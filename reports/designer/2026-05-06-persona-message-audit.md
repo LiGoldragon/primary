@@ -18,26 +18,35 @@ file-based append-only ledger, CLI as one Nota record in / one
 Nota record out. The implementation faithfully follows the
 design report.
 
-The shape is **too big for the stated test goal**. Roughly
-half the type surface is destination-plumbing the prototype
-doesn't exercise: `Authorization`, `Delivery`, three lifecycle
-enums, three identifier newtypes, `Object`/`Document` wrapping,
-`SchemaExample` output, a `Check` validate-only command, and
-the `::example()` factories on every record. None of it is run
-by the message-exchange flow; it's there to *look like* the
-eventual reducer shape.
+The shape is **too big in some places, too small in others**.
 
-The test goal is reachable with **just `Message` + `Inbox`**.
-Everything else can land when it has behavior to drive (the
-reducer's authorization gate, the delivery state machine).
-Carrying the future shape now produces dead surface area that
-agents will trust as if it were live.
+**Too big:** roughly half the type surface is
+destination-plumbing the prototype doesn't exercise.
+`Authorization`, `Delivery`, three lifecycle enums, three
+identifier newtypes, `Object`/`Document` wrapping,
+`SchemaExample` output, a `Check` validate-only command, the
+`::example()` factories on every record. None of it is run by
+the message-exchange flow; it's there to *look like* the
+eventual reducer shape. Contracts you don't drive lie.
 
-There's also one missing test that would actually validate the
-test goal: **a two-process integration test** that spawns the
-`message` binary twice (once to send, once to read) and proves
-the on-disk format crosses the process boundary. The existing
-tests share a `MessageStore` in-memory.
+**Too small:** three mechanics are missing that the *actual
+round-trip test scenario* needs (see §"What the test scenario
+actually requires"):
+
+1. **Certain sender identity** without trusting the message's
+   `from` claim — the binary must resolve who invoked it from
+   the process tree, not from what the message says.
+2. **An agents config file** mapping names to verifiable
+   identifiers (PIDs, sessions, or cwds).
+3. **A `Send` input shape** that the binary stamps with the
+   resolved sender, plus a **`Tail` mode** so the receiving
+   harness sees the message arrive while it's idle (Gas City's
+   prompt-injection equivalent).
+
+The existing tests are also all in-process (share a
+`MessageStore` instance). A two-process round-trip test is
+what would actually validate the prototype's reason for
+existing.
 
 ---
 
@@ -282,41 +291,219 @@ existing.
 
 ---
 
+## What the test scenario actually requires
+
+The audit above said "trim the dead surface." Looking more
+carefully into the prototype's actual purpose, three concrete
+mechanics are missing — none of which are in the binary today.
+
+The real test scenario is a **round-trip**:
+
+1. Harness A invokes `message` to push a prompt-shaped message
+   to harness B: *"hi, tell me you got this and reply back."*
+2. Harness B is running but idle; the message arrives at B
+   like a prompt being injected (Gas City did this via tmux
+   `send-keys`; for the naive prototype, B's running `message`
+   process notices the new entry and prints it to stdout).
+3. Harness B invokes `message` to send a reply back to A.
+4. Harness A's running `message` process notices the reply
+   and prints it.
+
+Three pieces are needed for that round-trip to work.
+
+### 1. Certain sender identity (no trust in message claims)
+
+The current input shape is `(Message m-1 thread-1 operator
+designer "..." [])` — the *user* supplies the `from` field.
+That's spoofable: any caller can write any `from`. The
+constraint stated by the user is that the binary must know
+**with certainty** which agent invoked it, without trusting
+the message claim.
+
+Two viable mechanisms on Linux:
+
+- **Process-ancestry walk.** When `message` runs, it reads its
+  own `getppid()`, then walks up `/proc/<pid>/status`'s `PPid:`
+  field until it finds a PID listed in the agents config. The
+  matching name is the authoritative sender. Spoof-resistant
+  because the kernel owns the process tree.
+- **Process-group / session ID.** Each harness runs in its
+  own session (`setsid()`); the binary calls `getsid(0)` and
+  looks up the SID in the agents config. Slightly less
+  spoof-resistant than ancestry walk; simpler to implement.
+
+**Don't** use environment variables alone (`PERSONA_ACTOR=...`)
+for the certainty test — the harness can spawn a child with a
+different env, breaking the certainty property. Env vars are
+fine as a *convenience* fallback when the test setup
+guarantees the harness doesn't re-export, but they don't
+satisfy "certainty."
+
+For the prototype, **ancestry walk** is the recommended shape.
+
+### 2. An agents config file
+
+The agents config maps names to identifiers the binary can
+verify. Nota record:
+
+```nota
+;; agents.nota — written by the test setup at session start
+(Agent operator 12345)
+(Agent designer 12346)
+```
+
+Where `12345` is the harness's PID at session start. The test
+setup spawns each harness, captures the PID, writes the file.
+The binary reads agents.nota each invocation, walks ancestry,
+picks the first match.
+
+PID is fragile across restarts; for a longer-lived setup, swap
+to session ID (`setsid()` once at harness start) or working
+directory (`cwd()`). The prototype only needs PID stability
+for the duration of one test session.
+
+The `agents.nota` file lives next to `messages.nota.log` in
+the store directory:
+
+```
+$PERSONA_MESSAGE_STORE/
+  ├── agents.nota          ;; config — written at setup
+  └── messages.nota.log    ;; ledger — append-only
+```
+
+### 3. The input-to-stored transformation
+
+Today the user types the full `Message` record. Per the
+"message gets transformed" instinct: the **input** should be
+minimal, and the **stored/delivered** form should be complete.
+
+Input form (what harness A types):
+
+```nota
+(Send designer "hi, tell me you got this and reply back")
+```
+
+What the binary does:
+
+1. Resolves sender via ancestry walk + agents config →
+   `operator`.
+2. Mints a `MessageId` (timestamp-based: `m-<unix-secs>-<seq>`).
+3. Defaults the thread name (`direct-operator-designer` or a
+   timestamp-based id).
+4. Writes the full record to the ledger:
+
+```nota
+(Message m-1714780800-1 direct-operator-designer operator designer "hi, tell me you got this and reply back" [])
+```
+
+The recipient sees the full record. They don't need to know
+the sender separately — the message tells them who to reply
+to. When B types `(Send operator "got it")`, the binary fills
+in `from designer` with the same mechanism; the resulting
+record goes to A.
+
+### 4. A `Tail` mode for the running harness
+
+The recipient needs to *receive* the message, not just be able
+to query an inbox. The simplest naive mechanism is a long-lived
+follower:
+
+```sh
+message '(Tail)'
+```
+
+This blocks. The binary resolves the caller via ancestry,
+filters the log to messages addressed to that caller, prints
+them as they appear, keeps following. Implementation: poll the
+log file every 200 ms; when a new line lands and
+`message.to == self`, print it. (Replace polling with a push
+subscription once the workspace has one — for the naive test,
+polling is fine.)
+
+This is the "Gas City prompt injection" equivalent for the
+prototype: the harness has a long-running process listening
+on its inbox; new messages appear on the harness's terminal
+while it's otherwise idle, like a prompt injection.
+
+### Round-trip diagram
+
+```mermaid
+sequenceDiagram
+    participant A as harness A<br/>(operator)
+    participant TailA as A's `message (Tail)`
+    participant FS as messages.nota.log
+    participant TailB as B's `message (Tail)`
+    participant B as harness B<br/>(designer)
+
+    Note over A,B: setup writes agents.nota with both PIDs
+    A->>TailA: spawn `message (Tail)`
+    B->>TailB: spawn `message (Tail)`
+
+    A->>FS: `message (Send designer "hi, reply please")`<br/>binary walks ancestry → from=operator
+    Note over FS: appended<br/>(Message ... operator designer "hi" [])
+    FS-->>TailB: poll sees new line; to=designer; print
+    Note over B: harness sees message inline,<br/>like a prompt injection
+
+    B->>FS: `message (Send operator "got it")`<br/>binary walks ancestry → from=designer
+    Note over FS: appended<br/>(Message ... designer operator "got it" [])
+    FS-->>TailA: poll sees new line; to=operator; print
+    Note over A: harness sees the reply
+```
+
+Both halves of the round-trip use the same mechanism. Each
+side's binary independently resolves its own identity. Neither
+trusts the other's claim about who they are.
+
+---
+
 ## Suggested simpler shape
 
 ```mermaid
 flowchart TB
-    subgraph schema[schema.rs · ~50 lines]
+    subgraph schema[schema.rs]
         msgId[MessageId · ThreadId · ActorId]
+        agentRec[Agent record - name + pid]
         att[Attachment]
         msg[Message · from_nota · to_nota]
     end
 
-    subgraph cmd[command.rs · ~80 lines]
-        inboxRec[Inbox]
-        input[Input::Message · Input::Inbox]
+    subgraph cmd[command.rs]
+        sendRec[Send input - recipient + body]
+        inboxRec[Inbox input - recipient]
+        tailRec[Tail input - empty]
+        input[Input::Send · Input::Inbox · Input::Tail]
         accepted[Accepted output]
         inboxOut[InboxMessages output]
         output[Output::Accepted · Output::InboxMessages]
         cliShape[CommandLine · execute]
     end
 
-    subgraph store[store.rs · unchanged ~90 lines]
-        sp[StorePath]
-        ms[MessageStore<br/>append · messages · inbox]
+    subgraph resolver[resolver.rs - new]
+        ancestry[walk ancestry via /proc]
+        match[match against AgentsConfig]
+        sender[resolved sender = ActorId]
     end
 
-    subgraph err[error.rs · ~25 lines]
+    subgraph store[store.rs]
+        sp[StorePath]
+        ms[MessageStore<br/>append · messages · inbox · tail]
+        ac[AgentsConfig<br/>load agents.nota]
+    end
+
+    subgraph err[error.rs]
         e[Error]
     end
 
     subgraph testsBlock[tests/]
         t1[message.rs · round-trip + inbox filter]
-        t2[two_process.rs · spawn binary twice<br/>verify on-disk exchange]
+        t2[two_process.rs · spawn binary twice<br/>verify on-disk exchange + sender resolution]
+        t3[round_trip.rs · A sends, B tails + replies, A tails<br/>full scenario]
     end
 
     cmd --> schema
     cmd --> store
+    cmd --> resolver
+    resolver --> store
     cmd --> err
     testsBlock --> cmd
     testsBlock --> store
@@ -328,10 +515,10 @@ public type count drops from ~20 to ~8.
 
 ---
 
-## Concrete deletion list
+## Concrete change list
 
-If the operator (or whoever picks this up) wants a one-pass
-shrink:
+If the operator (or whoever picks this up) wants the one-pass
+delete + add:
 
 ```
 Delete from schema.rs:
@@ -344,43 +531,74 @@ Delete from schema.rs:
 - ::example() on Message and Attachment
 
 Delete from command.rs:
-- Check record
-- Input::Check variant
-- Validated output record
-- SchemaExample output record
-- Output::Validated and Output::SchemaExample variants
+- Check record · Input::Check variant
+- Validated output record · Output::Validated variant
+- SchemaExample output record · Output::SchemaExample variant
+- multi-arg-joining inline-Nota path; take exactly one arg
 
 Trim main.rs:
 - the args_os().len() == 1 short-circuit; let CommandLine handle it
 - Replace the no-args path with a usage one-liner
 
+Add to schema.rs:
+- Agent record (name: ActorId, pid: u32)
+  ;; (Agent operator 12345) — written to agents.nota at session setup
+
+Add to command.rs:
+- Send input record (recipient: ActorId, body: String)
+- Tail input (empty record)
+- Input::Send and Input::Tail variants
+
+Add resolver.rs:
+- AgentsConfig::load(path) → Vec<Agent>
+- resolve_sender(config) → Result<ActorId>:
+    walk getppid() up via /proc/<pid>/status until a PID
+    matches an Agent in config; return that agent's name.
+- Error case: NoMatchingAncestor — exits with usage.
+
+Update store.rs:
+- MessageStore::tail(recipient) → blocking iterator (poll 200ms)
+- AgentsConfig path: $PERSONA_MESSAGE_STORE/agents.nota
+
+Update Input::execute:
+- Send: resolve sender, mint MessageId/ThreadId, build Message,
+  append, return Accepted.
+- Tail: resolve self, loop printing matches forever.
+- Inbox: unchanged (already takes a recipient parameter).
+
 Add tests/two_process.rs:
-- spawn binary twice; verify on-disk exchange
+- spawn binary twice; verify on-disk exchange + sender resolution.
+
+Add tests/round_trip.rs:
+- spawn two child processes simulating harnesses A and B,
+  spawn `message (Tail)` for each, send from A, verify B's
+  tail prints, send reply from B, verify A's tail prints.
 
 Optional:
 - default PERSONA_MESSAGE_STORE to ./.persona-message/
-- drop the multi-arg-joining inline-Nota path; one arg only
 ```
 
 ---
 
-## What this proves once trimmed
+## What this proves once trimmed and reshaped
 
-```mermaid
-sequenceDiagram
-    participant A as harness A (CLI invocation 1)
-    participant FS as messages.nota.log
-    participant B as harness B (CLI invocation 2)
+The full test goal — round-trip with certain sender identity
+and prompt-injection-style delivery — is what the round-trip
+diagram in §"What the test scenario actually requires" shows.
+That diagram is the prototype's reason for existing. The
+current shape proves much less than that, with much more code.
 
-    A->>FS: append (Message m-1 thread-1 operator designer "hi" [])
-    Note over FS: file persists between invocations
-    B->>FS: read all lines, filter to recipient
-    FS-->>B: [(Message m-1 ...)]
-```
+The trimmed-and-reshaped shape proves:
 
-That diagram is the test goal. The simpler shape proves it
-end-to-end with two processes; the current shape proves it
-in-process and adds a lot of un-driven types around it.
+- A typed `(Send recipient "body")` input, signed by the
+  binary on the way to the ledger, lands in the right inbox.
+- Two independent processes can each invoke the binary, each
+  resolving their own identity, each seeing the other's
+  messages arrive in their tail.
+- Sender identity is verified by the kernel's process tree,
+  not by the message's claim.
+- The eventual reducer-based shape can replace the file
+  ledger without changing the wire records.
 
 ---
 
