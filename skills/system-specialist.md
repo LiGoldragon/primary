@@ -95,9 +95,9 @@ See lojix-cli's `skills.md` for the per-repo specifics.
 
 ## Cluster Nix signing
 
-CriomOS today wires Nix signing only on **cache nodes**
-(`isNixCache = true`): `services.nix-serve.secretKeyFile` in
-CriomOS's `modules/nixos/nix.nix`. Non-cache nodes have no
+CriomOS today wires *daemon-attached* Nix signing only on **cache
+nodes** (`isNixCache = true`): `services.nix-serve.secretKeyFile`
+in CriomOS's `modules/nixos/nix.nix`. Non-cache nodes have no
 `nix.settings.secret-key-files` and no signing private key on
 disk. Paths they build are `ultimate`-trusted locally but carry
 no transferable signature.
@@ -106,39 +106,68 @@ Trust direction is wired correctly: every node's
 `trusted-public-keys` is rolled up from datom by horizon-rs
 (`lib/src/horizon.rs`, filter on `nix_pub_key_line`).
 
-The asymmetry: pubkeys are declared in datom for several nodes
-(ouranos, prometheus, tiger), but only the cache node has a
-matching secret on disk. A pubkey in datom for a non-cache node
-is **phantom** — declared trust, no real signing capability.
+How signed paths actually flow: **only `nix-serve` signs**, and
+it signs only over HTTP at request time. Direct
+nix-daemon-to-nix-daemon transfer over `ssh-ng` carries whatever
+signatures the source path already has — locally built paths on
+non-cache nodes have none.
 
-**Symptom**: `lojix-cli (FullOs … Switch None)` builds on the
-dispatcher, then `nix copy --to ssh-ng://<target>` fails with
-"cannot add path X because it lacks a signature by a trusted
-key."
+To bridge that gap, `lojix-cli/src/copy.rs` always passes
+`--substitute-on-destination` to `nix copy`. The target prefers
+substituting each path from its own substituters (the cluster
+HTTP cache) over receiving the raw path from the source. When
+the cache has the closure, the target gets it signed and
+verified; when the cache misses, the copy falls back to the
+unsigned ssh-ng path and fails.
+
+**Practical consequence**: deploys must route the build through
+a cache node so the cache has the closure to serve. Use
+`builder = <cache-node>` in the Nota request — e.g.
+`(FullOs goldragon zeus … Switch prometheus)`. The cache builds,
+nix-serve signs on serve, the target substitutes signed.
+**`builder = None` is broken** for cross-host deploys: the
+dispatcher builds locally, nothing in the cluster has the
+closure, substitution misses, ssh-ng fallback delivers unsigned
+paths, target rejects.
 
 **Diagnostics**:
 
-- Local sig: `nix path-info --sigs <path>` — `ultimate`
-  without a `Sig:` means unsigned local build.
+- Local sig: `nix path-info --sigs <path>` — `ultimate` without
+  a `Sig:` means unsigned local build.
 - Cache sig: `curl http://nix.<cache>.<cluster>.criome/<storehash>.narinfo`
   and read the `Sig:` line.
-- Reproduce push failure: `nix copy --to ssh-ng://root@<target> <path>`.
+- Reproduce push failure:
+  `nix copy --to ssh-ng://root@<target> <path>`.
+- Confirm fix:
+  `nix copy --substitute-on-destination --to ssh-ng://root@<target> <path>` —
+  if the cache has the path, you'll see lines like
+  `copying path '…' from 'http://nix.<cache>.<cluster>.criome'`
+  and zeus accepting.
 
-**Workarounds, in increasing scope**:
+**Generating per-node signing keys** (the procedure the user
+asked for, partially landed): on each host, generate at
+`/etc/nix/secret-key`:
 
-- Pull from cache before copy: `nix copy --from
-  http://nix.<cache>.<cluster>.criome <path>` on the dispatcher.
-  Replaces the unsigned local copy with a signed one. Only
-  works when the cache has the closure.
-- Build on a signing node: set `builder = <cache>` in the Nota
-  request.
-- `--no-check-sigs` on copy. Last resort; weakens cluster trust.
+```sh
+ssh root@<host> '
+  nix-store --generate-binary-cache-key <host>.<cluster>.criome \
+    /etc/nix/secret-key /etc/nix/secret-key.pub &&
+  chmod 400 /etc/nix/secret-key &&
+  chmod 444 /etc/nix/secret-key.pub
+'
+```
 
-**Real fix (not yet landed)**: wire
-`nix.settings.secret-key-files` per node in `nix.nix`, generate
-real keypairs, store secrets durably, and update datom with real
-pubkeys. New pubkeys propagate to every node's trust list on
-next deploy.
+Then read `/etc/nix/secret-key.pub` and replace the matching
+node's `NodePubKeys.nix` field in `goldragon/datom.nota`. Push
+goldragon. Redeploy each updated host so its trust list reflects
+the new pubkeys (use `builder = prometheus` for the redeploys
+because non-cache nodes still don't sign).
+
+The keys are *inert* until CriomOS wires
+`nix.settings.secret-key-files` in `modules/nixos/nix.nix` —
+that's the still-pending architectural fix that would let
+non-cache nodes' daemons sign locally-built paths and let
+`builder = None` deploys produce verifiable closures.
 
 ---
 
