@@ -9,9 +9,8 @@ Active scopes:
 - none
 
 Notes:
-- Lore project-decoupling sweep + skills-system bootstrap completed
-  2026-05-06: workspace skills (autonomous-agent, skill-editor,
-  stt-interpreter), repo skills (criome, sema), lore/AGENTS.md
-  updated to reference the skills layer.
+- 2026-05-06: skills bootstrap (workspace + criome + sema), lore decoupling
+  sweep, autonomous-agent rule for incremental per-repo skills.md rollout.
+  Bead primary-bmy tracks the per-repo rollout (incremental, agent-driven).
 - During initial setup, this file was created by the operator.
 - After initial setup, only the designer may edit this file.
