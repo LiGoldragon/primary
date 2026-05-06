@@ -146,6 +146,13 @@ A focused audit (subagent, in-conversation) read gas-city's bd
 architecture and produced a clean reading. The relevant
 distillation:
 
+**Note on scope.** BEADS itself is transitional in this
+workspace — Persona's messaging fabric is what replaces it, not
+a system that runs alongside it. The lessons below are about
+*what shape we lift* into Persona, not about *what surface
+Persona exposes to bd-the-tool*. There is no Persona-bd bridge
+in the destination.
+
 ### What was right
 
 - **Persistent typed-by-discriminator records** as the durable
@@ -830,11 +837,27 @@ on before code lands beyond the schema scaffold:
    matches my persona-audit's findings, matches
    verb-belongs-to-noun discipline). Operator's current scaffold
    uses verb-form. Worth one focused conversation.
-5. **Does Persona model BEADS tasks as first-class work
-   objects?** Operator's open question. My take: not yet —
-   BEADS is the workspace's coordination layer between Codex
-   and Claude, not part of Persona's harness fabric. If a
-   bridge becomes useful later, it's a typed adapter.
+5. **What replaces BEADS in the final shape?** **Persona does.**
+   BEADS is transitional substrate — used now because we have it
+   and it works for short tracked items, not because it's part
+   of the destination. The persona messaging fabric subsumes the
+   role: workspace coordination tasks become typed Persona
+   Records (`Task` / `Coordination` / `Memory` kinds, naming
+   TBD); the operator/designer-lock protocol becomes Persona
+   records and a typed Authorization gate; agent-to-agent
+   "mail" stops being beads with `Type="message"` and becomes
+   the canonical `Message` + `Authorization` + `Delivery` flow
+   from §5.3. The destination is **one fabric** — orchestration
+   and coordination both speak Nota records over the same
+   reducer.
+
+   Implication for design: don't carve out a "BEADS adapter."
+   Don't bridge persona to bd. Treat bd-tracked items today as
+   convenience-only and design Persona's record set so it can
+   absorb them when the time comes. The workspace itself
+   eventually becomes an instance of Persona, with operator and
+   designer as harness identities and the lock / task /
+   memory shapes as typed records.
 6. **First Authorization shape.** The minimum viable: a
    principal-pair table with `Allow`/`Deny`/`Hold` per
    `(from, to)`. Capability tokens, signed envelopes, and
