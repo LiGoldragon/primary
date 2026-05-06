@@ -44,13 +44,15 @@ filename**. Never use a full HTTPS URL.
 Right:
 
 - "see criome's `skills.md`"
-- "see lore's `programming/abstractions.md`"
+- "see this workspace's `skills/abstractions.md`"
 - "see this workspace's `skills/autonomous-agent.md`"
+- "see lore's `rust/ractor.md`" (when the target is a tool
+  reference, not a skill)
 
 Wrong:
 
 - `https://github.com/<org>/criome/blob/main/skills.md`
-- `https://github.com/<org>/lore/blob/main/programming/abstractions.md`
+- `https://github.com/<org>/primary/blob/main/skills/abstractions.md`
 
 **Why:** deep file URLs silently break when files move, get
 renamed, or are deleted. A repo-name reference stays valid
@@ -160,7 +162,7 @@ one repo, do real work in it, then write the skill.
 
 - `autonomous-agent.md` — how to act on routine obstacles
   without asking; cross-reference rules.
-- lore's `programming/naming.md` — naming conventions used
+- this workspace's `skills/naming.md` — naming conventions used
   inside skill files.
 - lore's `AGENTS.md` — workspace contract; skills are
   downstream of the contract.

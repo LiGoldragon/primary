@@ -44,9 +44,8 @@ underlying problem is; fix the underlying problem.
 - **A `pub` field on a wrapper newtype.** `Slot(pub u64)` is a
   label, not an abstraction.
 - **A free function that should be a method.** A verb that could
-  attach to a noun reads as a missing model. See lore's
-  `programming/abstractions.md` (also a candidate for migration to
-  this skills directory).
+  attach to a noun reads as a missing model. See this workspace's
+  `skills/abstractions.md`.
 - **Dead code retained "for safety" or "for backward compatibility."**
   Ariane 5. Knight Capital. Delete it; the history is in `git log`.
 - **Special cases stacked on the normal case.** Find the rewrite
@@ -93,11 +92,13 @@ were missing.
 
 ## See also
 
-- lore's `programming/abstractions.md` — the verb-belongs-to-noun
-  rule (one of the diagnostic readings above); a migration
-  candidate.
-- lore's `programming/naming.md` — the spelled-out-words rule;
-  another migration candidate.
+- this workspace's `skills/abstractions.md` — the
+  verb-belongs-to-noun rule (one of the diagnostic readings
+  above).
+- this workspace's `skills/naming.md` — the spelled-out-words
+  rule.
+- this workspace's `skills/rust-discipline.md` — Rust-specific
+  application of these rules.
 - this workspace's `skills/skill-editor.md` — how skills are
   written and cross-referenced.
 - this workspace's `ESSENCE.md` §"Beauty is the criterion" —

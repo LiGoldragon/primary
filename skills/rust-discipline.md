@@ -1,0 +1,575 @@
+# Skill — Rust discipline
+
+*Behavior lives on types. Domain values are typed. Boundaries take
+and return one object. Errors are enums you implement by hand.*
+
+---
+
+## What this skill is for
+
+When you write or review Rust in this workspace, this skill is the
+discipline. It is the Rust-specific enforcement of the cross-language
+rules in this workspace's `skills/abstractions.md`,
+`skills/naming.md`, `skills/beauty.md`, and `skills/micro-components.md`.
+
+For toolchain reference (Cargo.toml shape, cross-crate dependencies,
+git-URL deps + `cargoLock.outputHashes` pattern, pin strategy, Nix
+packaging), see lore's `rust/style.md` and lore's
+`rust/nix-packaging.md`. This skill is *how to write*; lore is *how
+the toolchain works*.
+
+---
+
+## The rules in one sentence
+
+**Behavior lives on types. Domain values are typed. Boundaries take
+and return one object. Errors are enums you implement by hand.**
+
+---
+
+## Methods on types, not free functions
+
+The only free function in a binary crate is `main`. Reusable
+behavior is a method on a type or a trait impl. Test helpers are
+methods on a fixture struct.
+
+```rust
+// Wrong
+pub fn parse_cert(pem: &str) -> Result<Cert, Error> { … }
+
+// Right
+impl Cert {
+    pub fn from_pem(pem: &str) -> Result<Self, Self::Error> { … }
+}
+```
+
+A small private helper inside one module is fine if it is
+genuinely local (`fn hex(h: &Hash) -> String` next to a single
+`Display` impl). Anything that smells reusable becomes a method.
+
+For the cross-language version of this rule (the same idea
+language-neutrally, plus the LLM-codegen reasoning and the
+principled exceptions), see this workspace's
+`skills/abstractions.md`. This section is the Rust enforcement.
+
+**The deeper consequence**: free functions let the agent skip
+creating the type that should own the behavior. If you're tempted
+to write
+
+```rust
+// Wrong
+pub fn parse_query(text: &str) -> Result<QueryOp, Error> { … }
+```
+
+the rule forces you to ask: *what type owns query parsing?* The
+answer is `QueryParser`, and the rule's pressure makes that type
+exist:
+
+```rust
+// Right
+pub struct QueryParser<'input> { lexer: Lexer<'input> }
+
+impl<'input> QueryParser<'input> {
+    pub fn new(input: &'input str) -> Self { … }
+    pub fn into_query(self) -> Result<QueryOp, Error> { … }
+}
+```
+
+The rule of thumb: **every reusable verb belongs to a noun**. If
+you can't name the noun, you haven't found the right model yet —
+keep looking until you can.
+
+---
+
+## No ZST method holders
+
+A `pub struct Foo;` whose `impl Foo` is just a parking lot for
+functions that do real work on data they don't carry is a free
+function in namespace clothing. The ZST is a label, nothing more —
+the type doesn't track what the work operates on, only what it's
+named after. This is the **methods-on-types** rule evaded one
+level deeper: the verb got attached to *something*, but the
+something is hollow.
+
+When you see this, don't rename `Foo`. Don't accept the smell.
+**Step back and find the noun.** A ZST-with-methods is the visible
+scar of "I had a verb but couldn't find a noun, so I created a
+fake noun to hold the verb." The right noun is a type that holds
+the data the verb reads or writes — and it may not exist yet.
+Invent it. Naming the right object is often the load-bearing
+design decision the prior thinking missed.
+
+```rust
+// Wrong — ZST as a folder for free functions
+pub struct CertParser;
+
+impl CertParser {
+    pub fn parse_pem(pem: &str) -> Result<Cert, Error> { … }
+    pub fn parse_der(der: &[u8]) -> Result<Cert, Error> { … }
+    pub fn fingerprint(cert: &Cert) -> Hash { … }
+}
+
+// Right — the verbs belong on the noun whose data they touch
+impl Cert {
+    pub fn from_pem(pem: &str) -> Result<Self, Error> { … }
+    pub fn from_der(der: &[u8]) -> Result<Self, Error> { … }
+    pub fn fingerprint(&self) -> Hash { … }
+}
+```
+
+If parsing genuinely needs its own state (a buffered lexer,
+accumulated diagnostics, a configurable mode), then the noun is
+`CertParser` *with fields* — see the `QueryParser` example above.
+Either the work belongs on the data type, or it belongs on a
+stateful parser type. The ZST middle ground is the gap.
+
+### Legitimate ZST uses — narrow, named
+
+ZSTs earn their keep when they carry **type-level information**
+rather than pretending to carry runtime state:
+
+- **`PhantomData<T>`** and other generic-parameter trackers.
+- **Marker types required by external frameworks** — `ractor`
+  actor behaviour markers, sealed-trait gates, an `Iterator` impl
+  on a unit struct that genuinely has no carried state. The ZST
+  has *only* trait-impl methods that delegate to a data-bearing
+  partner type; never inherent methods doing real work.
+- **Type-level enum variants** in trait-encoded state machines,
+  where the unit struct *is* the state and the type system
+  enforces transitions.
+
+The test: does the ZST's job vanish if you erase its name from
+the type system? If yes (it was just a namespace), the verbs need
+a real noun. If no (the type-system position is what does the work
+— phantom parameter, marker, state), the ZST is fine.
+
+---
+
+## Domain values are types, not primitives
+
+If a value has identity beyond its bits, it gets a newtype. A
+content hash is not a `String`. A node name is not a `String`. A
+file path used as an identifier is not a `Path`.
+
+```rust
+// Wrong
+pub fn details(&self, md5: &str) -> Result<Item, Error> { … }
+
+// Right
+pub struct Md5([u8; 16]);
+pub fn details(&self, md5: &Md5) -> Result<Item, Error> { … }
+```
+
+**The wrapped field is private.** A `pub` field exposes the
+primitive and defeats every reason to wrap it: callers can
+construct unchecked values and read the raw bytes back out.
+
+```rust
+// Wrong — pub field, the type is just a label
+pub struct NodeName(pub String);
+
+// Right — field private; construction and access go through methods
+pub struct NodeName(String);
+
+impl NodeName {
+    pub fn new(s: impl Into<String>) -> Self { Self(s.into()) }   // or TryFrom if validated
+}
+
+impl AsRef<str> for NodeName {
+    fn as_ref(&self) -> &str { &self.0 }
+}
+```
+
+Construction with validation goes through `TryFrom<&str>` (or
+`from_str`) returning the crate's `Error`.
+
+---
+
+## One type per concept — no `-Details` / `-Info` companions
+
+If you find yourself defining `Item` *and* `ItemDetails`, stop.
+The `-Details` or `-Info` suffix paired with a base type is one
+concept fragmented across two types because the base was designed
+too thin. Fix the base type. The same applies to `-Extra`,
+`-Meta`, `-Full`, `-Extended`, `-Raw`/`-Parsed` pairs, and any
+other suffix that means "the real version of the thing next door."
+
+```rust
+// Wrong — two types for one concept
+struct Item { md5: Md5, name: String }
+struct ItemDetails { md5: Md5, name: String, size: u64, mirrors: Vec<Url>, … }
+
+// Right — one Item, complete
+struct Item {
+    md5: Md5,
+    name: String,
+    size: u64,
+    mirrors: Vec<Url>,
+    …
+}
+```
+
+If different *call sites* genuinely need different *projections*,
+model that with a method that returns a smaller view
+(`item.summary()`), not with a parallel type.
+
+---
+
+## One object in, one object out
+
+Method signatures take at most one explicit object argument and
+return exactly one object. When inputs or outputs need more,
+define a struct.
+
+**Anonymous tuples are not used at type boundaries** — not as
+return types, not as parameter types, not as struct fields, not in
+type aliases. The exception is **tuple newtypes**: `struct
+Md5([u8; 16])`, `struct NodeName(String)`. They use tuple syntax
+to wrap a single thing, but the wrapper itself is a named type.
+Local destructuring like `let (a, b) = pair;` against a
+tuple-newtype's inner is fine; the rule is about type-level
+appearances of unnamed tuples.
+
+The verb is the method name; the noun is the type. Don't smuggle
+the verb into the type name (`DownloadRequest` + `download_url(req)`)
+— make it a method on the input (`Request::download`).
+
+```rust
+// Wrong — multi-primitive args at the boundary
+fn download_url(&self, md5: &str, path_index: Option<u32>,
+                domain_index: Option<u32>) -> Result<Download, Error> { … }
+
+// Wrong — free function with tuple return
+fn parse_results(html: &str) -> Result<(Vec<SearchResult>, bool), Error> { … }
+
+// Right — input is a Request; the verb is a method on it
+struct Request { md5: Md5, path_index: Option<u32>, domain_index: Option<u32> }
+
+impl Request {
+    pub fn download(&self) -> Result<Download, Error> { … }
+}
+
+// Right — input is a SearchPage; parse is a method on it
+struct SearchPage { html: String, page: u32 }
+
+impl SearchPage {
+    pub fn parse(&self) -> Result<SearchResponse, Error> { … }
+}
+
+// Right — one explicit object alongside self (relational operation)
+impl Tree {
+    pub fn merge(&self, other: Tree) -> Result<Tree, Error> { … }
+}
+```
+
+`self` is implicit; the rule counts explicit arguments only. A
+method takes zero or one typed object alongside `self`.
+
+---
+
+## Constructors are associated functions
+
+`new`, `with_*`, `from_*`, `build` — never module-level free
+functions.
+
+| Name           | Use when                                                       |
+|----------------|----------------------------------------------------------------|
+| `new`          | default / minimal construction.                                |
+| `with_<thing>` | ergonomic alt with one extra knob (`Tree::with_bits`).         |
+| `from_<src>`   | conversion from a specific source type or representation.      |
+| `from_input`   | conversion from a typed input struct (single-object-in style). |
+| `build`        | multi-step construction with clearly-named primitive args.     |
+| `Default`      | when "empty / zero" is meaningful for the type.                |
+| `From<T>`      | infallible conversion from another type.                       |
+| `TryFrom<T>`   | fallible conversion. Pair with `Error` enum.                   |
+
+Prefer `TryFrom` when the conversion has one canonical source
+type; prefer `from_<src>(…) -> Result<Self, Error>` when there are
+several plausible sources or extra args.
+
+---
+
+## Use existing trait domains
+
+If `core::str::FromStr` already names what you do, implement
+`FromStr`, not an inherent `parse` method. Same for `Display`,
+`From`, `TryFrom`, `AsRef`, `Default`, `Iterator`. Don't reach for
+an inherent method just because it's quicker.
+
+```rust
+use core::str::FromStr;
+
+impl FromStr for Message {
+    type Err = MessageParseError;
+    fn from_str(input: &str) -> Result<Self, Self::Err> { … }
+}
+```
+
+Inherent methods that bypass an obvious trait domain are a smell.
+
+---
+
+## Direction-encoded names
+
+Prefer `from_*`, `to_*`, `into_*`, `as_*`. Avoid `read`, `write`,
+`load`, `save` when a direction word already conveys the meaning.
+`as_str` over `get_string`. `to_hex` over `format_hex`.
+`from_bytes` over `parse_bytes`.
+
+`get` / `put` are fine for storage interfaces (`ChunkStore::get`);
+they name the storage operation, not a conversion.
+
+---
+
+## Naming — full English words
+
+Spell every identifier as full English words; the cryptic
+in-group dialect is fossil from 6-char FORTRAN, 80-column cards,
+and 10-cps teletypes. Cross-language version with the offender
+table and the six permitted exception classes lives in this
+workspace's `skills/naming.md`.
+
+```rust
+// Wrong — cryptic in-group dialect
+fn parse(input: &str) -> Result<Token, Error> {
+    let mut lex = Lexer::new(input);
+    let tok = lex.next_tok()?;
+    let kd = tok.kind();
+    let ctx = ParseCtx::new(&kd);
+    let de = Deser::with_ctx(ctx);
+    de.deser_op(&tok)
+}
+
+// Right — every name reads as English
+fn parse(input: &str) -> Result<Token, Error> {
+    let mut lexer = Lexer::new(input);
+    let token = lexer.next_token()?;
+    let kind = token.kind();
+    let context = ParseContext::new(&kind);
+    let deserializer = Deserializer::with_context(context);
+    deserializer.deserialize_operation(&token)
+}
+```
+
+`self` is the implicit receiver and is universal across Rust —
+leave it. This rule is about *naming the things you create*, not
+renaming the language's primitives.
+
+---
+
+## Errors: typed enum per crate via thiserror
+
+Each crate defines its own `Error` enum in `src/error.rs`,
+derived with `thiserror`. Variants are structured — carry the data
+needed to render a useful message. Foreign error types convert
+via `#[from]`.
+
+```rust
+use thiserror::Error;
+
+#[derive(Debug, Clone, Error)]
+pub enum Error {
+    #[error("chunk not found: {0}")]
+    ChunkNotFound(Hash),
+
+    #[error("deserialization failed: {0}")]
+    DeserializationFailed(String),
+
+    #[error("invalid node: {0}")]
+    InvalidNode(String),
+
+    #[error("merge conflict on key ({} bytes)", key.len())]
+    MergeConflict { key: Vec<u8> },
+
+    #[error("network: {0}")]
+    Network(#[from] reqwest::Error),
+}
+```
+
+Public APIs return `Result<T, Error>` with the crate's own enum.
+**Never** `anyhow::Result`, `eyre::Result`, or `Result<T, Box<dyn
+Error>>` — they erase the error type at the boundary, which loses
+the typed-failure discipline the rest of the rules build up.
+Callers can no longer pattern-match on what went wrong.
+
+---
+
+## Actors: logical units with ractor
+
+When the daemon grows enough concurrent state to need an actor
+framework, the reason is **logical cohesion, coherence, and
+consistency** — not performance. An actor is the unit you reach
+for when you want to model a coherent component: it owns its
+state, exposes a typed message protocol, and has a defined
+lifecycle. The framework is `ractor`.
+
+- **Messages are typed.** Each actor's message type is its own
+  enum, one variant per request kind. No untyped channels.
+- **State is owned, not shared.** The actor's state lives inside
+  the actor and is mutated only by its message handlers.
+  `Arc<Mutex<T>>` shared between actors is a smell — send a
+  message to whoever owns the state.
+- **Supervision is recursive.** An actor that spawns sub-actors
+  supervises them. Failures escalate; the parent decides restart
+  vs shutdown. No detached tasks.
+- **Use actors for components, not for chores.** A function that
+  awaits an HTTP call is a method, not an actor. An actor exists
+  because the *concept* it models warrants its own state and
+  protocol.
+
+**Ractor is the default** for any component with state and a
+message protocol. The per-actor overhead is negligible on modern
+hardware, and the discipline (typed messages, owned state,
+supervision trees) pays back immediately — you never end up
+retrofitting concurrency later. Ractor pulls tokio in; that's
+acceptable everywhere — for daemons and structured services,
+tokio via ractor is just the runtime.
+
+For the *how* — the per-file four-piece template,
+perfect-specificity messages, supervision, self-cast loops, and
+the sync-façade pattern — see lore's `rust/ractor.md`.
+
+Plain sync code is fine for one-shot CLIs, build tools, and
+library crates with no concurrent state.
+
+---
+
+## One Rust crate per repo
+
+Rust crates live in their own dedicated repos and are consumed
+via flake inputs. Don't inline a Rust crate inside a non-Rust
+repo (e.g. under a NixOS-platform repo's `packages/`). A Rust
+crate has its own toolchain pin, its own Cargo lockfile, its own
+test surface, its own release cadence, and its own style
+obligations. Inlining one inside a heterogeneous repo couples
+those concerns to the host repo's churn for no gain. Consume via
+flake input instead.
+
+A workspace of related Rust crates (e.g. lib + cli) belongs in
+**one** repo together. The split is per *project*, not per crate.
+
+For the toolchain reference (Cargo.toml conventions, cross-crate
+dependencies, git-URL deps, pin strategy), see lore's
+`rust/style.md`.
+
+---
+
+## Tests live in separate files
+
+Unit tests do **not** go in a `#[cfg(test)] mod tests` block at
+the bottom of the source file. They live in a sibling file under
+`tests/` at the crate root, named for the module they exercise.
+
+```
+src/
+├── cert.rs
+├── tree.rs
+└── error.rs
+tests/
+├── cert.rs      # integration tests for Cert
+└── tree.rs      # integration tests for Tree
+```
+
+This keeps the source file focused on behavior, lets the test
+file grow without bloating the source file, and forces tests to
+exercise the public API (integration tests can't reach private
+items — which is the right pressure: if something is hard to test
+from outside, the API needs work, not the test). Private-helper
+tests are rare and can go in a small `tests_internal` module with
+a clear boundary; if you find yourself reaching for many, that's
+a signal the helper wants to be its own type with a public
+constructor.
+
+One test file per source file. Don't collect tests from multiple
+modules into a single `tests/common.rs` unless the shared
+fixtures genuinely apply to more than one module.
+
+---
+
+## Module layout
+
+One concern per file. Typical crate:
+
+```
+src/
+├── lib.rs        # re-exports + crate-level doc (//!)
+├── error.rs      # Error enum + impls
+├── types.rs      # domain newtypes + small structs
+├── <thing>.rs    # one file per major type / subsystem
+└── main.rs       # only if the crate is a binary; only free fn lives here
+```
+
+Impls live in the same file as the type they're for. Don't split
+types and impls across files.
+
+### Split traits into their own files when they accumulate
+
+When a single file grows past ~300 lines because traits have
+piled up on a type, split each trait impl into its own file. The
+file for a type holds the type definition + its inherent impls;
+each separate file holds one trait impl for that type, named for
+the trait.
+
+```
+src/cert/
+├── mod.rs              # type definition + inherent impls (Cert::new, fields)
+├── from_str.rs         # impl FromStr for Cert
+├── display.rs          # impl Display for Cert
+├── try_from_pem.rs     # impl TryFrom<Pem> for Cert
+└── serde_impls.rs      # impl Serialize + Deserialize for Cert (paired traits)
+```
+
+This is the deliberate trade-off **explicit code is fine; long
+files are not**. Splitting trait impls into separate files keeps
+any single file readable, makes the type's surface discoverable
+from the directory listing, and prevents impl blocks from growing
+into a wall of unrelated behavior.
+
+Use this pattern when traits accumulate. Don't pre-split a type
+with two trait impls — that's premature ceremony. Split when a
+file is becoming hard to navigate.
+
+---
+
+## Documentation
+
+Doc comments are impersonal, timeless, precise. Document the
+contract; don't restate the signature.
+
+```rust
+impl Cert {
+    /// Issue a server certificate against this CA.
+    ///
+    /// The CA's signing key must be an Ed25519 key resolvable via the
+    /// local GPG agent. The server keypair is ECDSA P-256, generated fresh.
+    pub fn issue_server(&self, request: ServerCertRequest) -> Result<Self, Error> { … }
+}
+```
+
+Module-level docs go in `//!` at the top of `lib.rs` or `///` at
+the top of a single-purpose module file. Skip docs on obvious
+boilerplate: getters, `From` impls, internal helpers.
+
+No examples in doc comments unless the API is non-obvious. No
+personal voice. No future tense. Present indicative only.
+
+---
+
+## See also
+
+- this workspace's `skills/abstractions.md` — cross-language
+  version of the methods-on-types rule.
+- this workspace's `skills/naming.md` — cross-language naming
+  rule with the full offender table.
+- this workspace's `skills/beauty.md` — beauty as criterion;
+  the rules above are how Rust code gets there.
+- this workspace's `skills/micro-components.md` — one capability
+  per crate per repo.
+- lore's `rust/style.md` — toolchain reference (Cargo.toml,
+  cross-crate deps, pin strategy, Nix-based tests).
+- lore's `rust/nix-packaging.md` — canonical crane + fenix flake
+  layout.
+- lore's `rust/ractor.md` — ractor template, per-verb typed
+  messages, supervision patterns.
+- lore's `rust/rkyv.md` — rkyv portable feature set, derive-alias
+  pattern, schema fragility.

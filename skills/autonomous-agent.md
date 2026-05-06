@@ -82,7 +82,7 @@ Fix:
 
 ```
 git -C <repo> remote set-url origin git@github.com:<owner>/<repo>.git
-git -C <repo> push
+cd <repo> && jj git push --bookmark main
 ```
 
 This isn't a global config change — it's per-repo, repairs the
@@ -133,7 +133,7 @@ After every meaningful commit in any tracked repo, push
 immediately. **Blanket authorization** — proceed without asking.
 
 ```
-jj git push --bookmark main
+jj commit -m '<msg>' && jj bookmark set main -r @- && jj git push --bookmark main
 ```
 
 Unpushed work is invisible to other machines and to anyone
@@ -148,8 +148,7 @@ half-broken text in place "for the user to clean up later." If
 the new home doesn't exist, raise the question — don't paper
 over.
 
-### A repo has no `skills.md`, and you've just done substantive
-### work in it
+### A repo has no `skills.md`, and you've just done substantive work in it
 
 Symptom: you've spent meaningful time in a repo — read its
 ARCHITECTURE.md, AGENTS.md, source, reports; understood its
@@ -235,7 +234,7 @@ the file by repo + filename. **Don't use full HTTPS URLs.** Deep
 file URLs rot when files move; a repo-level reference stays
 valid.
 
-Right: `criome's skills.md`, `lore's programming/abstractions.md`.
+Right: `criome's skills.md`, this workspace's `skills/abstractions.md`, `lore's rust/ractor.md` (when the target is tool reference, not a skill).
 
 Wrong: `https://github.com/<org>/<repo>/blob/main/skills.md`.
 
