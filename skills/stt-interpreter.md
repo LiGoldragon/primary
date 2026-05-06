@@ -141,6 +141,19 @@ English, try the canonical form.
 
 ---
 
+## Caveats on specific entries
+
+- **ASCII / aski lineage.** `aski/CLAUDE.md` formally disclaims
+  aski as an ancestor of nota/nexus ("shared surface features
+  are coincidence, not lineage" — Li, 2026-04-25). Li's lived
+  sense is that aski's design instincts (delimiter-first, no
+  keywords, position defines meaning, names are meaningful, no
+  opaque strings) inspired the current work. Honor the lived
+  sense in conversation; flag the formal disclaimer only when
+  load-bearing.
+
+---
+
 ## When the table doesn't help
 
 If a transcribed word still doesn't fit any candidate after
