@@ -122,6 +122,26 @@ captures only what is specific to this repo.
 
 ---
 
+## When to create a new repo skill
+
+The trigger lives in `autonomous-agent.md`: after substantive
+work in a repo lacking a `skills.md`, the agent creates one
+before finishing the task. The skill captures what the agent
+just learned about the repo.
+
+The roll-out across the workspace is **incremental, not batch.**
+A skill written while the agent has fresh context — having just
+followed the repo's invariants, found its load-bearing files,
+respected its boundaries — is a real skill. A skill written by
+template-stamping across many repos in one go is a smell of the
+form the rule is meant to prevent.
+
+If you find yourself tempted to create skills for many repos
+quickly, you don't have enough context for any of them. Pick
+one repo, do real work in it, then write the skill.
+
+---
+
 ## Editing rules
 
 - Edit a skill in place; don't fork or version it.

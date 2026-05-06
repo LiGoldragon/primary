@@ -24,6 +24,52 @@ Everything else, you do.
 These problems have known answers in this workspace. When you
 hit them, fix them and keep moving.
 
+### Shared workspace work needs orchestration
+
+Before editing files or running commands that create, modify,
+format, or delete files, read and use this workspace's
+`protocols/orchestration.md`.
+
+The normal claim path is:
+
+```
+tools/orchestrate claim <operator|designer> <path> [more-paths] -- <reason>
+```
+
+The helper writes the role's own lock file, reads both lock
+files, lists open BEADS tasks, and rejects overlapping active
+scopes. If the work cannot proceed, create a short BEADS task
+with the blocker and the next required action.
+
+```
+bd create "Short task title" -t task -p 2 -d "Blocked because ..."
+```
+
+Release the role scope as soon as the work is done:
+
+```
+tools/orchestrate release <operator|designer>
+```
+
+### A Li repo is not JJ-colocated
+
+Li repositories and forks are Git-backed colocated Jujutsu
+repositories. Git remains the remote/storage compatibility
+layer; `jj` is the working history interface.
+
+Symptom: a Li repo has `.git/` but no `.jj/`.
+
+Fix, after claiming the repo in the orchestration protocol:
+
+```
+jj git init --colocate
+```
+
+Use `jj st`, `jj diff`, `jj commit`, `jj rebase`, `jj
+cherry-pick`, and `jj git push` for normal repository work.
+Use plain `git` for remote configuration or for tools that
+need Git directly.
+
 ### Push fails because the remote is HTTPS
 
 Symptom: `git push` returns
@@ -45,7 +91,7 @@ it without asking.
 
 ### A workspace has uncommitted state
 
-Symptom: `git status` shows new or modified files when you
+Symptom: `jj st` shows new or modified files when you
 expected a clean tree.
 
 Cause: prior work landed but wasn't committed. Either yours or a
@@ -53,16 +99,19 @@ peer agent's.
 
 Fix:
 
-1. Inspect: `git status`, `git diff <file>` for each.
+1. Inspect: `jj st`, `jj diff`, and file-level diffs for each
+   changed path.
 2. Group changes into **logical commits** — by concern, by
    author, or by feature. Don't fold unrelated changes into one
    commit.
 3. Commit each group with a short verb-plus-scope message.
-4. Push.
+4. Move the bookmark and push with `jj git push`.
 
 If the repo is in a coordination zone (e.g. with another agent
 holding a lock on some files), commit only files in *your* lock
-scope; leave the other agent's files for them.
+scope; leave the other agent's files for them. If the working
+copy mixes your work with someone else's, split the change
+before committing or leave the unrelated work untouched.
 
 ### A required tool is missing from PATH
 
@@ -84,8 +133,7 @@ After every meaningful commit in any tracked repo, push
 immediately. **Blanket authorization** — proceed without asking.
 
 ```
-git push                    # plain git
-jj git push --bookmark main # jj
+jj git push --bookmark main
 ```
 
 Unpushed work is invisible to other machines and to anyone
@@ -99,6 +147,42 @@ Fix: update the reference to the new home. Don't leave
 half-broken text in place "for the user to clean up later." If
 the new home doesn't exist, raise the question — don't paper
 over.
+
+### A repo has no `skills.md`, and you've just done substantive
+### work in it
+
+Symptom: you've spent meaningful time in a repo — read its
+ARCHITECTURE.md, AGENTS.md, source, reports; understood its
+role, invariants, and what it owns; landed a non-trivial change
+— and `<repo-root>/skills.md` does not exist.
+
+Fix: write the skill before finishing the task.
+
+1. Check the workspace's `skills/skill-editor.md` for the
+   canonical conventions (naming, location, format,
+   cross-references). **Read it first**, even if you've written
+   skills before — that file is where the conventions are
+   refined over time, and following the same protocol keeps the
+   skills consistent across the workspace.
+2. Gather what you learned: this repo's project-specific intent,
+   the invariants about how to work in it, what this repo is the
+   canonical owner of and what it isn't, the neighboring repos
+   whose skills are worth pointing at.
+3. Write `skills.md` at the repo root, following the format from
+   `skill-editor.md`.
+4. Commit and push.
+
+**What "substantive" means.** A 10-minute typo fix is not enough
+context to write a good skill — you don't yet know what's
+load-bearing in this repo vs incidental. A multi-step change
+that required understanding the repo's role, reading its
+ARCHITECTURE.md, and following its invariants — that's enough.
+A skill written without that depth is worse than no skill,
+because future agents will trust it.
+
+If you're unsure whether your work was substantive enough,
+err toward writing the skill — the next agent benefits, and a
+thin-but-honest skill is still useful.
 
 ---
 
@@ -120,6 +204,27 @@ routine; ask first:
 - **Large-scope assumptions**: when the task expands beyond
   what was asked of you. Surface the scope expansion; let the
   caller decide.
+
+---
+
+## Editing skill files — read skill-editor first
+
+Whenever you edit, create, or refine a skill file (this one,
+another workspace skill, or a repo's `skills.md`), **read
+`~/primary/skills/skill-editor.md` first**. That file is the
+canonical guide for naming, location, format, and
+cross-references. The conventions get refined over time; reading
+it each time keeps every skill on the same protocol.
+
+This applies to:
+
+- Creating a new repo's `skills.md` (per the
+  no-skills-md-after-substantive-work rule above).
+- Editing an existing skill file (this one, a sibling workspace
+  skill, or a repo's skill).
+- Refining the conventions themselves — if you find a new
+  convention worth adding, add it to `skill-editor.md`, not as
+  a one-off in the skill you happened to be editing.
 
 ---
 
