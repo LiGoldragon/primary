@@ -51,67 +51,18 @@ Release the role scope as soon as the work is done:
 tools/orchestrate release <operator|designer>
 ```
 
-### A Li repo is not JJ-colocated
+### Version-control obstacles
 
-Li repositories and forks are Git-backed colocated Jujutsu
-repositories. Git remains the remote/storage compatibility
-layer; `jj` is the working history interface.
+**When you finish a batch of changes, commit and push.** That's
+the standing rule — blanket authorization, no asking required.
+The full procedure (logical-commit grouping, the canonical
+one-liner, the standard fixes for HTTPS push failure /
+divergence / uncommitted state / repos missing `.jj/`) lives in
+this workspace's `skills/version-control.md`.
 
-Symptom: a Li repo has `.git/` but no `.jj/`.
-
-Fix, after claiming the repo in the orchestration protocol:
-
-```
-jj git init --colocate
-```
-
-Use `jj st`, `jj diff`, `jj commit`, `jj rebase`, `jj
-cherry-pick`, and `jj git push` for normal repository work.
-Use plain `git` for remote configuration or for tools that
-need Git directly.
-
-### Push fails because the remote is HTTPS
-
-Symptom: `git push` returns
-`fatal: could not read Username for 'https://github.com'`.
-
-Cause: this workspace authenticates over SSH; HTTPS without a
-credential helper is a misconfiguration.
-
-Fix:
-
-```
-git -C <repo> remote set-url origin git@github.com:<owner>/<repo>.git
-cd <repo> && jj git push --bookmark main
-```
-
-This isn't a global config change — it's per-repo, repairs the
-specific repo's remote, and matches the workspace standard. Do
-it without asking.
-
-### A workspace has uncommitted state
-
-Symptom: `jj st` shows new or modified files when you
-expected a clean tree.
-
-Cause: prior work landed but wasn't committed. Either yours or a
-peer agent's.
-
-Fix:
-
-1. Inspect: `jj st`, `jj diff`, and file-level diffs for each
-   changed path.
-2. Group changes into **logical commits** — by concern, by
-   author, or by feature. Don't fold unrelated changes into one
-   commit.
-3. Commit each group with a short verb-plus-scope message.
-4. Move the bookmark and push with `jj git push`.
-
-If the repo is in a coordination zone (e.g. with another agent
-holding a lock on some files), commit only files in *your* lock
-scope; leave the other agent's files for them. If the working
-copy mixes your work with someone else's, split the change
-before committing or leave the unrelated work untouched.
+If a VCS obstacle blocks you and the version-control skill
+doesn't already name the fix, surface it instead of inventing
+one — that's how the skill grows.
 
 ### A required tool is missing from PATH
 
@@ -126,18 +77,6 @@ nix run nixpkgs#<package> -- <args>
 Don't reach for `cargo install`, `pip install`, `npm install -g`,
 or distro package managers. The setup is Nix-managed end-to-end;
 out-of-Nix installs pollute and break reproducibility.
-
-### A change is meaningful but unpushed
-
-After every meaningful commit in any tracked repo, push
-immediately. **Blanket authorization** — proceed without asking.
-
-```
-jj commit -m '<msg>' && jj bookmark set main -r @- && jj git push --bookmark main
-```
-
-Unpushed work is invisible to other machines and to anyone
-consuming the repo as an input.
 
 ### A doc references a removed/renamed thing
 
