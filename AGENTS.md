@@ -6,35 +6,35 @@
 - Claude is the designer agent.
 - Before making edits, each agent must know which role it is acting as.
 
-## Agent Lock Files
+## Orchestration Protocol
 
-- Operator lock: `operator.lock`
-- Designer lock: `designer.lock`
-- The operator may edit only `operator.lock`.
-- The designer may edit only `designer.lock`.
-- The only exception is initial workspace setup, where the operator created
-  both lock files.
+Autonomous agents MUST read `protocols/orchestration.md` before editing files
+or running commands that create, modify, format, or delete files.
 
-## Lock Rule
+The protocol coordinates:
 
-Before editing files or running commands that create, modify, format, or delete
-files, an agent must:
+- Role-owned lock files: `operator.lock` and `designer.lock`.
+- The workspace BEADS task database: `.beads/`.
+- The helper command: `tools/orchestrate`.
 
-1. Write the intended scope into its own lock file with an `Updated-at`
-   timestamp.
-2. Read both lock files in the same tool call as that lock write.
-3. Check whether the intended write scope overlaps another agent's active
-   scope.
-4. If there is overlap, remove the overlapping scope from its own lock file in
-   the next tool call and stop before editing.
-5. On a later attempt, repeat the same write-and-read step. If the other
-   agent has removed or narrowed the overlapping scope, the agent may claim
-   the scope again and proceed.
+Use `tools/orchestrate claim <operator|designer> <path> [more-paths] --
+<reason>` before edits. The helper writes the agent's own lock file, reads both
+lock files, lists open BEADS tasks, and rejects overlapping active scopes.
 
-Use absolute paths where possible. For linked repositories under `repos/`, lock
-the real repository path under `/git/...`, not only the symlink path. A whole
-repository may be locked by listing its repository root path.
+Use `tools/orchestrate release <operator|designer>` when the scope is finished
+or no longer active.
 
-Locks are coordination records, not operating-system locks. Each agent is
-responsible for keeping its own lock current and removing or narrowing active
-scopes when work is finished.
+## No harness-dependent memory
+
+Memory and persistent agent state belong in workspace files — `skills/`,
+`lore/`, `reports/`, `protocols/`, repo `skills.md`, repo `ARCHITECTURE.md`,
+or `.beads/` while bd is the active coordination substrate. **Don't use
+harness-dependent memory systems** — e.g. Claude Code's per-session memory
+files at `~/.claude/projects/<workspace>/memory/`, or any agent-private state
+store an outside agent cannot read.
+
+**Why:** memory tied to one harness is invisible to every other harness
+and to the human. The workspace's truth must live in files every agent can
+open. If you learn something durable, write it to the right workspace file
+(per the skill-editor and report conventions); never to harness-private
+state.
