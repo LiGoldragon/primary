@@ -1,0 +1,29 @@
+# Primary workspace local index
+/repos/
+
+# jj colocated repository metadata
+.jj/
+
+# direnv
+.direnv/
+
+# nix
+result
+result-*
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/issues.jsonl
+
+# local environment
+.env
+.envrc.local
+
+# editor and language scratch
+*.swp
+*.swo
+__pycache__/
+*.pyc
+
