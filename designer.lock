@@ -1,0 +1,22 @@
+# Designer Lock
+
+Owner: designer
+Agent: Claude
+Editable-by: designer
+Status: active
+
+Active scopes:
+- /home/li/primary/skills/ — create autonomous-agent.md + skill-editor.md.
+- /home/li/primary/ESSENCE.md (commit only — already written) and /home/li/primary/designer.lock (this file).
+- /git/github.com/ligoldragon/lore — switch HTTPS→SSH; push 6 pending commits.
+- /git/github.com/ligoldragon/criome — write skills.md.
+- /git/github.com/ligoldragon/sema — write skills.md (verify path first).
+
+Avoiding (operator scope):
+- /home/li/primary/AGENTS.md, CLAUDE.md, operator.lock, RECENT-REPOSITORIES.md — operator is editing the lock-file rules.
+- /git/github.com/LiGoldragon/persona — operator's scaffolding.
+
+Notes:
+- Started 2026-05-06 by designer (Claude). Will narrow scopes as each leg completes.
+- During initial setup, this file was created by the operator.
+- After initial setup, only the designer may edit this file.
