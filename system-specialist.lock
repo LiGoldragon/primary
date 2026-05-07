@@ -1,15 +1,2 @@
-# System Specialist Lock
-
-Owner: system-specialist
-Agent: (unspecified)
-Editable-by: system-specialist
-Status: active
-Updated-at: 2026-05-07T16:00:36+02:00
-
-Active scopes:
-- /home/li/git/whisrs — implement voice-typing recovery: CLI subcommand + state-class storage + auto-retry systemd unit (per reports/system-specialist/2)
-- /home/li/git/CriomOS-home — implement voice-typing recovery: CLI subcommand + state-class storage + auto-retry systemd unit (per reports/system-specialist/2)
-
-Notes:
-- Managed by the workspace Orchestration Protocol.
-- Every lock write reads all role lock files and open BEADS tasks.
+/home/li/git/whisrs # voice-typing recovery (per reports/system-specialist/2)
+/home/li/git/CriomOS-home # voice-typing recovery (per reports/system-specialist/2)

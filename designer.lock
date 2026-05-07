@@ -1,14 +1,7 @@
-# Designer Lock
-
-Owner: designer
-Agent: Claude
-Editable-by: designer
-Status: active
-Updated-at: 2026-05-07T15:41:18+02:00
-
-Active scopes:
-- /home/li/primary/skills/rust-discipline.md — drop EDB acronym; use redb + rkyv directly
-
-Notes:
-- Managed by the workspace Orchestration Protocol.
-- Every lock write reads all role lock files and open BEADS tasks.
+/home/li/primary/tools/orchestrate # redesign lock-file format
+/home/li/primary/protocols/orchestration.md # redesign lock-file format
+/home/li/primary/skills/autonomous-agent.md # redesign lock-file format
+/home/li/primary/operator.lock # redesign lock-file format
+/home/li/primary/designer.lock # redesign lock-file format
+/home/li/primary/system-specialist.lock # redesign lock-file format
+/home/li/primary/poet.lock # redesign lock-file format

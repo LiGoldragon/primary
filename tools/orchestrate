@@ -13,6 +13,9 @@ Usage:
   tools/orchestrate status
 
 Roles: operator, designer, system-specialist, poet
+
+Lock files (<role>.lock) are plain text: one absolute path per line,
+optionally followed by `# <reason>`. Empty file means idle.
 EOF
 }
 
@@ -28,24 +31,6 @@ valid_role() {
 lock_path() {
   valid_role "$1" || { printf 'unknown role: %s\n' "$1" >&2; exit 64; }
   printf '%s/%s.lock\n' "$workspace" "$1"
-}
-
-display_role() {
-  case "$1" in
-    operator) printf 'Operator\n' ;;
-    designer) printf 'Designer\n' ;;
-    system-specialist) printf 'System Specialist\n' ;;
-    poet) printf 'Poet\n' ;;
-    *) printf '%s\n' "$1" ;;
-  esac
-}
-
-default_agent() {
-  case "$1" in
-    operator) printf 'Codex\n' ;;
-    designer) printf 'Claude\n' ;;
-    *) printf '(unspecified)\n' ;;
-  esac
 }
 
 peer_roles() {
@@ -65,48 +50,33 @@ normal_path() {
 
 write_lock() {
   local role="$1"
-  local status="$2"
-  local reason="${3:-}"
-  shift 3 || true
-  local lock display agent ts
+  local reason="${2:-}"
+  shift 2 || true
+  local lock
   lock="$(lock_path "$role")"
-  display="$(display_role "$role")"
-  agent="$(default_agent "$role")"
-  ts="$(date -Is)"
 
-  {
-    printf '# %s Lock\n\n' "$display"
-    printf 'Owner: %s\n' "$role"
-    printf 'Agent: %s\n' "$agent"
-    printf 'Editable-by: %s\n' "$role"
-    printf 'Status: %s\n' "$status"
-    printf 'Updated-at: %s\n\n' "$ts"
-    printf 'Active scopes:\n'
-    if [ "$status" = active ] && [ "$#" -gt 0 ]; then
-      local scope
-      for scope in "$@"; do
-        printf -- '- %s — %s\n' "$(normal_path "$scope")" "$reason"
-      done
+  : > "$lock"
+  local scope
+  for scope in "$@"; do
+    if [ -n "$reason" ]; then
+      printf '%s # %s\n' "$(normal_path "$scope")" "$reason" >> "$lock"
     else
-      printf -- '- none\n'
+      printf '%s\n' "$(normal_path "$scope")" >> "$lock"
     fi
-    printf '\nNotes:\n'
-    printf -- '- Managed by the workspace Orchestration Protocol.\n'
-    printf -- '- Every lock write reads all role lock files and open BEADS tasks.\n'
-  } > "$lock"
+  done
 }
 
 active_scopes() {
   local lock="$1"
   [ -f "$lock" ] || return 0
-  grep -q '^Status: active$' "$lock" || return 0
   awk '
-    $0 == "Active scopes:" { inside = 1; next }
-    inside && $0 == "Notes:" { exit }
-    inside && /^- / {
-      sub(/^- /, "")
-      sub(/[[:space:]]+—.*/, "")
-      if ($0 != "none") print
+    /^[[:space:]]*$/ { next }
+    /^[[:space:]]*#/ { next }
+    {
+      sub(/[[:space:]]+#.*$/, "")
+      sub(/[[:space:]]+$/, "")
+      sub(/^[[:space:]]+/, "")
+      if ($0 != "") print $0
     }
   ' "$lock"
 }
@@ -134,10 +104,10 @@ print_state() {
   for role in "${ROLES[@]}"; do
     lock="$(lock_path "$role")"
     printf -- '--- %s.lock ---\n' "$role"
-    if [ -f "$lock" ]; then
-      sed -n '1,180p' "$lock"
+    if [ -s "$lock" ]; then
+      cat "$lock"
     else
-      printf '%s\n' '(absent)'
+      printf '%s\n' '(idle)'
     fi
   done
   printf '%s\n' '--- open beads ---'
@@ -154,11 +124,11 @@ claim() {
   shift
   valid_role "$role" || { usage >&2; exit 64; }
   local scopes=()
-  local reason='claimed work'
+  local reason=''
   while [ "$#" -gt 0 ]; do
     if [ "$1" = "--" ]; then
       shift
-      reason="${*:-claimed work}"
+      reason="${*:-}"
       break
     fi
     scopes+=("$1")
@@ -178,7 +148,7 @@ claim() {
     fi
   done
 
-  write_lock "$role" active "$reason" "${scopes[@]}"
+  write_lock "$role" "$reason" "${scopes[@]}"
   print_state
 
   local peer peer_lock peer_scope own_scope conflict=0
@@ -196,7 +166,7 @@ claim() {
   done < <(peer_roles "$role")
 
   if [ "$conflict" -ne 0 ]; then
-    write_lock "$role" idle
+    write_lock "$role" ''
     printf '%s\n' 'Claim cleared because of overlap.'
     print_state
     exit 2
@@ -206,7 +176,7 @@ claim() {
 release() {
   local role="$1"
   valid_role "$role" || { usage >&2; exit 64; }
-  write_lock "$role" idle
+  write_lock "$role" ''
   print_state
 }
 

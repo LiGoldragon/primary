@@ -38,6 +38,22 @@ records, not operating-system locks.
 BEADS tasks at any time. A BEADS task is a shared work item, not a file-ownership
 claim.
 
+### Lock-file format
+
+Each lock file is plain text. One absolute path per line. An optional short
+`# reason` may follow the path on the same line. An empty file means the role
+is idle.
+
+```
+/home/li/primary/skills/autonomous-agent.md # sync claim-helper docs
+/home/li/git/whisrs # voice-typing recovery
+```
+
+The filename names the role; nothing else needs to live in the file. To
+inspect, `cat <role>.lock` or `tools/orchestrate status`. The helper is the
+canonical writer; agents may also edit lock files by hand as long as the
+format is preserved.
+
 ## Claim Flow
 
 Before editing files or running commands that create, modify, format, or
@@ -51,8 +67,8 @@ tools/orchestrate claim <role> <absolute-path> [more-paths] -- <reason>
 
 The helper performs the required work in one call:
 
-1. Writes the intended scope into the role's own lock file with an
-   `Updated-at` timestamp.
+1. Writes the intended scope into the role's own lock file: one path per
+   line, each annotated with the supplied reason as a `# comment`.
 2. Reads every role's lock file.
 3. Lists open BEADS tasks.
 4. Checks every other active lock for exact or nested path overlap.

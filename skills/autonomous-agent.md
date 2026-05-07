@@ -33,13 +33,14 @@ format, or delete files, read and use this workspace's
 The normal claim path is:
 
 ```
-tools/orchestrate claim <operator|designer> <path> [more-paths] -- <reason>
+tools/orchestrate claim <role> <path> [more-paths] -- <reason>
 ```
 
-The helper writes the role's own lock file, reads both lock
-files, lists open BEADS tasks, and rejects overlapping active
-scopes. If the work cannot proceed, create a short BEADS task
-with the blocker and the next required action.
+`<role>` is one of `operator`, `designer`, `system-specialist`,
+`poet`. The helper writes the role's own lock file, reads every
+role's lock file, lists open BEADS tasks, and rejects overlapping
+active scopes. If the work cannot proceed, create a short BEADS
+task with the blocker and the next required action.
 
 BEADS is never claimed. Do not claim `.beads/` before creating
 or updating a task; any agent may write BEADS tasks at any time.
@@ -55,7 +56,7 @@ bd create "Short task title" -t task -p 2 -d "Blocked because ..."
 Release the role scope as soon as the work is done:
 
 ```
-tools/orchestrate release <operator|designer>
+tools/orchestrate release <role>
 ```
 
 ### Version-control obstacles
