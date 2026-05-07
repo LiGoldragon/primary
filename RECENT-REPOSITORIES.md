@@ -50,9 +50,11 @@ Pruned on 2026-05-06:
 | `orchestrator` | `/git/github.com/LiGoldragon/orchestrator` |
 | `persona` | `/git/github.com/LiGoldragon/persona` |
 | `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` |
+| `persona-message` | `/git/github.com/LiGoldragon/persona-message` |
 | `persona-orchestrate` | `/git/github.com/LiGoldragon/persona-orchestrate` |
 | `persona-router` | `/git/github.com/LiGoldragon/persona-router` |
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` |
+| `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` |
 | `prism` | `/git/github.com/LiGoldragon/prism` |
 | `sema` | `/git/github.com/LiGoldragon/sema` |
 | `signal` | `/git/github.com/LiGoldragon/signal` |
