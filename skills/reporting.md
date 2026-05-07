@@ -210,6 +210,24 @@ Reports explain shapes, not implementations. Their medium
 is **prose plus visuals** — Mermaid diagrams, swimlanes,
 flowcharts, tables, dependency graphs.
 
+### Mermaid labels
+
+Quote Mermaid node labels whenever the visible label
+contains hyphens, slashes, punctuation, parentheses, or
+multiple words. Prefer the bracket form with a quoted label:
+
+```mermaid
+flowchart LR
+    router["persona-router"]
+    storage[("redb + rkyv")]
+    router --> storage
+```
+
+Do this even when the renderer appears to accept the
+unquoted label. Unquoted punctuation has inconsistent
+behavior across Mermaid renderers and can make diagrams
+misleading or ugly.
+
 Implementation code (Rust `impl` blocks, function bodies,
 struct definitions with methods, full Nix derivations)
 **does not belong in reports.** Code in a design doc goes
