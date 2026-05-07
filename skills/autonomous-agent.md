@@ -64,6 +64,26 @@ If a VCS obstacle blocks you and the jj skill
 doesn't already name the fix, surface it instead of inventing
 one — that's how the skill grows.
 
+Do not leave role-owned work uncommitted. Before finishing,
+run `jj status` in every repo or workspace area you changed.
+Commit and push your own files, including role-owned reports
+and coordination artifacts. If the working copy also contains
+another agent's files, split your paths with the partial-commit
+flow in `skills/jj.md` and leave the other agent's work alone.
+
+### A design wants polling
+
+Symptom: the next implementation step wants a sleep loop, a
+periodic file reread, a retry timer for unknown state, or an
+agent instruction to "check again later."
+
+Fix: apply `skills/push-not-pull.md`. Producers push;
+consumers subscribe. Build or wire the producer's subscription
+primitive, defer the dependent feature, or escalate. Do not add
+polling "for now"; the workspace treats polling as a design
+failure unless it is one of the named carve-outs in
+`skills/push-not-pull.md`.
+
 ### A required tool is missing from PATH
 
 Symptom: `command not found` for `rustfmt`, `clippy`, `jq`, etc.
