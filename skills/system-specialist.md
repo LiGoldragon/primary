@@ -59,6 +59,39 @@ paid key unless the user explicitly authorized that call in the current task.
 
 ---
 
+## Just-do-it operations
+
+Some operations are part of the standing system-specialist contract: they
+follow inevitably from earlier work in the same session, and stopping to
+ask about them produces friction without producing a decision. Do them
+without confirming.
+
+- **Downstream flake.lock bumps after upstream commits.** When you push
+  a change to `lojix-cli`, `horizon-rs`, `nota-codec`, `nota-derive`, or
+  any other repo whose output is consumed via flake-input by
+  `CriomOS-home` (and transitively by the running system), update
+  `CriomOS-home/flake.lock` to point at the new commit and redeploy.
+  The chain `nix flake update <input> → commit → push → HomeOnly Activate`
+  is the standard path. The rule of thumb: *if you said "use the new
+  version" earlier in this session, the user already authorized the lock
+  bump.*
+- **Re-deploying after activation-affecting home changes.** When a
+  CriomOS-home commit changes activation behavior (new module, new
+  service, new home.activation hook), run `HomeOnly Activate` against
+  the local node to make the change live. Don't leave the user with a
+  green commit and a stale generation.
+- **Re-deploying after CriomOS-home flake-input bumps.** Same shape as
+  the previous: if the input bump is the *whole* point of the change,
+  the deploy is part of the change.
+
+If something goes wrong mid-procedure (build failure, signature
+rejection, etc.), surface that — the obstacle is the question, not
+whether to proceed. The rule above is about *the standard happy path
+following from the work just done*, not about pushing through real
+errors silently.
+
+---
+
 ## Runtime interfaces
 
 The system specialist gives the user working interfaces, not just packages:
