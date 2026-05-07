@@ -128,6 +128,80 @@ correctly. Padding adds noise at the cost of needing to
 know the maximum digit count up front; the count grows
 without warning.
 
+**Numbers are not reused after deletion.** When a stale
+report is removed (see Hygiene below), its number stays
+retired. The next report takes the next-highest-plus-one,
+not the freed number. The gap in the filesystem listing is
+a visible signal that something was retired; the
+commit history holds the deleted content.
+
+---
+
+## Hygiene — soft cap, supersession, periodic review
+
+A role's `reports/` subdirectory is a working surface, not
+an archive. The git log preserves everything; the filesystem
+should hold only what's currently load-bearing.
+
+### Soft cap: 12 reports per role subdirectory
+
+When a role's subdir reaches 12 reports, **the next agent
+working in that subdir reviews the older reports** before
+adding a 13th. The cap is soft — it's a trigger for review,
+not a hard limit that blocks new work. The aim is to keep
+the surface small enough that a fresh reader can scan the
+listing and understand what's currently active.
+
+### Supersession deletes the older report
+
+When a new report **replaces** an older one — a fresh audit
+of the same target, a redesign that obsoletes the prior
+design, an architectural pass that supersedes a transitional
+sketch — **delete the older report in the same commit that
+lands the new one.** The substance lives in the new report;
+the lineage lives in the commit history. Don't accumulate
+"v1, v2, v3" reports side-by-side.
+
+Before deleting, **update cross-references** in surviving
+reports to point at the new one (or remove the citation if
+no longer relevant). Dead pointers in surviving reports are
+a smell; the cleanup is part of the supersession.
+
+### Periodic review when the subdir gets full
+
+When the count crosses 12, work through the older reports.
+For each, decide one of:
+
+| Action | When |
+|---|---|
+| **Keep** | The report is still load-bearing — current state, active design, decision record someone is still acting on. |
+| **Forward into a new report** | The substance is partially still relevant; absorb the live parts into a current report and delete the old one. |
+| **Migrate upstream** | Durable substance belongs in `skills/<name>.md`, `<repo>/skills.md`, `<repo>/ARCHITECTURE.md`, `ESSENCE.md`, code, or a `bd` tracked item. Move it there and delete the report. |
+| **Remove** | The substance is stale, the work is done, the design has shipped, the decision was reversed — nothing in the report is still load-bearing. Delete. |
+
+The reviewing agent decides these based on **its own
+context**. If the agent's current work touches the report's
+topic, it has the context to judge directly. If not, the
+agent does a brief read of the relevant code, skills, or
+recent reports to figure out where the substance lives now;
+then decides.
+
+The reviewer's question is always: *what does this report
+still teach a future reader that they can't get from
+current code, skills, architecture docs, or fresher
+reports?* If nothing — delete.
+
+### What never gets reviewed-out
+
+- Foundational decision records that capture *why* a
+  direction was chosen, when the why isn't recoverable from
+  current state alone.
+- Audits of historical incidents whose lessons are still
+  cited (e.g., a postmortem that future work points at as
+  "don't reintroduce these failures").
+
+These earn their seat permanently. Most reports don't.
+
 ---
 
 ## The report's medium — prose + visuals
