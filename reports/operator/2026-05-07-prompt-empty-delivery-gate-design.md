@@ -477,6 +477,7 @@ event forever; it needs a wake signal for pending work.
 DesktopEventSource =
   WezTermEventSource
   X11EventSource
+  NiriEventSource
   SwayEventSource
   HyprlandEventSource
 ```
@@ -487,6 +488,12 @@ Preferred local order:
 2. WM/compositor event stream if available.
 3. No fallback polling. If there is no event source, focus-gated delivery is
    unavailable for that target.
+
+Niri is a first-class source here, not a gap. It exposes a JSON IPC event stream
+and `WindowFocusChanged { id }`. The router should consume that stream as a
+push source and maintain a target-window focus map. Niri also has one-shot
+`FocusedWindow`, but that is only for initial state or debugging; it should not
+be used as a repeated check.
 
 The implementation should normalize all sources into one event:
 
@@ -564,6 +571,112 @@ The current `MessageStore::tail()` shape should move from a 200ms file reread
 loop to a daemon/router subscription. A tail client connects once and receives
 `MessageAppended` records as the producer emits them.
 
+## Focus lease
+
+The remaining race is not observation; it is authority. The router can observe
+that a pane is unfocused and empty, then lose that fact before terminal submit.
+A stronger design is a short-lived compositor lease:
+
+```mermaid
+sequenceDiagram
+    participant R as router
+    participant W as compositor or terminal
+    participant H as HarnessActor
+    participant E as endpoint
+
+    R->>W: request FocusLease(target, max_duration)
+    alt granted
+        W-->>R: LeaseGranted(token)
+        R->>H: final prompt/idle probe under lease
+        alt safe
+            H->>E: submit message
+        else unsafe
+            H-->>R: keep queued
+        end
+        R->>W: release(token)
+    else denied
+        W-->>R: LeaseDenied(reason)
+        R->>H: keep queued
+    end
+```
+
+The lease does not bully the user. It must be short, visible in audit, and
+revocable. If the compositor cannot grant it immediately, the message stays
+queued. The router never waits on a clock hoping the lease becomes available.
+
+For current Niri, this is future design. Niri gives push focus events, focus
+queries, and actions, but I found no IPC request that freezes focus or reserves
+keyboard input for a target window while another process injects text. Niri's
+`keyboard-shortcuts-inhibit` support is a different thing: it lets focused
+applications ask Niri not to consume compositor shortcuts, useful for VMs and
+remote desktop. It is not a router-owned focus lease and does not protect a
+harness prompt from human typing.
+
+Other compositors show the shape but not a portable answer:
+
+| Environment | Existing primitive | Fit for Persona |
+|---|---|---|
+| Niri | push `WindowFocusChanged`; no discovered focus lease | good event source, no atomic lease today |
+| Hyprland | `hyprland-focus-grab-v1` whitelists surfaces for focus | closest existing Wayland shape, compositor-specific |
+| wlroots family | `wlr_input_inhibit_unstable_v1` blocks input to other clients | too broad; lock-screen style privilege |
+| Wayland session lock | `ext-session-lock-v1` locks the whole session | wrong semantic; user-hostile for message delivery |
+| X11 | active keyboard/pointer grabs exist | possible but hostile; easy to freeze input badly |
+
+This points toward a Persona-owned compositor protocol if we ever build or fork
+the WM:
+
+```rust
+struct FocusLeaseRequest {
+    target: HarnessTarget,
+    max_duration: Duration,
+    reason: DeliveryReason,
+}
+
+enum FocusLeaseReply {
+    Granted(FocusLeaseToken),
+    Denied(FocusLeaseDenial),
+}
+```
+
+The compositor side owns the hard guarantee:
+
+```text
+while lease token is active:
+  - do not move keyboard focus to the target from human action
+  - do not deliver human keyboard input to the target
+  - cancel the lease on explicit human override
+  - expire the lease at max_duration through an OS deadline event
+```
+
+The target does not need to become focused. The point is not to steal focus; the
+point is to keep the target from becoming human-owned during the critical
+section.
+
+### Prompt save and restore
+
+Saving partially typed human input is only safe through a native prompt model:
+
+```mermaid
+flowchart LR
+    prompt[Prompt model]
+    save[save draft]
+    clear[clear input]
+    deliver[enqueue message]
+    restore[restore draft]
+
+    prompt --> save --> clear --> deliver --> restore
+```
+
+Doing this with terminal backspaces and retyped bytes is not acceptable. It uses
+the same stdin channel that already caused message splicing, and it can corrupt
+multi-line input, shell escapes, pasted text, IME composition, or a hidden TUI
+state. So the policy is:
+
+- terminal fallback only delivers when input is empty;
+- non-empty prompt stays queued;
+- save/restore is allowed only for native adapters that own the prompt buffer or
+  for a future Persona terminal/harness protocol that exposes a typed draft API.
+
 ## TTL
 
 TTL is the only timer-shaped mechanism in this design, and it is not used for
@@ -637,11 +750,16 @@ In `persona-message`:
 Add optional focus probes and event sources:
 
 - X11 `xdotool` if present.
+- Niri event stream over `$NIRI_SOCKET`.
 - Sway `swaymsg`.
 - Hyprland `hyprctl`.
 
 These are advisory guards. WezTerm pane state remains the default because it is
 available through the chosen harness substrate.
+
+If a compositor exposes a lease-like primitive, add it as a separate
+`FocusLeaseProvider`. Do not pretend a focus event source is a lease provider.
+Events wake the router; leases protect the final submit section.
 
 ### Phase 5: split runtime router
 
@@ -709,6 +827,21 @@ The most important policy rule:
   <https://wezterm.org/config/lua/pane/index.html>
 - WezTerm `cli list --format json` reports panes and metadata:
   <https://wezterm.org/cli/cli/list.html>
+- Niri IPC has a JSON event stream intended for updates without polling:
+  <https://yalter.github.io/niri/IPC.html>
+- Niri `Event` includes `WindowFocusChanged { id }`:
+  <https://yalter.github.io/niri/niri_ipc/enum.Event.html>
+- Niri `keyboard-shortcuts-inhibit` is for focused apps that want compositor
+  shortcuts passed through, not for router-owned focus locking:
+  <https://niri-wm.github.io/niri/Configuration%3A-Key-Bindings.html>
+- Hyprland's focus-grab protocol limits input focus to a surface whitelist:
+  <https://wayland.app/protocols/hyprland-focus-grab-v1>
+- `wlr_input_inhibit_unstable_v1` blocks input to other clients and is
+  lock-screen style authority:
+  <https://hoyon.github.io/wayland-protocol-docs/protocols/wlr_input_inhibit_unstable_v1.html>
+- `ext-session-lock-v1` locks the whole session; useful background, wrong
+  semantic for message delivery:
+  <https://wayland.app/protocols/ext-session-lock-v1>
 - `xdotool` can query active windows and window PIDs on X11:
   <https://manpages.debian.org/bookworm/xdotool/xdotool.1.en.html>
 - Sway can expose focused window info through `swaymsg -t get_tree`:
