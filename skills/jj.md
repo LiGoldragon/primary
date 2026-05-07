@@ -136,6 +136,42 @@ used.
 
 ---
 
+## Before you describe — the working-copy check
+
+`jj describe` (or any commit-equivalent that finalises `@`)
+captures **every change in the working copy**, regardless of
+who authored it. Run `jj st` before describing and read the
+list of changed paths against your scope.
+
+If `jj st` shows files outside your claim — a peer agent's
+in-flight edit, a linter touch, anything not yours — **do
+not describe**. Use `jj split` to isolate your paths first
+(see below). The bare `describe` will bundle peer work into
+a commit with your authorship and your message, leaving the
+peer's intent muddled in version control history.
+
+This check is procedural, not aesthetic. The recurring
+failure mode is "I edited files X and Y; I run `jj describe`;
+the working copy also contained Z (peer file or linter
+output); the resulting commit covers X+Y+Z under my message."
+Once pushed, fixing it requires either a force-push or a
+follow-up commit that explains the muddle. Both are worse
+than running `jj st` and `jj split` up front.
+
+The default before any describe in a shared workspace:
+
+```sh
+jj st                                # what's actually here?
+# if peers are present:
+jj split -m '<my-msg>' <my-paths>    # isolate my scope
+# if only mine:
+jj describe -m '<my-msg>'            # bundled commit
+```
+
+When in doubt — split.
+
+---
+
 ## Partial commits — `jj split` with paths
 
 When the working tree contains both your changes and a peer

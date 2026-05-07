@@ -252,35 +252,70 @@ copies of the type *look* the same. Err early.
 ## Naming a contract repo
 
 The contract crate is the *protocol the components speak*.
-Patterns that work:
+The naming hierarchy reflects the relationship to `signal`:
 
-- **`<project>-signal`** when the project speaks signal-shaped
-  wire — same `Frame` shape, same length-prefix framing, same
-  closed-enum-of-typed-payloads discipline as
-  `~/primary/repos/signal`. The `-signal` suffix marks family
-  membership, not literal layering: a `<project>-signal`
-  crate may be layered atop signal today (`signal-forge`,
-  `signal-arca`), or stand alone today on a path toward
-  convergence with the criome/signal ecosystem. The shared
-  name reflects shared design.
-- **`<project>-protocol`** or **`<project>-contract`** when
-  the project lives in its own ecosystem with a deliberately
-  *different* wire shape from signal-family — different
-  framing, different envelope, no convergence intended.
-  Names what it is.
-- **`<project>-wire`** when the focus is on the bytes that
-  travel; less semantically rich than -protocol, narrower.
+### `signal-<consumer>` — layered effect crate (the prefix form)
 
-The `-signal` family-membership marker is the right default
-when the project follows the same wire conventions, even
-without literal layering today. Pre-naming for a future
-convergence is appropriate when the convergence is the
-explicit destination; pre-naming for a hypothetical
-convergence is not.
+When the contract is **layered atop `signal`** — re-uses
+signal's `Frame`, handshake, and auth, adds per-verb payloads
+for a narrower audience — the canonical name is
+**`signal-<consumer>`**:
 
-Don't pick names that name the consumer (`<project>-types`,
-`<project>-shared`). The repo isn't a bag of utilities — it
-is the spoken protocol.
+- `signal-forge` — criome ↔ forge effect verbs
+- `signal-arca` — writers ↔ arca-daemon effect verbs
+- `signal-persona` — Persona's wire, layered atop signal
+
+Same shape signal/criome already established. The prefix
+order (`signal-` first, consumer name second) is read as
+*"this is signal, scoped to consumer."* Front-end clients
+that depend only on `signal` don't recompile when a layered
+crate churns.
+
+### `<project>-signal` — independent base contract (the suffix form)
+
+When the project's wire is **its own base contract** — owns
+its own `Frame`, handshake, auth — the name is
+**`<project>-signal`**:
+
+- `signal` — the base contract of the sema-ecosystem (named
+  without prefix because it IS the base)
+
+Use this only when the project is genuinely a separate
+signaling fabric with its own envelope and auth shape.
+Almost always, what feels like "a new ecosystem" is
+better modelled as a layered crate atop signal.
+
+### `<project>-protocol` / `<project>-contract` / `<project>-wire`
+
+When the project deliberately uses a **different wire shape
+than signal-family** — different framing, different envelope,
+no convergence intended — name it `<project>-protocol`,
+`<project>-contract`, or `<project>-wire`. These are escape-
+hatch names for projects that explicitly aren't part of the
+signal family.
+
+### Choosing
+
+```mermaid
+flowchart TD
+    q1{"Re-uses signal's<br/>Frame + handshake + auth?"}
+    q2{"Has its own<br/>base envelope?"}
+    layered["signal-&lt;consumer&gt;<br/>(layered effect crate)"]
+    base["&lt;project&gt;-signal<br/>(independent base contract)"]
+    other["&lt;project&gt;-protocol<br/>(non-signal-family)"]
+
+    q1 -->|yes| layered
+    q1 -->|no| q2
+    q2 -->|yes, signal-shaped| base
+    q2 -->|no, deliberately different| other
+```
+
+The default is `signal-<consumer>` — the layered shape is
+how the workspace's signaling fabric grows.
+
+Don't pick names that name the consumer's *internals*
+(`<project>-types`, `<project>-shared`). The repo isn't a
+bag of utilities — it is the spoken protocol.
 
 ---
 
