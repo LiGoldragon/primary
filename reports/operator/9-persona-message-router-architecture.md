@@ -34,16 +34,16 @@ input.
 
 ```mermaid
 flowchart TB
-    human[human]
-    desktop[future Persona desktop]
-    message[persona-message]
-    router[persona-router]
-    system[persona-system]
-    harness[persona-harness]
-    wezterm[persona-wezterm]
-    orchestrate[persona-orchestrate]
-    persona[persona integration]
-    store[(redb + rkyv)]
+    human["human"]
+    desktop["future Persona desktop"]
+    message["persona-message"]
+    router["persona-router"]
+    system["persona-system"]
+    harness["persona-harness"]
+    wezterm["persona-wezterm"]
+    orchestrate["persona-orchestrate"]
+    persona["persona integration"]
+    store[("redb + rkyv")]
 
     human --> desktop
     desktop --> router
@@ -51,9 +51,10 @@ flowchart TB
     router --> system
     router --> harness
     harness --> wezterm
-    router --> store
-    harness --> store
     orchestrate --> store
+    router --> orchestrate
+    harness --> orchestrate
+    system --> orchestrate
     persona --> message
     persona --> router
     persona --> system
@@ -66,11 +67,11 @@ The public component repos now exist:
 | Repository | Role |
 |---|---|
 | `persona-message` | message contract, `message` CLI, typed NOTA boundary |
-| `persona-router` | pending queue, delivery reducer, subscriptions, actor routing |
+| `persona-router` | delivery reducer, subscriptions, actor routing, typed transition proposals |
 | `persona-system` | OS/window/input event contracts; first Niri backend lives here |
 | `persona-harness` | harness identity, lifecycle, transcript and input observers |
 | `persona-wezterm` | current PTY/window adapter used by the live harness tests |
-| `persona-orchestrate` | typed successor to workspace claim/handoff coordination |
+| `persona-orchestrate` | orchestration reducer, single database owner, transaction boundary |
 | `persona` | integration surface and high-level architecture |
 
 `persona-system-niri` is intentionally not created yet. Niri stays inside
@@ -87,15 +88,15 @@ The critical next step is a working delivery path:
 
 ```mermaid
 flowchart LR
-    sender[agent or human client]
-    cli[message CLI]
-    router[RouterActor]
-    target[HarnessActor]
-    gate[DeliveryGate]
-    system[SystemEventSource]
-    input[InputBufferActor]
-    endpoint[EndpointActor]
-    harness[interactive harness]
+    sender["agent or human client"]
+    cli["message CLI"]
+    router["RouterActor"]
+    target["HarnessActor"]
+    gate["DeliveryGate"]
+    system["SystemEventSource"]
+    input["InputBufferActor"]
+    endpoint["EndpointActor"]
+    harness["interactive harness"]
 
     sender --> cli
     cli --> router
@@ -111,31 +112,76 @@ The boundary between text and durable state is explicit:
 
 ```mermaid
 flowchart LR
-    nota[NOTA text]
-    typed[typed domain value]
-    reducer[domain reducer]
-    archive[rkyv archived value]
-    redb[(redb table)]
-    projection[NOTA projection]
+    nota["NOTA text"]
+    typed["typed domain value"]
+    reducer["domain reducer"]
+    orchestrate["persona-orchestrate"]
+    archive["rkyv archived value"]
+    redb[("redb tables")]
+    projection["NOTA projection"]
 
     nota --> typed
     typed --> reducer
-    reducer --> archive
+    reducer --> orchestrate
+    orchestrate --> archive
     archive --> redb
     redb --> projection
 ```
 
 NOTA remains the human-facing and harness-facing text format. It is not the
 production queue store. Persistent component state is redb tables with
-rkyv-archived values.
+rkyv-archived values owned through the orchestrator.
+
+---
+
+## Database ownership
+
+If Persona has one database, it should have one database owner. The natural
+owner is `persona-orchestrate`: orchestration is the layer that knows which
+planes exist, sequences their transitions, and keeps the durable state coherent.
+
+```mermaid
+flowchart TB
+    message["persona-message"]
+    router["persona-router"]
+    harness["persona-harness"]
+    system["persona-system"]
+    desktop["persona-desktop"]
+    orchestrate["persona-orchestrate"]
+    db[("single redb database")]
+
+    message --> orchestrate
+    router --> orchestrate
+    harness --> orchestrate
+    system --> orchestrate
+    desktop --> orchestrate
+    orchestrate --> db
+```
+
+This changes the earlier actor/storage idea:
+
+| Rule | Meaning |
+|---|---|
+| one database owner | only `persona-orchestrate` opens and commits the shared redb database |
+| domain reducers stay local | router/harness/system still own their own domain rules |
+| persistence is proposed | domain actors submit typed transition proposals to the orchestrator |
+| transaction boundary is central | cross-plane writes are serialized and committed by the orchestrator |
+
+The risk is turning `persona-orchestrate` into a god object. The guardrail is
+strict: orchestrate owns ordering, authorization, transactionality, and durable
+projection. It does not decide whether a router delivery is safe, parse harness
+input buffers, or interpret Niri events. Those verbs stay on the actors that own
+the data.
 
 ---
 
 ## The router's job
 
-`persona-router` owns the harness delivery plane. It accepts typed messages,
-records their state, asks the target harness actor to attempt delivery, and
-subscribes to exactly the event sources that can unblock deferred work.
+`persona-router` owns the harness delivery rules. It accepts typed messages
+from the orchestrator, computes delivery decisions, asks the target harness
+actor to attempt delivery, subscribes to exactly the event sources that can
+unblock deferred work, and submits typed transition proposals back to
+`persona-orchestrate` for durable commit.
 
 ```mermaid
 stateDiagram-v2
@@ -178,11 +224,11 @@ condition.
 
 ```mermaid
 flowchart TD
-    msg[pending message]
-    focus{human focuses target?}
-    buffer{target input buffer empty?}
-    deliver[deliver]
-    queue[queue]
+    msg["pending message"]
+    focus{"human focuses target?"}
+    buffer{"target input buffer empty?"}
+    deliver["deliver"]
+    queue["queue"]
 
     msg --> focus
     focus -->|yes| queue
@@ -213,11 +259,11 @@ condition.
 
 ```mermaid
 flowchart TD
-    screen[terminal screen model]
-    present{input buffer present?}
-    chrome{only prompt chrome?}
-    empty[InputBufferEmpty]
-    blocked[InputBufferBlocked]
+    screen["terminal screen model"]
+    present{"input buffer present?"}
+    chrome{"only prompt chrome?"}
+    empty["InputBufferEmpty"]
+    blocked["InputBufferBlocked"]
 
     screen --> present
     present -->|no| blocked
@@ -249,11 +295,11 @@ support their system can offer.
 
 ```mermaid
 flowchart LR
-    system[persona-system]
-    niri[Niri backend]
-    mac[future macOS backend]
-    x11[future X11 backend]
-    compositor[future Persona compositor]
+    system["persona-system"]
+    niri["Niri backend"]
+    mac["future macOS backend"]
+    x11["future X11 backend"]
+    compositor["future Persona compositor"]
 
     system --> niri
     system --> mac
@@ -301,10 +347,10 @@ binding between a Persona harness and a system window or terminal endpoint.
 
 ```mermaid
 flowchart LR
-    target[HarnessTarget]
-    binding[HarnessBinding]
-    window[SystemWindowId]
-    endpoint[Endpoint]
+    target["HarnessTarget"]
+    binding["HarnessBinding"]
+    window["SystemWindowId"]
+    endpoint["Endpoint"]
 
     target --> binding
     binding --> window
@@ -346,11 +392,11 @@ composer.
 
 ```mermaid
 flowchart LR
-    human[human]
-    composer[Persona composer]
-    router[persona-router]
-    harness[HarnessActor]
-    terminal[interactive harness]
+    human["human"]
+    composer["Persona composer"]
+    router["persona-router"]
+    harness["HarnessActor"]
+    terminal["interactive harness"]
 
     human --> composer
     composer --> router
@@ -371,13 +417,20 @@ Actors own data; methods live on the object with the data.
 
 ```mermaid
 flowchart TB
-    router[RouterActor]
-    harness[HarnessActor]
-    focus[SystemFocusActor]
-    input[InputBufferActor]
-    deadline[DeadlineActor]
-    endpoint[EndpointActor]
+    orchestrate["OrchestratorActor"]
+    router["RouterActor"]
+    harness["HarnessActor"]
+    focus["SystemFocusActor"]
+    input["InputBufferActor"]
+    deadline["DeadlineActor"]
+    endpoint["EndpointActor"]
+    db[("redb + rkyv")]
 
+    orchestrate <--> router
+    orchestrate <--> harness
+    orchestrate <--> focus
+    orchestrate <--> deadline
+    orchestrate --> db
     router <--> harness
     router <--> focus
     router <--> deadline
@@ -387,16 +440,18 @@ flowchart TB
 
 | Actor | Owns |
 |---|---|
-| `RouterActor` | pending deliveries, block reasons, subscriptions, delivery transitions |
+| `OrchestratorActor` | single database handle, transaction ordering, cross-plane transition log |
+| `RouterActor` | delivery decisions, block reasons, subscriptions, typed delivery transition proposals |
 | `HarnessActor` | target identity, window/endpoint binding, current gate observations |
 | `SystemFocusActor` | OS event subscription and focus map |
 | `InputBufferActor` | parsed screen/input-region observations |
 | `DeadlineActor` | OS-pushed TTL deadlines |
 | `EndpointActor` | adapter-specific delivery channel |
 
-There is no `StorageActor`. Each domain actor writes its own redb tables. If a
-cross-table transaction becomes real, introduce a typed transaction value or a
-narrower domain object, not a generic storage dispatcher.
+There is still no `StorageActor`. `OrchestratorActor` is not a storage wrapper;
+it is the domain object that owns the whole orchestration state. Database writes
+are a method on that object because it owns the durable state. Domain actors do
+not open the shared database directly.
 
 ---
 
@@ -420,13 +475,13 @@ sequenceDiagram
     A->>M: Send operator initiator-ready
     T->>A: user message: ask responder for status
     A->>M: Send responder status request
-    M->>R: typed message
+    M->>R: typed message through orchestrator
     R->>B: gated delivery
     B->>M: Send initiator reply
-    M->>R: typed message
+    M->>R: typed message through orchestrator
     R->>A: gated delivery
     A->>M: Send operator received-reply
-    M->>R: typed message
+    M->>R: typed message through orchestrator
     R->>O: delivered to operator endpoint
 ```
 
@@ -445,21 +500,23 @@ delivery gate used for all harnesses.
 
 ```mermaid
 flowchart TD
-    repos[component repos scaffolded]
-    msg[stabilize persona-message daemon protocol]
-    ids[daemon-owned short message IDs]
-    router[persona-router reducer and queue]
-    store[redb + rkyv router store]
-    system[persona-system Niri focus source]
-    harness[persona-harness input-buffer fixtures]
-    gate[delivery gate tests]
-    live[live Pi/Codex/Claude routed test]
-    desktop[deferred Persona composer]
+    repos["component repos scaffolded"]
+    msg["stabilize persona-message daemon protocol"]
+    ids["daemon-owned short message IDs"]
+    orchestrate["persona-orchestrate database owner"]
+    router["persona-router reducer proposals"]
+    store["redb + rkyv shared store"]
+    system["persona-system Niri focus source"]
+    harness["persona-harness input-buffer fixtures"]
+    gate["delivery gate tests"]
+    live["live Pi/Codex/Claude routed test"]
+    desktop["deferred Persona composer"]
 
     repos --> msg
     msg --> ids
-    ids --> router
-    router --> store
+    ids --> orchestrate
+    orchestrate --> router
+    orchestrate --> store
     router --> system
     router --> harness
     system --> gate
@@ -470,19 +527,21 @@ flowchart TD
 
 First concrete tasks:
 
-1. Move `persona-message` from the NOTA-line prototype toward a daemon-backed
-   route: the CLI submits to a Unix socket; the daemon stamps the ID and returns
-   an accepted/delivered/queued result.
-2. Define the router command/result envelope. Use rkyv for CLI-to-daemon binary
-   frames when the route is local; keep NOTA for harness text and audit
-   projections.
-3. Implement `persona-router`'s reducer with fake system and harness event
-   sources first.
-4. Add redb + rkyv storage for pending deliveries and delivery transitions.
-5. Implement the first `persona-system` Niri focus source behind the generic
+1. Move `persona-message` from the NOTA-line prototype toward an
+   orchestrator-backed route: the CLI submits to a Unix socket; the
+   orchestrator stamps the ID and returns an accepted/delivered/queued result.
+2. Define the orchestrator command/result envelope. Use rkyv for local binary
+   frames; keep NOTA for harness text and audit projections.
+3. Implement `persona-orchestrate` as the single database owner and transition
+   sequencer for the first message-routing plane.
+4. Implement `persona-router`'s delivery reducer as typed transition proposals
+   with fake system and harness event sources first.
+5. Add redb + rkyv storage in `persona-orchestrate` for pending deliveries and
+   delivery transitions.
+6. Implement the first `persona-system` Niri focus source behind the generic
    event interface.
-6. Implement fixture-driven input-buffer recognizers in `persona-harness`.
-7. Re-run live harness tests only after the gate has fake-source coverage.
+7. Implement fixture-driven input-buffer recognizers in `persona-harness`.
+8. Re-run live harness tests only after the gate has fake-source coverage.
 
 ---
 
@@ -490,15 +549,17 @@ First concrete tasks:
 
 ```mermaid
 flowchart LR
-    nota[NOTA examples]
-    daemon[daemon protocol tests]
-    reducer[router reducer tests]
-    focus[Niri fixture tests]
-    input[input-buffer fixture tests]
-    live[live visible harness test]
+    nota["NOTA examples"]
+    daemon["daemon protocol tests"]
+    orchestrate["orchestrator store tests"]
+    reducer["router reducer tests"]
+    focus["Niri fixture tests"]
+    input["input-buffer fixture tests"]
+    live["live visible harness test"]
 
     nota --> daemon
-    daemon --> reducer
+    daemon --> orchestrate
+    orchestrate --> reducer
     reducer --> focus
     reducer --> input
     focus --> live
