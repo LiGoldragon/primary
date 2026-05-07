@@ -54,6 +54,12 @@ inspect, `cat <role>.lock` or `tools/orchestrate status`. The helper is the
 canonical writer; agents may also edit lock files by hand as long as the
 format is preserved.
 
+Lock files are **runtime state, gitignored.** They live on the local
+filesystem only — coordination between agents on the same machine, not
+versioned history. A clean checkout starts with no lock files; the helper
+creates them on first claim. Don't commit them, don't expect them to
+travel between machines.
+
 ## Claim Flow
 
 Before editing files or running commands that create, modify, format, or

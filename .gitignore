@@ -27,3 +27,9 @@ result-*
 __pycache__/
 *.pyc
 
+# orchestration role lock files — runtime coordination state, not history
+/operator.lock
+/designer.lock
+/system-specialist.lock
+/poet.lock
+

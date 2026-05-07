@@ -710,10 +710,12 @@ in the redb sense:
 
 - **Lock-file projections** (per
   `~/primary/protocols/orchestration.md`).
-  `<role>.lock` files are human-readable + git-trackable
-  text. The redb store is the in-process truth; the lock
-  file is the outward projection regenerated from the
-  record.
+  `<role>.lock` files are human-readable runtime
+  coordination state, gitignored — they exist on disk for
+  agents to read with `cat` or `tools/orchestrate status`,
+  not in version control. The redb store is the in-process
+  truth; the lock file is the outward projection
+  regenerated from the record.
 - **Configuration files.** `Cargo.toml`, `flake.nix`,
   per-repo configs. Inputs, not state.
 - **Reports and prose docs.** Markdown is markdown.
