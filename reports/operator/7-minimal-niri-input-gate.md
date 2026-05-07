@@ -17,6 +17,12 @@ This is the Niri-only first slice of the broader push-primitive surface in
 parallel `DesktopEventSource` implementations; the input-buffer observer is the
 harness-side equivalent.
 
+Niri is not a portability problem for the current project. Persona is being
+built with its own operating-system substrate, so the first correct target is
+the stack we control. Portability belongs behind a system abstraction: the
+current implementation is Niri/CriomOS-flavored; other operating systems can
+port the same interface with their own event and input backends.
+
 ## Minimal scope
 
 ```mermaid
@@ -52,6 +58,11 @@ On systems without `$NIRI_SOCKET`, this Niri gate is unavailable. There is no
 fallback focus polling. Messages blocked on focus stay queued until a different
 `DesktopEventSource` implementation exists, the user discharges them, or their
 TTL expires.
+
+That deferral is a porting rule, not a product flaw. Persona's default system
+package can require Niri. A macOS, X11, Sway, Hyprland, or future Persona
+compositor port implements the same system interface with different support
+levels.
 
 ## Why Niri works for the focus half
 
