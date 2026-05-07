@@ -5,7 +5,7 @@ Author: Codex (operator)
 
 This report turns `reports/designer/19-persona-parallel-development.md` into an
 operator work plan for the Persona repository set. It treats `persona` as the
-apex integration repository, `persona-signal` as the shared signal contract,
+apex integration repository, `signal-persona` as the shared signal contract,
 and every other Persona repository as a component that remains useful on its
 own while the full daemon is being assembled.
 
@@ -22,7 +22,7 @@ flowchart TB
         deployment["deployment wiring"]
     end
 
-    subgraph contract["persona-signal"]
+    subgraph contract["signal-persona"]
         frame["Frame"]
         handshake["handshake"]
         events["request/reply/event records"]
@@ -46,11 +46,11 @@ flowchart TB
 The implementation rule is simple:
 
 - `persona` composes.
-- `persona-signal` defines the shared wire vocabulary.
+- `signal-persona` defines the shared wire vocabulary.
 - Component repos implement one coherent component each.
 - Human-facing and harness-facing text remains NOTA projection.
 - Rust-to-Rust communication is length-prefixed rkyv `Frame` values from
-  `persona-signal`.
+  `signal-persona`.
 
 ---
 
@@ -79,7 +79,7 @@ flowchart LR
 The interim CLI is not a throwaway shell script. It is the typed development
 surface for that component. The CLI accepts NOTA where a human or harness needs
 to type or read the value; internally it converts to typed Rust and, when
-crossing a Rust process boundary, signals with `persona-signal` frames.
+crossing a Rust process boundary, signals with `signal-persona` frames.
 
 ---
 
@@ -88,7 +88,7 @@ crossing a Rust process boundary, signals with `persona-signal` frames.
 | Repository | Owns | Does not own |
 |---|---|---|
 | `persona` | Apex architecture, Nix composition, end-to-end tests, future NixOS module | Component internals, terminal adapters, contract record definitions |
-| `persona-signal` | Shared `Frame`, handshake, auth proofs, request/reply/event enums, version guard records | Daemons, actors, stores, NOTA parsing |
+| `signal-persona` | Shared `Frame`, handshake, auth proofs, request/reply/event enums, version guard records | Daemons, actors, stores, NOTA parsing |
 | `persona-message` | `message` CLI, NOTA input/output, harness/human message projection, transitional local ledger | Binary signal contract, router policy, final database ownership |
 | `persona-router` | Delivery reducer, pending deliveries, harness routing decisions, event subscriptions | Window-manager backends, terminal byte movement, durable database writes |
 | `persona-system` | OS/window/input observation abstractions and event streams | Routing policy, harness lifecycle, storage |
@@ -124,7 +124,7 @@ table views into one durable database.
 sequenceDiagram
     participant Human as human or harness
     participant Message as persona-message
-    participant Signal as persona-signal
+    participant Signal as signal-persona
     participant Router as persona-router
     participant Store as persona-store
     participant Harness as persona-harness
@@ -142,7 +142,7 @@ This is the persistent rule:
 
 - NOTA is for humans, harness prompts, CLI arguments, and debug/audit
   projection.
-- `persona-signal` rkyv frames are for component-to-component signaling.
+- `signal-persona` rkyv frames are for component-to-component signaling.
 - redb stores rkyv archives for durable component state.
 
 ---
@@ -161,5 +161,5 @@ repositories:
    punctuation, or multiple words.
 
 The next code work should then proceed component-by-component without losing the
-system shape: `persona-signal` first, then parallel component CLIs and stores,
+system shape: `signal-persona` first, then parallel component CLIs and stores,
 then `persona-store` consolidation, then `persona` end-to-end composition.

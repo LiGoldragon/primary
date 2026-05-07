@@ -53,7 +53,7 @@ Pruned on 2026-05-06:
 | `persona-message` | `/git/github.com/LiGoldragon/persona-message` |
 | `persona-orchestrate` | `/git/github.com/LiGoldragon/persona-orchestrate` |
 | `persona-router` | `/git/github.com/LiGoldragon/persona-router` |
-| `persona-signal` | `/git/github.com/LiGoldragon/persona-signal` |
+| `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` |
 | `persona-store` | `/git/github.com/LiGoldragon/persona-store` |
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` |
 | `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` |

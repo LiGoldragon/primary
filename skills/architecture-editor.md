@@ -30,7 +30,7 @@ ecosystem); each component repo carries its own
 For Persona, `persona` is the meta repo; its `ARCHITECTURE.md`
 is the apex; `persona-message`, `persona-router`,
 `persona-system`, `persona-harness`, `persona-store`,
-`persona-signal`, etc. each carry their own.
+`signal-persona`, etc. each carry their own.
 
 ---
 
