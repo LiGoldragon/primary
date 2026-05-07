@@ -91,6 +91,51 @@ shell string.
 
 ---
 
+## Never let jj open an editor
+
+Every jj command that takes a description has an inline
+flag. **Always use it.** An agent that lets jj fall back to
+`$EDITOR` blocks the session on a no-op editor invocation,
+or worse, leaves a half-described commit when the editor
+exits without saving.
+
+| Command | Inline form |
+|---|---|
+| `jj commit` | `jj commit -m '<msg>'` |
+| `jj describe` | `jj describe -m '<msg>'` |
+| `jj describe @-` | `jj describe @- -m '<msg>'` |
+| `jj split <paths>` | `jj split -m '<msg>' <paths>` |
+| `jj split -i` | `jj split -i -m '<msg>'` |
+| `jj squash --into <rev>` | `jj squash --into <rev> --use-destination-message` |
+| `jj new` | `jj new -m '<msg>'` |
+| `jj duplicate <rev>` | not editor-bound; safe |
+| `jj rebase` | safe unless conflicts surface |
+
+The deeper rule: **if a jj command would prompt for text
+without a flag, find the flag.** The flags exist on every
+description-taking command. The `-m '<msg>'` form is the
+canonical workspace shape.
+
+Two compound idioms worth knowing:
+
+- **`jj split -m '<msg>' <paths>`** — first commit gets the
+  description; the working copy (second commit) inherits
+  empty. After the split, the working copy can be
+  re-described later if needed.
+- **`jj squash --into <rev> --use-destination-message`** —
+  keeps the destination's existing description without
+  prompt. Use when amending into an already-described
+  commit.
+
+If you find yourself reaching for `EDITOR=true`,
+`GIT_EDITOR=true`, or any other no-op-editor environment
+shim, **stop**. The right answer is the inline `-m` flag on
+the command being run. Editor shims are anti-patterns —
+they hide the fact that the wrong invocation form was
+used.
+
+---
+
 ## Partial commits — `jj split` with paths
 
 When the working tree contains both your changes and a peer
@@ -99,26 +144,24 @@ locks), commit only files in your scope. `jj split` is the
 right tool — and `git add <paths>` is **not** the workspace
 shape, even though both produce the same end-state.
 
-Idiom for committing a subset of paths:
+Canonical idiom for committing a subset of paths:
 
 ```sh
-EDITOR=true jj split <my-path-1> <my-path-2> ...   # split selected paths into a new parent commit
-jj describe @- -m '<short verb + scope>'           # describe the just-split-off commit
-jj bookmark set main -r @-                         # point main at it
-jj git push --bookmark main                        # publish
+jj split -m '<short verb + scope>' <my-path-1> <my-path-2> ...
+jj bookmark set main -r @-
+jj git push --bookmark main
 ```
 
-`EDITOR=true` no-ops the editor jj would otherwise open for
-the description prompt; `jj describe @-` then sets the
-description after the split. The remaining paths stay in
-the working copy `@` for the peer agent to pick up later.
-
-Without `EDITOR=true`, jj opens the editor twice (once per
-split commit) and inherits descriptions in unhelpful ways
-when the original had no description.
+`-m` sets the description for the **first** commit (the one
+containing the selected paths) inline — **no editor
+opens**. The remaining paths stay in the working copy `@`
+(which inherits an empty description) for the peer agent to
+pick up later.
 
 For interactive selection of changes (rather than whole
-paths), use `jj split -i` — opens the diff editor.
+paths), use `jj split -i` — opens the diff editor for change
+selection. Even with `-i`, pass `-m` to set the description
+inline and avoid the second editor prompt.
 
 ---
 
