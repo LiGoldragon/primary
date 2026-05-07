@@ -15,8 +15,9 @@ cross-workspace agent discipline lives in `lore/AGENTS.md`.
 3. **`protocols/orchestration.md`** — how operator and designer
    share this workspace.
 4. **The relevant `skills/<name>.md`** — start with
-   `autonomous-agent.md` and `skill-editor.md`. Read the others
-   on demand for the work at hand.
+   `autonomous-agent.md`, `skill-editor.md`, and
+   `reporting.md`. Read the others on demand for the work
+   at hand.
 5. **The repo's `AGENTS.md` + `skills.md`** when editing inside
    a repo under `repos/`.
 

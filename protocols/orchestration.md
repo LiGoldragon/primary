@@ -141,9 +141,10 @@ The role subdirectories are *permanently owned* by their role. Treating
 them as role-private write zones removes the report path from the
 coordination surface — reports are how roles communicate without racing.
 
-Filename convention inside a role subdirectory is open. The
-`YYYY-MM-DD-<topic>.md` shape that the workspace already uses elsewhere is
-recommended; the date keeps reports sortable and prevents collisions.
+For *how* to write a report (filename convention, prose-plus-visuals
+medium, tone in chat replies, always-name-paths rule), see this
+workspace's `skills/reporting.md`. This protocol covers only the
+role-coordination side.
 
 ## Overrides
 

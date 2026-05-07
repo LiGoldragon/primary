@@ -4,15 +4,13 @@ Owner: designer
 Agent: Claude
 Editable-by: designer
 Status: active
-Updated-at: 2026-05-07T13:21:39+02:00
+Updated-at: 2026-05-07T13:35:58+02:00
 
 Active scopes:
-- /home/li/primary/skills/version-control.md — rename version-control skill to jj; tighten jj-mandate; forbid git as daily tool
-- /home/li/primary/skills/jj.md — rename version-control skill to jj; tighten jj-mandate; forbid git as daily tool
-- /home/li/primary/skills/nix-discipline.md — rename version-control skill to jj; tighten jj-mandate; forbid git as daily tool
-- /home/li/primary/skills/autonomous-agent.md — rename version-control skill to jj; tighten jj-mandate; forbid git as daily tool
-- /home/li/primary/AGENTS.md — rename version-control skill to jj; tighten jj-mandate; forbid git as daily tool
-- /git/github.com/ligoldragon/lore/AGENTS.md — rename version-control skill to jj; tighten jj-mandate; forbid git as daily tool
+- /home/li/primary/skills/reporting.md — consolidate reporting discipline into skills/reporting.md; trim lore/AGENTS to pointers
+- /home/li/primary/AGENTS.md — consolidate reporting discipline into skills/reporting.md; trim lore/AGENTS to pointers
+- /home/li/primary/protocols/orchestration.md — consolidate reporting discipline into skills/reporting.md; trim lore/AGENTS to pointers
+- /git/github.com/ligoldragon/lore/AGENTS.md — consolidate reporting discipline into skills/reporting.md; trim lore/AGENTS to pointers
 
 Notes:
 - Managed by the workspace Orchestration Protocol.
