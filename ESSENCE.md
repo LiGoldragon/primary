@@ -317,6 +317,45 @@ type-spec details live in reports.
 
 ---
 
+## Efficiency of instruction
+
+Each rule, principle, or pattern lives in **one canonical
+place**. Other docs cite by reference; they don't restate.
+When a rule starts to appear verbatim in multiple docs, that's
+a smell — find the canonical home and trim the others.
+
+The cost of duplication is paid every time a reader has to
+reconcile two slightly-different versions of the same idea.
+Instructions to agents should be efficient: short, focused,
+precise; cross-referenced rather than copied. The reader's
+attention is the resource being optimized.
+
+This applies at every layer:
+
+- **Upstream wins.** ESSENCE is upstream of `lore/AGENTS.md` is
+  upstream of skills is upstream of tool reference is upstream
+  of per-repo `AGENTS.md` / `ARCHITECTURE.md` / `skills.md`.
+  Higher layers state principles; lower layers cite them.
+- **Lore is *what* the tool does. Skills are *how* we use it
+  and *when* we pick it.** Don't restate one in the other;
+  point.
+- **A brief pointer beats a full-text restate.** If a doc
+  needs to invoke a rule, naming it and pointing at the
+  canonical home is enough.
+- **An agent should never have to choose between two versions
+  of the same rule.** If they do, that's the bug to fix —
+  consolidation, not arbitration.
+
+When in doubt about where a new rule lives: ask which doc's
+*role* it fits. If it's intent (the deepest "why"), it's
+ESSENCE. If it's how-to-act-as-an-agent, it's a skill. If it's
+how-the-tool-works, it's lore. If it's repo-specific intent
+or invariants, it's that repo's `skills.md`. If a rule fits
+two roles, it fits one of them better — pick that one and
+have the other point at it.
+
+---
+
 ## Choosing a data format
 
 Three orthogonal questions: **for whom, for what, for how long.**
