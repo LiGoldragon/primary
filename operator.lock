@@ -3,12 +3,11 @@
 Owner: operator
 Agent: Codex
 Editable-by: operator
-Status: active
-Updated-at: 2026-05-07T16:14:21+02:00
+Status: idle
+Updated-at: 2026-05-07T16:15:30+02:00
 
 Active scopes:
-- /home/li/primary/repos — index Persona component repositories
-- /home/li/primary/RECENT-REPOSITORIES.md — index Persona component repositories
+- none
 
 Notes:
 - Managed by the workspace Orchestration Protocol.
