@@ -3,15 +3,11 @@
 Owner: system-specialist
 Agent: (unspecified)
 Editable-by: system-specialist
-Status: active
-Updated-at: 2026-05-07T15:13:59+02:00
+Status: idle
+Updated-at: 2026-05-07T15:43:26+02:00
 
 Active scopes:
-- /home/li/git/nota-codec — nota: enforce all-fields-present rule end-to-end (remove lax branch + doctrine + datom sweep + cascade redeploy)
-- /home/li/git/horizon-rs — nota: enforce all-fields-present rule end-to-end (remove lax branch + doctrine + datom sweep + cascade redeploy)
-- /home/li/git/lojix-cli — nota: enforce all-fields-present rule end-to-end (remove lax branch + doctrine + datom sweep + cascade redeploy)
-- /home/li/git/goldragon — nota: enforce all-fields-present rule end-to-end (remove lax branch + doctrine + datom sweep + cascade redeploy)
-- /home/li/git/CriomOS-home — nota: enforce all-fields-present rule end-to-end (remove lax branch + doctrine + datom sweep + cascade redeploy)
+- none
 
 Notes:
 - Managed by the workspace Orchestration Protocol.
