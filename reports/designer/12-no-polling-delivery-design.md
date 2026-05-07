@@ -6,7 +6,7 @@ Author: Claude (designer)
 A design for Persona's message-delivery substrate that
 contains **no polling anywhere**. Builds directly on the
 operator's
-`reports/operator/2026-05-07-prompt-empty-delivery-gate-design.md`
+`reports/operator/6-prompt-empty-delivery-gate-design.md`
 and the audit
 `reports/designer/11-persona-message-state-and-gate-audit.md`,
 both of which surfaced four polling-shaped residuals in the
@@ -793,7 +793,7 @@ implementation as it grows.
 
 ## 15. See also
 
-- `reports/operator/2026-05-07-prompt-empty-delivery-gate-design.md`
+- `reports/operator/6-prompt-empty-delivery-gate-design.md`
   — the gate design this report extends.
 - `reports/designer/11-persona-message-state-and-gate-audit.md`
   — the audit that surfaced the four polling residuals.

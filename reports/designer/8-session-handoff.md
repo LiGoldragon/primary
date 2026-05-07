@@ -358,7 +358,7 @@ lock.
 
 - All designer reports under `reports/designer/`.
 - Operator's reports under `reports/operator/` (especially
-  `2026-05-06-terminal-harness-control-research.md` for the
+  `2-terminal-harness-control-research.md` for the
   substrate substance behind real-harness tests).
 - `reports/1-gas-city-fiasco.md` — workspace-historical
   post-mortem; predates the role split.

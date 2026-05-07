@@ -488,7 +488,7 @@ The phases that are most likely to surprise:
 - `~/primary/reports/designer/4-persona-messaging-design.md`
   — the broader design that this prototype is a stepping
   stone toward.
-- `~/primary/reports/operator/2026-05-06-terminal-harness-control-research.md`
+- `~/primary/reports/operator/2-terminal-harness-control-research.md`
   — the operator's substrate-research report; covers WezTerm,
   Kitty, portable-pty, ttyd, layered-observation model.
 - `lojix-cli/src/request.rs` — the canonical Nota CLI shape

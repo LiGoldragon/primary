@@ -5,7 +5,7 @@ Author: Claude (designer)
 
 A read of the persona-message + persona-wezterm code on
 2026-05-07, plus a second-pass audit of the operator's
-`reports/operator/2026-05-07-prompt-empty-delivery-gate-design.md`
+`reports/operator/6-prompt-empty-delivery-gate-design.md`
 after the operator's same-day update. The audit confirms the
 gate's framing as a *guarded fallback transport*, records
 that **every structural concern from the prior pass is
@@ -20,7 +20,7 @@ flags four polling-shaped residuals that motivate a separate
 
 Persona-message has reached *naive round-trip working between
 real interactive harnesses*. As of the operator's
-`2026-05-06-persona-message-real-harness-test-plan.md`:
+`5-persona-message-real-harness-test-plan.md`:
 
 - `nix run .#test-actual-codex-to-claude` passes.
 - `nix run .#test-actual-claude-to-codex` passes.
@@ -389,11 +389,11 @@ operator's territory.
 
 ## 8. See also
 
-- `reports/operator/2026-05-07-prompt-empty-delivery-gate-design.md`
+- `reports/operator/6-prompt-empty-delivery-gate-design.md`
   — the audit target.
-- `reports/operator/2026-05-06-persona-message-real-harness-test-plan.md`
+- `reports/operator/5-persona-message-real-harness-test-plan.md`
   — the test infrastructure the gate plugs into.
-- `reports/operator/2026-05-06-persona-message-plane-design.md`
+- `reports/operator/4-persona-message-plane-design.md`
   — the message-plane background.
 - `reports/designer/5-persona-message-audit.md` —
   the prior persona-message audit; trim discipline lineage.

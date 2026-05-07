@@ -85,8 +85,9 @@ the relevant content in a new report inside your own
 subdirectory. Don't edit another role's reports.
 
 For per-repo reports (specific to one repo's work), the
-convention is `<repo-root>/reports/NNN-<topic>.md` — see
-that repo's own `AGENTS.md` / `ARCHITECTURE.md`.
+convention is the same `<N>-<topic>.md` shape under
+`<repo-root>/reports/`. See that repo's own `AGENTS.md` /
+`ARCHITECTURE.md` for any per-repo refinements.
 
 ### Filename convention
 
