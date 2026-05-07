@@ -24,6 +24,12 @@ use the same fallback only behind a stricter gate:
 This is not a clean messaging layer. It is a guarded fallback transport for
 harnesses that have no native extension/API.
 
+**Sunset rule:** the gate retires per harness as native adapters land. When Pi
+has a reachable extension, Pi no longer uses the terminal fallback. Same for
+Codex, Claude, or any later harness. This is transitional substrate, like BEADS:
+it exists because the destination is not ready yet; it should shrink as native
+routes appear.
+
 ## Research read
 
 ### Gas City
@@ -180,6 +186,27 @@ queued_message_cursor
 The endpoint belongs to the actor. The message log is global state; endpoint
 state is runtime actor state.
 
+Endpoint kind and delivery policy must also be typed:
+
+```rust
+enum EndpointKind {
+    Human,
+    Native,
+    PtySocket,
+    WezTermPane,
+}
+
+enum DeliveryPolicy {
+    HumanReadOnly,
+    Native,
+    GatedTerminal,
+    UnsafeTerminal,
+}
+```
+
+Unknown endpoint strings should not silently drop messages. Adding a new
+endpoint kind must force an exhaustive match update.
+
 ### `PromptProbe`
 
 Small, synchronous, fast. It gathers a snapshot and returns a typed decision:
@@ -277,6 +304,20 @@ Harness-specific prompt recognizers:
 This table should move into per-harness adapters; the gate interface should not
 hard-code every product forever.
 
+The adapter selector should still be typed. The report's shorthand
+`harness_kind` means a closed Rust enum, not a string:
+
+```rust
+enum HarnessKind {
+    Pi,
+    Claude,
+    Codex,
+}
+```
+
+Each variant owns its recognizer through methods or an adapter object. The gate
+should not dispatch on `"pi"`/`"claude"`/`"codex"` strings.
+
 ## Race window
 
 The race cannot be eliminated while using stdin:
@@ -302,6 +343,22 @@ observe -> sleep 50ms -> observe again -> submit immediately
 ```
 
 If either observation differs materially, defer.
+
+The stable interval is a workaround, not a new polling doctrine. The first
+snapshot is a reachability-style probe: "is this surface safe right now?" The
+second snapshot narrows the race window because we do not yet have a push event
+for "human started typing in this prompt region." When the harness node or
+WezTerm adapter can emit an input-region-changed event, the stable-interval
+check should retire.
+
+Cancellation also needs a precise meaning. Phase 2 should make the final focus
+and prompt-empty check the last operation before submit. There should be no work
+between the final check and `send-text`/PTY write except the submit call itself.
+If focus changes before the final check, cancel means "do not submit." Once the
+write begins, there is no clean cancellation; this is why native adapters remain
+the destination. A later WezTerm Lua-side delivery could reduce this
+cross-process race by checking and writing inside WezTerm's event loop, but that
+is a later optimization, not the first implementation.
 
 ## Message lifecycle
 
@@ -469,12 +526,18 @@ flowchart LR
     focused[blocked_on_focus] --> focusSub[subscribe focus changed]
     nonempty[blocked_on_non_empty_prompt] --> inputSub[subscribe screen/input changed]
     busy[blocked_on_busy] --> idleSub[subscribe idle/screen changed]
-    unknown[blocked_on_unknown] --> timer[timer retry with backoff]
+    unknown[blocked_on_unknown] --> timer[last-resort backoff]
 ```
 
 For now, focus is the cleanest event. Prompt-empty and busy-state changes are
 usually screen/output changes; those may come from the harness node itself
 rather than the window manager.
+
+The retry loop should be event-driven by default. Timers are a last-resort
+backoff for unknown state or missing event sources, not the normal delivery
+engine. A harness node that already observes PTY output should push
+screen/idle/input-region changes to the router; the router then probes and
+attempts delivery once.
 
 ## Implementation plan
 
@@ -482,6 +545,8 @@ rather than the window manager.
 
 In `persona-message`:
 
+- Replace stringly `EndpointKind` dispatch with a closed `EndpointKind` enum.
+- Add a closed `DeliveryPolicy` enum.
 - Rename endpoint kind `pty-socket` use in live tests to
   `unsafe-pty-socket` or add `delivery_policy unsafe-terminal`.
 - Make default `pty-socket` delivery return queued/deferred unless explicitly
@@ -492,6 +557,9 @@ In `persona-message-harness.md`:
 
 - Teach agents that sending a message does not guarantee immediate terminal
   delivery.
+- Teach agents the three terminal-fallback outcomes: delivered, queued, and
+  deferred. Do not retry after a deferred outcome; the router actor owns
+  eventual delivery.
 - Teach them to use `message '(Inbox name)'` if prompted by tests or future
   adapters.
 
@@ -502,7 +570,8 @@ In `persona-wezterm`:
 - Add `PaneSnapshot` from `wezterm cli list --format json` + `get-text`.
 - Add `PromptLine` extraction using cursor coordinates.
 - Add `FocusState` from WezTerm `is_active`.
-- Add `PromptProbe::decision(snapshot, harness_kind)`.
+- Add `PromptProbe::decision(snapshot, HarnessKind)`, where `HarnessKind` is a
+  closed enum with per-harness recognizer methods.
 - Add tests using recorded fixture screens for empty and non-empty prompt rows.
 
 ### Phase 3: gated terminal fallback
@@ -513,6 +582,10 @@ In `persona-message`:
 - If safe, call terminal submit.
 - If unsafe/unknown, keep message queued and return `deferred`.
 - Add a retry loop owned by the actor, not by the CLI process.
+- Trigger retries from focus/screen/idle events when available; use timers only
+  as last-resort backoff.
+- Make the final focus and prompt-empty check the last step before terminal
+  submit.
 
 ### Phase 4: WM plugins
 
