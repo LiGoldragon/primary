@@ -48,6 +48,7 @@ Pruned on 2026-05-06:
 | `nota-codec` | `/git/github.com/LiGoldragon/nota-codec` |
 | `nota-derive` | `/git/github.com/LiGoldragon/nota-derive` |
 | `orchestrator` | `/git/github.com/LiGoldragon/orchestrator` |
+| `persona` | `/git/github.com/LiGoldragon/persona` |
 | `prism` | `/git/github.com/LiGoldragon/prism` |
 | `sema` | `/git/github.com/LiGoldragon/sema` |
 | `signal` | `/git/github.com/LiGoldragon/signal` |

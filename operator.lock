@@ -1,0 +1,14 @@
+# Operator Lock
+
+Owner: operator
+Agent: Codex
+Editable-by: operator
+Status: idle
+Updated-at: 2026-05-07T13:26:17+02:00
+
+Active scopes:
+- none
+
+Notes:
+- Managed by the workspace Orchestration Protocol.
+- Every lock write reads all role lock files and open BEADS tasks.
