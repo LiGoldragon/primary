@@ -19,7 +19,7 @@ flowchart TB
         architecture["apex architecture"]
         nix["Nix composition"]
         tests["end-to-end tests"]
-        module["future NixOS module"]
+        deployment["deployment wiring"]
     end
 
     subgraph contract["persona-signal"]
@@ -163,4 +163,3 @@ repositories:
 The next code work should then proceed component-by-component without losing the
 system shape: `persona-signal` first, then parallel component CLIs and stores,
 then `persona-store` consolidation, then `persona` end-to-end composition.
-
