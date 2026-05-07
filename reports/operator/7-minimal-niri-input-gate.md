@@ -6,8 +6,8 @@ Author: Codex (operator)
 This report narrows the input-management design to the smallest useful local
 implementation: a Persona router that uses Niri's IPC event stream for focus
 wakeups, a harness actor for each running harness, and a delivery gate that
-queues messages until the target harness is unfocused, idle, and has an empty
-prompt.
+queues messages until the target harness window is unfocused and the target
+input buffer is empty.
 
 The design stays inside the push-not-pull rule. The router subscribes only when
 there is blocked work, and it wakes only on producer events.
@@ -35,7 +35,7 @@ The first version owns only:
 | Piece | Responsibility |
 |---|---|
 | Router | ordered message queue, pending delivery state, subscriptions |
-| HarnessActor | target identity, endpoint, screen/prompt state, delivery method |
+| HarnessActor | target identity, endpoint, input-buffer state, delivery method |
 | NiriFocusSource | `$NIRI_SOCKET` event stream, focused window map |
 | Endpoint | terminal/PTY injection only after the gate says safe |
 | Message log | audit of accepted, queued, delivered, deferred |
@@ -66,25 +66,22 @@ ask Niri "who is focused?" on a timer.
 
 ## Delivery gate
 
-A terminal fallback delivery is safe only when all gate inputs are green:
+A terminal fallback delivery is safe only when both gate inputs are green:
 
 ```mermaid
 flowchart TD
     message[pending message]
     focus{target focused?}
-    prompt{prompt empty?}
-    idle{harness idle?}
+    input{input buffer empty?}
     deliver[deliver through endpoint]
     queue[stay queued]
 
     message --> focus
     focus -->|yes| queue
     focus -->|unknown| queue
-    focus -->|no| prompt
-    prompt -->|no or unknown| queue
-    prompt -->|yes| idle
-    idle -->|no or unknown| queue
-    idle -->|yes| deliver
+    focus -->|no| input
+    input -->|no or unknown| queue
+    input -->|yes| deliver
 ```
 
 Every queued result records a typed block reason:
@@ -92,8 +89,7 @@ Every queued result records a typed block reason:
 | Block reason | Producer that can wake it | First implementation |
 |---|---|---|
 | `blocked_on_focus` | Niri focus/window event stream | yes |
-| `blocked_on_non_empty_prompt` | harness screen-state actor | fixture first, live later |
-| `blocked_on_busy` | harness screen-state actor | fixture first, live later |
+| `blocked_on_non_empty_input` | harness input-buffer observer | fixture first, live later |
 | `blocked_on_unknown` | none | stays queued |
 
 ## Router state machine
@@ -105,18 +101,16 @@ stateDiagram-v2
     Queued --> GateCheck: attempt delivery
     GateCheck --> Delivered: safe
     GateCheck --> WaitingForFocus: target focused
-    GateCheck --> WaitingForPrompt: prompt occupied
-    GateCheck --> WaitingForIdle: harness busy
+    GateCheck --> WaitingForInput: input buffer occupied
     GateCheck --> WaitingUnknown: state unknown
     WaitingForFocus --> GateCheck: FocusChanged(target, false)
-    WaitingForPrompt --> GateCheck: InputRegionChanged(target, empty)
-    WaitingForIdle --> GateCheck: IdleStateChanged(target, idle)
+    WaitingForInput --> GateCheck: InputBufferChanged(target, empty)
     WaitingUnknown --> GateCheck: human retry / new authoritative event
     Delivered --> [*]
 ```
 
 The router stores pending messages by target. The target actor stores the last
-authoritative focus, prompt, and idle observations. A delivery attempt consumes
+authoritative focus and input-buffer observations. A delivery attempt consumes
 that state; it does not perform a polling loop to make it fresh.
 
 ## Conditional Niri subscription
@@ -184,12 +178,12 @@ flowchart LR
     router[RouterActor]
     harness[HarnessActor]
     focus[NiriFocusSourceActor]
-    screen[ScreenStateActor]
+    input[InputBufferActor]
     endpoint[EndpointActor]
 
     router --> harness
     router --> focus
-    harness --> screen
+    harness --> input
     harness --> endpoint
 ```
 
@@ -200,7 +194,7 @@ The verb belongs to the noun:
 | `RouterActor` | queue, subscriptions, routing state | accept, attempt, subscribe, expire |
 | `HarnessActor` | target state, endpoint, gate inputs | decide delivery, deliver, defer |
 | `NiriFocusSourceActor` | Niri socket stream, focus map | subscribe, unsubscribe, emit focus |
-| `ScreenStateActor` | parsed terminal screen state | emit prompt/idle changes |
+| `InputBufferActor` | parsed terminal input-buffer state | emit input-buffer changes |
 | `EndpointActor` | delivery channel | submit terminal message |
 
 No free function owns delivery. Delivery is a method/message on the target
@@ -222,7 +216,7 @@ sequenceDiagram
     R->>F: SubscribeFocus(target window)
     F-->>R: FocusChanged(target, false)
     R->>H: AttemptDelivery(message)
-    alt prompt empty + idle
+    alt input buffer empty
         H->>E: Submit(message)
         E-->>H: Submitted
         H-->>R: Delivered
@@ -245,8 +239,8 @@ So the policy remains:
 | Situation | Action |
 |---|---|
 | target focused | queue |
-| target unfocused, prompt occupied | queue |
-| target unfocused, prompt empty, harness idle | submit |
+| target unfocused, input occupied | queue |
+| target unfocused, input empty | submit |
 | any unknown | queue |
 
 The future focus lease removes more of the race. The minimal Niri design is the
@@ -275,9 +269,9 @@ Required tests:
 | current-state prelude says target focused | message stays queued |
 | `FocusChanged(target,false)` arrives | router attempts delivery once |
 | focus changes for unrelated window | target queue is untouched |
-| prompt occupied after focus clears | message moves to prompt block |
+| input occupied after focus clears | message moves to input block |
 | no Niri socket | focus-gated delivery unavailable, message queued |
-| visible human typing collision | no splice; target focused or prompt occupied blocks |
+| visible human typing collision | no splice; target focused or input occupied blocks |
 
 The tests use fake event sources first. The live Niri test comes after the
 router state machine passes with recorded JSON lines.
@@ -288,7 +282,7 @@ router state machine passes with recorded JSON lines.
 |---|---|
 | Is conditional subscription worth the complexity, or should the focus stream stay open while the router runs? | The user asked for subscribe-on-block; the event stream is still push either way |
 | Is Niri window id stable enough for a running harness binding? | The harness registry needs an explicit rebinding story after window close/reopen |
-| Should prompt and idle events block implementation until live screen parsing exists? | Without them, the focus half works but delivery remains too permissive |
+| Should input-buffer events block implementation until live screen parsing exists? | Without them, the focus half works but delivery remains too permissive |
 | Should `WaitingUnknown` be manually dischargeable only? | Push-not-pull forbids a retry timer |
 | Does this belong in `persona-router` as a separate repo before coding? | The router state machine is already its own component shape |
 
