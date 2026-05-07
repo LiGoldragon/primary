@@ -425,9 +425,23 @@ retrofitting concurrency later. Ractor pulls tokio in; that's
 acceptable everywhere — for daemons and structured services,
 tokio via ractor is just the runtime.
 
+**Every actor pairs with a `*Handle`.** The four-piece-per-file
+shape (`Actor` ZST, `State`, `Arguments`, `Message`) is the
+actor's *internal* surface; the `*Handle` struct
+(`EngineHandle`, `SupervisorHandle`, `ReaderHandle`) is its
+*consumer* surface. The Handle owns the spawn result
+(`ActorRef + JoinHandle`) and exposes `start(Arguments)`.
+Consumers reach for `*Handle::start`, never bare
+`Actor::spawn`. The root daemon's `*Handle::start` is the only
+place bare `Actor::spawn` is called; every other spawn happens
+inside a parent's `pre_start` via `Actor::spawn_linked`.
+
 For the *how* — the per-file four-piece template,
-perfect-specificity messages, supervision, self-cast loops, and
-the sync-façade pattern — see lore's `rust/ractor.md`.
+perfect-specificity messages, the `*Handle` consumer surface,
+supervision, self-cast loops, pool initialization, and the
+sync-façade pattern — see lore's `rust/ractor.md`. For testing
+patterns (sync façade on State, two-process integration via
+`CARGO_BIN_EXE_*`), see lore's `rust/testing.md`.
 
 Plain sync code is fine for one-shot CLIs, build tools, and
 library crates with no concurrent state.
