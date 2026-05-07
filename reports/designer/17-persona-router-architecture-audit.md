@@ -118,15 +118,14 @@ keeps its name. Concrete suggestion: rename to **`persona-store`** (it
 owns the store and its commit ordering; the name fits the verb on the
 noun).
 
-### 2. Subscription contract: emit current state on connect
+### 2. Subscription contract: cite the existing rule
 
 §"System abstraction" says: *"The router opens the stream only when
 pending focus-blocked work exists and closes it when no pending focus
 block remains."*
 
-This is correct subscription-on-demand. It is **incomplete** without a
-producer contract: when a consumer connects, what does the producer
-emit?
+This is correct subscription-on-demand. It is **incomplete** in the
+report without naming what the producer emits on connect.
 
 ```mermaid
 sequenceDiagram
@@ -136,25 +135,28 @@ sequenceDiagram
     Note over R: pending focus-blocked work appears
     R->>N: subscribe
     Note right of N: focus is currently on target X
-    N-->>R: ???
+    N-->>R: current state (FocusChanged target=X) — initial event
+    Note right of R: subsequent FocusChanged events are deltas
 ```
 
-If the producer waits for the next change, the router subscribes to a
-window that's already focused, and never wakes — the human walks away
-later, focus changes, but the router missed the *current* state at
-connect time and now the message is queued behind a state it can't
-verify.
+The workspace rule already exists in
+`~/primary/skills/push-not-pull.md` §"Subscription contract":
 
-The push-not-pull discipline requires producers to emit current state
-on subscribe. State this as a named rule in the producer contract:
+> Every push subscription emits the producer's current state when
+> the consumer connects, then emits deltas after that. The consumer
+> must not perform a separate "what is it now?" query or poll to
+> seed itself.
 
-> Every push subscription delivers an initial event reflecting the
-> current state, then continues with deltas. Consumers never poll for
-> "what is it now?"
+Without this, the router subscribes to an already-focused window and
+never wakes — the human walks away, focus changes later, but the
+initial state was missed. With it, every subscribe-on-demand pattern
+just works.
 
-This rule is general; it belongs in `~/primary/skills/push-not-pull.md`
-or as a §"Subscription contract" line in this report. Easier and
-more durable: add it to the skill.
+**Recommendation.** In §"System abstraction" of report 9, name the
+rule explicitly: *"Per `~/primary/skills/push-not-pull.md`
+§'Subscription contract', the focus source emits the current focus
+state immediately on subscribe, then emits deltas."* One sentence;
+prevents a class of latent bug.
 
 ### 3. Schema-version guard absent from implementation order
 
@@ -314,7 +316,7 @@ clarifying example.
 | # | Action | Surface | Priority |
 |---|---|---|---|
 | 1 | Rename operator's `persona-orchestrate` (proposal: `persona-store`) | report 9 + future repo creation | **P1** |
-| 2 | Add "subscription emits current state on connect" rule | `skills/push-not-pull.md` | P1 |
+| 2 | Cite the existing subscription-emits-current-state rule | report 9 §"System abstraction" | P1 |
 | 3 | Insert version-skew guard step in implementation order | report 9 §"Implementation order" | P1 |
 | 4 | Specify length-prefix framing for rkyv socket frames | report 9 §"Implementation order" step 2 | P2 |
 | 5 | Affirm `*Handle` pattern for each actor | report 9 §"Actor ownership" | P2 |
@@ -333,10 +335,9 @@ items make the design implementable without re-asking.
   `~/primary/skills/rust-discipline.md` already; the report doesn't
   need to restate it, just reference the rule and add the
   implementation-order step.
-- The **subscription emits current state** rule is general (applies
-  to every push primitive in the workspace, not just Niri focus).
-  It belongs in `skills/push-not-pull.md` as part of the producer
-  contract, not in report 9.
+- The **subscription emits current state** rule is already a
+  named producer contract in `skills/push-not-pull.md`. Report 9
+  should cite it; no skill change needed.
 - The naming collision in finding §1 is the only finding that
   *blocks* downstream work — once code starts talking about
   `persona-orchestrate`, ambiguity propagates. Rename before any

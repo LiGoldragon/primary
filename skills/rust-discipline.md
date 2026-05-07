@@ -620,6 +620,15 @@ The wire schema *is* the framing. Both parties know the
 same `Frame` type; the bytes are `Archived<Frame>`. The
 discipline:
 
+- **The shared `Frame` type lives in a contract repo.**
+  When two or more components speak the same wire, the
+  record types are not re-defined per consumer. They live
+  in a dedicated crate that every consumer pulls as a
+  dependency. See `~/primary/skills/contract-repo.md` for
+  the pattern (what belongs in a contract crate, the
+  layered-effect-crate shape, when to introduce one).
+  `signal` (`~/primary/repos/signal`) is the canonical
+  worked example.
 - **One frame type per channel.** A socket between two
   components carries one shared `Frame` enum; new
   request kinds are new variants, not new channels.
