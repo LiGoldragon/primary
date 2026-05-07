@@ -519,6 +519,90 @@ library crates with no concurrent state.
 
 ---
 
+## Persistent state — redb + rkyv (the EDB pattern)
+
+Persistent component state lives in **redb** (embedded
+key-value store) with **rkyv-archived** values. The
+combination is the workspace's "EDB" pattern. Use it as
+the default for any state that must survive a process
+restart — router queues, harness bindings, transition
+logs, lock state, transcripts, anything the running
+component mutates and re-reads.
+
+The discipline:
+
+- **Persistent state lives in redb.** Not flat files, not
+  JSON, not bare blobs.
+- **Values are rkyv-archived.** Not serde-JSON, not
+  hand-rolled binary serialization. rkyv gives zero-copy
+  reads and content-addressable canonical bytes.
+- **NOTA stays the wire / projection / interchange
+  format**, not the storage format. NOTA-line files are
+  prototypes or human-facing projections; production
+  components use redb.
+
+```rust
+// Wrong — flat-file NOTA log as the durable store
+fn append_lock(path: &Path, lock: &Lock) -> Result<()> {
+    let line = lock.to_nota()?;
+    OpenOptions::new().append(true).open(path)?.write_all(line.as_bytes())?;
+    Ok(())
+}
+
+// Right — typed records archived with rkyv, stored in redb
+const LOCKS: TableDefinition<&str, &[u8]> = TableDefinition::new("locks");
+
+let txn = self.db.begin_write()?;
+{
+    let mut table = txn.open_table(LOCKS)?;
+    let bytes = rkyv::to_bytes::<rancor::Error>(lock)?;
+    table.insert(role.as_str(), &bytes[..])?;
+}
+txn.commit()?;
+```
+
+### Named exceptions — text-on-disk that stays text
+
+The rule is about *state the component mutates and
+re-reads*. Some text-on-disk forms stay text by design and
+are not state in the EDB sense:
+
+- **Lock-file projections** (per
+  `~/primary/protocols/orchestration.md`).
+  `<role>.lock` files are human-readable + git-trackable
+  text. The redb store is the in-process truth; the lock
+  file is the outward projection.
+- **Configuration files.** `Cargo.toml`, `flake.nix`,
+  per-repo configs. Inputs, not state.
+- **Reports and prose docs.** Markdown is markdown.
+- **Interchange artifacts.** A NOTA-line file shared
+  across components for one-shot ingestion is interchange,
+  not the running component's state.
+
+If a component owns the data and mutates it during
+operation, it lives in redb + rkyv. The named exceptions
+above don't satisfy "owns and mutates."
+
+### When to lift to a shared crate
+
+Multiple components using the same redb + rkyv patterns —
+typed `Table<K, V>` wrapper, common error variants,
+transaction helpers, migration utilities — eventually
+warrant a shared `persona-edb` (or `edb`) crate.
+
+**Don't pre-abstract.** Each component uses redb + rkyv
+inline first; the shared shape becomes obvious after
+2–3 components have crystallized their patterns. The
+sema → criome path followed exactly this growth: shared
+shape became visible from real use, then extracted.
+
+For the rkyv tool reference (cargo features, portable
+feature set, derive aliases, encode/decode API), see
+lore's `rust/rkyv.md`. This skill section is *when and why*;
+lore is *how the tool works*.
+
+---
+
 ## One Rust crate per repo
 
 Rust crates live in their own dedicated repos and are consumed
