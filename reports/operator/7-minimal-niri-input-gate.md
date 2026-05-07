@@ -12,6 +12,11 @@ input buffer is empty.
 The design stays inside the push-not-pull rule. The router subscribes only when
 there is blocked work, and it wakes only on producer events.
 
+This is the Niri-only first slice of the broader push-primitive surface in
+`reports/designer/12-no-polling-delivery-design.md`. Other compositors land as
+parallel `DesktopEventSource` implementations; the input-buffer observer is the
+harness-side equivalent.
+
 ## Minimal scope
 
 ```mermaid
@@ -42,6 +47,11 @@ The first version owns only:
 
 It does not own the future desktop composer, compositor lease, native prompt
 drafts, or full Persona state reducer yet.
+
+On systems without `$NIRI_SOCKET`, this Niri gate is unavailable. There is no
+fallback focus polling. Messages blocked on focus stay queued until a different
+`DesktopEventSource` implementation exists, the user discharges them, or their
+TTL expires.
 
 ## Why Niri works for the focus half
 
@@ -92,6 +102,11 @@ Every queued result records a typed block reason:
 | `blocked_on_non_empty_input` | harness input-buffer observer | fixture first, live later |
 | `blocked_on_unknown` | none | stays queued |
 
+Every pending message has a TTL. Expiry is a deadline-driven OS event
+(`timerfd` or equivalent), not a retry loop. On expiry, the message moves to
+`Expired` in the durable log and leaves the live queue. The default TTL is a
+policy decision, not settled in this report.
+
 ## Router state machine
 
 ```mermaid
@@ -112,6 +127,9 @@ stateDiagram-v2
 The router stores pending messages by target. The target actor stores the last
 authoritative focus and input-buffer observations. A delivery attempt consumes
 that state; it does not perform a polling loop to make it fresh.
+
+`WaitingUnknown` is resolved only by a new authoritative event, explicit human
+discharge, or TTL expiry. It does not retry on a clock.
 
 ## Conditional Niri subscription
 
@@ -142,6 +160,11 @@ This is intentionally event-gated. The router can keep the stream open while
 there are any focus-blocked targets. It closes the stream when focus events no
 longer matter to pending work.
 
+Subscription multiplicity is one-per-source, not one-per-message. Five messages
+blocked on focus for the same target create one focus-blocked target entry. The
+Niri stream opens when the first focus-blocked target appears and closes when
+the focus-blocked set becomes empty.
+
 ## Niri focus map
 
 Niri's event stream gives a current-state prelude, then updates. The focus
@@ -171,6 +194,48 @@ The harness registry binds a Persona harness to a Niri window id:
 `app_id` and title are not stable identity. They help discovery. Once a harness
 is registered, the target-window binding is explicit.
 
+Niri window IDs are stable for a window's lifetime. When the window closes, the
+`HarnessActor` emits `BindingLost(target)`. Pending deliveries for that target
+remain queued until the harness is explicitly rebound or until TTL expiry. A
+new window with matching `app_id` or title is only a rebind candidate; automatic
+matching is not identity.
+
+## Input-buffer recognizer
+
+"Input buffer empty" is two predicates:
+
+```mermaid
+flowchart TD
+    screen[terminal screen]
+    present{input buffer present?}
+    empty{only prompt chrome?}
+    safe[empty]
+    blocked[blocked]
+
+    screen --> present
+    present -->|no or unknown| blocked
+    present -->|yes| empty
+    empty -->|yes| safe
+    empty -->|no or unknown| blocked
+```
+
+Both predicates must be true:
+
+| Predicate | Meaning |
+|---|---|
+| input buffer present | the harness is showing the editable input surface |
+| only prompt chrome | the input surface contains no user characters |
+
+When the harness is generating output, there is no input buffer to be empty, so
+the result is blocked. The per-harness recognizer is a closed enum with
+per-variant methods:
+
+| Harness | Input-buffer shape |
+|---|---|
+| Pi | prompt box; input is the line(s) inside it |
+| Claude | bottom `> ` input line |
+| Codex | `>` marker and editable input row |
+
 ## Actor ownership
 
 ```mermaid
@@ -192,13 +257,18 @@ The verb belongs to the noun:
 | Actor | Owns | Methods / messages |
 |---|---|---|
 | `RouterActor` | queue, subscriptions, routing state | accept, attempt, subscribe, expire |
-| `HarnessActor` | target state, endpoint, gate inputs | decide delivery, deliver, defer |
+| `HarnessActor` | target state, endpoint, gate inputs | attempt delivery |
 | `NiriFocusSourceActor` | Niri socket stream, focus map | subscribe, unsubscribe, emit focus |
 | `InputBufferActor` | parsed terminal input-buffer state | emit input-buffer changes |
 | `EndpointActor` | delivery channel | submit terminal message |
 
 No free function owns delivery. Delivery is a method/message on the target
 harness actor because the actor owns the endpoint and the current gate state.
+The single entry point is:
+
+```text
+AttemptDelivery(message) -> Delivered | Deferred(BlockReason)
+```
 
 ## Minimal data flow
 
@@ -272,6 +342,8 @@ Required tests:
 | input occupied after focus clears | message moves to input block |
 | no Niri socket | focus-gated delivery unavailable, message queued |
 | visible human typing collision | no splice; target focused or input occupied blocks |
+| window closes with pending delivery | `BindingLost(target)`, message remains queued until explicit rebind or TTL |
+| TTL expires | message becomes `Expired`, no retry attempt |
 
 The tests use fake event sources first. The live Niri test comes after the
 router state machine passes with recorded JSON lines.
@@ -285,6 +357,15 @@ router state machine passes with recorded JSON lines.
 | Should input-buffer events block implementation until live screen parsing exists? | Without them, the focus half works but delivery remains too permissive |
 | Should `WaitingUnknown` be manually dischargeable only? | Push-not-pull forbids a retry timer |
 | Does this belong in `persona-router` as a separate repo before coding? | The router state machine is already its own component shape |
+
+## Decisions needed
+
+Two decisions remain outside this report's authority:
+
+| Decision | Options | Why it needs the user |
+|---|---|---|
+| Default pending-message TTL | 24h, shorter per harness, or no default until configured | TTL is user-visible policy: it decides how long undeliverable messages remain alive |
+| `persona-router` repository split | create `persona-router` before coding, or keep the first prototype in `persona-message`/`persona` | The split changes repository shape and ownership boundaries |
 
 ## Sources
 
