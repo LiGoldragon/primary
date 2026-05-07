@@ -215,6 +215,77 @@ model that with a method that returns a smaller view
 
 ---
 
+## Don't hide typification in strings
+
+When a value has a typed identity, **the type system carries
+the discrimination**. Don't reach for `starts_with(...)`,
+`contains(...)`, or `match s.as_str()` to recover information
+the type system already encodes.
+
+### Wrong: verifying type by string prefix in tests
+
+```rust
+// the field's type is already MessageId — the assertion adds nothing
+assert!(messages[0].id.as_str().starts_with("m-"));
+assert_eq!(messages[0].id.as_str().len(), 9);
+```
+
+If the test wants to check that a particular kind of ID was
+returned, the types should already separate them.
+`Vec<Message>::id: MessageId` already proves the kind. If the
+same field can carry several kinds, that's the missing
+sum-type — not a string-prefix discriminator.
+
+### Wrong: dispatching on string prefix at runtime
+
+```rust
+fn route(id: &Id) -> Handler {
+    if id.as_str().starts_with("m-") { handle_message }
+    else if id.as_str().starts_with("d-") { handle_delivery }
+    else if id.as_str().starts_with("a-") { handle_authorization }
+    else { panic!("unknown id kind") }
+}
+```
+
+That's a closed enum with extra steps. Use one:
+
+```rust
+pub enum Id {
+    Message(MessageId),
+    Delivery(DeliveryId),
+    Authorization(AuthorizationId),
+}
+
+fn route(id: &Id) -> Handler {
+    match id {
+        Id::Message(_)       => handle_message,
+        Id::Delivery(_)      => handle_delivery,
+        Id::Authorization(_) => handle_authorization,
+    }
+}
+```
+
+### Prefixes for human readability are fine
+
+A prefix like `m-2026-05-07-001` is fine **on the wire** —
+humans reading the log see the kind. The rule is against
+*recovering* the kind from the prefix in code. Wire form:
+prefix is a hint; in-memory: types carry the truth.
+
+If the workspace uses prefix conventions, the convention
+lives in the type's constructor (`MessageId::mint()` produces
+a string starting with `m-`); no other code knows about the
+prefix.
+
+### Companion to "Domain values are types"
+
+The newtype rule says a domain value gets its own type. This
+rule extends the principle: once you have the typed identity,
+**use it**. Don't drop back to string operations to recover
+what the type already proved.
+
+---
+
 ## One object in, one object out
 
 Method signatures take at most one explicit object argument and
