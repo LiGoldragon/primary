@@ -389,6 +389,63 @@ type-spec details live in reports.
 
 ---
 
+## Rules find their level
+
+Every observation, rule, or pattern belongs at a specific
+level of the documentation stack — and the level is determined
+by *how broad* the rule is, not by what's currently being
+worked on. The agent's job, when learning something durable,
+is to **find the level** and write the rule there.
+
+```
+ESSENCE.md             ← intent + apex principles.
+                          The "why" upstream of everything.
+lore/AGENTS.md         ← workspace contract.
+                          What every agent must do.
+skills/<name>.md       ← cross-cutting capabilities.
+                          How to act in a kind of situation.
+lore/<tool>.md         ← tool reference.
+                          How a specific tool works.
+<repo>/AGENTS.md       ← per-repo contract.
+                          Repo-specific carve-outs.
+<repo>/skills.md       ← per-repo capabilities.
+                          What's load-bearing in this repo.
+<repo>/ARCHITECTURE.md ← per-repo shape.
+                          What this repo IS.
+reports/<role>/<n>.md  ← decision records, audits, syntheses.
+                          How thinking moved at a point in time.
+```
+
+The matching test: ask **what scope this rule applies to.**
+
+- *"Always"* — across every system, every language, every
+  context. → ESSENCE.
+- *"In this workspace"* — across every repo, every agent. →
+  workspace skill or `lore/AGENTS.md`.
+- *"When doing X"* — a kind of activity (writing Rust,
+  editing skills, designing protocols). → workspace skill.
+- *"In this tool"* — how the tool works. → lore.
+- *"In this repo"* — repo-specific shape, owners, invariants.
+  → repo `ARCHITECTURE.md` or `skills.md`.
+- *"Decided at this moment"* — design rationale, audit, or
+  synthesis. → report.
+
+When you discover something durable — a pattern, an
+anti-pattern, a missing rule, a load-bearing constraint —
+write it at its level. **Don't put a workspace-wide pattern
+in a single repo's skills.md.** Don't bury an apex principle
+in an audit report. Don't restate a tool reference inside a
+skill. Each level points at the next; each rule lives once.
+
+This is what lets a future agent discover the rule. A rule
+written at the wrong level either gets duplicated (silent
+drift between copies) or stays hidden (the agent who needs it
+doesn't read that file). Putting it at the right level is the
+difference between a workspace that gets smarter and one that
+re-learns the same lesson.
+
+---
+
 ## Efficiency of instruction
 
 Each rule, principle, or pattern lives in **one canonical

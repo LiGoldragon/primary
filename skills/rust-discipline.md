@@ -587,7 +587,17 @@ let txn = self.db.begin_write()?;
 txn.commit()?;
 ```
 
-### rkyv — the binary contract on the wire
+### rkyv — the binary contract on the wire (signaling)
+
+The workspace term for the rkyv-archive-on-the-wire pattern
+is **signal**, taken from the canonical reference
+`~/primary/repos/signal`. The verb is **to signal** — a
+component signals another by sending a length-prefixed rkyv
+archive on the wire. "Signaling" describes process-to-process
+communication in this workspace; "the signal pattern" describes
+the discipline this section defines. Cross-machine signaling
+(future networked transport) is a deferred extension; today,
+signaling is local IPC over Unix sockets, TCP, pipes, or mmap.
 
 When two Rust components talk across a process boundary
 — Unix domain socket, TCP, named pipe, message bus,

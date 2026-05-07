@@ -10,24 +10,33 @@ other.*
 
 ## What this skill is for
 
-When two or more Rust components need to talk over a wire — a
-Unix socket, TCP, message bus, named pipe, mmap region — the
-record types they exchange live in a **contract repo**: one
-crate, one home, every consumer pulls it as a dependency. This
-skill is *when* you reach for that pattern, *what* belongs in
-the contract crate, and *how* it relates to layered protocols
-and human-facing text formats.
+When two or more Rust components need to **signal** each other
+over a wire — a Unix socket, TCP, message bus, named pipe,
+mmap region — the record types they exchange live in a
+**contract repo**: one crate, one home, every consumer pulls
+it as a dependency. This skill is *when* you reach for that
+pattern, *what* belongs in the contract crate, and *how* it
+relates to layered protocols and human-facing text formats.
+
+**Signaling** is the workspace verb for inter-component
+communication via length-prefixed rkyv archives. A contract
+repo is the typed vocabulary of one signaling fabric — the
+shared `Frame`, the closed enum of payloads, the handshake,
+the auth proofs. Components that signal each other depend on
+the same contract repo.
 
 The principle is `~/primary/ESSENCE.md` §"Perfect specificity at
 boundaries" applied across processes. The Rust enforcement
 sits on top of `~/primary/skills/rust-discipline.md` §"redb +
-rkyv — durable state and binary wire" — this skill names how
-the binary contract is *organised* in repos.
+rkyv — durable state and binary wire" — that skill defines
+the rules; this one names how the contract is *organised* in
+repos.
 
 The canonical workspace example is **signal**
 (`~/primary/repos/signal`) — the wire-protocol crate of the
-sema-ecosystem. Read its `ARCHITECTURE.md` once before designing
-a new contract repo; the shape is concrete there.
+sema-ecosystem, and the namesake of the pattern. Read its
+`ARCHITECTURE.md` once before designing a new contract repo;
+the shape is concrete there.
 
 ---
 
