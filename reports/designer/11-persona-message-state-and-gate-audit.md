@@ -98,7 +98,7 @@ it can't decay under deadline pressure.
 A single layered note worth flagging: **`persona-router` is
 itself transitional substrate** on the path to the persona
 reducer. The destination per
-`reports/designer/2026-05-06-persona-messaging-design.md`
+`reports/designer/4-persona-messaging-design.md`
 is one reducer owning all transitions. Persona-router is
 the sketch shape; the reducer absorbs it later. Worth a
 single sentence in the gate report stating this layered
@@ -334,7 +334,7 @@ Most prior recommendations are now satisfied by the
 operator's update. Remaining items:
 
 1. **Address the four polling residuals** — see the
-   forthcoming `2026-05-07-no-polling-delivery-design.md`
+   forthcoming `12-no-polling-delivery-design.md`
    for the deeper treatment.
 2. **Add a sentence to the gate report** stating that
    `persona-router` is itself transitional substrate on the
@@ -395,14 +395,14 @@ operator's territory.
   — the test infrastructure the gate plugs into.
 - `reports/operator/2026-05-06-persona-message-plane-design.md`
   — the message-plane background.
-- `reports/designer/2026-05-06-persona-message-audit.md` —
+- `reports/designer/5-persona-message-audit.md` —
   the prior persona-message audit; trim discipline lineage.
-- `reports/designer/2026-05-06-persona-messaging-design.md`
+- `reports/designer/4-persona-messaging-design.md`
   — the full reducer-based fabric design; the gate is one
   endpoint adapter inside that design.
-- `reports/designer/2026-05-07-real-harness-test-architecture.md`
+- `reports/designer/6-real-harness-test-architecture.md`
   — the test-architecture parallel-read.
-- `reports/designer/2026-05-07-no-polling-delivery-design.md`
+- `reports/designer/12-no-polling-delivery-design.md`
   *(forthcoming)* — the deeper treatment of the four
   polling residuals identified in §2.3.
 - `~/primary/skills/rust-discipline.md` §"Don't hide

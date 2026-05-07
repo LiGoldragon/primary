@@ -642,9 +642,9 @@ authorization/delivery machinery.
 
 ## See also
 
-- `~/primary/reports/designer/2026-05-06-persona-messaging-design.md` —
+- `~/primary/reports/designer/4-persona-messaging-design.md` —
   the design report this prototype is implementing toward.
-- `~/primary/reports/designer/2026-05-06-persona-audit.md` —
+- `~/primary/reports/designer/2-persona-audit.md` —
   earlier audit on the previous persona scaffold; the
   redundant-prefix and `*Record` suffix concerns are *fixed*
   here (good — `Message`, not `PersonaMessageRecord`).

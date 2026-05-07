@@ -30,8 +30,8 @@ Author: Claude (designer)
 
 ## Questions
 
-1. Top-level reports (`2026-05-06-gas-city-fiasco.md`,
-   `2026-05-06-primary-handoff.md`) predate role
+1. Top-level reports (`1-gas-city-fiasco.md`,
+   `2-primary-handoff.md`) predate role
    subdirectories. Stay at top level as workspace-historical, or
    move under a role? My instinct: leave at top level — they're
    not role-authored.

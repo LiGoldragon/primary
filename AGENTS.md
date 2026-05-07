@@ -70,7 +70,7 @@ write it to the right workspace file (per
 
 `.beads/` exists today for convenience. The destination is
 **Persona's typed messaging fabric** — see
-`reports/designer/2026-05-06-persona-messaging-design.md` for
+`reports/designer/4-persona-messaging-design.md` for
 the design. Don't build a Persona↔bd bridge; don't deepen the bd
 investment. Use bd for short-tracked-item coordination today;
 design new shapes assuming bd goes away.

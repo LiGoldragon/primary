@@ -482,10 +482,10 @@ The phases that are most likely to surprise:
 
 ## See also
 
-- `~/primary/reports/designer/2026-05-06-persona-message-audit.md`
+- `~/primary/reports/designer/5-persona-message-audit.md`
   — the prior audit (naive round-trip; sender identity;
   agents config; tail mode).
-- `~/primary/reports/designer/2026-05-06-persona-messaging-design.md`
+- `~/primary/reports/designer/4-persona-messaging-design.md`
   — the broader design that this prototype is a stepping
   stone toward.
 - `~/primary/reports/operator/2026-05-06-terminal-harness-control-research.md`

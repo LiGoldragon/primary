@@ -156,7 +156,7 @@ disclaimer removed and a "Coordination" section added that
 points at `protocols/orchestration.md`.
 
 The skill's runbook section (Cluster Nix signing, lines 96–172)
-is independently flagged in `2026-05-06-skills-roadmap.md` as
+is independently flagged in `3-skills-roadmap.md` as
 tool-reference material that belongs in `lore/nix/` or
 `CriomOS/skills.md`. Moving it isn't blocked by the role
 question; deferring the move keeps this turn focused.
@@ -509,12 +509,12 @@ These match the workspace's full-English-words discipline:
   capability skill.
 - `~/primary/skills/autonomous-agent.md` — when to act and when
   to ask.
-- `~/primary/reports/designer/2026-05-06-persona-messaging-design.md`
+- `~/primary/reports/designer/4-persona-messaging-design.md`
   — the persona destination that absorbs the lock protocol.
-- `~/primary/reports/designer/2026-05-06-skills-roadmap.md` —
+- `~/primary/reports/designer/3-skills-roadmap.md` —
   the skills migration map; system-specialist's runbook flagged
   here.
-- `~/primary/reports/designer/2026-05-07-session-handoff.md` —
+- `~/primary/reports/designer/8-session-handoff.md` —
   prior-session context.
 - `TheBookOfSol/AGENTS.md` — writing conventions; substance
   the poet skill draws on.

@@ -52,8 +52,8 @@ the *why* belong in the report, not in chat.
 When you reference a report or any other file the user
 might want to navigate to, **name its path explicitly.**
 
-> "Two reports landed: `reports/designer/2026-05-07-X.md`
-> and `reports/designer/2026-05-07-Y.md`."
+> "Two reports landed: `reports/designer/11-persona-audit.md`
+> and `reports/designer/12-no-polling-delivery-design.md`."
 
 …not "two reports landed" without paths. The chat is a
 **navigation surface, not a teaser.** Make the user able
@@ -90,14 +90,42 @@ that repo's own `AGENTS.md` / `ARCHITECTURE.md`.
 
 ### Filename convention
 
-`YYYY-MM-DD-<topic>.md` keeps reports sortable and prevents
-collisions:
+**`<N>-<topic>.md`** where `N` is the next integer after the
+highest-numbered report already in the role's subdirectory.
+**No leading zeros. No date prefix.**
 
-- `2026-05-07-persona-message-audit.md`
-- `2026-05-07-no-polling-delivery-design.md`
+Examples for `reports/designer/`:
 
-The date is the date of writing; if a report is updated,
-the date stays — the git log captures the lineage.
+- `1-skills-bootstrap-status.md`
+- `2-persona-audit.md`
+- `12-no-polling-delivery-design.md`
+
+To find the next number:
+
+```sh
+ls reports/<role>/ | sort -t- -k1,1n | tail -1
+```
+
+The number is a stable identifier — once assigned, it does
+not change. The git log captures the lineage if a report
+gets updated.
+
+**Per-role numbering is independent.** Designer report 5
+and operator report 5 are different reports; the role
+subdirectory disambiguates. Cross-references between roles
+include the subdir: `reports/operator/3-...md` from a
+designer report.
+
+**Why no dates:** dates collide when more than one report
+lands in a day, and the date itself is noise once you have
+a unique number. Commit timestamps already record when each
+report landed; the filesystem doesn't need to repeat that.
+
+**Why no leading zeros:** numeric-aware sort tools (`ls -v`,
+`sort -n`, `sort -t- -k1,1n`) handle non-padded numbers
+correctly. Padding adds noise at the cost of needing to
+know the maximum digit count up front; the count grows
+without warning.
 
 ---
 

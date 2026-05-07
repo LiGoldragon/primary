@@ -8,7 +8,7 @@ contains **no polling anywhere**. Builds directly on the
 operator's
 `reports/operator/2026-05-07-prompt-empty-delivery-gate-design.md`
 and the audit
-`reports/designer/2026-05-07-persona-message-state-and-gate-audit.md`,
+`reports/designer/11-persona-message-state-and-gate-audit.md`,
 both of which surfaced four polling-shaped residuals in the
 gate design plus one inside `persona-message` itself.
 
@@ -795,9 +795,9 @@ implementation as it grows.
 
 - `reports/operator/2026-05-07-prompt-empty-delivery-gate-design.md`
   — the gate design this report extends.
-- `reports/designer/2026-05-07-persona-message-state-and-gate-audit.md`
+- `reports/designer/11-persona-message-state-and-gate-audit.md`
   — the audit that surfaced the four polling residuals.
-- `reports/designer/2026-05-06-persona-messaging-design.md`
+- `reports/designer/4-persona-messaging-design.md`
   — the full reducer-based fabric design; this report's
   router is a stepping stone toward that design's reducer.
 - `~/primary/skills/push-not-pull.md` — the rule this

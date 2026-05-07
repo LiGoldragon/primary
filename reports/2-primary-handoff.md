@@ -27,7 +27,7 @@ Created:
 - `/home/li/primary/reports`
 - `/home/li/primary/GOALS.md`
 - `/home/li/primary/RECENT-REPOSITORIES.md`
-- `/home/li/primary/reports/2026-05-06-gas-city-fiasco.md`
+- `/home/li/primary/reports/1-gas-city-fiasco.md`
 
 `~/primary/repos` is a symlink index only. Repository state remains under
 `ghq` root `/git`, mostly `/git/github.com/LiGoldragon/...`.
@@ -47,7 +47,7 @@ The ghq clones were not deleted.
 
 Main report:
 
-- `/home/li/primary/reports/2026-05-06-gas-city-fiasco.md`
+- `/home/li/primary/reports/1-gas-city-fiasco.md`
 
 It summarizes the multi-day Gas City/Criopolis failure: Dolt CPU burn, no-op
 metadata commits, setup failures, start-lock failures, wake-loss, pool/dog
@@ -115,7 +115,7 @@ Then read, in order:
 
 ```sh
 sed -n '1,220p' GOALS.md
-sed -n '1,260p' reports/2026-05-06-gas-city-fiasco.md
-sed -n '1,220p' reports/2026-05-06-primary-handoff.md
+sed -n '1,260p' reports/1-gas-city-fiasco.md
+sed -n '1,220p' reports/2-primary-handoff.md
 ```
 

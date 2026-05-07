@@ -125,14 +125,14 @@ and the real-harness test substrate.
 
 | Report | Topic |
 |---|---|
-| `2026-05-06-skills-bootstrap-status.md` | Initial skills inventory + concerns |
-| `2026-05-06-persona-audit.md` | Naming audit on persona scaffold (5 issues) |
-| `2026-05-06-skills-roadmap.md` | Lore→skills migration plan + 5 high-leverage skill candidates |
-| `2026-05-06-persona-messaging-design.md` | Big design report: typed records, one reducer, harness nodes |
-| `2026-05-06-persona-message-audit.md` | Skeptical audit of persona-message prototype + round-trip scenario expansion |
-| `2026-05-07-real-harness-test-architecture.md` | WezTerm-based harness test architecture |
-| `2026-05-07-rust-doc-audit.md` | Rust doc audit: 4 ractor lifts + 5 gaps + discipline check |
-| `2026-05-07-session-handoff.md` | This report |
+| `1-skills-bootstrap-status.md` | Initial skills inventory + concerns |
+| `2-persona-audit.md` | Naming audit on persona scaffold (5 issues) |
+| `3-skills-roadmap.md` | Lore→skills migration plan + 5 high-leverage skill candidates |
+| `4-persona-messaging-design.md` | Big design report: typed records, one reducer, harness nodes |
+| `5-persona-message-audit.md` | Skeptical audit of persona-message prototype + round-trip scenario expansion |
+| `6-real-harness-test-architecture.md` | WezTerm-based harness test architecture |
+| `7-rust-doc-audit.md` | Rust doc audit: 4 ractor lifts + 5 gaps + discipline check |
+| `8-session-handoff.md` | This report |
 
 ---
 
@@ -215,8 +215,8 @@ These are open as of this handoff:
 1. **Verb-form vs noun-form Commands** (persona scaffold). My
    audit recommended noun-form (`HarnessDeclaration` instead
    of `DeclareHarness`); operator's scaffold uses verb-form;
-   no decision yet. See `reports/designer/2026-05-06-persona-audit.md`
-   §1, `reports/designer/2026-05-06-persona-messaging-design.md`
+   no decision yet. See `reports/designer/2-persona-audit.md`
+   §1, `reports/designer/4-persona-messaging-design.md`
    open question 4.
 
 2. **persona-message simplification** — audit recommended
@@ -228,7 +228,7 @@ These are open as of this handoff:
 
 3. **The five ractor gaps** (registry, `pg` pubsub, hot-reload,
    sync-thread bridge, `pre_start` panic handling) — flagged
-   in `reports/designer/2026-05-07-rust-doc-audit.md` §4.
+   in `reports/designer/7-rust-doc-audit.md` §4.
    Wait until practice exists before documenting.
 
 4. **Three rust-discipline expansion candidates** (default
@@ -289,9 +289,9 @@ Read in order:
 | jj CLI | `lore/jj/basic-usage.md` |
 | nix CLI | `lore/nix/basic-usage.md` |
 | Nota grammar | `nota` repo's `README.md` |
-| Persona messaging design (typed records, reducer) | `reports/designer/2026-05-06-persona-messaging-design.md` |
-| Persona-message prototype audit | `reports/designer/2026-05-06-persona-message-audit.md` |
-| Real-harness test architecture | `reports/designer/2026-05-07-real-harness-test-architecture.md` |
+| Persona messaging design (typed records, reducer) | `reports/designer/4-persona-messaging-design.md` |
+| Persona-message prototype audit | `reports/designer/5-persona-message-audit.md` |
+| Real-harness test architecture | `reports/designer/6-real-harness-test-architecture.md` |
 | Workspace coordination (locks, BEADS) | `protocols/orchestration.md` |
 
 ---
@@ -360,9 +360,9 @@ lock.
 - Operator's reports under `reports/operator/` (especially
   `2026-05-06-terminal-harness-control-research.md` for the
   substrate substance behind real-harness tests).
-- `reports/2026-05-06-gas-city-fiasco.md` — workspace-historical
+- `reports/1-gas-city-fiasco.md` — workspace-historical
   post-mortem; predates the role split.
-- `reports/2026-05-06-primary-handoff.md` —
+- `reports/2-primary-handoff.md` —
   workspace-historical handoff that started this session;
   predates ESSENCE / skills / orchestration protocol /
   designer reports.

@@ -455,5 +455,5 @@ pools".
 - `hexis/src/supervisor.rs`, `hexis/src/reconciler.rs`,
   `hexis/tests/reconciler.rs` — the *Handle and sync-façade
   patterns this report proposes lifting.
-- `~/primary/reports/designer/2026-05-06-persona-audit.md` —
+- `~/primary/reports/designer/2-persona-audit.md` —
   earlier audit using the rust-discipline skill on real code.

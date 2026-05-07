@@ -164,8 +164,8 @@ of `programming/*` (4 more files) as one commit, then the
 ## See also
 
 - this report's source audit (subagent, in-conversation; not file-saved)
-- `~/primary/reports/designer/2026-05-06-persona-audit.md`
-- `~/primary/reports/designer/2026-05-06-skills-bootstrap-status.md`
+- `~/primary/reports/designer/2-persona-audit.md`
+- `~/primary/reports/designer/1-skills-bootstrap-status.md`
 - `~/primary/skills/skill-editor.md` (canonical conventions)
 - the operator's `reports/operator/2026-05-06-terminal-harness-control-research.md`
   (substance for the proposed `harness-control.md` skill)
