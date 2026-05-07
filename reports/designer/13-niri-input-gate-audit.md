@@ -27,11 +27,22 @@ in the same hygiene pass that landed this one).
   the unknown, no retry timer fakes a resolution. The
   message stays. (See Concerns §3 for the bounded-memory
   follow-up.)
-- **Closed enums for block reasons.** The four reasons
-  (`blocked_on_focus`, `blocked_on_non_empty_prompt`,
-  `blocked_on_busy`, `blocked_on_unknown`) are an
-  exhaustive set. Each is paired with the producer that
-  resolves it. No string-tagged dispatch.
+- **Closed enums for block reasons.** The three reasons
+  (`blocked_on_focus`, `blocked_on_non_empty_input`,
+  `blocked_on_unknown`) are an exhaustive set. Each is
+  paired with the producer that resolves it. No
+  string-tagged dispatch.
+- **Two-predicate gate.** The gate is now `focus +
+  input-buffer-empty`, not `focus + prompt-empty + idle`.
+  Merging the two non-focus predicates into one
+  *input-buffer-empty* check is a real structural
+  simplification: one observer (`InputBufferActor`) replaces
+  two; one waiting state (`WaitingForInput`) replaces two.
+  The merge holds because "input buffer is empty" implicitly
+  requires the prompt to be showing — when the harness is
+  generating output, there is no input buffer to be empty,
+  so the gate stays blocked. One signal subsumes both
+  conditions.
 - **Actor model with method ownership.** The methods table
   spells out which actor owns which verb. `RouterActor`
   owns queue/subscriptions. `HarnessActor` owns target state
@@ -135,17 +146,41 @@ The state machine should make this explicit: the
 `focus_blocked_count` per target on `RouterActor`) gates
 when the IPC stream opens and closes.
 
-### 6. Relationship to the broader no-polling design
+### 6. "Input buffer empty" needs a precise definition
+
+The merge of prompt-empty + idle into input-buffer-empty is
+clean *if* the recognizer can correctly identify the
+"input buffer exists and is empty" state. Different
+harnesses paint their input buffers differently:
+
+- Pi: a prompt box; the input buffer is the line(s) inside
+  it.
+- Claude: a `> ` line at the bottom; input is the rest of
+  that line.
+- Codex: a `>` marker; same shape.
+
+When the harness is mid-generation, there is no input
+buffer at all — that should map to *not empty* (or
+*unknown*), since the gate must stay blocked.
+
+The report should specify the recognizer's two predicates
+explicitly: *(a) is an input buffer present? (b) does it
+contain only the prompt chrome with no user characters?*
+Both must be true to count as "empty." Either false → the
+gate stays blocked. The per-harness recognizer logic lives
+in a closed `Harness` enum (operator's report 12 §3.1
+naming) with per-variant methods.
+
+### 7. Relationship to the broader no-polling design
 
 Report 12 (`no-polling-delivery-design.md`) names the
 broader push-primitive surface: WezTerm Lua, X11, Sway,
-Hyprland, plus parsed-screen-state events
-(`InputRegionChanged`, `IdleStateChanged`,
-`ScreenChanged`). The Niri gate is the first concrete
-slice. Worth one sentence in the Niri report stating *this
-is the Niri-only first cut of report 12's push-primitive
-surface; other compositors land as parallel
-`DesktopEventSource` implementations.*
+Hyprland, plus parsed-screen-state events. The Niri gate
+is the first concrete slice. Worth one sentence in the
+Niri report stating *this is the Niri-only first cut of
+report 12's push-primitive surface; other compositors land
+as parallel `DesktopEventSource` implementations, and the
+input-buffer observer becomes the harness-side equivalent.*
 
 ---
 
@@ -171,21 +206,20 @@ emits `BindingLost` on close; pending deliveries either
 rebind explicitly or expire via TTL. Don't auto-rebind on
 matching `app_id` / title.
 
-### Q3 — Block prompt/idle until live screen parsing exists?
+### Q3 — Block input-buffer events until live screen parsing exists?
 
 **Yes** — that's push-not-pull's deferral discipline.
-Without `InputRegionChanged` and `IdleStateChanged` events
-from a parsed-screen state actor, prompt-empty-gated and
-idle-gated delivery are unavailable. The message stays
-queued. Don't loosen the gate to be "permissive" while
-waiting for the events; the loosening would be a poll
-(re-check on each focus event, hope the prompt is still
-empty).
+Without `InputBufferChanged` events from
+`InputBufferActor`, input-buffer-gated delivery is
+unavailable. The message stays queued. Don't loosen the
+gate to be "permissive" while waiting for the events;
+the loosening would be a poll (re-check on each focus
+event, hope the input buffer is still empty).
 
 The fixture-first test plan in the report works for this:
-recorded screen states drive the gate's prompt/idle
-predicates before live screen parsing exists. But live
-delivery on a real harness waits for live events.
+recorded terminal output drives the gate's
+input-buffer predicate before live screen parsing exists.
+But live delivery on a real harness waits for live events.
 
 ### Q4 — `WaitingUnknown` manually dischargeable only?
 
@@ -230,19 +264,24 @@ In priority order:
    closes, `HarnessActor` emits `BindingLost(target)`. The
    router catches it and either rebinds (if a registry rule
    matches) or moves pending deliveries to expire-only state.
-4. **Collapse `HarnessActor` methods to one entry point.**
+4. **Define "input buffer empty" precisely.** Two predicates:
+   *(a) input buffer present?* and *(b) contains only prompt
+   chrome with no user characters?* Both true → empty.
+   Otherwise → not empty / unknown. Per-harness recognizer
+   in a closed `Harness` enum.
+5. **Collapse `HarnessActor` methods to one entry point.**
    `AttemptDelivery(message) -> Decision`.
-5. **Make subscription multiplicity explicit.** One sentence:
+6. **Make subscription multiplicity explicit.** One sentence:
    *one Niri IPC subscription is held while any focus-blocked
    delivery is pending; the subscription closes when the
    focus-blocked queue empties.*
-6. **Cross-reference report 12.** One sentence positioning
+7. **Cross-reference report 12.** One sentence positioning
    the Niri gate as the first slice of the broader
    push-primitive surface.
 
-(1)–(3) are the substantive design refinements. (4)–(6) are
-documentation tightening. All six fit in a single edit pass
-on the operator's report.
+(1)–(4) are the substantive design refinements. (5)–(7) are
+documentation tightening. All seven fit in a single edit
+pass on the operator's report.
 
 ---
 
