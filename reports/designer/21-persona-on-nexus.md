@@ -72,7 +72,7 @@ Concretely:
 
 - The same grammar speaks data, queries, mutations, retracts,
   validations, subscriptions, and replies.
-- A typed record `(Message "alice" "bob" "hi")` is a value AND
+- A typed record `(Message alice bob hi)` is a value AND
   an assert — the *position* of the expression (top-level on a
   connection) is what makes it a verb.
 - A pattern `(| Message @sender @recipient @body |)` is a
@@ -123,7 +123,7 @@ Here's what I invented and what each invention misses:
 | Invention | What it was | Why it was invention |
 |---|---|---|
 | Persona-specific verbs | `Send`, `Deliver`, `Defer`, `Discharge`, `Subscribe` enum variants in a `PersonaRequest` enum | These are *not* verbs at the protocol level; they are *state transitions on Delivery records*. `Send` = assert a Message; `Deliver` = assert a Delivery; `Defer` = mutate Delivery state; `Discharge` = retract Delivery. The universal verbs handle them. |
-| A custom CLI argv format | `message '(Send target=pi body=...)'` | This wasn't even valid nota — nota records are positional, no `field=value`. The right form was always `(Message "alice" "pi" "...")` — straight nexus. |
+| A custom CLI argv format | `message '(Send target=pi body=...)'` | This wasn't even valid nota — nota records are positional, no `field=value`. The right form was always `(Message alice pi "...")` — straight nexus. |
 | `signal-persona` owning Frame + handshake + auth | The base contract repo with envelope and verb enum | These belong upstream in `signal`. `signal-persona` is *layered* atop `signal`; it owns Persona's per-verb typed payloads (kinds), not the envelope. |
 | A custom Persona protocol-version + handshake | `PERSONA_PROTOCOL_VERSION` constant | signal already has `SIGNAL_PROTOCOL_VERSION` and handshake. Persona inherits both via the layered crate. |
 | Per-component subscription verbs | Custom `Subscribe` request types for each event source (focus, input-buffer, deadline) | nexus's `*(| pat |)` is the universal subscribe. Persona doesn't need per-source subscribe verbs; it patterns over the relevant record kind. |
@@ -141,15 +141,15 @@ Re-cast Persona's verbs as patterns over a record graph:
 
 | Original "verb" | Nexus expression | Meaning |
 |---|---|---|
-| `Send` a message | `(Message "alice" "bob" "send me status")` | Assert a Message record. The store assigns a slot. |
-| `Deliver` (router decides to push) | `(Delivery 100 "bob" Pending)` | Assert a Delivery for Message slot 100, target "bob", state Pending. |
+| `Send` a message | `(Message alice bob "send me status")` | Assert a Message record. The store assigns a slot. |
+| `Deliver` (router decides to push) | `(Delivery 100 bob Pending)` | Assert a Delivery for Message slot 100, target bob, state Pending. |
 | `Defer` (gate blocks) | `~(Delivery @slot @target (Deferred HumanFocus))` after a `(\| pat \|)` match | Mutate the Delivery's state field. |
 | `Discharge` (manual resolution) | `!(Delivery slot)` | Retract the Delivery. |
 | `Expire` (TTL fires) | `~(Delivery @slot @target Expired)` | Mutate to Expired. |
 | Subscribe to focus changes | `*(\| FocusObservation @target |)` | Stream FocusObservation records as they're asserted. |
-| Subscribe to pending deliveries for target X | `*(\| Delivery @messageSlot "X" Pending |)` | Stream Pending deliveries to X. |
+| Subscribe to pending deliveries for target bob | `*(\| Delivery @messageSlot bob Pending |)` | Stream Pending deliveries to bob. |
 | Query unresolved deliveries | `(\| Delivery @messageSlot @target @state |)` | Sequence of all matching Delivery records. |
-| Atomic delivery (rare; e.g. transactional message + binding update) | `[\| (Delivery 100 "bob" Pending) ~(Binding "bob" @endpoint) \|]` | Atomic batch. |
+| Atomic delivery (rare; e.g. transactional message + binding update) | `[\| (Delivery 100 bob Pending) ~(Binding bob @endpoint) \|]` | Atomic batch. |
 
 Every Persona-side operation lands as one of nexus's seven
 universal verbs over Persona's record kinds. The router's state
@@ -267,7 +267,7 @@ signal's. Nexus is the *human-facing* surface only.
 ### Sending a message from a CLI
 
 ```sh
-message '(Message "alice" "bob" "send me status")'
+message '(Message alice bob "send me status")'
 ```
 
 The `message` CLI is a thin wrapper around nexus-cli pointed at
@@ -279,14 +279,39 @@ this in response to a subscription, or could be the same client
 batched):
 
 ```sh
-message '(Delivery 100 "bob" Pending)'
+message '(Delivery 100 bob Pending)'
 ```
 
 Or both atomically:
 
 ```sh
-message '[| (Message "alice" "bob" "send me status") (Delivery 100 "bob" Pending) |]'
+message '[| (Message alice bob "send me status") (Delivery 100 bob Pending) |]'
 ```
+
+### Asserting can be refused — refusal is part of the protocol
+
+An assertion is a request that the system *accept* a record into
+the graph. The system replies at the same position with either
+`(Ok)` or `(Diagnostic …)`:
+
+```sh
+message '(Message alice unknown-target "anyone home?")'
+;; reply at the same position:
+;; (Diagnostic Refused (BindingNotFound unknown-target))
+```
+
+There is no separate `Reject` verb. Refusal is the protocol's
+built-in negative reply to an assert. The reasons are typed —
+`Diagnostic` carries level, code, site, and suggestions per
+signal's `Diagnostic` shape — so a client pattern-matches on
+the refusal cause instead of parsing strings.
+
+This is what makes the assertion model right for agent-to-agent
+messaging: the agent *requests* that the message be sent; the
+system either accepts the request (slot assigned, subscribers
+notified) or refuses with a typed reason (no binding, auth
+denied, body invalid, atomic-batch conflict, …). The agent
+reads the reply at the same connection position and reacts.
 
 ### The router's subscription loop
 
@@ -341,10 +366,10 @@ universal verbs over typed records.
 
 ```sh
 ;; All pending deliveries to bob
-nexus '(| Delivery @msgSlot "bob" Pending |)'
+nexus '(| Delivery @msgSlot bob Pending |)'
 
 ;; Stream focus changes for the responder harness
-nexus '*(| FocusObservation "responder" @focused |)'
+nexus '*(| FocusObservation responder @focused |)'
 
 ;; All bindings
 nexus '(| Binding @target @endpoint |)'
