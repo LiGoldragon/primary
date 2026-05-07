@@ -29,7 +29,7 @@ per-verb payloads, layered effect crates for narrow-audience verbs.
 
 ```mermaid
 flowchart TB
-    subgraph contract["persona-protocol"]
+    subgraph contract["persona-signal"]
         frame["Frame envelope"]
         hs["handshake + protocol version"]
         msg["message verbs<br/>(Send, Deliver, Defer, Discharge)"]
@@ -57,7 +57,7 @@ flowchart TB
 
 The split:
 
-- **Every component depends on `persona-protocol`.** Wire bytes
+- **Every component depends on `persona-signal`.** Wire bytes
   between any two components are rkyv archives of types from this
   crate.
 - **Only three components depend on `nota-codec`** (the human-
@@ -72,10 +72,10 @@ never the inter-component currency.
 
 ---
 
-## What `persona-protocol` owns
+## What `persona-signal` owns
 
 ```
-persona-protocol/
+persona-signal/
 ├── src/
 │   ├── lib.rs        — module entry + re-exports
 │   ├── frame.rs      — Frame envelope, encode/decode, FrameDecodeError
@@ -148,8 +148,8 @@ flowchart LR
     harness["interactive harness"]
 
     human -->|NOTA text| cli
-    cli -->|persona-protocol Frame| daemon
-    daemon -->|persona-protocol Frame| pre_harness
+    cli -->|persona-signal Frame| daemon
+    daemon -->|persona-signal Frame| pre_harness
     pre_harness -->|NOTA text projection| harness
 ```
 
@@ -157,7 +157,7 @@ NOTA appears at exactly two boundary points:
 
 1. **CLI input** — `message '(Send target=pi body=...)'`. The CLI
    parses the NOTA record into a typed `Send` request. The wire
-   bytes are then `persona-protocol::Frame`.
+   bytes are then `persona-signal::Frame`.
 2. **Harness terminal** — the pre-harness component projects the
    typed `Deliver` payload into NOTA bytes that get written to the
    harness's input region. The harness sees NOTA on its terminal;
@@ -177,17 +177,27 @@ Three reasonable names for the contract crate:
 
 | Name | Pros | Cons |
 |---|---|---|
-| `persona-protocol` | Direct; names what the crate is | Generic; doesn't reuse signal's vocabulary |
-| `persona-signal` | Reuses the workspace's "signal" naming convention; eases later integration with criome's signal | Implies the crate is a layered effect crate atop signal — which it isn't, today |
+| `persona-signal` | Marks family membership in the signal ecosystem; same Frame shape, framing, closed-enum discipline; naming today reflects the destination | Not literally layered atop signal yet; the marker anticipates the convergence rather than describing the present implementation |
+| `persona-protocol` | Direct; names what the crate is without family commitment | Generic; doesn't signal that Persona speaks signal-shaped wire by design |
 | `persona-wire` | Focused on the bytes | Less semantic; "wire" hints transport, not contract |
 
-**Recommendation: `persona-protocol`.** The Persona domain is its
-own protocol; the crate names what it is. If the eventual
-Persona/Criome convergence (named in operator report 9 + designer
-report 4) leads to Persona riding atop signal, the layered
-crates can be named `signal-persona` or `persona-protocol-signal`
-at that time. Pre-naming for a future convergence makes the
-present-day crate confusing; rename once convergence is real.
+**Recommendation: `persona-signal`.** Persona's wire follows the
+signal/criome conventions: the same `Frame` envelope shape, the
+same length-prefix framing, the same closed-enum-of-typed-payloads
+discipline. The `-signal` suffix marks family membership, not
+literal layering. The Criome ↔ Persona convergence (named in
+operator report 9 + designer report 4) is the explicit
+destination; naming today reflects that, not a hypothetical
+"someday." When the convergence becomes concrete,
+`persona-signal` either layers atop `signal` directly (becomes a
+layered effect crate sibling to `signal-forge` and `signal-arca`)
+or absorbs into a unified surface; the name carries through
+either way.
+
+The skill `~/primary/skills/contract-repo.md` §"Naming a contract
+repo" supports this: the `-signal` family-membership marker is
+the right default when the project follows the same wire
+conventions, even without literal layering today.
 
 ---
 
@@ -197,7 +207,7 @@ Two candidate layered crates show up in the Persona stack today.
 Neither is required at the start; both become the right answer if
 the layered-pattern indicators trigger.
 
-### `persona-protocol-niri` (or `persona-system-niri`)
+### `persona-signal-niri` (or `persona-system-niri`)
 
 **Audience:** `persona-system`'s Niri backend (sender of typed
 events) + `persona-router` (receiver). Narrow.
@@ -213,7 +223,7 @@ landing. Per operator report 9 §"System abstraction": *"first Niri
 backend lives here"* — keep it inline until the second backend is
 real.
 
-### `persona-protocol-harness-<adapter>` (e.g. -wezterm)
+### `persona-signal-harness-<adapter>` (e.g. -wezterm)
 
 **Audience:** `persona-wezterm` (sender of harness-adapter-specific
 events) + `persona-harness` (receiver).
@@ -229,11 +239,11 @@ above: split on second adapter.
 
 ```toml
 [package]
-name         = "persona-protocol"
+name         = "persona-signal"
 version      = "0.1.0"
 edition      = "2024"
 license      = "MIT OR Apache-2.0"
-repository   = "https://github.com/LiGoldragon/persona-protocol"
+repository   = "https://github.com/LiGoldragon/persona-signal"
 description  = "Persona binary contract: Frame envelope, handshake, per-verb typed payloads."
 
 [dependencies]
@@ -286,15 +296,15 @@ The contract repo lands as a precondition; insert it as **step 0**:
 
 ```mermaid
 flowchart TD
-    s0["Step 0: scaffold persona-protocol<br/>(Frame, handshake, message + router + system verbs)"]
-    s1["Step 1: persona-message uses persona-protocol on the wire"]
-    s2["Step 2: orchestrator command/result envelope = persona-protocol Frame"]
-    s3["Step 3: persona-store (renamed from persona-orchestrate) opens redb<br/>with persona-protocol records archived as values"]
-    s4["Step 4: persona-router reducer receives typed persona-protocol commands"]
-    s5["Step 5: redb storage uses persona-protocol records"]
-    s6["Step 6: persona-system Niri events emit persona-protocol SystemEvent"]
-    s7["Step 7: harness recognizers emit persona-protocol InputBufferChanged"]
-    s8["Step 8: live test routes through persona-protocol end-to-end"]
+    s0["Step 0: scaffold persona-signal<br/>(Frame, handshake, message + router + system verbs)"]
+    s1["Step 1: persona-message uses persona-signal on the wire"]
+    s2["Step 2: orchestrator command/result envelope = persona-signal Frame"]
+    s3["Step 3: persona-store (renamed from persona-orchestrate) opens redb<br/>with persona-signal records archived as values"]
+    s4["Step 4: persona-router reducer receives typed persona-signal commands"]
+    s5["Step 5: redb storage uses persona-signal records"]
+    s6["Step 6: persona-system Niri events emit persona-signal SystemEvent"]
+    s7["Step 7: harness recognizers emit persona-signal InputBufferChanged"]
+    s8["Step 8: live test routes through persona-signal end-to-end"]
 
     s0 --> s1
     s1 --> s2
@@ -313,7 +323,7 @@ the same crate; the wire format becomes a single edit per change.
 
 ---
 
-## Tests `persona-protocol` ships with
+## Tests `persona-signal` ships with
 
 Per `~/primary/skills/rust-discipline.md` §"Tests live in separate
 files" — every record kind gets a round-trip test in `tests/`:
@@ -338,12 +348,12 @@ network, no harness.
 
 | Decision | Recommendation |
 |---|---|
-| Crate name | `persona-protocol` |
+| Crate name | `persona-signal` |
 | Layered crate for Niri events now? | No — keep inline in `persona-system` until a second backend exists |
 | Layered crate for wezterm events now? | No — keep inline in `persona-wezterm` until a second adapter exists |
-| Does `persona-protocol` depend on `nota-codec`? | Only if record kinds use `NotaTransparent` derives; otherwise NOTA-free. Default: NOTA-free; consumers pull `nota-codec` separately at the boundary points. |
+| Does `persona-signal` depend on `nota-codec`? | Only if record kinds use `NotaTransparent` derives; otherwise NOTA-free. Default: NOTA-free; consumers pull `nota-codec` separately at the boundary points. |
 | Versioning rule pre-stable | Any change is coordinated upgrade; switch to major-exact / minor-forward when the surface stabilises |
-| When to introduce `persona-protocol-signal` (layered atop signal) | When the Criome ↔ Persona convergence makes the integration concrete, not before |
+| When to make `persona-signal` literally layered atop `signal` | When the Criome ↔ Persona convergence makes the integration concrete and the shared `Frame` / handshake / auth start to factor out. Today: standalone with the same wire conventions; convergence-ready by name. |
 
 ---
 

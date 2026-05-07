@@ -245,16 +245,29 @@ copies of the type *look* the same. Err early.
 The contract crate is the *protocol the components speak*.
 Patterns that work:
 
-- **`<system>-signal`** when the project follows the
-  signal/criome convention. Signal is the canonical name; if
-  another project's contract is **a layered crate atop
-  signal**, it can re-use signal's name structure
-  (`signal-forge`, `signal-arca`).
+- **`<project>-signal`** when the project speaks signal-shaped
+  wire — same `Frame` shape, same length-prefix framing, same
+  closed-enum-of-typed-payloads discipline as
+  `~/primary/repos/signal`. The `-signal` suffix marks family
+  membership, not literal layering: a `<project>-signal`
+  crate may be layered atop signal today (`signal-forge`,
+  `signal-arca`), or stand alone today on a path toward
+  convergence with the criome/signal ecosystem. The shared
+  name reflects shared design.
 - **`<project>-protocol`** or **`<project>-contract`** when
-  the project lives in its own ecosystem and doesn't sit on
-  top of signal. Names what it is.
+  the project lives in its own ecosystem with a deliberately
+  *different* wire shape from signal-family — different
+  framing, different envelope, no convergence intended.
+  Names what it is.
 - **`<project>-wire`** when the focus is on the bytes that
   travel; less semantically rich than -protocol, narrower.
+
+The `-signal` family-membership marker is the right default
+when the project follows the same wire conventions, even
+without literal layering today. Pre-naming for a future
+convergence is appropriate when the convergence is the
+explicit destination; pre-naming for a hypothetical
+convergence is not.
 
 Don't pick names that name the consumer (`<project>-types`,
 `<project>-shared`). The repo isn't a bag of utilities — it
