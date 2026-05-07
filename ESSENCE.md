@@ -74,6 +74,13 @@ decide what the underlying problem is; fix the underlying problem:
   aren't carrying their weight).
 - A long function with multiple responsibilities.
 
+This list is **open**. When a new anti-pattern shows up in the
+work, name it here. The discipline accumulates: every diagnostic
+reading we add is a class of bug we stop producing. Strict rules
+up front buy correct code by default — laborious at first, then
+the surface area of mistakes shrinks until the right shape is
+the only shape that fits.
+
 ---
 
 ## Naming — full English words
@@ -165,6 +172,15 @@ that do real work on data they don't carry is a free function in
 namespace clothing. The verb got attached to a fake noun. Step
 back; find the noun whose data the verbs read or write. That
 type may not exist yet — invent it.
+
+When a verb's noun is **stateful and lives across time**, the
+noun is an actor. Actors incentivize the right kind of thinking:
+the framework forces the component's state, message protocol,
+and lifecycle to be declared explicitly before any handler runs.
+"What does this actor own? What messages does it accept? Who
+supervises it?" — answering these is the load-bearing design
+work, made unavoidable by the shape of the framework. The same
+verb-belongs-to-noun rule, applied to behavior that persists.
 
 ---
 

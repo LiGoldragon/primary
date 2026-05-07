@@ -519,36 +519,63 @@ library crates with no concurrent state.
 
 ---
 
-## Persistent state — redb + rkyv
+## redb + rkyv — durable state and binary wire
 
-Persistent component state lives in **redb** (embedded
-key-value store) with **rkyv-archived** values. Use this
-combination as the default for any state that must
-survive a process restart — router queues, harness
-bindings, transition logs, lock state, transcripts,
+**redb** (embedded key-value store) holds component state
+that must survive a restart. **rkyv** (zero-copy archive
+format) is the binary contract between Rust components —
+both for the durable values inside redb and for the wire
+bytes that travel over IPC, sockets, and pipes between
+processes.
+
+This section is the *living* discipline for these two
+tools. It accumulates patterns and anti-patterns over
+time. When a new way of misusing redb or rkyv comes up,
+name it here so it stops reappearing. When a clean
+pattern gets validated, add it. The aim is correct code
+*by default*, with the surface area of bad patterns
+shrinking as the document grows.
+
+### What goes where
+
+The first decision when designing a boundary is: **what
+crosses it, and to whom does the other side answer?**
+
+| Boundary | Format | Why |
+|---|---|---|
+| In-process: actor ↔ actor, method ↔ method | typed Rust values | The type system is the schema. No serialization until something leaves the process. |
+| Process ↔ process: daemon ↔ harness, IPC, sockets, pipes between Rust components | **rkyv** archives | Zero-copy reads, content-addressable canonical bytes, bytecheck validation. The binary contract is the wire. |
+| Component ↔ disk: queues, transition logs, harness bindings, transcripts, snapshots | **redb** tables of rkyv values | Single embedded store, crash-consistent, snapshot reads, no separate server. |
+| Component ↔ human: CLI invocations, lock-file projections, debug prints, audit dumps | NOTA text projection | Human-readable + git-trackable; projected from the typed record, never the source of truth. |
+| Component ↔ legacy external system | the format the legacy demands | Adapters live at the edge. Internally, the component works in typed Rust; external bytes round-trip through one explicit codec at the boundary. |
+
+The rule: **rkyv is the binary contract for everything
+between Rust components.** NOTA is the projection format
+when the other side is a human. JSON / serde appears only
+at external boundaries that demand it (legacy APIs).
+
+### redb — the durable store
+
+Persistent component state lives in redb: router queues,
+harness bindings, transition logs, lock state in-process,
 anything the running component mutates and re-reads.
 
-The discipline:
-
-- **Persistent state lives in redb.** Not flat files, not
-  JSON, not bare blobs.
-- **Values are rkyv-archived.** Not serde-JSON, not
-  hand-rolled binary serialization. rkyv gives zero-copy
-  reads and content-addressable canonical bytes.
-- **NOTA stays the wire / projection / interchange
-  format**, not the storage format. NOTA-line files are
-  prototypes or human-facing projections; production
-  components use redb.
+- **Persistent state lives in redb.** Not flat files,
+  not JSON files, not bare blobs.
+- **Values are rkyv-archived bytes.** Not serde-JSON,
+  not hand-rolled binary, not text.
+- **One redb file per component.** Each component owns
+  its own database. No shared cross-component database.
 
 ```rust
-// Wrong — flat-file NOTA log as the durable store
+// Wrong — flat-file log as the durable store
 fn append_lock(path: &Path, lock: &Lock) -> Result<()> {
-    let line = lock.to_nota()?;
+    let line = lock.to_text()?;
     OpenOptions::new().append(true).open(path)?.write_all(line.as_bytes())?;
     Ok(())
 }
 
-// Right — typed records archived with rkyv, stored in redb
+// Right — typed record archived with rkyv, stored in redb
 const LOCKS: TableDefinition<&str, &[u8]> = TableDefinition::new("locks");
 
 let txn = self.db.begin_write()?;
@@ -560,27 +587,171 @@ let txn = self.db.begin_write()?;
 txn.commit()?;
 ```
 
+### rkyv — the binary contract on the wire
+
+When two Rust components talk across a process boundary
+— Unix domain socket, TCP, named pipe, message bus,
+mmap region — the bytes on the wire are rkyv archives.
+Both ends compile against the *same* rkyv feature set
+(see lore's `rust/rkyv.md`); they exchange `Archived<T>`
+for some shared frame type `T`; framing is a length
+prefix per archive.
+
+```rust
+// Wrong — JSON between Rust components
+let body = serde_json::to_vec(&request)?;
+stream.write_all(&body)?;
+
+// Wrong — ad-hoc binary
+stream.write_all(&request.id.to_le_bytes())?;
+stream.write_all(request.payload.as_bytes())?;
+
+// Right — rkyv frame, length-prefixed
+let archived = rkyv::to_bytes::<rancor::Error>(&request)?;
+stream.write_all(&(archived.len() as u32).to_be_bytes())?;
+stream.write_all(&archived)?;
+
+// Reader (zero-copy validate-on-receive)
+let archived = rkyv::access::<ArchivedRequest, rancor::Error>(&buf)?;
+let id = archived.id;        // direct read, no allocation
+```
+
+The wire schema *is* the framing. Both parties know the
+same `Frame` type; the bytes are `Archived<Frame>`. The
+discipline:
+
+- **One frame type per channel.** A socket between two
+  components carries one shared `Frame` enum; new
+  request kinds are new variants, not new channels.
+- **Same feature set both ends.** A crate that adds or
+  drops an rkyv feature (`little_endian`,
+  `pointer_width_32`, `unaligned`, `bytecheck`) breaks
+  archive compatibility silently. Pin the feature set
+  exactly per lore's `rust/rkyv.md`.
+- **Validate on receive.** Use `rkyv::access` (or
+  `from_bytes`) which runs bytecheck. Don't read fields
+  out of unvalidated buffers.
+- **Newtype the wire form.** `WirePath(Vec<u8>)` over
+  `PathBuf`; platform-dependent stdlib types don't
+  archive deterministically.
+- **No `serde_json` between Rust components, ever.**
+  JSON erases the schema; it appears only at external
+  boundaries that demand it.
+
+The Criome direction makes this concrete: the messaging
+substrate that lets Persona and Criome eventually merge
+is rkyv on the wire. That convergence works only because
+both sides agree on the same archive contract today.
+
+### NOTA — the human-facing projection
+
+NOTA is the project's text format. It is **not the wire
+between Rust components.** It is what a typed record
+*projects to* when a human, a CLI, or a git diff is on
+the other side.
+
+- A `Lock` record exists as a typed Rust value. It
+  archives to rkyv inside redb. It projects to NOTA
+  when written to a `<role>.lock` file. The text
+  projection is regenerated from the record; the record
+  is never reconstructed *from* the text by parsing
+  inside the daemon.
+- The CLI form `orchestrate '(ClaimScope ...)'` takes
+  one NOTA record on argv (so a human can type it) and
+  prints one NOTA record on stdout (so a human can read
+  it). Inside the binary, the value travels as typed
+  Rust.
+- Debug dumps, audit logs, error renderings — all NOTA
+  projections of typed records.
+
+The asymmetry: humans use NOTA, machines use rkyv. The
+codec at the boundary is `nota-codec`; it is the *only*
+text codec each crate ships. No second project-wide
+text format.
+
+### Patterns and anti-patterns
+
+This table is the accumulation surface — when a new
+shape comes up in review, add the row.
+
+#### Anti-patterns
+
+| Anti-pattern | What it looks like | Why it's wrong | Replace with |
+|---|---|---|---|
+| Flat-file log as durable state | Append-only `state.log` re-read on startup | No transactions, no atomic updates, parser races writer | redb table with rkyv values |
+| JSON between Rust components | `serde_json::to_vec` → socket | Schema erased; can't pattern-match on archive bytes; bytecheck unavailable | rkyv frame + length prefix |
+| Ad-hoc binary serialization | Hand-written `to_le_bytes` chains | No schema validation; subtle byte-order bugs; rewriting rkyv badly | rkyv archive |
+| NOTA text on the inter-component wire | Daemon ↔ daemon over UDS using NOTA records | NOTA is for human/CLI projection; using it inter-process means re-parsing canonical text in the hot path | rkyv frames; NOTA stays the CLI/lock-file form |
+| Storage actor as namespace | `StorageActor` that owns the redb handle and answers "store this" / "fetch that" for everyone | Verb-shaped; the actor owns *storing*, not domain data; each domain actor should own its tables | Each domain actor opens its own tables on the shared `Database` |
+| `Arc<Mutex<Database>>` shared across actors | Coarse lock around the whole DB | Defeats redb's transaction model; serializes all writers | One actor per logical data domain; pass values, not handles |
+| Reading a record from text in the daemon | `Lock::from_nota(disk_text)?` inside the running component | The text is a projection, not the source. Drift between in-memory and disk silently | Daemon owns the typed record; lock file is rewritten from the record |
+| Mixed feature set across crates | One crate has `unaligned`, another doesn't | Archives produced by one don't validate in the other; failure is silent (wrong values, not parse error) | Pin the exact rkyv feature string per lore |
+| Reordering struct fields casually | Renaming + reordering in one PR | rkyv archives change layout on field reorder within 0.8 — old data unreadable | Append-only fields; treat any layout change as a coordinated upgrade |
+| `anyhow` / `eyre` at component boundaries | `Result<T, anyhow::Error>` on a `pub fn` | Erases the typed-failure discipline; callers can't pattern-match | crate's own `Error` enum via thiserror |
+
+#### Validated patterns
+
+| Pattern | When to use | Notes |
+|---|---|---|
+| `TableDefinition<&str, &[u8]>` with rkyv-encoded value | Most component tables | Key shape is domain-typed (e.g. `RoleName`, `MessageId.as_str()`); value is rkyv bytes |
+| Single `Frame` enum per channel | Inter-component sockets | New variants for new requests; never a second channel for "the new thing" |
+| Length-prefixed framing | TCP / UDS streams | 4-byte big-endian length, then the archive |
+| `rkyv::access` on the read path | Hot-path reads where ownership isn't needed | Returns `&Archived<T>`; zero allocation |
+| Version-skew guard at boot | Any persisted store or long-lived socket | Known-slot record `(schema_version, wire_version)`; hard-fail on mismatch |
+| Sync façade on actor `State` | Tests for components that own redb + rkyv | Per lore's `rust/testing.md` |
+| Newtype around platform-fragile stdlib types | `PathBuf`, `OsString`, `SocketAddr` on the wire | `WirePath(Vec<u8>)` shape; deterministic across platforms |
+
 ### Named exceptions — text-on-disk that stays text
 
 The rule is about *state the component mutates and
-re-reads*. Some text-on-disk forms stay text by design and
-are not state in the redb sense:
+re-reads* and *bytes between Rust components*. Some
+text-on-disk forms stay text by design and are not state
+in the redb sense:
 
 - **Lock-file projections** (per
   `~/primary/protocols/orchestration.md`).
   `<role>.lock` files are human-readable + git-trackable
   text. The redb store is the in-process truth; the lock
-  file is the outward projection.
+  file is the outward projection regenerated from the
+  record.
 - **Configuration files.** `Cargo.toml`, `flake.nix`,
   per-repo configs. Inputs, not state.
 - **Reports and prose docs.** Markdown is markdown.
 - **Interchange artifacts.** A NOTA-line file shared
-  across components for one-shot ingestion is interchange,
-  not the running component's state.
+  across components for one-shot ingestion is
+  interchange, not the running component's state.
+- **Logs for human eyes.** A line-oriented audit log
+  intended for a human reading `tail -f` is a
+  projection. The structured log a component re-reads
+  on restart is not — that lives in redb.
 
 If a component owns the data and mutates it during
-operation, it lives in redb + rkyv. The named exceptions
-above don't satisfy "owns and mutates."
+operation, it lives in redb + rkyv. If a component
+sends bytes to another Rust component, those bytes are
+rkyv archives. The named exceptions above don't satisfy
+either condition.
+
+### Schema discipline
+
+rkyv archives are schema-fragile. Adding, removing, or
+reordering fields changes the archive layout. The
+disciplined consequences:
+
+- **No silent backward compatibility.** Old archives
+  don't read into new types and vice versa.
+- **Version-skew guard.** A known-slot record carrying
+  `(schema_version, wire_version)`, checked at boot.
+  Hard-fail on mismatch. rkyv's own version handling is
+  not enough.
+- **Treat schema changes as coordinated upgrades.** A
+  field reorder is a breaking change; a field addition
+  is too, in 0.8. Plan rollout across every consumer.
+
+For the tool-level details (the canonical feature set
+character-for-character, derive-alias pattern,
+encode/decode API, `bytecheck` semantics), see lore's
+`rust/rkyv.md`. This skill is *what discipline to apply*;
+lore is *how the tool works*.
 
 ### When to lift to a shared crate
 
@@ -592,13 +763,25 @@ warrant a shared helper crate.
 **Don't pre-abstract.** Each component uses redb + rkyv
 inline first; the shared shape becomes obvious after
 2–3 components have crystallized their patterns. The
-sema → criome path followed exactly this growth: shared
-shape became visible from real use, then extracted.
+sema → criome path followed exactly this growth:
+shared shape became visible from real use, then
+extracted.
 
-For the rkyv tool reference (cargo features, portable
-feature set, derive aliases, encode/decode API), see
-lore's `rust/rkyv.md`. This skill section is *when and why*;
-lore is *how the tool works*.
+### Why this discipline is strict
+
+The rules above feel laborious before the components are
+written. They are not laborious *while* the components
+are running: a typed wire makes wrong calls fail at
+compile time, a typed store makes wrong reads fail at
+boot time, and the projection-from-record discipline
+makes the disk and the in-memory truth impossible to
+disagree.
+
+Each entry in the anti-pattern table is a class of bug
+the workspace has either lived through or watched
+nearby. Each entry in the validated-pattern table is a
+shape that earned its place by surviving real use. The
+table grows; the work gets more correct as it grows.
 
 ---
 
