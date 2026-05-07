@@ -36,6 +36,7 @@ input.
 flowchart TB
     human["human"]
     desktop["future Persona desktop"]
+    signal["persona-signal"]
     message["persona-message"]
     router["persona-router"]
     system["persona-system"]
@@ -47,6 +48,11 @@ flowchart TB
     store[("redb + rkyv")]
 
     human --> desktop
+    signal --> message
+    signal --> router
+    signal --> system
+    signal --> harness
+    signal --> pstore
     desktop --> pstore
     message --> pstore
     pstore --> router
@@ -69,7 +75,8 @@ Current components and repository surfaces:
 
 | Component | Role |
 |---|---|
-| `persona-message` | message contract, `message` CLI, typed NOTA boundary |
+| `persona-signal` | planned contract crate: frame envelope, handshake, version, typed wire records; not yet a repo |
+| `persona-message` | `message` CLI, human-facing NOTA input, harness-facing NOTA projection |
 | `persona-router` | delivery reducer, subscriptions, actor routing, typed transition proposals |
 | `persona-system` | OS/window/input event contracts; first Niri backend lives here |
 | `persona-harness` | harness identity, lifecycle, transcript and input observers |
@@ -86,6 +93,79 @@ useful after the router can deliver safely and expose status.
 
 ---
 
+## Contract repo
+
+`persona-signal` is the missing contract crate. It owns the wire types every
+Persona daemon component speaks. Components exchange rkyv archives of
+`persona-signal` types; NOTA is only a boundary projection.
+
+```mermaid
+flowchart TB
+    signal["persona-signal"]
+    frame["Frame envelope"]
+    version["handshake + protocol version"]
+    request["Request enum"]
+    reply["Reply enum"]
+    records["MessageId / HarnessTarget / GateObservation"]
+    system_events["FocusChanged / WindowClosed / InputBufferChanged"]
+    delivery["DeliveryDecision / BlockReason"]
+
+    signal --> frame
+    signal --> version
+    signal --> request
+    signal --> reply
+    signal --> records
+    signal --> system_events
+    signal --> delivery
+```
+
+The crate owns:
+
+| Area | Examples |
+|---|---|
+| frame | `Frame { auth, body }`, length-prefixed binary encoding |
+| handshake | protocol version, compatibility result |
+| requests/replies | `Send`, `Deliver`, `Defer`, `Discharge`, `Subscribe`, `BindingLost` |
+| events | `FocusChanged`, `WindowClosed`, `InputBufferChanged`, `DeadlineExpired` |
+| records | `MessageId`, `HarnessTarget`, `HarnessBinding`, `GateObservation`, `SchemaVersion` |
+| auth | capability-token proof types for harness writes |
+
+It does not own daemons, actors, routing policy, Niri parsing, harness
+recognizers, or NOTA rendering.
+
+```mermaid
+flowchart LR
+    human["human"]
+    cli["message CLI"]
+    signal["persona-signal Frame"]
+    daemon["Persona daemon components"]
+    preharness["pre-harness projector"]
+    harness["interactive harness"]
+    nota["NOTA text"]
+
+    human -->|NOTA| cli
+    cli --> signal
+    signal --> daemon
+    daemon --> signal
+    signal --> preharness
+    preharness -->|NOTA| harness
+    nota -. projection only .-> cli
+    nota -. projection only .-> preharness
+```
+
+Only boundary components need `nota-codec`: the `message` CLI parses human
+input, audit/rendering surfaces project typed values for humans, and the final
+pre-harness delivery component renders the typed `Deliver` payload into NOTA
+bytes for the terminal. Router, system, harness, and store logic should trade in
+`persona-signal` values, not NOTA strings.
+
+The first contract repo should be standalone but signal-shaped: same
+length-prefix frame convention, closed enums of typed payloads, pinned rkyv
+feature set, and a protocol-version handshake. It can later layer directly on
+`signal` if the Criome/Persona convergence makes that shared surface concrete.
+
+---
+
 ## Layering
 
 The critical next step is a working delivery path:
@@ -94,6 +174,7 @@ The critical next step is a working delivery path:
 flowchart LR
     sender["agent or human client"]
     cli["message CLI"]
+    signal["persona-signal Frame"]
     pstore["StoreActor"]
     router["RouterActor"]
     target["HarnessActor"]
@@ -104,7 +185,8 @@ flowchart LR
     harness["interactive harness"]
 
     sender --> cli
-    cli --> pstore
+    cli --> signal
+    signal --> pstore
     pstore --> router
     router --> target
     target --> gate
@@ -531,8 +613,9 @@ delivery gate used for all harnesses.
 
 ```mermaid
 flowchart TD
+    contract["Step 0: scaffold persona-signal"]
     repos["component repos scaffolded"]
-    msg["stabilize persona-message daemon protocol"]
+    msg["persona-message uses persona-signal"]
     ids["daemon-owned short message IDs"]
     pstore["persona-store database owner"]
     skew["schema-version guard"]
@@ -544,7 +627,8 @@ flowchart TD
     live["live Pi/Codex/Claude routed test"]
     desktop["deferred Persona composer"]
 
-    repos --> msg
+    repos --> contract
+    contract --> msg
     msg --> ids
     ids --> pstore
     pstore --> skew
@@ -560,10 +644,14 @@ flowchart TD
 
 First concrete tasks:
 
+0. Scaffold `persona-signal`: frame envelope, handshake/version, message verbs,
+   router verbs, system events, harness records, delivery decisions, auth-proof
+   types, and schema-version record.
 1. Move `persona-message` from the NOTA-line prototype toward a
    store-backed route: the CLI submits to a Unix socket; the
    store stamps the ID and returns an accepted/delivered/queued result.
-2. Define the store command/result envelope. Use length-prefixed rkyv frames
+2. Define the store command/result envelope as `persona-signal::Frame`. Use
+   length-prefixed rkyv frames
    for local binary traffic: a 4-byte big-endian length followed by one rkyv
    archive of the channel's `Frame` type. Keep NOTA for harness text and audit
    projections.
@@ -586,6 +674,7 @@ First concrete tasks:
 
 ```mermaid
 flowchart LR
+    contract["persona-signal round-trip tests"]
     nota["NOTA examples"]
     daemon["daemon protocol tests"]
     pstore["persona-store tests"]
@@ -594,6 +683,8 @@ flowchart LR
     input["input-buffer fixture tests"]
     live["live visible harness test"]
 
+    contract --> nota
+    contract --> daemon
     nota --> daemon
     daemon --> pstore
     pstore --> reducer
@@ -605,6 +696,9 @@ flowchart LR
 
 | Test | Expected result |
 |---|---|
+| `persona-signal` frame round-trip | every `Request`, `Reply`, event, and record variant encodes and decodes |
+| `persona-signal` handshake | protocol-compatible handshakes accept; incompatible versions reject |
+| malformed frame bytes | bytecheck returns typed error, not panic |
 | CLI sends without ID | daemon assigns short ID |
 | CLI names unknown recipient | typed rejection |
 | target focused | message queued with `blocked_on_focus` |
