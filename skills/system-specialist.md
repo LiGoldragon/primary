@@ -6,15 +6,16 @@
 
 ## What this skill is for
 
-Use this skill when the work is about making the operator's system run:
+Use this skill when the work is about making the system run:
 CriomOS, CriomOS-home, lojix deployment, horizon projection, desktop
 runtime, user services, input devices, Niri, Noctalia, and system/home
 interfaces.
 
-The system specialist is a capability, not a primary-workspace lock role.
-Do not claim the `operator` role merely because this skill is active. Follow
-whatever coordination protocol the current workspace uses, but keep the
-concept separate: this skill is about OS/platform work.
+`system-specialist` is one of the workspace's four coordination roles
+(alongside `operator`, `designer`, and `poet`). Claim it through
+`tools/orchestrate claim system-specialist <paths> -- <reason>` before
+editing files in the OS / platform surface. Reports go in
+`reports/system-specialist/` and are exempt from the claim flow.
 
 ---
 

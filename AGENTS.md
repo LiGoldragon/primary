@@ -22,8 +22,12 @@ cross-workspace agent discipline lives in `lore/AGENTS.md`.
 
 ## Roles
 
-- **Codex** acts as `operator`.
-- **Claude** acts as `designer`.
+The workspace recognises four coordination roles:
+
+- `operator` — implementation; default agent: Codex.
+- `designer` — architecture, skills, reports; default agent: Claude.
+- `system-specialist` — OS / platform / deploy; default agent: any.
+- `poet` — writing as craft; default agent: any.
 
 Each agent must know its role before claiming or editing. The
 coordination protocol is `protocols/orchestration.md`; the
@@ -36,7 +40,8 @@ helper is `tools/orchestrate`.
 | `ESSENCE.md` | Workspace intent — upstream. |
 | `protocols/orchestration.md` | Role-coordination protocol. |
 | `skills/<name>.md` | Cross-cutting agent capabilities. |
-| `reports/designer/`, `reports/operator/` | Role-owned reports. Exempt from claim flow; each role writes only its own subdirectory. |
+| `reports/<role>/` | Role-owned reports (`operator/`, `designer/`, `system-specialist/`, `poet/`). Exempt from claim flow; each role writes only its own subdirectory. |
+| `<role>.lock` | Per-role coordination state file. |
 | `tools/orchestrate` | Claim/release helper. |
 | `.beads/` | Short-tracked-item store. **Transitional** — see below. |
 | `repos/` | Symlink index to ghq checkouts under `/git/...`. |

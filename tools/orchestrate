@@ -1,0 +1,217 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+workspace="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+ROLES=(operator designer system-specialist poet)
+
+usage() {
+  cat <<'EOF'
+Usage:
+  tools/orchestrate claim <role> <path> [more-paths] -- <reason>
+  tools/orchestrate release <role>
+  tools/orchestrate status
+
+Roles: operator, designer, system-specialist, poet
+EOF
+}
+
+valid_role() {
+  local candidate="$1"
+  local role
+  for role in "${ROLES[@]}"; do
+    [ "$role" = "$candidate" ] && return 0
+  done
+  return 1
+}
+
+lock_path() {
+  valid_role "$1" || { printf 'unknown role: %s\n' "$1" >&2; exit 64; }
+  printf '%s/%s.lock\n' "$workspace" "$1"
+}
+
+display_role() {
+  case "$1" in
+    operator) printf 'Operator\n' ;;
+    designer) printf 'Designer\n' ;;
+    system-specialist) printf 'System Specialist\n' ;;
+    poet) printf 'Poet\n' ;;
+    *) printf '%s\n' "$1" ;;
+  esac
+}
+
+default_agent() {
+  case "$1" in
+    operator) printf 'Codex\n' ;;
+    designer) printf 'Claude\n' ;;
+    *) printf '(unspecified)\n' ;;
+  esac
+}
+
+peer_roles() {
+  local role="$1"
+  local other
+  for other in "${ROLES[@]}"; do
+    [ "$other" != "$role" ] && printf '%s\n' "$other"
+  done
+}
+
+normal_path() {
+  case "$1" in
+    /*) realpath -m "$1" ;;
+    *) realpath -m "$PWD/$1" ;;
+  esac
+}
+
+write_lock() {
+  local role="$1"
+  local status="$2"
+  local reason="${3:-}"
+  shift 3 || true
+  local lock display agent ts
+  lock="$(lock_path "$role")"
+  display="$(display_role "$role")"
+  agent="$(default_agent "$role")"
+  ts="$(date -Is)"
+
+  {
+    printf '# %s Lock\n\n' "$display"
+    printf 'Owner: %s\n' "$role"
+    printf 'Agent: %s\n' "$agent"
+    printf 'Editable-by: %s\n' "$role"
+    printf 'Status: %s\n' "$status"
+    printf 'Updated-at: %s\n\n' "$ts"
+    printf 'Active scopes:\n'
+    if [ "$status" = active ] && [ "$#" -gt 0 ]; then
+      local scope
+      for scope in "$@"; do
+        printf -- '- %s — %s\n' "$(normal_path "$scope")" "$reason"
+      done
+    else
+      printf -- '- none\n'
+    fi
+    printf '\nNotes:\n'
+    printf -- '- Managed by the workspace Orchestration Protocol.\n'
+    printf -- '- Every lock write reads all role lock files and open BEADS tasks.\n'
+  } > "$lock"
+}
+
+active_scopes() {
+  local lock="$1"
+  [ -f "$lock" ] || return 0
+  grep -q '^Status: active$' "$lock" || return 0
+  awk '
+    $0 == "Active scopes:" { inside = 1; next }
+    inside && $0 == "Notes:" { exit }
+    inside && /^- / {
+      sub(/^- /, "")
+      sub(/[[:space:]]+—.*/, "")
+      if ($0 != "none") print
+    }
+  ' "$lock"
+}
+
+paths_overlap() {
+  local left right
+  left="$(normal_path "$1")"
+  right="$(normal_path "$2")"
+  [ "$left" = "$right" ] && return 0
+  [[ "$left" == "$right"/* ]] && return 0
+  [[ "$right" == "$left"/* ]] && return 0
+  return 1
+}
+
+print_state() {
+  local role lock
+  for role in "${ROLES[@]}"; do
+    lock="$(lock_path "$role")"
+    printf -- '--- %s.lock ---\n' "$role"
+    if [ -f "$lock" ]; then
+      sed -n '1,180p' "$lock"
+    else
+      printf '%s\n' '(absent)'
+    fi
+  done
+  printf '%s\n' '--- open beads ---'
+  if [ -d "$workspace/.beads" ]; then
+    (cd "$workspace" && bd --readonly list --status open --flat --no-pager --limit 20) \
+      || printf '%s\n' 'BEADS open-task check failed.'
+  else
+    printf '%s\n' 'No BEADS database found.'
+  fi
+}
+
+claim() {
+  local role="$1"
+  shift
+  valid_role "$role" || { usage >&2; exit 64; }
+  local scopes=()
+  local reason='claimed work'
+  while [ "$#" -gt 0 ]; do
+    if [ "$1" = "--" ]; then
+      shift
+      reason="${*:-claimed work}"
+      break
+    fi
+    scopes+=("$1")
+    shift
+  done
+  if [ "${#scopes[@]}" -eq 0 ]; then
+    usage >&2
+    exit 64
+  fi
+
+  write_lock "$role" active "$reason" "${scopes[@]}"
+  print_state
+
+  local peer peer_lock peer_scope own_scope conflict=0
+  while IFS= read -r peer; do
+    peer_lock="$(lock_path "$peer")"
+    while IFS= read -r peer_scope; do
+      for own_scope in "${scopes[@]}"; do
+        if paths_overlap "$own_scope" "$peer_scope"; then
+          printf 'Conflict: %s overlaps %s (held by %s)\n' \
+            "$(normal_path "$own_scope")" "$peer_scope" "$peer" >&2
+          conflict=1
+        fi
+      done
+    done < <(active_scopes "$peer_lock")
+  done < <(peer_roles "$role")
+
+  if [ "$conflict" -ne 0 ]; then
+    write_lock "$role" idle
+    printf '%s\n' 'Claim cleared because of overlap.'
+    print_state
+    exit 2
+  fi
+}
+
+release() {
+  local role="$1"
+  valid_role "$role" || { usage >&2; exit 64; }
+  write_lock "$role" idle
+  print_state
+}
+
+case "${1:-}" in
+  claim)
+    shift
+    [ "$#" -ge 2 ] || { usage >&2; exit 64; }
+    claim "$@"
+    ;;
+  release)
+    shift
+    [ "$#" -eq 1 ] || { usage >&2; exit 64; }
+    release "$1"
+    ;;
+  status)
+    print_state
+    ;;
+  -h|--help|help|'')
+    usage
+    ;;
+  *)
+    usage >&2
+    exit 64
+    ;;
+esac

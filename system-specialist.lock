@@ -1,10 +1,10 @@
-# Designer Lock
+# System Specialist Lock
 
-Owner: designer
-Agent: Claude
-Editable-by: designer
+Owner: system-specialist
+Agent: (unspecified)
+Editable-by: system-specialist
 Status: idle
-Updated-at: 2026-05-07T12:42:44+02:00
+Updated-at: 2026-05-07T12:39:31+02:00
 
 Active scopes:
 - none
