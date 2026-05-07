@@ -97,9 +97,9 @@ highest-numbered report already in the role's subdirectory.
 
 Examples for `reports/designer/`:
 
-- `1-skills-bootstrap-status.md`
-- `2-persona-audit.md`
+- `4-persona-messaging-design.md`
 - `12-no-polling-delivery-design.md`
+- `13-niri-input-gate-audit.md`
 
 To find the next number:
 

@@ -914,7 +914,6 @@ land.
 - operator's `persona/reports/2026-05-06-persona-core-state-machine.md`
 - operator's `~/primary/reports/operator/1-persona-core-state-pass.md`
 - operator's `~/primary/reports/operator/2-terminal-harness-control-research.md`
-- this designer's `~/primary/reports/designer/2-persona-audit.md`
 - `~/primary/reports/1-gas-city-fiasco.md`
 - nota's `README.md` — grammar spec
 - `lojix-cli/src/request.rs` — canonical "Nota as the CLI surface" example

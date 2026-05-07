@@ -4,13 +4,12 @@ Date: 2026-05-07
 Author: Claude (designer)
 
 A design for Persona's message-delivery substrate that
-contains **no polling anywhere**. Builds directly on the
-operator's
-`reports/operator/6-prompt-empty-delivery-gate-design.md`
-and the audit
-`reports/designer/11-persona-message-state-and-gate-audit.md`,
-both of which surfaced four polling-shaped residuals in the
-gate design plus one inside `persona-message` itself.
+contains **no polling anywhere**. Names the push primitives
+required, the deferral discipline when they're missing, and
+the single acceptable timer carve-out (TTL via OS-pushed
+deadlines). Operator's `reports/operator/7-minimal-niri-input-gate.md`
+is the current implementation slice that applies this design
+to a Niri-only first cut.
 
 The principle is `skills/push-not-pull.md` taken literally:
 *polling is wrong, always*; producers expose subscription
@@ -793,10 +792,8 @@ implementation as it grows.
 
 ## 15. See also
 
-- `reports/operator/6-prompt-empty-delivery-gate-design.md`
-  — the gate design this report extends.
-- `reports/designer/11-persona-message-state-and-gate-audit.md`
-  — the audit that surfaced the four polling residuals.
+- `reports/operator/7-minimal-niri-input-gate.md` — the
+  current implementation slice; Niri-only first cut.
 - `reports/designer/4-persona-messaging-design.md`
   — the full reducer-based fabric design; this report's
   router is a stepping stone toward that design's reducer.
