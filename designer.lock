@@ -3,11 +3,12 @@
 Owner: designer
 Agent: Claude
 Editable-by: designer
-Status: idle
-Updated-at: 2026-05-07T12:42:44+02:00
+Status: active
+Updated-at: 2026-05-07T13:17:06+02:00
 
 Active scopes:
-- none
+- /home/li/primary/ESSENCE.md — polling forbidden — strengthen ESSENCE, simplify skill to point at it
+- /home/li/primary/skills/push-not-pull.md — polling forbidden — strengthen ESSENCE, simplify skill to point at it
 
 Notes:
 - Managed by the workspace Orchestration Protocol.

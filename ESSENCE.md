@@ -168,33 +168,89 @@ type may not exist yet — invent it.
 
 ---
 
-## Push, never pull
+## Polling is forbidden
 
-When a system has a producer of state and a consumer of changes,
-the producer **pushes** updates to the consumer; the consumer
-does **not poll** the producer.
+When a system needs information from another system, that
+information arrives by **subscription**, not by repeated
+asking. The producer pushes; the consumer subscribes; the
+information flows when there is information to flow.
 
-**Polling is wrong. Always.**
+**Polling — repeatedly asking "did anything change?" on a
+clock — is forbidden.** Not "discouraged." Not "avoid where
+practical." Forbidden.
 
-Polling burns latency (worst-case latency *N* between event and
-reaction, for a poll interval *N*). Polling burns work (most
-polls are no-ops). Polling encodes the consumer's pacing into the
-producer's protocol. Polling fakes change-detection (two
-consecutive snapshots being identical doesn't mean nothing
-happened — only nothing visible to the consumer's projection).
+The mental image: polling is the partner who keeps texting
+when there's been no answer. The lack of an answer is the
+answer. Sending again every N seconds doesn't change the
+state of the world; it adds noise to it. Real systems
+behave the same way. When a producer has nothing to say,
+the right thing is to wait until it does. Asking
+repeatedly is harassment, not communication.
 
-Producers expose a subscription primitive: register a callback,
-open a stream, accept a long-lived RPC. Consumers subscribe once
-and receive events indefinitely.
+Why polling is the wrong shape:
 
-If the producer cannot yet push (the subscription primitive is
-not built), the consumer **defers its real-time feature** rather
-than fall back to polling. A poll "for now" never gets removed.
+- **Latency.** Worst-case latency *N* between event and
+  reaction, for a poll interval *N*.
+- **Resource burn.** Most polls are no-ops; the work is
+  wasted before the loop body runs. Systems that poll
+  degrade under no real load.
+- **Fake change-detection.** Two consecutive snapshots
+  being identical doesn't mean nothing happened — only
+  nothing visible to the consumer's projection.
+- **Pacing leak.** Polling encodes the consumer's pacing
+  into the producer's protocol.
+- **Pattern lock-in.** Once polling is in a codebase,
+  agents (human and LLM) reach for it again. Forbidding
+  it once stops the multiplication.
 
-Two narrow shapes that look like polling but aren't:
-transport-layer reachability probes (asking "are you alive," not
-"what changed"), and backpressure-aware pacing where the consumer
-drains its own buffer at its own rate. Default to push.
+Producers expose a **subscription primitive** — register a
+callback, open a stream, accept a long-lived RPC, watch a
+file via inotify, hold a Unix socket. Consumers subscribe
+once and receive events indefinitely.
+
+### When the producer can't push yet
+
+If the producer cannot yet push, the dependent feature
+**defers** rather than falls back to polling. A poll "for
+now" never gets removed.
+
+The right response is to sit down and figure out *why* the
+producer can't push, and either:
+
+- Build the subscription primitive in the producer.
+- Replace the producer with one that can push.
+- Accept that the dependent feature waits until push lands.
+
+If none of these resolve the case at hand, **escalate** —
+to the next level of design responsibility, and ultimately
+to the human. **Until a named rule exists for a specific
+class of "can't push" cases, that class escalates rather
+than falls back to polling.**
+
+Escalation is the correct outcome when no push answer is
+found. It is not a failure mode; it is the discipline
+working. The wrong outcome — falling back to a poll — is
+never the answer.
+
+### Named carve-outs — explicit, narrow
+
+Three patterns look polling-shaped but aren't, because the
+contract isn't "what changed?":
+
+- **Reachability probes.** "Is service X alive?" is
+  transport-layer reachability, not state-change detection.
+  The contract is "are you alive," not "what changed."
+- **Backpressure-aware pacing.** A consumer drains its own
+  buffer at its own rate; the producer still pushes. This
+  is flow control.
+- **Deadline-driven OS timers.** A `timerfd` or equivalent
+  fires when a wall-clock deadline arrives; the kernel
+  pushes the wake. Used for TTLs, expirations, scheduled
+  actions. The contract is "wake me at this deadline," not
+  "tell me what changed."
+
+These three are the complete list. Anything else that
+looks polling-shaped is polling — escalate.
 
 ---
 
