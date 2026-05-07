@@ -43,6 +43,20 @@ channel; nothing in the actor model requires polling. In
 databases with change feeds, subscribe to the feed. In UIs
 over a backing store, the store emits change events.
 
+## Subscription contract
+
+Every push subscription emits the producer's current state
+when the consumer connects, then emits deltas after that.
+The consumer must not perform a separate "what is it now?"
+query or poll to seed itself.
+
+This initial event is part of the producer contract. Without
+it, a consumer can subscribe after a state already exists and
+then wait forever for a change that never comes. "Subscribe,
+receive current state, then receive changes" is the standard
+shape for focus state, input-buffer state, message tails, and
+any other stateful stream.
+
 ---
 
 ## When the producer can't push — the escalation rule
