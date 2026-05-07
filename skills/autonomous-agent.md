@@ -58,9 +58,9 @@ the standing rule — blanket authorization, no asking required.
 The full procedure (logical-commit grouping, the canonical
 one-liner, the standard fixes for HTTPS push failure /
 divergence / uncommitted state / repos missing `.jj/`) lives in
-this workspace's `skills/version-control.md`.
+this workspace's `skills/jj.md`.
 
-If a VCS obstacle blocks you and the version-control skill
+If a VCS obstacle blocks you and the jj skill
 doesn't already name the fix, surface it instead of inventing
 one — that's how the skill grows.
 
@@ -77,6 +77,34 @@ nix run nixpkgs#<package> -- <args>
 Don't reach for `cargo install`, `pip install`, `npm install -g`,
 or distro package managers. The setup is Nix-managed end-to-end;
 out-of-Nix installs pollute and break reproducibility.
+
+### A stateful or custom test command is becoming part of the work
+
+Symptom: while debugging a feature, you keep running a long
+command by hand — for example an ignored integration test, a
+real-harness test, a WezTerm capture experiment, or a stateful
+script that depends on local authentication.
+
+Fix: turn the command into a named repo script and expose it
+through the repo's flake.
+
+Good pattern:
+
+```
+scripts/test-actual-thing
+nix run .#test-actual-thing
+```
+
+The script may still run stateful commands such as `cargo test`
+against the working tree. The point is not to force everything
+into a pure derivation; the point is to document the command,
+its environment variables, and its setup in versioned repo
+files. Iteration becomes: edit the script, run the named Nix
+command, inspect output, repeat.
+
+If a one-off debug command teaches you something useful, either
+keep the script with a clear `debug-*` name or fold it into the
+real test script before finishing.
 
 ### A doc references a removed/renamed thing
 

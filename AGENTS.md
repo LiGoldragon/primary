@@ -11,7 +11,7 @@ cross-workspace agent discipline lives in `lore/AGENTS.md`.
    shim pattern, per-repo `ARCHITECTURE.md`, documentation
    layers, beauty-as-criterion, verb-belongs-to-noun, push-not-
    poll, naming, design reports as visuals, parallel-tool-result
-   verification, version control via `skills/version-control.md`.
+   verification, version control via `skills/jj.md`.
 3. **`protocols/orchestration.md`** — how operator and designer
    share this workspace.
 4. **The relevant `skills/<name>.md`** — start with

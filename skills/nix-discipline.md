@@ -270,7 +270,7 @@ should name what changed
   flake layout for Rust crates.
 - lore's `rust/testing.md` — `nix flake check` as the test
   runner; `CARGO_BIN_EXE_*` for two-process integration tests.
-- this workspace's `skills/version-control.md` — push before
+- this workspace's `skills/jj.md` — push before
   building (so the input is reachable from the lock).
 - this workspace's `skills/skill-editor.md` — how skills are
   written and cross-referenced.
