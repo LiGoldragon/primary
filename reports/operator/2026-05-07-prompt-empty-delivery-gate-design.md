@@ -338,6 +338,144 @@ make this visible:
 (Accepted message deferred "pane focused")
 ```
 
+## Router, not just daemon
+
+The component currently called `message-daemon` is becoming the router. That is
+the better name because the work is no longer just "append a message":
+
+```mermaid
+flowchart TB
+    router[router]
+    log[(typed event/message log)]
+    actors[HarnessActor registry]
+    desktop[DesktopEventSource]
+    timers[retry timers]
+    probes[delivery probes]
+    endpoints[endpoint adapters]
+
+    router <--> log
+    router <--> actors
+    router <--> desktop
+    router <--> timers
+    router --> probes
+    probes --> endpoints
+```
+
+The router should probably become its own repository once it owns:
+
+- pending delivery state;
+- harness actor lifecycles;
+- desktop/window subscriptions;
+- typed route decisions;
+- policy for noisy event sources;
+- retries and deferred queues.
+
+`persona-message` can remain the contract crate and CLI for typed messages.
+`persona-router` can own runtime routing.
+
+## Event-driven focus wake
+
+The router must not poll the desktop constantly. The focused-pane case wants an
+edge-triggered subscription:
+
+```mermaid
+sequenceDiagram
+    participant R as router
+    participant H as HarnessActor
+    participant P as PromptProbe
+    participant W as DesktopEventSource
+    participant E as Endpoint
+
+    R->>H: attempt delivery
+    H->>P: probe target
+    P-->>H: Defer(focused)
+    H-->>R: pending: blocked_on_focus
+    R->>W: subscribe target window/pane focus changes
+    W-->>R: focus changed away from target
+    R->>H: retry pending delivery
+    H->>P: probe target again
+    alt empty + unfocused + not busy
+        P-->>H: SafeToSubmit
+        H->>E: terminal fallback submit
+    else still unsafe
+        P-->>H: Defer(reason)
+        H-->>R: keep pending
+    end
+```
+
+The subscription is conditional. The router subscribes when a pending delivery
+is blocked by focus, and it can unsubscribe when:
+
+- the pending queue for that target is empty;
+- the target becomes headless or detached;
+- the target process exits;
+- a native adapter replaces terminal fallback delivery.
+
+This keeps desktop integration quiet. The router does not need every focus
+event forever; it needs a wake signal for pending work.
+
+### Desktop event sources
+
+```text
+DesktopEventSource =
+  WezTermEventSource
+  X11EventSource
+  SwayEventSource
+  HyprlandEventSource
+  PollingFallback
+```
+
+Preferred local order:
+
+1. WezTerm pane state if the harness is in a WezTerm-managed pane.
+2. WM/compositor event stream if available.
+3. Slow polling fallback only while a message is pending.
+
+The implementation should normalize all sources into one event:
+
+```nota
+(FocusChanged target focused)
+```
+
+or a richer internal Rust enum:
+
+```rust
+DesktopEvent::FocusChanged {
+    target: HarnessTarget,
+    focused: bool,
+}
+```
+
+### Noise control
+
+Desktop focus can be noisy. The router should debounce:
+
+```text
+focus event
+  -> wait 30-75 ms
+  -> collect current pane/window state
+  -> run the full gate once
+```
+
+It should not try to deliver from inside the WM event callback. The event only
+invalidates the previous blocked reason.
+
+### Block reasons as subscriptions
+
+Every deferred delivery should record a typed block reason:
+
+```mermaid
+flowchart LR
+    focused[blocked_on_focus] --> focusSub[subscribe focus changed]
+    nonempty[blocked_on_non_empty_prompt] --> inputSub[subscribe screen/input changed]
+    busy[blocked_on_busy] --> idleSub[subscribe idle/screen changed]
+    unknown[blocked_on_unknown] --> timer[timer retry with backoff]
+```
+
+For now, focus is the cleanest event. Prompt-empty and busy-state changes are
+usually screen/output changes; those may come from the harness node itself
+rather than the window manager.
+
 ## Implementation plan
 
 ### Phase 1: make unsafe explicit
@@ -378,7 +516,7 @@ In `persona-message`:
 
 ### Phase 4: WM plugins
 
-Add optional focus probes:
+Add optional focus probes and event sources:
 
 - X11 `xdotool` if present.
 - Sway `swaymsg`.
@@ -387,7 +525,17 @@ Add optional focus probes:
 These are advisory guards. WezTerm pane state remains the default because it is
 available through the chosen harness substrate.
 
-### Phase 5: native adapters
+### Phase 5: split runtime router
+
+Create `persona-router` when routing state outgrows the `message` CLI:
+
+- move `message-daemon` runtime into router;
+- keep message schema/CLI contract in `persona-message`;
+- add `HarnessActor` and `DesktopEventSource` actors;
+- persist pending deliveries in the router log/state;
+- expose route decisions for audit.
+
+### Phase 6: native adapters
 
 The real long-term path:
 
@@ -446,4 +594,3 @@ The most important policy rule:
   <https://manpages.debian.org/bookworm/xdotool/xdotool.1.en.html>
 - Sway can expose focused window info through `swaymsg -t get_tree`:
   <https://unix.stackexchange.com/questions/443548/get-pid-of-focused-window-in-wayland>
-
