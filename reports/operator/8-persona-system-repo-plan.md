@@ -24,6 +24,7 @@ flowchart TB
     system[persona-system]
     niri[persona-system-niri]
     harness[persona-harness]
+    orchestrate[persona-orchestrate]
     storage[(redb + rkyv)]
 
     human --> desktop
@@ -32,6 +33,7 @@ flowchart TB
     router --> system
     system --> niri
     router --> harness
+    orchestrate --> storage
     message --> storage
     router --> storage
     harness --> storage
@@ -46,10 +48,11 @@ general portability experiment.
 |---|---|---|
 | `persona-message` | message contract, CLI surface, serialized message types | routing state, desktop focus, harness lifecycle |
 | `persona-router` | pending queues, delivery state machine, subscriptions, actors | message schema ownership, OS-specific focus APIs |
-| `persona-system` | generic OS/window/input traits and typed events | Niri-specific socket parsing |
-| `persona-system-niri` | Niri `$NIRI_SOCKET` event source, window binding backend | router policy |
+| `persona-system` | generic OS/window/input traits and typed events; first Niri backend may live here | router policy |
+| `persona-system-niri` | optional later split for Niri `$NIRI_SOCKET` backend once a second backend is concrete | generic system trait ownership |
 | `persona-harness` | harness identity, lifecycle, transcript/input observers | router queue policy |
 | `persona-desktop` | human composer, overview, audit UI | terminal injection policy |
+| `persona-orchestrate` | workspace coordination state engine: roles, scopes, handoff tasks | harness delivery routing |
 | `persona` | high-level integration and project-wide architecture | low-level component internals |
 
 This follows the workspace rule: when there is a real abstraction boundary,
@@ -86,6 +89,10 @@ Backends differ in support. The router does not compensate by polling. Missing
 support means the relevant delivery stays queued or the port exposes a weaker
 capability.
 
+The first implementation may keep the Niri backend inside `persona-system`.
+`persona-system-niri` becomes a separate repo when a second backend is concrete
+enough that the abstraction/backend split earns its own repository.
+
 ## Router state ownership
 
 ```mermaid
@@ -102,6 +109,22 @@ stateDiagram-v2
 `persona-router` owns this state machine. It receives typed messages from
 `persona-message`, system events from `persona-system`, and harness events from
 `persona-harness`. It writes durable transitions to redb.
+
+`persona-orchestrate` is a sibling state engine for workspace coordination, not
+the same engine. Both are plane reducers under a future unified Persona daemon:
+
+```mermaid
+flowchart LR
+    router[persona-router<br/>harness delivery plane]
+    orchestrate[persona-orchestrate<br/>workspace coordination plane]
+    daemon[future Persona daemon]
+
+    router -. absorbed later .-> daemon
+    orchestrate -. absorbed later .-> daemon
+```
+
+Both engines share the same discipline: typed commands, a pure reducer, pushed
+subscriptions, and redb + rkyv durable state.
 
 ## redb + rkyv everywhere
 
@@ -137,13 +160,11 @@ flowchart TB
     input[InputBufferActor]
     deadline[DeadlineActor]
     harness[HarnessActor]
-    store[StorageActor]
 
     router <--> focus
     router <--> input
     router <--> deadline
     router <--> harness
-    router <--> store
 ```
 
 The actor owns the data behind its verbs:
@@ -155,7 +176,11 @@ The actor owns the data behind its verbs:
 | `InputBufferActor` | parsed input-buffer observations |
 | `DeadlineActor` | OS-pushed TTL deadlines |
 | `HarnessActor` | endpoint and harness binding |
-| `StorageActor` | redb transactions |
+
+There is no `StorageActor`. A storage-only actor is verb-shaped: it owns
+"storing," not domain data. Each domain actor writes its own redb tables. If
+cross-table atomicity becomes load-bearing, introduce a typed transaction value
+or a narrower domain object rather than a generic storage dispatcher.
 
 ## Implementation order
 
@@ -164,7 +189,7 @@ flowchart TD
     report[design audit]
     message[stabilize persona-message contract]
     system[create persona-system]
-    niri[create persona-system-niri]
+    niri[Niri backend in persona-system]
     router[create persona-router]
     storage[wire redb + rkyv storage]
     live[live Niri gate test]
@@ -180,7 +205,7 @@ flowchart TD
 Recommended next move:
 
 1. Create `persona-system` with generic event/domain traits.
-2. Create `persona-system-niri` as the first backend.
+2. Put the first Niri backend in `persona-system`.
 3. Create `persona-router` for the delivery state machine.
 4. Move pending delivery storage away from NOTA-line files into redb + rkyv.
 5. Keep `persona-message` focused on the message contract and CLI.
@@ -191,7 +216,8 @@ Recommended next move:
 |---|---|
 | Is Niri a blocker? | No. Niri is the current OS substrate. Ports come later. |
 | Should `persona-router` be separate before coding? | Yes. Routing is a real abstraction level. |
-| Should `persona-system` exist before backend work? | Yes. It gives ports a target and keeps Niri-specific code isolated. |
+| Should `persona-system` exist before backend work? | Yes. It gives ports a target and bounds OS-facing responsibilities. |
+| Should `persona-system-niri` split immediately? | No. Keep Niri inside `persona-system` until a second backend is concrete. |
 | Should durable queues use NOTA record files? | No. Use redb + rkyv. |
 | Should Rust discipline document redb + rkyv as the storage default? | Yes. Create a designer task to add it. |
 
@@ -201,6 +227,4 @@ This report should be audited before code starts. The audit should check:
 
 - whether the repo split is too fine or exactly right;
 - whether `persona-system` is the right name for the OS abstraction;
-- whether redb + rkyv belongs directly in `persona-router` or behind a smaller
-  storage crate;
 - whether the actor boundaries match the data each actor owns.
