@@ -144,6 +144,12 @@ flowchart TB
 Unknown is unsafe. "Probably idle" is unsafe. A focused visible pane is unsafe,
 because a human can be composing text.
 
+The router never wakes itself up to check whether something changed. Every retry
+is caused by a producer event: a focus change, screen/input-region change,
+idle-state change, message append, endpoint close, or an OS deadline event for
+TTL expiry. If the relevant producer cannot push, the message stays pending
+until a push primitive exists, a human discharges it, or its TTL expires.
+
 ## Proposed components
 
 ```mermaid
@@ -331,25 +337,11 @@ t2 terminal submit writes message
 We can make the window small but not zero. The mitigation is policy:
 
 1. Never use this path for focused visible panes.
-2. Require a short stable interval: two empty observations, e.g. 50 ms apart.
-3. Send only to panes marked `agent-owned` or not currently focused.
-4. If the user focuses the pane during the interval, cancel.
-5. For truly shared panes, prefer inbox polling or native extension, not stdin.
-
-The "very fast check" is therefore:
-
-```text
-observe -> sleep 50ms -> observe again -> submit immediately
-```
-
-If either observation differs materially, defer.
-
-The stable interval is a workaround, not a new polling doctrine. The first
-snapshot is a reachability-style probe: "is this surface safe right now?" The
-second snapshot narrows the race window because we do not yet have a push event
-for "human started typing in this prompt region." When the harness node or
-WezTerm adapter can emit an input-region-changed event, the stable-interval
-check should retire.
+2. Send only to panes marked `agent-owned` or not currently focused.
+3. Require producer events for changes in focus, input-region occupancy, and
+   busy/idle state.
+4. For truly shared panes, prefer native extension delivery; terminal fallback
+   remains unavailable until its producer events exist.
 
 Cancellation also needs a precise meaning. Phase 2 should make the final focus
 and prompt-empty check the last operation before submit. There should be no work
@@ -359,6 +351,10 @@ write begins, there is no clean cancellation; this is why native adapters remain
 the destination. A later WezTerm Lua-side delivery could reduce this
 cross-process race by checking and writing inside WezTerm's event loop, but that
 is a later optimization, not the first implementation.
+
+There is no stable-interval resample. `sleep(50ms); observe_again` is polling.
+If the design wants to know that a human started typing, the harness daemon must
+emit `InputRegionChanged`; otherwise the message remains queued.
 
 ## Message lifecycle
 
@@ -406,14 +402,14 @@ flowchart TB
     log[(typed event/message log)]
     actors[HarnessActor registry]
     desktop[DesktopEventSource]
-    timers[retry timers]
+    deadline[TTL deadline source]
     probes[delivery probes]
     endpoints[endpoint adapters]
 
     router <--> log
     router <--> actors
     router <--> desktop
-    router <--> timers
+    router <--> deadline
     router --> probes
     probes --> endpoints
 ```
@@ -429,6 +425,10 @@ The router should probably become its own repository once it owns:
 
 `persona-message` can remain the contract crate and CLI for typed messages.
 `persona-router` can own runtime routing.
+
+`persona-router` is also transitional substrate on the path to the Persona
+reducer. It is the runtime sketch while the reducer contract is still forming;
+the reducer should eventually absorb the state-machine part of this router.
 
 ## Event-driven focus wake
 
@@ -479,14 +479,14 @@ DesktopEventSource =
   X11EventSource
   SwayEventSource
   HyprlandEventSource
-  PollingFallback
 ```
 
 Preferred local order:
 
 1. WezTerm pane state if the harness is in a WezTerm-managed pane.
 2. WM/compositor event stream if available.
-3. Slow polling fallback only while a message is pending.
+3. No fallback polling. If there is no event source, focus-gated delivery is
+   unavailable for that target.
 
 The implementation should normalize all sources into one event:
 
@@ -505,17 +505,11 @@ DesktopEvent::FocusChanged {
 
 ### Noise control
 
-Desktop focus can be noisy. The router should debounce:
-
-```text
-focus event
-  -> wait 30-75 ms
-  -> collect current pane/window state
-  -> run the full gate once
-```
-
-It should not try to deliver from inside the WM event callback. The event only
-invalidates the previous blocked reason.
+Desktop focus can be noisy, but the router should not debounce by sleeping. A
+focus event invalidates the previous block reason and schedules one gate attempt
+immediately in the router actor. If another focus event arrives, it schedules
+another attempt. Wake count follows event count; there is no wait-for-stability
+loop.
 
 ### Block reasons as subscriptions
 
@@ -526,18 +520,70 @@ flowchart LR
     focused[blocked_on_focus] --> focusSub[subscribe focus changed]
     nonempty[blocked_on_non_empty_prompt] --> inputSub[subscribe screen/input changed]
     busy[blocked_on_busy] --> idleSub[subscribe idle/screen changed]
-    unknown[blocked_on_unknown] --> timer[last-resort backoff]
+    unknown[blocked_on_unknown] --> hold[stay pending until event or TTL]
 ```
 
 For now, focus is the cleanest event. Prompt-empty and busy-state changes are
 usually screen/output changes; those may come from the harness node itself
 rather than the window manager.
 
-The retry loop should be event-driven by default. Timers are a last-resort
-backoff for unknown state or missing event sources, not the normal delivery
-engine. A harness node that already observes PTY output should push
-screen/idle/input-region changes to the router; the router then probes and
-attempts delivery once.
+The retry loop is event-driven. There is no timer backoff for unknown state or
+missing event sources. A harness node that already observes PTY output should
+push screen/idle/input-region changes to the router; the router then probes and
+attempts delivery once. If no event can resolve the block reason, the message
+stays pending until a real event arrives, a human discharges it, or TTL expires.
+
+## Push primitives
+
+Each block reason resolves through a producer-owned push primitive:
+
+| Block reason | Push primitive | Producer | Consumer |
+|---|---|---|---|
+| `blocked_on_focus` | `FocusChanged { target, focused: false }` | compositor or WezTerm focus hook | router |
+| `blocked_on_non_empty_prompt` | `InputRegionChanged { target, occupied: false }` | harness daemon parsed screen state | router |
+| `blocked_on_busy` | `IdleStateChanged { target, idle: true }` | harness daemon parsed screen state | router |
+| `blocked_on_unknown` | none | none | stays pending |
+| inbox/tail display | `MessageAppended { message }` | message router | subscriber |
+
+```mermaid
+flowchart LR
+    append[Message appended]
+    subscribers[message subscribers]
+    focus[FocusChanged]
+    screen[InputRegionChanged]
+    idle[IdleStateChanged]
+    router[router]
+
+    append --> subscribers
+    focus --> router
+    screen --> router
+    idle --> router
+```
+
+The current `MessageStore::tail()` shape should move from a 200ms file reread
+loop to a daemon/router subscription. A tail client connects once and receives
+`MessageAppended` records as the producer emits them.
+
+## TTL
+
+TTL is the only timer-shaped mechanism in this design, and it is not used for
+state-change detection. The router registers a per-message deadline with the
+operating system and receives one deadline event when it expires.
+
+```mermaid
+sequenceDiagram
+    participant R as router
+    participant T as OS deadline source
+    participant Q as pending queue
+
+    R->>Q: enqueue(message, ttl)
+    R->>T: register deadline
+    T-->>R: TtlExpired(message_id)
+    R->>Q: expire(message_id)
+```
+
+The TTL event bounds memory and stale pending work. It does not ask whether
+focus, prompt occupancy, or busy state changed.
 
 ## Implementation plan
 
@@ -582,8 +628,7 @@ In `persona-message`:
 - If safe, call terminal submit.
 - If unsafe/unknown, keep message queued and return `deferred`.
 - Add a retry loop owned by the actor, not by the CLI process.
-- Trigger retries from focus/screen/idle events when available; use timers only
-  as last-resort backoff.
+- Trigger retries only from focus/screen/idle events.
 - Make the final focus and prompt-empty check the last step before terminal
   submit.
 
@@ -606,6 +651,7 @@ Create `persona-router` when routing state outgrows the `message` CLI:
 - keep message schema/CLI contract in `persona-message`;
 - add `HarnessActor` and `DesktopEventSource` actors;
 - persist pending deliveries in the router log/state;
+- add TTL expiry through an OS deadline source;
 - expose route decisions for audit.
 
 ### Phase 6: native adapters
@@ -614,7 +660,7 @@ The real long-term path:
 
 - Pi extension/plugin first.
 - Codex/Claude native channels if any are discoverable.
-- Inbox-polling skill as a fallback that does not share stdin.
+- Inbox subscription as a fallback that does not share stdin.
 
 ## Test plan
 
@@ -647,7 +693,7 @@ Required tests:
 ## Recommendation
 
 Implement the gate, but treat it as a fallback with a warning label. The correct
-architecture remains native delivery or inbox polling. The gate exists because
+architecture remains native delivery or inbox subscription. The gate exists because
 some proprietary harnesses leave us no better transport today.
 
 The most important policy rule:
