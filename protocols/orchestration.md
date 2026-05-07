@@ -3,6 +3,7 @@
 The orchestration protocol coordinates autonomous agents sharing the same
 workspace. It combines role-owned lock files with the workspace BEADS task
 database so agents see both file ownership and open work before they edit.
+BEADS is shared coordination state, not a lockable scope.
 
 ## Roles
 
@@ -32,6 +33,10 @@ its own lock file.
 
 Each agent writes only its own lock file. The lock files are coordination
 records, not operating-system locks.
+
+`.beads/` is never claimed. Any agent may create, update, comment on, or close
+BEADS tasks at any time. A BEADS task is a shared work item, not a file-ownership
+claim.
 
 ## Claim Flow
 
@@ -95,9 +100,13 @@ Every lock write includes an open-task check. Agents should read the
 open-task list as part of deciding whether to continue, pick up a blocked
 item, or leave context for another agent.
 
-Do not run multiple BEADS commands in parallel from the same workspace. The
-embedded backend uses a local database lock; the orchestration helper is the
-single coordination read for claim/release checks.
+BEADS is not part of the claim/release surface. Agents do not claim `.beads/`
+before writing tasks, comments, state changes, or closures. If the current
+storage backend reports an exclusive database-lock error, treat that as
+transient backend contention only — not as another agent owning BEADS. Retry the
+BEADS command as the next natural action, or switch the workspace to a backend
+that supports concurrent access. Do not create an orchestration lock for
+`.beads/`.
 
 Useful direct commands:
 

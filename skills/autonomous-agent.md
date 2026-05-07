@@ -41,6 +41,13 @@ files, lists open BEADS tasks, and rejects overlapping active
 scopes. If the work cannot proceed, create a short BEADS task
 with the blocker and the next required action.
 
+BEADS is never claimed. Do not claim `.beads/` before creating
+or updating a task; any agent may write BEADS tasks at any time.
+If `bd` reports a backend database-lock error, treat it as
+transient storage contention, not ownership. Retry the BEADS
+operation as the next natural action or continue with a clear
+note if the task could not be recorded.
+
 ```
 bd create "Short task title" -t task -p 2 -d "Blocked because ..."
 ```

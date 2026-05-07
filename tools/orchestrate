@@ -121,6 +121,14 @@ paths_overlap() {
   return 1
 }
 
+beads_scope() {
+  local path
+  path="$(normal_path "$1")"
+  [ "$path" = "$workspace/.beads" ] && return 0
+  [[ "$path" == "$workspace/.beads"/* ]] && return 0
+  return 1
+}
+
 print_state() {
   local role lock
   for role in "${ROLES[@]}"; do
@@ -160,6 +168,15 @@ claim() {
     usage >&2
     exit 64
   fi
+
+  local scope
+  for scope in "${scopes[@]}"; do
+    if beads_scope "$scope"; then
+      printf '%s\n' 'BEADS is shared coordination state and is never claimed.' >&2
+      printf 'Remove %s from the claim; run bd commands directly.\n' "$(normal_path "$scope")" >&2
+      exit 64
+    fi
+  done
 
   write_lock "$role" active "$reason" "${scopes[@]}"
   print_state

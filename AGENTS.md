@@ -44,7 +44,7 @@ helper is `tools/orchestrate`.
 | `reports/<role>/` | Role-owned reports (`operator/`, `designer/`, `system-specialist/`, `poet/`). Exempt from claim flow; each role writes only its own subdirectory. |
 | `<role>.lock` | Per-role coordination state file. |
 | `tools/orchestrate` | Claim/release helper. |
-| `.beads/` | Short-tracked-item store. **Transitional** — see below. |
+| `.beads/` | Shared short-tracked-item store. Never claimed; any agent may write BEADS tasks at any time. **Transitional** — see below. |
 | `repos/` | Symlink index to ghq checkouts under `/git/...`. |
 | `RECENT-REPOSITORIES.md` | Active repo list + cutoff rule. |
 | `GOALS.md` | Standing high-level goals. |
@@ -74,3 +74,8 @@ write it to the right workspace file (per
 the design. Don't build a Persona↔bd bridge; don't deepen the bd
 investment. Use bd for short-tracked-item coordination today;
 design new shapes assuming bd goes away.
+
+BEADS is never an ownership lock. Do not claim `.beads/`.
+Any agent may create, update, comment on, or close BEADS tasks
+at any time. If the current backend reports a database lock,
+that is storage-engine contention, not coordination ownership.
