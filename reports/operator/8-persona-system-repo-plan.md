@@ -24,7 +24,7 @@ flowchart TB
     system[persona-system]
     niri[persona-system-niri]
     harness[persona-harness]
-    storage[(EDB: redb + rkyv)]
+    storage[(redb + rkyv)]
 
     human --> desktop
     desktop --> router
@@ -101,15 +101,11 @@ stateDiagram-v2
 
 `persona-router` owns this state machine. It receives typed messages from
 `persona-message`, system events from `persona-system`, and harness events from
-`persona-harness`. It writes durable transitions to EDB.
+`persona-harness`. It writes durable transitions to redb.
 
-## EDB everywhere
+## redb + rkyv everywhere
 
-The durable state direction is:
-
-```text
-EDB = redb tables + rkyv-archived records
-```
+The durable state direction is **redb tables with rkyv-archived records**.
 
 NOTA remains a human-facing and harness-facing text format where useful. It is
 not the durable state store for router queues, harness bindings, transcripts,
@@ -127,9 +123,8 @@ flowchart LR
 ```
 
 The rule should become part of Rust discipline: persistent component state is
-typed, archived with rkyv, and stored in redb through EDB-shaped APIs. Flat
-NOTA record files are prototypes or interchange artifacts, not the steady
-state.
+typed, archived with rkyv, and stored in redb. Flat NOTA record files are
+prototypes or interchange artifacts, not the steady state.
 
 ## Actor library
 
@@ -160,7 +155,7 @@ The actor owns the data behind its verbs:
 | `InputBufferActor` | parsed input-buffer observations |
 | `DeadlineActor` | OS-pushed TTL deadlines |
 | `HarnessActor` | endpoint and harness binding |
-| `StorageActor` | EDB transactions |
+| `StorageActor` | redb transactions |
 
 ## Implementation order
 
@@ -171,15 +166,15 @@ flowchart TD
     system[create persona-system]
     niri[create persona-system-niri]
     router[create persona-router]
-    edb[wire EDB storage]
+    storage[wire redb + rkyv storage]
     live[live Niri gate test]
 
     report --> message
     message --> system
     system --> niri
     niri --> router
-    router --> edb
-    edb --> live
+    router --> storage
+    storage --> live
 ```
 
 Recommended next move:
@@ -187,7 +182,7 @@ Recommended next move:
 1. Create `persona-system` with generic event/domain traits.
 2. Create `persona-system-niri` as the first backend.
 3. Create `persona-router` for the delivery state machine.
-4. Move pending delivery storage away from NOTA-line files into EDB.
+4. Move pending delivery storage away from NOTA-line files into redb + rkyv.
 5. Keep `persona-message` focused on the message contract and CLI.
 
 ## Decisions for the user
@@ -197,8 +192,8 @@ Recommended next move:
 | Is Niri a blocker? | No. Niri is the current OS substrate. Ports come later. |
 | Should `persona-router` be separate before coding? | Yes. Routing is a real abstraction level. |
 | Should `persona-system` exist before backend work? | Yes. It gives ports a target and keeps Niri-specific code isolated. |
-| Should durable queues use NOTA record files? | No. Use EDB: redb + rkyv. |
-| Should Rust discipline document EDB as the storage default? | Yes. Create a designer task to add it. |
+| Should durable queues use NOTA record files? | No. Use redb + rkyv. |
+| Should Rust discipline document redb + rkyv as the storage default? | Yes. Create a designer task to add it. |
 
 ## Audit request
 
@@ -206,6 +201,6 @@ This report should be audited before code starts. The audit should check:
 
 - whether the repo split is too fine or exactly right;
 - whether `persona-system` is the right name for the OS abstraction;
-- whether EDB belongs directly in `persona-router` or behind a smaller storage
-  crate;
+- whether redb + rkyv belongs directly in `persona-router` or behind a smaller
+  storage crate;
 - whether the actor boundaries match the data each actor owns.

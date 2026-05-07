@@ -519,15 +519,14 @@ library crates with no concurrent state.
 
 ---
 
-## Persistent state — redb + rkyv (the EDB pattern)
+## Persistent state — redb + rkyv
 
 Persistent component state lives in **redb** (embedded
-key-value store) with **rkyv-archived** values. The
-combination is the workspace's "EDB" pattern. Use it as
-the default for any state that must survive a process
-restart — router queues, harness bindings, transition
-logs, lock state, transcripts, anything the running
-component mutates and re-reads.
+key-value store) with **rkyv-archived** values. Use this
+combination as the default for any state that must
+survive a process restart — router queues, harness
+bindings, transition logs, lock state, transcripts,
+anything the running component mutates and re-reads.
 
 The discipline:
 
@@ -565,7 +564,7 @@ txn.commit()?;
 
 The rule is about *state the component mutates and
 re-reads*. Some text-on-disk forms stay text by design and
-are not state in the EDB sense:
+are not state in the redb sense:
 
 - **Lock-file projections** (per
   `~/primary/protocols/orchestration.md`).
@@ -588,7 +587,7 @@ above don't satisfy "owns and mutates."
 Multiple components using the same redb + rkyv patterns —
 typed `Table<K, V>` wrapper, common error variants,
 transaction helpers, migration utilities — eventually
-warrant a shared `persona-edb` (or `edb`) crate.
+warrant a shared helper crate.
 
 **Don't pre-abstract.** Each component uses redb + rkyv
 inline first; the shared shape becomes obvious after

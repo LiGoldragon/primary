@@ -10,8 +10,8 @@ repositories: `persona-message`, `persona-router`,
 `persona-system`, `persona-system-niri`, `persona-harness`,
 `persona-desktop`, with `persona` as the high-level
 integration. The plan also commits the workspace to
-**EDB (redb + rkyv) as the durable storage default** for
-all persistent component state.
+**redb + rkyv as the durable storage default** for all
+persistent component state.
 
 The plan is well-shaped overall. This audit answers the
 operator's four explicit questions, surfaces three concerns,
@@ -29,11 +29,11 @@ sibling state-engines, not the same engine).
   message contract ≠ routing state ≠ OS abstraction ≠ Niri
   specifics ≠ harness lifecycle ≠ UI. The owns/doesn't-own
   table is unambiguous.
-- **EDB as the durable default** is the right shape. redb
-  + rkyv was already the workspace standard for sema; making
-  it the default for every persistent component closes the
-  question. NOTA stays the wire/text format; redb stays the
-  truth.
+- **redb + rkyv as the durable default** is the right
+  shape. The combination was already the workspace standard
+  for sema; making it the default for every persistent
+  component closes the question. NOTA stays the wire/text
+  format; redb stays the truth.
 - **Backends differ in support, the router does not
   compensate by polling.** This is push-not-pull applied
   across the OS-abstraction surface: missing capability
@@ -134,12 +134,12 @@ Alternative names considered and rejected:
 `persona-system` is the cleanest of the candidates if the
 scope is held tight. **Keep the name; pin the scope.**
 
-### Q3 — EDB directly in persona-router, or behind a smaller storage crate?
+### Q3 — redb + rkyv directly in persona-router, or behind a smaller storage crate?
 
 **Inline first; lift to a shared crate when patterns
 crystallize.**
 
-A `persona-edb` crate would standardize the redb + rkyv
+A shared storage crate would standardize the redb + rkyv
 pattern: typed `Table<K, V>` wrapper, transaction helpers,
 migration utilities, error variants. That's valuable when
 multiple components share enough patterns to make
@@ -149,7 +149,7 @@ But pre-abstracting is the bigger risk:
 
 - Each component's data shapes differ (router state ≠
   harness bindings ≠ transcripts).
-- A premature `persona-edb` becomes a leaky abstraction —
+- A premature shared crate becomes a leaky abstraction —
   components reach past it for their own needs.
 - The shared shape isn't visible until 2–3 components have
   used redb directly and the common surface is *observable*.
@@ -157,9 +157,8 @@ But pre-abstracting is the bigger risk:
 Recommendation: **Phase 1 — each component uses redb +
 rkyv inline** (a `store.rs` per crate, directly opening
 tables). When the second or third component's `store.rs`
-shows the same patterns, **lift the common shape into
-`persona-edb`** (or `edb` as a generic name; the workspace
-already names the concept).
+shows the same patterns, **lift the common shape into a
+shared crate** (name TBD when the shape is concrete).
 
 This is the same growth path sema followed inside criome
 before becoming its own repo: shared shape becomes obvious;
@@ -178,7 +177,7 @@ The actor table is well-shaped on five of six entries:
 | `InputBufferActor` | parsed input-buffer observations | ✓ |
 | `DeadlineActor` | OS-pushed TTL deadlines | ✓ |
 | `HarnessActor` | endpoint, harness binding | ✓ |
-| `StorageActor` | EDB transactions | drop |
+| `StorageActor` | redb transactions | drop |
 
 **`StorageActor` is verb-shaped, not noun-shaped.** Per
 `skills/abstractions.md` §"The wrong-noun trap" and
@@ -249,16 +248,16 @@ My lean: include it. The same Criome-shape pattern, applied
 to two domains, is a load-bearing observation about how
 Persona's plane structure works.
 
-### 3.2 EDB rule belongs in `skills/rust-discipline.md`, scoped carefully
+### 3.2 redb + rkyv rule belongs in `skills/rust-discipline.md`, scoped carefully
 
 The operator's recommendation — *"persistent component state
-is typed, archived with rkyv, and stored in redb through
-EDB-shaped APIs. Flat NOTA record files are prototypes or
-interchange artifacts, not the steady state."* — is a
-workspace-discipline rule, not a per-component rule. It
-deserves a paragraph in `skills/rust-discipline.md`
-alongside the existing rules on errors, methods on types,
-and "Don't hide typification in strings."
+is typed, archived with rkyv, and stored in redb. Flat NOTA
+record files are prototypes or interchange artifacts, not
+the steady state."* — is a workspace-discipline rule, not a
+per-component rule. It deserves a paragraph in
+`skills/rust-discipline.md` alongside the existing rules on
+errors, methods on types, and "Don't hide typification in
+strings."
 
 The rule should say:
 
@@ -267,9 +266,9 @@ The rule should say:
   format.
 - Flat-file NOTA logs are prototype-only; production
   components use redb.
-- The EDB combination has named exceptions (interchange
-  artifacts, lock-file projections) that stay text-only
-  by design.
+- The redb + rkyv combination has named exceptions
+  (interchange artifacts, lock-file projections) that stay
+  text-only by design.
 
 The rule shouldn't claim *"every storage decision is
 redb"* — it should claim *"the durable in-process truth is
@@ -337,8 +336,8 @@ In priority order:
    explicitly note it's out of scope for this plan). The
    sibling state-engine relationship is load-bearing for
    future readers.
-4. **Land the EDB rule in `skills/rust-discipline.md`.** A
-   short section per the substance in §3.2 above.
+4. **Land the redb + rkyv rule in `skills/rust-discipline.md`.**
+   A short section per the substance in §3.2 above.
 5. **Pin `persona-system`'s scope in its `ARCHITECTURE.md`.**
    The four events define the surface; document this so the
    broad name doesn't grow into "everything systemic."
@@ -391,7 +390,7 @@ with audit-before-code discipline.
 - `~/primary/skills/micro-components.md` — the rule that
   motivates the repo split.
 - `~/primary/skills/rust-discipline.md` — the home for the
-  proposed EDB-as-default rule.
+  proposed redb + rkyv-as-default rule.
 - `~/primary/skills/abstractions.md` §"The wrong-noun
   trap" — the rule the StorageActor concern flags.
 

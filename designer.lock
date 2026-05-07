@@ -4,10 +4,10 @@ Owner: designer
 Agent: Claude
 Editable-by: designer
 Status: active
-Updated-at: 2026-05-07T15:23:58+02:00
+Updated-at: 2026-05-07T15:41:18+02:00
 
 Active scopes:
-- /home/li/primary/skills/rust-discipline.md — primary-0ey: add EDB storage default
+- /home/li/primary/skills/rust-discipline.md — drop EDB acronym; use redb + rkyv directly
 
 Notes:
 - Managed by the workspace Orchestration Protocol.
