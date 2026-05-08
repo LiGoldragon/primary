@@ -115,8 +115,8 @@ inline. The shape is a candidate for replacement, not patching.
 
 ```mermaid
 flowchart TB
-  subgraph daemon["chromad (one user service)"]
-    sup[ChromaSupervisor]
+  subgraph daemon["chroma-daemon (one user service)"]
+    sup[Supervisor]
     sup --> store[(StateStore<br/>redb: theme, warmth,<br/>brightness, last-known-location)]
     sup --> theme[ThemeApplier]
     sup --> warmth[WarmthApplier]
@@ -151,30 +151,30 @@ What goes away:
 
 | Removed | Replaced by |
 |---|---|
-| `darkman.service` | `chromad` |
+| `darkman.service` | `chroma-daemon` |
 | `services.darkman` block in `base.nix` | `chroma` flake input + home-manager module |
-| `nightshift` shell binary | `WarmthApplier` actor inside `chromad` |
+| `nightshift` shell binary | `WarmthApplier` actor inside `chroma-daemon` |
 | `nightshift-sync.service` | `ScheduleEngine` actor; deadline timer per waypoint |
 | `nightshift-on.service`, `nightshift-off.service` | `(SetWarmth Warmest)` / `(SetWarmth Cold)` CLI commands |
 | `brightness` shell binary | `BrightnessApplier` actor; `(SetBrightness ...)` CLI |
 | `~/.local/state/darkman/current-mode` text file | redb row keyed by axis; rkyv-archived value |
 | `~/.local/state/darkman/fzf-theme.sh` | apply command writes it (stays a file consumed by zsh init) |
-| `home.activation.reapplyDarkman` activation | `chromad` re-reads redb on start, re-applies all axes |
+| `home.activation.reapplyDarkman` activation | `chroma-daemon` re-reads redb on start, re-applies all axes |
 | systemd cycle workaround comment in `default.nix:705-714` | gone — no `nightshift-sync` exists in the new layout |
 
 What stays:
 
 | Kept | Why |
 |---|---|
-| `wl-gammarelay-rs.service` | Still the only stable wlroots gamma DBus daemon; `chromad` is its sole consumer. |
-| `mkApplyScript` shell content (dconf, GTK ini, ghostty, OSC, emacs, fzf) | NixOS-specific glue; lives as a home-manager-built script invoked by `chromad` as an opaque executable. |
-| Stylix's declarative initial polarity | First-boot default until `chromad` reads its state on first run. |
+| `wl-gammarelay-rs.service` | Still the only stable wlroots gamma DBus daemon; `chroma-daemon` is its sole consumer. |
+| `mkApplyScript` shell content (dconf, GTK ini, ghostty, OSC, emacs, fzf) | NixOS-specific glue; lives as a home-manager-built script invoked by `chroma-daemon` as an opaque executable. |
+| Stylix's declarative initial polarity | First-boot default until `chroma-daemon` reads its state on first run. |
 | zsh init hook reading `current-mode` + sourcing `fzf-theme.sh` | The apply script keeps writing those; new shells warm-start as before. |
 | `theme-dark` / `theme-light` shell scripts (optional) | Tiny wrappers around `chroma '(SetTheme Dark)'` / `(SetTheme Light)` for muscle-memory; not load-bearing. |
 
-The boundary the design draws: **`chromad` decides *when* and *to
+The boundary the design draws: **`chroma-daemon` decides *when* and *to
 what*; the apply command decides *how*.** The apply command is
-home-manager-built (NixOS-specific); `chromad` is portable Rust.
+home-manager-built (NixOS-specific); `chroma-daemon` is portable Rust.
 
 ---
 
@@ -221,7 +221,7 @@ one service unit). The decisions are independent.
 Single record; `ConfigWatcher` re-parses on inotify push.
 
 ```
-(ChromaConfig
+(Config
   (Theme
     (ApplyCommand "/run/current-system/sw/bin/chroma-apply-theme")
     (Schedule
@@ -250,7 +250,7 @@ Single record; `ConfigWatcher` re-parses on inotify push.
 Or fully manual (no schedule, daemon honours CLI commands only):
 
 ```
-(ChromaConfig
+(Config
   (Theme
     (ApplyCommand "/run/current-system/sw/bin/chroma-apply-theme")
     (Schedule (Manual Light)))
@@ -287,11 +287,11 @@ sequenceDiagram
   participant user as user shell
   participant cli as chroma CLI
   participant uds as UDS frame<br/>(rkyv archive)
-  participant d as chromad
+  participant d as chroma-daemon
   participant a as Applier
 
   user->>cli: chroma '(SetWarmth Warmest)'
-  cli->>cli: parse NOTA → ChromaRequest<br/>archive with rkyv<br/>length-prefixed frame
+  cli->>cli: parse NOTA → Request<br/>archive with rkyv<br/>length-prefixed frame
   cli->>uds: connect $XDG_RUNTIME_DIR/chroma.sock
   uds->>d: SocketServer reads frame
   d->>d: bytecheck validate<br/>dispatch to WarmthApplier
@@ -299,7 +299,7 @@ sequenceDiagram
   a->>a: cancel any in-flight ramp
   a->>a: zbus set Temperature=2700
   a->>d: ack with new state
-  d->>uds: ChromaResponse archive
+  d->>uds: Response archive
   uds->>cli: read frame, validate
   cli->>user: print NOTA reply
 ```
@@ -351,10 +351,10 @@ Every behavior lives in the daemon.
 | `RampDuration` | newtype `(Duration)` | Minimum clamp at construct (e.g. ≥1 second to avoid degenerate cases). |
 | `SignedMinutes` | newtype `(i16)` | Allows ±offset around civil-twilight events. |
 | `RampTrigger` | enum `{ CivilDawn(SignedMinutes), CivilDusk(SignedMinutes), TimeOfDay(LocalHour, LocalMinute) }` | Closed; geoclue subscription opens iff any twilight variant present. |
-| `ChromaRequest` | enum (one variant per CLI verb) | rkyv-archived on the wire. |
-| `ChromaResponse` | enum `{ State(VisualState), Error(ChromaError), Acked }` | One-shot reply per request. |
+| `Request` | enum (one variant per CLI verb) | rkyv-archived on the wire. |
+| `Response` | enum `{ State(VisualState), Error(Error), Acked }` | One-shot reply per request. |
 | `VisualState` | record `{ theme, warmth, brightness, in_flight_ramps }` | Full snapshot returned by `GetState`. |
-| `ChromaError` | enum (typed via `thiserror`) | per crate, no `anyhow`/`eyre` at boundaries. |
+| `Error` | enum (typed via `thiserror`) | per crate, no `anyhow`/`eyre` at boundaries. |
 
 Each level enum carries `step_up` / `step_down` / `clamp` as
 methods (verb belongs to noun). `KelvinTemperature::lerp` is a
@@ -373,7 +373,7 @@ consumer surface, supervision):
 
 ```mermaid
 flowchart TB
-  sup[ChromaSupervisor]
+  sup[Supervisor]
   sup --> store["StateStore<br/>owns redb DB handle"]
   sup --> theme["ThemeApplier<br/>owns apply-command path"]
   sup --> warmth["WarmthApplier<br/>owns zbus client A"]
@@ -391,7 +391,7 @@ flowchart TB
   style bramp stroke-dasharray: 5 5
 ```
 
-- **`ChromaSupervisor`** is the only place bare `Actor::spawn` is
+- **`Supervisor`** is the only place bare `Actor::spawn` is
   called; every other spawn is `spawn_linked` from a parent's
   `pre_start`. Failures in any child escalate to the supervisor's
   decision.
@@ -529,7 +529,7 @@ Per `skills/rust-discipline.md` §"redb + rkyv":
 - **Version-skew guard** at boot: a known-slot record carrying
   `(schema_version, wire_version)`; mismatch is a hard fail.
 
-On boot, `ChromaSupervisor` reads the three axis rows + last-known
+On boot, `Supervisor` reads the three axis rows + last-known
 location from redb, hands the values to each applier, and each
 applier re-applies its current value (theme apply command runs;
 zbus property is set). State on disk and state on hardware
@@ -550,7 +550,7 @@ shutdown.
 | Polling-shaped guards | `ExecStartPre = sleep 1` in `nightshift-sync.service` | proper actor `pre_start` + zbus connection-up wait |
 | State recomputation from text in the daemon | `darkman get` re-read by nightshift each `sync` | daemon owns the typed record |
 | Stale state on resume | text file diverges from DBus property | every boot re-applies redb state to hardware |
-| Cycle-prone systemd graph | `wl-gammarelay-rs ↔ nightshift-sync ↔ graphical-session.target` (incident `a415e3e`) | one user service: `chromad.service`, `After=wl-gammarelay-rs.service` |
+| Cycle-prone systemd graph | `wl-gammarelay-rs ↔ nightshift-sync ↔ graphical-session.target` (incident `a415e3e`) | one user service: `chroma-daemon.service`, `After=wl-gammarelay-rs.service` |
 
 The systemd-cycle incident class disappears because there's no
 `nightshift-sync` to participate in a cycle — the daemon listens
@@ -562,12 +562,12 @@ once with backoff before failing the start.
 ## Implementation plan — eight stops
 
 1. **New repo `chroma`** under `/git/github.com/<org>/chroma/`. One
-   Rust crate, `[lib]` + `[[bin]] chroma` + `[[bin]] chromad`. Flake
+   Rust crate, `[lib]` + `[[bin]] chroma` + `[[bin]] chroma-daemon`. Flake
    with crane + fenix per lore's `rust/nix-packaging.md`.
 2. **Domain types and error enum.** `ThemeMode`, `WarmthLevel`,
    `KelvinTemperature`, `BrightnessLevel`, `BrightnessPercent`,
-   `RampDuration`, `SignedMinutes`, `RampTrigger`, `ChromaRequest`,
-   `ChromaResponse`, `VisualState`, `ChromaConfig`, `ChromaError`.
+   `RampDuration`, `SignedMinutes`, `RampTrigger`, `Request`,
+   `Response`, `VisualState`, `Config`, `Error`.
    NOTA derive on the config + request types; rkyv derive on the
    wire types and the persisted records. Tests round-trip every
    shape.
@@ -581,7 +581,7 @@ once with backoff before failing the start.
    semantics. Per-axis `RampSession` child.
 5. **ThemeApplier actor.** Spawns the configured apply command,
    waits for exit, persists on success.
-6. **ScheduleEngine actor.** Loads `ChromaConfig`. Computes the
+6. **ScheduleEngine actor.** Loads `Config`. Computes the
    next fire across all three axes. Single deadline timer.
    Re-computation hook on `LocationUpdate` and on `ReloadConfig`.
    `GeoclueSubscriber` spawned conditionally on
@@ -596,7 +596,7 @@ once with backoff before failing the start.
    - New `modules/home/profiles/min/chroma.nix`: package the
      daemon, package the home-manager-built `chroma-apply-theme`
      script (lifted out of `mkApplyScript`), drop a default
-     `config.nota` if absent, define `chromad.service`
+     `config.nota` if absent, define `chroma-daemon.service`
      (`After=wl-gammarelay-rs.service`, `WantedBy=
      graphical-session.target`).
    - Delete `services.darkman` from `base.nix`.
@@ -619,11 +619,11 @@ as a single commit consuming the flake input.
 
 ## What's *not* in scope
 
-- **Implementing the freedesktop appearance portal in `chromad`.**
+- **Implementing the freedesktop appearance portal in `chroma-daemon`.**
   We rely on dconf as the de-facto baseline (set by the apply
   command; read by GTK4, Firefox, GNOME apps, Electron). If a
   later need surfaces, exposing
-  `org.freedesktop.portal.Settings.color-scheme` from `chromad`
+  `org.freedesktop.portal.Settings.color-scheme` from `chroma-daemon`
   is a small follow-up — the daemon already owns the truth.
 - **Per-monitor warmth/brightness.** wl-gammarelay-rs is
   per-output today; the daemon's first slice mirrors that. A
@@ -674,7 +674,7 @@ Defaults are picked; the user can flip them later by editing
    The CLI's NOTA reply is the user-visible feedback when
    commanded; schedule-driven changes are silent.
 7. **Should the CLI block until apply is ack'd?** Yes — the
-   `ChromaResponse::State` reply contains the post-change
+   `Response::State` reply contains the post-change
    `VisualState`, so a successful exit means the apply has
    actually landed. Faster feedback than fire-and-forget; matches
    the user's expectations for CLI tools.
