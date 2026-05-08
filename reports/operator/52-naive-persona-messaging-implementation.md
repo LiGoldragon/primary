@@ -16,8 +16,8 @@ Relevant prior work:
   messaging fabric.
 - `reports/designer/12-no-polling-delivery-design.md` marks polling tails as
   transitional and not acceptable for the final router.
-- `reports/operator/41-persona-twelve-verbs-implementation-consequences.md`
-  maps user-facing message commands onto the future verb layer.
+- `reports/designer/40-twelve-verbs-in-persona.md` maps user-facing message
+  commands onto the verb layer.
 
 ## What Landed
 

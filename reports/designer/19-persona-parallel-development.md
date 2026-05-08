@@ -11,14 +11,9 @@ repo is where the final daemon is composed, and the path from
 isolated tools to assembled daemon is incremental rather than
 cliff-shaped.
 
-This report sits on top of operator's
-`~/primary/reports/operator/9-persona-message-router-architecture.md`
-(component shapes, runtime topology) and the design arc's
-contract-repo treatment in
-`~/primary/reports/designer/21-persona-on-nexus.md` and
-`~/primary/skills/contract-repo.md`. It addresses the
-*development process* across those components, not the
-end-state architecture.
+This report addresses the *development process* across the
+Persona components (per `~/primary/skills/contract-repo.md`),
+not the end-state architecture.
 
 The pattern follows the criome/sema model: per-repo niches with
 their own `ARCHITECTURE.md`; one meta repo (`persona`) holding
@@ -518,13 +513,6 @@ shape is the rearrangement.
 
 ## 11 · See also
 
-- `~/primary/reports/operator/9-persona-message-router-architecture.md`
-  — the component shapes and runtime topology this report
-  develops in parallel against.
-- `~/primary/reports/designer/14-persona-orchestrate-design.md`
-  — the workspace orchestration component (different from the
-  intra-daemon database owner); both ship as Persona-family
-  crates.
 - `~/primary/reports/designer/4-persona-messaging-design.md`
   — destination architecture; this report develops the path
   to it.

@@ -127,9 +127,12 @@ The toolkit, organised by kind of decision:
   delimiters-earn-their-place, etc. Read end-to-end before
   any new notation work; the surface looks small but every
   instinct earned its place by being violated somewhere.
-- **`reports/designer/22`–`46`** — the nexus + nota
-  language-evolution thread. The actual decisions, with
-  the reasoning trail intact.
+- **`reports/designer/26`, `31`, `40`, `45`, `46`** — the
+  surviving load-bearing nexus + nota language-evolution
+  decisions (12-verb scaffold, curly-brackets drop, twelve
+  verbs in Persona, drop @, Bind/Wildcard typed records).
+  Older state-of-the-language reports were retired in the
+  2026-05-08 cleanup.
 - **`nota/README.md`** — the canonical positional text
   format the workspace's notations all build on top of.
 
@@ -250,9 +253,9 @@ cross-reference is the verifiable trail.
 
 Per the workspace pattern: design report first, then
 operator's implementation report responding to it (often
-named after the design — `operator/41-persona-twelve-verbs-
-implementation-consequences.md` responds to `designer/40-
-twelve-verbs-in-persona.md`), then back-and-forth as the
+named after the design — `operator/52-naive-persona-
+messaging-implementation.md` responds to the persona-
+messaging design thread), then back-and-forth as the
 implementation surfaces shape questions the design hadn't
 anticipated.
 

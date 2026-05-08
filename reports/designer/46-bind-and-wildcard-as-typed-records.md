@@ -143,9 +143,9 @@ impl<T: NotaEncode> NotaEncode for PatternField<T> {
 
 The Constrain example: each `(Bind)` captures the
 field-at-its-position; the `(Unify [to])` references those
-binds by the schema field name (since bind name = schema
-field name per designer/38 §2). The wire form is uniform —
-every pattern marker is a record.
+binds by the schema field name (the schema position carries
+the field's identity). The wire form is uniform — every
+pattern marker is a record.
 
 ---
 
@@ -284,15 +284,9 @@ lands so operator doesn't have to re-edit.
 
 | Report | Section | Status after this decision |
 |---|---|---|
-| designer/22 | §6 "drop `{ }` Shape" | Confirmed; consistent with this further drop |
-| designer/23 | "Tier 0 vs Tier 1"; §7 grammar table | Confirmed; `@` was kept under "Tier 1 sigil set" — now also dropped |
 | designer/26 | §7 grammar Tier 0 | **Update**: drop `At`; revise to 11 tokens |
 | designer/31 | §5 grammar lock at 12 tokens | **Update**: revise to 11 tokens; this report extends the same "delimiters earn their place" discipline |
-| designer/38 | §0 + §3 + §10 | **Update**: token references; pattern-decode table uses `(Bind)`/`(Wildcard)` |
 | designer/40 | §10 examples | **Update**: `@to` → `(Bind)` etc. |
-| designer/42 | §2 "12-token lock" recommendation | Subsumed: the lock is now at 11; the legacy-token strip is still needed |
-| designer/43 | §1.5, §1.7 — pattern enum duplication | **Reaffirms**: `signal-persona`'s per-field `*Pattern` enums become moot once `PatternField<T>` lives in `signal-core` |
-| designer/44 | "extract nexus-codec" | **Moot** in headline; supporting findings (NexusVerb rename, Error per crate, consumer audit) stand independently |
 | designer/45 | §3 bare-ident bind convention | **Superseded by §1 of this report** (typed-record approach is cleaner); §1 of designer/45 (the `@`-drop confirmation) and §5 (codec extraction is moot) stand |
 
 The arc closes neatly: every drop has been by the same
@@ -305,14 +299,10 @@ visible.
 
 ## 9 · See also
 
-- `~/primary/reports/designer/22-nexus-state-of-the-language.md`
-- `~/primary/reports/designer/23-nexus-structural-minimum.md`
 - `~/primary/reports/designer/26-twelve-verbs-as-zodiac.md`
   §7 — token list to update.
 - `~/primary/reports/designer/31-curly-brackets-drop-permanently.md`
   §5 — token-count lock; revises 12 → 11.
-- `~/primary/reports/designer/38-nexus-tier-0-grammar-explained.md`
-  §0 + §3 — token references and pattern table to update.
 - `~/primary/reports/designer/45-nexus-needs-no-grammar-of-its-own.md`
   §7 — implementation cascade complementing §6 of this
   report.

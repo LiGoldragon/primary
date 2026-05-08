@@ -251,9 +251,8 @@ commit; if it shows files outside your intended change
 set, use the partial-commit flow (`jj commit <paths>`)
 instead of bundling.
 
-The two recent operator slips that surfaced this rule
-(designer/48 logged them) were both `jj`-discipline
-failures: one bundled an unrelated file's change into a
+Two recent slips surfaced this rule (a 2026-05-08 handover
+logged them): one bundled an unrelated file's change into a
 typed-record migration commit; one claimed a deletion that
 hadn't happened. The fix in both cases was *read the state
 the working copy actually contains, not the state you

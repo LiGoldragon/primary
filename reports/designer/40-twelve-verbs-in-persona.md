@@ -807,11 +807,6 @@ Two threads worth picking up next, deferred from this report:
 - `~/primary/reports/designer/12-no-polling-delivery-design.md`
   — Subscribe is the runtime; this report names where the
   Subscribes are held.
-- `~/primary/reports/designer/14-persona-orchestrate-design.md`
-  — orchestration component; §7 of this report shows the
-  collapse to universal verbs.
-- `~/primary/reports/designer/21-persona-on-nexus.md`
-  — the architectural call this report operationalises.
 - `~/primary/reports/designer/26-twelve-verbs-as-zodiac.md`
   — the verb scaffold + zodiac structure; reads naturally
   alongside §0 of this report.

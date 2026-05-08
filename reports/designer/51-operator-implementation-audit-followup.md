@@ -5,7 +5,8 @@ broader scope.
 Author: Claude (designer)
 
 Designer/50 audited the typed-record migration (designer/45 +
-46 + operator/47). This follow-up adds three things that
+46 + the operator-side implementation plan). This follow-up
+adds three things that
 designer/50 deferred:
 
 1. **Verification** — actually run `cargo test` across every
@@ -154,10 +155,9 @@ for any of the typed-record migration.
 Designer/50 focused on the typed-record migration window.
 Operator's recent activity also includes a substantial
 **persona-* sibling crate scaffolding** that didn't appear in
-the designer/45/46/47 chain because its design lives in
-older reports (designer/4 messaging design; designer/14
-orchestrate design; designer/19 parallel development;
-designer/21 persona-on-nexus).
+the designer/45/46 chain because its design lives in older
+reports (designer/4 messaging design; designer/19 parallel
+development).
 
 ### 3.1 · The persona-* family
 
@@ -181,9 +181,9 @@ threaded the new `signal-persona` contract crate through the
 sibling family, replacing whatever legacy `persona-message`
 contract types they had.
 
-This is consistent with designer/43 §"rebase persona
-contract on sema verbs" — the persona family now talks the
-same wire as the rest of the signal-* family.
+The persona family now talks the same wire (signal-persona
+contract crate over signal-core kernel) as the rest of the
+signal-* family.
 
 ### 3.2 · Two notable depth points
 

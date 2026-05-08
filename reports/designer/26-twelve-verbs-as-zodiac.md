@@ -1090,15 +1090,6 @@ signal-persona.
   Local: `~/Criopolis/library/en/david-spivak/category-theory-for-sciences.pdf`
 
 ### Internal
-- `~/primary/reports/designer/22-nexus-state-of-the-language.md`
-  — implementation gap; what's lexed vs operational.
-- `~/primary/reports/designer/23-nexus-structural-minimum.md`
-  — Tier 0 / Tier 1 decision; this report picks Tier 0.
-- `~/primary/reports/designer/24-nexus-among-database-languages.md`
-  — peer survey (SQL, Datalog, Cypher, SPARQL, GraphQL,
-  MongoDB).
-- `~/primary/reports/designer/25-what-database-languages-are-really-for.md`
-  — the 12 verbs + LLM-as-comparator framing.
 - `~/primary/skills/library.md` — how to use the workspace
   research library (Young's *Geometry of Meaning*, Sowa, Spivak).
 - `~/primary/skills/contract-repo.md` — signal-persona is the

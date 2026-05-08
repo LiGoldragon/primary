@@ -313,12 +313,6 @@ asymmetry visible.
 - ~~`~/primary/reports/designer/30-curly-brackets-set-literals.md`~~
   — superseded by this report; deleted in the landing
   commit.
-- `~/primary/reports/designer/22-nexus-state-of-the-language.md`
-  §6 — the original drop of `{ }` Shape; this report makes
-  it permanent.
-- `~/primary/reports/designer/23-nexus-structural-minimum.md`
-  §7 — Tier 0 grammar; final state confirmed here at 12
-  tokens.
 - `~/primary/reports/designer/26-twelve-verbs-as-zodiac.md`
   §1 — the running example reverts to `(Unify [id])`.
 

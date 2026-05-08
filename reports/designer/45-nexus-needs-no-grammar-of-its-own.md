@@ -275,8 +275,8 @@ designer/31:
 > can't handle?"*
 
 For `@`: **no.** The bind name lives in the schema field
-name (per designer/38 §2 — bind name MUST equal schema
-field name). The schema knows the field name. The wire
+name (the schema position carries the field's identity).
+The schema knows the field name. The wire
 form doesn't need to repeat the marker. `@` was being kept
 "for visual clarity," which is the same anti-pattern
 designer/31 caught for `{ }`: cosmetic distinction the
@@ -347,28 +347,19 @@ slightly different shape; same correctness.
 
 ## 9 · See also
 
-- `~/primary/reports/designer/22-nexus-state-of-the-language.md`
-  — original state-of-the-language audit; identified what's
-  in the spec but unused.
-- `~/primary/reports/designer/23-nexus-structural-minimum.md`
-  — structural minimum decision; this report extends that
-  reasoning to the `@` question.
 - `~/primary/reports/designer/26-twelve-verbs-as-zodiac.md`
   — the verb scaffold; unchanged by dropping `@` (verbs are
   records, no special tokens).
 - `~/primary/reports/designer/31-curly-brackets-drop-permanently.md`
-  §5 — the locked grammar at 12 tokens this report would
-  revise to 11; §6's "delimiters earn their place" rule
-  this report applies to `@`.
-- `~/primary/reports/designer/38-nexus-tier-0-grammar-explained.md`
-  §2 — the "bind name MUST equal schema field name" rule
-  that makes the `@` cosmetic given the schema.
-- `~/primary/reports/designer/44-extract-nexus-codec-from-nota-codec.md`
-  — the prior analysis assuming `@` stays; this report's
-  §5 supersedes it.
+  §5 — the locked grammar this report revises from 12 to 11
+  tokens; §6's "delimiters earn their place" rule this
+  report applies to `@`.
+- `~/primary/reports/designer/46-bind-and-wildcard-as-typed-records.md`
+  — supersedes §3's "bare-ident-as-bind" convention with
+  the typed-record approach.
 - `~/primary/skills/contract-repo.md` — the layered-effect-
   crate pattern; `nexus-codec` extraction was an instance,
-  but unnecessary if `@` goes.
+  but unnecessary once `@` is gone.
 - `/git/github.com/LiGoldragon/nexus/spec/grammar.md`
   §1 + §4 — the two sections that change if (1) is
   confirmed.

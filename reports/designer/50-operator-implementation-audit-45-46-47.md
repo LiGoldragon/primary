@@ -8,15 +8,15 @@ Author: Claude (designer)
 
 The user requested an audit of operator's implementation work
 against designer/45 (nexus needs no grammar of its own),
-designer/46 (Bind/Wildcard as typed records), and
-operator/47 (the operator-side implementation plan).
+designer/46 (Bind/Wildcard as typed records), and the
+operator-side implementation plan that paired with them.
 
 Verdict at a glance: **the typed-record migration is clean
 across nota-codec, nota-derive, signal-core, signal, and
 nexus.** Signal-persona has not adopted the new
 `signal_core::PatternField<T>` and still ships a parallel
 hand-written pattern vocabulary; this is the load-bearing
-gap. Two designer/43 audit findings (Lock.agent type,
+gap. Two earlier-audit findings (Lock.agent type,
 PersonaRequest::Atomic narrowness) also remain open.
 One designer-side oversight (reserved-record-heads rule
 not yet in `skills/contract-repo.md`).
@@ -36,8 +36,8 @@ flowchart LR
     end
     subgraph open["Open"]
         sp["signal-persona — 16+ duplicate Any/Exact/Bind enums; should be PatternField&lt;T&gt;"]
-        l["Lock.agent: String → PrincipalName (designer/43 §1.5)"]
-        a["PersonaRequest::Atomic(Vec&lt;Record&gt;) too narrow (designer/43 §1.1)"]
+        l["Lock.agent: String → PrincipalName"]
+        a["PersonaRequest::Atomic(Vec&lt;Record&gt;) too narrow"]
         cr["skills/contract-repo.md missing reserved-heads rule (designer/46 §5)"]
     end
     clean -. gap .-> open
@@ -172,10 +172,10 @@ pub struct EdgeQuery {
 }
 ```
 
-This is designer/47 §5's "cleanest outcome" — no
-`NexusPattern` derive, no `#[nota(queries = "Node")]`
-attribute, no bind-name validation path. The schema is
-self-describing; the codec is structural.
+This is the cleanest outcome — no `NexusPattern` derive,
+no `#[nota(queries = "Node")]` attribute, no bind-name
+validation path. The schema is self-describing; the codec
+is structural.
 
 ### 1.7 · nexus/spec/grammar.md rewritten
 
@@ -225,8 +225,8 @@ pub enum QueryOperation { Node(NodeQuery), Edge(EdgeQuery), Graph(GraphQuery) }
 ```
 
 Per perfect-specificity — no generic record wrapper, no
-string kind dispatch. This is designer/43 §1.7 partially
-addressed for the criome domain.
+string kind dispatch. This is the verb-payload pairing
+discipline partially landed for the criome domain.
 
 ### 1.10 · `signal-core` kernel structure
 
@@ -281,11 +281,11 @@ The shape is identical: three variants
 (`Any`/`Wildcard`, `Exact(T)`/`Match(T)`, `Bind`).
 Sixteen-plus parallel definitions of the same closed sum.
 
-This is the exact duplication designer/43 §1.5 / §1.7
-flagged before `PatternField<T>` was universal — and after
-designer/46 made it universal, the duplication is strictly
-worse: now there's a canonical answer and signal-persona
-isn't using it.
+A prior contract audit flagged this duplication before
+`PatternField<T>` was universal; now that designer/46 has
+made it universal, the duplication is strictly worse:
+there's a canonical answer and signal-persona isn't using
+it.
 
 ### Why this matters
 
@@ -343,7 +343,7 @@ gains a text projection, there must be one shape.
 
 ---
 
-## 3 · Open designer/43 audit findings
+## 3 · Open audit findings (signal-persona contract)
 
 ### 3.1 · `Lock.agent` is still `String`
 
@@ -361,8 +361,7 @@ pub struct Lock {
 `PrincipalName` exists in `signal-persona/src/identity.rs`
 and is re-exported at the crate root. The `agent` field is
 the principal that holds the lock — exactly what
-`PrincipalName` names. Designer/43 §1.5 flagged this; the
-fix is one type-substitution.
+`PrincipalName` names. The fix is one type-substitution.
 
 ### 3.2 · `PersonaRequest::Atomic(Vec<Record>)` too narrow
 
@@ -380,10 +379,10 @@ pub enum PersonaRequest {
 ```
 
 Same problem in `Validation::Atomic(Vec<Record>)` (line 58).
-Designer/43 §1.1 flagged this: an atomic batch should be
-able to carry mixed kinds — `[(Record m) (Mutation
-(Slotted...)) (Retraction (Slot<Lock>))]` should be a
-legal atomic — not just a sequence of fresh records.
+An atomic batch should be able to carry mixed kinds —
+`[(Record m) (Mutation (Slotted...)) (Retraction
+(Slot<Lock>))]` should be a legal atomic — not just a
+sequence of fresh records.
 
 ### 3.3 · Verb-payload pairing not type-enforced
 
@@ -394,8 +393,7 @@ legal atomic — not just a sequence of fresh records.
 PersonaRequest::Record(...))` compiles even though the
 verb's intent is mutation and the payload is an assert.
 
-This is designer/43 §1.7 in its fullest form. Two ways to
-fix it, both substantial design decisions:
+Two ways to fix it, both substantial design decisions:
 
 - **Per-verb payload types** — `MutationPayload`,
   `RetractionPayload`, `AssertPayload` separately, with
@@ -459,10 +457,10 @@ not directly through `PatternField<T>`.
 If a future signal-* crate (signal-persona, signal-arca)
 were to ship a text projection, the kernel's pattern
 contract is what they'd rely on. A direct
-`signal-core/tests/pattern.rs` covering the six cases
-designer/47 §7 listed (`PatternField::<String>::Bind` →
-`(Bind)`, etc.) would harden the kernel's contract
-independently.
+`signal-core/tests/pattern.rs` covering the canonical cases
+(`PatternField::<String>::Bind` → `(Bind)`, etc.) would
+harden the kernel's contract independently. *(Landed in
+designer/51.)*
 
 Low priority — the tests are exercised transitively via
 `signal/tests/text_round_trip.rs` — but the more components
@@ -495,10 +493,9 @@ This is correct per ESSENCE §"Infrastructure mints identity,
 time, and sender" — the transition log itself stamps the
 time, and the `Transition` record body is what the log
 *entry's value* carries; the log key/header carries the
-time. Designer/43 §1.6 flagged the absence; on re-read with
-the ESSENCE rule in hand, the absence is the right shape if
-the log infrastructure stamps. No change required unless
-queries need transition time as a queryable field.
+time. The absence is the right shape when the log
+infrastructure stamps. No change required unless queries
+need transition time as a queryable field.
 
 ---
 
@@ -509,13 +506,13 @@ relocate `PatternField<T>`, delete `NexusPattern`, rename
 `NexusVerb`, rewrite `nexus/spec/grammar.md`) **is clean,
 end-to-end, with tests covering the round-trip and the
 negative `@` case.** Operator implemented designer/45 +
-designer/46 + their own operator/47 with no shortcuts.
+designer/46 with no shortcuts.
 
-The remaining gaps are in **signal-persona** and they are
-the same shape as designer/43 flagged before this typed-
-record work landed — only worse, because the universal
-answer (`signal_core::PatternField<T>`) now exists and
-signal-persona is shipping its own parallel vocabulary.
+The remaining gaps are in **signal-persona** and they were
+flagged in a prior contract audit — only worse now,
+because the universal answer
+(`signal_core::PatternField<T>`) exists and signal-persona
+is shipping its own parallel vocabulary.
 
 The single biggest lever is migrating signal-persona's 16
 hand-written `*Pattern` enums to `PatternField<T>`. After
@@ -523,10 +520,10 @@ that, the two type-correctness fixes (`Lock.agent` →
 `PrincipalName`; `PersonaRequest::Atomic` widened to
 mixed-kind) are mechanical.
 
-The verb-payload type-enforcement question (designer/43
-§1.7) deserves its own designer report before operator
-touches it — it's a structural decision about the
-`Request<Payload>` shape itself.
+The verb-payload type-enforcement question deserves its
+own designer report before operator touches it — it's a
+structural decision about the `Request<Payload>` shape
+itself.
 
 The reserved-record-heads rule belongs in
 `skills/contract-repo.md` and is mine to land.
@@ -537,18 +534,17 @@ The reserved-record-heads rule belongs in
 
 - `~/primary/reports/designer/40-twelve-verbs-in-persona.md`
   — the ESSENCE rule that drives Lock.agent + Atomic findings.
-- `~/primary/reports/designer/43-signal-core-and-signal-persona-contract-audit.md`
-  §1.1, §1.5, §1.7 — the open findings carried forward in §3 here.
 - `~/primary/reports/designer/45-nexus-needs-no-grammar-of-its-own.md`
   — implemented per §1.7 above.
 - `~/primary/reports/designer/46-bind-and-wildcard-as-typed-records.md`
   §5 reserved heads — designer-side miss noted in §4 here;
   §6 implementation cascade — covered in §1 above.
-- `~/primary/reports/operator/47-bind-wildcard-typed-record-implementation-plan.md`
-  — operator's own plan; §5 cleanest-outcome and §7 tests
-  both landed.
+- `~/primary/reports/designer/51-operator-implementation-audit-followup.md`
+  — verification + idiom + broader-scope follow-up; lands
+  the falsifiable-spec test §5.1 mentioned.
 - `~/primary/skills/contract-repo.md` — kernel extraction
-  pattern; reserved-heads rule pending.
+  pattern; reserved-heads rule landed by operator
+  concurrently per designer/51 §5.
 - `/git/github.com/LiGoldragon/signal-core/src/pattern.rs`
   — the canonical implementation of designer/46.
 - `/git/github.com/LiGoldragon/signal-persona/src/lock.rs`,
