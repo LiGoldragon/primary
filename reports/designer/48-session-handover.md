@@ -92,7 +92,7 @@ Plus two flag-forwards I owe (designer's job):
 | 26 | Twelve verbs as zodiac (the canonical scaffold) | Foundational; §7 token list needs `At` removed |
 | 31 | Drop curly brackets permanently — grammar lock at 12 (now 11) | Decision arc; §5 needs token-count update to 11 |
 | 38 | Nexus Tier 0 grammar explained | Foundational; §0 + §3 token references need update to 11 |
-| 39 | (deleted in cleanup — was a prior session handover) | — |
+| 39 | (prior session handover — deleted with this commit; 48 supersedes) | — |
 | 40 | The 12 verbs in Persona — operational mapping + identity-discipline destruction | **Foundational** |
 | 42 | Critique of operator/41 + Tier 0 implementation | Active critique |
 | 43 | Audit of signal-core 56002aa + signal-persona afdc468 | Active audit |
