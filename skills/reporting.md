@@ -292,6 +292,62 @@ Avoid full HTTPS URLs (deep file URLs rot when files
 move) — see this workspace's `skills/skill-editor.md` for
 the cross-reference convention.
 
+### Inline-summary rule
+
+**Every external section reference must carry a short
+inline summary of the cited substance.** Naming a path is
+fine; naming a path *plus* a one-line summary of what's
+there is what makes the reference useful.
+
+Wrong:
+
+> *"Operator/33 §4 and operator/34 §7 both keep 'explicit
+> approval for every proposal' as the default."*
+
+This forces the reader to open both reports and find §4 and
+§7 to follow the point. The chat or report becomes a
+navigation puzzle.
+
+Right:
+
+> *"Operator/33 §4 (open user-level decisions) and operator/34
+> §7 (rules to enforce while refactoring) both keep 'explicit
+> approval for every proposal' as the default."*
+
+Or, denser:
+
+> *"The default — explicit approval for every proposal — is
+> kept in operator/33 §4 and operator/34 §7."*
+
+The reader picks up the substance from the surrounding
+sentence; the path is provided for verification, not for
+forcing a lookup.
+
+**The form: `report/N §X (one-line summary)` or surrounding
+prose that names the substance, then the path.** Either way
+works; what matters is that the reader can follow the point
+without opening the cited section.
+
+**Why:** as the report tree grows, cross-references become
+dense. A reader navigating four or five reports to follow a
+single argument loses the thread. The substance has to live
+where the argument is being made, not in the cited section.
+The cited path is for verification (and for picking up the
+full context if needed); the inline summary is for following
+the argument.
+
+**Applies to all external references in reports**, not just
+report-to-report. When citing a skill section, an
+ARCHITECTURE.md section, or a library text:
+
+> *"`skills/contract-repo.md` §'Kernel extraction trigger'
+> (extract when 2+ domain consumers exist) supports this."*
+
+Not just:
+
+> *"See `skills/contract-repo.md` §'Kernel extraction
+> trigger'."*
+
 ---
 
 ## Tense and framing

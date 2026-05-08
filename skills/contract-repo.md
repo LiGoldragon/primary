@@ -249,6 +249,135 @@ copies of the type *look* the same. Err early.
 
 ---
 
+## Kernel extraction trigger
+
+A contract repo grows in two distinct ways:
+- **Domain growth:** new record kinds, new typed payloads,
+  new query shapes — all within the original audience.
+- **Audience growth:** a *second* domain wants to speak the
+  same wire conventions. The first domain's repo now carries
+  both the universal kernel (Frame, handshake, auth, version,
+  the verb spine) *and* its own record kinds.
+
+The audience case triggers extraction. **When two or more
+domains share the kernel, extract the kernel into its own
+crate** so neither domain's records contaminate the other's
+namespace.
+
+The trigger:
+
+```mermaid
+flowchart TB
+    one["one domain<br/>(kernel + records together)"]
+    two["second domain appears<br/>(needs kernel; doesn't need first domain's records)"]
+    extract["extract kernel<br/>(both domains depend on kernel only)"]
+
+    one --> two --> extract
+```
+
+Concrete: `signal` originally held both the sema-ecosystem's
+kernel (Frame, handshake, universal verbs) and Criome's
+record kinds (Node, Edge, Graph). When a second domain
+(`signal-persona`) needed the same kernel, leaving everything
+in `signal` would have forced `signal-persona` to depend on
+a Criome-flavored crate — exactly the boundary confusion
+this skill exists to prevent.
+
+The extraction:
+- New crate (`signal-core`, or whatever the project calls it)
+  holds Frame, handshake, auth, version, the universal verb
+  spine, the typed identity records (Slot, Revision).
+- The original crate (`signal`) becomes the first domain's
+  *vocabulary* over the kernel — Criome's records, Criome's
+  per-verb payloads.
+- The new domain (`signal-persona`) is also a *vocabulary*
+  over the kernel — Persona's records, Persona's per-verb
+  payloads.
+
+After extraction, both domains depend only on the kernel,
+not on each other. New domains can join the family without
+naming-confusion.
+
+**When NOT to extract early:** with a single domain, the
+kernel-and-records-together shape is fine. Don't pre-extract
+"in case" a second domain shows up. The cost of a one-domain
+contract crate is zero; the cost of a kernel crate with no
+second consumer is one extra artifact to maintain. Wait for
+the second domain.
+
+The signal-forge / signal-arca pattern (per the layered-
+effect-crate section above) is *complementary* to kernel
+extraction: a layered crate adds per-verb payloads for a
+narrow audience, but it depends on the same kernel as the
+base contract. After extraction, signal-forge depends on the
+kernel directly *plus* the base contract for record kinds it
+references.
+
+---
+
+## Examples-first round-trip discipline
+
+Every record kind in a contract repo lands as **a concrete
+text example + a round-trip test** before its Rust definition
+is final.
+
+The order of work:
+
+```mermaid
+flowchart LR
+    example["1. write canonical text example"]
+    type["2. derive Rust type from example"]
+    rt["3. round-trip test (text → typed → text)"]
+    archive["4. rkyv archive round-trip"]
+
+    example --> type --> rt --> archive
+```
+
+The discipline:
+
+1. **Write the canonical text example.** Before defining the
+   Rust struct, write what the record looks like in nexus
+   text. The example exercises the field positions, the
+   typed enum variants, the optional fields. If the example
+   is awkward, the type is wrong — fix the type before
+   coding.
+2. **Derive the Rust type from the example.** The Rust
+   struct's field order matches the text example's positional
+   order. The closed enum's variant set matches what the
+   example positions can hold. The PatternField fields
+   match the positions where binds and wildcards appear.
+3. **Round-trip test as the first test.** The first test
+   ever written for a new record kind is `text → typed →
+   text` and asserts equality. If the round-trip doesn't
+   close, the codec or the type definition has a bug.
+4. **rkyv archive round-trip as the second test.** The
+   record encodes to rkyv bytes, decodes back, and equals
+   the original. Per-feature-set parity (per
+   `~/primary/repos/lore/rust/rkyv.md`) is checked
+   independently.
+
+Why this order:
+- The text example is the **falsifiable specification.** A
+  Rust definition without an example is unverified
+  guesswork.
+- The round-trip test catches encoder/decoder asymmetry
+  immediately.
+- A new agent can read the example file before reading any
+  Rust source and know what the record kind is *for*.
+
+In contract crate practice, this means each record kind ships
+with:
+- An entry in the canonical examples file (one canonical text
+  form per kind).
+- A test in `tests/<kind>.rs` exercising round-trip in both
+  directions.
+- The Rust definition in `src/<kind>.rs`.
+
+If the example file is empty, the contract crate is
+incomplete — even if all the Rust definitions compile.
+
+---
+
 ## Naming a contract repo
 
 The contract crate is the *protocol the components speak*.

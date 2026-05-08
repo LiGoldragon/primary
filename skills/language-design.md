@@ -244,6 +244,48 @@ this along for the next step." If a step needs information,
 it's an input. If a step produces information, it's an
 output. The plumbing is part of the schema.
 
+### 18. Delimiters earn their place
+
+A delimiter pair belongs in the grammar only when records
+and sequences (the universal structural primitives) **cannot
+express the structural shape it would denote.** The test:
+
+> *Can the wire form be made shorter or clearer for an
+> expressive case that records + sequences + primitives
+> can't handle?*
+
+If no, the delimiter stays out.
+
+Two failure modes a free delimiter pair tempts:
+
+**Cosmetic distinctions.** Set vs. ordered list, map vs.
+sequence-of-pairs — these differ semantically at the
+receiving type's level, not at the wire's level. Adding a
+delimiter for a cosmetic distinction grows the parser
+without expressive gain. The schema-typed receiver already
+encodes the distinction.
+
+**Verb-shaped uses.** "Schema declaration" vs. "data";
+"governance record" vs. "domain record"; "with-context"
+wrapper. These encode operations into the delimiter — the
+opposite of *position defines meaning*. Verbs go on record
+head identifiers, never in delimiter pairs.
+
+The structural minimum is records (`( )`) and sequences
+(`[ ]`). A third delimiter pair (e.g., curly braces) earns
+its place only when the language has a structural shape
+genuinely outside this minimum that becomes load-bearing.
+
+The trap: agents looking at a free delimiter reach for ways
+to *use* it. The right discipline is to ask whether the
+delimiter would express something records and sequences
+can't. When the answer is no, the delimiter stays free —
+the grammar earns simplicity through subtraction.
+
+Cosmetic and verb-shaped temptations together cover most
+proposals for "what a free delimiter could mean." Reject
+both classes; keep the grammar small.
+
 ---
 
 ## Where these instincts live in working code
