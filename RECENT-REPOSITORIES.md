@@ -60,6 +60,7 @@ Pruned on 2026-05-06:
 | `prism` | `/git/github.com/LiGoldragon/prism` |
 | `sema` | `/git/github.com/LiGoldragon/sema` |
 | `signal` | `/git/github.com/LiGoldragon/signal` |
+| `signal-core` | `/git/github.com/LiGoldragon/signal-core` |
 | `signal-derive` | `/git/github.com/LiGoldragon/signal-derive` |
 | `signal-forge` | `/git/github.com/LiGoldragon/signal-forge` |
 | `substack-cli` | `/git/github.com/LiGoldragon/substack-cli` |
