@@ -1,13 +1,13 @@
 # Primary Workspace — Agent Instructions
 
 This file names what's specific to *this* workspace. The
-cross-workspace agent discipline lives in `lore/AGENTS.md`.
+cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
 
 ## Required reading, in order
 
 1. **`ESSENCE.md`** — workspace intent. Upstream of every other
    doc. If a downstream rule conflicts with intent, intent wins.
-2. **`lore/AGENTS.md`** — canonical agent contract. AGENTS/CLAUDE
+2. **`repos/lore/AGENTS.md`** — canonical agent contract. AGENTS/CLAUDE
    shim pattern, per-repo `ARCHITECTURE.md`, documentation
    layers, beauty-as-criterion, verb-belongs-to-noun, push-not-
    poll, naming, design reports as visuals, parallel-tool-result
@@ -64,7 +64,7 @@ helper is `tools/orchestrate`.
 ## No harness-dependent memory
 
 Memory and persistent agent state belong in workspace files —
-`skills/`, `lore/`, `reports/`, `protocols/`, repo `skills.md`,
+`skills/`, `repos/lore/`, `reports/`, `protocols/`, repo `skills.md`,
 repo `ARCHITECTURE.md`, or `.beads/` while bd is the active
 substrate. **Don't use harness-dependent memory systems** —
 e.g. Claude Code's per-session memory files at
