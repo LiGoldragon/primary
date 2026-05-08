@@ -1,4 +1,4 @@
-# Ignis — one daemon for theme, warmth, brightness
+# Chroma — one daemon for theme, warmth, brightness
 
 Author: Claude (system-specialist)
 
@@ -13,14 +13,16 @@ generator** in `CriomOS-home`. Six moving parts, three transports
 theme and warmth that the user has lost time to repeatedly.
 
 This report proposes folding all of that into a single Rust
-micro-component: **`ignis`**, a NOTA-controlled daemon that owns the
-three independent visual axes (theme, warmth, brightness), drives
-their schedules from real geolocation, persists its state in redb,
-exposes one rkyv-on-UDS request surface, and replaces darkman +
-nightshift outright. The name extends the existing **Ignis**
-visual identity (`ignis.yaml`, `ignis-light.yaml`,
-`ignis-dark`/`ignis-light` Emacs themes) — the daemon is the agent
-that animates Ignis.
+micro-component: **`chroma`**, a NOTA-controlled daemon that owns
+the three independent visual axes (theme, warmth, brightness),
+drives their schedules from real geolocation, persists its state in
+redb, exposes one rkyv-on-UDS request surface, and replaces darkman
++ nightshift outright. The daemon is named for what it manages —
+**chroma**, the colour state of the display. Chroma animates the
+existing **Ignis** visual identity (`ignis.yaml`, `ignis-light.yaml`,
+`ignis-dark`/`ignis-light` Emacs themes) without owning the palette:
+Ignis is the colour scheme; Chroma is the agent that applies and
+schedules it.
 
 This report supersedes `reports/system-specialist/3-warmth-decoupling-design.md`,
 which scoped a `warmth`-only daemon and left darkman + nightshift
@@ -113,8 +115,8 @@ inline. The shape is a candidate for replacement, not patching.
 
 ```mermaid
 flowchart TB
-  subgraph daemon["ignisd (one user service)"]
-    sup[IgnisSupervisor]
+  subgraph daemon["chromad (one user service)"]
+    sup[ChromaSupervisor]
     sup --> store[(StateStore<br/>redb: theme, warmth,<br/>brightness, last-known-location)]
     sup --> theme[ThemeApplier]
     sup --> warmth[WarmthApplier]
@@ -138,8 +140,8 @@ flowchart TB
   warmth --> wl[wl-gammarelay-rs<br/>Temperature]
   bright --> wl
 
-  cli["ignis CLI<br/>NOTA on argv"] -.UDS frame.-> server
-  cfg["~/.config/ignis/config.nota"] -.parsed at boot+inotify.-> watch
+  cli["chroma CLI<br/>NOTA on argv"] -.UDS frame.-> server
+  cfg["~/.config/chroma/config.nota"] -.parsed at boot+inotify.-> watch
   geosig["geoclue2 LocationUpdated"] -.DBus signal.-> geo
 
   style daemon fill:#fec,stroke:#a70
@@ -149,30 +151,30 @@ What goes away:
 
 | Removed | Replaced by |
 |---|---|
-| `darkman.service` | `ignisd` |
-| `services.darkman` block in `base.nix` | `ignis` flake input + home-manager module |
-| `nightshift` shell binary | `WarmthApplier` actor inside `ignisd` |
+| `darkman.service` | `chromad` |
+| `services.darkman` block in `base.nix` | `chroma` flake input + home-manager module |
+| `nightshift` shell binary | `WarmthApplier` actor inside `chromad` |
 | `nightshift-sync.service` | `ScheduleEngine` actor; deadline timer per waypoint |
 | `nightshift-on.service`, `nightshift-off.service` | `(SetWarmth Warmest)` / `(SetWarmth Cold)` CLI commands |
 | `brightness` shell binary | `BrightnessApplier` actor; `(SetBrightness ...)` CLI |
 | `~/.local/state/darkman/current-mode` text file | redb row keyed by axis; rkyv-archived value |
 | `~/.local/state/darkman/fzf-theme.sh` | apply command writes it (stays a file consumed by zsh init) |
-| `home.activation.reapplyDarkman` activation | `ignisd` re-reads redb on start, re-applies all axes |
+| `home.activation.reapplyDarkman` activation | `chromad` re-reads redb on start, re-applies all axes |
 | systemd cycle workaround comment in `default.nix:705-714` | gone — no `nightshift-sync` exists in the new layout |
 
 What stays:
 
 | Kept | Why |
 |---|---|
-| `wl-gammarelay-rs.service` | Still the only stable wlroots gamma DBus daemon; `ignisd` is its sole consumer. |
-| `mkApplyScript` shell content (dconf, GTK ini, ghostty, OSC, emacs, fzf) | NixOS-specific glue; lives as a home-manager-built script invoked by `ignisd` as an opaque executable. |
-| Stylix's declarative initial polarity | First-boot default until `ignisd` reads its state on first run. |
+| `wl-gammarelay-rs.service` | Still the only stable wlroots gamma DBus daemon; `chromad` is its sole consumer. |
+| `mkApplyScript` shell content (dconf, GTK ini, ghostty, OSC, emacs, fzf) | NixOS-specific glue; lives as a home-manager-built script invoked by `chromad` as an opaque executable. |
+| Stylix's declarative initial polarity | First-boot default until `chromad` reads its state on first run. |
 | zsh init hook reading `current-mode` + sourcing `fzf-theme.sh` | The apply script keeps writing those; new shells warm-start as before. |
-| `theme-dark` / `theme-light` shell scripts (optional) | Tiny wrappers around `ignis '(SetTheme Dark)'` / `(SetTheme Light)` for muscle-memory; not load-bearing. |
+| `theme-dark` / `theme-light` shell scripts (optional) | Tiny wrappers around `chroma '(SetTheme Dark)'` / `(SetTheme Light)` for muscle-memory; not load-bearing. |
 
-The boundary the design draws: **`ignisd` decides *when* and *to
+The boundary the design draws: **`chromad` decides *when* and *to
 what*; the apply command decides *how*.** The apply command is
-home-manager-built (NixOS-specific); `ignisd` is portable Rust.
+home-manager-built (NixOS-specific); `chromad` is portable Rust.
 
 ---
 
@@ -215,13 +217,13 @@ one service unit). The decisions are independent.
 
 ## Configuration — single NOTA record
 
-`~/.config/ignis/config.nota` carries the entire visual schedule.
+`~/.config/chroma/config.nota` carries the entire visual schedule.
 Single record; `ConfigWatcher` re-parses on inotify push.
 
 ```
-(IgnisConfig
+(ChromaConfig
   (Theme
-    (ApplyCommand "/run/current-system/sw/bin/ignis-apply-theme")
+    (ApplyCommand "/run/current-system/sw/bin/chroma-apply-theme")
     (Schedule
       (Waypoint (CivilDawn (SignedMinutes 0)) Light)
       (Waypoint (CivilDusk (SignedMinutes 0)) Dark)))
@@ -248,9 +250,9 @@ Single record; `ConfigWatcher` re-parses on inotify push.
 Or fully manual (no schedule, daemon honours CLI commands only):
 
 ```
-(IgnisConfig
+(ChromaConfig
   (Theme
-    (ApplyCommand "/run/current-system/sw/bin/ignis-apply-theme")
+    (ApplyCommand "/run/current-system/sw/bin/chroma-apply-theme")
     (Schedule (Manual Light)))
   (Warmth (Schedule (Manual Neutral)))
   (Brightness (Schedule (Manual Bright))))
@@ -283,21 +285,21 @@ field.
 ```mermaid
 sequenceDiagram
   participant user as user shell
-  participant cli as ignis CLI
+  participant cli as chroma CLI
   participant uds as UDS frame<br/>(rkyv archive)
-  participant d as ignisd
+  participant d as chromad
   participant a as Applier
 
-  user->>cli: ignis '(SetWarmth Warmest)'
-  cli->>cli: parse NOTA → IgnisRequest<br/>archive with rkyv<br/>length-prefixed frame
-  cli->>uds: connect $XDG_RUNTIME_DIR/ignis.sock
+  user->>cli: chroma '(SetWarmth Warmest)'
+  cli->>cli: parse NOTA → ChromaRequest<br/>archive with rkyv<br/>length-prefixed frame
+  cli->>uds: connect $XDG_RUNTIME_DIR/chroma.sock
   uds->>d: SocketServer reads frame
   d->>d: bytecheck validate<br/>dispatch to WarmthApplier
   d->>a: Apply { level: Warmest }
   a->>a: cancel any in-flight ramp
   a->>a: zbus set Temperature=2700
   a->>d: ack with new state
-  d->>uds: IgnisResponse archive
+  d->>uds: ChromaResponse archive
   uds->>cli: read frame, validate
   cli->>user: print NOTA reply
 ```
@@ -306,25 +308,25 @@ Per-verb table — perfect specificity, one variant per verb:
 
 | Invocation | Effect |
 |---|---|
-| `ignis '(GetState)'` | full snapshot of all three axes (NOTA reply) |
-| `ignis '(SetTheme Dark)'` | invoke apply command with `dark`, persist mode |
-| `ignis '(SetTheme Light)'` | invoke apply command with `light`, persist mode |
-| `ignis '(GetTheme)'` | print current theme |
-| `ignis '(SetWarmth Warm)'` | jump to a warmth level, cancel any ramp |
-| `ignis '(SetWarmthKelvin 3500)'` | set arbitrary kelvin (Custom level) |
-| `ignis '(StepWarmthUp)'` | step one level toward `Warmest`, clamped |
-| `ignis '(StepWarmthDown)'` | step one level toward `Cold`, clamped |
-| `ignis '(StartWarmthRamp Warmest (Minutes 60))'` | start an interpolating ramp |
-| `ignis '(InterruptWarmth)'` | cancel an in-flight warmth ramp |
-| `ignis '(GetWarmth)'` | print level + kelvin |
-| `ignis '(SetBrightness Mid)'` | jump to a brightness level |
-| `ignis '(SetBrightnessPercent 65)'` | set arbitrary percent |
-| `ignis '(StepBrightnessUp)'` | step one level toward `Brightest` |
-| `ignis '(StepBrightnessDown)'` | step one level toward `Dim` |
-| `ignis '(StartBrightnessRamp Mid (Minutes 5))'` | start an interpolating ramp |
-| `ignis '(InterruptBrightness)'` | cancel an in-flight brightness ramp |
-| `ignis '(GetBrightness)'` | print level + percent |
-| `ignis '(ReloadConfig)'` | force re-read of `config.nota` |
+| `chroma '(GetState)'` | full snapshot of all three axes (NOTA reply) |
+| `chroma '(SetTheme Dark)'` | invoke apply command with `dark`, persist mode |
+| `chroma '(SetTheme Light)'` | invoke apply command with `light`, persist mode |
+| `chroma '(GetTheme)'` | print current theme |
+| `chroma '(SetWarmth Warm)'` | jump to a warmth level, cancel any ramp |
+| `chroma '(SetWarmthKelvin 3500)'` | set arbitrary kelvin (Custom level) |
+| `chroma '(StepWarmthUp)'` | step one level toward `Warmest`, clamped |
+| `chroma '(StepWarmthDown)'` | step one level toward `Cold`, clamped |
+| `chroma '(StartWarmthRamp Warmest (Minutes 60))'` | start an interpolating ramp |
+| `chroma '(InterruptWarmth)'` | cancel an in-flight warmth ramp |
+| `chroma '(GetWarmth)'` | print level + kelvin |
+| `chroma '(SetBrightness Mid)'` | jump to a brightness level |
+| `chroma '(SetBrightnessPercent 65)'` | set arbitrary percent |
+| `chroma '(StepBrightnessUp)'` | step one level toward `Brightest` |
+| `chroma '(StepBrightnessDown)'` | step one level toward `Dim` |
+| `chroma '(StartBrightnessRamp Mid (Minutes 5))'` | start an interpolating ramp |
+| `chroma '(InterruptBrightness)'` | cancel an in-flight brightness ramp |
+| `chroma '(GetBrightness)'` | print level + percent |
+| `chroma '(ReloadConfig)'` | force re-read of `config.nota` |
 
 The verbs split per axis intentionally — perfect specificity over a
 polymorphic `(Set <axis> <value>)`. Each variant carries exactly
@@ -349,10 +351,10 @@ Every behavior lives in the daemon.
 | `RampDuration` | newtype `(Duration)` | Minimum clamp at construct (e.g. ≥1 second to avoid degenerate cases). |
 | `SignedMinutes` | newtype `(i16)` | Allows ±offset around civil-twilight events. |
 | `RampTrigger` | enum `{ CivilDawn(SignedMinutes), CivilDusk(SignedMinutes), TimeOfDay(LocalHour, LocalMinute) }` | Closed; geoclue subscription opens iff any twilight variant present. |
-| `IgnisRequest` | enum (one variant per CLI verb) | rkyv-archived on the wire. |
-| `IgnisResponse` | enum `{ State(VisualState), Error(IgnisError), Acked }` | One-shot reply per request. |
+| `ChromaRequest` | enum (one variant per CLI verb) | rkyv-archived on the wire. |
+| `ChromaResponse` | enum `{ State(VisualState), Error(ChromaError), Acked }` | One-shot reply per request. |
 | `VisualState` | record `{ theme, warmth, brightness, in_flight_ramps }` | Full snapshot returned by `GetState`. |
-| `IgnisError` | enum (typed via `thiserror`) | per crate, no `anyhow`/`eyre` at boundaries. |
+| `ChromaError` | enum (typed via `thiserror`) | per crate, no `anyhow`/`eyre` at boundaries. |
 
 Each level enum carries `step_up` / `step_down` / `clamp` as
 methods (verb belongs to noun). `KelvinTemperature::lerp` is a
@@ -371,7 +373,7 @@ consumer surface, supervision):
 
 ```mermaid
 flowchart TB
-  sup[IgnisSupervisor]
+  sup[ChromaSupervisor]
   sup --> store["StateStore<br/>owns redb DB handle"]
   sup --> theme["ThemeApplier<br/>owns apply-command path"]
   sup --> warmth["WarmthApplier<br/>owns zbus client A"]
@@ -389,7 +391,7 @@ flowchart TB
   style bramp stroke-dasharray: 5 5
 ```
 
-- **`IgnisSupervisor`** is the only place bare `Actor::spawn` is
+- **`ChromaSupervisor`** is the only place bare `Actor::spawn` is
   called; every other spawn is `spawn_linked` from a parent's
   `pre_start`. Failures in any child escalate to the supervisor's
   decision.
@@ -420,7 +422,7 @@ flowchart TB
   subscription to `org.freedesktop.GeoClue2.Client.LocationUpdated`.
   Each push triggers `ScheduleEngine` to recompute its deadlines.
 - **`SocketServer`** owns the UDS at
-  `$XDG_RUNTIME_DIR/ignis.sock`. Length-prefixed rkyv frames.
+  `$XDG_RUNTIME_DIR/chroma.sock`. Length-prefixed rkyv frames.
   Each request gets its own short-lived task; the server itself
   is the supervisor of those tasks.
 - **`ConfigWatcher`** holds an inotify handle on the config path.
@@ -486,7 +488,7 @@ it carries the dconf paths, GTK ini paths, ghostty config layout,
 running-emacs detection, fzf-theme path, and PTY enumeration.
 Today this content lives in `mkApplyScript` (180 lines in
 `base.nix`); under the new shape it becomes a standalone shell
-binary called `ignis-apply-theme`, exported from the home-manager
+binary called `chroma-apply-theme`, exported from the home-manager
 module, and the `ApplyCommand` field in `config.nota` points at it.
 
 Why this split:
@@ -513,7 +515,7 @@ the CLI caller.
 
 Per `skills/rust-discipline.md` §"redb + rkyv":
 
-- **One redb file:** `$XDG_STATE_HOME/ignis/state.redb`.
+- **One redb file:** `$XDG_STATE_HOME/chroma/state.redb`.
 - **One table per concept** (theme, warmth, brightness,
   last-known-location). Keys are `&str`; values are rkyv-archived
   domain records.
@@ -527,7 +529,7 @@ Per `skills/rust-discipline.md` §"redb + rkyv":
 - **Version-skew guard** at boot: a known-slot record carrying
   `(schema_version, wire_version)`; mismatch is a hard fail.
 
-On boot, `IgnisSupervisor` reads the three axis rows + last-known
+On boot, `ChromaSupervisor` reads the three axis rows + last-known
 location from redb, hands the values to each applier, and each
 applier re-applies its current value (theme apply command runs;
 zbus property is set). State on disk and state on hardware
@@ -548,7 +550,7 @@ shutdown.
 | Polling-shaped guards | `ExecStartPre = sleep 1` in `nightshift-sync.service` | proper actor `pre_start` + zbus connection-up wait |
 | State recomputation from text in the daemon | `darkman get` re-read by nightshift each `sync` | daemon owns the typed record |
 | Stale state on resume | text file diverges from DBus property | every boot re-applies redb state to hardware |
-| Cycle-prone systemd graph | `wl-gammarelay-rs ↔ nightshift-sync ↔ graphical-session.target` (incident `a415e3e`) | one user service: `ignisd.service`, `After=wl-gammarelay-rs.service` |
+| Cycle-prone systemd graph | `wl-gammarelay-rs ↔ nightshift-sync ↔ graphical-session.target` (incident `a415e3e`) | one user service: `chromad.service`, `After=wl-gammarelay-rs.service` |
 
 The systemd-cycle incident class disappears because there's no
 `nightshift-sync` to participate in a cycle — the daemon listens
@@ -559,18 +561,18 @@ once with backoff before failing the start.
 
 ## Implementation plan — eight stops
 
-1. **New repo `ignis`** under `/git/github.com/<org>/ignis/`. One
-   Rust crate, `[lib]` + `[[bin]] ignis` + `[[bin]] ignisd`. Flake
+1. **New repo `chroma`** under `/git/github.com/<org>/chroma/`. One
+   Rust crate, `[lib]` + `[[bin]] chroma` + `[[bin]] chromad`. Flake
    with crane + fenix per lore's `rust/nix-packaging.md`.
 2. **Domain types and error enum.** `ThemeMode`, `WarmthLevel`,
    `KelvinTemperature`, `BrightnessLevel`, `BrightnessPercent`,
-   `RampDuration`, `SignedMinutes`, `RampTrigger`, `IgnisRequest`,
-   `IgnisResponse`, `VisualState`, `IgnisConfig`, `IgnisError`.
+   `RampDuration`, `SignedMinutes`, `RampTrigger`, `ChromaRequest`,
+   `ChromaResponse`, `VisualState`, `ChromaConfig`, `ChromaError`.
    NOTA derive on the config + request types; rkyv derive on the
    wire types and the persisted records. Tests round-trip every
    shape.
 3. **StateStore actor.** Owns the redb file at
-   `$XDG_STATE_HOME/ignis/state.redb`. One typed table per axis;
+   `$XDG_STATE_HOME/chroma/state.redb`. One typed table per axis;
    rkyv-archived values. Boot recovery, version-skew guard.
 4. **WarmthApplier + BrightnessApplier actors** (parallel —
    essentially the same shape over different level types, distinct
@@ -579,22 +581,22 @@ once with backoff before failing the start.
    semantics. Per-axis `RampSession` child.
 5. **ThemeApplier actor.** Spawns the configured apply command,
    waits for exit, persists on success.
-6. **ScheduleEngine actor.** Loads `IgnisConfig`. Computes the
+6. **ScheduleEngine actor.** Loads `ChromaConfig`. Computes the
    next fire across all three axes. Single deadline timer.
    Re-computation hook on `LocationUpdate` and on `ReloadConfig`.
    `GeoclueSubscriber` spawned conditionally on
    twilight-trigger presence.
 7. **SocketServer + ConfigWatcher.** UDS at
-   `$XDG_RUNTIME_DIR/ignis.sock`. Length-prefixed rkyv frames.
-   Inotify watch on `~/.config/ignis/config.nota` reloads on
+   `$XDG_RUNTIME_DIR/chroma.sock`. Length-prefixed rkyv frames.
+   Inotify watch on `~/.config/chroma/config.nota` reloads on
    change (no SIGHUP needed; SIGHUP also handled defensively).
 8. **CriomOS-home wiring** (separate commit, after stops 1–7
    land):
-   - Add `ignis` as a flake input.
-   - New `modules/home/profiles/min/ignis.nix`: package the
-     daemon, package the home-manager-built `ignis-apply-theme`
+   - Add `chroma` as a flake input.
+   - New `modules/home/profiles/min/chroma.nix`: package the
+     daemon, package the home-manager-built `chroma-apply-theme`
      script (lifted out of `mkApplyScript`), drop a default
-     `config.nota` if absent, define `ignisd.service`
+     `config.nota` if absent, define `chromad.service`
      (`After=wl-gammarelay-rs.service`, `WantedBy=
      graphical-session.target`).
    - Delete `services.darkman` from `base.nix`.
@@ -602,7 +604,7 @@ once with backoff before failing the start.
      services from `profiles/min/default.nix`.
    - Delete `home.activation.reapplyDarkman`.
    - Replace `theme-dark` / `theme-light` shell wrappers with
-     `ignis '(SetTheme Dark)'` / `(SetTheme Light)` (or keep
+     `chroma '(SetTheme Dark)'` / `(SetTheme Light)` (or keep
      thin wrappers for muscle memory).
    - Drop the systemd-cycle workaround comment in
      `default.nix:705-714` (no longer relevant).
@@ -610,18 +612,18 @@ once with backoff before failing the start.
      and the zsh `terminalInitHook` unchanged — the apply script
      keeps writing the files those depend on.
 
-Stops 1–7 land in the `ignis` repo; stop 8 lands in CriomOS-home
+Stops 1–7 land in the `chroma` repo; stop 8 lands in CriomOS-home
 as a single commit consuming the flake input.
 
 ---
 
 ## What's *not* in scope
 
-- **Implementing the freedesktop appearance portal in `ignisd`.**
+- **Implementing the freedesktop appearance portal in `chromad`.**
   We rely on dconf as the de-facto baseline (set by the apply
   command; read by GTK4, Firefox, GNOME apps, Electron). If a
   later need surfaces, exposing
-  `org.freedesktop.portal.Settings.color-scheme` from `ignisd`
+  `org.freedesktop.portal.Settings.color-scheme` from `chromad`
   is a small follow-up — the daemon already owns the truth.
 - **Per-monitor warmth/brightness.** wl-gammarelay-rs is
   per-output today; the daemon's first slice mirrors that. A
@@ -636,7 +638,7 @@ as a single commit consuming the flake input.
   The canonical signal pattern (per `~/primary/repos/signal`)
   is the right shape today. When Persona's typed messaging
   fabric arrives, the daemon migrates to it as part of
-  workspace-wide migration; not a special case for `ignis`.
+  workspace-wide migration; not a special case for `chroma`.
 - **A `VisualState` cluster-proposal projection** (horizon-rs /
   Criome integration). The first slice is per-user config + state.
   Promotion to a cluster-proposal is a follow-up if visual state
@@ -666,13 +668,13 @@ Defaults are picked; the user can flip them later by editing
    axes that depend on geoclue stay at their `Default` value;
    `TimeOfDay` triggers continue to fire normally.
 5. **Default `ApplyCommand` path.** The home-manager module sets
-   it to `/run/current-system/sw/bin/ignis-apply-theme` — the
+   it to `/run/current-system/sw/bin/chroma-apply-theme` — the
    script the module builds and packages.
 6. **Notification on level changes?** No, by default — silent.
    The CLI's NOTA reply is the user-visible feedback when
    commanded; schedule-driven changes are silent.
 7. **Should the CLI block until apply is ack'd?** Yes — the
-   `IgnisResponse::State` reply contains the post-change
+   `ChromaResponse::State` reply contains the post-change
    `VisualState`, so a successful exit means the apply has
    actually landed. Faster feedback than fire-and-forget; matches
    the user's expectations for CLI tools.
@@ -686,8 +688,8 @@ defaults to a new crate, not editing an existing one. They must
 justify why the new behavior is part of the *same capability*,
 not a new one."
 
-The capability here is **animating the visual state of the
-desktop**. The three axes share:
+The capability here is **managing chroma — the colour state of
+the display**. The three axes share:
 
 - **Same triggers** (sun position, time of day, manual override).
 - **Same upstream signal** (geoclue location).
@@ -748,4 +750,4 @@ context window, per the micro-components ceiling.
   shell binaries and service units removed in stop 8.
 - `CriomOS-home/modules/home/ignis.yaml`,
   `CriomOS-home/modules/home/ignis-light.yaml` — the existing
-  Ignis palette files; the daemon name is the same brand.
+  Ignis palette files; Chroma applies them but does not own them.
