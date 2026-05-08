@@ -103,6 +103,10 @@ The contract crate **owns**:
 - The version-skew guard's known-slot record (schema +
   wire-format version).
 - A complete round-trip test per record kind.
+- Reserved record heads stay reserved workspace-wide. No
+  domain type defines a record kind named `Bind` or
+  `Wildcard`; those heads belong to
+  `signal_core::PatternField<T>` dispatch.
 
 It **does not own**:
 
