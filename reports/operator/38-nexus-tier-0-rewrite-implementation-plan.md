@@ -36,6 +36,16 @@ designer/38 names:
 | verbs | record heads: `(Assert ...)`, `(Match ...)`, `(Subscribe ...)` |
 | dropped | no `(| |)`, no `[| |]`, no `{ }`, no `~ ! ? *`, no `=` |
 
+The verb set is closed to the twelve Sema/Nexus verbs from the current design:
+
+```text
+Assert Subscribe Constrain Mutate Match Infer
+Retract Aggregate Project Atomic Validate Recurse
+```
+
+`Query` is not a Nexus verb. Query-like names such as `NodeQuery` are payload
+types owned by one of those verbs, usually `Match`.
+
 ---
 
 ## 2 · Implementation Defaults
@@ -48,7 +58,7 @@ these defaults unless the user redirects after seeing the diff.
 | implicit assert shorthand | no shorthand; every top-level request has a verb head |
 | reply slots | use typed `SlotBinding` examples, not anonymous `Tuple` |
 | slot reference syntax | bare integers in slot-typed positions |
-| query naming | `NodeQuery`, `EdgeQuery`, `GraphQuery` |
+| pattern payload naming | `NodeQuery`, `EdgeQuery`, `GraphQuery` only inside verb records |
 | wildcard outside pattern positions | invalid; examples keep `_` only inside query records |
 
 These are documentation/spec defaults in Nexus. They do not force the existing
@@ -88,7 +98,7 @@ Criome-facing M0 parser; the spec is moving first.
 
 ```mermaid
 flowchart TD
-    request["Request record"]
+    request["Verb record"]
     verb["Verb head"]
     payload["typed payload"]
     pattern["query record with PatternField positions"]
@@ -149,4 +159,3 @@ flowchart LR
 The key code work is not more Nexus sigil support. It is expected-type decoding
 for `PatternField<T>` in `nota-codec`, then domain records that can use the
 uniform verb-record text shape.
-
