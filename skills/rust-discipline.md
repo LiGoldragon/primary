@@ -265,17 +265,65 @@ fn route(id: &Id) -> Handler {
 }
 ```
 
-### Prefixes for human readability are fine
+### The system mints identity, not the agent
 
-A prefix like `m-2026-05-07-001` is fine **on the wire** —
-humans reading the log see the kind. The rule is against
-*recovering* the kind from the prefix in code. Wire form:
-prefix is a hint; in-memory: types carry the truth.
+Even when a string ID's discriminator is type-correct in
+code, an agent-minted prefix-encoded ID is the wrong shape
+because the agent shouldn't be minting identity at all.
 
-If the workspace uses prefix conventions, the convention
-lives in the type's constructor (`MessageId::mint()` produces
-a string starting with `m-`); no other code knows about the
-prefix.
+```rust
+// Wrong — agent invents an ID
+let id = format!("m-{}-{:03}", today_iso8601(), counter.next());
+store.send(Message { id, sender, recipient, body }).await?;
+```
+
+The agent does clock work, maintains counter state, packs
+typed values into stringly-typed form, and produces an
+opaque key parallel to the slot the store assigns anyway.
+
+```rust
+// Right — the store assigns Slot<T>
+let slot = store.assert(Message { recipient, body }).await?;   // returns Slot<Message>
+```
+
+The wire form on the read path shows the surrounding record
+kind at the head ident (`(Message ...)`) and the slot as a
+bare integer; humans see *what kind of thing* and *which one*
+without any agent-minted prefix.
+
+The same shape applies when the agent supplies its own
+sender or its own timestamps:
+
+```rust
+// Wrong — sender on the record body (already on the auth proof)
+store.assert(Message { sender: my_principal, recipient, body }).await?;
+
+// Wrong — commit time as a record field (transition log already stamps it)
+store.assert(HarnessObservation {
+    subject,
+    state,
+    observed_at: Utc::now().to_rfc3339(),    // string, agent-minted
+}).await?;
+
+// Right — agent supplies only content; infrastructure stamps the rest
+store.assert(Message { recipient, body }).await?;
+store.assert(HarnessObservation { subject, state }).await?;
+```
+
+The unifying test: ***could the system supply this value
+without asking the agent?*** If yes, the agent must not
+supply it. Identity, commit time, sender principal — all
+infrastructure context. The wire carries only what only
+the sender knows.
+
+*Content* timestamps (a `Deadline`'s expiration, a
+scheduled message's send-at) are different — those are
+values the agent genuinely supplies, and they appear as a
+typed `Timestamp` (a bare integer in NotaTransparent shape
+— nanos since epoch — not a string).
+
+For the apex statement of this rule, see ESSENCE
+§"Infrastructure mints identity, time, and sender."
 
 ### Companion to "Domain values are types"
 

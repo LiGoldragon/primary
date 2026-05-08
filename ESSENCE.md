@@ -305,6 +305,57 @@ across two because the base was designed too thin. Fix the base.
 
 ---
 
+## Infrastructure mints identity, time, and sender
+
+The wire form an agent constructs carries only what the agent
+knows. **Identity, timestamps, and sender principal are
+infrastructure-supplied — never minted by the agent.**
+
+- **Identity is the slot.** When a record has identity beyond
+  its content, the store assigns a typed `Slot<T>` on commit;
+  the agent receives it in the reply. The agent never invents
+  a string ID like `m-2026-05-06-001` — that's the agent doing
+  clock-work, maintaining counter state, packing typed values
+  into a stringly-typed format, and inventing a parallel
+  identity scheme alongside the slot the store will assign
+  anyway. The wire form on the read path shows the surrounding
+  record kind at the head identifier and the slot as a bare
+  integer; humans see *what kind of thing this is and which
+  one it is* without any agent-minted prefix.
+- **Commit time belongs on the transition log, not the
+  record.** When the store commits an Assert, the transition
+  entry stamps when. The agent doesn't write an ISO-8601
+  string into the record body — that's the agent doing the
+  clock's work, hiding a typed value in a string format, and
+  embedding redundant data the store already knows. Queries
+  by time range read the transition log, not a timestamp
+  field on the data record. The exception is *content*
+  timestamps (a Deadline's expiration, a scheduled-message
+  send-at): these are values the agent genuinely supplies,
+  and they appear as typed `Timestamp` (a bare integer in
+  NotaTransparent shape — nanos since epoch — not a string).
+- **Sender comes from the connection's auth proof, not the
+  message body.** A `Message` record names the recipient
+  (addressing is content) but never the sender — the sender
+  is established by the authentication of the connection
+  that asserted the message. Putting the sender in the
+  record body is redundant *and* untrustworthy: the model
+  could write any name and the record would carry it.
+
+The unifying test: ***could the system supply this value
+without asking the agent?*** If yes, the agent must not
+supply it. The wire is shorter; the agent does less work
+it's bad at; identity, time, and sender stop being places
+where bugs and spoofing live.
+
+The companion at the Rust level — concrete anti-patterns
+(`format!("m-{}-...")`, sender field on a record, commit
+time as a record field) and the type-system fixes — is in
+this workspace's `skills/rust-discipline.md` §"Don't hide
+typification in strings."
+
+---
+
 ## Micro-components
 
 Every functional capability lives in **its own independent
