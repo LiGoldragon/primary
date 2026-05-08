@@ -92,8 +92,9 @@ convention is the same `<N>-<topic>.md` shape under
 ### Filename convention
 
 **`<N>-<topic>.md`** where `N` is the next integer after the
-highest-numbered report already in the role's subdirectory.
-**No leading zeros. No date prefix.**
+**highest-numbered report across every role subdirectory**
+under `~/primary/reports/`. The numbering is **workspace-wide,
+not per-role.** **No leading zeros. No date prefix.**
 
 Examples for `reports/designer/`:
 
@@ -101,21 +102,51 @@ Examples for `reports/designer/`:
 - `12-no-polling-delivery-design.md`
 - `13-niri-input-gate-audit.md`
 
-To find the next number:
+To find the next number, scan **every** role subdir and take
+one above the maximum:
 
 ```sh
-ls reports/<role>/ | sort -t- -k1,1n | tail -1
+find ~/primary/reports -maxdepth 2 -name '[0-9]*.md' -printf '%f\n' \
+  | sort -t- -k1,1n | tail -1
 ```
+
+Then `N = (that number) + 1`.
 
 The number is a stable identifier — once assigned, it does
 not change. The git log captures the lineage if a report
 gets updated.
 
-**Per-role numbering is independent.** Designer report 5
-and operator report 5 are different reports; the role
-subdirectory disambiguates. Cross-references between roles
-include the subdir: `reports/operator/3-...md` from a
-designer report.
+**Numbering is workspace-wide, not per-role.** A report's
+number reflects its **landing order across all roles**, not
+its position within its role's own sequence. If the
+designer's highest is 26 and operator writes next, operator's
+report is 27 — *not* the next free slot in the operator
+subdir. The role subdirectory still disambiguates *who wrote
+it*; the number disambiguates *when it landed*.
+
+**Cross-references between roles still include the subdir:**
+`reports/operator/27-...md` — the role subdir names the
+author; the number names the position in the timeline.
+
+**Why workspace-wide.** Per-role numbering produced misleading
+juxtapositions: operator report 12 looked older than designer
+report 13 to a fresh reader, when in fact operator's 12
+landed *after* designer's 26. Reading the role subdir
+listings together became confusing as the workspace grew.
+The workspace-wide rule keeps the numerical ordering
+faithful to landing time across the whole `reports/` tree.
+
+**Numbers from before this rule landed are grandfathered.**
+Existing reports keep their numbers; the rule applies to
+newly-written reports. Don't renumber past reports.
+
+**Numbers are not reused after deletion.** When a stale
+report is removed (see Hygiene below), its number stays
+retired across the whole workspace. The next report takes
+the next-highest-plus-one *across every role subdir*, not
+the freed number. Gaps in the listing are a visible signal
+that something was retired; the commit history holds the
+deleted content.
 
 **Why no dates:** dates collide when more than one report
 lands in a day, and the date itself is noise once you have
@@ -127,13 +158,6 @@ report landed; the filesystem doesn't need to repeat that.
 correctly. Padding adds noise at the cost of needing to
 know the maximum digit count up front; the count grows
 without warning.
-
-**Numbers are not reused after deletion.** When a stale
-report is removed (see Hygiene below), its number stays
-retired. The next report takes the next-highest-plus-one,
-not the freed number. The gap in the filesystem listing is
-a visible signal that something was retired; the
-commit history holds the deleted content.
 
 ---
 
