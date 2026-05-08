@@ -18,8 +18,9 @@ Report 40 settles that every Persona operation is one of the
 twelve verb records:
 
 ```text
-Assert Subscribe Constrain Mutate Match Infer
-Retract Aggregate Project Atomic Validate Recurse
+Cardinal: Assert Mutate Retract Atomic
+Fixed: Subscribe Match Aggregate Validate
+Mutable: Constrain Infer Project Recurse
 ```
 
 The verb is the protocol move. The record kind is the Persona
@@ -96,20 +97,24 @@ flowchart TB
     delivery["delivery"]
     harness["harness"]
     binding["binding"]
+    authorization["authorization"]
     observation["observation"]
     lock["lock"]
     transition["transition"]
     stream["stream"]
+    deadline["deadline"]
 
     core --> persona
     persona --> message
     persona --> delivery
     persona --> harness
     persona --> binding
+    persona --> authorization
     persona --> observation
     persona --> lock
     persona --> transition
     persona --> stream
+    persona --> deadline
 ```
 
 First contract modules:
@@ -236,6 +241,11 @@ M0 does not need every advanced verb implemented. It does need
 `Subscribe`, because push-not-pull is not optional for Persona's
 router.
 
+`Aggregate`, `Project`, `Constrain`, `Recurse`, and `Infer` are
+deferred to M1. They are not load-bearing for the message-routing
+slice in §9, but become load-bearing as soon as queries need counts,
+field projection, joins, thread walks, or recovery rules.
+
 ---
 
 ## 7 · Tests To Add First
@@ -258,7 +268,7 @@ Test cases:
 
 | Test | What it proves |
 |---|---|
-| `Message` has only recipient/body | no sender/id/timestamp body fields |
+| encoded `Message` is `(Message recipient body)` | no sender/id/timestamp body fields |
 | `(Assert (Message bob "hello"))` round-trips | send is Assert |
 | assert reply returns `Slot<Message>` | store mints identity |
 | authenticated sender appears in transition log | auth, not model text, owns sender |
@@ -283,6 +293,7 @@ visible while coding:
 | `Delivery` lifecycle | keep as mutable state record; observations stay immutable asserts |
 | proposal records | define only when the first LLM recovery feature needs them; do not block M0 |
 | heterogeneous status replies | prefer typed status reply records over anonymous mixed tuples |
+| token vocabulary | lock the Tier 0 lexer to current Nexus records; no compatibility tokens for retired sigils or delimiters |
 
 The most important guardrail: do not reintroduce agent-minted
 string IDs as "temporary" test fixtures. Tests should use store
@@ -316,4 +327,3 @@ flowchart LR
 If that slice obeys the identity discipline, uses `Subscribe`
 instead of polling, and models effects outside the verbs, the rest
 of Persona can grow without inventing another protocol.
-
