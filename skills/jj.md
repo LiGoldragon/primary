@@ -91,6 +91,54 @@ shell string.
 
 ---
 
+## `jj describe @` is forbidden for finalising new work
+
+The canonical commit form is **`jj commit -m '<msg>'`** —
+nothing else. **Never use `jj describe @ -m '<msg>'`** to
+finalise new working-copy work, even though it is
+functionally similar.
+
+Why forbidden:
+
+- `jj commit` is *named* a commit. It explicitly *advances
+  `@` to a new empty child*. The next edit will go in a new
+  commit; you can't accidentally pile more changes onto
+  the just-described one.
+- `jj describe @` is *named* "describe." It just sets a
+  description on the current `@` without advancing. A
+  follow-up edit lands in the same commit, growing it
+  silently. Bookmark advancement (`-r @`) is also
+  incidental — the bookmark moves to the same commit you
+  just described, and jj's "became immutable, new commit
+  created on top" warning papers over the non-canonical
+  flow.
+- The friction of `-r @-` (commit's bookmark form) is the
+  discipline. The thought "wait, am I targeting the right
+  commit?" is what surfaces "what's actually in this
+  commit?" — which is the moment to remember to read
+  `jj st`.
+
+Allowed `describe` uses (narrow):
+
+| Form | Use |
+|---|---|
+| `jj describe @- -m '<msg>'` | Edit description of an already-committed parent (typo fix, message update before push) |
+| `jj describe <rev> -m '<msg>'` | Edit description of any earlier revision (rare) |
+
+**Forbidden:**
+
+| Form | Why |
+|---|---|
+| `jj describe @ -m '<msg>'` | This is the path that bundles peer files into your commit. Use `jj commit -m '<msg>'` instead. |
+| `jj describe -m '<msg>'` (defaults to `@`) | Same — implicit `@` is forbidden. |
+
+If you find yourself typing `jj describe`, stop and ask:
+*am I editing an already-committed description, or am I
+finalising new work?* If finalising new work — use
+`jj commit`.
+
+---
+
 ## Never let jj open an editor
 
 Every jj command that takes a description has an inline
@@ -102,8 +150,7 @@ exits without saving.
 | Command | Inline form |
 |---|---|
 | `jj commit` | `jj commit -m '<msg>'` |
-| `jj describe` | `jj describe -m '<msg>'` |
-| `jj describe @-` | `jj describe @- -m '<msg>'` |
+| `jj describe @-` | `jj describe @- -m '<msg>'` (only for editing already-committed descriptions; see §"`jj describe @` is forbidden") |
 | `jj split <paths>` | `jj split -m '<msg>' <paths>` |
 | `jj split -i` | `jj split -i -m '<msg>'` |
 | `jj squash --into <rev>` | `jj squash --into <rev> --use-destination-message` |
@@ -136,36 +183,44 @@ used.
 
 ---
 
-## Before you describe — the working-copy check
+## Before you commit — the working-copy check
 
-`jj describe` (or any commit-equivalent that finalises `@`)
+`jj commit` (and any other path that finalises `@`)
 captures **every change in the working copy**, regardless of
-who authored it. Run `jj st` before describing and read the
+who authored it. Run `jj st` before committing and read the
 list of changed paths against your scope.
 
 If `jj st` shows files outside your claim — a peer agent's
-in-flight edit, a linter touch, anything not yours — **do
-not describe**. Use `jj split` to isolate your paths first
-(see below). The bare `describe` will bundle peer work into
-a commit with your authorship and your message, leaving the
-peer's intent muddled in version control history.
+in-flight edit, a linter touch, anything not yours —
+**don't commit the whole working copy.** Use `jj split` to
+isolate your paths first (see below). A bare `jj commit`
+bundles peer work into a commit with your authorship and your
+message, leaving the peer's intent muddled in version control
+history.
 
 This check is procedural, not aesthetic. The recurring
-failure mode is "I edited files X and Y; I run `jj describe`;
+failure mode is "I edited files X and Y; I run `jj commit`;
 the working copy also contained Z (peer file or linter
 output); the resulting commit covers X+Y+Z under my message."
 Once pushed, fixing it requires either a force-push or a
 follow-up commit that explains the muddle. Both are worse
 than running `jj st` and `jj split` up front.
 
-The default before any describe in a shared workspace:
+A pragmatic note: if you accidentally bundle a peer file
+once, that's not catastrophic. The substance is intact;
+the commit attribution is muddled but recoverable. Don't
+spend extra command roundtrips guarding against rare
+bundles. Read `jj st`'s output when it appears in any
+preceding tool result — that's usually enough.
+
+The default before any commit in a shared workspace:
 
 ```sh
 jj st                                # what's actually here?
 # if peers are present:
 jj split -m '<my-msg>' <my-paths>    # isolate my scope
 # if only mine:
-jj describe -m '<my-msg>'            # bundled commit
+jj commit -m '<my-msg>'              # canonical commit
 ```
 
 When in doubt — split.

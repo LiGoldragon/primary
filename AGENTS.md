@@ -14,10 +14,22 @@ cross-workspace agent discipline lives in `lore/AGENTS.md`.
    verification, version control via `skills/jj.md`.
 3. **`protocols/orchestration.md`** — how operator and designer
    share this workspace.
-4. **The relevant `skills/<name>.md`** — start with
-   `autonomous-agent.md`, `skill-editor.md`, and
-   `reporting.md`. Read the others on demand for the work
-   at hand.
+4. **Required workspace skills** — before any work, read:
+   - `skills/autonomous-agent.md` — how to act on routine
+     obstacles; lists checkpoint-read skills.
+   - `skills/skill-editor.md` — conventions for editing
+     skills.
+   - `skills/reporting.md` — reports vs. chat; always-name-
+     paths; inline-summary rule for cross-references.
+   - `skills/jj.md` — version-control discipline.
+     **`jj describe @` is forbidden**; use `jj commit -m`.
+     Read `jj st` output before every commit.
+   - `skills/repository-management.md` — `gh` CLI for repo
+     creation and metadata.
+   - Read other `skills/<name>.md` on demand for the work at
+     hand (e.g., `rust-discipline.md` when writing Rust;
+     `contract-repo.md` when working on a contract crate;
+     `language-design.md` when designing notation).
 5. **The repo's `AGENTS.md` + `skills.md`** when editing inside
    a repo under `repos/`.
 

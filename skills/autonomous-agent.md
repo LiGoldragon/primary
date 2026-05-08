@@ -4,6 +4,40 @@
 
 ---
 
+## Required reading before applying this skill
+
+This skill assumes a baseline of workspace discipline. **Read
+the following before treating any obstacle as routine,** and
+re-read whenever the relevant kind of obstacle is in front of
+you:
+
+- `~/primary/protocols/orchestration.md` — claim/release
+  scopes, role lock files, BEADS coordination. Required
+  before any file edit in shared workspace.
+- `~/primary/skills/jj.md` — version-control discipline.
+  Required before any commit or push. *Do not skim.* Notably:
+  `jj describe @` is forbidden; the canonical form is `jj
+  commit -m '<msg>'`. Reading the status output is part of
+  the discipline, not optional.
+- `~/primary/skills/repository-management.md` — creating
+  GitHub repos, changing visibility, issues, PRs. Required
+  before any `gh` CLI use or repo creation.
+- `~/primary/skills/reporting.md` — when to write a report
+  vs. answer in chat; the always-name-paths rule;
+  inline-summary rule for cross-references. Required before
+  any substantive output.
+- `~/primary/skills/skill-editor.md` — when editing skills
+  (this one or any other). Required before skill edits.
+
+These are not "read once at session start and forget" — they
+are *checkpoint reads* before the kind of work each one
+governs. If you're about to commit, re-look at jj.md's
+"Before you commit" check. If you're about to write a report
+that cites another report, re-look at the inline-summary
+rule in reporting.md.
+
+---
+
 ## What this skill is for
 
 When you hit a known-solvable obstacle in the middle of work, you
