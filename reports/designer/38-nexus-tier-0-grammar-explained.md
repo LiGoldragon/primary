@@ -666,9 +666,6 @@ the user answers the open questions in §9.
   §8 — the closed Request enum scaffold.
 - `~/primary/reports/designer/31-curly-brackets-drop-permanently.md`
   §5 — the locked grammar at 12 token variants.
-- `~/primary/reports/designer/35-operator-33-34-critique.md`
-  §3 — the Tier 0 grammar lock referenced from operator/34's
-  restructure plan.
 
 ### Operator
 - `~/primary/repos/nexus/spec/examples/tier-0-canonical.nexus`

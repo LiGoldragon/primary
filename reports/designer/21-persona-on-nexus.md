@@ -565,18 +565,6 @@ What stays, what changes, what's superseded:
 | §"Implementation order" | **rewritten** — see §11 below |
 | §"Tests to land" | **adapts** — every test becomes a nexus expression instead of a custom-API call |
 
-### Designer report 18 (`~/primary/reports/designer/18-persona-contract-repo-design.md`)
-
-**Largely superseded.** The contract repo idea is right, but
-its content shrinks dramatically. Specific:
-
-| Section | Status |
-|---|---|
-| §"What `signal-persona` owns" | **superseded** — drop Frame, handshake, Request/Reply enums; keep only the per-verb payloads (PersonaAssert/Mutate/Retract/Query/Records) and record kinds |
-| §"NOTA boundary" | **rewritten** — nexus is the text boundary; nota-codec is involved as the parser kernel under nexus, not a separate persona-NOTA layer |
-| §"Implementation order" | **rewritten** — see §11 below |
-| §"Naming" | **stays** — `signal-persona` is the right name; it's a layered crate atop signal |
-
 ### Designer report 19 (`~/primary/reports/designer/19-persona-parallel-development.md`)
 
 **Largely stays.** The per-component repos, per-component CLIs,
@@ -590,19 +578,6 @@ What changes:
   a slight ergonomic shim.
 - Each component's "interim store" becomes a record-kind subset
   of the eventual unified persona-store.
-
-### Designer report 20 (`~/primary/reports/designer/20-contract-repo-survey.md`)
-
-**Bead `primary-tss` is partially obsoleted.** The eight
-discipline gaps in the current persona-signal scaffold are real,
-but the larger move is to **rebase signal-persona on signal**
-(drop the duplicated Frame/handshake/auth, drop the invented
-verb enum). Some of the discipline gaps (typed identity, mint
-constructors, missing event records) carry over; the
-verb-related gaps disappear.
-
-A new bead — or amendment to `primary-tss` — should reflect this
-larger pivot.
 
 ---
 
@@ -684,14 +659,8 @@ Both are deferred until the user confirms the nexus-shaped Persona direction lan
 - `~/primary/reports/operator/9-persona-message-router-architecture.md`
   — operator's component shape, mostly preserved; the verb
   shapes are rewritten.
-- `~/primary/reports/designer/18-persona-contract-repo-design.md`
-  — superseded for protocol shape; the contract-repo principle
-  remains.
 - `~/primary/reports/designer/19-persona-parallel-development.md`
   — parallel development shape preserved; CLI shape adapts.
-- `~/primary/reports/designer/20-contract-repo-survey.md` —
-  the bead pivots from "strengthen invented types" to
-  "rebase on signal."
 - `~/primary/skills/contract-repo.md` — the workspace pattern
   for shared rkyv contract crates.
 - `~/primary/skills/rust-discipline.md` §"redb + rkyv" — the

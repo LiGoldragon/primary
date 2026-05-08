@@ -321,9 +321,6 @@ asymmetry visible.
   tokens.
 - `~/primary/reports/designer/26-twelve-verbs-as-zodiac.md`
   §1 — the running example reverts to `(Unify [id])`.
-- `~/primary/reports/designer/28-operator-13-critique.md`
-  §6 — settled-decisions table; the `{ }` row is now "stays
-  dropped permanently."
 
 ---
 

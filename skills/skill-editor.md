@@ -122,6 +122,32 @@ A repo skill does **not** duplicate the workspace contract or
 language-agnostic discipline (those live in `lore/`). It
 captures only what is specific to this repo.
 
+## What goes in a workspace skill (and what doesn't)
+
+A workspace skill (`~/primary/skills/<name>.md`) captures
+**patterns that apply across multiple repos**: cross-cutting
+disciplines, agent-behavior rules, language-design
+principles, contract-repo conventions. The test is *audience*:
+if a fresh agent in a totally unrelated future repo would
+benefit from the rule, the rule belongs in primary.
+
+**Component-specific patterns don't belong in primary.**
+"How nota-codec dispatches `@` and `_` via PatternField<T>"
+is a nota-codec-specific implementation rule — it goes in
+`nota-codec/skills.md`, not `primary/skills/contract-repo.md`.
+"Sema's resilience plane uses typed proposal/approval records
+because LLMs can't be trusted to mutate state directly" is a
+design choice for sema-shaped systems — it goes in
+`sema/skills.md` (or stays in the design report) once that
+repo's skills emerge, not in a primary skill.
+
+The trap: when you discover a pattern, the temptation is to
+write it as a primary skill ("future agents will benefit").
+Resist this. Ask: *is this pattern about how we work across
+the workspace, or about how a specific component is built?*
+Component-specific goes to the component. The workspace skills
+stay general.
+
 ---
 
 ## When to create a new repo skill

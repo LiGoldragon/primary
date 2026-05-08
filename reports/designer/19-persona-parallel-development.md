@@ -13,10 +13,11 @@ cliff-shaped.
 
 This report sits on top of operator's
 `~/primary/reports/operator/9-persona-message-router-architecture.md`
-(component shapes, runtime topology) and designer's
-`~/primary/reports/designer/18-persona-contract-repo-design.md`
-(`persona-signal` as the shared wire vocabulary). It addresses
-the *development process* across those components, not the
+(component shapes, runtime topology) and the design arc's
+contract-repo treatment in
+`~/primary/reports/designer/21-persona-on-nexus.md` and
+`~/primary/skills/contract-repo.md`. It addresses the
+*development process* across those components, not the
 end-state architecture.
 
 The pattern follows the criome/sema model: per-repo niches with
@@ -152,10 +153,10 @@ surface** for each component:
   read), `persona-signal` on the wire to other components
   (machines read).
 
-Per
-`~/primary/reports/designer/18-persona-contract-repo-design.md`,
-NOTA appears at exactly two boundary points: CLI input and the
-pre-harness component's output projection. Inside each
+Per the contract-repo discipline (`~/primary/skills/contract-repo.md`
+§"How NOTA fits"), NOTA appears at exactly two boundary
+points: CLI input and the pre-harness component's output
+projection. Inside each
 component, the value is typed Rust; on the wire between
 components, the form is `persona-signal` rkyv frames.
 
@@ -520,12 +521,6 @@ shape is the rearrangement.
 - `~/primary/reports/operator/9-persona-message-router-architecture.md`
   — the component shapes and runtime topology this report
   develops in parallel against.
-- `~/primary/reports/designer/17-persona-router-architecture-audit.md`
-  — audit of report 9; finding §1 (rename to `persona-store`)
-  is referenced here.
-- `~/primary/reports/designer/18-persona-contract-repo-design.md`
-  — `persona-signal` as the shared wire vocabulary; this
-  report's phase 0 starts there.
 - `~/primary/reports/designer/14-persona-orchestrate-design.md`
   — the workspace orchestration component (different from the
   intra-daemon database owner); both ship as Persona-family
