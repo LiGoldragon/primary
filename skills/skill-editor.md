@@ -67,10 +67,18 @@ without naming a specific file), use the nix-flake form:
 
 ## Format
 
-Skill files are markdown. No required schema. Keep them small —
-soft cap ~150 lines, one capability per file. If a skill is
-growing past that, the right move is usually to split into two
-skills, not to expand one.
+Skill files are markdown. No required schema. **One capability
+per skill** — when a file straddles two distinct capabilities,
+split it. Length is not the criterion; the cohesion of what's
+inside is. A 1000-line skill that covers a single coherent
+discipline (e.g. Rust craft) is fine; a 200-line skill that
+mixes notation design with deploy hygiene is not.
+
+The capability test: *would an agent reaching for one of the
+sections be helped or hindered by also having the other in
+view?* If helped (one cross-cuts the other; the rules cite each
+other), it's one capability. If hindered (the agent has to skim
+past unrelated rules to find what they came for), it's two.
 
 The structure that has worked across this workspace:
 
@@ -132,14 +140,14 @@ if a fresh agent in a totally unrelated future repo would
 benefit from the rule, the rule belongs in primary.
 
 **Component-specific patterns don't belong in primary.**
-"How nota-codec dispatches `@` and `_` via PatternField<T>"
-is a nota-codec-specific implementation rule — it goes in
-`nota-codec/skills.md`, not `primary/skills/contract-repo.md`.
-"Sema's resilience plane uses typed proposal/approval records
-because LLMs can't be trusted to mutate state directly" is a
-design choice for sema-shaped systems — it goes in
-`sema/skills.md` (or stays in the design report) once that
-repo's skills emerge, not in a primary skill.
+"How `nota-codec`'s encoder emits eligible PascalCase strings
+as bare identifiers" is a nota-codec-specific implementation
+rule — it goes in `nota-codec/skills.md`, not in a primary
+skill. "Sema's resilience plane uses typed proposal/approval
+records because LLMs can't be trusted to mutate state
+directly" is a design choice for sema-shaped systems — it
+goes in `sema/skills.md` (or stays in the design report)
+once that repo's skills emerge, not in a primary skill.
 
 The trap: when you discover a pattern, the temptation is to
 write it as a primary skill ("future agents will benefit").

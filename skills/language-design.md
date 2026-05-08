@@ -296,7 +296,7 @@ both classes; keep the grammar small.
 | nexus | 1, 2, 3, 11 (extension surface), 14 |
 | signal | 6, 9, 14, 15, 16 |
 | persona-message records | 4, 5, 6, 14 |
-| ESSENCE.md §"Language-design instincts" | distilled summary of all 17 |
+| ESSENCE.md §"Language-design instincts" | distilled subset (older bullets — this file is the full 18) |
 
 ---
 

@@ -50,11 +50,11 @@ consequences make a shared crate the right home:
   redefined in another is two types — the bytes don't round-
   trip even if the field lists look identical. The contract
   crate is the single definition.
-- **Derive sharing.** `Archive`, `RkyvSerialize`,
-  `RkyvDeserialize`, `bytecheck`, plus any project-specific
-  derive (`NotaRecord`, `NexusPattern`) all live with the
-  type. Re-deriving in each consumer is dead code at best,
-  drift at worst.
+- **Derive sharing.** Wire-format derives (rkyv's
+  `Archive`/`Serialize`/`Deserialize`, `bytecheck`) and any
+  project-specific derives all live with the type.
+  Re-deriving in each consumer is dead code at best, drift
+  at worst.
 - **Front-end stability.** When a layered effect crate adds
   per-verb payloads (e.g. signal-forge over signal), front-end
   clients that depend only on the base contract don't recompile
