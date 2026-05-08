@@ -28,6 +28,8 @@ Pruned on 2026-05-06:
 | `CriomOS-pkgs` | `/git/github.com/LiGoldragon/CriomOS-pkgs` |
 | `TheBookOfSol` | `/git/github.com/LiGoldragon/TheBookOfSol` |
 | `arca` | `/git/github.com/LiGoldragon/arca` |
+| `chroma` | `/git/github.com/LiGoldragon/chroma` |
+| `chronos` | `/git/github.com/LiGoldragon/chronos` |
 | `criome` | `/git/github.com/ligoldragon/criome` |
 | `criomos-archive` | `/git/github.com/LiGoldragon/criomos-archive` |
 | `forge` | `/git/github.com/LiGoldragon/forge` |
