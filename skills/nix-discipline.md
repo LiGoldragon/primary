@@ -144,6 +144,12 @@ nix flake lock --inputs-from path:/path/to/sibling-flake
 This resolves any matching inputs using the sibling's locked
 entries — no hash typed by hand.
 
+For the workspace-specific application — every Rust crate's
+fenix lock copied from a canonical source so the workspace
+shares one rustc store path — see lore's `rust/nix-packaging.md`
+§"Workspace fenix lockstep" and the script
+`~/primary/tools/sync-rust-fenix`.
+
 ---
 
 ## Cargo git deps in crane flakes — never `outputHashes`
