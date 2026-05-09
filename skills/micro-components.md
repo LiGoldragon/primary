@@ -170,6 +170,53 @@ mode (Brown / Grzybek note this directly).
 
 ---
 
+## Cargo.toml dependencies — `git =`, never `path = "../"`
+
+A repo's `Cargo.toml` must not depend on a sibling repo via
+`path = "../sibling"`. Cross-repo dependencies use
+`git = "https://github.com/..."` (or a published crates.io
+version).
+
+```toml
+# Wrong — assumes a filesystem layout the consumer's machine doesn't have
+nota-codec = { path = "../nota-codec" }
+
+# Right — portable, Cargo.lock pins the rev, nix can fetch
+nota-codec = { git = "https://github.com/LiGoldragon/nota-codec.git" }
+```
+
+The discriminator: **does the path stay inside the repo's
+own working tree?** Intra-repo paths (`path = "lib"` inside
+a Cargo workspace) are fine — they travel with `git clone`.
+Any `..` in the path crosses repo boundaries and breaks
+the independently-buildable invariant above.
+
+Three concrete failures the rule prevents:
+
+1. **Fresh clones don't reproduce.** A new machine cloning
+   the consumer alone gets `cargo build` failing with
+   *"could not find Cargo.toml at ../sibling"*.
+2. **Cargo.lock drifts silently.** A `path` dep doesn't pin
+   a rev — Cargo resolves whatever the local sibling has
+   at build time. A `git = "..."` dep pins the rev in
+   Cargo.lock; the build is reproducible.
+3. **`nix flake check` can't fetch.** The build sandbox
+   isolates from the host filesystem; `path = "../..."`
+   can't cross the sandbox boundary.
+
+For local fast iteration without violating the committed
+Cargo.toml, use Cargo's `[patch."https://github.com/..."]`
+in a user-local `.cargo/config.toml` (gitignored). This
+mirrors the nix `--override-input path:...` pattern in
+`skills/nix-discipline.md` §"Iterating against a local
+clone."
+
+The toolchain mechanics — the `cargoLock.outputHashes`
+pattern in flake.nix, how to compute the sha256 — live in
+`lore/rust/style.md` §"Cross-crate dependencies."
+
+---
+
 ## Distinctions
 
 - **Microservices** (Newman, 2015) — runtime processes

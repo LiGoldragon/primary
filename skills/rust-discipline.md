@@ -476,6 +476,40 @@ renaming the language's primitives.
 
 ---
 
+## No crate-name prefix on types
+
+A type's name belongs to its module context, not the
+cross-crate global namespace. The crate IS the namespace;
+repeating it in the type name is redundant ceremony.
+
+```rust
+// Wrong — crate name in the type name; redundant at every use site
+pub struct ChromaRequest { … }
+pub struct ChromaError { … }
+
+// Right — call sites read chroma::Request, chroma::Error
+pub struct Request { … }
+pub struct Error { … }
+```
+
+The standard library is the canonical reference: `Vec`,
+`HashMap`, `Arc`, `Cell`, `Mutex` — never `StdVec`,
+`StdHashMap`, `StdArc`. The Rust API Guidelines name this as
+**C-CRATE-PREFIX**: types should not include the crate name.
+
+The discriminator: a *descriptive* leading word stays
+(`VisualState` — Visual describes what kind of state);
+a *namespace* prefix goes (`ChromaRequest` — Chroma names
+the crate). Same workspace pattern: `signal::Request`,
+`signal::Reply`, `signal::Frame`, `signal::Tweaks` — never
+`SignalRequest`.
+
+For the cross-language version with the wider offender
+table, see this workspace's `skills/naming.md` §"Anti-pattern:
+prefixing type names with the crate name."
+
+---
+
 ## Errors: typed enum per crate via thiserror
 
 Each crate defines its own `Error` enum in `src/error.rs`,
@@ -867,6 +901,15 @@ flake input instead.
 
 A workspace of related Rust crates (e.g. lib + cli) belongs in
 **one** repo together. The split is per *project*, not per crate.
+
+**Cross-crate Cargo.toml deps use `git = "..."`, never `path
+= "../..."`.** A repo's Cargo.toml that references a sibling
+repo via `path = "../sibling"` makes the repo non-portable —
+fresh clones don't reproduce, Cargo.lock doesn't pin the rev,
+nix flake check can't fetch through the sandbox. The
+canonical home for this rule is `skills/micro-components.md`
+§"Cargo.toml dependencies"; this section is the Rust crate's
+side of the same rule.
 
 For the toolchain reference (Cargo.toml conventions, cross-crate
 dependencies, git-URL deps, pin strategy), see lore's

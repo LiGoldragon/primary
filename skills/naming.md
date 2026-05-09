@@ -144,6 +144,58 @@ the bug, not the criterion.
 
 ---
 
+## Anti-pattern: prefixing type names with the crate name
+
+**A type's name belongs to its module context, not to the
+cross-crate global namespace.** The crate IS the namespace;
+repeating it in the type name is redundant ceremony.
+
+```rust
+// Wrong — crate name redundant at every use site
+pub struct ChromaRequest { … }
+pub struct ChromaResponse { … }
+pub struct ChromaConfig { … }
+pub struct ChromaError { … }
+
+// Right — call sites read chroma::Request, chroma::Error
+pub struct Request { … }
+pub struct Response { … }
+pub struct Config { … }
+pub struct Error { … }
+```
+
+The discriminator: **does the leading word *describe* the
+type, or does it *name* its origin crate?** Descriptive
+words stay; namespace prefixes go.
+
+| Prefix is wrong | Prefix is fine |
+|---|---|
+| `ChromaRequest` (Chroma is the crate) | `VisualState` (Visual describes what kind of state) |
+| `StylixOptions` (Stylix is the crate) | `ColorScheme` (descriptive) |
+| `NotaCodecError` | `LexerError` |
+| `PersonaMessageRouter` | `MessageRouter` |
+
+**The standard library is the canonical reference.** `Vec`,
+`HashMap`, `Arc`, `Cell`, `Mutex` — never `StdVec`,
+`StdHashMap`, `StdArc`. The pattern propagates: well-shaped
+crates name their types as if `use crate_name::*` were the
+norm, even when it isn't.
+
+**Why LLM agents are particularly prone to this:** the
+prefix "feels safe" (avoids collisions, matches the file
+name, looks self-documenting) and tokens are free. Same
+procrastination pressure as in `skills/abstractions.md` —
+the agent skips the harder thinking ("what does this type
+actually represent?") in favour of the shallower
+disambiguator ("which crate is it from?"). Both produce
+the same drift: structural meaning hidden by ceremony.
+
+The Rust enforcement (with std references) lives in
+`skills/rust-discipline.md` §"No crate-name prefix on
+types"; this section is the cross-language form.
+
+---
+
 ## Companion rule
 
 Pairs with this workspace's `skills/beauty.md`: a name that
