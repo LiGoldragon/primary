@@ -146,6 +146,96 @@ entries — no hash typed by hand.
 
 ---
 
+## Cargo git deps in crane flakes — never `outputHashes`
+
+When a Rust crate consumes sibling crates as `git = "..."`
+deps (e.g. `nota-codec`, `nota-derive`, `horizon-lib`),
+**don't** declare `cargoVendorDir.outputHashes = { ... }` in
+`flake.nix`. Modern crane fetches git deps directly from
+`Cargo.lock`'s git-source metadata — the rev hash that's
+already in the lock file is enough. A redundant outputHashes
+block re-pins the same hash in `flake.nix`, which violates
+the no-hashes-in-flake.nix rule above and creates two places
+to update on every bump.
+
+**Right shape** — chroma's `flake.nix` is the worked example:
+
+```nix
+craneLib = (crane.mkLib pkgs).overrideToolchain toolchain;
+src = craneLib.cleanCargoSource ./.;
+commonArgs = {
+  inherit src;
+  strictDeps = true;
+};
+cargoArtifacts = craneLib.buildDepsOnly commonArgs;
+# No outputHashes block. Cargo.lock is the source of truth.
+```
+
+**Wrong shape** (lojix-cli before the 2026-05-09 fix):
+
+```nix
+cargoVendorDir = craneLib.vendorCargoDeps {
+  inherit src;
+  outputHashes = {
+    "git+https://github.com/.../horizon-rs#<rev>" =
+      "sha256-<hash>";  # ← FORBIDDEN
+    "git+https://github.com/.../nota-codec.git#<rev>" =
+      "sha256-<hash>";
+  };
+};
+```
+
+The wrong shape persists in older flakes that pre-date the
+crane API where `Cargo.lock` was the sole source of git-dep
+truth. Drop the block; modern crane handles it.
+
+### Bumping a Rust git dep
+
+The flow is **Cargo.lock-only**, no `flake.nix` edit:
+
+```sh
+nix run nixpkgs#cargo -- update -p <crate>
+# Cargo.lock now references the new rev.
+nix build .# -L
+# Crane fetches the new rev via the lock metadata. No hash to
+# rotate in flake.nix.
+```
+
+To pin a Rust git dep to a specific rev (e.g. to keep
+compatibility with another consumer), use `--precise` against
+the rev hash:
+
+```sh
+nix run nixpkgs#cargo -- update -p nota-codec --precise <rev>
+```
+
+The rev belongs in `Cargo.lock`, not in `flake.nix`.
+
+### Why this matters
+
+Mixing rev pins in `flake.nix` and `Cargo.lock` produces:
+
+- **Two-place updates.** Bumping a dep means editing both the
+  outputHash and the lock entry; forgetting one fails the
+  build.
+- **Hash-mismatch theatre.** `nix build` reports the new sha;
+  the dev pastes it into `flake.nix`; another iteration
+  reveals the next mismatch; etc. This isn't engineering, it's
+  cargo-cult typing of hash strings.
+- **Drift between consumers.** Two flakes that both vendor
+  the same crate with manual outputHashes will go out of sync
+  at the first independent bump.
+
+**Trap**: `cargo update` (without `-p <pkg>`) bumps every
+git-source crate to its branch tip. Sibling crates that share
+a transitive dep (nota-codec, in this workspace's Rust
+family) are then locked at the LATEST tip, which may be
+API-incompatible with another sibling that's still on the
+older rev. Pin with `--precise <rev>` to the rev the other
+sibling consumes if the bump is breaking.
+
+---
+
 ## Don't reference raw `/nix/store/<hash>-<name>` paths
 
 Store hashes change on every rebuild. Any recorded path
