@@ -171,7 +171,8 @@ commit, the skill change). Example:
 ```sh
 bd close primary-8b6 -r "Shipped via chroma daemon (replaces \
 darkman + nightshift). See \
-~/primary/reports/system-specialist/28-chroma-unified-visual-daemon.md."
+~/primary/reports/system-specialist/96-system-specialist-agglomerated-archive.md \
+(retired report 28 summary)."
 ```
 
 The closing note is the breadcrumb a future agent reads

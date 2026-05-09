@@ -10,8 +10,8 @@ pushed, and the home generation is live on the new pipeline.*
 
 | Layer | Pin / state | Verified |
 |---|---|---|
-| User's `lojix-cli` in PATH | `/nix/store/229z993qgp5vyf5ms1mk2754534cp2ns-lojix-cli-0.1.0/bin/lojix-cli` | `which lojix-cli` resolved to it |
-| Live home generation | `/nix/store/lz20w0794p8pr729sy5q3lmcf0560lmw-home-manager-generation` | New gen activated cleanly |
+| User's `lojix-cli` in PATH | new `lojix-cli-0.1.0` store binary | `which lojix-cli` resolved to it |
+| Live home generation | new Home Manager generation | New gen activated cleanly |
 | `CriomOS-home/flake.lock` `lojix-cli` pin | `e3090eaf52` (audit Tier 2) | `nix flake metadata` confirmed |
 | `horizon-rs` main | `4a17d4799f1a` | pushed |
 | `lojix-cli` main | `e3090eaf5262` | pushed; home consumes via flake input |
@@ -88,7 +88,7 @@ Output stream confirmed:
 - `horizon` flake input overridden with the freshly-generated `horizon.json` (new field shape)
 - 5 derivations built (home-manager-path, fontconfig conf, activation script, files, generation)
 - All 18 home.activation steps completed cleanly (`linkGeneration`, `installPackages`, `dconfSettings`, `mergePiModels`, `reloadSystemd`, `vscodeProfiles`, etc.)
-- Final generation: `/nix/store/lz20w0794p8pr729sy5q3lmcf0560lmw-home-manager-generation`
+- Final generation: new Home Manager generation
 
 Post-deploy verification: `which lojix-cli` resolves to the new `lojix-cli-0.1.0` store path, and re-running with `Build` mode against the same Nota request returns the same generation hash — the installed binary is the new one.
 
@@ -118,9 +118,9 @@ I held off on running this myself because `FullOs Switch` is invasive (modifies 
 
 The `horizon-rs` flake-check breakage (`primary-4mn`) also keeps `nix flake check` from running — fixing that is prerequisite to any CI gating.
 
-### Items in `report 75` no longer surfaced
+### Items from retired report 75 no longer surfaced
 
-The report-75 surfaced items I labelled "needs human approval" are now *done* (Magnitude renames, AtLeast field renames, the smaller method-extraction items). The other "architectural smell" items I listed in 75 are either:
+Report 75 is now summarized in `reports/system-specialist/96-system-specialist-agglomerated-archive.md`; its surfaced items I labelled "needs human approval" are now *done* (Magnitude renames, AtLeast field renames, the smaller method-extraction items). The other "architectural smell" items I listed in 75 are either:
 - Done in this session (`SshTarget` typed fields landed in earlier audit follow-up; `lid_switch_policy` extracted; `resolve_builder_target` extracted)
 - Or genuinely not worth doing (the rest of `NodeProposal::project` and `DeployState::run` are linear pipelines whose data dependencies don't decompose cleanly; splitting buys only LOC reduction at the cost of structural risk)
 
