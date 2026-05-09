@@ -11,8 +11,8 @@ CriomOS, CriomOS-home, lojix deployment, horizon projection, desktop
 runtime, user services, input devices, Niri, Noctalia, and system/home
 interfaces.
 
-`system-specialist` is one of the workspace's four coordination roles
-(alongside `operator`, `designer`, and `poet`). Claim it through
+`system-specialist` is one of the workspace's five coordination roles
+(alongside `operator`, `designer`, `poet`, and `assistant`). Claim it through
 `tools/orchestrate claim system-specialist <paths> -- <reason>` before
 editing files in the OS / platform surface. Reports go in
 `reports/system-specialist/` and are exempt from the claim flow.
@@ -127,6 +127,16 @@ For STT prompts and likely transcription mistakes, read this workspace's
 
 ---
 
+## Working with assistant
+
+Assistant may take bounded system-specialist support work when the
+system specialist names the scope: a flake-input audit, a log
+inspection pass, a narrow Nix fix, or a deployment-adjacent report.
+Assistant reads this skill and the target repo's `skills.md` before
+claiming, then reports under `reports/assistant/`.
+
+---
+
 ## Operator interface — Nota only
 
 Cluster deploy requests flow through `lojix-cli` and the operator
@@ -231,4 +241,5 @@ non-cache nodes' daemons sign locally-built paths and let
 - CriomOS-home's `skills.md`
 - this workspace's `skills/stt-interpreter.md`
 - this workspace's `skills/autonomous-agent.md`
+- this workspace's `skills/assistant.md`
 - lore's `AGENTS.md`

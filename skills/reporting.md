@@ -74,6 +74,7 @@ Each role owns a subdirectory under `~/primary/reports/`:
 - `reports/designer/`
 - `reports/system-specialist/`
 - `reports/poet/`
+- `reports/assistant/`
 
 These are **exempt from the claim/release flow** — agents
 write reports without coordinating a lock. Each role

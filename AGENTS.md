@@ -12,8 +12,8 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
    layers, beauty-as-criterion, verb-belongs-to-noun, push-not-
    poll, naming, design reports as visuals, parallel-tool-result
    verification, version control via `skills/jj.md`.
-3. **`protocols/orchestration.md`** — how operator and designer
-   share this workspace.
+3. **`protocols/orchestration.md`** — how roles share this
+   workspace.
 4. **Required workspace skills** — before any work, read:
    - `skills/autonomous-agent.md` — how to act on routine
      obstacles; lists checkpoint-read skills.
@@ -35,12 +35,14 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
 
 ## Roles
 
-The workspace recognises four coordination roles:
+The workspace recognises five coordination roles:
 
 - `operator` — implementation; default agent: Codex.
 - `designer` — architecture, skills, reports; default agent: Claude.
 - `system-specialist` — OS / platform / deploy; default agent: any.
 - `poet` — writing as craft; default agent: any.
+- `assistant` — elastic agentic workforce, mostly
+  operator-shaped; default agent: any.
 
 Each agent must know its role before claiming or editing. The
 coordination protocol is `protocols/orchestration.md`; the
@@ -53,7 +55,7 @@ helper is `tools/orchestrate`.
 | `ESSENCE.md` | Workspace intent — upstream. |
 | `protocols/orchestration.md` | Role-coordination protocol. |
 | `skills/<name>.md` | Cross-cutting agent capabilities. |
-| `reports/<role>/` | Role-owned reports (`operator/`, `designer/`, `system-specialist/`, `poet/`). Exempt from claim flow; each role writes only its own subdirectory. |
+| `reports/<role>/` | Role-owned reports (`operator/`, `designer/`, `system-specialist/`, `poet/`, `assistant/`). Exempt from claim flow; each role writes only its own subdirectory. |
 | `<role>.lock` | Per-role coordination state file. |
 | `tools/orchestrate` | Claim/release helper. |
 | `.beads/` | Shared short-tracked-item store. Never claimed; any agent may write BEADS tasks at any time. **Transitional** — see below. |

@@ -14,11 +14,12 @@ notations humans write, the boundaries between crates, the
 rules in `ESSENCE.md` and `skills/`, the reports that name
 what the workspace is becoming.
 
-`designer` is one of the workspace's four coordination roles
-(alongside `operator`, `system-specialist`, and `poet`). Claim
-it through `tools/orchestrate claim designer <paths> --
-<reason>` before editing files in the design surface. Reports
-go in `reports/designer/` and are exempt from the claim flow.
+`designer` is one of the workspace's five coordination roles
+(alongside `operator`, `system-specialist`, `poet`, and
+`assistant`). Claim it through
+`tools/orchestrate claim designer <paths> -- <reason>` before
+editing files in the design surface. Reports go in
+`reports/designer/` and are exempt from the claim flow.
 
 The role name is the discipline. *Designer* names the kind of
 attention the work demands — attention to form, fit, the
@@ -300,6 +301,21 @@ wrong, that's an audit (designer report) + a fix
 
 ---
 
+## Working with assistant
+
+Assistant can extend the designer's working surface when a design
+task needs extra audit, cross-reference cleanup, report inventory,
+or implementation-adjacent verification. Assistant follows the
+designer's rules while doing designer-shaped work: read the
+relevant reports, keep structure in designer-owned canonical files,
+and write any assistant-authored report in `reports/assistant/`.
+
+The designer remains the owner of structural decisions. Assistant
+supplies additional attention and bounded execution; design
+authority stays with the role that owns the surface.
+
+---
+
 ## Working with system-specialist
 
 The designer's design reports may have system-specialist
@@ -417,7 +433,8 @@ violated a discipline. The diagnostic table in
 - this workspace's `skills/skill-editor.md` — how skills
   are written and cross-referenced.
 - this workspace's `skills/system-specialist.md`,
-  `skills/poet.md` — sister role skills.
+  `skills/poet.md`, `skills/assistant.md` — sister role
+  skills.
 - `lore/AGENTS.md` — workspace-level agent contract; the
   design-reports-as-visuals rule lives here.
 - `~/primary/reports/designer/` — the canonical body of

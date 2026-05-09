@@ -12,8 +12,9 @@ refining prose, applying citation conventions, shaping the
 language layer of a document where literary quality is the
 load-bearing concern.
 
-`poet` is one of the workspace's four coordination roles
-(alongside `operator`, `designer`, and `system-specialist`).
+`poet` is one of the workspace's five coordination roles
+(alongside `operator`, `designer`, `system-specialist`, and
+`assistant`).
 Claim it through
 `tools/orchestrate claim poet <paths> -- <reason>` before
 editing files in the writing surface. Reports go in
@@ -124,6 +125,16 @@ poet's discipline is to not paper over a citation gap.
 
 ---
 
+## Working with assistant
+
+Assistant can help the poet with bounded supporting work:
+source inventory, bibliography checks, OCR triage, citation
+cleanup, or prose-adjacent tool work. Assistant follows the
+poet's repo conventions for the writing surface and writes its
+own reports under `reports/assistant/`.
+
+---
+
 ## Tone — present tense, no hedging
 
 The poet writes in the present tense, in the voice of the
@@ -167,6 +178,8 @@ missing.
   applies to prose as well as code.
 - this workspace's `skills/skill-editor.md` — how skills are
   written and cross-referenced.
+- this workspace's `skills/assistant.md` — auxiliary workforce
+  role.
 - this workspace's `protocols/orchestration.md` — claim flow
   for the poet role.
 - TheBookOfSol's `AGENTS.md` — the most-developed writing
