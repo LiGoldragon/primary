@@ -35,6 +35,19 @@ The audit focuses on current work in:
 It builds on the earlier code audit in chat, but reframes every issue
 against the stronger Signal + actor contract.
 
+This revision also integrates the Sema design and audit sequence:
+
+- `reports/designer/63-sema-as-workspace-database-library.md`:
+  Sema is the workspace database kernel, mirroring the Signal-family
+  kernel/layer split.
+- `reports/designer/64-sema-architecture.md`: the live storage
+  architecture is `sema` kernel plus per-consumer typed layers such as
+  `persona-sema`.
+- `reports/designer/66-skeptical-audit-of-sema-work.md`: the
+  load-bearing corrections are version-only schemas, typed table
+  constants, hard failure on legacy/mismatched files, and no
+  hand-maintained table lists.
+
 ---
 
 ## 1. Destination Shape
@@ -89,10 +102,11 @@ logic-plane shape for the durable system.
 | Gap | Current shape | Intended shape | Consequence |
 |---|---|---|---|
 | Router protocol | `persona-message` formats `(RouteMessage ...)` by string | shared Signal request/reply type | no typed request or reply validation |
-| Durable message source | local NOTA log plus in-memory router queue | store actor commits typed transitions to `persona-sema` | delivered messages can be missing from durable state |
+| Durable message source | local NOTA log plus in-memory router queue | store actor commits typed records through `persona-sema` tables | delivered messages can be missing from durable state |
 | Delivery side effect | router injects terminal input directly | router asks harness actor through typed channel | routing policy and terminal mechanics are coupled |
 | Guard facts | shell script manually pushes prompt/focus text | system/harness actors publish typed pushed events | tests prove choreography, not runtime machinery |
 | Wire format | mixed NOTA, ad hoc rkyv, raw socket tags | Signal everywhere between components | incompatible protocols multiply |
+| State format | files and private in-memory queues | Sema-family: `sema` kernel plus `persona-sema` typed layer | no transactional source of truth |
 | Actor model | mostly synchronous loops and direct calls | one actor per stateful component | blocked delivery can stall unrelated traffic |
 | Configuration | hard-coded actor names, prompts, timings, UI detectors | typed configuration records and scenario messages | tests train code paths instead of exercising configured behavior |
 | Rust discipline | local helper functions, string dispatch, ZST commands | data-bearing types and actor-only ZSTs | model remains under-typed |
@@ -272,9 +286,135 @@ actor can translate to the PTY daemon's private byte protocol.
 
 ---
 
-## 6. Correctness Gaps
+## 6. Sema State-plane Gap
 
-### 6.1 Delivery can duplicate after side effect
+The designer reports establish the storage mirror of Signal:
+
+```mermaid
+flowchart TB
+    subgraph wire["wire family"]
+        signal_core["signal-core kernel"]
+        signal_persona["signal-persona domain contract"]
+        signal_core --> signal_persona
+    end
+
+    subgraph state["state family"]
+        sema_kernel["sema kernel"]
+        persona_sema["persona-sema typed storage"]
+        sema_kernel --> persona_sema
+    end
+
+    signal_persona -. "record types" .-> persona_sema
+```
+
+That means `persona-sema` is not a generic "store service" and not a
+router-owned queue. It is Persona's typed table layer over the Sema
+kernel. Its values are the record types from `signal-persona`.
+
+The current messaging prototype has not crossed into that shape:
+
+- message state is still a text ledger in `persona-message`;
+- router pending state is an in-memory `Vec`;
+- durable writes are not typed Sema transactions;
+- delivery attempts are not stored as typed `Delivery` or
+  `Transition` records;
+- the working test inspects `messages.nota.log` rather than querying
+  typed tables.
+
+### 6.1 What Sema Adds To The Messaging Design
+
+The Sema reports add these constraints to the messaging plan:
+
+| Constraint | Consequence for messaging |
+|---|---|
+| `sema` is the database kernel | no component writes its own durable ad hoc database |
+| `persona-sema` is the Persona typed layer | message, delivery, harness, binding, observation, and transition tables live there |
+| values come from `signal-persona` | storage records and wire records share one Rust type source |
+| `Schema` declares version only | table names live beside typed `Table<K, V>` constants, not in a string list |
+| schema guard hard-fails | legacy files and mismatched schema versions do not silently become Persona state |
+| transactions are closure-scoped | commit message + delivery records atomically, not append then route |
+
+This changes the earlier audit's "store actor" statement. The store
+actor is the runtime owner of commits; `persona-sema` is the typed
+storage layer it uses; `sema` is the kernel.
+
+```mermaid
+flowchart LR
+    router_actor["RouterActor"] -->|"commit request"| store_actor["StoreActor"]
+    store_actor -->|"write closure"| persona_sema["persona-sema"]
+    persona_sema -->|"Table<K, V: Archive>"| sema_kernel["sema"]
+    signal_persona["signal-persona"] -. "record types" .-> persona_sema
+```
+
+### 6.2 `persona-sema` Must Export The Real Tables
+
+`reports/designer/66-skeptical-audit-of-sema-work.md` flags that a
+mere open wrapper is not a typed storage layer. The missing piece is
+typed table ownership in `persona-sema`.
+
+The table surface should look conceptually like:
+
+```text
+MESSAGES: Table<MessageSlot, signal_persona::Message>
+DELIVERIES: Table<DeliverySlot, signal_persona::Delivery>
+BINDINGS: Table<BindingSlot, signal_persona::Binding>
+HARNESSES: Table<HarnessSlot, signal_persona::Harness>
+OBSERVATIONS: Table<ObservationSlot, signal_persona::Observation>
+TRANSITIONS: Table<TransitionSlot, signal_persona::Transition>
+```
+
+The exact keys are a design decision, but the ownership is not:
+`persona-sema` owns the typed table constants and open conventions.
+Consumers do not redeclare those tables locally.
+
+### 6.3 The Schema Correction Matters Here
+
+The Sema audit corrected an important false start: a
+`Schema { tables: &[&str], version }` shape does not compose with
+redb. Redb tables are typed by `(name, key_type, value_type)`.
+
+For messaging, this means:
+
+- do not add a hard-coded list of message table names to a schema;
+- do not pre-create tables with placeholder key/value types;
+- do not hand-maintain a table-name list that mirrors
+  `signal-persona::Record`;
+- define typed `Table<K, V>` constants and let redb create each table
+  on first use with its real key/value types.
+
+Any examples in older reports that still show `tables: &[...]` should be
+read through the correction in
+`reports/designer/66-skeptical-audit-of-sema-work.md` and the version-only schema wording in
+`reports/designer/64-sema-architecture.md`.
+
+### 6.4 Store Transition Shape
+
+The message path should become a typed transaction, not a text append:
+
+```mermaid
+sequenceDiagram
+    participant M as MessageIngressActor
+    participant R as RouterActor
+    participant S as StoreActor
+    participant P as persona-sema
+
+    M->>R: Signal Request(Assert Message)
+    R->>S: commit Message + Delivery(Pending)
+    S->>P: sema.write(|txn| insert typed records)
+    P-->>S: committed slots
+    S-->>R: CommitOutcome
+    R->>R: evaluate delivery gates
+```
+
+The store commit returns slots or typed commit outcomes. The agent or CLI
+does not mint durable IDs, sender identity, commit time, or delivery
+state.
+
+---
+
+## 7. Correctness Gaps
+
+### 7.1 Delivery can duplicate after side effect
 
 `persona-router` injects the prompt, then sleeps, captures output, and
 returns `false` if capture evidence is missing. `retry_pending` keeps
@@ -296,7 +436,7 @@ stateDiagram-v2
 Capture failure after input side effect is not "not delivered." It is
 `SentUnconfirmed` or `NeedsAudit`.
 
-### 6.2 Router accepts stale facts
+### 7.2 Router accepts stale facts
 
 The router stores `focus: Option<bool>` and `prompt: PromptFact`.
 Prompt facts have no source, generation, observed-at value, or target
@@ -311,7 +451,7 @@ Observation { target, kind, generation, observed_by, value }
 DeliveryAttempt { delivery, guard_generation, effect_state }
 ```
 
-### 6.3 Human messages are not durable router state
+### 7.3 Human messages are not durable router state
 
 The router treats `human` endpoints as delivered and returns `true`.
 That is acceptable only if another layer has already persisted the
@@ -319,14 +459,14 @@ message and the human inbox projection. In the current code, router
 state is in-memory and the CLI append order can lose audit state after
 route success.
 
-### 6.4 Unknown actors remain pending without a typed reason
+### 7.4 Unknown actors remain pending without a typed reason
 
 Messages to unknown actors stay in `pending`, but the pending item does
 not carry `Blocked(BindingLost)` or equivalent Signal state. The router
 cannot distinguish "wait for later registration" from "bad recipient"
 or "lost binding."
 
-### 6.5 PTY write failure can be invisible
+### 7.5 PTY write failure can be invisible
 
 The PTY daemon ignores write and resize errors in the input thread.
 That lets upper layers believe a write completed when the terminal
@@ -335,7 +475,23 @@ typed failure.
 
 ---
 
-## 7. Logic-plane Separation Gaps
+### 7.6 Store safety depends on Sema guard correctness
+
+Messaging correctness depends on `persona-sema` rejecting wrong files.
+If a legacy Sema file or another consumer's redb file can be opened as
+Persona state, the router can commit valid Signal records into the wrong
+database. The Sema audit names the required behavior:
+
+- fresh file: write schema version;
+- matching file: open;
+- mismatched version: hard fail;
+- existing file without schema version: hard fail as legacy or unknown.
+
+This is not storage hygiene. It is part of message safety.
+
+---
+
+## 8. Logic-plane Separation Gaps
 
 The intended ownership boundary is:
 
@@ -344,7 +500,9 @@ The intended ownership boundary is:
 | domain vocabulary | `signal-persona` | rkyv record types |
 | CLI text projection | `persona-message` | Nexus/NOTA text at human/harness boundary |
 | routing policy | `persona-router` | typed route/delivery decisions |
-| durable commits | `persona-sema` | typed transitions into redb |
+| durable commit actor | store actor | typed commit requests/replies |
+| typed storage layer | `persona-sema` | table layouts over `signal-persona` records |
+| database kernel | `sema` | redb/rkyv table mechanics and schema guard |
 | OS/window facts | `persona-system` | typed pushed observation frames |
 | harness lifecycle | `persona-harness` | typed harness events and commands |
 | terminal bytes | `persona-wezterm` | raw PTY/WezTerm mechanics only |
@@ -364,6 +522,9 @@ Current violations:
    Persona message semantics should live above it.
 5. `persona-message` and `persona-router` both carry delivery behavior.
    There should be one delivery policy owner.
+6. The current prototype has no store actor and no `persona-sema`
+   transaction boundary. Durable state is therefore not separated from
+   CLI/testing mechanics.
 
 The corrective rule: every cross-component call should be replaced by a
 typed actor message over a Signal channel. Direct Rust calls remain only
@@ -371,7 +532,7 @@ inside one component's internal implementation.
 
 ---
 
-## 8. Data Embedded In Code
+## 9. Data Embedded In Code
 
 The current prototype has too much scenario data and policy data in code
 or shell scripts.
@@ -424,10 +585,18 @@ Embedded runtime policy includes:
 - default socket paths under `/tmp`
 - default PTY size 32 x 120
 - string endpoint kinds: `human`, `pty-socket`, `wezterm-pane`
+- hand-maintained storage table-name lists that mirror
+  `signal-persona` record variants
 
 Some of these are adapter defaults, but they still need to be named data
 on configuration types. Timing heuristics should not be hidden inside
 delivery methods.
+
+For storage, the fix is stricter than "move the list to config": table
+identity belongs to typed `Table<K, V>` constants in `persona-sema`.
+Those constants should be generated from, or otherwise kept mechanically
+coupled to, the `signal-persona` record taxonomy rather than maintained
+as a free string list.
 
 ### Prompt and training text
 
@@ -441,9 +610,9 @@ test. The desired shape is:
 
 ---
 
-## 9. Rust-style Gaps
+## 10. Rust-style Gaps
 
-### 9.1 ZST rule conflict
+### 10.1 ZST rule conflict
 
 The new "ZST only for actors" rule conflicts with several current
 types:
@@ -461,7 +630,7 @@ rule is absolute, they need a different representation. If typed marker
 records are still allowed, the rule should say "actor behavior markers
 and schema marker records" rather than "only actors."
 
-### 9.2 Free helper functions remain
+### 10.2 Free helper functions remain
 
 Examples:
 
@@ -474,7 +643,7 @@ They are small, but they still indicate missing owner types:
 - `ProcessAncestry` should own parent lookup through a `ProcessTable`
   or `ProcessSource` object.
 
-### 9.3 Stringly dispatch remains
+### 10.3 Stringly dispatch remains
 
 Examples:
 
@@ -487,13 +656,18 @@ Examples:
 Closed enums in Signal contracts should replace string branches at
 component boundaries.
 
-### 9.4 Rkyv portable feature set is not universal
+### 10.4 Rkyv portable feature set is not universal
 
 `signal-core`, `signal-persona`, and `persona-sema` use the canonical
 rkyv feature set. `persona-message` uses plain `rkyv = "0.8"` for its
 daemon envelope. That creates a second archive dialect.
 
-### 9.5 Data-bearing actor split is incomplete
+Sema adds the same requirement on disk: values stored by
+`persona-sema` must be rkyv archives of the same `signal-persona`
+types, with bytecheck-compatible bounds. A local daemon envelope with a
+different feature set is not a compatible state or wire contract.
+
+### 10.5 Data-bearing actor split is incomplete
 
 The actor ZST pattern should look like:
 
@@ -510,7 +684,7 @@ struct nested inside the router, not a separately supervised actor.
 
 ---
 
-## 10. Repository Gap
+## 11. Repository Gap
 
 The repo set is close, but the dependency direction is still wrong.
 
@@ -532,6 +706,7 @@ and message construction.
 ```mermaid
 flowchart LR
     signal_core["signal-core"] --> signal_persona["signal-persona"]
+    sema_kernel["sema"] --> persona_sema["persona-sema"]
     signal_persona --> persona_message["persona-message"]
     signal_persona --> persona_router["persona-router"]
     signal_persona --> persona_system["persona-system"]
@@ -544,6 +719,8 @@ flowchart LR
 
 The router may depend on harness abstractions, not terminal bytes. The
 message CLI may depend on Signal contracts, not delivery mechanics.
+`persona-sema` depends on `sema` and `signal-persona`; runtime actors
+depend on `persona-sema` for storage, not on raw redb plumbing.
 
 If channel-specific repos are introduced, they sit between
 `signal-persona` and the paired runtime components:
@@ -564,7 +741,7 @@ flowchart TB
 
 ---
 
-## 11. Migration Consequence
+## 12. Migration Consequence
 
 The current prototype should be treated as a test harness that proved:
 
@@ -581,21 +758,25 @@ The next implementation pass should invert the dependency shape:
 
 1. Define the Signal contract for message ingress, delivery state,
    observations, and harness commands.
-2. Make `message` submit a typed Signal frame to a router actor.
-3. Make the router actor commit message/delivery records through
-   `persona-sema` before delivery effects.
-4. Make system and harness actors push observation frames into the
+2. Finish the `persona-sema` typed table surface using
+   `signal-persona` record types.
+3. Ensure `persona-sema` opens only through the Sema schema-version
+   guard and never through ad hoc file logic.
+4. Make `message` submit a typed Signal frame to a router actor.
+5. Make the router actor commit message/delivery records through the
+   store actor and `persona-sema` before delivery effects.
+6. Make system and harness actors push observation frames into the
    router.
-5. Make router delivery create typed `DeliveryAttempt` records.
-6. Make harness actors translate delivery attempts into terminal adapter
+7. Make router delivery create typed `DeliveryAttempt` records.
+8. Make harness actors translate delivery attempts into terminal adapter
    commands.
-7. Keep terminal adapter byte protocols internal to `persona-wezterm`.
-8. Rebuild the live Pi relay test as a configuration-driven actor test,
+9. Keep terminal adapter byte protocols internal to `persona-wezterm`.
+10. Rebuild the live Pi relay test as a configuration-driven actor test,
    with its scenario data in typed records.
 
 ---
 
-## 12. Decisions To Bring Forward
+## 13. Decisions To Bring Forward
 
 1. **ZST rule.** Confirm whether `Bind` and `Wildcard` must stop being
    zero-sized marker records, or whether schema marker records are a
@@ -604,18 +785,26 @@ The next implementation pass should invert the dependency shape:
    physical `signal-persona-*` repo immediately, or whether
    `signal-persona` can own channel modules until the second concrete
    consumer forces a split.
-3. **Text language at harness boundary.** Confirm whether harness-visible
+3. **Store actor naming and repo.** Confirm whether the store actor
+   lives in `persona-sema` or a separate runtime repo that depends on
+   `persona-sema`. The storage layer itself remains `persona-sema`.
+4. **Table derivation.** Decide how `persona-sema` table constants stay
+   coupled to `signal-persona::Record`: generated tables, macro output,
+   or a deliberately hand-written surface with tests that fail on drift.
+5. **Table keys.** Decide the key shape for Persona tables: typed
+   slots, per-record slot newtypes, or domain-specific keys.
+6. **Text language at harness boundary.** Confirm whether harness-visible
    prompts are rendered as Nexus text, NOTA records, or a named Persona
    projection language while models are still text-trained.
-4. **Store ownership.** Confirm that `persona-sema` is the only durable
-   state writer and the router never owns a private durable queue.
-5. **Terminal adapter protocol.** Confirm whether `persona-wezterm`'s
+7. **Store ownership.** Confirm that the assembled runtime has one store
+   actor and that neither router nor CLI owns a private durable queue.
+8. **Terminal adapter protocol.** Confirm whether `persona-wezterm`'s
    private PTY byte protocol can stay internal, with Signal only at the
    harness actor boundary.
 
 ---
 
-## 13. Bottom Line
+## 14. Bottom Line
 
 The current prototype is useful evidence, not the architecture. It proved
 that real harnesses can exchange messages under scripted guard conditions.
@@ -627,6 +816,12 @@ The largest gap is not one bug. It is a layering inversion: the current
 message path lets text, files, terminal bytes, and routing state touch
 each other directly. The intended system inserts typed Signal contracts
 and actors between every one of those concerns.
+
+The Sema reports add the corresponding state correction: typed Signal
+records need a typed Sema home. `persona-sema` must become the table
+layout over `signal-persona` records, guarded by Sema's schema-version
+contract. Until that exists, router "durability" is only a prototype
+log, not Persona state.
 
 The next code pass should therefore start with contracts and actor
 mailboxes, not by patching more behavior into the current line-oriented
