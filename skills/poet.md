@@ -38,9 +38,10 @@ The poet's natural primary scope:
   them.
 - **substack-cli** — the publish-to-substack tool. The poet
   uses it to ship.
-- **bibliography** (off-workspace, at `~/git/bibliography/`) —
-  the standalone scholarly library. Indexing and quote
-  extraction.
+- **library** (at `~/primary/repos/library/`, ghq-managed at
+  `/git/github.com/LiGoldragon/library/`) — the standalone
+  scholarly book repository: organized binaries plus the
+  `bibliography.md` index. Indexing, OCR, and quote extraction.
 - **The prose layer** of any other surface where literary
   quality is the load-bearing concern. ESSENCE.md and key
   sections of skills are written; the poet may refine wording
@@ -89,7 +90,7 @@ project-specific conventions:
 
 - TheBookOfSol's `AGENTS.md` carries:
   - The bibliography convention (book binaries live in
-    `~/git/bibliography/`, not in TheBookOfSol).
+    `~/primary/repos/library/`, not in TheBookOfSol).
   - Sanskrit / IAST primary-source quote structure
     (Sanskrit on top, blank `>` line, English in double quotes,
     em-dash attribution at the end).
