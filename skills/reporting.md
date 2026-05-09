@@ -234,7 +234,15 @@ Reports explain shapes, not implementations. Their medium
 is **prose plus visuals** — Mermaid diagrams, swimlanes,
 flowcharts, tables, dependency graphs.
 
-### Mermaid labels
+### Mermaid — node labels vs edge labels
+
+Mermaid's grammar treats **node labels** and **edge labels**
+differently. Quoted strings are node-shape syntax; edge
+labels use pipes. Mixing them — putting a quoted string
+where an edge label belongs — looks plausible and fails to
+parse.
+
+#### Node labels — quoted strings inside brackets
 
 Quote Mermaid node labels whenever the visible label
 contains hyphens, slashes, punctuation, parentheses, or
@@ -251,6 +259,62 @@ Do this even when the renderer appears to accept the
 unquoted label. Unquoted punctuation has inconsistent
 behavior across Mermaid renderers and can make diagrams
 misleading or ugly.
+
+#### Edge labels — pipe delimiters, NOT quoted strings
+
+```mermaid
+flowchart LR
+    A -->|solid arrow with label| B
+    A -.->|dotted arrow with label| B
+    A ==>|thick arrow with label| B
+```
+
+The pattern `A --> "label" --> B` looks like it should
+work — quoted strings are how node labels work, after all
+— but Mermaid's parser rejects it. **Quoted strings are
+node shapes; edge labels go in pipes.**
+
+Pattern that broke (durable record, designer/68 v1):
+
+```
+layers -.- "drift register" -.- gaps
+```
+
+Failed with:
+
+```
+Parse error on line 12:
+...nd    layers -.- "drift register" -.-
+---------------------^
+Expecting 'AMP', 'COLON', 'PIPE', 'TESTSTR', 'DOWN',
+'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS',
+'MULT', 'UNICODE_TEXT', got 'STR'
+```
+
+(Note `'PIPE'` in the expected-token list — that's the
+parser telling you it wanted `|label|`.)
+
+Right form:
+
+```mermaid
+flowchart LR
+    layers["six layers"]
+    gaps["drift register"]
+    layers -.->|drift register| gaps
+```
+
+The same rule applies to all edge variants: `-->`, `-.->`,
+`==>`, `---`, `-.-`, `===`. None of them accept a quoted
+string in the edge position; all of them accept a
+pipe-delimited label after the arrow head.
+
+The diagnostic test before publishing a report: paste the
+raw mermaid block into <https://mermaid.live/> (or any
+mermaid renderer) and confirm it renders. The parse error
+is the only signal you'll get from the markdown itself —
+GitHub-flavoured markdown silently shows the failed-to-parse
+block as the literal source on render failure, which is
+easy to miss in review.
 
 Implementation code (Rust `impl` blocks, function bodies,
 struct definitions with methods, full Nix derivations)

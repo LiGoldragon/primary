@@ -53,8 +53,8 @@ flowchart TB
         h4["K · every kernel-mode open initializes<br/>the slot counter unnecessarily"]
     end
 
-    crit -.- "blocks correctness" -.- plane
-    plane -.- "tangles modes" -.- hard
+    crit -.->|blocks correctness| plane
+    plane -.->|tangles modes| hard
 ```
 
 | Severity | Count | Examples |

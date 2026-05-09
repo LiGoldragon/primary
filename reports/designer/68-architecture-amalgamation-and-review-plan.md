@@ -32,11 +32,13 @@ flowchart TB
         disc["§7 Cross-cutting discipline<br/>(beauty, no-pull, types-not-strings, ractor, jj)"]
     end
 
-    layers -.- "drift register" -.- gaps["§9 17 beads open<br/>load-bearing: persona-sema typed Tables (P1)<br/>+ message off polling (P1)"]
+    gaps["§9 17 beads open<br/>load-bearing: persona-sema typed Tables (P1)<br/>+ message off polling (P1)"]
+    review["§10 5-phase walkthrough<br/>kernels first, runtime second, system third"]
+    q["§8 Decisions awaiting user<br/>(channel granularity, harness text language, ZST exception)"]
 
-    layers -.- "review plan" -.- review["§10 5-phase walkthrough<br/>kernels first, runtime second, system third"]
-
-    layers -.- "open questions" -.- q["§8 Decisions awaiting user<br/>(channel granularity, harness text language, ZST exception)"]
+    layers -.->|drift register| gaps
+    layers -.->|review plan| review
+    layers -.->|open questions| q
 ```
 
 | Decision-status counts | Count |
