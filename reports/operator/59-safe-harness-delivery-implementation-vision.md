@@ -279,6 +279,55 @@ The first recognizer can be narrow:
 
 When recognition fails, emit `Unknown`. The router queues.
 
+## Test Control Surface
+
+The safe-delivery tests need their own control surface. New windows commonly
+auto-focus, so a test that spawns harnesses and immediately sends a prompt can
+accidentally test the compositor's startup behavior instead of the router's
+gate.
+
+The test harness needs three explicit capabilities:
+
+| Capability | Why |
+|---|---|
+| locate existing harness windows | reuse live harnesses without respawning paid or stateful agents |
+| bind window ids to actor names | route focus facts to the right actor |
+| move focus to a neutral target | make the target harness unfocused before delivery tests |
+
+```mermaid
+flowchart LR
+    discover["discover windows"] --> bind["bind actor ↔ NiriWindow"]
+    bind --> neutral["focus neutral window"]
+    neutral --> test["run guarded delivery test"]
+```
+
+The neutral focus target can be a small disposable window owned by the test
+setup. It must not be a harness. In Niri terms, the test should be able to
+focus either:
+
+- an existing non-harness window selected by app id/title evidence, or
+- a tiny test-owned terminal/window created only to absorb focus.
+
+That lets the test prove both sides:
+
+- when the target harness is focused, delivery queues
+- when focus moves to neutral and the prompt is empty, delivery proceeds
+
+Harness discovery should use evidence, not guessing:
+
+```mermaid
+flowchart TB
+    niri["niri windows"] --> match["match app-id / title / pid / socket evidence"]
+    session["Persona session store"] --> match
+    match --> actor["HarnessActor target"]
+```
+
+The runtime should prefer stored actor endpoint data when it exists, then
+verify it against current Niri windows. If the window exists but the router
+does not yet know it, a test-only registration command can bind the visible
+window to an actor name. This is essential for debugging already-running
+harnesses.
+
 ## Actual Harness Test Vision
 
 The next visible test should prove the safety property, not merely focus
@@ -308,6 +357,8 @@ Pass conditions:
 - router logs show `Queued` before `Delivered`
 - delivery happens only after focus/prompt facts permit it
 - both Pi windows remain visible and attachable
+- the test can either reuse already-running Pi windows or create new ones
+- the test can deliberately focus a neutral window before an allowed delivery
 
 This test must submit prompts intentionally. No more "text inserted but not
 sent" ambiguity.
@@ -332,7 +383,8 @@ Practical first slice:
 5. Add a conservative `PromptObservation::Unknown` default so delivery blocks
    until prompt inspection exists.
 6. Implement the first Pi prompt recognizer.
-7. Run the visible Pi test where a typed human draft is preserved.
+7. Add harness-window discovery and neutral-focus test control.
+8. Run the visible Pi test where a typed human draft is preserved.
 
 ## Decisions Needed
 
