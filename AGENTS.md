@@ -85,11 +85,12 @@ write it to the right workspace file (per
 `.beads/` exists today for convenience. The destination is
 **Persona's native typed work graph** — see
 `reports/operator/97-native-issue-notes-tracker-research.md`
-and the `signal-persona-work` / `persona-work` repos. Don't
-build a Persona↔bd bridge; don't deepen the bd investment. Use
-bd only for short-tracked-item coordination while the native work
-graph is being implemented; design new shapes assuming bd goes
-away.
+and the `signal-persona-mind` / `persona-mind` repos. The work
+graph is part of Persona's central mind state, not a separate
+component. Don't build a Persona↔bd bridge; don't deepen the bd
+investment. Use bd only for short-tracked-item coordination while
+the native mind graph is being implemented; design new shapes
+assuming bd goes away.
 
 BEADS is never an ownership lock. Do not claim `.beads/`.
 Any agent may create, update, comment on, or close BEADS tasks

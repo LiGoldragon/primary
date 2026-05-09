@@ -28,7 +28,7 @@ flowchart LR
     contract["signal-persona-message"] --> message["persona-message"]
     contract --> router["persona-router"]
     store_contract["signal-persona-store"] --> router
-    store_contract --> orchestrate["persona-orchestrate"]
+    store_contract --> orchestrate["persona-mind"]
     orchestrate --> sema["persona-sema"]
     sema --> database[("persona.redb")]
     router --> harness_contract["signal-persona-harness"]
@@ -46,7 +46,7 @@ is the wrong shape for a channel.
 |---|---|
 | `signal/ARCHITECTURE.md` | Clarifies that this repo is the sema/criome contract inside the wider signal family; Persona channel payloads live in `signal-persona-*`; `signal-derive` stays deferred. |
 | `sema/ARCHITECTURE.md` | Clarifies sema as the state kernel; `<consumer>-sema` owns table layouts; runtime actors own write ordering and commit events. |
-| `persona/ARCHITECTURE.md` | Reorients the apex around five channel contracts, `persona-orchestrate` as the owner of the state actor, commit-before-deliver, and architectural-truth witnesses. |
+| `persona/ARCHITECTURE.md` | Reorients the apex around five channel contracts, `persona-mind` as the owner of the state actor, commit-before-deliver, and architectural-truth witnesses. |
 
 ## 2 · Implementation shape
 
@@ -57,16 +57,16 @@ sequenceDiagram
     participant Human as operator / harness
     participant Message as persona-message
     participant Router as persona-router
-    participant Orchestrate as persona-orchestrate
+    participant Mind as persona-mind
     participant Sema as persona-sema
     participant Harness as persona-harness
 
     Human->>Message: Nexus record in NOTA syntax
     Message->>Router: signal-persona-message::Submit
-    Router->>Orchestrate: signal-persona-store::CommitRequest
-    Orchestrate->>Sema: typed write transaction
-    Sema-->>Orchestrate: durable commit
-    Orchestrate-->>Router: CommitOutcome
+    Router->>Mind: signal-persona-store::CommitRequest
+    Mind->>Sema: typed write transaction
+    Sema-->>Mind: durable commit
+    Mind-->>Router: CommitOutcome
     Router->>Harness: signal-persona-harness::DeliverRequest
 ```
 
@@ -104,7 +104,7 @@ The first five contracts are:
 | Contract | Runtime boundary |
 |---|---|
 | `signal-persona-message` | `persona-message` → `persona-router` |
-| `signal-persona-store` | `persona-router` → `persona-orchestrate` state actor |
+| `signal-persona-store` | `persona-router` → `persona-mind` state actor |
 | `signal-persona-system` | `persona-system` → `persona-router` |
 | `signal-persona-harness` | `persona-router` ↔ `persona-harness` |
 | `signal-persona-terminal` | `persona-harness` → `persona-wezterm` |
@@ -122,7 +122,7 @@ checks, focus gates, and store ownership live in runtime components.
 
 Do not let the message CLI keep private durable logs. The CLI's
 durable act is sending a signal frame to the router. The database
-witness comes from `persona-orchestrate` and `persona-sema`.
+witness comes from `persona-mind` and `persona-sema`.
 
 ## 5 · Truth-test witnesses
 
@@ -159,7 +159,7 @@ flowchart LR
 1. Create `signal-persona-message` and `signal-persona-store`
    first. They are the minimum pair that lets a submitted message
    become durable.
-2. Implement the `persona-orchestrate` state actor immediately
+2. Implement the `persona-mind` state actor immediately
    after `signal-persona-store`; it is the runtime owner of
    database writes.
 3. Replace `persona-message` text-file state with a socket client
@@ -183,7 +183,7 @@ flowchart LR
 3. Should `persona-router` be forbidden from depending on
    `persona-sema` directly in production code, or is a read-only
    dependency acceptable for inspection paths while writes still go
-   through `persona-orchestrate`?
+   through `persona-mind`?
 
 4. Is commit-before-deliver enough for the first stack, or should
    authorization also be mandatory before store commit in the first
@@ -195,7 +195,7 @@ My recommendation:
 
 - Create only `signal-persona-message` and `signal-persona-store`
   first, then implement the corresponding state actor inside
-  `persona-orchestrate`.
+  `persona-mind`.
 - Treat request/message text as Nexus records in NOTA syntax.
   Convenience CLIs such as `message` may hide common wrappers, but
   they stay within NOTA syntax.

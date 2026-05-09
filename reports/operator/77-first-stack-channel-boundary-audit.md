@@ -136,7 +136,7 @@ The same rule applies elsewhere:
 | Component | Owns state for | Uses `persona-sema` as |
 |---|---|---|
 | `persona-router` | messages, deliveries, routing observations | library |
-| `persona-orchestrate` | claims, handoffs, coordination state | library |
+| `persona-mind` | claims, handoffs, coordination state | library |
 | `persona-harness` | harness-local lifecycle and transcript state, if needed | library |
 | `persona-system` | OS fact projection cache, if needed | library |
 
@@ -155,14 +155,14 @@ flowchart TB
     system["signal-persona-system"]
     harness["signal-persona-harness"]
     terminal["signal-persona-terminal"]
-    orchestrate["signal-persona-orchestrate<br/>(first next)"]
+    orchestrate["signal-persona-mind<br/>(first next)"]
 
     router["persona-router"]
     persona_message["persona-message"]
     persona_system["persona-system"]
     persona_harness["persona-harness"]
     persona_wezterm["persona-wezterm"]
-    persona_orchestrate["persona-orchestrate"]
+    persona_mind["persona-mind"]
     agent_tools["agents / tools"]
 
     umbrella --> message
@@ -175,7 +175,7 @@ flowchart TB
     persona_system --> system --> router
     router --> harness --> persona_harness
     persona_harness --> terminal --> persona_wezterm
-    agent_tools --> orchestrate --> persona_orchestrate
+    agent_tools --> orchestrate --> persona_mind
 ```
 
 | Contract | Producer / consumer | Domain | Status |
@@ -184,12 +184,12 @@ flowchart TB
 | `signal-persona-system` | `persona-system` / `persona-router` | focus, prompt, window, OS facts | active next design |
 | `signal-persona-harness` | `persona-router` / `persona-harness` | delivery requests and harness observations | active next design |
 | `signal-persona-terminal` | `persona-harness` / `persona-wezterm` | terminal projection and terminal receipts | active next design |
-| `signal-persona-orchestrate` | agents or tools / `persona-orchestrate` | claims, handoffs, orchestration operations | first genuine fifth channel |
+| `signal-persona-mind` | agents or tools / `persona-mind` | claims, handoffs, orchestration operations | first genuine fifth channel |
 
 `signal-persona-store` is absent because storage is not an
 inter-component domain. The active count is four, matching
 designer/76 §6.3 (the store-channel correction). The first
-genuine fifth channel is `signal-persona-orchestrate`, once its
+genuine fifth channel is `signal-persona-mind`, once its
 claim/release/handoff operations are named.
 
 ## 5 · What to do with `signal-persona-store`
@@ -205,7 +205,7 @@ dependency on it.
 |---|---|
 | Delete / archive `signal-persona-store` | cleanest; no false boundary survives |
 | Keep it as a temporary macro fixture | acceptable only with loud deprecation and no `persona` dependency |
-| Rename it to `signal-persona-orchestrate` | wrong; the payloads are message-domain, not orchestration-domain |
+| Rename it to `signal-persona-mind` | wrong; the payloads are message-domain, not orchestration-domain |
 
 If the repo stays temporarily, its `ARCHITECTURE.md` should state
 that it is a throwaway macro witness, not a Persona channel. The
@@ -299,7 +299,7 @@ owned by the receiving component.
    strongest Nix-chained witness targets
    `message -> router actor -> router-owned sema state -> message
    reply`.
-4. Let `signal-persona-orchestrate` exist only when the
+4. Let `signal-persona-mind` exist only when the
    orchestration operations are named: claim, release, handoff,
    task visibility, coordination observations. Do not repurpose
    the store repo into it.

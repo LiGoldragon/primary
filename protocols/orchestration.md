@@ -5,7 +5,7 @@ workspace. The current shell-helper implementation combines role-owned lock
 files with the transitional workspace BEADS task database so agents see both
 file ownership and open work before they edit. The target implementation
 replaces BEADS with Persona's native typed work graph carried by
-`signal-persona-work` and stored by `persona-work`.
+`signal-persona-mind` and stored by `persona-mind`.
 
 BEADS is shared coordination state while it exists, not a lockable scope.
 
@@ -46,33 +46,32 @@ claim.
 ### Typed orchestration target
 
 The current implementation is the lock-file helper described below. The target
-implementation is the Rust `orchestrate` CLI backed by `persona-orchestrate`
-and the `signal-persona-orchestrate` contract. See
-`reports/operator/95-orchestrate-cli-protocol-fit.md` for the current operator
-fit report.
+implementation is the Rust `mind` CLI backed by `persona-mind` and the
+`signal-persona-mind` contract. `tools/orchestrate` remains the compatibility
+helper name during migration.
 
 Target surface:
 
 ```sh
-orchestrate '<one NOTA request record>'
+mind '<one NOTA request record>'
 ```
 
 Target invariants:
 
-- The protocol truth is the typed `signal-persona-orchestrate` request/reply
+- The protocol truth is the typed `signal-persona-mind` request/reply
   vocabulary.
-- The `orchestrate` binary accepts exactly one NOTA request record and prints
-  exactly one NOTA reply record.
+- The `mind` binary accepts exactly one NOTA request record and prints exactly
+  one NOTA reply record.
 - `tools/orchestrate` becomes a compatibility shim that translates the current
   ergonomic commands into the canonical one-record CLI.
-- Durable state lives in `orchestrate.redb` through `persona-sema`.
+- Durable state lives in `mind.redb` through `persona-sema`.
 - Lock files become regenerated projections of durable coordination state.
 - Claim, release, and handoff requests create activity records automatically.
-- A later `persona-work` wave supplies the native typed work graph for tasks,
-  notes, dependencies, decisions, and ready-work queries via
-  `signal-persona-work`.
-- BEADS is retired by the `persona-work` wave. Existing BEADS entries may be
-  imported once as native work events and aliases, but there is no long-term
+- The mind graph supplies native typed work items, notes, dependencies,
+  decisions, aliases, and ready-work queries through the same
+  `signal-persona-mind` contract.
+- BEADS is retired by the `persona-mind` wave. Existing BEADS entries may be
+  imported once as native mind events and aliases, but there is no long-term
   Persona↔bd bridge and no dual-write path.
 
 Until that Rust path is implemented and tested, the shell helper remains the
@@ -188,8 +187,7 @@ tools/orchestrate status
 
 Lists every role's lock file plus open BEADS tasks in the current
 shell-helper era. In the typed target, `RoleObservation` reports role
-state and `WorkQueryKind::Ready` reports ready work from the native work
-graph.
+state and `QueryKind::Ready` reports ready work from the native mind graph.
 
 ## Blocked Work
 
@@ -208,10 +206,10 @@ the bead points at the file or path.
 
 Typed target:
 
-- Create or update a `signal-persona-work` work item.
+- Create or update a `signal-persona-mind` item.
 - Add a `Blocks`, `DiscoveredFrom`, `References`, or `RelatesTo` edge as
   appropriate.
-- Add notes as append-only `WorkNote` events.
+- Add notes as append-only mind graph events.
 - Use imported BEADS IDs only as aliases.
 
 ## Legacy BEADS Check
@@ -229,7 +227,7 @@ that supports concurrent access. Do not create an orchestration lock for
 `.beads/`.
 
 This section describes the legacy helper behavior only. New design work should
-target `signal-persona-work`; do not add new BEADS integrations.
+target `signal-persona-mind`; do not add new BEADS integrations.
 
 Useful direct commands:
 

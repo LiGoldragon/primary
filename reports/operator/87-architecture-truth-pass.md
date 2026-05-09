@@ -32,7 +32,7 @@ flowchart LR
 | File | High-certainty correction |
 |---|---|
 | `/git/github.com/LiGoldragon/persona-harness/ARCHITECTURE.md` | Replaced `persona-store` with harness-owned state using `persona-sema`; added `signal-persona-harness` as the harness contract boundary. |
-| `/git/github.com/LiGoldragon/persona-orchestrate/ARCHITECTURE.md` | Replaced `persona-store` with orchestrate-owned state using `persona-sema`. |
+| `/git/github.com/LiGoldragon/persona-mind/ARCHITECTURE.md` | Replaced `persona-store` with orchestrate-owned state using `persona-sema`. |
 | `/git/github.com/LiGoldragon/persona-system/ARCHITECTURE.md` | Replaced `persona-store` with `signal-persona-system` observations and consumer-owned durable state. |
 | `/git/github.com/LiGoldragon/persona-message/ARCHITECTURE.md` | Removed store-actor framing; named `signal-persona-message` as the message channel contract and router-owned durable message state as the destination. |
 | `/git/github.com/LiGoldragon/persona-router/ARCHITECTURE.md` | Removed the last store/caller wording; router owns its database, not a shared database actor. |

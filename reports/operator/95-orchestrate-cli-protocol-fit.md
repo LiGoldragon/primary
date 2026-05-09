@@ -1,18 +1,18 @@
-# Orchestrate CLI And Protocol Fit
+# Mind CLI And Protocol Fit
 
 ## Read Set
 
 - `protocols/orchestration.md`: current workspace coordination protocol.
 - `tools/orchestrate`: current bash helper and lock-file writer.
-- `reports/designer/93-persona-orchestrate-rust-rewrite-and-activity-log.md`: designer's current architecture for the Rust rewrite.
-- `repos/signal-persona-orchestrate/ARCHITECTURE.md`: contract boundary for typed coordination records.
-- `repos/signal-persona-orchestrate/src/lib.rs`: current request/reply record vocabulary.
-- `repos/persona-orchestrate/ARCHITECTURE.md`: component target shape.
+- `reports/designer/93-persona-mind-rust-rewrite-and-activity-log.md`: designer's current architecture for the Rust rewrite.
+- `repos/signal-persona-mind/ARCHITECTURE.md`: contract boundary for typed coordination records.
+- `repos/signal-persona-mind/src/lib.rs`: current request/reply record vocabulary.
+- `repos/persona-mind/ARCHITECTURE.md`: component target shape.
 - `skills/contract-repo.md`, `skills/rust-discipline.md`, `skills/system-specialist.md`, `skills/architectural-truth-tests.md`: relevant discipline.
 
 ## Position
 
-`orchestrate` should become a typed CLI facade over the same records used by the `signal-persona-orchestrate` contract. The existing `tools/orchestrate` script should survive only as a compatibility shim until all agents use the canonical one-record CLI.
+`orchestrate` should become a typed CLI facade over the same records used by the `signal-persona-mind` contract. The existing `tools/orchestrate` script should survive only as a compatibility shim until all agents use the canonical one-record CLI.
 
 The new protocol should not be "bash commands, then typed state behind them." The protocol should be "typed request in, typed reply out," with lock files as a projection for human and legacy agent visibility.
 
@@ -21,9 +21,9 @@ flowchart TD
     human["human or agent"]
     shim["tools/orchestrate compatibility shim"]
     cli["orchestrate canonical CLI"]
-    contract["signal-persona-orchestrate records"]
-    actor["persona-orchestrate actor"]
-    db["orchestrate.redb through persona-sema"]
+    contract["signal-persona-mind records"]
+    actor["persona-mind actor"]
+    db["mind.redb through persona-sema"]
     locks["operator/designer/... lock projections"]
     beads["BEADS open-item overlay"]
 
@@ -44,19 +44,19 @@ The designer report establishes a good migration path:
 | Surface | Current | Target |
 |---|---|---|
 | Agent command | `tools/orchestrate claim operator path -- reason` | `orchestrate '<one NOTA request>'` |
-| State | role lock files | `orchestrate.redb` |
+| State | role lock files | `mind.redb` |
 | Legacy visibility | lock files are authoritative | lock files are regenerated projections |
 | Activity | mostly chat/report memory | durable `Activity` rows |
 | BEADS | shown beside lock status | still external and transitional |
 
-The important alignment is that `persona-orchestrate` owns coordination state. BEADS is not an ownership system, and it should not become part of this contract.
+The important alignment is that `persona-mind` owns coordination state. BEADS is not an ownership system, and it should not become part of this contract.
 
 ## CLI Shape
 
 The real binary should accept exactly one NOTA record and print exactly one NOTA record:
 
 ```text
-orchestrate '<OrchestrateRequest record>'
+orchestrate '<MindRequest record>'
 ```
 
 No flags, no subcommands, no environment-selected behavior.
@@ -64,7 +64,7 @@ No flags, no subcommands, no environment-selected behavior.
 The compatibility shim can keep old ergonomics:
 
 ```text
-tools/orchestrate claim operator repos/persona-orchestrate -- implement typed CLI
+tools/orchestrate claim operator repos/persona-mind -- implement typed CLI
 tools/orchestrate release operator
 tools/orchestrate status
 ```
@@ -76,7 +76,7 @@ sequenceDiagram
     participant A as "agent"
     participant S as "tools/orchestrate"
     participant C as "orchestrate"
-    participant O as "persona-orchestrate actor"
+    participant O as "persona-mind actor"
     participant D as "redb"
     participant L as "lock files"
 
@@ -92,14 +92,14 @@ sequenceDiagram
 
 ## Contract Gap
 
-`signal-persona-orchestrate` currently derives `rkyv` traits, but it does not derive NOTA projection traits. That leaves two implementation choices:
+`signal-persona-mind` currently derives `rkyv` traits, but it does not derive NOTA projection traits. That leaves two implementation choices:
 
 | Option | Result |
 |---|---|
 | Add NOTA derives to the contract records | CLI can parse and print the same typed records it sends internally. |
-| Create separate CLI projection records in `persona-orchestrate` | Avoids text traits in the contract repo, but creates duplicate vocabulary. |
+| Create separate CLI projection records in `persona-mind` | Avoids text traits in the contract repo, but creates duplicate vocabulary. |
 
-I recommend adding NOTA derives to the contract records as projection capability, not policy. The contract repo still should not own CLI behavior. The `persona-orchestrate` binary owns parse/render policy, validation, and error presentation.
+I recommend adding NOTA derives to the contract records as projection capability, not policy. The contract repo still should not own CLI behavior. The `persona-mind` binary owns parse/render policy, validation, and error presentation.
 
 This should be decided before implementation starts, because duplicate CLI records would create drift pressure immediately.
 
@@ -123,7 +123,7 @@ flowchart LR
 
 The updated protocol should state:
 
-1. The protocol truth is `signal-persona-orchestrate`.
+1. The protocol truth is `signal-persona-mind`.
 2. `orchestrate '<one NOTA request>'` is the canonical command surface.
 3. `tools/orchestrate` is a compatibility shim.
 4. Lock files are projections regenerated after state commits.
@@ -199,7 +199,7 @@ Required witnesses:
 
 | Test | What it proves |
 |---|---|
-| canonical claim writes `orchestrate.redb` and lock projection | State truth is durable DB, not direct file mutation. |
+| canonical claim writes `mind.redb` and lock projection | State truth is durable DB, not direct file mutation. |
 | legacy shim claim produces same state as canonical claim | Compatibility surface is only translation. |
 | conflicting claim returns typed `ClaimRejection` | Conflict is contract data, not stderr text. |
 | claim/release both append activity rows | Activity is automatic and durable. |
@@ -210,8 +210,8 @@ Required witnesses:
 
 ## Implementation Slices
 
-1. Update `signal-persona-orchestrate` with NOTA projection derives, or explicitly decide to use separate CLI projection records.
-2. Rewrite `persona-orchestrate` around a data-bearing service and short-lived ractor actor.
+1. Update `signal-persona-mind` with NOTA projection derives, or explicitly decide to use separate CLI projection records.
+2. Rewrite `persona-mind` around a data-bearing service and short-lived ractor actor.
 3. Add `persona-sema` backed tables for claims, activities, and metadata.
 4. Implement the one-record `orchestrate` CLI.
 5. Convert `tools/orchestrate` into a shim that calls the Rust binary.
@@ -220,8 +220,8 @@ Required witnesses:
 
 ## Decisions To Surface
 
-1. Should `signal-persona-orchestrate` carry NOTA derives directly? I recommend yes.
+1. Should `signal-persona-mind` carry NOTA derives directly? I recommend yes.
 2. Should v1 spawn a short-lived ractor actor per CLI invocation? I recommend yes, because it preserves the actor boundary without requiring a daemon.
 3. Should `RoleObservation` include BEADS? I recommend no. The shim can display BEADS externally until BEADS is retired.
-4. Should `WirePath::new` validate absolute normalized paths in the contract crate, or should validation live in `persona-orchestrate`? I recommend validation in `persona-orchestrate` first, with contract constructors tightened later if needed.
+4. Should `WirePath::new` validate absolute normalized paths in the contract crate, or should validation live in `persona-mind`? I recommend validation in `persona-mind` first, with contract constructors tightened later if needed.
 5. Should the first protocol update happen before or after the Rust CLI lands? I recommend a two-step update: first document the target layer, then switch authority after tests pass.

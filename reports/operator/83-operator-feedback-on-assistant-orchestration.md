@@ -47,7 +47,7 @@ Use Mode A for:
 | Surface | Reason |
 |---|---|
 | `persona-router` | delivery safety and prompt/focus guards |
-| `persona-orchestrate` | coordination state and role claims |
+| `persona-mind` | coordination state and role claims |
 | `persona-sema` / `sema` | durable state semantics |
 | Signal contracts | cross-component wire stability |
 | end-to-end witnesses | one driver should own the full chain |
@@ -93,7 +93,7 @@ because it is small, typed, and a good calibration task.
 Operator should keep the load-bearing first-pass chain:
 
 1. `persona-router` ractor + `persona-sema` state.
-2. `persona-orchestrate` first slice.
+2. `persona-mind` first slice.
 3. End-to-end Nix-chained messaging witness.
 
 Assistant should take:

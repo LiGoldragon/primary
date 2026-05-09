@@ -2,7 +2,7 @@
 
 ## Position
 
-We should retire BEADS as part of the `persona-orchestrate` implementation, not preserve it as a sidecar. BEADS has useful ideas, but its storage and command surface pull against the workspace direction:
+We should retire BEADS as part of the `persona-mind` implementation, not preserve it as a sidecar. BEADS has useful ideas, but its storage and command surface pull against the workspace direction:
 
 - Persona wants typed Signal contracts, ractor actors, and Sema-backed component state.
 - BEADS is an external Dolt-backed issue graph with a broad CLI surface and string-heavy schema.
@@ -68,7 +68,7 @@ flowchart LR
     agent["agent"]
     cli["orchestrate CLI"]
     signal["Signal contract"]
-    actor["persona-orchestrate actor"]
+    actor["persona-mind actor"]
     sema["Sema redb state"]
     views["typed projections"]
 
@@ -187,17 +187,17 @@ This reinforces append-only notes over mutable note blobs.
 
 ## Proposed Native Model
 
-Name recommendation: `persona-work` for the domain, with `signal-persona-work` as the contract repo if the vocabulary is split from `signal-persona-orchestrate`.
+Name recommendation: `persona-mind` for the domain, with `signal-persona-mind` as the contract repo if the vocabulary is split from `signal-persona-mind`.
 
-The component receiver can still be `persona-orchestrate`. The key is that the work-tracker vocabulary is isolated from role claim/release vocabulary.
+The component receiver can still be `persona-mind`. The key is that the work-tracker vocabulary is isolated from role claim/release vocabulary.
 
 ```mermaid
 flowchart TD
     cli["orchestrate CLI"]
     workcli["work convenience shim"]
-    contract["signal-persona-work"]
-    orch["persona-orchestrate actor"]
-    sema["orchestrate.redb"]
+    contract["signal-persona-mind"]
+    orch["persona-mind actor"]
+    sema["mind.redb"]
     graph["work graph projection"]
     locks["lock projections"]
 
@@ -308,15 +308,15 @@ Collision policy:
 Canonical surface stays one NOTA record:
 
 ```text
-orchestrate '<WorkRequest record>'
+orchestrate '<MindRequest record>'
 ```
 
 Convenience shims are acceptable only as translators:
 
 ```text
-work '<WorkRequest record>'
-issue '<WorkRequest record>'
-note '<WorkRequest record>'
+work '<MindRequest record>'
+issue '<MindRequest record>'
+note '<MindRequest record>'
 ```
 
 The shims must not own storage, locks, projection, or parsing policy beyond building the canonical record.
@@ -394,13 +394,13 @@ The native tracker needs tests that enforce architecture, not just behavior:
 
 ## Recommendation
 
-Build a native `persona-work` vocabulary and store it in `persona-orchestrate`'s Sema database in the same implementation wave that replaces the shell `tools/orchestrate`.
+Build a native `persona-mind` vocabulary and store it in `persona-mind`'s Sema database in the same implementation wave that replaces the shell `tools/orchestrate`.
 
 Minimal v1:
 
-1. `signal-persona-work` contract repo.
+1. `signal-persona-mind` contract repo.
 2. `WorkItem`, `WorkEvent`, `WorkEdge`, `WorkNote`, `WorkQuery`, `WorkView`.
-3. `persona-orchestrate` consumes both `signal-persona-orchestrate` and `signal-persona-work`.
+3. `persona-mind` consumes both `signal-persona-mind` and `signal-persona-mind`.
 4. `orchestrate` remains the canonical one-NOTA CLI.
 5. `work` can be a shim for issue/note ergonomics.
 6. One-time BEADS importer.
@@ -408,7 +408,7 @@ Minimal v1:
 
 ## Open Decisions
 
-1. Should the contract be split as `signal-persona-work`, or folded into `signal-persona-orchestrate` for v1?
+1. Should the contract be split as `signal-persona-mind`, or folded into `signal-persona-mind` for v1?
    - I recommend split contract, same receiving actor.
 2. Should the convenience command be named `work`, `issue`, or `note`?
    - I recommend `work`; issues and notes are both work-graph items.
