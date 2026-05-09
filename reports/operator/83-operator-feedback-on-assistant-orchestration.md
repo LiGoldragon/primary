@@ -1,4 +1,4 @@
-# 82 · Operator feedback on assistant orchestration
+# 83 · Operator feedback on assistant orchestration
 
 Status: operator response to
 `reports/designer/81-three-agent-orchestration-with-assistant-role.md`.
