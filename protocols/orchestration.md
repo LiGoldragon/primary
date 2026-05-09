@@ -39,6 +39,38 @@ records, not operating-system locks.
 BEADS tasks at any time. A BEADS task is a shared work item, not a file-ownership
 claim.
 
+### Typed orchestration target
+
+The current implementation is the lock-file helper described below. The target
+implementation is the Rust `orchestrate` CLI backed by `persona-orchestrate`
+and the `signal-persona-orchestrate` contract. See
+`reports/operator/95-orchestrate-cli-protocol-fit.md` for the current operator
+fit report.
+
+Target surface:
+
+```sh
+orchestrate '<one NOTA request record>'
+```
+
+Target invariants:
+
+- The protocol truth is the typed `signal-persona-orchestrate` request/reply
+  vocabulary.
+- The `orchestrate` binary accepts exactly one NOTA request record and prints
+  exactly one NOTA reply record.
+- `tools/orchestrate` becomes a compatibility shim that translates the current
+  ergonomic commands into the canonical one-record CLI.
+- Durable state lives in `orchestrate.redb` through `persona-sema`.
+- Lock files become regenerated projections of durable coordination state.
+- Claim, release, and handoff requests create activity records automatically.
+- BEADS remains external and transitional; status displays may show open BEADS
+  beside orchestration state, but BEADS is not ownership state and not part of
+  the typed claim contract.
+
+Until that Rust path is implemented and tested, the shell helper remains the
+canonical writer for lock files.
+
 ### Lock-file format
 
 Each lock file is plain text. Each line is **one scope**, optionally
