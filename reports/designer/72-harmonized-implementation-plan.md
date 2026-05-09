@@ -1,5 +1,13 @@
 # 72 · Harmonized implementation plan
 
+> **STATUS as of 2026-05-08:** Snapshot — superseded.
+> Read end-to-end only for historical context. For current
+> state see:
+> - `reports/designer/78-convergence-with-operator-77.md` (current Task A/B)
+> - `reports/designer/80-open-questions-inventory.md` (open decisions)
+> - `reports/designer/81-three-agent-orchestration-with-assistant-role.md` (working model)
+> - `reports/designer/86-handoff-from-context-reset-2026-05-08.md` (current index)
+
 Status: **single canonical plan** — supersedes
 `designer/71` (deleted in same commit). Synthesizes
 operator/71's stronger framings + designer/71's research

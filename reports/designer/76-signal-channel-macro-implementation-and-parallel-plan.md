@@ -1,5 +1,16 @@
 # 76 · `signal_channel!` macro implementation + parallel-work proposal
 
+> **STATUS as of 2026-05-08:** Snapshot — superseded.
+> The macro shipped and earns its place; `signal-persona-store`
+> retired (per operator/77 + designer/78). Parallel plan
+> superseded by:
+> - `reports/designer/78-convergence-with-operator-77.md`
+> - `reports/designer/81-three-agent-orchestration-with-assistant-role.md`
+> - `reports/designer/86-handoff-from-context-reset-2026-05-08.md` (current index)
+>
+> Note: this report records 3 commit-bundling races that
+> bit me — load-bearing lesson preserved here.
+
 Status: detailed exposé of the work that landed
 2026-05-09 (the `signal_channel!` macro_rules!, two
 contract repos, four wire-test shim binaries, four

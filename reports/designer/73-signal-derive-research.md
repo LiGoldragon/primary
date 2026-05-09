@@ -1,5 +1,12 @@
 # 73 · `signal-derive` research — should a derive macro own channel boilerplate?
 
+> **STATUS as of 2026-05-08:** Decision deferred —
+> `signal_channel!` macro_rules! macro shipped instead
+> (see `reports/designer/76`). signal-derive expansion
+> defers per `skills/rust-discipline.md` §"When to lift to
+> a shared crate" until 2-3 contract repos crystallize
+> their patterns. Read for research context only.
+
 Status: research-only report (no code changes). Per user
 request 2026-05-09: *"if we create a signal derive macro on
 that top-level enum, then probably a lot of the logic on

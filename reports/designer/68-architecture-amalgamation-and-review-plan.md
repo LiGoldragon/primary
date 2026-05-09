@@ -1,5 +1,13 @@
 # 68 · Architecture amalgamation + implementation review plan
 
+> **STATUS as of 2026-05-08:** Snapshot — superseded.
+> Read end-to-end only for historical context. For current
+> state see:
+> - `reports/designer/79-architecture-files-audit.md` (ARCH gaps)
+> - `reports/designer/80-open-questions-inventory.md` (open decisions)
+> - `reports/designer/81-three-agent-orchestration-with-assistant-role.md` (working model)
+> - `reports/designer/86-handoff-from-context-reset-2026-05-08.md` (current index)
+
 Status: comprehensive synthesis of all architecture decisions
 taken in the workspace to date, status of each, open questions
 that need user input, drift register from recent audits, and

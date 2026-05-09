@@ -1,5 +1,12 @@
 # 70 · Code-stack amalgamation — sema + signal + criome + persona, with messaging as first production stack
 
+> **STATUS as of 2026-05-08:** Snapshot — superseded.
+> Read end-to-end only for historical context. For current
+> state see:
+> - `reports/designer/80-open-questions-inventory.md` (open decisions; A.2/A.5 resolved)
+> - `reports/designer/81-three-agent-orchestration-with-assistant-role.md` (working model)
+> - `reports/designer/86-handoff-from-context-reset-2026-05-08.md` (current index)
+
 Status: companion to `designer/68` (workspace amalgamation).
 Where 68 covered tooling/skills/protocols, this report
 covers the **code architecture** — the four ecosystems that
