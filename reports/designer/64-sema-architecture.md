@@ -705,7 +705,7 @@ Steps marked `○` are operator-shaped follow-up work.
 | 1 | Update criome's `reader_count` lookup to be local (not via deprecated `sema::Sema::reader_count`) | operator | small; the sema accessor stays for now, just unused |
 | 2 | Refactor `orchestrator/state.rs` onto the sema kernel (replace bespoke open + ensure_tables boilerplate) | operator | replaces ~40 LoC of plumbing |
 | 3 | Define persona-sema's actual table layouts using `signal-persona`'s record types | operator | deepest work; defines the persistence shape for Persona |
-| 4 | persona-message stops using its text-files-with-polling store; switches to persona-sema | operator | unblocks the persona-router push delivery in operator/59 |
+| 4 | persona-message stops using its text-files-with-polling store; switches to persona-sema | operator | unblocks the persona-router push delivery (per operator/67's safety-property work) |
 | 5 | When persona-orchestrate is ready to grow, implement the design in §4 of this report | operator | design captured; implementation flows from it |
 
 ---

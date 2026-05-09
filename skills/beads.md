@@ -297,9 +297,10 @@ haven't moved, **audit:**
 4. Active and unstuck → that's a bead that should
    be moving; name what it needs to move.
 
-The audit produces a designer report (e.g.
-`reports/designer/56-beads-audit.md` for the canonical
-worked example).
+The audit produces a designer report. (Audit 56 was the
+worked example; retired in the 2026-05-09 cleanup once the
+substance had migrated into this skill and `designer/68`'s
+inventory.)
 
 ---
 
@@ -334,9 +335,8 @@ contention, not coordination ownership."*
 - `~/primary/skills/reporting.md` §"Hygiene — soft cap,
   supersession, periodic review" — the parallel
   hygiene discipline for designer reports.
-- `~/primary/reports/designer/56-beads-audit.md` — the
-  canonical worked example of a BEADS audit (the audit
-  that triggered this skill).
+- `~/primary/reports/designer/68-architecture-amalgamation-and-review-plan.md`
+  §11 — the workspace's current open-beads inventory.
 - `~/primary/reports/designer/4-persona-messaging-design.md`
   — the messaging fabric BEADS will eventually be
   superseded by.

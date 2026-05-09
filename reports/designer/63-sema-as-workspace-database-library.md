@@ -153,9 +153,10 @@ criome). Net change is small in LoC, large in *role*.
 
 ## 5 · `persona-sema` (renamed from `persona-store`)
 
-Today `persona-store` is a 32-line BTreeSet stub (per
-`reports/designer/60-persona-audit-and-critique-of-59.md`
-§3.3 finding C). The rename happens in the same operator
+Today `persona-store` is a 32-line BTreeSet stub. (Earlier
+audit 60 named this finding; that report retired in the
+2026-05-09 cleanup; the current inventory lives in
+`designer/68` §9.) The rename happens in the same operator
 slice that builds it properly:
 
 ```mermaid
@@ -292,9 +293,8 @@ explicit design commitment, not a pre-abstraction.
 - `~/primary/reports/designer/4-persona-messaging-design.md`
   — apex design; persona-sema's tables are the storage end
   of designer/4's state engine.
-- `~/primary/reports/designer/60-persona-audit-and-critique-of-59.md`
-  §3.3 — the persona-store stub finding that this redesign
-  closes.
+- `~/primary/reports/designer/68-architecture-amalgamation-and-review-plan.md`
+  §4 + §9 — current state of the sema-family + open beads.
 
 ---
 
