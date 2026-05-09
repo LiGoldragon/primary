@@ -989,7 +989,11 @@ when picking up the BEADS tasks.
   store-actor framing; this report builds on the cleaner shape.
 - `~/primary/reports/operator/95-orchestrate-cli-protocol-fit.md`
   — operator's read of the orchestrate CLI / protocol fit; see
-  /98 for the designer critique.
+  designer/98 for the critique.
+- `~/primary/reports/operator/97-native-issue-notes-tracker-research.md`
+  — operator's research proposing a native typed work-graph
+  (`persona-work`) to retire BEADS; sibling to this report's
+  channel-development moves; see designer/98 for the critique.
 - `~/primary/reports/assistant/95-operator-work-review-after-designer-93.md`
   — assistant's review of operator work after /93; identifies
   the README drift that should fold into the implementation
