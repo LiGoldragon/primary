@@ -19,14 +19,18 @@ Author: Claude (designer)
 | **B. Designer/operator can resolve** — mechanical or in-scope | 9 | agent |
 | **C. Deferred-by-design** — questions that resolve themselves when triggered | 6 | (event) |
 
-Two questions are **load-bearing for the next 1-2 weeks of
-work** and should be answered first:
+Two questions were load-bearing — **both resolved by user
+2026-05-08**:
 
-1. **Bucket A #3** — harness boundary text language (Nexus /
-   NOTA / projection). Gates `signal-persona-terminal` design
-   and the `body: String` typing in `signal-persona-message`.
-2. **Bucket A #5** — Commands naming (verb-form vs noun-form).
-   Touches every persona-* contract before they harden.
+1. ✅ **A.2 — Harness boundary text language** = **Nexus.**
+   Nota is the format; Nexus is the Nota-implemented
+   vocabulary. No new text formats. (See `skills/language-
+   design.md` §0 — "No new text formats. Ever." for the
+   bold-letter rule.)
+2. ✅ **A.5 — Commands naming** = **noun-form.** Reason:
+   "messages are things; verbs are what runs through an
+   engine — those are method names." Scaffold rename pass
+   needed.
 
 Everything else can wait or proceed in parallel.
 
@@ -67,39 +71,45 @@ block the next skill-rule cleanup pass.
 
 ---
 
-### 1.2 · Harness boundary text language
+### 1.2 · Harness boundary text language — ✅ RESOLVED 2026-05-08
 
-**Question:** When the harness delivers a message body to a
-human, what is the typed text payload? Nexus, NOTA, a named
-"PersonaText" projection, or plain `String`?
+**Resolution: Nexus.** All harness-boundary text payloads
+are Nexus expressions in NOTA syntax.
 
-**Today:** `body: String` in
-`signal-persona-message::SubmitMessage` (operator/77 §7
-flagged this as first-stack scaffolding).
+User reasoning (verbatim):
+
+> NOTA is just a format, so it's not really a thing — it's
+> just a format that Nexus is a Nota-formatted
+> implementation, and Nexus is the text. Nexus is basically
+> all the text that we use. Of course, there are specialized
+> Nexus sub-languages — like the message CLI doesn't always
+> have to say `assert`. It's just command-line sugar for
+> often-used Nexus sub-vocabularies.
+
+**Implications:**
+- `body: String` in `signal-persona-message::SubmitMessage`
+  → typed Nexus expression (`Body` becomes a typed Nexus
+  record, not a plain String). Migration needed; not yet
+  scheduled.
+- `signal-persona-terminal` channel surface speaks Nexus
+  (not a new "harness text language"). Designer can ship
+  the contract scaffold under this discipline.
+- CLI sugar (e.g. `message foo` desugaring to
+  `(Assert (Message foo))`) is convenience surface over
+  often-used Nexus sub-vocabularies. Sugar must desugar
+  1:1 to a Nexus expression — not a separate language.
+
+**Bold-letter rule landed in `skills/language-design.md`
+§0 "No new text formats. Ever."** — any future report,
+contract, or bead naming a candidate text format other than
+"Nota / Nexus + sugar" must be edited out.
 
 **Source:** `primary-kxb` #3 / operator/67 §12 #3 /
-designer/70 §4 / designer/72 §14 #1 / designer/78 §4 / 
-designer/68 §8 #3.
+designer/70 §4 / designer/72 §14 #1 / designer/78 §4 /
+designer/68 §8 #3 — all updated to reflect the resolution.
 
-**Blocking:** **load-bearing**. Gates:
-- `signal-persona-terminal` design (designer/72 Phase 7)
-- `body: String` → typed payload migration in
-  `signal-persona-message`
-- `recipient: String` and `sender: String` → domain
-  newtypes from `signal-persona`
-
-**Recommendation:** the user picks one of three:
-- (a) NOTA payload — full Nota record in body, terminal
-  renders the projection
-- (b) Nexus payload — Nexus request/message surface
-  (Nexus is a NOTA-using request surface, not a separate
-  syntax — per `primary-gl6`)
-- (c) Named "PersonaText" projection — a typed
-  Persona-domain text record (smaller surface than full
-  Nexus)
-
-Designer can write a comparison report once the user gives
-a direction.
+**Follow-up bead** (filed): `body: String` migration to
+typed Nexus record in `signal-persona-message`.
 
 ---
 
@@ -142,26 +152,34 @@ report once the user signals intent.
 
 ---
 
-### 1.5 · Commands naming — verb-form vs noun-form
+### 1.5 · Commands naming — ✅ RESOLVED 2026-05-08
 
-**Question:** Should commands be `DeclareHarness`
-(verb-form) or `HarnessDeclaration` (noun-form)?
+**Resolution: noun-form.** Commands are
+`HarnessDeclaration` / `MessageSubmission` /
+`FocusSubscription` / `MessageDelivery`, etc.
 
-**Designer lean** (designer/4 #4): noun-form. Matches
-`lojix-cli`'s `FullOs`/`OsOnly`, matches verb-belongs-to-
-noun discipline. Operator's current scaffold uses verb-form.
+User reasoning (verbatim):
 
-**Today:** mixed. `signal-persona-system` uses
-`SubscribeFocus` (verb), `signal-persona-harness` uses
-`DeliverMessage` (verb), `signal-persona-message` uses
-`SubmitMessage` (verb). The scaffold has settled toward
-verb-form.
+> Messages are things, and verbs are when things are run
+> through an engine, so they're more for method names,
+> functions.
+
+**Today's drift** (the rename pass):
+- `signal-persona-system::SubscribeFocus` →
+  `FocusSubscription` (and `ObserveFocus` →
+  `FocusObservation` — already noun-form)
+- `signal-persona-harness::DeliverMessage` →
+  `MessageDelivery`; `SurfaceInteraction` →
+  `InteractionSurfacing`; `CancelDelivery` →
+  `DeliveryCancellation`
+- `signal-persona-message::SubmitMessage` →
+  `MessageSubmission`; `SubmitReceipt` already noun-form
+
+The scope of the rename is the request enums in three
+contract repos plus their consumers. Mechanical Mode B
+work for the implementation pair. Bead filed.
 
 **Source:** designer/4 §12 #4.
-
-**Blocking:** **load-bearing**. Should be answered before
-more channels harden. If noun-form wins, we have a 4-channel
-rename pass coming.
 
 ---
 
@@ -476,16 +494,15 @@ flowchart TB
         c5["C.5 orchestration as typed component"]
     end
 
-    a2 -.->|gates| signal_persona_terminal["signal-persona-terminal design"]
-    a2 -.->|gates| typed_text["body: String → typed payload"]
-    a5 -.->|gates| channel_rename["potential 4-channel rename pass"]
+    a2 -.->|✅ resolved 2026-05-08: Nexus| signal_persona_terminal["signal-persona-terminal design unblocked"]
+    a5 -.->|✅ resolved 2026-05-08: noun-form| channel_rename["3-channel rename pass scheduled"]
 
-    style a2 fill:#fee
-    style a5 fill:#fee
+    style a2 fill:#cfc
+    style a5 fill:#cfc
 ```
 
-`⚠` marks the two load-bearing questions that should be
-answered first.
+`✅` marks the two load-bearing questions resolved
+2026-05-08.
 
 ---
 
@@ -494,13 +511,13 @@ answered first.
 If the user wants to clear the most blocking questions
 fast, the order is:
 
-| Order | Question | Why first |
+| Order | Question | Status |
 |---|---|---|
-| 1 | A.5 Commands verb vs noun | Touches every channel before they harden — cheap to fix now, expensive after 4 contracts ship |
-| 2 | A.2 Harness text language | Gates signal-persona-terminal + typed body migration |
+| 1 | A.5 Commands verb vs noun | ✅ resolved 2026-05-08 — noun-form |
+| 2 | A.2 Harness text language | ✅ resolved 2026-05-08 — Nexus |
 | 3 | A.1 ZST exception | Unblocks skill-rule cleanup; soft impact on code |
 | 4 | A.3 Terminal adapter protocol | Shape decision for signal-persona-terminal |
-| 5 | A.4 Critical-analysis role | New work; no pressure |
+| 5 | A.4 Critical-analysis role | Substantially resolved by `assistant` role (designer/81 §8); the meta-question — design-stage critique vs implementation-stage audit — defers |
 | 6 | A.6 First Authorization shape | Becomes blocking after operator's Task 1 |
 | 7 | A.7 Snapshot vs log-replay | Becomes blocking after operator's Task 1 |
 | 8 | A.8 nota-codec::expect_end | Cleanup; lowest priority |

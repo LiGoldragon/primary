@@ -34,7 +34,7 @@ flowchart TB
 
     gaps["§9 17 beads open<br/>load-bearing: persona-sema typed Tables (P1)<br/>+ message off polling (P1)"]
     review["§10 5-phase walkthrough<br/>kernels first, runtime second, system third"]
-    q["§8 Decisions awaiting user<br/>(channel granularity, harness text language, ZST exception)"]
+    q["§8 Decisions awaiting user<br/>(harness text language ✅ Nexus + naming ✅ noun-form resolved 2026-05-08;<br/>ZST exception remaining)"]
 
     layers -.->|drift register| gaps
     layers -.->|review plan| review
@@ -459,7 +459,7 @@ These questions can't be resolved by an agent alone:
 |---|---|---|---|
 | 1 | Is the critical-analysis role a fifth role, or designer's existing critic mode? | `primary-9h2` | user request 2026-05-08 |
 | 2 | Channel repo granularity: single `signal-persona` or split per channel? | `primary-kxb` | operator/67 §12 #2 |
-| 3 | Harness boundary text language: Nexus, NOTA, or named projection? | `primary-kxb` | operator/67 §12 #3 |
+| 3 | ~~Harness boundary text language~~ | ✅ resolved 2026-05-08 — **Nexus** (Nota is the format; Nexus is the Nota-implemented vocabulary; no new text formats — `skills/language-design.md` §0) |
 | 4 | Terminal adapter protocol: persona-wezterm internal PTY vs Signal at the boundary? | `primary-kxb` | operator/67 §12 #5 |
 | 5 | ZST exception for schema marker records (Bind, Wildcard) — keep ZST or promote to data-bearing? | `primary-kxb` | operator/67 §12 #1 |
 | 6 | When does signal-network design begin? (persona doesn't need cross-machine yet) | `primary-uea` | designer/uea |

@@ -197,7 +197,7 @@ actor calls `persona-sema` directly as a library.
 | Item | Owner |
 |---|---|
 | Confirm channel naming (signal-persona-* prefix; no churn later) | designer + operator |
-| Decide harness text projection (Nexus / NOTA / "PersonaText") | designer (drives signal-persona-terminal contract) |
+| ~~Decide harness text projection~~ — ✅ resolved 2026-05-08: **Nexus** (Nota-formatted; no new text formats — see `skills/language-design.md` §0) |
 | Truth-test skill adoption — every Persona repo points at `skills/architectural-truth-tests.md` | both |
 
 ### 3.4 · Phase 0 outputs
@@ -669,9 +669,10 @@ than replacing it.
 
 | # | Question | Phase blocked by |
 |---|---|---|
-| 1 | Harness boundary text language: Nexus, NOTA, "PersonaText"? | Phase 0 (joint research item §3.3) — answer needed before Phase 7's signal-persona-terminal |
-| 2 | ZST exception for `Bind`/`Wildcard` | (deferable; not blocking) |
-| 3 | When does signal-network design begin? | (deferable; `primary-uea`) |
+| 1 | ~~Harness boundary text language~~ | ✅ resolved 2026-05-08 — **Nexus** (Nota is the format; Nexus is the Nota-implemented vocabulary; no new text formats — see `skills/language-design.md` §0) |
+| 2 | Commands naming: verb-form or noun-form? | ✅ resolved 2026-05-08 — **noun-form** ("messages are things; verbs are method names") |
+| 3 | ZST exception for `Bind`/`Wildcard` | (deferable; not blocking) |
+| 4 | When does signal-network design begin? | (deferable; `primary-uea`) |
 
 Note: the channel-count question (3 vs 5) is **resolved per
 user 2026-05-09 — 5 channels**. The store-actor-as-separate-

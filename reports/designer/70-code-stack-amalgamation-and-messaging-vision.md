@@ -487,9 +487,10 @@ implementation. Per Phase 4 of the stack plan, the CLI
 surface gets rewritten to emit Signal frames. The
 text-file store goes away (per Phase 5).
 
-Open question (`primary-kxb` #3): is the harness boundary
-text language Nexus, NOTA records, or a named projection
-("PersonaText"?) when the model is text-trained?
+~~Open question~~ ✅ **Resolved 2026-05-08:** harness
+boundary text is **Nexus** (Nota-formatted vocabulary; no
+new text formats — see `skills/language-design.md` §0
+"No new text formats. Ever.").
 
 ### 4.6 · persona-router (delivery routing)
 
@@ -554,7 +555,7 @@ sema's deprecated accessor (move pending — `primary-4zr`).
 |---|---|---|
 | 1 | Are `Bind` and `Wildcard` allowed to remain ZST records? Or must they be promoted to data-bearing? | Lean: keep ZST, name the exception (operator/67 §12 #1) |
 | 2 | Channel repo granularity: single `signal-persona` or split into per-channel repos? | Wait for second concrete consumer per kernel-extraction trigger |
-| 3 | Harness boundary text language: Nexus, NOTA, "PersonaText" projection? | Open — needs design report |
+| 3 | ~~Harness boundary text language~~ | ✅ resolved 2026-05-08 — **Nexus** (Nota-formatted; no new text formats — `skills/language-design.md` §0) |
 | 4 | Terminal adapter protocol: persona-wezterm internal PTY vs Signal at the boundary? | Lean: internal PTY for now; Signal at the harness actor boundary |
 | 5 | Does the message-cli live in a new crate or stay inside persona-message? | Lean: new crate `message-cli` (per `skills/micro-components.md` — one capability per crate); `persona-message` becomes the typed-records library |
 | 6 | When should signal-network be designed? (cross-machine messaging) | Defer until a second machine actually needs it (`primary-uea`) |

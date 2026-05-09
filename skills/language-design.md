@@ -36,6 +36,40 @@ alternatives. The design move is to add typed NOTA records and typed Nexus
 interpretation rules, or a convenience CLI that constructs the same
 record shape, not to invent syntax.
 
+#### **No new text formats. Ever.**
+
+> **NOTA is the format. Nexus is the Nota-implemented vocabulary
+> — it is the text. There are no other text formats in this
+> workspace.**
+
+If a design discussion floats a name like "PersonaText",
+"HarnessText", "MessageLang", "AgentSpeak", or any variant on
+"text language for X", **stop and refuse**. The answer is
+already given:
+
+- **NOTA** is the syntax. (lexer, parser, codec, canonical
+  encoding — owned by `nota-codec` + `nota-derive`.)
+- **Nexus** is the typed text content — records, verbs,
+  interpretation rules — written in NOTA syntax. Nexus is the
+  text the workspace uses end-to-end.
+- **CLI sugar** (e.g. `message foo` desugaring to
+  `(Assert (Message foo))`) is convenience surface over
+  often-used Nexus sub-vocabularies. **Sugar is not a new
+  language**; it must desugar 1:1 to a Nexus expression.
+
+Why this is load-bearing: every "what text format does X
+speak?" question erodes the single-format invariant. Once a
+second text format exists, every consumer must know which
+format the producer is using, and the union grows. The
+discipline is to **always extend Nexus** (add a typed record,
+a typed verb, a typed sub-vocabulary) rather than introduce a
+new text surface.
+
+When you see a designer-pair discussion, contract repo,
+report, or bead naming a candidate text format other than
+"Nota / Nexus + sugar," **edit it out**. This is one of the
+few absolute rules in the workspace.
+
 ### 1. Delimiter-first
 
 Every construct has explicit opening and closing delimiters.
