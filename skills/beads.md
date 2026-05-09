@@ -111,6 +111,53 @@ queue-shaped tracking, not assignment. If the work needs
 to land, an agent picks up the bead and does it; if no
 agent does, the bead sits open until pruned.
 
+## Taking on a bead — the task-lock bridge
+
+When you start work on a bead, claim it through the
+orchestration protocol so other agents see the work is in
+flight. Per `protocols/orchestration.md` §"Claim Flow",
+task locks use bracketed tokens:
+
+```sh
+tools/orchestrate claim system-specialist '[primary-f99]' -- chroma migration
+# … do the work …
+tools/orchestrate release system-specialist
+bd close primary-f99 -r "<closing note>"
+```
+
+The bracketed token must be quoted in shell — `[` is a
+glob character. The helper enforces exact-match overlap
+across roles: if two roles try to claim `[primary-f99]`,
+the second is rejected.
+
+This bridges two coordination layers that BEADS alone
+doesn't span:
+
+- **BEADS lifecycle** (filed/open/closed) — durable
+  task tracking; visible across machines via `bd list`.
+- **Orchestration locks** (claim/release) — in-flight
+  agent coordination on this machine; visible via
+  `tools/orchestrate status`.
+
+A bead in *open* state doesn't tell other agents *"someone
+is working on this right now."* The task lock does.
+Without it, two agents racing on the same bead is a real
+risk: each does the work, only one push lands, the other
+discovers their commits are now stale. The task lock
+prevents the race up front.
+
+When done with the work, **release the lock and close the
+bead in the same flow.** Don't leave a stale task lock
+after the bead closes; don't close the bead while still
+holding the lock.
+
+For non-BEADS work the same syntax extends naturally:
+`'[pr:42]'` to coordinate review of a specific PR,
+`'[draft:role-redesign]'` for a draft report not yet
+filed. The helper treats brackets as exact-match
+identifiers; the projection from the token to the
+underlying artifact is the agent's responsibility.
+
 ---
 
 ## When to close a bead

@@ -8,14 +8,20 @@ ROLES=(operator designer system-specialist poet)
 usage() {
   cat <<'EOF'
 Usage:
-  tools/orchestrate claim <role> <path> [more-paths] -- <reason>
+  tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
   tools/orchestrate release <role>
   tools/orchestrate status
 
 Roles: operator, designer, system-specialist, poet
 
-Lock files (<role>.lock) are plain text: one absolute path per line,
-optionally followed by `# <reason>`. Empty file means idle.
+Scopes: each <scope> is either
+  - an absolute path:    /home/li/primary/skills/foo.md
+  - a task lock:         '[primary-f99]'      (quote in shell — `[` is a glob char)
+
+Lock files (<role>.lock) are plain text. Empty file means idle.
+Each line is one scope, optionally followed by `# <reason>`:
+  /home/li/primary/skills/foo.md # syncing claim docs
+  [primary-f99] # chroma nota-codec migration
 EOF
 }
 
@@ -48,6 +54,20 @@ normal_path() {
   esac
 }
 
+# A task-lock scope is a bracketed token like `[primary-f99]`.
+# Path scopes are everything else; they get path-normalized.
+is_task_lock() {
+  [[ "$1" =~ ^\[.+\]$ ]]
+}
+
+normalize_scope() {
+  if is_task_lock "$1"; then
+    printf '%s\n' "$1"
+  else
+    normal_path "$1"
+  fi
+}
+
 write_lock() {
   local role="$1"
   local reason="${2:-}"
@@ -59,9 +79,9 @@ write_lock() {
   local scope
   for scope in "$@"; do
     if [ -n "$reason" ]; then
-      printf '%s # %s\n' "$(normal_path "$scope")" "$reason" >> "$lock"
+      printf '%s # %s\n' "$(normalize_scope "$scope")" "$reason" >> "$lock"
     else
-      printf '%s\n' "$(normal_path "$scope")" >> "$lock"
+      printf '%s\n' "$(normalize_scope "$scope")" >> "$lock"
     fi
   done
 }
@@ -89,6 +109,22 @@ paths_overlap() {
   [[ "$left" == "$right"/* ]] && return 0
   [[ "$right" == "$left"/* ]] && return 0
   return 1
+}
+
+# Two scopes overlap if they're the same kind AND collide.
+# - Path vs path: nested or equal (existing rule).
+# - Task vs task: exact-match on the bracketed token.
+# - Mixed kinds never overlap.
+scopes_overlap() {
+  local left="$1" right="$2"
+  if is_task_lock "$left" && is_task_lock "$right"; then
+    [ "$left" = "$right" ]
+    return $?
+  fi
+  if is_task_lock "$left" || is_task_lock "$right"; then
+    return 1
+  fi
+  paths_overlap "$left" "$right"
 }
 
 beads_scope() {
@@ -141,9 +177,10 @@ claim() {
 
   local scope
   for scope in "${scopes[@]}"; do
-    if beads_scope "$scope"; then
+    if ! is_task_lock "$scope" && beads_scope "$scope"; then
       printf '%s\n' 'BEADS is shared coordination state and is never claimed.' >&2
-      printf 'Remove %s from the claim; run bd commands directly.\n' "$(normal_path "$scope")" >&2
+      printf 'Remove %s from the claim; run bd commands directly,\n' "$(normal_path "$scope")" >&2
+      printf 'or claim a specific bead with [bead-id] (e.g. '"'"'[primary-f99]'"'"').\n' >&2
       exit 64
     fi
   done
@@ -151,14 +188,15 @@ claim() {
   write_lock "$role" "$reason" "${scopes[@]}"
   print_state
 
-  local peer peer_lock peer_scope own_scope conflict=0
+  local peer peer_lock peer_scope own_scope own_norm conflict=0
   while IFS= read -r peer; do
     peer_lock="$(lock_path "$peer")"
     while IFS= read -r peer_scope; do
       for own_scope in "${scopes[@]}"; do
-        if paths_overlap "$own_scope" "$peer_scope"; then
+        own_norm="$(normalize_scope "$own_scope")"
+        if scopes_overlap "$own_norm" "$peer_scope"; then
           printf 'Conflict: %s overlaps %s (held by %s)\n' \
-            "$(normal_path "$own_scope")" "$peer_scope" "$peer" >&2
+            "$own_norm" "$peer_scope" "$peer" >&2
           conflict=1
         fi
       done

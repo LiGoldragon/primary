@@ -40,14 +40,26 @@ claim.
 
 ### Lock-file format
 
-Each lock file is plain text. One absolute path per line. An optional short
-`# reason` may follow the path on the same line. An empty file means the role
-is idle.
+Each lock file is plain text. Each line is **one scope**, optionally
+followed by `# reason`. An empty file means the role is idle.
+
+A **scope** is one of two kinds:
+
+- **Path lock** — an absolute path. Coordinates editing of files/dirs
+  on disk. Overlap rule: a path lock conflicts with another path lock
+  if they're equal or nested.
+- **Task lock** — a bracketed token like `[primary-f99]`. Coordinates
+  *who is actively working on* a BEADS task (or any other named work
+  item the bracketed token identifies). Overlap rule: exact match.
 
 ```
 /home/li/primary/skills/autonomous-agent.md # sync claim-helper docs
-/home/li/git/whisrs # voice-typing recovery
+[primary-f99] # chroma nota-codec migration
 ```
+
+The two kinds are independent: a path lock and a task lock never
+conflict, and a single role can hold both at once (e.g. claim the
+task plus the specific paths the task requires).
 
 The filename names the role; nothing else needs to live in the file. To
 inspect, `cat <role>.lock` or `tools/orchestrate status`. The helper is the
@@ -62,27 +74,60 @@ travel between machines.
 
 ## Claim Flow
 
-Before editing files or running commands that create, modify, format, or
-delete files, an agent claims its intended scope.
+Before editing files, running commands that create/modify/delete files, or
+taking on a tracked unit of work, an agent claims its intended scope.
 
 ```sh
-tools/orchestrate claim <role> <absolute-path> [more-paths] -- <reason>
+tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 ```
 
 `<role>` is one of `operator`, `designer`, `system-specialist`, `poet`.
+Each `<scope>` is either an absolute path or a bracketed task lock
+(`'[primary-f99]'` — quote it; `[` is a shell glob character).
+
+Mix freely:
+
+```sh
+tools/orchestrate claim system-specialist '[primary-f99]' \
+  /git/github.com/LiGoldragon/chroma -- chroma nota-codec migration
+```
 
 The helper performs the required work in one call:
 
-1. Writes the intended scope into the role's own lock file: one path per
-   line, each annotated with the supplied reason as a `# comment`.
+1. Writes the intended scopes into the role's own lock file: one scope
+   per line, each annotated with the supplied reason as a `# comment`.
 2. Reads every role's lock file.
 3. Lists open BEADS tasks.
-4. Checks every other active lock for exact or nested path overlap.
+4. Checks every other active lock for overlap (path nesting for path
+   locks; exact match for task locks).
 5. Clears the role's claim and exits non-zero if any overlap exists.
 
 Use absolute paths where possible. For linked repositories under `repos/`,
 claim the real repository path under `/git/...`, not only the symlink path. A
 whole repository may be claimed by listing its repository root path.
+
+### When to use a task lock
+
+Task locks bridge BEADS' lifecycle (filed → open → closed) to in-flight
+coordination ("who is working on this *right now*"). Use one when you
+take on a tracked task that other agents might otherwise also pick up:
+
+```sh
+tools/orchestrate claim system-specialist '[primary-f99]' -- chroma migration
+# … do the work …
+tools/orchestrate release system-specialist
+bd close primary-f99 -r "<closing note>"
+```
+
+A bead going from open → closed in BEADS doesn't tell other agents
+"someone is on it" while in progress; the task lock does. After
+closing the bead, release the lock.
+
+For non-BEADS work items (a GitHub PR, a draft design report you
+haven't filed yet), the bracketed token can name them:
+`'[pr:42]'`, `'[draft:role-redesign]'`. The helper doesn't validate
+the token — it's an exact-match identifier; conflicts are exact
+collisions.
 
 ## Release Flow
 
