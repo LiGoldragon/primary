@@ -144,6 +144,70 @@ the bug, not the criterion.
 
 ---
 
+## Field naming — `profileSize` vs `size` vs `profile::size`
+
+When naming a field, method, or local that *could* be just a
+short word (`size`, `id`, `name`, `body`), the question is:
+**does the surrounding namespace already give the noun?**
+
+- If the access path is `profile::size` (module path) or
+  `profile.size` (struct field of a `Profile`-typed thing),
+  then `size` reads as English at the call site —
+  `profile.size` *is* the description.
+- If the field stands alone, naked, with no enclosing
+  namespace (a top-level binding, an unqualified function
+  parameter, a record field that often appears outside its
+  parent type's context), then `size` is too thin —
+  `profileSize` carries the missing context.
+
+```rust
+// Right — namespace already qualifies; field name stays short
+struct Profile {
+    pub size: u64,        // accessed as profile.size
+}
+
+// Right — naked field with no enclosing namespace; name carries the context
+fn record_metric(profileSize: u64, requestCount: u32) { … }
+
+// Wrong — descriptor's namespace already names "profile"; field name redundant
+struct Profile {
+    pub profileSize: u64,  // profile.profileSize reads as repetition
+}
+
+// Wrong — naked field claims a context that isn't there
+fn record_metric(size: u64, count: u32) { … }
+//                ^^^^         ^^^^^ which size? which count?
+```
+
+The rule: **the name carries the context the namespace
+doesn't.** Tests:
+
+- *Will the reader see this name with or without its
+  enclosing namespace?*
+- *Does the namespace already name the thing the field
+  describes?*
+
+If both answers are "with namespace + namespace names it,"
+the field name can be short. If either answer is "without
+namespace" or "namespace doesn't name it," the field name
+needs the descriptive prefix.
+
+The discipline is logical-plane separation: naked names
+*claim* a context they don't have. Naked names that survive
+in code are silent failures of clarity that the type system
+can't catch.
+
+This refines the "full English words" rule: it isn't *more
+words* that wins — it's *the words the namespace doesn't
+already supply*. `messageId` when there's no `Message`
+namespace; `id` when there is.
+
+(Per Li 2026-05-09: "I prefer more indirection and logical
+planes, more naming accuracy — `profileSize` is better than
+`size`, unless it is `profile::size`.")
+
+---
+
 ## Anti-pattern: prefixing type names with the crate name
 
 **A type's name belongs to its module context, not to the
