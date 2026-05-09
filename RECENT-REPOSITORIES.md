@@ -56,6 +56,7 @@ Pruned on 2026-05-06:
 | `persona-orchestrate` | `/git/github.com/LiGoldragon/persona-orchestrate` |
 | `persona-router` | `/git/github.com/LiGoldragon/persona-router` |
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` |
+| `signal-persona-orchestrate` | `/git/github.com/LiGoldragon/signal-persona-orchestrate` |
 | `persona-store` | `/git/github.com/LiGoldragon/persona-store` |
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` |
 | `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` |
