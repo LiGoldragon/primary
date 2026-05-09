@@ -1,9 +1,13 @@
 # Orchestration Protocol
 
 The orchestration protocol coordinates autonomous agents sharing the same
-workspace. It combines role-owned lock files with the workspace BEADS task
-database so agents see both file ownership and open work before they edit.
-BEADS is shared coordination state, not a lockable scope.
+workspace. The current shell-helper implementation combines role-owned lock
+files with the transitional workspace BEADS task database so agents see both
+file ownership and open work before they edit. The target implementation
+replaces BEADS with Persona's native typed work graph carried by
+`signal-persona-work` and stored by `persona-work`.
+
+BEADS is shared coordination state while it exists, not a lockable scope.
 
 ## Roles
 
@@ -29,7 +33,7 @@ its own lock file.
 
 - Lock files: one per role at `<role>.lock` (e.g. `operator.lock`,
   `system-specialist.lock`).
-- BEADS database: `.beads/`.
+- BEADS database: `.beads/` (legacy transitional work-item store).
 - Helper: `tools/orchestrate`.
 
 Each agent writes only its own lock file. The lock files are coordination
@@ -64,9 +68,12 @@ Target invariants:
 - Durable state lives in `orchestrate.redb` through `persona-sema`.
 - Lock files become regenerated projections of durable coordination state.
 - Claim, release, and handoff requests create activity records automatically.
-- BEADS remains external and transitional; status displays may show open BEADS
-  beside orchestration state, but BEADS is not ownership state and not part of
-  the typed claim contract.
+- A later `persona-work` wave supplies the native typed work graph for tasks,
+  notes, dependencies, decisions, and ready-work queries via
+  `signal-persona-work`.
+- BEADS is retired by the `persona-work` wave. Existing BEADS entries may be
+  imported once as native work events and aliases, but there is no long-term
+  Persona↔bd bridge and no dual-write path.
 
 Until that Rust path is implemented and tested, the shell helper remains the
 canonical writer for lock files.
@@ -179,13 +186,17 @@ This clears the role's active scopes and lists the current open BEADS tasks.
 tools/orchestrate status
 ```
 
-Lists every role's lock file plus the open BEADS tasks. Useful before
-starting work to see what other roles are doing.
+Lists every role's lock file plus open BEADS tasks in the current
+shell-helper era. In the typed target, `RoleObservation` reports role
+state and `WorkQueryKind::Ready` reports ready work from the native work
+graph.
 
 ## Blocked Work
 
 When an agent cannot proceed because a scope is owned, context is missing, or
-a dependency is not ready, it records the blocked work as a BEADS task.
+a dependency is not ready, it records blocked work durably.
+
+Current shell-helper era:
 
 ```sh
 bd create "Short task title" -t task -p 2 \
@@ -195,7 +206,15 @@ bd create "Short task title" -t task -p 2 \
 Keep BEADS entries short. Long designs, reports, and protocols live as files;
 the bead points at the file or path.
 
-## BEADS Check
+Typed target:
+
+- Create or update a `signal-persona-work` work item.
+- Add a `Blocks`, `DiscoveredFrom`, `References`, or `RelatesTo` edge as
+  appropriate.
+- Add notes as append-only `WorkNote` events.
+- Use imported BEADS IDs only as aliases.
+
+## Legacy BEADS Check
 
 Every lock write includes an open-task check. Agents should read the
 open-task list as part of deciding whether to continue, pick up a blocked
@@ -208,6 +227,9 @@ transient backend contention only — not as another agent owning BEADS. Retry t
 BEADS command as the next natural action, or switch the workspace to a backend
 that supports concurrent access. Do not create an orchestration lock for
 `.beads/`.
+
+This section describes the legacy helper behavior only. New design work should
+target `signal-persona-work`; do not add new BEADS integrations.
 
 Useful direct commands:
 

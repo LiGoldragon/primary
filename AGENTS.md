@@ -83,11 +83,13 @@ write it to the right workspace file (per
 ## BEADS is transitional
 
 `.beads/` exists today for convenience. The destination is
-**Persona's typed messaging fabric** — see
-`reports/designer/4-persona-messaging-design.md` for
-the design. Don't build a Persona↔bd bridge; don't deepen the bd
-investment. Use bd for short-tracked-item coordination today;
-design new shapes assuming bd goes away.
+**Persona's native typed work graph** — see
+`reports/operator/97-native-issue-notes-tracker-research.md`
+and the `signal-persona-work` / `persona-work` repos. Don't
+build a Persona↔bd bridge; don't deepen the bd investment. Use
+bd only for short-tracked-item coordination while the native work
+graph is being implemented; design new shapes assuming bd goes
+away.
 
 BEADS is never an ownership lock. Do not claim `.beads/`.
 Any agent may create, update, comment on, or close BEADS tasks
