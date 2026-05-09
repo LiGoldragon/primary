@@ -119,6 +119,11 @@ flowchart TB
   initiator`; the remaining failure was the initiator not reliably receiving or
   acting on the original operator router delivery. Debugging stayed inside
   `nix run .#debug-pty-pi-router-relay-state`.
+- The next failure was narrower: `initiator` sent the correct message through
+  `message`, but `responder` never saw the router delivery. Delivery now
+  verifies that the prompt appears in PTY capture before reporting delivered;
+  otherwise the router keeps the message pending for the next pushed prompt or
+  focus observation.
 
 ## First Implementation Cut
 
@@ -161,3 +166,118 @@ sequenceDiagram
 
 This is the same behavior that worked manually during diagnosis and it is the
 path used by router delivery.
+
+## Delivery Verification
+
+The router path now treats "write returned Ok" as insufficient:
+
+```mermaid
+flowchart TD
+    start["send prompt bytes"] --> capture["capture PTY transcript"]
+    capture --> seen{"prompt visible?"}
+    seen -->|"yes"| delivered["delivered"]
+    seen -->|"no"| pending["defer as PromptUnknown"]
+    pending --> event["next pushed observation"]
+    event --> start
+```
+
+The relay script emits explicit prompt observations after each expected
+handoff. They stand in for the future harness/system event stream and let the
+router retry only when a producer has pushed a new fact.
+
+## Operator-Origin Message
+
+The original relay instruction is sent by the operator side through the
+`message` CLI, not by a direct router record:
+
+```mermaid
+sequenceDiagram
+    participant O as operator test process
+    participant M as message
+    participant R as persona-router
+    participant I as initiator harness
+
+    O->>M: (Send initiator "...")
+    M->>M: resolve operator from actors.nota
+    M->>R: (RouteMessage (Message ... operator initiator ...))
+    R->>I: guarded PTY delivery
+```
+
+Direct router calls in the script are limited to actor registration and pushed
+system facts such as `PromptObservation` and `FocusObservation`.
+
+## Guard State Fix
+
+The router now treats prompt state as a consumable fact:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Unknown
+    Unknown --> Empty: PromptObservation Empty
+    Empty --> Unknown: delivered message
+    Unknown --> Occupied: PromptObservation Occupied
+    Occupied --> Empty: PromptObservation Empty
+```
+
+This avoids reusing stale "empty prompt" knowledge. A second message to the
+same harness waits until the system pushes a fresh prompt observation.
+
+## Transport Fix Found During Test
+
+The PTY daemon had a protocol bug: raw input clients that did not send the
+viewer handshake were classified as scrollback-replay clients. The daemon could
+try to replay scrollback into an input-only socket and skip the input frame if
+that replay failed.
+
+```mermaid
+flowchart LR
+    before["input client"] --> wrong["replay scrollback"]
+    wrong --> drop["input frame skipped"]
+
+    fixed["input client"] --> noReplay["no replay"]
+    noReplay --> input["frame reaches PTY writer"]
+```
+
+The fix is in `persona-wezterm`: a client whose first byte is already an input
+frame tag is marked `replay = false`.
+
+## Passing Result
+
+The Nix-scripted visible relay test now passes:
+
+```text
+nix run .#test-pty-pi-router-relay
+pi_router_relay_test=passed
+```
+
+The passed path used two visible Pi harnesses with `prometheus/qwen3.6-27b`
+and medium thinking:
+
+```mermaid
+sequenceDiagram
+    participant O as operator
+    participant I as initiator
+    participant R as responder
+
+    O->>I: Send responder ...
+    I->>R: reply to sender with relay-reply
+    R->>I: relay-reply
+    I->>O: relay-complete
+```
+
+The same script then verifies both guards:
+
+```mermaid
+flowchart TD
+    focus["focus responder"] --> route1["route message"]
+    route1 --> pending1["pending"]
+    pending1 --> unfocus["focus neutral + observe focus"]
+    unfocus --> prompt1["observe prompt empty"]
+    prompt1 --> delivered1["delivered"]
+
+    draft["type human draft"] --> occupied["observe prompt occupied"]
+    occupied --> route2["route message"]
+    route2 --> pending2["pending"]
+    pending2 --> clear["clear draft + observe empty"]
+    clear --> delivered2["delivered"]
+```
