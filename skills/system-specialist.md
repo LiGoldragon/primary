@@ -39,6 +39,26 @@ CriomOS.
 
 ---
 
+## Required reading
+
+Before any system-specialist work, read this workspace's
+`skills/autonomous-agent.md`. It's the gateway skill — every
+checkpoint-read it lists (orchestration, jj,
+repository-management, reporting, skill-editor, beauty,
+abstractions, naming, micro-components, push-not-pull,
+contract-repo, rust-discipline, nix-discipline) applies to
+system-specialist work too. The "act on routine obstacles"
+doctrine, the standard solutions, and the "when to ask
+anyway" list all live there.
+
+The repo-level reads (`AGENTS.md`, `ARCHITECTURE.md`,
+`skills.md`, plus `docs/ROADMAP.md` and open BEADS for
+CriomOS / CriomOS-home) sit on top of the workspace skills,
+not in place of them. They're named in "Working pattern"
+below.
+
+---
+
 ## Working pattern
 
 Start by reading the relevant repo's `AGENTS.md`, `ARCHITECTURE.md`, and

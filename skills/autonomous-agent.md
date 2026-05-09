@@ -9,7 +9,9 @@
 This skill assumes a baseline of workspace discipline. **Read
 the following before treating any obstacle as routine,** and
 re-read whenever the relevant kind of obstacle is in front of
-you:
+you.
+
+### Coordination — how the workspace shares state
 
 - `~/primary/protocols/orchestration.md` — claim/release
   scopes, role lock files, BEADS coordination. Required
@@ -20,8 +22,9 @@ you:
   commit -m '<msg>'`. Reading the status output is part of
   the discipline, not optional.
 - `~/primary/skills/repository-management.md` — creating
-  GitHub repos, changing visibility, issues, PRs. Required
-  before any `gh` CLI use or repo creation.
+  GitHub repos, changing visibility, issues, PRs, the `ghq`
+  layout. Required before any `gh` CLI use, repo creation,
+  or local clone navigation.
 - `~/primary/skills/reporting.md` — when to write a report
   vs. answer in chat; the always-name-paths rule;
   inline-summary rule for cross-references. Required before
@@ -29,12 +32,61 @@ you:
 - `~/primary/skills/skill-editor.md` — when editing skills
   (this one or any other). Required before skill edits.
 
+### Design discipline — how to think before you write
+
+- `~/primary/skills/beauty.md` — beauty as the criterion;
+  ugliness as diagnostic reading. Required before deciding
+  "this is done." Notably: if a name, structure, or shape
+  feels ugly, slow down — the structure you're missing is
+  exactly what the ugliness signals.
+- `~/primary/skills/abstractions.md` — verb-belongs-to-noun.
+  Required before writing any reusable verb (function or
+  method). Notably: a free function is an incorrectly-
+  specified verb; the rule forces you to find the noun the
+  verb belongs to, and inventing that noun is often the
+  load-bearing design step.
+- `~/primary/skills/naming.md` — full English words; six
+  narrow exceptions for short forms; no crate-name prefix on
+  types. Required before naming any identifier.
+- `~/primary/skills/micro-components.md` — one capability,
+  one crate, one repo; component fits in one LLM context
+  window; cross-crate deps via `git =`, never
+  `path = "../"`. Required before adding a capability — the
+  default is a new repo, not a new module in an existing
+  crate.
+- `~/primary/skills/push-not-pull.md` — producers push;
+  consumers subscribe; polling is forbidden. Required before
+  designing any producer-consumer interaction. Notably: when
+  no push primitive exists, escalate — never fall back to a
+  poll loop "for now."
+- `~/primary/skills/contract-repo.md` — the wire contract
+  between Rust components lives in a dedicated repo of typed
+  records. Required before two Rust components signal each
+  other across a process boundary.
+
+### Language and tooling
+
+- `~/primary/skills/rust-discipline.md` — methods on types,
+  domain newtypes, one-object-in/out, errors as crate-owned
+  enums, redb + rkyv discipline. Required before writing or
+  reviewing Rust.
+- `~/primary/skills/nix-discipline.md` — flake-input forms
+  (default `github:`), no hand-edited `flake.lock`, no raw
+  `/nix/store/...` paths, `nix run nixpkgs#<pkg>` for missing
+  tools, `nix flake check` as canonical pre-commit runner.
+  Required before editing any `flake.nix` or invoking a tool
+  not on PATH.
+
 These are not "read once at session start and forget" — they
 are *checkpoint reads* before the kind of work each one
 governs. If you're about to commit, re-look at jj.md's
 "Before you commit" check. If you're about to write a report
 that cites another report, re-look at the inline-summary
-rule in reporting.md.
+rule in reporting.md. If you're about to write a free
+function, re-look at abstractions.md's "find the noun"
+diagnostic. If you're about to grow a crate with a new
+feature, re-look at micro-components.md's "default to a new
+repo."
 
 ---
 
