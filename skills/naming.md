@@ -166,17 +166,21 @@ struct Profile {
     pub size: u64,        // accessed as profile.size
 }
 
-// Right — naked field with no enclosing namespace; name carries the context
-fn record_metric(profileSize: u64, requestCount: u32) { … }
+// Right — naked parameter with no enclosing namespace; name carries the context
+impl MetricsRecorder {
+    pub fn record(&self, profileSize: u64, requestCount: u32) { … }
+}
 
 // Wrong — descriptor's namespace already names "profile"; field name redundant
 struct Profile {
     pub profileSize: u64,  // profile.profileSize reads as repetition
 }
 
-// Wrong — naked field claims a context that isn't there
-fn record_metric(size: u64, count: u32) { … }
-//                ^^^^         ^^^^^ which size? which count?
+// Wrong — naked parameters claim a context that isn't there
+impl MetricsRecorder {
+    pub fn record(&self, size: u64, count: u32) { … }
+    //                   ^^^^         ^^^^^ which size? which count?
+}
 ```
 
 The rule: **the name carries the context the namespace

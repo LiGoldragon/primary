@@ -192,6 +192,81 @@ one repo, do real work in it, then write the skill.
 
 ---
 
+## Examples never show free functions (only `main`)
+
+**The only free function any example shows is `main`.**
+Every other `fn` in an example body is a method on a type
+(`impl T { fn ... }`) or an associated function (also inside
+an `impl`).
+
+This is stricter than `skills/abstractions.md`'s rule (which
+permits free functions for small private helpers and pure
+relational operations). The reason: **examples teach by
+imitation**. An example that shows `fn parse_query(...)` —
+even labelled "Wrong:" — primes the next agent to write a
+free function. The Wrong/Right comparison teaches the wrong
+shape twice.
+
+```rust
+// Wrong (rule violation in the example itself):
+//
+//   fn parse_query(text: &str) -> Result<QueryOp, Error> { … }
+//
+// vs.
+//
+//   impl QueryParser<'_> {
+//       pub fn into_query(self) -> Result<QueryOp, Error> { … }
+//   }
+
+// Right (the example never shows the bad shape):
+//
+// Anti-pattern (in prose): a free `parse_query(text: &str) -> ...`
+// would be a verb-without-a-noun (per `skills/abstractions.md`).
+// The right shape is a method:
+//
+//   impl QueryParser<'_> {
+//       pub fn into_query(self) -> Result<QueryOp, Error> { … }
+//   }
+```
+
+When a skill needs to discuss an anti-pattern that IS the
+free function, name the anti-pattern in **prose**, with the
+right-shape code in the example block. Don't write the
+free-function shape as code.
+
+### Test functions
+
+Rust's `#[test]` attribute requires the function be free —
+that's a `cargo` constraint, not an example choice.
+Examples for tests:
+- Show the test **name** as a list item or in prose, not as
+  a `fn ...()` block: *Test name patterns:*
+  `router_cannot_deliver_without_store_commit`,
+  `message_cli_cannot_write_private_message_log`.
+- Show the test **body** inside an `impl Fixture { fn ... }`
+  block when the body teaches structure, with prose noting
+  *"the `#[test]` wrapper calls
+  `Fixture::router_cannot_deliver_without_store_commit`."*
+
+### `main` is the named exception
+
+`fn main() { … }` is the one free function any example may
+show — it's the binary entry point and Rust requires it.
+
+### Auditing existing skills
+
+When editing a skill, sweep its examples for the violation
+before commit. The grep:
+
+```sh
+grep -nE '^\s*(pub )?(async )?fn ' <file> | grep -vE 'fn main\b'
+```
+
+Every match in an example block needs to be either inside
+`impl` or removed.
+
+---
+
 ## See also
 
 - `autonomous-agent.md` — how to act on routine obstacles

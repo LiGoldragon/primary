@@ -28,10 +28,14 @@ things that genuinely belong nowhere else: a binary's `main`, a
 small private helper inside one module, a pure mathematical
 operation between values of equal status.
 
-```rust
-// Wrong — verb floating, type implicit
-fn parse_query(text: &str) -> Result<QueryOp, Error> { … }
+**Anti-pattern (named in prose, never shown as code per
+`skills/skill-editor.md` §"Examples never show free
+functions"):** a free `parse_query(text: &str) -> Result<QueryOp,
+Error>` is a verb floating without a type. The `text`
+parameter is the input the verb wants; the verb is the
+affordance the *type around the parser state* should own.
 
+```rust
 // Right — verb on the type that owns it
 struct QueryParser<'input> { lexer: Lexer<'input> }
 
