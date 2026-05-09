@@ -106,6 +106,19 @@ flowchart TB
 - Added `persona-message/scripts/test-pty-pi-router-relay`.
 - Added `persona-message/scripts/teardown-pty-pi-router-relay`.
 - Added Nix app names for the relay setup/teardown.
+- Added a named diagnostic script,
+  `persona-message/scripts/debug-pty-pi-router-relay-state`, after the user
+  pointed out that relay inspection also needs to go through Nix-created
+  scripts rather than ad-hoc shell commands.
+- First live run exposed a lower transport issue: `persona-wezterm-send`
+  typed prompt text into Pi but did not reliably submit it when text and
+  carriage return were sent through the same socket connection. A separate raw
+  carriage return submitted correctly, so the fix belongs in `persona-wezterm`,
+  not only in the relay script.
+- A later run proved the relay semantics reached `initiator -> responder ->
+  initiator`; the remaining failure was the initiator not reliably receiving or
+  acting on the original operator router delivery. Debugging stayed inside
+  `nix run .#debug-pty-pi-router-relay-state`.
 
 ## First Implementation Cut
 
@@ -128,3 +141,23 @@ sequenceDiagram
 
 The relay script keeps the earlier guard tests but moves the route origin to
 `message`, not hand-written router records.
+
+## Transport Fix
+
+`PtySocket::send_prompt` now sends prompt text and the submit carriage return as
+two transport writes, with an explicit flush before socket teardown:
+
+```mermaid
+sequenceDiagram
+    participant C as client
+    participant D as PTY daemon
+    participant P as Pi harness
+
+    C->>D: input text
+    D->>P: prompt bytes
+    C->>D: input carriage return
+    D->>P: submit
+```
+
+This is the same behavior that worked manually during diagnosis and it is the
+path used by router delivery.

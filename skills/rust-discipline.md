@@ -856,19 +856,36 @@ encode/decode API, `bytecheck` semantics), see lore's
 `rust/rkyv.md`. This skill is *what discipline to apply*;
 lore is *how the tool works*.
 
-### When to lift to a shared crate
+### The sema-family pattern
 
-Multiple components using the same redb + rkyv patterns —
-typed `Table<K, V>` wrapper, common error variants,
-transaction helpers, migration utilities — eventually
-warrant a shared helper crate.
+The workspace's typed-storage substrate lives in **`sema`**
+(the kernel) plus per-consumer **`<consumer>-sema`** crates
+(the typed layers). Sema is to state what `signal-core` is
+to wire:
 
-**Don't pre-abstract.** Each component uses redb + rkyv
-inline first; the shared shape becomes obvious after
-2–3 components have crystallized their patterns. The
-sema → criome path followed exactly this growth:
-shared shape became visible from real use, then
-extracted.
+```
+signal-core             sema
+  ├─ signal-persona       ├─ persona-sema
+  ├─ signal-forge         ├─ forge-sema  (future)
+  └─ signal-arca          └─ ...
+```
+
+`sema` (the kernel) owns: redb file lifecycle, the typed
+`Table<K, V: Archive>` wrapper, txn helpers, the standard
+`Error` enum, the version-skew guard, and the `Slot(u64)` +
+slot-counter utility.
+
+Each `<consumer>-sema` crate owns: its `Schema` constant
+(table list + version), its typed table layouts, its open
+conventions, its migration helpers. Records' Rust types
+live in the matching `signal-<consumer>` crate, not in
+`<consumer>-sema`.
+
+**New components consuming sema:** add `sema = "..."` to
+`Cargo.toml`, declare a `Schema` constant, define typed
+tables atop `sema::Table<K, V>`. Don't reinvent the
+plumbing. See `~/primary/reports/designer/63-sema-as-workspace-database-library.md`
+for the design.
 
 ### Why this discipline is strict
 
