@@ -498,7 +498,7 @@ The intended ownership boundary is:
 | Plane | Owner | What crosses |
 |---|---|---|
 | domain vocabulary | `signal-persona` | rkyv record types |
-| CLI text projection | `persona-message` | Nexus/NOTA text at human/harness boundary |
+| CLI text projection | `persona-message` | Nexus records in NOTA syntax at human/harness boundary |
 | routing policy | `persona-router` | typed route/delivery decisions |
 | durable commit actor | store actor | typed commit requests/replies |
 | typed storage layer | `persona-sema` | table layouts over `signal-persona` records |
@@ -785,19 +785,19 @@ The next implementation pass should invert the dependency shape:
    physical `signal-persona-*` repo immediately, or whether
    `signal-persona` can own channel modules until the second concrete
    consumer forces a split.
-3. **Store actor naming and repo.** Confirm whether the store actor
-   lives in `persona-sema` or a separate runtime repo that depends on
-   `persona-sema`. The storage layer itself remains `persona-sema`.
+3. **State actor ownership.** Confirm which Persona component owns the
+   ractor actor holding the `PersonaSema` handle. The storage layer
+   itself remains `persona-sema`.
 4. **Table derivation.** Decide how `persona-sema` table constants stay
    coupled to `signal-persona::Record`: generated tables, macro output,
    or a deliberately hand-written surface with tests that fail on drift.
 5. **Table keys.** Decide the key shape for Persona tables: typed
    slots, per-record slot newtypes, or domain-specific keys.
-6. **Text language at harness boundary.** Confirm whether harness-visible
-   prompts are rendered as Nexus text, NOTA records, or a named Persona
-   projection language while models are still text-trained.
-7. **Store ownership.** Confirm that the assembled runtime has one store
-   actor and that neither router nor CLI owns a private durable queue.
+6. **Harness boundary text.** Confirm the Nexus records in NOTA syntax
+   used for harness-visible prompts while models are still text-trained.
+7. **State ownership.** Confirm that the assembled runtime has one
+   database-owning actor and that neither router nor CLI owns a private
+   durable queue.
 8. **Terminal adapter protocol.** Confirm whether `persona-wezterm`'s
    private PTY byte protocol can stay internal, with Signal only at the
    harness actor boundary.

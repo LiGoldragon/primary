@@ -16,7 +16,7 @@ right next stack is:
 
 1. land the signal contract repositories that let components agree
    on typed messages;
-2. land the store actor as the only database mailbox;
+2. land the orchestrator state actor as the only database mailbox;
 3. make `persona-message` speak the message contract to
    `persona-router`;
 4. make `persona-router` commit through the store contract before
@@ -28,8 +28,8 @@ flowchart LR
     contract["signal-persona-message"] --> message["persona-message"]
     contract --> router["persona-router"]
     store_contract["signal-persona-store"] --> router
-    store_contract --> store_actor["persona-store-actor"]
-    store_actor --> sema["persona-sema"]
+    store_contract --> orchestrate["persona-orchestrate"]
+    orchestrate --> sema["persona-sema"]
     sema --> database[("persona.redb")]
     router --> harness_contract["signal-persona-harness"]
 ```
@@ -45,8 +45,8 @@ is the wrong shape for a channel.
 | Repo | Change |
 |---|---|
 | `signal/ARCHITECTURE.md` | Clarifies that this repo is the sema/criome contract inside the wider signal family; Persona channel payloads live in `signal-persona-*`; `signal-derive` stays deferred. |
-| `sema/ARCHITECTURE.md` | Clarifies sema as the state kernel; `<consumer>-sema` owns table layouts; runtime store actors own write ordering and commit events. |
-| `persona/ARCHITECTURE.md` | Reorients the apex around five channel contracts, `persona-store-actor`, commit-before-deliver, and architectural-truth witnesses. |
+| `sema/ARCHITECTURE.md` | Clarifies sema as the state kernel; `<consumer>-sema` owns table layouts; runtime actors own write ordering and commit events. |
+| `persona/ARCHITECTURE.md` | Reorients the apex around five channel contracts, `persona-orchestrate` as the owner of the state actor, commit-before-deliver, and architectural-truth witnesses. |
 
 ## 2 · Implementation shape
 
@@ -57,22 +57,22 @@ sequenceDiagram
     participant Human as operator / harness
     participant Message as persona-message
     participant Router as persona-router
-    participant Store as persona-store-actor
+    participant Orchestrate as persona-orchestrate
     participant Sema as persona-sema
     participant Harness as persona-harness
 
-    Human->>Message: text projection
+    Human->>Message: Nexus record in NOTA syntax
     Message->>Router: signal-persona-message::Submit
-    Router->>Store: signal-persona-store::CommitRequest
-    Store->>Sema: typed write transaction
-    Sema-->>Store: durable commit
-    Store-->>Router: CommitOutcome
+    Router->>Orchestrate: signal-persona-store::CommitRequest
+    Orchestrate->>Sema: typed write transaction
+    Sema-->>Orchestrate: durable commit
+    Orchestrate-->>Router: CommitOutcome
     Router->>Harness: signal-persona-harness::DeliverRequest
 ```
 
 The key point: `persona-router` must not "helpfully" write a
 message file or a redb table itself. It reduces state, asks the
-store actor for a commit, and only then emits delivery.
+orchestrator state actor for a commit, and only then emits delivery.
 
 ## 3 · Contract repos as the parallel boundary
 
@@ -104,7 +104,7 @@ The first five contracts are:
 | Contract | Runtime boundary |
 |---|---|
 | `signal-persona-message` | `persona-message` → `persona-router` |
-| `signal-persona-store` | `persona-router` → `persona-store-actor` |
+| `signal-persona-store` | `persona-router` → `persona-orchestrate` state actor |
 | `signal-persona-system` | `persona-system` → `persona-router` |
 | `signal-persona-harness` | `persona-router` ↔ `persona-harness` |
 | `signal-persona-terminal` | `persona-harness` → `persona-wezterm` |
@@ -122,7 +122,7 @@ checks, focus gates, and store ownership live in runtime components.
 
 Do not let the message CLI keep private durable logs. The CLI's
 durable act is sending a signal frame to the router. The database
-witness comes from `persona-store-actor` and `persona-sema`.
+witness comes from `persona-orchestrate` and `persona-sema`.
 
 ## 5 · Truth-test witnesses
 
@@ -136,7 +136,7 @@ output.
 | CLI has no private durable queue | `message_cli_cannot_write_private_message_log` |
 | Router commits before delivery | `router_cannot_deliver_without_store_commit` |
 | Router does not own terminal transport | `router_cannot_import_persona_wezterm` |
-| Store actor owns database writes | `store_actor_commits_through_persona_sema` |
+| Orchestrator actor owns database writes | `orchestrator_actor_commits_through_persona_sema` |
 | Persistence is real | Nix writer derivation emits `persona.redb`; separate reader derivation opens it |
 | Delivery is push-based | paused-clock test proves no retry without pushed observation |
 
@@ -144,7 +144,7 @@ The Nix-chained database test is the strongest early witness:
 
 ```mermaid
 flowchart LR
-    writer["derivation A<br/>run router + store actor + message CLI"]
+    writer["derivation A<br/>run router + orchestrator + message CLI"]
     database[("persona.redb")]
     reader["derivation B<br/>persona-sema reader"]
     pass["message exists in typed table"]
@@ -159,8 +159,8 @@ flowchart LR
 1. Create `signal-persona-message` and `signal-persona-store`
    first. They are the minimum pair that lets a submitted message
    become durable.
-2. Create `persona-store-actor` immediately after
-   `signal-persona-store`; it is the missing runtime owner of
+2. Implement the `persona-orchestrate` state actor immediately
+   after `signal-persona-store`; it is the runtime owner of
    database writes.
 3. Replace `persona-message` text-file state with a socket client
    that emits `signal-persona-message` frames.
@@ -171,29 +171,21 @@ flowchart LR
 
 ## 7 · Questions for Li
 
-1. Should the runtime database actor repo be named exactly
-   `persona-store-actor`, or do you want a different noun such as
-   `persona-state` / `persona-state-actor` before we create it?
-
-2. Should the first text projection for `signal-persona-message` be
-   plain NOTA record syntax, Nexus verb syntax, or a deliberately
-   Persona-specific text projection that later maps cleanly to Nexus?
-
-3. Do you want the five `signal-persona-*` repos created now even if
+1. Do you want the five `signal-persona-*` repos created now even if
    only `message` and `store` get code first, or should we create only
    the first two and leave the other three as architecture references
    until their implementation turn?
 
-4. Should `FrameEnvelopable` land in `signal-core` before the first
+2. Should `FrameEnvelopable` land in `signal-core` before the first
    Persona channel, or should we force the first channel to feel the
    raw rkyv bounds and only abstract after the second or third channel?
 
-5. Should `persona-router` be forbidden from depending on
+3. Should `persona-router` be forbidden from depending on
    `persona-sema` directly in production code, or is a read-only
    dependency acceptable for inspection paths while writes still go
-   through `persona-store-actor`?
+   through `persona-orchestrate`?
 
-6. Is commit-before-deliver enough for the first stack, or should
+4. Is commit-before-deliver enough for the first stack, or should
    authorization also be mandatory before store commit in the first
    message path?
 
@@ -201,8 +193,12 @@ flowchart LR
 
 My recommendation:
 
-- Create only `signal-persona-message`,
-  `signal-persona-store`, and `persona-store-actor` first.
+- Create only `signal-persona-message` and `signal-persona-store`
+  first, then implement the corresponding state actor inside
+  `persona-orchestrate`.
+- Treat request/message text as Nexus records in NOTA syntax.
+  Convenience CLIs such as `message` may hide common wrappers, but
+  they stay within NOTA syntax.
 - Keep `signal-persona-system`, `signal-persona-harness`, and
   `signal-persona-terminal` in architecture until the first durable
   message path is real.

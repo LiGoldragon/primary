@@ -746,10 +746,12 @@ both sides agree on the same archive contract today.
 
 ### NOTA — the human-facing projection
 
-NOTA is the project's text format. It is **not the wire
-between Rust components.** It is what a typed record
-*projects to* when a human, a CLI, or a git diff is on
-the other side.
+NOTA is the project's text syntax. Nexus is a NOTA-using
+request/message surface, not a second syntax. In practice,
+when request or message text is discussed, it usually means Nexus
+records written in NOTA syntax. NOTA is **not the wire between Rust
+components.** It is what a typed record *projects to* when a human,
+a CLI, or a git diff is on the other side.
 
 - A `Lock` record exists as a typed Rust value. It
   archives to rkyv inside redb. It projects to NOTA
@@ -762,13 +764,16 @@ the other side.
   prints one NOTA record on stdout (so a human can read
   it). Inside the binary, the value travels as typed
   Rust.
+- A convenience CLI such as `message` may hide a common Nexus
+  wrapper from the user. It still constructs a typed NOTA record
+  shape and stays within NOTA syntax.
 - Debug dumps, audit logs, error renderings — all NOTA
   projections of typed records.
 
 The asymmetry: humans use NOTA, machines use rkyv. The
 codec at the boundary is `nota-codec`; it is the *only*
-text codec each crate ships. No second project-wide
-text format.
+text codec each crate ships. No second project-wide text
+format.
 
 ### Patterns and anti-patterns
 

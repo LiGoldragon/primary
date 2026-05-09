@@ -16,7 +16,7 @@ mmap region — the record types they exchange live in a
 **contract repo**: one crate, one home, every consumer pulls
 it as a dependency. This skill is *when* you reach for that
 pattern, *what* belongs in the contract crate, and *how* it
-relates to layered protocols and human-facing text formats.
+relates to layered protocols and human-facing NOTA projections.
 
 **Signaling** is the workspace verb for inter-component
 communication via length-prefixed rkyv archives. A contract
@@ -115,9 +115,8 @@ It **does not own**:
   reducer state, its supervisor tree are private.
 - Logic that interprets the records. Validation pipelines,
   routing rules, gate decisions stay in the daemons.
-- Text formats. Human-facing projections live in their own
-  codec crate (e.g. `nota-codec`); the contract crate's wire
-  is binary.
+- NOTA projection policy. Human-facing projections use NOTA;
+  the contract crate's wire is binary.
 - Configuration. `Cargo.toml`, `flake.nix`, deployment.
 - `serde`. Contract types may *also* derive serde for debug
   rendering, but the contract is rkyv-on-the-wire.
@@ -205,15 +204,18 @@ error to recover from.
 
 ## How NOTA fits
 
-NOTA is the project's text format. It is **not the inter-
-component wire**. The contract crate carries rkyv types; NOTA
-appears only at boundaries that touch a human or a text
-projection:
+NOTA is the project's only text syntax. Nexus is a NOTA-using
+request/message surface, not a second syntax. In practice,
+request/message text usually means Nexus records written in NOTA
+syntax; configs and convenience CLIs may use direct NOTA records.
+NOTA is **not the inter-component wire**. The contract crate carries
+rkyv types; NOTA appears only at boundaries that touch a human or a
+text projection:
 
 | Boundary | Format |
 |---|---|
 | Component ↔ component (Rust ↔ Rust) | contract-crate types via rkyv frames |
-| CLI ↔ daemon | NOTA on argv/stdin (human types it); daemon parses to typed contract record |
+| CLI ↔ daemon | NOTA on argv/stdin (human types it), often through a convenience CLI that constructs the Nexus wrapper; daemon parses to typed contract record |
 | Daemon ↔ harness terminal | Pre-harness component projects typed record to NOTA before write |
 | Audit logs / debug dumps | NOTA projection |
 

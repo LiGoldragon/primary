@@ -52,12 +52,10 @@ The designer's natural primary scope:
   shape; operator owns the implementation that fulfills it.
   Substantive ARCH edits in operator's repos go through
   designer review, often via a dedicated report.
-- **Notation design** — `nota` grammar, `nexus` discipline,
-  any future query DSL or schema notation. The
-  language-design instincts in `skills/language-design.md`
-  are the toolkit; new designs land as designer reports
-  with worked text examples and contract-crate
-  implications.
+- **Notation design** — `nota` grammar and `nexus` discipline.
+  The language-design instincts in `skills/language-design.md`
+  are the toolkit; new record surfaces land as designer reports
+  with worked NOTA examples and contract-crate implications.
 - **Critique** — auditing operator's implementation work
   against design intent. Reports name what landed cleanly,
   what regressed, what gap remains.

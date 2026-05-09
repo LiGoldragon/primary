@@ -85,7 +85,7 @@ Every Persona component architecture should answer the same questions:
 | Outbound Signal | which contract repo messages it emits |
 | State | whether it owns state, and if so through which actor/table |
 | Actor boundary | which data-bearing actor owns long-lived behavior |
-| Text boundary | whether NOTA/Nexus is allowed here |
+| Text boundary | whether NOTA syntax appears here, usually as Nexus records for request/message text |
 | Forbidden shortcuts | what future agents are likely to bypass |
 | Truth tests | which tests prove the architecture is obeyed |
 
@@ -97,7 +97,7 @@ For contract repos, the skeleton changes:
 | Record source | which domain records are imported from `signal-persona` |
 | Messages | closed request/event/reply enums |
 | Versioning | Signal frame/version expectations |
-| Examples | canonical Nexus/NOTA text projection for each record |
+| Examples | canonical Nexus records in NOTA syntax for each request/message projection |
 | Round trips | text round-trip and rkyv frame round-trip |
 | Non-ownership | no actors, daemons, routing, storage, or terminal logic |
 
@@ -175,7 +175,7 @@ exchange them. They do not redefine them.
 | `sema::Table<K,V>` bounds | `persona-sema` docs must name real storable values | operator |
 | ractor pattern in workspace | actor docs must match real implementation style | operator |
 | Contract repo naming | avoid churn between `signal-persona-*` and modules | designer + operator |
-| Harness text projection | decide Nexus/NOTA/persona projection at terminal boundary | designer |
+| Harness text projection | define the Nexus records in NOTA syntax used at the terminal boundary | designer |
 | Niri/system fact shape | focus/prompt contracts need real OS witness boundaries | operator |
 | Truth-test skill adoption | ensure every Persona repo points at `skills/architectural-truth-tests.md` | designer + operator |
 

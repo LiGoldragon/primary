@@ -7,26 +7,34 @@ request language, a schema notation, or a query surface.*
 
 ## What this skill is for
 
-Whenever a notation is being designed — Nota records, the Nexus
-request language, a future query DSL, a config syntax for a
-new tool — apply this skill before writing the parser. The
-instincts below are what the workspace's working surfaces
-(Nota, Nexus, signal IR) have converged on after the
-language-design exploration in `aski` (retired but
-inspirational; `aski/spec/design.md` has the original
-articulations).
+Whenever a text surface is being designed, apply this skill before
+writing a parser. The syntax substrate is NOTA. Nexus is a
+NOTA-using request/message surface, not a second syntax. In practice,
+when the workspace says "text" for requests or messages, it usually
+means Nexus records written in NOTA syntax. Some configs and
+convenience CLIs use NOTA directly.
 
-If you're not designing a notation — just *using* one already
-defined — this skill isn't for you. Read `nota`'s `README.md`
-or the relevant grammar spec instead.
+If you're not designing a text surface — just *using* one already
+defined — this skill isn't for you. Read `nota`'s `README.md` or the
+relevant NOTA schema instead.
 
-The principles below are upstream of every existing notation
-in the workspace. New notations either follow them or have a
-named, defended reason not to.
+The principles below are upstream of every NOTA text surface in the
+workspace. They do not authorize additional syntax.
 
 ---
 
 ## The instincts
+
+### 0. NOTA is the only text syntax
+
+All human-facing and harness-facing text surfaces use NOTA syntax.
+Nexus is a NOTA user: it may define records, verbs, and
+interpretation over NOTA, but it is not a second grammar.
+
+Do not propose alternative syntax or frame Nexus and NOTA as
+alternatives. The design move is to add typed NOTA records and typed Nexus
+interpretation rules, or a convenience CLI that constructs the same
+record shape, not to invent syntax.
 
 ### 1. Delimiter-first
 
@@ -319,8 +327,8 @@ one.
 
 ## See also
 
-- nota's `README.md` — grammar spec for the canonical
-  positional text format.
+- nota's `README.md` — grammar spec for the canonical NOTA
+  syntax.
 - this workspace's `ESSENCE.md` §"Language-design instincts"
   — distilled summary that this skill expands.
 - this workspace's `skills/abstractions.md` — verb belongs to
