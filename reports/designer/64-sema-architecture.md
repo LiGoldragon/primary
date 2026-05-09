@@ -92,20 +92,31 @@ mode is a property of the *open call*, not the handle.
 
 ```rust
 pub struct Schema {
-    pub tables: &'static [&'static str],
     pub version: SchemaVersion,
 }
 
-pub struct SchemaVersion(pub u32);
+pub struct SchemaVersion(u32);
+impl SchemaVersion {
+    pub const fn new(value: u32) -> Self;
+    pub const fn value(self) -> u32;
+}
 ```
+
+The schema declares only the version. **Tables aren't
+declared here.** Per redb's model, a table is uniquely
+identified by `(name, key_type, value_type)`; a list of
+names doesn't carry the type information and would
+prematurely commit tables to a single key type at open. The
+consumer's typed `Table<K, V>` constants are the actual
+schema; tables get created lazily on first
+`Table::get`/`insert` with the consumer's K and V.
 
 Schemas are **static** so they can be declared at module
 top:
 
 ```rust
 const SCHEMA: Schema = Schema {
-    tables: &["messages", "locks", "deliveries"],
-    version: SchemaVersion(1),
+    version: SchemaVersion::new(1),
 };
 ```
 
@@ -121,10 +132,9 @@ sequenceDiagram
     C->>K: open_with_schema(path, &SCHEMA)
     K->>F: open or create
     K->>F: read meta.schema_version
-    alt no stored version (first open)
+    alt fresh file (didn't exist before open)
         F-->>K: None
         K->>F: write meta.schema_version = SCHEMA.version
-        K->>F: ensure each declared table exists
         K-->>C: Ok(Sema)
     else stored version matches
         F-->>K: Some(SCHEMA.version)
@@ -132,6 +142,9 @@ sequenceDiagram
     else stored version differs
         F-->>K: Some(other)
         K-->>C: Err(SchemaVersionMismatch { expected, found })
+    else existing file with no stored version (legacy file)
+        F-->>K: None
+        K-->>C: Err(LegacyFileLacksSchema { path, expected })
     end
 ```
 
@@ -447,6 +460,13 @@ safe, totally ordered.
 
 ### 4.4 · Operations
 
+The audit log is a typed table keyed by a monotonic
+sequence (kept in the kernel's `META` slot counter
+indirectly, or in a dedicated counter row inside this
+crate). The role list is **the data**, not a hard-coded
+constant — `claim()` iterates the existing rows in the
+`claims` table.
+
 ```rust
 // persona-orchestrate/src/store.rs (proposed)
 use sema::{Sema, Table};
@@ -454,6 +474,17 @@ use signal_persona::{ClaimState, RoleName, Scope};
 
 const CLAIMS: Table<&str, ClaimState> = Table::new("claims");
 const TASKS: Table<&str, HandoffTask> = Table::new("tasks");
+const CLAIM_LOG: Table<u64, ClaimEvent> = Table::new("claim_log");
+const TASK_LOG: Table<u64, TaskEvent> = Table::new("task_log");
+
+// A small helper to allocate the next audit-log key inside
+// an existing write txn (the kernel doesn't support
+// nested begin_write).
+fn next_log_key(txn: &WriteTransaction, last_key_table: &Table<&str, u64>) -> Result<u64> {
+    let next = last_key_table.get(txn, "claim_log")?.unwrap_or(0) + 1;
+    last_key_table.insert(txn, "claim_log", &next)?;
+    Ok(next)
+}
 
 pub struct PersonaOrchestrate {
     sema: Sema,
@@ -466,7 +497,9 @@ impl PersonaOrchestrate {
     }
 
     /// Atomic claim: write the role's claim AND check
-    /// overlap against all other roles in one txn.
+    /// overlap against every other role's row in the same
+    /// txn. The role list is data: we iterate the table,
+    /// don't enumerate constants.
     pub fn claim(
         &self,
         role: RoleName,
@@ -474,23 +507,32 @@ impl PersonaOrchestrate {
         reason: String,
     ) -> Result<ClaimOutcome> {
         self.sema.write(|txn| {
-            // overlap check vs other roles
-            for other_role_name in OTHER_ROLES {
-                if let Some(other) = CLAIMS.get(txn, other_role_name)? {
-                    for scope in &scopes {
-                        if other.overlaps(scope) {
-                            return Ok(ClaimOutcome::Conflict {
-                                with: other_role_name.into(),
-                                scope: scope.clone(),
-                            });
-                        }
+            // Iterate every existing claim row; check overlap.
+            // (Pseudocode — Table::iter is the API gap noted
+            // in audit 66 §3 Issue J.)
+            for (peer_name, peer_state) in CLAIMS.iter(txn)? {
+                if peer_name == role.as_str() { continue; }
+                for scope in &scopes {
+                    if peer_state.overlaps(scope) {
+                        return Ok(ClaimOutcome::Conflict {
+                            with: peer_name.into(),
+                            scope: scope.clone(),
+                        });
                     }
                 }
             }
-            let new_state = ClaimState::new(role.clone(), scopes.clone(), reason);
+            let new_state = ClaimState::new(role.clone(), scopes.clone(), reason.clone());
             CLAIMS.insert(txn, role.as_str(), &new_state)?;
-            // audit log
-            self.sema.store(&claim_event_bytes(...))?;
+            // Audit log entry — typed table inside the same txn.
+            // No nested begin_write; the audit-log key is a
+            // typed monotone counter inside persona-orchestrate.
+            let log_key = next_log_key(txn, &LOG_COUNTER)?;
+            CLAIM_LOG.insert(txn, log_key, &ClaimEvent::Claimed {
+                role: role.clone(),
+                scopes,
+                reason,
+                at: now(),
+            })?;
             Ok(ClaimOutcome::Claimed)
         })
     }
@@ -498,7 +540,11 @@ impl PersonaOrchestrate {
     pub fn release(&self, role: RoleName) -> Result<()> {
         self.sema.write(|txn| {
             CLAIMS.remove(txn, role.as_str())?;
-            self.sema.store(&release_event_bytes(...))?;
+            let log_key = next_log_key(txn, &LOG_COUNTER)?;
+            CLAIM_LOG.insert(txn, log_key, &ClaimEvent::Released {
+                role: role.clone(),
+                at: now(),
+            })?;
             Ok(())
         })
     }
@@ -522,6 +568,20 @@ impl PersonaOrchestrate {
     }
 }
 ```
+
+**Audit-log fix detail:** the original sketch in this
+report's first version called `self.sema.store(...)` from
+inside an outer `sema.write(|txn| ...)` closure. That's a
+nested `begin_write` and won't compile/run (per audit 66
+Issue B). The corrected version above uses a typed
+`CLAIM_LOG: Table<u64, ClaimEvent>` plus an explicit counter
+table — both inside the same outer write txn. No nesting.
+
+**Role-list fix detail:** the original sketch hard-coded
+`OTHER_ROLES`. The corrected version iterates `CLAIMS` —
+the role list is data, not config (per audit 66 Issue J).
+This requires `Table::iter` to land in the kernel (audit
+66 §5.2 item 6).
 
 ### 4.5 · The atomicity win
 

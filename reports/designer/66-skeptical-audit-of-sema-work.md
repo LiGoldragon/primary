@@ -6,11 +6,25 @@ Status: critical pass over the work landed in this session
 **correctness**, **logic-plane separation**, and **simple
 code (no hard-coding; let input data drive the engine)**.
 
-The audit found **three correctness issues, four
+The audit found **four correctness issues, four
 logic-plane violations, and four hard-coding smells**. One
-of the correctness issues is a security-shaped silent-fail:
+correctness issue (A) is a security-shaped silent-fail —
 the version-skew guard doesn't actually fire when a file
-was created by the legacy `Sema::open(path)` path.
+was created by the legacy `Sema::open(path)` path. Another
+(L, added on user push-back) is more fundamental: **the
+`Schema { tables: &[&str], … }` shape doesn't compose with
+how redb actually works** — redb tables are typed `(K, V)`,
+not just named, and pre-creating with hard-coded
+`K = &str` locks out every consumer that wants different
+key types.
+
+That second one — the schema-shape one — is a bug the
+*first pass* of this audit missed. The audit framed itself
+as skeptical but accepted the Schema shape as given. A
+genuinely skeptical pass would have asked: *does
+list-of-names compose with redb's typed-tables model?* It
+doesn't. Section §1.5 below names the issue and how it
+surfaced.
 
 Author: Claude (designer)
 
@@ -20,10 +34,11 @@ Author: Claude (designer)
 
 ```mermaid
 flowchart TB
-    subgraph crit["Correctness — 3"]
+    subgraph crit["Correctness — 4"]
         c1["A · version-skew guard silently accepts<br/>legacy files (defeats its own purpose)"]
         c2["B · designer/64 §4.4 example has<br/>nested write txn (won't compile)"]
         c3["C · SchemaVersion(pub u32) — pub field<br/>violates rule I just landed"]
+        c4["L · Schema.tables: &[&str] doesn't compose<br/>with redb's typed-tables model<br/>(missed in first pass)"]
     end
     subgraph plane["Logic-plane — 4"]
         p1["D · open_inner mixes plumbing,<br/>slot policy, schema policy"]
@@ -44,7 +59,7 @@ flowchart TB
 
 | Severity | Count | Examples |
 |---|---:|---|
-| Correctness — must fix | 3 | A, B, C |
+| Correctness — must fix | 4 | A, B, C, **L** |
 | Logic-plane — should fix | 4 | D, E, F, G |
 | Hard-coding — fix when extending | 4 | H, I, J, K |
 
@@ -176,6 +191,89 @@ impl SchemaVersion {
 Same fix needed for `Schema { pub tables, pub version }` arguably (config-like structs are borderline; the rule's spirit applies). Keep `Schema`'s pub fields if treating it as a manifest-shaped const declaration; tighten them if the design wants `Schema` to be opaque.
 
 **Severity: high** — I violated my own newly-landed rule in the same session, in code that's now public API. Fixing this is a breaking change.
+
+### L · `Schema { tables: &[&str], ... }` doesn't compose with redb's typed-tables model
+
+**Surfaced via user push-back after the first pass of this
+audit shipped.** The first pass missed it. Fixing.
+
+**Redb's actual model:** a table is uniquely identified by
+`(name, key_type, value_type)`. Opening a table with a
+mismatched type after it already exists with different
+types **errors**. `TableDefinition::new("foo")` is
+incomplete on its own — you need the full `TableDefinition<K, V>`
+to actually open or create.
+
+**What the kernel's `open_inner` does today:**
+
+```rust
+for table_name in schema.tables {
+    let definition: TableDefinition<&str, &[u8]> = TableDefinition::new(table_name);
+    let _ = transaction.open_table(definition)?;
+}
+```
+
+It pre-creates every declared table with hard-coded
+`K = &str, V = &[u8]`. That **locks out** any consumer
+that later wants `Table<u64, …>`, `Table<(u32, u32), …>`,
+etc. Redb refuses because the table already exists with
+`&str` keys.
+
+For persona-sema today this hasn't bitten yet because the
+SCHEMA list exists but no typed `Table` constants
+reference it. The moment a consumer actually declares
+`Table<u64, Message>`, it fails at open-table time.
+
+**Three reasons the design is wrong:**
+
+1. **Redb already auto-creates tables on first
+   `open_table`.** The "ensure tables" step is redundant —
+   first use creates them, with the right types,
+   automatically.
+2. **The schema-as-list-of-strings adds zero typing.** A
+   bare name doesn't know what kind of table it is. The
+   consumer's typed `Table<K, V>` constant IS the real
+   schema; the string list duplicates the names without
+   the type information.
+3. **It silently commits to wrong types** for tables that
+   haven't been used yet but exist in the file.
+
+**Fix:** drop `tables: &[&str]` from `Schema` entirely:
+
+```rust
+pub struct Schema {
+    pub version: SchemaVersion,
+}
+```
+
+Then `open_with_schema` just checks the version. Tables
+get created lazily on first `Table<K, V>::get`/`insert`
+with the consumer's actual K and V types.
+
+Persona-sema's SCHEMA becomes simply:
+
+```rust
+pub const SCHEMA_VERSION: SchemaVersion = SchemaVersion(1);
+pub const SCHEMA: Schema = Schema { version: SCHEMA_VERSION };
+```
+
+The 6 table NAMES belong with the typed Table constants
+where they live alongside their K/V types — which is the
+missing work item G ("persona-sema doesn't actually export
+typed Tables").
+
+**Severity: critical.** The current code blocks the
+load-bearing use case (persona-sema's actual table
+layouts) while looking like it works.
+
+**Process note:** the first pass of this audit (above)
+listed 11 issues, framed itself as skeptical, and missed
+this one because it accepted the Schema-shape as given
+rather than asking *does this match how redb actually
+works?* The user's pointed question — *"is this how
+redb+rkyv works?"* — was the right level of scrutiny.
+Adding "did I question the framing itself?" to the
+audit-checklist for next time.
 
 ---
 
@@ -559,6 +657,7 @@ src/
 
 | # | Action | Where | Severity |
 |---|---|---|---|
+| 0 | Drop `tables: &[&str]` from `Schema`; drop `ensure tables` step from `open_inner`; let redb auto-create on first typed `Table::get/insert` (Issue **L**) | `sema/src/lib.rs` + `persona-sema/src/schema.rs` | **critical** |
 | 1 | Fix the version-skew guard's silent-acceptance bug (Issue A) | `sema/src/lib.rs::ensure_schema_version` | critical |
 | 2 | Make `SchemaVersion`'s field private (Issue C) | `sema/src/lib.rs:136` | high |
 | 3 | Export typed Tables from persona-sema using signal-persona records (Issue G) | new `persona-sema/src/tables.rs` | high |
