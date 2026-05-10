@@ -133,9 +133,9 @@ rather than pretending to carry runtime state:
   gates or an `Iterator` impl on a unit struct that genuinely has no
   carried state. The ZST has *only* trait-impl methods that delegate
   to a data-bearing partner type; never inherent methods doing real
-  work. For actors, raw `ractor` may require framework marker shapes;
-  keep them private or crate-private and put domain behavior on
-  data-bearing state, reducer, or handle types.
+  work. For actors, the workspace runtime is Kameo, whose `Self IS
+  the actor` shape removes the need for framework marker types
+  entirely — the actor type carries data fields and is the noun.
 - **Type-level enum variants** in trait-encoded state machines,
   where the unit struct *is* the state and the type system
   enforces transitions.
@@ -549,26 +549,30 @@ Callers can no longer pattern-match on what went wrong.
 
 ---
 
-## Actors: logical units with ractor
+## Actors: logical units with kameo
 
 When a Rust component is a daemon, state engine, router,
 watcher, delivery engine, database owner, or long-lived service,
-read this workspace's `skills/actor-systems.md` before writing
+read this workspace's `skills/actor-systems.md` (the architectural
+rule) and `skills/kameo.md` (the framework usage) before writing
 the runtime. The reason to use actors is **logical cohesion,
 coherence, and consistency** — not performance. An actor is the
 unit you reach for when you want to model a coherent plane of
 logic: it owns state, exposes a typed message protocol, and has
-a defined lifecycle. The framework is `ractor`.
+a defined lifecycle. The framework is `kameo`.
 
-- **Messages are typed.** Each actor's message type is its own
-  enum, one variant per request kind. No untyped channels.
-- **State is owned, not shared.** The actor's state lives inside
-  the actor and is mutated only by its message handlers.
-  `Arc<Mutex<T>>` shared between actors is a smell — send a
-  message to whoever owns the state.
-- **Supervision is recursive.** An actor that spawns sub-actors
-  supervises them. Failures escalate; the parent decides restart
-  vs shutdown. No detached tasks.
+- **Messages are typed per kind.** Each accepted message is a
+  separate `Message<T>` impl on the actor — not variants of one
+  enum. No untyped channels.
+- **State is owned, not shared.** The actor's data lives on the
+  actor type itself (`Self` IS the state in Kameo). `Arc<Mutex<T>>`
+  shared between actors is a smell — send a message to whoever
+  owns the state.
+- **Supervision is declarative.** Use Kameo's `RestartPolicy`
+  (`Permanent`/`Transient`/`Never`) and `SupervisionStrategy`
+  (`OneForOne`/`OneForAll`/`RestForOne`) on the supervisor; bound
+  storms with `restart_limit(n, window)`. Failures escalate; the
+  parent decides restart vs shutdown. No detached tasks.
 - **Use actors for logical planes, even small ones.** A plane that
   parses, routes, validates, mints identity, commits, reads,
   shapes replies, or performs IO deserves an actor when it is part
@@ -578,35 +582,36 @@ a defined lifecycle. The framework is `ractor`.
   waits on a lock, runs a slow process, performs blocking IO, or
   does long CPU work has recreated a hidden lock. Move that wait
   into its own supervised actor or worker-pool actor and send it a
-  typed message.
+  typed message — or use `DelegatedReply<R>` so the handler
+  returns immediately and a spawned task replies later.
 - **Actor traces are architecture witnesses.** Important request
   paths should be testable as actor sequences: parse actor, caller
   actor, dispatcher actor, domain actor, commit actor, view actor,
   reply actor. If the trace can omit a required actor and tests
   still pass, the tests are not architectural-truth tests.
 
-**Direct ractor is the current runtime default.** Its raw API splits
-the behavior marker from mutable `State`; that is framework mechanics.
-Keep marker types private or crate-private where possible, give the
-mutable actor body a specific data-bearing name, and put domain behavior
-on that state, on reducers owned by that state, or on public handles. A
-future runtime change is a whole-stack architecture decision, not a
-reason to introduce speculative wrappers today.
+**Kameo native shape collapses behavior marker and state.** The
+actor type IS the data: `pub struct ClaimNormalize { fields … }`,
+`impl Actor for ClaimNormalize { type Args = Self; … }`, methods
+on `&mut self`. The no-public-ZST-actor rule is naturally satisfied
+because the actor type carries its own fields.
 
-**Every actor pairs with a `*Handle`.** The actor's consumer surface
-is a typed handle (`EngineHandle`, `SupervisorHandle`,
-`ReaderHandle`). The handle owns the spawn result and exposes the
-typed start / ask / tell surface. Consumers reach for the handle,
-never bare ractor spawn. The root daemon handle is the only place
-runtime-root spawn happens; every other spawn happens inside a parent
-supervision path.
+**`ActorRef<A>` is the public consumer surface.** Kameo's `ActorRef`
+is statically typed against the actor; consumers call
+`actor_ref.ask(msg).await` or `actor_ref.tell(msg).await` directly.
+A wrapping `*Handle` newtype is appropriate only when a crate wants
+to hide Kameo from its downstream surface — never as boilerplate.
 
-For the *how* today, read lore's `rust/ractor.md`, but treat its
-raw ractor template as framework reference. Persona-facing code uses
-data-bearing actor state, typed messages, typed handles, supervision,
-self-cast loops only when the actor owns the loop, and pool
-initialization through supervisors.
-For testing patterns, see lore's `rust/testing.md`.
+**Never `tell` a fallible handler unless `on_panic` is overridden.**
+A handler whose `Reply = Result<_, _>` returning `Err(_)` to a
+`tell` becomes `ActorStopReason::Panicked(PanicError { reason: PanicReason::OnMessage })`.
+The default `on_panic` stops the actor. `ask` instead, or override
+`on_panic` to recover from `PanicReason::OnMessage`. See
+`skills/kameo.md` §"The tell-of-fallible-handler trap".
+
+For the *how today*, read this workspace's `skills/kameo.md`. For
+testing patterns, see lore's `rust/testing.md` and the worked
+examples at `/git/github.com/LiGoldragon/kameo-testing`.
 
 Plain sync code is fine for one-shot CLIs, build tools, and
 library crates with no concurrent state.
@@ -803,7 +808,7 @@ shape comes up in review, add the row.
 | Storage actor as namespace | `StorageActor` that owns the redb handle and answers "store this" / "fetch that" for everyone | Verb-shaped; the actor owns *storing*, not domain data; each domain actor should own its tables | Each domain actor opens its own tables on the shared `Database` |
 | `Arc<Mutex<Database>>` shared across actors | Coarse lock around the whole DB | Defeats redb's transaction model; serializes all writers | One actor per logical data domain; pass values, not handles |
 | Blocking work inside a normal actor handler | Handler sleeps, polls, waits on a mutex, runs a command, or performs blocking IO | The actor's mailbox stops receiving pushes; the hidden wait becomes the real lock | Dedicated supervised IO/command/worker actor or actor pool |
-| Public ZST actor noun | `ClaimNormalize` is empty and exported as the domain actor while the real data lives in a separate state type | The public actor name is a label; verbs drift onto the wrong noun | Direct `ractor` with private/crate-private marker where possible, specifically named data-bearing state, and a typed public handle |
+| Public ZST actor noun | `ClaimNormalize` is empty and exported as the domain actor | The public actor name is a label; verbs drift onto the wrong noun | Kameo's `Self IS the actor` shape: put fields on the actor type, methods on `&mut self`; consumers reach for the typed `ActorRef<ClaimNormalize>` |
 | Reading a record from text in the daemon | `Lock::from_nota(disk_text)?` inside the running component | The text is a projection, not the source. Drift between in-memory and disk silently | Daemon owns the typed record; lock file is rewritten from the record |
 | Mixed feature set across crates | One crate has `unaligned`, another doesn't | Archives produced by one don't validate in the other; failure is silent (wrong values, not parse error) | Pin the exact rkyv feature string per lore |
 | Reordering struct fields casually | Renaming + reordering in one PR | rkyv archives change layout on field reorder within 0.8 — old data unreadable | Append-only fields; treat any layout change as a coordinated upgrade |
@@ -1068,7 +1073,10 @@ personal voice. No future tense. Present indicative only.
   cross-crate deps, pin strategy, Nix-based tests).
 - lore's `rust/nix-packaging.md` — canonical crane + fenix flake
   layout.
-- lore's `rust/ractor.md` — ractor template, per-verb typed
-  messages, supervision patterns.
+- this workspace's `skills/kameo.md` — Kameo 0.20 usage (the
+  workspace runtime); per-kind `Message<T>` impls, declarative
+  supervision, mailbox sizing.
+- `/git/github.com/LiGoldragon/kameo-testing` — worked Kameo
+  examples backing every claim in `skills/kameo.md`.
 - lore's `rust/rkyv.md` — rkyv portable feature set, derive-alias
   pattern, schema fragility.

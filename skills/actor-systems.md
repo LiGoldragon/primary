@@ -20,18 +20,20 @@ agent-written codebase: an agent can hide a missing phase inside a
 helper method, but it is much harder to fake an actor topology,
 typed messages, and trace witnesses.
 
-For Rust implementation details, the current runtime default is direct
-`ractor`. Do not introduce a second actor library or trait layer as a
-prerequisite. A future runtime change is possible only as an explicit
-architecture decision after concrete implementation pressure; do not
-add adapters in anticipation. Read lore's `rust/ractor.md` for the
-tool; this skill is the architectural rule.
+For Rust implementation details, the runtime default is **`kameo`
+0.20** — see this workspace's `skills/kameo.md` for usage. Kameo's
+native shape (`Self` IS the actor; `Args = Self` is the documented
+common case; per-kind `Message<T>` impls; declarative supervision)
+agrees with the rules below; no carve-outs needed.
 
-Do not name or design a `persona-actor`, `workspace-actor`,
-`workspace_actor::Actor`, or equivalent wrapper crate/trait unless the
-human explicitly asks for a new actor abstraction. Those names are
-historical drift from reports, not architecture. A component may have
-many actors; it still has one Rust actor library: `ractor`.
+Do not introduce a second actor library or wrapper trait layer as a
+prerequisite. Do not name or design a `persona-actor`,
+`workspace-actor`, `workspace_actor::Actor`, or equivalent wrapper
+crate/trait unless the human explicitly asks for a new actor
+abstraction. Those names are historical drift from the
+ractor-substitute thread (operator/103); the framework is now Kameo
+and the wrapper question is settled. A component may have many
+actors; it still has one Rust actor library: `kameo`.
 
 ---
 
@@ -196,38 +198,49 @@ or a supervised worker pool.
 
 ## Rust shape
 
-The workspace runtime default is direct `ractor` today. The actor should
-not be a public hollow noun. Raw ractor splits the behavior marker from
-the mutable associated `State`; treat that as framework mechanics, not
-as a reason to delay on a separate actor abstraction.
+The workspace runtime default is **`kameo` 0.20**. The actor type IS
+the data-bearing noun — Kameo collapses the framework's behavior
+marker and the actor's mutable state into a single struct. The
+no-public-ZST-actor rule is naturally satisfied because the type
+that carries the actor's data IS the actor.
 
-Direct-ractor shape:
+Kameo native shape:
 
-- the behavior marker stays private or crate-private where possible;
-- the actor's mutable body has a specific data-bearing name such as
-  `ClaimNormalizeState`, not a vague cross-module `State`;
-- domain methods live on that state, on reducers owned by that state,
-  or on public handles, not on a ZST namespace;
-- the public consumer surface is a typed handle such as
-  `ClaimNormalizeHandle`, not raw `ActorRef`;
-- if a future runtime or wrapper is proposed, it needs a concrete
-  implementation pain from direct ractor first.
+- the actor type carries fields (`pub struct ClaimNormalize { in_flight: …, metrics: … }`);
+- `type Args = Self` is the documented common case; the spawner
+  passes a fully-built actor value to `on_start` which returns it;
+- `type Error = kameo::error::Infallible` (or a typed crate Error)
+  on the `Actor` impl;
+- domain methods live on the actor type directly (`impl ClaimNormalize { fn validate_and_collapse(&mut self, …) }`), not on a ZST namespace;
+- per-kind `impl Message<Verb> for ClaimNormalize` for each accepted
+  message — no monolithic `Msg` enum;
+- the public consumer surface is `ActorRef<ClaimNormalize>` (Kameo
+  ActorRefs are statically typed; no extra `*Handle` wrapper needed
+  unless the consumer wants to hide Kameo from a downstream crate
+  surface);
+- supervision is declarative: `ClaimNormalize::supervise(&parent, args).restart_policy(...).restart_limit(n, dur).spawn().await`.
 
 For actor-dense systems:
 
-- one actor per file when the actor is durable enough to name
-- named-field message variants
-- one message variant per verb
-- no "handle anything" frame inside a component
-- no raw `spawn` outside the root
-- no raw `spawn_linked` outside the parent supervision path
-- no `Arc<Mutex<T>>` between actors
-- no long `await` inside a handler unless this actor owns that wait
+- one actor per file when the actor is durable enough to name;
+  co-locate the `Actor` impl, the `Message<T>` impls for that actor,
+  and the message/reply types in one file;
+- one `impl Message<Verb> for Actor` per verb — no monolithic
+  message enum;
+- no "handle anything" `on_message` override inside a component;
+- no raw `Spawn::spawn` outside the runtime root; child spawns go
+  through `supervise(&parent, args).spawn().await`;
+- no `Arc<Mutex<T>>` between actors;
+- no long `await` inside a handler unless this actor owns that wait;
 - no blocking call inside a handler except in a dedicated blocking
-  plane actor
-- no public ZST actor nouns
-- no vague generic `State` name once the actor body has domain weight;
-  use `ClaimNormalizeState`, `CommitSupervisorState`, etc.
+  plane actor — and that actor uses `DelegatedReply<R>` so the
+  mailbox stays responsive;
+- no public ZST actor nouns (Kameo permits them, the workspace
+  doesn't — actor types must carry data fields);
+- never `tell` a handler whose `Reply = Result<_, _>` unless `on_panic`
+  is overridden to recover from `PanicReason::OnMessage` — a
+  `Result::Err` from a `tell`'d handler crashes the actor by default
+  (see `skills/kameo.md` §"The tell-of-fallible-handler trap").
 
 The actor's public consumer surface is its handle type. Consumers
 start or call the handle; they do not construct actor internals.
@@ -279,7 +292,7 @@ Required test families:
 | no-blocking-handler test | actor handler did not perform forbidden blocking work |
 | failure-injection test | each actor phase has typed failure behavior |
 | actor-count test | future agents cannot collapse actors by assuming overhead |
-| no-zst-actor test | public actor nouns are not hollow; raw ractor markers stay private framework mechanics and delegate to data-bearing state |
+| no-zst-actor test | public actor nouns carry data fields (Kameo's `Self IS the actor` shape makes this naturally enforceable via `mem::size_of::<MyActor>() > 0`) |
 
 Test name patterns:
 
@@ -315,13 +328,16 @@ a free function or a ZST method holder.
 ## See also
 
 - this workspace's `skills/rust-discipline.md` — Rust ownership,
-  typing, errors, redb/rkyv, and the ractor default.
+  typing, errors, redb/rkyv, and the kameo default.
 - this workspace's `skills/architectural-truth-tests.md` —
   tests that prove the actor path was used.
 - this workspace's `skills/push-not-pull.md` — actor mailboxes
   are push channels; polling is forbidden.
 - this workspace's `skills/abstractions.md` — actor verbs belong
   on the data-bearing actor noun, not on framework marker glue.
-- lore's `rust/ractor.md` — ractor implementation patterns.
+- this workspace's `skills/kameo.md` — Kameo 0.20 usage in this
+  workspace (the framework reference).
+- `/git/github.com/LiGoldragon/kameo-testing` — falsifiable source
+  for every Kameo behavior the skill cites.
 - lore's `rust/testing.md` — actor runtime testing and fixture
   patterns.
