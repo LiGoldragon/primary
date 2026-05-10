@@ -294,7 +294,7 @@ Role-shaped suffixes stay; category-shaped suffixes go.
 | `*Actor` | `*Supervisor` (this type supervises children) |
 | `*Message`, `*Msg` | `*Resolver` (this type resolves something) |
 | `*Handler` | `*Decoder`, `*Encoder` (this type decodes/encodes) |
-| `*Listener`, `*Subscriber` (when describing trait participation) | `*Tracker`, `*Cache`, `*Ledger` (this type holds that state) |
+| `*Listener`, `*Subscriber` (as a generic trait-participation tag — `EventSubscriber` to mean "thing that implements `Subscribe`") | `*Tracker`, `*Cache`, `*Ledger` (this type holds that state); also `Subscriber` as the *role* of the long-lived actor on the receiving side of a publish/subscribe channel — that's role-naming, not category-tagging |
 | `*Object`, `*Type`, `*Class` | `*Builder`, `*Factory` (when actually building things) |
 | | `*Handle`, `*Client`, `*Ref` — relationship-naming (the value IS a held authority on the target; same shape as `JoinHandle`, `FileHandle`) |
 

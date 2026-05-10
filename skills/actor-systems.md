@@ -259,6 +259,54 @@ side effects, or work whose failure must be supervised.
 
 ---
 
+## Durable state belongs in sema
+
+An actor with durable state goes through `sema`. There is no
+in-memory durable state in this workspace; if state must survive a
+crash, restart, or process exit, it lives in a `sema` redb owned by
+the actor's component.
+
+This shapes restart policy directly. Kameo's restart reconstructs
+an actor from its `Args`, not from mutated memory — a counter at 12
+reads back as 0 after restart. So an actor's state is one of two
+things:
+
+- **`sema`-backed durable state**: restart reconstructs from sema.
+  `RestartPolicy::Permanent` is safe; the actor recovers what it
+  had.
+- **Transient state** (in-memory only): restart loses everything
+  the crashed instance had been told. **Default
+  `RestartPolicy::Never`**, because the alternative is silent state
+  loss followed by accepting writes against an empty state.
+
+`RestartPolicy::Permanent` on a transient-state actor requires an
+explicit comment justifying why losing state on crash is
+acceptable. Default to `Never` and let the supervision tree
+escalate.
+
+The destination for every state-owning actor is sema-backed, so the
+`Never`-default is transitional — it disappears when the actor's
+durable substrate lands.
+
+---
+
+## Counter-only state — test witnesses must be tested
+
+Actors commonly carry `_count: u64` fields used only by tests as
+witnesses ("the actor ran"). This pattern is permitted, but every
+counter field must be read by at least one test that asserts on its
+value. Unread counter fields are dead code; an unread counter does
+not witness anything.
+
+When `cargo check` passes but a counter has never been read in a
+test, treat it as a code smell — either add the test that reads it,
+or remove the field. The alternative (push witnesses via
+`tokio::sync::oneshot` / `tokio::sync::watch`, per
+`skills/kameo.md` §"Test patterns") is also acceptable and usually
+cleaner.
+
+---
+
 ## Runtime roots are actors
 
 A daemon, service, router, watcher, database owner, or runtime root

@@ -672,6 +672,50 @@ Kameo makes restart policy easy to express; it does **not** make
 restart semantics automatically safe. Design with reconstruction
 in mind from the start.
 
+### `OneForAll` / `RestForOne` can bypass `RestartPolicy::Never`
+
+Strategy and policy compose, but not in the way the docs suggest.
+When a sibling failure triggers `OneForAll` or `RestForOne`,
+Kameo's coordinated restart paths can call sibling factories
+directly — apparently bypassing each child's individual
+`RestartPolicy::Never`. A child you set as `Never` may still be
+respawned if a sibling failure invokes a strategy that restarts
+the whole group.
+
+```rust
+// supervisor uses OneForAll
+fn supervision_strategy() -> SupervisionStrategy {
+    SupervisionStrategy::OneForAll
+}
+
+// child A: explicitly Never
+let child_a = WorkerA::supervise(&supervisor, args)
+    .restart_policy(RestartPolicy::Never)
+    .spawn()
+    .await;
+
+// child B: Permanent
+let child_b = WorkerB::supervise(&supervisor, args)
+    .restart_policy(RestartPolicy::Permanent)
+    .spawn()
+    .await;
+
+// When child B panics, OneForAll triggers — child A's `Never`
+// is bypassed; both children get respawned.
+```
+
+If your supervision strategy is `OneForAll` or `RestForOne`,
+test the bypass behavior explicitly. `RestartPolicy::Never`
+doesn't always mean what it says under coordinated strategies.
+
+The safe combinations:
+
+| Strategy | Per-child Policy | Behavior |
+|---|---|---|
+| `OneForOne` | Any | Each child's policy is honored independently |
+| `OneForAll` / `RestForOne` | All children share the same policy | Predictable |
+| `OneForAll` / `RestForOne` | Mixed policies | **Coordinated paths may bypass `Never`; test explicitly** |
+
 ---
 
 ## Mailbox

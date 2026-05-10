@@ -36,26 +36,41 @@ fall in three buckets**:
 
 ---
 
-## 0.5 · Decisions just landed (2026-05-10)
+## 0.5 · Decisions landed (2026-05-10)
 
-User answered four of the questions below via `AskUserQuestion`.
-Recorded as durable decisions; the relevant question sections below
-are rewritten to reflect them. Beads filed.
+All eleven questions resolved across two AskUserQuestion rounds plus
+chat dialogue. Recorded as durable decisions.
 
-| # | Question | Decision | Action |
+| # | Question | Decision | Where it landed |
 |---|---|---|---|
-| Q-dec-1 | CLI lifecycle (one-shot vs daemon) | **Daemon**: long-lived process owns `MindRoot`; CLI calls connect as thin clients | Note added to existing bead `primary-9iv` |
-| Q-dec-2 | `WirePath` / `TaskToken` validation location | **Split**: contract enforces value invariants; runtime enforces environment facts (target exists, claim is open, route is reachable) | Note added to `primary-9iv` |
-| Q-dec-4 | designer/100's 5 implementation pins | **Designer-assistant pre-pass first**: verify which pins are still load-bearing, then bundle into one bead | New P1 bead: `primary-qqb` |
-| Q-app-2 | Forwarding-trampoline actors | **Rename to `*Phase` + document trace-as-domain carve-out** | Skill carve-out landed in `~/primary/skills/actor-systems.md` §"Actor or data type"; new P2 bead `primary-9yq` for the persona-mind rename |
+| Q-dec-1 | CLI lifecycle (one-shot vs daemon) | **Daemon**: long-lived process owns `MindRoot`; CLI calls connect as thin clients | Note on `primary-9iv` |
+| Q-dec-2 | `WirePath` / `TaskToken` validation location | **Split**: contract enforces value invariants; runtime enforces environment facts | Note on `primary-9iv` |
+| Q-dec-3 | `MindRuntime` promote/delete/keep | **Delete**: expose `ActorRef<MindRoot>` directly | New P2 bead `primary-m8x` |
+| Q-dec-4 | designer/100's 5 implementation pins | **Designer-assistant pre-pass first** | P1 bead `primary-qqb` |
+| Q-dec-5 | `RestartPolicy::Never` default | **Stronger**: durable state requires sema, full stop. Transient-state actors (in-memory only) default to `RestartPolicy::Never` because alternative is silent loss | Rule landed in `~/primary/skills/actor-systems.md` §"Durable state belongs in sema" |
+| Q-app-1 | 5 data-type-shadowed actors | **One batched bead** (collapse 3, delete 2) | New P2 bead `primary-3ro` |
+| Q-app-2 | Forwarding-trampoline actors | **Rename `*Supervisor` → `*Phase`** + carve-out in skill | Skill landed; bead `primary-9yq` |
+| Q-app-3 | `ActorKind` enum split | **Reframed**: user pushed deeper — *why have an `ActorKind` enum at all?* The parallel namespace creates the drift it tries to manage. Split decision is downstream of keep-or-drop assessment | New P2 bead `primary-rhh` (designer-assistant) — assess whether `ActorKind` should be dropped in favor of `const NAME` per actor + spawn-function-as-manifest. Cross-referenced on `primary-qqb` |
+| Q-skill-1 | `*Subscriber` suffix in `naming.md` | **Clarified**: wrong as generic trait-participation tag; right as role-noun for actual subscriber actor | Landed in `~/primary/skills/naming.md` |
+| Q-skill-2 | `OneForAll`/`RestForOne` restart-policy bypass gotcha | **Documented**: added to `kameo.md` §"Supervision" with table showing which strategy/policy combinations are safe vs require explicit testing | Landed in `~/primary/skills/kameo.md` |
+| Q-skill-3 | Counter-only state pattern policy | **Tightened**: counter fields permitted, but every counter must be read by at least one test (auto-prunes dead counters). Push witnesses still cleaner where ergonomic | Landed in `~/primary/skills/actor-systems.md` §"Counter-only state — test witnesses must be tested" |
 
-Q1+Q2 together resolve the operator/95-vs-designer/98 contradictions
-that had blocked `primary-9iv` since the Kameo wave.
+Q-dec-1 + Q-dec-2 together resolve the operator/95-vs-designer/98
+contradictions that had blocked `primary-9iv` since the Kameo wave.
 
-Still open after this round: §3 Q-app-1 (5 data-type-shadowed actors
-collapse), §3 Q-app-3 (ActorKind enum split), §4 Q-dec-3 (`MindRuntime`
-promote/delete/keep), §4 Q-dec-5 (`RestartPolicy::Never` default),
-§5 Q-skill-1 through Q-skill-3.
+Q-app-3 reframing matters: it suggests the actor-topology framing in
+operator/105 §4 Gap 5 ("current actor topology is mixed real actors +
+trace phases") is potentially a category error in the framing. If
+`ActorKind` goes away, the gap doesn't exist — there's no parallel
+namespace to be "mixed."
+
+This report is now closing record only. Active follow-ups:
+- `primary-qqb` (P1, designer-assistant) — designer/100 pre-pass
+- `primary-rhh` (P2, designer-assistant) — `ActorKind` keep-or-drop
+- `primary-m8x` (P2, operator-assistant) — delete `MindRuntime`
+- `primary-3ro` (P2, operator-assistant) — apply data-type-shadowing rule
+- `primary-9yq` (P2, operator-assistant) — rename `*Supervisor` → `*Phase`
+- `primary-9iv` (P1, ongoing) — Rust persona-mind implementation wave
 
 ---
 
