@@ -306,6 +306,47 @@ The same rule applies to all edge variants: `-->`, `-.->`,
 string in the edge position; all of them accept a
 pipe-delimited label after the arrow head.
 
+#### Avoid Mermaid reserved-word node IDs
+
+Mermaid reserves identifiers across diagram types — notably
+`graph`, `flowchart`, `subgraph`, `end`, `class`, `classDef`,
+`style`, `link`, `linkStyle`, `note`, `click`, `direction`.
+Using any of these as a **node ID** in a flowchart breaks
+the parser, especially in older renderers (Substack ships
+Mermaid 8.8.0, which is strict about keyword collisions
+across contexts; the failure mode is a "Syntax error in
+graph" image where the diagram should be).
+
+A node like `graph["MemoryGraph"]` looks fine but the parser
+sees the `graph` keyword. Same for `link["LinkActor"]` and
+`note["NoteActor"]`. The label inside the brackets is fine;
+only the node ID needs to dodge the keyword.
+
+Right form — suffix node IDs by what they are:
+
+```mermaid
+flowchart TB
+    domain --> graph_supervisor["MemoryGraphSupervisor"]
+    graph_supervisor --> link_actor["LinkActor"]
+    graph_supervisor --> note_actor["NoteActor"]
+```
+
+Convention for actor-topology diagrams (which collide with
+keywords most often):
+
+| Concern | Suffix | Example |
+|---|---|---|
+| Actor node ID | `_actor` | `link_actor["LinkActor"]` |
+| Supervisor node ID | `_supervisor` | `graph_supervisor["MemoryGraphSupervisor"]` |
+| Table actor node ID | `_table` | `note_table["NoteTableActor"]` |
+| View actor node ID | `_view` | `ready_view["ReadyWorkViewActor"]` |
+
+The labels render unchanged; the suffix dodges the parser
+silently. Default to suffixing all node IDs in actor diagrams
+— it's cheap and prevents the failure mode where the
+diagram displays as the bomb-icon error on rendered
+surfaces (Substack, GitHub, internal docs).
+
 The diagnostic test before publishing a report: paste the
 raw mermaid block into <https://mermaid.live/> (or any
 mermaid renderer) and confirm it renders. The parse error
