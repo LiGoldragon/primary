@@ -232,8 +232,11 @@ empty. The workspace's runtime, **Kameo**, doesn't have this problem:
 The verb-belongs-to-noun rule applies sharply here. In Persona,
 `ClaimNormalizer` should be the actor type — fields, construction,
 methods, and `Message<T>` impls all on the same noun. There is no
-separate marker, no separate `State`, no `*Handle` boilerplate. The
-data-bearing actor IS the noun the verbs attach to.
+separate marker, no separate `State`, and no automatic `*Handle`
+boilerplate between the actor and its callers. A public domain
+facade is still allowed when it earns its place under
+`skills/kameo.md` §"Public consumer surface — ActorRef<A> or domain
+wrapper". The data-bearing actor IS the noun the verbs attach to.
 
 For the workspace's actor discipline, see `skills/actor-systems.md`
 (architectural rule) and `skills/kameo.md` (Rust shape).

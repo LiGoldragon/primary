@@ -108,6 +108,39 @@ belong on the data-bearing actor that owns the surrounding phase.
 
 ---
 
+## Actor or data type
+
+When an actor wraps exactly one data type and only forwards to that
+data type's methods, the data type is probably the actor. Prefer
+`impl Actor for MemoryState` over `StoreSupervisor` holding a
+`MemoryState` and forwarding every message into it.
+
+Use this test:
+
+- If the wrapped data type already owns the state and verbs, put the
+  mailbox on that type.
+- If the wrapper owns lifecycle, supervision, admission control,
+  backpressure, restart policy, or a real child set, keep the
+  wrapper actor and make those responsibilities explicit in its
+  fields and tests.
+- If the type has only `ActorRef<_>` fields and just forwards
+  messages, it is a forwarding helper, not an actor. Either give it
+  real state/failure policy or collapse it into the parent.
+
+Runtime roots are the important exception: a root actor may carry
+child `ActorRef<_>` fields because child lifecycle and restart policy
+are its state. A root that merely exposes convenience methods over
+sibling refs is still a non-actor wrapper and should be removed or
+made into the actual root actor.
+
+Every manifest-declared actor must have a concrete `impl Actor`.
+Trace-only variants in an `ActorKind` enum are not actors. Either
+create the actor, or rename the enum to the thing it really is
+(`PipelinePhase`, `TracePoint`, `ResidencyPlane`) so tests do not
+mistake an aspirational name for runtime architecture.
+
+---
+
 ## Blocking is a design bug
 
 An actor's mailbox is the push channel for that actor. If an actor
@@ -197,6 +230,13 @@ Each supervisor needs a typed failure policy:
 No detached tasks. If work must run independently, it is an actor
 or a supervised worker pool.
 
+`DelegatedReply<R>` is the narrow exception for short reply
+deferrals: the actor returns immediately and a spawned future sends
+the reply later. It is not supervised actor work. Use it to avoid
+blocking the mailbox on small async/IO reply work; use a dedicated
+actor or worker pool for long-lived work, retry policy, durable
+side effects, or work whose failure must be supervised.
+
 ---
 
 ## Runtime roots are actors
@@ -206,12 +246,19 @@ is an actor. A struct that merely owns several `ActorRef<_>` values
 and exposes convenience methods is a hidden non-actor owner; it
 recreates the wrapper shape this discipline exists to remove.
 
-The public surface for an actor runtime is `ActorRef<RuntimeRoot>`
+The internal surface for an actor runtime is `ActorRef<RuntimeRoot>`
 or `ActorRef<ServiceRoot>` directly. Startup, child spawning,
 shutdown, and child-stop policy belong to that root actor's
 lifecycle hooks or typed mailbox messages. If a root owns child
 actor refs, the root carries those refs as actor state and handles
 requests through its mailbox.
+
+A public domain facade may wrap the root actor when it earns its
+place under `skills/kameo.md` §"Public consumer surface —
+ActorRef<A> or domain wrapper": lifecycle ownership, topology
+insulation, safe fallible-message handling, capability narrowing,
+domain errors, domain verbs, or library publication. That facade is
+not the runtime owner; the root actor still owns the actor tree.
 
 Tests must make this boundary falsifiable: a topology or
 forbidden-edge test should fail if a runtime root regresses into a
@@ -237,11 +284,10 @@ Kameo native shape:
 - domain methods live on the actor type directly (`impl ClaimNormalizer { fn validate_and_collapse(&mut self, …) }`), not on a ZST namespace;
 - per-kind `impl Message<Verb> for ClaimNormalizer` for each accepted
   message — no monolithic `Msg` enum;
-- the public consumer surface is `ActorRef<ClaimNormalizer>` directly;
-  Kameo's `ActorRef<A>` is statically typed against the actor, so
-  no `*Handle` wrapper is needed — including for library users
-  (see `skills/kameo.md` §"Public consumer surface — ActorRef<A>
-  or domain wrapper");
+- the public consumer surface is `ActorRef<ClaimNormalizer>` when
+  the actor's message vocabulary is the API; use a domain wrapper
+  only when it earns its place under `skills/kameo.md`
+  §"Public consumer surface — ActorRef<A> or domain wrapper";
 - supervision is declarative: `ClaimNormalizer::supervise(&parent, args).restart_policy(...).restart_limit(n, dur).spawn().await`.
 
 For actor-dense systems:
@@ -263,14 +309,17 @@ For actor-dense systems:
   mailbox stays responsive;
 - no public ZST actor nouns (Kameo permits them, the workspace
   doesn't — actor types must carry data fields);
+- no manifest-declared actor without a concrete `impl Actor`;
 - never `tell` a handler whose `Reply = Result<_, _>` unless `on_panic`
   is overridden to recover from `PanicReason::OnMessage` — a
   `Result::Err` from a `tell`'d handler crashes the actor by default
   (see `skills/kameo.md` §"The tell-of-fallible-handler trap").
 
-The actor's public consumer surface is `ActorRef<MyActor>`.
-Consumers spawn the actor (or are handed an `ActorRef`) and call
-`ask` / `tell` directly. They do not construct actor internals.
+The default actor public surface is `ActorRef<MyActor>`. Consumers
+spawn the actor (or are handed an `ActorRef`) and call `ask` /
+`tell` directly. A domain wrapper is allowed only when it adds the
+domain content named in `skills/kameo.md`; it must not become a
+second actor runtime abstraction.
 
 ---
 

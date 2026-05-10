@@ -149,9 +149,9 @@ This applies at every level of the actor surface:
 | Actor type | `ClaimNormalizerActor` | `ClaimNormalizer` |
 | Actor type | `MindRootActor` | `MindRoot` |
 | Actor type | `CounterActor` | `Counter` |
-| Message type | `IncMessage`, `IncMsg` | `Inc` |
-| Message type | `SubmitMessage` | `Submit` (or `SubmitClaim` if disambiguation needed) |
-| Reply type (when needed) | `SubmitReply` | `SubmitReceipt` |
+| Message type | `IncMessage`, `IncMsg`, `Inc` | `Increment` |
+| Message type | `SubmitMessage`, `SubmitClaim` | `ClaimSubmission` |
+| Reply type (when needed) | `SubmitReply` | `SubmissionReceipt` |
 | Handle type | `CounterHandle` (when wrapping `ActorRef<Counter>` for no reason) | use `ActorRef<Counter>` directly |
 
 **Descriptive role suffixes earn their place** — they name what
@@ -324,8 +324,8 @@ pub struct CounterHandle {
     counter: ActorRef<Counter>,
 }
 impl CounterHandle {
-    pub async fn inc(&self) -> Result<i64, SendError<Inc>> {
-        self.counter.ask(Inc).await
+    pub async fn increment(&self) -> Result<i64, SendError<Increment>> {
+        self.counter.ask(Increment).await
     }
 }
 ```
@@ -514,9 +514,80 @@ block on the slow work — re-creating the hidden-lock failure mode
 | `MyActor::supervise(&parent, args).restart_policy(...).restart_limit(n, dur).spawn().await` | `ActorRef<MyActor>` | **Async.** Supervised. Args must be `Clone + Sync` (or use `supervise_with(factory)`). |
 | `MyActor::prepare()` then `prepared.actor_ref()` then `prepared.spawn(args)` | `PreparedActor<MyActor>` | The `ActorRef` is available *before* the run loop starts — useful for pre-registering or pre-enqueueing. |
 
+Use `PreparedActor::run(args).await` when a test needs the actor
+value back after shutdown. The pattern is:
+
+```rust
+let prepared_actor = Ledger::prepare();
+let ledger_ref = prepared_actor.actor_ref().clone();
+ledger_ref.tell(OpenItem { title }).await?;
+ledger_ref.tell(AddNote { body }).await?;
+let stop_task = tokio::spawn(async move { ledger_ref.ask(StopAndRead).await });
+let (final_ledger, stop_reason) = prepared_actor.run(Ledger::new()).await?;
+assert!(matches!(stop_reason, ActorStopReason::Normal));
+assert_eq!(final_ledger.snapshot(), stop_task.await??);
+```
+
+This is the clean test shape for "messages changed actor state and I
+need to assert on the final actor value."
+
 The default mailbox capacity is **64** (`pub(crate) const
 DEFAULT_MAILBOX_CAPACITY: usize = 64`). Macro doc claims 1000;
 that's stale. Size deliberately when traffic patterns warrant it.
+
+---
+
+## Test patterns
+
+Prefer push witnesses over sleeps. If a test needs to know that a
+handler started, a restart happened, or a link death was observed,
+have the actor send on a `oneshot` or `watch` channel at the exact
+moment:
+
+```rust
+let (started_sender, started_receiver) = tokio::sync::oneshot::channel();
+let (release_sender, release_receiver) = tokio::sync::oneshot::channel();
+
+gate.tell(HoldUntilReleased {
+    started: started_sender,
+    release: release_receiver,
+}).await?;
+
+started_receiver.await?;
+gate.tell(QueuedBehindHeldMessage).await?;
+release_sender.send(())?;
+```
+
+For repeated lifecycle events, use `watch`:
+
+```rust
+let (generation_sender, mut generation_receiver) = tokio::sync::watch::channel(0);
+let actor = RestartingActor::spawn(RestartingActor {
+    generation_sender,
+});
+
+generation_receiver.changed().await?;
+assert_eq!(*generation_receiver.borrow(), 1);
+```
+
+A bounded `timeout(...).await.is_err()` is acceptable only when the
+test is proving a should-not-fire condition. It is not a substitute
+for waiting "long enough."
+
+When asserting shutdown behavior, match the structured
+`ActorStopReason`, not just a counter:
+
+```rust
+let stop_reason = peer.wait_for_shutdown_result().await?;
+assert!(matches!(
+    stop_reason,
+    ActorStopReason::LinkDied { reason, .. }
+        if matches!(*reason, ActorStopReason::Killed)
+));
+```
+
+For final state assertions, use `PreparedActor::run` as described in
+§"Spawning" rather than exposing test-only shared locks.
 
 ---
 
