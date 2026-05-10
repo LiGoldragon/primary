@@ -16,7 +16,7 @@ the workspace coordination truth:
 - decisions
 - aliases for imported or external identities
 - ready-work views
-- compatibility projections such as `<role>.lock`
+- role state that replaces `<role>.lock` files
 
 The short version:
 
@@ -25,7 +25,7 @@ flowchart LR
     contracts["signal-persona-mind"] --> mind["persona-mind"]
     sema["persona-sema"] --> mind
     mind --> db[("mind.redb")]
-    mind --> projections["role lock projections"]
+    mind --> roles["typed role state"]
     mind --> views["ready-work views"]
 ```
 
@@ -45,7 +45,7 @@ partial scaffold.
 | Memory/work graph | `persona-mind` has an in-memory reducer with tests for open, note, link, status, alias, ready, blocked, and query behavior. | Preserve reducer semantics, but store items, edges, notes, aliases, and events in sema-backed tables. |
 | Activity | Contract exists. | Implement as store-stamped append-only activity records. |
 | CLI | Architecture names `mind` as one NOTA argv record to one NOTA reply. | Keep that. The CLI should translate text into a typed signal request, then submit to the same actor path used by any host. |
-| Legacy coordination | `<role>.lock` files and BEADS exist today. | Make lock files projections from `mind.redb`. Treat BEADS as transitional import input, not a live dependency. |
+| Legacy coordination | `<role>.lock` files and BEADS exist today. | Replace lock files with typed mind state. Treat BEADS as transitional import input, not a live dependency. |
 
 ## 3. Component Boundary
 
@@ -59,17 +59,19 @@ flowchart TB
     shim["tools/orchestrate compatibility shim"] --> cli
 
     cli --> contract["signal-persona-mind"]
-    contract --> ingress["MindIngressActor"]
-    ingress --> state["MindStateActor"]
+    contract --> ingress["IngressSupervisorActor"]
+    ingress --> dispatch["DispatchSupervisorActor"]
+    dispatch --> domain["DomainSupervisorActor"]
+    domain --> store["StoreSupervisorActor"]
 
-    state --> sema["persona-sema"]
+    store --> writer["SemaWriterActor"]
+    writer --> sema["persona-sema"]
     sema --> db[("mind.redb")]
 
-    state --> projection["ProjectionActor"]
-    projection --> locks["operator.lock designer.lock ..."]
-    projection --> views["ready-work and role views"]
+    store --> views_actor["ViewSupervisorActor"]
+    views_actor --> views["ready-work and role views"]
 
-    state --> events["post-commit event stream"]
+    store --> events["post-commit event stream"]
     events --> subscribers["future subscribers"]
 ```
 
@@ -80,43 +82,353 @@ flowchart LR
     bad1["router"] -. must not write .-> db[("mind.redb")]
     bad2["harness"] -. must not write .-> db
     bad3["terminal"] -. must not write .-> db
-    good["MindStateActor"] --> db
+    good["SemaWriterActor"] --> db
 ```
 
 The router may route Persona messages. The harness may inject or observe a
 terminal. The terminal layer may own pane/session handles. None of those
 components owns role claims, handoffs, memory items, or work dependencies.
 
-## 4. Actor Tree
+## 4. Actor-Dense Runtime
 
 Every runtime form should use the same actor structure. For the first working
 stack, the `mind` CLI can start the actors in-process for a single request. A
 long-lived host can reuse the same actor tree later when post-commit
 subscriptions become necessary.
 
+The important correction is that mind is not one or two actors. Mind is an
+actor system. Each phase of logic gets an actor so the architecture can be
+inspected, tested, supervised, and expanded without turning into a hidden
+service object.
+
 ```mermaid
 flowchart TB
     root["MindRootActor"]
-    root --> ingress["MindIngressActor"]
-    root --> state["MindStateActor"]
-    root --> projection["ProjectionActor"]
-    root --> subscription["SubscriptionActor"]
+    root --> config["ConfigActor"]
+    root --> ingress_supervisor["IngressSupervisorActor"]
+    root --> dispatch_supervisor["DispatchSupervisorActor"]
+    root --> domain_supervisor["DomainSupervisorActor"]
+    root --> store_supervisor["StoreSupervisorActor"]
+    root --> view_supervisor["ViewSupervisorActor"]
+    root --> subscription_supervisor["SubscriptionSupervisorActor"]
+    root --> reply_supervisor["ReplySupervisorActor"]
 
-    ingress --> state
-    state --> projection
-    state --> subscription
+    ingress_supervisor --> cli_ingress["CliIngressActor"]
+    ingress_supervisor --> session["RequestSessionActor"]
+    ingress_supervisor --> nota_decode["NotaDecodeActor"]
+    ingress_supervisor --> identity["CallerIdentityActor"]
+    ingress_supervisor --> envelope["EnvelopeActor"]
+
+    dispatch_supervisor --> router_actor["RequestDispatchActor"]
+    dispatch_supervisor --> claim_flow["ClaimFlowActor"]
+    dispatch_supervisor --> handoff_flow["HandoffFlowActor"]
+    dispatch_supervisor --> activity_flow["ActivityFlowActor"]
+    dispatch_supervisor --> memory_flow["MemoryFlowActor"]
+    dispatch_supervisor --> query_flow["QueryFlowActor"]
+
+    domain_supervisor --> claim_supervisor["ClaimSupervisorActor"]
+    domain_supervisor --> memory_supervisor["MemoryGraphSupervisorActor"]
+    domain_supervisor --> query_supervisor["QuerySupervisorActor"]
+
+    store_supervisor --> writer["SemaWriterActor"]
+    store_supervisor --> reader["SemaReadActor"]
+    store_supervisor --> id_mint["IdMintActor"]
+    store_supervisor --> clock["ClockActor"]
+    store_supervisor --> event_append["EventAppendActor"]
+    store_supervisor --> commit["CommitActor"]
+
+    view_supervisor --> role_view["RoleSnapshotViewActor"]
+    view_supervisor --> ready_view["ReadyWorkViewActor"]
+    view_supervisor --> blocked_view["BlockedWorkViewActor"]
+    view_supervisor --> activity_view["RecentActivityViewActor"]
+
+    subscription_supervisor --> commit_bus["CommitBusActor"]
+    subscription_supervisor --> subscriber["SubscriberActor"]
+
+    reply_supervisor --> reply_encode["NotaReplyEncodeActor"]
+    reply_supervisor --> error_shape["ErrorShapeActor"]
 ```
 
-| Actor | Owns | Does not own |
-|---|---|---|
-| `MindRootActor` | Actor startup, shutdown, handles, configuration. | State transitions. |
-| `MindIngressActor` | Decoded request intake, caller identity envelope, reply correlation. | Database writes. |
-| `MindStateActor` | The sema database handle, transaction order, reducers, store-stamped IDs and time. | Terminal focus, router delivery, process management. |
-| `ProjectionActor` | Post-commit lock-file and view-file projections. | Authoritative state. |
-| `SubscriptionActor` | Push notifications after commit. | Polling, speculative reads before commit. |
+Top-level actor groups:
 
-Only `MindStateActor` opens write transactions. This makes claim conflicts,
-handoffs, item status changes, and dependency updates serial and auditable.
+| Actor group | Owns | Does not own |
+|---|---|---|
+| `IngressSupervisorActor` | Input sessions, NOTA decode, caller identity, request envelope. | State transitions. |
+| `DispatchSupervisorActor` | Request classification and operation flow actor selection. | Storage. |
+| `DomainSupervisorActor` | Claim, handoff, activity, memory, and query domain actors. | Redb transactions. |
+| `StoreSupervisorActor` | Sema access, IDs, time, event append, commit ordering. | Domain policy. |
+| `ViewSupervisorActor` | Read views and cached summaries after commit. | Authoritative state. |
+| `SubscriptionSupervisorActor` | Push events after commit. | Polling. |
+| `ReplySupervisorActor` | Typed replies, NOTA reply rendering, error shape. | State transitions. |
+
+Only `SemaWriterActor` opens write transactions. That does not mean it
+contains the whole state machine. It means all operation actors send typed
+write intents to one serialized writer.
+
+```mermaid
+flowchart LR
+    claim_actor["ClaimDecisionActor"] --> write_intent["ClaimWriteIntent"]
+    memory_actor["ItemOpenActor"] --> item_intent["ItemWriteIntent"]
+    status_actor["StatusChangeActor"] --> status_intent["StatusWriteIntent"]
+    activity_actor["ActivityAppendActor"] --> activity_intent["ActivityWriteIntent"]
+
+    write_intent --> writer["SemaWriterActor"]
+    item_intent --> writer
+    status_intent --> writer
+    activity_intent --> writer
+
+    writer --> tx["single write transaction"]
+    tx --> db[("mind.redb")]
+```
+
+The practical rule: if a phase has a name and a failure mode, it probably
+deserves an actor.
+
+### 4.1 Claim Write Scenario
+
+```mermaid
+sequenceDiagram
+    participant CLI as "mind CLI"
+    participant Session as "RequestSessionActor"
+    participant Decode as "NotaDecodeActor"
+    participant Identity as "CallerIdentityActor"
+    participant Dispatch as "RequestDispatchActor"
+    participant Flow as "ClaimFlowActor"
+    participant Normalize as "ClaimNormalizeActor"
+    participant Conflict as "ClaimConflictActor"
+    participant Writer as "SemaWriterActor"
+    participant Event as "EventAppendActor"
+    participant Views as "RoleSnapshotViewActor"
+    participant Reply as "NotaReplyEncodeActor"
+
+    CLI->>Session: one NOTA argv record
+    Session->>Decode: decode text
+    Decode->>Identity: typed MindRequest
+    Identity->>Dispatch: MindEnvelope
+    Dispatch->>Flow: RoleClaim
+    Flow->>Normalize: normalize scope
+    Normalize->>Conflict: normalized claim
+    Conflict->>Writer: ClaimWriteIntent
+    Writer->>Event: append ClaimAccepted event
+    Writer->>Views: post-commit role view refresh
+    Writer-->>Flow: ClaimAcceptance
+    Flow-->>Reply: typed reply
+    Reply-->>CLI: one NOTA reply record
+```
+
+This path has many actors because every stage can be tested separately:
+decode failure, identity failure, scope normalization, conflict detection,
+write failure, event append, view refresh, and reply shape.
+
+### 4.2 Ready-Work Query Scenario
+
+```mermaid
+sequenceDiagram
+    participant CLI as "mind CLI"
+    participant Session as "RequestSessionActor"
+    participant Decode as "NotaDecodeActor"
+    participant Dispatch as "RequestDispatchActor"
+    participant Query as "QueryFlowActor"
+    participant Plan as "QueryPlanActor"
+    participant Reader as "SemaReadActor"
+    participant Ready as "ReadyWorkViewActor"
+    participant Graph as "GraphTraversalActor"
+    participant Shape as "QueryResultShapeActor"
+    participant Reply as "NotaReplyEncodeActor"
+
+    CLI->>Session: Query ReadyWork
+    Session->>Decode: decode NOTA
+    Decode->>Dispatch: MindRequest::Query
+    Dispatch->>Query: query request
+    Query->>Plan: choose read strategy
+    Plan->>Ready: ask cached ready-work view
+    Ready->>Reader: read view snapshot
+    Reader-->>Ready: candidate item IDs
+    Ready->>Graph: validate dependencies
+    Graph->>Reader: read item and edge snapshot
+    Reader-->>Graph: typed graph rows
+    Graph-->>Shape: ready item set
+    Shape-->>Reply: MindReply::View
+    Reply-->>CLI: NOTA reply
+```
+
+Query actors are allowed to use read snapshots. They are not allowed to repair
+state while answering. If a query detects stale views, it returns that fact as
+a typed reply or emits a push-triggered refresh request after the read.
+
+### 4.3 Blocked Item Query
+
+```mermaid
+flowchart TB
+    cli["mind CLI"] --> session["RequestSessionActor"]
+    session --> decode["NotaDecodeActor"]
+    decode --> dispatch["RequestDispatchActor"]
+    dispatch --> query["QueryFlowActor"]
+    query --> plan["QueryPlanActor"]
+
+    plan --> blocked_view["BlockedWorkViewActor"]
+    blocked_view --> read_a["SemaReadActor"]
+    read_a --> blocked_rows["blocked candidate rows"]
+
+    blocked_rows --> graph["GraphTraversalActor"]
+    graph --> edge_read["EdgeReadActor"]
+    graph --> item_read["ItemReadActor"]
+    edge_read --> sema_read["SemaReadActor"]
+    item_read --> sema_read
+
+    graph --> explain["BlockerExplainActor"]
+    explain --> shape["QueryResultShapeActor"]
+    shape --> reply["NotaReplyEncodeActor"]
+```
+
+This is intentionally more actorful than a normal in-process query. The point
+is to make each internal promise testable: the blocked view finds candidates,
+the graph traversal validates them, and the explanation actor turns the graph
+facts into a reply without mutating state.
+
+### 4.4 Open Item Scenario
+
+```mermaid
+sequenceDiagram
+    participant CLI as "mind CLI"
+    participant Dispatch as "RequestDispatchActor"
+    participant Flow as "MemoryFlowActor"
+    participant Open as "ItemOpenActor"
+    participant Id as "IdMintActor"
+    participant Clock as "ClockActor"
+    participant Writer as "SemaWriterActor"
+    participant Items as "ItemTableActor"
+    participant Events as "EventAppendActor"
+    participant Ready as "ReadyWorkViewActor"
+    participant Reply as "NotaReplyEncodeActor"
+
+    CLI->>Dispatch: MindRequest::Open
+    Dispatch->>Flow: memory mutation
+    Flow->>Open: open item command
+    Open->>Id: mint item ID and display ID
+    Open->>Clock: store timestamp
+    Open->>Writer: ItemOpenWriteIntent
+    Writer->>Items: write item row
+    Writer->>Events: append ItemOpened event
+    Writer->>Ready: refresh ready-work view
+    Writer-->>Open: Opened
+    Open-->>Reply: MindReply::Opened
+```
+
+The item opener does not mint IDs itself. It asks the ID actor. The caller does
+not supply time. It asks the clock actor through the write path.
+
+### 4.5 Dependency Link Scenario
+
+```mermaid
+flowchart LR
+    cli["mind CLI"] --> session["RequestSessionActor"]
+    session --> dispatch["RequestDispatchActor"]
+    dispatch --> memory_flow["MemoryFlowActor"]
+    memory_flow --> link_actor["LinkActor"]
+    link_actor --> resolve_source["SourceResolveActor"]
+    link_actor --> resolve_target["TargetResolveActor"]
+    resolve_source --> read_actor["SemaReadActor"]
+    resolve_target --> read_actor
+    link_actor --> edge_validate["EdgeValidateActor"]
+    edge_validate --> writer["SemaWriterActor"]
+    writer --> edge_table["EdgeTableActor"]
+    writer --> event_append["EventAppendActor"]
+    writer --> ready_view["ReadyWorkViewActor"]
+    writer --> blocked_view["BlockedWorkViewActor"]
+    ready_view --> reply["NotaReplyEncodeActor"]
+    blocked_view --> reply
+```
+
+This is where actor granularity matters. Source resolution, target resolution,
+edge validation, edge write, event append, and view refresh are separate
+failures.
+
+### 4.6 Handoff Scenario
+
+```mermaid
+sequenceDiagram
+    participant CLI as "mind CLI"
+    participant Flow as "HandoffFlowActor"
+    participant From as "FromRoleActor"
+    participant To as "ToRoleActor"
+    participant Claim as "ClaimConflictActor"
+    participant Writer as "SemaWriterActor"
+    participant Handoffs as "HandoffTableActor"
+    participant Claims as "ClaimTableActor"
+    participant Events as "EventAppendActor"
+    participant Views as "RoleSnapshotViewActor"
+    participant Reply as "NotaReplyEncodeActor"
+
+    CLI->>Flow: MindRequest::RoleHandoff
+    Flow->>From: validate source role owns scope
+    Flow->>To: validate target role
+    Flow->>Claim: validate no third-role conflict
+    Claim->>Writer: HandoffWriteIntent
+    Writer->>Handoffs: append handoff row
+    Writer->>Claims: move claim ownership
+    Writer->>Events: append RoleHandoff event
+    Writer->>Views: refresh source and target role views
+    Writer-->>Reply: HandoffAcceptance
+```
+
+A handoff is still one state transition, but the validation phases are actors.
+
+### 4.7 Error Reply Scenario
+
+```mermaid
+flowchart TB
+    cli["mind CLI"] --> decode["NotaDecodeActor"]
+    decode -->|decode error| error_shape["ErrorShapeActor"]
+    error_shape --> reply_encode["NotaReplyEncodeActor"]
+    reply_encode --> cli_reply["Rejected reply"]
+
+    decode -->|valid request| identity["CallerIdentityActor"]
+    identity -->|unknown caller| error_shape
+    identity -->|known caller| dispatch["RequestDispatchActor"]
+    dispatch -->|unsupported operation| error_shape
+```
+
+Errors are also actor-shaped. A rejected reply should be just as typed as an
+accepted reply.
+
+### 4.8 Actor Multiplicity Pattern
+
+Mind should be designed so hundreds of actors are normal, not exceptional.
+Many of them can be short-lived request actors. Others can be long-lived
+supervisors, role actors, view actors, or table actors.
+
+```mermaid
+flowchart TB
+    root["MindRootActor"] --> roles["RoleSupervisorActor"]
+    root --> items["ItemSupervisorActor"]
+    root --> queries["QuerySupervisorActor"]
+    root --> tables["TableSupervisorActor"]
+
+    roles --> operator_role["RoleActor operator"]
+    roles --> designer_role["RoleActor designer"]
+    roles --> assistant_role["RoleActor assistant"]
+    roles --> system_role["RoleActor system-specialist"]
+
+    items --> item_a["ItemActor item-a"]
+    items --> item_b["ItemActor item-b"]
+    items --> item_c["ItemActor item-c"]
+
+    queries --> query_a["QuerySessionActor A"]
+    queries --> query_b["QuerySessionActor B"]
+    queries --> query_c["QuerySessionActor C"]
+
+    tables --> claim_table["ClaimTableActor"]
+    tables --> item_table["ItemTableActor"]
+    tables --> edge_table["EdgeTableActor"]
+    tables --> note_table["NoteTableActor"]
+    tables --> alias_table["AliasTableActor"]
+    tables --> activity_table["ActivityTableActor"]
+```
+
+This keeps the implementation honest. If a future agent claims "the item graph
+is actor-based" but there is no `ItemActor`, no `EdgeActor`, and no
+`GraphTraversalActor`, the architecture truth tests should fail.
 
 ## 5. Signal Boundary
 
@@ -185,7 +497,7 @@ Recommended tables:
 | `EVENTS` | Append-only event log for every state mutation. |
 | `META` | Schema version, store identity, migration marker. |
 
-The event log is the audit trail. The tables are projections optimized for
+The event log is the audit trail. The tables are materialized views optimized for
 current-state queries.
 
 ```mermaid
@@ -195,7 +507,7 @@ flowchart TB
     event --> commit["single redb write transaction"]
     commit --> tables["current-state tables"]
     commit --> log["EVENTS"]
-    commit --> post["post-commit projection"]
+    commit --> views["post-commit read views"]
 ```
 
 Store-minted data:
@@ -212,27 +524,32 @@ especially important for IDs and timestamps.
 
 ## 7. Claim And Handoff Semantics
 
-Role claims are the replacement for ad hoc lock editing. The lock files remain
-visible compatibility projections.
+Role claims are the replacement for ad hoc lock editing. Mind does not keep
+lock files alive as projections. Old lock files are migration artifacts only.
 
 ```mermaid
 sequenceDiagram
     participant A as "operator"
     participant C as "mind CLI"
-    participant M as "MindStateActor"
-    participant D as "mind.redb"
-    participant P as "ProjectionActor"
+    participant D as "RequestDispatchActor"
+    participant F as "ClaimFlowActor"
+    participant N as "ClaimNormalizeActor"
+    participant X as "ClaimConflictActor"
+    participant W as "SemaWriterActor"
+    participant V as "RoleSnapshotViewActor"
 
     A->>C: RoleClaim path + reason
-    C->>M: MindRequest::RoleClaim
-    M->>D: read active claims
-    M->>M: normalize and check overlap
+    C->>D: MindRequest::RoleClaim
+    D->>F: start claim flow
+    F->>N: normalize scope
+    N->>X: normalized claim
+    X->>W: conflict-checked write intent
     alt accepted
-        M->>D: commit claim + event + activity
-        M->>P: post-commit projection command
-        M-->>C: ClaimAcceptance
+        W->>V: post-commit role view refresh
+        W-->>F: ClaimAcceptance
+        F-->>C: ClaimAcceptance
     else rejected
-        M-->>C: ClaimRejection with conflicting role and scope
+        X-->>C: ClaimRejection with conflicting role and scope
     end
 ```
 
@@ -245,9 +562,11 @@ Rules:
 - Redundant child claims under the same role collapse into the parent claim.
 - A handoff is not a release plus a claim. It is a typed transition with one
   event that preserves provenance.
-- Lock projection failure is not allowed to silently hide a successful claim.
-  The reply must surface projection status or the projection actor must retry
-  by push-driven scheduling.
+- No new code should write `<role>.lock`. The migration path is to read old
+  files once if needed, commit equivalent mind state, then stop using them.
+- View refresh failure is not allowed to silently hide a successful claim. The
+  reply must surface view status or the view actor must retry by push-driven
+  scheduling.
 
 ## 8. Activity Semantics
 
@@ -267,8 +586,11 @@ The caller can submit activity content, but the store supplies time and slot.
 
 ```mermaid
 flowchart LR
-    submitted["ActivitySubmission without timestamp"] --> state["MindStateActor"]
-    state --> stamped["store-stamped Activity"]
+    submitted["ActivitySubmission without timestamp"] --> flow["ActivityFlowActor"]
+    flow --> clock["ClockActor"]
+    flow --> writer["SemaWriterActor"]
+    clock --> stamped["store-stamped Activity"]
+    writer --> stamped
     stamped --> activities["ACTIVITIES"]
     stamped --> events["EVENTS"]
 ```
@@ -377,7 +699,7 @@ flowchart LR
 
 The CLI must not grow flag-shaped alternate semantics. If a convenience command
 is needed, it should lower into the same typed request and should be tested as
-a projection.
+a typed lowering.
 
 Examples of acceptable CLI responsibilities:
 
@@ -403,7 +725,19 @@ persona-mind/
   src/
     lib.rs
     main.rs
-    actor.rs
+    actors/
+      root.rs
+      ingress.rs
+      dispatch.rs
+      claim.rs
+      handoff.rs
+      activity.rs
+      memory.rs
+      query.rs
+      store.rs
+      view.rs
+      subscription.rs
+      reply.rs
     service.rs
     state.rs
     store.rs
@@ -411,21 +745,32 @@ persona-mind/
     claim.rs
     activity.rs
     memory.rs
-    projection.rs
+    view.rs
     config.rs
 ```
 
 | Module | Responsibility |
 |---|---|
-| `actor.rs` | ractor actor definitions and messages. |
-| `service.rs` | Data-bearing service object used by CLI and tests. |
-| `state.rs` | `MindState` object that owns reducers and store access. |
+| `actors/root.rs` | Runtime supervision tree. |
+| `actors/ingress.rs` | CLI sessions, NOTA decode, caller identity, request envelopes. |
+| `actors/dispatch.rs` | Request classification and operation flow selection. |
+| `actors/claim.rs` | Claim normalization, conflict detection, claim write intents. |
+| `actors/handoff.rs` | Source role validation, target role validation, atomic handoff intent. |
+| `actors/activity.rs` | Activity shaping before store-stamped append. |
+| `actors/memory.rs` | Item, note, edge, status, and alias operation actors. |
+| `actors/query.rs` | Query planning, view reads, graph traversal, result shaping. |
+| `actors/store.rs` | Sema read/write actors, ID mint, clock, event append, commit ordering. |
+| `actors/view.rs` | Role snapshot, ready-work, blocked-work, and activity view actors. |
+| `actors/subscription.rs` | Push-only post-commit notifications. |
+| `actors/reply.rs` | Typed reply and error rendering. |
+| `service.rs` | Runtime bootstrap object used by CLI and tests. |
+| `state.rs` | Data-bearing reducer state types; no hidden runtime ownership. |
 | `store.rs` | Sema-backed persistence wrapper. |
 | `tables.rs` | Typed table definitions and migration/version checks. |
 | `claim.rs` | Claim normalization and conflict reducer. |
 | `activity.rs` | Activity append reducer. |
 | `memory.rs` | Item/edge/note/alias reducer. |
-| `projection.rs` | Lock-file and read-view projection writer. |
+| `view.rs` | Read-view and cached-summary refresh logic. |
 | `config.rs` | Workspace-local paths and caller identity configuration. |
 
 The style constraint is important: reducers should be methods on data-bearing
@@ -473,18 +818,20 @@ flowchart LR
 Required cases:
 
 - write in one process, read in another
-- event append and projection table update happen in one transaction
+- event append and view table update happen in one transaction
 - store, not caller, supplies timestamp
 - store, not caller, supplies item ID
-- failed projection does not erase a committed event
+- failed read-view refresh does not erase a committed event
 
 ### 13.4 Actor ordering tests
 
 ```mermaid
 flowchart TB
-    a["RoleClaim A"] --> actor["MindStateActor"]
-    b["RoleClaim B"] --> actor
-    actor --> result["one accepted, one rejected"]
+    a["RoleClaim A"] --> flow_a["ClaimFlowActor A"]
+    b["RoleClaim B"] --> flow_b["ClaimFlowActor B"]
+    flow_a --> writer["SemaWriterActor"]
+    flow_b --> writer
+    writer --> result["one accepted, one rejected"]
 ```
 
 Required cases:
@@ -503,7 +850,7 @@ agent-written codebase:
 - `persona-mind` depends on `persona-sema`
 - `persona-mind` does not depend on router, harness, terminal, or WezTerm
 - `persona-mind` does not import BEADS as a live backend
-- lock files are written only by projection code
+- no production code writes `<role>.lock` files
 - CLI code does not open redb write transactions directly
 - no polling loops exist in mind
 - every mutation appends an event
@@ -514,7 +861,7 @@ agent-written codebase:
 flowchart TB
     p0["Phase 0: current scaffold"] --> p1["Phase 1: actor-backed service"]
     p1 --> p2["Phase 2: sema persistence"]
-    p2 --> p3["Phase 3: lock projections"]
+    p2 --> p3["Phase 3: typed read views"]
     p3 --> p4["Phase 4: compatibility shim"]
     p4 --> p5["Phase 5: post-commit subscriptions"]
 ```
@@ -535,8 +882,12 @@ Add ractor dependency and actor tree.
 Deliverables:
 
 - `MindRootActor`
-- `MindIngressActor`
-- `MindStateActor`
+- `IngressSupervisorActor`
+- `DispatchSupervisorActor`
+- `DomainSupervisorActor`
+- `StoreSupervisorActor`
+- `ViewSupervisorActor`
+- first pass of per-operation actors for claim, query, activity, and memory
 - in-process CLI path using the actor tree
 - no persistent daemon required yet
 
@@ -554,16 +905,18 @@ Deliverables:
 - persisted memory graph
 - separate-process storage tests
 
-### Phase 3: Lock projections
+### Phase 3: Typed read views
 
-Generate compatibility files from committed state.
+Generate typed read views from committed state. This replaces the old lock-file
+workflow instead of preserving it.
 
 Deliverables:
 
-- projection actor
-- `<role>.lock` writer
-- projection failure behavior
-- tests proving manual lock-file edits are not authoritative
+- view actor
+- role snapshot view
+- ready-work view
+- view refresh failure behavior
+- tests proving `<role>.lock` files are ignored by production code
 
 ### Phase 4: Compatibility shim
 
@@ -573,7 +926,7 @@ Deliverables:
 
 - claim/release/handoff compatibility
 - old orchestration protocol examples updated
-- docs stating lock files are projections
+- docs stating lock files are retired and replaced by mind state
 
 ### Phase 5: Post-commit subscriptions
 
@@ -583,7 +936,7 @@ Deliverables:
 
 - subscription actor
 - no polling
-- projection retry triggered by commit or filesystem error recovery event
+- view refresh retry triggered by commit or filesystem error recovery event
 - future router/system integration points
 
 ## 15. Decisions Needed
@@ -596,9 +949,9 @@ wrong shape.
 | Database location | Workspace-local state path first. | Current coordination is workspace-scoped and must be easy to inspect. |
 | Runtime form | Short-lived actor tree in `mind` CLI first; long-lived host only when subscriptions need it. | Gives actor discipline now without inventing daemon lifecycle too early. |
 | Caller identity | Add or confirm a common request envelope carrying actor identity. | Memory/work mutations need accountability. Current reducer uses a placeholder actor. |
-| Projection failure reply | Surface projection failure or retry state in typed replies/events. | A committed claim with a failed lock projection must not look fully successful. |
+| View failure reply | Surface read-view failure or retry state in typed replies/events. | A committed claim with a stale role view must not look fully settled. |
 | BEADS import | One-shot import only, with aliases. | Matches the workspace rule that BEADS is transitional. |
-| Activity auto-logging | Every state mutation should append an event; user-visible activity may be a selected projection of those events. | Avoids duplicate truth while preserving auditability. |
+| Activity auto-logging | Every state mutation should append an event; user-visible activity may be a selected view of those events. | Avoids duplicate truth while preserving auditability. |
 
 ## 16. Final Shape
 
@@ -606,16 +959,18 @@ When finished, the first usable `persona-mind` stack should make this true:
 
 ```mermaid
 flowchart LR
-    request["typed MindRequest"] --> actor["MindStateActor"]
-    actor --> transaction["single sema transaction"]
+    request["typed MindRequest"] --> ingress["RequestSessionActor"]
+    ingress --> dispatch["RequestDispatchActor"]
+    dispatch --> operation["operation flow actor"]
+    operation --> writer["SemaWriterActor"]
+    writer --> transaction["single sema transaction"]
     transaction --> db[("mind.redb")]
     transaction --> event["typed Event"]
-    event --> projection["lock and ready-work projections"]
-    actor --> reply["typed MindReply"]
+    event --> views["role and ready-work views"]
+    operation --> reply["typed MindReply"]
 ```
 
 If an agent wants to claim a path, hand off work, record a decision, open a
 task, mark work blocked, or query ready work, it goes through mind. The
-workspace can then stop treating lock files and BEADS as the coordination
-substrate and start treating them as old projections and imported history.
-
+workspace can then stop using lock files as coordination state. BEADS becomes
+imported history; lock files become retired migration debris.
