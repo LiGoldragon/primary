@@ -32,10 +32,13 @@ shape:
 | `detached_output_is_replayed_to_late_subscriber` | Passes. Output emitted before any subscription is replayed to a late subscriber. |
 | `programmatic_input_uses_the_same_pty_input_port` | Passes. Programmatic `/usage\r` bytes go through the PTY input path and are observed by the child. |
 | `screen_projection_is_derived_from_transcript` | Passes. A `vt100` projection is built from transcript bytes, not from viewer state. |
+| `terminal_exit_is_observable_without_polling_the_child` | Passes. The actor records child exit and can answer/wake exit observers without process-table polling. |
 | `agent_terminal_accepts_prompt_and_terminal_cell_reads_response` | Passes. A deterministic agent-like terminal process accepts an injected prompt and the terminal cell reads its response from transcript. |
 | `agent_terminal_usage_probe_is_prompt_input_not_terminal_semantics` | Passes. A `/usage\r` probe is carried as raw PTY input and interpreted only by the agent fixture. |
 | `daemon_accepts_programmatic_prompt_and_capture_reads_transcript` | Passes. A daemon owns the `TerminalCell`; socket clients send a prompt, wait on transcript text, and capture the response. |
 | `attach_view_replays_transcript_without_owning_the_child` | Passes. A late `view --once` client replays transcript without owning the child. |
+| `daemon_exposes_terminal_exit_status` | Passes. A socket client can block until the child exits and print the recorded terminal exit status. |
+| `nix run .#live-coding-agent-witness` | Passes. A real Codex CLI is launched in the terminal cell, prompted through the socket, and the transcript captures the LLM response marker. |
 | `nix run .#ghostty-agent-witness` | Passes. Ghostty runs the attach view, the view pushes an attachment-ready signal, a prompt is injected through the daemon, and the captured transcript contains the response. |
 | `nix run .#ghostty-agent-session` | Passes. A durable Ghostty view stays attached to a daemon-owned cell for human inspection until closed explicitly. |
 
@@ -48,6 +51,9 @@ Verification:
 - `nix run .#agent-terminal-witness` passes as the deterministic agent-dialogue
   PTY witness.
 - `nix run .#daemon-witness` passes as the daemon/client/socket witness.
+- `nix run .#live-coding-agent-witness` passes as the real LLM-backed coding
+  agent witness and writes
+  `target/live-coding-agent-witness/transcript.txt`.
 - `nix run .#ghostty-agent-witness` passes as the GUI-terminal attach witness
   and writes `target/ghostty-agent-witness/transcript.txt`.
 - `nix run .#ghostty-agent-session` opens a durable visible session and writes
@@ -116,10 +122,12 @@ Current prototype nouns:
 | `TerminalTranscript` | Append-only in-memory output deltas sequenced by `TerminalSequence`. |
 | `TranscriptSubscription` | Replay from a sequence plus live broadcast receiver. |
 | `TerminalInput` | Raw bytes plus provenance (`Viewer` or `Programmatic`). |
+| `TerminalExit` | Child status recorded as actor state and exposed through actor/socket waiters. |
 | `ScreenProjection` | `vt100` projection derived from transcript bytes. |
 | `TerminalCellSocketClient` | Thin Unix-socket client used by command-line tools and viewers. |
 | `terminal-cell-daemon` | Daemon that owns the actor and exposes socket requests. |
 | `terminal-cell-view` | Attach client run inside Ghostty or another terminal. It replays transcript, subscribes live, enables raw mode, and forwards keyboard bytes. |
+| `terminal-cell-exit` | Socket client that waits for and prints the child exit status. |
 | `agent-terminal-fixture` | Deterministic agent-like terminal binary used to prove prompt/response and usage-probe dialogue through the PTY. |
 
 The prototype uses blocking OS threads for PTY read and child wait. Those
@@ -131,6 +139,13 @@ The daemon waits for Kameo actor startup before binding and announcing its
 socket. The Ghostty witness found this race: if the socket is announced before
 the actor is running, a fast GUI attach can hit `actor not running`. The fixed
 shape is "actor startup first, socket ready second, view attachment third."
+
+The live Codex witness found a second important edge: a modern coding-agent TUI
+is not the same as a line-oriented process. Prompt text and the submit key must
+be treated as separate terminal inputs. Coalescing prompt bytes and Enter into
+one write is not a faithful enough model for Codex; the passing witness sends
+text, waits for a small echoed word, then sends Enter as its own PTY write and
+waits for a response marker that was not present in the prompt.
 
 ## Production Constraints Recorded
 
@@ -169,13 +184,49 @@ The first production version still needs real work:
   data; raw input provenance and redaction policy need typed records.
 - Single-writer or transaction policy between human keyboard input and Persona
   injection.
-- Durable child-exit observation and typed `TerminalExited` emission.
+- Persistent child-exit storage and typed `TerminalExited` emission over
+  `signal-persona-terminal`.
+
+## Game Plan Update
+
+Switch the architecture direction away from a WezTerm-centered terminal owner
+and toward Terminal Cell as the backend-neutral primitive.
+
+Current repo state:
+
+- `/git/github.com/LiGoldragon/terminal-cell` exists locally and on GitHub as
+  `LiGoldragon/terminal-cell`.
+- `persona-terminal` does not exist yet on GitHub.
+- `/git/github.com/LiGoldragon/persona-wezterm` is the existing terminal
+  transport repo. Its name is now stale for the intended owner shape: WezTerm
+  should be one viewer/adapter, not the noun that owns terminal truth.
+
+Recommended migration:
+
+1. Keep `terminal-cell` generic while the primitive hardens.
+2. Create or rename to a production `persona-terminal` repo when we are ready
+   to wire the Persona stack. If `persona-wezterm` is renamed, update path
+   dependencies, architecture references, active-repo docs, and any
+   `signal-persona-terminal` boundary tests in the same pass.
+3. Seed `persona-terminal` with the proven Terminal Cell shape: daemon-owned
+   PTY, append-only transcript, pushed subscriptions, raw input, screen
+   projection, child-exit observation, and Nix witnesses.
+4. Keep `signal-persona-terminal` as the harness-to-terminal contract. The
+   terminal owner moves bytes and terminal facts; `persona-harness` decides
+   slash-command semantics and provider-usage interpretation.
+5. Keep `persona-system` responsible for OS/window/focus policy. Terminal Cell
+   should expose enough viewer identity for `persona-system` to observe, but it
+   should not learn Niri focus rules or placement policy.
+6. Keep the live coding-agent witness. The deterministic fixture is necessary
+   but not sufficient; the real target is an LLM-backed harness that can be
+   prompted through the cell and read back from transcript.
 
 ## Recommendation
 
 Continue with a production `persona-terminal` split once the operator is ready:
 
-1. Move the backend-neutral PTY owner out of `persona-wezterm`.
+1. Move the backend-neutral PTY owner out of `persona-wezterm` or rename the
+   repo to `persona-terminal`.
 2. Keep `signal-persona-terminal` as the contract.
 3. Keep WezTerm, Ghostty/plain terminal, browser terminal, and possible zmx or
    abduco interop as viewer/adapters.

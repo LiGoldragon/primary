@@ -26,7 +26,8 @@ stack.
 | `persona-message` | `/git/github.com/LiGoldragon/persona-message` | Current CLI/message experiments; transitional until router/mind contracts settle. |
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` | System facts such as focus and prompt-state observations. |
 | `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` | Harness process/session control boundary. |
-| `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` | WezTerm-backed visible/detachable terminal support. |
+| `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` | Existing terminal transport repo. Rename/split target is `persona-terminal`; WezTerm should become a viewer adapter, not the terminal owner noun. |
+| `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Generic daemon-owned PTY/transcript prototype; seed candidate for `persona-terminal`. |
 | `sema` (rename pending → `sema-db`) | `/git/github.com/LiGoldragon/sema` | **Pragmatic** typed database library; not a daemon and not shared storage. Distinct from the **ideal** `Sema` (fully-specified knowledge representation; not yet realized). Per `ESSENCE.md` §"Pragmatic now, ideal later". |
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
