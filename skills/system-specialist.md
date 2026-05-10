@@ -74,6 +74,15 @@ Prefer the existing deployment path over one-off commands:
 - Keep store paths in shell variables, not prose.
 - Do not signal niri.
 
+Niri config changes are not live when they land in a repo or after a
+successful build. For changes to `programs.niri.settings` that must affect
+the running session, push the CriomOS-home commit, activate the home profile
+through lojix `HomeOnly ... Activate`, then reload Niri with
+`niri msg action load-config-file`. `load-config-file` is Niri's IPC reload
+action; it is allowed. SIGHUP or other process signals remain forbidden. Do
+not claim a new window rule, keybind, or runtime setting is being tested until
+activation and IPC reload have both happened.
+
 Secrets stay out of Nix and broad process environments. For paid cloud
 inference, follow the repo rule: local model first, then ask before using a
 paid key unless the user explicitly authorized that call in the current task.
