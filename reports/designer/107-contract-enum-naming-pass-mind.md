@@ -9,18 +9,21 @@ and the remaining work queued for the next pass.*
 
 ## 0 · TL;DR
 
-Per user instruction (claim+implement on contract enum work), did the
-deep variant-rename pass on `signal-persona-mind`. The role/activity
-variants were already noun-form; the memory-graph variants were the
-remaining out-of-pattern cases — verb-shape (`Open`, `AddNote`,
-`ChangeStatus`, `AddAlias`) and past-participle (`Opened`, `NoteAdded`,
-`Linked`, `StatusChanged`, `AliasAdded`, `Rejected`). Renamed all 10
-to match payload type names (the rest of the channel's convention).
+Per user instruction (claim+implement on contract enum work, then
+"keep going"), did the full deep enum pass on `signal-persona-mind` +
+the trailing polish in `signal-persona`. Five commits across three
+repos.
 
-| Repo | Commit | Status |
+| Repo | Commit | What |
 |---|---|---|
-| `signal-persona-mind` | `4505abab` "contract: rename MindRequest/MindReply memory-graph variants to noun-form" | pushed; 35 round-trip tests passing |
-| `persona-mind` | `5db412a6` "persona-mind: track signal-persona-mind variant rename" | pushed; cargo test passes (incl. weird_actor_truth, smoke, memory) |
+| `signal-persona-mind` | `4505abab` | variant rename (memory-graph) — `Open`/`AddNote`/`ChangeStatus`/`AddAlias` → noun-form; `Opened`/`NoteAdded`/`Linked`/`StatusChanged`/`AliasAdded`/`Rejected` → noun-form |
+| `signal-persona-mind` | `eeb13110` | generic-name prefix — `Kind`→`ItemKind`, `Status`→`ItemStatus`, `Priority`→`ItemPriority`, `Body`→`TextBody` |
+| `persona-mind` | `5db412a6` | consumer update for variant rename |
+| `persona-mind` | `9d002380` | consumer update for generic-name prefix |
+| `signal-persona` | `7b0f35be` | `Records` enum → `RecordBatch`; catch-all `Records::RecordBatch` → `RecordBatch::Mixed` |
+
+All 35 contract round-trip tests + all 41 persona-mind tests + 5 signal-persona
+tests pass. `primary-rz1` (the polish queue bead) is closed.
 
 **Survey finding**: no contract repos are missing for any current
 relation in the Persona architecture. The only known gap (subscription
@@ -134,9 +137,9 @@ weird-actor-truth tests).
 
 ---
 
-## 3 · Queued for the next pass
+## 3 · Items now landed (originally queued)
 
-### Q-app-4. Generic enum prefix in signal-persona-mind — `Kind` / `Status` / `Priority` → `Item*`
+### Q-app-4. Generic enum prefix in signal-persona-mind — `Kind` / `Status` / `Priority` → `Item*` — **DONE** (commit `eeb13110`)
 
 Per `~/primary/reports/designer-assistant/7-contract-relation-naming-survey.md`
 §"signal-persona-mind": *"`Kind`, `Status`, and `Priority` are too
@@ -169,7 +172,7 @@ These are used as field types throughout `Item`, `Opening`,
 `EdgeKind::DependsOn` and `QueryKind::Ready` need to be left alone.
 Surgical Edits required.
 
-### Q-app-5. `Body` field type — context-specific newtypes
+### Q-app-5. `Body` field type — context-specific newtypes — **DONE** (commit `eeb13110`, single-newtype shape: `TextBody`)
 
 Per DA/7: *"`Body` is too broad for a central work graph. Consider
 `ItemBody`, `NoteBody`, or `TextBody` depending on whether one type is
@@ -186,7 +189,7 @@ Two options:
 Recommendation: `TextBody` for now. The single-newtype shape preserves
 wire compatibility while making the name say what it is.
 
-### Q-app-6 (small). `Records` enum in signal-persona
+### Q-app-6 (small). `Records` enum in signal-persona — **DONE** (commit `7b0f35be`)
 
 Per DA/7: *"`Records` is convenient, but it weakens the type boundary."*
 The 14:33 sharpening pass renamed the `Mixed` variant to `RecordBatch`,
