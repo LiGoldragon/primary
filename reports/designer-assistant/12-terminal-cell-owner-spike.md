@@ -23,7 +23,7 @@ flowchart LR
     owner -->|"replay + live deltas"| viewer
 ```
 
-The prototype repo is `/git/github.com/LiGoldragon/terminal-cell-lab`.
+The prototype repo is `/git/github.com/LiGoldragon/terminal-cell`.
 It now proves daemon-first attach as well as the original in-process PTY
 shape:
 
@@ -37,10 +37,11 @@ shape:
 | `daemon_accepts_programmatic_prompt_and_capture_reads_transcript` | Passes. A daemon owns the `TerminalCell`; socket clients send a prompt, wait on transcript text, and capture the response. |
 | `attach_view_replays_transcript_without_owning_the_child` | Passes. A late `view --once` client replays transcript without owning the child. |
 | `nix run .#ghostty-agent-witness` | Passes. Ghostty runs the attach view, the view pushes an attachment-ready signal, a prompt is injected through the daemon, and the captured transcript contains the response. |
+| `nix run .#ghostty-agent-session` | Passes. A durable Ghostty view stays attached to a daemon-owned cell for human inspection until closed explicitly. |
 
 Verification:
 
-- `cargo test` passes in `terminal-cell-lab`.
+- `cargo test` passes in `terminal-cell`.
 - `nix flake check` passes as the pure build/fmt/clippy gate.
 - `nix run .#session-witnesses` passes as the host-visible stateful PTY
   witness.
@@ -49,6 +50,9 @@ Verification:
 - `nix run .#daemon-witness` passes as the daemon/client/socket witness.
 - `nix run .#ghostty-agent-witness` passes as the GUI-terminal attach witness
   and writes `target/ghostty-agent-witness/transcript.txt`.
+- `nix run .#ghostty-agent-session` opens a durable visible session and writes
+  its socket, pids, logs, and transcript under
+  `${XDG_RUNTIME_DIR:-/tmp}/terminal-cell/session-*`.
 
 The Ghostty witness launches with the GTK app ID/class
 `com.ligoldragon.terminalcellwitness`. On Niri 25.11, this can be paired with a
@@ -99,7 +103,7 @@ Primary sources used include:
 
 ## Prototype Shape
 
-`terminal-cell-lab` is intentionally generic. It is not Persona-prefixed because
+`terminal-cell` is intentionally generic. It is not Persona-prefixed because
 the primitive is useful outside Persona, and because the production split is
 still a design decision. If the shape graduates, the likely production owner is
 `persona-terminal`, with `persona-wezterm` narrowed to a WezTerm adapter.
@@ -114,8 +118,8 @@ Current prototype nouns:
 | `TerminalInput` | Raw bytes plus provenance (`Viewer` or `Programmatic`). |
 | `ScreenProjection` | `vt100` projection derived from transcript bytes. |
 | `TerminalCellSocketClient` | Thin Unix-socket client used by command-line tools and viewers. |
-| `terminal-cell-lab-daemon` | Daemon that owns the actor and exposes socket requests. |
-| `terminal-cell-lab-view` | Attach client run inside Ghostty or another terminal. It replays transcript, subscribes live, enables raw mode, and forwards keyboard bytes. |
+| `terminal-cell-daemon` | Daemon that owns the actor and exposes socket requests. |
+| `terminal-cell-view` | Attach client run inside Ghostty or another terminal. It replays transcript, subscribes live, enables raw mode, and forwards keyboard bytes. |
 | `agent-terminal-fixture` | Deterministic agent-like terminal binary used to prove prompt/response and usage-probe dialogue through the PTY. |
 
 The prototype uses blocking OS threads for PTY read and child wait. Those
