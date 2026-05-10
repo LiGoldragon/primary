@@ -66,6 +66,72 @@ the next clause.
 
 ---
 
+## Questions to the user — paste the evidence, not a pointer
+
+When you surface a question for the user — asking for a
+decision, clarifying ambiguity, choosing between options —
+**the question must carry the substance that lets the user
+answer without opening files.**
+
+Wrong:
+
+> *"Should I collapse the four forwarding-trampoline actors?
+> See `reports/designer/<N>-actor-discipline-sweep.md` §5.2
+> for context."*
+
+This forces the user to open a report and find §5.2 just to
+understand what's being asked. The question becomes a chore;
+the user disengages.
+
+Right:
+
+> *"Should I collapse the four forwarding-trampoline actors in
+> `persona-mind`?*
+>
+> *Code (`/git/.../persona-mind/src/actors/dispatch.rs:14-18`):*
+>
+>     pub(super) struct DispatchSupervisor {
+>         domain: ActorRef<domain::DomainSupervisor>,
+>         view:   ActorRef<view::ViewSupervisor>,
+>         reply:  ActorRef<reply::ReplySupervisor>,
+>     }
+>
+> *The struct holds only `ActorRef` fields — no domain state.*
+> *The handler routes messages and records trace events. If the*
+> *trace recording IS the domain (witnessing the pipeline ran),*
+> *keep them. If the trace is observability noise, collapse them*
+> *and route straight from request → memory dispatch.*
+>
+> *Options: (a) collapse, lose per-stage witness; (b) keep and*
+> *document the trace-as-domain carve-out; (c) keep but rename*
+> *from `*Supervisor` to something less misleading."*
+
+The user reads the question once and has everything needed
+to decide.
+
+**The form: question + concrete evidence (code, text, or
+symptom) + why it matters + concrete options with
+tradeoffs.**
+
+Cite the source report as a "for the longer context" footer
+if useful — but the link is a *back-reference for verification,
+not the substance*. If the user has to follow the link to
+answer the question, the question is not yet asked.
+
+**Why:** the user is the bottleneck on decisions. Forcing
+them through navigation chores stalls work and makes them
+less likely to engage. The skill's job is to eliminate that
+friction. A question that takes 2 minutes to understand will
+get answered late or skipped; a question that fits on one
+screen with the evidence inline gets answered immediately.
+
+**Applies anywhere a question is surfaced to the user** —
+chat, a report's "open questions" section, `AskUserQuestion`
+prompts, or a hand-off to another role's report. The rule
+follows the question, not the medium.
+
+---
+
 ## Where reports live
 
 Each role owns a subdirectory under `~/primary/reports/`:
