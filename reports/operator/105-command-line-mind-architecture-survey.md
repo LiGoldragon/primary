@@ -349,14 +349,17 @@ The architecture has converged on these durable decisions:
 | `mind` takes one NOTA request and prints one NOTA reply | High |
 | Direct Kameo is the actor runtime; no `persona-actor` wrapper crate | High |
 
-The main contradictions left:
+The main contradictions left when this survey first landed:
 
 | Topic | Conflict |
 |---|---|
-| lifecycle | one-shot in-process actor tree vs long-lived daemon |
 | lock files | temporary regenerated projections vs fully retired typed views |
 | trace phases | accepted trace markers vs demand that every named plane become a real actor |
 | storage pins | designs name `DisplayId`, table keys, caller identity, `mind.redb` path, subscriptions; implementation has not landed them |
+
+Post-survey update: `reports/designer/106-actor-discipline-status-and-questions.md`
+records the user decision that `persona-mind` is daemon-backed. The `mind` CLI
+is a thin client to that daemon, not a one-shot actor host.
 
 ## 4 · Gap register
 
@@ -564,23 +567,19 @@ Priority conversions:
 | `Clock` | owns store-supplied time |
 | `EventAppender` | owns append-only event ordering |
 
-## 5 · Recommended command-line architecture
+## 5 · Command-line architecture
 
-I recommend the first working command-line mind be **one-shot
-in-process Kameo**, not a daemon. The same actor tree can later be
-hosted by a daemon when subscriptions or push streams require it.
-
-Why: the immediate problem is replacing shell-level lock writes with a
-typed request/reply tool. A daemon adds lifecycle and transport before
-the storage and text surfaces are even complete. The one-shot CLI still
-uses the real actor tree; it just starts and stops it per invocation.
+Updated decision: the first working command-line mind is daemon-backed.
+The `mind` binary is a thin client. The long-lived `persona-mind` daemon
+owns `MindRoot`, `mind.redb`, subscriptions, and warm state.
 
 ```mermaid
 sequenceDiagram
     participant Agent as "agent"
     participant CLI as "mind binary"
     participant Decode as "NotaDecoder"
-    participant Identity as "CallerIdentityResolver"
+    participant Client as "MindClient"
+    participant Daemon as "persona-mind daemon"
     participant Root as "MindRoot"
     participant Store as "MindStore"
     participant Encode as "NotaReplyEncoder"
@@ -588,17 +587,19 @@ sequenceDiagram
     Agent->>CLI: one NOTA MindRequest
     CLI->>Decode: argv text
     Decode-->>CLI: MindRequest
-    CLI->>Identity: env/config/process context
-    Identity-->>CLI: ActorName
-    CLI->>Root: MindEnvelope { actor, request }
+    CLI->>Client: signal request frame
+    Client->>Daemon: local transport
+    Daemon->>Root: MindEnvelope { actor, request }
     Root->>Store: typed state transition
     Store-->>Root: MindReply
-    Root-->>CLI: MindRuntimeReply
+    Root-->>Daemon: MindRuntimeReply
+    Daemon-->>Client: signal reply frame
+    Client-->>CLI: MindReply
     CLI->>Encode: MindReply
     Encode-->>Agent: one NOTA reply
 ```
 
-The CLI owns only process-boundary concerns:
+The CLI owns only client-boundary concerns:
 
 ```rust
 pub struct MindCommand {
@@ -614,17 +615,12 @@ impl MindCommand {
     pub async fn run(self) -> Result<MindExit> {
         let input = MindInput::from_argv(self.argv)?;
         let request = MindTextDecoder::new(input.text()).into_request()?;
-        let actor = CallerIdentity::from_environment(self.environment).resolve()?;
-        let store = MindStorePath::from_environment(self.environment);
-
-        let runtime = MindRuntime::start(store.into_location()).await?;
-        let reply = runtime
-            .submit(MindEnvelope::new(actor, request))
-            .await?;
-        runtime.stop().await?;
+        let endpoint = MindDaemonEndpoint::from_environment(self.environment);
+        let client = MindClient::connect(endpoint).await?;
+        let reply = client.submit(request).await?;
 
         let encoder = MindTextEncoder::new();
-        let text = encoder.reply(reply.reply().ok_or(Error::NoReply)?)?;
+        let text = encoder.reply(&reply)?;
         Ok(MindExit::success(text))
     }
 }
@@ -638,9 +634,8 @@ functions:
 | `MindCommand` | process invocation state |
 | `MindInput` | exactly-one-argument rule |
 | `MindTextDecoder` | NOTA decode diagnostics |
-| `CallerIdentity` | actor resolution inputs |
-| `MindStorePath` | path defaults and env override |
-| `MindRuntime` | actor tree |
+| `MindDaemonEndpoint` | local daemon endpoint default and env override |
+| `MindClient` | daemon connection and signal-frame exchange |
 | `MindTextEncoder` | NOTA reply rendering |
 
 ## 6 · Command scenarios
@@ -731,23 +726,14 @@ architecture path was used, not only that the final reply looks right.
 
 ## 8 · Decisions to bring to the user
 
-### Decision 1 — one-shot CLI first, or daemon first?
+### Decision 1 — daemon first
 
-Evidence:
+Resolved after this report first landed:
 
-- `persona-mind` already has an in-process `MindRuntime`.
-- The current `mind` binary is a scaffold.
-- Subscriptions are not implemented.
-
-Options:
-
-| Option | Tradeoff |
-|---|---|
-| one-shot in-process Kameo first | fastest route to replacing `tools/orchestrate`; actor tree remains real; no push subscriptions yet |
-| daemon first | better long-lived subscription shape; slower and adds transport/lifecycle before storage/text is complete |
-
-Recommendation: **one-shot first**, with the actor tree structured so a
-daemon can host the same root later.
+`reports/designer/106-actor-discipline-status-and-questions.md` records the
+user decision: **daemon**. A long-lived `persona-mind` process owns
+`MindRoot`; CLI calls connect as thin clients over local transport and submit
+`signal-persona-mind` frames.
 
 ### Decision 2 — retire lock files immediately or keep projections briefly?
 

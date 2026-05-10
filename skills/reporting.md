@@ -324,6 +324,30 @@ unquoted label. Unquoted punctuation has inconsistent
 behavior across Mermaid renderers and can make diagrams
 misleading or ugly.
 
+#### Never use bare quoted strings as flowchart node IDs
+
+This is broken in older Mermaid renderers, including
+Mermaid 8.8.0:
+
+```text
+flowchart LR
+    "mind CLI" --> "MindRoot"
+```
+
+The strings look like visible labels, but the parser treats
+them as invalid flowchart node syntax. Always give the node
+a simple identifier and put the visible label in brackets:
+
+```mermaid
+flowchart LR
+    mind_cli["mind CLI"] --> mind_root["MindRoot"]
+```
+
+For maximum compatibility, node IDs should be ASCII
+identifiers: lowercase letters, digits, and underscores.
+The visible label can still contain spaces and punctuation
+inside the brackets.
+
 #### Edge labels — pipe delimiters, NOT quoted strings
 
 ```mermaid

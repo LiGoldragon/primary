@@ -3,9 +3,13 @@
 The orchestration protocol coordinates autonomous agents sharing the same
 workspace. The current shell-helper implementation combines role-owned lock
 files with the transitional workspace BEADS task database so agents see both
-file ownership and open work before they edit. The target implementation
-replaces BEADS with Persona's native typed work graph carried by
-`signal-persona-mind` and stored by `persona-mind`.
+file ownership and open work before they edit.
+
+The destination is the **command-line mind**: the Rust `mind` CLI as a thin
+client to the long-lived `persona-mind` daemon, using the
+`signal-persona-mind` contract. It replaces lock-file ownership and BEADS work
+tracking with typed role state, activity, and a native work/memory graph stored
+in `mind.redb`.
 
 BEADS is shared coordination state while it exists, not a lockable scope.
 
@@ -44,12 +48,12 @@ records, not operating-system locks.
 BEADS tasks at any time. A BEADS task is a shared work item, not a file-ownership
 claim.
 
-### Typed orchestration target
+### Command-line mind target
 
 The current implementation is the lock-file helper described below. The target
-implementation is the Rust `mind` CLI backed by `persona-mind` and the
-`signal-persona-mind` contract. `tools/orchestrate` remains the compatibility
-helper name during migration.
+implementation is the Rust `mind` CLI backed by a long-lived `persona-mind`
+daemon and the `signal-persona-mind` contract. `tools/orchestrate` remains the
+compatibility helper name during migration.
 
 Target surface:
 
@@ -63,10 +67,13 @@ Target invariants:
   vocabulary.
 - The `mind` binary accepts exactly one NOTA request record and prints exactly
   one NOTA reply record.
+- The `mind` binary is a thin client. The long-lived `persona-mind` daemon owns
+  `MindRoot` and `mind.redb`.
 - `tools/orchestrate` becomes a compatibility shim that translates the current
   ergonomic commands into the canonical one-record CLI.
 - Durable state lives in `mind.redb` through `persona-sema`.
-- Lock files become regenerated projections of durable coordination state.
+- Lock files are transitional compatibility state. They may be read or projected
+  during migration, but they are not the durable truth of the target protocol.
 - Claim, release, and handoff requests create activity records automatically.
 - The mind graph supplies native typed work items, notes, dependencies,
   decisions, aliases, and ready-work queries through the same
@@ -76,7 +83,9 @@ Target invariants:
   Persona↔bd bridge and no dual-write path.
 
 Until that Rust path is implemented and tested, the shell helper remains the
-canonical writer for lock files.
+canonical writer for lock files. Once agents use `mind` directly, lock files
+should disappear as an ownership mechanism rather than becoming a parallel
+state model.
 
 ### Lock-file format
 
