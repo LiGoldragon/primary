@@ -581,15 +581,17 @@ a defined lifecycle. The framework is `ractor`.
   typed message.
 - **Actor traces are architecture witnesses.** Important request
   paths should be testable as actor sequences: parse actor, caller
-  actor, dispatcher actor, domain actor, store actor, view actor,
+  actor, dispatcher actor, domain actor, commit actor, view actor,
   reply actor. If the trace can omit a required actor and tests
   still pass, the tests are not architectural-truth tests.
 
-**Ractor is the runtime default.** Its raw API splits the behavior
-marker from mutable `State`; that is framework mechanics. Keep marker
-types private or crate-private where possible, give the mutable actor
-body a specific data-bearing name, and put domain behavior on that
-state, on reducers owned by that state, or on public handles.
+**Direct ractor is the current runtime default.** Its raw API splits
+the behavior marker from mutable `State`; that is framework mechanics.
+Keep marker types private or crate-private where possible, give the
+mutable actor body a specific data-bearing name, and put domain behavior
+on that state, on reducers owned by that state, or on public handles. A
+future runtime change is a whole-stack architecture decision, not a
+reason to introduce speculative wrappers today.
 
 **Every actor pairs with a `*Handle`.** The actor's consumer surface
 is a typed handle (`EngineHandle`, `SupervisorHandle`,

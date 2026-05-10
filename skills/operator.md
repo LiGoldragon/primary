@@ -39,8 +39,8 @@ The operator's natural primary scope:
   `signal-derive`, `signal-persona`, `signal-forge`,
   `nexus`, `nexus-cli`, `criome`, `persona`,
   `persona-harness`, `persona-message`, `persona-router`,
-  `persona-store`, `persona-system`, `persona-mind`,
-  `persona-wezterm`, `forge`, `prism`, `chroma`,
+  `persona-system`, `persona-mind`, `persona-wezterm`,
+  `forge`, `prism`, `chroma`,
   `mentci-egui`, `mentci-lib`, `mentci-tools`,
   `horizon-rs`, `goldragon`, and so on.
 - **Tests** — every `tests/*.rs` file inside operator's

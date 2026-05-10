@@ -4,6 +4,10 @@ This workspace links repositories through `ghq` under `/git/github.com/...`.
 `~/primary/repos` is only a symlink index; repository state stays in the ghq
 checkout.
 
+This is a broad checkout index, not the current architecture focus. For the
+smaller active set used during Persona architecture sweeps, read
+`protocols/active-repositories.md`.
+
 Selection basis: LiGoldragon GitHub repositories already in `ghq`, plus the
 recently touched LiGoldragon repositories found in the old `~/git` layout and
 then cloned into `ghq`.
@@ -57,7 +61,6 @@ Pruned on 2026-05-06:
 | `persona-router` | `/git/github.com/LiGoldragon/persona-router` |
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` |
 | `signal-persona-mind` | `/git/github.com/LiGoldragon/signal-persona-mind` |
-| `persona-store` | `/git/github.com/LiGoldragon/persona-store` |
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` |
 | `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` |
 | `prism` | `/git/github.com/LiGoldragon/prism` |
@@ -66,6 +69,9 @@ Pruned on 2026-05-06:
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` |
 | `signal-derive` | `/git/github.com/LiGoldragon/signal-derive` |
 | `signal-forge` | `/git/github.com/LiGoldragon/signal-forge` |
+| `signal-persona-message` | `/git/github.com/LiGoldragon/signal-persona-message` |
+| `signal-persona-system` | `/git/github.com/LiGoldragon/signal-persona-system` |
+| `signal-persona-harness` | `/git/github.com/LiGoldragon/signal-persona-harness` |
 | `substack-cli` | `/git/github.com/LiGoldragon/substack-cli` |
 | `test-city` | `/git/github.com/LiGoldragon/test-city` |
 | `workspace` | `/git/github.com/ligoldragon/workspace` |

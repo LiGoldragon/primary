@@ -28,9 +28,8 @@ ecosystem); each component repo carries its own
 `ARCHITECTURE.md` for its niche.
 
 For Persona, `persona` is the meta repo; its `ARCHITECTURE.md`
-is the apex; `persona-message`, `persona-router`,
-`persona-system`, `persona-harness`, `persona-store`,
-`signal-persona`, etc. each carry their own.
+is the apex. Active component and contract repos are listed in
+`~/primary/protocols/active-repositories.md`.
 
 ---
 

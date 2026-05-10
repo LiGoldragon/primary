@@ -56,13 +56,14 @@ helper is `tools/orchestrate`.
 |---|---|
 | `ESSENCE.md` | Workspace intent — upstream. |
 | `protocols/orchestration.md` | Role-coordination protocol. |
+| `protocols/active-repositories.md` | Current active repo map for architecture sweeps. Smaller than the recent checkout index. |
 | `skills/<name>.md` | Cross-cutting agent capabilities. |
 | `reports/<role>/` | Role-owned reports (`operator/`, `operator-assistant/`, `designer/`, `designer-assistant/`, `system-specialist/`, `poet/`). Exempt from claim flow; each role writes only its own subdirectory. |
 | `<role>.lock` | Per-role coordination state file. |
 | `tools/orchestrate` | Claim/release helper. |
 | `.beads/` | Shared short-tracked-item store. Never claimed; any agent may write BEADS tasks at any time. **Transitional** — see below. |
 | `repos/` | Symlink index to ghq checkouts under `/git/...`. |
-| `RECENT-REPOSITORIES.md` | Active repo list + cutoff rule. |
+| `RECENT-REPOSITORIES.md` | Broad recent checkout index + cutoff rule. Not the active architecture set. |
 | `GOALS.md` | Standing high-level goals. |
 
 ## No harness-dependent memory

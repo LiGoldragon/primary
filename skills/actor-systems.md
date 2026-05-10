@@ -20,10 +20,12 @@ agent-written codebase: an agent can hide a missing phase inside a
 helper method, but it is much harder to fake an actor topology,
 typed messages, and trace witnesses.
 
-For Rust implementation details, the runtime default is direct
+For Rust implementation details, the current runtime default is direct
 `ractor`. Do not introduce a second actor library or trait layer as a
-prerequisite. Read lore's `rust/ractor.md` for the tool; this skill is
-the architectural rule.
+prerequisite. A future runtime change is possible only as an explicit
+architecture decision after concrete implementation pressure; do not
+add adapters in anticipation. Read lore's `rust/ractor.md` for the
+tool; this skill is the architectural rule.
 
 Do not name or design a `persona-actor`, `workspace-actor`,
 `workspace_actor::Actor`, or equivalent wrapper crate/trait unless the
@@ -169,7 +171,7 @@ flowchart TB
     root["RootSupervisorActor"]
     root --> ingress["IngressSupervisorActor"]
     root --> domain["DomainSupervisorActor"]
-    root --> store["StoreSupervisorActor"]
+    root --> commit["CommitSupervisorActor"]
     root --> view["ViewSupervisorActor"]
 
     domain --> claim["ClaimSupervisorActor"]
@@ -194,10 +196,10 @@ or a supervised worker pool.
 
 ## Rust shape
 
-The workspace runtime default is direct `ractor`. The actor should not
-be a public hollow noun. Raw ractor splits the behavior marker from the
-mutable associated `State`; treat that as framework mechanics, not as a
-reason to delay on a separate actor abstraction.
+The workspace runtime default is direct `ractor` today. The actor should
+not be a public hollow noun. Raw ractor splits the behavior marker from
+the mutable associated `State`; treat that as framework mechanics, not
+as a reason to delay on a separate actor abstraction.
 
 Direct-ractor shape:
 
@@ -225,7 +227,7 @@ For actor-dense systems:
   plane actor
 - no public ZST actor nouns
 - no vague generic `State` name once the actor body has domain weight;
-  use `ClaimNormalizeState`, `StoreSupervisorState`, etc.
+  use `ClaimNormalizeState`, `CommitSupervisorState`, etc.
 
 The actor's public consumer surface is its handle type. Consumers
 start or call the handle; they do not construct actor internals.

@@ -16,6 +16,10 @@ you.
 - `~/primary/protocols/orchestration.md` — claim/release
   scopes, role lock files, BEADS coordination. Required
   before any file edit in shared workspace.
+- `~/primary/protocols/active-repositories.md` — current
+  active repo map. Required before broad architecture sweeps
+  or repo-set summaries; do not confuse it with the broader
+  recent checkout index.
 - `~/primary/skills/jj.md` — version-control discipline.
   Required before any commit or push. *Do not skim.* Notably:
   `jj describe @` is forbidden; the canonical form is `jj
@@ -234,6 +238,21 @@ Fix: update the reference to the new home. Don't leave
 half-broken text in place "for the user to clean up later." If
 the new home doesn't exist, raise the question — don't paper
 over.
+
+### A doc names a speculative component as real
+
+Symptom: a doc treats `persona-store`, `persona-actor`,
+`workspace-actor`, a shared Sema daemon, or a second text format
+as current architecture.
+
+Fix: trim it back to the confirmed shape:
+
+- `persona-mind` is Persona's central state component.
+- Sema is a library; each stateful component owns its own redb.
+- Signal contracts carry typed communication between components.
+- NOTA is the only text syntax; Nexus is typed NOTA content.
+- Direct `ractor` is the current actor runtime until an explicit
+  architecture decision changes it.
 
 ### A repo has no `skills.md`, and you've just done substantive work in it
 
