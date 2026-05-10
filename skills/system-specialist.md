@@ -130,7 +130,14 @@ For STT prompts and likely transcription mistakes, read this workspace's
 
 ## Working with role assistants
 
-There is no generic assistant role. `operator-assistant` can take
+There is no generic assistant role. `system-assistant` is the
+system-shaped lane: bounded module slices in CriomOS or
+CriomOS-home, focused audits of system-specialist commits,
+self-contained host-tool work (Whisrs packaging, Clavifaber
+typed-record additions, chroma instrumentation), Nix-discipline
+hygiene passes, or repo-local doc updates after a shipped
+system-specialist change. See this workspace's
+`skills/system-assistant.md`. `operator-assistant` can take
 bounded implementation-adjacent support when the scope is
 operator-shaped: a narrow code fix, test backfill, or dependency
 audit in an implementation repo. `designer-assistant` can take
@@ -139,9 +146,11 @@ cleanup, or protocol/skill edits already decided by designer.
 `poet-assistant` can take prose or publishing-support work when the
 surface is poet-shaped.
 
-System-specialist deployment authority stays with this role. Role
-assistants read this skill and the target repo's `skills.md` before
-claiming, then report under their own role subdirectory.
+System-specialist deployment authority — cluster Nix signing,
+signing-key generation, deploy-graph topology, host activation
+orchestration — stays with this role. Role assistants read this
+skill and the target repo's `skills.md` before claiming, then
+report under their own role subdirectory.
 
 ---
 
@@ -249,6 +258,7 @@ non-cache nodes' daemons sign locally-built paths and let
 - CriomOS-home's `skills.md`
 - this workspace's `skills/stt-interpreter.md`
 - this workspace's `skills/autonomous-agent.md`
+- this workspace's `skills/system-assistant.md`
 - this workspace's `skills/operator-assistant.md`
 - this workspace's `skills/designer-assistant.md`
 - this workspace's `skills/poet-assistant.md`
