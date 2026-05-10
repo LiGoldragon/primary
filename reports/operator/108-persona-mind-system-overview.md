@@ -151,16 +151,18 @@ Current common requests:
 (ActivityQuery 5 [])
 
 (Opening Task High "Implement command line mind" "make daemon path usable")
-(NoteSubmission (Stable item-0000000000000001) "note body")
-(AliasAssignment (Stable item-0000000000000001) primary-test)
-(Link (Stable item-0000000000000001) References (Report "reports/operator/105-command-line-mind-architecture-survey.md") None)
-(StatusChange (Stable item-0000000000000001) InProgress "started")
+(NoteSubmission (Display aab) "note body")
+(AliasAssignment (Display aab) primary-test)
+(Link (Display aab) References (Report "reports/operator/105-command-line-mind-architecture-survey.md") None)
+(StatusChange (Display aab) InProgress "started")
 (Query (Open) 10)
 ```
 
 The CLI convenience surface is still thin. It does not yet have natural
 subcommands like `mind claim ...`; the command line takes the NOTA record
-directly.
+directly. The public examples should prefer `Display` or `Alias` references.
+The token is only a short handle; the type lives in the record wrapper
+(`Display`, `Stable`, `OperationId` on the Rust side), not in the string.
 
 ---
 
