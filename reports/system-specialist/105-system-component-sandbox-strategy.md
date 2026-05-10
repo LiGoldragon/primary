@@ -11,25 +11,28 @@ Recommended shape:
 
 1. **Pure Nix checks** remain the first gate for every component.
 2. **Desktop-lite local sandbox** runs on the workstation for fast GUI-adjacent
-   tests, but never receives the host Wayland socket, host session bus, host
-   `XDG_RUNTIME_DIR`, or host Chroma/Ghostty state.
+   tests. It has two explicit modes: an isolated nested/headless desktop, and a
+   host-display mode that deliberately binds the real Wayland socket while
+   keeping home, state, runtime, services, and process supervision separate.
 3. **Prometheus real-host runner** uses `systemd-nspawn` or a NixOS VM when a
    test needs real systemd/user-service behavior.
 4. **Full NixOS VM tests** are mandatory for compositor, terminal lifecycle,
    Ghostty reload, browser, or anything that can plausibly crash the real
    desktop.
 
-This is the important safety line:
+This is the important safety line for default runs:
 
-> A sandbox that binds the live host `WAYLAND_DISPLAY` or
-> `DBUS_SESSION_BUS_ADDRESS` is not a safe Chroma sandbox. It can still talk to
-> the user's real compositor, real user services, real Ghostty process, real
-> clipboard, and real terminals.
+> Host desktop sockets are never inherited accidentally. A scenario may ask for
+> host-display mode, but then the test is explicitly accepting compositor
+> integration risk and the runner binds only the named socket(s), not the whole
+> host runtime directory.
 
-So the local "systemd spawn sandbox" should use systemd only as a supervisor
-and cgroup boundary. The actual test boundary must be a private home/state
-tree, private runtime dir, private D-Bus session, and either no compositor or a
-nested/headless compositor.
+So the local "systemd spawn sandbox" should use systemd primarily as a
+supervisor and cgroup boundary. The actual test boundary is private home/state
+paths, a private runtime dir, and an explicit D-Bus/display policy. In
+isolated mode the display is nested/headless. In host-display mode the display
+socket is intentionally projected into the sandbox, while the rest of the
+environment stays disposable.
 
 ## Why The Previous Incident Changes The Bar
 
@@ -78,7 +81,11 @@ Expose through `checks.<system>.*` and `nix flake check`.
 
 ## Tier 1 — Local Desktop-Lite Sandbox
 
-This is the frictionless local lane the user was asking for.
+This is the frictionless local lane the user was asking for. It is not a
+malicious-code sandbox. It is an accident-containment sandbox: spawned
+processes, config files, state files, service units, and logs live in a
+disposable run, while selected integration sockets can be shared when the test
+requires them.
 
 It should be a Nix-owned runner, likely:
 
@@ -97,8 +104,11 @@ that unit it creates a disposable environment:
 - `XDG_RUNTIME_DIR=$TMPDIR/run`
 - private `DBUS_SESSION_BUS_ADDRESS` from `dbus-run-session` or
   `dbus-broker-launch`
-- no inherited `WAYLAND_DISPLAY`, `DISPLAY`, `NIRI_SOCKET`, `SWAYSOCK`,
-  `HYPRLAND_INSTANCE_SIGNATURE`
+- display policy:
+  - `Display Isolated` means no inherited `WAYLAND_DISPLAY`, `DISPLAY`,
+    `NIRI_SOCKET`, `SWAYSOCK`, or `HYPRLAND_INSTANCE_SIGNATURE`
+  - `Display HostWayland` binds exactly the current host Wayland socket into
+    the private runtime dir and sets `WAYLAND_DISPLAY` to that socket name
 - optional nested/headless Wayland compositor
 
 Use systemd execution properties for containment where available:
@@ -117,8 +127,16 @@ Use systemd execution properties for containment where available:
 
 But systemd-run alone is not enough. `systemd-run --user` creates a transient
 service in the user's systemd instance. If that service inherits the real
-session bus or runtime dir, it can still mutate the real desktop. The runner
-must actively replace those variables and socket paths.
+session bus or runtime dir, it can still mutate the real desktop accidentally.
+The runner must actively replace those variables and then project back only the
+named sockets the scenario requested.
+
+For host-display mode, prefer `systemd-run --user` as the supervisor with a
+mount namespace helper such as bubblewrap inside it. That keeps the same user
+identity, which makes binding the Wayland socket practical, while still hiding
+the host home tree and building a private runtime dir. `systemd-nspawn` can
+also bind Wayland sockets, but it is heavier and UID/device handling is more
+awkward for fast local desktop integration tests.
 
 ### Desktop-Lite Compositor
 
@@ -145,13 +163,19 @@ The desktop-lite lane is appropriate for:
 - "a terminal process can start in a disposable Wayland session";
 - "a browser can start with a temp profile and never touch the real profile";
 - screenshot or pixel smoke tests against nested output.
+- "an app can draw on the real display from a private home/runtime tree"
+  when the scenario explicitly asks for `Display HostWayland`.
 
-It is not appropriate for:
+It is not enough for:
 
 - testing that real Ghostty's systemd integration reloads running windows;
 - testing compositor crash hazards;
 - testing Niri/libwayland failure modes;
 - anything where a failure could still take down real user work.
+
+Host-display mode reduces ordinary process/config blast radius. It cannot
+guarantee that a compositor or libwayland bug will not affect the live session,
+because the sandboxed client is still a real client of the live compositor.
 
 ## Tier 2 — Prometheus `systemd-nspawn` Runner
 
@@ -337,7 +361,8 @@ These should become tests.
 1. **No host desktop sockets by default.** A sandbox run fails if it inherits
    host `WAYLAND_DISPLAY`, `DISPLAY`, `DBUS_SESSION_BUS_ADDRESS`,
    `XDG_RUNTIME_DIR`, `NIRI_SOCKET`, `SWAYSOCK`, or
-   `HYPRLAND_INSTANCE_SIGNATURE`.
+   `HYPRLAND_INSTANCE_SIGNATURE`. Host-display mode is an explicit scenario
+   field, and it binds only the selected socket into a private runtime dir.
 
 2. **No host home by default.** A sandbox run fails if `$HOME`, `$XDG_CONFIG_HOME`,
    `$XDG_STATE_HOME`, or `$XDG_CACHE_HOME` points outside the run directory.
