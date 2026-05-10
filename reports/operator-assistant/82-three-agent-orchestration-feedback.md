@@ -26,10 +26,10 @@ The first assistant workload should be:
 | 4 | Move into channel-disjoint work | Use Mode B only after review rhythm exists |
 
 Current state update: the assistant infrastructure now exists in
-`skills/assistant.md`, `protocols/orchestration.md`,
+`skills/operator-assistant.md`, `protocols/orchestration.md`,
 `tools/orchestrate`, `AGENTS.md`, `.gitignore`, and
-`reports/assistant/` via commit `651413a7` ("assistant role
-orchestration"). `assistant.lock` is ignored runtime state and
+`reports/operator-assistant/` via commit `651413a7` ("assistant role
+orchestration"). `operator-assistant.lock` is ignored runtime state and
 is idle locally.
 
 ---
@@ -152,7 +152,7 @@ witness.
 - `reports/designer/81-three-agent-orchestration-with-assistant-role.md`
   (design pair / implementation pair proposal and section 11
   questions).
-- `skills/assistant.md` (assistant role contract: mostly
+- `skills/operator-assistant.md` (assistant role contract: mostly
   operator-shaped, borrows other role disciplines).
 - `skills/operator.md` (implementation craft and design-gap
   escalation).

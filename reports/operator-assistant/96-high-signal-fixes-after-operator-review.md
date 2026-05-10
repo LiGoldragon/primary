@@ -1,7 +1,7 @@
 # 96 - High-signal fixes after operator review
 
 Status: completed assistant implementation pass after
-`reports/assistant/95-operator-work-review-after-designer-93.md`.
+`reports/operator-assistant/95-operator-work-review-after-designer-93.md`.
 
 Author: Codex (assistant)
 
@@ -11,7 +11,7 @@ Date: 2026-05-09
 
 ## Summary
 
-I fixed the high-signal issues surfaced in `reports/assistant/95` and folded
+I fixed the high-signal issues surfaced in `reports/operator-assistant/95` and folded
 in the matching designer critique about contract-owned boundary validation.
 
 The substantive code change landed in `signal-persona-orchestrate`: boundary
@@ -136,7 +136,7 @@ Notes:
 
 ## Current State
 
-The findings from `reports/assistant/95` are now fixed.
+The findings from `reports/operator-assistant/95` are now fixed.
 
 The next live implementation gap remains `primary-9iv`: implement
 `persona-orchestrate` against `signal-persona-orchestrate`, using

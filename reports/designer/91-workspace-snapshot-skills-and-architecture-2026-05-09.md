@@ -129,8 +129,8 @@ addition: **`assistant` role** infrastructure (commit `651413a7`,
 
 ### 1.3 · Recent discipline-layer changes
 
-- 2026-05-08: `skills/assistant.md` + AGENTS.md role list +
-  `tools/orchestrate` role list + `reports/assistant/`. The
+- 2026-05-08: `skills/operator-assistant.md` + AGENTS.md role list +
+  `tools/orchestrate` role list + `reports/operator-assistant/`. The
   five-role coordination model is now `operator | designer |
   system-specialist | poet | assistant`.
 - 2026-05-08: `skills/language-design.md` §0 — **"No new text
@@ -599,7 +599,7 @@ Gas-City cascade dispatcher.
 - `~/primary/repos/persona/ARCHITECTURE.md` — Persona apex.
 - `~/primary/reports/designer/86-handoff-from-context-reset-2026-05-08.md` — handoff index.
 - `~/primary/reports/operator/87-architecture-truth-pass.md` — recent ARCH cleanup.
-- `~/primary/reports/assistant/88-recent-code-signal-sema-audit.md` — current implementation gap analysis.
+- `~/primary/reports/operator-assistant/88-recent-code-signal-sema-audit.md` — current implementation gap analysis.
 
 ---
 

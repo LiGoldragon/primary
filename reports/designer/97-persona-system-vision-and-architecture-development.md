@@ -994,7 +994,7 @@ when picking up the BEADS tasks.
   — operator's research proposing a native typed work-graph
   (`persona-work`) to retire BEADS; sibling to this report's
   channel-development moves; see designer/98 for the critique.
-- `~/primary/reports/assistant/95-operator-work-review-after-designer-93.md`
+- `~/primary/reports/operator-assistant/95-operator-work-review-after-designer-93.md`
   — assistant's review of operator work after /93; identifies
   the README drift that should fold into the implementation
   cascade.

@@ -223,7 +223,7 @@ responsibility into a component.
 
 ### 2.3 · Production posture
 
-Per `reports/assistant/90-rkyv-redb-design-research.md`
+Per `reports/operator-assistant/90-rkyv-redb-design-research.md`
 §"Executive Summary" (rkyv+redb research, 2026-05-09), the
 right shape is:
 
@@ -592,7 +592,7 @@ What lands as this revamp completes:
 
 ## 8 · See also
 
-- `~/primary/reports/assistant/90-rkyv-redb-design-research.md`
+- `~/primary/reports/operator-assistant/90-rkyv-redb-design-research.md`
   — production interface research grounding this revamp;
   external project survey (Overdrive, Keriox, Korrosync,
   Kaizen, Lithos, Gather Step); concrete sema API
@@ -604,7 +604,7 @@ What lands as this revamp completes:
 - `~/primary/reports/designer/91-workspace-snapshot-skills-and-architecture-2026-05-09.md`
   §3.1 — drift register entry naming the
   signal/signal-core overlap this revamp cleans up.
-- `~/primary/reports/assistant/88-recent-code-signal-sema-audit.md`
+- `~/primary/reports/operator-assistant/88-recent-code-signal-sema-audit.md`
   — current implementation gap (runtime crates haven't
   adopted persona-sema yet); the next implementation
   slice (message-Frame end-to-end witness) is the first

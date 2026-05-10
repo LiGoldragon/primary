@@ -228,7 +228,7 @@ const ACTIVITIES: Table<u64, Activity> = Table::new("activities");
 Stored as rkyv-archived `Activity` values, slot-counter-keyed.
 The store stamps `stamped_at` at insert time inside the
 write transaction (per the rkyv+redb production patterns
-in `~/primary/reports/assistant/90-rkyv-redb-design-research.md`).
+in `~/primary/reports/operator-assistant/90-rkyv-redb-design-research.md`).
 
 Retention is **no-op in v1**: the log accumulates without
 auto-pruning. A future retention policy (e.g., last 1000
@@ -459,7 +459,7 @@ flowchart LR
     contract["signal-persona-orchestrate<br/>(typed channel records)"]
     actor["persona-orchestrate<br/>state actor"]
     redb[("orchestrate.redb")]
-    locks[("designer.lock<br/>operator.lock<br/>system-specialist.lock<br/>poet.lock<br/>assistant.lock")]
+    locks[("designer.lock<br/>operator.lock<br/>system-specialist.lock<br/>poet.lock<br/>operator-assistant.lock")]
 
     cli -->|signal frame| contract
     contract -->|typed records| actor
@@ -838,7 +838,7 @@ awareness. Easy to add later without contract changes.
   channel as "to design."
 - `~/primary/reports/designer/92-sema-as-database-library-architecture-revamp.md`
   — the persona-sema-as-library framing this design uses.
-- `~/primary/reports/assistant/90-rkyv-redb-design-research.md`
+- `~/primary/reports/operator-assistant/90-rkyv-redb-design-research.md`
   — the production sema-interface research informing the
   table-design choices.
 - `signal-persona-system/ARCHITECTURE.md` — canonical

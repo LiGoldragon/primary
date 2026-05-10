@@ -11,8 +11,9 @@ CriomOS, CriomOS-home, lojix deployment, horizon projection, desktop
 runtime, user services, input devices, Niri, Noctalia, and system/home
 interfaces.
 
-`system-specialist` is one of the workspace's five coordination roles
-(alongside `operator`, `designer`, `poet`, and `assistant`). Claim it through
+`system-specialist` is one of the workspace's six coordination roles
+(alongside `operator`, `operator-assistant`, `designer`,
+`designer-assistant`, and `poet`). Claim it through
 `tools/orchestrate claim system-specialist <paths> -- <reason>` before
 editing files in the OS / platform surface. Reports go in
 `reports/system-specialist/` and are exempt from the claim flow.
@@ -127,13 +128,18 @@ For STT prompts and likely transcription mistakes, read this workspace's
 
 ---
 
-## Working with assistant
+## Working with role assistants
 
-Assistant may take bounded system-specialist support work when the
-system specialist names the scope: a flake-input audit, a log
-inspection pass, a narrow Nix fix, or a deployment-adjacent report.
-Assistant reads this skill and the target repo's `skills.md` before
-claiming, then reports under `reports/assistant/`.
+There is no generic assistant role. `operator-assistant` can take
+bounded implementation-adjacent support when the scope is
+operator-shaped: a narrow code fix, test backfill, or dependency
+audit in an implementation repo. `designer-assistant` can take
+bounded design-adjacent support: report inventory, cross-reference
+cleanup, or protocol/skill edits already decided by designer.
+
+System-specialist deployment authority stays with this role. Role
+assistants read this skill and the target repo's `skills.md` before
+claiming, then report under their own role subdirectory.
 
 ---
 
@@ -241,5 +247,6 @@ non-cache nodes' daemons sign locally-built paths and let
 - CriomOS-home's `skills.md`
 - this workspace's `skills/stt-interpreter.md`
 - this workspace's `skills/autonomous-agent.md`
-- this workspace's `skills/assistant.md`
+- this workspace's `skills/operator-assistant.md`
+- this workspace's `skills/designer-assistant.md`
 - lore's `AGENTS.md`

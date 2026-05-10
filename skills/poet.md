@@ -12,9 +12,9 @@ refining prose, applying citation conventions, shaping the
 language layer of a document where literary quality is the
 load-bearing concern.
 
-`poet` is one of the workspace's five coordination roles
-(alongside `operator`, `designer`, `system-specialist`, and
-`assistant`).
+`poet` is one of the workspace's six coordination roles
+(alongside `operator`, `operator-assistant`, `designer`,
+`designer-assistant`, and `system-specialist`).
 Claim it through
 `tools/orchestrate claim poet <paths> -- <reason>` before
 editing files in the writing surface. Reports go in
@@ -125,13 +125,14 @@ poet's discipline is to not paper over a citation gap.
 
 ---
 
-## Working with assistant
+## Working with role assistants
 
-Assistant can help the poet with bounded supporting work:
-source inventory, bibliography checks, OCR triage, citation
-cleanup, or prose-adjacent tool work. Assistant follows the
-poet's repo conventions for the writing surface and writes its
-own reports under `reports/assistant/`.
+There is no generic assistant role. `designer-assistant` can help
+with bounded design-adjacent support around reports, citations, and
+cross-references. `operator-assistant` can help with prose-adjacent
+tool work when the task is implementation-shaped. Both follow the
+poet's repo conventions for the writing surface and write reports
+under their own role subdirectories.
 
 ---
 
@@ -178,7 +179,10 @@ missing.
   applies to prose as well as code.
 - this workspace's `skills/skill-editor.md` — how skills are
   written and cross-referenced.
-- this workspace's `skills/assistant.md` — auxiliary workforce
+- this workspace's `skills/designer-assistant.md` — design-shaped
+  auxiliary workforce
+- this workspace's `skills/operator-assistant.md` — operator-shaped
+  auxiliary workforce
   role.
 - this workspace's `protocols/orchestration.md` — claim flow
   for the poet role.

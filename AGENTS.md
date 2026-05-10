@@ -35,14 +35,16 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
 
 ## Roles
 
-The workspace recognises five coordination roles:
+The workspace recognises six coordination roles:
 
 - `operator` — implementation; default agent: Codex.
+- `operator-assistant` — extra implementation/audit capacity
+  under operator discipline; default agent: any.
 - `designer` — architecture, skills, reports; default agent: Claude.
+- `designer-assistant` — extra design/audit capacity under
+  designer discipline; default agent: Codex.
 - `system-specialist` — OS / platform / deploy; default agent: any.
 - `poet` — writing as craft; default agent: any.
-- `assistant` — elastic agentic workforce, mostly
-  operator-shaped; default agent: any.
 
 Each agent must know its role before claiming or editing. The
 coordination protocol is `protocols/orchestration.md`; the
@@ -55,7 +57,7 @@ helper is `tools/orchestrate`.
 | `ESSENCE.md` | Workspace intent — upstream. |
 | `protocols/orchestration.md` | Role-coordination protocol. |
 | `skills/<name>.md` | Cross-cutting agent capabilities. |
-| `reports/<role>/` | Role-owned reports (`operator/`, `designer/`, `system-specialist/`, `poet/`, `assistant/`). Exempt from claim flow; each role writes only its own subdirectory. |
+| `reports/<role>/` | Role-owned reports (`operator/`, `operator-assistant/`, `designer/`, `designer-assistant/`, `system-specialist/`, `poet/`). Exempt from claim flow; each role writes only its own subdirectory. |
 | `<role>.lock` | Per-role coordination state file. |
 | `tools/orchestrate` | Claim/release helper. |
 | `.beads/` | Shared short-tracked-item store. Never claimed; any agent may write BEADS tasks at any time. **Transitional** — see below. |

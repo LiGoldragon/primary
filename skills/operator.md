@@ -14,9 +14,9 @@ consumer crates, migrating between schema shapes, getting
 tests to green. The work the designer's reports prescribe
 and the system needs to actually run.
 
-`operator` is one of the workspace's five coordination roles
-(alongside `designer`, `system-specialist`, `poet`, and
-`assistant`).
+`operator` is one of the workspace's six coordination roles
+(alongside `operator-assistant`, `designer`,
+`designer-assistant`, `system-specialist`, and `poet`).
 Claim it through
 `tools/orchestrate claim operator <paths> -- <reason>`
 before editing source files in operator's lane. Reports go
@@ -292,21 +292,22 @@ owns design changes; operator owns implementing them.
 
 ---
 
-## Working with assistant
+## Working with operator-assistant
 
-Assistant is extra operator-shaped workforce. Operator uses
-assistant when implementation work can split into disjoint
+Operator-assistant is extra operator-shaped workforce. Operator uses
+operator-assistant when implementation work can split into disjoint
 claimed paths: one crate migration, one test backfill, one audit
-pass, one dependency bump, one report response. Assistant claims
-its own scopes through `tools/orchestrate claim assistant ...`,
-commits and pushes its own logical changes, and writes assistant
-reports in `reports/assistant/`.
+pass, one dependency bump, one report response. Operator-assistant
+claims its own scopes through
+`tools/orchestrate claim operator-assistant ...`, commits and pushes
+its own logical changes, and writes reports in
+`reports/operator-assistant/`.
 
 The operator remains responsible for the implementation thread it
-owns. Assistant is parallel capacity, not hidden edits under the
-operator lock. When operator and assistant touch adjacent code,
-both read the same designer report or BEADS task, name their path
-boundaries explicitly, and avoid overlapping claims.
+owns. Operator-assistant is parallel capacity, not hidden edits under
+the operator lock. When operator and operator-assistant touch
+adjacent code, both read the same designer report or BEADS task,
+name their path boundaries explicitly, and avoid overlapping claims.
 
 ---
 
@@ -402,8 +403,9 @@ you were missing.
 - this workspace's `skills/autonomous-agent.md` — how to
   act on routine obstacles.
 - this workspace's `skills/designer.md`,
+  `skills/designer-assistant.md`,
   `skills/system-specialist.md`, `skills/poet.md`,
-  `skills/assistant.md` —
+  `skills/operator-assistant.md` —
   sister role skills.
 - `lore/rust/style.md`, `lore/rust/rkyv.md`,
   `lore/rust/ractor.md`, `lore/rust/testing.md`,

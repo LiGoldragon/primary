@@ -112,7 +112,7 @@ single owner.
 Operator/101 §6 names tables; §4.8 and §12 name per-table
 actors (`ClaimTableActor`, `ItemTableActor`, `EdgeTableActor`,
 `NoteTableActor`, `AliasTableActor`, `ActivityTableActor`).
-Per `~/primary/reports/assistant/90-rkyv-redb-design-research.md`
+Per `~/primary/reports/operator-assistant/90-rkyv-redb-design-research.md`
 §"Do Not Store Arbitrary rkyv Archives as redb Keys" —
 keys are designed bytes, not rkyv-encoded. Each table actor
 owns one key shape:
@@ -421,7 +421,7 @@ This revised version aligns with that direction throughout.
   — the architecture this report companions; §4 is the
   actor-dense runtime each section here pins implementations
   inside.
-- `~/primary/reports/assistant/90-rkyv-redb-design-research.md`
+- `~/primary/reports/operator-assistant/90-rkyv-redb-design-research.md`
   §"Do Not Store Arbitrary rkyv Archives as redb Keys" —
   the basis for §2 explicit byte-key shapes.
 - `~/primary/reports/designer/97-persona-system-vision-and-architecture-development.md`

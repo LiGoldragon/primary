@@ -49,7 +49,7 @@ multiple times).
 - `operator` — Codex. Lock: `operator.lock`. Reports:
   `reports/operator/`.
 - `assistant` — Codex (new role, just bootstrapped).
-  Lock: `assistant.lock`. Reports: `reports/assistant/`.
+  Lock: `operator-assistant.lock`. Reports: `reports/operator-assistant/`.
 - `system-specialist` — any. Lock: `system-specialist.lock`.
 - `poet` — any. Lock: `poet.lock`.
 
@@ -94,16 +94,16 @@ orchestration-with-assistant-role.md`. Read it.
   *before* push; assistant verifies independently *after*).
 
 ### System-specialist landed:
-- `assistant` role infrastructure: `skills/assistant.md`,
+- `assistant` role infrastructure: `skills/operator-assistant.md`,
   `AGENTS.md` update, `protocols/orchestration.md` update,
-  `tools/orchestrate` role list, `reports/assistant/`
+  `tools/orchestrate` role list, `reports/operator-assistant/`
   directory. Commit `651413a7`.
 
 ### Assistant (Codex, new) landed:
-- `reports/assistant/82` — feedback on designer/81 (mode A
+- `reports/operator-assistant/82` — feedback on designer/81 (mode A
   default, audit-first lane, single daily summary +
   dedicated reports for structural findings)
-- `reports/assistant/85` — first audit of operator's
+- `reports/operator-assistant/85` — first audit of operator's
   signal-persona-system integration. **Key finding:**
   `DeliveryGate` exists in `persona-router/src/delivery.rs`
   consuming `signal_persona_system::{FocusObservation,
@@ -132,7 +132,7 @@ Read these end-to-end. They are the minimum context to act.
    orchestration.md`** — operator's adjustments to
    designer/81 (8 substantive points; convergence pending
    in your queue).
-5. **`reports/assistant/82-three-agent-orchestration-
+5. **`reports/operator-assistant/82-three-agent-orchestration-
    feedback.md`** — assistant's answers to the 6 questions
    in designer/81 §11 (Mode A default, audit-first lane).
 
@@ -151,7 +151,7 @@ After those 5, you'll have the joint working model.
 | Channel inventory | `reports/operator/77` §4 |
 | Apex Persona design | `reports/designer/4` |
 | Sema kernel architecture | `reports/designer/64` |
-| Assistant's first audit findings (router gap) | `reports/assistant/85` |
+| Assistant's first audit findings (router gap) | `reports/operator-assistant/85` |
 | Contract repo design conventions | `skills/contract-repo.md` |
 | Architectural-truth test discipline | `skills/architectural-truth-tests.md` |
 | jj discipline (load-bearing) | `skills/jj.md` |
@@ -364,9 +364,9 @@ have shifted; always re-check.
    assistant-role.md
 5. Read reports/operator/83-operator-feedback-on-
    assistant-orchestration.md
-6. Read reports/assistant/82-three-agent-orchestration-
+6. Read reports/operator-assistant/82-three-agent-orchestration-
    feedback.md
-7. Skim reports/assistant/85-signal-persona-system-
+7. Skim reports/operator-assistant/85-signal-persona-system-
    integration-audit.md (the router gap)
 8. Run `tools/orchestrate status` to see live claims
 9. Run `bd list --status open --limit 25` to see live BEADS
@@ -393,7 +393,7 @@ Total: ~30 min reading, then act.
   load-bearing designer reports
 - `~/primary/reports/operator/{77,83}` — current
   load-bearing operator reports
-- `~/primary/reports/assistant/{82,85}` — assistant's
+- `~/primary/reports/operator-assistant/{82,85}` — assistant's
   bootstrap output
 
 ---

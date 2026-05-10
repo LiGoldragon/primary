@@ -32,7 +32,7 @@ flowchart TB
 
     contracts["contract repos<br/>signal-persona-*"]
     reports_d["reports/designer/<br/>+ skills/<br/>+ ESSENCE / AGENTS"]
-    reports_i["reports/operator/<br/>reports/assistant/<br/>+ per-repo ARCH/skills.md"]
+    reports_i["reports/operator/<br/>reports/operator-assistant/<br/>+ per-repo ARCH/skills.md"]
     code["persona-* runtime crates<br/>+ nix flake checks<br/>+ tests"]
 
     design --> contracts
@@ -58,7 +58,7 @@ pattern.
 |---|---|---|---|
 | operator | Codex | Wiring `persona-system` + `persona-message` + `persona-router` to consume `signal-persona-system` (replacing path deps with git deps) | in-flight |
 | designer | Claude (me) | Just landed designer/79 (architecture audit) + designer/80 (open-questions inventory) | idle this turn |
-| system-specialist | (any) | Building assistant role infrastructure: `skills/assistant.md`, `AGENTS.md` update, `tools/orchestrate` role list, `reports/assistant/` directory | in-flight |
+| system-specialist | (any) | Building assistant role infrastructure: `skills/operator-assistant.md`, `AGENTS.md` update, `tools/orchestrate` role list, `reports/operator-assistant/` directory | in-flight |
 | poet | (any) | Vision-OCR of caraka-1922-nirnaya-sagar via Claude subagents | in-flight |
 | **assistant** | TBD | (joining after system-specialist lands the role infra) | bootstrapping |
 
@@ -204,7 +204,7 @@ sequenceDiagram
   lands directly.
 - **Non-trivial gaps** (design ambiguity, missing
   architectural-truth witness, structural smell) — assistant
-  files an audit report (`reports/assistant/<NN>-*.md`).
+  files an audit report (`reports/operator-assistant/<NN>-*.md`).
   Designer pair reads it; design follow-up if needed;
   operator implements the follow-up.
 
@@ -405,7 +405,7 @@ its primary mode, **substantially resolves this**:
 | `primary-9h2` sub-question | Answer (this report) |
 |---|---|
 | (a) separate role or designer sub-mode? | Separate role — `assistant` |
-| (b) lock file shape? | `assistant.lock`, same format as others |
+| (b) lock file shape? | `operator-assistant.lock`, same format as others |
 | (c) verb owned that designer/operator don't? | `audit` — read commits, file audit reports, land trivial fixes |
 | (d) predates design or post-dates implementation? | Post-dates implementation; predates the user's review |
 
@@ -460,7 +460,7 @@ implementing.
 
 Assistant must learn the orchestration discipline.
 
-**Mitigation:** `skills/assistant.md` (system-specialist
+**Mitigation:** `skills/operator-assistant.md` (system-specialist
 is currently writing it) should reference
 `protocols/orchestration.md`, `skills/jj.md`,
 `skills/autonomous-agent.md`,
@@ -474,7 +474,7 @@ pair drowns.
 
 **Mitigation:** Assistant reports two ways:
 - **Trivial findings** — fix directly; log in a single
-  daily summary report (`reports/assistant/<NN>-daily-
+  daily summary report (`reports/operator-assistant/<NN>-daily-
   audit-summary.md`)
 - **Substantive findings** — its own audit report,
   surfaced explicitly to designer pair
@@ -489,7 +489,7 @@ Required:
 - `ESSENCE.md`
 - `AGENTS.md`
 - `protocols/orchestration.md`
-- `skills/assistant.md` (its own — system-specialist
+- `skills/operator-assistant.md` (its own — system-specialist
   writes)
 - `skills/operator.md` (sister role — most of the
   discipline carries over)
@@ -532,7 +532,7 @@ Audit operator's just-landed wire-integration commits in
 - `nix flake check` green per repo?
 - `signal-persona-system` consumed correctly?
 - ARCHITECTURE.md / skills.md drift?
-- File `reports/assistant/<NN>-wire-integration-audit.md`
+- File `reports/operator-assistant/<NN>-wire-integration-audit.md`
 
 ### 10.4 · First parallel-channel work
 
@@ -586,7 +586,7 @@ give feedback. Specific questions:
   specialist is adding `assistant`)
 - `~/primary/skills/operator.md` — sister-role discipline;
   most of it carries over to assistant
-- `~/primary/skills/assistant.md` — TBD; system-specialist
+- `~/primary/skills/operator-assistant.md` — TBD; system-specialist
   is currently writing
 - `~/primary/skills/architectural-truth-tests.md` — the
   primary audit lens

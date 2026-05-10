@@ -11,16 +11,17 @@ BEADS is shared coordination state while it exists, not a lockable scope.
 
 ## Roles
 
-The workspace recognises five coordination roles. Each role has its own lock
+The workspace recognises six coordination roles. Each role has its own lock
 file, its own report subdirectory, and a natural primary scope.
 
 | Role | Default agent | Lock file | Reports subdir | Natural primary scope |
 |---|---|---|---|---|
 | `operator` | Codex | `operator.lock` | `reports/operator/` | Rust crates, persona, sema-ecosystem implementation |
+| `operator-assistant` | (any) | `operator-assistant.lock` | `reports/operator-assistant/` | Extra implementation/audit workforce under operator discipline |
 | `designer` | Claude | `designer.lock` | `reports/designer/` | ESSENCE, AGENTS, lore, skills, design reports |
+| `designer-assistant` | Codex | `designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
 | `system-specialist` | (any) | `system-specialist.lock` | `reports/system-specialist/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
 | `poet` | (any) | `poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
-| `assistant` | (any) | `assistant.lock` | `reports/assistant/` | Extra agentic workforce; mostly operator-shaped, available to assist any role |
 
 The "Default agent" column is convenience labelling for the lock file, not a
 binding. Any agent may take any role; the role determines scope authority,
@@ -120,8 +121,8 @@ taking on a tracked unit of work, an agent claims its intended scope.
 tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 ```
 
-`<role>` is one of `operator`, `designer`, `system-specialist`, `poet`,
-`assistant`.
+`<role>` is one of `operator`, `operator-assistant`, `designer`,
+`designer-assistant`, `system-specialist`, or `poet`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
@@ -258,10 +259,11 @@ should be able to write reports at any time without coordinating a lock.
 Convention: each role owns a subdirectory.
 
 - `reports/operator/` — operator's reports.
+- `reports/operator-assistant/` — operator assistant's reports.
 - `reports/designer/` — designer's reports.
+- `reports/designer-assistant/` — designer assistant's reports.
 - `reports/system-specialist/` — system specialist's reports.
 - `reports/poet/` — poet's reports.
-- `reports/assistant/` — assistant's reports.
 
 Each role writes only into its own role subdirectory. Other roles may
 **read** any report freely; if they want to **build on** another role's

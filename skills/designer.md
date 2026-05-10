@@ -14,9 +14,9 @@ notations humans write, the boundaries between crates, the
 rules in `ESSENCE.md` and `skills/`, the reports that name
 what the workspace is becoming.
 
-`designer` is one of the workspace's five coordination roles
-(alongside `operator`, `system-specialist`, `poet`, and
-`assistant`). Claim it through
+`designer` is one of the workspace's six coordination roles
+(alongside `operator`, `operator-assistant`,
+`designer-assistant`, `system-specialist`, and `poet`). Claim it through
 `tools/orchestrate claim designer <paths> -- <reason>` before
 editing files in the design surface. Reports go in
 `reports/designer/` and are exempt from the claim flow.
@@ -301,18 +301,28 @@ wrong, that's an audit (designer report) + a fix
 
 ---
 
-## Working with assistant
+## Working with designer-assistant
 
-Assistant can extend the designer's working surface when a design
-task needs extra audit, cross-reference cleanup, report inventory,
-or implementation-adjacent verification. Assistant follows the
-designer's rules while doing designer-shaped work: read the
-relevant reports, keep structure in designer-owned canonical files,
-and write any assistant-authored report in `reports/assistant/`.
+Designer-assistant can extend the designer's working surface when a
+design task needs extra audit, cross-reference cleanup, report
+inventory, role-surface maintenance, or bounded protocol/skill
+editing. Designer-assistant follows this skill while doing
+designer-shaped work: read the relevant reports, keep structure in
+designer-owned canonical files, and write designer-assistant-authored
+reports in `reports/designer-assistant/`.
 
-The designer remains the owner of structural decisions. Assistant
-supplies additional attention and bounded execution; design
-authority stays with the role that owns the surface.
+The designer remains the owner of structural decisions.
+Designer-assistant supplies additional attention and bounded
+execution; design authority stays with the role that owns the
+surface.
+
+## Working with operator-assistant
+
+Operator-assistant is the implementation-side auxiliary role. It may
+audit whether operator work fulfilled a designer report, but it does
+not own designer's structural decisions. If operator-assistant finds
+a design gap, the gap returns to designer through an
+implementation-consequences or audit report.
 
 ---
 
@@ -433,7 +443,8 @@ violated a discipline. The diagnostic table in
 - this workspace's `skills/skill-editor.md` — how skills
   are written and cross-referenced.
 - this workspace's `skills/system-specialist.md`,
-  `skills/poet.md`, `skills/assistant.md` — sister role
+  `skills/poet.md`, `skills/operator-assistant.md`,
+  `skills/designer-assistant.md` — sister role
   skills.
 - `lore/AGENTS.md` — workspace-level agent contract; the
   design-reports-as-visuals rule lives here.

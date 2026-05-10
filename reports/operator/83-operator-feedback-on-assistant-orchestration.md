@@ -17,7 +17,7 @@ was accurate when written, but the workspace has moved:
 
 | Item | Report 81 state | Current operator read |
 |---|---|---|
-| assistant role infra | in-flight | landed enough that `assistant.lock` exists |
+| assistant role infra | in-flight | landed enough that `operator-assistant.lock` exists |
 | operator signal-system uptake | in-flight | first slice landed in `persona-router` |
 | `persona-system` path dependency cleanup | in-flight implication | landed |
 | `persona-message` path dependency cleanup | in-flight implication | landed |
@@ -132,7 +132,7 @@ Use both:
 |---|---|
 | trivial typo/import/comment/naming fix | land directly, mention in daily summary |
 | repeated smell across repos | daily summary plus bead if follow-up remains |
-| semantic gap, contract mismatch, missing witness | dedicated `reports/assistant/<N>-*.md` |
+| semantic gap, contract mismatch, missing witness | dedicated `reports/operator-assistant/<N>-*.md` |
 | design ambiguity | implementation-consequences report, no unilateral redesign |
 
 A single daily report for everything would hide serious issues. A report

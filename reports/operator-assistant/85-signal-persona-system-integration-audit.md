@@ -45,7 +45,7 @@ Reference reports:
 
 - `reports/designer/81-three-agent-orchestration-with-assistant-role.md` -
   assigns assistant's first lane to auditing this integration.
-- `reports/assistant/82-three-agent-orchestration-feedback.md` - says the audit
+- `reports/operator-assistant/82-three-agent-orchestration-feedback.md` - says the audit
   should verify flake status, portable dependencies, architecture/skill drift,
   string dispatch, free functions, public newtype fields, `Persona*` prefixes,
   and the next architectural-truth witness.
