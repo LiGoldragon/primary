@@ -123,6 +123,97 @@ It **does not own**:
 
 ---
 
+## Contracts name relations
+
+A contract repo is not a shared-types bucket. It is the
+typed vocabulary of one **relation**:
+
+- one component talking to one component;
+- many clients talking to one daemon;
+- one producer pushing events to many subscribers;
+- many agents changing one shared work graph;
+- or one domain vocabulary layered over the shared
+  `signal-core` kernel.
+
+Before adding or renaming a contract type, name the relation
+in plain English:
+
+1. **Endpoints.** Who can send, who can receive, and who is
+   only observing?
+2. **Cardinality.** Is the relation one-to-one, many-to-one,
+   one-to-many, or many-to-many?
+3. **Direction.** Which facts are requests, replies, events,
+   observations, subscriptions, assertions, mutations, or
+   retractions?
+4. **Authority.** Which side mints identity, time, slots,
+   revisions, and sender fields? Those must not be agent-
+   supplied fields.
+5. **Lifecycle vectors.** What can happen at the root of the
+   relation: submitted, accepted, rejected, assigned,
+   unassigned, closed, expired, cancelled, observed?
+
+The root enum of a contract crate is the closed set of
+vectors in that relation. A `Request`, `Reply`, or `Event`
+variant is not "whatever payload fits today"; it is one
+mutually-exclusive way the relationship can move. If the root
+variants are wrong, every consumer is forced to program with
+the wrong model.
+
+Naming is therefore load-bearing architecture:
+
+- Prefer domain nouns for contract records. Commands are
+  things crossing the wire, so `MessageSubmission`,
+  `FocusSubscription`, `MessageDelivery`, and
+  `DeliveryCancellation` are better contract nouns than
+  imperative command names.
+- Verbs belong to methods and engines. The exception is the
+  universal verb spine itself (`Assert`, `Mutate`, `Retract`,
+  etc.), where the enum is deliberately naming verbs.
+- Do not repeat namespace already supplied by the crate,
+  module, or enclosing enum. `signal_persona_message::
+  MessageRequest::MessageSubmission` may need `Message`
+  because the relation is message-shaped; `PersonaMessage`
+  usually repeats the crate name.
+- Do not fix under-specified names by adding generic suffixes.
+  `Data`, `Payload`, `Info`, `Operation`, `Generic`, `Mixed`,
+  `Ok`, and `ThingRequest` are warning signs unless the
+  surrounding relation makes them exact.
+- A variant and its payload may share the same domain noun
+  when that noun is the exact vector. That is better than
+  shortening the variant until it becomes vague. If the
+  phrase stutters, split the meaning: root variant names the
+  vector; payload type names the record carried by that
+  vector.
+- Field names inherit context from their containing record.
+  Keep fields short when the record supplies the noun, but
+  newtype the wire form when the primitive alone is too weak
+  (`WirePath`, `TaskToken`, `TimestampNanos`, `QueryLimit`).
+- Never encode lifecycle uncertainty as `Unknown` or a string
+  kind. Add the missing relation vector as a closed enum
+  variant, then coordinate the upgrade.
+
+Run the naming pass in this order:
+
+1. Read the repo's `ARCHITECTURE.md` and write the relation
+   sentence.
+2. List every top-level enum and decide whether each enum is
+   the root vector set, a payload kind set, a lifecycle state,
+   an error reason, or an identity reference.
+3. Audit root variants first. They set the domain grammar that
+   all payload names must fit.
+4. Audit payload structs and nested enums second.
+5. Audit field names and primitive wrappers third.
+6. Read examples and call sites last. If the code reads like
+   the wrong relationship, rename the contract before writing
+   more consumers.
+
+For a new contract repo or a large rename, make the naming
+review an explicit work item. Contract names are harder to
+escape than architecture prose: once consumers compile
+against them, the names become the system's enforced model.
+
+---
+
 ## The layered pattern
 
 When a wire protocol has audience-scoped concerns — verbs that
@@ -466,6 +557,9 @@ bag of utilities — it is the spoken protocol.
 | New wire verb added to the base contract because it was easy | Front-end clients now recompile on every effect-side change | Add a layered effect crate; base stays stable |
 | No `ARCHITECTURE.md` in the contract repo | Schema discipline is unwritten | Every contract repo carries `ARCHITECTURE.md` per `~/primary/lore/AGENTS.md`; schema discipline is the load-bearing part |
 | Open enum where closed was meant | Adding `Unknown` variant "for forward compatibility" | Closed enum + coordinated upgrade. The `Unknown` is a polling-shaped escape hatch |
+| Relation unnamed | The repo is described as "shared types" or "messages" | Write the relation sentence: endpoints, cardinality, direction, authority, lifecycle vectors |
+| Root variants underspecified | `Ok`, `Generic`, `Mixed`, `Data`, or `Submit` where several things can be submitted | Name the vector exactly, or move the generic word under a more precise enclosing enum |
+| Namespace repeated as a prefix | `PersonaMessage`, `SignalPersonaRequest`, `HarnessHarnessEvent` | Let crate/module/enum context carry the namespace; keep the type name on the domain thing |
 
 ---
 
