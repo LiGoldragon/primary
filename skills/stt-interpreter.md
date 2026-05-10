@@ -69,7 +69,7 @@ English, try the canonical form.
 
 | Heard / transcribed as | Canonical |
 |---|---|
-| "Creom" / "Cree-ome" / "Krio" / "Criom" / "Cry-om" | the workspace's auth/security/identity ecosystem; canonical filesystem name is `criome` (lowercase, trailing `e`) |
+| "Creom" / "Cree-ome" / "Krio" / "Criom" / "Cry-om" | **Criome** — the universal validator/coordinator daemon at the center of the sema-ecosystem; long-term replaces Git, code editor, SSH, web server, etc. Canonical written name is `Criome` (capital C, trailing `e`); filesystem path is lowercase `criome` per GitHub convention. |
 | "Sema" / "Seema" | the canonical-store repo |
 | "Nota" / "Nodda" | the text-format repo |
 | "Nexus" | the request-language repo |
