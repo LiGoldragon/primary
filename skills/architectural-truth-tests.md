@@ -10,8 +10,9 @@ component next door."*
 
 ## What this skill is for
 
-Apply this skill when an architecture rule says *"component
-A uses component B to do C"* and you're writing tests for C.
+Apply this skill when an architecture constraint says
+*"component A uses component B to do C"* and you're writing
+tests for C.
 
 Behavior tests prove C succeeds. Architectural-truth tests
 prove **B was the path** — not a local shortcut that
@@ -45,10 +46,29 @@ layers, actor protocols, deploy chains.
 > reimplementing the component next door. A correct test
 > forces the intended path to be the only passing path.
 
-> Every architectural invariant gets at least one witness
+> Every architectural constraint gets at least one witness
 > test: one **positive** test proving the intended
 > component is used, and one **negative** test proving the
 > tempting shortcut fails.
+
+## Constraints first
+
+The `Constraints` section of a component `ARCHITECTURE.md`
+is the seed list for these tests. Write each constraint as a
+short direct sentence in plain language; then name at least
+one test after that sentence.
+
+| Constraint | Test name |
+|---|---|
+| `mind` CLI accepts exactly one NOTA record | `mind_cli_accepts_exactly_one_nota_record` |
+| `mind` CLI sends Signal frames to the daemon | `mind_cli_cannot_reply_without_daemon_signal_frame` |
+| queries never send write intents | `query_path_cannot_touch_sema_writer` |
+| daemon owns `mind.redb` | `mind_redb_cannot_be_opened_by_cli` |
+| contract crates contain no runtime actors | `contract_crate_cannot_spawn_actor_runtime` |
+
+A constraint that does not suggest a witness is not precise
+enough yet. Rewrite it until it names the component, the
+operation, and the boundary that must not be bypassed.
 
 ---
 
@@ -56,7 +76,7 @@ layers, actor protocols, deploy chains.
 
 ```mermaid
 flowchart LR
-    rule["architecture rule:<br/>A uses B to do C"]
+    rule["architecture constraint:<br/>A uses B to do C"]
     witness["observable witness:<br/>something B leaves behind<br/>that a bypass cannot counterfeit"]
     positive["positive test:<br/>C succeeds AND witness present"]
     negative["negative test:<br/>local shortcut compiled-out<br/>or runtime-rejected"]
@@ -92,7 +112,7 @@ Witnesses, by category:
 | Process-tree witnesses (`/proc/<pid>/maps`, `lsof`) | claimed-open files that aren't open |
 | Length-prefixed-frame parser on the wire | text/JSON snuck into a Signal channel |
 | Schema-version golden | undocumented schema drift |
-| Lock-file format witness | concurrent-edit fakery |
+| Legacy-surface absence witness | lock-file / BEADS reinvestment sneaking into new components |
 | Network namespace test | hidden cross-machine calls |
 
 ---
@@ -197,11 +217,11 @@ step B fails. The test names the failure as
 
 | Constraint | Architectural-truth test |
 |---|---|
-| `persona-sema` stores Signal types | Insert and read a `signal_persona::Message` through `persona_sema::MESSAGES`; no local message type can satisfy the table's value type. |
+| Component-owned Sema tables store Signal contract types | Insert and read a Signal contract record through the owning component's typed Sema table; no local duplicate type can satisfy the table's value type. |
 | Router commits before delivery | Use a fake store actor + fake harness actor; assert the router emits `CommitMessage` *before* any `DeliverToHarness`. |
 | Router does not own terminal bytes | `cargo metadata` test fails if `persona-router/Cargo.toml` depends on `persona-wezterm`. |
 | Signal is the component wire | Integration test sends a length-prefixed `signal_core::Frame`; NOTA strings on the component socket are rejected. |
-| No private durable queue | Restart router after queued message; message survives only if committed through `persona-sema`, not if held in memory. (Nix-chained: writer derivation queues + crashes; reader derivation opens the redb and looks for the message.) |
+| No private durable queue | Restart router after queued message; message survives only if committed through the router-owned Sema table, not if held in memory. (Nix-chained: writer derivation queues + crashes; reader derivation opens the redb and looks for the message.) |
 | Sema schema guard is real | Existing redb file with no schema version hard-fails on `open_with_schema`; fresh file writes the version; mismatched version hard-fails. |
 | Guard facts are pushed | Fake system actor sends focus/prompt facts; router retries only on pushed observation, never on a timer. (Witness: `tokio-test`'s clock-pause shows zero retries during paused time.) |
 | Prompt guard blocks injection | Nonempty prompt fact → `DeliveryBlocked(PromptOccupied)` and **zero** terminal-input frames. |
@@ -227,7 +247,7 @@ the witness exists.
 
 Examples:
 
-- `message_cannot_persist_without_persona_sema`
+- `message_cannot_persist_without_component_owned_sema`
 - `router_cannot_deliver_without_commit`
 - `injection_cannot_happen_without_focus_observation`
 - `claim_cannot_commit_without_conflict_actor`

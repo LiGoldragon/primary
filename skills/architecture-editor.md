@@ -86,9 +86,15 @@ The structure that has worked:
 
 <what this scope owns vs doesn't; cross-references to neighboring repos>
 
-## 5 · Invariants
+## 5 · Constraints
 
-<things that must always be true; the load-bearing constraints>
+<line-by-line obligations this component must satisfy; simple enough to become
+test names>
+
+## 6 · Invariants
+
+<system-wide truths this scope preserves; usually fewer and broader than
+constraints>
 
 ## Code map
 
@@ -108,6 +114,38 @@ Diagrams are first-class. Mermaid `flowchart`, `sequenceDiagram`,
 `stateDiagram-v2` — all welcome. Per `~/primary/skills/reporting.md`
 §"Mermaid label quoting", quote labels containing parentheses or
 slashes.
+
+### Constraints are the test seed
+
+Every component architecture should have a **Constraints** section.
+Constraints are short, direct sentences naming what the component must do.
+They are intentionally simpler and more numerous than invariants.
+
+Good constraints read like test names in prose:
+
+- The `mind` CLI accepts exactly one NOTA record.
+- The `mind` CLI sends a Signal frame to the daemon.
+- The daemon owns `mind.redb`.
+- Queries never send write intents.
+- The router commits a message before delivery.
+- A contract crate contains no runtime actors.
+
+Each load-bearing constraint needs an architectural-truth test named after it.
+The test can be strange: static source scans, dependency-graph checks, actor
+trace witnesses, redb fixture chains, process-boundary probes, or compile-fail
+guards are all valid if they prove the constraint. The constraint says what
+must be true; the test names the observable witness that makes lying hard.
+
+Use this split:
+
+| Section | Shape |
+|---|---|
+| Constraints | Many concrete obligations; often one test per line. |
+| Invariants | Few broad truths this scope preserves across all constraints. |
+| Tests | Constraint-name witnesses that prove the architecture path was used. |
+
+If a constraint cannot be tested, rewrite it until it names an observable
+witness or move it to a report as unfinished thinking.
 
 ---
 
@@ -143,9 +181,11 @@ Edit `ARCHITECTURE.md` when:
    document; lag costs comprehension.
 2. **A reader will be confused** by the current state. If a
    statement is technically right but easy to misread, rewrite.
-3. **A new invariant has emerged** and is now load-bearing.
+3. **A new constraint has emerged** and is now load-bearing.
+   Add it to §"Constraints" and name the witness test it implies.
+4. **A new invariant has emerged** and is now load-bearing.
    Add it to §"Invariants".
-4. **A cross-reference to a neighbor has stale or wrong info.**
+5. **A cross-reference to a neighbor has stale or wrong info.**
    Update the cross-reference; if the neighbor's architecture
    has drifted, surface it (or open a bead for that repo's
    owner).

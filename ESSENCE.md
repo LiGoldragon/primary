@@ -57,6 +57,25 @@ makes it beautiful. **That structure is the one you were missing.**
 
 If you cannot make it beautiful, you do not understand it yet.
 
+## Constraints become tests
+
+Architecture is not finished when it sounds plausible. It is finished when its
+constraints have witnesses.
+
+A component's architecture names the constraints it must satisfy in simple
+language. Each load-bearing constraint becomes a test with the same shape:
+the test proves the component used the required path, not only that the final
+output looked acceptable. The witness may be unusual by conventional testing
+standards: an actor trace, a dependency graph assertion, a redb file written by
+one process and read by another, a compile-fail guard, a source scan for a
+forbidden shortcut, a Nix-chained artifact, or a negative test that makes the
+tempting lie fail.
+
+This is not bureaucracy. It is how agent-written software stays honest. An
+agent can hallucinate a satisfying implementation; it is much harder to fake a
+typed path with an observable witness. Constraints give the author the shape;
+tests make the shape enforceable.
+
 Diagnostic readings — each is a *signal*, not a sin. Notice it;
 decide what the underlying problem is; fix the underlying problem:
 
