@@ -127,6 +127,13 @@ Use this test:
   messages, it is a forwarding helper, not an actor. Either give it
   real state/failure policy or collapse it into the parent.
 
+When collapsing a wrapper into the data-bearing actor, move tested
+witness fields with the data. A counter that proves `MemoryState`
+handled a write belongs on `MemoryState` after the collapse, not on a
+leftover `StoreSupervisor`. When deleting a wrapper outright, delete
+wrapper-only counters too after grepping for tests that read them.
+Counter fields never keep a wrapper actor alive by themselves.
+
 Runtime roots are the important exception: a root actor may carry
 child `ActorRef<_>` fields because child lifecycle and restart policy
 are its state. A root that merely exposes convenience methods over
@@ -327,6 +334,13 @@ ActorRef<A> or domain wrapper": lifecycle ownership, topology
 insulation, safe fallible-message handling, capability narrowing,
 domain errors, domain verbs, or library publication. That facade is
 not the runtime owner; the root actor still owns the actor tree.
+
+Do not keep a non-actor runtime facade just because tests use it or
+because the daemon, durable store, or transport boundary is not built
+yet. Those are separate concerns. Tests can use `ActorRef<RuntimeRoot>`
+directly or a test fixture that spawns the root; the product API does
+not grow a wrapper to make tests shorter. If a later daemon/client
+surface earns a domain facade, add it then for the domain reason.
 
 Tests must make this boundary falsifiable: a topology or
 forbidden-edge test should fail if a runtime root regresses into a

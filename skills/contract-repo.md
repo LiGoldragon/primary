@@ -318,6 +318,14 @@ discipline.md` §"NOTA — the human-facing projection" already
 states; the contract repo is how that discipline gets enforced
 at the repo level.
 
+If a contract repo's architecture says it owns `text -> typed ->
+frame`, narrow it. The contract owns the typed frame round-trip:
+typed request/reply/event records plus rkyv frame encoding. The
+human-facing NOTA projection belongs in the boundary component that
+accepts or prints text, such as a CLI, daemon endpoint, router edge,
+or pre-harness writer. Put NOTA text witnesses in that boundary
+component, not in the contract crate.
+
 ---
 
 ## When to introduce a contract repo

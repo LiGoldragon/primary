@@ -117,6 +117,27 @@ Witnesses, by category:
 
 ---
 
+## Actor trace first, artifacts later
+
+For actor-system ordering constraints, start with the mailbox path.
+An actor trace is the first witness: it proves the required actors saw
+the message and records the happens-before relation that a direct call
+or shortcut would skip.
+
+Do not wait for durable storage to exist before testing an ordering
+claim. If the current component has only in-memory state, write the
+actor-trace witness now. For example, `router_cannot_emit_delivery_before_commit`
+records the matching commit event before any delivery event in the
+trace stream; the test fails if delivery appears first.
+
+When the durable substrate lands, add the stronger stateful or
+Nix-chained artifact witness on top. The later artifact test proves
+the redb/table write happened before delivery across process or
+derivation boundaries; it does not replace the actor trace, which
+still proves the intended mailbox path was used.
+
+---
+
 ## Nix-chained tests — the strongest witness
 
 When a rule says *"this writes to the database"*, the
