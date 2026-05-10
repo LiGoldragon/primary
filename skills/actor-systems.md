@@ -25,6 +25,12 @@ For Rust implementation details, the runtime default is direct
 prerequisite. Read lore's `rust/ractor.md` for the tool; this skill is
 the architectural rule.
 
+Do not name or design a `persona-actor`, `workspace-actor`,
+`workspace_actor::Actor`, or equivalent wrapper crate/trait unless the
+human explicitly asks for a new actor abstraction. Those names are
+historical drift from reports, not architecture. A component may have
+many actors; it still has one Rust actor library: `ractor`.
+
 ---
 
 ## Core rule
