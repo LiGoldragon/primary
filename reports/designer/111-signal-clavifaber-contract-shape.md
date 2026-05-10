@@ -1,7 +1,7 @@
 # 111 — signal-clavifaber contract shape
 
 *Designer report. Resolves `primary-9xo`. Names the two relations
-between per-host `clavifaber` runs, the long-lived `Criome`
+between per-host `clavifaber` runs, the long-lived `cluster-trust`
 component, and host trust-subscribers; sketches the closed root enums,
 the authority mints, the transport carve-outs; lists examples-first
 NOTA records; flags the split-or-collapse question.*
@@ -15,8 +15,8 @@ both should land as typed Signal contracts layered atop `signal-core`:
 
 | Relation | Direction | Cardinality | Authority | Lifecycle |
 |---|---|---|---|---|
-| **Publication push** — per-host clavifaber to `Criome` | host → cluster | many hosts → one cluster; one-shot per host convergence | `Criome` mints `Slot<PublicationCommit>` | short-lived, request/reply per submission |
-| **Trust distribution** — `Criome` to each host subscriber | cluster → host | one cluster → many hosts; long-lived | `Criome` is source of truth; subscriber holds cursor | long-lived stream; current-state on connect, then deltas |
+| **Publication push** — per-host clavifaber to `cluster-trust` | host → cluster | many hosts → one cluster; one-shot per host convergence | `cluster-trust` mints `Slot<PublicationCommit>` | short-lived, request/reply per submission |
+| **Trust distribution** — `cluster-trust` to each host subscriber | cluster → host | one cluster → many hosts; long-lived | `cluster-trust` is source of truth; subscriber holds cursor | long-lived stream; current-state on connect, then deltas |
 
 **Recommendation**: one repo `signal-clavifaber` with two top-level
 channels (publication + trust), not two separate repos. The two channels
@@ -36,35 +36,35 @@ effect crates."
 Per `~/primary/skills/contract-repo.md` §"Contracts name relations":
 *"Name the relation in plain English before naming any record."*
 
-### Relation 1 — Publication push (host clavifaber to Criome)
+### Relation 1 — Publication push (host clavifaber to cluster-trust runtime)
 
 A `clavifaber` convergence run on each host completes by submitting one
-typed publication record to the long-lived `Criome` component.
+typed publication record to the long-lived `cluster-trust` component.
 The submission is **one-shot per convergence**: clavifaber opens a
 connection, sends `PublicationSubmission`, receives `PublicationReceipt`
 or `PublicationRejection`, closes. Convergence is idempotent —
 re-submission of the same `(NodeName, public-material)` is a no-op
-commit on `Criome`'s side.
+commit on `cluster-trust`'s side.
 
 ```
 clavifaber (host probus, one-shot)
-  ─ PublicationSubmission ─►  Criome (Prometheus, long-lived)
-  ◄─ PublicationReceipt ─    Criome
+  ─ PublicationSubmission ─►  cluster-trust (Prometheus, long-lived)
+  ◄─ PublicationReceipt ─    cluster-trust
 ```
 
-### Relation 2 — Trust distribution (Criome to host subscriber)
+### Relation 2 — Trust distribution (cluster-trust runtime to host subscriber)
 
 Each host that needs to know the current trust state subscribes to
-`Criome`. The contract is the canonical pushed-subscription
+`cluster-trust`. The contract is the canonical pushed-subscription
 shape per `~/primary/skills/push-not-pull.md` §"Subscription contract":
 emit current state on connect, then deltas. No polling.
 
 ```
 host_subscriber (any persona-host)
-  ─ TrustSubscription ─►        Criome
-  ◄─ TrustSubscriptionReceipt ─ Criome  (current state snapshot)
-  ◄─ TrustUpdate (event N)     Criome  (each committed revision)
-  ◄─ TrustUpdate (event N+1)   Criome
+  ─ TrustSubscription ─►        cluster-trust
+  ◄─ TrustSubscriptionReceipt ─ cluster-trust  (current state snapshot)
+  ◄─ TrustUpdate (event N)     cluster-trust  (each committed revision)
+  ◄─ TrustUpdate (event N+1)   cluster-trust
   ...
 ```
 
@@ -160,7 +160,7 @@ Domain newtypes (per `skills/rust-discipline.md` §"Domain newtypes"):
 
 ```rust
 pub struct NodeName(String);  // validated: nonempty, no whitespace, ASCII-printable
-pub struct ClusterRevision(u64);  // monotonic, Criome-supplied
+pub struct ClusterRevision(u64);  // monotonic, cluster-trust-supplied
 pub struct PublicationCommit;  // marker type for the slot
 ```
 
@@ -236,10 +236,10 @@ Per ESSENCE §"Infrastructure mints identity, time, and sender":
 
 | Value | Who mints | Why |
 |---|---|---|
-| `Slot<PublicationCommit>` | `Criome` on commit | Identity beyond content; assigned by the store, returned in reply. Clavifaber never invents it. |
-| Commit time of a publication | `Criome`'s transition log | Time the cluster registry committed the publication. Lives on the transition log, not on the record body. |
-| `ClusterRevision` | `Criome` | Monotonic source-of-truth counter; `Criome` mints; subscribers receive in events. |
-| `NodeName` | `clavifaber` (host hostname) | Content; the host knows its own name. Subject to validation by `Criome` (NodeNameMismatch rejection). |
+| `Slot<PublicationCommit>` | `cluster-trust` on commit | Identity beyond content; assigned by the store, returned in reply. Clavifaber never invents it. |
+| Commit time of a publication | `cluster-trust`'s transition log | Time the cluster registry committed the publication. Lives on the transition log, not on the record body. |
+| `ClusterRevision` | `cluster-trust` | Monotonic source-of-truth counter; `cluster-trust` mints; subscribers receive in events. |
+| `NodeName` | `clavifaber` (host hostname) | Content; the host knows its own name. Subject to validation by `cluster-trust` (NodeNameMismatch rejection). |
 | `PublicKeyPublication` body | `clavifaber` | Content; the host generated/derived its own public material. |
 | Sender principal of a `PublicationSubmission` | Connection auth proof, NOT record body | Host TLS / signed handshake establishes who is submitting. Putting `submitting_node` on the record body would be redundant *and* untrustworthy. |
 | `TrustSubscription` subscriber identity | Connection auth proof | Same reason. |
@@ -247,7 +247,7 @@ Per ESSENCE §"Infrastructure mints identity, time, and sender":
 A subtle case: the `node_name` field on `PublicKeyPublication` is
 content (clavifaber knows its own hostname) — but the *trust* that
 this submission really comes from that node is established by the
-connection's auth proof, not by the field. `Criome` validates
+connection's auth proof, not by the field. `cluster-trust` validates
 that the auth-proof-derived sender principal matches the
 `node_name` field; mismatch yields `NodeNameMismatch` rejection.
 
@@ -261,7 +261,7 @@ contract for value invariants, runtime for environment facts.)
 ## 5 · Transport — push, with one named carve-out
 
 The default transport is **the canonical persona pattern**: long-lived
-unix-domain socket on the cluster's central node (`Criome`'s
+unix-domain socket on the cluster's central node (`cluster-trust`'s
 home), accepting Signal frames over the wire. Each host opens the
 socket, sends one `PublicationSubmission`, receives reply, closes.
 Trust subscribers open the socket, send `TrustSubscription`, hold the
@@ -269,7 +269,7 @@ connection open for streaming events.
 
 Cross-machine traffic uses TCP+TLS once `signal-network`
 (`primary-uea`) lands. Until then, host clavifaber runs on the same
-machine as `Criome` (development) or via SSH tunneling
+machine as `cluster-trust` (development) or via SSH tunneling
 (production). The contract is transport-agnostic; bytes are bytes.
 
 ### Carve-out: file-on-disk + inotify
@@ -281,7 +281,7 @@ is naturally file-shaped.
 
 `clavifaber` already writes `publication.nota` to
 `/var/lib/clavifaber/publication.nota` per `primary-7a7`'s acceptance
-criteria. If `Criome` has filesystem access to the host's
+criteria. If `cluster-trust` has filesystem access to the host's
 publication path (via SSH+NFS, mounted volume, or co-location), it can
 `inotify` the path and consume publications without clavifaber needing
 to open a socket.
@@ -290,11 +290,11 @@ This is the alternative push primitive for Relation 1. Trade-offs:
 
 | Primitive | Pros | Cons |
 |---|---|---|
-| Direct socket push | Same wire pattern as the rest of the sema-ecosystem; works cross-machine; immediate ack so clavifaber knows the submission committed before exiting. | Requires `Criome` reachable from each host at convergence time. Failure mode: clavifaber exits 0 with publication uncommitted. |
-| File-on-disk + inotify | Decouples per-host clavifaber from `Criome` availability. Convergence runner exits clean even if the cluster is down. The publication file is the durable record on the host. | One-way: clavifaber gets no commit acknowledgement; `Criome` may take seconds to consume. Requires file-path access (NFS/SSH/mount). |
+| Direct socket push | Same wire pattern as the rest of the sema-ecosystem; works cross-machine; immediate ack so clavifaber knows the submission committed before exiting. | Requires `cluster-trust` reachable from each host at convergence time. Failure mode: clavifaber exits 0 with publication uncommitted. |
+| File-on-disk + inotify | Decouples per-host clavifaber from `cluster-trust` availability. Convergence runner exits clean even if the cluster is down. The publication file is the durable record on the host. | One-way: clavifaber gets no commit acknowledgement; `cluster-trust` may take seconds to consume. Requires file-path access (NFS/SSH/mount). |
 
 **My recommendation**: socket push as the canonical relation-1 transport;
-inotify as a fallback when `Criome` is unreachable. The contract
+inotify as a fallback when `cluster-trust` is unreachable. The contract
 records (`PublicationSubmission`, `PublicationReceipt`) stay the same
 either way — under inotify the "receipt" is asynchronously implicit
 (clavifaber trusts that a successful file write will be picked up).
@@ -324,8 +324,8 @@ Argument for (a): the relations share substantial domain vocabulary
 (`PublicKeyPublication`, `NodeName`, `ClusterRevision`,
 `TrustObservation`). Duplicating these into two repos creates the
 classic kernel-extraction problem prematurely. The two relations also
-both have `Criome` as one endpoint; pairing them in one repo
-makes the `Criome` ↔ cluster-host story visible in one file.
+both have `cluster-trust` as one endpoint; pairing them in one repo
+makes the `cluster-trust` ↔ cluster-host story visible in one file.
 
 Argument for (b): per `skills/contract-repo.md` §"Contracts name
 relations" — *"a contract owns one relation."* The two relations have
@@ -405,10 +405,11 @@ depends only on `primary-7a7` (per-host clavifaber convergence runner).
 
 ## See also
 
-- `~/primary/reports/designer/110-cluster-trust-in-criome.md`
-  — sibling report; names Criome as the cluster-trust runtime
-  this contract serves (within the universal validator/coordinator
-  daemon's broader scope).
+- `~/primary/reports/designer/110-cluster-trust-runtime-placement.md`
+  — sibling report; places the cluster-trust runtime as a new sibling
+  component in the auth/security ecosystem (not inside ClaviFaber, not
+  inside the current `criome` daemon, not inside Persona). Repo name
+  TBD.
 - `~/primary/reports/designer/107-contract-enum-naming-pass-mind.md`
   — variant-name = payload-name convention applied here in §2.
 - `~/primary/reports/designer-assistant/7-contract-relation-naming-survey.md`

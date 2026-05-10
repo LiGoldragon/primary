@@ -459,6 +459,42 @@ type-spec details live in reports.
 
 ---
 
+## Pragmatic now, ideal later — different things, different names
+
+When a workspace concept has both a current pragmatic implementation
+and an eventual idealized form, **they are different things and get
+different names.** Same-name conflation lets the idealized vision
+silently overwrite the pragmatic snapshot in ARCH docs — readers
+(human or agent) cannot tell whether a document describes today's
+code or tomorrow's ambition.
+
+The pragmatic implementation earns a concrete narrower name. The
+ideal name stays reserved for the realized form. ARCH docs describe
+what is true today in present tense; separate sections (or separate
+docs) name the eventual shape and the path between.
+
+Two such pairs are in flight as of 2026-05-10:
+
+- **`Sema`** — the eventual fully-specified knowledge representation
+  (every value structured, every concept typed, no untyped strings,
+  capable of expressing any natural-language meaning given proper
+  interpretation). Distinct from **`sema-db`** — the current typed
+  database library (redb, rkyv, typed slots) used by every
+  state-bearing component today. (`sema-db` is the proposed name
+  for the rename pressure on the existing `sema` repo; rename
+  pending.)
+- **`Criome`** — the eventual universal validator/coordinator that
+  encompasses everything (replaces Git, code editor, SSH, web;
+  encompasses auth/security, identity, validation across the stack).
+  Distinct from **the current `criome` daemon** — the
+  sema-ecosystem records validator (Graph/Node/Edge/Derivation/
+  CompiledBinary), which is a pre-realization step toward the ideal.
+
+Until the rename pressure resolves, ARCH docs that name the eventual
+shape carry an explicit *"this describes the eventual shape; pragmatic
+today is narrower"* marker, and pragmatic users describe their actual
+current dependency, not the eventual one.
+
 ## Rules find their level
 
 Every observation, rule, or pattern belongs at a specific

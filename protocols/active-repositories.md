@@ -27,7 +27,7 @@ stack.
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` | System facts such as focus and prompt-state observations. |
 | `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` | Harness process/session control boundary. |
 | `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` | WezTerm-backed visible/detachable terminal support. |
-| `sema` | `/git/github.com/LiGoldragon/sema` | Typed database library; not a daemon and not shared storage. |
+| `sema` (rename pending → `sema-db`) | `/git/github.com/LiGoldragon/sema` | **Pragmatic** typed database library; not a daemon and not shared storage. Distinct from the **ideal** `Sema` (fully-specified knowledge representation; not yet realized). Per `ESSENCE.md` §"Pragmatic now, ideal later". |
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Persona-wide Signal vocabulary. |
@@ -57,7 +57,7 @@ the main Persona architecture reset unless the user names them.
 
 | Repository | Path | Why adjacent |
 |---|---|---|
-| `criome` | `/git/github.com/ligoldragon/criome` | Sema ecosystem consumer and architecture reference. |
+| `criome` | `/git/github.com/LiGoldragon/criome` | **Pragmatic** sema-ecosystem records validator daemon (Graph/Node/Edge/Derivation/CompiledBinary; signs capability tokens; uses `sema` library). Distinct from the **ideal** `Criome` (universal validator/coordinator that eventually replaces Git, editor, SSH, web; encompasses auth/security; uses ideal `Sema`). Per `ESSENCE.md` §"Pragmatic now, ideal later". The existing `ARCHITECTURE.md` blends both — leans toward the ideal description; pragmatic today is narrower. |
 | `chroma` | `/git/github.com/LiGoldragon/chroma` | Active system-specialist visual/scheduler work. |
 | `CriomOS` | `/git/github.com/LiGoldragon/CriomOS` | Operating-system layer for the broader project. |
 | `CriomOS-home` | `/git/github.com/LiGoldragon/CriomOS-home` | User/home-manager surface for the OS layer. |
@@ -75,10 +75,12 @@ the main Persona architecture reset unless the user names them.
   topology/trace tests prove real mailbox paths. Direct `ractor`,
   `persona-actor`, and `workspace-actor` language is stale unless a
   current report explicitly reopens that decision.
-- State: Sema is a typed database library. Each component that needs
-  durable state owns its own redb and its own Sema layer/table
-  declarations. There is no shared Sema daemon, no generic store
-  component, and no shared `persona-sema` architecture.
+- State: pragmatic `sema` (rename pending → `sema-db`) is a typed
+  database library. Each component that needs durable state owns its
+  own redb and its own table declarations. There is no shared sema
+  daemon, no generic store component, and no shared `persona-sema`
+  architecture. Ideal `Sema` (fully-specified knowledge representation)
+  is the eventual target, not a current implementation.
 - Wire: Signal is the typed binary communication fabric. Component
   contracts live in dedicated `signal-*` repos.
 - Text: NOTA is the only text syntax. Nexus is typed semantic content
