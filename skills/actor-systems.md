@@ -20,10 +20,10 @@ agent-written codebase: an agent can hide a missing phase inside a
 helper method, but it is much harder to fake an actor topology,
 typed messages, and trace witnesses.
 
-For Rust implementation details, the runtime default is `ractor`,
-but Persona-facing actors should be data-bearing actor nouns with
-private adapter glue. Read lore's `rust/ractor.md` for the tool;
-this skill is the architectural rule.
+For Rust implementation details, the runtime default is direct
+`ractor`. Do not introduce a second actor library or trait layer as a
+prerequisite. Read lore's `rust/ractor.md` for the tool; this skill is
+the architectural rule.
 
 ---
 
@@ -134,7 +134,7 @@ traceable, and replaceable.
 
 Do not use `Arc<Mutex<T>>` or `Arc<RwLock<T>>` as the ownership
 model between actors. That turns the lock into the real actor and
-makes the actor wrappers decorative.
+makes the actors decorative.
 
 State has one owner:
 
@@ -188,28 +188,22 @@ or a supervised worker pool.
 
 ## Rust shape
 
-The workspace runtime default is still `ractor`, but Persona-facing
-code should not model actors as public ZST behavior markers. The
-actor type should carry the actor's data.
+The workspace runtime default is direct `ractor`. The actor should not
+be a public hollow noun. Raw ractor splits the behavior marker from the
+mutable associated `State`; treat that as framework mechanics, not as a
+reason to delay on a separate actor abstraction.
 
-Target shape:
+Direct-ractor shape:
 
-- `ClaimNormalize` is a struct with fields: config, in-flight
-  requests, metrics, child handles, or whatever qualities the actor
-  owns.
-- `ClaimNormalize::open(arguments)` constructs `Self`.
-- `ClaimNormalize` implements the workspace actor trait once that
-  trait exists.
-- `ClaimNormalize::handle(&mut self, message)` operates on the
-  fields of `Self`.
-- The public consumer surface is a typed handle, not ractor's raw
-  `ActorRef`.
-
-`ractor` compatibility belongs behind one adapter layer. If direct
-`ractor` use is still necessary before the adapter crate lands, treat
-the ractor behavior marker as private framework glue. Do not put
-domain methods on it. Do not expose it as the actor noun. The actor
-noun is the data-bearing type.
+- the behavior marker stays private or crate-private where possible;
+- the actor's mutable body has a specific data-bearing name such as
+  `ClaimNormalizeState`, not a vague cross-module `State`;
+- domain methods live on that state, on reducers owned by that state,
+  or on public handles, not on a ZST namespace;
+- the public consumer surface is a typed handle such as
+  `ClaimNormalizeHandle`, not raw `ActorRef`;
+- if a future runtime or wrapper is proposed, it needs a concrete
+  implementation pain from direct ractor first.
 
 For actor-dense systems:
 
@@ -218,14 +212,14 @@ For actor-dense systems:
 - one message variant per verb
 - no "handle anything" frame inside a component
 - no raw `spawn` outside the root
-- no raw `spawn_linked` outside the parent or actor wrapper
+- no raw `spawn_linked` outside the parent supervision path
 - no `Arc<Mutex<T>>` between actors
 - no long `await` inside a handler unless this actor owns that wait
 - no blocking call inside a handler except in a dedicated blocking
   plane actor
 - no public ZST actor nouns
-- no separate `State` type as the only place where real actor
-  methods live, except inside transitional framework glue
+- no vague generic `State` name once the actor body has domain weight;
+  use `ClaimNormalizeState`, `StoreSupervisorState`, etc.
 
 The actor's public consumer surface is its handle type. Consumers
 start or call the handle; they do not construct actor internals.
@@ -277,7 +271,7 @@ Required test families:
 | no-blocking-handler test | actor handler did not perform forbidden blocking work |
 | failure-injection test | each actor phase has typed failure behavior |
 | actor-count test | future agents cannot collapse actors by assuming overhead |
-| no-zst-actor test | actor nouns carry fields and implement the actor trait |
+| no-zst-actor test | public actor nouns are not hollow; raw ractor markers stay private framework mechanics and delegate to data-bearing state |
 
 Test name patterns:
 

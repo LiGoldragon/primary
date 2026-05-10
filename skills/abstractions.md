@@ -224,13 +224,13 @@ is universal even when the syntax varies.
 
 Actor frameworks sometimes force a behavior-marker type whose only
 job is satisfying the framework's trait shape. Do not let that leak
-into the domain model. The actor noun still carries the actor's
-data and methods; the framework marker is private adapter glue.
+into the domain model. In raw `ractor`, the behavior marker is
+framework mechanics; domain behavior belongs on data-bearing state,
+reducers owned by that state, or public handles.
 
-In Persona, `ClaimNormalize` should be the data-bearing actor with
-fields, construction, and message-handling behavior. A ractor
-adapter may exist underneath it, but the adapter is not the noun and
-must not become the place where domain verbs live.
+In Persona, `ClaimNormalizeState` should carry fields, construction,
+and message-handling behavior. The ractor marker must not become a
+namespace for domain verbs.
 
 ---
 

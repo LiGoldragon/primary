@@ -133,9 +133,9 @@ rather than pretending to carry runtime state:
   gates or an `Iterator` impl on a unit struct that genuinely has no
   carried state. The ZST has *only* trait-impl methods that delegate
   to a data-bearing partner type; never inherent methods doing real
-  work. For actors, the only tolerated ZST is framework adapter glue
-  hidden inside the actor wrapper crate; workspace actor nouns carry
-  data.
+  work. For actors, raw `ractor` may require framework marker shapes;
+  keep them private or crate-private and put domain behavior on
+  data-bearing state, reducer, or handle types.
 - **Type-level enum variants** in trait-encoded state machines,
   where the unit struct *is* the state and the type system
   enforces transitions.
@@ -585,27 +585,25 @@ a defined lifecycle. The framework is `ractor`.
   reply actor. If the trace can omit a required actor and tests
   still pass, the tests are not architectural-truth tests.
 
-**Ractor is the runtime default**, not the modeling surface. The
-workspace actor noun is data-bearing: `ClaimNormalize` carries its
-configuration, in-flight requests, metrics, child handles, and other
-qualities. It constructs itself from typed arguments and handles
-messages through methods on `Self`. If a ractor ZST is needed, it is
-private framework glue inside the actor adapter, not the domain
-actor.
+**Ractor is the runtime default.** Its raw API splits the behavior
+marker from mutable `State`; that is framework mechanics. Keep marker
+types private or crate-private where possible, give the mutable actor
+body a specific data-bearing name, and put domain behavior on that
+state, on reducers owned by that state, or on public handles.
 
 **Every actor pairs with a `*Handle`.** The actor's consumer surface
 is a typed handle (`EngineHandle`, `SupervisorHandle`,
 `ReaderHandle`). The handle owns the spawn result and exposes the
 typed start / ask / tell surface. Consumers reach for the handle,
 never bare ractor spawn. The root daemon handle is the only place
-runtime-root spawn happens; every other spawn happens inside a
-parent or actor-wrapper supervision path.
+runtime-root spawn happens; every other spawn happens inside a parent
+supervision path.
 
 For the *how* today, read lore's `rust/ractor.md`, but treat its
-raw ractor template as framework reference, not the domain-facing
-shape. Persona-facing code uses data-bearing actor nouns, typed
-messages, typed handles, supervision, self-cast loops only when the
-actor owns the loop, and pool initialization through supervisors.
+raw ractor template as framework reference. Persona-facing code uses
+data-bearing actor state, typed messages, typed handles, supervision,
+self-cast loops only when the actor owns the loop, and pool
+initialization through supervisors.
 For testing patterns, see lore's `rust/testing.md`.
 
 Plain sync code is fine for one-shot CLIs, build tools, and
