@@ -16,31 +16,46 @@ doesn't pin. The first version of this report (commit
 
 Operator/101 is the architecture: persona-mind is the central
 state component (role coordination + memory/work graph in one
-place); the actor tree (`MindRootActor` / `MindIngressActor`
-/ `MindStateActor` / `ViewActor` / `SubscriptionActor`) is the
-component's structure across phases; lock files are retired
+place). Operator/101 §4 commits to an **actor-dense** runtime
+— `MindRootActor` supervises eight top-level supervisors
+(`ConfigActor`, `IngressSupervisorActor`,
+`DispatchSupervisorActor`, `DomainSupervisorActor`,
+`StoreSupervisorActor`, `ViewSupervisorActor`,
+`SubscriptionSupervisorActor`, `ReplySupervisorActor`); each
+supervisor owns dozens of typed phase actors (decode, identity,
+envelope, claim-normalize, claim-conflict, id-mint, clock,
+event-append, commit, role-snapshot-view, ready-work-view,
+commit-bus, …); per-role / per-item / per-table actors fan out
+beneath. *"If a phase has a name and a failure mode, it
+probably deserves an actor; hundreds of actors are normal, not
+exceptional"* (operator/101 §4). Lock files are retired
 (Phase 3 = typed read views, not projections); `mind.redb`
 holds the typed truth via `persona-sema`.
 
 This report contributes five concrete pins for what
-operator/101 names but doesn't fully specify:
+operator/101 names but doesn't fully specify. Each pin lives
+*inside* a named actor in operator/101's tree — these are
+implementation contracts for those actors, not new structure.
 
-- §1 — `DisplayId` mint algorithm
-- §2 — concrete sema table key shapes
-- §3 — caller-identity mechanism (resolves operator/101 §8 +
-  §15's open issue)
-- §4 — `mind.redb` path with env override
-- §5 — subscription contract sketch (Phase 5 preview)
+| Section | Pin | Lives inside |
+|---|---|---|
+| §1 | `DisplayId` mint algorithm | `IdMintActor` |
+| §2 | concrete sema table key shapes | per-table actors (`ClaimTableActor`, `ItemTableActor`, `EdgeTableActor`, `NoteTableActor`, `AliasTableActor`, `ActivityTableActor`) |
+| §3 | caller-identity resolution mechanism | `CallerIdentityActor` + `EnvelopeActor` |
+| §4 | `mind.redb` path with env override | `ConfigActor` |
+| §5 | subscription contract sketch (Phase 5) | `CommitBusActor` + `SubscriberActor` |
 
 §6 names open questions worth surfacing before Phase 2.
 
 ---
 
-## 1 · `DisplayId` mint algorithm
+## 1 · `DisplayId` mint algorithm — `IdMintActor` implementation
 
 Current contract has `DisplayId(String)`
 (`/git/github.com/LiGoldragon/signal-persona-mind/src/lib.rs:441`)
-without a generation spec. Pin before Phase 2 sema persistence.
+without a generation spec. Operator/101 §4 names `IdMintActor`
+under `StoreSupervisorActor` as the source of minted IDs;
+this is its algorithm:
 
 ```rust
 fn mint_display_id(item: StableItemId, existing: &DisplayIndex) -> DisplayId {
@@ -68,29 +83,37 @@ preserve the old token via `ExternalAlias` records;
 resolution goes through the `ALIASES` index, not the
 `DISPLAY_IDS` index.
 
+`IdMintActor` also mints `StableItemId` (BLAKE3 of
+`workspace_salt || EventSeq || hash(payload)`),
+`OperationId`, and `EventSeq` (from the `META` counter).
+Operator/101 §6 lists *"item IDs, display IDs, imported-alias
+records"* as store-minted; `IdMintActor` is the single owner.
+
 ---
 
-## 2 · Concrete sema table key shapes
+## 2 · Concrete sema table key shapes — per-table actor contracts
 
-Operator/101 §6 names tables; per
-`~/primary/reports/assistant/90-rkyv-redb-design-research.md`
-§"Do Not Store Arbitrary rkyv Archives as redb Keys",
-keys are designed bytes, not rkyv-encoded. Proposed key
-shapes:
+Operator/101 §6 names tables; §4.8 and §12 name per-table
+actors (`ClaimTableActor`, `ItemTableActor`, `EdgeTableActor`,
+`NoteTableActor`, `AliasTableActor`, `ActivityTableActor`).
+Per `~/primary/reports/assistant/90-rkyv-redb-design-research.md`
+§"Do Not Store Arbitrary rkyv Archives as redb Keys" —
+keys are designed bytes, not rkyv-encoded. Each table actor
+owns one key shape:
 
-| Table | Key | Value | Notes |
+| Owner actor | Table | Key | Value |
 |---|---|---|---|
-| `CLAIMS` | `(role_byte, scope_kind_byte, scope_bytes)` | `Claim` | Composite key; ordered for prefix scans by role then by scope kind |
-| `HANDOFFS` | `OperationId` bytes | `Handoff` | One row per handoff |
-| `ACTIVITIES` | `EventSeq(u64)` BE bytes | `Activity` | Append-only; chrono order |
-| `ITEMS` | `StableItemId` bytes | `Item` | Direct lookup |
-| `EDGES_BY_SOURCE` | `(StableItemId, edge_kind_byte, EdgeTargetBytes)` | `Edge` | Outbound graph index |
-| `EDGES_BY_TARGET` | `(EdgeTargetBytes, edge_kind_byte, StableItemId)` | `Edge` | Inbound graph index |
-| `NOTES_BY_ITEM` | `(StableItemId, EventSeq)` | `Note` | Per-item chrono |
-| `ALIASES` | `ExternalAlias` bytes | `StableItemId` | Reverse lookup: imported alias → native item |
-| `DISPLAY_IDS` | `DisplayId` bytes | `StableItemId` | Reverse lookup: short id → native item |
-| `EVENTS` | `EventSeq(u64)` BE bytes | `Event` | The truth layer |
-| `META` | `&'static str` | `Vec<u8>` | `schema_version`, `event_seq_counter`, `operation_id_counter`, … |
+| `ClaimTableActor` | `CLAIMS` | `(role_byte, scope_kind_byte, scope_bytes)` | `Claim` |
+| `HandoffTableActor` | `HANDOFFS` | `OperationId` bytes | `Handoff` |
+| `ActivityTableActor` | `ACTIVITIES` | `EventSeq(u64)` BE bytes | `Activity` |
+| `ItemTableActor` | `ITEMS` | `StableItemId` bytes | `Item` |
+| `EdgeTableActor` | `EDGES_BY_SOURCE` | `(StableItemId, edge_kind_byte, EdgeTargetBytes)` | `Edge` |
+| `EdgeTableActor` | `EDGES_BY_TARGET` | `(EdgeTargetBytes, edge_kind_byte, StableItemId)` | `Edge` |
+| `NoteTableActor` | `NOTES_BY_ITEM` | `(StableItemId, EventSeq)` | `Note` |
+| `AliasTableActor` | `ALIASES` | `ExternalAlias` bytes | `StableItemId` |
+| (display-id table actor) | `DISPLAY_IDS` | `DisplayId` bytes | `StableItemId` |
+| `EventAppendActor` | `EVENTS` | `EventSeq(u64)` BE bytes | `Event` |
+| (meta actor) | `META` | `&'static str` | `Vec<u8>` |
 
 Type-discriminator bytes (`role_byte`, `scope_kind_byte`,
 `edge_kind_byte`) are 1-byte enum tags chosen at the
@@ -100,27 +123,29 @@ numeric keys gives lexicographic ordering equal to numeric
 ordering — important for range scans on `EVENTS` and
 `ACTIVITIES`.
 
+Per operator/101 §4 ("only `SemaWriterActor` opens write
+transactions"), the table actors are *typed views* over the
+single writer's transactions — they shape and validate write
+intents but don't independently open transactions.
+
 ---
 
-## 3 · Caller-identity mechanism — resolves operator/101 §8 + §15
+## 3 · Caller-identity mechanism — `CallerIdentityActor` + `EnvelopeActor` contracts
 
-Operator/101 §8 surfaces the open issue:
+Operator/101 §8 raises the open issue (*"current memory
+mutations need a reliable actor identity ... if the CLI
+derives actor identity from the role configuration, the actor
+field must still enter the typed state transition before
+persistence"*). Operator/101 §15 hedges to *"Add or confirm a
+common request envelope carrying actor identity."* Operator/101
+§4 names `CallerIdentityActor` + `EnvelopeActor` under
+`IngressSupervisorActor` as the runtime locations.
 
-> *"Current memory mutations need a reliable actor identity.
-> The clean solution is a common request envelope:
-> `MindEnvelope { actor, request }`. If the CLI derives actor
-> identity from the role configuration, the actor field must
-> still enter the typed state transition before persistence."*
+Concrete contracts for those two actors:
 
-Operator/101 §15 hedges to *"Add or confirm a common request
-envelope carrying actor identity."*
+### `CallerIdentityActor` — three-layer resolution
 
-Concrete proposal — three-layer caller-identity resolution
-plus dispatcher-side enforcement:
-
-### Resolution order (CLI side)
-
-The `mind` CLI determines the calling actor in priority order:
+Determines the calling actor in priority order:
 
 1. **`MIND_ACTOR` env var** — explicit override; primarily
    for test harnesses and one-shot pipelines.
@@ -134,49 +159,57 @@ The `mind` CLI determines the calling actor in priority order:
    Walks the process tree; matches PID against registered
    actor bindings; returns the matched `ActorName`.
 
-If none of these yields an `ActorName`, the CLI exits with a
-typed error (no implicit "unknown" actor).
+If none of these yields an `ActorName`, the actor returns a
+typed identity-failure that `IngressSupervisorActor` routes
+through `ErrorShapeActor` → `NotaReplyEncodeActor`. No
+implicit "unknown" actor is ever stamped on an event.
 
-### Envelope shape (wire)
+### `EnvelopeActor` — wire-shape construction
 
-Operator/101 §8's `MindEnvelope { actor, request }` is the
-right shape. The CLI constructs it:
+Wraps the typed `MindRequest` from `NotaDecodeActor` together
+with the resolved `ActorName` from `CallerIdentityActor`:
 
 ```rust
 MindEnvelope {
-    actor:   resolve_caller_identity()?,    // from layers above
-    request: parse_argv_into_mind_request()?,
+    actor:   resolved_caller_identity,    // from CallerIdentityActor
+    request: typed_request,               // from NotaDecodeActor
 }
 ```
 
-### Dispatcher enforcement (state-actor side)
+The envelope is what `DispatchSupervisorActor` receives —
+operations downstream see the envelope, never the raw request.
 
-The `MindStateActor` reads `envelope.actor` and inserts it
-into the `EventHeader.actor` of every event the operation
-appends. The reducer's typed request types (`Opening`,
-`NoteSubmission`, `Link`, `StatusChange`, `AliasAssignment`,
-`Query`) carry no `actor` field — the type system enforces
-that the agent's payload cannot supply or override actor
-identity. Per ESSENCE §"Infrastructure mints identity, time,
-and sender": the wire carries the envelope; the *event* that
-gets persisted carries the dispatcher-stamped actor.
+### Dispatcher enforcement (the load-bearing rule)
+
+`MindStateActor` (and every domain flow actor — `ClaimFlowActor`,
+`MemoryFlowActor`, etc.) reads `envelope.actor` and inserts it
+into the `EventHeader.actor` of every persisted event. Per
+ESSENCE §"Infrastructure mints identity, time, and sender":
+the wire carries the envelope, but the **typed request payload
+itself carries no actor field** — the type system enforces
+that the agent's `Opening`, `NoteSubmission`, `Link`,
+`StatusChange`, `AliasAssignment`, `Query` cannot supply or
+override actor identity.
 
 ```mermaid
 flowchart LR
-    cli["mind CLI"] -->|"MIND_ACTOR / config / ancestry"| resolve["resolve_caller_identity()"]
-    resolve -->|"ActorName"| envelope["MindEnvelope { actor, request }"]
-    envelope -->|"signal-persona-mind frame"| ingress["MindIngressActor"]
-    ingress -->|"envelope"| state["MindStateActor"]
+    cli["mind CLI"] -->|"text"| decode["NotaDecodeActor"]
+    cli -->|"env / config / ancestry"| identity["CallerIdentityActor"]
+    decode -->|"typed MindRequest"| envelope_actor["EnvelopeActor"]
+    identity -->|"ActorName"| envelope_actor
+    envelope_actor -->|"MindEnvelope { actor, request }"| dispatch["DispatchSupervisorActor"]
+    dispatch -->|"flow"| state["MindStateActor"]
     state -->|"insert envelope.actor"| header["EventHeader.actor"]
     header --> event["persisted Event"]
 ```
 
-### Architectural-truth witness
+### Architectural-truth witnesses
 
 | Witness | Catches |
 |---|---|
 | Request body cannot supply actor | Compile-fail — `Opening`, `NoteSubmission`, `Link`, `StatusChange`, `AliasAssignment`, `Query` literally have no `actor` field |
-| `EventHeader.actor` equals `MindEnvelope.actor` | Synthetic-envelope test — submit `MindEnvelope { actor: ActorName::new("designer"), request: Opening { … } }`; assert resulting `ItemOpenedEvent.header.actor == ActorName::new("designer")`; vary actor; assert lockstep |
+| `EventHeader.actor` equals `MindEnvelope.actor` | Synthetic-envelope test — submit `MindEnvelope { actor: ActorName::new("designer"), request: Opening { … } }` through the actor tree; assert resulting `ItemOpenedEvent.header.actor == ActorName::new("designer")`; vary actor; assert lockstep |
+| Identity failure routes through `ErrorShapeActor` | Run `mind` with `MIND_ACTOR` unset and no config and no resolvable ancestry; assert reply is a typed `Rejected(IdentityFailure)`, not a panic and not a default actor |
 
 ### Trust note
 
@@ -184,36 +217,39 @@ flowchart LR
 single-user workspace this is fine. For multi-user contexts,
 fall through to process ancestry which is harder to spoof
 (requires controlling a parent process registered as that
-actor). Actor authentication beyond ancestry is deferred —
-operator/101's `signal-persona-mind` doesn't carry an
-`AuthProof` shell yet, and adding one is a coordinated schema
-bump for a later wave.
+actor). Stronger actor authentication (e.g. signed
+`AuthProof`) is deferred — `signal-persona-mind` doesn't
+carry an `AuthProof` shell yet, and adding one is a
+coordinated schema bump for a later wave.
 
 ---
 
-## 4 · `mind.redb` path with env override
+## 4 · `mind.redb` path with env override — `ConfigActor` contract
 
-Operator/101 §6 says workspace-local first. Pin the exact
-path + env override before Phase 2:
+Operator/101 §6 says workspace-local first; operator/101 §4
+names `ConfigActor` as the supervisor-tree owner of paths.
+Pin the exact path + env override before Phase 2:
 
 | Source | Path | When |
 |---|---|---|
 | `MIND_DB_PATH` env var | (override) | Test isolation; CI; future multi-workspace |
-| Default | `~/primary/.mind/mind.redb` | The standard path |
+| `ConfigActor` default | `~/primary/.mind/mind.redb` | The standard path |
 
 `~/primary/.mind/` is gitignored. The path mirrors per-workspace
 shape `<role>.lock` files used today (until they're retired in
 Phase 3). System-level multi-workspace deployment can move the
-location behind configuration without changing the contract.
+location behind `ConfigActor` configuration without changing
+the contract.
 
 ---
 
-## 5 · Subscription contract sketch — Phase 5 preview
+## 5 · Subscription contract sketch — `CommitBusActor` + `SubscriberActor` wire
 
-Operator/101 §14 Phase 5 names "Post-commit subscriptions"
-without fixing the wire shape. Worth sketching now so
-consumers (router, harness, future external integrations) can
-plan for it:
+Operator/101 §4 names `CommitBusActor` + `SubscriberActor`
+under `SubscriptionSupervisorActor`; operator/101 §14 Phase 5
+names "Post-commit subscriptions" without fixing the wire
+shape. Worth sketching now so consumers (router, harness,
+future external integrations) can plan for it:
 
 ```rust
 pub enum MindRequest {
@@ -244,20 +280,22 @@ pub enum SubscribeFilter {
 
 Per `~/primary/skills/push-not-pull.md` §"Subscription
 contract" — every subscription emits the producer's current
-state on connect, then deltas. For mind:
+state on connect, then deltas. `SubscriberActor` handles the
+on-connect emission per filter:
 
 | Filter | On-connect emission | Then deltas |
 |---|---|---|
 | `AllEvents` | Every event from a starting `EventSeq` (default current+1) | Every committed event |
-| `Coordination` | Current `RoleSnapshot` | Coordination-touching events |
-| `Memory` | Current `View` snapshot | Memory-touching events |
+| `Coordination` | Current `RoleSnapshot` from `RoleSnapshotViewActor` | Coordination-touching events |
+| `Memory` | Current `View` snapshot from memory view actors | Memory-touching events |
 | `ItemsOfKind(k)` | Current `Item` projections of kind `k` | Events affecting matching items |
 | `EventsForItem(ref)` | Recent events for the item | Events affecting the item |
 
-Phase 5 lands when push-not-pull discipline (the subscription
-substrate behind future router/system integrations) genuinely
-requires it. Pinning the wire shape now means consumers can
-write against the future contract today.
+`CommitBusActor` is the post-commit fanout — every commit by
+`CommitActor` produces a typed event; `CommitBusActor` routes
+the event to every `SubscriberActor` whose filter matches.
+No polling; subscription wakes are push-driven from the
+commit.
 
 ---
 
@@ -299,6 +337,19 @@ beyond what operator/101 §15 already lists:
    `Body(String)` field travels with that migration; no
    separate handling needed.
 
+6. **Actor density vs. test surface.** Operator/101 §4
+   commits to "hundreds of actors normal" — each phase actor
+   becomes a test seam. Worth confirming: are
+   architectural-truth tests expected per actor (e.g.
+   `ItemActor`, `EdgeActor`, `GraphTraversalActor` each have
+   their own behavioral contract test), or only at supervisor
+   boundaries? §4.8 says *"if a future agent claims 'the
+   item graph is actor-based' but there is no `ItemActor`,
+   no `EdgeActor`, and no `GraphTraversalActor`, the
+   architecture truth tests should fail"* — so per-actor
+   existence tests at minimum, plus per-actor behavioral
+   tests for the load-bearing ones.
+
 ---
 
 ## Retracted from prior draft
@@ -306,13 +357,20 @@ beyond what operator/101 §15 already lists:
 The first version of this report (commit 24d47bd) carried
 five push backs in §2 that were wrong-shaped:
 
-- **§2.1 — actor framing in Phase 1.** The push back conflated
-  CLI-request lifetime with persona-mind's component
-  structure. The actor tree (operator/101 §4) describes the
-  *component's* shape across all phases; the CLI is one
-  short-lived access path. Starting with actors in Phase 1
-  avoids a structural refactor at Phase 5 when subscriptions
-  land. Retracted.
+- **§2.1 — actor framing in Phase 1.** The push back argued
+  for plain methods on `MindState` until subscriptions land,
+  treating actors as ceremony around a one-shot CLI. This was
+  wrong-shaped on two counts. *First*: persona-mind is the
+  central state component, not a CLI; the actor structure is
+  the component's shape across phases; the CLI is one short-
+  lived access path. *Second*: operator/101 §4 has since been
+  hardened to an explicit actor-dense system (eight top-level
+  supervisors, dozens of per-phase actors, per-role / per-item
+  / per-table fanout, *"hundreds of actors normal, not
+  exceptional"*). The push back wasn't just missing the
+  small actor tree — it was opposite to the explicit design
+  intent that every named phase with a failure mode gets its
+  own actor. Retracted.
 - **§2.3 — `Status::Closed` carries no `Resolution`.** The
   push back proposed adding closure metadata to `Status`, but
   closure relationships (`Duplicates`, `Supersedes`,
@@ -326,7 +384,8 @@ five push backs in §2 that were wrong-shaped:
 The remaining /98 §2.2-derived observations (`EventHeader.actor`
 filling from a trustworthy source; `Body(String)` flagging for
 typed-Nexus migration) appear in this revised version where
-they're load-bearing — §3 (caller-identity mechanism) and §6
+they're load-bearing — §3 (caller-identity mechanism, now
+mapped to `CallerIdentityActor` + `EnvelopeActor`) and §6
 (open questions) respectively.
 
 The prior draft also referenced "lock-file projections" as
@@ -343,7 +402,9 @@ This revised version aligns with that direction throughout.
 - `~/primary/reports/operator/100-persona-mind-central-rename-plan.md`
   — the consolidation that grounds operator/101.
 - `~/primary/reports/operator/101-persona-mind-full-architecture-proposal.md`
-  — the architecture this report companions.
+  — the architecture this report companions; §4 is the
+  actor-dense runtime each section here pins implementations
+  inside.
 - `~/primary/reports/assistant/90-rkyv-redb-design-research.md`
   §"Do Not Store Arbitrary rkyv Archives as redb Keys" —
   the basis for §2 explicit byte-key shapes.
