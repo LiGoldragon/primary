@@ -24,7 +24,8 @@ flowchart LR
 ```
 
 The prototype repo is `/git/github.com/LiGoldragon/terminal-cell-lab`.
-It proves five witnesses:
+It now proves daemon-first attach as well as the original in-process PTY
+shape:
 
 | Witness | Result |
 |---|---|
@@ -33,6 +34,9 @@ It proves five witnesses:
 | `screen_projection_is_derived_from_transcript` | Passes. A `vt100` projection is built from transcript bytes, not from viewer state. |
 | `agent_terminal_accepts_prompt_and_terminal_cell_reads_response` | Passes. A deterministic agent-like terminal process accepts an injected prompt and the terminal cell reads its response from transcript. |
 | `agent_terminal_usage_probe_is_prompt_input_not_terminal_semantics` | Passes. A `/usage\r` probe is carried as raw PTY input and interpreted only by the agent fixture. |
+| `daemon_accepts_programmatic_prompt_and_capture_reads_transcript` | Passes. A daemon owns the `TerminalCell`; socket clients send a prompt, wait on transcript text, and capture the response. |
+| `attach_view_replays_transcript_without_owning_the_child` | Passes. A late `view --once` client replays transcript without owning the child. |
+| `nix run .#ghostty-agent-witness` | Passes. Ghostty runs the attach view, the view pushes an attachment-ready signal, a prompt is injected through the daemon, and the captured transcript contains the response. |
 
 Verification:
 
@@ -42,6 +46,20 @@ Verification:
   witness.
 - `nix run .#agent-terminal-witness` passes as the deterministic agent-dialogue
   PTY witness.
+- `nix run .#daemon-witness` passes as the daemon/client/socket witness.
+- `nix run .#ghostty-agent-witness` passes as the GUI-terminal attach witness
+  and writes `target/ghostty-agent-witness/transcript.txt`.
+
+The Ghostty witness launches with the GTK app ID/class
+`com.ligoldragon.terminalcellwitness`. On Niri 25.11, this can be paired with a
+targeted window rule so the test window opens without stealing focus:
+
+```kdl
+window-rule {
+    match app-id=r#"^com\.ligoldragon\.terminalcellwitness$"#
+    open-focused false
+}
+```
 
 ## Why This Is Possible
 
@@ -95,12 +113,20 @@ Current prototype nouns:
 | `TranscriptSubscription` | Replay from a sequence plus live broadcast receiver. |
 | `TerminalInput` | Raw bytes plus provenance (`Viewer` or `Programmatic`). |
 | `ScreenProjection` | `vt100` projection derived from transcript bytes. |
+| `TerminalCellSocketClient` | Thin Unix-socket client used by command-line tools and viewers. |
+| `terminal-cell-lab-daemon` | Daemon that owns the actor and exposes socket requests. |
+| `terminal-cell-lab-view` | Attach client run inside Ghostty or another terminal. It replays transcript, subscribes live, enables raw mode, and forwards keyboard bytes. |
 | `agent-terminal-fixture` | Deterministic agent-like terminal binary used to prove prompt/response and usage-probe dialogue through the PTY. |
 
 The prototype uses blocking OS threads for PTY read and child wait. Those
 threads do not own state; they push typed messages into the `TerminalCell`
 actor. That keeps the actor as the single owner while acknowledging that PTY
 read and child wait are blocking host operations.
+
+The daemon waits for Kameo actor startup before binding and announcing its
+socket. The Ghostty witness found this race: if the socket is announced before
+the actor is running, a fast GUI attach can hit `actor not running`. The fixed
+shape is "actor startup first, socket ready second, view attachment third."
 
 ## Production Constraints Recorded
 
