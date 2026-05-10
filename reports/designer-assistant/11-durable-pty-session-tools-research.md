@@ -18,6 +18,22 @@ The closest fit depends on which requirement is allowed to move:
 - If programmatic control and output capture are primary: Zellij now has the strongest off-the-shelf surface, but it is a full terminal workspace/multiplexer.
 - If building a small purpose-specific component is acceptable: a Rust daemon using `portable-pty` plus an append-only output log is the cleanest way to satisfy all four.
 
+The most minimal abstraction is a durable terminal session owner:
+
+- `TerminalSession` owns one child process group and its PTY. It survives every
+  viewer attach/detach cycle.
+- `TerminalTranscript` is the append-only truth: every output byte read from
+  the PTY master is assigned a terminal generation and sequence before any
+  viewer sees it.
+- `TerminalInputPort` accepts raw input bytes and resize events for the PTY.
+- `TerminalViewer` is disposable. It can replay transcript from a known
+  sequence and subscribe to live deltas, but it never owns the child.
+- `ScreenProjection` is derived state. It may use `vt100`, `termwiz`, or another
+  parser to answer capture questions, but it is not the source of truth.
+
+That is smaller than tmux, Zellij, or WezTerm mux. It is also slightly larger
+than abduco/dtach, because Persona needs transcript truth while detached.
+
 ## Requirement Matrix
 
 | Candidate | Child survives viewer death | Programmatic input | Output transcript including detached periods | Minimal non-mux |
@@ -31,6 +47,38 @@ The closest fit depends on which requirement is allowed to move:
 | `ttyd` / WeTTY | Browser transport, not durable ownership | Yes through websocket/browser | No durable detached transcript by default | Yes-ish transport, not session layer |
 | Rust `portable-pty` | Only if wrapped in daemon | Yes | Only if implemented | Yes as library |
 | Rust `expectrl` / `rexpect` | No durable ownership by itself | Yes | Buffered live output, not detached ownership | Yes as automation library |
+
+## Local Persona Fit
+
+No external tool cleanly exists at the right boundary. Locally, however, the
+abstraction mostly exists already and is split across two repositories:
+
+- `/git/github.com/LiGoldragon/signal-persona-terminal/src/lib.rs` defines the
+  typed public channel: `TerminalName`, `TerminalGeneration`,
+  `TerminalSequence`, `TerminalInputBytes`, `TerminalTranscriptBytes`, terminal
+  connection/input/resize/detachment/capture requests, and readiness,
+  transcript, resize, capture, detach, exit, and rejection events.
+- `/git/github.com/LiGoldragon/persona-wezterm/src/pty.rs` already has the core
+  owner shape: `PtySession` owns the child and PTY, `Clients` broadcasts output,
+  `Scrollback` stores bytes read from the PTY, socket frames carry input/resize,
+  and capture can project stored bytes through `vt100`.
+- `/git/github.com/LiGoldragon/persona-wezterm/src/contract.rs` adapts the
+  private PTY socket to the typed `signal-persona-terminal` request/event
+  records.
+
+So the answer is not "pick a different terminal tool." The answer is "promote
+the local PTY owner into the real `persona-terminal` boundary and finish the
+missing hardening." A bare rename is not enough. The missing pieces are:
+
+- persistent transcript storage instead of only an in-memory ring;
+- a session registry that names, lists, starts, stops, and reconnects sessions;
+- typed pushed `TranscriptDelta` events from the daemon itself;
+- child-exit observation and `TerminalExited` emission;
+- replay by terminal sequence, not just "dump current ring";
+- a resize source that is evented where possible and guarded where polling is
+  unavoidable;
+- viewer adapters that stay clearly second-class: WezTerm, Ghostty/plain
+  terminal, browser terminal, and optional abduco interop.
 
 ## Findings
 
@@ -184,4 +232,3 @@ The four requirements describe a small daemon, not a terminal recorder and not a
 - optional live subscribers fed from the same byte stream.
 
 Existing minimal detach tools intentionally avoid owning scrollback/transcript. Existing recorder tools own the PTY but are not durable detached session managers. Existing programmatic tools with enough observability become multiplexers. Therefore the clean answer is to build the small owner directly, most likely in Rust on `portable-pty`, borrowing user-facing ideas from `abduco`/`dtach` and persistence ergonomics from `shpool`.
-
