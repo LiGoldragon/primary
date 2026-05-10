@@ -124,7 +124,7 @@ The same rule applies to messages, replies, and consumer surfaces:
 | `IncMessage`, `IncMsg` | `Inc` |
 | `SubmitMessage`, `SubmitRequest` | `Submit` (or `SubmitClaim` if scoped) |
 | `SubmitReply` | `SubmitReceipt` |
-| `CounterHandle` (defensive wrap of `ActorRef<Counter>`) | `ActorRef<Counter>` directly |
+| `CounterActorHandle` (the `Actor` is still framework category) | `CounterHandle` if the bare noun shadows; `ActorRef<Counter>` if not |
 
 Role-descriptive suffixes earn their place — they describe what
 the type DOES, not what category it's in. `Supervisor`,
@@ -184,45 +184,69 @@ Most workspace actors fit this. The user's framing applies:
 typed. Re-export `kameo::actor::ActorRef` from the crate root if
 that makes consumer imports cleaner.
 
-**A domain-named wrapper** — when the public API is a domain
-abstraction over one or more actors. The wrapper is named for
-what it IS (`Mind`, `Cache`, `Ledger`) — *never* `*Handle`, per
-the framework-category-suffix anti-pattern (§3). It earns its
-place when:
+**A domain wrapper** — when the public API is a domain abstraction
+over one or more actors. Two name shapes are both acceptable
+(refined further after rereading designer-assistant/6):
 
-- it composes multiple `ActorRef`s into one consumer surface;
-- it exposes domain verbs as methods so consumers don't construct
-  Message values themselves (`mind.claim(role, scope, reason)`
-  instead of `mind_ref.ask(MindRequest::Claim { role, scope, reason })`);
-- it adds retry, transformation, or multi-step orchestration that
-  doesn't belong in the actor itself;
-- the crate is published as a library consumed by code that
-  shouldn't construct Message values directly.
+- **Bare domain noun** (`Mind`, `Router`) when the wrapper IS the
+  conceptual surface and no shadowing data type exists.
+- **`*Handle` suffix** (`LedgerHandle`, `MindHandle`) when the bare
+  noun would shadow a sibling data type and disambiguation matters.
+  `Handle` is *relationship-naming* (the value IS a held authority
+  on the live actor) — same shape as Tokio `JoinHandle` or std
+  `File`/`Child` — *not* the framework-category tagging that
+  `Actor`/`Message` are.
 
-**Don't wrap defensively.** A bare `LedgerHandle { actor_reference:
-ActorRef<Ledger> }` with no domain methods is the
+Never `*ActorHandle` (the `Actor` part is still the trap).
+
+The wrapper earns its place when **at least one** of these is
+true (per designer-assistant/6 §"A Rule That Fits Both Sides"):
+
+1. **Lifecycle ownership** — the wrapper has `start(config)` /
+   `stop()` methods naming "I own this live service."
+2. **Topology insulation** — the wrapper hides actor topology from
+   the public API; if `Ledger` later splits into
+   `LedgerWriter` + `LedgerReader` + `LedgerIndex`, the public
+   surface stays stable.
+3. **Fallible-`tell` prevention** — the wrapper exposes only the
+   safe `ask`-flavored method, removing the consumer's option to
+   `tell` a `Result`-returning handler and crash the actor.
+4. **Capability narrowing** — `LedgerReader` and `LedgerWriter` as
+   distinct wrappers around the same actor, exposing only `read`
+   or only `append`.
+5. **Domain error vocabulary** — `Result<T, MindError>` instead of
+   `Result<T, SendError<Submit, SubmitError>>` at every call site.
+6. **Domain verbs over Message construction** — `mind.claim(role,
+   scope, reason)` instead of `mind_ref.ask(MindRequest::Claim
+   { ... })`.
+7. **Library publication** — the crate is consumed by code that
+   shouldn't construct Kameo Message values directly.
+
+**Don't wrap defensively.** A bare `CounterHandle { counter:
+ActorRef<Counter> }` with no domain content is still the
 speculative-abstraction shape operator/103 retired with
-`persona-actor` / `workspace-actor`. We just spent a wave switching
-FROM ractor TO Kameo *because* we hadn't wrapped — the migration
-was bounded. Don't pre-pay the wrapper cost for a runtime swap that
-may never come.
+`persona-actor` / `workspace-actor`. The discriminator: does the
+wrapper meet at least one of the seven criteria, or is it type
+laundering?
 
-The discriminator: **does the wrapper carry domain content, or is
-it type laundering?** If the wrapper ends up just delegating
-method-by-method to `ActorRef`, drop it.
+When a wrapper exists, expose `actor_ref()` (or a narrow
+`ReplyRecipient<M, _, _>`) as a deliberate escape hatch for tests
+and advanced orchestration. Don't hide Kameo invisibly.
 
-This refinement supersedes an earlier-in-this-wave absolutism on
-my part ("ActorRef<A> directly, full stop, narrow builder
-carve-out"). Designer-assistant/5 §3's intuition that wrappers
-have a real role is right; the part to keep retiring is bare
-runtime-hiding wrappers and the `*Handle` suffix that violates
-the naming rule.
+This position evolved in two refinements:
 
-The older "every actor pairs with a `*Handle`" language from the
-ractor era is retired in `skills/actor-systems.md` and
-`skills/rust-discipline.md` regardless — that was about per-actor
-wrappers as boilerplate, not about domain abstractions over actor
-groups.
+- v1 (early in the wave): "ActorRef<A> directly, full stop, narrow
+  builder carve-out" — too absolutist.
+- v2 (after designer-assistant/5 §3): "wrap when the public API is
+  a domain abstraction; never `*Handle`" — right on the
+  domain-abstraction part, wrong on the naming.
+- v3 (after designer-assistant/6, current): "wrap when the public
+  API is a domain abstraction; bare noun or `*Handle` suffix both
+  acceptable; `Handle` is relationship-naming, not category-tagging."
+
+The retired older "every actor pairs with a `*Handle` boilerplate"
+ractor-era language stays retired — that was per-actor wrappers
+as ceremony, not domain abstractions over actor groups.
 
 ---
 

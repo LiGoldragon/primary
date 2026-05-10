@@ -596,27 +596,33 @@ actor type IS the data: `pub struct ClaimNormalize { fields … }`,
 on `&mut self`. The no-public-ZST-actor rule is naturally satisfied
 because the actor type carries its own fields.
 
-**`ActorRef<A>` directly is the default public consumer surface.**
-Kameo's `ActorRef<A>` is statically typed against the actor;
-consumers call `actor_ref.ask(msg).await` / `actor_ref.tell(msg).await`
-directly, and the type system rejects wrong messages at the call
-site. There is no class of misuse a defensive wrapper prevents.
+**`ActorRef<A>` directly is the default public consumer surface for
+actors whose message types ARE the API.** Most workspace actors fit
+this. Consumers call `actor_ref.ask(msg).await` /
+`actor_ref.tell(msg).await` directly; the type system rejects wrong
+messages at the call site.
 
-A **domain-named wrapper** (e.g. `Mind`, `Cache`, `Ledger` —
-*not* `*Handle`, per `skills/naming.md`) is appropriate when the
-public API is a domain abstraction over one or more actors:
-composing multiple `ActorRef`s, exposing domain verbs as methods
-(`mind.claim(role, scope, reason)` instead of
-`mind.ask(MindRequest::Claim { … })`), or adding
-retry/transformation/multi-step orchestration. The wrapper earns
-its place by carrying domain content — not by hiding the
-runtime.
+A **domain wrapper** is appropriate when the public API is a domain
+abstraction over one or more actors. Both name shapes are fine:
 
-Don't wrap defensively when there's no domain meaning — the same
-speculative-abstraction shape operator/103 retired with the
-`persona-actor` / `workspace-actor` hallucination. See
-`skills/kameo.md` §"Public consumer surface — ActorRef<A> or
-domain wrapper" for the discriminator.
+- **Bare domain noun** (`Mind`, `Router`) when the wrapper IS the
+  conceptual surface;
+- **`*Handle` suffix** (`LedgerHandle`, `MindHandle`) when the bare
+  noun would shadow a sibling data type and disambiguation matters.
+  `Handle` is relationship-naming (the value IS a held authority on
+  the live actor — same shape as Tokio `JoinHandle`), not the
+  framework-category tagging that `*Actor` / `*Message` are.
+
+A wrapper earns its place when at least one of: lifecycle ownership,
+topology insulation, fallible-`tell` prevention, capability narrowing,
+domain error vocabulary, domain-verb methods over Message
+construction, or library publication. See `skills/kameo.md`
+§"Public consumer surface — ActorRef<A> or domain wrapper" for the
+seven criteria and worked examples.
+
+Bare wrappers that just delegate method-by-method to `ActorRef`
+without adding domain content are still the speculative-abstraction
+shape operator/103 retired — drop them.
 
 **Never `tell` a fallible handler unless `on_panic` is overridden.**
 A handler whose `Reply = Result<_, _>` returning `Err(_)` to a

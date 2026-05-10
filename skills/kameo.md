@@ -203,13 +203,25 @@ Most workspace actors fit this — small actors with a clear single
 message vocabulary, in-workspace consumers, no multi-step
 orchestration to hide.
 
-### Domain-named wrapper — when the public API is a domain abstraction
+### Domain wrapper — when the public API is a domain abstraction
 
 When the consumer surface is a domain abstraction *over* one or
-more actors, wrap. The wrapper is named for what it IS (`Mind`,
-`Cache`, `Ledger`) — never `*Handle`, per
-`skills/naming.md` §"Anti-pattern: framework-category suffixes on
-type names".
+more actors, wrap. Two name shapes are both acceptable:
+
+- **Bare domain noun** when the wrapper IS the conceptual surface
+  and no shadowing data type exists: `Mind`, `Router`. Cleaner.
+- **`*Handle` suffix** when the bare noun would shadow a sibling
+  data type and the disambiguation matters: `LedgerHandle` (when
+  `Ledger` is the data type with `entries: Vec<Entry>`),
+  `MindHandle` (when `Mind` is also a typed record kind elsewhere).
+  Per `skills/naming.md`, `Handle` is *relationship-naming* (the
+  value IS a held authority on the live actor) — same shape as
+  Tokio's `JoinHandle` or std's `File` / `Child` — *not*
+  framework-category tagging like `Actor` / `Message`.
+
+Never `*ActorHandle` (the `Actor` part is still the framework-category
+trap). For remote-network services, `*Client` may be a better
+relationship name than `*Handle`.
 
 ```rust
 pub struct Mind {
@@ -235,40 +247,96 @@ impl Mind {
 }
 ```
 
-This earns its place when:
+A wrapper earns its place when **at least one** of these is true (per
+designer-assistant/6 §"A Rule That Fits Both Sides"):
 
-- the wrapper composes **multiple** `ActorRef`s into one consumer
-  surface (e.g., `Mind` orchestrating root + reader + subscriber);
-- the wrapper exposes **domain verbs** as methods so consumers
-  don't construct Message types themselves (`mind.claim(role,
-  scope, reason)` vs `mind.ask(MindRequest::Claim { role, scope,
-  reason })`);
-- the wrapper adds **retry, transformation, or multi-step
-  orchestration** that doesn't belong in the actor itself;
-- the crate is **published as a library** consumed by code that
-  shouldn't construct Kameo Message values directly.
+1. **Lifecycle ownership** — the wrapper has `start(config)` /
+   `stop()` methods naming "I own this live service," not just "I
+   hold a reference to an actor." Consumers think in services.
+2. **Topology insulation** — the wrapper hides actor topology from
+   the public API. If `Ledger` later becomes
+   `LedgerWriter` + `LedgerReader` + `LedgerIndex` internally, the
+   public `Ledger.append()` / `Ledger.read()` surface stays stable.
+3. **Fallible-`tell` prevention** — the wrapper exposes only the
+   safe method (`mind.claim(...)` does `ask` internally), removing
+   the consumer's option to `tell` a `Result`-returning handler and
+   crash the actor. (See §"The tell-of-fallible-handler trap".)
+4. **Capability narrowing** — `LedgerReader` and `LedgerWriter` as
+   distinct wrappers around the same underlying actor, exposing
+   only `read` or only `append`. Different from Kameo's
+   `Recipient<M>` (single-message); a wrapper handles a small
+   domain surface.
+5. **Domain error vocabulary** — `Result<T, MindError>` instead of
+   `Result<T, SendError<Submit, SubmitError>>` at every call site.
+6. **Domain verbs over Message construction** — `mind.claim(role,
+   scope, reason)` instead of `mind_ref.ask(MindRequest::Claim {
+   role, scope, reason })`. Caller writes domain English; wrapper
+   constructs the typed Message.
+7. **Library publication** — the crate is consumed by code that
+   shouldn't construct Kameo Message values directly (external
+   library users; downstream crates that want a stable API surface
+   that survives Kameo version churn).
 
-### Don't wrap defensively
+### Escape hatch for advanced consumers
 
-A bare wrapper that just holds an `ActorRef<A>` to "hide Kameo"
-without adding domain meaning is the speculative-abstraction shape
-operator/103 retired with `persona-actor` / `workspace-actor`.
-We just spent a wave switching FROM ractor TO Kameo precisely
-because we hadn't wrapped — the migration was bounded. Don't
-pre-pay the wrapper cost for a runtime swap that may never come.
+When a wrapper exists, advanced consumers may still need raw `ActorRef`
+access (testing, custom orchestration). Expose deliberately, not
+implicitly:
 
 ```rust
-// Wrong — wrapper adds nothing the type system isn't already enforcing
-pub struct Ledger { actor_reference: ActorRef<MemoryLedger> }
-impl Ledger {
-    pub fn ask<M>(&self, msg: M) -> ... { self.actor_reference.ask(msg) }
+impl ClaimNormalizerHandle {
+    /// Escape hatch for tests and advanced orchestration that need to
+    /// construct messages or use Kameo's full builder surface.
+    pub fn actor_ref(&self) -> &ActorRef<ClaimNormalizer> {
+        &self.normalizer
+    }
 }
 ```
 
-If the wrapper ends up just delegating method-by-method to
-`ActorRef`, drop it and expose `ActorRef<A>` directly. The
-discriminator: **does the wrapper carry domain content, or is it
-type laundering?**
+Or expose a narrower Kameo-native capability:
+
+```rust
+impl ClaimNormalizerHandle {
+    pub fn normalize_recipient(&self)
+        -> ReplyRecipient<NormalizeClaim, NormalizedClaim, NormalizeError>
+    {
+        self.normalizer.recipient()
+    }
+}
+```
+
+This keeps Kameo honest and visible without making it the first API
+every domain caller has to learn.
+
+### Don't wrap defensively
+
+A bare wrapper that just holds an `ActorRef<A>` and delegates
+method-by-method without adding domain content is still the
+speculative-abstraction shape operator/103 retired with
+`persona-actor` / `workspace-actor`. We just spent a wave switching
+FROM ractor TO Kameo *because* we hadn't wrapped — the migration was
+bounded. Don't pre-pay the wrapper cost for a runtime swap that may
+never come.
+
+```rust
+// Wrong — wrapper adds nothing the type system isn't already enforcing
+pub struct CounterHandle {
+    counter: ActorRef<Counter>,
+}
+impl CounterHandle {
+    pub async fn inc(&self) -> Result<i64, SendError<Inc>> {
+        self.counter.ask(Inc).await
+    }
+}
+```
+
+If the wrapper ends up just delegating method-by-method to `ActorRef`
+with no transformation, no error mapping, no lifecycle ownership, no
+capability narrowing, drop it and expose `ActorRef<A>` directly.
+
+The discriminator: **does the wrapper meet at least one of the seven
+criteria above, or is it type laundering?** If it doesn't meet one,
+it's laundering.
 
 ---
 

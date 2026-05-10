@@ -289,13 +289,31 @@ The discriminator: **does the suffix describe the type's role, or
 does it tag the framework category the type happens to fall into?**
 Role-shaped suffixes stay; category-shaped suffixes go.
 
-| Suffix is wrong (framework category) | Suffix is fine (descriptive role) |
+| Suffix is wrong (framework category) | Suffix is fine (descriptive role or relationship) |
 |---|---|
 | `*Actor` | `*Supervisor` (this type supervises children) |
 | `*Message`, `*Msg` | `*Resolver` (this type resolves something) |
-| `*Handler`, `*Handle` | `*Decoder`, `*Encoder` (this type decodes/encodes) |
+| `*Handler` | `*Decoder`, `*Encoder` (this type decodes/encodes) |
 | `*Listener`, `*Subscriber` (when describing trait participation) | `*Tracker`, `*Cache`, `*Ledger` (this type holds that state) |
 | `*Object`, `*Type`, `*Class` | `*Builder`, `*Factory` (when actually building things) |
+| | `*Handle`, `*Client`, `*Ref` — relationship-naming (the value IS a held authority on the target; same shape as `JoinHandle`, `FileHandle`) |
+
+**Note on `Handle`**: `Handle` is *not* a framework-category tag in the
+same shape as `Actor` / `Message` / `Handler`. It names a relationship —
+the value IS the caller's held authority to a live service or resource.
+Same pattern as `tokio::task::JoinHandle` (a handle to join a task) or
+`std::fs::File` / `std::process::Child` as held-resource types.
+`*Handle` earns its place when the wrapper carries domain content
+(lifecycle ownership, capability narrowing, error vocabulary mapping,
+topology insulation, or send-policy enforcement). For the actor-specific
+application of *when* a Handle is appropriate, see this workspace's
+`skills/kameo.md` §"Public consumer surface — ActorRef<A> or domain
+wrapper".
+
+A bare `Handle` wrapper that just holds an `ActorRef<A>` and delegates
+method-by-method without adding domain content is still the
+runtime-laundering anti-pattern operator/103 retired — drop the wrapper
+and expose `ActorRef<A>` directly.
 
 The rule's deeper purpose: type names are read at every use site,
 and a category tag forces the reader to mentally strip it ("oh,
