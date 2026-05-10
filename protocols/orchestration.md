@@ -15,7 +15,7 @@ BEADS is shared coordination state while it exists, not a lockable scope.
 
 ## Roles
 
-The workspace recognises six coordination roles. Each role has its own lock
+The workspace recognises seven coordination roles. Each role has its own lock
 file, its own report subdirectory, and a natural primary scope.
 
 | Role | Default agent | Lock file | Reports subdir | Natural primary scope |
@@ -26,6 +26,7 @@ file, its own report subdirectory, and a natural primary scope.
 | `designer-assistant` | Codex | `designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
 | `system-specialist` | (any) | `system-specialist.lock` | `reports/system-specialist/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
 | `poet` | (any) | `poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
+| `poet-assistant` | (any) | `poet-assistant.lock` | `reports/poet-assistant/` | Extra prose, citation, and Substack publishing support under poet discipline |
 
 The "Default agent" column is convenience labelling for the lock file, not a
 binding. Any agent may take any role; the role determines scope authority,
@@ -134,7 +135,8 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 ```
 
 `<role>` is one of `operator`, `operator-assistant`, `designer`,
-`designer-assistant`, `system-specialist`, or `poet`.
+`designer-assistant`, `system-specialist`, `poet`, or
+`poet-assistant`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
@@ -276,6 +278,7 @@ Convention: each role owns a subdirectory.
 - `reports/designer-assistant/` — designer assistant's reports.
 - `reports/system-specialist/` — system specialist's reports.
 - `reports/poet/` — poet's reports.
+- `reports/poet-assistant/` — poet assistant's reports.
 
 Each role writes only into its own role subdirectory. Other roles may
 **read** any report freely; if they want to **build on** another role's
