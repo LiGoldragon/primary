@@ -3,8 +3,8 @@
 Role: `operator`
 
 Question: how much do we actually understand about finishing
-`persona-mind` with a command-line `mind` interface that replaces the
-current `tools/orchestrate` lock-file helper?
+`persona-mind` with a command-line `mind` interface that becomes the
+typed successor to the current workspace coordination helper?
 
 ## 0 · Short answer
 
@@ -25,16 +25,16 @@ through the actor path.
 The **command-line mind** is not implemented. The binary exists, but
 `src/main.rs` only prints `mind scaffold`. There is no NOTA parser /
 renderer path for `MindRequest` / `MindReply`, no durable
-`mind.redb`, no `persona-sema` tables for mind records, and the
+`mind.redb`, no mind-owned Sema tables for mind records, and the
 role-claim/release/handoff/activity variants are currently unsupported
 by `persona-mind`.
 
 ```mermaid
-flowchart LR
+graph LR
     contract[done typed contract] --> runtime[partial Kameo runtime]
     runtime --> text[missing command line NOTA surface]
     text --> store[missing durable mind redb]
-    store --> shim[missing tools orchestrate replacement]
+    store --> cutover[missing workspace cutover path]
 ```
 
 Rough engineering read:
@@ -47,7 +47,7 @@ Rough engineering read:
 | role coordination semantics | 4/10 | contract and some reducer pieces exist; runtime dispatch returns unsupported |
 | durable `mind.redb` state | 1/10 | architecture is clear; code is still in-memory |
 | command-line `mind` | 1/10 | binary exists but prints `mind scaffold` |
-| `tools/orchestrate` replacement | 2/10 | target protocol is documented; compatibility shim is not implemented |
+| workspace cutover path | 2/10 | target protocol is documented; external wrapper/retirement choreography is not implemented |
 
 So the architecture is **usable**, but the production command is still
 mostly unbuilt.
@@ -61,18 +61,16 @@ I surveyed these sources and ran checks:
 | `signal-persona-mind` contract | `signal-persona-mind/src/lib.rs`, `signal-persona-mind/tests/round_trip.rs`, `signal-persona-mind/ARCHITECTURE.md` |
 | `persona-mind` runtime | `persona-mind/src/service.rs`, `src/actors/*`, `src/memory.rs`, `tests/*`, `ARCHITECTURE.md` |
 | current orchestration helper | `protocols/orchestration.md`, `tools/orchestrate` |
-| storage substrate | `sema/ARCHITECTURE.md`, `persona-sema/ARCHITECTURE.md` |
+| storage substrate | `sema/ARCHITECTURE.md`; component-owned Sema layers |
 | recent design reports | `reports/operator/95-...`, `97-...`, `99-...`, `101-...`, `104-...`; `reports/designer/98-...`, `100-...`, `106-...`; `reports/operator-assistant/100-...` |
 
-Verification:
+Verification from the original survey pass:
 
 - `nix flake check` passed in `/git/github.com/LiGoldragon/signal-persona-mind`.
 - `nix flake check` passed in `/git/github.com/LiGoldragon/persona-mind`.
 
-The working copies for `persona-mind`, `signal-persona-mind`,
-`persona`, and `persona-router` were clean when inspected. The current
-coordination lock owner for `persona-mind` and `persona-router` is
-`operator-assistant`, so this report stayed read-only for those repos.
+This report is not a current working-copy status report. Re-run `jj st`
+in each repo before editing or committing.
 
 ## 2 · What is actually implemented
 
@@ -178,7 +176,7 @@ impl MindRuntime {
 `IngressSupervisor`.
 
 ```mermaid
-flowchart TB
+graph TB
     root[MindRoot] --> config[Config]
     root --> ingress[IngressSupervisor]
     root --> dispatch[DispatchSupervisor]
@@ -262,13 +260,15 @@ The current architecture says the target CLI is:
 mind '<one NOTA request record>'
 ```
 
-and the reply is one NOTA record. `tools/orchestrate` becomes a
-compatibility shim during migration.
+and the reply is one NOTA record. If `tools/orchestrate` survives during
+migration, it is only an external workspace wrapper over `mind`; it is
+not part of `persona-mind`, and it does not handle legacy lock files
+inside the mind implementation.
 
 The current shell helper still owns the live implementation:
 
 ```mermaid
-flowchart LR
+graph LR
     agent[agent] --> helper[tools orchestrate]
     helper --> locks[role lock files]
     helper --> beads[BEADS list]
@@ -277,13 +277,13 @@ flowchart LR
 The target shape is:
 
 ```mermaid
-flowchart LR
+graph LR
     agent[agent] --> cli[mind CLI]
     cli --> decoder[NOTA decoder]
     decoder --> request[MindRequest]
     request --> envelope[MindEnvelope]
     envelope --> root[MindRoot]
-    root --> state[mind redb through persona sema]
+    root --> state[mind redb through mind Sema]
     root --> reply[MindReply]
     reply --> encoder[NOTA encoder]
     encoder --> agent
@@ -296,7 +296,7 @@ record spellings below are illustrative because the NOTA projection for
 ```sh
 mind '(RoleClaim Operator ((Path "/git/github.com/LiGoldragon/persona-mind")) "implement command-line mind")'
 mind '(Query Ready 20)'
-mind '(Open Task High "wire command-line mind" "Replace lock-file helper with typed state")'
+mind '(Open Task High "wire command-line mind" "Replace workspace coordination helper with typed state")'
 ```
 
 The important shape is one record in, one record out. Convenience shims
@@ -309,10 +309,14 @@ tools/orchestrate claim operator /git/github.com/LiGoldragon/persona-mind -- imp
 mind '<one RoleClaim NOTA record>'
 ```
 
+That wrapper is migration choreography around the workspace. It is not a
+`persona-mind` component and must not become a projection path back to
+lock files.
+
 The target state shape is:
 
 ```mermaid
-flowchart TB
+graph TB
     db[mind redb]
     events[events]
     claims[claims]
@@ -343,7 +347,9 @@ The architecture has converged on these durable decisions:
 |---|---|
 | `persona-mind` is Persona's central state component | High |
 | `signal-persona-mind` is the public typed vocabulary | High |
-| `mind.redb` is owned by `persona-mind` through `persona-sema` / `sema` | High |
+| A long-lived `persona-mind` daemon owns `MindRoot`; the `mind` CLI is a thin client | High |
+| `mind.redb` is owned by `persona-mind` through mind-owned Sema tables | High |
+| Lock files are outside the `persona-mind` implementation and retire at workspace cutover | High |
 | BEADS is transitional; imported IDs become aliases, not a live bridge | High |
 | Request payloads do not carry caller identity/time/slot IDs | High |
 | `mind` takes one NOTA request and prints one NOTA reply | High |
@@ -353,13 +359,14 @@ The main contradictions left when this survey first landed:
 
 | Topic | Conflict |
 |---|---|
-| lock files | temporary regenerated projections vs fully retired typed views |
 | trace phases | accepted trace markers vs demand that every named plane become a real actor |
 | storage pins | designs name `DisplayId`, table keys, caller identity, `mind.redb` path, subscriptions; implementation has not landed them |
 
-Post-survey update: `reports/designer/106-actor-discipline-status-and-questions.md`
-records the user decision that `persona-mind` is daemon-backed. The `mind` CLI
-is a thin client to that daemon, not a one-shot actor host.
+The daemon, lock-file, and storage-layer questions are closed. Earlier
+versions of this report carried stale alternatives; those alternatives are no
+longer part of the architecture. The shared `persona-sema` layer was a false
+abstraction. Sema layers are component-owned. Mind storage is mind Sema inside
+`persona-mind`.
 
 ## 4 · Gap register
 
@@ -426,7 +433,7 @@ This is the main reason `persona-mind` cannot replace
 Needed actors:
 
 ```mermaid
-flowchart TB
+graph TB
     dispatch[DispatchSupervisor] --> claim[ClaimFlow]
     claim --> normalize[ClaimNormalizer]
     claim --> conflict[ClaimConflictDetector]
@@ -471,19 +478,19 @@ struct Graph {
 }
 ```
 
-No `persona-sema` dependency exists in `persona-mind/Cargo.toml` yet.
+No durable Sema-backed mind store exists in `persona-mind` yet.
 
 Needed shape:
 
 ```rust
 pub struct MindStore {
-    sema: PersonaSema,
+    sema: MindSema,
     tables: MindTables,
 }
 
 impl MindStore {
     pub fn open(path: MindStorePath) -> Result<Self> {
-        let sema = PersonaSema::open(path.as_path())?;
+        let sema = MindSema::open(path.as_path())?;
         Ok(Self {
             sema,
             tables: MindTables::current(),
@@ -504,13 +511,9 @@ impl MindStore {
 }
 ```
 
-The exact table declarations should live in the Persona storage layer
-for mind records. Today `persona-sema` only stores umbrella
-`signal-persona` records, not `signal-persona-mind` records. That is a
-real repo-boundary decision: either extend `persona-sema` with
-mind-specific tables or create a `persona-mind` local table module over
-the lower `sema` kernel. The current docs lean toward mind-owned
-tables using the shared sema kernel.
+The exact table declarations live in `persona-mind`, because
+`persona-mind` owns this state. Other components talk to mind through
+`signal-persona-mind`, not by opening `mind.redb`.
 
 ### Gap 4 — Store-minted identity is still provisional
 
@@ -532,7 +535,7 @@ Designer/100 pins a different target:
 Needed shape:
 
 ```mermaid
-flowchart LR
+graph LR
     envelope[MindEnvelope] --> identity[CallerIdentity]
     command[StoreCommand] --> mint[IdMint]
     command --> clock[Clock]
@@ -643,7 +646,7 @@ functions:
 ### 6.1 Claim a path
 
 ```mermaid
-flowchart TB
+graph TB
     cli[mind CLI] --> decoder[NotaDecoder]
     decoder --> request[MindRequest RoleClaim]
     request --> identity[CallerIdentityResolver]
@@ -666,7 +669,7 @@ What must be true:
 ### 6.2 Query ready work
 
 ```mermaid
-flowchart TB
+graph TB
     cli[mind CLI] --> request[MindRequest Query]
     request --> flow[QueryFlow]
     flow --> planner[QueryPlanner]
@@ -687,7 +690,7 @@ What must be true:
 ### 6.3 Import a BEADS task once
 
 ```mermaid
-flowchart TB
+graph TB
     export[bd export import input] --> decoder[ImportDecoder]
     decoder --> request[MindRequest Open]
     request --> open[ItemOpen]
@@ -716,7 +719,7 @@ These should land before declaring the command-line mind usable:
 | `claim_release_handoff_append_activity_records` | activity is automatic and durable |
 | `query_ready_uses_reader_without_writer` | read path cannot mutate state |
 | `mind_store_persists_across_two_cli_invocations` | `mind.redb` is real |
-| `lock_files_are_not_the_source_of_truth` | deleting projection files cannot delete state |
+| `legacy_lock_files_do_not_affect_mind_state` | `operator.lock` / `designer.lock` are ignored by steady-state mind queries |
 | `beads_is_not_read_during_steady_state_query` | BEADS is retired |
 | `request_payload_cannot_supply_actor_or_timestamp` | infrastructure mints identity/time |
 | `trace_phase_that_owns_state_has_impl_actor` | no fake actor planes for stateful work |
@@ -724,67 +727,33 @@ These should land before declaring the command-line mind usable:
 The test style should be weird on purpose: tests should prove the
 architecture path was used, not only that the final reply looks right.
 
-## 8 · Decisions to bring to the user
+## 8 · Closed decisions and remaining questions
 
-### Decision 1 — daemon first
+The daemon, lock-file, and storage-layer decisions are closed:
 
-Resolved after this report first landed:
+- `persona-mind` is daemon-first. The `mind` CLI is a thin client.
+- Lock files are outside the `persona-mind` implementation. They retire at
+  workspace cutover.
+- Mind state is stored in `mind.redb` through mind-owned Sema tables inside
+  `persona-mind`. There is no shared `persona-sema` layer for mind state.
 
-`reports/designer/106-actor-discipline-status-and-questions.md` records the
-user decision: **daemon**. A long-lived `persona-mind` process owns
-`MindRoot`; CLI calls connect as thin clients over local transport and submit
-`signal-persona-mind` frames.
+The remaining questions are implementation-local:
 
-### Decision 2 — retire lock files immediately or keep projections briefly?
-
-Evidence:
-
-- User intent says mind replaces lock files.
-- `protocols/orchestration.md` still says lock files become regenerated
-  projections.
-- Existing agents still coordinate through `tools/orchestrate`.
-
-Options:
-
-| Option | Tradeoff |
+| Question | Why it matters |
 |---|---|
-| no projections in v1 | clean truth model; current agents must switch to `mind` immediately |
-| temporary projections | smoother migration; risks keeping lock files psychologically authoritative |
-
-Recommendation: **temporary read-only compatibility projections only if
-needed**, and name them explicitly as disposable. No new architecture
-should depend on them.
-
-### Decision 3 — where do mind-specific tables live?
-
-Evidence:
-
-- `persona-sema` currently declares umbrella `signal-persona` tables,
-  not `signal-persona-mind` tables.
-- `sema` is the kernel; consumer-specific table layouts belong in a
-  consumer typed layer.
-
-Options:
-
-| Option | Tradeoff |
-|---|---|
-| extend `persona-sema` with mind table set | one Persona storage layer; could grow broad |
-| put `MindTables` in `persona-mind` over `sema` | tighter ownership; less reusable table layer |
-
-Recommendation: **put the first `MindTables` in `persona-mind`** unless
-another component needs to read/write those tables directly. Other
-components should talk to mind through `signal-persona-mind`, not by
-opening its database.
+| Which local transport should the thin CLI use first? | The daemon boundary needs a concrete socket/framing choice. |
+| Which trace phases become real Kameo actors in slice one? | Stateful and failure-bearing planes must not stay as cosmetic trace names. |
+| What is the first stable NOTA projection for `MindRequest` / `MindReply`? | Agents need one command surface before workspace cutover. |
 
 ## 9 · Implementation order
 
 ```mermaid
-flowchart TD
-    text[one NOTA projection for MindRequest and MindReply] --> cli[real mind CLI]
-    cli --> roles[role claim release handoff activity flows]
-    roles --> store[durable MindStore over sema]
-    store --> shim[replace tools orchestrate with shim]
-    shim --> import[BEADS one time import]
+graph TD
+    daemon[persona mind daemon host] --> text[one NOTA projection for MindRequest and MindReply]
+    text --> roles[role claim release handoff activity flows]
+    roles --> store[durable MindStore over mind owned Sema]
+    store --> cutover[workspace cutover to mind CLI]
+    cutover --> import[optional one time BEADS import]
 ```
 
 The first two slices can be tested without committing to the full table
@@ -806,8 +775,9 @@ engineering:
 - implement the `mind` binary;
 - implement role/activity flows;
 - replace in-memory state with durable `mind.redb`;
-- decide the lock-file migration boundary;
+- keep lock-file migration outside the implementation;
 - convert the stateful trace phases into real actors where needed.
 
-Once those land, `tools/orchestrate` can become a compatibility shim
-instead of the operational source of truth.
+Once those land, the workspace can retire `tools/orchestrate` or keep it
+temporarily as an external wrapper over `mind`. It is not part of
+`persona-mind` architecture.

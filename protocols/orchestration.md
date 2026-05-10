@@ -69,11 +69,13 @@ Target invariants:
   one NOTA reply record.
 - The `mind` binary is a thin client. The long-lived `persona-mind` daemon owns
   `MindRoot` and `mind.redb`.
-- `tools/orchestrate` becomes a compatibility shim that translates the current
-  ergonomic commands into the canonical one-record CLI.
-- Durable state lives in `mind.redb` through `persona-sema`.
-- Lock files are transitional compatibility state. They may be read or projected
-  during migration, but they are not the durable truth of the target protocol.
+- If `tools/orchestrate` survives during cutover, it is only an external
+  workspace wrapper that translates the current ergonomic commands into the
+  canonical one-record CLI. It is not a `persona-mind` component.
+- Durable state lives in `mind.redb`, owned by `persona-mind` through its
+  mind-specific Sema layer/table declarations.
+- Lock files are current helper state only. They are not imported, read, or
+  projected by `persona-mind`; they retire at the workspace cutover boundary.
 - Claim, release, and handoff requests create activity records automatically.
 - The mind graph supplies native typed work items, notes, dependencies,
   decisions, aliases, and ready-work queries through the same
@@ -83,9 +85,10 @@ Target invariants:
   Persona↔bd bridge and no dual-write path.
 
 Until that Rust path is implemented and tested, the shell helper remains the
-canonical writer for lock files. Once agents use `mind` directly, lock files
-should disappear as an ownership mechanism rather than becoming a parallel
-state model.
+canonical writer for lock files. The `persona-mind` implementation does not
+need lock-file projection logic. Once agents use `mind` directly, lock files
+disappear as an ownership mechanism rather than becoming a parallel state
+model.
 
 ### Lock-file format
 

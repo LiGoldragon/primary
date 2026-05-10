@@ -27,7 +27,6 @@ stack.
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` | System facts such as focus and prompt-state observations. |
 | `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` | Harness process/session control boundary. |
 | `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` | WezTerm-backed visible/detachable terminal support. |
-| `persona-sema` | `/git/github.com/LiGoldragon/persona-sema` | Persona-facing helpers around Sema as a library. |
 | `sema` | `/git/github.com/LiGoldragon/sema` | Typed database library; not a daemon and not shared storage. |
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
@@ -41,6 +40,15 @@ stack.
 | `nota` | `/git/github.com/LiGoldragon/nota` | NOTA language home. |
 | `nota-codec` | `/git/github.com/LiGoldragon/nota-codec` | NOTA parser/encoder/decoder; no Nexus semantics. |
 | `nota-derive` | `/git/github.com/LiGoldragon/nota-derive` | NOTA derive support. |
+
+## Retired / Cleanup Targets
+
+These repos may still exist in checkouts or flake history, but they are not
+current architecture targets.
+
+| Repository | Path | Status |
+|---|---|---|
+| `persona-sema` | `/git/github.com/LiGoldragon/persona-sema` | Retired abstraction. Sema layers are component-owned: mind Sema lives in `persona-mind`, router Sema lives in `persona-router`, etc. |
 
 ## Adjacent Active Work
 
@@ -68,8 +76,9 @@ the main Persona architecture reset unless the user names them.
   `persona-actor`, and `workspace-actor` language is stale unless a
   current report explicitly reopens that decision.
 - State: Sema is a typed database library. Each component that needs
-  durable state owns its own redb through Sema. There is no shared
-  Sema daemon and no generic store component.
+  durable state owns its own redb and its own Sema layer/table
+  declarations. There is no shared Sema daemon, no generic store
+  component, and no shared `persona-sema` architecture.
 - Wire: Signal is the typed binary communication fabric. Component
   contracts live in dedicated `signal-*` repos.
 - Text: NOTA is the only text syntax. Nexus is typed semantic content

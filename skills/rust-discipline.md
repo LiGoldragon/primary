@@ -25,6 +25,28 @@ the toolchain works*.
 **Behavior lives on types. Domain values are typed. Boundaries take
 and return one object. Errors are enums you implement by hand.**
 
+## CLIs are daemon clients
+
+Command-line interfaces in this workspace are clients. When a tool
+needs durable state, supervision, subscriptions, long-lived actors,
+or shared runtime context, that state lives in a daemon and the CLI
+talks to it. Do not reopen "one-shot CLI owns the runtime" as an
+architecture option unless the user explicitly asks to break this
+rule.
+
+Shape:
+
+- daemon owns the root actor, durable database, subscriptions, and
+  runtime lifecycle;
+- CLI parses one input object, sends a typed request to the daemon,
+  waits for one typed reply, renders it, and exits;
+- tests may use in-process harnesses for speed, but production
+  architecture stays daemon-first.
+
+Example: the Persona command-line mind is `mind` as a thin client to
+the long-lived `persona-mind` daemon. The daemon owns `MindRoot` and
+`mind.redb`; the CLI owns argv/env decoding and reply rendering.
+
 ---
 
 ## Methods on types, not free functions
@@ -635,8 +657,10 @@ For the *how today*, read this workspace's `skills/kameo.md`. For
 testing patterns, see lore's `rust/testing.md` and the worked
 examples at `/git/github.com/LiGoldragon/kameo-testing`.
 
-Plain sync code is fine for one-shot CLIs, build tools, and
-library crates with no concurrent state.
+Plain sync code is fine for stateless one-shot CLIs, build tools,
+and library crates with no concurrent state. If a CLI needs durable
+state, supervision, subscriptions, or shared runtime context, it is
+a daemon client per §"CLIs are daemon clients".
 
 ---
 
@@ -667,7 +691,7 @@ crosses it, and to whom does the other side answer?**
 | In-process: actor ↔ actor, method ↔ method | typed Rust values | The type system is the schema. No serialization until something leaves the process. |
 | Process ↔ process: daemon ↔ harness, IPC, sockets, pipes between Rust components | **rkyv** archives | Zero-copy reads, content-addressable canonical bytes, bytecheck validation. The binary contract is the wire. |
 | Component ↔ disk: queues, transition logs, harness bindings, transcripts, snapshots | **redb** tables of rkyv values | Single embedded store, crash-consistent, snapshot reads, no separate server. |
-| Component ↔ human: CLI invocations, lock-file projections, debug prints, audit dumps | NOTA text projection | Human-readable + git-trackable; projected from the typed record, never the source of truth. |
+| Component ↔ human: CLI invocations, debug prints, audit dumps | NOTA text projection | Human-readable; projected from the typed record, never the source of truth. |
 | Component ↔ legacy external system | the format the legacy demands | Adapters live at the edge. Internally, the component works in typed Rust; external bytes round-trip through one explicit codec at the boundary. |
 
 The rule: **rkyv is the binary contract for everything
@@ -678,8 +702,8 @@ at external boundaries that demand it (legacy APIs).
 ### redb — the durable store
 
 Persistent component state lives in redb: router queues,
-harness bindings, transition logs, lock state in-process,
-anything the running component mutates and re-reads.
+harness bindings, transition logs, coordination state, anything the
+running component mutates and re-reads.
 
 - **Persistent state lives in redb.** Not flat files,
   not JSON files, not bare blobs.
@@ -690,19 +714,19 @@ anything the running component mutates and re-reads.
 
 ```rust
 // Wrong — flat-file log as the durable store
-fn append_lock(path: &Path, lock: &Lock) -> Result<()> {
-    let line = lock.to_text()?;
+fn append_claim(path: &Path, claim: &Claim) -> Result<()> {
+    let line = claim.to_text()?;
     OpenOptions::new().append(true).open(path)?.write_all(line.as_bytes())?;
     Ok(())
 }
 
 // Right — typed record archived with rkyv, stored in redb
-const LOCKS: TableDefinition<&str, &[u8]> = TableDefinition::new("locks");
+const CLAIMS: TableDefinition<&str, &[u8]> = TableDefinition::new("claims");
 
 let txn = self.db.begin_write()?;
 {
-    let mut table = txn.open_table(LOCKS)?;
-    let bytes = rkyv::to_bytes::<rancor::Error>(lock)?;
+    let mut table = txn.open_table(CLAIMS)?;
+    let bytes = rkyv::to_bytes::<rancor::Error>(claim)?;
     table.insert(role.as_str(), &bytes[..])?;
 }
 txn.commit()?;
@@ -831,7 +855,7 @@ shape comes up in review, add the row.
 | `Arc<Mutex<Database>>` shared across actors | Coarse lock around the whole DB | Defeats redb's transaction model; serializes all writers | One actor per logical data domain; pass values, not handles |
 | Blocking work inside a normal actor handler | Handler sleeps, polls, waits on a mutex, runs a command, or performs blocking IO | The actor's mailbox stops receiving pushes; the hidden wait becomes the real lock | Dedicated supervised IO/command/worker actor or actor pool |
 | Public ZST actor noun | `ClaimNormalizer` is empty and exported as the domain actor | The public actor name is a label; verbs drift onto the wrong noun | Kameo's `Self IS the actor` shape: put fields on the actor type, methods on `&mut self`; consumers reach for the typed `ActorRef<ClaimNormalizer>` |
-| Reading a record from text in the daemon | `Lock::from_nota(disk_text)?` inside the running component | The text is a projection, not the source. Drift between in-memory and disk silently | Daemon owns the typed record; lock file is rewritten from the record |
+| Reading a record from text in the daemon | `Record::from_nota(disk_text)?` inside the running component | The text is a projection, not the source. Drift between typed state and disk text silently | Daemon owns the typed record; text is only a boundary projection |
 | Mixed feature set across crates | One crate has `unaligned`, another doesn't | Archives produced by one don't validate in the other; failure is silent (wrong values, not parse error) | Pin the exact rkyv feature string per lore |
 | Reordering struct fields casually | Renaming + reordering in one PR | rkyv archives change layout on field reorder within 0.8 — old data unreadable | Append-only fields; treat any layout change as a coordinated upgrade |
 | `anyhow` / `eyre` at component boundaries | `Result<T, anyhow::Error>` on a `pub fn` | Erases the typed-failure discipline; callers can't pattern-match | crate's own `Error` enum via thiserror |
@@ -905,15 +929,22 @@ lore is *how the tool works*.
 ### The sema-family pattern
 
 The workspace's typed-storage substrate lives in **`sema`**
-(the kernel) plus per-consumer **`<consumer>-sema`** crates
-(the typed layers). Sema is to state what `signal-core` is
-to wire:
+(the kernel) plus component-owned typed layers. Prefer an internal
+module first (`persona-mind/src/tables.rs`, `persona-router/src/tables.rs`,
+etc.). Create a dedicated Sema crate only after reuse is real and its
+architecture has been explicitly named. Do not create broad umbrella
+Sema crates for meta projects just because the meta repo composes
+several components. In particular, `persona` is a meta project today;
+there is no shared `persona-sema` architecture.
+
+Sema is to state what `signal-core` is to wire, but ownership is
+by state-bearing component:
 
 ```
-signal-core             sema
-  ├─ signal-persona       ├─ persona-sema
-  ├─ signal-forge         ├─ forge-sema  (future)
-  └─ signal-arca          └─ ...
+signal-core                 sema
+  ├─ signal-persona-mind      ├─ mind Sema tables in persona-mind
+  ├─ signal-persona-message   ├─ router Sema tables in persona-router
+  └─ signal-persona-harness   └─ harness Sema tables in persona-harness
 ```
 
 `sema` (the kernel) owns: redb file lifecycle, the typed
@@ -921,11 +952,12 @@ signal-core             sema
 `Error` enum, the version-skew guard, and the `Slot(u64)` +
 slot-counter utility.
 
-Each `<consumer>-sema` crate owns: its `Schema` constant
+Each component-owned Sema layer owns: its `Schema` constant
 (table list + version), its typed table layouts, its open
-conventions, its migration helpers. Records' Rust types
-live in the matching `signal-<consumer>` crate, not in
-`<consumer>-sema`.
+conventions, and its migration helpers. Records' Rust types
+live in the matching `signal-*` contract crate when they cross
+a component boundary; purely internal persisted records may live
+inside the component.
 
 **New components consuming sema:** add `sema = "..."` to
 `Cargo.toml`, declare a `Schema` constant, define typed
