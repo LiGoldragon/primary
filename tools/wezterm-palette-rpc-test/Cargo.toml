@@ -1,0 +1,15 @@
+[package]
+name = "wezterm-palette-rpc-test"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+codec = { path = "/git/github.com/wezterm/wezterm/codec" }
+config = { path = "/git/github.com/wezterm/wezterm/config" }
+mux = { path = "/git/github.com/wezterm/wezterm/mux" }
+smol = "2"
+thiserror = "2"
+wezterm-client = { path = "/git/github.com/wezterm/wezterm/wezterm-client" }
+wezterm-term = { path = "/git/github.com/wezterm/wezterm/term" }

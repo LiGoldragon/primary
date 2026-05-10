@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+set -eu
+
+root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+openssl_dev=$(nix eval --raw nixpkgs#openssl.dev.outPath)
+openssl_out=$(nix eval --raw nixpkgs#openssl.out.outPath)
+
+export OPENSSL_INCLUDE_DIR="$openssl_dev/include"
+export OPENSSL_LIB_DIR="$openssl_out/lib"
+export PKG_CONFIG_PATH="$openssl_dev/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+
+exec cargo run --manifest-path "$root/Cargo.toml" -- "$@"

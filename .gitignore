@@ -26,6 +26,7 @@ result-*
 *.swo
 __pycache__/
 *.pyc
+/tools/wezterm-palette-rpc-test/target/
 
 # orchestration role lock files — runtime coordination state, not history
 /operator.lock
