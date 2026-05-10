@@ -318,8 +318,9 @@ Fix: trim it back to the confirmed shape:
 - Sema is a library; each stateful component owns its own redb.
 - Signal contracts carry typed communication between components.
 - NOTA is the only text syntax; Nexus is typed NOTA content.
-- Direct `ractor` is the current actor runtime until an explicit
-  architecture decision changes it.
+- Direct `kameo` is the current actor runtime. `ractor`,
+  `persona-actor`, and `workspace-actor` are stale unless a current
+  architecture report explicitly reopens that decision.
 
 ### A repo has no `skills.md`, and you've just done substantive work in it
 

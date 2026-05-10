@@ -62,10 +62,11 @@ the main Persona architecture reset unless the user names them.
 
 ## Current Truth Pins
 
-- Actor runtime: direct `ractor` today. Actor density is required.
-  A custom actor wrapper or replacement runtime is not current
-  architecture. If the runtime changes later, it changes as an
-  explicit architecture decision, not through anticipatory adapters.
+- Actor runtime: direct `kameo` today. Actor density is required:
+  runtime roots are actors, public actor nouns carry data, and
+  topology/trace tests prove real mailbox paths. Direct `ractor`,
+  `persona-actor`, and `workspace-actor` language is stale unless a
+  current report explicitly reopens that decision.
 - State: Sema is a typed database library. Each component that needs
   durable state owns its own redb through Sema. There is no shared
   Sema daemon and no generic store component.
