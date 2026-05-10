@@ -596,11 +596,19 @@ actor type IS the data: `pub struct ClaimNormalize { fields … }`,
 on `&mut self`. The no-public-ZST-actor rule is naturally satisfied
 because the actor type carries its own fields.
 
-**`ActorRef<A>` is the public consumer surface.** Kameo's `ActorRef`
-is statically typed against the actor; consumers call
-`actor_ref.ask(msg).await` or `actor_ref.tell(msg).await` directly.
-A wrapping `*Handle` newtype is appropriate only when a crate wants
-to hide Kameo from its downstream surface — never as boilerplate.
+**`ActorRef<A>` is the public consumer surface — including for
+library users.** Kameo's `ActorRef<A>` is statically typed against
+the actor; consumers call `actor_ref.ask(msg).await` /
+`actor_ref.tell(msg).await` directly, and the type system rejects
+wrong messages at the call site. There is no class of misuse a
+`*Handle` newtype prevents.
+
+Re-export `kameo::actor::ActorRef` from your crate root if it
+makes consumer imports cleaner. Don't wrap it as a defensive
+"hide-the-runtime" measure — that's the same speculative
+abstraction shape operator/103 retired with the
+`persona-actor` / `workspace-actor` hallucination. See
+`skills/kameo.md` §"ActorRef<A> is the public consumer surface".
 
 **Never `tell` a fallible handler unless `on_panic` is overridden.**
 A handler whose `Reply = Result<_, _>` returning `Err(_)` to a

@@ -77,22 +77,25 @@ flowchart LR
 An actor-heavy system should look over-named to conventional Rust
 eyes. That is expected.
 
-| Plane | Actor shape |
+| Plane | Actor noun |
 |---|---|
-| Parse one CLI record with diagnostics | `NotaDecodeActor` |
-| Identify caller | `CallerIdentityActor` |
-| Add actor identity to request | `EnvelopeActor` |
-| Route request by type | `RequestDispatchActor` |
-| Normalize a claim path | `ClaimNormalizeActor` |
-| Check claim conflicts | `ClaimConflictActor` |
-| Mint item identity | `IdMintActor` |
-| Mint store time | `ClockActor` |
-| Append event | `EventAppendActor` |
-| Commit state | `SemaWriterActor` |
-| Read state | `SemaReadActor` |
-| Maintain ready-work view | `ReadyWorkViewActor` |
-| Shape query result | `QueryResultShapeActor` |
-| Encode reply | `NotaReplyEncodeActor` |
+| Parse one CLI record with diagnostics | `NotaDecoder` |
+| Identify caller | `CallerIdentityResolver` |
+| Add actor identity to request | `EnvelopeBuilder` |
+| Route request by type | `RequestDispatcher` |
+| Normalize a claim path | `ClaimNormalizer` |
+| Check claim conflicts | `ClaimConflictDetector` |
+| Mint item identity | `IdMint` |
+| Mint store time | `Clock` |
+| Append event | `EventAppender` |
+| Commit state | `SemaWriter` |
+| Read state | `SemaReader` |
+| Maintain ready-work view | `ReadyWorkView` |
+| Shape query result | `QueryResultShaper` |
+| Encode reply | `NotaReplyEncoder` |
+
+(Names follow `skills/kameo.md` §"Naming actor types": the type
+IS the actor; the role describes what it does; no `Actor` suffix.)
 
 These actors may be small. Some may be short-lived per request.
 Some may be long-lived singletons. Some may become pools. The
@@ -125,12 +128,12 @@ Replace blocking with another actor:
 
 | Blocking smell | Actor-shaped replacement |
 |---|---|
-| Handler runs a slow command | `CommandActor` or `CommandPoolActor` owns process execution. |
-| Handler waits for file IO | `FileReadActor` / `FileWriteActor` owns that IO. |
-| Handler waits for database commit | Send a typed intent to `SemaWriterActor`; receive a reply. |
+| Handler runs a slow command | `Command` or `CommandPool` owns process execution. |
+| Handler waits for file IO | `FileReader` / `FileWriter` owns that IO. |
+| Handler waits for database commit | Send a typed intent to `SemaWriter`; receive a reply. |
 | Handler sleeps before retry | Subscribe to the producer event; no sleep. |
 | Handler locks shared state | Send a message to the actor that owns that state. |
-| Handler does expensive CPU transform | `TransformWorkerActor` pool owns that work. |
+| Handler does expensive CPU transform | `TransformWorker` pool owns that work. |
 
 The rule is not "nothing ever takes time." The rule is that time
 belongs to a named actor whose mailbox and supervision make the wait
@@ -150,8 +153,8 @@ State has one owner:
 
 ```mermaid
 flowchart LR
-    owner["StateOwnerActor"] --> state["private State"]
-    caller["CallerActor"] -->|typed message| owner
+    owner["StateOwner"] --> state["private State"]
+    caller["Caller"] -->|typed message| owner
 
     bad_a["Actor A"] -. forbidden .-> lock["Arc<Mutex<State>>"]
     bad_b["Actor B"] -. forbidden .-> lock
@@ -170,15 +173,15 @@ belongs in a tree.
 
 ```mermaid
 flowchart TB
-    root["RootSupervisorActor"]
-    root --> ingress["IngressSupervisorActor"]
-    root --> domain["DomainSupervisorActor"]
-    root --> commit["CommitSupervisorActor"]
-    root --> view["ViewSupervisorActor"]
+    root["RootSupervisor"]
+    root --> ingress["IngressSupervisor"]
+    root --> domain["DomainSupervisor"]
+    root --> commit["CommitSupervisor"]
+    root --> view["ViewSupervisor"]
 
-    domain --> claim["ClaimSupervisorActor"]
-    claim --> normalize["ClaimNormalizeActor"]
-    claim --> conflict["ClaimConflictActor"]
+    domain --> claim["ClaimSupervisor"]
+    claim --> normalize["ClaimNormalizer"]
+    claim --> conflict["ClaimConflictDetector"]
 ```
 
 Each supervisor needs a typed failure policy:
@@ -214,10 +217,11 @@ Kameo native shape:
 - domain methods live on the actor type directly (`impl ClaimNormalize { fn validate_and_collapse(&mut self, …) }`), not on a ZST namespace;
 - per-kind `impl Message<Verb> for ClaimNormalize` for each accepted
   message — no monolithic `Msg` enum;
-- the public consumer surface is `ActorRef<ClaimNormalize>` (Kameo
-  ActorRefs are statically typed; no extra `*Handle` wrapper needed
-  unless the consumer wants to hide Kameo from a downstream crate
-  surface);
+- the public consumer surface is `ActorRef<ClaimNormalize>` directly;
+  Kameo's `ActorRef<A>` is statically typed against the actor, so
+  no `*Handle` wrapper is needed — including for library users
+  (see `skills/kameo.md` §"ActorRef<A> is the public consumer
+  surface");
 - supervision is declarative: `ClaimNormalize::supervise(&parent, args).restart_policy(...).restart_limit(n, dur).spawn().await`.
 
 For actor-dense systems:
@@ -242,8 +246,9 @@ For actor-dense systems:
   `Result::Err` from a `tell`'d handler crashes the actor by default
   (see `skills/kameo.md` §"The tell-of-fallible-handler trap").
 
-The actor's public consumer surface is its handle type. Consumers
-start or call the handle; they do not construct actor internals.
+The actor's public consumer surface is `ActorRef<MyActor>`.
+Consumers spawn the actor (or are handed an `ActorRef`) and call
+`ask` / `tell` directly. They do not construct actor internals.
 
 ---
 

@@ -264,6 +264,61 @@ types"; this section is the cross-language form.
 
 ---
 
+## Anti-pattern: framework-category suffixes on type names
+
+**A type's name should describe what it IS or what role it plays
+— never the framework category it falls into.** A `Counter` that
+implements the `Actor` trait IS an actor; calling it `CounterActor`
+adds the category to the name without adding meaning.
+
+```rust
+// Wrong — framework-category suffix
+pub struct CounterActor { count: i64 }
+pub struct IncMessage { amount: i64 }
+pub struct ClaimNormalizerActor { … }
+pub struct SubmitMessage { … }
+
+// Right — name says what the type IS / does
+pub struct Counter { count: i64 }
+pub struct Inc { amount: i64 }
+pub struct ClaimNormalizer { … }
+pub struct Submit { … }
+```
+
+The discriminator: **does the suffix describe the type's role, or
+does it tag the framework category the type happens to fall into?**
+Role-shaped suffixes stay; category-shaped suffixes go.
+
+| Suffix is wrong (framework category) | Suffix is fine (descriptive role) |
+|---|---|
+| `*Actor` | `*Supervisor` (this type supervises children) |
+| `*Message`, `*Msg` | `*Resolver` (this type resolves something) |
+| `*Handler`, `*Handle` | `*Decoder`, `*Encoder` (this type decodes/encodes) |
+| `*Listener`, `*Subscriber` (when describing trait participation) | `*Tracker`, `*Cache`, `*Ledger` (this type holds that state) |
+| `*Object`, `*Type`, `*Class` | `*Builder`, `*Factory` (when actually building things) |
+
+The rule's deeper purpose: type names are read at every use site,
+and a category tag forces the reader to mentally strip it ("oh,
+`CounterActor` — that's a Counter that's an Actor — well it's
+always going to be an Actor in this codebase, so just Counter").
+That mental strip is paid every time. Drop the tag; let the type
+name carry meaning.
+
+**Why LLM agents are particularly prone to this:** category tags
+"feel safe" (they document the framework participation visibly,
+match common tutorial conventions, look self-explanatory). Same
+procrastination pressure as crate-name prefixes — the agent reaches
+for the shallower disambiguator instead of doing the harder work
+of finding the right role-shaped name.
+
+For the actor-specific application of this rule (with worked
+examples and the historical context — ractor's behavior-marker
++ State split made the suffix briefly defensible; Kameo's
+`Self`-IS-the-actor shape removed even that), see this workspace's
+`skills/kameo.md` §"Naming actor types".
+
+---
+
 ## Companion rule
 
 Pairs with this workspace's `skills/beauty.md`: a name that

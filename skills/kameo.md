@@ -115,6 +115,97 @@ naturally satisfied: the actor type is the data-bearing noun.
 
 ---
 
+## Naming actor types
+
+**Name the actor by what it IS or what role it plays — never by
+the framework category it falls into.** `Counter` is an actor;
+`CounterActor` is `Counter` plus framework-category ceremony.
+
+```rust
+// Right
+pub struct ClaimNormalizer { ... }
+pub struct MindRoot { ... }
+pub struct StoreSupervisor { ... }
+pub struct Counter { count: i64 }
+
+// Wrong — framework-category suffix
+pub struct ClaimNormalizerActor { ... }
+pub struct MindRootActor { ... }
+pub struct StoreSupervisorActor { ... }
+pub struct CounterActor { ... }
+```
+
+The `Actor` suffix is the same shape as `Type` / `Class` /
+`Object` suffixes that ESSENCE retired. It names the framework
+category the type happens to fall into — not the type's role or
+function. The trait impl (`impl Actor for Counter`) makes the
+framework participation explicit; the type name should describe
+what the type IS.
+
+This applies at every level of the actor surface:
+
+| Concept | Wrong | Right |
+|---|---|---|
+| Actor type | `ClaimNormalizerActor` | `ClaimNormalizer` |
+| Actor type | `MindRootActor` | `MindRoot` |
+| Actor type | `CounterActor` | `Counter` |
+| Message type | `IncMessage`, `IncMsg` | `Inc` |
+| Message type | `SubmitMessage` | `Submit` (or `SubmitClaim` if disambiguation needed) |
+| Reply type (when needed) | `SubmitReply` | `SubmitReceipt` |
+| Handle type | `CounterHandle` (when wrapping `ActorRef<Counter>` for no reason) | use `ActorRef<Counter>` directly |
+
+**Descriptive role suffixes earn their place** — they name what
+the type DOES, not what category it falls into:
+
+- `Supervisor` (this type supervises children)
+- `Normalizer`, `Resolver`, `Validator`, `Decoder`, `Encoder`,
+  `Dispatcher` (this type performs that named function)
+- `Tracker`, `Cache`, `Ledger`, `Store` (this type holds that kind
+  of state)
+
+These are nouns with meaning. `Actor` is a category tag.
+
+The historical drift toward `*Actor` / `*Message` suffixes came
+from frameworks like ractor where the actor's behavior marker was
+a separate ZST from its `State` — the suffix disambiguated. In
+Kameo, where `Self` IS the actor, that disambiguation is moot and
+the suffix becomes the workspace's "feels too verbose" trap (per
+`ESSENCE.md` §"Naming"). Drop the suffix from the start.
+
+---
+
+## ActorRef<A> is the public consumer surface
+
+Kameo's `ActorRef<A>` is statically typed against the actor; the
+message types it accepts are guaranteed by `impl Message<T> for A`
+at compile time. There is no class of misuse a `*Handle` newtype
+prevents — sending the wrong message is a type error at the call
+site.
+
+**Export `ActorRef<A>` as the public consumer surface, including
+for library users.** Library consumers spawn the actor (or are
+handed an `ActorRef<A>`) and call `actor_ref.ask(msg).await` /
+`actor_ref.tell(msg).await` directly. Re-export `kameo::actor::ActorRef`
+from the crate root if it makes consumer imports cleaner; that's
+the limit of the wrapping needed.
+
+Don't wrap `ActorRef<A>` in a `*Handle` newtype as a defensive
+measure to "hide Kameo." That's the same speculative-abstraction
+shape that produced the `persona-actor` / `workspace-actor`
+hallucination operator/103 retired — wrapping a runtime in case
+we want to swap it. We just spent a wave switching FROM ractor TO
+Kameo precisely BECAUSE we hadn't wrapped — the migration was
+bounded. Don't pre-pay the wrapper cost for a swap that may never
+come.
+
+The narrow case where a wrapper IS appropriate: the crate genuinely
+exposes a different abstraction (e.g., a builder that returns an
+`ActorRef` after async setup) and the wrapper is a constructor
+type, not a runtime-hider. In that case, the wrapper has its own
+role-shaped name (`ClaimNormalizerBuilder`), not `*Handle`.
+
+---
+
 ## Module map (where each thing lives)
 
 The single source of confusion in Kameo's surface is the split
