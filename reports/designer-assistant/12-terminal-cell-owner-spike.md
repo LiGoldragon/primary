@@ -24,13 +24,15 @@ flowchart LR
 ```
 
 The prototype repo is `/git/github.com/LiGoldragon/terminal-cell-lab`.
-It proves three witnesses:
+It proves five witnesses:
 
 | Witness | Result |
 |---|---|
 | `detached_output_is_replayed_to_late_subscriber` | Passes. Output emitted before any subscription is replayed to a late subscriber. |
 | `programmatic_input_uses_the_same_pty_input_port` | Passes. Programmatic `/usage\r` bytes go through the PTY input path and are observed by the child. |
 | `screen_projection_is_derived_from_transcript` | Passes. A `vt100` projection is built from transcript bytes, not from viewer state. |
+| `agent_terminal_accepts_prompt_and_terminal_cell_reads_response` | Passes. A deterministic agent-like terminal process accepts an injected prompt and the terminal cell reads its response from transcript. |
+| `agent_terminal_usage_probe_is_prompt_input_not_terminal_semantics` | Passes. A `/usage\r` probe is carried as raw PTY input and interpreted only by the agent fixture. |
 
 Verification:
 
@@ -38,6 +40,8 @@ Verification:
 - `nix flake check` passes as the pure build/fmt/clippy gate.
 - `nix run .#session-witnesses` passes as the host-visible stateful PTY
   witness.
+- `nix run .#agent-terminal-witness` passes as the deterministic agent-dialogue
+  PTY witness.
 
 ## Why This Is Possible
 
@@ -91,6 +95,7 @@ Current prototype nouns:
 | `TranscriptSubscription` | Replay from a sequence plus live broadcast receiver. |
 | `TerminalInput` | Raw bytes plus provenance (`Viewer` or `Programmatic`). |
 | `ScreenProjection` | `vt100` projection derived from transcript bytes. |
+| `agent-terminal-fixture` | Deterministic agent-like terminal binary used to prove prompt/response and usage-probe dialogue through the PTY. |
 
 The prototype uses blocking OS threads for PTY read and child wait. Those
 threads do not own state; they push typed messages into the `TerminalCell`
@@ -146,4 +151,3 @@ Continue with a production `persona-terminal` split once the operator is ready:
    abduco interop as viewer/adapters.
 4. Add the transcript persistence and sequence replay witnesses before making
    it the live harness owner.
-
