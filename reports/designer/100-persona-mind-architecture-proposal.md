@@ -54,28 +54,43 @@ implementation contracts for those actors, not new structure.
 Current contract has `DisplayId(String)`
 (`/git/github.com/LiGoldragon/signal-persona-mind/src/lib.rs:441`)
 without a generation spec. Operator/101 §4 names `IdMintActor`
-under `StoreSupervisorActor` as the source of minted IDs;
-this is its algorithm:
+under `StoreSupervisorActor` as the source of minted IDs.
+The data lives on `IdMintState` (the actor's typed state per
+the four-piece-per-file shape in
+`~/primary/skills/rust-discipline.md` §"Actors"); the verb is
+a method on it:
 
 ```rust
-fn mint_display_id(item: StableItemId, existing: &DisplayIndex) -> DisplayId {
-    // base32-crockford encoding of BLAKE3(StableItemId).
-    // Crockford avoids 0/O 1/I/l confusion — important for
-    // human transcription and LLM tokenisation.
-    let full = base32_crockford(blake3(item.as_bytes()));
-    // Try lengths 3, 4, 5, ... until uncollided.
-    for len in 3.. {
-        let candidate = DisplayId::new(&full[..len]);
-        if !existing.contains(&candidate) {
-            return candidate;
-        }
+impl IdMintState {
+    /// Mint a fresh DisplayId for `item`, extending the prefix
+    /// length on collision against the in-memory index. The
+    /// new alias is recorded in `self.display_index` before
+    /// the method returns, so subsequent calls in the same
+    /// transaction see it.
+    pub fn mint_display_id(&mut self, item: &StableItemId) -> DisplayId {
+        // base32-crockford encoding of BLAKE3(StableItemId).
+        // Crockford avoids 0/O 1/I/l confusion — important
+        // for human transcription and LLM tokenisation.
+        let full = self.encode(item);
+        (3..)
+            .map(|len| DisplayId::new(&full[..len]))
+            .find(|candidate| !self.display_index.contains(candidate))
+            .map(|candidate| {
+                self.display_index.insert(candidate.clone());
+                candidate
+            })
+            .expect("BLAKE3 has 256 bits; collision exhaustion impossible")
     }
-    unreachable!("BLAKE3 has 256 bits; collision exhaustion impossible");
 }
 ```
 
-Examples (illustrative): `9iv`, `kxa`, `ffj` (3-char default);
-`9ivx` (collision-extended).
+`IdMintState::encode` (also a method) wraps the BLAKE3 +
+base32-crockford pipeline; both are calls into external
+crates (`blake3`, a base32 helper) — no project-side free
+functions in the algorithm.
+
+Examples of minted DisplayIds (illustrative): `9iv`, `kxa`,
+`ffj` (3-char default); `9ivx` (collision-extended).
 
 No workspace prefix on the wire (`9iv`, not `mind-9iv`, not
 `primary-9iv`). Imported BEADS aliases (`primary-9iv` style)
@@ -83,11 +98,12 @@ preserve the old token via `ExternalAlias` records;
 resolution goes through the `ALIASES` index, not the
 `DISPLAY_IDS` index.
 
-`IdMintActor` also mints `StableItemId` (BLAKE3 of
-`workspace_salt || EventSeq || hash(payload)`),
-`OperationId`, and `EventSeq` (from the `META` counter).
+`IdMintState` also owns the methods that mint `StableItemId`
+(BLAKE3 of `workspace_salt || EventSeq || hash(payload)`),
+`OperationId`, and `EventSeq` (read from the `META` counter).
 Operator/101 §6 lists *"item IDs, display IDs, imported-alias
-records"* as store-minted; `IdMintActor` is the single owner.
+records"* as store-minted; `IdMintActor`'s state is the
+single owner.
 
 ---
 
