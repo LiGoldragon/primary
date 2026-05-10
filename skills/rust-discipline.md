@@ -129,11 +129,13 @@ ZSTs earn their keep when they carry **type-level information**
 rather than pretending to carry runtime state:
 
 - **`PhantomData<T>`** and other generic-parameter trackers.
-- **Marker types required by external frameworks** — `ractor`
-  actor behaviour markers, sealed-trait gates, an `Iterator` impl
-  on a unit struct that genuinely has no carried state. The ZST
-  has *only* trait-impl methods that delegate to a data-bearing
-  partner type; never inherent methods doing real work.
+- **Marker types required by external frameworks** — sealed-trait
+  gates or an `Iterator` impl on a unit struct that genuinely has no
+  carried state. The ZST has *only* trait-impl methods that delegate
+  to a data-bearing partner type; never inherent methods doing real
+  work. For actors, the only tolerated ZST is framework adapter glue
+  hidden inside the actor wrapper crate; workspace actor nouns carry
+  data.
 - **Type-level enum variants** in trait-encoded state machines,
   where the unit struct *is* the state and the type system
   enforces transitions.
@@ -549,12 +551,14 @@ Callers can no longer pattern-match on what went wrong.
 
 ## Actors: logical units with ractor
 
-When the daemon grows enough concurrent state to need an actor
-framework, the reason is **logical cohesion, coherence, and
-consistency** — not performance. An actor is the unit you reach
-for when you want to model a coherent component: it owns its
-state, exposes a typed message protocol, and has a defined
-lifecycle. The framework is `ractor`.
+When a Rust component is a daemon, state engine, router,
+watcher, delivery engine, database owner, or long-lived service,
+read this workspace's `skills/actor-systems.md` before writing
+the runtime. The reason to use actors is **logical cohesion,
+coherence, and consistency** — not performance. An actor is the
+unit you reach for when you want to model a coherent plane of
+logic: it owns state, exposes a typed message protocol, and has
+a defined lifecycle. The framework is `ractor`.
 
 - **Messages are typed.** Each actor's message type is its own
   enum, one variant per request kind. No untyped channels.
@@ -565,36 +569,44 @@ lifecycle. The framework is `ractor`.
 - **Supervision is recursive.** An actor that spawns sub-actors
   supervises them. Failures escalate; the parent decides restart
   vs shutdown. No detached tasks.
-- **Use actors for components, not for chores.** A function that
-  awaits an HTTP call is a method, not an actor. An actor exists
-  because the *concept* it models warrants its own state and
-  protocol.
+- **Use actors for logical planes, even small ones.** A plane that
+  parses, routes, validates, mints identity, commits, reads,
+  shapes replies, or performs IO deserves an actor when it is part
+  of a long-lived component. Smallness is not a reason to collapse
+  the actor; the named boundary is the correctness mechanism.
+- **Handlers do not block.** An actor handler that sleeps, polls,
+  waits on a lock, runs a slow process, performs blocking IO, or
+  does long CPU work has recreated a hidden lock. Move that wait
+  into its own supervised actor or worker-pool actor and send it a
+  typed message.
+- **Actor traces are architecture witnesses.** Important request
+  paths should be testable as actor sequences: parse actor, caller
+  actor, dispatcher actor, domain actor, store actor, view actor,
+  reply actor. If the trace can omit a required actor and tests
+  still pass, the tests are not architectural-truth tests.
 
-**Ractor is the default** for any component with state and a
-message protocol. The per-actor overhead is negligible on modern
-hardware, and the discipline (typed messages, owned state,
-supervision trees) pays back immediately — you never end up
-retrofitting concurrency later. Ractor pulls tokio in; that's
-acceptable everywhere — for daemons and structured services,
-tokio via ractor is just the runtime.
+**Ractor is the runtime default**, not the modeling surface. The
+workspace actor noun is data-bearing: `ClaimNormalize` carries its
+configuration, in-flight requests, metrics, child handles, and other
+qualities. It constructs itself from typed arguments and handles
+messages through methods on `Self`. If a ractor ZST is needed, it is
+private framework glue inside the actor adapter, not the domain
+actor.
 
-**Every actor pairs with a `*Handle`.** The four-piece-per-file
-shape (`Actor` ZST, `State`, `Arguments`, `Message`) is the
-actor's *internal* surface; the `*Handle` struct
-(`EngineHandle`, `SupervisorHandle`, `ReaderHandle`) is its
-*consumer* surface. The Handle owns the spawn result
-(`ActorRef + JoinHandle`) and exposes `start(Arguments)`.
-Consumers reach for `*Handle::start`, never bare
-`Actor::spawn`. The root daemon's `*Handle::start` is the only
-place bare `Actor::spawn` is called; every other spawn happens
-inside a parent's `pre_start` via `Actor::spawn_linked`.
+**Every actor pairs with a `*Handle`.** The actor's consumer surface
+is a typed handle (`EngineHandle`, `SupervisorHandle`,
+`ReaderHandle`). The handle owns the spawn result and exposes the
+typed start / ask / tell surface. Consumers reach for the handle,
+never bare ractor spawn. The root daemon handle is the only place
+runtime-root spawn happens; every other spawn happens inside a
+parent or actor-wrapper supervision path.
 
-For the *how* — the per-file four-piece template,
-perfect-specificity messages, the `*Handle` consumer surface,
-supervision, self-cast loops, pool initialization, and the
-sync-façade pattern — see lore's `rust/ractor.md`. For testing
-patterns (sync façade on State, two-process integration via
-`CARGO_BIN_EXE_*`), see lore's `rust/testing.md`.
+For the *how* today, read lore's `rust/ractor.md`, but treat its
+raw ractor template as framework reference, not the domain-facing
+shape. Persona-facing code uses data-bearing actor nouns, typed
+messages, typed handles, supervision, self-cast loops only when the
+actor owns the loop, and pool initialization through supervisors.
+For testing patterns, see lore's `rust/testing.md`.
 
 Plain sync code is fine for one-shot CLIs, build tools, and
 library crates with no concurrent state.
@@ -790,6 +802,8 @@ shape comes up in review, add the row.
 | NOTA text on the inter-component wire | Daemon ↔ daemon over UDS using NOTA records | NOTA is for human/CLI projection; using it inter-process means re-parsing canonical text in the hot path | rkyv frames; NOTA stays the CLI/lock-file form |
 | Storage actor as namespace | `StorageActor` that owns the redb handle and answers "store this" / "fetch that" for everyone | Verb-shaped; the actor owns *storing*, not domain data; each domain actor should own its tables | Each domain actor opens its own tables on the shared `Database` |
 | `Arc<Mutex<Database>>` shared across actors | Coarse lock around the whole DB | Defeats redb's transaction model; serializes all writers | One actor per logical data domain; pass values, not handles |
+| Blocking work inside a normal actor handler | Handler sleeps, polls, waits on a mutex, runs a command, or performs blocking IO | The actor's mailbox stops receiving pushes; the hidden wait becomes the real lock | Dedicated supervised IO/command/worker actor or actor pool |
+| Public ZST actor noun | `ClaimNormalize` is empty and the real data lives in a separate state type | The actor type is a label; verbs drift onto the wrong noun | Data-bearing actor type plus private framework adapter if ractor needs one |
 | Reading a record from text in the daemon | `Lock::from_nota(disk_text)?` inside the running component | The text is a projection, not the source. Drift between in-memory and disk silently | Daemon owns the typed record; lock file is rewritten from the record |
 | Mixed feature set across crates | One crate has `unaligned`, another doesn't | Archives produced by one don't validate in the other; failure is silent (wrong values, not parse error) | Pin the exact rkyv feature string per lore |
 | Reordering struct fields casually | Renaming + reordering in one PR | rkyv archives change layout on field reorder within 0.8 — old data unreadable | Append-only fields; treat any layout change as a coordinated upgrade |

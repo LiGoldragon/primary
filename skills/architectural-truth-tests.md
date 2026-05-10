@@ -83,6 +83,9 @@ Witnesses, by category:
 | `compile-fail` tests (`trybuild` or similar) | local duplicate types, string shortcuts, missing trait contracts |
 | Fake actor handles | direct method calls disguised as actor code |
 | Typed event traces (recorder actor) | wrong ordering of effects (e.g. push-before-commit) |
+| Actor topology manifest | missing actors, collapsed phases, unsupervised children |
+| Actor trace pattern | request bypasses a required actor plane |
+| Forbidden actor-edge trace | query writes, CLI opens database, domain actor bypasses store actor |
 | redb fixture files (golden) | schema/version lies; missing table writes |
 | rkyv byte fixtures (golden) | incompatible wire or disk encoding |
 | Nix-chained derivations (next §) | runtime memory faking what should be filesystem |
@@ -204,6 +207,9 @@ step B fails. The test names the failure as
 | Prompt guard blocks injection | Nonempty prompt fact → `DeliveryBlocked(PromptOccupied)` and **zero** terminal-input frames. |
 | Focus guard blocks injection | Focused target → `DeliveryBlocked(HumanOwnsFocus)` and **zero** terminal-input frames. |
 | Actor model is real | Router test communicates through actor handles/mailboxes only; direct method calls aren't part of the public API (compile-fail test against the bypass attempt). |
+| Actor density is real | Runtime topology contains the named phase actors from the architecture manifest; a request trace must pass through each required actor in order. |
+| Actor handler does not block | Failure-injection actor holds an IO/command/clock plane; domain actor mailbox remains responsive while that plane waits. |
+| Actor nouns carry data | Static or compile-time witness rejects public empty actor marker types; adapter ZSTs are private framework glue only. |
 
 ---
 
@@ -221,16 +227,54 @@ the witness exists.
 
 Examples:
 
-```rust
-#[test]
-fn message_cannot_persist_without_persona_sema() { … }
+- `message_cannot_persist_without_persona_sema`
+- `router_cannot_deliver_without_commit`
+- `injection_cannot_happen_without_focus_observation`
+- `claim_cannot_commit_without_conflict_actor`
+- `query_cannot_touch_sema_writer`
+- `handler_cannot_block_mailbox`
+- `claim_normalizer_cannot_be_empty_marker`
 
-#[test]
-fn router_cannot_deliver_without_commit() { … }
+When the body needs to teach structure, put the body on a
+fixture method. The `#[test]` wrapper only calls the fixture.
 
-#[test]
-fn injection_cannot_happen_without_focus_observation() { … }
+---
+
+## Actor-density tests
+
+When an architecture says a component is actor-based, behavior
+tests are not enough. The tests must prove that the expected actor
+planes exist and were used.
+
+```mermaid
+flowchart LR
+    manifest["ActorManifest"] --> runtime["running actor tree"]
+    runtime --> dump["topology dump"]
+    dump --> topology_test["topology test"]
+
+    request["typed request"] --> trace["ActorTrace"]
+    trace --> pattern["required actor sequence"]
+    pattern --> trace_test["trace-pattern test"]
 ```
+
+Use these witnesses:
+
+| Rule | Witness |
+|---|---|
+| Actor exists | topology dump contains the actor path |
+| Actor is supervised | topology dump shows the expected parent |
+| Request used actor | trace contains actor received/replied events |
+| Query stayed read-only | trace contains read actors and excludes writer actors |
+| Mutation used store actor | trace contains writer, event append, and commit actors |
+| Handler did not block | while one plane actor waits, sibling request actor still replies |
+| No hidden shared lock | static scan rejects `Arc<Mutex<...>>` ownership between actors |
+| Actor noun carries qualities | compile-time or static witness rejects public empty actor structs |
+
+The failure mode to catch is "one actor with helper methods." If
+the architecture names `ClaimNormalizeActor` and
+`ClaimConflictActor`, a single `ClaimActor` with private helper
+methods is not equivalent. The topology and trace tests should fail
+that implementation.
 
 ---
 
@@ -246,6 +290,9 @@ fn injection_cannot_happen_without_focus_observation() { … }
 | "Schema version is checked" | golden redb fixtures (one matching, one mismatched) |
 | "Component A doesn't directly call C" | compile-fail test on the direct call + cargo metadata exclusion |
 | "Actor X holds state Y" | snapshot the actor's `State` struct after stimulus |
+| "Every logical plane is an actor" | topology manifest + runtime topology dump |
+| "Request went through actor X" | ordered actor trace pattern |
+| "Actor handler does not block" | responsiveness test with blocked plane actor and live sibling actor |
 
 ---
 
@@ -290,6 +337,8 @@ This pairs with:
   lifted from there.
 - `~/primary/skills/rust-discipline.md` §"Actors" — fake
   actor handles + sync-façade-on-State pattern.
+- `~/primary/skills/actor-systems.md` — actor-density,
+  blocking-handler, topology, and trace rules.
 - `~/primary/repos/lore/rust/testing.md` — `CARGO_BIN_EXE_*`
   for two-process integration tests.
 - `~/primary/repos/lore/nix/integration-tests.md` — chained

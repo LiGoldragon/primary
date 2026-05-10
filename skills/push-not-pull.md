@@ -43,6 +43,12 @@ channel; nothing in the actor model requires polling. In
 databases with change feeds, subscribe to the feed. In UIs
 over a backing store, the store emits change events.
 
+An actor handler that blocks has also violated push discipline:
+while it waits, the mailbox cannot accept the next pushed fact.
+Split the wait into its own actor or worker-pool actor. The
+domain actor sends a typed request and returns to its mailbox; the
+IO/command/clock actor replies when the producer has an event.
+
 ## Subscription contract
 
 Every push subscription emits the producer's current state
@@ -122,6 +128,10 @@ Patterns that smell ok but are actually polling:
 - **A consumer "ticker" that drives reconciliation.**
   Polling. Replace with subscription + reactive
   reconciliation triggered by events.
+- **An actor handler that sleeps or blocks until something
+  changes.** Polling in actor clothing. Replace with a
+  subscription or a dedicated plane actor that receives a pushed
+  completion event.
 - **"Check every poll-interval, debounce flickers."** The
   debounce is hiding the polling. Replace with the
   push-event source.
@@ -163,3 +173,6 @@ nothing to do.
 - this workspace's `skills/micro-components.md` —
   components communicate via subscription primitives, not
   by polling each other.
+- this workspace's `skills/actor-systems.md` — actor
+  handlers must not block their mailboxes; blocking work gets
+  its own supervised actor plane.

@@ -220,6 +220,18 @@ is conceptually a method on `a` even though the syntax is
 top-level. Python follows it via `class … def …`. The discipline
 is universal even when the syntax varies.
 
+### Actor frameworks
+
+Actor frameworks sometimes force a behavior-marker type whose only
+job is satisfying the framework's trait shape. Do not let that leak
+into the domain model. The actor noun still carries the actor's
+data and methods; the framework marker is private adapter glue.
+
+In Persona, `ClaimNormalize` should be the data-bearing actor with
+fields, construction, and message-handling behavior. A ractor
+adapter may exist underneath it, but the adapter is not the noun and
+must not become the place where domain verbs live.
+
 ---
 
 ## What "find the noun" actually looks like
