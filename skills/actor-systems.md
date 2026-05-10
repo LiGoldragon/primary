@@ -199,6 +199,26 @@ or a supervised worker pool.
 
 ---
 
+## Runtime roots are actors
+
+A daemon, service, router, watcher, database owner, or runtime root
+is an actor. A struct that merely owns several `ActorRef<_>` values
+and exposes convenience methods is a hidden non-actor owner; it
+recreates the wrapper shape this discipline exists to remove.
+
+The public surface for an actor runtime is `ActorRef<RuntimeRoot>`
+or `ActorRef<ServiceRoot>` directly. Startup, child spawning,
+shutdown, and child-stop policy belong to that root actor's
+lifecycle hooks or typed mailbox messages. If a root owns child
+actor refs, the root carries those refs as actor state and handles
+requests through its mailbox.
+
+Tests must make this boundary falsifiable: a topology or
+forbidden-edge test should fail if a runtime root regresses into a
+non-actor owner around actor refs.
+
+---
+
 ## Rust shape
 
 The workspace runtime default is **`kameo` 0.20**. The actor type IS
@@ -232,8 +252,10 @@ For actor-dense systems:
 - one `impl Message<Verb> for Actor` per verb — no monolithic
   message enum;
 - no "handle anything" `on_message` override inside a component;
-- no raw `Spawn::spawn` outside the runtime root; child spawns go
-  through `supervise(&parent, args).spawn().await`;
+- no non-actor runtime/root/manager wrappers around `ActorRef<_>`
+  values;
+- no raw `Spawn::spawn` outside the runtime root actor; child spawns
+  go through `supervise(&parent, args).spawn().await`;
 - no `Arc<Mutex<T>>` between actors;
 - no long `await` inside a handler unless this actor owns that wait;
 - no blocking call inside a handler except in a dedicated blocking
