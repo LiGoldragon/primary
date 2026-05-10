@@ -281,14 +281,31 @@ terminal-cell-daemon
   child PTY read pump -> attached clients
                       -> non-blocking transcript queue
                       -> observer queue
-  attached clients and Persona injection -> child PTY write pump
+  attached clients and Persona injection -> input gate -> child PTY write pump
 ```
+
+The input gate is the right place for the multiple-writer problem. Before
+Persona injects a prompt or slash command, it can close the gate to attached
+human input, write its bytes contiguously to the child PTY, then reopen the
+gate. The gate is not a parser and not a harness-state engine. It only
+arbitrates writers to the one PTY input stream.
+
+Two policies are viable:
+
+- buffer blocked human bytes and release them after the injection;
+- reject blocked human bytes with an explicit "input gate closed" event so the
+  frontend can avoid pretending input was accepted.
+
+The choice belongs to the UX layer, but the gate itself belongs at the PTY
+writer, not in the viewer. Putting it at the writer means every frontend and
+every programmatic injector shares the same serialization rule.
 
 Required witnesses:
 
 - A manual Pi TUI session in Ghostty accepts human typing immediately and
   losslessly.
 - The same session still accepts Persona programmatic input.
+- A gated Persona injection cannot interleave with simultaneous human typing.
 - A high-volume output fixture does not make keyboard input lag.
 - A deliberately slow transcript sink does not affect the attached viewer.
 - The live byte path can be inspected in code without finding an actor mailbox,
