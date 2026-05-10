@@ -66,13 +66,13 @@ use kameo::actor::{ActorRef, Spawn};
 use kameo::error::Infallible;
 use kameo::message::{Context, Message};
 
-pub struct ClaimNormalize {
+pub struct ClaimNormalizer {
     in_flight:    HashMap<RequestId, WirePath>,
     max_in_flight: usize,
-    metrics:      ClaimNormalizeMetrics,
+    metrics:      ClaimNormalizerMetrics,
 }
 
-impl Actor for ClaimNormalize {
+impl Actor for ClaimNormalizer {
     type Args  = Self;          // the documented common case
     type Error = Infallible;
 
@@ -83,8 +83,8 @@ impl Actor for ClaimNormalize {
 
 pub struct Normalize { pub operation: OperationId, pub path: WirePath }
 
-impl Message<Normalize> for ClaimNormalize {
-    type Reply = Result<NormalizedScope, ClaimNormalizeFailure>;
+impl Message<Normalize> for ClaimNormalizer {
+    type Reply = Result<NormalizedScope, ClaimNormalizerFailure>;
 
     async fn handle(
         &mut self,
@@ -99,10 +99,10 @@ impl Message<Normalize> for ClaimNormalize {
     }
 }
 
-let normalizer = ClaimNormalize::spawn(ClaimNormalize {
+let normalizer = ClaimNormalizer::spawn(ClaimNormalizer {
     in_flight:     HashMap::new(),
     max_in_flight: 64,
-    metrics:       ClaimNormalizeMetrics::default(),
+    metrics:       ClaimNormalizerMetrics::default(),
 });
 
 let scope = normalizer.ask(Normalize { operation, path }).await?;
@@ -411,14 +411,18 @@ Multiple impls compose freely on one actor; dispatch is statically
 resolved at the call site.
 
 ```rust
-struct Inc(i64);
-struct Mul(i64);
-struct Read;
+struct Increment(i64);
+struct Multiply(i64);
+struct ReadCount;
 
-impl Message<Inc>  for Calculator { type Reply = i64; async fn handle(...) -> i64 { ... } }
-impl Message<Mul>  for Calculator { type Reply = i64; async fn handle(...) -> i64 { ... } }
-impl Message<Read> for Calculator { type Reply = i64; async fn handle(...) -> i64 { ... } }
+impl Message<Increment> for Calculator { type Reply = i64; async fn handle(...) -> i64 { ... } }
+impl Message<Multiply>  for Calculator { type Reply = i64; async fn handle(...) -> i64 { ... } }
+impl Message<ReadCount> for Calculator { type Reply = i64; async fn handle(...) -> i64 { ... } }
 ```
+
+Names are full English (per `skills/naming.md`): `Increment` not
+`Inc`, `Multiply` not `Mul`, `ReadCount` not `Read` (which would
+shadow `std::io::Read`).
 
 The `#[messages]` macro on an `impl` block generates these for you
 (see `notes/findings.md` for sub-attributes). Hand-rolled impls are
@@ -523,9 +527,15 @@ Declarative — no manual restart wiring.
 ```rust
 use kameo::supervision::{RestartPolicy, SupervisionStrategy};
 
-// Parent supervisor: chooses how to react to child failures.
-struct Supervisor;
-impl Actor for Supervisor {
+// Parent supervisor — carries data so it isn't a public ZST. The
+// child registry tracks who's been spawned for diagnostics; the
+// failure_log captures structured restart events.
+struct StoreSupervisor {
+    children:    HashMap<ActorId, ChildSpec>,
+    failure_log: Vec<RestartEvent>,
+}
+
+impl Actor for StoreSupervisor {
     type Args = Self;
     type Error = Infallible;
     async fn on_start(args: Self, _: ActorRef<Self>) -> Result<Self, Self::Error> { Ok(args) }
@@ -536,7 +546,10 @@ impl Actor for Supervisor {
     }
 }
 
-let supervisor = Supervisor::spawn(Supervisor);
+let supervisor = StoreSupervisor::spawn(StoreSupervisor {
+    children:    HashMap::new(),
+    failure_log: Vec::new(),
+});
 let child = Worker::supervise(&supervisor, WorkerArgs { … })
     .restart_policy(RestartPolicy::Permanent)
     .restart_limit(5, Duration::from_secs(10))

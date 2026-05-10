@@ -222,15 +222,21 @@ is universal even when the syntax varies.
 
 ### Actor frameworks
 
-Actor frameworks sometimes force a behavior-marker type whose only
-job is satisfying the framework's trait shape. Do not let that leak
-into the domain model. In raw `ractor`, the behavior marker is
-framework mechanics; domain behavior belongs on data-bearing state,
-reducers owned by that state, or public handles.
+Some actor frameworks force a behavior-marker type whose only job is
+satisfying the framework's trait shape — a ZST with the trait impl
+plus a separate `State` type that carries the actual data. Verbs
+then drift onto `State`, leaving the named noun (the behavior marker)
+empty. The workspace's runtime, **Kameo**, doesn't have this problem:
+`Self` IS the actor, and the actor type carries fields directly.
 
-In Persona, `ClaimNormalizeState` should carry fields, construction,
-and message-handling behavior. The ractor marker must not become a
-namespace for domain verbs.
+The verb-belongs-to-noun rule applies sharply here. In Persona,
+`ClaimNormalizer` should be the actor type — fields, construction,
+methods, and `Message<T>` impls all on the same noun. There is no
+separate marker, no separate `State`, no `*Handle` boilerplate. The
+data-bearing actor IS the noun the verbs attach to.
+
+For the workspace's actor discipline, see `skills/actor-systems.md`
+(architectural rule) and `skills/kameo.md` (Rust shape).
 
 ---
 

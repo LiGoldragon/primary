@@ -229,20 +229,20 @@ that carries the actor's data IS the actor.
 
 Kameo native shape:
 
-- the actor type carries fields (`pub struct ClaimNormalize { in_flight: …, metrics: … }`);
+- the actor type carries fields (`pub struct ClaimNormalizer { in_flight: …, metrics: … }`);
 - `type Args = Self` is the documented common case; the spawner
   passes a fully-built actor value to `on_start` which returns it;
 - `type Error = kameo::error::Infallible` (or a typed crate Error)
   on the `Actor` impl;
-- domain methods live on the actor type directly (`impl ClaimNormalize { fn validate_and_collapse(&mut self, …) }`), not on a ZST namespace;
-- per-kind `impl Message<Verb> for ClaimNormalize` for each accepted
+- domain methods live on the actor type directly (`impl ClaimNormalizer { fn validate_and_collapse(&mut self, …) }`), not on a ZST namespace;
+- per-kind `impl Message<Verb> for ClaimNormalizer` for each accepted
   message — no monolithic `Msg` enum;
-- the public consumer surface is `ActorRef<ClaimNormalize>` directly;
+- the public consumer surface is `ActorRef<ClaimNormalizer>` directly;
   Kameo's `ActorRef<A>` is statically typed against the actor, so
   no `*Handle` wrapper is needed — including for library users
-  (see `skills/kameo.md` §"ActorRef<A> is the public consumer
-  surface");
-- supervision is declarative: `ClaimNormalize::supervise(&parent, args).restart_policy(...).restart_limit(n, dur).spawn().await`.
+  (see `skills/kameo.md` §"Public consumer surface — ActorRef<A>
+  or domain wrapper");
+- supervision is declarative: `ClaimNormalizer::supervise(&parent, args).restart_policy(...).restart_limit(n, dur).spawn().await`.
 
 For actor-dense systems:
 

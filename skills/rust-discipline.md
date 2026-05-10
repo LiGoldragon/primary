@@ -591,8 +591,8 @@ a defined lifecycle. The framework is `kameo`.
   still pass, the tests are not architectural-truth tests.
 
 **Kameo native shape collapses behavior marker and state.** The
-actor type IS the data: `pub struct ClaimNormalize { fields … }`,
-`impl Actor for ClaimNormalize { type Args = Self; … }`, methods
+actor type IS the data: `pub struct ClaimNormalizer { fields … }`,
+`impl Actor for ClaimNormalizer { type Args = Self; … }`, methods
 on `&mut self`. The no-public-ZST-actor rule is naturally satisfied
 because the actor type carries its own fields.
 
@@ -830,7 +830,7 @@ shape comes up in review, add the row.
 | Storage actor as namespace | `StorageActor` that owns the redb handle and answers "store this" / "fetch that" for everyone | Verb-shaped; the actor owns *storing*, not domain data; each domain actor should own its tables | Each domain actor opens its own tables on the shared `Database` |
 | `Arc<Mutex<Database>>` shared across actors | Coarse lock around the whole DB | Defeats redb's transaction model; serializes all writers | One actor per logical data domain; pass values, not handles |
 | Blocking work inside a normal actor handler | Handler sleeps, polls, waits on a mutex, runs a command, or performs blocking IO | The actor's mailbox stops receiving pushes; the hidden wait becomes the real lock | Dedicated supervised IO/command/worker actor or actor pool |
-| Public ZST actor noun | `ClaimNormalize` is empty and exported as the domain actor | The public actor name is a label; verbs drift onto the wrong noun | Kameo's `Self IS the actor` shape: put fields on the actor type, methods on `&mut self`; consumers reach for the typed `ActorRef<ClaimNormalize>` |
+| Public ZST actor noun | `ClaimNormalizer` is empty and exported as the domain actor | The public actor name is a label; verbs drift onto the wrong noun | Kameo's `Self IS the actor` shape: put fields on the actor type, methods on `&mut self`; consumers reach for the typed `ActorRef<ClaimNormalizer>` |
 | Reading a record from text in the daemon | `Lock::from_nota(disk_text)?` inside the running component | The text is a projection, not the source. Drift between in-memory and disk silently | Daemon owns the typed record; lock file is rewritten from the record |
 | Mixed feature set across crates | One crate has `unaligned`, another doesn't | Archives produced by one don't validate in the other; failure is silent (wrong values, not parse error) | Pin the exact rkyv feature string per lore |
 | Reordering struct fields casually | Renaming + reordering in one PR | rkyv archives change layout on field reorder within 0.8 — old data unreadable | Append-only fields; treat any layout change as a coordinated upgrade |
