@@ -62,6 +62,9 @@ repos, Rust, Nix, and repository management.
 Then read:
 
 - `skills/operator.md` — the role contract this role assists.
+- `skills/testing.md` — all tests live in Nix; pure tests are
+  checks, stateful tests are named flake outputs, and chained
+  tests expose artifacts.
 - `skills/architectural-truth-tests.md` — the audit lens for
   proving implementation followed the intended path.
 - The target repo's `AGENTS.md`, `ARCHITECTURE.md`, and `skills.md`
@@ -107,7 +110,9 @@ the default shape is operator first pass, operator assistant review.
 
 The review checks:
 
-- named Nix checks or `nix flake check` when the repo exposes it;
+- `skills/testing.md` compliance: pure checks through
+  `nix flake check`, stateful runners through named flake
+  outputs, and inspectable artifacts for chained tests;
 - architectural-truth witnesses, not only behavior tests;
 - no string dispatch where a closed enum belongs;
 - no free-function or ZST method-holder drift;
@@ -166,6 +171,8 @@ poet-assistant.
   auxiliary role.
 - this workspace's `skills/architectural-truth-tests.md` — audit
   tests for architecture compliance.
+- this workspace's `skills/testing.md` — Nix-backed test
+  surfaces for pure, stateful, and chained tests.
 - this workspace's `skills/autonomous-agent.md` — checkpoint
   reads and routine-obstacle handling.
 - this workspace's `skills/jj.md` — version-control discipline.

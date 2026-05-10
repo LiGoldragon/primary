@@ -334,6 +334,9 @@ it during a tight inner loop if you must, but treat
 
 For the canonical flake layout (crane + fenix + layered
 cargo-deps caching), see lore's `rust/nix-packaging.md`.
+For the broader testing contract, including stateful runners
+and chained derivations with inspectable artifacts, see this
+workspace's `skills/testing.md`.
 
 ---
 
@@ -366,6 +369,8 @@ should name what changed
   flake layout for Rust crates.
 - lore's `rust/testing.md` — `nix flake check` as the test
   runner; `CARGO_BIN_EXE_*` for two-process integration tests.
+- this workspace's `skills/testing.md` — pure, stateful, and
+  chained test surfaces through Nix.
 - this workspace's `skills/jj.md` — push before
   building (so the input is reachable from the lock).
 - this workspace's `skills/skill-editor.md` — how skills are

@@ -135,6 +135,10 @@ instinct.
   mailbox, supervision, and trace witness. Blocking inside
   an actor handler is a hidden lock; move the wait into its
   own supervised actor plane.
+- **`skills/kameo.md`** — the current Rust actor runtime
+  discipline. `Self` is the actor; actor types carry their
+  state directly; no public marker actors or stale Ractor
+  vocabulary.
 - **`skills/abstractions.md`** — verb belongs to noun;
   the cross-language version of the methods-on-types rule.
 - **`skills/naming.md`** — full English words. The
@@ -144,10 +148,11 @@ instinct.
   cross-crate deps, pin strategy, Nix-based tests.
 - **`lore/rust/rkyv.md`** — canonical rkyv feature set,
   derive-alias pattern, schema fragility.
-- **`lore/rust/ractor.md`** — actor template, per-verb
-  typed messages, supervision.
 - **`lore/rust/testing.md`** — sync-façade-on-State
   pattern, two-process integration via `CARGO_BIN_EXE_*`.
+- **`skills/testing.md`** — all tests live in Nix; pure
+  tests run as checks, stateful tests are named flake
+  outputs, and chained tests expose intermediate artifacts.
 - **`lore/rust/nix-packaging.md`** — canonical crane +
   fenix flake layout.
 
@@ -205,9 +210,9 @@ designer's input before guessing.
 Per `skills/contract-repo.md` §"Examples-first round-trip
 discipline", many designs land their falsifiable
 specification as a `tests/<name>.rs` file in the contract
-crate. **Run those tests first.** Red means the
-implementation is missing; green-after-edit means the
-implementation matches the design.
+crate. **Run those tests first through the repo's Nix test
+surface.** Red means the implementation is missing;
+green-after-edit means the implementation matches the design.
 
 ### Land features bundled with their tests
 
@@ -216,7 +221,9 @@ behavioral test. The test is the proof the feature exists;
 without it, the feature is a claim. Per `skills/rust-
 discipline.md` §"Tests live in separate files", tests go in
 `tests/` files at crate root, named after the module they
-exercise.
+exercise. Per `skills/testing.md`, the test is accepted only
+when it is reachable through `nix flake check` or a named
+flake output.
 
 ### Don't add what the design doesn't ask for
 
@@ -395,6 +402,8 @@ you were missing.
   flow for the operator role.
 - this workspace's `skills/rust-discipline.md` — the
   canonical Rust enforcement; operator's primary toolkit.
+- this workspace's `skills/kameo.md` — current Rust actor
+  runtime discipline.
 - this workspace's `skills/abstractions.md` — verb belongs
   to noun.
 - this workspace's `skills/naming.md` — full English words.
@@ -406,6 +415,8 @@ you were missing.
   capability, one crate, one repo.
 - this workspace's `skills/push-not-pull.md` — polling is
   forbidden.
+- this workspace's `skills/testing.md` — Nix-backed test
+  surfaces for pure, stateful, and chained tests.
 - this workspace's `skills/jj.md` — version-control
   discipline.
 - this workspace's `skills/autonomous-agent.md` — how to
@@ -416,8 +427,8 @@ you were missing.
   `skills/poet-assistant.md`, `skills/operator-assistant.md` —
   sister role skills.
 - `lore/rust/style.md`, `lore/rust/rkyv.md`,
-  `lore/rust/ractor.md`, `lore/rust/testing.md`,
-  `lore/rust/nix-packaging.md` — toolchain references.
+  `lore/rust/testing.md`, `lore/rust/nix-packaging.md` —
+  toolchain references.
 - `~/primary/reports/operator/` — the canonical body of
   implementation work; the discipline is what the reports
   collectively demonstrate.

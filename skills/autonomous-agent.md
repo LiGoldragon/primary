@@ -154,6 +154,10 @@ you.
   tools, `nix flake check` as canonical pre-commit runner.
   Required before editing any `flake.nix` or invoking a tool
   not on PATH.
+- `~/primary/skills/testing.md` — all tests live in Nix;
+  pure tests run as checks, stateful tests are named flake
+  outputs, and chained tests expose inspectable artifacts.
+  Required before adding, reviewing, or relying on any test.
 
 These are not "read once at session start and forget" — they
 are *checkpoint reads* before the kind of work each one
@@ -295,6 +299,10 @@ its environment variables, and its setup in versioned repo
 files. Iteration becomes: edit the script, run the named Nix
 command, inspect output, repeat.
 
+This is the stateful-test branch of `skills/testing.md`: the
+test may be live, but the command still enters through Nix and
+leaves inspectable evidence.
+
 If a one-off debug command teaches you something useful, either
 keep the script with a clear `debug-*` name or fold it into the
 real test script before finishing.
@@ -410,7 +418,9 @@ the file by repo + filename. **Don't use full HTTPS URLs.** Deep
 file URLs rot when files move; a repo-level reference stays
 valid.
 
-Right: `criome's skills.md`, this workspace's `skills/abstractions.md`, `lore's rust/ractor.md` (when the target is tool reference, not a skill).
+Right: `criome's skills.md`, this workspace's
+`skills/abstractions.md`, lore's `rust/testing.md` (when the
+target is tool reference, not a skill).
 
 Wrong: `https://github.com/<org>/<repo>/blob/main/skills.md`.
 
