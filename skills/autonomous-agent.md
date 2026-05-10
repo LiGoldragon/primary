@@ -59,6 +59,12 @@ you.
   designing any producer-consumer interaction. Notably: when
   no push primitive exists, escalate — never fall back to a
   poll loop "for now."
+- `~/primary/skills/actor-systems.md` — actors all the way
+  down for long-lived Rust runtimes. Required before designing
+  or editing any daemon, router, state engine, watcher,
+  delivery engine, or actor-based component. Notably: blocking
+  inside an actor handler is a hidden lock; every non-trivial
+  logical plane gets a supervised actor.
 - `~/primary/skills/contract-repo.md` — the wire contract
   between Rust components lives in a dedicated repo of typed
   records. Required before two Rust components signal each

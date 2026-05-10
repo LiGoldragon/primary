@@ -148,6 +148,12 @@ The toolkit, organised by kind of decision:
   enforcement: methods on types, no ZST method holders,
   domain newtypes, one-object-in/one-object-out, errors as
   typed enums. The redb + rkyv discipline lives here.
+- **`skills/actor-systems.md`** — actor-density discipline
+  for long-lived Rust runtimes. Use it when designing
+  daemons, routers, state engines, watchers, or delivery
+  engines: every non-trivial logical plane gets a
+  data-bearing actor; blocking inside a handler is a hidden
+  lock.
 - **`skills/contract-repo.md`** — when two or more
   components signal each other, the wire contract lives in
   a dedicated repo. The kernel-extraction trigger; the

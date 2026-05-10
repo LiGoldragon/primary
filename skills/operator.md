@@ -127,6 +127,12 @@ instinct.
   as typed enums. The redb + rkyv discipline lives here.
   **Read this end-to-end before any non-trivial Rust
   edit.**
+- **`skills/actor-systems.md`** — actor-dense runtime
+  discipline. Every non-trivial logical plane in a
+  long-lived component gets a data-bearing actor, typed
+  mailbox, supervision, and trace witness. Blocking inside
+  an actor handler is a hidden lock; move the wait into its
+  own supervised actor plane.
 - **`skills/abstractions.md`** — verb belongs to noun;
   the cross-language version of the methods-on-types rule.
 - **`skills/naming.md`** — full English words. The
