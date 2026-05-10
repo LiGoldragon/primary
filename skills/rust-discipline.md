@@ -596,19 +596,27 @@ actor type IS the data: `pub struct ClaimNormalize { fields … }`,
 on `&mut self`. The no-public-ZST-actor rule is naturally satisfied
 because the actor type carries its own fields.
 
-**`ActorRef<A>` is the public consumer surface — including for
-library users.** Kameo's `ActorRef<A>` is statically typed against
-the actor; consumers call `actor_ref.ask(msg).await` /
-`actor_ref.tell(msg).await` directly, and the type system rejects
-wrong messages at the call site. There is no class of misuse a
-`*Handle` newtype prevents.
+**`ActorRef<A>` directly is the default public consumer surface.**
+Kameo's `ActorRef<A>` is statically typed against the actor;
+consumers call `actor_ref.ask(msg).await` / `actor_ref.tell(msg).await`
+directly, and the type system rejects wrong messages at the call
+site. There is no class of misuse a defensive wrapper prevents.
 
-Re-export `kameo::actor::ActorRef` from your crate root if it
-makes consumer imports cleaner. Don't wrap it as a defensive
-"hide-the-runtime" measure — that's the same speculative
-abstraction shape operator/103 retired with the
+A **domain-named wrapper** (e.g. `Mind`, `Cache`, `Ledger` —
+*not* `*Handle`, per `skills/naming.md`) is appropriate when the
+public API is a domain abstraction over one or more actors:
+composing multiple `ActorRef`s, exposing domain verbs as methods
+(`mind.claim(role, scope, reason)` instead of
+`mind.ask(MindRequest::Claim { … })`), or adding
+retry/transformation/multi-step orchestration. The wrapper earns
+its place by carrying domain content — not by hiding the
+runtime.
+
+Don't wrap defensively when there's no domain meaning — the same
+speculative-abstraction shape operator/103 retired with the
 `persona-actor` / `workspace-actor` hallucination. See
-`skills/kameo.md` §"ActorRef<A> is the public consumer surface".
+`skills/kameo.md` §"Public consumer surface — ActorRef<A> or
+domain wrapper" for the discriminator.
 
 **Never `tell` a fallible handler unless `on_panic` is overridden.**
 A handler whose `Reply = Result<_, _>` returning `Err(_)` to a

@@ -158,20 +158,21 @@ mechanical rename.
 
 ---
 
-## 4 · `ActorRef<A>` is the public consumer surface
+## 4 · Public consumer surface — `ActorRef<A>` or domain wrapper
 
 Kameo's `ActorRef<A>` is statically typed against the actor; the
 message types it accepts are guaranteed by `impl Message<T> for A`
-at compile time. There is no class of misuse a `*Handle` newtype
-prevents — sending the wrong message is a type error at the call
-site.
+at compile time. There is no class of misuse a wrapper newtype
+prevents — the type system already rejects wrong messages at the
+call site. The question isn't safety; it's **what API makes sense**
+for the consumer.
 
-**Export `ActorRef<A>` as the public consumer surface, including
-for library users.** Re-export `kameo::actor::ActorRef` from the
-crate root if it makes consumer imports cleaner; that is the
-limit of the wrapping needed.
+Two patterns, distinguished by whether the wrapper carries domain
+meaning (refined after rereading designer-assistant/5 §3):
 
-The user's reasoning, in their own framing:
+**`ActorRef<A>` directly** — when the actor IS the public API.
+Default for actors whose message types ARE the consumer surface.
+Most workspace actors fit this. The user's framing applies:
 
 > Actors are by design really correct, so it would be hard to
 > misuse them. And our libraries are going to start using
@@ -179,19 +180,49 @@ The user's reasoning, in their own framing:
 > they're going to have to use the handle, they're going to
 > have to be able to use it.
 
-Yes. `ActorRef<A>` IS the handle; it's already statically typed;
-a defensive `*Handle` wrapper adds nothing the type system isn't
-already enforcing.
+`ActorRef<A>` IS the handle in those cases; it's already statically
+typed. Re-export `kameo::actor::ActorRef` from the crate root if
+that makes consumer imports cleaner.
 
-The narrow case where a wrapper IS appropriate: the crate
-genuinely exposes a different abstraction (e.g., a builder that
-returns an `ActorRef` after async setup). The wrapper has its own
-role-shaped name (`ClaimNormalizerBuilder`), not `*Handle`.
+**A domain-named wrapper** — when the public API is a domain
+abstraction over one or more actors. The wrapper is named for
+what it IS (`Mind`, `Cache`, `Ledger`) — *never* `*Handle`, per
+the framework-category-suffix anti-pattern (§3). It earns its
+place when:
 
-This decision retires the older "every actor pairs with a `*Handle`"
-language that lived in `skills/actor-systems.md` and
-`skills/rust-discipline.md` from the ractor era. Both updated this
-wave.
+- it composes multiple `ActorRef`s into one consumer surface;
+- it exposes domain verbs as methods so consumers don't construct
+  Message values themselves (`mind.claim(role, scope, reason)`
+  instead of `mind_ref.ask(MindRequest::Claim { role, scope, reason })`);
+- it adds retry, transformation, or multi-step orchestration that
+  doesn't belong in the actor itself;
+- the crate is published as a library consumed by code that
+  shouldn't construct Message values directly.
+
+**Don't wrap defensively.** A bare `LedgerHandle { actor_reference:
+ActorRef<Ledger> }` with no domain methods is the
+speculative-abstraction shape operator/103 retired with
+`persona-actor` / `workspace-actor`. We just spent a wave switching
+FROM ractor TO Kameo *because* we hadn't wrapped — the migration
+was bounded. Don't pre-pay the wrapper cost for a runtime swap that
+may never come.
+
+The discriminator: **does the wrapper carry domain content, or is
+it type laundering?** If the wrapper ends up just delegating
+method-by-method to `ActorRef`, drop it.
+
+This refinement supersedes an earlier-in-this-wave absolutism on
+my part ("ActorRef<A> directly, full stop, narrow builder
+carve-out"). Designer-assistant/5 §3's intuition that wrappers
+have a real role is right; the part to keep retiring is bare
+runtime-hiding wrappers and the `*Handle` suffix that violates
+the naming rule.
+
+The older "every actor pairs with a `*Handle`" language from the
+ractor era is retired in `skills/actor-systems.md` and
+`skills/rust-discipline.md` regardless — that was about per-actor
+wrappers as boilerplate, not about domain abstractions over actor
+groups.
 
 ---
 

@@ -174,35 +174,101 @@ the suffix becomes the workspace's "feels too verbose" trap (per
 
 ---
 
-## ActorRef<A> is the public consumer surface
+## Public consumer surface — `ActorRef<A>` or domain wrapper
 
 Kameo's `ActorRef<A>` is statically typed against the actor; the
 message types it accepts are guaranteed by `impl Message<T> for A`
-at compile time. There is no class of misuse a `*Handle` newtype
+at compile time. There is no class of misuse a wrapper newtype
 prevents — sending the wrong message is a type error at the call
-site.
+site. The question isn't safety; it's **what API makes sense** for
+the consumer.
 
-**Export `ActorRef<A>` as the public consumer surface, including
-for library users.** Library consumers spawn the actor (or are
-handed an `ActorRef<A>`) and call `actor_ref.ask(msg).await` /
-`actor_ref.tell(msg).await` directly. Re-export `kameo::actor::ActorRef`
-from the crate root if it makes consumer imports cleaner; that's
-the limit of the wrapping needed.
+Two patterns, distinguished by whether the wrapper carries domain
+meaning:
 
-Don't wrap `ActorRef<A>` in a `*Handle` newtype as a defensive
-measure to "hide Kameo." That's the same speculative-abstraction
-shape that produced the `persona-actor` / `workspace-actor`
-hallucination operator/103 retired — wrapping a runtime in case
-we want to swap it. We just spent a wave switching FROM ractor TO
-Kameo precisely BECAUSE we hadn't wrapped — the migration was
-bounded. Don't pre-pay the wrapper cost for a swap that may never
-come.
+### `ActorRef<A>` directly — when the actor IS the public API
 
-The narrow case where a wrapper IS appropriate: the crate genuinely
-exposes a different abstraction (e.g., a builder that returns an
-`ActorRef` after async setup) and the wrapper is a constructor
-type, not a runtime-hider. In that case, the wrapper has its own
-role-shaped name (`ClaimNormalizerBuilder`), not `*Handle`.
+Default for actors whose message types ARE the consumer surface.
+The consumer spawns the actor (or is handed an `ActorRef<A>`) and
+calls `actor_ref.ask(msg).await` / `actor_ref.tell(msg).await`
+directly. Re-export `kameo::actor::ActorRef` from the crate root
+if it makes consumer imports cleaner.
+
+```rust
+let normalizer = ClaimNormalizer::spawn(ClaimNormalizer { … });
+let scope = normalizer.ask(Normalize { operation, path }).await?;
+```
+
+Most workspace actors fit this — small actors with a clear single
+message vocabulary, in-workspace consumers, no multi-step
+orchestration to hide.
+
+### Domain-named wrapper — when the public API is a domain abstraction
+
+When the consumer surface is a domain abstraction *over* one or
+more actors, wrap. The wrapper is named for what it IS (`Mind`,
+`Cache`, `Ledger`) — never `*Handle`, per
+`skills/naming.md` §"Anti-pattern: framework-category suffixes on
+type names".
+
+```rust
+pub struct Mind {
+    root:   ActorRef<MindRoot>,
+    reader: ActorRef<SemaReader>,
+}
+
+impl Mind {
+    pub async fn claim(
+        &self,
+        role:   ActorName,
+        scope:  WirePath,
+        reason: ScopeReason,
+    ) -> Result<ClaimAcceptance, MindError> {
+        self.root.ask(MindRequest::Claim { role, scope, reason }).await
+            .map_err(MindError::from)?
+            .into_acceptance()
+    }
+
+    pub async fn note(&self, item: ItemId, body: NoteBody) -> Result<NoteAdded, MindError> { … }
+
+    pub async fn ready_work(&self) -> Result<Vec<ReadyItem>, MindError> { … }
+}
+```
+
+This earns its place when:
+
+- the wrapper composes **multiple** `ActorRef`s into one consumer
+  surface (e.g., `Mind` orchestrating root + reader + subscriber);
+- the wrapper exposes **domain verbs** as methods so consumers
+  don't construct Message types themselves (`mind.claim(role,
+  scope, reason)` vs `mind.ask(MindRequest::Claim { role, scope,
+  reason })`);
+- the wrapper adds **retry, transformation, or multi-step
+  orchestration** that doesn't belong in the actor itself;
+- the crate is **published as a library** consumed by code that
+  shouldn't construct Kameo Message values directly.
+
+### Don't wrap defensively
+
+A bare wrapper that just holds an `ActorRef<A>` to "hide Kameo"
+without adding domain meaning is the speculative-abstraction shape
+operator/103 retired with `persona-actor` / `workspace-actor`.
+We just spent a wave switching FROM ractor TO Kameo precisely
+because we hadn't wrapped — the migration was bounded. Don't
+pre-pay the wrapper cost for a runtime swap that may never come.
+
+```rust
+// Wrong — wrapper adds nothing the type system isn't already enforcing
+pub struct Ledger { actor_reference: ActorRef<MemoryLedger> }
+impl Ledger {
+    pub fn ask<M>(&self, msg: M) -> ... { self.actor_reference.ask(msg) }
+}
+```
+
+If the wrapper ends up just delegating method-by-method to
+`ActorRef`, drop it and expose `ActorRef<A>` directly. The
+discriminator: **does the wrapper carry domain content, or is it
+type laundering?**
 
 ---
 
