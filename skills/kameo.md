@@ -18,9 +18,39 @@ the no-public-ZST-actor-noun rule — see this workspace's
 `skills/actor-systems.md`. This skill is *how* you express that
 discipline in Kameo specifically.
 
-The falsifiable source for every claim below is
-`/git/github.com/LiGoldragon/kameo-testing` — every substantive
-behavior cites a test in that repo.
+The falsifiable source for every claim below is twofold:
+
+- `/git/github.com/LiGoldragon/kameo-testing` — designer's test bed
+  (lifecycle, messages, spawn, mailbox, registry, supervision,
+  streams, links, topology).
+- `/git/github.com/LiGoldragon/kameo-testing-assistant` —
+  designer-assistant's complementary tests (data-bearing patterns,
+  failure & mailbox, lifecycle/registry/threads).
+
+Together they cover the surface a Persona component needs.
+
+## Maturity and pinning
+
+Kameo is pre-1.0, actively developed, and small enough that API
+churn between minor versions is real. As of 2026-05-10:
+
+- crates.io: 33 versions; latest `0.20.0` (2026-04-07); ~248k total
+  downloads, ~109k recent.
+- GitHub: `tqwewe/kameo`; ~1,300 stars, last push 2026-04-27, 9
+  open issues, single primary author.
+- Public production users: `CapSoftware/Cap` (Loom alternative) on
+  `0.17.2`; `ethui/ethui` (Ethereum toolkit) on workspace pin;
+  `volga-project/volga` on `0.16.0`; `microsoft/dactor` ships a
+  `dactor-kameo` adapter.
+
+Read this as: not boring infrastructure yet, but real — beyond toy.
+Pin Kameo's version intentionally per-crate; expect minor breaks.
+
+**Rust 1.88 is required.** Kameo 0.20 declares `rust-version =
+"1.88.0"`. Crates pinned at older toolchains (Persona's runtime
+crates were on 1.85) must bump before adopting Kameo. See
+`tools/sync-rust-fenix` for workspace-wide fenix lock alignment
+once any crate's toolchain moves.
 
 ---
 
@@ -315,11 +345,23 @@ Strategy semantics:
 the limit, the supervisor's `on_link_died` fires for the dead child;
 default behavior stops the supervisor.
 
-**Restart preserves the mailbox.** Messages queued at the time of
-crash survive into the new instance; the message currently being
-processed is lost. The new instance runs `on_start` again — counters
-on `Self` reset unless they live in `Args` (`Clone`-ed in) or are
-shared via `Arc<AtomicU32>` etc.
+**Restart reconstructs Self from Args, not from memory.** This is
+the load-bearing supervision rule. When Kameo restarts an actor:
+
+- The mailbox survives — queued messages reach the new instance;
+  the message currently being processed is lost.
+- **The actor's mutable state does not survive.** `on_start` runs
+  again with the original `Args` (or a fresh value from
+  `supervise_with(factory)`). A counter the crashed instance had
+  bumped to 12 reads back as 0 (or whatever `Args` rebuilds to).
+- Anything that *must* survive restart belongs outside the actor:
+  in `persona-sema` (durable state via redb+rkyv), in shared
+  `Arc<AtomicU32>` (cheap counters), or in `Args` itself (so each
+  restart sees the same starting value).
+
+Kameo makes restart policy easy to express; it does **not** make
+restart semantics automatically safe. Design with reconstruction
+in mind from the start.
 
 ---
 
@@ -400,6 +442,19 @@ When either dies, the survivor's `on_link_died(id, reason)` fires.
 Default behavior continues for `Normal` / `SupervisorRestart`,
 breaks (stops the survivor) for `Killed` / `Panicked` / `LinkDied`.
 
+Two link patterns emerge — keep them separate in the design:
+
+- **Supervision links** — death should propagate. Use the default
+  `on_link_died`; the survivor stops on abnormal peer death and
+  the supervisor restarts both per its strategy.
+- **Observational links** — death should be observed without
+  stopping the survivor. Override `on_link_died` to record the
+  event (counter, channel send, sema row) and return
+  `Ok(ControlFlow::Continue(()))` for all reasons.
+
+A given actor may participate in both kinds — fail-fast on its
+sibling, observe a downstream watchdog. Be deliberate per pair.
+
 `actor_ref.unlink(&peer_ref).await` removes the link bidirectionally.
 
 Use `spawn_link` instead of `spawn` + `link` when the link must be
@@ -460,6 +515,19 @@ workspace uses Kameo.
 - **`PendingReply` (from `ask().enqueue()`) blocks the caller.**
   The actor still runs; the reply sits in the oneshot until you
   await it. If you forget to await/drop, the caller hangs.
+- **Pipelined `tell(panic_trigger) + ask(other)` races on_panic
+  recovery.** Even with `on_panic` returning `Continue(())`, the
+  second message's reply oneshot can be set up before recovery
+  finishes — caller observes `ActorStopped`. Use `ask(panic_trigger)`
+  (which awaits past the panic AND the recovery), then `ask(other)`
+  on a known-recovered actor. See
+  `kameo-testing/tests/lifecycle.rs::on_panic_continue_keeps_stateful_actor_alive_after_handler_panic`.
+- **`DelegatedReply`'s spawned task is not supervised actor work.**
+  Errors from the detached future do not call the actor's
+  `on_panic`; they route to the global error hook (or the original
+  ask caller, for ask-shaped delegations). Use `DelegatedReply`
+  for short reply deferrals; for real long work, supervise a
+  dedicated actor.
 - **`on_stop` panics propagate as task panics.** No `catch_unwind`
   around `on_stop` in 0.20. Don't panic in stop hooks; return
   `Err` instead.
@@ -484,11 +552,18 @@ For surprises surfaced under test, see
   discipline this skill serves.
 - this workspace's `skills/rust-discipline.md` — the Rust style
   Kameo code follows.
-- `/git/github.com/LiGoldragon/kameo-testing` — the falsifiable
-  source: every behavior named above is exercised by a passing
-  test.
+- `/git/github.com/LiGoldragon/kameo-testing` — designer's test
+  bed; every behavior named above is exercised by a passing test.
+- `/git/github.com/LiGoldragon/kameo-testing-assistant` —
+  designer-assistant's complementary test bed; data-bearing
+  patterns, restart-from-args reconstruction, observational
+  link-death survival.
+- `~/primary/reports/designer-assistant/5-kameo-testing-assistant-findings.md`
+  — designer-assistant's findings (maturity signals, restart
+  reconstruction, supervision-vs-observational link split). Folded
+  into this skill.
 - `/git/github.com/LiGoldragon/kameo-testing/notes/findings.md` —
-  documented surprises, gotchas, and source citations.
+  source-grounded research notes behind the skill's claims.
 - `https://github.com/tqwewe/kameo` — upstream source (v0.20.0
   tag is the workspace's pinned baseline).
 - `https://docs.rs/kameo/0.20.0/kameo/` — rustdoc reference.
