@@ -31,10 +31,10 @@ by `persona-mind`.
 
 ```mermaid
 flowchart LR
-    "done: typed contract" --> "partial: Kameo runtime"
-    "partial: Kameo runtime" --> "missing: command-line NOTA surface"
-    "missing: command-line NOTA surface" --> "missing: durable mind.redb"
-    "missing: durable mind.redb" --> "missing: replace tools/orchestrate"
+    contract[done typed contract] --> runtime[partial Kameo runtime]
+    runtime --> text[missing command line NOTA surface]
+    text --> store[missing durable mind redb]
+    store --> shim[missing tools orchestrate replacement]
 ```
 
 Rough engineering read:
@@ -179,14 +179,14 @@ impl MindRuntime {
 
 ```mermaid
 flowchart TB
-    "MindRoot" --> "Config"
-    "MindRoot" --> "IngressSupervisor"
-    "MindRoot" --> "DispatchSupervisor"
-    "MindRoot" --> "DomainSupervisor"
-    "MindRoot" --> "StoreSupervisor"
-    "MindRoot" --> "ViewSupervisor"
-    "MindRoot" --> "SubscriptionSupervisor"
-    "MindRoot" --> "ReplySupervisor"
+    root[MindRoot] --> config[Config]
+    root --> ingress[IngressSupervisor]
+    root --> dispatch[DispatchSupervisor]
+    root --> domain[DomainSupervisor]
+    root --> store[StoreSupervisor]
+    root --> view[ViewSupervisor]
+    root --> subscription[SubscriptionSupervisor]
+    root --> reply[ReplySupervisor]
 ```
 
 Memory/work mutations are implemented behind the actor path:
@@ -269,24 +269,24 @@ The current shell helper still owns the live implementation:
 
 ```mermaid
 flowchart LR
-    "agent" --> "tools/orchestrate"
-    "tools/orchestrate" --> "role.lock files"
-    "tools/orchestrate" --> "BEADS list"
+    agent[agent] --> helper[tools orchestrate]
+    helper --> locks[role lock files]
+    helper --> beads[BEADS list]
 ```
 
 The target shape is:
 
 ```mermaid
 flowchart LR
-    "agent" --> "mind CLI"
-    "mind CLI" --> "NOTA decoder"
-    "NOTA decoder" --> "MindRequest"
-    "MindRequest" --> "MindEnvelope"
-    "MindEnvelope" --> "MindRoot"
-    "MindRoot" --> "mind.redb through persona-sema"
-    "MindRoot" --> "MindReply"
-    "MindReply" --> "NOTA encoder"
-    "NOTA encoder" --> "agent"
+    agent[agent] --> cli[mind CLI]
+    cli --> decoder[NOTA decoder]
+    decoder --> request[MindRequest]
+    request --> envelope[MindEnvelope]
+    envelope --> root[MindRoot]
+    root --> state[mind redb through persona sema]
+    root --> reply[MindReply]
+    reply --> encoder[NOTA encoder]
+    encoder --> agent
 ```
 
 The eventual human/agent surface should feel like this. The exact NOTA
@@ -313,22 +313,28 @@ The target state shape is:
 
 ```mermaid
 flowchart TB
-    subgraph "mind.redb"
-        "events"
-        "claims"
-        "activities"
-        "items"
-        "notes"
-        "edges"
-        "aliases"
-        "views"
-    end
-
-    "SemaWriter" --> "events"
-    "SemaWriter" --> "claims"
-    "SemaWriter" --> "activities"
-    "SemaWriter" --> "items"
-    "SemaReader" --> "views"
+    db[mind redb]
+    events[events]
+    claims[claims]
+    activities[activities]
+    items[items]
+    notes[notes]
+    edges[edges]
+    aliases[aliases]
+    views[views]
+    writer[SemaWriter] --> events
+    writer --> claims
+    writer --> activities
+    writer --> items
+    reader[SemaReader] --> views
+    events --> db
+    claims --> db
+    activities --> db
+    items --> db
+    notes --> db
+    edges --> db
+    aliases --> db
+    views --> db
 ```
 
 The architecture has converged on these durable decisions:
@@ -418,18 +424,18 @@ Needed actors:
 
 ```mermaid
 flowchart TB
-    "DispatchSupervisor" --> "ClaimFlow"
-    "ClaimFlow" --> "ClaimNormalizer"
-    "ClaimFlow" --> "ClaimConflictDetector"
-    "ClaimFlow" --> "ClaimCommitter"
+    dispatch[DispatchSupervisor] --> claim[ClaimFlow]
+    claim --> normalize[ClaimNormalizer]
+    claim --> conflict[ClaimConflictDetector]
+    claim --> commit[ClaimCommitter]
 
-    "DispatchSupervisor" --> "HandoffFlow"
-    "HandoffFlow" --> "HandoffAuthorizer"
-    "HandoffFlow" --> "HandoffCommitter"
+    dispatch --> handoff[HandoffFlow]
+    handoff --> authorize[HandoffAuthorizer]
+    handoff --> handoff_commit[HandoffCommitter]
 
-    "DispatchSupervisor" --> "ActivityFlow"
-    "ActivityFlow" --> "ActivityAppender"
-    "ActivityFlow" --> "ActivityQueryPlanner"
+    dispatch --> activity[ActivityFlow]
+    activity --> append[ActivityAppender]
+    activity --> plan[ActivityQueryPlanner]
 ```
 
 Whether these are all real Kameo actors immediately or some remain
@@ -524,13 +530,13 @@ Needed shape:
 
 ```mermaid
 flowchart LR
-    "MindEnvelope" --> "CallerIdentity"
-    "StoreCommand" --> "IdMint"
-    "StoreCommand" --> "Clock"
-    "IdMint" --> "StableItemId"
-    "IdMint" --> "DisplayId"
-    "Clock" --> "TimestampNanos"
-    "CallerIdentity" --> "EventHeader.actor"
+    envelope[MindEnvelope] --> identity[CallerIdentity]
+    command[StoreCommand] --> mint[IdMint]
+    command --> clock[Clock]
+    mint --> stable[StableItemId]
+    mint --> display[DisplayId]
+    clock --> time[TimestampNanos]
+    identity --> event_actor[EventHeader actor]
 ```
 
 ### Gap 5 — Current actor topology is mixed real actors + trace phases
@@ -643,16 +649,16 @@ functions:
 
 ```mermaid
 flowchart TB
-    "mind CLI" --> "NotaDecoder"
-    "NotaDecoder" --> "MindRequest::RoleClaim"
-    "MindRequest::RoleClaim" --> "CallerIdentityResolver"
-    "CallerIdentityResolver" --> "MindEnvelope"
-    "MindEnvelope" --> "ClaimFlow"
-    "ClaimFlow" --> "ClaimNormalizer"
-    "ClaimNormalizer" --> "ClaimConflictDetector"
-    "ClaimConflictDetector" --> "SemaWriter"
-    "SemaWriter" --> "ActivityAppender"
-    "ActivityAppender" --> "MindReply::ClaimAcceptance"
+    cli[mind CLI] --> decoder[NotaDecoder]
+    decoder --> request[MindRequest RoleClaim]
+    request --> identity[CallerIdentityResolver]
+    identity --> envelope[MindEnvelope]
+    envelope --> flow[ClaimFlow]
+    flow --> normalize[ClaimNormalizer]
+    normalize --> conflict[ClaimConflictDetector]
+    conflict --> writer[SemaWriter]
+    writer --> activity[ActivityAppender]
+    activity --> reply[MindReply ClaimAcceptance]
 ```
 
 What must be true:
@@ -666,14 +672,14 @@ What must be true:
 
 ```mermaid
 flowchart TB
-    "mind CLI" --> "MindRequest::Query"
-    "MindRequest::Query" --> "QueryFlow"
-    "QueryFlow" --> "QueryPlanner"
-    "QueryPlanner" --> "ReadyWorkView"
-    "ReadyWorkView" --> "SemaReader"
-    "SemaReader" --> "GraphTraversal"
-    "GraphTraversal" --> "QueryResultShaper"
-    "QueryResultShaper" --> "MindReply::View"
+    cli[mind CLI] --> request[MindRequest Query]
+    request --> flow[QueryFlow]
+    flow --> planner[QueryPlanner]
+    planner --> ready[ReadyWorkView]
+    ready --> reader[SemaReader]
+    reader --> graph[GraphTraversal]
+    graph --> shaper[QueryResultShaper]
+    shaper --> reply[MindReply View]
 ```
 
 What must be true:
@@ -687,13 +693,13 @@ What must be true:
 
 ```mermaid
 flowchart TB
-    "bd export/import input" --> "ImportDecoder"
-    "ImportDecoder" --> "MindRequest::Open"
-    "MindRequest::Open" --> "ItemOpen"
-    "ItemOpen" --> "SemaWriter"
-    "SemaWriter" --> "Item"
-    "SemaWriter" --> "ExternalAlias primary-xyz"
-    "SemaWriter" --> "Event"
+    export[bd export import input] --> decoder[ImportDecoder]
+    decoder --> request[MindRequest Open]
+    request --> open[ItemOpen]
+    open --> writer[SemaWriter]
+    writer --> item[Item]
+    writer --> alias[ExternalAlias primary xyz]
+    writer --> event[Event]
 ```
 
 What must be true:
@@ -788,11 +794,11 @@ opening its database.
 
 ```mermaid
 flowchart TD
-    "1 NOTA projection for MindRequest/MindReply" --> "2 real mind CLI"
-    "2 real mind CLI" --> "3 role claim/release/handoff/activity flows"
-    "3 role claim/release/handoff/activity flows" --> "4 durable MindStore over sema"
-    "4 durable MindStore over sema" --> "5 replace tools/orchestrate with shim"
-    "5 replace tools/orchestrate with shim" --> "6 BEADS one-time import"
+    text[one NOTA projection for MindRequest and MindReply] --> cli[real mind CLI]
+    cli --> roles[role claim release handoff activity flows]
+    roles --> store[durable MindStore over sema]
+    store --> shim[replace tools orchestrate with shim]
+    shim --> import[BEADS one time import]
 ```
 
 The first two slices can be tested without committing to the full table
