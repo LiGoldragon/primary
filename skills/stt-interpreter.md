@@ -69,7 +69,7 @@ English, try the canonical form.
 
 | Heard / transcribed as | Canonical |
 |---|---|
-| "Creom" / "Cree-ome" / "Krio" | the engine repo (see its directory for the canonical filesystem name) |
+| "Creom" / "Cree-ome" / "Krio" / "Criom" / "Cry-om" | the workspace's auth/security/identity ecosystem; canonical filesystem name is `criome` (lowercase, trailing `e`) |
 | "Sema" / "Seema" | the canonical-store repo |
 | "Nota" / "Nodda" | the text-format repo |
 | "Nexus" | the request-language repo |
