@@ -133,6 +133,26 @@ are its state. A root that merely exposes convenience methods over
 sibling refs is still a non-actor wrapper and should be removed or
 made into the actual root actor.
 
+**Phase actors are the second exception**: an actor whose only state
+is downstream `ActorRef<_>`s and whose only behavior is
+forward-with-trace earns its place when the trace plane IS the
+domain — when each forwarding hop is a witness that the pipeline
+ran a particular stage and that witness is part of what the system
+guarantees. Name these `*Phase` (e.g., `IngressPhase`, `DispatchPhase`),
+**not** `*Supervisor` — they don't supervise. A `*Phase` actor must
+satisfy three conditions to earn the carve-out:
+
+- the trace event it emits is structurally part of the domain (the
+  pipeline's witness contract), not opportunistic logging;
+- there is a test that asserts the witness was emitted (the trace IS
+  the testable claim);
+- supervision happens elsewhere (typically the runtime root) — the
+  `*Phase` actor's name does not lie about what it does.
+
+If those three conditions don't hold, the rule above applies: the
+type is a forwarding helper. Either give it real state/failure policy
+or collapse it into the parent.
+
 Every manifest-declared actor must have a concrete `impl Actor`.
 Trace-only variants in an `ActorKind` enum are not actors. Either
 create the actor, or rename the enum to the thing it really is

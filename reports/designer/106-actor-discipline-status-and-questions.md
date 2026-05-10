@@ -34,7 +34,28 @@ fall in three buckets**:
 - **Skill clarifications I'll land if you don't object** — small
   edits where the right answer is plain. (§5)
 
-Skip to §3 if you want the decisions.
+---
+
+## 0.5 · Decisions just landed (2026-05-10)
+
+User answered four of the questions below via `AskUserQuestion`.
+Recorded as durable decisions; the relevant question sections below
+are rewritten to reflect them. Beads filed.
+
+| # | Question | Decision | Action |
+|---|---|---|---|
+| Q-dec-1 | CLI lifecycle (one-shot vs daemon) | **Daemon**: long-lived process owns `MindRoot`; CLI calls connect as thin clients | Note added to existing bead `primary-9iv` |
+| Q-dec-2 | `WirePath` / `TaskToken` validation location | **Split**: contract enforces value invariants; runtime enforces environment facts (target exists, claim is open, route is reachable) | Note added to `primary-9iv` |
+| Q-dec-4 | designer/100's 5 implementation pins | **Designer-assistant pre-pass first**: verify which pins are still load-bearing, then bundle into one bead | New P1 bead: `primary-qqb` |
+| Q-app-2 | Forwarding-trampoline actors | **Rename to `*Phase` + document trace-as-domain carve-out** | Skill carve-out landed in `~/primary/skills/actor-systems.md` §"Actor or data type"; new P2 bead `primary-9yq` for the persona-mind rename |
+
+Q1+Q2 together resolve the operator/95-vs-designer/98 contradictions
+that had blocked `primary-9iv` since the Kameo wave.
+
+Still open after this round: §3 Q-app-1 (5 data-type-shadowed actors
+collapse), §3 Q-app-3 (ActorKind enum split), §4 Q-dec-3 (`MindRuntime`
+promote/delete/keep), §4 Q-dec-5 (`RestartPolicy::Never` default),
+§5 Q-skill-1 through Q-skill-3.
 
 ---
 
@@ -54,8 +75,10 @@ Skip to §3 if you want the decisions.
 | Manifest-declared actors without `impl Actor` | **RULE LANDED** | `actor-systems.md:136-140` — *"every manifest-declared actor must have a concrete `impl Actor`. Trace-only variants in an `ActorKind` enum are not actors. Either create the actor, or rename the enum to the thing it really is (`PipelinePhase`, `TracePoint`, `ResidencyPlane`)"*. Application to `persona-mind`'s `ActorKind`: Q-app-3 below |
 | `TerminalDelivery` never spawned | **RULE-DECIDED** | The new "actor or data type" rule says delete; offering for confirmation as Q-app-1 case |
 | `ActorKind` 47/9 "gap" framing | **REFRAMED** | `persona-mind/src/actors/manifest.rs:30-107` — `ActorResidency::TracePhase` makes "trace marker" an explicit residency. The 38 trace variants are by-design trace phases, not unimplemented actors. Q-app-3 is now whether to also split the static enum |
-| Designer/100's 5 implementation pins (0/5 done) | **STILL OPEN** | Q-dec-4 |
-| operator/95 vs designer/98 contradictions block primary-9iv | **STILL OPEN** | Q-dec-1, Q-dec-2 |
+| Designer/100's 5 implementation pins (0/5 done) | **DECIDED** | Bead `primary-qqb` filed (DA pre-pass). Q-dec-4 |
+| operator/95 vs designer/98 lifecycle contradiction | **DECIDED** | Daemon. Note on `primary-9iv`. Q-dec-1 |
+| operator/95 vs designer/98 validation-location contradiction | **DECIDED** | Split (contract for value, runtime for environment). Note on `primary-9iv`. Q-dec-2 |
+| Forwarding-trampoline actors — application | **DECIDED** | Rename to `*Phase` + carve-out landed in skill. Bead `primary-9yq` filed. Q-app-2 |
 | Counter-only state pattern policy | **STILL OPEN** | Q-skill-3 |
 | `RestartPolicy::Never` default for state-owning actors | **STILL OPEN** | Q-skill-4 |
 | `*Subscriber` ambiguity in `naming.md:297` | **STILL OPEN** | Q-skill-1 |
@@ -129,56 +152,24 @@ application is one work session.
 
 ---
 
-### Q-app-2. Four forwarding-trampoline actors in persona-mind — rule says collapse, but the trace plane needs somewhere to go
+### Q-app-2. **DECIDED**: rename `*Supervisor` → `*Phase`; trace-as-domain carve-out lands in `actor-systems.md`
 
-Per `~/primary/skills/actor-systems.md:126-128`:
+Four `LongLived` actors in persona-mind have only `ActorRef<_>`
+fields and forward messages while emitting trace events
+(`IngressSupervisor`, `DispatchSupervisor`, `DomainSupervisor`,
+`ViewSupervisor`). The trace plane IS the domain — each forwarding
+hop is a witness that the pipeline ran a particular stage.
 
-> *"If the type has only `ActorRef<_>` fields and just forwards
-> messages, it is a forwarding helper, not an actor. Either give it
-> real state/failure policy or collapse it into the parent."*
+**Skill change landed**: `~/primary/skills/actor-systems.md`
+§"Actor or data type" gains a *"Phase actors are the second
+exception"* paragraph. A `*Phase` actor earns its place when (1)
+the trace event is structurally part of the domain witness contract,
+(2) a test asserts the witness was emitted, (3) supervision happens
+elsewhere — the name doesn't lie.
 
-The four trampolines:
-
-`/git/github.com/LiGoldragon/persona-mind/src/actors/dispatch.rs:14-18`:
-
-```rust
-pub(super) struct DispatchSupervisor {
-    domain: ActorRef<domain::DomainSupervisor>,
-    view:   ActorRef<view::ViewSupervisor>,
-    reply:  ActorRef<reply::ReplySupervisor>,
-}
-```
-
-Same shape: `IngressSupervisor` (1 child ref), `DomainSupervisor` (1
-child ref), `ViewSupervisor` (1 child ref). All are `LongLived` per
-the manifest, all are named `*Supervisor` despite not actually
-supervising (supervision is set up in `MindRoot::on_start`).
-
-The rule says: collapse into the parent (`MindRoot`). But these
-actors emit trace events on the way through — and the trace plane is
-arguably the domain (each hop witnesses that the pipeline ran a
-particular stage).
-
-**Two readings**:
-
-(a) **The rule is right; collapse into `MindRoot`.** Trace emission
-   becomes free-function calls from `MindRoot` handlers. Lose the
-   per-stage actor witness; gain one fewer actor layer. Cleaner code.
-
-(b) **The trace plane IS the domain; rename and document.** Rename
-   `*Supervisor` → `*Phase` (matching `TracePhase` residency).
-   Document the carve-out in `actor-systems.md`: *"phase actors —
-   actors whose only state is downstream `ActorRef`s and whose only
-   behavior is forward-with-trace — are acceptable when the trace
-   plane IS the domain."* Adds an exception to the rule.
-
-**Question for you**: which reading? My recommendation is (b) — the
-actors do have a real reason (witness emission), and the misleading
-`*Supervisor` name is the actual problem. But this is a design call.
-
-If (b): file 1 P2 bead "rename `*Supervisor` → `*Phase` in
-persona-mind; document trace-phase carve-out in `actor-systems.md`."
-If (a): file 1 P2 bead "collapse 4 trampolines into `MindRoot`."
+**Bead filed**: `primary-9yq` for operator-assistant — rename the
+four trampolines + corresponding `ActorKind` variants + manifest
+entries. Blocked-by the skill update (already landed).
 
 ---
 
@@ -216,68 +207,39 @@ work in.
 
 ## 4 · Decision questions — still need your judgment
 
-### Q-dec-1. orchestrate CLI: one-shot per call vs daemon?
+### Q-dec-1. **DECIDED**: persona-mind CLI hits a daemon
 
-Open since designer/98 critiqued operator/95. The Kameo wave didn't
-decide; operator/99 deferred to designer; nothing since.
+The Rust `persona-mind` implementation is a long-lived daemon
+process owning `MindRoot`. CLI calls (`persona mind ...`) connect
+as thin clients (Unix socket + signal-core frames). Not one-shot
+per call.
 
-- **operator/95** says YES one-shot: each `persona mind ...` CLI
-  invocation spawns a fresh actor that processes the request and
-  exits. Lifecycle is bounded. No daemon to install/manage.
-- **designer/98** says NO: actors should be long-lived state owners;
-  CLI-per-call loses warmed state, persistent connections, and the
-  supervision tree's value.
-- `persona-mind/ARCHITECTURE.md` keeps both paths open (deliberately,
-  per operator/99).
+This resolves the operator/95-vs-designer/98 contradiction that
+had been blocking `primary-9iv`. The supervision tree is observable
+across calls; warm state is preserved.
 
-**Why it matters**: every persona-mind handler that touches per-call
-state will work differently depending on the answer. Lifecycle of a
-CLI call depends on it. `primary-9iv` (Rust persona-mind
-implementation) can't progress without the call.
-
-**Options**:
-
-(i) **One-shot per call.** Simple lifecycle. Each CLI call fresh. No
-   daemon to install/configure/recover. Lose warmed state and
-   connection pooling.
-(ii) **Daemon.** Long-lived state. Connection pooling. Better for
-   bursty work. Requires daemon installation and lifecycle.
-(iii) **Both, selectable by env or flag.** Most flexible; most
-   complexity.
-
-**My recommendation**: (ii) daemon. The supervision tree is the
-load-bearing thing; a daemon makes it observable across CLI calls.
-But this is genuinely your call.
+**Bead update**: design constraint added as a note on existing bead
+`primary-9iv`. Daemon installation/lifecycle/recovery is part of
+that bead's scope.
 
 ---
 
-### Q-dec-2. `WirePath` / `TaskToken` validation — contract or runtime?
+### Q-dec-2. **DECIDED**: split validation — contract for value invariants, runtime for environment
 
-Same provenance as Q-dec-1.
+Contract enforces what makes a value *valid*: shape, format,
+structural rules. `signal-persona-mind` already does this for
+`WirePath` (absolute path, no `..`, normalized `.`/repeated
+components), `TaskToken` (no brackets/whitespace/empty),
+`ScopeReason` (no empty/multiline), `TimestampNanos` (store-supplied).
 
-- **operator/95** says: validate in `persona-mind` first; contract
-  validation can come later as a hardening pass.
-- **designer/98** says: validate in the contract from day one;
-  runtime can't be the source of truth for what's a valid wire path.
+Runtime enforces what makes a value *meaningful right now*: target
+exists, claim is currently open, route is reachable, etc.
 
-**Why it matters**: every contract addition needs the answer. If
-runtime validates, contract is just a `String` newtype. If contract
-validates, contract carries the semantic rules.
+The line between value invariant and environment fact is sharp and
+natural. Contract changes are slow but correct; runtime changes are
+fast but transient.
 
-**Options**:
-
-(i) **Contract validates.** `WirePath::new(...)` returns `Result<Self,
-   WirePathError>`. Runtime trusts. Design pressure forces the
-   contract to be exact. Slower contract iteration; more correct
-   types.
-(ii) **Runtime validates.** Contract is shape-only; runtime checks.
-   Faster contract iteration; runtime owns rules.
-(iii) **Both.** Contract for shape; runtime for semantics (e.g.,
-   target exists). Most defensive.
-
-**My recommendation**: (i). Contract repos are the most-load-bearing
-typed surfaces in the workspace (per designer-assistant/7); validation
-belongs there. But this is your call.
+**Bead update**: design constraint added as a note on `primary-9iv`.
 
 ---
 
@@ -328,57 +290,20 @@ anything; deleting it is cheapest. If a domain facade emerges later
 
 ---
 
-### Q-dec-4. Designer/100's 5 implementation pins remain 0/5 done
+### Q-dec-4. **DECIDED**: designer-assistant pre-pass first, then bundle
 
-The 5 pins from
-`~/primary/reports/designer/100-persona-mind-architecture-proposal.md`,
-none implemented after the Kameo wave:
+Designer-assistant claims a 1-2 hour pre-pass to verify which of
+designer/100's 5 implementation pins are still load-bearing against
+the current `persona-mind` state (some may have been overtaken by
+topology changes since 100 was written). Output: a designer-assistant
+report that lets operator-assistant either claim the surviving pins
+as one bundled bead or understand the spec deltas needed first.
 
-1. **DisplayId mint algorithm**: BLAKE3 + base32-crockford, 8 chars.
-   Currently `persona-mind/src/memory.rs:398-418` uses a counter stub.
-2. **Sema table key shapes**: redb schemas for items, notes, edges,
-   aliases, scopes, statuses, claims, sessions. No `tables.rs`
-   exists; no `persona-sema` dependency in `persona-mind`'s
-   `Cargo.toml`.
-3. **Caller-identity 3-layer resolution**: actor → role → principal.
-   Currently every spot uses hardcoded `ActorName::new("persona-mind")`
-   (per op-asst/97 P1).
-4. **`mind.redb` path with env override**:
-   `~/.local/share/persona-mind/mind.redb` plus `PERSONA_MIND_DB`
-   override. Phase 2 not started.
-5. **Subscription contract sketch**: how the change-feed works
-   against the redb store. Phase 5 deferred entirely.
+The 5 pins (DisplayId mint, sema table key shapes, caller-identity
+3-layer, `mind.redb` path with env override, subscription contract
+sketch) — see designer/100 for the original spec.
 
-The Kameo migration covered topology — the supervision tree exists,
-the actor shapes are right, names are clean. But the *content* of
-those actors (what data they own, where it persists, who they speak
-as) is still stub.
-
-Operator and operator-assistant landed 6 crates of Kameo migration
-without folding these in, and have now moved on to the contract
-relation naming work prompted by designer-assistant/7. The pins sit
-in operator's lane but nobody's claimed them.
-
-**Why it matters**: `primary-9iv` (Rust persona-mind implementation
-wave) is the bead pointing at this work. It can't progress until
-either the pins land or get reframed.
-
-**Options**:
-
-(a) **File 5 separate P1 beads, one per pin**, and let next operator
-   cycle work them. Risk: blocks other work; operator may prioritize
-   in-flight contract naming first.
-(b) **One bundled P1 bead** "persona-mind implementation pins
-   (designer/100 §1-§5)" claimed in one wave by operator-assistant.
-(c) **Wait.** Operator's currently on contract-naming work; these
-   may surface naturally next cycle.
-(d) **Designer-assistant claims a pre-pass: re-read designer/100
-   against current code, verify which pins are still load-bearing.**
-   Some may have been overtaken by topology changes since 100 was
-   written.
-
-**My recommendation**: (d) first (1-2 hours of designer-assistant
-work to verify pins are still live), then (b) based on result.
+**Bead filed**: `primary-qqb` (P1, assigned designer-assistant).
 
 ---
 
