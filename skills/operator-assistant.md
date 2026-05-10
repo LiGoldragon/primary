@@ -11,7 +11,7 @@ lane: a bounded implementation slice, an audit of operator commits,
 a test backfill, a mechanical migration, a dependency bump, or a
 per-repo documentation update caused by implementation work.
 
-`operator-assistant` is one of the workspace's six coordination
+`operator-assistant` is one of the workspace's seven coordination
 roles. Claim it through
 `tools/orchestrate claim operator-assistant <paths> -- <reason>`
 before editing files. Reports go in `reports/operator-assistant/`
@@ -44,8 +44,9 @@ extends operator capacity without blurring authority:
 
 The operator assistant does **not** own architecture over designer,
 workspace skills over designer, deployment over system-specialist,
-or prose craft over poet. It also does not silently redesign while
-implementing. If a code pass reveals a structural gap, file an
+or prose craft over poet or poet-assistant. It also does not
+silently redesign while implementing. If a code pass reveals a
+structural gap, file an
 implementation-consequences report and let the designer lane answer.
 
 ---
@@ -148,7 +149,8 @@ make progress without splitting a single unresolved judgment:
 
 If the work is a structural design question, use designer or
 designer-assistant. If it is OS/deploy ownership, use
-system-specialist. If it is prose craft, use poet.
+system-specialist. If it is prose craft, use poet or
+poet-assistant.
 
 ---
 
@@ -159,6 +161,8 @@ system-specialist. If it is prose craft, use poet.
 - this workspace's `skills/operator.md` — the assisted role's
   implementation discipline.
 - this workspace's `skills/designer-assistant.md` — design-shaped
+  auxiliary role.
+- this workspace's `skills/poet-assistant.md` — poet-shaped
   auxiliary role.
 - this workspace's `skills/architectural-truth-tests.md` — audit
   tests for architecture compliance.

@@ -14,9 +14,10 @@ notations humans write, the boundaries between crates, the
 rules in `ESSENCE.md` and `skills/`, the reports that name
 what the workspace is becoming.
 
-`designer` is one of the workspace's six coordination roles
+`designer` is one of the workspace's seven coordination roles
 (alongside `operator`, `operator-assistant`,
-`designer-assistant`, `system-specialist`, and `poet`). Claim it through
+`designer-assistant`, `system-specialist`, `poet`, and
+`poet-assistant`). Claim it through
 `tools/orchestrate claim designer <paths> -- <reason>` before
 editing files in the design surface. Reports go in
 `reports/designer/` and are exempt from the claim flow.
@@ -71,8 +72,9 @@ The designer does **not** own:
 - **OS, deploy, platform glue** — system specialist's
   surface.
 - **Prose-as-craft** in TheBookOfSol or substack-cli —
-  poet's surface. (Designer may refine wording in skills
-  and reports; the poet refines wording in essays.)
+  poet's and poet-assistant's surface. (Designer may refine
+  wording in skills and reports; poet-shaped roles refine
+  wording in essays.)
 
 When in doubt about a contested file, the load-bearing
 question is: *what kind of attention does this surface
@@ -350,17 +352,17 @@ deployments are theirs to shape.
 
 ---
 
-## Working with poet
+## Working with poet and poet-assistant
 
-The designer owns *structure*; the poet owns *prose-as-craft*.
-The seam: ESSENCE.md and major skill files are designer
-structure with prose surface; the poet may refine wording
-without changing structure. Either side asking the other
-to invade the other's lane is a smell.
+The designer owns *structure*; poet-shaped roles own
+*prose-as-craft*. ESSENCE.md and major skill files are designer
+structure with prose surface; poet or poet-assistant may refine
+wording without changing structure. Either side asking the other to
+invade the other's lane is a smell.
 
 In practice: ESSENCE rule additions land via designer; the
-poet may smooth a clause that already says the right thing
-clunkily.
+poet-shaped roles may smooth a clause that already says the right
+thing clunkily.
 
 ---
 
@@ -450,7 +452,7 @@ violated a discipline. The diagnostic table in
   are written and cross-referenced.
 - this workspace's `skills/system-specialist.md`,
   `skills/poet.md`, `skills/operator-assistant.md`,
-  `skills/designer-assistant.md` — sister role
+  `skills/poet-assistant.md`, `skills/designer-assistant.md` — sister role
   skills.
 - `lore/AGENTS.md` — workspace-level agent contract; the
   design-reports-as-visuals rule lives here.

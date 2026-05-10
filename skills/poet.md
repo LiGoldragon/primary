@@ -12,9 +12,10 @@ refining prose, applying citation conventions, shaping the
 language layer of a document where literary quality is the
 load-bearing concern.
 
-`poet` is one of the workspace's six coordination roles
+`poet` is one of the workspace's seven coordination roles
 (alongside `operator`, `operator-assistant`, `designer`,
-`designer-assistant`, and `system-specialist`).
+`designer-assistant`, `system-specialist`, and
+`poet-assistant`).
 Claim it through
 `tools/orchestrate claim poet <paths> -- <reason>` before
 editing files in the writing surface. Reports go in
@@ -125,14 +126,21 @@ poet's discipline is to not paper over a citation gap.
 
 ---
 
-## Working with role assistants
+## Working with poet-assistant and other roles
 
-There is no generic assistant role. `designer-assistant` can help
-with bounded design-adjacent support around reports, citations, and
-cross-references. `operator-assistant` can help with prose-adjacent
-tool work when the task is implementation-shaped. Both follow the
-poet's repo conventions for the writing surface and write reports
-under their own role subdirectories.
+Poet-assistant is a second poet-shaped lane. It reads this skill,
+`skills/prose.md`, `skills/naming.md`, the target writing surface's
+repo instructions, and lore's `substack/basic-usage.md` when the
+work touches publication. It claims its own paths through
+`tools/orchestrate claim poet-assistant ...` and writes reports in
+`reports/poet-assistant/`.
+
+Designer-assistant can help with bounded design-adjacent support
+around reports, citations, and cross-references. Operator-assistant
+can help with prose-adjacent tool work when the task is
+implementation-shaped. Both follow the poet's repo conventions for
+the writing surface and write reports under their own role
+subdirectories.
 
 ---
 
@@ -183,7 +191,8 @@ missing.
   auxiliary workforce
 - this workspace's `skills/operator-assistant.md` — operator-shaped
   auxiliary workforce
-  role.
+- this workspace's `skills/poet-assistant.md` — poet-shaped
+  auxiliary workforce role.
 - this workspace's `protocols/orchestration.md` — claim flow
   for the poet role.
 - TheBookOfSol's `AGENTS.md` — the most-developed writing

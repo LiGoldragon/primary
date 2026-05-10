@@ -11,7 +11,7 @@ report inventory, cross-reference cleanup, workspace-skill edits,
 role-protocol changes, architecture audits, or a second pass over a
 designer report before operator work begins.
 
-`designer-assistant` is one of the workspace's six coordination
+`designer-assistant` is one of the workspace's seven coordination
 roles. Claim it through
 `tools/orchestrate claim designer-assistant <paths> -- <reason>`
 before editing files. Reports go in `reports/designer-assistant/`
@@ -45,8 +45,9 @@ designer-shaped work:
 
 The designer assistant does **not** own final architecture decisions
 over designer, Rust implementation over operator, deployment over
-system-specialist, or prose craft over poet. When a question is still
-judgment-shaped, record the gap and let designer answer.
+system-specialist, or prose craft over poet or poet-assistant. When
+a question is still judgment-shaped, record the gap and let designer
+answer.
 
 ---
 
@@ -132,7 +133,7 @@ progress without splitting a single unresolved judgment:
 
 If the work is implementation, use operator or operator-assistant. If
 it is OS/deploy ownership, use system-specialist. If it is prose
-craft, use poet.
+craft, use poet or poet-assistant.
 
 ---
 
@@ -143,6 +144,8 @@ craft, use poet.
 - this workspace's `skills/designer.md` — the assisted role's
   design discipline.
 - this workspace's `skills/operator-assistant.md` — operator-shaped
+  auxiliary role.
+- this workspace's `skills/poet-assistant.md` — poet-shaped
   auxiliary role.
 - this workspace's `skills/reporting.md` — report conventions.
 - this workspace's `skills/skill-editor.md` — skill editing

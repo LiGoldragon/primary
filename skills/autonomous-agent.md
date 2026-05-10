@@ -28,8 +28,9 @@ workspace's intent.
 
 Every workspace-coordinated bead carries a `role:<role>` label. The roles
 are `operator`, `operator-assistant`, `designer`, `designer-assistant`,
-`system-specialist`, `poet`. A bead with no role label is "any role" work —
-usually a workspace-wide cleanup or a question for whoever picks it up.
+`system-specialist`, `poet`, `poet-assistant`. A bead with no role label is
+"any role" work — usually a workspace-wide cleanup or a question for whoever
+picks it up.
 
 **When you file a bead for another role, tag it `role:<that-role>`.** The
 target role's next agent will see it via `bd ready --label role:<their-role>`.
@@ -200,7 +201,8 @@ tools/orchestrate claim <role> <path> [more-paths] -- <reason>
 ```
 
 `<role>` is one of `operator`, `operator-assistant`, `designer`,
-`designer-assistant`, `system-specialist`, or `poet`. The helper writes the role's own lock file,
+`designer-assistant`, `system-specialist`, `poet`, or `poet-assistant`.
+The helper writes the role's own lock file,
 reads every role's lock file, lists open BEADS tasks, and rejects
 overlapping active scopes. If the work cannot proceed, create a
 short BEADS task with the blocker and the next required action.

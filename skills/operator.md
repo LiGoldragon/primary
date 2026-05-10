@@ -14,9 +14,10 @@ consumer crates, migrating between schema shapes, getting
 tests to green. The work the designer's reports prescribe
 and the system needs to actually run.
 
-`operator` is one of the workspace's six coordination roles
+`operator` is one of the workspace's seven coordination roles
 (alongside `operator-assistant`, `designer`,
-`designer-assistant`, `system-specialist`, and `poet`).
+`designer-assistant`, `system-specialist`, `poet`, and
+`poet-assistant`).
 Claim it through
 `tools/orchestrate claim operator <paths> -- <reason>`
 before editing source files in operator's lane. Reports go
@@ -79,7 +80,8 @@ The operator does **not** own:
   surface. Operator may bump a flake input that affects a
   consumer, but the deployment chain is system
   specialist's.
-- **Prose-as-craft in essays** — poet's surface.
+- **Prose-as-craft in essays** — poet's and poet-assistant's
+  surface.
 
 When in doubt about a contested file, the load-bearing
 question is: *is this a structural decision (designer) or
@@ -336,13 +338,13 @@ system-specialist's is to execute the deploy chain.
 
 ---
 
-## Working with poet
+## Working with poet and poet-assistant
 
-Operator's surface and poet's surface barely overlap. When
+Operator's surface and the poet surfaces barely overlap. When
 they do (a CLI's user-facing strings, an error message that
-becomes part of the docs surface), defer to poet on prose
-choices the way operator defers to designer on design
-choices.
+becomes part of the docs surface), defer to poet or
+poet-assistant on prose choices the way operator defers to
+designer on design choices.
 
 ---
 
@@ -411,7 +413,7 @@ you were missing.
 - this workspace's `skills/designer.md`,
   `skills/designer-assistant.md`,
   `skills/system-specialist.md`, `skills/poet.md`,
-  `skills/operator-assistant.md` —
+  `skills/poet-assistant.md`, `skills/operator-assistant.md` —
   sister role skills.
 - `lore/rust/style.md`, `lore/rust/rkyv.md`,
   `lore/rust/ractor.md`, `lore/rust/testing.md`,

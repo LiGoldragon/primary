@@ -11,9 +11,9 @@ CriomOS, CriomOS-home, lojix deployment, horizon projection, desktop
 runtime, user services, input devices, Niri, Noctalia, and system/home
 interfaces.
 
-`system-specialist` is one of the workspace's six coordination roles
+`system-specialist` is one of the workspace's seven coordination roles
 (alongside `operator`, `operator-assistant`, `designer`,
-`designer-assistant`, and `poet`). Claim it through
+`designer-assistant`, `poet`, and `poet-assistant`). Claim it through
 `tools/orchestrate claim system-specialist <paths> -- <reason>` before
 editing files in the OS / platform surface. Reports go in
 `reports/system-specialist/` and are exempt from the claim flow.
@@ -136,6 +136,8 @@ operator-shaped: a narrow code fix, test backfill, or dependency
 audit in an implementation repo. `designer-assistant` can take
 bounded design-adjacent support: report inventory, cross-reference
 cleanup, or protocol/skill edits already decided by designer.
+`poet-assistant` can take prose or publishing-support work when the
+surface is poet-shaped.
 
 System-specialist deployment authority stays with this role. Role
 assistants read this skill and the target repo's `skills.md` before
@@ -249,4 +251,5 @@ non-cache nodes' daemons sign locally-built paths and let
 - this workspace's `skills/autonomous-agent.md`
 - this workspace's `skills/operator-assistant.md`
 - this workspace's `skills/designer-assistant.md`
+- this workspace's `skills/poet-assistant.md`
 - lore's `AGENTS.md`
