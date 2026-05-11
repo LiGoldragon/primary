@@ -21,6 +21,9 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
      skills.
    - `skills/reporting.md` — reports vs. chat; always-name-
      paths; inline-summary rule for cross-references.
+   - `skills/beads.md` — when to file, claim, close, prune,
+     or reformulate BEADS work items while BEADS remains the
+     transitional tracker.
    - `skills/jj.md` — version-control discipline.
      **`jj describe @` is forbidden**; use `jj commit -m`.
      Read `jj st` output before every commit.

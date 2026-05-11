@@ -151,6 +151,20 @@ bead in the same flow.** Don't leave a stale task lock
 after the bead closes; don't close the bead while still
 holding the lock.
 
+### Beads as session anchors
+
+For any task that is larger than a tiny one-step edit, make sure
+there is a bead that names the goal before the work sprawls. If an
+appropriate bead already exists, claim it with a task lock. If no
+bead exists and the work could survive a context compaction or a
+handoff to another agent, create one.
+
+At the end of the session, read the bead again. If the bead's
+definition of done is satisfied, close it. If it is not satisfied,
+leave the next action or blocker in the bead before releasing the
+lock. Do not rely on chat history or harness memory to carry that
+state.
+
 For non-BEADS work the same syntax extends naturally:
 `'[pr:42]'` to coordinate review of a specific PR,
 `'[draft:role-redesign]'` for a draft report not yet

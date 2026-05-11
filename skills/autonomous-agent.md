@@ -48,6 +48,30 @@ check; the bead becomes background that no one is actively scanning for.
 6. **Release or re-claim.** `tools/orchestrate release <role>`, or re-claim with the next bead's scopes.
 7. **Loop.** Check active beads again; if more, repeat.
 
+### Session end — prove the active work is not forgotten
+
+Before sending a final response after any non-trivial work, re-check
+the bead you claimed and the active beads for your role:
+
+```sh
+bd show <bead-id>
+bd list --label role:<your-role> --no-pager
+```
+
+Then make one of these states true:
+
+- **Shipped:** close the bead with a note naming the commit,
+  report, skill, or path where the work landed.
+- **Still active:** leave a short BEADS note naming the current
+  blocker or exact next action, and keep or narrow the task lock
+  only if another command will run in the same session.
+- **Moot:** close with a supersession note.
+
+Do this before releasing the role lock. The lock file tells every
+agent what you are actively touching; the bead tells the future
+agent why the work is not done yet. A context compaction can erase
+the harness's memory, but it must not erase the workspace's memory.
+
 ### When the user's prompt and the active bead disagree
 
 The user's direct instruction wins. The agent acknowledges the open bead,

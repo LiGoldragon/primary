@@ -194,6 +194,10 @@ tools/orchestrate release <role>
 ```
 
 This clears the role's active scopes and lists the current open BEADS tasks.
+Before release at the end of a non-trivial session, re-read any task bead you
+claimed. Close it if the work shipped; otherwise update it with the blocker or
+next action. The lock file is the live-edit surface; the bead is the durable
+goal surface.
 
 ## Status
 
