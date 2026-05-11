@@ -57,6 +57,17 @@ Good test names read like constraints:
 If the same visible result can pass through a shortcut, the witness is
 not strong enough.
 
+The witness must exercise the production code path it claims to protect.
+Fixture code is allowed only as the outside stimulus or observer: a fake child
+process, a temporary database directory, a socket peer, a test harness, or an
+artifact reader. The load-bearing action still crosses the real boundary:
+the real daemon, actor, socket protocol, Sema writer, parser, contract type,
+or CLI binary.
+
+If a test builds a miniature copy of the logic inside the test and then proves
+that copy works, it is not a witness. It is a self-contained story. Delete it
+or reroute it through the component's production API.
+
 ## Pure tests
 
 Pure tests are the default. They run in the Nix build sandbox and are
@@ -147,6 +158,10 @@ boring to reject.
 - A README command that is not a flake output.
 - A recurring debug script that is not versioned.
 - `cargo test` as the only claimed verification.
+- A test that invents a parallel implementation inside the test and proves only
+  that the invented logic works.
+- A test fixture that replaces the production boundary it claims to witness
+  instead of driving that boundary from the outside.
 - One huge integration loop that round-trips through the same code and
   exposes no intermediate artifacts.
 - Writer and reader using the same mock, cache, or in-memory object.
@@ -168,6 +183,8 @@ Ask these before accepting a test:
   `nix run .#<name>` or another named flake output?
 - Does each load-bearing constraint have a named witness?
 - Does the witness prove the intended component or phase was used?
+- Does the witness call, drive, or observe the production code path, rather
+  than only test-local logic?
 - Are intermediate artifacts inspectable?
 - Would a shortcut, stub, or bypass fail?
 - Is the test name the constraint it protects?
