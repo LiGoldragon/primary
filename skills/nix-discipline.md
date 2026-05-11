@@ -147,8 +147,10 @@ entries — no hash typed by hand.
 For the workspace-specific application — every Rust crate's
 fenix lock copied from a canonical source so the workspace
 shares one rustc store path — see lore's `rust/nix-packaging.md`
-§"Workspace fenix lockstep" and the script
-`~/primary/tools/sync-rust-fenix`.
+§"Workspace fenix lockstep". The previously proposed helper
+`~/primary/tools/sync-rust-fenix` is not a live workspace tool
+unless it exists in `tools/`; do the lockstep explicitly or land
+the helper before citing it as runnable.
 
 ---
 

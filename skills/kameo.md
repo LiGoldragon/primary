@@ -49,8 +49,8 @@ Pin Kameo's version intentionally per-crate; expect minor breaks.
 **Rust 1.88 is required.** Kameo 0.20 declares `rust-version =
 "1.88.0"`. Crates pinned at older toolchains (Persona's runtime
 crates were on 1.85) must bump before adopting Kameo. See
-`tools/sync-rust-fenix` for workspace-wide fenix lock alignment
-once any crate's toolchain moves.
+`skills/nix-discipline.md` §"Workspace fenix lockstep" for
+workspace-wide lock alignment once any crate's toolchain moves.
 
 ---
 
@@ -1037,10 +1037,9 @@ For surprises surfaced under test, see
   designer-assistant's complementary test bed; data-bearing
   patterns, restart-from-args reconstruction, observational
   link-death survival.
-- `~/primary/reports/designer-assistant/5-kameo-testing-assistant-findings.md`
-  — designer-assistant's findings (maturity signals, restart
-  reconstruction, supervision-vs-observational link split). Folded
-  into this skill.
+- `~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
+  §2.1 — retired designer-assistant Kameo findings that were
+  folded into this skill.
 - `/git/github.com/LiGoldragon/kameo-testing/notes/findings.md` —
   source-grounded research notes behind the skill's claims.
 - `https://github.com/tqwewe/kameo` — upstream source (v0.20.0

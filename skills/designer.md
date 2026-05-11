@@ -201,12 +201,11 @@ The toolkit, organised by kind of decision:
   delimiters-earn-their-place, etc. Read end-to-end before
   any new notation work; the surface looks small but every
   instinct earned its place by being violated somewhere.
-- **`reports/designer/26`, `31`, `40`, `45`, `46`** — the
-  surviving load-bearing nexus + nota language-evolution
-  decisions (12-verb scaffold, curly-brackets drop, twelve
-  verbs in Persona, drop @, Bind/Wildcard typed records).
-  Older state-of-the-language reports were retired in the
-  2026-05-08 cleanup.
+- **`reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
+  §2.3** — retired Nexus + NOTA language-evolution decisions
+  worth preserving (12-verb scaffold, curly-brackets drop,
+  twelve verbs in Persona, drop `@`, Bind/Wildcard typed
+  records).
 - **`nota/README.md`** — the canonical positional text
   format the workspace's notations all build on top of.
 

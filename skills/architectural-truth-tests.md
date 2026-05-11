@@ -21,11 +21,12 @@ an agent (or a future agent without yesterday's memory) can
 ship code that satisfies behavior while routing around the
 intended component, and no test fires.
 
-The discipline name comes from `reports/operator/69-architectural-truth-tests.md`,
-which proposed the rule for the persona-messaging stack. This
-skill lifts it to the workspace level because it applies to
-every architectural assertion — wire contracts, storage
-layers, actor protocols, deploy chains.
+The discipline name came from a retired persona-messaging report;
+the surviving cleanup archive is
+`reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
+§2.5. This skill lifts it to the workspace level because it
+applies to every architectural assertion — wire contracts,
+storage layers, actor protocols, deploy chains.
 
 ---
 
@@ -373,9 +374,9 @@ This pairs with:
 
 ## See also
 
-- `~/primary/reports/operator/69-architectural-truth-tests.md`
-  — the originating proposal; the examples table here is
-  lifted from there.
+- `~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
+  §2.5 — retired report lineage and router/delivery lessons
+  preserved from the pre-today cleanup.
 - `~/primary/skills/rust-discipline.md` §"Actors" — fake
   actor handles + sync-façade-on-State pattern.
 - `~/primary/skills/actor-systems.md` — actor-density,

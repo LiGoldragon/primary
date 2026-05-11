@@ -997,8 +997,9 @@ inside the component.
 **New components consuming sema:** add `sema = "..."` to
 `Cargo.toml`, declare a `Schema` constant, define typed
 tables atop `sema::Table<K, V>`. Don't reinvent the
-plumbing. See `~/primary/reports/designer/63-sema-as-workspace-database-library.md`
-for the design.
+plumbing. See `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md`
+and `~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
+§2.4 for the current design.
 
 ### Why this discipline is strict
 
