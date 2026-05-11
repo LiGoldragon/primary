@@ -482,6 +482,33 @@ places agents often hit when writing prose-heavy diagrams.
 Keep diagram syntax ASCII-simple and put prose in labels,
 not in identifiers or parser-sensitive punctuation.
 
+Subgraphs use the Mermaid 8.8-safe form:
+
+```mermaid
+flowchart TB
+    subgraph terminal_group [Terminal boundary]
+        terminal_cell["terminal-cell"]
+        persona_terminal["persona-terminal"]
+    end
+```
+
+Rules:
+
+- Put a space between the subgraph identifier and the title
+  bracket: `subgraph terminal_group [Terminal boundary]`.
+  Do not use the newer no-space quoted-bracket form
+  `subgraph terminal_group["Terminal boundary"]`; Mermaid
+  8.8.0 rejects it.
+- Do not put quotes inside the subgraph title bracket. Use
+  `[Terminal boundary]`, not `["Terminal boundary"]`.
+- Do not write `direction TB` or `direction LR` inside a
+  subgraph. Mermaid 8.8.0 does not support subgraph-local
+  direction; the subgraph inherits the parent flowchart
+  direction.
+- Keep subgraph titles punctuation-light. Avoid parentheses,
+  slashes, semicolons, and arrows; use commas, `and`, or a
+  shorter title.
+
 Flowchart edge labels: avoid Unicode arrows such as `↔`
 and `→` inside `|label|`. Write `to`, `from`, `and`, or
 split the edge. These labels read fine to humans and do not
