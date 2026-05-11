@@ -13,31 +13,34 @@ integration), and the existing terminal-cell live-agent witnesses.*
 
 ## 0 · TL;DR
 
-Four load-bearing decisions, each with one primary-source citation
-behind it (full list in §10).
+Four load-bearing decisions, each with primary-source citations
+behind it (full list in §10). The first two are revised from this
+report's initial draft to fold in designer-assistant/19's
+empirically-verified findings (see §13 for the convergence
+record).
 
 | # | Decision | Why |
 |---|---|---|
-| 1 | **Sandbox is `bubblewrap`, not `systemd-nspawn`.** | nspawn's unprivileged mode supports only `--image=` containers and won't share the host Wayland socket without root or `systemd-machined` registration; `bwrap` does the whole job with the kernel's user-namespace + bind-mount primitives the workspace already runs. |
-| 2 | **Auth crosses the boundary by long-lived token or fresh per-sandbox login — never by sharing the live credentials file.** | Both `~/.claude/.credentials.json` and `~/.codex/auth.json` use single-use OAuth refresh-token rotation. Bind-mounting the live file makes the first refresh log out the other party. The supported headless path for Claude Code is `claude setup-token` (1-year token, injected as `CLAUDE_CODE_OAUTH_TOKEN`); Codex CLI ChatGPT-plan auth has no headless equivalent and requires either an in-sandbox `codex login` or a raw API key. |
-| 3 | **Model selection per harness aims at the cheapest tier accessible from each authentication path.** Claude → `claude-haiku-4-5` with extended thinking omitted (default-off, no `thinking` field). Codex via ChatGPT-plan auth → `gpt-5.4-mini` with `reasoning_effort = "minimal"`. Codex via API key → `gpt-5-nano` (subscription auth cannot route to the nano tier). Pi → local model when the user's machine can serve it; deferred otherwise. | Subscription auth gates which models the CLI can route to; the cheapest tier on each path is different. Names verified against current provider pricing pages and Codex models documentation as of 2026-05-11. |
+| 1 | **Sandbox is a two-layer cake: `systemd-run --user` outside, optional `bwrap` strict-mount inside.** `systemd-nspawn` is deferred to the production-container path. | systemd-run provides cgroup lifecycle, cleanup, and — load-bearingly — `LoadCredential=` (systemd's read-only credential-passing mechanism). `ProtectHome=tmpfs` + `PrivateUsers=yes` give the fresh-$HOME and userns properties for free. `bwrap` inner adds a strict mount profile when the test wants a deliberately tiny `/`. nspawn's unprivileged mode is too restricted (image-only containers, no clean Wayland passthrough) for this test path. DA empirically confirmed the systemd-run pattern works against `~/.codex/auth.json`. |
+| 2 | **Credentials enter the sandbox through one of three named modes (`SnapshotCredential`, `ReadOnlyHostCredential`, `IssuedSandboxCredential`), preferably via systemd `LoadCredential=` plus per-tool config-dir env-vars (`CLAUDE_CONFIG_DIR`, `CODEX_HOME`, `PI_CODING_AGENT_DIR`). The live host credential file is never bind-mounted in either direction.** | Both `~/.claude/.credentials.json` and `~/.codex/auth.json` use single-use OAuth refresh-token rotation; bind-mounting them races the host's session. Each tool exposes a config-dir env var that redirects the whole config tree, which is cleaner than path-specific bind-mounts. For Claude, `claude setup-token` + `CLAUDE_CODE_OAUTH_TOKEN` is the supported headless path (`IssuedSandboxCredential`). For Codex, no equivalent exists yet; `SnapshotCredential` via `LoadCredential=` is the working pattern but **must be empirically witnessed** before being trusted (§9.4). |
+| 3 | **Model selection per harness aims at the cheapest tier accessible from each authentication path.** Claude → `claude-haiku-4-5` with extended thinking omitted (default-off, no `thinking` field). Codex via ChatGPT-plan auth → `gpt-5.4-mini` with `reasoning_effort = "minimal"`. Codex via API key → `gpt-5-nano` (subscription auth cannot route to the nano tier). Pi → prometheus-served local model (e.g. `prometheus/glm-4.7-flash` or `prometheus/qwen3-8b`). | Subscription auth gates which models the CLI can route to; the cheapest tier on each path is different. Names verified against current provider pricing pages and Codex models documentation as of 2026-05-11. Pi's backend (answered by DA's report): the user's cluster `prometheus` node serves the local models; `PI_PACKAGE_DIR` must point at Pi's Nix-store package. |
 | 4 | **Display sharing keeps Ghostty on the host; terminal-cell's PTY socket lives at a path bind-mounted out of the sandbox so the host Ghostty dials in.** | The existing terminal-cell live path (`Ghostty tty ↔ attach pump ↔ daemon byte pump ↔ child PTY`, per `terminal-cell/ARCHITECTURE.md` §1) requires the viewer to reach the daemon's Unix socket. Mounting the socket outward is simpler and exposes less surface than letting the Wayland socket into the sandbox. |
 
-The deliverable is a new flake-app surface at the apex `persona` repo
-that composes the federation under bubblewrap and exposes one
-parameterised witness per harness kind:
+The deliverable is a new Nix app at the apex `persona` repo named
+`persona-engine-sandbox` (DA's name), parameterised by harness:
 
 ```
-nix run .#federation-witness -- --harness claude
-nix run .#federation-witness -- --harness codex
-nix run .#federation-witness -- --harness pi
+nix run .#persona-engine-sandbox -- --harness pi
+nix run .#persona-engine-sandbox -- --harness claude
+nix run .#persona-engine-sandbox -- --harness codex
+nix run .#persona-engine-sandbox -- --harness codex-api
 ```
 
-Each invocation boots one fresh engine instance, drives one message
-end-to-end (`persona-message` ingress → `persona-router` → channel
-adjudication via `persona-mind` → `persona-harness` →
-`persona-terminal` → `terminal-cell` PTY → real agent), and asserts
-named architectural-truth witnesses (§9).
+Each invocation boots one fresh engine instance under `systemd-run
+--user`, drives one message end-to-end (`persona-message` ingress →
+`persona-router` → channel adjudication via `persona-mind` →
+`persona-harness` → `persona-terminal` → `terminal-cell` PTY → real
+agent), and asserts named architectural-truth witnesses (§9).
 
 ---
 
@@ -103,110 +106,142 @@ instead of running them in isolation.
 
 ---
 
-## 2 · Sandbox technology — bubblewrap
+## 2 · Sandbox technology — systemd-run outer, bubblewrap inner
+
+The sandbox is **two layers**, each doing a job the other doesn't.
+The outer layer is `systemd-run --user`, which gives cgroup
+lifecycle management, automatic cleanup, and systemd's
+`LoadCredential=` credential-passing primitive. The inner layer is
+optional `bwrap`, used when the test wants a deliberately tiny
+filesystem view (only `/nix`, `/run/current-system`, the sandbox
+state directory, plus `/proc`, `/dev`, and the Wayland socket if
+graphics are needed).
+
+```mermaid
+flowchart TB
+    host["host shell — runs persona-engine-sandbox Nix app"]
+    sd["systemd-run --user (transient unit)<br/>PrivateUsers=yes, ProtectHome=tmpfs,<br/>LoadCredential=codex-auth:...<br/>LoadCredential=claude-auth:..."]
+    bwrap_inner["optional inner bwrap<br/>(strict mount profile)"]
+    federation["Persona federation processes<br/>(persona-daemon → engine → components → agent)"]
+
+    host --> sd
+    sd --> bwrap_inner
+    bwrap_inner --> federation
+    sd -.->|"or, when strict mounts not needed"| federation
+```
 
 ### 2.1 Why not systemd-nspawn
 
-The user's first instinct was `systemd-nspawn` with the caveat that
-CriomOS would need a route-setup carve-out. The actual constraint
-is sharper. Per the `systemd-nspawn(1)` man page (man7.org), full
-functionality requires root; unprivileged mode supports **only
-disk-image containers** (`--image=`) and only two network modes
-(`--private-network`, `--network-veth`). Neither pattern shares the
-host Wayland socket cleanly, neither admits a single
-bind-mount-just-one-credential-file pattern, and `machinectl shell`
-into the container needs `systemd-machined` registration which
-needs root.
+`systemd-nspawn` is the right path for production container
+deployment of the engine, but it is the wrong path for this test.
+Per the `systemd-nspawn(1)` man page (man7.org), full functionality
+requires root; unprivileged mode supports **only disk-image
+containers** (`--image=`) and only two network modes. Neither
+pattern shares the host Wayland socket cleanly, and `machinectl
+shell` needs `systemd-machined` registration which needs root.
+DA reached the same conclusion: nspawn is heavier than this test
+needs and depends on CriomOS routing/private-user setup we don't
+have yet.
 
-We could carve out the privileges, but doing so on a per-test basis
-defeats the purpose of the sandbox — the privileged surface
-re-enters the host's blast radius the moment we grant it.
+### 2.2 Why systemd-run + bwrap fit together
 
-### 2.2 Why bubblewrap fits
+**`systemd-run --user`** is the canonical NixOS-native way to
+launch a transient user-mode service with a structured property
+set. It provides:
 
-`bwrap` is the userspace front-end for the kernel's userns +
-bind-mount primitives. It runs without setuid (NixOS ships it that
-way because `kernel.unprivileged_userns_clone=1` is the default;
-confirmed locally: `max_user_namespaces=126182`). It admits
-fine-grained `--ro-bind` / `--bind` / `--tmpfs` for each path the
-sandbox needs, and `--share-net` for the API calls.
+- `PrivateUsers=yes` — runs inside a user namespace; uid 0 inside
+  the unit maps to the user outside.
+- `ProtectHome=tmpfs` — replaces `/home/<user>` with an empty
+  tmpfs visible only to the unit.
+- `LoadCredential=name:path` — loads the host file at `path` into
+  `$CREDENTIALS_DIRECTORY/name` inside the unit. Read-only. The
+  unit can read it; nothing else can; the unit cannot write back
+  to the host path.
+- Cgroup-based lifecycle: the whole process tree is reaped on
+  unit stop. No orphan daemons.
 
-### 2.3 NixOS-specific calling pattern
+DA verified empirically: `systemd-run --user --property=PrivateUsers=yes
+--property=ProtectHome=tmpfs --property=LoadCredential=codex-auth:$HOME/.codex/auth.json`
+works on this host and gives the unit a fresh $HOME with the
+credential file available at `$CREDENTIALS_DIRECTORY/codex-auth`.
 
-Two NixOS-specific facts shape the invocation:
+**Inner `bwrap`** is added when the test wants a tighter mount
+profile than `ProtectHome=tmpfs` provides — typically to keep
+`/etc`, `/usr`, and the rest of the host filesystem out of the
+sandbox view. It runs *inside* the systemd-run unit (no nested
+systemd needed). On NixOS, two facts shape the bwrap invocation:
 
 | Fact | Consequence |
 |---|---|
 | `bubblewrap` is in nixpkgs as a plain binary at `~/.nix-profile/bin/bwrap`. | Call that path directly. |
 | NixOS *also* installs setuid wrappers at `/run/wrappers/bin/...`. The setuid-wrapped `bwrap` from there breaks inside userns (nixpkgs#49100). | **Do not call `/run/wrappers/bin/bwrap`.** |
 | `/etc/*` on NixOS is largely a symlink farm into `/etc/static/*`, which lives in the Nix store. | Both `/etc` and `/etc/static` need ro-bind so SSL roots, resolv.conf, etc. resolve. |
-| User-installed binaries are at `~/.nix-profile/bin/...` (and `/etc/profiles/per-user/$USER/bin/...`) — both symlinks into `/nix/store/...`. | Bind `/nix/store` ro plus the relevant profile symlinks; that gives the sandbox the host's whole toolchain without copies. |
+| User-installed binaries are at `~/.nix-profile/bin/...` (and `/etc/profiles/per-user/$USER/bin/...`) — both symlinks into `/nix/store/...`. | Bind `/nix/store` ro plus the relevant profile symlinks. |
 
-Skeleton shape of the bubblewrap invocation (illustrative — the
-real invocation lives in a Nix-built shell script under the apex
-`persona` repo's `scripts/`):
+Inner bwrap is **optional** for the first implementation;
+`systemd-run --user` with `ProtectHome=tmpfs` is enough to start
+running the witness against. Tighten with bwrap once a concrete
+gap surfaces.
+
+### 2.3 Composed invocation shape
+
+Sketch of the layered invocation (the real shape lives in a
+Nix-built shell script under the apex `persona` repo's
+`scripts/`):
 
 ```text
-bwrap
-  # process isolation
-  --unshare-all --share-net
-  --die-with-parent --new-session
-  # toolchain
-  --ro-bind /nix/store /nix/store
-  --ro-bind /etc        /etc
-  --ro-bind /etc/static /etc/static
-  --ro-bind /etc/resolv.conf /etc/resolv.conf
-  # base filesystems
-  --proc  /proc
-  --dev   /dev
-  --tmpfs /tmp
-  # fresh $HOME
-  --tmpfs $HOME
-  --chdir $HOME
-  # auth injection — one of: (a) ro-bind a per-sandbox token,
-  #                          (b) inject env var (Claude long-lived),
-  #                          (c) leave empty for fresh in-sandbox login
-  # (per §3)
-  # sockets out
-  --tmpfs $XDG_RUNTIME_DIR
-  --bind  /tmp/sbx-pty/  $HOME/.terminal-cell/
-  # env
-  --setenv HOME           $HOME
-  --setenv PATH           $PATH
-  --setenv XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
-  -- /nix/store/.../persona-dev-stack
+systemd-run --user --pty --collect --service-type=exec
+  --property=PrivateUsers=yes
+  --property=PrivateTmp=yes
+  --property=ProtectHome=tmpfs
+  --property=ProtectSystem=strict
+  --property=ReadWritePaths=$SANDBOX_DIR
+  --property=LoadCredential=codex-auth:$HOME/.codex/auth.json    # SnapshotCredential
+  --property=LoadCredential=claude-auth:$HOME/.claude/.credentials.json
+  --property=SetCredential=harness-prompt:reply-exactly-persona-sandbox-ok
+  --
+  /nix/store/.../persona-engine-sandbox-runner
+    --sandbox-dir $SANDBOX_DIR
+    --harness claude
+    # the runner sets CLAUDE_CONFIG_DIR, CODEX_HOME, PI_CODING_AGENT_DIR
+    # to point inside $SANDBOX_DIR, copies the loaded credentials into
+    # those config dirs as $CREDENTIALS_DIRECTORY/<name>, and starts
+    # persona-daemon as a child.
 ```
 
-The actual content is a Nix-built shell script per
-`skills/testing.md` §"Stateful tests": versioned, named flake
-output, leaves inspectable artifacts.
+`SetCredential=` lets the test driver inject a fixed prompt
+without writing it to disk; the runner reads it from
+`$CREDENTIALS_DIRECTORY/harness-prompt`. Per
+`systemd.exec(5)` documentation on credentials.
 
 ### 2.4 What the sandbox sees and doesn't
 
 | Resource | Inside sandbox | Outside |
 |---|---|---|
-| `$HOME` | fresh tmpfs | the host's real home |
-| `/nix/store` | ro-bind from host | shared |
-| Network | shared (`--share-net`) | shared |
+| `$HOME` | empty tmpfs (`ProtectHome=tmpfs`) | the host's real home, untouched |
+| `$SANDBOX_DIR/{state,run,home,work,artifacts}/` | rw (`ReadWritePaths=`) | visible to the host for artifact inspection |
+| `/nix/store` | shared via systemd defaults (or ro-bind under bwrap) | shared |
+| Network | inherited from host | unchanged |
 | `$WAYLAND_DISPLAY` socket | **not mounted in** | available on host |
-| terminal-cell socket | created inside `$HOME/.terminal-cell/pty.sock` | visible at host `/tmp/sbx-pty/pty.sock` via `--bind` |
-| `~/.claude/projects/...` | absent | present, untouched |
-| `~/.claude/history.jsonl` | absent | present, untouched |
+| terminal-cell control socket | created at `$SANDBOX_DIR/run/cell.sock` | visible at the same path on host (rw via `ReadWritePaths=`) |
+| Loaded credentials | available read-only at `$CREDENTIALS_DIRECTORY/{codex-auth,claude-auth,...}` | source files on host are untouched |
+| `~/.claude/projects/...`, `~/.claude/history.jsonl` | absent | present, untouched |
 | `~/.codex/sessions/`, `logs_2.sqlite`, etc. | absent | present, untouched |
-| API endpoints | reachable through shared net | reachable |
+| API endpoints | reachable | reachable |
 
-The host's session history is **never visible** to the sandbox,
-because the entire `$HOME` is a fresh tmpfs. This is what gives the
-witness clean session-start semantics: the sandboxed agent has no
-prior project memory to "remember", no prior conversation to
-reference, no statsig or telemetry continuity. Each test session
-starts cold.
+The host's session history is **never visible** to the sandbox
+because `$HOME` is an empty tmpfs and the credential injection is
+done via `LoadCredential=` (which doesn't traverse the host home
+tree). This is what gives the witness clean session-start
+semantics: the sandboxed agent has no prior project memory, no
+prior conversation, no statsig or telemetry continuity. Each test
+session starts cold.
 
 ---
 
-## 3 · Credential injection — the single-use refresh-token trap
+## 3 · Credential injection
 
-### 3.1 The discovery
+### 3.1 The single-use refresh-token discovery
 
 Both Claude Code and Codex CLI use OAuth refresh-token rotation
 that is **single-use**:
@@ -223,79 +258,103 @@ that is **single-use**:
   workflow stream. Do not share the same file across concurrent
   jobs or multiple machines."*
 
-**Consequence**: a naive `--ro-bind ~/.claude/.credentials.json
-$HOME/.claude/.credentials.json` is **wrong by construction**. It
-either:
+**Consequence**: a naive bind-mount of the live credential file —
+in either direction — is wrong by construction. Read-only blocks
+refresh and the first 401 inside the sandbox is fatal; read-write
+lets the sandbox refresh and silently invalidates the host's copy
+on its next refresh. Either side wins; the other side loses.
 
-- (ro): blocks the sandbox from refreshing → first 401 inside the
-  sandbox is fatal; *or*
-- (rw): lets the sandbox refresh → the sandboxed instance now owns
-  the new refresh-token, the host's copy is now stale, and the
-  host is silently logged out on the *next* refresh.
+### 3.2 The three named modes
 
-Either side wins; the other side loses.
+Three distinct ways credentials can cross the boundary — each
+with a name (DA's vocabulary, adopted here) so the design choice
+is explicit at every call site:
 
-### 3.2 The three named patterns
-
-```mermaid
-flowchart LR
-    pattern_a["A · long-lived Claude OAuth token"]
-    pattern_b["B · fresh in-sandbox login"]
-    pattern_c["C · raw API key"]
-
-    claude["Claude Code"] --> pattern_a
-    claude --> pattern_b
-
-    codex["Codex CLI"] --> pattern_b
-    codex --> pattern_c
-
-    pi["Pi (local model)"] --> pattern_d["D · no credentials needed"]
-```
-
-**A · Long-lived OAuth token (Claude only).** Anthropic ships
-`claude setup-token` (documented in Claude Code Authentication
-§"Generate a long-lived token") which mints a 1-year OAuth token
-that the CLI accepts via the `CLAUDE_CODE_OAUTH_TOKEN` environment
-variable. The sandbox receives this token through `--setenv`; the
-host's `.credentials.json` is never read. **Recommended default for
-Claude in the federation witness.**
-
-**B · Fresh in-sandbox login.** The sandbox starts cold, the test
-driver invokes `claude /login` (or `codex login`) inside the
-sandbox, and the login completes through the device-code flow on
-the host browser. The sandbox's credentials persist only inside the
-sandbox tmpfs and vanish when the sandbox exits. Slower; requires
-human interaction the first time. Use when the long-lived-token
-pattern is unavailable (Codex ChatGPT-plan auth has no headless
-equivalent per openai/codex issue #3820).
-
-**C · Raw API key (Codex only).** When the test wants to reach
-nano-tier models (which subscription auth cannot route to — see
-§4), use a raw `OPENAI_API_KEY` injected via `--setenv` into the
-sandbox. Codex CLI's `~/.codex/config.toml` admits raw-key auth as
-an alternative to ChatGPT-plan auth. No file injection needed; the
-env var supplants the auth.json lookup.
-
-**D · No credentials (Pi).** Pi connects to a local-model backend
-on the user's machine. The sandbox needs to reach that backend's
-endpoint — either bind-mounted in if it's a Unix socket, or
-network-reachable if it's an HTTP server. No API credentials cross
-the boundary.
-
-### 3.3 Pattern choice per harness
-
-| Harness | Pattern | Pollution risk | Recovery if invalidated |
+| Mode | Mechanism | Refresh risk | When to use |
 |---|---|---|---|
-| Claude Code | A (long-lived 1-yr token) | minimal: token is purpose-minted for headless use, separate from host session | regenerate via `claude setup-token` on host |
-| Codex CLI (subscription) | B (fresh login) | minimal: in-sandbox session is per-test | re-login at next test |
-| Codex CLI (API tier) | C (env-var API key) | none: raw key never touches sandbox storage | rotate key in user's OpenAI dashboard |
-| Pi | D (no credentials) | none | — |
+| **`SnapshotCredential`** | Copy the host credential file into the sandbox config dir at launch. | If the sandbox refreshes, the host's copy goes stale at next refresh. | Pi auth; short Codex smokes until the issued-token path lands; Claude when no long-lived token is available. |
+| **`ReadOnlyHostCredential`** | Expose the file read-only into the sandbox via `LoadCredential=`. | Sandbox cannot refresh — the first 401 is fatal. | Brief "does it parse the file" smoke tests; not durable enough for prompt-bearing witnesses. |
+| **`IssuedSandboxCredential`** | Mint a credential specifically for the sandbox, destroy it after. | None: per-sandbox lifetime; never shared with host. | Claude via `claude setup-token` → `CLAUDE_CODE_OAUTH_TOKEN` (1-year, inference-scoped). Codex via raw `OPENAI_API_KEY` env var (no subscription equivalent yet). |
 
-### 3.4 What we do NOT do
+### 3.3 Two delivery primitives — `LoadCredential=` and config-dir env vars
 
-- **Do not bind-mount `~/.claude/.credentials.json` or `~/.codex/auth.json` into the sandbox** in either direction. The single-use refresh-token rotation makes this unsafe by construction; pattern A/B/C are the supported alternatives.
-- **Do not run host + sandbox sessions concurrently against the same auth identity** — even with proper isolation, the provider servers see two clients asking to refresh the same token and one of them loses.
-- **Do not copy `auth.json` out of the sandbox at shutdown back to the host.** That's the rw-bind pattern wearing different clothes.
+The modes name *what* crosses; the **delivery primitives** name
+*how*. Two cross-cutting mechanisms, used together:
+
+**Systemd `LoadCredential=name:path`.** Loads `path` from the
+host into `$CREDENTIALS_DIRECTORY/name` inside the unit. Read-only,
+in-memory, doesn't traverse host home tree, never persisted to
+sandbox disk. The runner reads it and copies it into the
+sandbox's per-tool config dir for `SnapshotCredential`, or leaves
+it where it is for `ReadOnlyHostCredential`. Documented in
+`systemd.exec(5)` §"Credentials".
+
+**Per-tool config-dir env vars.** Every harness CLI in scope
+exposes an env var that redirects its config tree:
+
+| Tool | Env var | What it redirects |
+|---|---|---|
+| Claude Code | `CLAUDE_CONFIG_DIR` | The whole `~/.claude/` tree. Setting it isolates *all* state — credentials, projects, history, settings — to the chosen path. |
+| Codex CLI | `CODEX_HOME` | The whole `~/.codex/` tree, including session/history files. |
+| Pi | `PI_CODING_AGENT_DIR` (config), `PI_CODING_AGENT_SESSION_DIR` (session), `PI_PACKAGE_DIR` (Nix-store package path) | Pi needs all three set inside the sandbox; without `PI_PACKAGE_DIR` Pi looks under the fake home and fails before doing useful work. |
+
+Setting these env vars to point at `$SANDBOX_DIR/home/{.claude,.codex,...}/`
+is **the cleaner alternative** to bind-mounting credentials to
+canonical paths. The sandbox-internal config dir gets the
+credential file populated by `LoadCredential=`, plus tool-specific
+non-credential bits the tool would otherwise look for in the
+default home (Claude writes `.claude.json` into the config dir on
+first run; that's fine — it stays in the sandbox state directory).
+
+Additional per-tool flags for non-interactive use (verified by DA):
+
+| Tool | Flag / env var | Purpose |
+|---|---|---|
+| Claude Code | `claude -p --no-session-persistence` | non-interactive run, no session persistence |
+| Claude Code | `CLAUDE_CODE_SKIP_PROMPT_HISTORY` | same persistence control, any mode |
+| Codex CLI | `codex exec --ephemeral --ignore-user-config` | ephemeral exec; `--ignore-user-config` still uses `CODEX_HOME` for auth |
+| Pi | `--no-session` | no session directory created |
+
+### 3.4 Mode choice per harness
+
+| Harness | Mode | Delivery | Pollution risk | Recovery if invalidated |
+|---|---|---|---|---|
+| Pi | `SnapshotCredential` | `LoadCredential=pi-auth` + `PI_CODING_AGENT_DIR` + `PI_PACKAGE_DIR` | none (no external API) | — |
+| Claude (preferred) | `IssuedSandboxCredential` | `--setenv CLAUDE_CODE_OAUTH_TOKEN=<token>` from `claude setup-token` | minimal: token is purpose-minted, separate from host session | regenerate via `claude setup-token` on host |
+| Claude (fallback) | `SnapshotCredential` | `LoadCredential=claude-auth` + `CLAUDE_CONFIG_DIR` | refresh-rotation risk; see §3.5 | re-`/login` on host |
+| Codex (subscription) | `SnapshotCredential` | `LoadCredential=codex-auth` + `CODEX_HOME` | **empirically unverified**; refresh-rotation risk; gated by §9.4 witness | re-login on host |
+| Codex (API) | `IssuedSandboxCredential` | `--setenv OPENAI_API_KEY=<key>` | none: raw key never touches sandbox storage | rotate key in OpenAI dashboard |
+
+### 3.5 What this report does NOT yet prove
+
+- **Codex `SnapshotCredential` is empirically unverified for
+  prompt-bearing workloads.** DA confirmed `codex login status`
+  works on a copied `auth.json` with `CODEX_HOME` set, but a
+  prompt may trigger a refresh, and a refresh on the copied
+  refresh-token will invalidate the host's copy. Architecture
+  decision: **gate Codex subscription-auth sandboxing on the
+  `full_engine_codex_smoke` witness** (§9.4) which records
+  host-side auth state before and after one prompt and asserts
+  no mutation. If the witness shows host auth is mutated, the
+  Codex subscription-auth path requires an issued-token or
+  API-key alternative.
+- **`IssuedSandboxCredential` for Codex subscription auth does
+  not exist yet.** `codex login --with-api-key` and `codex login
+  --with-access-token` exist (verified by DA) but no
+  subscription-equivalent long-lived flow is documented (per
+  openai/codex issue #3820). Watch for upstream changes.
+
+### 3.6 What we do NOT do
+
+- **Do not bind-mount `~/.claude/.credentials.json` or
+  `~/.codex/auth.json` into the sandbox** in either direction.
+  Use `LoadCredential=` + config-dir env vars instead.
+- **Do not run host + sandbox sessions concurrently against the
+  same auth identity** — the provider servers see two clients
+  asking to refresh the same token and one of them loses.
+- **Do not copy `auth.json` out of the sandbox at shutdown back
+  to the host.** That's the rw-bind pattern wearing different
+  clothes.
 
 ---
 
@@ -357,23 +416,37 @@ OpenAI's reasoning-models guide). Add it unconditionally.
 ### 4.3 Pi side — local, preferred-when-available
 
 Pi is `persona-harness::HarnessKind::Pi`. The harness binary lives
-at `~/.nix-profile/bin/pi`. Pi connects to a local-model backend on
-the user's machine. The federation witness for Pi has zero per-call
-cost — but it competes with the user's foreground use of the same
-local model server.
+at `~/.nix-profile/bin/pi`. Pi's local model backend is **served by
+the user's `prometheus` cluster node** (DA's discovery). Pi's
+configured models, per DA:
 
-The pragmatic rule: **Pi is the preferred witness target when the
-local-model backend has spare capacity; subscription-paid harnesses
-are the fallback when Pi is busy or when the test needs to exercise
+| Model | Notes |
+|---|---|
+| `prometheus/qwen3.6-27b` | Pi's default |
+| `prometheus/glm-4.7-flash` | small/fast; preferred for sandbox witness traffic |
+| `prometheus/qwen3-8b` | small/fast alternative |
+
+For the sandbox witness, **prefer `prometheus/glm-4.7-flash` or
+`prometheus/qwen3-8b`** — small enough that the witness completes
+quickly and doesn't compete with the user's foreground use of the
+larger default. Set the model via Pi's normal config mechanism in
+`$PI_CODING_AGENT_DIR`.
+
+The federation witness for Pi has zero per-call cost — but it
+shares the prometheus node with the user's other Pi use. The
+pragmatic rule: **Pi is the preferred witness target when
+prometheus has spare capacity; subscription-paid harnesses are
+the fallback when Pi is busy or when the test needs to exercise
 specifically Claude or Codex behavior.**
 
-A flake-output naming pattern that encodes this:
+A flake-output naming pattern that encodes this (DA's name —
+adopted):
 
 ```text
-nix run .#federation-witness-pi        # local, free, preferred
-nix run .#federation-witness-claude    # Haiku 4.5, subscription
-nix run .#federation-witness-codex     # gpt-5.4-mini, subscription
-nix run .#federation-witness-codex-api # gpt-5-nano, API key
+nix run .#persona-engine-sandbox -- --harness pi        # local, free, preferred
+nix run .#persona-engine-sandbox -- --harness claude    # Haiku 4.5, subscription
+nix run .#persona-engine-sandbox -- --harness codex     # gpt-5.4-mini, subscription
+nix run .#persona-engine-sandbox -- --harness codex-api # gpt-5-nano, API key
 ```
 
 CI/automation can prefer `pi` and fall back to `claude` if Pi
@@ -420,12 +493,14 @@ flowchart LR
     style sbox fill:#faf6f4
 ```
 
-**`--bind /tmp/sbx-pty/  $HOME/.terminal-cell/`** in the bubblewrap
-invocation makes the directory writable from inside the sandbox at
-`$HOME/.terminal-cell/` and visible on the host at `/tmp/sbx-pty/`.
-The terminal-cell daemon creates its socket there inside the
-sandbox; the host Ghostty viewer reads the same inode through the
-bind-mount.
+**`ReadWritePaths=$SANDBOX_DIR`** on the `systemd-run` unit makes
+the sandbox state tree writable from inside the unit and visible
+on the host at the same path. The terminal-cell daemon creates its
+control socket at `$SANDBOX_DIR/run/cell.sock` inside the unit; the
+host Ghostty viewer (via `terminal-cell-view`) reads the same inode
+through the shared path. No bind-mount-out gymnastics needed; the
+sandbox state directory exists on the host filesystem and the
+systemd unit just carves out write access to it.
 
 ### 5.2 Why not bind the Wayland socket in
 
@@ -464,15 +539,15 @@ flowchart TB
         a3["nix run .#ghostty-agent-witness"]
     end
 
-    subgraph new [new — full federation]
-        b1["nix run .#federation-witness-pi"]
-        b2["nix run .#federation-witness-claude"]
-        b3["nix run .#federation-witness-codex"]
-        b4["nix run .#federation-witness-codex-api"]
+    subgraph new [new — full federation under sandbox]
+        b1["nix run .#persona-engine-sandbox -- --harness pi"]
+        b2["nix run .#persona-engine-sandbox -- --harness claude"]
+        b3["nix run .#persona-engine-sandbox -- --harness codex"]
+        b4["nix run .#persona-engine-sandbox -- --harness codex-api"]
     end
 
     existing -.->|"terminal layer only"| existing_proof["proves: terminal-cell + viewer + real agent CLI"]
-    new -->|"federation layer over terminal layer"| new_proof["proves: router commit → mind adjudication → harness delivery → terminal injection → real agent reply"]
+    new -->|"federation layer over terminal layer + systemd-run sandbox"| new_proof["proves: router commit → mind adjudication → harness delivery → terminal injection → real agent reply, all under sandboxed home + LoadCredential"]
 ```
 
 | What the existing terminal-cell witnesses prove | What the new federation witness adds |
@@ -637,12 +712,43 @@ test in the federation-witness flake-app. Names follow the
     (`claude_witness_uses_haiku_no_thinking`).
 14. The Codex-subscription witness configures
     `model = "gpt-5.4-mini"` and `model_reasoning_effort = "minimal"`
-    in `$HOME/.codex/config.toml`
+    in `$CODEX_HOME/config.toml`
     (`codex_subscription_witness_uses_mini_minimal_reasoning`).
 15. The Codex-api-key witness configures `model = "gpt-5-nano"`
     and reads the key from a `$OPENAI_API_KEY` env var, not from
     a file
     (`codex_api_witness_uses_nano_via_env_key`).
+
+### 9.5 Auth isolation — the empirical witnesses (per DA)
+
+16. **`codex_auth_isolated_status`** — create a fresh
+    `$CODEX_HOME` containing only the loaded credential, run
+    `codex login status`, assert no Codex session/history files
+    appear under the host's `~/.codex/` or under the sandbox
+    state directory except the snapshot.
+17. **`claude_auth_isolated_status`** — create a fresh
+    `$CLAUDE_CONFIG_DIR` containing only `.credentials.json`,
+    run `claude auth status`, assert any `.claude.json` write
+    lands in the sandbox config dir, not the host.
+18. **`pi_auth_isolated_startup`** — fresh
+    `$PI_CODING_AGENT_DIR`, `$PI_PACKAGE_DIR` set, run `pi
+    --version` or model-list, assert no session dir created
+    unless `--no-session` is overridden.
+19. **`full_engine_codex_smoke_preserves_host_auth`** — the gate
+    witness for Codex subscription-auth sandboxing. Run one full
+    prompt-bearing federation witness through Codex with
+    `SnapshotCredential`. Record `mtime`/`hash` of host
+    `~/.codex/auth.json` before and after. Assert: **host file
+    unchanged** AND `codex login status` on the host still
+    returns ok after the sandbox session. If this witness fails,
+    Codex subscription-auth `SnapshotCredential` is unsafe and
+    the test path falls back to `IssuedSandboxCredential` via
+    raw API key.
+20. **`full_engine_claude_smoke_preserves_host_auth`** — same
+    shape for Claude. Should pass for the
+    `IssuedSandboxCredential` path (1-year token from `claude
+    setup-token`) by construction; the witness is still required
+    to catch regressions.
 
 ---
 
@@ -652,7 +758,7 @@ test in the federation-witness flake-app. Names follow the
 |---|---|---|
 | Q1 | What's the bead/track number for the operator hand-off? T1-T9 (per /126) are infrastructure for the federation itself; the federation-witness is a *test-side* track and probably wants a new bead category (`role:operator` for the script wiring, `role:system-specialist` for the bubblewrap-on-CriomOS layer). | designer + operator |
 | Q2 | Does the Codex-fresh-login pattern (B) work with the device-code flow against a sandbox that has no browser inside? Test plan: run `codex login` inside bwrap, confirm the device-code URL prints, open it on the host browser, confirm the sandbox completes login. If device-code's polling endpoint is reachable, this works; document the exact UX before counting on it. | operator (empirical) |
-| Q3 | Pi requires a local-model backend reachable from inside the sandbox. The user's machine has no Ollama installed; the Pi binary's actual backend is undocumented in `persona-harness/ARCHITECTURE.md`. Either: (a) Pi runs an in-process model, (b) Pi assumes a backend service the user hasn't yet installed, (c) Pi has a fallback to a network-hosted model. Resolving Q3 unblocks the Pi witness; doesn't block the Claude/Codex witnesses. | operator + system-specialist (locate or document Pi's backend) |
+| Q3 | ~~Pi's backend is undocumented.~~ **Resolved by DA's report:** Pi uses the user's cluster `prometheus` node to serve local models. Configured models include `prometheus/qwen3.6-27b` (default), `prometheus/glm-4.7-flash`, `prometheus/qwen3-8b`. The sandbox needs `PI_CODING_AGENT_DIR`, `PI_CODING_AGENT_SESSION_DIR`, and `PI_PACKAGE_DIR` set; network reachability to prometheus is the only sandbox requirement beyond that. **Document Pi's prometheus backend in `persona-harness/ARCHITECTURE.md`** as a follow-up. | operator (document) |
 | Q4 | The sandboxed `persona-daemon` runs as the host user inside the sandbox's userns, not as a `persona` system user. That's fine for testing (no real privilege boundary needed when the whole engine is ephemeral and isolated by bwrap), but it diverges from the production model in /115 §3 ("privileged-user position"). Should the test-mode persona-daemon be marked explicitly as a test variant in its own startup arguments to keep the divergence honest? | designer |
 | Q5 | When the API endpoints are reached via `--share-net`, the sandbox sees the host's `/etc/resolv.conf` and outbound routing. Should the witness optionally support an egress-only proxy (mitmproxy or similar) to record the exact provider calls for cost-budget tracking? Listed as optional artifact in §8. | operator (if/when needed) |
 | Q6 | The federation-witness exposes the sandbox `$HOME` snapshot at `/tmp/sbx-home-final/` — should we redact any tokens or token-shaped strings before exposing it, in case the inspection artifact ends up in a shared report? | designer |
@@ -685,18 +791,101 @@ The work splits into tracks per the operator hand-off pattern of /126:
 
 | Track | Owner | Substance | Depends on |
 |---|---|---|---|
-| W1 — sandbox-launch script | operator | `persona/scripts/federation-witness` shell skeleton; bubblewrap invocation; argument parsing for `--harness {claude,codex,codex-api,pi}` | none |
-| W2 — auth injection per harness | operator | wire patterns A/B/C/D from §3; one branch per harness | W1 |
-| W3 — federation startup inside sandbox | operator | reuse `persona-dev-stack` (per `persona/ARCHITECTURE.md` §1.7); adapt for sandbox $HOME layout | W1, /126 T3 |
-| W4 — driver outside sandbox | operator | message-cli invocation + assertion runner; reads bound-out artifacts | W3 |
-| W5 — Pi backend discovery | operator + system-specialist | answer Q3 above; document Pi's local-model backend in `persona-harness/ARCHITECTURE.md`; install or document the backend's host setup | none |
-| W6 — Ghostty attach helper | system-specialist | tiny wrapper script that finds the bound-out socket and runs `terminal-cell-view` with Ghostty embedded; integrates with Niri to open in the user's session | W3 |
-| W7 — nix-chained reader derivations | operator-assistant or operator | the `derivB`/`derivC`/`derivD` shapes from §8; each reader derivation opens one redb with the authoritative reader and asserts the witness | W4 |
-| W8 — CI integration (optional, deferred) | system-specialist | run `federation-witness-codex-api` (nano-tier) on commit; budget-bound the per-test spend | W4, W7 |
+| W1 — sandbox-launch script | operator | `persona/scripts/persona-engine-sandbox` shell skeleton; `systemd-run --user` invocation with `PrivateUsers=yes`, `ProtectHome=tmpfs`, `LoadCredential=...`; argument parsing for `--harness {claude,codex,codex-api,pi}` | none |
+| W2 — auth injection per harness | operator | wire the three modes (`SnapshotCredential`, `ReadOnlyHostCredential`, `IssuedSandboxCredential`) from §3.2 via `LoadCredential=` + config-dir env vars (`CLAUDE_CONFIG_DIR`, `CODEX_HOME`, `PI_CODING_AGENT_DIR`/`PI_PACKAGE_DIR`); one branch per harness | W1 |
+| W3 — federation startup inside sandbox | operator | reuse `persona-dev-stack` (per `persona/ARCHITECTURE.md` §1.7); adapt for sandbox state directory layout (`state/`, `run/`, `home/`, `work/`, `artifacts/`) | W1, /126 T3 |
+| W4 — driver outside sandbox | operator | message-cli invocation + assertion runner; reads sandbox state directory and credentials artifacts | W3 |
+| W5 — Pi backend documentation | operator | document Pi's `prometheus` local-model backend in `persona-harness/ARCHITECTURE.md`; name the small models (`prometheus/glm-4.7-flash`, `prometheus/qwen3-8b`) | none |
+| W6 — Ghostty attach helper | system-specialist | tiny wrapper script that finds the sandbox `run/cell.sock` and runs `terminal-cell-view` with Ghostty embedded; integrates with Niri to open in the user's session | W3 |
+| W7 — Codex auth-preservation witness (`full_engine_codex_smoke_preserves_host_auth`) | operator | the gate witness from §9.5: assert host `~/.codex/auth.json` is byte-unchanged before and after one full prompt-bearing federation witness. **Blocks** Codex subscription-auth being a settled architecture choice. | W4 |
+| W8 — inner bwrap strict-mount profile (optional) | system-specialist | the `bwrap` invocation that runs inside the systemd-run unit, giving a deliberately tiny `/`; deferred until `ProtectHome=tmpfs` alone proves insufficient | W3 |
+| W9 — nix-chained reader derivations | operator-assistant or operator | the `derivB`/`derivC`/`derivD` shapes from §8; each reader derivation opens one redb with the authoritative reader and asserts the witness | W4 |
+| W10 — CI integration (optional, deferred) | system-specialist | run `persona-engine-sandbox -- --harness codex-api` (nano-tier) on commit; budget-bound the per-test spend | W4, W9 |
 
-The tracks don't need to land in lockstep; W1+W2 (bubblewrap +
-auth) is enough to start running the Claude witness manually. W7
-adds the chained-derivation rigor. W8 is automation.
+The tracks don't need to land in lockstep. W1+W2+W3+W4+W5 is
+enough to start running the Pi witness manually. W7 is the
+**gate** that decides whether Codex subscription-auth
+sandboxing is part of the architecture or whether the API-key
+path is the only Codex option.
+
+---
+
+## 13 · Convergence with designer-assistant/19
+
+DA produced a parallel research report at
+`reports/designer-assistant/19-persona-engine-sandbox-auth-research.md`
+on the same task, surfaced after /129's initial draft landed. The
+two reports independently reach the same architectural shape on
+most decisions; this section records the agreements, the additions
+DA contributed (folded into the revision above), and the
+disagreements (none structural).
+
+### 13.1 Agreed
+
+- Runner belongs at the Persona apex, not in a component repo.
+- Fresh state tree (`state/`, `run/`, `home/`, `work/`,
+  `artifacts/`).
+- Never bind-mount the host home or live credential file into
+  the sandbox.
+- Single-use OAuth refresh-token rotation is the central
+  credential risk.
+- Three named credential modes (DA's `SnapshotCredential` /
+  `ReadOnlyHostCredential` / `IssuedSandboxCredential` —
+  adopted, replacing /129's original A/B/C labels).
+- `CLAUDE_CODE_OAUTH_TOKEN` (via `claude setup-token`) is the
+  cleanest Claude path.
+- Codex subscription auth lacks an `IssuedSandboxCredential`
+  equivalent.
+- Haiku 4.5 for Claude, `gpt-5.4-mini` with low reasoning for
+  Codex subscription, Pi local for preferred.
+- Display: Ghostty stays on host, attaches via a sandbox-side
+  socket bind-mounted out.
+
+### 13.2 DA contributions folded into this revision
+
+- **`systemd-run --user` as the outer layer**, with `LoadCredential=`
+  for credential injection. /129's initial draft used pure
+  bubblewrap. DA's pattern is empirically verified on this host
+  and is structurally better: cgroup lifecycle, systemd-native
+  credential primitive, `ProtectHome=tmpfs` for free.
+- **Per-tool config-dir env vars** (`CLAUDE_CONFIG_DIR`,
+  `CODEX_HOME`, `PI_CODING_AGENT_DIR`) as the redirection
+  mechanism. Cleaner than path-specific bind-mounts.
+- **Concrete per-tool CLI flags** verified by DA: `claude -p
+  --no-session-persistence`, `CLAUDE_CODE_SKIP_PROMPT_HISTORY`,
+  `codex exec --ephemeral --ignore-user-config`, Pi's
+  `--no-session` plus the `PI_*` env-var trio including
+  `PI_PACKAGE_DIR`.
+- **Pi backend identified.** Pi uses the user's `prometheus`
+  cluster node for local models; small/fast models include
+  `prometheus/glm-4.7-flash` and `prometheus/qwen3-8b`. This
+  closes /129's Q3.
+- **The `full_engine_codex_smoke_preserves_host_auth` witness
+  as the gate** for Codex subscription-auth sandboxing.
+  /129's initial draft presented `SnapshotCredential` as a
+  settled pattern; DA's framing is sharper — settle by
+  empirical witness, not by documentation.
+- **Runner name `persona-engine-sandbox`** (DA's, adopted)
+  replaces /129's initial `federation-witness`.
+
+### 13.3 Where /129 still adds substance DA didn't cover
+
+- The data-plane-stays-raw invariant from /127 §2.3 explicitly
+  tied to the display-sharing pattern (§5.3).
+- The `x_cannot_happen_without_y` witness naming pattern from
+  `skills/architectural-truth-tests.md` (§9, witnesses 1-15).
+- The Nix-chained reader-derivation pattern for verification
+  (§8 chain diagram).
+- The full operator hand-off track table (§12) matching
+  /126's structure.
+
+### 13.4 No structural disagreements
+
+The two reports do not disagree on any architectural choice.
+The differences are emphasis (DA leads with empirical evidence
+from local testing; /129 leads with primary-source citation)
+and naming (cleaned up in this revision to use DA's
+vocabulary where DA's was clearer).
 
 ---
 
@@ -704,6 +893,11 @@ adds the chained-derivation rigor. W8 is automation.
 
 - `~/primary/ESSENCE.md` §"Constraints become tests" — the
   witness-test discipline this report applies to a new test surface.
+- `~/primary/reports/designer-assistant/19-persona-engine-sandbox-auth-research.md`
+  — parallel research synthesized in §13. Carries the empirical
+  proof (the `systemd-run --user --property=PrivateUsers=yes
+  --property=ProtectHome=tmpfs --property=LoadCredential=codex-auth:...`
+  invocation verified locally) that this report builds on.
 - `~/primary/reports/designer/114-persona-vision-as-of-2026-05-11.md`
   — the federation this report sandboxes.
 - `~/primary/reports/designer/115-persona-engine-manager-architecture.md`
@@ -754,6 +948,15 @@ adds the chained-derivation rigor. W8 is automation.
   OpenAI API pricing (gpt-5.4-nano, gpt-5.4-mini, gpt-5-nano).
 - `https://developers.openai.com/api/docs/guides/reasoning` —
   `reasoning_effort = "minimal"` for cost-sensitive flows.
+- `https://www.freedesktop.org/software/systemd/man/systemd.exec.html`
+  — `systemd.exec(5)` reference for `LoadCredential=`,
+  `SetCredential=`, `PrivateUsers=`, `ProtectHome=`, `ProtectSystem=`.
+- `https://systemd.io/CREDENTIALS/` — systemd CREDENTIALS
+  architecture: how `LoadCredential=` materializes the file at
+  `$CREDENTIALS_DIRECTORY/<name>` in-memory, read-only.
+- `https://code.claude.com/docs/en/cli-reference` — Claude Code
+  CLI reference (`-p`, `--no-session-persistence`,
+  `CLAUDE_CODE_SKIP_PROMPT_HISTORY`, `CLAUDE_CONFIG_DIR`).
 - `https://man7.org/linux/man-pages/man1/systemd-nspawn.1.html` —
   nspawn unprivileged-mode restrictions.
 - `https://manpages.debian.org/testing/bubblewrap/bwrap.1.en.html` —
