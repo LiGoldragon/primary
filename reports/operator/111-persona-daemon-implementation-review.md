@@ -25,15 +25,23 @@ This is useful, but it is still a scaffold. It is not yet the real host
 engine manager described by `reports/designer/116-persona-apex-development-plan.md`
 and `reports/designer/115-persona-engine-manager-architecture.md`. There is
 no manager redb, no component process supervision, no per-engine resource
-catalog, no real `ConnectionClass` minting, no peer-credential check, no
-spawn envelope, and no component socket topology decision.
+catalog, no `EngineId`-scoped socket/state layout, no daemon-created socket
+ACLs, no privileged-user mode, and no spawn envelope.
 
-The next implementation should not deepen this scaffold blindly. It should
-wait for the designer decisions called out in
-`reports/designer-assistant/16-new-designer-documents-analysis.md`: where
-`ConnectionClass` lives, whether `persona` accepts all component sockets or
-components accept their own sockets, one writer actor per redb file, whether
-hot-swap is deferred, and how contract relation boundaries are named.
+> **Update after designer/125 and designer/126.** The next `persona`
+> implementation track is no longer an open decision table. It is
+> `reports/designer/126-implementation-tracks-operator-handoff.md` T3:
+> persona daemon socket setup, privileged-user mode, manager redb,
+> engine catalog, spawn envelope, and `EngineId`-scoped paths. The
+> trust model is settled in
+> `reports/designer/125-channel-choreography-and-trust-model.md`: the
+> daemon creates sockets correctly at spawn time; components own and
+> accept their own sockets; filesystem ACLs are the engine boundary;
+> `ConnectionClass`/`MessageOrigin` are provenance records in
+> `signal-persona-auth`, not in-band runtime gates. Wherever
+> `reports/designer/124-synthesis-drift-audit-plus-development-plans.md`
+> still says "ConnectionClass minting", "AuthProof signing",
+> "class-aware delivery", or "class-aware input gate", designer/125 wins.
 
 ---
 
@@ -78,8 +86,10 @@ flowchart TB
 
     target_daemon["target persona-daemon"]
     target_catalog["manager redb"]
+    target_paths["EngineId-scoped paths"]
+    target_acl["daemon-created socket ACLs"]
     target_spawn["component spawn supervisors"]
-    target_auth["ConnectionClass authority"]
+    target_user["privileged persona user"]
     target_routes["engine routes"]
     target_health["push health events"]
 
@@ -88,8 +98,10 @@ flowchart TB
     current_manager --> current_memory
 
     target_daemon --> target_catalog
+    target_daemon --> target_paths
+    target_daemon --> target_acl
     target_daemon --> target_spawn
-    target_daemon --> target_auth
+    target_daemon --> target_user
     target_daemon --> target_routes
     target_daemon --> target_health
 ```
@@ -155,9 +167,12 @@ What this gets right:
 What is still wrong:
 
 - Error output is plain stderr, not a typed NOTA failure record.
-- There is no daemon auto-discovery beyond `PERSONA_SOCKET` or `/tmp/persona.sock`.
-- Caller identity still comes from environment fallback, not from real
-  infrastructure authority.
+- There is no daemon auto-discovery beyond `PERSONA_SOCKET` or the scaffold
+  `/tmp/persona.sock`.
+- The target socket layout is `/var/run/persona/<engine-id>/...`, with the
+  manager and component sockets created by the daemon during engine setup.
+- Caller identity still comes from environment fallback. The current
+  `AuthProof::LocalOperator` path should be retired, not hardened.
 
 ### 3.2 Daemon Transport Objects
 
@@ -224,9 +239,14 @@ pub async fn read_frame(&self, stream: &mut UnixStream) -> Result<Frame> {
 ```
 
 The useful part is that the daemon boundary is already Signal-shaped. The
-weak part is that this is a generic connection codec with no peer-credential
-check and no auth-context derivation. It only checks that a frame carries
-some auth proof.
+weak part is that this is a generic connection codec that still carries the
+old `AuthProof` shape. After designer/125, that is not the target inside the
+engine. Internal trust comes from filesystem ACLs on daemon-created sockets;
+external message provenance becomes `MessageOrigin` in the
+`signal-persona-auth` vocabulary. Operators should not implement a new record
+named `AuthProof`, even if it is described as a slim tag. The safer name is
+`IngressContext`, because it describes where the request entered without
+implying a cryptographic proof or a runtime admission gate.
 
 ### 3.4 Current Kameo Actor
 
@@ -301,8 +321,9 @@ Shortcomings:
 - It has no graceful shutdown message.
 - It does not supervise child component daemons.
 - It does not persist manager state.
-- It does not mint `ConnectionClass`.
-- It does not read Unix peer credentials.
+- It does not create `EngineId`-scoped socket/state directories.
+- It does not set socket owners or modes.
+- It does not run in privileged-user mode.
 
 ### 3.6 Current In-Memory Reducer
 
@@ -384,16 +405,17 @@ The tests are useful but not enough.
 
 | Missing witness | Why it matters |
 |---|---|
-| Auth proof is infrastructure-minted | Current `PersonaCaller` uses `PERSONA_OPERATOR` or `operator`. That is not the final identity model. |
-| Missing-auth frame rejection | `PersonaFrameCodec::request_from_frame` rejects frames without auth, but there is no direct test. |
+| Old auth-proof path is retired | Current `PersonaCaller` uses `PERSONA_OPERATOR` or `operator`. That path should disappear rather than become stronger. |
 | Too-large frame rejection | `DaemonFrameTooLarge` is implemented but not tested. |
 | Malformed frame rejection | The daemon should return/log a clear error without corrupting state. |
 | Concurrent clients | The daemon currently handles connections serially. We do not know the real behavior under multiple clients. |
 | Graceful daemon shutdown | Tests kill the child process. There is no typed shutdown request yet. |
 | Durable manager state | State disappears when the daemon exits. The target needs manager redb. |
 | Component spawn supervision | Startup/shutdown only mutates desired state; no component process is actually started or stopped. |
-| Per-engine socket paths | Current default is `/tmp/persona.sock`, not `/var/run/persona/<engine-id>/...`. |
-| ConnectionClass rejection of payload-supplied class | The current contract path does not yet implement that boundary. |
+| Per-engine socket paths | Current default is scaffold `/tmp/persona.sock`, not `/var/run/persona/<engine-id>/...`. |
+| Daemon-created socket ACLs | No test proves internal sockets are mode `0600` owned by `persona`, or that the message-proxy socket is mode `0660`. |
+| Privileged-user mode | No process-table witness proves `persona-daemon` runs as the dedicated `persona` system user. |
+| Spawn envelope | No witness proves component daemons receive socket/state paths through a typed spawn envelope. |
 | CLI error replies as NOTA | Successful output is NOTA. Error output is not yet a typed NOTA reply. |
 
 ---
@@ -404,8 +426,8 @@ The tests are useful but not enough.
 
 The architecture says `persona-daemon` owns the host-level engine manager.
 The implementation owns only an in-memory list of components. There is no
-engine catalog, no redb, no route table, no lifecycle observations, and no
-spawn supervisor.
+engine catalog, no redb, no route table, no lifecycle observations, no
+`EngineId`-scoped paths, no socket ACL setup, and no spawn supervisor.
 
 The code is correct only for the first slice: "can a CLI send a typed Signal
 request to a long-lived daemon-owned actor?"
@@ -427,9 +449,12 @@ pub fn auth_proof(&self) -> AuthProof {
 }
 ```
 
-This is not good enough. It is a scaffold that lets the Signal frame carry an
-auth proof shape. The final system must derive identity from process/socket
-authority and manager-minted context, not from a free environment variable.
+This is not good enough. After designer/125, this path should be retired,
+not hardened. Internal engine traffic is admitted by filesystem ACLs on
+daemon-created sockets. External message submission enters through the
+user-writable message-proxy socket and becomes provenance:
+`MessageOrigin::External(ConnectionClass::Owner)` or another typed origin
+from `signal-persona-auth`.
 
 ### 6.3 The Event Trace Is A Test Crutch
 
@@ -564,45 +589,51 @@ the full noun instead of a shorthand.
 
 ---
 
-## 8 - Decisions I Am Waiting On
+## 8 - Settled Decisions That Change The Next Work
 
-These are from `reports/designer-assistant/16-new-designer-documents-analysis.md`
-and should not be papered over by code:
+`reports/designer/125-channel-choreography-and-trust-model.md` and
+`reports/designer/126-implementation-tracks-operator-handoff.md` supersede
+the old open-decision table below. The old report text treated socket
+boundary and provenance naming as unsettled; that is stale.
 
-| Decision | Why it blocks deeper implementation |
+| Settled point | Consequence for this implementation |
 |---|---|
-| Where `ConnectionClass` lives | It is now used by mind, router, system, harness, terminal, and message. Keeping it in the wrong contract will force dependency drift. |
-| Socket boundary model | Either `persona-daemon` accepts all component connections, or component daemons accept their own sockets using manager-minted auth context. The current code only proves the manager socket. |
-| One redb writer actor per redb file | Before adding manager redb, we need the writer actor boundary named. |
-| Preserve `OtherPersona` provenance | Router/terminal gates should not erase source class by rewriting it to `System`. |
-| Input-buffer producer | Prompt cleanliness should probably come from `persona-terminal`; focus comes from `persona-system`. The docs need one answer. |
-| Hot-swap milestone | Hot-swap should probably be deferred until catalog, spawn, health, and class minting exist. |
-| Contract repo relation boundaries | Component contracts are starting to hold multiple relations. That needs a rule before more records land. |
-| Typed Nexus body migration | Router/harness durable schemas should not harden around opaque `MessageBody(String)`. |
+| Filesystem ACLs are the engine boundary | `persona-daemon` creates sockets with correct owner/mode at spawn time. It does not become a runtime `ConnectionAcceptor` for every component stream. |
+| Components own and accept their own sockets | The daemon gap is socket creation, path layout, ownership, and spawn envelope, not in-band auth delegation. |
+| `ConnectionClass` is provenance | `AuthProof::LocalOperator` should be retired. Provenance moves to `MessageOrigin` / `ConnectionClass` in `signal-persona-auth`. |
+| The hand-off's `AuthProof` name is rejected | T1 should use `IngressContext` or another origin/context noun before implementation. Do not carry an `AuthProof` record name forward. |
+| Component hot-swap is rejected | The later upgrade path is engine-level typed migration over channels, not component v2 sharing v1's redb. |
+| Router/mind channel choreography is the policy layer | `persona-daemon` should not grow per-message policy logic; it creates the engine substrate. |
 
 ---
 
-## 9 - What I Would Do Next After Decisions
+## 9 - Next Persona Work Now
 
-If the designer resolves socket and identity boundaries, my next `persona`
-repo work should be:
+The next `persona` repo work should follow
+`reports/designer/126-implementation-tracks-operator-handoff.md` T3.
+The practical sequence is:
 
 1. Add a manager-owned Sema/redb layer with one explicit writer actor.
 2. Replace `EngineState::default_catalog()` with manager catalog records.
 3. Add a typed event log for manager lifecycle events.
 4. Add the first spawn envelope type and test that engine socket/state paths
    include `EngineId`.
-5. Replace `PersonaCaller::from_environment()` with a real auth-context path.
-6. Add a typed shutdown/control request for `persona-daemon`.
-7. Make daemon stream handling concurrent or actorized, with a test that two
+5. Replace scaffold `/tmp/persona.sock` with
+   `/var/run/persona/<engine-id>/...` paths for engine/component sockets.
+6. Add daemon-created socket ACL setup: internal sockets `0600`, owned by
+   `persona`; message-proxy socket `0660`, owned by `persona`, group set to
+   the engine owner's group.
+7. Add privileged-user mode and a process-table witness that
+   `persona-daemon` runs as the `persona` system user.
+8. Retire `AuthProof::LocalOperator` on this path instead of hardening it.
+9. Add a typed shutdown/control request for `persona-daemon`.
+10. Make daemon stream handling concurrent or actorized, with a test that two
    CLI clients can hit the daemon without corrupting state.
-8. Convert CLI error output into typed NOTA replies where the surface is
+11. Convert CLI error output into typed NOTA replies where the surface is
    machine-facing.
 
-If the designer does not resolve those boundaries yet, the safe work is more
-testing around the current scaffold:
+Useful scaffold tests still remain, but they are not the main T3 track:
 
-- missing-auth frame rejection;
 - oversized-frame rejection;
 - malformed-frame rejection;
 - stale socket vs non-socket endpoint behavior;
@@ -628,4 +659,3 @@ right first question, but not the final architecture. The most suspicious
 code today is the environment-derived auth proof, the in-memory hard-coded
 catalog, and the trace vector used as an actor-path witness. Those should not
 survive into the real engine manager.
-
