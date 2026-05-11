@@ -458,7 +458,7 @@ sentence (per `skills/contract-repo.md`) makes the matrix readable.
 | `message` CLI | `persona-router` | `signal-persona-message` | Assert (submission), Match (inbox) | `MessageSubmission`, `MessageSlot`, `InboxListing` |
 | `persona-router` | `persona-system` | `signal-persona-system` | Subscribe, Constrain | `FocusObservation`, `InputBufferObservation`, `SystemTarget`, `ObservationGeneration` |
 | `persona-router` | `persona-harness` | `signal-persona-harness` | Mutate (delivery, cancellation), Subscribe (lifecycle) | `MessageDelivery`, `DeliveryFailureReason`, `HarnessStarted` |
-| `persona-harness` | `persona-terminal` | `signal-persona-terminal` (planned) | Mutate (open/resize/close), Subscribe (transcript) | `TerminalRequest`, `TerminalEvent` |
+| `persona-harness` | `persona-terminal` | `signal-persona-terminal` | Mutate (open/resize/close), Subscribe (transcript) | `TerminalRequest`, `TerminalEvent` |
 
 ### 4.4 Shape of a contract — `signal-persona-mind` in detail
 
@@ -693,7 +693,7 @@ through `signal-persona-mind`:
 ```
 
 The item gets a stable id (`StableItemId`), a display id (e.g.,
-`primary-bkb` — bd-shaped during the transitional era), a typed
+`primary-2w6` — bd-shaped during the transitional era), a typed
 kind, priority, and body.
 
 ### 6.3 How agents take work
@@ -1170,9 +1170,8 @@ flight; the seams are honestly visible.
 | **`sema` → `sema-db` rename** | Pending. Bead `primary-ddx`. Naming reflects "today's piece" vs eventual `Sema`. | active-repositories.md; ESSENCE.md §"Today and eventually" |
 | **Durable router state** | MVP uses in-memory pending-delivery; destination is `router.redb` via `sema-db`. | persona-router/ARCHITECTURE.md |
 | **`persona-message` proxy shape** | Active migration (`primary-2w6`, P1). Today's `persona-message` still owns transitional text-file ledger + polling; destination is a stateless Nexus↔signal proxy on router's edges with no durable message state of its own. | persona-message/ARCHITECTURE.md; bead `primary-2w6` |
-| **`signal-persona-terminal` contract** | Exists with `TerminalRequest` and `TerminalEvent` typed records. Its own `ARCHITECTURE.md` still describes terminal transport as `persona-wezterm` — bead filed for the wording sweep. | signal-persona-terminal/ARCHITECTURE.md |
+| **`signal-persona-terminal` contract** | Exists with `TerminalRequest` and `TerminalEvent` typed records. Its own `ARCHITECTURE.md` still names the former terminal-owner repo — bead filed for the wording sweep. | signal-persona-terminal/ARCHITECTURE.md |
 | **Trace phases → real actors** | Persona-mind has trace witnesses (`NotaDecoder`, `CallerIdentityResolver`, etc.) that should graduate to data-bearing actors. | persona-mind/ARCHITECTURE.md §"Trace phases" |
-| **Actor blocking violation in `TerminalDelivery`** | Bead `primary-bkb` (P2). Fix is mechanical (Template 1 or Template 3 from `skills/kameo.md`). | designer/113; the current code path in the persona-terminal checkout |
 | **Cluster trust runtime placement** | Designer/110 settled the scope discipline; system-specialist work pending on the runtime daemon. | reports/designer/110-cluster-trust-runtime-placement.md |
 | **BEADS retirement** | Transitional. Native mind work graph is the destination. No long-term Persona↔bd bridge. | AGENTS.md §"BEADS is transitional" |
 | **Lock-files retirement** | Transitional. `tools/orchestrate` becomes external glue (or retires) once agents use `mind` directly. | protocols/orchestration.md §"Command-line mind target" |
