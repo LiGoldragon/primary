@@ -22,7 +22,8 @@ relates to layered protocols and human-facing NOTA projections.
 communication via length-prefixed rkyv archives. A contract
 repo is the typed vocabulary of one signaling fabric — the
 shared `Frame`, the closed enum of payloads, the handshake,
-the auth proofs. Components that signal each other depend on
+and any identity/origin/auth context that genuinely crosses
+that boundary. Components that signal each other depend on
 the same contract repo.
 
 The principle is `~/primary/ESSENCE.md` §"Perfect specificity at
@@ -79,7 +80,7 @@ contract-repo/
 │   ├── lib.rs        — module entry + re-exports
 │   ├── frame.rs      — Frame envelope, encode/decode, error type
 │   ├── handshake.rs  — ProtocolVersion + handshake exchange
-│   ├── auth.rs       — auth-proof types (capability tokens, signatures)
+│   ├── origin.rs     — origin/auth context records (only when the boundary carries them; many local-engine contracts omit this entirely)
 │   ├── request.rs    — Request enum (closed; per-verb dispatch)
 │   ├── reply.rs      — Reply enum (closed; matches request kinds)
 │   ├── <verb>.rs     — per-verb typed payloads
@@ -96,7 +97,10 @@ The contract crate **owns**:
 - Length-prefix framing rule (4-byte big-endian per archive).
 - Handshake + protocol version + compatibility rule
   (major-exact / minor-forward, or whatever the project picks).
-- Auth-proof types and capability-token shape.
+- Origin/auth context records only when the boundary carries
+  identity, provenance, capability, or signature material.
+  Do not create a proof type just because the template has a
+  slot for one.
 - The closed enum of request kinds + paired reply kinds.
 - Per-verb typed payloads (closed enums of typed kinds — no
   generic record wrapper, no `Unknown` variant).
@@ -123,20 +127,31 @@ It **does not own**:
 
 ---
 
-## Contracts name relations
+## Contracts name a component's wire surface
 
-A contract repo is not a shared-types bucket. It is the
-typed vocabulary of one **relation**:
+A contract repo is the typed-vocabulary bucket for **one
+component's wire surface**. Multiple relations within one
+component's contract are fine — a harness component speaks
+delivery-from-router, identity-query-from-anyone,
+transcript-tail-to-subscribers, lifecycle-observation-to-
+mind, all in one signal-persona-harness crate. The
+component is the unit of contract ownership; relations
+within it co-evolve and share the typed records they touch.
 
-- one component talking to one component;
-- many clients talking to one daemon;
-- one producer pushing events to many subscribers;
-- many agents changing one shared work graph;
-- or one domain vocabulary layered over the shared
-  `signal-core` kernel.
+What a contract crate is **not** is a workspace-wide grab
+bag mixing vocabularies from unrelated components. A crate
+that wants to hold both signal-persona-mind records and
+signal-persona-router records has stopped being a contract
+and started being a shared utilities crate; split it.
 
-Before adding or renaming a contract type, name the relation
-in plain English:
+Each relation within a contract crate is still named
+explicitly — name the relations in `ARCHITECTURE.md` so
+readers can find them, and split source modules by
+relation when the file count justifies it (e.g.
+`src/delivery.rs`, `src/identity.rs`, `src/transcript.rs`).
+
+For each relation a contract carries, name it in plain
+English:
 
 1. **Endpoints.** Who can send, who can receive, and who is
    only observing?
@@ -152,12 +167,15 @@ in plain English:
    relation: submitted, accepted, rejected, assigned,
    unassigned, closed, expired, cancelled, observed?
 
-The root enum of a contract crate is the closed set of
-vectors in that relation. A `Request`, `Reply`, or `Event`
-variant is not "whatever payload fits today"; it is one
-mutually-exclusive way the relationship can move. If the root
-variants are wrong, every consumer is forced to program with
-the wrong model.
+Each named relation within a contract crate has its own
+closed root enum (or closed request/reply/event family)
+naming that relation's vectors. A `Request`, `Reply`, or
+`Event` variant is not "whatever payload fits today"; it is
+one mutually-exclusive way the relationship can move. A
+multi-relation contract crate (one component, multiple
+relations) has one root family per relation, not one
+crate-wide enum. If the root variants are wrong, every
+consumer is forced to program with the wrong model.
 
 Naming is therefore load-bearing architecture:
 
@@ -225,7 +243,7 @@ flowchart TB
     subgraph contract["base contract crate"]
         frame["Frame envelope"]
         hs["handshake + protocol version"]
-        auth["auth proofs"]
+        auth["optional origin/auth context"]
         front["front-end verbs<br/>(seen by every client)"]
     end
 
@@ -244,10 +262,10 @@ flowchart TB
 
 The pattern (signal-forge over signal is the canonical
 example): the layered crate **re-uses** the base contract's
-`Frame`, handshake, and auth, and **adds** its own per-verb
-payload enum. New layered verbs land in the layered crate;
-front-end clients that depend only on the base contract don't
-recompile.
+`Frame`, handshake, and any boundary origin/auth context, and
+**adds** its own per-verb payload enum. New layered verbs
+land in the layered crate; front-end clients that depend only
+on the base contract don't recompile.
 
 Use a layered crate when:
 
@@ -361,8 +379,9 @@ A contract repo grows in two distinct ways:
   new query shapes — all within the original audience.
 - **Audience growth:** a *second* domain wants to speak the
   same wire conventions. The first domain's repo now carries
-  both the universal kernel (Frame, handshake, auth, version,
-  the verb spine) *and* its own record kinds.
+  both the universal kernel (Frame, handshake, optional
+  origin/auth context, version, the verb spine) *and* its own
+  record kinds.
 
 The audience case triggers extraction. **When two or more
 domains share the kernel, extract the kernel into its own
@@ -390,8 +409,10 @@ this skill exists to prevent.
 
 The extraction:
 - New crate (`signal-core`, or whatever the project calls it)
-  holds Frame, handshake, auth, version, the universal verb
-  spine, the typed identity records (Slot, Revision).
+  holds Frame, handshake, version, the universal verb spine,
+  the typed identity records (Slot, Revision), and only the
+  origin/auth context records that are truly shared by every
+  domain using that kernel.
 - The original crate (`signal`) becomes the first domain's
   *vocabulary* over the kernel — Criome's records, Criome's
   per-verb payloads.
@@ -491,8 +512,8 @@ The naming hierarchy reflects the relationship to `signal`:
 ### `signal-<consumer>` — layered effect crate (the prefix form)
 
 When the contract is **layered atop `signal`** — re-uses
-signal's `Frame`, handshake, and auth, adds per-verb payloads
-for a narrower audience — the canonical name is
+signal's `Frame`, handshake, and shared boundary context,
+adds per-verb payloads for a narrower audience — the canonical name is
 **`signal-<consumer>`**:
 
 - `signal-forge` — criome ↔ forge effect verbs
@@ -508,14 +529,14 @@ crate churns.
 ### `<project>-signal` — independent base contract (the suffix form)
 
 When the project's wire is **its own base contract** — owns
-its own `Frame`, handshake, auth — the name is
+its own `Frame`, handshake, and boundary context — the name is
 **`<project>-signal`**:
 
 - `signal` — the base contract of the sema-ecosystem (named
   without prefix because it IS the base)
 
 Use this only when the project is genuinely a separate
-signaling fabric with its own envelope and auth shape.
+signaling fabric with its own envelope and boundary-context shape.
 Almost always, what feels like "a new ecosystem" is
 better modelled as a layered crate atop signal.
 
@@ -532,7 +553,7 @@ signal family.
 
 ```mermaid
 flowchart TD
-    q1{"Re-uses signal's<br/>Frame + handshake + auth?"}
+    q1{"Re-uses signal's<br/>Frame + handshake + context?"}
     q2{"Has its own<br/>base envelope?"}
     layered["signal-&lt;consumer&gt;<br/>(layered effect crate)"]
     base["&lt;project&gt;-signal<br/>(independent base contract)"]
@@ -565,7 +586,7 @@ bag of utilities — it is the spoken protocol.
 | New wire verb added to the base contract because it was easy | Front-end clients now recompile on every effect-side change | Add a layered effect crate; base stays stable |
 | No `ARCHITECTURE.md` in the contract repo | Schema discipline is unwritten | Every contract repo carries `ARCHITECTURE.md` per `~/primary/lore/AGENTS.md`; schema discipline is the load-bearing part |
 | Open enum where closed was meant | Adding `Unknown` variant "for forward compatibility" | Closed enum + coordinated upgrade. The `Unknown` is a polling-shaped escape hatch |
-| Relation unnamed | The repo is described as "shared types" or "messages" | Write the relation sentence: endpoints, cardinality, direction, authority, lifecycle vectors |
+| Boundary unnamed | The repo is described only as "shared types" or "messages," with no named endpoints, direction, authority, lifecycle vectors, or owning component | Name what crosses the boundary: which component/endpoint, which direction, which authority mints what, which lifecycle vectors are open. Sharing types is fine; failing to name what they speak is the bug. |
 | Root variants underspecified | `Ok`, `Generic`, `Mixed`, `Data`, or `Submit` where several things can be submitted | Name the vector exactly, or move the generic word under a more precise enclosing enum |
 | Namespace repeated as a prefix | `PersonaMessage`, `SignalPersonaRequest`, `HarnessHarnessEvent` | Let crate/module/enum context carry the namespace; keep the type name on the domain thing |
 
