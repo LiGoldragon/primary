@@ -110,6 +110,9 @@ CriomOS-home changes:
 - `modules/home/profiles/min/dictation.nix` enables `status_bar = true`.
 - `modules/home/profiles/min/sfwbar.nix` registers the local Noctalia plugin in
   the right side of the bar.
+- `modules/home/profiles/min/sfwbar.nix` uses Hexis to ensure the
+  `whisrs-level` entry in Noctalia's mutable `plugins.json`; Home Manager does
+  not own that file as a symlink.
 
 Validation:
 
