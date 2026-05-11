@@ -56,7 +56,7 @@ surface when the work can split cleanly:
   staying within the per-repo discipline (Mentci three-tuple commit
   format, `nix flake check` plus `nix run .#test-pki-lifecycle`).
   Never touch private key material outside the local-material plane.
-- **chroma**, **persona-wezterm**, **persona-system** — when the
+- **chroma**, **persona-terminal**, **persona-system** — when the
   work is platform-adjacent rather than persona-component
   architecture (palette plumbing, focus tracking against the live
   niri runtime, terminal supervisor experiments).

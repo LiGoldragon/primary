@@ -27,7 +27,7 @@ consume.
 
 ```nix
 inputs.nota-codec.url = "github:LiGoldragon/nota-codec";
-inputs.persona-wezterm.url = "github:LiGoldragon/persona-wezterm";
+inputs.persona-terminal.url = "github:LiGoldragon/persona-terminal";
 ```
 
 The github form is **portable** (any machine resolves it

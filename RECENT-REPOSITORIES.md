@@ -62,7 +62,7 @@ Pruned on 2026-05-06:
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` |
 | `signal-persona-mind` | `/git/github.com/LiGoldragon/signal-persona-mind` |
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` |
-| `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` |
+| `persona-terminal` | `/git/github.com/LiGoldragon/persona-terminal` |
 | `prism` | `/git/github.com/LiGoldragon/prism` |
 | `sema` | `/git/github.com/LiGoldragon/sema` |
 | `signal` | `/git/github.com/LiGoldragon/signal` |

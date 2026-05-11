@@ -26,8 +26,8 @@ stack.
 | `persona-message` | `/git/github.com/LiGoldragon/persona-message` | Current CLI/message experiments; transitional until router/mind contracts settle. |
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` | System facts such as focus and prompt-state observations. |
 | `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` | Harness process/session control boundary. |
-| `persona-wezterm` | `/git/github.com/LiGoldragon/persona-wezterm` | Existing terminal transport repo. Rename/split target is `persona-terminal`; WezTerm should become a viewer adapter, not the terminal owner noun. |
-| `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Generic daemon-owned PTY/transcript prototype; seed candidate for `persona-terminal`. |
+| `persona-terminal` | `/git/github.com/LiGoldragon/persona-terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. WezTerm is shelved adapter code only, not an owner noun. |
+| `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Low-level daemon-owned PTY/transcript cell primitive consumed by `persona-terminal`. |
 | `sema` (rename pending → `sema-db`) | `/git/github.com/LiGoldragon/sema` | **Today's** typed database library (redb + rkyv + typed slots); used by every state-bearing component (`persona-mind`, `persona-router`, `criome`, …). Not a daemon and not shared storage. Distinct from the **eventual** `Sema` — the universal medium for meaning (self-hosting computational substrate, fully-typed human-language representation, universal interlingua). Per `ESSENCE.md` §"Today and eventually". |
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |

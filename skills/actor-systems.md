@@ -161,10 +161,11 @@ type is a forwarding helper. Either give it real state/failure policy
 or collapse it into the parent.
 
 Every manifest-declared actor must have a concrete `impl Actor`.
-Trace-only variants in an `ActorKind` enum are not actors. Either
-create the actor, or rename the enum to the thing it really is
-(`PipelinePhase`, `TracePoint`, `ResidencyPlane`) so tests do not
-mistake an aspirational name for runtime architecture.
+Trace-only names are not actors. If a trace witness includes phases,
+name them as trace nodes or pipeline phases, and make the value carry
+the label data it reports. Do not use `ActorKind` as a bucket for both
+real actors and aspirational phases; tests must not mistake trace
+witness vocabulary for runtime architecture.
 
 ---
 

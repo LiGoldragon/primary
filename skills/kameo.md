@@ -969,8 +969,9 @@ machinery.
 an `async fn handle()` with no detach. The actor's mailbox stalls
 and the Tokio worker thread it ran on starves any sibling actors
 scheduled there. See `skills/actor-systems.md` §"No blocking" for
-the full rule and `~/primary/reports/designer/113-actor-blocking-audit.md`
-for a worked example (`persona-wezterm::TerminalDelivery`).
+the full rule and `~/primary/reports/designer/113-actor-blocking-audit.md`.
+The old `persona-terminal::TerminalDelivery` example was removed rather than
+kept as a blocking actor.
 
 ---
 

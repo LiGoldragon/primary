@@ -99,7 +99,7 @@ Witnesses, by category:
 
 | Witness | Catches |
 |---|---|
-| `cargo metadata` dependency assertions | wrong repo reached across a boundary (e.g. router pulls persona-wezterm directly) |
+| `cargo metadata` dependency assertions | wrong repo reached across a boundary (e.g. router pulls persona-terminal directly) |
 | `compile-fail` tests (`trybuild` or similar) | local duplicate types, string shortcuts, missing trait contracts |
 | Fake actor handles | direct method calls disguised as actor code |
 | Typed event traces (recorder actor) | wrong ordering of effects (e.g. push-before-commit) |
@@ -240,7 +240,7 @@ empty file and step B fails. The test names the failure as
 |---|---|
 | Component-owned Sema tables store Signal contract types | Insert and read a Signal contract record through the owning component's typed Sema table; no local duplicate type can satisfy the table's value type. |
 | Router commits before delivery | Use a fake store actor + fake harness actor; assert the router emits `CommitMessage` *before* any `DeliverToHarness`. |
-| Router does not own terminal bytes | `cargo metadata` test fails if `persona-router/Cargo.toml` depends on `persona-wezterm`. |
+| Router does not own terminal bytes | `cargo metadata` test fails if `persona-router/Cargo.toml` depends on `persona-terminal`. |
 | Signal is the component wire | Integration test sends a length-prefixed `signal_core::Frame`; NOTA strings on the component socket are rejected. |
 | No private durable queue | Restart router after queued message; message survives only if committed through the router-owned Sema table, not if held in memory. (Nix-chained: writer derivation queues + crashes; reader derivation opens the redb and looks for the message.) |
 | Sema schema guard is real | Existing redb file with no schema version hard-fails on `open_with_schema`; fresh file writes the version; mismatched version hard-fails. |
