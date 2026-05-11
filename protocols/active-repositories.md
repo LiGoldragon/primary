@@ -24,7 +24,7 @@ stack.
 | `persona-mind` | `/git/github.com/LiGoldragon/persona-mind` | Central Persona state component; replaces lock-file orchestration over time. |
 | `persona-router` | `/git/github.com/LiGoldragon/persona-router` | Message routing and delivery coordination. |
 | `persona-message` | `/git/github.com/LiGoldragon/persona-message` | Current CLI/message experiments; transitional until router/mind contracts settle. |
-| `persona-system` | `/git/github.com/LiGoldragon/persona-system` | System facts such as focus and prompt-state observations. |
+| `persona-system` | `/git/github.com/LiGoldragon/persona-system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-owned in the current wave. |
 | `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` | Harness process/session control boundary. |
 | `persona-terminal` | `/git/github.com/LiGoldragon/persona-terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. Terminal-brand mux helpers are retired. |
 | `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Low-level daemon-owned PTY/transcript cell primitive consumed by `persona-terminal`. |
