@@ -32,6 +32,7 @@ stack.
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Persona-wide Signal vocabulary. |
+| `signal-persona-auth` | `/git/github.com/LiGoldragon/signal-persona-auth` | Persona origin-context vocabulary: engine/route/channel ids, component names, connection classes, message origins, and ingress context. Not an authentication library. |
 | `signal-persona-message` | `/git/github.com/LiGoldragon/signal-persona-message` | Message CLI to router channel contract. |
 | `signal-persona-system` | `/git/github.com/LiGoldragon/signal-persona-system` | System observation to router channel contract. |
 | `signal-persona-harness` | `/git/github.com/LiGoldragon/signal-persona-harness` | Router to harness delivery/observation channel contract. |
