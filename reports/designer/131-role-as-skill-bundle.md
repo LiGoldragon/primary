@@ -128,22 +128,26 @@ The user's quote: *"If the operator assistant needs work, he
 should work on the operator beads. And if he needs to bead work
 for himself, he should file it as an operator bead."*
 
-### Existing assistant-labeled beads
+### Existing assistant-labeled beads — migrated in this sweep
 
-A handful of currently open beads carry `role:*-assistant`
-labels under the prior convention:
+Three open beads carried `role:*-assistant` labels under the
+prior convention; two more carried `@operator-assistant`
+assignees. All five were migrated as part of this sweep:
 
-| Bead | Current label | Should be |
+| Bead | Before | After |
 |---|---|---|
 | `primary-75t` | `role:operator-assistant` | `role:operator` |
 | `primary-ddx` | `role:operator-assistant` | `role:operator` |
 | `primary-mm0` | `role:system-assistant` | `role:system-specialist` |
+| `primary-aww` | `@operator-assistant` | `@operator` |
+| `primary-3ro` | `@operator-assistant` | `@operator` |
 
-These need a label-migration pass. Filed as a follow-up rather
-than bundled here because bd label-update mechanics live outside
-this skill-and-protocol sweep. Until they migrate, the labels
-they carry are stale; agents reading bd output should treat them
-as belonging to the main role.
+Title prefixes that read `operator-assistant:` on
+`primary-aww` and `primary-3ro` are left in place — they are
+historical text that doesn't mislead under the new rule, and
+per `skills/beads.md` §"Stale internal references in bead
+descriptions" bead descriptions are a timestamp of what was
+true when filed, not an ongoing accuracy contract.
 
 ---
 
