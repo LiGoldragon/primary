@@ -6,14 +6,18 @@ Date: May 11, 2026.
 
 ## Verdict
 
-`terminal-cell` is done enough as an attach-path spike.
+`terminal-cell` first existed as a narrow prototype: code written to prove the
+risky attach-path idea before treating it as the durable shape. The next pass
+started converting that prototype into a production-candidate low-level
+terminal cell by replacing source-only witnesses with behavioral witnesses and
+enforcing single active viewer authority.
 
 It is not done as the production terminal component. The production shape still
 belongs in `persona-terminal`: a long-lived supervisor daemon, Sema-owned
 session registry, typed contracts, and an explicit policy for active viewers and
 programmatic injection.
 
-The spike now proves the important local claim: a terminal session can be
+The component now proves the important local claim: a terminal session can be
 daemon-owned, visible through Ghostty, reattachable, injectable, transcriptable,
 and responsive when the live path is an abduco-like byte pump instead of a
 transcript-rendered actor relay.
@@ -130,29 +134,29 @@ Repository changes in `/git/github.com/LiGoldragon/terminal-cell`:
   and `TerminalInputGate`.
 - Updated session and agent terminal witnesses to inject through
   `TerminalInputPort` instead of `TerminalCell.ask(TerminalInput)`.
-- Added `tests/source_witness.rs`, proving:
-  - live attach input bypasses actor mailbox and terminal semantics;
-  - the view is a raw stdin/stdout pump;
-  - output reaches viewers before transcript actor append;
-  - the PTY input gate is owned by `TerminalInputWriter`.
-- Exposed the source witness through Nix:
-  `nix run .#source-witness` and `checks.source-witness`.
+- Added `tests/production_witnesses.rs`, which spawns the real daemon and uses
+  the real socket/client path to prove detach/reattach, single active viewer
+  rejection, and slow-subscriber behavior.
+- Exposed production witnesses through Nix as a stateful runner:
+  `nix run .#production-witnesses`. They are not a pure flake check because
+  they open a real PTY and the Nix build sandbox does not provide the needed
+  host PTY device.
 - Updated `ARCHITECTURE.md` and `skills.md` to document why live input uses the
   writer port rather than an actor mailbox.
 - Removed obvious ZST method-holder shapes in the daemon/view/test helper code.
 
 ## Fit Against Workspace Discipline
 
-**Daemon-first CLI:** good for the spike. CLIs are socket clients; the daemon
-owns the child PTY and actor.
+**Daemon-first CLI:** good for this low-level component. CLIs are socket
+clients; the daemon owns the child PTY and actor.
 
-**Actor topology:** acceptable for a spike, incomplete for production. The
-`TerminalCell` actor is a real data-bearing Kameo actor. The raw PTY reader,
-PTY writer, output fanout, and per-connection loops are blocking thread planes,
-not actors. That is intentional for this low-level byte pump, but production
-needs either an explicit actor-supervised worker topology or a documented
-terminal-transport carve-out that names exactly which blocking planes are
-allowed.
+**Actor topology:** acceptable for the low-level terminal transport, incomplete
+for the full production stack. The `TerminalCell` actor is a real data-bearing
+Kameo actor. The raw PTY reader, PTY writer, output fanout, and per-connection
+loops are blocking thread planes, not actors. That is intentional for this
+low-level byte pump, but `persona-terminal` needs either an explicit
+actor-supervised worker topology or a documented terminal-transport carve-out
+that names exactly which blocking planes are allowed.
 
 **Push-not-pull:** mostly good. Resize uses `SIGWINCH`; exit is pushed through
 the child wait thread into actor state; transcript subscribers receive replay
@@ -170,8 +174,10 @@ such as `TranscriptSnapshotRequest`, `TerminalExitRequest`, and
 current Rust/Kameo skill carve-out, but if the workspace adopts an absolute
 "every type carries runtime data" rule, these need a separate decision.
 
-**Nix-backed witnesses:** improved. The new source witness is a pure flake
-check. The stateful witnesses remain named Nix apps.
+**Nix-backed witnesses:** improved. The production witnesses are real daemon
+tests exposed through a named Nix app. They stay out of pure flake checks
+because they require host PTY support. The other stateful witnesses remain
+named Nix apps.
 
 ## Remaining Gaps
 
@@ -180,33 +186,26 @@ check. The stateful witnesses remain named Nix apps.
    `session.env`) are convenience metadata. They are not Sema. This is fine for
    `terminal-cell`; it must not become the production registry.
 
-2. **Multiple viewers have no authority policy.**
-   The transport can attach multiple viewers. They all receive output and can
-   write input. That is dangerous unless the intended policy is explicitly
-   "multi-writer human input." Production probably wants one active writer, with
-   extra viewers read-only or rejected.
+2. **Multiple viewers now have a first production policy.**
+   The transport admits one active attached viewer. Extra viewers are closed
+   rather than becoming extra human input writers. Production `persona-terminal`
+   still needs the policy represented as a typed contract, but the low-level
+   cell no longer silently accepts multiple human writers.
 
-3. **Slow attached viewers can still block fanout.**
-   `TerminalOutputFanout` writes output to each viewer synchronously before
-   telling the transcript actor. This satisfies "transcript does not slow the
-   viewer," but a slow viewer can slow other viewers and transcript append.
-   Single-active-viewer policy would make this acceptable. Multi-viewer support
-   needs per-viewer output pumps or nonblocking write discipline.
-
-4. **The blocking IO planes are not supervised actors.**
+3. **The blocking IO planes are not supervised actors.**
    The input writer, output reader, fanout, and connection loops are named
    threads. That was the right move to prove the raw byte shape quickly, but
    production needs restart/error policy around those planes.
 
-5. **The hardest manual witness is still human-observed.**
+4. **The hardest manual witness is still human-observed.**
    The user confirmed the fixed path works. We still do not have a durable
    high-volume, lossless manual typing witness that proves keyboard latency
    under load.
 
-6. **Session list/rename are shell apps.**
-   They are useful, but they should remain spike tooling. In production these
-   become typed requests to `persona-terminal` over its daemon socket, backed by
-   Sema state.
+5. **Session list/rename are shell apps.**
+   They are useful, but they should remain local prototype tooling. In
+   production these become typed requests to `persona-terminal` over its daemon
+   socket, backed by Sema state.
 
 ## Recommendation
 
@@ -223,18 +222,16 @@ The next architectural work should move upward into `persona-terminal`:
 
 If work continues inside `terminal-cell`, keep it witness-oriented:
 
-- add a single-active-writer or read-only-viewer policy;
 - prove high-volume output does not lag input;
-- prove slow viewer handling cannot stall the session;
-- add a source or runtime witness that reattach chooses only live daemon
-  sessions, not merely the newest socket path.
+- add a runtime witness that reattach chooses only live daemon sessions, not
+  merely the newest socket path.
 
 ## Verification
 
 Run on May 11, 2026:
 
 ```text
-nix run .#source-witness        -> 4 passed
+nix run .#production-witnesses  -> 3 passed
 nix run .#session-witnesses     -> 4 passed
 nix run .#agent-terminal-witness -> 2 passed
 nix run .#daemon-witness        -> 6 passed
