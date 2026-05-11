@@ -439,7 +439,11 @@ Using any of these as a **node ID** in a flowchart breaks
 the parser, especially in older renderers (Substack ships
 Mermaid 8.8.0, which is strict about keyword collisions
 across contexts; the failure mode is a "Syntax error in
-graph" image where the diagram should be).
+graph" image where the diagram should be). Mermaid 8.8.0
+can also collide on underscore-separated ID segments, so
+avoid IDs like `mind_graph`, `state_link`, or `audit_note`.
+Use a noun that dodges the keyword entirely: `mind_work`,
+`state_route`, `audit_record`.
 
 A node like `graph["MemoryGraph"]` looks fine but the parser
 sees the `graph` keyword. Same for `link["LinkActor"]` and
@@ -471,10 +475,60 @@ silently. Default to suffixing all node IDs in actor diagrams
 diagram displays as the bomb-icon error on rendered
 surfaces (Substack, GitHub, internal docs).
 
-The diagnostic test before publishing a report: paste the
-raw mermaid block into <https://mermaid.live/> (or any
-mermaid renderer) and confirm it renders. The parse error
-is the only signal you'll get from the markdown itself —
+#### Mermaid 8.8-safe labels
+
+Mermaid 8.8.0 is stricter than current Mermaid Live in
+places agents often hit when writing prose-heavy diagrams.
+Keep diagram syntax ASCII-simple and put prose in labels,
+not in identifiers or parser-sensitive punctuation.
+
+Flowchart edge labels: avoid Unicode arrows such as `↔`
+and `→` inside `|label|`. Write `to`, `from`, `and`, or
+split the edge. These labels read fine to humans and do not
+trip the lexer.
+
+Sequence diagrams: do not put semicolons in participant
+aliases or message text. Mermaid 8.8.0 treats `;` as a
+statement boundary, so a line like this can fail even though
+the sentence is understandable:
+
+```text
+Daemon->>Redb: mutate item state to Closed; append event
+```
+
+Right form:
+
+```mermaid
+sequenceDiagram
+    participant Daemon as Mind daemon
+    participant Redb as redb
+    Daemon->>Redb: mutate item state to Closed and append event
+```
+
+The same rule applies to participant aliases:
+
+```text
+participant Op as Operator (Codex; later session)
+```
+
+Use commas or words instead:
+
+```mermaid
+sequenceDiagram
+    participant Op as Operator (Codex, later session)
+```
+
+When a sequence message wants a chain of actions, prefer
+separate messages or a comma-separated label over arrows,
+semicolons, shell punctuation, or markdown/HTML. The
+diagram is a topology artifact, not a transcript.
+
+The diagnostic test before publishing a report: parse the
+raw Mermaid block with the target renderer version whenever
+you know it. For Substack or another Mermaid 8.8.0 surface,
+a current Mermaid Live render is not sufficient because it
+may accept syntax 8.8.0 rejects. The parse error is the
+only signal you'll get from the markdown itself —
 GitHub-flavoured markdown silently shows the failed-to-parse
 block as the literal source on render failure, which is
 easy to miss in review.

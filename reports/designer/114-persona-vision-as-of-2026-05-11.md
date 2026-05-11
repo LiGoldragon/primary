@@ -90,7 +90,7 @@ flowchart TB
         criome_daemon["criome<br/>(records validator)"]
         forge_daemon["forge<br/>(executor)"]
         arca_daemon["arca-daemon<br/>(privileged blob store)"]
-        nexus_daemon["nexus daemon<br/>(text↔signal)"]
+        nexus_daemon["nexus daemon<br/>(text to signal)"]
     end
 
     subgraph os_layer["OS / cluster"]
@@ -126,7 +126,7 @@ flowchart TB
     criome_daemon -->|owns records| sema_db
     criome_daemon -->|signal-forge| forge_daemon
     forge_daemon -->|signal-arca| arca_daemon
-    nexus_daemon -->|NOTA ↔ signal| criome_daemon
+    nexus_daemon -->|NOTA to signal| criome_daemon
 
     persona_layer -.->|"runs on"| criomos
     lojix -->|deploys| criomos
@@ -408,8 +408,8 @@ flowchart TB
     sig_harn["signal-persona-harness<br/>(MessageDelivery, DeliveryFailureReason, harness lifecycle)"]
     sig_term["signal-persona-terminal<br/>(OpenTerminal, ResizeTerminal, transcript events)"]
 
-    sig_forge["signal-forge<br/>(criome ↔ forge: Build, Deploy)"]
-    sig_arca["signal-arca<br/>(planned: writers ↔ arca-daemon)"]
+    sig_forge["signal-forge<br/>(criome to forge: Build, Deploy)"]
+    sig_arca["signal-arca<br/>(planned: writers to arca-daemon)"]
 
     sig_core --> sig
     sig_core --> sig_persona
@@ -702,12 +702,12 @@ flowchart TB
     in_flight["work-in-progress<br/>(discovered while doing other work)"]
     audit["audit / cross-reference sweep<br/>(designer-assistant, operator-assistant)"]
 
-    mind_graph["persona-mind work graph"]
+    mind_work["persona-mind work graph"]
 
-    human4 -->|"user prompt"| mind_graph
-    designer_role -->|"report's open questions"| mind_graph
-    in_flight -->|"newly discovered task"| mind_graph
-    audit -->|"drift findings"| mind_graph
+    human4 -->|"user prompt"| mind_work
+    designer_role -->|"report's open questions"| mind_work
+    in_flight -->|"newly discovered task"| mind_work
+    audit -->|"drift findings"| mind_work
 ```
 
 1. **Human prompt.** The user says "do X" or "what should we do
@@ -814,12 +814,12 @@ sequenceDiagram
 
     Agent->>MindCLI: mind '(StatusChange (id N) Closed)'
     MindCLI->>Daemon: (StatusChange frame)
-    Daemon->>Redb: mutate item state to Closed; append event
+    Daemon->>Redb: mutate item state to Closed and append event
     Daemon-->>MindCLI: StatusReceipt
 
     Agent->>MindCLI: mind '(RoleRelease Designer)'
     MindCLI->>Daemon: (RoleRelease frame)
-    Daemon->>Redb: clear active claim; append activity event
+    Daemon->>Redb: clear active claim and append activity event
     Daemon-->>MindCLI: ReleaseAcknowledgment
 ```
 
@@ -946,7 +946,7 @@ sequenceDiagram
     Mind-->>MindCLI: View { items: [primary-bkb, primary-aww, ...] }
     MindCLI-->>Op: NOTA: ready items
 
-    Op->>Op: read primary-bkb description; read designer/113
+    Op->>Op: read primary-bkb description and designer/113
 
     Op->>MindCLI: mind '(RoleClaim Operator ([Path "/git/.../persona-wezterm"] [Task "primary-bkb"]) "fix TerminalDelivery blocking")'
     Mind-->>MindCLI: ClaimAcceptance
@@ -995,7 +995,7 @@ sequenceDiagram
     participant Design as Designer (Claude)
     participant MindCLI
     participant Mind
-    participant Op as Operator (Codex; later session)
+    participant Op as Operator (Codex, later session)
 
     Design->>Design: write reports/designer/113-actor-blocking-audit.md
     Design->>MindCLI: mind '(Opening Task Normal "Fix persona-wezterm::TerminalDelivery blocking violation" ...)'
@@ -1009,7 +1009,7 @@ sequenceDiagram
     Op->>MindCLI: mind '(Query Ready (role operator-assistant) 10)'
     Mind-->>Op: View { items: [primary-bkb, ...] }
     Op->>Op: read primary-bkb + designer/113 §"Suggested fix"
-    Op->>Op: apply fix → commit → push
+    Op->>Op: apply fix, commit, push
     Op->>MindCLI: mind '(StatusChange (id primary-bkb) Closed)'
 ```
 
