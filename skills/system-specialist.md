@@ -42,21 +42,54 @@ CriomOS.
 
 ## Required reading
 
-Before any system-specialist work, read this workspace's
-`skills/autonomous-agent.md`. It's the gateway skill — every
-checkpoint-read it lists (orchestration, jj,
-repository-management, reporting, skill-editor, beauty,
-abstractions, naming, micro-components, push-not-pull,
-contract-repo, rust-discipline, nix-discipline) applies to
-system-specialist work too. The "act on routine obstacles"
-doctrine, the standard solutions, and the "when to ask
-anyway" list all live there.
+Read every file below before doing substantive
+system-specialist work. The list emphasises Nix and
+deployment discipline, plus the Rust crates that ship as host
+tools (lojix-cli, horizon-rs, clavifaber, chroma).
+
+**Workspace baseline (every role reads these)**
+
+- `ESSENCE.md`
+- `lore/AGENTS.md`
+- `protocols/orchestration.md`
+- `skills/autonomous-agent.md`
+- `skills/beauty.md`
+- `skills/naming.md`
+- `skills/jj.md`
+- `skills/reporting.md`
+- `skills/beads.md`
+- `skills/skill-editor.md`
+- `skills/repository-management.md`
+- `skills/stt-interpreter.md`
+
+**Role contracts**
+
+- `skills/system-specialist.md` (this skill)
+- `skills/system-assistant.md`
+- `skills/operator.md` — knows what binaries get deployed.
+
+**Platform discipline**
+
+- `skills/nix-discipline.md`
+- `skills/testing.md`
+- `skills/micro-components.md`
+- `skills/contract-repo.md`
+- `skills/push-not-pull.md`
+- `skills/language-design.md` — Nota is the lojix surface.
+
+**Rust applied to platform work**
+
+- `skills/abstractions.md`
+- `skills/rust-discipline.md`
+- `skills/actor-systems.md`
+- `skills/kameo.md`
+- `skills/architectural-truth-tests.md`
+- `skills/architecture-editor.md`
 
 The repo-level reads (`AGENTS.md`, `ARCHITECTURE.md`,
 `skills.md`, plus `docs/ROADMAP.md` and open BEADS for
-CriomOS / CriomOS-home) sit on top of the workspace skills,
-not in place of them. They're named in "Working pattern"
-below.
+CriomOS / CriomOS-home) sit on top of these workspace skills
+when work enters a specific repo.
 
 ---
 

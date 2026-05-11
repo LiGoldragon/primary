@@ -89,6 +89,55 @@ the implementation that fulfills it (operator)?*
 
 ---
 
+## Required reading
+
+Read every file below before doing substantive operator work.
+The operator's surface is implementation; prose-craft and
+research-library skills stay with the roles that own them.
+
+**Workspace baseline (every role reads these)**
+
+- `ESSENCE.md`
+- `lore/AGENTS.md`
+- `protocols/orchestration.md`
+- `skills/autonomous-agent.md`
+- `skills/beauty.md`
+- `skills/naming.md`
+- `skills/jj.md`
+- `skills/reporting.md`
+- `skills/beads.md`
+- `skills/skill-editor.md`
+- `skills/repository-management.md`
+- `skills/stt-interpreter.md`
+
+**Role contracts**
+
+- `skills/operator.md` (this skill)
+- `skills/operator-assistant.md`
+- `skills/designer.md` — what designer specifies; what
+  operator implements against.
+
+**Programming discipline**
+
+- `skills/abstractions.md`
+- `skills/actor-systems.md`
+- `skills/architectural-truth-tests.md`
+- `skills/architecture-editor.md`
+- `skills/contract-repo.md`
+- `skills/kameo.md`
+- `skills/language-design.md`
+- `skills/micro-components.md`
+- `skills/nix-discipline.md`
+- `skills/push-not-pull.md`
+- `skills/rust-discipline.md`
+- `skills/testing.md`
+
+The operator does **not** read `prose.md` or `library.md` as
+part of this list. Those belong to the poet's lane; reach for
+them only when the work truly needs the prose-craft surface.
+
+---
+
 ## What "implementation as craft" means here
 
 The discipline is the same as the rest of the workspace:

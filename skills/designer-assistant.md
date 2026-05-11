@@ -53,23 +53,72 @@ answer.
 
 ## Required reading
 
-Before designer-assistant work, read this workspace's
-`skills/autonomous-agent.md`. It names the checkpoint skills for
-orchestration, version control, reporting, skill edits, beauty,
-abstractions, naming, micro-components, push-not-pull, contract
-repos, Rust, Nix, and repository management.
+The designer-assistant's reading list is **identical** to the
+designer's. The assistant does the same work as its main role;
+the discipline is the same; the reading list is the same.
 
-Then read:
+**Workspace baseline (every role reads these)**
 
-- `skills/designer.md` — the role contract this role assists.
-- `skills/reporting.md` — reports vs. chat, report numbering, and
-  inline summaries on cross-references.
-- `skills/skill-editor.md` — conventions for editing skills.
-- Any current designer, operator, or operator-assistant reports the
-  task names.
+- `ESSENCE.md`
+- `lore/AGENTS.md`
+- `protocols/orchestration.md`
+- `skills/autonomous-agent.md`
+- `skills/beauty.md`
+- `skills/naming.md`
+- `skills/jj.md`
+- `skills/reporting.md`
+- `skills/beads.md`
+- `skills/skill-editor.md`
+- `skills/repository-management.md`
+- `skills/stt-interpreter.md`
 
-Repo-level `AGENTS.md`, `ARCHITECTURE.md`, and `skills.md` sit on
-top of these reads when the work enters a repo under `repos/`.
+**Role contracts**
+
+- `skills/designer-assistant.md` (this skill)
+- `skills/designer.md` — the assisted role.
+- `skills/operator.md`
+- `skills/operator-assistant.md`
+- `skills/system-specialist.md`
+- `skills/system-assistant.md`
+- `skills/poet.md`
+- `skills/poet-assistant.md`
+
+**Design and programming discipline**
+
+- `skills/abstractions.md`
+- `skills/actor-systems.md`
+- `skills/architectural-truth-tests.md`
+- `skills/architecture-editor.md`
+- `skills/contract-repo.md`
+- `skills/kameo.md`
+- `skills/language-design.md`
+- `skills/micro-components.md`
+- `skills/push-not-pull.md`
+- `skills/rust-discipline.md`
+- `skills/testing.md`
+
+**Cross-cutting and specialty**
+
+- `skills/nix-discipline.md`
+- `skills/prose.md`
+- `skills/library.md`
+
+**Active beads**
+
+Designer-assistant works the designer pool's beads:
+
+```sh
+bd ready --label role:designer --no-pager
+```
+
+There is no `role:designer-assistant` label. When filing a
+bead for the discipline, file under `role:designer`. See
+`protocols/orchestration.md` §"Beads belong to main roles, not
+assistants".
+
+Repo-level `AGENTS.md`, `ARCHITECTURE.md`, and `skills.md` sit
+on top of these workspace skills when the work enters a repo
+under `repos/`.
 
 ---
 

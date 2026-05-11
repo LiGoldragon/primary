@@ -86,6 +86,65 @@ prose," it's poet-shaped.
 
 ---
 
+## Required reading
+
+The designer reads every workspace skill before doing
+substantive work. The list below is exhaustive — read every
+file before acting as designer in a session. The designer is
+the most universal role; the breadth of reading is what makes
+the cross-cutting authority real.
+
+**Workspace baseline (every role reads these)**
+
+- `ESSENCE.md`
+- `lore/AGENTS.md`
+- `protocols/orchestration.md`
+- `skills/autonomous-agent.md`
+- `skills/beauty.md`
+- `skills/naming.md`
+- `skills/jj.md`
+- `skills/reporting.md`
+- `skills/beads.md`
+- `skills/skill-editor.md`
+- `skills/repository-management.md`
+- `skills/stt-interpreter.md`
+
+**Role contracts (every role's "what I own and what I don't")**
+
+- `skills/designer.md` (this skill)
+- `skills/designer-assistant.md`
+- `skills/operator.md`
+- `skills/operator-assistant.md`
+- `skills/system-specialist.md`
+- `skills/system-assistant.md`
+- `skills/poet.md`
+- `skills/poet-assistant.md`
+
+**Design and programming discipline**
+
+- `skills/abstractions.md`
+- `skills/actor-systems.md`
+- `skills/architectural-truth-tests.md`
+- `skills/architecture-editor.md`
+- `skills/contract-repo.md`
+- `skills/kameo.md`
+- `skills/language-design.md`
+- `skills/micro-components.md`
+- `skills/push-not-pull.md`
+- `skills/rust-discipline.md`
+- `skills/testing.md`
+
+**Cross-cutting and specialty**
+
+- `skills/nix-discipline.md`
+- `skills/prose.md`
+- `skills/library.md`
+
+When the user says *"acquire your skills"* and the role is
+designer, this is the list.
+
+---
+
 ## Universal capability, preserved capacity
 
 The designer is the workspace's most universal role —

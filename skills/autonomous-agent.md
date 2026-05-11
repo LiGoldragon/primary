@@ -6,11 +6,12 @@
 
 ## Active beads — check first, work them through
 
-**Before anything else in any session, check active beads in your role:**
+**Before anything else in any session, check active beads in your role**
+(assistants use the main role's label — see "Role-tag convention" below):
 
 ```sh
-bd ready --label role:<your-role>             # ready-to-work, role-filtered
-bd list --label role:<your-role> --no-pager   # everything claimed for your role
+bd ready --label role:<main-role>             # ready-to-work, role-filtered
+bd list --label role:<main-role> --no-pager   # everything claimed for your role
 ```
 
 If results come back, **that is the workspace's continuing intent for your
@@ -26,16 +27,26 @@ workspace's intent.
 
 ### Role-tag convention
 
-Every workspace-coordinated bead carries a `role:<role>` label. The roles
-are `operator`, `operator-assistant`, `designer`, `designer-assistant`,
-`system-specialist`, `system-assistant`, `poet`, `poet-assistant`. A bead
-with no role label is "any role" work — usually a workspace-wide cleanup
-or a question for whoever picks it up.
+Every workspace-coordinated bead carries a `role:<main-role>` label. The
+four main roles are `operator`, `designer`, `system-specialist`, and
+`poet`. **There are no `role:*-assistant` labels.** A bead with no role
+label is "any role" work — usually a workspace-wide cleanup or a question
+for whoever picks it up.
 
-**When you file a bead for another role, tag it `role:<that-role>`.** The
-target role's next agent will see it via `bd ready --label role:<their-role>`.
-Filing without a role label hides the work from every role's active-beads
-check; the bead becomes background that no one is actively scanning for.
+**Assistants work their main role's beads.** If you are
+`operator-assistant`, run `bd ready --label role:operator` (not
+`role:operator-assistant`); same for `designer-assistant`,
+`system-assistant`, `poet-assistant`. The discipline pool — main role
+plus any assistants stacked under it — sees the same beads. The lock
+file is per-agent (an assistant edits its own lock); beads pool at the
+discipline level. See `protocols/orchestration.md` §"Beads belong to main
+roles, not assistants".
+
+**When you file a bead for another discipline, tag it with that main
+role's label.** The target discipline's next agent will see it via
+`bd ready --label role:<main-role>`. Filing without a role label hides the
+work from every discipline's active-beads check; the bead becomes
+background that no one is actively scanning for.
 
 ### The flow
 

@@ -258,6 +258,41 @@ bd show <id>
 bd close <id> --reason "<what changed>"
 ```
 
+## Beads belong to main roles, not assistants
+
+BEADS work items are filed by **main role**, not by assistant. The four
+main-role labels are `role:operator`, `role:designer`,
+`role:system-specialist`, and `role:poet`. There are no
+`role:operator-assistant`, `role:designer-assistant`,
+`role:system-assistant`, or `role:poet-assistant` labels.
+
+**Assistants work the main role's beads.** A `designer-assistant` agent
+runs `bd ready --label role:designer` to see ready work; same for the
+other three disciplines. When an assistant files a bead for its
+discipline, it files under the main role's label.
+
+The reason: an assistant does the same kind of work as its main role. A
+bead filed under `role:system-assistant` would be invisible to the system
+specialist agent who could pick it up; a bead filed under
+`role:system-specialist` is visible to both. The discipline pool — main
+role plus any assistants stacked under it — sees the same beads.
+
+The rule generalises. If a future second-assistant or third-assistant
+ever appears (extra capacity stacked under one main role), it still files
+beads under the main role's label. The discipline pool sees the work;
+the role-shape decides who claims it.
+
+Lock files are different. Each agent (main or assistant) edits its own
+lock file — locks name *who is actively touching what files right now*,
+which is per-agent. Two agents in the same discipline can hold different
+lock scopes at the same time without conflict; one bead can be claimed at
+the discipline pool level and worked by whichever agent picked it up.
+
+The mind-graph destination (per "Command-line mind target" above)
+preserves this: typed work items in `mind.redb` route by the main role's
+identity, not the assistant's. Assistants act as additional capacity
+under one role's identity.
+
 ## Version Control
 
 Li repositories and forks are Git-backed colocated Jujutsu repositories. If a

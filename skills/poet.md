@@ -58,6 +58,45 @@ The poet does **not** own:
 
 ---
 
+## Required reading
+
+Read every file below before doing substantive poet work. The
+list emphasises prose craft, citation, and the workspace
+skills every role shares. Programming discipline stays with
+the roles that own it.
+
+**Workspace baseline (every role reads these)**
+
+- `ESSENCE.md`
+- `lore/AGENTS.md`
+- `protocols/orchestration.md`
+- `skills/autonomous-agent.md`
+- `skills/beauty.md`
+- `skills/naming.md`
+- `skills/jj.md`
+- `skills/reporting.md`
+- `skills/beads.md`
+- `skills/skill-editor.md`
+- `skills/repository-management.md`
+- `skills/stt-interpreter.md`
+
+**Role contracts**
+
+- `skills/poet.md` (this skill)
+- `skills/poet-assistant.md`
+
+**Craft discipline**
+
+- `skills/prose.md`
+- `skills/library.md`
+
+The poet does **not** read programming-discipline skills as
+part of this list. The poet's surface and the operator's
+barely overlap; reach for a programming skill only when the
+work truly needs it.
+
+---
+
 ## What "writing as craft" means here
 
 The discipline is the same as the rest of the workspace:

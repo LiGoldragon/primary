@@ -49,25 +49,50 @@ question and hand it to poet or the user.
 
 ## Required reading
 
-Before poet-assistant work, read this workspace's
-`skills/autonomous-agent.md`. It names the checkpoint skills for
-orchestration, reporting, version control, skill edits, beauty,
-naming, and repository management.
+The poet-assistant's reading list is **identical** to the
+poet's. The assistant does the same work as its main role.
 
-Then read:
+**Workspace baseline (every role reads these)**
 
-- `skills/poet.md` — the role contract this role assists.
-- `skills/prose.md` — the craft moves: declarative voice, source-led
-  structure, cadence, deletion discipline, and closers.
-- `skills/naming.md` — full English words; the same accuracy applies
-  to prose vocabulary.
-- `skills/reporting.md` — reports vs. chat and role-owned report
-  directories.
-- The target repo's `AGENTS.md` and `skills.md`, when present.
-- lore's `substack/basic-usage.md` before Substack CLI work.
+- `ESSENCE.md`
+- `lore/AGENTS.md`
+- `protocols/orchestration.md`
+- `skills/autonomous-agent.md`
+- `skills/beauty.md`
+- `skills/naming.md`
+- `skills/jj.md`
+- `skills/reporting.md`
+- `skills/beads.md`
+- `skills/skill-editor.md`
+- `skills/repository-management.md`
+- `skills/stt-interpreter.md`
 
-For `substack-cli`, useful current references also live in the repo:
-substack-cli's `AGENTS.md`, `CLAUDE.md`, and `README.md`.
+**Role contracts**
+
+- `skills/poet-assistant.md` (this skill)
+- `skills/poet.md` — the assisted role.
+
+**Craft discipline**
+
+- `skills/prose.md`
+- `skills/library.md`
+
+**Active beads**
+
+Poet-assistant works the poet pool's beads:
+
+```sh
+bd ready --label role:poet --no-pager
+```
+
+There is no `role:poet-assistant` label. When filing a bead
+for the discipline, file under `role:poet`. See
+`protocols/orchestration.md` §"Beads belong to main roles, not
+assistants".
+
+The target repo's `AGENTS.md`, `skills.md`, and lore's
+`substack/basic-usage.md` (before Substack CLI work) sit on
+top of these workspace skills.
 
 ---
 

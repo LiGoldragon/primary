@@ -83,40 +83,65 @@ The system assistant does **not** own:
 
 ## Required reading
 
-Before any system-assistant work, read this workspace's
-`skills/autonomous-agent.md`. It names the checkpoint skills for
-orchestration, version control, reporting, skill edits, beauty,
-abstractions, naming, micro-components, push-not-pull, contract
-repos, Rust, Nix, testing, and repository management.
+The system-assistant's reading list is **identical** to the
+system-specialist's. The assistant does the same work as its
+main role.
 
-Then read:
+**Workspace baseline (every role reads these)**
 
-- `skills/system-specialist.md` — the assisted role's full
-  contract. The system assistant works under this skill's authority
-  boundaries; the just-do-it operations and "when to ask anyway"
-  list apply identically.
-- `skills/nix-discipline.md` — flake-input forms, lockfile
-  hygiene, `nix run nixpkgs#<pkg>` for missing tools, `nix flake
-  check` as the canonical pre-commit gate, no `git+file://` in
-  committed flakes, no `outputHashes` block in modern crane crates.
-- `skills/testing.md` — pure tests through `nix flake check`,
-  stateful runners through named flake outputs (`nix run
-  .#test-…`), chained derivations for write/read separation when an
-  end-to-end loop could hide a stub.
-- `skills/rust-discipline.md` — methods on types, domain newtypes,
-  one-object-in/out, `thiserror` enums per crate, redb + rkyv
-  discipline, the "CLIs are daemon clients" rule when a host tool
-  starts to need durable shared state.
-- `skills/push-not-pull.md` — when wiring host runtime
-  subscriptions (focus, prompt state, key-material changes,
-  daemon-status indicators); polling is forbidden, escalate when
-  the producer can't push.
-- `skills/stt-interpreter.md` — for reading dictated prompts,
-  same as system-specialist.
-- The target repo's `AGENTS.md`, `ARCHITECTURE.md`, and
-  `skills.md` before touching repo-local files.
+- `ESSENCE.md`
+- `lore/AGENTS.md`
+- `protocols/orchestration.md`
+- `skills/autonomous-agent.md`
+- `skills/beauty.md`
+- `skills/naming.md`
+- `skills/jj.md`
+- `skills/reporting.md`
+- `skills/beads.md`
+- `skills/skill-editor.md`
+- `skills/repository-management.md`
+- `skills/stt-interpreter.md`
 
-Repo-level reads sit on top of these, not in place of them.
+**Role contracts**
+
+- `skills/system-assistant.md` (this skill)
+- `skills/system-specialist.md` — the assisted role.
+- `skills/operator.md`
+
+**Platform discipline**
+
+- `skills/nix-discipline.md`
+- `skills/testing.md`
+- `skills/micro-components.md`
+- `skills/contract-repo.md`
+- `skills/push-not-pull.md`
+- `skills/language-design.md`
+
+**Rust applied to platform work**
+
+- `skills/abstractions.md`
+- `skills/rust-discipline.md`
+- `skills/actor-systems.md`
+- `skills/kameo.md`
+- `skills/architectural-truth-tests.md`
+- `skills/architecture-editor.md`
+
+**Active beads**
+
+System-assistant works the system-specialist pool's beads:
+
+```sh
+bd ready --label role:system-specialist --no-pager
+```
+
+There is no `role:system-assistant` label. When filing a bead
+for the discipline, file under `role:system-specialist`. See
+`protocols/orchestration.md` §"Beads belong to main roles, not
+assistants".
+
+Repo-level reads (`AGENTS.md`, `ARCHITECTURE.md`, `skills.md`)
+sit on top of these workspace skills when work enters a
+specific repo.
 
 ---
 
