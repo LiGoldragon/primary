@@ -838,7 +838,8 @@ workspace uses Kameo.
   polls, or runs synchronous IO has recreated a hidden lock per
   `skills/actor-systems.md`. Move the wait into a dedicated
   supervised actor (`CommandActor`, `FileReadActor`, etc.) and
-  send it a typed message.
+  send it a typed message. The three concrete shapes such actors
+  take are documented below in §"Blocking-plane templates".
 - **Tests live in `tests/`, not `#[cfg(test)] mod tests`.** Per
   `skills/rust-discipline.md` — and the kameo-testing repo
   demonstrates the shape.
@@ -846,6 +847,130 @@ workspace uses Kameo.
   designed.** The local registry semantics differ; the libp2p
   surface is heavy. Document the decision in the consumer's
   `ARCHITECTURE.md` if you enable it.
+
+---
+
+## Blocking-plane templates
+
+The no-blocking-handler rule says *move the wait into a dedicated
+supervised actor*. Three concrete templates land that rule, each
+fitting a different shape of blocking work. They live side-by-side
+here so consumers can pick the right one without inventing a fourth.
+
+### Template 1 — `spawn_blocking` + `DelegatedReply` detach
+
+For an actor whose blocking work is short-to-medium and occasional
+(subprocess invocations, blocking IO leaves, bounded CPU bursts).
+The handler returns *immediately*; the blocking work runs on Tokio's
+blocking pool; the reply ships back when it completes. The actor's
+mailbox doesn't stall.
+
+```rust
+impl Message<DeliverToHarness> for HarnessDelivery {
+    type Reply = DelegatedReply<DeliveryResult>;
+
+    async fn handle(
+        &mut self,
+        message: DeliverToHarness,
+        context: &mut Context<Self, Self::Reply>,
+    ) -> Self::Reply {
+        let (delegated, sender) = context.reply_sender();
+        context.spawn(async move {
+            let outcome = tokio::task::spawn_blocking(move || {
+                HarnessDelivery::deliver(message)  // sync work
+            }).await;
+            if let Some(sender) = sender {
+                sender.send(outcome.into());
+            }
+        });
+        delegated
+    }
+}
+```
+
+Live reference: `persona-router::HarnessDelivery`
+(`src/harness_delivery.rs:88-120`).
+
+The actor's ARCH must explicitly name it as the dedicated blocking
+plane for the backend it owns. The detach is invisible without that
+ARCH-level naming.
+
+### Template 2 — Dedicated OS thread (`spawn_in_thread`)
+
+For a state-bearing actor with *frequent* sync work that would burn
+through per-call `spawn_blocking` invocations — typically a
+redb-backed store, a file watcher, anything where every message
+touches the same sync backend.
+
+```rust
+fn spawn_in_thread(store: StateStore) -> ActorRef<StateStore> {
+    let (actor_ref, mailbox) = kameo::actor::Mailbox::bounded(64);
+    std::thread::spawn(move || {
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .expect("dedicated store runtime");
+        runtime.block_on(store.run_loop(mailbox));
+    });
+    actor_ref
+}
+```
+
+Live reference: `chroma::StateStore` (`src/state.rs:61`).
+
+The actor runs on its own OS thread, off the Tokio worker pool
+entirely. One mailbox, one writer, one thread — cleaner than per-call
+detach for high-frequency stores. Pair with a typed schema and the
+sema-family pattern from `rust-discipline.md` §"sema-family pattern".
+
+### Template 3 — `tokio::process` + bounded `timeout` + `kill_on_drop`
+
+For process-exec work where async equivalents exist
+(`tokio::process::Command` is the common case). Often cleaner than
+Template 1 because the whole handler stays properly async — no
+detach machinery.
+
+```rust
+async fn run_dconf_write(key: &str, value: &str) -> Result<(), ApplyError> {
+    tokio::time::timeout(Duration::from_secs(1), async {
+        let mut child = tokio::process::Command::new("dconf")
+            .args(["write", key, value])
+            .kill_on_drop(true)
+            .spawn()
+            .map_err(ApplyError::spawn)?;
+        let status = child.wait().await.map_err(ApplyError::wait)?;
+        if !status.success() {
+            return Err(ApplyError::exit(status));
+        }
+        Ok(())
+    })
+    .await
+    .map_err(|_| ApplyError::timeout())?
+}
+```
+
+Live reference: `chroma::DesktopThemeConcern::run_dconf_write`
+(`src/theme.rs:493-510`).
+
+Bounded by `timeout`; child killed on drop or timeout; no
+`spawn_blocking` needed. When `tokio::process` is available, prefer
+this over `std::process::Command::output()` wrapped in detach
+machinery.
+
+### Picking a template
+
+| Shape of work | Template |
+|---|---|
+| occasional short blocking call, no async equivalent | 1 — `spawn_blocking` + `DelegatedReply` |
+| frequent sync DB / store / watcher | 2 — dedicated OS thread |
+| process-exec with async API (`tokio::process`) | 3 — `tokio::process` + timeout |
+
+**Anti-template (the violation):** doing the blocking work inline in
+an `async fn handle()` with no detach. The actor's mailbox stalls
+and the Tokio worker thread it ran on starves any sibling actors
+scheduled there. See `skills/actor-systems.md` §"No blocking" for
+the full rule and `~/primary/reports/designer/113-actor-blocking-audit.md`
+for a worked example (`persona-wezterm::TerminalDelivery`).
 
 ---
 

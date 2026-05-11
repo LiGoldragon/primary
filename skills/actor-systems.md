@@ -201,6 +201,13 @@ visible. A blocking operation is allowed only inside the actor whose
 single job is that blocking plane, and that actor is supervised,
 traceable, and replaceable.
 
+Three concrete code-level templates for such actors are documented in
+`~/primary/skills/kameo.md` §"Blocking-plane templates": (1)
+`spawn_blocking` + `DelegatedReply` detach for occasional short
+blocking calls; (2) dedicated OS thread for frequent sync work; (3)
+`tokio::process` + bounded `timeout` for process-exec work with an
+async API. Pick by shape of work; don't invent a fourth.
+
 ---
 
 ## No shared locks
