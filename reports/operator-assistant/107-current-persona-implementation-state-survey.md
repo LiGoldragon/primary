@@ -4,6 +4,35 @@
 subagents: BEADS/locks, current design+skills, and active Persona repo
 implementation. No tests were run and no implementation files were edited.*
 
+**Status update, 2026-05-11 after T9 contract work landed**
+
+This report is no longer a current lock map or a current
+`signal-persona-terminal` contract survey. It remains useful as a record of the
+architecture framing after designer/127, but the following facts supersede the
+original evidence below:
+
+- `signal-persona-terminal` now has the T9 terminal-cell control-plane records:
+  `PromptPattern`, `AcquireInputGate`, `WriteInjection`, `ReleaseInputGate`,
+  `PromptState`, `SubscribeTerminalWorkerLifecycle`, worker lifecycle events,
+  and round-trip tests. See commit `b2d8edb7` in
+  `/git/github.com/LiGoldragon/signal-persona-terminal`.
+- Current coordination is not the original section 1 state. `operator.lock`
+  owns `[primary-tru]`, `signal-core`, `signal-persona`, `persona`,
+  `persona-router`, `persona-mind`, `persona-message`,
+  `signal-persona-message`, and `signal-persona-auth`. Do not follow the
+  original recommendations literally against those locked repos.
+- The original live-source evidence for `AuthProof::LocalOperator` /
+  `LocalOperatorProof` in `persona`, `persona-router`, and
+  `signal-persona-message` is stale. The remaining risk is stale architecture
+  wording, not those source symbols in the surveyed targets.
+- The active repo map issue is resolved: `persona-system` is no longer named as
+  the prompt-state owner, and `repos/signal-persona-terminal` exists.
+- `ComponentName::MessageProxy` is resolved in
+  `/git/github.com/LiGoldragon/signal-persona-auth/src/names.rs`.
+- The remaining live finding from this report is the `signal-persona-auth` rkyv
+  feature mismatch. That repo is currently operator-locked, so it is queued
+  rather than edited here.
+
 ---
 
 ## 0 - Executive Position
@@ -52,7 +81,10 @@ flowchart LR
 
 ## 1 - Coordination State
 
-`operator.lock` currently owns:
+**Historical at time of original survey. Do not use this as current lock
+state.** See the status update at the top before acting on this section.
+
+At the time of the original survey, `operator.lock` owned:
 
 - `[primary-2w6]`
 - `/git/github.com/LiGoldragon/persona-message`
@@ -60,8 +92,8 @@ flowchart LR
 
 Reason: persona-message stateless ingress cleanup.
 
-`operator-assistant.lock` is idle. All other role locks were idle during this
-survey.
+`operator-assistant.lock` was idle. All other role locks were idle during this
+survey. That is no longer necessarily true.
 
 Open operator-assistant beads are all blocked:
 
@@ -94,8 +126,8 @@ Two bead hygiene issues:
 | `terminal-cell` | Strong low-level primitive; input gate exists; raw attach path avoids Kameo mailbox and transcript subscription; worker lifecycle is observable. | Control socket is still bespoke byte-tag protocol in `src/socket.rs`; no `signal-persona-terminal` control plane; no prompt-pattern registry; no prompt-state reply on gate acquisition. |
 | `persona-harness` | `HarnessKind` is closed; identity projection is a typed read-path view; terminal delivery points at persona-terminal. | No prompt-pattern publisher yet; no daemon/redb lifecycle state from T7; terminal contract is still pre-T9. |
 | `persona-mind` | Closest to the orchestration target: daemon-backed `mind`, Signal frames, `mind.redb`, role/work graph, no lock-file projection, direct Kameo. | No channel choreography: no `AdjudicationRequest`, `ChannelGrant`/extend/retract, suggestion/adoption structures, or real post-commit subscription bus yet. |
-| `signal-persona-auth` | T1 mostly landed: provenance/engine/channel IDs, closed `ConnectionClass`, `MessageOrigin`, `IngressContext`, no Persona-local `AuthProof`, round-trip tests. | Not consumed downstream yet. `ComponentName` uses `Message` where designer/126 names `MessageProxy`. Cargo uses `rkyv = { version = "0.8", features = ["std"] }`, which does not match the canonical full rkyv feature set in lore/skills. |
-| `signal-persona-terminal` | Pure contract crate with closed enums and round trips. | Pre-127. It models harness-to-terminal transcript/input transport, not terminal-cell's Signal control plane. Missing gate/prompt/injection records, worker lifecycle subscription, and raw-data-plane invariant. `repos/signal-persona-terminal` symlink is missing even though the `/git/...` repo exists. |
+| `signal-persona-auth` | T1 mostly landed: provenance/engine/channel IDs, closed `ConnectionClass`, `MessageOrigin`, `IngressContext`, `ComponentName::MessageProxy`, no Persona-local `AuthProof`, round-trip tests. | Not consumed downstream yet. Cargo uses `rkyv = { version = "0.8", features = ["std"] }`, which does not match the canonical full rkyv feature set in lore/skills. |
+| `signal-persona-terminal` | Pure contract crate with closed enums and round trips. T9 contract work has now landed: harness transport records plus prompt-pattern, input-gate, write-injection, prompt-state, and worker-lifecycle control records. | Consumers still need to implement the new contract. `terminal-cell` needs to accept these Signal frames while preserving the raw byte data plane; `persona-terminal` then needs gate-and-cache delivery. |
 | `signal-persona` | Pure engine-manager contract crate. | Still carries manager-era `ConnectionClass`/auth wording in docs while `signal-persona-auth` is now the provenance home. Source and architecture are not aligned: source is narrower than architecture. |
 | `signal-persona-system` | Pure contract with round trips. | Current contract still contains `FocusObservation` and `InputBufferObservation`; this is acceptable as deferred system vocabulary, but it must not be treated as an active injection-safety dependency. |
 | `signal-persona-message` | `MessageBody(String)` is now acceptable per designer/127; sender-free request payload matches current direction. | Architecture example still shows `Frame { auth: Some(LocalOperatorProof("operator")) }`, which conflicts with persona-message's current no-proof proxy direction. |
@@ -167,37 +199,42 @@ Current design:
 This is the largest "out of place" implementation surface because it affects
 the central message path.
 
-### 4.2 `signal-persona-terminal` is the wrong contract for T9
+### 4.2 `signal-persona-terminal` T9 contract gap is resolved
 
-Evidence:
+Original evidence, now stale:
 
 - `/git/github.com/LiGoldragon/signal-persona-terminal/src/lib.rs` defines
   `TerminalConnection`, `TerminalInput`, `TerminalResize`,
   `TerminalCapture`, transcript events, and rejection reasons.
-- It does not define `PromptPattern`, `AcquireInputGate`,
-  `WriteInjection`, `ReleaseInputGate`, `PromptState`, or
+- At the time of survey it did not define `PromptPattern`,
+  `AcquireInputGate`, `WriteInjection`, `ReleaseInputGate`, `PromptState`, or
   worker lifecycle subscription records.
 
-Current design:
+Current state:
 
-- T9 starts contract-first in `signal-persona-terminal`;
-- terminal-cell control plane speaks Signal;
-- raw data plane stays raw.
+- T9 contract-first work landed in `signal-persona-terminal` commit
+  `b2d8edb7`.
+- `terminal-cell` remains the next implementation step: control-plane Signal
+  frames must drive the existing input gate, prompt checks, injection, and
+  worker lifecycle observation while the viewer data plane stays raw.
 
-This blocks `persona-terminal` T6 and `persona-harness` prompt-pattern work.
+This no longer blocks on contract vocabulary. It blocks on terminal-cell and
+persona-terminal consumers.
 
-### 4.3 Auth/proof vocabulary is split across old and new worlds
+### 4.3 Auth/proof wording is still split across old and new worlds
 
-Evidence:
+Original live-source evidence in this section is stale. Current source search
+found no `AuthProof`, `LocalOperator`, or `LocalOperatorProof` in the surveyed
+source/doc targets named below. The remaining evidence is stale architecture
+wording and any still-open transition work around the signal-core carrier.
+
+Historical evidence:
 
 - `/git/github.com/LiGoldragon/signal-persona-auth` correctly rejects a
   Persona-local `AuthProof`.
-- `/git/github.com/LiGoldragon/persona/src/transport.rs` still constructs
-  `signal_core::AuthProof::LocalOperator`.
-- `/git/github.com/LiGoldragon/persona-router/src/router.rs` still extracts
-  `AuthProof::LocalOperator` into an `ActorId`.
-- `signal-persona-message/ARCHITECTURE.md` still shows
-  `LocalOperatorProof("operator")` in its example.
+- Older versions of `persona`, `persona-router`, and
+  `signal-persona-message` still showed `AuthProof::LocalOperator` /
+  `LocalOperatorProof` evidence when this report was written.
 
 This may be acceptable as transitional `signal-core` compatibility, but the
 current docs and code need to say that clearly. New Persona contract or
@@ -220,20 +257,20 @@ Current design:
 The `persona` architecture should be updated before it becomes a generator for
 new stale implementation.
 
-### 4.5 Active repo map has one stale phrase and one missing symlink
+### 4.5 Active repo map issue is resolved
 
-Evidence:
+Original evidence, now resolved:
 
-- `/home/li/primary/protocols/active-repositories.md` describes
+- `/home/li/primary/protocols/active-repositories.md` described
   `persona-system` as "System facts such as focus and prompt-state
   observations." Current design puts prompt-state checking in terminal-cell /
   persona-terminal and pauses persona-system.
-- `/home/li/primary/repos/signal-persona-terminal` is missing even though
+- `/home/li/primary/repos/signal-persona-terminal` was missing even though
   `/git/github.com/LiGoldragon/signal-persona-terminal` exists and
   `protocols/active-repositories.md` names it as active.
 
-The missing symlink is small but high-friction: agents following the `repos/`
-index will fail to find the active terminal contract repo.
+Both are fixed. The active repo map now says prompt-state is terminal-owned,
+and the symlink exists.
 
 ### 4.6 `signal-persona-auth` is correct in concept but not yet wired
 
@@ -279,17 +316,17 @@ feature parity is part of the wire/disk compatibility discipline.
    operator-assistant can resume `primary-v8j`: replace transitional identity
    handling with `IngressContext` / `MessageOrigin` where it belongs.
 
-2. **Fix the small coordination/index issues.**
-   Close or supersede `primary-i34` against closed `primary-90k`, inspect
-   `primary-9iv`, create the missing `repos/signal-persona-terminal` symlink,
-   and update `active-repositories.md` so persona-system is not described as a
-   prompt-state owner.
+2. **Do not use the original coordination/index recommendations without a
+   fresh lock check.**
+   The missing `repos/signal-persona-terminal` symlink and persona-system
+   prompt-state wording are fixed. Any remaining BEADS hygiene should be based
+   on current `bd` output, not this historical snapshot.
 
-3. **Start T9 contract-first.**
-   `signal-persona-terminal` should gain the terminal-cell control-plane
-   vocabulary: prompt patterns, gate acquire/release, injection write,
-   prompt-state result, worker lifecycle subscription, and the raw-data-plane
-   invariant.
+3. **Continue T9 in terminal-cell.**
+   `signal-persona-terminal` now has the contract vocabulary. The next work is
+   terminal-cell accepting those Signal frames and proving that control-plane
+   frames do not pull raw viewer bytes through Signal, Kameo mailboxes, or
+   transcript subscription.
 
 4. **Then implement T6 in `persona-terminal`.**
    Use T9's contract to coordinate gate-and-cache delivery against a real
@@ -311,24 +348,15 @@ feature parity is part of the wire/disk compatibility discipline.
 
 ## 7 - Open Questions To Bring Back To The Human / Designer
 
-1. **Should `ComponentName::Message` in `signal-persona-auth` be renamed to
-   `MessageProxy` before downstream adoption?**
+Resolved questions:
 
-   Evidence: designer/126 names the component `MessageProxy`, while
-   `signal-persona-auth/src/names.rs` currently uses `Message`. Renaming now is
-   cheap because no downstream consumer is wired yet. Waiting makes the shorter
-   name part of the contract.
+- `ComponentName::MessageProxy` now exists in `signal-persona-auth`.
+- `signal-persona-terminal` grew the T9 control relation family alongside the
+  harness-terminal transport records.
 
-2. **Should `signal-persona-terminal` replace its current harness-terminal
-   transcript/input vocabulary or grow a second relation family?**
+Still open:
 
-   Evidence: skills now allow one component contract crate to carry multiple
-   explicit relation families. T9 needs terminal-cell control-plane records,
-   while current `signal-persona-terminal` already has harness-terminal
-   transport records. Replacing is simpler; splitting relation families may
-   better match the updated contract-repo skill.
-
-3. **How should transitional `signal-core::AuthProof` be named in reports and
+1. **How should transitional `signal-core::AuthProof` be named in reports and
    code while local Persona moves to `MessageOrigin`?**
 
    Evidence: designer-assistant/18 says distinguish base `signal-core` carrier
