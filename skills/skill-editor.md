@@ -46,7 +46,7 @@ Right:
 - "see criome's `skills.md`"
 - "see this workspace's `skills/abstractions.md`"
 - "see this workspace's `skills/autonomous-agent.md`"
-- "see lore's `rust/ractor.md`" (when the target is a tool
+- "see lore's `rust/kameo.md`" (when the target is a tool
   reference, not a skill)
 
 Wrong:
