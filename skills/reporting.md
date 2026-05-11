@@ -66,6 +66,39 @@ the next clause.
 
 ---
 
+## Human-facing references are self-contained
+
+Treat the current response as the user's whole world. The
+user should not need to scroll back, query BEADS, open a
+report, remember an earlier numbered list, or decode an
+internal label before they can answer or judge what you
+said.
+
+Whenever a reply mentions a shorthand, identifier, numbered
+point, report, BEADS item, actor name, protocol term, or
+prior recommendation, **restate the substance inline**.
+
+Examples:
+
+- If you ask about `primary-ar7`, also name the task title
+  and why it matters. The ID is a locator, not the context.
+- If you discuss "point 6," restate point 6 as a sentence
+  before explaining its terms. The number is a locator, not
+  the argument.
+- If you use a term like `PTY fanout`, define it in relation
+  to the concrete recommendation being made. A glossary entry
+  without the recommendation is not an answer.
+- If you cite a report path, include a one-line summary of the
+  relevant claim from that report. The path is a verification
+  link, not the substance.
+
+The rule is general: **reference + inline description**. The
+description can be short, but it must carry the decision-relevant
+meaning. A locator alone creates work for the user; the agent's job
+is to remove that work.
+
+---
+
 ## Questions to the user — paste the evidence, not a pointer
 
 When you surface a question for the user — asking for a
