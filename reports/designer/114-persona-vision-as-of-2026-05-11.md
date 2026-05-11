@@ -30,7 +30,7 @@ its own redb store and its own `signal-persona-*` contract, plus the
 | **`persona-message`** (proxy) | Nexus↔signal translation on `persona-router`'s edges. Inbound: Nexus-in-NOTA text from the user/agent surface → `signal-persona-message` frames into router. Outbound: router delivery → terminal-injection bytes into the harness's terminal cell. Stateless boundary; the router owns durable message state. Per bead `primary-2w6`. |
 | **`persona-system`** | OS / window-manager observations (focus, prompt-buffer state). Pushed to both `persona-router` (for delivery decisions) and `persona-terminal` (for input gate state). |
 | **`persona-harness`** | Harness identity, lifecycle, transcript. Models AI sessions (Codex, Claude, Pi) as addressable nouns. |
-| **`persona-terminal`** | Durable PTYs + viewer attachments (Ghostty adapter). **Where the agent CLIs actually run as PTY children.** Transitional checkout: `terminal-cell` as the seed. |
+| **`persona-terminal`** | Durable terminal sessions, viewer attachments (Ghostty adapter), Signal adapter, viewer-adapter policy, component Sema metadata. **Where the agent CLIs actually run as PTY children.** Consumes `terminal-cell` (the low-level daemon-owned PTY/transcript primitive). |
 
 Underneath sits the **sema-ecosystem**: `sema-db` (typed-database library),
 `criome` (today's records validator), `signal-core` (wire kernel), the
@@ -77,17 +77,21 @@ flowchart LR
         direction TB
         viewer["Ghostty viewer"]
         gate["input gate"]
-        agent["agent CLI<br/>(Claude Code, Codex, Pi, …)"]
-        transcript["transcript<br/>(append-only)"]
+        agent["agent CLI (Claude Code, Codex, Pi, etc.)"]
+        transcript["transcript (append-only)"]
     end
 
-    workspace["workspace files<br/>(ESSENCE, skills, reports,<br/>repos, NOTA requests)"]
+    workspace["workspace files (ESSENCE, skills, reports, repos, NOTA requests)"]
 
-    human <-->|keystrokes / reads| viewer
-    viewer <-->|raw bytes| gate
-    gate <-->|bytes| agent
+    human -->|keystrokes| viewer
+    viewer -->|display| human
+    viewer -->|input bytes| gate
+    gate -->|output bytes| viewer
+    gate -->|to agent| agent
+    agent -->|from agent| gate
     agent -.->|side effect| transcript
-    agent <-->|reads, writes, commits| workspace
+    agent -->|reads and writes and commits| workspace
+    workspace -->|read| agent
 ```
 
 The agent is the PTY child. The human and the agent share the PTY
@@ -99,14 +103,14 @@ workspace files.
 
 ```mermaid
 flowchart TB
-    mgr["persona<br/>(engine manager)"]
+    mgr["persona (engine manager)"]
 
-    mind["persona-mind<br/>(work graph)"]
-    msg["persona-message<br/>(Nexus↔signal proxy)"]
-    router["persona-router<br/>(delivery + gates)"]
-    system["persona-system<br/>(focus / prompt obs)"]
-    harness["persona-harness<br/>(harness identity)"]
-    terminal["persona-terminal<br/>(PTYs + viewers + agents)"]
+    mind["persona-mind (work graph)"]
+    msg["persona-message (Nexus-to-signal proxy)"]
+    router["persona-router (delivery and gates)"]
+    system["persona-system (focus and prompt obs)"]
+    harness["persona-harness (harness identity)"]
+    terminal["persona-terminal (PTYs and viewers and agents)"]
 
     mgr -.->|supervises| mind
     mgr -.->|supervises| router
@@ -114,13 +118,14 @@ flowchart TB
     mgr -.->|supervises| harness
     mgr -.->|supervises| terminal
 
-    msg <-->|inbound + outbound translation| router
+    msg -->|inbound translation| router
+    router -->|outbound translation| msg
     router -->|signal-persona-harness| harness
     harness -->|signal-persona-terminal| terminal
-    msg -->|router→terminal injection| terminal
+    msg -->|router-to-terminal injection| terminal
 
-    system -->|focus / prompt obs| router
-    system -->|focus / prompt obs| terminal
+    system -->|focus and prompt obs| router
+    system -->|focus and prompt obs| terminal
 ```
 
 `persona-system` pushes the same focus + input-buffer observations to
@@ -220,7 +225,7 @@ For example, `persona-mind`'s topology (from its ARCHITECTURE.md):
 
 ```mermaid
 flowchart TB
-    mind_root["MindRoot<br/>(runtime root; routes ingress/dispatch/domain/store/view/reply)"]
+    mind_root["MindRoot (routes ingress, dispatch, domain, store, view, reply)"]
     store_super["StoreSupervisor"]
     store_kernel["StoreKernel<br/>(sole redb opener)"]
     memory_store["MemoryStore<br/>(graph reducer)"]
@@ -263,7 +268,7 @@ flowchart TB
     subgraph persona_today["Persona stack (today)"]
         p_mind["persona-mind"]
         p_router["persona-router"]
-        p_etc["…the federation"]
+        p_etc["the rest of the federation"]
     end
 
     subgraph sema_today["sema-ecosystem stack (today)"]
@@ -322,13 +327,13 @@ flowchart TB
     subgraph eventually["Eventual Sema-on-Sema stack"]
         persona_sema["Persona (Sema program)<br/>durable agents, work graph"]
         criome_sema["Criome (Sema program)<br/>computing paradigm: VCS, editor, network, auth"]
-        sema_runtime["Sema runtime<br/>(Sema interpreter / compiler / assembler)"]
-        sema_os["Sema-OS<br/>(host written in Sema)"]
+        sema_runtime["Sema runtime (interpreter, compiler, assembler)"]
+        criomos_sema["CriomOS (written in Sema)"]
     end
 
     persona_sema --> sema_runtime
     criome_sema --> sema_runtime
-    sema_runtime --> sema_os
+    sema_runtime --> criomos_sema
 ```
 
 In the eventual:
@@ -389,20 +394,20 @@ defined in a `signal-*` crate.
 
 ```mermaid
 flowchart TB
-    sig_core["signal-core<br/>Frame, handshake, auth, 12-verb spine,<br/>Slot<T>, Revision, PatternField<T>"]
+    sig_core["signal-core (Frame, handshake, auth, 12-verb spine, Slot, Revision, PatternField)"]
 
-    sig["signal<br/>(sema-ecosystem record vocabulary:<br/>Node, Edge, Graph, AssertOp, MutateOp, …)"]
+    sig["signal (Node, Edge, Graph, AssertOp, MutateOp, etc.)"]
 
-    sig_persona["signal-persona<br/>(engine manager contract:<br/>EngineRequest, EngineReply, ComponentStatus)"]
+    sig_persona["signal-persona (EngineRequest, EngineReply, ComponentStatus)"]
 
-    sig_mind["signal-persona-mind<br/>(work graph: RoleClaim, Opening, Note, Link, …)"]
-    sig_msg["signal-persona-message<br/>(MessageSubmission, InboxQuery)"]
-    sig_sys["signal-persona-system<br/>(FocusObservation, InputBufferObservation)"]
-    sig_harn["signal-persona-harness<br/>(MessageDelivery, DeliveryFailureReason, harness lifecycle)"]
-    sig_term["signal-persona-terminal<br/>(OpenTerminal, ResizeTerminal, transcript events)"]
+    sig_mind["signal-persona-mind (RoleClaim, Opening, Note, Link, etc.)"]
+    sig_msg["signal-persona-message (MessageSubmission, InboxQuery)"]
+    sig_sys["signal-persona-system (FocusObservation, InputBufferObservation)"]
+    sig_harn["signal-persona-harness (MessageDelivery, DeliveryFailureReason, lifecycle)"]
+    sig_term["signal-persona-terminal (TerminalRequest, TerminalEvent)"]
 
-    sig_forge["signal-forge<br/>(criome to forge: Build, Deploy)"]
-    sig_arca["signal-arca<br/>(planned: writers to arca-daemon)"]
+    sig_forge["signal-forge (criome to forge: Build, Deploy)"]
+    sig_arca["signal-arca (planned: writers to arca-daemon)"]
 
     sig_core --> sig
     sig_core --> sig_persona
@@ -555,17 +560,20 @@ flowchart LR
         direction TB
         viewer["Ghostty viewer"]
         gate["input gate"]
-        agent["agent CLI<br/>(Claude Code, Codex, …)"]
+        agent["agent CLI (Claude Code, Codex, etc.)"]
         transcript["transcript"]
     end
 
     system["persona-system"]
 
-    human <-->|keystrokes / reads| viewer
-    viewer <-->|raw bytes| gate
-    gate <-->|bytes| agent
+    human -->|keystrokes| viewer
+    viewer -->|display| human
+    viewer -->|input bytes| gate
+    gate -->|output bytes| viewer
+    gate -->|to agent| agent
+    agent -->|from agent| gate
     agent -.-> transcript
-    system -->|focus / prompt-buffer obs<br/>(pushed)| gate
+    system -->|focus and prompt-buffer obs (pushed)| gate
 ```
 
 The human types into a Ghostty viewer attached to a `persona-terminal`
@@ -646,17 +654,17 @@ Work enters Persona's graph from four sources:
 
 ```mermaid
 flowchart TB
-    human4["human, in conversation<br/>('do X', 'design Y', 'fix Z')"]
+    human4["human in conversation, do X, design Y, fix Z"]
     designer_role["designer authoring reports"]
-    in_flight["work-in-progress<br/>(discovered while doing other work)"]
-    audit["audit / cross-reference sweep<br/>(designer-assistant, operator-assistant)"]
+    in_flight["work-in-progress, discovered while doing other work"]
+    audit["audit or cross-reference sweep, designer-assistant or operator-assistant"]
 
     mind_work["persona-mind work graph"]
 
-    human4 -->|"user prompt"| mind_work
-    designer_role -->|"report's open questions"| mind_work
-    in_flight -->|"newly discovered task"| mind_work
-    audit -->|"drift findings"| mind_work
+    human4 -->|user prompt| mind_work
+    designer_role -->|report open questions| mind_work
+    in_flight -->|newly discovered task| mind_work
+    audit -->|drift findings| mind_work
 ```
 
 1. **Human prompt.** The user says "do X" or "what should we do
@@ -796,21 +804,21 @@ Agents don't talk to each other directly. They interact through:
 
 ```mermaid
 flowchart LR
-    agent_a["Agent A<br/>(in role X)"]
-    agent_b["Agent B<br/>(in role Y)"]
+    agent_a["Agent A in role X"]
+    agent_b["Agent B in role Y"]
     mind_g["persona-mind work graph"]
-    reports_dir2["reports/<role>/"]
-    pr["GitHub PR / issue"]
+    reports_dir2["role-owned reports directory"]
+    pr["GitHub PR or issue"]
 
-    agent_a -->|"file Opening for Y"| mind_g
-    agent_b -->|"query ready items for Y"| mind_g
-    mind_g -->|"surfaces work"| agent_b
+    agent_a -->|file Opening for Y| mind_g
+    agent_b -->|query ready items for Y| mind_g
+    mind_g -->|surfaces work| agent_b
 
-    agent_a -->|"write report"| reports_dir2
-    agent_b -->|"read report"| reports_dir2
+    agent_a -->|write report| reports_dir2
+    agent_b -->|read report| reports_dir2
 
-    agent_a -->|"file PR / issue"| pr
-    agent_b -->|"see PR review"| pr
+    agent_a -->|file PR or issue| pr
+    agent_b -->|see PR review| pr
 ```
 
 Three channels:
@@ -846,11 +854,11 @@ Today's `tools/orchestrate` is the transitional ergonomic surface:
 flowchart LR
     agent_shell["agent invoking shell command"]
     orchestrate["tools/orchestrate"]
-    lock_file["<role>.lock<br/>(gitignored; per-machine)"]
-    mind_path["mind CLI<br/>(future canonical path)"]
+    lock_file["per-role lock file (gitignored, per-machine)"]
+    mind_path["mind CLI (future canonical path)"]
     daemon_path["persona-mind daemon"]
 
-    agent_shell -->|"tools/orchestrate claim …"| orchestrate
+    agent_shell -->|orchestrate claim| orchestrate
     orchestrate -->|today| lock_file
     orchestrate -.->|future| mind_path
     mind_path --> daemon_path
@@ -878,45 +886,47 @@ names which contracts cross which boundaries.
 ### 7.1 Scenario A — Operator picks up a P2 task
 
 Setting: Operator (Codex) starts a session. There are open beads;
-the highest-priority `role:operator` is `primary-bkb` (fix
-`TerminalDelivery` blocking violation in the `persona-terminal`
-checkout).
+the highest-priority `role:operator` is `primary-qp7` —
+`nota-codec`'s encoder emits single-quoted strings for content that
+contains newlines, which the parser rejects on round-trip. Fix:
+the encoder must switch to triple-quoted multiline (`"""..."""`)
+for any string with a newline.
 
 ```mermaid
 sequenceDiagram
     participant Op as Operator (Codex)
     participant MindCLI as mind CLI
     participant Mind as persona-mind daemon
-    participant Repo as persona-terminal repo
+    participant Repo as nota-codec repo
     participant JJ as jj (version control)
     participant GitHub
 
     Op->>MindCLI: mind '(Query Ready (role operator) 10)'
     MindCLI->>Mind: signal-persona-mind frame
-    Mind-->>MindCLI: View { items: [primary-bkb, primary-aww, ...] }
-    MindCLI-->>Op: NOTA: ready items
+    Mind-->>MindCLI: View { items: [primary-qp7, primary-2w6, ...] }
+    MindCLI-->>Op: NOTA, ready items
 
-    Op->>Op: read primary-bkb description and designer/113
+    Op->>Op: read primary-qp7 description and nota-codec ARCHITECTURE.md
 
-    Op->>MindCLI: mind '(RoleClaim Operator ([Path "/git/.../persona-terminal"] [Task "primary-bkb"]) "fix TerminalDelivery blocking")'
+    Op->>MindCLI: mind '(RoleClaim Operator ([Path "/git/.../nota-codec"] [Task "primary-qp7"]) "encoder multiline strings")'
     Mind-->>MindCLI: ClaimAcceptance
-    MindCLI-->>Op: NOTA: claim accepted
+    MindCLI-->>Op: NOTA, claim accepted
 
-    Op->>MindCLI: mind '(StatusChange (id primary-bkb) InProgress)'
+    Op->>MindCLI: mind '(StatusChange (id primary-qp7) InProgress)'
     Mind-->>MindCLI: StatusReceipt
 
-    Op->>Repo: read src/terminal.rs:150-157
-    Op->>Repo: apply Template 3 (tokio::process + timeout per skills/kameo.md §"Blocking-plane templates")
-    Op->>Repo: write test: handler_cannot_block_mailbox
+    Op->>Repo: read src/encoder.rs
+    Op->>Repo: switch string emission to triple-quote when content has a newline
+    Op->>Repo: write test, multiline string round-trip
 
     Op->>JJ: jj st (read working copy)
-    Op->>JJ: jj commit -m 'TerminalDelivery: tokio::process + timeout (closes primary-bkb)'
+    Op->>JJ: jj commit -m 'encoder, triple-quote multiline strings (closes primary-qp7)'
     Op->>JJ: jj bookmark set main -r @-
     Op->>JJ: jj git push --bookmark main
     JJ->>GitHub: push
 
-    Op->>MindCLI: mind '(NoteSubmission (item primary-bkb) "landed in commit <hash>")'
-    Op->>MindCLI: mind '(StatusChange (id primary-bkb) Closed)'
+    Op->>MindCLI: mind '(NoteSubmission (item primary-qp7) "landed in commit <hash>")'
+    Op->>MindCLI: mind '(StatusChange (id primary-qp7) Closed)'
     Op->>MindCLI: mind '(RoleRelease Operator)'
 ```
 
@@ -936,43 +946,51 @@ the graph sees the full history.
 
 ### 7.2 Scenario B — Designer files a report; operator implements
 
-Setting: Designer (Claude) writes designer/112 (day review) and
-discovers in the process that `persona-terminal`'s `TerminalDelivery`
-has a blocking-handler violation. Designer writes designer/113 (the
-audit) and files a bead.
+Setting: Designer (Claude) is reading active workspace state and
+notices that `persona-message` still owns a text-file ledger plus
+polling — stale scaffolding. Designer reframes `persona-message`'s
+role: it is a stateless Nexus-to-signal proxy on `persona-router`'s
+edges, never the owner of durable message state. The reframe lands
+as updates to `protocols/active-repositories.md` and as bead
+`primary-2w6` with the destination spec spelled out. Operator picks
+it up over several sessions.
 
 ```mermaid
 sequenceDiagram
     participant Design as Designer (Claude)
     participant MindCLI
     participant Mind
-    participant Op as Operator (Codex, later session)
+    participant Op as Operator (Codex, later sessions)
 
-    Design->>Design: write reports/designer/113-actor-blocking-audit.md
-    Design->>MindCLI: mind '(Opening Task Normal "Fix TerminalDelivery blocking violation in persona-terminal" ...)'
-    Mind-->>MindCLI: OpeningReceipt { item_id, display_id: "primary-bkb" }
+    Design->>Design: update active-repositories.md persona-message row
+    Design->>MindCLI: mind '(Opening Task High "persona-message becomes Nexus-to-router and router-to-terminal proxy" ...)'
+    Mind-->>MindCLI: OpeningReceipt { item_id, display_id, "primary-2w6" }
 
-    Design->>MindCLI: mind '(AliasAssignment (item primary-bkb) "role:operator-assistant")'
-    Design->>MindCLI: mind '(AliasAssignment (item primary-bkb) "actor-discipline")'
+    Design->>MindCLI: mind '(AliasAssignment (item primary-2w6) "persona-message")'
+    Design->>MindCLI: mind '(AliasAssignment (item primary-2w6) "router")'
+    Design->>MindCLI: mind '(AliasAssignment (item primary-2w6) "stale-scaffold")'
 
-    Note over Design,Mind: …time passes…
+    Note over Design,Mind: time passes
 
-    Op->>MindCLI: mind '(Query Ready (role operator-assistant) 10)'
-    Mind-->>Op: View { items: [primary-bkb, ...] }
-    Op->>Op: read primary-bkb + designer/113 §"Suggested fix"
-    Op->>Op: apply fix, commit, push
-    Op->>MindCLI: mind '(StatusChange (id primary-bkb) Closed)'
+    Op->>MindCLI: mind '(Query Ready (role operator) 10)'
+    Mind-->>Op: View { items: [primary-2w6, ...] }
+    Op->>Op: read primary-2w6 destination spec
+    Op->>Op: wire PERSONA_MESSAGE_ROUTER_SOCKET, convert Send and Inbox to length-prefixed signal-persona-message frames
+    Op->>Op: prove path does not write or read messages.nota.log
+    Op->>MindCLI: mind '(NoteSubmission (item primary-2w6) "Send/Inbox path landed, legacy ledger retirement still open")'
 ```
 
 The thread is:
-1. Designer's report (designer/113) is the **frame**.
+1. Designer's reframe (active-repositories.md and the bead
+   description itself) is the **frame**.
 2. The Opening is the **handle** that surfaces in operator's queue.
-3. The closing note points back at the commit, which references
-   the report.
+3. Notes record each implementation milestone; the bead stays open
+   while sub-pieces (legacy ledger retirement, router-to-terminal
+   delivery side) still remain.
 
-Reports and the work graph cross-reference each other; neither
-duplicates the other. The report carries the substance; the work
-graph carries the lifecycle.
+Reports, contract docs, and the work graph cross-reference each
+other; the substance lives in the documents, the lifecycle lives in
+the work graph.
 
 ### 7.3 Scenario C — Human asks the agent for something
 
@@ -987,29 +1005,30 @@ sequenceDiagram
     participant Gate as input gate
     participant Agent as agent (PTY child)
     participant System as persona-system
+    participant Mind as persona-mind daemon
     participant Router as persona-router
 
-    System->>Gate: focus / prompt-buffer obs (pushed, continuous)
+    System->>Gate: focus and prompt-buffer obs (pushed, continuous)
 
-    Human->>Viewer: types "write designer/115 on …"
+    Human->>Viewer: types a request
     Viewer->>Cell: raw bytes
     Cell->>Gate: bytes
-    Gate->>Agent: bytes (gate state: human)
-    Agent->>Agent: reason / plan / call API
+    Gate->>Agent: bytes, gate state is human
+    Agent->>Agent: reason, plan, call API
     Agent->>Agent: read workspace files, edit, jj commit, jj push
-    Agent->>Cell: response bytes (status updates, summaries)
+    Agent->>Cell: response bytes, status updates and summaries
     Cell->>Viewer: forwarded output
     Viewer->>Human: rendered text
 
     Note over Cell: transcript appends every byte
 
     opt agent files an Opening for follow-up
-        Agent->>Router: signal-persona-mind (via mind CLI)
+        Agent->>Mind: signal-persona-mind frame via mind CLI
     end
 
     opt router injects a system message back to the agent
-        Router->>Cell: signal-persona-harness → terminal injection (gate state: persona)
-        Cell->>Agent: injected bytes (queued behind any in-flight human input)
+        Router->>Cell: signal-persona-harness then signal-persona-terminal, gate state is persona
+        Cell->>Agent: injected bytes, queued behind any in-flight human input
     end
 ```
 
@@ -1054,13 +1073,13 @@ sequenceDiagram
     DA->>Repos: read persona-mind/ARCHITECTURE.md
     DA->>Repos: read recent designer reports
 
-    DA->>ArchTests: nix flake check (run topology, trace-pattern, forbidden-edge tests)
-    ArchTests-->>DA: tests pass / fail
+    DA->>ArchTests: nix flake check, runs topology, trace-pattern, forbidden-edge tests
+    ArchTests-->>DA: tests pass or fail
 
-    DA->>DA: write reports/designer-assistant/<N>-persona-mind-audit.md
+    DA->>DA: write reports/designer-assistant/N-persona-mind-audit.md
 
-    DA->>MindCLI: mind '(NoteSubmission "audit landed: see designer-assistant/<N>")'
-    DA->>MindCLI: mind '(RoleRelease DesignerAssistant)'
+    DA->>MindCLI: mind NoteSubmission, audit landed at designer-assistant/N
+    DA->>MindCLI: mind RoleRelease DesignerAssistant
 ```
 
 Designer-assistant's discipline (per `skills/designer-assistant.md`):
@@ -1099,27 +1118,27 @@ sequenceDiagram
     SS->>MindCLI: mind '(RoleClaim SystemSpecialist ([Path "/git/.../CriomOS-home"] [Path "/git/.../goldragon"]) "bump nota-codec cluster-wide")'
 
     SS->>CO_Home: nix flake update nota-codec
-    SS->>FlakeLock: jj commit -m 'flake.lock: nota-codec to <rev>'
+    SS->>FlakeLock: jj commit, bumps nota-codec lock to the new rev
     SS->>CO_Home: jj git push
 
-    SS->>SS: write NOTA deploy request:<br/>(FullOs goldragon zeus Switch prometheus)
+    SS->>SS: write NOTA deploy request, FullOs goldragon zeus Switch prometheus
     Note over SS,LojixCLI: builder=prometheus so cache signs closure
 
-    SS->>LojixCLI: lojix deploy <request-file>
-    LojixCLI->>Horizon: project (cluster zeus, viewpoint zeus)
+    SS->>LojixCLI: lojix deploy on the request file
+    LojixCLI->>Horizon: project cluster zeus, viewpoint zeus
     Horizon-->>LojixCLI: enriched horizon JSON
 
     LojixCLI->>Cache: build closure on prometheus
-    Cache->>Cache: nix build (crane + fenix)
+    Cache->>Cache: nix build with crane and fenix
     Cache->>Cache: nix-serve signs closure
 
-    LojixCLI->>TargetNode: nix copy --substitute-on-destination
+    LojixCLI->>TargetNode: nix copy with substitute-on-destination
     TargetNode->>Cache: substitute signed closure
     TargetNode->>TargetNode: nixos-rebuild switch
     TargetNode-->>LojixCLI: activation success
 
-    SS->>MindCLI: mind '(NoteSubmission "deployed: zeus on rev <sha>")'
-    SS->>MindCLI: mind '(RoleRelease SystemSpecialist)'
+    SS->>MindCLI: mind NoteSubmission, deployed zeus on the new rev
+    SS->>MindCLI: mind RoleRelease SystemSpecialist
 ```
 
 The deploy is one typed NOTA record. The flow:
@@ -1151,7 +1170,7 @@ flight; the seams are honestly visible.
 | **`sema` → `sema-db` rename** | Pending. Bead `primary-ddx`. Naming reflects "today's piece" vs eventual `Sema`. | active-repositories.md; ESSENCE.md §"Today and eventually" |
 | **Durable router state** | MVP uses in-memory pending-delivery; destination is `router.redb` via `sema-db`. | persona-router/ARCHITECTURE.md |
 | **`persona-message` proxy shape** | Active migration (`primary-2w6`, P1). Today's `persona-message` still owns transitional text-file ledger + polling; destination is a stateless Nexus↔signal proxy on router's edges with no durable message state of its own. | persona-message/ARCHITECTURE.md; bead `primary-2w6` |
-| **`signal-persona-terminal` contract** | Planned, not yet instantiated. Currently inferred from the `terminal-cell` ↔ `persona-router` / `persona-harness` boundary. | terminal-cell/skills.md |
+| **`signal-persona-terminal` contract** | Exists with `TerminalRequest` and `TerminalEvent` typed records. Its own `ARCHITECTURE.md` still describes terminal transport as `persona-wezterm` — bead filed for the wording sweep. | signal-persona-terminal/ARCHITECTURE.md |
 | **Trace phases → real actors** | Persona-mind has trace witnesses (`NotaDecoder`, `CallerIdentityResolver`, etc.) that should graduate to data-bearing actors. | persona-mind/ARCHITECTURE.md §"Trace phases" |
 | **Actor blocking violation in `TerminalDelivery`** | Bead `primary-bkb` (P2). Fix is mechanical (Template 1 or Template 3 from `skills/kameo.md`). | designer/113; the current code path in the persona-terminal checkout |
 | **Cluster trust runtime placement** | Designer/110 settled the scope discipline; system-specialist work pending on the runtime daemon. | reports/designer/110-cluster-trust-runtime-placement.md |
