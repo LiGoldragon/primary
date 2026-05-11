@@ -303,7 +303,7 @@ out-of-Nix installs pollute and break reproducibility.
 
 Symptom: while debugging a feature, you keep running a long
 command by hand — for example an ignored integration test, a
-real-harness test, a WezTerm capture experiment, or a stateful
+real-harness test, a terminal capture experiment, or a stateful
 script that depends on local authentication.
 
 Fix: turn the command into a named repo script and expose it
