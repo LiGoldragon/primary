@@ -19,7 +19,7 @@ stack.
 | Repository | Path | Current role |
 |---|---|---|
 | `primary` | `/home/li/primary` | Workspace coordination, skills, protocols, reports. |
-| `lore` | `/git/github.com/ligoldragon/lore` | Cross-workspace agent discipline and language/coding lore. |
+| `lore` | `/git/github.com/LiGoldragon/lore` | Cross-workspace agent discipline and language/coding lore. |
 | `persona` | `/git/github.com/LiGoldragon/persona` | Persona meta-repo; wires the stack through Nix and apex architecture. |
 | `persona-mind` | `/git/github.com/LiGoldragon/persona-mind` | Central Persona state component; replaces lock-file orchestration over time. |
 | `persona-router` | `/git/github.com/LiGoldragon/persona-router` | Message routing and delivery coordination. |

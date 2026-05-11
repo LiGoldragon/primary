@@ -1,10 +1,136 @@
 {
 	"folders": [
 		{
+			"name": "primary",
 			"path": "."
 		},
 		{
-			"path": "../../../git/github.com/LiGoldragon/chroma"
+			"name": "lore",
+			"path": "/git/github.com/LiGoldragon/lore"
+		},
+		{
+			"name": "persona",
+			"path": "/git/github.com/LiGoldragon/persona"
+		},
+		{
+			"name": "persona-mind",
+			"path": "/git/github.com/LiGoldragon/persona-mind"
+		},
+		{
+			"name": "persona-router",
+			"path": "/git/github.com/LiGoldragon/persona-router"
+		},
+		{
+			"name": "persona-message",
+			"path": "/git/github.com/LiGoldragon/persona-message"
+		},
+		{
+			"name": "persona-system",
+			"path": "/git/github.com/LiGoldragon/persona-system"
+		},
+		{
+			"name": "persona-harness",
+			"path": "/git/github.com/LiGoldragon/persona-harness"
+		},
+		{
+			"name": "persona-wezterm",
+			"path": "/git/github.com/LiGoldragon/persona-wezterm"
+		},
+		{
+			"name": "terminal-cell",
+			"path": "/git/github.com/LiGoldragon/terminal-cell"
+		},
+		{
+			"name": "sema",
+			"path": "/git/github.com/LiGoldragon/sema"
+		},
+		{
+			"name": "signal-core",
+			"path": "/git/github.com/LiGoldragon/signal-core"
+		},
+		{
+			"name": "signal",
+			"path": "/git/github.com/LiGoldragon/signal"
+		},
+		{
+			"name": "signal-persona",
+			"path": "/git/github.com/LiGoldragon/signal-persona"
+		},
+		{
+			"name": "signal-persona-message",
+			"path": "/git/github.com/LiGoldragon/signal-persona-message"
+		},
+		{
+			"name": "signal-persona-system",
+			"path": "/git/github.com/LiGoldragon/signal-persona-system"
+		},
+		{
+			"name": "signal-persona-harness",
+			"path": "/git/github.com/LiGoldragon/signal-persona-harness"
+		},
+		{
+			"name": "signal-persona-mind",
+			"path": "/git/github.com/LiGoldragon/signal-persona-mind"
+		},
+		{
+			"name": "nexus",
+			"path": "/git/github.com/LiGoldragon/nexus"
+		},
+		{
+			"name": "nexus-cli",
+			"path": "/git/github.com/LiGoldragon/nexus-cli"
+		},
+		{
+			"name": "nota",
+			"path": "/git/github.com/LiGoldragon/nota"
+		},
+		{
+			"name": "nota-codec",
+			"path": "/git/github.com/LiGoldragon/nota-codec"
+		},
+		{
+			"name": "nota-derive",
+			"path": "/git/github.com/LiGoldragon/nota-derive"
+		},
+		{
+			"name": "criome",
+			"path": "/git/github.com/LiGoldragon/criome"
+		},
+		{
+			"name": "chroma",
+			"path": "/git/github.com/LiGoldragon/chroma"
+		},
+		{
+			"name": "CriomOS",
+			"path": "/git/github.com/LiGoldragon/CriomOS"
+		},
+		{
+			"name": "CriomOS-home",
+			"path": "/git/github.com/LiGoldragon/CriomOS-home"
+		},
+		{
+			"name": "mentci-lib",
+			"path": "/git/github.com/LiGoldragon/mentci-lib"
+		},
+		{
+			"name": "horizon-rs",
+			"path": "/git/github.com/LiGoldragon/horizon-rs"
+		},
+		{
+			"name": "lojix-cli",
+			"path": "/git/github.com/LiGoldragon/lojix-cli"
+		},
+		{
+			"name": "goldragon",
+			"path": "/git/github.com/LiGoldragon/goldragon"
+		},
+		{
+			"name": "chronos",
+			"path": "/git/github.com/LiGoldragon/chronos"
+		},
+		{
+			"name": "TheBookOfSol",
+			"path": "/git/github.com/LiGoldragon/TheBookOfSol"
 		}
 	],
 	"settings": {}
