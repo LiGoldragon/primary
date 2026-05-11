@@ -73,15 +73,14 @@ together they're the engine.
 flowchart LR
     human["human"]
 
-    subgraph cell["persona-terminal cell"]
-        direction TB
+    subgraph persona_terminal_cell [persona-terminal cell]
         viewer["Ghostty viewer"]
         gate["input gate"]
-        agent["agent CLI (Claude Code, Codex, Pi, etc.)"]
-        transcript["transcript (append-only)"]
+        agent["agent CLI, Claude Code or Codex or Pi"]
+        transcript["transcript, append-only"]
     end
 
-    workspace["workspace files (ESSENCE, skills, reports, repos, NOTA requests)"]
+    workspace["workspace files, ESSENCE and skills and reports and repos and NOTA requests"]
 
     human -->|keystrokes| viewer
     viewer -->|display| human
@@ -265,22 +264,22 @@ is the workspace's most common failure mode.
 
 ```mermaid
 flowchart TB
-    subgraph persona_today["Persona stack (today)"]
+    subgraph persona_today [Persona stack today]
         p_mind["persona-mind"]
         p_router["persona-router"]
         p_etc["the rest of the federation"]
     end
 
-    subgraph sema_today["sema-ecosystem stack (today)"]
-        criome_d["criome daemon<br/>(records validator)"]
+    subgraph sema_today [sema-ecosystem stack today]
+        criome_d["criome daemon, records validator"]
         forge_d["forge daemon"]
         arca_d["arca-daemon"]
         nexus_d["nexus daemon"]
     end
 
-    subgraph shared["Shared substrate"]
-        sema_lib["sema-db<br/>(typed database library)"]
-        sig_core["signal-core<br/>(wire kernel + 12 verbs)"]
+    subgraph shared [Shared substrate]
+        sema_lib["sema-db, typed database library"]
+        sig_core["signal-core, wire kernel and 12-verb spine"]
     end
 
     persona_today --> sema_lib
@@ -324,11 +323,11 @@ into one paradigm:
 
 ```mermaid
 flowchart TB
-    subgraph eventually["Eventual Sema-on-Sema stack"]
-        persona_sema["Persona (Sema program)<br/>durable agents, work graph"]
-        criome_sema["Criome (Sema program)<br/>computing paradigm: VCS, editor, network, auth"]
-        sema_runtime["Sema runtime (interpreter, compiler, assembler)"]
-        criomos_sema["CriomOS (written in Sema)"]
+    subgraph eventually [Eventual Sema-on-Sema stack]
+        persona_sema["Persona as a Sema program, durable agents and work graph"]
+        criome_sema["Criome as a Sema program, computing paradigm, VCS and editor and network and auth"]
+        sema_runtime["Sema runtime, interpreter and compiler and assembler"]
+        criomos_sema["CriomOS, written in Sema"]
     end
 
     persona_sema --> sema_runtime
@@ -556,11 +555,10 @@ needs.
 flowchart LR
     human["human"]
 
-    subgraph cell["persona-terminal cell"]
-        direction TB
+    subgraph persona_terminal_cell [persona-terminal cell]
         viewer["Ghostty viewer"]
         gate["input gate"]
-        agent["agent CLI (Claude Code, Codex, etc.)"]
+        agent["agent CLI, Claude Code or Codex"]
         transcript["transcript"]
     end
 
@@ -573,7 +571,7 @@ flowchart LR
     gate -->|to agent| agent
     agent -->|from agent| gate
     agent -.-> transcript
-    system -->|focus and prompt-buffer obs (pushed)| gate
+    system -->|focus and prompt-buffer obs, pushed| gate
 ```
 
 The human types into a Ghostty viewer attached to a `persona-terminal`
