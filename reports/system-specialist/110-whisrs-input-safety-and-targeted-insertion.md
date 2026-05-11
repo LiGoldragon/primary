@@ -69,12 +69,12 @@ The current package pins `github:y0sif/whisrs/v0.1.11`. Local patches add:
   typing them.
 - audio spool recovery for failed transcriptions.
 
-The active keybindings are:
+The active keybindings were changed after this report's first draft:
 
-- `Mod+V` -> `whisrs toggle`, direct insertion through the virtual keyboard.
-- `Mod+Shift+V` -> `whisrs toggle-copy`, clipboard-only output.
+- `Mod+V` -> `whisrs toggle-copy`, clipboard-only output.
+- `Mod+Shift+V` -> `whisrs toggle`, direct insertion through the virtual keyboard.
 
-This means the safer mode exists, but it is not the muscle-memory default.
+This means the safer mode is now the muscle-memory default.
 
 ## Root Cause
 
@@ -193,11 +193,10 @@ move terminal bytes.
 
 ### 1. Immediate operational default
 
-Make the safe path the default muscle-memory path:
+The safe path is now the default muscle-memory path:
 
-- `Mod+V` should become clipboard-only until direct insertion has an explicit
-  safety gate.
-- direct insertion should move to a more explicit binding or be disabled.
+- `Mod+V` is clipboard-only until direct insertion has an explicit safety gate.
+- direct insertion lives on the more explicit `Mod+Shift+V` binding.
 
 This is a nuisance, but it prevents transcript text from becoming desktop
 shortcuts.
@@ -286,10 +285,161 @@ The risky tests should run in an isolated session or a Niri/systemd sandbox with
 test-only windows. They should not inject desktop input into the human's live
 session.
 
+## Follow-up: Clipboard Recall Picker
+
+The next user-facing problem is recovery friction. WHISRS already stores
+successful transcripts in:
+
+```text
+~/.local/share/whisrs/history.jsonl
+```
+
+`whisrs log -n 20` reads that history newest-first, but it only prints a
+human-oriented multi-line view. There is no command that says "show me recent
+transcripts and copy the selected one back to the clipboard." That is why the
+current recovery path degrades into opening the JSONL/history text manually and
+selecting a transcript by hand.
+
+The launcher ecosystem already has the right external UI shape. Wofi, fuzzel,
+walker, rofi-wayland, bemenu, and tofi all follow the dmenu pattern: read rows
+from stdin, show a fuzzy selector, and print the chosen row to stdout. On this
+host, `wofi` and `wl-copy` are installed. Fuzzel and Walker are more modern and
+script-friendly than Wofi: fuzzel has dmenu options for displaying one field and
+accepting another field, and Walker has dmenu/service modes with explicit
+label/value columns.
+
+Do not implement this by parsing `whisrs log` output. The correct shape is a
+WHISRS-owned recall command:
+
+```text
+whisrs history pick
+  -> read HistoryEntry records with history::read_entries(limit)
+  -> build one selector row per entry: index, timestamp, compact preview
+  -> run configured picker
+  -> parse the selected index
+  -> copy the exact HistoryEntry.text through ClipboardOps
+  -> notify "Copied transcript to clipboard"
+```
+
+Suggested CLI surface:
+
+```text
+whisrs history list [-n 20] [--json]
+whisrs history copy [--index 0]
+whisrs history pick [-n 50]
+```
+
+Keep the current `whisrs log` as compatibility sugar around `history list`.
+
+The picker command should be configurable because the desktop stack may change:
+
+```toml
+[history]
+picker = "wofi --show dmenu --prompt Transcripts --cache-file /dev/null"
+limit = 50
+```
+
+The implementation should not expose transcript contents in shell logs or
+agent chat. Tests should use fixture history files and a shim picker binary,
+not the user's real history. Good witness names:
+
+- `history_pick_copies_selected_transcript_to_clipboard`
+- `history_pick_uses_newest_first_history_order`
+- `history_pick_does_not_parse_pretty_log_output`
+- `history_pick_handles_newlines_in_transcript_text`
+- `history_pick_returns_without_clipboard_write_when_cancelled`
+
+Short-term Nix wrapper option: `CriomOS-home` could add a
+`whisrs-history-pick` script that reads the JSONL file with `jq`, sends rows to
+`wofi`, decodes the selected row, and calls `wl-copy`. That would be quick, but
+it is not the durable shape. The durable shape belongs in WHISRS Rust code so
+history parsing, picker row construction, selection parsing, and clipboard
+copying can be tested without live desktop input.
+
+Recommended first implementation: add the Rust command, use Wofi as the
+CriomOS-home default picker because it is already installed, and leave fuzzel or
+Walker as a later polish pass if Wofi's row/value handling is too clumsy.
+
+## Follow-up: Recording Level Visual
+
+WHISRS already contains most of the desired "is the mic alive?" visual:
+
+- `AudioCaptureHandle::start_with_level_tx` computes RMS audio levels for input
+  buffers and publishes normalized levels.
+- `src/overlay/service.rs` renders a Wayland layer-shell pill with moving bars.
+- The overlay uses `KeyboardInteractivity::None` and sets an empty input region,
+  so it is designed not to steal keyboard or pointer input.
+- The overlay defaults to off for old configs.
+
+CriomOS-home currently sets:
+
+```toml
+[general]
+overlay = false
+```
+
+So the first experiment does not need a new waveform component. It should be:
+
+```toml
+[general]
+overlay = true
+
+[overlay]
+theme = "carbon"
+width = 100
+height = 40
+```
+
+Niri supports layer-shell components and exposes `niri msg layers` / layer rules
+for them. WHISRS uses the layer-shell namespace `whisrs`, so if the overlay
+needs compositor-side polish later we can add a targeted Niri `layer-rule`
+instead of changing the audio path.
+
+The risk is modest but still real: this is live Wayland UI in the user's actual
+session. It should be tested by starting and cancelling a recording without a
+paid transcription call. The test sequence is:
+
+```text
+whisrs toggle
+observe overlay bars moving while speaking
+whisrs cancel
+observe overlay disappears and whisrs status returns idle
+```
+
+No STT API call is needed for that verification.
+
+## Follow-up: Niri Direct-Insertion Guard
+
+A Niri focus guard is worth doing, but it is only one part of the direct
+insertion safety story.
+
+The Niri side should become event-driven:
+
+```text
+DirectInsertionRequested(target_window_id)
+  -> niri focus-window --id target_window_id
+  -> wait for niri event-stream/focused-window observation proving target focus
+  -> if target focus is not observed before timeout, copy to clipboard
+```
+
+This replaces the current fixed 100 ms sleep after `focus_window`. It proves the
+target window is actually focused before WHISRS attempts desktop insertion.
+
+It does not prove that the physical Mod/Super key has been released. That still
+needs a separate modifier-release gate from evdev, a small privileged
+input-observer helper, or a compositor-provided pushed key-state source. The
+correct direct-insertion gate is therefore:
+
+```text
+TargetFocusedByNiri && PhysicalModifiersReleased
+```
+
+If either side is unknown, direct insertion should fall back to clipboard.
+
 ## No Live Input Testing Done
 
-I did not toggle WHISRS or inject keys during this investigation. I also did not
-quote or preserve transcript contents from WHISRS history in this report.
+I did not inject keys during this investigation. I also did not quote or
+preserve transcript contents from WHISRS history in this report.
 
 ## Sources
 
@@ -298,6 +448,9 @@ Local source:
 - `/git/github.com/LiGoldragon/CriomOS-home/modules/home/profiles/min/dictation.nix`
 - `/git/github.com/LiGoldragon/CriomOS-home/packages/whisrs/default.nix`
 - `/git/github.com/LiGoldragon/CriomOS-home/packages/whisrs/clipboard-mode.patch`
+- `/git/github.com/y0sif/whisrs` `src/history.rs`
+- `/git/github.com/y0sif/whisrs` `src/overlay/service.rs`
+- `/git/github.com/y0sif/whisrs` `src/audio/capture.rs`
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/users.nix`
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/metal/default.nix`
 - `/git/github.com/y0sif/whisrs` at tag `v0.1.11`
@@ -324,3 +477,11 @@ External references:
   `https://yalter.github.io/niri/niri_ipc/`
 - Apple AXUIElementPostKeyboardEvent:
   `https://developer.apple.com/documentation/applicationservices/1462057-axuielementpostkeyboardevent`
+- Walker dmenu/service CLI:
+  `https://walkerlauncher.com/docs/cli`
+- Fuzzel dmenu mode:
+  `https://manpages.debian.org/unstable/fuzzel/fuzzel.1.en.html`
+- Niri layer-shell component notes:
+  `https://github.com/YaLTeR/niri/wiki/Layer%E2%80%90Shell-Components`
+- Niri layer rules:
+  `https://niri-wm.github.io/niri/Configuration%3A-Layer-Rules.html`
