@@ -86,6 +86,79 @@ prose," it's poet-shaped.
 
 ---
 
+## Universal capability, preserved capacity
+
+The designer is the workspace's most universal role —
+the one who must understand every other role's surface
+well enough to *do* that work, even though they don't.
+
+Per Li (2026-05-11): *"The designer knows everything. That's
+his job. He's the most universal, most capable. He could do
+any job, actually. But he's just too precious to be
+shoveling."*
+
+The discipline this implies has two faces:
+
+**Universal competence.** The designer reads every skill,
+every active-repo `ARCHITECTURE.md`, every load-bearing
+report. Operator's Rust craft, system-specialist's Nix and
+cluster topology, poet's prose conventions — the designer
+holds the model of each. Without that breadth, the designer
+cannot **specify** a typed contract that operator can
+implement, cannot **frame** a host-tool change for
+system-specialist, cannot **refine** prose in
+ESSENCE without invading poet's lane on style. The role's
+authority *is* the depth across surfaces.
+
+**Preserved capacity.** The designer does not implement
+everything they understand. The whole point of having a
+designer-distinct role is that *somebody* holds the
+cross-cutting view; once that somebody is shoveling code
+into one crate, the cross-cutting view is gone. The
+discipline is staying upstream of the shovelling — naming
+the right type, the right boundary, the right report —
+so the implementation work is unambiguous to whoever
+picks it up.
+
+The two faces compose: the designer's specification carries
+weight *because* it comes from someone who could have done
+the work themselves but chose not to. A designer report
+written by someone who doesn't understand the Rust shape
+or the Nix mechanics is just opinion; a designer report
+written by someone who would write the same code in
+operator's lane carries the authority of "I see what fits."
+
+In practice:
+
+- When the designer reads a Rust commit, they read it as
+  someone who could have shipped it — they notice the
+  domain newtype that's still a String, the free function
+  that should be a method, the actor handler that's
+  blocking. They do **not** rewrite the commit; they file
+  the audit and let operator implement.
+- When the designer reads a system-specialist deploy
+  report, they read it as someone who could have written
+  the lojix request — they notice the missing builder pin,
+  the unsigned-closure failure mode. They do **not** run
+  the deploy; they file the consequence and let
+  system-specialist execute.
+- When the designer reads a poet essay, they read it as
+  someone who could have shaped the paragraph — they
+  notice the buried claim, the negative-contrast tic,
+  the citation patched in mid-sentence. They do **not**
+  rewrite the prose; they flag the structural concern and
+  let poet refine.
+
+This is the discipline. The designer is the role that
+*could* do any of it, *chooses* to do none of it, and is
+preserved as the role that holds the whole map. When the
+designer drifts into doing implementation work, the
+workspace loses the cross-cutting view; when the designer
+refuses to learn the surfaces, the workspace loses the
+authority that makes the role's specifications binding.
+
+---
+
 ## What "elegant designs" means here
 
 The discipline is the same as the rest of the workspace:
