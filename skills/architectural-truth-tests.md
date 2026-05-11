@@ -205,9 +205,9 @@ Worked sketch in a flake:
           # Step B: read the redb file with the authoritative
           # reader; assert the message landed.
           message-stack-read = pkgs.runCommand "message-stack-read" {
-            buildInputs = [ self.packages.${system}.persona-sema-reader ];
+            buildInputs = [ self.packages.${system}.persona-router-reader ];
           } ''
-            persona-sema-reader \
+            persona-router-reader \
               --db ${self.checks.${system}.message-stack-write}/persona.redb \
               --table messages \
               --expect "stack test message"
@@ -226,9 +226,9 @@ The chain forces:
 - The reader is a **separate binary** that depends only on
   the file artifact (so it can't share the writer's memory).
 
-If the agent who wrote the router shortcuts persona-sema and
-keeps state in memory, step A produces an empty file and
-step B fails. The test names the failure as
+If the agent who wrote the router shortcuts the durable
+router-owned store and keeps state in memory, step A produces an
+empty file and step B fails. The test names the failure as
 `message-stack-read` failing on the witness file from
 `message-stack-write`.
 

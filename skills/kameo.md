@@ -664,9 +664,9 @@ the load-bearing supervision rule. When Kameo restarts an actor:
   `supervise_with(factory)`). A counter the crashed instance had
   bumped to 12 reads back as 0 (or whatever `Args` rebuilds to).
 - Anything that *must* survive restart belongs outside the actor:
-  in `persona-sema` (durable state via redb+rkyv), in shared
-  `Arc<AtomicU32>` (cheap counters), or in `Args` itself (so each
-  restart sees the same starting value).
+  in the component's own `sema-db`-backed redb (durable state via
+  redb+rkyv), in shared `Arc<AtomicU32>` (cheap counters), or in
+  `Args` itself (so each restart sees the same starting value).
 
 Kameo makes restart policy easy to express; it does **not** make
 restart semantics automatically safe. Design with reconstruction
