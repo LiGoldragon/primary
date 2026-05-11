@@ -43,6 +43,27 @@ Shape:
 - tests may use in-process harnesses for speed, but production
   architecture stays daemon-first.
 
+Every non-contract stateful component or daemon exposes a thin CLI
+control surface, even when the CLI is not user-facing. The CLI is a
+test and operations boundary: it parses one typed input object,
+sends the component's production request to the daemon, prints one
+typed reply or artifact path, and exits. It does not own durable
+state, open the component database directly, or bypass the daemon's
+actor/message path.
+
+Read-only inspection CLIs are the narrow exception. A component may
+ship an explicitly named inspection client that opens the component's
+Sema database to render test artifacts or operational state. It must
+not mutate state, allocate identity, drive effects, or become the
+production request path; effect-bearing commands still go through the
+daemon.
+
+Contract crates are the exception: they are libraries of typed
+wire vocabulary. They do not need a daemon CLI merely to be
+testable; their tests are round-trip, schema, and compile-time
+witnesses unless they deliberately ship a generator or inspection
+tool.
+
 Example: the Persona command-line mind is `mind` as a thin client to
 the long-lived `persona-mind` daemon. The daemon owns `MindRoot` and
 `mind.redb`; the CLI owns argv/env decoding and reply rendering.
@@ -711,6 +732,11 @@ running component mutates and re-reads.
   not hand-rolled binary, not text.
 - **One redb file per component.** Each component owns
   its own database. No shared cross-component database.
+- **Component state goes through the component-owned Sema layer.**
+  Do not create ad hoc registry files, sidecar indexes, JSON
+  catalogs, lockfile-like stores, or text manifests for state the
+  component mutates and re-reads. If the data is component state,
+  declare it as typed Sema tables owned by that component.
 
 ```rust
 // Wrong — flat-file log as the durable store
@@ -850,6 +876,7 @@ shape comes up in review, add the row.
 | Anti-pattern | What it looks like | Why it's wrong | Replace with |
 |---|---|---|---|
 | Flat-file log as durable state | Append-only `state.log` re-read on startup | No transactions, no atomic updates, parser races writer | redb table with rkyv values |
+| Ad hoc registry file as component state | `registry.json`, `components.nota`, or a sidecar text index re-read on startup | Splits truth away from the component's typed store; no transaction boundary, schema guard, or authoritative reader | Component-owned Sema tables in the component's redb |
 | JSON between Rust components | `serde_json::to_vec` → socket | Schema erased; can't pattern-match on archive bytes; bytecheck unavailable | rkyv frame + length prefix |
 | Ad-hoc binary serialization | Hand-written `to_le_bytes` chains | No schema validation; subtle byte-order bugs; rewriting rkyv badly | rkyv archive |
 | NOTA text on the inter-component wire | Daemon ↔ daemon over UDS using NOTA records | NOTA is for human/CLI projection; using it inter-process means re-parsing canonical text in the hot path | rkyv frames; NOTA stays the CLI/lock-file form |

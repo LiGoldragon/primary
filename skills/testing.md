@@ -104,6 +104,18 @@ Use this shape:
 - Prefer a pure check that validates the artifact shape when the live
   run itself cannot happen in the builder.
 
+For stateful daemon components, prefer driving the production daemon
+through its thin CLI control surface. The CLI is part of the
+component's test/control API even when no human-facing command is
+promised. The test proves the real daemon path; the CLI must not
+open the durable database directly or recreate the daemon's state
+machine in-process.
+
+Read-only inspection CLIs may open the component Sema database to
+render artifacts for tests. Keep them named as inspection surfaces,
+and pair them with daemon-driven writers so the test still proves
+where state came from.
+
 A stateful test runner that only prints "passed" is weak. It should
 leave evidence that another step, tool, or human can inspect.
 
