@@ -459,40 +459,64 @@ type-spec details live in reports.
 
 ---
 
-## Pragmatic now, ideal later — different things, different names
+## Today and eventually — different things, different names
 
-When a workspace concept has both a current pragmatic implementation
-and an eventual idealized form, **they are different things and get
-different names.** Same-name conflation lets the idealized vision
-silently overwrite the pragmatic snapshot in ARCH docs — readers
-(human or agent) cannot tell whether a document describes today's
-code or tomorrow's ambition.
+When a workspace concept names both **what is built today** and the
+**larger eventual form** it is one step toward, those are different
+things and get different names. Same-name conflation lets the
+encompassing vision silently overwrite today's snapshot in ARCH docs
+— readers (human or agent) cannot tell whether a document describes
+today's code or the eventual scope.
 
-The pragmatic implementation earns a concrete narrower name. The
-ideal name stays reserved for the realized form. ARCH docs describe
-what is true today in present tense; separate sections (or separate
-docs) name the eventual shape and the path between.
+**This is a scope discipline, not a quality one.** Today's narrower
+piece is held to the same standard as everything else in this file —
+Beauty is the criterion; the right shape now is worth more than a
+wrong shape sooner. What's built today is built **rightly** for what
+it does today (no corners cut, no slop). The eventual form is named
+separately so readers know which scope a doc is in — not so today's
+work can be lazy about its own scope.
+
+Today's piece earns a concrete narrower name. The eventual name stays
+reserved for the realized form. ARCH docs describe what is true today
+in present tense; separate sections (or separate docs) name the
+eventual shape and the path between.
 
 Two such pairs are in flight as of 2026-05-10:
 
-- **`Sema`** — the eventual fully-specified knowledge representation
-  (every value structured, every concept typed, no untyped strings,
-  capable of expressing any natural-language meaning given proper
-  interpretation). Distinct from **`sema-db`** — the current typed
-  database library (redb, rkyv, typed slots) used by every
-  state-bearing component today. (`sema-db` is the proposed name
-  for the rename pressure on the existing `sema` repo; rename
-  pending.)
-- **`Criome`** — the eventual universal validator/coordinator that
-  encompasses everything (replaces Git, code editor, SSH, web;
-  encompasses auth/security, identity, validation across the stack).
-  Distinct from **the current `criome` daemon** — the
+- **`Sema`** — the eventual **universal medium for meaning**. A
+  self-hosting computational substrate (compiler and assembler
+  written in Sema); a fully-typed human-language representation
+  replacing today's ambiguous text formats (which are "meaning
+  written on rocks" — what humans had, not what conveys meaning to
+  a computer); a universal interlingua between human languages.
+  Distinct from **`sema-db`** — today's typed database library
+  (redb, rkyv, typed slots) used by every state-bearing component.
+  (`sema-db` is the proposed name for the rename pressure on the
+  existing `sema` repo; rename tracked in bead `primary-ddx`.)
+- **`Criome`** — the eventual **universal computing paradigm**,
+  expressed in Sema. Replaces Git, code editor, SSH, web server;
+  encompasses programming, version control, network identity,
+  validation, and auth/security across the stack. Auth/identity is
+  realized as Criome's **quorum-signature multi-sig system** —
+  infinitely programmable multi-sig access on any object — which
+  obsoletes today's ClaviFaber-shaped key-generation shims (and the
+  legacy systems they serve) when the OS itself is written in Sema.
+  Distinct from **the current `criome` daemon** — today's
   sema-ecosystem records validator (Graph/Node/Edge/Derivation/
-  CompiledBinary), which is a pre-realization step toward the ideal.
+  CompiledBinary).
+
+The eventual layer is **one stack**, not many. Every "eventual X"
+runs as Sema-on-Sema: components are Sema programs on a Sema runtime
+on a Sema-written OS. The split is therefore not per-component (each
+on its own slow climb); it is **today's stack** (Rust on Linux, with
+redb, with separate daemons, with legacy auth) **vs the eventually
+self-hosting stack** (Sema all the way down). What's built today is
+one realization step toward a unified vanishing point — built rightly
+for its scope, not as a draft of the eventual.
 
 Until the rename pressure resolves, ARCH docs that name the eventual
-shape carry an explicit *"this describes the eventual shape; pragmatic
-today is narrower"* marker, and pragmatic users describe their actual
+shape carry an explicit *"this describes the eventual shape; today's
+piece is narrower"* marker, and consumers describe their actual
 current dependency, not the eventual one.
 
 ## Rules find their level
