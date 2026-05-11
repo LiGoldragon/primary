@@ -18,27 +18,31 @@ that lose sight of what's actually happening. Persona replaces both with a
 plane of state, each speaking only through typed wire contracts, each
 introspectable from outside.
 
-The federation has six components, each a separate repo with its own
-redb store and its own `signal-persona-*` contract:
+The federation has six state-owning daemons, each a separate repo with
+its own redb store and its own `signal-persona-*` contract, plus the
+`persona-message` proxy that wraps `persona-router` on both edges:
 
 | Component | What it owns |
 |---|---|
 | **`persona`** (engine manager) | Supervisor of the whole engine. Component health, lifecycle, engine status. |
 | **`persona-mind`** | The work graph. Role coordination, activity, items, notes, edges, ready/blocked views. Replaces lock-files + BEADS. |
 | **`persona-router`** | Message routing, delivery state, gate decisions. Sits between message senders and harnesses. |
-| **`persona-system`** | OS / window-manager observations (focus, prompt-buffer state). Pushed, not polled. |
+| **`persona-message`** (proxy) | Nexus↔signal translation on `persona-router`'s edges. Inbound: Nexus-in-NOTA text from the user/agent surface → `signal-persona-message` frames into router. Outbound: router delivery → terminal-injection bytes into the harness's terminal cell. Stateless boundary; the router owns durable message state. Per bead `primary-2w6`. |
+| **`persona-system`** | OS / window-manager observations (focus, prompt-buffer state). Pushed to both `persona-router` (for delivery decisions) and `persona-terminal` (for input gate state). |
 | **`persona-harness`** | Harness identity, lifecycle, transcript. Models AI sessions (Codex, Claude, Pi) as addressable nouns. |
-| **`persona-terminal`** | Durable PTYs + viewers. Today still `persona-wezterm` + `terminal-cell`; production split pending. |
+| **`persona-terminal`** | Durable PTYs + viewer attachments (Ghostty adapter). **Where the agent CLIs actually run as PTY children.** Transitional checkout: `terminal-cell` as the seed. |
 
 Underneath sits the **sema-ecosystem**: `sema-db` (typed-database library),
 `criome` (today's records validator), `signal-core` (wire kernel), the
 `signal-*` contract crates. Persona links `sema-db` for storage and speaks
 `signal-core`-framed messages.
 
-**The human appears in three places**: at the terminal (typing into a
-viewer attached to a `persona-terminal` cell); at the design surface
-(authoring ESSENCE.md, reports, skills); and at the deploy surface
-(authoring NOTA deploy requests for `lojix-cli` to execute).
+**The human's only direct surface is the terminal** — typing into a
+Ghostty viewer attached to a `persona-terminal` cell whose PTY child is
+an agent CLI (Claude Code, Codex, …). The human's intent flows through
+conversation with that agent; everything else (editing ESSENCE.md,
+skills, reports; authoring NOTA deploy requests; opening and closing
+work items) the agent materializes on the human's behalf.
 
 **Agents take and close work** through `persona-mind`'s typed work graph.
 A claim is a typed `RoleClaim` record; release is a typed `RoleRelease`;
@@ -60,85 +64,91 @@ sketched as a draft of the eventual.
 
 ## 1 · The bird's-eye view
 
+Three focused diagrams instead of one giant map. Each shows one slice;
+together they're the engine.
+
+### 1.1 · The terminal loop — human and agent share a cell
+
 ```mermaid
-flowchart TB
-    subgraph human["The human"]
-        terminal["Ghostty / WezTerm viewer<br/>(types, sees output)"]
-        editor["text editor<br/>(writes ESSENCE.md, reports, skills, NOTA requests)"]
+flowchart LR
+    human["human"]
+
+    subgraph cell["persona-terminal cell"]
+        direction TB
+        viewer["Ghostty viewer"]
+        gate["input gate"]
+        agent["agent CLI<br/>(Claude Code, Codex, Pi, …)"]
+        transcript["transcript<br/>(append-only)"]
     end
 
-    subgraph agents["Agents (Claude Code, Codex, …)"]
-        designer_agent["designer"]
-        operator_agent["operator"]
-        system_agent["system-specialist"]
-        poet_agent["poet"]
-        assistant["…-assistant variants"]
-    end
+    workspace["workspace files<br/>(ESSENCE, skills, reports,<br/>repos, NOTA requests)"]
 
-    subgraph persona_layer["Persona federation"]
-        persona_mgr["persona<br/>(engine manager)"]
-        mind["persona-mind<br/>(work graph)"]
-        router["persona-router<br/>(message routing)"]
-        system_obs["persona-system<br/>(focus / prompt-buffer obs)"]
-        harness["persona-harness<br/>(harness identity)"]
-        term["persona-terminal<br/>(PTYs + viewers)"]
-    end
-
-    subgraph sema_layer["Sema ecosystem (today)"]
-        sema_db["sema-db<br/>(typed database library)"]
-        signal_core["signal-core<br/>(wire kernel + 12 verbs)"]
-        criome_daemon["criome<br/>(records validator)"]
-        forge_daemon["forge<br/>(executor)"]
-        arca_daemon["arca-daemon<br/>(privileged blob store)"]
-        nexus_daemon["nexus daemon<br/>(text to signal)"]
-    end
-
-    subgraph os_layer["OS / cluster"]
-        criomos["CriomOS<br/>(NixOS host)"]
-        lojix["lojix-cli<br/>(deploy)"]
-        clavifaber["clavifaber<br/>(host keys, certs)"]
-        goldragon["goldragon<br/>(cluster proposal)"]
-        chroma_daemon["chroma<br/>(theme / warmth / brightness)"]
-    end
-
-    terminal --> term
-    editor --> agents
-    agents --> mind
-    agents -.->|messages| router
-    router --> harness
-    harness --> term
-    term --> terminal
-
-    system_obs -->|pushed observations| router
-    persona_mgr -->|supervises| mind
-    persona_mgr -->|supervises| router
-    persona_mgr -->|supervises| system_obs
-    persona_mgr -->|supervises| harness
-    persona_mgr -->|supervises| term
-
-    mind -->|sema-db| sema_db
-    router -->|sema-db| sema_db
-    harness -->|sema-db| sema_db
-    persona_mgr -->|sema-db| sema_db
-
-    agents -.->|signal frames| signal_core
-
-    criome_daemon -->|owns records| sema_db
-    criome_daemon -->|signal-forge| forge_daemon
-    forge_daemon -->|signal-arca| arca_daemon
-    nexus_daemon -->|NOTA to signal| criome_daemon
-
-    persona_layer -.->|"runs on"| criomos
-    lojix -->|deploys| criomos
-    goldragon -->|projection| lojix
-    clavifaber -->|host keys| criomos
-    chroma_daemon -->|theme| terminal
+    human <-->|keystrokes / reads| viewer
+    viewer <-->|raw bytes| gate
+    gate <-->|bytes| agent
+    agent -.->|side effect| transcript
+    agent <-->|reads, writes, commits| workspace
 ```
 
-Eight layers, each owning a sliver. None of the arrows are runtime calls
-to a shared in-memory state; every arrow is a **typed wire boundary**
-(rkyv frames on UDS) or an **OS-level interface** (PTY, filesystem, nix
-activate).
+The agent is the PTY child. The human and the agent share the PTY
+through the input gate; both write into the same byte stream, gated for
+mutual exclusion. The agent — not the human — is what reads and writes
+workspace files.
+
+### 1.2 · The federation — six daemons plus the persona-message proxy
+
+```mermaid
+flowchart TB
+    mgr["persona<br/>(engine manager)"]
+
+    mind["persona-mind<br/>(work graph)"]
+    msg["persona-message<br/>(Nexus↔signal proxy)"]
+    router["persona-router<br/>(delivery + gates)"]
+    system["persona-system<br/>(focus / prompt obs)"]
+    harness["persona-harness<br/>(harness identity)"]
+    terminal["persona-terminal<br/>(PTYs + viewers + agents)"]
+
+    mgr -.->|supervises| mind
+    mgr -.->|supervises| router
+    mgr -.->|supervises| system
+    mgr -.->|supervises| harness
+    mgr -.->|supervises| terminal
+
+    msg <-->|inbound + outbound translation| router
+    router -->|signal-persona-harness| harness
+    harness -->|signal-persona-terminal| terminal
+    msg -->|router→terminal injection| terminal
+
+    system -->|focus / prompt obs| router
+    system -->|focus / prompt obs| terminal
+```
+
+`persona-system` pushes the same focus + input-buffer observations to
+**both** `persona-router` (for delivery decisions) and `persona-terminal`
+(for input gate state). `persona-message` is the only Nexus↔signal
+boundary: agents speak Nexus-in-NOTA into it; it speaks
+`signal-persona-message` to `persona-router`; on the way back out it
+turns router delivery output into terminal-injection bytes so the
+harness sees text, not binary.
+
+### 1.3 · Where the federation sits
+
+```mermaid
+flowchart TB
+    persona_fed["Persona federation<br/>(six daemons + persona-message)"]
+    sema["sema-db + signal-core<br/>(typed substrate)"]
+    crio["sema-ecosystem<br/>(criome, forge, arca, nexus)"]
+    os["CriomOS + cluster tooling<br/>(lojix-cli, horizon-rs, clavifaber, chroma, goldragon)"]
+
+    persona_fed --> sema
+    crio --> sema
+    persona_fed -.->|runs on| os
+    crio -.->|runs on| os
+```
+
+Every solid arrow above is a **typed wire boundary** (length-prefixed
+rkyv on UDS). Dashed arrows are OS-level interfaces (PTY,
+filesystem, nix activate). No arrow is shared in-memory state.
 
 ---
 
@@ -167,36 +177,19 @@ Each daemon is:
   has a typed event; the `persona` engine manager exposes status
   through `signal-persona`.
 
-### 2.2 The six components
-
-```mermaid
-flowchart LR
-    mgr["persona<br/>engine manager"]
-    mind_node["persona-mind"]
-    router_node["persona-router"]
-    system_node["persona-system"]
-    harness_node["persona-harness"]
-    term_node["persona-terminal<br/>(transitional: persona-wezterm + terminal-cell)"]
-
-    mgr -->|signal-persona| mind_node
-    mgr -->|signal-persona| router_node
-    mgr -->|signal-persona| system_node
-    mgr -->|signal-persona| harness_node
-    mgr -->|signal-persona| term_node
-
-    system_node -->|signal-persona-system observations| router_node
-    router_node -->|signal-persona-harness deliveries| harness_node
-    harness_node -->|signal-persona-terminal| term_node
-```
+### 2.2 The federation
 
 | Component | Owns | Does not own |
 |---|---|---|
 | `persona` (mgr) | supervisor state; component desired/actual state; engine status surface | component-internal logic, work graph, message routing |
 | `persona-mind` | role claims, activity, work graph, decisions, aliases, ready views | message delivery, harness lifecycle, terminal transport |
-| `persona-router` | message frames, delivery queue, gate state, pending delivery records | role state, work graph, harness process lifecycle |
-| `persona-system` | OS / window / input observations (FocusObservation, InputBufferObservation) | routing decisions, harness state |
+| `persona-message` (proxy) | Nexus↔signal translation on router's edges (inbound + outbound) | durable message state (router owns it), routing policy |
+| `persona-router` | message frames, delivery queue, gate state, pending delivery records, the canonical message ledger | role state, work graph, harness process lifecycle, text↔signal translation |
+| `persona-system` | OS / window / input observations (FocusObservation, InputBufferObservation); push to router AND to terminal | routing decisions, harness state, gate behavior |
 | `persona-harness` | harness identity, lifecycle state, transcript events | router policy, terminal byte transport |
-| `persona-terminal` | durable PTYs, viewer attachments, transcript replay, raw byte transport | Persona message semantics, role state, slash-command parsing |
+| `persona-terminal` | durable PTYs, viewer attachments (Ghostty adapter), transcript replay, raw byte transport, the **input gate** | Persona message semantics, role state, slash-command parsing |
+
+The wires between them are in §1.2.
 
 ### 2.3 Why federated, not monolithic
 
@@ -212,10 +205,10 @@ The federation is not coincidence — it is the workspace's
 - **Typed protocols cross every boundary.** Module-level
   boundaries decay under pressure ("modular monolith" failure
   mode); separate repos with separate contract crates do not.
-- **Independent replaceability.** When the `persona-wezterm`
-  + `terminal-cell` split lands as `persona-terminal`, the rest of
-  the federation keeps working unchanged because the
-  `signal-persona-terminal` contract is the contract.
+- **Independent replaceability.** When `persona-message`'s
+  Nexus↔signal proxy folds in tightly with `persona-router`, the
+  rest of the federation keeps working unchanged because the
+  contract is the contract.
 
 ### 2.4 The actor density
 
@@ -546,123 +539,79 @@ The CLI is a thin client; the daemon owns `MindRoot` and
 
 ## 5 · Where the human lives
 
-The human is not a peer of the agents. The human is **upstream of
-the work** — they are the source of every claim that survives
-across roles, the author of every design report's why, and the
-final approver of every action that touches shared state outside
-local edits.
+The human is not a peer of the agents. The human has **one direct
+surface — the terminal** — through which intent flows in (as
+conversation) and the world flows back (as the agent's response). The
+agents materialize that intent into every other artifact the workspace
+needs.
 
-Three live human-machine seams:
-
-### 5.1 The terminal seam (live interaction)
+### 5.1 The terminal is the only direct surface
 
 ```mermaid
 flowchart LR
-    human["human at keyboard"]
-    viewer["Ghostty / WezTerm viewer"]
-    cell["terminal-cell<br/>(PTY owner)"]
-    input_gate["TerminalInputWriter<br/>(input gate)"]
-    pty["child PTY<br/>(shell, harness CLI, agent)"]
-    transcript["TerminalTranscript<br/>(append-only)"]
+    human["human"]
 
-    human -->|keystrokes| viewer
-    viewer -->|raw bytes| cell
-    cell --> input_gate
-    input_gate --> pty
-    pty -->|output| cell
-    cell -->|output to viewer| viewer
-    viewer --> human
-    cell -.->|side effect| transcript
+    subgraph cell["persona-terminal cell"]
+        direction TB
+        viewer["Ghostty viewer"]
+        gate["input gate"]
+        agent["agent CLI<br/>(Claude Code, Codex, …)"]
+        transcript["transcript"]
+    end
+
+    system["persona-system"]
+
+    human <-->|keystrokes / reads| viewer
+    viewer <-->|raw bytes| gate
+    gate <-->|bytes| agent
+    agent -.-> transcript
+    system -->|focus / prompt-buffer obs<br/>(pushed)| gate
 ```
 
-The human types at a Ghostty (or WezTerm) viewer. The viewer attaches
-to a `terminal-cell` daemon over a Unix socket. Bytes pass through
-the **input gate** (`TerminalInputWriter`), which arbitrates between
-human keystrokes and programmatic input (from `persona-harness`
-delivering an agent-generated message). The PTY output flows back
-through the cell to the viewer, with the transcript recording
-everything as a side effect.
+The human types into a Ghostty viewer attached to a `persona-terminal`
+cell. Inside that cell, the PTY child IS the agent — Claude Code,
+Codex, Pi, etc. — running as a process. The input gate arbitrates
+between human keystrokes and programmatic injections (router →
+harness → terminal). `persona-system` pushes focus + input-buffer
+observations directly to the terminal so the gate knows current state.
 
 Two invariants:
 
-- **Closing the viewer does not kill the harness.** The PTY daemon
-  is durable; the viewer is disposable. Detach, reattach, kill the
-  Ghostty window — the child process keeps running.
-- **Input gate enforces mutual exclusion.** When Persona writes
-  injected bytes (delivering a message to the harness), human
-  keystrokes are either queued or rejected — gate state is observable
-  per `signal-persona-terminal` events.
+- **Closing the viewer does not kill the agent.** The PTY daemon is
+  durable; the viewer is disposable. Detach, reattach, kill the Ghostty
+  window — the agent keeps running.
+- **Input gate enforces mutual exclusion.** When Persona injects bytes
+  (delivering a message to the agent), human keystrokes are queued or
+  rejected — gate state is observable per `signal-persona-terminal`.
 
-### 5.2 The design seam (authoring intent)
+### 5.2 Intent flows through conversation
 
-```mermaid
-flowchart LR
-    human2["human at editor"]
-    essence["ESSENCE.md"]
-    skills_dir["skills/<name>.md"]
-    reports_dir["reports/<role>/N-*.md"]
-    archdocs["<repo>/ARCHITECTURE.md"]
+The human doesn't author `ESSENCE.md`, skills, reports, or NOTA deploy
+requests by hand. They tell the agent in conversation; the agent
+materializes the intent into files, commits, deploys. The human's
+voice carries the workspace's vocabulary (per `skills/designer.md`
+§"The user's vocabulary"); the agent reads that voice as the canonical
+statement of intent.
 
-    human2 --> essence
-    human2 --> skills_dir
-    human2 --> reports_dir
-    human2 --> archdocs
+What this means in practice — the agents, on the human's behalf:
 
-    essence -.->|read by every agent| agents_box["agents apply the intent"]
-    skills_dir -.->|read by every agent| agents_box
-    reports_dir -.->|read on demand| agents_box
-    archdocs -.->|read in-repo| agents_box
-```
+- **Edit `ESSENCE.md`, skills, AGENTS, protocols** when the
+  conversation reshapes a discipline.
+- **File reports** in `reports/<role>/` when work needs durable
+  framing or audit.
+- **Author NOTA deploy requests** and run `lojix-cli` for cluster
+  changes.
+- **Open and close work items** in `persona-mind` for anything that
+  crosses sessions.
 
-The human writes `ESSENCE.md` (workspace intent), edits or directs
-edits to skills, files designer reports through the designer agent,
-and approves substantive changes to per-repo ARCHs. Agents read all of
-this; the user's voice in design conversation carries the workspace's
-vocabulary, and the **designer** agent's job is to be in continuous
-dialogue with that voice (per `skills/designer.md` §"The user's
-vocabulary").
+### 5.3 Where the human is NOT
 
-The human's design surface is **append-mostly**: ESSENCE grows by
-reframing, not by replacement; skills evolve in place; reports
-accumulate per role and supersede older reports cleanly (per
-`skills/reporting.md` §"Hygiene").
-
-### 5.3 The deploy seam (cluster intent)
-
-```mermaid
-flowchart LR
-    human3["human (or autonomous agent acting on their behalf)"]
-    nota_req["one NOTA deploy request<br/>(FullOs / OsOnly / HomeOnly)"]
-    lojix_cli["lojix-cli"]
-    horizon["horizon-rs (projection)"]
-    nix_build["nix build (crane + fenix)"]
-    activate["activate on target node"]
-
-    human3 --> nota_req
-    nota_req --> lojix_cli
-    lojix_cli --> horizon
-    horizon --> nix_build
-    nix_build --> activate
-```
-
-For cluster-affecting changes (a new host, a new home-manager module,
-a re-pin of a flake input that affects the running system), the human
-authors **one typed NOTA record** describing the deploy. `lojix-cli`
-reads it, projects through `horizon-rs`, builds via Nix, copies
-closures with `--substitute-on-destination` so the cluster cache
-signs them, and activates on the target node(s).
-
-The whole deploy is one NOTA record — reproducible, auditable, and
-identical across machines. No flags, no env vars, no interactive
-prompts. The human's intent is the typed input.
-
-### 5.4 Where the human is NOT
-
-The human is **not** in the message-routing loop. When an agent writes
-a message and the router commits it, the human doesn't approve each
-delivery. The human's authority lives upstream (in the intent docs,
-the design reports, the role discipline) and downstream (in the
-terminal where they read or override). The middle is the federation.
+The human is **not** in the message-routing loop (router decides
+delivery), **not** in the agent's reasoning loop (agent decides what to
+write), **not** in the lifecycle supervision (engine manager handles
+restart). The human's authority is **intent setting** (upstream
+conversation) and **override** (downstream terminal reading); the
+middle is the federation, running without them.
 
 ---
 
@@ -930,14 +879,15 @@ names which contracts cross which boundaries.
 
 Setting: Operator (Codex) starts a session. There are open beads;
 the highest-priority `role:operator` is `primary-bkb` (fix
-persona-wezterm TerminalDelivery blocking violation).
+`TerminalDelivery` blocking violation in the `persona-terminal`
+checkout).
 
 ```mermaid
 sequenceDiagram
     participant Op as Operator (Codex)
     participant MindCLI as mind CLI
     participant Mind as persona-mind daemon
-    participant Repo as persona-wezterm repo
+    participant Repo as persona-terminal repo
     participant JJ as jj (version control)
     participant GitHub
 
@@ -948,7 +898,7 @@ sequenceDiagram
 
     Op->>Op: read primary-bkb description and designer/113
 
-    Op->>MindCLI: mind '(RoleClaim Operator ([Path "/git/.../persona-wezterm"] [Task "primary-bkb"]) "fix TerminalDelivery blocking")'
+    Op->>MindCLI: mind '(RoleClaim Operator ([Path "/git/.../persona-terminal"] [Task "primary-bkb"]) "fix TerminalDelivery blocking")'
     Mind-->>MindCLI: ClaimAcceptance
     MindCLI-->>Op: NOTA: claim accepted
 
@@ -987,8 +937,9 @@ the graph sees the full history.
 ### 7.2 Scenario B — Designer files a report; operator implements
 
 Setting: Designer (Claude) writes designer/112 (day review) and
-discovers in the process that persona-wezterm has a blocking-handler
-violation. Designer writes designer/113 (the audit) and files a bead.
+discovers in the process that `persona-terminal`'s `TerminalDelivery`
+has a blocking-handler violation. Designer writes designer/113 (the
+audit) and files a bead.
 
 ```mermaid
 sequenceDiagram
@@ -998,7 +949,7 @@ sequenceDiagram
     participant Op as Operator (Codex, later session)
 
     Design->>Design: write reports/designer/113-actor-blocking-audit.md
-    Design->>MindCLI: mind '(Opening Task Normal "Fix persona-wezterm::TerminalDelivery blocking violation" ...)'
+    Design->>MindCLI: mind '(Opening Task Normal "Fix TerminalDelivery blocking violation in persona-terminal" ...)'
     Mind-->>MindCLI: OpeningReceipt { item_id, display_id: "primary-bkb" }
 
     Design->>MindCLI: mind '(AliasAssignment (item primary-bkb) "role:operator-assistant")'
@@ -1023,61 +974,63 @@ Reports and the work graph cross-reference each other; neither
 duplicates the other. The report carries the substance; the work
 graph carries the lifecycle.
 
-### 7.3 Scenario C — Human types a message in a terminal
+### 7.3 Scenario C — Human asks the agent for something
 
-Setting: Human is at a Ghostty viewer attached to a `terminal-cell`
-running a Claude harness. They type a question. Claude responds.
+Setting: The human is at a Ghostty viewer. The PTY child inside that
+cell IS the agent (Claude Code, Codex, …). They share the terminal.
 
 ```mermaid
 sequenceDiagram
     participant Human
-    participant Ghostty as Ghostty viewer
-    participant Cell as terminal-cell daemon
-    participant Gate as TerminalInputWriter (input gate)
-    participant PTY
-    participant Claude as Claude harness (CLI in PTY)
-    participant Router as persona-router (future)
-    participant Harness as persona-harness
+    participant Viewer as Ghostty viewer
+    participant Cell as persona-terminal cell
+    participant Gate as input gate
+    participant Agent as agent (PTY child)
+    participant System as persona-system
+    participant Router as persona-router
 
-    Human->>Ghostty: keystrokes
-    Ghostty->>Cell: attached input stream
-    Cell->>Gate: write bytes
-    Gate->>PTY: bytes (gate state: human)
-    PTY->>Claude: bytes
-    Claude->>Claude: compute response (calls Anthropic API or local)
-    Claude->>PTY: response bytes
-    PTY->>Cell: output bytes
-    Cell->>Ghostty: forwarded output
-    Ghostty->>Human: rendered text
+    System->>Gate: focus / prompt-buffer obs (pushed, continuous)
 
-    Note over Cell: side effect: TerminalTranscript appends every byte
+    Human->>Viewer: types "write designer/115 on …"
+    Viewer->>Cell: raw bytes
+    Cell->>Gate: bytes
+    Gate->>Agent: bytes (gate state: human)
+    Agent->>Agent: reason / plan / call API
+    Agent->>Agent: read workspace files, edit, jj commit, jj push
+    Agent->>Cell: response bytes (status updates, summaries)
+    Cell->>Viewer: forwarded output
+    Viewer->>Human: rendered text
 
-    opt persona-router involvement (future)
-        Claude->>Harness: signal-persona-harness DeliveryCompleted event
-        Harness->>Router: subscription event
-        Router->>Router: log delivery in router.redb
+    Note over Cell: transcript appends every byte
+
+    opt agent files an Opening for follow-up
+        Agent->>Router: signal-persona-mind (via mind CLI)
+    end
+
+    opt router injects a system message back to the agent
+        Router->>Cell: signal-persona-harness → terminal injection (gate state: persona)
+        Cell->>Agent: injected bytes (queued behind any in-flight human input)
     end
 ```
 
-Today, this is mostly raw byte transport through `terminal-cell` —
-Persona's routing layer is not yet in the path. The destination
-shape (per designer/110, designer/113, and the persona-router
-ARCHITECTURE.md):
+The agent is what runs in the PTY. The human types; the agent reads;
+the agent acts on the workspace; the agent writes back. The human
+never opens a text editor — every artifact (files, commits, beads,
+deploy requests) goes through the agent.
 
-- Human keystrokes go through the input gate.
-- The gate enforces mutual exclusion with Persona injections.
-- Outputs flow back through the cell to the viewer.
-- Persona-router subscribes to the harness's lifecycle events.
-- When the router decides to inject a system message (e.g.,
-  "another agent just claimed this scope"), it goes through
-  `signal-persona-harness` → `persona-harness` → `signal-persona-terminal`
-  → `terminal-cell`'s input gate → PTY.
-- The input gate observes "Persona is writing now" state so
-  human keystrokes don't interleave mid-injection.
+Two push paths feed the cell:
 
-The transcript captures everything — both human and Persona
-bytes. The transcript is auditable evidence of what actually
-happened in the session.
+- **`persona-system` → terminal input gate.** Focus state and
+  input-buffer state arrive continuously as pushed observations. The
+  gate uses them to decide whether the human is actively typing
+  (queue Persona injections) or away (inject freely).
+- **`persona-router` → terminal (via `signal-persona-harness` then
+  `signal-persona-terminal`).** When the router delivers a message to
+  the agent's cell, the bytes arrive through the gate just like human
+  keystrokes — same input port, same mutual-exclusion rule.
+
+The transcript captures everything — human, agent, router-injected.
+It is the auditable record of what actually happened.
 
 ### 7.4 Scenario D — Designer-assistant audits operator's recent work
 
@@ -1194,13 +1147,13 @@ flight; the seams are honestly visible.
 
 | Seam | Status | Where it lives |
 |---|---|---|
-| **`persona-wezterm` → `persona-terminal` split** | Pending rename. Today's `persona-wezterm` carries terminal-owner architecture; production split to `persona-terminal` (owner) with WezTerm/Ghostty/Niri as viewer adapters. | persona-wezterm/ARCHITECTURE.md; designer reports under designer/ |
+| **`persona-terminal` landing** | The terminal owner noun; production component formalizing from the `terminal-cell` daemon prototype. Ghostty is the viewer adapter. | terminal-cell/ARCHITECTURE.md; rename tracked in active-repositories.md |
 | **`sema` → `sema-db` rename** | Pending. Bead `primary-ddx`. Naming reflects "today's piece" vs eventual `Sema`. | active-repositories.md; ESSENCE.md §"Today and eventually" |
 | **Durable router state** | MVP uses in-memory pending-delivery; destination is `router.redb` via `sema-db`. | persona-router/ARCHITECTURE.md |
-| **`persona-message` → router** | `persona-message` is transitional CLI/projection layer; durable message storage will live in router-owned sema tables. | persona-message/ARCHITECTURE.md |
-| **`signal-persona-terminal` contract** | Planned, not yet instantiated. Currently inferred from terminal-cell + persona-wezterm boundaries. | terminal-cell/skills.md; persona-wezterm/ARCHITECTURE.md |
+| **`persona-message` proxy shape** | Active migration (`primary-2w6`, P1). Today's `persona-message` still owns transitional text-file ledger + polling; destination is a stateless Nexus↔signal proxy on router's edges with no durable message state of its own. | persona-message/ARCHITECTURE.md; bead `primary-2w6` |
+| **`signal-persona-terminal` contract** | Planned, not yet instantiated. Currently inferred from the `terminal-cell` ↔ `persona-router` / `persona-harness` boundary. | terminal-cell/skills.md |
 | **Trace phases → real actors** | Persona-mind has trace witnesses (`NotaDecoder`, `CallerIdentityResolver`, etc.) that should graduate to data-bearing actors. | persona-mind/ARCHITECTURE.md §"Trace phases" |
-| **Actor blocking violation in TerminalDelivery** | Bead `primary-bkb` (P2). Fix is mechanical (Template 1 or Template 3 from `skills/kameo.md`). | designer/113; persona-wezterm/src/terminal.rs:150-157 |
+| **Actor blocking violation in `TerminalDelivery`** | Bead `primary-bkb` (P2). Fix is mechanical (Template 1 or Template 3 from `skills/kameo.md`). | designer/113; the current code path in the persona-terminal checkout |
 | **Cluster trust runtime placement** | Designer/110 settled the scope discipline; system-specialist work pending on the runtime daemon. | reports/designer/110-cluster-trust-runtime-placement.md |
 | **BEADS retirement** | Transitional. Native mind work graph is the destination. No long-term Persona↔bd bridge. | AGENTS.md §"BEADS is transitional" |
 | **Lock-files retirement** | Transitional. `tools/orchestrate` becomes external glue (or retires) once agents use `mind` directly. | protocols/orchestration.md §"Command-line mind target" |
