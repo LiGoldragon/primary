@@ -32,8 +32,42 @@ Discipline edits landed in this pass:
 
 | Bead | Assessment | Next action |
 |---|---|---|
-| `primary-2w6` | Real and urgent. `persona-message` still has text-file ledger/pending files and polling. | Keep open. Migrate message state/delivery into router-owned durable state with push delivery. |
+| `primary-2w6` | Real and urgent. `persona-message` should become a Nexus-to-router and router-to-terminal proxy, not a durable ledger owner. Its current text-file ledger/pending files and polling are stale scaffolding. | Keep open. Replace the file-ledger/polling implementation with a daemon/CLI boundary that converts message-command Nexus into router signal, receives router delivery work, talks to the terminal-facing boundary, and escalates delivery failure back to the router. |
 | `primary-9iv` | Real but stale wording. `persona-mind` exists and has daemon/socket flow, but the bead still mentions old `persona-orchestrate` and lock-file projection. | Refresh the bead or close/reopen under current command-line mind acceptance. Do not close yet; persona-mind still needs cutover hardening. |
+
+## Readable Queue Map
+
+The IDs are only handles. Read the remaining queue as these work streams:
+
+| Work stream | What it means | Representative beads |
+|---|---|---|
+| Command-line mind | Finish the typed replacement for lock files and BEADS work tracking. | `primary-9iv` |
+| Message routing | Turn `message` into a Nexus convenience surface that talks to router and terminal components; remove the local text-file ledger. | `primary-2w6`, `primary-b7i`, `primary-3fa` |
+| Contract cleanup | Make signal contracts and consumer names match current noun/type discipline. | `primary-28v`, `primary-tlu`, `primary-aww` |
+| Actor discipline | Remove actor/data shadowing and blocking handlers; decide whether `ActorKind` stays. | `primary-3ro`, `primary-bkb`, `primary-rhh` |
+| Sema database hygiene | Rename the pragmatic database library and finish kernel cleanup. | `primary-ddx`, `primary-4zr` |
+| Workspace discipline | Remove stale examples and old report language that teaches wrong patterns. | `primary-0ty`, `primary-gl6`, `primary-obm`, `primary-jsi` |
+| System work | Clavifaber, CriomOS, Chronos, Whisrs, and cross-machine signal work. | `primary-8b3`, `primary-e3c`, `primary-mm0`, `primary-fgk`, `primary-oil`, `primary-uea` |
+
+The highest-value operator path is:
+
+```mermaid
+flowchart LR
+    MessageCli["message CLI\\nNexus in NOTA"]
+    PersonaMessage["persona-message\\nproxy daemon"]
+    Router["persona-router\\nrouting + durable delivery state"]
+    TerminalBoundary["persona-terminal boundary\\nname still settling"]
+    Harness["visible harness terminal"]
+
+    MessageCli --> PersonaMessage
+    PersonaMessage --> Router
+    Router --> PersonaMessage
+    PersonaMessage --> TerminalBoundary
+    TerminalBoundary --> Harness
+    PersonaMessage -->|"delivery failure / retry exhausted"| Router
+```
+
+That is the updated reading of `primary-2w6`.
 
 ## Remaining P2
 
