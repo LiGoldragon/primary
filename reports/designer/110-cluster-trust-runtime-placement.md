@@ -3,9 +3,9 @@
 *Designer report. Resolves `primary-rab` (cluster-registry component
 identity). Records the user's decision and supporting clarifications:
 the cluster-trust runtime is a NEW sibling component in the auth/security
-ecosystem; ClaviFaber stays narrow; pragmatic Criome (today's
+ecosystem; ClaviFaber stays narrow; today's `criome` daemon (today's
 sema-ecosystem records validator) does not yet house auth/security;
-ideal Criome eventually encompasses everything.*
+eventual Criome eventually encompasses everything.*
 
 *Supersedes two earlier drafts (commits `81125fa3` and `5df136a2`) —
 both numbered 110, both wrong on the ecosystem boundary. The git log
@@ -18,9 +18,9 @@ captures their content; this version is the corrected placement.*
 | Question | Answer |
 |---|---|
 | Where does the cluster-trust runtime live? | **A new sibling component in the auth/security ecosystem**, not inside ClaviFaber and not inside the current `criome` daemon. |
-| Why not extend ClaviFaber? | ClaviFaber is intentionally narrow — a key-generation shim for legacy systems (SSH, X.509, Yggdrasil, WiFi certs) that ideal Criome will eventually obsolete. It does not grow new responsibilities. |
-| Why not place it in the current `criome` daemon? | Pragmatic Criome today is the sema-ecosystem records validator (Graph/Node/Edge/Derivation/CompiledBinary). It does not currently encompass auth/security. The idealistic framing in `criome/ARCHITECTURE.md` describes the *eventual* shape, not today's. |
-| What about ideal Criome? | Eventually, when ideal Criome is realized, it encompasses everything — auth/security included, this cluster-trust runtime among the things that route through it. Today it doesn't. |
+| Why not extend ClaviFaber? | ClaviFaber is intentionally narrow — a key-generation shim for legacy systems (SSH, X.509, Yggdrasil, WiFi certs) that eventual Criome will eventually obsolete. It does not grow new responsibilities. |
+| Why not place it in the current `criome` daemon? | Today's `criome` daemon is the sema-ecosystem records validator (Graph/Node/Edge/Derivation/CompiledBinary). It does not currently encompass auth/security. The eventual-shape framing in `criome/ARCHITECTURE.md` describes the *eventual* shape, not today's. |
+| What about eventual Criome? | Eventually, when eventual Criome is realized, it encompasses everything — auth/security included, this cluster-trust runtime among the things that route through it. Today it doesn't. |
 | Repo name for the new component? | Open question. System-specialist's call when implementation lands. Candidates: `criome-cluster-trust`, a fresh name in the auth/security family, or something cleanly distinct. Not deciding here. |
 
 ---
@@ -38,29 +38,29 @@ Three placements were on the table over the prior drafts:
 | Placement | Verdict | Why |
 |---|---|---|
 | Inside Persona ecosystem (e.g. `persona-trust`) | **Wrong** | Persona owns workspace-scope durable-agent state. Auth/security/identity is not workspace-scope; it's machine + cluster scope. Ecosystem mismatch. |
-| Inside the current `criome` daemon | **Wrong** | Pragmatic `criome` today is the sema-ecosystem records validator. It does not currently encompass auth/security. The idealistic framing in `criome/ARCHITECTURE.md` describes the eventual shape; today's pragmatic scope is narrower. |
-| Extending ClaviFaber to grow a cluster-side daemon | **Wrong** | ClaviFaber is deliberately narrow — a key-generation shim for legacy systems (SSH, X.509, Yggdrasil, WiFi certs) that ideal Criome will eventually obsolete. It does not grow new responsibilities. |
+| Inside the current `criome` daemon | **Wrong** | Today's `criome` daemon is the sema-ecosystem records validator. It does not currently encompass auth/security. The eventual-shape framing in `criome/ARCHITECTURE.md` describes the eventual shape; today's scope is narrower. |
+| Extending ClaviFaber to grow a cluster-side daemon | **Wrong** | ClaviFaber is deliberately narrow — a key-generation shim for legacy systems (SSH, X.509, Yggdrasil, WiFi certs) that eventual Criome will eventually obsolete. It does not grow new responsibilities. |
 
 The right placement: **a NEW sibling component** in the auth/security
 ecosystem — sibling to ClaviFaber by ecosystem membership, but
 separate by repo and lifecycle. ClaviFaber stays per-host one-shot;
 the new runtime is long-lived cluster-side; both are auth/security
-components that ideal Criome will eventually subsume.
+components that eventual Criome will eventually subsume.
 
 ---
 
-## 2 · Pragmatic vs ideal — the load-bearing distinction
+## 2 · Today vs eventually — the load-bearing distinction
 
-This report applies the workspace's pragmatic-vs-ideal naming
-discipline (per `ESSENCE.md` §"Pragmatic now, ideal later — different
+This report applies the workspace's today-vs-eventually naming
+discipline (per `ESSENCE.md` §"Today and eventually — different
 things, different names"):
 
 - **`Sema`** — eventual fully-specified knowledge representation.
-  **`sema-db`** — current pragmatic typed database library
+  **`sema-db`** — today's typed database library
   (rename pending; the existing `sema` repo carries the load today).
 - **`Criome`** — eventual universal validator/coordinator that
   encompasses everything (replaces Git, editor, SSH, web). **The
-  current `criome` daemon** — pragmatic sema-ecosystem records
+  current `criome` daemon** — today's sema-ecosystem records
   validator (Graph/Node/Edge/Derivation/CompiledBinary, signs
   capability tokens). The existing `criome/ARCHITECTURE.md` blends
   both, leaning toward the eventual description; the implementation
@@ -71,13 +71,13 @@ The first draft (`81125fa3`) read "persona is the durable agent" too
 broadly and placed cluster-trust in a hypothetical persona-* component.
 The second draft (`5df136a2`) read "criome is the universal
 validator" too broadly and placed cluster-trust in the existing
-`criome` daemon. Both errors traced back to taking idealistic
-framing as a present-tense description of pragmatic scope.
+`criome` daemon. Both errors traced back to taking eventual-shape
+framing as a present-tense description of today's scope.
 
 This third draft holds the distinction: cluster-trust runtime today
 goes where today's auth/security work goes. The auth/security
 ecosystem is real but not yet centralized; ClaviFaber is one
-component, the cluster-trust runtime will be another, and ideal
+component, the cluster-trust runtime will be another, and eventual
 Criome eventually subsumes both.
 
 ---
@@ -96,7 +96,7 @@ direction (2026-05-10):
 - Existing ARCH explicitly disclaims being the cluster-database writer.
 - **Does not grow.** ClaviFaber is intentionally disposable
   infrastructure — the legacy systems it serves (SSH, X.509, etc.)
-  are themselves obsolescence targets. Once ideal Criome is realized,
+  are themselves obsolescence targets. Once eventual Criome is realized,
   none of this matters as a separate concern.
 
 The user's framing (2026-05-10): *"ClaviFaber is just a stupid fucking
@@ -114,7 +114,7 @@ different repo.
 
 ---
 
-## 4 · Pragmatic Criome doesn't house auth/security yet
+## 4 · Today's `criome` daemon doesn't house auth/security yet
 
 The existing `criome` daemon today owns:
 
@@ -125,18 +125,18 @@ The existing `criome` daemon today owns:
 
 That's sema-ecosystem records. It is not auth/security at the level
 of host identity, cluster trust, public-material publication. The
-idealistic ARCH framing — *"eventually replaces Git, editor, SSH,
+eventual-shape ARCH framing — *"eventually replaces Git, editor, SSH,
 web"* — describes the eventual encompassment, not today's scope.
 
 Placing the cluster-trust runtime inside today's `criome` repo would:
 
-- conflate two pragmatic scopes (records validator + auth/security
+- conflate two today scopes (records validator + auth/security
   cluster registry) under one daemon
 - lock in the conflation across consumer ARCH docs
 - make the eventual rename/consolidation harder (more touch points)
 
 So today: cluster-trust lives elsewhere, in its own component. When
-ideal Criome arrives, the consolidation happens then.
+eventual Criome arrives, the consolidation happens then.
 
 ---
 
@@ -184,7 +184,7 @@ implementation lands. Candidates this report flags but does not
 decide:
 
 - **`criome-cluster-trust`** — uses `criome-*` as the auth/security
-  ecosystem prefix even though pragmatic Criome doesn't own
+  ecosystem prefix even though today's `criome` daemon doesn't own
   auth/security yet (the prefix names the eventual home).
 - **A fresh name** in the auth/security family — no `criome-*`
   prefix; the component earns its own name.
@@ -196,9 +196,9 @@ shape, not the name.
 
 ---
 
-## 6 · Eventual ideal Criome convergence
+## 6 · Eventual Criome convergence
 
-The eventual shape: ideal Criome encompasses validation, identity,
+The eventual shape: eventual Criome encompasses validation, identity,
 auth/security, programming, version control, network identity, web
 request handling. Per the user (2026-05-10): *"eventually everything
 will go through Criome. We're going to program through the Criome,
@@ -207,17 +207,17 @@ SSH, web server."*
 
 In that eventual world:
 
-- ClaviFaber's per-host key generation routes through ideal Criome
-  (or is obsoleted by ideal Criome's identity primitives).
-- The cluster-trust runtime routes through ideal Criome (or is
-  absorbed into ideal Criome's typed records).
-- Sema-ecosystem records (today's pragmatic `criome` daemon) become
-  one facet of ideal Criome's universal scope.
+- ClaviFaber's per-host key generation routes through eventual Criome
+  (or is obsoleted by eventual Criome's identity primitives).
+- The cluster-trust runtime routes through eventual Criome (or is
+  absorbed into eventual Criome's typed records).
+- Sema-ecosystem records (today's `criome` daemon) become
+  one facet of eventual Criome's universal scope.
 
 This convergence is the long-term direction. The placement decision
 in this report is **for today** — which is pre-realization
-("pre-duct-tape stage"). When ideal Criome lands, the
-pragmatic-vs-ideal distinction collapses and the components named
+("pre-duct-tape stage"). When eventual Criome lands, the
+today-vs-eventually distinction collapses and the components named
 here either move into Criome or are obsoleted alongside the legacy
 systems they serve.
 
@@ -231,10 +231,10 @@ systems they serve.
   ClaviFaber, not inside the current `criome` daemon, not inside the
   Persona ecosystem.
 - ClaviFaber stays narrow — does not grow a cluster-side daemon.
-- Pragmatic `criome` today does not house auth/security; the
+- Today's `criome` daemon does not house auth/security; the
   cluster-trust runtime does not extend its scope.
-- Ideal Criome is the eventual convergence target; the new sibling
-  component routes into it when ideal Criome is realized.
+- Eventual Criome is the eventual convergence target; the new sibling
+  component routes into it when eventual Criome is realized.
 - Earlier drafts of this report (commits `81125fa3` and `5df136a2`)
   are superseded.
 
@@ -248,7 +248,7 @@ systems they serve.
   failover; etc.).
 - The `sema` → `sema-db` rename — flagged as separate work.
 - Whether and how Criome's `ARCHITECTURE.md` gets a "this is
-  pragmatic today; ideal later" marker — depends on `criome` repo
+  today's piece is narrower" marker — depends on `criome` repo
   ownership decision (system-specialist or operator).
 
 ---
@@ -273,9 +273,9 @@ Possible new beads (file when actively useful):
   cascade. File when there's appetite for the work and a clear
   freeze window. Owner: operator (Rust + cargo) with system-specialist
   for flake.lock fan-out.
-- *"Criome ARCH ideal-vs-pragmatic marker"* — small edit to
+- *"Criome ARCH eventual-vs-today marker"* — small edit to
   `criome/ARCHITECTURE.md` flagging that the document describes the
-  eventual shape and pragmatic today is narrower. Trivial work; file
+  eventual shape and today's piece is narrower. Trivial work; file
   when system-specialist or operator is in `criome` source for any
   reason.
 
@@ -283,11 +283,11 @@ Possible new beads (file when actively useful):
 
 ## See also
 
-- `~/primary/ESSENCE.md` §"Pragmatic now, ideal later — different
+- `~/primary/ESSENCE.md` §"Today and eventually — different
   things, different names" — the upstream framing this report
   applies. (Landed in the same commit as this report.)
 - `~/primary/protocols/active-repositories.md` — the active repo
-  attention map; sema and criome rows now mark ideal-vs-pragmatic
+  attention map; sema and criome rows now mark eventual-vs-today
   scope explicitly. (Landed in the same commit.)
 - `~/primary/reports/designer/111-signal-clavifaber-contract-shape.md`
   — sibling report; defines the wire contract between per-host
@@ -302,9 +302,9 @@ Possible new beads (file when actively useful):
 - `/git/github.com/LiGoldragon/clavifaber/src/publication.rs:7-13` —
   the `PublicKeyPublication` shape that crosses the per-host →
   cluster-trust boundary.
-- `/git/github.com/LiGoldragon/criome/ARCHITECTURE.md` — pragmatic
+- `/git/github.com/LiGoldragon/criome/ARCHITECTURE.md` — today's
   `criome` daemon's described role (sema-ecosystem records validator,
-  blended with idealistic vision).
+  blended with eventual-shape vision).
 - `/git/github.com/LiGoldragon/criome/README.md` — *"The Criome / A
   Universal Computing Paradigm"* — the upstream vision statement for
-  ideal Criome.
+  eventual Criome.

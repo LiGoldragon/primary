@@ -58,7 +58,7 @@ the main Persona architecture reset unless the user names them.
 
 | Repository | Path | Why adjacent |
 |---|---|---|
-| `criome` | `/git/github.com/LiGoldragon/criome` | **Pragmatic** sema-ecosystem records validator daemon (Graph/Node/Edge/Derivation/CompiledBinary; signs capability tokens; uses `sema` library). Distinct from the **ideal** `Criome` (universal validator/coordinator that eventually replaces Git, editor, SSH, web; encompasses auth/security; uses ideal `Sema`). Per `ESSENCE.md` §"Pragmatic now, ideal later". The existing `ARCHITECTURE.md` blends both — leans toward the ideal description; pragmatic today is narrower. |
+| `criome` | `/git/github.com/LiGoldragon/criome` | **Today's** sema-ecosystem records validator daemon (Graph/Node/Edge/Derivation/CompiledBinary; signs capability tokens; uses `sema` library). Distinct from the **eventual** `Criome` — the universal computing paradigm in Sema (replaces Git, editor, SSH, web; encompasses auth/security via quorum-signature multi-sig). Per `ESSENCE.md` §"Today and eventually". The existing `ARCHITECTURE.md` blends both — leans toward the eventual description; today's piece is narrower. |
 | `chroma` | `/git/github.com/LiGoldragon/chroma` | Active system-specialist visual/scheduler work. |
 | `CriomOS` | `/git/github.com/LiGoldragon/CriomOS` | Operating-system layer for the broader project. |
 | `CriomOS-home` | `/git/github.com/LiGoldragon/CriomOS-home` | User/home-manager surface for the OS layer. |
@@ -76,12 +76,21 @@ the main Persona architecture reset unless the user names them.
   topology/trace tests prove real mailbox paths. Direct `ractor`,
   `persona-actor`, and `workspace-actor` language is stale unless a
   current report explicitly reopens that decision.
-- State: pragmatic `sema` (rename pending → `sema-db`) is a typed
+- State: today's `sema` (rename pending → `sema-db`) is a typed
   database library. Each component that needs durable state owns its
   own redb and its own table declarations. There is no shared sema
   daemon, no generic store component, and no shared `persona-sema`
-  architecture. Ideal `Sema` (fully-specified knowledge representation)
-  is the eventual target, not a current implementation.
+  architecture. The eventual `Sema` (universal medium for meaning —
+  self-hosting computational substrate, fully-typed human-language
+  representation, universal interlingua) is the long-term target,
+  not a current implementation.
+- Scope discipline: when a concept has both a today's form and an
+  eventual encompassing form, they get different names (`sema-db`
+  vs `Sema`; `criome` daemon vs `Criome`). ARCH docs describe
+  what's built today; eventual scope gets an explicit marker. Per
+  ESSENCE §"Today and eventually — different things, different
+  names". This is a scope discipline, not a quality one — "today's
+  piece" is never a license to cut corners.
 - Wire: Signal is the typed binary communication fabric. Component
   contracts live in dedicated `signal-*` repos.
 - Text: NOTA is the only text syntax. Nexus is typed semantic content

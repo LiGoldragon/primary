@@ -103,6 +103,34 @@ must read as English.
 
 ---
 
+## Different scopes get different names
+
+When a workspace concept names both **what is built today** and the
+**larger eventual form** it is one step toward, those are different
+things and get different names. Same-name conflation lets the
+encompassing vision silently overwrite today's snapshot — readers
+can't tell which scope a doc is in.
+
+Today's piece earns a concrete narrower name. The eventual name
+stays reserved for the realized form. Live examples in this
+workspace:
+
+- `sema-db` (today's typed database library) vs `Sema` (the
+  eventual universal medium for meaning).
+- The current `criome` daemon (today's sema-ecosystem records
+  validator) vs `Criome` (the eventual universal computing paradigm
+  in Sema).
+
+**This is a scope discipline, not a quality one.** Today's narrower
+piece is held to ESSENCE's full priorities — built rightly for its
+scope, not as a draft of the eventual. "Today's piece" is not a
+license to cut corners or write slop.
+
+See `~/primary/ESSENCE.md` §"Today and eventually — different
+things, different names" for the upstream framing.
+
+---
+
 ## How to apply when generating code
 
 When generating new code: **spell identifiers as full English

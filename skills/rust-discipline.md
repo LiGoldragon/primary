@@ -802,10 +802,12 @@ discipline:
   JSON erases the schema; it appears only at external
   boundaries that demand it.
 
-The Criome direction makes this concrete: the messaging
-substrate that lets Persona and Criome eventually merge
-is rkyv on the wire. That convergence works only because
-both sides agree on the same archive contract today.
+The eventual-Criome direction makes this concrete: the messaging
+substrate that lets Persona and the eventual Criome merge is rkyv
+on the wire. ("Criome" here means the eventual universal computing
+paradigm — see `~/primary/ESSENCE.md` §"Today and eventually" — not
+today's `criome` daemon.) That convergence works only because both
+sides agree on the same archive contract today.
 
 ### NOTA — the human-facing projection
 
@@ -927,6 +929,12 @@ encode/decode API, `bytecheck` semantics), see lore's
 lore is *how the tool works*.
 
 ### The sema-family pattern
+
+> **Scope: today, not eventually.** This section describes today's
+> typed-storage substrate — `sema` (the kernel; rename pending →
+> `sema-db`). The eventual `Sema` is broader (universal medium for
+> meaning — see `~/primary/ESSENCE.md` §"Today and eventually");
+> for Rust today, use what's named here.
 
 The workspace's typed-storage substrate lives in **`sema`**
 (the kernel) plus component-owned typed layers. Prefer an internal

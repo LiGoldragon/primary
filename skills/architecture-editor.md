@@ -31,6 +31,14 @@ For Persona, `persona` is the meta repo; its `ARCHITECTURE.md`
 is the apex. Active component and contract repos are listed in
 `~/primary/protocols/active-repositories.md`.
 
+**Scope discipline.** When an ARCH doc describes a system whose
+*eventual* form is larger than what's built today, name the scope
+explicitly in a marker near the top (see `criome/ARCHITECTURE.md`
+and `sema/ARCHITECTURE.md` for landed examples). ARCH bodies
+describe what is true today in present tense; the eventual shape is
+labelled, not implied. Per `~/primary/ESSENCE.md` §"Today and
+eventually — different things, different names".
+
 ---
 
 ## Where each kind of statement lives
