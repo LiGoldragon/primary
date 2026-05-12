@@ -38,6 +38,7 @@ stack.
 | `signal-persona-harness` | `/git/github.com/LiGoldragon/signal-persona-harness` | Router to harness delivery/observation channel contract. |
 | `signal-persona-terminal` | `/git/github.com/LiGoldragon/signal-persona-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
 | `signal-persona-mind` | `/git/github.com/LiGoldragon/signal-persona-mind` | Mind/orchestration contract vocabulary. |
+| `signal-criome` | `/git/github.com/LiGoldragon/signal-criome` | Criome trust and attestation contract vocabulary: BLS signature envelopes, identity records, delegation grants, component releases, and out-of-band attestations. Pure contract crate; no daemon, no storage, no Persona policy ownership. |
 | `nexus` | `/git/github.com/LiGoldragon/nexus` | Typed semantic text vocabulary written in NOTA syntax. |
 | `nexus-cli` | `/git/github.com/LiGoldragon/nexus-cli` | CLI surface for Nexus-shaped NOTA records. |
 | `nota` | `/git/github.com/LiGoldragon/nota` | NOTA language home. |
@@ -60,7 +61,7 @@ the main Persona architecture reset unless the user names them.
 
 | Repository | Path | Why adjacent |
 |---|---|---|
-| `criome` | `/git/github.com/LiGoldragon/criome` | **Today's** sema-ecosystem records validator daemon (Graph/Node/Edge/Derivation/CompiledBinary; signs capability tokens; uses `sema` library). Distinct from the **eventual** `Criome` — the universal computing paradigm in Sema (replaces Git, editor, SSH, web; encompasses auth/security via quorum-signature multi-sig). Per `ESSENCE.md` §"Today and eventually". The existing `ARCHITECTURE.md` blends both — leans toward the eventual description; today's piece is narrower. |
+| `criome` | `/git/github.com/LiGoldragon/criome` | Current target is a minimal Spartan BLS12-381 authentication and attestation daemon. It verifies signatures, maintains identity/revocation state, signs attestations, and reports verification facts. Persona decides policy. Distinct from the **eventual** `Criome` — the universal computing paradigm in Sema (replaces Git, editor, SSH, web; encompasses broader auth/security via quorum-signature multi-sig). Per `ESSENCE.md` §"Today and eventually". |
 | `chroma` | `/git/github.com/LiGoldragon/chroma` | Active system-specialist visual/scheduler work. |
 | `CriomOS` | `/git/github.com/LiGoldragon/CriomOS` | Operating-system layer for the broader project. |
 | `CriomOS-home` | `/git/github.com/LiGoldragon/CriomOS-home` | User/home-manager surface for the OS layer. |
