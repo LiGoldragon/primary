@@ -18,12 +18,15 @@ question "what does today's criome daemon do?".*
 | Why now? | The workspace's near-term need is auth/attestation across personas, agents, channel grants, privilege elevation, and release archives. Per /110's framing, eventual Criome eventually subsumes auth; we bring that slice forward into today's scope, narrow and Spartan. |
 | Supersedes what? | /110's "today's criome = sema-records validator; cluster-trust runtime = new sibling component." The cluster-trust runtime function is **folded into the Spartan criome**; ClaviFaber's `PublicKeyPublication` feeds into criome's identity registry. /110's discipline (ClaviFaber stays narrow; eventual Criome subsumes everything) is preserved. |
 | What happens to the sema-records validator? | Deferred to eventual Criome (Sema-on-Sema). No active consumer today; the skeleton in commit `a3f4173` of `criome` remains as design archaeology if a future agent wants to mine it. |
-| Signing primitive | **BLS12-381**, via `blst` (Supranational). Sig/pubkey size split (G1 sig + G2 pub vs G2 sig + G1 pub) is operator's call at implementation time per `blst` ergonomics. |
-| Owns what state? | One redb file: `criome.redb`. Identity registry (PublicKey ↔ typed Identity), attestation audit log, and criome's own root keypair (private + public). Held via `sema-db`. |
-| Wire contract | `signal-criome` (new repo) — closed `CriomeRequest`/`CriomeReply` enums. Depends only on `signal-core`; does not depend on `signal` (the sema-ecosystem vocabulary). |
-| Out-of-band, never in-band | Attestations live in `signal-criome` records that **reference** content records (e.g. a `ChannelGrant` from `signal-persona-mind`). They are not embedded as proof fields inside the content records themselves. `signal-persona-auth`'s discipline ("origin context, not proof material") stays inviolate. |
-| What gets attested | Channel grants/retracts/denies (mind→router); persona-to-persona prompt requests (with audit verdict); agent privilege elevations; release archive fingerprints (replacing trust in Git/GitHub as the trust root); persona-audit verdicts. |
-| Persona audit | Out of scope for *this* report. Criome signs the **audit verdict**; the **policy engine** that produces the verdict is a separate component to be designed in a follow-up report. The signature surface is named here; the policy surface is named as deferred. |
+| Operative principle | **Criome verifies; Persona decides.** Criome answers *"is this signature valid for this principal under this grant for these bytes?"* Persona answers *"should this prompt be delivered, should this work be executed, should this elevation be honored?"* The boundary is sharp. (Per designer-assistant/30 §0.) |
+| Signing scheme | **Closed `SignatureScheme` enum**, starting with `Ed25519` (via `ed25519-dalek`) for single-signer cases. `Bls12_381MinPk` / `Bls12_381MinSig` (via `blst`) land when quorum/aggregation is load-bearing, justified by a concrete first quorum witness. Single-scheme commit on day one; second scheme is a coordinated schema bump. |
+| Owns what state? | One redb file: `criome.redb`. Identity registry (PublicKey ↔ typed Identity), delegation grants, replay-guard nonces, and an append-only audit event log. Criome holds its own root keypair (private + public). Held via `sema-db`. |
+| Wire contract | `signal-criome` (new repo) — closed `CriomeRequest`/`CriomeReply` enums. Depends only on `signal-core`; does not depend on `signal` (the sema-ecosystem vocabulary). Avoids the overloaded `AuthProof` name from `signal/src/auth.rs` (drift surfaced in designer-assistant/30 §1.3); uses specific names `SignatureEnvelope`, `SignedObject`, `VerificationReceipt`, `DelegationGrant`, `ComponentRelease`, `SignedPersonaRequest`. |
+| Out-of-band, never in-band | Verification records live in `signal-criome` and reference content records (e.g. a `ChannelGrant` from `signal-persona-mind`) by content hash. They are not embedded as proof fields inside the content records themselves. `signal-persona-auth`'s discipline ("origin context, not proof material") stays inviolate; designer/125's "filesystem ACL is the local engine boundary; per-component class gates are removed" stays inviolate. |
+| Domain separation in signed bytes | Every signed payload binds the content hash to its **purpose** (component name, channel role, audience, contract/schema version, expiry) so a release signature cannot be replayed as a persona-message authorization. Detached signatures over raw bytes are forbidden. |
+| Replay protection | A typed `replay_guard` redb table tracks `(principal, audience, nonce)` for one-shot delegations and time-bound authorizations. Repeat use rejects with `VerificationRejected::ReplayAttempted`. |
+| What gets attested | Channel grants/retracts/denies (mind→router); cross-persona signed requests; agent privilege elevations; release archive fingerprints (replacing trust in Git/GitHub as the trust root). |
+| Persona audit | **Lives in `persona-mind`, NOT in criome** (per designer-assistant/30 §2.3). Criome's verification receipt says "this signed request comes from a known principal under a valid delegation"; mind decides whether the request is safe to absorb or execute. Conflating the two would recreate the in-band proof / per-component gate sprawl that designer/125 explicitly removed. |
 
 ---
 
@@ -540,28 +543,49 @@ local `criome.pub` (from `/etc/criome/root.pub`) is the trust
 root; the developer's identity-registration with criome was
 the prior bootstrap step.
 
-### 6.5 `persona-audit` ↔ criome (deferred component)
+### 6.5 Prompt audit lives in `persona-mind`, not in criome
 
-The user's stated intent: "we would develop a kind of persona
-auditing system to verify that prompts are not trying to
-induce a persona to do something that would be injurious."
+Per designer-assistant/30 §2.3, the prompt-audit policy
+engine **lives inside `persona-mind`**, NOT inside criome.
+The boundary is sharp:
 
-This audit policy engine is a **separate component to be
-designed in a follow-up report**. Its shape will likely be:
+- **Criome** answers: "is this signed request from a known
+  principal, under a valid delegation, over these exact
+  bytes?"
+- **persona-mind** answers: "is this prompt safe? does this
+  request match policy? should this work be absorbed or
+  executed?"
 
-- Reads inbound messages tagged `MessageOrigin::External(...)`
-  before router delivery.
-- Applies a closed set of audit policies (pattern matching for
-  prompt-injection sigils, role-confusion induction, policy
-  override requests; could grow to semantic analysis later).
-- Emits an `AuthorizationRequest` → criome attests the
-  verdict → router consults the attestation before delivery.
+Conflating them recreates the failure mode designer/125
+explicitly removed (per-component class gates and in-band
+proof sprawl). The clean flow:
 
-For *this* report: criome's contract surface is ready to
-support the audit verdict shape via
-`AttestAuthorization`. The policy engine itself is out of
-scope; it gets its own designer report when the user is ready
-to design it.
+```text
+external persona / developer / agent
+  → SignedPersonaRequest crosses the future network or
+    persona-message boundary
+  → criome verifies signature, key status, grant, digest,
+    nonce → returns VerificationAccepted with principal +
+    delegation receipt
+  → router commits message with verified provenance
+  → router checks authorized-channel table
+  → if no active channel, router parks and asks persona-mind
+  → persona-mind runs prompt-audit / policy adjudication
+  → mind issues ChannelGrant (allow once / permanent /
+    time-bound) or AdjudicationDeny
+  → router enforces the channel decision
+```
+
+The cryptographic facts (criome's verification receipt)
+persist in criome's audit log; the safety/policy facts
+(mind's adjudication record) persist in mind's work graph.
+Neither replaces the other.
+
+For *this* report: criome's contract surface supports the
+flow via `VerifyAttestation` (router asks criome to verify
+inbound signed requests). The prompt-audit policy engine
+itself is in `persona-mind` and gets its own designer
+report when the user is ready to design it.
 
 ### 6.6 ClaviFaber → criome (identity feed)
 
@@ -759,19 +783,30 @@ inline with each track.
 
 ---
 
-## 10 · Open questions
+## 10 · Open questions for the user
+
+Designer-assistant/30 §8 surfaced a tight set of decisions
+that benefit from the user's call before operator starts
+Track 1. Restated inline with my recommendations:
+
+| Question | My recommendation | Owner |
+|---|---|---|
+| First signature scheme — `Ed25519` (single-signer simpler) or `Bls12_381` (quorum-ready)? | **Start with `Ed25519`**. Add `Bls12_381` when a concrete quorum/aggregation witness is in front of us. The `SignatureScheme` closed enum carries both variants from day one; the first impl chooses Ed25519. (DA/30 §4.2.) | User |
+| First witness to land — signed release verification, signed cross-persona request, or agent privilege elevation? | **Signed release verification**. It directly tests "GitHub is dumb storage," scope is narrow, the lojix-cli integration is mechanical. (DA/30 §8 q4.) | User |
+| Cleanup of stale `AuthProof` in `signal/src/auth.rs` — fold into this wave or defer? | **Defer.** The new `signal-criome` contract avoids `AuthProof` naming entirely; cleanup of the stale type in `signal/src/auth.rs` can land separately when an operator-assistant audit catches the drift. (DA/30 §1.3.) | Designer-assistant (next audit pass) |
+| Private key custody for personas / agents / developers | **Distributed.** Criome holds only its own root keypair. Personas, agents, developers each custody their own private material (under OS protection or HSMs); they register their public halves with criome. (DA/30 §3.2.) | Designer (next report when implementation surfaces the question) |
+| Per-developer key tool — `gpg-agent` reuse from ClaviFaber, or HSM, or new tool? | **Reuse ClaviFaber's `gpg-agent` integration pattern** for the first wave. HSM lands when production-deployment scope demands it. | System-specialist |
+| Quorum-signature multi-sig (eventual-Criome shape) | **Out of scope for Spartan criome.** `SignatureScheme` enum supports `Bls12_381*` variants from day one; quorum aggregation lands when a witness needs it. | Designer (eventual) |
+
+Operator-side and system-specialist-side implementation
+choices that don't need user input:
 
 | Question | Owner | Resolution path |
 |---|---|---|
-| BLS sig/pubkey size choice (G1 sig + G2 pub vs the inverse) | Operator | Pick at Track 3 implementation time per `blst` ergonomics. Document the choice in `criome/ARCHITECTURE.md` after the decision lands. |
-| Where does `criome.pub` live on each consumer's host? | System-specialist | Default `/etc/criome/root.pub` per `signal-criome/ARCHITECTURE.md`; system-specialist refines path on first deploy. |
-| Per-persona private key custody (lives where, rotated how?) | Designer (next report) | Out of scope for /141; will be addressed when persona-keypair design lands. Spartan criome works without it — bootstrap with operator-key registrations only. |
-| Per-agent private key custody | Designer (next report) | Same as above. |
-| Per-developer private key custody (gpg-agent? HSM? CLI tool?) | Designer (next report) | Initial implementation can reuse `clavifaber`'s gpg-agent integration pattern. |
-| Quorum-signature multi-sig (eventual-Criome shape) | Designer (eventual) | Out of scope for Spartan criome. The `signal-criome::Attestation` shape can carry a single signature today; future evolution adds `QuorumAttestation` variants. |
-| `persona-audit` policy engine | Designer (next report) | Separate component. Criome's `AttestAuthorization` surface is ready; the policy engine itself is unwritten. |
-| `signal-clavifaber` → `signal-criome` identity feed | System-specialist + Designer | Per /110, signal-clavifaber exists for per-host publications. The new criome subscribes to that feed and registers hosts. Concrete protocol detail is implementation-time. |
-| Repo for `signal-criome` | System-specialist | Create on first track-1 push: `gh repo create LiGoldragon/signal-criome --public`. |
+| BLS sig/pubkey size choice if/when BLS lands | Operator | Pick per `blst` ergonomics when adding the variant. |
+| `/etc/criome/root.pub` default path | System-specialist | Document in `signal-criome/ARCHITECTURE.md` on first deploy. |
+| `signal-clavifaber` → `signal-criome` identity feed shape | System-specialist + Designer | Concrete protocol shape lands when implementation surfaces it. |
+| Repo for `signal-criome` | System-specialist | `gh repo create LiGoldragon/signal-criome --public` at Track 1 start. |
 
 ---
 
@@ -811,6 +846,14 @@ Operator+system-specialist consult /141 for current shape;
 - `~/primary/reports/designer/114-persona-vision-as-of-2026-05-11.md`
   §3.2 — the eventual Criome quorum-signature multi-sig
   direction; today's Spartan criome is one step toward it.
+- `~/primary/reports/designer-assistant/30-minimal-criome-persona-auth-research.md`
+  — parallel designer-assistant research on the same
+  direction; surfaced the **"Criome verifies; Persona
+  decides"** sharpening, the Ed25519-first staging
+  argument, the replay-guard requirement, the
+  prompt-audit-belongs-in-mind boundary, and the
+  `AuthProof` naming drift in `signal/src/auth.rs`.
+  Folded into §0, §6.5, and §10 of this report.
 - `~/primary/reports/system-specialist/117-system-data-purity-and-wifi-pki.md`
   — existing per-host PKI surface (X.509 + Ed25519 +
   WiFi-EAP-TLS); criome's identity registry consumes
