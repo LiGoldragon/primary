@@ -36,6 +36,7 @@ stack.
 | `signal-persona-message` | `/git/github.com/LiGoldragon/signal-persona-message` | Message CLI to router channel contract. |
 | `signal-persona-system` | `/git/github.com/LiGoldragon/signal-persona-system` | System observation to router channel contract. |
 | `signal-persona-harness` | `/git/github.com/LiGoldragon/signal-persona-harness` | Router to harness delivery/observation channel contract. |
+| `signal-persona-terminal` | `/git/github.com/LiGoldragon/signal-persona-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
 | `signal-persona-mind` | `/git/github.com/LiGoldragon/signal-persona-mind` | Mind/orchestration contract vocabulary. |
 | `nexus` | `/git/github.com/LiGoldragon/nexus` | Typed semantic text vocabulary written in NOTA syntax. |
 | `nexus-cli` | `/git/github.com/LiGoldragon/nexus-cli` | CLI surface for Nexus-shaped NOTA records. |
