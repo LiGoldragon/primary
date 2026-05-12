@@ -19,7 +19,7 @@ question "what does today's criome daemon do?".*
 | Supersedes what? | /110's "today's criome = sema-records validator; cluster-trust runtime = new sibling component." The cluster-trust runtime function is **folded into the Spartan criome**; ClaviFaber's `PublicKeyPublication` feeds into criome's identity registry. /110's discipline (ClaviFaber stays narrow; eventual Criome subsumes everything) is preserved. |
 | What happens to the sema-records validator? | Deferred to eventual Criome (Sema-on-Sema). No active consumer today; the skeleton in commit `a3f4173` of `criome` remains as design archaeology if a future agent wants to mine it. |
 | Operative principle | **Criome verifies; Persona decides.** Criome answers *"is this signature valid for this principal under this grant for these bytes?"* Persona answers *"should this prompt be delivered, should this work be executed, should this elevation be honored?"* The boundary is sharp. (Per designer-assistant/30 §0.) |
-| Signing scheme | **Closed `SignatureScheme` enum**, starting with `Ed25519` (via `ed25519-dalek`) for single-signer cases. `Bls12_381MinPk` / `Bls12_381MinSig` (via `blst`) land when quorum/aggregation is load-bearing, justified by a concrete first quorum witness. Single-scheme commit on day one; second scheme is a coordinated schema bump. |
+| Signing scheme | **BLS12-381 from day one, via `blst`** (Supranational). Closed `SignatureScheme` enum carries `Bls12_381MinPk` and `Bls12_381MinSig` variants; operator picks one at Track 3 per `blst` ergonomics. Quorum aggregation is the long-term direction (per eventual Criome's quorum-signature multi-sig); committing to BLS at milestone one lets every Spartan attestation be a quorum candidate without a future scheme migration. |
 | Owns what state? | One redb file: `criome.redb`. Identity registry (PublicKey ↔ typed Identity), delegation grants, replay-guard nonces, and an append-only audit event log. Criome holds its own root keypair (private + public). Held via `sema-db`. |
 | Wire contract | `signal-criome` (new repo) — closed `CriomeRequest`/`CriomeReply` enums. Depends only on `signal-core`; does not depend on `signal` (the sema-ecosystem vocabulary). Avoids the overloaded `AuthProof` name from `signal/src/auth.rs` (drift surfaced in designer-assistant/30 §1.3); uses specific names `SignatureEnvelope`, `SignedObject`, `VerificationReceipt`, `DelegationGrant`, `ComponentRelease`, `SignedPersonaRequest`. |
 | Out-of-band, never in-band | Verification records live in `signal-criome` and reference content records (e.g. a `ChannelGrant` from `signal-persona-mind`) by content hash. They are not embedded as proof fields inside the content records themselves. `signal-persona-auth`'s discipline ("origin context, not proof material") stays inviolate; designer/125's "filesystem ACL is the local engine boundary; per-component class gates are removed" stays inviolate. |
@@ -791,7 +791,6 @@ Track 1. Restated inline with my recommendations:
 
 | Question | My recommendation | Owner |
 |---|---|---|
-| First signature scheme — `Ed25519` (single-signer simpler) or `Bls12_381` (quorum-ready)? | **Start with `Ed25519`**. Add `Bls12_381` when a concrete quorum/aggregation witness is in front of us. The `SignatureScheme` closed enum carries both variants from day one; the first impl chooses Ed25519. (DA/30 §4.2.) | User |
 | First witness to land — signed release verification, signed cross-persona request, or agent privilege elevation? | **Signed release verification**. It directly tests "GitHub is dumb storage," scope is narrow, the lojix-cli integration is mechanical. (DA/30 §8 q4.) | User |
 | Cleanup of stale `AuthProof` in `signal/src/auth.rs` — fold into this wave or defer? | **Defer.** The new `signal-criome` contract avoids `AuthProof` naming entirely; cleanup of the stale type in `signal/src/auth.rs` can land separately when an operator-assistant audit catches the drift. (DA/30 §1.3.) | Designer-assistant (next audit pass) |
 | Private key custody for personas / agents / developers | **Distributed.** Criome holds only its own root keypair. Personas, agents, developers each custody their own private material (under OS protection or HSMs); they register their public halves with criome. (DA/30 §3.2.) | Designer (next report when implementation surfaces the question) |
@@ -849,11 +848,14 @@ Operator+system-specialist consult /141 for current shape;
 - `~/primary/reports/designer-assistant/30-minimal-criome-persona-auth-research.md`
   — parallel designer-assistant research on the same
   direction; surfaced the **"Criome verifies; Persona
-  decides"** sharpening, the Ed25519-first staging
-  argument, the replay-guard requirement, the
-  prompt-audit-belongs-in-mind boundary, and the
+  decides"** sharpening, the replay-guard requirement,
+  the prompt-audit-belongs-in-mind boundary, and the
   `AuthProof` naming drift in `signal/src/auth.rs`.
-  Folded into §0, §6.5, and §10 of this report.
+  Folded into §0, §6.5, and §10 of this report. (DA/30's
+  Ed25519-first staging recommendation was considered and
+  rejected per user direction 2026-05-12: BLS from day
+  one, since eventual Criome's quorum-signature direction
+  makes BLS legitimate at milestone one.)
 - `~/primary/reports/system-specialist/117-system-data-purity-and-wifi-pki.md`
   — existing per-host PKI surface (X.509 + Ed25519 +
   WiFi-EAP-TLS); criome's identity registry consumes
