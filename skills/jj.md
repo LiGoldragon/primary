@@ -183,6 +183,45 @@ used.
 
 ---
 
+## Descriptionless commits are forbidden
+
+`(no description set)` on a commit you authored is a
+**workspace contract violation**, on equal footing with the
+ban on raw `git` for daily commits. The 2026-05-12 117-orphan
+incident (see `reports/designer/140-jj-discipline-after-
+orphan-incident.md`) traced directly to this: an agent ran
+`jj commit` without `-m`, the editor returned empty, the
+commit succeeded with an empty description, no bookmark was
+set, and the work became reachable only by op-log spelunking.
+
+The structural fix lives in workspace `jj` config —
+`ui.editor = "false"` so editor fallback aborts the operation.
+**System-specialist:** land this config at the workspace
+level so editor fallback fails loudly rather than writing
+empty descriptions silently. Until that lands, this section
+is the procedural backstop.
+
+**Before every push**, run:
+
+```sh
+jj log -r 'main..@- & description(exact:"")'
+```
+
+If anything appears, fix it before pushing:
+
+```sh
+jj describe <rev> -m '<msg>'
+```
+
+**If `jj st` or any `jj log` output ever shows
+`(no description set)` on a commit you authored**, stop and
+describe it immediately — even before the next file edit.
+The instant you continue past it, the next agent's view of
+your work depends on you having set a description; their
+`jj log` filters will hide it otherwise.
+
+---
+
 ## Before you commit — the working-copy check
 
 `jj commit` (and any other path that finalises `@`)
@@ -412,6 +451,22 @@ Fix:
 3. If ownership is ambiguous, file a BEADS task and ask
    before touching.
 
+### `jj restore` is hazardous mid-commit
+
+`jj restore -f <rev>` reverts the working copy to match
+`<rev>` without changing `@`'s position. It silently discards
+any uncommitted changes in the working copy. Use sparingly;
+**never** to "clean up before a commit" — that's what
+`jj split` is for.
+
+If you find yourself reaching for `jj restore` during normal
+work, stop and check `jj st`; you probably want `jj split`
+(to keep your paths and isolate peer paths) or `jj abandon @`
+with deliberate intent. The 2026-05-12 117-orphan incident
+included a `restore into commit …` op that was a load-bearing
+step toward the failure — see `reports/designer/140-jj-
+discipline-after-orphan-incident.md` §1.
+
 ---
 
 ## Per-logical-commit pushes — not batch
@@ -428,6 +483,43 @@ commits that depend on each other (a refactor with three
 sequential steps), push the whole sequence at the end of
 the sequence. But each individual commit message still
 names the step, not the sequence.
+
+---
+
+## End-of-session check
+
+Before ending a session — closing the conversation,
+releasing a claim, handing off, or running `jj new main` /
+`jj edit main` (which has the same effect as ending the
+session in terms of moving `@` off the current chain) —
+confirm every commit you authored is reachable from a
+bookmark or from `main`. The check:
+
+```sh
+jj log -r 'main..@ ~ bookmarks()'
+```
+
+If the output is empty (or shows only the empty `@` working
+copy), the session ends clean. If anything else appears,
+those are **unbookmarked descendants of main** — pushable
+work that no one but you can find. They are exactly the
+shape of the 117-orphan failure (see
+`reports/designer/140-jj-discipline-after-orphan-incident.md`).
+
+Each row needs one of:
+
+- **Land on main** — `jj bookmark set main -r <rev> && jj git push --bookmark main`.
+- **Bookmark for review** — `jj bookmark create push-<topic> -r <rev> && jj git push --bookmark push-<topic>`.
+- **Explicit abandon** — `jj abandon <rev>`, only if you
+  genuinely want the work gone. Discarded work is the most
+  expensive kind to recover; the bias is *always* toward
+  bookmark-then-decide later.
+
+Prefer landing on main when the work is yours and complete.
+Reserve `push-<topic>` bookmarks for work that needs review
+before landing — not as a default "stash so I can move on."
+A long-lived chain of `push-*` bookmarks is itself a smell;
+it usually means someone forgot to advance `main`.
 
 ---
 
