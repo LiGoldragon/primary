@@ -19,6 +19,75 @@ behind each.
 
 ---
 
+## Services are NixOS modules, not OCI workloads
+
+**Nix through and through.** Every service on a CriomOS host —
+whether it lives directly on the host or inside a `Contained`
+node — is a NixOS service module. `services.<name>` from nixpkgs,
+or a CriomOS-owned module under `services/`, or a typed
+`systemd.services.<name>` in module Nix.
+
+OCI / Docker workloads (`virtualisation.oci-containers`,
+`docker-compose` imports, image-tag pins) are **not a peer
+choice**. They are transitional debt. They sit beside the Nix
+configuration as a second deployment language — image tags don't
+flow from the cluster proposal, image contents don't flow from the
+flake, and the operator has to manage a parallel update cadence.
+
+When upstream ships a service as an OCI image only, the answer is
+to package it natively. `mkYarnPackage` / pnpm overlays / Python
+via `uv2nix` / Rust via crane / Go via `buildGoModule` — every
+mainstream stack has a Nix path. The packaging cost is real but
+pays back permanently: one update cadence, one source of truth,
+one reproducible system closure.
+
+OCI is acceptable only with all three of these in place:
+
+1. an explicit transitional bead with a sunset date,
+2. image and tag pinned through a typed cluster record (no
+   floating `:latest`, no Compose YAML on the host that horizon
+   doesn't see),
+3. secrets and state declared exactly as for a native service.
+
+The same rule applies inside CriomOS contained nodes. A
+`Contained { substrate: NixosContainer }` node runs CriomOS;
+CriomOS runs NixOS service modules. There is no separate
+"workload substrate" axis to choose along — the workload of a
+CriomOS node is whatever Nix puts in its system closure.
+
+### Why
+
+Because the alternative is two configuration languages and two
+update cadences for the same machine. "Just for this one service"
+becomes the standing exception, and the next service inherits the
+exception. The whole point of CriomOS is that the flake describes
+the entire system; a single OCI escape hatch erodes that to the
+point where reasoning about "what is on this host" requires
+joining a Nix store walk with a Docker image inventory.
+
+It is also a cost trap. Each new service that lands as an OCI
+workload doesn't make the next OCI workload cheaper — it just
+makes the eventual native packaging more expensive, because by
+then the operational habits depend on the OCI shape.
+
+### What this means for design surfaces
+
+When proposing a new service, the choice is "which native NixOS
+module shape," not "native or OCI." When extending horizon-rs
+node vocabulary, the workload axis does not exist — placement
+(`Metal`, `Contained`) names how the node exists; the workload it
+runs is just Nix. When adding a contained node, the question is
+which CriomOS modules its viewpoint imports, not which image its
+service definition pulls.
+
+When the answer to a service question is "but the official
+install is Docker Compose," the rule still holds. The official
+install is one of several reference implementations; the CriomOS
+implementation is a NixOS module that reads the same upstream
+sources Docker Compose does.
+
+---
+
 ## Flake inputs — choosing the form
 
 **Default: `github:<owner>/<repo>`.** The github form is what
