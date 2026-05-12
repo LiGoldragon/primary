@@ -131,6 +131,9 @@
 		{
 			"name": "TheBookOfSol",
 			"path": "/git/github.com/LiGoldragon/TheBookOfSol"
+		},
+		{
+			"path": "/git/github.com/LiGoldragon/persona-terminal"
 		}
 	],
 	"settings": {}
