@@ -76,6 +76,7 @@ poet's. The assistant does the same work as its main role.
 
 - `skills/prose.md`
 - `skills/library.md`
+- `skills/mermaid.md`
 
 **Active beads**
 

@@ -94,14 +94,18 @@ the discipline is the same; the reading list is the same.
 - `skills/language-design.md`
 - `skills/micro-components.md`
 - `skills/push-not-pull.md`
-- `skills/rust-discipline.md`
+- `skills/rust-discipline.md` (index)
+- `skills/rust/methods.md`
+- `skills/rust/errors.md`
+- `skills/rust/storage-and-wire.md`
+- `skills/rust/parsers.md`
+- `skills/rust/crate-layout.md`
 - `skills/testing.md`
 
-**Cross-cutting and specialty**
+**Cross-cutting**
 
+- `skills/mermaid.md`
 - `skills/nix-discipline.md`
-- `skills/prose.md`
-- `skills/library.md`
 
 **Active beads**
 

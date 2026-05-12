@@ -80,7 +80,12 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 **Rust applied to platform work**
 
 - `skills/abstractions.md`
-- `skills/rust-discipline.md`
+- `skills/rust-discipline.md` (index)
+- `skills/rust/methods.md`
+- `skills/rust/errors.md`
+- `skills/rust/storage-and-wire.md`
+- `skills/rust/parsers.md`
+- `skills/rust/crate-layout.md`
 - `skills/actor-systems.md`
 - `skills/kameo.md`
 - `skills/architectural-truth-tests.md`

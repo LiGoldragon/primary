@@ -28,10 +28,9 @@ the same contract repo.
 
 The principle is `~/primary/ESSENCE.md` §"Perfect specificity at
 boundaries" applied across processes. The Rust enforcement
-sits on top of `~/primary/skills/rust-discipline.md` §"redb +
-rkyv — durable state and binary wire" — that skill defines
-the rules; this one names how the contract is *organised* in
-repos.
+sits on top of `~/primary/skills/rust/storage-and-wire.md` —
+that skill defines the rules; this one names how the contract
+is *organised* in repos.
 
 The canonical workspace example is **signal**
 (`~/primary/repos/signal`) — the wire-protocol crate of the
@@ -596,7 +595,7 @@ bag of utilities — it is the spoken protocol.
 
 - `~/primary/ESSENCE.md` §"Perfect specificity at boundaries"
   — the principle the contract repo encodes.
-- `~/primary/skills/rust-discipline.md` §"redb + rkyv" — the
+- `~/primary/skills/rust/storage-and-wire.md` — the
   Rust-specific rules for the binary contract; this skill
   organises those types into repos.
 - `~/primary/skills/micro-components.md` — every component is

@@ -362,7 +362,7 @@ This pairs with:
   discipline" — the architectural-truth pattern for wire
   contracts (text + typed + round-trip = three layers of
   witness).
-- `skills/rust-discipline.md` §"Tests live in separate
+- `skills/rust/crate-layout.md` §"Tests live in separate
   files" — where the tests go.
 - `skills/push-not-pull.md` — the `tokio-test`-clock-pause
   pattern for proving no-polling.
@@ -377,8 +377,8 @@ This pairs with:
 - `~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
   §2.5 — retired report lineage and router/delivery lessons
   preserved from the pre-today cleanup.
-- `~/primary/skills/rust-discipline.md` §"Actors" — fake
-  actor handles + sync-façade-on-State pattern.
+- `~/primary/skills/rust-discipline.md` §"Actors: logical
+  units with kameo" — Rust-side actor enforcement summary.
 - `~/primary/skills/actor-systems.md` — actor-density,
   blocking-handler, topology, and trace rules.
 - `~/primary/repos/lore/rust/testing.md` — `CARGO_BIN_EXE_*`

@@ -897,7 +897,7 @@ Live reference: `chroma::StateStore` (`src/state.rs:61`).
 The actor runs on its own OS thread, off the Tokio worker pool
 entirely. One mailbox, one writer, one thread — cleaner than per-call
 detach for high-frequency stores. Pair with a typed schema and the
-sema-family pattern from `rust-discipline.md` §"sema-family pattern".
+sema-family pattern from `skills/rust/storage-and-wire.md` §"The sema-family pattern".
 
 ### Template 3 — `tokio::process` + bounded `timeout` + `kill_on_drop`
 

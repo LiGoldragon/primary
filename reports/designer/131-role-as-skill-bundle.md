@@ -82,7 +82,7 @@ role-specific discipline.
 
 | Role | Adds | Skips |
 |---|---|---|
-| `designer` | every other workspace skill (the role's authority IS breadth) | nothing |
+| `designer` | every other workspace skill (the role's authority IS breadth) | `prose`, `library` |
 | `operator` | programming discipline; cross-role designer contract | `prose`, `library` |
 | `system-specialist` | platform discipline + Rust as applied to host tools | `prose`, `library` |
 | `poet` | `prose`, `library` | programming discipline |

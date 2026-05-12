@@ -325,7 +325,7 @@ This rule pairs with two others that push the same direction:
   u64)`), callers can construct unchecked values and read raw
   bytes back out, defeating every reason to wrap. Same
   discipline: the type owns its representation. (Rust enforcement
-  in this workspace's `skills/rust-discipline.md` §"Domain values
+  in this workspace's `skills/rust/methods.md` §"Domain values
   are types".)
 
 - **Perfect specificity.** Every typed boundary in the system

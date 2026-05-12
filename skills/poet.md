@@ -89,11 +89,7 @@ the roles that own it.
 
 - `skills/prose.md`
 - `skills/library.md`
-
-The poet does **not** read programming-discipline skills as
-part of this list. The poet's surface and the operator's
-barely overlap; reach for a programming skill only when the
-work truly needs it.
+- `skills/mermaid.md`
 
 ---
 

@@ -131,14 +131,18 @@ the cross-cutting authority real.
 - `skills/language-design.md`
 - `skills/micro-components.md`
 - `skills/push-not-pull.md`
-- `skills/rust-discipline.md`
+- `skills/rust-discipline.md` (index)
+- `skills/rust/methods.md`
+- `skills/rust/errors.md`
+- `skills/rust/storage-and-wire.md`
+- `skills/rust/parsers.md`
+- `skills/rust/crate-layout.md`
 - `skills/testing.md`
 
-**Cross-cutting and specialty**
+**Cross-cutting**
 
+- `skills/mermaid.md`
 - `skills/nix-discipline.md`
-- `skills/prose.md`
-- `skills/library.md`
 
 When the user says *"acquire your skills"* and the role is
 designer, this is the list.
@@ -151,13 +155,17 @@ The designer is the workspace's most universal role: they hold
 the cross-cutting model that lets a specification carry weight.
 The discipline has two faces.
 
-**Universal competence.** The designer reads every skill, every
-active-repo `ARCHITECTURE.md`, every load-bearing report —
-operator's Rust craft, system-specialist's Nix and cluster
-topology, poet's prose conventions. Without that breadth, the
-designer cannot specify a typed contract operator can implement,
-frame a host-tool change for system-specialist, or refine ESSENCE
-prose without invading poet's lane.
+**Universal competence.** The designer reads workspace skills
+broadly — operator's Rust craft, system-specialist's Nix and
+cluster topology, the design and contract disciplines — every
+active-repo `ARCHITECTURE.md`, every load-bearing report. That
+breadth is what makes a designer specification carry weight:
+without it, the designer cannot specify a typed contract
+operator can implement or frame a host-tool change for
+system-specialist. Prose-craft work — refining wording in
+ESSENCE or skills past simple consistency edits — defers to
+poet; surface the structural concern as a designer report and
+let poet refine.
 
 **Preserved capacity.** The designer does not implement what they
 understand. The role exists because *somebody* must hold the

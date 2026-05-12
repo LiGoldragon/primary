@@ -47,7 +47,7 @@ The operator's natural primary scope:
 - **Tests** — every `tests/*.rs` file inside operator's
   crates, plus inline `#[cfg(test)]` modules where tests
   haven't been split out yet (per
-  `skills/rust-discipline.md` §"Tests live in separate
+  `skills/rust/crate-layout.md` §"Tests live in separate
   files", split when the file grows).
 - **`Cargo.toml` / `Cargo.lock`** — cross-crate
   dependencies, version bumps, branch/rev pins. Coordinated
@@ -129,12 +129,13 @@ research-library skills stay with the roles that own them.
 - `skills/micro-components.md`
 - `skills/nix-discipline.md`
 - `skills/push-not-pull.md`
-- `skills/rust-discipline.md`
+- `skills/rust-discipline.md` (index)
+- `skills/rust/methods.md`
+- `skills/rust/errors.md`
+- `skills/rust/storage-and-wire.md`
+- `skills/rust/parsers.md`
+- `skills/rust/crate-layout.md`
 - `skills/testing.md`
-
-The operator does **not** read `prose.md` or `library.md` as
-part of this list. Those belong to the poet's lane; reach for
-them only when the work truly needs the prose-craft surface.
 
 ---
 
@@ -172,12 +173,15 @@ instinct.
 
 ### Rust craft
 
-- **`skills/rust-discipline.md`** — the canonical Rust
-  enforcement. Methods on types, no ZST method holders,
-  domain newtypes, one-object-in/one-object-out, errors
-  as typed enums. The redb + rkyv discipline lives here.
-  **Read this end-to-end before any non-trivial Rust
-  edit.**
+- **`skills/rust-discipline.md`** (index) and the five
+  sub-files under `skills/rust/` — the canonical Rust
+  enforcement: methods on types, no ZST method holders,
+  domain newtypes, one-object-in/one-object-out
+  (`rust/methods.md`); typed errors (`rust/errors.md`);
+  redb + rkyv (`rust/storage-and-wire.md`); no hand-rolled
+  parsers (`rust/parsers.md`); CLIs as daemon clients,
+  crate organization, tests, layout (`rust/crate-layout.md`).
+  **Read these end-to-end before any non-trivial Rust edit.**
 - **`skills/actor-systems.md`** — actor-dense runtime
   discipline. Every non-trivial logical plane in a
   long-lived component gets a data-bearing actor, typed
@@ -407,18 +411,18 @@ designer on design choices.
 ## When the implementation feels off
 
 The diagnostic catalogue from `skills/beauty.md` and
-`skills/rust-discipline.md`, applied at implementation
+the `skills/rust/` discipline, applied at implementation
 time:
 
 - **A free function that should be a method.** Find the
   noun. Per `skills/abstractions.md`.
 - **A ZST struct with inherent methods doing real work.**
   Find the noun that owns the data the methods touch. Per
-  `skills/rust-discipline.md` §"No ZST method holders".
+  `skills/rust/methods.md` §"No ZST method holders".
 - **`anyhow::Result` or `eyre::Result` at a public
   boundary.** Define the crate's typed `Error` enum. Per
-  `skills/rust-discipline.md` §"Errors: typed enum per
-  crate via thiserror".
+  `skills/rust/errors.md` §"Typed enum per crate via
+  thiserror".
 - **A type named `*Details`, `*Info`, `*Extra`, `*Meta`,
   `*Full`, `*Extended`, `*Raw`, `*Parsed`** alongside its
   base type. The base was designed too thin. Widen it.
@@ -426,13 +430,13 @@ time:
   a label. Make the field private; expose what callers
   need via methods.
 - **A function that takes 5+ primitive arguments.** Define
-  a struct. Per `skills/rust-discipline.md` §"One object
-  in, one object out".
+  a struct. Per `skills/rust/methods.md` §"One object in,
+  one object out".
 - **`match s.as_str()` over cases that should be a closed
   enum.** Use the enum.
 - **Tests inside `#[cfg(test)] mod tests` at the bottom
   of the source file.** Move to `tests/<name>.rs` per
-  `skills/rust-discipline.md` §"Tests live in separate
+  `skills/rust/crate-layout.md` §"Tests live in separate
   files".
 - **A polling loop.** Per `skills/push-not-pull.md` —
   find the producer's subscription primitive or escalate.

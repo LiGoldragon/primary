@@ -89,7 +89,12 @@ operator's. The assistant does the same work as its main role.
 - `skills/micro-components.md`
 - `skills/nix-discipline.md`
 - `skills/push-not-pull.md`
-- `skills/rust-discipline.md`
+- `skills/rust-discipline.md` (index)
+- `skills/rust/methods.md`
+- `skills/rust/errors.md`
+- `skills/rust/storage-and-wire.md`
+- `skills/rust/parsers.md`
+- `skills/rust/crate-layout.md`
 - `skills/testing.md`
 
 **Active beads**

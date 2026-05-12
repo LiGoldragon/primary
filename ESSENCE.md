@@ -370,7 +370,7 @@ where bugs and spoofing live.
 The companion at the Rust level — concrete anti-patterns
 (`format!("m-{}-...")`, sender field on a record, commit
 time as a record field) and the type-system fixes — is in
-this workspace's `skills/rust-discipline.md` §"Don't hide
+this workspace's `skills/rust/methods.md` §"Don't hide
 typification in strings."
 
 ---
