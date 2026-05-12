@@ -294,17 +294,26 @@ In `persona/src/schema.rs`:
 
 Estimated deletion: ~120 lines.
 
-### Phase 3 — Refactor other contract crates incrementally
+### Phase 3 — Concurrent migration of every other contract crate
 
-The same move applies to:
-- `signal-persona-auth`'s enums (when the next pass touches them).
-- `signal-persona-message`, `signal-persona-mind`, etc. (as those
-  crates land contract additions).
+The user's answer to "current-pass or opportunistic?" is **immediate
+workspace-wide** (per §7 below). Concurrent with Phases 1-2 above, the
+same `NotaEnum` / `NotaRecord` / `NotaTransparent` derive additions
+land in every remaining contract crate:
 
-This is *opportunistic*, not blocking. Each contract crate gains
-`NotaEnum`/`NotaRecord` on its types as part of the next pass that
-touches it. The policy is "new contract types derive NOTA from the
-start; existing types upgrade on next-touch."
+- `signal-persona-auth` — `EngineId` and any other typed records.
+- `signal-persona-message` — message ingress contract types.
+- `signal-persona-mind` — mind contract types.
+- `signal-persona-system` — system observation contract types.
+- `signal-persona-harness` — harness delivery contract types.
+- Any other `signal-*` / contract crate in the workspace's `repos/`
+  index. `signal-core` already does this (§1); `nota-*` crates own
+  NOTA derives by definition.
+
+The migration is partitionable by crate, so it parallelizes if
+multiple operator/operator-assistant lanes are available. Each crate's
+work is bounded: add the (already-transitive) `nota-codec` dep as an
+explicit dep, add the derives, run `cargo test`, commit.
 
 ---
 
@@ -380,24 +389,46 @@ is straightforward: do `/138` Phase 1 first.
 
 ---
 
-## 7 — One thing this report doesn't settle
+## 7 — Scope of application: immediate, workspace-wide
 
-The user's stated intent generalizes: *centralization is the design
-value*. That value applies to every wire/text mirror in the workspace,
-not just `signal-persona`. Two questions follow:
+The user's stated answer (recorded verbatim, this thread, 2026-05-12):
 
-1. Should every existing wire-only contract crate (`signal-persona-auth`
-   today, others as they exist) get `NotaEnum` derives in the
-   *current* pass, or wait for opportunistic next-touch?
-2. Should the eventually-self-hosting stack (`persona/ARCHITECTURE.md`
-   §0.5) inherit this policy directly — wire and text always
-   centralized on the same type — or is that a future re-decision?
+> when I change policy I want it applied immediately everywhere
 
-Both are deferrable. `/138` recommends current-pass for `signal-persona`
-(scope matched to the work `/137` and `/135` are doing) and
-opportunistic for the rest. The eventually-self-hosting stack
-inherits the *current* policy; that future re-decision is far enough
-away that it can be made when the substrate work begins.
+So the policy shift is **not** opportunistic. Every contract crate
+gets `NotaEnum` / `NotaRecord` / `NotaTransparent` derives on its
+typed records in a single coordinated pass, not as each crate
+happens to get touched for unrelated work.
+
+The concrete scope, in priority order (matched to the current
+`persona`-anchored work plus the contract crates that adjoin it):
+
+1. `signal-persona` — five unit-variant enums + the payload-bearing
+   structs (`ComponentStatus`, `EngineStatus`, queries, supervisor
+   actions). Blocks `/137` Pattern B.
+2. `signal-persona-auth` — `EngineId` and any other typed records.
+3. `signal-persona-message` — message ingress contract types.
+4. `signal-persona-mind` — mind contract types.
+5. `signal-persona-system` — system observation contract types.
+6. `signal-persona-harness` — harness delivery contract types.
+7. Any other `signal-*` contract crate not yet listed (the workspace's
+   `repos/` index is the authoritative set).
+
+`signal-core` already does this (per §1); no change needed. The
+`nota-*` crates already own NOTA derives by definition; no change
+needed.
+
+The eventually-self-hosting stack (`persona/ARCHITECTURE.md` §0.5)
+inherits the *current* policy — centralized — from the start. That
+future stack should never re-introduce the wire/text split.
+
+An operator running this pass treats each contract crate as one
+unit: add the dependency (where not already transitive-only), add the
+derives, run `cargo test` per crate, commit. Cross-crate side effects
+(deleting schema-side mirrors in `persona`) land after all contract-side
+derives are in place. The migration is partitionable by crate, so it
+parallelizes naturally if multiple operator/operator-assistant lanes
+are available.
 
 ---
 
@@ -411,11 +442,15 @@ centralize, gain debuggability — is right; the skill's current text
 describes a discipline the workspace doesn't actually follow.
 
 No structural blocker. The migration is ~120 lines deleted in
-`persona/schema.rs` plus ~10-15 lines of derives added across
-`signal-persona`. Combined with `/137` (Pattern B) and `/135` (strum),
-the three reports remove ~264 lines of duplication and unlock
+`persona/schema.rs` plus ~10-15 lines of derives added per contract
+crate (across `signal-persona`, `signal-persona-auth`,
+`signal-persona-message`, `signal-persona-mind`,
+`signal-persona-system`, `signal-persona-harness`, and any further
+`signal-*` crate in the workspace's `repos/` index). Combined with
+`/137` (Pattern B) and `/135` (strum), the three reports remove
+~264 lines of duplication in `persona` alone and unlock
 NOTA-encodable contract messages for tests, logs, and debugging
-across the entire `signal-persona` consumer set.
+across every `signal-*` consumer set in the workspace.
 
 The `contract-repo.md` skill needs a parallel update naming the
 policy correctly: contract crates own typed records and *both* their

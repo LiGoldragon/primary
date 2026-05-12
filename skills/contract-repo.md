@@ -51,15 +51,20 @@ consequences make a shared crate the right home:
   trip even if the field lists look identical. The contract
   crate is the single definition.
 - **Derive sharing.** Wire-format derives (rkyv's
-  `Archive`/`Serialize`/`Deserialize`, `bytecheck`) and any
-  project-specific derives all live with the type.
+  `Archive`/`Serialize`/`Deserialize`, `bytecheck`), text-
+  format derives (`NotaEnum` / `NotaRecord` / `NotaTransparent`
+  from `nota-codec`), and any project-specific derives all
+  live with the type. The contract crate owns both the wire
+  shape and the text shape on the same types; consumers do
+  not carry shadow types that re-derive across layers.
   Re-deriving in each consumer is dead code at best, drift
   at worst.
-- **Front-end stability.** When a layered effect crate adds
+- **Layered stability.** When a layered effect crate adds
   per-verb payloads (e.g. signal-forge over signal), front-end
   clients that depend only on the base contract don't recompile
-  on layered-crate churn. Audience-scoped compile-time
-  isolation.
+  on layered-crate churn. The isolation is at the *layered*
+  effect-crate boundary, not at the wire/text-derive boundary
+  on the base contract itself.
 
 A workspace pattern that doesn't follow this:
 - types defined in component A, copy-pasted into component B,
@@ -105,7 +110,13 @@ The contract crate **owns**:
   generic record wrapper, no `Unknown` variant).
 - The version-skew guard's known-slot record (schema +
   wire-format version).
-- A complete round-trip test per record kind.
+- A complete round-trip test per record kind (rkyv frame
+  round-trip *and* NOTA text round-trip, both witnessed in
+  `tests/`).
+- `NotaEnum` / `NotaRecord` / `NotaTransparent` derives on
+  the typed records, so contract values are NOTA-encodable
+  directly. The same type IS the wire record AND IS the text
+  record; consumers consume it once.
 - Reserved record heads stay reserved workspace-wide. No
   domain type defines a record kind named `Bind` or
   `Wildcard`; those heads belong to
@@ -118,8 +129,14 @@ It **does not own**:
   reducer state, its supervisor tree are private.
 - Logic that interprets the records. Validation pipelines,
   routing rules, gate decisions stay in the daemons.
-- NOTA projection policy. Human-facing projections use NOTA;
-  the contract crate's wire is binary.
+- NOTA projection *policy* and *surfaces*. The contract owns
+  text codec on its types (per "What it owns" above) — every
+  contract value is NOTA-encodable directly. The contract does
+  not own *where* NOTA renders (which CLI prints it, which
+  daemon endpoint accepts it, which audit format wraps it) or
+  the composition of Nexus wrapper records for a particular
+  human-facing form. Projection policy lives in the boundary
+  component.
 - Configuration. `Cargo.toml`, `flake.nix`, deployment.
 - `serde`. Contract types may *also* derive serde for debug
   rendering, but the contract is rkyv-on-the-wire.
@@ -316,32 +333,40 @@ NOTA is the project's only text syntax. Nexus is a NOTA-using
 request/message surface, not a second syntax. In practice,
 request/message text usually means Nexus records written in NOTA
 syntax; configs and convenience CLIs may use direct NOTA records.
-NOTA is **not the inter-component wire**. The contract crate carries
-rkyv types; NOTA appears only at boundaries that touch a human or a
-text projection:
+
+The contract crate owns both the wire form (rkyv) and the text
+form (NOTA) of its typed records — the same type IS the wire
+record AND IS the text record. Consumers do not carry shadow
+types that re-derive text projection. Round-trip witnesses for
+both forms live in the contract crate's `tests/`.
+
+NOTA is **not the inter-component wire**. Component-to-component
+traffic uses rkyv frames, not NOTA text. NOTA *renders* at
+surfaces that touch a human or a log:
 
 | Boundary | Format |
 |---|---|
 | Component ↔ component (Rust ↔ Rust) | contract-crate types via rkyv frames |
 | CLI ↔ daemon | NOTA on argv/stdin (human types it), often through a convenience CLI that constructs the Nexus wrapper; daemon parses to typed contract record |
 | Daemon ↔ harness terminal | Pre-harness component projects typed record to NOTA before write |
-| Audit logs / debug dumps | NOTA projection |
+| Audit logs / debug dumps | NOTA projection of typed records |
 
-The CLI, the router, and the pre-harness component are the
-*only* parts of the system that touch NOTA. Everywhere else, a
-component holds typed records (in memory) or rkyv archives (on
-disk and on the wire). This is what `~/primary/skills/rust-
-discipline.md` §"NOTA — the human-facing projection" already
-states; the contract repo is how that discipline gets enforced
-at the repo level.
+The CLI, the router, and the pre-harness component are the parts
+of the system that *render* NOTA text on a surface. They use the
+contract crate's NOTA derives to produce the text; they do not
+re-derive text projection of their own. Everywhere else, components
+hold typed records (in memory) or rkyv archives (on disk and on
+the wire).
 
-If a contract repo's architecture says it owns `text -> typed ->
-frame`, narrow it. The contract owns the typed frame round-trip:
-typed request/reply/event records plus rkyv frame encoding. The
-human-facing NOTA projection belongs in the boundary component that
-accepts or prints text, such as a CLI, daemon endpoint, router edge,
-or pre-harness writer. Put NOTA text witnesses in that boundary
-component, not in the contract crate.
+If a contract repo's architecture says it owns the *human-facing
+surface* — argv parsing, audit-log formatting, terminal-prompt
+composition — narrow it. The contract owns the *codec* on its
+types (wire AND text); the boundary component owns the *surface*
+(which CLI prints, which daemon endpoint accepts, which audit
+format wraps). The codec is the contract's; the surface is the
+boundary's. Put the codec round-trip witnesses in the contract
+crate (both rkyv and NOTA); put the surface witnesses in the
+boundary component.
 
 ---
 
