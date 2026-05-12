@@ -358,58 +358,31 @@ non-actor owner around actor refs.
 
 ## Rust shape
 
-The workspace runtime default is **`kameo` 0.20**. The actor type IS
-the data-bearing noun — Kameo collapses the framework's behavior
-marker and the actor's mutable state into a single struct. The
+The workspace runtime default is **`kameo` 0.20**. Kameo's native
+shape — `Self IS the actor`, `type Args = Self`, per-kind
+`Message<T>` impls, declarative supervision — makes every
+architectural rule in this skill naturally expressible. The
 no-public-ZST-actor rule is naturally satisfied because the type
 that carries the actor's data IS the actor.
 
-Kameo native shape:
+For the framework usage (lifecycle hooks, spawning, mailbox,
+supervision API, blocking-plane templates, naming, public consumer
+surface), see `skills/kameo.md`. The architectural rules above —
+one actor per plane, no shared locks, supervision is part of the
+design, no blocking handlers, no public ZST actor nouns, manifest-
+declared actors must have concrete `impl Actor` — are what this
+skill owns; how to express them in Kameo lives in `skills/kameo.md`.
 
-- the actor type carries fields (`pub struct ClaimNormalizer { in_flight: …, metrics: … }`);
-- `type Args = Self` is the documented common case; the spawner
-  passes a fully-built actor value to `on_start` which returns it;
-- `type Error = kameo::error::Infallible` (or a typed crate Error)
-  on the `Actor` impl;
-- domain methods live on the actor type directly (`impl ClaimNormalizer { fn validate_and_collapse(&mut self, …) }`), not on a ZST namespace;
-- per-kind `impl Message<Verb> for ClaimNormalizer` for each accepted
-  message — no monolithic `Msg` enum;
-- the public consumer surface is `ActorRef<ClaimNormalizer>` when
-  the actor's message vocabulary is the API; use a domain wrapper
-  only when it earns its place under `skills/kameo.md`
-  §"Public consumer surface — ActorRef<A> or domain wrapper";
-- supervision is declarative: `ClaimNormalizer::supervise(&parent, args).restart_policy(...).restart_limit(n, dur).spawn().await`.
+Two Kameo-specific guardrails worth surfacing here because they
+shape what an actor-dense Rust system *cannot* do:
 
-For actor-dense systems:
-
-- one actor per file when the actor is durable enough to name;
-  co-locate the `Actor` impl, the `Message<T>` impls for that actor,
-  and the message/reply types in one file;
-- one `impl Message<Verb> for Actor` per verb — no monolithic
-  message enum;
-- no "handle anything" `on_message` override inside a component;
-- no non-actor runtime/root/manager wrappers around `ActorRef<_>`
-  values;
-- no raw `Spawn::spawn` outside the runtime root actor; child spawns
-  go through `supervise(&parent, args).spawn().await`;
-- no `Arc<Mutex<T>>` between actors;
-- no long `await` inside a handler unless this actor owns that wait;
-- no blocking call inside a handler except in a dedicated blocking
-  plane actor — and that actor uses `DelegatedReply<R>` so the
-  mailbox stays responsive;
-- no public ZST actor nouns (Kameo permits them, the workspace
-  doesn't — actor types must carry data fields);
-- no manifest-declared actor without a concrete `impl Actor`;
-- never `tell` a handler whose `Reply = Result<_, _>` unless `on_panic`
-  is overridden to recover from `PanicReason::OnMessage` — a
-  `Result::Err` from a `tell`'d handler crashes the actor by default
-  (see `skills/kameo.md` §"The tell-of-fallible-handler trap").
-
-The default actor public surface is `ActorRef<MyActor>`. Consumers
-spawn the actor (or are handed an `ActorRef`) and call `ask` /
-`tell` directly. A domain wrapper is allowed only when it adds the
-domain content named in `skills/kameo.md`; it must not become a
-second actor runtime abstraction.
+- **No non-actor runtime/root/manager wrappers around `ActorRef<_>`
+  values.** A struct that holds several actor refs and exposes
+  convenience methods is a hidden non-actor owner; the root must
+  itself be an actor.
+- **Never `tell` a handler whose `Reply = Result<_, _>` unless
+  `on_panic` is overridden** to recover from `PanicReason::OnMessage`
+  — see `skills/kameo.md` §"The tell-of-fallible-handler trap".
 
 ---
 

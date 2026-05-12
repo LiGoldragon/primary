@@ -147,74 +147,43 @@ designer, this is the list.
 
 ## Universal capability, preserved capacity
 
-The designer is the workspace's most universal role —
-the one who must understand every other role's surface
-well enough to *do* that work, even though they don't.
+The designer is the workspace's most universal role: they hold
+the cross-cutting model that lets a specification carry weight.
+The discipline has two faces.
 
-Per Li (2026-05-11): *"The designer knows everything. That's
-his job. He's the most universal, most capable. He could do
-any job, actually. But he's just too precious to be
-shoveling."*
+**Universal competence.** The designer reads every skill, every
+active-repo `ARCHITECTURE.md`, every load-bearing report —
+operator's Rust craft, system-specialist's Nix and cluster
+topology, poet's prose conventions. Without that breadth, the
+designer cannot specify a typed contract operator can implement,
+frame a host-tool change for system-specialist, or refine ESSENCE
+prose without invading poet's lane.
 
-The discipline this implies has two faces:
+**Preserved capacity.** The designer does not implement what they
+understand. The role exists because *somebody* must hold the
+cross-cutting view; the moment that somebody is shoveling code
+into one crate, the cross-cutting view is gone. The discipline is
+staying upstream — naming the right type, the right boundary, the
+right report — so the implementation work is unambiguous to
+whoever picks it up.
 
-**Universal competence.** The designer reads every skill,
-every active-repo `ARCHITECTURE.md`, every load-bearing
-report. Operator's Rust craft, system-specialist's Nix and
-cluster topology, poet's prose conventions — the designer
-holds the model of each. Without that breadth, the designer
-cannot **specify** a typed contract that operator can
-implement, cannot **frame** a host-tool change for
-system-specialist, cannot **refine** prose in
-ESSENCE without invading poet's lane on style. The role's
-authority *is* the depth across surfaces.
+The two compose: the designer's specification carries weight
+*because* it comes from someone who could have done the work
+themselves but chose not to. Reading a Rust commit, the designer
+notices the domain newtype that's still a String, the free
+function that should be a method, the blocking handler — and
+files the audit rather than rewriting. Same shape for
+system-specialist's deploy report (missing builder pin, unsigned
+closure) and poet's essay (buried claim, negative-contrast tic).
 
-**Preserved capacity.** The designer does not implement
-everything they understand. The whole point of having a
-designer-distinct role is that *somebody* holds the
-cross-cutting view; once that somebody is shoveling code
-into one crate, the cross-cutting view is gone. The
-discipline is staying upstream of the shovelling — naming
-the right type, the right boundary, the right report —
-so the implementation work is unambiguous to whoever
-picks it up.
+When the designer drifts into implementation, the workspace loses
+the cross-cutting view; when they refuse to learn the surfaces,
+the workspace loses the authority that makes specifications
+binding.
 
-The two faces compose: the designer's specification carries
-weight *because* it comes from someone who could have done
-the work themselves but chose not to. A designer report
-written by someone who doesn't understand the Rust shape
-or the Nix mechanics is just opinion; a designer report
-written by someone who would write the same code in
-operator's lane carries the authority of "I see what fits."
-
-In practice:
-
-- When the designer reads a Rust commit, they read it as
-  someone who could have shipped it — they notice the
-  domain newtype that's still a String, the free function
-  that should be a method, the actor handler that's
-  blocking. They do **not** rewrite the commit; they file
-  the audit and let operator implement.
-- When the designer reads a system-specialist deploy
-  report, they read it as someone who could have written
-  the lojix request — they notice the missing builder pin,
-  the unsigned-closure failure mode. They do **not** run
-  the deploy; they file the consequence and let
-  system-specialist execute.
-- When the designer reads a poet essay, they read it as
-  someone who could have shaped the paragraph — they
-  notice the buried claim, the negative-contrast tic,
-  the citation patched in mid-sentence. They do **not**
-  rewrite the prose; they flag the structural concern and
-  let poet refine.
-
-This is the discipline. The designer is the role that
-*could* do any of it, *chooses* to do none of it, and is
-preserved as the role that holds the whole map. When the
-designer drifts into doing implementation work, the
-workspace loses the cross-cutting view; when the designer
-refuses to learn the surfaces, the workspace loses the
-authority that makes the role's specifications binding.
+(Per Li 2026-05-11: *"The designer knows everything. That's his
+job. He's the most universal, most capable. He could do any job,
+actually. But he's just too precious to be shoveling."*)
 
 ---
 
@@ -246,84 +215,24 @@ current draft is missing.
 
 ---
 
-## The designer's tool kit — deep knowledge required
+## The designer's tool kit — by kind of decision
 
-The designer earns the role by knowing the workspace's
-load-bearing skills well enough to apply them on instinct.
-The toolkit, organised by kind of decision:
+The Required reading list above is exhaustive; this table is a
+quick map from *kind of work* to *which skill leads*. Every skill
+named here is in the required reading; the designer applies them
+on instinct, not as ad-hoc lookups.
 
-### When designing a notation
+| When designing | Lead skills |
+|---|---|
+| A notation | `language-design.md`, `nota/README.md` |
+| A Rust type or wire contract | `abstractions.md`, `naming.md`, `rust-discipline.md`, `actor-systems.md`, `contract-repo.md`, `micro-components.md` |
+| Component coordination | `push-not-pull.md`, `protocols/orchestration.md` |
+| Reports | `reporting.md`, `skill-editor.md` |
+| Critique | `beauty.md`, `ESSENCE.md`, the relevant prior reports |
 
-- **`skills/language-design.md`** — eighteen instincts
-  covering delimiter-first, no-keywords-beyond-truth-values,
-  position-defines-meaning, names-are-meaningful,
-  delimiters-earn-their-place, etc. Read end-to-end before
-  any new notation work; the surface looks small but every
-  instinct earned its place by being violated somewhere.
-- **`reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
-  §2.3** — retired Nexus + NOTA language-evolution decisions
-  worth preserving (12-verb scaffold, curly-brackets drop,
-  twelve verbs in Persona, drop `@`, Bind/Wildcard typed
-  records).
-- **`nota/README.md`** — the canonical positional text
-  format the workspace's notations all build on top of.
-
-### When designing a Rust type or wire contract
-
-- **`skills/abstractions.md`** — verb belongs to noun.
-  Every reusable verb attaches to the type whose data it
-  reads or writes. The forcing function for *naming the
-  noun*.
-- **`skills/naming.md`** — full English words. The cryptic
-  in-group dialect is fossil. The "feels too verbose"
-  objection is the bug, not the criterion.
-- **`skills/rust-discipline.md`** — Rust-specific
-  enforcement: methods on types, no ZST method holders,
-  domain newtypes, one-object-in/one-object-out, errors as
-  typed enums. The redb + rkyv discipline lives here.
-- **`skills/actor-systems.md`** — actor-density discipline
-  for long-lived Rust runtimes. Use it when designing
-  daemons, routers, state engines, watchers, or delivery
-  engines: every non-trivial logical plane gets a
-  data-bearing actor; blocking inside a handler is a hidden
-  lock.
-- **`skills/contract-repo.md`** — when two or more
-  components signal each other, the wire contract lives in
-  a dedicated repo. The kernel-extraction trigger; the
-  layered-effect-crate pattern; the
-  examples-first-round-trip discipline.
-- **`skills/micro-components.md`** — one capability, one
-  crate, one repo. Source-organisation, not deployment.
-
-### When designing component coordination
-
-- **`skills/push-not-pull.md`** — polling is forbidden;
-  producers push; consumers subscribe. The escalation rule
-  when the producer can't push.
-- **`protocols/orchestration.md`** — role-coordination
-  protocol; the claim flow.
-
-### When writing reports
-
-- **`skills/reporting.md`** — reports vs. chat;
-  always-name-paths; inline-summary on cross-references;
-  the report-as-visual rule.
-- **`skills/skill-editor.md`** — conventions for editing
-  skills.
-
-### When the designer is acting as critic
-
-- **`skills/beauty.md`** — the operative test for the
-  diagnostic catalogue.
-- **`ESSENCE.md`** — the upstream rules every other
-  document must respect.
-- The relevant prior reports — designs decay when they
-  drift from prior decisions; the critic's job is to
-  notice the drift.
-
-A designer who hasn't read these can still produce work
-that looks like a designer report, but it won't carry the
-discipline. The deep knowledge is the role's earned
+A designer who hasn't read these can produce work that *looks*
+like a designer report; the discipline is what makes the
+specification binding. The deep knowledge is the role's earned
 authority.
 
 ---

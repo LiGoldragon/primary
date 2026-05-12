@@ -90,37 +90,11 @@ A small private helper inside one module is fine if it is
 genuinely local (`fn hex(h: &Hash) -> String` next to a single
 `Display` impl). Anything that smells reusable becomes a method.
 
-For the cross-language version of this rule (the same idea
-language-neutrally, plus the LLM-codegen reasoning and the
-principled exceptions), see this workspace's
-`skills/abstractions.md`. This section is the Rust enforcement.
-
-**The deeper consequence**: free functions let the agent skip
-creating the type that should own the behavior. If you're tempted
-to write
-
-```rust
-// Wrong
-pub fn parse_query(text: &str) -> Result<QueryOp, Error> { … }
-```
-
-the rule forces you to ask: *what type owns query parsing?* The
-answer is `QueryParser`, and the rule's pressure makes that type
-exist:
-
-```rust
-// Right
-pub struct QueryParser<'input> { lexer: Lexer<'input> }
-
-impl<'input> QueryParser<'input> {
-    pub fn new(input: &'input str) -> Self { … }
-    pub fn into_query(self) -> Result<QueryOp, Error> { … }
-}
-```
-
-The rule of thumb: **every reusable verb belongs to a noun**. If
-you can't name the noun, you haven't found the right model yet —
-keep looking until you can.
+For the cross-language rule — the forcing-function reasoning,
+the Karlton bridge, the wrong-noun trap, and the principled
+exceptions (local helper, relational operation, standard-library
+convention) — see `skills/abstractions.md`. This section is the
+Rust enforcement.
 
 ---
 
@@ -128,19 +102,10 @@ keep looking until you can.
 
 A `pub struct Foo;` whose `impl Foo` is just a parking lot for
 functions that do real work on data they don't carry is a free
-function in namespace clothing. The ZST is a label, nothing more —
-the type doesn't track what the work operates on, only what it's
-named after. This is the **methods-on-types** rule evaded one
-level deeper: the verb got attached to *something*, but the
-something is hollow.
-
-When you see this, don't rename `Foo`. Don't accept the smell.
-**Step back and find the noun.** A ZST-with-methods is the visible
-scar of "I had a verb but couldn't find a noun, so I created a
-fake noun to hold the verb." The right noun is a type that holds
-the data the verb reads or writes — and it may not exist yet.
-Invent it. Naming the right object is often the load-bearing
-design decision the prior thinking missed.
+function in namespace clothing — the methods-on-types rule evaded
+one level deeper. Per `skills/abstractions.md` §"The wrong-noun
+trap" and §"The forcing function": find the noun whose data the
+verb reads or writes; invent it if it doesn't exist yet.
 
 ```rust
 // Wrong — ZST as a folder for free functions
@@ -161,10 +126,10 @@ impl Cert {
 ```
 
 If parsing genuinely needs its own state (a buffered lexer,
-accumulated diagnostics, a configurable mode), then the noun is
-`CertParser` *with fields* — see the `QueryParser` example above.
-Either the work belongs on the data type, or it belongs on a
-stateful parser type. The ZST middle ground is the gap.
+accumulated diagnostics, a configurable mode), the noun is
+`CertParser` *with fields*. Either the work belongs on the data
+type, or it belongs on a stateful parser type. The ZST middle
+ground is the gap.
 
 ### Legitimate ZST uses — narrow, named
 
@@ -487,71 +452,40 @@ they name the storage operation, not a conversion.
 
 ## Naming — full English words
 
-Spell every identifier as full English words; the cryptic
-in-group dialect is fossil from 6-char FORTRAN, 80-column cards,
-and 10-cps teletypes. Cross-language version with the offender
-table and the six permitted exception classes lives in this
-workspace's `skills/naming.md`.
+The cross-language rule, the offender table, and the six
+permitted exception classes live in `skills/naming.md`. Rust
+enforcement keeps `self` as the implicit receiver (universal
+across the language; leave it) and applies the rule to everything
+else you create:
 
 ```rust
 // Wrong — cryptic in-group dialect
-fn parse(input: &str) -> Result<Token, Error> {
-    let mut lex = Lexer::new(input);
-    let tok = lex.next_tok()?;
-    let kd = tok.kind();
-    let ctx = ParseCtx::new(&kd);
-    let de = Deser::with_ctx(ctx);
-    de.deser_op(&tok)
-}
+let mut lex = Lexer::new(input);
+let tok = lex.next_tok()?;
+let kd = tok.kind();
+let ctx = ParseCtx::new(&kd);
+let de = Deser::with_ctx(ctx);
 
 // Right — every name reads as English
-fn parse(input: &str) -> Result<Token, Error> {
-    let mut lexer = Lexer::new(input);
-    let token = lexer.next_token()?;
-    let kind = token.kind();
-    let context = ParseContext::new(&kind);
-    let deserializer = Deserializer::with_context(context);
-    deserializer.deserialize_operation(&token)
-}
+let mut lexer = Lexer::new(input);
+let token = lexer.next_token()?;
+let kind = token.kind();
+let context = ParseContext::new(&kind);
+let deserializer = Deserializer::with_context(context);
 ```
-
-`self` is the implicit receiver and is universal across Rust —
-leave it. This rule is about *naming the things you create*, not
-renaming the language's primitives.
 
 ---
 
 ## No crate-name prefix on types
 
-A type's name belongs to its module context, not the
-cross-crate global namespace. The crate IS the namespace;
-repeating it in the type name is redundant ceremony.
-
-```rust
-// Wrong — crate name in the type name; redundant at every use site
-pub struct ChromaRequest { … }
-pub struct ChromaError { … }
-
-// Right — call sites read chroma::Request, chroma::Error
-pub struct Request { … }
-pub struct Error { … }
-```
-
-The standard library is the canonical reference: `Vec`,
-`HashMap`, `Arc`, `Cell`, `Mutex` — never `StdVec`,
-`StdHashMap`, `StdArc`. The Rust API Guidelines name this as
-**C-CRATE-PREFIX**: types should not include the crate name.
-
-The discriminator: a *descriptive* leading word stays
-(`VisualState` — Visual describes what kind of state);
-a *namespace* prefix goes (`ChromaRequest` — Chroma names
-the crate). Same workspace pattern: `signal::Request`,
-`signal::Reply`, `signal::Frame`, `signal::Tweaks` — never
-`SignalRequest`.
-
-For the cross-language version with the wider offender
-table, see this workspace's `skills/naming.md` §"Anti-pattern:
-prefixing type names with the crate name."
+The cross-language rule lives in `skills/naming.md`
+§"Anti-pattern: prefixing type names with the crate name". Rust
+applies it without exception — the Rust API Guidelines call this
+**C-CRATE-PREFIX**, and the standard library is the canonical
+reference (`Vec`, `HashMap`, `Arc`, `Cell`, `Mutex` — never
+`StdVec`, `StdHashMap`, `StdArc`). Workspace pattern:
+`signal::Request`, `chroma::Error`; never `SignalRequest` or
+`ChromaError`.
 
 ---
 
@@ -594,89 +528,36 @@ Callers can no longer pattern-match on what went wrong.
 
 ## Actors: logical units with kameo
 
-When a Rust component is a daemon, state engine, router,
-watcher, delivery engine, database owner, or long-lived service,
-read this workspace's `skills/actor-systems.md` (the architectural
-rule) and `skills/kameo.md` (the framework usage) before writing
-the runtime. The reason to use actors is **logical cohesion,
-coherence, and consistency** — not performance. An actor is the
-unit you reach for when you want to model a coherent plane of
-logic: it owns state, exposes a typed message protocol, and has
-a defined lifecycle. The framework is `kameo`.
+When a Rust component is a daemon, state engine, router, watcher,
+delivery engine, database owner, or long-lived service, the
+workspace's actor discipline (`skills/actor-systems.md`) and the
+Kameo framework usage (`skills/kameo.md`) carry the rules. Read
+both before writing the runtime. The reason to use actors is
+**logical cohesion**, not performance: an actor is the unit you
+reach for when you want a coherent plane of logic with owned state,
+a typed message protocol, and a defined lifecycle.
 
-- **Messages are typed per kind.** Each accepted message is a
-  separate `Message<T>` impl on the actor — not variants of one
-  enum. No untyped channels.
-- **State is owned, not shared.** The actor's data lives on the
-  actor type itself (`Self` IS the state in Kameo). `Arc<Mutex<T>>`
-  shared between actors is a smell — send a message to whoever
+Rust-side enforcement summary:
+
+- Actor type carries data fields (Kameo's `Self IS the actor`); no
+  public ZST actor nouns.
+- One `impl Message<Verb> for Actor` per verb; no monolithic `Msg`
+  enum, no untyped channels.
+- One actor per file when the actor is durable enough to name.
+- Handlers do not block. Use `DelegatedReply<R>` or a dedicated
+  blocking-plane actor; see `skills/kameo.md` §"Blocking-plane
+  templates" for the three concrete shapes.
+- Never `tell` a handler whose `Reply = Result<_, _>` unless
+  `on_panic` is overridden (see `skills/kameo.md` §"The
+  tell-of-fallible-handler trap").
+- No `Arc<Mutex<T>>` between actors — send a message to whoever
   owns the state.
-- **Supervision is declarative.** Use Kameo's `RestartPolicy`
-  (`Permanent`/`Transient`/`Never`) and `SupervisionStrategy`
-  (`OneForOne`/`OneForAll`/`RestForOne`) on the supervisor; bound
-  storms with `restart_limit(n, window)`. Failures escalate; the
-  parent decides restart vs shutdown. No detached tasks.
-- **Use actors for logical planes, even small ones.** A plane that
-  parses, routes, validates, mints identity, commits, reads,
-  shapes replies, or performs IO deserves an actor when it is part
-  of a long-lived component. Smallness is not a reason to collapse
-  the actor; the named boundary is the correctness mechanism.
-- **Handlers do not block.** An actor handler that sleeps, polls,
-  waits on a lock, runs a slow process, performs blocking IO, or
-  does long CPU work has recreated a hidden lock. Move that wait
-  into its own supervised actor or worker-pool actor and send it a
-  typed message — or use `DelegatedReply<R>` so the handler
-  returns immediately and a spawned task replies later.
-- **Actor traces are architecture witnesses.** Important request
-  paths should be testable as actor sequences: parse actor, caller
-  actor, dispatcher actor, domain actor, commit actor, view actor,
-  reply actor. If the trace can omit a required actor and tests
-  still pass, the tests are not architectural-truth tests.
-
-**Kameo native shape collapses behavior marker and state.** The
-actor type IS the data: `pub struct ClaimNormalizer { fields … }`,
-`impl Actor for ClaimNormalizer { type Args = Self; … }`, methods
-on `&mut self`. The no-public-ZST-actor rule is naturally satisfied
-because the actor type carries its own fields.
-
-**`ActorRef<A>` directly is the default public consumer surface for
-actors whose message types ARE the API.** Most workspace actors fit
-this. Consumers call `actor_ref.ask(msg).await` /
-`actor_ref.tell(msg).await` directly; the type system rejects wrong
-messages at the call site.
-
-A **domain wrapper** is appropriate when the public API is a domain
-abstraction over one or more actors. Both name shapes are fine:
-
-- **Bare domain noun** (`Mind`, `Router`) when the wrapper IS the
-  conceptual surface;
-- **`*Handle` suffix** (`LedgerHandle`, `MindHandle`) when the bare
-  noun would shadow a sibling data type and disambiguation matters.
-  `Handle` is relationship-naming (the value IS a held authority on
-  the live actor — same shape as Tokio `JoinHandle`), not the
-  framework-category tagging that `*Actor` / `*Message` are.
-
-A wrapper earns its place when at least one of: lifecycle ownership,
-topology insulation, fallible-`tell` prevention, capability narrowing,
-domain error vocabulary, domain-verb methods over Message
-construction, or library publication. See `skills/kameo.md`
-§"Public consumer surface — ActorRef<A> or domain wrapper" for the
-seven criteria and worked examples.
-
-Bare wrappers that just delegate method-by-method to `ActorRef`
-without adding domain content are still the speculative-abstraction
-shape operator/103 retired — drop them.
-
-**Never `tell` a fallible handler unless `on_panic` is overridden.**
-A handler whose `Reply = Result<_, _>` returning `Err(_)` to a
-`tell` becomes `ActorStopReason::Panicked(PanicError { reason: PanicReason::OnMessage })`.
-The default `on_panic` stops the actor. `ask` instead, or override
-`on_panic` to recover from `PanicReason::OnMessage`. See
-`skills/kameo.md` §"The tell-of-fallible-handler trap".
-
-For the *how today*, read this workspace's `skills/kameo.md`. For
-testing patterns, see lore's `rust/testing.md` and the worked
-examples at `/git/github.com/LiGoldragon/kameo-testing`.
+- Errors at component boundaries are the crate's typed `Error`
+  enum (per §"Errors: typed enum per crate" below), never
+  `anyhow`/`eyre`.
+- The default public consumer surface is `ActorRef<MyActor>`;
+  domain wrappers earn their place per `skills/kameo.md` §"Public
+  consumer surface — ActorRef<A> or domain wrapper".
 
 Plain sync code is fine for stateless one-shot CLIs, build tools,
 and library crates with no concurrent state. If a CLI needs durable

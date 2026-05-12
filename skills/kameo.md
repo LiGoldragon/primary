@@ -117,60 +117,36 @@ naturally satisfied: the actor type is the data-bearing noun.
 
 ## Naming actor types
 
-**Name the actor by what it IS or what role it plays — never by
-the framework category it falls into.** `Counter` is an actor;
-`CounterActor` is `Counter` plus framework-category ceremony.
+The cross-language rule is `skills/naming.md` §"Anti-pattern:
+framework-category suffixes on type names" — drop `*Actor`,
+`*Message`, `*Msg`, `*Handler` suffixes; let the type's role-shaped
+name carry meaning. Kameo's `Self IS the actor` shape makes this
+naturally enforceable: there's no second behavior-marker type to
+disambiguate against.
 
-```rust
-// Right
-pub struct ClaimNormalizer { ... }
-pub struct MindRoot { ... }
-pub struct StoreSupervisor { ... }
-pub struct Counter { count: i64 }
-
-// Wrong — framework-category suffix
-pub struct ClaimNormalizerActor { ... }
-pub struct MindRootActor { ... }
-pub struct StoreSupervisorActor { ... }
-pub struct CounterActor { ... }
-```
-
-The `Actor` suffix is the same shape as `Type` / `Class` /
-`Object` suffixes that ESSENCE retired. It names the framework
-category the type happens to fall into — not the type's role or
-function. The trait impl (`impl Actor for Counter`) makes the
-framework participation explicit; the type name should describe
-what the type IS.
-
-This applies at every level of the actor surface:
+Application to Kameo's surface:
 
 | Concept | Wrong | Right |
 |---|---|---|
-| Actor type | `ClaimNormalizerActor` | `ClaimNormalizer` |
-| Actor type | `MindRootActor` | `MindRoot` |
-| Actor type | `CounterActor` | `Counter` |
+| Actor type | `ClaimNormalizerActor`, `MindRootActor`, `CounterActor` | `ClaimNormalizer`, `MindRoot`, `Counter` |
 | Message type | `IncMessage`, `IncMsg`, `Inc` | `Increment` |
 | Message type | `SubmitMessage`, `SubmitClaim` | `ClaimSubmission` |
-| Reply type (when needed) | `SubmitReply` | `SubmissionReceipt` |
-| Handle type | `CounterHandle` (when wrapping `ActorRef<Counter>` for no reason) | use `ActorRef<Counter>` directly |
+| Reply type | `SubmitReply` | `SubmissionReceipt` |
+| Handle type | `CounterHandle` (when wrapping `ActorRef<Counter>` for no reason) | `ActorRef<Counter>` directly |
 
-**Descriptive role suffixes earn their place** — they name what
-the type DOES, not what category it falls into:
-
-- `Supervisor` (this type supervises children)
-- `Normalizer`, `Resolver`, `Validator`, `Decoder`, `Encoder`,
-  `Dispatcher` (this type performs that named function)
-- `Tracker`, `Cache`, `Ledger`, `Store` (this type holds that kind
-  of state)
-
-These are nouns with meaning. `Actor` is a category tag.
+Role-shaped suffixes (`*Supervisor`, `*Resolver`, `*Normalizer`,
+`*Tracker`, `*Ledger`, `*Store`) describe what the type DOES and
+stay. `*Handle` is relationship-naming (same shape as
+`JoinHandle`) — earns its place when the wrapper carries domain
+content per §"Public consumer surface — ActorRef<A> or domain
+wrapper". `Actor` is a category tag; the trait impl
+(`impl Actor for Counter`) makes the framework participation
+explicit, so the type name doesn't have to.
 
 The historical drift toward `*Actor` / `*Message` suffixes came
 from frameworks like ractor where the actor's behavior marker was
-a separate ZST from its `State` — the suffix disambiguated. In
-Kameo, where `Self` IS the actor, that disambiguation is moot and
-the suffix becomes the workspace's "feels too verbose" trap (per
-`ESSENCE.md` §"Naming"). Drop the suffix from the start.
+a separate ZST from its `State` — the suffix disambiguated. Kameo
+removed the disambiguation; drop the suffix from the start.
 
 ---
 
