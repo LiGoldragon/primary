@@ -19,6 +19,8 @@ The direction is sound if the boundary stays sharp:
 - Minimal Criome should be the cryptographic trust root at the edges:
   external persona/persona messages, signed object and release verification,
   developer and agent signing keys, delegation records, and audit receipts.
+- BLS is the signing substrate. Do not stage an Ed25519 first milestone or
+  keep Ed25519 as a fallback path in the Criome trust design.
 - Prompt audit should live in Persona, probably `persona-mind`, not inside
   Criome. Criome can say "this request was signed by this principal under this
   valid delegation"; mind decides whether the request is safe to absorb or
@@ -242,12 +244,13 @@ line log.
 
 ## 4 - Signing scheme research
 
-### 4.1 BLS is justified by quorum and aggregation
+### 4.1 BLS is the selected signing substrate
 
 The eventual Criome architecture names quorum-signature multi-sig, and current
 `signal/src/auth.rs` already has a BLS skeleton. BLS earns its complexity when
 aggregate or threshold signatures are central: many developers/signers produce
-one compact proof, or a quorum signs one object.
+one compact proof, or a quorum signs one object. The user has now resolved the
+first-milestone question: Criome should use BLS, not Ed25519.
 
 External research:
 
@@ -264,35 +267,30 @@ External research:
   audited for our threat model. Source:
   `https://docs.rs/threshold-bls/latest/threshold_bls/`.
 
-Recommendation if BLS is selected now: use `blst` for the first serious
-verification path, and make the exact ciphersuite/scheme a closed enum variant,
-not a string. Also require domain separation in the signed bytes so a release
-signature cannot be replayed as a persona-message authorization.
+Recommendation: use `blst` for the first serious verification path, and make
+the exact ciphersuite/scheme a closed enum variant, not a string. Also require
+domain separation in the signed bytes so a release signature cannot be replayed
+as a persona-message authorization.
 
-### 4.2 Ed25519 may still be the right first step for single-signer auth
+### 4.2 No Ed25519 staging path
 
-If milestone one only needs "developer X signed artifact Y" and "agent key X
-signed request Y," Ed25519 is simpler than BLS. The `ed25519-dalek` crate is a
-straight Rust implementation of key generation, signing, and verification:
-`https://docs.rs/crate/ed25519-dalek/latest`.
+Do not implement a simpler single-signer Ed25519 bridge first. It would create
+an attractive compatibility surface that later agents would preserve, test, and
+route around. The minimal Criome trust component should be small, but it should
+be small around the chosen primitive.
 
-The design should not hide this behind an open string scheme. Use a closed enum
-with explicit variants, for example:
+The design should still avoid open string schemes. Use a closed BLS enum with
+explicit variants, for example:
 
 ```text
 SignatureScheme
-  | Ed25519
   | Bls12_381MinPk
   | Bls12_381MinSig
 ```
 
-Then choose one variant for the first implementation. Adding another is a
-schema bump with tests, not a runtime surprise.
-
-My bias: if quorum/aggregation is a near-term witness, start with BLS. If not,
-start with Ed25519 and add BLS when quorum is real. The user's stated long-term
-direction makes BLS legitimate; the milestone should still justify it with a
-first aggregate/quorum test.
+Then choose one BLS variant for the first implementation. Adding another BLS
+variant is a schema bump with tests, not a runtime surprise. Adding a non-BLS
+scheme is outside this report's recommendation after the user's clarification.
 
 ## 5 - Object and update verification
 
@@ -383,9 +381,9 @@ Important distinction:
 1. **Repo identity.** Should the existing `criome` repo be repurposed into the
    minimal trust daemon, or should the trust daemon be a new sibling repo while
    current `criome` remains the sema-ecosystem validator?
-2. **First signature scheme.** Is BLS required for the first milestone because
-   aggregate/quorum signatures are immediately load-bearing, or is the first
-   milestone single-signer release/request verification where Ed25519 is enough?
+2. **First BLS ciphersuite.** BLS is settled. The remaining question is whether
+   the first contract variant should be `Bls12_381MinPk`,
+   `Bls12_381MinSig`, or a more specific workspace-named BLS ciphersuite.
 3. **Private key custody.** Does Criome store private signing keys, or only
    public trust state and verification receipts? My recommendation is
    public-verifier first, with a narrowly named engine signing key only if a
