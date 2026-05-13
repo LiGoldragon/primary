@@ -1,19 +1,28 @@
-# 142 — Supervision in signal-persona; no message-proxy daemon; the two reducers named
+# 142 — Supervision in signal-persona; persona-message IS the daemon (drop "proxy" name); the two reducers named
 
 *Designer report. Corrects three drifts surfaced in the
 DA/32 → my-chat-review → operator/113 → operator's-next-step
 thread (2026-05-12/13): supervision lifecycle records belong
-in `signal-persona`, not in a new repo; there is no
-`persona-message-proxy` daemon and never was one in the
-user's intent; the engine-lifecycle reducer is named and
-designed alongside the engine-status reducer.*
+in `signal-persona`, not in a new repo; the `MessageProxy`
+naming retires but the **daemon stays** — `persona-message`
+IS the supervised first-stack daemon, just don't call it
+"proxy"; the engine-lifecycle reducer is named and designed
+alongside the engine-status reducer.*
 
 *Lands the architectural correction in `persona/ARCHITECTURE.md`,
 `persona-router/ARCHITECTURE.md`, `persona-message/ARCHITECTURE.md`
 & `README.md`, `signal-persona/ARCHITECTURE.md`, and
 `protocols/active-repositories.md`. Files an operator bead to
-retire `EngineComponent::MessageProxy` and add the supervision
+rename `EngineComponent::MessageProxy` → `EngineComponent::Message`,
+add the `persona-message-daemon` binary, and add the supervision
 relation to `signal-persona`.*
+
+*Revision 2026-05-13: §3 originally proposed dropping the
+daemon entirely and folding both sockets onto `persona-router`.
+That was a misreading of the user's "no proxy demon" direction
+(which meant "no SEPARATE proxy daemon beyond persona-message
+itself," not "no daemon"). Corrected here in line with
+designer-assistant/33 §0.2 and §1.2. See §9.5 for the trace.*
 
 ---
 
@@ -24,21 +33,24 @@ Three corrections from the user (2026-05-12 / 2026-05-13):
 | Question | Answer |
 |---|---|
 | Where do the common supervision/readiness records live? | **In `signal-persona` as a new relation.** Not in a new `signal-persona-supervision` repo. `signal-persona` already owns the manager's wire surface (engine catalog, component status, supervisor actions); supervision is one more relation inside that contract. Per `/127 §4.2 D3` (one contract crate = one component's wire surface; multiple relations within is fine). |
-| Is there a `persona-message-proxy` daemon? | **No.** The word "proxy" in `persona-message`'s description means *"boundary translator at the CLI surface,"* not *"proxy daemon process."* Agents (DA/32, my prior chat review, the framing in operator/113 and operator's last reply) reified the word into a phantom daemon. There is no daemon to supervise; `EngineComponent::MessageProxy` retires. |
+| Is there a `persona-message-proxy` daemon? | **No — but `persona-message` IS the daemon.** The user's "no proxy demon" means "no SEPARATE proxy daemon beyond what `persona-message` already is." `persona-message` itself stays a supervised first-stack component; its long-lived binary is `persona-message-daemon`; the `message` binary stays as its CLI client. What retires is the **name** "proxy" (in `MessageProxy` / `message-proxy.sock` / `PERSONA_MESSAGE_PROXY_EXECUTABLE`), not the daemon. Per DA/33's rename matrix. |
 | What is the engine-lifecycle reducer? | **A second reducer that consumes the same events as the engine-status reducer but materializes process state** (Unspawned → Launched → SocketBound → Ready → Stopping → Exited). Engine-status answers "is this component healthy?"; engine-lifecycle answers "what's its current process state and how did it get there?". CLI status reads engine-status; audit replay walks engine-lifecycle events. |
 
 Plus a residual cleanup:
 
 | Cleanup | Resolution |
 |---|---|
-| `message-proxy.sock` named in `persona/ARCHITECTURE.md` §1.6 and `/125 §1.1` | Rename to **`router-public.sock`** (or merge into `router.sock` with mode 0660 — operator's call). Router owns this socket directly; the `0660` mode is the engine's user-writable ingress boundary. No separate component binds it. |
-| First-stack supervised set | **Five components**: `persona-mind`, `persona-router`, `persona-system`, `persona-harness`, `persona-terminal`. **Not** six. |
+| `message-proxy.sock` named in `persona/ARCHITECTURE.md` §1.6 and `/125 §1.1` | Rename to **`message.sock`** (mode 0660, group = engine owner's group). Bound by `persona-message-daemon`. The `0660` mode is the engine's user-writable ingress boundary. |
+| `EngineComponent::MessageProxy` + `ComponentKind::MessageProxy` | Rename to `EngineComponent::Message` + `ComponentKind::Message`. The variant survives; only the name retires. |
+| `PERSONA_MESSAGE_PROXY_EXECUTABLE` env var | Rename to `PERSONA_MESSAGE_DAEMON_EXECUTABLE` (operator's choice on suffix; the point is to drop "proxy"). |
+| First-stack supervised set | **Six components**: `persona-mind`, `persona-router`, `persona-system`, `persona-harness`, `persona-terminal`, `persona-message`. |
 
 The operator's last response (the 10-step prototype walkthrough)
-proposes `signal-persona-supervision` and a real
-message-proxy daemon as items 1 and 3. **Both are wrong** per
-this report; the other eight items are sound. Operator's bead
-update is in §8.
+proposes `signal-persona-supervision` as item 1 — **wrong**;
+supervision lives in `signal-persona` per §2. Item 3 (a real
+message daemon) is **right in substance**; just don't call it a
+"proxy" — the binary is `persona-message-daemon`. Items 2 and
+4–10 are sound. Operator's bead update is in §8.
 
 ---
 
@@ -90,6 +102,20 @@ relation alongside the engine-catalog and supervisor-action
 relations already there. **Not** in a new
 `signal-persona-supervision` repo.
 
+**The supervision relation has its own closed root family**
+(`SupervisionRequest` / `SupervisionReply`), separate from
+the manager/CLI relation's `EngineRequest` / `EngineReply`.
+Per `skills/contract-repo.md` §"Contracts name a component's
+wire surface": *"a multi-relation contract crate (one
+component, multiple relations) has one root family per
+relation, not one crate-wide enum."* The relations share a
+crate; they do not share a root enum or a single
+`signal_channel!` invocation. (Correction from DA/34 §1: an
+earlier draft of this report said the two relations "share
+one `signal_channel!` declaration" — that was wrong; root
+families must stay separate so CLI-oriented surface cannot
+accidentally grow child-lifecycle verbs and vice versa.)
+
 Why this is the right home:
 
 - `signal-persona` is the manager's wire surface; every
@@ -128,7 +154,7 @@ SupervisionReply (closed enum)
                         kind: ComponentKind,
                         supervision_protocol_version: SupervisionProtocolVersion,
                         last_fatal_startup_error: Option<ComponentStartupError> }
-  | ComponentReady   { since: TimestampNanos }
+  | ComponentReady   { component_started_at: Option<TimestampNanos> }  -- child-supplied diagnostic; not minted by component as authoritative event time
   | ComponentNotReady { reason: ComponentNotReadyReason }
   | ComponentHealth  { health: ComponentHealth }
   | GracefulStopAck  { drain_completed_at: Option<TimestampNanos> }
@@ -141,10 +167,22 @@ ComponentNotReadyReason    (closed enum: NotYetBound, AwaitingDependency, Recove
 `ComponentHealth` already exists in `signal-persona` as
 `Starting | Running | Degraded | Stopped | Failed`. Reuse.
 
+**Timestamp authority** (per DA/34 §4 / ESSENCE §"Infrastructure
+mints identity, time, and sender"): a child component does not
+mint authoritative event time. `ComponentReady`'s
+`component_started_at` is diagnostic (the child's own
+process-start clock); the **manager** mints `observed_at`
+when the readiness round trip succeeds and writes that as
+the lifecycle event's authoritative timestamp. The same rule
+applies to `GracefulStopAck`'s `drain_completed_at` — child's
+clock for diagnostics; manager's clock on the manager event.
+
 The relation crosses the daemon ↔ child boundary, in BOTH
 directions: manager initiates queries; component replies.
 Frame envelope, handshake, and the universal verb spine come
-from `signal-core` per the existing pattern.
+from `signal-core` per the existing pattern. Each relation
+gets its own `signal_channel!` invocation; the two relations
+do not share a root family.
 
 ### 2.3 Why this stays narrow
 
@@ -171,90 +209,131 @@ domain contract instead.
 
 ---
 
-## 3 · Decision 2 — No `MessageProxy` daemon
+## 3 · Decision 2 — `persona-message` IS the daemon; drop the "proxy" name only
 
-### 3.1 The retraction
+### 3.1 The rename
 
 `EngineComponent::MessageProxy` (in `persona/src/engine.rs`)
-and `ComponentKind::MessageProxy` (in `signal-persona/src/lib.rs`)
-are retired. The first-stack supervised set is:
+becomes `EngineComponent::Message`. `ComponentKind::MessageProxy`
+(in `signal-persona/src/lib.rs`) becomes `ComponentKind::Message`.
+The **variant survives**; only the name retires. The supervised
+first-stack set is:
 
 ```text
 mind     persona-mind         signal-persona-mind
-router   persona-router       signal-persona-message + others
+router   persona-router       signal-persona-message + others (consumer)
 system   persona-system       signal-persona-system
 harness  persona-harness      signal-persona-harness
 terminal persona-terminal     signal-persona-terminal
+message  persona-message      signal-persona-message (producer-side daemon)
 ```
 
-Five components. The `persona-message` repo stays — it's the
-CLI, not a supervised process. The `message` binary projects
-NOTA into `signal-persona-message` frames and sends them to
-`persona-router`'s public ingress socket. There is no
-intermediate daemon.
+**Six components.** The `persona-message` repo owns:
+- the existing `message` CLI binary (one NOTA in, one NOTA out;
+  client of the message daemon's socket)
+- a new `persona-message-daemon` binary (long-lived; binds
+  `message.sock`; forwards typed frames to `persona-router`)
 
-### 3.2 The socket rename
+### 3.2 The socket rename and ownership
 
-Today the user-writable socket is `message-proxy.sock` at
-mode `0660`. The new shape:
+Today the user-writable socket is `message-proxy.sock` at mode
+`0660`. The new shape:
 
 | Before | After |
 |---|---|
-| `/var/run/persona/<engine-id>/router.sock` (mode 0600) | unchanged — `persona-router`'s internal socket for component-to-component traffic (mind, system → router) |
-| `/var/run/persona/<engine-id>/message-proxy.sock` (mode 0660) | **`/var/run/persona/<engine-id>/router-public.sock`** (mode 0660) — bound by `persona-router` directly, owner-group-writable, the engine's untrusted-ingress boundary |
+| `/var/run/persona/<engine-id>/router.sock` (mode 0600, bound by `persona-router`) | unchanged |
+| `/var/run/persona/<engine-id>/message-proxy.sock` (mode 0660) | **`/var/run/persona/<engine-id>/message.sock`** (mode 0660, group = engine owner's group, bound by `persona-message-daemon`) |
 
-`persona-router` therefore binds **two sockets** at startup:
-- `router.sock` (mode 0600) for internal Signal traffic
-- `router-public.sock` (mode 0660) for external NOTA-CLI submissions
+`persona-router` binds **one socket** at `router.sock` (0600
+internal traffic only). `persona-message-daemon` binds
+**`message.sock`** at mode 0660 — the engine's user-writable
+ingress boundary.
 
-Both are spawned-envelope-driven (persona-daemon provides the
-paths and modes; router binds and applies the mode; manager
-verifies after `ComponentReady`).
+Both are spawn-envelope-driven (persona-daemon provides the
+paths and modes; each component binds and applies the mode;
+manager verifies after `ComponentReady`).
 
-The "stateless boundary" framing for `persona-message` survives
-— it IS a stateless boundary, but the boundary is the
-CLI-to-router edge, not a separate daemon. The CLI parses
-NOTA, projects to `signal-persona-message::MessageSubmission`,
-opens a connection to `router-public.sock`, sends one frame,
-reads one frame, projects the reply NOTA, prints, exits.
+### 3.3 What `persona-message-daemon` does
 
-### 3.3 Why router owns both sockets (not a separate daemon)
+The message daemon is small and stateless. Its job is the
+user-writable boundary:
 
-DA/32 §2 worried: "if router owns the user-writable socket,
-the router absorbs an ingress/security responsibility that
-belongs at the boundary."
+```mermaid
+flowchart LR
+    user["human or harness"] --> cli["message CLI<br/>(NOTA in / NOTA out)"]
+    cli --> sock["message.sock<br/>(mode 0660)"]
+    sock --> daemon["persona-message-daemon"]
+    daemon --> origin_tag["MessageOrigin::External(...)<br/>(minted from SO_PEERCRED)"]
+    origin_tag --> router_sock["router.sock<br/>(mode 0600)"]
+    router_sock --> router["persona-router"]
+    router -.->|"reply"| daemon
+    daemon -.->|"reply"| cli
+    cli -.->|"NOTA"| user
+```
 
-That worry is real for in-band proof systems where the
-boundary needs to do cryptographic validation. It is **not** a
-concern in this workspace's trust model. Per `/125 §1.1` and
-`/125 §1.2`: filesystem ACLs are the engine boundary; the
-kernel enforces who can `connect()`. Inside `persona-router`,
-incoming frames are tagged with `MessageOrigin` (from
-SO_PEERCRED on the public socket) and that tag flows into the
-channel-state table. Router doesn't need a separate process
-to do this; it's a small responsibility (mint the
-`MessageOrigin` tag from the connection's peer credentials)
-that fits naturally next to router's existing channel
-authority.
+The daemon's responsibilities:
 
-A separate daemon would multiply processes for no security
-gain. The kernel ACL is the boundary; the validating
-component is router; the trust model is unchanged.
+- bind `message.sock` at mode 0660 with engine-owner group;
+- accept Signal frames from the `message` CLI (or any future
+  user-side client speaking `signal-persona-message`);
+- mint `MessageOrigin::External(ConnectionClass)` from
+  SO_PEERCRED on the connecting peer;
+- forward typed `signal-persona-message` frames to
+  `persona-router` over `router.sock` with the origin tag;
+- read the router's reply frame;
+- forward the reply back to the CLI client.
 
-### 3.4 What this means for `persona-message`'s repo
+No durable state. No actor topology beyond the small Kameo
+tree that owns the two socket connections (`UserSocketListener`
+that accepts CLI connections; `RouterClient` that maintains the
+internal-side connection to router). No `message.redb`.
 
-The `persona-message` repo stays. Its ARCH already says:
+### 3.4 Why a daemon and not router-owns-both-sockets
+
+Earlier draft of this report (now corrected) proposed
+collapsing both sockets onto `persona-router`. That
+mis-implemented the architectural separation the user has
+been holding throughout:
+
+- The **user-writable boundary** is a distinct concern from
+  routing. Keeping it on its own supervised process lets the
+  message daemon evolve independently (rate-limiting, ingress
+  validation, eventual signature-verification when criome
+  integration lands) without growing router's surface.
+- The kernel ACL is the same trust boundary either way, but
+  the **process boundary** doubles as a blast-radius boundary:
+  a daemon crash takes down ingress without taking down
+  routing; an exploitation of the ingress code path is bounded
+  by the daemon's privileges.
+- The user has named "persona-message is a proxy *between* pure
+  signal and the message landing somewhere" — i.e., it has a
+  distinct job at a distinct boundary, even if currently a tiny
+  one. Naming that job as its own supervised component matches
+  the workspace's micro-component discipline.
+
+### 3.5 What changes in `persona-message`'s repo
+
+`persona-message/ARCHITECTURE.md` previously said:
 
 > *"The proxy does not build or run a daemon."*
-> *"The proxy does not depend on an actor runtime."*
 
-These were correct all along. The drift was in the *naming
-elsewhere* — `EngineComponent::MessageProxy`,
-`ComponentKind::MessageProxy`, the `message-proxy.sock`
-filename. That naming gets dropped; persona-message's own
-ARCH stays close to its current form, with light wording
-edits to remove "proxy" framing where it leads agents to
-imagine a daemon.
+That's wrong now. The repo gains a daemon binary. Specifically:
+
+- New binary `persona-message-daemon` (long-lived; supervised
+  by `persona-daemon`).
+- Existing `message` CLI binary unchanged in role (NOTA-to-frame
+  translation at the CLI surface), but its target socket changes
+  from "router socket" to "message daemon socket" — i.e., from
+  router-directly to going through the supervised message daemon.
+- The repo's ARCH and README drop "proxy" framing in favor of
+  "message ingress boundary" or "user-writable ingress component."
+- Kameo runtime (a small one) lands per `skills/actor-systems.md`
+  and `skills/kameo.md`; the daemon is two or three actors
+  (root + listener + router-client).
+
+The repo's no-in-band-proof discipline is preserved; the
+daemon mints origin from SO_PEERCRED, never from request
+payload fields.
 
 ---
 
@@ -367,15 +446,23 @@ daemon startup:
 |---|---|---|
 | `EngineStatusQuery` (CLI) — "what's the engine's overall health?" | engine-status | `engine-status-snapshot` |
 | `ComponentStatusQuery` (CLI) — "what's component X's health?" | engine-status | `engine-status-snapshot` |
-| `SupervisionReply::ComponentHealth` (manager-to-CLI passthrough) | engine-status | `engine-status-snapshot` |
+| `SupervisionReply::ComponentHealth` (child → manager input to the status reducer) | engine-status | feeds the reducer; does **not** read CLI status |
+| `EngineReply::ComponentStatus` (manager → CLI output from the status reducer) | engine-status | reads `engine-status-snapshot` |
 | "Did component X come up cleanly?" (audit / debug) | engine-lifecycle | walk events for X |
 | "Was component X's last exit expected?" | engine-lifecycle | latest event for X |
 | "How long has X been Ready?" | engine-lifecycle | `engine-lifecycle-snapshot.since` |
 | "Why did X transition to Failed?" | event-log + engine-lifecycle | events leading to Exited(unexpected) |
 
 The CLI never reads the event log directly. CLI status is a
-read of the engine-status snapshot. Audit / debug paths walk
-the event log or read the engine-lifecycle snapshot.
+read of the engine-status snapshot via `EngineReply` on the
+manager/CLI relation. The supervision relation only feeds
+the reducers; it does not return CLI-shaped replies. (Per
+DA/34 §5: the two relations stay sharply separate — child-
+to-manager facts flow into reducers; manager-to-CLI
+projections flow out of reducers.)
+
+Audit / debug paths walk the event log or read the
+engine-lifecycle snapshot.
 
 ### 4.5 Why both, not one with two projections
 
@@ -403,92 +490,125 @@ the safer first cut.
 
 ## 5 · Architecture changes required
 
-This report's edits land in the same commit:
+This report distinguishes two layers per DA/34 §2:
 
-### 5.1 `signal-persona/src/lib.rs`
+- **Design decisions** that land immediately, in the canonical
+  architecture docs (this section's edits — landed in the same
+  commit as the report).
+- **Implementation drift** in `*.rs` source and tests that
+  takes operator's bead to clear. Listed under §8.
 
-- **Remove** `ComponentKind::MessageProxy` variant.
-- **Add** the supervision relation: `SupervisionRequest`,
-  `SupervisionReply`, `SupervisionProtocolVersion`,
-  `ComponentStartupError`, `ComponentNotReadyReason` (per §2.2).
+The design-doc edits (this section) land immediately. The
+source/test edits (§8) land per the operator bead. The bead
+closes only when no `MessageProxy` survives in any source
+file.
+
+### 5.1 `signal-persona/src/lib.rs` (operator bead — implementation)
+
+- **Rename** `ComponentKind::MessageProxy` → `ComponentKind::Message`.
+- **Add** the supervision relation as its own closed root family:
+  `SupervisionRequest`, `SupervisionReply`,
+  `SupervisionProtocolVersion`, `ComponentStartupError`,
+  `ComponentNotReadyReason` (per §2.2). The supervision
+  relation gets its own `signal_channel!` invocation, separate
+  from the existing `EngineRequest` / `EngineReply`.
 
 This is a coordinated wire-version bump per
 `skills/contract-repo.md` §"Versioning is the wire".
-Operator handles in the bead.
 
-### 5.2 `signal-persona/ARCHITECTURE.md`
+### 5.2 `signal-persona/ARCHITECTURE.md` (designer — landed)
 
-- **Drop** `MessageProxy` from the `ComponentKind` closed enum
-  listing (§"Typed Records").
-- **Drop** the constraint "Message proxy is named as a closed
-  component kind" + its witness test.
+- **Rename** `MessageProxy` → `Message` in the `ComponentKind`
+  closed enum listing (§"Typed Records").
+- **Update** the witness "Message proxy is named as a closed
+  component kind" → "Supervision requests carry no domain
+  payloads" with a witness pointer.
 - **Add** the supervision-relation surface to §"Current
-  Surface" and §"Typed Records".
-- **Add** a constraint: "Supervision requests carry no domain
-  payloads (no MessageBody, RoleClaim, TerminalInput, etc.)"
-  with a witness.
+  Surface" and §"Typed Records" — declared as its own root
+  family.
+- State explicitly that the two relations (manager/CLI
+  catalog vs manager/child supervision) **each have their own
+  closed root family**; they do not share one
+  `signal_channel!` declaration.
 
-### 5.3 `persona/ARCHITECTURE.md`
+### 5.3 `persona/ARCHITECTURE.md` (designer — landed)
 
-- **§1.6 socket-layout table**: drop `message-proxy.sock`;
-  add `router-public.sock` at mode `0660` bound by
-  `persona-router`. Both `router.sock` (0600 internal) and
-  `router-public.sock` (0660 public) belong to router.
-- **§1 component map**: confirm the first-stack supervised
-  set is five components. Adjust any prose referring to six.
+- **§1.6 socket-layout table**: keep `message.sock` in the
+  list (bound by `persona-message-daemon` at mode 0660,
+  group = engine owner's group). `router.sock` (mode 0600) is
+  bound by `persona-router`. Drop the misleading
+  `router-public.sock` placeholder from my earlier draft.
+- **§1 component map**: first-stack supervised set is **six
+  components** including `persona-message`.
 - **§7 constraints**: rewrite "the message-proxy socket is
-  group-writable for owner ingress" to "the router-public
-  socket is group-writable for owner ingress."
+  group-writable for owner ingress" to "the `message.sock`
+  is group-writable for owner ingress (bound by
+  `persona-message-daemon`)."
 
-### 5.4 `persona-router/ARCHITECTURE.md`
+### 5.4 `persona-router/ARCHITECTURE.md` (designer — landed)
 
-- **§1 / §2**: add the two-socket detail. Router binds
-  `router.sock` and `router-public.sock`. Frame ingress on the
-  public socket is tagged `MessageOrigin::External(...)` from
-  SO_PEERCRED; ingress on the internal socket is tagged
-  `MessageOrigin::Internal(...)`.
-- **Constraints**: add witnesses for "router binds two
-  sockets" and "frames on router-public.sock are tagged
-  External; frames on router.sock are tagged Internal."
+- **§1 / §2**: router binds **one socket** (`router.sock`,
+  mode 0600). Drop the "two sockets" framing from my
+  earlier draft.
+- Ingress on `router.sock` tags as
+  `MessageOrigin::Internal(...)` for in-engine components,
+  or `MessageOrigin::External(...)` when the connecting
+  peer is `persona-message-daemon` forwarding owner ingress
+  with the External tag already minted.
 
-### 5.5 `persona-message/ARCHITECTURE.md` and `README.md`
+### 5.5 `persona-message/ARCHITECTURE.md` and `README.md` (designer — landed)
 
-- **Header**: rephrase "NOTA boundary and stateless router
-  proxy" to "NOTA-to-router CLI boundary" or "Message CLI
-  surface for the engine's public router socket." Avoid the
-  word "proxy" where it leads agents to imagine a separate
-  process.
-- **§4 Invariants**: keep "The proxy does not build or run a
-  daemon" — rename the section's framing so it reads as the
-  reason, not a residual constraint after some daemon
-  considered: "This repo holds a CLI surface only; no daemon
-  runtime, no actor system, no durable state."
-- **Code Map**: confirm `src/main.rs` is the CLI entry point;
-  drop any prose suggesting a future daemon.
+- **Header**: this is the message ingress/text-boundary
+  component. Owns: the `message` CLI binary, the
+  `persona-message-daemon` binary (long-lived, supervised
+  first-stack member), and a small Kameo runtime inside the
+  daemon.
+- **§2 State and Ownership**: the daemon binds
+  `message.sock` (mode 0660). It owns no durable state
+  (no redb). Origin tags are minted from SO_PEERCRED, not
+  from request payloads.
+- **§4 Invariants**: drop the "proxy does not build or run
+  a daemon" line — that's wrong now. Keep "no in-band proof
+  material," "no durable message ledger," "no actor
+  registration writes," "origin via SO_PEERCRED."
+- **Code Map**: add `src/bin/persona-message-daemon.rs` (or
+  equivalent) alongside the `message` CLI.
 
-### 5.6 `protocols/active-repositories.md`
+### 5.6 `protocols/active-repositories.md` (designer — landed)
 
-- **`persona-message` row**: change description from
-  "Current CLI/message experiments; transitional until
-  router/mind contracts settle" to "Message CLI: NOTA-to-router
-  boundary surface; sends `signal-persona-message` frames to
-  `persona-router`'s public ingress socket. No daemon."
-- **`persona-router` row**: add note that router binds both
-  internal (`router.sock`, 0600) and public ingress
-  (`router-public.sock`, 0660) sockets.
+- **`persona-message` row**: change description to: "The
+  `message` CLI and `persona-message-daemon`: NOTA-to-router
+  message ingress. Daemon owns `message.sock` (mode 0660,
+  engine-owner-writable), forwards typed Signal frames to
+  `persona-router` with origin tags minted from
+  SO_PEERCRED."
+- **`persona-router` row**: revert to a single-socket
+  description (`router.sock` at mode 0600, internal traffic;
+  external traffic flows through `persona-message-daemon`).
 
 ### 5.7 `reports/designer/125-channel-choreography-and-trust-model.md`
 
-- **§1.1 socket table**: edit the row labeled "Per-engine
-  message proxy" to "Per-engine router public ingress" with
-  the new socket name. The mode (0660, group = engine owner's
-  group) and owner (persona) stay.
+- **§1.1 socket table**: row labeled "Per-engine message
+  proxy" → "Per-engine message ingress" with the new socket
+  name `message.sock` bound by `persona-message-daemon`. The
+  mode (0660, group = engine owner's group) and owner
+  (persona) stay.
+- Other instances of "persona-message proxy" or
+  `Internal(MessageProxy)` in /125 prose: rename to
+  `persona-message-daemon` / `Internal(Message)`.
 
-### 5.8 `reports/designer/141-minimal-criome-bls-auth-substrate.md`
+### 5.8 Tests across the stack (operator bead — implementation)
 
-- **§5 keys table**: the row for "per-host keypair" mentions
-  ClaviFaber's Ed25519 SSH identity — unchanged. No
-  message-proxy-related edits.
+Per DA/34 §7:
+
+- `persona-daemon-spawns-first-stack-skeletons` and related
+  Nix witnesses: assert **six** first-stack processes,
+  including `persona-message-daemon`.
+- Peer socket count witnesses: include `message.sock` in the
+  expected peer set.
+- `persona-message` tests: cover the daemon's accept loop
+  and origin-tag minting in addition to the CLI's
+  NOTA-to-frame translation.
 
 ---
 
@@ -594,33 +714,84 @@ report lands those alongside).
 
 ## 9 · What this report supersedes / corrects
 
-- **My prior DA/32 chat review (2026-05-13)** — proposed
-  `persona-message-proxy` as the supervised component name
-  when a real daemon landed. **Retracted.** No daemon; the
-  supervised set is five components.
-- **DA/32 §2** — "Keep MessageProxy as a supervised engine
-  component and make it a real long-lived boundary daemon."
-  **Rejected** per user direction.
-- **Operator's 10-step walkthrough (chat, 2026-05-13)**
-  items 1 (`signal-persona-supervision` as a NEW contract)
-  and 3 (real message-proxy daemon). **Rejected**.
-- **Designer/125 §1.1**, the row labeled "Per-engine message
-  proxy" — renamed to "Per-engine router public ingress"
-  per §5.7.
+### 9.1 Retracted
 
-Sound items preserved:
+- **DA/32 §2** — "Keep MessageProxy as a supervised engine
+  component and make it a real long-lived boundary daemon
+  named `persona-message-proxy-daemon`." Only the **name**
+  was wrong; the daemon stays. Corrected per §3.
+- **My prior DA/32 chat review (2026-05-13)** —
+  recommended `persona-message-proxy-daemon` naming.
+  Corrected: the binary is `persona-message-daemon`.
+- **Operator's 10-step walkthrough (chat, 2026-05-13)**
+  item 1 (`signal-persona-supervision` as a NEW contract):
+  **rejected**; supervision lives in `signal-persona`.
+  Item 3 (real message-proxy daemon): **right in
+  substance**, just rename — `persona-message-daemon`.
+
+### 9.2 Sound items preserved from DA/32
 
 - DA/32 §1 (common supervision-relation surface + domain
   Unimplemented stays domain) — confirmed; lives in
   `signal-persona`.
 - DA/32 §3 (socket mode: child applies, manager verifies) —
   confirmed.
-- DA/32 §4 (split-brain manager state) — addressed via /142
-  §4's two-reducer design.
+- DA/32 §4 (split-brain manager state) — addressed via §4's
+  two-reducer design.
 - DA/32 §5 (restart waits; exit observation goes now) —
   confirmed.
-- Operator's 10-step walkthrough items 2, 4, 5, 6, 7, 8, 9,
-  10 — sound.
+
+### 9.3 DA/33 — superseding their own self-supersession
+
+DA/33 §0.2 / §1.2 / §5.4 / §6 said: keep `persona-message` in
+the supervised first stack; drop "proxy" from the name; the
+daemon binary is `persona-message-daemon`. **That was right.**
+DA/34 §0 later superseded DA/33 in favor of /142's
+(then-wrong) 5-component shape. With this correction, DA/33's
+direction is restored; DA/34's verdict that DA/33 was
+"superseded" is itself superseded. Operator follows /142 (this
+version) and DA/33's rename matrix.
+
+### 9.4 DA/34 — kept refinements / rejected verdict
+
+**Kept**: DA/34 §1 (separate root families per relation —
+folded into §2.1); DA/34 §2 (design-vs-implementation
+distinction — folded into §5's structure); DA/34 §4
+(manager-minted authoritative timestamps; child-supplied
+diagnostic time — folded into §2.2); DA/34 §5
+(`SupervisionReply::ComponentHealth` is child-to-manager,
+not manager-to-CLI — fixed in §4.4); DA/34 §6 (stale proxy
+wording remains in canonical files — captured in §5.7 and the
+operator bead); DA/34 §7 (tests need updating to match the
+new component count and socket layout — captured in §5.8).
+
+**Rejected**: DA/34 §0 verdict that /142's old 5-component
+shape was correct, and DA/34's claim that this supersedes
+DA/33. The user's clarification 2026-05-13
+(*"PersonaMessage is the daemon. There's no other
+PersonaMessage daemon"*) makes the 6-component shape
+authoritative. DA/34's verdict is reversed in §3.
+
+### 9.5 The misread trace
+
+For future agents reviewing this thread:
+
+- User direction 2026-05-12: *"There's no persona message
+  proxy either. ... There's no proxy demon."*
+- /142 v1 reading: "no daemon at all; collapse the daemon
+  into router."
+- DA/33 reading: "the variant survives as `Message`;
+  `persona-message-daemon` is the supervised binary."
+- DA/34 reading: "agree with /142 v1; supersede DA/33."
+- User clarification 2026-05-13: *"PersonaMessage is the
+  daemon. There's no other PersonaMessage daemon, right?
+  ... are you saying the design assistant didn't
+  understand that?"*
+
+The user's word "proxy demon" meant **a separate proxy
+daemon** beyond `persona-message` itself, not "no daemon."
+DA/33 understood; /142 v1 and DA/34 did not. This revision
+of /142 aligns with the user's clarification.
 
 ---
 
