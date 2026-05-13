@@ -259,6 +259,41 @@ without warning.
 
 ---
 
+## Kinds of reports — and where their substance ultimately lives
+
+Reports are a working surface, not the substance's permanent
+home. **For every report you write, name where its
+substance is *destined* to live.** The typology below
+catalogues the recurring shapes and their permanent homes
+so future cleanups have a clear migration target.
+
+| Report shape | Pattern | Permanent home for the substance |
+|---|---|---|
+| **Architecture decision** | A typed design decision (a record kind, a protocol shape, a boundary placement) that some other work depends on. | **`<repo>/ARCHITECTURE.md`**. The report is the staging-ground; the ARCH is the destination. Land the report; absorb the substance; retire the report. |
+| **In-flight implementation roadmap** | A consolidated current-state report covering an active multi-track implementation push. Acceptance witnesses, bead trail, deferred-pieces inventory. | **Retires when the implementation acceptance fires green.** While in flight, the report is canonical state-of-art for the push. After acceptance, substance moves to ARCH (decisions) + git history (the path). |
+| **Incident / postmortem** | A reconstruction of a past failure or surprise, with the lessons it teaches. | **Kept indefinitely if cited from a skill** (the skill points future readers at the incident as "don't reintroduce this"). Otherwise retires once the lessons land in a skill or rule. |
+| **Cross-role response** | A designer (or other role) reading another role's report and shaping the response: refinements, shape decisions, things missed. | **Retires when the recipient role absorbs the guidance** into their work — typically into a sibling repo's ARCH, a skill, or shipped code. While the back-and-forth is active, the response is load-bearing. |
+| **Synthesis / state-of-art** | A wide pass across the workspace identifying gaps, dependencies, prioritised questions for the user. | **Retires when answered.** The substance flows into action: closed beads, new design reports, codified skills, ARCH edits. The synthesis itself is a working artefact; once the user has decided the questions, it stops being load-bearing. |
+| **Cleanup ledger** | The record of a cleanup pass — what was deleted, what was absorbed, what was kept. | **Retires when the next cleanup ledger lands** (or sooner if its findings have all been acted on). Each cleanup ledger supersedes the previous one. |
+| **Research / exploratory draft** | A first-sketch design exploring a problem before the answer is known. Marks itself as draft; leaves explicit open questions. | **Retires when a final design report lands** (or when the user closes the question without proceeding). The draft is intermediate; the decision record is permanent. |
+
+The discipline that follows: when you write a report, ask
+*what shape is this?* and *what's the destination home for
+its substance?* If you can't name either, the report shouldn't
+be written — the substance probably belongs in chat (too
+small for a report), in a skill (a discipline statement
+masquerading as a report), or in ARCH directly (a decision
+clear enough to land permanently).
+
+This typology was codified in 2026-05-13 after the
+designer-side report-and-bead reconsolidation (see
+`~/primary/reports/designer/149-cleanup-ledger-2026-05-13.md` §5
+and `~/primary/reports/designer/151-synthesis-2026-05-13.md` §6 Q6).
+The pattern existed informally before; the explicit table makes
+it teachable.
+
+---
+
 ## Hygiene — soft cap, supersession, periodic review
 
 A role's `reports/` subdirectory is a working surface, not
