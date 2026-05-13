@@ -167,6 +167,98 @@ the label data it reports. Do not use `ActorKind` as a bucket for both
 real actors and aspirational phases; tests must not mistake trace
 witness vocabulary for runtime architecture.
 
+### Zero-sized actors are not actors
+
+A zero-sized struct that implements `Actor` and whose only behavior is
+to receive one message variant, call a method on data carried *inside*
+the message, and reply with the result, is not an actor. It is a
+method on the message's payload, wearing a mailbox costume.
+
+```rust
+// Anti-pattern. The actor is empty; the data lives in the message.
+pub struct ProposalReader;
+pub enum ProposalMsg {
+    Read { source: ProposalSource, reply: RpcReplyPort<Result<ClusterProposal>> },
+}
+impl Actor for ProposalReader {
+    type State = ();
+    async fn handle(&self, _: ActorRef<_>, msg: Self::Msg, _: &mut ()) -> Result<()> {
+        match msg {
+            ProposalMsg::Read { source, reply } => {
+                let _ = reply.send(source.load());
+            }
+        }
+        Ok(())
+    }
+}
+```
+
+The three failures stack:
+
+- The `Actor` has no state — `State = ()`. There is nothing the actor
+  *holds* between messages.
+- The data the verb operates on (`source`) is carried in the message,
+  not in the actor. The actor is a relay between the message-payload
+  type's existing method (`ProposalSource::load`) and the reply port.
+- The handler is structurally `let _ = reply.send(message.payload.method())`.
+  Spawning a Kameo task to do that is ceremony, not concurrency.
+
+The fix is the obvious one. Delete the actor type, delete the message
+enum, call the method directly:
+
+```rust
+// `ProposalSource::load()` already exists. Use it.
+let proposal = source.load()?;
+```
+
+This is the diagnostic worth remembering: **a real actor's state field
+names the noun the actor is.** If `type State = ()`, the actor is
+nameless — the would-be "actor" is asking the data carried in its
+message to play the role the actor itself failed to.
+
+The lojix-cli kameo migration (bead `primary-q3y`) is the worked
+example. Six "actors" — `ProposalReader`, `HorizonProjector`,
+`HorizonArtifact`, `NixBuilder`, `ClosureCopier`, `Activator` — each
+ZST, each `State = ()`, each one-variant. The "migration" was not
+ractor → kameo; it was actors → methods. The data nouns
+(`ProposalSource`, `HorizonProjection`, `ArtifactMaterialization`,
+`NixBuild`, `ClosureCopy`, `Activation`) already owned the verbs.
+The wrappers and a `DeployCoordinator` that supervised them collapsed
+into one `pub async fn deploy(req) -> Result<DeployOutcome>`. About
+200 lines of ceremony deleted; tests all still passed. See
+`reports/system-assistant/04` §"Actor framework" and the commit on
+`lojix-cli/push-ovulwxnnpykv` for the diff.
+
+This anti-pattern is the most common false positive when a codebase
+"wants actors": the discipline says "every plane gets an actor," so a
+plane that *isn't actor-shaped* (one verb on one piece of data, no
+state between calls, no supervision relationship) ends up dressed as
+one anyway. The Core Rule's three tests — typed domain name, failure
+mode callers act on, independently testable with synthetic input —
+catch this. A ZST one-shot forwarder fails the first test: it has no
+typed domain because it has no data.
+
+### Real actors carry data that survives between messages
+
+The healthy counterpoint is clavifaber. Each of its actors —
+`CertificateIssuer`, `GpgAgentSession`, `YggdrasilKey`,
+`TraceRecorder`, `RuntimeRoot` — has a `State` that names something
+the actor *holds*: an in-flight issuance pipeline, an open gpg-agent
+session, a yggdrasil binary lifecycle, a trace log, a supervised
+child set. The state field is the noun the actor is. Compare:
+
+| Actor | `State` field | Noun |
+|---|---|---|
+| `ProposalReader` (anti) | `()` | (none) |
+| `GpgAgentSession` (real) | `Option<GpgAgentHandle>` | the open gpg-agent session |
+| `CertificateIssuer` (real) | `IssuanceQueue` | the in-flight issuances |
+| `YggdrasilKey` (real) | `YggdrasilKeyState` | the yggdrasil binary's lifecycle |
+
+This is also why phase actors get a carve-out (above): a `*Phase`
+actor's `State` is its downstream `ActorRef<_>`s, which *are* its
+data — the pipeline's stage-graph. Without that state it would
+collapse to a method too.
+
 ---
 
 ## Blocking is a design bug
