@@ -26,20 +26,30 @@ That spine now exists in three places:
 
 - `nexus/spec/grammar.md`: Nexus is ordinary NOTA records, not a
   separate expression language.
-- `signal-core/src/request.rs`: `SemaVerb` is the binary rkyv request
-  envelope used by Signal.
+- `signal-core/src/request.rs`: `SemaVerb` is the universal binary
+  rkyv request envelope used by Signal.
 - `signal-persona*` contracts: component request variants are already
   being mapped onto the Sema verb spine (`Match` for status queries,
   `Mutate` for lifecycle changes, `Assert` for message submissions).
 
+The clarified model is stronger than "Signal has some database-like
+verbs":
+
+> Signal is the engine's typed binary database-operation language.
+> `signal-core` owns the closed operation envelope; each `signal-*`
+> contract owns the typed payload vocabulary valid under those verbs.
+> Every cross-component Signal request must declare a verb. If no
+> existing verb fits, that is a design event: the payload is
+> mis-modeled, or the verb set is incomplete.
+
 So the right recovery is not "bring back old Nexus syntax." The right
 recovery is:
 
-> Treat each component contract as a typed subset of the larger Sema
-> database language. Nexus/NOTA is the edge projection of that typed
-> language; Signal is the internal binary form; Sema-db should grow the
-> reusable storage/query/mutation affordances that make those verbs
-> cheap and correct for every state-bearing component.
+> Treat each cross-component contract as a typed subset of the larger
+> Sema database-operation language. Nexus/NOTA is the edge projection
+> of that typed language; Signal is the internal binary form; Sema-db
+> should grow the reusable storage/query/mutation affordances that make
+> those verbs cheap and correct for every state-bearing component.
 
 ## 1. Recovered lineage
 
@@ -108,7 +118,7 @@ rkyv-archived typed records, not Nexus text.
 ### 1.3 Current Signal: the preserved verb spine
 
 `/git/github.com/LiGoldragon/signal-core/src/request.rs` is the
-preserved database-language kernel:
+preserved database-operation envelope:
 
 ```rust
 pub enum SemaVerb {
@@ -140,6 +150,19 @@ pub enum PatternField<T> {
 
 In NOTA this becomes `(Wildcard)`, `(Bind)`, or a concrete typed
 value in a field whose Rust type is `PatternField<T>`.
+
+The split is:
+
+- `signal-core`: universal frame, request/reply envelope,
+  `SemaVerb`, pattern markers, and version/handshake machinery;
+- `signal-*`: domain payloads, root request/reply enums, and
+  relation-specific legality;
+- component daemon: policy, validation, mailbox order, persistence,
+  and post-commit effects.
+
+So "Signal" as a whole is the communication language. `signal-core`
+is the small kernel that prevents every contract from inventing its
+own operation vocabulary.
 
 ## 2. How Persona already uses the larger language
 
@@ -197,6 +220,11 @@ should not mean:
 - sema-owned subscribers and routing destinations;
 - untyped table names or string-tagged dispatch.
 
+Sema-db is not itself a communicating component. It does not speak
+Signal between daemons, route messages, or decide operation legality.
+It gives the component daemon the typed execution machinery needed to
+implement the Signal request it accepted.
+
 The component daemon remains the owner of semantic policy:
 
 - who is allowed to request the operation;
@@ -236,8 +264,8 @@ around the operations the engine already speaks.
 ## 5. Contract discipline needed next
 
 The weak point is not the existence of `SemaVerb`. The weak point is
-that most contracts do not yet force a request variant to declare its
-legal verb.
+that most cross-component Signal contracts do not yet force a request
+variant to declare its legal verb.
 
 Today a caller can wrap any payload in any `Request::<Payload>` helper.
 That is useful as a low-level envelope but weak as a contract witness.
@@ -269,6 +297,13 @@ The precise API can vary, but the witness should not. Every
 
 This would turn the user's "a message is an assert" rule into an
 architectural-truth test, not a convention remembered by agents.
+
+Replies do not need their own independent verb when they are causally
+tied to a request. Their legality is checked by the request operation
+they answer. If a "reply" becomes a standalone observation/event that
+can travel independently, it should be modeled as its own request under
+the appropriate verb, usually `Assert` for a newly observed fact or
+`Match`/`Subscribe` for an observation query.
 
 ## 6. How this ties into introspection
 
@@ -410,12 +445,12 @@ constructed through `Assert`.
 
 Bring the database-language work forward as an architectural rule:
 
-> Every component request is a typed subset of the Sema operation
-> language. Nexus is the NOTA projection of that language at the edge.
-> Signal is the binary transport. Sema-db is the typed execution kernel
-> for durable state. Components own domain policy, but they should not
-> keep reimplementing the same mechanical table/index/range/atomic
-> machinery.
+> Every cross-component Signal request is a typed operation in the
+> Sema language. Nexus is the NOTA projection of that language at the
+> edge. Signal is the binary communication language. Sema-db is the
+> typed execution kernel for durable state. Components own domain
+> policy, but they should not keep reimplementing the same mechanical
+> table/index/range/atomic machinery.
 
 The next concrete move is not a broad query engine. It is:
 
