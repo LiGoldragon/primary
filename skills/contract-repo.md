@@ -125,8 +125,30 @@ The contract crate **owns**:
 It **does not own**:
 
 - Daemon code. No actors, no runtime, no `tokio`.
-- Component-internal state. Each daemon's redb tables, its
-  reducer state, its supervisor tree are private.
+- Component-internal state at the **runtime** level — each
+  daemon's redb tables, its reducer state, its supervisor
+  tree are private. Reducers, write paths, transaction
+  boundaries, and the actual `Database::open` call stay
+  inside the daemon.
+
+It **may own**:
+
+- **Typed introspection record shapes for durable
+  inspectable state** (per
+  `~/primary/reports/designer/146-introspection-component-and-contract-layer.md` §1).
+  A contract crate may declare the typed record shape of a
+  redb-stored value so peer components and
+  `persona-introspect` can name what's inspectable. The
+  contract owns the *vocabulary* of inspectable state; the
+  component still owns the database, the reducers, the
+  consistency model, and the projection policy (which
+  fields are exposed, how snapshots are taken, redaction
+  rules). Operational records (those that cross a live
+  boundary) stay in their existing operational contract;
+  introspection-only records may land in a dedicated
+  `signal-persona-<X>-introspect` crate when the
+  inspection vocabulary is heavy or high-churn enough to
+  separate from the operational surface.
 - Logic that interprets the records. Validation pipelines,
   routing rules, gate decisions stay in the daemons.
 - NOTA projection *policy* and *surfaces*. The contract owns

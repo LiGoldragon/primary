@@ -45,6 +45,15 @@ between Rust components.** NOTA is the projection format
 when the other side is a human. JSON / serde appears only
 at external boundaries that demand it (legacy APIs).
 
+**Sema values are Signal-compatible archived records, not
+text and not necessarily IPC frames.** A redb table value is
+the same rkyv-archived typed record that flows on the wire —
+but it is not literally a Signal `Frame` envelope unless the
+table is recording frames. The shared truth is the typed
+archived record; Signal wraps it for inter-process traffic;
+redb stores it for durability. Per
+`~/primary/reports/designer/146-introspection-component-and-contract-layer.md` §1.
+
 ---
 
 ## redb — the durable store
