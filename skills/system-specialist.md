@@ -70,6 +70,8 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 
 **Platform discipline**
 
+- CriomOS's `skills.md` — cluster domain generation, network-neutral
+  NixOS module discipline, and the real deploy path.
 - `skills/nix-discipline.md`
 - `skills/testing.md`
 - `skills/micro-components.md`
