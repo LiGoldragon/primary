@@ -29,17 +29,26 @@ Relations (closed kinds, the edges):
   Supersedes | Authored | References | Decides | Considered | Belongs
 ```
 
-Every Thought carries its kind, a typed body, its author
-(an Identity via Reference), its timestamp, and a
-content-hash identity. Every Relation carries its kind,
-source thought, target thought, author, and timestamp.
+A Thought carries its kind, a typed body, and a content-hash
+identity (`RecordId = hash(kind, body)`). Author and commit
+time are NOT inside the Thought — author surfaces as an
+`Authored` Relation, commit time as a storage-row field
+(§5). A Relation is a typed temporal event: it carries
+kind, source, target, author, occurred_at, and an optional
+note; all of these participate in the Relation's hash. Two
+agents asserting the same Thought content produce one Thought
+row + two `Authored` Relations.
+
 Updates are NEW thoughts pointing at older ones via
 `Supersedes`. Nothing is ever mutated in place.
 
 The query surface is push-subscribe (per
 `~/primary/skills/push-not-pull.md`): subscribe by
-filter; receive initial snapshot then deltas. The CLI
-surface stays one NOTA record in, one NOTA reply out (per
+filter; receive initial snapshot then deltas. v1 acceptance
+requires shipping this path — operator track
+`primary-hj4.1.1` is building it; current code stubs return
+`MindRequestUnimplemented`. The CLI surface stays one NOTA
+record in, one NOTA reply out (per
 `persona-mind/ARCHITECTURE.md` §0).
 
 ```mermaid
@@ -395,10 +404,14 @@ enum ClaimActivity {
 Today's `RoleClaim` + `RoleRelease` records become Claims
 (write) + Observation summaries (release events). A Claim
 `Implements` a Goal; an Observation of `ClaimReleased`
-`Realizes` the Claim. The current `lock-file projection`
-(see `persona-mind/ARCHITECTURE.md`) becomes a derived
-rendering — read the latest non-superseded Claims with
-`ClaimActivity::Active`, group by role, write the lock file.
+`Realizes` the Claim. The lock-file rendering for current
+`tools/orchestrate` consumers stays an **external workspace
+shim** — not persona-mind behavior. Per
+`persona-mind/ARCHITECTURE.md` §"Lock-file projections", the
+mind does not write filesystem lock files. The shim
+subscribes to Claims with `ClaimActivity::Active` and
+renders the `<role>.lock` files on commit; persona-mind is
+the source-of-truth substrate, not the renderer.
 
 ### 3.6 · Decision — *a chosen path*
 
@@ -472,9 +485,10 @@ authority — they're related but separate).
 
 ## 4 · The eleven Relation kinds
 
-A Relation is also a Thought (in the broad sense) but
-specialized — it has source/target/kind/author/timestamp,
-nothing more. The eleven kinds:
+A Relation is a typed temporal assertion: at time T, author
+A claims that source thought S stands in relation R to
+target thought T. The eleven kinds, with strict typed
+**domain / range** constraints:
 
 | Relation | Domain → Range | Meaning |
 |---|---|---|
@@ -490,38 +504,86 @@ nothing more. The eleven kinds:
 | `Considered` | Decision → alternative Goal \| alternative Belief | "this option was weighed and not chosen." |
 | `Belongs` | any → Memory \| any → Goal | scoping: this thought is part of that session / project. |
 
-Each Relation has its own body too (mostly empty — kind +
-ends + author + timestamp is enough — but some carry a small
-rationale or qualifier):
+The table is the **contract**: relation-kind dispatch
+validates source/target thought kinds at commit time. A
+commit attempting `Implements` from a non-Claim source —
+or to a non-Goal target — is rejected with typed
+`RelationKindMismatch { expected_source_kinds,
+expected_target_kinds, got_source_kind, got_target_kind }`.
+
+> *Current code* (`persona-mind/src/tables.rs:206`)
+> `append_relation` checks only that source and target
+> Thoughts exist; it does not validate their kinds against
+> the relation's domain/range. v1 acceptance requires a
+> relation-kind validator (§12 witness
+> `relation_kind_rejects_wrong_domain`). The validator's
+> rule table is the §4 table above; it lives in
+> `signal-persona-mind`'s contract crate so both producers
+> and consumers share it.
+
+Each Relation has its own body too:
 
 ```rust
 struct Relation {
-    id:        RelationId,           // content hash
+    id:        RelationId,           // content hash over the whole record
     kind:      RelationKind,
     source:    RecordId,
     target:    RecordId,
-    author:    Reference,            // Identity
-    occurred_at: TimestampNanos,
-    note:      Option<NotaRecord>,   // small qualifier
+    author:    Reference,            // Identity — part of hash (relations are events)
+    occurred_at: TimestampNanos,     // manager-minted; part of hash
+    note:      Option<NotaRecord>,   // small qualifier; part of hash
 }
 ```
 
 Future Relations can be added by variant extension (the
-NotaEnum + closed-sum policy keeps them disciplined).
+NotaEnum + closed-sum policy keeps them disciplined). New
+variants must specify their domain/range and land
+validator + witness entries.
 
 ---
 
 ## 5 · Identity, immutability, supersession
 
-### 5.1 · Content-hash IDs
+### 5.1 · Content-hash IDs — different rule for Thoughts vs Relations
 
-Every Thought and every Relation has a `RecordId` /
-`RelationId` that is the BLAKE3 hash of its canonical rkyv
-encoding. Two agents producing the same Thought produce the
-same record — natural deduplication. The CLI/UI surface uses
-**display IDs** (Crockford base32 short prefix, extending on
+Thoughts and Relations follow **different identity rules**
+because they encode different kinds of substance.
+
+**Thought identity.** `RecordId = BLAKE3(canonical rkyv encoding of (kind, body))`.
+The hash is over **the semantic content only** — not over the
+author and not over the commit time. Two agents committing the
+same Thought content produce the same `RecordId`; the storage
+table stores the record once. Author and time live OUTSIDE
+the Thought: author surfaces as an `Authored` Relation
+(§4); commit time is a storage-row field carried by the table
+row (`commit_at`), not by the Thought value itself.
+
+**Relation identity.** `RelationId = BLAKE3(canonical rkyv
+encoding of (kind, source, target, author, occurred_at, note))`.
+Relations ARE events — temporal assertions by a specific
+author at a specific time — so their hash includes the
+who+when. Two agents asserting the "same" relation at
+different times produce distinct Relations, preserving the
+multi-author trail.
+
+This split is load-bearing: it lets multi-author
+deduplication of Thoughts work (one Thought row, many
+`Authored` Relations) while still recording the full
+provenance of every assertion.
+
+**Display IDs** (Crockford base32 short prefix, extending on
 collision per `~/primary/reports/designer-assistant/17`
-§2.2) for human readability.
+§2.2) project both `RecordId` and `RelationId` to human-
+readable form for CLI/UI.
+
+> *Current code* (`signal-persona-mind/src/graph.rs:173`) has
+> `author` and `occurred_at` embedded inside the `Thought` type
+> and persona-mind mints sequential compact IDs
+> (`persona-mind/src/tables.rs:189`). Both are pre-content-hash
+> shapes that this report supersedes. Operator's migration: move
+> author/time out of `Thought`; switch `RecordId` minting to
+> content-hash. The `Authored` Relation captures author; the
+> storage row captures `commit_at`.
 
 ### 5.2 · Immutability
 
@@ -536,19 +598,37 @@ Records are never mutated in place. Three consequences:
 
 ### 5.3 · Time
 
-Every Thought and Relation has an `occurred_at` timestamp,
-**manager-minted** at commit time (per
+Every Thought commit produces a storage row whose
+`commit_at` field is **manager-minted** at commit time (per
 `persona/ARCHITECTURE.md` §1.5 — infrastructure mints
-identity, time, and sender; agents supply content). Author-
-supplied timestamps are diagnostic, never authoritative.
+identity, time, and sender; agents supply content). The
+Thought value itself doesn't carry a timestamp — only the
+storage row does.
+
+Relations are different: `occurred_at` is part of the
+Relation's identity (see §5.1), so it's embedded in the
+Relation value. The commit-time and `occurred_at` of a
+Relation are the same thing (manager-minted).
+Author-supplied timestamps are diagnostic on the Thought
+side, never authoritative.
 
 ### 5.4 · Authoring
 
-Every Thought and Relation has an `author` field that is a
-`Reference` to an `Identity` (User / Role / Component /
-Harness / Engine). The mind graph is multi-author by
-construction: any authorized actor can append; the
-`Authored` Relations preserve who-said-what.
+The mind graph is multi-author by construction: any
+authorized actor can append. Authorship is recorded by
+**`Authored` Relations**, not by an `author` field inside
+the Thought (per §5.1). Every Thought commit emits both:
+
+1. the Thought row (if new content) or no-op (if the
+   content hash matches an existing row); and
+2. an `Authored` Relation from the committer's Identity
+   Reference to the Thought's `RecordId`.
+
+When two agents commit the same Thought content, the Thought
+row exists once; two `Authored` Relations exist. Querying
+"who said this?" returns the set of `Authored` Relation
+authors. This is the multi-author preservation witness in
+§12.
 
 ---
 
@@ -561,14 +641,23 @@ its redb file.
 ```
 mind.redb tables (v1):
 
-  thoughts:        RecordId   → Thought         (the primary table)
+  thoughts:        RecordId   → StoredThought   (record + commit_at)
   relations:       RelationId → Relation         (the edge table)
 
+  -- Where StoredThought is --
+  StoredThought {
+      kind:      ThoughtKind,
+      body:      ThoughtBody,
+      commit_at: TimestampNanos,    // manager-minted; NOT in hash
+  }
+  (RecordId = hash(kind, body); commit_at is row metadata.)
+
   -- Secondary indices --
+  -- Author is not on Thought; query by author via relations_by_source
+  -- (filtered on Authored kind).
 
   thoughts_by_kind:        (ThoughtKind, RecordId)  → ()
-  thoughts_by_author:      (AuthorRef,   RecordId)  → ()
-  thoughts_by_time:        (TimestampNanos, RecordId) → ()
+  thoughts_by_commit_time: (TimestampNanos, RecordId) → ()
 
   relations_by_kind:       (RelationKind, RelationId) → ()
   relations_by_source:     (RecordId,    RelationId) → ()
@@ -667,16 +756,34 @@ then receive deltas (new Thoughts, new Relations, new
 Subscribe → ack with initial snapshot → push deltas forever
 ```
 
-Projections — the things that look like "views" — are simply
-subscribers that aggregate. The lock-file projection
-subscribes to `Claims with ClaimActivity::Active`, groups by
-role, writes `<role>.lock`. The "work graph" view subscribes
-to Goals + Claims + Realizing Observations and renders
-ready/blocked. The "activity feed" subscribes to recent
-Observations.
+Projections — the things that look like "views" — are
+simply subscribers that aggregate. All projections live
+**outside persona-mind**: the daemon emits typed commit
+events; consumers (CLI tools, dashboards, the `tools/orchestrate`
+lock-file shim) subscribe and render. The mind doesn't write
+files, doesn't render markdown, doesn't keep a lock-file
+table. Examples:
+
+- **Lock-file shim** (external) subscribes to Claims with
+  `ClaimActivity::Active`, groups by role, writes
+  `<role>.lock` from outside persona-mind. Per
+  `persona-mind/ARCHITECTURE.md` §"Lock-file projections":
+  the mind is the substrate, not the renderer.
+- **Work-graph view** subscribes to Goals + Claims +
+  Realizing Observations and renders ready/blocked.
+- **Activity feed** subscribes to recent Observations.
 
 No subscription polls. No reducer runs on a timer. Reducers
-fire on commits (the StoreKernel emits after durable commit).
+fire on commits (the StoreKernel emits after durable
+commit). 
+
+> **Current code status**: `SubscribeThoughts` and
+> `SubscribeRelations` return `MindRequestUnimplemented`
+> today (`persona-mind/src/graph.rs:58`). Operator is
+> actively building the subscription path under bead
+> `primary-hj4.1.1` ("implement typed graph subscription
+> delivery"). **Subscriptions are required for v1
+> acceptance** (§12 witness); they are not yet landed.
 
 ---
 
@@ -739,11 +846,15 @@ with References to canonical worked examples. The
 filesystem `skills/<name>.md` renders from the Belief set.
 Defer to v3.
 
-### 9.5 · Lock-files → derived projection (already specified)
+### 9.5 · Lock-files → external shim subscribes to mind
 
-The lock-file rendering pattern already exists in
-`persona-mind`. v1 generalises it to render from the
-`Active` Claims.
+Lock-file rendering stays **outside** persona-mind per
+`persona-mind/ARCHITECTURE.md` §"Lock-file projections".
+The `tools/orchestrate` Rust binary (or equivalent shim)
+subscribes to Claim commits and writes the
+`<role>.lock` files. v1 ensures the substrate emits enough
+to support that shim; v1 does not put the rendering inside
+persona-mind.
 
 ---
 
@@ -757,11 +868,18 @@ The CLI parses one NOTA record, sends to daemon. Daemon
 writes:
 
 ```
-Thought (Goal): id=hash(...), description="land prototype-one acceptance",
-                scope=Project{name="persona"},
-                authored_at=T0, author=Identity(user)
+Thought (Goal): record_id = hash(GoalKind, body)
+                body = GoalBody {
+                    description: "land prototype-one acceptance",
+                    scope: Project{name="persona"},
+                    status: Open,
+                }
+                storage row: commit_at = T0
 
-Relation (Authored): user → Goal(id) at T0
+Relation (Authored):
+  id = hash(Authored, source=Reference(Identity(user)), target=Goal.record_id, T0, ...)
+  occurred_at = T0
+  source → target: Identity(user) → Goal.record_id
 ```
 
 Designer agent claims: `mind claim-start <goal-display-id> --role designer`
@@ -769,12 +887,17 @@ Designer agent claims: `mind claim-start <goal-display-id> --role designer`
 Daemon writes:
 
 ```
-Thought (Claim): id=hash(...), claimed_by=Identity(role=designer),
-                  scope=Paths{...},
-                  activity=Active{started_at=T1}, authored_at=T1
+Thought (Claim): record_id = hash(ClaimKind, body)
+                  body = ClaimBody {
+                      claimed_by: Reference(Identity(role=designer)),
+                      scope: Paths{...},
+                      role: designer,
+                      activity: Active{started_at=T1},
+                  }
+                  storage row: commit_at = T1
 
-Relation (Implements): Claim → Goal at T1
-Relation (Authored): Identity(designer) → Claim at T1
+Relation (Implements): Claim.record_id → Goal.record_id at T1
+Relation (Authored):   Identity(designer) → Claim.record_id at T1
 ```
 
 Designer ships work and releases: `mind claim-release <claim-display-id>`
@@ -782,17 +905,24 @@ Designer ships work and releases: `mind claim-release <claim-display-id>`
 Daemon writes:
 
 ```
-Thought (Observation): id=hash(...),
-                        summary=ClaimReleased{claim_id, role=designer},
-                        authored_at=T2
+Thought (Observation): record_id = hash(ObservationKind, body)
+                        body = ObservationBody {
+                            summary: ClaimReleased{claim_id, role=designer},
+                            detail: None,
+                            location: None,
+                        }
+                        storage row: commit_at = T2
 
-Relation (Realizes): Observation → Claim at T2
+Relation (Realizes):   Observation.record_id → Claim.record_id at T2
+Relation (Authored):   Identity(designer) → Observation.record_id at T2
 ```
 
-The "lock file" projection subscribed to `Claims with
-ClaimActivity::Active` receives a delta: the Claim's
-activity moved to `Releasing` then dropped from the active
-set. The projector rewrites `designer.lock`.
+An **external lock-file shim** (e.g. `tools/orchestrate`'s
+Rust binary; per `persona-mind/ARCHITECTURE.md`
+§"Lock-file projections", NOT inside persona-mind) subscribes
+to Claims with `ClaimActivity::Active`. On the
+`ClaimReleased` Observation, the shim sees the Claim drop
+from the active set and rewrites `designer.lock`.
 
 ### 10.2 · A decision recorded with rationale
 
@@ -855,7 +985,9 @@ non-superseded Memory and produces markdown.
 | 7 | Spaced repetition / Anki-style review of stored Beliefs? | Out of v1. Could be a v3 layer over the substrate; not graph-shape concern. |
 | 8 | Embeddings / vector search? | Out of v1. The substrate supports any number of secondary indexes added later; semantic search can be one. |
 | 9 | Garbage collection of superseded Thoughts? | Never. Append-only is the discipline; superseded Thoughts are still queryable for history. Storage cost is manageable for v1; revisit at v3 if scale demands. |
-| 10 | What happens if two agents commit the same Thought concurrently? | Content-hash IDs deduplicate naturally. Both `Authored` relations land (preserving who-said-it). |
+| 10 | What happens if two agents commit the same Thought concurrently? | `RecordId = hash(kind, body)` deduplicates content. Both `Authored` Relations land (preserving who-said-it). The Thought row is idempotent on re-write. |
+| 11 | When does TextBody get upgraded to a typed `NexusBody`/`StructuredBody`? | v2 candidate. Today's `TextBody` (used widely in `signal-persona-mind/src/graph.rs:220`) is the pragmatic shape for narrative prose where the structure isn't named yet. Type the structure where it surfaces: cited claims → typed `Citation` records; embedded thought refs → typed `EmbeddedReference`. Don't try to type all prose at once. |
+| 12 | Does the relation-kind validator's table live in the contract crate or the runtime crate? | Contract crate (`signal-persona-mind`). Producers and consumers should share the same validator; runtime crates compose against it. |
 
 ---
 
@@ -865,12 +997,14 @@ Per `~/primary/skills/architectural-truth-tests.md`, every
 new substrate gets witnesses. v1 acceptance fires when:
 
 - **Round-trip**: every record kind round-trips through rkyv wire form. Test name pattern: `thought_<kind>_round_trip`, `relation_<kind>_round_trip`.
-- **Content-hash identity**: two encodings of the same record produce the same `RecordId`. Test name: `record_id_stable_under_re_encode`.
-- **Append-only**: writing a record with the same ID returns "already exists" (idempotent), never replaces. Test name: `record_write_is_idempotent`.
+- **Content-hash identity (Thought)**: two encodings of the same Thought (kind + body) produce the same `RecordId` regardless of which author / when. Test name: `record_id_stable_under_re_encode`, `record_id_independent_of_author`.
+- **Relation identity (event)**: two Relations with the same source/target/kind but different author or different `occurred_at` produce **distinct** `RelationId`s. Test name: `relation_id_includes_author_and_time`.
+- **Append-only**: writing a Thought with the same `RecordId` is a no-op (idempotent), never replaces. Test name: `thought_write_is_idempotent`.
+- **Relation-kind domain/range validation**: a commit attempting `Implements` from non-Claim source rejects with typed `RelationKindMismatch`. Test name: `relation_kind_rejects_wrong_domain` (one parametrized witness covers all eleven kinds + their domains/ranges). This witness directly addresses the gap in current `persona-mind/src/tables.rs:206`.
 - **Supersession chain**: writing a `Supersedes` relation lets queries filter out superseded records. Test name: `superseded_thought_excluded_from_current_query`.
-- **Push-not-pull**: a subscriber sees a new commit as a push event in under N ms; no polling exists in the path. Test name: `subscription_delivers_commit_without_polling`.
-- **Multi-author preservation**: two `Authored` relations on the same Thought both persist. Test name: `multi_author_relations_persist`.
-- **Lock-file projection round-trip**: writing a Claim writes the lock file; releasing the Claim removes the line. Test name: `claim_active_renders_lock_file`.
+- **Push-not-pull**: a subscriber sees a new commit as a push event in under N ms; no polling exists in the path. Test name: `subscription_delivers_commit_without_polling`. **Currently stubbed**; operator track `primary-hj4.1.1` is shipping the subscription path that this witness gates.
+- **Multi-author preservation**: two agents committing the same Thought content produce one Thought row + two distinct `Authored` Relations. Test name: `multi_author_relations_persist`.
+- **External lock-file shim round-trip**: the shim's subscription on Active Claims renders `<role>.lock` correctly on Claim commit and on release. Test name lives in the shim's repo, not in persona-mind (per `persona-mind/ARCHITECTURE.md` §"Lock-file projections": persona-mind doesn't render).
 - **BEADS migration round-trip**: importing N beads produces N Goals with `BeadId` References; querying by bead ID returns the right Goal. Test name: `bead_import_recovers_by_old_id`.
 
 ---
@@ -878,12 +1012,13 @@ new substrate gets witnesses. v1 acceptance fires when:
 ## 13 · What v1 deliberately doesn't do
 
 - **No mutable property bags.** All knowledge is typed records + typed relations.
-- **No free-text body fields outside `NotaRecord`.** Every body field is typed NOTA.
-- **No full-text search.** Filter by kind / author / time / belonging only.
+- **No raw `String` body fields.** Every text field is at least a named newtype carrying its semantic role (e.g. `Rationale(String)`, `Summary(String)`, `Description(String)`); structure is extracted into typed sums and sub-records wherever it surfaces (closed-kind enums for what-kind-of-thing, sub-records for composite structure, `Reference` Thoughts for citations). **Genuine prose remains a string leaf in NOTA today** — the current `TextBody` shape in `signal-persona-mind/src/graph.rs:220` is the pragmatic v1 container. **Eventual Sema** (per `~/primary/ESSENCE.md` §"Today and eventually") is the typed-all-the-way-down destination; v1 doesn't claim that today. v2 candidate: typed `NexusBody`/`StructuredBody` shape for prose with internal structure (paragraphs, embedded citations, embedded thought refs).
+- **No full-text search.** Filter by kind / time / belonging / source / target relations only.
 - **No semantic embeddings.** Add as a secondary index layer when needed; not v1.
 - **No cross-engine sync.** Single-engine mind graph in v1.
 - **No automatic inference.** New Beliefs come from authored Thoughts, not from rule firing. (Inference can land as a downstream component that subscribes, computes, submits new Beliefs.)
 - **No special "agent" mind layer.** Every agent submits typed records; agency emerges from the patterns of submissions, not from a dedicated agent shape.
+- **No lock-file rendering inside persona-mind.** Per `persona-mind/ARCHITECTURE.md` §"Lock-file projections": the mind is the substrate; lock files render in an external shim that subscribes to Claim commits.
 
 These are kept out so that what does land lands typed.
 
@@ -896,14 +1031,16 @@ filing):
 
 1. Extend `signal-persona-mind` with the new `MindRequest`/`MindReply` variants for `SubmitThought`/`SubmitRelation`/`QueryThoughts`/`QueryRelations`/`SubscribeThoughts`/`SubscribeRelations`. NotaEnum/NotaRecord derives per workspace policy.
 2. Implement the seven `ThoughtBody` variants and eleven `RelationKind` variants as typed records inside the contract crate. Round-trip tests per variant.
-3. Extend `persona-mind/StoreKernel` to write to the new `thoughts`/`relations` tables. Single-writer discipline preserved.
-4. Implement the secondary indices (`by_kind`, `by_author`, `by_time`, `by_source`, `by_target`).
-5. Implement the subscription system (commit-then-emit; subscriber actors receive deltas).
-6. Implement filter evaluation (in-process; v1 has small data sets).
-7. BEADS import path (one-time): read all open beads, write Goals + `BeadId` References. Don't dual-write.
-8. Lock-file projection over Active Claims.
-9. Re-implement today's `RoleClaim`/`RoleRelease`/`ActivitySubmission` as thin projections over `SubmitThought`/`SubmitRelation`.
-10. Designer + user start writing Decision Thoughts for non-trivial choices, growing the discipline organically.
+3. Land the relation-kind validator (domain/range table from §4) in the contract crate so producers and consumers share it. Witness: `relation_kind_rejects_wrong_domain`.
+4. Migrate `persona-mind`'s ID minting from sequential compact IDs to `RecordId = hash(kind, body)` (Thoughts) / `RelationId = hash(kind, source, target, author, occurred_at, note)` (Relations). Move author + occurred_at OUT of the `Thought` type per §5.1. Witnesses: `record_id_independent_of_author`, `thought_write_is_idempotent`.
+5. Extend `persona-mind/StoreKernel` to write to the new `thoughts`/`relations` tables with the `commit_at` row metadata. Single-writer discipline preserved.
+6. Implement the secondary indices (`by_kind`, `by_commit_time`, `by_source`, `by_target`).
+7. Implement the subscription system (commit-then-emit; subscriber actors receive deltas) — currently stubbed; this is the work under operator bead `primary-hj4.1.1`.
+8. Implement filter evaluation (in-process; v1 has small data sets).
+9. BEADS import path (one-time): read all open beads, write Goals + `BeadId` References. Don't dual-write.
+10. External lock-file shim (in `tools/orchestrate` or equivalent — NOT in persona-mind) subscribes to Active Claims and renders `<role>.lock`.
+11. Re-implement today's `RoleClaim`/`RoleRelease`/`ActivitySubmission` as thin projections over `SubmitThought`/`SubmitRelation`.
+12. Designer + user start writing Decision Thoughts for non-trivial choices, growing the discipline organically.
 
 After v1 is real, v2 stages: report rendering; ARCH rendering;
 skill rendering. These follow the same pattern — projections
