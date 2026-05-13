@@ -44,11 +44,16 @@ Updates are NEW thoughts pointing at older ones via
 
 The query surface is push-subscribe (per
 `~/primary/skills/push-not-pull.md`): subscribe by
-filter; receive initial snapshot then deltas. v1 acceptance
-requires shipping this path — operator track
-`primary-hj4.1.1` is building it; current code stubs return
-`MindRequestUnimplemented`. The CLI surface stays one NOTA
-record in, one NOTA reply out (per
+filter; receive initial snapshot then deltas. **Initial-
+snapshot subscription is live** — `SubscribeThoughts` /
+`SubscribeRelations` register the filter, persist it, and
+return `SubscriptionAccepted { initial_snapshot, … }`
+(`persona-mind/src/graph.rs:58`). **Commit-time push delivery
+is still missing** — `StoreKernel` does not yet emit
+`SubscriptionEvent { delta }` to registered subscribers on
+new commits. v1 acceptance fires when commit-time push lands;
+operator track `primary-hj4.1.1` carries that work. The CLI
+surface stays one NOTA record in, one NOTA reply out (per
 `persona-mind/ARCHITECTURE.md` §0).
 
 ```mermaid
@@ -349,7 +354,6 @@ chain), `Decided away from` (by Decision), or
 struct GoalBody {
     description:  NotaRecord,
     scope:        GoalScope,
-    status:       GoalStatus,
 }
 
 enum GoalScope {
@@ -359,19 +363,27 @@ enum GoalScope {
     Personal       { actor: Reference },
     Crosscutting   { description },
 }
-
-enum GoalStatus {
-    Open,
-    Active   { claims: Vec<RecordId> },  // derived view
-    Achieved { realizing_observation: RecordId },
-    Abandoned { reason: NotaRecord },
-}
 ```
 
 BEADS issues become Goals of the appropriate `GoalScope`.
-The current `Goal.status` is derived from existing
-`Implements` (Claim → Goal), `Realizes` (Observation →
-Claim), and `Supersedes` Relations; not a mutable field.
+`GoalBody` carries no `status` field. The named states a
+goal can be in — *Open*, *Active*, *Achieved*, *Abandoned* —
+are **query results derived from Relations**, not stored on
+the Thought:
+
+- *Open*: a Goal with no `Implements` Relation from any Claim.
+- *Active*: a Goal with one or more `Implements` Relations from
+  Claims whose `ClaimActivity` is `Active` (no later
+  `Realizes`-Observation closing them).
+- *Achieved*: a Goal whose Claims have `Realizes` Observations
+  marking completion.
+- *Abandoned*: a Goal with an Observation `Belongs`-related to
+  it whose summary names abandonment.
+
+Storing the state on the Thought would conflict with content-
+hash identity (§5.1) and immutability (§5.2). The matching
+current shape in `signal-persona-mind/src/graph.rs:397` already
+omits the field; v1 keeps it that way.
 
 ### 3.5 · Claim — *committed work toward a Goal*
 
@@ -778,12 +790,19 @@ fire on commits (the StoreKernel emits after durable
 commit). 
 
 > **Current code status**: `SubscribeThoughts` and
-> `SubscribeRelations` return `MindRequestUnimplemented`
-> today (`persona-mind/src/graph.rs:58`). Operator is
-> actively building the subscription path under bead
-> `primary-hj4.1.1` ("implement typed graph subscription
-> delivery"). **Subscriptions are required for v1
-> acceptance** (§12 witness); they are not yet landed.
+> `SubscribeRelations` (`persona-mind/src/graph.rs:58`) now
+> register the subscription filter in the
+> `thought_subscriptions` / `relation_subscriptions` redb
+> tables and reply with `SubscriptionAccepted { initial_snapshot, … }`
+> containing the records matching the filter at subscribe time.
+> **Commit-time push delivery is still missing**: `StoreKernel`
+> does not yet emit `SubscriptionEvent { subscription, delta }`
+> to the live subscriber set when new Thoughts / Relations
+> commit. Operator track `primary-hj4.1.1` ("implement typed
+> graph subscription delivery") carries that work. **Push
+> delivery is required for v1 acceptance** (§12 witness);
+> initial-snapshot subscription on its own does not satisfy
+> the witness.
 
 ---
 
@@ -872,9 +891,10 @@ Thought (Goal): record_id = hash(GoalKind, body)
                 body = GoalBody {
                     description: "land prototype-one acceptance",
                     scope: Project{name="persona"},
-                    status: Open,
                 }
                 storage row: commit_at = T0
+                # named state (Open / Active / Achieved / Abandoned) is
+                # a query result derived from Relations, not a field
 
 Relation (Authored):
   id = hash(Authored, source=Reference(Identity(user)), target=Goal.record_id, T0, ...)
@@ -1002,7 +1022,7 @@ new substrate gets witnesses. v1 acceptance fires when:
 - **Append-only**: writing a Thought with the same `RecordId` is a no-op (idempotent), never replaces. Test name: `thought_write_is_idempotent`.
 - **Relation-kind domain/range validation**: a commit attempting `Implements` from non-Claim source rejects with typed `RelationKindMismatch`. Test name: `relation_kind_rejects_wrong_domain` (one parametrized witness covers all eleven kinds + their domains/ranges). This witness directly addresses the gap in current `persona-mind/src/tables.rs:206`.
 - **Supersession chain**: writing a `Supersedes` relation lets queries filter out superseded records. Test name: `superseded_thought_excluded_from_current_query`.
-- **Push-not-pull**: a subscriber sees a new commit as a push event in under N ms; no polling exists in the path. Test name: `subscription_delivers_commit_without_polling`. **Currently stubbed**; operator track `primary-hj4.1.1` is shipping the subscription path that this witness gates.
+- **Push-not-pull**: a subscriber sees a new commit as a push event in under N ms; no polling exists in the path. Test name: `subscription_delivers_commit_without_polling`. **Initial-snapshot subscription is live** (`persona-mind/src/graph.rs:58` returns `SubscriptionAccepted` with `initial_snapshot`); **commit-time push delivery is still missing** — `StoreKernel` does not yet emit `SubscriptionEvent` to live subscribers on new commits. Operator track `primary-hj4.1.1` is shipping the push leg that this witness gates.
 - **Multi-author preservation**: two agents committing the same Thought content produce one Thought row + two distinct `Authored` Relations. Test name: `multi_author_relations_persist`.
 - **External lock-file shim round-trip**: the shim's subscription on Active Claims renders `<role>.lock` correctly on Claim commit and on release. Test name lives in the shim's repo, not in persona-mind (per `persona-mind/ARCHITECTURE.md` §"Lock-file projections": persona-mind doesn't render).
 - **BEADS migration round-trip**: importing N beads produces N Goals with `BeadId` References; querying by bead ID returns the right Goal. Test name: `bead_import_recovers_by_old_id`.
@@ -1035,7 +1055,7 @@ filing):
 4. Migrate `persona-mind`'s ID minting from sequential compact IDs to `RecordId = hash(kind, body)` (Thoughts) / `RelationId = hash(kind, source, target, author, occurred_at, note)` (Relations). Move author + occurred_at OUT of the `Thought` type per §5.1. Witnesses: `record_id_independent_of_author`, `thought_write_is_idempotent`.
 5. Extend `persona-mind/StoreKernel` to write to the new `thoughts`/`relations` tables with the `commit_at` row metadata. Single-writer discipline preserved.
 6. Implement the secondary indices (`by_kind`, `by_commit_time`, `by_source`, `by_target`).
-7. Implement the subscription system (commit-then-emit; subscriber actors receive deltas) — currently stubbed; this is the work under operator bead `primary-hj4.1.1`.
+7. Complete the subscription system: commit-then-emit push delivery from `StoreKernel` to live subscribers. Initial-snapshot subscription is live (`persona-mind/src/graph.rs:58` returns `SubscriptionAccepted` with the matching records at subscribe time); the missing leg is the post-commit `SubscriptionEvent { subscription, delta }` emission to every registered filter that accepts the new record. This is the work under operator bead `primary-hj4.1.1`.
 8. Implement filter evaluation (in-process; v1 has small data sets).
 9. BEADS import path (one-time): read all open beads, write Goals + `BeadId` References. Don't dual-write.
 10. External lock-file shim (in `tools/orchestrate` or equivalent — NOT in persona-mind) subscribes to Active Claims and renders `<role>.lock`.
