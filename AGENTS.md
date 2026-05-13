@@ -31,6 +31,21 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
 5. **The repo's `AGENTS.md` + `skills.md`** when editing inside
    a repo under `repos/`.
 
+## Nix store search is forbidden
+
+The Nix store is not a workspace search surface. Do not run
+generic filesystem search or traversal tools (`rg`, `grep`,
+`find`, `fd`, broad shell globs, recursive `ls`) against
+`/nix/store`.
+
+When looking for Nix-controlled information, use Nix: inspect the
+source checkout, `nix eval`, `nix flake show`, `nix flake
+metadata`, `nix path-info`, or a targeted derivation output. If a
+value cannot be reached that way, change the Nix code so the value
+is exposed as an evaluable option, package, check, passthru, or
+helper output. See `skills/nix-discipline.md` for the detailed
+rule.
+
 ## Roles
 
 The workspace recognises eight coordination roles:
