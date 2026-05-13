@@ -523,6 +523,77 @@ it usually means someone forgot to advance `main`.
 
 ---
 
+## `jj git push -c @` is forbidden for routine commits
+
+The form `jj git push --change @` (or `-c @`) creates an
+auto-named `push-<change-id>` bookmark on the remote and pushes
+the commit to it. It does **not** advance `main`. The bookmark
+accumulates on the remote until someone manually deletes it.
+
+**Use the standard flow instead** (per §"The standard flow").
+The commit lands on `main`; no auto-named bookmark is created;
+consumers see the work immediately.
+
+Allowed `--change` uses, narrow:
+
+- **Orphan recovery** — when an agent's prior work was
+  abandoned and needs to be brought back onto a fresh `@`, per
+  `reports/designer/140-jj-discipline-after-orphan-incident.md`
+  §6.
+- **Explicit "needs review before main"** — when the work
+  genuinely needs review before landing. Use a descriptive
+  bookmark name (`jj bookmark create push-<topic>`), not the
+  auto-naming form. Descriptive names are findable on the
+  remote and easy to delete after merge.
+
+If you find yourself reaching for `-c @` in routine work, stop.
+The standard flow is the discipline; the difference is one
+extra command, not three.
+
+The pattern compounds. Auto-named bookmarks accumulate on the
+remote silently — there's no clean-up step. A workspace with 26
+stray `push-*` bookmarks (as observed 2026-05-13, see
+`reports/system-assistant/10-bookmark-divergence-forensic.md`)
+is the direct consequence of treating `-c @` as routine.
+
+---
+
+## Bookmark cleanup after merge
+
+When a `push-<topic>` bookmark's commit becomes an ancestor of
+`main` (because the work merged), **delete the bookmark**.
+Locally and on the remote:
+
+```sh
+jj bookmark delete push-<topic>
+jj git push --deleted
+```
+
+(`--deleted` is its own mode; it can't be combined with
+`--bookmark`. Run it on its own after the local delete; it pushes
+every locally-deleted bookmark to the remote in one call.)
+
+Long-lived `push-*` bookmarks are noise. They mislead
+reviewers ("is this still in flight?"), they multiply the
+surface area of `jj bookmark list`, and they grow forever if
+no one prunes. The standard flow above (push directly to `main`)
+avoids creating them in the first place; this rule cleans up the
+ones that exist legitimately for review.
+
+**End-of-session addition**: include `jj bookmark list` in the
+session-end check. Any bookmark starting with `push-` whose
+commit is already an ancestor of `main` should be deleted before
+the session ends:
+
+```sh
+# list candidate bookmarks
+jj bookmark list | awk '/^push-/ {print $1}'
+# for each name, check ancestor status:
+jj log -r '<commit>::main' --no-graph     # nonempty = ancestor = delete
+```
+
+---
+
 ## When to ask anyway
 
 Routine obstacles are autonomy. The following are *not*
