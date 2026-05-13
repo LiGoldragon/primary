@@ -174,6 +174,61 @@ underlying artifact is the agent's responsibility.
 
 ---
 
+## Feature beads carry their branch name
+
+A `feature` bead represents work that lives on a **non-main branch**
+for the duration of the feature arc — typically work spanning more
+than one commit, often coordinated across multiple repos and
+multiple agents. `task` beads tend to land directly on main; feature
+beads name the parallel branch where the work happens.
+
+The bead description **declares the branch name explicitly**, near
+the top, in a discoverable form:
+
+```text
+Branch: horizon-re-engineering
+Repos:  horizon-rs, lojix, signal-lojix, CriomOS, CriomOS-home, goldragon
+```
+
+For multi-repo features, name every repo whose branch carries this
+work — every repo uses the same branch name so any agent picking up
+the bead lands on the right surface in each.
+
+**Why:** without an explicit branch name in the bead, multiple
+agents picking up the same bead at different times each create a
+fresh branch with a slightly different name (`feature/horizon`,
+`horizon-refactor`, `re-engineering-v2`, …). The result is parallel
+reimplementations of the same work that have to be reconciled later
+or thrown away. The bead is the rendezvous; the branch name is what
+makes the rendezvous concrete on the file system.
+
+**How to apply:**
+
+- When filing a `feature` bead, name the branch in the description
+  before any agent picks it up. If you don't know the name yet, name
+  *that* explicitly (`Branch: TBD — first agent to claim picks the
+  name and updates this bead`).
+- When picking up a `feature` bead, find the declared branch name; if
+  missing, comment on the bead naming a branch before starting work,
+  so the next agent sees what you chose.
+- Sub-task beads blocked-by a feature bead inherit the parent's
+  branch — they don't get separate branches unless their work scope
+  is genuinely narrower than the feature.
+- Branch names follow the workspace's branch-naming convention: bare
+  descriptive names (`horizon-re-engineering`), not `push-` prefixed.
+  The `push-` convention in `~/primary/skills/jj.md` is for
+  short-lived review-cycle bookmarks; long-lived feature branches are
+  a different shape and use the bare form.
+- When the feature lands and the branch merges to main, close the
+  feature bead with a closing note pointing at the merge commit.
+  Delete the merged branch in every repo (per
+  `~/primary/skills/jj.md` §"Bookmark cleanup after merge").
+
+`task` beads do not need this — by default they land on main as
+small commits and don't have a parallel branch life.
+
+---
+
 ## When to close a bead
 
 ### Shipped
