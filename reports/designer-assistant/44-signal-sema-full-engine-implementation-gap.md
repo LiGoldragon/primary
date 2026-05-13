@@ -6,7 +6,10 @@ typed binary database-operation language in transit, and Sema should
 grow into the reusable database engine that executes those operations
 for state-bearing components. This report focuses on code that exists
 now, the distance from intent, and the essential Sema modifications
-needed for the full engine.*
+needed for the full engine. Read alongside
+`reports/designer/157-sema-db-full-engine-direction.md`, which now
+supersedes the narrower `reports/designer/155-sema-db-pattern-library.md`
+direction.*
 
 ## 0. Bottom line
 
@@ -46,12 +49,12 @@ The full target should be stated this sharply:
 > transaction logs. Components still own domain policy and authorization,
 > but they should not reimplement the database engine per component.
 
-The version of `reports/designer/155-sema-db-pattern-library.md` read
-during this pass gives a useful first layer if it stays narrow:
-`IndexedTable`, `MonotoneSequence`, `Table::scan_range`, and named
-packed keys. For the full engine, those are implementation materials,
-not the destination. A narrow pattern library can be accepted only as
-Layer 1 of a larger Sema engine plan.
+`reports/designer/157-sema-db-full-engine-direction.md` now states the
+same architectural direction from the designer lane: 155's pattern
+library is a subset, not the answer. This report independently reaches
+that conclusion from the implementation evidence. `IndexedTable`,
+`MonotoneSequence`, `Table::scan_range`, and named packed keys are
+useful materials inside the full engine, not the public destination.
 
 ## 1. Clarified intent
 
@@ -306,8 +309,9 @@ This is the pressure the full engine should absorb.
 
 ## 4. What Sema must become for the full engine
 
-Designer 155's pattern library is useful as storage machinery, but the
-full engine needs a larger shape. The core change is:
+Designer 157 gives the canonical design direction; this section names
+the implementation consequences from the current code. The core change
+is:
 
 > Sema should not only expose typed tables. It should expose typed
 > execution of the Signal/Sema verbs over a component's record
@@ -475,7 +479,7 @@ The engine needs:
 - join/unification support over `PatternField<T>`;
 - stable cursors/snapshot identity.
 
-Designer 155's `scan_range` and `IndexedTable` are useful materials
+Designer 155's `scan_range` and `IndexedTable` remain useful materials
 inside this larger query engine, but they are not the query engine.
 
 ### 4.7 Subscribe and changefeed
@@ -594,39 +598,38 @@ changed and which typed subscriptions match it.
 Do not pretend those verbs are covered by a pattern library. Keep them
 as explicit full-engine tracks.
 
-## 6. What designer 155 should become
+## 6. Alignment with designer 157
 
-If `reports/designer/155-sema-db-pattern-library.md` remains narrow,
-it should be reframed as:
+`reports/designer/157-sema-db-full-engine-direction.md` resolves the
+designer-lane direction: the narrow 155 pattern library is superseded,
+and sema-db is to become the full execution engine for Signal verbs.
+This report agrees with that direction.
 
-> Layer 1: storage primitives needed by the full Sema engine.
+The overlap is direct:
 
-It should not be framed as the answer to "Sema as database engine."
-The four primitives are useful:
+- Designer 157's Package 1, "verb-mapping witnesses per contract,"
+  matches this report's Package A.
+- Designer 157's table/index registration maps to this report's record
+  family catalog.
+- Designer 157's `QueryPlan` and `MutationPlan` map to this report's
+  read/query and write-verb execution layers.
+- Designer 157's `Subscribe` primitive maps to this report's
+  subscription/changefeed requirement.
+- Designer 157's validate, list-record-kinds, and snapshot identity
+  map to this report's schema/introspection and validation sections.
 
-- `IndexedTable` helps maintain secondary indexes;
-- `MonotoneSequence` helps mint typed counters;
-- `scan_range` helps bounded scans;
-- `define_packed_key!` helps named compound indexes.
+Where this report adds value is implementation distance:
 
-But the full engine also needs:
+- it names the exact `Request::assert` drift in existing
+  `signal-persona-*` tests;
+- it names the old `signal` crate request enum that still has `Query`;
+- it names the Nexus parser's assert-only compatibility path;
+- it names the `sema` raw table kernel and legacy raw slot store;
+- it names the component code that is already rebuilding database
+  mechanics locally.
 
-- legal verb mapping at Signal boundaries;
-- operation plans;
-- operation log;
-- validators;
-- query planner;
-- projection and aggregate execution;
-- constrain/join execution;
-- subscription/changefeed;
-- schema/catalog introspection.
-
-If designer modifies 155 toward full engine, it should either expand
-into those packages or split the current pattern-library material into
-a subreport under a larger full-engine design. The unacceptable middle
-position is to call the pattern library "the Sema engine" while leaving
-verb execution, query planning, operation logging, and subscription
-change matching in every component.
+The combined reading is: use designer 157 as the design target; use
+this report as the implementation-gap audit and migration checklist.
 
 ## 7. Highest-signal immediate fixes
 
@@ -643,9 +646,9 @@ change matching in every component.
    requests in the reverse direction.
 4. **Rebase `signal` and Nexus.** The sema-ecosystem path is still the
    oldest part: old `Query`, old parser, old assert-only compatibility.
-5. **Treat designer 155 as foundational only.** It can land as the
-   storage primitive layer, but it does not satisfy the full-engine
-   intent by itself.
+5. **Treat designer 157 as the current design target.** Designer 155's
+   storage primitives can survive as internal engine materials, but
+   the implementation target is the full verb-execution engine.
 
 ## 8. Recommended wording for the architecture
 
