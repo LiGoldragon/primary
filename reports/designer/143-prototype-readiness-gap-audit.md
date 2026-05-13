@@ -24,7 +24,7 @@ The target prototype shape (§1 unpacks this):
 > `persona-daemon` starts one engine; all six first-stack
 > daemons come up under it; `persona status` returns real
 > component readiness; one `message` CLI call traverses the
-> engine through `persona-message-daemon` → `persona-router`
+> engine through `persona-message` → `persona-router`
 > → `persona-harness` → `persona-terminal` → child terminal
 > cell; durable manager events land in `manager.redb`. No
 > Criome/BLS, no restart policy, no multi-engine, no
@@ -57,7 +57,7 @@ concrete fix location):
 | `engine-lifecycle-snapshot` + `engine-status-snapshot` redb tables | Named in /142 §4.3 but absent from `manager.redb` schema | §4.5 |
 | The typed `MessageIngressSubmission` `ChannelMessageKind` variant | Hard-coded as generic `DirectMessage` in router structural-channel install | §4.6 |
 | The message-landing endpoint (where router→harness→terminal delivery ends) | Implicit in code; not specified in any ARCH | §4.7 |
-| `persona-message-daemon` actor topology | Outlined in /142 §3.3; not yet in `persona-message/ARCHITECTURE.md` body | §4.8 |
+| `persona-message` actor topology (the daemon's internal Kameo tree) | Outlined in /142 §3.3; not yet in `persona-message/ARCHITECTURE.md` body | §4.8 |
 | Nix prototype witness `persona-daemon-spawns-first-stack-skeletons` shape | Named as a test target in operator/113 §6; no concrete acceptance spec | §4.9 |
 
 **Plus implementation drift across operator-lane source** —
@@ -115,7 +115,7 @@ parts that actually need to demonstrate "engine alive":
 ```mermaid
 flowchart LR
     cli["message CLI"]
-    mday["persona-message-daemon<br/>(binds message.sock 0660)"]
+    mday["persona-message<br/>(daemon; binds message.sock 0660)"]
     router["persona-router<br/>(binds router.sock 0600)"]
     harness["persona-harness"]
     terminal["persona-terminal"]
@@ -333,7 +333,7 @@ The /142 revision already partially updated this. Remaining
 gaps:
 
 - **Daemon actor topology not described.** ARCH says "this
-  repo owns the message CLI and `persona-message-daemon`"
+  repo owns the message CLI and the `persona-message` daemon (binary: `persona-message-daemon`)"
   but doesn't sketch the actor topology. /142 §3.3
   proposed root + `UserSocketListener` + `RouterClient`.
   Promote that sketch into the ARCH body. (Fix: §4.8 +
@@ -584,7 +584,7 @@ The path:
 
 ```text
 1. message CLI parses NOTA, sends MessageSubmission to message.sock.
-2. persona-message-daemon stamps MessageOrigin::External(Owner) from SO_PEERCRED.
+2. persona-message stamps MessageOrigin::External(Owner) from SO_PEERCRED.
 3. Daemon forwards to router.sock; channel-state lookup against MessageIngressSubmission channel.
 4. Router resolves recipient role → harness instance via persona-harness's registry.
 5. Router emits signal-persona-harness::MessageDelivery to harness.sock.
@@ -605,7 +605,7 @@ that's just a `cat` PTY child — bytes echo back. That's
 enough to prove the path works without needing a real
 agent harness.
 
-### 4.8 `persona-message-daemon` actor topology
+### 4.8 `persona-message` actor topology
 
 ```mermaid
 flowchart TB

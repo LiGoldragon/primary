@@ -68,7 +68,7 @@ This report:
      role-name namespace alignment between
      `signal-persona-harness` and `signal-persona-terminal`.
    - `StampedMessageSubmission.stamped_at` timestamp
-     authority: `persona-message-daemon` mints the ingress
+     authority: `persona-message` mints the ingress
      observation time (provenance); `persona-router` mints
      the durable commit time when persisting the accepted
      message.
@@ -136,14 +136,14 @@ sharing one root family** (`MessageRequest` /
 
 ```text
 Relation A — Client message
-  endpoint:   message CLI (sender) → persona-message-daemon (receiver)
+  endpoint:   message CLI (sender) → persona-message (receiver)
   socket:     message.sock (mode 0660)
   payloads:   MessageRequest::MessageSubmission     (CLI → daemon)
               MessageRequest::InboxQuery
               MessageReply::*
 
 Relation B — Router ingress
-  endpoint:   persona-message-daemon (sender) → persona-router (receiver)
+  endpoint:   persona-message (sender) → persona-router (receiver)
   socket:     router.sock (mode 0600)
   payloads:   MessageRequest::StampedMessageSubmission (daemon → router, with origin tag)
               MessageReply::*
@@ -308,7 +308,7 @@ The prototype rule:
 
 > **Every component receives a state directory via its
 > `SpawnEnvelope.state_dir`. Stateless components (today:
-> `persona-message-daemon`, `persona-system` in skeleton
+> `persona-message`, `persona-system` in skeleton
 > mode) leave the directory empty and do not open a redb
 > file until they own durable state.**
 
@@ -380,7 +380,7 @@ timestamps, two distinct minters:
 
 | Field | Minted by | Meaning |
 |---|---|---|
-| `StampedMessageSubmission.stamped_at` | `persona-message-daemon` | Ingress observation time. Audit/provenance. |
+| `StampedMessageSubmission.stamped_at` | `persona-message` | Ingress observation time. Audit/provenance. |
 | `Router::commit_time` (on `MessageSlot` persistence) | `persona-router` | Durable commit time. Source of truth for "when did this message land in the engine." |
 
 Ingress timestamp is provenance; router commit time is
@@ -446,8 +446,8 @@ prototype-scope ops fails the witness.
 ```text
 message CLI parses NOTA `(Send fixture "hello")`
 CLI connects to message.sock, sends MessageRequest::MessageSubmission
-persona-message-daemon receives, stamps MessageOrigin::External(Owner) from SO_PEERCRED
-daemon forwards MessageRequest::StampedMessageSubmission to router.sock
+persona-message receives, stamps MessageOrigin::External(Owner) from SO_PEERCRED
+persona-message forwards MessageRequest::StampedMessageSubmission to router.sock
 router checks channel table: Internal(Message) → Internal(Router) kind MessageIngressSubmission found (Permanent, installed at engine setup)
 router resolves recipient "fixture" → HarnessKind::Fixture instance
 router sends signal-persona-harness::MessageDelivery to harness.sock
