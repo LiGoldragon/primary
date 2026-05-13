@@ -75,6 +75,26 @@ the main Persona architecture reset unless the user names them.
 | `chronos` | `/git/github.com/LiGoldragon/chronos` | Active enough to keep visible, not Persona-core. |
 | `TheBookOfSol` | `/git/github.com/LiGoldragon/TheBookOfSol` | Poet/prose surface, not Persona-core. |
 
+## Replacement Stack (Future Infrastructure)
+
+These repos exist on GitHub as **skeleton-only documentation** today.
+They are scheduled to replace parts of the current stack once
+implementation lands. Built in parallel with the current stack so the
+existing surface keeps working until cutover; do not assume current
+cluster operations flow through them.
+
+| Repository | Path | Replaces | Status |
+|---|---|---|---|
+| `signal-lojix` | `github:LiGoldragon/signal-lojix` | wire surface implicit in `lojix-cli` (none today) | Skeleton only. ARCHITECTURE.md + skills.md stub. No `Cargo.toml`, no `src/`, no `flake.nix`. Implementation kicks off when `lojix-daemon` work begins. Per `~/primary/reports/system-assistant/04-dedicated-cloud-host-plan-second-revision.md` §P5.4. |
+| `lojix-daemon` | `github:LiGoldragon/lojix-daemon` | implementation surface of `lojix-cli` (cli stays, becomes thin client) | Skeleton only. ARCHITECTURE.md describes planned actors (LiveSetActor, GcRootActor, EventLogActor, ContainerLifecycleActor) and the `/run/lojix/daemon.sock` surface. No code yet. Per `~/primary/reports/system-assistant/04-dedicated-cloud-host-plan-second-revision.md` §P5. |
+
+**Cutover discipline.** Each replacement repo has a documented
+"replaces" target above. The cutover for that target is staged: build
+the replacement to feature parity, run both in parallel, switch
+producers/consumers one at a time, then retire the original (move it to
+"Retired / Cleanup Targets"). Do not begin retiring the old until the
+replacement covers every consumer of the surface being replaced.
+
 ## Current Truth Pins
 
 - Actor runtime: direct `kameo` today. Actor density is required:
