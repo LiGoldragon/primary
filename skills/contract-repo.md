@@ -130,6 +130,19 @@ It **does not own**:
   tree are private. Reducers, write paths, transaction
   boundaries, and the actual `Database::open` call stay
   inside the daemon.
+- Logic that interprets the records. Validation pipelines,
+  routing rules, gate decisions stay in the daemons.
+- NOTA projection *policy* and *surfaces*. The contract owns
+  text codec on its types (per "What it owns" above) — every
+  contract value is NOTA-encodable directly. The contract does
+  not own *where* NOTA renders (which CLI prints it, which
+  daemon endpoint accepts it, which audit format wraps it) or
+  the composition of Nexus wrapper records for a particular
+  human-facing form. Projection policy lives in the boundary
+  component.
+- Configuration. `Cargo.toml`, `flake.nix`, deployment.
+- `serde`. Contract types may *also* derive serde for debug
+  rendering, but the contract is rkyv-on-the-wire.
 
 It **may own**:
 
@@ -149,19 +162,6 @@ It **may own**:
   `signal-persona-<X>-introspect` crate when the
   inspection vocabulary is heavy or high-churn enough to
   separate from the operational surface.
-- Logic that interprets the records. Validation pipelines,
-  routing rules, gate decisions stay in the daemons.
-- NOTA projection *policy* and *surfaces*. The contract owns
-  text codec on its types (per "What it owns" above) — every
-  contract value is NOTA-encodable directly. The contract does
-  not own *where* NOTA renders (which CLI prints it, which
-  daemon endpoint accepts it, which audit format wraps it) or
-  the composition of Nexus wrapper records for a particular
-  human-facing form. Projection policy lives in the boundary
-  component.
-- Configuration. `Cargo.toml`, `flake.nix`, deployment.
-- `serde`. Contract types may *also* derive serde for debug
-  rendering, but the contract is rkyv-on-the-wire.
 
 ---
 
