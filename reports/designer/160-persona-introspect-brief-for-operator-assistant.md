@@ -40,37 +40,49 @@ ARCH.
 **Persona-introspect is the engine's inspection plane.** Today
 it's a scaffold: `IntrospectionRoot` + five empty child actors
 that return `Unknown` for every request except a stubbed
-`PrototypeWitness`. Under the new architecture three things
-become clear:
+`PrototypeWitness`. Under the new architecture:
 
 1. **Persona-introspect is primarily a fan-out coordinator over
-   Signal**, not a state-bearing component. Its day job is:
-   receive a typed `Match`-shaped Signal frame at
-   `introspect.sock`; validate + lower to peer-specific typed
-   queries; send those to peer daemons (terminal.sock, router.sock,
-   etc.); wrap the typed replies in `signal-persona-introspect`'s
-   envelope; reply. **No central Persona database; no peer redb
-   opens; no shared observation store.**
+   Signal.** Receives a typed `Match`-shaped Signal frame at
+   `introspect.sock`; lowers to peer-specific typed queries;
+   sends those to peer daemons (terminal.sock, router.sock,
+   etc.); wraps the typed replies in `signal-persona-introspect`'s
+   envelope; replies. **No central Persona database; no peer
+   redb opens; no shared observation store.**
 
-2. **The first work slice is sema-agnostic.** The fan-out path
-   doesn't need `sema-engine`. Verb-mapping witnesses can land
-   now (Package 1 from `/158 §6.1`); the `/41 §1.2`
-   terminal-first slice can land against current code; the
-   CLI extension is contract-shaped.
+2. **Per the user's 2026-05-14 decision (§7 Q1), persona-introspect
+   does carry local persistent state** — but only when Slice 3
+   lands (post-sema-engine). The local state is bounded:
+   subscription registrations (for `SubscribeComponent` forwarding)
+   plus a correlation cache populated by Subscribe deltas from
+   each peer (for cache-backed `DeliveryTrace`).
 
-3. **What waits for `sema-engine`** is anything requiring
-   *local persistent state* in persona-introspect itself —
-   primarily push subscriptions across restart, and (if it
-   gets one) any local correlation cache for `DeliveryTrace`.
-   The user's six questions in §7 determine whether
-   persona-introspect needs local state at all, and if so,
-   how much.
+3. **The work splits into three slices** per §3:
+   - **Slice 1 (status-fill, sema-agnostic):** verb-mapping
+     witness + real `EngineSnapshot` / `ComponentSnapshot` /
+     `PrototypeWitness` replies. `DeliveryTrace` returns
+     `AwaitingCorrelationCache` until Slice 3.
+   - **Slice 2 (`/41` end-to-end, sema-agnostic):** terminal
+     observation contract + handler; router observation
+     contract + handler (per Q5: OA owns Package D too);
+     introspect TerminalClient + RouterClient; CLI extension;
+     Nix end-to-end witness. The hand-rolled `_by_time`
+     index tables in terminal + router are exactly the
+     patterns `sema-engine` eventually absorbs; the work
+     doesn't wait.
+   - **Slice 3 (Subscribe + DeliveryTrace cache, post-sema-engine):**
+     persona-introspect becomes a sema-engine consumer for
+     its local subscriptions + correlation cache. Lands when
+     `sema-engine` Package 4 + commit-then-emit in peers are
+     real. Detailed package structure lands in a separate
+     designer brief when the gates clear.
 
-The operator-assistant's first dispatchable work is the
-terminal-first slice from `/41` plus the verb-mapping witness
-for `signal-persona-introspect`, both runnable against
-current code without waiting for `sema-engine`'s skeleton to
-land.
+OA dispatches Slice 1 first as the fastest deliverable (a
+working introspect CLI with real readiness), then Slice 2 as
+the substantive architecture proof (typed records crossing
+component boundaries, time-indexed reads, NOTA at the edge).
+Slice 3 is forward work, sequenced behind sema-engine
+Package 4.
 
 ---
 
@@ -244,9 +256,44 @@ once each peer is a sema-engine `Subscribe` consumer.
 
 ## 3 · The work for operator-assistant
 
-Six packages, ordered by dependency. Each is sized for
-operator-assistant dispatch with witnesses that prove the
-typed path is used.
+Per user decisions 2026-05-14 (see §7): three slices, each
+with its own coordination bead.
+
+### 3.0 · Slice structure
+
+```text
+Slice 1 — Status-fill the four current envelope variants
+  OA-1 verb-mapping witness (independent; can land first)
+  OA-A EngineSnapshot real reply
+  OA-B ComponentSnapshot real reply
+  OA-C PrototypeWitness real reply
+  (DeliveryTrace stays Unknown until Slice 3 cache lands)
+
+Slice 2 — /41 terminal + router end-to-end (sema-agnostic)
+  OA-2 signal-persona-introspect envelope extension
+  OA-3 terminal observation contract + handler
+  OA-4 persona-introspect TerminalClient
+  OA-D router observation contract + handler + RouterClient
+  OA-5 CLI Input extension
+  OA-6 Nix end-to-end witness
+
+Slice 3 — Subscribe + DeliveryTrace cache (post-sema-engine)
+  Lands when sema-engine Package 4 (Subscribe primitive) +
+  commit-then-emit in router/terminal/harness are real.
+  persona-introspect becomes a sema-engine consumer for its
+  local subscription registrations + correlation cache.
+```
+
+Slice 1 is sema-agnostic and lightweight; it can ship first
+as the fastest first deliverable and gives an immediate
+introspect-CLI experience (real `Ready`/`NotReady` instead of
+`Unknown` on three of four variants). Slice 2 is the substance
+of `/41` end-to-end including router follow-up per Q5's "OA
+does A + B + C + D" decision. Slice 3 is forward work that
+unblocks when sema-engine + peer commit-then-emit are
+available.
+
+### Slice 1 packages — Status-fill
 
 ### Package OA-1 — signal-persona-introspect verb-mapping witness
 
@@ -267,7 +314,78 @@ typed path is used.
 
 **Independence:** Lands without any sema-engine or
 persona-introspect runtime changes. Can land first or in
-parallel with OA-2/OA-3.
+parallel with the rest of Slice 1 / Slice 2.
+
+### Package OA-A — `EngineSnapshot` real reply
+
+**Repos:** `persona-introspect`.
+
+**Work:**
+- Replace the `IntrospectionRoot.handle_request` Unknown
+  return for `EngineSnapshot` with a real fan-out: query
+  the manager (per `signal-persona`'s engine status surface)
+  for the list of `IntrospectionTarget` values currently
+  alive in this engine.
+- Wrap the result in `EngineSnapshot { engine, observed_components }`.
+- Real `Ready` / `NotReady` per target based on the manager's
+  current readiness facts.
+
+**Witnesses:**
+- `engine_snapshot_returns_alive_targets` — integration test
+  that starts a prototype engine and asserts the snapshot
+  lists the running components.
+- `engine_snapshot_uses_manager_socket` — source-scan +
+  actor trace.
+
+### Package OA-B — `ComponentSnapshot` real reply
+
+**Repos:** `persona-introspect`.
+
+**Work:**
+- Replace the Unknown return for `ComponentSnapshot { engine,
+  target }` with a fan-out to the named target's daemon
+  (terminal.sock / router.sock / mind.sock / harness.sock /
+  system.sock / message.sock / introspect.sock).
+- Query each peer's supervision/readiness surface (per
+  `signal-persona`'s hello/readiness/health relations).
+- Return `Ready` / `NotReady` based on the peer's actual
+  reply.
+
+**Witnesses:**
+- `component_snapshot_uses_target_socket` (per target).
+- `component_snapshot_reports_peer_socket_missing` for
+  unreachable peers.
+
+### Package OA-C — `PrototypeWitness` real reply
+
+**Repos:** `persona-introspect`.
+
+**Work:**
+- Replace the current stub with a real composition of the
+  prototype's end-to-end fire facts: manager seen + router
+  seen + terminal seen + delivery status. Each "seen" fact
+  is a real `ComponentSnapshot::Ready` reply from §OA-B.
+- The `delivery_status` field reports whether the prototype
+  fixture's expected delivery happened (uses the existing
+  router observation surface if available; otherwise
+  `Unknown`).
+
+**Witnesses:**
+- `prototype_witness_composes_real_component_snapshots` —
+  asserts the prototype witness reply uses real
+  `ComponentSnapshot` facts, not stubs.
+- `prototype_witness_unknown_when_router_observation_missing` —
+  if router observation isn't yet wired, the field reports
+  `Unknown` cleanly.
+
+**Note on `DeliveryTrace`.** Per Q1's "stateful with cache"
+decision, `DeliveryTrace` waits for Slice 3 (the local
+correlation cache populated via Subscribe). In Slice 1,
+`DeliveryTrace` returns
+`IntrospectionUnimplementedReason::AwaitingCorrelationCache`
+(typed variant — add to the envelope).
+
+### Slice 2 packages — `/41` terminal + router end-to-end
 
 ### Package OA-2 — Envelope extension per `/41 D2/D3/D7`
 
@@ -380,6 +498,52 @@ mechanical rewrites.
 - `terminal_client_reports_peer_socket_missing`.
 - `terminal_client_reports_peer_socket_unreachable`.
 
+### Package OA-D — Router observation contract + handler + RouterClient (`/41 Package D`)
+
+Per Q5's "OA does A + B + C + D" decision, router follow-up is
+in Slice 2 alongside terminal. Same shape as the terminal work,
+applied to the router's observation surface.
+
+**Repos:** `signal-persona-router`, `persona-router`,
+`signal-persona-introspect`, `persona-introspect`.
+
+**Work** (per `/41 §3 Package D`):
+
+In `signal-persona-router`:
+- Convert the existing router summary/message-trace/channel-
+  state surface into typed `RouterObservationQuery` +
+  `RouterObservationBatch` matching the terminal pattern.
+- Add `RouterObservation` closed sum (`RouteDecision`,
+  `DeliveryStatus`, `ChannelStateChange`, `AdjudicationOutcome`).
+- Add sequence + time range types if not already present.
+
+In `persona-router`:
+- Add router observation sequence + packed time-index tables
+  (same `_by_time` pattern as terminal Slice 2 §OA-3).
+- Atomic dual-write discipline.
+- Add observation handler that compiles `RouterObservationQuery`
+  to reads against the typed tables.
+
+In `signal-persona-introspect`:
+- Extend `ComponentObservationQuery` + `ComponentObservationResult`
+  with `RouterObservations(...)` variants wrapping
+  `signal-persona-router`'s router-owned types.
+
+In `persona-introspect`:
+- Replace `RouterClient` scaffold with a real Kameo actor
+  matching the terminal pattern.
+- Route `ComponentObservationQuery::RouterObservations`
+  through `QueryPlanner` to `RouterClient`.
+- Upgrade `DeliveryTrace` reply: with router observations
+  flowing through introspect, the prototype-witness path
+  can return real router-seen facts. (Full DeliveryTrace
+  correlation cache still waits for Slice 3.)
+
+**Witnesses:**
+- Mirror the terminal witnesses (router_observations_read_*,
+  router_observation_time_index_written_with_primary_record,
+  component_observations_uses_router_socket, etc.).
+
 ### Package OA-5 — CLI extension (`/41 §2`)
 
 **Repos:** `persona-introspect`.
@@ -415,6 +579,51 @@ mechanical rewrites.
 
 **Witnesses:**
 - The derivation itself green = the end-to-end path works.
+
+### Slice 3 packages — Subscribe + DeliveryTrace cache (post-sema-engine)
+
+Slice 3 is **forward work** that lands when sema-engine
+Package 4 ships (the `Subscribe` primitive + `SubscriptionSink<R>`
+contract per `/158 §3.5`) and when each peer component
+(router, terminal, harness, system, message) has commit-then-
+emit machinery wired through its own sema-engine integration.
+
+The shape, per Q1's stateful-with-cache decision:
+
+- **persona-introspect becomes a sema-engine consumer.** Its
+  own redb stores: (a) subscription registrations (caller_id
+  → forwarded peer subscriptions) for `SubscribeComponent`
+  forwarding; (b) a typed correlation cache keyed by
+  `CorrelationId`, populated by subscription deltas from
+  each peer's observation stream.
+- **`SubscribeComponent` wire variant lands** in
+  `signal-persona-introspect`. Verb mapping = `Subscribe`.
+  Forwarding mechanism: persona-introspect subscribes to
+  the relevant peer's observation stream via sema-engine's
+  `Subscribe` primitive, then forwards deltas to the
+  caller's `SubscriptionSink<R>` through introspect's
+  socket.
+- **`DeliveryTrace` upgrades from `AwaitingCorrelationCache`
+  to real cache-backed replies.** Same Subscribe mechanism:
+  persona-introspect subscribes to each peer's observation
+  stream filtered by `CorrelationId` presence; deltas
+  populate the cache; trace queries serve from local state.
+- **persona-introspect/ARCHITECTURE.md** updates: the
+  central no-peer-redb constraint stays; the new local
+  redb (sema-engine-backed) is named explicitly; the
+  Subscribe forwarding pattern is described.
+
+Slice 3 dispatch waits for:
+- sema-engine Package 4 (Subscribe primitive) is green;
+- persona-mind's first-consumer migration is stable (per
+  `/158 §6.1`);
+- each peer that participates in `DeliveryTrace` has
+  commit-then-emit wired through its sema-engine
+  integration.
+
+This is multiple coordination passes downstream. Slice 3's
+package structure lands in a separate designer brief when
+the gates clear.
 
 ---
 
@@ -453,41 +662,48 @@ something to anticipate now.
 
 ---
 
-## 5 · What stays out of scope for this slice
+## 5 · What stays out of scope for Slices 1 + 2
 
 Stating the boundary explicitly so operator-assistant doesn't
-drift into adjacent work:
+drift into adjacent work *within* the first two slices.
+Items marked "→ Slice 3" land later, not never; items marked
+"separate" are entirely outside this brief.
 
-- **No `SubscribeComponent` wire variant.** Per `/41 D6`:
-  "do not add a `SubscribeComponent` wire variant in this
-  slice. A variant that only returns `Unimplemented` gives
-  every consumer contract debt with no working feature."
-  Waits for sema-engine Package 4 + commit-then-emit in
-  each peer.
-- **No local persistent state in persona-introspect.** No
-  subscription tables, no correlation cache, no operation
-  log. Per §1.4 + §7 Q1, defer to post-sema-engine.
-- **No reading of peer redb files.** Per
+- **No `SubscribeComponent` wire variant in Slices 1 + 2.**
+  Per `/41 D6`: "do not add a `SubscribeComponent` wire
+  variant in this slice. A variant that only returns
+  `Unimplemented` gives every consumer contract debt with
+  no working feature." → Slice 3.
+- **No local persistent state in persona-introspect during
+  Slices 1 + 2.** No subscription tables, no correlation
+  cache, no operation log. → Slice 3, when sema-engine is
+  available.
+- **No reading of peer redb files (ever).** Per
   `persona-introspect/ARCHITECTURE.md` §2 constraint:
   "the daemon does not open peer redb files." All state
-  access goes through the peer's Signal socket.
-- **No `DeliveryTrace` push reassembly.** The current pull
-  shape stays; the push alternative (each peer emits
-  correlated-fact events to an introspect-local store) is
-  out of scope. See §7 Q3.
-- **No persona-harness CLI.** The gap `/153 §3` named is
-  real (harness has only `persona-harness-daemon`, no
-  `harness` CLI), but it's a separate slice. See §7 Q5.
+  access goes through the peer's Signal socket. **Permanent
+  architectural constraint**, not a slice boundary.
+- **`DeliveryTrace` in Slice 1 returns
+  `AwaitingCorrelationCache`** (typed unimplemented reason
+  to add to the envelope). Real DeliveryTrace cache-backed
+  replies → Slice 3 once peers can emit `CorrelationId`-tagged
+  observation deltas via Subscribe.
+- **No persona-harness CLI** in this dispatch. The gap
+  `/153 §3` named is real (harness has only
+  `persona-harness-daemon`, no `harness` CLI), but it's a
+  **separate** slice per Q4. Different operator-assistant
+  bead.
 - **No field-level schema introspection.** `ListRecordKinds`
   returns capability flags + record-kind names + contract
   crate identifiers (per `/41 D7`), not field schemas.
   Field-level reflection waits for nota-derive's descriptor
-  generation.
+  generation. **Separate** future work.
 - **No `signal-persona-introspect-*` sibling crate.** All
   envelope additions land in the central crate (per
   `signal-persona-introspect/ARCHITECTURE.md`); the
   wrapper-not-schema-hub constraint per DA `/40` keeps
   the central crate from absorbing component row vocab.
+  **Permanent architectural constraint.**
 
 ---
 
@@ -526,16 +742,14 @@ operator-assistant ships; designer absorbs any shape surprises.
 
 ---
 
-## 7 · Open questions for the user
+## 7 · Decisions from the user (2026-05-14)
 
-Six questions surface the ambiguities in the work below.
-Each carries the substance for the user to answer without
-opening files (per `~/primary/skills/reporting.md` §"Questions
-to the user — paste the evidence, not a pointer"). Recommendations
-are the designer's call; the user's settled answers pin the
-work.
+Six questions surfaced; three answered by the user 2026-05-14
+(Q1, Q2, Q5); three still open or deferred (Q3, Q4, Q6).
+Designer recommendations preserved as historical record below;
+the user's settled answer pins the work.
 
-### Q1 — Does persona-introspect have its own persistent state?
+### Q1 — Does persona-introspect have its own persistent state? — **STATEFUL (Subscribe + DeliveryTrace cache)**
 
 **The question.** Today the daemon binds `introspect.sock` and
 serves Signal frames through a Kameo actor root. The
@@ -562,17 +776,39 @@ not say whether it has its own redb file.
 **Designer recommendation: (b).** The Subscribe case has a
 clear need (durability across restart). DeliveryTrace stays
 pull-shaped (per §7 Q3 below) for v1, so no correlation cache.
-The introspect's local state is small and bounded: one typed
-subscription record per active subscriber × per peer it
-forwards to.
 
-**Why this matters for OA's work:** all OA-1 to OA-6 packages
-above are sema-agnostic regardless of the answer. But the
-answer pins whether persona-introspect becomes a sema-engine
-consumer (yes if b or c, no if a), which affects the eventual
-migration story.
+**User decision (c) — overrides recommendation.** persona-
+introspect carries persistent subscriptions AND a local
+correlation cache for `DeliveryTrace`. The mechanism: each
+peer becomes a `Subscribe` producer (commit-then-emit
+observation deltas tagged with `CorrelationId` when present);
+persona-introspect subscribes to each peer's observation
+stream via the same `Subscribe` primitive that powers
+`SubscribeComponent` for outside callers. Subscription deltas
+populate persona-introspect's local correlation cache (keyed
+by `CorrelationId`). `DeliveryTrace` queries serve from that
+local cache.
 
-### Q2 — First slice scope: the four current envelope variants, or `/41`'s `ComponentObservations` extension?
+**Implications:**
+
+- **persona-introspect becomes a sema-engine consumer.** Its
+  local state (subscription registrations + correlation cache)
+  lives in persona-introspect's own redb via sema-engine. See
+  `/158 §5` update landing alongside this report.
+- **Each peer that participates in `DeliveryTrace` must be
+  a sema-engine Subscribe producer first.** persona-introspect
+  cannot populate its correlation cache until peers can emit
+  commit-then-emit deltas through `sema-engine` Package 4.
+  That gates the cache, not slice 1 status-fill.
+- **DeliveryTrace pull-vs-push (Q3) is implicitly resolved:**
+  push from peers via Subscribe, pull from persona-introspect's
+  local cache. The hybrid is a single mechanism, not two.
+- **The slice-3 work (post-sema-engine) is non-trivial.** It's
+  not just SubscribeComponent forwarding; it's persona-introspect
+  as an active subscriber to its own peers, plus a cache lookup
+  path for DeliveryTrace queries.
+
+### Q2 — First slice scope: the four current envelope variants, or `/41`'s `ComponentObservations` extension? — **BOTH, SEQUENCED**
 
 **The question.** Today only `PrototypeWitness` returns
 anything other than `Unknown`. Two scoping options for OA's
@@ -594,15 +830,19 @@ first deliverable:
 **Designer recommendation: (b).** The status-fill work is
 cheaper but less load-bearing — `Ready/NotReady/Unknown` is
 already a working tri-state envelope; making it actually
-report readiness doesn't require any structural change. `/41`
-is what proves the architecture (typed records crossing
-component boundaries, time-indexed reads, NOTA projection at
-the edge). If OA can ship one slice, ship the one that
-validates the shape.
+report readiness doesn't require any structural change.
 
-**Counter-argument for (a):** if operator-assistant has less
-context for `/41`'s detail, status-fill is the gentler first
-deliverable.
+**User decision (c) — sequenced.** Status-fill first (Slice 1
+in §3 below), then `/41` terminal-first (Slice 2). The
+sequencing has structural value: Slice 1 lets OA ship a
+working introspect-CLI experience early (real `Ready/NotReady`
+on the four current variants); Slice 2 then layers the
+record-carrying observation path on top of a daemon that's
+already serving real responses.
+
+**Implication.** §3 below restructures the work into three
+slices: Slice 1 (status-fill), Slice 2 (`/41` end-to-end),
+Slice 3 (Subscribe + DeliveryTrace cache, post-sema-engine).
 
 ### Q3 — `DeliveryTrace` reassembly: pull or push?
 
@@ -648,7 +888,7 @@ a sibling bead for `harness` CLI is the cleaner shape. Could
 even be operator-assistant's *next* slice after the
 introspect terminal slice.
 
-### Q5 — Operator-assistant lane boundary: does OA do `/41` Package A (terminal-side), or only the introspect-side?
+### Q5 — Operator-assistant lane boundary: does OA do `/41` Package A (terminal-side), or only the introspect-side? — **OA DOES A + B + C + D (EVERYTHING)**
 
 **The question.** `/41` has four packages: A (terminal), B
 (central contract), C (introspect runtime + CLI), D (router
@@ -673,10 +913,20 @@ introspect-side only.
 **Designer recommendation: (c).** Operator's sema-engine
 work is the bottleneck for the broader migration; offloading
 terminal-side observation work to operator-assistant lets
-both tracks progress. The terminal observation handler is
-operator-shaped (Rust + sema + Kameo actor in
-persona-terminal), well within operator-assistant's scope
-per `~/primary/skills/operator-assistant.md`.
+both tracks progress.
+
+**User decision (d) — OA does A + B + C + D end-to-end.**
+The full `/41` is OA's lane: terminal (Package A), central
+contract (Package B), introspect runtime + CLI (Package C),
+*and* router follow-up (Package D). Operator stays on
+sema-engine track on `[primary-5ir2]` (persona-mind first
+sema-engine consumer migration).
+
+**Implication.** §3 Slice 2 below is the whole `/41`: terminal
++ router observation contracts + handlers + introspect-side
+clients for both + CLI + Nix witness. Slice 2 is genuinely
+sized; OA may want to dispatch it as four sub-beads (one per
+`/41` package) within the slice.
 
 ### Q6 — Should persona-introspect be among the first sema-engine consumers (alongside persona-mind, then criome)?
 
@@ -709,6 +959,19 @@ question becomes: when does persona-introspect migrate?
 **Designer recommendation: (c).** Aligns with §1.4 and Q1(b).
 Keeps persona-introspect's dependency surface minimal until
 real state appears.
+
+**Status (open).** With Q1's actual answer = (c) stateful for
+Subscribe + DeliveryTrace cache, persona-introspect is
+definitely a sema-engine consumer. The remaining question is
+*ordering*: after persona-mind (the first consumer, currently
+in flight on `[primary-5ir2]`), after criome (the planned
+second consumer), or as part of a third wave alongside the
+other persona-* migrations? Designer recommendation: **after
+mind + criome stabilise** — persona-introspect's local state
+is bounded but exercises Subscribe heavily, so it benefits
+from a stable Subscribe API rather than being a co-driver of
+its design. The user can pin a different ordering if the
+correlation cache becomes urgent before the planned schedule.
 
 ---
 

@@ -539,7 +539,7 @@ daemon translates the wire payload to a plan and back.
 | `persona-harness` | `sema-engine` | Transcript events + lifecycle observations + Subscribe. |
 | `persona-system` | `sema-engine` | Focus observations + Subscribe. |
 | `persona-message` | `sema-engine` | Message submission (Assert) + InboxQuery (Match). |
-| `persona-introspect` | `sema-engine` | Owns its own introspection database through `sema-engine` for observation state, indexes, catalogs, and audit/projection cache. Peer inspection still crosses daemon sockets and component contracts; `persona-introspect` does not open peer databases. |
+| `persona-introspect` | `sema-engine` | Owns its own introspect database through `sema-engine` for: subscription registrations (forwarded peer subscriptions for `SubscribeComponent`); a typed correlation cache populated by Subscribe deltas from each peer (powers cache-backed `DeliveryTrace`); audit/projection state. Peer inspection still crosses daemon sockets and component contracts; `persona-introspect` does not open peer redb files. Local-state shape confirmed by user 2026-05-14 per `reports/designer/160-persona-introspect-brief-for-operator-assistant.md` §7 Q1; migration lands as `/160` Slice 3, after sema-engine Package 4 (Subscribe primitive) and per-peer commit-then-emit. |
 | `persona-daemon` (manager) | `sema-engine` | Engine status (Match) + component lifecycle (Mutate). |
 
 **`sema-engine` becomes the canonical database-operation layer**
