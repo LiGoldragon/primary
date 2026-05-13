@@ -4,15 +4,15 @@
 `reports/operator/115-sema-engine-split-implementation-investigation.md`'s
 implementation-investigation of `reports/designer/158-sema-kernel-and-sema-engine-two-interfaces.md`
 (the two-repo design) and `reports/designer-assistant/45-sema-and-sema-engine-interface-split.md`
-(DA's parallel arrival at the same conclusion). Endorses operator's
-investigation, lands two designer-level decisions operator surfaced
-(§2), names what's already absorbed into the latest `/158` revision
-(§4), and surfaces four questions for the user that need answers
-before operator's package work begins (§3).*
+(DA's parallel arrival at the same conclusion). Records the four
+decisions the user made 2026-05-14 in answer to questions
+surfaced here, and the matching `/158` edits that absorbed them.*
 
-**Retires when:** the user's questions in §3 are answered, the
-matching `/158` edits land, operator's first coordination bead is
-filed, and Package A (sema cleanup) starts.
+**Retires when:** operator's Package A coordination bead is
+filed, /158's revised packages are reflected in operator's
+work plan, and the engine consumers begin their migrations.
+The substance has now absorbed into `/158`; this report is
+the dialog record.
 
 ---
 
@@ -25,14 +25,24 @@ the deletion path is even cleaner than `/158` first stated),
 and surfaces three implementation decisions plus the broader
 authorization question.
 
-All four decisions landed 2026-05-14 (recorded in §3): work
-is authorized to start; schema-less `Sema::open` deleted but
-the name `open_with_schema` stays (designer rename to `open`
-overridden); persona-mind + criome migrate in parallel as the
-first consumers (overrides designer's mind-first recommendation
-in favor of broader verb-surface pressure); operator track
-`primary-hj4.1.1` reframes as Package 4 in sema-engine with
-persona-mind as the first Subscribe consumer.
+All four decisions landed 2026-05-14 (recorded in §3):
+
+- **work is authorized to start** (operator's coordination
+  bead + Package A `sema` cleanup are now in flight per the
+  open lock on `[primary-6nr]` and `/git/.../sema`);
+- schema-less `Sema::open` deleted; the name
+  `open_with_schema` is kept (designer's rename recommendation
+  was overridden — the qualifier stays as a permanent visual
+  reminder of schema discipline);
+- **persona-mind migrates first, then criome.** Mind's
+  hand-rolled engine facsimile is the most complete; its
+  migration surfaces the most engine-API gaps per unit work.
+  Criome follows once the Assert/Match path is stable. (Per
+  the user's settled position 2026-05-14 + `/115 §7` steps
+  7→9.)
+- operator track `primary-hj4.1.1` reframes as Package 4 in
+  sema-engine with persona-mind as the first Subscribe
+  consumer.
 
 Endorsements:
 - The 10-step implementation order in `/115 §7` is the right
@@ -279,34 +289,26 @@ Package A (`sema` cleanup) + Package B (`sema-engine` repo
 creation with skeleton + dependency-witness tests). All later
 packages follow the §6.1-revised sequence in `/158`.
 
-### Q2 · Confirm Decision 1 (Sema::open shape)? — **SINGLE OPEN, NAME KEPT**
+### Q2 · Confirm Decision 1 (Sema::open shape)? — **RESOLVED: name kept**
 
-**The question.** Designer's call in §2.1 above: delete schema-
-less `Sema::open(path)`; rename `open_with_schema(path, &Schema)`
-to `open(path, &Schema)`. One canonical open. This is a public-
-API shape change for the sema kernel.
+**The question.** With the legacy slot store deleted, does the
+schema-less `Sema::open(path)` survive as a low-level utility,
+or is the schema-guarded path the only public open?
 
-**The alternative.** Keep both `Sema::open(path)` (schema-less,
-low-level kernel open) and `Sema::open_with_schema(path, &Schema)`
-(schema-guarded). The schema-less path would survive as a
-narrow utility for opening a sema file without committing to
-a schema version (e.g., diagnostic tools, migration scripts).
+**Resolved 2026-05-14.** Schema-less `Sema::open(path)` is
+deleted; `Sema::open_with_schema(path, &Schema)` remains the
+sole public durable-state open. The name `open_with_schema` is
+kept — the qualifier reads as the invariant in identifiers per
+`~/primary/skills/naming.md`. See §2.1 for the fuller framing.
 
-**Trade-off.** Single open = one shape, schema discipline always
-on, simpler API. Two opens = flexibility for tooling, but
-adds a footgun (typed-table consumer accidentally opens
-schema-less, schema-mismatch never fires).
+**Implication.** Operator implements: delete `Sema::open(path)`
++ `OpenMode::LegacySlotStore` branch + `RECORDS` /
+`NEXT_SLOT_KEY` internal tables. Keep `Sema::open_with_schema`
+unchanged in name. Diagnostic / migration tooling that needs
+header-only access reads raw redb directly (not part of the
+kernel's public contract).
 
-**Recommendation.** Single open. Diagnostic / migration tooling
-can read raw redb directly (it's not part of the kernel's
-public contract); the kernel's public API stays disciplined.
-
-**Implication.** Single open: confirmed. The user kept the name
-`open_with_schema` (designer's rename to `open` was overridden);
-the qualifier-as-discipline-marker stays. See §2.1 for the
-fuller framing.
-
-### Q3 · Migration order — persona-mind before criome? — **BOTH IN PARALLEL**
+### Q3 · Migration order — persona-mind before criome? — **PERSONA-MIND FIRST, CRIOME SECOND**
 
 **The question.** Operator's `/115 §7` puts the order as:
 persona-mind graph Assert/Match (step 7) → persona-mind
@@ -334,26 +336,24 @@ the back-and-forth on engine API shape.
 `/115 §7`'s sequence). persona-mind's hand-rolled engine
 facsimile (`persona-mind/src/tables.rs:18-33,321-361`) is
 the most complete; migrating it surfaces the most API gaps
-per unit work. criome's migration runs alongside Subscribe
-landing (operator step 8 → 9), so criome migration starts
-once persona-mind's Assert/Match path is stable.
+per unit work. criome's migration starts once persona-mind's
+Assert/Match path is stable.
 
-**Decision: parallel** (overrides recommendation). The user
-chose more aggressive parallel work: persona-mind and criome
-migrate simultaneously as the first consumers. The reasoning
-follows: persona-mind brings graph Assert/Match + Subscribe
-pressure (its existing facsimile is the most complete); criome
-brings Mutate (identity transitions), Retract (revocation),
-and Atomic (revocation+identity-status together) — verbs
-persona-mind doesn't exercise. The parallel pressure surfaces
-engine API gaps across the verb spine faster than sequential
-migration would; coordination cost is accepted as the price
-of broader surface validation.
+**Decision: persona-mind first, criome second.** Settled
+2026-05-14 (matches recommendation; matches `/115 §7` steps
+7→9). persona-mind's hand-rolled facsimile is the most
+complete; migrating it surfaces the most engine-API gaps
+per unit work. criome follows once the Assert/Match path is
+stable, bringing a different verb mix (Mutate for identity
+transitions, Retract for revocation, Atomic for combined
+revocation+identity-status writes) for the second design-proof
+slice.
 
 **Implication.** `/158 §6.1` Component migrations section
-updated to reflect parallel first consumers. Operator's bead
-structure carries two parallel consumer-migration tracks
-(persona-mind + criome) once Package 3 lands.
+records the sequence. Operator's bead structure carries
+persona-mind migration as the first consumer track; criome
+migration starts when Assert/Match is proven, alongside
+Package 4 Subscribe landing.
 
 ### Q4 · `primary-hj4.1.1` track — reframe as sema-engine Subscribe + persona-mind as first consumer? — **REFRAME AS PACKAGE 4**
 
@@ -407,12 +407,15 @@ targets the engine-side implementation.
 
 ---
 
-## 4 · What's already absorbed into `/158`
+## 4 · What's absorbed into `/158`
 
-The latest `/158` revision (commit landing alongside this report)
-folds the following from `/115` + DA `/46`:
+All `/115` + DA `/46` findings + user decisions 2026-05-14
+are now reflected in `/158`'s current revision:
 
-- §2.1: `Sema::open` rename per Decision 1 (this turn).
+- §2.1: schema-less `Sema::open` deleted alongside legacy
+  slot store; `open_with_schema` remains the public
+  durable-state path (name kept per user's settled
+  position 2026-05-14).
 - §2.2: legacy slot store deletion (not migration); criome
   doesn't use it (per `/115 §2` code-scan).
 - §2.3: explicit "no raw-redb escape hatch" per DA `/46 §1`.
@@ -423,25 +426,25 @@ folds the following from `/115` + DA `/46`:
 - §5: criome moves to sema-engine column (user correction +
   `/115` code-scan); "canonical database-operation layer"
   wording per DA `/46 §5`.
+- §6.1 Package 2: operation log + **snapshot identity** land
+  together before Subscribe (Package 4) — moved out of
+  Package 5 per the snapshot-dependency in §3.5 + `/115 §7
+  step 6`.
+- §6.1 Component migrations: persona-mind first, criome second
+  (settled 2026-05-14; matches `/115 §7`'s sequence).
+- §6.1 Package 4: `primary-hj4.1.1` operator track reframed
+  as Package 4 + persona-mind as first Subscribe consumer
+  (settled 2026-05-14).
 - §7.2: line-count witness softened to advisory per DA `/46 §6`;
   structural witnesses (no `Slot`, no legacy slot store, no
   `reader_count`, no `signal-core` dep, no `sema-engine` dep)
   remain load-bearing.
-- §7.4: subscription delivery witnesses (`subscribe_blocking_sink_does_not_freeze_writes`,
-  etc.) per the new §3.5 contract.
+- §7.4: subscription delivery witnesses
+  (`subscribe_blocking_sink_does_not_freeze_writes`, etc.)
+  per the new §3.5 contract.
 - §7.5: criome migration witnesses (`criome_depends_on_sema_engine`,
   `criome_uses_engine_assert_for_validated_records`,
   `criome_does_not_use_raw_redb`).
-
-What `/158` does **not** yet say (waiting on user answers):
-
-- Migration ordering — `/158 §6.1` recommends persona-mind first,
-  but Q3's answer pins this.
-- `primary-hj4.1.1` reframe — `/158 §6.1` Package F notes the
-  coordination question, but Q4's answer pins the operator
-  track.
-- Authorization status — `/158` describes the design; it does
-  not declare "go" or "wait."
 
 ---
 
@@ -479,9 +482,11 @@ endorses without owning:
   implementation order, runtime-shape vocabulary, code-scan
   table, and three open decisions.
 - `reports/designer/158-sema-kernel-and-sema-engine-two-interfaces.md`
-  — the design `/115` investigates. Updated in the commit
-  landing alongside this report with Decision 1 (Sema::open
-  rename).
+  — the design `/115` investigates. Reflects all four user
+  decisions from 2026-05-14 (single open with `open_with_schema`
+  name kept, persona-mind-first migration order, Package 4
+  reframe absorbing `primary-hj4.1.1`, snapshot identity moved
+  into Package 2 alongside operation log).
 - `reports/designer-assistant/45-sema-and-sema-engine-interface-split.md`
   — DA's parallel two-repo conclusion.
 - `reports/designer-assistant/46-review-designer-158-sema-two-interfaces.md`

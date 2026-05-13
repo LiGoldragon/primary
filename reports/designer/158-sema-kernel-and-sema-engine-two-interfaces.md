@@ -580,8 +580,16 @@ from the new shape.
    - Package 1.5: rebase older `signal` crate + Nexus parser onto
      signal-core verb spine. Independent of sema/sema-engine.
    - Package 2: `Record` trait + `register_table` /
-     `register_index` API + operation log + catalog. Lands in
-     `sema-engine`.
+     `register_index` API + operation log + **snapshot identity
+     (`SnapshotId`)** + catalog. Lands in `sema-engine`.
+     Snapshot identity lives here, not in Package 5, because
+     §3.5's Subscribe contract depends on commit-sequence
+     cursors for replay (per `OperationLogEntry.commit_sequence`
+     in §4.6 and the witnesses in §7.4 referencing
+     `SubscriptionEvent` carrying snapshot id). Operator `/115
+     §7` step 6 calls this out explicitly: operation log +
+     snapshot identity should land before real migration so
+     replies have a stable cursor from the start.
    - Package 3: `QueryPlan` / `MutationPlan` IR + execution.
      Lands in `sema-engine`.
    - Package 4: `Subscribe` primitive per the delivery
@@ -592,8 +600,8 @@ from the new shape.
      `Subscribe` consumer, providing a `SubscriptionSink<R>`
      rather than the dispatch logic. No mind-local subscription
      dispatch ships and later retires.
-   - Package 5: `Validate` dry-run + `list_tables` introspection
-     + snapshot identity. Lands in `sema-engine`.
+   - Package 5: `Validate` dry-run + `list_tables` introspection.
+     Lands in `sema-engine` after Package 4.
 
 4. **Component migrations.** Each state-bearing component
    migrates from current sema use (where it exists) to
@@ -601,17 +609,21 @@ from the new shape.
    step per component; no half-migrated states.
 
    Migration ordering (user-decided 2026-05-14):
-   - **persona-mind and criome migrate in parallel as the
-     first consumers.** Both exercise the engine API
-     simultaneously: persona-mind brings graph Assert/Match
-     + Subscribe pressure (its hand-rolled facsimile is the
-     most complete in the current stack); criome brings
-     Mutate (identity transitions), Retract (revocation),
-     and Atomic (revocation+identity-status together) — verbs
-     persona-mind doesn't exercise. The parallel pressure
-     surfaces engine API gaps across the verb spine faster
-     than a sequential migration would. Coordination cost is
-     accepted as the price of broader surface validation.
+   - **persona-mind first.** The most exercised existing
+     consumer; its hand-rolled engine facsimile
+     (`persona-mind/src/tables.rs:18-33,321-361`: counters,
+     subscription tables, scan-and-filter, ad-hoc compact ids)
+     is the most complete. Migrating it surfaces the most
+     engine-API gaps per unit work. Brings graph
+     Assert/Match/Subscribe pressure first.
+   - **criome second.** Criome's validator path moves from
+     its current typed-table-over-sema scaffold to typed
+     `Engine::assert(criome_table, validated_record)` once
+     persona-mind's Assert/Match path is stable. Criome adds
+     a different verb mix — Mutate (identity transitions),
+     Retract (revocation), and Atomic (revocation +
+     identity-status together) — so its migration is the
+     second design-proof slice across the verb spine.
    - **persona-introspect** lands once the engine surface
      exists: its local state uses `sema-engine`; peer state
      remains behind peer daemon sockets and contracts.
