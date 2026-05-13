@@ -586,9 +586,12 @@ from the new shape.
      Lands in `sema-engine`.
    - Package 4: `Subscribe` primitive per the delivery
      contract in §3.5. Lands in `sema-engine`.
-     **Coordinates with operator track `primary-hj4.1.1`** —
-     per /157 §9 Q3 the recommendation is to reframe that
-     track as Package 4 + first consumer migration.
+     **Operator track `primary-hj4.1.1` is reframed as Package 4**
+     (user-decided 2026-05-14). The commit-then-emit machinery
+     lands once in sema-engine; persona-mind becomes the first
+     `Subscribe` consumer, providing a `SubscriptionSink<R>`
+     rather than the dispatch logic. No mind-local subscription
+     dispatch ships and later retires.
    - Package 5: `Validate` dry-run + `list_tables` introspection
      + snapshot identity. Lands in `sema-engine`.
 
@@ -597,23 +600,25 @@ from the new shape.
    `sema-engine` typed verbs. Per ESSENCE rule: migrate in one
    step per component; no half-migrated states.
 
-   Migration ordering (decided 2026-05-14):
-   - **persona-mind first** (per DA `/45 §8` step 4): the most
-     exercised existing consumer, validates the engine API
-     against real domain pressure. Migration surfaces real
-     gaps; synthetic tests miss those.
-   - **criome alongside or after persona-mind**: criome's
-     validator path moves from raw-bytes-at-slot to typed
-     `Engine::assert(criome_table, validated_record)`. Per the
-     user's correction 2026-05-14, criome is an engine
-     consumer, not a kernel-only consumer.
-   - **persona-introspect as its own database lands once the
-     engine surface exists.** Its local state uses `sema-engine`;
-     peer state remains behind peer daemon sockets and contracts.
+   Migration ordering (user-decided 2026-05-14):
+   - **persona-mind and criome migrate in parallel as the
+     first consumers.** Both exercise the engine API
+     simultaneously: persona-mind brings graph Assert/Match
+     + Subscribe pressure (its hand-rolled facsimile is the
+     most complete in the current stack); criome brings
+     Mutate (identity transitions), Retract (revocation),
+     and Atomic (revocation+identity-status together) — verbs
+     persona-mind doesn't exercise. The parallel pressure
+     surfaces engine API gaps across the verb spine faster
+     than a sequential migration would. Coordination cost is
+     accepted as the price of broader surface validation.
+   - **persona-introspect** lands once the engine surface
+     exists: its local state uses `sema-engine`; peer state
+     remains behind peer daemon sockets and contracts.
    - **Then the remaining persona-* components** (terminal,
-     router, harness, system, message, manager) —
-     each lands as the engine surface stabilises through the
-     first consumers.
+     router, harness, system, message, manager) — each lands
+     as the engine surface stabilises through the first
+     consumers.
 
 ### 6.2 · No transitional shape
 

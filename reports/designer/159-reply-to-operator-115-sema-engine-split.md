@@ -22,10 +22,17 @@ filed, and Package A (sema cleanup) starts.
 two-repo split, sharpens the criome story with a code-scan
 finding (criome doesn't use the legacy slot store today — so
 the deletion path is even cleaner than `/158` first stated),
-and surfaces three implementation decisions. Two of those are
-designer-level (Sema::open shape, dep pinning), now decided in
-§2. One is the user's call (does the work start now?), surfaced
-in §3.
+and surfaces three implementation decisions plus the broader
+authorization question.
+
+All four decisions landed 2026-05-14 (recorded in §3): work
+is authorized to start; schema-less `Sema::open` deleted but
+the name `open_with_schema` stays (designer rename to `open`
+overridden); persona-mind + criome migrate in parallel as the
+first consumers (overrides designer's mind-first recommendation
+in favor of broader verb-surface pressure); operator track
+`primary-hj4.1.1` reframes as Package 4 in sema-engine with
+persona-mind as the first Subscribe consumer.
 
 Endorsements:
 - The 10-step implementation order in `/115 §7` is the right
@@ -154,12 +161,18 @@ gone, does `Sema::open(path)` (schema-less) remain public, or
 does `open_with_schema(path, &Schema)` become the only public
 open path?
 
-**Decision: schema-less `Sema::open` is deleted; the schema-guarded
-path is renamed from `open_with_schema` to `open` with signature
-`Sema::open(path: &Path, schema: &Schema)`.** One canonical open
-path, takes a schema explicitly.
+**Decision (user-confirmed 2026-05-14): schema-less `Sema::open`
+is deleted. `Sema::open_with_schema(path, &Schema)` remains the
+public durable-state path; the name is kept (designer's rename
+recommendation was overridden).**
 
-Why:
+The substance: a single canonical open with schema discipline
+always on. The naming nuance: the qualifier in `open_with_schema`
+stays as a permanent visual reminder that every durable open
+carries an explicit schema. The name reads as the discipline
+being enforced — and the user judged that load-bearing.
+
+Why the substance:
 
 - Schema discipline is load-bearing. Per
   `~/primary/skills/rust/storage-and-wire.md` and the existing
@@ -172,17 +185,30 @@ Why:
   store, which had no typed schema. With the slot store gone,
   the concession goes too.
 - Per `~/primary/ESSENCE.md` §"Backward compatibility is not a
-  constraint": the rename + deletion is the right shape *now*,
-  not something to phase in.
-- The renamed signature is the bare canonical name; the
-  `_with_schema` suffix is redundant when there's no other
-  open path.
+  constraint": the deletion is the right shape *now*, not
+  something to phase in.
 
-`/158 §2.1` has been updated to reflect this. Operator implements:
-delete `Sema::open(path)` body + `OpenMode::LegacySlotStore`
-branch + `RECORDS`/`NEXT_SLOT_KEY` internal tables; rename
-`open_with_schema` → `open` (per the typical Rust convention
-when a verb's qualifier becomes unnecessary).
+Why the name stays:
+
+- `open_with_schema` reads as the invariant in identifiers per
+  `~/primary/skills/naming.md` (full English words; the name
+  carries the meaning). The qualifier costs nothing per
+  occurrence but reinforces the discipline every time it's
+  read.
+- The designer's rename argument ("the qualifier becomes
+  redundant when there's only one open path") trades
+  invariant-in-the-name for surface tidiness. The user judged
+  the invariant-in-the-name more valuable.
+- If a header-only kernel open is ever needed in future (e.g.,
+  diagnostic tooling), it earns a specific name — and a
+  witness proving component durable state cannot use it
+  accidentally.
+
+`/158 §2.1` reflects this (the user's update kept the name +
+added the reasoning). Operator implements: delete
+`Sema::open(path)` + `OpenMode::LegacySlotStore` branch +
+`RECORDS`/`NEXT_SLOT_KEY` internal tables; keep
+`Sema::open_with_schema` as the sole public open.
 
 ### 2.2 · Decision 3 — dependency pin wording
 
@@ -214,14 +240,13 @@ storage (per operator's recommendation).
 
 ---
 
-## 3 · Questions for the user
+## 3 · Decisions from the user (2026-05-14)
 
-Four questions need user input before operator's package work
-begins. Each carries the substance for the user to answer
-without opening files (per `~/primary/skills/reporting.md`
-§"Questions to the user — paste the evidence, not a pointer").
+Four questions surfaced to the user; all four answered. Each
+sub-section below records the question + the answer + its
+implication for the work ahead.
 
-### Q1 · Authorize the work to start?
+### Q1 · Authorize the work to start? — **YES, AUTHORIZE**
 
 **The question.** `/115`'s Package A (clean sema) + Package B
 (create sema-engine skeleton) are the gating prerequisites for
@@ -249,7 +274,12 @@ ready per `/46`'s acceptance criteria + `/115`'s investigation.
 Postponing buys nothing; the migration cost scales with each
 new hand-rolled consumer.
 
-### Q2 · Confirm Decision 1 (Sema::open rename)?
+**Implication.** Operator files the coordination bead and starts
+Package A (`sema` cleanup) + Package B (`sema-engine` repo
+creation with skeleton + dependency-witness tests). All later
+packages follow the §6.1-revised sequence in `/158`.
+
+### Q2 · Confirm Decision 1 (Sema::open shape)? — **SINGLE OPEN, NAME KEPT**
 
 **The question.** Designer's call in §2.1 above: delete schema-
 less `Sema::open(path)`; rename `open_with_schema(path, &Schema)`
@@ -271,7 +301,12 @@ schema-less, schema-mismatch never fires).
 can read raw redb directly (it's not part of the kernel's
 public contract); the kernel's public API stays disciplined.
 
-### Q3 · Migration order — persona-mind before criome?
+**Implication.** Single open: confirmed. The user kept the name
+`open_with_schema` (designer's rename to `open` was overridden);
+the qualifier-as-discipline-marker stays. See §2.1 for the
+fuller framing.
+
+### Q3 · Migration order — persona-mind before criome? — **BOTH IN PARALLEL**
 
 **The question.** Operator's `/115 §7` puts the order as:
 persona-mind graph Assert/Match (step 7) → persona-mind
@@ -303,7 +338,24 @@ per unit work. criome's migration runs alongside Subscribe
 landing (operator step 8 → 9), so criome migration starts
 once persona-mind's Assert/Match path is stable.
 
-### Q4 · `primary-hj4.1.1` track — reframe as sema-engine Subscribe + persona-mind as first consumer?
+**Decision: parallel** (overrides recommendation). The user
+chose more aggressive parallel work: persona-mind and criome
+migrate simultaneously as the first consumers. The reasoning
+follows: persona-mind brings graph Assert/Match + Subscribe
+pressure (its existing facsimile is the most complete); criome
+brings Mutate (identity transitions), Retract (revocation),
+and Atomic (revocation+identity-status together) — verbs
+persona-mind doesn't exercise. The parallel pressure surfaces
+engine API gaps across the verb spine faster than sequential
+migration would; coordination cost is accepted as the price
+of broader surface validation.
+
+**Implication.** `/158 §6.1` Component migrations section
+updated to reflect parallel first consumers. Operator's bead
+structure carries two parallel consumer-migration tracks
+(persona-mind + criome) once Package 3 lands.
+
+### Q4 · `primary-hj4.1.1` track — reframe as sema-engine Subscribe + persona-mind as first consumer? — **REFRAME AS PACKAGE 4**
 
 **The question (open since `/157 §9 Q3`).** Operator track
 `primary-hj4.1.1` is in flight implementing commit-then-emit
@@ -340,8 +392,18 @@ shape; mind-local subscription dispatch never exists, so
 nothing retires later. The operator should fold
 `primary-hj4.1.1` into Package F's bead structure.
 
-If the answer to Q1 is "yes, authorize," Q4's answer determines
-whether `primary-hj4.1.1` is on hold or actively reframed.
+**Decision: option (a).** Matches the recommendation. The
+commit-then-emit machinery lands once in sema-engine per the
+§3.5 subscription-delivery contract; persona-mind becomes the
+first Subscribe consumer and provides a `SubscriptionSink<R>`
+rather than mind-local dispatch logic.
+
+**Implication.** Operator track `primary-hj4.1.1` is reframed:
+same operator track, new scope = first sema-engine Subscribe
+consumer (per the §3.5 contract). `/158 §6.1` Package 4
+updated to record the reframe. The mind-local commit-then-emit
+work that was in flight retires; the same operator effort
+targets the engine-side implementation.
 
 ---
 
