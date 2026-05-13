@@ -30,7 +30,8 @@ stack.
 | `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` | Harness process/session control boundary. |
 | `persona-terminal` | `/git/github.com/LiGoldragon/persona-terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. Terminal-brand mux helpers are retired. |
 | `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Low-level daemon-owned PTY/transcript cell primitive consumed by `persona-terminal`. |
-| `sema` (rename pending → `sema-db`) | `/git/github.com/LiGoldragon/sema` | **Today's** typed database library (redb + rkyv + typed slots); used by every state-bearing component (`persona-mind`, `persona-router`, `criome`, …). Not a daemon and not shared storage. Distinct from the **eventual** `Sema` — the universal medium for meaning (self-hosting computational substrate, fully-typed human-language representation, universal interlingua). Per `ESSENCE.md` §"Today and eventually". |
+| `sema` | `/git/github.com/LiGoldragon/sema` | **Today's** typed storage kernel (redb + rkyv + schema guard). Not a daemon, not shared storage, and not the full database engine. Distinct from the **eventual** `Sema` — the universal medium for meaning (self-hosting computational substrate, fully-typed human-language representation, universal interlingua). Per `ESSENCE.md` §"Today and eventually". |
+| `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema` and `signal-core`: registered record families, Signal-verb execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not NOTA, and not Persona-specific. First real consumer is `persona-mind`; Criome follows. |
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Persona-wide Signal vocabulary. |
@@ -102,17 +103,18 @@ replacement covers every consumer of the surface being replaced.
   topology/trace tests prove real mailbox paths. Direct `ractor`,
   `persona-actor`, and `workspace-actor` language is stale unless a
   current report explicitly reopens that decision.
-- State: today's `sema` (rename pending → `sema-db`) is a typed
-  database library. Each component that needs durable state owns its
-  own redb and its own table declarations. There is no shared sema
-  daemon, no generic store component, and no shared `persona-sema`
-  architecture. The eventual `Sema` (universal medium for meaning —
-  self-hosting computational substrate, fully-typed human-language
-  representation, universal interlingua) is the long-term target,
-  not a current implementation.
+- State: today's `sema` is the typed storage kernel; `sema-engine` is
+  the full database engine library. Each component that needs durable
+  state owns its own redb and its own engine/kernel handle. There is no
+  shared sema daemon, no generic store component, and no shared
+  `persona-sema` architecture. The eventual `Sema` (universal medium
+  for meaning — self-hosting computational substrate, fully-typed
+  human-language representation, universal interlingua) is the
+  long-term target, not a current implementation.
 - Scope discipline: when a concept has both a today's form and an
-  eventual encompassing form, they get different names (`sema-db`
-  vs `Sema`; `criome` daemon vs `Criome`). ARCH docs describe
+  eventual encompassing form, the docs explicitly mark that boundary
+  (`sema` storage kernel / `sema-engine` today vs eventual `Sema`;
+  `criome` daemon today vs `Criome`). ARCH docs describe
   what's built today; eventual scope gets an explicit marker. Per
   ESSENCE §"Today and eventually — different things, different
   names". This is a scope discipline, not a quality one — "today's
