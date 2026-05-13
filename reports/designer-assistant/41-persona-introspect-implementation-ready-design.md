@@ -26,7 +26,7 @@ It does not define component row fields.
 Allowed:
 
 ```rust
-ComponentObservationBatch::Terminal(
+ComponentObservationResult::TerminalObservations(
     signal_persona_terminal::TerminalObservationBatch
 )
 ```
@@ -47,8 +47,9 @@ wrap the owning component contract's query:
 
 ```rust
 pub enum ComponentObservationQuery {
-    Terminal(signal_persona_terminal::TerminalObservationQuery),
-    Router(signal_persona_router::RouterObservationQuery),
+    TerminalObservations(signal_persona_terminal::TerminalObservationQuery),
+    TerminalSessionSnapshot(signal_persona_terminal::TerminalSessionSnapshotQuery),
+    RouterObservations(signal_persona_router::RouterObservationQuery),
 }
 ```
 
@@ -71,17 +72,22 @@ Queries may use:
 - `since_time`
 - `through_time`
 
-The reply includes the highest sequence covered by the snapshot.
+The reply includes both the lower and upper sequence bounds it actually
+covered, so callers can detect truncation or a narrowed result:
+
+- `from_sequence`
+- `through_sequence`
 
 ### D5 - Time windows
 
 Time-window queries are supported by explicit secondary indexes.
 
 `Table::range` ranges over table keys. A component that wants "records
-between two timestamps" must write a time-keyed index table such as:
+between two timestamps" must write a time-keyed index table with a
+packed key:
 
 ```text
-(TimestampNanos, TerminalObservationSequence) -> TerminalObservationSequence
+TerminalObservationTimeKey -> TerminalObservationTimeIndexEntry
 ```
 
 The primary observation record and secondary index row must be written in
@@ -89,11 +95,12 @@ the same component Sema transaction.
 
 ### D6 - Subscriptions
 
-Do not implement polling. V1 can ship one-shot observations first.
+Do not implement polling. V1 ships one-shot observations only.
 
-If `SubscribeComponent` is added now, it returns typed `Unimplemented`
-for components that cannot push yet. Live subscriptions land after a
-component has commit-then-emit wiring: initial snapshot, then deltas.
+Do not add a `SubscribeComponent` wire variant in this slice. A variant
+that only returns `Unimplemented` gives every consumer contract debt with
+no working feature. Live subscriptions land after a component has
+commit-then-emit wiring: initial snapshot, then deltas.
 
 ### D7 - Schema/catalog introspection
 
@@ -124,12 +131,11 @@ Add these types:
 
 ```rust
 pub enum TerminalObservationKind {
-    Session,
     DeliveryAttempt,
-    TerminalEvent,
+    Event,
     ViewerAttachment,
-    SessionHealth,
-    SessionArchive,
+    SessionHealthChange,
+    SessionArchiveCommit,
 }
 
 pub struct TerminalObservationTimeRange {
@@ -148,29 +154,60 @@ pub struct TerminalObservationQuery {
     pub time_range: Option<TerminalObservationTimeRange>,
 }
 
+pub enum TerminalObservation {
+    DeliveryAttempt(TerminalDeliveryAttemptObservation),
+    Event(TerminalEventObservation),
+    ViewerAttachment(TerminalViewerAttachmentObservation),
+    SessionHealthChange(TerminalSessionHealthObservation),
+    SessionArchiveCommit(TerminalSessionArchiveObservation),
+}
+
 pub struct TerminalObservationBatch {
+    pub from_sequence: Option<TerminalObservationSequence>,
     pub through_sequence: Option<TerminalObservationSequence>,
+    pub observations: Vec<TerminalObservation>,
+}
+
+pub struct TerminalSessionSnapshotQuery {
+    pub terminal: Option<TerminalName>,
+}
+
+pub struct TerminalSessionSnapshot {
+    pub at_sequence: TerminalObservationSequence,
     pub sessions: Vec<TerminalSessionObservation>,
-    pub delivery_attempts: Vec<TerminalDeliveryAttemptObservation>,
-    pub terminal_events: Vec<TerminalEventObservation>,
-    pub viewer_attachments: Vec<TerminalViewerAttachmentObservation>,
-    pub session_health: Vec<TerminalSessionHealthObservation>,
-    pub session_archive: Vec<TerminalSessionArchiveObservation>,
+}
+
+pub struct TerminalObservationUnimplemented {
+    pub reason: TerminalObservationUnimplementedReason,
+}
+
+pub enum TerminalObservationUnimplementedReason {
+    NotInPrototypeScope,
+    TerminalStoreUnavailable,
+    TimeIndexUnavailable,
+}
+
+pub enum TerminalObservationRequest {
+    Observations(TerminalObservationQuery),
+    SessionSnapshot(TerminalSessionSnapshotQuery),
 }
 
 pub enum TerminalObservationReply {
-    Batch(TerminalObservationBatch),
+    Observations(TerminalObservationBatch),
+    SessionSnapshot(TerminalSessionSnapshot),
     Unimplemented(TerminalObservationUnimplemented),
 }
 ```
 
-The existing `TerminalIntrospectionSnapshot` can either become a type
-alias to `TerminalObservationBatch` after the new type lands, or remain
-as a narrow convenience constructor. The implementation should not keep
-two parallel snapshot models long term.
+The existing `TerminalIntrospectionSnapshot` should retire after the
+event-log and session-snapshot relations land. It currently mixes
+event-like observations with current session state; the implementation
+should not keep two parallel snapshot models long term.
 
-Add `observed_at` fields to event-like terminal observations as the
-implementation touches them:
+Add `sequence` and `observed_at` fields to event-like terminal
+observations as the implementation touches them. The first three already
+carry `sequence`; health/archive must grow it before they can participate
+in the ordered event-log batch:
 
 - `TerminalDeliveryAttemptObservation`
 - `TerminalEventObservation`
@@ -179,40 +216,61 @@ implementation touches them:
 - `TerminalSessionArchiveObservation`
 
 `TerminalSessionObservation` may either carry `observed_at` directly or
-be treated as current-state projection indexed by terminal name. The
-first slice can leave sessions current-state only as long as
-time-window queries are documented to apply to event-like records first.
+be treated as current-state projection indexed by terminal name. In this
+slice, sessions are current-state and live in `TerminalSessionSnapshot`,
+not in `TerminalObservationBatch`.
 
 ### 1.2 `persona-terminal`
 
 Add Sema support for the terminal observation relation.
 
-Required table shape:
+Add a `signal-persona` dependency if `TimestampNanos` remains there.
+There is no dependency cycle today; `signal-persona` does not depend on
+`signal-persona-terminal`.
+
+Required table shape after this slice:
 
 ```text
+sessions_by_terminal: &str -> TerminalSessionObservation
 delivery_attempts: u64 -> TerminalDeliveryAttemptObservation
 terminal_events: u64 -> TerminalEventObservation
 viewer_attachments: u64 -> TerminalViewerAttachmentObservation
-session_health: &str -> TerminalSessionHealthObservation
-session_archive: &str -> TerminalSessionArchiveObservation
+session_health_changes: u64 -> TerminalSessionHealthObservation
+session_archive_commits: u64 -> TerminalSessionArchiveObservation
+latest_session_health_by_terminal: &str -> TerminalSessionHealthObservation
 ```
 
-Those tables already exist. Add sequence/time indexes for the event-like
-records:
+The current code already has sequence-keyed delivery/event/viewer tables
+and string-keyed session, health, and archive tables. Do not use the
+string-keyed health/archive tables as event-log primaries; they cannot
+preserve multiple changes or participate in an ordered observation batch.
+Either rename them as latest-state projections during the schema bump or
+add new sequence-keyed event tables beside them.
+
+Add packed-key time indexes for the event-like records:
 
 ```text
-delivery_attempts_by_time: (TimestampNanos, u64) -> u64
-terminal_events_by_time: (TimestampNanos, u64) -> u64
-viewer_attachments_by_time: (TimestampNanos, u64) -> u64
-session_health_by_time: (TimestampNanos, TerminalName) -> TerminalName
-session_archive_by_time: (TimestampNanos, TerminalName) -> TerminalName
+delivery_attempts_by_time: TerminalObservationTimeKey -> TerminalObservationTimeIndexEntry
+terminal_events_by_time: TerminalObservationTimeKey -> TerminalObservationTimeIndexEntry
+viewer_attachments_by_time: TerminalObservationTimeKey -> TerminalObservationTimeIndexEntry
+session_health_changes_by_time: TerminalObservationTimeKey -> TerminalObservationTimeIndexEntry
+session_archive_commits_by_time: TerminalObservationTimeKey -> TerminalObservationTimeIndexEntry
 ```
 
-If tuple keys are awkward under current Sema/redb key constraints, use a
-typed packed string key owned by `persona-terminal`, for example:
+Use a typed packed key owned by `persona-terminal`:
 
 ```rust
 TerminalObservationTimeKey::new(timestamp, sequence)
+```
+
+The value is a data-carrying reference, not `()`. A zero-sized index
+value would be a conventional covering-index trick, but it conflicts with
+the workspace's no-zero-sized-type direction. Use:
+
+```rust
+pub struct TerminalObservationTimeIndexEntry {
+    pub sequence: TerminalObservationSequence,
+}
 ```
 
 Do not move this helper into Sema until a second component repeats the
@@ -236,8 +294,9 @@ Add central wrapper types:
 
 ```rust
 pub enum ComponentObservationQuery {
-    Terminal(signal_persona_terminal::TerminalObservationQuery),
-    Router(signal_persona_router::RouterObservationQuery),
+    TerminalObservations(signal_persona_terminal::TerminalObservationQuery),
+    TerminalSessionSnapshot(signal_persona_terminal::TerminalSessionSnapshotQuery),
+    RouterObservations(signal_persona_router::RouterObservationQuery),
 }
 
 pub struct ComponentObservationsQuery {
@@ -245,14 +304,15 @@ pub struct ComponentObservationsQuery {
     pub query: ComponentObservationQuery,
 }
 
-pub enum ComponentObservationBatch {
-    Terminal(signal_persona_terminal::TerminalObservationBatch),
-    Router(signal_persona_router::RouterObservationBatch),
+pub enum ComponentObservationResult {
+    TerminalObservations(signal_persona_terminal::TerminalObservationBatch),
+    TerminalSessionSnapshot(signal_persona_terminal::TerminalSessionSnapshot),
+    RouterObservations(signal_persona_router::RouterObservationBatch),
 }
 
 pub struct ComponentObservations {
     pub engine: EngineId,
-    pub batch: ComponentObservationBatch,
+    pub result: ComponentObservationResult,
 }
 ```
 
@@ -275,9 +335,18 @@ reply IntrospectionReply {
 Add `ComponentObservations` and `ListRecordKinds` to
 `IntrospectionScope`.
 
-Do not add `SubscribeComponent` in the first implementation unless the
-operator also implements a real push stream or returns a typed
-`Unimplemented`.
+Do not add `SubscribeComponent` in the first implementation.
+
+Add precise peer-failure reasons to `IntrospectionUnimplementedReason`:
+
+```rust
+PeerSocketMissing,
+PeerSocketUnreachable,
+```
+
+`ComponentObservationMissing` means the component contract does not yet
+support the observation relation. It should not be used when the daemon
+socket is absent or refusing connections.
 
 ### 1.4 `persona-introspect`
 
@@ -295,7 +364,7 @@ The first runtime implementation should do this:
    `persona-terminal` over `terminal.sock`.
 6. `persona-terminal` returns `TerminalObservationBatch`.
 7. `persona-introspect` wraps it as
-   `ComponentObservationBatch::Terminal`.
+   `ComponentObservationResult::TerminalObservations`.
 8. `NotaProjection` renders the reply at the edge.
 
 The root should not return `Unknown` for this path. If a socket is
@@ -310,25 +379,15 @@ Recommended NOTA input:
 ```nota
 (ComponentObservations
   engine "prototype"
-  terminal
-    kinds (Session DeliveryAttempt TerminalEvent)
-    sinceSequence 0)
-```
-
-Alternative acceptable form if the current NOTA derive shape makes
-nested records easier:
-
-```nota
-(ComponentObservations
-  engine "prototype"
   query (TerminalObservationQuery
-    kinds (Session DeliveryAttempt TerminalEvent)
+    kinds (DeliveryAttempt Event)
     sequenceRange (TerminalObservationSequenceRange
       since 0)))
 ```
 
-The second shape is more directly typed and therefore preferable if it
-is ergonomic with `nota-codec`.
+This is the only accepted shape for this slice. Do not add a shorthand
+form with a bare `terminal` discriminator; that would be keyword dispatch
+in disguise.
 
 The reply should be a typed NOTA projection of
 `IntrospectionReply::ComponentObservations`, not hand-written text.
@@ -347,11 +406,14 @@ Work:
 1. Add terminal observation query/batch/reply types.
 2. Add sequence/time filtering types.
 3. Add or update terminal event records with `observed_at`.
-4. Add time-index tables in `persona-terminal`.
-5. Add `TerminalTables::terminal_observations(query)` that reads real
+4. Split event-log observations from `TerminalSessionSnapshot`.
+5. Add packed-key time-index tables in `persona-terminal`.
+6. Add `TerminalTables::terminal_observations(query)` that reads real
    production tables.
-6. Add a terminal supervisor observation handler.
-7. Add round-trip and Sema-backed tests.
+7. Add `TerminalTables::terminal_session_snapshot(query)` for current
+   session state.
+8. Add a terminal supervisor observation handler.
+9. Add round-trip and Sema-backed tests.
 
 ### Package B - central wrapper
 
@@ -363,11 +425,14 @@ Work:
 
 1. Add `ComponentObservations`.
 2. Add `ListRecordKinds`.
-3. Add wrapper enum variants for Terminal and Router.
+3. Add wrapper enum variants for TerminalObservations,
+   TerminalSessionSnapshot, and RouterObservations.
 4. Add round-trip tests proving the wrapper carries terminal-owned types
    without redefining them.
 5. Add source-scan witness that central crate does not define terminal
    row structs.
+6. Add `PeerSocketMissing` and `PeerSocketUnreachable` to
+   `IntrospectionUnimplementedReason`.
 
 ### Package C - introspect runtime and CLI
 
@@ -400,7 +465,7 @@ Work:
 1. Convert existing router summary/message-trace/channel-state surface into
    `RouterObservationQuery` and `RouterObservationBatch`.
 2. Add router observation sequence and time indexes.
-3. Add `ComponentObservationBatch::Router`.
+3. Add `ComponentObservationResult::RouterObservations`.
 4. Implement `RouterClient` in `persona-introspect`.
 5. Upgrade `DeliveryTrace` from scaffold status to correlated router and
    terminal facts.
@@ -413,13 +478,17 @@ Work:
 
 - `terminal_observation_query_round_trips`
 - `terminal_observation_batch_round_trips`
+- `terminal_session_snapshot_round_trips`
+- `terminal_observation_batch_preserves_event_order`
 - `terminal_observation_batch_uses_terminal_owned_records`
 
 `signal-persona-introspect`:
 
 - `component_observations_wrap_terminal_batch`
+- `component_observations_wrap_terminal_session_snapshot`
 - `list_record_kinds_round_trips`
 - `central_contract_does_not_define_terminal_rows`
+- `peer_socket_failure_reasons_round_trip`
 
 ### Component Sema witnesses
 
@@ -429,6 +498,7 @@ Work:
 - `terminal_observations_filter_by_sequence_range`
 - `terminal_observations_filter_by_time_range`
 - `terminal_observation_time_index_written_with_primary_record`
+- `terminal_observation_time_index_value_carries_sequence`
 
 The time-index test must call production write methods such as
 `put_terminal_event`, not test-only table writes.
@@ -440,6 +510,8 @@ The time-index test must call production write methods such as
 - `component_observations_uses_terminal_socket`
 - `component_observations_does_not_open_terminal_redb`
 - `terminal_client_decodes_terminal_observation_batch`
+- `terminal_client_reports_peer_socket_missing`
+- `terminal_client_reports_peer_socket_unreachable`
 - `introspect_cli_projects_component_observations_to_nota`
 
 Use fake terminal sockets for the first runtime slice. The fake should
@@ -474,6 +546,7 @@ Do not implement these in the first slice:
 - polling subscriptions;
 - field-level runtime reflection;
 - a Sema-level `TimeIndexedTable` helper;
+- zero-sized Sema index values such as `Table<Key, ()>`;
 - a sibling `signal-persona-terminal-introspect` crate;
 - duplicate terminal row structs in `signal-persona-introspect`.
 
@@ -510,4 +583,3 @@ terminal-owned observation query/reply
 
 The central invariant is simple: `persona-introspect` sees widely, but
 truth stays owned by each component.
-
