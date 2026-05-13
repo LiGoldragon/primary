@@ -36,7 +36,12 @@ than the speed it bought.
 
 Not backward compatibility for systems being born. Until a
 compatibility boundary is declared, the system is being shaped, not
-preserved.
+preserved. Breaking an undeployed system is correct when the break
+reveals the right structure. Do not design transitional APIs to pay
+homage to technical debt. If an old shape must keep serving a real
+deployment while the right shape lands, preserve that old shape on a
+branch, release line, or separate repository; do not compromise the
+new design to keep the old one comfortable.
 
 Not estimates. Implementation timelines do not appear in design
 discussions. Work is described by *what it requires*, not by *how
@@ -88,6 +93,8 @@ decide what the underlying problem is; fix the underlying problem:
 - Stringly-typed dispatch — `match name.as_str()` over cases that
   should be a closed enum.
 - Dead code retained "for safety" or "for backward compatibility."
+- Transitional compatibility scaffolding retained to avoid breaking
+  code whose design is already known to be wrong.
 - A doc comment that explains *what* the code does (well-named
   code already explains what; the comment signals the names
   aren't carrying their weight).
