@@ -35,9 +35,10 @@ consumer, not the home of the deleted legacy slot store.
 Update after designer-assistant review and user decisions:
 
 - Schema-less `Sema::open` should not remain public after legacy slot
-  deletion. The schema-guarded path becomes the canonical
-  `Sema::open(path, schema)`. If a header-only kernel open is needed
-  later, add it with a specific name and a test witness.
+  deletion. `open_with_schema(path, schema)` stays the public
+  durable-state path so call sites name the schema invariant. If a
+  header-only kernel open is needed later, add it with a specific name
+  and a test witness.
 - `persona-introspect` has its own database. It should inspect peers
   through their daemon sockets and component contracts, but its own
   observation/index state uses `sema-engine`.
@@ -168,9 +169,8 @@ Edits:
 - Remove `Sema::store`, `Sema::get(Slot)`, and legacy `Sema::iter`.
 - Remove `DEFAULT_READER_COUNT`, `reader_count`, `set_reader_count`,
   `MissingSlotCounter`, and raw slot-store internal tables.
-- Delete schema-less `Sema::open(path)` and rename
-  `open_with_schema(path, schema)` to the canonical
-  `Sema::open(path, schema)`.
+- Delete schema-less `Sema::open(path)` and keep
+  `open_with_schema(path, schema)` as the public durable-state open.
 - Keep `read`, `write`, `Table`, `Table::ensure`, `get`, `insert`,
   `remove`, `iter`, `range`, `Schema`,
   `SchemaVersion`, and the database header guard.
@@ -459,17 +459,17 @@ reader has no durable state to inspect.
 
 ### Decision 1 - What does `Sema::open` mean after legacy slot deletion?
 
-`reports/designer/158` keeps `Sema::open` in the kernel surface, but
-schema discipline says component state should hard-fail on schema
-mismatch. Current `Sema::open` means “legacy slot store, no schema
-guard.” After deletion, we need one precise meaning:
+Older drafts kept `Sema::open` in the kernel surface, but schema
+discipline says component state should hard-fail on schema mismatch.
+Current `Sema::open` means “legacy slot store, no schema guard.” After
+deletion, we need one precise meaning:
 
-Delete schema-less `Sema::open(path)`. Rename
-`open_with_schema(path, schema)` to the canonical
-`Sema::open(path, schema)`. If a low-level header-only open is needed
-later, it should be added under a name that says that precisely and
-with a witness test proving no component durable-state path uses it
-accidentally.
+Delete schema-less `Sema::open(path)`. Keep
+`open_with_schema(path, schema)` as the public durable-state path so
+the call site names the schema invariant. If a low-level header-only
+open is needed later, it should be added under a name that says that
+precisely and with a witness test proving no component durable-state
+path uses it accidentally.
 
 ### Decision 2 - Delete legacy slot store, or preserve it somewhere?
 
@@ -509,11 +509,11 @@ never use `path = "../sema"`; the lockfile is the exact pin. Tags can
 come once the kernel release cadence is ready.
 
 Designer-owned report `reports/designer/158-sema-kernel-and-sema-engine-two-interfaces.md`
-has now absorbed the key corrections per `reports/designer/159-reply-to-operator-115-sema-engine-split.md`:
-schema-guarded `Sema::open(path, schema)`, legacy slot-store
-deletion, HTTPS revision pinning, and Criome as an engine consumer.
-Operator implementation should follow `/158` + `/159` wherever older
-copies conflict.
+has now absorbed the key corrections: schema-guarded
+`open_with_schema(path, schema)`, legacy slot-store deletion, HTTPS
+revision pinning, `persona-introspect` as owner of its own database,
+and Criome as an engine consumer. Operator implementation should
+follow `/158` wherever older copies conflict.
 
 ## 9 - Gaps before code starts
 

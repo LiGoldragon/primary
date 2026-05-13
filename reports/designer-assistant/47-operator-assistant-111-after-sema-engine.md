@@ -10,6 +10,12 @@ Question: what remains true, what is stale, and what should operators
 do differently now that `sema-engine` is the planned full
 database-operation engine.*
 
+Update 2026-05-14: the user clarified that `persona-introspect` does
+own its own database. This report therefore treats
+`persona-introspect` as a `sema-engine` consumer for local
+introspection state while preserving the socket/contract boundary for
+peer inspection.
+
 ## 0. Bottom line
 
 Operator-assistant/111 is directionally right about ownership:
@@ -182,16 +188,18 @@ records. When `ListRecordKinds` or `operation_log_range` becomes the
 next slice, decide the contract home then with the concrete payload in
 front of us.
 
-### 2.4 `persona-introspect` should not depend on `sema-engine` by default
+### 2.4 `persona-introspect` depends on `sema-engine` for its own database
 
-Because `sema-engine` is a library capability used inside each
-state-bearing daemon, `persona-introspect` should not normally depend
-on `sema-engine` just to inspect other components. It should depend on
-the peer contracts it speaks.
+Because `persona-introspect` owns a local database, it should depend on
+`sema-engine` for its own observation state, indexes, catalogs, audit
+records, projection cache, and query surface. That is local state owned
+by the introspection component.
 
-Exception: if `persona-introspect` itself gains a local database backed
-by `sema-engine`, then it may depend on `sema-engine` for its own
-state. That is separate from inspecting peers.
+That does not make `sema-engine` the peer-inspection boundary.
+`persona-introspect` still reaches peer state by asking peer daemons
+over their sockets and typed component contracts. The peer daemon uses
+its own `sema-engine` instance internally and returns a typed contract
+reply.
 
 The shape to avoid:
 
@@ -202,6 +210,8 @@ persona-introspect opens or imports peer sema-engine state directly
 The correct shape:
 
 ```text
+persona-introspect -> sema-engine -> its own introspection database
+
 persona-introspect -> peer daemon socket -> peer contract request
 peer daemon -> sema-engine -> local sema state
 peer daemon -> peer contract reply -> persona-introspect projection

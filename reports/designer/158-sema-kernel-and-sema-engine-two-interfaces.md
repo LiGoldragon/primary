@@ -30,7 +30,7 @@ witnesses in §7 carry the constraints forward.
 Two micro-components in two repositories:
 
 - **`sema`** (existing repo): typed storage kernel.
-  `Sema::open`, `Table<K, V>`, closure-scoped `read|write`
+  `Sema::open_with_schema`, `Table<K, V>`, closure-scoped `read|write`
   transactions, rkyv encode/decode at the table boundary, schema
   and database-header guards. After §2's cleanup: ~500 lines.
   Speculative kernel-only consumers (arca-if-simple, future
@@ -189,7 +189,7 @@ criome-specific carryovers.
 
 | Surface | Lines | Why it stays |
 |---|---|---|
-| `Sema` struct + `open(path, schema)` | ~140 | Lifecycle + schema guards. **Schema-less `Sema::open(path)` is deleted alongside the legacy slot store; the schema-guarded path is renamed from `open_with_schema` to `open`.** One canonical open path, takes a schema explicitly. Per operator `/115 §8 D1` recommendation + designer concurrence: durable component state always opens through schema discipline. |
+| `Sema` struct + `open_with_schema(path, schema)` | ~140 | Lifecycle + schema guards. **Schema-less `Sema::open(path)` is deleted alongside the legacy slot store.** `open_with_schema` remains the public durable-state path because the name preserves the invariant: durable component state opens through explicit schema discipline. If a header-only kernel open is ever needed, it gets a specific name and a witness proving component durable state cannot use it accidentally. |
 | `Sema::read(\|txn\| ...)` / `write(\|txn\| ...)` | ~25 | Closure-scoped transactions — the discipline every higher layer depends on |
 | `Table<K, V>` + `OwnedTableKey` trait + impls | ~250 | The typed table abstraction |
 | `Table::get` / `insert` / `remove` / `iter` / `range` / `ensure` | (in above) | The primitive read/write surface |
@@ -278,8 +278,11 @@ kernel.
 ## 3 · What `sema-engine` is
 
 A new repository: `/git/github.com/LiGoldragon/sema-engine`.
-Carries everything specified in `/157 §4` (the four affordances)
-plus the verb execution layer.
+Carries the engine surface specified in `/157 §4`: typed table/index
+registration, query plans, mutation plans, subscriptions, operation
+logs, validation, and the verb execution layer. The older four
+affordances named in `/155` are internal construction material, not the
+public API boundary.
 
 ### 3.1 · The surface
 
@@ -536,7 +539,7 @@ daemon translates the wire payload to a plan and back.
 | `persona-harness` | `sema-engine` | Transcript events + lifecycle observations + Subscribe. |
 | `persona-system` | `sema-engine` | Focus observations + Subscribe. |
 | `persona-message` | `sema-engine` | Message submission (Assert) + InboxQuery (Match). |
-| `persona-introspect` | `sema-engine` | Query+Subscribe across the engine's introspection surface. |
+| `persona-introspect` | `sema-engine` | Owns its own introspection database through `sema-engine` for observation state, indexes, catalogs, and audit/projection cache. Peer inspection still crosses daemon sockets and component contracts; `persona-introspect` does not open peer databases. |
 | `persona-daemon` (manager) | `sema-engine` | Engine status (Match) + component lifecycle (Mutate). |
 
 **`sema-engine` becomes the canonical database-operation layer**
@@ -594,7 +597,7 @@ from the new shape.
    `sema-engine` typed verbs. Per ESSENCE rule: migrate in one
    step per component; no half-migrated states.
 
-   Migration ordering:
+   Migration ordering (decided 2026-05-14):
    - **persona-mind first** (per DA `/45 §8` step 4): the most
      exercised existing consumer, validates the engine API
      against real domain pressure. Migration surfaces real
@@ -604,8 +607,11 @@ from the new shape.
      `Engine::assert(criome_table, validated_record)`. Per the
      user's correction 2026-05-14, criome is an engine
      consumer, not a kernel-only consumer.
+   - **persona-introspect as its own database lands once the
+     engine surface exists.** Its local state uses `sema-engine`;
+     peer state remains behind peer daemon sockets and contracts.
    - **Then the remaining persona-* components** (terminal,
-     router, harness, system, message, introspect, manager) —
+     router, harness, system, message, manager) —
      each lands as the engine surface stabilises through the
      first consumers.
 
@@ -622,8 +628,9 @@ Specifically rejected migration patterns:
   shortcut.** `sema-engine::Engine` wraps `sema::Sema` (composition,
   not inheritance); the two structs are different concerns.
 - **No `path = "../sema"` while the version is being stabilized.**
-  Even pre-release `sema-engine` depends via git+tag, per
-  ESSENCE §"Micro-components."
+  Even pre-release `sema-engine` depends on `sema` through HTTPS git
+  with an explicit revision recorded in `Cargo.lock`. Tags are release
+  trace, not the precision mechanism for local development.
 
 The migration is bounded: roughly four coordinated repo bumps
 (`sema` cleanup, `sema-engine` creation, then per-consumer
@@ -775,31 +782,19 @@ keep advisory):
 
 ---
 
-## 8 · Open questions
+## 8 · Closed and open questions
 
-### Q1 — Where does `Slot` live: criome or a new `sema-slots` crate?
+### Q1 — Slot and legacy slot store disposition is closed
 
-**Background.** The `Slot(u64)` newtype + legacy slot store
-were originally placed in `sema` because criome needed them.
-Moving them out: two options.
+The `Slot(u64)` newtype + legacy slot store are deleted from `sema`
+and are not moved to Criome or to a new `sema-slots` crate. Current
+Criome no longer uses that legacy byte-slot surface, so preserving it
+would be compatibility tribute to dead architecture.
 
-**Options.**
-
-(a) **Move to criome.** Criome owns `criome::Slot` and its
-slot-store module. Simplest; one less repo to maintain. Other
-future consumers that want "append-only typed slot store" would
-either depend on criome or re-implement.
-
-(b) **New `sema-slots` crate.** A small dedicated repo carrying
-`Slot` + slot-store implementation. Sema-shaped consumers that
-want slot semantics depend on `sema-slots`; criome migrates to
-depend on `sema-slots`.
-
-**Recommendation.** (a). The pattern is criome-shaped today; no
-second consumer is asking for it. Per `~/primary/skills/contract-repo.md`
-§"Kernel extraction trigger" — extract when ≥2 consumers exist.
-One consumer = keep it in that consumer. If a second consumer
-later wants the slot pattern, extract `sema-slots` then.
+If an append-only sequence allocator or slot-shaped table becomes a
+real requirement later, it should land as a typed `sema-engine`
+primitive with its own records and witnesses, not as resurrected raw
+slot storage.
 
 ### Q2 — `sema-db` rename: does it still happen?
 
@@ -826,27 +821,16 @@ probably keep the same name" for the kernel. Saves cross-repo
 churn. The eventual `Sema` rename can happen when eventual
 `Sema` lands (years away per ESSENCE).
 
-### Q3 — `persona-mind` migration: order of operations?
+### Q3 — `persona-mind` migration order is closed
 
-**Background.** Persona-mind currently uses `sema` directly for
-typed tables. Under the two-repo split, it should depend on
-`sema-engine` (since it needs Match, Assert, Subscribe). The
-question is timing.
+The first real `sema-engine` consumer is `persona-mind`. It pressure
+tests Match, Assert, relation validation, and Subscribe against the
+graph domain that already exists. Criome follows as an early consumer
+for identity, revocation, attestation, audit, lookup, and subscription
+state.
 
-**Options.**
-
-(a) **Migrate persona-mind to `sema-engine` as the first
-consumer**, in lockstep with sema-engine's Package 2-4 landing.
-This proves the engine API against a real consumer.
-
-(b) **Land `sema-engine` first with synthetic test consumers**;
-migrate persona-mind in a separate pass once the engine is
-stable.
-
-**Recommendation.** (a). Per the kernel-extraction principle, the
-engine API shape needs concrete-consumer validation. Persona-
-mind is the most exercised existing consumer. Migration
-pressure surfaces real API gaps; synthetic tests miss those.
+Synthetic consumers may exist as witnesses, but they do not replace
+the `persona-mind` migration as the first real design proof.
 
 ---
 
