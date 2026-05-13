@@ -905,9 +905,6 @@ vocabulary where DA's was clearer).
   intentionally diverges from (Q4).
 - `~/primary/reports/designer/125-channel-choreography-and-trust-model.md`
   — the channel choreography the witness exercises end-to-end.
-- `~/primary/reports/designer/126-implementation-tracks-operator-handoff.md`
-  — the production federation tracks; the federation-witness sits
-  on top of all of them.
 - `~/primary/reports/designer/127-decisions-resolved-2026-05-11.md`
   §1 (gate-and-cache), §2 (terminal-cell signal integration), §2.3
   (data-plane-stays-raw) — the mechanisms the witness exercises and

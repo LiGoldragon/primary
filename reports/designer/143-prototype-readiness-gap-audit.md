@@ -981,9 +981,6 @@ from this report:
   HarnessKind closed, MessageBody freeform.
 - `~/primary/reports/designer/125-channel-choreography-and-trust-model.md`
   — filesystem-ACL trust model; channel choreography.
-- `~/primary/reports/designer/126-implementation-tracks-operator-handoff.md`
-  — predecessor track list (T1–T9); /143 extends with
-  tracks 13–17 in `primary-devn`'s description.
 - `~/primary/reports/designer/115-persona-engine-manager-architecture.md`
   — engine manager substance; §1.7 spawn lifecycle prose
   is the closest existing source for the `SpawnEnvelope`

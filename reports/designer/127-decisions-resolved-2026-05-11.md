@@ -297,12 +297,14 @@ question reopens — but for now, two repos.
 
 ### 2.6 Operator hand-off impact
 
-Track **T9 — terminal-cell signal integration** lands in
-designer/126's hand-off as a new track. Sequence: T1
-(signal-persona-auth) → T9 (terminal-cell speaks signal) →
-T6 (persona-terminal supervisor uses signal protocol to
-both directions). T6 and T9 co-develop the contract
-surface.
+Track **terminal-cell signal integration** lands alongside the
+terminal supervisor work. Sequence: signal-persona-auth →
+terminal-cell speaks signal → persona-terminal supervisor uses
+signal protocol to both directions. The supervisor work and
+the cell signal integration co-develop the contract surface.
+Beads carrying this work: `primary-8n8` terminal supervisor +
+gate-and-cache; implementation reports under
+`reports/operator/` and `reports/operator-assistant/`.
 
 ---
 
@@ -488,7 +490,6 @@ Edits landing alongside this report:
 | File | Edit |
 |---|---|
 | `~/primary/reports/designer/125-channel-choreography-and-trust-model.md` §6 | Mark all D1-D7 resolved; point at this report. |
-| `~/primary/reports/designer/126-implementation-tracks-operator-handoff.md` | Defer T8 (persona-system). Expand T6 to include the gate-and-cache mechanism. Add T9 (terminal-cell signal integration). |
 | `~/primary/skills/contract-repo.md` §"Contracts name relations" | Replace the opening framing per D3. |
 
 Plans that get notes (not edited inline; the notes live in
@@ -537,10 +538,6 @@ Data-plane-protection witnesses (per §2.3, DA's D7 concern):
 ## See Also
 
 - `~/primary/reports/designer/125-channel-choreography-and-trust-model.md` §6 — the deferred items this report resolves.
-- `~/primary/reports/designer/126-implementation-tracks-operator-handoff.md` — operator tracks; updated alongside this report (T8 deferred; T6 expanded; T9 added).
-- `~/primary/reports/designer/121-persona-terminal-development-plan.md` — gains the gate-and-cache mechanism from §1.
-- `~/primary/reports/designer/123-terminal-cell-development-plan.md` — refactor scope: signal integration, not polish.
-- `~/primary/reports/designer/120-persona-harness-development-plan.md` — `HarnessKind` closes; transcript-pointer default.
 - `~/primary/reports/designer/119-persona-system-development-plan.md` — design record, deferred from current wave.
 - `~/primary/reports/designer-assistant/16-new-designer-documents-analysis.md` — surfaced the seven decisions resolved here.
 - `~/primary/skills/contract-repo.md` §"Contracts name relations" — edited alongside this report per D3.

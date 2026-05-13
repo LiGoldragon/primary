@@ -1254,10 +1254,6 @@ this report enforces.
 - `~/primary/protocols/active-repositories.md` — active repo map.
 - `~/primary/reports/designer/110-cluster-trust-runtime-placement.md`
   — scope discipline in action.
-- `~/primary/reports/designer/112-day-review-2026-05-10.md` —
-  recent work that this report synthesizes.
-- `~/primary/reports/designer/113-actor-blocking-audit.md` — the
-  blocking-plane discipline (one of the open seams).
 - `~/primary/skills/actor-systems.md`, `~/primary/skills/kameo.md`
   — actor discipline (foundational).
 - `~/primary/skills/contract-repo.md` — wire-contract discipline.

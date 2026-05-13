@@ -479,19 +479,24 @@ brief summary here:
 | D6 | `HarnessKind::Other` | **Close the enum.** No `Other` variant. New harness types are coordinated schema bumps. |
 | D7 | terminal-cell push form | **Subsumed by larger refactor.** terminal-cell speaks `signal-persona-terminal` directly (§2 of 127); the push form for worker lifecycle is part of the signal integration, not a separate add. |
 
-Implementation impact in
-`~/primary/reports/designer/126-implementation-tracks-operator-handoff.md`:
-T8 (persona-system) deferred; T6 (persona-terminal)
-expanded with the gate-and-cache mechanism; T9
-(terminal-cell signal integration) added.
+Implementation impact carried into the active BEADS track set
+(`primary-2y5` daemon scaffold, `primary-hj4` mind, `primary-8n8`
+terminal supervisor + gate-and-cache, `primary-es9` harness,
+`primary-devn` first-stack supervision witness): persona-system
+deferred per /127 §3; the terminal supervisor track expanded
+with the gate-and-cache mechanism; terminal-cell signal
+integration coupled with the supervisor track.
 
 ---
 
 ## 7 · Constraints (architectural-truth test seeds)
 
-For the implementation tracks (operator hand-off in designer/126), the
-following constraints should each land a witness test in the appropriate
-component:
+For the implementation tracks (now tracked as BEADS items —
+`primary-2y5` daemon socket/manager scaffold, `primary-hj4`
+mind choreography, `primary-8n8` terminal supervisor + gate,
+`primary-es9` harness, `primary-devn` first-stack supervision
+witness), the following constraints should each land a witness
+test in the appropriate component:
 
 1. Every internal socket is created with mode `0600` and owner `persona`
    (filesystem witness; can be checked by a startup assertion or a
@@ -537,16 +542,12 @@ component:
   (privileged-user), §4 (multi-engine), §6 (ConnectionClass),
   §7 (EngineRoute) are still load-bearing; this report
   refines the auth/route layer.
-- `~/primary/reports/designer/116-persona-apex-development-plan.md`
-  through `123-terminal-cell-development-plan.md` — the
-  per-component plans whose auth-gating sections this
-  report supersedes (per §5).
-- `~/primary/reports/designer/124-synthesis-drift-audit-plus-development-plans.md`
-  — the synthesis; updated in parallel to point at this
-  report.
-- `~/primary/reports/designer/126-implementation-tracks-operator-handoff.md`
-  — operator-facing concrete tracks ready to claim, written
-  against the decisions in this report.
+- The per-component development plans designer/116-/124 that
+  preceded this report — all retired per
+  `~/primary/reports/designer/128-designer-report-status-after-127.md`
+  (subsequently deleted in /147 cleanup) — had auth-gating
+  sections this report superseded per §5. Their live substance
+  now lives in the active BEADS tracks named in §7.
 - `~/primary/reports/designer-assistant/15-architecture-implementation-drift-audit.md`
   — drift audit; the persona-message retirement work is
   also a precondition for the §3.2 default-channel setup.
