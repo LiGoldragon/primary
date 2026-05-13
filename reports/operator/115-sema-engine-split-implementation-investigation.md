@@ -32,6 +32,17 @@ Persona stack. But Criome is no longer classified as a thin-kernel
 consumer in the target architecture; it is another early engine
 consumer, not the home of the deleted legacy slot store.
 
+Update after designer-assistant review and user decisions:
+
+- Schema-less `Sema::open` should not remain public after legacy slot
+  deletion. The schema-guarded path becomes the canonical
+  `Sema::open(path, schema)`. If a header-only kernel open is needed
+  later, add it with a specific name and a test witness.
+- `persona-introspect` has its own database. It should inspect peers
+  through their daemon sockets and component contracts, but its own
+  observation/index state uses `sema-engine`.
+- First real engine migration order is `persona-mind`, then Criome.
+
 ## 1 - What I read
 
 Required operator context:
@@ -157,11 +168,11 @@ Edits:
 - Remove `Sema::store`, `Sema::get(Slot)`, and legacy `Sema::iter`.
 - Remove `DEFAULT_READER_COUNT`, `reader_count`, `set_reader_count`,
   `MissingSlotCounter`, and raw slot-store internal tables.
-- Reframe `Sema::open` if it survives: it must mean a kernel open, not
-  “legacy slot mode.” The safest implementation question is whether
-  schema-less `open` should remain public at all.
-- Keep `open_with_schema`, `read`, `write`, `Table`, `Table::ensure`,
-  `get`, `insert`, `remove`, `iter`, `range`, `Schema`,
+- Delete schema-less `Sema::open(path)` and rename
+  `open_with_schema(path, schema)` to the canonical
+  `Sema::open(path, schema)`.
+- Keep `read`, `write`, `Table`, `Table::ensure`, `get`, `insert`,
+  `remove`, `iter`, `range`, `Schema`,
   `SchemaVersion`, and the database header guard.
 - Update `sema/ARCHITECTURE.md`, `sema/AGENTS.md`, and `sema/skills.md`
   so they no longer describe sema as Criome’s records database or
@@ -438,10 +449,13 @@ reader has no durable state to inspect.
 9. **Migrate `criome`** from direct `sema` table calls to
    `sema-engine` for identity, revocation, attestation, and audit
    records.
-10. **Then move outward** to `persona-terminal`, `persona-router`,
-   `persona-harness`, `persona-message`, and `persona-introspect`.
+10. **Migrate `persona-introspect` local state** to `sema-engine`.
+   Introspection of peers still happens through daemon sockets and
+   contracts; the engine dependency is for introspect's own database.
+11. **Then move outward** to `persona-terminal`, `persona-router`,
+   `persona-harness`, and `persona-message`.
 
-## 8 - Open decisions to surface
+## 8 - Closed decisions from review
 
 ### Decision 1 - What does `Sema::open` mean after legacy slot deletion?
 
@@ -450,13 +464,12 @@ schema discipline says component state should hard-fail on schema
 mismatch. Current `Sema::open` means “legacy slot store, no schema
 guard.” After deletion, we need one precise meaning:
 
-- keep `Sema::open` as a header-only low-level kernel open for rare
-  schema-less stores; or
-- delete/privatize it and make `open_with_schema` the public path for
-  durable component state.
-
-I recommend the second unless a real current consumer needs
-schema-less persistence.
+Delete schema-less `Sema::open(path)`. Rename
+`open_with_schema(path, schema)` to the canonical
+`Sema::open(path, schema)`. If a low-level header-only open is needed
+later, it should be added under a name that says that precisely and
+with a witness test proving no component durable-state path uses it
+accidentally.
 
 ### Decision 2 - Delete legacy slot store, or preserve it somewhere?
 
@@ -467,18 +480,40 @@ slot-store surface and already models attestation slots as typed
 tables. Adding a copied raw-byte slot store to current Criome would be
 new dead code.
 
-I recommend deleting it from `sema` and not adding it anywhere. If the
+Decision: delete it from `sema` and do not add it anywhere. If the
 engine needs append-only sequence allocation, implement that as an
 engine primitive with typed records and witnesses, not as resurrected
 raw-byte slot storage.
 
-### Decision 3 - Exact dependency pin wording
+### Decision 3 - `persona-introspect` and `sema-engine`
+
+`persona-introspect` has its own database. It should therefore use
+`sema-engine` for its own observation, index, and query state. It
+should not use direct peer database reads as its introspection model:
+peer component state is reached through daemon sockets and component
+contracts.
+
+### Decision 4 - First real consumers
+
+The migration order is `persona-mind` first, then Criome. `persona-mind`
+is the strongest graph/subscription pressure test. Criome follows as an
+early engine consumer for identity, revocation, attestation, audit,
+lookup, and subscription state.
+
+### Decision 5 - Exact dependency pin wording
 
 The reports say `sema-engine` should depend on `sema` by tag/version.
 Workspace Cargo practice currently uses git dependencies with
 `Cargo.lock` pinning the exact rev. The committed manifest should
 never use `path = "../sema"`; the lockfile is the exact pin. Tags can
 come once the kernel release cadence is ready.
+
+Designer-owned report `reports/designer/158-sema-kernel-and-sema-engine-two-interfaces.md`
+has now absorbed the key corrections per `reports/designer/159-reply-to-operator-115-sema-engine-split.md`:
+schema-guarded `Sema::open(path, schema)`, legacy slot-store
+deletion, HTTPS revision pinning, and Criome as an engine consumer.
+Operator implementation should follow `/158` + `/159` wherever older
+copies conflict.
 
 ## 9 - Gaps before code starts
 
@@ -496,6 +531,10 @@ come once the kernel release cadence is ready.
   implementation. That is current scaffold, not target architecture;
   Criome should migrate to `sema-engine` for its stateful identity and
   attestation paths.
+- `persona-introspect` has its own database by design; if it exists as
+  direct `sema` or ad hoc file state, that local state should migrate
+  to `sema-engine`. Peer inspection still goes through daemon sockets
+  and component contracts.
 - The report lineage still uses both `sema` and `sema-db` language.
   The current implementation should keep the repo name `sema` per
   designer/158 Q2 unless the user reopens the rename.
