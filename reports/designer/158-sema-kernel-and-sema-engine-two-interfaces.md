@@ -33,14 +33,21 @@ Two micro-components in two repositories:
   `Sema::open`, `Table<K, V>`, closure-scoped `read|write`
   transactions, rkyv encode/decode at the table boundary, schema
   and database-header guards. After §2's cleanup: ~500 lines.
-  Components that only need typed KV storage depend on `sema`
-  directly.
-- **`sema-engine`** (new repo): full database engine implementing
-  the Signal verb spine from `/157 §4`. `Engine::open`,
-  `register_table`, `register_index`, `match_query`, `assert`,
-  `mutate`, `retract`, `atomic`, `subscribe`, `validate`,
-  `list_tables`, `operation_log_range`, plus typed
-  `QueryPlan<R>` / `MutationPlan<R>` / `OperationLogEntry` /
+  Speculative kernel-only consumers (arca-if-simple, future
+  tiny config stores) may depend on `sema` directly; the split
+  is justified by capability cleanliness regardless of whether
+  any non-engine consumer materialises (per §1.2).
+- **`sema-engine`** (new repo): full database engine carrying
+  the engine surface from `/157 §4` (QueryPlan, MutationPlan,
+  Subscribe, table/index registration, operation log, validate
+  — what `/157` calls the engine surface; the four affordances
+  from the retired `/155` pattern-library design become
+  *internal* building materials of this engine, not the public
+  API). `Engine::open`, `register_table`, `register_index`,
+  `match_query`, `assert`, `mutate`, `retract`, `atomic`,
+  `subscribe`, `validate`, `list_tables`,
+  `operation_log_range`, plus typed `QueryPlan<R>` /
+  `MutationPlan<R>` / `OperationLogEntry` /
   `SubscriptionSink<R>`. ~2000-3000 lines initially (within
   the single-context micro-component budget per
   `~/primary/skills/micro-components.md`).
@@ -56,13 +63,13 @@ flowchart TD
     sema["sema (existing, cleaned per §2)<br/>storage kernel<br/>~500 lines"]
     engine["sema-engine (new repo, §3)<br/>full database engine<br/>QueryPlan, MutationPlan, Subscribe,<br/>operation log, catalog, validate<br/>~2000-3000 lines"]
 
-    subgraph kernel_only["Components depending on sema only"]
-        criome["criome<br/>(after absorbing its slot store, §2.2)"]
-        arca["arca<br/>(artifact storage; if typed KV is enough)"]
-        cfg["simple configuration stores"]
+    subgraph speculative_kernel_only["Speculative kernel-only consumers"]
+        arca["arca<br/>(artifact storage; only if typed KV is genuinely enough)"]
+        cfg["future tiny configuration stores"]
     end
 
     subgraph engine_users["Components depending on sema-engine"]
+        criome["criome"]
         mind["persona-mind"]
         terminal["persona-terminal"]
         router["persona-router"]
@@ -74,7 +81,7 @@ flowchart TD
     end
 
     engine --> sema
-    kernel_only --> sema
+    speculative_kernel_only -. only if proven .-> sema
     engine_users --> engine
 ```
 
@@ -118,20 +125,36 @@ The default answer per the rule is "new crate, new repo." The
 burden of proof for keeping them in one crate would be a
 demonstration that they are the *same* capability. They aren't.
 
-### 1.2 · Not all components need the engine
+### 1.2 · Capability cleanliness
 
-Some workspace components need typed KV storage and nothing
-more — the legacy criome slot path (today an internal sema
-utility) is the canonical example. Arca (artifact storage) is
-another candidate: an arca that maps content hashes to byte
-sequences may not need verb execution. Configuration stores in
-future infra components likely don't either.
+Storage and database-operation execution are different
+capabilities even if every current consumer uses both. A
+storage kernel hides redb + rkyv behind typed transactions and
+schemas. A database-operation engine executes typed verbs
+(Assert, Mutate, Retract, Match, Subscribe, ...) against
+registered record families. These have different vocabularies,
+different invariants, different tests, different consumers in
+principle.
 
-Forcing every storage consumer to depend on the engine crate
-(with its query-plan execution, subscription machinery,
-operation log, catalog) is a budget penalty those consumers
-don't earn. The micro-component split lets each consumer pick
-the layer it needs.
+Per ESSENCE §"Micro-components": *new capability defaults to
+new crate; the burden of proof is on the contributor who wants
+to grow a crate.* Storage and engine are distinct capabilities;
+forcing them into one crate would require the proof that they
+are the *same* capability. They aren't.
+
+Speculative kernel-only consumers (arca-if-simple, future tiny
+configuration stores) may or may not materialise. The split
+does not depend on them. If every state-bearing component ends
+up depending on `sema-engine`, the split is still right — the
+boundary between storage primitives and engine execution stays
+clean, tests stay focused, and the engine's evolution doesn't
+ripple into the kernel.
+
+Most current state-bearing components — criome included, per
+the user's correction 2026-05-14 — are engine consumers.
+Criome's records get verb execution (Assert/Match/Mutate/
+Retract, eventually Subscribe); criome depends on
+`sema-engine`. See §5.
 
 ### 1.3 · Clean break enabled by the new ESSENCE rule
 
@@ -177,58 +200,77 @@ criome-specific carryovers.
 Total kept: ~570 lines. Some trim possible (deduplicate, tighten
 docs) → realistic target ~500 lines.
 
-### 2.2 · What moves out — criome-specific carryovers
+### 2.2 · What gets deleted from sema
 
-Three pieces. Each was already marked for relocation in source
-comments; the new ESSENCE rule says: relocate them.
+Three pieces leave `sema`. None of them re-emerges as a "moved"
+implementation in another crate — they retire. Criome migrates
+to `sema-engine` for typed verb execution and so does not need
+sema's old append-only-bytes path at all.
 
 **`Slot(u64)` newtype** (`sema/src/lib.rs:50-72`). The slot
-identity for criome's append-only records. Criome-specific.
-Moves to criome. The newtype was originally placed in sema
-because the legacy slot store needed it; once the slot store
-moves, the newtype follows.
+identity for criome's legacy append-only records. **Deleted
+from sema.** Criome's new path (`sema-engine`) mints typed
+record identity through `Engine::assert`'s return value;
+criome's domain may keep a typed identity newtype of its own
+(`criome::NodeSlot` / `criome::EdgeSlot` if needed), but that's
+criome's domain choice, not a relocation of sema's `Slot`.
 
 **Legacy slot store** (`sema/src/lib.rs:662-709`).
 `Sema::store(&[u8]) -> Slot`, `Sema::get(Slot) -> Option<Vec<u8>>`,
-`Sema::iter() -> Vec<(Slot, Vec<u8>)>` — criome's M0 query
-substrate. The doc comment at line 17-20 calls it the "legacy
-slot store" and explicitly says: "do not use for new typed
-component state". Moves to criome.
+`Sema::iter() -> Vec<(Slot, Vec<u8>)>`. **Deleted from sema.**
+The raw-bytes-at-u64 path was always the wrong shape — its own
+doc comment (line 17-20) calls it the "legacy slot store" and
+warns "do not use for new typed component state." Criome moves
+to typed `Engine::assert(table, value)`; the byte-at-slot
+abstraction is not preserved anywhere.
 
 **Reader-count config** (`sema/src/lib.rs:511-519,716-736`).
 `DEFAULT_READER_COUNT`, `Sema::reader_count`,
-`Sema::set_reader_count`. Source comments at line 519-520:
-"**Deprecated location.** This constant + the
-`reader_count`/`set_reader_count` accessors are criome-specific
-and should move to criome." Moves to criome.
+`Sema::set_reader_count`. **Deleted from sema.** Criome's
+actor-pool configuration is criome's concern; criome's daemon
+gains its own typed config record for the read-pool size,
+without sema being a partial home for it. Per source comments
+at line 519-520, this was always marked deprecated location.
 
 Plus the matching error variant `Error::MissingSlotCounter`
 (line 130) and the internal `RECORDS` / `NEXT_SLOT_KEY` /
-`READER_COUNT_KEY` table constants (lines 502-507).
+`READER_COUNT_KEY` table constants (lines 502-507) — also
+deleted.
 
 Total removed: ~150 lines. `sema` shrinks from 737 → ~500-590
 lines.
 
-### 2.3 · What criome absorbs
+### 2.3 · What happens in criome
 
-Criome gains its own `criome::Slot` newtype, its own slot-store
-module, its own `reader_count` config. The implementation
-moves into criome's source; criome continues using `sema`'s
-typed `Table` API for slot/byte storage (the legacy store can
-be reimplemented as a typed table internally, or kept as raw
-redb access for performance — criome's call).
+Criome depends on `sema-engine`, not on `sema` directly. The
+migration story:
 
-This is the cleanest break: criome owns its slot identity and
-its reader-pool configuration. `sema` is no longer a partial
-home for criome's internals.
+- Criome's records (Node, Edge, Graph, etc.) become typed
+  `Record` implementations under sema-engine's `register_table`.
+- Criome's old "store bytes at allocated slot" pattern retires:
+  validated records flow through `Engine::assert`, which mints
+  typed identity, persists the typed value, and updates indexes
+  atomically.
+- Criome's actor-pool configuration (formerly
+  `Sema::reader_count`) becomes a criome-domain typed config
+  record. Its persistence path goes through `sema-engine`'s
+  catalog like any other criome record.
+- Per ESSENCE §"Backward compatibility is not a constraint":
+  the old raw-bytes path is **not** preserved as an escape
+  hatch. Criome does not retain a `path = "..."` shim to raw
+  `redb` for performance. If raw byte access ever becomes a
+  proven requirement, it earns its own design report and
+  witnesses (per DA `/46 §1`); it does not appear as a casual
+  carve-out in this migration.
 
 ### 2.4 · The cleanup is the right shape *now*
 
-Per ESSENCE backward-compat rule: no transitional shim
-versions of `Sema::store`/`get`/`iter` that re-export from a
-new crate. They disappear from `sema`; they appear in criome.
-Criome's existing call sites change. Old `sema` releases are
-preserved at their git tags; new releases ship the cleaned
+Per ESSENCE §"Backward compatibility is not a constraint": no
+transitional shim versions of `Sema::store`/`get`/`iter` that
+re-export from a new crate. They disappear from `sema`. Their
+callers (currently in criome) migrate to typed
+`Engine::assert` / `match_query`. Old `sema` releases are
+preserved at their git revisions; new releases ship the cleaned
 kernel.
 
 ---
@@ -304,20 +346,31 @@ for a single repo.
 
 ```toml
 [dependencies]
-sema = { git = "ssh://git@github.com/LiGoldragon/sema", tag = "..." }
-signal-core = { git = "...", tag = "..." }
+sema = { git = "https://github.com/LiGoldragon/sema.git", rev = "<commit-sha>" }
+signal-core = { git = "https://github.com/LiGoldragon/signal-core.git", rev = "<commit-sha>" }
 rkyv = "0.8"
 thiserror = "..."
 ```
 
-Critical: **never `path = "../sema"`.** Per `~/primary/ESSENCE.md`
-§"Micro-components" — "Never cross-crate `path = "../sibling"`
-in a manifest — that assumes a layout a fresh clone won't
-reproduce."
+Two discipline rules:
+
+- **Never `path = "../sema"`.** Per `~/primary/ESSENCE.md`
+  §"Micro-components" — "Never cross-crate `path = "../sibling"`
+  in a manifest — that assumes a layout a fresh clone won't
+  reproduce."
+- **Pin by commit revision, not by tag.** Per DA `/46 §3`: a
+  tag is a release label, not the immutable build identity.
+  Tags can be moved unless the hosting policy explicitly
+  forbids it; `https://` URLs are more portable in Nix and CI
+  contexts than `ssh://`. `Cargo.lock` records the resolved
+  revision and is what the build actually depends on; the
+  manifest names the revision explicitly so the spec and the
+  lock agree without a tag-to-revision indirection.
 
 The version pin is the bridge. Each `sema-engine` release pins
-a specific `sema` version. Bumping `sema` requires a coordinated
-release.
+a specific `sema` revision. Bumping `sema` requires a
+coordinated release (new `sema` commit + new `sema-engine`
+revision pin + new release tags on both for traceability).
 
 ### 3.3 · What `sema-engine` does NOT depend on
 
@@ -351,16 +404,84 @@ remains the durable-state owner for its own concerns; the
 engine is the *machinery* each component uses inside its own
 boundary.
 
-A second consequence: there is no `signal-sema-engine` or
-`engine-protocol` contract crate **yet**. `signal-core` already
-owns the universal verb words (`SemaVerb` + `Request { verb,
-payload }`). The engine is the first (and currently only)
-implementation of how to execute those verbs against typed
-records. A separate engine-protocol crate earns its place only
-if (a) a second engine implementation appears, or (b) plan IR
-must cross a process boundary — neither holds yet. Per DA
-`/45 §3` and `~/primary/skills/contract-repo.md` §"Kernel
-extraction trigger" — wait for the second consumer.
+**No separate `sema-engine` protocol crate in v1.** The plan
+IR is an implementation API inside `sema-engine`. Split a
+protocol crate only when (a) a second engine implementation
+appears, or (b) plans must cross a process boundary. `signal-core`
+already owns the universal verb words (`SemaVerb` + `Request {
+verb, payload }`); a parallel `signal-sema-engine` or
+`sema-engine-contract` crate before either condition holds
+would be ceremony, not a useful boundary. Per DA `/45 §3` +
+DA `/46 §4` and `~/primary/skills/contract-repo.md`
+§"Kernel extraction trigger" — wait for the second
+implementation or the cross-process need.
+
+### 3.5 · Subscription delivery contract
+
+The `Subscribe` verb is the riskiest piece of the engine
+because naive implementations couple write-path latency to
+sink health. The contract below pins the prototype rule;
+implementations land against it.
+
+**Commit-then-emit ordering.**
+
+1. `Engine` opens the write transaction, applies the mutation
+   plan, appends the operation-log entry, and commits.
+2. Only **after** the commit returns successfully does
+   `Engine` evaluate which registered subscriptions' plans
+   match the just-committed records.
+3. For each matching subscription, `Engine` enqueues a typed
+   `SubscriptionEvent::Delta` for delivery through the
+   `SubscriptionSink<R>`.
+
+A subscriber that registers at snapshot `Sn` and disconnects
+during snapshot `Sn+k` cannot delay snapshot `Sn+k`'s commit by
+any amount — its delivery is downstream of the commit.
+
+**`SubscriptionSink<R>::deliver` is enqueue-only.**
+
+The trait method must not block on network IO, an actor
+mailbox at capacity, terminal IO, or any disk operation that
+could fail or stall. Conforming sinks push the event into a
+bounded in-memory queue (or equivalent) and return
+synchronously. The consumer daemon's actor drains the queue at
+its own rate.
+
+The engine treats any sink that violates this rule as a
+correctness bug, not a performance issue. A blocking sink can
+freeze every consumer of the same engine instance.
+
+**Sink failure is typed; it never rolls back the commit.**
+
+If `deliver` returns a typed `SinkError`, `Engine` logs the
+error (via the consumer-installed logger), increments a typed
+counter on the subscription record, and continues with the
+next subscription. The write transaction is already committed
+and cannot be retroactively un-applied.
+
+If a subscriber needs at-least-once delivery across process
+restart, the consumer wires its sink to a durable outbox; the
+engine does **not** mandate durable delivery in v1. The
+prototype rule is "best-effort live notification, plus durable
+operation log for catch-up by sequence id" — consumers that
+miss a delta can replay from `Engine::operation_log_range`
+using the last seen `SnapshotId`.
+
+**Backpressure and reconnect are consumer-daemon concerns.**
+
+The engine does not throttle writes when subscribers fall
+behind. If a subscriber's bounded queue is full, the sink
+returns `SinkError::QueueFull` (or equivalent); the consumer
+daemon decides whether to drop, batch, summarise, or pause
+its own actor that drains the queue. Rebinding a sink after a
+subscriber reconnects is also the consumer daemon's
+responsibility — the subscription record persists across
+restart so the engine can resume delivery once the consumer
+provides a fresh sink.
+
+Per DA `/46 §2`: this contract is what makes the `Subscribe`
+verb implementation-ready. Without it, Package 4 in §6.1 is
+under-specified.
 
 ---
 
@@ -406,8 +527,9 @@ daemon translates the wire payload to a plan and back.
 
 | Component | Depends on | Reason |
 |---|---|---|
-| `criome` (current sema-ecosystem records validator) | `sema` | After §2.2's absorption: criome carries its own slot store + reader_count; its dependency on `sema` is just the typed `Table` API for record storage. |
-| `arca` (artifact storage, if it exists / when it lands) | `sema` (likely) | Maps content hashes to bytes. Typed KV is enough; no verb execution needed for hash → bytes lookup. |
+| `criome` (sema-ecosystem records validator) | `sema-engine` | Records (Node, Edge, Graph) need typed verb execution: Assert (validated submission), Match (lookup), Mutate (state transition), Retract (removal), eventually Subscribe (change feed). Per the user's correction 2026-05-14, criome is an engine consumer, not a kernel-only consumer. |
+| `arca` (artifact storage, if/when it lands) | `sema` (possibly) | Maps content hashes to bytes. If arca's surface is genuinely just `lookup hash → bytes` with no verb semantics, kernel suffices. If arca grows Subscribe ("notify on new artifact"), it joins the engine consumers. Treat as speculative until arca ships. |
+| Future tiny config stores | `sema` (possibly) | A single typed config table accessed by a known key may not earn the engine surface. Treat as speculative; if any such consumer materialises, evaluate at that point. |
 | `persona-mind` | `sema-engine` | Verb execution (Match for graph queries, Assert for thoughts/relations, Subscribe for graph subscriptions). |
 | `persona-terminal` | `sema-engine` | Per `/41 §1.2`: time-indexed observations need Assert+Match+atomic dual-write + (eventually) Subscribe. |
 | `persona-router` | `sema-engine` | Channel state + delivery decisions + route observations + Subscribe for live introspection. |
@@ -417,9 +539,11 @@ daemon translates the wire payload to a plan and back.
 | `persona-introspect` | `sema-engine` | Query+Subscribe across the engine's introspection surface. |
 | `persona-daemon` (manager) | `sema-engine` | Engine status (Match) + component lifecycle (Mutate). |
 
-`sema` keeps a small consumer base (criome + future simple
-stores). `sema-engine` becomes the canonical storage layer for
-state-bearing engine components.
+**`sema-engine` becomes the canonical database-operation layer**
+for state-bearing components, backed by `sema` as the storage
+layer (per DA `/46 §5` wording correction). The kernel
+consumer base is speculative; the split's justification is
+capability cleanliness (§1.2), not consumer count.
 
 ---
 
@@ -432,11 +556,11 @@ from the new shape.
 
 ### 6.1 · Sequence
 
-1. **`sema` cleanup.** Move `Slot` + legacy slot store +
-   `reader_count` out to `criome`. `sema` releases new version
-   with cleaned surface. Criome simultaneously releases version
-   that absorbs the moved pieces. This is one coordinated
-   migration step.
+1. **`sema` cleanup.** Delete `Slot` + legacy slot store +
+   `reader_count` from `sema`. Release new `sema` revision
+   with the cleaned surface (~500 lines). This is independent
+   of criome's migration — sema can release as soon as the
+   deletion is done; criome catches up against `sema-engine`.
 
 2. **`sema-engine` repo created.** Empty repository + initial
    skeleton (`record.rs`, `query.rs`, `mutation.rs`,
@@ -457,17 +581,33 @@ from the new shape.
      `sema-engine`.
    - Package 3: `QueryPlan` / `MutationPlan` IR + execution.
      Lands in `sema-engine`.
-   - Package 4: `Subscribe` primitive. Lands in `sema-engine`.
+   - Package 4: `Subscribe` primitive per the delivery
+     contract in §3.5. Lands in `sema-engine`.
      **Coordinates with operator track `primary-hj4.1.1`** —
      per /157 §9 Q3 the recommendation is to reframe that
      track as Package 4 + first consumer migration.
    - Package 5: `Validate` dry-run + `list_tables` introspection
      + snapshot identity. Lands in `sema-engine`.
 
-4. **Component migrations.** Each consumer (persona-mind,
-   persona-terminal, etc.) migrates from raw `sema` table-and-
-   hand-roll to `sema-engine` typed verbs. Per ESSENCE rule:
-   migrate in one step per component; no half-migrated states.
+4. **Component migrations.** Each state-bearing component
+   migrates from current sema use (where it exists) to
+   `sema-engine` typed verbs. Per ESSENCE rule: migrate in one
+   step per component; no half-migrated states.
+
+   Migration ordering:
+   - **persona-mind first** (per DA `/45 §8` step 4): the most
+     exercised existing consumer, validates the engine API
+     against real domain pressure. Migration surfaces real
+     gaps; synthetic tests miss those.
+   - **criome alongside or after persona-mind**: criome's
+     validator path moves from raw-bytes-at-slot to typed
+     `Engine::assert(criome_table, validated_record)`. Per the
+     user's correction 2026-05-14, criome is an engine
+     consumer, not a kernel-only consumer.
+   - **Then the remaining persona-* components** (terminal,
+     router, harness, system, message, introspect, manager) —
+     each lands as the engine surface stabilises through the
+     first consumers.
 
 ### 6.2 · No transitional shape
 
@@ -518,9 +658,19 @@ from the start. No deployment is broken by this reorganization.
 - `sema_does_not_depend_on_persona` — source-scan: no
   `signal-persona*` dependency. The kernel is workspace-wide
   infrastructure, not Persona-coupled.
-- `sema_engine_depends_on_sema_via_version_pin` — source-scan of
-  `sema-engine/Cargo.toml`: `sema = { git = "...", tag = "..." }`
-  with explicit tag/version, never `path = "../sema"`.
+- `sema_engine_depends_on_sema_via_revision_pin` — source-scan
+  of `sema-engine/Cargo.toml`: `sema = { git = "https://...",
+  rev = "<commit-sha>" }` with an explicit revision (not a
+  tag), never `path = "../sema"`. Per DA `/46 §3`: tags are
+  release labels, not immutable build identity; `Cargo.lock`
+  records the resolved revision.
+- `sema_engine_cargo_lock_pins_sema_revision` — the committed
+  `Cargo.lock` includes the resolved revision for `sema` and
+  the resolved revision for `signal-core`. Build proof is the
+  lock, not the manifest tag.
+- `sema_engine_uses_https_git_not_ssh` — source-scan: git
+  dependency URLs are `https://`, not `ssh://`. HTTPS is more
+  portable across Nix/CI contexts.
 - `sema_engine_depends_on_signal_core` — `sema-engine` does
   consume the verb spine from `signal-core`; that's the
   legitimate dependency direction (signal-core ← sema-engine).
@@ -535,9 +685,9 @@ from the start. No deployment is broken by this reorganization.
 
 ### 7.2 · `sema` cleanup witnesses
 
-- `sema_kernel_size_below_six_hundred_lines` — `sema/src/lib.rs`
-  is ≤ 600 lines after the cleanup, down from 737. (Realistic
-  target: ~500.)
+Structural witnesses (load-bearing — these define the cleaned
+kernel boundary):
+
 - `sema_does_not_export_slot` — source-scan: `pub use Slot` or
   `pub struct Slot` does not appear in `sema/src/lib.rs`.
 - `sema_does_not_export_legacy_slot_store` — source-scan:
@@ -546,10 +696,19 @@ from the start. No deployment is broken by this reorganization.
 - `sema_does_not_export_reader_count` — source-scan:
   `Sema::reader_count`, `Sema::set_reader_count`,
   `DEFAULT_READER_COUNT` do not appear in `sema/src/lib.rs`.
-- `criome_absorbs_its_own_slot_store` — source-scan in `criome`:
-  `criome::Slot` or equivalent newtype exists; criome's own
-  slot-store module exists; `criome` does not import slot-store
-  surface from `sema`.
+- `sema_kernel_fits_one_context_review` — the `sema` source
+  reviews as one capability in one context window per
+  `~/primary/skills/micro-components.md`. This is a structural
+  check, not a line count.
+
+Advisory witness (per DA `/46 §6`: line-count is gameable —
+keep advisory):
+
+- `sema_kernel_size_advisory_under_600_lines` — `sema/src/lib.rs`
+  is around ≤ 600 lines after the cleanup, down from 737.
+  Realistic target ~500. If exceeded by a small margin while
+  the structural witnesses hold, that's fine; if exceeded
+  substantially, audit whether engine concepts have leaked in.
 
 ### 7.3 · `sema-engine` shape witnesses
 
@@ -565,7 +724,34 @@ from the start. No deployment is broken by this reorganization.
   internally; the atomic scope cannot leak the redb transaction
   lifetime past the closure.
 
-### 7.4 · Per-component migration witnesses
+### 7.4 · Subscription delivery contract witnesses (per §3.5)
+
+- `subscribe_initial_snapshot_uses_post_commit_read_txn` —
+  registers two rows; subscribes; asserts the sink receives
+  `SubscriptionEvent::InitialSnapshot` with both rows AND the
+  snapshot id matches the most-recent commit at subscription
+  time.
+- `subscribe_delta_fires_after_commit_returns` — subscribes;
+  asserts a row in a separate write; instrument the engine
+  to verify the sink's `deliver` is called *after*
+  `Sema::write` returns Ok, not inside the closure.
+- `subscribe_sink_failure_does_not_roll_back_commit` —
+  subscribes with a sink whose `deliver` returns
+  `SinkError::QueueFull`; asserts a row; assert the row is
+  durably committed (visible after process restart) despite
+  the sink failure.
+- `subscribe_blocking_sink_does_not_freeze_writes` —
+  subscribes with two sinks: one slow (sleeps 5s in
+  `deliver`), one fast. Asserts a row. Assert the second
+  (fast) sink receives its delta within bounded time AND
+  the next write transaction commits within bounded time.
+  If this fails the engine has violated the enqueue-only
+  rule.
+- `subscribe_survives_process_restart` — subscribes; close
+  engine; reopen; the persisted subscription record is
+  available for re-binding through a fresh sink.
+
+### 7.5 · Per-component migration witnesses
 
 - `persona_mind_depends_on_sema_engine_not_sema` —
   source-scan: `persona-mind/Cargo.toml` has `sema-engine`,
@@ -574,9 +760,18 @@ from the start. No deployment is broken by this reorganization.
   source-scan: persona-mind's write paths call
   `engine.assert(...)` / `engine.mutate(...)` rather than
   `THOUGHTS.insert(...)` style.
-- `criome_depends_on_sema_only` — source-scan: `criome/Cargo.toml`
-  has `sema`, not `sema-engine`. Criome remains a sema-only
-  consumer.
+- `criome_depends_on_sema_engine` — source-scan of
+  `criome/Cargo.toml`: depends on `sema-engine`, not on
+  `sema` directly. (Per user correction 2026-05-14: criome
+  is an engine consumer.)
+- `criome_uses_engine_assert_for_validated_records` —
+  source-scan: criome's validator path calls
+  `engine.assert(criome_table, validated_record)` rather
+  than raw `Sema::store(bytes)`.
+- `criome_does_not_use_raw_redb` — source-scan: `criome/src`
+  imports no `redb::` types directly. Storage flows through
+  `sema-engine` → `sema` → redb; no escape hatch (per DA
+  `/46 §1`).
 
 ---
 
@@ -679,8 +874,18 @@ pressure surfaces real API gaps; synthetic tests miss those.
   the first engine consumer. /45 also names the principle
   applied to legacy slot store ("Do not preserve it as kernel
   API just because it exists") — same conclusion as §2.4 here.
-  The two reports cross-confirm each other; either is sufficient
-  as the architectural decision record.
+- `reports/designer-assistant/46-review-designer-158-sema-two-interfaces.md`
+  — DA's review of the first /158 draft. Five findings folded
+  into this revision: §1 (raw redb escape hatch removed, §2.3),
+  §2 (subscription delivery contract specified, §3.5),
+  §3 (HTTPS git + revision pinning, §3.2 + §7.1),
+  §4 (no engine-protocol crate guard, §3.4),
+  §5 ("canonical database-operation layer" wording, §5),
+  §6 (line-count witness softened to advisory, §7.2). The
+  remaining /46 findings (the "four affordances" cross-reference
+  to /157 §4) are corrected in §0 above. After these
+  corrections /158 should be implementation-ready per /46's
+  acceptance criteria.
 - `reports/designer/63-sema-as-workspace-database-library.md`
   (referenced from `sema/ARCHITECTURE.md`) — the original
   design for sema-as-kernel; the source of the "deprecated
