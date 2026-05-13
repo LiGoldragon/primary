@@ -351,31 +351,6 @@ ls "$result"/bin
 
 ---
 
-## Never search the Nix store with generic filesystem tools
-
-Do not run `grep`, `rg`, `find`, `fd`, or broad shell traversal
-against `/nix/store`. The store is content-addressed build
-output, not a workspace search surface. Searching it directly is
-slow, noisy, unreproducible, and usually means the thing you
-need is not exposed through the Nix interface that should own it.
-
-When looking for Nix-controlled information, use Nix:
-
-- Inspect local source repos and flake inputs from the checkout,
-  not from their copied store output.
-- Use `nix flake metadata`, `nix flake show`, `nix eval`,
-  `nix path-info`, or a targeted derivation output when the
-  question is about Nix state.
-- If the value you need cannot be reached with `nix eval`,
-  change the Nix code so the value is exposed as an evaluable
-  option, package, check, passthru, or helper output.
-
-The correct fix for "I need to discover what Nix produced" is to
-make the production of that value explicit and inspectable in
-Nix. It is not to rummage through `/nix/store`.
-
----
-
 ## Use `nix run nixpkgs#<pkg>` for missing tools
 
 When a tool isn't on `PATH` (`rustfmt`, `clippy`, `jq`,

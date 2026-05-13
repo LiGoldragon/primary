@@ -43,8 +43,7 @@ source checkout, `nix eval`, `nix flake show`, `nix flake
 metadata`, `nix path-info`, or a targeted derivation output. If a
 value cannot be reached that way, change the Nix code so the value
 is exposed as an evaluable option, package, check, passthru, or
-helper output. See `skills/nix-discipline.md` for the detailed
-rule.
+helper output.
 
 ## Roles
 
