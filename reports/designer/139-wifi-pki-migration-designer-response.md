@@ -9,7 +9,7 @@
 | Question | 117's position | Designer position |
 |---|---|---|
 | Where does Wi-Fi policy attach? | Implied cluster-wide `WifiPolicy` | **Per-router `NodeProposal.wifi`**. Precedent: `RouterInterfaces`. Hoist to `Cluster` only when a multi-AP cluster makes it load-bearing. |
-| What does Horizon carry — fingerprint or PEM? | "CA cert/fingerprint" (both) | **Fingerprint + nominal identity only.** PEM lives in `clavifaber/publication.nota` and is distributed by the cluster-trust runtime (per designer/110). Horizon embedding the PEM erases the trust runtime's reason to exist. |
+| What does Horizon carry — fingerprint or PEM? | "CA cert/fingerprint" (both) | **Fingerprint + nominal identity only.** PEM lives in `clavifaber/publication.nota` and is distributed by the cluster-trust runtime (per `persona/ARCHITECTURE.md` §7 — auth/security/identity is a sibling component, not inside criome or persona). Horizon embedding the PEM erases the trust runtime's reason to exist. |
 | Client key strategy (A vs B)? | Open question | **Option B — dedicated Wi-Fi keypair.** ECDSA-P256 default; Ed25519 only behind a passing per-cluster interop test. |
 | WPA3-SAE fallback during migration? | "explicit Horizon migration policy, not a hard-coded password" | A typed `WifiAuthentication::MigrationWindow { primary, fallback, until: TimestampNanos }`. Expiry is a *projection-time* check; never a TODO comment. |
 | ClaviFaber X.509 profile? | "verify SAN/EKU policy" | **Hard precondition** — typed `CertificateProfile` record with SAN/EKU/KeyUsage fields; tests assert the profile, not just round-trip. Lands before any deploy. |
