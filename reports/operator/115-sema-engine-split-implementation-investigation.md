@@ -459,10 +459,11 @@ reader has no durable state to inspect.
 
 ### Decision 1 - What does `Sema::open` mean after legacy slot deletion?
 
-Older drafts kept `Sema::open` in the kernel surface, but schema
-discipline says component state should hard-fail on schema mismatch.
-Current `Sema::open` means “legacy slot store, no schema guard.” After
-deletion, we need one precise meaning:
+Older drafts kept schema-less `Sema::open(path)` in the kernel
+surface, but schema discipline says component state should hard-fail
+on schema mismatch. Current schema-less `Sema::open(path)` means
+“legacy slot store, no schema guard.” After deletion, there is one
+precise meaning:
 
 Delete schema-less `Sema::open(path)`. Keep
 `open_with_schema(path, schema)` as the public durable-state path so
