@@ -189,7 +189,7 @@ criome-specific carryovers.
 
 | Surface | Lines | Why it stays |
 |---|---|---|
-| `Sema` struct + `open` / `open_with_schema` | ~140 | Lifecycle, schema guards |
+| `Sema` struct + `open(path, schema)` | ~140 | Lifecycle + schema guards. **Schema-less `Sema::open(path)` is deleted alongside the legacy slot store; the schema-guarded path is renamed from `open_with_schema` to `open`.** One canonical open path, takes a schema explicitly. Per operator `/115 §8 D1` recommendation + designer concurrence: durable component state always opens through schema discipline. |
 | `Sema::read(\|txn\| ...)` / `write(\|txn\| ...)` | ~25 | Closure-scoped transactions — the discipline every higher layer depends on |
 | `Table<K, V>` + `OwnedTableKey` trait + impls | ~250 | The typed table abstraction |
 | `Table::get` / `insert` / `remove` / `iter` / `range` / `ensure` | (in above) | The primitive read/write surface |
