@@ -22,8 +22,8 @@ stack.
 | `lore` | `/git/github.com/LiGoldragon/lore` | Cross-workspace agent discipline and language/coding lore. |
 | `persona` | `/git/github.com/LiGoldragon/persona` | Persona meta-repo; wires the stack through Nix and apex architecture. |
 | `persona-mind` | `/git/github.com/LiGoldragon/persona-mind` | Central Persona state component; replaces lock-file orchestration over time. |
-| `persona-router` | `/git/github.com/LiGoldragon/persona-router` | Message routing and delivery coordination. |
-| `persona-message` | `/git/github.com/LiGoldragon/persona-message` | Current CLI/message experiments; transitional until router/mind contracts settle. |
+| `persona-router` | `/git/github.com/LiGoldragon/persona-router` | Message routing and delivery coordination. Binds two sockets: `router.sock` (0600, internal) and `router-public.sock` (0660, engine-owner ingress). |
+| `persona-message` | `/git/github.com/LiGoldragon/persona-message` | The `message` CLI: NOTA-to-router boundary translator. Sends `signal-persona-message` frames to `persona-router`'s public ingress socket. **No daemon.** Per `~/primary/reports/designer/142-supervision-in-signal-persona-no-message-proxy-daemon.md`. |
 | `persona-system` | `/git/github.com/LiGoldragon/persona-system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-owned in the current wave. |
 | `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` | Harness process/session control boundary. |
 | `persona-terminal` | `/git/github.com/LiGoldragon/persona-terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. Terminal-brand mux helpers are retired. |

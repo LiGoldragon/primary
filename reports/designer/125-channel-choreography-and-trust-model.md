@@ -78,7 +78,7 @@ permissions that admit only the `persona` user:
 | Per-engine system | `/var/run/persona/<engine-id>/system.sock` | `0600` | `persona` |
 | Per-engine harness | `/var/run/persona/<engine-id>/harness.sock` | `0600` | `persona` |
 | Per-engine terminal | `/var/run/persona/<engine-id>/terminal.sock` | `0600` | `persona` |
-| **Per-engine message proxy** | `/var/run/persona/<engine-id>/message-proxy.sock` | **`0660`**, group = engine owner's group | `persona` |
+| **Per-engine router public ingress** | `/var/run/persona/<engine-id>/router-public.sock` | **`0660`**, group = engine owner's group | `persona` |
 
 The persona-message proxy socket is the **only** exception.
 It's user-writable so the engine owner can submit messages
