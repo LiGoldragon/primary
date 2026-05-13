@@ -270,6 +270,137 @@ against them, the names become the system's enforced model.
 
 ---
 
+## Signal is the database language — every request declares a verb
+
+Signal is the workspace's typed binary **database-operation
+language used to communicate**. `signal-core::SemaVerb` names
+the closed set of operations that can cross a Signal boundary;
+every cross-component Signal request declares which verb it
+instantiates. There is no "non-database" communication.
+
+### The verb spine
+
+The closed set, in `signal-core/src/request.rs`:
+
+```
+Assert  Subscribe  Constrain  Mutate  Match  Infer
+Retract  Aggregate  Project  Atomic  Validate  Recurse
+```
+
+Recovered from older Nexus database-language work
+(`/git/github.com/LiGoldragon/nexus-spec-archive/`); the
+punctuation retired, the semantic spine survived. See
+`~/primary/reports/designer-assistant/43-nexus-query-language-and-sema-engine-arc.md`
+§1-§3 for the recovery synthesis.
+
+One-line semantics:
+
+| Verb | Meaning |
+|---|---|
+| `Assert` | Insert/append a typed fact/event/row. |
+| `Subscribe` | Initial state plus commit deltas (push, not poll). |
+| `Constrain` | Join/unify multiple typed patterns through shared binds. |
+| `Mutate` | Replace/transition a record at stable identity. |
+| `Match` | Pattern/range/key query over typed tables. |
+| `Infer` | Derived facts from rules/ontology (later). |
+| `Retract` | Tombstone/remove/retract a typed fact. |
+| `Aggregate` | Count/reduce grouped matched rows. |
+| `Project` | Return selected fields or a derived view. |
+| `Atomic` | Bundle multiple operations in one transaction. |
+| `Validate` | Dry-run request through validators. |
+| `Recurse` | Fixpoint traversal over graph/relation shape (later). |
+
+### The rule
+
+**Every cross-component Signal request declares its verb. The
+verb is part of the contract; the verb-payload combination is
+the operation.**
+
+Each `signal-<consumer>` request enum ships a contract-owned
+mapping:
+
+```rust
+impl <Consumer>Request {
+    pub fn sema_verb(&self) -> SemaVerb {
+        match self {
+            Self::Variant1(_) => SemaVerb::Assert,
+            Self::Variant2(_) => SemaVerb::Match,
+            ...
+        }
+    }
+}
+```
+
+with round-trip tests asserting:
+
+- each request variant maps to exactly one `SemaVerb`;
+- read-shaped payloads use `Match`, `Project`, `Aggregate`, or
+  `Subscribe`;
+- write-shaped payloads use `Assert`, `Mutate`, `Retract`, or
+  `Atomic`;
+- Nexus examples use the same verb as the Signal frame.
+
+A request that maps to no verb is a design event, not a
+constructor failure.
+
+### The two failure modes
+
+**No existing verb fits.** Two paths: (a) the payload is
+mis-modeled — rename or restructure until it fits an existing
+verb; (b) the verb set is incomplete — propose a new `SemaVerb`
+variant as a workspace-level coordinated change. Both are
+architectural events. Neither is "bypass the verb."
+
+**Drift between intent and constructor.** When a read-shaped
+payload (a query) is constructed through a write-shaped helper
+(`Request::assert(...)`), the witness catches it. The
+constructor is convenient but doesn't enforce semantics; the
+per-variant `sema_verb()` mapping does. Example:
+`signal-persona-message::InboxQuery` currently constructs via
+`Request::assert(...)`; it should be `Match` (per
+`~/primary/reports/designer-assistant/43-nexus-query-language-and-sema-engine-arc.md`
+§2).
+
+### Reply discipline
+
+Replies do not need their own independent verb when they are
+causally tied to a request. Their legality is checked by the
+request operation they answer. If a "reply" becomes a standalone
+observation/event that can travel independently, it should be
+modeled as its own request under the appropriate verb — usually
+`Assert` for a newly observed fact or `Match`/`Subscribe` for an
+observation query.
+
+### What the rule does
+
+- Forces every cross-component contract to be a typed subset of
+  the same database-operation language. No two components invent
+  their own operation vocabulary.
+- Makes Nexus/NOTA the **text projection** of the same language
+  (every top-level Nexus request is a verb record per
+  `nexus/spec/grammar.md`); Signal is the binary projection.
+- Lets sema-db execute the verbs against typed tables that
+  consumers register, so each component does not hand-roll the
+  engine (per
+  `~/primary/reports/designer/157-sema-db-full-engine-direction.md`).
+- Turns "a message is an assert" from a convention into an
+  architectural-truth test.
+
+### See also (in this skill)
+
+- `~/primary/reports/designer-assistant/43-nexus-query-language-and-sema-engine-arc.md`
+  §4 (verb-to-storage interpretation table) — what each verb
+  means at the storage layer.
+- `~/primary/reports/designer/157-sema-db-full-engine-direction.md`
+  — the designer-side design for sema-db as the full engine
+  executing the verbs.
+- `/git/github.com/LiGoldragon/signal-core/src/request.rs` —
+  the canonical `SemaVerb` enum.
+- `/git/github.com/LiGoldragon/signal-core/src/pattern.rs` —
+  `PatternField<T> = Wildcard | Bind | Match(T)` pattern markers.
+
+---
+
 ## The layered pattern
 
 When a wire protocol has audience-scoped concerns — verbs that
