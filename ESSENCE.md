@@ -34,18 +34,49 @@ Not speed. Not feature volume. Not "minimum viable," "ship fast,"
 more than a wrong shape sooner; unbuilding a wrong shape costs more
 than the speed it bought.
 
-Not backward compatibility for systems being born. Until a
-compatibility boundary is declared, the system is being shaped, not
-preserved. Breaking an undeployed system is correct when the break
-reveals the right structure. Do not design transitional APIs to pay
-homage to technical debt. If an old shape must keep serving a real
-deployment while the right shape lands, preserve that old shape on a
-branch, release line, or separate repository; do not compromise the
-new design to keep the old one comfortable.
+Not backward compatibility for systems being born.
 
 Not estimates. Implementation timelines do not appear in design
 discussions. Work is described by *what it requires*, not by *how
 long it will take*.
+
+---
+
+## Backward compatibility is not a constraint
+
+**Break the system if it makes it more beautiful.** That is the
+motto. Not carelessness — refusal to compromise design to preserve
+a wrong shape. The cost of a wrong shape compounds; the cost of a
+clean break is paid once.
+
+When something must keep running while a redesign lands, the
+running copy stays at a pinned branch or a separate repo. The
+redesigned version breaks freely. Old callers either upgrade or
+stay pinned to the old branch. **Two clean shapes are better than
+one transitional shape.**
+
+A *transitional shape* compromises both the old and the new to
+avoid breaking either. It is the wrong shape for both, and the
+wrong shape, period. The cost looks small per step and compounds
+every release.
+
+**No technical-debt homage.** A design does not bend to make peace
+with debt the system has already accumulated. The debt is paid by
+deleting, not by carrying it forward in a shim. The new shape is
+what is right *now* — not what is reachable from the current state
+by small steps.
+
+The only place backward compatibility is a real constraint:
+**explicitly declared** boundaries — published APIs under semantic
+versioning, wire contracts pinned by version, schemas externally
+consumed by systems we don't control. Inside the workspace, before
+such a boundary is declared, **the system is being shaped, not
+preserved.**
+
+When a rule that says "preserve X for compatibility" appears in a
+design discussion, ask: *is X a published compatibility boundary?*
+If no, the rule is rejected. Design freely. The break-and-migrate
+cost is bounded; the preserve-and-bend cost is unbounded.
 
 ---
 
