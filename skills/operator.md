@@ -482,6 +482,3 @@ you were missing.
 - `lore/rust/style.md`, `lore/rust/rkyv.md`,
   `lore/rust/testing.md`, `lore/rust/nix-packaging.md` —
   toolchain references.
-- `~/primary/reports/operator/` — the canonical body of
-  implementation work; the discipline is what the reports
-  collectively demonstrate.

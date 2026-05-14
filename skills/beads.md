@@ -234,14 +234,13 @@ small commits and don't have a parallel branch life.
 ### Shipped
 
 When the work the bead names has shipped, close with a
-note pointing at the canonical home (the report, the
-commit, the skill change). Example:
+note pointing at the canonical home (the commit, the skill
+change, the `ARCHITECTURE.md` section). Example:
 
 ```sh
 bd close primary-8b6 -r "Shipped via chroma daemon (replaces \
-darkman + nightshift). See \
-~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md \
-§2.7 (retired Chroma/system summary)."
+darkman + nightshift). See chroma repo HEAD and \
+~/primary/skills/system-specialist.md §'Chroma daemon'."
 ```
 
 The closing note is the breadcrumb a future agent reads
@@ -405,8 +404,3 @@ contention, not coordination ownership."*
 - `~/primary/skills/reporting.md` §"Hygiene — soft cap,
   supersession, periodic review" — the parallel
   hygiene discipline for designer reports.
-- `~/primary/reports/designer/114-persona-vision-as-of-2026-05-11.md`
-  — current Persona vision and work-graph direction.
-- `~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
-  §2.2 — retired BEADS and native-work-graph findings
-  preserved from the pre-today cleanup.

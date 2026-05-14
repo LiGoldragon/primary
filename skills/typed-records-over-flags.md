@@ -276,11 +276,6 @@ closed.
 
 ## See also
 
-- `reports/system-assistant/07-criomos-stack-deep-audit.md` §5.1 names
-  this pattern and points to the witnessed examples.
-- `reports/system-assistant/04-dedicated-cloud-host-plan-second-revision.md`
-  is the working example: every architectural decision in that plan is
-  a "typed record over flag soup" application.
 - The week's CriomOS commits ("Use Horizon roles instead of node-name
   gates", "Replace tailnet booleans with NodeServices") are concrete
   applications.

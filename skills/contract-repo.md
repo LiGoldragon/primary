@@ -147,10 +147,8 @@ It **does not own**:
 It **may own**:
 
 - **Typed introspection record shapes for durable
-  inspectable state** (per
-  `~/primary/reports/designer/146-introspection-component-and-contract-layer.md` §1).
-  A contract crate may declare the typed record shape of a
-  redb-stored value so peer components and
+  inspectable state.** A contract crate may declare the typed
+  record shape of a redb-stored value so peer components and
   `persona-introspect` can name what's inspectable. The
   contract owns the *vocabulary* of inspectable state; the
   component still owns the database, the reducers, the
@@ -279,12 +277,11 @@ the closed set of root operations that can cross a Signal boundary;
 every cross-component Signal request declares which root it
 instantiates. There is no "non-database" communication.
 
-> **Adopted shape** (per `~/primary/reports/designer/162-signal-verb-roots-synthesis.md`
-> and `~/primary/reports/designer-assistant/50-signal-core-base-verb-shape.md`):
-> seven root verbs in `signal-core`; the read-algebra operators
-> (`Constrain`, `Project`, `Aggregate`, `Infer`, `Recurse`) live as
-> a `ReadPlan<R>` type in `sema-engine`, *not* as peer root verbs.
-> The wire kernel is domain-free and engine-free.
+> **Adopted shape:** seven root verbs in `signal-core`; the
+> read-algebra operators (`Constrain`, `Project`, `Aggregate`,
+> `Infer`, `Recurse`) live as a `ReadPlan<R>` type in
+> `sema-engine`, *not* as peer root verbs. The wire kernel is
+> domain-free and engine-free.
 
 ### The seven root verbs
 
@@ -294,18 +291,18 @@ The closed set, in `signal-core/src/request.rs` (post-adoption):
 Assert  Mutate  Retract  Match  Subscribe  Atomic  Validate
 ```
 
-The criterion (per `/50 §3`): a name is a root iff it changes
-*durable effect*, *read-vs-write semantics*, *streaming lifecycle*,
-*transaction boundary*, or *execution mode* at the Signal boundary.
+A name is a root iff it changes one of *durable effect*,
+*read-vs-write semantics*, *streaming lifecycle*, *transaction
+boundary*, or *execution mode* at the Signal boundary. A name
+that only changes how a result is computed, joined, reduced, or
+shaped is a `ReadPlan` operator in `sema-engine`, not a root.
 
 Recovered from older `signal` work (`/git/github.com/LiGoldragon/signal/src/request.rs`,
 commit `7a78288`, 2026-04-26), which had exactly this shape after
-renames (`AtomicBatch → Atomic`, `Query → Match`). See
-`~/primary/reports/designer-assistant/43-nexus-query-language-and-sema-engine-arc.md`
-§1-§3 for the workspace recovery synthesis;
-`~/primary/reports/designer/162-signal-verb-roots-synthesis.md`
-§5 for the lineage and §6 for why the seven (not twelve) is the
-root stratum.
+renames (`AtomicBatch → Atomic`, `Query → Match`). The widening
+to twelve names in `signal-core` (commit `1d863ce`, 2026-05-08)
+was vocabulary-recovery that conflated read-algebra operators with
+root operations; the seven-root shape restores the discipline.
 
 One-line semantics:
 
@@ -390,9 +387,8 @@ payload (a query) is constructed through a write-shaped helper
 constructor is convenient but doesn't enforce semantics; the
 per-variant `signal_verb()` mapping does. Example:
 `signal-persona-message::InboxQuery` currently constructs via
-`Request::assert(...)`; it should be `Match` (per
-`~/primary/reports/designer-assistant/43-nexus-query-language-and-sema-engine-arc.md`
-§2).
+`Request::assert(...)`; it should be `Match` (a read-shaped
+payload is not an assertion of a fact).
 
 ### Reply discipline
 
@@ -412,29 +408,24 @@ observation query.
 - Makes Nexus/NOTA the **text projection** of the same language
   (every top-level Nexus request is a verb record per
   `nexus/spec/grammar.md`); Signal is the binary projection.
-- Lets sema-db execute the verbs against typed tables that
-  consumers register, so each component does not hand-roll the
-  engine (per
-  `~/primary/reports/designer/157-sema-db-full-engine-direction.md`).
+- Lets `sema-engine` execute the verbs against typed tables
+  that consumers register, so each component does not hand-roll
+  the engine.
 - Turns "a message is an assert" from a convention into an
   architectural-truth test.
 
 ### See also (in this skill)
 
-- `~/primary/reports/designer-assistant/43-nexus-query-language-and-sema-engine-arc.md`
-  §4 (verb-to-storage interpretation table) — what each verb
-  means at the storage layer.
-- `~/primary/reports/designer/157-sema-db-full-engine-direction.md`
-  — the designer-side design for sema-db as the full engine
-  executing the verbs.
 - `/git/github.com/LiGoldragon/signal-core/src/request.rs` —
   the canonical `SignalVerb` root enum.
 - `/git/github.com/LiGoldragon/signal-core/src/pattern.rs` —
   `PatternField<T> = Wildcard | Bind | Match(T)` pattern markers.
-- `~/primary/reports/designer-assistant/50-signal-core-base-verb-shape.md`
-  — the seven-root recommendation.
-- `~/primary/reports/designer/162-signal-verb-roots-synthesis.md`
-  — the synthesis adopting `/50`; cross-domain corroboration.
+- `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` —
+  the wire kernel.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` —
+  where `ReadPlan<R>` and the read-algebra operators
+  (`Constrain`, `Project`, `Aggregate`, `Infer`, `Recurse`)
+  live.
 
 ---
 

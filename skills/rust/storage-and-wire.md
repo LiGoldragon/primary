@@ -51,8 +51,7 @@ the same rkyv-archived typed record that flows on the wire —
 but it is not literally a Signal `Frame` envelope unless the
 table is recording frames. The shared truth is the typed
 archived record; Signal wraps it for inter-process traffic;
-redb stores it for durability. Per
-`~/primary/reports/designer/146-introspection-component-and-contract-layer.md` §1.
+redb stores it for durability.
 
 ---
 
@@ -381,9 +380,7 @@ Don't reinvent the plumbing. See
 `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` for the
 current Engine surface and
 `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` for the kernel
-design. Designer reports
-`~/primary/reports/designer/{157-sema-db-full-engine-direction.md,158-sema-kernel-and-sema-engine-two-interfaces.md}`
-carry the architectural rationale for the kernel/engine split.
+design.
 
 Prefer an internal module for component-local table layouts
 (`persona-mind/src/tables.rs`, `persona-router/src/tables.rs`).

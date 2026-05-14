@@ -188,8 +188,7 @@ used.
 `(no description set)` on a commit you authored is a
 **workspace contract violation**, on equal footing with the
 ban on raw `git` for daily commits. The 2026-05-12 117-orphan
-incident (see `reports/designer/140-jj-discipline-after-
-orphan-incident.md`) traced directly to this: an agent ran
+incident traced directly to this: an agent ran
 `jj commit` without `-m`, the editor returned empty, the
 commit succeeded with an empty description, no bookmark was
 set, and the work became reachable only by op-log spelunking.
@@ -464,8 +463,7 @@ work, stop and check `jj st`; you probably want `jj split`
 (to keep your paths and isolate peer paths) or `jj abandon @`
 with deliberate intent. The 2026-05-12 117-orphan incident
 included a `restore into commit …` op that was a load-bearing
-step toward the failure — see `reports/designer/140-jj-
-discipline-after-orphan-incident.md` §1.
+step toward the failure.
 
 ---
 
@@ -503,8 +501,7 @@ If the output is empty (or shows only the empty `@` working
 copy), the session ends clean. If anything else appears,
 those are **unbookmarked descendants of main** — pushable
 work that no one but you can find. They are exactly the
-shape of the 117-orphan failure (see
-`reports/designer/140-jj-discipline-after-orphan-incident.md`).
+shape of the 117-orphan failure.
 
 Each row needs one of:
 
@@ -537,9 +534,10 @@ consumers see the work immediately.
 Allowed `--change` uses, narrow:
 
 - **Orphan recovery** — when an agent's prior work was
-  abandoned and needs to be brought back onto a fresh `@`, per
-  `reports/designer/140-jj-discipline-after-orphan-incident.md`
-  §6.
+  abandoned and needs to be brought back onto a fresh `@`.
+  The recovery shape is `jj op log -n 50` to find the orphan,
+  `jj show <id>` to confirm, `jj new -m '...' <id>` to bring
+  it back, then `jj git push --change <id>` or bookmark-and-push.
 - **Explicit "needs review before main"** — when the work
   genuinely needs review before landing. Use a descriptive
   bookmark name (`jj bookmark create push-<topic>`), not the
@@ -552,8 +550,7 @@ extra command, not three.
 
 The pattern compounds. Auto-named bookmarks accumulate on the
 remote silently — there's no clean-up step. A workspace with 26
-stray `push-*` bookmarks (as observed 2026-05-13, see
-`reports/system-assistant/10-bookmark-divergence-forensic.md`)
+stray `push-*` bookmarks (as observed 2026-05-13)
 is the direct consequence of treating `-c @` as routine.
 
 ---

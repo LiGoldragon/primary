@@ -192,6 +192,46 @@ one repo, do real work in it, then write the skill.
 
 ---
 
+## Skills never reference reports
+
+**Skills do not cite reports.** Reports under `reports/<role>/` are
+ephemeral — working surfaces for decision paths, syntheses, audits,
+and design rationale that retire as their substance migrates
+elsewhere (per `~/primary/skills/reporting.md` §"Kinds of reports —
+and where their substance ultimately lives"). A skill is permanent
+discipline; it must stand on its own without time-stamped citations
+into a working surface.
+
+When a skill needs content that currently lives in a report:
+
+- **Inline the load-bearing rule, table, or example.** Copy the
+  substance into the skill body. The skill becomes self-contained
+  and survives the report's retirement.
+- **Reference another permanent doc** — a sibling skill, an
+  `ARCHITECTURE.md`, an `ESSENCE.md` section, or code (with a
+  file path, not a deep URL). Permanent docs cite each other;
+  permanent docs do not cite ephemerals.
+- **Drop the reference** if nothing in the report is load-bearing
+  for the skill. A "see also: report 123" line that doesn't change
+  how the agent acts is noise that decays into rot.
+
+If the rule the report carries is not yet ready to be inlined as
+discipline, the report stays a report — the skill should not pretend
+the rule is settled by linking to a working draft.
+
+**Why:** report numbers shift; reports retire (per `reporting.md`
+§"Retires when" headers); their contents change as designs evolve.
+A skill that says "see report 161" rots the moment 161 is deleted
+or superseded. The discipline that must survive design churn lives
+in the permanent doc surface — skills, architectures, `ESSENCE.md`.
+
+This rule has no exception. **Postmortems**, **decision records**,
+**syntheses** — all are reports; their lessons live in skills or
+architecture or they don't live at all. The corresponding section in
+`reporting.md` lists permanent homes for each report shape.
+
+---
+
 ## Examples never show free functions (only `main`)
 
 **The only free function any example shows is `main`.**

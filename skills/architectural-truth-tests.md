@@ -21,12 +21,8 @@ an agent (or a future agent without yesterday's memory) can
 ship code that satisfies behavior while routing around the
 intended component, and no test fires.
 
-The discipline name came from a retired persona-messaging report;
-the surviving cleanup archive is
-`reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
-§2.5. This skill lifts it to the workspace level because it
-applies to every architectural assertion — wire contracts,
-storage layers, actor protocols, deploy chains.
+The discipline applies to every architectural assertion — wire
+contracts, storage layers, actor protocols, deploy chains.
 
 ---
 
@@ -374,9 +370,6 @@ This pairs with:
 
 ## See also
 
-- `~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
-  §2.5 — retired report lineage and router/delivery lessons
-  preserved from the pre-today cleanup.
 - `~/primary/skills/rust-discipline.md` §"Actors: logical
   units with kameo" — Rust-side actor enforcement summary.
 - `~/primary/skills/actor-systems.md` — actor-density,

@@ -504,6 +504,3 @@ violated a discipline. The diagnostic table in
   skills.
 - `lore/AGENTS.md` — workspace-level agent contract; the
   design-reports-as-visuals rule lives here.
-- `~/primary/reports/designer/` — the canonical body of
-  design work; the discipline is what the reports
-  collectively demonstrate.

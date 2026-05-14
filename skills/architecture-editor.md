@@ -43,19 +43,20 @@ eventually — different things, different names".
 
 ## Where each kind of statement lives
 
-| Doc | What goes there |
-|---|---|
-| `ARCHITECTURE.md` (meta) | How the components fit together. The runtime topology. The wire vocabulary. The flow of state across processes. The named clusters and their boundaries. |
-| `ARCHITECTURE.md` (per-repo) | This repo's role, what it owns, what it doesn't, code map, invariants, contracts at its edges. |
-| `skills.md` (per-repo) | How an agent works *in* this repo. The "if you're editing here, here's what's load-bearing." |
-| `AGENTS.md` (per-repo) | Thin shim that names the repo's role + carve-outs from the workspace contract. |
-| Reports | Decision records, design rationales, audits, syntheses. The path that led to the architecture. |
+| Doc | What goes there | Permanent? |
+|---|---|---|
+| `ARCHITECTURE.md` (meta) | How the components fit together. The runtime topology. The wire vocabulary. The flow of state across processes. The named clusters and their boundaries. | Yes |
+| `ARCHITECTURE.md` (per-repo) | This repo's role, what it owns, what it doesn't, code map, invariants, contracts at its edges. | Yes |
+| `skills.md` (per-repo) | How an agent works *in* this repo. The "if you're editing here, here's what's load-bearing." | Yes |
+| `AGENTS.md` (per-repo) | Thin shim that names the repo's role + carve-outs from the workspace contract. | Yes |
+| Reports | Decision records, design rationales, audits, syntheses. Working surfaces for the path that led to the architecture. | **No — ephemeral, retires** |
 
 If a statement is "what the system IS," it goes in
 `ARCHITECTURE.md`. If it's "what an agent should do," it goes in
-`skills.md`. If it's "why we chose this," it goes in a report
-and the architecture cites the report only when the rationale is
-load-bearing for understanding the shape.
+`skills.md`. If it's "why we chose this," it goes in a report —
+and when the rationale is load-bearing for understanding the shape,
+**the architecture inlines the load-bearing claim** rather than
+citing the report.
 
 ---
 
@@ -166,7 +167,9 @@ witness or move it to a report as unfinished thinking.
 - **Decision history.** "We considered X but went with Y" lives
   in a report. The current `ARCHITECTURE.md` describes Y as
   *what is*; if rationale is load-bearing for understanding,
-  cross-reference the report.
+  **inline the rationale** rather than citing a report.
+- **References to reports.** See §"Architecture files never
+  reference reports" below — this is a load-bearing rule.
 - **Roadmap or implementation order.** "Will land" / "is
   planned" belongs in a report. The architecture is what the
   system *is*; if a piece isn't built yet, either describe it
@@ -176,6 +179,45 @@ witness or move it to a report as unfinished thinking.
   module..." Architecture is reference, not a guided tour.
 - **Restatement of workspace skills.** The architecture cites
   workspace skills; it doesn't repeat them.
+
+---
+
+## Architecture files never reference reports
+
+**`ARCHITECTURE.md` files do not cite reports.** Reports under
+`reports/<role>/` are ephemeral — working surfaces for design
+rationale, decision paths, audits, and syntheses that retire as
+their substance migrates elsewhere (per
+`~/primary/skills/reporting.md` §"Kinds of reports — and where
+their substance ultimately lives"). An `ARCHITECTURE.md` describes
+*what is*; it must stand without time-stamped citations into a
+working surface that may be deleted, superseded, or renumbered.
+
+When an architecture needs content that currently lives in a
+report:
+
+- **Inline the load-bearing claim.** The constraint, the typed
+  shape, the invariant, the table — copy it into the architecture
+  body. The architecture becomes self-contained.
+- **Reference another permanent doc** — a sibling
+  `ARCHITECTURE.md`, a `skills.md`, an `ESSENCE.md` section, or
+  code (with a file path, not a deep URL).
+- **Drop the reference** if nothing in the report is load-bearing
+  for the architecture.
+
+If the design the report carries isn't yet settled enough to inline
+as architecture, the report stays the canonical state — the
+architecture is updated only when the design is ready to be stated
+in present-tense "this IS" prose.
+
+**Why:** reports retire; their numbers shift; their contents change
+as the design evolves. An `ARCHITECTURE.md` that says "see report
+161 for the verb spine" rots the moment 161 is deleted or
+superseded. Architecture must stand without ephemeral citations.
+
+This rule has no exception. The corresponding section in
+`reporting.md` lists permanent homes for each report shape;
+the architecture is one of those homes.
 
 ---
 
@@ -297,10 +339,11 @@ of detail.
 ## See also
 
 - `~/primary/skills/skill-editor.md` — the parallel skill for
-  `skills.md` files; same conventions for cross-references and
-  scope.
+  `skills.md` files; same conventions for cross-references,
+  scope, and the no-report-references rule.
 - `~/primary/skills/reporting.md` — when to write a report
-  versus update an architecture.
+  versus update an architecture; permanent homes for each
+  report shape.
 - `~/primary/ESSENCE.md` §"Documentation layers" — where each
   layer lives.
 - `~/primary/ESSENCE.md` §"Rules find their level" — finding

@@ -945,9 +945,8 @@ machinery.
 an `async fn handle()` with no detach. The actor's mailbox stalls
 and the Tokio worker thread it ran on starves any sibling actors
 scheduled there. See `skills/actor-systems.md` §"No blocking" for
-the full rule and `~/primary/reports/designer/113-actor-blocking-audit.md`.
-The old `persona-terminal::TerminalDelivery` example was removed rather than
-kept as a blocking actor.
+the full rule. The old `persona-terminal::TerminalDelivery` example
+was removed rather than kept as a blocking actor.
 
 ---
 
@@ -1013,9 +1012,6 @@ For surprises surfaced under test, see
   designer-assistant's complementary test bed; data-bearing
   patterns, restart-from-args reconstruction, observational
   link-death survival.
-- `~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
-  §2.1 — retired designer-assistant Kameo findings that were
-  folded into this skill.
 - `/git/github.com/LiGoldragon/kameo-testing/notes/findings.md` —
   source-grounded research notes behind the skill's claims.
 - `https://github.com/tqwewe/kameo` — upstream source (v0.20.0

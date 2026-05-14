@@ -225,9 +225,8 @@ ractor → kameo; it was actors → methods. The data nouns
 `NixBuild`, `ClosureCopy`, `Activation`) already owned the verbs.
 The wrappers and a `DeployCoordinator` that supervised them collapsed
 into one `pub async fn deploy(req) -> Result<DeployOutcome>`. About
-200 lines of ceremony deleted; tests all still passed. See
-`reports/system-assistant/04` §"Actor framework" and the commit on
-`lojix-cli/push-ovulwxnnpykv` for the diff.
+200 lines of ceremony deleted; tests all still passed. See the commit
+on `lojix-cli/push-ovulwxnnpykv` for the diff.
 
 This anti-pattern is the most common false positive when a codebase
 "wants actors": the discipline says "every plane gets an actor," so a
