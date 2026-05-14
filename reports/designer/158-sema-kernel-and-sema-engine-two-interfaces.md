@@ -345,12 +345,12 @@ for a single repo.
 
 ### 3.2 · Dependencies
 
-`sema-engine/Cargo.toml`:
+`sema-engine/Cargo.toml` (per current `skills/micro-components.md`):
 
 ```toml
 [dependencies]
-sema = { git = "https://github.com/LiGoldragon/sema.git", rev = "<commit-sha>" }
-signal-core = { git = "https://github.com/LiGoldragon/signal-core.git", rev = "<commit-sha>" }
+sema = { git = "https://github.com/LiGoldragon/sema.git", branch = "main" }
+signal-core = { git = "https://github.com/LiGoldragon/signal-core.git", branch = "main" }
 rkyv = "0.8"
 thiserror = "..."
 ```
@@ -361,19 +361,23 @@ Two discipline rules:
   §"Micro-components" — "Never cross-crate `path = "../sibling"`
   in a manifest — that assumes a layout a fresh clone won't
   reproduce."
-- **Pin by commit revision, not by tag.** Per DA `/46 §3`: a
-  tag is a release label, not the immutable build identity.
-  Tags can be moved unless the hosting policy explicitly
-  forbids it; `https://` URLs are more portable in Nix and CI
-  contexts than `ssh://`. `Cargo.lock` records the resolved
-  revision and is what the build actually depends on; the
-  manifest names the revision explicitly so the spec and the
-  lock agree without a tag-to-revision indirection.
+- **Use named refs (branch / tag / version); `Cargo.lock`
+  pins the exact resolved commit.** Per the current rule in
+  `~/primary/skills/micro-components.md` (clarified after DA
+  `/49 §3.1`): cross-repo Cargo manifests use named references
+  that name the API lane the consumer follows. A raw
+  `rev = "<sha>"` doesn't carry interface meaning. Branches
+  are acceptable while `sema-engine` is tracking the live
+  development surface of `sema` and `signal-core`; once a
+  provider needs to offer a stable interface, cut a named
+  compatibility branch/bookmark or release tag and point
+  consumers at that named ref.
 
-The version pin is the bridge. Each `sema-engine` release pins
-a specific `sema` revision. Bumping `sema` requires a
-coordinated release (new `sema` commit + new `sema-engine`
-revision pin + new release tags on both for traceability).
+The version bridge is the named ref + `Cargo.lock`. Each
+`sema-engine` build resolves the branch to a specific commit
+recorded in the lock. Bumping `sema` requires either a new
+commit on the tracked branch + `cargo update` in `sema-engine`,
+or cutting a new named ref for a stable interface boundary.
 
 ### 3.3 · What `sema-engine` does NOT depend on
 
@@ -682,16 +686,16 @@ from the start. No deployment is broken by this reorganization.
 - `sema_does_not_depend_on_persona` — source-scan: no
   `signal-persona*` dependency. The kernel is workspace-wide
   infrastructure, not Persona-coupled.
-- `sema_engine_depends_on_sema_via_revision_pin` — source-scan
+- `sema_engine_depends_on_sema_via_named_ref` — source-scan
   of `sema-engine/Cargo.toml`: `sema = { git = "https://...",
-  rev = "<commit-sha>" }` with an explicit revision (not a
-  tag), never `path = "../sema"`. Per DA `/46 §3`: tags are
-  release labels, not immutable build identity; `Cargo.lock`
-  records the resolved revision.
+  branch = "..." }` or tag/version pin, never `path = "../sema"`.
+  Per `~/primary/skills/micro-components.md` (clarified after
+  DA `/49 §3.1`): named refs carry interface meaning; raw rev
+  pins do not.
 - `sema_engine_cargo_lock_pins_sema_revision` — the committed
   `Cargo.lock` includes the resolved revision for `sema` and
   the resolved revision for `signal-core`. Build proof is the
-  lock, not the manifest tag.
+  lock; the manifest names the interface lane.
 - `sema_engine_uses_https_git_not_ssh` — source-scan: git
   dependency URLs are `https://`, not `ssh://`. HTTPS is more
   portable across Nix/CI contexts.

@@ -40,7 +40,9 @@ ARCH.
 **Persona-introspect is the engine's inspection plane.** Today
 it's a scaffold: `IntrospectionRoot` + five empty child actors
 that return `Unknown` for every request except a stubbed
-`PrototypeWitness`. Under the new architecture:
+`PrototypeWitness`. Under the new architecture and the user's
+directive 2026-05-14 ("nothing ships that doesn't use sema-engine;
+the old hand-roll-then-migrate approach is off"):
 
 1. **Persona-introspect is primarily a fan-out coordinator over
    Signal.** Receives a typed `Match`-shaped Signal frame at
@@ -50,39 +52,53 @@ that return `Unknown` for every request except a stubbed
    envelope; replies. **No central Persona database; no peer
    redb opens; no shared observation store.**
 
-2. **Per the user's 2026-05-14 decision (§7 Q1), persona-introspect
-   does carry local persistent state** — but only when Slice 3
-   lands (post-sema-engine). The local state is bounded:
-   subscription registrations (for `SubscribeComponent` forwarding)
-   plus a correlation cache populated by Subscribe deltas from
-   each peer (for cache-backed `DeliveryTrace`).
+2. **Per the user's 2026-05-14 decisions (§7 Q1 + the
+   sema-engine-only directive), persona-introspect carries
+   local persistent state through `sema-engine`** — subscription
+   registrations + correlation cache populated by Subscribe
+   deltas from each peer.
 
-3. **The work splits into three slices** per §3:
-   - **Slice 1 (status-fill, sema-agnostic):** verb-mapping
+3. **All storage-shaped work goes through `sema-engine` only.**
+   Per the user's directive: no more hand-rolled patterns
+   against current `sema`'s typed `Table` API as a
+   transitional step. Where `sema-engine` doesn't yet expose
+   the needed surface (`register_index`, range/index query
+   plans, `Subscribe`), the dependent slice **waits** for
+   `sema-engine` to grow that surface. Operator is actively
+   widening `sema-engine` per DA `/49`'s finish path.
+
+4. **The work splits into three slices** per §3:
+   - **Slice 1 (immediate, sema-agnostic):** verb-mapping
      witness + real `EngineSnapshot` / `ComponentSnapshot` /
-     `PrototypeWitness` replies. `DeliveryTrace` returns
+     `PrototypeWitness` replies via Signal fan-out (no
+     storage) + central contract extension + introspect
+     skeleton actor + persona-introspect's own `introspect.redb`
+     opened via `sema-engine`'s existing `Engine::assert` /
+     `Engine::match_records` surface for an audit-trail
+     record family. `DeliveryTrace` returns
      `AwaitingCorrelationCache` until Slice 3.
-   - **Slice 2 (`/41` end-to-end, sema-agnostic):** terminal
-     observation contract + handler; router observation
-     contract + handler (per Q5: OA owns Package D too);
-     introspect TerminalClient + RouterClient; CLI extension;
-     Nix end-to-end witness. The hand-rolled `_by_time`
-     index tables in terminal + router are exactly the
-     patterns `sema-engine` eventually absorbs; the work
-     doesn't wait.
-   - **Slice 3 (Subscribe + DeliveryTrace cache, post-sema-engine):**
-     persona-introspect becomes a sema-engine consumer for
-     its local subscriptions + correlation cache. Lands when
-     `sema-engine` Package 4 + commit-then-emit in peers are
-     real. Detailed package structure lands in a separate
-     designer brief when the gates clear.
+   - **Slice 2 (`/41` terminal + router end-to-end; gated on
+     sema-engine Package 3 widening):** terminal + router
+     observation contracts + handlers + introspect clients +
+     CLI + Nix witness. Handler-side storage uses
+     `Engine::register_index` + `QueryPlan::ByIndex` /
+     `QueryPlan::ByKeyRange` — meaning persona-terminal and
+     persona-router **migrate to sema-engine as part of this
+     slice**, alongside operator's persona-mind migration.
+     Waits for operator step 5 in DA `/49 §5` finish path
+     (QueryPlan widening with key range + index lookup).
+   - **Slice 3 (Subscribe + DeliveryTrace cache; gated on
+     sema-engine Package 4 + per-peer commit-then-emit):**
+     `SubscribeComponent` wire variant + forwarded peer
+     subscriptions + cache-backed `DeliveryTrace`. Waits
+     for operator step 8 (Subscribe primitive) and each
+     peer becoming a Subscribe producer.
 
-OA dispatches Slice 1 first as the fastest deliverable (a
-working introspect CLI with real readiness), then Slice 2 as
-the substantive architecture proof (typed records crossing
-component boundaries, time-indexed reads, NOTA at the edge).
-Slice 3 is forward work, sequenced behind sema-engine
-Package 4.
+OA dispatches Slice 1 first as the immediate sema-agnostic
+deliverable. Slice 2 dispatches when operator's `sema-engine`
+QueryPlan widening lands. Slice 3 dispatches when operator's
+`Subscribe` primitive lands and peers have commit-then-emit
+wired.
 
 ---
 
@@ -261,37 +277,84 @@ with its own coordination bead.
 
 ### 3.0 · Slice structure
 
+Per the user's 2026-05-14 directive — nothing ships that
+doesn't use `sema-engine`; the old hand-roll-then-migrate path
+is off — slices are now gated on which `sema-engine` surfaces
+are live. DA `/49`'s read of the current state: `Engine::assert`
++ `Engine::match_records` (All / Key) + `SnapshotId` +
+operation log + catalog exist; `register_index`, range/index
+QueryPlan variants, `MutationPlan`, `atomic`, `Subscribe`,
+`validate`, `list_tables()`, `operation_log_range()` are still
+to land. Operator is working through DA `/49 §5` finish path
+on the persona-mind first-consumer migration track
+`[primary-5ir2]`.
+
 ```text
-Slice 1 — Status-fill the four current envelope variants
-  OA-1 verb-mapping witness (independent; can land first)
-  OA-A EngineSnapshot real reply
-  OA-B ComponentSnapshot real reply
-  OA-C PrototypeWitness real reply
-  (DeliveryTrace stays Unknown until Slice 3 cache lands)
+Slice 1 — Immediate, sema-agnostic + current-sema-engine
+  Contract work (sema-agnostic):
+    OA-1   verb-mapping witness in signal-persona-introspect
+    OA-2   signal-persona-introspect envelope extension
+           (ComponentObservations, ListRecordKinds,
+           AwaitingCorrelationCache reason variant)
+    OA-3c  signal-persona-terminal observation contract types
+    OA-Dc  signal-persona-router observation contract types
 
-Slice 2 — /41 terminal + router end-to-end (sema-agnostic)
-  OA-2 signal-persona-introspect envelope extension
-  OA-3 terminal observation contract + handler
-  OA-4 persona-introspect TerminalClient
-  OA-D router observation contract + handler + RouterClient
-  OA-5 CLI Input extension
-  OA-6 Nix end-to-end witness
+  Wire fan-out (sema-agnostic):
+    OA-A   real EngineSnapshot reply via manager fan-out
+    OA-B   real ComponentSnapshot reply via per-target fan-out
+    OA-C   real PrototypeWitness composed from OA-B facts
+    OA-4s  persona-introspect TerminalClient skeleton actor
+           (Signal frames out, typed PeerSocket* errors back —
+           returns ComponentObservationMissing until Slice 2
+           handler lands)
+    OA-Ds  persona-introspect RouterClient skeleton (same)
+    OA-5   CLI Input enum extension (no storage)
 
-Slice 3 — Subscribe + DeliveryTrace cache (post-sema-engine)
-  Lands when sema-engine Package 4 (Subscribe primitive) +
-  commit-then-emit in router/terminal/harness are real.
-  persona-introspect becomes a sema-engine consumer for its
-  local subscription registrations + correlation cache.
+  Introspect's own store (uses current sema-engine):
+    OA-S   persona-introspect skeleton — IntrospectionStore
+           actor; introspect.redb opened via sema-engine's
+           current Engine::assert + Engine::match_records;
+           local record families for query/reply/error audit
+           (per DA /49 §4 option 2: ship architecture +
+           skeleton; richer surfaces wait for sema-engine).
+
+Slice 2 — /41 terminal + router handlers (gated on sema-engine widening)
+  Waits for operator step 5 in DA /49 §5: QueryPlan widening
+  with key range + index-backed lookup; register_index API.
+  Lands as part of persona-terminal + persona-router migrations
+  to sema-engine.
+    OA-3h  persona-terminal observation handler using
+           Engine::register_index + QueryPlan::ByIndex /
+           QueryPlan::ByKeyRange (NO hand-rolled _by_time
+           tables; everything via sema-engine API)
+    OA-Dh  persona-router observation handler (same)
+    OA-6   Nix end-to-end witness (lights up once handlers
+           are real)
+
+Slice 3 — Subscribe + DeliveryTrace cache (gated on sema-engine Package 4 + per-peer commit-then-emit)
+  Waits for operator step 8 in DA /49 §5: Subscribe primitive.
+  Also requires each peer (router, terminal, harness) to be
+  a sema-engine Subscribe producer with commit-then-emit
+  wired for CorrelationId-tagged observation deltas.
+    OA-7   SubscribeComponent wire variant
+    OA-8   persona-introspect subscribes to peer streams via
+           Engine::subscribe + populates local correlation
+           cache
+    OA-9   DeliveryTrace upgrades from AwaitingCorrelationCache
+           to real cache-backed reply
+    OA-10  introspect.redb's subscription registration + cache
+           tables (via sema-engine — already a consumer per
+           Slice 1 OA-S)
 ```
 
-Slice 1 is sema-agnostic and lightweight; it can ship first
-as the fastest first deliverable and gives an immediate
-introspect-CLI experience (real `Ready`/`NotReady` instead of
-`Unknown` on three of four variants). Slice 2 is the substance
-of `/41` end-to-end including router follow-up per Q5's "OA
-does A + B + C + D" decision. Slice 3 is forward work that
-unblocks when sema-engine + peer commit-then-emit are
-available.
+Slice 1 is the immediate dispatch: all contract additions,
+fan-out for the three readiness-shaped variants, introspect
+skeleton actor + audit-trail records via current sema-engine.
+Slice 2 lands when operator's QueryPlan widening + register_index
+arrive; persona-terminal and persona-router migrate to
+sema-engine as part of this slice. Slice 3 lands when
+operator's Subscribe primitive + per-peer commit-then-emit
+are real.
 
 ### Slice 1 packages — Status-fill
 
@@ -442,26 +505,39 @@ implements `/41`'s Package A end-to-end.
   event-log + session-snapshot relations land (don't keep
   two parallel snapshot models long term).
 
-**Storage work** (per `/41 §1.2`):
-- Add the five `_by_time` secondary index tables using
-  packed key `TerminalObservationTimeKey(observed_at,
-  sequence)` and data-carrying entry
-  `TerminalObservationTimeIndexEntry { sequence }`. **No
-  `Table<Key, ()>`** per `/158 §2`.
-- Add typed observation handler in the terminal supervisor
-  path that compiles a `TerminalObservationQuery` to a
-  read against the appropriate primary/index tables.
-- Atomic dual-write discipline: every production write
-  method (e.g. `put_terminal_event`) writes primary + index
-  in the same `sema.write` closure.
+**Storage work (Slice 2 — gated on sema-engine widening):**
 
-**Critical:** this lands against **current sema** today, not
-against sema-engine. The packed key + `_by_time` tables are
-exactly the patterns sema-engine eventually absorbs (per
-`/158 §3.1`'s `IndexedTable` / `register_index` API); the
-work doesn't wait. When persona-terminal migrates to
-sema-engine later (per `/158 §6.1`), this is one of the
-mechanical rewrites.
+Per the user's 2026-05-14 directive (nothing ships without
+sema-engine), the terminal observation handler uses
+`sema-engine`'s typed API, **not** hand-rolled `_by_time` tables
+against current sema:
+
+- Register the primary observation tables and time-indexed
+  secondary indexes through `Engine::register_table` +
+  `Engine::register_index` (per `/158 §4`). Packed key type
+  `TerminalObservationTimeKey(observed_at, sequence)` and
+  data-carrying entry
+  `TerminalObservationTimeIndexEntry { sequence }` stay as
+  the typed contract shape; the *atomicity discipline*
+  (primary + index in one write) is owned by sema-engine,
+  not by the consumer's `sema.write` closure.
+- Write via `Engine::assert(table_ref, record)` (or a
+  per-table helper). Index updates happen inside
+  sema-engine per the registration.
+- Read via `Engine::match_records(QueryPlan::ByIndex {
+  index: terminal_by_time, range: ... })` for time-window
+  queries; `QueryPlan::ByKeyRange` for sequence-range
+  queries.
+
+**This work is gated on:** operator landing `register_index` +
+`QueryPlan::ByIndex` / `ByKeyRange` in `sema-engine` (DA `/49
+§5` step 5 in the operator finish path). Until those land,
+the contract types (Slice 1 OA-3c) ship but the handler
+(Slice 2 OA-3h) is parked.
+
+**persona-terminal migrates to sema-engine as part of this
+work** — there is no separate later "migrate persona-terminal"
+step. The observation handler is the migration trigger.
 
 **Witnesses** (per `/41 §4`):
 - `terminal_observations_read_existing_production_tables`.
@@ -517,12 +593,21 @@ In `signal-persona-router`:
   `DeliveryStatus`, `ChannelStateChange`, `AdjudicationOutcome`).
 - Add sequence + time range types if not already present.
 
-In `persona-router`:
-- Add router observation sequence + packed time-index tables
-  (same `_by_time` pattern as terminal Slice 2 §OA-3).
-- Atomic dual-write discipline.
-- Add observation handler that compiles `RouterObservationQuery`
-  to reads against the typed tables.
+In `persona-router` (Slice 2 — gated on sema-engine widening,
+same gate as terminal Slice 2 §OA-3 storage work):
+- Register primary observation tables + time-index secondary
+  indexes through `Engine::register_table` +
+  `Engine::register_index`. **No hand-rolled `_by_time`
+  tables** — sema-engine API only, per user directive
+  2026-05-14.
+- Write via `Engine::assert`; atomic primary + index dual
+  write happens inside sema-engine.
+- Read via `Engine::match_records(QueryPlan::ByIndex { ... })`
+  for time-window; `QueryPlan::ByKeyRange` for sequence
+  ranges.
+- **persona-router migrates to sema-engine as part of this
+  work** — there is no separate later "migrate persona-router"
+  step.
 
 In `signal-persona-introspect`:
 - Extend `ComponentObservationQuery` + `ComponentObservationResult`
@@ -629,36 +714,59 @@ the gates clear.
 
 ## 4 · Coordination with operator's sema-engine track
 
-Operator currently holds `[primary-6nr]` for sema cleanup
-(`/git/.../sema`); the sema-engine repo + skeleton lands next
-(Package B per `/115 §7`). Operator-assistant's persona-introspect
-work runs in parallel with that track because:
+Current state (per DA `/49`):
 
-- **No package above depends on sema-engine being ready.**
-  Every storage operation in OA-1 through OA-6 goes through
-  current sema's `Table` API. The patterns (packed time-key,
-  atomic dual-write, monotone sequence) are the patterns
-  sema-engine will eventually absorb, but operator-assistant
-  hand-rolls them now for terminal exactly as `/41 §1.2`
-  specified.
+- `sema-engine` repo exists with `Engine::open`,
+  `register_table`, `assert`, `match_records` (All / Key),
+  `SnapshotId`, operation log, catalog. Missing:
+  `register_index`, range/index QueryPlan variants,
+  `MutationPlan` + `mutate` + `retract`, `atomic`,
+  `Subscribe`, `validate`, `list_tables()`,
+  `operation_log_range()`.
+- `sema` is cleaned (commit `57ad38c`); structural witnesses
+  (no `Slot`, no legacy slot store, no `reader_count`, no
+  signal-core dep, no sema-engine dep) exist.
+- Operator currently holds
+  `[primary-5ir2] persona-mind first sema-engine consumer
+  migration` (`/git/.../persona-mind`).
 
-- **The verb-mapping witness (OA-1) is independent of either
-  sema or sema-engine.** It's contract-crate work; operator-
-  assistant can ship it first as the cheapest first deliverable.
+Operator's continuing finish path (per DA `/49 §5`): step 3
+`list_tables()` → step 4 `operation_log_range()` → step 5
+QueryPlan widening (key range + index) → step 6 `MutationPlan`
++ `mutate` + `retract` → step 7 `atomic` → step 8 `Subscribe`
+→ step 9 persona-mind migration → step 10 hand OA the
+introspect store.
 
-- **persona-mind migration to sema-engine (the first
-  sema-engine consumer per `/158 §6.1`) is operator's lane.**
-  Operator-assistant does not need to coordinate package-by-
-  package with that work.
+Per the user's directive 2026-05-14 ("nothing ships without
+sema-engine; the old hand-roll-then-migrate approach is off"),
+OA's slice-2 storage work waits for operator step 5 (QueryPlan
+widening). OA's slice-3 work waits for operator step 8
+(Subscribe) plus per-peer commit-then-emit.
 
-When persona-terminal migrates to sema-engine later (per
-`/158 §6.1`'s remaining persona-* components after persona-mind +
-criome), the hand-rolled `_by_time` tables become
-`Engine::register_index` calls, the time-range filter loops
-become `QueryPlan::ByIndex`, and the witnesses adjust to use
-the engine API. That's mechanical rewrite work that operator
-or operator-assistant can pick up at that point — not
-something to anticipate now.
+**Slice 1 is OA's immediate dispatch.** It uses `sema-engine`'s
+existing `Engine::assert` + `Engine::match_records` surface
+(per DA `/49 §4` option 2) for `introspect.redb`'s audit-trail
+records. No package in Slice 1 is gated on operator's later
+sema-engine widening.
+
+**Slice 2 starts when operator's step 5 lands** (`register_index`
++ `QueryPlan::ByIndex` / `ByKeyRange`). At that point
+persona-terminal + persona-router migrate to `sema-engine` as
+part of the observation-handler work — they are the second
+and third sema-engine consumers, alongside (or just after)
+persona-mind's first-consumer landing.
+
+**Slice 3 starts when operator's step 8 lands** (`Subscribe`
+primitive) and each peer (router, terminal, harness, system,
+message) has commit-then-emit wired through its own
+sema-engine integration. At that point persona-introspect
+adds its forwarded-subscription + correlation-cache machinery.
+
+Operator-assistant does not hand-roll any pattern that
+`sema-engine` will later absorb. The contract types
+(observation queries, batch types, packed key newtypes)
+land now; their storage-bearing handlers wait for the right
+sema-engine surface.
 
 ---
 
@@ -990,6 +1098,15 @@ correlation cache becomes urgent before the planned schedule.
 - `reports/designer-assistant/41-persona-introspect-implementation-ready-design.md`
   — DA's terminal-first implementation-ready spec. The
   load-bearing input for the OA-3 + OA-4 packages.
+- `reports/designer-assistant/48-persona-introspect-start-shape-and-questions.md`
+  — DA's start-shape investigation. Folded into the Slice 1
+  OA-S package structure.
+- `reports/designer-assistant/49-sema-engine-state-and-readiness.md`
+  — DA's survey of the current `sema-engine` implementation
+  state. The gating reads in §4 above (which slice waits for
+  which operator step) come from `/49 §5`'s finish path.
+  Critical for understanding which OA packages can start now
+  vs which wait.
 - `reports/designer/158-sema-kernel-and-sema-engine-two-interfaces.md`
   — the storage architecture. §3.5's `SubscriptionSink<R>`
   contract is what `SubscribeComponent` would land against
