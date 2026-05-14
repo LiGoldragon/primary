@@ -1291,19 +1291,10 @@ substance; witnesses carry the constraints.
   signal-rebase migration step). Use /44 as the implementation
   migration checklist; use /157 (this report) as the design
   target.
-- `reports/designer/154-sema-db-query-engine-research-brief.md`
-  §4 — the four candidate positions (A/B/C/D). This report
-  lands at **Option C** (engine semantics), sharpened by the
-  verb spine the workspace had recovered. Retires alongside
-  /157 when ARCH absorbs.
 - `reports/designer/152-persona-mind-graph-design.md` §6 (mind's
   storage shape) + §8 (initial-snapshot subscription live;
   commit-then-emit pending per operator `primary-hj4.1.1`) —
   the reference implementation that retires under full engine.
-- `reports/designer/153-persona-introspect-shape-and-sema-capabilities.md`
-  §4 (today's sema is raw KV) + §7.7 (Datomic precedent for
-  snapshot id) + §7.11 (the field's verdict on the current
-  envelope) — the prior framing this design replaces.
 - `reports/designer-assistant/41-persona-introspect-implementation-ready-design.md`
   §1.2 (terminal Sema tables specifying the hand-rolled engine
   to be) — Package 3's first consumer-side migration target.

@@ -17,8 +17,6 @@ surfaced into `/158`/`/41`/`signal-persona-introspect`'s
 ARCH.
 
 **Builds on:**
-- `reports/designer/153-persona-introspect-shape-and-sema-capabilities.md`
-  (the shape & dependency analysis that named the gap).
 - `reports/designer-assistant/40-persona-introspect-after-111-and-153.md`
   (DA's sharpenings: wrapper-not-schema-hub; target-specific
   selectors; component-minted sequences; read-only inspection
@@ -1112,11 +1110,6 @@ correlation cache becomes urgent before the planned schedule.
 
 ## 8 · See also
 
-- `reports/designer/153-persona-introspect-shape-and-sema-capabilities.md`
-  — the shape & dependency analysis that named the gap.
-  §6 lists the concrete blocks (six items); this report
-  picks up where `/153` left off, after the verb-spine
-  framing landed.
 - `reports/designer-assistant/40-persona-introspect-after-111-and-153.md`
   — DA's sharpenings (wrapper-not-schema-hub; target-specific
   selectors; component-minted ObservationSequence; read-only
