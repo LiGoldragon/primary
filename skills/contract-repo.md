@@ -284,9 +284,7 @@ instantiates. There is no "non-database" communication.
 > seven root verbs in `signal-core`; the read-algebra operators
 > (`Constrain`, `Project`, `Aggregate`, `Infer`, `Recurse`) live as
 > a `ReadPlan<R>` type in `sema-engine`, *not* as peer root verbs.
-> The wire kernel is domain-free and engine-free. While the code
-> rename from `SemaVerb` to `SignalVerb` is pending the
-> implementation pass, this skill describes the target shape.
+> The wire kernel is domain-free and engine-free.
 
 ### The seven root verbs
 
@@ -430,8 +428,7 @@ observation query.
   — the designer-side design for sema-db as the full engine
   executing the verbs.
 - `/git/github.com/LiGoldragon/signal-core/src/request.rs` —
-  the canonical root-verb enum (currently named `SemaVerb`;
-  renaming to `SignalVerb` per `/50`/`/162`).
+  the canonical `SignalVerb` root enum.
 - `/git/github.com/LiGoldragon/signal-core/src/pattern.rs` —
   `PatternField<T> = Wildcard | Bind | Match(T)` pattern markers.
 - `~/primary/reports/designer-assistant/50-signal-core-base-verb-shape.md`
