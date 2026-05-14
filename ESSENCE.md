@@ -557,6 +557,40 @@ shape carry an explicit *"this describes the eventual shape; today's
 piece is narrower"* marker, and consumers describe their actual
 current dependency, not the eventual one.
 
+### Versioning on the eventual stack
+
+Sema's purity (no ambient state, no implicit context) makes every
+Sema artifact **content-addressable by hash**. That property
+unlocks a versioning model the today-stack approximates with manual
+schema-version guards:
+
+- **Schema versions are content-addressed.** A schema is identified
+  by the hash of its Sema source. Two components computing the same
+  hash have the same schema by construction.
+- **Components carry multiple schema versions in their runtime.**
+  Cross-trust-domain peers do not need consensus on a single
+  current version. A component holds v3 and v4 simultaneously; it
+  serves v3 to peers that ask in v3, v4 to peers that ask in v4.
+- **Translation lives in reducers or dedicated translator nodes.**
+  When a peer in domain A speaks v3 and a peer in domain B speaks
+  v4, the bridge is a typed reducer (a Sema function from v3 to v4
+  records) — either inline in the receiving component's runtime or
+  hosted by a dedicated translator component that holds multiple
+  versions and bridges between them without bloating either
+  endpoint's runtime.
+- **Cross-domain federation needs no quorum primitive at the verb
+  level.** Schema agreement reduces to "both sides can decode each
+  other," which the version-tagged content-addressing plus
+  translation gives for free. The seven-root Signal verbs handle
+  the wire; schema bridging is reducer work, not verb work.
+
+This is **future work, not first-prototype work.** Today's Persona
+uses manual `SchemaVersion` records and the rkyv format guard.
+Naming the eventual model here keeps the today-stack honest about
+what it's approximating, and tells future agents what the
+near-term `SchemaVersion` records evolve *toward* once Sema lands
+as the substrate.
+
 ## Rules find their level
 
 Every observation, rule, or pattern belongs at a specific

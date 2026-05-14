@@ -217,50 +217,123 @@ forces the question.
 
 ---
 
-## 5 · Falsifiability — when the case reopens
+## 5 · Falsifiability — the conditions and their workspace resolutions
 
-Three concrete conditions would reopen the eighth-verb question.
-None apply to current workspace traffic. If any fires, this report
-retires in favor of a `Structure` (or kindred) proposal.
+The original eighth-verb question named three potential triggers. As
+of 2026-05-14, each has a workspace-shaped resolution that keeps the
+seven-only direction holding under the user's full architectural
+vision. The resolutions live in eventual-architecture sections of
+the meta repos; the conditions stay listed here as **historical
+falsifiability triggers**, kept so a future agent encountering a
+genuinely new condition can compare it against the resolved set.
 
-### 5.1 · Runtime user-defined types
+### 5.1 · Runtime user-defined types — resolved by proposal-and-recompile
 
-A future component lets end-users define their own record kinds at
-runtime — a no-code schema designer, a tenant-isolated multi-schema
-service, an LLM-authored typed-table tool. Then the schema *isn't*
-compile-time-decided; the wire has to carry the shape itself, not
-just an announcement.
+**Trigger**: A future component lets agents (or humans, or
+runtime-supplied identities) define their own record kinds at
+runtime — a no-code schema designer, an LLM-authored typed-table
+tool. The shape-as-compile-time-Rust assumption breaks; the wire
+would have to carry the shape definition itself.
 
-The seven-verb absorption depends on shape-as-Rust. Runtime-defined
-shapes break that assumption.
+**Resolution**: The workspace's medium-term schema-change path is
+**proposal-and-recompile** (per
+`/git/github.com/LiGoldragon/persona/ARCHITECTURE.md` §10.1).
+Agents author new typed records by `Assert`-ing a `TypeProposal`
+record, going through adjudication via `Match` and `Mutate`, and on
+acceptance committing actual Rust source that recompiles into a new
+binary. **Agents are the authors — but the authorship target is
+Rust source, not runtime types.** The type system mutation happens
+in the source layer, out-of-band from the Signal wire. The seven
+verbs handle proposal traffic + post-deploy catalog announcement;
+no `Structure` verb is needed.
 
-**Current workspace state**: no component allows runtime-defined
-record types. Consumers register Rust-typed tables at engine start;
-the type system is closed.
+**Current workspace state**: today's Persona has no `TypeProposal`
+record yet — schema changes go through humans editing Rust. The
+proposal flow lands once `persona-mind` carries real traffic. The
+seven verbs already cover the flow; no new verb is needed when it
+arrives.
 
-### 5.2 · Cross-daemon schema consensus
+### 5.2 · Cross-trust-domain schema consensus — resolved by translator nodes
 
-A future Sema runtime distributes one logical database across
-multiple writers and schema must agree across them. Then DDL needs
-Paxos/Raft-shaped agreement primitives that aren't reducible to
-single-writer `Atomic`.
+**Trigger**: Multiple Persona deployments owned by distinct
+organizations need to share a typed-record vocabulary. Neither side
+can force the other's recompile. The single-writer-per-daemon
+assumption holds locally but does not give cross-domain agreement.
 
-**Current workspace state**: every `sema-engine` consumer is
-single-writer (the daemon owns its redb). Cross-daemon
-communication happens via Signal frames, not via shared storage.
-There is no consensus to schedule.
+**Resolution**: When the workspace self-hosts on the eventual Sema
+substrate (per `~/primary/ESSENCE.md` §"Versioning on the eventual
+stack" and
+`/git/github.com/LiGoldragon/persona/ARCHITECTURE.md` §10.2), Sema's
+purity makes schemas **content-addressable by hash**. Components
+carry **multiple schema versions in their runtime** and bridge
+between versions through **translation reducers** — typed Sema
+functions from one version to another, either inline in the
+receiving component or hosted by a dedicated translator component.
+Federation reduces to "both sides can decode each other," provided
+by content-addressing + translation. **Schema consensus is not a
+verb-level operation**; the seven roots handle the wire, translator
+reducers handle the bridging.
 
-### 5.3 · Visibility protocols not expressible as a catalog state machine
+**Current workspace state**: today's Persona is single-trust-domain
+(one user, one workspace root). Federation is far-future. The
+eventual resolution is named so the today-stack stays honest about
+what it's a realization step toward.
 
-A schema change requires visibility semantics that the catalog row's
-typed state cannot carry. The canonical example: "old readers see
-v3, new readers see v4, both concurrent for 10 minutes" with
-cryptographic visibility guarantees per reader.
+### 5.3 · Reader-isolated schema visibility — resolved by read-algebra + multi-version runtime
 
-The catalog-row state machine in §2.4 handles two-phase visibility
-(`pending → active`) honestly. It does not handle reader-isolated
-visibility windows. If those become a wire concern, the catalog row
-isn't enough and `Structure` (or kindred) earns its seat.
+**Trigger**: A schema change requires distinct concurrent visibility
+per reader — time-travel queries against historical schema versions,
+tenant-isolated schemas, capability-gated field visibility,
+cryptographic visibility windows. The catalog row's typed state
+machine handles linear `pending → active` evolution but cannot
+carry per-reader visibility.
+
+**Resolution**: The visibility cases decompose:
+
+- **Time-travel** (`Match as-of snapshot N`) is a `ReadPlan`
+  parameter against the operation log — read-algebra in
+  `sema-engine`, not a verb concern. Historical shapes decode
+  because they were already compile-time-typed when written.
+- **Tenant-isolated visibility** is `ReadPlan::Filter` on tenant-id,
+  not a separate schema per tenant.
+- **Capability-gated field visibility** is `ReadPlan::Project`
+  parameterized by the reader's capability set.
+- **Schema-version visibility** is resolved by §5.2's multi-version
+  runtime: different peers run different versions concurrently; the
+  receiver decodes through whichever version's hash matches the
+  archive. Translation reducers bridge.
+
+None of these require a verb that classifies "reader-isolated
+schema visibility" as a boundary behavior. The seven roots classify
+the operation kind; the payload (`ReadPlan<R>`) carries the
+visibility shape. Read-algebra is engine-side work, not wire-root
+work.
+
+**Current workspace state**: no consumer requires reader-isolated
+visibility. The eventual cases all land cleanly in `ReadPlan` (for
+read-time concerns) or multi-version runtime (for schema-version
+concerns).
+
+### 5.4 · How the trigger fires (procedure)
+
+If a designer (or operator, or operator-assistant) finds themselves
+writing a payload that doesn't honestly fit `Assert`/`Mutate`/
+`Retract`/`Atomic`/`Match`/`Subscribe`/`Validate`, *and* the
+resolutions in §5.1–§5.3 do not absorb the case:
+
+1. **Stop.** This is a workspace-level design event per the
+   verb-discipline rule.
+2. **Test the containment rule.** Can the operation be modeled as
+   a catalog state machine? Can it be modeled as `ReadPlan`
+   algebra? Can it be modeled as proposal-and-recompile traffic?
+   If yes (even if awkwardly), reach for those first.
+3. **If genuinely not.** Surface the case in a designer report
+   naming the specific operation, why the existing resolutions
+   don't absorb it, and what the missing boundary semantic is.
+   That report supersedes this one and motivates the eighth verb.
+
+The rule is "no payload maps to no root" — the failure mode is a
+typed proposal for a new root, not a workaround.
 
 **Current workspace state**: no consumer requires reader-isolated
 schema visibility. Migrations land atomically; consumers see the new
