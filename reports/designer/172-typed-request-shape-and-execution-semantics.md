@@ -100,7 +100,7 @@ signal_channel! {
 }
 
 // Macro emits:
-pub type MindFrame = Frame<MindRequest, MindBatchIntent, MindReply, MindBatchIntent>;
+pub type MindFrame = Frame<MindRequest, MindReply, MindBatchIntent>;
 ```
 
 The intent type is part of the channel's typed identity, exactly
@@ -505,6 +505,10 @@ pub enum BatchFailureReason {
     /// `Op { verb, payload }` whose verb doesn't match the payload's
     /// declared verb, or an empty batch slipping past the type guard).
     PolicyViolation,
+    /// The batch violated a channel-declared `BatchPolicy` rule
+    /// (max_ops exceeded, forbidden verb present, etc.). The named
+    /// `rule` identifies which limit fired.
+    BatchPolicyViolation { rule: &'static str, limit: usize },
     /// The batch contained a `Subscribe` op that was not at the tail
     /// of the batch. Subscribes must come last per §4 composition
     /// rules; receive-time check fires before any op runs.
@@ -522,18 +526,24 @@ pub enum BatchFailureReason {
 /// error tuple on failure so the receiver can build the rejection
 /// reply with the original request's header and per-op verbs.
 ///
+/// Both methods take a `Policy` generic (per `/175 §2.2`) so the
+/// channel's `BatchPolicy` impl is mechanically connected to
+/// validation. `DefaultPolicy` is the default — permissive on every
+/// channel-specific rule.
+///
 /// Replaces today's single-op `Request::into_payload_checked` for
 /// the new multi-op shape.
 impl<P, I> Request<P, I>
 where
     P: RequestPayload,
 {
-    /// Validate without consuming. Walks every `Op`, checks
-    /// verb/payload alignment via `RequestPayload::signal_verb()`,
-    /// and enforces the Subscribe-must-be-last position rule.
-    /// Returns the first violation if any. The caller retains the
-    /// request for whatever follows.
-    pub fn validate(&self) -> Result<(), BatchVerbMismatch> {
+    /// Validate without consuming. Universal rules (verb/payload
+    /// alignment, Subscribe-must-be-last) plus the channel's
+    /// `Policy` rules. Returns the first violation. The caller
+    /// retains the request for whatever follows.
+    pub fn validate<Policy: BatchPolicy<P, I> = DefaultPolicy>(
+        &self,
+    ) -> Result<(), BatchVerbMismatch> {
         // Empty-batch check is impossible at this layer because
         // `Request` carries `NonEmpty<Op>`; empty frames are caught
         // by the rkyv decoder via NonEmpty's bytecheck invariant and
@@ -573,14 +583,46 @@ where
     /// failure, returns both the violation and the unconverted
     /// request — the caller can echo the request's header and per-op
     /// verbs into the rejection reply without losing context.
-    pub fn into_checked(self) -> Result<CheckedRequest<P, I>, (BatchVerbMismatch, Self)> {
-        if let Err(reason) = self.validate() {
+    pub fn into_checked<Policy: BatchPolicy<P, I> = DefaultPolicy>(
+        self,
+    ) -> Result<CheckedRequest<P, I>, (BatchVerbMismatch, Self)> {
+        if let Err(reason) = self.validate::<Policy>() {
             return Err((reason, self));
         }
         let (header, ops) = self.into_parts();
         Ok(CheckedRequest { header, ops })
     }
 }
+
+/// Channel batch-policy trait. Implemented by per-channel unit
+/// structs that the `signal_channel!` macro emits from the
+/// optional `batch_policy { ... }` block. Channels without that
+/// block use `DefaultPolicy`. Declarative only — no closures, no
+/// runtime expressions; custom checks live in the daemon, not in
+/// the contract crate (per `skills/contract-repo.md` and `/175 §3`).
+pub trait BatchPolicy<P, I>
+where
+    P: RequestPayload,
+{
+    /// Maximum number of ops in one batch. Default: no cap.
+    fn max_ops() -> usize { usize::MAX }
+
+    /// Whether `Match` and write ops may appear in the same batch.
+    /// Default: permitted.
+    fn allow_mixed_read_write() -> bool { true }
+
+    /// Whether `Subscribe` ops are allowed at all. Default: permitted.
+    /// (The universal Subscribe-must-be-last rule is enforced regardless.)
+    fn forbid_subscribe() -> bool { false }
+
+    /// Whether `Validate` ops are allowed. Default: permitted.
+    fn forbid_validate() -> bool { false }
+}
+
+/// Default policy — permissive on every channel-specific rule.
+/// Used by channels that don't declare a `batch_policy { ... }` block.
+pub struct DefaultPolicy;
+impl<P, I> BatchPolicy<P, I> for DefaultPolicy where P: RequestPayload {}
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum BatchVerbMismatch {
@@ -598,6 +640,13 @@ pub enum BatchVerbMismatch {
     /// `failed_at: index` (pointing at the Subscribe that came too
     /// early — the receiver names the first violating Subscribe).
     SubscribeOutOfOrder { index: usize },
+    /// The channel's `BatchPolicy` rejected the batch. `rule` names
+    /// which declarative limit fired; `limit` is the threshold value
+    /// from the policy block (e.g. max_ops: 32).
+    PolicyViolation {
+        rule: &'static str,
+        limit: usize,
+    },
 }
 
 /// A `CheckedRequest` is the post-validation handle a receiver hands
@@ -702,7 +751,7 @@ Macro emissions:
 - The `MindRequest` and `MindReply` payload enums (as today).
 - The `MindBatchIntent` enum.
 - Per-variant `SignalVerb` mappings (as today).
-- `pub type MindFrame = Frame<MindRequest, MindBatchIntent, MindReply, MindBatchIntent>;`
+- `pub type MindFrame = Frame<MindRequest, MindReply, MindBatchIntent>;`
   — though intent type can differ for request vs reply; usually
   the same.
 - Per-channel constructor helpers for both single-op and batched
