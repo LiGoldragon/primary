@@ -303,51 +303,95 @@ lore is *how the tool works*.
 
 ---
 
-## The sema-family pattern
+## The sema-engine pattern (default for new components)
 
 > **Scope: today, not eventually.** This section describes today's
-> typed-storage substrate — `sema` (the kernel; rename pending →
-> `sema-db`). The eventual `Sema` is broader (universal medium for
-> meaning — see `~/primary/ESSENCE.md` §"Today and eventually");
-> for Rust today, use what's named here.
+> typed-storage substrate. The eventual `Sema` is broader (universal
+> medium for meaning — see `~/primary/ESSENCE.md` §"Today and
+> eventually"); for Rust today, use what's named here.
 
-The workspace's typed-storage substrate lives in **`sema`**
-(the kernel) plus component-owned typed layers. Prefer an internal
-module first (`persona-mind/src/tables.rs`, `persona-router/src/tables.rs`,
-etc.). Create a dedicated Sema crate only after reuse is real and its
+The workspace's typed-storage substrate is **two layers** today:
+
+- **`sema`** — the storage *kernel*. Owns redb file lifecycle, the
+  typed `Table<K, V: Archive>` wrapper, txn helpers, the standard
+  `Error` enum, the version-skew guard, and the `Slot(u64)` +
+  slot-counter utility. Low-level. Most components do not depend on
+  `sema` directly.
+- **`sema-engine`** — the full *database engine* library over `sema`
+  and `signal-core`. Registered record families, typed Signal-verb
+  execution (`Assert`, `Match`, `Subscribe`), operation log + snapshot
+  identity, subscription surface. Pure library — no daemon, no
+  Kameo, no tokio, no NOTA, no `signal-persona-*` deps. First real
+  consumer is `persona-mind`; Criome follows.
+
+**Default for new state-bearing components: depend on `sema-engine`,
+not on `sema` directly.** `sema-engine` owns the engine surface
+(record family registration, Assert/Match/Subscribe verbs, operation
+log range, mutation receipts, snapshot identity); the component owns
+domain validation, actors, sockets, authorization, and the daemon
+shape around it. Reach for `sema` directly only for low-level kernel
+operations the engine doesn't expose (rare; usually a signal that
+`sema-engine` should grow the surface instead).
+
+Both layers' ownership is **by state-bearing component**:
+
+```
+signal-core            sema-engine             sema
+  signal-persona-mind    Engine in persona-mind  ├─ persona-mind.redb
+  signal-persona-router  Engine in persona-router├─ persona-router.redb
+  signal-persona-harness Engine in persona-harness ─ persona-harness.redb
+```
+
+The Engine instance lives inside the component daemon, opens the
+component's redb file through `Sema::open_with_schema`, and registers
+the typed record families the component owns. Records' Rust types
+live in the matching `signal-*` contract crate when they cross a
+component boundary; purely internal persisted records may live inside
+the component.
+
+**Signal traffic builds on `signal-core`.** `signal-core` is the
+wire kernel — typed frames, envelopes, channel macro. Every
+component-specific `signal-*` contract crate (`signal-persona-mind`,
+`signal-persona-router`, `signal-lojix`, `signal-criome`, etc.) layers
+its typed records on top of `signal-core`'s primitives. **Don't
+invent a parallel framing or envelope mechanism per contract;** the
+`signal-core` types are the substrate.
+
+**New components consuming the substrate:**
+
+```toml
+# Cargo.toml
+sema-engine = "..."           # the typed database engine
+signal-core = "..."           # wire kernel for any inter-component frames
+signal-<component> = "..."    # the contract crate(s) this component speaks
+```
+
+Inside the component:
+
+```rust
+use sema_engine::{Engine, EngineOpen, TableDescriptor, TableName, Assertion, QueryPlan};
+
+let mut engine = Engine::open(EngineOpen::new(database_path, SchemaVersion::new(1)))?;
+let family = engine.register_table(TableDescriptor::new(TableName::new("thoughts")))?;
+engine.assert(Assertion::new(family.clone(), thought))?;
+let snapshot = engine.match_records(QueryPlan::all(family))?;
+```
+
+Don't reinvent the plumbing. See
+`/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` for the
+current Engine surface and
+`/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` for the kernel
+design. Designer reports
+`~/primary/reports/designer/{157-sema-db-full-engine-direction.md,158-sema-kernel-and-sema-engine-two-interfaces.md}`
+carry the architectural rationale for the kernel/engine split.
+
+Prefer an internal module for component-local table layouts
+(`persona-mind/src/tables.rs`, `persona-router/src/tables.rs`).
+Create a dedicated Sema crate only after reuse is real and its
 architecture has been explicitly named. Do not create broad umbrella
 Sema crates for meta projects just because the meta repo composes
 several components. In particular, `persona` is a meta project today;
 there is no shared `persona-sema` architecture.
-
-Sema is to state what `signal-core` is to wire, but ownership is
-by state-bearing component:
-
-```
-signal-core                 sema
-  ├─ signal-persona-mind      ├─ mind Sema tables in persona-mind
-  ├─ signal-persona-message   ├─ router Sema tables in persona-router
-  └─ signal-persona-harness   └─ harness Sema tables in persona-harness
-```
-
-`sema` (the kernel) owns: redb file lifecycle, the typed
-`Table<K, V: Archive>` wrapper, txn helpers, the standard
-`Error` enum, the version-skew guard, and the `Slot(u64)` +
-slot-counter utility.
-
-Each component-owned Sema layer owns: its `Schema` constant
-(table list + version), its typed table layouts, its open
-conventions, and its migration helpers. Records' Rust types
-live in the matching `signal-*` contract crate when they cross
-a component boundary; purely internal persisted records may live
-inside the component.
-
-**New components consuming sema:** add `sema = "..."` to
-`Cargo.toml`, declare a `Schema` constant, define typed
-tables atop `sema::Table<K, V>`. Don't reinvent the
-plumbing. See `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md`
-and `~/primary/reports/designer-assistant/17-pre-today-report-cleanup-agglomeration.md`
-§2.4 for the current design.
 
 ---
 
@@ -383,5 +427,11 @@ table grows; the work gets more correct as it grows.
 - `lore/rust/testing.md` — sync-façade-on-State pattern.
 - `~/primary/repos/signal/ARCHITECTURE.md` — the canonical
   signal pattern worked example.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` —
+  sema-engine architecture (the default for new state-bearing
+  components).
 - `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — sema kernel
-  architecture.
+  architecture (low-level; underneath sema-engine).
+- `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` —
+  signal-core wire kernel (the substrate every signal-* contract
+  builds on).
