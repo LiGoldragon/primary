@@ -396,30 +396,67 @@ This report is the adopted workspace direction:
 2. **Schema/catalog operations fit `Assert`/`Mutate`/`Retract`
    under `Atomic`** per the worked examples in §2. The catalog is a
    typed `sema-engine` table.
-3. **The schema-version guard** (per `/158 §3`) reads the catalog
-   row state; engine-internal, not a boundary verb concern.
-4. **The falsifiability triggers in §5** are the conditions under
-   which the case reopens. Until then, the seven hold.
+3. **The schema-version guard** reads the catalog row state;
+   engine-internal, not a boundary verb concern.
+4. **The falsifiability triggers in §5** are the historical
+   conditions the case had to absorb. Each has a workspace-shaped
+   resolution; the seven hold under the user's full vision.
 5. **The eighth-verb watch-list item in `/162 §9`** is
    superseded by this report: the seven absorb DDL by default; no
    eighth verb is pending.
+
+### 7.1 · Companion architectural changes
+
+The following permanent-doc edits landed alongside this report and
+encode the resolutions named in §5:
+
+- **`~/primary/ESSENCE.md` §"Versioning on the eventual stack"**
+  (new subsection of §"Today and eventually") — names the
+  versioning model that arrives with self-hosting Sema:
+  content-addressed schema (purity → hash), multi-version
+  runtime, translation reducers. Marks the model as future
+  work, not first-prototype work.
+- **`/git/github.com/LiGoldragon/sema/ARCHITECTURE.md`** — new
+  scope marker noting the eventual `Sema` is a different
+  artifact at a different layer; new §"Versioning — today and
+  eventually" section contrasting today's manual
+  `Sema::open_with_schema` mechanic with the eventual
+  content-addressing.
+- **`/git/github.com/LiGoldragon/persona/ARCHITECTURE.md` §10
+  "Eventual cross-domain federation"** — names the
+  proposal-and-recompile flow (§10.1, medium-term) and the
+  multi-version-runtime + translator-nodes pattern (§10.2,
+  long-term). Marks the §10.3 ordering: today (first
+  prototype) → medium (proposal flow) → long (content-addressed
+  Sema). Reinforces that none of this is first-prototype work.
+
+These three changes carry the substance that resolves the
+falsifiability triggers in §5. This report points at them; the
+architectural surface carries the rules.
 
 ---
 
 ## 8 · See also
 
-- `reports/designer/162-signal-verb-roots-synthesis.md` §4 — the
-  containment rule this report formalizes.
-- `reports/designer-assistant/50-signal-core-base-verb-shape.md`
-  §3, §7 — the seven-root criterion and the original `Structure`
-  containment.
-- `reports/designer-assistant/51-review-designer-162-signal-verb-roots.md`
-  §2.4 — DA's sharper containment framing that motivated this
-  report.
+Permanent surfaces (the substance lives here; this report is a
+synthesis):
+
 - `/git/github.com/LiGoldragon/signal-core/src/request.rs` — the
   seven-variant `SignalVerb` enum as landed.
 - `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — where
-  the catalog table lives and how schema-version guarding works.
+  the catalog table lives, how `ReadPlan<R>` is structured, and how
+  schema-version guarding works in the today-stack.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` §"Versioning —
+  today and eventually" — the kernel-side versioning story
+  (manual `SchemaVersion` today → content-addressed Sema schema
+  eventually).
+- `/git/github.com/LiGoldragon/persona/ARCHITECTURE.md` §10
+  "Eventual cross-domain federation" — the proposal-and-recompile
+  flow (medium-term) and multi-version-runtime + translator-nodes
+  pattern (long-term).
+- `~/primary/ESSENCE.md` §"Today and eventually" and §"Versioning
+  on the eventual stack" — the workspace-intent framing that makes
+  the resolutions in §5 coherent.
 - `~/primary/skills/contract-repo.md` §"Signal is the database
   language — every request declares a verb" — the verb-discipline
   rule. The "no payload maps to no root" failure mode in §5.4
