@@ -16,24 +16,24 @@ when the work is supposed to be deep.
 The library is at:
 
 ```
-~/Criopolis/library/
+~/primary/repos/library/
 ```
 
-Per `~/Criopolis/library/CLAUDE.md`, this is *"the scholarly
+Per `~/primary/repos/library/CLAUDE.md`, this is *"the scholarly
 foundation that sema's ontology is built on"* — classical
 source texts (Ptolemy, Valens, Parasara, Lilly), modern
 systematizers, category theory (Mazzola, Spivak, Zalamea),
 correspondence systems, Vedic philosophy, and the project's own
 work. Binary files (PDF, EPUB, DJVU) are gitignored locally and
 indexed by Anna's Archive MD5 hashes; text-form bibliography is
-in `Criopolis/library/bibliography.md`.
+in `~/primary/repos/library/bibliography.md`.
 
 ---
 
 ## Layout
 
 ```
-~/Criopolis/library/
+~/primary/repos/library/
 ├── bibliography.md        — complete tiered bibliography with MD5 hashes
 ├── documentation-spec.md  — category-theoretic documentation framework
 ├── samskara-world-upgrade-plan.md — relation design notes
@@ -76,7 +76,7 @@ read the source.
 PDFs are read via the `Read` tool with the `pages:` parameter:
 
 ```
-Read /home/li/Criopolis/library/en/john-sowa/conceptual-structures.pdf pages:1-15
+Read /home/li/primary/repos/library/en/john-sowa/conceptual-structures.pdf pages:1-15
 ```
 
 Notes:
@@ -101,39 +101,41 @@ nix run nixpkgs#djvulibre -- ddjvu -format=pdf input.djvu output.pdf
 ## Adding new books — the `annas` CLI
 
 The CLI tool that searches and downloads from Anna's Archive is
-in this workspace's nix-store (Go binary, built from
-`~/git/annas-mcp`). It is **not currently on PATH**; invoke via
-the nix store path or via `nix run`.
+a Go binary built from `~/git/annas-mcp` and installed on PATH
+via the home-manager profile (`/home/li/.nix-profile/bin/annas`).
+Invoke it as `annas`. If `which annas` returns nothing, fall back
+to `find /nix/store -maxdepth 2 -name annas -type f 2>/dev/null`
+and invoke by the nix-store path.
 
-### Discover the binary
+### Running it cleanly
+
+Always invoke `annas` from the library directory so it finds
+`.env`:
 
 ```sh
-# Find the most recent build:
-find /nix/store -maxdepth 2 -name annas -type f 2>/dev/null
+cd ~/primary/repos/library && annas book-search "<query>"
 ```
 
-A binary path looks like:
+The CLI emits a noisy startup `WARN` line and Go stack trace
+when `.env` is missing or empty; pipe through a filter when you
+just want results:
 
+```sh
+annas book-search "<query>" 2>&1 \
+  | grep -v "WARN\|Error loading\|cli.go\|main.go\|proc.go\|annas-mcp\|runtime.main\|StartCLI\|^github"
 ```
-/nix/store/<hash>-annas/bin/annas
-```
-
-Nix-store paths change on rebuild; either invoke via the path
-above each time, or wire `annas` into PATH via the relevant
-home-manager profile (system-specialist territory; raise as a
-bead if it's needed durably).
 
 ### Configure the environment
 
-Two variables, both stored in `~/Criopolis/library/.env`:
+Two variables, both stored in `~/primary/repos/library/.env`:
 
 ```
 ANNAS_SECRET_KEY=<API key from annas-archive.li>
-ANNAS_DOWNLOAD_PATH=/home/li/Criopolis/library/<lang>/<author>/
+ANNAS_DOWNLOAD_PATH=/home/li/primary/repos/library/<lang>/<author>/
 ```
 
-The `.env` in `~/Criopolis/library/` is gitignored. As of this
-skill's writing, the workspace runs **unauthenticated**
+The `.env` in `~/primary/repos/library/` is gitignored. As of
+this skill's writing, the workspace runs **unauthenticated**
 (searches work without a key; downloads may require one).
 
 ### Searching
@@ -162,7 +164,7 @@ hyphenated, encoding work + translator (e.g.
 
 ### Adding to the bibliography
 
-After downloading, add to `~/Criopolis/library/bibliography.md`
+After downloading, add to `~/primary/repos/library/bibliography.md`
 in the appropriate tier and author section. The format follows
 the existing entries:
 
@@ -217,7 +219,7 @@ path:
 - **Sowa, J. F. (1984).** *Conceptual Structures: Information
   Processing in Mind and Machine.* Addison-Wesley.
   Chapter 1 §1.4 (Intensions and Extensions).
-  Local: `~/Criopolis/library/en/john-sowa/conceptual-structures.pdf`
+  Local: `~/primary/repos/library/en/john-sowa/conceptual-structures.pdf`
 ```
 
 This makes citations falsifiable: the next agent reading the
@@ -242,7 +244,7 @@ correspond to actual reading.
   Files in author directories that aren't in `bibliography.md`
   drift; future agents won't find them by topic search.
 - **Treating the library as canonical workspace state.** The
-  library is `~/Criopolis/library/`, not under `~/primary/`.
+  library is `~/primary/repos/library/`, not under `~/primary/`.
   It's a sibling resource. Don't move references to it inside
   `~/primary/`.
 
@@ -250,11 +252,11 @@ correspond to actual reading.
 
 ## See also
 
-- `~/Criopolis/library/CLAUDE.md` — the library's own
+- `~/primary/repos/library/CLAUDE.md` — the library's own
   agent-facing intro.
-- `~/Criopolis/library/bibliography.md` — the full curated
+- `~/primary/repos/library/bibliography.md` — the full curated
   index.
-- `~/Criopolis/library/documentation-spec.md` — the
+- `~/primary/repos/library/documentation-spec.md` — the
   category-theoretic documentation framework that organizes
   the library.
 - `~/git/annas-mcp/README.md` — the source repo for the CLI
