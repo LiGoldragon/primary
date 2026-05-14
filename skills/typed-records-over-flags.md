@@ -246,8 +246,8 @@ one cycle"). Apply it whenever flag-soup migrates to typed records.
 | `is_remote_nix_builder: bool` | `build_host: Option<BuildHost>` | same |
 | `machine.species = Pod` (with `super_node`) | `placement: NodePlacement::Contained{...}` | same |
 | `tailnet: bool` (gated on node name) | `services.tailnet: Option<TailnetMembership>` | horizon-rs `proposal.rs::NodeServices` |
-| `wifi_cert: bool` (separate from cert reference) | `WifiAuthentication::EapTls{profile}` | designer/139 plan |
-| `MachineSpecies::Pod` (no payload) | `ContainedPlacement` (substrate, host, …) | report 04 §P1.2 |
+| `wifi_cert: bool` (separate from cert reference) | `WifiAuthentication::EapTls{profile}` | Wi-Fi PKI migration design |
+| `MachineSpecies::Pod` (no payload) | `ContainedPlacement` (substrate, host, …) | dedicated-cloud-host placement design |
 
 The cumulative effect of these migrations is the recurring narrative
 arc of this workspace: **typed records replace name overloading and
