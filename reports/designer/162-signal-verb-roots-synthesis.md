@@ -13,8 +13,9 @@ seven-root verb shape. The four streams converge.*
 
 - **Adopt DA `/50`'s seven-root recommendation**: `Assert`, `Mutate`,
   `Retract`, `Match`, `Subscribe`, `Atomic`, `Validate`.
-- **Move five demoted to typed `ReadPlan<R>`** per `/50 §6`:
-  `Constrain`, `Project`, `Aggregate`, `Infer`, `Recurse`.
+- **Move five demoted to typed `ReadPlan<R>` in `sema-engine`** per
+  `/50 §6`: `Constrain`, `Project`, `Aggregate`, `Infer`, `Recurse`.
+  `signal-core` stays the wire kernel; the read-algebra is engine-side.
 - **Rename `SemaVerb` → `SignalVerb`** per `/50 §0` — the type lives
   in `signal-core` and classifies Signal frames; many but not all
   are sema-engine calls.
@@ -395,38 +396,35 @@ so the reader knows where each finding came from:
 
 ---
 
-## 9 · Required documentation edits
+## 9 · Required documentation and contract edits
 
 Hand-off note for operators: the canonical-decision shape lives in
-this report and DA `/50`, but several workspace files still describe
-the twelve-verb prior. **These edits must land before or alongside
-the code change** (the implementation order can interleave; the docs
-must not drift past a contract migration):
+this report and DA `/50`, but multiple workspace files describe the
+twelve-verb prior. **Edits must land before or alongside the code
+change** — the implementation order can interleave; the docs must not
+drift past a contract migration. Status column tracks current state
+so future agents don't chase already-landed work.
 
-| File | Today | Target |
-|---|---|---|
-| `~/primary/skills/contract-repo.md` §"Signal is the database language" | Lists the twelve verbs; `sema_verb()` examples; rule "read-shaped payloads use `Match`/`Project`/`Aggregate`/`Subscribe`" | List the seven roots; `signal_verb()` examples; rule "read-shaped payloads use `Match` or `Subscribe`; algebra (`Project`/`Aggregate`/`Constrain`/`Infer`/`Recurse`) lives in `sema_engine::ReadPlan`" |
-| `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` §1, §3 | "`SemaVerb`, the closed twelve-verb request spine" + the twelve in §1; "verb set is closed and ordered as the twelve" in §3 | "`SignalVerb`, the closed seven-verb request spine"; the seven in §1; closure rule restated; note that the five demoted live in `sema-engine`'s `ReadPlan<R>` |
-| `/git/github.com/LiGoldragon/signal-core/src/request.rs:6-19` | `pub enum SemaVerb` with twelve variants | `pub enum SignalVerb` with seven variants; doc-comments on `Atomic` and `Validate` noting the planetary-tradition rename candidates (`Bind`/`Assay`); explicit pointer to `sema-engine::ReadPlan` for the algebra |
-| `/git/github.com/LiGoldragon/nexus/spec/grammar.md` | Top-level Nexus records enumerate twelve verbs | Top-level records enumerate seven verbs; algebra appears inside `Match`/`Subscribe`/`Validate` payloads as `ReadPlan` records |
-| `/git/github.com/LiGoldragon/signal-core/src/lib.rs` `signal_channel!` macro | Convenience constructors `Request::assert(...)`, etc. accept any payload | Per `/50 §5`, accept verb annotations on request enum variants; generate `signal_verb()` mappings and witnesses; deprecate or rename free-form constructors that can wrap any payload under any root |
-| `reports/designer/157-sema-db-full-engine-direction.md` §4 verb-storage table | Twelve-row table mixing roots and algebra | Two-section table: seven roots with storage behavior; five algebra operators with plan-node semantics |
-| `/git/github.com/LiGoldragon/signal/README.md` (line 27) | "owns the universal envelope and twelve-verb spine" | Seven-root spine; pointer to `/50`/`/162`; algebra in `sema-engine::ReadPlan` |
-| `/git/github.com/LiGoldragon/signal/ARCHITECTURE.md` (line 125) | "closed verb spine (`SemaVerb`: …12 names…)" | Seven roots; algebra demoted to `sema-engine::ReadPlan` |
-| `/git/github.com/LiGoldragon/signal-persona-mind/ARCHITECTURE.md` (line 24) | "`MindRequest` variant to the `SemaVerb`" | `SignalVerb` rename pending; same per-variant mapping discipline |
-| `/git/github.com/LiGoldragon/signal-persona-introspect/ARCHITECTURE.md` (constraints table) | Rule: "Read-shaped payloads use `Match` (or `Project`/`Aggregate`/`Subscribe`)" — actively wrong | Rule: "Read-shaped payloads use `Match` or `Subscribe`; read-algebra appears inside payloads via `sema-engine::ReadPlan`" |
+| File | Prior state | Target | Status |
+|---|---|---|---|
+| `~/primary/skills/contract-repo.md` §"Signal is the database language" | Lists the twelve verbs; `sema_verb()` examples; rule "read-shaped payloads use `Match`/`Project`/`Aggregate`/`Subscribe`" | List the seven roots; `signal_verb()` examples; rule "read-shaped payloads use `Match` or `Subscribe`; algebra lives in `sema_engine::ReadPlan`" | **Done** (`19de3f04`) |
+| `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` §1, §3 | "`SemaVerb`, the closed twelve-verb request spine" + the twelve in §1; "verb set is closed and ordered as the twelve" in §3 | "`SignalVerb`, the closed seven-root request spine"; the seven in §1; closure rule restated; note that the five demoted live in `sema-engine`'s `ReadPlan<R>` | **Done** (parallel landing) |
+| `/git/github.com/LiGoldragon/signal-core/src/request.rs:6-19` (enum) | `pub enum SemaVerb` with twelve variants | `pub enum SignalVerb` with seven variants; doc-comments on `Atomic` and `Validate` noting the planetary-tradition rename candidates (`Bind`/`Assay`); explicit pointer to `sema-engine::ReadPlan` for the algebra | **Done** (already seven; rename to `SignalVerb` pending) |
+| `/git/github.com/LiGoldragon/signal-core/src/lib.rs` `Request<P>` constructors | Free-form `Request::assert(...)`, `Request::match_records(...)`, etc. accept any payload under any root | Deprecate or rename to unchecked/internal so source scans find them; payload-first construction via per-contract `signal_verb()` mapping is the canonical path | **Pending** (operator-scope) |
+| `/git/github.com/LiGoldragon/signal-core/src/lib.rs` `signal_channel!` macro | No verb annotation on request-enum variants | Per `/50 §5`, accept verb annotations; generate `signal_verb()` mappings and per-variant witnesses | **Pending** (operator-scope) |
+| `/git/github.com/LiGoldragon/nexus/spec/grammar.md` | Top-level Nexus records enumerate twelve verbs | Top-level records enumerate seven; algebra appears inside `Match`/`Subscribe`/`Validate` payloads as `ReadPlan` records | **Pending** (operator-scope) |
+| `reports/designer/157-sema-db-full-engine-direction.md` §4 verb-storage table | Twelve-row table mixing roots and algebra | Two-section table: seven roots with storage behavior; five algebra operators with plan-node semantics | **Pending** (designer follow-up) |
+| `/git/github.com/LiGoldragon/signal/README.md` (line 27) | "owns the universal envelope and twelve-verb spine" | Seven-root spine; pointer to `/50`/`/162`; algebra in `sema-engine::ReadPlan` | **Done** (`c1d522ea`) |
+| `/git/github.com/LiGoldragon/signal/ARCHITECTURE.md` (line 125) | "closed verb spine (`SemaVerb`: …12 names…)" | Seven roots; algebra demoted to `sema-engine::ReadPlan` | **Done** (`c1d522ea`) |
+| `/git/github.com/LiGoldragon/signal-persona-mind/ARCHITECTURE.md` (line 24) | "`MindRequest` variant to the `SemaVerb`" | `SignalVerb` rename pending; same per-variant mapping discipline | **Done** (`81b16811`) |
+| `/git/github.com/LiGoldragon/signal-persona-introspect/ARCHITECTURE.md` (constraints table + owned-surface) | Rule: "Read-shaped payloads use `Match` (or `Project`/`Aggregate`/`Subscribe`)" — actively wrong; owned surface listed "`SemaVerb` mapping" | Rule corrected: "Read-shaped payloads use `Match` or `Subscribe`; algebra in `sema-engine::ReadPlan`"; owned surface restated as "Signal root-verb mapping" | **Done** (`2cfb9b5b` + follow-up cleanup) |
+| **Every `signal-*` contract crate with a verb mapping** (signal-persona, signal-persona-message, signal-persona-router, signal-persona-terminal, signal-persona-manager, signal-persona-mind, signal-persona-introspect, signal-persona-system, signal-persona-harness, signal-forge, signal-arca, ...) | `pub fn sema_verb(&self) -> SemaVerb` per-variant mapping returning the closed twelve | `pub fn signal_verb(&self) -> SignalVerb` per-variant mapping returning the closed seven; round-trip witness that no variant maps to a demoted name | **Pending** (operator-scope coordinated sweep) — `signal-persona-introspect` and `signal-persona-mind` have *method renamed to `signal_verb`* but type still `SemaVerb` (partial migration; finishes when `signal-core` lands the type rename). Other contracts need a scan: any unmigrated `sema_verb` method, any variant mapping to `Constrain`/`Project`/`Aggregate`/`Infer`/`Recurse` as a root, any free-form `Request::assert(...)` constructor — all must be migrated or explicitly marked pending. |
 
-The first three are immediate (skill + architecture + enum). The
-macro change, grammar update, and downstream contract architecture
-files (signal, signal-persona-mind, signal-persona-introspect) can
-lag by a contract migration or two but should not lag indefinitely.
-
-The skill + signal-core + signal + signal-persona-mind +
-signal-persona-introspect text edits landed alongside `/162` at
-commits `19de3f04` (skill + signal-core) and the follow-up
-(propagation cascade). The remaining items (`signal-core/src/request.rs`,
-the `signal_channel!` macro, the Nexus grammar, and the `/157`
-verb-storage table) are operator-scope.
+The implementation order: `signal-core/src/request.rs` rename is the
+ordering pin — every downstream contract crate's `signal_verb() ->
+SignalVerb` migration depends on the type existing. The
+contract-crate sweep happens in the same breaking pass; one PR per
+contract or one coordinated mega-PR, designer's call.
 
 ---
 
