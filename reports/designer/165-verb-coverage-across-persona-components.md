@@ -4,15 +4,27 @@
 audit by working through every component's external Signal surface,
 mapping the implemented variants and the imagined-but-missing operations
 each component will need as it matures, and naming the verb each
-operation fits. Surfaces ten open questions where the user's intent is
-load-bearing for the answer — six of them carried forward to the chat
-reply per `~/primary/skills/reporting.md` §"What goes in chat when a
-report exists".*
+operation fits. Surfaces open questions where the user's intent is
+load-bearing for the answer.*
 
-**Retires when**: the open questions in §4 are resolved (each becomes a
-designer report or an ARCH edit), and the proposed verbs in §2 either
-land as contracts or are explicitly deferred. At that point this report
-has been absorbed into the ARCH layer and the contract crates.
+**This report has been corrected against designer-assistant's parallel
+audit `~/primary/reports/designer-assistant/54-verb-coverage-implementation-and-design-audit.md`**
+(an explicit recount of active source, plus cross-domain awareness of
+`sema-engine` and `signal-criome`). The original draft missed three
+load-bearing facts: the engine-catalog verbs are already landed on
+`signal-persona` active source; `Atomic` and `Validate` are unused
+*only in `signal-persona-*` contracts* — `sema-engine` has the
+reference library implementation, `signal-criome` has the first
+contract consumer; and the workspace-wide correctness gap is on the
+*receiver side* — most components destructure `Request::Operation
+{ payload, .. }` and discard the verb, bypassing
+`Request::into_payload_checked`. The headline-question list narrows
+to **two** after these corrections.
+
+**Retires when**: the two narrowed open questions in §4 are resolved,
+and the receiver-validation discipline lands across every component
+transport. At that point this report has been absorbed into the ARCH
+layer and the contract crates.
 
 ---
 
@@ -24,43 +36,53 @@ operation Persona has today and every operation it plausibly needs.
 **No new verb is needed**; the gaps are missing *payload variants*
 inside the existing verbs, not missing root verbs.
 
-Current count across all eight `signal-persona-*` contracts is **62
-request variants**, distributed:
+Current count across all eight `signal-persona-*` contracts in active
+source (per designer-assistant `/54 §1`) is **65 request variants**:
 
 | Verb | Count | Use |
 |---|---|---|
-| `Assert` | 20 | New facts: messages, role claims, work items, prompts, terminal input, channel grants, …. |
+| `Assert` | 21 | New facts: messages, role claims, work items, prompts, terminal input, channel grants, engine launches. |
 | `Mutate` | 7 | State transitions at stable identity: handoffs, status changes, channel extensions, component lifecycle. |
-| `Retract` | 7 | Withdrawals: role releases, channel retractions, gate releases, unsubscribes. |
-| `Match` | 24 | One-shot reads: status queries, inbox queries, observation queries, snapshots. |
+| `Retract` | 8 | Withdrawals: role releases, channel retractions, gate releases, engine retirements, focus unsubscribe. |
+| `Match` | 25 | One-shot reads: status queries, inbox queries, observation queries, snapshots, engine catalog. |
 | `Subscribe` | 4 | Live streams: thoughts, relations, focus, terminal worker lifecycle. |
-| `Atomic` | **0** | Reserved; no consumer. |
-| `Validate` | **0** | Reserved; no consumer. |
-| **Total** | **62** | |
+| `Atomic` | 0 in `signal-persona-*`; **reference impl in `sema-engine::AtomicBatch`** | Library-layer engine-side implementation lands; no Persona-domain contract consumer yet. |
+| `Validate` | 0 in `signal-persona-*`; **`sema-engine::Engine::validate` lands; `signal-criome::Validate VerifyAttestation` is the first contract use** | Two existing footholds outside Persona; no Persona-domain contract consumer yet. |
+| **Total** | **65** | |
 
-(Recount supersedes `/164 §4.1`'s rough totals — the prior numbers were
-column-skim estimates; this report walks each contract carefully.)
+The **engine-catalog gap from `/164`'s recommendation has closed in
+active source** — `signal-persona`'s `EngineRequest` now declares
+`Assert EngineLaunchProposal`, `Match EngineCatalogQuery`,
+`Retract EngineRetirement`. Operator-assistant is implementing the
+manager-side consumers; the `persona` runtime still locks to a
+pre-engine-catalog commit and needs a lock refresh.
 
-Proposed additions across the eight components total roughly **30 new
-variants** — most are `Subscribe` (replacing poll-shaped `Match`) and
-new `Assert` variants on the engine-manager contract (engine catalog
-operations). The first concrete uses of `Atomic` and `Validate` need
-the user's input — those are two of the open questions surfaced below.
+Proposed additions (mostly `Subscribe` variants replacing poll-shaped
+`Match`, plus a few `Atomic` / `Validate` candidates) total roughly
+**30 new variants** across the eight components.
 
-The user-attention questions (also in the chat reply):
+**The narrowed user-attention questions** (also in the chat reply):
 
-1. **Atomic's first use case** — which feature should drive it.
-2. **Validate's first use case** — which feature should drive it.
-3. **Subscribe-lifecycle pattern** — three different patterns coexist
-   today; pick one canonical shape for unsubscribe.
-4. **Engine adoption vs engine creation** — one `Assert` variant or two?
-5. **Read-plan algebra at the CLI** — does the CLI surface
-   `Constrain`/`Project`/etc. inside `Match` payloads, or stay simple?
-6. **`persona-terminal`'s nine specialized binaries** — wrap, replace,
-   or keep alongside a new `terminal` CLI?
+1. **First Persona-domain `Atomic`** — designer-assistant proposes
+   `signal-persona-mind::RoleHandoff` as atomically `Retract` old claim
+   + `Assert` new claim under one snapshot, replacing today's opaque
+   single `Mutate`. The question is whether `RoleHandoff` is honestly
+   two-facts-under-one-snapshot, or one transition. Concur with
+   designer-assistant pending your read of the domain.
+2. **Subscribe-lifecycle pattern** — three patterns coexist;
+   designer-assistant proposes pattern B (one contract-local
+   `Retract SubscriptionRetraction(SubscriptionToken)` per contract,
+   addressing by token). Requires a `SubscriptionToken` primitive that
+   subscription replies return. Concur, pending confirmation.
 
-(Four further questions in §4 are second-tier — important but not
-blocking imminent work.)
+Four other questions (`Validate`'s first use, engine adoption-vs-creation,
+ReadPlan at the CLI, `persona-terminal`'s nine binaries) have
+designer-assistant answers in `/54 §5` that I concur with — not
+blocking, but documented in §4 below so you can object if a
+recommendation feels wrong.
+
+Three second-tier questions (Q7–Q10) defer until concrete-consumer
+pressure surfaces them.
 
 ---
 
@@ -117,12 +139,18 @@ Each subsection has:
 
 Owns the apex contract — the `persona` daemon's boundary. Two channels:
 `EngineRequest` (client → manager) and `SupervisionRequest` (manager →
-supervised child).
+supervised child). **Active source has the engine-catalog verbs
+landed** (the gap from `/164 §4.3` is closed in source); the `persona`
+runtime is locked to a pre-catalog commit and needs to advance to
+consume them (per `/54 §4.1`).
 
-**Implemented today** (4 + 4 = 8):
+**Implemented today in active source** (7 + 4 = 11):
 
 | Channel | Verb | Variant | Boundary use |
 |---|---|---|---|
+| Engine | `Assert` | `EngineLaunchProposal` | Spawn + register a fresh engine in the manager's catalog. |
+| Engine | `Match` | `EngineCatalogQuery` | List engines known to this manager. |
+| Engine | `Retract` | `EngineRetirement` | Retire an engine. |
 | Engine | `Match` | `EngineStatusQuery` | Read whole-engine status. |
 | Engine | `Match` | `ComponentStatusQuery` | Read one component's status. |
 | Engine | `Mutate` | `ComponentStartup` | Transition a component's desired state to Running. |
@@ -132,19 +160,16 @@ supervised child).
 | Supervision | `Match` | `ComponentHealthQuery` | Manager probes child health. |
 | Supervision | `Mutate` | `GracefulStopRequest` | Manager asks child to drain and stop. |
 
-**Missing / proposed** (engine-level catalog operations):
+**Missing / proposed**:
 
-| Verb | Proposed variant | Why this verb | Rationale |
-|---|---|---|---|
-| `Assert` | `EngineLaunch(EngineLaunchProposal)` | New catalog row asserted | Spawn + register a fresh engine in the manager's catalog. The gap from `/164 §4.3`. |
-| `Assert` | `EngineAdoption(EngineAdoption)` | Same — adopting an already-running peer engine into the catalog is still an `Assert` on a catalog row, just constructed from a different source. | See §4 Q4 — possibly one variant carrying a union payload, or two distinct variants. |
-| `Match` | `EngineCatalog(EngineCatalogQuery)` | Read catalog | List engines known to this manager. |
-| `Retract` | `EngineRetirement(EngineRetirement)` | Withdraw a catalog row | Retire an engine cleanly. |
-| `Atomic` | `EngineUpgrade(EngineUpgradePlan)` | Multi-step commit | Bundle: spawn engine v2 → migrate state via channels → retire engine v1. Per persona ARCH §1.6.5 "Multi-engine as upgrade substrate" — this is exactly an `Atomic`. |
-| `Subscribe` | `EngineHealthStream(EngineHealthFilter)` | Push-not-pull | Replace status-poll loops. |
-| `Subscribe` | `ComponentHealthStream(ComponentHealthFilter)` | Push-not-pull | Per-component health stream. |
-| `Assert` | `EngineRoute(EngineRouteProposal)` | New cross-engine route asserted | Cross-engine routing (per ARCH §1.6.4). |
-| `Retract` | `EngineRouteRetraction(EngineRouteRetraction)` | Withdraw a route | Same. |
+| Verb | Proposed variant | Rationale |
+|---|---|---|
+| `Assert` | `EngineAdoptionProposal` | Adoption is structurally separate from launch (different provenance, different failure modes). Per `/54 §5 Q4` and §4 Q4 below: two distinct `Assert` variants, not one union payload. |
+| `Atomic` | `EngineUpgrade(EngineUpgradePlan)` | Multi-step commit: spawn engine v2 → migrate state via channels → retire engine v1. Per persona ARCH §1.6.5. Designer-assistant `/54 §4.2` flags this as a *better long-term* `Atomic` but **not** the right first implementation — depends on multi-engine federation. Concur. |
+| `Subscribe` | `EngineHealthStream(EngineHealthFilter)` | Push-not-pull replacement for status polling. |
+| `Subscribe` | `ComponentHealthStream(ComponentHealthFilter)` | Per-component health stream. |
+| `Assert` | `EngineRoute(EngineRouteProposal)` | Cross-engine routing (per ARCH §1.6.4). |
+| `Retract` | `EngineRouteRetraction(EngineRouteRetraction)` | Withdraw a route. |
 
 On the supervision channel:
 
@@ -155,10 +180,10 @@ On the supervision channel:
 
 **Open questions surfaced**:
 
-- Q4 (chat-surfaced): adoption-vs-creation — same `Assert` variant or two?
-- Q1 (chat-surfaced): the engine-upgrade `Atomic` is one obvious first
-  consumer for `Atomic`. Is this the right first use, or should
-  schema-migration take priority?
+- Q4 (designer-assistant answered): adoption-vs-creation — two distinct
+  `Assert` variants. Concur.
+- Q1 (chat-surfaced): `EngineUpgrade` is deferred — not the right first
+  `Atomic`. See §3.1.
 
 ### 2.2 · `signal-persona-mind`
 
@@ -353,41 +378,66 @@ Subscribe.
 
 ## 3 · Cross-cutting verb-usage analysis
 
-### 3.1 · `Atomic` is unused — what should drive its first use?
+### 3.1 · `Atomic`'s first Persona-domain use
 
-`Atomic` is the only multi-operation verb. Today it has zero
-consumers. Several plausible first-uses sit on the proposed-additions
-list above. The candidates differ in implementation complexity and
-load-bearing-ness:
+`Atomic` is the only multi-operation verb. **`sema-engine` already
+implements it at the library layer** (per `/54 §4.2`):
+`AtomicBatch<RecordValue>` with `Assert` / `Mutate` / `Retract`
+sub-operations, preflight rejection (empty batch, duplicate keys,
+missing targets), one operation-log entry tagged
+`SignalVerb::Atomic`, one committed snapshot, post-commit subscription
+deltas sharing the snapshot. This is the reference implementation for
+`Atomic` semantics — Persona should not invent a different meaning.
 
-| Candidate | Component | Implementation cost | Load-bearing |
+The question is narrowed to **what's the first Persona-domain contract
+payload that exposes an atomic operation across a Signal boundary?**
+Candidates:
+
+| Candidate | Component | Implementation cost | Load-bearing | Designer-assistant `/54` |
+|---|---|---|---|---|
+| `RoleHandoff` (atomic `Retract` old claim + `Assert` new claim) | persona-mind | Low | Cleaner audit trail; semantically honest | **Recommended first use** |
+| `EngineUpgrade` | persona | High (multi-engine federation first) | Critical long-term, but premature first use | Defer |
+| `SchemaMigration` over the engine catalog | persona-mind / sema-engine | High (proposal-and-recompile flow needs to land) | Critical for sema-version evolution | Defer |
+| `BatchSubmission` | persona-message | Low | Optimization, not correctness | **Rejected** — makes `Atomic` look like batching, not correctness boundary |
+| `TerminalSetupBundle` | persona-terminal | Low | Avoids first-bring-up races | Not surfaced |
+| `CoordinatedShutdown` | persona (supervision) | Medium | Needed for clean engine retirement | Not surfaced |
+
+Designer-assistant's reasoning is sound: choosing message batching as
+the reference implementation would frame `Atomic` as an optimization
+rather than a correctness boundary. `RoleHandoff` is the cheapest path
+to "Atomic as semantically honest two-facts-under-one-snapshot."
+
+**Concur — pending user confirmation that `RoleHandoff` is honestly
+two-facts (the historic claim is retracted, a new claim is asserted)
+rather than one transition.** See §4 Q1.
+
+### 3.2 · `Validate`'s first Persona-domain use
+
+`Validate` is **not unused globally** (per `/54 §4.3`):
+
+- `sema-engine` has `Engine::validate(QueryPlan<_>)` returning a
+  `ValidationReceipt` with `SignalVerb::Validate` (library-layer
+  reference implementation).
+- `signal-criome` already declares
+  `Validate VerifyAttestation(VerifyRequest)` (the first contract
+  consumer of `Validate` workspace-wide).
+
+The question is narrowed to **what's the first Persona-domain contract
+validation?**
+
+| Candidate | Component | Use | Designer-assistant `/54` |
 |---|---|---|---|
-| `EngineUpgrade` | persona | High (multi-engine federation needed first) | Critical for cutover discipline |
-| `SchemaMigration` (over `sema-engine`'s catalog table) | persona-mind / sema-engine | High (proposal-and-recompile flow needs to land) | Critical for any sema-version evolution |
-| `ClaimHandoff` (Retract + Assert atomically) | persona-mind | Low | Cleaner audit trail; not critical |
-| `BatchSubmission` | persona-message | Low | Optimization; not critical |
-| `TerminalSetupBundle` | persona-terminal | Low | Avoids first-bring-up races |
-| `CoordinatedShutdown` | persona (supervision) | Medium | Needed for clean engine retirement |
+| `ChannelGrantValidation` | persona-mind | Dry-run that a proposed channel grant doesn't conflict with existing channels. | **Recommended first use** |
+| `TypeProposalValidation` | persona-mind | Dry-run a `TypeProposal` before commit (per `/163 §5.1`). | Deferred (proposal flow not landed). |
+| `SchemaCheck` (in `sema-engine`'s domain) | sema-engine | Pre-flight constraint check before migration. | Reserved for migration work. |
+| `WriteInjectionValidation` | persona-terminal | Dry-run before injecting into a terminal. | "Useful but local." |
+| `DeliveryValidation` | persona-harness | Dry-run a delivery. | "Belongs after delivery is wired enough that 'can accept now' has real data." |
 
-The choice affects which component owns the *reference implementation*
-of `Atomic` — the first one to land sets the pattern for the rest.
-
-### 3.2 · `Validate` is unused — what's the first?
-
-Same shape. Candidates:
-
-| Candidate | Component | Use |
-|---|---|---|
-| `TypeProposalValidation` | persona-mind | Dry-run a `TypeProposal` record before commit (per `/163 §5.1`'s proposal-and-recompile flow). |
-| `SchemaCheck` | sema-engine (downstream of persona-mind) | Pre-flight constraint check before migration commit. |
-| `ChannelGrantValidation` | persona-mind | Dry-run a channel grant for conflict detection. |
-| `WriteInjectionValidation` | persona-terminal | Dry-run before injecting into a terminal. |
-| `DeliveryValidation` | persona-harness | Dry-run a delivery (gate clean? harness ready?). |
-
-The most natural first-Validate is probably **schema-migration
-pre-flight** — `Validate` was named specifically for this case in
-`/163 §2.6`. But that depends on the migration flow itself landing
-first.
+Designer-assistant's reasoning: mind owns policy; router enforces. A
+validation request lets an operator, agent, or future policy actor ask
+mind what *would* happen before committing. Load-bearing for the
+trust/channel model. **Concur** — `ChannelGrantValidation` is the
+right first Persona-domain `Validate`.
 
 ### 3.3 · `Subscribe`-lifecycle inconsistency
 
@@ -433,7 +483,41 @@ The simple shape is what `mind`, `message`, `introspect` use today. The
 read-plan shape would surface query algebra to the CLI grammar.
 **Whether to surface it determines the CLI's expressive ceiling.**
 
-### 3.5 · 60+ `Match` vs only 4 `Subscribe` — push-not-pull pressure
+### 3.5 · Receiver-side verb validation — the real correctness gap
+
+Per `/54 §2` and `/54 §4.4`: active `signal-core` source now has
+`Request::into_payload_checked()` (verb-checked unwrapping that returns
+`SignalVerbMismatch` on a frame whose verb doesn't match the payload's
+declared verb). But most component transports still use the old
+destructure-and-discard pattern at receive:
+
+```rust
+FrameBody::Request(Request::Operation { payload, .. }) => Ok(payload)
+```
+
+That throws away the frame verb. The seven-root discipline is
+**structurally enforced on the sender side** (the
+`signal_channel!` macro emits the per-variant verb witness) but
+**not enforced on the receiver side** until receivers call
+`into_payload_checked()` and reject mismatches.
+
+This is the workspace's biggest *correctness* gap in the verb
+discipline. Sender-side enforcement says "the frame I encoded is
+verb-tagged honestly." Receiver-side enforcement says "the frame I
+decoded passed verb-vs-payload alignment." Without the second, a
+malicious or buggy producer that sends `Request::unchecked_operation(
+SignalVerb::Match, AssertPayload(...))` reaches the daemon unchallenged.
+
+**This is operator-shaped work**, not designer-shaped. The fix:
+
+1. Refresh every component's `signal-core` lock to the commit that
+   carries `into_payload_checked` + `SignalVerbMismatch`.
+2. Replace receive-path destructuring with the checked helper.
+3. Add a negative test per receive path using
+   `Request::unchecked_operation` with a deliberately mismatched
+   verb — the test asserts the daemon rejects the frame.
+
+### 3.6 · 60+ `Match` vs only 4 `Subscribe` — push-not-pull pressure
 
 The verb distribution is heavily Match-skewed: 24 Match, 4 Subscribe.
 Per `ESSENCE.md` §"Polling is forbidden", consumers that want live
@@ -454,155 +538,176 @@ the Subscribe variants need to be added alongside.
 
 ## 4 · Open questions
 
-These need the user's input. The first six are also in the chat reply
-per `~/primary/skills/reporting.md` §"What goes in chat when a report
-exists".
+Designer-assistant `/54 §5` answered seven of the original questions
+with concrete recommendations. **Two remain needing user input** —
+those are also in the chat reply per
+`~/primary/skills/reporting.md` §"What goes in chat when a report
+exists". Five questions have answers I concur with (documented for
+your visibility, not blocking). Three second-tier defer.
 
-### Q1 — What drives `Atomic`'s first contract use? (chat-surfaced)
+### Q1 — First Persona-domain `Atomic`: `RoleHandoff`? (chat-surfaced)
 
-The verb `Atomic` ("execute a group of operations under one commit
-boundary") has zero consumers. Several candidates (§3.1 table). The
-first to land sets the pattern.
+Designer-assistant `/54 §5 Q1` proposes
+`signal-persona-mind::RoleHandoff` as atomic `Retract` old claim +
+`Assert` new claim under one snapshot, replacing today's opaque single
+`Mutate`. Reasoning: "central, low-cost, semantically honest. Do not
+use message batching as the reference implementation; it makes
+`Atomic` look like an optimization rather than a correctness
+boundary."
 
-**Recommendation**: schema migration (driven by sema-engine's
-catalog table) is the cleanest match — `/163 §2.4` already named it
-as the canonical Atomic use case. But that depends on the
-proposal-and-recompile flow landing. **Alternate first-use**:
-`ClaimHandoff` in `signal-persona-mind` is low-cost and gives the
-pattern an early consumer.
-
-Decision needed: which first?
-
-### Q2 — What drives `Validate`'s first contract use? (chat-surfaced)
-
-Same shape (§3.2 table). Recommendation: `Validate` first lands as a
-schema-migration dry-run when the migration flow arrives.
-
-Decision needed: which first, and is the recommendation right?
-
-### Q3 — Which Subscribe-lifecycle pattern is canonical? (chat-surfaced)
-
-§3.3 above names three coexisting patterns. The cleanest answer is
-probably **(A) every Subscribe variant has a paired Retract variant**
-(matches `signal-persona-system`'s shape; makes the wire vocabulary
-explicit). But the user's intent is what decides.
-
-Decision needed: A, B, or C?
-
-### Q4 — Engine adoption vs engine creation: one Assert or two? (chat-surfaced)
-
-`signal-persona`'s engine catalog will gain an `Assert` for engine
-creation (per `/164 §5.1`). When cross-engine federation lands, the
-manager will also need to *adopt* an already-running peer engine
-into its catalog. Two operations, both `Assert` on the catalog:
-
-- `Assert EngineLaunch(EngineLaunchProposal)` — spawn from spec
-- `Assert EngineAdoption(EngineAdoptionProposal)` — pick up an
-  existing peer
-
-Both end as a catalog row, but the payload shapes differ
-substantially. **One Assert variant with a union payload, or two
-distinct Assert variants?**
+**Concur, pending your read of the domain.** The question is whether
+`RoleHandoff` is honestly two-facts-under-one-snapshot — does role A's
+claim retract and role B's claim assert as separate facts in the audit
+log, or does the handoff read as a single state transition? If the
+former, `Atomic` is the honest verb and `RoleHandoff` becomes
+Persona's first Atomic. If the latter, it stays `Mutate` and we look
+elsewhere for the first Persona-domain Atomic consumer.
 
 Decision needed.
 
-### Q5 — Does the CLI surface ReadPlan algebra? (chat-surfaced)
+### Q3 — Subscribe-lifecycle pattern: B (token-addressed retraction)? (chat-surfaced)
 
-§3.4 above. The choice affects every CLI's expressive ceiling.
+§3.3 names three coexisting patterns. Designer-assistant `/54 §5 Q3`
+picks **pattern B**: one contract-local
+`Retract SubscriptionRetraction(SubscriptionToken)` per contract,
+addressing by token. Reasoning: "explicit, data-carrying, scales
+better than one retract variant per subscribe variant. Pattern A is
+acceptable for one-stream contracts like `signal-persona-system`
+today, but it grows repetitive. Pattern C, implicit close-on-connection-drop
+only, is too vague for durable subscriptions and reconnect semantics."
 
-**Simple-shape vote**: keep CLIs to `verb + simple payload`. Power
-users construct ReadPlans programmatically.
+**Concur with a caveat**: pattern B requires a `SubscriptionToken`
+primitive that subscription replies return. Today's
+`signal-persona-system` uses paired records keyed by `target`
+(effectively pattern A with `target` as the de-facto token).
+Adopting pattern B workspace-wide means subscription acceptance
+replies gain a `SubscriptionToken` newtype, and unsubscribe variants
+address by token rather than by domain record.
 
-**Read-plan-bearing-shape vote**: CLI is the full grammar; `mind` /
-`message` / etc. can express any ReadPlan the engine supports.
+Decision needed.
 
-Decision needed: simple or full?
+### Q2 — First Persona-domain `Validate`: `ChannelGrantValidation`? (answered, concur)
 
-### Q6 — `persona-terminal`'s nine command-shaped binaries (chat-surfaced)
+Designer-assistant `/54 §5 Q2` recommends
+`ChannelGrantValidation` in `signal-persona-mind` as the first
+Persona-domain `Validate` consumer (§3.2 above). Concur — mind owns
+policy; this is the load-bearing first use. Not blocking; surfaced in
+case you want a different first use.
 
-§2.6 + `/164 §5.3`. Options:
+### Q4 — Engine adoption vs creation: two distinct `Assert` variants (answered, concur)
 
-- **(a) Wrap as shims**: `persona-terminal-send foo` desugars to
-  `terminal '(Assert (TerminalInput (bytes foo)))'`. Backward
-  compatibility during cutover.
-- **(b) Replace immediately**: drop the nine binaries, ship one
-  `terminal '<NOTA record>'` CLI.
-- **(c) Keep alongside**: `terminal` is the canonical CLI; the nine
-  specialized binaries stay as ergonomic shortcuts.
+Designer-assistant `/54 §5 Q4` recommends two distinct `Assert`
+variants:
+`Assert EngineLaunchProposal` (spawn from spec) and
+`Assert EngineAdoptionProposal` (verify and catalog an already-running
+peer). Reasoning: different provenance, different failure modes, both
+deserve their own names. Concur — `EngineLaunchProposal` is already
+landed in active source; `EngineAdoptionProposal` lands when
+federation does.
 
-Decision needed: a, b, or c?
+### Q5 — ReadPlan at the CLI: "full, but typed" (answered, concur)
 
-### Q7 — Is `persona-router` permanently observation-only externally? (second-tier)
+Designer-assistant `/54 §5 Q5` recommends "full, but typed" — every
+CLI accepts the canonical typed NOTA record for its contract;
+contracts that expose query algebra carry a typed `ReadPlan` (or
+domain-specific wrapper) inside `Match` / `Subscribe` / `Validate`
+payloads; ergonomic shorthand desugars to the full typed record.
+Concur — the truth is the typed record; the CLI grammar follows.
 
-Today router's external contract is three `Match` queries. Channel
-operations live in mind. Confirming this is permanent keeps the
-router contract well-bounded; deferring the question leaves the
-discipline ambiguous.
+### Q6 — `persona-terminal`'s nine command-shaped binaries: replace (answered, concur)
 
-### Q8 — Cross-engine federation contract shape (second-tier)
+Designer-assistant `/54 §5 Q6` invokes ESSENCE.md §"Backward
+compatibility is not a constraint" and recommends one canonical
+`terminal` CLI, dropping the nine. The few helpers that genuinely
+make the terminal-cell/terminal split easier to test stay as named
+witnesses; the rest go. Concur.
+
+### Q7 — Router observation-first (answered, concur)
+
+Designer-assistant `/54 §5 Q7` confirms `signal-persona-router`
+stays observation-first. Router enforces; mind decides. If router
+ever needs a writable control relation, it lands as a separate
+named relation, not as an expansion of the introspection surface.
+Concur.
+
+### Q8 — Cross-engine federation contract shape (second-tier, deferred)
 
 When engine A's mind talks to engine B's mind, is the wire
 `signal-persona-mind` over a network socket, or a new
-`signal-persona-federation` contract? Today this is deferred to
-post-second-engine work, but the contract shape decision will be
-load-bearing.
+`signal-persona-federation` contract? Deferred until post-second-engine
+work surfaces concrete consumer pressure.
 
-### Q9 — Auth handshakes when network components arrive (second-tier)
+### Q9 — Auth handshakes when network components arrive (second-tier, deferred)
 
 Today auth is filesystem-ACL + SO_PEERCRED (per persona ARCH §1.6).
 When `Network(NetworkSource)` connections arrive, do they grow an
-in-band `Assert` of a `Challenge` record? Or do all challenges live
-below the Signal layer (e.g., TLS-style handshake before any Signal
-frame flows)?
+in-band `Assert Challenge` flow, or live below the Signal layer
+(TLS-shaped pre-frame handshake)? Deferred until network components
+arrive.
 
-### Q10 — Sub-component contracts inside terminal-cell (second-tier)
+### Q10 — Sub-component contracts inside terminal-cell (second-tier, deferred)
 
-`terminal-cell` is consumed by `persona-terminal` (per
-`active-repositories.md`). Does it have its own
-`signal-terminal-cell` contract for its PTY workers, or are its
-internal signals not crossing a Signal boundary?
+Does `terminal-cell` have its own `signal-terminal-cell` contract for
+its PTY workers, or are its internal signals not crossing a Signal
+boundary? Deferred until terminal-cell evolves further.
 
 ---
 
-## 5 · Concrete recommendations
+## 5 · Operator order
 
-1. **Land the engine-catalog operations on `signal-persona`**
-   (Assert EngineLaunch / Match EngineCatalog / Retract
-   EngineRetirement). Operator-assistant has already picked this up
-   per the current operator-assistant lock; this is the first
-   landing.
+Per `/54 §7` (designer-assistant's operator-order recommendation,
+which I concur with) — the right ordering is to first make the
+current Signal discipline real in the running component graph, then
+widen contracts:
 
-2. **Add `Subscribe`-shaped variants alongside every poll-shaped
-   `Match`** that consumers want live (§3.5 list). This is roughly
-   8–10 new Subscribe variants across mind, message, router, harness,
-   persona, introspect. Each adds a few lines to the relevant
-   `signal_channel!` invocation.
+```mermaid
+flowchart TD
+    A["1 · Refresh component locks<br/>to current signal-core<br/>(with into_payload_checked)"]
+    B["2 · Convert receive paths<br/>to into_payload_checked"]
+    C["3 · Refresh persona's signal-persona lock<br/>to engine-catalog source"]
+    D["4 · Implement engine-catalog<br/>CLI + manager replies"]
+    E["5 · Normalize component CLIs<br/>(router, harness, terminal)"]
+    F["6 · Pick SubscriptionToken shape<br/>(Q3 confirmed)"]
+    G["7 · Add first Persona Validate<br/>(ChannelGrantValidation)"]
+    H["8 · Add first Persona Atomic<br/>(RoleHandoff, if Q1 confirmed)"]
 
-3. **Normalize the Subscribe-lifecycle pattern**. Pick A/B/C per Q3;
-   update `signal-persona-mind` and `signal-persona-terminal` to
-   match. `signal-persona-system` is the existing model for pattern
-   A.
+    A --> B
+    A --> C
+    C --> D
+    B --> E
+    E --> F
+    F --> G
+    F --> H
+```
 
-4. **Resolve Q1 + Q2**, then **land the first `Atomic` and `Validate`
-   contract uses**. The reference implementation sets the pattern
-   for the rest. Schema-migration is the strongest natural fit for
-   both; an alternative low-cost first-Atomic is mind's `ClaimHandoff`.
+**Do not start by adding more proposed variants everywhere.** First
+land the receiver-side discipline (§3.5), refresh the lagging locks,
+and consume the engine-catalog verbs that are already in source. Only
+then widen.
 
-5. **Resolve Q5 (ReadPlan surfacing)** before terminal-cli convergence
-   (Q6) — the CLI's grammar shape depends on it.
+The proposed `Subscribe` additions (§3.6 push-not-pull pressure) and
+the per-component proposed variants in §2 land after the discipline
+catches up — most of them are non-blocking add-ons.
 
-6. **Defer** the second-tier questions (Q7–Q10) until they have
-   concrete-consumer pressure. The second-engine demonstration is the
-   trigger for Q8/Q9; `terminal-cell`'s own component evolution is
-   the trigger for Q10.
+Second-tier questions (Q8–Q10) defer until concrete-consumer pressure
+surfaces them. The second-engine demonstration is the trigger for
+Q8/Q9; `terminal-cell`'s own component evolution is the trigger for
+Q10.
 
 ---
 
 ## 6 · See also
 
+- `~/primary/reports/designer-assistant/54-verb-coverage-implementation-and-design-audit.md`
+  — the parallel audit that corrected this report's stale counts,
+  flagged the Atomic/Validate footholds in `sema-engine` and
+  `signal-criome`, surfaced the receiver-validation gap, and proposed
+  the operator order in §5. Companion canonical reference for the
+  decisions in §4.
 - `~/primary/reports/designer/164-signal-core-vs-signal-and-cli-verb-wrapping.md`
   — the prior audit (per-contract verb mapping, CLI shape, the
-  engine-catalog gap that's now being picked up).
+  engine-catalog gap that's now closed in `signal-persona` active
+  source).
 - `~/primary/reports/designer/162-signal-verb-roots-synthesis.md` —
   the seven-verb spine, the planet bijection.
 - `~/primary/reports/designer/163-seven-verbs-no-structure-eighth.md`
