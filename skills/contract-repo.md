@@ -223,8 +223,9 @@ Naming is therefore load-bearing architecture:
   `DeliveryCancellation` are better contract nouns than
   imperative command names.
 - Verbs belong to methods and engines. The exception is the
-  universal verb spine itself (`Assert`, `Mutate`, `Retract`,
-  etc.), where the enum is deliberately naming verbs.
+  universal root-verb spine itself (`Assert`, `Mutate`, `Retract`,
+  `Match`, `Subscribe`, `Atomic`, `Validate`), where the
+  `SignalVerb` enum is deliberately naming root operations.
 - Do not repeat namespace already supplied by the crate,
   module, or enclosing enum. `signal_persona_message::
   MessageRequest::MessageSubmission` may need `Message`
@@ -273,58 +274,87 @@ against them, the names become the system's enforced model.
 ## Signal is the database language — every request declares a verb
 
 Signal is the workspace's typed binary **database-operation
-language used to communicate**. `signal-core::SemaVerb` names
-the closed set of operations that can cross a Signal boundary;
-every cross-component Signal request declares which verb it
+language used to communicate**. `signal-core::SignalVerb` names
+the closed set of root operations that can cross a Signal boundary;
+every cross-component Signal request declares which root it
 instantiates. There is no "non-database" communication.
 
-### The verb spine
+> **Adopted shape** (per `~/primary/reports/designer/162-signal-verb-roots-synthesis.md`
+> and `~/primary/reports/designer-assistant/50-signal-core-base-verb-shape.md`):
+> seven root verbs in `signal-core`; the read-algebra operators
+> (`Constrain`, `Project`, `Aggregate`, `Infer`, `Recurse`) live as
+> a `ReadPlan<R>` type in `sema-engine`, *not* as peer root verbs.
+> The wire kernel is domain-free and engine-free. While the code
+> rename from `SemaVerb` to `SignalVerb` is pending the
+> implementation pass, this skill describes the target shape.
 
-The closed set, in `signal-core/src/request.rs`:
+### The seven root verbs
+
+The closed set, in `signal-core/src/request.rs` (post-adoption):
 
 ```
-Assert  Subscribe  Constrain  Mutate  Match  Infer
-Retract  Aggregate  Project  Atomic  Validate  Recurse
+Assert  Mutate  Retract  Match  Subscribe  Atomic  Validate
 ```
 
-Recovered from older Nexus database-language work
-(`/git/github.com/LiGoldragon/nexus-spec-archive/`); the
-punctuation retired, the semantic spine survived. See
+The criterion (per `/50 §3`): a name is a root iff it changes
+*durable effect*, *read-vs-write semantics*, *streaming lifecycle*,
+*transaction boundary*, or *execution mode* at the Signal boundary.
+
+Recovered from older `signal` work (`/git/github.com/LiGoldragon/signal/src/request.rs`,
+commit `7a78288`, 2026-04-26), which had exactly this shape after
+renames (`AtomicBatch → Atomic`, `Query → Match`). See
 `~/primary/reports/designer-assistant/43-nexus-query-language-and-sema-engine-arc.md`
-§1-§3 for the recovery synthesis.
+§1-§3 for the workspace recovery synthesis;
+`~/primary/reports/designer/162-signal-verb-roots-synthesis.md`
+§5 for the lineage and §6 for why the seven (not twelve) is the
+root stratum.
 
 One-line semantics:
 
 | Verb | Meaning |
 |---|---|
-| `Assert` | Insert/append a typed fact/event/row. |
-| `Subscribe` | Initial state plus commit deltas (push, not poll). |
+| `Assert` | Insert/append a typed fact/event/row. Boundary-visible write. |
+| `Mutate` | Replace/transition a record at stable identity. Boundary-visible write. |
+| `Retract` | Tombstone/remove/retract a typed fact. Boundary-visible write. |
+| `Match` | Pattern/range/key query over typed tables. Base read. |
+| `Subscribe` | Initial state plus commit deltas (push, not poll). Streaming lifecycle. |
+| `Atomic` | Bundle multiple operations in one transaction. Commit-boundary. |
+| `Validate` | Dry-run request through validators/planner without commit. Execution mode. |
+
+### The read-plan operators (not roots)
+
+The five demoted names live as `sema_engine::ReadPlan<R>`
+operators *inside* `Match`/`Subscribe`/`Validate` payloads — query
+algebra, not boundary behavior:
+
+| Operator | Role |
+|---|---|
 | `Constrain` | Join/unify multiple typed patterns through shared binds. |
-| `Mutate` | Replace/transition a record at stable identity. |
-| `Match` | Pattern/range/key query over typed tables. |
-| `Infer` | Derived facts from rules/ontology (later). |
-| `Retract` | Tombstone/remove/retract a typed fact. |
-| `Aggregate` | Count/reduce grouped matched rows. |
 | `Project` | Return selected fields or a derived view. |
-| `Atomic` | Bundle multiple operations in one transaction. |
-| `Validate` | Dry-run request through validators. |
-| `Recurse` | Fixpoint traversal over graph/relation shape (later). |
+| `Aggregate` | Count/reduce grouped matched rows. |
+| `Infer` | Derived facts from rules/ontology. |
+| `Recurse` | Fixpoint traversal over graph/relation shape. |
+
+These do not appear in `signal-core`; they appear in `sema-engine`
+and may be referenced by domain contract payloads (e.g. a query
+contract may expose `ReadPlan` directly, or wrap it in domain-named
+records).
 
 ### The rule
 
-**Every cross-component Signal request declares its verb. The
-verb is part of the contract; the verb-payload combination is
-the operation.**
+**Every cross-component Signal request declares its root verb. The
+verb is part of the contract; the verb-payload combination is the
+operation.**
 
 Each `signal-<consumer>` request enum ships a contract-owned
 mapping:
 
 ```rust
 impl <Consumer>Request {
-    pub fn sema_verb(&self) -> SemaVerb {
+    pub fn signal_verb(&self) -> SignalVerb {
         match self {
-            Self::Variant1(_) => SemaVerb::Assert,
-            Self::Variant2(_) => SemaVerb::Match,
+            Self::Variant1(_) => SignalVerb::Assert,
+            Self::Variant2(_) => SignalVerb::Match,
             ...
         }
     }
@@ -333,29 +363,34 @@ impl <Consumer>Request {
 
 with round-trip tests asserting:
 
-- each request variant maps to exactly one `SemaVerb`;
-- read-shaped payloads use `Match`, `Project`, `Aggregate`, or
-  `Subscribe`;
+- each request variant maps to exactly one `SignalVerb`;
+- read-shaped payloads use `Match` or `Subscribe`;
 - write-shaped payloads use `Assert`, `Mutate`, `Retract`, or
   `Atomic`;
-- Nexus examples use the same verb as the Signal frame.
+- dry-run payloads use `Validate`;
+- read algebra (`Constrain`/`Project`/`Aggregate`/`Infer`/`Recurse`)
+  appears inside `Match`/`Subscribe`/`Validate` payloads via
+  `sema_engine::ReadPlan`, never as a root verb;
+- Nexus examples use the same root as the Signal frame.
 
-A request that maps to no verb is a design event, not a
+A request that maps to no root is a design event, not a
 constructor failure.
 
 ### The two failure modes
 
-**No existing verb fits.** Two paths: (a) the payload is
+**No existing root fits.** Two paths: (a) the payload is
 mis-modeled — rename or restructure until it fits an existing
-verb; (b) the verb set is incomplete — propose a new `SemaVerb`
+root; (b) the root set is incomplete — propose a new `SignalVerb`
 variant as a workspace-level coordinated change. Both are
-architectural events. Neither is "bypass the verb."
+architectural events. Neither is "bypass the verb." Note that
+"this is an algebraic operation on a read" is not a root-extension
+case — it is a `ReadPlan` extension case.
 
 **Drift between intent and constructor.** When a read-shaped
 payload (a query) is constructed through a write-shaped helper
 (`Request::assert(...)`), the witness catches it. The
 constructor is convenient but doesn't enforce semantics; the
-per-variant `sema_verb()` mapping does. Example:
+per-variant `signal_verb()` mapping does. Example:
 `signal-persona-message::InboxQuery` currently constructs via
 `Request::assert(...)`; it should be `Match` (per
 `~/primary/reports/designer-assistant/43-nexus-query-language-and-sema-engine-arc.md`
@@ -395,9 +430,14 @@ observation query.
   — the designer-side design for sema-db as the full engine
   executing the verbs.
 - `/git/github.com/LiGoldragon/signal-core/src/request.rs` —
-  the canonical `SemaVerb` enum.
+  the canonical root-verb enum (currently named `SemaVerb`;
+  renaming to `SignalVerb` per `/50`/`/162`).
 - `/git/github.com/LiGoldragon/signal-core/src/pattern.rs` —
   `PatternField<T> = Wildcard | Bind | Match(T)` pattern markers.
+- `~/primary/reports/designer-assistant/50-signal-core-base-verb-shape.md`
+  — the seven-root recommendation.
+- `~/primary/reports/designer/162-signal-verb-roots-synthesis.md`
+  — the synthesis adopting `/50`; cross-domain corroboration.
 
 ---
 

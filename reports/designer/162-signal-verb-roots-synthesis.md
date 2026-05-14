@@ -149,10 +149,14 @@ Candidate replacements: `Assay`, `Weigh`, `Measure`.
 ### 3.3 · Recommendation on renames
 
 CS convention has weight; breaking `Atomic` and `Validate` introduces
-contract debt across every consumer. **Record the misalignment now;
-defer the rename**. If a future contract-breaking pass touches these
-verbs (e.g. the `SemaVerb → SignalVerb` rename in §8), take the rename
-then.
+contract debt across every consumer. **Do not rename in the current
+pass.** The `SemaVerb → SignalVerb` rename in §8 is a separate
+decision from the per-verb rename question. Keep `Atomic` and
+`Validate` as-is for now; record the planetary misalignment in
+doc-comments on the enum so future reviewers see the etymological
+story. Reopen the rename question only after concrete contract
+examples show the technical-tradition names obscuring the operation
+(not before).
 
 The other five names (`Assert`, `Mutate`, `Retract`, `Match`,
 `Subscribe`) carry their planetary archetype cleanly; no rename
@@ -177,10 +181,17 @@ DA `/50 §7` folds schema migration into `Mutate` or `Atomic`. The
 counter-evidence is mild but consistent across streams. Provisional
 eighth-verb candidate: **`Structure`** (or `Define` / `Schema`).
 
-This is falsifiable. If workspace DDL traffic fits cleanly into
-`Mutate`/`Atomic` once it appears, the gap is theoretical only.
-**Defer until first concrete DDL traffic** — don't add the eighth verb
-pre-emptively.
+**Containment rule (default first):** schema and catalog changes are
+*data changes first*. A `CREATE TABLE` is an `Assert` on the catalog;
+an `ALTER` is a `Mutate` at stable catalog-row identity; a `DROP` is a
+`Retract`; a multi-step migration is `Atomic` over those. Model DDL as
+data-against-the-catalog before treating it as a new root.
+
+`Structure` only emerges if real DDL traffic cannot be honestly
+modeled as Assert/Mutate/Retract under Atomic — for example, if a
+schema change requires a boundary behavior operationally distinct
+from data writes (a different commit semantics, a different visibility
+model). **Until concrete traffic forces it, the seven absorb DDL.**
 
 Other gap candidates raised by individual streams (capability probes,
 distributed consensus, flow control, schema introspection) fold
@@ -267,43 +278,45 @@ disciplinary research.
 
 ---
 
-## 7 · What each stream contributes
+## 7 · What each research stream contributed
 
-For the reader who wants depth, the stream outputs live as temporary
-artifacts at `/tmp/verb-research-{database,linguistics,astrology,
-archeology}.md`. This report carries the synthesis; the streams are
-not for commit. Brief contribution summaries:
+The synthesis aggregates four parallel research streams (dispatched
+as agents on 2026-05-14). The streams are process artifacts; their
+substance lives in this report's body. Brief contribution summaries
+so the reader knows where each finding came from:
 
-- **Database stream** (4605 words) — verb genealogy across Datomic,
-  Datalog, Codd's relational algebra, SQL, GraphQL, CQRS, event
-  sourcing, Reactive Streams, Erlang/Akka, gRPC, HTTP. Names ten
-  falsifiable pressure points. Strongest framing: "Datalog-extended-
-  with-CQRS." Expects 1-3 verb additions over time.
-- **Linguistics stream** (3448 words) — Pāṇini's Aṣṭādhyāyī (lakāra
+- **Database / distributed systems stream** — verb genealogy across
+  Datomic, Datalog, Codd's relational algebra, SQL, GraphQL, CQRS,
+  event sourcing, Reactive Streams, Erlang/Akka, gRPC, HTTP. Surfaced
+  ten falsifiable pressure points; strongest framing was "Datalog-
+  extended-with-CQRS." Expects 1-3 verb additions over time;
+  schema-migration is the highest-pressure candidate (folded into the
+  §4 containment rule).
+- **Linguistics + Sanskrit stream** — Pāṇini's Aṣṭādhyāyī (lakāra
   10, kāraka 6, Dhātupāṭha ~2000 roots), semantic primes (NSM verb
   primes), Searle's five illocutionary classes, Vendler's four aspect
-  classes, Frege/Russell logical primitives. Recommendation: defend
-  the verb set on database-operation grounds, not linguistic-universal
-  grounds. Sanskrit-as-formal-language claim: defensible for meta-
-  grammatical machinery (utsarga/apavāda, anuvṛtti, pratyāhāra, it-
-  saṃjñā — generative rule techniques predating Chomsky by 2300
+  classes, Frege/Russell logical primitives. Verdict: defend the verb
+  set on database-operation grounds, not linguistic-universal grounds.
+  The Sanskrit-as-formal-language claim is defensible for meta-
+  grammatical machinery (utsarga/apavāda, anuvṛtti, pratyāhāra,
+  it-saṃjñā — generative rule techniques predating Chomsky by 2300
   years), overstated for verb categories.
-- **Astrology stream** (3458 words after C-update overwrote
-  C-original at 7523 words) — zodiac 4×3 decomposition, Young's
-  twelve measure-formulae, twelve-fold catalogue, mathematics of 12,
-  seven-planet ↔ seven-verb bijective mapping with per-planet sources
-  (Ptolemy *Tetrabiblos*, Lilly *Christian Astrology*, Hermetic
-  tradition, Jungian archetypes). Both astrology runs arrived at
+- **Astrology + planets stream** — zodiac 4×3 decomposition, Young's
+  twelve measure-formulae from *Science and Astrology* (1987),
+  twelve-fold catalogue, mathematics of 12 vs 7, seven-planet ↔
+  seven-verb bijective mapping with per-planet sources (Ptolemy
+  *Tetrabiblos*, Lilly *Christian Astrology* 1647, Hermetic tradition,
+  Jungian archetypes). Two independent astrology agent runs arrived at
   identical verb-to-planet assignments.
-- **Archeology stream** (5009 words after D-original overwrote
-  D-update at 2427 words) — workspace lineage 3→5→5→7→12→proposed-7;
-  per-component verb-usage inventory (5 of 7 roots used; zero
-  consumers use the demoted 5 as roots); library inventory (rich on
-  linguistic theory: Sowa, Tesnière, Mel'čuk, Halliday, Rajpopat,
-  Bhartṛhari; on category theory: Spivak, Mazzola, Zalamea; on Cyc:
-  Lenat; sparse on databases/distributed systems). Closure-rigor
-  verdict: "load-bearing as coordination rule, weak as argument" —
-  `/50 §3` is the first explicit closure argument in workspace history.
+- **Workspace archeology stream** — workspace lineage
+  3→5→5→7→12→proposed-7; per-component verb-usage inventory (5 of 7
+  roots used; zero consumers use the demoted 5 as roots); library
+  inventory (rich on linguistic theory: Sowa, Tesnière, Mel'čuk,
+  Halliday, Rajpopat, Bhartṛhari; on category theory: Spivak, Mazzola,
+  Zalamea; on Cyc: Lenat; sparse on databases/distributed systems).
+  Closure-rigor verdict on the prior 12: "load-bearing as coordination
+  rule, weak as argument" — `/50 §3` is the first explicit closure
+  argument in workspace history.
 
 ---
 
@@ -324,10 +337,13 @@ not for commit. Brief contribution summaries:
    }
    ```
 
-2. **Move the five demoted to typed `ReadPlan<R>`** per `/50 §6` —
-   plan operators inside `Match`/`Subscribe`/`Validate` payloads:
+2. **Move the five demoted to typed `ReadPlan<R>` in `sema-engine`**
+   per `/50 §6` — plan operators inside read execution, **not in
+   `signal-core`**:
 
    ```rust
+   // Crate: sema-engine (NOT signal-core).
+   // signal-core is the wire kernel — SignalVerb + envelope, nothing else.
    pub enum ReadPlan<R> {
        AllRows { table: TableRef<R> },
        ByKey   { table: TableRef<R>, key: R::Key },
@@ -341,6 +357,15 @@ not for commit. Brief contribution summaries:
        Recurse   { seed: Box<Self>, edge: Box<Self>, mode: RecursionMode },
    }
    ```
+
+   Domain contracts (`signal-persona-*`) carry domain-typed payloads
+   (e.g. `MessageRequest::InboxQuery { since, kind, limit }`) that the
+   receiving daemon translates to a `sema_engine::ReadPlan` before
+   calling the engine. A contract may *optionally* expose
+   `ReadPlan<R>` directly as its payload type when the contract is
+   purely a query surface (e.g. an inspection-plane contract); this
+   couples that contract to `sema-engine` and is a per-contract
+   choice. **`signal-core` itself stays domain-free and engine-free.**
 
 3. **Rename `SemaVerb` → `SignalVerb`** per `/50 §0`. The type lives
    in `signal-core` and classifies Signal frames; it is not an engine
@@ -370,7 +395,30 @@ not for commit. Brief contribution summaries:
 
 ---
 
-## 9 · What this retires
+## 9 · Required documentation edits
+
+Hand-off note for operators: the canonical-decision shape lives in
+this report and DA `/50`, but several workspace files still describe
+the twelve-verb prior. **These edits must land before or alongside
+the code change** (the implementation order can interleave; the docs
+must not drift past a contract migration):
+
+| File | Today | Target |
+|---|---|---|
+| `~/primary/skills/contract-repo.md` §"Signal is the database language" | Lists the twelve verbs; `sema_verb()` examples; rule "read-shaped payloads use `Match`/`Project`/`Aggregate`/`Subscribe`" | List the seven roots; `signal_verb()` examples; rule "read-shaped payloads use `Match` or `Subscribe`; algebra (`Project`/`Aggregate`/`Constrain`/`Infer`/`Recurse`) lives in `sema_engine::ReadPlan`" |
+| `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` §1, §3 | "`SemaVerb`, the closed twelve-verb request spine" + the twelve in §1; "verb set is closed and ordered as the twelve" in §3 | "`SignalVerb`, the closed seven-verb request spine"; the seven in §1; closure rule restated; note that the five demoted live in `sema-engine`'s `ReadPlan<R>` |
+| `/git/github.com/LiGoldragon/signal-core/src/request.rs:6-19` | `pub enum SemaVerb` with twelve variants | `pub enum SignalVerb` with seven variants; doc-comments on `Atomic` and `Validate` noting the planetary-tradition rename candidates (`Bind`/`Assay`); explicit pointer to `sema-engine::ReadPlan` for the algebra |
+| `/git/github.com/LiGoldragon/nexus/spec/grammar.md` | Top-level Nexus records enumerate twelve verbs | Top-level records enumerate seven verbs; algebra appears inside `Match`/`Subscribe`/`Validate` payloads as `ReadPlan` records |
+| `/git/github.com/LiGoldragon/signal-core/src/lib.rs` `signal_channel!` macro | Convenience constructors `Request::assert(...)`, etc. accept any payload | Per `/50 §5`, accept verb annotations on request enum variants; generate `signal_verb()` mappings and witnesses; deprecate or rename free-form constructors that can wrap any payload under any root |
+| `reports/designer/157-sema-db-full-engine-direction.md` §4 verb-storage table | Twelve-row table mixing roots and algebra | Two-section table: seven roots with storage behavior; five algebra operators with plan-node semantics |
+
+The first three are immediate (skill + architecture + enum). The
+macro change and the grammar update can lag by a contract migration
+or two but should not lag indefinitely.
+
+---
+
+## 10 · What this retires
 
 - **`/161`** — the research brief. Q1 (per-verb genealogy), Q2 (set
   completeness), Q3 (composition closure), Q5 (gaps and pressure
@@ -388,7 +436,7 @@ not for commit. Brief contribution summaries:
 
 ---
 
-## 10 · See also
+## 11 · See also
 
 - `reports/designer-assistant/50-signal-core-base-verb-shape.md` —
   the operative proposal this report adopts.
