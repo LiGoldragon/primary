@@ -426,6 +426,21 @@ SignalVerb` migration depends on the type existing. The
 contract-crate sweep happens in the same breaking pass; one PR per
 contract or one coordinated mega-PR, designer's call.
 
+**Additional prose propagation landings** (architecture/README files
+brought into alignment with the seven-root shape; see commit history
+for SHAs): `nexus/ARCHITECTURE.md` (twelve-verb language IR
+description → seven roots + ReadPlan note); `nexus-cli/ARCHITECTURE.md`
+(twelve top-level request heads → seven); `persona-introspect/
+ARCHITECTURE.md` (constraint table fixed: `signal_verb()` method,
+`SignalVerb` rename pending note); `signal-persona-message/
+ARCHITECTURE.md` (verified clean — was updated in parallel with the
+correct rename-pending note). Plus `signal-core/ARCHITECTURE.md`,
+`signal/ARCHITECTURE.md` + `README.md`, `signal-persona-mind/
+ARCHITECTURE.md`, `signal-persona-introspect/ARCHITECTURE.md` from
+the earlier passes. The only `*.md` straggler left in the
+LiGoldragon set is `nexus/spec/grammar.md` (the actual Nexus grammar
+spec) — listed Pending above, operator-scope.
+
 ---
 
 ## 10 · What this retires
