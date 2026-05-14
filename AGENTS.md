@@ -82,6 +82,30 @@ helper is `tools/orchestrate`.
 | `RECENT-REPOSITORIES.md` | Broad recent checkout index + cutoff rule. Not the active architecture set. |
 | `GOALS.md` | Standing high-level goals. |
 
+## Reports are for agents; chat is for the user
+
+Long-form output goes in `reports/<role>/`. Reports are the
+durable, scrollable, agent-consumable record — peers and future
+versions of yourself read them. Chat is the **user's** working
+surface; the user reads it now and acts on it.
+
+The implication: a chat reply is never *just* a pointer to a
+report when the user has something to attend to. Whatever the
+user must read, decide on, or act on goes **in the chat with
+full inline context** — open questions, blockers, surprising
+findings, recommendations awaiting approval — each stated so
+the user can engage without opening the report. Opaque IDs,
+section numbers, or "see report N" without inline substance
+are a discipline violation: the user is not navigating a
+database while reading.
+
+A small chat reply is fine when the output is small. An
+elaborate output deserves a report **plus** a chat reply that
+carries the user-attention items inline. See
+`skills/reporting.md` §"When to write a report vs answer in
+chat" and §"What goes in chat when a report exists" for the
+discipline in full.
+
 ## No harness-dependent memory
 
 Memory and persistent agent state belong in workspace files —

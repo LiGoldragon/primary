@@ -18,23 +18,85 @@ discipline that keeps both clean.
 
 ## When to write a report vs answer in chat
 
+The two media have different audiences:
+
+- **Reports are for agents.** Peer roles, future versions of
+  yourself, future readers piecing the work back together —
+  they consume the report. Reports are durable, scrollable,
+  filename-indexed, and citeable by other reports.
+- **Chat is for the user.** Read now, acted on now. The user
+  is the project's bottleneck on decisions; the chat is their
+  working surface.
+
 If your output would be more than a few lines of substance,
 **write a report** in the appropriate `reports/<role>/`
-subdirectory and reduce the chat reply to a one-line
-pointer.
+subdirectory. The report is the durable artifact other agents
+will read.
 
-Two reasons:
+Then write the **chat reply for the user, with full context
+inline**. Don't reduce it to a path pointer when the user has
+something to attend to — see §"What goes in chat when a report
+exists" below.
 
-1. **Chat UIs are poor reading interfaces.** Files are
-   easier — scrollable, searchable, linkable, persistent.
-2. **The user reviews asynchronously while you continue.**
-   The substance must live in a stable, scrollable,
-   file-backed place; chat is ephemeral.
+Small reports are fine — the report doesn't have to be long.
+Acknowledgements, tool-result summaries, "done; pushed"
+confirmations don't need reports. Anything that explains,
+proposes, analyses, or summarises does.
 
-Small reports are fine — the report doesn't have to be
-long. Acknowledgements, tool-result summaries, "done;
-pushed" confirmations don't need reports. Anything that
-explains, proposes, analyses, or summarises does.
+Two reasons reports exist at all:
+
+1. **Chat UIs are poor reading interfaces.** Files are easier —
+   scrollable, searchable, linkable, persistent.
+2. **Agents reading later need the substance.** A future agent
+   picking up the thread can't read your chat; they read the
+   report. Chat is for the user's now-action; the report is for
+   the agent's later-reference.
+
+---
+
+## What goes in chat when a report exists
+
+A report does not relieve the chat of being the user's working
+surface. When a report lands, the chat must carry:
+
+1. **The report's path, explicitly named** (per §"Always name
+   paths" below).
+2. **A 1–3 sentence summary** of what's in the report — what
+   was found, what was decided, what changed.
+3. **Anything the user must read, decide on, or act on,
+   restated with full inline context.** Open questions,
+   blockers, surprising findings, recommendations awaiting
+   approval — each stated with enough substance that the user
+   can engage *without opening the report*.
+4. **Any cross-references** — to reports, tasks, IDs, section
+   numbers, file paths — carry an inline summary. Never just
+   the locator. The user is not navigating a database while
+   reading; "see /164 §5.2" without naming what §5.2 says
+   creates friction this rule eliminates.
+
+The discipline's deeper reason: **the user is the bottleneck**.
+A question or finding that needs the user's attention but sits
+inside a report waiting to be opened is a question that takes
+longer to answer. The chat is the surface that prevents that
+latency. When the chat says *"I wrote a report; here are the
+three questions in it that need your attention, each restated
+with full context,"* the user can engage immediately without
+navigating files.
+
+What does **not** go in chat:
+
+- The full report content (the report is the report).
+- Implementation tour, "first I did X then Y" narration.
+- Tool-call diagnostics, intermediate state.
+
+What **does** go in chat:
+
+- The report path, named explicitly.
+- The headline finding, in 1–3 sentences.
+- The user-attention items, each with full inline context.
+
+The chat is short — usually less than one screen. But every
+sentence carries substance the user needs to act on.
 
 ---
 
