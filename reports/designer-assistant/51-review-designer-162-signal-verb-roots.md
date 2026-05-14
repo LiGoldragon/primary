@@ -409,3 +409,56 @@ The clean next handoff is:
 3. Add a direct contract-crate migration row.
 4. Keep `ReadPlan` ownership visible in the TL;DR.
 5. Split constructor cleanup from macro generation work.
+
+## 7. Context-maintenance note after follow-up landings
+
+Designer subsequently applied the §6 handoff corrections to `/162`, and
+operators began landing the actual code migration. Treat §6 as the
+review trail, not as the current todo list.
+
+Current state observed during context maintenance:
+
+- `reports/designer/162-signal-verb-roots-synthesis.md` now has a
+  status-aware table, explicit `sema-engine` `ReadPlan` ownership in
+  the TL;DR/body, a contract-crate sweep row, and separate rows for
+  request constructors and `signal_channel!`.
+- `skills/contract-repo.md` now names the seven `SignalVerb` roots and
+  says the read-algebra names live in `sema_engine::ReadPlan`.
+- `signal-core` now exposes `SignalVerb` with seven variants,
+  `RequestPayload::signal_verb()`, payload-first request construction,
+  and `unchecked_operation` as the named low-level escape hatch.
+- `sema-engine` architecture now states that schema/catalog operations
+  are catalog data under the seven roots, not an eighth `Structure`
+  root.
+
+The remaining implementation risk is the downstream contract sweep, not
+the root decision itself. At the time of this note, `/162` still marks
+some direct `signal-core` consumers as partially migrated. Those crates
+need either `SignalVerb`/`signal_verb()` migration or an explicit pending
+status in `/162`.
+
+### 7.1 `Structure` conclusion
+
+The latest designer examples make the seven-only case stronger:
+
+```text
+DDL is the same acts applied to the catalog table.
+```
+
+In the workspace model, SQL's fused `CREATE TABLE` operation separates
+into:
+
+```text
+declare shape       -> Rust type / contract
+allocate storage    -> internal sema-engine work
+make visible        -> Assert/Mutate/Retract catalog row, often under Atomic
+```
+
+So `Structure` is not a root now. It remains a named pressure point only
+if future traffic proves a schema operation has different Signal
+boundary semantics from catalog writes. Runtime user-defined types alone
+are not enough; they can still begin as `Assert(RuntimeRecordKind)`,
+`Assert(RuntimeField)`, `Validate(RuntimeSchema)`, and `Atomic([...])`.
+The pressure becomes real only when schema changes require distinct
+visibility, consensus, invalidation, or legality semantics at the wire
+boundary.
