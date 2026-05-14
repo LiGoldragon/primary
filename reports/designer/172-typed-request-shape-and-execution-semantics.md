@@ -347,11 +347,13 @@ below; the findings are restated for completeness:
   atomically. Rolling back a stream-open isn't coherent (the client
   has already consumed events), so the receiver must never half-open.
 - **Receiver-side verb-validation API for the multi-op shape.** §2
-  now specifies `Request::into_ops_checked() -> Result<CheckedRequest,
-  BatchVerbMismatch>` as the replacement for today's single-op
-  `into_payload_checked`. The mismatch variants carry the offending
-  `index` so the receiver can produce `failed_at` and a per-op
-  `SubFailureReason::SignalVerbMismatch`.
+  now specifies a two-method API (per `/174 §2.2`'s correction):
+  `Request::validate(&self) -> Result<(), BatchVerbMismatch>` plus
+  `Request::into_checked(self) -> Result<CheckedRequest, (BatchVerbMismatch,
+  Self)>`. The borrow-based validator lets receivers build rejection
+  replies with the original request's context; the consuming
+  `into_checked` returns the unconverted request on failure for the
+  same reason. Replaces today's single-op `into_payload_checked`.
 - **Stale "Subscribe + writes forbidden" sentence**. The note
   contradicting the table immediately above it has been removed; the
   composition rule is now consistently "Subscribes must come last."
@@ -415,13 +417,14 @@ pub struct Op<Payload> {
 }
 
 // Frame envelope owns the handshake variants exclusively — Reply has
-// no Handshake variant (per `/172 §1.5` settling DA's "handshake is
-// duplicated" finding).
-pub enum FrameBody<RequestPayload, RequestIntent, ReplyPayload, ReplyIntent> {
+// no Handshake variant. A channel's request and reply share one
+// intent vocabulary; Frame is therefore three-parameter (per `/174 §2.1`
+// correction of an earlier four-parameter draft).
+pub enum FrameBody<RequestPayload, ReplyPayload, Intent> {
     HandshakeRequest(HandshakeRequest),
     HandshakeReply(HandshakeReply),
-    Request(Request<RequestPayload, RequestIntent>),
-    Reply(Reply<ReplyPayload, ReplyIntent>),
+    Request(Request<RequestPayload, Intent>),
+    Reply(Reply<ReplyPayload, Intent>),
 }
 ```
 
@@ -512,36 +515,47 @@ pub enum BatchFailureReason {
     Internal,
 }
 
-/// Receiver-side verb-validation API. Walks every `Op` in the request,
-/// checks each `op.verb` against the payload's contract-declared verb
-/// (via the `RequestPayload` trait), and either returns a checked
-/// request that the runtime may execute or an error with the position
-/// of the first mismatch. Replaces today's single-op
-/// `Request::into_payload_checked` for the new multi-op shape.
+/// Receiver-side verb-validation API. Two methods (per `/174 §2.2`
+/// correction): `validate(&self)` borrows the request and reports
+/// any violation without consuming; `into_checked(self)` validates
+/// then converts on success, returning the request *back* in the
+/// error tuple on failure so the receiver can build the rejection
+/// reply with the original request's header and per-op verbs.
+///
+/// Replaces today's single-op `Request::into_payload_checked` for
+/// the new multi-op shape.
 impl<P, I> Request<P, I>
 where
     P: RequestPayload,
 {
-    pub fn into_ops_checked(self) -> Result<CheckedRequest<P, I>, BatchVerbMismatch> {
-        // 1. Empty-batch check is impossible at this layer because
-        //    `Request` carries `NonEmpty<Op>`; empty frames are caught
-        //    by the rkyv decoder via NonEmpty's bytecheck invariant
-        //    and surface as FrameError, not as BatchVerbMismatch.
-        let (header, ops) = self.into_parts();
+    /// Validate without consuming. Walks every `Op`, checks
+    /// verb/payload alignment via `RequestPayload::signal_verb()`,
+    /// and enforces the Subscribe-must-be-last position rule.
+    /// Returns the first violation if any. The caller retains the
+    /// request for whatever follows.
+    pub fn validate(&self) -> Result<(), BatchVerbMismatch> {
+        // Empty-batch check is impossible at this layer because
+        // `Request` carries `NonEmpty<Op>`; empty frames are caught
+        // by the rkyv decoder via NonEmpty's bytecheck invariant and
+        // surface as FrameError, not as BatchVerbMismatch.
 
-        // 2. Subscribe-position check: if any Subscribe is followed by
-        //    a non-Subscribe, fail fast.
-        let mut seen_subscribe = false;
-        for (index, op) in ops.iter().enumerate() {
+        // 1. Subscribe-position check: if any Subscribe is followed
+        //    by a non-Subscribe, fail at the offending Subscribe.
+        let mut seen_subscribe = None;
+        for (index, op) in self.ops.iter().enumerate() {
             if op.verb == SignalVerb::Subscribe {
-                seen_subscribe = true;
-            } else if seen_subscribe {
-                return Err(BatchVerbMismatch::SubscribeOutOfOrder { index });
+                if seen_subscribe.is_none() {
+                    seen_subscribe = Some(index);
+                }
+            } else if let Some(sub_index) = seen_subscribe {
+                return Err(BatchVerbMismatch::SubscribeOutOfOrder {
+                    index: sub_index,
+                });
             }
         }
 
-        // 3. Per-op verb/payload alignment.
-        for (index, op) in ops.iter().enumerate() {
+        // 2. Per-op verb/payload alignment.
+        for (index, op) in self.ops.iter().enumerate() {
             let expected = op.payload.signal_verb();
             if op.verb != expected {
                 return Err(BatchVerbMismatch::OpMismatch {
@@ -552,6 +566,18 @@ where
             }
         }
 
+        Ok(())
+    }
+
+    /// Convert to a `CheckedRequest`, validating along the way. On
+    /// failure, returns both the violation and the unconverted
+    /// request — the caller can echo the request's header and per-op
+    /// verbs into the rejection reply without losing context.
+    pub fn into_checked(self) -> Result<CheckedRequest<P, I>, (BatchVerbMismatch, Self)> {
+        if let Err(reason) = self.validate() {
+            return Err((reason, self));
+        }
+        let (header, ops) = self.into_parts();
         Ok(CheckedRequest { header, ops })
     }
 }
@@ -575,7 +601,8 @@ pub enum BatchVerbMismatch {
 }
 
 /// A `CheckedRequest` is the post-validation handle a receiver hands
-/// to its execution runtime. Only constructible via `into_ops_checked`.
+/// to its execution runtime. Only constructible via `into_checked`
+/// (after `validate` returns `Ok`).
 pub struct CheckedRequest<P, I> {
     pub header: RequestHeader<I>,
     pub ops: NonEmpty<Op<P>>,
@@ -584,8 +611,8 @@ pub struct CheckedRequest<P, I> {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum SubFailureReason {
     /// The verb/payload mismatch caught at receive time. Only produced
-    /// during `into_ops_checked`; runtime execution never reaches an
-    /// op with mismatched verb because the check fires first.
+    /// during `validate`/`into_checked`; runtime execution never
+    /// reaches an op with mismatched verb because the check fires first.
     SignalVerbMismatch,
     /// The op's pre-condition (expected_rev, etc.) failed.
     PreconditionFailed,
