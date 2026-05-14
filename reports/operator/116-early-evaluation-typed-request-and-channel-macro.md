@@ -7,6 +7,13 @@
 attached findings, and the refreshed workspace skills. This is an
 early implementation-readiness pass while the design is still moving.*
 
+**Status note, 2026-05-15:** this report is a first-pass review.
+Read `reports/operator/117-post-175-signal-core-sema-engine-readiness.md`
+after it for the current implementation ordering and the corrections
+after DA's follow-up critique. In particular, sema-engine belongs in
+the first migration wave with signal-core, not after component receive
+paths.
+
 ## Verdict
 
 The design direction is good: `Request<Payload, Intent>`, closed
