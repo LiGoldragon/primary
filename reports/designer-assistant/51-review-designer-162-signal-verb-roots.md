@@ -304,3 +304,108 @@ All operational Signal messages fit inside one of the base signal-core
 verbs.
 ```
 
+## 6. Addendum after designer revised 162
+
+Designer revised `/162` after this report's first pass. The revised
+document absorbs most of the structural critique above:
+
+- `ReadPlan` is now explicitly assigned to `sema-engine`, not
+  `signal-core`.
+- `Atomic` and `Validate` are explicitly kept for the current pass.
+- `Structure` is contained behind the schema-as-data default rule.
+- `/tmp` research artifacts are no longer load-bearing sources.
+- required documentation edits are listed directly in `/162`.
+
+That makes `/162` good as canonical architecture. Remaining issues are
+handoff/status issues, not objections to the seven-root decision.
+
+### 6.1 Status table should distinguish prior state from live state
+
+`/162` now has a required documentation edits table. The table is
+useful, but the workspace is moving while the report is being read.
+Some rows already changed in the live tree: `skills/contract-repo.md`,
+`signal-core/ARCHITECTURE.md`, and `signal-core/src/request.rs` now
+show the seven-root `SignalVerb` model.
+
+To avoid sending operators after completed stale-text edits, `/162`
+should phrase that table as:
+
+```text
+Prior state | Target | Status
+```
+
+rather than:
+
+```text
+Today | Target
+```
+
+The point is not to rewrite history. The point is to keep `/162`
+implementation-safe as operators continue landing pieces in parallel.
+
+### 6.2 Add an explicit contract-crate sweep
+
+The revised `/162` correctly says every contract request declares
+`signal_verb()`, but its implementation checklist should explicitly
+require a sweep of every direct `signal-core` consumer.
+
+Current live scan still finds stale `SemaVerb` / `sema_verb()` mentions
+in at least `signal-persona-introspect`; the operator lock shows active
+migration work in `signal-persona`, `signal-persona-mind`, and
+`persona-mind`.
+
+The missing row:
+
+```text
+All signal-* contract repos with verb mappings must migrate from
+SemaVerb/sema_verb() to SignalVerb/signal_verb(), or be explicitly
+listed as pending.
+```
+
+Without that row, an operator can shrink `signal-core` correctly while
+leaving dependent contract crates in a half-migrated state.
+
+### 6.3 Put `sema-engine` ownership in the TL;DR
+
+The body now says `ReadPlan<R>` belongs in `sema-engine`; the TL;DR
+still says only "Move five demoted to typed `ReadPlan<R>`." Skimming
+agents will read the TL;DR first and may miss the boundary.
+
+The TL;DR should say:
+
+```text
+Move the five demoted names to typed sema-engine ReadPlan<R> operators.
+```
+
+That closes the ambiguity at the highest-friction reading point.
+
+### 6.4 Split macro work from constructor work
+
+The `/162` required-edits table currently combines two surfaces:
+
+- `Request::assert(...)` and other free-form request constructors;
+- `signal_channel!` macro support for verb annotations and generated
+  mapping witnesses.
+
+Those are related but not the same implementation. Split them into two
+rows so an operator can land them independently:
+
+- `src/request.rs`: seven constructors only; demoted-root constructors
+  removed; unchecked generic operation constructor explicitly treated
+  as low-level/internal.
+- `signal_channel!`: variant-level verb annotations, generated
+  `signal_verb()`, and generated/required witnesses.
+
+### 6.5 Updated bottom line
+
+The design is settled enough to implement. The only remaining issue is
+keeping the implementation handoff precise while operators are already
+landing pieces.
+
+The clean next handoff is:
+
+1. Keep `/162` as canonical seven-root architecture.
+2. Update `/162`'s required-edits section to be status-aware.
+3. Add a direct contract-crate migration row.
+4. Keep `ReadPlan` ownership visible in the TL;DR.
+5. Split constructor cleanup from macro generation work.
