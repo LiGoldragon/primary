@@ -389,9 +389,20 @@ or cutting a new named ref for a stable interface boundary.
   typed plans, not Signal frames. The compilation from
   `signal-<consumer>::Request` to `Engine::match_query(&plan)`
   happens in the consumer daemon, per `/157 §9 Q2`.
-- **No NOTA codec.** Nexus parsing/rendering lives at the
-  edge (consumer daemons + CLIs). The engine speaks typed
-  Rust, not text.
+- **No NOTA codec — direct only.** Nexus parsing/rendering
+  lives at the edge (consumer daemons + CLIs). The engine
+  speaks typed Rust, not text. `sema-engine`'s direct
+  dependencies do not include `nota-codec`. **Caveat per
+  DA `/49 §3.2`:** `signal-core` currently depends on
+  `nota-codec` (for pattern-marker NOTA encode/decode), so
+  `sema-engine` inherits `nota-codec` transitively. The
+  *direct* rule holds — engine code uses no NOTA APIs — but
+  the *build graph* is not NOTA-free. If a stricter rule
+  ("no NOTA at all in the build graph") becomes load-bearing,
+  the fix is upstream: split `signal-core` so the pure verb +
+  frame spine has no NOTA, leaving pattern-marker text
+  encoding to a separate crate. Open workspace-level
+  architecture question; doesn't block engine work today.
 - **No Persona-specific anything.** The engine is workspace-wide
   infrastructure; Persona is one consumer.
 

@@ -68,19 +68,22 @@ the old hand-roll-then-migrate approach is off"):
    widening `sema-engine` per DA `/49`'s finish path.
 
 4. **The work splits into three slices** per §3:
-   - **Slice 1 (immediate, sema-agnostic):** verb-mapping
+   - **Slice 1 (immediate, mostly sema-agnostic):** verb-mapping
      witness + real `EngineSnapshot` / `ComponentSnapshot` /
      `PrototypeWitness` replies via Signal fan-out (no
      storage) + central contract extension + introspect
-     skeleton actor + persona-introspect's own `introspect.redb`
-     opened via `sema-engine`'s existing `Engine::assert` /
-     `Engine::match_records` surface for an audit-trail
-     record family. `DeliveryTrace` returns
-     `AwaitingCorrelationCache` until Slice 3.
+     **skeleton actor + record family type definitions +
+     architecture witnesses** (per DA `/49 §4` option 2 —
+     persistence wires up only when the skeleton is reviewed
+     and operator's next surface lands). `DeliveryTrace`
+     returns `AwaitingCorrelationCache` until Slice 3.
+     Optional Slice 1.5 wires the first `Engine::assert`
+     calls for an audit-trail record family using current
+     sema-engine surface.
    - **Slice 2 (`/41` terminal + router end-to-end; gated on
-     sema-engine Package 3 widening):** terminal + router
-     observation contracts + handlers + introspect clients +
-     CLI + Nix witness. Handler-side storage uses
+     sema-engine widening):** terminal + router observation
+     contracts + handlers + introspect clients + CLI + Nix
+     witness. Handler-side storage uses
      `Engine::register_index` + `QueryPlan::ByIndex` /
      `QueryPlan::ByKeyRange` — meaning persona-terminal and
      persona-router **migrate to sema-engine as part of this
@@ -310,13 +313,37 @@ Slice 1 — Immediate, sema-agnostic + current-sema-engine
     OA-Ds  persona-introspect RouterClient skeleton (same)
     OA-5   CLI Input enum extension (no storage)
 
-  Introspect's own store (uses current sema-engine):
-    OA-S   persona-introspect skeleton — IntrospectionStore
-           actor; introspect.redb opened via sema-engine's
-           current Engine::assert + Engine::match_records;
-           local record families for query/reply/error audit
-           (per DA /49 §4 option 2: ship architecture +
-           skeleton; richer surfaces wait for sema-engine).
+  Introspect skeleton (architecture + types only — per DA /49 §4
+  option 2; persistence waits for richer sema-engine surfaces):
+    OA-S   persona-introspect skeleton —
+           - IntrospectionStore Kameo actor as a real
+             state-carrying actor plane (not yet wired to
+             persistence);
+           - introspect.redb path declared as owned local
+             state in ARCH (no peer redb opens — permanent
+             architectural constraint);
+           - record family TYPES defined in Rust:
+             ObservedTarget, IntrospectionQueryRecord,
+             IntrospectionReplyRecord, IntrospectionErrorRecord
+             (per /49 §4); these are typed Rust definitions,
+             not yet persisted;
+           - architecture/witness tests proving NOTA is
+             edge-only (no nota-codec usage in introspect
+             daemon's runtime path) and peer state is
+             reached through daemon sockets (no
+             peer-redb opens);
+           - sema-engine dependency line in Cargo.toml +
+             Engine::open call wired (proves the
+             dependency direction) but no Engine::assert
+             on these record families until Slice 1.5.
+
+  Slice 1.5 (optional, parallel with operator step 3 — list_tables):
+    OA-S+  IntrospectionStore wires its first Engine::assert
+           calls for a minimal audit trail of query/reply/error
+           records, using current Engine::assert +
+           Engine::match_records (All / Key). Lands as soon
+           as the skeleton (OA-S) is reviewed; doesn't gate
+           Slice 2.
 
 Slice 2 — /41 terminal + router handlers (gated on sema-engine widening)
   Waits for operator step 5 in DA /49 §5: QueryPlan widening
