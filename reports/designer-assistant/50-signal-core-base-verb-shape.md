@@ -148,6 +148,37 @@ work with atomicity, consistency, isolation, and durability. That
 supports keeping `Atomic` as a root because it changes commit boundary,
 not because "atomic" is a record operation like assert or retract.
 
+### Arthur Young and the 12/7 split
+
+Designer's parallel research into Arthur Young adds a useful
+cross-domain framing without changing this report's recommendation.
+Young's 12-fold table is a static measure vocabulary: twelve kinds of
+measure arranged as a 3-by-4 lattice. That fits the current twelve
+Signal names as a vocabulary of possible semantic concerns.
+
+Young also carries a seven-step dynamic learning/action cycle. That
+maps better to `signal-core` roots: roots are not every semantic name
+the system can speak; roots are the dynamic operation modes that carry
+a message across a boundary.
+
+So the better synthesis is:
+
+```text
+12 = static vocabulary / semantic lattice
+7  = dynamic operation roots
+```
+
+This supports preserving the twelve-name work as vocabulary while
+shrinking the root enum to seven. It also explains why the wider list
+felt meaningful but became awkward when treated as peer root verbs.
+
+The designer research also surfaced possible traditional-name pressure:
+`Atomic` could be read as "bind many into one," and `Validate` could be
+read as "assay/weigh." I would not rename those in the first code
+change. `Atomic` and `Validate` are clear technical words in database
+and contract contexts; `Bind` and `Assay` are worth keeping in the
+language-design notebook, not using as implementation names yet.
+
 ## 3. Root-verb criterion
 
 A name belongs in `SignalVerb` only if it changes at least one of these
@@ -383,6 +414,11 @@ This should happen before more contracts harden around the twelve-root
 shape. The current engine is young enough that breaking this now is
 cleaner than teaching every component that `Project` is a peer of
 `Assert`.
+
+I would not combine the root-shrink with a poetic rename of the seven
+technical verbs. Root-count and root-name stability are separate
+decisions; the first is ready, the second needs more pressure from code
+and contract examples.
 
 ## 9. Recommendation
 
