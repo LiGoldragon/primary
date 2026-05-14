@@ -307,8 +307,10 @@ remotes and storage.
 
 ## Reports
 
-The `reports/` directory is **exempt from the claim/release flow**. All agents
-should be able to write reports at any time without coordinating a lock.
+The `reports/` directory is **exempt from the claim/release flow** because
+reports are already partitioned by role lane. Each role's report subdirectory
+is its implied write lock. Do not claim report paths in your own lane, and do
+not add your own report files to a lock file.
 
 Convention: each role owns a subdirectory.
 
@@ -326,9 +328,14 @@ Each role writes only into its own role subdirectory. Other roles may
 report, they rewrite the relevant content in a new report inside their own
 subdirectory rather than editing the original.
 
-The role subdirectories are *permanently owned* by their role. Treating
-them as role-private write zones removes the report path from the
+The role subdirectories are *permanently owned* by their role. The lock is
+always implied by the lane itself, not by a line in `<role>.lock`. Treating
+report lanes as role-private write zones removes report paths from the
 coordination surface — reports are how roles communicate without racing.
+
+Cross-lane report edits are exceptional. If the user explicitly asks a role to
+edit, delete, or rewrite another role's report, that request is the named
+override for that report edit. Otherwise, respond in your own lane.
 
 For *how* to write a report (filename convention, prose-plus-visuals
 medium, tone in chat replies, always-name-paths rule), see this
