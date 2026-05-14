@@ -108,7 +108,7 @@ component migration                       not landed yet
 
 ## 3. Boundary gaps
 
-### 3.1. Dependency pin is not strict enough
+### 3.1. Dependency reference policy is correct enough for now
 
 `sema-engine/Cargo.toml` currently uses:
 
@@ -117,17 +117,23 @@ sema = { git = "https://github.com/LiGoldragon/sema.git", branch = "main" }
 signal-core = { git = "https://github.com/LiGoldragon/signal-core.git", branch = "main" }
 ```
 
-`Cargo.lock` pins exact revisions, but `/158 §3.2` requires explicit
-manifest revisions:
+My earlier recommendation to replace these with raw
+`rev = "<sha>"` pins was wrong.
 
-```toml
-sema = { git = "https://github.com/LiGoldragon/sema.git", rev = "..." }
-signal-core = { git = "https://github.com/LiGoldragon/signal-core.git", rev = "..." }
-```
+The corrected workspace rule is now in `skills/micro-components.md`:
+cross-repo Cargo manifests use named references — branches,
+bookmark-equivalent branches, tags, or crates.io versions — to name the
+API lane the consumer follows. `Cargo.lock` records the exact commit
+that Cargo resolved. Raw manifest revs are not the default
+stable-interface mechanism because an opaque hash does not name the
+interface promise.
 
-The current dependency-boundary test checks "git, not path"; it does
-not reject `branch = "main"`. Operator should change the manifest to
-explicit `rev = ...` pins and add a witness that fails on `branch =`.
+Therefore `branch = "main"` is acceptable while `sema-engine` is
+tracking the live development surface of `sema` and `signal-core`. Once
+either provider needs to offer a stable interface, create a named
+compatibility branch/bookmark or release tag and point consumers at
+that named ref. Keep the existing "git, not path" witness; do not add a
+witness that rejects branches.
 
 ### 3.2. "No NOTA in sema-engine" is direct-only right now
 
@@ -215,9 +221,12 @@ introspect store work starts.
 
 Priority order:
 
-1. **Pin dependencies exactly.** Replace `branch = "main"` with
-   explicit `rev = ...` for both `sema` and `signal-core`; add a
-   witness rejecting branch pins and sibling path deps.
+1. **Keep named cross-repo dependency refs.** `branch = "main"` is
+   acceptable for a live development API. When `sema` or `signal-core`
+   needs to present a stable interface, cut a named compatibility
+   branch/bookmark or a release tag and point `sema-engine` at that
+   named ref. Keep the witness rejecting sibling `path = "../..."`;
+   do not reject branches merely for being branches.
 2. **Update stale architecture status.** `sema/ARCHITECTURE.md` should
    stop saying the repo is being cleaned before `sema-engine` exists.
    `sema-engine/ARCHITECTURE.md` should mark the current package as

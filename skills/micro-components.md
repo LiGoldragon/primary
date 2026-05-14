@@ -170,20 +170,47 @@ mode (Brown / Grzybek note this directly).
 
 ---
 
-## Cargo.toml dependencies — `git =`, never `path = "../"`
+## Cargo.toml dependencies — named `git =` refs, never `path = "../"`
 
 A repo's `Cargo.toml` must not depend on a sibling repo via
 `path = "../sibling"`. Cross-repo dependencies use
-`git = "https://github.com/..."` (or a published crates.io
-version).
+`git = "https://github.com/..."` with a **named reference**
+or a published crates.io version.
 
 ```toml
 # Wrong — assumes a filesystem layout the consumer's machine doesn't have
 nota-codec = { path = "../nota-codec" }
 
-# Right — portable, Cargo.lock pins the rev, nix can fetch
-nota-codec = { git = "https://github.com/LiGoldragon/nota-codec.git" }
+# Right — portable; the named ref is the API lane, Cargo.lock records the commit
+nota-codec = { git = "https://github.com/LiGoldragon/nota-codec.git", branch = "main" }
+
+# Right for a stabilized wire/API cut
+nota-codec = { git = "https://github.com/LiGoldragon/nota-codec.git", tag = "v0.3.0" }
 ```
+
+Use named references — branches, jj/git bookmarks exposed as
+branches, or tags — to express the dependency contract. A
+raw commit rev is not the default stable-interface mechanism.
+The manifest should say which API lane the consumer follows;
+`Cargo.lock` records the exact commit that was resolved for a
+reproducible build.
+
+Choose the named reference by intent:
+
+| Reference | Use when |
+|---|---|
+| `branch = "main"` | The consumer intentionally tracks the current development API. |
+| `branch = "<compat-lane>"` or bookmark-equivalent | Several repos need a named compatibility lane while the next API settles. |
+| `tag = "vX.Y.Z"` | The provider offers a stable release or stable wire/API cut. |
+| crates.io version | The provider is published as a normal crate. |
+
+Do not write raw `rev = "<sha>"` in `Cargo.toml` merely to
+make a dependency feel pinned. That hides the semantic contract
+behind an opaque hash. If a particular commit matters, create
+or move a named reference that says why that commit is the one
+consumers should use. Raw revs are acceptable only as a short,
+local diagnostic override while bisecting or reproducing a bug;
+they should not be committed as the normal dependency shape.
 
 The discriminator: **does the path stay inside the repo's
 own working tree?** Intra-repo paths (`path = "lib"` inside
@@ -196,10 +223,12 @@ Three concrete failures the rule prevents:
 1. **Fresh clones don't reproduce.** A new machine cloning
    the consumer alone gets `cargo build` failing with
    *"could not find Cargo.toml at ../sibling"*.
-2. **Cargo.lock drifts silently.** A `path` dep doesn't pin
-   a rev — Cargo resolves whatever the local sibling has
-   at build time. A `git = "..."` dep pins the rev in
-   Cargo.lock; the build is reproducible.
+2. **Cargo.lock drifts silently.** A `path` dep doesn't record
+   an upstream identity — Cargo resolves whatever the local
+   sibling has at build time. A `git = "..."` dep names the
+   upstream ref in `Cargo.toml` and records the resolved commit
+   in `Cargo.lock`; the build is reproducible and the API lane
+   remains visible.
 3. **`nix flake check` can't fetch.** The build sandbox
    isolates from the host filesystem; `path = "../..."`
    can't cross the sandbox boundary.
