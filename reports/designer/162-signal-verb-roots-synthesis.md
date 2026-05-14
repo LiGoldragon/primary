@@ -411,10 +411,22 @@ must not drift past a contract migration):
 | `/git/github.com/LiGoldragon/nexus/spec/grammar.md` | Top-level Nexus records enumerate twelve verbs | Top-level records enumerate seven verbs; algebra appears inside `Match`/`Subscribe`/`Validate` payloads as `ReadPlan` records |
 | `/git/github.com/LiGoldragon/signal-core/src/lib.rs` `signal_channel!` macro | Convenience constructors `Request::assert(...)`, etc. accept any payload | Per `/50 §5`, accept verb annotations on request enum variants; generate `signal_verb()` mappings and witnesses; deprecate or rename free-form constructors that can wrap any payload under any root |
 | `reports/designer/157-sema-db-full-engine-direction.md` §4 verb-storage table | Twelve-row table mixing roots and algebra | Two-section table: seven roots with storage behavior; five algebra operators with plan-node semantics |
+| `/git/github.com/LiGoldragon/signal/README.md` (line 27) | "owns the universal envelope and twelve-verb spine" | Seven-root spine; pointer to `/50`/`/162`; algebra in `sema-engine::ReadPlan` |
+| `/git/github.com/LiGoldragon/signal/ARCHITECTURE.md` (line 125) | "closed verb spine (`SemaVerb`: …12 names…)" | Seven roots; algebra demoted to `sema-engine::ReadPlan` |
+| `/git/github.com/LiGoldragon/signal-persona-mind/ARCHITECTURE.md` (line 24) | "`MindRequest` variant to the `SemaVerb`" | `SignalVerb` rename pending; same per-variant mapping discipline |
+| `/git/github.com/LiGoldragon/signal-persona-introspect/ARCHITECTURE.md` (constraints table) | Rule: "Read-shaped payloads use `Match` (or `Project`/`Aggregate`/`Subscribe`)" — actively wrong | Rule: "Read-shaped payloads use `Match` or `Subscribe`; read-algebra appears inside payloads via `sema-engine::ReadPlan`" |
 
 The first three are immediate (skill + architecture + enum). The
-macro change and the grammar update can lag by a contract migration
-or two but should not lag indefinitely.
+macro change, grammar update, and downstream contract architecture
+files (signal, signal-persona-mind, signal-persona-introspect) can
+lag by a contract migration or two but should not lag indefinitely.
+
+The skill + signal-core + signal + signal-persona-mind +
+signal-persona-introspect text edits landed alongside `/162` at
+commits `19de3f04` (skill + signal-core) and the follow-up
+(propagation cascade). The remaining items (`signal-core/src/request.rs`,
+the `signal_channel!` macro, the Nexus grammar, and the `/157`
+verb-storage table) are operator-scope.
 
 ---
 
