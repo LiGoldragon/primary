@@ -331,6 +331,38 @@ findings are restated here for completeness:
 All five settlements are structural; none should change the
 implementation work an operator picks up from this spec.
 
+### 1.8 · DA's third round (precision edits)
+
+After the §1.7 settlements landed, DA reviewed the revised draft and
+flagged five further precision issues. All are folded into the spec
+below; the findings are restated for completeness:
+
+- **`BatchFailureReason::SubscribeOutOfOrder` was referenced but not
+  defined.** The enum in §2 now lists it as a fifth variant alongside
+  `OpRejected` / `PolicyViolation` / `ValidationFailed` / `Internal`.
+- **Subscription opens need an explicit two-phase rule.** §4.1 now
+  states the validate-phase + commit-phase protocol: every Subscribe
+  is validated before *any* stream opens; only if all preceding ops
+  succeed AND all Subscribe-validations pass do all streams open
+  atomically. Rolling back a stream-open isn't coherent (the client
+  has already consumed events), so the receiver must never half-open.
+- **Receiver-side verb-validation API for the multi-op shape.** §2
+  now specifies `Request::into_ops_checked() -> Result<CheckedRequest,
+  BatchVerbMismatch>` as the replacement for today's single-op
+  `into_payload_checked`. The mismatch variants carry the offending
+  `index` so the receiver can produce `failed_at` and a per-op
+  `SubFailureReason::SignalVerbMismatch`.
+- **Stale "Subscribe + writes forbidden" sentence**. The note
+  contradicting the table immediately above it has been removed; the
+  composition rule is now consistently "Subscribes must come last."
+- **`signal_channel!` needs a no-intent path.** §3.0 introduces
+  `NoIntent` as an uninhabited enum; §3.1 shows the two macro forms
+  (with `intent` block / without). Contracts that have no named
+  batches drop the `with intent X` clause and the `intent X { ... }`
+  block; the macro substitutes `NoIntent` automatically, and the
+  type system guarantees no `Named` header can be constructed for
+  that channel.
+
 ---
 
 ## 2 · The corrected design — `signal-core` primitives
@@ -466,17 +498,94 @@ pub enum SubStatus {
 pub enum BatchFailureReason {
     /// The op at `failed_at` was rejected by the receiver.
     OpRejected,
-    /// The batch violated a receiver-policy rule (e.g. mixed-with-Subscribe).
+    /// The batch violated a receiver-policy rule (e.g. an
+    /// `Op { verb, payload }` whose verb doesn't match the payload's
+    /// declared verb, or an empty batch slipping past the type guard).
     PolicyViolation,
-    /// The batch failed a Validate op at `failed_at`.
+    /// The batch contained a `Subscribe` op that was not at the tail
+    /// of the batch. Subscribes must come last per §4 composition
+    /// rules; receive-time check fires before any op runs.
+    SubscribeOutOfOrder,
+    /// The batch failed a `Validate` op at `failed_at`.
     ValidationFailed,
     /// A receiver-internal error.
     Internal,
 }
 
+/// Receiver-side verb-validation API. Walks every `Op` in the request,
+/// checks each `op.verb` against the payload's contract-declared verb
+/// (via the `RequestPayload` trait), and either returns a checked
+/// request that the runtime may execute or an error with the position
+/// of the first mismatch. Replaces today's single-op
+/// `Request::into_payload_checked` for the new multi-op shape.
+impl<P, I> Request<P, I>
+where
+    P: RequestPayload,
+{
+    pub fn into_ops_checked(self) -> Result<CheckedRequest<P, I>, BatchVerbMismatch> {
+        // 1. Empty-batch check is impossible at this layer because
+        //    `Request` carries `NonEmpty<Op>`; empty frames are caught
+        //    by the rkyv decoder via NonEmpty's bytecheck invariant
+        //    and surface as FrameError, not as BatchVerbMismatch.
+        let (header, ops) = self.into_parts();
+
+        // 2. Subscribe-position check: if any Subscribe is followed by
+        //    a non-Subscribe, fail fast.
+        let mut seen_subscribe = false;
+        for (index, op) in ops.iter().enumerate() {
+            if op.verb == SignalVerb::Subscribe {
+                seen_subscribe = true;
+            } else if seen_subscribe {
+                return Err(BatchVerbMismatch::SubscribeOutOfOrder { index });
+            }
+        }
+
+        // 3. Per-op verb/payload alignment.
+        for (index, op) in ops.iter().enumerate() {
+            let expected = op.payload.signal_verb();
+            if op.verb != expected {
+                return Err(BatchVerbMismatch::OpMismatch {
+                    index,
+                    expected,
+                    got: op.verb,
+                });
+            }
+        }
+
+        Ok(CheckedRequest { header, ops })
+    }
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub enum BatchVerbMismatch {
+    /// An op at `index` carried a verb that doesn't match its payload's
+    /// declared verb. Maps to `BatchFailureReason::PolicyViolation`
+    /// with `failed_at: index` in the rejection reply, and to
+    /// `SubFailureReason::SignalVerbMismatch` in the per-op SubReply.
+    OpMismatch {
+        index: usize,
+        expected: SignalVerb,
+        got: SignalVerb,
+    },
+    /// A Subscribe op appeared before a non-Subscribe op. Maps to
+    /// `BatchFailureReason::SubscribeOutOfOrder` with
+    /// `failed_at: index` (pointing at the Subscribe that came too
+    /// early — the receiver names the first violating Subscribe).
+    SubscribeOutOfOrder { index: usize },
+}
+
+/// A `CheckedRequest` is the post-validation handle a receiver hands
+/// to its execution runtime. Only constructible via `into_ops_checked`.
+pub struct CheckedRequest<P, I> {
+    pub header: RequestHeader<I>,
+    pub ops: NonEmpty<Op<P>>,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum SubFailureReason {
-    /// The verb/payload mismatch caught at receive time.
+    /// The verb/payload mismatch caught at receive time. Only produced
+    /// during `into_ops_checked`; runtime execution never reaches an
+    /// op with mismatched verb because the check fires first.
     SignalVerbMismatch,
     /// The op's pre-condition (expected_rev, etc.) failed.
     PreconditionFailed,
@@ -491,10 +600,35 @@ pub enum SubFailureReason {
 
 ## 3 · The corrected design — `signal_channel!` macro
 
-The macro grows to accept an `intent` declaration alongside the
-request/reply enums:
+The macro grows to accept an *optional* `intent` declaration
+alongside the request/reply enums. Contracts that have named batch
+intents declare an enum; contracts that don't get an uninhabited
+`NoIntent` automatically.
+
+### 3.0 · `NoIntent` for contracts with no named batches
 
 ```rust
+// signal-core/src/intent.rs
+
+/// Marker type for contracts that have no named batch intents.
+/// Uninhabited — no value can ever be constructed.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum NoIntent {}
+```
+
+A `Request<P, NoIntent>` can only ever carry `RequestHeader::Anonymous`
+or `RequestHeader::Tracked`; `RequestHeader::Named { intent: NoIntent,
+.. }` is impossible to construct because `NoIntent` has no variants.
+This is a type-level guarantee that the contract has no named-intent
+audit surface; the receiver doesn't need to handle one.
+
+### 3.1 · Macro forms
+
+Two equivalent macro forms — with intent (named-batch surface) and
+without (no named batches needed):
+
+```rust
+// With named intents (most contracts that support multi-op batches):
 signal_channel! {
     request MindRequest with intent MindBatchIntent {
         Assert SubmitThought(SubmitThought),
@@ -519,6 +653,21 @@ signal_channel! {
         ChannelMigration,
     }
 }
+
+// Without named intents (contracts that don't need named-batch audit):
+signal_channel! {
+    request SimpleRequest {           // no `with intent X`
+        Match StatusQuery(StatusQuery),
+        Assert SimpleAssertion(SimpleAssertion),
+    }
+    reply SimpleReply {
+        Status(StatusReport),
+        Acknowledged(SimpleAck),
+    }
+    // no `intent` block
+}
+// Macro substitutes signal_core::NoIntent automatically. The contract's
+// requests can be Anonymous or Tracked, never Named.
 ```
 
 Macro emissions:
@@ -555,8 +704,39 @@ semantics for every verb mix:
 | Match + writes | Strict-ordered: a Match at position N reads cumulative state including writes at 1..N-1. The SQL `SELECT FOR UPDATE` pattern works; result binding (using a Match's result in a later op) does not — see §5 and §10.4 below. |
 | Subscribe + any non-Subscribe op | **Subscribes must come last in the batch.** All non-Subscribe ops execute first in strict order; if any fails, the batch aborts and no streams open. If all succeed, writes commit and subscribes open at the post-commit snapshot. A Subscribe in the middle of a batch is rejected at receive-time as `BatchFailureReason::SubscribeOutOfOrder`. |
 
-The "Subscribe + writes forbidden" policy is per-receiver; a domain
-that has a clean semantics for it can override.
+### 4.1 · Staged subscription open (the two-phase rule)
+
+A Subscribe is an external ongoing side-effect: once a stream is
+open, the client is consuming it. Rolling back a stream-open is
+incoherent (the client may have already received events). The
+receiver therefore opens subscriptions in **two explicit phases**:
+
+1. **Validate phase.** For every Subscribe in the batch, the receiver
+   verifies the subscription is acceptable: the filter type-checks,
+   the requested resource exists, the requester has the right to
+   subscribe, the receiver has capacity. **No streams open yet.**
+
+2. **Commit phase.** If (a) the validate phase passed for every
+   Subscribe, AND (b) every preceding non-Subscribe op completed
+   successfully (writes committed atomically, reads observed the
+   snapshot, validates passed), THEN the receiver opens all Subscribe
+   streams in one atomic step. Each gets its `SubscriptionToken` in
+   the `SubReply` payload.
+
+If either phase fails, the batch aborts and **zero streams open**.
+Per-op statuses for the Subscribes are `RolledBack` (if validation
+passed but a later non-Subscribe op failed in commit phase) or
+`Failed`/`Skipped` (if a Subscribe's own validation failed).
+
+The two-phase rule applies to *all-Subscribe* batches as well:
+validate all subscriptions, then open all atomically. A failing
+validation at position K aborts the batch with positions 0..K-1
+having status `RolledBack` (validation passed but commit was
+abandoned) and position K having status `Failed`.
+
+This is the analog of two-phase commit for stream-opens. It's
+necessary because stream-open is the one side-effect that can't be
+rolled back once it lands.
 
 ---
 
