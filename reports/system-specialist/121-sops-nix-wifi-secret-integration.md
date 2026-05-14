@@ -50,7 +50,8 @@ Relevant source URLs:
 
 ## Current Production Facts
 
-Current leak:
+Pre-implementation leak, now superseded by the implementation status
+below:
 
 - `CriomOS/modules/nixos/router/default.nix` hardcodes the WPA3-SAE
   password inline under `services.hostapd`.
@@ -278,3 +279,100 @@ integration a first `SecretReference` implementation rather than a local
 Nix cleanup. The durable contract is the `secrets` flake input and the
 runtime path consumed by hostapd. Horizon/lojix can evolve behind that
 contract without putting secret values into CriomOS or Horizon.
+
+## Implementation Status, 2026-05-14
+
+This report has been forwarded from design into implementation state.
+The production sops-nix slice has landed and been pushed in the
+production stack:
+
+- `horizon-rs` commit `f4af8b7c`: adds `SecretName` and
+  `SecretReference`, and lets `RouterInterfaces` refer to the router
+  WPA3-SAE password by logical secret name.
+- `goldragon` commit `f0355d50`: stores the transitional router
+  password as `secrets/router-wifi-sae-passwords.sops` and points the
+  Prometheus router interface at `routerWifiSaePasswords`.
+- `lojix-cli` commit `42529ebd`: materializes and stages a generated
+  `secrets` flake input beside the existing generated `horizon`,
+  `system`, and `deployment` inputs.
+- `CriomOS-home` commit `f59ec859`: adds the operator tools needed for
+  this flow (`sops`, `age`, `ssh-to-age`) and updates `lojix-cli`.
+- `CriomOS` commit `b7b7d504`: imports `sops-nix`, declares the router
+  secret from `inputs.secrets.sopsFiles.routerWifiSaePasswords`, passes
+  the decrypted runtime path to hostapd via `saePasswordsFile`, and adds
+  a pure Nix check rejecting inline `saePasswords`.
+
+Verification completed before the deployment incident:
+
+- `horizon-rs` tests passed.
+- `lojix-cli` tests passed.
+- Local and remote evaluation for Prometheus showed hostapd now uses
+  `saePasswordsFile = "/run/secrets/routerWifiSaePasswords"` and no
+  inline `saePasswords`.
+- Prometheus's SSH host key could decrypt the staged sops secret through
+  the age recipient path, without printing the plaintext.
+- Remote Nix evaluation on Prometheus succeeded and returned a system
+  derivation path.
+
+## Deployment Incident
+
+The attempted Prometheus `Switch` activation built remotely and reached:
+
+```text
+Checking switch inhibitors... done
+stopping the following units: hostapd.service
+```
+
+After that point the activation produced no useful output for several
+minutes. Prometheus became unreachable over the Yggdrasil SSH path; the
+local hung `ssh` / `lojix-cli` processes were killed. From the local
+machine, the Yggdrasil route still existed, but Prometheus no longer
+answered over that path. A local IPv4 scan of the upstream LAN showed
+only `ouranos` with SSH open, so Prometheus was not reachable by the
+obvious fallback route either.
+
+Treat Prometheus as needing direct recovery or direct local verification.
+Do not assume the switch completed. The most likely recovery surface is
+the host console, physical access, or a reboot/power path.
+
+Recovery checklist once Prometheus is reachable:
+
+- Check whether the new generation activated:
+  `readlink /run/current-system` and
+  `readlink /nix/var/nix/profiles/system`.
+- Check the units involved in the network cut:
+  `systemctl status sops-nix hostapd yggdrasil systemd-networkd`.
+- Inspect logs without printing the secret:
+  `journalctl -u sops-nix -u hostapd -b --no-pager`.
+- Confirm the decrypted secret file exists with restrictive permissions:
+  `ls -l /run/secrets/routerWifiSaePasswords`.
+- Confirm hostapd generated a runtime config using a file-backed SAE
+  path rather than inline Nix material.
+- If hostapd failed because the secret was unavailable, start with
+  `systemctl restart sops-nix` and then `systemctl restart hostapd`.
+- If the system is half-switched and the network cannot be restored,
+  roll back to the previous generation from the console, then revisit
+  the ordering and activation behavior before another remote switch.
+
+## Still Open
+
+`primary-a61` remains open. This implementation removes the password
+plaintext from CriomOS, but the original acceptance criteria are not yet
+fully satisfied:
+
+- The SSID and regulatory country policy still need to move out of
+  CriomOS and into Horizon-projected Wi-Fi policy.
+- The dual-radio migration remains the intended path: keep the current
+  password-based WPA3-SAE network while adding the certificate/EAP-TLS
+  network on the USB Wi-Fi dongle, migrate clients, then delete the old
+  password network.
+- CriomOS-test-cluster still needs the broader Wi-Fi constraints for
+  synthetic policy, missing secrets, and absence of hard-coded Wi-Fi
+  data.
+- Prometheus recovery must happen before this can be treated as
+  production-proven. The current code has passed evaluation and local
+  decryption checks, but the live switch left the router unreachable.
+
+Context-maintenance decision: this report stays as the load-bearing
+working artifact for the sops-nix Wi-Fi secret work. No separate
+catchall handover report is needed for this topic.
