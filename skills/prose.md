@@ -132,6 +132,30 @@ is the most-developed in the workspace.
 
 ---
 
+## One image, held
+
+A quote-dense essay needs one load-bearing image at its centre.
+The practitioner refining silver; the chloride dissolving the
+membrane; the broom no one lives on. Every quote selected,
+every section opened, every sentence chosen deepens *that*
+image.
+
+The drift to avoid: a strong quote arrives in a different
+metaphor and the writer brings it in because the quote is
+strong. Water-as-soft-overcoming-hard, names-must-be-rectified,
+the householder-supports-all-*āśramas* — each is a fine anchor
+for its own essay. Stacked inside one article they braid many
+essays into one and hold to none. The reader feels the loss of
+centre even when each quote on its own is excellent.
+
+Discipline: pick the load-bearing image before drafting; cut
+every quote that does not deepen it; if a cut quote is too
+strong to lose, save it for the article it belongs to. A
+single-image essay reads as one thing. A braided essay reads
+as a tour.
+
+---
+
 ## Movement — concrete to abstract
 
 Open in particulars. Rise into doctrine. The reverse — opening
@@ -240,7 +264,11 @@ the piece is correcting), absorb it as a trailing concession:
 
 **Meta-prose.** No announcing the structure of the piece. No
 opening with "this essay does X." See *Begin with the substance*
-above.
+above. Do not surface the project's own writing conventions
+inside an article either — vocabulary swaps, em-dash density,
+the not-X-but-Y rule, curly-vs-straight quotes. Those are
+workshop discipline, invisible to the reader; an article that
+points at them reads as the project talking about itself.
 
 **Stage-setting.** "Notice that...", "Observe how...",
 "Note that..." Do not cue the reader to attend; let the
