@@ -1052,7 +1052,5 @@ Companion designer reports:
   closed by `/163`; the present report's bearing on `/162` is in
   §7 above.
 - `~/primary/reports/designer/163-seven-verbs-no-structure-eighth.md`
-  — adoption of the seven-only direction.
-- `~/primary/reports/designer/166-atomic-collapses-into-frame-shape.md`
-  — the proposed collapse to six elementary verbs + Vec frame.
-  Pending user decision.
+  — adoption of the seven-only direction (later collapsed to six per
+  `/172`; the schema-as-data containment rule survives intact).

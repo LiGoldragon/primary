@@ -802,9 +802,9 @@ useful as a baseline; its conclusion retires.
 - `~/primary/reports/designer/172-typed-request-shape-and-execution-semantics.md`
   — the typed shape this redesign serves; corrections in §2 above
   apply to `/172` directly.
-- `~/primary/reports/designer/173-signal-channel-macro-rethink.md`
-  — the conservative predecessor; superseded by this report on the
-  redesign decision.
+- `~/primary/reports/designer/175-rust-shape-and-nota-syntax-corrections.md`
+  — Rust-shape and NOTA-syntax corrections to this report's
+  initial §4.3 (illegal alias impls) and §5 (NOTA syntax).
 - `/git/github.com/LiGoldragon/signal-core/src/channel.rs` — the
   current macro; replaced by the proc-macro form spec'd here.
 - `/git/github.com/LiGoldragon/signal-persona-mind/src/lib.rs:1633`

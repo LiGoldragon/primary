@@ -1314,20 +1314,28 @@ present report, which closes its remaining gaps.
 
 ## 10 · See also
 
-- `~/primary/reports/designer/171-what-is-atomic-for-best-design.md`
-  — answers what Atomic is for; correction record. Superseded by
-  this report on the type-shape and semantic-precision points.
-- `~/primary/reports/designer-assistant/<the /171 critique>` —
-  DA's six findings whose settlements are §1.1–§1.6 above.
-- `~/primary/reports/designer/170-atomic-collapse-followup-typed-atomic-or-full-spec.md`
-  — Option A's §3 is the antecedent; the present report closes its
-  remaining gaps.
+- `~/primary/reports/designer/162-signal-verb-roots-synthesis.md` —
+  the seven-verb synthesis (and planetary bijection); §1.7–§1.9
+  above carry the collapse to six and the planetary refinement.
+- `~/primary/reports/designer/163-seven-verbs-no-structure-eighth.md`
+  — schema-as-data containment; the no-Structure-eighth argument
+  survives the collapse intact.
+- `~/primary/reports/designer/174-signal-channel-macro-redesign.md`
+  — the macro redesign over these primitives.
+- `~/primary/reports/designer/175-rust-shape-and-nota-syntax-corrections.md`
+  — the Rust-shape and NOTA-syntax corrections folded into §1.9
+  and §2 above.
+- `~/primary/reports/operator/117-post-175-signal-core-sema-engine-readiness.md`
+  — operator's wave-1 plan against this spec.
+- `~/primary/reports/operator-assistant/114-typed-request-shape-and-macro-redesign-evaluation.md`
+  — operator-assistant's independent confirmation + the
+  `NonEmpty` codec / `SubscriptionToken` precision gaps.
 - `/git/github.com/LiGoldragon/signal-core/src/request.rs` — what
   this spec replaces.
 - `/git/github.com/LiGoldragon/signal-core/src/reply.rs` — what
   this spec replaces.
 - `/git/github.com/LiGoldragon/signal-core/src/channel.rs` — the
-  macro that grows to support `with intent <X>` syntax.
+  macro that grows to support `with intent <T>` syntax.
 - `/git/github.com/LiGoldragon/sema-engine/src/engine.rs` — the
   commit-log shape that changes per §5.
 - `~/primary/reports/designer/163-seven-verbs-no-structure-eighth.md`
