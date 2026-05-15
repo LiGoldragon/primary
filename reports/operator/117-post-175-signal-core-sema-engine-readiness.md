@@ -1,5 +1,13 @@
 # 117 - Post-175 Readiness: Signal-Core and Sema-Engine Move Together
 
+**Status update, 2026-05-15:** this report is now **pre-DA59**.
+Keep its findings about six verbs, no `Atomic`, typed `SubReply`,
+`NonEmpty`, handshake-in-`FrameBody`, and sema-engine moving with
+`signal-core`. Do **not** implement its `Request<Payload, Intent>` /
+`RequestHeader<Intent>` / `ReplyHeader<Intent>` / `(Batch (Named ...))`
+metadata shape until `reports/operator/118-frame-metadata-correlation-impact.md`
+is resolved against `reports/designer-assistant/59-frame-metadata-and-correlation-correction.md`.
+
 *Operator follow-up, 2026-05-15. Reads
 `reports/designer/175-rust-shape-and-nota-syntax-corrections.md`, DA's
 critique of `reports/operator/116-early-evaluation-typed-request-and-channel-macro.md`,
