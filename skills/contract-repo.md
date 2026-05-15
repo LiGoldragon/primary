@@ -222,8 +222,8 @@ Naming is therefore load-bearing architecture:
   imperative command names.
 - Verbs belong to methods and engines. The exception is the
   universal root-verb spine itself (`Assert`, `Mutate`, `Retract`,
-  `Match`, `Subscribe`, `Atomic`, `Validate`), where the
-  `SignalVerb` enum is deliberately naming root operations.
+  `Match`, `Subscribe`, `Validate`), where the `SignalVerb` enum
+  is deliberately naming root operations.
 - Do not repeat namespace already supplied by the crate,
   module, or enclosing enum. `signal_persona_message::
   MessageRequest::MessageSubmission` may need `Message`
@@ -277,32 +277,37 @@ the closed set of root operations that can cross a Signal boundary;
 every cross-component Signal request declares which root it
 instantiates. There is no "non-database" communication.
 
-> **Adopted shape:** seven root verbs in `signal-core`; the
-> read-algebra operators (`Constrain`, `Project`, `Aggregate`,
-> `Infer`, `Recurse`) live as a `ReadPlan<R>` type in
-> `sema-engine`, *not* as peer root verbs. The wire kernel is
+> **Adopted shape:** six root verbs in `signal-core`. Atomicity is
+> structural — a `Request<Payload>` carries `NonEmpty<Operation<Payload>>`
+> and commits as one unit. The read-algebra operators (`Constrain`,
+> `Project`, `Aggregate`, `Infer`, `Recurse`) live as a `ReadPlan<R>`
+> type in `sema-engine`, *not* as peer root verbs. The wire kernel is
 > domain-free and engine-free.
 
-### The seven root verbs
+### The six root verbs
 
-The closed set, in `signal-core/src/request.rs` (post-adoption):
+The closed set, in `signal-core/src/request.rs`:
 
 ```
-Assert  Mutate  Retract  Match  Subscribe  Atomic  Validate
+Assert  Mutate  Retract  Match  Subscribe  Validate
 ```
 
 A name is a root iff it changes one of *durable effect*,
-*read-vs-write semantics*, *streaming lifecycle*, *transaction
-boundary*, or *execution mode* at the Signal boundary. A name
-that only changes how a result is computed, joined, reduced, or
-shaped is a `ReadPlan` operator in `sema-engine`, not a root.
+*read-vs-write semantics*, *streaming lifecycle*, or *execution
+mode* at the Signal boundary. A name that only changes how a result
+is computed, joined, reduced, or shaped is a `ReadPlan` operator in
+`sema-engine`, not a root. The transaction boundary is **not** a
+verb — it's the structural shape of a `Request<Payload>`, whose
+`NonEmpty<Operation>` sequence is the atomic unit.
 
-Recovered from older `signal` work (`/git/github.com/LiGoldragon/signal/src/request.rs`,
-commit `7a78288`, 2026-04-26), which had exactly this shape after
-renames (`AtomicBatch → Atomic`, `Query → Match`). The widening
-to twelve names in `signal-core` (commit `1d863ce`, 2026-05-08)
-was vocabulary-recovery that conflated read-algebra operators with
-root operations; the seven-root shape restores the discipline.
+History: older `signal` work (commit `7a78288`, 2026-04-26) carried
+seven roots including `Atomic`; the widening to twelve names (commit
+`1d863ce`, 2026-05-08) conflated read-algebra operators with root
+operations; a seven-root restoration kept `Atomic` as a peer verb.
+The current six-root shape (2026-05-15, per `reports/designer/177-typed-request-shape-and-execution-semantics.md`)
+drops `Atomic` entirely — atomicity is structural to the request,
+not a verb. Single-op requests and multi-op requests are the same
+type; the difference is the length of `operations`.
 
 One-line semantics:
 
@@ -313,8 +318,14 @@ One-line semantics:
 | `Retract` | Tombstone/remove/retract a typed fact. Boundary-visible write. |
 | `Match` | Pattern/range/key query over typed tables. Base read. |
 | `Subscribe` | Initial state plus commit deltas (push, not poll). Streaming lifecycle. |
-| `Atomic` | Bundle multiple operations in one transaction. Commit-boundary. |
 | `Validate` | Dry-run request through validators/planner without commit. Execution mode. |
+
+**Atomic batching is structural.** A `Request<Payload>` whose
+`operations` has length > 1 commits or aborts as one unit; each
+op is verb-tagged independently. Mixed verbs in one request are
+allowed by the kernel; `Subscribe` ops must come last. Channel-
+specific rules may forbid mixing (e.g. "no reads with writes")
+when a concrete channel earns that constraint.
 
 ### The read-plan operators (not roots)
 
@@ -360,12 +371,14 @@ with round-trip tests asserting:
 
 - each request variant maps to exactly one `SignalVerb`;
 - read-shaped payloads use `Match` or `Subscribe`;
-- write-shaped payloads use `Assert`, `Mutate`, `Retract`, or
-  `Atomic`;
+- write-shaped payloads use `Assert`, `Mutate`, or `Retract`;
 - dry-run payloads use `Validate`;
 - read algebra (`Constrain`/`Project`/`Aggregate`/`Infer`/`Recurse`)
   appears inside `Match`/`Subscribe`/`Validate` payloads via
   `sema_engine::ReadPlan`, never as a root verb;
+- multi-op atomic commits are expressed as a `Request<Payload>`
+  with `NonEmpty<Operation>` length > 1, not as a separate
+  verb;
 - Nexus examples use the same root as the Signal frame.
 
 A request that maps to no root is a design event, not a
@@ -426,6 +439,9 @@ observation query.
   where `ReadPlan<R>` and the read-algebra operators
   (`Constrain`, `Project`, `Aggregate`, `Infer`, `Recurse`)
   live.
+- `~/primary/reports/designer/177-typed-request-shape-and-execution-semantics.md` —
+  the typed-request spec; six-root spine, structural atomicity,
+  async exchange frame layer.
 
 ---
 
