@@ -1,5 +1,15 @@
 # 115 - Sema engine split implementation investigation
 
+**Context-maintenance note, 2026-05-15:** this report is still the
+operator guide for the `sema` / `sema-engine` split, but its old
+`SemaVerb`, twelve-root, and `Atomic` vocabulary is historical. Read
+`reports/designer-assistant/61-signal-redesign-current-spec.md` when
+that DA report is available, or
+`reports/operator/120-hard-context-maintenance.md` for the local
+operator summary. The current Signal shape is six `SignalVerb` roots,
+no `Atomic`, non-empty requests, async frame exchanges, and structural
+sema-engine commit logs.
+
 *Operator report. Scope: implementation consequences of
 `reports/designer-assistant/45-sema-and-sema-engine-interface-split.md`
 and `reports/designer/158-sema-kernel-and-sema-engine-two-interfaces.md`.*
@@ -92,14 +102,14 @@ Design/code context:
 | `sema` docs | `AGENTS.md`, `ARCHITECTURE.md`, and `skills.md` still describe slot utility and some stale Criome-record-database framing. | Docs must change with the cleanup. |
 | Current `criome` | No current use of `sema::Slot`, `Sema::store`, or reader-count API. It has its own typed `ATTESTATION_NEXT_SLOT` table over `sema`. | Do not move legacy slot store into current Criome. Target Criome at `sema-engine` once the engine can execute its identity/attestation store verbs. |
 | `persona-mind` | Hand-rolls counters, graph IDs, graph table CRUD, relation validation calls, subscription registration tables, and eager query scans. | It is the right first `sema-engine` consumer. |
-| Signal verb spine | `signal_core::SemaVerb` exists with twelve verbs and `Request::Operation { verb, payload }`. | Engine can depend on `signal-core`, but contract-level verb mapping is incomplete. |
-| `signal-persona-*` contracts | A scan found no `SemaVerb` mapping in the sampled Persona contract repos. | Package 1 from designer/157 is still needed before real verb execution is trustworthy. |
+| Signal verb spine | Historical scan: `signal_core::SemaVerb` existed with twelve verbs. Current target is six-root `signal_core::SignalVerb`, no `Atomic`. | Engine can depend on `signal-core`, but contract-level verb mapping remains a required witness. |
+| `signal-persona-*` contracts | Historical scan found no verb mapping in the sampled Persona contract repos. | Contract variants still need explicit `SignalVerb` witnesses before real verb execution is trustworthy. |
 
 ## 3 - Boundary shape
 
 ```mermaid
 flowchart TD
-    "signal-core"["signal-core<br/>SemaVerb, Frame, Request envelope"]
+    "signal-core"["signal-core<br/>SignalVerb, Frame, Request envelope"]
     "sema"["sema<br/>typed redb/rkyv storage kernel"]
     "sema-engine"["sema-engine<br/>Signal verb execution library"]
     "signal-contracts"["signal-persona-* contracts<br/>typed records + verb mapping"]
@@ -143,7 +153,7 @@ sequenceDiagram
     "ComponentRoot"->>"RequestCompiler": contract payload
     "RequestCompiler"-->>"ComponentRoot": QueryPlan or MutationPlan
     "ComponentRoot"->>"SemaWriter": mutation intent
-    "SemaWriter"->>"Engine": assert / mutate / atomic
+    "SemaWriter"->>"Engine": assert / mutate / commit
     "Engine"->>"Sema": write transaction closure
     "Sema"->>"redb": typed rkyv table writes
     "redb"-->>"Sema": committed snapshot
@@ -290,7 +300,7 @@ failures are the crate’s typed `Error`.
 
 Before `sema-engine` can be trusted against Persona requests, each
 contract repo needs a typed mapping from request variant to
-`SemaVerb`. The current `Request::assert(payload)` constructors in
+`SignalVerb`. The current `Request::assert(payload)` constructors in
 `signal-core` do not prevent wrong payload/verb pairings by
 themselves.
 
@@ -298,13 +308,13 @@ The likely contract-side shape:
 
 ```rust
 impl MindRequest {
-    pub const fn sema_verb(&self) -> signal_core::SemaVerb {
+    pub const fn signal_verb(&self) -> signal_core::SignalVerb {
         match self {
-            Self::RoleClaim(_) => signal_core::SemaVerb::Assert,
-            Self::RoleObservation(_) => signal_core::SemaVerb::Match,
-            Self::SubmitThought(_) => signal_core::SemaVerb::Assert,
-            Self::QueryThoughts(_) => signal_core::SemaVerb::Match,
-            Self::SubscribeThoughts(_) => signal_core::SemaVerb::Subscribe,
+            Self::RoleClaim(_) => signal_core::SignalVerb::Assert,
+            Self::RoleObservation(_) => signal_core::SignalVerb::Match,
+            Self::SubmitThought(_) => signal_core::SignalVerb::Assert,
+            Self::QueryThoughts(_) => signal_core::SignalVerb::Match,
+            Self::SubscribeThoughts(_) => signal_core::SignalVerb::Subscribe,
             // ...
         }
     }
@@ -317,7 +327,7 @@ contract crates to learn that mapping.
 
 Witnesses:
 
-- `mind_request_variants_have_expected_sema_verbs`.
+- `mind_request_variants_have_expected_signal_verbs`.
 - `message_inbox_query_is_match_not_assert`.
 - `subscription_request_is_subscribe`.
 - `contract_frame_round_trip_preserves_verb_and_payload`.
@@ -374,7 +384,7 @@ the first Criome migration needs, not the final shape.
 | `put_identity` | `Engine::assert(IdentityRecord)` or `Engine::mutate(IdentityRecord)` depending on identity lifecycle semantics. |
 | `identity` | `Engine::match_query(QueryPlan<IdentityRecord>)` by typed identity key. |
 | `identities` | `Engine::match_query(QueryPlan<IdentityRecord>)` over all active identities or a status index. |
-| `put_revocation` | `Engine::assert(RevocationRecord)` plus identity status mutation under `AtomicScope`. |
+| `put_revocation` | `Engine::assert(RevocationRecord)` plus identity status mutation in one structural commit. |
 | `put_attestation` | `Engine::assert(AttestationRecord)` with engine-owned sequence / operation-log cursor. |
 | `attestations` | `Engine::match_query(QueryPlan<AttestationRecord>)`, eventually by issuer, referent, time, or status indexes. |
 
@@ -389,7 +399,7 @@ Engine-owned mechanics:
 
 - typed table/index catalog for identity, revocation, attestation,
   and audit records;
-- atomic identity+revocation transitions;
+- structural identity+revocation commits;
 - operation log and snapshot identity;
 - query plans for lookup/list paths;
 - subscription/delta delivery for identity updates when the
@@ -407,7 +417,7 @@ The tests should be weird enough to catch architectural lies.
 | Engine catalog is durable. | First Nix derivation registers a table and emits `engine.redb`; second derivation reopens through `Engine::open` and `list_tables`. |
 | `Assert` writes through engine, not direct table insert. | `engine_executes_assert_through_registered_record_family`; forbid direct component table insert in migrated path. |
 | `Match` reads through engine plans. | `engine_match_query_uses_registered_table_or_index`. |
-| Atomic writes roll back together. | `engine_atomic_rolls_back_all_record_families`. |
+| Multi-write commits roll back together. | `engine_commit_rolls_back_all_record_families`. |
 | Subscription is push, not poll. | `engine_subscribe_pushes_after_commit`; no sleeps/timers as witnesses. |
 | `persona-mind` graph path uses engine after migration. | `persona_mind_uses_engine_assert_not_table_insert`; a source scan plus an actor trace from request to `SemaWriter` to `Engine`. |
 | `criome` identity and attestation state uses engine after migration. | `criome_uses_engine_assert_not_direct_table_insert`; source scan plus Kameo trace from `CriomeRoot` to store plane to `Engine`. |
@@ -524,7 +534,7 @@ follow `/158` wherever older copies conflict.
 - `sema` tests currently assert the legacy surface exists; those tests
   must invert into absence witnesses.
 - `signal-persona-*` contracts do not yet expose obvious request
-  variant to `SemaVerb` witnesses.
+  variant to `SignalVerb` witnesses.
 - `persona-mind` depends directly on `sema` and has a large direct
   `MindTables` implementation. That is acceptable now, but it becomes
   the first migration target once `sema-engine` can execute real plans.
