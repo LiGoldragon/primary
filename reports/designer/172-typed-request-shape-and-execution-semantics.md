@@ -393,6 +393,63 @@ below; the findings are restated for completeness:
 
 ---
 
+### 1.9 · Operator/117 + operator-assistant/114 + DA/55 round
+
+After the §1.8 settlements landed and `/175` was drafted, three
+further reviews surfaced more issues — all design-level, none
+migration-shaped (the user explicitly rules out migration concerns
+from design judgment).
+
+- **Default type parameters on methods are not legal Rust.** An
+  earlier draft of the validate API used
+  `validate<Policy: BatchPolicy<P, I> = DefaultPolicy>(...)`, which
+  Rust forbids: defaults apply to `struct` / `enum` / `type` /
+  `trait` generics, not function or method generics. The spec
+  below now uses four explicit methods (`validate`,
+  `validate_with_policy::<Policy>`, `into_checked`,
+  `into_checked_with_policy::<Policy>`), with the no-suffix forms
+  delegating to `DefaultPolicy` internally.
+- **`SubReply` typed sum instead of struct + Option payload.** An
+  earlier draft used `SubReply { verb, status: SubStatus, payload:
+  Option<R> }` with the status-payload invariants documented as
+  prose comments. The typed sum below (`Ok { verb, payload: R }` /
+  `RolledBack { verb }` / `Failed { verb, reason, detail:
+  Option<R> }` / `Skipped { verb }`) makes the invariants
+  unrepresentable; per `skills/typed-records-over-flags.md`,
+  status-plus-Option is the anti-pattern; the variant form is the
+  fix.
+- **`NonEmpty<T>` codec impls now specified.** Operator-assistant
+  /114 §4.1 flagged that rkyv + NOTA codec impls for `NonEmpty<T>`
+  weren't named. The `NonEmpty<T>` definition in §2 now carries
+  the rkyv derive note and the hand-written NOTA decoder
+  specification.
+- **`SubscriptionToken` shape is still pending the user.** Per
+  operator-assistant/113 §13 Q3 and reaffirmed by /114 §4.3.
+  Surfaced in §7 Q5 below; needs decision before subscription-
+  bearing channels can compile.
+- **Handshake/Reply cascade.** Today's `signal-core::Reply<Payload>`
+  has `Handshake + Operation` variants; the corrected shape moves
+  handshakes exclusively to `FrameBody` and makes `Reply` batch-only
+  (`Reply::Batch { header, outcome, per_op }`). Every existing
+  reply construction site changes — not just request construction.
+  Operator pickup affects:
+
+  - `Reply::handshake(reply)` constructor removed from `Reply`;
+    handshake replies build `FrameBody::HandshakeReply(reply)`
+    directly.
+  - Every contract reply path (today
+    `Reply::operation(payload)`) becomes
+    `Reply::Batch { header, outcome, per_op }`.
+  - Every handshake round-trip test currently asserting
+    `Reply::Handshake` shape is replaced with
+    `FrameBody::HandshakeReply` shape.
+  - Same applies to `Request<Payload>::Handshake` → moves to
+    `FrameBody::HandshakeRequest`.
+
+  Workspace-wide cascade, but mechanical. Plan for it in wave 1.
+
+---
+
 ## 2 · The corrected design — `signal-core` primitives
 
 ```rust
@@ -411,6 +468,21 @@ pub enum SignalVerb {
 /// A non-empty sequence — guaranteed at the type level to hold at
 /// least one element. Empty batches have no semantics; the type
 /// rules them out at construction.
+///
+/// **rkyv codec** (per operator-assistant/114 §4.1): derive
+/// `Archive + RkyvSerialize + RkyvDeserialize` with
+/// `#[archive(check_bytes)]`. The mandatory `head: T` field
+/// guarantees non-emptiness structurally — the archive shape rules
+/// out the empty case at the type level, so no runtime check is
+/// needed during deserialization.
+///
+/// **NOTA codec**: hand-written `NotaDecode for NonEmpty<T>` in
+/// signal-core. NOTA represents collections as sequences
+/// (`[item item item ...]`); the decoder consumes the sequence,
+/// errors on empty with `NotaCodecError::EmptyNonEmpty`, and splits
+/// the remainder into `head` + `tail`. The decoder lives in
+/// signal-core because `NonEmpty<T>` is signal-core's type. The
+/// `NotaEncode` impl reverses: emit `[head, tail0, tail1, …]`.
 pub struct NonEmpty<T> {
     head: T,
     tail: Vec<T>,
@@ -1004,6 +1076,45 @@ A correlation id is generated at the originating frame; echoed in
 all replies; carried in follow-up frames that logically continue the
 same conversation. TTL-based garbage collection. Spec doesn't pin
 down details beyond the generation/echo rule.
+
+### Q5 — `SubscriptionToken` shape (pending user decision)
+
+Per operator-assistant/113 §13 Q3 and reaffirmed by operator-
+assistant/114 §4.3. `Reply` carries `SubscriptionOpened(SubscriptionToken)`
+in /172 §3.1 and the two-phase staged open in §4.1 references the
+token, but `SubscriptionToken`'s shape is not defined.
+
+Natural sketch:
+
+```rust
+// signal-core/src/subscription.rs
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaTransparent,
+         Debug, Clone, PartialEq, Eq)]
+pub struct SubscriptionToken(u64);
+```
+
+Plus a workspace pattern of `Retract SubscriptionRetraction(SubscriptionToken)`
+on every channel that supports subscription cancellation.
+
+Three sub-decisions for the user:
+
+- **(a) Field type**: opaque `u64` counter / typed
+  `Slot<Subscription>` (content-addressed) / content-hash. The
+  `u64` is simplest; `Slot<Subscription>` lets the engine
+  introspect; content-hash makes tokens deterministically
+  reproducible at the cost of needing the inputs to recompute.
+- **(b) Scope**: per-channel typed (each contract's tokens are a
+  different type) or workspace-shared (all subscriptions use the
+  same `SubscriptionToken` type across channels). Per-channel
+  matches the contract-repo discipline of perfect specificity;
+  workspace-shared is simpler.
+- **(c) Retraction shape**: one `Retract SubscriptionRetraction(SubscriptionToken)`
+  per channel (matches the per-channel-type direction); or one
+  workspace-wide retraction surface. Same trade-off as (b).
+
+Pending decision. Lean: (a) `u64` for now, (b) per-channel, (c)
+per-channel retraction variant. The lean is conservative; awaits
+confirmation.
 
 ---
 

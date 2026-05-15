@@ -47,10 +47,10 @@ What this report settles:
      interpretation.
 
 3. **Three new macro emissions** beyond `/173`'s list:
-   - `pub enum <ReqName>Kind` auto-generated from the variant list
+   - `pub enum <RequestName>Kind` auto-generated from the variant list
      (eliminates today's hand-written duplication, e.g.
      `MindOperationKind` in `signal-persona-mind/src/lib.rs:1633`).
-   - `impl BatchPolicy for <ReqName>` emitted from an optional
+   - `impl BatchPolicy for <RequestName>` emitted from an optional
      `batch_policy { ... }` block.
    - Multi-mode constructors: `ChannelRequest::single_anonymous`,
      `::single_tracked(correlation)`,
@@ -76,7 +76,7 @@ assumption, more generated contract truth"* — names the right shape.
 Today's macro emits:
 
 ```rust
-impl <ReqName> {
+impl <RequestName> {
     pub fn into_signal_request(self) -> Request<Self> {
         Request::from_payload(self)
     }
@@ -126,8 +126,8 @@ pub enum FrameBody<RequestPayload, ReplyPayload, Intent> {
 Three parameters. The macro emits:
 
 ```rust
-pub type Frame = signal_core::Frame<<ReqName>, <RepName>, <IntentName>>;
-pub type FrameBody = signal_core::FrameBody<<ReqName>, <RepName>, <IntentName>>;
+pub type Frame = signal_core::Frame<<RequestName>, <ReplyName>, <IntentName>>;
+pub type FrameBody = signal_core::FrameBody<<RequestName>, <ReplyName>, <IntentName>>;
 ```
 
 This is a real correction to `/172`. The four-parameter Frame was
@@ -323,7 +323,7 @@ runtime. Each owns a well-defined slice.
 - The channel-specific payload enums (request, reply).
 - The channel-specific intent enum (or `NoIntent` substitution).
 - The channel-specific operation-kind enum (auto-generated).
-- The verb witnesses: `impl RequestPayload for <ReqName>`.
+- The verb witnesses: `impl RequestPayload for <RequestName>`.
 - The per-channel `Frame` / `FrameBody` / `ChannelRequest` /
   `ChannelReply` type aliases.
 - The per-channel `BatchPolicy` impl (emitted from the optional
@@ -393,7 +393,7 @@ This replaces today's hand-written `MindOperationKind` enum and the
 ~24-line match in `operation_kind()`. The macro guarantees the kinds
 stay in sync with the variants.
 
-Naming: `<ReqName>Kind` (matching the request enum's name) rather
+Naming: `<RequestName>Kind` (matching the request enum's name) rather
 than `MindOperationKind` (which was a hand-chosen name).
 Re-exporting under the old name for backward compat is one approach;
 or contracts can rename callers to use the macro-emitted name.
@@ -531,13 +531,13 @@ signal-core.
 
 ```rust
 signal_channel! {
-    request <ReqName>
+    request <RequestName>
         [with intent <IntentName>]
     {
         <Verb> <Variant> ( <Payload> ),
         ...
     }
-    reply <RepName> {
+    reply <ReplyName> {
         <Variant> ( <Payload> ),
         ...
     }
@@ -560,73 +560,73 @@ substitutes `NoIntent` and default policy when absent.
 
 ```rust
 // 1. The request payload enum (existing, unchanged shape)
-pub enum <ReqName> { ... }
+pub enum <RequestName> { ... }
 
 // 2. The reply payload enum (existing, unchanged shape)
-pub enum <RepName> { ... }
+pub enum <ReplyName> { ... }
 
 // 3. The intent enum (new, or NoIntent substitution)
 pub enum <IntentName> { ... }    // or: pub use signal_core::NoIntent as <IntentName>
 
 // 4. Auto-generated operation-kind enum (new)
-pub enum <ReqName>Kind {
+pub enum <RequestName>Kind {
     <Variant>,    // one per request variant, unit-only
     ...
 }
 
 // 5. Channel type aliases (updated to 3-parameter Frame)
-pub type Frame = signal_core::Frame<<ReqName>, <RepName>, <IntentName>>;
-pub type FrameBody = signal_core::FrameBody<<ReqName>, <RepName>, <IntentName>>;
-pub type ChannelRequest = signal_core::Request<<ReqName>, <IntentName>>;
-pub type ChannelReply = signal_core::Reply<<RepName>, <IntentName>>;
+pub type Frame = signal_core::Frame<<RequestName>, <ReplyName>, <IntentName>>;
+pub type FrameBody = signal_core::FrameBody<<RequestName>, <ReplyName>, <IntentName>>;
+pub type ChannelRequest = signal_core::Request<<RequestName>, <IntentName>>;
+pub type ChannelReply = signal_core::Reply<<ReplyName>, <IntentName>>;
 
 // 6. RequestPayload impl (existing, unchanged)
-impl signal_core::RequestPayload for <ReqName> {
+impl signal_core::RequestPayload for <RequestName> {
     fn signal_verb(&self) -> SignalVerb { match self { ... } }
 }
 
 // 7. Kind helper (new)
-impl <ReqName> {
-    pub fn kind(&self) -> <ReqName>Kind { match self { ... } }
+impl <RequestName> {
+    pub fn kind(&self) -> <RequestName>Kind { match self { ... } }
 }
 
 // 8. Multi-mode constructors (new, replaces into_signal_request)
 impl ChannelRequest {
-    pub fn single(payload: <ReqName>) -> Self;
-    pub fn tracked(payload: <ReqName>, correlation: CorrelationId) -> Self;
-    pub fn named(payload: <ReqName>, intent: <IntentName>, correlation: CorrelationId) -> Self;
-    pub fn batch(intent: <IntentName>, correlation: CorrelationId) -> BatchBuilder<<ReqName>, <IntentName>>;
-    pub fn batch_tracked(correlation: CorrelationId) -> BatchBuilder<<ReqName>, <IntentName>>;
+    pub fn single(payload: <RequestName>) -> Self;
+    pub fn tracked(payload: <RequestName>, correlation: CorrelationId) -> Self;
+    pub fn named(payload: <RequestName>, intent: <IntentName>, correlation: CorrelationId) -> Self;
+    pub fn batch(intent: <IntentName>, correlation: CorrelationId) -> BatchBuilder<<RequestName>, <IntentName>>;
+    pub fn batch_tracked(correlation: CorrelationId) -> BatchBuilder<<RequestName>, <IntentName>>;
 }
 
 // 9. BatchPolicy impl (new, from batch_policy block or default)
-impl signal_core::BatchPolicy for <ReqName> {
+impl signal_core::BatchPolicy for <RequestName> {
     fn max_ops(&self) -> usize { ... }
     // ...
 }
 
 // 10. From<Variant> impls per request variant (existing, unchanged)
-impl From<<Payload>> for <ReqName> { ... }
+impl From<<Payload>> for <RequestName> { ... }
 
-// 11. NotaEncode/Decode for <ReqName> (existing, unchanged — per-variant codec dispatch)
-impl NotaEncode for <ReqName> { ... }
-impl NotaDecode for <ReqName> { ... }
+// 11. NotaEncode/Decode for <RequestName> (existing, unchanged — per-variant codec dispatch)
+impl NotaEncode for <RequestName> { ... }
+impl NotaDecode for <RequestName> { ... }
 
 // 12. From<Variant> impls per reply variant (existing, unchanged)
-impl From<<Payload>> for <RepName> { ... }
+impl From<<Payload>> for <ReplyName> { ... }
 
-// 13. NotaEncode/Decode for <RepName> (existing, unchanged)
-impl NotaEncode for <RepName> { ... }
-impl NotaDecode for <RepName> { ... }
+// 13. NotaEncode/Decode for <ReplyName> (existing, unchanged)
+impl NotaEncode for <ReplyName> { ... }
+impl NotaDecode for <ReplyName> { ... }
 
 // 14. NotaEncode/Decode for <IntentName> (new, only if intent block declared
 //     and not auto-NoIntent)
 impl NotaEncode for <IntentName> { ... }
 impl NotaDecode for <IntentName> { ... }
 
-// 15. NotaEncode/Decode for <ReqName>Kind (new, useful for audit/log surfaces)
-impl NotaEncode for <ReqName>Kind { ... }
-impl NotaDecode for <ReqName>Kind { ... }
+// 15. NotaEncode/Decode for <RequestName>Kind (new, useful for audit/log surfaces)
+impl NotaEncode for <RequestName>Kind { ... }
+impl NotaDecode for <RequestName>Kind { ... }
 ```
 
 Roughly **15 emission categories** under the new shape, up from
@@ -648,7 +648,7 @@ Implementing §5's emissions in `macro_rules!` requires:
 - Two top-level arms (with-intent / without-intent) plus matching
   helper macros for the optional `batch_policy` block. Each arm
   duplicates most of the emission body.
-- The auto-generated `<ReqName>Kind` enum requires re-iterating the
+- The auto-generated `<RequestName>Kind` enum requires re-iterating the
   variants twice (the enum body + the impl body); `macro_rules!`
   handles this with `$( ... )*` but each variant template gets
   long.
@@ -726,14 +726,14 @@ The questions in `/172 §7` plus DA's new ones:
 
 ### Q1 — Operation-kind enum naming
 
-`<ReqName>Kind` is the macro's default. But today's contracts use
-`<ReqName>OperationKind` (e.g., `MindOperationKind`, not
+`<RequestName>Kind` is the macro's default. But today's contracts use
+`<RequestName>OperationKind` (e.g., `MindOperationKind`, not
 `MindRequestKind`). Either:
-- (a) Macro emits `<ReqName>Kind`; contracts rename internal callers.
-- (b) Macro emits `<ReqName>OperationKind` for backward fit.
+- (a) Macro emits `<RequestName>Kind`; contracts rename internal callers.
+- (b) Macro emits `<RequestName>OperationKind` for backward fit.
 - (c) Configurable macro parameter for the suffix.
 
-Lean (a) — `<ReqName>Kind` is shorter and matches the request enum's
+Lean (a) — `<RequestName>Kind` is shorter and matches the request enum's
 natural namespace. The rename is mechanical and one-time.
 
 ### Q2 — `BatchPolicy` field list
@@ -768,7 +768,7 @@ handle `EmptyBatch` deliberately if it's somehow reached).
 now, alongside the redesign, in one operator pass. The single
 migration to proc-macro lets every subsequent extension be additive.
 
-### Q5 — Should `<ReqName>Kind` carry intent-tagged variants too?
+### Q5 — Should `<RequestName>Kind` carry intent-tagged variants too?
 
 Today's hand-written `MindOperationKind` is unit-only. But `/172`
 allows intent variants to carry payloads:

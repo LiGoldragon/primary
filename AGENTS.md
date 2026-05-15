@@ -82,6 +82,16 @@ helper is `tools/orchestrate`.
 | `RECENT-REPOSITORIES.md` | Broad recent checkout index + cutoff rule. Not the active architecture set. |
 | `GOALS.md` | Standing high-level goals. |
 
+## Spell every identifier as a full English word
+
+`Request` not `Req`. `Reply` not `Rep`. `Configuration` not `Cfg`.
+Types, fields, variables, macro template placeholders, file-internal
+helpers — *everything* spells out. The narrow carve-outs (loop
+counters, generic type parameters with no semantic content, common
+acronyms, std-library names) and the full justification live in
+`ESSENCE.md` §"Naming — full English words" and `skills/naming.md`.
+This rule is ignored often enough to warrant being surfaced here.
+
 ## Reports are for agents; chat is for the user
 
 Long-form output goes in `reports/<role>/`. Reports are the

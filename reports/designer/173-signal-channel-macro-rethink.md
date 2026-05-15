@@ -70,18 +70,18 @@ Emissions (≈140 lines including derives):
 
 | # | Emission | Purpose |
 |---|---|---|
-| 1 | `pub enum <ReqName>` with rkyv + Debug + Clone + Eq derives | the request payload enum |
-| 2 | `pub enum <RepName>` with same derives | the reply payload enum |
-| 3 | `pub type Frame = signal_core::Frame<ReqName, RepName>` | per-channel Frame alias |
-| 4 | `pub type FrameBody = signal_core::FrameBody<ReqName, RepName>` | per-channel FrameBody alias |
-| 5 | `impl RequestPayload for <ReqName>` with verb-mapping match | the verb witness; receiver-side validation depends on this |
-| 6 | `impl <ReqName>` with `signal_verb()` and `into_signal_request()` | ergonomic helpers |
-| 7 | per-variant `impl From<Payload> for <ReqName>` | so `payload.into()` works |
-| 8 | `impl NotaEncode for <ReqName>` dispatching to variant payloads | text codec encode |
-| 9 | `impl NotaDecode for <ReqName>` matching on head identifier | text codec decode |
-| 10 | per-variant `impl From<Payload> for <RepName>` | reply-side same |
-| 11 | `impl NotaEncode for <RepName>` | same |
-| 12 | `impl NotaDecode for <RepName>` | same |
+| 1 | `pub enum <RequestName>` with rkyv + Debug + Clone + Eq derives | the request payload enum |
+| 2 | `pub enum <ReplyName>` with same derives | the reply payload enum |
+| 3 | `pub type Frame = signal_core::Frame<RequestName, ReplyName>` | per-channel Frame alias |
+| 4 | `pub type FrameBody = signal_core::FrameBody<RequestName, ReplyName>` | per-channel FrameBody alias |
+| 5 | `impl RequestPayload for <RequestName>` with verb-mapping match | the verb witness; receiver-side validation depends on this |
+| 6 | `impl <RequestName>` with `signal_verb()` and `into_signal_request()` | ergonomic helpers |
+| 7 | per-variant `impl From<Payload> for <RequestName>` | so `payload.into()` works |
+| 8 | `impl NotaEncode for <RequestName>` dispatching to variant payloads | text codec encode |
+| 9 | `impl NotaDecode for <RequestName>` matching on head identifier | text codec decode |
+| 10 | per-variant `impl From<Payload> for <ReplyName>` | reply-side same |
+| 11 | `impl NotaEncode for <ReplyName>` | same |
+| 12 | `impl NotaDecode for <ReplyName>` | same |
 
 The macro is structurally one large emission block with repeating
 patterns (`$( ... )*` over variants).
@@ -128,7 +128,7 @@ Two extensions:
 ### 3.1 · Optional `with intent <T>` on the request block
 
 ```text
-request <ReqName> with intent <IntentName> {
+request <RequestName> with intent <IntentName> {
     <Verb> <Variant> ( <Payload> ), ...
 }
 ```
@@ -136,7 +136,7 @@ request <ReqName> with intent <IntentName> {
 …or, when no named intent is needed:
 
 ```text
-request <ReqName> {
+request <RequestName> {
     <Verb> <Variant> ( <Payload> ), ...
 }
 ```
@@ -231,8 +231,8 @@ request-enum dispatch — but each intent variant is independent.
 ### 4.2 · `Frame` / `FrameBody` aliases — now 4-parameter
 
 ```rust
-pub type Frame = $crate::Frame<<ReqName>, <IntentName>, <RepName>, <IntentName>>;
-pub type FrameBody = $crate::FrameBody<<ReqName>, <IntentName>, <RepName>, <IntentName>>;
+pub type Frame = $crate::Frame<<RequestName>, <IntentName>, <ReplyName>, <IntentName>>;
+pub type FrameBody = $crate::FrameBody<<RequestName>, <IntentName>, <ReplyName>, <IntentName>>;
 ```
 
 The intent type is repeated because both request and reply carry the
@@ -242,8 +242,8 @@ differ, but per the current spec, they're the same channel's intent.)
 ### 4.3 · Channel request/reply aliases (new)
 
 ```rust
-pub type ChannelRequest = $crate::Request<<ReqName>, <IntentName>>;
-pub type ChannelReply = $crate::Reply<<RepName>, <IntentName>>;
+pub type ChannelRequest = $crate::Request<<RequestName>, <IntentName>>;
+pub type ChannelReply = $crate::Reply<<ReplyName>, <IntentName>>;
 ```
 
 These let callers reach `ChannelRequest::single(payload)` etc. without
@@ -252,7 +252,7 @@ typing the full 2-parameter shape each time.
 ### 4.4 · `is_subscribe` helper on the request enum (new)
 
 ```rust
-impl <ReqName> {
+impl <RequestName> {
     /// Returns true if this variant's declared verb is Subscribe.
     /// Used by Request::into_ops_checked for the
     /// Subscribe-must-be-last position check.
