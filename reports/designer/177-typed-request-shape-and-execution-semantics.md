@@ -511,6 +511,56 @@ CLI / client library mints the next-sequence on the Connector lane
 and wraps the typed request in a frame; users don't type the
 exchange identifier.
 
+### 8.1 · NOTA codec at the kernel layer
+
+`signal-core` owns the NOTA codec for `Operation<Payload>` and
+`Request<Payload>`. The macro owns the NOTA codec for the channel's
+payload enum. Stacked, they produce the verb-wrapped form above.
+
+**`Operation<Payload>` codec** (where `Payload: NotaEncode + NotaDecode + RequestPayload`):
+
+```text
+encode(Operation { verb, payload }) → (<verb-name> <encoded-payload>)
+decode((<verb-name> <inner>))      → Operation {
+                                       verb: <verb-name>,
+                                       payload: Payload::decode(<inner>),
+                                     }
+                                       — and then check
+                                         payload.signal_verb() == verb
+                                         (else DecodeMismatch error)
+```
+
+`<verb-name>` is the PascalCase `SignalVerb` discriminant
+(`Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate`).
+
+**`Request<Payload>` codec**:
+
+```text
+length-1 request: encode as the single Operation form
+                  (Assert (SubmitThought ...))
+length-N request: encode as bracketed sequence of Operation forms
+                  [(Assert ...) (Match ...) ...]
+
+decode head:
+  - record head matching a SignalVerb name → length-1 request,
+    decode as single Operation
+  - sequence head [ → length-N request, decode each element as Operation,
+    construct NonEmpty
+```
+
+Round-trip witnesses live in `signal-core/tests/`:
+
+- `single_op_request_round_trips_through_verb_wrapper`
+- `multi_op_request_round_trips_through_sequence`
+- `verb_payload_mismatch_in_outer_wrapper_is_rejected`
+- `bare_payload_without_verb_wrapper_is_rejected` (catches the
+  current macro-test regression)
+
+The channel macro's NOTA codec for `MindRequest` only covers the
+payload enum (`(SubmitThought ...)` ↔ `MindRequest::SubmitThought(...)`).
+Wrapping in `(Assert ...)` and request-sequence handling live at
+the kernel layer, where they're shared across every channel.
+
 ---
 
 ## 9 · Open design questions
@@ -671,6 +721,66 @@ Naming the counter `LaneSequence` makes it correct for both
 `ExchangeIdentifier` and `StreamEventIdentifier`, which both embed it.
 
 Settled.
+
+### Q12 — One parameterized `FrameBody`, not two types (vs DA/64 §5)
+
+DA/64 §5 recommends splitting `FrameBody` into two distinct types
+— `ExchangeFrameBody<RequestPayload, ReplyPayload>` for non-streaming
+channels and `StreamingFrameBody<RequestPayload, ReplyPayload,
+EventPayload>` for streaming — to avoid a "fake zero-sized NoEvent
+type."
+
+I disagree. `core::convert::Infallible` is the standard Rust idiom
+for "this case cannot exist" (used by `Result<T, Infallible>` in
+the stdlib, by `Never` in nightly, by the `?` operator's type
+machinery). Setting `EventPayload = Infallible` on non-streaming
+channels makes the `SubscriptionEvent` variant **type-uninhabited**
+at use-site — a real compile-time guarantee, not a fake type.
+
+One parameterized type wins on:
+- single decode/dispatch path in transport code;
+- single `Frame<RequestPayload, ReplyPayload, EventPayload>` API
+  shared by every channel;
+- future frame variants (flow control, cancellation, etc.) land
+  once, not twice.
+
+The wire overhead is one unreachable rkyv tag value per
+non-streaming connection — irrelevant.
+
+Settled: one `FrameBody`. Non-streaming channels' macro emission
+sets `EventPayload = Infallible`.
+
+### Q13 — Verb-wrapped NOTA codec at the kernel layer (per DA/64 §6)
+
+§8.1 above adds `Operation<Payload>` and `Request<Payload>` NOTA
+codecs to `signal-core`. The channel macro emits payload-only
+codecs; verb-wrapping (`(Assert ...)`) and request-sequence
+brackets (`[(Assert ...) (Match ...)]`) are kernel concerns
+shared across every channel.
+
+DA/64 §7 notes the current macro tests prove only bare-payload
+NOTA. New round-trip witnesses required in `signal-core/tests/`:
+
+- `single_op_request_round_trips_through_verb_wrapper`
+- `multi_op_request_round_trips_through_sequence`
+- `verb_payload_mismatch_in_outer_wrapper_is_rejected`
+- `bare_payload_without_verb_wrapper_is_rejected`
+
+Settled.
+
+### Q14 — No auto-`From<Payload>` impls (per DA/64 §7)
+
+DA/64 §7 flags that auto-`From<Payload> for RequestEnum` impls
+conflict if two variants ever share a payload type. The current
+convention (unique payload types per enum) is enforced by Rust's
+compile-error on conflict, but the diagnostic is poor.
+
+Drop the auto-From entirely. Variant constructors are already
+ergonomic — `MindRequest::SubmitThought(payload)`. If a channel
+wants `.into()` for an unambiguous payload, hand-write `From` for
+that one.
+
+Settled: macro doesn't emit auto-From impls.
 
 ---
 

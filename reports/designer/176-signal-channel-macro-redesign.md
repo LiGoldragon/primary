@@ -171,19 +171,22 @@ pub type ChannelRequest = signal_core::Request<MindRequest>;
 pub type ChannelReply   = signal_core::Reply<MindReply>;
 pub type ChannelRequestBuilder = signal_core::RequestBuilder<MindRequest>;
 
-// (7) Per-variant From<Payload> impls (request + reply + event) for
-// ergonomic `.into()` at call sites.
-impl From<SubmitThought> for MindRequest { /* ... */ }
-// ... and so on for each variant in each enum.
-
-// (8) NOTA codec impls for the payload enums (per-variant
-// dispatch on the head identifier).
+// (7) NOTA codec impls for the payload enums (per-variant
+// dispatch on the head identifier). Codecs cover only the payload
+// layer — wrapping in `(<Verb> ...)` and request-sequence handling
+// live at the kernel layer in `signal-core::Operation` and
+// `signal-core::Request` NOTA codecs (see /177 §8.1).
 impl NotaEncode for MindRequest { /* match-and-encode */ }
 impl NotaDecode for MindRequest { /* peek head, dispatch */ }
 impl NotaEncode for MindReply { /* same */ }
 impl NotaDecode for MindReply { /* same */ }
 impl NotaEncode for MindEvent { /* same */ }
 impl NotaDecode for MindEvent { /* same */ }
+
+// (No blanket `From<Payload>` impls — see /176 §3 below. Variant
+// constructors `MindRequest::SubmitThought(payload)` are already
+// ergonomic; auto-From conflicts when two variants share a
+// payload type.)
 
 // (No channel-policy struct in v1 — universal rules only, per
 // /177 §9 Q6. When a real channel needs stricter-than-universal
@@ -213,7 +216,18 @@ Explicit non-emissions, to prevent regression as the macro evolves:
   types.
 - No `channel_policy { ... }` block in v1 (deferred per /177 §9 Q6).
 - No `Batch*` public names. The construction surface is named
-  `RequestBuilder<P>` — see §6.
+  `RequestBuilder<P>` — see §6. `RequestBuilderError` carries
+  `EmptyRequest`, never `EmptyBatch`.
+- No blanket `From<Payload>` impls on the request/reply/event
+  enums. Variant constructors are already ergonomic; auto-From
+  conflicts if two variants share a payload type (per DA/64 §7).
+  If a channel wants `.into()` ergonomics, it can hand-write
+  `From` for unambiguous payloads; the macro doesn't generate them
+  for any.
+- No `(Assert ...)` wrapping at the channel codec layer. The
+  channel's `NotaEncode/NotaDecode` covers only the payload enum.
+  Operation/Request wrapping is owned by `signal-core::Operation`
+  and `signal-core::Request` NOTA codecs (see /177 §8.1).
 
 ---
 
