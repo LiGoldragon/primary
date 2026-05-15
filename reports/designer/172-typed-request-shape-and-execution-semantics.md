@@ -270,30 +270,56 @@ pub enum BatchOutcome {
 }
 ```
 
-Per-op detail lives in the `SubReply`:
+Per-op detail lives in the `SubReply` — a **typed sum**, not a
+status-flag-plus-Option-payload (per
+`skills/typed-records-over-flags.md` and DA's review of `/172`'s
+draft shape, which would have permitted invalid states like `Ok`
+with `None` payload):
 
 ```rust
-pub struct SubReply<ReplyPayload> {
-    pub verb: SignalVerb,         // echoed from request
-    pub status: SubStatus,
-    pub payload: Option<ReplyPayload>,
-}
+pub enum SubReply<ReplyPayload> {
+    /// Op ran and committed/completed. Payload carries the result.
+    /// Only emitted in BatchOutcome::Completed batches.
+    Ok {
+        verb: SignalVerb,         // echoed from request
+        payload: ReplyPayload,    // mandatory — no Option, no invalid Ok-without-payload state
+    },
 
-pub enum SubStatus {
-    /// Op completed successfully. Payload carries the per-verb result.
-    Ok,
-    /// Op was not attempted because an earlier op in the batch failed.
-    Skipped,
-    /// Op was attempted and failed.
-    Failed(SubFailureReason),
+    /// Op ran but the batch aborted. For writes: durable effects
+    /// rolled back. For reads/validates: result observed speculative
+    /// state and is no longer authoritative. No payload — the caller
+    /// should re-issue if it still wants the value.
+    RolledBack {
+        verb: SignalVerb,
+    },
+
+    /// Op was attempted and failed; this is the cause of the batch
+    /// abort. Exactly one op per aborted batch has this status, at
+    /// BatchOutcome::Aborted::failed_at. May carry a typed detail
+    /// payload describing the failure (e.g. ValidationFailureDetail).
+    Failed {
+        verb: SignalVerb,
+        reason: SubFailureReason,
+        detail: Option<ReplyPayload>,
+    },
+
+    /// Op was never attempted because an earlier op in the batch
+    /// failed.
+    Skipped {
+        verb: SignalVerb,
+    },
 }
 ```
 
 `Completed` + `Ok` per op = clean reads / clean writes / clean
 subscribes / clean validates.
 
-`Aborted` + per-op `Skipped`/`Failed` = the failure case, with the
-exact position and reason recorded.
+`Aborted` + per-op `Skipped`/`Failed`/`RolledBack` = the failure
+case, with the exact position and reason recorded.
+
+The typed-sum shape makes illegal combinations unrepresentable:
+`Ok` requires a payload; `RolledBack`/`Skipped` have no payload
+field at all; `Failed` carries optional detail.
 
 ---
 
@@ -455,47 +481,58 @@ pub enum BatchOutcome {
     },
 }
 
-pub struct SubReply<ReplyPayload> {
-    pub verb: SignalVerb,
-    pub status: SubStatus,
-    pub payload: Option<ReplyPayload>,
-}
+/// Per-op reply — a typed sum (per `skills/typed-records-over-flags.md`
+/// and DA's review of `/172` §55) that makes illegal combinations
+/// unrepresentable. The earlier draft used `{ status, payload: Option }`
+/// which allowed `Ok` with `None` payload at the type level; this
+/// shape forbids it.
+pub enum SubReply<ReplyPayload> {
+    /// Op ran and committed/completed. Only emitted when the entire
+    /// batch reached `BatchOutcome::Completed`.
+    Ok {
+        verb: SignalVerb,
+        payload: ReplyPayload,
+    },
 
-pub enum SubStatus {
-    /// Op ran and committed/completed. Payload carries the result.
-    /// Only set when the entire batch reached `BatchOutcome::Completed`.
-    Ok,
-
-    /// Op ran inside a batch that subsequently aborted. For writes: any
-    /// durable effects were rolled back. For reads or validates that
-    /// ran: their result may have observed speculative state that did
-    /// not commit; the result is no longer authoritative. **Payload is
-    /// always `None`** — the caller should re-issue if it still wants
-    /// the value.
-    RolledBack,
+    /// Op ran inside a batch that subsequently aborted. For writes:
+    /// durable effects were rolled back. For reads/validates that
+    /// ran: their result observed speculative state that did not
+    /// commit; the result is no longer authoritative. No payload —
+    /// the caller should re-issue if it still wants the value.
+    RolledBack {
+        verb: SignalVerb,
+    },
 
     /// Op was attempted and failed; this is the cause of the batch
-    /// abort. Exactly one op per aborted batch has this status, at
-    /// `BatchOutcome::Aborted::failed_at`.
-    Failed(SubFailureReason),
+    /// abort. Exactly one op per aborted batch has this variant, at
+    /// `BatchOutcome::Aborted::failed_at`. May carry a typed detail
+    /// payload describing the failure.
+    Failed {
+        verb: SignalVerb,
+        reason: SubFailureReason,
+        detail: Option<ReplyPayload>,
+    },
 
     /// Op was never attempted because an earlier op in the batch
-    /// failed. Payload is always `None`.
-    Skipped,
+    /// failed.
+    Skipped {
+        verb: SignalVerb,
+    },
 }
 
-// Status invariants:
+// Outcome × per-op invariants (now type-enforced by SubReply's
+// typed-sum shape — the earlier struct-with-Option draft had to
+// state these as prose; the typed sum makes most of them
+// unrepresentable):
 //
-// - BatchOutcome::Completed ⇒ every SubReply.status == Ok and
-//   SubReply.payload == Some(result).
+// - BatchOutcome::Completed ⇒ every SubReply is SubReply::Ok
+//   (each carries a non-Option payload — Ok-without-payload is
+//   structurally impossible).
 // - BatchOutcome::Aborted { failed_at, .. } ⇒
-//     * positions 0..failed_at have status RolledBack, payload None.
-//     * position failed_at has status Failed(reason).
-//     * positions failed_at+1..n have status Skipped, payload None.
-// - Status::Ok ⟺ payload is Some.
-// - Status::RolledBack | Skipped ⇒ payload is None.
-// - Status::Failed(_) → payload may be Some (with failure detail) or
-//   None depending on the per-verb failure convention.
+//     * positions 0..failed_at are SubReply::RolledBack.
+//     * position failed_at is SubReply::Failed (carries reason and
+//       optional typed detail).
+//     * positions failed_at+1..n are SubReply::Skipped.
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum BatchFailureReason {
@@ -519,17 +556,24 @@ pub enum BatchFailureReason {
     Internal,
 }
 
-/// Receiver-side verb-validation API. Two methods (per `/174 §2.2`
-/// correction): `validate(&self)` borrows the request and reports
-/// any violation without consuming; `into_checked(self)` validates
-/// then converts on success, returning the request *back* in the
-/// error tuple on failure so the receiver can build the rejection
-/// reply with the original request's header and per-op verbs.
+/// Receiver-side verb-validation API. Four methods total — two
+/// convenience methods for the universal/default-policy path, two
+/// generic-on-Policy methods for channels that declare a specific
+/// policy. Rust forbids default generic type parameters on methods
+/// (per operator/117 §"Rust Sanity"), so the spec uses explicit
+/// pairs instead of the `<Policy = DefaultPolicy>` shape an earlier
+/// draft tried.
 ///
-/// Both methods take a `Policy` generic (per `/175 §2.2`) so the
-/// channel's `BatchPolicy` impl is mechanically connected to
-/// validation. `DefaultPolicy` is the default — permissive on every
-/// channel-specific rule.
+/// - `validate(&self)` borrows the request, runs universal rules
+///   plus `DefaultPolicy`'s permissive defaults. Caller retains
+///   the request.
+/// - `validate_with_policy::<Policy>(&self)` same with an explicit
+///   channel policy.
+/// - `into_checked(self)` consumes on success; returns the request
+///   back in the error tuple on failure (so the receiver can build
+///   the rejection reply with original header + per-op verbs).
+/// - `into_checked_with_policy::<Policy>(self)` same with explicit
+///   policy.
 ///
 /// Replaces today's single-op `Request::into_payload_checked` for
 /// the new multi-op shape.
@@ -537,13 +581,21 @@ impl<P, I> Request<P, I>
 where
     P: RequestPayload,
 {
-    /// Validate without consuming. Universal rules (verb/payload
-    /// alignment, Subscribe-must-be-last) plus the channel's
-    /// `Policy` rules. Returns the first violation. The caller
-    /// retains the request for whatever follows.
-    pub fn validate<Policy: BatchPolicy<P, I> = DefaultPolicy>(
+    /// Validate without consuming, using the universal rules plus
+    /// `DefaultPolicy`. Universal rules: verb/payload alignment per
+    /// op, Subscribe-must-be-last, NonEmpty (type-enforced).
+    pub fn validate(&self) -> Result<(), BatchVerbMismatch> {
+        self.validate_with_policy::<DefaultPolicy>()
+    }
+
+    /// Validate without consuming, applying a specific channel
+    /// policy in addition to the universal rules.
+    pub fn validate_with_policy<Policy>(
         &self,
-    ) -> Result<(), BatchVerbMismatch> {
+    ) -> Result<(), BatchVerbMismatch>
+    where
+        Policy: BatchPolicy<P, I>,
+    {
         // Empty-batch check is impossible at this layer because
         // `Request` carries `NonEmpty<Op>`; empty frames are caught
         // by the rkyv decoder via NonEmpty's bytecheck invariant and
@@ -579,14 +631,26 @@ where
         Ok(())
     }
 
-    /// Convert to a `CheckedRequest`, validating along the way. On
-    /// failure, returns both the violation and the unconverted
-    /// request — the caller can echo the request's header and per-op
-    /// verbs into the rejection reply without losing context.
-    pub fn into_checked<Policy: BatchPolicy<P, I> = DefaultPolicy>(
+    /// Convert to a `CheckedRequest`, validating with the universal
+    /// rules plus `DefaultPolicy`. On failure, returns both the
+    /// violation and the unconverted request — the caller can echo
+    /// the request's header and per-op verbs into the rejection
+    /// reply without losing context.
+    pub fn into_checked(
         self,
     ) -> Result<CheckedRequest<P, I>, (BatchVerbMismatch, Self)> {
-        if let Err(reason) = self.validate::<Policy>() {
+        self.into_checked_with_policy::<DefaultPolicy>()
+    }
+
+    /// Convert to a `CheckedRequest`, validating with a specific
+    /// channel policy.
+    pub fn into_checked_with_policy<Policy>(
+        self,
+    ) -> Result<CheckedRequest<P, I>, (BatchVerbMismatch, Self)>
+    where
+        Policy: BatchPolicy<P, I>,
+    {
+        if let Err(reason) = self.validate_with_policy::<Policy>() {
             return Err((reason, self));
         }
         let (header, ops) = self.into_parts();

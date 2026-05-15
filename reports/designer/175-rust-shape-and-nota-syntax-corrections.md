@@ -389,13 +389,21 @@ DA's finding 4: examples like `(intent RoleHandoff)` and
 instance" (record heads must be PascalCase). They read as
 keyword-prefixed annotations rather than typed records.
 
-Fix: wrap the header in a typed sum:
+Fix: encode the header as a typed sum. The right type already
+exists — `RequestHeader<Intent>` from `/172 §2`. **Use it directly**
+for the NOTA encoding rather than introducing a parallel
+`BatchHeaderShape` type (per operator/117 §"NOTA Shape: Use /175
+Canon" — "prefer deriving this projection from the real
+`RequestHeader<Intent>` … avoid parallel projection-only types if
+the real domain type can own the NOTA representation directly").
+An earlier draft of this report proposed a separate
+`BatchHeaderShape`; that's redundant and dropped.
 
 ```rust
-// signal-core
-pub enum BatchHeaderShape<Intent> {
+// signal-core (already in /172 §2 — re-shown here for the NOTA codec):
+pub enum RequestHeader<Intent> {
     Anonymous,
-    Tracked(CorrelationId),
+    Tracked { correlation: CorrelationId },
     Named { intent: Intent, correlation: CorrelationId },
 }
 ```
