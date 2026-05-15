@@ -89,8 +89,33 @@ pub struct Frame<RequestPayload, ReplyPayload> {
 `FrameMetadata` should start minimal. For a local v1 daemon, ordered
 single-flight means no request-matching id is needed for correctness.
 If multiplexing arrives later, the matching key should be scoped by
-connection/session plus request sequence, not a client-supplied global
-correlation string.
+connection/session plus a negotiated sender lane and monotonic request
+sequence, not a client-supplied global correlation string.
+
+DA/59's sharper async rule is worth carrying into implementation:
+
+```rust
+pub enum ExchangeMode {
+    OrderedSingleFlight,
+    Multiplexed {
+        session_epoch: SessionEpoch,
+        client_lane: RequestLane,
+        server_lane: RequestLane,
+    },
+}
+
+pub struct RequestIdentifier {
+    pub session_epoch: SessionEpoch,
+    pub lane: RequestLane,
+    pub sequence: RequestSequence,
+}
+```
+
+The handshake negotiates `ExchangeMode`. `OrderedSingleFlight` carries
+no request identifier. `Multiplexed` gives each side its own lane; a
+party mints outgoing request ids only by incrementing its own lane's
+sequence. The peer rejects ids outside the negotiated session/lane or
+duplicates within that lane.
 
 ## Domain Intent
 
@@ -153,9 +178,9 @@ design exists. Do not smuggle them into the storage request core.
 
 1. Should local Signal IPC v1 be ordered single-flight? Operator lean:
    yes. It keeps request/reply matching out of the core request type.
-2. Should future multiplexed channels use `(connection, sequence)` as
-   their matching key rather than global correlation strings? Operator
-   lean: yes.
+2. Should future multiplexed channels negotiate
+   `(session_epoch, sender_lane, sequence)` in the handshake rather
+   than accept global correlation strings? Operator lean: yes.
 3. Should trace/audit metadata be absent from v1 frames unless the
    introspection/logging layer requires it? Operator lean: yes.
 4. Should generic `Intent` be removed from signal-core request/reply
