@@ -398,3 +398,92 @@ resolver policy, service trust, VPN, AI providers, and secret references.
 Once those records exist and are projected, CriomOS and CriomOS-home can
 be reduced to pure renderers, and the source constraints can make the old
 pattern hard to reintroduce.
+
+## Refactor Status, 2026-05-15
+
+Schema work landed on the `horizon-re-engineering` branch in each
+relevant repo (horizon-rs, goldragon, CriomOS, CriomOS-lib,
+CriomOS-home, CriomOS-test-cluster). End-to-end verification for
+each step is `nix flake check` on CriomOS-test-cluster against the
+fieldlab fixture (cluster-contracts, full-module-contracts,
+projections-match-fieldlab, multiple-tailnet-controllers-rejected,
+source-constraints — all green at the latest tip).
+
+Done on the refactor branch:
+
+- Step 1 — `proposal::*` / `view::*` namespace split.
+- Step 4 — `cluster.lan` (LanNetwork: cidr/gateway/dhcpPool/leasePolicy)
+  + `cluster.resolver` (ResolverPolicy: upstreams/fallbacks/listens).
+  CriomOS network/default.nix, dnsmasq.nix, resolver.nix consume.
+- Step 6 — `cluster.aiProviders` (typed AiProvider with models, sources
+  as a NotaSum of AiModelFetchurl/AiModelMultiShard, per-model serving,
+  per-provider serving config). `CriomOS-lib/data/largeAI/llm.json`
+  deleted. CriomOS llm.nix + CriomOS-home pi-models.nix consume.
+- Step 6b — per-node operating envelope on AiServingConfig
+  (gpu_override, memory_max_gb, memory_high_gb). RDNA3
+  HSA_OVERRIDE_GFX_VERSION + memory caps gone from llm.nix.
+- Step 7a — collapse `is_nix_cache + nix_cache_domain + nix_url` into
+  `Option<NixCache>` on view::Node. Same yggdrasil-style sub-record
+  collapse as step 14.
+- Step 7b — drop six shadow `has_*_pub_key` fields (has_nix, has_ygg,
+  has_wireguard, has_nordvpn, has_wifi_cert, has_base). Consumers
+  derive locally from the underlying typed field.
+- Step 8 — `cluster.vpnProfiles` (VpnProfile NotaSum with NordvpnProfile
+  variant carrying VpnDns / VpnClient / NordvpnServer list /
+  credentials SecretReference). `CriomOS/data/config/nordvpn/*` deleted.
+  CriomOS nordvpn.nix consumes.
+- Step 11 — `cluster.tailnet` (TailnetConfig: baseDomain + optional
+  TlsTrustPolicy). TailnetControllerRole::Server collapsed to
+  port-only.
+- Step 14 — yggdrasil sibling fields (`ygg_pub_key`, `ygg_address`,
+  `ygg_subnet`) collapsed into `Option<YggPubKeyEntry>`. SSH-pubkey
+  always-true field deleted.
+
+Open on the refactor branch:
+
+- Step 3 — `criomeDomainName` rename / cluster-domain policy.
+- Step 5 — Wi-Fi typed records (WifiNetwork with WifiAuthentication
+  sum: Wpa3Sae / EapTls). The CriomOS literal SAE password is now
+  out of source via the production sops integration (see report 121),
+  but it's not yet behind a typed Horizon record on the refactor
+  side. Migration here is one of two paths: (a) add WifiNetwork to
+  Cluster + author SecretReference for the password; (b) keep the
+  password as a SecretReference on `RouterInterfaces` (already
+  shaped that way in production main, see report 121) and add SSID
+  / country / regulatory policy as additional Cluster fields.
+- Step 9 — NodePlacement (typed location per node).
+- Step 10 — Machine data-bearing variants (no ZST machine variants).
+- Step 12 — ProjectedNodeView typed shape.
+- Step 13 — Ghost-as-Publication.
+- Step 15 — source-constraint tests for the refactor's invariants.
+
+Two consumer modules in the refactor branch carry loud-fail throws
+where SecretReference resolution is needed:
+
+- `horizon-re-engineering` CriomOS llm.nix — when `AiProvider.api_key`
+  is `Some(ref)`. Today's local providers have `api_key = None` so
+  the throw doesn't fire on goldragon.
+- `horizon-re-engineering` CriomOS nordvpn.nix — when a node opts
+  into nordvpn (`node.nordvpn = true`) and the cluster has a
+  `NordvpnProfile`. Today's fieldlab fixture has empty `vpn_profiles`
+  so the throw doesn't fire on the fieldlab test path.
+
+Both throws were a stub against the unproven secret backend. **The
+backend is now proven on production main** (report 121, phase 2).
+The refactor's consumer modules can adopt the same pattern that
+production router/default.nix uses today: pull
+`inputs.secrets.sopsFiles.<name>` into the consumer module, declare
+`sops.secrets.<name> = { sopsFile = ...; mode = "0400"; restartUnits
+= [ ... ]; }`, and pass `config.sops.secrets.<name>.path` to the
+service that consumes it. The lojix-cli artifact-staging code already
+generalises: `src/artifact.rs:21` synthesises `sopsFiles = { ... }`
+from any sops files present in `<cluster-repo>/secrets/`. Adding new
+named secrets needs no infrastructure changes — author the encrypted
+file beside `router-wifi-sae-passwords.sops`, declare the
+SecretReference in datom, and consume it in the relevant CriomOS
+module.
+
+Pre-existing kea-dhcp4-server stale-socket bug (also discovered
+during this arc) — see report 121 §"Side Note: Pre-existing kea
+Bug Found". Independent of the schema work; worth folding into the
+step-7 / NodeCapabilities work or treating as standalone follow-up.

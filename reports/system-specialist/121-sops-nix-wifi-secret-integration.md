@@ -354,25 +354,128 @@ Recovery checklist once Prometheus is reachable:
   roll back to the previous generation from the console, then revisit
   the ordering and activation behavior before another remote switch.
 
+## Production Deployment, 2026-05-15
+
+The deployment incident was recovered (Prometheus came back; the
+unreachability was transient — the original Switch attempt
+restarted hostapd, which dropped the SSH-over-Wi-Fi path that the
+local invocation depended on, and the local processes were killed
+before reconnect). A LAN to Prometheus was set up for this round
+so SSH no longer depends on Wi-Fi.
+
+The sops chain is now landed, deployed, and end-to-end verified
+on Prometheus.
+
+Phased dual-radio approach (`wifi-sops-fix` branch, since deleted):
+
+1. Phase 1 — independent test radio. A second hostapd service
+   (`hostapd-sops-test.service`) on the secondary USB Wi-Fi
+   adapter (`wlp199s0f0u4`, RTL8192CU) ran in parallel to but
+   completely isolated from the nixpkgs-managed primary
+   `hostapd.service`. The primary radio kept reading from a
+   build-time-embedded password file containing the same plaintext
+   (zero risk to running Wi-Fi); the test radio's
+   `ExecStartPre` read `/run/secrets/routerWifiSaePasswords` and
+   wrote a transient hostapd config to its tmpfs `RuntimeDirectory`.
+   This fully exercised sops decryption + reading from
+   `/run/secrets/` without putting the production radio at risk.
+   Verified end-to-end: associated to `criome-sops-test`, kea
+   served DHCP, prometheus NAT'd to the upstream, internet worked
+   (verified with the workstation's wired ethernet down so Wi-Fi
+   was the only egress).
+
+2. Phase 2 — primary radio swapped to sops. With the chain
+   proven on the test radio, the primary `hostapd.service` was
+   moved back to `saePasswordsFile = config.sops.secrets.<name>.path`
+   and the test radio module was deleted. `restartUnits =
+   [ "hostapd.service" ]` on the secret declaration handles future
+   rotations. Activated via `systemd-run --collect --no-block
+   <profile>/bin/switch-to-configuration test`, then registered as
+   the persistent default with `nix-env -p
+   /nix/var/nix/profiles/system --set <profile>` +
+   `switch-to-configuration boot` (no service restart in the boot
+   step — unit content unchanged from the active Test state).
+   `main` fast-forwarded to the phase-2 commit and pushed.
+
+Two operator gotchas surfaced and are worth remembering:
+
+- **The previous `Requires=sops-nix.service` on hostapd was a
+  wifi-breaker.** Modern sops-nix has no `sops-nix.service` —
+  `sops-install-secrets` runs at system activation before any
+  service starts; rotation is handled by `restartUnits` on the
+  secret. Depending on a non-existent unit would have prevented
+  hostapd from starting on the first activation of the
+  sops-aware generation. Fixed in the same arc as a separate
+  commit ahead of the sops swap.
+
+- **Verifying "internet works through wifi" requires a route the
+  workstation will accept replies on.** With both wired and wifi
+  active, the kernel's main-table default routes the destination
+  via wired; a wifi-bound `--interface` source forces outgoing
+  through wifi but inbound replies are dropped because the route
+  to the source IP says wired. Two clean approaches: (a) bring
+  wired down for the test (most reliable, but kills wired for
+  whoever's on the workstation); (b) add a `/32` route for the
+  test target via the wifi gateway through `nmcli c modify
+  <conn> +ipv4.routes "<target>/32 <wifi-gw>"` + `nmcli device
+  reapply <wifi-iface>` — needs no sudo (polkit grants), no
+  interface bounce, scoped to one destination. Cleanup is
+  `-ipv4.routes` + reapply.
+
+## Side Note: Pre-existing kea Bug Found
+
+While debugging the test-radio DHCP path, a stale-socket bug in
+`kea-dhcp4-server.service` surfaced. Across activations where
+kea's unit file doesn't change, `switch-to-configuration` does
+not restart kea, and the running daemon stays bound to the
+unicast UDP socket on the bridge IP. That socket only handles
+DHCPREQUEST renewals (sent unicast to the server IP); fresh
+DHCPDISCOVER broadcasts to `255.255.255.255:67` are silently
+ignored. Restarting kea once at the start of each session picks
+up the configured `dhcp-socket-type = "raw"` and brings the raw
+packet socket back, after which fresh joins work. This is
+independent of the sops work and was already present before
+phase 1.
+
+The robust fix is to wire the kea config file path into the
+unit's `restartTriggers` so any change to it forces kea to
+restart. Tracked as a follow-up; not part of the sops arc.
+
 ## Still Open
 
-`primary-a61` remains open. This implementation removes the password
-plaintext from CriomOS, but the original acceptance criteria are not yet
-fully satisfied:
+`primary-a61` is partially closed. The password plaintext is out
+of CriomOS in production. Remaining items:
 
 - The SSID and regulatory country policy still need to move out of
   CriomOS and into Horizon-projected Wi-Fi policy.
-- The dual-radio migration remains the intended path: keep the current
-  password-based WPA3-SAE network while adding the certificate/EAP-TLS
-  network on the USB Wi-Fi dongle, migrate clients, then delete the old
-  password network.
-- CriomOS-test-cluster still needs the broader Wi-Fi constraints for
-  synthetic policy, missing secrets, and absence of hard-coded Wi-Fi
-  data.
-- Prometheus recovery must happen before this can be treated as
-  production-proven. The current code has passed evaluation and local
-  decryption checks, but the live switch left the router unreachable.
+- The dual-radio EAP-TLS migration is the intended path long-term:
+  the password-based WPA3-SAE network gets replaced by the
+  certificate/EAP-TLS network on the USB Wi-Fi dongle (the test
+  radio is gone now; the dongle hardware is the same one used for
+  phase 1's test). The clavifaber actor for issuing client certs
+  was prepared in earlier reports; the consumer wiring is the
+  remaining work.
+- CriomOS-test-cluster still needs the broader Wi-Fi constraints
+  for synthetic policy, missing secrets, and absence of hard-coded
+  Wi-Fi data.
+- Pre-existing kea unicast-socket bug noted above.
 
-Context-maintenance decision: this report stays as the load-bearing
-working artifact for the sops-nix Wi-Fi secret work. No separate
-catchall handover report is needed for this topic.
+## Implications for the Horizon Re-engineering Refactor
+
+The horizon-re-engineering branches in `/home/li/wt/...` carry
+two consumer modules that loud-fail when a SecretReference would
+be resolved (`AiProvider.api_key` in step 6's CriomOS llm.nix +
+CriomOS-home pi-models.nix; `NordvpnProfile.credentials` in
+step 8's CriomOS nordvpn.nix). The throws were a stub against
+the unproven secret backend. **The backend is now proven on
+production main.** The refactor's consumer modules can adopt the
+same `inputs.secrets.sopsFiles.<name>` + `sops.secrets.<name> =
+{ ... }` pattern as router/default.nix uses today; the
+`SecretReference.name` (and the lojix-cli artifact staging) drive
+the wiring. No new infrastructure needed — just consume.
+
+Context-maintenance decision: this report stays as the
+load-bearing artifact for the sops-nix Wi-Fi secret work. The
+next-session pickup is the horizon-re-engineering refactor (step
+3 / 5 / 9–15 schema work + the secret-backend consumption now
+unblocked); see the bd tracker and task list for those.
