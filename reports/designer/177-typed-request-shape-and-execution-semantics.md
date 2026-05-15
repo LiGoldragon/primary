@@ -79,46 +79,66 @@ pub struct Request<Payload> {
 }
 
 // signal-core/src/reply.rs
-pub struct Reply<ReplyPayload> {
-    pub outcome: RequestOutcome,
-    pub per_operation: NonEmpty<SubReply<ReplyPayload>>,
+//
+// Reply is a typed sum. Pre-execution rejection and in-execution
+// abort are different categories: one has no per-op results
+// because no op ran; the other has per-op results because some did.
+// Splitting the variants makes illegal states unrepresentable.
+pub enum Reply<ReplyPayload> {
+    /// Request was accepted for execution. Per-op results follow.
+    /// `outcome` distinguishes all-committed from aborted-at-N.
+    Accepted {
+        outcome: AcceptedOutcome,
+        per_operation: NonEmpty<SubReply<ReplyPayload>>,
+    },
+
+    /// Request was rejected before any op began (pre-flight rule
+    /// violation: verb/payload mismatch, Subscribe position,
+    /// decode error, malformed shape). No per-op results because
+    /// no op ran.
+    Rejected {
+        reason: RequestRejectionReason,
+    },
 }
 
-pub enum RequestOutcome {
-    /// All operations completed/committed. Per-op `SubReply` carries
-    /// the per-verb result.
+pub enum AcceptedOutcome {
+    /// All operations completed/committed. Each `per_operation`
+    /// entry is `SubReply::Ok`.
     Completed,
-    /// An op at position `failed_at` failed; the request was aborted.
+    /// Op at position `failed_at` failed; the request was aborted.
     /// Writes that would have committed did not. Subscribes that
     /// would have opened did not.
     Aborted {
         failed_at: usize,
-        reason: RequestFailureReason,
+        reason: OperationFailureReason,
     },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub enum RequestFailureReason {
-    /// The op at `failed_at` was rejected by the receiver.
-    OpRejected,
-    /// The request violated a universal rule (verb/payload mismatch,
-    /// non-empty, etc.).
-    PolicyViolation,
-    /// The channel-declared static policy rejected the request.
-    ChannelPolicyViolation { rule: &'static str, limit: usize },
-    /// A Subscribe was not at the tail (universal rule; fires at
-    /// receive time before any op runs).
-    SubscribeOutOfOrder,
-    /// A `Validate` op failed.
-    ValidationFailed,
-    /// Receiver-internal error.
+pub enum RequestRejectionReason {
+    /// An op's `verb` did not match its payload's
+    /// `RequestPayload::signal_verb()`.
+    VerbPayloadMismatch { index: usize },
+    /// A `Subscribe` op appeared at a position other than the tail.
+    SubscribeOutOfPosition { index: usize },
+    /// Frame failed to decode against the expected payload type.
+    DecodeError,
+    /// Receiver-internal error before any op ran.
     Internal,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum OperationFailureReason {
+    PreconditionFailed,
+    ValidationFailed,
+    DomainRejection,
+}
+
 /// Per-op reply — typed sum. Illegal states unrepresentable.
+/// Only present inside `Reply::Accepted`.
 pub enum SubReply<ReplyPayload> {
-    /// Op ran and committed/completed. Only emitted in
-    /// RequestOutcome::Completed requests.
+    /// Op ran and committed/completed. Only emitted when the
+    /// containing `AcceptedOutcome` is `Completed`.
     Ok { verb: SignalVerb, payload: ReplyPayload },
 
     /// Op ran inside a request that subsequently aborted. For writes:
@@ -128,23 +148,15 @@ pub enum SubReply<ReplyPayload> {
     Invalidated { verb: SignalVerb },
 
     /// Op was attempted and failed; this is the cause of the abort.
-    /// Exactly one per aborted request, at failed_at.
+    /// Exactly one per aborted request, at `failed_at`.
     Failed {
         verb: SignalVerb,
-        reason: SubFailureReason,
+        reason: OperationFailureReason,
         detail: Option<ReplyPayload>,
     },
 
     /// Op never ran because an earlier op failed.
     Skipped { verb: SignalVerb },
-}
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum SubFailureReason {
-    SignalVerbMismatch,
-    PreconditionFailed,
-    ValidationFailed,
-    DomainRejection,
 }
 
 // signal-core/src/subscription.rs
@@ -176,7 +188,20 @@ pub enum ExchangeLane {
     Acceptor,    // the side that accepted
 }
 
+/// Identifies a request/reply exchange. The request frame mints
+/// it; the reply frame echoes it. The pair is the exchange.
 pub struct ExchangeIdentifier {
+    pub session_epoch: SessionEpoch,
+    pub lane: ExchangeLane,
+    pub sequence: ExchangeSequence,
+}
+
+/// Identifies one subscription-event frame's position on the
+/// acceptor lane. Same wire shape as `ExchangeIdentifier`, but a
+/// distinct type — an event is a stream item, not half of a
+/// request/reply pair. The field exists for future
+/// resume-from-N reconnect support.
+pub struct StreamEventIdentifier {
     pub session_epoch: SessionEpoch,
     pub lane: ExchangeLane,
     pub sequence: ExchangeSequence,
@@ -203,11 +228,9 @@ pub enum FrameBody<RequestPayload, ReplyPayload> {
     /// Daemon-initiated subscription event. Rides on the acceptor's
     /// outbound lane with its own monotonic sequence. The
     /// `SubscriptionTokenInner` demuxes to the subscriber that
-    /// requested the stream; the `sequence` in `ExchangeIdentifier`
-    /// gives the client a "resume from N+1" capability on reconnect.
-    /// (Open structural question — see §9 Q2.)
+    /// requested the stream (see §4.2).
     SubscriptionEvent {
-        exchange: ExchangeIdentifier,
+        event_identifier: StreamEventIdentifier,
         token: SubscriptionTokenInner,
         event: ReplyPayload,
     },
@@ -220,7 +243,13 @@ pub struct Frame<RequestPayload, ReplyPayload> {
 
 ---
 
-## 4 · Exchange correctness rules
+## 4 · Connection state — exchanges and subscriptions
+
+Two parallel concerns live on the runtime: request/reply exchange
+tracking, and subscription-event tracking. The handshake establishes
+the lane/sequence grammar for both.
+
+### 4.1 · Request/Reply exchange state
 
 Sender-side:
 
@@ -247,54 +276,114 @@ Failure modes: unknown-exchange Reply, wrong-lane Request, duplicate
 open exchange — all protocol errors (drop connection, log). Out-of-
 order Replies are normal.
 
+### 4.2 · Subscription state
+
+A `Subscribe` op opens a long-lived event stream; that needs explicit
+per-connection state on both sides for routing and lifecycle.
+
+```rust
+// Connector (subscriber) side: routes incoming SubscriptionEvent
+// frames to the actor that opened the stream.
+pub struct ConnectorSubscriptionState {
+    pub open: BTreeMap<SubscriptionTokenInner, ConnectorSubscriptionHandle>,
+}
+
+pub struct ConnectorSubscriptionHandle {
+    pub token: SubscriptionTokenInner,
+    pub opener_exchange: ExchangeIdentifier,
+    pub event_sink: SubscriptionEventSink,
+}
+
+// Acceptor (emitter) side: tracks which subscriptions exist on this
+// connection so writes know whom to notify.
+pub struct AcceptorSubscriptionState {
+    pub open: BTreeMap<SubscriptionTokenInner, AcceptorSubscriptionRecord>,
+    pub next_token: SubscriptionTokenInner,  // monotonic mint
+}
+
+pub struct AcceptorSubscriptionRecord {
+    pub token: SubscriptionTokenInner,
+    pub opener_exchange: ExchangeIdentifier,
+    pub filter: ChannelSubscriptionFilter,   // per-channel typed
+}
+```
+
+**Token assignment**: the acceptor mints. The `SubscriptionOpened`
+reply carries the assigned token. Subsequent `SubscriptionEvent`
+frames on that connection's acceptor lane reference it.
+
+**Token uniqueness**: per-connection. Different connections may
+mint colliding numeric values without consequence — the
+`(connection, token)` pair is the identity.
+
+**Connector-side routing**:
+1. Decode `FrameBody::SubscriptionEvent { exchange, token, event }`.
+2. Look up `token` in `open`.
+3. Forward `event` to `event_sink`.
+4. Unknown token ⇒ protocol error (drop connection, log).
+
+**Acceptor-side fanout**: each write/state-change iterates `open`,
+evaluates per-subscription filters, emits matching events on the
+acceptor lane using the standard `ExchangeSequence` counter.
+
+**Ordering guarantees**:
+- *Within a subscription*: transport-ordered. Frames on the acceptor
+  lane arrive in emission order; the daemon's emit-loop serializes.
+  No per-event sequence number on `SubscriptionEvent` beyond the
+  acceptor-lane `ExchangeIdentifier`.
+- *Across subscriptions*: events interleave on the shared acceptor
+  lane. Each substream stays ordered; cross-substream order is the
+  daemon's emission order, not a promised invariant.
+
+**Retraction**: a `Retract <Channel>SubscriptionRetraction(token)`
+request closes the subscription. On commit, the acceptor removes
+the entry; the reply confirms; the connector removes its entry on
+reply. Late events for a closed token (racing the retract) are
+dropped on the connector side.
+
+**Disconnect**: closing a connection clears both open maps. No
+cross-connection subscription continuity in v1; reconnect re-opens
+explicitly.
+
+**Resume / replay (deferred)**: the `exchange.sequence` on each
+`SubscriptionEvent` (acceptor-lane monotonic) is the position
+required for future resume-from-N. A reconnect handshake variant
+could carry the connector's "highest seen acceptor sequence." Not
+in v1; the field is in the frame for the day it becomes useful.
+
+**Subscription "name"**: the wire identity is the token. Any
+human-readable label lives on `ConnectorSubscriptionHandle` (or
+on the actor that owns the `event_sink`) — client-side concern,
+not protocol.
+
 ---
 
 ## 5 · Validation API
 
-Four explicit methods on `Request<Payload>` — no default type
-parameters on generic methods (Rust forbids them). The
-no-suffix forms delegate to `DefaultPolicy` internally.
+Two methods on `Request<Payload>`; both enforce the same universal
+rules. v1 has no channel-specific policy in the kernel — see §9 Q6.
 
 ```rust
 impl<Payload> Request<Payload>
 where
     Payload: RequestPayload,
 {
-    /// Universal rules + DefaultPolicy. Universal: per-op
-    /// verb/payload alignment via RequestPayload::signal_verb(),
-    /// Subscribe-must-be-last position, NonEmpty (type-enforced).
-    pub fn check(&self) -> Result<(), RequestVerbMismatch> {
-        self.check_with_policy::<DefaultPolicy>()
-    }
+    /// Run universal structural rules: per-op verb/payload alignment
+    /// via `RequestPayload::signal_verb()`, Subscribe-must-be-last
+    /// position. NonEmpty is type-enforced and needs no runtime check.
+    pub fn check(&self) -> Result<(), RequestRejectionReason> { /* ... */ }
 
-    pub fn check_with_policy<Policy>(&self)
-        -> Result<(), RequestVerbMismatch>
-    where
-        Policy: ChannelPolicy<Payload>,
-    { /* universal + policy */ }
-
+    /// Consume self and return a `CheckedRequest` if universal rules
+    /// pass. Returns the rejection reason plus the original request
+    /// on failure (so the caller can recover the payload).
     pub fn into_checked(self)
-        -> Result<CheckedRequest<Payload>, (RequestVerbMismatch, Self)>
+        -> Result<CheckedRequest<Payload>, (RequestRejectionReason, Self)>
     {
-        self.into_checked_with_policy::<DefaultPolicy>()
-    }
-
-    pub fn into_checked_with_policy<Policy>(self)
-        -> Result<CheckedRequest<Payload>, (RequestVerbMismatch, Self)>
-    where
-        Policy: ChannelPolicy<Payload>,
-    {
-        if let Err(reason) = self.check_with_policy::<Policy>() {
+        if let Err(reason) = self.check() {
             return Err((reason, self));
         }
         Ok(CheckedRequest { operations: self.operations })
     }
-}
-
-pub enum RequestVerbMismatch {
-    OpMismatch { index: usize, expected: SignalVerb, got: SignalVerb },
-    SubscribeOutOfOrder { index: usize },
-    PolicyViolation { rule: &'static str, limit: usize },
 }
 
 pub struct CheckedRequest<Payload> {
@@ -302,31 +391,25 @@ pub struct CheckedRequest<Payload> {
 }
 ```
 
+Universal-only rule set:
+
+1. **Verb/payload alignment**: each `Operation { verb, payload }` has
+   `verb == payload.signal_verb()`. Catchable at construction by
+   using `From<Payload> for Request<P>` paths that auto-derive verb;
+   `check()` enforces for constructions that don't.
+2. **Subscribe position**: any `Subscribe` op must be at the last
+   position. Multi-subscribe in one request is allowed only if all
+   Subscribes are tail-contiguous (or banned outright — see §6).
+
 Method named `check` rather than `validate` to avoid confusion with
 `SignalVerb::Validate` (the verb that means "dry-run an op against
 rules"). The two are different things; the name change makes that
 visible. (Open naming question — see §9 Q5.)
 
-**`ChannelPolicy` trait** (channel-declared static rules, opt-in
-per contract):
-
-```rust
-pub trait ChannelPolicy<Payload>
-where Payload: RequestPayload,
-{
-    fn max_ops() -> usize { usize::MAX }
-    fn allow_mixed_read_write() -> bool { true }
-    fn forbid_subscribe() -> bool { false }
-    fn forbid_validate() -> bool { false }
-}
-
-pub struct DefaultPolicy;
-impl<P> ChannelPolicy<P> for DefaultPolicy where P: RequestPayload {}
-```
-
-Declarative only — no closures, no runtime expressions (those
-violate `skills/contract-repo.md`). Custom runtime checks live in
-daemon code, not in the contract.
+Channel-specific static policy (max ops, read/write mixing rules,
+forbidden verbs) is **not in v1**. The kernel ships with universal
+rules only. When a concrete channel needs stricter rules, a
+typed channel-level policy lands then. See §9 Q6.
 
 ---
 
@@ -342,7 +425,7 @@ Strict-ordered execution + read-your-own-writes within a request:
 | All Validate | Dry-run against the request-time snapshot. First failure aborts. |
 | Validate + writes | Strict-ordered; Validate at position N sees cumulative writes 1..N-1. Preflight (Validates first) and checkpoint (Validates after) both work. |
 | Match + writes | Strict-ordered; Match at position N sees cumulative writes 1..N-1. SQL SELECT-FOR-UPDATE pattern works. **No result binding** — Match's payload is for the caller's read; later ops carry their own pre-conditions (e.g., `expected_rev` on Mutate). |
-| Subscribe + non-Subscribe | **Subscribes must come last in the request.** Non-Subscribe ops execute in strict order first; if any fails, no streams open. If all succeed, writes commit, then subscribes open at the post-commit snapshot. A Subscribe in the middle is rejected at receive-time as `RequestFailureReason::SubscribeOutOfOrder`. |
+| Subscribe + non-Subscribe | **Subscribes must come last in the request.** Non-Subscribe ops execute in strict order first; if any fails, no streams open. If all succeed, writes commit, then subscribes open at the post-commit snapshot. A Subscribe in the middle is rejected at receive-time as `Reply::Rejected { reason: RequestRejectionReason::SubscribeOutOfPosition }`. |
 
 Subscribes use the **two-phase staged-open**: validate every
 Subscribe first (filter type-checks, resource exists, requester
@@ -450,80 +533,78 @@ observed dead state). No separate variant earns its keep.
 
 Settled: unified `Invalidated`.
 
-### Q2 — Where do subscription events live in `FrameBody`?
+### Q2 — `SubscriptionEvent` is the 5th `FrameBody` variant
 
-§3 above adds `SubscriptionEvent { exchange, token, event }` as
-the fourth FrameBody variant. DA/61 §3 is silent on this — the
-spec only names HandshakeRequest, HandshakeReply, Request, Reply.
+§3 carries `SubscriptionEvent { exchange, token, event }` as the
+fifth FrameBody variant. The alternatives (replies-after-replies
+on the original Subscribe exchange, or per-event daemon-initiated
+request frames) either break "one reply per exchange" or pay
+handshake overhead per event.
 
-Without an event variant, subscription events would have to be
-either (a) replies-after-replies on the original Subscribe
-exchange (breaks "one reply per exchange") or (b) daemon-initiated
-requests on `Acceptor` lane that expect a trivial ack from the
-client (overhead per event). Neither is clean.
+§4.2 specifies the connector-side and acceptor-side subscription
+trackers: the connector maintains `SubscriptionTokenInner →
+ConnectorSubscriptionHandle` so events route to the right
+subscriber; the acceptor maintains `SubscriptionTokenInner →
+AcceptorSubscriptionRecord` so writes know whom to notify.
+Ordering within a subscription is transport-guaranteed (single
+acceptor lane, serialized emit-loop); cross-subscription order is
+not promised.
 
-My lean: include `SubscriptionEvent` as a fourth variant. The
-overhead is small (one variant in the enum); the alternative
-shoehorns events into protocols they don't fit.
+Settled: 5th variant + stateful per-connection trackers on both
+sides.
 
-### Q3 — `ExchangeMode::LaneSequence` no longer needs explicit lane fields
+### Q3 — `ExchangeMode::LaneSequence` drops the tautological lane fields
 
-DA/61 §3 still has:
+The `connector_lane`/`acceptor_lane` fields in DA/61's
+`ExchangeMode::LaneSequence` were always `Connector`/`Acceptor`
+respectively — known from connection direction, not negotiated.
 
-```rust
-pub enum ExchangeMode {
-    LaneSequence {
-        session_epoch: SessionEpoch,
-        connector_lane: ExchangeLane,
-        acceptor_lane: ExchangeLane,
-    },
-}
-```
+§3 simplifies to `LaneSequence { session_epoch }`. A future
+variant that genuinely needs dynamic lane assignment gets its
+own enum variant.
 
-But `connector_lane` is always `ExchangeLane::Connector` and
-`acceptor_lane` is always `ExchangeLane::Acceptor` by convention.
-The fields are tautological — known from the connection direction.
+Settled.
 
-§3 above simplifies to:
+### Q4 — `session_epoch` on every frame
 
-```rust
-pub enum ExchangeMode {
-    LaneSequence { session_epoch: SessionEpoch },
-}
-```
+§3 keeps `session_epoch` on every frame. Costs 8 bytes per frame.
+Buys: a confused reconnect can't accidentally interpret an
+old-epoch frame as current-epoch.
 
-The runtime knows each side's lane from connection state
-(who opened the socket vs who accepted). If a future variant
-genuinely needs dynamic lane assignment (e.g., a server-initiated
-reversal during handshake), it gets its own enum variant.
+Settled.
 
-### Q4 — `session_epoch` on every frame, or implicit?
+### Q5 — `check` (settled)
 
-DA/61 §3 says *"the live wire may omit `session_epoch` from each
-frame if connection state already supplies it. Durable logs expand
-identity as needed."* That's wishy-washy — either the wire always
-includes it or never does.
+§5 uses `check()`. Visibly different from `SignalVerb::Validate`
+(the verb that means "dry-run an op against rules"); the two
+concepts no longer collide on a single name.
 
-§3 above keeps it on every frame. Costs 8 bytes per frame. Buys: a
-confused reconnect can't accidentally interpret an old-epoch frame
-as current-epoch.
+Settled.
 
-My lean: keep it on the wire. The cost is trivial; the safety is
-real.
+### Q6 — `ChannelPolicy` deferred out of v1 (per DA/63 F2)
 
-### Q5 — `check` vs `validate` method name
+DA/63 §F2 argues `ChannelPolicy` in `signal-core` and
+`channel_policy { ... }` in the macro are premature: no concrete
+channel has been identified that needs stricter-than-universal
+rules, so the kernel doesn't earn the abstraction yet. v1 should
+ship with universal rules only.
 
-§5 above uses `check()` / `check_with_policy()`. DA/61 §9 suggests
-this to avoid confusion with `SignalVerb::Validate` (the verb that
-means "dry-run an op against rules").
+§5 now reflects this: only `check()` / `into_checked()` enforce
+universal rules (verb/payload alignment + Subscribe position).
+The `_with_policy` methods, the `ChannelPolicy` trait, the
+`DefaultPolicy` struct, and the macro's `channel_policy { ... }`
+block all come back the day a real channel needs them.
 
-Pro `check`: visibly different from `SignalVerb::Validate`.
-Avoids the "validate-validate" awkwardness.
+Settled-as-deferred.
 
-Pro `validate`: matches Rust convention (`String::from_utf8`-shaped
-validators usually use `validate`); CS tradition.
+### Q7 — Architecture drift (per DA/63 §3)
 
-My lean: `check`. The Verb collision is real; `check` reads cleanly.
+`signal-core/ARCHITECTURE.md` and `skills/contract-repo.md`
+currently say `SignalVerb` is a closed seven-root spine with
+`Atomic`. /177 says six roots with structural atomicity. After the
+user confirms these reports as canonical, both docs need a sweep.
+
+Followup, not a /177 spec change.
 
 ---
 

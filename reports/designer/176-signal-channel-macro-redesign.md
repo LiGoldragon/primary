@@ -18,13 +18,16 @@ re-exported across contract crates; the substance migrates to
 typed payload enums, the per-variant `SignalVerb` witness, the
 auto-generated kind enum, the channel type aliases, and the NOTA
 codec impls. Nothing else. No `with intent` clause. No `intent
-{ ... }` block. No correlation/header machinery. No `NoIntent`.
-No multi-mode constructors per channel — the generic
-`BatchBuilder<P>` in `signal-core` does that work.
+{ ... }` block. No `channel_policy { ... }` block (deferred — see
+/177 §9 Q6). No correlation/header machinery. No `NoIntent`. No
+multi-mode constructors per channel — the generic `RequestBuilder<P>`
+in `signal-core` does that work.
 
-The macro engine is **proc-macro**. The new emissions push
-`macro_rules!` past the practical line; proc-macro gives clean
-conditional emission and custom error messages.
+The current `macro_rules!` engine in `signal-core/src/channel.rs`
+stays for v1. After the intent/correlation/policy machinery is
+gone, the remaining surface is well within `macro_rules!` reach.
+Proc-macro extraction is on the table only when a future extension
+earns it.
 
 ---
 
@@ -40,17 +43,11 @@ signal_channel! {
         <Variant>(<Payload>),
         ...
     }
-    [channel_policy {
-        <field>: <value>,
-        ...
-    }]
 }
 ```
 
-`request <RequestName> { ... }` is required. `reply <ReplyName>
-{ ... }` is required. `channel_policy { ... }` is optional;
-absent means `DefaultPolicy` (permissive on every channel-specific
-rule).
+Both `request <RequestName> { ... }` and `reply <ReplyName> { ... }`
+are required. No optional blocks in v1.
 
 Verbs are exactly the six `SignalVerb` variants. Each request
 variant lists its verb in the macro syntax; the macro emits the
@@ -142,7 +139,7 @@ pub type Frame        = signal_core::Frame<MindRequest, MindReply>;
 pub type FrameBody    = signal_core::FrameBody<MindRequest, MindReply>;
 pub type ChannelRequest = signal_core::Request<MindRequest>;
 pub type ChannelReply   = signal_core::Reply<MindReply>;
-pub type ChannelBuilder = signal_core::BatchBuilder<MindRequest>;
+pub type ChannelRequestBuilder = signal_core::RequestBuilder<MindRequest>;
 
 // (6) Per-variant From<Payload> impls (request + reply) for
 // ergonomic `.into()` at call sites.
@@ -156,12 +153,9 @@ impl NotaDecode for MindRequest { /* peek head, dispatch */ }
 impl NotaEncode for MindReply { /* same */ }
 impl NotaDecode for MindReply { /* same */ }
 
-// (8) Channel-policy unit struct + impl (or DefaultPolicy alias).
-// If channel_policy block was absent, this is just a re-export.
-pub struct MindChannelPolicy;
-impl signal_core::ChannelPolicy<MindRequest> for MindChannelPolicy {
-    // Defaults from the trait, or override from the macro block.
-}
+// (No channel-policy struct in v1 — universal rules only, per
+// /177 §9 Q6. When a real channel needs stricter-than-universal
+// rules, a typed channel-level policy lands then.)
 ```
 
 ---
@@ -180,13 +174,14 @@ Explicit non-emissions, to prevent regression as the macro evolves:
 - No `(Anonymous)` / `(Tracked ...)` / `(Named ...)` NOTA shapes.
 - No `(Batch ...)` wrapper in NOTA.
 - No `single_named` / `single_tracked` / `batch_tracked`
-  per-channel constructors. Use the generic `BatchBuilder<P>` in
+  per-channel constructors. Use the generic `RequestBuilder<P>` in
   `signal-core`.
 - No exchange-id machinery. Exchange ids live at the
   `signal-core::FrameBody` level, not in the channel-specific
   types.
-- No runtime validation closures. `channel_policy { ... }` is
-  declarative-only.
+- No `channel_policy { ... }` block in v1 (deferred per /177 §9 Q6).
+- No `Batch*` public names. The construction surface is named
+  `RequestBuilder<P>` — see §6.
 
 ---
 
@@ -219,38 +214,19 @@ auto-adds its kind. The hand-written drift problem retires.
 
 ---
 
-## 5 · `channel_policy { ... }` block (optional)
+## 5 · Channel-policy block — not in v1
 
-Declarative field-only block; the macro emits a `ChannelPolicy`
-impl. Closed field list per `/177 §5`:
-
-```rust
-signal_channel! {
-    request <Name> { ... }
-    reply <Name> { ... }
-    channel_policy {
-        max_ops: 32,
-        allow_mixed_read_write: true,
-        forbid_subscribe: false,
-        forbid_validate: false,
-    }
-}
-```
-
-If the block is absent, the macro emits `pub use signal_core::DefaultPolicy
-as <ChannelName>ChannelPolicy;` — a type alias to the permissive
-default. Channels that don't need static rules don't pay the
-per-channel struct overhead.
-
-No closures. No runtime expressions. Custom checks live in daemon
-code, not in the contract crate.
+No `channel_policy { ... }` block in v1. The kernel ships with
+universal rules only (verb/payload alignment + Subscribe position).
+When a concrete channel needs stricter-than-universal rules, a
+typed channel-level policy lands then. See `/177 §9 Q6`.
 
 ---
 
 ## 6 · Construction surface (lives in `signal-core`, not in the macro)
 
 Channel-specific constructors are not macro-emitted. The generic
-`BatchBuilder<P>` and `RequestPayload` default methods in
+`RequestBuilder<P>` and `RequestPayload` default methods in
 `signal-core` handle construction:
 
 ```rust
@@ -270,11 +246,11 @@ pub trait RequestPayload: Sized {
     }
 }
 
-pub struct BatchBuilder<P> {
+pub struct RequestBuilder<P> {
     ops: Vec<Operation<P>>,
 }
 
-impl<P> BatchBuilder<P>
+impl<P> RequestBuilder<P>
 where P: RequestPayload,
 {
     pub fn new() -> Self { Self { ops: Vec::new() } }
@@ -285,15 +261,15 @@ where P: RequestPayload,
         self
     }
 
-    pub fn build(self) -> Result<Request<P>, BatchBuilderError> {
+    pub fn build(self) -> Result<Request<P>, RequestBuilderError> {
         NonEmpty::from_vec(self.ops)
             .map(|operations| Request { operations })
-            .ok_or(BatchBuilderError::EmptyBatch)
+            .ok_or(RequestBuilderError::EmptyRequest)
     }
 }
 
-pub enum BatchBuilderError {
-    EmptyBatch,
+pub enum RequestBuilderError {
+    EmptyRequest,
 }
 ```
 
@@ -304,40 +280,33 @@ Call sites:
 let request = MindRequest::SubmitThought(thought).into_request();
 
 // Multi-op:
-let request = signal_persona_mind::ChannelBuilder::new()
+let request = signal_persona_mind::ChannelRequestBuilder::new()
     .with(MindRequest::RoleRelease(...))
     .with(MindRequest::RoleClaim(...))
     .build()?;
 ```
 
-The per-channel `ChannelBuilder` type alias from §2 emission (5)
-specializes the generic builder to that channel's payload type.
+The per-channel `ChannelRequestBuilder` type alias from §2 emission
+(5) specializes the generic builder to that channel's payload type.
+All public names are `Request*`; "batch" survives nowhere as a
+type/method name.
 
 ---
 
-## 7 · Macro engine: proc-macro
+## 7 · Macro engine: `macro_rules!` for v1
 
-The macro is a proc-macro, not `macro_rules!`. The new emissions
-(auto-generated kind enum, optional `channel_policy` block,
-conditional emissions, type aliases that depend on the input)
-push `macro_rules!` past the practical line. proc-macro buys:
+The current `macro_rules!` engine in `signal-core/src/channel.rs`
+stays. After the intent/correlation/policy machinery is gone, the
+remaining surface (payload enums, verb-witness match,
+auto-generated kind enum, type aliases, From impls, NOTA codec) is
+well within `macro_rules!` reach — the `paste` crate handles
+ident-concatenation for the kind enum.
 
-- Conditional emission as normal Rust `if let`.
-- Custom error messages via `syn::Error::new_spanned(token, msg)`
-  pointing at the exact offending input.
-- Easier extension (future per-variant attributes, validator
-  derives, batch-policy custom rules) without `macro_rules!`
-  pattern gymnastics.
-
-Implementation:
-
-- `signal-core-macros` crate with `[lib] proc-macro = true`.
-- `signal-core` re-exports the macro (`pub use signal_core_macros::signal_channel;`).
-- Contract crates' `signal_channel!` invocation sites stay
-  Rust-syntactic and unchanged.
-
-The migration is one operator pass and lands alongside the
-signal-core async-first wave (operator wave 2 per DA/62).
+Proc-macro extraction is on the table the day a real extension
+needs it (custom per-variant attributes, span-aware error messages,
+or a future `channel_policy { ... }` block). Don't add the crate
+preemptively — DA/63 §F5 is right that a new crate without a v1
+witness is a micro-component violation.
 
 ---
 
