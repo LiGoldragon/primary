@@ -4,6 +4,7 @@
 `reports/designer/175-rust-shape-and-nota-syntax-corrections.md`, DA's
 critique of `reports/operator/116-early-evaluation-typed-request-and-channel-macro.md`,
 `reports/designer-assistant/55-review-operator-116-typed-request-channel-macro.md`,
+`reports/operator-assistant/114-typed-request-shape-and-macro-redesign-evaluation.md`,
 current `signal-core` source, and current `sema-engine` source. This
 supersedes `/116` where they differ.*
 
@@ -256,6 +257,49 @@ types unless a separate `BatchHeaderShape` type earns its place.
 Avoid parallel projection-only types if the real domain type can own
 the NOTA representation directly.
 
+Operator-assistant `/114` sharpens this into an implementation gate:
+`/172` names `RequestHeader<Intent>` and `/175` names
+`BatchHeaderShape<Intent>` for the same shape. Pick one type and one
+name before code lands. My lean is `RequestHeader<Intent>` because it
+already participates in the request/reply type model; the NOTA
+projection should derive from the real request header rather than a
+parallel projection-only type.
+
+## NonEmpty Codec Gate
+
+Operator-assistant `/114` also names a codec gap that should move
+into wave 1. `NonEmpty<Op<Payload>>` is not just a Rust collection;
+it is a wire and NOTA boundary.
+
+Rust/rkyv shape:
+
+```rust
+pub struct NonEmpty<Value> {
+    head: Value,
+    tail: Vec<Value>,
+}
+```
+
+The rkyv archive shape naturally rules out empty batches because
+there is always a `head`. The implementation still needs explicit
+derive/bytecheck coverage for `NonEmpty<Value>` and a test proving an
+empty batch cannot be constructed or decoded into a valid request.
+
+NOTA shape:
+
+```text
+[(Assert (...)) (Mutate (...))]
+```
+
+The NOTA decoder for `NonEmpty<Value>` cannot be hand-waved as a
+normal record derive. It must consume a NOTA sequence, reject an empty
+sequence, and split the first item into `head` and the rest into
+`tail`. That impl belongs in signal-core because signal-core owns
+`NonEmpty`.
+
+This is first-wave work with signal-core. Do not leave it for the
+macro or contract repos to improvise.
+
 ## `SubReply` Should Be Typed Before Code Lands
 
 `/116`'s strongest extra finding still stands. The proposed:
@@ -302,6 +346,28 @@ If a successful operation has no domain payload, the contract should
 define an explicit acknowledgement reply payload. Do not encode
 "successful but no payload" as `None` inside a broad struct.
 
+## SubscriptionToken Remains A Design Gap
+
+Operator-assistant `/114` points out that the new batch/subscription
+semantics mention `SubscriptionToken`, but the token itself is not
+specified. That does not block the core `Request` / `Reply` /
+`NonEmpty` / `Frame` rewrite unless signal-core decides to own a
+generic subscription token. It does block subscription-capable
+contracts from becoming implementation-ready.
+
+Decisions still needed:
+
+- Is the token a signal-core type, a per-contract type, or a
+  sema-engine slot-like handle?
+- Is its storage identity numeric, slot-backed, hash-backed, or
+  another typed id?
+- Is cancellation represented as a `Retract` payload carrying the
+  token, or by a separate channel-specific variant?
+
+Until those settle, wave-1 signal-core can model successful
+subscription opening as a normal `ReplyPayload`, but contract repos
+that actually expose subscription open/cancel behavior should wait.
+
 ## Current Implementation Readiness
 
 Implementation can start only after the following are treated as the
@@ -313,7 +379,12 @@ active code shape:
 3. `Reply` is batch-only and handshake lives only in `FrameBody`.
 4. `SubReply` illegal states are removed by type shape.
 5. NOTA examples use only the `(Batch (Header) [ops])` form.
-6. `NoIntent` rkyv/bytecheck/NOTA derivation is empirically tested.
+6. `RequestHeader` and `BatchHeaderShape` collapse to one named type.
+7. `NonEmpty<T>` has explicit rkyv/bytecheck and NOTA sequence
+   behavior.
+8. `NoIntent` rkyv/bytecheck/NOTA derivation is empirically tested.
+9. `SubscriptionToken` is either explicitly deferred from wave 1 or
+   specified before subscription-capable contracts move.
 
 The build witnesses for wave 1 should be Nix checks in `signal-core`
 and `sema-engine`:
@@ -322,6 +393,7 @@ and `sema-engine`:
 signal-core:
   - six-root verb set, no Atomic
   - Request cannot be empty
+  - NonEmpty sequence decoding rejects empty NOTA sequences
   - mismatched op verb returns original request
   - subscribe followed by non-subscribe rejects
   - NoIntent cannot form Named request
@@ -347,3 +419,7 @@ receive paths are migrated.
 - `reports/designer-assistant/55-review-operator-116-typed-request-channel-macro.md`
   - DA review that identifies sema-engine as first-wave work and
   confirms the remaining useful `/116` findings.
+- `reports/operator-assistant/114-typed-request-shape-and-macro-redesign-evaluation.md`
+  - independent operator-assistant confirmation that adds the
+  `NonEmpty` codec, header-name unification, and `SubscriptionToken`
+  gates.
