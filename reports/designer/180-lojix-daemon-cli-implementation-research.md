@@ -9,6 +9,18 @@ worktree carries real implementation, not skeletons.*
 > sequence. The actor implementation, socket loop, deploy
 > pipeline, and CLI body are operator/system-specialist lanes.
 
+> **Update (later 2026-05-15):** Wave 1 step 1 of §4 (sema-engine
+> Assert-freshness + fmt) landed via
+> `reports/operator-assistant/121-readiness-audit-resolution-2026-05-15.md`
+> (sema-engine commits `3fd65fc1` + `2a4cbfd1` + `ea00c12d`).
+> `Engine::assert` now rejects pre-existing keys with typed
+> `DuplicateAssertKey`; release gate green; README + ARCH honest.
+> Wave 1 steps 2–4 (Cargo.lock bumps in lojix + signal-lojix,
+> `channel <Name>` macro wrap, observation-shape decision) and
+> Waves 2–8 remain. The four signal-core macro §4 gaps named in
+> Gap A's lineage are in operator's active claim
+> (`primary-6jww`).
+
 ## 0 · Correction to /179
 
 `reports/designer/179-...md` §3 reported that `signal-lojix` and

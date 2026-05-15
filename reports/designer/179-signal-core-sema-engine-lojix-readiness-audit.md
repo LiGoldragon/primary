@@ -11,6 +11,18 @@
 > `lojix/ARCHITECTURE.md` (added Constraints; named the channel
 > shape; named the SubscriptionSink bridge).
 
+> **Update (later 2026-05-15):** `reports/operator-assistant/121-readiness-audit-resolution-2026-05-15.md`
+> closes both correctness bugs and Q1 + Q3. `sema-engine` commits
+> `3fd65fc1` (Assert-freshness + DuplicateAssertKey), `2a4cbfd1`
+> (fmt → nix flake check green), and `ea00c12d` (README + ARCH
+> honest, Rename-Map + Package-Order retired, example fixed)
+> landed. The four signal-core macro §4 validator gaps and the
+> trybuild harness (Q2) remain open under operator's active claim
+> `primary-6jww`. DA/71's three deferred items (snapshot allocation
+> safety, prevalidation outside write txn, multi-table commit)
+> are sidestepped via the now-explicit single-owner constraint in
+> sema-engine's ARCH.
+
 ## 0 · TL;DR
 
 `signal-core` is fully migrated to the six-root spine, structural
