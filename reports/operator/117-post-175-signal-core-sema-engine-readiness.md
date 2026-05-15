@@ -5,6 +5,8 @@
 critique of `reports/operator/116-early-evaluation-typed-request-and-channel-macro.md`,
 `reports/designer-assistant/55-review-operator-116-typed-request-channel-macro.md`,
 `reports/operator-assistant/114-typed-request-shape-and-macro-redesign-evaluation.md`,
+`reports/designer-assistant/56-review-operator-117-post-175-readiness.md`,
+`reports/designer-assistant/57-review-operator-assistant-114-typed-request-evaluation.md`,
 current `signal-core` source, and current `sema-engine` source. This
 supersedes `/116` where they differ.*
 
@@ -115,6 +117,62 @@ wave 3
 
 This preserves buildability and keeps sema-engine as the pressure
 test for whether the new batch semantics are real.
+
+## Active Sema-Engine Gap
+
+DA/56 and DA/57 narrow the main remaining implementation blocker:
+the wave-1 plan needs concrete sema-engine replacement names and log
+schema before code changes start. "Remove Atomic" is not enough,
+because sema-engine currently exposes an Atomic-colored API surface:
+
+```text
+AtomicBatch
+AtomicOperation
+AtomicReceipt
+Engine::atomic
+Error::EmptyAtomicBatch
+Error::DuplicateAtomicKey
+OperationLogEntry { verb: SignalVerb, table_name, key }
+```
+
+The replacement should make batch commit structural, not a root verb.
+My current implementation lean is:
+
+```rust
+pub struct WriteBatch<RecordValue> {
+    table: TableReference<RecordValue>,
+    operations: NonEmpty<WriteOperation<RecordValue>>,
+}
+
+pub enum WriteOperation<RecordValue> {
+    Assert(RecordValue),
+    Mutate(RecordValue),
+    Retract(RecordKey),
+}
+
+pub struct CommitReceipt {
+    table: TableName,
+    snapshot: SnapshotId,
+    operation_count: usize,
+}
+
+pub struct CommitLogEntry {
+    snapshot: SnapshotId,
+    table_name: TableName,
+    operations: NonEmpty<CommitLogOperation>,
+}
+
+pub struct CommitLogOperation {
+    verb: SignalVerb, // Assert / Mutate / Retract only.
+    key: RecordKey,
+}
+```
+
+Names can still be adjusted, but the shape should be chosen before a
+sema-engine edit. The important invariant is that `CommitLogEntry`
+does not carry a top-level `SignalVerb`; singleton writes are one-op
+commit entries, and multi-op writes are one commit entry with per-op
+details.
 
 ## Rust Sanity: `/175` Policy Shape Still Fails
 
@@ -251,19 +309,11 @@ direction from `/175` is:
         (Assert  (RoleClaim (role Poet)))])
 ```
 
-One refinement remains from `/116`: prefer deriving this projection
-from the real `RequestHeader<Intent>` / `Request<Payload, Intent>`
-types unless a separate `BatchHeaderShape` type earns its place.
-Avoid parallel projection-only types if the real domain type can own
-the NOTA representation directly.
-
-Operator-assistant `/114` sharpens this into an implementation gate:
-`/172` names `RequestHeader<Intent>` and `/175` names
-`BatchHeaderShape<Intent>` for the same shape. Pick one type and one
-name before code lands. My lean is `RequestHeader<Intent>` because it
-already participates in the request/reply type model; the NOTA
-projection should derive from the real request header rather than a
-parallel projection-only type.
+DA/57 says the latest `/175` main text now resolves the old
+`RequestHeader` / `BatchHeaderShape` split. The canonical type is
+`RequestHeader<Intent>`, and it owns the NOTA projection directly.
+Any remaining `BatchHeaderShape` mentions in headings, summaries, or
+tables are stale documentation cleanup, not an open design decision.
 
 ## NonEmpty Codec Gate
 
@@ -281,9 +331,12 @@ pub struct NonEmpty<Value> {
 ```
 
 The rkyv archive shape naturally rules out empty batches because
-there is always a `head`. The implementation still needs explicit
-derive/bytecheck coverage for `NonEmpty<Value>` and a test proving an
-empty batch cannot be constructed or decoded into a valid request.
+there is always a `head`. The implementation still needs archive and
+serialization support for `NonEmpty<Value>`, plus decode-site
+`CheckBytes` witnesses matching the rest of the rkyv 0.8 workspace
+style. Do not bake a guessed `#[archive(check_bytes)]` incantation
+into the architecture; prove the actual trait bounds and decoder path
+with tests.
 
 NOTA shape:
 
@@ -346,7 +399,7 @@ If a successful operation has no domain payload, the contract should
 define an explicit acknowledgement reply payload. Do not encode
 "successful but no payload" as `None` inside a broad struct.
 
-## SubscriptionToken Remains A Design Gap
+## SubscriptionToken Is Deferred From Wave 1
 
 Operator-assistant `/114` points out that the new batch/subscription
 semantics mention `SubscriptionToken`, but the token itself is not
@@ -364,9 +417,10 @@ Decisions still needed:
 - Is cancellation represented as a `Retract` payload carrying the
   token, or by a separate channel-specific variant?
 
-Until those settle, wave-1 signal-core can model successful
-subscription opening as a normal `ReplyPayload`, but contract repos
-that actually expose subscription open/cancel behavior should wait.
+Until those settle, wave-1 signal-core should explicitly defer the
+token unless it chooses to own a generic token type. Contract repos
+that expose subscription open/cancel behavior should wait until the
+token and cancellation shape are specified.
 
 ## Current Implementation Readiness
 
@@ -374,16 +428,20 @@ Implementation can start only after the following are treated as the
 active code shape:
 
 1. `signal-core` and `sema-engine` move together in wave 1.
-2. `/175`'s method-level default generic syntax is replaced by legal
+2. sema-engine has chosen replacements for `AtomicBatch`,
+   `AtomicOperation`, `AtomicReceipt`, `Engine::atomic`, and the
+   single-verb `OperationLogEntry` schema.
+3. `/175`'s method-level default generic syntax is replaced by legal
    Rust.
-3. `Reply` is batch-only and handshake lives only in `FrameBody`.
-4. `SubReply` illegal states are removed by type shape.
-5. NOTA examples use only the `(Batch (Header) [ops])` form.
-6. `RequestHeader` and `BatchHeaderShape` collapse to one named type.
-7. `NonEmpty<T>` has explicit rkyv/bytecheck and NOTA sequence
-   behavior.
-8. `NoIntent` rkyv/bytecheck/NOTA derivation is empirically tested.
-9. `SubscriptionToken` is either explicitly deferred from wave 1 or
+4. `Reply` is batch-only and handshake lives only in `FrameBody`.
+5. `SubReply` illegal states are removed by type shape.
+6. NOTA examples use only the `(Batch (Header) [ops])` form.
+7. `RequestHeader<Intent>` directly owns the NOTA projection; stale
+   `BatchHeaderShape` text is documentation cleanup only.
+8. `NonEmpty<T>` has explicit archive, decode-bound, and NOTA
+   sequence behavior.
+9. `NoIntent` rkyv/bytecheck/NOTA derivation is empirically tested.
+10. `SubscriptionToken` is either explicitly deferred from wave 1 or
    specified before subscription-capable contracts move.
 
 The build witnesses for wave 1 should be Nix checks in `signal-core`
@@ -401,6 +459,8 @@ signal-core:
 
 sema-engine:
   - operation log records batch structure without SignalVerb::Atomic
+  - CommitLogEntry has no top-level SignalVerb
+  - CommitLogEntry carries one snapshot and per-op details
   - receipt records batch structure without SignalVerb::Atomic
   - per-op effects still identify Assert/Mutate/Retract
   - committed write batch emits one snapshot
@@ -420,6 +480,14 @@ receive paths are migrated.
   - DA review that identifies sema-engine as first-wave work and
   confirms the remaining useful `/116` findings.
 - `reports/operator-assistant/114-typed-request-shape-and-macro-redesign-evaluation.md`
-  - independent operator-assistant confirmation that adds the
-  `NonEmpty` codec, header-name unification, and `SubscriptionToken`
-  gates.
+  - historical operator-assistant confirmation that added the
+  `NonEmpty` codec and `SubscriptionToken` observations. Its
+  header-name split is resolved by the latest `/175` main text.
+- `reports/designer-assistant/56-review-operator-117-post-175-readiness.md`
+  - identifies the concrete sema-engine replacement vocabulary and
+  operation-log schema as the main remaining implementation gap.
+- `reports/designer-assistant/57-review-operator-assistant-114-typed-request-evaluation.md`
+  - narrows OA/114 into the current active gate: `RequestHeader`
+  is canonical, `SubscriptionToken` is deferred from wave 1 unless
+  core owns it, and `NonEmpty` rkyv guidance should be expressed as
+  trait/test witnesses rather than a guessed attribute.
