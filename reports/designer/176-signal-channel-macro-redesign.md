@@ -1,212 +1,234 @@
-# 176 — `signal_channel!` redesign + two corrections to `/177`
+# 176 — `signal_channel!` macro redesign
 
-*Designer follow-up, 2026-05-15. Accepts DA's critique that `/173`'s
-"the macro grows but doesn't fundamentally rethink" was too
-conservative. Folds DA's five points: single-op helpers obsolete,
-four-axis Frame should be three-axis, optional intent already covered,
-batch policy belongs in the macro, operation-kind enum should be
-auto-generated. Plus surfaces two corrections to `/177` that DA's
-critique implies: the Frame parameter count and the
-`into_ops_checked` API shape. Spec'd as the macro shape going
-forward.*
+*Designer spec, 2026-05-15. Compact current-state record after the
+async-first correction (DA/60). Companion to `/177` (the typed-
+request spec). Aligns with
+`reports/designer-assistant/62-signal-redesign-implementation-brief.md`
+§4 (the operator-facing macro section).*
 
-**Retires when**: the redesigned macro lands in `signal-core`; the
-spec absorbs into `signal-core/ARCHITECTURE.md`.
+**Retires when**: the proc-macro lands in `signal-core` and is
+re-exported across contract crates; the substance migrates to
+`signal-core/ARCHITECTURE.md`.
 
 ---
 
 ## 0 · TL;DR
 
-`/173` concluded the macro "grows along its current axis; no
-fundamental rethink." DA's response: rethink it, but don't delete
-it. The macro should remain the single declaration point for a
-channel vocabulary, but the shape of what it declares has shifted
-enough that "just add `with intent`" understates the change.
+`signal_channel!` is one declaration per channel. It emits the
+typed payload enums, the per-variant `SignalVerb` witness, the
+auto-generated kind enum, the channel type aliases, and the NOTA
+codec impls. Nothing else. No `with intent` clause. No `intent
+{ ... }` block. No correlation/header machinery. No `NoIntent`.
+No multi-mode constructors per channel — the generic
+`BatchBuilder<P>` in `signal-core` does that work.
 
-What this report settles:
+The macro engine is **proc-macro**. The new emissions push
+`macro_rules!` past the practical line; proc-macro gives clean
+conditional emission and custom error messages.
 
-1. **Two corrections to `/177`**:
-   - `Frame` is **three-parameter**, not four: `Frame<RequestPayload,
-     ReplyPayload, Intent>`. Request and reply share one intent
-     vocabulary per channel.
-   - `Request::into_ops_checked()` becomes a **two-method API**:
-     `Request::validate(&self) -> Result<(), BatchVerbMismatch>` plus
-     `Request::into_checked(self) -> Result<CheckedRequest, (BatchVerbMismatch,
-     Self)>`. The error variant returns the unconsumed request so the
-     receiver can build the rejection reply.
+---
 
-2. **The macro's redesigned concerns**:
-   - `signal-core` owns: `Request`, `Reply`, `Op`, `NonEmpty`,
-     headers, `BatchOutcome`, `BatchVerbMismatch`, validation logic,
-     batch-codec, all generic primitives.
-   - The macro owns: payload enums, intent enum (or `NoIntent`),
-     frame aliases, verb witnesses, **auto-generated operation-kind
-     enum**, **declarative batch-policy impl**, multi-mode constructors.
-   - The receiver runtime owns: two-phase staged subscription open,
-     storage transaction execution, per-receiver policy
-     interpretation.
-
-3. **Three new macro emissions** beyond `/173`'s list:
-   - `pub enum <RequestName>Kind` auto-generated from the variant list
-     (eliminates today's hand-written duplication, e.g.
-     `MindOperationKind` in `signal-persona-mind/src/lib.rs:1633`).
-   - `impl BatchPolicy for <RequestName>` emitted from an optional
-     `batch_policy { ... }` block.
-   - Multi-mode constructors: `ChannelRequest::single_anonymous`,
-     `::single_tracked(correlation)`,
-     `::single_named(intent, correlation)`, plus a builder pattern
-     for multi-op batches.
-
-4. **`macro_rules!` vs `proc-macro` is now closer to forced.** The
-   new emissions push `macro_rules!` past the practical
-   readability/error-message threshold. Recommendation: migrate to
-   proc-macro alongside the redesign, in one operator pass.
-
-The macro stays. Its declarative center stays. What changes is the
-list of what it declares and the cleanness of the API it emits. DA's
-phrasing — *"same declarative center, less ad hoc single-op
-assumption, more generated contract truth"* — names the right shape.
-
-
-**Updated 2026-05-15 (async-first correction per DA/61)**: the
-spec below drops every Intent-related emission. No `with intent
-<T>` clause, no `intent <T> { ... }` block, no `NoIntent`, no
-`<IntentName>` type aliases, no per-intent constructors. The macro
-emits payload enums, the request/reply type aliases, the
-`<RequestName>Kind` auto-projection, verb witnesses, NOTA codec
-impls, and an optional `BatchPolicy` impl. That's it. The
-`Frame` / `FrameBody` aliases are two-axis (`<RequestPayload,
-ReplyPayload>`), not three; the exchange identifier lives at the
-transport layer in `signal-core::FrameBody::Request{...}` /
-`Reply{...}` / `SubscriptionEvent{...}` variants.
-
-The historical narrative in the sections below references
-`RequestHeader<Intent>`, `BatchPolicy<P, I>`, etc. — those types
-no longer exist. Where the body uses them, read them as "the
-shape an earlier draft proposed, now retired." The corrected
-emissions list is:
+## 1 · Macro input grammar
 
 ```rust
-// signal-core/src/channel.rs (proc-macro form, per §6 below)
+signal_channel! {
+    request <RequestName> {
+        <Verb> <Variant>(<Payload>),
+        ...
+    }
+    reply <ReplyName> {
+        <Variant>(<Payload>),
+        ...
+    }
+    [channel_policy {
+        <field>: <value>,
+        ...
+    }]
+}
+```
+
+`request <RequestName> { ... }` is required. `reply <ReplyName>
+{ ... }` is required. `channel_policy { ... }` is optional;
+absent means `DefaultPolicy` (permissive on every channel-specific
+rule).
+
+Verbs are exactly the six `SignalVerb` variants. Each request
+variant lists its verb in the macro syntax; the macro emits the
+`RequestPayload::signal_verb()` witness from this.
+
+Worked example:
+
+```rust
 signal_channel! {
     request MindRequest {
         Assert SubmitThought(SubmitThought),
-        // ...
+        Mutate StatusChange(StatusChange),
+        Retract RoleRelease(RoleRelease),
+        Match QueryThoughts(QueryThoughtsRequest),
         Subscribe SubscribeThoughts(SubscribeThoughtsRequest),
         Retract SubscriptionRetraction(MindSubscriptionToken),
+        Validate ValidateProposal(ProposalCheck),
     }
+
     reply MindReply {
         Thought(ThoughtSummary),
+        Status(ActivityAck),
+        Released(RoleReleaseAck),
+        ThoughtList(ThoughtList),
         SubscriptionOpened(SubscriptionOpenedAck),
-        // ...
+        ValidationPassed(ValidationReceipt),
     }
-    // Optional, per /177 §2.2:
-    // batch_policy { max_ops: 32, forbid_subscribe: false, ... }
 }
-
-// Emits:
-pub enum MindRequest { ... }
-pub enum MindReply { ... }
-pub enum MindRequestKind { ... }                // unit-only projection
-impl signal_core::RequestPayload for MindRequest { ... }
-impl MindRequest { pub fn kind(&self) -> MindRequestKind { ... } }
-pub type Frame = signal_core::Frame<MindRequest, MindReply>;
-pub type FrameBody = signal_core::FrameBody<MindRequest, MindReply>;
-pub type ChannelRequest = signal_core::Request<MindRequest>;
-pub type ChannelReply = signal_core::Reply<MindReply>;
-pub type ChannelBuilder = signal_core::BatchBuilder<MindRequest>;
-pub struct MindRequestPolicy;                     // unit struct
-impl signal_core::BatchPolicy<MindRequest> for MindRequestPolicy { ... }
-// Plus per-variant From<Payload> impls + NotaEncode/Decode.
 ```
 
 ---
 
+## 2 · Macro emissions
 
-## 1 · DA's findings, with concurrence
-
-### 1.1 · Single-op helpers are obsolete ✓
-
-Today's macro emits:
+For the worked example above, the macro emits:
 
 ```rust
-impl <RequestName> {
-    pub fn into_signal_request(self) -> Request<Self> {
-        Request::from_payload(self)
+// (1) Request payload enum with rkyv + NOTA derives.
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, Debug, Clone, PartialEq, Eq)]
+pub enum MindRequest {
+    SubmitThought(SubmitThought),
+    StatusChange(StatusChange),
+    RoleRelease(RoleRelease),
+    QueryThoughts(QueryThoughtsRequest),
+    SubscribeThoughts(SubscribeThoughtsRequest),
+    SubscriptionRetraction(MindSubscriptionToken),
+    ValidateProposal(ProposalCheck),
+}
+
+// (2) Reply payload enum with the same derives.
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, Debug, Clone, PartialEq, Eq)]
+pub enum MindReply { /* variants */ }
+
+// (3) RequestPayload impl with the verb-mapping match.
+impl signal_core::RequestPayload for MindRequest {
+    fn signal_verb(&self) -> signal_core::SignalVerb {
+        match self {
+            Self::SubmitThought(_)         => SignalVerb::Assert,
+            Self::StatusChange(_)          => SignalVerb::Mutate,
+            Self::RoleRelease(_)           => SignalVerb::Retract,
+            Self::QueryThoughts(_)         => SignalVerb::Match,
+            Self::SubscribeThoughts(_)     => SignalVerb::Subscribe,
+            Self::SubscriptionRetraction(_) => SignalVerb::Retract,
+            Self::ValidateProposal(_)      => SignalVerb::Validate,
+        }
     }
 }
-```
 
-This presumes single-op requests are the default shape. Under `/177`,
-every `Request<P, I>` carries `NonEmpty<Op<P>>`; single-op is just a
-length-1 batch. The helper should retire as such.
+// (4) Auto-generated kind enum (unit-only projection of the
+// request variants). Retires hand-written enums like
+// `MindOperationKind` in signal-persona-mind.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum MindRequestKind {
+    SubmitThought,
+    StatusChange,
+    RoleRelease,
+    QueryThoughts,
+    SubscribeThoughts,
+    SubscriptionRetraction,
+    ValidateProposal,
+}
 
-Replacement: three constructor helpers (anonymous, tracked, named)
-plus a builder for multi-op. Per §4.3 below.
+impl MindRequest {
+    pub fn kind(&self) -> MindRequestKind { /* match */ }
+}
 
-### 1.2 · Four-axis Frame should be three-axis ✓
+// (5) Channel type aliases. Two-axis Frame; no Intent parameter.
+pub type Frame        = signal_core::Frame<MindRequest, MindReply>;
+pub type FrameBody    = signal_core::FrameBody<MindRequest, MindReply>;
+pub type ChannelRequest = signal_core::Request<MindRequest>;
+pub type ChannelReply   = signal_core::Reply<MindReply>;
+pub type ChannelBuilder = signal_core::BatchBuilder<MindRequest>;
 
-`/177 §2` declared:
+// (6) Per-variant From<Payload> impls (request + reply) for
+// ergonomic `.into()` at call sites.
+impl From<SubmitThought> for MindRequest { /* ... */ }
+// ... and so on for each variant.
 
-```rust
-pub enum FrameBody<RequestPayload, RequestIntent, ReplyPayload, ReplyIntent> {
-    HandshakeRequest(HandshakeRequest),
-    HandshakeReply(HandshakeReply),
-    Request(Request<RequestPayload, RequestIntent>),
-    Reply(Reply<ReplyPayload, ReplyIntent>),
+// (7) NOTA codec impls for the payload enums (per-variant
+// dispatch on the head identifier).
+impl NotaEncode for MindRequest { /* match-and-encode */ }
+impl NotaDecode for MindRequest { /* peek head, dispatch */ }
+impl NotaEncode for MindReply { /* same */ }
+impl NotaDecode for MindReply { /* same */ }
+
+// (8) Channel-policy unit struct + impl (or DefaultPolicy alias).
+// If channel_policy block was absent, this is just a re-export.
+pub struct MindChannelPolicy;
+impl signal_core::ChannelPolicy<MindRequest> for MindChannelPolicy {
+    // Defaults from the trait, or override from the macro block.
 }
 ```
 
-Four parameters. But: a channel's request and reply share one intent
-vocabulary. There's no use case where a `RoleHandoff` request gets
-replied to with a different intent type. The reply echoes the
-request's intent.
+---
 
-Corrected:
+## 3 · What the macro does NOT emit
+
+Explicit non-emissions, to prevent regression as the macro evolves:
+
+- No `Intent` type parameter on any emitted type.
+- No `RequestHeader<Intent>` / `ReplyHeader<Intent>`.
+- No `CorrelationId` field on requests or replies.
+- No `with intent <T>` clause in the input grammar.
+- No `intent <T> { ... }` block.
+- No `NoIntent` substitution.
+- No `<IntentName>Kind` projection (no intent enum exists).
+- No `(Anonymous)` / `(Tracked ...)` / `(Named ...)` NOTA shapes.
+- No `(Batch ...)` wrapper in NOTA.
+- No `single_named` / `single_tracked` / `batch_tracked`
+  per-channel constructors. Use the generic `BatchBuilder<P>` in
+  `signal-core`.
+- No exchange-id machinery. Exchange ids live at the
+  `signal-core::FrameBody` level, not in the channel-specific
+  types.
+- No runtime validation closures. `channel_policy { ... }` is
+  declarative-only.
+
+---
+
+## 4 · Auto-generated `<RequestName>Kind` enum
+
+The macro auto-generates a unit-only projection of the request
+enum's variants. Retires hand-written enums like
+`MindOperationKind` (currently in `signal-persona-mind/src/lib.rs`
+around the lines that hand-list 24 request variant kinds).
 
 ```rust
-pub struct Frame<RequestPayload, ReplyPayload, Intent> {
-    body: FrameBody<RequestPayload, ReplyPayload, Intent>,
+// Auto-generated from the request enum's variant list:
+pub enum MindRequestKind {
+    SubmitThought, StatusChange, RoleRelease,
+    QueryThoughts, SubscribeThoughts, SubscriptionRetraction,
+    ValidateProposal,
 }
 
-pub enum FrameBody<RequestPayload, ReplyPayload, Intent> {
-    HandshakeRequest(HandshakeRequest),
-    HandshakeReply(HandshakeReply),
-    Request(Request<RequestPayload, Intent>),
-    Reply(Reply<ReplyPayload, Intent>),
+impl MindRequest {
+    /// Returns the unit-tag of this request variant. Useful for
+    /// audit logs that don't need the full payload, dispatch tables,
+    /// and metric labels.
+    pub fn kind(&self) -> MindRequestKind { /* match */ }
 }
 ```
 
-Three parameters. The macro emits:
+The macro guarantees `MindRequestKind`'s variants stay in sync
+with `MindRequest`'s variants — adding a new request variant
+auto-adds its kind. The hand-written drift problem retires.
 
-```rust
-pub type Frame = signal_core::Frame<<RequestName>, <ReplyName>, <IntentName>>;
-pub type FrameBody = signal_core::FrameBody<<RequestName>, <ReplyName>, <IntentName>>;
-```
+---
 
-This is a real correction to `/177`. The four-parameter Frame was
-over-general. **`/177 §2` should be updated to three parameters.**
+## 5 · `channel_policy { ... }` block (optional)
 
-### 1.3 · Optional intent surface ✓ (already covered in `/173`)
-
-`/173 §3.1 / §3.2 / §3.3` already addressed this. The macro takes
-optional `with intent <T>` plus optional trailing `intent <T> { ... }`
-block; `NoIntent` substitutes when absent. No additional change.
-
-### 1.4 · Batch policy belongs near the channel declaration ✓
-
-`/177 §7 Q1` left per-receiver batch-policy syntax open. DA argues:
-if the policy is contract-level (and it should be — different
-channels have genuinely different policies), it belongs in the macro.
-
-The macro grows an optional `batch_policy { ... }` block:
+Declarative field-only block; the macro emits a `ChannelPolicy`
+impl. Closed field list per `/177 §5`:
 
 ```rust
 signal_channel! {
-    request <Name> with intent <Intent> { ... }
+    request <Name> { ... }
     reply <Name> { ... }
-    intent <Intent> { ... }
-    batch_policy {
+    channel_policy {
         max_ops: 32,
         allow_mixed_read_write: true,
         forbid_subscribe: false,
@@ -215,661 +237,120 @@ signal_channel! {
 }
 ```
 
-The macro emits a `BatchPolicy` impl that the receiver runtime
-consults during `Request::validate()`. Spec'd in §4.2.
+If the block is absent, the macro emits `pub use signal_core::DefaultPolicy
+as <ChannelName>ChannelPolicy;` — a type alias to the permissive
+default. Channels that don't need static rules don't pay the
+per-channel struct overhead.
 
-### 1.5 · Operation-kind enum should be generated, not hand-written ✓
+No closures. No runtime expressions. Custom checks live in daemon
+code, not in the contract crate.
 
-Real duplication. Today's `signal-persona-mind` declares:
+---
+
+## 6 · Construction surface (lives in `signal-core`, not in the macro)
+
+Channel-specific constructors are not macro-emitted. The generic
+`BatchBuilder<P>` and `RequestPayload` default methods in
+`signal-core` handle construction:
 
 ```rust
-// signal-persona-mind/src/lib.rs:1633
-pub enum MindOperationKind {
-    SubmitThought,
-    SubmitRelation,
-    QueryThoughts,
-    // ... 24 variants, hand-written
-}
+// signal-core/src/request.rs
+pub trait RequestPayload: Sized {
+    fn signal_verb(&self) -> SignalVerb;
 
-// signal-persona-mind/src/lib.rs:1802
-impl MindRequest {
-    pub fn operation_kind(&self) -> MindOperationKind {
-        match self {
-            Self::SubmitThought(_) => MindOperationKind::SubmitThought,
-            // ... 24 matches, hand-written
+    // Default convenience methods — payload becomes a length-1
+    // Request via these.
+    fn into_request(self) -> Request<Self> {
+        Request {
+            operations: NonEmpty::single(Operation {
+                verb: self.signal_verb(),
+                payload: self,
+            }),
         }
     }
 }
-```
 
-The macro sees every variant; it can emit both. Saves ~50 lines per
-contract. Spec'd in §4.1.
+pub struct BatchBuilder<P> {
+    ops: Vec<Operation<P>>,
+}
 
----
-
-## 2 · Two corrections to `/177`
-
-### 2.1 · `Frame` is three-parameter
-
-As §1.2 above. The reply echoes the request's intent vocabulary
-within a single channel; the four-parameter generality has no use
-case in scope.
-
-This affects:
-- `/177 §2`'s `FrameBody<RequestPayload, RequestIntent, ReplyPayload, ReplyIntent>` → `FrameBody<RequestPayload, ReplyPayload, Intent>`.
-- `/177 §3`'s sample `pub type MindFrame = ...` → three parameters.
-- `/177 §8.3`'s "ReplyHeader echoes the request's header shape" — still
-  true; both use the same `Intent` type by construction.
-
-### 2.2 · `into_ops_checked` API redesigned
-
-`/177 §2`'s API consumed the request and returned only the mismatch
-on failure:
-
-```rust
-pub fn into_ops_checked(self) -> Result<CheckedRequest<P, I>, BatchVerbMismatch>;
-```
-
-DA's point: on failure, the receiver needs the request's header,
-op count, and per-op verbs to build the batch rejection reply. With
-the request consumed and only a `BatchVerbMismatch` returned, the
-receiver has lost the context it needs.
-
-Two acceptable redesigns:
-
-#### Option A: Borrow-based two-method API
-
-```rust
-impl<P, I> Request<P, I>
-where
-    P: RequestPayload,
+impl<P> BatchBuilder<P>
+where P: RequestPayload,
 {
-    /// Validate without consuming. Returns the position of the first
-    /// violation if any. The caller retains the request for whatever
-    /// follows (build rejection reply, log, retry).
-    pub fn validate(&self) -> Result<(), BatchVerbMismatch>;
+    pub fn new() -> Self { Self { ops: Vec::new() } }
 
-    /// Convert to a CheckedRequest, assuming validate() was called.
-    /// If you want both at once, use into_checked() (validates inside,
-    /// returns the request back on failure).
-    pub fn into_checked(self) -> Result<CheckedRequest<P, I>, (BatchVerbMismatch, Self)>;
-}
-```
-
-The receiver code becomes:
-
-```rust
-let request = decode_frame()?;
-match request.into_checked() {
-    Ok(checked) => execute(checked).await,
-    Err((mismatch, rejected)) => {
-        // rejected still owns the request; build the reply
-        let reply = build_rejection(rejected, mismatch);
-        send_reply(reply).await
-    }
-}
-```
-
-#### Option B: Error carries context (alternative)
-
-```rust
-pub fn into_ops_checked(self) -> Result<CheckedRequest<P, I>, BatchVerbMismatchContext<I>>;
-
-pub struct BatchVerbMismatchContext<I> {
-    pub mismatch: BatchVerbMismatch,
-    pub rejected_header: ReplyHeader<I>,
-    pub op_count: usize,
-    pub op_verbs: Vec<SignalVerb>,
-}
-```
-
-The error carries pre-extracted context.
-
-**Recommendation: Option A** (borrow-based two-method). Reasons:
-
-- Matches the Rust standard idiom for "validation that consumes on
-  success but preserves on failure" (e.g., `String::from_utf8`
-  returns the original bytes in the error).
-- Composes more cleanly: callers that don't need the full request
-  back can use `request.validate()?` and then own `request` for any
-  follow-up.
-- The `(BatchVerbMismatch, Self)` error tuple on `into_checked` is
-  ergonomic — pattern-match destructures cleanly.
-
-This affects:
-- `/177 §2`'s `Request::into_ops_checked` impl → `Request::validate` +
-  `Request::into_checked`.
-- `/177 §1.7`'s description of the verb-validation API → both
-  methods documented.
-
----
-
-## 3 · The macro's redesigned concerns
-
-A three-way split between signal-core, the macro, and the receiver
-runtime. Each owns a well-defined slice.
-
-### 3.1 · `signal-core` owns
-
-- The frame/wire primitives: `Frame`, `FrameBody`, `Request`, `Reply`.
-- The collection / position invariants: `NonEmpty<T>`, `Op<Payload>`.
-- The headers: `RequestHeader<Intent>`, `ReplyHeader<Intent>`.
-- The reply machinery: `BatchOutcome`, `SubReply<R>`, `SubStatus`.
-- The validation logic: `Request::validate`, `Request::into_checked`,
-  `BatchVerbMismatch`, `CheckedRequest`.
-- The failure-reason taxonomies: `BatchFailureReason` (with
-  `SubscribeOutOfOrder` defined), `SubFailureReason`.
-- The default policy enforcement (Subscribe-must-be-last) in
-  `Request::validate`.
-- `NoIntent` (uninhabited enum) for channels without named intents.
-- The NOTA codec for `Request<P, I>` and `Reply<P, I>` — the batch
-  grammar `[(intent X) (correlation Y) (op) (op) ...]` plus the
-  bare `(op)` single-op form.
-- The `RequestPayload` trait with `signal_verb()` and default
-  `is_subscribe()`.
-- The `BatchPolicy` trait that channels can implement.
-- Convenience constructors: `Request::single_anonymous(payload)`,
-  `::single_tracked(payload, correlation)`,
-  `::single_named(payload, intent, correlation)`.
-
-### 3.2 · The macro owns
-
-- The channel-specific payload enums (request, reply).
-- The channel-specific intent enum (or `NoIntent` substitution).
-- The channel-specific operation-kind enum (auto-generated).
-- The verb witnesses: `impl RequestPayload for <RequestName>`.
-- The per-channel `Frame` / `FrameBody` / `ChannelRequest` /
-  `ChannelReply` type aliases.
-- The per-channel `BatchPolicy` impl (emitted from the optional
-  `batch_policy { ... }` block).
-- The per-channel ergonomic constructors that wrap signal-core's
-  `Request::single_*` helpers.
-- The per-channel `From<Payload>` impls for each variant.
-- The NOTA codec impls for the request/reply payload enums and the
-  intent enum (the per-variant text codec; not the batch grammar).
-
-### 3.3 · The receiver runtime owns
-
-- The two-phase staged subscription open (per `/177 §4.1`).
-- The actual storage transaction execution — strict-ordered with
-  RYOW, batch commit/rollback semantics.
-- Per-receiver runtime interpretation of policy (the receiver decides
-  whether to enforce stricter policy than `BatchPolicy` declares).
-- The `Reply` construction — populating `SubReply` per op,
-  `BatchOutcome::Aborted { failed_at, reason }`.
-
-This split is the cleanest version of the declarative center DA
-named. The macro doesn't pretend to enforce anything; it just
-declares. signal-core provides primitives; the runtime executes.
-
----
-
-## 4 · New macro emissions
-
-### 4.1 · Auto-generated operation-kind enum
-
-Today's hand-written duplication in `signal-persona-mind` becomes
-macro-emitted. Given the request block:
-
-```rust
-request MindRequest with intent MindBatchIntent {
-    Assert SubmitThought(SubmitThought),
-    Mutate StatusChange(StatusChange),
-    Retract RoleRelease(RoleRelease),
-    // ...
-}
-```
-
-The macro auto-emits:
-
-```rust
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum MindRequestKind {
-    SubmitThought,
-    StatusChange,
-    RoleRelease,
-    // one variant per request variant; unit-only (no payloads)
-}
-
-impl MindRequest {
-    pub fn kind(&self) -> MindRequestKind {
-        match self {
-            Self::SubmitThought(_) => MindRequestKind::SubmitThought,
-            Self::StatusChange(_) => MindRequestKind::StatusChange,
-            Self::RoleRelease(_) => MindRequestKind::RoleRelease,
-            // ...
-        }
-    }
-}
-```
-
-This replaces today's hand-written `MindOperationKind` enum and the
-~24-line match in `operation_kind()`. The macro guarantees the kinds
-stay in sync with the variants.
-
-Naming: `<RequestName>Kind` (matching the request enum's name) rather
-than `MindOperationKind` (which was a hand-chosen name).
-Re-exporting under the old name for backward compat is one approach;
-or contracts can rename callers to use the macro-emitted name.
-
-### 4.2 · Batch policy impl from `batch_policy` block
-
-The macro accepts an optional trailing block:
-
-```rust
-batch_policy {
-    max_ops: 32,                                       // hard cap on Vec length
-    allow_mixed_read_write: true,                      // default
-    forbid_subscribe: false,                           // default (Subscribe-last applies)
-    forbid_validate: false,
-    forbid_mid_batch_subscribe: true,                  // already in signal-core default
-    custom_check: |request| -> Result<(), CustomCheckFailure> { ... },  // optional extension
-}
-```
-
-The macro emits:
-
-```rust
-impl signal_core::BatchPolicy for MindRequest {
-    fn max_ops(&self) -> usize { 32 }
-    fn allow_mixed_read_write(&self) -> bool { true }
-    fn forbid_subscribe(&self) -> bool { false }
-    fn forbid_validate(&self) -> bool { false }
-    // ...
-
-    /// Custom check, runs after the built-in checks.
-    fn custom_check(request: &Request<MindRequest, MindBatchIntent>) -> Result<(), CustomCheckFailure> {
-        // body from the macro block
-    }
-}
-```
-
-The signal-core `Request::validate(&self)` consults the channel's
-`BatchPolicy` for the per-channel rules; if a request violates them,
-validation fails with `BatchVerbMismatch::PolicyViolation` (and we
-gain a sub-reason naming the specific rule).
-
-If `batch_policy { ... }` is absent, the macro emits a default impl
-that enforces only signal-core's universal rules (Subscribe must be
-last, non-empty batch, verb/payload alignment).
-
-### 4.3 · Multi-mode constructors
-
-Replace today's `into_signal_request` single-op helper with a
-constructor surface that matches the new `RequestHeader<Intent>`
-variants:
-
-```rust
-impl ChannelRequest {
-    /// Build an anonymous single-op request.
-    pub fn single(payload: MindRequest) -> Self {
-        Request::single_anonymous(payload)
-    }
-
-    /// Build a tracked single-op request (carries correlation; no intent).
-    pub fn tracked(payload: MindRequest, correlation: CorrelationId) -> Self {
-        Request::single_tracked(payload, correlation)
-    }
-
-    /// Build a named single-op request (carries intent and correlation).
-    pub fn named(payload: MindRequest, intent: MindBatchIntent, correlation: CorrelationId) -> Self {
-        Request::single_named(payload, intent, correlation)
-    }
-
-    /// Build a multi-op batch via a builder pattern. Initially named
-    /// (the multi-op case typically wants audit metadata).
-    pub fn batch(intent: MindBatchIntent, correlation: CorrelationId) -> BatchBuilder {
-        BatchBuilder::new_named(intent, correlation)
-    }
-
-    /// Build a tracked multi-op batch (multi-op without named intent).
-    pub fn batch_tracked(correlation: CorrelationId) -> BatchBuilder {
-        BatchBuilder::new_tracked(correlation)
-    }
-}
-```
-
-Where `BatchBuilder` is a generic signal-core type:
-
-```rust
-pub struct BatchBuilder<P, I> {
-    header: RequestHeader<I>,
-    ops: Vec<Op<P>>,
-}
-
-impl<P, I> BatchBuilder<P, I>
-where
-    P: RequestPayload,
-{
-    pub fn new_named(intent: I, correlation: CorrelationId) -> Self;
-    pub fn new_tracked(correlation: CorrelationId) -> Self;
     pub fn with(mut self, payload: P) -> Self {
         let verb = payload.signal_verb();
-        self.ops.push(Op { verb, payload });
+        self.ops.push(Operation { verb, payload });
         self
     }
-    pub fn build(self) -> Result<Request<P, I>, BatchBuilderError>;  // checks NonEmpty
-}
-```
 
-Call sites become readable:
-
-```rust
-ChannelRequest::batch(MindBatchIntent::RoleHandoff, cor_id)
-    .with(MindRequest::RoleRelease(RoleRelease { role: Designer }))
-    .with(MindRequest::RoleClaim(RoleClaim { role: Poet, ... }))
-    .build()?
-```
-
-vs the manual:
-
-```rust
-Request {
-    header: RequestHeader::Named { intent: MindBatchIntent::RoleHandoff, correlation: cor_id },
-    ops: NonEmpty::from_vec(vec![
-        Op { verb: SignalVerb::Retract, payload: MindRequest::RoleRelease(...) },
-        Op { verb: SignalVerb::Assert,  payload: MindRequest::RoleClaim(...) },
-    ])?,
-}
-```
-
-The builder pattern is significantly cleaner. The macro emits the
-per-channel `ChannelRequest::*` helpers; the builder itself lives in
-signal-core.
-
----
-
-## 5 · The complete macro shape
-
-### 5.1 · Grammar (the full input form)
-
-```rust
-signal_channel! {
-    request <RequestName>
-        [with intent <IntentName>]
-    {
-        <Verb> <Variant> ( <Payload> ),
-        ...
+    pub fn build(self) -> Result<Request<P>, BatchBuilderError> {
+        NonEmpty::from_vec(self.ops)
+            .map(|operations| Request { operations })
+            .ok_or(BatchBuilderError::EmptyBatch)
     }
-    reply <ReplyName> {
-        <Variant> ( <Payload> ),
-        ...
-    }
-    [intent <IntentName> {
-        <Variant> [( <Payload> )],
-        ...
-    }]
-    [batch_policy {
-        <field>: <value>,
-        ...
-    }]
+}
+
+pub enum BatchBuilderError {
+    EmptyBatch,
 }
 ```
 
-Both `[with intent <IntentName>]` and the trailing `intent ... { }`
-block are optional. `[batch_policy { ... }]` is optional. The macro
-substitutes `NoIntent` and default policy when absent.
-
-### 5.2 · Emissions (the full output form, abbreviated)
+Call sites:
 
 ```rust
-// 1. The request payload enum (existing, unchanged shape)
-pub enum <RequestName> { ... }
+// Single-op:
+let request = MindRequest::SubmitThought(thought).into_request();
 
-// 2. The reply payload enum (existing, unchanged shape)
-pub enum <ReplyName> { ... }
-
-// 3. The intent enum (new, or NoIntent substitution)
-pub enum <IntentName> { ... }    // or: pub use signal_core::NoIntent as <IntentName>
-
-// 4. Auto-generated operation-kind enum (new)
-pub enum <RequestName>Kind {
-    <Variant>,    // one per request variant, unit-only
-    ...
-}
-
-// 5. Channel type aliases (updated to 3-parameter Frame)
-pub type Frame = signal_core::Frame<<RequestName>, <ReplyName>, <IntentName>>;
-pub type FrameBody = signal_core::FrameBody<<RequestName>, <ReplyName>, <IntentName>>;
-pub type ChannelRequest = signal_core::Request<<RequestName>, <IntentName>>;
-pub type ChannelReply = signal_core::Reply<<ReplyName>, <IntentName>>;
-
-// 6. RequestPayload impl (existing, unchanged)
-impl signal_core::RequestPayload for <RequestName> {
-    fn signal_verb(&self) -> SignalVerb { match self { ... } }
-}
-
-// 7. Kind helper (new)
-impl <RequestName> {
-    pub fn kind(&self) -> <RequestName>Kind { match self { ... } }
-}
-
-// 8. Multi-mode constructors (new, replaces into_signal_request)
-impl ChannelRequest {
-    pub fn single(payload: <RequestName>) -> Self;
-    pub fn tracked(payload: <RequestName>, correlation: CorrelationId) -> Self;
-    pub fn named(payload: <RequestName>, intent: <IntentName>, correlation: CorrelationId) -> Self;
-    pub fn batch(intent: <IntentName>, correlation: CorrelationId) -> BatchBuilder<<RequestName>, <IntentName>>;
-    pub fn batch_tracked(correlation: CorrelationId) -> BatchBuilder<<RequestName>, <IntentName>>;
-}
-
-// 9. BatchPolicy impl (new, from batch_policy block or default)
-impl signal_core::BatchPolicy for <RequestName> {
-    fn max_ops(&self) -> usize { ... }
-    // ...
-}
-
-// 10. From<Variant> impls per request variant (existing, unchanged)
-impl From<<Payload>> for <RequestName> { ... }
-
-// 11. NotaEncode/Decode for <RequestName> (existing, unchanged — per-variant codec dispatch)
-impl NotaEncode for <RequestName> { ... }
-impl NotaDecode for <RequestName> { ... }
-
-// 12. From<Variant> impls per reply variant (existing, unchanged)
-impl From<<Payload>> for <ReplyName> { ... }
-
-// 13. NotaEncode/Decode for <ReplyName> (existing, unchanged)
-impl NotaEncode for <ReplyName> { ... }
-impl NotaDecode for <ReplyName> { ... }
-
-// 14. NotaEncode/Decode for <IntentName> (new, only if intent block declared
-//     and not auto-NoIntent)
-impl NotaEncode for <IntentName> { ... }
-impl NotaDecode for <IntentName> { ... }
-
-// 15. NotaEncode/Decode for <RequestName>Kind (new, useful for audit/log surfaces)
-impl NotaEncode for <RequestName>Kind { ... }
-impl NotaDecode for <RequestName>Kind { ... }
+// Multi-op:
+let request = signal_persona_mind::ChannelBuilder::new()
+    .with(MindRequest::RoleRelease(...))
+    .with(MindRequest::RoleClaim(...))
+    .build()?;
 ```
 
-Roughly **15 emission categories** under the new shape, up from
-today's **12**. The new ones (3, 4, 7, 8, 9, 14, 15) are tightly
-defined; each has a specific purpose that's been load-bearing in at
-least one workspace contract.
+The per-channel `ChannelBuilder` type alias from §2 emission (5)
+specializes the generic builder to that channel's payload type.
 
 ---
 
-## 6 · `macro_rules!` vs `proc-macro` — settled: proc-macro now, in wave 2
+## 7 · Macro engine: proc-macro
 
-`/173 §6` evaluated this as a preference. After §4–§5 above, the
-choice is sharper.
+The macro is a proc-macro, not `macro_rules!`. The new emissions
+(auto-generated kind enum, optional `channel_policy` block,
+conditional emissions, type aliases that depend on the input)
+push `macro_rules!` past the practical line. proc-macro buys:
 
-### macro_rules! cost under the new shape
+- Conditional emission as normal Rust `if let`.
+- Custom error messages via `syn::Error::new_spanned(token, msg)`
+  pointing at the exact offending input.
+- Easier extension (future per-variant attributes, validator
+  derives, batch-policy custom rules) without `macro_rules!`
+  pattern gymnastics.
 
-Implementing §5's emissions in `macro_rules!` requires:
+Implementation:
 
-- Two top-level arms (with-intent / without-intent) plus matching
-  helper macros for the optional `batch_policy` block. Each arm
-  duplicates most of the emission body.
-- The auto-generated `<RequestName>Kind` enum requires re-iterating the
-  variants twice (the enum body + the impl body); `macro_rules!`
-  handles this with `$( ... )*` but each variant template gets
-  long.
-- The `batch_policy { ... }` block parser in `macro_rules!` requires
-  matching named fields with `$field:ident: $value:literal` shapes
-  — workable but unwieldy.
-- Custom check expressions inside `batch_policy` (`custom_check: |req|
-  -> Result<...> { ... }`) — `macro_rules!` can capture an expression
-  block, but the syntax for "optional closure with optional body"
-  gets gnarly.
-- Error messages stay opaque.
+- `signal-core-macros` crate with `[lib] proc-macro = true`.
+- `signal-core` re-exports the macro (`pub use signal_core_macros::signal_channel;`).
+- Contract crates' `signal_channel!` invocation sites stay
+  Rust-syntactic and unchanged.
 
-Realistic line count for the `macro_rules!` form of §5: ~400–500
-lines, with extensive duplication across the with/without-intent arms.
-
-### proc-macro cost
-
-- One-time crate split: `signal-core-macros` (proc-macro = true) +
-  `signal-core` re-exports.
-- `syn`-based parser handles the optional blocks naturally.
-- Emission via `quote!` is direct Rust generation; conditional
-  emission is a normal `if let`.
-- Custom error messages via `syn::Error::new_spanned`; the compiler
-  points at the offending input with a descriptive message.
-- ~600–800 lines of proc-macro Rust (more code, but no duplication,
-  with maintainable structure).
-
-### Verdict
-
-The cost balance has shifted. With §4–§5's new emissions, the
-`macro_rules!` form is on the wrong side of the ergonomic line.
-
-**Recommendation: proc-macro, alongside the redesign.** One operator
-pass:
-
-1. Add `signal-core-macros` proc-macro crate.
-2. Rewrite the emissions in `quote!` blocks.
-3. Cut over `signal-core` to re-export from the new crate.
-4. Every consuming contract continues to use `signal_channel!` —
-   their invocation sites don't change.
-
-The redesigned macro lands as one cohesive piece; future extensions
-(per-variant attributes, NOTA-shaped channel files, BatchValidator
-derives) are then incremental rather than each requiring another
-`macro_rules!` puzzle.
+The migration is one operator pass and lands alongside the
+signal-core async-first wave (operator wave 2 per DA/62).
 
 ---
 
-## 7 · Migration impact on `/177`
+## 8 · See also
 
-The corrections in §2 (three-parameter Frame, validate/into_checked
-API split) are real changes to `/177`'s spec, not just additions.
-They land alongside this report or in a companion `/177` revision.
-
-The specific edits to `/177`:
-
-- §2 `FrameBody<RequestPayload, RequestIntent, ReplyPayload, ReplyIntent>` →
-  `FrameBody<RequestPayload, ReplyPayload, Intent>`.
-- §2 `Request::into_ops_checked` → `Request::validate` +
-  `Request::into_checked`. The `BatchVerbMismatch` enum stays; the
-  error tuple `(BatchVerbMismatch, Self)` on `into_checked` is new.
-- §1.7's description of the verb-validation API updates to two
-  methods.
-- §8.3's "ReplyHeader echoes the request's header" — still true; both
-  use the same `Intent` type by the new generic shape.
-
-These are corrections, not extensions. `/177` is the spec of record
-and should be updated in present-tense.
-
----
-
-## 8 · Open questions — settled 2026-05-15
-
-User settled Q1, Q3, Q4 explicitly; Q2 deferred per the user's
-guidance; Q5 lean confirmed by default. Recorded for reference:
-
-### Q1 — Operation-kind enum naming — *settled: `<RequestName>Kind`*
-
-Macro emits `<RequestName>Kind` (e.g. `MindRequestKind`). Today's
-hand-written `MindOperationKind` retires; consuming callers update
-their imports as part of the wave-2 contract sweep.
-
-### Q2 — `BatchPolicy` field list — *deferred*
-
-Settled by the user as: defer until the first concrete consumer has
-real policy pressure (e.g., the first contract that wants
-`max_ops: 32`). When that arrives, settle the field list then.
-Channels without `batch_policy { ... }` use `DefaultPolicy`
-(permissive on every channel-specific rule); universal rules
-(Subscribe-must-be-last, verb/payload alignment, NonEmpty) apply
-regardless.
-
-`custom_check` is dropped from this section: closure expressions in
-contracts violate `skills/contract-repo.md`. Validation pipelines
-live in daemon code, not in the contract.
-
-### Q3 — Builder pattern: panic-or-error on `build()` — *settled: Result*
-
-`BatchBuilder::build() -> Result<Request, BatchBuilderError>`. No
-panics on the wire-construction path. Callers handle `EmptyBatch`
-deliberately if reached.
-
-### Q4 — Proc-macro migration timing — *settled: now, after core*
-
-The macro migration to proc-macro lands after the signal-core /
-sema-engine first slice named in DA/62 (the macro-redesign work). Not
-deferred to a later wave.
-Reasoning: the new emissions (auto-generated kind enums, optional
-intent block, batch_policy parsing, multi-mode constructors) push
-`macro_rules!` past the practical ergonomic line. Single migration
-in one operator pass; every subsequent macro extension is then
-incremental.
-
-Operator should add `signal-core-macros` as a `proc-macro = true`
-crate; `signal-core` re-exports the macro. Contract crates'
-`signal_channel!` call sites stay Rust-syntactic (no per-contract
-changes from the engine swap).
-
-### Q5 — Should `<RequestName>Kind` cover intent-tagged variants too? — *lean confirmed: yes*
-
-The macro emits a `<RequestName>Kind` from request variants. By
-the same pattern, it should emit `<IntentName>Kind` projections
-for intent enums whose variants carry payloads:
-
-```rust
-intent MindBatchIntent {
-    RoleHandoff,
-    SchemaUpgrade(SchemaUpgradeIntent),    // tuple variant
-    ChannelMigration,
-}
-
-// Macro auto-emits:
-pub enum MindBatchIntentKind {
-    RoleHandoff,
-    SchemaUpgrade,         // unit-only projection
-    ChannelMigration,
-}
-```
-
-Useful for audit summaries that don't need the full payload. The
-macro emits one `<EnumName>Kind` for every payload-carrying enum
-it sees in the channel declaration (currently the request enum
-plus the optional intent enum).
-
----
-
-## 9 · `/173`'s status
-
-`/173` concluded "no fundamental rethink." DA's response showed this
-was too conservative. The redesign in §3–§5 above supersedes `/173`'s
-conclusion. `/173`'s detailed inventory of current emissions remains
-useful as a baseline; its conclusion retires.
-
----
-
-## 10 · See also
-
-- the typed-request spec companion in this directory — the typed
-  shape this redesign serves; §2 above corrections apply to it
-  directly.
+- `~/primary/reports/designer/177-typed-request-shape-and-execution-semantics.md`
+  — the typed-request spec this macro serves.
+- `~/primary/reports/designer-assistant/61-signal-redesign-current-spec.md`
+  — the DA-side spec for the protocol shape.
+- `~/primary/reports/designer-assistant/62-signal-redesign-implementation-brief.md`
+  §4 — the DA-side operator brief for the macro.
 - `/git/github.com/LiGoldragon/signal-core/src/channel.rs` — the
-  current macro; replaced by the proc-macro form spec'd here.
-- `/git/github.com/LiGoldragon/signal-persona-mind/src/lib.rs:1633`
-  — the hand-written `MindOperationKind` that auto-generation
-  retires.
-- `/git/github.com/LiGoldragon/signal-persona-mind/src/lib.rs:1802`
-  — the hand-written `operation_kind()` impl that retires with it.
+  current `macro_rules!` form; replaced by proc-macro.
 - `~/primary/skills/contract-repo.md` §"Signal is the database
-  language — every request declares a verb" — the discipline
-  unchanged across the redesign.
+  language — every request declares a verb" — the upstream
+  discipline this macro enforces.
