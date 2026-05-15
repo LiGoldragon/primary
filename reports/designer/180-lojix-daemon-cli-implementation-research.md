@@ -9,17 +9,22 @@ worktree carries real implementation, not skeletons.*
 > sequence. The actor implementation, socket loop, deploy
 > pipeline, and CLI body are operator/system-specialist lanes.
 
-> **Update (later 2026-05-15):** Wave 1 step 1 of §4 (sema-engine
-> Assert-freshness + fmt) landed via
+> **Update (later 2026-05-15):** The whole kernel stack is now
+> first-consumer-ready. Wave 1 step 1 landed via
 > `reports/operator-assistant/121-readiness-audit-resolution-2026-05-15.md`
-> (sema-engine commits `3fd65fc1` + `2a4cbfd1` + `ea00c12d`).
-> `Engine::assert` now rejects pre-existing keys with typed
-> `DuplicateAssertKey`; release gate green; README + ARCH honest.
-> Wave 1 steps 2–4 (Cargo.lock bumps in lojix + signal-lojix,
-> `channel <Name>` macro wrap, observation-shape decision) and
-> Waves 2–8 remain. The four signal-core macro §4 gaps named in
-> Gap A's lineage are in operator's active claim
-> (`primary-6jww`).
+> (sema-engine `3fd65fc1` + `2a4cbfd1` + `ea00c12d` —
+> `Engine::assert` rejects pre-existing keys; release gate green;
+> README + ARCH honest). The signal-core macro §4 gap from Gap A's
+> lineage landed via `reports/operator/121-signal-core-sema-engine-readiness-work.md`
+> (signal-core `25212c0d` — duplicate NOTA record-head check,
+> `opens`-on-non-Subscribe rejection, orphan-stream rejection,
+> reverse-`belongs` cross-reference, plus `trybuild` compile-fail
+> harness; nine pinned contract crates all green on `nix flake
+> check -L`; beads `primary-6jww`, `primary-0mwl`, `primary-z1uo`,
+> `primary-8zet` closed). Wave 1 steps 2–4 (Cargo.lock bumps in
+> lojix + signal-lojix, `channel <Name>` macro wrap,
+> observation-shape decision) and Waves 2–8 remain — these are
+> consumer-side work, not kernel readiness.
 
 ## 0 · Correction to /179
 

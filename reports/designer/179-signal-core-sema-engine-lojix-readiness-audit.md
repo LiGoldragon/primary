@@ -11,17 +11,24 @@
 > `lojix/ARCHITECTURE.md` (added Constraints; named the channel
 > shape; named the SubscriptionSink bridge).
 
-> **Update (later 2026-05-15):** `reports/operator-assistant/121-readiness-audit-resolution-2026-05-15.md`
-> closes both correctness bugs and Q1 + Q3. `sema-engine` commits
-> `3fd65fc1` (Assert-freshness + DuplicateAssertKey), `2a4cbfd1`
-> (fmt → nix flake check green), and `ea00c12d` (README + ARCH
-> honest, Rename-Map + Package-Order retired, example fixed)
-> landed. The four signal-core macro §4 validator gaps and the
-> trybuild harness (Q2) remain open under operator's active claim
-> `primary-6jww`. DA/71's three deferred items (snapshot allocation
-> safety, prevalidation outside write txn, multi-table commit)
-> are sidestepped via the now-explicit single-owner constraint in
-> sema-engine's ARCH.
+> **Update (later 2026-05-15):** Every blocker named in this
+> report is now closed. `reports/operator-assistant/121-readiness-audit-resolution-2026-05-15.md`
+> closes Bugs A + B and Q1 + Q3 via sema-engine commits `3fd65fc1`
+> (Assert-freshness + DuplicateAssertKey), `2a4cbfd1` (fmt → flake
+> check green), and `ea00c12d` (README + ARCH honest, Rename-Map +
+> Package-Order retired, example fixed). `reports/operator/121-signal-core-sema-engine-readiness-work.md`
+> closes Q2 (the four /176 §4 validator gaps + trybuild harness)
+> via signal-core commit `25212c0d` plus a sema-engine pin-verify
+> commit `d3809149`, then verified the hardened kernel against
+> nine pinned contract crates (signal-persona / signal-persona-*
+> family + signal-criome) all green on `nix flake check -L`.
+> Beads closed: `primary-6jww`, `primary-0mwl`, `primary-z1uo`,
+> `primary-8zet`. DA/71's three deferred items (snapshot
+> allocation safety, prevalidation outside write txn, multi-table
+> commit) are sidestepped via the now-explicit single-owner
+> constraint in sema-engine's ARCH. This report's blocker
+> sections are partially stale per operator/121 §5.3 — read it
+> alongside OA/121 before treating any open finding here as open.
 
 ## 0 · TL;DR
 
