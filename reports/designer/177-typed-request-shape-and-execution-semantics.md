@@ -119,13 +119,17 @@ pub enum RequestRejectionReason {
     /// An op's `verb` did not match its payload's
     /// `RequestPayload::signal_verb()`.
     VerbPayloadMismatch { index: usize },
-    /// A `Subscribe` op appeared at a position other than the tail.
+    /// A `Subscribe` op appeared outside the request's tail-contiguous
+    /// Subscribe suffix.
     SubscribeOutOfPosition { index: usize },
-    /// Frame failed to decode against the expected payload type.
-    DecodeError,
     /// Receiver-internal error before any op ran.
     Internal,
 }
+
+// NOTE: there is no `DecodeError` variant. A typed `Reply::Rejected`
+// requires an exchange identifier to address; rkyv-level frame decode
+// failure means there is no typed request to answer (no exchange).
+// That case is a protocol error: drop the connection, log.
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum OperationFailureReason {
@@ -181,7 +185,7 @@ the handshake establishes.
 ```rust
 // signal-core/src/exchange.rs
 pub struct SessionEpoch(u64);
-pub struct ExchangeSequence(u64);
+pub struct LaneSequence(u64);
 
 pub enum ExchangeLane {
     Connector,   // the side that opened the connection
@@ -193,7 +197,7 @@ pub enum ExchangeLane {
 pub struct ExchangeIdentifier {
     pub session_epoch: SessionEpoch,
     pub lane: ExchangeLane,
-    pub sequence: ExchangeSequence,
+    pub sequence: LaneSequence,
 }
 
 /// Identifies one subscription-event frame's position on the
@@ -204,7 +208,7 @@ pub struct ExchangeIdentifier {
 pub struct StreamEventIdentifier {
     pub session_epoch: SessionEpoch,
     pub lane: ExchangeLane,
-    pub sequence: ExchangeSequence,
+    pub sequence: LaneSequence,
 }
 
 pub enum ExchangeMode {
@@ -214,7 +218,13 @@ pub enum ExchangeMode {
 }
 
 // signal-core/src/frame.rs
-pub enum FrameBody<RequestPayload, ReplyPayload> {
+//
+// Three payload type parameters keep replies and subscription events
+// in distinct types — a reply cannot accidentally carry an event
+// variant and vice versa. Channels without Subscribe ops set
+// EventPayload = core::convert::Infallible, making the
+// SubscriptionEvent variant unconstructible by type.
+pub enum FrameBody<RequestPayload, ReplyPayload, EventPayload> {
     HandshakeRequest(HandshakeRequest),
     HandshakeReply(HandshakeReply),
     Request {
@@ -232,12 +242,12 @@ pub enum FrameBody<RequestPayload, ReplyPayload> {
     SubscriptionEvent {
         event_identifier: StreamEventIdentifier,
         token: SubscriptionTokenInner,
-        event: ReplyPayload,
+        event: EventPayload,
     },
 }
 
-pub struct Frame<RequestPayload, ReplyPayload> {
-    pub body: FrameBody<RequestPayload, ReplyPayload>,
+pub struct Frame<RequestPayload, ReplyPayload, EventPayload> {
+    pub body: FrameBody<RequestPayload, ReplyPayload, EventPayload>,
 }
 ```
 
@@ -317,20 +327,22 @@ mint colliding numeric values without consequence — the
 `(connection, token)` pair is the identity.
 
 **Connector-side routing**:
-1. Decode `FrameBody::SubscriptionEvent { exchange, token, event }`.
+1. Decode `FrameBody::SubscriptionEvent { event_identifier, token, event }`.
+   The `event` is the channel's `EventPayload` enum (`MindEvent`,
+   `RouterEvent`, etc.), not its `ReplyPayload`.
 2. Look up `token` in `open`.
 3. Forward `event` to `event_sink`.
 4. Unknown token ⇒ protocol error (drop connection, log).
 
 **Acceptor-side fanout**: each write/state-change iterates `open`,
 evaluates per-subscription filters, emits matching events on the
-acceptor lane using the standard `ExchangeSequence` counter.
+acceptor lane using the standard `LaneSequence` counter.
 
 **Ordering guarantees**:
 - *Within a subscription*: transport-ordered. Frames on the acceptor
   lane arrive in emission order; the daemon's emit-loop serializes.
   No per-event sequence number on `SubscriptionEvent` beyond the
-  acceptor-lane `ExchangeIdentifier`.
+  acceptor-lane `StreamEventIdentifier`.
 - *Across subscriptions*: events interleave on the shared acceptor
   lane. Each substream stays ordered; cross-substream order is the
   daemon's emission order, not a promised invariant.
@@ -345,11 +357,12 @@ dropped on the connector side.
 cross-connection subscription continuity in v1; reconnect re-opens
 explicitly.
 
-**Resume / replay (deferred)**: the `exchange.sequence` on each
-`SubscriptionEvent` (acceptor-lane monotonic) is the position
-required for future resume-from-N. A reconnect handshake variant
-could carry the connector's "highest seen acceptor sequence." Not
-in v1; the field is in the frame for the day it becomes useful.
+**Resume / replay (deferred)**: the `event_identifier.sequence` on
+each `SubscriptionEvent` (acceptor-lane monotonic `LaneSequence`)
+is the position required for future resume-from-N. A reconnect
+handshake variant could carry the connector's "highest seen
+acceptor-lane sequence." Not in v1; the field is in the frame for
+the day it becomes useful.
 
 **Subscription "name"**: the wire identity is the token. Any
 human-readable label lives on `ConnectorSubscriptionHandle` (or
@@ -397,9 +410,11 @@ Universal-only rule set:
    `verb == payload.signal_verb()`. Catchable at construction by
    using `From<Payload> for Request<P>` paths that auto-derive verb;
    `check()` enforces for constructions that don't.
-2. **Subscribe position**: any `Subscribe` op must be at the last
-   position. Multi-subscribe in one request is allowed only if all
-   Subscribes are tail-contiguous (or banned outright — see §6).
+2. **Subscribe suffix**: `Subscribe` ops, if any, form a contiguous
+   suffix of the operation sequence. A single Subscribe is a special
+   case (suffix of length 1); multiple Subscribes at the tail open
+   atomically via two-phase staged-open (see §6). A Subscribe at any
+   position other than the suffix is `SubscribeOutOfPosition`.
 
 Method named `check` rather than `validate` to avoid confusion with
 `SignalVerb::Validate` (the verb that means "dry-run an op against
@@ -425,7 +440,7 @@ Strict-ordered execution + read-your-own-writes within a request:
 | All Validate | Dry-run against the request-time snapshot. First failure aborts. |
 | Validate + writes | Strict-ordered; Validate at position N sees cumulative writes 1..N-1. Preflight (Validates first) and checkpoint (Validates after) both work. |
 | Match + writes | Strict-ordered; Match at position N sees cumulative writes 1..N-1. SQL SELECT-FOR-UPDATE pattern works. **No result binding** — Match's payload is for the caller's read; later ops carry their own pre-conditions (e.g., `expected_rev` on Mutate). |
-| Subscribe + non-Subscribe | **Subscribes must come last in the request.** Non-Subscribe ops execute in strict order first; if any fails, no streams open. If all succeed, writes commit, then subscribes open at the post-commit snapshot. A Subscribe in the middle is rejected at receive-time as `Reply::Rejected { reason: RequestRejectionReason::SubscribeOutOfPosition }`. |
+| Subscribe + non-Subscribe | **Subscribes, if any, form a contiguous suffix.** Non-Subscribe ops execute in strict order first; if any fails, no streams open. If all succeed, writes commit, then the Subscribe suffix opens atomically at the post-commit snapshot via two-phase staged-open. A Subscribe outside the tail-contiguous suffix is rejected at receive-time as `Reply::Rejected { reason: RequestRejectionReason::SubscribeOutOfPosition }`. |
 
 Subscribes use the **two-phase staged-open**: validate every
 Subscribe first (filter type-checks, resource exists, requester
@@ -599,12 +614,63 @@ Settled-as-deferred.
 
 ### Q7 — Architecture drift (per DA/63 §3)
 
-`signal-core/ARCHITECTURE.md` and `skills/contract-repo.md`
-currently say `SignalVerb` is a closed seven-root spine with
-`Atomic`. /177 says six roots with structural atomicity. After the
-user confirms these reports as canonical, both docs need a sweep.
+Resolved 2026-05-15. Workspace-wide architecture sweep landed across
+the affected docs:
 
-Followup, not a /177 spec change.
+- `skills/contract-repo.md` (primary repo)
+- `signal-core/ARCHITECTURE.md`
+- `sema-engine/ARCHITECTURE.md` (with rename map for the seven-root
+  → six-root transition)
+- `signal/ARCHITECTURE.md` + `README.md`
+- `signal-persona/ARCHITECTURE.md`
+- `nexus/ARCHITECTURE.md` + `spec/grammar.md`
+- `signal-persona-mind/ARCHITECTURE.md` (no change needed; already
+  consistent)
+- `persona/ARCHITECTURE.md` (no change needed; already consistent)
+
+Settled.
+
+### Q8 — `SubscriptionEvent` payload type (per DA/63 v2 #1)
+
+`FrameBody` is now three-axis: `FrameBody<RequestPayload, ReplyPayload,
+EventPayload>`. The `SubscriptionEvent` variant carries `event:
+EventPayload`, distinct from `reply: Reply<ReplyPayload>`. Channels
+with `Subscribe` ops declare an `event <EventName> { ... }` macro
+block; channels without `Subscribe` set `EventPayload =
+core::convert::Infallible`, making the `SubscriptionEvent` variant
+type-uninhabited.
+
+Settled.
+
+### Q9 — Subscribe placement is the tail-contiguous suffix (per DA/63 v2 #2)
+
+§5 and §6 both say: `Subscribe` ops, if any, form a contiguous suffix
+of the operation sequence. A single Subscribe is a special case
+(suffix of length 1); multiple Subscribes at the tail open atomically
+via two-phase staged-open. Subscribes elsewhere are
+`RequestRejectionReason::SubscribeOutOfPosition`.
+
+Settled.
+
+### Q10 — `DecodeError` removed from `RequestRejectionReason` (per DA/63 v2 #3)
+
+A typed `Reply::Rejected` requires an `ExchangeIdentifier` to address.
+rkyv-level frame decode failure means there is no typed request to
+answer (no exchange ⇒ no addressable reply). That case is a protocol
+error: drop the connection, log. `RequestRejectionReason` now contains
+only `VerbPayloadMismatch`, `SubscribeOutOfPosition`, and `Internal`.
+
+Settled.
+
+### Q11 — `LaneSequence` replaces `ExchangeSequence` (per DA/63 v2 #4)
+
+The monotonic counter is a property of the lane, not of the exchange.
+Replies don't consume sequence numbers (they echo the request's).
+SubscriptionEvents consume sequence numbers on the acceptor lane.
+Naming the counter `LaneSequence` makes it correct for both
+`ExchangeIdentifier` and `StreamEventIdentifier`, which both embed it.
+
+Settled.
 
 ---
 

@@ -43,17 +43,25 @@ signal_channel! {
         <Variant>(<Payload>),
         ...
     }
+    [event <EventName> {
+        <Variant>(<Payload>),
+        ...
+    }]
 }
 ```
 
-Both `request <RequestName> { ... }` and `reply <ReplyName> { ... }`
-are required. No optional blocks in v1.
+`request <RequestName> { ... }` and `reply <ReplyName> { ... }` are
+required. `event <EventName> { ... }` is **required iff** any request
+variant declares the `Subscribe` verb, and **forbidden** otherwise.
+The macro enforces this by inspecting the verb declarations: a
+channel with a `Subscribe` variant but no `event` block fails
+compilation with a span-pointed error.
 
 Verbs are exactly the six `SignalVerb` variants. Each request
 variant lists its verb in the macro syntax; the macro emits the
 `RequestPayload::signal_verb()` witness from this.
 
-Worked example:
+Worked example (channel with subscriptions):
 
 ```rust
 signal_channel! {
@@ -75,8 +83,19 @@ signal_channel! {
         SubscriptionOpened(SubscriptionOpenedAck),
         ValidationPassed(ValidationReceipt),
     }
+
+    event MindEvent {
+        ThoughtAdded(ThoughtAddedEvent),
+        ThoughtRetracted(ThoughtRetractedEvent),
+        StatusChanged(StatusChangedEvent),
+    }
 }
 ```
+
+Worked example (channel without subscriptions): the `event` block
+is absent, and the macro sets `EventPayload = core::convert::Infallible`
+on the channel's `Frame` alias — the `SubscriptionEvent` variant
+becomes unconstructible by type.
 
 ---
 
@@ -134,24 +153,37 @@ impl MindRequest {
     pub fn kind(&self) -> MindRequestKind { /* match */ }
 }
 
-// (5) Channel type aliases. Two-axis Frame; no Intent parameter.
-pub type Frame        = signal_core::Frame<MindRequest, MindReply>;
-pub type FrameBody    = signal_core::FrameBody<MindRequest, MindReply>;
+// (5) Event payload enum + rkyv/NOTA derives (emitted only when the
+// channel has Subscribe variants).
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, Debug, Clone, PartialEq, Eq)]
+pub enum MindEvent {
+    ThoughtAdded(ThoughtAddedEvent),
+    ThoughtRetracted(ThoughtRetractedEvent),
+    StatusChanged(StatusChangedEvent),
+}
+
+// (6) Channel type aliases. Three-axis Frame (RequestPayload,
+// ReplyPayload, EventPayload). EventPayload is core::convert::Infallible
+// when the channel has no Subscribe variants.
+pub type Frame        = signal_core::Frame<MindRequest, MindReply, MindEvent>;
+pub type FrameBody    = signal_core::FrameBody<MindRequest, MindReply, MindEvent>;
 pub type ChannelRequest = signal_core::Request<MindRequest>;
 pub type ChannelReply   = signal_core::Reply<MindReply>;
 pub type ChannelRequestBuilder = signal_core::RequestBuilder<MindRequest>;
 
-// (6) Per-variant From<Payload> impls (request + reply) for
+// (7) Per-variant From<Payload> impls (request + reply + event) for
 // ergonomic `.into()` at call sites.
 impl From<SubmitThought> for MindRequest { /* ... */ }
-// ... and so on for each variant.
+// ... and so on for each variant in each enum.
 
-// (7) NOTA codec impls for the payload enums (per-variant
+// (8) NOTA codec impls for the payload enums (per-variant
 // dispatch on the head identifier).
 impl NotaEncode for MindRequest { /* match-and-encode */ }
 impl NotaDecode for MindRequest { /* peek head, dispatch */ }
 impl NotaEncode for MindReply { /* same */ }
 impl NotaDecode for MindReply { /* same */ }
+impl NotaEncode for MindEvent { /* same */ }
+impl NotaDecode for MindEvent { /* same */ }
 
 // (No channel-policy struct in v1 — universal rules only, per
 // /177 §9 Q6. When a real channel needs stricter-than-universal
