@@ -19,6 +19,50 @@ and `/174` (or a `/175` follow-up); operator picks up the core.
 
 ---
 
+## 0.0 · Banner — superseded for current-gate purposes by DA/57
+
+DA/57 (review of this report, 2026-05-15) corrects three things and
+narrows the active gate; this report is now **background
+confirmation**, not the live gate list. Read in this order for
+implementation:
+
+1. `/175` for corrected Rust/NOTA direction.
+2. `/172` for the spec it's actually absorbed into.
+3. `/117` for the active operator sequencing.
+4. DA/56 for the sema-engine replacement vocabulary (this report
+   stops at directional language; DA/56 names the concrete
+   `WriteBatch` / `WriteOperation` / `CommitReceipt` /
+   `CommitLogEntry` shapes).
+5. DA/57 for the narrowed pre-implementation gate.
+6. This report — background confirmation, the `NonEmpty<T>` codec
+   observation (now expressed as witness criteria, not a specific
+   rkyv attribute — see §4.1), and the `SubscriptionToken` gap
+   (deferred from wave 1 unless signal-core owns the type).
+
+The three DA/57 corrections folded below:
+
+- **§4.1**: dropped the specific `#[archive(check_bytes)]`
+  prescription; the rule is now witness-shaped (tests + trait
+  bounds), per DA/57 §1.3. Workspace rkyv-0.8 pattern uses
+  explicit `CheckBytes` bounds at decode sites, not a derive
+  attribute.
+- **§4.3**: `SubscriptionToken` re-classed as wave-1-deferred per
+  DA/57 §1.4 (not a wave-1 blocker; blocks subscription-capable
+  contracts only).
+- **§5**: items 1 (six-roots confirmation), 9
+  (`RequestHeader`/`BatchHeaderShape` unification) marked
+  settled per DA/57 §1.1 + §1.2. The narrowed gate is in §5
+  below; the canonical gate is DA/57 §3.
+
+The remaining contributions worth carrying forward (per DA/57 §2):
+independent confirmation of `/175`'s invalid default-generic
+syntax; the `NonEmpty<T>` NOTA sequence decoder requirement;
+`RequestHeader` as the single header concept; `SubscriptionToken`
+as a real future gap; `SubReply` as typed enum; sema-engine
+wave-1 dependency. The rest is historical.
+
+---
+
 ## 0 · Position relative to the existing thread
 
 This evaluation was started before `/175` and `/116` were visible
@@ -233,14 +277,19 @@ Rust shape is wrong.
 `/172 §2` introduces `NonEmpty<Op>` with a structural non-empty
 guarantee (head + tail). `/172 §1.7` references the bytecheck
 invariant: *"empty frames are caught by the rkyv decoder via
-NonEmpty's bytecheck invariant."* But the actual codec impls are
-not specified. Implementation gates the operator hits:
+NonEmpty's bytecheck invariant."* But the actual codec
+requirements are not specified. The implementation requirement is
+phrased as witnesses (per DA/57 §1.3 — an earlier draft of this
+report wrote `#[archive(check_bytes)]`; that's too specific for the
+workspace's rkyv-0.8 pattern, which uses explicit `CheckBytes`
+bounds at decode sites rather than a derive attribute):
 
-- **rkyv:** `NonEmpty<T>` needs `#[derive(Archive, RkyvSerialize,
-  RkyvDeserialize)]` plus `#[archive(check_bytes)]`. The
-  `head: T` field guarantees non-emptiness structurally — no
-  runtime check needed; the archive shape rules out the empty
-  case.
+- **rkyv:** `NonEmpty<T>` derives or implements the canonical
+  archive / serialization traits the workspace uses on contract
+  types. `ArchivedNonEmpty<T>` satisfies the same `CheckBytes`
+  bounds `Frame::decode` already expects. The `head: T` field
+  guarantees non-emptiness *structurally* — the archive shape
+  rules out empty at the type level; no runtime check needed.
 - **NOTA:** `NonEmpty<T>` cannot derive `NotaEnum` /
   `NotaRecord` directly because the canonical NOTA form for a
   collection is `[item item item ...]`, a sequence. The decoder
@@ -248,9 +297,11 @@ not specified. Implementation gates the operator hits:
   `head` + `tail`. This needs a hand-written `NotaDecode for
   NonEmpty<T>` impl in `signal-core` (the type is signal-core's,
   so the impl lives there).
+- **Tests:** an archived request with a valid `head` decodes
+  successfully; an empty NOTA sequence is rejected.
 
-Neither piece is hard; both need to be in the spec so operator
-implements rather than improvises. `/175` doesn't cover this.
+The witnesses are the spec; the rkyv-attribute syntax is operator
+choice within the workspace's existing pattern.
 
 ### 4.2 · `BatchHeaderShape` codec dispatch ambiguity
 
@@ -300,7 +351,17 @@ name (workspace convention leans toward `RequestHeader` since
 the type names the shape of a request, not specifically a batch
 inside a request); the codec lives on that type.
 
-### 4.3 · `SubscriptionToken` still has no spec
+### 4.3 · `SubscriptionToken` is wave-1-deferred (per DA/57 §1.4)
+
+Per DA/57: this blocks subscription-capable contracts from being
+implementation-ready, but does **not** block the wave-1
+`signal-core` + `sema-engine` core (`Request` / `Reply` /
+`NonEmpty` / `Frame`) unless `signal-core` is going to own the
+token type. Recommended status: *"explicitly deferred from wave 1
+unless signal-core owns the type; required before migrating
+Subscribe-capable contracts."*
+
+The original observation stands as a future-design gap:
 
 `/172 §3.1` shows:
 
@@ -339,15 +400,25 @@ it.
 
 ---
 
-## 5 · Implementation gate — concurrence with `/116`, adjusted for `/175` and `/55`
+## 5 · Implementation gate — superseded by DA/57 §3 + DA/56 §1.2
+
+The canonical pre-implementation gate after this report's thread
+landed is DA/57 §3 (six items, narrower than this report's
+original eleven). DA/56 §1.2 supplies the concrete sema-engine
+vocabulary the original `/116` + this report's first version both
+left at directional language. The table below is preserved for
+the lineage but is **not** the live gate. Per DA/57 §1.1 items 1
+and 9 below are now settled in the live thread; item 8 is
+deferred per DA/57 §1.4.
 
 `/116 §"Suggested Implementation Gate"` names seven items the
 operator wants settled before changing code. Per `/55 §1.2`,
-several of these are now settled by `/175`. The adjusted gate:
+several of these are now settled by `/175`. The adjusted gate
+follows; status revised per DA/57:
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Confirm "six roots, no `Atomic` root" intended | Open — user decision; the workspace-wide impact (§6.1 below) means this is *the* upstream decision. |
+| 1 | Confirm "six roots, no `Atomic` root" intended | **Settled per DA/57 §1.1** — `/172` and `/117` already treat six-root Signal as the active direction; the live question is now DA/56's sema-engine replacement names, not "six or seven." |
 | 2 | Replace lowercase NOTA examples with PascalCase typed records | **Settled by `/175 §4`** — `(Batch (Anonymous \| Tracked \| Named) [ops])`. `/172 §6` + `/174 §5` still need the line-edit sweep but the direction is decided. |
 | 3 | Remove four-parameter `Frame` examples | **Settled by `/175 §6.1`** — `/172 §3` line 103 and §10 line 754 already three-param; `/174 §1.2` and §5 also three-param. No remaining stale examples. |
 | 4 | Replace `/175`'s invalid default-generic method signature | **Open** — `/116 §F` and `/55 §1.3` both call this out; `/175` needs a `validate_universal` + `validate_with_policy::<Policy>()` split (§3 above). |
@@ -359,8 +430,8 @@ Three items I add:
 
 | # | Item | Per |
 |---|---|---|
-| 8 | Settle `SubscriptionToken` shape | §4.3 above; `/113 §13 Q3` pending user decision. |
-| 9 | Reconcile `RequestHeader<I>` (`/172`) vs `BatchHeaderShape<I>` (`/175`) — one name, one type | §4.2 above and `/116 §"4. Lowercase NOTA"`. |
+| 8 | Settle `SubscriptionToken` shape | **Wave-1-deferred per DA/57 §1.4** — not a wave-1 blocker unless signal-core owns the token type; required before migrating Subscribe-capable contracts. |
+| 9 | Reconcile `RequestHeader<I>` (`/172`) vs `BatchHeaderShape<I>` (`/175`) — one name, one type | **Settled per DA/57 §1.2** — latest `/175 §4` main text uses `RequestHeader<Intent>` directly; only cleanup left in `/175 §0/§6.1`. |
 | 10 | Specify `NonEmpty<T>`'s NOTA codec impl in signal-core | §4.1 above. |
 
 And one from `/55 §1.4`:
@@ -369,9 +440,30 @@ And one from `/55 §1.4`:
 |---|---|---|
 | 11 | Enumerate the handshake/Reply break consequences | §6.2 below. `Reply<Payload>::Handshake` retires; every reply construction site changes. |
 
-Open items: 1, 4, 5, 8, 9, 10, 11. The rest are settled in
-direction; remaining work is line-edits to `/172`/`/174` for
-consistency with `/175`. All settle in one designer pass.
+Open items per the post-DA/57 narrowed gate: 4 (legal Rust
+validate API), 5 (`SubReply` typed enum), 10 (`NonEmpty<T>`
+codec witnesses), 11 (handshake/Reply break enumeration), plus
+DA/56 §1.2's *new* concrete-sema-engine-vocabulary gate item
+(`WriteBatch` / `WriteOperation` / `CommitReceipt` /
+`CommitLogEntry` replacement names — this report did not name
+them). Items 1 and 9 are settled; item 8 is deferred.
+
+Net active gate per DA/57 §3 (canonical):
+1. Concrete sema-engine replacement vocabulary + log schema
+   (DA/56 §1.2).
+2. Legal `validate` / `validate_with_policy` Rust shape (now in
+   `/172 §2` lines 587–658; needs propagation into `/175`).
+3. `SubReply` typed enum promoted from recommendation to spec —
+   choose `RolledBack`, `Invalidated`, or both (DA/56 §1.6;
+   `/172 §1.6` already has it but worked example at `/172 §8.4`
+   contradicts).
+4. `RequestHeader<Intent>` owns the NOTA projection directly;
+   remove stale `BatchHeaderShape` references.
+5. `NonEmpty<T>` codec witnesses (tests + trait bounds), not a
+   specific rkyv attribute.
+6. Explicitly defer or specify `SubscriptionToken`.
+
+All six settle in one designer pass per DA/57 §4.
 
 ---
 
@@ -558,6 +650,16 @@ after).
   sema-engine wave-1 correction; cites this report's three
   gates (NonEmpty codec, header-name unification,
   SubscriptionToken).
+- `~/primary/reports/designer-assistant/56-review-operator-117-post-175-readiness.md` —
+  DA's review of `/117`; names the concrete sema-engine
+  replacement vocabulary (`WriteBatch`, `WriteOperation`,
+  `CommitReceipt`, `CommitLogEntry`) that this report and
+  `/117` left at directional language only.
+- `~/primary/reports/designer-assistant/57-review-operator-assistant-114-typed-request-evaluation.md` —
+  DA's review of this report; the corrections folded above
+  (rkyv prescription too specific → witness-shaped; gate items
+  1 and 9 settled; item 8 wave-1-deferred; canonical gate is
+  DA/57 §3, not this report's §5).
 - `~/primary/reports/designer-assistant/55-review-operator-116-typed-request-channel-macro.md` —
   DA's review of `/116`; this report folds in its four
   corrections (sema-engine wave-1 dependency, partial
