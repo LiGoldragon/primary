@@ -1077,44 +1077,77 @@ all replies; carried in follow-up frames that logically continue the
 same conversation. TTL-based garbage collection. Spec doesn't pin
 down details beyond the generation/echo rule.
 
-### Q5 — `SubscriptionToken` shape (pending user decision)
+### Q5 — `SubscriptionToken` shape — *settled 2026-05-15*
 
 Per operator-assistant/113 §13 Q3 and reaffirmed by operator-
-assistant/114 §4.3. `Reply` carries `SubscriptionOpened(SubscriptionToken)`
-in /172 §3.1 and the two-phase staged open in §4.1 references the
-token, but `SubscriptionToken`'s shape is not defined.
+assistant/114 §4.3. User settled the three sub-decisions:
 
-Natural sketch:
+- **(a) Field type**: opaque `u64` counter.
+- **(b) Scope**: per-channel typed — each contract declares its own
+  `<Channel>SubscriptionToken` newtype around `u64`.
+- **(c) Retraction shape**: per-channel `Retract
+  SubscriptionRetraction(<Channel>SubscriptionToken)` variant on
+  every channel that supports subscription cancellation.
+
+The signal-core primitive provides the `u64` newtype wrapper for
+contracts to alias:
 
 ```rust
 // signal-core/src/subscription.rs
 #[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaTransparent,
-         Debug, Clone, PartialEq, Eq)]
-pub struct SubscriptionToken(u64);
+         Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct SubscriptionTokenInner(u64);
+
+impl SubscriptionTokenInner {
+    pub const fn new(value: u64) -> Self { Self(value) }
+    pub const fn into_u64(self) -> u64 { self.0 }
+}
 ```
 
-Plus a workspace pattern of `Retract SubscriptionRetraction(SubscriptionToken)`
-on every channel that supports subscription cancellation.
+Each contract that supports subscriptions declares a typed wrapper:
 
-Three sub-decisions for the user:
+```rust
+// signal-persona-mind:
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaTransparent,
+         Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct MindSubscriptionToken(SubscriptionTokenInner);
+```
 
-- **(a) Field type**: opaque `u64` counter / typed
-  `Slot<Subscription>` (content-addressed) / content-hash. The
-  `u64` is simplest; `Slot<Subscription>` lets the engine
-  introspect; content-hash makes tokens deterministically
-  reproducible at the cost of needing the inputs to recompute.
-- **(b) Scope**: per-channel typed (each contract's tokens are a
-  different type) or workspace-shared (all subscriptions use the
-  same `SubscriptionToken` type across channels). Per-channel
-  matches the contract-repo discipline of perfect specificity;
-  workspace-shared is simpler.
-- **(c) Retraction shape**: one `Retract SubscriptionRetraction(SubscriptionToken)`
-  per channel (matches the per-channel-type direction); or one
-  workspace-wide retraction surface. Same trade-off as (b).
+And one `Retract` variant per subscribe-supporting channel:
 
-Pending decision. Lean: (a) `u64` for now, (b) per-channel, (c)
-per-channel retraction variant. The lean is conservative; awaits
-confirmation.
+```rust
+signal_channel! {
+    request MindRequest with intent MindBatchIntent {
+        // ...
+        Subscribe SubscribeThoughts(SubscribeThoughtsRequest),
+        Subscribe SubscribeRelations(SubscribeRelationsRequest),
+        Retract  SubscriptionRetraction(MindSubscriptionToken),
+        // ...
+    }
+}
+```
+
+Subscription replies carry the token:
+
+```rust
+reply MindReply {
+    // ...
+    SubscriptionOpened(MindSubscriptionOpened),
+    // ...
+}
+
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord,
+         Debug, Clone, PartialEq, Eq)]
+pub struct MindSubscriptionOpened {
+    pub token: MindSubscriptionToken,
+    pub kind: MindSubscriptionKind,    // Thoughts | Relations | ...
+}
+```
+
+The per-channel typed wrapping prevents accidental cross-channel
+retraction (you can't pass a `TerminalSubscriptionToken` to
+`MindRequest::SubscriptionRetraction`); the `u64` inside keeps the
+storage compact; each channel mints its own monotonic counter.
 
 ---
 

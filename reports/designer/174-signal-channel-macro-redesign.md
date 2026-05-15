@@ -636,7 +636,7 @@ least one workspace contract.
 
 ---
 
-## 6 · `macro_rules!` vs `proc-macro` — now nearly forced
+## 6 · `macro_rules!` vs `proc-macro` — settled: proc-macro now, in wave 2
 
 `/173 §6` evaluated this as a preference. After §4–§5 above, the
 choice is sharper.
@@ -720,58 +720,56 @@ and should be updated in present-tense.
 
 ---
 
-## 8 · Open questions
+## 8 · Open questions — settled 2026-05-15
 
-The questions in `/172 §7` plus DA's new ones:
+User settled Q1, Q3, Q4 explicitly; Q2 deferred per the user's
+guidance; Q5 lean confirmed by default. Recorded for reference:
 
-### Q1 — Operation-kind enum naming
+### Q1 — Operation-kind enum naming — *settled: `<RequestName>Kind`*
 
-`<RequestName>Kind` is the macro's default. But today's contracts use
-`<RequestName>OperationKind` (e.g., `MindOperationKind`, not
-`MindRequestKind`). Either:
-- (a) Macro emits `<RequestName>Kind`; contracts rename internal callers.
-- (b) Macro emits `<RequestName>OperationKind` for backward fit.
-- (c) Configurable macro parameter for the suffix.
+Macro emits `<RequestName>Kind` (e.g. `MindRequestKind`). Today's
+hand-written `MindOperationKind` retires; consuming callers update
+their imports as part of the wave-2 contract sweep.
 
-Lean (a) — `<RequestName>Kind` is shorter and matches the request enum's
-natural namespace. The rename is mechanical and one-time.
+### Q2 — `BatchPolicy` field list — *deferred*
 
-### Q2 — `BatchPolicy` field list
+Settled by the user as: defer until the first concrete consumer has
+real policy pressure (e.g., the first contract that wants
+`max_ops: 32`). When that arrives, settle the field list then.
+Channels without `batch_policy { ... }` use `DefaultPolicy`
+(permissive on every channel-specific rule); universal rules
+(Subscribe-must-be-last, verb/payload alignment, NonEmpty) apply
+regardless.
 
-The `batch_policy { ... }` block needs a closed field list. My §4.2
-draft has 5 fields plus `custom_check`. The right set depends on
-what receivers actually need. Likely candidates:
+`custom_check` is dropped from this section per `/175 §3` (closure
+expressions in contracts violate `skills/contract-repo.md`).
 
-- `max_ops: usize`
-- `allow_mixed_read_write: bool`
-- `forbid_subscribe: bool`
-- `forbid_validate: bool`
-- `forbid_mid_batch_subscribe: bool` (default true, hard rule)
-- `custom_check: |request| Result<(), CustomCheckFailure>`
+### Q3 — Builder pattern: panic-or-error on `build()` — *settled: Result*
 
-Settle this when the first per-receiver policy lands in a real
-contract.
+`BatchBuilder::build() -> Result<Request, BatchBuilderError>`. No
+panics on the wire-construction path. Callers handle `EmptyBatch`
+deliberately if reached.
 
-### Q3 — Builder pattern: panic-or-error on `build()`?
+### Q4 — Proc-macro migration timing — *settled: now, in wave 2*
 
-`BatchBuilder::build() -> Result<Request, BatchBuilderError>` returns
-error if the ops vec is empty (violating `NonEmpty`). Alternative:
-panic on empty (since the agent constructing the batch should know
-not to call `build()` without `.with(...)`).
+The macro migration to proc-macro lands as part of operator/117's
+wave 2 (the macro-redesign work). Not deferred to a later wave.
+Reasoning: the new emissions (auto-generated kind enums, optional
+intent block, batch_policy parsing, multi-mode constructors) push
+`macro_rules!` past the practical ergonomic line. Single migration
+in one operator pass; every subsequent macro extension is then
+incremental.
 
-Lean Result (no panics in the wire-construction path; callers can
-handle `EmptyBatch` deliberately if it's somehow reached).
+Operator should add `signal-core-macros` as a `proc-macro = true`
+crate; `signal-core` re-exports the macro. Contract crates'
+`signal_channel!` call sites stay Rust-syntactic (no per-contract
+changes from the engine swap).
 
-### Q4 — Proc-macro migration timing
+### Q5 — Should `<RequestName>Kind` cover intent-tagged variants too? — *lean confirmed: yes*
 
-(`/173 §9 Q1`.) After this redesign, the answer is clearer: migrate
-now, alongside the redesign, in one operator pass. The single
-migration to proc-macro lets every subsequent extension be additive.
-
-### Q5 — Should `<RequestName>Kind` carry intent-tagged variants too?
-
-Today's hand-written `MindOperationKind` is unit-only. But `/172`
-allows intent variants to carry payloads:
+The macro emits a `<RequestName>Kind` from request variants. By
+the same pattern, it should emit `<IntentName>Kind` projections
+for intent enums whose variants carry payloads:
 
 ```rust
 intent MindBatchIntent {
@@ -779,12 +777,19 @@ intent MindBatchIntent {
     SchemaUpgrade(SchemaUpgradeIntent),    // tuple variant
     ChannelMigration,
 }
+
+// Macro auto-emits:
+pub enum MindBatchIntentKind {
+    RoleHandoff,
+    SchemaUpgrade,         // unit-only projection
+    ChannelMigration,
+}
 ```
 
-Should the macro auto-generate a `MindBatchIntentKind` too (unit-only
-projection of the intent enum)? Plausibly useful for audit summaries
-that don't need the full payload. Probably worth emitting; another
-`<EnumName>Kind` for each named enum the macro sees.
+Useful for audit summaries that don't need the full payload. The
+macro emits one `<EnumName>Kind` for every payload-carrying enum
+it sees in the channel declaration (currently the request enum
+plus the optional intent enum).
 
 ---
 
