@@ -393,7 +393,7 @@ below; the findings are restated for completeness:
 
 ---
 
-### 1.9 · Operator/117 + operator-assistant/114 + DA/55 round
+### 1.9 · Historical review round, now absorbed by DA/61 and DA/62
 
 After the §1.8 settlements landed and a corrections-companion
 report was drafted, three further reviews surfaced more issues —
@@ -418,11 +418,10 @@ out migration concerns from design judgment).
   unrepresentable; per `skills/typed-records-over-flags.md`,
   status-plus-Option is the anti-pattern; the variant form is the
   fix.
-- **`NonEmpty<T>` codec impls now specified.** Operator-assistant
-  /114 §4.1 flagged that rkyv + NOTA codec impls for `NonEmpty<T>`
-  weren't named. The `NonEmpty<T>` definition in §2 now carries
-  the rkyv derive note and the hand-written NOTA decoder
-  specification.
+- **`NonEmpty<T>` codec impls now specified.** The historical review
+  round flagged that rkyv + NOTA codec impls for `NonEmpty<T>` weren't
+  named. The `NonEmpty<T>` definition in §2 now carries the rkyv derive
+  note and the hand-written NOTA decoder specification.
 - **`SubscriptionToken` shape is still pending the user.** Per
   operator-assistant/113 §13 Q3 and reaffirmed by /114 §4.3.
   Surfaced in §7 Q5 below; needs decision before subscription-
@@ -448,13 +447,64 @@ out migration concerns from design judgment).
 
   Workspace-wide cascade, but mechanical. Plan for it in wave 1.
 
+### 1.10 · Async-first correction (DA/61 round)
+
+After §1.9 landed, the user pushed back on the `correlation: Option<CorrelationId>`
+field that the spec had been carrying. Working through the question —
+*why does the protocol need a correlation ID at all?* — revealed the
+spec had been muddling three different concerns under one wrapper:
+
+- **Transport request/reply matching** (which reply belongs to which
+  request).
+- **Audit / workflow naming** (this batch is part of "RoleHandoff").
+- **Cross-component trace ID** (observability across daemons).
+
+The earlier `RequestHeader<Intent>` shape conflated all three. DA/61
+keeps the clean separation and sharpens the request/reply-matching
+answer: **the protocol is async, the matching scheme is a deterministic
+id grammar negotiated at handshake**, not a free-form client-chosen
+string.
+
+The shape that lands:
+
+- `signal-core` drops `Intent` as a type parameter on `Request` /
+  `Reply` / `Frame`. Domain "intent" (`RoleHandoff`, etc.) belongs
+  in domain payloads, not in transport wrappers. Audit labels wait
+  for tracing.
+- `signal-core` drops `CorrelationId`. The request/reply matching
+  key is `ExchangeIdentifier = (session_epoch, lane, sequence)`,
+  established at handshake, monotonic within a lane, sender-minted
+  but not sender-chosen (lane + sequence are deterministic from
+  shared connection state).
+- Each side owns one outbound lane; sequences are monotonic within
+  a lane; `session_epoch` lets reconnect cleanly reset.
+- `ExchangeIdentifier` lives on `FrameBody::Request` /
+  `FrameBody::Reply` variants — handshake frames don't carry one.
+- Subscription events ride on their own `FrameBody::SubscriptionEvent`
+  variant (the daemon's outbound lane), addressed by
+  `SubscriptionToken` plus a monotonic sequence for resume-on-reconnect.
+
+§2 below carries the corrected primitives. The protocol becomes:
+
+> Signal is async request/reply over a negotiated connection. A
+> request is one or more verb-tagged operations. Each request opens
+> one exchange identified by the sender's lane and monotonic
+> sequence. The reply closes that exchange by echoing the same
+> identifier. Subscription events flow on the daemon's lane,
+> addressed by subscription token. Trace/audit metadata, when added,
+> lives in a separate frame-level field — not in payloads, not in
+> the exchange id.
+
 ---
 
 ## 2 · The corrected design — `signal-core` primitives
 
-```rust
-// signal-core/src/request.rs
+Async-first per DA/61. `Intent` is gone. `CorrelationId` is gone.
+`RequestHeader<Intent>` / `ReplyHeader<Intent>` are gone. The shape
+that lands:
 
+```rust
+// signal-core/src/verb.rs
 pub enum SignalVerb {
     Assert,
     Mutate,
@@ -462,392 +512,300 @@ pub enum SignalVerb {
     Match,
     Subscribe,
     Validate,
-    // No Atomic. Atomicity is structural to every batch.
 }
 
-/// A non-empty sequence — guaranteed at the type level to hold at
-/// least one element. Empty batches have no semantics; the type
-/// rules them out at construction.
+// signal-core/src/exchange.rs
+//
+// The negotiated exchange grammar. The handshake establishes
+// session_epoch + which lane each side owns; per-message ids are
+// then derived monotonically by each sender from its own lane.
+// No party invents a global id; no party negotiates per message.
+pub struct SessionEpoch(u64);
+
+pub enum ExchangeLane {
+    Connector,   // the side that opened the connection
+    Acceptor,    // the side that accepted
+}
+
+pub struct ExchangeSequence(u64);
+
+pub struct ExchangeIdentifier {
+    pub session_epoch: SessionEpoch,
+    pub lane: ExchangeLane,
+    pub sequence: ExchangeSequence,
+}
+
+pub enum ExchangeMode {
+    LaneSequence {
+        session_epoch: SessionEpoch,
+        connector_lane: ExchangeLane,   // by convention, Connector
+        acceptor_lane: ExchangeLane,    // by convention, Acceptor
+    },
+    // Future modes (e.g. cryptographic-derivation chain for network
+    // components) get their own enum variants. Local IPC uses
+    // LaneSequence.
+}
+
+// signal-core/src/operation.rs
+pub struct Operation<Payload> {
+    pub verb: SignalVerb,
+    pub payload: Payload,
+}
+
+/// A non-empty sequence — guaranteed at the type level. Empty
+/// batches have no semantics; the type rules them out at
+/// construction.
 ///
-/// **rkyv codec** (per operator-assistant/114 §4.1): derive
-/// `Archive + RkyvSerialize + RkyvDeserialize` with
-/// `#[archive(check_bytes)]`. The mandatory `head: T` field
-/// guarantees non-emptiness structurally — the archive shape rules
-/// out the empty case at the type level, so no runtime check is
-/// needed during deserialization.
+/// rkyv codec: derive `Archive + check_bytes`; the `head: T`
+/// field guarantees non-emptiness structurally.
 ///
-/// **NOTA codec**: hand-written `NotaDecode for NonEmpty<T>` in
-/// signal-core. NOTA represents collections as sequences
-/// (`[item item item ...]`); the decoder consumes the sequence,
-/// errors on empty with `NotaCodecError::EmptyNonEmpty`, and splits
-/// the remainder into `head` + `tail`. The decoder lives in
-/// signal-core because `NonEmpty<T>` is signal-core's type. The
-/// `NotaEncode` impl reverses: emit `[head, tail0, tail1, …]`.
+/// NOTA codec: hand-written `NotaDecode` in signal-core that
+/// consumes `[item item ...]`, errors on empty with
+/// `NotaCodecError::EmptyNonEmpty`, and splits head/tail.
 pub struct NonEmpty<T> {
     head: T,
     tail: Vec<T>,
 }
 
-pub struct Request<Payload, Intent> {
-    pub header: RequestHeader<Intent>,
-    pub ops: NonEmpty<Op<Payload>>,
+// signal-core/src/request.rs
+pub struct Request<Payload> {
+    pub operations: NonEmpty<Operation<Payload>>,
 }
 
-/// The request header carries the closed-set of valid (intent,
-/// correlation) combinations. Named frames (with an intent) require
-/// a correlation id; anonymous and tracked frames do not.
-pub enum RequestHeader<Intent> {
-    /// No audit metadata. Most one-shot reads, single-op writes.
-    Anonymous,
-
-    /// Correlation id only; no named intent. Used for follow-up frames
-    /// that continue a tracked conversation.
-    Tracked { correlation: CorrelationId },
-
-    /// Named intent with correlation. Used for batches whose audit
-    /// meaning matters (RoleHandoff, SchemaUpgrade, etc.).
-    Named { intent: Intent, correlation: CorrelationId },
-}
-
-pub struct Op<Payload> {
-    pub verb: SignalVerb,
-    pub payload: Payload,
-}
-
-// Frame envelope owns the handshake variants exclusively — Reply has
-// no Handshake variant. A channel's request and reply share one
-// intent vocabulary; Frame is therefore three-parameter (per `/176 §2.1`
-// correction of an earlier four-parameter draft).
-pub enum FrameBody<RequestPayload, ReplyPayload, Intent> {
-    HandshakeRequest(HandshakeRequest),
-    HandshakeReply(HandshakeReply),
-    Request(Request<RequestPayload, Intent>),
-    Reply(Reply<ReplyPayload, Intent>),
-}
-```
-
-```rust
 // signal-core/src/reply.rs
-
-pub enum Reply<ReplyPayload, Intent> {
-    // No Handshake variant — handshakes live on FrameBody only.
-    Batch {
-        header: ReplyHeader<Intent>,
-        outcome: BatchOutcome,
-        per_op: Vec<SubReply<ReplyPayload>>,
-    },
+pub struct Reply<ReplyPayload> {
+    pub outcome: RequestOutcome,
+    pub per_operation: NonEmpty<SubReply<ReplyPayload>>,
 }
 
-/// Reply header echoes the request's header shape.
-pub enum ReplyHeader<Intent> {
-    Anonymous,
-    Tracked { correlation: CorrelationId },
-    Named { intent: Intent, correlation: CorrelationId },
-}
-
-pub enum BatchOutcome {
+pub enum RequestOutcome {
+    /// All operations completed/committed. Per-op `SubReply` carries
+    /// the per-verb result.
     Completed,
+    /// An op at position `failed_at` failed; the batch was aborted.
+    /// Writes that would have committed did not. Subscribes that
+    /// would have opened did not. Per-op replies say which.
     Aborted {
         failed_at: usize,
-        reason: BatchFailureReason,
+        reason: RequestFailureReason,
     },
 }
-
-/// Per-op reply — a typed sum (per `skills/typed-records-over-flags.md`
-/// and DA's review of `/177` §55) that makes illegal combinations
-/// unrepresentable. The earlier draft used `{ status, payload: Option }`
-/// which allowed `Ok` with `None` payload at the type level; this
-/// shape forbids it.
-pub enum SubReply<ReplyPayload> {
-    /// Op ran and committed/completed. Only emitted when the entire
-    /// batch reached `BatchOutcome::Completed`.
-    Ok {
-        verb: SignalVerb,
-        payload: ReplyPayload,
-    },
-
-    /// Op ran inside a batch that subsequently aborted. For writes:
-    /// durable effects were rolled back. For reads/validates that
-    /// ran: their result observed speculative state that did not
-    /// commit; the result is no longer authoritative. No payload —
-    /// the caller should re-issue if it still wants the value.
-    RolledBack {
-        verb: SignalVerb,
-    },
-
-    /// Op was attempted and failed; this is the cause of the batch
-    /// abort. Exactly one op per aborted batch has this variant, at
-    /// `BatchOutcome::Aborted::failed_at`. May carry a typed detail
-    /// payload describing the failure.
-    Failed {
-        verb: SignalVerb,
-        reason: SubFailureReason,
-        detail: Option<ReplyPayload>,
-    },
-
-    /// Op was never attempted because an earlier op in the batch
-    /// failed.
-    Skipped {
-        verb: SignalVerb,
-    },
-}
-
-// Outcome × per-op invariants (now type-enforced by SubReply's
-// typed-sum shape — the earlier struct-with-Option draft had to
-// state these as prose; the typed sum makes most of them
-// unrepresentable):
-//
-// - BatchOutcome::Completed ⇒ every SubReply is SubReply::Ok
-//   (each carries a non-Option payload — Ok-without-payload is
-//   structurally impossible).
-// - BatchOutcome::Aborted { failed_at, .. } ⇒
-//     * positions 0..failed_at are SubReply::RolledBack.
-//     * position failed_at is SubReply::Failed (carries reason and
-//       optional typed detail).
-//     * positions failed_at+1..n are SubReply::Skipped.
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub enum BatchFailureReason {
+pub enum RequestFailureReason {
     /// The op at `failed_at` was rejected by the receiver.
     OpRejected,
-    /// The batch violated a receiver-policy rule (e.g. an
-    /// `Op { verb, payload }` whose verb doesn't match the payload's
-    /// declared verb, or an empty batch slipping past the type guard).
+    /// The request violated a receive-time check (verb/payload
+    /// mismatch, Subscribe-out-of-order, etc.).
     PolicyViolation,
-    /// The batch violated a channel-declared `BatchPolicy` rule
-    /// (max_ops exceeded, forbidden verb present, etc.). The named
-    /// `rule` identifies which limit fired.
+    /// The channel-declared `BatchPolicy` rejected the request.
     BatchPolicyViolation { rule: &'static str, limit: usize },
-    /// The batch contained a `Subscribe` op that was not at the tail
-    /// of the batch. Subscribes must come last per §4 composition
-    /// rules; receive-time check fires before any op runs.
+    /// A Subscribe was not at the tail (universal rule, fires at
+    /// receive time before any op runs).
     SubscribeOutOfOrder,
-    /// The batch failed a `Validate` op at `failed_at`.
+    /// A `Validate` op at `failed_at` failed.
     ValidationFailed,
     /// A receiver-internal error.
     Internal,
 }
 
-/// Receiver-side verb-validation API. Four methods total — two
-/// convenience methods for the universal/default-policy path, two
-/// generic-on-Policy methods for channels that declare a specific
-/// policy. Rust forbids default generic type parameters on methods
-/// (per operator/117 §"Rust Sanity"), so the spec uses explicit
-/// pairs instead of the `<Policy = DefaultPolicy>` shape an earlier
-/// draft tried.
-///
-/// - `validate(&self)` borrows the request, runs universal rules
-///   plus `DefaultPolicy`'s permissive defaults. Caller retains
-///   the request.
-/// - `validate_with_policy::<Policy>(&self)` same with an explicit
-///   channel policy.
-/// - `into_checked(self)` consumes on success; returns the request
-///   back in the error tuple on failure (so the receiver can build
-///   the rejection reply with original header + per-op verbs).
-/// - `into_checked_with_policy::<Policy>(self)` same with explicit
-///   policy.
-///
-/// Replaces today's single-op `Request::into_payload_checked` for
-/// the new multi-op shape.
-impl<P, I> Request<P, I>
-where
-    P: RequestPayload,
-{
-    /// Validate without consuming, using the universal rules plus
-    /// `DefaultPolicy`. Universal rules: verb/payload alignment per
-    /// op, Subscribe-must-be-last, NonEmpty (type-enforced).
-    pub fn validate(&self) -> Result<(), BatchVerbMismatch> {
-        self.validate_with_policy::<DefaultPolicy>()
-    }
-
-    /// Validate without consuming, applying a specific channel
-    /// policy in addition to the universal rules.
-    pub fn validate_with_policy<Policy>(
-        &self,
-    ) -> Result<(), BatchVerbMismatch>
-    where
-        Policy: BatchPolicy<P, I>,
-    {
-        // Empty-batch check is impossible at this layer because
-        // `Request` carries `NonEmpty<Op>`; empty frames are caught
-        // by the rkyv decoder via NonEmpty's bytecheck invariant and
-        // surface as FrameError, not as BatchVerbMismatch.
-
-        // 1. Subscribe-position check: if any Subscribe is followed
-        //    by a non-Subscribe, fail at the offending Subscribe.
-        let mut seen_subscribe = None;
-        for (index, op) in self.ops.iter().enumerate() {
-            if op.verb == SignalVerb::Subscribe {
-                if seen_subscribe.is_none() {
-                    seen_subscribe = Some(index);
-                }
-            } else if let Some(sub_index) = seen_subscribe {
-                return Err(BatchVerbMismatch::SubscribeOutOfOrder {
-                    index: sub_index,
-                });
-            }
-        }
-
-        // 2. Per-op verb/payload alignment.
-        for (index, op) in self.ops.iter().enumerate() {
-            let expected = op.payload.signal_verb();
-            if op.verb != expected {
-                return Err(BatchVerbMismatch::OpMismatch {
-                    index,
-                    expected,
-                    got: op.verb,
-                });
-            }
-        }
-
-        Ok(())
-    }
-
-    /// Convert to a `CheckedRequest`, validating with the universal
-    /// rules plus `DefaultPolicy`. On failure, returns both the
-    /// violation and the unconverted request — the caller can echo
-    /// the request's header and per-op verbs into the rejection
-    /// reply without losing context.
-    pub fn into_checked(
-        self,
-    ) -> Result<CheckedRequest<P, I>, (BatchVerbMismatch, Self)> {
-        self.into_checked_with_policy::<DefaultPolicy>()
-    }
-
-    /// Convert to a `CheckedRequest`, validating with a specific
-    /// channel policy.
-    pub fn into_checked_with_policy<Policy>(
-        self,
-    ) -> Result<CheckedRequest<P, I>, (BatchVerbMismatch, Self)>
-    where
-        Policy: BatchPolicy<P, I>,
-    {
-        if let Err(reason) = self.validate_with_policy::<Policy>() {
-            return Err((reason, self));
-        }
-        let (header, ops) = self.into_parts();
-        Ok(CheckedRequest { header, ops })
-    }
-}
-
-/// Channel batch-policy trait. Implemented by per-channel unit
-/// structs that the `signal_channel!` macro emits from the
-/// optional `batch_policy { ... }` block. Channels without that
-/// block use `DefaultPolicy`. Declarative only — no closures, no
-/// runtime expressions; custom checks live in the daemon, not in
-/// the contract crate (per `skills/contract-repo.md`).
-pub trait BatchPolicy<P, I>
-where
-    P: RequestPayload,
-{
-    /// Maximum number of ops in one batch. Default: no cap.
-    fn max_ops() -> usize { usize::MAX }
-
-    /// Whether `Match` and write ops may appear in the same batch.
-    /// Default: permitted.
-    fn allow_mixed_read_write() -> bool { true }
-
-    /// Whether `Subscribe` ops are allowed at all. Default: permitted.
-    /// (The universal Subscribe-must-be-last rule is enforced regardless.)
-    fn forbid_subscribe() -> bool { false }
-
-    /// Whether `Validate` ops are allowed. Default: permitted.
-    fn forbid_validate() -> bool { false }
-}
-
-/// Default policy — permissive on every channel-specific rule.
-/// Used by channels that don't declare a `batch_policy { ... }` block.
-pub struct DefaultPolicy;
-impl<P, I> BatchPolicy<P, I> for DefaultPolicy where P: RequestPayload {}
-
-#[derive(Debug, PartialEq, Eq)]
-pub enum BatchVerbMismatch {
-    /// An op at `index` carried a verb that doesn't match its payload's
-    /// declared verb. Maps to `BatchFailureReason::PolicyViolation`
-    /// with `failed_at: index` in the rejection reply, and to
-    /// `SubFailureReason::SignalVerbMismatch` in the per-op SubReply.
-    OpMismatch {
-        index: usize,
-        expected: SignalVerb,
-        got: SignalVerb,
+/// Per-op reply — a typed sum (makes illegal states unrepresentable).
+pub enum SubReply<ReplyPayload> {
+    /// Op ran and committed/completed.
+    Ok { verb: SignalVerb, payload: ReplyPayload },
+    /// Op ran inside a request that subsequently aborted. Writes
+    /// rolled back; read/validate results no longer authoritative.
+    RolledBack { verb: SignalVerb },
+    /// Op was attempted and failed; this is the cause of the abort.
+    Failed {
+        verb: SignalVerb,
+        reason: SubFailureReason,
+        detail: Option<ReplyPayload>,
     },
-    /// A Subscribe op appeared before a non-Subscribe op. Maps to
-    /// `BatchFailureReason::SubscribeOutOfOrder` with
-    /// `failed_at: index` (pointing at the Subscribe that came too
-    /// early — the receiver names the first violating Subscribe).
-    SubscribeOutOfOrder { index: usize },
-    /// The channel's `BatchPolicy` rejected the batch. `rule` names
-    /// which declarative limit fired; `limit` is the threshold value
-    /// from the policy block (e.g. max_ops: 32).
-    PolicyViolation {
-        rule: &'static str,
-        limit: usize,
-    },
-}
-
-/// A `CheckedRequest` is the post-validation handle a receiver hands
-/// to its execution runtime. Only constructible via `into_checked`
-/// (after `validate` returns `Ok`).
-pub struct CheckedRequest<P, I> {
-    pub header: RequestHeader<I>,
-    pub ops: NonEmpty<Op<P>>,
+    /// Op never ran because an earlier op failed.
+    Skipped { verb: SignalVerb },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum SubFailureReason {
-    /// The verb/payload mismatch caught at receive time. Only produced
-    /// during `validate`/`into_checked`; runtime execution never
-    /// reaches an op with mismatched verb because the check fires first.
     SignalVerbMismatch,
-    /// The op's pre-condition (expected_rev, etc.) failed.
     PreconditionFailed,
-    /// The validation rule the op was checking did not hold.
     ValidationFailed,
-    /// Domain-specific failure; receiver-side detail in the payload.
     DomainRejection,
 }
+
+// signal-core/src/frame.rs
+//
+// Handshake variants don't carry an `ExchangeIdentifier` — the
+// exchange grammar is what the handshake establishes. Request /
+// Reply / SubscriptionEvent variants carry it.
+pub enum FrameBody<RequestPayload, ReplyPayload> {
+    HandshakeRequest(HandshakeRequest),
+    HandshakeReply(HandshakeReply),
+    Request {
+        exchange: ExchangeIdentifier,
+        request: Request<RequestPayload>,
+    },
+    Reply {
+        exchange: ExchangeIdentifier,
+        reply: Reply<ReplyPayload>,
+    },
+    /// Daemon-initiated subscription event. Rides on the daemon's
+    /// outbound lane (Acceptor) with its own monotonic sequence. The
+    /// `SubscriptionTokenInner` demuxes to the subscriber that
+    /// requested the stream; the `sequence` in `ExchangeIdentifier`
+    /// gives the client a "resume from N+1" capability on reconnect.
+    SubscriptionEvent {
+        exchange: ExchangeIdentifier,
+        token: SubscriptionTokenInner,
+        event: ReplyPayload,
+    },
+}
+
+pub struct Frame<RequestPayload, ReplyPayload> {
+    pub body: FrameBody<RequestPayload, ReplyPayload>,
+}
+
+// signal-core/src/subscription.rs
+//
+// Per /177 §7 Q5: opaque u64 inner; each subscription-bearing
+// channel declares its own typed wrapper plus a per-channel
+// `Retract SubscriptionRetraction(<Channel>SubscriptionToken)`
+// variant.
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaTransparent,
+         Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct SubscriptionTokenInner(u64);
 ```
+
+### 2.1 · Validation API — `validate` / `into_checked`
+
+Four explicit methods. The default-policy convenience methods
+delegate to the policy-typed methods internally; Rust forbids
+default type parameters on methods, so the explicit pair is the
+only legal shape:
+
+```rust
+impl<Payload> Request<Payload>
+where
+    Payload: RequestPayload,
+{
+    /// Validate without consuming. Universal rules + `DefaultPolicy`.
+    /// Universal rules: per-op verb/payload alignment via
+    /// `RequestPayload::signal_verb()`, Subscribe-must-be-last
+    /// position check, NonEmpty (type-enforced).
+    pub fn validate(&self) -> Result<(), RequestVerbMismatch> {
+        self.validate_with_policy::<DefaultPolicy>()
+    }
+
+    /// Same with an explicit channel policy.
+    pub fn validate_with_policy<Policy>(&self)
+        -> Result<(), RequestVerbMismatch>
+    where
+        Policy: BatchPolicy<Payload>,
+    { /* universal + policy */ }
+
+    /// Consume on success; return `(Err, Self)` on failure so the
+    /// receiver can build the rejection reply.
+    pub fn into_checked(self)
+        -> Result<CheckedRequest<Payload>, (RequestVerbMismatch, Self)>
+    {
+        self.into_checked_with_policy::<DefaultPolicy>()
+    }
+
+    /// Same with an explicit channel policy.
+    pub fn into_checked_with_policy<Policy>(self)
+        -> Result<CheckedRequest<Payload>, (RequestVerbMismatch, Self)>
+    where
+        Policy: BatchPolicy<Payload>,
+    {
+        if let Err(reason) = self.validate_with_policy::<Policy>() {
+            return Err((reason, self));
+        }
+        Ok(CheckedRequest { operations: self.operations })
+    }
+}
+
+pub enum RequestVerbMismatch {
+    OpMismatch { index: usize, expected: SignalVerb, got: SignalVerb },
+    SubscribeOutOfOrder { index: usize },
+    PolicyViolation { rule: &'static str, limit: usize },
+}
+
+pub struct CheckedRequest<Payload> {
+    pub operations: NonEmpty<Operation<Payload>>,
+}
+```
+
+### 2.2 · `BatchPolicy` — channel-declared rules
+
+Declarative-only. No closures, no runtime expressions (those would
+violate `skills/contract-repo.md`'s "contracts own typed records,
+not validation pipelines" discipline).
+
+```rust
+pub trait BatchPolicy<Payload>
+where
+    Payload: RequestPayload,
+{
+    fn max_ops() -> usize { usize::MAX }
+    fn allow_mixed_read_write() -> bool { true }
+    fn forbid_subscribe() -> bool { false }
+    fn forbid_validate() -> bool { false }
+}
+
+pub struct DefaultPolicy;
+impl<P> BatchPolicy<P> for DefaultPolicy where P: RequestPayload {}
+```
+
+The channel's macro emits a per-channel unit struct that
+implements `BatchPolicy` from an optional `batch_policy { ... }`
+block. Channels without the block use `DefaultPolicy`.
+
+### 2.3 · Exchange correctness rules
+
+Sender-side (per DA/61):
+
+- Maintain `next_outgoing_sequence` for own lane.
+- Assign the next sequence before writing a request frame.
+- Insert the exchange into the pending map.
+- Remove the pending exchange when its reply arrives.
+
+Receiver-side:
+
+- Reject a request whose lane is not the peer's outbound lane.
+- Reject a repeated `(lane, sequence)` request while the prior
+  exchange is still open.
+- Process requests independently (under actor backpressure).
+- Reply with the exact exchange identifier from the request.
+
+Reply-side:
+
+- Reject a reply whose exchange is not pending.
+- Reject duplicate replies for a closed exchange.
+- Route the reply by exchange id to the waiting requester.
+
+Failure semantics: unknown-exchange reply, wrong-lane request,
+duplicate open exchange = protocol error (drop connection or
+escalate). Out-of-order replies are normal.
 
 ---
 
 ## 3 · The corrected design — `signal_channel!` macro
 
-The macro grows to accept an *optional* `intent` declaration
-alongside the request/reply enums. Contracts that have named batch
-intents declare an enum; contracts that don't get an uninhabited
-`NoIntent` automatically.
-
-### 3.0 · `NoIntent` for contracts with no named batches
+After the async-first correction in §1.10 / §2, the macro
+contract simplifies. No `with intent <T>` clause. No `intent <T>
+{ ... }` block. No `NoIntent` substitution. No `<IntentName>`
+type emissions.
 
 ```rust
-// signal-core/src/intent.rs
-
-/// Marker type for contracts that have no named batch intents.
-/// Uninhabited — no value can ever be constructed.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum NoIntent {}
-```
-
-A `Request<P, NoIntent>` can only ever carry `RequestHeader::Anonymous`
-or `RequestHeader::Tracked`; `RequestHeader::Named { intent: NoIntent,
-.. }` is impossible to construct because `NoIntent` has no variants.
-This is a type-level guarantee that the contract has no named-intent
-audit surface; the receiver doesn't need to handle one.
-
-### 3.1 · Macro forms
-
-Two equivalent macro forms — with intent (named-batch surface) and
-without (no named batches needed):
-
-```rust
-// With named intents (most contracts that support multi-op batches):
 signal_channel! {
-    request MindRequest with intent MindBatchIntent {
+    request MindRequest {
         Assert SubmitThought(SubmitThought),
         Mutate StatusChange(StatusChange),
         Retract RoleRelease(RoleRelease),
         Match QueryThoughts(QueryThoughts),
-        Subscribe SubscribeThoughts(SubscribeSpec),
+        Subscribe SubscribeThoughts(SubscribeThoughtsRequest),
+        Retract SubscriptionRetraction(MindSubscriptionToken),
         Validate ValidateProposal(Proposal),
     }
     reply MindReply {
@@ -855,51 +813,36 @@ signal_channel! {
         Status(ActivityAck),
         Released(RoleReleaseAck),
         ThoughtList(Vec<Thought>),
-        SubscriptionOpened(SubscriptionToken),
+        SubscriptionOpened(SubscriptionOpenedAck),
         ValidationPassed(ValidationReceipt),
-        // Plus per-domain failure variants if the channel needs them.
     }
-    intent MindBatchIntent {
-        RoleHandoff,
-        SchemaUpgrade,
-        ChannelMigration,
-    }
+    // Optional, channels with policy pressure:
+    // batch_policy { max_ops: 32, forbid_subscribe: false, ... }
 }
-
-// Without named intents (contracts that don't need named-batch audit):
-signal_channel! {
-    request SimpleRequest {           // no `with intent X`
-        Match StatusQuery(StatusQuery),
-        Assert SimpleAssertion(SimpleAssertion),
-    }
-    reply SimpleReply {
-        Status(StatusReport),
-        Acknowledged(SimpleAck),
-    }
-    // no `intent` block
-}
-// Macro substitutes signal_core::NoIntent automatically. The contract's
-// requests can be Anonymous or Tracked, never Named.
 ```
 
 Macro emissions:
 
-- The `MindRequest` and `MindReply` payload enums (as today).
-- The `MindBatchIntent` enum.
-- Per-variant `SignalVerb` mappings (as today).
-- `pub type MindFrame = Frame<MindRequest, MindReply, MindBatchIntent>;`
-  — though intent type can differ for request vs reply; usually
-  the same.
-- Per-channel constructor helpers for both single-op and batched
-  frames.
-- The NOTA codec impls (with the new bracketed `[...]` form for
-  batches).
+- `pub enum MindRequest { ... }` and `pub enum MindReply { ... }`
+  with rkyv + NOTA derives.
+- `pub enum MindRequestKind` (unit-only projection of MindRequest
+  variants) auto-generated, plus `impl MindRequest { fn kind(&self)
+  -> MindRequestKind }`.
+- `impl RequestPayload for MindRequest` with the verb-mapping
+  match.
+- `pub type Frame = signal_core::Frame<MindRequest, MindReply>;`
+  — no `Intent` type parameter; the frame is two-axis.
+- `pub type FrameBody = signal_core::FrameBody<MindRequest, MindReply>;`
+- `pub type ChannelRequest = signal_core::Request<MindRequest>;`
+- `pub type ChannelReply = signal_core::Reply<MindReply>;`
+- `pub type ChannelBuilder = signal_core::BatchBuilder<MindRequest>;`
+- Per-variant `From<Payload>` impls (request + reply).
+- Per-channel `BatchPolicy` unit struct impl (or `DefaultPolicy`
+  if no `batch_policy` block).
+- NOTA codec impls on the payload enums.
 
-The intent enum participates in the same compile-time discipline as
-the request enum: adding a variant is a coordinated contract bump;
-no `Custom(String)` escape hatch.
-
----
+The full spec for the macro lives in the companion macro-redesign
+report.
 
 ## 4 · Composition rules (now precise)
 
@@ -992,57 +935,50 @@ Default: only commit-bearing batches are durably logged.
 
 ## 6 · CLI surface (the NOTA grammar)
 
-Bracketed-sequence form for batches; bare form as ergonomic
-shorthand for length-1:
+After the async-first correction, the wire grammar simplifies.
+No `(Batch ...)` wrapper. No `(Anonymous)` / `(Tracked ...)` /
+`(Named ...)` header. The exchange identifier is transport
+plumbing (`ExchangeIdentifier` on the frame), invisible to the
+human typing into the CLI:
 
 ```sh
-# Bare single-op (sugar for length-1 batch):
+# Single-op (the common case):
 mind '(Assert (SubmitThought (...)))'
 
-# Explicit batch (length-N):
-mind '[(Mutate (Catalog (...)))
-       (Mutate (Row (...)))
-       (Mutate (Catalog (status Active)))]'
+# Multi-op (when several ops must commit atomically):
+mind '[(Retract (RoleClaim (role Designer)))
+       (Assert (RoleClaim (role Poet)))]'
 
-# Batch with intent:
-mind '[(intent SchemaUpgrade)
-       (Mutate (Catalog (status Migrating)))
-       (Mutate (Row (...)))
-       (Mutate (Catalog (status Active)))]'
+# Mixed validate + writes (Validate first; if it fails, no writes commit):
+mind '[(Validate (Integrity (table thoughts)))
+       (Mutate (Catalog (table thoughts) (status Active)))]'
 
-# Strict-ordered with preflight Validate:
-mind '[(intent RoleHandoff)
-       (Validate (RoleHandoff (from designer) (to poet)))
-       (Retract (RoleClaim (role designer)))
-       (Assert (RoleClaim (role poet)))]'
+# Mixed Match + writes (Match reads at the request snapshot; the
+# Mutate carries its own pre-condition via expected_rev — no
+# result binding from Match):
+mind '[(Match (ClaimSnapshot (role Designer)))
+       (Validate (ExpectedRevision (key Designer) (revision 5)))
+       (Mutate (RoleClaim (role Designer) (expected_rev 5)))]'
 
-# Strict-ordered with checkpoint Validate (sees post-Mutate state):
-mind '[(intent SchemaUpgrade)
-       (Mutate (Catalog (status Migrating)))
-       (Mutate (Row (...)))
-       (Validate (Integrity (table thoughts)))
-       (Mutate (Catalog (status Active)))]'
+# Subscribe (one-op; opens a stream on the daemon's lane):
+mind '(Subscribe (ThoughtFilter (kind Decision)))'
 
-# Mixed Match + write — Match is for caller's read access; the Mutate's
-# pre-condition is SELF-CONTAINED (does NOT reference the Match's
-# result). No result binding; each op's payload carries its own
-# inputs.
-mind '[(Match (ClaimSnapshot (role designer)))                ; for caller's read
-       (Validate (ExpectedRevision (table claims) (key designer) (revision 5)))
-       (Mutate (RoleClaim (role designer) (expected_rev 5) (...)))]'
-
-# If the agent wants to *act conditionally* on a value, the conditional
-# is expressed as a Validate with its own typed predicate. The Validate
-# re-runs the read against the shared transactional state; on failure,
-# the batch aborts. The Mutate that follows is unconditional from its
-# own perspective — it just trusts the Validate's promise.
+# Subscribe + writes (writes commit; then subscribe opens at the
+# post-commit snapshot; Subscribes must come last):
+mind '[(Mutate (Catalog (table thoughts) (status Active)))
+       (Subscribe (ThoughtFilter (kind Decision)))]'
 ```
 
-The NOTA grammar gains the bracketed-sequence form `[ op op ... ]`.
-The `intent` and `correlation` annotations live at frame-head
-position; they parse before the ops.
+The `[ ... ]` sequence brackets are the **structural** marker of a
+multi-op atomic request. No keyword, no `Batch` wrapper. The
+single-op `(Verb ...)` form is sugar for a one-op request; the
+CLI parser desugars to a length-1 `NonEmpty<Operation>`
+internally.
 
----
+The `ExchangeIdentifier` lives on the frame at the transport layer
+— the CLI client mints the next sequence on the
+`Connector`-lane when it sends; replies arrive with the same
+exchange echoed. Users don't type the identifier.
 
 ## 7 · What's still open
 
@@ -1151,199 +1087,98 @@ storage compact; each channel mints its own monotonic counter.
 
 ---
 
-## 8 · Worked examples for four open questions
+## 8 · Worked examples
 
-The user's earlier four open questions land cleanly under the
-present spec. Each is shown concretely.
+Two scenarios that exercise the spec end-to-end.
 
-### 8.1 · Q1 — Subscribe-in-batch policy (now: Subscribes must be last)
+### 8.1 · Subscribe-in-batch policy: Subscribes must come last
 
 ```sh
-# Allowed: Subscribe-only batch
+# Allowed: Subscribe-only request
 mind '[(Subscribe (ThoughtFilter (kind Decision)))
        (Subscribe (RoleFilter (role designer)))]'
-# Both subscribes open at the shared snapshot. SubReply carries
-# SubscriptionToken per op.
+# Both subscribes open in the two-phase staged-open (per §4.1).
 
 # Allowed: non-Subscribe ops followed by Subscribes
 mind '[(Mutate (Catalog (table thoughts) (status Active)))
        (Subscribe (ThoughtFilter (kind Decision)))]'
-# Mutate executes first; if it commits, Subscribe opens at post-commit
-# snapshot. If Mutate fails, Subscribe never opens, batch aborts.
+# Mutate executes first; if it commits, Subscribe opens at
+# post-commit snapshot. If Mutate fails, Subscribe never opens.
 
 # Rejected at receive: Subscribe in the middle
 mind '[(Subscribe (ThoughtFilter (...)))
        (Assert (SubmitThought (...)))]'
-# → Reply::Batch {
-#     outcome: Aborted { failed_at: 0, reason: SubscribeOutOfOrder },
-#     ...
-#   }
+# → Reply { outcome: Aborted { failed_at: 0, reason: SubscribeOutOfOrder }, ... }
 ```
 
-Rationale: a subscription is an external ongoing side-effect (the
-client now has an open stream); if a later op fails, the spec must
-either roll back the stream-open (awkward — the client may have
-already received events) or keep it open despite the batch failure
-(also awkward — the audit record says the batch aborted, but the
-side-effect persists). Forcing Subscribes to the end of the batch
-collapses both edge cases into "subscribes only open after everything
-else succeeds." Clean.
+Rationale: a subscription is an external ongoing side-effect; once
+a stream opens, the client has events. Rolling back a stream-open
+is incoherent. Forcing Subscribes to the end collapses both edge
+cases (partial open, post-fail stream) into "subscribes only open
+after everything else succeeds."
 
-### 8.2 · Q2 — `BatchIntent` per-contract via the generic
+### 8.2 · Failure-reply shape in a mixed validate-write request
 
-Each contract owns its own intent enum, scoped through the
-`Request<Payload, Intent>` generic:
-
-```rust
-// signal-persona-mind:
-signal_channel! {
-    request MindRequest with intent MindBatchIntent {
-        Assert SubmitThought(SubmitThought),
-        // ...
-    }
-    intent MindBatchIntent {
-        RoleHandoff,
-        SchemaUpgrade,
-        ChannelMigration,
-    }
-}
-
-// signal-persona-message:
-signal_channel! {
-    request MessageRequest with intent MessageBatchIntent {
-        Assert MessageSubmission(MessageSubmission),
-        Mutate MessageMarkRead(MarkRead),
-        // ...
-    }
-    intent MessageBatchIntent {
-        BulkSubmission,
-        ConversationClose,
-    }
-}
-```
-
-Cross-contract intents are not allowed at the type level —
-`signal-persona-mind` cannot use `MessageBatchIntent`. If a workspace
-needs cross-contract audit (e.g., "this schema upgrade spanned mind
-and sema-engine"), it lives at the orchestration layer (correlation
-ids linking frames across contracts), not at a global intent enum.
-
-### 8.3 · Q3 — Correlation required when intent is set (now: type-enforced)
-
-The `RequestHeader::Named` variant bundles intent + correlation; the
-type system rejects an intent without a correlation:
-
-```rust
-// Allowed shapes:
-RequestHeader::Anonymous                                                     // no audit
-RequestHeader::Tracked { correlation: cor_abc }                              // tracked only
-RequestHeader::Named { intent: RoleHandoff, correlation: cor_abc }           // both
-
-// Disallowed at the type level — no `Named { intent: X }` variant
-// exists without correlation. The bad shape cannot be constructed.
-```
-
-NOTA wire forms:
+**Request (schema-upgrade pattern, checkpoint Validate fails)**:
 
 ```sh
-# Anonymous:
-mind '(Assert (SubmitThought (...)))'
-
-# Tracked (correlation only):
-mind '[(correlation cor-abc-123)
-       (Match (QueryThoughts (limit 10)))]'
-
-# Named (both):
-mind '[(intent RoleHandoff) (correlation cor-abc-123)
-       (Retract (RoleClaim (role designer)))
-       (Assert (RoleClaim (role poet)))]'
-
-# This shape — intent without correlation — is impossible to
-# construct (no constructor accepts it):
-#   mind '[(intent RoleHandoff) (Retract ...) (Assert ...)]'
-# The NOTA parser rejects it as missing the required correlation.
-```
-
-### 8.4 · Q4 — Failure-reply shape in mixed validate-write batches
-
-Concrete failure trace for a schema-upgrade batch where the
-checkpoint Validate fails:
-
-**Request:**
-
-```sh
-mind '[(intent SchemaUpgrade) (correlation cor-xyz-789)
-       (Mutate (Catalog (table thoughts) (status Migrating)))    ; op 0
+mind '[(Mutate (Catalog (table thoughts) (status Migrating)))    ; op 0
        (Mutate (Row 1 (new-shape ...)))                           ; op 1
        (Mutate (Row 2 (new-shape ...)))                           ; op 2
        (Validate (Integrity (table thoughts)))                    ; op 3 — fails
        (Mutate (Catalog (table thoughts) (status Active)))]'      ; op 4
 ```
 
-**Reply:**
+**Reply**:
 
 ```rust
-Reply::Batch {
-    header: ReplyHeader::Named {
-        intent: MindBatchIntent::SchemaUpgrade,    // echoed
-        correlation: cor_xyz_789,                  // echoed
+Reply {
+    outcome: RequestOutcome::Aborted {
+        failed_at: 3,                            // the Validate that failed
+        reason: RequestFailureReason::ValidationFailed,
     },
-    outcome: BatchOutcome::Aborted {
-        failed_at: 3,                              // the Validate that failed
-        reason: BatchFailureReason::ValidationFailed,
-    },
-    per_op: vec![
-        // op 0: ran, committed, then rolled back when batch aborted.
-        SubReply { verb: Mutate,   status: RolledBack, payload: None },
-        // op 1: same.
-        SubReply { verb: Mutate,   status: RolledBack, payload: None },
-        // op 2: same.
-        SubReply { verb: Mutate,   status: RolledBack, payload: None },
-        // op 3: the failure. Payload carries the validate's reason.
-        SubReply {
-            verb: Validate,
-            status: Failed(SubFailureReason::ValidationFailed),
-            payload: Some(MindReply::ValidationDetail(integrity_check_failure_detail)),
+    per_operation: NonEmpty::from(vec![
+        // op 0..2: ran, committed, then rolled back when the batch aborted
+        SubReply::RolledBack { verb: SignalVerb::Mutate },
+        SubReply::RolledBack { verb: SignalVerb::Mutate },
+        SubReply::RolledBack { verb: SignalVerb::Mutate },
+        // op 3: the failure. Payload carries the validate's detail
+        SubReply::Failed {
+            verb: SignalVerb::Validate,
+            reason: SubFailureReason::ValidationFailed,
+            detail: Some(MindReply::ValidationDetail(integrity_check_failure)),
         },
-        // op 4: never ran.
-        SubReply { verb: Mutate,   status: Skipped,    payload: None },
-    ],
+        // op 4: never ran
+        SubReply::Skipped { verb: SignalVerb::Mutate },
+    ]),
 }
 ```
 
-The reply carries:
+The reply carries everything the caller needs: the batch-level
+reason (`ValidationFailed` at position 3), the validate's specific
+detail in op 3's payload, and the status of every other op
+(`RolledBack` for ops that ran-then-undone, `Skipped` for op that
+never ran). The typed-sum `SubReply` makes "Ok with no payload"
+or "Skipped with payload" structurally impossible.
 
-- **The batch-level reason** (`ValidationFailed` at position 3) so the
-  caller can act on the failure category.
-- **The validate's specific detail** (in op 3's payload) so the caller
-  can render exactly which integrity check failed.
-- **The status of every other op**: which were attempted-but-undone
-  (`RolledBack`), which never ran (`Skipped`).
-- **No payloads for `RolledBack` or `Skipped` ops** per the invariants
-  in §1.6 — the caller can't trust observed values that didn't commit.
-
-The four-state `SubStatus` (Ok / RolledBack / Failed / Skipped) plus
-the position-keyed `failed_at` give the caller everything needed to
-understand the failure, retry intelligently, or surface a precise
-error to the user.
-
----
+The `ExchangeIdentifier` on the frame echoes the request's
+identifier; the caller routes the reply back to whoever was
+waiting on that exchange.
 
 ## 9 · See also
 
 - the macro-redesign companion in this directory — the macro shape
   over these primitives.
-- `~/primary/reports/operator/117-post-175-signal-core-sema-engine-readiness.md`
-  — operator's wave-1 plan against this spec.
-- `~/primary/reports/operator-assistant/114-typed-request-shape-and-macro-redesign-evaluation.md`
-  — operator-assistant's independent confirmation + the
-  `NonEmpty` codec / `SubscriptionToken` precision gaps.
+- `~/primary/reports/designer-assistant/61-signal-redesign-current-spec.md`
+  — compact current Signal protocol spec.
+- `~/primary/reports/designer-assistant/62-signal-redesign-implementation-brief.md`
+  — implementation ordering and witnesses.
 - `/git/github.com/LiGoldragon/signal-core/src/request.rs` — what
   this spec replaces.
 - `/git/github.com/LiGoldragon/signal-core/src/reply.rs` — what
   this spec replaces.
 - `/git/github.com/LiGoldragon/signal-core/src/channel.rs` — the
-  macro that grows to support `with intent <T>` syntax.
+  macro implementation this spec replaces.
 - `~/primary/skills/contract-repo.md` §"Signal is the database
   language — every request declares a verb" — the upstream
   discipline this spec encodes.

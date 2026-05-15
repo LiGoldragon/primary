@@ -67,7 +67,61 @@ list of what it declares and the cleanness of the API it emits. DA's
 phrasing — *"same declarative center, less ad hoc single-op
 assumption, more generated contract truth"* — names the right shape.
 
+
+**Updated 2026-05-15 (async-first correction per DA/61)**: the
+spec below drops every Intent-related emission. No `with intent
+<T>` clause, no `intent <T> { ... }` block, no `NoIntent`, no
+`<IntentName>` type aliases, no per-intent constructors. The macro
+emits payload enums, the request/reply type aliases, the
+`<RequestName>Kind` auto-projection, verb witnesses, NOTA codec
+impls, and an optional `BatchPolicy` impl. That's it. The
+`Frame` / `FrameBody` aliases are two-axis (`<RequestPayload,
+ReplyPayload>`), not three; the exchange identifier lives at the
+transport layer in `signal-core::FrameBody::Request{...}` /
+`Reply{...}` / `SubscriptionEvent{...}` variants.
+
+The historical narrative in the sections below references
+`RequestHeader<Intent>`, `BatchPolicy<P, I>`, etc. — those types
+no longer exist. Where the body uses them, read them as "the
+shape an earlier draft proposed, now retired." The corrected
+emissions list is:
+
+```rust
+// signal-core/src/channel.rs (proc-macro form, per §6 below)
+signal_channel! {
+    request MindRequest {
+        Assert SubmitThought(SubmitThought),
+        // ...
+        Subscribe SubscribeThoughts(SubscribeThoughtsRequest),
+        Retract SubscriptionRetraction(MindSubscriptionToken),
+    }
+    reply MindReply {
+        Thought(ThoughtSummary),
+        SubscriptionOpened(SubscriptionOpenedAck),
+        // ...
+    }
+    // Optional, per /177 §2.2:
+    // batch_policy { max_ops: 32, forbid_subscribe: false, ... }
+}
+
+// Emits:
+pub enum MindRequest { ... }
+pub enum MindReply { ... }
+pub enum MindRequestKind { ... }                // unit-only projection
+impl signal_core::RequestPayload for MindRequest { ... }
+impl MindRequest { pub fn kind(&self) -> MindRequestKind { ... } }
+pub type Frame = signal_core::Frame<MindRequest, MindReply>;
+pub type FrameBody = signal_core::FrameBody<MindRequest, MindReply>;
+pub type ChannelRequest = signal_core::Request<MindRequest>;
+pub type ChannelReply = signal_core::Reply<MindReply>;
+pub type ChannelBuilder = signal_core::BatchBuilder<MindRequest>;
+pub struct MindRequestPolicy;                     // unit struct
+impl signal_core::BatchPolicy<MindRequest> for MindRequestPolicy { ... }
+// Plus per-variant From<Payload> impls + NotaEncode/Decode.
+```
+
 ---
+
 
 ## 1 · DA's findings, with concurrence
 
@@ -751,10 +805,11 @@ live in daemon code, not in the contract.
 panics on the wire-construction path. Callers handle `EmptyBatch`
 deliberately if reached.
 
-### Q4 — Proc-macro migration timing — *settled: now, in wave 2*
+### Q4 — Proc-macro migration timing — *settled: now, after core*
 
-The macro migration to proc-macro lands as part of operator/117's
-wave 2 (the macro-redesign work). Not deferred to a later wave.
+The macro migration to proc-macro lands after the signal-core /
+sema-engine first slice named in DA/62 (the macro-redesign work). Not
+deferred to a later wave.
 Reasoning: the new emissions (auto-generated kind enums, optional
 intent block, batch_policy parsing, multi-mode constructors) push
 `macro_rules!` past the practical ergonomic line. Single migration
