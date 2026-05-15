@@ -70,6 +70,7 @@ the discipline is the same; the reading list is the same.
 - `skills/beads.md`
 - `skills/skill-editor.md`
 - `skills/repository-management.md`
+- `skills/feature-development.md`
 - `skills/stt-interpreter.md`
 
 **Role contracts**

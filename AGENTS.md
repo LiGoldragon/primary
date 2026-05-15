@@ -45,6 +45,29 @@ value cannot be reached that way, change the Nix code so the value
 is exposed as an evaluable option, package, check, passthru, or
 helper output.
 
+## Feature branches live in worktrees, not the canonical checkout
+
+When work touches code that is already in production (the deploy
+stack, the OS layer, anything users depend on right now) and the
+arc spans more than one commit, the work belongs on a feature
+branch in a *separate worktree* — not on the canonical ghq
+checkout under `/git/...`. Keeping the canonical checkout on
+`main` is what lets every peer agent see production reality
+without negotiating who-has-the-checkout.
+
+The worktree path is parallel-and-predictable:
+`~/wt/github.com/<owner>/<repo>/<branch-name>/`. Same shape as
+the ghq layout under `/git/github.com/...`, with the branch name
+as the leaf directory. The same branch name is used across every
+repo a multi-repo arc touches.
+
+The full discipline — when to use a worktree, how to create one
+(jj-colocated and plain-git forms), branch naming, push flow,
+cleanup at merge time, and the orchestration-protocol interaction
+— lives in `skills/feature-development.md`. Read that skill
+before starting any non-trivial branch work; it is part of every
+role's required reading.
+
 ## Roles
 
 The workspace recognises eight coordination roles:

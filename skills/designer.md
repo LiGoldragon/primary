@@ -107,6 +107,7 @@ the cross-cutting authority real.
 - `skills/beads.md`
 - `skills/skill-editor.md`
 - `skills/repository-management.md`
+- `skills/feature-development.md`
 - `skills/stt-interpreter.md`
 
 **Role contracts (every role's "what I own and what I don't")**

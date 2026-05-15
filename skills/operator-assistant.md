@@ -69,6 +69,7 @@ operator's. The assistant does the same work as its main role.
 - `skills/beads.md`
 - `skills/skill-editor.md`
 - `skills/repository-management.md`
+- `skills/feature-development.md`
 - `skills/stt-interpreter.md`
 
 **Role contracts**

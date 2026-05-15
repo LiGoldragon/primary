@@ -60,6 +60,7 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 - `skills/beads.md`
 - `skills/skill-editor.md`
 - `skills/repository-management.md`
+- `skills/feature-development.md`
 - `skills/stt-interpreter.md`
 
 **Role contracts**
