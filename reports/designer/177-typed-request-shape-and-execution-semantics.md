@@ -219,12 +219,31 @@ pub enum ExchangeMode {
 
 // signal-core/src/frame.rs
 //
-// Three payload type parameters keep replies and subscription events
-// in distinct types — a reply cannot accidentally carry an event
-// variant and vice versa. Channels without Subscribe ops set
-// EventPayload = core::convert::Infallible, making the
-// SubscriptionEvent variant unconstructible by type.
-pub enum FrameBody<RequestPayload, ReplyPayload, EventPayload> {
+// Two FrameBody types — one per channel shape. The split keeps
+// non-streaming channels' match patterns clean (no uninhabited
+// SubscriptionEvent variant to discharge) and makes the schema
+// honestly reflect which channels emit pushed events.
+
+/// Non-streaming channel frame: handshake + request/reply only.
+/// No `SubscriptionEvent` variant exists.
+pub enum ExchangeFrameBody<RequestPayload, ReplyPayload> {
+    HandshakeRequest(HandshakeRequest),
+    HandshakeReply(HandshakeReply),
+    Request {
+        exchange: ExchangeIdentifier,
+        request: Request<RequestPayload>,
+    },
+    Reply {
+        exchange: ExchangeIdentifier,
+        reply: Reply<ReplyPayload>,
+    },
+}
+
+/// Streaming channel frame: adds daemon-initiated subscription events.
+/// Event payload is type-distinct from reply payload — illegal states
+/// (an event variant accidentally appearing in a reply, or vice versa)
+/// are unrepresentable.
+pub enum StreamingFrameBody<RequestPayload, ReplyPayload, EventPayload> {
     HandshakeRequest(HandshakeRequest),
     HandshakeReply(HandshakeReply),
     Request {
@@ -246,8 +265,12 @@ pub enum FrameBody<RequestPayload, ReplyPayload, EventPayload> {
     },
 }
 
-pub struct Frame<RequestPayload, ReplyPayload, EventPayload> {
-    pub body: FrameBody<RequestPayload, ReplyPayload, EventPayload>,
+pub struct ExchangeFrame<RequestPayload, ReplyPayload> {
+    pub body: ExchangeFrameBody<RequestPayload, ReplyPayload>,
+}
+
+pub struct StreamingFrame<RequestPayload, ReplyPayload, EventPayload> {
+    pub body: StreamingFrameBody<RequestPayload, ReplyPayload, EventPayload>,
 }
 ```
 
@@ -327,7 +350,7 @@ mint colliding numeric values without consequence — the
 `(connection, token)` pair is the identity.
 
 **Connector-side routing**:
-1. Decode `FrameBody::SubscriptionEvent { event_identifier, token, event }`.
+1. Decode `StreamingFrameBody::SubscriptionEvent { event_identifier, token, event }`.
    The `event` is the channel's `EventPayload` enum (`MindEvent`,
    `RouterEvent`, etc.), not its `ReplyPayload`.
 2. Look up `token` in `open`.
@@ -598,13 +621,14 @@ observed dead state). No separate variant earns its keep.
 
 Settled: unified `Invalidated`.
 
-### Q2 — `SubscriptionEvent` is the 5th `FrameBody` variant
+### Q2 — `SubscriptionEvent` lives on `StreamingFrameBody`
 
-§3 carries `SubscriptionEvent { exchange, token, event }` as the
-fifth FrameBody variant. The alternatives (replies-after-replies
-on the original Subscribe exchange, or per-event daemon-initiated
-request frames) either break "one reply per exchange" or pay
-handshake overhead per event.
+§3 carries `SubscriptionEvent { event_identifier, token, event }`
+as a variant of `StreamingFrameBody` (the streaming-channel frame).
+The alternatives (replies-after-replies on the original Subscribe
+exchange, or per-event daemon-initiated request frames) either
+break "one reply per exchange" or pay handshake overhead per
+event.
 
 §4.2 specifies the connector-side and acceptor-side subscription
 trackers: the connector maintains `SubscriptionTokenInner →
@@ -615,8 +639,8 @@ Ordering within a subscription is transport-guaranteed (single
 acceptor lane, serialized emit-loop); cross-subscription order is
 not promised.
 
-Settled: 5th variant + stateful per-connection trackers on both
-sides.
+Settled: streaming-frame variant + stateful per-connection
+trackers on both sides.
 
 ### Q3 — `ExchangeMode::LaneSequence` drops the tautological lane fields
 
@@ -680,15 +704,11 @@ the affected docs:
 
 Settled.
 
-### Q8 — `SubscriptionEvent` payload type (per DA/63 v2 #1)
+### Q8 — `SubscriptionEvent` lives on a separate frame type (per DA/63 v2 #1, refined by Q12)
 
-`FrameBody` is now three-axis: `FrameBody<RequestPayload, ReplyPayload,
-EventPayload>`. The `SubscriptionEvent` variant carries `event:
-EventPayload`, distinct from `reply: Reply<ReplyPayload>`. Channels
-with `Subscribe` ops declare an `event <EventName> { ... }` macro
-block; channels without `Subscribe` set `EventPayload =
-core::convert::Infallible`, making the `SubscriptionEvent` variant
-type-uninhabited.
+Subscription events use the `StreamingFrameBody::SubscriptionEvent`
+variant, distinct from `Reply<ReplyPayload>`. Event payload is a
+separate type parameter. See Q12 for the frame-type split.
 
 Settled.
 
@@ -722,33 +742,34 @@ Naming the counter `LaneSequence` makes it correct for both
 
 Settled.
 
-### Q12 — One parameterized `FrameBody`, not two types (vs DA/64 §5)
+### Q12 — Two `FrameBody` types: `ExchangeFrameBody` and `StreamingFrameBody` (per DA/64 §5, DA/65 §1)
 
-DA/64 §5 recommends splitting `FrameBody` into two distinct types
-— `ExchangeFrameBody<RequestPayload, ReplyPayload>` for non-streaming
-channels and `StreamingFrameBody<RequestPayload, ReplyPayload,
-EventPayload>` for streaming — to avoid a "fake zero-sized NoEvent
-type."
+Reversed 2026-05-15 (was: one parameterized type with `Infallible`).
+OA/116 surfaced the concrete cost: every non-streaming daemon's
+`match frame.into_body() { ... }` would have to discharge an
+uninhabited `SubscriptionEvent` arm (the stable-Rust exhaustiveness
+checker doesn't yet recognize uninhabited enum variants without
+`#![feature(exhaustive_patterns)]`). Six-plus daemons * that
+boilerplate is real noise.
 
-I disagree. `core::convert::Infallible` is the standard Rust idiom
-for "this case cannot exist" (used by `Result<T, Infallible>` in
-the stdlib, by `Never` in nightly, by the `?` operator's type
-machinery). Setting `EventPayload = Infallible` on non-streaming
-channels makes the `SubscriptionEvent` variant **type-uninhabited**
-at use-site — a real compile-time guarantee, not a fake type.
+§3 now defines two enums:
 
-One parameterized type wins on:
-- single decode/dispatch path in transport code;
-- single `Frame<RequestPayload, ReplyPayload, EventPayload>` API
-  shared by every channel;
-- future frame variants (flow control, cancellation, etc.) land
-  once, not twice.
+- `ExchangeFrameBody<RequestPayload, ReplyPayload>` — 4 variants
+  (handshake + request/reply), no event arm.
+- `StreamingFrameBody<RequestPayload, ReplyPayload, EventPayload>` —
+  5 variants (adds `SubscriptionEvent`).
 
-The wire overhead is one unreachable rkyv tag value per
-non-streaming connection — irrelevant.
+Channels declare which they use via the macro `channel { ... }` block
+(see /176 §1). Non-streaming channels emit `ExchangeFrame` aliases;
+streaming channels emit `StreamingFrame` aliases. No `Infallible`
+filler.
 
-Settled: one `FrameBody`. Non-streaming channels' macro emission
-sets `EventPayload = Infallible`.
+Tradeoff accepted: transport code that's generic over either frame
+shape is rare in practice (each connection knows its channel and
+therefore its frame type), so the duplicated 4-variant dispatch
+path is acceptable.
+
+Settled.
 
 ### Q13 — Verb-wrapped NOTA codec at the kernel layer (per DA/64 §6)
 
@@ -781,6 +802,87 @@ wants `.into()` for an unambiguous payload, hand-write `From` for
 that one.
 
 Settled: macro doesn't emit auto-From impls.
+
+### Q15 — Proc-macro readopted (reverses DA/63 F5 / earlier Q5)
+
+Reversed 2026-05-15. The earlier macro_rules! settlement (DA/63 F5)
+was right *at that spec snapshot*. The DA/65-shape spec is richer:
+
+- The `channel { ... }` wrapper plus `stream { ... }` block names
+  a typed relationship graph (which Subscribe variant opens which
+  stream, which token type, which reply opens, which Retract
+  closes). Cross-block name resolution and validation is
+  compiler work.
+- Diagnostics matter: "`Create` is not a SignalVerb; expected
+  Assert, Mutate, Retract, Match, Subscribe, Validate" with
+  span-pointed errors is well within proc-macro reach and beyond
+  `macro_rules!`.
+- The user's original direction in this thread was proc-macro.
+  Reverting to it restores that intent.
+
+Crate shape per DA/65 §6:
+
+```
+signal-core/macros/
+├── Cargo.toml          # proc-macro = true
+└── src/
+    ├── lib.rs          # #[proc_macro] signal_channel
+    ├── parse.rs        # syn parser for channel declaration
+    ├── model.rs        # ChannelSpec, StreamSpec, VariantSpec
+    ├── validate.rs     # semantic checks + diagnostics
+    └── emit.rs         # quote! output
+```
+
+`signal-core` re-exports `pub use signal_core_macros::signal_channel`.
+
+Settled.
+
+### Q16 — `stream { ... }` block in macro grammar (per DA/65 §2)
+
+Streaming channels declare each stream's full relation:
+
+```rust
+stream <StreamName> {
+    token <TokenType>;
+    opened <OpenedReplyVariant>;
+    event <EventPayloadVariant>;
+    close <RetractRequestVariant>;
+}
+```
+
+Subscribe variants annotate which stream they open:
+`Subscribe SubscribeX(SubscribeX) opens <StreamName>`. Event
+variants annotate which stream they belong to:
+`<EventVariant>(<Payload>) belongs <StreamName>`.
+
+The proc-macro enforces:
+- every `opens <StreamName>` resolves to a declared `stream` block;
+- every `belongs <StreamName>` does the same;
+- every stream's `opened` / `event` / `close` references resolve to
+  variants in their respective `reply` / `event` / `request` blocks
+  (with `close` carrying the stream's token type);
+- a channel with at least one Subscribe variant has at least one
+  `stream` block;
+- a channel with `event` variants has corresponding stream blocks.
+
+The macro emits relationship witnesses:
+
+```rust
+impl TerminalRequest {
+    pub fn opened_stream(&self) -> Option<TerminalStreamKind> { ... }
+}
+
+impl TerminalEvent {
+    pub fn stream_kind(&self) -> TerminalStreamKind { ... }
+}
+
+pub enum TerminalStreamKind {
+    TerminalWorkerLifecycleStream,
+    // ...
+}
+```
+
+Settled.
 
 ---
 

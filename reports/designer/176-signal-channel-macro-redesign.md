@@ -1,269 +1,332 @@
-# 176 — `signal_channel!` macro redesign
+# 176 — `signal_channel!` proc-macro redesign
 
 *Designer spec, 2026-05-15. Compact current-state record after the
-async-first correction (DA/60). Companion to `/177` (the typed-
-request spec). Aligns with
-`reports/designer-assistant/62-signal-redesign-implementation-brief.md`
-§4 (the operator-facing macro section).*
+DA/65 fold-in. Companion to `/177` (typed-request spec). Channel
+declarations are now a typed relationship graph; the macro is a
+small contract compiler.*
 
-**Retires when**: the proc-macro lands in `signal-core` and is
-re-exported across contract crates; the substance migrates to
-`signal-core/ARCHITECTURE.md`.
+**Retires when**: the proc-macro lands in `signal-core/macros/` and
+contract crates use it; the substance migrates to
+`signal-core/ARCHITECTURE.md` and `signal-core/macros/ARCHITECTURE.md`.
 
 ---
 
 ## 0 · TL;DR
 
 `signal_channel!` is one declaration per channel. It emits the
-typed payload enums, the per-variant `SignalVerb` witness, the
-auto-generated kind enum, the channel type aliases, and the NOTA
-codec impls. Nothing else. No `with intent` clause. No `intent
-{ ... }` block. No `channel_policy { ... }` block (deferred — see
-/177 §9 Q6). No correlation/header machinery. No `NoIntent`. No
-multi-mode constructors per channel — the generic `RequestBuilder<P>`
-in `signal-core` does that work.
+typed payload enums (request, reply, optionally event), the
+per-variant `SignalVerb` witness, the auto-generated kind enums,
+the frame aliases (exchange or streaming), the stream-relation
+witnesses, and the NOTA codec for the payload layer.
 
-The current `macro_rules!` engine in `signal-core/src/channel.rs`
-stays for v1. After the intent/correlation/policy machinery is
-gone, the remaining surface is well within `macro_rules!` reach.
-Proc-macro extraction is on the table only when a future extension
-earns it.
+The engine is **proc-macro**, not `macro_rules!`. The channel
+declaration is a typed relationship graph (Subscribe → opens →
+stream → token → event → close); cross-block name resolution and
+span-pointed diagnostics are compiler work.
+
+Two channel shapes:
+
+- **exchange-only** — request + reply, no streams. Emits
+  `ExchangeFrame<R, P>` aliases.
+- **streaming** — adds `event` block + one or more `stream` blocks.
+  Emits `StreamingFrame<R, P, E>` aliases.
+
+No `Infallible` filler. No `(Assert ...)` wrapping at the channel
+layer (that's `signal-core` per /177 §8.1). No `channel_policy`.
+No auto-`From<Payload>` impls.
 
 ---
 
 ## 1 · Macro input grammar
 
-```rust
-signal_channel! {
-    request <RequestName> {
-        <Verb> <Variant>(<Payload>),
-        ...
-    }
-    reply <ReplyName> {
-        <Variant>(<Payload>),
-        ...
-    }
-    [event <EventName> {
-        <Variant>(<Payload>),
-        ...
-    }]
-}
-```
-
-`request <RequestName> { ... }` and `reply <ReplyName> { ... }` are
-required. `event <EventName> { ... }` is **required iff** any request
-variant declares the `Subscribe` verb, and **forbidden** otherwise.
-The macro enforces this by inspecting the verb declarations: a
-channel with a `Subscribe` variant but no `event` block fails
-compilation with a span-pointed error.
-
-Verbs are exactly the six `SignalVerb` variants. Each request
-variant lists its verb in the macro syntax; the macro emits the
-`RequestPayload::signal_verb()` witness from this.
-
-Worked example (channel with subscriptions):
+### Exchange-only channel
 
 ```rust
 signal_channel! {
-    request MindRequest {
-        Assert SubmitThought(SubmitThought),
-        Mutate StatusChange(StatusChange),
-        Retract RoleRelease(RoleRelease),
-        Match QueryThoughts(QueryThoughtsRequest),
-        Subscribe SubscribeThoughts(SubscribeThoughtsRequest),
-        Retract SubscriptionRetraction(MindSubscriptionToken),
-        Validate ValidateProposal(ProposalCheck),
-    }
-
-    reply MindReply {
-        Thought(ThoughtSummary),
-        Status(ActivityAck),
-        Released(RoleReleaseAck),
-        ThoughtList(ThoughtList),
-        SubscriptionOpened(SubscriptionOpenedAck),
-        ValidationPassed(ValidationReceipt),
-    }
-
-    event MindEvent {
-        ThoughtAdded(ThoughtAddedEvent),
-        ThoughtRetracted(ThoughtRetractedEvent),
-        StatusChanged(StatusChangedEvent),
+    channel <ChannelName> {
+        request <RequestName> {
+            <Verb> <Variant>(<Payload>),
+            ...
+        }
+        reply <ReplyName> {
+            <Variant>(<Payload>),
+            ...
+        }
     }
 }
 ```
 
-Worked example (channel without subscriptions): the `event` block
-is absent, and the macro sets `EventPayload = core::convert::Infallible`
-on the channel's `Frame` alias — the `SubscriptionEvent` variant
-becomes unconstructible by type.
+### Streaming channel
+
+```rust
+signal_channel! {
+    channel <ChannelName> {
+        request <RequestName> {
+            <Verb> <Variant>(<Payload>),
+            ...
+            Subscribe <Variant>(<Payload>) opens <StreamName>,
+            ...
+            Retract <Variant>(<TokenType>),
+            ...
+        }
+        reply <ReplyName> {
+            <Variant>(<Payload>),
+            ...
+        }
+        event <EventName> {
+            <Variant>(<Payload>) belongs <StreamName>,
+            ...
+        }
+        stream <StreamName> {
+            token <TokenType>;
+            opened <OpenedReplyVariant>;
+            event <EventPayloadVariant>;
+            close <RetractRequestVariant>;
+        }
+        // one stream block per declared stream
+    }
+}
+```
+
+The `channel <ChannelName> { ... }` wrapper exists because the macro
+emits names derived from the channel (`<ChannelName>Frame`,
+`<ChannelName>StreamKind`, etc.).
+
+Worked example — terminal channel with one stream:
+
+```rust
+signal_channel! {
+    channel Terminal {
+        request TerminalRequest {
+            Assert TerminalConnection(TerminalConnection),
+            Assert TerminalInput(TerminalInput),
+            Mutate TerminalResize(TerminalResize),
+            Retract TerminalDetachment(TerminalDetachment),
+            Match TerminalCapture(TerminalCapture),
+            Subscribe SubscribeTerminalWorkerLifecycle(
+                SubscribeTerminalWorkerLifecycle
+            ) opens TerminalWorkerLifecycleStream,
+            Retract TerminalWorkerLifecycleRetraction(
+                TerminalWorkerLifecycleToken
+            ),
+        }
+
+        reply TerminalReply {
+            TerminalReady(TerminalReady),
+            TerminalInputAccepted(TerminalInputAccepted),
+            TerminalResized(TerminalResized),
+            TerminalCaptured(TerminalCaptured),
+            TerminalDetached(TerminalDetached),
+            TerminalRejected(TerminalRejected),
+            TerminalWorkerLifecycleSnapshot(TerminalWorkerLifecycleSnapshot),
+        }
+
+        event TerminalEvent {
+            TerminalWorkerLifecycleEvent(TerminalWorkerLifecycleEvent)
+                belongs TerminalWorkerLifecycleStream,
+        }
+
+        stream TerminalWorkerLifecycleStream {
+            token TerminalWorkerLifecycleToken;
+            opened TerminalWorkerLifecycleSnapshot;
+            event TerminalWorkerLifecycleEvent;
+            close TerminalWorkerLifecycleRetraction;
+        }
+    }
+}
+```
+
+Verbs are exactly the six `SignalVerb` variants.
 
 ---
 
-## 2 · Macro emissions
-
-For the worked example above, the macro emits:
+## 2 · Macro emissions (streaming example)
 
 ```rust
 // (1) Request payload enum with rkyv + NOTA derives.
 #[derive(Archive, RkyvSerialize, RkyvDeserialize, Debug, Clone, PartialEq, Eq)]
-pub enum MindRequest {
-    SubmitThought(SubmitThought),
-    StatusChange(StatusChange),
-    RoleRelease(RoleRelease),
-    QueryThoughts(QueryThoughtsRequest),
-    SubscribeThoughts(SubscribeThoughtsRequest),
-    SubscriptionRetraction(MindSubscriptionToken),
-    ValidateProposal(ProposalCheck),
+pub enum TerminalRequest {
+    TerminalConnection(TerminalConnection),
+    TerminalInput(TerminalInput),
+    TerminalResize(TerminalResize),
+    TerminalDetachment(TerminalDetachment),
+    TerminalCapture(TerminalCapture),
+    SubscribeTerminalWorkerLifecycle(SubscribeTerminalWorkerLifecycle),
+    TerminalWorkerLifecycleRetraction(TerminalWorkerLifecycleToken),
 }
 
-// (2) Reply payload enum with the same derives.
+// (2) Reply payload enum.
 #[derive(Archive, RkyvSerialize, RkyvDeserialize, Debug, Clone, PartialEq, Eq)]
-pub enum MindReply { /* variants */ }
+pub enum TerminalReply { /* variants */ }
 
-// (3) RequestPayload impl with the verb-mapping match.
-impl signal_core::RequestPayload for MindRequest {
-    fn signal_verb(&self) -> signal_core::SignalVerb {
+// (3) Event payload enum (only when stream blocks exist).
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, Debug, Clone, PartialEq, Eq)]
+pub enum TerminalEvent {
+    TerminalWorkerLifecycleEvent(TerminalWorkerLifecycleEvent),
+}
+
+// (4) RequestPayload impl with the verb-mapping match.
+impl signal_core::RequestPayload for TerminalRequest {
+    fn signal_verb(&self) -> SignalVerb {
         match self {
-            Self::SubmitThought(_)         => SignalVerb::Assert,
-            Self::StatusChange(_)          => SignalVerb::Mutate,
-            Self::RoleRelease(_)           => SignalVerb::Retract,
-            Self::QueryThoughts(_)         => SignalVerb::Match,
-            Self::SubscribeThoughts(_)     => SignalVerb::Subscribe,
-            Self::SubscriptionRetraction(_) => SignalVerb::Retract,
-            Self::ValidateProposal(_)      => SignalVerb::Validate,
+            Self::TerminalConnection(_)               => SignalVerb::Assert,
+            Self::TerminalInput(_)                    => SignalVerb::Assert,
+            Self::TerminalResize(_)                   => SignalVerb::Mutate,
+            Self::TerminalDetachment(_)               => SignalVerb::Retract,
+            Self::TerminalCapture(_)                  => SignalVerb::Match,
+            Self::SubscribeTerminalWorkerLifecycle(_) => SignalVerb::Subscribe,
+            Self::TerminalWorkerLifecycleRetraction(_) => SignalVerb::Retract,
         }
     }
 }
 
-// (4) Auto-generated kind enum (unit-only projection of the
-// request variants). Retires hand-written enums like
-// `MindOperationKind` in signal-persona-mind.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum MindRequestKind {
-    SubmitThought,
-    StatusChange,
-    RoleRelease,
-    QueryThoughts,
-    SubscribeThoughts,
-    SubscriptionRetraction,
-    ValidateProposal,
+// (5) Auto-generated kind enums (unit-only projections).
+pub enum TerminalRequestKind { /* one variant per request variant */ }
+pub enum TerminalReplyKind   { /* one variant per reply variant */ }
+pub enum TerminalEventKind   { /* one variant per event variant */ }
+
+impl TerminalRequest { pub fn kind(&self) -> TerminalRequestKind { /* match */ } }
+impl TerminalReply   { pub fn kind(&self) -> TerminalReplyKind   { /* match */ } }
+impl TerminalEvent   { pub fn kind(&self) -> TerminalEventKind   { /* match */ } }
+
+// (6) Stream relation witnesses.
+pub enum TerminalStreamKind {
+    TerminalWorkerLifecycleStream,
 }
 
-impl MindRequest {
-    pub fn kind(&self) -> MindRequestKind { /* match */ }
+impl TerminalRequest {
+    /// Returns the stream this request variant opens, if any.
+    /// Driven by `opens <StreamName>` annotations on Subscribe variants.
+    pub fn opened_stream(&self) -> Option<TerminalStreamKind> {
+        match self {
+            Self::SubscribeTerminalWorkerLifecycle(_) =>
+                Some(TerminalStreamKind::TerminalWorkerLifecycleStream),
+            _ => None,
+        }
+    }
+
+    /// Returns the stream this request variant closes, if any.
+    /// Driven by the `close <RetractVariant>` field of stream blocks.
+    pub fn closed_stream(&self) -> Option<TerminalStreamKind> {
+        match self {
+            Self::TerminalWorkerLifecycleRetraction(_) =>
+                Some(TerminalStreamKind::TerminalWorkerLifecycleStream),
+            _ => None,
+        }
+    }
 }
 
-// (5) Event payload enum + rkyv/NOTA derives (emitted only when the
-// channel has Subscribe variants).
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, Debug, Clone, PartialEq, Eq)]
-pub enum MindEvent {
-    ThoughtAdded(ThoughtAddedEvent),
-    ThoughtRetracted(ThoughtRetractedEvent),
-    StatusChanged(StatusChangedEvent),
+impl TerminalEvent {
+    pub fn stream_kind(&self) -> TerminalStreamKind {
+        match self {
+            Self::TerminalWorkerLifecycleEvent(_) =>
+                TerminalStreamKind::TerminalWorkerLifecycleStream,
+        }
+    }
 }
 
-// (6) Channel type aliases. Three-axis Frame (RequestPayload,
-// ReplyPayload, EventPayload). EventPayload is core::convert::Infallible
-// when the channel has no Subscribe variants.
-pub type Frame        = signal_core::Frame<MindRequest, MindReply, MindEvent>;
-pub type FrameBody    = signal_core::FrameBody<MindRequest, MindReply, MindEvent>;
-pub type ChannelRequest = signal_core::Request<MindRequest>;
-pub type ChannelReply   = signal_core::Reply<MindReply>;
-pub type ChannelRequestBuilder = signal_core::RequestBuilder<MindRequest>;
+// (7) Frame aliases. Streaming channels use StreamingFrame.
+pub type TerminalFrame =
+    signal_core::StreamingFrame<TerminalRequest, TerminalReply, TerminalEvent>;
+pub type TerminalFrameBody =
+    signal_core::StreamingFrameBody<TerminalRequest, TerminalReply, TerminalEvent>;
+pub type TerminalChannelRequest = signal_core::Request<TerminalRequest>;
+pub type TerminalChannelReply   = signal_core::Reply<TerminalReply>;
+pub type TerminalRequestBuilder = signal_core::RequestBuilder<TerminalRequest>;
 
-// (7) NOTA codec impls for the payload enums (per-variant
-// dispatch on the head identifier). Codecs cover only the payload
-// layer — wrapping in `(<Verb> ...)` and request-sequence handling
-// live at the kernel layer in `signal-core::Operation` and
-// `signal-core::Request` NOTA codecs (see /177 §8.1).
-impl NotaEncode for MindRequest { /* match-and-encode */ }
-impl NotaDecode for MindRequest { /* peek head, dispatch */ }
-impl NotaEncode for MindReply { /* same */ }
-impl NotaDecode for MindReply { /* same */ }
-impl NotaEncode for MindEvent { /* same */ }
-impl NotaDecode for MindEvent { /* same */ }
+// (8) NOTA codec impls for the payload enums (per-variant
+// dispatch on the head identifier). Verb-wrapping ((Assert ...))
+// and request-sequence brackets ([(Assert ...) (Match ...)]) live
+// at the kernel layer in signal_core::Operation and
+// signal_core::Request NOTA codecs (/177 §8.1).
+impl NotaEncode for TerminalRequest { /* match-and-encode */ }
+impl NotaDecode for TerminalRequest { /* peek head, dispatch */ }
+impl NotaEncode for TerminalReply   { /* same */ }
+impl NotaDecode for TerminalReply   { /* same */ }
+impl NotaEncode for TerminalEvent   { /* same */ }
+impl NotaDecode for TerminalEvent   { /* same */ }
+```
 
-// (No blanket `From<Payload>` impls — see /176 §3 below. Variant
-// constructors `MindRequest::SubmitThought(payload)` are already
-// ergonomic; auto-From conflicts when two variants share a
-// payload type.)
+Exchange-only channels emit the same shape minus event/stream
+pieces and use `ExchangeFrame` / `ExchangeFrameBody` aliases:
 
-// (No channel-policy struct in v1 — universal rules only, per
-// /177 §9 Q6. When a real channel needs stricter-than-universal
-// rules, a typed channel-level policy lands then.)
+```rust
+pub type MessageFrame =
+    signal_core::ExchangeFrame<MessageRequest, MessageReply>;
+pub type MessageFrameBody =
+    signal_core::ExchangeFrameBody<MessageRequest, MessageReply>;
 ```
 
 ---
 
 ## 3 · What the macro does NOT emit
 
-Explicit non-emissions, to prevent regression as the macro evolves:
+Explicit non-emissions, to prevent regression:
 
 - No `Intent` type parameter on any emitted type.
 - No `RequestHeader<Intent>` / `ReplyHeader<Intent>`.
 - No `CorrelationId` field on requests or replies.
-- No `with intent <T>` clause in the input grammar.
-- No `intent <T> { ... }` block.
-- No `NoIntent` substitution.
-- No `<IntentName>Kind` projection (no intent enum exists).
-- No `(Anonymous)` / `(Tracked ...)` / `(Named ...)` NOTA shapes.
-- No `(Batch ...)` wrapper in NOTA.
+- No `with intent <T>` clause / `intent <T> { ... }` block /
+  `NoIntent`.
+- No `(Anonymous)` / `(Tracked ...)` / `(Named ...)` /
+  `(Batch ...)` NOTA shapes.
 - No `single_named` / `single_tracked` / `batch_tracked`
-  per-channel constructors. Use the generic `RequestBuilder<P>` in
-  `signal-core`.
-- No exchange-id machinery. Exchange ids live at the
-  `signal-core::FrameBody` level, not in the channel-specific
-  types.
+  per-channel constructors. Use `signal_core::RequestBuilder<P>`.
+- No exchange-id machinery in channel-specific types; lives in
+  `signal-core` frame-layer types.
 - No `channel_policy { ... }` block in v1 (deferred per /177 §9 Q6).
-- No `Batch*` public names. The construction surface is named
-  `RequestBuilder<P>` — see §6. `RequestBuilderError` carries
+- No `Batch*` public names. `RequestBuilderError` carries
   `EmptyRequest`, never `EmptyBatch`.
-- No blanket `From<Payload>` impls on the request/reply/event
-  enums. Variant constructors are already ergonomic; auto-From
-  conflicts if two variants share a payload type (per DA/64 §7).
-  If a channel wants `.into()` ergonomics, it can hand-write
-  `From` for unambiguous payloads; the macro doesn't generate them
-  for any.
+- No blanket `From<Payload>` impls. Variant constructors are
+  ergonomic; auto-From conflicts on duplicate payload types
+  (per /177 §9 Q14). Channels may hand-write `From` for unambiguous
+  payloads.
 - No `(Assert ...)` wrapping at the channel codec layer. The
   channel's `NotaEncode/NotaDecode` covers only the payload enum.
-  Operation/Request wrapping is owned by `signal-core::Operation`
-  and `signal-core::Request` NOTA codecs (see /177 §8.1).
+  Operation/Request wrapping is owned by `signal_core::Operation`
+  and `signal_core::Request` NOTA codecs (see /177 §8.1).
+- No `Infallible` filler. Exchange-only channels use
+  `ExchangeFrame`; streaming channels use `StreamingFrame`. Two
+  distinct frame types.
+- No runtime actors, sockets, storage, routing, or policy
+  closures. The macro emits typed vocabulary and static facts
+  about the relation; daemons own runtime behaviour.
 
 ---
 
-## 4 · Auto-generated `<RequestName>Kind` enum
+## 4 · Compile-time diagnostics
 
-The macro auto-generates a unit-only projection of the request
-enum's variants. Retires hand-written enums like
-`MindOperationKind` (currently in `signal-persona-mind/src/lib.rs`
-around the lines that hand-list 24 request variant kinds).
+The proc-macro validates the channel declaration as a typed
+relationship graph. Span-pointed errors include:
 
-```rust
-// Auto-generated from the request enum's variant list:
-pub enum MindRequestKind {
-    SubmitThought, StatusChange, RoleRelease,
-    QueryThoughts, SubscribeThoughts, SubscriptionRetraction,
-    ValidateProposal,
-}
+- **unknown root verb** — `"Create" is not a SignalVerb; expected
+  Assert, Mutate, Retract, Match, Subscribe, Validate`.
+- **duplicate variant name** across request / reply / event blocks.
+- **duplicate payload type** within a single block (would conflict
+  with hand-written `From` impls; macro flags it pre-emptively).
+- **event block without stream block** — events must belong to a
+  declared stream.
+- **`Subscribe ... opens <StreamName>`** where `<StreamName>` has
+  no corresponding `stream` block.
+- **stream block references missing variant** — `opened`, `event`,
+  or `close` names a variant that doesn't exist in its block.
+- **stream `close` variant's payload type ≠ stream `token` type**.
+- **channel with at least one Subscribe but no `stream` block** —
+  Subscribe semantics aren't declared.
+- **channel with `event` block but no Subscribe variants** — event
+  payloads exist but no operation creates a stream.
+- **streaming-shaped declaration emitting `ExchangeFrame`** (or
+  vice versa) — internal consistency.
 
-impl MindRequest {
-    /// Returns the unit-tag of this request variant. Useful for
-    /// audit logs that don't need the full payload, dispatch tables,
-    /// and metric labels.
-    pub fn kind(&self) -> MindRequestKind { /* match */ }
-}
-```
-
-The macro guarantees `MindRequestKind`'s variants stay in sync
-with `MindRequest`'s variants — adding a new request variant
-auto-adds its kind. The hand-written drift problem retires.
+`macro_rules!` can generate syntax but cannot comfortably resolve
+cross-block name references with these error messages.
 
 ---
 
 ## 5 · Channel-policy block — not in v1
 
 No `channel_policy { ... }` block in v1. The kernel ships with
-universal rules only (verb/payload alignment + Subscribe position).
+universal rules only (verb/payload alignment + Subscribe suffix).
 When a concrete channel needs stricter-than-universal rules, a
 typed channel-level policy lands then. See `/177 §9 Q6`.
 
@@ -280,8 +343,6 @@ Channel-specific constructors are not macro-emitted. The generic
 pub trait RequestPayload: Sized {
     fn signal_verb(&self) -> SignalVerb;
 
-    // Default convenience methods — payload becomes a length-1
-    // Request via these.
     fn into_request(self) -> Request<Self> {
         Request {
             operations: NonEmpty::single(Operation {
@@ -323,36 +384,62 @@ Call sites:
 
 ```rust
 // Single-op:
-let request = MindRequest::SubmitThought(thought).into_request();
+let request = TerminalRequest::TerminalInput(input).into_request();
 
 // Multi-op:
-let request = signal_persona_mind::ChannelRequestBuilder::new()
-    .with(MindRequest::RoleRelease(...))
-    .with(MindRequest::RoleClaim(...))
+let request = TerminalRequestBuilder::new()
+    .with(TerminalRequest::TerminalDetachment(detach))
+    .with(TerminalRequest::TerminalConnection(connect))
     .build()?;
 ```
 
-The per-channel `ChannelRequestBuilder` type alias from §2 emission
-(5) specializes the generic builder to that channel's payload type.
-All public names are `Request*`; "batch" survives nowhere as a
-type/method name.
+The per-channel `<Channel>RequestBuilder` type alias from §2
+emission (7) specializes the generic builder.
 
 ---
 
-## 7 · Macro engine: `macro_rules!` for v1
+## 7 · Macro engine: proc-macro
 
-The current `macro_rules!` engine in `signal-core/src/channel.rs`
-stays. After the intent/correlation/policy machinery is gone, the
-remaining surface (payload enums, verb-witness match,
-auto-generated kind enum, type aliases, From impls, NOTA codec) is
-well within `macro_rules!` reach — the `paste` crate handles
-ident-concatenation for the kind enum.
+Crate shape:
 
-Proc-macro extraction is on the table the day a real extension
-needs it (custom per-variant attributes, span-aware error messages,
-or a future `channel_policy { ... }` block). Don't add the crate
-preemptively — DA/63 §F5 is right that a new crate without a v1
-witness is a micro-component violation.
+```text
+signal-core/macros/
+├── Cargo.toml          # proc-macro = true
+└── src/
+    ├── lib.rs          # #[proc_macro] signal_channel
+    ├── parse.rs        # syn parser for channel declaration
+    ├── model.rs        # ChannelSpec, StreamSpec, VariantSpec
+    ├── validate.rs     # semantic checks + diagnostics
+    └── emit.rs         # quote! output
+```
+
+`signal-core` re-exports:
+
+```rust
+pub use signal_core_macros::signal_channel;
+```
+
+Dependencies: `syn`, `quote`, `proc-macro2`. Runtime code does not
+depend on macro internals.
+
+Implementation pipeline:
+
+1. **`parse.rs`** — read the channel declaration into a
+   `ChannelSpec` tree (request variants with verb tags, reply
+   variants, event variants with `belongs` refs, stream blocks
+   with cross-references).
+2. **`validate.rs`** — semantic checks per §4 diagnostics. Each
+   check returns `syn::Error::new_spanned(...)` pointing at the
+   offending input.
+3. **`emit.rs`** — `quote!` output per §2 emissions. Conditional
+   on whether stream blocks exist (exchange-only vs streaming
+   channel).
+
+The migration lands as one operator pass: introduce
+`signal-core/macros/` crate, replace the current `macro_rules!`
+engine in `signal-core/src/channel.rs` with a re-export, sweep
+contract crates' `signal_channel!` invocations to the new grammar
+(channel wrapper, stream blocks, opens/belongs annotations).
 
 ---
 
@@ -364,8 +451,12 @@ witness is a micro-component violation.
   — the DA-side spec for the protocol shape.
 - `~/primary/reports/designer-assistant/62-signal-redesign-implementation-brief.md`
   §4 — the DA-side operator brief for the macro.
+- `~/primary/reports/designer-assistant/64-signal-channel-macro-gap-research.md`
+  — the gap research that surfaced the missing stream relation.
+- `~/primary/reports/designer-assistant/65-signal-channel-proc-macro-shape.md`
+  — the proc-macro shape sketch this spec adopts.
 - `/git/github.com/LiGoldragon/signal-core/src/channel.rs` — the
-  current `macro_rules!` form; replaced by proc-macro.
+  current `macro_rules!` engine; replaced by proc-macro.
 - `~/primary/skills/contract-repo.md` §"Signal is the database
   language — every request declares a verb" — the upstream
   discipline this macro enforces.
