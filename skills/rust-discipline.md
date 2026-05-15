@@ -13,10 +13,12 @@ the cross-cutting Rust applications of `skills/naming.md` and
 `skills/actor-systems.md` stay here so the Rust enforcement is
 visible at one entry point.
 
-These skills are *how to write* Rust in this workspace; for
-toolchain reference (Cargo.toml shape, cross-crate dependencies,
-pin strategy, Nix packaging), see lore's `rust/style.md` and
-`rust/nix-packaging.md`.
+These skills are *how to write* Rust in this workspace. For the
+canonical interactive/user-profile Rust toolchain, see
+CriomOS-home's `packages/rust-toolchain/default.nix` and
+`skills.md`. For per-repo Rust crate shape (Cargo.toml shape,
+cross-crate dependencies, pin strategy, Nix packaging), see
+lore's `rust/style.md` and `rust/nix-packaging.md`.
 
 ---
 
@@ -25,6 +27,28 @@ pin strategy, Nix packaging), see lore's `rust/style.md` and
 **Behavior lives on types. Domain values are typed. Boundaries
 take and return one object. Errors are enums you implement by
 hand.**
+
+---
+
+## Toolchain Authority
+
+The workspace-wide interactive Rust toolchain is owned by
+CriomOS-home, not by Primary and not by ad hoc repo devshells.
+The canonical package is
+`CriomOS-home.packages.<system>.rust-toolchain`, defined at
+CriomOS-home's `packages/rust-toolchain/default.nix` and pinned by
+`CriomOS-home/flake.lock`.
+
+User profiles should install that package rather than bare
+`pkgs.cargo`, `pkgs.rustc`, `pkgs.rustfmt`, or hand-picked Rust
+components. It provides `cargo`, `rustfmt` / `cargo fmt`,
+`clippy`, `rust-analyzer`, and `rust-src` for day-to-day agent
+work.
+
+Individual Rust application repos may still pin their own build
+toolchain through their flake when reproducibility requires it.
+That repo-local build pin does not become the profile toolchain
+authority.
 
 ---
 
