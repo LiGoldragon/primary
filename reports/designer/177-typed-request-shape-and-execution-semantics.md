@@ -122,10 +122,10 @@ pub enum SubReply<ReplyPayload> {
     Ok { verb: SignalVerb, payload: ReplyPayload },
 
     /// Op ran inside a request that subsequently aborted. For writes:
-    /// durable effects rolled back. For reads/validates: result may
-    /// have observed speculative state — no longer authoritative.
-    /// (Open naming question — see §9 Q1.)
-    RolledBack { verb: SignalVerb },
+    /// durable effects were reverted. For reads/validates: result
+    /// observed speculative state that did not persist. Either way,
+    /// the result is no longer authoritative.
+    Invalidated { verb: SignalVerb },
 
     /// Op was attempted and failed; this is the cause of the abort.
     /// Exactly one per aborted request, at failed_at.
@@ -417,37 +417,38 @@ exchange identifier.
 
 ## 9 · Open design questions
 
-### Q1 — `RolledBack` vs `Invalidated` for prior aborted ops?
+### Q1 — `Invalidated` (unified) for prior aborted ops
 
-`SubReply::RolledBack { verb }` currently covers both:
-- Writes that ran and were rolled back (durable effects undone)
-- Reads/validates that ran and observed speculative state (no
-  durability, but the result isn't authoritative)
+`SubReply::Invalidated { verb }` is the universal predicate for ops
+that ran in an aborted request:
 
-DA/61 §9 suggests splitting:
+- A **write** that ran and got reverted: the receipt promised a
+  durable effect the engine then undid. The receipt is invalid.
+- A **read or validate** that ran against speculative state: the
+  view is no longer authoritative. The result is invalid.
 
 ```rust
 pub enum SubReply<R> {
     Ok { verb, payload: R },
-    /// Writes whose durable effects were rolled back.
-    RolledBack { verb },
-    /// Reads/validates whose results observed speculative state.
+    /// Ran but its result is no longer authoritative because the
+    /// request as a whole aborted. For writes, the effect was
+    /// reverted; for reads, the observed state did not persist.
     Invalidated { verb },
     Failed { verb, reason, detail: Option<R> },
     Skipped { verb },
 }
 ```
 
-Pro split: distinguishes "system reverted my durable effects"
-from "my read described uncommitted state." Different actions:
-re-issue vs re-query.
+`RolledBack` would be a half-lie: it correctly names the write case
+but is a category error for reads (nothing was rolled back; the read
+was accurate at the moment it ran, the world just didn't keep that
+state). `Invalidated` is universally true.
 
-Pro unified: callers usually just need "don't trust this op's
-result; the request aborted." The distinction is rare in practice
-and the embedded `verb` already lets callers infer it
-(`verb: Match` → it's a read; not a durable rollback).
+The `verb` field tells callers *how* the result got invalidated
+(`verb: Mutate` ⇒ a write was reverted; `verb: Match` ⇒ a read
+observed dead state). No separate variant earns its keep.
 
-My lean: unified `RolledBack`. The verb already disambiguates.
+Settled: unified `Invalidated`.
 
 ### Q2 — Where do subscription events live in `FrameBody`?
 
