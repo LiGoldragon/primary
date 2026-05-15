@@ -584,6 +584,17 @@ payload enum (`(SubmitThought ...)` ↔ `MindRequest::SubmitThought(...)`).
 Wrapping in `(Assert ...)` and request-sequence handling live at
 the kernel layer, where they're shared across every channel.
 
+**Record-head uniqueness.** The macro's payload-enum codec
+dispatches by the NOTA record head (`SubmitThought`, `QueryThoughts`,
+etc.), which is derived from the payload type's last path segment.
+The macro must reject any channel declaration where two payload
+types — within the same `request` / `reply` / `event` block —
+project to the same head. `domain_a::Status` and `domain_b::Status`
+both decode under the head `Status` and would silently collide;
+this is a compile error, not a runtime ambiguity. Uniqueness is
+checked **by head identifier**, not by full Rust type string.
+See `/176 §4`.
+
 ---
 
 ## 9 · Open design questions

@@ -34,6 +34,38 @@ Each component section has the same shape: **what it is** ·
 **owns / doesn't own** · **key types** · **constraints** ·
 **diagram**.
 
+**Intent, not implementation.** Every diagram and constraint
+below describes the system's *intended* shape. The current
+implementation has drift in several places — the contract-family
+proc-macro migration is mid-wave; several daemons are
+"async-framed" (using synthetic one-shot exchanges) rather than
+"async-runtime" (with long-lived connection-owned lane state).
+Status is tracked elsewhere; see DA/67 for the operator-side
+audit.
+
+**Companion reports.** Two designer-assistant reports cover
+material this one is light on and should be read alongside it:
+
+- **DA/68** (`persona-engine-component-visual-atlas`) — per-daemon
+  internal actor structure (named actors: `RouterRoot`,
+  `ChannelAuthority`, `MindAdjudicationOutbox`, `HarnessRegistry`,
+  etc.), aspect tables (repo / process / CLI / contract / state),
+  concrete socket modes (`0600` for internal, `0660` for
+  user-writable boundaries). Deeper detail per component than §5
+  here.
+- **DA/69** (`persona-engine-whole-topology`) — sequence diagrams
+  for the supervision / delivery / introspection flows (the
+  timing of channel-authorization fork is much clearer there); a
+  "what each component sees / should not see" matrix; the
+  prototype success shape (minimum outcomes for a working
+  end-to-end demonstration); the 18-point high-level constraints
+  list.
+
+The three reports compose: /178 carries the whole-engine
+narrative, kernel internals, and pulled-out invariants in one
+place; DA/68 carries component detail; DA/69 carries flows and
+boundary matrices.
+
 ---
 
 ## 1 · The whole at a glance
@@ -1153,6 +1185,16 @@ Canonical specs the diagrams reference:
   discipline.
 - `~/primary/skills/architecture-editor.md` — the shape this
   report (and every per-repo `ARCHITECTURE.md`) follows.
+
+Designer-assistant companions (see §0):
+
+- `reports/designer-assistant/68-persona-engine-component-visual-atlas.md`
+  — per-component detail with internal actor names and socket modes.
+- `reports/designer-assistant/69-persona-engine-whole-topology.md`
+  — sequence diagrams + what-each-sees matrix + prototype success
+  shape.
+- `reports/designer-assistant/67-operator-work-audit-2026-05-15.md`
+  — current implementation status against intent.
 
 Per-repo architecture for any deeper read:
 

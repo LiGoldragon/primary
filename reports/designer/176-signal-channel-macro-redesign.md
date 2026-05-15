@@ -304,6 +304,22 @@ relationship graph. Span-pointed errors include:
 - **duplicate variant name** across request / reply / event blocks.
 - **duplicate payload type** within a single block (would conflict
   with hand-written `From` impls; macro flags it pre-emptively).
+- **duplicate NOTA record head** across variants — uniqueness is
+  checked by the **NOTA head identifier** the codec dispatches on,
+  not by the Rust type string. `domain_a::Status` and
+  `domain_b::Status` both decode under the head `Status` and must
+  be flagged as a collision even though their Rust paths differ
+  (per DA/67 F3).
+- **`opens <StreamName>` on a non-`Subscribe` request variant** —
+  the `opens` annotation is meaningful only on Subscribe.
+- **`belongs <StreamName>` on a variant whose stream block doesn't
+  name it** — reverse cross-reference: a stream block's
+  `event <Variant>` must point at a variant whose `belongs` points
+  back to the same stream. The two halves of the relation must
+  agree.
+- **orphan stream block** — a `stream` block exists but no
+  Subscribe variant opens it. Either delete the stream or add the
+  opener.
 - **event block without stream block** — events must belong to a
   declared stream.
 - **`Subscribe ... opens <StreamName>`** where `<StreamName>` has
@@ -317,6 +333,11 @@ relationship graph. Span-pointed errors include:
   payloads exist but no operation creates a stream.
 - **streaming-shaped declaration emitting `ExchangeFrame`** (or
   vice versa) — internal consistency.
+
+The list above is the spec's required validation set. Each
+diagnostic should land with a matching compile-fail test in
+`signal-core/macros/tests/` so the validator regresses loudly
+when a check is dropped.
 
 `macro_rules!` can generate syntax but cannot comfortably resolve
 cross-block name references with these error messages.
