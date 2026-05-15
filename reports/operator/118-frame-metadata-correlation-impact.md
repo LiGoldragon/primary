@@ -1,5 +1,12 @@
 # 118 - Frame Metadata And Correlation Impact
 
+**Status update, 2026-05-15:** this report is now **pre-DA60** for
+the transport exchange shape. Keep its layer split and rejection of
+`RequestHeader<Intent>` / `CorrelationId` / generic `Intent`, but read
+`reports/operator/119-async-first-signal-exchange-impact.md` for the
+current exchange decision: Signal is async from v1, with lane/sequence
+exchange ids negotiated in the handshake.
+
 *Operator impact report, 2026-05-15. Reads
 `reports/designer-assistant/59-frame-metadata-and-correlation-correction.md`,
 current `reports/designer/177-typed-request-shape-and-execution-semantics.md`,
