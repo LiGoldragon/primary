@@ -138,14 +138,24 @@ landing. We recommend:
 - **PR #1** (`kameo-shutdown-short-fix`) ships as-is.
 - **PR #2** (`kameo-shutdown-lifecycle-fix`) ships as-is.
 - **PR #3** is a substantive redesign of the phase model:
-  set-of-flags instead of `PartialOrd`, `notify_links` awaiting
-  dispatch, `LinksNotified` folded into `Terminated`,
-  `StateReleased` renamed to `SelfDropped` (or docs narrowed).
-- **PR #4** is fork-only: fallible waits, asymmetry fixes,
-  `is_alive` deprecation, OTP-shape shutdown timeouts,
-  public-docs invariant.
+  **path-aware `ActorLifecycleFact` enum** with explicit
+  startup-success vs startup-failure sequences (not a single
+  fixed chain), `ActorStateAbsent(Dropped | NeverAllocated |
+  Ejected)` carrying the outcome, `LinkSignalsDispatched`
+  awaiting dispatch (no fire-and-forget), `shutdown_result`
+  set at `TerminalResultSet` on every path, fallible
+  `wait_for_lifecycle_target(...) -> Result<_, LifecycleWaitError>`
+  with `NeverObserved` as a distinct error.
+- **PR #4** is fork-only: weak-ref wait fixes, `is_alive`
+  deprecation, OTP-shape shutdown timeouts, public-docs
+  invariant, `StoreKernel` migration to the fork.
 
-See §6 for the staging plan in full.
+See §6 for the staging plan in full. The path-aware reducer
+shape is operator/128's `ActorLifecycleFact` proposal +
+DA's correction that **operator/128's "single universal
+ordering" (item 4) silently glosses over the startup-failure
+path** — there is no `Running` and no `CleanupHookFinished`
+on that path; the model must reflect that.
 
 ## 1. Verification of operator/126's claims
 
@@ -1070,114 +1080,202 @@ shutdown), implement it here. Document that
 `run_returning_state()` cannot guarantee `StateReleased`
 because the caller controls when the state actually drops.
 
-### PR #3 — Lifecycle phase observation (set-of-flags shape)
+### PR #3 — Path-aware lifecycle facts (DA's refinement)
 
-The phase enum + watch publisher + `wait_for_lifecycle_phase`
+The phase enum + watch publisher + `wait_for_lifecycle_target`
 API. This is the design contribution and the largest
 upstream conversation.
 
 **Reshape the wait primitive away from linear ordering.**
 The branch's current derived `PartialOrd` model creates
-false witnesses on paths that skip phases (§2.8). The right
-shape is a **set of observed events**, not a position on a
-chain. Concretely:
+false witnesses on paths that skip phases (§2.8). Operator/128
+proposed a fact-based model (`ActorLifecycleFact` +
+`ActorLifecycleTarget` + `ActorTerminalOutcome`) — that's the
+right direction but silently assumes a single sequence
+applies to every path. DA's refinement is the load-bearing
+correction: **the lifecycle is *path-aware*, not a single
+fixed chain with no-op phases**.
+
+The two explicit paths:
+
+**Startup-success path** (actor's `on_start` returned Ok):
+
+```text
+Prepared
+  → Starting
+    → Running
+      → Stopping
+        → ChildrenAbsent
+          → CleanupHookFinished
+            → ActorStateAbsent(Dropped | Ejected)
+              → RegistryAbsent
+                → LinkSignalsDispatched
+                  → TerminalResultSet
+                    → Terminated(Stopped | Killed | Panicked | CleanupFailed)
+```
+
+**Startup-failure path** (actor's `on_start` returned Err):
+
+```text
+Prepared
+  → Starting
+    → Stopping
+      → ChildrenAbsent
+        → ActorStateAbsent(NeverAllocated)
+          → RegistryAbsent
+            → LinkSignalsDispatched
+              → TerminalResultSet
+                → Terminated(StartupFailed)
+```
+
+Notice: `Running`, `CleanupHookFinished` are **absent** on
+the startup-failure path. They are not "no-op marked" — they
+genuinely did not happen. The lifecycle reducer publishes
+*only the facts that occurred*. A caller
+`wait_for_lifecycle_target(CleanupHookFinished)` on the
+startup-failure path returns `Err(NeverObserved)` —
+truthfully.
+
+**API shape:**
 
 ```rust
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum LifecycleEvent {
-    Prepared, Starting, Running, Stopping,
-    CleanupFinished, SelfDropped, Terminated,
-    // LinksNotified removed — see §2.5
+pub enum ActorLifecycleFact {
+    Prepared,
+    Starting,
+    Running,
+    Stopping,
+    ChildrenAbsent,
+    CleanupHookFinished,
+    ActorStateAbsent(ActorStateAbsence),
+    RegistryAbsent,
+    LinkSignalsDispatched,
+    TerminalResultSet,
+    Terminated(ActorTerminalReason),
 }
 
-pub struct LifecycleObservations {
-    seen: BitSet<LifecycleEvent>,   // monotonically additive
+pub enum ActorStateAbsence {
+    Dropped,           // success path: drop(self) ran
+    NeverAllocated,    // startup-failure path: Self never existed
+    Ejected,           // state-ejection API: caller owns it now
 }
 
-impl LifecycleObservations {
-    pub fn has(&self, event: LifecycleEvent) -> bool { ... }
+pub enum ActorTerminalReason {
+    Stopped,           // graceful stop completed cleanly
+    Killed,            // abort via kill(); on_stop did not run
+    Panicked,          // handler/on_stop/on_start panicked
+    CleanupFailed,     // on_stop returned Err
+    StartupFailed,     // on_start returned Err or panicked
 }
 
-pub async fn wait_for(&self, event: LifecycleEvent) -> Result<(), LifecycleWaitError> {
-    // returns Ok when this specific event has been observed;
-    // returns Err(NeverObserved) if the actor reached Terminated
-    // without ever observing the requested event.
+pub struct ActorTerminalOutcome {
+    pub reason:  ActorTerminalReason,
+    pub state:   ActorStateAbsence,
+    pub stop_reason: ActorStopReason,    // for compatibility
+}
+
+pub async fn wait_for_lifecycle_target(
+    &self,
+    target: ActorLifecycleFact,
+) -> Result<(), LifecycleWaitError>;
+
+pub enum LifecycleWaitError {
+    NeverObserved {
+        target: ActorLifecycleFact,
+        observed: Vec<ActorLifecycleFact>,
+    },
+    LifecycleClosedBeforeTarget {
+        target: ActorLifecycleFact,
+        last_observed: ActorLifecycleFact,
+    },
 }
 ```
 
-`wait_for(SelfDropped)` on a startup-failure path returns
-`Err(NeverObserved)` — *because state was never held, much
-less released*. No false-positive return. The caller knows
-the assertion is unsatisfiable on this path and can branch.
+`ActorStateAbsent(Dropped)` and `ActorStateAbsent(NeverAllocated)`
+are different observed facts — both satisfy "state is absent,"
+but a caller can branch on *why* if they need to.
 
-This PR must include the eight fixes the audit surfaced:
+**The implementation invariant**: the lifecycle reducer is
+single-writer (the actor's runtime task) and emits facts
+monotonically per the path-aware sequence above. The watch
+channel publishes a `LifecycleSnapshot` containing the latest
+fact PLUS the ordered list of facts observed so far. Late
+subscribers see both the current fact and the path-trace
+that led there.
 
-1. **`unregister_actor` consistency**: deregister at the same
-   relative phase on every path. Propose: after `SelfDropped`
-   on every path (success, on-stop-error, startup-failure).
-2. **Per-event observation**: replace
-   `ActorLifecyclePhase: PartialOrd` with the
-   `LifecycleObservations` set-of-flags shape. No false
-   witnesses on skipped phases.
-3. **`mark` atomicity**: convert to a CAS or assert
-   single-task discipline.
-4. **`notify_links` awaits dispatch**: change `notify_links`
-   from a sync `tokio::spawn(...)`-fire-and-forget to an
-   `async fn` that awaits the dispatch futures. The cost is
-   making the surrounding shutdown phase truly async. With
-   that, **fold `LinksNotified` into `Terminated`** —
-   `Terminated` becomes the honest "everything done"
-   boundary.
-5. **`SelfDropped` rename**: rename `StateReleased` to
-   `SelfDropped` *or* document the contract narrowly. The
-   phase guarantees only what its name claims.
+**The audit-log concern** (§7's "Don't use watch as history")
+maps cleanly: the `LifecycleSnapshot.observed_facts: Vec<...>`
+gives short-term history-on-demand for testing and
+introspection, but external durable audit still belongs to a
+separate Persona event log subscribing to the watch.
+
+This PR must land the eight fixes the audit surfaced,
+expressed in the path-aware model:
+
+1. **Per-path lifecycle reducer**: the runtime publishes only
+   facts that occurred on the path being walked. No no-op
+   marks. `wait_for_lifecycle_target(CleanupHookFinished)`
+   on the startup-failure path returns
+   `Err(NeverObserved)` — truthfully, not via ordinal-comparison.
+2. **`unregister_actor` ordering identical on every path**:
+   always after `ActorStateAbsent`, always before
+   `LinkSignalsDispatched`. Both paths walk this transition.
+3. **`mark` atomicity**: lifecycle reducer is single-writer
+   (the actor's runtime task) by construction. Document the
+   invariant; assert at runtime that `mark` is called only
+   from the actor task. CAS-based version is acceptable but
+   not load-bearing.
+4. **`notify_links` awaits dispatch before
+   `LinkSignalsDispatched` fact**: change `notify_links` from
+   a sync `tokio::spawn(...)`-fire-and-forget to an `async fn`
+   that awaits the dispatch futures. The fact name is honest;
+   linked peers may still take time to *process* the signal
+   (a separate concern, not a fact the dying actor can
+   publish).
+5. **`ActorStateAbsent` variant accuracy**: the runtime
+   publishes `Dropped` only after `drop(self)` actually runs;
+   `NeverAllocated` only on startup-failure paths;
+   `Ejected` only via the explicit
+   `run_to_state_ejection()` API. No path produces a wrong
+   variant.
 6. **`shutdown_result` consistent timing**: set at the
-   `Terminated` boundary on every path. Single semantics
-   ("terminal result"), matches `wait_for_shutdown`'s contract.
-7. **Tests for asymmetric paths**: startup failure, on_stop
-   error, link-notification ordering, supervised
-   `spawn_in_thread` resource release. Each one a
-   falsifiable test.
-8. **Public-docs invariant**: document the release-ordering
-   guarantee in the `Actor` trait's rustdoc. Akka regrets
-   not doing this; we can preempt the user surprise.
+   `TerminalResultSet` fact on every path. Single semantics
+   matches the post-branch `wait_for_shutdown`'s contract
+   (waits for `Terminated`).
+7. **Tests for both paths**: startup failure, on_stop error,
+   `LinkSignalsDispatched` ordering, supervised
+   `spawn_in_thread` resource release, weak-ref/strong-ref
+   wait equivalence, registry-disappearance-after-state-absence.
+   Each a falsifiable test.
+8. **Public-docs invariant**: document the
+   release-ordering guarantee — *and the two paths* — in the
+   `Actor` trait's rustdoc. Akka regrets only documenting in
+   source comments; the fork can preempt the user surprise.
 
 ### PR #4 — Fork-only extensions
 
 Things upstream may not want but Persona needs:
 
-- **Fallible wait API**:
-  `wait_for_lifecycle_phase(...) -> Result<(), LifecycleWaitError>`,
-  so a closed sender before the requested phase is
-  distinguishable from a successful wait.
+- **Fallible wait API** (already in PR #3's signature):
+  `wait_for_lifecycle_target(...) -> Result<(), LifecycleWaitError>`,
+  so a closed sender or a path that never reaches the target
+  is distinguishable from a successful wait.
 - **`WeakActorRef::wait_for_shutdown_result()` fix**: the
-  inconsistency the report flagged as High. Wait for
-  `Terminated` before reading `shutdown_result`, mirroring
-  the strong-ref version.
-- **`ChildrenStopped` phase**: between `Stopping` and
-  `CleanupFinished`. Akka's "all children PostStop before
-  parent PostStop" rule, made externally observable.
-  Persona's supervisors need to know "every child has
-  released its resources" before the parent rebuilds them.
-- **`LinksNotified` rename or removal**: pick one in this
-  PR. We recommend `LinkSignalsDispatched` if kept;
-  fold into `Terminated` if no non-watcher consumer
-  emerges.
+  inconsistency the report flagged as High. Wait for the
+  `Terminated` fact before reading `shutdown_result`,
+  mirroring the strong-ref version.
 - **`is_alive` deprecation**: replace with explicit
-  `is_running()`/`is_stopping()`/`is_terminated()` that
-  read from the phase, not from mailbox or
+  `is_running()`/`is_stopping()`/`is_terminated()` that read
+  from `LifecycleSnapshot`, not from mailbox or
   `shutdown_result`. Single observation surface.
-- **`pre_notify_links` hook**: Persona's `StoreKernel`
-  (Template-2, dedicated OS thread, supervised) needs a
-  hook that fires *after* `Drop` runs and *before* the
-  supervisor's `wait_for_shutdown` returns. The phase
-  model gives this directly via
-  `wait_for_lifecycle_phase(StateReleased)` — but
-  `StoreKernel`'s parent is currently using
-  `wait_for_shutdown` (which fires at `Terminated`).
-  PR #3's API already covers it; document the migration
-  for the live consumer at
-  `persona-mind/src/actors/store/mod.rs:295-307`.
+- **`StoreKernel` migration** (live consumer): Persona's
+  Template-2 (dedicated OS thread, supervised) needs to
+  wait until `ActorStateAbsent(Dropped)` before allowing
+  the supervisor to spawn a replacement. PR #3's
+  `wait_for_lifecycle_target(ActorLifecycleFact::ActorStateAbsent(_))`
+  covers it. Document the migration for the live consumer
+  at `persona-mind/src/actors/store/mod.rs:295-307` —
+  the deferral comment can be removed once kameo is pinned
+  to the fork.
 - **Shutdown-timeout configuration** (OTP shape):
   `Shutdown::Graceful(Duration) | Shutdown::Infinity | Shutdown::Brutal`,
   modelled on Erlang's `shutdown` field. On timeout, abort
