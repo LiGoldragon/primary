@@ -4,7 +4,10 @@ Role: designer-assistant
 Date: 2026-05-16
 
 This is a context-maintenance handover for the hands-on Persona engine
-coherence pass that followed `86-persona-engine-wide-audit-2026-05-16`.
+coherence pass that followed `88-persona-engine-wide-audit-2026-05-16`
+(originally landed as `86-` and renumbered during 2026-05-16
+context maintenance to resolve a collision with
+`86-cluster-secret-binding-arc.md`).
 It records only the load-bearing residue: what changed, what is still
 open, and where to resume.
 
@@ -136,7 +139,7 @@ to `branch = "main"`. The wider stable named-reference discipline is not
 finished: `signal-core` still needs its stable API branch/bookmark/tag,
 and downstream crates still need to consume that named reference.
 
-`reports/designer-assistant/86-persona-engine-wide-audit-2026-05-16.md`
+`reports/designer-assistant/88-persona-engine-wide-audit-2026-05-16.md`
 has a maintenance note marking its stale findings. Do not read findings
 1, 5, or the router-facing part of 6 as current without that note.
 
