@@ -104,8 +104,9 @@ CriomOS module contract, but the stronger future witness is:
 
 ### DNS split is now proportional
 
-The DNS stack moved toward the shape recommended in
-`reports/system-specialist/115-router-dns-server-research.md`:
+The DNS stack moved toward the proportional edge/router shape now
+captured in CriomOS network modules and
+`checks/resolver-role-policy/default.nix`:
 
 - edge/NetworkManager nodes use `systemd-resolved`;
 - router nodes use dnsmasq for LAN DNS and cluster records;
