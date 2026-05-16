@@ -24,16 +24,41 @@ outcome enum, not in observable intermediate phases.
 
 The 12-fact observable lifecycle stream proposed in
 `reports/operator/128` and `reports/designer-assistant/96` is
-over-engineering for the public API. **Akka deliberately rejected
-this in the Typed redesign** (akka-meta#21) for the same reason it
-should be rejected here: exposing internal sequence as public
-contract creates fragile user code and conflates "implementation
-mechanism" with "user surface."
+over-engineering *for the public API*. **Akka deliberately rejected
+public phase signals in the Typed redesign** (akka-meta#21) for the
+same reason it should be rejected here: exposing internal sequence
+as public contract creates fragile user code and conflates
+"implementation mechanism" with "user surface."
 
-Rust's async constraints do not change this argument. They change
-the *internal* mechanism (await on dispatch, not fire-and-forget
-spawn). They do not change the *public* contract (single termination
-event + outcome describing how we got there).
+**The 12 facts are correct as the *internal* model** (§2.5):
+they're how the framework proves its own correctness in tests.
+They just don't surface as public API. Operator/128 and DA/96's
+substance lands in `pub(crate) enum LifecycleFact` + test
+infrastructure, not in the public `ActorRef` surface.
+
+Rust's async constraints do not change this public-vs-internal
+boundary. They change the *internal* mechanism (await on dispatch,
+not fire-and-forget spawn; admission stops at step 1, not late;
+"await dispatch" means accepted into a control-plane channel,
+not processed by the recipient's handler). They do not change
+the *public* contract (single termination event + outcome
+describing how we got there).
+
+**Per DA's refinement after first draft, four corrections landed:**
+
+1. **Admission stops first.** §1.2 sequence opens with
+   `mailbox.close_admission()`, not closes mailbox after `drop`.
+   New sends get clean errors instead of silently queuing.
+2. **"Await" means control-plane delivery, not handler processing.**
+   §2 invariant 2 names this explicitly — the death-signal is
+   enqueued into a non-deadlocking control channel; the recipient's
+   `on_link_died` handler runs separately.
+3. **`ActorRunOutcome<A>` enum replaces tuple return.** §1.1 —
+   the `(A, ActorTerminalOutcome)` tuple isn't type-correct on
+   startup-failure paths where `A` was never constructed.
+4. **Internal lifecycle facts retained for tests.** §2.5 —
+   `pub(crate) enum LifecycleFact` + test introspection.
+   12-fact model is correct internally; just not public.
 
 ## 1. The contract
 
@@ -121,18 +146,46 @@ impl<A: Actor> PreparedActor<A> {
     /// is responsible for dropping it. The runtime makes no claim
     /// about resource release after this returns.
     pub async fn run_to_state_ejection(self, args: A::Args)
-        -> Result<(A, ActorTerminalOutcome), PanicError>;
+        -> Result<ActorRunOutcome<A>, PanicError>;
+
+    /// `run_to_termination` returns the same enum; ejection variants
+    /// are unreachable on this path.
+    pub async fn run_to_termination(self, args: A::Args)
+        -> Result<ActorRunOutcome<A>, PanicError>;
+}
+
+/// Per-DA correction: a tuple return is not type-correct because
+/// `on_start` failure leaves no `A`. An enum is needed.
+pub enum ActorRunOutcome<A> {
+    /// Actor ran successfully and `Self` was dropped at terminal.
+    Dropped(ActorTerminalOutcome),
+    /// Caller chose `run_to_state_ejection` and the actor reached
+    /// terminal; `actor` is the ejected `Self`, caller owns it now.
+    Ejected { actor: A, outcome: ActorTerminalOutcome },
+    /// `on_start` returned `Err` or panicked; no `A` was ever
+    /// constructed. Possible on either run mode.
+    NeverAllocated(ActorTerminalOutcome),
 }
 ```
+
+The same `ActorRunOutcome<A>` is returned by both run methods.
+`Ejected` is unreachable from `run_to_termination` (that API
+always drops); `Dropped` is unreachable from `run_to_state_ejection`
+(that API always ejects); `NeverAllocated` is reachable from
+either when `on_start` fails. Operator can refine to two separate
+enums if the type-level guarantee is wanted.
 
 **That is the entire surface.** No `ActorLifecyclePhase` enum.
 No `wait_for_lifecycle_phase`. No `wait_for_lifecycle_target`.
 No `watch<ActorLifecyclePhase>` publisher. No intermediate-phase
 observation primitives.
 
-### 1.2 Internal `finish_terminate` — Akka's seven-step chain, awaited
+### 1.2 Internal `finish_terminate` — Akka's chain, awaited, with admission-stops-first
 
-The runtime's terminal sequence on the success path:
+Per DA's correction (mailbox admission must close *before*
+cleanup starts; otherwise new sends queue into an actor that
+will never process them), the runtime's terminal sequence on
+the success path is:
 
 ```rust
 async fn finish_terminate<A: Actor>(
@@ -140,35 +193,71 @@ async fn finish_terminate<A: Actor>(
     ctx: ShutdownContext<A>,
     reason: ActorStopReason,
 ) -> ActorTerminalOutcome {
-    // 1. await user cleanup — release async resources
+    // 1. STOP ADMISSION FIRST.
+    //    New sends from outside return SendError::ActorStopping
+    //    immediately. The mailbox sender's `is_closed()` flips true.
+    //    This is the Rust equivalent of Akka's `Terminate` system
+    //    message + later `dispatcher.detach`, but consolidated to
+    //    the front so callers get a clean error instead of silent
+    //    enqueue-into-the-void.
+    ctx.mailbox.close_admission();
+
+    // 2. Finish the currently-running handler (if any).
+    //    The handler that was processing when the stop signal
+    //    arrived runs to its natural conclusion. New messages
+    //    cannot arrive because step 1.
+    //    (This is implicit in the runtime task structure; no
+    //    explicit call needed.)
+
+    // 3. Stop children. Drain children's mailboxes; wait until
+    //    every child has reached its own terminal outcome.
+    //    (Akka's "all children PostStop before parent PostStop"
+    //    rule from akka-actor/.../FaultHandling.scala.)
+    ctx.stop_and_await_children().await;
+
+    // 4. Await user cleanup — release async resources.
     let cleanup_result = AssertUnwindSafe(
         actor.on_stop(ctx.weak.clone(), reason.clone())
     ).catch_unwind().await;
 
-    // 2. drop actor explicitly — Self-owned resources released here
+    // 5. Drop actor explicitly — Self-owned resources released here.
+    //    For `run_to_state_ejection`, this step is replaced by
+    //    "return actor to caller" and outcome.state = Ejected.
     drop(actor);
 
-    // 3. close mailbox — admission stops
-    ctx.mailbox.close();
+    // 6. Dispatch parent notification — AWAITED on the parent's
+    //    *control channel* (system-message plane), NOT the parent's
+    //    user mailbox. The await resolves when the signal has been
+    //    accepted by a non-deadlocking control plane, NOT when the
+    //    parent's handler has processed it. See §2 invariant 2 for
+    //    why this distinction is load-bearing.
+    ctx.parent.deliver_child_terminated_to_control_plane(
+        ctx.id, outcome.clone(),
+    ).await;
 
-    // 4. notify parent — AWAITED (not tokio::spawn fire-and-forget)
-    ctx.parent.deliver_child_terminated(ctx.id, outcome.clone()).await;
-
-    // 5. notify watchers — AWAITED
+    // 7. Dispatch watcher notifications — same semantics as step 6.
+    //    Each watcher's control channel is awaited, not its
+    //    handler-processing.
     for watcher in ctx.watchers.drain() {
-        watcher.deliver_link_died(ctx.id, outcome.clone()).await;
+        watcher.deliver_link_died_to_control_plane(
+            ctx.id, outcome.clone(),
+        ).await;
     }
 
-    // 6. cancel our outbound watches
+    // 8. Cancel our outbound watches. The actors we were watching
+    //    no longer need to track us as an observer.
     for watched in ctx.watching.drain() {
         watched.unwatch(ctx.id).await;
     }
 
-    // 7. unregister from registry
+    // 9. Unregister from the registry. New actors can now claim
+    //    this name.
     ctx.registry.remove(ctx.id).await;
 
-    // 8. resolve wait_for_shutdown
-    ctx.terminal_outcome_sender.send(outcome).ok();
+    // 10. Resolve wait_for_shutdown. The oneshot send is the
+    //     last thing the runtime does; callers awaiting
+    //     wait_for_shutdown() see the outcome here.
+    ctx.terminal_outcome_sender.send(outcome.clone()).ok();
     outcome
 }
 ```
@@ -177,18 +266,32 @@ Strict ordering. Every step awaited. By the time
 `wait_for_shutdown().await` resolves on any caller's thread,
 every prior step has completed.
 
-**This is Akka's `finishTerminate` chain. The source comment in
-`akka-actor/.../FaultHandling.scala` —**
+**This is Akka's `finishTerminate` chain — adapted for Rust
+async + DA's admission-stops-first correction.** The source
+comment in `akka-actor/.../FaultHandling.scala`:
 
 > *The following order is crucial for things to work properly.
 > Only change this if you're very confident and lucky.*
 
-**— applies verbatim.** Translated to Rust async, with the
-critical strengthening that each dispatch is explicitly awaited.
-Akka's `sendSystemMessage(DWN)` enqueues onto the JVM mailbox and
-relies on JVM monitor happens-before for cross-thread visibility;
-Rust's `.await` on a channel send is strictly stronger — the
-sender is blocked until the message is in the channel.
+— applies verbatim. The translation strengthens Akka in three
+ways:
+
+1. **Admission stops at step 1**, before cleanup starts.
+   Akka's `Terminate` system message stops dequeueing but
+   keeps the mailbox attached; Rust's stricter "sender
+   refuses new sends" gives callers a clean error.
+2. **Each dispatch is `.await`-ed** on a control channel
+   (steps 6, 7). Akka's `sendSystemMessage(DWN)` enqueues
+   onto the JVM mailbox and relies on JVM monitor happens-before
+   for cross-thread visibility; Rust's `.await` on a channel
+   send is strictly stronger — the sender is blocked until the
+   message is in the channel.
+3. **The terminal-outcome oneshot is the last operation**.
+   The `wait_for_shutdown` resolution is sequenced strictly
+   after registry-remove, link-cancellation, watcher-dispatch,
+   parent-dispatch, drop, on_stop, child-drain, and
+   admission-stop. No path can resolve the terminal wait
+   before completing all prior steps.
 
 ### 1.3 The startup-failure path — different sequence, same contract
 
@@ -202,30 +305,38 @@ async fn finish_terminate_startup_failure<A: Actor>(
         reason: ActorTerminalReason::StartupFailed,
     };
 
+    // 1. Stop admission (mailbox sender refuses new sends).
+    ctx.mailbox.close_admission();
+
     // No on_stop — there was no actor.
     // No drop(actor) — there was nothing to drop.
+    // No outbound watches — actor never reached Running.
 
-    // 3. close mailbox
-    ctx.mailbox.close();
+    // 3. Stop and drain children (if any were spawned during on_start).
+    ctx.stop_and_await_children().await;
 
-    // 4. notify parent
-    ctx.parent.deliver_child_terminated(ctx.id, outcome.clone()).await;
+    // 6. Dispatch parent notification to control plane.
+    ctx.parent.deliver_child_terminated_to_control_plane(
+        ctx.id, outcome.clone(),
+    ).await;
 
-    // 5. notify watchers
+    // 7. Dispatch watcher notifications.
     for watcher in ctx.watchers.drain() {
-        watcher.deliver_link_died(ctx.id, outcome.clone()).await;
+        watcher.deliver_link_died_to_control_plane(
+            ctx.id, outcome.clone(),
+        ).await;
     }
 
-    // 7. unregister from registry
+    // 9. Unregister from registry.
     ctx.registry.remove(ctx.id).await;
 
-    // 8. resolve wait_for_shutdown
+    // 10. Resolve wait_for_shutdown.
     ctx.terminal_outcome_sender.send(outcome.clone()).ok();
     outcome
 }
 ```
 
-Different internal sequence — no steps 1, 2, 6 (no actor existed
+Different internal sequence — no steps 4, 5, 8 (no actor existed
 to clean up, drop, or unwatch from). **Same public contract:** one
 `wait_for_shutdown` resolution with an outcome that names the
 path (`state: NeverAllocated, reason: StartupFailed`).
@@ -258,9 +369,9 @@ it via `await` ordering in the runtime task. **Same invariant,
 three different mechanisms.** The Kameo version is the one Rust
 can give us.
 
-### Invariant 2 — Notification dispatch is awaited
+### Invariant 2 — Notification dispatch is awaited on a non-deadlocking control plane
 
-Steps 4 and 5 use `.await` on each channel send, not
+Steps 6 and 7 use `.await` on each channel send, not
 `tokio::spawn(...)`. This is where the current
 `kameo-push-only-lifecycle` branch is broken:
 `src/links.rs:112-141` uses `tokio::spawn(parent_link.notify(...))`
@@ -268,10 +379,40 @@ and returns immediately. The branch marks `LinksNotified` before
 any notification future has even been polled — two scheduler
 hops away from "linked peers know."
 
-The correct shape is `await` on each dispatch. The terminal
-notification is the *last* thing the runtime does before
-resolving `wait_for_shutdown`; nothing about it is
-fire-and-forget.
+The correct shape is `await` on each dispatch. But — per DA's
+correction — **"await" here means "accepted into a non-deadlocking
+control channel," NOT "processed by the recipient actor's
+handler."** If the dying actor waits for the parent to *process*
+the signal in its handler, shutdown can deadlock: parent is
+running a handler that called `child.stop().await`; child's
+shutdown waits for parent to handle the death signal; parent
+can't handle the death signal until its current handler returns;
+parent's current handler is waiting on child's shutdown.
+
+The implementation requirement is that Kameo grow (or formalize)
+a **system-message control plane** distinct from the user
+mailbox:
+
+- The control plane has its own queue, separate from
+  `Message<T>` user messages.
+- The control plane is processed even when the recipient's
+  user-message processing is blocked (e.g., its current handler
+  is awaiting something).
+- A control-plane signal cannot deadlock against the recipient's
+  user-handler execution.
+
+This is what Akka has as system-messages, what Erlang has as
+EXIT/DOWN signal handling outside the normal receive loop. Kameo
+0.20 has the *shape* of this with its `Signal` enum (`StartupFinished`
+etc.) but the discipline must be made explicit: terminal death
+notifications go through the control plane, not the user mailbox.
+
+The terminal `await` resolves when the death-signal has been
+enqueued into the recipient's control-plane queue (channel send
+completed), which is processed asynchronously and cannot
+deadlock. The recipient's `on_link_died` handler runs at the
+recipient's own pace, separate from the dying actor's shutdown
+sequence.
 
 ### Invariant 3 — Path-awareness lives in the outcome, not in observable phases
 
@@ -286,6 +427,85 @@ The outcome carries everything a caller needs to know about
 which path the actor took. Asking "did state get dropped?" is
 answered by inspecting `outcome.state == ActorStateAbsence::Dropped`.
 The terminal event is sufficient.
+
+## 2.5. Internal lifecycle facts exist — for tests, not for users
+
+Per DA's clarification: the internal step sequence in §1.2 + §1.3
+is real, and the framework's correctness depends on it being
+provably ordered. **Those facts have a home in the implementation
+and in test infrastructure — not in the public API.**
+
+Concretely:
+
+```rust
+// pub(crate) — internal only.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum LifecycleFact {
+    AdmissionStopped,
+    InFlightWorkEnded,
+    ChildrenAbsent,
+    CleanupHookFinished,
+    ActorStateAbsent,
+    LinkSignalsDispatched,
+    RegistryEntryAbsent,
+    TerminalResultVisible,
+}
+
+// pub(crate) — available to tests via a feature flag or
+// test-only build path.
+#[cfg(any(test, feature = "test-introspection"))]
+impl<A: Actor> ActorRef<A> {
+    /// Test-only: returns the set of internal lifecycle facts
+    /// observed so far. Used by the framework's correctness tests
+    /// to assert ordering invariants. NOT a public API; production
+    /// users go through `wait_for_shutdown()`.
+    pub(crate) fn observed_lifecycle_facts(&self) -> &[LifecycleFact];
+}
+```
+
+Tests can then assert:
+
+```rust
+#[tokio::test]
+async fn admission_stops_before_on_stop_runs() {
+    // ... drive the actor to shutdown ...
+    let facts = actor_ref.observed_lifecycle_facts();
+    let admission_idx = facts.iter().position(|f| *f == LifecycleFact::AdmissionStopped).unwrap();
+    let cleanup_idx = facts.iter().position(|f| *f == LifecycleFact::CleanupHookFinished).unwrap();
+    assert!(admission_idx < cleanup_idx, "admission must stop before cleanup hook runs");
+}
+
+#[tokio::test]
+async fn link_signals_dispatched_before_terminal_visible() {
+    // ... drive the actor to shutdown ...
+    let facts = actor_ref.observed_lifecycle_facts();
+    assert!(
+        facts.iter().position(|f| *f == LifecycleFact::LinkSignalsDispatched)
+            < facts.iter().position(|f| *f == LifecycleFact::TerminalResultVisible),
+    );
+}
+```
+
+These tests **live in the framework**, prove the framework's
+internal correctness, and are invisible to consumers. Operator
+implements `finish_terminate` such that each `LifecycleFact`
+is emitted at the right boundary; the test infrastructure
+verifies the ordering on every run; consumers never see the
+enum.
+
+This is how Akka does it (internal `terminating` flag inspected
+only by the framework's own tests and by `akka.event.Logging`
+debug output) and how Erlang does it (the BEAM has internal
+process state machine that's debuggable via `erlang:process_info/1`
+but is not part of the public actor contract). The discipline
+is: **internal sequence is rich and testable; public contract
+is minimal and outcome-shaped.**
+
+The 12-fact proposals from operator/128 and DA/96 §3 are
+correct as the *internal* model. They're wrong only when
+exposed as public API. With this clarification, those reports'
+substance lands in the framework's `pub(crate) enum LifecycleFact`
++ test infrastructure, not in the public `ActorRef` surface.
 
 ## 3. Why the observable-fact-stream design is wrong
 
