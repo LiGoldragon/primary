@@ -84,7 +84,7 @@ poet's. The assistant does the same work as its main role.
 Poet-assistant works the poet pool's beads:
 
 ```sh
-bd ready --label role:poet --no-pager
+bd ready --label role:poet --limit 30
 ```
 
 There is no `role:poet-assistant` label. When filing a bead

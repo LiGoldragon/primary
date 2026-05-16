@@ -113,7 +113,7 @@ the discipline is the same; the reading list is the same.
 Designer-assistant works the designer pool's beads:
 
 ```sh
-bd ready --label role:designer --no-pager
+bd ready --label role:designer --limit 30
 ```
 
 There is no `role:designer-assistant` label. When filing a

@@ -252,7 +252,7 @@ target `signal-persona-mind`; do not add new BEADS integrations.
 Useful direct commands:
 
 ```sh
-bd list --status open --flat --no-pager --limit 20
+bd list --status open --flat --limit 20
 bd ready
 bd show <id>
 bd close <id> --reason "<what changed>"

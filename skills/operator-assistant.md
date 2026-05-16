@@ -103,7 +103,7 @@ operator's. The assistant does the same work as its main role.
 Operator-assistant works the operator pool's beads:
 
 ```sh
-bd ready --label role:operator --no-pager
+bd ready --label role:operator --limit 30
 ```
 
 There is no `role:operator-assistant` label. When filing a

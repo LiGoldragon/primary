@@ -11,7 +11,7 @@
 
 ```sh
 bd ready --label role:<main-role>             # ready-to-work, role-filtered
-bd list --label role:<main-role> --no-pager   # everything claimed for your role
+bd list --label role:<main-role> --limit 0    # everything claimed for your role
 ```
 
 If results come back, **that is the workspace's continuing intent for your
@@ -66,7 +66,7 @@ the bead you claimed and the active beads for your role:
 
 ```sh
 bd show <bead-id>
-bd list --label role:<your-role> --no-pager
+bd list --label role:<main-role> --limit 0
 ```
 
 Then make one of these states true:

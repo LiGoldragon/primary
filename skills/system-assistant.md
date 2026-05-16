@@ -139,7 +139,7 @@ main role.
 System-assistant works the system-specialist pool's beads:
 
 ```sh
-bd ready --label role:system-specialist --no-pager
+bd ready --label role:system-specialist --limit 30
 ```
 
 There is no `role:system-assistant` label. When filing a bead
