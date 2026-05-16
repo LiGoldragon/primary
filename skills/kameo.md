@@ -899,6 +899,31 @@ entirely. One mailbox, one writer, one thread — cleaner than per-call
 detach for high-frequency stores. Pair with a typed schema and the
 sema-family pattern from `skills/rust/storage-and-wire.md` §"The sema-family pattern".
 
+**Do not use `spawn_in_thread` on a supervised state-bearing actor in
+Kameo 0.20.** Kameo signals "child closed" the moment `notify_links`
+drops `mailbox_rx`, **before** the actor's `Self` value (and any
+durable resource it owns — redb `Database`, file lock, open socket)
+is dropped. The parent's `wait_for_shutdown` returns while the OS
+thread is still running `block_on(...)` and the resource is still
+held. The next process that tries to open the same redb path
+races the still-locked file and fails with `Io(UnexpectedEof)`
+or hangs on the second `bind()`. The failure mode and the
+`pre_notify_links` hook that would close it upstream are documented
+at `persona-mind/src/actors/store/mod.rs:295-307` (the live
+`StoreKernel` deferral) and in `reports/operator-assistant/138-persona-mind-gap-close-2026-05-16.md`
+§"P2 — StoreKernel Template-2 deferral".
+
+Until upstream Kameo grows a hook that fires after `Self` is dropped
+(or the actor owns its own close-then-confirm protocol that the
+supervisor awaits before propagating shutdown), supervised state-
+bearing actors stay on `.spawn()` even when Template 2 is the right
+destination shape. The non-supervised `Self::spawn_in_thread(self)`
+shape (call after building `Self`, no parent supervisor) is fine
+for processes that exit on their own clock; the trap is specifically
+`supervise(&parent, …).spawn_in_thread().await`. Document the
+deferral in ARCH and the actor's `on_start` comment so future agents
+see the cause when they revisit the template choice.
+
 ### Template 3 — `tokio::process` + bounded `timeout` + `kill_on_drop`
 
 For process-exec work where async equivalents exist
@@ -963,6 +988,25 @@ was removed rather than kept as a blocking actor.
   is `current_thread` — `spawn_in_thread` panics with *"threaded
   actors are not supported in a single threaded tokio runtime"*.
   Use `#[tokio::test(flavor = "multi_thread")]`.
+- **Supervised `spawn_in_thread` releases `wait_for_shutdown` before
+  `Self::drop()` runs.** A supervised state-bearing actor that owns a
+  durable resource (redb `Database`, file lock, open Unix socket) sees
+  the resource outlive the parent's "children closed" signal — restart
+  on the same path races the still-held lock. See §"Blocking-plane
+  templates" Template 2 for the full failure mode and the deferral
+  shape. Use `.spawn()` until the upstream `pre_notify_links` hook
+  lands.
+- **`#[tokio::test(flavor = "multi_thread")]` + parallel restart
+  tests.** Even with `.spawn()` (not `.spawn_in_thread()`), the
+  combination of multi-thread runtime per test plus `cargo test`'s
+  default parallel runner triggers a separate kameo/tokio interaction
+  that hangs daemon-restart tests indefinitely. Single-thread `#[tokio::test]`
+  (the default) and the same restart tests pass in parallel. Surfaced
+  in `reports/operator-assistant/138-persona-mind-gap-close-2026-05-16.md`
+  §"Found by accident — multi_thread parallel-restart hang". Until
+  isolated, prefer `#[tokio::test]` over `flavor = "multi_thread"`
+  for daemon-restart witnesses unless the test specifically needs
+  `spawn_in_thread`.
 - **`#[derive(Actor)] #[actor(mailbox = bounded(64))]` doesn't
   work.** Documented but unparsed; only `#[actor(name = "...")]`
   is implemented. Use `spawn_with_mailbox` instead.
