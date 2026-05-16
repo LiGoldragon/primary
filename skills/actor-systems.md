@@ -300,6 +300,29 @@ blocking calls; (2) dedicated OS thread for frequent sync work; (3)
 `tokio::process` + bounded `timeout` for process-exec work with an
 async API. Pick by shape of work; don't invent a fourth.
 
+### Supervision gotcha — Template 2 on a supervised state-bearing actor
+
+A state-bearing actor that owns a durable resource (redb `Database`,
+file lock, open Unix socket) and is **supervised** as a Kameo child
+must stay on `.spawn()`, not `.spawn_in_thread()`, in Kameo 0.20.
+Kameo signals "child closed" the moment `notify_links` drops
+`mailbox_rx`, **before** the actor's `Self` value (the thing that
+holds the redb `Database` handle) is dropped. The parent's
+`wait_for_shutdown` returns while the OS thread is still running
+`block_on(...)` and the resource is still held — the next process
+that opens the same path races the still-locked file and fails with
+`Io(UnexpectedEof)` or hangs on the second `bind()`.
+
+Template 2 stays the right *destination* shape for redb-backed
+stores; it does not become the right *current* shape on a supervised
+parent until upstream Kameo grows a `pre_notify_links` hook (or the
+actor exposes a close-then-confirm protocol the supervisor awaits
+before propagating shutdown). The deferral is documented at
+`persona-mind/src/actors/store/mod.rs:295-307` and
+`reports/operator-assistant/138-persona-mind-gap-close-2026-05-16.md`
+§"P2 — StoreKernel Template-2 deferral". `~/primary/skills/kameo.md`
+§"Blocking-plane templates" Template 2 carries the full mechanics.
+
 ---
 
 ## No shared locks
@@ -536,6 +559,23 @@ Test name patterns:
 The `#[test]` wrapper calls methods on a fixture. The fixture
 drives the actor runtime, captures the trace, and asserts the
 topology or path.
+
+### Anti-pattern — `flavor = "multi_thread"` on parallel daemon-restart tests
+
+A daemon-restart witness that drops one runtime root and opens
+another against the same on-disk state must stay on
+`#[tokio::test]` (single-thread default) unless it specifically
+needs `spawn_in_thread`. With `flavor = "multi_thread"`, the same
+restart tests pass individually but **hang indefinitely under
+`cargo test`'s default parallel runner** — a separate kameo/tokio
+interaction (likely registry contention or link-bookkeeping shared
+state across runtimes) shows up only with multi-thread + parallel.
+Surfaced in `reports/operator-assistant/138-persona-mind-gap-close-2026-05-16.md`
+§"Found by accident — multi_thread parallel-restart hang". The
+default `#[tokio::test]` annotation is sufficient for `.spawn()`-
+backed actors; switch to multi-thread only when a test specifically
+demands `spawn_in_thread`, and run such tests under `--test-threads=1`
+or in a single-test process.
 
 ---
 
