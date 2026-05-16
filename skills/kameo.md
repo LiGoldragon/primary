@@ -823,71 +823,49 @@ workspace uses Kameo.
   designed.** The local registry semantics differ; the libp2p
   surface is heavy. Document the decision in the consumer's
   `ARCHITECTURE.md` if you enable it.
-- **Wait on `ActorTerminalOutcome`, not on `is_alive()` or
-  mailbox closure.** Per `skills/actor-systems.md` §"Release
-  before notify", supervisors and callers that need to know
-  "the actor is done and its resources are released" branch on
-  `wait_for_shutdown().await`'s outcome. `outcome.state ==
-  Dropped` is the only public signal that owned resources are
-  released. `is_alive()` flips false at admission-stop (the
-  *first* step of shutdown) — it does NOT mean terminal.
-  Polling `is_alive()` is a workspace violation of both the
-  push-not-pull rule and the release-before-notify discipline.
+- **Wait on `ActorTerminalOutcome`, not `is_alive()` or
+  mailbox closure.** `outcome.state == Dropped` is the only
+  public signal that owned resources released. See §"Lifecycle
+  contract" below and `skills/actor-systems.md` §"Release
+  before notify".
 
 ---
 
-## Lifecycle contract — release before notify
+## Lifecycle contract
 
-The workspace's Kameo fork implements the release-before-notify
-discipline from `skills/actor-systems.md` §"Release before
-notify". The public contract is:
+Implements `skills/actor-systems.md` §"Release before notify".
 
 ```rust
 pub struct ActorTerminalOutcome {
     pub state: ActorStateAbsence,        // Dropped | NeverAllocated | Ejected
-    pub reason: ActorTerminalReason,     // Stopped | StartupFailed | Killed | ...
+    pub reason: ActorTerminalReason,
 }
 
 impl<A: Actor> ActorRef<A> {
     pub async fn wait_for_shutdown(&self) -> ActorTerminalOutcome;
-    pub fn is_accepting_messages(&self) -> bool;   // admission gate
-    pub fn is_terminated(&self) -> bool;            // terminal outcome published
-    // Deprecated: is_alive() — compatibility alias for is_accepting_messages().
+    pub fn is_accepting_messages(&self) -> bool;
+    pub fn is_terminated(&self) -> bool;
+    // is_alive() — deprecated alias for is_accepting_messages().
 }
 ```
 
 Watchers receive `Signal::LinkDied { id, outcome }` exactly
-once per terminated peer. The terminal signal is dispatched on
-a non-deadlocking control plane separate from the user
-mailbox; the dying actor's send blocks only until the channel
-accepts the message, not until the peer's `on_link_died`
-handler returns.
+once per terminated peer, dispatched on a control channel
+physically separate from the user mailbox.
 
-Three workspace rules follow from this:
+Application rules:
 
-1. **Supervisors branch on `outcome.state`**, not on a stop
-   reason alone. `Dropped` means resource released; `NeverAllocated`
-   means startup failed (no resource was ever held);
-   `Ejected` means the caller now owns the state and the
-   framework makes no resource-release claim.
-2. **Resource-owning actors test resource-release falsifiably**.
-   The kameo test
-   `tests/lifecycle_phases.rs::wait_for_shutdown_returns_after_cleanup_drop_and_notifications`
-   rebinds a `TcpListener` to prove the OS-level resource is
-   actually free at terminal. Persona components with redb,
-   sockets, child processes, etc. need component-specific
-   equivalents.
-3. **Never `tokio::spawn(...)` lifecycle dispatch as
-   fire-and-forget.** Death signals are awaited until the
-   target control channel accepts them. Spawning the
-   dispatch task and proceeding to mark "linked" would be a
-   lie — the recipient might not even have been scheduled
-   yet.
+- Supervisors branch on `outcome.state`. `Dropped` is the only
+  signal that owned resources released.
+- Resource-owning actors need component-specific falsifiable
+  tests (rebind socket, reopen redb, etc.). The kameo
+  `lifecycle_phases.rs::wait_for_shutdown_returns_after_cleanup_drop_and_notifications`
+  test is the shape.
+- Never `tokio::spawn(...)` death dispatch fire-and-forget.
+  Await the control-channel accept.
 
-The Kameo fork at `kameo-push-only-lifecycle` provides this
-contract. Versions of Kameo that publish `ActorLifecyclePhase`
-as a public ordinal phase enum are pre-redesign and should not
-be used as the lifecycle contract surface.
+Use the `kameo-push-only-lifecycle` fork; pre-fork versions
+expose an ordinal `ActorLifecyclePhase` that is not the contract.
 
 ---
 
