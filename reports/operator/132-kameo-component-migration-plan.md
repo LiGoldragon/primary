@@ -10,14 +10,15 @@ engine components, but not because every risk is gone. It is ready because the
 specific blocker that kept state-owning actors on the old shared-worker shape
 has been addressed and covered by framework tests.
 
-The target Kameo commit is:
+The current Kameo fork head is:
 
 ```text
-04f6e2ab937caf75b7e38dd58b4ce9380d259313
+22514f7c6900da00703a4a0ef096f21a45c95a99
 ```
 
 This commit is on the `LiGoldragon/kameo` fork and is pushed on both `main` and
-`kameo-push-only-lifecycle`.
+`kameo-push-only-lifecycle`. Component manifests should use a named Git
+reference; `Cargo.lock` will witness the resolved commit.
 
 The clean stack is:
 
@@ -25,11 +26,13 @@ The clean stack is:
 ddab7733 actor: publish terminal lifecycle outcomes
 565ff25e actor: split lifecycle control mailbox
 04f6e2ab actor: cover lifecycle control edge cases
+22514f7c actor: gate weak shutdown result helpers
 ```
 
 The component migration should be done in this order:
 
-1. Pin every active Persona runtime component to the forked Kameo commit.
+1. Pin every active Persona runtime component to the forked Kameo named
+   reference.
 2. Migrate `persona-mind` first, because `StoreKernel` is the concrete
    redb-owning actor that exposed the old shutdown lie.
 3. Migrate terminal and harness components next, because they own processes,
@@ -118,6 +121,11 @@ The control lane is physically separate from the ordinary message lane. A
 bounded or saturated user mailbox cannot prevent stop/control messages from
 reaching the actor.
 
+The last consistency fix in the fork gates `WeakActorRef`'s nonblocking
+shutdown-result helpers behind terminal lifecycle publication, matching
+`ActorRef`. That keeps compatibility helpers from revealing an `on_stop` result
+while actor state is still dropping.
+
 ### Stale Message Shape
 
 ```mermaid
@@ -136,16 +144,7 @@ before calling `stop_gracefully()`. Kameo shutdown is not a hidden drain.
 ## 3 - Pinning Rule
 
 Every active Persona runtime repository that depends on Kameo should use the
-same GitHub HTTPS dependency pinned to the exact revision:
-
-```toml
-kameo = {
-    git = "https://github.com/LiGoldragon/kameo",
-    rev = "04f6e2ab937caf75b7e38dd58b4ce9380d259313",
-    default-features = false,
-    features = ["macros", "tracing"],
-}
-```
+same GitHub HTTPS dependency, addressed through a named Git reference.
 
 Feature lists remain component-specific. For example, `persona-terminal`
 currently uses `["tracing"]`, and `persona-message` currently uses
@@ -155,11 +154,27 @@ Do not use:
 
 - local path dependencies;
 - `git+file`;
-- unpinned branches;
+- anonymous or local-only branch names;
 - Nix hashes in `flake.nix` for this pin.
 
-The lockfile should witness the Git source. The flake should keep using the
-workspace's normal Cargo/Nix flow.
+The current implementation-ready named reference is the fork's `main` branch:
+
+```toml
+kameo = {
+    git = "https://github.com/LiGoldragon/kameo",
+    branch = "main",
+    default-features = false,
+    features = ["macros", "tracing"],
+}
+```
+
+If the migration needs a less-moving interface before the sweep finishes, mint
+a named branch or tag first and use that name across every component. Do not
+write a raw commit revision into the component manifests as the steady-state
+dependency interface.
+
+The lockfile should witness the resolved Git commit. The flake should keep
+using the workspace's normal Cargo/Nix flow.
 
 ## 4 - Current Component Surface
 
@@ -185,7 +200,7 @@ part of this migration.
 
 ```mermaid
 flowchart TD
-    kameo["Kameo fork @ 04f6e2ab"] --> mind["persona-mind"]
+    kameo["Kameo fork main @ 22514f7c"] --> mind["persona-mind"]
     kameo --> cell["terminal-cell"]
     cell --> terminal["persona-terminal"]
     terminal --> harness["persona-harness"]
@@ -409,7 +424,7 @@ The meta-repository migrates last.
 
 Required constraints:
 
-- The sandbox engine uses one Kameo revision across every runtime component.
+- The sandbox engine resolves one Kameo commit across every runtime component.
 - The sandbox starts components that have already pinned the fork.
 - The sandbox stop path observes component daemon outcomes, not only process
   exits.
@@ -417,7 +432,7 @@ Required constraints:
 First tests:
 
 ```text
-sandbox_uses_single_kameo_revision
+sandbox_uses_single_kameo_commit
 sandbox_two_component_engine_starts_and_stops_cleanly
 sandbox_component_restart_waits_for_old_terminal_outcome
 ```
@@ -484,7 +499,7 @@ architecture, not just function output.
 These tests prevent backsliding:
 
 ```text
-component_uses_workspace_kameo_fork_revision
+component_uses_workspace_kameo_fork_reference
 component_does_not_depend_on_crates_io_kameo
 component_does_not_call_get_shutdown_result_for_resource_truth
 component_does_not_use_actor_liveness_as_shutdown_proof
@@ -540,7 +555,7 @@ The fork does not solve every actor lifecycle problem.
 | Stopping discards queued ordinary messages | Domain work can be dropped unless the component drains explicitly | Components that require durable completion must implement quiesce/drain before stop |
 | `blocking_recv()` now wakes on control signals, but still creates a small current-thread runtime internally | It is a compatibility surface, not the preferred engine shape | Persona actors should use async handlers unless there is a reason not to |
 | `wait_for_shutdown_result()` remains for compatibility | It reports hook result, not state absence | New resource-owner checks should use `wait_for_shutdown()` |
-| The fork is not upstream Kameo | Upstream drift is possible | Pin exact commit and keep component tests as the real acceptance contract |
+| The fork is not upstream Kameo | Upstream drift is possible | Use one named fork reference, verify the lockfile's resolved commit, and keep component tests as the real acceptance contract |
 
 ## 10 - Architecture Files To Update
 
@@ -558,7 +573,7 @@ High-signal edits after pinning:
 - `persona-router/ARCHITECTURE.md`: add child-outcome and quiesce-before-stop
   constraints.
 - `persona/ARCHITECTURE.md`: record that the sandbox engine requires one
-  pinned Kameo revision across runtime components.
+  resolved Kameo commit across runtime components.
 
 Do not update `skills/kameo.md` again from theory alone. Update it after
 `persona-mind::StoreKernel` lands as the first worked example.
