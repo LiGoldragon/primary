@@ -1,12 +1,12 @@
-# 97 — Working-system reference for the kameo lifecycle redesign
+# 203 — Working-system reference for the kameo lifecycle redesign
 
 Date: 2026-05-16
-Role: designer-assistant
+Role: designer
 Scope: synthesis of three production actor-framework references
 (Erlang's `ranch`+`cowboy`, Akka Classic, Microsoft Service
 Fabric Reliable Actors) for the workspace's kameo-fork
 lifecycle redesign discussed in
-`reports/designer-assistant/96-kameo-push-only-lifecycle-audit-2026-05-16.md`,
+`reports/designer/202-kameo-push-only-lifecycle-audit-2026-05-16.md`,
 `reports/operator/126`, and `reports/operator/128`.
 
 ## 0. The canonical reference model
@@ -79,7 +79,7 @@ flowchart TD
   `TxnWorker` pool (freely restartable, never owns the handle).
   This is the production-tested answer for our exact failure
   mode (exclusive local resource + supervised restart).
-- **Continue the kameo-lifecycle redesign (`reports/designer-assistant/96`)
+- **Continue the kameo-lifecycle redesign (`reports/designer/202`)
   as the long-term shape**, but recognize it is solving a
   problem *no production framework directly tackles* —
   observable in-flight teardown in a system with async cleanup
@@ -635,7 +635,7 @@ If you accept Path C:
 
 ## 7. Honest closing assessment
 
-The audit (`reports/designer-assistant/96`) recommended a
+The audit (`reports/designer/202`) recommended a
 substantial framework redesign. This research adds nuance: the
 redesign is *correct for the general case* but is solving a
 problem no production framework directly solves. Production
@@ -679,7 +679,7 @@ where decomposition isn't possible).
 
 ### Workspace context
 
-- `reports/designer-assistant/96-kameo-push-only-lifecycle-audit-2026-05-16.md`
+- `reports/designer/202-kameo-push-only-lifecycle-audit-2026-05-16.md`
   — the audit this synthesis informs
 - `reports/operator/126-kameo-push-only-lifecycle-branch-review.md`
   — operator's original branch review
