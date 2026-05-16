@@ -1,7 +1,7 @@
 # 93 — Session handoff, 2026-05-16
 
 *Designer-assistant session capped at the Claude 5h-window; substance
-handed to system-assistant / system-specialist (Codex). This report
+handed to system-specialist (Codex). This report
 names what landed, what was queued but never fired, the per-subagent
 follow-ups that surfaced after report 92 closed, and the suggested
 order of operations for the next role.*
@@ -82,7 +82,7 @@ Two subagents were briefed but the 5h-window capped the session before they fire
 
 **Lane**: CriomOS Nix.
 **Branch**: `horizon-re-engineering` worktree at `/home/li/wt/github.com/LiGoldragon/CriomOS/horizon-re-engineering/`.
-**Report number to claim**: 94 (in whatever lane's `reports/<role>/` directory the implementer chooses; e.g. `reports/system-assistant/N`).
+**Report number to claim**: 94 (in whatever lane's `reports/<role>/` directory the implementer chooses; e.g. `reports/system-specialist/N`).
 
 Scope:
 
