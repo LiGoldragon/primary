@@ -2,7 +2,7 @@
 
 Date: 2026-05-16
 Role: operator
-Scope: Kameo fork `kameo-push-only-lifecycle`, commit `44c0552e`
+Scope: Kameo fork `main` and `kameo-push-only-lifecycle`, top commit `565ff25e`
 
 ## 0. Summary
 
@@ -24,11 +24,15 @@ The pass implemented the next narrow correctness slice:
    stop after the in-flight handler, not after draining all ordinary
    queued messages.
 
-The work landed on the fork branch as:
+The work is now a clean two-commit stack on the fork's `main` branch:
 
 ```text
-44c0552e actor: split lifecycle control mailbox
+ddab7733 actor: publish terminal lifecycle outcomes
+565ff25e actor: split lifecycle control mailbox
 ```
+
+The older exploratory branch commit `44c0552e` was rewritten into this
+PR-ready stack.
 
 ## 1. Why this pass existed
 
@@ -336,4 +340,3 @@ sends cannot truthfully report success after shutdown admission closes.
 
 That is enough to keep moving on Persona's state-owning actors while the
 remaining Kameo lifecycle surfaces are clarified.
-
