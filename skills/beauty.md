@@ -6,17 +6,16 @@
 
 ## What this skill is for
 
-When something you've written or are reviewing **feels ugly**, this
-skill is what to do next. Beauty in this workspace is not decorative;
-it is the operative test of whether the underlying problem is solved.
-Ugly code is evidence that the underlying problem is unsolved. The
-aesthetic discomfort itself is the signal — and the diagnostic table
-below is how to read it.
+When something you've written or are reviewing **feels ugly**, the
+discomfort is the diagnostic. Beauty is the operative test of
+correctness; ugliness is evidence the underlying problem is
+unsolved. The readings below name what each kind of ugliness
+signals.
 
-When the right structure is found, ugliness dissolves: special cases
-collapse into the normal case; repetition resolves into a single
-named pattern. Slow down and find that structure. The structure you
-find *is* the one you were missing.
+When the right structure is found, ugliness dissolves: special
+cases collapse into the normal case; repetition resolves into a
+single named pattern. Slow down and find that structure. The
+structure you find *is* the one you were missing.
 
 If you cannot make it beautiful, you do not understand it yet.
 
@@ -25,9 +24,6 @@ If you cannot make it beautiful, you do not understand it yet.
 ## The rule
 
 **If it isn't beautiful, it isn't done.**
-
-When something feels ugly, slow down and find the structure that
-makes it beautiful. That structure is the one you were missing.
 
 ---
 
@@ -79,14 +75,6 @@ once.
 
 Per Li (2026-04-27): *"You were taught wrong."* The criterion is
 beauty, not keystroke-economy.
-
----
-
-## The one-line summary
-
-**If it isn't beautiful, it isn't done.** Slow down and find the
-structure that makes it beautiful — that structure is the one you
-were missing.
 
 ---
 
