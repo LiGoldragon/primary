@@ -131,6 +131,12 @@ pub enum ActorTerminalReason {
 }
 
 /// Watchers receive exactly ONE signal per terminated actor.
+/// Public payload — the framework may retain additional
+/// private fields (mailbox receiver, sibling links) for
+/// supervisor-restart material; those are NOT part of the
+/// public contract observed by user `on_link_died` handlers.
+/// Per `reports/designer-assistant/98` §2.1, omitting the
+/// private fields would break supervised restart.
 pub enum Signal {
     LinkDied { id: ActorId, outcome: ActorTerminalOutcome },
 }
@@ -391,21 +397,49 @@ parent's current handler is waiting on child's shutdown.
 
 The implementation requirement is that Kameo grow (or formalize)
 a **system-message control plane** distinct from the user
-mailbox:
+mailbox. **"Distinct" has a specific operational meaning:**
 
-- The control plane has its own queue, separate from
-  `Message<T>` user messages.
+- The control plane is **physically separate** from the user
+  mailbox — either a second channel, or a reserved capacity in
+  the existing channel that ordinary user messages provably
+  cannot consume.
 - The control plane is processed even when the recipient's
   user-message processing is blocked (e.g., its current handler
   is awaiting something).
 - A control-plane signal cannot deadlock against the recipient's
   user-handler execution.
+- Filling the user mailbox to capacity must not block control
+  signals.
 
-This is what Akka has as system-messages, what Erlang has as
-EXIT/DOWN signal handling outside the normal receive loop. Kameo
-0.20 has the *shape* of this with its `Signal` enum (`StartupFinished`
-etc.) but the discipline must be made explicit: terminal death
-notifications go through the control plane, not the user mailbox.
+**A single `Signal<A>` enum variant tagged "control" sharing one
+bounded mpsc queue with `Signal::Message` does NOT satisfy this
+requirement.** Per `reports/designer-assistant/98` §1.1, that
+shape preserves two failure modes:
+1. If the bounded mailbox is full of ordinary user messages,
+   `signal_link_died(...).await` blocks behind user capacity.
+2. If a parent actor handler is awaiting a child's shutdown,
+   the parent cannot process the link signal from the same
+   receiver until that handler returns.
+
+This is what Akka has as system-messages (a *separate* queue with
+its own dispatcher entry), what Erlang has as EXIT/DOWN signal
+handling outside the normal receive loop. Kameo 0.20's `Signal`
+enum is multi-variant *but single-channel* — the variants share
+queue capacity. The earlier draft of this section said Kameo "has
+the *shape* of this" which was misleading; the shape is *not* yet
+there.
+
+Acceptable implementations:
+
+- **Two physical channels** — one for `Signal::Message`, one for
+  control signals. The actor's runtime loop `select!`s between
+  them with the control channel as the preferential branch.
+- **Reserved capacity** — one channel where N slots are reserved
+  for control signals and user `tell`/`ask` enforces a max of
+  `capacity - N`. Simpler but requires careful accounting.
+- **Unbounded control queue + bounded user queue** combined via
+  `select!` — control signals never block on capacity; user
+  messages preserve backpressure.
 
 The terminal `await` resolves when the death-signal has been
 enqueued into the recipient's control-plane queue (channel send
@@ -769,6 +803,85 @@ The last test is the workspace's live blocker — the
 `StoreKernel` Template-2 deferral. On a Kameo fork pinned to
 this design, that test passes and the comment at
 `persona-mind/src/actors/store/mod.rs:295-307` can be removed.
+
+## 6.5. Implementation review — operator/130 + DA/98
+
+Operator landed the design at kameo commit `1329a646`
+(`actor: publish terminal lifecycle outcomes`); see
+`reports/operator/130-kameo-terminal-lifecycle-implementation.md`.
+DA reviewed the implementation in
+`reports/designer-assistant/98-review-operator-130-kameo-lifecycle-implementation.md`,
+which is the canonical review.
+
+Three high-level findings from DA/98 that this report's spec
+should sharpen:
+
+### 6.5.1 (HIGH) The "control plane" requirement is real, not implemented yet
+
+§2 invariant 2 above is now sharpened. Operator's implementation
+uses one mailbox with an admission gate — it satisfies "admission
+stops first" (DA correction #1) but **not** "non-deadlocking
+control plane" (DA correction #2). The two failure modes
+(deadlock when parent handler awaits child shutdown; block when
+user mailbox is full) remain.
+
+The fix is structural: separate the physical channel for control
+signals from the user mailbox, per the acceptable
+implementations enumerated in §2 invariant 2 above. This is the
+load-bearing follow-up to operator/130.
+
+### 6.5.2 (HIGH) Admission gate must be atomic with send-capacity acquisition
+
+The current implementation checks admission *before* `tx.send().await`
+parks on bounded capacity. A bounded-full mailbox can have a
+pending send that passes the admission check, parks, and then
+completes after admission closes — enqueuing an ordinary message
+after shutdown started. On supervised restart, the replacement
+actor's reused mailbox sees that stale message.
+
+Required spec: a `Signal::Message` send that crosses the
+admission-close boundary must fail with `SendError::ActorStopping`,
+not enqueue. Two acceptable mechanisms (per DA/98 §1.2):
+
+- **Generation tokens** — each message carries a generation
+  identifier; the receiver drops messages from prior generations.
+- **Fresh mailbox per generation** — supervised restart creates
+  a new mailbox; the old one is dropped (with any pending sends).
+- **Acquire-and-recheck** — `send().await` acquires capacity,
+  then re-checks admission before committing; aborts without
+  enqueuing if admission closed.
+
+### 6.5.3 (MEDIUM) `Signal::LinkDied` carries private restart material
+
+DA/98 §2.1 caught a /204 specification gap: the public payload
+`{ id, outcome }` is correct but insufficient. The framework
+must retain `mailbox_rx` and `dead_actor_siblings` privately on
+the supervised path so the supervisor can install the
+replacement actor with the original mailbox. /204 §1.1 has
+been amended to note this.
+
+### 6.5.4 (MEDIUM) Public compatibility surface needs alignment
+
+DA/98 §1.3, §1.4, §1.5 surface three smaller issues:
+- `get_shutdown_result()` can return `Some` while
+  `is_terminated()` returns `false` (a small race window).
+- `is_alive()` compatibility alias now means "accepting ordinary
+  messages" — risky for old callers that treated `!is_alive()`
+  as "safe to restart."
+- Graceful-stop queue semantics (queued-before-stop, pending
+  sends crossing close, messages-during-restart) need an
+  explicit test matrix.
+
+These are cleanup, not correctness blockers. DA/98 §3 names them.
+
+### 6.5.5 (POSITIVE) Restart material preservation
+
+DA/98 §2.1 also flagged a /204 design oversight that operator
+*correctly worked around*: the public `Signal::LinkDied { id,
+outcome }` sketch in §1.1 was too narrow for the supervised
+restart path. Operator kept private fields alongside the public
+payload — the right move. /204 §1.1 has been amended above to
+make this discipline explicit.
 
 ## 7. Open questions / where I might be wrong
 
