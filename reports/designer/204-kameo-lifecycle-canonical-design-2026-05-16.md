@@ -84,17 +84,30 @@ pub trait Actor: Sized + Send + 'static {
 }
 
 impl<A: Actor> ActorRef<A> {
-    /// Wait for the actor to fully terminate.
+    /// Wait for the actor to reach a terminal outcome.
     ///
-    /// At the moment this resolves, the runtime guarantees:
-    /// - if the actor reached `Running`, its `on_stop` hook has
-    ///   completed (success or error captured in outcome);
-    /// - if the actor was constructed, its `Self` value has been
-    ///   dropped — every resource owned uniquely by `Self` is
-    ///   released;
+    /// At resolution, the actor has reached a terminal outcome.
+    /// Inspect `outcome.state` to know whether `Self` was dropped,
+    /// never allocated, or ejected to a caller. Inspect
+    /// `outcome.reason` for the path that led there.
+    ///
+    /// When `outcome.state == Dropped`:
+    /// - the actor's `on_stop` hook completed (success or error
+    ///   captured in `outcome.reason`);
+    /// - the actor's `Self` value has been dropped — every
+    ///   resource owned uniquely by `Self` is released;
     /// - all parent/watcher notifications have been dispatched
     ///   (channel sends completed, not merely spawned);
     /// - the registry entry for this actor has been removed.
+    ///
+    /// When `outcome.state == NeverAllocated`: no actor state ever
+    /// existed; `on_stop` did not run; parent/watcher notifications
+    /// have been dispatched and registry entry removed.
+    ///
+    /// When `outcome.state == Ejected`: the actor `Self` was
+    /// returned to the caller via `run_to_state_ejection`. The
+    /// runtime makes NO claim about resource release — the caller
+    /// owns the actor and is responsible for dropping it.
     pub async fn wait_for_shutdown(&self) -> ActorTerminalOutcome;
 }
 
@@ -120,7 +133,10 @@ pub enum ActorStateAbsence {
 pub enum ActorTerminalReason {
     /// Graceful stop completed via `on_stop` returning `Ok`.
     Stopped,
-    /// Actor was killed via `abort()`/`kill()`; `on_stop` did not run.
+    /// Actor was killed via `abort()`/`kill()`. Current Kameo
+    /// semantics: in-flight work is aborted but `on_stop` STILL
+    /// runs and the actor state is still dropped. The actor is
+    /// terminated but cleanup ran.
     Killed,
     /// Handler, `on_stop`, or `on_start` panicked.
     Panicked,
@@ -128,6 +144,20 @@ pub enum ActorTerminalReason {
     StartupFailed,
     /// `on_stop` returned `Err`. The actor `Self` was still dropped.
     CleanupFailed,
+    /// Brutal termination — `on_stop` did NOT run, state may not
+    /// have been dropped cleanly. Reserved for a future
+    /// `Shutdown::Brutal` mode (OTP-shape shutdown timeout escape).
+    /// NOT the same as `Killed`. See PR #4 in §5 for the
+    /// shutdown-timeout configuration this variant accompanies.
+    Brutal,
+    /// Supervised restart — the actor was stopped to be restarted
+    /// by its supervisor. Cleanup ran; state was dropped. Operator
+    /// added this variant in operator/130 to preserve existing
+    /// kameo `ActorStopReason::SupervisorRestart` semantics.
+    SupervisorRestart,
+    /// A linked actor died, propagating death to this actor.
+    /// Cleanup ran; state was dropped.
+    LinkDied,
 }
 
 /// Watchers receive exactly ONE signal per terminated actor.
@@ -143,43 +173,39 @@ pub enum Signal {
 
 /// Two run modes. NOT fungible — different contracts:
 impl<A: Actor> PreparedActor<A> {
-    /// State is dropped at termination; `state: Dropped` (or
-    /// `NeverAllocated` on startup failure).
+    /// State is dropped at termination. Returns either `Dropped`
+    /// (success path) or `NeverAllocated` (startup-failure path).
     pub async fn run_to_termination(self, args: A::Args)
-        -> Result<ActorTerminalOutcome, PanicError>;
+        -> Result<ActorTerminationRunOutcome, PanicError>;
 
-    /// State is returned to the caller; `state: Ejected`. The caller
-    /// is responsible for dropping it. The runtime makes no claim
-    /// about resource release after this returns.
+    /// State is returned to the caller. Returns either `Ejected`
+    /// (success path) or `NeverAllocated` (startup-failure path).
+    /// The runtime makes NO claim about resource release after
+    /// this returns — the caller now owns the actor.
     pub async fn run_to_state_ejection(self, args: A::Args)
-        -> Result<ActorRunOutcome<A>, PanicError>;
-
-    /// `run_to_termination` returns the same enum; ejection variants
-    /// are unreachable on this path.
-    pub async fn run_to_termination(self, args: A::Args)
-        -> Result<ActorRunOutcome<A>, PanicError>;
+        -> Result<ActorEjectionRunOutcome<A>, PanicError>;
 }
 
-/// Per-DA correction: a tuple return is not type-correct because
-/// `on_start` failure leaves no `A`. An enum is needed.
-pub enum ActorRunOutcome<A> {
-    /// Actor ran successfully and `Self` was dropped at terminal.
+/// Returned by `run_to_termination`. Two variants — the API
+/// never ejects, so `Ejected` is unrepresentable.
+pub enum ActorTerminationRunOutcome {
     Dropped(ActorTerminalOutcome),
-    /// Caller chose `run_to_state_ejection` and the actor reached
-    /// terminal; `actor` is the ejected `Self`, caller owns it now.
+    NeverAllocated(ActorTerminalOutcome),
+}
+
+/// Returned by `run_to_state_ejection`. Two variants — the API
+/// never drops at terminal, so `Dropped` is unrepresentable.
+pub enum ActorEjectionRunOutcome<A> {
     Ejected { actor: A, outcome: ActorTerminalOutcome },
-    /// `on_start` returned `Err` or panicked; no `A` was ever
-    /// constructed. Possible on either run mode.
     NeverAllocated(ActorTerminalOutcome),
 }
 ```
 
-The same `ActorRunOutcome<A>` is returned by both run methods.
-`Ejected` is unreachable from `run_to_termination` (that API
-always drops); `Dropped` is unreachable from `run_to_state_ejection`
-(that API always ejects); `NeverAllocated` is reachable from
-either when `on_start` fails. Operator can refine to two separate
-enums if the type-level guarantee is wanted.
+Per DA/99 §1.1: two separate enums make the unreachable variants
+unrepresentable at the type level. A unified `ActorRunOutcome<A>`
+with three variants (Dropped, Ejected, NeverAllocated) is also
+acceptable if the workspace wants one type, but the duplicate
+`run_to_termination` signature from the prior draft must go.
 
 **That is the entire surface.** No `ActorLifecyclePhase` enum.
 No `wait_for_lifecycle_phase`. No `wait_for_lifecycle_target`.
@@ -359,8 +385,8 @@ implementation is in service of them.
 
 ### Invariant 1 — Release happens-before notify
 
-Steps 1+2 (`on_stop` await, `drop(actor)`) complete strictly before
-steps 4+5 (parent/watcher notification) begin. This is the
+Steps 4+5 (`on_stop` await, `drop(actor)`) complete strictly before
+steps 6+7 (parent/watcher notification) begin. This is the
 Erlang/OTP discipline made explicit:
 
 > Exit signals due to links, down signals, and reply signals from
@@ -674,21 +700,42 @@ outcomes from a SupervisorRegistry) is the right shape —
 explicit, application-owned, decoupled from framework
 internals.
 
-## 4. What changes from the current branch
+## 4. What changes from the pre-operator/130 branch
 
-| Branch today | Canonical design |
+Per DA/99 §1.5: this table was historically ambiguous after
+operator/130 landed. Split now into (a) what operator/130
+already fixed and (b) what remains for the next pass.
+
+### 4.1 Already landed in operator/130 (kameo commit `1329a646`)
+
+| Pre-operator/130 branch shape | Now in operator/130 |
 |---|---|
 | `ActorLifecyclePhase` 8-variant enum publicly exposed | **Removed.** Internal sequence only. |
 | `wait_for_lifecycle_phase(phase)` public | **Removed.** Replaced with `wait_for_shutdown() -> ActorTerminalOutcome`. |
-| `tokio::watch<ActorLifecyclePhase>` published | **Replaced** with internal step sequencing + `oneshot<ActorTerminalOutcome>` for terminal wait. |
-| `notify_links` uses `tokio::spawn(...)` fire-and-forget | **Each dispatch `.await`-ed.** This is the largest internal change. |
+| `tokio::watch<ActorLifecyclePhase>` published | **Replaced** with `Arc<SetOnce<ActorTerminalOutcome>>` for terminal wait. |
+| `notify_links` uses `tokio::spawn(...)` fire-and-forget | **Each dispatch `.await`-ed** via `LinkNotification::dispatch().await`. |
 | `StateReleased` phase publicly observable | **Internal.** The terminal outcome's `state: Dropped` is the public signal. |
 | `LinksNotified` phase publicly observable | **Removed.** The terminal event *is* the post-notify boundary. |
 | Linear `PartialOrd` over 8 phases | **Removed.** Paths walk different internal sequences; outcome carries path information. |
-| `PreparedActor::run()` returns only `ActorStopReason` (current branch) | **Two methods:** `run_to_termination()` (drops state) vs `run_to_state_ejection()` (returns state, sets `state: Ejected`). |
-| Startup failure has same enum as graceful stop | **Different internal sequence.** Same `ActorTerminalOutcome` shape with `state: NeverAllocated`. |
+| Startup failure has same enum as graceful stop | **Different internal sequence.** `outcome.state: NeverAllocated`. |
 | `WeakActorRef::wait_for_shutdown_result()` inconsistent with strong | **Fixed.** Both surfaces resolve at the same `ActorTerminalOutcome`. |
-| `is_alive()` exists with inconsistent semantics | **Deprecated.** Replaced with `lifecycle.is_running()` / `lifecycle.is_terminated()` querying the runtime's internal state. |
+| Admission stops late | **Stops first** via `stop_message_admission()` at the head of the shutdown sequence. |
+| `is_alive()` exists with inconsistent semantics | **Compat alias** for `is_accepting_messages()`. `is_terminated()` added. |
+
+### 4.2 Remaining for the next operator pass
+
+Per DA/98 review of operator/130. These are correctness gaps
+the current implementation does not yet satisfy:
+
+| Gap | Severity | Spec response (this report) |
+|---|---|---|
+| Lifecycle/control signals share user mailbox; deadlock + capacity-block | **HIGH** | §2 invariant 2 — physical channel separation, reserved capacity, or unbounded control + bounded user. A shared `Signal<A>` mpsc with admission gate does NOT satisfy. |
+| Admission gate not atomic with send-capacity acquisition; stale messages cross restart | **HIGH** | §6.5.2 — generation tokens / fresh mailbox per generation / acquire-and-recheck. |
+| `PreparedActor::run()` returns `ActorStopReason`; `run_to_state_ejection` not yet enum-shaped | MEDIUM | §1.1 — two separate enums, `ActorTerminationRunOutcome` + `ActorEjectionRunOutcome<A>`. |
+| `get_shutdown_result()` race window before terminal outcome | MEDIUM | §6.5.4 — set terminal outcome before compat result, or gate compat behind `is_terminated()`. |
+| `is_alive()` compat-alias semantics risky for old callers | MEDIUM | §6.5.4 — deprecate with `#[deprecated]` and rustdoc warning. |
+| Graceful-stop queue semantics not test-locked | MEDIUM | §6.5.4 — explicit test matrix per DA/98 §1.5. |
+| Remote `PeerDisconnected` reports `state: Dropped` but can't actually prove it | LOW (operator-flagged) | Future: `state: NeverAllocated` or new variant. |
 
 ## 5. Staged landing
 
@@ -800,9 +847,26 @@ async fn supervised_spawn_in_thread_resource_released_before_restart() {
 ```
 
 The last test is the workspace's live blocker — the
-`StoreKernel` Template-2 deferral. On a Kameo fork pinned to
-this design, that test passes and the comment at
-`persona-mind/src/actors/store/mod.rs:295-307` can be removed.
+`StoreKernel` Template-2 deferral.
+
+Per DA/99 §1.6: this Kameo lifecycle design removes the
+*lifecycle* blocker for a supervised dedicated-thread
+`StoreKernel`. It does NOT by itself finish the StoreKernel
+destination. The comment at
+`persona-mind/src/actors/store/mod.rs:295-307` can be removed
+only after BOTH:
+
+1. The Kameo lifecycle fix lands and is verified by the
+   supervised-`spawn_in_thread` test above.
+2. The single-owner storage plane and `CloseAndConfirm`
+   discipline from `reports/designer-assistant/96-kameo-lifecycle-independent-pov-2026-05-16.md`
+   §2 land and are verified by the practical close-confirm
+   test in DA/96 §5.2 (start owner → write rows → close-confirm
+   → wait → fresh process reopens → reads succeed).
+
+The Kameo fix and the StoreKernel topology fix are
+complementary, not substitutes. Each closes a different layer
+of the failure.
 
 ## 6.5. Implementation review — operator/130 + DA/98
 
@@ -882,6 +946,24 @@ outcome }` sketch in §1.1 was too narrow for the supervised
 restart path. Operator kept private fields alongside the public
 payload — the right move. /204 §1.1 has been amended above to
 make this discipline explicit.
+
+### 6.5.6 Follow-up review of /204 itself (DA/99)
+
+After this report's §6.5 amendments, DA reviewed /204 in
+`reports/designer-assistant/99-review-current-designer-204-kameo-lifecycle.md`
+and surfaced six remaining flaws *in this design document*:
+
+| DA/99 finding | /204 response (now landed) |
+|---|---|
+| §1.1 Duplicate `run_to_termination` signatures | §1.1 — single sig per method; two separate enums (`ActorTerminationRunOutcome`, `ActorEjectionRunOutcome<A>`) make unreachable variants unrepresentable |
+| §1.2 `wait_for_shutdown` rustdoc overclaims under ejection | §1.1 — rustdoc rewritten with per-state branches; explicitly NO claim of resource release on `Ejected` |
+| §1.3 `Killed` definition contradicts Kameo's current `kill()` semantics | §1.1 — `Killed` now reflects "in-flight aborted, `on_stop` still runs"; new `Brutal` variant reserved for no-cleanup mode |
+| §1.4 Invariant 1 has stale step numbers | §2 invariant 1 — corrected `1+2 → 4+5, 4+5 → 6+7` to match §1.2 numbering |
+| §1.5 §4 "Branch today" table historically ambiguous | §4 split into §4.1 (already landed in operator/130) + §4.2 (remaining for next pass) |
+| §1.6 StoreKernel closure claim too strong | §6 last-test wording — closure requires BOTH Kameo lifecycle fix AND DA/96 §2 single-owner storage plane |
+
+DA/99 is the canonical review of /204; this section records
+the responses but does not duplicate the findings.
 
 ## 7. Open questions / where I might be wrong
 
