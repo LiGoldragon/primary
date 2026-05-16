@@ -2,7 +2,7 @@
 
 Date: 2026-05-16
 Role: operator
-Scope: Kameo fork `main` and `kameo-push-only-lifecycle`, top commit `565ff25e`
+Scope: Kameo fork `main` and `kameo-push-only-lifecycle`, top commit `04f6e2ab`
 
 ## 0. Summary
 
@@ -24,15 +24,21 @@ The pass implemented the next narrow correctness slice:
    stop after the in-flight handler, not after draining all ordinary
    queued messages.
 
-The work is now a clean two-commit stack on the fork's `main` branch:
+The work is now a clean three-commit stack on the fork's `main` branch:
 
 ```text
 ddab7733 actor: publish terminal lifecycle outcomes
 565ff25e actor: split lifecycle control mailbox
+04f6e2ab actor: cover lifecycle control edge cases
 ```
 
 The older exploratory branch commit `44c0552e` was rewritten into this
 PR-ready stack.
+
+The third commit incorporates the follow-up findings from:
+
+- `reports/designer/206-audit-operator-131-kameo-control-plane-2026-05-16.md`
+- `reports/designer-assistant/102-audit-operator-131-kameo-control-plane.md`
 
 ## 1. Why this pass existed
 
@@ -239,17 +245,19 @@ Signals the actor to stop after processing all messages currently in its mailbox
 
 That conflicts with the new lifecycle contract. A stop signal is a
 control-plane signal; it should not be blocked behind ordinary user
-messages. The docs now say:
+messages. The docs now say that stop uses the control lane, closes
+ordinary message admission before cleanup, lets the current in-flight
+ordinary message finish, and discards ordinary messages not yet being
+handled once stop is processed.
 
 ```text
-Signals the actor to stop after the current in-flight message completes.
+Signals the actor to stop.
 ```
 
-and explain that ordinary admission closes before cleanup starts.
-
 This is not a cosmetic wording change. The tests now encode the same
-contract: queued ordinary user work is not processed merely because it
-was already in the mailbox when stop arrived.
+contract: queued ordinary user work and queued `ask` work are not
+processed merely because they were already in the mailbox when stop
+arrived.
 
 ## 6. Verification
 
@@ -258,16 +266,13 @@ Commands run with low build parallelism:
 ```sh
 CARGO_BUILD_JOBS=1 cargo check -p kameo --all-targets --all-features
 CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 cargo test -p kameo --all-features --test lifecycle_phases -- --nocapture
-CARGO_BUILD_JOBS=1 RUST_TEST_THREADS=1 cargo test -p kameo --all-features bounded -- --nocapture
 CARGO_BUILD_JOBS=1 cargo test -p kameo --all-features -- --test-threads=2
 ```
 
 Results:
 
 - `cargo check`: passed.
-- lifecycle integration test: 8 passed.
-- bounded mailbox focused suite: 16 passed across unit and lifecycle
-  tests.
+- lifecycle integration test: 11 passed.
 - full `kameo` package suite with all features: passed.
 
 One operational note: the full `--all-features` package suite cannot
@@ -291,6 +296,11 @@ prove the architectural path, not just a final output. A full ordinary
 mailbox and a blocked user handler are the conditions that previously
 made lifecycle control unsafe.
 
+The follow-up tests now also cover the StoreKernel-critical
+`supervised spawn_in_thread` exclusive-resource restart path, the
+queued-`ask` discard semantic, and the public `blocking_recv()` control
+wake path.
+
 ## 8. What is still lacking
 
 This pass did not implement internal lifecycle facts from `/204` §2.5.
@@ -307,11 +317,10 @@ This pass did not change `kill()` semantics. `/204` now distinguishes
 current Kameo `Killed` behavior from future brutal termination. This
 pass keeps current Kameo behavior.
 
-This pass did not add a direct test for the exact visibility boundary of
-`get_shutdown_result()`. The current spawn path sets `shutdown_result`
-after link notification and registry removal, and immediately before the
-terminal lifecycle outcome. That should get its own witness if this API
-remains compatibility surface.
+This pass gates `get_shutdown_result()` and `with_shutdown_result()`
+behind terminal lifecycle publication, but it still does not add a
+dedicated test that tries to catch the old tiny visibility window. That
+would be useful if this API remains compatibility surface.
 
 This pass did not split the registry into `mark_unfindable` and
 `release_slot`. `/204` names that as part of the larger exclusive
