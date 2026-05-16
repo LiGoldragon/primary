@@ -595,10 +595,32 @@ be free.
 
 The split is real *internally* — the registry's `lookup` should
 return `None` early (at admission-stops) while `register` should
-succeed only after step 7 in `finish_terminate`. But this is an
+succeed only after step 9 in `finish_terminate`. But this is an
 implementation detail of the registry, not a public lifecycle
 fact. The two operations have different internal triggers; the
 public contract doesn't expose either.
+
+**The three race conditions the split closes (design rationale):**
+
+| Race | What goes wrong | When closed |
+|---|---|---|
+| **R1 stale discovery** | Peer calls `lookup(name)`, gets a ref to the dying actor, sends a message. Best case clean error; worst case silent drop. | `lookup` returns `None` *early*, at admission-stops (step 1 of `finish_terminate`). |
+| **R2 resource collision** | Peer sees `lookup` return `None`, calls `register(name, new_actor)`. New actor's `on_start` tries to acquire the same exclusive resource. Races old actor's still-held resource. | `register` blocks/fails *late*, until registry-entry removal (step 9 of `finish_terminate`). |
+| **R3 double publication** | Two refs registered under the same name. Lookups non-deterministic. | Slot mutex preserved by the tombstone between steps 1 and 9. |
+
+A registry that serves both events from one removal point closes
+only one of R1 or R2:
+- Service Fabric removes early (closes R1, *leaves R2 open* —
+  fine for SF because state is replicated, broken for us
+  because we have local exclusive resources).
+- A naive "remove at terminal" closes R2 but *leaves R1 open* —
+  peers can find the dying actor for the duration of `on_stop`.
+
+The split closes all three. **The implementation lives in the
+framework's registry as two distinct operations**:
+`mark_unfindable(name)` at step 1, `release_slot(name)` at
+step 9. Public API never sees this — it sees only the terminal
+outcome.
 
 ### 3.5 The watch-as-history concern doesn't argue for an event stream
 

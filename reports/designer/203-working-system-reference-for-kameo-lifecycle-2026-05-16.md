@@ -346,13 +346,21 @@ Cosmos DB, Skype for Business, Cortana, Power BI. It's *the*
 reference for "stateful actor with at-most-one activation
 across a cluster."
 
-### 3.1 The crucial finding: SF says don't model exclusive local resources as actors
+### 3.1 The crucial inference: SF's model is hostile to exclusive local resources
 
-From the [Reliable Actors Overview](https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-reliable-actors-introduction)
-("When to use Reliable Actors", anti-patterns section):
-exclusive local resources, blocking I/O with unpredictable
-delays, exclusive file locks, exclusive port bindings — these
-are explicitly listed as bad fits for SF's actor model.
+The SF docs do not include a primary quote saying "exclusive
+file locks and port bindings are explicitly listed as actor
+anti-patterns." That framing in the original draft was an
+inference, not a citation. **Per `reports/designer-assistant/96`
+§1.4, this should be marked as inference.**
+
+What the [Reliable Actors Overview](https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-reliable-actors-introduction)
+("When to use Reliable Actors") *does* say is that actor object
+lifetime is virtual (state outlives the object), that actors
+should not block callers with unpredictable I/O, and that
+deactivation may not run on node failure. The combination
+implies — but does not state — that exclusive local resources
+are unsafe to model as actors.
 
 **SF achieves the at-most-one-activation guarantee by pushing
 exclusivity into the replication layer**, not by holding it in
@@ -478,6 +486,26 @@ Implications:
 - Issues: `microsoft/service-fabric-services-and-actors-dotnet#205`, `#64`
 
 ## 4. The fork in the road — three legitimate paths forward
+
+> **Supersession note (added by /204):** The "Path C — both,
+> with `KernelHandleOwner + TxnWorker pool over Arc<Database>`"
+> framing in this section is **superseded** by:
+>
+> - `reports/designer-assistant/96-kameo-lifecycle-independent-pov-2026-05-16.md`
+>   §2 — single-owner storage topology (no pool), because
+>   `sema-engine`'s `Engine` is single-owner by design and a
+>   `TxnWorker` pool either serializes through one writer
+>   (defeating the pool) or bypasses the engine's commit-log
+>   ordering (breaking correctness).
+> - `reports/designer/204-kameo-lifecycle-canonical-design-2026-05-16.md`
+>   — the framework-side recommendation (12-fact public stream)
+>   is superseded by the Akka-contract-translated-to-Rust
+>   design.
+>
+> The Path-C *split* (apply ranch's ownership-separation
+> discipline AND continue framework repair) is correct. The
+> granularity is **single owner + restartable phase actors**,
+> not **owner + worker pool**.
 
 Each reference embodies a different philosophy. None is
 strictly better; each is right for its context.
