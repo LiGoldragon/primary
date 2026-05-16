@@ -327,6 +327,38 @@ looks polling-shaped is polling — escalate.
 
 ---
 
+## Release before notify
+
+When an actor or component owns an exclusive resource — a
+database handle, a file lock, a socket binding, a child
+process — that resource must be **released** before the
+framework notifies supervisors and watchers of the actor's
+death.
+
+The order matters. A supervisor that sees "child died" and
+immediately spawns a replacement against the same resource
+races the dying child's still-held handle. The replacement
+fails to acquire the resource, hangs on the lock, or worse,
+silently corrupts state.
+
+The discipline is older than this workspace. Erlang/OTP
+enforces it at the BEAM VM level: exit signals are delayed
+until directly visible resources are released. Akka enforces
+it via in-thread chained cleanup ordering before watcher
+notification. Rust and Tokio provide no equivalent runtime
+guarantee, so the discipline must be **implemented
+explicitly** by every actor framework the workspace adopts —
+cleanup hook awaited, actor state dropped, then death
+signals dispatched.
+
+The implementation requirement composes with the polling
+rule. Death signals are **pushed** on a non-deadlocking
+control plane, not polled by supervisors. The combination —
+release before notify, and notify by push — is what makes
+supervised restart safe under exclusive-resource ownership.
+
+---
+
 ## Perfect specificity at boundaries
 
 Every typed boundary names exactly what flows through it. No

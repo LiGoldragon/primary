@@ -388,6 +388,154 @@ side effects, or work whose failure must be supervised.
 
 ---
 
+## Release before notify
+
+The workspace follows the Erlang/OTP + Akka **release-before-notify**
+discipline for supervised state-owning actors: an actor's owned
+exclusive resources must be released *before* death notifications
+dispatch to supervisors and watchers.
+
+The order matters. If a supervisor observes "child died" and
+spawns a replacement while the dying child's `Self` still holds a
+redb handle, a TCP listener, a file lock, or a child-process pid,
+the replacement races the still-held resource. `Database::open`
+fails with `DatabaseAlreadyOpen`; `bind()` fails with
+`EADDRINUSE`; the spawn hangs on a lock that hasn't released yet.
+Worse failures (silent state corruption) follow when the race is
+hidden by retry loops.
+
+### Required ordering inside the framework
+
+A correct shutdown sequence for a supervised state-owning actor:
+
+1. **Stop admission** — the mailbox sender refuses new ordinary
+   messages. Lifecycle/control signals continue arriving through
+   a separate channel.
+2. **Finish in-flight work** — the handler currently running
+   completes; no new handlers start.
+3. **Stop children** — drain child actors; wait for each child's
+   own terminal outcome.
+4. **Await `on_stop`** — the user cleanup hook runs to completion
+   (success or error captured in the outcome).
+5. **Drop actor state** — the actor's `Self` value drops; every
+   resource it owned uniquely is released here.
+6. **Dispatch supervisor/watcher notifications** — the death
+   signal is *enqueued* into each recipient's control channel.
+   The await resolves when the channel send completes, not when
+   the recipient processes the signal.
+7. **Cancel outbound watches** — drop our observation rights on
+   actors we were watching.
+8. **Unregister from the registry** — the name slot becomes
+   available for a replacement.
+9. **Publish terminal outcome** — `wait_for_shutdown()` resolves.
+
+By the time `wait_for_shutdown()` returns on any caller's thread,
+every prior step has completed. The supervisor that branches on
+the terminal outcome can safely restart against the same
+resource — by then it is guaranteed released.
+
+### Why the explicit implementation requirement
+
+Three production actor systems achieve release-before-notify by
+different mechanisms:
+
+| System | Mechanism |
+|---|---|
+| **Erlang/OTP** | BEAM VM enforces it: exit signals to linked/monitoring processes are delayed until directly visible Erlang resources (ETS tables, registered names, ports) are released. Limited to BEAM-visible resources; NIF-held OS resources escape the guarantee. |
+| **Akka Classic** | `FaultHandling.scala::finishTerminate` runs `aroundPostStop` then `dispatcher.detach` then watcher notification in a chained `try/finally` on the dispatcher thread. Synchronous; the JVM monitor happens-before makes cross-thread visibility automatic. Source comment: *"The following order is crucial for things to work properly."* |
+| **Rust/Tokio (workspace)** | **No runtime equivalent.** Rust has no GC; `Drop` is synchronous; async I/O means cleanup may cross await points. The discipline must be implemented *explicitly* by the actor framework — cleanup awaited, state dropped, then channel sends awaited on a non-deadlocking control plane. |
+
+The workspace's Rust actor framework (currently Kameo, on a fork
+that adds the release-before-notify protocol) implements the
+discipline as an explicit shutdown chain. There is no carve-out —
+the framework must guarantee the ordering, and supervisors must
+observe terminal outcomes (not mailbox closure) before restarting.
+
+### The control plane requirement
+
+Death notifications dispatch on a **non-deadlocking control plane**
+distinct from the user mailbox. This means:
+
+- The control plane is physically separate from the user mailbox
+  — either a second channel, or reserved capacity in the existing
+  channel that ordinary user messages cannot consume.
+- The control plane is processed even when the recipient's
+  user-message processing is blocked.
+- A control-plane signal cannot deadlock against the recipient's
+  user-handler execution.
+- Filling the user mailbox to capacity must not block control
+  signals.
+
+A single shared mailbox with an admission gate does **not**
+satisfy this — control dispatch would block on user capacity, and
+a parent handler awaiting child shutdown would deadlock against
+the child's death-signal send.
+
+### What "await dispatch" means
+
+When the framework awaits the death notification, the await
+resolves when the signal has been **enqueued** into the
+recipient's control channel — not when the recipient has
+**processed** the signal in its handler. Waiting for processing
+would deadlock when the recipient is itself a supervisor running
+a handler that awaits the child's shutdown.
+
+Enqueue-completion gives the cross-thread happens-before
+guarantee Akka derives from JVM monitor semantics. The recipient
+processes the death signal at its own pace, separately from the
+dying actor's shutdown sequence.
+
+### Path-aware terminal outcomes
+
+The discipline applies to every termination path, not just
+graceful shutdown:
+
+- **Graceful stop**: full sequence; outcome reports `state:
+  Dropped` and `reason: Stopped`.
+- **Cleanup error** (`on_stop` returns `Err`): full sequence with
+  state still dropped; outcome reports `state: Dropped` and
+  `reason: CleanupFailed`.
+- **Panic**: full sequence (handler/on_stop panic is caught and
+  the cleanup chain runs); outcome reports `state: Dropped` and
+  `reason: Panicked`.
+- **Startup failure** (`on_start` returns `Err`): no actor was
+  constructed, so steps 4 and 5 are skipped; outcome reports
+  `state: NeverAllocated` and `reason: StartupFailed`.
+- **State ejection** (explicit API): the framework returns the
+  actor's `Self` to a caller instead of dropping; outcome reports
+  `state: Ejected`. The framework makes no claim of resource
+  release in this case — the caller now owns the state.
+
+A caller that needs "resource is definitely released" branches on
+`outcome.state == Dropped`. `NeverAllocated` and `Ejected` both
+satisfy "no actor state remains" but for different reasons; the
+outcome enum lets supervisors distinguish them without inferring
+from ordinal phases.
+
+### When this isn't enough — decompose
+
+Some actors own resources too critical or too restart-frequent to
+rely on the framework's lifecycle alone. The discipline still
+applies, but the *topology* changes: move the resource into a
+long-lived owner actor that is structurally insulated from
+routine failures.
+
+Erlang's `ranch` (the production TCP listener supervisor) is the
+canonical example. Listening sockets live in `ranch_acceptors_sup`
+— the supervisor process itself — while cheap `ranch_acceptor`
+workers borrow the socket and crash freely. Worker death never
+touches the listening FD.
+
+The workspace's `StoreKernel` follows the same pattern:
+`KernelHandleOwner` owns the `Arc<Database>` and never restarts
+under normal failure modes; restartable store-phase actors send
+typed requests to the owner without holding the handle. This
+combines with release-before-notify rather than replacing it —
+the owner *itself* still follows the discipline when the daemon
+shuts down.
+
+---
+
 ## Durable state belongs in sema
 
 An actor with durable state goes through `sema`. There is no
