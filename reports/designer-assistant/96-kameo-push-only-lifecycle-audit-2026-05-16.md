@@ -19,7 +19,9 @@ actual code; the test passes as described; the two named "High"
 findings (weak `wait_for_shutdown_result` inconsistency,
 `PreparedActor::run()` API break) are real and load-bearing.
 
-Five gaps the report did not surface:
+Eight gaps the report did not surface — the last three
+contributed by a parallel designer-assistant pass (Codex) on
+the same source:
 
 1. **`unregister_actor` ordering is inconsistent across paths.**
    On the success path, deregistration runs *between* `CleanupFinished`
@@ -30,10 +32,13 @@ Five gaps the report did not surface:
    registry contract is silently inconsistent.
 
 2. **Startup failure never marks `CleanupFinished` or
-   `StateReleased`.** A caller waiting on either phase will hang
-   on this path. Phases should be monotonic *across all
-   termination paths*, not just the success path. Adding
-   no-op marks for these phases preserves the invariant.
+   `StateReleased`.** A caller waiting on
+   `wait_for_lifecycle_phase(StateReleased)` on this path
+   returns *true* (because `Terminated > StateReleased`
+   ordinally) — *even though state was never released*.
+   This is a **false witness**, not a hang. See §2.8 for the
+   deeper consequence: linear `PartialOrd` is the wrong wait
+   primitive for paths that don't visit every phase.
 
 3. **`notify_links(...)` consumes the `mailbox_rx`.** The mailbox
    is genuinely closed (sender's `is_closed()` becomes true)
@@ -52,11 +57,43 @@ Five gaps the report did not surface:
    change that publishes phase from a sibling task or a
    `Drop` impl will silently race.
 
-5. **`LinksNotified` actually means "link signals
-   dispatched," not "received and processed by linked peers."**
-   The phase fires *after* `notify_links` sends signals into
-   each linked peer's mailbox, *before* any peer's
-   `on_link_died` handler runs. The naming overpromises.
+5. **`LinksNotified` is misnamed at *two* levels.** The branch's
+   `notify_links` is a sync function that uses `tokio::spawn(...)`
+   internally (verified at `src/links.rs:112-141`) and returns
+   immediately. When `LinksNotified` is marked, even the
+   notification *dispatch* futures haven't been polled yet —
+   they're in the Tokio scheduler queue. So the phase fires:
+   - before signals have been dispatched (futures unpolled);
+   - before linked peers have processed `on_link_died` (signals
+     not consumed).
+   The naming overpromises by two scheduler hops.
+
+6. **`StateReleased` only proves `Self` was dropped, not every
+   resource.** Arc-shared resources persist (`Arc<Database>` in
+   theory; the workspace prohibits it but the contract doesn't
+   enforce). Detached `tokio::spawn` workers survive `Self`'s
+   drop. Delegated handles, `Box::leak`, `mem::forget` —
+   all escape the guarantee. The TcpListener test happens to
+   work because the listener is owned directly. Either rename
+   (`SelfDropped`) or document the contract narrowly.
+
+7. **`shutdown_result` is set at asymmetric phase positions.**
+   On success and on_stop-error: set between `StateReleased` and
+   `notify_links`. On startup failure: set *after* `LinksNotified`
+   and `unregister_actor`. Mixed semantics — callers using
+   `shutdown_result.wait()` (which `WeakActorRef::wait_for_shutdown_result`
+   does today, see report's High finding) observe different
+   relative-phase positions on different paths.
+
+8. **The `watch` channel is the right primitive for current
+   state, but the wrong tool for lifecycle history/audit.**
+   `watch` retains only the latest value — fine for "wait
+   until phase X" — but no help for "show me every phase
+   transition this actor went through." If Persona wants
+   lifecycle introspection (e.g., for a daemon's child-exit
+   audit log), the phase observations must be mirrored into
+   a separate durable event log. The kameo branch's
+   contribution is observation, not history; design accordingly.
 
 Plus four findings from the prior-art surveys:
 
@@ -95,9 +132,20 @@ Plus four findings from the prior-art surveys:
    on a `watch` channel is. The design doesn't depend on async-Drop
    ever shipping. (See §5.)
 
-The branch is the right direction. We recommend landing it as
-**four staged PRs**, not one, with a falsifiable test for each.
-See §6 for the staging plan.
+The branch is the right *direction*, not the right *shape* for
+landing. We recommend:
+
+- **PR #1** (`kameo-shutdown-short-fix`) ships as-is.
+- **PR #2** (`kameo-shutdown-lifecycle-fix`) ships as-is.
+- **PR #3** is a substantive redesign of the phase model:
+  set-of-flags instead of `PartialOrd`, `notify_links` awaiting
+  dispatch, `LinksNotified` folded into `Terminated`,
+  `StateReleased` renamed to `SelfDropped` (or docs narrowed).
+- **PR #4** is fork-only: fallible waits, asymmetry fixes,
+  `is_alive` deprecation, OTP-shape shutdown timeouts,
+  public-docs invariant.
+
+See §6 for the staging plan in full.
 
 ## 1. Verification of operator/126's claims
 
@@ -296,25 +344,196 @@ or assert at runtime that only the actor task calls `mark`
 (via a `CURRENT_ACTOR_ID`-like check). Document the invariant
 either way.
 
-### 2.5 `LinksNotified` means "signals dispatched," not "consumed"
+### 2.5 `LinksNotified` is misnamed at two levels — even dispatch isn't guaranteed
 
-`notify_links` is documented in upstream Kameo as:
+`notify_links` is a **sync function** that returns
+immediately. Inside it, every notification path uses
+`tokio::spawn(...)` (verified at `src/links.rs:98-141`):
 
-> Sends `Signal::LinkDied(...)` into every linked actor's
-> mailbox.
+```rust
+pub fn notify_links<A: Actor>(&mut self, id, reason, mailbox_rx) {
+    match self.parent.clone() {
+        Some((parent_id, parent_link)) => {
+            // ...
+            tokio::spawn(parent_link.notify(parent_id, id, reason, None, None));
+            // ...
+        }
+        None => { self.notify_sibblings(id, &reason); }
+    }
+}
 
-The phase `LinksNotified` is marked *immediately after*
-`notify_links` returns. But "signal in the mailbox" is not "the
-peer ran `on_link_died`." Each linked peer's mailbox will
-process the signal at its own pace; a slow or backed-up peer
-will not have observed the death by the time the originating
-actor marks `LinksNotified`.
+pub fn notify_sibblings(&mut self, id, reason) {
+    let mut notify_futs: FuturesUnordered<_> = self.sibblings.drain()
+        .map(|(sibbling_actor_id, link)| {
+            link.notify(sibbling_actor_id, id, reason.clone(), None, None).boxed()
+        })
+        .collect();
+    tokio::spawn(async move { while let Some(()) = notify_futs.next().await {} });
+}
+```
 
-The name overpromises. A linked-peer-side test wanting
-"`LinksNotified` means peers have processed the signal" will
-fail. We recommend renaming to `LinkSignalsDispatched` or
-collapsing into `Terminated` (see §3 below for why the latter
-may be the right move anyway).
+So when the runtime marks `LinksNotified`, the actual
+notification futures (`parent_link.notify(...)` and
+`link.notify(...)`) haven't even been polled yet — they're
+in the Tokio scheduler queue waiting to run. The signals
+that the peers eventually receive (which themselves require
+the peer's mailbox to be picked up by an actor task) are
+two scheduler hops away from "notified."
+
+The phase is misnamed at two levels:
+
+1. **Even dispatch isn't guaranteed at mark time** — the
+   spawned futures may not have run.
+2. **Even after dispatch, linked peers haven't processed
+   `on_link_died`** — the signal sits in their mailboxes.
+
+If `LinksNotified` is meant to mean "peers know," neither
+condition holds when the phase fires. Three options:
+
+| Option | Trade-off |
+|---|---|
+| Rename to `LinkNotificationsScheduled` | Honest, but a phase named "scheduled" is weak — what does the consumer do with it? |
+| `await` notification dispatch before marking | Stronger guarantee; requires `notify_links` to be `async`. Still not "peers consumed." |
+| Fold into `Terminated` | Removes a phase no surveyed system has. See §3.6. |
+
+We recommend the third option unless a non-watcher consumer
+emerges. Then make `notify_links` itself await dispatch and
+keep one phase (`Terminated`) at the truthful boundary.
+
+### 2.6 `StateReleased` only proves `Self` was dropped — not every resource
+
+The phase fires after `drop(actor)`. That guarantees the
+actor's `Self` value, and any resources owned *uniquely* by
+`Self`, have been released. It does not guarantee that every
+resource the actor *touched* has been released.
+
+Failure modes that escape the guarantee:
+
+- **Arc-shared ownership**: an actor holds
+  `Arc<Database>` shared with another actor. Dropping
+  `Self` decrements one refcount; the lock persists until
+  the *last* Arc holder drops.
+- **Detached worker tasks**: an actor spawned a Tokio
+  task via `tokio::spawn(...)` without retaining the
+  `JoinHandle`. The task survives `Self`'s drop and may
+  still hold resources.
+- **Delegated ownership**: an actor handed a resource off
+  to a child actor or another supervisor. The handoff
+  succeeded, the actor's `Self` dropped — but the resource
+  is now held by the recipient.
+- **Leaked handles**: an actor called `Box::leak`,
+  `mem::forget`, or stored a handle in a global static.
+
+The branch's test (`tests/lifecycle_phases.rs`) uses a
+`TcpListener` *owned directly* by the actor — the clean case.
+But the phase's contract should be narrower than its name
+suggests. We recommend either:
+
+- **Rename**: `SelfDropped` — narrower, accurate.
+- **Document the contract narrowly**: "`StateReleased`
+  guarantees only that the actor's `Self` value has been
+  dropped. Resources held only through `Self`'s direct
+  ownership are released; Arc-shared, spawned-task-held,
+  delegated, or leaked resources are not guaranteed
+  released."
+
+For Persona's redb-backed actors, the workspace discipline
+already prohibits Arc-sharing of `Database` handles — the
+`Database` is owned uniquely by the kernel actor per
+`skills/storage-and-wire.md`. So the contract is sufficient
+for the workspace's current use, but workspace docs should
+state the invariant explicitly because the phase name does
+not state it.
+
+### 2.7 `shutdown_result` timing is asymmetric across paths
+
+The phase ordering audit (§2.1) flagged the
+`unregister_actor` asymmetry. There is a second asymmetry on
+the same paths in `shutdown_result.set` ordering:
+
+| Path | When `shutdown_result.set` runs |
+|---|---|
+| Success (`on_stop` returned `Ok`) | **Before** `notify_links` and `LinksNotified`. Inserted between `StateReleased` and `notify_links`. |
+| `on_stop` returned `Err` | **Before** `notify_links` and `LinksNotified`. Same as success. |
+| Startup failure | **After** `LinksNotified` and `unregister_actor`. Just before `Terminated`. |
+
+So `wait_for_shutdown_result` on the success path resolves
+between `StateReleased` and `LinksNotified` — different from
+the startup-failure path where it resolves between
+`LinksNotified` and `Terminated`.
+
+The asymmetry is invisible to callers using
+`wait_for_shutdown` (which waits for `Terminated`) but visible
+to anyone using `shutdown_result.wait()` directly — which the
+*strong* `ActorRef::wait_for_shutdown_result()` does, but the
+*weak* `WeakActorRef::wait_for_shutdown_result()` *also* does
+(report's High finding) and the asymmetry compounds: the weak
+version resolves at different relative-phase positions on the
+two paths, and at a *different* position than the strong
+version on either path.
+
+Fix: pick one semantics for `shutdown_result`:
+
+- **"Cleanup result"**: set at the `CleanupFinished`
+  boundary on every path. Callers waiting on it observe
+  cleanup completion, separate from terminal-phase
+  observation.
+- **"Terminal result"**: set at the `Terminated` boundary
+  on every path. Callers waiting on it observe terminal
+  completion, after links notified.
+
+Either is internally consistent. The current mixed semantics
+are not. We recommend the second — terminal result — because
+it matches the post-branch `wait_for_shutdown`'s contract
+(waits for `Terminated`).
+
+### 2.8 Linear `PartialOrd` is the wrong shape for non-monotonic paths
+
+This generalizes §2.2's startup-failure-phase-monotonicity
+finding. The deeper problem is that
+`wait_for_lifecycle_phase(X)` is defined as
+`current_phase >= X` — which assumes every path visits every
+phase, which is false.
+
+A startup-failure path goes
+`Prepared → Starting → Stopping → LinksNotified → Terminated`.
+`Terminated > StateReleased` ordinally, so
+`wait_for_lifecycle_phase(StateReleased)` returns *true*
+on this path — *even though state was never released*. The
+caller's assertion is silently false. A test using
+`wait_for_lifecycle_phase(StateReleased)` followed by
+"now I can rebind the resource" will pass on the
+startup-failure path even though the actor never held the
+resource.
+
+§2.2's proposed fix (emit no-op marks for missing phases on
+startup failure) makes the contract monotonic-shaped but
+*lies*: `StateReleased` would be marked on a path where
+state was never released. That's a worse failure mode than
+the current state — it converts a false negative into a
+false positive.
+
+The real fix is to abandon linear ordering as the wait
+primitive. Options:
+
+| Option | Shape |
+|---|---|
+| Explicit predicates | `wait_for(LifecycleEvent::StateReleased)` where `LifecycleEvent` is a fact, not an ordinal. The predicate evaluates against a *set* of observed events, not a position on a line. |
+| Per-path terminal outcomes | Split `Terminated` into `TerminatedAfterCleanup` and `TerminatedAfterStartupFailure`. Callers `wait_for_any([TerminatedAfterCleanup, TerminatedAfterStartupFailure])` and then dispatch on which. |
+| DAG-shaped phase model | Phases form a directed graph, not a chain. The watch publishes the *current node*, and callers query reachability. |
+
+The first option is the simplest delta. Make
+`ActorLifecyclePhase` a set-of-flags model (the runtime
+*observed* each phase, monotonically additive) rather than an
+ordinal. The `watch` channel becomes
+`watch::Sender<PhaseSet>` where `PhaseSet` is a typed
+bitfield. `wait_for(StateReleased)` waits for that bit
+specifically — never satisfied if the path skips that phase.
+
+This is a substantive design change. The branch's current
+shape (`PartialOrd` derived from declaration order) is
+*beautifully simple* but encodes a path assumption that doesn't
+hold. We should pay the complexity to make the contract honest.
 
 ## 3. Field validation — prior art
 
@@ -851,28 +1070,77 @@ shutdown), implement it here. Document that
 `run_returning_state()` cannot guarantee `StateReleased`
 because the caller controls when the state actually drops.
 
-### PR #3 — `ActorLifecyclePhase` enum + watch publisher
+### PR #3 — Lifecycle phase observation (set-of-flags shape)
 
-The 8-phase enum + `ActorLifecycle` wrapper +
-`wait_for_lifecycle_phase` API. This is the design
-contribution.
+The phase enum + watch publisher + `wait_for_lifecycle_phase`
+API. This is the design contribution and the largest
+upstream conversation.
 
-This PR must include the three fixes the report missed:
+**Reshape the wait primitive away from linear ordering.**
+The branch's current derived `PartialOrd` model creates
+false witnesses on paths that skip phases (§2.8). The right
+shape is a **set of observed events**, not a position on a
+chain. Concretely:
+
+```rust
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum LifecycleEvent {
+    Prepared, Starting, Running, Stopping,
+    CleanupFinished, SelfDropped, Terminated,
+    // LinksNotified removed — see §2.5
+}
+
+pub struct LifecycleObservations {
+    seen: BitSet<LifecycleEvent>,   // monotonically additive
+}
+
+impl LifecycleObservations {
+    pub fn has(&self, event: LifecycleEvent) -> bool { ... }
+}
+
+pub async fn wait_for(&self, event: LifecycleEvent) -> Result<(), LifecycleWaitError> {
+    // returns Ok when this specific event has been observed;
+    // returns Err(NeverObserved) if the actor reached Terminated
+    // without ever observing the requested event.
+}
+```
+
+`wait_for(SelfDropped)` on a startup-failure path returns
+`Err(NeverObserved)` — *because state was never held, much
+less released*. No false-positive return. The caller knows
+the assertion is unsatisfiable on this path and can branch.
+
+This PR must include the eight fixes the audit surfaced:
 
 1. **`unregister_actor` consistency**: deregister at the same
-   relative phase on every path. We propose: after
-   `StateReleased` on every path (success, on-stop-error,
-   startup-failure).
-2. **Startup-failure no-op marks**: emit `CleanupFinished`
-   and `StateReleased` even when the actor's `Self` never
-   existed. Preserves monotonicity.
-3. **`mark` race**: convert to `send_if_modified` with the
-   monotonic check inside, or assert single-task discipline.
-
-The phase enum should grow explicit `#[repr(u8)]` discriminants
-(or an inherent `as_index() -> u8` method) so reorders are
-visible at review time. Add a `tests/phase_order.rs` regression
-test.
+   relative phase on every path. Propose: after `SelfDropped`
+   on every path (success, on-stop-error, startup-failure).
+2. **Per-event observation**: replace
+   `ActorLifecyclePhase: PartialOrd` with the
+   `LifecycleObservations` set-of-flags shape. No false
+   witnesses on skipped phases.
+3. **`mark` atomicity**: convert to a CAS or assert
+   single-task discipline.
+4. **`notify_links` awaits dispatch**: change `notify_links`
+   from a sync `tokio::spawn(...)`-fire-and-forget to an
+   `async fn` that awaits the dispatch futures. The cost is
+   making the surrounding shutdown phase truly async. With
+   that, **fold `LinksNotified` into `Terminated`** —
+   `Terminated` becomes the honest "everything done"
+   boundary.
+5. **`SelfDropped` rename**: rename `StateReleased` to
+   `SelfDropped` *or* document the contract narrowly. The
+   phase guarantees only what its name claims.
+6. **`shutdown_result` consistent timing**: set at the
+   `Terminated` boundary on every path. Single semantics
+   ("terminal result"), matches `wait_for_shutdown`'s contract.
+7. **Tests for asymmetric paths**: startup failure, on_stop
+   error, link-notification ordering, supervised
+   `spawn_in_thread` resource release. Each one a
+   falsifiable test.
+8. **Public-docs invariant**: document the release-ordering
+   guarantee in the `Actor` trait's rustdoc. Akka regrets
+   not doing this; we can preempt the user surprise.
 
 ### PR #4 — Fork-only extensions
 
@@ -970,6 +1238,15 @@ correctness guarantees demand it.
   Kernel-level reuse covers TCP sockets only. Use both
   layers: `SO_REUSEADDR` for socket actors *and*
   `StateReleased` for the general case. (See §5.7.)
+- **Using the kameo `watch` channel as an audit log.**
+  `watch` retains only the latest phase — perfect for "wait
+  until X" but useless for "show me every transition this
+  actor went through." Persona needs that history surface
+  (e.g., a daemon's child-exit audit, the work-graph's
+  trace events) — but it must come from a *separate*
+  observation pipe (an actor that subscribes to the watch
+  and writes transitions into the workspace's durable event
+  log). The fork's contribution is observation, not history.
 
 ## 8. Live consumers in this workspace
 
