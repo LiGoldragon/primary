@@ -447,7 +447,133 @@ In priority order:
 Items 1-3 are small and should land together in the next pass.
 Items 4-6 can stage.
 
-## 6. Sources
+## 7. Follow-up findings from DA/102
+
+DA performed a parallel audit at
+`reports/designer-assistant/102-audit-operator-131-kameo-control-plane.md`,
+ran the lifecycle test suite locally (`8 passed, 0 failed`),
+and independently confirmed this report's main conclusions
+(control lane is physically real, generation guard correctly
+placed, both DA/98 HIGH gaps closed). DA surfaced three
+findings I missed:
+
+### 7.1 (MEDIUM) `blocking_recv()` does not mirror async control-lane wake semantics
+
+Per DA/102 §F2: the async `recv()` correctly uses
+`tokio::select! { biased; ... }` for control-priority. But
+`MailboxReceiver::blocking_recv()` is implemented as:
+
+1. `control.try_recv()` — non-blocking peek
+2. If empty: block on `messages.blocking_recv()`
+
+**Failure mode:** if a control signal arrives *after* the
+`try_recv()` returned Empty, while no ordinary user message
+arrives, the caller is parked on the user-message lane and
+will not see the control signal until a user message also
+arrives.
+
+**Scope:** the standard actor loop uses async `recv()`, so the
+internal runtime is safe — including `spawn_in_thread` (which
+uses `Handle::block_on(async_recv)`). The risk is the *public*
+`MailboxReceiver::blocking_recv()` primitive: any consumer who
+builds a manual blocking loop on a `MailboxReceiver` directly
+will have this race.
+
+**Required test:**
+
+```rust
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn blocking_recv_sees_late_control_signals_without_user_traffic() {
+    // Spawn a thread that calls blocking_recv() on a MailboxReceiver
+    // with an empty user lane.
+    // Send a control signal from the test thread.
+    // The blocking thread must wake and observe the control signal
+    // within a bounded timeout.
+}
+```
+
+**Fix options:**
+- Rewrite `blocking_recv()` to wake on either lane (use
+  `Handle::current().block_on(async_recv())` or a dual-channel
+  blocking primitive); OR
+- Document `blocking_recv()` as ordinary-message-only and
+  explicitly NOT a lifecycle-control primitive; consumers
+  who need both lanes use async `recv()`.
+
+### 7.2 (MEDIUM) Queued `ask` discard needs explicit witness
+
+Per DA/102 §F3: §3.1 of this report flagged that queued
+ordinary messages are dropped on stop (stronger than docs
+claim). The current tests verify this for `tell`-style work
+(via the counter). They do *not* verify what happens to
+queued `ask` messages — the caller awaits a reply whose
+oneshot sender gets dropped when the queued message is
+discarded.
+
+Based on `AskRequest`'s design, the caller should observe
+`SendError::ActorStopped` once the oneshot is dropped. This
+is correct behavior but is undocumented and untested. It is
+also a *subtle public semantic*: "send succeeded, reply
+failed because stop overtook queued work" is a valid state
+consumers need to know about.
+
+**Required test:**
+
+```rust
+#[tokio::test]
+async fn queued_ask_returns_actor_stopped_when_stop_overtakes_queued_work() {
+    // Spawn actor with bounded(1) and a long-running handler.
+    // ask() a queued message; capture the pending reply future.
+    // stop_gracefully() on the actor (control lane).
+    // Release the handler; the actor terminates.
+    // Await the pending reply — must be Err(SendError::ActorStopped).
+}
+```
+
+This should land alongside §5 item 2 (stop_gracefully doc
+precision) — the doc text and the test go together.
+
+### 7.3 (LOW-MEDIUM) Public mailbox helper docs need split-lane cleanup
+
+Per DA/102 §F5: `MailboxSender::closed()`, `is_closed()`,
+`capacity()`, `strong_count()`, `weak_count()` were written
+for a single-channel mailbox. In the split-lane implementation,
+they all report the **ordinary message lane only**, not the
+control lane.
+
+This is probably the right public shape — user-facing senders
+send ordinary messages, so `capacity()` reporting the user
+lane is what users mean — but the docs don't say so.
+Consumers may mistakenly assume:
+- `closed()` means both lanes closed (it means user lane closed)
+- `capacity()` says anything about lifecycle traffic (it doesn't)
+
+**Recommended action:** doc-only pass adding "Reports
+ordinary-message lane state. Control/lifecycle traffic uses
+a separate unbounded lane and is not covered by this method"
+to each of the affected methods.
+
+### 7.4 Consolidated next-pass list (replaces §5)
+
+Combining my §5 with DA/102's recommendations, in priority
+order:
+
+| # | Item | Source | Priority |
+|---|---|---|---|
+| 1 | Supervised `spawn_in_thread` exclusive-resource restart test | §2.1 + DA/102 §F1 | **BLOCKER** for StoreKernel Path A |
+| 2 | `stop_gracefully` rustdoc precision + queued-`ask` discard test | §3.1 + §7.2 + DA/102 §F3, §F4 | HIGH (semantic documentation correctness) |
+| 3 | `blocking_recv()` control-lane wake test + fix-or-document | §7.1 + DA/102 §F2 | MEDIUM (public API correctness) |
+| 4 | Public mailbox helper docs split-lane cleanup | §7.3 + DA/102 §F5 | LOW-MEDIUM (doc-only) |
+| 5 | `#[deprecated]` attribute on `is_alive()` | §2.3 + DA/102 §F7 | LOW (migration hygiene) |
+| 6 | `get_shutdown_result()` visibility-boundary test + gate-or-deprecate | §3.5 + DA/102 §F6 | LOW-MEDIUM |
+| 7 | `run_to_state_ejection` enum-shaped API | /204 §1.1 | DEFERRED (no consumer) |
+| 8 | `Shutdown::Brutal` variant + `kill()` semantic split | /204 §1.1 | DEFERRED (no consumer) |
+
+Items 1-2 are blockers for safe StoreKernel migration. Items
+3-6 can stage. Items 7-8 are documented but await a real
+consumer.
+
+## 8. Sources
 
 - `reports/operator/131-kameo-control-plane-lifecycle-work.md`
 - `reports/operator/130-kameo-terminal-lifecycle-implementation.md`
