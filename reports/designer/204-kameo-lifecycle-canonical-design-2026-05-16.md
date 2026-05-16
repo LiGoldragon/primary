@@ -2,12 +2,12 @@
 
 Date: 2026-05-16
 Role: designer
-Scope: designer's POV on the most-correct, working-system-true Kameo
-lifecycle contract, after the audit (`reports/designer/202`),
-working-system synthesis (`reports/designer/203`), operator's branch
-review (`reports/operator/126`), operator's response
-(`reports/operator/128`), and designer-assistant's independent pass
-(`reports/designer-assistant/96`).
+Scope: canonical Kameo lifecycle contract. Responds to
+`reports/operator/126`, `reports/operator/128`, and
+`reports/designer-assistant/96`. The discipline statement and
+prior-art research have been agglomerated into
+`ESSENCE.md` §"Release before notify" and
+`skills/actor-systems.md` §"Release before notify".
 
 This report is opinionated. It rejects the observable-fact-stream
 direction the prior round converged on. The answer is simpler and
@@ -739,8 +739,7 @@ the current implementation does not yet satisfy:
 
 ## 5. Staged landing
 
-The audit's PRs #1 and #2 (`reports/designer/202` §6) remain the
-right minimal upstream candidates:
+PRs #1 and #2 below are the minimal upstream candidates:
 
 ### PR #1 — `kameo-shutdown-short-fix` as-is
 
@@ -752,7 +751,7 @@ of mailbox closure. Pure bug fix. Cleanly upstream-eligible.
 Drop-before-notify-links reordering, `PreparedActor::run()`
 signature change. Upstream conversation; must name the break.
 
-### PR #3 — Canonical design (replaces audit/202's PR #3 entirely)
+### PR #3 — Canonical design
 
 This is the substantive design contribution. It is **not** the
 audit's "path-aware fact stream"; it is the Akka contract
@@ -1024,14 +1023,11 @@ contract; nothing else.
 
 1. **Adopt this design as the canonical Kameo lifecycle
    contract** for the workspace fork.
-2. **Audit/202's PR #3 plan should be replaced** by §5 of this
-   report (PR #3 = Akka contract translation, not 12-fact stream).
-3. **The `reports/designer/203` working-system synthesis** should
-   be updated (or annotated in chat) to reflect that the
-   "observable fact stream" recommendation is superseded by this
-   design. The single-owner storage topology recommendation for
-   StoreKernel (from designer-assistant/96) is unchanged and
-   correct — it solves a different problem at a different layer.
+2. PR #3 is Akka contract translation, not the 12-fact stream
+   that an earlier round of this design proposed.
+3. The single-owner storage topology for StoreKernel (from
+   `reports/designer-assistant/96`) is unchanged and correct —
+   it solves a different problem at a different layer.
 4. **Operator's `reports/operator/128`** proposed an
    `ActorLifecycleFact` enum; this design supersedes that
    proposal. The `ActorTerminalOutcome` + enum substructure in
@@ -1062,11 +1058,11 @@ contract; nothing else.
 
 ### Workspace context
 
-- `reports/designer/202-kameo-push-only-lifecycle-audit-2026-05-16.md`
-  — the audit that prompted this design
-- `reports/designer/203-working-system-reference-for-kameo-lifecycle-2026-05-16.md`
-  — three-system synthesis; this report's §3 supersedes /203's
-  fact-stream recommendation
+- `ESSENCE.md` §"Release before notify" — workspace-level intent
+- `skills/actor-systems.md` §"Release before notify" — full
+  discipline (shutdown sequence, control plane, await semantics,
+  terminal outcomes, decomposition)
+- `skills/kameo.md` §"Lifecycle contract" — Kameo-specific API
 - `reports/operator/126-kameo-push-only-lifecycle-branch-review.md`
 - `reports/operator/128-response-to-da-96-kameo-lifecycle-audit.md`
   — operator's `ActorLifecycleFact` proposal that this design
