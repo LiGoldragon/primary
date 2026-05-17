@@ -20,23 +20,30 @@ Author: second-operator-assistant
 
 Per brief 118 §6, this report names:
 
-1. **Verdict** — partial fit. The shape is right; three named gaps
-   require glue today.
+1. **Verdict** — good fit. No engine API additions required for
+   current consumers. The kernel/daemon split holds.
 2. **Verb → engine API table** — §1. All six verbs are
    verb-shaped methods on `Engine`; structural atomicity rides on
    `CommitRequest`.
-3. **Boilerplate list** — §3. Per-daemon match-on-variant dispatch,
-   stringified actor-call errors at the kernel boundary, locally
-   re-implemented write-validation.
-4. **Recommendation** — §4. Keep sema-engine as the kernel; add
-   `Engine::validate_write`, `Engine::commit_multi`, and
-   `Engine::unsubscribe`; emit a `signal_channel!`-driven
-   dispatcher trait. Do not reshape the kernel into a full Signal
-   operation executor — the contract's domain validation, actor
-   topology, and socket policy belong in components.
-5. **Witness-test plan** — §5. Most brief-named witnesses are
-   not yet wired; persona-mind has the first two; the rest land
-   alongside the helper APIs.
+3. **Boilerplate list** — §3. The original audit listed three
+   patterns; falsification dissolved one (write-validation),
+   reframed one (stringly seams are component-side), and the
+   third (per-daemon match-on-variant dispatch) reads as normal
+   Rust pattern matching rather than painful boilerplate.
+4. **Recommendation** — §4. Keep sema-engine as is. The three
+   helper APIs the first pass proposed (`validate_write`,
+   `commit_multi`, `unsubscribe`) either dissolve through
+   composition or have known-cleaner alternatives. Component-side
+   composition of `Engine::match_records` covers write
+   pre-validation; component supervisors manage subscription
+   lifetime; cross-table atomicity is usually a schema-design
+   question, not a kernel API question.
+5. **Witness-test plan** — §5. Six wire→engine seam witnesses
+   landed at `tests/signal_core_seam.rs`; six gap-falsification
+   witnesses landed at `tests/seam_gap_falsification.rs`; the
+   brief's open witnesses are either already exercised by the
+   existing sema-engine suite or wait on the first owner-signal
+   contract crate to land.
 
 ```mermaid
 flowchart LR
@@ -338,124 +345,151 @@ beyond the engine receipt — but for the basic shape (mutation
 succeeded; here's the snapshot/key/verb), a contract-emitted
 default could absorb the common case.
 
-### §3.C — Reducer-side write validation
+### §3.C — Write validation (retracted)
 
-Because `Engine::validate` only dry-runs reads (Q3), each
-component re-implements the engine's own duplicate-key /
-record-found checks in its reducer when it wants to support
-`Validate` on write payloads. The component reducer thus carries:
+The first pass framed component-side write pre-validation as
+"reducer-side boilerplate that mirrors engine integrity logic."
+Falsification at
+`sema-engine/tests/seam_gap_falsification.rs::validate_write_dissolves_into_match_records_dry_run`
+shows the composition is three lines of `Engine::match_records`
+plus a typed `Result` wrapper. The multi-op case
+(`multi_op_write_dry_run_composes_with_match_records_plus_local_staging`)
+adds a `HashSet` for within-batch duplicate detection and one
+match probe per op — total ~12 lines for the whole batch
+walker. The engine's typed errors (`DuplicateAssertKey`,
+`DuplicateWriteKey`, `RecordNotFound`) map directly onto the
+component-side equivalents; no parallel reducer logic, no
+schema-check duplication.
 
-- the same `if storage.get(key).is_some() { reject as duplicate }`
-  shape as `Engine::assert`;
-- the same `if storage.get(key).is_none() { reject as missing }`
-  shape as `Engine::mutate`;
-- plus the component's own preconditions (e.g. persona-mind's
-  `SubmitRelation` endpoint validator that rejects relations
-  pointing at missing thought IDs — this is genuinely component
-  logic, not engine work).
-
-Today persona-mind hasn't wired `Validate` for its graph records,
-so the boilerplate is latent. The moment any contract grows
-`Validate (Mutate X)` semantics, this duplication lands as drift.
+Per the inelegance criterion, this is **not boilerplate** — it
+is small typed composition that reads as English. Component
+domain validation (the parts the engine doesn't know about, like
+persona-mind's relation endpoint validator) remains the
+component's responsibility, as the engine docs say.
 
 ---
 
 ## §4 — Recommendation
 
-**Keep sema-engine's shape; add three helper APIs; emit one macro
-extension. Do not reshape sema-engine into a full Signal operation
-executor.**
-
-The kernel split is correct: sema-engine is a verb-shaped database
-library; the daemon owns actors, sockets, authorization, and
-domain validation. The brief's bottom-line sentence holds:
+**Keep sema-engine as is.** The brief's bottom-line sentence holds
+without engine changes:
 
 > *"Signal Core is the wire grammar of operations; sema-engine is
 > the durable execution substrate for those operations."*
 
-The three helper APIs close the three real engine-side gaps.
+The first pass of this audit proposed three helper APIs and one
+macro extension. Falsification dissolved or deferred all four.
 
-### §4.1 — `Engine::validate_write` (closes Q3 / §3.C)
+### §4.1 — `Engine::validate_write` (retracted)
 
-```text
-fn validate_write(&self, request: CommitRequest<RecordValue>)
-    -> Result<WriteValidationReceipt, Error>;
-```
+**Status: dissolves into composition.** Witness:
+`tests/seam_gap_falsification.rs::validate_write_dissolves_into_match_records_dry_run`
+and `multi_op_write_dry_run_composes_with_match_records_plus_local_staging`.
 
-Runs the same pre-flight checks `Engine::commit` runs
-(duplicate-assert-key, duplicate-write-key, record-not-found,
-empty-commit) without writing. Returns a typed receipt carrying
-the per-op pass/fail verdict. The component's reducer still owns
-domain preconditions; the engine owns the storage-layer
-preconditions.
+A component can dry-run any write by composing
+`Engine::match_records(QueryPlan::key(...))` against the proposed
+records — three lines for the single-op case, ~12 lines for the
+multi-op-with-within-batch-detection case. The engine's typed
+errors map onto local enum variants one-for-one. No engine API
+extension required.
 
-This single addition lets every component support `Validate` on
-write payloads without re-implementing the engine's own integrity
-checks.
+What the engine doesn't know — domain preconditions like
+persona-mind's relation endpoint validator — remains in the
+component, as the engine docs say.
 
-### §4.2 — `Engine::commit_multi` (closes Q5)
+### §4.2 — `Engine::commit_multi` (deferred)
 
-```text
-fn commit_multi(&self, request: MultiTableCommitRequest)
-    -> Result<CommitReceipt, Error>;
-```
+**Status: real but unpressed; schema redesign usually cleaner.**
+Witness:
+`tests/seam_gap_falsification.rs::cross_table_writes_via_two_engine_commits_are_not_engine_atomic`.
 
-Same atomicity as `Engine::commit`, but the `CommitRequest`
-variant takes a `Vec<TableWriteSet>` where each `TableWriteSet`
-binds a `TableReference<R>` to its `WriteOperation<R>`s. The
-implementation wraps every per-table write in one
-`storage.write(|transaction| ...)` closure. Receipt shape:
-existing `CommitReceipt` extended (or new `MultiCommitReceipt`)
-carrying per-table snapshot/op-count.
+The witness confirms that two separate `Engine::assert` calls land
+as two `CommitLogEntry` values at two snapshot IDs — not atomic.
+The escape hatch is `engine.storage_kernel().write(|txn| { ... })`,
+which is genuinely inelegant: it bypasses commit-log emission,
+snapshot-ID bump, and subscription delta delivery. A multi-table
+write through `storage_kernel` is architecturally invisible to the
+engine's verb-tracking machinery.
 
-Closes the multi-table-atomicity gap without exposing
-`storage_kernel()` as a routine API. A `RoleClaim` that updates
-both `claims` and `activities` atomically becomes one
-`commit_multi` call.
+No consumer pushes for cross-table atomicity today. The workspace
+pattern (one component per concern, single-writer-actor per
+engine, one engine per component) localises writes per table. When
+one logical operation appears to span tables — e.g. a
+`RoleHandoff` that retracts a claim from role A and asserts it for
+role B — the cleaner answer is usually schema redesign (express
+the operation as `Mutate` on one table) rather than growing the
+engine API.
 
-### §4.3 — `Engine::unsubscribe` (closes Q4 gap A)
+Resolution paths, in order of preference when the gap surfaces:
 
-```text
-fn unsubscribe(&self, handle: SubscriptionHandle) -> Result<(), Error>;
-```
+1. **Schema first.** Can the operation live in one table? If yes,
+   atomicity is structural in the existing API.
+2. **Extend `Engine::commit`.** When the schema genuinely
+   requires multiple tables, grow the typed surface to accept a
+   multi-table commit request preserving commit-log + snapshot +
+   delta delivery semantics.
+3. **Document the constraint.** Consumers that hit it surface a
+   contract-design issue rather than reaching for
+   `storage_kernel`.
 
-Removes the active subscription from the registry and persistent
-registration. Pair with a typed `SubscriptionClose` event the sink
-may receive so consumers can drain cleanly. The wire-side
-`SubscriptionRetraction` request becomes one `unsubscribe` call.
+Defer the engine extension until a consumer surfaces that
+genuinely resists schema redesign.
 
-Backpressure (Q4 gap B) is a larger design choice; defer until a
-consumer actually saturates a sink. The detached-spawn-per-delta
-pattern is a known band-aid (subscribe.rs:415); the long-term
-shape is demand-driven delivery, which belongs in a follow-up
-design pass.
+### §4.3 — `Engine::unsubscribe` (soft; deferred)
 
-### §4.4 — `signal_channel!` dispatcher trait (closes §3.A)
+**Status: component-side route-around covers correctness.**
+Witness:
+`tests/seam_gap_falsification.rs::subscription_lifetime_can_be_managed_externally_via_handle_id_filter`.
 
-Emit a `<Channel>Dispatcher` trait alongside the existing types:
+A component supervisor tracks active subscription IDs externally;
+the sink filters delivered events by handle id. Spurious deltas
+do not reach domain code. The engine's registry grows monotonically
+until daemon shutdown — bounded by daemon lifetime, fine for
+steady-state subscription sets, wasteful for churn workloads.
 
-```text
-trait MindDispatcher {
-    async fn handle_submit_thought(&self, payload: SubmitThought)
-        -> Result<MindReply, MindError>;
-    async fn handle_role_claim(&self, payload: RoleClaim)
-        -> Result<MindReply, MindError>;
-    // … one method per request variant
-}
-```
+The more load-bearing performance concern is **detached
+thread-per-delta** in `SubscriptionDeliveryMode::Detached`
+(`sema-engine/src/subscribe.rs:415`): each accepted delta in
+detached mode spawns one OS thread. The actor-shaped answer
+today is `SubscriptionDeliveryMode::Inline` — the supervisor sink
+uses inline delivery, accepts inside its own actor mailbox, and
+avoids the per-delta thread cost. A future demand-driven delivery
+mode would tighten this further but is not load-bearing yet.
 
-Plus an `Operation<MindRequest>::dispatch(&impl MindDispatcher)`
-method that does the routing. Each daemon implements the trait;
-the match-on-variant boilerplate retires.
+### §4.4 — Dispatcher-trait macro extension (reconsidered)
 
-This is purely additive — consumers that prefer their own dispatch
-keep matching on the request enum directly.
+**Status: normal Rust pattern matching, not painful boilerplate.**
 
-### §4.5 — What not to add
+The match-on-variant dispatch at
+`persona-mind/src/actors/dispatch.rs:55-119` reads as ordinary
+Rust. Each arm carries meaning (which handler to call, which
+flow to route to, which trace nodes to record). A macro-emitted
+dispatcher trait would replace the explicit match with a typed
+method-per-variant trait — saving keystrokes but not adding
+clarity. The Rust compiler already catches missed variants on
+the `MindRequest` enum.
+
+If a future contract has many more variants and the dispatch
+shape is genuinely uniform, the macro extension becomes worth
+the cost. Today it isn't.
+
+### §4.5 — What stays as named gaps
+
+The two component-side stringly seams from §2 Q7 stand:
+
+- `SinkError { message: String }` loses the typed cause of sink
+  delivery failures.
+- Persona-mind's actor-call boundary
+  (`crate::Error::ActorCall(error.to_string())`) flattens
+  Kameo's typed `SendError` into a string.
+
+Both are component-side fixes, not engine-shape issues. They
+follow `skills/rust/errors.md` discipline when addressed.
+
+### §4.6 — What not to add
 
 - **Do not move domain validation into the engine.** Per-component
-  preconditions (e.g. relation endpoint validation) are domain
-  logic; they don't belong in the kernel.
+  preconditions are domain logic; they don't belong in the kernel.
 - **Do not move actor topology, sockets, or authorization into the
   engine.** That defeats the kernel-vs-daemon split.
 - **Do not invent a parallel API per permission class.** Owner and
@@ -466,32 +500,28 @@ keep matching on the request enum directly.
 
 ## §5 — Witness-test plan
 
-The brief §5 names seven witnesses. Status today:
+The brief §5 names seven witnesses. Status now:
 
 | Witness | Status |
 |---|---|
-| `signal-core-request-executes-through-sema-engine-assert` | **landed in persona-mind** as `typed_thought_append_uses_sema_engine_operation_log` (per `persona-mind/ARCHITECTURE.md` §10). Generalize the shape to a workspace pattern. |
-| `signal-core-request-executes-through-sema-engine-mutate` | **not yet** — no consumer issues `Mutate` against typed sema-engine records today (persona-mind's graph records are append-only). Lands when channel-grant or status-change mutations port. |
-| `signal-core-validate-does-not-commit` | **not yet** — blocked on §4.1 (`Engine::validate_write`) plus a consumer wiring `Validate` on a write payload. |
-| `signal-core-subscribe-receives-initial-state-then-delta` | **landed in persona-mind** as `typed_thought_subscription_delivers_live_delta_through_subscription_actor` and the relation analogue (per `persona-mind/ARCHITECTURE.md` §10). Same generalization opportunity. |
-| `owner-signal-request-uses-same-reducer-through-owner-socket` | **not yet** — blocked on the first owner-signal contract crate. |
-| `wrong-contract-frame-does-not-reach-reducer` | **not yet** — same blocker. |
-| `multi-operation-request-has-clear-commit-semantics` | **not yet** — blocked on §4.2 (`Engine::commit_multi`) plus a consumer issuing a multi-op `CommitRequest`. |
+| `signal-core-request-executes-through-sema-engine-assert` | **landed** at `sema-engine/tests/signal_core_seam.rs::signal_core_assert_operation_lands_as_engine_assert_with_matching_verb`. Persona-mind has a domain-level analogue at `typed_thought_append_uses_sema_engine_operation_log`. |
+| `signal-core-request-executes-through-sema-engine-mutate` | **landed** at `tests/signal_core_seam.rs::signal_core_mutate_operation_lands_as_engine_mutate_with_matching_verb`. |
+| `signal-core-validate-does-not-commit` | **dissolved** — `Engine::validate(QueryPlan)` already passes the existing engine-suite test `validate_dry_run_returns_validate_receipt_without_commit_log_write`; component-side write dry-run via `match_records` is witnessed at `tests/seam_gap_falsification.rs::validate_write_dissolves_into_match_records_dry_run`. No write-shaped `Validate` API is required. |
+| `signal-core-subscribe-receives-initial-state-then-delta` | **landed** at the engine layer via `subscribe_initial_snapshot_uses_latest_committed_snapshot` + `subscribe_delta_fires_after_commit_is_visible`; persona-mind has the domain analogue. The supervisor pattern is witnessed at `tests/seam_gap_falsification.rs::subscription_lifetime_can_be_managed_externally_via_handle_id_filter`. |
+| `owner-signal-request-uses-same-reducer-through-owner-socket` | **not yet** — waits on the first owner-signal contract crate. The engine being contract-blind is the structural enabler; nothing engine-side blocks this. |
+| `wrong-contract-frame-does-not-reach-reducer` | **not yet** — same blocker; needs a daemon binding both ordinary and owner sockets to demonstrate. |
+| `multi-operation-request-has-clear-commit-semantics` | **landed** at `tests/signal_core_seam.rs::signal_core_multi_op_request_lands_as_one_commit_log_entry_with_ordered_per_op_verbs`. The cross-table escape-hatch shape is also witnessed at `tests/seam_gap_falsification.rs::cross_table_writes_via_two_engine_commits_are_not_engine_atomic` so the constraint is documented in code, not just prose. |
 
-Minimal implementation order:
+Per the brief's §6 ask for a minimal implementation plan for
+missing witnesses: the two owner-signal witnesses are blocked on
+upstream contract work (`primary-699g` /
+`owner-signal-persona-orchestrate`). Nothing in sema-engine blocks
+them. When the first owner-signal contract crate lands, the
+witnesses become small daemon-side dispatch tests.
 
-1. **§4.1 (`validate_write`) lands first.** Smallest API surface;
-   immediately unblocks the `Validate` witness above.
-2. **§4.4 (dispatcher trait) lands second.** Pure additive
-   compile-time work in the macro crate; no engine churn.
-3. **§4.2 (`commit_multi`) lands third.** Needs a typed
-   `MultiTableCommitRequest` shape; check downstream code paths in
-   persona-mind, persona-router, persona-harness for cross-table
-   atomicity needs before fixing the API surface.
-4. **§4.3 (`unsubscribe`) lands fourth.** Symmetric pair for
-   `subscribe`; small.
-5. **Witness tests follow each helper** — each helper ships with
-   the witness that exercises it.
+The first pass of this audit's "minimal implementation order" for
+helper APIs is **retracted**; no helpers are needed given the
+falsification results.
 
 ---
 
@@ -499,7 +529,10 @@ Minimal implementation order:
 
 - **Backpressure / demand-driven delivery.** Real concern; not a
   fit problem between the crates. Defer to a separate design
-  pass when a consumer saturates a sink.
+  pass when a consumer saturates a sink. The detached
+  thread-per-delta path is the most-load-bearing flavour of this
+  concern today; `SubscriptionDeliveryMode::Inline` is the
+  actor-shaped workaround.
 - **Stringly seams** (Q7) — the engine's `SinkError` carries a
   `String`; persona-mind's actor-call errors carry a `String`.
   Operator-side fixes inside each component; not a kernel-shape
@@ -508,7 +541,8 @@ Minimal implementation order:
   for the today-stack audit.
 - **Owner contract surfaces** — designed in DA/116; once first
   owner contract lands, the two owner-shaped witnesses above
-  become implementable.
+  become implementable. The engine being contract-blind is the
+  structural enabler.
 
 ---
 
@@ -545,3 +579,8 @@ Minimal implementation order:
   (§3.B) is in adjacent files.
 - `~/primary/reports/designer-assistant/118-signal-core-sema-engine-fit-investigation-brief-2026-05-17.md` —
   the brief this audit answers.
+- `/git/github.com/LiGoldragon/sema-engine/tests/signal_core_seam.rs` —
+  six wire→engine seam witnesses landed for this audit.
+- `/git/github.com/LiGoldragon/sema-engine/tests/seam_gap_falsification.rs` —
+  six falsification witnesses that dissolved, reframed, or
+  confirmed the gaps this audit's first pass named.
