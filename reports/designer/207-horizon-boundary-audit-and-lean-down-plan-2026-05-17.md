@@ -450,34 +450,121 @@ either way. If (b) lands, the field count on `ClusterProposal`
 drops further; if (a) lands, two `pub const` entries in
 horizon-rs absorb the load.
 
-## 7 · Pickup order
+## 7 · Pickup order — and what landed (update 2026-05-17 PM)
 
-1. **This report lands** (designer/207) — designer canon for the
-   boundary.
-2. **Pan-horizon config report** (designer/208) — sketch the
-   second input surface.
-3. **ARCH + skill edits** — designer commits to both
-   horizon-leaner-shape and horizon-rs main, per §5.3.
-4. **System-specialist Phase F (leaner-shape branch)** —
-   *exit-only* changes: drop `lan`, `resolver`, `domain`,
-   `public_domain`, `tailnet.base_domain`, `ssid`, `ai_providers`
-   model catalog, `vpn_profiles` server catalog from
-   `ClusterProposal`. Move corresponding text out of
-   `goldragon/datom.nota`. Add minimal projection-side derivations.
-   Whole files (`vpn.rs`, `network.rs`) retire.
-5. **CriomOS pickup** — CriomOS modules grow defaults for the
-   shed values (resolver upstreams, DHCP pool, lease TTL, AI
-   runtime). Move NordVPN catalog into a CriomOS Nix package.
-   Move AI model catalog into a CriomOS Nix package.
-6. **Pan-horizon config wiring** (only if `/208` is approved) —
-   add the second input file path to `horizon-cli`, thread the
-   constants into projection.
+The originally-proposed pickup order in this section is now
+historical; the system-specialist landed Phase F + the
+pan-horizon config in one arc, pushing seven branches
+(`horizon-rs`, `lojix`, `goldragon`, `CriomOS`, `CriomOS-home`,
+`CriomOS-lib` all on `horizon-leaner-shape`; new repo
+`criomos-horizon-config` on `main`) — per
+`reports/system-specialist/134-lean-horizon-pan-config-and-lojix-build-2026-05-17.md`.
+End-to-end smoke (`zeus` built through `prometheus` via lojix)
+is green.
 
-Step 4 is system-specialist's lane. The cut is mechanical once
-the boundary is named (this report) and the destination defaults
-are agreed (CriomOS sweep). Step 5 is CriomOS work for
-system-specialist; step 6 is horizon-rs work for
-system-specialist with operator coordination.
+### What landed cleanly
+
+- `criomos-horizon-config/horizon.nota` matches /208 §4.1
+  sketch verbatim (`(HorizonProposal LiGoldragon (DomainSuffixes
+  "criome" "criome.net") (LanPool "10.18.0.0/16" 24
+  "criome-lan-v1") [tailnet vault git mail] [])`).
+- `lib/src/horizon_proposal.rs` carries `HorizonProposal`,
+  `OperatorName`, `DomainSuffixes`, `LanPool`,
+  `ReservedSubdomainLabel`, `HorizonTrustedKey` per /208 §4.2;
+  derivation methods (`router_ssid`, `tailnet_base_domain`,
+  `lan_network`, `resolver_policy`) live on the noun.
+- `ClusterProposal::project(&HorizonProposal, &Viewpoint)` —
+  two-input signature per /208 §4.3.
+- `goldragon/datom.nota` shed: 482 → 294 lines. `domain`,
+  `public_domain`, `lan`, `resolver`, `tailnet.base_domain`,
+  authored SSID, AI model catalog, NordVPN server catalog, AI
+  serving config — all gone.
+- `AiProvider` collapsed to `{ name, serving_node, profile,
+  api_key }` with closed `AiProviderProfile::CriomosLocalLlama`
+  enum. `NordvpnProfile` collapsed to `{ credentials,
+  preferred_locations }`. Selection-only on the cluster
+  surface; implementation lives in `CriomOS-lib`.
+- `RouterInterfaces` lost the `ssid` field on the proposal
+  side; new `view::router::RouterInterfaces::project(proposal,
+  ssid)` injects the derived SSID.
+- `TailnetConfig` collapsed to `{ tls }` only.
+- `cli/src/main.rs` takes `--horizon` and `--proposal`.
+- ARCH boundary discipline + skills four-bucket sorter survived
+  the implementation commit.
+
+### What's incomplete (designer-flagged followups)
+
+| # | Issue | Where | Lane |
+|---|---|---|---|
+| 1 | ARCH narrative still describes the one-input shape (intro paragraph, Consumers table, mermaid diagram, Owned-records table all stale). The boundary section is the only current part. | `horizon-leaner-shape/ARCHITECTURE.md` | designer prose refresh |
+| 2 | `proposal/network.rs` carries `LanNetwork` / `DhcpPool` / `LanCidr` / `ResolverPolicy` whose own doc comments now say *"these records are not authored in a cluster proposal"*. They live in `proposal/` but are exported as if authored. | `lib/src/proposal/network.rs` + `proposal.rs` exports | system-specialist — move to `view/network.rs` |
+| 3 | `Ssid` newtype defined and re-exported from `proposal::router` but no proposal record uses it anymore — only `HorizonProposal::router_ssid()` consumes it. | `lib/src/proposal/router.rs` | system-specialist — move to `view/` |
+
+### Smells (lower-priority, fold into next pass)
+
+- `HorizonProposal::service_domain(cluster, service: &str)`
+  takes a raw `&str`; the typed `reserved_subdomains: Vec<ReservedSubdomainLabel>`
+  list isn't consulted. The call site
+  `self.service_domain(cluster, "tailnet")` is a string
+  literal. Tighten to `&ReservedSubdomainLabel` with a
+  loud-fail when the label isn't in the reserved list.
+- Hard-coded LAN magic numbers in `lan_network()` —
+  `gateway = network+1`, `dhcp_pool = network+100..network+240`.
+  These migrated from cluster authoring (visible) to Rust
+  literals (invisible from both pan-horizon and cluster
+  surfaces). Belong on `LanPool` as a `LanAllocationPolicy`
+  sub-record, or documented as horizon-rs constants.
+- Free functions `stable_hash_v1` and `increment` in
+  `horizon_proposal.rs` — verb without noun per
+  `skills/abstractions.md`. `stable_hash_v1` also uses FNV-1a
+  (`0xcbf29ce484222325`, `0x100000001b3`) without naming the
+  algorithm.
+- `LanPoolMustBeIpv4` error path undocumented; IPv6 LAN
+  allocation excluded with no docstring on `LanPool`.
+- `TailnetConfig` is a one-field wrapper around
+  `Option<TlsTrustPolicy>` — earns its place only if other
+  cluster-level tailnet authoring is foreseen.
+
+### Four-bucket sorter refinement (post-implementation, 2026-05-17)
+
+The user/system-specialist refined the four-bucket table in
+`horizon-leaner-shape/{ARCHITECTURE.md,skills.md}`:
+
+- **Horizon constant** examples: "LAN address pool" → "temporary
+  exact IPv4 LAN" — acknowledging today's `LanPool` is closer
+  to a constant-with-shape than a true allocator.
+- **Horizon derivation** examples: dropped "LAN CIDR / gateway /
+  DHCP pool" — these still derive from `LanPool`, but the
+  refinement names them as a future-allocator case rather than
+  a worked-derivation case today.
+
+The refinement is correct: the current allocator is rudimentary
+(IPv4-only, exact-pool, fixed offsets), and naming it as
+"temporary" is honest. The full-allocator shape remains the
+direction; today's code is the minimum that satisfies the
+boundary discipline.
+
+### New issue introduced by the cleanup
+
+AI model catalog moved from `goldragon/datom.nota` (authored
+data, never reaches Nix flake input) to `CriomOS-lib` (Nix
+package, in the system closure). GGUF derivations now appear in
+`nixosConfigurations.prometheus`. SS/134 §"Remaining Caveat"
+flags this; resolution path is runtime/cache-managed
+materialization rather than unconditional closure inclusion.
+Worth its own designer report when the AI-model lifecycle is
+architected.
+
+### Process note
+
+SS/134's implementation landed by rewriting this designer's
+prior jj change (same change-ID `zpskmlrr`, new description
+"derive runtime shape from pan-horizon config" replacing the
+designer's "ARCHITECTURE + skills — four-bucket sorter for
+cluster/horizon/derivation/CriomOS boundary"). Content
+preserved in the diff; credit-trail muddled. Worth a one-line
+in `skills/jj.md` about not redescribing other roles' commits
+— flagging for the next jj-discipline pass.
 
 ## 8 · Open questions for the user
 
