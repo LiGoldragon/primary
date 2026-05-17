@@ -165,6 +165,68 @@ Artifacts are part of the test design, not leftovers.
 The test should make the correct path visible and the shortcut path
 boring to reject.
 
+## Test-only binaries — the `-test` suffix
+
+A repo may legitimately ship binaries that are **not on the production
+path** — standalone test harnesses for a library primitive,
+deterministic-input fixtures driven by witness scripts, validator
+helpers that drive captured-state checks. These binaries name
+themselves with the **`-test` suffix** so the production surface is
+unambiguous at a glance from `Cargo.toml`.
+
+The rule:
+
+- A binary in `[[bin]]` *without* the `-test` suffix is a
+  production-path binary. It may be invoked by deployment units,
+  supervised process trees, service catalogs, persona engine manager
+  spawn configs, and operator workflows.
+- A binary *with* the `-test` suffix is for tests, witnesses, or
+  isolated experimentation only. It may not be referenced by any
+  production component's `[dependencies]`, deployment unit, supervised
+  process tree, or service catalog. Witness scripts under
+  `<repo>/scripts/` and Nix `check` derivations may invoke it freely.
+
+Examples (some renames pending — convention is forward-looking; existing
+binaries without the suffix migrate as their repos are next touched):
+
+- `terminal-cell-daemon-test` — standalone PTY-primitive daemon for
+  exercising the `terminal-cell` library without standing up
+  `persona-terminal-daemon`. Per
+  `~/primary/reports/designer/211-persona-terminal-consolidation-one-daemon-2026-05-17.md`
+  §7 and §11 Q2.
+- `agent-terminal-fixture-test` — deterministic agent-like terminal
+  process used by `terminal-cell`'s stateful witnesses.
+- `output-flood-fixture-test` — deterministic high-volume output
+  process used to prove attached input still reaches the child under
+  output load.
+
+A name without `-test` is read by every other agent (and by `nix flake
+show`, deployment derivations, and supervision configs) as "this is
+production." Renaming reduces the cost of confusion to one search.
+
+The discipline is filesystem-enforced through a witness test per repo:
+`<repo>-test-only-binaries-have-test-suffix` — source-scan `[[bin]]`
+entries against the production-surface allowlist; any production-named
+binary that isn't on the allowlist (or isn't named with `-test`) fails
+the check.
+
+The convention applies to **binaries** (`[[bin]]` entries that produce
+a runnable). It does not apply to:
+
+- Cargo test files under `tests/` — those are already test-only by
+  Cargo convention.
+- Nix `check` derivations — already named by the constraint they
+  witness.
+- Per-test child processes spawned within a test via
+  `tokio::process::Command::new(env!("CARGO_BIN_EXE_*"))` against a
+  `-test`-suffixed binary.
+
+When a binary's production-vs-test status is ambiguous (e.g., a
+validator helper that an operator might invoke during a build), prefer
+the test-only suffix plus a Nix `check` derivation that wraps it for
+the operator path. The Nix wrapper carries the production status; the
+underlying binary stays clearly test-only.
+
 ## Anti-patterns
 
 - A README command that is not a flake output.

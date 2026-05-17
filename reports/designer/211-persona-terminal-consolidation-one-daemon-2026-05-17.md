@@ -610,25 +610,32 @@ first cut, document explicitly, file a follow-up for pidfd re-adopt
 if/when it matters**. The change is internal — a future
 re-adoption-enabled daemon doesn't break the contract.
 
-**Q2 — `terminal-cell-daemon` binary status.** Should the
-`terminal-cell-daemon` binary stay in the upstream repo (as a
-standalone testing affordance for the PTY primitive), be retired
-entirely (terminal-cell ships only as a library), or split into a
-separate `terminal-cell-test-daemon` to make the test-only status
-explicit? My recommendation: **keep as standalone testing
-affordance, add the ARCH marker (per §7) making "not on the
-production Persona path" explicit**. Retiring it loses a useful
-isolation-testing tool; renaming it is ceremony without payoff.
+**Q2 — `terminal-cell-daemon` binary status.** **Resolved
+(2026-05-17):** keep the binary as the standalone PTY-primitive
+testbed, *but rename it with the `-test` suffix* —
+`terminal-cell-daemon-test`. The fixture binaries
+(`agent-terminal-fixture`, `output-flood-fixture`) take the same
+suffix. The convention is now canonical in
+`~/primary/skills/testing.md` §"Test-only binaries — the `-test`
+suffix". The terminal-cell ARCH update (per §7) becomes "production
+Persona consumes terminal-cell as a library; the `-test`-suffixed
+binaries are the standalone PTY-primitive testbed." The witness
+discipline gets a new test:
+`<repo>-test-only-binaries-have-test-suffix` (source-scans `[[bin]]`
+entries against the production-surface allowlist). The rename + ARCH
+note land in system-specialist's lane when the consolidation arc
+touches `terminal-cell`.
 
-**Q3 — Where does `persona-terminal-validate-capture` go?** It's a
-helper today, possibly a fixture-driver. If its job is "validate a
-captured transcript against an expected pattern," it belongs as a
-witness test in `persona-terminal/tests/` (cargo test fixture), not
-as a production binary. If it's used in operator workflows as a
-build-time check, it could become a Nix `check` derivation. My
-recommendation: **convert to test/check, not binary**. I haven't
-audited its current callers; the user or designer-assistant should
-confirm.
+**Q3 — Where does `persona-terminal-validate-capture` go?** **Default
+under the new convention:** rename to
+`persona-terminal-validate-capture-test` and keep as a test-only
+binary. If its only callers are Cargo tests, prefer converting to a
+`tests/` fixture; if operator workflows invoke it as a build-time
+check, wrap it as a Nix `check` derivation per the testing skill's
+"ambiguous status" guidance. The audit of its current callers
+remains operator-lane work to confirm the migration shape; in either
+direction the binary surface no longer reads as production after the
+rename.
 
 ### Non-blocking
 
