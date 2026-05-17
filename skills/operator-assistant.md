@@ -6,13 +6,14 @@
 
 ## What this skill is for
 
-Use this skill when the workspace needs a second operator-shaped
-lane: a bounded implementation slice, an audit of operator commits,
-a test backfill, a mechanical migration, a dependency bump, or a
-per-repo documentation update caused by implementation work.
+Use this skill when the workspace needs an additional
+operator-shaped lane: a bounded implementation slice, an audit of
+operator commits, a test backfill, a mechanical migration, a
+dependency bump, or a per-repo documentation update caused by
+implementation work.
 
-`operator-assistant` is one of the workspace's seven coordination
-roles. Claim it through
+`operator-assistant` is one of the workspace's coordination roles.
+Claim it through
 `tools/orchestrate claim operator-assistant <paths> -- <reason>`
 before editing files. Reports go in `reports/operator-assistant/`
 and are exempt from the claim flow.
@@ -20,7 +21,8 @@ and are exempt from the claim flow.
 The role replaces the earlier generic `assistant` role. The old
 role was mostly operator-shaped in practice; this name makes that
 discipline explicit. The operator assistant assists operator work.
-Design-shaped support belongs to `designer-assistant`.
+Design-shaped support belongs to `designer-assistant` or
+`second-designer-assistant`.
 
 ---
 
@@ -75,6 +77,7 @@ operator's. The assistant does the same work as its main role.
 **Role contracts**
 
 - `skills/operator-assistant.md` (this skill)
+- `skills/second-operator-assistant.md`
 - `skills/operator.md` — the assisted role.
 - `skills/designer.md`
 
@@ -197,9 +200,10 @@ make progress without splitting a single unresolved judgment:
 - a repo touched by implementation needs its `ARCHITECTURE.md` or
   `skills.md` kept true.
 
-If the work is a structural design question, use designer or
-designer-assistant. If it is OS/deploy ownership, use
-system-specialist. If it is prose craft, use poet or
+If the work is a structural design question, use designer,
+designer-assistant, or second-designer-assistant. If it is
+OS/deploy ownership, use system-specialist, system-assistant, or
+second-system-assistant. If it is prose craft, use poet or
 poet-assistant.
 
 ---
@@ -210,6 +214,8 @@ poet-assistant.
   the operator-assistant role.
 - this workspace's `skills/operator.md` — the assisted role's
   implementation discipline.
+- this workspace's `skills/second-operator-assistant.md` — the
+  second operator-shaped auxiliary role.
 - this workspace's `skills/designer-assistant.md` — design-shaped
   auxiliary role.
 - this workspace's `skills/poet-assistant.md` — poet-shaped

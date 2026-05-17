@@ -12,11 +12,7 @@ refining prose, applying citation conventions, shaping the
 language layer of a document where literary quality is the
 load-bearing concern.
 
-`poet` is one of the workspace's seven coordination roles
-(alongside `operator`, `operator-assistant`, `designer`,
-`designer-assistant`, `system-specialist`, and
-`poet-assistant`).
-Claim it through
+`poet` is one of the workspace's coordination roles. Claim it through
 `tools/orchestrate claim poet <paths> -- <reason>` before
 editing files in the writing surface. Reports go in
 `reports/poet/` and are exempt from the claim flow.

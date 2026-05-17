@@ -14,10 +14,7 @@ consumer crates, migrating between schema shapes, getting
 tests to green. The work the designer's reports prescribe
 and the system needs to actually run.
 
-`operator` is one of the workspace's seven coordination roles
-(alongside `operator-assistant`, `designer`,
-`designer-assistant`, `system-specialist`, `poet`, and
-`poet-assistant`).
+`operator` is one of the workspace's coordination roles.
 Claim it through
 `tools/orchestrate claim operator <paths> -- <reason>`
 before editing source files in operator's lane. Reports go
@@ -115,6 +112,7 @@ research-library skills stay with the roles that own them.
 
 - `skills/operator.md` (this skill)
 - `skills/operator-assistant.md`
+- `skills/second-operator-assistant.md`
 - `skills/designer.md` — what designer specifies; what
   operator implements against.
 
@@ -362,22 +360,20 @@ owns design changes; operator owns implementing them.
 
 ---
 
-## Working with operator-assistant
+## Working with operator assistants
 
-Operator-assistant is extra operator-shaped workforce. Operator uses
-operator-assistant when implementation work can split into disjoint
-claimed paths: one crate migration, one test backfill, one audit
-pass, one dependency bump, one report response. Operator-assistant
-claims its own scopes through
-`tools/orchestrate claim operator-assistant ...`, commits and pushes
-its own logical changes, and writes reports in
-`reports/operator-assistant/`.
+Operator-assistant and second-operator-assistant are extra operator-shaped
+workforce. Operator uses them when implementation work can split into
+disjoint claimed paths: one crate migration, one test backfill, one audit
+pass, one dependency bump, one report response. Each assistant claims its own
+scopes through its own role name, commits and pushes its own logical changes,
+and writes reports in its own report lane.
 
-The operator remains responsible for the implementation thread it
-owns. Operator-assistant is parallel capacity, not hidden edits under
-the operator lock. When operator and operator-assistant touch
-adjacent code, both read the same designer report or BEADS task,
-name their path boundaries explicitly, and avoid overlapping claims.
+The operator remains responsible for the implementation thread it owns.
+Operator assistants are parallel capacity, not hidden edits under the operator
+lock. When operator and assistants touch adjacent code, all agents read the
+same designer report or BEADS task, name their path boundaries explicitly, and
+avoid overlapping claims.
 
 ---
 
@@ -478,8 +474,10 @@ you were missing.
   act on routine obstacles.
 - this workspace's `skills/designer.md`,
   `skills/designer-assistant.md`,
+  `skills/second-designer-assistant.md`,
   `skills/system-specialist.md`, `skills/poet.md`,
-  `skills/poet-assistant.md`, `skills/operator-assistant.md` —
+  `skills/poet-assistant.md`, `skills/operator-assistant.md`,
+  `skills/second-operator-assistant.md` —
   sister role skills.
 - `lore/rust/style.md`, `lore/rust/rkyv.md`,
   `lore/rust/testing.md`, `lore/rust/nix-packaging.md` —

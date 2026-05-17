@@ -19,13 +19,13 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
    "Required reading" section listing every workspace skill
    mandatory for that role:
 
-   - `operator` / `operator-assistant` → `skills/operator.md`
-   - `designer` / `designer-assistant` → `skills/designer.md`
-   - `system-specialist` / `system-assistant` → `skills/system-specialist.md`
+   - `operator` / `operator-assistant` / `second-operator-assistant` → `skills/operator.md`
+   - `designer` / `designer-assistant` / `second-designer-assistant` → `skills/designer.md`
+   - `system-specialist` / `system-assistant` / `second-system-assistant` → `skills/system-specialist.md`
    - `poet` / `poet-assistant` → `skills/poet.md`
 
    Assistants also read their own assistant file
-   (`skills/<role>-assistant.md`); the reading list it carries
+   (`skills/<assistant-role>.md`); the reading list it carries
    is identical to the main role's. Read every skill the role
    lists before doing substantive work in that role.
 5. **The repo's `AGENTS.md` + `skills.md`** when editing inside
@@ -70,17 +70,24 @@ role's required reading.
 
 ## Roles
 
-The workspace recognises eight coordination roles:
+The workspace recognises eleven coordination roles:
 
 - `operator` — implementation; default agent: Codex.
 - `operator-assistant` — extra implementation/audit capacity
   under operator discipline; default agent: any.
+- `second-operator-assistant` — a second extra implementation/audit
+  capacity lane under operator discipline; default agent: any.
 - `designer` — architecture, skills, reports; default agent: Claude.
 - `designer-assistant` — extra design/audit capacity under
   designer discipline; default agent: Codex.
+- `second-designer-assistant` — a second extra design/audit
+  capacity lane under designer discipline; default agent: any.
 - `system-specialist` — OS / platform / deploy; default agent: any.
 - `system-assistant` — extra OS/platform/host capacity under
   system-specialist discipline; default agent: any.
+- `second-system-assistant` — a second extra OS/platform/host
+  capacity lane under system-specialist discipline; default
+  agent: any.
 - `poet` — writing as craft; default agent: any.
 - `poet-assistant` — extra writing, citation, and publishing
   capacity under poet discipline; default agent: any.
@@ -97,7 +104,7 @@ helper is `tools/orchestrate`.
 | `protocols/orchestration.md` | Role-coordination protocol. |
 | `protocols/active-repositories.md` | Current active repo map for architecture sweeps. Smaller than the recent checkout index. |
 | `skills/<name>.md` | Cross-cutting agent capabilities. |
-| `reports/<role>/` | Role-owned reports (`operator/`, `operator-assistant/`, `designer/`, `designer-assistant/`, `system-specialist/`, `system-assistant/`, `poet/`, `poet-assistant/`). Exempt from claim flow; each role writes only its own subdirectory. |
+| `reports/<role>/` | Role-owned reports (`operator/`, `operator-assistant/`, `second-operator-assistant/`, `designer/`, `designer-assistant/`, `second-designer-assistant/`, `system-specialist/`, `system-assistant/`, `second-system-assistant/`, `poet/`, `poet-assistant/`). Exempt from claim flow; each role writes only its own subdirectory. |
 | `<role>.lock` | Per-role coordination state file. |
 | `tools/orchestrate` | Claim/release helper. |
 | `.beads/` | Shared short-tracked-item store. Never claimed; any agent may write BEADS tasks at any time. **Transitional** — see below. |

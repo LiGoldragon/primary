@@ -3,7 +3,7 @@ set -euo pipefail
 
 workspace="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-ROLES=(operator operator-assistant designer designer-assistant system-specialist system-assistant poet poet-assistant)
+ROLES=(operator operator-assistant second-operator-assistant designer designer-assistant second-designer-assistant system-specialist system-assistant second-system-assistant poet poet-assistant)
 
 usage() {
   cat <<'EOF'
@@ -12,7 +12,7 @@ Usage:
   tools/orchestrate release <role>
   tools/orchestrate status
 
-Roles: operator, operator-assistant, designer, designer-assistant, system-specialist, system-assistant, poet, poet-assistant
+Roles: operator, operator-assistant, second-operator-assistant, designer, designer-assistant, second-designer-assistant, system-specialist, system-assistant, second-system-assistant, poet, poet-assistant
 
 Scopes: each <scope> is either
   - an absolute path:    /home/li/primary/skills/foo.md

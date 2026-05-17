@@ -11,9 +11,7 @@ CriomOS, CriomOS-home, lojix deployment, horizon projection, desktop
 runtime, user services, input devices, Niri, Noctalia, and system/home
 interfaces.
 
-`system-specialist` is one of the workspace's seven coordination roles
-(alongside `operator`, `operator-assistant`, `designer`,
-`designer-assistant`, `poet`, and `poet-assistant`). Claim it through
+`system-specialist` is one of the workspace's coordination roles. Claim it through
 `tools/orchestrate claim system-specialist <paths> -- <reason>` before
 editing files in the OS / platform surface. Reports go in
 `reports/system-specialist/` and are exempt from the claim flow.
@@ -67,6 +65,7 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 
 - `skills/system-specialist.md` (this skill)
 - `skills/system-assistant.md`
+- `skills/second-system-assistant.md`
 - `skills/operator.md` — knows what binaries get deployed.
 
 **Platform discipline**
@@ -181,19 +180,21 @@ For STT prompts and likely transcription mistakes, read this workspace's
 
 ## Working with role assistants
 
-There is no generic assistant role. `system-assistant` is the
-system-shaped lane: bounded module slices in CriomOS or
-CriomOS-home, focused audits of system-specialist commits,
+There is no generic assistant role. `system-assistant` and
+`second-system-assistant` are system-shaped lanes: bounded module slices in
+CriomOS or CriomOS-home, focused audits of system-specialist commits,
 self-contained host-tool work (Whisrs packaging, Clavifaber
 typed-record additions, chroma instrumentation), Nix-discipline
 hygiene passes, or repo-local doc updates after a shipped
 system-specialist change. See this workspace's
-`skills/system-assistant.md`. `operator-assistant` can take
+`skills/system-assistant.md` and `skills/second-system-assistant.md`.
+`operator-assistant` and `second-operator-assistant` can take
 bounded implementation-adjacent support when the scope is
 operator-shaped: a narrow code fix, test backfill, or dependency
-audit in an implementation repo. `designer-assistant` can take
-bounded design-adjacent support: report inventory, cross-reference
-cleanup, or protocol/skill edits already decided by designer.
+audit in an implementation repo. `designer-assistant` and
+`second-designer-assistant` can take bounded design-adjacent support: report
+inventory, cross-reference cleanup, or protocol/skill edits already decided by
+designer.
 `poet-assistant` can take prose or publishing-support work when the
 surface is poet-shaped.
 
@@ -310,7 +311,10 @@ non-cache nodes' daemons sign locally-built paths and let
 - this workspace's `skills/stt-interpreter.md`
 - this workspace's `skills/autonomous-agent.md`
 - this workspace's `skills/system-assistant.md`
+- this workspace's `skills/second-system-assistant.md`
 - this workspace's `skills/operator-assistant.md`
+- this workspace's `skills/second-operator-assistant.md`
 - this workspace's `skills/designer-assistant.md`
+- this workspace's `skills/second-designer-assistant.md`
 - this workspace's `skills/poet-assistant.md`
 - lore's `AGENTS.md`

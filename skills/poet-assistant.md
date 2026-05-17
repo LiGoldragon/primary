@@ -11,8 +11,7 @@ copyediting, citation cleanup, bibliography/OCR follow-through,
 Substack publish preparation, or a bounded prose audit while poet
 continues another writing thread.
 
-`poet-assistant` is one of the workspace's seven coordination roles.
-Claim it through
+`poet-assistant` is one of the workspace's coordination roles. Claim it through
 `tools/orchestrate claim poet-assistant <paths> -- <reason>` before
 editing files. Reports go in `reports/poet-assistant/` and are
 exempt from the claim flow.
@@ -165,10 +164,11 @@ progress without splitting a single unresolved judgment:
 - OCR or bibliography work feeds a writing surface;
 - a prose report needs a second craft pass.
 
-If the work is implementation, use operator or operator-assistant. If
-it is architecture, skill structure, or protocol design, use designer
-or designer-assistant. If it is OS/deploy ownership, use
-system-specialist.
+If the work is implementation, use operator, operator-assistant, or
+second-operator-assistant. If it is architecture, skill structure, or
+protocol design, use designer, designer-assistant, or
+second-designer-assistant. If it is OS/deploy ownership, use
+system-specialist, system-assistant, or second-system-assistant.
 
 ---
 

@@ -15,17 +15,20 @@ BEADS is shared coordination state while it exists, not a lockable scope.
 
 ## Roles
 
-The workspace recognises eight coordination roles. Each role has its own lock
+The workspace recognises eleven coordination roles. Each role has its own lock
 file, its own report subdirectory, and a natural primary scope.
 
 | Role | Default agent | Lock file | Reports subdir | Natural primary scope |
 |---|---|---|---|---|
 | `operator` | Codex | `operator.lock` | `reports/operator/` | Rust crates, persona, sema-ecosystem implementation |
 | `operator-assistant` | (any) | `operator-assistant.lock` | `reports/operator-assistant/` | Extra implementation/audit workforce under operator discipline |
+| `second-operator-assistant` | (any) | `second-operator-assistant.lock` | `reports/second-operator-assistant/` | Second extra implementation/audit workforce under operator discipline |
 | `designer` | Claude | `designer.lock` | `reports/designer/` | ESSENCE, AGENTS, lore, skills, design reports |
 | `designer-assistant` | Codex | `designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
+| `second-designer-assistant` | (any) | `second-designer-assistant.lock` | `reports/second-designer-assistant/` | Second extra design audit, report, skill, and protocol support under designer discipline |
 | `system-specialist` | (any) | `system-specialist.lock` | `reports/system-specialist/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
 | `system-assistant` | (any) | `system-assistant.lock` | `reports/system-assistant/` | Extra platform/host workforce under system-specialist discipline |
+| `second-system-assistant` | (any) | `second-system-assistant.lock` | `reports/second-system-assistant/` | Second extra platform/host workforce under system-specialist discipline |
 | `poet` | (any) | `poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
 | `poet-assistant` | (any) | `poet-assistant.lock` | `reports/poet-assistant/` | Extra prose, citation, and Substack publishing support under poet discipline |
 
@@ -135,9 +138,10 @@ taking on a tracked unit of work, an agent claims its intended scope.
 tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 ```
 
-`<role>` is one of `operator`, `operator-assistant`, `designer`,
-`designer-assistant`, `system-specialist`, `system-assistant`,
-`poet`, or `poet-assistant`.
+`<role>` is one of `operator`, `operator-assistant`,
+`second-operator-assistant`, `designer`, `designer-assistant`,
+`second-designer-assistant`, `system-specialist`, `system-assistant`,
+`second-system-assistant`, `poet`, or `poet-assistant`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
@@ -263,24 +267,27 @@ bd close <id> --reason "<what changed>"
 BEADS work items are filed by **main role**, not by assistant. The four
 main-role labels are `role:operator`, `role:designer`,
 `role:system-specialist`, and `role:poet`. There are no
-`role:operator-assistant`, `role:designer-assistant`,
-`role:system-assistant`, or `role:poet-assistant` labels.
+`role:operator-assistant`, `role:second-operator-assistant`,
+`role:designer-assistant`, `role:second-designer-assistant`,
+`role:system-assistant`, `role:second-system-assistant`, or
+`role:poet-assistant` labels.
 
-**Assistants work the main role's beads.** A `designer-assistant` agent
-runs `bd ready --label role:designer` to see ready work; same for the
-other three disciplines. When an assistant files a bead for its
-discipline, it files under the main role's label.
+**Assistants work the main role's beads.** A `designer-assistant` or
+`second-designer-assistant` agent runs `bd ready --label role:designer`
+to see ready work; same for every assistant lane in the other disciplines.
+When an assistant files a bead for its discipline, it files under the main
+role's label.
 
 The reason: an assistant does the same kind of work as its main role. A
-bead filed under `role:system-assistant` would be invisible to the system
-specialist agent who could pick it up; a bead filed under
-`role:system-specialist` is visible to both. The discipline pool — main
-role plus any assistants stacked under it — sees the same beads.
+bead filed under an assistant label such as `role:second-operator-assistant`,
+`role:second-designer-assistant`, or `role:second-system-assistant` would be
+invisible to the main-role agent who could pick it up; a bead filed under the
+main role's label is visible to the whole discipline pool. The discipline
+pool — main role plus any assistants stacked under it — sees the same beads.
 
-The rule generalises. If a future second-assistant or third-assistant
-ever appears (extra capacity stacked under one main role), it still files
-beads under the main role's label. The discipline pool sees the work;
-the role-shape decides who claims it.
+The rule generalises. A second-assistant or third-assistant stacked under one
+main role still files beads under the main role's label. The discipline pool
+sees the work; the role-shape decides who claims it.
 
 Lock files are different. Each agent (main or assistant) edits its own
 lock file — locks name *who is actively touching what files right now*,
@@ -316,10 +323,13 @@ Convention: each role owns a subdirectory.
 
 - `reports/operator/` — operator's reports.
 - `reports/operator-assistant/` — operator assistant's reports.
+- `reports/second-operator-assistant/` — second operator assistant's reports.
 - `reports/designer/` — designer's reports.
 - `reports/designer-assistant/` — designer assistant's reports.
+- `reports/second-designer-assistant/` — second designer assistant's reports.
 - `reports/system-specialist/` — system specialist's reports.
 - `reports/system-assistant/` — system assistant's reports.
+- `reports/second-system-assistant/` — second system assistant's reports.
 - `reports/poet/` — poet's reports.
 - `reports/poet-assistant/` — poet assistant's reports.
 

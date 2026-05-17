@@ -14,10 +14,7 @@ notations humans write, the boundaries between crates, the
 rules in `ESSENCE.md` and `skills/`, the reports that name
 what the workspace is becoming.
 
-`designer` is one of the workspace's seven coordination roles
-(alongside `operator`, `operator-assistant`,
-`designer-assistant`, `system-specialist`, `poet`, and
-`poet-assistant`). Claim it through
+`designer` is one of the workspace's coordination roles. Claim it through
 `tools/orchestrate claim designer <paths> -- <reason>` before
 editing files in the design surface. Reports go in
 `reports/designer/` and are exempt from the claim flow.
@@ -114,10 +111,13 @@ the cross-cutting authority real.
 
 - `skills/designer.md` (this skill)
 - `skills/designer-assistant.md`
+- `skills/second-designer-assistant.md`
 - `skills/operator.md`
 - `skills/operator-assistant.md`
+- `skills/second-operator-assistant.md`
 - `skills/system-specialist.md`
 - `skills/system-assistant.md`
+- `skills/second-system-assistant.md`
 - `skills/poet.md`
 - `skills/poet-assistant.md`
 
@@ -143,6 +143,7 @@ the cross-cutting authority real.
 **Cross-cutting**
 
 - `skills/mermaid.md`
+- `skills/nix-usage.md`
 - `skills/nix-discipline.md`
 
 When the user says *"acquire your skills"* and the role is
@@ -358,27 +359,25 @@ wrong, that's an audit (designer report) + a fix
 
 ---
 
-## Working with designer-assistant
+## Working with designer assistants
 
-Designer-assistant can extend the designer's working surface when a
-design task needs extra audit, cross-reference cleanup, report
-inventory, role-surface maintenance, or bounded protocol/skill
-editing. Designer-assistant follows this skill while doing
-designer-shaped work: read the relevant reports, keep structure in
-designer-owned canonical files, and write designer-assistant-authored
-reports in `reports/designer-assistant/`.
+Designer-assistant and second-designer-assistant can extend the designer's
+working surface when a design task needs extra audit, cross-reference cleanup,
+report inventory, role-surface maintenance, or bounded protocol/skill editing.
+Each assistant follows this skill while doing designer-shaped work: read the
+relevant reports, keep structure in designer-owned canonical files, claim its
+own path scopes, and write reports in its own report lane.
 
-The designer remains the owner of structural decisions.
-Designer-assistant supplies additional attention and bounded
-execution; design authority stays with the role that owns the
-surface.
+The designer remains the owner of structural decisions. Designer assistants
+supply additional attention and bounded execution; design authority stays with
+the role that owns the surface.
 
-## Working with operator-assistant
+## Working with operator assistants
 
-Operator-assistant is the implementation-side auxiliary role. It may
-audit whether operator work fulfilled a designer report, but it does
-not own designer's structural decisions. If operator-assistant finds
-a design gap, the gap returns to designer through an
+Operator-assistant and second-operator-assistant are implementation-side
+auxiliary roles. They may audit whether operator work fulfilled a designer
+report, but they do not own designer's structural decisions. If an operator
+assistant finds a design gap, the gap returns to designer through an
 implementation-consequences or audit report.
 
 ---
@@ -500,8 +499,10 @@ violated a discipline. The diagnostic table in
 - this workspace's `skills/skill-editor.md` — how skills
   are written and cross-referenced.
 - this workspace's `skills/system-specialist.md`,
+  `skills/system-assistant.md`, `skills/second-system-assistant.md`,
   `skills/poet.md`, `skills/operator-assistant.md`,
-  `skills/poet-assistant.md`, `skills/designer-assistant.md` — sister role
-  skills.
+  `skills/second-operator-assistant.md`, `skills/poet-assistant.md`,
+  `skills/designer-assistant.md`, `skills/second-designer-assistant.md` —
+  sister role skills.
 - `lore/AGENTS.md` — workspace-level agent contract; the
   design-reports-as-visuals rule lives here.

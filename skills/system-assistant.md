@@ -7,12 +7,12 @@
 ## What this skill is for
 
 Use this skill when the workspace's OS/platform/runtime surface needs
-a second lane: a bounded module change in CriomOS or CriomOS-home, a
-focused audit of recent system-specialist commits, a self-contained
-host-tool slice (Whisrs packaging, Clavifaber typed-record work,
-chroma instrumentation), a Nix flake hygiene pass on a system-adjacent
-repo, or a deploy-affecting documentation update caused by platform
-work that's already settled.
+an additional lane: a bounded module change in CriomOS or
+CriomOS-home, a focused audit of recent system-specialist commits, a
+self-contained host-tool slice (Whisrs packaging, Clavifaber
+typed-record work, chroma instrumentation), a Nix flake hygiene pass on
+a system-adjacent repo, or a deploy-affecting documentation update
+caused by platform work that's already settled.
 
 `system-assistant` is one of the workspace's coordination roles. Claim
 it through
@@ -106,6 +106,7 @@ main role.
 **Role contracts**
 
 - `skills/system-assistant.md` (this skill)
+- `skills/second-system-assistant.md`
 - `skills/system-specialist.md` — the assisted role.
 - `skills/operator.md`
 
@@ -244,10 +245,11 @@ make progress without splitting a single unresolved judgment:
 - a repo's `ARCHITECTURE.md` / `skills.md` needs an update after a
   shipped system-specialist change.
 
-If the work is core architecture, use designer or
-designer-assistant. If it is Rust-crate implementation outside the
-platform surface, use operator or operator-assistant. If it is
-prose craft, use poet or poet-assistant.
+If the work is core architecture, use designer, designer-assistant,
+or second-designer-assistant. If it is Rust-crate implementation
+outside the platform surface, use operator, operator-assistant, or
+second-operator-assistant. If it is prose craft, use poet or
+poet-assistant.
 
 ---
 
@@ -258,6 +260,8 @@ prose craft, use poet or poet-assistant.
 - this workspace's `skills/system-specialist.md` — the assisted
   role's platform discipline (cluster Nix signing, lojix-projected
   deploys, system/home boundary).
+- this workspace's `skills/second-system-assistant.md` — the
+  second platform-shaped auxiliary role.
 - this workspace's `skills/operator-assistant.md` — operator-shaped
   auxiliary role; same assistant pattern, different surface.
 - this workspace's `skills/designer-assistant.md` — design-shaped
