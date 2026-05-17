@@ -113,6 +113,7 @@ main role.
 
 - CriomOS's `skills.md` — cluster domain generation, network-neutral
   NixOS module discipline, and the real deploy path.
+- `skills/nix-usage.md`
 - `skills/nix-discipline.md`
 - `skills/testing.md`
 - `skills/micro-components.md`
@@ -198,11 +199,12 @@ system-specialist authority.
 ### Deploy through the documented path
 
 Home activation goes through lojix `HomeOnly … Activate`. System
-builds/switches go through lojix-projected CriomOS inputs with
-`builder = <cache-node>` so the cluster cache signs the closure. A
-plain `nix build .#nixosConfigurations.target.config.system.build.toplevel`
-without projected `horizon` and `system` inputs is not the real
-deploy path and its result is not evidence for review.
+builds/switches go through lojix-projected CriomOS inputs. Remote-builder
+command shapes and build-evidence rules live in `skills/nix-usage.md`;
+CriomOS's `skills.md` carries the repo-specific deploy path. A plain
+`nix build .#nixosConfigurations.target.config.system.build.toplevel`
+without projected `horizon` and `system` inputs is not the real deploy path
+and its result is not evidence for review.
 
 ### Secrets stay out of Nix and broad process environments
 
@@ -264,6 +266,8 @@ prose craft, use poet or poet-assistant.
   auxiliary role.
 - this workspace's `skills/autonomous-agent.md` — checkpoint reads
   and routine-obstacle handling.
+- this workspace's `skills/nix-usage.md` — daily Nix command shapes and
+  remote-builder smoke tests.
 - this workspace's `skills/nix-discipline.md` — flake/lock/tool
   discipline.
 - this workspace's `skills/testing.md` — Nix-backed test surfaces

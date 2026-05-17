@@ -88,6 +88,7 @@ operator's. The assistant does the same work as its main role.
 - `skills/kameo.md`
 - `skills/language-design.md`
 - `skills/micro-components.md`
+- `skills/nix-usage.md`
 - `skills/nix-discipline.md`
 - `skills/push-not-pull.md`
 - `skills/rust-discipline.md` (index)
