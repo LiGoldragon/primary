@@ -553,25 +553,63 @@ ordinary-message lane state. Control/lifecycle traffic uses
 a separate unbounded lane and is not covered by this method"
 to each of the affected methods.
 
-### 7.4 Consolidated next-pass list (replaces §5)
+### 7.4 Consolidated next-pass list — status after operator's followup
 
-Combining my §5 with DA/102's recommendations, in priority
-order:
+Operator landed two more commits beyond `/131` (`04f6e2ab`
+"cover lifecycle control edge cases" and `22514f7c` "gate weak
+shutdown result helpers"). Fork head is now `22514f7c`.
+DA/103 verified the lifecycle suite locally: **11/11 passing**.
 
-| # | Item | Source | Priority |
-|---|---|---|---|
-| 1 | Supervised `spawn_in_thread` exclusive-resource restart test | §2.1 + DA/102 §F1 | **BLOCKER** for StoreKernel Path A |
-| 2 | `stop_gracefully` rustdoc precision + queued-`ask` discard test | §3.1 + §7.2 + DA/102 §F3, §F4 | HIGH (semantic documentation correctness) |
-| 3 | `blocking_recv()` control-lane wake test + fix-or-document | §7.1 + DA/102 §F2 | MEDIUM (public API correctness) |
-| 4 | Public mailbox helper docs split-lane cleanup | §7.3 + DA/102 §F5 | LOW-MEDIUM (doc-only) |
-| 5 | `#[deprecated]` attribute on `is_alive()` | §2.3 + DA/102 §F7 | LOW (migration hygiene) |
-| 6 | `get_shutdown_result()` visibility-boundary test + gate-or-deprecate | §3.5 + DA/102 §F6 | LOW-MEDIUM |
-| 7 | `run_to_state_ejection` enum-shaped API | /204 §1.1 | DEFERRED (no consumer) |
-| 8 | `Shutdown::Brutal` variant + `kill()` semantic split | /204 §1.1 | DEFERRED (no consumer) |
+Status of the priority list:
 
-Items 1-2 are blockers for safe StoreKernel migration. Items
-3-6 can stage. Items 7-8 are documented but await a real
-consumer.
+| # | Item | Status |
+|---|---|---|
+| 1 | Supervised `spawn_in_thread` exclusive-resource restart test | **CLOSED** via `04f6e2ab` — test `supervised_spawn_in_thread_releases_resource_before_restart` |
+| 2 | `stop_gracefully` rustdoc precision + queued-`ask` discard test | **CLOSED (test)** via `04f6e2ab` — test `queued_ask_dropped_by_stop_reports_actor_stopped`; doc precision: still pending |
+| 3 | `blocking_recv()` control-lane wake test + fix | **CLOSED** via `04f6e2ab` — rewritten to run async `recv()` on a current-thread runtime; test `blocking_recv_wakes_for_late_control_signal` |
+| 4 | Public mailbox helper docs split-lane cleanup | Pending |
+| 5 | `#[deprecated]` attribute on `is_alive()` | Pending — DA/103 §1.7 notes docs were updated but no deprecation attr |
+| 6 | `get_shutdown_result()` visibility-boundary test + gate | **CLOSED** for `ActorRef` and `WeakActorRef` via `22514f7c` ("gate weak shutdown result helpers") — both surfaces now gated behind `is_terminated()` |
+| 7 | `run_to_state_ejection` enum-shaped API | DEFERRED (no consumer) |
+| 8 | `Shutdown::Brutal` variant + `kill()` semantic split | DEFERRED (no consumer) |
+
+**Remaining blockers for Persona migration: none.** Items 4
+and 5 are migration-hygiene nice-to-haves; items 7-8 remain
+deferred.
+
+### 7.5 Convergent migration plans (operator/132 + DA/103)
+
+Operator and DA independently produced migration plans:
+- `reports/operator/132-kameo-component-migration-plan.md`
+- `reports/designer-assistant/103-kameo-lifecycle-component-migration-plan.md`
+
+Convergent on:
+- Named Git reference pin (`branch = "main"`, lockfile resolves
+  commit; no raw `rev = ...`).
+- Migration order: `persona-mind` first (StoreKernel is the
+  motivating case), then terminal-cell / persona-terminal /
+  persona-harness, then router/message/introspect/system,
+  then meta-`persona` last.
+- Per-component constraints + first tests for each repo.
+- StoreKernel needs its own redb-release witness; the kameo
+  TcpListener witness is necessary but not sufficient.
+- `wait_for_shutdown_result()` and `get_shutdown_result()` are
+  compat surfaces; new code uses `wait_for_shutdown()`.
+
+Operator/132 contributes a fourth test category — **source-shape
+tests** (e.g., `component_does_not_depend_on_crates_io_kameo`,
+`component_does_not_use_actor_liveness_as_shutdown_proof`) —
+that DA/103 doesn't enumerate. This is the architectural-truth
+discipline applied at the workspace boundary; worth keeping.
+
+DA/103 contributes a fifth phase — **mechanical API sweep** with
+explicit `rg` commands across all Persona repos — that
+operator/132 doesn't enumerate. Useful execution discipline;
+operator should run it as part of phase 2 of the migration.
+
+Both plans are sound. Operator's is more architecturally
+opinionated; DA's is more execution-procedural. Together they
+form the complete migration playbook.
 
 ## 8. Sources
 
