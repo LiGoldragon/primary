@@ -1,4 +1,4 @@
-# 101 — horizon-rs overbuild audit, 2026-05-16
+# 17 — horizon-rs overbuild audit, 2026-05-16
 
 *Where the 7,585 lines of `horizon-rs/horizon-re-engineering` come
 from, and which of them carry their weight. The job is "derive a
@@ -6,8 +6,8 @@ data-tree from an input tree"; the shape this work has taken is
 considerably bigger than the job demands.*
 
 > **Status (2026-05-16):** Read-only audit. Focuses on structural
-> overbuild and gratuitous repetition — distinct from /100, which
-> audited lojix. Asked by user after /100: "it shouldn't be so big,
+> overbuild and gratuitous repetition — distinct from /16, which
+> audited lojix. Asked by user after /16: "it shouldn't be so big,
 > only derives a data-tree from an input tree. look for inefficient
 > design and outright bullshit."
 
@@ -457,7 +457,7 @@ validation of trust/tailnet/secrets).
 - `~/primary/reports/designer-assistant/84-horizon-rs-schema-fixes-and-json-roundtrip-seed.md`
   — DA's prior horizon-rs schema-fix report; carries the three
   pre-existing red-test caveat referenced in §8.
-- `~/primary/reports/designer-assistant/100-lojix-current-code-audit-2026-05-16.md`
+- `~/primary/reports/system-assistant/16-lojix-current-code-audit-2026-05-16.md`
   — sister audit of `lojix` on the same branch; same
   authorship-context.
 - `~/wt/github.com/LiGoldragon/horizon-rs/horizon-re-engineering/`

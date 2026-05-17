@@ -1,7 +1,7 @@
-# 102 — horizon-leaner-shape downstream pickup, 2026-05-17
+# 18 — horizon-leaner-shape downstream pickup, 2026-05-17
 
 *Handoff report. The `horizon-leaner-shape` sibling branch of
-horizon-rs implements the structural cleanups from /101 and is
+horizon-rs implements the structural cleanups from /17 and is
 green at the library level. This report names the downstream
 consumer rewrites needed to land the wire-format break end-to-end,
 file by file, so operator / system-specialist can pick up the work
@@ -12,7 +12,7 @@ without re-deriving the scope.*
 > 197 tests green, ARCHITECTURE.md rewritten. No downstream
 > consumer has been updated yet — by design, per the user's
 > "sibling branch" coordination decision in
-> `reports/designer-assistant/100-lojix-current-code-audit-2026-05-16.md`'s
+> `reports/system-assistant/16-lojix-current-code-audit-2026-05-16.md`'s
 > follow-up dialogue.
 
 ## 0 · TL;DR
@@ -289,7 +289,7 @@ retired field and update it per §2.
 
 ## 6 · Why this scope and not bigger
 
-The audit in `/101 §6` sketched a more aggressive leaner shape
+The audit in `/17 §6` sketched a more aggressive leaner shape
 (retire `view::Cluster`/`view::User`/`view::Node`, factor a
 `Derived` sub-record). I implemented the narrower "what goes
 away" list from the same section:
@@ -306,7 +306,7 @@ away" list from the same section:
 the seven derived booleans + `BehavesAs` + viewpoint-only fields
 that only exist after projection. `view::User` carries trust
 ladder + the computed booleans + typed `EmailAddress` / `MatrixId`.
-Per /101 §6 "What stays," all three earn their place.
+Per /17 §6 "What stays," all three earn their place.
 
 The aggressive `Derived` sub-record refactor is a separate
 arc — worth considering once this lands, but not load-bearing
@@ -316,9 +316,9 @@ churn.
 
 ## 7 · See also
 
-- `reports/designer-assistant/100-lojix-current-code-audit-2026-05-16.md`
+- `reports/system-assistant/16-lojix-current-code-audit-2026-05-16.md`
   — companion audit; coordination decision context.
-- `reports/designer-assistant/101-horizon-rs-overbuild-audit-2026-05-16.md`
+- `reports/system-assistant/17-horizon-rs-overbuild-audit-2026-05-16.md`
   — the audit this arc implements.
 - `reports/system-specialist/119-horizon-data-needed-to-purge-criomos-literals.md`
   — the system-specialist's refactor step list. The

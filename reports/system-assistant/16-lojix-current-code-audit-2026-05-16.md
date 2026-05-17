@@ -1,4 +1,4 @@
-# 100 — lojix current-code audit, 2026-05-16
+# 16 — lojix current-code audit, 2026-05-16
 
 *Audit of the `horizon-re-engineering` worktree state of `lojix` and
 `signal-lojix` against the recent design reports (designer/179,

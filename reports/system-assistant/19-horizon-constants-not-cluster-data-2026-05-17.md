@@ -1,7 +1,7 @@
-# 103 — Horizon constants don't belong on the cluster-author boundary
+# 19 — Horizon constants don't belong on the cluster-author boundary
 
-*Designer-assistant report on a structural smell the user surfaced
-during peer review of /102. `ClusterProposal.domain` and
+*System-assistant report on a structural smell the user surfaced
+during peer review of /18. `ClusterProposal.domain` and
 `ClusterProposal.public_domain` carry values that are facts about
 the Horizon, not facts about any cluster within it. The smell is a
 category, not a one-off: `tailnet.baseDomain` carries it too. This
@@ -148,7 +148,7 @@ If only the projector, (2) is cleaner.
 ## 4 · Implication for the leaner-shape arc
 
 This is the same class of finding as `TypeIs` / `ComputerIs` in
-/101: a wire shape carrying ceremony rather than substance.
+/17: a wire shape carrying ceremony rather than substance.
 There, the ceremony was *enum-shadow structs* — 11 booleans
 shadowing the species enum. Here, the ceremony is *cluster
 fields carrying constants* — two fields surfaced on the
@@ -165,9 +165,9 @@ Per SYS/132's "Recommendation": *"Treat this as part of the
 compatibility patch."* I agree. The arc is breaking shape
 deliberately; this is the same category of correction.
 
-## 5 · Correction to /102
+## 5 · Correction to /18
 
-`reports/designer-assistant/102-horizon-leaner-shape-downstream-pickup-2026-05-17.md`
+`reports/system-assistant/18-horizon-leaner-shape-downstream-pickup-2026-05-17.md`
 §2.4 said:
 
 > *"Goldragon's `datom.nota` on `horizon-re-engineering` does NOT
@@ -180,10 +180,10 @@ done earlier missed it). And the user's response made the deeper
 point — adding the literal is the wrong fix; *removing the field*
 is the right one.
 
-So /102 §2.4 should be read as: ignore. SYS/132 supersedes that
+So /18 §2.4 should be read as: ignore. SYS/132 supersedes that
 section; this report frames its design question.
 
-Other corrections to /102 from the same peer review:
+Other corrections to /18 from the same peer review:
 
 - The CriomOS punch-list misses `checks/nspawn-role-policy/default.nix:19,26`
   (also has `buildCores`). The count "three live files, eight
@@ -199,7 +199,7 @@ Other corrections to /102 from the same peer review:
   `horizon-rs/docs/DESIGN.md:{69, 351, 356, 379, 391}` all still
   refer to `TypeIs` / `ComputerIs` / `computer_is` after Phase A.
 
-These are mechanical fixes to /102. None of them changes the
+These are mechanical fixes to /18. None of them changes the
 shape of the arc; all of them widen the pickup scope by a small
 amount.
 
@@ -258,10 +258,10 @@ toward a horizon-controlled value?*
   — operator-side prescription for the fix this report frames.
   Carries the specific Rust impls, the goldragon edit, the
   verification gates.
-- `reports/designer-assistant/102-horizon-leaner-shape-downstream-pickup-2026-05-17.md`
+- `reports/system-assistant/18-horizon-leaner-shape-downstream-pickup-2026-05-17.md`
   §2.4 — superseded by SYS/132 + this report; mechanical
   corrections in §5 above.
-- `reports/designer-assistant/101-horizon-rs-overbuild-audit-2026-05-16.md`
+- `reports/system-assistant/17-horizon-rs-overbuild-audit-2026-05-16.md`
   — the parent audit; this finding is the same class as the
   audit's "TypeIs / ComputerIs are enum-shadow structs" finding
   (ceremony where substance is meant to live).
