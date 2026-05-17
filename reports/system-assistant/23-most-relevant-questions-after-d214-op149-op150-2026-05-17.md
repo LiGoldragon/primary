@@ -112,7 +112,37 @@ These are unchanged:
 
 ---
 
-## 4 · No-effect-before-grant invariant — still the right first witness
+## 4 · Carry-forward from SS/18 — lojix-mesh-side residuals
+
+SS/18's G1-G19 gap framework is being retired (per D/215 §4.6).
+Most gaps closed (G1, G4, G7, G11, G14, G15, G19) or absorbed into
+later reports (G2 → D/214, SS/22, SS/23). These seven are the live
+**lojix-side** residuals, separate from the criome questions in §1
+above. They are not yet captured in D/216 (criome compendium) or
+D/221 (lojix compendium §7 question slate) and belong on the
+lojix-mesh tactical backlog.
+
+| Old ID | Live residual | Lean / suggested resolution |
+|---|---|---|
+| G3 | **Peer-daemon discovery for `peer_daemons` runtime population.** Today's `LojixDaemonConfiguration.peer_daemons` is configured statically. Multi-cluster / dynamic membership needs a population mechanism. | v1: static configuration. v2: dynamic via clavifaber's node registry. Cross-link to D/221 Q15 (`owned_cluster` shape). |
+| G8 | **GC-root lifetime across participating daemons.** Builder pins build outputs; cache pins received outputs; target pins activated outputs. The "let go" event needs a wire signal. | Add `DeploymentReleased { request_id }` to `signal-lojix`. Issued by caller on observed activation; each role-daemon releases its pin on receipt. |
+| G9 (partial) | **Concurrent-deploy + network-partition failure modes** not in SS/137 §"Failure behavior". | Spec needed: behaviour when (a) two concurrent deploys to same target arrive; (b) network partitions builder↔cache mid-transfer. |
+| G10 | **Cancellation wire shape.** SS/137 names the verb; the scope and semantics are not specified. | `CancelDeployment { request_id, scope: CancellationScope }` where `CancellationScope ∈ { PreBuild, MidBuild, PreActivate, MidActivate(force_rollback) }`. Activation is intrinsically uncancellable once `nixos-rebuild switch` is invoked — the wire must reflect this. |
+| G13 | **Per-deploy observability granularity.** SS/141's `DeploymentObservation` events leave open whether per-derivation events are emitted or only per-phase. | Per-phase events default; per-derivation events opt-in via subscription filter. Per-derivation could be tens of thousands per build; not a default. |
+| G16 | **Concurrent deploys to same target.** SS/137 names the per-target activation lock; queueing/rejection policy is not specified. | Per-target activation lock (already in SS/137). On lock contention: reject second with typed reason (caller decides retry). FIFO-with-rejection rather than queue to keep semantics simple in v1. |
+| G18 | **Idempotency.** `wire::DeploymentSubmission` has no idempotency key. A retried submission allocates a fresh `request_id`. | Add `idempotency_key: IdempotencyKey` field. Daemon dedupes by `(caller_identity, idempotency_key)` for a configurable window; same-key resubmission returns the existing `request_id`. Cheap now, hard later. |
+
+### Deferred-to-v2 (no immediate action)
+
+| Old ID | Item | Why deferred |
+|---|---|---|
+| G5 | Cost model (metered network awareness) | Big design subspace; ship v1 with cost as boolean metered/unmetered. |
+| G6 | Stream-while-build granularity | SS/137 recommends final-closure-copy first; streaming after the distributed ownership model is correct. |
+| G12, G17 | Multi-cluster + cross-cluster mesh | v1 = single-cluster only; cross-cluster wire schema fields reserved but not implemented. |
+
+---
+
+## 5 · No-effect-before-grant invariant — still the right first witness
 
 SYS/141 §"Actors I expect in lojix" stated the invariant:
 
