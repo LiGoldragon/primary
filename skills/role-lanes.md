@@ -98,11 +98,16 @@ lanes exist* is `AGENTS.md`'s role table.
 A new lane (a `third-designer-assistant`, a `fourth-operator-assistant`,
 or a future fifth lane under any main role) requires:
 
-1. Declare the lane in `orchestrate/roles.nota` (the role registry
-   read by `tools/orchestrate`). Name its `assistant-of` main role.
+1. Add the lane to `orchestrate/roles.list` (the lane registry read
+   by `tools/orchestrate`). Name its `assistant-of` main role on the
+   same line. The eventual destination format is `orchestrate/roles.nota`
+   — a typed Nota record — per the design report referenced from
+   `orchestrate/roles.list`.
 2. Create its report subdirectory: `reports/<lane>/`.
-3. Add its lock filename to `.gitignore`.
-4. Update the role table in `AGENTS.md` to mention the lane.
+3. The `.gitignore` rule `/orchestrate/*.lock` already covers the new
+   lock file; no edit needed.
+4. Update the role table in `AGENTS.md` and `orchestrate/AGENTS.md`
+   to mention the lane.
 
 That is the whole list. No new skill file. No new section in the
 main role's skill — the main role's *"Working with assistants"*

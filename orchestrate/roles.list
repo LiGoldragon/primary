@@ -1,0 +1,23 @@
+# Role-lane registry — one lane per line.
+#
+# Format: <lane-name> [assistant-of:<main-role>]
+# - Lines starting with '#' and blank lines are ignored.
+# - A main role has no 'assistant-of:' marker.
+# - An assistant lane declares its main role with 'assistant-of:<main-role>'.
+#
+# This file is a transitional bash-readable format. The destination is
+# orchestrate/roles.nota — a typed Nota record read by a Rust-rewritten
+# tools/orchestrate. The Rust rewrite is specified in
+# reports/second-designer-assistant/2-orchestrate-rust-rewrite-design-2026-05-17.md.
+
+operator
+operator-assistant                assistant-of:operator
+second-operator-assistant         assistant-of:operator
+designer
+designer-assistant                assistant-of:designer
+second-designer-assistant         assistant-of:designer
+system-specialist
+system-assistant                  assistant-of:system-specialist
+second-system-assistant           assistant-of:system-specialist
+poet
+poet-assistant                    assistant-of:poet

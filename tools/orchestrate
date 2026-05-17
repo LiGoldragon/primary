@@ -3,23 +3,28 @@ set -euo pipefail
 
 workspace="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-ROLES=(operator operator-assistant second-operator-assistant designer designer-assistant second-designer-assistant system-specialist system-assistant second-system-assistant poet poet-assistant)
+roles_file="$workspace/orchestrate/roles.list"
+mapfile -t ROLES < <(awk '/^[[:space:]]*#/ {next} /^[[:space:]]*$/ {next} {print $1}' "$roles_file")
+if [ "${#ROLES[@]}" -eq 0 ]; then
+  printf 'orchestrate: no lanes loaded from %s\n' "$roles_file" >&2
+  exit 70
+fi
 
 usage() {
-  cat <<'EOF'
+  cat <<EOF
 Usage:
   tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
   tools/orchestrate release <role>
   tools/orchestrate status
 
-Roles: operator, operator-assistant, second-operator-assistant, designer, designer-assistant, second-designer-assistant, system-specialist, system-assistant, second-system-assistant, poet, poet-assistant
+Roles (from $roles_file): $(IFS=', '; printf '%s' "${ROLES[*]}")
 
 Scopes: each <scope> is either
   - an absolute path:    /home/li/primary/skills/foo.md
-  - a task lock:         '[primary-f99]'      (quote in shell — `[` is a glob char)
+  - a task lock:         '[primary-f99]'      (quote in shell — \`[\` is a glob char)
 
-Lock files (<role>.lock) are plain text. Empty file means idle.
-Each line is one scope, optionally followed by `# <reason>`:
+Lock files (orchestrate/<role>.lock) are plain text. Empty file means idle.
+Each line is one scope, optionally followed by \`# <reason>\`:
   /home/li/primary/skills/foo.md # syncing claim docs
   [primary-f99] # chroma nota-codec migration
 EOF
