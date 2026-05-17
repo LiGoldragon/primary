@@ -52,7 +52,12 @@ This report is the staging-and-audit record alongside those ARCHs.
   enforceable.
 - **Master keypair = the daemon's core identity.** Private half
   may be encrypted at rest; the owner submits the passphrase over
-  `owner-signal-criome` at startup.
+  `owner-signal-criome` at startup. Owner-session bytes are
+  **encrypted on the wire** with an ECDH-derived symmetric session
+  key so a different-UID attacker who manages to read the socket
+  (TOCTOU on bind, symlink racing in the runtime dir, partial-frame
+  protocol bug) still cannot recover passphrase or owner-class
+  traffic.
 - **Two contracts.** `signal-criome` carries the
   consumer-asking-criome and peer-criome-routing surfaces.
   `owner-signal-criome` (new contract, to land) carries the
@@ -154,30 +159,60 @@ only that user can issue owner-class orders. Therefore the
 daemon's authority to sign with its master key is anchored at the
 Unix user.
 
-### 2.1 Plaintext passphrase over the owner socket
+### 2.1 Owner-session encryption with ECDH-derived session key
 
-The passphrase travels in cleartext over the owner socket. Within
-the local boundary, this is acceptable: any process that can
-write the socket already runs as the owner user, and therefore
-already has the same memory-inspection capability (`/proc/<pid>/mem`,
-`ptrace`) that would let it read the decrypted master key
-directly. Transport-encrypting the passphrase between owner client
-and daemon adds no floor.
+Owner-session bytes between owner client (CLI or TUI) and the
+daemon are encrypted with a symmetric session key derived from an
+ECDH handshake at the start of each connection. The shape:
 
-The residual concerns are orthogonal to transport:
+```text
+client                                   daemon
+  |  --- ephemeral pubkey (ECDH) --->   |
+  |  <--- ephemeral pubkey (ECDH) ---   |
+  |     [HKDF-blake3(shared, salt)]     |   (both sides derive
+  |                                     |    the same session key)
+  |  --- AEAD-encrypted frames --->     |
+  |  <--- AEAD-encrypted frames ---     |
+```
+
+Algorithms TBD by the `owner-signal-criome` contract pass:
+candidates are Noise XX, or a hand-rolled X25519 + HKDF-blake3 +
+ChaCha20-Poly1305 / AES-GCM AEAD. blake3 is already in criome's
+dependency closure; X25519 and an AEAD primitive are the only new
+dependencies. The handshake is a single round-trip.
+
+Inside the encrypted session, the passphrase travels in cleartext.
+Per the §2 boundary argument, *same-UID* processes can already
+inspect the daemon's memory and would recover the master key
+anyway; the encrypted session is defense-in-depth against
+**different-UID** attackers who manage to read the socket's bytes
+through:
+
+- TOCTOU on the socket bind / runtime-dir permissions.
+- Symlink-racing in the runtime dir before the daemon's
+  `bind()` settles.
+- A partial-frame protocol bug that allowed read access without
+  full auth.
+
+The hardening list is unchanged and still applies:
 
 - `mlock` decrypted key pages so they don't reach swap.
 - Zero passphrase bytes after use.
 - Disable core dumps for the daemon (`RLIMIT_CORE = 0`).
 - Log-discipline so passphrases never reach logs.
 
-**Strengthening worth questioning** (per SYS/22 §4.5): the
-same-UID model assumes the attacker has same-UID code execution.
-TOCTOU on the socket bind, path-traversal in the runtime dir, or
-a protocol bug allowing partial frames could let a *different*-UID
-attacker intercept passphrase bytes. Defense-in-depth crypto (e.g.,
-symmetric encryption with an ECDH-derived per-session key) is cheap
-and is a no-regret strengthening. **Open item** — see §11.
+This decision resolves SYS/22 §4.5 and §11.6 (the
+"plaintext-passphrase defense-in-depth" open item from the
+predecessor of this report). It commits the owner-signal-criome
+contract to a session-encrypted shape from day one; specific
+cipher choices land in that contract's design pass (§11.11).
+
+The absorption of this commitment into `criome/ARCHITECTURE.md`
+§6 ("Trust model and key distribution") prose is queued. That
+ARCH paragraph currently describes only the passphrase-submission
+flow without naming the ECDH-session wrapping; the prose update
+follows when the operator-assistant lane releases its lock on the
+criome repo (currently held for `primary-at7x` implementation).
 
 ### 2.2 What this model is NOT a defence against
 
@@ -200,7 +235,7 @@ The criome daemon's identity IS its master keypair. Properties:
 |---|---|
 | Generation | At first daemon startup; if no master-key file exists, create one. |
 | Storage | Private half at a known per-user path under the daemon's state dir; mode `0600`; encrypted at rest if the owner has set a passphrase. |
-| Decryption | Owner submits passphrase over owner-signal-criome at startup; daemon decrypts in memory. |
+| Decryption | Owner submits passphrase over owner-signal-criome at startup, inside the ECDH-encrypted session (§2.1); daemon decrypts the master key in memory. |
 | Memory hardening | `mlock` decrypted key pages; zero plaintext passphrase after use; disabled core dumps. |
 | Public half | Published at a stable per-user well-known location; consumed by peer criome daemons and consumers verifying criome-issued attestations. |
 | Subkeys | Deferred to `criome/ARCHITECTURE.md` §"Future possibilities". |
@@ -405,12 +440,12 @@ must precede later phases.
 | 11.3 System criome's role | SYS/22 Q2 | Full participant vs machine identity only. Lean: full participant under operator-set policy. Needs confirmation. |
 | 11.4 RegisterIdentity placement | This record §7 | Owner-class moves to owner-signal-criome; third-party variant stays on signal-criome by default; needs explicit decision. |
 | 11.5 Escalation-to-approve configurability | SYS/22 Q7 | Per-policy boolean vs scope-pattern predicate vs part of deferred schema. |
-| 11.6 Plaintext-passphrase defense-in-depth | SYS/22 §4.5 | ECDH-derived symmetric session key on the owner socket as a no-regret strengthening. Open. |
+| 11.6 ~~Plaintext-passphrase defense-in-depth~~ | SYS/22 §4.5 | **Decided** — owner-signal-criome session uses an ECDH-derived AEAD session key (§2.1). Specific cipher suite (Noise XX vs hand-rolled X25519 + HKDF-blake3 + ChaCha20-Poly1305/AES-GCM) belongs to the owner-signal-criome contract design (§11.11). |
 | 11.7 Outright-refuse vs signature-denial reply distinction | /212 §3.3 | Split into `AuthorizationRefused` (policy refused without signing) and `AuthorizationDenied` (signatures said no), or carry a closed `DecisionPath` field. |
 | 11.8 Quorum threshold representation in `AuthorizationGrant` | /212 §3.4 | The threshold spec the signatures satisfied must travel with the grant for downstream verification. |
 | 11.9 Verifier policy vs originator policy | SYS/22 Q10 | When peer B verifies a `SignedObject` from peer A, does B check signers-acceptable-by-A's-policy or B's-policy? Likely: `SignedObject` carries the satisfied policy spec; B verifies signatures-valid AND spec-acceptable-by-B's-policy-for-this-action. Needs wire definition. |
 | 11.10 SignedObject canonical bytes | SYS/141 Q3, SYS/22 Q5 | Which fields are inside the signed digest (request_id, target cluster/node, action, expiry, anti-replay nonce, issuing criome identity). Cross-lane (designer + system-specialist). |
-| 11.11 owner-signal-criome contract sketch | This record | Request/reply vocabulary for passphrase submission, peer registration, policy mutation, escalation-to-approve prompts and replies. Next designer report. |
+| 11.11 owner-signal-criome contract sketch | This record | Request/reply vocabulary for passphrase submission, peer registration, policy mutation, escalation-to-approve prompts and replies. Plus the ECDH-handshake-then-AEAD-encrypted-session wire shape from §2.1 (cipher-suite choice belongs to this design). Next designer report. |
 | 11.12 Operator-offline-mid-quorum | SYS/22 Q12 | Pending-authorization state needs to track who is solicited but not yet responded so the operator on next login sees what awaits them. Spec gap in `ObserveAuthorization`. |
 
 ---
