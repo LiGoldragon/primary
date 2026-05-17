@@ -368,6 +368,52 @@ persona-orchestrate design report that absorbs this report's §3/§4
 substance — at which point this report retires; or (b) the user
 shifts direction and the substance here needs revision.
 
+### §6.1 — Adjacent reports surfaced (2026-05-18)
+
+A maintenance-pass sweep of recent reports surfaced three adjacent
+artefacts that postdate this report's §1 list and touch its
+substance enough to be flagged here rather than rediscovered later:
+
+- `reports/designer-assistant/117-*` — terminal consolidation +
+  owner-chain decisions. §4 settles "harness owns terminal" for the
+  owner graph; updates the candidate graph in DA/116 §9 with concrete
+  reasoning. Touches §3.2 here because `owner-signal-persona-harness`
+  is the surface that carries terminal-session lifecycle Mutates
+  through to `owner-signal-persona-terminal` (next chain link).
+- `reports/designer-assistant/118-*` — surfaces that
+  `signal-core` ↔ `sema-engine` composition is claimed but not
+  audited. Pre-requisite awareness for `primary-699g`'s
+  implementation: every triad daemon (including `persona-orchestrate`)
+  inherits integration boilerplate if the two layers don't compose
+  cleanly.
+- `reports/designer/211-*` — `persona-terminal` consolidation (the
+  workspace's loudest triad violation, 10 binaries → 3). Sibling arc
+  that blocks substantial terminal-side orchestrate work until the
+  consolidation lands; constrains the OwnerSignal authority chain
+  through terminal.
+
+### §6.2 — Adjacent open questions outside this report's topic
+
+Two open questions sit close enough to this report's substance to
+warrant cross-reference, but live in other reports' scope:
+
+- **Mutate transaction boundaries** (DA/210 §2 + DA/115 §4) — in the
+  `mind → orchestrate → router/harness` Mutate chain, which steps
+  are atomic? Affects the reply semantics of every `LaneRegistry*`
+  Mutate (§3.2) in addition to the spawn-pipeline Mutates.
+  Designer pickup of `primary-699g` resolves this for the contract
+  as a whole; the registry surface follows the same rule.
+- **Orchestrate-spawned runs claiming scope** (DA/115 §4.2,
+  operator/1 §3) — can an orchestrate-spawned agent submit
+  `ScopeAcquisitionSubmission` directly through the ordinary
+  surface, or only act on `AcquireScopeOrder` from mind? Composes
+  with §4 Q4 (lane-identity vs connection-identity); both questions
+  want the same cross-layer rule.
+
+These don't extend §4 of this report because their primary home is
+the persona-orchestrate contract design, not the registry-as-data
+direction specifically.
+
 ---
 
 ## See also
