@@ -41,6 +41,7 @@ stack.
 | `signal-persona-system` | `/git/github.com/LiGoldragon/signal-persona-system` | System observation to router channel contract. |
 | `signal-persona-harness` | `/git/github.com/LiGoldragon/signal-persona-harness` | Router to harness delivery/observation channel contract. |
 | `signal-persona-terminal` | `/git/github.com/LiGoldragon/signal-persona-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
+| `owner-signal-persona-terminal` | `/git/github.com/LiGoldragon/owner-signal-persona-terminal` | Owner-only terminal session lifecycle mutation contract for `CreateSession` and `RetireSession`; ordinary terminal traffic stays in `signal-persona-terminal`. |
 | `signal-persona-mind` | `/git/github.com/LiGoldragon/signal-persona-mind` | Mind/orchestration contract vocabulary. |
 | `signal-criome` | `/git/github.com/LiGoldragon/signal-criome` | Criome trust and attestation contract vocabulary: BLS signature envelopes, identity records, delegation grants, component releases, and out-of-band attestations. Pure contract crate; no daemon, no storage, no Persona policy ownership. |
 | `nexus` | `/git/github.com/LiGoldragon/nexus` | Typed semantic text vocabulary written in NOTA syntax. |
