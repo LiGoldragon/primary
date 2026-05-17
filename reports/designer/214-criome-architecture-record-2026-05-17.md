@@ -462,6 +462,44 @@ ARCH-absorbed), §11.7 (denial-source split), and §11.8 (threshold
 on grants). The remaining items below are either still open from
 the design pass or new known-debt items op-149 surfaced.
 
+### 10.1.1 · op-150 — store-minted authorization-request slots
+
+`reports/operator-assistant/150-criome-authorization-slot-identity-follow-up-2026-05-17.md`
+takes the next slice — closing the digest-string-derived slot
+anti-pattern that op-149 flagged.
+
+In `signal-criome` (commit `be950e3` *carry authorization request
+slot on grants*):
+
+- `AuthorizationGrant` now carries
+  `request_slot: AuthorizationRequestSlot` so verifiers reference
+  the durable store identity, not a reconstructed digest.
+
+In `criome` (commit `73d34bf` *mint authorization request slots
+in store*):
+
+- `StoreKernel` owns a new `CreateAuthorizationState` message and
+  an `authorization_next_slot` Sema table; the store mints the
+  next slot on each `AuthorizeSignalCall`.
+- `AuthorizationCoordinator`'s old digest-to-slot helper is gone;
+  it asks the store and uses the returned slot.
+- Witness: two submissions of the same `SignalCallAuthorization`
+  yield the same digest but **two different request slots**,
+  neither equal to the digest.
+- Architectural-truth Nix check
+  `criome-authorization-slots-are-store-minted` fails if the
+  table goes missing, if the constraint disappears from the ARCH,
+  or if the digest-derived helper shape is reintroduced.
+- ARCH + skills.md now name the *"slots are store-minted; never
+  digest-derived"* invariant explicitly.
+
+This closes §11.11 (typed slot allocator). The contract-side slot
+is still a string newtype (`AuthorizationRequestSlot(String)`)
+holding a numeric string the store mints; a future contract pass
+may tighten to a stronger slot shape if other consumers benefit
+from typed numeric identity, but the *agent-minted-from-digest*
+anti-pattern is gone and prevented by witness.
+
 ---
 
 ## 11 · Open items
@@ -483,10 +521,9 @@ must precede later phases.
 | 11.8 owner-signal-criome contract sketch | This record | Request/reply vocabulary for passphrase submission, peer registration, policy mutation, escalation-to-approve prompts and replies. Plus the ECDH-handshake-then-AEAD-encrypted-session wire shape from §2.1 (cipher-suite choice — Noise XX vs hand-rolled X25519 + HKDF-blake3 + ChaCha20-Poly1305/AES-GCM — belongs to this design). Next designer report. |
 | 11.9 Operator-offline-mid-quorum | SYS/22 Q12 | Pending-authorization state needs to track who is solicited but not yet responded so the operator on next login sees what awaits them. Spec gap in `ObserveAuthorization`. |
 | 11.10 `ObserveAuthorization` push stream | op-149 known debt | The current `AuthorizationCoordinator` returns a snapshot only; no push deltas. This is a polling-shape gap per `ESSENCE.md` §"Polling is forbidden" — must land before consumers can subscribe operationally, and is the prerequisite for §11.9 (operator-offline visibility). |
-| 11.11 Typed slot for authorization requests | op-149 known debt | Authorization request slots are currently derived from the digest string. Per `ESSENCE.md` §"Infrastructure mints identity": identity is the slot; the store mints, the agent receives in the reply. Replace with a `Slot<AuthorizationRequest>` allocator before authorization state becomes operationally important. |
-| 11.12 Real signature verification in `VerifyAuthorization` | op-149 known debt | Currently checks digest equality only. Full BLS verification against the registered signers' public keys is required for the "permission comes from signatures" claim to hold. |
-| 11.13 Master-key signing for simple-self-signed policy | op-149 known debt | The coordinator records pending state and stores solicitation/submission records but does not sign with criome's master key. The first signing path (simple-self-signed policy → `AuthorizationGrant` with master-key signature) is the most load-bearing next implementation slice. |
-| 11.14 Replay-guard + expiry enforcement | op-149 known debt | `criome/ARCHITECTURE.md` §8 names replay protection and expiry as constraints; the coordinator skeleton does not yet enforce either. |
+| 11.11 Real signature verification in `VerifyAuthorization` | op-149 known debt | Currently checks digest equality only. Full BLS verification against the registered signers' public keys is required for the "permission comes from signatures" claim to hold. |
+| 11.12 Master-key signing for simple-self-signed policy | op-149 known debt | The coordinator records pending state and stores solicitation/submission records but does not sign with criome's master key. The first signing path (simple-self-signed policy → `AuthorizationGrant` with master-key signature) is the most load-bearing next implementation slice. |
+| 11.13 Replay-guard + expiry enforcement | op-149 known debt | `criome/ARCHITECTURE.md` §8 names replay protection and expiry as constraints; the coordinator skeleton does not yet enforce either. |
 
 ---
 
@@ -499,16 +536,17 @@ must precede later phases.
   signing client with its own Sema database for signing-client
   keypairs) is superseded.
 - **`primary-at7x`** ("criome: add routed authorization contract
-  and daemon skeleton") — in flight. Op-149's pass landed the
-  contract types, the coordinator actor skeleton, the Sema state
-  tables, socket-mode `0600` witness, and the ECDH/AEAD ARCH text
+  and daemon skeleton") — in flight. Op-149 landed the contract
+  types, the coordinator actor skeleton, the Sema state tables,
+  socket-mode `0600` witness, and the ECDH/AEAD ARCH text
   (commits `9dff026`, `bd98b9d` on `signal-criome`; `2b74697` on
-  `criome`). Bead remains open; the load-bearing remaining slices
-  are §11.10 (push stream), §11.11 (typed slot), §11.12 (real
-  signature verification), §11.13 (master-key signing), §11.14
-  (replay-guard + expiry). Bead description should be refreshed
-  to name those slices so the next operator-assistant pass picks
-  up unambiguously.
+  `criome`). Op-150 closed the typed-slot anti-pattern
+  (`be950e3` on `signal-criome`; `73d34bf` on `criome`). Bead
+  remains open; the load-bearing remaining slices are §11.10
+  (push stream), §11.11 (real signature verification), §11.12
+  (master-key signing), §11.13 (replay-guard + expiry). Bead
+  description should be refreshed to name those slices so the
+  next operator-assistant pass picks up unambiguously.
 - **New bead suggested**: *"design owner-signal-criome contract
   surface"* — `role:designer`, follows from §11.11.
 - **New bead suggested**: *"design cross-user-same-host criome
