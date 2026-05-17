@@ -84,8 +84,9 @@ cutover.
 
 | Repository | Path | Replaces | Status |
 |---|---|---|---|
-| `signal-lojix` | `github:LiGoldragon/signal-lojix` | wire surface implicit in `lojix-cli` (none today) | Skeleton + ARCHITECTURE.md. Implementation lands on the `horizon-re-engineering` feature branch alongside `lojix` daemon work. |
-| `lojix` | `github:LiGoldragon/lojix` | implementation surface of `lojix-cli` (legacy stays at current schema; retires after CriomOS migrates) | Renamed from `lojix-daemon` (2026-05-14). One crate, two binaries: `lojix-daemon` (long-lived orchestrator) + `lojix` (thin CLI client) per `~/primary/AGENTS.md` §"Binary naming". Implementation lands on the `horizon-re-engineering` feature branch. Storage via `sema-engine`; wire via `signal-core` carrying `signal-lojix` records. |
+| `signal-lojix` | `github:LiGoldragon/signal-lojix` | wire surface implicit in `lojix-cli` (none today) | Skeleton + ARCHITECTURE.md. Implementation lands on the `horizon-leaner-shape` feature branch alongside `lojix` daemon work. |
+| `lojix` | `github:LiGoldragon/lojix` | implementation surface of `lojix-cli` (legacy stays at current schema; retires after CriomOS migrates) | Renamed from `lojix-daemon` (2026-05-14). One crate, two binaries: `lojix-daemon` (long-lived orchestrator) + `lojix` (thin CLI client) per `~/primary/AGENTS.md` §"Binary naming". Implementation lands on the `horizon-leaner-shape` feature branch. Storage via `sema-engine`; wire via `signal-core` carrying `signal-lojix` records. |
+| `criomos-horizon-config` | `github:LiGoldragon/criomos-horizon-config` | pan-horizon constants previously inlined in `goldragon/datom.nota` (operator/suffixes/LAN pool/reserved labels) | Pan-horizon constants repo introduced on `horizon-leaner-shape`. Consumed by `horizon-rs` to derive cluster domains, router SSID, LAN CIDR/DHCP pool, resolver listen addresses, and tailnet base from cluster facts. |
 
 **Cutover discipline.** Each replacement repo has a documented
 "replaces" target above. The cutover for that target is staged: build
@@ -94,12 +95,47 @@ producers/consumers one at a time, then retire the original (move it to
 "Retired / Cleanup Targets"). Do not begin retiring the old until the
 replacement covers every consumer of the surface being replaced.
 
-**Active feature arc — horizon re-engineering** (started 2026-05-14, bead
-`primary-vhb6`). Spans `horizon-rs`, `lojix`, `signal-lojix`, `CriomOS`,
-`CriomOS-home`, `goldragon`. All on the `horizon-re-engineering` branch
-in worktrees per `~/primary/skills/feature-development.md`. `lojix-cli`
-is untouched by the arc — stays at the current schema and retires after
-CriomOS migrates to the new daemon's projection.
+**Active feature arc — horizon-leaner-shape** (sibling branch off the
+earlier `horizon-re-engineering` work; supersedes it as of 2026-05-17).
+Spans `horizon-rs`, `lojix`, `signal-lojix`, `CriomOS`, `CriomOS-home`,
+`CriomOS-lib`, `goldragon`, and the new `criomos-horizon-config` repo.
+All on the `horizon-leaner-shape` branch in worktrees per
+`~/primary/skills/feature-development.md`. `lojix-cli` is untouched by
+the arc — stays at the current schema and retires after CriomOS migrates
+to the new daemon's projection. Smoke-built `zeus` end-to-end through
+`prometheus` (see `reports/system-specialist/134`); has **not** been cut
+over to any node.
+
+`horizon-re-engineering` worktrees still exist for several repos but are
+**superseded**. Do not pick up that branch; new work belongs on
+`horizon-leaner-shape`.
+
+### Two deploy stacks coexist — production and the lean rewrite
+
+Until cutover lands, agents must distinguish two parallel deploy stacks.
+
+**Stack A — production today** (running on every node). `main` branches
+in the canonical `/git/github.com/LiGoldragon/...` checkouts of:
+`horizon-rs`, `lojix-cli`, `CriomOS`, `CriomOS-home`, `CriomOS-lib`,
+`goldragon`. Old monolithic `lojix-cli` projects `horizon-rs/main` over
+`goldragon/datom.nota` and writes the `horizon` / `system` /
+`deployment` flake inputs into CriomOS at deploy time. No daemon, no
+`lojix` repo, no `criomos-horizon-config`. CriomOS's flake.lock pins
+`lojix-cli` at `42529ebd2114`. **Production fixes go here.**
+
+**Stack B — lean rewrite, smoke-built, not yet deployed**.
+`horizon-leaner-shape` branches in worktrees under
+`~/wt/github.com/LiGoldragon/<repo>/horizon-leaner-shape/`, spanning the
+same six repos plus two new ones: `lojix` (daemon + thin CLI client) and
+`criomos-horizon-config` (pan-horizon constants). Lean horizon
+proposal/view, pan-horizon config split into its own repo, new lojix
+daemon-and-thin-client shape. **Rewrite edits go here.**
+
+**Do not fold one stack into the other piecemeal.** Schemas have
+diverged. Cutover happens as a coordinated multi-repo merge after the
+rewrite reaches feature parity, per §"Cutover discipline" above. Until
+then: production edits → `main` in the canonical checkout; rewrite edits
+→ `horizon-leaner-shape` in the worktree.
 
 Note: GitHub redirects `LiGoldragon/lojix` → `LiGoldragon/forge` are
 stale (forge was previously named lojix and got renamed). The new

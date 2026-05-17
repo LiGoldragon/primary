@@ -68,6 +68,34 @@ cleanup at merge time, and the orchestration-protocol interaction
 before starting any non-trivial branch work; it is part of every
 role's required reading.
 
+## Two deploy stacks coexist — production and the lean rewrite
+
+**Production today** runs the old monolithic `lojix-cli` stack on
+`main` branches in the canonical `/git/...` checkouts:
+`horizon-rs`, `lojix-cli`, `CriomOS`, `CriomOS-home`, `CriomOS-lib`,
+`goldragon`. If you need to fix something that is live on a node
+right now, the fix goes on `main` in those checkouts.
+
+**The lean rewrite** — new `lojix` daemon + thin `lojix` CLI client
++ lean horizon proposal/view + pan-horizon config — lives on
+`horizon-leaner-shape` branches in worktrees under `~/wt/...`, plus
+two new repos: `lojix` and `criomos-horizon-config`. It smoke-built
+`zeus` end-to-end through `prometheus` (see
+`reports/system-specialist/134`) but **has not been cut over**. No
+node in the cluster runs it. Do not deploy it as if it were a fix.
+
+**Do not fold one stack into the other piecemeal.** Schemas have
+diverged. Cutover happens as a coordinated multi-repo merge after
+the rewrite reaches feature parity and the migration is staged per
+`protocols/active-repositories.md` §"Replacement Stack". Until
+then: production edits → `main` in the canonical checkout; rewrite
+edits → `horizon-leaner-shape` in the worktree.
+
+The live inventory of what is on which branch (and which arc is
+active) lives in `protocols/active-repositories.md` §"Two deploy
+stacks coexist". Stale worktrees on `horizon-re-engineering` are
+superseded by `horizon-leaner-shape`; don't pick that branch up.
+
 ## Roles
 
 The workspace recognises four main roles, each carrying its own
