@@ -56,6 +56,19 @@ conceptual split is universal (Erlang/OTP, Akka, Hewitt's actor
 model); deployment-level split (separate OS process vs co-resident
 actor) is deferrable at workspace scale.
 
+**As of designer/210 (commit `90cba206`), this is no longer just a
+recommendation.** `persona-mind/ARCHITECTURE.md` §6.6 (new) names
+the orchestrate component's slot in the Mutate authority chain
+running through it; `skills/component-triad.md` (new, tier-1
+required reading per `AGENTS.md` §"Skill importance") names the
+universal daemon + CLI + signal-* contract shape that
+persona-orchestrate must follow; and the Mutate authority verb
+reframing in `signal-core/ARCHITECTURE.md` shapes how
+`signal-persona-orchestrate`'s verbs need to be designed (most are
+**Mutate** orders flowing down-tree from mind through orchestrate
+to executors). The bead `primary-699g` design work has *upstream
+inputs* now, not just a green field.
+
 ---
 
 ## §1 — What landed
@@ -253,39 +266,117 @@ VM, insist on the supervisor-vs-worker distinction.
 
 ### Recommended shape
 
-1. **`signal-persona-orchestrate`** — its own contract repo.
-   Orthogonal to `signal-persona-mind`. Defines:
-   - Requests: `SpawnAgent`, `AcquireScope`, `ReleaseScope`,
-     `SuperviseAgent`, `EscalateBlockedWork`.
-   - Replies: `AgentSpawned`, `ScopeAcquired`, `ScopeRejected`
-     (with conflict detail), `SupervisionAck`, `EscalationAck`.
-   - Lifecycle events emitted (push, never pulled):
-     `AgentLifecycle` (`Starting | Running | Paused | Stopped |
-     Failed | Timed-out`), `ScopeContested`, `WorkReady`,
-     `Escalation`.
+The shape is now constrained by three pieces of upstream
+discipline landed in designer/210:
 
-2. **`persona-orchestrate`** — the daemon. It subscribes to mind
-   events for new work, runs the orchestration logic (conflict
-   resolution, agent selection, supervision spawning), and
-   persists outcomes back via the existing `signal-persona-mind`
-   `RoleClaim` / `RoleRelease` / `ActivitySubmission` requests.
+- The **triad** (`skills/component-triad.md`, new tier-1 skill):
+  every stateful component is a *daemon + CLI + signal-* contract*.
+  `persona-orchestrate` follows this — `persona-orchestrate/`
+  repo (daemon + `orchestrate` CLI), `signal-persona-orchestrate/`
+  repo (typed wire vocabulary + per-variant `SignalVerb` mapping).
+  Three invariants the triad enforces apply unchanged: CLI has
+  exactly one Signal peer (its own daemon), daemon's external
+  surface is exclusively `signal-core` frames, verb declared
+  per-variant in the contract crate.
+- The **Mutate authority semantics** (`signal-core/ARCHITECTURE.md`,
+  authority-direction paragraph): `Mutate` is the authority verb —
+  top-down, *"change this; I do not care what you think."* The
+  issuer holds *possibly-mutated* state until the subordinate
+  confirms; transitions to *now-mutated* on the typed reply; may
+  then issue the next downstream order.
+- The **explicit slot** (`persona-mind/ARCHITECTURE.md` §6.6, new):
+  orchestrate component is named in mind's extended authority chain
+  — mind issues `Mutate (SpawnAgent X in lane Y)` to orchestrate;
+  orchestrate may further issue `Mutate (spawn typed permissions)`
+  to harness or future executors; each subordinate obeys and
+  confirms; mind transitions its choreography state on each
+  confirmation.
 
-3. **Deployment.** Start as a co-resident Kameo actor tree in
-   the same OS process as `MindRoot`, contracted by
-   `signal-persona-orchestrate`. The contract boundary is the
-   load-bearing distinction; physical process split is
-   deferrable. Peel apart if independent failure / restart or
-   real-time constraints from the raw-LLM-API executor demand
-   it.
+#### `signal-persona-orchestrate` — verb classifications
 
-4. **Multi-executor.** `(SpawnAgent <lane> <work-item>
-   <executor-kind>)` accepts at minimum
-   `Harness` (existing — calls into `persona-harness`) and
-   `RawLlm` (forthcoming — the user-named non-harness path for
-   specialised LLM calls). Future executor kinds add as new
-   enum variants. This is the Mesos two-level pattern in
-   miniature: orchestrator allocates work to executors; each
-   executor owns its own runtime discipline.
+Per the triad invariant "verb declared per-variant in the contract
+crate," each request kind carries one of the six `SignalVerb` roots.
+The orchestrate vocabulary lands like this (proposed; the contract
+design in `primary-699g` finalises):
+
+| Request | Verb | Direction | Notes |
+|---|---|---|---|
+| `SpawnAgent { lane, work, executor }` | **`Mutate`** | mind → orch | Authority order; orch obeys and confirms via `AgentSpawned`. May internally issue downstream `Mutate` to executor. |
+| `AcquireScope { lane, scope, reason }` | **`Mutate`** | issuer → orch | Authority order: install the scope claim; orch resolves conflict and confirms via `ScopeAcquired` or typed-failure `ScopeRejected`. Internally orch persists the underlying `RoleClaim` via existing `signal-persona-mind`. |
+| `ReleaseScope { lane, scope }` | **`Retract`** | issuer → orch | Symmetric retraction; orch persists `RoleRelease` via `signal-persona-mind`. |
+| `SuperviseAgent { lane, policy }` | **`Mutate`** | mind → orch | Authority order: register restart policy. |
+| `EscalateBlockedWork { lane, work, reason }` | **`Assert`** | bottom-up | A typed *fact*: "this work is blocked because…". Orch's escalation flow turns the asserted fact into a user-visible escalation. Not an authority chain. |
+| `OrchestrateObservation` | **`Match`** | any | One-shot query for current orchestrate state. |
+| `AgentLifecycle` deltas | **`Subscribe`** | observer → orch | Push subscription; receivers observe agent FSM transitions. Per `skills/push-not-pull.md`. |
+| `ScopeContested` events | **`Subscribe`** | observer → orch | Push subscription on conflict-resolution events. |
+| `WorkReady` events | **`Subscribe`** | observer → orch | Push subscription on new-ready-work notifications. |
+
+The verb-mapping witness test from the triad skill catches
+misclassifications: `signal-persona-orchestrate-signal-verb-mapping-covers-every-request-variant`.
+
+#### The Mutate chain through `persona-orchestrate`
+
+```mermaid
+flowchart TB
+    mind["persona-mind<br/>(authority root,<br/>record persistence)"]
+    orch["persona-orchestrate<br/>(orchestration machinery,<br/>co-resident actor)"]
+    router["persona-router<br/>(channel + delivery authority)"]
+    harness["persona-harness<br/>(executor)"]
+    rawllm["raw-llm-executor<br/>(future executor)"]
+
+    mind  -- "1. Mutate: SpawnAgent X (lane Y, exec=Harness)" --> orch
+    orch  -- "2. ack mutated"                                   --> mind
+    mind  -- "3. Mutate: ChannelGrant (X ↔ peer)"               --> router
+    router -- "4. ack mutated"                                  --> mind
+    mind  -- "5. Mutate: SpawnHarness (typed permissions)"      --> orch
+    orch  -- "6. Mutate: spawn (typed permissions)"             --> harness
+    harness -- "7. ack mutated"                                 --> orch
+    orch  -- "8. ack mutated"                                   --> mind
+
+    harness -. "Subscribe: AgentLifecycle"   .-> orch
+    orch    -. "Subscribe: AgentLifecycle"   .-> mind
+    rawllm  -. "Subscribe: AgentLifecycle"   .-> orch
+    router  -. "Subscribe: channel events"   .-> mind
+```
+
+At each Mutate step the issuer holds *possibly-mutated* state
+until the typed ack arrives; only then does it advance to the
+next order. Replies are confirmations (or typed-failure
+rejections), not opinions. The harness is not spawned with
+channel rights until step 4 returns: install the channel, then
+spawn the agent that uses it.
+
+The two relationships matter:
+
+- **Authority down-tree.** Mind issues Mutate orders to orchestrate;
+  orchestrate may issue Mutate orders to executors. Each step is
+  obeyed-then-confirmed.
+- **Observation up-tree.** Executors emit `AgentLifecycle`
+  subscriptions to orchestrate; orchestrate emits its own
+  subscriptions to mind. Observation flows the opposite direction
+  from authority, per `skills/push-not-pull.md`.
+
+#### Multi-executor
+
+`(SpawnAgent <lane> <work-item> <executor-kind>)` accepts at
+minimum `Harness` (existing — orch issues Mutate down to
+`persona-harness`) and `RawLlm` (forthcoming — the user-named
+non-harness path for specialised LLM calls, slotted into the same
+spawn authority per /210 §5). Future executor kinds land as new
+enum variants on the executor enum. This is the Mesos two-level
+pattern in miniature: orchestrator allocates work to executors;
+each executor owns its own runtime discipline; orch's contract
+stays stable as executors come and go.
+
+#### Deployment
+
+Start as a co-resident Kameo actor tree in the same OS process as
+`MindRoot`, contracted by `signal-persona-orchestrate`. The contract
+boundary is the load-bearing distinction; physical process split is
+deferrable. Peel apart if independent failure / restart or real-time
+constraints from the raw-LLM-API executor demand it. This matches
+report 4's Nomad-flavored recommendation and isn't contradicted by
+/210 §3 ("this report doesn't contradict that").
 
 ### Why this beats the alternatives
 
@@ -341,7 +432,16 @@ spawning, supervision, etc.) is out of scope — that's bead
 5. **(Future)** sends the decoded `MindRequest` to
    `persona-mind`'s Unix socket directly, once persona-mind is
    the canonical store. At that point the lock-file side effect
-   becomes redundant and drops.
+   becomes redundant and drops. Once `persona-orchestrate`
+   (§4) is live, the natural routing is `tools/orchestrate` →
+   `signal-persona-orchestrate AcquireScope` (Mutate) →
+   orchestrate → underlying `RoleClaim` via signal-persona-mind.
+   The orchestrate layer is what resolves conflicts and emits
+   the lifecycle events; mind stays the persistence layer. For
+   the rewrite itself, the immediate target is mind-direct
+   (since orchestrate doesn't exist yet); the routing-through-
+   orchestrate shape is a small follow-up once the
+   `signal-persona-orchestrate` contract lands.
 
 ### What the binary explicitly does NOT do
 
@@ -434,34 +534,84 @@ One `Error` enum, `#[from]` conversions for foreign types, no
 A. **`signal-persona-orchestrate` contract repo.** Typed records
 for the machinery verbs sketched in §2 (`SpawnAgent`,
 `AcquireScope`, `ReleaseScope`, `SuperviseAgent`,
-`EscalateBlockedWork`) and the lifecycle events. Includes the
-contract-crate-shaped artefacts per `skills/contract-repo.md`:
-examples-first round-trip tests, reserved record-head discipline,
-typed enum closures (no `Unknown` variants).
+`EscalateBlockedWork`) and the lifecycle events
+(`AgentLifecycle`, `ScopeContested`, `WorkReady`, `Escalation`).
+Includes the contract-crate-shaped artefacts per
+`skills/contract-repo.md`: examples-first round-trip tests,
+reserved record-head discipline, typed enum closures (no
+`Unknown` variants), and the **per-variant `SignalVerb` mapping**
+per the triad invariant (§2's verb table is the proposed
+mapping; finalise in the contract crate). The witness test
+`signal-persona-orchestrate-signal-verb-mapping-covers-every-request-variant`
+keeps the mapping honest.
 
-B. **`persona-orchestrate` daemon skeleton.** New repo with
-`ARCHITECTURE.md` naming:
+B. **`persona-orchestrate` daemon skeleton.** New repo following
+the triad shape (`skills/component-triad.md`): daemon + CLI +
+this `signal-*` contract. `ARCHITECTURE.md` names:
 - Owned scope (the machinery, explicitly distinct from
-  persona-mind's record persistence).
+  persona-mind's record persistence). Citations to
+  `skills/component-triad.md` rather than restating its
+  invariants.
 - Actor topology (root + planned children for spawning,
   supervision, scheduling, escalation).
+- Inbound/outbound verb table (per the pattern
+  `persona-mind/ARCHITECTURE.md` §6.6 establishes). For each
+  request: is it received from a higher authority (Mutate
+  inbound from mind), emitted as an order to a subordinate
+  (Mutate outbound to harness / raw-LLM executor), a fact
+  appended (Assert inbound from a subscriber), or a stream
+  observed (Subscribe outbound from this daemon).
+- Obey-then-confirm discipline for inbound Mutate (per
+  `persona-router/ARCHITECTURE.md` §2.5). Hold
+  possibly-mutated state across the operation; emit the
+  typed confirmation reply only after the order commits.
 - Deployment shape (start co-resident with `MindRoot`; the
   open question on process split addressed below).
 - Subscription primitives consumed (mind deltas, executor
   lifecycle events).
 - Subscription primitives emitted (lifecycle events, contested
   scopes, ready-work fan-out, escalations).
+- The triad witness tests (CLI exactly-one-Signal-peer; daemon
+  external-surface-Signal-only; verb-mapping-covers-every-variant;
+  CLI cannot open peer database; CLI accepts one NOTA in and
+  prints one NOTA out).
 
-C. **Resolution of the open questions in §5.**
+C. **The `orchestrate` CLI** (the third triad leg). Thin Rust
+binary that takes one `signal-persona-orchestrate` NOTA request
+on argv/stdin and prints one typed NOTA reply. Per the triad:
+one Signal peer (its own daemon), no other component's surface
+opened.
 
-### Adjacent recent work to read first
+D. **Resolution of the open questions in §5.**
 
-Designer commit `9f78a30e` — "designer: /209 — component triad
-(daemon + CLI + signal-* contract) audit and skill-gap finding"
-— landed during this lane's work. Sounds directly relevant to
-the contract+daemon+CLI shape this bead would produce. First
-pickup action: read designer report 209 and reconcile with the
-§2 recommendation here.
+### Upstream design context — read first
+
+Designer reports `/209` and `/210` land the discipline this
+contract design respects:
+
+- `/209` — component triad audit + skill-gap finding (commit
+  `9f78a30e`). Establishes that the workspace's persona-mind /
+  persona-router / persona-introspect etc. all already follow
+  a triad shape; surfaces the gap that the shape wasn't
+  named.
+- `/210` — component triad decisions + Mutate authority
+  semantics (commit `90cba206`). Lands
+  `skills/component-triad.md`, the `AGENTS.md` skill-importance
+  tier table (triad at tier 1), the authority-direction column
+  in `skills/contract-repo.md`'s verb table, the
+  authority-direction paragraph in `signal-core/ARCHITECTURE.md`,
+  the new §6.6 in `persona-mind/ARCHITECTURE.md`
+  ("`Mutate` flows down-tree"), and the new §2.5 in
+  `persona-router/ARCHITECTURE.md` ("channel grants are inbound
+  `Mutate` orders"). `/210` §3 explicitly cites the
+  persona-orchestrate work this bead carries forward, and
+  §5 notes that the raw-LLM-API executor "lands as a sibling
+  of `persona-harness` under orchestrate's spawn authority."
+
+These two reports + `skills/component-triad.md` are the
+load-bearing inputs. Read them before designing the contract;
+this report's §2 sketches a verb mapping but the canonical
+classifications go through that discipline.
 
 ---
 
@@ -471,28 +621,48 @@ Tagged for the designer pickup of `primary-699g`. None are
 load-bearing enough to block §3's Rust-port work, which is why
 they live here rather than in §3.
 
-1. **Spawning protocol.** Does `persona-orchestrate` spawn a
-   harness by pushing a request to `persona-harness` over its
-   Unix socket ("start a Codex session for this lane"), or by
-   spawning OS processes directly? Likely the former, but the
-   contract needs design.
+1. **Spawning protocol — concrete shape.** The Mutate framing
+   from /210 settles the *shape*: orchestrate issues a
+   `Mutate (Spawn …)` order to the executor (harness or
+   raw-LLM) over the executor's `signal-*` contract, expects
+   the typed confirmation reply. Still open: does
+   `persona-harness` today carry a request variant that maps
+   to this Mutate, or does
+   `signal-persona-harness` need extension? Also: does orch
+   spawn a fresh harness process per agent, or does it issue
+   the Mutate against an already-running harness daemon that
+   manages multiple agents internally?
 2. **Identity of "an agent."** Today each agent is a human-driven
    Codex / Claude Code session. Automated orchestration introduces
    non-human-attended agents. Does the existing role-coordination
    protocol (one lock file per lane) hold, or do automated agents
-   get a different identity discipline?
+   get a different identity discipline? Likely: the lock file
+   (now `orchestrate/<lane>.lock`) stays as the per-lane
+   coordination surface; the *holder* changes from
+   "human-attended" to "orchestrate-spawned" but the
+   per-lane identity persists.
 3. **Backpressure.** If `persona-orchestrate` is observing mind
    via subscription and pushing to executors, and the executors
    are slower than the work-stream, what's the discipline? Per
    `skills/push-not-pull.md` §"Named carve-outs",
    backpressure-aware pacing is allowed — but the specific shape
-   needs design.
-4. **Authorisation.** Once orchestration is automated, who can
-   say "spawn an agent that has authority to commit to repo X"?
-   The Criome quorum-signature direction in `ESSENCE.md` §"Today
-   and eventually" points at the eventual answer; the near-term
-   answer is probably "the user's signature on the spawn
-   request" via the existing ClaviFaber discipline.
+   needs design. Probable shape: orch observes executor capacity
+   via `AgentLifecycle` subscriptions; gates the next
+   `SpawnAgent` Mutate on executor readiness.
+4. **Authorisation — partly resolved by Mutate framing.** The
+   authority chain (`signal-core/ARCHITECTURE.md`
+   authority-direction paragraph; `skills/component-triad.md`)
+   answers part of this: mind is the authority root; mind
+   issues `Mutate (SpawnAgent …)` with typed permissions in the
+   payload; orchestrate executes the order; the spawned agent's
+   authority is exactly what mind ordered. The user's role
+   becomes "authorise mind itself" — likely via the existing
+   ClaviFaber-shaped key discipline near term, and the Criome
+   quorum-signature direction in `ESSENCE.md` §"Today and
+   eventually" eventually. Still open: where does the
+   per-spawn typed-permissions payload live in the
+   `SpawnAgent` Mutate record? (Inline; or by reference to a
+   role-policy record in mind?)
 
 ---
 
@@ -501,10 +671,18 @@ they live here rather than in §3.
 - this workspace's `orchestrate/AGENTS.md` — the canonical
   orchestration protocol; the `tools/orchestrate` invocation
   surface and lock-file format both live there.
+- this workspace's **`skills/component-triad.md`** — the
+  universal daemon + CLI + signal-* contract shape.
+  Tier-1 required reading per `AGENTS.md` §"Skill importance"
+  and load-bearing for the persona-orchestrate design.
 - this workspace's `skills/role-lanes.md` — the lane meta-pattern
   this report's §1 landed.
 - this workspace's `skills/micro-components.md` — the one-capability
   principle the persona-orchestrate split honours.
+- this workspace's `skills/contract-repo.md` — verb table now
+  with the authority-direction column; canonical home for the
+  contract-crate discipline `signal-persona-orchestrate` must
+  follow.
 - this workspace's `skills/push-not-pull.md` — the subscription
   discipline `persona-orchestrate` would respect across both its
   mind-side reads and its executor-side writes.
@@ -519,17 +697,32 @@ they live here rather than in §3.
   `reports/operator-assistant/138-persona-mind-gap-close-2026-05-16.md`
   §"P2" — the supervised-resource teardown race that grounds the
   Kameo analogy.
-- this workspace's `reports/designer/209-*` (designer commit
-  `9f78a30e`) — recent designer audit on the
-  daemon+CLI+signal-contract triad; first read for the
-  `primary-699g` pickup.
+- this workspace's
+  `reports/designer/209-component-triad-daemon-cli-contract-2026-05-17.md`
+  (commit `9f78a30e`) — designer audit on the
+  daemon+CLI+signal-contract triad; establishes the discipline
+  `skills/component-triad.md` formalises.
+- this workspace's
+  `reports/designer/210-component-triad-decisions-and-mutate-authority-2026-05-17.md`
+  (commit `90cba206`) — lands `skills/component-triad.md`,
+  the Mutate authority semantics, and the orchestrate component's
+  formal slot in mind's extended authority chain. **Required
+  upstream reading** for the persona-orchestrate contract design.
+- `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` —
+  authority-direction paragraph for the six verbs; the wire
+  kernel `signal-persona-orchestrate` builds on.
 - `/git/github.com/LiGoldragon/signal-persona-mind/src/lib.rs:418-580, 1756-1760`
   — the existing typed orchestration-record vocabulary.
 - `/git/github.com/LiGoldragon/persona-mind/src/text.rs:242-782`
   — the daemon's existing parsing for the same vocabulary.
-- `/git/github.com/LiGoldragon/persona-mind/ARCHITECTURE.md` —
-  the central-state daemon's owned scope; the boundary
-  `persona-orchestrate` would sit alongside.
+- `/git/github.com/LiGoldragon/persona-mind/ARCHITECTURE.md`
+  §6.6 (new) — "Authority direction — `Mutate` flows down-tree";
+  per-verb inbound/outbound table for mind; orchestrate
+  component slotted into the extended chain.
+- `/git/github.com/LiGoldragon/persona-router/ARCHITECTURE.md`
+  §2.5 (new) — "Authority direction — channel grants are
+  inbound `Mutate` orders"; obey-then-confirm discipline
+  pattern persona-orchestrate's inbound handlers follow.
 - Schwarzkopf et al., "Omega: flexible, scalable schedulers for
   large compute clusters," EuroSys 2013
   (<https://research.google/pubs/omega-flexible-scalable-schedulers-for-large-compute-clusters/>)
