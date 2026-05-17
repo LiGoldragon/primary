@@ -13,14 +13,16 @@ under `repos/`.*
 
 ## 0 · TL;DR
 
-`primary` is the workspace at `~/primary/`. Eight coordination roles
-(four main + four assistants) share it, claiming work through
-per-role lock files and writing reports into role-owned report
-directories. Active code lives in `/git/github.com/LiGoldragon/`
-checkouts that primary surfaces via the `repos/` symlink index.
-Workspace intent lives in `ESSENCE.md`; cross-workspace agent
-discipline lives in `repos/lore/AGENTS.md`; per-role discipline
-lives in `skills/<role>.md`.
+`primary` is the workspace at `~/primary/`. Four main coordination
+roles share it — `operator`, `designer`, `system-specialist`, `poet`
+— each carrying its own discipline through `skills/<role>.md` and
+extensible with assistant lanes (`<role>-assistant`,
+`second-<role>-assistant`, …) that share the main role's skill but
+hold their own lock file and report directory. The lane mechanism
+is canonical in `skills/role-lanes.md`. Active code lives in
+`/git/github.com/LiGoldragon/` checkouts that primary surfaces via
+the `repos/` symlink index. Workspace intent lives in `ESSENCE.md`;
+cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
 
 The workspace is the apex of the agent-discipline graph:
 `ESSENCE.md` (intent) → `lore/AGENTS.md` (cross-workspace contract)
@@ -59,24 +61,28 @@ native typed work graph.
 
 ## 2 · Roles and lanes
 
-Eight coordination roles. Each role's substantive work goes through
-its `skills/<role>.md`; that file's "Required reading" section names
-every workspace skill the role must read.
+Four main roles. Each main role's substantive work goes through its
+`skills/<role>.md`; that file's "Required reading" section names
+every workspace skill the role must read, and applies unchanged to
+every assistant lane stacked under it.
 
-| Role | Default agent | Skill | Report lane |
-|---|---|---|---|
-| `operator` | Codex | `skills/operator.md` | `reports/operator/` |
-| `operator-assistant` | any | `skills/operator-assistant.md` | `reports/operator-assistant/` |
-| `designer` | Claude | `skills/designer.md` | `reports/designer/` |
-| `designer-assistant` | Codex | `skills/designer-assistant.md` | `reports/designer-assistant/` |
-| `system-specialist` | any | `skills/system-specialist.md` | `reports/system-specialist/` |
-| `system-assistant` | any | `skills/system-assistant.md` | `reports/system-assistant/` |
-| `poet` | any | `skills/poet.md` | `reports/poet/` |
-| `poet-assistant` | any | `skills/poet-assistant.md` | `reports/poet-assistant/` |
+| Main role | Default agent | Skill |
+|---|---|---|
+| `operator` | Codex | `skills/operator.md` |
+| `designer` | Claude | `skills/designer.md` |
+| `system-specialist` | any | `skills/system-specialist.md` |
+| `poet` | any | `skills/poet.md` |
 
-`<role>.lock` files coordinate claims on shared resources (repos,
+Assistant lanes (`<role>-assistant`, `second-<role>-assistant`, …)
+share their main role's skill, owned area, beads label, and
+discipline. Per lane: lock filename, report subdirectory, claim
+string. The lane mechanism is canonical in `skills/role-lanes.md`;
+the current set of lanes plus their lock files and report
+directories is enumerated in `protocols/orchestration.md`.
+
+`<lane>.lock` files coordinate claims on shared resources (repos,
 files). `tools/orchestrate` is the claim/release helper.
-`reports/<role>/` directories are lane-owned: each role writes only
+`reports/<lane>/` directories are lane-owned: each lane writes only
 its own subdirectory; report lanes are exempt from the file-claim
 flow.
 
@@ -107,7 +113,7 @@ This workspace owns:
 - Cross-cutting workspace skills (`skills/<name>.md`).
 - Role-owned report directories (`reports/<role>/`).
 - The `repos/` symlink index.
-- Per-role coordination state (`<role>.lock`).
+- Per-lane coordination state (`<lane>.lock`).
 
 It does not own:
 

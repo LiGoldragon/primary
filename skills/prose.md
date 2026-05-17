@@ -963,9 +963,9 @@ Arnau to read, the register is right.
   identifiers; the same discipline applies to the diction this
   skill recommends.
 - this workspace's `skills/poet.md` — the role that holds the prose
-  surface.
-- this workspace's `skills/poet-assistant.md` — the assistant lane
-  for the same.
+  surface; assistant lanes share this skill.
+- this workspace's `skills/role-lanes.md` — how assistant lanes
+  stack under a main role.
 - this workspace's `skills/library.md` — how to consult the
   reference shelf when a quote is needed and the author's voice
   must be heard before the citation.

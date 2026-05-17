@@ -15,28 +15,33 @@ BEADS is shared coordination state while it exists, not a lockable scope.
 
 ## Roles
 
-The workspace recognises eleven coordination roles. Each role has its own lock
-file, its own report subdirectory, and a natural primary scope.
+The workspace organises work under **four main roles**, each carrying its
+own discipline. Additional **lanes** — `<role>-assistant`,
+`second-<role>-assistant`, and any future stacked lane — share their main
+role's discipline, skill file, and beads label; only the lock file, report
+subdirectory, and claim string differ per lane. The lane mechanism is
+canonical in `skills/role-lanes.md`. The current set of lanes is enumerated
+below.
 
-| Role | Default agent | Lock file | Reports subdir | Natural primary scope |
-|---|---|---|---|---|
-| `operator` | Codex | `operator.lock` | `reports/operator/` | Rust crates, persona, sema-ecosystem implementation |
-| `operator-assistant` | (any) | `operator-assistant.lock` | `reports/operator-assistant/` | Extra implementation/audit workforce under operator discipline |
-| `second-operator-assistant` | (any) | `second-operator-assistant.lock` | `reports/second-operator-assistant/` | Second extra implementation/audit workforce under operator discipline |
-| `designer` | Claude | `designer.lock` | `reports/designer/` | ESSENCE, AGENTS, lore, skills, design reports |
-| `designer-assistant` | Codex | `designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
-| `second-designer-assistant` | (any) | `second-designer-assistant.lock` | `reports/second-designer-assistant/` | Second extra design audit, report, skill, and protocol support under designer discipline |
-| `system-specialist` | (any) | `system-specialist.lock` | `reports/system-specialist/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
-| `system-assistant` | (any) | `system-assistant.lock` | `reports/system-assistant/` | Extra platform/host workforce under system-specialist discipline |
-| `second-system-assistant` | (any) | `second-system-assistant.lock` | `reports/second-system-assistant/` | Second extra platform/host workforce under system-specialist discipline |
-| `poet` | (any) | `poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
-| `poet-assistant` | (any) | `poet-assistant.lock` | `reports/poet-assistant/` | Extra prose, citation, and Substack publishing support under poet discipline |
+| Lane | Main role | Default agent | Lock file | Reports subdir | Natural primary scope |
+|---|---|---|---|---|---|
+| `operator` | operator | Codex | `operator.lock` | `reports/operator/` | Rust crates, persona, sema-ecosystem implementation |
+| `operator-assistant` | operator | (any) | `operator-assistant.lock` | `reports/operator-assistant/` | Extra implementation/audit workforce under operator discipline |
+| `second-operator-assistant` | operator | (any) | `second-operator-assistant.lock` | `reports/second-operator-assistant/` | Second extra implementation/audit workforce under operator discipline |
+| `designer` | designer | Claude | `designer.lock` | `reports/designer/` | ESSENCE, AGENTS, lore, skills, design reports |
+| `designer-assistant` | designer | Codex | `designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
+| `second-designer-assistant` | designer | (any) | `second-designer-assistant.lock` | `reports/second-designer-assistant/` | Second extra design audit, report, skill, and protocol support under designer discipline |
+| `system-specialist` | system-specialist | (any) | `system-specialist.lock` | `reports/system-specialist/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
+| `system-assistant` | system-specialist | (any) | `system-assistant.lock` | `reports/system-assistant/` | Extra platform/host workforce under system-specialist discipline |
+| `second-system-assistant` | system-specialist | (any) | `second-system-assistant.lock` | `reports/second-system-assistant/` | Second extra platform/host workforce under system-specialist discipline |
+| `poet` | poet | (any) | `poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
+| `poet-assistant` | poet | (any) | `poet-assistant.lock` | `reports/poet-assistant/` | Extra prose, citation, and Substack publishing support under poet discipline |
 
 The "Default agent" column is convenience labelling for the lock file, not a
-binding. Any agent may take any role; the role determines scope authority,
-not which model holds it.
+binding. Any agent may take any lane; the main role determines scope
+authority, not which model holds it.
 
-Each agent must know its role before claiming work. Each agent edits only
+Each agent must know its lane before claiming work. Each agent edits only
 its own lock file.
 
 ## Coordination State

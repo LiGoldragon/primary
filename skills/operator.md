@@ -97,6 +97,7 @@ research-library skills stay with the roles that own them.
 - `ESSENCE.md`
 - `lore/AGENTS.md`
 - `protocols/orchestration.md`
+- `skills/role-lanes.md`
 - `skills/autonomous-agent.md`
 - `skills/beauty.md`
 - `skills/naming.md`
@@ -111,10 +112,11 @@ research-library skills stay with the roles that own them.
 **Role contracts**
 
 - `skills/operator.md` (this skill)
-- `skills/operator-assistant.md`
-- `skills/second-operator-assistant.md`
 - `skills/designer.md` — what designer specifies; what
   operator implements against.
+
+Assistant lanes share their main role's skill; the lane mechanism
+is canonical in `skills/role-lanes.md`.
 
 **Programming discipline**
 
@@ -360,20 +362,40 @@ owns design changes; operator owns implementing them.
 
 ---
 
-## Working with operator assistants
+## Working with operator's assistant lanes
 
-Operator-assistant and second-operator-assistant are extra operator-shaped
-workforce. Operator uses them when implementation work can split into
-disjoint claimed paths: one crate migration, one test backfill, one audit
-pass, one dependency bump, one report response. Each assistant claims its own
-scopes through its own role name, commits and pushes its own logical changes,
-and writes reports in its own report lane.
+`operator-assistant` and `second-operator-assistant` are additional
+lanes under the operator-discipline pool. They share this skill's
+discipline, required reading, owned area, and beads label; only the
+lock file, report subdirectory, and claim string differ per lane. The
+mechanism is canonical in `skills/role-lanes.md`.
 
-The operator remains responsible for the implementation thread it owns.
-Operator assistants are parallel capacity, not hidden edits under the operator
-lock. When operator and assistants touch adjacent code, all agents read the
-same designer report or BEADS task, name their path boundaries explicitly, and
-avoid overlapping claims.
+Operator uses assistant lanes when implementation work can split into
+disjoint claimed paths: one crate migration, one test backfill, one
+audit pass, one dependency bump, one report response. Each lane
+claims its own scopes, commits and pushes its own logical changes,
+and writes reports in its own report lane. Operator remains
+responsible for the implementation thread it owns — assistant lanes
+are parallel capacity, not hidden edits under the operator lock.
+
+On high-risk paths (Persona's message plane, central mind state,
+signal contracts, sema storage, actor topology, Nix
+deployment-affecting changes), the default shape is operator first
+pass, assistant-lane review. The review checks `skills/testing.md`
+compliance, architectural-truth witnesses rather than only behavior
+tests, no string dispatch where a closed enum belongs, no free-function
+or ZST method-holder drift, no public fields on wrapper newtypes, and
+repo `ARCHITECTURE.md` / `skills.md` still matching the shipped shape.
+
+Take implementation slices in an assistant lane only when the design
+is settled — mechanical, path-disjoint tasks: one crate in a rename
+sweep, one closed-enum migration, one test backfill, one repo-local
+doc drift fix. If the work needs a design judgment, stop and report
+instead of deciding inside the implementation pass.
+
+When operator and assistant lanes touch adjacent code, all agents
+read the same designer report or BEADS task, name their path
+boundaries explicitly, and avoid overlapping claims.
 
 ---
 
@@ -396,13 +418,12 @@ system-specialist's is to execute the deploy chain.
 
 ---
 
-## Working with poet and poet-assistant
+## Working with poet's lanes
 
 Operator's surface and the poet surfaces barely overlap. When
 they do (a CLI's user-facing strings, an error message that
-becomes part of the docs surface), defer to poet or
-poet-assistant on prose choices the way operator defers to
-designer on design choices.
+becomes part of the docs surface), defer to poet's lanes on prose
+choices the way operator defers to designer on design choices.
 
 ---
 
@@ -472,13 +493,11 @@ you were missing.
   discipline.
 - this workspace's `skills/autonomous-agent.md` — how to
   act on routine obstacles.
+- this workspace's `skills/role-lanes.md` — how assistant lanes
+  stack under a main role.
 - this workspace's `skills/designer.md`,
-  `skills/designer-assistant.md`,
-  `skills/second-designer-assistant.md`,
-  `skills/system-specialist.md`, `skills/poet.md`,
-  `skills/poet-assistant.md`, `skills/operator-assistant.md`,
-  `skills/second-operator-assistant.md` —
-  sister role skills.
+  `skills/system-specialist.md`, `skills/poet.md` — sister
+  main-role skills.
 - `lore/rust/style.md`, `lore/rust/rkyv.md`,
   `lore/rust/testing.md`, `lore/rust/nix-packaging.md` —
   toolchain references.

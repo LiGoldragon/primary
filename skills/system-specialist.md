@@ -50,6 +50,7 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 - `ESSENCE.md`
 - `lore/AGENTS.md`
 - `protocols/orchestration.md`
+- `skills/role-lanes.md`
 - `skills/autonomous-agent.md`
 - `skills/beauty.md`
 - `skills/naming.md`
@@ -64,9 +65,10 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 **Role contracts**
 
 - `skills/system-specialist.md` (this skill)
-- `skills/system-assistant.md`
-- `skills/second-system-assistant.md`
 - `skills/operator.md` — knows what binaries get deployed.
+
+Assistant lanes share their main role's skill; the lane mechanism
+is canonical in `skills/role-lanes.md`.
 
 **Platform discipline**
 
@@ -178,31 +180,49 @@ For STT prompts and likely transcription mistakes, read this workspace's
 
 ---
 
-## Working with role assistants
+## Working with system-specialist's assistant lanes
 
-There is no generic assistant role. `system-assistant` and
-`second-system-assistant` are system-shaped lanes: bounded module slices in
-CriomOS or CriomOS-home, focused audits of system-specialist commits,
-self-contained host-tool work (Whisrs packaging, Clavifaber
-typed-record additions, chroma instrumentation), Nix-discipline
-hygiene passes, or repo-local doc updates after a shipped
-system-specialist change. See this workspace's
-`skills/system-assistant.md` and `skills/second-system-assistant.md`.
-`operator-assistant` and `second-operator-assistant` can take
-bounded implementation-adjacent support when the scope is
-operator-shaped: a narrow code fix, test backfill, or dependency
-audit in an implementation repo. `designer-assistant` and
-`second-designer-assistant` can take bounded design-adjacent support: report
-inventory, cross-reference cleanup, or protocol/skill edits already decided by
-designer.
-`poet-assistant` can take prose or publishing-support work when the
-surface is poet-shaped.
+`system-assistant` and `second-system-assistant` are additional lanes
+under the system-specialist-discipline pool. They share this skill's
+discipline, required reading, owned area, and beads label; only the
+lock file, report subdirectory, and claim string differ per lane. The
+mechanism is canonical in `skills/role-lanes.md`.
 
-System-specialist deployment authority — cluster Nix signing,
-signing-key generation, deploy-graph topology, host activation
-orchestration — stays with this role. Role assistants read this
-skill and the target repo's `skills.md` before claiming, then
-report under their own role subdirectory.
+Good system-lane work has a concrete boundary: one CriomOS or
+CriomOS-home module slice, a focused audit of recent system-specialist
+commits, a self-contained host-tool slice (Whisrs packaging, Clavifaber
+typed-record additions, chroma instrumentation), a Nix flake hygiene
+pass on a system-adjacent repo, or a deploy-affecting documentation
+update caused by platform work that's already settled. Lane scope
+mirrors system-specialist's surface but stays within
+already-decided shapes.
+
+Defer to system-specialist on cluster-effecting changes — cluster Nix
+signing topology, signing-key generation, deploy-graph topology, host
+activation orchestration. The just-do-it operations above (downstream
+`flake.lock` bumps after upstream commits, redeploys after
+activation-affecting CriomOS-home changes) apply to assistant lanes
+too, since those are inside the standing happy path. A change that
+*modifies* the path itself is system-specialist authority. Secrets
+discipline applies unchanged: keys from `gopass` at daemon-wrapper
+layer, private key bytes never in stdout/logs/reports/Nix
+store/fixtures.
+
+If a host change reveals a structural gap (a missing actor plane, a
+subscription primitive that doesn't exist, a NOTA-vs-Signal boundary
+that was wrong), the lane writes an implementation-consequences
+report and lets system-specialist or designer answer rather than
+deciding inside the implementation pass.
+
+## Working with other disciplines' lanes
+
+Operator's assistant lanes can take bounded implementation-adjacent
+support when the scope is operator-shaped: a narrow code fix, test
+backfill, or dependency audit in an implementation repo. Designer's
+assistant lanes can take bounded design-adjacent support: report
+inventory, cross-reference cleanup, or protocol/skill edits already
+decided by designer. Poet's assistant lane can take prose or
+publishing-support work when the surface is poet-shaped.
 
 ---
 
@@ -310,11 +330,8 @@ non-cache nodes' daemons sign locally-built paths and let
 - CriomOS-home's `skills.md`
 - this workspace's `skills/stt-interpreter.md`
 - this workspace's `skills/autonomous-agent.md`
-- this workspace's `skills/system-assistant.md`
-- this workspace's `skills/second-system-assistant.md`
-- this workspace's `skills/operator-assistant.md`
-- this workspace's `skills/second-operator-assistant.md`
-- this workspace's `skills/designer-assistant.md`
-- this workspace's `skills/second-designer-assistant.md`
-- this workspace's `skills/poet-assistant.md`
+- this workspace's `skills/role-lanes.md` — how assistant lanes
+  stack under a main role.
+- this workspace's `skills/operator.md`, `skills/designer.md`,
+  `skills/poet.md` — sister main-role skills.
 - lore's `AGENTS.md`

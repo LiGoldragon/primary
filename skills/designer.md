@@ -96,6 +96,7 @@ the cross-cutting authority real.
 - `ESSENCE.md`
 - `lore/AGENTS.md`
 - `protocols/orchestration.md`
+- `skills/role-lanes.md`
 - `skills/autonomous-agent.md`
 - `skills/beauty.md`
 - `skills/naming.md`
@@ -107,19 +108,15 @@ the cross-cutting authority real.
 - `skills/feature-development.md`
 - `skills/stt-interpreter.md`
 
-**Role contracts (every role's "what I own and what I don't")**
+**Role contracts (each main role's "what I own and what I don't")**
 
 - `skills/designer.md` (this skill)
-- `skills/designer-assistant.md`
-- `skills/second-designer-assistant.md`
 - `skills/operator.md`
-- `skills/operator-assistant.md`
-- `skills/second-operator-assistant.md`
 - `skills/system-specialist.md`
-- `skills/system-assistant.md`
-- `skills/second-system-assistant.md`
 - `skills/poet.md`
-- `skills/poet-assistant.md`
+
+Assistant lanes share their main role's skill; the lane mechanism
+is canonical in `skills/role-lanes.md`.
 
 **Design and programming discipline**
 
@@ -359,26 +356,38 @@ wrong, that's an audit (designer report) + a fix
 
 ---
 
-## Working with designer assistants
+## Working with designer's assistant lanes
 
-Designer-assistant and second-designer-assistant can extend the designer's
-working surface when a design task needs extra audit, cross-reference cleanup,
-report inventory, role-surface maintenance, or bounded protocol/skill editing.
-Each assistant follows this skill while doing designer-shaped work: read the
-relevant reports, keep structure in designer-owned canonical files, claim its
-own path scopes, and write reports in its own report lane.
+`designer-assistant` and `second-designer-assistant` are additional
+lanes under the designer-discipline pool. They share this skill's
+discipline, required reading, owned area, and beads label; only the
+lock file, report subdirectory, and claim string differ per lane. The
+mechanism is canonical in `skills/role-lanes.md`.
 
-The designer remains the owner of structural decisions. Designer assistants
-supply additional attention and bounded execution; design authority stays with
-the role that owns the surface.
+Good designer-lane work has a concrete boundary: one role-surface
+update, one skill or small cluster of role skills, one report
+inventory, one stale-reference sweep, one architecture audit target,
+one falsifiable example or witness table. If the work would absorb a
+structural decision rather than support it, the lane writes a report
+that names the open question and lets designer answer.
 
-## Working with operator assistants
+Choose an assistant lane when extra design-shaped attention can make
+progress without splitting a single unresolved judgment: designer has
+decided a role or protocol shape and the workspace docs need bringing
+into line; a report tree needs a freshness or supersession pass;
+cross-references need mechanical cleanup after a rename; a skill
+needs a narrow consistency edit; an architecture file needs an audit
+against current reports.
 
-Operator-assistant and second-operator-assistant are implementation-side
-auxiliary roles. They may audit whether operator work fulfilled a designer
-report, but they do not own designer's structural decisions. If an operator
-assistant finds a design gap, the gap returns to designer through an
-implementation-consequences or audit report.
+Structural authority stays with designer. Assistant lanes supply
+attention and bounded execution, not authority over the surface.
+
+## Working with operator's lanes
+
+Operator's assistant lanes may audit whether operator work fulfilled
+a designer report, but they do not own designer's structural decisions.
+If a finding reveals a design gap, the gap returns to designer through
+an implementation-consequences or audit report.
 
 ---
 
@@ -400,17 +409,16 @@ deployments are theirs to shape.
 
 ---
 
-## Working with poet and poet-assistant
+## Working with poet's lanes
 
-The designer owns *structure*; poet-shaped roles own
+The designer owns *structure*; poet-shaped lanes own
 *prose-as-craft*. ESSENCE.md and major skill files are designer
-structure with prose surface; poet or poet-assistant may refine
-wording without changing structure. Either side asking the other to
-invade the other's lane is a smell.
+structure with prose surface; poet's lanes may refine wording without
+changing structure. Either side asking the other to invade the other's
+lane is a smell.
 
-In practice: ESSENCE rule additions land via designer; the
-poet-shaped roles may smooth a clause that already says the right
-thing clunkily.
+In practice: ESSENCE rule additions land via designer; poet's lanes
+may smooth a clause that already says the right thing clunkily.
 
 ---
 
@@ -498,11 +506,9 @@ violated a discipline. The diagnostic table in
   conventions.
 - this workspace's `skills/skill-editor.md` — how skills
   are written and cross-referenced.
-- this workspace's `skills/system-specialist.md`,
-  `skills/system-assistant.md`, `skills/second-system-assistant.md`,
-  `skills/poet.md`, `skills/operator-assistant.md`,
-  `skills/second-operator-assistant.md`, `skills/poet-assistant.md`,
-  `skills/designer-assistant.md`, `skills/second-designer-assistant.md` —
-  sister role skills.
+- this workspace's `skills/role-lanes.md` — how assistant lanes
+  stack under a main role.
+- this workspace's `skills/operator.md`, `skills/system-specialist.md`,
+  `skills/poet.md` — sister main-role skills.
 - `lore/AGENTS.md` — workspace-level agent contract; the
   design-reports-as-visuals rule lives here.

@@ -14,20 +14,20 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
    verification, version control via `skills/jj.md`.
 3. **`protocols/orchestration.md`** — how roles share this
    workspace.
-4. **Your role's `skills/<role>.md` is the required-reading
-   list.** Each role's skill file carries an explicit
+4. **Your main role's `skills/<role>.md` is the required-reading
+   list.** Each main role's skill file carries an explicit
    "Required reading" section listing every workspace skill
-   mandatory for that role:
+   mandatory for that role and every assistant lane stacked
+   under it:
 
-   - `operator` / `operator-assistant` / `second-operator-assistant` → `skills/operator.md`
-   - `designer` / `designer-assistant` / `second-designer-assistant` → `skills/designer.md`
-   - `system-specialist` / `system-assistant` / `second-system-assistant` → `skills/system-specialist.md`
-   - `poet` / `poet-assistant` → `skills/poet.md`
+   - `operator` and its assistant lanes → `skills/operator.md`
+   - `designer` and its assistant lanes → `skills/designer.md`
+   - `system-specialist` and its assistant lanes → `skills/system-specialist.md`
+   - `poet` and its assistant lanes → `skills/poet.md`
 
-   Assistants also read their own assistant file
-   (`skills/<assistant-role>.md`); the reading list it carries
-   is identical to the main role's. Read every skill the role
-   lists before doing substantive work in that role.
+   Every lane additionally reads `skills/role-lanes.md` for the
+   lane mechanism. Read every skill the role lists before doing
+   substantive work in that role.
 5. **The repo's `AGENTS.md` + `skills.md`** when editing inside
    a repo under `repos/`.
 
@@ -70,29 +70,23 @@ role's required reading.
 
 ## Roles
 
-The workspace recognises eleven coordination roles:
+The workspace recognises four main roles, each carrying its own
+discipline. Additional **lanes** — `<role>-assistant`,
+`second-<role>-assistant`, and any future stacked lane — share their
+main role's discipline, skill file, and beads label; only the lock
+file, report subdirectory, and claim string differ per lane. The lane
+mechanism is canonical in `skills/role-lanes.md`.
 
 - `operator` — implementation; default agent: Codex.
-- `operator-assistant` — extra implementation/audit capacity
-  under operator discipline; default agent: any.
-- `second-operator-assistant` — a second extra implementation/audit
-  capacity lane under operator discipline; default agent: any.
+  Assistant lanes: `operator-assistant`, `second-operator-assistant`.
 - `designer` — architecture, skills, reports; default agent: Claude.
-- `designer-assistant` — extra design/audit capacity under
-  designer discipline; default agent: Codex.
-- `second-designer-assistant` — a second extra design/audit
-  capacity lane under designer discipline; default agent: any.
+  Assistant lanes: `designer-assistant`, `second-designer-assistant`.
 - `system-specialist` — OS / platform / deploy; default agent: any.
-- `system-assistant` — extra OS/platform/host capacity under
-  system-specialist discipline; default agent: any.
-- `second-system-assistant` — a second extra OS/platform/host
-  capacity lane under system-specialist discipline; default
-  agent: any.
+  Assistant lanes: `system-assistant`, `second-system-assistant`.
 - `poet` — writing as craft; default agent: any.
-- `poet-assistant` — extra writing, citation, and publishing
-  capacity under poet discipline; default agent: any.
+  Assistant lane: `poet-assistant`.
 
-Each agent must know its role before claiming or editing. The
+Each agent must know its lane before claiming or editing. The
 coordination protocol is `protocols/orchestration.md`; the
 helper is `tools/orchestrate`.
 

@@ -66,6 +66,7 @@ the roles that own it.
 - `ESSENCE.md`
 - `lore/AGENTS.md`
 - `protocols/orchestration.md`
+- `skills/role-lanes.md`
 - `skills/autonomous-agent.md`
 - `skills/beauty.md`
 - `skills/naming.md`
@@ -80,7 +81,9 @@ the roles that own it.
 **Role contracts**
 
 - `skills/poet.md` (this skill)
-- `skills/poet-assistant.md`
+
+Assistant lanes share their main role's skill; the lane mechanism
+is canonical in `skills/role-lanes.md`.
 
 **Craft discipline**
 
@@ -158,19 +161,34 @@ poet's discipline is to not paper over a citation gap.
 
 ---
 
-## Working with poet-assistant and other roles
+## Working with poet's assistant lane
 
-Poet-assistant is a second poet-shaped lane. It reads this skill,
-`skills/prose.md`, `skills/naming.md`, the target writing surface's
-repo instructions, and lore's `substack/basic-usage.md` when the
-work touches publication. It claims its own paths through
-`tools/orchestrate claim poet-assistant ...` and writes reports in
-`reports/poet-assistant/`.
+`poet-assistant` is an additional lane under the poet-discipline pool.
+It shares this skill's discipline, required reading, owned area, and
+beads label; only the lock file (`poet-assistant.lock`), report
+subdirectory (`reports/poet-assistant/`), and claim string differ. The
+mechanism is canonical in `skills/role-lanes.md`.
 
-Designer-assistant can help with bounded design-adjacent support
-around reports, citations, and cross-references. Operator-assistant
-can help with prose-adjacent tool work when the task is
-implementation-shaped. Both follow the poet's repo conventions for
+Good poet-lane work has a concrete boundary: one essay, one citation
+family, one bibliography or OCR pass, one Substack post preparation,
+one prose audit report, or one mechanical wording or house-style
+sweep. When a primary source exists, frame it and let it speak rather
+than replacing it with paraphrase — for TheBookOfSol, follow the
+repo's Sanskrit-first quote convention and the bibliography/library
+split. Before running Substack commands, read lore's
+`substack/basic-usage.md`; use the documented CLI surface rather than
+guessing private API behavior from memory.
+
+If the work becomes a structural writing decision rather than a
+bounded support pass, the lane writes a report that names the open
+question and hands it to poet or the user.
+
+## Working with other disciplines' lanes
+
+Designer's assistant lanes can help with bounded design-adjacent
+support around reports, citations, and cross-references. Operator's
+assistant lanes can help with prose-adjacent tool work when the task
+is implementation-shaped. Both follow the poet's repo conventions for
 the writing surface and write reports under their own role
 subdirectories.
 
@@ -219,12 +237,10 @@ missing.
   applies to prose as well as code.
 - this workspace's `skills/skill-editor.md` — how skills are
   written and cross-referenced.
-- this workspace's `skills/designer-assistant.md` — design-shaped
-  auxiliary workforce
-- this workspace's `skills/operator-assistant.md` — operator-shaped
-  auxiliary workforce
-- this workspace's `skills/poet-assistant.md` — poet-shaped
-  auxiliary workforce role.
+- this workspace's `skills/role-lanes.md` — how assistant lanes
+  stack under a main role.
+- this workspace's `skills/designer.md`, `skills/operator.md`,
+  `skills/system-specialist.md` — sister main-role skills.
 - this workspace's `protocols/orchestration.md` — claim flow
   for the poet role.
 - TheBookOfSol's `AGENTS.md` — the most-developed writing
