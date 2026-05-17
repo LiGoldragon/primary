@@ -1,0 +1,29 @@
+[package]
+name         = "orchestrate-cli"
+version      = "0.1.0"
+edition      = "2024"
+rust-version = "1.85"
+license      = "MIT OR Apache-2.0"
+publish      = false
+description  = "Workspace coordination helper — thin client over signal-persona-mind's role/claim vocabulary. Replaces the shell tools/orchestrate during the shell-helper era; routes through persona-mind once that lands."
+
+[lib]
+name = "orchestrate_cli"
+path = "src/lib.rs"
+
+[[bin]]
+name = "orchestrate"
+path = "src/bin/orchestrate.rs"
+
+[dependencies]
+signal-persona-mind = { git = "https://github.com/LiGoldragon/signal-persona-mind.git", branch = "main" }
+nota-codec          = { git = "https://github.com/LiGoldragon/nota-codec.git", branch = "main" }
+thiserror           = "2"
+
+[dev-dependencies]
+tempfile = "3"
+
+[lints.rust]
+unsafe_code = "forbid"
+unused      = { level = "warn", priority = -1 }
+dead_code   = "warn"
