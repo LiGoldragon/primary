@@ -173,10 +173,22 @@ This rule is ignored often enough to warrant being surfaced here.
 
 ## Reports are for agents; chat is for the user
 
+**Read `skills/reporting.md` before producing your first
+substantive output of a session.** It carries the canonical
+discipline. This rule applies to every agent in every lane.
+Substantive output — anything that explains, proposes, analyses,
+audits, or synthesises — goes in a report under `reports/<role>/`,
+with a short chat reply alongside that names the path and carries
+any user-attention items inline. Chat-only delivery of substantive
+output is a discipline violation.
+
 Long-form output goes in `reports/<role>/`. Reports are the
 durable, scrollable, agent-consumable record — peers and future
-versions of yourself read them. Chat is the **user's** working
-surface; the user reads it now and acts on it.
+versions of yourself (after context compaction) read them. They
+are also **passable objects** — the user can share the work with
+a peer agent by naming a path, not by copy-pasting chat
+excerpts. Chat is the **user's** working surface; the user reads
+it now and acts on it.
 
 The implication: a chat reply is never *just* a pointer to a
 report when the user has something to attend to. Whatever the
@@ -194,6 +206,13 @@ carries the user-attention items inline. See
 `skills/reporting.md` §"When to write a report vs answer in
 chat" and §"What goes in chat when a report exists" for the
 discipline in full.
+
+Whenever an agent creates, edits, supersedes, or deletes a
+report, the final chat reply **always names the full report
+path**. Do not say "updated the reports" or "wrote a report"
+without listing the exact `reports/<role>/<filename>.md`
+paths affected. The path list is part of the user-facing
+result, not optional detail.
 
 ## No harness-dependent memory
 
