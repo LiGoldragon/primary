@@ -14,6 +14,24 @@ References:
 - `reports/designer-assistant/99-review-current-designer-204-kameo-lifecycle.md` — /204 review
 - kameo branch `kameo-push-only-lifecycle` commit `1329a646`
 
+## 0. Staleness note — added 2026-05-17
+
+This report was written against operator/130 at kameo
+`1329a646`. The fork has advanced through `565ff25e`,
+`04f6e2ab`, and `22514f7c` (current head). The two HIGH
+correctness gaps named in §3.1 below are **now closed** in
+the current fork — verified in `reports/designer/206` §7.4
+and `reports/designer-assistant/103` §1.
+
+**Use this report for the migration *patterns* (§2, §4) and
+the operational concerns (§3.3-§3.7). Do NOT use the §0
+"wait for next operator pass" conclusion — it's superseded.**
+
+The fresher migration handoff is:
+- `reports/operator/132-kameo-component-migration-plan.md`
+- `reports/designer-assistant/103-kameo-lifecycle-component-migration-plan.md`
+- `reports/designer-assistant/104-review-operator-132-kameo-component-migration-plan.md`
+
 ## 0. TL;DR
 
 **Public usage is affected — three breaking changes, one silent
@@ -311,7 +329,18 @@ Prefer `outcome.reason` over `_legacy_reason`.
 
 ## 3. Things this question didn't ask about
 
-### 3.1 The HIGH gaps in operator/130 are adoption blockers
+### 3.1 ~~The HIGH gaps in operator/130 are adoption blockers~~ (CLOSED)
+
+**Status update 2026-05-17**: both HIGH gaps below are now
+closed in the current fork (`22514f7c`).
+- Shared-mailbox deadlock → closed by `565ff25e` (split control lane).
+- Admission race across restart → closed by `565ff25e` (generation guard).
+- Plus three follow-up items via `04f6e2ab` + `22514f7c`. See
+  `reports/designer/206` §7.4 for status.
+
+The original-text concerns are preserved below for historical
+context but no longer block Persona adoption.
+
 
 Per DA/98:
 
