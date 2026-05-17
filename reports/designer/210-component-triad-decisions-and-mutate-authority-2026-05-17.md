@@ -189,63 +189,156 @@ contract.
 
 ---
 
-## 4 · Q2 — `persona-terminal`'s nine binaries (deferred to follow-up)
+## 4 · Q2 — `persona-terminal`'s ten binaries (correction + consolidation plan)
 
 The `/209` audit quoted "five CLIs"; that came from reading the ARCH's
-code map. The actual `Cargo.toml` ships **nine binaries**:
+code map. The actual `Cargo.toml` ships **ten binaries** (I undercounted
+twice — the ARCH code map was stale, and a `-validate-capture` helper
+was also added). And — load-bearing correction to my earlier reply —
+**the two-daemon shape is not legitimate either**: there should be
+**one daemon**, full stop.
 
-| Binary | Plane | Conformance to triad |
+### The current ten
+
+| Binary | Plane | Today's role |
 |---|---|---|
-| `persona-terminal-daemon` | — (daemon) | ✅ PTY-owning daemon |
-| `persona-terminal-supervisor` | — (daemon) | ✅ Registry frontend daemon |
-| `persona-terminal-view` | data | ✅ legitimate exception (data-plane attacher; raw bytes) |
-| `persona-terminal-send` | data | ✅ legitimate exception (data-plane raw input sender) |
-| `persona-terminal-capture` | control (Signal) | ❌ should be a subcommand of one CLI |
-| `persona-terminal-type` | control (Signal) | ❌ should be a subcommand of one CLI |
-| `persona-terminal-sessions` | control (Signal, read-only) | ❌ should be a subcommand of one CLI |
-| `persona-terminal-resolve` | control (Signal, read-only) | ❌ should be a subcommand of one CLI |
-| `persona-terminal-signal` | control (Signal) | ❌ should be the one CLI |
+| `persona-terminal-daemon` | daemon | PTY-owning daemon — **one process per active terminal session**, embeds `terminal-cell` library, binds `control.sock` + `data.sock` |
+| `persona-terminal-supervisor` | daemon | Registry frontend — knows about all per-terminal daemons; forwards Signal frames by name resolution from component Sema |
+| `persona-terminal-view` | data | viewer attaches to a terminal's `data.sock` (raw bytes) |
+| `persona-terminal-send` | data | raw input sender on `data.sock` |
+| `persona-terminal-capture` | control (Signal) | captures transcript bytes |
+| `persona-terminal-type` | control (Signal) | injects programmatic input |
+| `persona-terminal-sessions` | control (Signal, read-only) | session inspection |
+| `persona-terminal-resolve` | control (Signal, read-only) | name → control socket path resolver |
+| `persona-terminal-signal` | control (Signal) | generic Signal request client |
+| `persona-terminal-validate-capture` | control (Signal) | capture-validator helper |
 
-The user's hypothesis was right: there's no good architectural reason
-to have **five separate Signal-control-plane CLI binaries** for one
-component. The triad discipline says one CLI per daemon. Each of
-`capture`, `type`, `sessions`, `resolve`, `signal` is a single-purpose
-binary; they all open the same component's contract socket; they all
-parse a request and print a reply. The natural shape is one CLI —
-`terminal` — that accepts any `signal-persona-terminal` request as
-NOTA on argv/stdin and prints the typed NOTA reply. The five behaviors
-become NOTA payload variants the user types, exactly as `message`
-distinguishes `Send` from `Inbox` today.
+### Why the two-daemon shape is wrong
 
-The two **data-plane attachers** (`view`, `send`) stay separate
-binaries — they don't speak Signal, they attach to the data socket
-for raw bytes, and the triad's §"Named carve-outs" specifically
-permits this for high-bandwidth byte paths. The two daemons stay as
-they are; whether `persona-terminal-supervisor` and
-`persona-terminal-daemon` should merge is a separate architectural
-question (the supervisor is a registry frontend that forwards to many
-PTY-owning daemons; this looks legitimate but I haven't audited it
-deeply).
+The current layering is:
 
-**Remedy proposal** (for the user to schedule):
+1. **`terminal-cell` repo** ships its own `terminal-cell-daemon`
+   binary — one daemon per terminal session, owns one PTY.
+2. **`persona-terminal-daemon`** *also* owns one PTY per process —
+   it embeds the `terminal-cell` library and spawns its own
+   `TerminalCell` actor. Per the persona-terminal ARCH §1.5:
+   *"`persona-terminal-daemon` is a PTY-owning daemon. It embeds the
+   `terminal_cell` library to spawn a `TerminalCell` actor… binds
+   `--control-socket` and `--data-socket`."* That's **one
+   persona-terminal-daemon process per terminal session**.
+3. **`persona-terminal-supervisor`** is a *registry frontend* —
+   binds one `signal-persona-terminal` socket, resolves
+   names from component Sema, forwards Signal frames to whichever
+   per-terminal daemon is named.
 
-1. Collapse `capture`, `type`, `sessions`, `resolve`, `signal` into
-   one `persona-terminal` binary (or just `terminal`) that accepts
-   one NOTA `signal-persona-terminal` request and prints the typed
-   NOTA reply.
-2. Retire the five superseded binaries.
-3. Keep `view` and `send` (data-plane attachers, named exception).
-4. File the witness test
-   `persona-terminal-cli-has-exactly-one-signal-peer` (currently
-   trivially-true for the five separate ones; meaningful once
-   collapsed).
+So there are conceptually three layers of daemon: terminal-cell's
+own daemon binary, one persona-terminal-daemon per session, and one
+supervisor knowing about all of them. The **supervisor exists
+because the architecture made each terminal its own daemon, which
+required a registry to find them.** Collapse the per-terminal
+daemons and the supervisor's reason to exist evaporates.
 
-I have **not** done this in this pass — it's an implementation arc
-that belongs in an operator-lane or system-specialist-lane bead. The
-right next step is a designer-assistant or operator audit report
-naming the consolidation plan + Nix flake updates. I'd file a bead
-under `role:operator` or `role:designer-assistant` depending on
-whether the user wants design or implementation first.
+The triad discipline says **one daemon per component**. A terminal
+session is not a component — it is *state the component manages*,
+exactly like a work-graph item in persona-mind, a channel in
+persona-router, or a message in persona-message. None of those
+spawn one daemon per work item; the daemon holds the state in
+sema-engine + per-state actors.
+
+### What the right `persona-terminal` daemon does
+
+One daemon for the whole component:
+
+1. **Binds the persona-terminal Signal control socket** — one
+   socket for the entire component. Receives
+   `signal-persona-terminal` frames from any client. Resolves
+   `TerminalName → ActorRef<TerminalCell>` *in-process* and forwards
+   the frame to that actor's mailbox.
+2. **Maintains the terminal-session registry in its own
+   `sema-engine` database** — names, child PIDs, creation time,
+   prompt-pattern registrations, input-gate state history, viewer
+   attachment state, session-archive records. Same shape as every
+   other triad daemon's durable state.
+3. **Spawns one Kameo `TerminalCell` actor per active terminal
+   session.** Each actor owns one child process group, one PTY
+   master fd, one transcript log (append-only via the existing
+   `TranscriptScriber` worker pattern), one viewer attachment, one
+   prompt-pattern + input-gate state, the per-terminal worker
+   lifecycle (output reader, viewer fanout, scriber, input writer).
+   `terminal-cell` is consumed as a *library only*, providing
+   typed PTY primitives.
+4. **Binds one data socket per active terminal** — these are
+   short-lived, per-actor sockets at e.g.
+   `${XDG_RUNTIME_DIR}/persona-terminal/<terminal-name>/data.sock`.
+   The viewer attacher dials the named terminal's data socket
+   directly; raw bytes pass through `TerminalInputWriter` /
+   `ViewerFanout` as today. The data plane stays out of the actor
+   mailbox per `terminal-cell/ARCHITECTURE.md` §3.2 "Data-plane
+   latency".
+5. **Answers `signal-persona::SupervisionRequest` from the persona
+   engine manager** via a canonical `SupervisionPhase` actor in
+   the daemon's tree (same as every other Persona triad daemon).
+6. **Handles cross-terminal coordination** that today has no
+   home: focus tracking, broadcast events, restart-all semantics.
+   Each is mailbox-local in the consolidated daemon; cross-process
+   coordination disappears as a problem.
+
+### Why crash-isolation does not justify the per-terminal daemon
+
+The most plausible argument for per-terminal daemons would be OS-level
+process isolation — if one terminal's PTY hangs or its actor panics,
+the others survive. Kameo's supervision discipline already provides
+crash isolation **inside** one daemon: a panicking actor is restarted
+under its supervisor; other actors are unaffected. PTY-level
+pathologies (runaway child, syscall hang) cause the *worker thread*
+inside the actor to misbehave, not the whole daemon — and the existing
+worker-lifecycle observation (`TerminalWorkerLifecycle` events per
+terminal-cell ARCH §3.8) is the mechanism that surfaces these as
+queryable actor state.
+
+If a *specific* terminal needs OS-level isolation (e.g., for security
+reasons — a session running as a different user), that's a deployment
+choice for *that one terminal*, expressed via Kameo's
+spawn-in-subprocess facility or an equivalent IPC plumbing. It's not
+the default architecture. The default is one daemon, many TerminalCell
+actors.
+
+### The consolidated binary count: 3 (down from 10)
+
+| Binary | Plane | Role |
+|---|---|---|
+| `persona-terminal-daemon` | daemon | The one daemon. Binds the component's Signal control socket, owns the sema-engine registry, supervises N TerminalCell actors. |
+| `persona-terminal` | control (Signal) | The one CLI. Accepts any `signal-persona-terminal` request as NOTA on argv/stdin; prints the typed NOTA reply. Subsumes `capture`, `type`, `sessions`, `resolve`, `signal`, `validate-capture`. |
+| `persona-terminal-view` | data | Data-plane viewer attacher (raw bytes, named carve-out per triad §"Named carve-outs"). May also absorb `send` if the unified attach is interactive. |
+
+`terminal-cell` becomes a **library only** at the production-Persona
+layer. Its own daemon binary (`terminal-cell-daemon`) can stay for
+independent testing of the PTY primitive in isolation, but it's not
+on the production Persona path.
+
+### Remedy proposal
+
+This is a substantial implementation arc, not a fit for this report's
+pass. The right shape is a focused designer report (this one is
+broader) plus an implementation bead. The shape:
+
+1. **Designer report** (next): "persona-terminal consolidation —
+   one daemon per component" — names the actor topology, the
+   sema-engine registry shape, the per-terminal data-socket
+   lifecycle, the migration sequence for existing persona-terminal
+   consumers (router, harness, introspect).
+2. **Bead** (after designer report lands): `role:operator` for the
+   consolidation work — embed terminal-cell as library only; collapse
+   ten binaries to three; retire the supervisor binary and its
+   registry-frontend code; convert the per-terminal daemon's
+   lifecycle into per-actor Kameo supervision.
+3. **Witness tests** added in lockstep:
+   `persona-terminal-component-has-exactly-one-daemon-binary`,
+   `persona-terminal-cli-has-exactly-one-signal-peer`,
+   `persona-terminal-daemon-supervises-one-actor-per-terminal-session`.
+
+I will draft the designer report as the natural next deliverable
+unless you redirect.
 
 ---
 
