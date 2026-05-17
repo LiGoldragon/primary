@@ -31,6 +31,33 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
 5. **The repo's `AGENTS.md` + `skills.md`** when editing inside
    a repo under `repos/`.
 
+## Skill importance — read the higher tiers first
+
+Workspace skills aren't equal weight. The role-specific lists in
+`skills/<role>.md` enumerate everything a lane reads; this table ranks
+the cross-cutting skills by how much load they carry across the whole
+workspace. **A skill at tier 0 or 1 should reshape what you do next; a
+tier-3 skill is consulted when the topic comes up.**
+
+| Tier | What | Skill | Why this tier |
+|---|---|---|---|
+| 0 | **Apex** — intent upstream of everything | `ESSENCE.md` | Every rule below bows to it. Conflicts resolve toward intent. |
+| 1 | **Universal architecture** | `skills/component-triad.md` | The shape *every* stateful component in this workspace takes: daemon + thin CLI + `signal-*` contract. Three invariants determine whether a design is in the system at all. Read once, then recognize the shape in every component ARCH. Deliberately short so agents actually read it. |
+| 2 | **Universal craft** | `skills/abstractions.md` (verb-belongs-to-noun) · `skills/naming.md` (full English words) · `skills/beauty.md` (the criterion) · `skills/push-not-pull.md` (no polling) · `skills/reporting.md` (chat vs reports) | Apply on every keystroke and every report. Drift here propagates faster than drift in tier 3. |
+| 3 | **Do-X** — consulted by topic | `skills/contract-repo.md` (wire design) · `skills/micro-components.md` (crate organization) · `skills/actor-systems.md` (daemon design) · `skills/kameo.md` (actor implementation) · `skills/rust-discipline.md` (Rust craft) · `skills/contract-repo.md` (verb spine) | Read when designing or auditing the named surface. |
+| 4 | **Mechanism** — supports the role lanes | `skills/role-lanes.md` · `skills/feature-development.md` · `skills/jj.md` · `skills/skill-editor.md` · `skills/architecture-editor.md` · `skills/context-maintenance.md` | Procedural; consult when the lane mechanism, worktree, version-control, or skill-editing question comes up. |
+
+`skills/component-triad.md` (tier 1) is the load-bearing addition: it
+names the daemon-and-thin-CLI-and-`signal-*`-contract pattern that
+every component already follows in practice but that was previously
+restated fragment-by-fragment in each component's `ARCHITECTURE.md`.
+**If you can read only one skill, read that one.**
+
+The tier list is not exhaustive — `skills/` holds more files than this
+table names. Skills not listed are tier 3 or 4 by default; reach the
+role's required-reading list (`skills/<role>.md` §"Required reading")
+for the exhaustive enumeration.
+
 ## Nix store search is forbidden
 
 The Nix store is not a workspace search surface. Do not run

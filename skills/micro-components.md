@@ -157,10 +157,17 @@ When you reach for a new feature:
 3. **Default to a new repo.** Cost: a `Cargo.toml`, a `flake.nix`,
    a few minutes of plumbing. Benefit: a permanent boundary the
    build system enforces.
-4. **Define the protocol crate first** if the new component will
+4. **If the new capability is stateful, default to the triad
+   shape.** Per `skills/component-triad.md`: one runtime repo
+   carrying a long-lived daemon binary + thin CLI client, one
+   separate `signal-<component>` contract repo for the typed wire
+   vocabulary. The triad is what gives a stateful component a
+   subscribable surface, a debug bridge, and a typed boundary
+   that peers can speak directly without going through a CLI.
+5. **Define the protocol crate first** if the new component will
    have multiple consumers. Implementation crates depend on the
    protocol crate, not on each other.
-5. **Each component carries its own `ARCHITECTURE.md`,
+6. **Each component carries its own `ARCHITECTURE.md`,
    `AGENTS.md`, and `skills.md` at its repo root.**
 
 The boundary is filesystem-enforced; nothing else holds.
@@ -288,6 +295,9 @@ components that compose*. There is no third path that scales.
 
 ## See also
 
+- this workspace's `skills/component-triad.md` — the shape every
+  *stateful* component takes inside the per-capability boundary
+  this skill enforces: daemon + thin CLI + `signal-*` contract.
 - this workspace's `skills/abstractions.md` — every reusable verb
   belongs to a noun; same discipline at the type level.
 - this workspace's `skills/beauty.md` — when a crate's structure

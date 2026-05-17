@@ -311,14 +311,25 @@ type; the difference is the length of `operations`.
 
 One-line semantics:
 
-| Verb | Meaning |
-|---|---|
-| `Assert` | Insert/append a typed fact/event/row. Boundary-visible write. |
-| `Mutate` | Replace/transition a record at stable identity. Boundary-visible write. |
-| `Retract` | Tombstone/remove/retract a typed fact. Boundary-visible write. |
-| `Match` | Pattern/range/key query over typed tables. Base read. |
-| `Subscribe` | Initial state plus commit deltas (push, not poll). Streaming lifecycle. |
-| `Validate` | Dry-run request through validators/planner without commit. Execution mode. |
+| Verb | Meaning | Authority direction |
+|---|---|---|
+| `Assert` | Insert/append a typed fact/event/row. Boundary-visible write. | bottom-up or peer (a new fact entered the system) |
+| `Mutate` | Replace/transition a record at stable identity. **An authority order — "change this; I do not care what you think."** Issuer holds *possibly-mutated* state until the recipient confirms; only then advances to the next order. | top-down (higher authority → lower authority) |
+| `Retract` | Tombstone/remove/retract a typed fact. Same authority shape as `Mutate` when the retraction is ordered from above. | top-down when ordered; peer when self-retracting |
+| `Match` | Pattern/range/key query over typed tables. Base read. | any direction |
+| `Subscribe` | Initial state plus commit deltas (push, not poll). Streaming lifecycle. **Observation flows up-tree; authority Mutate flows down-tree** (per `skills/component-triad.md` §"The six verbs"). | observer ↔ producer (typically up-tree) |
+| `Validate` | Dry-run request through validators/planner without commit. Execution mode. | any direction |
+
+The **authority direction** column is load-bearing for `Mutate`. The
+verb is how Persona maintains correctness top-down: persona-mind issues
+`Mutate` orders to `persona-orchestrate`; `persona-orchestrate` issues
+`Mutate` orders to `persona-router` (e.g. install this channel grant)
+and to `persona-harness` (e.g. spawn this lane with these rights). Each
+recipient *obeys and confirms*; the issuer transitions its own state
+from *possibly-mutated* to *now-mutated* only on the confirmation,
+which is what makes the next downstream order safe. See
+`skills/component-triad.md` §"Authority chain — worked example" for the
+worked Persona case.
 
 **Atomic batching is structural.** A `Request<Payload>` whose
 `operations` has length > 1 commits or aborts as one unit; each
