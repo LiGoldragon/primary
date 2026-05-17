@@ -201,18 +201,12 @@ The hardening list is unchanged and still applies:
 - Disable core dumps for the daemon (`RLIMIT_CORE = 0`).
 - Log-discipline so passphrases never reach logs.
 
-This decision resolves SYS/22 §4.5 and §11.6 (the
-"plaintext-passphrase defense-in-depth" open item from the
-predecessor of this report). It commits the owner-signal-criome
-contract to a session-encrypted shape from day one; specific
-cipher choices land in that contract's design pass (§11.11).
-
-The absorption of this commitment into `criome/ARCHITECTURE.md`
-§6 ("Trust model and key distribution") prose is queued. That
-ARCH paragraph currently describes only the passphrase-submission
-flow without naming the ECDH-session wrapping; the prose update
-follows when the operator-assistant lane releases its lock on the
-criome repo (currently held for `primary-at7x` implementation).
+This decision resolves SYS/22 §4.5 (the
+"plaintext-passphrase defense-in-depth" question). It commits the
+owner-signal-criome contract to a session-encrypted shape from day
+one; specific cipher choices land in that contract's design pass
+(§11.8). The ARCH-prose absorption into `criome/ARCHITECTURE.md`
+landed in op-149's commit `2b74697` (see §10.1).
 
 ### 2.2 What this model is NOT a defence against
 
@@ -426,6 +420,50 @@ with a typed reason naming the gap).
 
 ---
 
+## 10.1 · Implementation state — op-149
+
+`reports/operator-assistant/149-criome-designer-214-implementation-pass-2026-05-17.md`
+records the first operator-assistant pass against this design.
+Substance landed:
+
+In `signal-criome` (commits `9dff026` *model authorization policy
+satisfaction* + `bd98b9d` *document authorization policy evidence*):
+
+- `RequiredSignatureThreshold(u16)` typed newtype.
+- `AuthorizationPolicyClass` closed enum (Simple / Quorum).
+- `AuthorizationPolicySatisfaction { policy_class, required_signature_threshold, ... }`
+  — the satisfied-policy evidence that travels with grants.
+- `AuthorizationGrant` carries `policy_satisfaction` plus the
+  signers that satisfied it.
+- `AuthorizationStatus::Signing` for in-flight signature work.
+- `AuthorizationDenial { source: AuthorizationDenialSource, reason:
+  AuthorizationDenialReason }` separating policy-refusal from
+  signer-refusal.
+- Round-trip witnesses for every new variant; absence-of-owner-
+  class-operations witness.
+
+In `criome` (commit `2b74697` *add routed authorization
+coordinator skeleton*):
+
+- `AuthorizationCoordinator` Kameo actor under `CriomeRoot`,
+  routing the routed-authorization request variants.
+- Sema tables for authorization request state, signature
+  solicitations, submitted signatures.
+- Owner socket bind path sets mode `0600`; witness test asserts
+  this.
+- ECDH/AEAD owner-session wording landed in
+  `criome/ARCHITECTURE.md` and `criome/skills.md`; Nix check fails
+  if the stale plaintext-passphrase wording is reintroduced. (This
+  is the ARCH-prose absorption that §2.1 said was queued — now
+  landed.)
+
+This closes the architecture-side of §11.6 (decided +
+ARCH-absorbed), §11.7 (denial-source split), and §11.8 (threshold
+on grants). The remaining items below are either still open from
+the design pass or new known-debt items op-149 surfaced.
+
+---
+
 ## 11 · Open items
 
 The architecture is settled enough for implementation to proceed
@@ -440,13 +478,15 @@ must precede later phases.
 | 11.3 System criome's role | SYS/22 Q2 | Full participant vs machine identity only. Lean: full participant under operator-set policy. Needs confirmation. |
 | 11.4 RegisterIdentity placement | This record §7 | Owner-class moves to owner-signal-criome; third-party variant stays on signal-criome by default; needs explicit decision. |
 | 11.5 Escalation-to-approve configurability | SYS/22 Q7 | Per-policy boolean vs scope-pattern predicate vs part of deferred schema. |
-| 11.6 ~~Plaintext-passphrase defense-in-depth~~ | SYS/22 §4.5 | **Decided** — owner-signal-criome session uses an ECDH-derived AEAD session key (§2.1). Specific cipher suite (Noise XX vs hand-rolled X25519 + HKDF-blake3 + ChaCha20-Poly1305/AES-GCM) belongs to the owner-signal-criome contract design (§11.11). |
-| 11.7 Outright-refuse vs signature-denial reply distinction | /212 §3.3 | Split into `AuthorizationRefused` (policy refused without signing) and `AuthorizationDenied` (signatures said no), or carry a closed `DecisionPath` field. |
-| 11.8 Quorum threshold representation in `AuthorizationGrant` | /212 §3.4 | The threshold spec the signatures satisfied must travel with the grant for downstream verification. |
-| 11.9 Verifier policy vs originator policy | SYS/22 Q10 | When peer B verifies a `SignedObject` from peer A, does B check signers-acceptable-by-A's-policy or B's-policy? Likely: `SignedObject` carries the satisfied policy spec; B verifies signatures-valid AND spec-acceptable-by-B's-policy-for-this-action. Needs wire definition. |
-| 11.10 SignedObject canonical bytes | SYS/141 Q3, SYS/22 Q5 | Which fields are inside the signed digest (request_id, target cluster/node, action, expiry, anti-replay nonce, issuing criome identity). Cross-lane (designer + system-specialist). |
-| 11.11 owner-signal-criome contract sketch | This record | Request/reply vocabulary for passphrase submission, peer registration, policy mutation, escalation-to-approve prompts and replies. Plus the ECDH-handshake-then-AEAD-encrypted-session wire shape from §2.1 (cipher-suite choice belongs to this design). Next designer report. |
-| 11.12 Operator-offline-mid-quorum | SYS/22 Q12 | Pending-authorization state needs to track who is solicited but not yet responded so the operator on next login sees what awaits them. Spec gap in `ObserveAuthorization`. |
+| 11.6 Verifier policy vs originator policy | SYS/22 Q10 | When peer B verifies a `SignedObject` from peer A, does B check signers-acceptable-by-A's-policy or B's-policy? Likely: `SignedObject` carries the satisfied policy spec; B verifies signatures-valid AND spec-acceptable-by-B's-policy-for-this-action. Needs wire definition. |
+| 11.7 SignedObject canonical bytes | SYS/141 Q3, SYS/22 Q5 | Which fields are inside the signed digest (request_id, target cluster/node, action, expiry, anti-replay nonce, issuing criome identity). Cross-lane (designer + system-specialist). |
+| 11.8 owner-signal-criome contract sketch | This record | Request/reply vocabulary for passphrase submission, peer registration, policy mutation, escalation-to-approve prompts and replies. Plus the ECDH-handshake-then-AEAD-encrypted-session wire shape from §2.1 (cipher-suite choice — Noise XX vs hand-rolled X25519 + HKDF-blake3 + ChaCha20-Poly1305/AES-GCM — belongs to this design). Next designer report. |
+| 11.9 Operator-offline-mid-quorum | SYS/22 Q12 | Pending-authorization state needs to track who is solicited but not yet responded so the operator on next login sees what awaits them. Spec gap in `ObserveAuthorization`. |
+| 11.10 `ObserveAuthorization` push stream | op-149 known debt | The current `AuthorizationCoordinator` returns a snapshot only; no push deltas. This is a polling-shape gap per `ESSENCE.md` §"Polling is forbidden" — must land before consumers can subscribe operationally, and is the prerequisite for §11.9 (operator-offline visibility). |
+| 11.11 Typed slot for authorization requests | op-149 known debt | Authorization request slots are currently derived from the digest string. Per `ESSENCE.md` §"Infrastructure mints identity": identity is the slot; the store mints, the agent receives in the reply. Replace with a `Slot<AuthorizationRequest>` allocator before authorization state becomes operationally important. |
+| 11.12 Real signature verification in `VerifyAuthorization` | op-149 known debt | Currently checks digest equality only. Full BLS verification against the registered signers' public keys is required for the "permission comes from signatures" claim to hold. |
+| 11.13 Master-key signing for simple-self-signed policy | op-149 known debt | The coordinator records pending state and stores solicitation/submission records but does not sign with criome's master key. The first signing path (simple-self-signed policy → `AuthorizationGrant` with master-key signature) is the most load-bearing next implementation slice. |
+| 11.14 Replay-guard + expiry enforcement | op-149 known debt | `criome/ARCHITECTURE.md` §8 names replay protection and expiry as constraints; the coordinator skeleton does not yet enforce either. |
 
 ---
 
@@ -459,13 +499,16 @@ must precede later phases.
   signing client with its own Sema database for signing-client
   keypairs) is superseded.
 - **`primary-at7x`** ("criome: add routed authorization contract
-  and daemon skeleton") — currently being implemented by
-  operator-assistant lane per /213's design pass (lock holds the
-  criome and signal-criome repos at this report's writing). The
-  ARCH text in commits `4474bb8` (criome) and `723e6c8`
-  (signal-criome) is what they're implementing against. No bead
-  change; the implementation continues, and the open items in §11
-  surface as the implementation reaches each affected slice.
+  and daemon skeleton") — in flight. Op-149's pass landed the
+  contract types, the coordinator actor skeleton, the Sema state
+  tables, socket-mode `0600` witness, and the ECDH/AEAD ARCH text
+  (commits `9dff026`, `bd98b9d` on `signal-criome`; `2b74697` on
+  `criome`). Bead remains open; the load-bearing remaining slices
+  are §11.10 (push stream), §11.11 (typed slot), §11.12 (real
+  signature verification), §11.13 (master-key signing), §11.14
+  (replay-guard + expiry). Bead description should be refreshed
+  to name those slices so the next operator-assistant pass picks
+  up unambiguously.
 - **New bead suggested**: *"design owner-signal-criome contract
   surface"* — `role:designer`, follows from §11.11.
 - **New bead suggested**: *"design cross-user-same-host criome
