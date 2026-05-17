@@ -25,11 +25,13 @@ Per brief 118 §6, this report names:
 2. **Verb → engine API table** — §1. All six verbs are
    verb-shaped methods on `Engine`; structural atomicity rides on
    `CommitRequest`.
-3. **Boilerplate list** — §3. The original audit listed three
-   patterns; falsification dissolved one (write-validation),
-   reframed one (stringly seams are component-side), and the
-   third (per-daemon match-on-variant dispatch) reads as normal
-   Rust pattern matching rather than painful boilerplate.
+3. **Component-side responsibilities** — §3. The original audit
+   framed three patterns as boilerplate; falsification + DA/119
+   §4 collapsed the framing. Match-on-variant dispatch is the
+   daemon's observable dispatch plane (not boilerplate);
+   receipt-to-reply shaping carries per-channel domain content
+   (not boilerplate); component-side write-validation dissolves
+   into a 3-line `match_records` composition (not boilerplate).
 4. **Recommendation** — §4. Keep sema-engine as is. The three
    helper APIs the first pass proposed (`validate_write`,
    `commit_multi`, `unsubscribe`) either dissolve through
@@ -241,8 +243,13 @@ consequential gap. Concrete: a `RoleClaim` Mutate that updates
 both the `claims` table and appends to the `activities` table
 needs cross-table atomicity. Today the consumer either does two
 separate commits (atomicity lost) or escapes through
-`storage_kernel()` (typed engine API bypassed). §4 names the
-`Engine::commit_multi` helper that closes this.
+`storage_kernel()` (typed engine API bypassed). §4.2 deferred
+the `Engine::commit_multi` helper per the falsification —
+schema redesign (express the operation on one table) is usually
+cleaner, and effectful operations should use durable pending
+state per
+`reports/designer-assistant/119-full-signal-executor-architecture-concept-2026-05-18.md`
+§4.7 rather than wider engine transactions.
 
 ### Q6. Are owner-signal operations first-class?
 
@@ -300,50 +307,64 @@ typed-error surface is honest.
 
 ---
 
-## §3 — Boilerplate / adapter code repeated in components
+## §3 — Component-side responsibilities
 
-Three patterns repeat across triad daemons.
+The first pass of this report framed three patterns as
+"boilerplate repeated across components" and proposed engine /
+macro additions to remove them. Falsification + DA/119 §4
+collapsed that framing: two of the three are component
+responsibilities that aren't boilerplate, and the third dissolved
+into existing API composition. The revised position retains the
+substance but drops the framing.
 
-### §3.A — Match-on-variant dispatch
+### §3.A — Match-on-variant dispatch is the dispatch plane
 
-Every daemon writes a `match request.payload() { Variant(_) => ... }`
-to route a typed payload to the right handler. The match
-re-enumerates information the macro already encodes (the variant
-exists; its verb is declared).
+Every triad daemon writes a `match request.payload() { Variant(_)
+=> ... }` to route typed payloads to the right plane. Worked
+example: `persona-mind/src/actors/dispatch.rs:55-119` has the full
+match across `MindRequest` variants — 26 arms, each delegating to
+a per-flow handler.
 
-Worked example: `persona-mind/src/actors/dispatch.rs:55-119` has
-the full match across all `MindRequest` variants — 26 arms, each
-delegating to a `self.<method>(envelope, trace)` call that itself
-unpacks the typed payload. The same shape repeats in every other
-component daemon that consumes `signal-core` frames.
+The first pass called this "boilerplate the macro should
+eliminate." Reading the dispatch with fresh eyes: **each arm names
+a flow and records trace nodes** (e.g.
+`MindRequest::SubmitThought` → `TraceNode::GRAPH_FLOW` →
+`self.submit_thought(envelope, trace)`). The Rust compiler catches
+missed variants on the closed `MindRequest` enum. The dispatch is
+part of the daemon's observable actor topology per
+`skills/actor-systems.md` and the witness shape per
+`skills/architectural-truth-tests.md` — not pattern-matching
+ceremony.
 
-What a macro extension could emit: a `MindDispatcher` trait with
-one method per request variant
-(`async fn handle_submit_thought(&self, payload: SubmitThought)
--> MindReply` etc.). The dispatch loop becomes
-`request.dispatch(&self).await`. Consumers implement the trait;
-the macro emits the routing.
+A macro-generated `<Channel>Dispatcher` trait would replace the
+match arms with trait method bodies; the routing semantics still
+appear once per variant. Net gain: keystrokes. Net loss: explicit
+topology. Per DA/119 §11 Q2 — defer until measured repetition
+appears, and the question lives in `signal-core-macros` if it
+lands, not in sema-engine.
 
-### §3.B — Engine-call-to-reply shaping
+### §3.B — Receipt → reply shaping carries domain content
 
 After the engine returns a typed receipt (`MutationReceipt`,
 `QuerySnapshot`, `SubscriptionReceipt`, `CommitReceipt`,
-`ValidationReceipt`), the daemon must shape it into a
-contract-typed reply payload. Today this happens in each
-component's reply-shaper code; the mapping is mechanical (the
-receipt carries the verb, table, key, snapshot; the reply carries
-some subset of those plus domain-specific fields).
+`ValidationReceipt`), the daemon shapes it into a contract-typed
+reply payload. Worked example:
+`persona-mind/src/actors/store/graph.rs` returns the kernel reply
+from a per-message handler; `PipelineReply::new(reply, trace)`
+wraps it; `ReplyShaper` maps it onto `MindReply::*`.
 
-Worked example: `persona-mind/src/actors/store/graph.rs` returns
-the kernel reply from a per-message handler; the
-`PipelineReply::new(reply, trace)` wraps it; the `ReplyShaper`
-actor maps it onto `MindReply::*`. Each component re-implements
-this collapse.
+The mapping has two parts: the engine-provided fields (verb,
+table, key, snapshot — mechanical) and the domain-specific
+fields (which fields of `MindReply::*` the receipt populates,
+plus per-channel domain content like the typed reply variant
+choice). The mechanical part is small; the domain part is
+per-channel by definition.
 
-This is unavoidable when the reply payload carries domain content
-beyond the engine receipt — but for the basic shape (mutation
-succeeded; here's the snapshot/key/verb), a contract-emitted
-default could absorb the common case.
+The first pass said "a contract-emitted default could absorb the
+common case." Reconsidered: the common case is small enough that
+emitting it as a default obscures more than it saves. The reply
+shaping is part of the daemon's `ReplyEventProjector` plane per
+DA/119 §4.8 — a component responsibility, not boilerplate.
 
 ### §3.C — Write validation (retracted)
 
