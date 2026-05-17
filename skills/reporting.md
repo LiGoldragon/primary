@@ -49,8 +49,13 @@ Two reasons reports exist at all:
    scrollable, searchable, linkable, persistent.
 2. **Agents reading later need the substance.** A future agent
    picking up the thread can't read your chat; they read the
-   report. Chat is for the user's now-action; the report is for
-   the agent's later-reference.
+   report. **This includes future versions of *yourself* after
+   context compaction** — your current context is ephemeral, but
+   the report on disk survives. Chat is for the user's now-action;
+   the report is for the agent's later-reference, by any agent
+   including your future self. Reports are also **passable
+   objects** — the user can hand the work off to a peer agent by
+   naming a path, instead of copy-pasting chat excerpts.
 
 ---
 

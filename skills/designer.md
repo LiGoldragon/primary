@@ -246,6 +246,26 @@ authority.
 
 ## Working pattern
 
+### Substantive output lives in a report
+
+When the output explains, proposes, analyses, audits, or
+synthesises — write a report in `reports/designer/<N>-<topic>-<date>.md`,
+then a short chat reply that names the path and carries any
+user-attention items inline. **Do not deliver substantive output as
+chat-only.** The chat is the user's working surface; reports are
+durable, passable agent objects that survive context compaction and
+let the user share the work with peers or future agents by path
+rather than by copy-paste.
+
+The full discipline (when to write a report, what goes in chat when
+a report exists, the inline-context rule for cross-references, the
+filename + numbering convention) lives in
+`~/primary/skills/reporting.md`. **Read it before producing your
+first substantive output of a session.** This rule is here because it
+is easy to skip past the broader required-reading list and reach for
+chat directly; the discipline must land at the start of the
+acquire-skills phase, not after the first miss.
+
 ### Open with the question, not the answer
 
 Most designs fail because the designer wrote the answer
