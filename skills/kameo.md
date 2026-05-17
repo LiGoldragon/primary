@@ -1020,6 +1020,12 @@ was removed rather than kept as a blocking actor.
 
 ## Anti-patterns and gotchas
 
+- **Unbounded `on_stop`.** An `on_stop` that awaits forever holds
+  the supervisor's restart sequence forever. The new lifecycle
+  contract makes this *more visible* (supervisors correctly wait
+  for terminal), not less dangerous. Bound async cleanup with
+  `tokio::time::timeout`; keep `Drop` impls on actor state
+  non-blocking (or document the bound explicitly).
 - **`tell`-ing a fallible handler.** A `Result::Err` from a
   `tell`'d handler crashes the actor by default. `ask` instead, or
   override `on_panic` to recover from `PanicReason::OnMessage`.

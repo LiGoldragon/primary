@@ -445,7 +445,14 @@ fork change that introduces an `ActorStateAbsence::Unknown`
 variant for the remote-disconnect case, and have
 `peer_disconnected()` use that.
 
-### 3.6 `on_stop` is unbounded — bound it explicitly per Persona actor
+### 3.6 ~~`on_stop` is unbounded — bound it explicitly per Persona actor~~ (MIGRATED)
+
+**Status update 2026-05-17**: migrated to `skills/kameo.md`
+§"Anti-patterns and gotchas" as the "Unbounded `on_stop`"
+bullet. The discipline is now a workspace rule.
+
+Historical text preserved below.
+
 
 The new contract is "release-before-notify" but doesn't bound
 how long `on_stop` can take. A Persona actor whose `on_stop`

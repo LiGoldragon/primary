@@ -99,7 +99,7 @@ flowchart TD
     stop --> close["ordinary message admission closes"]
     close --> cleanup["on_stop awaits cleanup"]
     cleanup --> drop["actor Self drops"]
-    drop --> notify["parent and watchers receive terminal signal"]
+    drop --> notify["parent and watchers' control lanes accept terminal signal"]
     notify --> outcome["wait_for_shutdown returns ActorTerminalOutcome"]
 ```
 
@@ -157,21 +157,17 @@ Do not use:
 - anonymous or local-only branch names;
 - Nix hashes in `flake.nix` for this pin.
 
-The current implementation-ready named reference is the fork's `main` branch:
+The stable implementation-ready named reference is
+`persona-lifecycle-terminal-outcome`:
 
 ```toml
 kameo = {
     git = "https://github.com/LiGoldragon/kameo",
-    branch = "main",
+    branch = "persona-lifecycle-terminal-outcome",
     default-features = false,
     features = ["macros", "tracing"],
 }
 ```
-
-If the migration needs a less-moving interface before the sweep finishes, mint
-a named branch or tag first and use that name across every component. Do not
-write a raw commit revision into the component manifests as the steady-state
-dependency interface.
 
 The lockfile should witness the resolved Git commit. The flake should keep
 using the workspace's normal Cargo/Nix flow.
@@ -200,7 +196,7 @@ part of this migration.
 
 ```mermaid
 flowchart TD
-    kameo["Kameo fork main @ 22514f7c"] --> mind["persona-mind"]
+    kameo["Kameo branch persona-lifecycle-terminal-outcome @ 22514f7c"] --> mind["persona-mind"]
     kameo --> cell["terminal-cell"]
     cell --> terminal["persona-terminal"]
     terminal --> harness["persona-harness"]
@@ -361,22 +357,35 @@ router_control_stop_survives_saturated_delivery_mailbox
 
 ### 6.6 - `persona-message`
 
-The current direction after designer report 142 is no separate message proxy
-daemon. `persona-message` remains the user/CLI text surface and should talk to
-the router using Signal contracts. Its migration risk is small but still worth
-testing because ingress actors are easy to overload.
+The current direction after designer report 142 is **no `MessageProxy`
+component** and **no `persona-message-proxy-daemon`**. That is only a naming
+and component-boundary correction. It does not remove the message daemon.
+
+`persona-message` is the supervised first-stack message-ingress component. It
+owns the `message` CLI and the long-lived `persona-message-daemon` binary. The
+daemon binds `message.sock`, stamps `MessageSubmission` with typed
+origin/provenance, forwards `StampedMessageSubmission` to `persona-router`, and
+returns one reply frame to the CLI.
 
 Required constraints:
 
-- The message CLI/client path does not depend on Kameo shutdown truth.
-- Any message daemon/client actor that exists stops with a terminal outcome.
-- Queued ingress after stop is rejected or reported as stopped.
+- `persona-message` is pinned to the same Kameo fork reference as the rest of
+  the runtime.
+- `MessageDaemonRoot` migrates to the terminal-outcome contract.
+- Listener and connection actors, when split out, also migrate to the
+  terminal-outcome contract.
+- Daemon shutdown releases `message.sock`.
+- Ingress after daemon stop is rejected or reports actor stopped.
+- The `message` CLI remains a client of `message.sock`; it is not the daemon.
+- "No proxy" remains only a naming correction, not a daemon-removal claim.
 
 First tests:
 
 ```text
-message_ingress_after_stop_reports_actor_stopped
-message_client_shutdown_returns_terminal_outcome
+message_daemon_shutdown_releases_message_socket
+message_ingress_after_daemon_stop_reports_actor_stopped
+message_daemon_root_shutdown_returns_terminal_outcome
+message_cli_remains_socket_client_not_daemon
 ```
 
 ### 6.7 - `persona-introspect`
