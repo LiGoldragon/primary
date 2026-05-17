@@ -115,7 +115,7 @@ agent does, the bead sits open until pruned.
 
 When you start work on a bead, claim it through the
 orchestration protocol so other agents see the work is in
-flight. Per `protocols/orchestration.md` §"Claim Flow",
+flight. Per `orchestrate/AGENTS.md` §"Claim Flow",
 task locks use bracketed tokens:
 
 ```sh

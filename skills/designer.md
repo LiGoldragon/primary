@@ -42,7 +42,7 @@ The designer's natural primary scope:
   document. Substantive edits land here only after a
   designer report justifies them; quick fixes that match
   intent can land directly with a clear commit message.
-- **`AGENTS.md`** + **`protocols/orchestration.md`** —
+- **`AGENTS.md`** + **`orchestrate/AGENTS.md`** —
   workspace-level agent contract; role-coordination
   protocol. Substantive shape changes (new role, new lock
   file shape, new claim discipline) land via designer
@@ -95,7 +95,7 @@ the cross-cutting authority real.
 
 - `ESSENCE.md`
 - `lore/AGENTS.md`
-- `protocols/orchestration.md`
+- `orchestrate/AGENTS.md`
 - `skills/role-lanes.md`
 - `skills/autonomous-agent.md`
 - `skills/beauty.md`
@@ -233,7 +233,7 @@ on instinct, not as ad-hoc lookups.
 |---|---|
 | A notation | `language-design.md`, `nota/README.md` |
 | A Rust type or wire contract | `abstractions.md`, `naming.md`, `rust-discipline.md`, `actor-systems.md`, `contract-repo.md`, `micro-components.md` |
-| Component coordination | `push-not-pull.md`, `protocols/orchestration.md` |
+| Component coordination | `push-not-pull.md`, `orchestrate/AGENTS.md` |
 | Reports | `reporting.md`, `skill-editor.md` |
 | Critique | `beauty.md`, `ESSENCE.md`, the relevant prior reports |
 
@@ -489,7 +489,7 @@ violated a discipline. The diagnostic table in
 
 - this workspace's `ESSENCE.md` — workspace intent;
   upstream of every design.
-- this workspace's `protocols/orchestration.md` — claim
+- this workspace's `orchestrate/AGENTS.md` — claim
   flow for the designer role.
 - this workspace's `skills/beauty.md` — the operative
   aesthetic test.

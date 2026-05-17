@@ -39,7 +39,7 @@ for whoever picks it up.
 `system-assistant`, `poet-assistant`. The discipline pool — main role
 plus any assistants stacked under it — sees the same beads. The lock
 file is per-agent (an assistant edits its own lock); beads pool at the
-discipline level. See `protocols/orchestration.md` §"Beads belong to main
+discipline level. See `orchestrate/AGENTS.md` §"Beads belong to main
 roles, not assistants".
 
 **When you file a bead for another discipline, tag it with that main
@@ -52,7 +52,7 @@ background that no one is actively scanning for.
 
 1. **Session start.** Check active beads in your role. Take the
    highest-priority open one if any.
-2. **Claim the bead.** `tools/orchestrate claim <role> '[<bead-id>]' <paths> -- <reason>` per `protocols/orchestration.md`.
+2. **Claim the bead.** `tools/orchestrate claim <role> '[<bead-id>]' <paths> -- <reason>` per `orchestrate/AGENTS.md`.
 3. **Mark in progress.** `bd update <bead-id> --status in_progress`.
 4. **Work it through.**
 5. **Close on landing.** `bd close <bead-id> -r "<closing note pointing at where the work landed>"`.
@@ -116,7 +116,7 @@ you.
 
 ### Coordination — how the workspace shares state
 
-- `~/primary/protocols/orchestration.md` — claim/release
+- `~/primary/orchestrate/AGENTS.md` — claim/release
   scopes, role lock files, BEADS coordination. Required
   before any file edit in shared workspace.
 - `~/primary/protocols/active-repositories.md` — current
@@ -231,7 +231,7 @@ hit them, fix them and keep moving.
 
 Before editing files or running commands that create, modify,
 format, or delete files, read and use this workspace's
-`protocols/orchestration.md`.
+`orchestrate/AGENTS.md`.
 
 The normal claim path is:
 

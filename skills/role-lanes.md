@@ -54,7 +54,7 @@ Everything else is shared with the main role:
   assistants"* section for discipline-specific guidance.
 - **Beads label** — work items go under `role:<main-role>` (e.g.
   `role:designer`), never `role:designer-assistant`. See
-  `protocols/orchestration.md` §"Beads belong to main roles, not
+  `orchestrate/AGENTS.md` §"Beads belong to main roles, not
   assistants." A bead is visible to the discipline pool — main lane
   plus every assistant lane under it — and any agent in the pool
   can pick it up.
@@ -113,7 +113,7 @@ lanes there are.
 
 - this workspace's `AGENTS.md` — the role table; the list of which
   lanes currently exist.
-- this workspace's `protocols/orchestration.md` — the claim flow,
+- this workspace's `orchestrate/AGENTS.md` — the claim flow,
   lock-file format, status command, blocked-work flow, BEADS rules.
 - this workspace's `skills/designer.md`,
   `skills/operator.md`,

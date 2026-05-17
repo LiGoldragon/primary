@@ -49,7 +49,7 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 
 - `ESSENCE.md`
 - `lore/AGENTS.md`
-- `protocols/orchestration.md`
+- `orchestrate/AGENTS.md`
 - `skills/role-lanes.md`
 - `skills/autonomous-agent.md`
 - `skills/beauty.md`

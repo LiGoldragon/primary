@@ -70,7 +70,7 @@ The operator does **not** own:
   implementation surfaces a design gap, file an
   implementation-consequences report and wait for the
   designer's follow-up.
-- **`ESSENCE.md`, `protocols/orchestration.md`,
+- **`ESSENCE.md`, `orchestrate/AGENTS.md`,
   workspace-level `skills/`, `AGENTS.md`** — designer's
   surface.
 - **OS / deploy / Nix system glue** — system specialist's
@@ -96,7 +96,7 @@ research-library skills stay with the roles that own them.
 
 - `ESSENCE.md`
 - `lore/AGENTS.md`
-- `protocols/orchestration.md`
+- `orchestrate/AGENTS.md`
 - `skills/role-lanes.md`
 - `skills/autonomous-agent.md`
 - `skills/beauty.md`
@@ -470,7 +470,7 @@ you were missing.
 
 - this workspace's `ESSENCE.md` — workspace intent;
   upstream of every implementation.
-- this workspace's `protocols/orchestration.md` — claim
+- this workspace's `orchestrate/AGENTS.md` — claim
   flow for the operator role.
 - this workspace's `skills/rust-discipline.md` — the
   canonical Rust enforcement; operator's primary toolkit.

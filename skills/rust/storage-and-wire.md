@@ -252,7 +252,7 @@ text-on-disk forms stay text by design and are not state
 in the redb sense:
 
 - **Lock-file projections** (per
-  `~/primary/protocols/orchestration.md`).
+  `~/primary/orchestrate/AGENTS.md`).
   `<role>.lock` files are human-readable runtime
   coordination state, gitignored — they exist on disk for
   agents to read with `cat` or `tools/orchestrate status`,

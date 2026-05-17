@@ -223,7 +223,7 @@ predictable paths; agents claim worktrees individually.
   flow for commits and pushes inside a worktree.
 - `~/primary/skills/beads.md` §"Feature beads carry their branch
   name" — the upstream discipline that names the branch in the bead.
-- `~/primary/protocols/orchestration.md` — claim flow; worktree
+- `~/primary/orchestrate/AGENTS.md` — claim flow; worktree
   paths are scope-claimable.
 - `~/primary/skills/repository-management.md` — the ghq-managed
   canonical checkout layout this skill parallels.

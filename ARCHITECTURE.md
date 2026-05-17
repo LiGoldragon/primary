@@ -26,7 +26,7 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
 
 The workspace is the apex of the agent-discipline graph:
 `ESSENCE.md` (intent) → `lore/AGENTS.md` (cross-workspace contract)
-→ `protocols/orchestration.md` (this workspace's coordination)
+→ `orchestrate/AGENTS.md` (this workspace's coordination)
 → `skills/<role>.md` (per-role required reading) → per-repo
 `AGENTS.md` + `ARCHITECTURE.md` + `skills.md` (per-repo).
 
@@ -78,7 +78,7 @@ share their main role's skill, owned area, beads label, and
 discipline. Per lane: lock filename, report subdirectory, claim
 string. The lane mechanism is canonical in `skills/role-lanes.md`;
 the current set of lanes plus their lock files and report
-directories is enumerated in `protocols/orchestration.md`.
+directories is enumerated in `orchestrate/AGENTS.md`.
 
 `<lane>.lock` files coordinate claims on shared resources (repos,
 files). `tools/orchestrate` is the claim/release helper.
@@ -108,7 +108,7 @@ This workspace owns:
 
 - Workspace intent (`ESSENCE.md`) and standing goals (`GOALS.md`).
 - Role discipline (`AGENTS.md`, `CLAUDE.md`).
-- The coordination protocol (`protocols/orchestration.md`) and the
+- The coordination protocol (`orchestrate/AGENTS.md`) and the
   active-repo map (`protocols/active-repositories.md`).
 - Cross-cutting workspace skills (`skills/<name>.md`).
 - Role-owned report directories (`reports/<role>/`).
@@ -164,7 +164,7 @@ It does not own:
 
 - `ESSENCE.md` — workspace intent.
 - `AGENTS.md` — workspace-specific agent instructions.
-- `protocols/orchestration.md` — role coordination.
+- `orchestrate/AGENTS.md` — role coordination.
 - `protocols/active-repositories.md` — current active repo set.
 - `repos/lore/ARCHITECTURE.md` — the canonical agent-discipline
   repo this workspace points at.

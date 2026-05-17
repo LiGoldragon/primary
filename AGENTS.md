@@ -12,7 +12,7 @@ cross-workspace agent discipline lives in `repos/lore/AGENTS.md`.
    layers, beauty-as-criterion, verb-belongs-to-noun, push-not-
    poll, naming, design reports as visuals, parallel-tool-result
    verification, version control via `skills/jj.md`.
-3. **`protocols/orchestration.md`** — how roles share this
+3. **`orchestrate/AGENTS.md`** — how roles share this
    workspace.
 4. **Your main role's `skills/<role>.md` is the required-reading
    list.** Each main role's skill file carries an explicit
@@ -87,7 +87,7 @@ mechanism is canonical in `skills/role-lanes.md`.
   Assistant lane: `poet-assistant`.
 
 Each agent must know its lane before claiming or editing. The
-coordination protocol is `protocols/orchestration.md`; the
+coordination protocol is `orchestrate/AGENTS.md`; the
 helper is `tools/orchestrate`.
 
 ## Where things live
@@ -95,7 +95,7 @@ helper is `tools/orchestrate`.
 | Path | What |
 |---|---|
 | `ESSENCE.md` | Workspace intent — upstream. |
-| `protocols/orchestration.md` | Role-coordination protocol. |
+| `orchestrate/AGENTS.md` | Role-coordination protocol. |
 | `protocols/active-repositories.md` | Current active repo map for architecture sweeps. Smaller than the recent checkout index. |
 | `skills/<name>.md` | Cross-cutting agent capabilities. |
 | `reports/<role>/` | Role-owned reports (`operator/`, `operator-assistant/`, `second-operator-assistant/`, `designer/`, `designer-assistant/`, `second-designer-assistant/`, `system-specialist/`, `system-assistant/`, `second-system-assistant/`, `poet/`, `poet-assistant/`). Exempt from claim flow; each role writes only its own subdirectory. |
@@ -155,7 +155,7 @@ harness and to the human. The workspace's truth must live in
 files every agent can open. If you learn something durable,
 write it to the right workspace file (per
 `skills/skill-editor.md` and the report conventions in
-`protocols/orchestration.md`); never to harness-private state.
+`orchestrate/AGENTS.md`); never to harness-private state.
 
 ## BEADS is transitional
 

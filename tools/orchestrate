@@ -36,7 +36,7 @@ valid_role() {
 
 lock_path() {
   valid_role "$1" || { printf 'unknown role: %s\n' "$1" >&2; exit 64; }
-  printf '%s/%s.lock\n' "$workspace" "$1"
+  printf '%s/orchestrate/%s.lock\n' "$workspace" "$1"
 }
 
 peer_roles() {

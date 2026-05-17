@@ -577,7 +577,7 @@ narrative purpose (audit findings, decision record).
 
 ## See also
 
-- `~/primary/protocols/orchestration.md` §"Reports" — the
+- `~/primary/orchestrate/AGENTS.md` §"Reports" — the
   role-coordination side (subdir ownership, exemption
   from claim flow).
 - this workspace's `skills/skill-editor.md` — how skills

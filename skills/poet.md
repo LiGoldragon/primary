@@ -65,7 +65,7 @@ the roles that own it.
 
 - `ESSENCE.md`
 - `lore/AGENTS.md`
-- `protocols/orchestration.md`
+- `orchestrate/AGENTS.md`
 - `skills/role-lanes.md`
 - `skills/autonomous-agent.md`
 - `skills/beauty.md`
@@ -241,7 +241,7 @@ missing.
   stack under a main role.
 - this workspace's `skills/designer.md`, `skills/operator.md`,
   `skills/system-specialist.md` — sister main-role skills.
-- this workspace's `protocols/orchestration.md` — claim flow
+- this workspace's `orchestrate/AGENTS.md` — claim flow
   for the poet role.
 - TheBookOfSol's `AGENTS.md` — the most-developed writing
   conventions in the workspace.

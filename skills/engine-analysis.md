@@ -18,7 +18,7 @@ architecture: every claim must say whether it is **hooked**, **stubbed**,
 ## Reading order
 
 1. Read workspace intent and coordination: `ESSENCE.md`,
-   `repos/lore/AGENTS.md`, `protocols/orchestration.md`, and
+   `repos/lore/AGENTS.md`, `orchestrate/AGENTS.md`, and
    `protocols/active-repositories.md`.
 2. Read the apex engine repo `ARCHITECTURE.md`, then each component repo's
    `AGENTS.md`, `skills.md`, `ARCHITECTURE.md`, `TESTS.md`, and code map.
