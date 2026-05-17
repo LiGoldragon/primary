@@ -329,6 +329,34 @@ hadn't happened. The fix in both cases was *read the state
 the working copy actually contains, not the state you
 intended to create*.
 
+### Commit descriptions are the routine implementation report
+
+Routine code landings do **not** get duplicate short reports.
+The `jj` commit description is the implementation summary for
+that landing. Make it self-contained enough that a future agent
+can understand the change from the history:
+
+- what changed;
+- which witnesses passed;
+- what remains stubbed or deliberately deferred, if relevant;
+- the next smallest slice, when the commit leaves an obvious
+  handoff.
+
+This keeps implementation truth in the version-control object
+that actually changed the files. Do not make agents maintain
+the same summary twice.
+
+Write an operator report only when the work needs durable prose
+beyond the commit description: an implementation-consequences
+gap, a migration plan, an audit, a multi-repo synthesis, or a
+user-requested report. A report that merely repeats "what this
+commit changed" is noise.
+
+When the workspace has a repository-change ledger daemon, it
+will index commit descriptions and path metadata for recent-work
+queries. Until then, use `jj log` / `jj show` directly when you
+need to reconstruct a coding slice.
+
 ---
 
 ## Working with designer

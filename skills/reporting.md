@@ -43,6 +43,21 @@ Acknowledgements, tool-result summaries, "done; pushed"
 confirmations don't need reports. Anything that explains,
 proposes, analyses, or summarises does.
 
+Routine implementation commits are a named exception to "small
+reports are fine": **the commit description is the report for the
+code it lands.** Do not create a report whose only purpose is to
+repeat a `jj` commit message, changed-file list, and test list. Put
+that substance in the commit description itself, where it is bound
+to the file changes. Write a report only when there is analysis,
+design consequence, audit substance, user-facing decision context,
+or a cross-repo synthesis that does not fit in the commit object.
+
+The intended long-term reader for routine landing summaries is a
+repository-change ledger daemon that indexes `jj`/Git commits and
+their metadata. Until that exists, agents reconstruct routine code
+landings from `jj log`, `jj show`, and the pushed branch history,
+not from duplicate short reports.
+
 Two reasons reports exist at all:
 
 1. **Chat UIs are poor reading interfaces.** Files are easier —
