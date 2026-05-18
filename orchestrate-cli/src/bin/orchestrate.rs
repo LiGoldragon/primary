@@ -7,8 +7,8 @@
 //! orchestrate status
 //! ```
 //! Lock files land at `<workspace>/orchestrate/<lane>.lock` in the
-//! existing format. The typed [`signal_persona_mind::MindRequest`]
-//! projection is constructed for every flow; once `persona-mind` is
+//! existing format. The typed [`signal_persona_orchestrate::OrchestrateRequest`]
+//! projection is constructed for every flow; once `persona-orchestrate` is
 //! the canonical store the binary forwards the typed request to its
 //! socket instead of writing the lock file directly.
 
@@ -44,8 +44,7 @@ fn main() -> ExitCode {
 
 fn run(arguments: Vec<String>) -> Result<u8, String> {
     let workspace = locate_workspace().map_err(stringify)?;
-    let registry =
-        LaneRegistry::load(workspace.role_registry()).map_err(stringify)?;
+    let registry = LaneRegistry::load(workspace.role_registry()).map_err(stringify)?;
     let working_directory = env::current_dir()
         .map_err(|error| format!("could not read current working directory: {error}"))?;
 
@@ -73,9 +72,7 @@ fn handle_claim(
     mut arguments: std::vec::IntoIter<String>,
     working_directory: &Path,
 ) -> Result<u8, String> {
-    let lane_token = arguments
-        .next()
-        .ok_or_else(|| usage(registry))?;
+    let lane_token = arguments.next().ok_or_else(|| usage(registry))?;
     let lane = Lane::from_token(&lane_token).map_err(stringify)?;
 
     let mut scopes = Vec::new();
@@ -99,8 +96,15 @@ fn handle_claim(
     }
     let reason = reason_parts.join(" ");
 
-    let outcome = claim::claim(workspace, registry, lane, scopes, &reason, working_directory)
-        .map_err(stringify)?;
+    let outcome = claim::claim(
+        workspace,
+        registry,
+        lane,
+        scopes,
+        &reason,
+        working_directory,
+    )
+    .map_err(stringify)?;
     let report = claim::status(workspace, registry).map_err(stringify)?;
 
     let mut lock_state = String::new();
@@ -141,9 +145,7 @@ fn handle_release(
     registry: &LaneRegistry,
     mut arguments: std::vec::IntoIter<String>,
 ) -> Result<u8, String> {
-    let lane_token = arguments
-        .next()
-        .ok_or_else(|| usage(registry))?;
+    let lane_token = arguments.next().ok_or_else(|| usage(registry))?;
     if arguments.next().is_some() {
         eprint!("{}", usage(registry));
         return Ok(EXIT_USAGE);

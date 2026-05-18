@@ -14,7 +14,9 @@ pub fn overlap(left: &NormalizedScope, right: &NormalizedScope) -> bool {
         (NormalizedScope::Path(left), NormalizedScope::Path(right)) => {
             path_overlap(left.as_str(), right.as_str())
         }
-        (NormalizedScope::Task(left), NormalizedScope::Task(right)) => left.as_str() == right.as_str(),
+        (NormalizedScope::Task(left), NormalizedScope::Task(right)) => {
+            left.as_str() == right.as_str()
+        }
         _ => false,
     }
 }

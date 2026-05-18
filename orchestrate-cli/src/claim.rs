@@ -1,12 +1,12 @@
 //! Claim / release / status flows.
 //!
 //! Each flow projects argv into a typed
-//! [`signal_persona_mind::MindRequest`] and reduces the projection into
+//! [`signal_persona_orchestrate::OrchestrateRequest`] and reduces the projection into
 //! the lock-file side effect plus a typed outcome the caller can render.
 //! The legacy shell helper's plain-text rendering is built on top of
 //! [`StatusReport`] and the per-flow outcomes in [`crate::render`].
 
-use signal_persona_mind::MindRequest;
+use signal_persona_orchestrate::OrchestrateRequest;
 
 use crate::error::{Error, Result};
 use crate::lane::Lane;
@@ -29,13 +29,13 @@ pub struct ClaimOverlapDescription {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ClaimOutcome {
     Accepted {
-        request: MindRequest,
+        request: OrchestrateRequest,
         lane: Lane,
         scopes: Vec<NormalizedScope>,
         reason: String,
     },
     Rejected {
-        request: MindRequest,
+        request: OrchestrateRequest,
         lane: Lane,
         overlaps: Vec<ClaimOverlapDescription>,
     },
@@ -43,7 +43,7 @@ pub enum ClaimOutcome {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ReleaseOutcome {
-    pub request: MindRequest,
+    pub request: OrchestrateRequest,
     pub lane: Lane,
 }
 
@@ -55,7 +55,7 @@ pub struct LaneStatus {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StatusReport {
-    pub request: MindRequest,
+    pub request: OrchestrateRequest,
     pub lanes: Vec<LaneStatus>,
 }
 

@@ -257,7 +257,7 @@ name = "orchestrate-cli"
 version = "0.1.0"
 dependencies = [
  "nota-codec",
- "signal-persona-mind",
+ "signal-persona-orchestrate",
  "tempfile",
  "thiserror",
 ]
@@ -459,24 +459,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "signal-persona-auth"
+name = "signal-persona-orchestrate"
 version = "0.1.0"
-source = "git+https://github.com/LiGoldragon/signal-persona-auth.git#860d2c15f38617afb3d78df2cce874139e8a5322"
+source = "git+https://github.com/LiGoldragon/signal-persona-orchestrate.git?branch=main#a45176d1c14272f8a4e7b603f5b218950a6a2b92"
 dependencies = [
  "nota-codec",
  "rkyv",
  "signal-core",
-]
-
-[[package]]
-name = "signal-persona-mind"
-version = "0.1.0"
-source = "git+https://github.com/LiGoldragon/signal-persona-mind.git?branch=main#743a406c997504f96db9786fe19362bb608523e9"
-dependencies = [
- "nota-codec",
- "rkyv",
- "signal-core",
- "signal-persona-auth",
  "thiserror",
 ]
 

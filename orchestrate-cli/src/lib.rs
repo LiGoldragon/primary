@@ -3,10 +3,10 @@
 //! `orchestrate-cli` is the Rust port of the shell `tools/orchestrate`
 //! helper. It accepts the same `claim` / `release` / `status` argv
 //! surface, projects the operation into a typed
-//! `signal_persona_mind::MindRequest`, and keeps the on-disk
+//! `signal_persona_orchestrate::OrchestrateRequest`, and keeps the on-disk
 //! `orchestrate/<lane>.lock` files bit-compatible with the shell era.
 //!
-//! Direct routing to `persona-mind`'s socket is deferred until the
+//! Direct routing to `persona-orchestrate`'s socket is deferred until the
 //! daemon is the canonical store; the lock files are a serialised
 //! projection of the typed records.
 //!
@@ -29,7 +29,7 @@ pub mod workspace;
 pub use claim::{ClaimOutcome, ReleaseOutcome, StatusReport};
 pub use error::Error;
 pub use lane::Lane;
-pub use lockfile::{LockFile, LockEntry};
+pub use lockfile::{LockEntry, LockFile};
 pub use registry::{LaneDescriptor, LaneRegistry};
 pub use scope::{NormalizedScope, RawScope};
 pub use workspace::Workspace;

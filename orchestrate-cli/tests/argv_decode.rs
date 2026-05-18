@@ -2,7 +2,7 @@ use std::path::Path;
 
 use orchestrate_cli::scope::RawScope;
 use orchestrate_cli::{Lane, NormalizedScope};
-use signal_persona_mind::{MindRequest, RoleName, ScopeReference};
+use signal_persona_orchestrate::{OrchestrateRequest, RoleName, ScopeReference};
 
 fn scope(raw: &str) -> NormalizedScope {
     NormalizedScope::from_raw(&RawScope::new(raw), Path::new("/home/li")).unwrap()
@@ -15,7 +15,7 @@ fn claim_decodes_to_role_claim_with_typed_scope_and_reason() {
         orchestrate_cli::request::claim_request(Lane::Operator, &scopes, "syncing claim docs")
             .expect("claim request");
     match request {
-        MindRequest::RoleClaim(record) => {
+        OrchestrateRequest::RoleClaim(record) => {
             assert_eq!(record.role, RoleName::Operator);
             assert_eq!(record.scopes.len(), 1);
             match &record.scopes[0] {
@@ -26,18 +26,17 @@ fn claim_decodes_to_role_claim_with_typed_scope_and_reason() {
             }
             assert_eq!(record.reason.as_str(), "syncing claim docs");
         }
-        other => panic!("expected MindRequest::RoleClaim, got {other:?}"),
+        other => panic!("expected OrchestrateRequest::RoleClaim, got {other:?}"),
     }
 }
 
 #[test]
 fn claim_with_task_scope_projects_to_task_reference() {
     let scopes = vec![scope("[primary-68cb]")];
-    let request =
-        orchestrate_cli::request::claim_request(Lane::Operator, &scopes, "rust port")
-            .expect("claim request");
+    let request = orchestrate_cli::request::claim_request(Lane::Operator, &scopes, "rust port")
+        .expect("claim request");
     match request {
-        MindRequest::RoleClaim(record) => match &record.scopes[0] {
+        OrchestrateRequest::RoleClaim(record) => match &record.scopes[0] {
             ScopeReference::Task(task) => {
                 assert_eq!(task.as_str(), "primary-68cb");
             }
@@ -51,7 +50,7 @@ fn claim_with_task_scope_projects_to_task_reference() {
 fn release_decodes_to_role_release_with_role_name() {
     let request = orchestrate_cli::request::release_request(Lane::Operator);
     match request {
-        MindRequest::RoleRelease(record) => assert_eq!(record.role, RoleName::Operator),
+        OrchestrateRequest::RoleRelease(record) => assert_eq!(record.role, RoleName::Operator),
         other => panic!("expected RoleRelease, got {other:?}"),
     }
 }
@@ -59,7 +58,7 @@ fn release_decodes_to_role_release_with_role_name() {
 #[test]
 fn observation_decodes_to_role_observation() {
     let request = orchestrate_cli::request::observation_request();
-    assert!(matches!(request, MindRequest::RoleObservation(_)));
+    assert!(matches!(request, OrchestrateRequest::RoleObservation(_)));
 }
 
 #[test]

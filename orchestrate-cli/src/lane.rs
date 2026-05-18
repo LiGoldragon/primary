@@ -5,7 +5,7 @@
 //! current `orchestrate/roles.list` registry as a closed enum so call
 //! sites get exhaustive `match` coverage.
 //!
-//! Each lane maps to a [`signal_persona_mind::RoleName`] variant via
+//! Each lane maps to a [`signal_persona_orchestrate::RoleName`] variant via
 //! [`Lane::role_name`]. Today the contract enumerates eight role
 //! variants (four main roles plus four first-tier assistants); the
 //! three `second-*-assistant` lanes added by `skills/role-lanes.md`
@@ -15,7 +15,7 @@
 
 use std::fmt;
 
-use signal_persona_mind::RoleName;
+use signal_persona_orchestrate::RoleName;
 
 use crate::error::Error;
 
@@ -87,7 +87,7 @@ impl Lane {
     /// projection.
     ///
     /// The lock file projection keeps the per-lane identity; only the
-    /// typed `MindRequest` collapses. If the contract grows
+    /// typed `OrchestrateRequest` collapses. If the contract grows
     /// second-`*` variants later, update this method to preserve them.
     pub const fn role_name(self) -> RoleName {
         match self {

@@ -5,13 +5,13 @@
 //! form: `^\[.+\]$` is a task lock; everything else is a path.
 //! `NormalizedScope` preserves that bimodal shape but binds the values
 //! to the contract's typed primitives ([`WirePath`] and [`TaskToken`])
-//! so the projection into `signal_persona_mind::ScopeReference` is a
+//! so the projection into `signal_persona_orchestrate::ScopeReference` is a
 //! pure structural lift.
 
 use std::fmt;
 use std::path::{Component, Path, PathBuf};
 
-use signal_persona_mind::{ScopeReference, TaskToken, WirePath};
+use signal_persona_orchestrate::{ScopeReference, TaskToken, WirePath};
 
 use crate::error::{Error, Result};
 
@@ -56,7 +56,9 @@ impl NormalizedScope {
         if let Some(token) = task_token_in_brackets(value) {
             let task = TaskToken::from_wire_token(token).map_err(|_| Error::InvalidTaskToken {
                 raw: value.to_string(),
-                message: "task tokens must be non-empty, contain no whitespace, and no inner '['/']'".to_string(),
+                message:
+                    "task tokens must be non-empty, contain no whitespace, and no inner '['/']'"
+                        .to_string(),
             })?;
             return Ok(Self::Task(task));
         }

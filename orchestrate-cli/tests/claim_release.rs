@@ -32,8 +32,7 @@ impl Fixture {
         let workspace = Workspace::new(temp.path());
         fs::create_dir_all(workspace.orchestrate_dir()).unwrap();
         fs::write(workspace.role_registry(), REGISTRY).unwrap();
-        let registry =
-            LaneRegistry::load(workspace.role_registry()).expect("registry load");
+        let registry = LaneRegistry::load(workspace.role_registry()).expect("registry load");
         Self {
             _temp: temp,
             workspace,
@@ -75,10 +74,7 @@ fn claim_writes_lock_file_in_shell_format() {
     assert!(matches!(outcome, ClaimOutcome::Accepted { .. }));
 
     let lock_text = fixture.read_lock(Lane::Operator);
-    assert_eq!(
-        lock_text,
-        format!("{scope_text} # syncing claim docs\n")
-    );
+    assert_eq!(lock_text, format!("{scope_text} # syncing claim docs\n"));
 }
 
 #[test]

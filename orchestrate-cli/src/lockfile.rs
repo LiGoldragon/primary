@@ -41,7 +41,9 @@ impl LockFile {
     pub fn read(path: &Path) -> Result<Self> {
         let text = match fs::read_to_string(path) {
             Ok(text) => text,
-            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(Self::default()),
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+                return Ok(Self::default());
+            }
             Err(source) => {
                 return Err(Error::LockRead {
                     path: path.to_path_buf(),

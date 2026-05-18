@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use orchestrate_cli::{LockEntry, LockFile, NormalizedScope};
 use orchestrate_cli::scope::RawScope;
+use orchestrate_cli::{LockEntry, LockFile, NormalizedScope};
 
 fn scope(raw: &str) -> NormalizedScope {
     NormalizedScope::from_raw(&RawScope::new(raw), Path::new("/")).unwrap()
@@ -55,10 +55,7 @@ fn blank_lines_and_comment_only_lines_are_dropped() {
         lock.entries()[0].scope.lock_file_form(),
         "/home/li/primary/skills/foo.md"
     );
-    assert_eq!(
-        lock.entries()[0].reason.as_deref(),
-        Some("reason")
-    );
+    assert_eq!(lock.entries()[0].reason.as_deref(), Some("reason"));
 }
 
 #[test]

@@ -7,7 +7,7 @@
 use std::io;
 use std::path::PathBuf;
 
-use signal_persona_mind as contract;
+use signal_persona_orchestrate as contract;
 
 use crate::lane::Lane;
 use crate::scope::RawScope;
@@ -19,7 +19,9 @@ pub enum Error {
     #[error("unknown lane token: {token}")]
     UnknownLane { token: String },
 
-    #[error("lane {lane} appears in registry but is missing from the closed Lane enum — update orchestrate-cli to mirror orchestrate/roles.list")]
+    #[error(
+        "lane {lane} appears in registry but is missing from the closed Lane enum — update orchestrate-cli to mirror orchestrate/roles.list"
+    )]
     LaneNotInEnum { lane: String },
 
     #[error("role registry has no entries — check {path}")]
@@ -76,7 +78,9 @@ pub enum Error {
     #[error("scope is neither an absolute/relative path nor a bracketed task token: {raw}")]
     UnclassifiableScope { raw: RawScope },
 
-    #[error("contract refused {role_token} (no matching signal-persona-mind RoleName variant — workspace registry has lanes the contract does not yet know)")]
+    #[error(
+        "contract refused {role_token} (no matching signal-persona-orchestrate RoleName variant — workspace registry has lanes the contract does not yet know)"
+    )]
     LaneOutsideContract { role_token: String },
 
     #[error("scope reason must be non-empty and single-line")]
