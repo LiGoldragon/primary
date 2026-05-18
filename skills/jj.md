@@ -265,6 +265,45 @@ When in doubt — split.
 
 ---
 
+## When `@` shifts under you — concurrent rebases
+
+In a shared workspace, another agent's commit while you're working
+can shift your `@` onto their commit. jj auto-snapshots your working
+copy onto the new parent. Usually this is right. The failure mode
+is when **files you hadn't yet committed get silently dropped** —
+they were in your working-copy state but never made it into a
+stable commit of yours, and the rebase resolved them as "not in
+the new path".
+
+The DA/118 pattern: a file arrived in your working copy from a
+prior session (it showed as "A" against your then-parent). You ran
+jj commands without first committing the file into a stable parent.
+A concurrent agent's commit reshuffled history. The file
+disappeared from `@`'s tree, even though no one explicitly deleted
+it.
+
+Defence:
+
+1. **Commit early.** Any file that arrives in your working copy —
+   peer staging, prior-session carry-over, linter output — gets
+   committed into a stable parent of yours before you do more jj
+   operations. A "save existing state" commit is fine.
+2. **Verify after concurrent ops.** When jj prints
+   `Working copy (@) now at: <new-id>` and the change_id isn't what
+   you set, run `jj status` and confirm the files you expect are
+   still there.
+3. **Recover via `jj restore --from`.** Lost files are usually
+   still in some historical commit (your prior commit, another
+   agent's, a feature-branch bookmark). Find them with
+   `jj log -r 'all() & files("<path>")'` and restore.
+
+The auto-rebase is usually right. When it isn't, the file isn't
+gone — it's on a different path in history. The discipline is to
+keep working-copy state minimal between commits, and to verify
+after any `@` shift you didn't drive.
+
+---
+
 ## Partial commits — `jj split` with paths
 
 When the working tree contains both your changes and a peer

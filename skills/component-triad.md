@@ -17,13 +17,15 @@ Every stateful capability in this workspace is a **triad**:
   src/lib.rs             component library
   src/bin/<name>-daemon  long-lived daemon binary (actor root + storage)
   src/bin/<name>         thin CLI client binary
-signal-<component>/      repo for the typed wire vocabulary
+signal-<component>/      repo for the unprivileged/normal wire vocabulary
+permission-signal-<component>/ repo for limited delegated authority
+owner-signal-<component>/ repo for owner-only authority/configuration
   src/lib.rs             signal_channel! { ... } declaration
                          + per-variant SignalVerb mapping
   tests/round_trip.rs    rkyv + NOTA round-trips
 ```
 
-Three load-bearing invariants. Each becomes a witness test (per
+Four load-bearing invariants. Each becomes a witness test (per
 `skills/architectural-truth-tests.md`):
 
 1. **The CLI has exactly one Signal peer — its own daemon.** No CLI is a
@@ -42,10 +44,27 @@ Three load-bearing invariants. Each becomes a witness test (per
    one of the six `SignalVerb` roots; the CLI's NOTA sugar omits the
    verb because the contract resolves it from the payload type.
 
+4. **Authority surfaces are part of the triad, not an add-on.** A
+   stateful component has three typed authority tiers:
+   `signal-<component>` for the normal/unprivileged component surface,
+   `permission-signal-<component>` for limited delegated authority, and
+   `owner-signal-<component>` for owner-only authority/configuration.
+   The corresponding actors live inside the daemon and listen on
+   permission-separated sockets. Privileged mutable configuration enters
+   through the owner-signal actor. The CLI configures privileged
+   component state by sending owner-signal requests to that actor over
+   the owner-owned socket. There is no separate privileged side channel
+   and no "static local config first, owner-signal later"
+   implementation path for mutable configuration. Static files may
+   provide bootstrap defaults needed to start the daemon, but once the
+   daemon is running, privileged changes go through owner signal.
+
 The triad is filesystem-enforced (per `skills/micro-components.md`): one
 daemon + CLI in `<component>` (typically one Cargo crate with two
-`[[bin]]` entries), one contract in `signal-<component>`. The contract
-crate carries no runtime, no actors, no `tokio`.
+`[[bin]]` entries), one normal contract in `signal-<component>`, one
+limited delegated authority contract in `permission-signal-<component>`,
+and one owner authority contract in `owner-signal-<component>`. The
+contract crates carry no runtime, no actors, no `tokio`.
 
 ---
 
