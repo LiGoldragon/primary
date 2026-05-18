@@ -265,71 +265,34 @@ When in doubt — split.
 
 ---
 
-## When `@` shifts under you — concurrent rebases
-
-In a shared workspace, another agent's commit while you're working
-can shift your `@` onto their commit. jj auto-snapshots your working
-copy onto the new parent. Usually this is right. The failure mode
-is when **files you hadn't yet committed get silently dropped** —
-they were in your working-copy state but never made it into a
-stable commit of yours, and the rebase resolved them as "not in
-the new path".
-
-The DA/118 pattern: a file arrived in your working copy from a
-prior session (it showed as "A" against your then-parent). You ran
-jj commands without first committing the file into a stable parent.
-A concurrent agent's commit reshuffled history. The file
-disappeared from `@`'s tree, even though no one explicitly deleted
-it.
-
-Defence:
-
-1. **Commit early.** Any file that arrives in your working copy —
-   peer staging, prior-session carry-over, linter output — gets
-   committed into a stable parent of yours before you do more jj
-   operations. A "save existing state" commit is fine.
-2. **Verify after concurrent ops.** When jj prints
-   `Working copy (@) now at: <new-id>` and the change_id isn't what
-   you set, run `jj status` and confirm the files you expect are
-   still there.
-3. **Recover via `jj restore --from`.** Lost files are usually
-   still in some historical commit (your prior commit, another
-   agent's, a feature-branch bookmark). Find them with
-   `jj log -r 'all() & files("<path>")'` and restore.
-
-The auto-rebase is usually right. When it isn't, the file isn't
-gone — it's on a different path in history. The discipline is to
-keep working-copy state minimal between commits, and to verify
-after any `@` shift you didn't drive.
-
----
-
-## Partial commits — `jj split` with paths
+## Partial commits — `jj commit <paths>` or `jj split`
 
 When the working tree contains both your changes and a peer
 agent's uncommitted work (visible via the orchestration
-locks), commit only files in your scope. `jj split` is the
-right tool — and `git add <paths>` is **not** the workspace
-shape, even though both produce the same end-state.
+locks), commit only files in your scope. `git add <paths>` is
+**not** the workspace shape. Two tools fit:
 
-Canonical idiom for committing a subset of paths:
+| Tool | When |
+|---|---|
+| `jj commit <paths> -m '<msg>'` | Path-selective, same parent, advance `@`. The simple default. |
+| `jj split -m '<msg>' <paths>` | Path-selective; also moves bookmarks forward from old change to child. |
+| `jj split -A <rev> -m '<msg>' <paths>` (or `-B`, `-o`) | Path-selective and target a different destination. |
+
+`jj commit <paths>` puts the selected paths in the now-described
+commit; the rest stays in the new working-copy `@` on top. Same
+shape as `git commit -- <paths>` but jj-native.
+
+Canonical idiom:
 
 ```sh
-jj split -m '<short verb + scope>' <my-path-1> <my-path-2> ...
+jj commit <my-path-1> <my-path-2> -m '<short verb + scope>'
 jj bookmark set main -r @-
 jj git push --bookmark main
 ```
 
-`-m` sets the description for the **first** commit (the one
-containing the selected paths) inline — **no editor
-opens**. The remaining paths stay in the working copy `@`
-(which inherits an empty description) for the peer agent to
-pick up later.
-
-For interactive selection of changes (rather than whole
-paths), use `jj split -i` — opens the diff editor for change
-selection. Even with `-i`, pass `-m` to set the description
-inline and avoid the second editor prompt.
+For interactive selection of *changes* (hunks, not whole paths),
+use `jj split -i` — opens the diff editor. Pass `-m` to set the
+description inline and avoid the second editor prompt.
 
 ---
 
