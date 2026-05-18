@@ -2,7 +2,8 @@
 
 **Lane:** second-designer-assistant
 **Date:** 2026-05-18
-**Status:** design proposal — needs designer pickup
+**Status:** implemented + tested in nota-codec; spec text in `repos/nota/README.md`
+still pending designer pickup
 **Audience:** designer (language-design authority), operator (`nota-codec` + `nota-derive` implementor)
 
 ---
@@ -315,20 +316,110 @@ improvement.
 
 1. **Adopt the `Path` newtype approach (§2.6 option a) over an
    attribute (option b)?** Recommendation: yes — typed shape over
-   attribute-encoded type-distinction.
+   attribute-encoded type-distinction. **Status:** implemented as
+   the typed-newtype path; see §9.
 2. **Approve the bare alphabet (§2.1) including leading `/` and `.`?**
-   Recommendation: yes (§5.1, §5.2).
+   Recommendation: yes (§5.1, §5.2). **Status:** implemented; see §9.
 3. **Defer `Url` to a separate report (§5.5)?** Recommendation: yes.
+   **Status:** deferred; no `Url` type added in this pass.
 4. **Land in two commits — codec accepts wider tokens first, encoder
    canonicalises to bare second (§5.6)?** Recommendation: yes.
+   **Status:** shipped in a single commit (lexer + decoder + encoder
+   + `Path` newtype + tests). The split was a precaution against
+   round-trip regressions; the test suite (§9.2) verified the joint
+   change held end-to-end. Designer can override and split in
+   follow-up if preferred.
 
-After designer approval: this becomes an operator bead under
-`role:operator` for the `nota-codec` + `nota-derive` + `nota` spec
-changes, with a follow-up tiny commit migrating `skills/skills.nota`.
+After designer approval of the **spec text** (§2.7): the codec is
+already implemented; what remains is (a) landing the spec section in
+`repos/nota/README.md`, (b) optional `NotaPath` derive in `nota-derive`,
+(c) the cosmetic migration of `skills/skills.nota` to drop quoted
+paths. None of (a)/(b)/(c) blocks consumers from adopting `Path`
+today.
 
 ---
 
-## 8. See also
+## 9. Implementation evidence
+
+**Codec shipped 2026-05-18.** Repository
+`LiGoldragon/nota-codec`, branch `main`, commit `97c1f496`
+("add Path type with relaxed bare-token alphabet at schema position").
+Workspace claim taken under `second-designer-assistant` per user
+direction to implement; claim released after push.
+
+### 9.1 Files changed
+
+| File | Change |
+|---|---|
+| `src/ident.rs` | added `PathByte` predicate (wide alphabet: `[A-Za-z_./]` start, `[A-Za-z0-9_\-./]` continue); added `Ident::is_bare_path` (used at decode/encode validation time). `IdentByte` + `Ident::is_bare_string` stay strict — the encoder still quotes path-shaped String content. |
+| `src/lexer.rs` | bare-ident scanning switched from `IdentByte` to `PathByte` (start dispatch + continuation slurp). The lexer now produces a single `Token::Ident("skills/operator.md")` for path-shaped input; first-token-decidability preserved because leading digit still dispatches to `read_number`. |
+| `src/decoder.rs` | `read_string` validates the bare-ident token content against `Ident::is_bare_string` (strict) and rejects path-shaped tokens with the new typed error below. New `read_path` accepts `Token::Str` or any `Token::Ident` whose content matches `Ident::is_bare_path`. |
+| `src/encoder.rs` | new `write_path` mirrors `write_string` but uses the wide bare alphabet for bare-eligibility; falls back to inline-quoted form otherwise. `write_string` is unchanged — `String` field encoding still uses strict bare. |
+| `src/error.rs` | new variant `Error::PathShapedTokenInStringPosition { content: String }` with a help-text message naming both remedies (quote the content, or use a `Path`-typed field). |
+| `src/path.rs` | new module: `pub struct Path(String)` with `new`/`as_str`/`into_string`, `From<String>`/`From<&str>`/`From<Path> for String`/`AsRef<str>`, and the `NotaEncode` + `NotaDecode` impls delegating to `write_path` / `read_path`. |
+| `src/lib.rs` | re-exports `pub use path::Path`. |
+| `tests/path_round_trip.rs` | 25 tests covering bare-Path encode, bare-Path decode, quoted-form decode, round-trip via canonical text, quoted fallback for content with spaces / leading digit / reserved literal `None`, String-position rejection with the typed error, regression guards for strict bare-ident-as-String acceptance and reserved nexus-sigil rejection, lexer single-token production for path-shaped input, and a record schema position carrying `Path` (`(Skill operator skills/operator.md "…")`). |
+
+### 9.2 Test surface
+
+`cargo test` — **111/111 pass** across 11 binaries:
+
+| Suite | Count | Result |
+|---|---|---|
+| `path_round_trip` (new) | 25 | pass |
+| `horizon_rs_feedback_fixes` (existing bare-ident-as-String + multiline) | 16 | pass |
+| `production_primitives` (existing primitives + containers) | 25 | pass |
+| `lexer_tokens` (existing reserved-sigil rejection) | 3 | pass |
+| `nota_record_round_trip`, `nota_enum_round_trip`, `nota_sum_round_trip`, `nota_transparent_round_trip`, `nota_try_transparent_round_trip`, `option_vec_struct_variant` | 42 | pass |
+
+`nix flake check` — built from clean derivation on the remote builder;
+**all checks passed**. The Nix surface confirms the cargo result and
+satisfies `skills/testing.md` ("all tests live in Nix").
+
+### 9.3 Verified behaviors
+
+- `Path::from("skills/operator.md").encode(...)` → `skills/operator.md`
+- `Path::from("/etc/hosts").encode(...)` → `/etc/hosts`
+- `Path::from("./foo").encode(...)` → `./foo`
+- `Path::from("../bar").encode(...)` → `../bar`
+- `Path::from("README").encode(...)` → `README`
+- `Path::from("with space").encode(...)` → `"with space"` (quoted fallback)
+- `Path::from("01-intro.md").encode(...)` → `"01-intro.md"` (leading-digit quoted fallback)
+- `Path::from("None").encode(...)` → `"None"` (reserved literal quoted fallback)
+- `String::decode("skills/operator.md")` → `Error::PathShapedTokenInStringPosition { content: "skills/operator.md" }`
+- `String::decode("foo")` → `Ok("foo")` (strict bare-ident-as-String still works)
+- `String::decode("\"skills/operator.md\"")` → `Ok("skills/operator.md")` (quoted-form still works in String position)
+- Record with `path: Path` field: `(Skill operator skills/operator.md "…")` round-trips
+- Reserved nexus sigils (`~`, `@`, `?`, `*`) still rejected at the lexer
+
+### 9.4 What did not land in this pass
+
+- `repos/nota/README.md` — the §"Path bare form" spec text drafted
+  in §2.7 of this report is the change designer needs to land. The
+  codec ships ahead of the spec doc; the test suite is the
+  falsifiable proof of the behavior.
+- `nota-derive` — no `NotaPath` derive. `Path` works through manual
+  impls; a derive is nice-to-have if/when the type appears with
+  variants or as part of a bigger derive family. Not blocking.
+- `skills/skills.nota` migration — the workspace canonical example
+  (designer's commit `36bc77ad`, currently on the
+  `push-ukwtxmxn-lanefix` branch) still quotes every path. The
+  migration is cosmetic, backwards-compatible at decode, and trivial
+  once designer's commit lands on main. Deferred to a follow-up
+  (`Role operator skills/operator.md apex "…"` saves one quote pair
+  per row — 40+ rows in the file).
+
+### 9.5 Bead state
+
+No new bead created. Designer-scope follow-up work is the spec text
+in `repos/nota/README.md`; the codec implementation is closed.
+If designer wants to formalise the spec-text + derive + migration as
+a discrete tracking item, this report names the scope; bead is small
+enough that opening one is a discretion call.
+
+---
+
+## 10. See also
 
 - `repos/nota/README.md` §"Bare-identifier strings" — the existing
   bare-string carve-out this extends.
@@ -346,6 +437,10 @@ changes, with a follow-up tiny commit migrating `skills/skills.nota`.
   the wrapping-type / data-not-comments / named-enums rules; quoted
   paths are the residue.
 - `skills/skills.nota` — the file that benefits first.
+- `repos/nota-codec/src/path.rs` (commit `97c1f496`) — the `Path` newtype
+  shipped to nota-codec main.
+- `repos/nota-codec/tests/path_round_trip.rs` (commit `97c1f496`) — the
+  25-test falsifiable spec for bare-Path behavior.
 - `reports/second-designer-assistant/6-roles-as-config-owner-socket-mutable-2026-05-17.md` —
   the prior lane report; mentions the eventual `orchestrate/roles.nota`
   shape that would also benefit.
