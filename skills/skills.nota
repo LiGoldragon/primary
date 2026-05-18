@@ -1,93 +1,93 @@
 [
-  (Role operator "skills/operator.md" apex
+  (Role operator skills/operator.md apex
     "Implementation as craft. The discipline an agent brings when the work is landing code.")
-  (Role designer "skills/designer.md" apex
+  (Role designer skills/designer.md apex
     "Architecture as craft. What designer specifies; what operator implements against.")
-  (Role system-specialist "skills/system-specialist.md" apex
+  (Role system-specialist skills/system-specialist.md apex
     "OS / platform / deploy craft.")
-  (Role poet "skills/poet.md" apex
+  (Role poet skills/poet.md apex
     "Prose as craft.")
 
-  (Architecture component-triad "skills/component-triad.md" apex
+  (Architecture component-triad skills/component-triad.md apex
     "Daemon + thin CLI + signal-* contract. The universal stateful component shape; the load-bearing read.")
-  (Architecture contract-repo "skills/contract-repo.md" topic
+  (Architecture contract-repo skills/contract-repo.md topic
     "Wire-contract crate discipline. Six-verb spine; signal_channel! macro; layered-effect pattern.")
-  (Architecture micro-components "skills/micro-components.md" topic
+  (Architecture micro-components skills/micro-components.md topic
     "When to create a new crate; family-of-micro-components pattern; kernel-extraction triggers.")
-  (Architecture actor-systems "skills/actor-systems.md" topic
+  (Architecture actor-systems skills/actor-systems.md topic
     "Dense actor topology. Supervised state-bearing actors; release-before-notify; trace witnesses.")
-  (Architecture architectural-truth-tests "skills/architectural-truth-tests.md" topic
+  (Architecture architectural-truth-tests skills/architectural-truth-tests.md topic
     "Tests that catch architectural drift, not just regression.")
-  (Architecture engine-analysis "skills/engine-analysis.md" topic
+  (Architecture engine-analysis skills/engine-analysis.md topic
     "How to analyze daemon/engine internals — the planes-and-actors lens.")
-  (Architecture language-design "skills/language-design.md" topic
+  (Architecture language-design skills/language-design.md topic
     "Language-design discipline. Closed enums; structural beauty over ad-hoc strings.")
-  (Architecture library "skills/library.md" topic
+  (Architecture library skills/library.md topic
     "Library-vs-daemon split. When to extract a library crate from a daemon.")
-  (Architecture subscription-lifecycle "skills/subscription-lifecycle.md" topic
+  (Architecture subscription-lifecycle skills/subscription-lifecycle.md topic
     "Subscription close-vs-retract semantics. Token-keyed cleanup.")
 
-  (Craft abstractions "skills/abstractions.md" keystroke
+  (Craft abstractions skills/abstractions.md keystroke
     "Verb belongs to noun. Methods on types; no free helpers when a method would do.")
-  (Craft naming "skills/naming.md" keystroke
+  (Craft naming skills/naming.md keystroke
     "Full English words. The offender table.")
-  (Craft beauty "skills/beauty.md" keystroke
+  (Craft beauty skills/beauty.md keystroke
     "Beauty as criterion. Special cases dissolve into the normal case.")
-  (Craft push-not-pull "skills/push-not-pull.md" keystroke
+  (Craft push-not-pull skills/push-not-pull.md keystroke
     "No polling. Subscribe and receive; producers push events.")
-  (Craft reporting "skills/reporting.md" keystroke
+  (Craft reporting skills/reporting.md keystroke
     "When to write a report vs answer in chat. Chat for user; reports for agents.")
-  (Craft typed-records-over-flags "skills/typed-records-over-flags.md" keystroke
+  (Craft typed-records-over-flags skills/typed-records-over-flags.md keystroke
     "Closed typed records over bool flags. Surface the variant set in the type system.")
-  (Craft prose "skills/prose.md" topic
+  (Craft prose skills/prose.md topic
     "Prose-craft discipline.")
 
-  (Programming kameo "skills/kameo.md" topic
+  (Programming kameo skills/kameo.md topic
     "Kameo actor-runtime discipline. Lifecycle contract; spawn-in-thread restart trap.")
-  (Programming rust-discipline "skills/rust-discipline.md" topic
+  (Programming rust-discipline skills/rust-discipline.md topic
     "Rust craft index. Methods on types; typed errors; no ZST holders.")
-  (Programming rust-methods "skills/rust/methods.md" topic
+  (Programming rust-methods skills/rust/methods.md topic
     "Methods on types. One-object-in/one-object-out.")
-  (Programming rust-errors "skills/rust/errors.md" topic
+  (Programming rust-errors skills/rust/errors.md topic
     "Typed errors at crate boundary. thiserror; no anyhow at edges.")
-  (Programming rust-storage-and-wire "skills/rust/storage-and-wire.md" topic
+  (Programming rust-storage-and-wire skills/rust/storage-and-wire.md topic
     "redb + rkyv pattern for storage and wire.")
-  (Programming rust-parsers "skills/rust/parsers.md" topic
+  (Programming rust-parsers skills/rust/parsers.md topic
     "No hand-rolled parsers. Use winnow or NOTA codec.")
-  (Programming rust-crate-layout "skills/rust/crate-layout.md" topic
+  (Programming rust-crate-layout skills/rust/crate-layout.md topic
     "Crate layout. Tests in separate files; bin / lib / examples.")
-  (Programming nix-discipline "skills/nix-discipline.md" topic
+  (Programming nix-discipline skills/nix-discipline.md topic
     "Nix module structure. Flake conventions; check derivations.")
-  (Programming nix-usage "skills/nix-usage.md" topic
+  (Programming nix-usage skills/nix-usage.md topic
     "When to use Nix tooling. nix eval / flake show / path-info — not filesystem search.")
-  (Programming mermaid "skills/mermaid.md" mechanism
+  (Programming mermaid skills/mermaid.md mechanism
     "Mermaid diagram conventions and safe-syntax workarounds.")
-  (Programming stt-interpreter "skills/stt-interpreter.md" mechanism
+  (Programming stt-interpreter skills/stt-interpreter.md mechanism
     "Speech-to-text interpreter integration notes.")
 
-  (Workflow role-lanes "skills/role-lanes.md" mechanism
+  (Workflow role-lanes skills/role-lanes.md mechanism
     "Lane mechanism for assistant + second-assistant lanes under each main role.")
-  (Workflow architecture-editor "skills/architecture-editor.md" mechanism
+  (Workflow architecture-editor skills/architecture-editor.md mechanism
     "How to edit ARCHITECTURE.md. ARCH never references reports.")
-  (Workflow nota-schema-docs "skills/nota-schema-docs.md" mechanism
+  (Workflow nota-schema-docs skills/nota-schema-docs.md mechanism
     "Pseudo-NOTA convention for documenting record schemas: angle-bracket placeholders, optional ?, enum |.")
-  (Workflow nota-design "skills/nota-design.md" topic
+  (Workflow nota-design skills/nota-design.md topic
     "Canonical NOTA design. The type names the most useful distinction in context; data lives in records, not comments; enums get names, not numbers.")
-  (Workflow jj "skills/jj.md" mechanism
+  (Workflow jj skills/jj.md mechanism
     "Jujutsu version-control discipline. Concurrent-agent safety.")
-  (Workflow testing "skills/testing.md" mechanism
+  (Workflow testing skills/testing.md mechanism
     "All tests in Nix. Pure tests as checks; -test suffix for test-only binaries.")
-  (Workflow feature-development "skills/feature-development.md" mechanism
+  (Workflow feature-development skills/feature-development.md mechanism
     "Feature branches in worktrees. Multi-repo arc coordination.")
-  (Workflow beads "skills/beads.md" mechanism
+  (Workflow beads skills/beads.md mechanism
     "Short-tracked-item discipline. Transitional pre-Persona-mind.")
-  (Workflow repository-management "skills/repository-management.md" mechanism
+  (Workflow repository-management skills/repository-management.md mechanism
     "ghq / gh mechanics for repo work.")
-  (Workflow skill-editor "skills/skill-editor.md" mechanism
+  (Workflow skill-editor skills/skill-editor.md mechanism
     "How to edit skill files without growing them noisy. Skills never reference reports.")
 
-  (Meta autonomous-agent "skills/autonomous-agent.md" mechanism
+  (Meta autonomous-agent skills/autonomous-agent.md mechanism
     "When to act vs ask. How to surface blocked decisions.")
-  (Meta context-maintenance "skills/context-maintenance.md" mechanism
+  (Meta context-maintenance skills/context-maintenance.md mechanism
     "Sweep reports and conversation. Migrate substance to permanent homes.")
 ]
