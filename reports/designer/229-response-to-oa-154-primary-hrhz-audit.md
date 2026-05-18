@@ -16,10 +16,13 @@ each.*
 
 The ordinary slice is real. Six answers below in one line each:
 
-1. **Ordinary triad first.** Make daemon + thin CLI real with
-   component-triad witnesses before the OwnerSignal chain. OwnerSignal
-   skeletons (namespace + ARCH) may land in parallel; implementation
-   sequences after.
+1. **Q1 framing was wrong.** Owner-signal is part of the triad
+   (`skills/component-triad.md` invariant #4), not a follow-up arc.
+   The next implementation arc must ship `owner-signal-persona-orchestrate`
+   alongside the real daemon + thin CLI. Per DA/116 A4 chain discipline,
+   that arc also creates `owner-signal-persona-router` and
+   `owner-signal-persona-harness` contract repos (skeletal actors in
+   those daemons are acceptable; the contracts must exist).
 2. **`RoleName` dissolves on both contracts** once `LaneIdentifier`
    lands. The interim repair (second-* variants added) is correct as
    a stopgap. Final state: typed `LaneIdentifier` newtype; lane
@@ -34,17 +37,19 @@ The ordinary slice is real. Six answers below in one line each:
 5. **Yes — activity query records expose the slot.** Add `slot: u64`
    to `Activity` (matching the slot in `ActivityAcknowledgment`).
    Required for subscription catch-up, replay, stable pagination.
-6. **Three-stage lane-registry migration**: (a) sema-backed lane
-   registry + ordinary Match/Subscribe observation, closed
-   `RoleName` enum stays compilable as namespace; (b) owner-signal
-   `Register/Retract/UpdateLaneOrder`; (c) closed enum dissolves,
-   `LaneIdentifier` typed newtype. Lock-file projection is a daemon
-   side-effect during cutover; the daemon stops writing them when
-   `tools/orchestrate` is fully replaced.
+6. **Two-stage lane-registry migration**: (a) sema-backed lane registry
+   table + ordinary Match/Subscribe observation + owner-signal
+   `Register/Retract/UpdateLaneOrder` shipping *together* (this arc),
+   closed `RoleName` enum stays as namespace stable id; (b) closed
+   enum dissolves into typed `LaneIdentifier` newtype (contract-churn
+   pass, later). Lock-file projection is a daemon side-effect during
+   cutover; the daemon stops writing them when `tools/orchestrate` is
+   fully replaced.
 
 User-attention items in §3 below. The only user judgment call is
 **Q4 (sub-scope handoff)** — every other answer is architecturally
-settled by `/228` plus DA/115 + DA/116 + second-DA/6.
+settled by `skills/component-triad.md` + `/228` + DA/115 + DA/116 +
+second-DA/6.
 
 ---
 
@@ -72,48 +77,58 @@ substrate. Both of those are larger arcs and should follow.
 
 ### Q1 — Ordinary triad first, or OwnerSignal first?
 
-**Recommendation: ordinary triad first.**
+**The question rests on a framing mistake.** `skills/component-triad.md`
+invariant #4 says: *"Authority surfaces are part of the triad, not
+an add-on. A stateful component has two typed authority tiers:
+`signal-<component>` for the normal/unprivileged component surface,
+and `owner-signal-<component>` for owner-only authority/configuration."*
+A daemon with only the ordinary surface isn't a triad-shaped daemon
+yet — owner-signal is a co-equal contract that ships *with* the
+daemon being real, not after it.
 
-The ordinary slice has consumers already: `orchestrate-cli`, peer
-agents calling through the workspace helper, and the existing
-`tools/orchestrate` flow that the daemon must subsume. Making the
-ordinary surface real means:
+So the choice isn't "ordinary first or owner-signal first." It's:
+**the next arc ships both surfaces together** — that's what makes
+the daemon a triad in the first place. Per DA/116 A4 chain
+discipline, shipping `owner-signal-persona-orchestrate` also
+requires creating `owner-signal-persona-router` and
+`owner-signal-persona-harness` as co-arrival contract repos (the
+chain ships end-to-end, not link-by-link).
+
+Correct scope for the next implementation arc:
 
 | What | Where it lands |
 |---|---|
 | Long-lived `persona-orchestrate-daemon` accepting `OrchestrateFrame` over a socket | `persona-orchestrate/src/bin/persona-orchestrate-daemon.rs` |
 | Thin `persona-orchestrate` CLI (one NOTA request in, one NOTA reply out, exactly one Signal peer) | `persona-orchestrate/src/bin/persona-orchestrate.rs` (or via the existing `orchestrate-cli` migration) |
-| `signal_channel!` for ordinary surface | Already done in `signal-persona-orchestrate` |
-| Component-triad witness tests | `persona-orchestrate/tests/triad_*.rs` — `cli_has_one_signal_peer`, `daemon_external_surface_is_signal_only`, `verb_declared_per_variant`, `durable_state_via_sema_engine`, plus the not-bypassed `tools/orchestrate` projection |
+| `signal_channel!` for ordinary surface (complete: with Subscribe variants per Q5) | `signal-persona-orchestrate` |
+| **`owner-signal-persona-orchestrate` contract** (`signal_channel!` over the verbs in `/228` §4.3) | New repo: `owner-signal-persona-orchestrate` |
+| **`owner-signal-persona-orchestrate` actor in the daemon** listening on the owner socket (per DA/116 A1, owner socket is OS-permission-separated; in prototype, same-UID is acceptable per DA/116 A1) | `persona-orchestrate/src/actors/owner_signal_socket_actor.rs` |
+| **`owner-signal-persona-router` contract** (per DA/116 A4 chain discipline) | New repo: `owner-signal-persona-router` |
+| **`owner-signal-persona-harness` contract** (per DA/116 A4 chain discipline) | New repo: `owner-signal-persona-harness` |
+| **Mind-side caller stub** for `owner-signal-persona-orchestrate` (issuing at least one Mutate end-to-end — recommend `Mutate RegisterLaneOrder` since it dovetails with Q6 Stage (a)) | `persona-mind/src/actors/orchestrate_owner_caller.rs` |
+| Component-triad witness tests covering **both** authority surfaces | `persona-orchestrate/tests/triad_*.rs` — `cli_has_one_signal_peer`, `daemon_external_surface_is_signal_only`, `verb_declared_per_variant`, `durable_state_via_sema_engine`, plus `ordinary_socket_rejects_owner_frame`, `owner_socket_mode_matches_spawn_envelope`, `daemon_state_goes_through_sema_engine` (per DA/116 §10) |
 | Lock-file projection | Daemon-side side effect of accepted state mutation; CLI does not write lock files directly |
-| **Ordinary Subscribe variants** (per Q5+Q6 and gap §4 below) | `signal-persona-orchestrate` — adds `Subscribe` family before the OwnerSignal chain |
 
-The OwnerSignal chain (per DA/116 A4 "build the chain end-to-end in
-the first pass" — *meaning when you start that arc, ship orchestrate
-+ router + harness owner contracts together, not link-by-link*) is a
-**separate arc** that requires:
+What is *not* required in this arc:
 
-- Three new repos (`owner-signal-persona-orchestrate`,
-  `owner-signal-persona-router`, `owner-signal-persona-harness`).
-- Caller-side implementation in `persona-mind` (issuing
-  `SpawnAgentOrder`, `AcquireScopeOrder`, etc.).
-- Per-component Unix users/groups for OS-enforced socket access
-  (DA/116 A1).
-- `OwnerSignal` socket actors in each owning daemon (DA/116 A5).
+- **Full mind-side callers for every owner-signal verb** —
+  shipping `Mutate RegisterLaneOrder` end-to-end is the proof; the
+  rest of the `/228` §4.3 owner verb family (SpawnAgent, AcquireScope,
+  SetSchedulingPolicy, etc.) can be added as mind develops needs for
+  them. The witness is "the chain works for one verb," not "every
+  verb is wired."
+- **Full router/harness daemon actor implementations** for their
+  owner-signal contracts. The repos exist and the contracts compile;
+  router and harness daemons accept the owner-signal contract types
+  in their dependency graphs. Actor implementations in those daemons
+  land when those daemons themselves get rebuilt (a separate arc per
+  daemon).
+- **Per-component Unix users/groups** for OS-enforced socket access
+  (DA/116 A1 says runtime credential gates are *not* the main
+  design — owner-socket OS perms come later). Prototype is same-UID.
 
-That arc is roughly 3× the size of the ordinary triad arc. Doing
-ordinary triad first means: the next user-visible improvement is one
-arc away, not two; the component-triad invariants are testable on the
-slice we already have; the OwnerSignal arc starts from a known-working
-substrate.
-
-**OwnerSignal skeletons may land in parallel.** Per
-`skills/repository-creation.md` §"Skeleton-vs-implementation repos",
-`owner-signal-persona-orchestrate` / `-router` / `-harness` can each
-exist as namespace-locked skeletons (ARCHITECTURE.md + Cargo.toml
-shell + license + flake) without the implementation. That preserves
-the option to ship all three together later without doing the gh
-repo create in the middle of the implementation arc.
+That gives a *concrete* arc with a clear "triad-shaped" finish
+line, not an open-ended "do owner-signal sometime" promise.
 
 ### Q2 — Is `RoleName` still allowed in `signal-persona-mind` once lane registry lands?
 
@@ -248,29 +263,31 @@ streams future ones.
 
 ### Q6 — First owner-signal lane-registry migration shape?
 
-**Recommendation: three stages, sequenced.**
+**Recommendation: two stages.** Stage (a) ships in the next arc (the
+arc that makes the daemon triad-shaped per Q1); stage (b) is a
+later contract-churn pass.
 
-**Stage 1 — sema-backed lane registry, ordinary observation only**
-(this arc or the next):
+**Stage (a) — sema-backed registry + ordinary observation + owner-signal
+mutation, all together** (next arc):
 
 - Add the `lane_registry` table to `persona-orchestrate.redb` per
   `/228` §5.
 - Bootstrap on first daemon boot from `orchestrate/roles.list`.
 - Ordinary surface gets `LaneRegistrySnapshot` (Match) and
   `LaneRegistrySubscription` (Subscribe).
+- **Owner surface gets `RegisterLaneOrder` / `RetractLaneOrder` /
+  `UpdateLaneMetadataOrder` (Mutate / Retract / Mutate).** Per Q1,
+  the owner surface ships with the triad; lane registry is the most
+  natural Mutate to wire end-to-end first because it dovetails with
+  this stage's table.
 - The closed `RoleName` enum stays compilable as the namespace
   stable id — every value in `lane_registry` corresponds to a
-  variant. Adding a runtime-only lane is not yet possible.
+  variant. Adding a runtime-only lane requires both the contract
+  variant *and* a `RegisterLaneOrder` Mutate; the contract variant
+  is the hold-out preventing pure-runtime lane addition until
+  stage (b).
 
-**Stage 2 — owner-signal mutation** (the OwnerSignal arc):
-
-- `owner-signal-persona-orchestrate` ships with `RegisterLaneOrder` /
-  `RetractLaneOrder` / `UpdateLaneMetadataOrder`.
-- Mind (or whatever orchestrator-owner exists by then) issues these.
-- Adding a lane is now a runtime owner-Mutate, not a contract
-  recompile.
-
-**Stage 3 — closed enum dissolves**:
+**Stage (b) — closed enum dissolves** (later):
 
 - `LaneIdentifier` becomes a typed newtype carrying an opaque-to-
   contract stable id (per second-DA/6 §3.2 — recommended shape is
@@ -278,6 +295,9 @@ streams future ones.
 - The closed `RoleName` enum is removed.
 - Every consumer of the contract migrates from enum-match to
   typed-newtype.
+- After stage (b), `RegisterLaneOrder` can register *any* new
+  identifier without contract recompile — the full registry-as-config
+  destination.
 - `primary-jboc` (the closed-enum gap bead) closes as superseded.
 
 **Lock-file projection during cutover:** the daemon writes lock
@@ -289,11 +309,12 @@ helper retires), the daemon stops writing lock files too. The
 projection is one cutover-window subroutine, not a permanent
 contract.
 
-Why this order: Stage 1 is implementable on the ordinary surface
-alone (no new repos beyond what's landed); Stage 2 is the natural
-home for the OwnerSignal arc (per Q1 sequencing); Stage 3 happens
-when the broader workspace decides to absorb the contract churn
-(rename pass per `/224` §4.7).
+Why this order: stage (a) gives the witness ("the chain works for
+RegisterLaneOrder end-to-end") needed for the triad-shaped daemon
+without the contract-churn of dissolving `RoleName`; stage (b) is a
+separable, cross-cutting contract pass that lands when the workspace
+is ready to absorb the cascade (rename pass per `/224` §4.7 may want
+to coordinate).
 
 ---
 
@@ -303,16 +324,36 @@ These are the items the user must engage with for this work to
 proceed coherently. Most are settled by existing design; one is a
 genuine judgment call.
 
-### A — Confirm the **ordinary-triad-first** sequencing
+### A — Confirm the **full-triad-arc** scope
 
-Per Q1: next implementation pass makes the `persona-orchestrate`
-daemon real (long-lived, accepts `OrchestrateFrame` over socket),
-ships the thin CLI, lands component-triad witness tests, adds the
-ordinary `Subscribe` variants, and migrates lock-file writing to
-be a daemon-side side effect. OwnerSignal repos may land as
-skeletons in parallel; OwnerSignal implementation follows.
+Per Q1 (and the `skills/component-triad.md` invariant #4 that
+owner-signal is part of the triad): the next implementation arc
+ships *both* authority surfaces as a single triad-shaped milestone.
+Concretely: real `persona-orchestrate-daemon` + thin CLI + complete
+ordinary surface (with Subscribe variants) + `owner-signal-persona-orchestrate`
+contract + actor + at least one Mutate verb wired end-to-end from
+mind-side caller (recommended: `Mutate RegisterLaneOrder`, dovetailing
+with Q6 stage (a)) + the two co-arrival owner-signal contract repos
+for router and harness (contracts only; actors in those daemons
+deferred).
 
-**Confirm**: ordinary triad first; or jump straight to OwnerSignal?
+This arc is bigger than the OA's "ordinary first" framing budgeted
+for. The question for the user: is shipping the full triad as one
+arc the right scope, or does the user want a smaller intermediate
+milestone (e.g., ordinary surface complete + ordinary Subscribe
+variants + lane registry sema table + ordinary `LaneRegistrySnapshot`
+— but NOT yet owner-signal-persona-orchestrate)?
+
+The smaller-intermediate option violates the triad invariant in
+the short term but lets the next user-visible improvement land
+sooner. The bigger arc respects the invariant from day one. My
+recommendation is the bigger arc because partial triads accumulate
+debt that's expensive to pay later (mind-side callers, owner socket
+actors, and the chain repos all need to land eventually; doing
+them when the daemon is already real means re-touching the daemon).
+
+**Confirm**: full-triad arc (recommended), or smaller-intermediate
+milestone with a follow-up arc for owner-signal?
 
 ### B — **Q4 (sub-scope handoff) is a genuine user decision**
 
@@ -356,46 +397,73 @@ follow-up; not blocking.
 
 ## 4 · Recommended next-pass shape
 
-Concrete ordering for the next implementation arc, ship one at a
-time:
+Concrete ordering for the next implementation arc — the whole arc
+delivers a triad-shaped daemon. Ship in dependency order:
 
 1. **Ordinary `Subscribe` variants** — `signal-persona-orchestrate`
    adds `Subscribe ActivityStream`, `Subscribe ClaimStream`,
-   `Subscribe LaneRegistryStream` (plus the round-trip witnesses).
+   `Subscribe LaneRegistryStream` (plus round-trip witnesses).
    Closes OA gap §4.
 2. **Activity slot exposed** — `Activity` record carries `slot:
    u64`. Round-trip witnesses updated. Closes Q5.
 3. **Exact-scope-match handoff documented** — contract doc-comment
-   + ARCH update. Closes Q4 (the recommended answer).
-4. **`persona-orchestrate-daemon` made real** —
-   - Long-lived process; reads socket; speaks `OrchestrateFrame`.
+   + ARCH update; typed `HandoffRejection::ScopeNotHeldExactly`
+   variant. Closes Q4 (recommended answer).
+4. **Create `owner-signal-persona-orchestrate`** — new repo;
+   `signal_channel!` declares the verbs in `/228` §4.3
+   (`SpawnAgentOrder`, `AcquireScopeOrder`, …, `RegisterLaneOrder`,
+   `RetractLaneOrder`, `UpdateLaneMetadataOrder`); round-trip
+   witnesses; standard 14-file shape per
+   `skills/repository-creation.md`.
+5. **Create `owner-signal-persona-router` and
+   `owner-signal-persona-harness`** — chain-discipline co-arrival
+   per DA/116 A4; contracts only (the verb set for each per
+   `/228` §3 "Authority chain — canonical Mutate flow"). Skeletal
+   actors in router/harness daemons are acceptable for this arc;
+   full implementation in those daemons is a future arc per
+   component.
+6. **`persona-orchestrate-daemon` made real** —
+   - Long-lived process; binds ordinary socket + owner socket;
+     speaks `OrchestrateFrame` on the first, owner frames on the
+     second.
+   - One actor per Signal contract surface (DA/116 A5).
    - Sema-engine state owned exclusively by daemon; CLI does not
      touch `persona-orchestrate.redb` directly.
    - Lock-file projection as daemon side effect on accepted state
      mutation.
-   - Component-triad witness tests land: `cli_has_one_signal_peer`,
+   - Component-triad witness tests land — both authority surfaces
+     covered: `cli_has_one_signal_peer`,
      `daemon_external_surface_is_signal_only`,
-     `verb_declared_per_variant`, `durable_state_via_sema_engine`.
-5. **Thin `persona-orchestrate` CLI** — one NOTA request in, one
-   NOTA reply out, exactly one Signal peer (its daemon). The
-   `orchestrate-cli` helper migrates to invoke through this path
-   rather than writing lock files directly.
-6. **Lane registry table + ordinary observation** —
-   `lane_registry` table in sema; bootstrap from
-   `orchestrate/roles.list`; `LaneRegistrySnapshot` + Subscribe
-   surface. Closed `RoleName` enum stays as namespace stable id.
-   Closes Q6 Stage 1.
-7. **`/228` §9 ARCH cross-reference flip pass** — every "when
-   persona-orchestrate lands" reference in `persona/ARCHITECTURE.md`,
-   `persona-mind/ARCHITECTURE.md`, `persona-router/ARCHITECTURE.md`,
-   `signal-persona-mind/ARCHITECTURE.md`, and the workspace skills
-   flips from future-tense to present-tense.
+     `verb_declared_per_variant`, `durable_state_via_sema_engine`,
+     `ordinary_socket_rejects_owner_frame`,
+     `owner_socket_mode_matches_spawn_envelope`.
+7. **Thin `persona-orchestrate` CLI** — one NOTA request in, one
+   NOTA reply out, exactly one Signal peer (its daemon's ordinary
+   socket). The `orchestrate-cli` helper migrates to invoke
+   through this path rather than writing lock files directly.
+8. **Lane registry table + ordinary observation + owner mutation
+   together (Q6 stage (a))** —
+   - `lane_registry` table in sema; bootstrap from
+     `orchestrate/roles.list`.
+   - Ordinary surface: `LaneRegistrySnapshot` + `LaneRegistrySubscription`.
+   - Owner surface: `RegisterLaneOrder` / `RetractLaneOrder` /
+     `UpdateLaneMetadataOrder`.
+   - Closed `RoleName` enum stays as namespace stable id.
+9. **Mind-side caller stub for `owner-signal-persona-orchestrate`** —
+   `persona-mind` issues `Mutate RegisterLaneOrder` end-to-end as
+   the witness for the authority chain working. Other owner verbs
+   land as mind develops needs for them.
+10. **`/228` §9 ARCH cross-reference flip pass** — every "when
+    persona-orchestrate lands" reference in `persona/ARCHITECTURE.md`,
+    `persona-mind/ARCHITECTURE.md`, `persona-router/ARCHITECTURE.md`,
+    `signal-persona-mind/ARCHITECTURE.md`, and the workspace skills
+    flips from future-tense to present-tense. Includes
+    `persona-orchestrate/ARCHITECTURE.md` and the contract repos'
+    own ARCH stating that the triad is complete.
 
-Then the OwnerSignal arc begins (Q1 stage 2 — separate report when
-that arc is scoped).
-
-Sema feature bead (Q3) and skeleton owner-signal repos (Q1
-parallel option) can land any time without blocking this sequence.
+Sema feature bead (Q3) is a separable arc — can land any time
+without blocking this sequence. Q6 stage (b) (closed enum dissolves)
+is a separate later contract-churn arc.
 
 ---
 
