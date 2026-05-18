@@ -1,0 +1,110 @@
+;; skills/skills.nota — typed skill index.
+;;
+;; Each entry: (Skill name path kind tier "description")
+;;
+;;   name        kebab-case identifier
+;;   path        relative path under skills/ (or absolute from workspace root)
+;;   kind        role | architecture | craft | programming | workflow | meta
+;;   tier        1 (apex) | 2 (every-keystroke craft) | 3 (consulted by topic) | 4 (mechanism)
+;;   description one line, names the load-bearing rule the skill carries
+;;
+;; ESSENCE.md is tier-0 (workspace apex) and not listed here; it lives at
+;; the workspace root and is upstream of every skill.
+
+[
+  ;; Roles
+  (Skill operator "skills/operator.md" role 1
+    "Implementation as craft. The discipline an agent brings when the work is landing code.")
+  (Skill designer "skills/designer.md" role 1
+    "Architecture as craft. What designer specifies; what operator implements against.")
+  (Skill system-specialist "skills/system-specialist.md" role 1
+    "OS / platform / deploy craft.")
+  (Skill poet "skills/poet.md" role 1
+    "Prose as craft.")
+  (Skill role-lanes "skills/role-lanes.md" workflow 4
+    "Lane mechanism for assistant + second-assistant lanes under each main role.")
+
+  ;; Architecture — how systems are shaped
+  (Skill component-triad "skills/component-triad.md" architecture 1
+    "Daemon + thin CLI + signal-* contract. The universal stateful component shape; the load-bearing read.")
+  (Skill contract-repo "skills/contract-repo.md" architecture 3
+    "Wire-contract crate discipline. Six-verb spine; signal_channel! macro; layered-effect pattern.")
+  (Skill micro-components "skills/micro-components.md" architecture 3
+    "When to create a new crate; family-of-micro-components pattern; kernel-extraction triggers.")
+  (Skill actor-systems "skills/actor-systems.md" architecture 3
+    "Dense actor topology. Supervised state-bearing actors; release-before-notify; trace witnesses.")
+  (Skill architectural-truth-tests "skills/architectural-truth-tests.md" architecture 3
+    "Tests that catch architectural drift, not just regression.")
+  (Skill architecture-editor "skills/architecture-editor.md" workflow 4
+    "How to edit ARCHITECTURE.md. ARCH never references reports.")
+  (Skill engine-analysis "skills/engine-analysis.md" architecture 3
+    "How to analyze daemon/engine internals — the planes-and-actors lens.")
+  (Skill language-design "skills/language-design.md" architecture 3
+    "Language-design discipline. Closed enums; structural beauty over ad-hoc strings.")
+  (Skill library "skills/library.md" architecture 3
+    "Library-vs-daemon split. When to extract a library crate from a daemon.")
+  (Skill subscription-lifecycle "skills/subscription-lifecycle.md" architecture 3
+    "Subscription close-vs-retract semantics. Token-keyed cleanup.")
+
+  ;; Craft — every keystroke
+  (Skill abstractions "skills/abstractions.md" craft 2
+    "Verb belongs to noun. Methods on types; no free helpers when a method would do.")
+  (Skill naming "skills/naming.md" craft 2
+    "Full English words. The offender table.")
+  (Skill beauty "skills/beauty.md" craft 2
+    "Beauty as criterion. Special cases dissolve into the normal case.")
+  (Skill push-not-pull "skills/push-not-pull.md" craft 2
+    "No polling. Subscribe and receive; producers push events.")
+  (Skill reporting "skills/reporting.md" craft 2
+    "When to write a report vs answer in chat. Chat for user; reports for agents.")
+  (Skill typed-records-over-flags "skills/typed-records-over-flags.md" craft 2
+    "Closed typed records over bool flags. Surface the variant set in the type system.")
+  (Skill prose "skills/prose.md" craft 3
+    "Prose-craft discipline.")
+
+  ;; Programming — language and platform craft
+  (Skill kameo "skills/kameo.md" programming 3
+    "Kameo actor-runtime discipline. Lifecycle contract; spawn-in-thread restart trap.")
+  (Skill rust-discipline "skills/rust-discipline.md" programming 3
+    "Rust craft index. Methods on types; typed errors; no ZST holders.")
+  (Skill rust-methods "skills/rust/methods.md" programming 3
+    "Methods on types. One-object-in/one-object-out.")
+  (Skill rust-errors "skills/rust/errors.md" programming 3
+    "Typed errors at crate boundary. thiserror; no anyhow at edges.")
+  (Skill rust-storage-and-wire "skills/rust/storage-and-wire.md" programming 3
+    "redb + rkyv pattern for storage and wire.")
+  (Skill rust-parsers "skills/rust/parsers.md" programming 3
+    "No hand-rolled parsers. Use winnow or NOTA codec.")
+  (Skill rust-crate-layout "skills/rust/crate-layout.md" programming 3
+    "Crate layout. Tests in separate files; bin / lib / examples.")
+  (Skill nix-discipline "skills/nix-discipline.md" programming 3
+    "Nix module structure. Flake conventions; check derivations.")
+  (Skill nix-usage "skills/nix-usage.md" programming 3
+    "When to use Nix tooling. nix eval / flake show / path-info — not filesystem search.")
+  (Skill mermaid "skills/mermaid.md" programming 4
+    "Mermaid diagram conventions and safe-syntax workarounds.")
+  (Skill nota-schema-docs "skills/nota-schema-docs.md" workflow 4
+    "Pseudo-NOTA convention for documenting record schemas: angle-bracket placeholders, optional ?, enum |.")
+  (Skill stt-interpreter "skills/stt-interpreter.md" programming 4
+    "Speech-to-text interpreter integration notes.")
+
+  ;; Workflow — how work moves
+  (Skill jj "skills/jj.md" workflow 4
+    "Jujutsu version-control discipline. Concurrent-agent safety.")
+  (Skill testing "skills/testing.md" workflow 4
+    "All tests in Nix. Pure tests as checks; -test suffix for test-only binaries.")
+  (Skill feature-development "skills/feature-development.md" workflow 4
+    "Feature branches in worktrees. Multi-repo arc coordination.")
+  (Skill beads "skills/beads.md" workflow 4
+    "Short-tracked-item discipline. Transitional pre-Persona-mind.")
+  (Skill repository-management "skills/repository-management.md" workflow 4
+    "ghq / gh mechanics for repo work.")
+  (Skill skill-editor "skills/skill-editor.md" workflow 4
+    "How to edit skill files without growing them noisy. Skills never reference reports.")
+
+  ;; Meta — how the workspace maintains itself
+  (Skill autonomous-agent "skills/autonomous-agent.md" meta 4
+    "When to act vs ask. How to surface blocked decisions.")
+  (Skill context-maintenance "skills/context-maintenance.md" meta 4
+    "Sweep reports and conversation. Migrate substance to permanent homes.")
+]

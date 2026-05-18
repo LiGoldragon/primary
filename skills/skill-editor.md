@@ -4,6 +4,39 @@
 
 ---
 
+## Skills are compact — trust the reader
+
+Agents reading this workspace are smart. They fill in obvious blanks.
+A skill that enumerates every edge case becomes unreadable; the agent
+stops at the first interesting rule and never sees the rest. A skill
+that names the rule and the *why* is enough.
+
+When editing or writing a skill, ask: *what would a smart agent miss
+without this line?* If the answer is "nothing", cut the line.
+
+What to keep:
+
+- The rule. Stated as a rule, not as a story.
+- The *why*. Why this rule exists; what breaks if it doesn't hold.
+  The *why* lets future agents judge edge cases.
+- One or two concrete examples — the kind that teach the rule, not
+  the kind that enumerate every variant.
+
+What to cut:
+
+- Hard caps quoted as numbers ("max 100 lines"). The cap drifts;
+  the number becomes wrong; the rule reads as rigid where it isn't.
+- Exhaustive case-by-case enumeration. If the agent can derive the
+  case from the rule, the case doesn't belong in the skill.
+- Multi-paragraph rationale where one sentence would work.
+- "When in doubt, ask the user." The autonomous-agent skill already
+  carries this; don't restate it in every skill.
+
+The capability test: would deleting this line make the skill *less
+effective*? If not, delete.
+
+---
+
 ## What a skill file is
 
 A skill file is "what an agent needs to know to be effective in

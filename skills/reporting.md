@@ -333,6 +333,42 @@ lands in a day, and the date itself is noise once you have
 a unique number. Commit timestamps already record when each
 report landed; the filesystem doesn't need to repeat that.
 
+**Iterating on a report — v2 / v3 suffix.** When a topic
+is in active back-and-forth with the user or another agent
+and the next version is *substantially the same report with
+absorbed feedback*, rename the file with a `-v2` (then
+`-v3`, …) suffix between the number and the topic:
+
+- v1 (implicit, no suffix): `225-workspace-redesign-direction.md`
+- v2: `225-v2-workspace-redesign-direction.md`
+- v3: `225-v3-workspace-redesign-direction.md`
+
+The file under the same number is the canonical current
+version. Delete the predecessor in the same commit that
+lands the successor — git history holds the lineage.
+**Don't accumulate `v1`/`v2`/`v3` side-by-side.**
+
+When the topic shifts enough that the *name after the
+number* should change, that is the judgment call where it
+becomes a new report. Take the next number, absorb anything
+still relevant from the predecessor, then **delete the
+predecessor** in the same commit. The pattern:
+
+```
+write   reports/<role>/226-new-topic.md  (absorbs /225)
+delete  reports/<role>/225-old-topic.md  (same commit)
+```
+
+The number sequence is per-role and gap-tolerant; the
+deleted number stays retired.
+
+**Why this shape.** Stacking obsolete reports that
+recursively partially-supersede each other is harder to
+reason about than a single current report with the git log
+as the lineage record. Editing in place is fine for light
+fixes; renames + deletions are the discipline for real
+iteration.
+
 **Why no leading zeros:** numeric-aware sort tools (`ls -v`,
 `sort -n`, `sort -t- -k1,1n`) handle non-padded numbers
 correctly. Padding adds noise at the cost of needing to

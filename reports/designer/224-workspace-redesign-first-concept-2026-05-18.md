@@ -1,7 +1,13 @@
 # 224 — Workspace redesign: first concept (2026-05-18)
 
 *Role redesign + report-repo question + repository-creation skill +
-skills-subdivision question. First concept; awaiting user reaction.*
+skills-subdivision question. First concept; user pushback now
+absorbed in `reports/designer/225-workspace-redesign-direction-after-pushback-2026-05-18.md`.*
+
+**Status**: §2-§7 pattern catalog, research synthesis, repo
+conventions, and skills-taxonomy reasoning are still load-bearing.
+§4 (lane set) and §10 (open questions) are partially superseded by
+/225. Read /225 first for the current direction.
 
 ---
 
