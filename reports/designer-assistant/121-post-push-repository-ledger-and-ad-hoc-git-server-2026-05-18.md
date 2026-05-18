@@ -769,7 +769,7 @@ The ledger should classify repositories by authored purpose:
 This should remain a typed record, not a hardcoded file-path heuristic
 alone. A path heuristic can be used to bootstrap.
 
-## 10. Current Decisions And Remaining Question
+## 10. Decisions
 
 ### D1. Self-hosted receive first
 
@@ -788,24 +788,195 @@ Decision: signed commits, pre-receive rejection of unsigned commits,
 and Criome/BLS release trust are future features. They should be
 designed, but they do not block the ad hoc Git receive prototype.
 
-### Q1. Forgejo first, or Gitolite first?
+### D4. Gitolite first
 
-This is now the remaining architecture choice.
-
-Forgejo is the faster general forge: web UI, webhooks, push mirrors,
-and simpler administration. It gives the ad hoc cloud a usable surface
-immediately.
+Decision: Gitolite is the first self-hosted canonical receive point.
+Forgejo and Gerrit are not first-slice infrastructure.
 
 Gitolite is the smaller authority: SSH Git receive, ACLs, hooks, and
 less surface area. It relies on `repository-ledger` and Orchestrate for
 the higher-level collaboration model.
 
-Recommendation after the agent-user clarification: do not start with
-Gerrit. Agents gain too little from a full review server if Orchestrate
-and `repository-ledger` are meant to become the typed coordination
-surface. Choose Forgejo for speed, or Gitolite for minimality.
+### D5. Owner-signal is mandatory
 
-## 11. Sources
+Decision: privileged mutable configuration for `repository-ledger`
+always goes through owner signal. There is no implementation path where
+we start with static local configuration as the privileged configuration
+surface and add owner signal later.
+
+### D6. Failed ledger notification uses fail-open spool
+
+Decision: if the `post-receive` hook cannot contact
+`repository-ledger-daemon`, the hook writes a spool file and exits
+success. Git pushes should not fail because the ledger daemon is down.
+The daemon replays the spool on restart.
+
+This is partly forced by Git's hook semantics: `post-receive` runs after
+refs have moved, so it cannot cleanly reject the push. True fail-closed
+would require making the ledger-critical step part of `pre-receive`,
+which is future policy work.
+
+### D7. No cgit
+
+Decision: do not install cgit and do not keep it in the plan.
+
+## 11. Implementation Plan
+
+### Slice A: Gitolite Host
+
+Implement or document the ad hoc host profile that runs:
+
+- `openssh`
+- `git`
+- `gitolite`
+- bare repository storage
+- Gitolite admin repository
+- server-side hook install path
+
+Minimum Nix/CriomOS shape:
+
+- A host role or service module for the ad hoc Git receive node.
+- A dedicated Unix user such as `git`.
+- A persistent repository root, for example `/var/lib/gitolite`.
+- SSH access limited to the Gitolite forced-command path.
+- Backups deferred but named.
+
+Do not put cluster-specific names into daemon/component names.
+
+### Slice B: Repository Ledger Triad
+
+Create the triad component:
+
+- `signal-repository-ledger` contract repository.
+- `permission-signal-repository-ledger` delegated-authority contract
+  repository.
+- `owner-signal-repository-ledger` owner-authority contract repository.
+- `repository-ledger-daemon`.
+- `repository-ledger` CLI.
+
+The daemon stores state in sema-engine.
+
+Minimum public signal:
+
+```text
+Assert RepositoryPushObserved
+Match RecentRepositoryChanges
+Match RecentReports
+Match ChangesByRepository
+Match ChangesInTimeWindow
+```
+
+Minimum owner signal:
+
+```text
+Assert WatchedRepository
+Mutate RepositoryMirrorPolicy
+Mutate RepositoryHookSecret
+Retract WatchedRepository
+Validate RepositoryHookConfiguration
+```
+
+The owner-signal actor is part of `repository-ledger-daemon` from day
+one. Permission-signal can start as skeletal if no delegated authority
+operation is needed in the first slice, but the tier exists in the
+component architecture.
+
+### Slice C: post-receive Adapter
+
+Gitolite hook calls a tiny adapter after refs are updated.
+
+Hook input:
+
+```text
+<old-oid> <new-oid> <ref-name>
+```
+
+Adapter sends one event to `repository-ledger-daemon` containing:
+
+- repository logical name or path;
+- old object ID;
+- new object ID;
+- ref name;
+- receive timestamp minted by daemon side where possible;
+- delivery ID minted by daemon or adapter;
+- source kind: `GitolitePostReceive`.
+
+The hook should be dumb:
+
+- It should not parse commits deeply.
+- It should not decide report types.
+- It should not verify signatures in this slice.
+- If the daemon is down, it writes a spool file and exits success.
+
+### Slice D: Ledger Importer
+
+`repository-ledger-daemon` treats hook delivery as a wake-up. It then
+reads the canonical bare repo itself.
+
+Importer work:
+
+- Resolve repository identity.
+- Record the ref update.
+- Enumerate commits in `old..new` where meaningful.
+- For each commit, store:
+  - Git commit ID;
+  - author/committer identities;
+  - commit timestamp;
+  - subject/body;
+  - changed paths summary;
+  - `jj` change ID if recoverable from commit metadata;
+  - report landing facts if changed paths are report-lane files.
+
+The hook payload is not the source of truth. The bare repo is.
+
+### Slice E: Mirroring To GitHub
+
+GitHub is outbound mirror only after self-hosted receive exists.
+
+First slice can skip mirroring. When added:
+
+- mirror worker runs after accepted pushes;
+- mirror target is configured through owner signal;
+- GitHub deploy key or GitHub App credential gives transport write
+  permission;
+- trust does not come from the GitHub credential;
+- signed commit/tag verification remains future feature;
+- Criome/BLS release trust remains future feature.
+
+Do not let agents push to GitHub as a second authority once the
+self-hosted receive is live.
+
+## 12. Acceptance Witnesses
+
+Minimum tests / witnesses:
+
+- A push to Gitolite updates a bare repo ref.
+- `post-receive` emits a typed `RepositoryPushObserved`.
+- `repository-ledger-daemon` records `RepositoryRefUpdate`.
+- `repository-ledger recent changes` returns the pushed commit.
+- If daemon is down, hook writes spool and push still succeeds.
+- On daemon restart, spool replay imports the missed push.
+- Owner-only configuration commands go through
+  `owner-signal-repository-ledger`.
+- GitHub remote is not required for the first test.
+- GitHub mirror, once added, does not become an accepted push source.
+
+## 13. Operator Handoff
+
+Implementation can be split:
+
+1. System specialist: ad hoc Gitolite host/service module.
+2. Operator: `repository-ledger` triad component skeleton with
+   `signal-repository-ledger`, `permission-signal-repository-ledger`,
+   and `owner-signal-repository-ledger`.
+3. Operator/system specialist together: hook adapter and socket/spool
+   integration.
+4. Operator: importer and sema-engine tables.
+
+The architecture constraint is simple: pushed-to-canonical-remote is
+what makes a change real; local commits are drafts.
+
+## 14. Sources
 
 - Git hooks documentation: `pre-receive`, `update`, `post-receive`, and
   `post-update` semantics. <https://git-scm.com/docs/githooks.html>
@@ -826,8 +997,6 @@ surface. Choose Forgejo for speed, or Gitolite for minimality.
   <https://gitolite.com/gitolite/mirroring.html>
 - Gitolite post-receive hook configuration.
   <https://gitolite.com/gitolite/non-core.html>
-- cgit: hyperfast web frontend for Git repositories written in C.
-  <https://git.zx2c4.com/cgit/about/>
 - Git server-side Smart HTTP implementation via `git-http-backend`.
   <https://git-scm.com/docs/git-http-backend>
 - Git HTTP protocol: dumb and smart HTTP server forms.
