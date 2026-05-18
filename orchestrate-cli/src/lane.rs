@@ -6,12 +6,8 @@
 //! sites get exhaustive `match` coverage.
 //!
 //! Each lane maps to a [`signal_persona_orchestrate::RoleName`] variant via
-//! [`Lane::role_name`]. Today the contract enumerates eight role
-//! variants (four main roles plus four first-tier assistants); the
-//! three `second-*-assistant` lanes added by `skills/role-lanes.md`
-//! collapse onto their first-tier assistant variant. The collapse is
-//! documented inline at the projection site so a future contract growth
-//! has a single place to revisit.
+//! [`Lane::role_name`]. The contract mirrors the current workspace lane
+//! list, including the second-assistant lanes.
 
 use std::fmt;
 
@@ -81,22 +77,18 @@ impl Lane {
     }
 
     /// Project the workspace-side lane onto the contract-side
-    /// [`RoleName`]. The contract enumerates only four main roles plus
-    /// four first-tier assistants; second-tier assistant lanes collapse
-    /// onto their first-tier assistant variant for the typed
-    /// projection.
-    ///
-    /// The lock file projection keeps the per-lane identity; only the
-    /// typed `OrchestrateRequest` collapses. If the contract grows
-    /// second-`*` variants later, update this method to preserve them.
+    /// [`RoleName`].
     pub const fn role_name(self) -> RoleName {
         match self {
             Self::Operator => RoleName::Operator,
-            Self::OperatorAssistant | Self::SecondOperatorAssistant => RoleName::OperatorAssistant,
+            Self::OperatorAssistant => RoleName::OperatorAssistant,
+            Self::SecondOperatorAssistant => RoleName::SecondOperatorAssistant,
             Self::Designer => RoleName::Designer,
-            Self::DesignerAssistant | Self::SecondDesignerAssistant => RoleName::DesignerAssistant,
+            Self::DesignerAssistant => RoleName::DesignerAssistant,
+            Self::SecondDesignerAssistant => RoleName::SecondDesignerAssistant,
             Self::SystemSpecialist => RoleName::SystemSpecialist,
-            Self::SystemAssistant | Self::SecondSystemAssistant => RoleName::SystemAssistant,
+            Self::SystemAssistant => RoleName::SystemAssistant,
+            Self::SecondSystemAssistant => RoleName::SecondSystemAssistant,
             Self::Poet => RoleName::Poet,
             Self::PoetAssistant => RoleName::PoetAssistant,
         }

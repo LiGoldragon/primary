@@ -62,18 +62,18 @@ fn observation_decodes_to_role_observation() {
 }
 
 #[test]
-fn second_assistant_lanes_collapse_onto_first_tier_role_name() {
+fn second_assistant_lanes_project_to_matching_role_name() {
     assert_eq!(
         Lane::SecondOperatorAssistant.role_name(),
-        RoleName::OperatorAssistant
+        RoleName::SecondOperatorAssistant
     );
     assert_eq!(
         Lane::SecondDesignerAssistant.role_name(),
-        RoleName::DesignerAssistant
+        RoleName::SecondDesignerAssistant
     );
     assert_eq!(
         Lane::SecondSystemAssistant.role_name(),
-        RoleName::SystemAssistant
+        RoleName::SecondSystemAssistant
     );
 }
 

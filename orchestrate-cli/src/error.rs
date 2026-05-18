@@ -78,11 +78,6 @@ pub enum Error {
     #[error("scope is neither an absolute/relative path nor a bracketed task token: {raw}")]
     UnclassifiableScope { raw: RawScope },
 
-    #[error(
-        "contract refused {role_token} (no matching signal-persona-orchestrate RoleName variant — workspace registry has lanes the contract does not yet know)"
-    )]
-    LaneOutsideContract { role_token: String },
-
     #[error("scope reason must be non-empty and single-line")]
     InvalidScopeReason,
 
