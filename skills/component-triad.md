@@ -18,7 +18,6 @@ Every stateful capability in this workspace is a **triad**:
   src/bin/<name>-daemon  long-lived daemon binary (actor root + storage)
   src/bin/<name>         thin CLI client binary
 signal-<component>/      repo for the unprivileged/normal wire vocabulary
-permission-signal-<component>/ repo for limited delegated authority
 owner-signal-<component>/ repo for owner-only authority/configuration
   src/lib.rs             signal_channel! { ... } declaration
                          + per-variant SignalVerb mapping
@@ -45,10 +44,9 @@ Four load-bearing invariants. Each becomes a witness test (per
    verb because the contract resolves it from the payload type.
 
 4. **Authority surfaces are part of the triad, not an add-on.** A
-   stateful component has three typed authority tiers:
+   stateful component has two typed authority tiers:
    `signal-<component>` for the normal/unprivileged component surface,
-   `permission-signal-<component>` for limited delegated authority, and
-   `owner-signal-<component>` for owner-only authority/configuration.
+   and `owner-signal-<component>` for owner-only authority/configuration.
    The corresponding actors live inside the daemon and listen on
    permission-separated sockets. Privileged mutable configuration enters
    through the owner-signal actor. The CLI configures privileged
@@ -61,9 +59,8 @@ Four load-bearing invariants. Each becomes a witness test (per
 
 The triad is filesystem-enforced (per `skills/micro-components.md`): one
 daemon + CLI in `<component>` (typically one Cargo crate with two
-`[[bin]]` entries), one normal contract in `signal-<component>`, one
-limited delegated authority contract in `permission-signal-<component>`,
-and one owner authority contract in `owner-signal-<component>`. The
+`[[bin]]` entries), one normal contract in `signal-<component>`, and
+one owner authority contract in `owner-signal-<component>`. The
 contract crates carry no runtime, no actors, no `tokio`.
 
 ---
