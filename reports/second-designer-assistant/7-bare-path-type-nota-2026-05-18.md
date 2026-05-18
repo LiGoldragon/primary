@@ -1,9 +1,9 @@
 # 7 — Bare `Path` type in NOTA
 
 **Lane:** second-designer-assistant
-**Date:** 2026-05-18
-**Status:** implemented + tested in nota-codec; spec text in `repos/nota/README.md`
-still pending designer pickup
+**Date:** 2026-05-18 (initial); 2026-05-19 (spec + migration follow-up)
+**Status:** implemented + tested in nota-codec (§9); spec section landed in
+`repos/nota/README.md`; `skills/skills.nota` migrated to bare paths (§11)
 **Audience:** designer (language-design authority), operator (`nota-codec` + `nota-derive` implementor)
 
 ---
@@ -419,7 +419,53 @@ enough that opening one is a discretion call.
 
 ---
 
-## 10. See also
+## 10. Follow-up 2026-05-19 — spec landed + workspace migration
+
+Per user direction the same day as initial implementation:
+
+### 10.1 Spec text landed in nota README
+
+Repository `LiGoldragon/nota`, branch `main`, commit `a0617b99`
+("spec: bare Path form section — typed Path widens the bare alphabet
+to [A-Za-z_./]/[A-Za-z0-9_-./]"). New section `## Bare \`Path\` form`
+placed after `### A clarification on bracketed bare idents`, before
+the unrelated `## Path syntax` (which describes NOTA's nested-name
+`:` separator — distinct concept; not renamed in this pass).
+
+Section content matches §2.7's draft and the implemented behavior:
+the two-row alphabet table (strict bare-string vs bare-`Path`); a
+schema-level example using the canonical `(Skill <name> <Path>
+<tier> "<description>")` shape; the "content that always quotes"
+table covering spaces, leading digit, `~`, `:`, `\`, and reserved
+literals; the canonical-form bare-emit-when-eligible note.
+
+### 10.2 `skills/skills.nota` migrated to bare paths
+
+Workspace `primary`, branch `main`, commit `9c018120`
+("skills.nota: migrate path strings to bare per nota Path
+typed-position rule (was quoted)"). Every quoted path string in
+the typed-skill-index — `"skills/operator.md"`,
+`"skills/component-triad.md"`, etc., ~40 rows — dropped to its
+bare form. Descriptions stay quoted (they contain spaces and
+punctuation).
+
+The schema-comment header was kept stripped (designer's commit
+`c5f80951` removed it earlier the same day as self-evident); the
+file is data-only now, which is consistent with `skills/nota-design.md`
+Rule 2 ("data lives in records, not in comments"). Any future
+schema documentation lives in `skills/nota-design.md` rather than
+as inline comments in the data file.
+
+### 10.3 Still deferred
+
+- `nota-derive` `NotaPath` derive — see follow-up analysis: useful
+  if/when the workspace introduces multiple type-distinguished path
+  newtypes (`RepoPath`, `CratePath`, etc.). Today there is one
+  `Path` shape and the manual impl in `src/path.rs` covers it.
+  Lift the manual impl into a `NotaPath` derive (in `nota-derive`
+  alongside `NotaTransparent`) when the second consumer lands.
+
+## 11. See also
 
 - `repos/nota/README.md` §"Bare-identifier strings" — the existing
   bare-string carve-out this extends.
