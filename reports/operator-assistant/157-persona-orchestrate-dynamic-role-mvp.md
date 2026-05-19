@@ -46,6 +46,23 @@ triad:
   - `main`: `c159d955 orchestrate: isolate ledger tests from workspace locks`
   - bookmark: `persona-orchestrate-mvp`
 
+## Architecture Redirection
+
+`reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
+supersedes the public six-verb Signal shape this MVP was implemented
+against. The daemon/CLI boundary, owner/ordinary socket split, dynamic
+role storage, repository indexing, and lock projection remain useful
+runtime work, but the contract surface is not final architecture:
+
+- `signal-core` still requires `SignalVerb` on every operation.
+- `signal-persona-orchestrate` still declares public operations under
+  `Assert` / `Retract` / `Mutate` / `Match`.
+- `owner-signal-persona-orchestrate` still declares owner operations
+  under `Mutate` / `Retract`.
+- Full alignment requires the broader `signal-core` / `signal-sema`
+  migration described by report 238 before these Orchestrate contracts
+  can expose contract-local public verbs.
+
 ## Verification
 
 - `signal-persona-orchestrate`: `cargo test`
