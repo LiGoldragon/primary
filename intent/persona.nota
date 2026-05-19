@@ -95,3 +95,10 @@
     "Authorizing operator to start the persona-spirit foundation from the recent design reports, with an explicit stop condition when implementation would require unstated intent."
     Maximum
     2026-05-19T13:48:00+02:00)
+
+(Decision
+    "Move persona-orchestrate forward now so the workspace can replace the old shell-script orchestration helper with the real persona-orchestrate component."
+    "I would like to move forward with persona-orchestrate and get that rolling so we can actually move out of the old shell script."
+    "After the intent-backfill detour, psyche redirected current work toward context maintenance and assembling persona-orchestrate intent/architecture so implementation can proceed beyond tools/orchestrate."
+    Medium
+    2026-05-19T12:16:06Z)
