@@ -2,7 +2,12 @@
 
 *Operator update after the owner-socket daemon slice.*
 
-Code landing: `/git/github.com/LiGoldragon/persona-spirit` `ecaf880a`.
+Code landings:
+
+- `/git/github.com/LiGoldragon/persona-spirit` `ecaf880a` — ordinary/owner
+  daemon socket split.
+- `/git/github.com/LiGoldragon/persona-spirit` `31e36d7b` — `PolicyPlane`
+  bootstrap reload handling.
 
 ## 0 · Short Read
 
@@ -11,7 +16,7 @@ Code landing: `/git/github.com/LiGoldragon/persona-spirit` `ecaf880a`.
 - typed NOTA request input;
 - sema-engine backed record storage;
 - Kameo actor planes for text, dispatch, record storage, working state,
-  subscriptions, owner lifecycle, and reply projection;
+  subscriptions, owner lifecycle, bootstrap policy, and reply projection;
 - a daemon with separate ordinary and owner Signal sockets;
 - constraint tests for the actor paths and socket boundaries.
 
@@ -29,6 +34,7 @@ flowchart TB
     owner["owner socket"]
     root["SpiritRoot"]
     ownerPlane["OwnerPlane"]
+    policy["PolicyPlane"]
     ingress["IngressPhase"]
     decoder["NotaDecoder"]
     dispatch["DispatchPhase"]
@@ -45,6 +51,7 @@ flowchart TB
     ordinary --> root
     owner --> root
     root --> ownerPlane
+    ownerPlane --> policy
     root --> ingress
     ingress --> decoder
     ingress --> dispatch
@@ -98,6 +105,7 @@ persona_spirit_state_observation_uses_state_plane
 persona_spirit_record_subscription_uses_read_plane_then_subscription_plane
 persona_spirit_subscription_retractions_use_subscription_plane
 persona_spirit_owner_lifecycle_orders_use_owner_plane
+persona_spirit_bootstrap_policy_reload_uses_policy_plane
 persona_spirit_daemon_serves_signal_frames_through_actor_root
 persona_spirit_daemon_serves_owner_signal_frames_through_owner_plane
 persona_spirit_ordinary_socket_rejects_owner_signal_frames
@@ -119,8 +127,8 @@ The component now has a real triad shape:
 
 The internal naming is much cleaner than the earlier intent-prefix attempt:
 `Entry`, `Quote`, `Topic`, `Summary`, `StatePlane`, `SubscriptionPlane`,
-`OwnerPlane`, `RecordStore`. The repository context already says this is
-Spirit intent work, so the types do not carry ancestor names.
+`OwnerPlane`, `PolicyPlane`, `RecordStore`. The repository context already
+says this is Spirit intent work, so the types do not carry ancestor names.
 
 The daemon now has hard boundary witnesses. If an owner frame is sent to the
 ordinary socket, or an ordinary frame is sent to the owner socket, the server
@@ -131,8 +139,9 @@ rejects it before any actor plane can process it.
 `SubscriptionPlane` opens and retracts subscriptions, but it does not yet push
 events. It is a lifecycle/token plane, not a live event stream.
 
-`OwnerPlane` handles start, drain/stop, register identity, and retire identity,
-but `ReloadBootstrapPolicyOrder` returns an honest `RequestUnimplemented`.
+`PolicyPlane` parses the embedded `bootstrap-policy.nota` seed and
+`ReloadBootstrapPolicyOrder` now returns `BootstrapPolicyReloaded`. It does not
+yet support a runtime-configured policy path.
 
 `RecordStore` still handles only the current entry and query surface. It does
 not yet store a refined intent-manifestation graph with multiple verbatim
@@ -145,11 +154,11 @@ into owner-Mutate calls toward `persona-mind`.
 
 The next slices that do not need new product intent are:
 
-1. Implement `bootstrap-policy.nota` import through `OwnerPlane`.
-2. Add subscription event delivery and tests that prove events cross the
+1. Add subscription event delivery and tests that prove events cross the
    daemon socket as Signal stream frames.
-3. Add a refined stored entry model with multiple verbatim references.
-4. Add Spirit-to-mind owner-Mutate forwarding once the target contract is ready.
+2. Add a refined stored entry model only if the psyche changes the current
+   separate-record repetition intent.
+3. Add Spirit-to-mind owner-Mutate forwarding once the target contract is ready.
 
 The classifier, contradiction guardian, and richer psyche model still need
 design intent before implementation.
