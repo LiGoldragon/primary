@@ -33,7 +33,9 @@ Path: `/git/github.com/LiGoldragon/signal-repository-ledger`
 
 Remote: `gitolite@localhost:signal-repository-ledger`
 
-Commit: `8f746959 signal-repository-ledger: add ordinary repository ledger contract`
+Initial commit: `8f746959 signal-repository-ledger: add ordinary repository ledger contract`
+
+Latest commit: `73f7f517 signal-repository-ledger: add daemon configuration contract`
 
 Surface:
 
@@ -45,6 +47,8 @@ Surface:
   - `Match RepositoryCatalogQuery`
 - Replies for recorded events, event listings, catalog listings, and typed
   unimplemented responses.
+- `RepositoryLedgerDaemonConfiguration`, the typed daemon startup record for
+  ordinary socket, owner socket, store path, and spool directory.
 
 Verification:
 
@@ -60,13 +64,17 @@ Path: `/git/github.com/LiGoldragon/owner-signal-repository-ledger`
 
 Remote: `gitolite@localhost:owner-signal-repository-ledger`
 
-Commit: `b92f35d3 owner-signal-repository-ledger: add owner policy contract`
+Initial commit: `b92f35d3 owner-signal-repository-ledger: add owner policy contract`
+
+Latest commit: `2e8d37fa owner-signal-repository-ledger: reuse ledger path contract`
 
 Surface:
 
 - Owner-only repository registration and retirement.
 - Spool directory policy.
 - Future mirror policy records.
+- Reuses the ordinary contract's `RepositoryLedgerPath` so the daemon
+  configuration and owner policy use one path vocabulary.
 
 Verification:
 
@@ -82,15 +90,23 @@ Path: `/git/github.com/LiGoldragon/repository-ledger`
 
 Remote: `gitolite@localhost:repository-ledger`
 
-Commit: `5c4e1465 repository-ledger: add sema-engine backed first slice`
+Initial commit: `5c4e1465 repository-ledger: add sema-engine backed first slice`
+
+Latest commit: `ff89f6fd repository-ledger: add live daemon and cli slice`
 
 Surface:
 
 - `RepositoryLedgerStore` opens a `sema-engine` database.
 - Hook notifications commit as typed `StoredRepositoryEvent` records.
 - Repository registrations commit as typed catalog records.
-- Placeholder CLI and daemon binaries accept exactly one argument and report
-  typed unimplemented output until socket actors land.
+- `repository-ledger-daemon` accepts one typed
+  `RepositoryLedgerDaemonConfiguration` argument, binds ordinary and owner
+  sockets, drains the current Gitolite spool projection, and answers Signal
+  request frames.
+- `repository-ledger` is a thin ordinary-contract client: it accepts one NOTA
+  request payload, connects only to the repository-ledger daemon, wraps the
+  payload in a Signal request frame, and prints the domain reply payload as
+  NOTA.
 
 Verification:
 
@@ -99,6 +115,19 @@ cargo test
 ```
 
 Passed.
+
+Additional live binary smoke in this pass:
+
+```sh
+repository-ledger-daemon '(RepositoryLedgerDaemonConfiguration ...)'
+REPOSITORY_LEDGER_SOCKET_PATH=<ordinary-socket> repository-ledger '(RepositoryCatalogQuery)'
+```
+
+Observed reply:
+
+```nota
+(RepositoryCatalogListing [])
+```
 
 ## Workspace Registry Update
 
@@ -190,15 +219,31 @@ Verification:
 - `checks.x86_64-linux.repository-receive-role-policy` passed with the
   generated production `system` and `horizon` inputs.
 
+## Newly Closed In This Pass
+
+- Daemon ordinary socket handler.
+- Daemon owner-signal socket handler.
+- Spool consumer for the current CriomOS receive-hook NOTA shape.
+- Thin query CLI that talks to the daemon.
+- Tests for ordinary Signal request/reply, owner Signal mutation, and spool
+  ingestion with move-to-processed after commit.
+
 ## Not Yet Implemented
 
-- Daemon ordinary socket actor.
-- Daemon owner-signal socket actor.
-- Spool consumer.
 - Direct hook-to-daemon Signal submission.
 - Mirror execution to GitHub or any other remote.
-- Query CLI that talks to the daemon.
+- Nix flake checks for the three new repos. The current witness is `cargo test`
+  plus the live binary smoke; the workspace testing discipline wants these
+  surfaced as named Nix checks next.
+- Production CriomOS service packaging for `repository-ledger-daemon`; the
+  current production deployment has the Gitolite hook and filesystem handoff,
+  not the daemon unit.
+- Kameo actor topology. The handlers are split by socket and behavior, but the
+  first live runtime is synchronous threads over one store mutex. That is
+  acceptable for proving the boundary and should be replaced with the standard
+  triad actor layout when the service is packaged.
 
-The implementation now has enough contract and sema-engine state shape for the
-next slice to be concrete: build the daemon actor tree and consume the spool
-under the corrected filesystem handoff.
+The implementation now has enough contract, sema-engine state, socket, and CLI
+shape for the next slice to be concrete: package the daemon as a local CriomOS
+service on `ouranos`, add the Nix checks, then replace the temporary spool loop
+with direct hook-to-daemon Signal delivery.
