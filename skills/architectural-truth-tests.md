@@ -254,6 +254,7 @@ Examples:
 - `injection_cannot_happen_without_focus_observation`
 - `claim_cannot_commit_without_conflict_actor`
 - `query_cannot_touch_sema_writer`
+- `cli_cannot_open_component_database`
 - `handler_cannot_block_mailbox`
 - `claim_normalizer_cannot_be_empty_marker`
 

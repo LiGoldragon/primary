@@ -37,16 +37,20 @@ table at the end of this section.
 ### 1. The CLI has exactly one Signal peer — its own daemon
 
 The CLI is a text bridge into the typed wire for *one* daemon's
-contract. It cannot multiplex across daemons, open another component's
-database, or speak its own parallel protocol. The CLI exists because
-humans and early agents need a text-to-Signal adapter; once peer
-daemons speak Signal directly to each other (which they already do —
-`persona-introspect`'s daemon queries `persona-router` over
-`signal-persona-router`), the CLI is no longer load-bearing for that
-path and retires.
+contract. It cannot multiplex across daemons, open **any** durable
+database, open another component's socket, or speak its own parallel
+protocol. "Any database" includes the component's own redb/sema store:
+the daemon is the only process that opens durable component state.
+The CLI exists because humans and early agents need a text-to-Signal
+adapter; once peer daemons speak Signal directly to each other (which
+they already do — `persona-introspect`'s daemon queries
+`persona-router` over `signal-persona-router`), the CLI is no longer
+load-bearing for that path and retires.
 
 The CLI is **eventually obsolete machinery**. Keep CLI-side logic thin
-accordingly.
+accordingly. A "temporary direct-store CLI" is not a prototype; it is
+a triad violation. If the daemon socket is not implemented yet, the
+CLI fails closed or remains unshipped rather than opening the store.
 
 ### 2. The daemon's external surface is exclusively `signal-core` frames
 
@@ -179,7 +183,7 @@ truth.
 |---|---|
 | `<component>-cli-accepts-one-argument-and-prints-one-nota-reply` | 1 |
 | `<component>-cli-has-exactly-one-signal-peer` | 1 |
-| `<component>-cli-cannot-open-peer-database-or-socket` | 1 |
+| `<component>-cli-cannot-open-any-database-or-peer-socket` | 1 |
 | `<component>-daemon-rejects-non-signal-traffic-on-its-socket` | 2 |
 | `<component>-signal-verb-mapping-covers-every-request-variant` | 3 |
 | `<component>-owner-socket-rejects-ordinary-frame` | 4 |

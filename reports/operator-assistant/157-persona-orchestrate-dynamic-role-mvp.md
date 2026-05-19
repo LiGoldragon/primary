@@ -25,9 +25,10 @@ triad:
     role record.
   - Added local repository-index refresh from a configured Git index
     root into workspace `repos/` symlinks.
-  - Added a direct-store raw CLI in the existing
-    `persona-orchestrate-daemon` target for `role create`, `role list`,
-    `repository refresh`, `repository list`, `claim`, and `release`.
+  - Corrected the initial direct-store CLI mistake: the daemon binary
+    now fails closed until its socket runtime exists, and the CLI
+    binary only encodes NOTA requests as Signal frames to the daemon
+    sockets.
   - Added named Nix checks for dynamic role creation and repository
     refresh.
 
@@ -57,6 +58,7 @@ witnesses:
 
 - `checks.<system>.test-dynamic-role-creation`
 - `checks.<system>.test-repository-refresh`
+- `checks.<system>.test-cli-boundary`
 
 ## What Works
 
@@ -71,12 +73,14 @@ witnesses:
 - Role creation creates local report-lane filesystem shape in tests.
 - Repository refresh scans local checkout directories and links them
   into a workspace `repos/` directory.
-- The raw CLI can exercise the MVP without the old shell topology.
+- The CLI boundary is now guarded by a source-scan witness: it must
+  not import the service, tables, store location, sema-engine, or the
+  redb path.
 
 ## Gaps
 
-- There is still no long-lived daemon socket. The CLI opens the store
-  directly for now.
+- There is still no long-lived daemon socket. The CLI now fails at the
+  socket boundary until that daemon exists; it does not open the store.
 - There is no lock-file projection back to `orchestrate/*.lock`.
 - Report-repository creation is local-directory creation plus a
   report-lane symlink. It does not yet create a GitHub repository or
@@ -103,6 +107,6 @@ witnesses:
 4. When `RetireRoleOrder` lands for real, should it preserve report
    lanes by default and only mark the role inactive, or should it
    remove links and prevent future claims?
-5. Should the next slice build the daemon/socket boundary first, or
-   wire compatibility lock-file projection first so the raw CLI can
-   start replacing `tools/orchestrate` sooner?
+5. The next slice should build the daemon/socket boundary before any
+   compatibility lock-file projection; otherwise the CLI cannot be
+   used without violating the triad.
