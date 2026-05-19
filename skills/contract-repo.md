@@ -217,10 +217,15 @@ Naming is therefore load-bearing architecture:
   `Match`, `Subscribe`, `Validate`), where the `SignalVerb` enum
   is deliberately naming root operations.
 - Do not repeat namespace already supplied by the crate,
-  module, or enclosing enum. `signal_persona_message::
+  module, channel, relation, owning component, or enclosing
+  enum. This is a hard naming rule, not a style preference.
+  A `signal-repository-ledger` payload named
+  `RepositoryChangedFileQuery` is wrong because the repository
+  ledger context is already supplied by the contract; the name
+  should be `ChangedFileQuery`. `signal_persona_message::
   MessageRequest::MessageSubmission` may need `Message`
   because the relation is message-shaped; `PersonaMessage`
-  usually repeats the crate name.
+  repeats the crate/component namespace.
 - Do not fix under-specified names by adding generic suffixes.
   `Data`, `Payload`, `Info`, `Operation`, `Generic`, `Mixed`,
   `Ok`, and `ThingRequest` are warning signs unless the
@@ -794,7 +799,7 @@ bag of utilities — it is the spoken protocol.
 | Open enum where closed was meant | Adding `Unknown` variant "for forward compatibility" | Closed enum + coordinated upgrade. The `Unknown` is a polling-shaped escape hatch |
 | Boundary unnamed | The repo is described only as "shared types" or "messages," with no named endpoints, direction, authority, lifecycle vectors, or owning component | Name what crosses the boundary: which component/endpoint, which direction, which authority mints what, which lifecycle vectors are open. Sharing types is fine; failing to name what they speak is the bug. |
 | Root variants underspecified | `Ok`, `Generic`, `Mixed`, `Data`, or `Submit` where several things can be submitted | Name the vector exactly, or move the generic word under a more precise enclosing enum |
-| Namespace repeated as a prefix | `PersonaMessage`, `SignalPersonaRequest`, `HarnessHarnessEvent` | Let crate/module/enum context carry the namespace; keep the type name on the domain thing |
+| Namespace repeated as a prefix | `PersonaMessage`, `SignalPersonaRequest`, `HarnessHarnessEvent`, `RepositoryChangedFileQuery` inside `signal-repository-ledger` | Let crate/module/channel/enum context carry the namespace; keep the type name on the domain thing |
 
 ## See also
 

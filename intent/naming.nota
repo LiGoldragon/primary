@@ -1,0 +1,7 @@
+
+(Correction
+    "Do not prefix every record or variant with the component or contract domain when that domain is already implied by the crate, channel, module, or enclosing type. Names inside `signal-repository-ledger` should not all start with `Repository`; the boundary already supplies that context. Repeated domain prefixes are noise and violate the intended naming style."
+    "why are all your variants prefixed with Repository? … The fact that these objects are inside the repository ledger contract means that repository ledger is already implied. So saying repository all the time is against what I intend my naming rules to be like."
+    "Correction after repository-ledger query records were added with names like RepositoryPushObservation and RepositoryChangedFileQuery. Psyche wants naming guidance strengthened if it does not already forbid redundant domain prefixes."
+    Maximum
+    2026-05-19T14:40:38Z)

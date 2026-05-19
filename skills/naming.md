@@ -220,11 +220,13 @@ namespace; `id` when there is.
 planes, more naming accuracy — `profileSize` is better than
 `size`, unless it is `profile::size`.")
 
-## Anti-pattern: prefixing type names with the crate name
+## Anti-pattern: prefixing names with their namespace or domain
 
-**A type's name belongs to its module context, not to the
-cross-crate global namespace.** The crate IS the namespace;
-repeating it in the type name is redundant ceremony.
+**A name belongs to its surrounding context, not to the
+cross-crate global namespace.** The crate, module, contract,
+channel, enclosing enum, and owning component are all namespaces.
+Repeating any of them in the type, variant, field, or payload name
+is redundant ceremony.
 
 ```rust
 // Wrong — crate name redundant at every use site
@@ -240,9 +242,27 @@ pub struct Config { … }
 pub struct Error { … }
 ```
 
-The discriminator: **does the leading word *describe* the
-type, or does it *name* its origin crate?** Descriptive
-words stay; namespace prefixes go.
+For contract crates, the same rule applies to the contract's domain:
+
+```rust
+// Wrong — the contract crate already says repository-ledger
+pub struct RepositoryPushObservation { … }
+pub struct RepositoryChangedFileQuery { … }
+pub enum RepositoryLedgerRequest {
+    RepositoryPushObservation(RepositoryPushObservation),
+}
+
+// Right — use-site context reads signal_repository_ledger::PushObservation
+pub struct PushObservation { … }
+pub struct ChangedFileQuery { … }
+pub enum Request {
+    PushObservation(PushObservation),
+}
+```
+
+The discriminator: **does the leading word *describe* the type, or
+does it name a namespace already visible at the use site?**
+Descriptive words stay; namespace prefixes go.
 
 | Prefix is wrong | Prefix is fine |
 |---|---|
@@ -250,6 +270,8 @@ words stay; namespace prefixes go.
 | `StylixOptions` (Stylix is the crate) | `ColorScheme` (descriptive) |
 | `NotaCodecError` | `LexerError` |
 | `PersonaMessageRouter` | `MessageRouter` |
+| `RepositoryChangedFileQuery` inside `signal-repository-ledger` | `ChangedFileQuery` |
+| `HarnessHarnessEvent` inside `signal-persona-harness` | `LifecycleEvent` |
 
 **The standard library is the canonical reference.** `Vec`,
 `HashMap`, `Arc`, `Cell`, `Mutex` — never `StdVec`,
