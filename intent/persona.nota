@@ -228,3 +228,17 @@
     "Resolving Q4b of /236 — promote the intent-protocol value statement to essence in its dictated impersonal form."
     Maximum
     2026-05-19T17:30:00Z)
+
+(Correction
+    "Manifesting intent#8 must NOT use the bare line 'no persona component works without LLMs' — that phrasing strips its meaning when read out of context (could be misread as 'every persona binary embeds an LLM,' which is false; sema-engine, sockets, codecs contain no models). The substance: persona is LLM-mediated end-to-end. Components are dumb mechanism; agents (LLMs) are the thinking layer driving components via CLIs and persona-spirit. Anything inside a component that looks like a natural-language-understanding decision — classifier, supersession judgment, intent parsing — is an LLM call. The manifested form must carry enough framing that the out-of-context reading can't strip the meaning."
+    "[on the proposed manifestation 'no persona component works without LLMs'] that could be taken out of context"
+    "Correcting my proposed INTENT.md manifestation of intent#8. The bare line invites misreading; the broader 'agents are mind; components are mechanism; language-understanding is always an LLM call' framing is what should land."
+    Maximum
+    2026-05-19T17:45:00Z)
+
+(Decision
+    "Manifestation wording for intent#8 in workspace INTENT.md is option B (from the menu of A=compact / B=fuller-explicit / C=psyche-dictated). The fuller form names the load-bearing parts explicitly — components as dumb mechanism, agents (LLMs) as the thinking layer, language-understanding decisions inside components as LLM calls — so the out-of-context misreading ('every binary embeds an LLM') cannot strip the intent."
+    "B"
+    "Settling the manifestation wording for intent#8 after the bare-line correction. Psyche selected the option that carries enough framing to survive out-of-context reading."
+    Maximum
+    2026-05-19T17:50:00Z)

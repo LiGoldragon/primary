@@ -117,6 +117,31 @@ maintenance context):
 If you skip recording a borderline case and the psyche later asks
 "why isn't this in `intent/`?" — at that point, record it.
 
+## Forward — richer supersession lifecycle
+
+Today's protocol treats supersession as binary: the prior is
+overridden or it isn't. The psyche has surfaced a richer model
+that lands when the multi-agent auditing arc arrives:
+
+- **Negation.** A prior intent is fully invalidated by a new
+  statement. Negated entries are candidates for archival and
+  eventual garbage collection — archived first (slow storage
+  is cheap), deleted only after a retention window.
+- **Certainty lowering.** A new statement partially contradicts
+  a prior. The prior stays but its certainty drops (`Maximum` →
+  `Medium`, `Medium` → `Minimum`) without full negation.
+- **Escalation on partial contradiction.** When the agent can't
+  decide whether the new statement negates, lowers, or coexists
+  with the prior — the contradiction is too tangled — escalate
+  to the psyche directly, or to a review agent that takes in
+  more context and decides.
+
+The "spirit guardian" is the future sub-actor in `persona-spirit`
+that judges among the three responses. Until the multi-agent
+auditing system exists, today's spirit is dumb storage that
+trusts agent input, and the binary protocol above is the
+operative discipline.
+
 ## Forward — persona-mind migration
 
 When persona-mind's typed memory variants land, supersession

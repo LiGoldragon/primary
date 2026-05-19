@@ -182,6 +182,27 @@ checkout, `nix eval` against an attribute path, `nix flake show`
 or a targeted check/passthru that exposes the value. If a value
 cannot be reached this way, change the Nix code to expose it.
 
+## Persona is LLM-mediated end-to-end
+
+Persona components are dumb mechanism without internal
+intelligence; the thinking happens in agent LLMs that drive
+components through CLIs and through persona-spirit. Anything
+inside a component that looks like a natural-language-
+understanding decision — classifier, supersession judgment,
+intent parsing — is an LLM call, not algorithm code.
+*"there's no component that works without LLMs."* The LLM is
+always on the other end of the wire, agent-side.
+
+## Persona components ship in raw form first
+
+Components ship as standalone CLI + daemon + sema state first;
+integration with sibling components comes after the raw form is
+working. Agents use components individually through their CLIs
+before component-to-component wiring lands. *"we can use the
+components in the raw form like they don't have to be talking
+to each other right away."* No pre-coordinated integration
+ceremony; ship the triad, let usage demand wiring.
+
 ## Persona-spirit is the apex; concept designer is the entry
 
 `persona-spirit` is a new persona component — *the interface
