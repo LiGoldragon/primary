@@ -1,0 +1,57 @@
+[
+(Decision
+    "Deploys are local execution per concern. The host being deployed runs its own activation; the deploy daemon coordinates remote daemons (build, cache, target) but does not maintain a remote SSH session for the activation effect itself. This eliminates the entire class of SSH-disconnect-survival problems that the production lojix-cli stack had to engineer around."
+    "the deployment could actually be done by using the logic steam of the host on which we're deploying, so that the deployment logic wouldn't need all of this remote command passing and returning stuff. So essentially we would only need to worry about local deploy … we ended up implementing logic to make sure that a disconnect, an SSH disconnect, did not kill the deployment process. So, yeah, potentially we could even create a deployment override kind of thing"
+    "Stating the design direction for the lojix lean rewrite as a daemon-mesh deploy model; framed against the pain of SSH-disconnect-survival logic in the current production stack."
+    Maximum
+    2026-05-17T11:00:00Z)
+
+(Decision
+    "Three variables for any deploy: where the build happens, where the Nix cache will be, and where the deploy target is. The target is always the node itself — the node deploys itself. Builder and cache can be other nodes, the same node, or the target itself."
+    "There's three variables. Where the build happens, where the Nyx cache will be for the deploy to happen, and then where the deploy is happening, which is always going to be on the node itself. The node will deploy itself, which makes sense because in the end we ended up implementing this anyway."
+    "Naming the three deploy variables during the daemon-mesh proposal; resolves the SSH-disconnect problem by removing remote activation."
+    Maximum
+    2026-05-17T11:00:00Z)
+
+(Principle
+    "The lojix-daemon maintains state about what it believes the cluster topology and network topology to be — a 'possibly true' or 'last known believed to be true' picture of cluster shape, node roles, reachability, latency, bandwidth, and cost. The believed topology informs routing decisions (which node should serve as cache; whether to fall back to builder-as-cache; whether a remote cache is too expensive to use on metered networks)."
+    "we're going to maintain the state in the logic steam, and a very important part of the state is what the daemon believes the topology is. It's a possibly true topology of the system … in the logic daemon we could even include last known, believed to be true, whatever wording we want to use, network topology, so that if the Nyx cache is really far or has very little bandwidth or is expensive, we could even have variables like cost."
+    "Setting the believed-topology direction during the daemon-mesh proposal; the daemon's state includes more than just deploy job records, it includes a cluster + network + cost model that routing decisions consult."
+    Maximum
+    2026-05-17T11:00:00Z)
+
+(Decision
+    "lojix-daemon takes control of nix configuration. It can change /etc/nix/nix.conf (or an include slot the daemon owns per the NixDaemonConfigurationActor pattern) and restart nix-daemon whenever the deploy plan requires — for example, to install a per-deploy substituter trust key, then remove it on release."
+    "one of the first thing lojix-daemon should take control of is the nix config, so it can change it and restart the nix-daemon whenever necessary."
+    "Direction during the criome-routed-authorization discussion; resolves how transient binary-cache trust gets installed for a single deploy without operator-side ssh-and-edit."
+    Maximum
+    2026-05-17T13:30:00Z)
+
+(Decision
+    "Every cluster node has a Nix signing key. ClaviFaber populates the key on first boot. This is what makes signed-binary-cache trust between cluster nodes feasible — every node can sign its build outputs and every other node can trust those signatures via the cluster-wide signing-key publication."
+    "also, all nodes should have a nix signing key (clavifaber populated on first boot)"
+    "Same turn as the lojix-owns-nix-config decision; together they form the basis for transient signed binary caches between cluster nodes during a deploy."
+    Maximum
+    2026-05-17T13:30:00Z)
+
+(Decision
+    "Authorization for a signal-lojix call is propagated through the criome-daemon topology. The signal-lojix call is the object signed; criome holds the policy data (which key or quorum has which permission). lojix-daemon does not own permission and does not sign — it submits intent and waits for criome to authorize. The signature lives in criome, not in lojix."
+    "we need the criome-daemon for this. authorization is propagated through the criome-daemon topology first, with the signal lojix call being the object signed, and the criome holds the permission data (which key/quorum has which permission)"
+    "Settling the authorization architecture for the lojix lean rewrite; established criome as the authorization substrate and the signal-lojix call as the signed object."
+    Maximum
+    2026-05-17T15:30:00Z)
+
+(Decision
+    "Daemons talk to daemons; the CLI (or any client) only initiates a deploy. The receiving lojix-daemon forwards the request to the local criome-daemon, which may route signature solicitations to concerned clients (operator's signing devices, persona-terminal surfaces, yubikeys, etc.). The operator's machine does not need to run a lojix-daemon — only the CLI, plus optionally the user's own criome-daemon if it holds a signing key."
+    "daemons talk to each other, the cli (or any client) only initiates the deploy. the daemon then forwards the request to the criome-daemon, which might route the request signature(s) to the concerned clients."
+    "Resolving the caller-shape question: the deploy mesh is between cluster daemons; the operator's machine is a thin client."
+    Maximum
+    2026-05-17T15:30:00Z)
+
+(Correction
+    "Bootstrap is not an architectural gap. The current production lojix-cli stack IS the bootstrap path. Until a cluster node is on the new daemon-mesh stack, the old monolithic stack handles its first deploys; cutover is per-node, not flag-day. The two-stacks-coexist discipline (protocols/active-repositories.md) already covers this."
+    "we already have a working lojix-cli (our current production stack)"
+    "Correcting my framing of 'how does a fresh node get the new daemon' as an open architectural question in reports/system-assistant/18. The production stack handles bootstrap; the agent was inventing a problem that doesn't exist."
+    Maximum
+    2026-05-17T13:30:00Z)
+]

@@ -33,4 +33,18 @@
     "Correcting a chat reply that referenced multiple reports by number across designer-assistant, second-operator-assistant, and second-designer-assistant lanes. The numbered shorthand is convenient between agents but unreadable for the psyche."
     Maximum
     2026-05-19T01:00:00Z)
+
+(Principle
+    "When reading reports across lanes or across time, give more credit to more recent reports. Use commit time (jj or git) to establish recency. Older reports in an evolving arc may be partly or wholly superseded by later ones; the most recent thinking carries the most authority on contradiction."
+    "review and create a response. give more credit to more recent reports (use commit time to establish most recent)"
+    "Direction during a cross-lane audit of three converging reports on the criome routed-authorization arc (reports/system-assistant/21, reports/system-specialist/141, reports/designer/213). The recency rule resolved how to weight contradictions between them and drove the reports/system-assistant/22 audit."
+    Medium
+    2026-05-17T17:30:00Z)
+
+(Constraint
+    "When listing 'gaps in user intent' or 'open questions', do not restate things the psyche clearly stated or implied just because the wording was loose. Pedantically promoting the obvious to a gap is insulting and signals the agent isn't reading carefully. Distinguish real gaps (where a decision is genuinely undecided) from pseudo-gaps that just require contextual reading."
+    "this is a stupid comment; of course im talking about a per-derivation-copy. Im not a fucking idiot!"
+    "Reacting to my listing 'Stream-while-build granularity — Nix realizes per-derivation, not per-byte' as a gap in reports/system-assistant/18 when the per-derivation framing was already implicit in the psyche's description. Guidance about how to surface gaps in audit reports."
+    Maximum
+    2026-05-17T13:30:00Z)
 ]
