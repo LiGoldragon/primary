@@ -1,22 +1,41 @@
 # 136 — persona-spirit current system and remaining gaps
 
-*Operator update after the first useful raw Spirit slice landed.*
+*Operator update after the Kameo actor-path slice.*
 
 ## 0 · Short Read
 
-`persona-spirit` is now a usable raw intent component for typed
-entry logging and querying. It is not yet a daemon actor tree.
+`persona-spirit` is now a usable raw intent component with typed
+entry logging, summary/provenance querying, sema-engine persistence,
+and a Kameo actor tree on the CLI request path.
+
+It is still not a long-lived daemon socket component. The daemon
+binary exists but fails honestly until the socket/config/runtime
+surface lands.
 
 Current path:
 
-```text
-agent
-  -> persona-spirit CLI
-  -> decode one signal-persona-spirit request
-  -> SpiritRuntime
-  -> SpiritStore
-  -> sema-engine table records
-  -> typed SpiritReply as NOTA
+```mermaid
+flowchart LR
+    agent["agent"]
+    cli["persona-spirit CLI"]
+    root["SpiritRoot"]
+    ingress["IngressPhase"]
+    decoder["NotaDecoder"]
+    dispatch["DispatchPhase"]
+    store["RecordStore"]
+    shaper["ReplyShaper"]
+    encoder["ReplyTextEncoder"]
+    database["sema-engine records"]
+
+    agent --> cli
+    cli --> root
+    root --> ingress
+    ingress --> decoder
+    ingress --> dispatch
+    dispatch --> store
+    dispatch --> shaper
+    store --> database
+    root --> encoder
 ```
 
 Example write:
@@ -45,84 +64,59 @@ Reply:
 
 ## 1 · What Changed
 
-### `signal-persona-spirit`
-
-Path: `/git/github.com/LiGoldragon/signal-persona-spirit`
-
-The contract no longer repeats the intent namespace in every type.
-The main records are:
-
-```rust
-pub struct Entry {
-    pub topic: Topic,
-    pub kind: Kind,
-    pub summary: Summary,
-    pub context: Context,
-    pub certainty: Certainty,
-    pub timestamp: Timestamp,
-    pub quote: Quote,
-}
-
-pub struct RecordAccepted {
-    pub captured: RecordSummary,
-}
-```
-
-`Entry` is one top-level assertion record. Restatements are repeated
-records, not a vector inside one record. `RecordIdentifier` is
-spirit output, not agent input.
-
-### `owner-signal-persona-spirit`
-
-Path: `/git/github.com/LiGoldragon/owner-signal-persona-spirit`
-
-The owner contract also dropped redundant prefixes:
-
-```rust
-pub struct StartOrder {
-    pub generation: Generation,
-}
-
-pub struct RegisterIdentity {
-    pub name: IdentityName,
-}
-```
-
-The generated channel types still carry the channel root
-(`OwnerSpiritRequest`, `OwnerSpiritReply`). That is macro output, not
-payload naming noise.
-
-### `persona-spirit`
-
 Path: `/git/github.com/LiGoldragon/persona-spirit`
 
-The runtime now has a store object over `sema-engine`:
+The runtime now starts a Kameo tree for each CLI call:
+
+```text
+SpiritRoot
+  IngressPhase
+    NotaDecoder
+    DispatchPhase
+      RecordStore
+      ReplyShaper
+  ReplyTextEncoder
+```
+
+The important implementation change is that `SpiritClient` no longer
+opens `SpiritStore` and dispatches directly. It calls
+`SpiritActorRuntime::submit_text_blocking`, so the production CLI path
+crosses the same actor planes the future daemon keeps alive.
+
+Representative code shape:
 
 ```rust
-pub struct SpiritStore {
-    engine: Engine,
-    records: TableReference<StoredRecord>,
+pub struct SpiritRoot {
+    ingress: ActorRef<ingress::IngressPhase>,
+    encoder: ActorRef<reply::ReplyTextEncoder>,
+}
+
+pub struct RecordStore {
+    store: SpiritStore,
 }
 ```
 
-Implemented request handling:
-
-```rust
-match request {
-    SpiritRequest::Entry(entry) => RecordAccepted(...),
-    SpiritRequest::RecordObservation(observation) => RecordsObserved(...) | RecordProvenancesObserved(...),
-    other => RequestUnimplemented(...),
-}
-```
-
-The CLI can persist `Entry` records and query them later from the
-same database path. Tests pass an explicit `StoreLocation`; normal
-CLI use falls back to `PERSONA_SPIRIT_STORE`,
-`PERSONA_STATE_PATH`, then `/tmp/persona-spirit.redb`.
+The actor names are not decorative. `RecordStore` owns the
+sema-engine store; `NotaDecoder` owns strict-end decoding policy;
+`ReplyShaper` owns unimplemented-operation policy; `ReplyTextEncoder`
+owns text projection policy.
 
 ## 2 · Constraint Tests
 
-The runtime tests are named after the behavior they enforce:
+New actor-path witnesses:
+
+```text
+persona_spirit_entry_assertion_runs_through_actor_planes
+persona_spirit_record_observation_uses_read_plane_without_write_plane
+persona_spirit_unimplemented_statement_uses_reply_shaper_not_store
+persona_spirit_shutdown_releases_store_for_restart
+persona_spirit_invalid_text_keeps_typed_decode_error
+persona_spirit_command_line_path_uses_actor_runtime
+persona_spirit_uses_kameo_as_only_actor_runtime
+persona_spirit_actor_types_are_data_bearing
+```
+
+Existing boundary/storage witnesses still pass:
 
 ```text
 persona_spirit_client_asserts_entry_and_mints_record_identifier
@@ -132,48 +126,58 @@ persona_spirit_client_returns_provenance_only_when_requested
 persona_spirit_client_repeated_entries_remain_distinct_records
 ```
 
-These tests prove the current intent decisions:
+The strongest new tests are trace-based. They prove the actor path,
+not only the visible output:
 
-```text
-agents do not send identifiers
-spirit mints identifiers
-summary queries stay summary-only
-provenance is explicit
-restatement is repetition
+```mermaid
+sequenceDiagram
+    participant "SpiritRoot"
+    participant "IngressPhase"
+    participant "NotaDecoder"
+    participant "DispatchPhase"
+    participant "RecordStore"
+    participant "SemaWriter"
+    participant "ReplyTextEncoder"
+
+    "SpiritRoot"->>"IngressPhase": text
+    "IngressPhase"->>"NotaDecoder": decode
+    "IngressPhase"->>"DispatchPhase": typed request
+    "DispatchPhase"->>"RecordStore": Entry
+    "RecordStore"->>"SemaWriter": commit
+    "SpiritRoot"->>"ReplyTextEncoder": typed reply
 ```
 
 ## 3 · Remaining Gaps
 
-The largest missing piece is the daemon. The component still runs the
-store in-process through the CLI; it does not yet expose a Kameo actor
-tree or socket boundary.
-
-Not implemented:
+Clear next work:
 
 ```text
 persona-spirit-daemon socket listener
-Kameo SpiritRoot / Store actor topology
+one-argument daemon configuration record
+ordinary and owner socket split
 owner-signal lifecycle handling
+bootstrap-policy.nota first-start import
 subscriptions
-classifier / guardian
-spirit-to-mind owner calls
 filesystem projection from database back to intent/*.nota
 ```
 
-I do not see a need for new psyche clarification before the next
-implementation step. The next clear slice is daemonizing this exact
-store/query behavior behind the component socket without changing the
-contract shape again.
+Deferred by intent:
+
+```text
+intent classifier
+spirit guardian / contradiction adjudication
+spirit-to-mind owner calls
+```
+
+Those deferred items need the later multi-agent/auditing arc or the
+spirit-to-mind contract work. Today's spirit remains dumb storage
+driven by typed agent input.
 
 ## 4 · Verification
 
 Passing locally:
 
 ```text
-signal-persona-spirit: cargo test --locked
-signal-persona-spirit: cargo clippy --all-targets --locked -- -D warnings
-owner-signal-persona-spirit: cargo test --locked
-owner-signal-persona-spirit: cargo clippy --all-targets --locked -- -D warnings
 persona-spirit: cargo test --locked
 persona-spirit: cargo clippy --all-targets --locked -- -D warnings
 ```
@@ -181,7 +185,5 @@ persona-spirit: cargo clippy --all-targets --locked -- -D warnings
 Passing through Nix with remote builder:
 
 ```text
-signal-persona-spirit: nix flake check -L --max-jobs 0
-owner-signal-persona-spirit: nix flake check -L --max-jobs 0
 persona-spirit: nix flake check -L --max-jobs 0
 ```
