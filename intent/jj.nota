@@ -1,4 +1,3 @@
-[
 (Constraint
     "The canonical commit form is jj commit -m '<msg>'. Don't use jj describe @ -m '<msg>' on the working copy — describe is for already-committed parents only. skills/jj.md forbids describe-on-@ explicitly."
     "you shouldnt use describe, and you should push the working copy, so I dont know why youre documenting the use of @ - doesnt the skill forbid the use of describe?"
@@ -12,4 +11,3 @@
     "Pointing out that I had been documenting jj split as if it were the only path-selective option; jj commit is the simpler form for same-parent commits with no bookmark motion."
     Medium
     2026-05-18T17:06:23Z)
-]

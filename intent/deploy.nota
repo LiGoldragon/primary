@@ -1,4 +1,3 @@
-[
 (Decision
     "Deploys are local execution per concern. The host being deployed runs its own activation; the deploy daemon coordinates remote daemons (build, cache, target) but does not maintain a remote SSH session for the activation effect itself. This eliminates the entire class of SSH-disconnect-survival problems that the production lojix-cli stack had to engineer around."
     "the deployment could actually be done by using the logic steam of the host on which we're deploying, so that the deployment logic wouldn't need all of this remote command passing and returning stuff. So essentially we would only need to worry about local deploy … we ended up implementing logic to make sure that a disconnect, an SSH disconnect, did not kill the deployment process. So, yeah, potentially we could even create a deployment override kind of thing"
@@ -54,4 +53,3 @@
     "Correcting my framing of 'how does a fresh node get the new daemon' as an open architectural question in reports/system-assistant/18. The production stack handles bootstrap; the agent was inventing a problem that doesn't exist."
     Maximum
     2026-05-17T13:30:00Z)
-]

@@ -1,4 +1,3 @@
-[
 (Decision
     "AGENTS.md is the compact every-session override file; bulky discipline lives in AGENTS-extended.md. AGENTS.md aims for around 100 lines as a soft target, but no line-cap number is quoted inside the file itself — that would be noise. Hard caps are forbidden as a class."
     "let's say 100 lines is what goes into agents.md and no more. And don't put that into agents.md. Don't say this file should only be 100 lines. Like that's just fucking noise again. … And then don't make these things hard caps. Let's say if it becomes 120 lines, that's okay. And don't quote that number either. … the agents.md file is like super compact and the super important stuff, like the super override stuff to break, to buck these agents from doing these things that they tend to do a lot."
@@ -109,4 +108,17 @@
     "Setting the elegance criterion during a challenge to take the other side on claimed sema-engine gaps. Drove the retraction of three of four originally-claimed engine helpers in the fit audit — each had a composition or component-side route-around that was small and read as English; only inelegant solutions (storage_kernel escape hatch for cross-table atomicity) confirmed a real gap."
     Maximum
     2026-05-18T13:00:00Z)
-]
+
+(Decision
+    "Intent files use lock-free append semantics. Concurrent agents recording intent `>>` to the topic file without coordination — POSIX O_APPEND atomicity for writes under PIPE_BUF (4096 bytes on Linux) means concurrent small appends sequence cleanly without mangling. Each intent record stays well under 4KB. File format dropped the outer `[ … ]` wrapping so naive append works; intent files are now a sequence of top-level NOTA records."
+    "Wouldn't it be possible to use a shell call to append something in an intent file so that essentially there's no need to lock it? Because if two append calls come in through Linux, correct me if I'm wrong, but they're not going to actually mangle the text together. They're just going to come in in sequence, right?"
+    "Psyche's intuition about Linux atomic-append is correct. Triggered the format change (drop outer brackets) so `cat >> file <<EOF` works without locking. This entry was itself appended via that mechanism — meta-witness."
+    Maximum
+    2026-05-19T16:05:00Z)
+
+(Correction
+    "Don't claim a lock for an intent-append. Use `cat >> intent/<topic>.nota <<'EOF' … EOF` (or any shell append). Locks are for supersession edits (rewriting prior records); recording new intent is lock-free."
+    "So if I'm right in what I'm saying, I guess you locking the file to edit it means that I'm wrong, otherwise you would have used a shellcall to append what you wanted to add in there instead of trying to acquire a lock for it. So by your actions either you're saying I'm wrong or you didn't actually understand and process what I said."
+    "Catching the contradiction: I claimed the lock and used Edit instead of demonstrating the shell append, despite the psyche's intuition being correct. Reordering: lock-free `>>` for new records; lock only for rewrites."
+    Maximum
+    2026-05-19T16:05:00Z)

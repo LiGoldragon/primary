@@ -30,10 +30,13 @@ prior recorded entry:
    | "Both apply in different contexts" | Add the new entry; the existing one stays |
 
 3. **On confirmed override:** remove the prior entry from the
-   topic file and add the new entry in the same commit. Name the
-   supersession in the commit message
-   (`intent: <topic> — psyche overrides prior <summary slug>; new
-   <new summary slug>`).
+   topic file and add the new entry in the same commit. **This is
+   one of the cases that needs a designer lock** (per
+   `skills/intent-log.md` §"Recording is a lock-free shell
+   append" — routine appends are lock-free, but rewrites that
+   remove prior content need coordination). Name the supersession
+   in the commit message (`intent: <topic> — psyche overrides
+   prior <summary slug>; new <new summary slug>`).
 
 **Git history holds the lineage.** No `superseded/` subdirectory,
 no `Superseded` records in the file. The topic file always

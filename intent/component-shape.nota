@@ -1,4 +1,3 @@
-[
 (Correction
     "There are exactly two authority contracts per component: signal-<component> (peer-callable) and owner-signal-<component> (owner-only). There is no permission-signal-<component> middle tier — that was a hallucination in an earlier version of skills/component-triad.md."
     "what is permission-signal? ohh wow! the agent who made that edit hallucinated. the permissioned signal is just owner-signal. there is no permission-signal. edit that"
@@ -39,4 +38,3 @@
     "Answering Q4 of /229 on sub-scope handoff semantics; settled during the daemon-state brainstorm."
     Maximum
     2026-05-19T01:20:00Z)
-]

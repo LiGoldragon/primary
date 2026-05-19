@@ -94,8 +94,49 @@ The quote uses `…` for elided tangents — the psyche often
 interleaves multiple topics in one turn, and the record only
 carries the part that belongs to this entry.
 
-A file is a top-level NOTA list `[ … ]` containing every entry on
-that topic.
+A file is a **flat sequence of top-level NOTA records** — no outer
+`[ … ]` list wrapping. The flat sequence is what makes append-only
+writes possible (see below).
+
+## Recording is a lock-free shell append
+
+Recording a new intent record is a **lock-free shell append**:
+
+```sh
+cat >> intent/<topic>.nota <<'EOF'
+
+(<Kind>
+    "<summary>"
+    "<quote>"
+    "<context>"
+    <Certainty>
+    <ISO-8601 timestamp>)
+EOF
+```
+
+No orchestrate claim, no Edit-tool sequence, no coordination —
+concurrent agents append to the same topic file without conflict.
+The guarantee comes from POSIX `O_APPEND` semantics (which `>>`
+sets): the kernel atomically positions at end-of-file and writes,
+so two concurrent appends sequence cleanly without mangling, as
+long as each write is **under PIPE_BUF** (4096 bytes on Linux).
+A typical intent record is well under 4KB — single records of
+1–1.5KB are typical.
+
+When a lock IS needed:
+
+- **Supersession edits** (rewriting or removing prior records per
+  `skills/intent-maintenance.md`) — not append-only; needs a lock.
+- **Format changes** to the file itself (rare).
+- **Bulk operations** that rewrite a topic file.
+
+Routine recording does not. The lock-free append is the discipline
+default.
+
+The flat-sequence format (no outer `[ … ]`) is what makes the
+append work — if the file ended with `]`, every new record would
+have to land *before* that bracket, requiring a non-append edit.
+Dropping the brackets lets `>>` work directly.
 
 ## Certainty vocabulary
 

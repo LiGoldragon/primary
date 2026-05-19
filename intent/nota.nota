@@ -1,4 +1,3 @@
-[
 (Correction
     "NOTA records are positional. Wrapping type first, then fields in declared order. The (key value) shape from Lisp/Clojure/JSON is not NOTA. Many agents make this mistake when sketching records in chat without consulting the canonical example."
     "thats not NOTA, and your response is too long, which means it should be a report. … look into how we can get agents to understand nota, simply and reliably - you just made the same misake many agents make in assuming nota has named fields"
@@ -19,4 +18,3 @@
     "After my investigation explained that filepath strings always need quotes in NOTA (the bare-ident alphabet `[A-Za-z0-9_-]` excludes `/` and `.`), the psyche proposed introducing a typed Path shape with a relaxed alphabet at the schema position. Implemented in nota-codec main commit 97c1f496; spec section landed in nota main commit a0617b99; skills/skills.nota migrated to bare paths in workspace commit 9c018120."
     Medium
     2026-05-18T15:00:00Z)
-]

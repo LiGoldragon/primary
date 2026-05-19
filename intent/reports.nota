@@ -1,4 +1,3 @@
-[
 (Principle
     "Substantive output — analysis, proposal, audit, synthesis — goes in a report under reports/<role>/. Chat carries the user-attention items inline with full substance. The chat is the user's working surface; reports are the durable record for agents. The user runs many parallel agents and cannot read giant chat responses."
     "the human doesn't have that much attention to give to your response. Everything else goes into a report, an artifact that can be passed around to other agents because that's who you want to be worthy to is other agents, not the human. I'm juggling like 12 agents over here. You think I have time to read?"
@@ -47,4 +46,3 @@
     "Reacting to my listing 'Stream-while-build granularity — Nix realizes per-derivation, not per-byte' as a gap in reports/system-assistant/18 when the per-derivation framing was already implicit in the psyche's description. Guidance about how to surface gaps in audit reports."
     Maximum
     2026-05-17T13:30:00Z)
-]
