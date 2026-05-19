@@ -74,7 +74,13 @@ Horizon now derives the tailnet base domain from the cluster name:
 tailnet.<cluster>.criome
 ```
 
-CriomOS owns the Headscale service port. The production value is the CriomOS constant `8443`, not cluster data.
+CriomOS owns the Headscale service port. The production value is now centralized as the CriomOS-lib constant:
+
+```nix
+constants.network.headscale.port
+```
+
+Cluster data does not author this value.
 
 Remote builder and cache status are no longer inferred from broad node species or size. They require explicit variants:
 
@@ -97,6 +103,11 @@ That helper handles externally tagged JSON variants and keeps the module logic r
 - `TailnetController` enables Headscale.
 - `PersonaDevelopment` with `GitoliteServer` enables repository receive.
 
+The Headscale module reads its fixed service port from `CriomOS-lib`.
+The check for the Headscale module also reads the expected port from
+the same constant, so the test verifies the shared boundary rather than
+duplicating the literal.
+
 ## Commits
 
 - `horizon-rs`: `ab0fbb8a` - `horizon: project node service variants`
@@ -105,8 +116,11 @@ That helper handles externally tagged JSON variants and keeps the module logic r
 - `CriomOS`: `27154804` - consumed node service variants
 - `CriomOS-home`: `9b0dca4c` - repinned `lojix-cli`
 - `CriomOS`: `a11c74f6` - repinned `CriomOS-home`
+- `horizon-rs`: `e03ccdf8` - documented the production boundary and service variant rule
+- `CriomOS-lib`: `43fa2540` - exposed `constants.network.headscale.port`
+- `CriomOS`: `fcf6f09a` - consumed the Headscale port constant and repinned `CriomOS-lib`
 
-All six commits were pushed to `origin/main`.
+All commits were pushed to `origin/main`.
 
 ## Verification
 
@@ -118,6 +132,7 @@ Passed:
 - `CriomOS` check `headscale-selfsigned-cert`
 - `CriomOS` check `repository-receive-role-policy`
 - `CriomOS` check `resolver-role-policy`
+- `FullOs` `Switch` deploy to `ouranos` through the production `lojix-cli` path, pinned to `CriomOS` `fcf6f09a`
 
 The CriomOS checks were run with local-only Nix settings:
 
@@ -127,11 +142,12 @@ The CriomOS checks were run with local-only Nix settings:
 
 ## Remaining Caveat
 
-`horizon-rs` still has pre-existing dirty edits in:
+`cargo fmt --check` is not currently a useful repo-wide verifier in `horizon-rs`: many unrelated files in the clean tree fail current rustfmt formatting. The implementation files were handled carefully, and the behavioral tests above are the relevant verifier for this slice.
 
+`CriomOS-lib` still has unrelated dirty documentation edits in its checkout:
+
+- `AGENTS.md`
 - `ARCHITECTURE.md`
 - `skills.md`
 
-Those files were dirty before this implementation pass and were not committed as part of this work.
-
-`cargo fmt --check` is not currently a useful repo-wide verifier in `horizon-rs`: many unrelated files in the clean tree fail current rustfmt formatting. The implementation files were handled carefully, and the behavioral tests above are the relevant verifier for this slice.
+Those edits were not part of the functional Headscale-port constant commit.
