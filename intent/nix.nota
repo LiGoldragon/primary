@@ -5,3 +5,10 @@
     "The operator was reporting on signal-frame work and running verification; the psyche clarified the Nix invocation constraint."
     Maximum
     2026-05-19T18:45:46Z)
+
+(Constraint
+    "Every Nix invocation in this work should use max-jobs 0 so the remote builder is used."
+    "use max-jobs 0 on all nix calls"
+    "The operator was about to retest signal-frame and continue the signal-frame / signal-repository-ledger migration."
+    Maximum
+    2026-05-19T21:07:30Z)
