@@ -56,7 +56,7 @@ consequences make a shared crate the right home:
   Re-deriving in each consumer is dead code at best, drift
   at worst.
 - **Layered stability.** When a layered effect crate adds
-  per-verb payloads (e.g. signal-forge over signal), front-end
+  operation payloads (e.g. signal-forge over signal), front-end
   clients that depend only on the base contract don't recompile
   on layered-crate churn. The isolation is at the *layered*
   effect-crate boundary, not at the wire/text-derive boundary
@@ -79,12 +79,12 @@ contract-repo/
 │   ├── frame.rs      — Frame envelope, encode/decode, error type
 │   ├── handshake.rs  — ProtocolVersion + handshake exchange
 │   ├── origin.rs     — origin/auth context records (only when the boundary carries them; many local-engine contracts omit this entirely)
-│   ├── request.rs    — Request enum (closed; per-verb dispatch)
+│   ├── request.rs    — Request enum (closed; per-operation dispatch)
 │   ├── reply.rs      — Reply enum (closed; matches request kinds)
-│   ├── <verb>.rs     — per-verb typed payloads
+│   ├── <operation>.rs — per-operation typed payloads
 │   ├── <kind>.rs     — domain record kinds + paired *Query types
 │   └── error.rs      — crate Error enum (thiserror)
-├── tests/            — round-trip per record kind, per verb
+├── tests/            — round-trip per record kind, per operation
 ├── Cargo.toml        — pinned rkyv feature set, versioned
 └── ARCHITECTURE.md   — what's owned, what's not, schema discipline
 ```
@@ -100,7 +100,7 @@ The contract crate **owns**:
   Do not create a proof type just because the template has a
   slot for one.
 - The closed enum of request kinds + paired reply kinds.
-- Per-verb typed payloads (closed enums of typed kinds — no
+- Per-operation typed payloads (closed enums of typed kinds — no
   generic record wrapper, no `Unknown` variant).
 - The version-skew guard's known-slot record (schema +
   wire-format version).
@@ -207,15 +207,15 @@ consumer is forced to program with the wrong model.
 
 Naming is therefore load-bearing architecture:
 
-- Prefer domain nouns for contract records. Commands are
-  things crossing the wire, so `MessageSubmission`,
-  `FocusSubscription`, `MessageDelivery`, and
-  `DeliveryCancellation` are better contract nouns than
-  imperative command names.
-- Verbs belong to methods and engines. The exception is the
-  universal root-verb spine itself (`Assert`, `Mutate`, `Retract`,
-  `Match`, `Subscribe`, `Validate`), where the `SignalVerb` enum
-  is deliberately naming root operations.
+- Prefer domain nouns for payload records. A `Submit` operation
+  can carry a `Message`; a `Configure` operation can carry a
+  `Configuration`; a `Register` operation can carry a
+  `Registration`.
+- Contract operation roots are verbs, in verb form. `Submit`,
+  `Query`, `Observe`, `Configure`, `Register`, `Retire`, `Start`,
+  and `Stop` name what the caller is doing at this boundary.
+  Do not force those public actions under Sema state-effect
+  words such as `Assert` or `Match`.
 - Do not repeat namespace already supplied by the crate,
   module, channel, relation, owning component, or enclosing
   enum. This is a hard naming rule, not a style preference.
@@ -264,196 +264,190 @@ review an explicit work item. Contract names are harder to
 escape than architecture prose: once consumers compile
 against them, the names become the system's enforced model.
 
-## Signal is the database language — every request declares a verb
+## Public contracts use contract-local operation verbs
 
-Signal is the workspace's typed binary **database-operation
-language used to communicate**. `signal-core::SignalVerb` names
-the closed set of root operations that can cross a Signal boundary;
-every cross-component Signal request declares which root it
-instantiates. There is no "non-database" communication.
+Signal is the workspace's typed binary communication fabric. A
+contract crate names the public actions that can cross one
+component boundary. Those public actions are **contract-local
+operation verbs**: they describe what the caller is doing in
+that component's domain, not what the receiver may later do to
+its database.
 
-> **Adopted shape:** six root verbs in `signal-core`. Atomicity is
-> structural — a `Request<Payload>` carries `NonEmpty<Operation<Payload>>`
-> and commits as one unit. The read-algebra operators (`Constrain`,
-> `Project`, `Aggregate`, `Infer`, `Recurse`) live as a `ReadPlan<R>`
-> type in `sema-engine`, *not* as peer root verbs. The wire kernel is
-> domain-free and engine-free.
+> **Current direction, per
+> `reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`:**
+> the former universal roots (`Assert`, `Mutate`, `Retract`,
+> `Match`, `Subscribe`, `Validate`) are Sema execution
+> vocabulary. They do not belong as the public operation roots
+> of every contract. The public contract asks in domain terms;
+> the daemon lowers that request to Sema effects internally.
 
-### The six root verbs
+The three layers:
 
-The closed set, in `signal-core/src/request.rs`:
+```text
+Frame / exchange mechanics
+  length-prefixed rkyv bytes, handshake, exchange identifiers,
+  streams, replies
 
+Contract operations
+  public per-contract verbs such as Submit, Query, Observe,
+  Configure, Register, Retire, State, Watch
+
+Sema operations
+  internal state-effect vocabulary such as Assert, Mutate,
+  Retract, Match, Subscribe, Validate
 ```
-Assert  Mutate  Retract  Match  Subscribe  Validate
+
+The client sends what it wants to do at that boundary:
+
+```nota
+(Submit (Message ...))
+(Query (RecentRepositories ...))
+(Configure (DaemonConfiguration ...))
+(State (Quote ...))
 ```
 
-A name is a root iff it changes one of *durable effect*,
-*read-vs-write semantics*, *streaming lifecycle*, or *execution
-mode* at the Signal boundary. A name that only changes how a result
-is computed, joined, reduced, or shaped is a `ReadPlan` operator in
-`sema-engine`, not a root. The transaction boundary is **not** a
-verb — it's the structural shape of a `Request<Payload>`, whose
-`NonEmpty<Operation>` sequence is the atomic unit.
+The daemon decides whether that public action lowers to no
+Sema effects, one effect, many effects, a forwarded request,
+or a rejection.
 
-History: older `signal` work (commit `7a78288`, 2026-04-26) carried
-seven roots including `Atomic`; the widening to twelve names (commit
-`1d863ce`, 2026-05-08) conflated read-algebra operators with root
-operations; a seven-root restoration kept `Atomic` as a peer verb.
-The current six-root shape (2026-05-15, per `reports/designer/177-typed-request-shape-and-execution-semantics.md`)
-drops `Atomic` entirely — atomicity is structural to the request,
-not a verb. Single-op requests and multi-op requests are the same
-type; the difference is the length of `operations`.
+### Operation naming rule
 
-One-line semantics:
+**The operation root is a verb, in verb form.** Use `Submit`,
+not `Submission`; `Query`, not `QueryRequest`; `Observe`, not
+`Observation`; `Configure`, not `Configuration`; `State`, not
+`Statement`.
 
-| Verb | Meaning | Authority direction |
-|---|---|---|
-| `Assert` | Insert/append a typed fact/event/row. Boundary-visible write. | bottom-up or peer (a new fact entered the system) |
-| `Mutate` | Replace/transition a record at stable identity. **An authority order — "change this; I do not care what you think."** Issuer holds *possibly-mutated* state until the recipient confirms; only then advances to the next order. | top-down (higher authority → lower authority) |
-| `Retract` | Tombstone/remove/retract a typed fact. Same authority shape as `Mutate` when the retraction is ordered from above. | top-down when ordered; peer when self-retracting |
-| `Match` | Pattern/range/key query over typed tables. Base read. | any direction |
-| `Subscribe` | Initial state plus commit deltas (push, not poll). Streaming lifecycle. **Observation flows up-tree; authority Mutate flows down-tree** (per `skills/component-triad.md` §"The six verbs"). | observer ↔ producer (typically up-tree) |
-| `Validate` | Dry-run request through validators/planner without commit. Execution mode. | any direction |
+The payload that follows the operation is usually a noun:
 
-The **authority direction** column is load-bearing for `Mutate`. The
-verb is how Persona maintains correctness top-down: persona-mind issues
-`Mutate` orders to `persona-orchestrate`; `persona-orchestrate` issues
-`Mutate` orders to `persona-router` (e.g. install this channel grant)
-and to `persona-harness` (e.g. spawn this lane with these rights). Each
-recipient *obeys and confirms*; the issuer transitions its own state
-from *possibly-mutated* to *now-mutated* only on the confirmation,
-which is what makes the next downstream order safe. See
-`skills/component-triad.md` §"Authority chain — worked example" for the
-worked Persona case.
+```nota
+(Submit (Message ...))
+(Register (Registration ...))
+(Configure (Configuration ...))
+```
 
-**Atomic batching is structural.** A `Request<Payload>` whose
-`operations` has length > 1 commits or aborts as one unit; each
-op is verb-tagged independently. Mixed verbs in one request are
-allowed by the kernel; `Subscribe` ops must come last. Channel-
-specific rules may forbid mixing (e.g. "no reads with writes")
-when a concrete channel earns that constraint.
+Same verb spelling across contracts is allowed. The receiver
+context supplies the meaning. `Observe` in a repository ledger
+contract and `Observe` in a Spirit contract are not required to
+mean the same thing beyond "caller asks this receiver to
+observe something in its domain."
 
-### The read-plan operators (not roots)
+### What moved below the public contract
 
-The five demoted names live as `sema_engine::ReadPlan<R>`
-operators *inside* `Match`/`Subscribe`/`Validate` payloads — query
-algebra, not boundary behavior:
+The Sema operation vocabulary is still real, but it is not the
+public grammar of every component:
 
-| Operator | Role |
+| Sema operation | Layer meaning |
 |---|---|
-| `Constrain` | Join/unify multiple typed patterns through shared binds. |
-| `Project` | Return selected fields or a derived view. |
-| `Aggregate` | Count/reduce grouped matched rows. |
-| `Infer` | Derived facts from rules/ontology. |
-| `Recurse` | Fixpoint traversal over graph/relation shape. |
+| `Assert` | insert/append a typed fact/event/row |
+| `Mutate` | transition a record at stable identity |
+| `Retract` | tombstone/remove/retract a typed fact |
+| `Match` | pattern/range/key read over typed tables |
+| `Subscribe` | state-plus-delta stream over typed tables |
+| `Validate` | dry-run validation/planning without commit |
 
-These do not appear in `signal-core`; they appear in `sema-engine`
-and may be referenced by domain contract payloads (e.g. a query
-contract may expose `ReadPlan` directly, or wrap it in domain-named
-records).
+These words belong in the Sema engine layer and in any explicit
+Sema-facing contract, not as a mandatory wrapper around every
+domain action. A component may expose Sema-shaped operations on
+a specialized socket when that is the actual public service it
+offers. Most component contracts should not.
 
-### The rule
+### Lowering is daemon logic
 
-**Every cross-component Signal request declares its root verb. The
-verb is part of the contract; the verb-payload combination is the
-operation.**
+Each daemon is the lowering boundary:
 
-Each `signal-<consumer>` request enum ships a contract-owned
-mapping:
-
-```rust
-impl <Consumer>Request {
-    pub fn signal_verb(&self) -> SignalVerb {
-        match self {
-            Self::Variant1(_) => SignalVerb::Assert,
-            Self::Variant2(_) => SignalVerb::Match,
-            ...
-        }
-    }
-}
+```text
+public contract operation
+  -> validation / routing / authorization
+  -> Sema operation plan when durable state changes or reads are needed
+  -> commit / reply / event
 ```
 
-with round-trip tests asserting:
+That lowering belongs in the runtime component, not in the
+contract crate. The contract may define typed records that make
+lowering inspectable, but it does not own reducers,
+authorization, routing, transaction boundaries, or table
+execution.
 
-- each request variant maps to exactly one `SignalVerb`;
-- read-shaped payloads use `Match` or `Subscribe`;
-- write-shaped payloads use `Assert`, `Mutate`, or `Retract`;
-- dry-run payloads use `Validate`;
-- read algebra (`Constrain`/`Project`/`Aggregate`/`Infer`/`Recurse`)
-  appears inside `Match`/`Subscribe`/`Validate` payloads via
-  `sema_engine::ReadPlan`, never as a root verb;
-- multi-op atomic commits are expressed as a `Request<Payload>`
-  with `NonEmpty<Operation>` length > 1, not as a separate
-  verb;
-- Nexus examples use the same root as the Signal frame.
+Static lowering examples:
 
-A request that maps to no root is a design event, not a
-constructor failure.
+```text
+Query RecentRepositories -> Sema Match over repository indexes
+Watch Entries            -> Sema Subscribe over entry tables
+```
 
-### The two failure modes
+Dynamic lowering examples:
 
-**No existing root fits.** Two paths: (a) the payload is
-mis-modeled — rename or restructure until it fits an existing
-root; (b) the root set is incomplete — propose a new `SignalVerb`
-variant as a workspace-level coordinated change. Both are
-architectural events. Neither is "bypass the verb." Note that
-"this is an algebraic operation on a read" is not a root-extension
-case — it is a `ReadPlan` extension case.
+```text
+Submit Message
+  -> reject without write
+  -> assert ingress event
+  -> mutate delivery state
+  -> forward to router
 
-**Drift between intent and constructor.** When a read-shaped
-payload (a query) is constructed through a write-shaped helper
-(`Request::assert(...)`), the witness catches it. The
-constructor is convenient but doesn't enforce semantics; the
-per-variant `signal_verb()` mapping does. Example:
-`signal-persona-message::InboxQuery` currently constructs via
-`Request::assert(...)`; it should be `Match` (a read-shaped
-payload is not an assertion of a fact).
+State Quote
+  -> record raw psyche statement
+  -> update working view
+  -> enqueue mind suggestion
+```
+
+### Tests for contract-local verbs
+
+Contract tests assert the public grammar:
+
+- every operation root is a domain verb in verb form;
+- no public contract operation wraps payloads in mandatory
+  Sema roots unless the contract is explicitly Sema-facing;
+- examples round-trip in NOTA and rkyv using the same typed
+  records;
+- repeated suffixes such as `*Query`, `*Command`, `*Event`,
+  and `*Listing` are checked as schema smells before the type
+  shape is accepted;
+- when a daemon publishes lowering witnesses, those witnesses
+  prove the runtime mapping from public operation to Sema plan.
+
+Examples of stale shapes to avoid:
+
+```nota
+(Assert (Message ...))
+(Match (Query ...))
+(Mutate (Configure ...))
+```
+
+Better public shapes:
+
+```nota
+(Submit (Message ...))
+(Query (...))
+(Configure (...))
+```
 
 ### Reply discipline
 
-Replies do not need their own independent verb when they are
-causally tied to a request. Their legality is checked by the
-request operation they answer. If a "reply" becomes a standalone
-observation/event that can travel independently, it should be
-modeled as its own request under the appropriate verb — usually
-`Assert` for a newly observed fact or `Match`/`Subscribe` for an
-observation query.
+Replies are causally tied to the request operation they answer.
+If a "reply" becomes an independent observation or event that
+can travel without a request, model it as an event/stream record
+in the contract. Do not hide independent event traffic inside a
+reply enum just because it was convenient for the first test.
 
-### What the rule does
+### See also
 
-- Forces every cross-component contract to be a typed subset of
-  the same database-operation language. No two components invent
-  their own operation vocabulary.
-- Makes Nexus/NOTA the **text projection** of the same language
-  (every top-level Nexus request is a verb record per
-  `nexus/spec/grammar.md`); Signal is the binary projection.
-- Lets `sema-engine` execute the verbs against typed tables
-  that consumers register, so each component does not hand-roll
-  the engine.
-- Turns "a message is an assert" from a convention into an
-  architectural-truth test.
-
-### See also (in this skill)
-
-- `/git/github.com/LiGoldragon/signal-core/src/request.rs` —
-  the canonical `SignalVerb` root enum.
-- `/git/github.com/LiGoldragon/signal-core/src/pattern.rs` —
-  `PatternField<T> = Wildcard | Bind | Match(T)` pattern markers.
-- `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` —
-  the wire kernel.
-- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` —
-  where `ReadPlan<R>` and the read-algebra operators
-  (`Constrain`, `Project`, `Aggregate`, `Infer`, `Recurse`)
-  live.
-- `~/primary/reports/designer/177-typed-request-shape-and-execution-semantics.md` —
-  the typed-request spec; six-root spine, structural atomicity,
-  async exchange frame layer.
+- `~/primary/reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
+  — current direction: contract-local public verbs, Sema verbs
+  below daemon boundary.
+- `~/primary/reports/designer-assistant/125-v2-contract-local-verbs-vs-sema-core-verbs.md`
+  — analysis behind the split.
+- `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md`
+  — currently in transition; frame/exchange mechanics should
+  survive the split.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md`
+  — Sema execution vocabulary and read plans.
 
 ## The layered pattern
 
-When a wire protocol has audience-scoped concerns — verbs that
-only a subset of components care about — those verbs land in a
-**layered effect crate**, not in the base contract:
+When a wire protocol has audience-scoped concerns — operation
+families that only a subset of components care about — those
+operations land in a **layered effect crate**, not in the base
+contract:
 
 ```mermaid
 flowchart TB
@@ -461,11 +455,11 @@ flowchart TB
         frame["Frame envelope"]
         hs["handshake + protocol version"]
         auth["optional origin/auth context"]
-        front["front-end verbs<br/>(seen by every client)"]
+        front["front-end operations<br/>(seen by every client)"]
     end
 
     subgraph layered["layered effect crate"]
-        verbs["per-verb payloads<br/>(narrow audience)"]
+        operations["operation payloads<br/>(narrow audience)"]
     end
 
     layered -. depends on .-> contract
@@ -480,13 +474,13 @@ flowchart TB
 The pattern (signal-forge over signal is the canonical
 example): the layered crate **re-uses** the base contract's
 `Frame`, handshake, and any boundary origin/auth context, and
-**adds** its own per-verb payload enum. New layered verbs
-land in the layered crate; front-end clients that depend only
-on the base contract don't recompile.
+**adds** its own operation payload enum. New layered operations
+land in the layered crate; front-end clients that depend only on
+the base contract don't recompile.
 
 Use a layered crate when:
 
-- The verbs have a narrow audience (sender + receiver +
+- The operations have a narrow audience (sender + receiver +
   maybe one transitional caller, not "every client").
 - The base contract would otherwise grow to absorb effect-
   specific concerns that don't belong on the front-end
@@ -596,8 +590,8 @@ A contract repo grows in two distinct ways:
   new query shapes — all within the original audience.
 - **Audience growth:** a *second* domain wants to speak the
   same wire conventions. The first domain's repo now carries
-  both the universal kernel (Frame, handshake, optional
-  origin/auth context, version, the verb spine) *and* its own
+  both the shared kernel (Frame, handshake, optional
+  origin/auth context, version, frame mechanics) *and* its own
   record kinds.
 
 The audience case triggers extraction. **When two or more
@@ -617,8 +611,8 @@ flowchart TB
 ```
 
 Concrete: `signal` originally held both the sema-ecosystem's
-kernel (Frame, handshake, universal verbs) and Criome's
-record kinds (Node, Edge, Graph). When a second domain
+kernel (Frame, handshake, early shared operation vocabulary) and
+Criome's record kinds (Node, Edge, Graph). When a second domain
 (`signal-persona`) needed the same kernel, leaving everything
 in `signal` would have forced `signal-persona` to depend on
 a Criome-flavored crate — exactly the boundary confusion
@@ -626,15 +620,15 @@ this skill exists to prevent.
 
 The extraction:
 - New crate (`signal-core`, or whatever the project calls it)
-  holds Frame, handshake, version, the universal verb spine,
-  the typed identity records (Slot, Revision), and only the
+  holds Frame, handshake, version, exchange mechanics, stream
+  mechanics, and only the
   origin/auth context records that are truly shared by every
   domain using that kernel.
 - The original crate (`signal`) becomes the first domain's
   *vocabulary* over the kernel — Criome's records, Criome's
-  per-verb payloads.
+  operation payloads.
 - The new domain (`signal-persona`) is also a *vocabulary*
-  over the kernel — Persona's records, Persona's per-verb
+  over the kernel — Persona's records, Persona's operation
   payloads.
 
 After extraction, both domains depend only on the kernel,
@@ -650,7 +644,7 @@ the second domain.
 
 The signal-forge / signal-arca pattern (per the layered-
 effect-crate section above) is *complementary* to kernel
-extraction: a layered crate adds per-verb payloads for a
+extraction: a layered crate adds operation payloads for a
 narrow audience, but it depends on the same kernel as the
 base contract. After extraction, signal-forge depends on the
 kernel directly *plus* the base contract for record kinds it
@@ -726,11 +720,11 @@ The naming hierarchy reflects the relationship to `signal`:
 
 When the contract is **layered atop `signal`** — re-uses
 signal's `Frame`, handshake, and shared boundary context,
-adds per-verb payloads for a narrower audience — the canonical name is
+adds operation payloads for a narrower audience — the canonical name is
 **`signal-<consumer>`**:
 
-- `signal-forge` — criome ↔ forge effect verbs
-- `signal-arca` — writers ↔ arca-daemon effect verbs
+- `signal-forge` — criome ↔ forge effect operations
+- `signal-arca` — writers ↔ arca-daemon effect operations
 - `signal-persona` — Persona's wire, layered atop signal
 
 Same shape signal/criome already established. The prefix
@@ -794,7 +788,7 @@ bag of utilities — it is the spoken protocol.
 | `path = "../contract"` in `Cargo.toml` | Local sibling reference | `git = "..."` with a tag, or a published crates.io version. Cross-crate `path = "../sibling"` is forbidden per ESSENCE §"Micro-components" |
 | Contract crate carries logic | Validation, routing, or reducer code in the contract | Move logic to the daemon; contract holds types only |
 | Contract crate has a runtime dependency | tokio, kameo, nix system bindings | Contract crate depends only on rkyv + thiserror + (optionally) the project's derive crate |
-| New wire verb added to the base contract because it was easy | Front-end clients now recompile on every effect-side change | Add a layered effect crate; base stays stable |
+| New wire operation added to the base contract because it was easy | Front-end clients now recompile on every effect-side change | Add a layered effect crate; base stays stable |
 | No `ARCHITECTURE.md` in the contract repo | Schema discipline is unwritten | Every contract repo carries `ARCHITECTURE.md` per `~/primary/lore/AGENTS.md`; schema discipline is the load-bearing part |
 | Open enum where closed was meant | Adding `Unknown` variant "for forward compatibility" | Closed enum + coordinated upgrade. The `Unknown` is a polling-shaped escape hatch |
 | Boundary unnamed | The repo is described only as "shared types" or "messages," with no named endpoints, direction, authority, lifecycle vectors, or owning component | Name what crosses the boundary: which component/endpoint, which direction, which authority mints what, which lifecycle vectors are open. Sharing types is fine; failing to name what they speak is the bug. |
