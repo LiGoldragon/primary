@@ -38,7 +38,6 @@ The compact contract. Every agent reads this on every session.
 | `.beads/` | Shared short-tracked-item store. Transitional. |
 | `repos/` | Symlink index to ghq checkouts under `/git/...`. |
 | `RECENT-REPOSITORIES.md` | Broad recent checkout index. |
-| `GOALS.md` | Standing high-level goals. |
 
 ## Skill discovery — query the index, don't scan
 
@@ -147,4 +146,3 @@ Each agent knows its lane before claiming or editing. Coordination:
   two-deploy-stack discipline, worktree flow, BEADS, harness-memory
   rationale, intent layer, dynamic-role escalation): `INTENT.md`.
 - Repo map for architecture sweeps: `protocols/active-repositories.md`.
-- Standing goals: `GOALS.md`.
