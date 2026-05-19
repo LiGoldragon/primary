@@ -129,3 +129,10 @@
     "Psyche extending the lock-free-append discipline into orchestrate/AGENTS.md so all peer agents see it. File creation via `>>` is also lock-free (open(O_CREAT|O_APPEND) is atomic per POSIX)."
     Maximum
     2026-05-19T16:20:00Z)
+
+(Clarification
+    "Intent entries should be recorded from actual live psyche prompt text, not from compacted summaries, old history, or reconstructed context."
+    "if there's like any actual real psyche prompts that you still have in your context, not old history, not compacted history, like new real prompts that you still have in your context that you can turn into intent or that you can add to intent files"
+    "Clarifying the retroactive intent-recording rule during an intent-protocol reread: compacted summaries are not treated as direct psyche evidence."
+    Maximum
+    2026-05-19T16:35:00Z)
