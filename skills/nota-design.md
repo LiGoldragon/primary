@@ -132,34 +132,36 @@ Agents (this one, repeatedly) keep proposing shapes that violate
 them. The source of truth is `nota/README.md`; restated here so
 the discipline skill carries the load.
 
-**Records vs sequences.** Two delimiter pairs with different roles:
+**Records and sequences.** Two delimiter pairs:
 
-- `(fields…)` or `(Type fields…)` — a **record**. Fields are
-  positional. A PascalCase head names the type when the schema
-  position is polymorphic (enum variants, top-level records);
-  for monomorphic positions (the schema position uniquely
-  determines the type), the head may be omitted and the record
-  is written positionally without naming the type.
-- `[items…]` — a **sequence**. No head type. Element
-  interpretation is determined by the schema position.
+- `(…)` — a **record**. A Rust struct or enum variant. Fields are
+  positional. When the type isn't determined by schema position
+  (enum variants, top-level records in a file with multiple
+  types), the type name appears as the first token: `(Decision
+  …)`. When the type IS determined by schema position (e.g.
+  every element of a `Vec<Statement>` is a `Statement`), the type
+  name is omitted and the fields come directly: `(2026-05-19
+  18:30 "quote")`.
+- `[…]` — a **sequence**. A `Vec<T>`. Every element is the same
+  type `T`.
 
-A sequence at a `Vec<T>`-typed position is homogeneous — every
-element is `T`. **Lists are homogeneous; heterogeneous positional
-structures are records** — even when both forms are grammatically
-permitted at the wire layer, the discipline is: list = repeated
-shape, record = positional struct.
+**Lists are homogeneous; heterogeneous positional structure is a
+record (struct).** A `(date, time, quote)` triple is a struct;
+write it `(2026-05-19 18:30 "first quote")` at a position the
+schema declares as that struct.
 
-So a `(date, time, quote)` triple at a fixed schema position is a
-record, written as `(2026-05-19 18:30 "first quote")` — positional
-without a head because the schema position determines the type.
-Anonymous-tuple shapes at monomorphic positions get this
-write-without-head treatment; the parent's schema disambiguates.
+A struct does NOT need to be wrapped in an enum variant. A struct
+is just a struct with positional fields. The "wrapping type names
+the most useful distinction" rule (Rule 1) is about enum variants
+where one of several types could appear; a struct that is the
+only type at a position writes positionally without naming the
+type.
 
-> *(Note 2026-05-19: an earlier version of this section over-stated
-> the PascalCase-head rule as universal, mirroring an over-strict
-> claim in `nota/README.md`. The psyche corrected: a struct does
-> not need a variant wrapper; the head is required only where
-> position is polymorphic. README fix pending.)*
+> *(Note 2026-05-19: the prior version of this section invented
+> 'head' and 'monomorphic position' terminology. NOTA's actual
+> concepts are struct, enum variant, positional fields, schema
+> position. The over-strict 'every record names its type' claim
+> in `nota/README.md` is being corrected per bead `primary-hj63`.)*
 
 **Bare identifiers as strings.** Where the schema expects `String`,
 a bare ident-class token serves as the value (`(Package nota-codec)`
@@ -204,13 +206,13 @@ proposal, anywhere — do these four things:
    like `Item`, `Entry`, or `Record` when the file already says so.
    **The variant test**: if you can't name another type that could
    go in this position, the wrapper is superfluous — drop it.
-3. **If the structure is heterogeneous positional, it's a record**
-   (`(Type field1 field2 …)`) **— not a sequence**. Heterogeneous
-   sequences (`[date time quote]`) are valid grammar at tuple-typed
-   schema positions, but practice says: lists are homogeneous, and
-   heterogeneous positional structure is a record. If the record
-   wrapper has no meaningful variant (per step 2), the structure is
-   in the wrong shape — re-think it before emitting either.
+3. **If the structure is heterogeneous positional, it's a record
+   (struct) — not a sequence.** Lists are homogeneous; mixed-type
+   positional structure is a struct with positional fields. The
+   struct's type name appears only when not determined by schema
+   position (enum variants, top-level records); at a known
+   schema position, the fields come directly without naming the
+   type.
 4. **Sketch fields positionally — no `(key value)` pairs inside the
    record. No nested wrappers when every record has the same
    inner shape.** Positional means

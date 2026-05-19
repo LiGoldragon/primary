@@ -74,3 +74,10 @@
     "Fifth NOTA correction (third structural). The PascalCase-head rule as currently stated in nota/README.md and as I propagated into skills/nota-design.md is wrong. Need: bead against the nota repo to fix the README; retraction of my recent addition to skills/nota-design.md."
     Maximum
     2026-05-19 20:15)
+
+(Correction
+    "Stop inventing NOTA terminology. NOTA has structs and enum variants; structs have positional fields. There is no 'head' concept — the type name appears as the first token of a record when the type is named (e.g. enum variant tag); when the type is already determined by schema position (e.g. an element of a Vec<Statement>), the name is omitted and the fields come directly. The terms 'head' and 'monomorphic position' I introduced are made-up; use NOTA's actual terms — struct, variant, positional fields, schema position."
+    "what head? youre still making stuff up. you dont understand nota"
+    "Sixth NOTA correction. Pattern is now clear: I keep inventing language to describe NOTA instead of using its actual concepts. The correction is to drop the invented terms (head, monomorphic) and stick with NOTA's actual vocabulary."
+    Maximum
+    2026-05-19 20:30)
