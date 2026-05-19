@@ -15,6 +15,38 @@ The live Gitolite premise is true on `ouranos`.
 The three repository-ledger repos were created through `gitolite-admin` and
 pushed with initial `main` branches.
 
+## Readiness Boundary
+
+This slice is locally usable as a deployed development witness, not finished as
+a fully green, constraint-complete component.
+
+What is ready:
+
+- The local Gitolite server exists and accepts pushes.
+- `repository-ledger.service` is deployed on `ouranos` through production
+  CriomOS.
+- The ordinary CLI can query the daemon over the ordinary socket.
+- The daemon can ingest Gitolite post-receive spool records into Sema state.
+- Fresh pushes to the `testing` repository are visible through
+  `RepositoryEventQuery`.
+
+What is not yet ready:
+
+- The whole constraint suite is not yet complete.
+- `signal-repository-ledger` and `owner-signal-repository-ledger` do not yet
+  have Nix flake checks.
+- The Gitolite hook still writes spool files; it does not yet submit direct
+  Signal frames to the daemon.
+- Mirror execution is not implemented.
+- The daemon runtime is synchronous threads plus one store mutex, not the final
+  Kameo triad actor topology.
+- Repository catalog registration is still owner-signal state; pushes are
+  recorded, but repositories do not auto-register into the catalog.
+
+So the correct status is: ready to use for local development observation of
+Gitolite pushes on `ouranos`; not yet ready to call complete, green, or
+production-shaped.
+
 ## Intent Captured
 
 The workflow change was recorded in `intent/workspace.nota`:

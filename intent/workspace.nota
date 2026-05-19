@@ -227,3 +227,10 @@
     "New STT misspelling lookup entry."
     Maximum
     2026-05-19 20:15)
+
+(Correction
+    "No-open-clarification is not the same as ready-to-use. An agent must distinguish: no psyche decision is blocked; implementation still has named constraints, tests, or hardening gaps. 'Ready to use' only applies when the report says which constraint tests exist, which passed, which are missing, and what the safe-use boundary is."
+    "So if you don't need new clarification and you're not working, then that means you're done and it's finished and ready to use? So that means you have covered all of the constraint tests. All of the constraint tests are in Nix, they all pass, everything is green, and we're ready to use the repository ledger?"
+    "Correcting the repository-ledger status language after the agent said no new clarification was needed. The phrase was too strong: the local deployed slice works, but the full constraint-test suite and final readiness boundary are not complete."
+    Maximum
+    2026-05-19 20:30)
