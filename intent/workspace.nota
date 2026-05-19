@@ -388,3 +388,24 @@
     "Reorienting the bead workflow around psyche visibility. The current bead surface is opaque to the psyche; the workspace's documentation should pass through reports."
     Maximum
     2026-05-19T19:45:00Z)
+
+(Correction
+    "'Designer pass' is meaningless vocabulary in this workspace — all agents use the same LLM models in different contexts. The role distinction is about discipline (what discipline an agent is currently applying) and locus (which lock, which report subdir), not about LLM capability. When an agent says 'this needs a designer pass before X,' they mean 'this needs design thought before X' — which is just thought, applicable to any agent who's in a designing mindset right now."
+    "I don't know what you mean by designer pass. All agents are just using the same LLM models in different contexts."
+    "Correcting my vocabulary. 'Designer pass' implied a special agent gating step; there is none. The right framing is 'this needs design thought,' which any agent (including the current one) can do."
+    Maximum
+    2026-05-19T20:30:00Z)
+
+(Principle
+    "When the existing shape doesn't fit, follow where the logic wants to go — don't be bound by what's already there. Let the water find where it wants to go downhill. Desire paths name this: the path that gets walked into the grass because it's the way the body naturally moves, regardless of where the paved walkway was put. Architecture grows the same way — let the logic carve its own path, and where multiple agents independently arrive at the same shape, that's the right shape."
+    "let's not be bound by the code that was already existed. And let's see where the water wants to go downhill. Desire paths, they call it."
+    "Foundational principle for architectural change. Promotion candidate to ESSENCE."
+    Maximum
+    2026-05-19T20:30:00Z)
+
+(Clarification
+    "An agent is currently editing signal-frame's macros — at least testing and documenting them. Do not duplicate that agent's work on the macro implementation. Coordinate by reading what they've produced before proposing further macro changes. The macro redesign for per-scenario closing variants is collaborative and should layer on top of, not replace, the in-flight work."
+    "there's an agent already editing signal-frame's macros … or at least testing it and documenting it"
+    "Coordination notice. Don't dispatch agents to do macro implementation; design proposals are OK but check the in-flight work first."
+    Maximum
+    2026-05-19T20:30:00Z)

@@ -129,3 +129,38 @@
     "Direction for the editing spree: reports as the documentation substrate, parallel agent work on components, 'must implement' annotations across affected crates."
     Maximum
     2026-05-19T20:00:00Z)
+
+(Decision
+    "signal-persona-mind's channel-choreography family splits into multiple contract-local verbs (Grant / Extend / Revoke / List / Deny — names TBD) rather than collapsing under one Adjudicate verb. The split makes the logic clearer; verbs aren't to be feared. Apply the split rule generally: when the choice is between one verb covering many sub-actions and multiple verbs naming each sub-action, prefer multiple verbs."
+    "I think the split is better. I don't think we have to be afraid of verbs. I think they'll make everything more clear."
+    "Settling the signal-persona-mind shape question raised in the MUST IMPLEMENT sweep. Reinforces the broader principle: verbs are cheap; splitting is usually better than collapsing."
+    Maximum
+    2026-05-19T20:30:00Z)
+
+(Decision
+    "Redesign the signal_channel! macro to allow a contract-local closing variant for each subscription scenario, rather than requiring a hard-coded request-side Retract variant. The current grammar forces a Retract*Retraction shape; under contract-local verbs, the closing variant should be a contract verb (e.g., Unwatch, Detach) named by the contract author. Collaborative redesign — the psyche wants to look at this together."
+    "Macro grammar gap. Signal channel stream block requires a request side retract variant for string close. So let's redesign the macro. Let's make it a way to create a closing variant for each scenario. Let's look at this together."
+    "Authorizing macro redesign on the stream-close grammar. The fix lets each contract name its own close verb instead of inheriting the universal Retract shape."
+    Maximum
+    2026-05-19T20:30:00Z)
+
+(Clarification
+    "The 5 missing owner-signal-persona-* repos (mind, router, harness, message, auth) are intentionally missing — the workspace is moving fast and the owner-signal pattern is recent. Don't backfill them by assumption; let them emerge as each component's owner discipline crystallizes."
+    "No, no, no, no, this is intentional. We've been moving so fast. The owner signal repo is sort of a new thing."
+    "Resolving the missing-repos observation from the sweep. No action needed; the pattern fills out as each component matures."
+    Maximum
+    2026-05-19T20:30:00Z)
+
+(Decision
+    "Continue the signal-frame contract migration work"
+    "you can continue your work"
+    "The operator had reported the signal-frame macro migration and identified the next acceptance step as migrating a real pilot contract."
+    Medium
+    2026-05-19T18:52:33Z)
+
+(Decision
+    "Two follow-up cleanups in signal-frame after the macro migration: (1) collapse Operation<Payload> out of Request<Payload> entirely. With SignalVerb removed, Operation is a transparent {payload} wrapper carrying no semantic content; consumers see Request<Payload> = NonEmpty<Payload>. If a contract ever needs per-op metadata it goes in the payload type, not in a kernel wrapper. (2) Drop Request::check() entirely. With the universal verb-shaped rules gone, the function always returns Ok and is dead API. Channel-specific validation belongs in daemon executors or in payload-level constructors, not in a kernel function that lies about doing work."
+    "I concur"
+    "Resolving the two design smells flagged in operator report 138 §'What remains' #4. The macro migration succeeded; these cleanups bring the kernel types into alignment with the new direction."
+    Maximum
+    2026-05-19T20:50:00Z)
