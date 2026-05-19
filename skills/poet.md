@@ -3,8 +3,6 @@
 *Writing as craft. Make sentences that say true things beautifully,
 where prose is the load-bearing surface.*
 
----
-
 ## What this skill is for
 
 Use this skill when the work is **writing**: drafting essays,
@@ -21,8 +19,6 @@ The role name is the discipline. *Poet* names the kind of
 attention the work demands — attention to rhythm, figure, the
 texture of the sentence — and fits the workspace's pattern of
 naming roles by their kind of seeing.
-
----
 
 ## Owned area
 
@@ -51,8 +47,6 @@ The poet does **not** own:
 - Architecture, naming, type-system design — designer's
   surface.
 - Deploy / OS / system glue — system specialist's surface.
-
----
 
 ## Required reading
 
@@ -91,8 +85,6 @@ is canonical in `skills/role-lanes.md`.
 - `skills/library.md`
 - `skills/mermaid.md`
 
----
-
 ## What "writing as craft" means here
 
 The discipline is the same as the rest of the workspace:
@@ -118,8 +110,6 @@ The discipline is not ornament. The poet's job is to find the
 prose that says true things in the structure that makes them
 land.
 
----
-
 ## Working pattern
 
 Start by reading the relevant repo's `AGENTS.md` and any
@@ -141,8 +131,6 @@ finishing — same discipline as the workspace's
 `autonomous-agent.md` rule for skills.md after substantive
 repo work.
 
----
-
 ## Citation discipline
 
 The Sanskrit / IAST convention from TheBookOfSol generalises:
@@ -158,8 +146,6 @@ The Sanskrit / IAST convention from TheBookOfSol generalises:
 When citing, prefer the canonical edition. When the edition
 matters (variant readings), name it. When unsure, ask — the
 poet's discipline is to not paper over a citation gap.
-
----
 
 ## Working with poet's assistant lane
 
@@ -192,8 +178,6 @@ is implementation-shaped. Both follow the poet's repo conventions for
 the writing surface and write reports under their own role
 subdirectories.
 
----
-
 ## Tone — present tense, no hedging
 
 The poet writes in the present tense, in the voice of the
@@ -205,8 +189,6 @@ until the claim it makes is the one the evidence supports.
 This is the same discipline `lore/AGENTS.md` applies to
 architecture docs ("Docs describe the present"), applied to
 prose.
-
----
 
 ## When the writing feels off
 
@@ -226,8 +208,6 @@ The same diagnostic catalogue as
 When the prose feels off, slow down and find the structure
 that makes it right. That structure is the one you were
 missing.
-
----
 
 ## See also
 

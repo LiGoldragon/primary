@@ -4,8 +4,6 @@
 Boundaries take and return one object. Don't hide typification
 in strings.*
 
----
-
 ## What this skill is for
 
 When writing Rust types and methods in this workspace, this skill
@@ -16,8 +14,6 @@ and `skills/beauty.md`.
 For the index pointing at the wider Rust discipline (errors,
 storage and wire, parsers, crate layout), see
 `skills/rust-discipline.md`.
-
----
 
 ## Methods on types, not free functions
 
@@ -44,8 +40,6 @@ the Karlton bridge, the wrong-noun trap, and the principled
 exceptions (local helper, relational operation, standard-library
 convention) — see `skills/abstractions.md`. This section is the
 Rust enforcement.
-
----
 
 ## No ZST method holders
 
@@ -102,8 +96,6 @@ the type system? If yes (it was just a namespace), the verbs need
 a real noun. If no (the type-system position is what does the work
 — phantom parameter, marker, state), the ZST is fine.
 
----
-
 ## Domain values are types, not primitives
 
 If a value has identity beyond its bits, it gets a newtype. A
@@ -142,8 +134,6 @@ impl AsRef<str> for NodeName {
 Construction with validation goes through `TryFrom<&str>` (or
 `from_str`) returning the crate's `Error`.
 
----
-
 ## One type per concept — no `-Details` / `-Info` companions
 
 If you find yourself defining `Item` *and* `ItemDetails`, stop.
@@ -171,8 +161,6 @@ struct Item {
 If different *call sites* genuinely need different *projections*,
 model that with a method that returns a smaller view
 (`item.summary()`), not with a parallel type.
-
----
 
 ## Don't hide typification in strings
 
@@ -291,8 +279,6 @@ rule extends the principle: once you have the typed identity,
 **use it**. Don't drop back to string operations to recover
 what the type already proved.
 
----
-
 ## One object in, one object out
 
 Method signatures take at most one explicit object argument and
@@ -343,8 +329,6 @@ impl Tree {
 `self` is implicit; the rule counts explicit arguments only. A
 method takes zero or one typed object alongside `self`.
 
----
-
 ## Constructors are associated functions
 
 `new`, `with_*`, `from_*`, `build` — never module-level free
@@ -365,8 +349,6 @@ Prefer `TryFrom` when the conversion has one canonical source
 type; prefer `from_<src>(…) -> Result<Self, Error>` when there are
 several plausible sources or extra args.
 
----
-
 ## Use existing trait domains
 
 If `core::str::FromStr` already names what you do, implement
@@ -385,8 +367,6 @@ impl FromStr for Message {
 
 Inherent methods that bypass an obvious trait domain are a smell.
 
----
-
 ## Direction-encoded names
 
 Prefer `from_*`, `to_*`, `into_*`, `as_*`. Avoid `read`, `write`,
@@ -396,8 +376,6 @@ Prefer `from_*`, `to_*`, `into_*`, `as_*`. Avoid `read`, `write`,
 
 `get` / `put` are fine for storage interfaces (`ChunkStore::get`);
 they name the storage operation, not a conversion.
-
----
 
 ## See also
 

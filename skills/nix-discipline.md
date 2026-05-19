@@ -3,8 +3,6 @@
 *Choosing flake-input forms, pinning, store-path hygiene, and
 when to reach for `nix run` vs `cargo install`.*
 
----
-
 ## What this skill is for
 
 When you're editing a `flake.nix`, choosing how to declare an
@@ -16,8 +14,6 @@ does. The CLI reference for nix commands lives in lore (see
 this skill is about the *discipline* — which input form to
 pick, which command shape, which test runner — and the why
 behind each.
-
----
 
 ## Services are NixOS modules, not OCI workloads
 
@@ -85,8 +81,6 @@ install is Docker Compose," the rule still holds. The official
 install is one of several reference implementations; the CriomOS
 implementation is a NixOS module that reads the same upstream
 sources Docker Compose does.
-
----
 
 ## Flake inputs — choosing the form
 
@@ -182,8 +176,6 @@ a `flake.nix`, leave `flake = false` off; you want its outputs.
 | `git+ssh://`, `git+https://` | Repos not on github | Same shape as `github:` but explicit transport. |
 | `git+file:///...` | **Forbidden** in committed flakes | Use `--override-input path:...` for local iteration instead. |
 
----
-
 ## Lock-side pinning
 
 Keep `flake.nix` generic; record the exact rev in
@@ -220,8 +212,6 @@ shares one rustc store path — see lore's `rust/nix-packaging.md`
 `~/primary/tools/sync-rust-fenix` is not a live workspace tool
 unless it exists in `tools/`; do the lockstep explicitly or land
 the helper before citing it as runnable.
-
----
 
 ## Cargo git deps in crane flakes — never `outputHashes`
 
@@ -311,8 +301,6 @@ API-incompatible with another sibling that's still on the
 older rev. Pin with `--precise <rev>` to the rev the other
 sibling consumes if the bump is breaking.
 
----
-
 ## Don't reference raw `/nix/store/<hash>-<name>` paths
 
 Store hashes change on every rebuild. Any recorded path
@@ -349,8 +337,6 @@ ls "$result"/bin
 # git history or chat logs.
 ```
 
----
-
 ## Use `nix run nixpkgs#<pkg>` for missing tools
 
 When a tool isn't on `PATH` (`rustfmt`, `clippy`, `jq`,
@@ -382,8 +368,6 @@ Reach for `nix build` only when the store path itself is
 load-bearing (closure introspection, `nix copy`, etc.) — and
 even then, capture the path in a shell variable.
 
----
-
 ## `nix flake check` is the canonical pre-commit runner
 
 Every Rust crate (and ideally every flake) exposes its test
@@ -409,8 +393,6 @@ For the broader testing contract, including stateful runners
 and chained derivations with inspectable artifacts, see this
 workspace's `skills/testing.md`.
 
----
-
 ## Don't hand-edit `flake.lock`
 
 `flake.lock` is machine-generated. Hand edits drift silently;
@@ -426,8 +408,6 @@ If a lock entry is wrong:
 Commit `flake.lock` after any of these. The commit message
 should name what changed
 (`update nota-codec to <short-sha>`).
-
----
 
 ## See also
 

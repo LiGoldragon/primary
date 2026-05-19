@@ -3,8 +3,6 @@
 *How `ARCHITECTURE.md` files are named, located, scoped, and
 maintained.*
 
----
-
 ## What an `ARCHITECTURE.md` is
 
 An `ARCHITECTURE.md` describes **what the system IS** at a
@@ -39,8 +37,6 @@ describe what is true today in present tense; the eventual shape is
 labelled, not implied. Per `~/primary/ESSENCE.md` §"Today and
 eventually — different things, different names".
 
----
-
 ## Where each kind of statement lives
 
 | Doc | What goes there | Permanent? |
@@ -57,8 +53,6 @@ If a statement is "what the system IS," it goes in
 and when the rationale is load-bearing for understanding the shape,
 **the architecture inlines the load-bearing claim** rather than
 citing the report.
-
----
 
 ## Format
 
@@ -156,8 +150,6 @@ Use this split:
 If a constraint cannot be tested, rewrite it until it names an observable
 witness or move it to a report as unfinished thinking.
 
----
-
 ## What an `ARCHITECTURE.md` does NOT contain
 
 - **Implementation code.** Per `~/primary/ESSENCE.md`
@@ -179,8 +171,6 @@ witness or move it to a report as unfinished thinking.
   module..." Architecture is reference, not a guided tour.
 - **Restatement of workspace skills.** The architecture cites
   workspace skills; it doesn't repeat them.
-
----
 
 ## Architecture files never reference reports
 
@@ -219,8 +209,6 @@ This rule has no exception. The corresponding section in
 `reporting.md` lists permanent homes for each report shape;
 the architecture is one of those homes.
 
----
-
 ## When to edit
 
 Edit `ARCHITECTURE.md` when:
@@ -247,8 +235,6 @@ Don't edit for:
 - Fixing a typo in a comment block. Skip the ARCHITECTURE
   ceremony; just edit.
 
----
-
 ## Editing rules
 
 - **Edit in place; don't fork or version.** The current shape
@@ -268,8 +254,6 @@ Don't edit for:
   `~/primary/skills/autonomous-agent.md` §"Version-control
   obstacles".
 
----
-
 ## When to create one
 
 If a repo doesn't have an `ARCHITECTURE.md` and you've done
@@ -287,8 +271,6 @@ A thin-but-honest `ARCHITECTURE.md` is better than no file.
 in deeply** — the same warning that applies to `skills.md`
 applies here: a confidently-wrong architecture is worse than
 no architecture, because future agents will trust it.
-
----
 
 ## Meta vs per-repo split
 
@@ -333,8 +315,6 @@ The split avoids the ecosystem-architecture growing into a
 single huge file and avoids per-repo files repeating
 ecosystem-wide context. Each scope has the appropriate amount
 of detail.
-
----
 
 ## See also
 

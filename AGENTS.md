@@ -91,6 +91,11 @@ Each agent knows its lane before claiming or editing. Coordination:
 - **Reach for the right tool, not raw git.** Version control is `jj`
   per `skills/jj.md`; raw `git` is reserved for two named escape-hatch
   cases listed there.
+- **No `---` horizontal-rule lines in markdown.** Section structure
+  comes from headings (`##`, `###`). `---` between every section is
+  pure noise in agent context — costs tokens, conveys nothing
+  headings don't already convey. Allowed inside code blocks (e.g.
+  illustrating a markdown template); never as a document separator.
 
 ## Where to look for more
 

@@ -2,8 +2,6 @@
 
 *Maintaining the operating-system layer underneath the workspace.*
 
----
-
 ## What this skill is for
 
 Use this skill when the work is about making the system run:
@@ -15,8 +13,6 @@ interfaces.
 `tools/orchestrate claim system-specialist <paths> -- <reason>` before
 editing files in the OS / platform surface. Reports go in
 `reports/system-specialist/` and are exempt from the claim flow.
-
----
 
 ## Owned area
 
@@ -35,8 +31,6 @@ When a task crosses system and home boundaries, preserve ownership. Example:
 Whisrs packaging, keybindings, tray state, clipboard recovery, and transcript
 history live in CriomOS-home; `/dev/uinput` group/module/udev access lives in
 CriomOS.
-
----
 
 ## Required reading
 
@@ -101,8 +95,6 @@ The repo-level reads (`AGENTS.md`, `ARCHITECTURE.md`,
 CriomOS / CriomOS-home) sit on top of these workspace skills
 when work enters a specific repo.
 
----
-
 ## Working pattern
 
 Start by reading the relevant repo's `AGENTS.md`, `ARCHITECTURE.md`, and
@@ -129,8 +121,6 @@ activation and IPC reload have both happened.
 Secrets stay out of Nix and broad process environments. For paid cloud
 inference, follow the repo rule: local model first, then ask before using a
 paid key unless the user explicitly authorized that call in the current task.
-
----
 
 ## Just-do-it operations
 
@@ -163,8 +153,6 @@ whether to proceed. The rule above is about *the standard happy path
 following from the work just done*, not about pushing through real
 errors silently.
 
----
-
 ## Runtime interfaces
 
 The system specialist gives the user working interfaces, not just packages:
@@ -177,8 +165,6 @@ The system specialist gives the user working interfaces, not just packages:
 
 For STT prompts and likely transcription mistakes, read this workspace's
 `skills/stt-interpreter.md`.
-
----
 
 ## Working with system-specialist's assistant lanes
 
@@ -224,8 +210,6 @@ inventory, cross-reference cleanup, or protocol/skill edits already
 decided by designer. Poet's assistant lane can take prose or
 publishing-support work when the surface is poet-shaped.
 
----
-
 ## Operator interface — Nota only
 
 Cluster deploy requests flow through `lojix-cli` and the operator
@@ -243,8 +227,6 @@ operator-facing data live as typed Nota records read by
 order; reordering or renaming is a breaking change.
 
 See lojix-cli's `skills.md` for the per-repo specifics.
-
----
 
 ## Cluster Nix signing
 
@@ -321,8 +303,6 @@ The keys are *inert* until CriomOS wires
 that's the still-pending architectural fix that would let
 non-cache nodes' daemons sign locally-built paths and let
 `builder = None` deploys produce verifiable closures.
-
----
 
 ## See also
 

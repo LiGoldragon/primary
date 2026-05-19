@@ -3,8 +3,6 @@
 *The load-bearing commitments when designing a text notation, a
 request language, a schema notation, or a query surface.*
 
----
-
 ## What this skill is for
 
 Whenever a text surface is being designed, apply this skill before
@@ -20,8 +18,6 @@ relevant NOTA schema instead.
 
 The principles below are upstream of every NOTA text surface in the
 workspace. They do not authorize additional syntax.
-
----
 
 ## The instincts
 
@@ -328,8 +324,6 @@ Cosmetic and verb-shaped temptations together cover most
 proposals for "what a free delimiter could mean." Reject
 both classes; keep the grammar small.
 
----
-
 ## Where these instincts live in working code
 
 | Surface | Apply most directly to |
@@ -339,8 +333,6 @@ both classes; keep the grammar small.
 | signal | 6, 9, 14, 15, 16 |
 | persona-message records | 4, 5, 6, 14 |
 | ESSENCE.md §"Language-design instincts" | distilled subset (older bullets — this file is the full 18) |
-
----
 
 ## When the rules feel restrictive
 
@@ -356,8 +348,6 @@ the relevant grammar spec — the way nota's "bare-identifier
 strings" carve-out is documented. Carve-outs are explicit and
 narrow; absence of a documented carve-out means there isn't
 one.
-
----
 
 ## See also
 

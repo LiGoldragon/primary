@@ -6,8 +6,6 @@ document; when a downstream rule conflicts with this, this wins.*
 
 > Read this before any other document.
 
----
-
 ## Intent is the cornerstone
 
 Intent is primordial. **If any agent needs to know what to do, they
@@ -46,8 +44,6 @@ its own as the founding rule of a whole way of working. The bar is
 high. Most psyche intent lives in the log and per-repo `INTENT.md`;
 the essence is the gold of the gold.
 
----
-
 ## What I am building
 
 Software that is **eventually impossible to improve** — in a
@@ -66,8 +62,6 @@ In priority order, when two conflict the earlier wins:
 4. **Beauty** — beauty in the operative sense: not pretty, but
    right. Ugliness is evidence the underlying problem is unsolved.
 
----
-
 ## What I am not optimising for
 
 Not speed. Not feature volume. Not "minimum viable," "ship fast,"
@@ -80,8 +74,6 @@ Not backward compatibility for systems being born.
 Not estimates. Implementation timelines do not appear in design
 discussions. Work is described by *what it requires*, not by *how
 long it will take*.
-
----
 
 ## Beauty is the criterion
 
@@ -96,8 +88,6 @@ makes it beautiful. **That structure is the one you were missing.**
 If you cannot make it beautiful, you do not understand it yet.
 
 The discipline that follows from this lives in `skills/beauty.md`.
-
----
 
 ## Backward compatibility is not a constraint
 
@@ -116,7 +106,5 @@ versioning, wire contracts pinned by version, schemas externally
 consumed by systems outside our control. Inside the workspace,
 before such a boundary is declared, the system is being shaped,
 not preserved.
-
----
 
 *End ESSENCE.*

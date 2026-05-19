@@ -5,8 +5,6 @@ apply, archive overrides explicitly. The discipline that keeps
 `intent/` from rotting as the workspace and the author's positions
 evolve.*
 
----
-
 ## What this skill is for
 
 `skills/intent-log.md` covers recording. This skill covers
@@ -18,8 +16,6 @@ Three operations: **supersession** (author overrides a prior),
 **verification** (does the entry still describe how the workspace
 actually works?), and **archival** (moving superseded entries out
 of active queries without deleting their content).
-
----
 
 ## Supersession protocol — never silent
 
@@ -72,8 +68,6 @@ entry is never quietly overwritten by another author entry, and
 never overwritten by agent inference. This is the load-bearing
 protection against agent hallucination passing as psyche intent.
 
----
-
 ## Verification — does the entry still apply?
 
 Periodically (when sweeping the log, or when an entry's substance
@@ -97,8 +91,6 @@ intent (just fixing the agent's transcription) can land directly —
 they're discipline cleanup, not author overrides. Log the change in
 the commit message ("intent: corrected summary in `<file>.nota` to
 match verbatim").
-
----
 
 ## Sweep — when and how
 
@@ -128,8 +120,6 @@ How:
    specific sub-topic file; leave a `(SubTopicSplit "old-file" ["new-file-1" "new-file-2"] "<timestamp>")`
    record in the topic's `supersessions.nota`.
 
----
-
 ## Don't delete — archive
 
 The `intent/<topic>/superseded/` subdirectory holds prior entries
@@ -141,8 +131,6 @@ agents who don't reach for `jj log`.
 Do **not** delete a superseded entry from git history. Even when
 the author overrides their own prior intent, the prior matters as
 context for understanding the override.
-
----
 
 ## When to skip the surface
 
@@ -157,8 +145,6 @@ Some author statements are too transient for the log:
 If you skip recording a borderline case, the author can ask later
 "why isn't this in `intent/`?" — at that point, record it.
 
----
-
 ## Forward — persona-mind migration
 
 When persona-mind's typed memory variants land, supersession
@@ -166,8 +152,6 @@ becomes a typed relation (`Supersedes` linking two
 `Authorial<Kind>` memories), and the `superseded/` subdir
 retires — the relation graph carries the lineage. Until then,
 filesystem-level archival is the carrier.
-
----
 
 ## See also
 

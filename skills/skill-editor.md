@@ -2,8 +2,6 @@
 
 *How skill files are named, located, and cross-referenced.*
 
----
-
 ## What a skill file is
 
 A skill file is "what an agent needs to know to be effective in
@@ -23,8 +21,6 @@ Skill files complement, but do not replace, `AGENTS.md` and
 (what the system IS); skills.md is what an agent needs to know
 to be *good at* a particular scope.
 
----
-
 ## Naming and location
 
 | Scale | Path | Example |
@@ -33,8 +29,6 @@ to be *good at* a particular scope.
 | Repo skill | `<repo-root>/skills.md` | `criome/skills.md` |
 
 One file per repo. Workspace skills are lowercase-with-hyphens.
-
----
 
 ## Cross-references
 
@@ -62,8 +56,6 @@ the repo root, named `skills.md`.
 For repo-level pointers (when you mean "this repo exists,"
 without naming a specific file), use the nix-flake form:
 `github:<org>/<repo>`.
-
----
 
 ## Format
 
@@ -108,8 +100,6 @@ The structure that has worked across this workspace:
 
 The `# Skill — <name>` heading is recognisable, separates
 skills from regular docs, and matches the file naming.
-
----
 
 ## What goes in a repo skill
 
@@ -156,8 +146,6 @@ the workspace, or about how a specific component is built?*
 Component-specific goes to the component. The workspace skills
 stay general.
 
----
-
 ## When to create a new repo skill
 
 The trigger lives in `autonomous-agent.md`: after substantive
@@ -176,8 +164,6 @@ If you find yourself tempted to create skills for many repos
 quickly, you don't have enough context for any of them. Pick
 one repo, do real work in it, then write the skill.
 
----
-
 ## Editing rules
 
 - Edit a skill in place; don't fork or version it.
@@ -189,8 +175,6 @@ one repo, do real work in it, then write the skill.
   the same thing, one of them should reference the other.
 - After a meaningful edit, commit and push immediately
   (per the workspace's autonomous-agent skill).
-
----
 
 ## Skills never reference reports
 
@@ -229,8 +213,6 @@ This rule has no exception. **Postmortems**, **decision records**,
 **syntheses** — all are reports; their lessons live in skills or
 architecture or they don't live at all. The corresponding section in
 `reporting.md` lists permanent homes for each report shape.
-
----
 
 ## Examples never show free functions (only `main`)
 
@@ -304,8 +286,6 @@ grep -nE '^\s*(pub )?(async )?fn ' <file> | grep -vE 'fn main\b'
 
 Every match in an example block needs to be either inside
 `impl` or removed.
-
----
 
 ## See also
 

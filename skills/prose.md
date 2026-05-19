@@ -5,8 +5,6 @@ the moves for writing sentences that hold their weight, the criterion
 that tells you whether they do, and the canon of voices that defines
 the register.*
 
----
-
 ## What this skill is for
 
 Prose carries arguments. When the prose is thin, the argument is
@@ -29,8 +27,6 @@ generalises.
 
 The skill does not apply to identifiers, code comments, or commit
 messages — see `skills/naming.md` and `skills/jj.md` for those.
-
----
 
 ## The criterion
 
@@ -101,8 +97,6 @@ For citation conventions specific to a repo, see that repo's
 `AGENTS.md`. TheBookOfSol's Sanskrit-translation-citation form is
 the most-developed in the workspace.
 
----
-
 ## Voice
 
 ### Declarative, present, unhedged
@@ -156,8 +150,6 @@ Use the word that names the thing. *"Smith"* not *"artisan"*; *"fire"*
 not *"flame"*; *"this is the old work"* not *"this constitutes the
 ancient labor."*
 
----
-
 ## Diction
 
 ### The lexicon is the argument
@@ -188,8 +180,6 @@ English glosses on first appearance in each article. Subsequent uses
 can drop the gloss. Never assume the reader has met *agni*, *ojas*,
 *snigdha*, *mitāhāra*, *Caraka Saṃhitā*, *Haṭha Yoga Pradīpikā*
 before.
-
----
 
 ## Opening
 
@@ -230,8 +220,6 @@ the internet considers Ayurvedic; show the reader the eleven
 ingredients on the plate; then bring forward the classical doctrine
 that disqualifies the plate clause by clause. The reader has already
 visualised the failure before the doctrine names it.
-
----
 
 ## Working with sources
 
@@ -282,8 +270,6 @@ Dhammapada, Seneca, Proverbs, Job, Heraclitus, Bhagavad Gītā,
 Castaneda, Marcus Aurelius, Musashi. The catalog is not erudition;
 it is evidence. The plurality of voices is what makes the claim
 classical.
-
----
 
 ## The sentence
 
@@ -345,8 +331,6 @@ Reference closers from the workspace:
 The prose has done the work. The closer lands what the work
 established. Restatement ("In summary, the argument has shown
 that...") flattens what the prose built. Cut it.
-
----
 
 ## The reference shelf
 
@@ -767,8 +751,6 @@ When the field of the writing is cosmic — cycles, scales, the body
 in the year, the year in the cosmos — Rudhyar names the pulse without
 either flattening it or dressing it up.
 
----
-
 ## What to delete on sight
 
 These patterns appear in drafts. Strike them every time.
@@ -821,8 +803,6 @@ talking about itself.
 *"Notice that...", "Observe how...", "Note that..."* Do not cue the
 reader to attend; let the sentence merit attention on its own.
 
----
-
 ## What it sounds like
 
 Three short reference passages, each demonstrating the register in
@@ -865,8 +845,6 @@ verdict. No throat-clearing between them.
 The voice the writer can take when speaking to the self. The reader
 overhears, and the overheard is more durable than the directly told.
 
----
-
 ## What it does not sound like
 
 Three short passages of what the register *will not produce*. Each
@@ -895,8 +873,6 @@ is what to feel for and rewrite away from.
 
 The negative test, in one line: *would Heraclitus or Hemingway have
 let this sentence stand?* If the answer is no, rewrite it.
-
----
 
 ## When the prose feels off
 
@@ -932,8 +908,6 @@ problem.
 When the prose feels off, slow down and find the structure that
 makes it right. That structure is the one the prose was missing.
 
----
-
 ## When the writing arrives at its own form
 
 A high-register piece does not begin in this register. It begins as
@@ -952,8 +926,6 @@ from the noun.
 
 If it sounds like Hemingway translating Marcus Aurelius for Juan
 Arnau to read, the register is right.
-
----
 
 ## See also
 

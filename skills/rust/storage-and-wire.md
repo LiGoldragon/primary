@@ -5,8 +5,6 @@ is the binary contract between Rust components — both for the
 durable values inside redb and for the wire bytes that travel
 between processes.*
 
----
-
 ## What this skill is for
 
 Use this skill when designing the durable-state or inter-process
@@ -24,8 +22,6 @@ patterns shrinking as the document grows.
 
 For the index pointing at the wider Rust discipline, see
 `skills/rust-discipline.md`.
-
----
 
 ## What goes where
 
@@ -52,8 +48,6 @@ but it is not literally a Signal `Frame` envelope unless the
 table is recording frames. The shared truth is the typed
 archived record; Signal wraps it for inter-process traffic;
 redb stores it for durability.
-
----
 
 ## redb — the durable store
 
@@ -92,8 +86,6 @@ let txn = self.db.begin_write()?;
 }
 txn.commit()?;
 ```
-
----
 
 ## rkyv — the binary contract on the wire (signaling)
 
@@ -172,8 +164,6 @@ paradigm — see `~/primary/ESSENCE.md` §"Today and eventually" — not
 today's `criome` daemon.) That convergence works only because both
 sides agree on the same archive contract today.
 
----
-
 ## NOTA — the human-facing projection
 
 NOTA is the project's text syntax. Nexus is a NOTA-using
@@ -204,8 +194,6 @@ The asymmetry: humans use NOTA, machines use rkyv. The
 codec at the boundary is `nota-codec`; it is the *only*
 text codec each crate ships. No second project-wide text
 format.
-
----
 
 ## Patterns and anti-patterns
 
@@ -242,8 +230,6 @@ shape comes up in review, add the row.
 | Sync façade on actor `State` | Tests for components that own redb + rkyv | Per lore's `rust/testing.md` |
 | Newtype around platform-fragile stdlib types | `PathBuf`, `OsString`, `SocketAddr` on the wire | `WirePath(Vec<u8>)` shape; deterministic across platforms |
 
----
-
 ## Named exceptions — text-on-disk that stays text
 
 The rule is about *state the component mutates and
@@ -276,8 +262,6 @@ sends bytes to another Rust component, those bytes are
 rkyv archives. The named exceptions above don't satisfy
 either condition.
 
----
-
 ## Schema discipline
 
 rkyv archives are schema-fragile. Adding, removing, or
@@ -299,8 +283,6 @@ character-for-character, derive-alias pattern,
 encode/decode API, `bytecheck` semantics), see lore's
 `rust/rkyv.md`. This skill is *what discipline to apply*;
 lore is *how the tool works*.
-
----
 
 ## The sema-engine pattern (default for new components)
 
@@ -390,8 +372,6 @@ Sema crates for meta projects just because the meta repo composes
 several components. In particular, `persona` is a meta project today;
 there is no shared `persona-sema` architecture.
 
----
-
 ## Why this discipline is strict
 
 The rules above feel laborious before the components are
@@ -407,8 +387,6 @@ the workspace has either lived through or watched
 nearby. Each entry in the validated-pattern table is a
 shape that earned its place by surviving real use. The
 table grows; the work gets more correct as it grows.
-
----
 
 ## See also
 

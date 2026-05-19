@@ -6,8 +6,6 @@ author's voice on each topic, verbatim, with context and certainty,
 so future agents can query what the author actually wanted versus
 what some agent decided.*
 
----
-
 ## What this skill is for
 
 **Only psyche statements are recorded.** The psyche is the human
@@ -35,8 +33,6 @@ is the question.
 
 Sweep and supersession discipline lives in
 `skills/intent-maintenance.md`.
-
----
 
 ## When to record
 
@@ -66,8 +62,6 @@ The bar: *would this statement be valuable to a future agent
 trying to understand what the author actually wants on this topic?*
 If yes, record. If unclear, ask the author whether to record before
 recording.
-
----
 
 ## Record shape
 
@@ -103,8 +97,6 @@ carries the part that belongs to this entry.
 A file is a top-level NOTA list `[ … ]` of one or more entries on
 the same sub-topic.
 
----
-
 ## Certainty vocabulary
 
 Triggered mechanically by the author's phrasing so the agent's
@@ -119,8 +111,6 @@ interpretation is minimal:
 The psyche can also tag certainty explicitly mid-sentence ("I'm
 certain about X but not sure about Y") — record X as `Maximum` and
 Y as `Minimum`.
-
----
 
 ## Directory and file organization
 
@@ -142,8 +132,6 @@ One topic per directory; one sub-topic per file; one or more
 entries per file. Group entries when they're on the same point;
 split when they diverge.
 
----
-
 ## Recording protocol — three steps
 
 Before adding an entry:
@@ -164,8 +152,6 @@ The agent who recorded an entry stays accountable for re-reading it
 within the session — if a later author statement reframes the
 earlier one, the recorded entry might need supersession.
 
----
-
 ## What this skill is NOT for
 
 - Agent-internal decisions. Those live in reports, commits, and
@@ -177,8 +163,6 @@ earlier one, the recorded entry might need supersession.
 - Long-form analysis. The log carries terse facts with verbatim
   evidence. Analysis goes in reports.
 
----
-
 ## Forward — persona-mind migration
 
 When persona-mind's typed memory variants land, each `<Kind>`
@@ -189,8 +173,6 @@ relation tag (`(IntentTopic <topic>)`). The
 
 No work in `persona-mind` yet. This note signposts where the
 substance migrates.
-
----
 
 ## See also
 

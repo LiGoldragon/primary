@@ -3,8 +3,6 @@
 *A tiny convention for documenting NOTA record schemas so agents
 don't have to read Rust to know what a record looks like.*
 
----
-
 ## The convention
 
 To document a NOTA record's shape, write a pseudo-NOTA form where
@@ -38,8 +36,6 @@ Rules:
 
 That's the whole convention.
 
----
-
 ## Why pseudo-NOTA, not the real syntax
 
 Real NOTA is positional and the field names live in the Rust schema.
@@ -52,8 +48,6 @@ For real records on the wire, names disappear (NOTA is positional).
 For *documenting* schemas in skill files, ARCH files, and design
 reports, the pseudo-form is what an agent reads.
 
----
-
 ## When to use it
 
 - Documenting record schemas in `signal-*` contract ARCH files.
@@ -65,8 +59,6 @@ For canonical typed records on the wire — use the real Rust schema +
 `tests/round_trip.rs` + `tests/canonical_examples.rs`. The
 pseudo-NOTA in docs is teaching material, not the authoritative
 shape.
-
----
 
 ## Example — a memory variant set
 
@@ -98,8 +90,6 @@ That's enough to let an agent draft a payload without reading the
 Rust schema. When implementation lands, the test in
 `tests/canonical_examples.rs` is the authoritative truth — the
 pseudo-NOTA in this skill is just orientation.
-
----
 
 ## See also
 

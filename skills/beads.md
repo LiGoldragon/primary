@@ -3,8 +3,6 @@
 *When to track a unit of work as a BEADS task, when to make
 it a discipline instead, when to close.*
 
----
-
 ## What this skill is for
 
 When you find yourself reaching for `bd create`, this skill
@@ -20,8 +18,6 @@ through the `bd` CLI. It is **transitional** per
 messaging fabric. Don't deepen the BEADS investment; don't
 bridge to Persona; use BEADS for what it's good at today
 and design new shapes assuming BEADS goes away.
-
----
 
 ## When to file a bead
 
@@ -47,8 +43,6 @@ Examples that fit:
   designer task, will close when the report lands.
 - *"Migrate ~/git to /git/github.com layout"* — discrete
   system-specialist task, mechanical scope.
-
----
 
 ## When NOT to file a bead
 
@@ -96,8 +90,6 @@ fix it next time you're in this file."* If the fix is a
 one-line edit and you're in the file, fix it. If it's
 forgettable but trivial, leave a `TODO` next to the code
 and the next agent who passes will see it.
-
----
 
 ## Beads are not ownership locks
 
@@ -172,8 +164,6 @@ filed. The helper treats brackets as exact-match
 identifiers; the projection from the token to the
 underlying artifact is the agent's responsibility.
 
----
-
 ## Feature beads carry their branch name
 
 A `feature` bead represents work that lives on a **non-main branch**
@@ -226,8 +216,6 @@ makes the rendezvous concrete on the file system.
 
 `task` beads do not need this — by default they land on main as
 small commits and don't have a parallel branch life.
-
----
 
 ## When to close a bead
 
@@ -282,8 +270,6 @@ bd close primary-XYZ -r "Won't ship — superseded by approach Y; \
 see designer/N for context."
 ```
 
----
-
 ## Closing notes carry forward
 
 Every closed bead's `-r` reason becomes the durable record
@@ -295,8 +281,6 @@ or move on (almost always).
 
 The closing note is the bead's small designer report.
 Treat it as such — name the path forward, not just *"done."*
-
----
 
 ## Stale internal references in bead descriptions
 
@@ -322,8 +306,6 @@ Don't accumulate edits to bead descriptions trying to keep
 them fresh; let the canonical home (the skill, the report,
 the code) carry the current substance.
 
----
-
 ## The `bd` CLI shape
 
 This skill names *when* to use BEADS; the CLI commands
@@ -348,8 +330,6 @@ For the full CLI reference and any project-specific
 conventions, see `lore/bd/basic-usage.md` if it exists, or
 `bd help <command>`.
 
----
-
 ## Periodic audit
 
 A workspace's open-beads list should be small (~5-15
@@ -371,8 +351,6 @@ worked example; retired in the 2026-05-09 cleanup once the
 substance had migrated into this skill and `designer/68`'s
 inventory.)
 
----
-
 ## When `.beads/` reports a database lock
 
 Symptom: `bd` returns a database-lock error.
@@ -390,8 +368,6 @@ a coordination concern.
 Per `~/primary/AGENTS.md`: *"If `bd` reports a backend
 database-lock error, treat it as transient storage
 contention, not coordination ownership."*
-
----
 
 ## See also
 

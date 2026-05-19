@@ -4,8 +4,6 @@
 Hand-rolled string slicing for JSON / TOML / YAML / PEM / DER /
 HTTP is forbidden.*
 
----
-
 ## What this skill is for
 
 When external bytes (file format, API response, config file,
@@ -14,8 +12,6 @@ is the discipline.
 
 For the index pointing at the wider Rust discipline, see
 `skills/rust-discipline.md`.
-
----
 
 ## No hand-rolled parsers
 
@@ -104,8 +100,6 @@ under any circumstances. If the right library isn't on the
 dependency list, add it (per `~/primary/skills/nix-discipline.md`
 the toolchain is Nix-managed; pulling in a crate is one
 `Cargo.toml` line plus a `cargo update`).
-
----
 
 ## See also
 

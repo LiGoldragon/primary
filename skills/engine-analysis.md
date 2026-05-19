@@ -3,8 +3,6 @@
 *How to inspect a multi-component engine from code, contracts, runtime
 topology, state, and trust boundaries, then write a reusable compendium.*
 
----
-
 ## What this skill is for
 
 Use this skill when asked to explain how an engine currently works, what talks

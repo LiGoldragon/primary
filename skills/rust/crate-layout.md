@@ -3,8 +3,6 @@
 *CLIs are daemon clients. One Rust crate per project per repo.
 Tests live in separate files. One concern per file.*
 
----
-
 ## What this skill is for
 
 When organizing a Rust crate's surface — CLI vs daemon, source
@@ -13,8 +11,6 @@ this skill is the discipline.
 
 For the index pointing at the wider Rust discipline, see
 `skills/rust-discipline.md`.
-
----
 
 ## CLIs are daemon clients
 
@@ -59,8 +55,6 @@ Example: the Persona command-line mind is `mind` as a thin client to
 the long-lived `persona-mind` daemon. The daemon owns `MindRoot` and
 `mind.redb`; the CLI owns argv/env decoding and reply rendering.
 
----
-
 ## One Rust crate per repo
 
 Rust crates live in their own dedicated repos and are consumed
@@ -87,8 +81,6 @@ side of the same rule.
 For the toolchain reference (Cargo.toml conventions, cross-crate
 dependencies, git-URL deps, pin strategy), see lore's
 `rust/style.md`.
-
----
 
 ## Tests live in separate files
 
@@ -119,8 +111,6 @@ constructor.
 One test file per source file. Don't collect tests from multiple
 modules into a single `tests/common.rs` unless the shared
 fixtures genuinely apply to more than one module.
-
----
 
 ## Module layout
 
@@ -165,8 +155,6 @@ Use this pattern when traits accumulate. Don't pre-split a type
 with two trait impls — that's premature ceremony. Split when a
 file is becoming hard to navigate.
 
----
-
 ## Documentation
 
 Doc comments are impersonal, timeless, precise. Document the
@@ -188,8 +176,6 @@ boilerplate: getters, `From` impls, internal helpers.
 
 No examples in doc comments unless the API is non-obvious. No
 personal voice. No future tense. Present indicative only.
-
----
 
 ## See also
 

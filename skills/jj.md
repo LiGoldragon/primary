@@ -6,8 +6,6 @@ forbidden as a daily-commit tool; it survives only as an
 explicit escape hatch for two named remote-config cases
 below.*
 
----
-
 ## What this skill is for
 
 Whenever you have made meaningful changes — even a one-line
@@ -35,8 +33,6 @@ the `@` model, undo, bookmarks), see lore's
 `jj/basic-usage.md`. This skill is *how we use jj here*;
 lore is *how jj works*.
 
----
-
 ## Raw `git` is forbidden for daily commits
 
 The default tool for **every commit** is `jj`. **Don't
@@ -62,8 +58,6 @@ named cases, stop. Either find the jj equivalent or
 escalate (per `skills/autonomous-agent.md`) — don't paper
 over the unfamiliarity by dropping to git.
 
----
-
 ## The standard flow
 
 In a clean working tree after an edit batch:
@@ -88,8 +82,6 @@ change; the commit you want to push is its parent.
 If the message contains apostrophes, use double quotes
 (`-m "<msg>"`). Apostrophes inside `'…'` terminate the
 shell string.
-
----
 
 ## `jj describe @` is forbidden for finalising new work
 
@@ -137,8 +129,6 @@ If you find yourself typing `jj describe`, stop and ask:
 finalising new work?* If finalising new work — use
 `jj commit`.
 
----
-
 ## Never let jj open an editor
 
 Every jj command that takes a description has an inline
@@ -181,8 +171,6 @@ the command being run. Editor shims are anti-patterns —
 they hide the fact that the wrong invocation form was
 used.
 
----
-
 ## Descriptionless commits are forbidden
 
 `(no description set)` on a commit you authored is a
@@ -218,8 +206,6 @@ describe it immediately — even before the next file edit.
 The instant you continue past it, the next agent's view of
 your work depends on you having set a description; their
 `jj log` filters will hide it otherwise.
-
----
 
 ## Before you commit — the working-copy check
 
@@ -263,8 +249,6 @@ jj commit -m '<my-msg>'              # canonical commit
 
 When in doubt — split.
 
----
-
 ## Partial commits — `jj commit <paths>` or `jj split`
 
 When the working tree contains both your changes and a peer
@@ -294,8 +278,6 @@ For interactive selection of *changes* (hunks, not whole paths),
 use `jj split -i` — opens the diff editor. Pass `-m` to set the
 description inline and avoid the second editor prompt.
 
----
-
 ## Logical commits
 
 When the working tree contains more than one concern, **split
@@ -319,8 +301,6 @@ Don't fold unrelated edits into one "miscellaneous" commit.
 "While I was here" cleanups go in their own commit with a
 clear message.
 
----
-
 ## Commit message style
 
 Single line. Short. A short verb plus scope, plus an
@@ -338,8 +318,6 @@ Examples:
 If a single change touches multiple repos, each repo gets
 its own short commit.
 
----
-
 ## Always push
 
 After every logical commit, **push immediately**. Blanket
@@ -349,8 +327,6 @@ Unpushed work is invisible to other machines and to anyone
 consuming the repo as a flake input. Forgotten pushes cause
 divergence and surprising forks. Don't batch pushes "to be
 clean"; the standard cadence is one push per commit.
-
----
 
 ## Standard fixes for routine obstacles
 
@@ -467,8 +443,6 @@ with deliberate intent. The 2026-05-12 117-orphan incident
 included a `restore into commit …` op that was a load-bearing
 step toward the failure.
 
----
-
 ## Per-logical-commit pushes — not batch
 
 Don't accumulate three commits and push at the end. Each
@@ -483,8 +457,6 @@ commits that depend on each other (a refactor with three
 sequential steps), push the whole sequence at the end of
 the sequence. But each individual commit message still
 names the step, not the sequence.
-
----
 
 ## End-of-session check
 
@@ -520,8 +492,6 @@ before landing — not as a default "stash so I can move on."
 A long-lived chain of `push-*` bookmarks is itself a smell;
 it usually means someone forgot to advance `main`.
 
----
-
 ## `jj git push -c @` is forbidden for routine commits
 
 The form `jj git push --change @` (or `-c @`) creates an
@@ -554,8 +524,6 @@ The pattern compounds. Auto-named bookmarks accumulate on the
 remote silently — there's no clean-up step. A workspace with 26
 stray `push-*` bookmarks (as observed 2026-05-13)
 is the direct consequence of treating `-c @` as routine.
-
----
 
 ## Bookmark cleanup after merge
 
@@ -591,8 +559,6 @@ jj bookmark list | awk '/^push-/ {print $1}'
 jj log -r '<commit>::main' --no-graph     # nonempty = ancestor = delete
 ```
 
----
-
 ## When to ask anyway
 
 Routine obstacles are autonomy. The following are *not*
@@ -607,8 +573,6 @@ routine; ask first:
   on push failure.
 - **Reaching for raw `git`** outside the two named
   escape-hatch cases above.
-
----
 
 ## See also
 

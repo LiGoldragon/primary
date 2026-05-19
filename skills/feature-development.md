@@ -3,8 +3,6 @@
 *Working on a feature branch in a separate worktree so the main checkout
 stays available for parallel work on `main`.*
 
----
-
 ## What this skill is for
 
 When a feature spans more than one commit and one session — typical of
@@ -18,8 +16,6 @@ Instead, create a **separate worktree** for the feature branch at a
 parallel path. The ghq checkout stays on `main`; the worktree is where
 the feature work happens. Multiple agents and multiple feature branches
 can coexist without ever competing for the same checkout.
-
----
 
 ## The path convention
 
@@ -36,8 +32,6 @@ The branch name is the directory leaf — one feature branch per
 worktree. A repo can host multiple worktrees simultaneously
 (`~/wt/github.com/<owner>/<repo>/<feature-a>/` and
 `~/wt/github.com/<owner>/<repo>/<feature-b>/`); each is independent.
-
----
 
 ## Creating a worktree
 
@@ -79,8 +73,6 @@ git -C /git/github.com/<owner>/<repo> worktree add \
 After creation, run `jj git init --colocate` from inside the worktree
 if jj operations are needed (per `~/primary/skills/jj.md` §"A repo lacks `.jj/`").
 
----
-
 ## Branch naming
 
 Bare descriptive names — `horizon-re-engineering`, `pty-fanout`,
@@ -98,8 +90,6 @@ paths.
 The feature bead's description carries the branch name explicitly
 (per `~/primary/skills/beads.md` §"Feature beads carry their branch
 name") so any agent picking up the bead lands on the right branches.
-
----
 
 ## Working in a worktree
 
@@ -122,8 +112,6 @@ jj git push --bookmark <branch-name>
 ```
 
 (With `--allow-new` on the first push of a new bookmark.)
-
----
 
 ## Cleaning up a worktree
 
@@ -157,8 +145,6 @@ Long-lived `/wt/` directories that no longer correspond to active
 feature beads are smell — they accumulate and confuse the next agent
 about what's in flight. Clean up at merge time.
 
----
-
 ## When NOT to use a worktree
 
 - **Single-commit fixes that land on `main`.** A `task` bead's small
@@ -172,8 +158,6 @@ about what's in flight. Clean up at merge time.
 
 The trigger for this skill is *"this work needs its own branch."* If
 the work is going straight to main, no worktree.
-
----
 
 ## Why a worktree, not just a branch
 
@@ -191,8 +175,6 @@ multiple features in parallel without competing for one checkout.
 This matches the workspace's broader push-not-poll discipline (per
 `~/primary/skills/push-not-pull.md`): coordination is structural, not
 serialized through one shared mutable thing.
-
----
 
 ## Interaction with the orchestration protocol
 
@@ -214,8 +196,6 @@ beads carry their branch name") plus this worktree path discipline
 gives a complete coordination story for multi-agent feature work:
 the bead names the branch; the branch lives in worktrees at
 predictable paths; agents claim worktrees individually.
-
----
 
 ## See also
 

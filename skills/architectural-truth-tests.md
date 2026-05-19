@@ -6,8 +6,6 @@ doesn't remember what they wrote yesterday — these tests are
 what catches "looks aligned but secretly reimplemented the
 component next door."*
 
----
-
 ## What this skill is for
 
 Apply this skill when an architecture constraint says
@@ -23,8 +21,6 @@ intended component, and no test fires.
 
 The discipline applies to every architectural assertion — wire
 contracts, storage layers, actor protocols, deploy chains.
-
----
 
 ## The principle
 
@@ -67,8 +63,6 @@ A constraint that does not suggest a witness is not precise
 enough yet. Rewrite it until it names the component, the
 operation, and the boundary that must not be bypassed.
 
----
-
 ## The shape
 
 ```mermaid
@@ -87,8 +81,6 @@ The hardest step is naming the **witness** — the artifact
 that B necessarily produces and a bypass necessarily
 doesn't. Witnesses are the load-bearing design move; the
 tests are mechanical once the witness is named.
-
----
 
 ## Witness catalogue
 
@@ -112,8 +104,6 @@ Witnesses, by category:
 | Legacy-surface absence witness | lock-file / BEADS reinvestment sneaking into new components |
 | Network namespace test | hidden cross-machine calls |
 
----
-
 ## Actor trace first, artifacts later
 
 For actor-system ordering constraints, start with the mailbox path.
@@ -132,8 +122,6 @@ Nix-chained artifact witness on top. The later artifact test proves
 the redb/table write happened before delivery across process or
 derivation boundaries; it does not replace the actor trace, which
 still proves the intended mailbox path was used.
-
----
 
 ## Nix-chained tests — the strongest witness
 
@@ -229,8 +217,6 @@ empty file and step B fails. The test names the failure as
 `message-stack-read` failing on the witness file from
 `message-stack-write`.
 
----
-
 ## Examples (from the persona messaging stack)
 
 | Constraint | Architectural-truth test |
@@ -248,8 +234,6 @@ empty file and step B fails. The test names the failure as
 | Actor density is real | Runtime topology contains the named phase actors from the architecture manifest; a request trace must pass through each required actor in order. |
 | Actor handler does not block | Failure-injection actor holds an IO/command/clock plane; domain actor mailbox remains responsive while that plane waits. |
 | Actor nouns carry data | Static or compile-time witness rejects public empty actor marker types; adapter ZSTs are private framework glue only. |
-
----
 
 ## Rule of thumb — the test name pattern
 
@@ -275,8 +259,6 @@ Examples:
 
 When the body needs to teach structure, put the body on a
 fixture method. The `#[test]` wrapper only calls the fixture.
-
----
 
 ## Actor-density tests
 
@@ -314,8 +296,6 @@ the architecture names `ClaimNormalizeActor` and
 methods is not equivalent. The topology and trace tests should fail
 that implementation.
 
----
-
 ## When to use which witness
 
 | Rule shape | Use |
@@ -332,8 +312,6 @@ that implementation.
 | "Request went through actor X" | ordered actor trace pattern |
 | "Actor handler does not block" | responsiveness test with blocked plane actor and live sibling actor |
 
----
-
 ## What this skill is NOT
 
 - **Not a replacement for behavior tests.** Architectural
@@ -349,8 +327,6 @@ that implementation.
   harder* to ship architecture-violating code without
   catching it in review.
 
----
-
 ## Companion skills
 
 This pairs with:
@@ -365,8 +341,6 @@ This pairs with:
 - `skills/nix-discipline.md` §"`nix flake check` is the
   canonical pre-commit runner" — the chained-derivation
   pattern lives in nix.
-
----
 
 ## See also
 

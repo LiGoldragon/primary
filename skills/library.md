@@ -3,8 +3,6 @@
 *The workspace's curated bibliography. When and how to consult
 it; how to fetch new material.*
 
----
-
 ## What this skill is for
 
 When a task wants depth — primary-source philosophy, formal
@@ -28,8 +26,6 @@ work. Binary files (PDF, EPUB, DJVU) are gitignored locally and
 indexed by Anna's Archive MD5 hashes; text-form bibliography is
 in `~/primary/repos/library/bibliography.md`.
 
----
-
 ## Layout
 
 ```
@@ -51,8 +47,6 @@ encode the work and translator/edition (e.g.
 `conceptual-structures.pdf`,
 `semantic-conception-truth-foundations-semantics.pdf`).
 
----
-
 ## When to consult the library
 
 | Situation | Use library? |
@@ -68,8 +62,6 @@ When in doubt: if the task description asks for *depth* or
 *research*, use the library. If a previous report drew on
 secondhand training-data analogues and the user pushed back,
 read the source.
-
----
 
 ## Reading from the library
 
@@ -95,8 +87,6 @@ For DJVU:
 ```sh
 nix run nixpkgs#djvulibre -- ddjvu -format=pdf input.djvu output.pdf
 ```
-
----
 
 ## Adding new books — the `annas` CLI
 
@@ -178,8 +168,6 @@ The MD5 hash is what survives the gitignored binary; if a
 machine loses the local file, the MD5 is the bridge back to
 Anna's Archive.
 
----
-
 ## What the library contains today (workspace highlights)
 
 This isn't an exhaustive list — see `bibliography.md` for the
@@ -207,8 +195,6 @@ usually:
 - For categorial semantics of natural language: **Aarne Ranta**.
 - For domain-specific (sema's astrology): **Ptolemy**, **Valens**.
 
----
-
 ## Citing in reports
 
 When a designer report draws on a library text, cite it
@@ -230,8 +216,6 @@ prior knowledge of Frege's sense/reference distinction"* is
 fair, *"Frege showed in §2 that..."* is a citation that should
 correspond to actual reading.
 
----
-
 ## Anti-patterns
 
 - **Citing without reading.** Drive-by mentions of "as Sowa
@@ -247,8 +231,6 @@ correspond to actual reading.
   library is `~/primary/repos/library/`, not under `~/primary/`.
   It's a sibling resource. Don't move references to it inside
   `~/primary/`.
-
----
 
 ## See also
 

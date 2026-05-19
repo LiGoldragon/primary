@@ -3,8 +3,6 @@
 *Every reusable verb belongs to a noun. If you can't name the noun,
 the model isn't formed yet — keep looking until you can.*
 
----
-
 ## What this skill is for
 
 When you sit down to write a verb (a function, a method, a
@@ -18,8 +16,6 @@ Go, Java, C++, Smalltalk) and is enforced by convention in
 languages without it (C's `_operations` vtables, Haskell's
 typeclass-constrained free functions). The discipline is universal
 even when the syntax varies.
-
----
 
 ## The rule
 
@@ -54,8 +50,6 @@ this verb describes. If no obvious noun exists, the *model* is
 incomplete; the missing type is what the verb is asking you to
 declare.
 
----
-
 ## Affordances vs operations
 
 Methods encode **affordances** — what kinds of things a value of
@@ -81,8 +75,6 @@ A method-bearing type *advertises* its affordances at every call
 site. A passive record next to a free-function library does not.
 The type system knows which is which only when the operations are
 attached to the things that own them.
-
----
 
 ## The forcing function
 
@@ -114,8 +106,6 @@ verb.
 The rule is: do this once, up front, instead of accumulating the
 debt and refactoring later.
 
----
-
 ## Why this matters more for LLM agents
 
 Humans procrastinate creating types because typing out
@@ -146,8 +136,6 @@ without owning nouns**: naming conventions go bad because there
 is no type to anchor a name to; unused code accumulates because
 nothing carries a clean responsibility.
 
----
-
 ## The Karlton bridge
 
 Phil Karlton: "There are only two hard things in Computer
@@ -160,8 +148,6 @@ workflow, where it belongs.
 
 This is the cleanest one-line statement of the rule's purpose:
 *the rule exists to make sure naming happens.*
-
----
 
 ## Principled exceptions
 
@@ -241,8 +227,6 @@ wrapper". The data-bearing actor IS the noun the verbs attach to.
 For the workspace's actor discipline, see `skills/actor-systems.md`
 (architectural rule) and `skills/kameo.md` (Rust shape).
 
----
-
 ## What "find the noun" actually looks like
 
 When the rule's question — "what type owns this verb?" — is
@@ -261,8 +245,6 @@ of the problem isn't fully formed yet. Three kinds of resolution:
 
 If none of these apply, you don't have a clean program model
 yet. Slow down. Don't paper over the gap with a free function.
-
----
 
 ## The wrong-noun trap
 
@@ -314,8 +296,6 @@ the same discipline at the crate boundary. One capability per
 crate; "the new crate's surface is similar to the existing one"
 is not by itself a reason to fold them.
 
----
-
 ## Companion disciplines
 
 This rule pairs with two others that push the same direction:
@@ -337,15 +317,11 @@ This rule pairs with two others that push the same direction:
 All three rules say the same thing in different domains: **the
 type system is the model**. Use it.
 
----
-
 ## The one-line summary
 
 **Every reusable verb belongs to a noun. If you can't name the
 noun, you haven't found the right model yet — keep looking until
 you can.**
-
----
 
 ## See also
 

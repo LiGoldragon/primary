@@ -4,8 +4,6 @@
 LLM context window. The boundary is filesystem-enforced; nothing
 else holds.*
 
----
-
 ## What this skill is for
 
 When you reach for a new feature, this skill decides where it
@@ -17,8 +15,6 @@ or years of future-friction.
 Apply this skill at the moment of "should I add this here, or
 start a new crate?" — that's where bundling decay begins, and
 where this rule has the most leverage.
-
----
 
 ## The shape
 
@@ -39,8 +35,6 @@ This doctrine is the only known antidote to the failure mode it
 closes: **agents and humans bundling new features into existing
 crates** until the result is a monolith no one — including the
 language model assisting them — can hold in mind.
-
----
 
 ## The rule
 
@@ -84,8 +78,6 @@ language model assisting them — can hold in mind.
    "build" used for both the verb and the artifact — the crate
    must split along that seam.
 
----
-
 ## Why
 
 The literature on monolith collapse (Parnas 1972 onward)
@@ -121,8 +113,6 @@ discovered at launch time. Bank and government COBOL systems
 persist because they cannot be modified — institutional
 knowledge of the whole evaporates with retirements.
 
----
-
 ## The LLM-context argument
 
 This is the new structural reason in 2024–2026. Frontier model
@@ -142,8 +132,6 @@ LLM-context-sized.
 The historical accident is fortunate: McIlroy's 1978
 Unix-philosophy crate-size advice and a 2026 frontier-model
 context window converge on the same number.
-
----
 
 ## How
 
@@ -174,8 +162,6 @@ The boundary is filesystem-enforced; nothing else holds.
 Module-level boundaries inside one crate decay under deadline
 pressure into shared internals — the "modular monolith" failure
 mode (Brown / Grzybek note this directly).
-
----
 
 ## Cargo.toml dependencies — named `git =` refs, never `path = "../"`
 
@@ -251,8 +237,6 @@ The toolchain mechanics — the `cargoLock.outputHashes`
 pattern in flake.nix, how to compute the sha256 — live in
 `lore/rust/style.md` §"Cross-crate dependencies."
 
----
-
 ## Distinctions
 
 - **Microservices** (Newman, 2015) — runtime processes
@@ -269,8 +253,6 @@ pattern in flake.nix, how to compute the sha256 — live in
 The axis micro-components occupies and the others miss:
 **source-level filesystem-enforced decomposition,
 deployment-agnostic.**
-
----
 
 ## When you're tempted to grow a crate
 
@@ -290,8 +272,6 @@ future-friction that no LLM and no team will resolve cleanly.
 The Unix advice (McIlroy, 1978) and the modern AI-assisted-
 development reality both point at the same shape: *small
 components that compose*. There is no third path that scales.
-
----
 
 ## See also
 

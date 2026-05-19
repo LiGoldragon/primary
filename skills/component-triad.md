@@ -5,8 +5,6 @@ Five invariants and one argument rule determine whether a design is
 in this system at all. Read this once; recognise the shape in every
 component's `ARCHITECTURE.md`.*
 
----
-
 ## The shape
 
 Every stateful capability is a triad of three repositories:
@@ -29,8 +27,6 @@ The contract crates carry no runtime, no actors, no `tokio` — they
 declare typed wire vocabulary and nothing else. The runtime crate
 owns the daemon, the CLI, and the typed sema-engine state. The
 split is filesystem-enforced (per `skills/micro-components.md`).
-
----
 
 ## The five invariants
 
@@ -195,8 +191,6 @@ truth.
 | `<component>-working-tables-never-read-bootstrap-file` | 5 |
 | `<component>-binary-rejects-flag-style-arguments` | argument rule below |
 
----
-
 ## The single argument rule
 
 Every component binary — CLI and daemon both — takes exactly one
@@ -228,8 +222,6 @@ keeps NOTA the single language for invoking the workspace: the
 moment one binary starts accepting flags, the workspace fragments
 into ad-hoc CLIs.
 
----
-
 ## Named carve-outs
 
 These look like triad violations but aren't. Each is *narrow*; do not
@@ -255,8 +247,6 @@ extend the pattern of carve-outs.
    contracts. This is the right shape. The CLI's "exactly one peer"
    constraint does not extend to daemons — fanning out across peers
    is how daemons compose.
-
----
 
 ## Authority chain — worked example
 
@@ -290,8 +280,6 @@ are not opinions — they are confirmations. The authority chain makes
 the next step safe: the harness is not spawned with channel rights
 until the router has confirmed the channel exists.
 
----
-
 ## When this skill applies
 
 - **Designing a new stateful component.** Default to the triad. If
@@ -303,8 +291,6 @@ until the router has confirmed the channel exists.
 - **Reading a component's `ARCHITECTURE.md`.** The ARCH cites this
   skill and only states component-specific carve-outs — never restates
   the universal invariants.
-
----
 
 ## See also
 

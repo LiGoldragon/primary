@@ -6,8 +6,6 @@ Every component on the same fabric depends on the same contract
 crate; rkyv archives produced by one are readable by every
 other.*
 
----
-
 ## What this skill is for
 
 When two or more Rust components need to **signal** each other
@@ -37,8 +35,6 @@ The canonical workspace example is **signal**
 sema-ecosystem, and the namesake of the pattern. Read its
 `ARCHITECTURE.md` once before designing a new contract repo;
 the shape is concrete there.
-
----
 
 ## Why a contract repo exists
 
@@ -73,8 +69,6 @@ A workspace pattern that doesn't follow this:
 
 This is exactly the class of bug rkyv's strict layout makes
 invisible (no parse error, just wrong values).
-
----
 
 ## What goes in a contract repo
 
@@ -160,8 +154,6 @@ It **may own**:
   `signal-persona-<X>-introspect` crate when the
   inspection vocabulary is heavy or high-churn enough to
   separate from the operational surface.
-
----
 
 ## Contracts name a component's wire surface
 
@@ -266,8 +258,6 @@ For a new contract repo or a large rename, make the naming
 review an explicit work item. Contract names are harder to
 escape than architecture prose: once consumers compile
 against them, the names become the system's enforced model.
-
----
 
 ## Signal is the database language — every request declares a verb
 
@@ -454,8 +444,6 @@ observation query.
   the typed-request spec; six-root spine, structural atomicity,
   async exchange frame layer.
 
----
-
 ## The layered pattern
 
 When a wire protocol has audience-scoped concerns — verbs that
@@ -505,8 +493,6 @@ Don't pre-layer. A second contract crate's layered shape
 becomes obvious after one effect-bearing leg is real and a
 second is being added.
 
----
-
 ## Versioning is the wire
 
 The contract crate's semver **is** the wire's semver:
@@ -532,8 +518,6 @@ wire_version)`, checked at boot. Hard-fail on mismatch. The
 guard runs *before* the daemon starts handling traffic; a
 mismatch is a coordinated-upgrade signal, not a runtime
 error to recover from.
-
----
 
 ## How NOTA fits
 
@@ -576,8 +560,6 @@ boundary's. Put the codec round-trip witnesses in the contract
 crate (both rkyv and NOTA); put the surface witnesses in the
 boundary component.
 
----
-
 ## When to introduce a contract repo
 
 Indicators the moment is now, not "later":
@@ -601,8 +583,6 @@ The cost of premature hoisting is a contract repo with one
 consumer — fine, low overhead. The cost of late hoisting is a
 silent schema-drift bug that survives review because both
 copies of the type *look* the same. Err early.
-
----
 
 ## Kernel extraction trigger
 
@@ -671,8 +651,6 @@ base contract. After extraction, signal-forge depends on the
 kernel directly *plus* the base contract for record kinds it
 references.
 
----
-
 ## Examples-first round-trip discipline
 
 Every record kind in a contract repo lands as **a concrete
@@ -733,8 +711,6 @@ with:
 
 If the example file is empty, the contract crate is
 incomplete — even if all the Rust definitions compile.
-
----
 
 ## Naming a contract repo
 
@@ -804,8 +780,6 @@ Don't pick names that name the consumer's *internals*
 (`<project>-types`, `<project>-shared`). The repo isn't a
 bag of utilities — it is the spoken protocol.
 
----
-
 ## Common mistakes
 
 | Mistake | What it looks like | Fix |
@@ -821,8 +795,6 @@ bag of utilities — it is the spoken protocol.
 | Boundary unnamed | The repo is described only as "shared types" or "messages," with no named endpoints, direction, authority, lifecycle vectors, or owning component | Name what crosses the boundary: which component/endpoint, which direction, which authority mints what, which lifecycle vectors are open. Sharing types is fine; failing to name what they speak is the bug. |
 | Root variants underspecified | `Ok`, `Generic`, `Mixed`, `Data`, or `Submit` where several things can be submitted | Name the vector exactly, or move the generic word under a more precise enclosing enum |
 | Namespace repeated as a prefix | `PersonaMessage`, `SignalPersonaRequest`, `HarnessHarnessEvent` | Let crate/module/enum context carry the namespace; keep the type name on the domain thing |
-
----
 
 ## See also
 

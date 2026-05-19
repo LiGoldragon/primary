@@ -2,8 +2,6 @@
 
 *How to act when no human is in the loop for routine obstacles.*
 
----
-
 ## Active beads — check first, work them through
 
 **Before anything else in any session, check active beads in your role**
@@ -105,8 +103,6 @@ and asks whether to start work.
 If the work is for another role and you need their attention, file with
 `-l role:<that-role>` and let their next session-start check pick it up.
 
----
-
 ## Required reading before applying this skill
 
 This skill assumes a baseline of workspace discipline. **Read
@@ -205,8 +201,6 @@ diagnostic. If you're about to grow a crate with a new
 feature, re-look at micro-components.md's "default to a new
 repo."
 
----
-
 ## What this skill is for
 
 When you hit a known-solvable obstacle in the middle of work, you
@@ -219,8 +213,6 @@ The trade-off is sharp: you ask only when an action is
 destructive, hard to reverse, significantly out of scope, or
 operates on shared state outside what was asked of you.
 Everything else, you do.
-
----
 
 ## Standard solutions
 
@@ -402,8 +394,6 @@ If you're unsure whether your work was substantive enough,
 err toward writing the skill — the next agent benefits, and a
 thin-but-honest skill is still useful.
 
----
-
 ## When to ask anyway
 
 Solving a routine obstacle is autonomy. The following are *not*
@@ -423,8 +413,6 @@ routine; ask first:
   what was asked of you. Surface the scope expansion; let the
   caller decide.
 
----
-
 ## Editing skill files — read skill-editor first
 
 Whenever you edit, create, or refine a skill file (this one,
@@ -443,8 +431,6 @@ This applies to:
 - Refining the conventions themselves — if you find a new
   convention worth adding, add it to `skill-editor.md`, not as
   a one-off in the skill you happened to be editing.
-
----
 
 ## Skill-file cross-references
 

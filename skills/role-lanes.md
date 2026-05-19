@@ -4,8 +4,6 @@
 the lane mechanism — every assistant lane reads this plus its main
 role's skill, and nothing else lane-specific.*
 
----
-
 ## What a role lane is
 
 A **main role** names a discipline: `designer`, `operator`,

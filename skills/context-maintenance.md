@@ -5,8 +5,6 @@ reports under `reports/<role>/` and the in-conversation context
 window — for what's still load-bearing, migrate substance to its
 right permanent home, and retire what's done.*
 
----
-
 ## What this skill is for
 
 Two surfaces decay together:
@@ -26,8 +24,6 @@ load-bearing substance; move it to its right permanent home;
 retire what's done. Treating them separately is a smell — they
 usually need maintenance at the same time, by the same pass.
 
----
-
 ## When to invoke
 
 - **Compaction trigger.** The context window is approaching its
@@ -44,8 +40,6 @@ usually need maintenance at the same time, by the same pass.
   a handover" or similar.
 
 Often the triggers coincide. Treat them as one pass.
-
----
 
 ## Method
 
@@ -115,8 +109,6 @@ that says `note: agents asked about X three times this week —
 might warrant a skill if it recurs` is better than no record.
 Discovery later is the value, not formality now.
 
----
-
 ## The rollover / handover report (when one is needed)
 
 If a handover artifact is genuinely needed, it lives at
@@ -134,8 +126,6 @@ Structure:
 The handover report retires once the substance migrates to its
 right permanent home or the next-session work absorbs it. It is
 itself a forwarding-eligible report under the standard hygiene.
-
----
 
 ## Using agents for the sweep
 
@@ -159,8 +149,6 @@ role is to apply decisions, not to re-read every report.
 For context-only substance (the part that lives in the live
 conversation, not on disk), the orchestrator does this sweep
 itself — agents can't see the conversation's working memory.
-
----
 
 ## Anti-patterns
 
@@ -186,8 +174,6 @@ itself — agents can't see the conversation's working memory.
 - **Over-formatting small thoughts.** A note-line is a note-line.
   Don't promote a half-formed observation to a numbered section or
   a dedicated report. The shape matches the substance.
-
----
 
 ## See also
 

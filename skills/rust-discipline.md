@@ -3,8 +3,6 @@
 *Behavior lives on types. Domain values are typed. Boundaries take
 and return one object. Errors are enums you implement by hand.*
 
----
-
 ## What this skill is for
 
 This is the index for Rust discipline in the workspace. The
@@ -20,15 +18,11 @@ CriomOS-home's `packages/rust-toolchain/default.nix` and
 cross-crate dependencies, pin strategy, Nix packaging), see
 lore's `rust/style.md` and `rust/nix-packaging.md`.
 
----
-
 ## The rules in one sentence
 
 **Behavior lives on types. Domain values are typed. Boundaries
 take and return one object. Errors are enums you implement by
 hand.**
-
----
 
 ## Toolchain Authority
 
@@ -50,8 +44,6 @@ toolchain through their flake when reproducibility requires it.
 That repo-local build pin does not become the profile toolchain
 authority.
 
----
-
 ## Sub-files
 
 | Sub-file | Covers |
@@ -61,8 +53,6 @@ authority.
 | `skills/rust/storage-and-wire.md` | redb + rkyv durable state and binary wire (signaling, NOTA projection, anti-patterns, sema-family) |
 | `skills/rust/parsers.md` | no hand-rolled parsers; use a real library |
 | `skills/rust/crate-layout.md` | CLIs as daemon clients, one crate per repo, tests in separate files, module layout, documentation |
-
----
 
 ## Naming — full English words
 
@@ -88,8 +78,6 @@ let context = ParseContext::new(&kind);
 let deserializer = Deserializer::with_context(context);
 ```
 
----
-
 ## No crate-name prefix on types
 
 The cross-language rule lives in `skills/naming.md` §"Anti-pattern:
@@ -99,8 +87,6 @@ and the standard library is the canonical reference (`Vec`,
 `HashMap`, `Arc`, `Cell`, `Mutex` — never `StdVec`, `StdHashMap`,
 `StdArc`). Workspace pattern: `signal::Request`, `chroma::Error`;
 never `SignalRequest` or `ChromaError`.
-
----
 
 ## Actors: logical units with kameo
 
@@ -139,8 +125,6 @@ and library crates with no concurrent state. If a CLI needs durable
 state, supervision, subscriptions, or shared runtime context, it is
 a daemon client per `skills/rust/crate-layout.md` §"CLIs are daemon
 clients".
-
----
 
 ## See also
 

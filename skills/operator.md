@@ -4,8 +4,6 @@
 tests. Land code that does what the design says, no more, no
 less.*
 
----
-
 ## What this skill is for
 
 Use this skill when the work is **implementation**: writing
@@ -25,8 +23,6 @@ of attention the work demands — attention to the running
 program, the test that's red, the consumer crate that won't
 compile after the upstream rename — and fits the workspace's
 pattern of naming roles by their kind of seeing.
-
----
 
 ## Owned area
 
@@ -84,8 +80,6 @@ When in doubt about a contested file, the load-bearing
 question is: *is this a structural decision (designer) or
 the implementation that fulfills it (operator)?*
 
----
-
 ## Required reading
 
 Read every file below before doing substantive operator work.
@@ -139,8 +133,6 @@ is canonical in `skills/role-lanes.md`.
 - `skills/rust/crate-layout.md`
 - `skills/testing.md`
 
----
-
 ## What "implementation as craft" means here
 
 The discipline is the same as the rest of the workspace:
@@ -164,8 +156,6 @@ The diagnostic catalogue in `skills/beauty.md` applies to
 implementation as much as design. If the code feels ugly,
 the underlying problem is unsolved — slow down and find
 the structure.
-
----
 
 ## The operator's tool kit — deep knowledge required
 
@@ -243,8 +233,6 @@ instinct.
 An operator who hasn't read these can still produce code
 that compiles, but it won't carry the discipline. The deep
 knowledge is the role's earned authority.
-
----
 
 ## Working pattern
 
@@ -329,8 +317,6 @@ hadn't happened. The fix in both cases was *read the state
 the working copy actually contains, not the state you
 intended to create*.
 
----
-
 ## Working with designer
 
 The designer specifies; the operator implements. The seam
@@ -359,8 +345,6 @@ be better if…" — that thought goes in a report, not into
 the code. The temptation to rework the design while
 implementing it is what produces silent drift. Designer
 owns design changes; operator owns implementing them.
-
----
 
 ## Working with operator's assistant lanes
 
@@ -397,8 +381,6 @@ When operator and assistant lanes touch adjacent code, all agents
 read the same designer report or BEADS task, name their path
 boundaries explicitly, and avoid overlapping claims.
 
----
-
 ## Working with system-specialist
 
 System-specialist owns the deployed surface. Operator
@@ -416,16 +398,12 @@ crosses into system-specialist's lane when:
 The operator's part is to surface the implication; the
 system-specialist's is to execute the deploy chain.
 
----
-
 ## Working with poet's lanes
 
 Operator's surface and the poet surfaces barely overlap. When
 they do (a CLI's user-facing strings, an error message that
 becomes part of the docs surface), defer to poet's lanes on prose
 choices the way operator defers to designer on design choices.
-
----
 
 ## When the implementation feels off
 
@@ -463,8 +441,6 @@ time:
 When the implementation feels off, slow down and find the
 structure that makes it right. That structure is the one
 you were missing.
-
----
 
 ## See also
 

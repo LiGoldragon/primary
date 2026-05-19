@@ -5,8 +5,6 @@ are quoted strings; edge labels are pipe-delimited. Mermaid 8.8.0
 is stricter than current Mermaid Live in subgraph titles, edge
 Unicode, and sequence-diagram punctuation.*
 
----
-
 ## What this skill is for
 
 Use this skill when writing reports, design documents, or essays
@@ -18,8 +16,6 @@ permissive but still strict on the rules below).
 Pairs with `skills/reporting.md` (which links here for the
 syntax workarounds; that skill owns the broader rule "reports
 explain shapes via prose + visuals").
-
----
 
 ## Node labels — quoted strings inside brackets
 
@@ -43,8 +39,6 @@ Do this even when the renderer appears to accept the unquoted
 label. Unquoted punctuation has inconsistent behavior across
 Mermaid renderers and can make diagrams misleading or ugly.
 
----
-
 ## Never use bare quoted strings as flowchart node IDs
 
 This is broken in older Mermaid renderers, including Mermaid 8.8.0:
@@ -66,8 +60,6 @@ flowchart LR
 For maximum compatibility, node IDs should be ASCII identifiers:
 lowercase letters, digits, and underscores. The visible label can
 still contain spaces and punctuation inside the brackets.
-
----
 
 ## Edge labels — pipe delimiters, NOT quoted strings
 
@@ -117,8 +109,6 @@ The same rule applies to all edge variants: `-->`, `-.->`,
 in the edge position; all of them accept a pipe-delimited label
 after the arrow head.
 
----
-
 ## Avoid Mermaid reserved-word node IDs
 
 Mermaid reserves identifiers across diagram types — notably
@@ -162,8 +152,6 @@ silently. Default to suffixing all node IDs in actor diagrams —
 it's cheap and prevents the failure mode where the diagram
 displays as the bomb-icon error on rendered surfaces (Substack,
 GitHub, internal docs).
-
----
 
 ## Mermaid 8.8-safe labels
 
@@ -243,8 +231,6 @@ messages or a comma-separated label over arrows, semicolons,
 shell punctuation, or markdown/HTML. The diagram is a topology
 artifact, not a transcript.
 
----
-
 ## Diagnostic — parse before publishing
 
 Parse the raw Mermaid block with the target renderer version
@@ -254,8 +240,6 @@ it may accept syntax 8.8.0 rejects. The parse error is the only
 signal you'll get from the markdown itself — GitHub-flavoured
 markdown silently shows the failed-to-parse block as the literal
 source on render failure, which is easy to miss in review.
-
----
 
 ## See also
 

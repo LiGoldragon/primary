@@ -4,8 +4,6 @@
 chat, where they live, and how to reference them. Required
 reading for autonomous agents.*
 
----
-
 ## What this skill is for
 
 Whenever you produce output that explains, proposes,
@@ -13,8 +11,6 @@ analyses, or summarises — apply this skill before posting
 to the chat. Reports go in files; chat carries pointers.
 This skill names the boundary between the two and the
 discipline that keeps both clean.
-
----
 
 ## When to write a report vs answer in chat
 
@@ -72,8 +68,6 @@ Two reasons reports exist at all:
    objects** — the user can hand the work off to a peer agent by
    naming a path, instead of copy-pasting chat excerpts.
 
----
-
 ## What goes in chat when a report exists
 
 A report does not relieve the chat of being the user's working
@@ -118,16 +112,12 @@ What **does** go in chat:
 The chat is short — usually less than one screen. But every
 sentence carries substance the user needs to act on.
 
----
-
 ## Tone in chat replies
 
 **State results. Don't narrate process; don't apologise;
 don't pre-announce what you're about to do.** The chat
 reply is for what changed and what's next. The *how* and
 the *why* belong in the report, not in chat.
-
----
 
 ## Always name paths
 
@@ -145,8 +135,6 @@ The same rule applies to any file the chat references —
 name it explicitly with its path. If the chat says "I
 edited the schema," the path of the schema file goes in
 the next clause.
-
----
 
 ## Human-facing references are self-contained
 
@@ -178,8 +166,6 @@ The rule is general: **reference + inline description**. The
 description can be short, but it must carry the decision-relevant
 meaning. A locator alone creates work for the user; the agent's job
 is to remove that work.
-
----
 
 ## Questions to the user — paste the evidence, not a pointer
 
@@ -244,8 +230,6 @@ screen with the evidence inline gets answered immediately.
 chat, a report's "open questions" section, `AskUserQuestion`
 prompts, or a hand-off to another role's report. The rule
 follows the question, not the medium.
-
----
 
 ## Where reports live
 
@@ -375,8 +359,6 @@ correctly. Padding adds noise at the cost of needing to
 know the maximum digit count up front; the count grows
 without warning.
 
----
-
 ## Kinds of reports — and where their substance ultimately lives
 
 Reports are a working surface, not the substance's permanent
@@ -405,8 +387,6 @@ clear enough to land permanently).
 
 The pattern existed informally before; the explicit table makes
 it teachable.
-
----
 
 ## Hygiene — soft cap, supersession, periodic review
 
@@ -490,8 +470,6 @@ is the move; the report retires.
 
 These earn their seat permanently. Most reports don't.
 
----
-
 ## The report's medium — prose + visuals
 
 Reports explain shapes, not implementations. Their medium
@@ -520,8 +498,6 @@ showing its shape, a one-line CLI invocation, a single
 field declaration to anchor a name) is fine. The rule is
 about implementation blocks, not about showing the shape
 of the thing the design is about.
-
----
 
 ## Cross-references — relative paths and prose
 
@@ -598,8 +574,6 @@ Not just:
 > *"See `skills/contract-repo.md` §'Kernel extraction
 > trigger'."*
 
----
-
 ## Tense and framing
 
 **Present tense.** Reports describe what IS — the current
@@ -611,8 +585,6 @@ When a direction turns out to be wrong, **rewrite the
 report** to state the new direction. Don't accumulate
 "v2" / "previously we thought" / strikethrough text — the
 git log captures the lineage.
-
----
 
 ## When report substance becomes durable
 
@@ -628,8 +600,6 @@ than leaving it in `reports/`:
 The report's body either becomes a thin pointer or gets
 deleted, depending on whether the report still serves a
 narrative purpose (audit findings, decision record).
-
----
 
 ## See also
 

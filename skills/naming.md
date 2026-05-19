@@ -3,8 +3,6 @@
 *Identifiers are read far more than they are written. Spell every
 identifier as a full English word; let the right name happen.*
 
----
-
 ## What this skill is for
 
 Apply this skill every time you name an identifier — a type, a
@@ -18,8 +16,6 @@ This skill pairs with the **verb-belongs-to-noun** discipline
 (workspace `skills/abstractions.md`) — that rule forces a naming
 step to happen at all; this one decides what the name should look
 like once you're forced to choose.
-
----
 
 ## The default
 
@@ -56,8 +52,6 @@ Examples (bad → good):
 | `gen` | `generate` or `generator` |
 | `ser` / `deser` | `serialize` / `deserialize` |
 
----
-
 ## Permitted exceptions — tight, named, no others
 
 1. **Loop counters in tight scopes (<10 lines).** `for i in 0..n`
@@ -82,16 +76,12 @@ Examples (bad → good):
    load-bearing in the schema, name it in `ARCHITECTURE.md` so the
    exception is explicit; otherwise spell it out.
 
----
-
 ## Rule of thumb
 
 **Name length proportional to scope.** A 3-line loop counter can
 be `i`. A module-level type that appears across the codebase must
 spell itself out. A function parameter that lives for 50 lines
 must read as English.
-
----
 
 ## What this rule is NOT
 
@@ -100,8 +90,6 @@ must read as English.
   `total_items`. The goal is *clear*, not *long*.
 - Not "no acronyms ever" — see exception 4.
 - Not "rewrite std" — see exception 5.
-
----
 
 ## Different scopes get different names
 
@@ -129,8 +117,6 @@ license to cut corners or write slop.
 See `~/primary/ESSENCE.md` §"Today and eventually — different
 things, different names" for the upstream framing.
 
----
-
 ## How to apply when generating code
 
 When generating new code: **spell identifiers as full English
@@ -140,8 +126,6 @@ identifiers, do not propagate them into new code. Either rename
 and flag the inconsistency as a follow-up. Pattern-matching the
 local dialect is exactly the failure mode this rule exists to
 break.
-
----
 
 ## The "feels too verbose" anti-pattern
 
@@ -169,8 +153,6 @@ When you catch yourself thinking "this name feels too long" or
 
 There is no exception class for "feels verbose." That feeling is
 the bug, not the criterion.
-
----
 
 ## Field naming — `profileSize` vs `size` vs `profile::size`
 
@@ -238,8 +220,6 @@ namespace; `id` when there is.
 planes, more naming accuracy — `profileSize` is better than
 `size`, unless it is `profile::size`.")
 
----
-
 ## Anti-pattern: prefixing type names with the crate name
 
 **A type's name belongs to its module context, not to the
@@ -289,8 +269,6 @@ the same drift: structural meaning hidden by ceremony.
 The Rust enforcement (with std references) lives in
 `skills/rust-discipline.md` §"No crate-name prefix on
 types"; this section is the cross-language form.
-
----
 
 ## Anti-pattern: framework-category suffixes on type names
 
@@ -363,8 +341,6 @@ examples and the historical context — ractor's behavior-marker
 `Self`-IS-the-actor shape removed even that), see this workspace's
 `skills/kameo.md` §"Naming actor types".
 
----
-
 ## Companion rule
 
 Pairs with this workspace's `skills/beauty.md`: a name that
@@ -372,8 +348,6 @@ doesn't read as English is one of the diagnostic readings of
 structural ugliness. The aesthetic discomfort is the signal that
 the right structure (the right name, the right type) hasn't been
 found.
-
----
 
 ## See also
 

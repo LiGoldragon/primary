@@ -2,8 +2,6 @@
 
 *Beauty is the test of correctness; ugliness is the diagnostic reading.*
 
----
-
 ## What this skill is for
 
 When something you've written or are reviewing **feels ugly**, the
@@ -19,13 +17,9 @@ structure you find *is* the one you were missing.
 
 If you cannot make it beautiful, you do not understand it yet.
 
----
-
 ## The rule
 
 **If it isn't beautiful, it isn't done.**
-
----
 
 ## What ugliness signals
 
@@ -59,8 +53,6 @@ underlying problem is; fix the underlying problem.
   name.
 - **A long function with multiple responsibilities.** Split it.
 
----
-
 ## The "feels too verbose" anti-pattern
 
 The most common slip is the verbosity objection to spelled-out
@@ -75,8 +67,6 @@ once.
 
 Per Li (2026-04-27): *"You were taught wrong."* The criterion is
 beauty, not keystroke-economy.
-
----
 
 ## See also
 

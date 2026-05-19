@@ -5,8 +5,6 @@ typed open, typed event stream, typed close, final acknowledgement,
 end. The producer pushes; the consumer subscribes; the close is a
 real request, not a socket hang-up.*
 
----
-
 ## What this skill is for
 
 Use this skill when you are designing or implementing a typed
@@ -24,8 +22,6 @@ This skill is **not** about transport reachability probes,
 backpressure-aware pacing, or `timerfd` deadlines — those are the
 named carve-outs in `skills/push-not-pull.md` and they look
 polling-shaped but are not subscriptions.
-
----
 
 ## The lifecycle FSM
 
@@ -63,8 +59,6 @@ The transitions are typed records, never bare socket events. A TCP
 or Unix socket reset *is not* a `Retract`; it is transport failure,
 which the consumer may observe but is not part of the subscription
 protocol.
-
----
 
 ## The kernel grammar enforces it
 
@@ -121,8 +115,6 @@ The five records (`SubscribeHarnessTranscript`,
 the one token type (`HarnessTranscriptToken`) carry the entire
 lifecycle. Nothing is encoded in the socket state.
 
----
-
 ## Constraints every subscription satisfies
 
 A subscription's producer is the actor that owns the state being
@@ -167,8 +159,6 @@ ARCHITECTURE.md should name. Per `skills/architectural-truth-tests.md`,
 the test proves the path was used, not only that the reply looked
 acceptable.
 
----
-
 ## The producer's three-actor shape
 
 A long-lived push subscription is *stateful behavior across time*.
@@ -212,8 +202,6 @@ A prototype may scale down explicitly, with the ARCH naming the
 scaled-down form and the constraint test naming what the
 destination shape will check.
 
----
-
 ## Anti-patterns
 
 **Reply-side-only retraction.** A contract that omits a
@@ -253,8 +241,6 @@ defines the failure (drop the slow subscription with a typed
 failure reply, or refuse to accept more events from the
 publisher until the handler drains).
 
----
-
 ## When the open snapshot is empty
 
 The open snapshot reply is never optional, but it may be empty.
@@ -265,8 +251,6 @@ naming the current sequence and the current state.
 
 The consumer always knows where it starts. There is no "I subscribed
 but I don't know if I missed events" state.
-
----
 
 ## Reconnection and resume
 
@@ -289,8 +273,6 @@ typed resume request still exists in the contract; the producer
 just always replies `ResumeUnavailable`. The destination shape is
 present; the runtime is scaffolded.
 
----
-
 ## Witness shape
 
 Every subscription producer's ARCHITECTURE.md names these tests:
@@ -308,8 +290,6 @@ The tests use real actor mailboxes and real connections (Unix
 sockets, in-process channels). Mocked subscription delivery is
 forbidden — a mock cannot witness that the producer holds a real
 per-subscription handler.
-
----
 
 ## See also
 

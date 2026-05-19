@@ -4,8 +4,6 @@
 `thiserror` handles the Display impl. Never `anyhow`/`eyre` at
 component boundaries.*
 
----
-
 ## What this skill is for
 
 When writing or reviewing Rust error types in this workspace, this
@@ -15,8 +13,6 @@ skill is the discipline. Pairs with `skills/rust/methods.md`
 
 For the index pointing at the wider Rust discipline, see
 `skills/rust-discipline.md`.
-
----
 
 ## Typed enum per crate via thiserror
 
@@ -52,8 +48,6 @@ Public APIs return `Result<T, Error>` with the crate's own enum.
 Error>>` — they erase the error type at the boundary, which loses
 the typed-failure discipline the rest of the rules build up.
 Callers can no longer pattern-match on what went wrong.
-
----
 
 ## See also
 

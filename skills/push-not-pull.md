@@ -5,8 +5,6 @@ on it: how to recognise polling, how to design a
 subscription, and how to escalate when the producer can't
 push.*
 
----
-
 ## What this skill is for
 
 When you have a producer of state and a consumer of changes,
@@ -17,8 +15,6 @@ this skill assumes the rule and only describes how to act.
 
 If you find yourself reaching for a polling loop, stop.
 Apply the steps below.
-
----
 
 ## How to apply when designing
 
@@ -63,8 +59,6 @@ receive current state, then receive changes" is the standard
 shape for focus state, input-buffer state, message tails, and
 any other stateful stream.
 
----
-
 ## When the producer can't push — the escalation rule
 
 If the producer's subscription primitive doesn't exist yet,
@@ -91,8 +85,6 @@ The wrong outcome — falling back to a poll — is never the
 answer. A poll once written is rarely removed; the cost is
 paid forever.
 
----
-
 ## The named carve-outs
 
 `ESSENCE.md` names three carve-outs that look polling-shaped
@@ -108,8 +100,6 @@ These three are exhaustive. When a design seems to need
 polling and *none* of the three apply, the design needs an
 escalation, not a fourth de-facto carve-out. Reach for the
 escalation rule above; don't invent a local exception.
-
----
 
 ## Common pull-shaped traps
 
@@ -143,8 +133,6 @@ Patterns that smell ok but are actually polling:
 When you catch one of these, the right move is either fix
 it (build or wire the push primitive) or escalate.
 
----
-
 ## Recognising the symptom
 
 Polling shows up as **wake-when-nothing-changed**. A
@@ -157,8 +145,6 @@ process that:
 
 is polling. Push-correct systems go quiet when they have
 nothing to do.
-
----
 
 ## See also
 

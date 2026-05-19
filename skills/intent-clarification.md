@@ -5,8 +5,6 @@ the psyche. Don't infer; don't compose new intent from old; ask.
 The cost of one question is bounded; the cost of building on
 invented intent compounds.*
 
----
-
 ## What this skill is for
 
 The intent layer (the workspace `intent/` log, per-repo
@@ -25,8 +23,6 @@ these is true, this skill applies:
 
 **The agent asks the psyche before deciding.** Inferring is the
 discipline breaking; asking is the discipline working.
-
----
 
 ## When to ask vs when to proceed
 
@@ -53,8 +49,6 @@ Some decisions need a question:
 The test: *would the psyche have a specific opinion on this if
 asked?* If yes, ask. If no, decide.
 
----
-
 ## How to ask
 
 Per `skills/reporting.md` §"Questions to the user — paste the
@@ -73,8 +67,6 @@ Don't ask open-ended ("what do you think?"). Don't ask without
 options. The psyche's time is the resource; structured questions
 cost them seconds, open-ended questions cost minutes.
 
----
-
 ## After the psyche answers
 
 1. **Record the new intent** per `skills/intent-log.md` — the
@@ -86,8 +78,6 @@ cost them seconds, open-ended questions cost minutes.
 4. **Update the relevant per-repo `INTENT.md`** per
    `skills/repo-intent.md` if the new statement is
    project-specific.
-
----
 
 ## When the psyche is not reachable
 
@@ -105,8 +95,6 @@ work, three options, in order of preference:
 
 Don't silently invent intent. Don't promote agent inference to
 documented intent.
-
----
 
 ## See also
 

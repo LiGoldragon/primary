@@ -2,8 +2,6 @@
 
 *Daily Nix command shapes, builder checks, and store-path hygiene.*
 
----
-
 ## What this skill is for
 
 Use this skill when running Nix commands in the workspace: inspecting daemon
@@ -14,8 +12,6 @@ This skill is operational. For flake-input forms, lock-file pinning,
 `git+file://` avoidance, missing tools, and test-runner discipline, read this
 workspace's `skills/nix-discipline.md`. For CriomOS deployment and host-module
 rules, read CriomOS's `skills.md`.
-
----
 
 ## Inspect the active Nix configuration
 
@@ -35,8 +31,6 @@ sed -n '1,120p' /etc/nix/machines
 
 Do not search the Nix store for configuration. If a value is Nix-controlled,
 inspect the source checkout, evaluate the option, or ask the Nix daemon.
-
----
 
 ## Remote builder smoke test
 
@@ -73,8 +67,6 @@ such as `ssh nix-ssh@prometheus.goldragon.criome` or
 the caller's SSH credentials, not necessarily the daemon's machine entry, and
 can fail even while remote builds work.
 
----
-
 ## Store paths stay in variables
 
 When a command returns a store path, keep it in a shell variable:
@@ -87,8 +79,6 @@ ls "$result"
 Do not paste raw store paths into chat, reports, skills, commit messages, or
 architecture docs. Store hashes drift on rebuild; prose that freezes a path
 becomes stale immediately.
-
----
 
 ## Which command is evidence
 
@@ -103,8 +93,6 @@ A direct build of a CriomOS `nixosConfigurations.target` without
 lojix-projected inputs is not a real deployment check. For that path, use
 lojix and the target repo's skill. CriomOS's `skills.md` carries the
 network-neutral module and deploy rules.
-
----
 
 ## See also
 

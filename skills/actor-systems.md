@@ -4,8 +4,6 @@
 named owner, a typed mailbox, supervision, and tests that prove
 the path was used.*
 
----
-
 ## What this skill is for
 
 Use this skill whenever a component is a daemon, service, runtime,
@@ -34,8 +32,6 @@ abstraction. Those names are historical drift from the
 ractor-substitute thread (operator/103); the framework is now Kameo
 and the wrapper question is settled. A component may have many
 actors; it still has one Rust actor library: `kameo`.
-
----
 
 ## Core rule
 
@@ -70,8 +66,6 @@ flowchart LR
     tests --> correct["bypass fails"]
 ```
 
----
-
 ## Actor per plane
 
 An actor-heavy system should look over-named to conventional Rust
@@ -105,8 +99,6 @@ architecture decision.
 Do not create actors for pure value transformations that have no
 domain failure and no independent runtime ownership. Those methods
 belong on the data-bearing actor that owns the surrounding phase.
-
----
 
 ## Actor or data type
 
@@ -258,8 +250,6 @@ actor's `State` is its downstream `ActorRef<_>`s, which *are* its
 data — the pipeline's stage-graph. Without that state it would
 collapse to a method too.
 
----
-
 ## Blocking is a design bug
 
 An actor's mailbox is the push channel for that actor. If an actor
@@ -323,8 +313,6 @@ before propagating shutdown). The deferral is documented at
 §"P2 — StoreKernel Template-2 deferral". `~/primary/skills/kameo.md`
 §"Blocking-plane templates" Template 2 carries the full mechanics.
 
----
-
 ## No shared locks
 
 Do not use `Arc<Mutex<T>>` or `Arc<RwLock<T>>` as the ownership
@@ -345,8 +333,6 @@ flowchart LR
 If two actors need the same state, the state has the wrong owner or
 the state should be split into two actors. Use message passing,
 snapshots, and read views; do not add shared locks.
-
----
 
 ## Supervision is part of the design
 
@@ -385,8 +371,6 @@ the reply later. It is not supervised actor work. Use it to avoid
 blocking the mailbox on small async/IO reply work; use a dedicated
 actor or worker pool for long-lived work, retry policy, durable
 side effects, or work whose failure must be supervised.
-
----
 
 ## Release before notify
 
@@ -488,8 +472,6 @@ release-before-notify; it doesn't replace it.
 | Can I restart a supervised actor before `wait_for_shutdown()` returns? | No. The terminal outcome is the synchronization point. Restarting earlier races the resource release. |
 | Does this apply to actors that don't own exclusive resources? | The framework follows it for everyone; the discipline is load-bearing only when resources are involved. Don't write code that assumes a weaker contract. |
 
----
-
 ## Durable state belongs in sema
 
 An actor with durable state goes through `sema`. There is no
@@ -519,8 +501,6 @@ The destination for every state-owning actor is sema-backed, so the
 `Never`-default is transitional — it disappears when the actor's
 durable substrate lands.
 
----
-
 ## Counter-only state — test witnesses must be tested
 
 Actors commonly carry `_count: u64` fields used only by tests as
@@ -535,8 +515,6 @@ or remove the field. The alternative (push witnesses via
 `tokio::sync::oneshot` / `tokio::sync::watch`, per
 `skills/kameo.md` §"Test patterns") is also acceptable and usually
 cleaner.
-
----
 
 ## Runtime roots are actors
 
@@ -570,8 +548,6 @@ Tests must make this boundary falsifiable: a topology or
 forbidden-edge test should fail if a runtime root regresses into a
 non-actor owner around actor refs.
 
----
-
 ## Rust shape
 
 The workspace runtime default is **`kameo` 0.20**. Kameo's native
@@ -600,8 +576,6 @@ shape what an actor-dense Rust system *cannot* do:
   `on_panic` is overridden** to recover from `PanicReason::OnMessage`
   — see `skills/kameo.md` §"The tell-of-fallible-handler trap".
 
----
-
 ## Traces are required
 
 An actor-heavy system must expose an actor trace in tests. The
@@ -628,8 +602,6 @@ Trace events should include:
 - view refreshed
 
 The trace is not a logging substitute. It is a test witness.
-
----
 
 ## Test actor density
 
@@ -679,8 +651,6 @@ backed actors; switch to multi-thread only when a test specifically
 demands `spawn_in_thread`, and run such tests under `--test-threads=1`
 or in a single-test process.
 
----
-
 ## When not to create an actor
 
 Do not create an actor for:
@@ -694,8 +664,6 @@ Do not create an actor for:
 
 Even then, the behavior still belongs on a data-bearing type, not
 a free function or a ZST method holder.
-
----
 
 ## See also
 

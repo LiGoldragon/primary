@@ -3,8 +3,6 @@
 *Decoding STT-transcribed prompts that contain workspace-specific
 words.*
 
----
-
 ## What this skill is for
 
 Li often dictates prompts through a speech-to-text tool. The
@@ -21,8 +19,6 @@ workspace's repos). Read CriomOS-home's `skills.md` /
 `ARCHITECTURE.md` for the specific tool, model, and any
 configuration. Don't name the vendor or model in this skill —
 that drifts; the repo is canonical.
-
----
 
 ## How to read STT output
 
@@ -42,8 +38,6 @@ that drifts; the repo is canonical.
    filesystem (workspace `repos/` symlink index, or
    `RECENT-REPOSITORIES.md`).
 
----
-
 ## Canonical spellings live on the filesystem
 
 When the user mentions a repository, the canonical spelling
@@ -55,8 +49,6 @@ spelling from the spoken form.
 
 This rule applies recursively: any time you're unsure how a
 project name is spelled, look at the directory.
-
----
 
 ## Table of common words and what they may have been
 
@@ -139,8 +131,6 @@ English, try the canonical form.
 | "ESSENCE" / "Intention" | the workspace's intent doc; see `~/primary/ESSENCE.md` |
 | "Lock" / "Lockfile" | when adjacent to "operator" or "designer," means the coordination protocol; otherwise normal English |
 
----
-
 ## Caveats on specific entries
 
 - **ASCII / aski lineage.** `aski/CLAUDE.md` formally disclaims
@@ -151,8 +141,6 @@ English, try the canonical form.
   opaque strings) inspired the current work. Honor the lived
   sense in conversation; flag the formal disclaimer only when
   load-bearing.
-
----
 
 ## When the table doesn't help
 
@@ -171,8 +159,6 @@ checking the table:
    listing the closest matches you considered, so the user
    doesn't have to think from scratch.
 
----
-
 ## How to keep this skill current
 
 This table is workspace-state — it grows as new repos and
@@ -180,8 +166,6 @@ libraries land. When you encounter a new STT mishearing in
 practice that isn't in the table, add the row before continuing.
 Per the workspace's autonomous-agent skill, that is a routine
 edit; commit and push.
-
----
 
 ## See also
 

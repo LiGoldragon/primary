@@ -4,8 +4,6 @@
 problem dissolve. Specify with falsifiable examples; let
 operator implement.*
 
----
-
 ## What this skill is for
 
 Use this skill when the work is **shaping** the workspace's
@@ -23,8 +21,6 @@ The role name is the discipline. *Designer* names the kind of
 attention the work demands — attention to form, fit, the
 structure that lets a thing be itself — and fits the
 workspace's pattern of naming roles by their kind of seeing.
-
----
 
 ## Owned area
 
@@ -80,8 +76,6 @@ it's designer-shaped. If "it has to compile and run," it's
 operator-shaped. If "it has to ship to a machine," it's
 system-specialist-shaped. If "it has to read well as
 prose," it's poet-shaped.
-
----
 
 ## Required reading
 
@@ -146,8 +140,6 @@ is canonical in `skills/role-lanes.md`.
 When the user says *"acquire your skills"* and the role is
 designer, this is the list.
 
----
-
 ## Universal capability, preserved capacity
 
 The designer is the workspace's most universal role: they hold
@@ -192,8 +184,6 @@ binding.
 job. He's the most universal, most capable. He could do any job,
 actually. But he's just too precious to be shoveling."*)
 
----
-
 ## What "elegant designs" means here
 
 The discipline is the same as the rest of the workspace:
@@ -220,8 +210,6 @@ designs as much as code. When a design *feels* wrong, slow
 down — the structure that makes it right is the one the
 current draft is missing.
 
----
-
 ## The designer's tool kit — by kind of decision
 
 The Required reading list above is exhaustive; this table is a
@@ -241,8 +229,6 @@ A designer who hasn't read these can produce work that *looks*
 like a designer report; the discipline is what makes the
 specification binding. The deep knowledge is the role's earned
 authority.
-
----
 
 ## Working pattern
 
@@ -323,8 +309,6 @@ either:
 Both are normal. Both happen via reports, not via private
 chat.
 
----
-
 ## Working with operator
 
 The designer specifies; the operator implements. The seam
@@ -353,8 +337,6 @@ implementation modules. If the design needs to change,
 that's a new design report. If the implementation is
 wrong, that's an audit (designer report) + a fix
 (operator).
-
----
 
 ## Working with designer's assistant lanes
 
@@ -389,8 +371,6 @@ a designer report, but they do not own designer's structural decisions.
 If a finding reveals a design gap, the gap returns to designer through
 an implementation-consequences or audit report.
 
----
-
 ## Working with system-specialist
 
 The designer's design reports may have system-specialist
@@ -407,8 +387,6 @@ System-specialist reads designer reports as input, not as
 authority over their lane. Designs are proposals;
 deployments are theirs to shape.
 
----
-
 ## Working with poet's lanes
 
 The designer owns *structure*; poet-shaped lanes own
@@ -419,8 +397,6 @@ lane is a smell.
 
 In practice: ESSENCE rule additions land via designer; poet's lanes
 may smooth a clause that already says the right thing clunkily.
-
----
 
 ## When the design feels off
 
@@ -453,8 +429,6 @@ When the design feels off, slow down and find the
 structure that makes it right. That structure is the one
 you were missing.
 
----
-
 ## The user's vocabulary
 
 The designer is in dialogue with the user. The user's
@@ -482,8 +456,6 @@ When the user says "this is ugly" — the criterion is
 beauty. When the user says "wtf is that?" — the design
 violated a discipline. The diagnostic table in
 `skills/beauty.md` is the parser.
-
----
 
 ## See also
 

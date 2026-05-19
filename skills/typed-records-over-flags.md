@@ -5,8 +5,6 @@
 not a boolean. Booleans that hide data are a recurring drift pattern;
 this skill names it.*
 
----
-
 ## What this skill is for
 
 Apply this skill when designing schema for projected state (a `Node`, a
@@ -24,8 +22,6 @@ The rule:
 The same rule generalises to enums: a unit-variant enum whose variants
 carry meaning beyond the variant name is asking to become an enum with
 data, or a struct of `Option<T>`s.
-
----
 
 ## Why this matters
 
@@ -52,8 +48,6 @@ every property the cache carries is in the type and every consumer
 reads it the same way. Adding a property is one struct field; removing
 a property breaks every consumer that read it. The type **is** the
 contract.
-
----
 
 ## The pattern, concretely
 
@@ -131,8 +125,6 @@ if let Some(cache) = &node.capabilities.binary_cache {
 If the cache record is incomplete, the *proposal* fails validation —
 not the deploy.
 
----
-
 ## The three forms
 
 The pattern has three concrete shapes; pick whichever fits.
@@ -191,8 +183,6 @@ form was equivalent to the enum form except that `(true, true, false)`
 was illegal but type-checked. The enum form makes the illegal state
 unrepresentable.
 
----
-
 ## What to keep on boolean shape
 
 Not every boolean wants to be a typed record. The rule is:
@@ -212,8 +202,6 @@ The diagnostic: if a `bool` field's value would let you derive the
 payload trivially (`if x { default() }`), it can stay. If the payload
 requires authored data (endpoints, keys, policies, references), the
 boolean is hiding a record.
-
----
 
 ## Migration shape
 
@@ -236,8 +224,6 @@ When converting a flag to a typed record:
 This is the shape report 04 §1.3 names ("compat-shimmed flags survive
 one cycle"). Apply it whenever flag-soup migrates to typed records.
 
----
-
 ## Witnessed examples in the workspace
 
 | Before | After | Repo / context |
@@ -256,8 +242,6 @@ implicit data, (2) a downstream consumer that re-derived the data
 from magic strings, and (3) a type-checking gap that the new record
 closed.
 
----
-
 ## Related skills
 
 - `skills/abstractions.md` — verb belongs to noun. The corollary:
@@ -271,8 +255,6 @@ closed.
   soup admitted.
 - `skills/naming.md` — typed records make naming honest; flag soup
   obscures it.
-
----
 
 ## See also
 

@@ -5,8 +5,6 @@ test for "is this NOTA designed well?" is grep-ability and density:
 every meaningful distinction is in the data; no token is wasted on
 information the context already gives.*
 
----
-
 ## What this skill is for
 
 NOTA is positional, typed, terse. Designed badly, it becomes a JSON
@@ -19,8 +17,6 @@ channel.
 Read this skill before designing a new NOTA file or schema. The
 rules below are the difference between NOTA-the-substrate and NOTA-
 the-format-you-wrote-once-then-regretted.
-
----
 
 ## Rule 1 — The wrapping type names the most useful distinction in context
 
@@ -43,8 +39,6 @@ the data the CLI dispatches on.
 The test: if every record in this file would have the same wrapping
 type, that type is implied — drop it, and use the next level of
 distinction as the type.
-
----
 
 ## Rule 2 — Data lives in records, not in comments
 
@@ -89,8 +83,6 @@ What comments DO carry: the schema preamble at the top of the file
 That teaches the reader how to parse the data. The data itself stays
 in records.
 
----
-
 ## Rule 3 — Enums get PascalCase names, not numbers
 
 Ad-hoc integer codes for enum variants are a smell. `tier 1` /
@@ -118,8 +110,6 @@ The schema preamble names the enum's allowed values. Grep for
 `Apex` finds every apex-tier record across the file (and across
 every NOTA file in the workspace that uses the same vocabulary).
 
----
-
 ## The canonical example
 
 `/home/li/primary/skills/skills.nota` is the workspace's canonical
@@ -134,8 +124,6 @@ example of NOTA designed well. Open it. Notice:
   enums allow, what's not in the index and why.
 
 If you're designing a new NOTA file, read it first.
-
----
 
 ## Before you sketch any NOTA record
 
@@ -163,8 +151,6 @@ Most agent NOTA mistakes are the same mistake — labeled fields. The
 fix is the same too: read the canonical example before you sketch,
 and let the wrapping type carry the schema.
 
----
-
 ## When you find yourself fighting the rules
 
 You'll notice yourself wanting to:
@@ -182,8 +168,6 @@ shared enum vocabulary, a shared identity newtype, a shared
 date-shape), that's a sign of a real workspace primitive. Document
 it once in the relevant repo's `skills.md` or `ARCHITECTURE.md` and
 reference by name; don't restate it in every NOTA file's preamble.
-
----
 
 ## See also
 

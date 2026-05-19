@@ -4,8 +4,6 @@
 per-kind; supervision is declarative. The framework's shape agrees
 with `skills/actor-systems.md`'s rules — no carve-outs needed.*
 
----
-
 ## What this skill is for
 
 Use this skill when you write or edit Rust that defines, spawns,
@@ -51,8 +49,6 @@ Pin Kameo's version intentionally per-crate; expect minor breaks.
 crates were on 1.85) must bump before adopting Kameo. See
 `skills/nix-discipline.md` §"Workspace fenix lockstep" for
 workspace-wide lock alignment once any crate's toolchain moves.
-
----
 
 ## The core shape
 
@@ -113,8 +109,6 @@ live on the actor (`fn validate_and_collapse(&mut self, …)`). The
 no-public-ZST-actor-noun rule from `skills/actor-systems.md` is
 naturally satisfied: the actor type is the data-bearing noun.
 
----
-
 ## Naming actor types
 
 The cross-language rule is `skills/naming.md` §"Anti-pattern:
@@ -147,8 +141,6 @@ The historical drift toward `*Actor` / `*Message` suffixes came
 from frameworks like ractor where the actor's behavior marker was
 a separate ZST from its `State` — the suffix disambiguated. Kameo
 removed the disambiguation; drop the suffix from the start.
-
----
 
 ## Public consumer surface — `ActorRef<A>` or domain wrapper
 
@@ -314,8 +306,6 @@ The discriminator: **does the wrapper meet at least one of the seven
 criteria above, or is it type laundering?** If it doesn't meet one,
 it's laundering.
 
----
-
 ## Module map (where each thing lives)
 
 The single source of confusion in Kameo's surface is the split
@@ -347,8 +337,6 @@ Add `use kameo::message::StreamMessage;` if you use `attach_stream`,
 and `use kameo::error::Infallible;` if you write the `type Error`
 field by hand (`#[derive(Actor)]` covers both).
 
----
-
 ## Lifecycle hooks
 
 | Hook | Default | When to override |
@@ -377,8 +365,6 @@ Three load-bearing details:
   `OnMessage`, `OnStart`, `OnPanic`, `OnLinkDied`, `OnStop`,
   `Next`. Inspect via `err.reason()` and downcast via
   `err.downcast::<MyError>()` or `err.with_str(|s| ...)`.
-
----
 
 ## Messages and replies
 
@@ -476,8 +462,6 @@ task drops). Without `DelegatedReply`, the actor's mailbox would
 block on the slow work — re-creating the hidden-lock failure mode
 `skills/actor-systems.md` warns against.
 
----
-
 ## Spawning
 
 | Form | Returns | Notes |
@@ -510,8 +494,6 @@ need to assert on the final actor value."
 The default mailbox capacity is **64** (`pub(crate) const
 DEFAULT_MAILBOX_CAPACITY: usize = 64`). Macro doc claims 1000;
 that's stale. Size deliberately when traffic patterns warrant it.
-
----
 
 ## Test patterns
 
@@ -564,8 +546,6 @@ assert!(matches!(
 
 For final state assertions, use `PreparedActor::run` as described in
 §"Spawning" rather than exposing test-only shared locks.
-
----
 
 ## Supervision
 
@@ -692,8 +672,6 @@ The safe combinations:
 | `OneForAll` / `RestForOne` | All children share the same policy | Predictable |
 | `OneForAll` / `RestForOne` | Mixed policies | **Coordinated paths may bypass `Never`; test explicitly** |
 
----
-
 ## Mailbox
 
 Two factories at module level — there is no `Mailbox` type with
@@ -715,8 +693,6 @@ overflow policies built in.
 `ask().await` blocks twice: first on enqueue (mailbox capacity),
 then on the reply (oneshot). `ask().reply_timeout(d).send().await`
 caps the reply wait.
-
----
 
 ## Local registry
 
@@ -742,8 +718,6 @@ async, take `Arc<str>`, require `A: RemoteActor`, and use libp2p
 Kademlia. Different shape; named here only so consumers don't try
 to call the local form on a remote build.
 
----
-
 ## Streams
 
 `actor_ref.attach_stream(stream, started_value, finished_value)`
@@ -761,8 +735,6 @@ The returned `JoinHandle<Result<S, SendError<...>>>` resolves with
 the unconsumed stream if the actor stops mid-stream — useful for
 recovery. Backpressure on the actor's mailbox naturally throttles
 the producer.
-
----
 
 ## Links
 
@@ -789,8 +761,6 @@ sibling, observe a downstream watchdog. Be deliberate per pair.
 Use `spawn_link` instead of `spawn` + `link` when the link must be
 established before the actor can fail — avoids the race where the
 actor dies before the link is installed.
-
----
 
 ## Workspace conventions on top of Kameo
 
@@ -829,8 +799,6 @@ workspace uses Kameo.
   contract" below and `skills/actor-systems.md` §"Release
   before notify".
 
----
-
 ## Lifecycle contract
 
 Implements `skills/actor-systems.md` §"Release before notify".
@@ -866,8 +834,6 @@ Application rules:
 
 Use the `kameo-push-only-lifecycle` fork; pre-fork versions
 expose an ordinal `ActorLifecyclePhase` that is not the contract.
-
----
 
 ## Blocking-plane templates
 
@@ -1016,8 +982,6 @@ scheduled there. See `skills/actor-systems.md` §"No blocking" for
 the full rule. The old `persona-terminal::TerminalDelivery` example
 was removed rather than kept as a blocking actor.
 
----
-
 ## Anti-patterns and gotchas
 
 - **Unbounded `on_stop`.** An `on_stop` that awaits forever holds
@@ -1090,8 +1054,6 @@ was removed rather than kept as a blocking actor.
 
 For surprises surfaced under test, see
 `/git/github.com/LiGoldragon/kameo-testing/notes/findings.md`.
-
----
 
 ## See also
 

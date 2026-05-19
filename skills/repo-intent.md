@@ -5,8 +5,6 @@ the psyche has explicitly intended for that project. Like
 `ARCHITECTURE.md` but for intent: agent-written prose, 100% backed
 by psyche statements, no embellishment, no inference.*
 
----
-
 ## What this skill is for
 
 `ARCHITECTURE.md` says what the system IS. `INTENT.md` says what
@@ -22,8 +20,6 @@ The file exists because:
 - Future agents starting cold on a repo need to know the
   project-specific intent before reading the code.
 
----
-
 ## Where it lives
 
 ```
@@ -33,8 +29,6 @@ The file exists because:
 Repository root, alongside `ARCHITECTURE.md`, `AGENTS.md`,
 `skills.md`. Uppercase to match `ARCHITECTURE.md` / `AGENTS.md` /
 `CLAUDE.md`.
-
----
 
 ## What goes in
 
@@ -50,8 +44,6 @@ psyche statements**. The agent's role is synthesis without
 embellishment — clear restatement of what was said, not
 elaboration of what was implied.
 
----
-
 ## What does NOT go in
 
 - Agent inference. If the psyche didn't say it, it doesn't go
@@ -65,8 +57,6 @@ elaboration of what was implied.
 The discipline: every statement in `INTENT.md` is a clear
 restatement of a psyche-said thing. The agent's interpretation
 is minimal — synthesis for clarity, not invention.
-
----
 
 ## Shape
 
@@ -108,8 +98,6 @@ Synthesised from psyche statements; not embellished.*
 The sections are illustrative; reshape per the psyche statements'
 actual shape.
 
----
-
 ## How to derive from psyche statements
 
 1. **Read the intent log** at `~/primary/intent/<topic>/` for
@@ -122,8 +110,6 @@ actual shape.
 4. **No conclusion-drawing.** If the psyche said "X is important"
    without saying why, `INTENT.md` records "X is important." Don't
    add "because Y" unless the psyche said Y.
-
----
 
 ## When to update
 
@@ -141,8 +127,6 @@ encountering `INTENT.md` content that seems wrong does NOT edit
 based on inference; they consult the psyche
 (`skills/intent-clarification.md`).
 
----
-
 ## When to skip
 
 A repo without psyche-stated intent doesn't need an `INTENT.md`.
@@ -150,8 +134,6 @@ The file appears when the first psyche intent specific to the
 project lands; not before. A pure-skeleton repo or a repo whose
 only purpose is mechanical (build artifact, codec, no psyche
 input on direction) can stay without one.
-
----
 
 ## See also
 

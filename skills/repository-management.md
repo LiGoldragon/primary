@@ -2,8 +2,6 @@
 
 *How to create and maintain GitHub repositories from this workspace.*
 
----
-
 ## What this skill is for
 
 Use this when a local repo needs a GitHub remote, when repository metadata needs
@@ -14,8 +12,6 @@ Repositories in this workspace are public by default. A private repository is
 an exception that needs a concrete reason: secrets, private credentials,
 personal data, unpublished third-party code, or another explicit confidentiality
 constraint. Absent that reason, create the repository as public.
-
----
 
 ## Where repositories live — the ghq layout
 
@@ -113,8 +109,6 @@ ghq list | grep <repo>
 `ghq` indexes the filesystem on each `list`; no separate
 "add to index" step.
 
----
-
 ## Create a repository
 
 From the repo root:
@@ -140,8 +134,6 @@ gh repo create LiGoldragon/<name> --private --source . --remote origin --push
 
 Only use `--private` when the reason is clear in the task or in the repository
 contents.
-
----
 
 ## Change visibility and metadata
 
@@ -169,8 +161,6 @@ Inspect current metadata:
 ```sh
 gh repo view LiGoldragon/<name> --json nameWithOwner,visibility,url,description,homepageUrl
 ```
-
----
 
 ## Issues and pull requests
 
@@ -201,15 +191,11 @@ gh pr checks --repo LiGoldragon/<name> <number>
 Use the GitHub plugin skills for deep PR review or CI triage. This skill is the
 minimal daily repository-management layer.
 
----
-
 ## Version-control boundary
 
 Use `gh` for GitHub repository objects and metadata. Use `jj` for local history
 and pushing bookmarks. Do not use raw `git` for ordinary commits or pushes; see
 this workspace's `skills/jj.md`.
-
----
 
 ## See also
 
