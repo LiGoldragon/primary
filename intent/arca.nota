@@ -21,7 +21,7 @@
 
 (Decision
     "Sema is the source of truth for everything about an Arca-stored file beyond its bytes — filename, content type, owner, capability grants, references from other records, GC reachability. The on-disk store is just the content; sema carries the meaning. When the workspace eventually has full sema-on-sema (the eventual Criome), this distinction collapses; today Arca exists because today's sema can't hold blob-shaped data."
-    "the real source of truth or important reference for all of the files in the ARCA store, which is managed by the ARCA daemon, is going to be held in the ARCA SEMA database engine, in the SEMA database, which is interacted with with the SEMA engine in ARCA."
+    "the real source of truth or important reference for all of the files in the Arca store, which is managed by the Arca daemon, is going to be held in the Arca sema database engine, in the sema database, which is interacted with with the sema engine in Arca."
     "Stating the metadata-source-of-truth direction; sema records describe the file, Arca holds the bytes. Matches the existing arca repo's ARCHITECTURE.md §'Role in the sema-ecosystem' framing."
     Maximum
     2026-05-17T13:30:00Z)
