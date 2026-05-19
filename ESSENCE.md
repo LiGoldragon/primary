@@ -120,6 +120,29 @@ If you cannot make it beautiful, you do not understand it yet.
 
 The discipline that follows from this lives in `skills/beauty.md`.
 
+## Naming
+
+**Spell every identifier as a full English word.** `Request` not
+`Req`. `Reply` not `Rep`. `Identifier` not `Id`. `Configuration`
+not `Cfg`. *"we don't allow abbreviations for almost anything."*
+Only acronyms that have fully passed into general English
+(`CPU`) qualify as a narrow exception; convenience shortenings
+(`ctx`, `cfg`, `addr`, `db`) do not.
+
+**Names don't carry their full ancestry.** A type, variant, or
+field belongs to its surrounding namespace; repeating the
+namespace in the name is redundant ceremony. Inside
+`signal-persona-spirit`, the type is `Entry`, not `IntentEntry`
+(intent is the crate's domain). Inside a `Profile` struct, the
+field is `size`, not `profileSize`. *"If I held the name of all
+my ancestors, I would be speaking until I die before I could
+spell my name out."* The crate, module, channel, enclosing
+enum, and parent record all supply context the name doesn't
+need to restate.
+
+The two rules pull in opposite directions and only work as a
+pair. Full discipline + worked examples: `skills/naming.md`.
+
 ## Backward compatibility is not a constraint
 
 **Break the system if it makes it more beautiful.** Not

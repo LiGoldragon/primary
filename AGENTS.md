@@ -80,9 +80,13 @@ Each agent knows its lane before claiming or editing. Coordination:
 
 ## Hard overrides
 
-- **Spell every identifier as a full English word.** `Request` not
-  `Req`. `Reply` not `Rep`. The narrow carve-outs and the justification
-  live in `ESSENCE.md` §"Naming" and `skills/naming.md`.
+- **Spell every identifier as a full English word AND names don't
+  carry their full ancestry.** Two rules, applied together.
+  `Request` not `Req`; `Identifier` not `Id`; AND `Entry` (inside
+  persona-spirit) not `IntentEntry`; `size` (inside `Profile`)
+  not `profileSize`. The pair pulls in opposite directions and
+  only works together. Full discipline: `ESSENCE.md` §"Naming"
+  and `skills/naming.md`.
 - **NOTA is the only argument language.** Every component binary
   (CLI and daemon) takes exactly one argument: a NOTA string, a path
   to a NOTA file, or a path to a signal-encoded (rkyv) file. No flags

@@ -1,16 +1,33 @@
-# Skill — naming (full English words)
+# Skill — naming (full English words; no redundant ancestry)
 
 *Identifiers are read far more than they are written. Spell every
-identifier as a full English word; let the right name happen.*
+identifier as a full English word; let the right name happen. And
+the partner rule: names don't carry their full ancestry — the
+surrounding namespace already supplies that context.*
 
 ## What this skill is for
 
 Apply this skill every time you name an identifier — a type, a
-function, a field, a variable, a module, a parameter. The
-default is the spelled-out English form; abbreviations require
-one of six narrow exceptions. Skim the offender table when you
-catch yourself reaching for `ctx`, `tok`, `op`, `de`, or any
-two-to-three-letter shape; it's almost always the wrong move.
+function, a field, a variable, a module, a parameter. **Two
+rules apply together, pulling in opposite directions:**
+
+1. **Spell every identifier as a full English word.** The
+   default is the spelled-out English form; abbreviations require
+   one of six narrow exceptions (§"Permitted exceptions" below).
+   Skim the offender table when you catch yourself reaching for
+   `ctx`, `tok`, `op`, `de`, or any two-to-three-letter shape.
+2. **Names don't carry their full ancestry.** A type, variant,
+   or field belongs to its surrounding namespace; repeating the
+   namespace is redundant ceremony (§"Anti-pattern: prefixing
+   names with their namespace or domain" below). Inside `Profile`,
+   the field is `size`, not `profileSize`. Inside
+   `signal-persona-spirit`, the type is `Entry`, not `IntentEntry`.
+
+The two only work as a pair. "Full word" without the ancestry
+rule produces `IntentRecordIdentifier` (every ancestor named).
+The ancestry rule without "full word" produces `Id` or `Ctx`
+(short, but abbreviated). Apply both; the right name carries the
+words the namespace doesn't, in full English.
 
 This skill pairs with the **verb-belongs-to-noun** discipline
 (workspace `skills/abstractions.md`) — that rule forces a naming
@@ -31,7 +48,7 @@ Examples (bad → good):
 |---|---|
 | `lex` | `lexer` |
 | `tok` | `token` |
-| `ident` | `identifier` |
+| `id` / `ident` | `identifier` |
 | `op` | `operation` (or specific: `assert_op`) |
 | `de` | `deserializer` |
 | `pf` | `pattern_field` |
@@ -63,9 +80,24 @@ Examples (bad → good):
 3. **Generic type parameters.** `T`, `U`, `V`, `K`, `E`. Use a
    descriptive name when the parameter has non-trivial semantic
    content.
-4. **Acronyms that have passed into general English.** `id`, `url`,
-   `http`, `json`, `uuid`, `db`, `os`, `cpu`, `ram`, `io`, `ui`,
-   `tcp`, `udp`, `dns`. Spell them when ambiguous in context.
+4. **Acronyms that have fully passed into general English.**
+   `cpu` is the canonical example — written and spoken as a
+   word in non-technical contexts. **Reach for this exception
+   sparingly.** Most code-side "acronyms" are convenience
+   shortenings (`ctx`, `cfg`, `addr`, `tok`, `buf`, `proc`),
+   not English words; those belong in the offender table above,
+   not here. Do **not** use `id` — spell `identifier`; the
+   psyche has been explicit: *"identifier is actually better."*
+   Protocol/format acronyms (`url`, `http`, `json`, `uuid`,
+   `tcp`, `udp`, `dns`) conventionally appear in their acronym
+   form when the spelled variant ("hypertext transfer protocol")
+   is genuinely awkward, but default to spelling out; reach for
+   the acronym only when the awkwardness is real. Internal
+   abbreviations of system concepts (`db`, `os`, `ui`, `io`,
+   `ram`) are convenience shortenings and should be spelled
+   (`database`, `operating_system`, `interface` if
+   user-interface is meant) unless the spelled form is itself
+   awkward in the specific context.
 5. **Names inherited from `std` or well-known libraries.** `Vec`,
    `HashMap`, `Arc`, `Rc`, `Box`, `Cell`, `RefCell`, `Mutex`,
    `mpsc`, `regex`. Do not rename these; do *not* extend the
