@@ -89,3 +89,38 @@
     "Recovering intent that the previous agent did not log. The psyche critiqued repository-ledger's *Query suffix pattern around reports /123 + /124; the agent wrote the analysis (/124) but did not log the underlying psyche intent. This record fills the gap, drawing the substance from /124's reconstruction. Manifestation target: skills/naming.md (new section on repeated-category-words) + skills/contract-repo.md (contract-specific form of the same rule)."
     Maximum
     2026-05-19T18:55:00Z)
+
+(Clarification
+  "Considering whether Signal core verbs may be the wrong layer: perhaps Assert/Mutate/Retract/Match/Subscribe/Validate are Sema/database operation verbs, while Signal contracts may extend with domain-local verbs such as Message or Query on sockets that implement them. This is not settled; it is a low-certainty design question to brainstorm."
+  "Maybe I was thinking wrong all along. Trying to fit everything into the core verbs when we could actually just extend with more verbs. Where, you know, certain verbs only work obviously on the sockets that implement those contracts. And perhaps the signal core verbs are not really necessary or not that they're not necessary. Maybe they're a SEMA. Maybe they're the SEMA core verbs since they deal with the database. Maybe we were, maybe this is signal SEMA is what we were actually trying to point that out. Because the whole idea was that these verbs work with the SEMA engine."
+  "Psyche is reconsidering the recent Signal-core/root-verb model after noticing that repository-ledger Query and persona Message may want to be contract-local operation roots rather than payloads under Match or Assert. Capture as consideration, not decision."
+  Minimum
+  2026-05-19T16:49:08Z)
+
+(Decision
+    "Authorize landing the three skill edits proposed in /237 §5 (skills/naming.md new section, skills/contract-repo.md strengthened row, skills/language-design.md Rule 6 extension) AND filing an operator bead for the signal-repository-ledger refactor to apply the new tree-shape (Match Query(Query) with nested Query enum)."
+    "yes to both"
+    "Resolving the two open questions in /237. Skill edits land first; the refactor bead follows. The new bead carries the canonical rule the operator can reference."
+    Maximum
+    2026-05-19T19:00:00Z)
+
+(Clarification
+  "Public contract verbs cannot be decided by a universal rule. Whether a domain action should be a public contract verb must be judged case by case by looking at the actual contract, socket, authority, and state effects."
+  "I don't think that I could give a unilateral answer. I think that you're trying to ask me, like, are all cats black? … We're going to do this case by case."
+  "Response to the report question asking whether public contract operations should be allowed to name domain verbs such as Message, Query, Configure, and Register. The psyche rejected the question as too universal."
+  Maximum
+  2026-05-19T17:00:46Z)
+
+(Clarification
+  "Signal-Sema is the possible layer for sending Sema operations over the wire. The current question is whether Assert/Mutate/Retract/Match/Subscribe/Validate are Sema operations that can travel through Signal-Sema, not necessarily public verbs for every Signal contract."
+  "I mean, there's signal sema, right? They're how to send semi-operations on the wire. Isn't that what we're saying? Or what? I think so."
+  "Response to whether the six current Signal verbs should move or be renamed as Sema operations. The psyche identifies this as exactly the open consideration, with Signal-Sema as the likely naming direction."
+  Minimum
+  2026-05-19T17:00:46Z)
+
+(Clarification
+  "Daemons should not automatically log every public contract action and lower Sema effect by default. A sensible first answer is subscription-driven introspection: if persona-introspect subscribes to an event class, the component emits or records that event; otherwise it is not necessarily logged unless normal operation already requires it."
+  "Possibly we don't log everything unless there's an introspection subscribe for it. Right? So it depends if there's a subscription for that event. Unless it's just normal operation to log that event, it's kind of like turning on debugging mode."
+  "Response to whether daemons should log both public contract actions and lower Sema effects for introspection. The psyche prefers transparent development observation without turning all possible introspection into always-on durable logs."
+  Medium
+  2026-05-19T17:00:46Z)

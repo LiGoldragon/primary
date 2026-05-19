@@ -328,6 +328,67 @@ The Rust enforcement (with std references) lives in
 `skills/rust-discipline.md` §"No crate-name prefix on
 types"; this section is the cross-language form.
 
+## Anti-pattern: repeated category words across sibling names
+
+When several adjacent types or variants share the same prefix
+or suffix — `*Query`, `*Command`, `*Event`, `*Listing`,
+`*Selection`, `*Mode`, `*Result` — stop and ask which layer
+the repeated word belongs to. It may be a missing parent enum,
+relation, record, module, contract operation, or lower execution
+effect that has been exposed at the wrong layer. Repeated
+category words are **schema smells**, not naming choices.
+
+```rust
+// Wrong — Query repeated as a suffix across five siblings
+Match EventQuery(EventQuery),
+Match RecentRepositoriesQuery(RecentRepositoriesQuery),
+Match ChangedFileQuery(ChangedFileQuery),
+Match CommitMessageQuery(CommitMessageQuery),
+Match CatalogQuery(CatalogQuery),
+
+// Possible correction — Query is the parent enum; siblings name read targets
+Match Query(Query),
+
+pub enum Query {
+    Events(EventSelection),
+    RecentRepositories(RecentRepositorySelection),
+    ChangedFiles(ChangedFileSelection),
+    CommitMessages(CommitMessageSelection),
+    Catalog(CatalogSelection),
+}
+```
+
+That correction is not automatic. If `Query` is the public act
+this contract receives, it may belong one layer higher as a
+contract operation, while the lower database/read operation stays
+inside the daemon:
+
+```rust
+// Also possible — Query is the contract operation.
+operation Query(Query)
+
+// The daemon may lower it internally to a Sema Match effect.
+```
+
+The threshold is behavioral, not numeric: when you find
+yourself adding a third sibling with the same suffix, stop
+and ask. The schema is asking for a new structural layer; do
+not decide in advance whether that layer is a parent payload,
+a contract operation, or a lower execution effect.
+
+**Why this rule pairs with the no-redundant-ancestry rule.**
+The ancestry rule says "don't restate what the namespace
+already supplies." The repeated-category rule says "if a word
+recurs across siblings, the schema is missing a namespace
+that would supply it." Together: names carry only what the
+schema's structure doesn't carry; when names repeat a word,
+that word should become structure.
+
+This is one of two failure modes that produce flat schemas
+where the schema should grow into a tree (the other being the
+redundant-prefix pattern above). Both diagnose agents who
+don't see the schema as a growing tree.
+
 ## Anti-pattern: framework-category suffixes on type names
 
 **A type's name should describe what it IS or what role it plays

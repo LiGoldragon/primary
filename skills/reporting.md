@@ -333,6 +333,13 @@ absorbed feedback*, rename the file with a `-v2` (then
 - v2: `225-v2-workspace-redesign-direction.md`
 - v3: `225-v3-workspace-redesign-direction.md`
 
+If the report path has already been shared with the user or
+passed to another agent, this rule is mandatory: do not
+silently edit the original path for substantive absorbed
+feedback. Publish the successor under the same number with
+the next `-vN` suffix, delete the predecessor in the same
+commit, and name the new path in chat.
+
 The file under the same number is the canonical current
 version. Delete the predecessor in the same commit that
 lands the successor — git history holds the lineage.

@@ -104,3 +104,10 @@ We need to forbid this type of report name. So find out what the report is about
     "Correcting my chat reply 'Bead primary-hj63 is ready to close' that combined two indirections — bureaucratic workflow language and bare opaque identifier — even though AGENTS.md opaque-identifiers-in-chat hard override and the bureaucratic-noise correction in workspace.nota each already forbid one of them. This sharpens to a positive rule: actions are taken, not announced as 'ready'."
     Maximum
     2026-05-19 18:30)
+
+(Correction
+  "When a report has already been passed around and is substantively revised with absorbed feedback, the agent must publish the revision as a V2 report name rather than silently editing the original path. Agents should understand and apply this without being reminded."
+  "As per the report editing rule, though, if you edit your report, which you can with my answers, you'd have to change the name with V2. And my question actually is, would you have done that if I hadn't actually mentioned it? And if not, then we need to somehow make sure that agents understand to do that."
+  "The psyche is reinforcing the existing report-iteration discipline after a report had already been passed to other agents. The correction is about agent behavior, not the Signal/Sema design itself."
+  Maximum
+  2026-05-19T17:00:46Z)
