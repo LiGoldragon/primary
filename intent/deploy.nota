@@ -1,20 +1,20 @@
 (Decision
     "Deploys are local execution per concern. The host being deployed runs its own activation; the deploy daemon coordinates remote daemons (build, cache, target) but does not maintain a remote SSH session for the activation effect itself. This eliminates the entire class of SSH-disconnect-survival problems that the production lojix-cli stack had to engineer around."
-    "the deployment could actually be done by using the logic steam of the host on which we're deploying, so that the deployment logic wouldn't need all of this remote command passing and returning stuff. So essentially we would only need to worry about local deploy … we ended up implementing logic to make sure that a disconnect, an SSH disconnect, did not kill the deployment process. So, yeah, potentially we could even create a deployment override kind of thing"
+    "the deployment could actually be done by using the lojix daemon of the host on which we're deploying, so that the deployment logic wouldn't need all of this remote command passing and returning stuff. So essentially we would only need to worry about local deploy … we ended up implementing logic to make sure that a disconnect, an SSH disconnect, did not kill the deployment process. So, yeah, potentially we could even create a deployment override kind of thing"
     "Stating the design direction for the lojix lean rewrite as a daemon-mesh deploy model; framed against the pain of SSH-disconnect-survival logic in the current production stack."
     Maximum
     2026-05-17T11:00:00Z)
 
 (Decision
     "Three variables for any deploy: where the build happens, where the Nix cache will be, and where the deploy target is. The target is always the node itself — the node deploys itself. Builder and cache can be other nodes, the same node, or the target itself."
-    "There's three variables. Where the build happens, where the Nyx cache will be for the deploy to happen, and then where the deploy is happening, which is always going to be on the node itself. The node will deploy itself, which makes sense because in the end we ended up implementing this anyway."
+    "There's three variables. Where the build happens, where the Nix cache will be for the deploy to happen, and then where the deploy is happening, which is always going to be on the node itself. The node will deploy itself, which makes sense because in the end we ended up implementing this anyway."
     "Naming the three deploy variables during the daemon-mesh proposal; resolves the SSH-disconnect problem by removing remote activation."
     Maximum
     2026-05-17T11:00:00Z)
 
 (Principle
     "The lojix-daemon maintains state about what it believes the cluster topology and network topology to be — a 'possibly true' or 'last known believed to be true' picture of cluster shape, node roles, reachability, latency, bandwidth, and cost. The believed topology informs routing decisions (which node should serve as cache; whether to fall back to builder-as-cache; whether a remote cache is too expensive to use on metered networks)."
-    "we're going to maintain the state in the logic steam, and a very important part of the state is what the daemon believes the topology is. It's a possibly true topology of the system … in the logic daemon we could even include last known, believed to be true, whatever wording we want to use, network topology, so that if the Nyx cache is really far or has very little bandwidth or is expensive, we could even have variables like cost."
+    "we're going to maintain the state in the lojix daemon, and a very important part of the state is what the daemon believes the topology is. It's a possibly true topology of the system … in the lojix daemon we could even include last known, believed to be true, whatever wording we want to use, network topology, so that if the Nix cache is really far or has very little bandwidth or is expensive, we could even have variables like cost."
     "Setting the believed-topology direction during the daemon-mesh proposal; the daemon's state includes more than just deploy job records, it includes a cluster + network + cost model that routing decisions consult."
     Maximum
     2026-05-17T11:00:00Z)
