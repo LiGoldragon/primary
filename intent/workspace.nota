@@ -297,3 +297,10 @@
     "Caught the over-engineering. Removing the blockquote-for-multi-line special case from skills/intent-manifestation.md. One rule, no exception."
     Maximum
     2026-05-19 22:30)
+
+(Correction
+    "When the psyche asks 'Why?', the right move is to give the reason — not to interpret the question as a command to remove. The multi-line blockquote rule for verbatim psyche quotes has a real technical reason: markdown italics close at any blank line in CommonMark; multi-paragraph verbatim wrapped in plain `*…*` would split into multiple italic spans (or fail to render). The blockquote-with-italics carries the span across paragraph breaks. Restore the rule and answer the 'Why?' inline."
+    "For multi-line verbatim, use a markdown blockquote with italics:"
+    "Psyche echoing the line back is affirming the rule and asking for the justification I should have given when asked 'Why?'. Meta-pattern correction: don't interpret questions as commands; give the reason; let the psyche decide whether to keep or drop."
+    Maximum
+    2026-05-19 22:45)

@@ -114,13 +114,21 @@ The italicised span is the psyche's words (post speech-to-text
 correction per `skills/stt-interpreter.md`). The surrounding prose
 is agent-composed from the intent-log summaries.
 
-Italics span multiple lines naturally — same rule whether the
-verbatim is a phrase or several sentences:
+For multi-paragraph verbatim, use a markdown blockquote with
+italics:
 
 ```markdown
-*the multi-line verbatim text from the psyche, wrapped
-in italics, line-broken naturally*
+> *the multi-paragraph verbatim from the psyche, wrapped in
+> italics inside a blockquote.*
+>
+> *the second paragraph stays italicised because the blockquote
+> wraps both — plain `*…*` italics close at any blank line in
+> CommonMark.*
 ```
+
+The blockquote-with-italics is the only reliable way to carry
+italics across paragraph breaks. For single-line or single-
+paragraph verbatim, plain `*…*` is sufficient.
 
 The italicised verbatim is *not* the same as the wholly-verbatim
 `quote` field of an intent record — that lives in the NOTA log.
