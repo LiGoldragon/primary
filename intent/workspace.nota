@@ -290,3 +290,10 @@
     "Picked single asterisks (italics) — the psyche left between single / double / underline; italics is the lightest and renders cleanly in markdown. Documented in skills/intent-manifestation.md and cross-referenced from skills/repo-intent.md."
     Maximum
     2026-05-19 22:00)
+
+(Correction
+    "The verbatim-quoting rule is just italics — no special blockquote form for multi-line. Italics span multiple lines in markdown without ceremony; adding a blockquote-wrapper for longer quotes is over-engineering and not stated psyche intent. Single rule: italicise verbatim psyche quotes with `*...*`. Inline or multi-line, same form."
+    "'For multi-line verbatim, use a markdown blockquote with italics:' Why?"
+    "Caught the over-engineering. Removing the blockquote-for-multi-line special case from skills/intent-manifestation.md. One rule, no exception."
+    Maximum
+    2026-05-19 22:30)

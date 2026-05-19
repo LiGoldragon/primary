@@ -114,17 +114,18 @@ The italicised span is the psyche's words (post speech-to-text
 correction per `skills/stt-interpreter.md`). The surrounding prose
 is agent-composed from the intent-log summaries.
 
-For multi-line verbatim, use a markdown blockquote with italics:
+Italics span multiple lines naturally — same rule whether the
+verbatim is a phrase or several sentences:
 
 ```markdown
-> *the multi-line verbatim text from the psyche, wrapped in italics
-> inside a blockquote, line-broken naturally*
+*the multi-line verbatim text from the psyche, wrapped
+in italics, line-broken naturally*
 ```
 
 The italicised verbatim is *not* the same as the wholly-verbatim
 `quote` field of an intent record — that lives in the NOTA log.
-Here, the italics flag short load-bearing pieces of original
-wording that survive the prose synthesis.
+Here, the italics flag load-bearing pieces of original wording
+that survive the prose synthesis.
 
 ## Voice of each destination
 

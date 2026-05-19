@@ -45,11 +45,12 @@ embellishment — clear restatement of what was said, not
 elaboration of what was implied.
 
 **Verbatim psyche quotes go in markdown italics** (`*verbatim text*`)
-inline within the prose, or as italicised blockquotes for multi-line
-verbatim. The italics flag "this is the psyche's own words" — the
-surrounding prose is the agent's synthesis of intent-log summaries.
-Full convention: `skills/intent-manifestation.md` §"The verbatim-
-quoting convention".
+inline within the prose. Italics span multiple lines naturally —
+same form whether the quote is a phrase or several sentences. The
+italics flag "this is the psyche's own words" — the surrounding
+prose is the agent's synthesis of intent-log summaries. Full
+convention: `skills/intent-manifestation.md` §"The verbatim-quoting
+convention".
 
 ## What does NOT go in
 
