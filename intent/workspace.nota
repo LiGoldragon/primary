@@ -409,3 +409,24 @@
     "Coordination notice. Don't dispatch agents to do macro implementation; design proposals are OK but check the in-flight work first."
     Maximum
     2026-05-19T20:30:00Z)
+
+(Constraint
+    "Pass `--max-jobs 0` on every nix invocation (`nix build`, `nix flake check`, `nix run`, etc.). This forces all builds to the remote builder rather than the local machine, which is the intended workspace configuration. Local builds during agent work are slow and starve the local interactive surface; the remote builder is what the workspace is set up to use."
+    "use max-jobs 0 for all nix calls, to use the remote builder"
+    "Constraint on Nix invocation discipline added during a signal-architecture-migration task. Workspace expectation across every flake call."
+    Maximum
+    2026-05-19 23:00)
+
+(Constraint
+    "All Nix builds run with --max-jobs 0 to delegate to the remote builder. Local builders avoid local jobs by setting max-jobs to zero; the remote-builder configuration in nix.conf carries the actual builders. This applies to every nix build/check/eval call agents issue."
+    "use max-jobs 0 for all nix calls, to use the remote builder"
+    "Workspace-wide Nix build directive issued alongside the signal-architecture-migration prompt; ensures local agents don't burn local cycles when a remote builder is configured."
+    Maximum
+    2026-05-19T20:00:00Z)
+
+(Constraint
+    "Nix evaluations and flake checks must invoke remote builders by passing --max-jobs 0. Local nix builds without this flag waste local CPU and time when a remote builder is configured. When dispatching agents to run nix checks, instruct them to use --max-jobs 0; when running nix yourself, include the flag."
+    "use max-jobs 0 with your nix calls to use remote builders"
+    "Workflow constraint on nix invocations. Applies to nix flake check, nix build, etc. Future agent dispatches should include this instruction."
+    Maximum
+    2026-05-19T21:00:00Z)
