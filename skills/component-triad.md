@@ -1,128 +1,232 @@
 # Skill — component triad (daemon + CLI + signal-* contract)
 
 *The universal shape for every stateful capability in the workspace.
-Daemon owns state and speaks Signal. CLI is a thin bridge — one NOTA in,
-one NOTA out, exactly one peer. Contract crate owns the typed wire
-vocabulary and the per-variant verb mapping. Read this before designing
-or auditing any new component.*
+Five invariants and one argument rule determine whether a design is
+in this system at all. Read this once; recognise the shape in every
+component's `ARCHITECTURE.md`.*
 
 ---
 
 ## The shape
 
-Every stateful capability in this workspace is a **triad**:
+Every stateful capability is a triad of three repositories:
 
 ```
-<component>/             repo for the runtime
-  src/lib.rs             component library
-  src/bin/<name>-daemon  long-lived daemon binary (actor root + storage)
-  src/bin/<name>         thin CLI client binary
-signal-<component>/      repo for the unprivileged/normal wire vocabulary
-owner-signal-<component>/ repo for owner-only authority/configuration
-  src/lib.rs             signal_channel! { ... } declaration
-                         + per-variant SignalVerb mapping
-  tests/round_trip.rs    rkyv + NOTA round-trips
+<component>/                      runtime
+  src/lib.rs                      component library
+  src/bin/<name>-daemon.rs        long-lived daemon
+  src/bin/<name>.rs               thin CLI client
+  bootstrap-policy.nota           first-start policy declaration
+signal-<component>/               ordinary wire vocabulary
+  src/lib.rs                      signal_channel! { … } declaration
+  tests/round_trip.rs             rkyv + NOTA round-trips
+owner-signal-<component>/         owner-only authority/configuration vocabulary
+  src/lib.rs                      signal_channel! { … } declaration
+  tests/round_trip.rs             rkyv + NOTA round-trips
 ```
 
-Four load-bearing invariants. Each becomes a witness test (per
-`skills/architectural-truth-tests.md`):
-
-1. **The CLI has exactly one Signal peer — its own daemon.** No CLI is a
-   workspace multiplexer; no CLI directly opens another component's
-   database, socket, or in-memory state. The CLI is a text adapter for
-   *one* daemon's contract.
-
-2. **The daemon's external surface is exclusively `signal-core` frames.**
-   No `serde_json` socket, no NOTA on the wire between components, no
-   parallel control protocol. NOTA exists at three named projection
-   edges — CLI argv/stdin, daemon ↔ harness terminal, audit/debug dumps
-   — never inter-component.
-
-3. **The verb is declared per-variant in the contract crate, not typed
-   by the user.** Each `signal_channel!` request enum variant carries
-   one of the six `SignalVerb` roots; the CLI's NOTA sugar omits the
-   verb because the contract resolves it from the payload type.
-
-4. **Authority surfaces are part of the triad, not an add-on.** A
-   stateful component has two typed authority tiers:
-   `signal-<component>` for the normal/unprivileged component surface,
-   and `owner-signal-<component>` for owner-only authority/configuration.
-   The corresponding actors live inside the daemon and listen on
-   permission-separated sockets. Privileged mutable configuration enters
-   through the owner-signal actor. The CLI configures privileged
-   component state by sending owner-signal requests to that actor over
-   the owner-owned socket. There is no separate privileged side channel
-   and no "static local config first, owner-signal later"
-   implementation path for mutable configuration. Static files may
-   provide bootstrap defaults needed to start the daemon, but once the
-   daemon is running, privileged changes go through owner signal.
-
-The triad is filesystem-enforced (per `skills/micro-components.md`): one
-daemon + CLI in `<component>` (typically one Cargo crate with two
-`[[bin]]` entries), one normal contract in `signal-<component>`, and
-one owner authority contract in `owner-signal-<component>`. The
-contract crates carry no runtime, no actors, no `tokio`.
+The contract crates carry no runtime, no actors, no `tokio` — they
+declare typed wire vocabulary and nothing else. The runtime crate
+owns the daemon, the CLI, and the typed sema-engine state. The
+split is filesystem-enforced (per `skills/micro-components.md`).
 
 ---
 
-## Why this shape
+## The five invariants
 
-A CLI invocation is a short-lived process. It cannot supervise actors,
-own a `redb` handle across requests, hold subscription streams, or
-sequence operation IDs. **A daemon does all four.** The CLI exists
-because humans and early agents need a text bridge into the typed wire;
-once peer components speak Signal directly (which they already do —
+Each invariant becomes a witness test (per
+`skills/architectural-truth-tests.md`). The test names appear in the
+table at the end of this section.
+
+### 1. The CLI has exactly one Signal peer — its own daemon
+
+The CLI is a text bridge into the typed wire for *one* daemon's
+contract. It cannot multiplex across daemons, open another component's
+database, or speak its own parallel protocol. The CLI exists because
+humans and early agents need a text-to-Signal adapter; once peer
+daemons speak Signal directly to each other (which they already do —
 `persona-introspect`'s daemon queries `persona-router` over
 `signal-persona-router`), the CLI is no longer load-bearing for that
-path.
+path and retires.
 
 The CLI is **eventually obsolete machinery**. Keep CLI-side logic thin
-accordingly. Per `lojix/ARCHITECTURE.md` §"CLI/daemon boundary": *"Until
-agents can speak binary Signal directly, the CLI exists only to
-translate human/agent text into daemon Signal and daemon Signal back
-into text."*
+accordingly.
 
----
+### 2. The daemon's external surface is exclusively `signal-core` frames
 
-## The six verbs and what each one means
+No `serde_json` socket, no NOTA on the wire between components, no
+parallel control protocol. NOTA exists at three named projection edges
+— CLI argv/stdin, daemon ↔ harness terminal, audit/debug dumps —
+never inter-component.
 
-The `SignalVerb` set is closed at six roots (in `signal-core/src/verb.rs`):
+A daemon may be a Signal client of any number of peer daemons (this is
+how daemons compose); the "exactly one peer" constraint applies to
+CLIs, not daemons. What no daemon may do is bypass another daemon's
+contract — no opening another component's redb, no shared in-memory
+state.
+
+### 3. The verb is declared per-variant by the contract crate
+
+Each `signal_channel!` request enum variant carries one of the six
+`SignalVerb` roots (`Assert`, `Mutate`, `Retract`, `Match`,
+`Subscribe`, `Validate`). The CLI's NOTA sugar omits the verb keyword
+because every variant maps to exactly one verb — the contract resolves
+it from the payload type.
+
+The verbs and their meanings:
 
 | Verb | Direction | What it means |
 |---|---|---|
 | `Assert` | bottom-up or peer | append a new typed fact / event / row |
-| `Mutate` | **top-down authority order** — *"change this, I don't care what you think"*. Authority issues; subordinate obeys and confirms | replace / transition a record at stable identity |
+| `Mutate` | top-down authority order — *"change this, I don't care what you think"*. Authority issues; subordinate obeys and confirms | replace / transition a record at stable identity |
 | `Retract` | top-down authority order | tombstone / remove a typed fact |
 | `Match` | any direction | one-shot pattern / range / key query |
 | `Subscribe` | observer ↔ producer | initial state + commit-deltas (push, not poll) |
 | `Validate` | any direction | dry-run an operation without commit |
 
-**Mutate is the authority verb.** When persona-mind issues a `Mutate` to
-`persona-orchestrate`, mind is *ordering* a change, not asserting a
-fact. The recipient obeys and confirms; the issuer transitions its own
-state from *possibly-mutated* to *now-mutated* on the confirmation, and
-only then proceeds to any downstream order (spawn the harness, install
-the channel, deliver the message). The Mutate chain is how the system
-maintains correctness *from the top down*. Without the explicit
-authority-verb framing, the same chain devolves into ambiguous
-"requests" with no protocol for who has the right to refuse.
+**Mutate is the authority verb.** When mind issues a `Mutate` to
+orchestrate, mind is *ordering* a change, not asserting a fact. The
+recipient obeys and confirms; the issuer transitions its own state
+from *possibly-mutated* to *now-mutated* on the confirmation, and only
+then proceeds to any downstream order. The Mutate chain maintains
+correctness top-down.
 
-**Subscribe flows the other way.** Authority *observes* state via
-push-subscriptions from down-tree (per `skills/push-not-pull.md`),
-*decides*, and *orders* via Mutate down-tree. Observation up, authority
-down.
+**Subscribe flows the other way.** Authority observes state via push-
+subscriptions from down-tree (per `skills/push-not-pull.md`), decides,
+orders via Mutate down-tree. Observation up, authority down.
 
 **Assert is for new facts.** When a CLI user sends a message, the
 component asserts the message exists. When a sensor records an
-observation, it asserts the observation. No authority chain — just *a
-new typed fact entered the system*.
+observation, it asserts. No authority chain — just a new typed fact
+entered the system.
 
-The contract crate (`signal-<component>`) declares the verb per request
-variant inside the `signal_channel!` macro. The CLI's NOTA-sugar
-omits the verb keyword because every variant maps to exactly one verb.
-Concrete: `message '(Send recipient "hi")'` desugars to
-`(Assert (MessageSubmission (MessageRecipient recipient) (MessageBody "hi")))`
-because `signal-persona-message` declares `MessageSubmission → Assert`.
+### 4. Two authority tiers — both part of the triad
+
+A stateful component has two typed authority surfaces, both part of
+the triad:
+
+- **`signal-<component>`** — ordinary peer surface. Variants here are
+  callable by any authenticated peer.
+- **`owner-signal-<component>`** — owner-only authority/configuration
+  surface. Variants here are callable only by the component's owner
+  (the entity above it in the workspace's owner graph — e.g., mind
+  owns orchestrate; orchestrate owns router and harness).
+
+Each surface gets its own typed listener actor inside the daemon and
+its own permission-separated socket. Per-component Unix users/groups
+enforce the owner socket as an OS security boundary; same-UID prototype
+is for author-only development.
+
+**Contracts split by who-can-call, not by what-state-they-touch.**
+Variants in the owner contract are owner-only; variants in the
+ordinary contract are peer-callable. *Both contracts can carry
+`Mutate` variants* against any kind of state — what places a variant
+in one contract rather than the other is whether the caller needs
+owner authority. A peer-callable `Mutate` (peer mutates a record they
+own, like releasing their own claim) lives in the ordinary contract;
+an owner-only `Mutate` (mind orders orchestrate to spawn an agent)
+lives in the owner contract.
+
+The two surfaces ship together. A daemon with only the ordinary
+surface is not yet triad-shaped — the next implementation arc for any
+component must deliver both. Privileged mutable configuration enters
+through the owner-signal actor; there is no separate privileged side
+channel and no "static local config first, owner-signal later"
+implementation path.
+
+### 5. Policy state and working state — both in one sema-engine DB
+
+Every triad daemon's durable state splits into two typed categories,
+both living in the same `<component>.redb` opened through
+`sema-engine`:
+
+**Policy state** — the rules the daemon enforces.
+- Source of truth: the daemon's sema tables, after bootstrap.
+- How it changes: only owner-signal `Mutate` verbs (variants in the
+  owner contract).
+- First-start population: from `bootstrap-policy.nota` in the
+  component's repo. The daemon reads this file exactly once — on first
+  start, when the policy tables are empty — writes the declared
+  records as if they had been Mutated, then records bootstrap-complete
+  in a one-shot table. Never reads the file again.
+- After first start: changes to `bootstrap-policy.nota` are ignored.
+  Policy changes only via owner `Mutate`. Factory reset is deliberate
+  — blow away the redb (the daemon re-bootstraps), or issue an explicit
+  reset verb.
+- Examples (orchestrate): `lane_registry`, `scheduling_policy`,
+  `supervision_policies`.
+
+**Working state** — the records produced by operation.
+- Source of truth: the daemon's sema tables, from operation.
+- How it changes: per the variants in either contract — some peer
+  `Assert`s (e.g. activity submission), some peer `Mutate`s of records
+  the peer owns (e.g. releasing their own claim), some owner `Mutate`s
+  (e.g. mind ordering a run stopped).
+- First-start population: empty. Working state never bootstraps from
+  file.
+- Examples (orchestrate): `claims`, `activities`, `agent_runs`,
+  `spawn_plans`, `scope_acquisitions`, `escalation_state`.
+
+The split is by table category — table name prefixes or a sema
+table-set declaration — not by storage backend. One sema-engine DB
+per component; two categories of table within.
+
+This invariant settles a recurring design question: *"how does the
+daemon get its config on first start?"* The answer is bootstrap-once
+from a declared NOTA file in the repo; thereafter, owner Mutate is
+the only path. The bootstrap file is a one-shot seed, not source-of-
+truth.
+
+### Witness tests
+
+| Test | Proves invariant |
+|---|---|
+| `<component>-cli-accepts-one-argument-and-prints-one-nota-reply` | 1 |
+| `<component>-cli-has-exactly-one-signal-peer` | 1 |
+| `<component>-cli-cannot-open-peer-database-or-socket` | 1 |
+| `<component>-daemon-rejects-non-signal-traffic-on-its-socket` | 2 |
+| `<component>-signal-verb-mapping-covers-every-request-variant` | 3 |
+| `<component>-owner-socket-rejects-ordinary-frame` | 4 |
+| `<component>-ordinary-socket-rejects-owner-frame` | 4 |
+| `<component>-owner-socket-mode-matches-spawn-envelope` | 4 |
+| `<component>-policy-tables-empty-on-first-start-trigger-bootstrap` | 5 |
+| `<component>-bootstrap-runs-exactly-once` | 5 |
+| `<component>-policy-changes-after-bootstrap-only-via-owner-signal` | 5 |
+| `<component>-working-tables-never-read-bootstrap-file` | 5 |
+| `<component>-binary-rejects-flag-style-arguments` | argument rule below |
+
+---
+
+## The single argument rule
+
+Every component binary — CLI and daemon both — takes exactly one
+argument on argv. That argument is one of:
+
+- A **NOTA string literal**: `persona-orchestrate '(RoleClaim ...)'`
+- A path to a **NOTA file**: `persona-orchestrate ./request.nota`
+- A path to a **signal-encoded file** (rkyv binary):
+  `persona-orchestrate-daemon ./config.signal`
+
+**No flags.** No `--verbose`, no `--format=json`, no `--config=path`,
+no positional second arguments. If the binary needs additional
+configuration, that configuration is a field of the NOTA payload —
+the contract's NOTA schema is the only source of truth for what
+arguments mean.
+
+For the CLI: the argument is a NOTA request record matching one of
+the request variants in the component's ordinary or owner contract.
+
+For the daemon: the argument is a NOTA config record naming the
+daemon's identity, socket paths, redb path, and the path to its
+`bootstrap-policy.nota`. The config record's schema lives in
+`signal-<component>` (or a small `<component>-config` crate if it
+needs to be shared between daemon and a deploy helper).
+
+If a new argument shape is needed, the contract's NOTA schema gets a
+new field or variant — not a new CLI flag. This is the rule that
+keeps NOTA the single language for invoking the workspace: the
+moment one binary starts accepting flags, the workspace fragments
+into ad-hoc CLIs.
 
 ---
 
@@ -141,40 +245,24 @@ extend the pattern of carve-outs.
    audio), the data plane is a separate socket outside the triad. The
    control plane still follows the triad. Canonical example:
    `persona-terminal`'s `control.sock` (Signal) vs `data.sock` (raw
-   viewer bytes); raw bytes flow viewer ↔ `terminal-cell` `data.sock`
-   directly. Document the exception in the component's ARCH.
+   viewer bytes); raw bytes flow viewer ↔ `terminal-cell`'s
+   `data.sock` directly. Document the exception in the component's
+   ARCH.
 
 3. **A daemon may be a Signal client of any number of peer daemons.**
    `persona-introspect`'s daemon opens client connections to
    `persona-router`, `persona-terminal`, `persona-manager` over their
-   contracts. This is the right shape. **The CLI's "exactly one peer"
-   constraint does not extend to daemons** — fanning out across peers is
-   how daemons compose. What the daemon may not do is bypass another
-   daemon's contract (no opening another component's redb, no shared
-   in-memory state).
-
----
-
-## The witness tests every triad ships
-
-Each constraint becomes a test (per `skills/architectural-truth-tests.md`).
-Use these exact names so the discipline reads at a glance:
-
-| Test | Proves |
-|---|---|
-| `<component>-cli-accepts-one-nota-record-and-prints-one-nota-reply` | The CLI is one-NOTA-in-one-NOTA-out. |
-| `<component>-cli-has-exactly-one-signal-peer` | The CLI cannot multiplex across daemons. |
-| `<component>-daemon-rejects-non-signal-traffic-on-its-socket` | The daemon's external surface is exclusively `signal-core` frames. |
-| `<component>-signal-verb-mapping-covers-every-request-variant` | Every request variant has a declared `SignalVerb`. |
-| `<component>-cli-cannot-open-peer-database-or-socket` | The CLI never bypasses its daemon. |
+   contracts. This is the right shape. The CLI's "exactly one peer"
+   constraint does not extend to daemons — fanning out across peers
+   is how daemons compose.
 
 ---
 
 ## Authority chain — worked example
 
 Persona's correctness is maintained top-down via Mutate chains.
-Concrete: when persona-mind decides a new agent needs a channel grant
-so it can talk to the router:
+When mind decides a new agent run needs a channel grant so it can
+talk to the router:
 
 ```mermaid
 flowchart TB
@@ -196,32 +284,33 @@ flowchart TB
     orch    -. "Subscribe: agent lifecycle"   .-> mind
 ```
 
-At each Mutate step the issuer holds *possibly-mutated* state until the
-ack arrives; only then does it advance to the next order. Replies are
-not opinions — they are confirmations. The authority chain is what
-makes the next step safe: the harness is not spawned with channel
-rights until the router has confirmed the channel exists.
+At each Mutate step the issuer holds *possibly-mutated* state until
+the ack arrives; only then does it advance to the next order. Replies
+are not opinions — they are confirmations. The authority chain makes
+the next step safe: the harness is not spawned with channel rights
+until the router has confirmed the channel exists.
 
 ---
 
 ## When this skill applies
 
-- **Designing a new stateful component.** Default to the triad. If the
-  shape doesn't fit, write down which named carve-out justifies the
+- **Designing a new stateful component.** Default to the triad. If
+  the shape doesn't fit, name which carve-out justifies the
   divergence — or escalate to the user before deviating.
-- **Auditing an existing component.** Check it against the three
-  invariants and the witness tests. Surface deviations in a report.
-- **Reading a component's `ARCHITECTURE.md`.** The ARCH should *cite*
-  this skill and only state component-specific carve-outs — not
-  restate the universal invariants.
+- **Auditing an existing component.** Check it against the five
+  invariants and the single-argument rule. Surface deviations in a
+  report.
+- **Reading a component's `ARCHITECTURE.md`.** The ARCH cites this
+  skill and only states component-specific carve-outs — never restates
+  the universal invariants.
 
 ---
 
 ## See also
 
-- `~/primary/ESSENCE.md` §"Micro-components" — the one-capability-one-
-  crate-one-repo rule the triad applies on top of.
-- `~/primary/skills/micro-components.md` — file-system-enforced
+- `~/primary/ESSENCE.md` §"Micro-components" — the one-capability-
+  one-crate-one-repo rule the triad applies on top of.
+- `~/primary/skills/micro-components.md` — filesystem-enforced
   per-capability boundary; the triad is the *shape inside the
   boundary*.
 - `~/primary/skills/contract-repo.md` — what lives in a `signal-*`
@@ -231,11 +320,6 @@ rights until the router has confirmed the channel exists.
   the daemon's actor-root shape.
 - `~/primary/skills/push-not-pull.md` — Subscribe, not poll.
 - `~/primary/skills/architectural-truth-tests.md` — witness-test
-  discipline for the constraints above.
-- `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` — the wire
-  kernel; closed six-root verb set; `signal_channel!` macro.
-- `~/primary/reports/designer/209-component-triad-daemon-cli-contract-2026-05-17.md`
-  — the audit that established this skill's scope.
-- `~/primary/reports/designer/210-component-triad-decisions-and-mutate-authority-2026-05-17.md`
-  — Mutate's authority semantics, the orchestrate component context,
-  follow-ups.
+  discipline for the invariants above.
+- `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` — the
+  wire kernel; closed six-root verb set; `signal_channel!` macro.

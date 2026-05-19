@@ -69,6 +69,13 @@ Each agent knows its lane before claiming or editing. Coordination:
 - **Spell every identifier as a full English word.** `Request` not
   `Req`. `Reply` not `Rep`. The narrow carve-outs and the justification
   live in `ESSENCE.md` §"Naming" and `skills/naming.md`.
+- **NOTA is the only argument language.** Every component binary
+  (CLI and daemon) takes exactly one argument: a NOTA string, a path
+  to a NOTA file, or a path to a signal-encoded (rkyv) file. No flags
+  (`--verbose`, `--format`, `--config=path`) — ever. If a binary
+  needs new configuration, the contract's NOTA schema gets a new
+  field. Full rule: `skills/component-triad.md` §"The single argument
+  rule".
 - **No harness-dependent memory.** Workspace truth lives in files
   every agent can open. Don't use per-session memory at
   `~/.claude/projects/<workspace>/memory/` or any agent-private store.
