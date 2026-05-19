@@ -46,6 +46,9 @@ triad:
   - `main`: `d198fa24 orchestrate: mark signal migration requirement`
   - bookmark: `persona-orchestrate-mvp`
 
+The `main` lines include later architecture-note commits. The
+`persona-orchestrate-mvp` bookmarks remain the implementation snapshot.
+
 ## Architecture Redirection
 
 `reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
