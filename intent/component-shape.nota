@@ -87,3 +87,45 @@
     "Establishing the contract-locality of verbs. Cross-contract verb-name reuse is allowed and expected; the meaning is dispatched on the receiver, not on the name in isolation."
     Maximum
     2026-05-19T19:45:00Z)
+
+(Decision
+    "signal-core is renamed to signal-frame. The renamed crate owns frame mechanics only: Frame envelope, length-prefixed rkyv archives, handshake, protocol version, exchange identifiers, async correlation, streams, reply plumbing. No SignalVerb enum, no Sema verbs."
+    "I agree with your conclusion with your first question"
+    "Settling Q1 from /238 §7. signal-core's role narrows; rename to signal-frame for clarity."
+    Maximum
+    2026-05-19T20:00:00Z)
+
+(Decision
+    "The signal_channel! macro stays as one macro but is modified to declare contract-local operations instead of verb-tagged variants. Input shape becomes 'operation <Verb>(<Payload>)' without a leading SignalVerb. Macro continues to emit the contract's Operation enum + frame plumbing (Frame, ChannelRequest, ChannelReply, RequestBuilder)."
+    "if I understand it right, you're saying we keep the macro but modify it. And that I agree with."
+    "Settling Q2 from /238 §7. One macro; new input shape."
+    Maximum
+    2026-05-19T20:00:00Z)
+
+(Decision
+    "Verb-to-Sema lowering lives in the daemon executor — runtime policy, not macro-static declaration. The same contract verb means different things depending on which daemon receives it; the lowering is necessarily executor-specific. 'For a bird to lower itself, it changes the angle of its wings. But for a cloud to lower itself, it changes its temperature.' Same verb (lower), different effect per receiver."
+    "the lowering lives in the daemon, right? Yeah, it's just a daemon dependent thing. Because for a bird to lower itself, it changes the angle of its wings. But for a cloud to lower itself, it changes its temperature. So the verb will mean different things depending on who is dealing with them."
+    "Settling Q3 from /238 §7 with a load-bearing metaphor: same verb has receiver-specific lowering. Reinforces the cross-contract verb-reuse principle from 19:45."
+    Maximum
+    2026-05-19T20:00:00Z)
+
+(Decision
+    "Introspection observes both public-layer operations AND Sema-effect-layer operations. persona-introspect consumes all contract crates so it knows about every observable type. The mechanism: a universal observer hook on every daemon — whenever a message arrives or a Sema effect happens, the daemon checks for a subscribed observer lane and sends a copy if present. Subscribing to that hook is done on the daemon's normal (public) socket, not the owner socket — observation isn't a security concern because no secrets cross the wire, and putting it on the owner socket would create ambiguity about which owner observation belongs to. The interface is a debug surface for the engine."
+    "I think introspection should be able to introspect anything. … both the semi effect and the public layer observation. So persona introspect still consumes all the contracts. … there could be maybe a universal kind of hook. Whenever a message arrives, it looks for an observer lane. And just sends a copy there, if it's there. … Subscribing to these events would be done on the public socket. Or the, yeah, the normal socket."
+    "Settling Q4 from /238 §7. Universal observer-hook mechanism; subscription on the public socket. Introspection is a debugging surface; observation isn't security-sensitive."
+    Maximum
+    2026-05-19T20:00:00Z)
+
+(Decision
+    "Authorize creation of new GitHub repositories for the migration: signal-frame (renamed signal-core, frame mechanics only) and signal-sema (the new home for the 6 Sema verbs Assert/Mutate/Retract/Match/Subscribe/Validate). Agents are unblocked to transition to the new repos. A migration report goes alongside so agents can drive their component refactors."
+    "you can go ahead and create those public repositories with the new names and the new implementation and create a report that agents can consume to do the migration on their component."
+    "Authorizing the giant editing spree. Repos created publicly with new names; migration report is the agent-consumable entry point."
+    Maximum
+    2026-05-19T20:00:00Z)
+
+(Decision
+    "Big migration begins now. Edit all relevant skills (contract-repo, naming, language-design, etc.) to absorb the new direction. Dispatch agents to do component-by-component architecture editing where useful — leave 'must implement' notes in component ARCHITECTURE.md files. Use reports as the documentation substrate (psyche-observable). The psyche is leaving the workspace to the agents for this phase."
+    "go on a massive editing spree of... Maybe create some... Some beads that have enough references to enough contexts that... Yeah, this is kind of large, so you kind of need to think wide. Like start documenting what this all means, and probably just use reports … I guess you could use agents and just send them on components to do some architecture stuff and leave a note, maybe. That says must implement."
+    "Direction for the editing spree: reports as the documentation substrate, parallel agent work on components, 'must implement' annotations across affected crates."
+    Maximum
+    2026-05-19T20:00:00Z)
