@@ -116,9 +116,13 @@ Remote refs exist on the live Gitolite server:
 
 That proves Gitolite accepted real pushes for all three new repos.
 
-## Critical Spool Boundary Gap
+## Original Spool Boundary Gap
 
-The current CriomOS hook path is not yet a proven daemon handoff.
+Status as of CriomOS commit `717504ab`: resolved on `ouranos` for the
+current production Gitolite slice.
+
+Before the production CriomOS fix, the hook path was not a proven daemon
+handoff.
 
 Observed on `ouranos`:
 
@@ -137,11 +141,11 @@ That means notification files are likely `0600 gitolite:gitolite`. A future
 `repository-ledger-daemon` running as its own per-component Unix user will not
 be able to read them unless the system layer changes the handoff boundary.
 
-This matters because the component-triad / owner-signal direction points toward
+This mattered because the component-triad / owner-signal direction points toward
 a dedicated daemon identity, not running the repository ledger daemon as the
 `gitolite` user.
 
-Recommended system shape:
+Recommended system shape, now implemented in CriomOS:
 
 - Create a dedicated `repository-ledger` Unix user for the daemon.
 - Create a shared receive group, for example `repository-ledger-receive`.
@@ -150,8 +154,38 @@ Recommended system shape:
 - Make hook output files group-readable, either with `umask 007` or an explicit
   `chmod 0640` after writing.
 
-Until this lands, Gitolite is live and pushable, but the hook-to-daemon spool
-handoff is not yet proven under the intended OS security model.
+This gap is closed for the current local production slice.
+
+## Resolution Witness
+
+Production CriomOS now creates:
+
+- `repository-ledger` system user.
+- `repository-ledger` system group.
+- `repository-ledger-receive` shared group containing `gitolite` and
+  `repository-ledger`.
+- `/var/lib/repository-ledger` as `2770 repository-ledger:repository-ledger-receive`.
+- `/var/lib/repository-ledger/spool` as `2770 gitolite:repository-ledger-receive`.
+- `/run/repository-ledger` as `0750 repository-ledger:repository-ledger-receive`.
+
+The post-receive hook now writes notification files with group
+`repository-ledger-receive` and mode `0640`.
+
+Runtime witness after deploying locally on `ouranos`:
+
+- A fresh push to the `testing` Gitolite repository created a
+  `RepositoryReceiveHookNotification` file.
+- The file landed as `0640 gitolite:repository-ledger-receive`.
+- `runuser -u repository-ledger -- test -r <latest-spool-file>` returned
+  success.
+- The `repository-ledger` user could read the NOTA notification content.
+
+Verification:
+
+- `lojix-cli '(FullOs goldragon ouranos ".../datom.nota" "github:LiGoldragon/CriomOS/main" Switch None [])'`
+  completed successfully.
+- `checks.x86_64-linux.repository-receive-role-policy` passed with the
+  generated production `system` and `horizon` inputs.
 
 ## Not Yet Implemented
 
