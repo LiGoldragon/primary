@@ -102,3 +102,17 @@
     "After the intent-backfill detour, psyche redirected current work toward context maintenance and assembling persona-orchestrate intent/architecture so implementation can proceed beyond tools/orchestrate."
     Medium
     2026-05-19T12:16:06Z)
+
+(Decision
+    "persona-spirit starts with typed intent logging/querying for agents: a CLI that type-checks intent entries and can be used before spirit-to-mind ownership is implemented."
+    "We don't need to worry about the spirit-to-mind own invariants right now. We really want to start with the persona-spirit component so that agents can use it with the CLI so that we can have type checking on intent logging and agents can use it to query stuff."
+    "Narrowing the next persona-spirit implementation slice after the raw triad scaffold landed."
+    Maximum
+    2026-05-19T13:08:11Z)
+
+(Decision
+    "An intent entry can be restated and therefore owns multiple verbatim references. The verbatim field is a vector of timestamped structs rather than one flat quote string."
+    "every intent, because it can be restated, can have multiple verbatim references. So that the verbatim object is going to be a vector, and that because every verbatim entry is going to have a timestamp, it's going to be a struct."
+    "Defining the first typed persona-spirit intent-entry record shape, replacing the crude manual file schema."
+    Maximum
+    2026-05-19T13:08:11Z)
