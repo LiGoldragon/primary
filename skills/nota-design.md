@@ -136,37 +136,34 @@ Agents (this one, repeatedly) keep proposing shapes that violate
 them. The source of truth is `nota/README.md`; restated here so
 the discipline skill carries the load.
 
-**The mental model.** NOTA has three kinds of values:
+**The mental model — three cases for PascalCase, one for the rest.**
 
-- **Primitives**: strings (`"…"` or bare), integers, floats, bools,
-  bytes (`#…`).
-- **Structs**: positional fields, **no type tag in the wire form**.
-  Written as `(field1 field2 field3 …)`. The schema position tells
-  the reader what struct this is.
-- **Enums**: tagged by the variant's PascalCase name. Written as
-  `(VariantName field1 field2 …)`. The tag IS the variant.
+When you read NOTA, every PascalCase token falls into one of
+three cases:
 
-**A PascalCase token at the start of `(…)` is ALWAYS an enum
-variant.** There is no "sometimes the first token is a struct's
-name" case. If you see PascalCase first, you're inside an enum.
-If you don't, you're inside a struct.
+1. `(VariantName fields…)` — **data-carrying enum variant**. The
+   opening `(` followed immediately by a PascalCase token means
+   you're at an enum variant that carries data; everything after
+   the variant name is its fields, positional.
+2. `(fields…)` without a leading PascalCase — **struct**. No tag.
+   The schema position tells the reader what struct this is.
+3. Bare `VariantName` with no preceding `(` — **non-data-carrying
+   unit variant**. Like `None`, `Maximum`, `Apex`.
 
-**Sequences** `[…]` are `Vec<T>` — every element is the same type.
+Everything else is a primitive (strings, numbers, bools, bytes) or
+a sequence `[…]` which is `Vec<T>` (every element the same type).
 
-**Lists are homogeneous; heterogeneous positional structure is a
-struct.** A `(date, time, quote)` triple is a struct; write it
-`(2026-05-19 18:30 "first quote")` — no tag, just three positional
-fields. If the same file held multiple triple shapes (e.g.
-different statement kinds), you'd have an enum and the variants
-would tag each: `(Said …)` / `(Quoted …)` / etc.
+**The corollary**: when you write a NOTA record, ask: *can this
+position hold more than one shape?* If yes, you have an enum;
+every record tags its variant (case 1) or is a unit (case 3). If
+no, you have a struct; write the fields directly without any tag
+(case 2).
 
-> *(Note 2026-05-19: the prior version of this section invented
-> 'head' and 'monomorphic position' terminology. NOTA's actual
-> concepts are simpler than that: PascalCase tag = enum variant,
-> no tag = struct, sequence = `Vec<T>`. The over-strict "every
-> record names its type" claim in `nota/README.md` conflates
-> structs with enum variants and is being corrected per bead
-> `primary-hj63`.)*
+This is the entirety of the PascalCase rule. Earlier versions of
+this skill invented terminology ("head", "monomorphic position")
+and the `nota/README.md` over-states the rule by conflating
+structs with enum variants — both being corrected per bead
+`primary-hj63`.
 
 **Bare identifiers as strings.** Where the schema expects `String`,
 a bare ident-class token serves as the value (`(Package nota-codec)`

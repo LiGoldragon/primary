@@ -88,3 +88,10 @@
     "Seventh NOTA correction. The mental model I was missing: PascalCase tag = enum variant, always. No tag = struct. That's the binary. Rule 1 of nota-design.md becomes 'drop the variant tag if there's only one variant — because then it's a struct, not an enum.' The README needs the same correction in primary-hj63."
     Maximum
     2026-05-19 20:45)
+
+(Decision
+    "NOTA's PascalCase-token mental model is three cases. `(VariantName fields…)` = data-carrying enum variant (everything after the variant name is its data). `(fields…)` without a leading PascalCase = struct. Bare `VariantName` with no preceding `(` = non-data-carrying unit variant. That covers every PascalCase usage in NOTA. Agents repeatedly miss this because it has never been documented this cleanly."
+    "when you have something like what we have in the current nota files for intent, so first opens a parentheses, right? Then you have a Pascal case identifier. So because you've opened a parentheses and there's a Pascal case, that means you have a data-carrying variant. And everything after the first Pascal case identifier, which is the variant name, is the data of the variant. … If there's a parenthesis and it doesn't start with a variant name, then it's a struct. If there's a parenthesis and it starts with a variant name, then it's a data-carrying variant. If there's no parenthesis before, there's no opening parenthesis before the variant name, then it's a non-data-carrying variant."
+    "The clean three-case rule. Replaces my prior invented terminology and partial framings. Lands in skills/nota-design.md and feeds bead primary-hj63 for the README rewrite."
+    Maximum
+    2026-05-19 21:00)
