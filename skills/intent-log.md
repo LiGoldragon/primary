@@ -36,8 +36,7 @@ Sweep and supersession discipline lives in
 
 ## When to record
 
-Record when the author explicitly states something durable on a
-topic that's expected to apply beyond the current task. The five
+Record every psyche statement that classifies as intent — the five
 recordable kinds:
 
 | Kind | Author shape |
@@ -48,20 +47,34 @@ recordable kinds:
 | `Clarification` | "when I said X, I meant Y" |
 | `Constraint` | "never do Z" |
 
-Do **not** record:
+**Record everything that classifies as intent — no filtering
+at capture time.** *"Just write down the intent as it comes."*
+Repetition is itself signal: when the psyche restates an intent
+across sessions, the cluster of records carries the intensity.
+The workspace does not dedup or filter at the log layer.
+Refinement of intent — supersession, certainty lowering,
+negation, dedup — is downstream (the spirit guardian arrives
+with the multi-agent auditing arc per `skills/intent-maintenance.md`
+§"Forward — richer supersession lifecycle").
 
-- Routine confirmations of a fully-specified agent proposal ("yeah,
-  sounds good" — the substance is in the proposal; the green light
-  isn't an intent).
-- Brainstorming-out-loud where the author explicitly says they're
-  not sure yet (record only the parts they *do* commit to, with
-  certainty `Minimum`).
-- Conversational tangents.
+Even short responses can carry substantial intent. A "yes" to
+an agent's proposal locks in the proposal's substance as a
+Decision; record with the proposal substance as the summary and
+the "yes" as the verbatim. A "let me think about that" is a
+Clarification at `Minimum` certainty, not silence — record it.
+Brainstorming-out-loud where the psyche says "I'm not sure"
+still carries intent at `Minimum` — record what was said.
 
-The bar: *would this statement be valuable to a future agent
-trying to understand what the author actually wants on this topic?*
-If yes, record. If unclear, ask the author whether to record before
-recording.
+What is **not** intent (and so not recorded):
+
+- **Pure questions** — *"How does X work?"* carries no intent;
+  answer in chat, no record needed.
+- **Conversational tangents** with no decision, principle,
+  correction, clarification, or constraint.
+
+The classification step is the only filter. The bar: *does the
+statement carry intent, or is it a pure question?* If it carries
+intent in any of the five kinds, record it.
 
 ## Record shape
 

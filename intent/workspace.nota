@@ -339,3 +339,17 @@
     "Refining the golden rule with the classification step. The bare logging-is-first rule could be read as 'always log' — psyche clarified that the actual first step is the classification decision, and that 'yes'-shaped responses can carry substantial intent depending on context."
     Maximum
     2026-05-19T18:10:00Z)
+
+(Clarification
+    "Agents using the Write tool to append intent records instead of the documented cat-append shell pattern is acceptable practice — not a hard violation. Write's failure mode (refusing to write when the file has changed under it) provides natural safety against the concurrent-append risk the shell pattern was designed to avoid. Persona-spirit will eventually be the canonical recording mechanism, supplanting both. Documented preference (shell append) remains, but it is not load-bearing."
+    "they don't seem to really understand the mechanism by which they can append entries to the intent log. They just use the write tool. Which I guess is not that big of a deal, really. … if the file has changed and they use the write tool to insert at a certain line, it doesn't work, it fails, so it's actually fine. … I guess we're solving this now by making persona spirit."
+    "Psyche observed that agents drift to Write-tool usage instead of cat-append, and resolved that it's acceptable because Write's stale-state failure mode prevents the corruption risk."
+    Medium
+    2026-05-19T18:35:00Z)
+
+(Decision
+    "Record every psyche statement that classifies as intent — no filtering at capture time. The skills/intent-log.md 'Do not record routine confirmations of a fully-specified agent proposal' rule is retired. Repetition is signal: when intent gets restated across sessions, the cluster of records carries the intensity; the workspace doesn't dedup or filter at the log layer. Refinement of intent — supersession, certainty lowering, negation, dedup — is a downstream system (spirit guardian, multi-agent auditing) that arrives later. For now, the raw log captures everything."
+    "now we record everything. Yeah, because otherwise it's too complicated. Just write down the intent as it comes. And then when an intent gets expressed more, then it becomes stronger. And then we're gonna, you know, eventually develop this into a more elaborate system for refining intent. But yeah, the raw intent log, we're just gonna log everything."
+    "Resolving the skills/intent-log.md 'Do not record' reconciliation from the prior turn. Psyche affirms: record everything classified as intent. Filtering is downstream."
+    Maximum
+    2026-05-19T18:35:00Z)

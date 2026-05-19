@@ -81,23 +81,27 @@ Examples (bad → good):
    descriptive name when the parameter has non-trivial semantic
    content.
 4. **Acronyms that have fully passed into general English.**
-   `cpu` is the canonical example — written and spoken as a
-   word in non-technical contexts. **Reach for this exception
-   sparingly.** Most code-side "acronyms" are convenience
-   shortenings (`ctx`, `cfg`, `addr`, `tok`, `buf`, `proc`),
-   not English words; those belong in the offender table above,
-   not here. Do **not** use `id` — spell `identifier`; the
-   psyche has been explicit: *"identifier is actually better."*
-   Protocol/format acronyms (`url`, `http`, `json`, `uuid`,
-   `tcp`, `udp`, `dns`) conventionally appear in their acronym
-   form when the spelled variant ("hypertext transfer protocol")
-   is genuinely awkward, but default to spelling out; reach for
-   the acronym only when the awkwardness is real. Internal
-   abbreviations of system concepts (`db`, `os`, `ui`, `io`,
-   `ram`) are convenience shortenings and should be spelled
-   (`database`, `operating_system`, `interface` if
-   user-interface is meant) unless the spelled form is itself
-   awkward in the specific context.
+   `cpu`, `url`, `http`, `json` are the canonical examples —
+   the acronym has functionally become the English word; the
+   spelled form ("hypertext transfer protocol", "javascript
+   object notation") is awkward or no longer remembered.
+   *"no one even knows what JSON actually extends to."* Use
+   these freely.
+
+   The test for adding others: *has the acronym functionally
+   become the English word?* `uuid`, `tcp`, `udp`, `dns` often
+   qualify in the right context — apply the test case-by-case.
+   Internal short forms of system concepts (`db`, `os`, `ui`,
+   `io`, `ram`) are convenience shortenings, not English words
+   — spell them (`database`, `operating_system`, `interface`
+   if user-interface is meant) unless the spelled form is
+   itself awkward.
+
+   Do **not** use `id` — spell `identifier`; the psyche has
+   been explicit: *"identifier is actually better."* Most
+   code-side "acronyms" are convenience shortenings (`ctx`,
+   `cfg`, `addr`, `tok`, `buf`, `proc`) and belong in the
+   offender table above, not in this exception.
 5. **Names inherited from `std` or well-known libraries.** `Vec`,
    `HashMap`, `Arc`, `Rc`, `Box`, `Cell`, `RefCell`, `Mutex`,
    `mpsc`, `regex`. Do not rename these; do *not* extend the

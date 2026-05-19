@@ -33,3 +33,10 @@
     "Manifestation directive: bring the two naming rules together across coding skills. ESSENCE.md §Naming is the missing keystone (AGENTS.md's hard override references it as if it exists). skills/naming.md already carries both rules but with the abbreviation exception list too wide; skills/contract-repo.md and skills/rust-discipline.md carry partial coverage. All need the paired emphasis."
     Maximum
     2026-05-19T18:20:00Z)
+
+(Decision
+    "Acronyms that have fully passed into general English are allowed in code: CPU, URL, HTTP, JSON. The test is whether the acronym has functionally become the English word — where the spelled form is awkward or no longer remembered. JSON specifically: 'no one even knows what JSON actually extends to.' Other technical acronyms (UUID, TCP, UDP, DNS) often qualify under the same test. Internal short forms (ctx, cfg, addr, db, os, ui, io, ram) are convenience shortenings, not English words — spell them. id explicitly does not qualify; use identifier."
+    "Yeah, we can use URL, HTTP, JSON. … Yeah, we can use CPU definitely, and HTTP and JSON. JSON is not really an acronym. I mean, it is an acronym, but it's not an abbreviation. It's an acronym that has basically become, no one even knows what JSON actually extends to."
+    "Settling the acronym exception list for skills/naming.md exception #4. Psyche affirmed CPU/URL/HTTP/JSON explicitly with the 'has it become the English word' test."
+    Maximum
+    2026-05-19T18:35:00Z)
