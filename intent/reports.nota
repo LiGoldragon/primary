@@ -76,3 +76,10 @@ We need to forbid this type of report name. So find out what the report is about
     "Correcting a report filename whose locator described that it responded to OA/154 instead of naming its actual persona-orchestrate subject."
     Maximum
     2026-05-19T17:05:00Z)
+
+(Constraint
+    "Never delete an uncommitted report. Commit first, then delete. Deletion of a committed report only removes it from the work tree — git history retains the substance. Deletion of an uncommitted report is total loss. This applies to the rename/amalgamation protocol: when a new report absorbs a predecessor, the predecessor's deletion is safe ONLY after both reports are committed."
+    "reports always have to be committed so that the deletions mean the report is lost. It just means now it's in the commit history and not the work tree. So don't ever delete a report that hasn't been committed, obviously."
+    "Adding a safety constraint to the rename/amalgamation protocol. The git-history-holds-lineage assumption only works when content has actually landed in git."
+    Maximum
+    2026-05-19T17:00:00Z)
