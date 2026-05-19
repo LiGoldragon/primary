@@ -269,3 +269,24 @@
     "Clarifies the direct hook-to-daemon Signal question. Do not introduce a separate hook-ingest socket yet; use the existing CLI path first."
     Maximum
     2026-05-19 15:57)
+
+(Decision
+    "A new skill — intent manifestation — covers the discipline of walking through intent files and translating recorded intent into the right guidance file. An agent reads intent records by topic, decides where each one belongs (ESSENCE.md, AGENTS.md, ONBOARDING.md, a specific skill, a per-repo INTENT.md or ESSENCE), and edits the destination accordingly. Eventually persona-spirit does this query-and-manifest automatically; today agents do it. Name candidates: intent-implementation / intent-translation / intent-manifestation. Settled: 'manifestation' — the verb is 'manifest the intent in a guidance file'."
+    "we should call it intent implementation, a new skill, where an agent walks through … intent — I don't know if I want to call it intent implementation or intent translation, or intent manifestation, there you go — where we take intent and go through intent files or whatever. Or when personal spirit is going to show up, we can actually query intent and find places where this intent should be expressed in either intent files in particular repositories"
+    "New workflow skill landing now; psyche settled the name 'manifestation' mid-message. Sweep itself deferred (psyche will route to another agent post-compaction)."
+    Maximum
+    2026-05-19 22:00)
+
+(Decision
+    "Vocabulary clarification — three terms, distinct surfaces. (1) 'Intent log' = the NOTA-format records in intent/<topic>.nota. Raw psyche statements, append-only, lock-free. (2) 'Intent file' = the per-repo INTENT.md at a repo root. Prose, mostly composed of summaries from the intent log, with verbatim psyche quotes interleaved. Like ARCHITECTURE.md but for intent. (3) 'Essence' = 'essential intent' — the highest, most universal psyche intent. Workspace ESSENCE.md is the workspace's essence; per-repo ESSENCE files (when they exist) are the project's essence. Same prose-of-summaries-plus-verbatim-quotes convention as intent files."
+    "these intent files that I'm talking about — so we have intent logs and intent files. And the intent log is the nota format. The intent file is the top-level file that lives in a repository. It's a markdown file, so it's intent markdown. And it's a description of intent in prose using intent summaries. … the highest intent lives in the essence, which is short for essential intent."
+    "Vocabulary settled. Distinguishes the three surfaces by format (NOTA vs markdown) and scope (log = raw records; file = synthesised prose; essence = highest distillation)."
+    Maximum
+    2026-05-19 22:00)
+
+(Decision
+    "Verbatim-quoting convention for intent files and essence files. When a psyche statement is quoted directly (after speech-to-text correction), wrap it in markdown italics — `*verbatim text*` (single asterisks). The rest of the file is prose composed of intent-log summaries, written together as flowing prose describing the project's or workspace's intent. The italics denote 'this is the psyche's own words'; surrounding prose is the agent's synthesis (mostly unchanged summaries, sometimes composed into sentences). The same convention applies to ESSENCE.md and per-repo essence files."
+    "if a verbatim psyche — if anything is verbatim from the psyche, from the psyche log, the verbatim log, then it should be in double asterisk surrounders. Or maybe something like that. I don't know. Maybe single asterisks or double asterisks. But we should use a standard like that. … whenever an intent is actually quoted directly from the psyche as the psyche said it, after speech-to-text correction, then it should be in some kind of asterisk surrounder or underline surrounder or something to denote that this is actually verbatim what the psyche said in his own words. And the rest is just prose of summaries written together as a straightforward file of intent."
+    "Picked single asterisks (italics) — the psyche left between single / double / underline; italics is the lightest and renders cleanly in markdown. Documented in skills/intent-manifestation.md and cross-referenced from skills/repo-intent.md."
+    Maximum
+    2026-05-19 22:00)
