@@ -12,4 +12,11 @@
     "Critique of an earlier skills.nota that wrapped every entry in (Skill …); produced the canonical three NOTA-design rules now living in skills/nota-design.md."
     Maximum
     2026-05-18T13:07:19Z)
+
+(Decision
+    "Add a typed `Path` shape to NOTA whose schema position relaxes the bare-token alphabet. Filepath-shaped content (`/`, `.` in the body) can be written bare when the schema expects `Path`; the quoted form remains the fallback for content with spaces or other unsafe symbols. Same discipline as `#[serde(transparent)]` newtypes accepting bare primitives at their position — the type at the schema position determines which bare alphabet applies."
+    "We should create a basic pass type that can either be in quotations if it has spaces or any other symbol that's not safe, but that could also be without quotations. And then we could relax the types of characters that are allowed in a pass type, in a object that expects a pass, so that we wouldn't always need to put pass into quotations."
+    "After my investigation explained that filepath strings always need quotes in NOTA (the bare-ident alphabet `[A-Za-z0-9_-]` excludes `/` and `.`), the psyche proposed introducing a typed Path shape with a relaxed alphabet at the schema position. Implemented in nota-codec main commit 97c1f496; spec section landed in nota main commit a0617b99; skills/skills.nota migrated to bare paths in workspace commit 9c018120."
+    Medium
+    2026-05-18T15:00:00Z)
 ]
