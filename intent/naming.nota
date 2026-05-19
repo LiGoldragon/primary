@@ -131,3 +131,17 @@
     "Correcting my persona-spirit example. The rule generalises across all contract verbs: pick the verb spelling, never the noun spelling that derived from it."
     Maximum
     2026-05-19T19:45:00Z)
+
+(Decision
+    "Verb/noun homograph collisions in operation roots are not a problem — position in the contract structure disambiguates. The operation-root position implies a verb interpretation; the payload position implies a noun interpretation. Same word can serve both roles within one contract (e.g., signal-persona-spirit's 'State' as the verb for psyche stating intent vs 'State' as the noun for psyche presence-state). Reader picks the meaning from position."
+    "I don't really see a problem since if we expect a verb then we would interpret it as a verb"
+    "Settling hole 1 from /242. The verb-form rule's apparent collision with noun forms isn't a real problem in practice — positional schema dispatches the interpretation."
+    Maximum
+    2026-05-19T21:15:00Z)
+
+(Decision
+    "Compound contract verbs are fine when the action they name doesn't decompose into separate verbs cleanly. 'DrainAndStop' is a valid contract-local operation root when the action is a single atomic graceful-shutdown sequence (drain → then stop). The English language's lack of a single word for the compound is a limitation to accept, not a problem to design around."
+    "Well, if we need an action that's drain and stop order, then that's what we call it. I don't really see a problem with that. It's just a limitation of the English language."
+    "Settling hole 3 from /242. Agglutinated compound verbs are valid; agents should not split a single atomic action into multiple operations just because English wants two words."
+    Maximum
+    2026-05-19T21:15:00Z)

@@ -430,3 +430,10 @@
     "Workflow constraint on nix invocations. Applies to nix flake check, nix build, etc. Future agent dispatches should include this instruction."
     Maximum
     2026-05-19T21:00:00Z)
+
+(Constraint
+    "Never write a long response in chat. The rule is absolute, not a soft preference. Substance goes in reports; chat names the report path and carries only the user-attention items (open questions, blockers, the next move). Agents repeatedly break this rule despite prior guidance — the failure is so persistent it warrants treating as ESSENCE-level discipline, not a skill-level convention."
+    "never write a long response. agents are so stupid and keep breaking this rule so much, its really annoying."
+    "Strengthening the chat-brevity rule from a discipline to an absolute. The persistence of the failure mode is the signal that the prior guidance wasn't strong enough."
+    Maximum
+    2026-05-20T00:00:00Z)
