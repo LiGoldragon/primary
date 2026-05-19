@@ -8,6 +8,11 @@ Code landings:
   daemon socket split.
 - `/git/github.com/LiGoldragon/persona-spirit` `31e36d7b` — `PolicyPlane`
   bootstrap reload handling.
+- `/git/github.com/LiGoldragon/persona-spirit` `e365799d` — explicit
+  bootstrap-policy source constructor and missing-source witness.
+- `/git/github.com/LiGoldragon/persona-spirit` `44072678` — daemon
+  configuration selects the bootstrap-policy source and has an owner-socket
+  reload witness.
 
 ## 0 · Short Read
 
@@ -18,10 +23,17 @@ Code landings:
 - Kameo actor planes for text, dispatch, record storage, working state,
   subscriptions, owner lifecycle, bootstrap policy, and reply projection;
 - a daemon with separate ordinary and owner Signal sockets;
+- daemon configuration that can select an embedded or external bootstrap
+  policy source;
 - constraint tests for the actor paths and socket boundaries.
 
 It is still not the full Spirit apex. The classifier, bootstrap-policy import,
-subscription event push, and owner-Mutate forwarding to mind are still absent.
+subscription event push, and typed owner-signal forwarding to mind are still
+absent.
+The public contract also sits on the pre-`reports/designer/238` Signal shape:
+`Assert` / `Match` / `Subscribe` / `Retract` are still present in the contract
+crates. That is now architectural drift, but the required signal-core and
+contract-local-verb rewrite is larger than this component slice.
 
 ## 1 · Current Runtime Shape
 
@@ -67,6 +79,10 @@ invocation. When `PERSONA_SPIRIT_SOCKET` is set, the CLI decodes one NOTA
 `SpiritRequest`, sends a length-prefixed Signal frame to the ordinary socket,
 and receives a typed Signal reply.
 
+`DaemonConfiguration` now carries an optional bootstrap-policy path. If absent,
+the embedded `bootstrap-policy.nota` seed remains the source; if present, the
+daemon starts `PolicyPlane` against that configured file.
+
 ## 2 · Representative Code Shape
 
 The root actor owns references to the long-lived logic planes:
@@ -108,6 +124,7 @@ persona_spirit_owner_lifecycle_orders_use_owner_plane
 persona_spirit_bootstrap_policy_reload_uses_policy_plane
 persona_spirit_daemon_serves_signal_frames_through_actor_root
 persona_spirit_daemon_serves_owner_signal_frames_through_owner_plane
+persona_spirit_daemon_configuration_controls_bootstrap_policy_source
 persona_spirit_ordinary_socket_rejects_owner_signal_frames
 persona_spirit_owner_socket_rejects_ordinary_signal_frames
 persona_spirit_daemon_rejects_verb_payload_mismatch_before_actor_execution
@@ -139,29 +156,40 @@ rejects it before any actor plane can process it.
 `SubscriptionPlane` opens and retracts subscriptions, but it does not yet push
 events. It is a lifecycle/token plane, not a live event stream.
 
-`PolicyPlane` parses the embedded `bootstrap-policy.nota` seed and
-`ReloadBootstrapPolicyOrder` now returns `BootstrapPolicyReloaded`. It does not
-yet support a runtime-configured policy path.
+`PolicyPlane` parses the embedded `bootstrap-policy.nota` seed by default.
+`DaemonConfiguration` can now point at an external bootstrap-policy file, and
+`ReloadBootstrapPolicyOrder` returns `BootstrapPolicyReloaded` after parsing
+that configured source. The actor runtime also has a missing-source failure
+witness.
 
 `RecordStore` still handles only the current entry and query surface. It does
 not yet store a refined intent-manifestation graph with multiple verbatim
 quotes per restated intent.
 
 There is no Spirit-to-mind forwarding. Spirit does not yet turn accepted intent
-into owner-Mutate calls toward `persona-mind`.
+into typed owner-signal calls toward `persona-mind`.
 
 ## 6 · Next Clear Work
 
-The next slices that do not need new product intent are:
+The next slices that do not need new product intent inside the current
+pre-contract-local-verb runtime are:
 
 1. Add subscription event delivery and tests that prove events cross the
    daemon socket as Signal stream frames.
 2. Add a refined stored entry model only if the psyche changes the current
    separate-record repetition intent.
-3. Add Spirit-to-mind owner-Mutate forwarding once the target contract is ready.
+3. Add Spirit-to-mind owner-signal forwarding once the target contract is ready.
 
 The classifier, contradiction guardian, and richer psyche model still need
 design intent before implementation.
+
+The stronger next architectural slice is outside `persona-spirit` alone:
+`reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
+supersedes the current public `SignalVerb` contract shape. Spirit's intended
+public operations become contract-local verbs such as `State`, `Record`,
+`Observe`, and stream/watch operations; the Sema verbs move below the daemon
+boundary. That requires coordinated `signal-core`, macro, contract, and
+consumer migration before this runtime can honestly remove the old wrappers.
 
 ## 7 · Verification
 
