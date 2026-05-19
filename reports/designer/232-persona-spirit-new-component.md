@@ -93,9 +93,13 @@ flowchart TB
 Two implications for existing components:
 
 - **`persona-mind` gains an owner.** Mind currently has no upstream
-  cognitive authority; spirit becomes that authority. `owner-signal-persona-mind`
-  may need new variants for spirit-to-mind orders (intent records
-  arriving, psyche-state transitions, work-graph priority hints).
+  cognitive authority; spirit becomes that authority. *Psyche
+  confirmed 2026-05-19.* `owner-signal-persona-mind` gains variants
+  for spirit-to-mind orders. The concrete relationship — what mind
+  receives from spirit beyond intent-awareness — develops as the
+  components flesh out. The psyche has stated the apex; the precise
+  verb set is design work that follows implementation, not a
+  blocker for it.
 - **`owner-signal-persona-spirit`'s only legitimate caller is the
   supervisor.** Spirit has no cognitive owner; the supervisor uses
   its owner contract for process-lifecycle concerns only (start,
@@ -130,12 +134,21 @@ policy and working categories. Both live in `persona-spirit.redb` via
 **Policy state** (owner-Mutate from supervisor only; first-start
 bootstrap from `bootstrap-policy.nota`):
 
-- Psyche identity markers (name? Communication preferences? Default
-  certainty when phrasing is ambiguous? — see Q2 below)
+The bootstrap is **the first intent — the root of spirit**.
+*Psyche on 2026-05-19: "the seed file is the first intent, right?
+The root of spirit. Something like do no harm. Well, maybe not, but
+basic stuff about how to live properly."* The shape: foundational
+right-knowledge / right-action principles in the spirit of the
+Bhagavad Gita. A separate research arc (deferred — not blocking
+implementation) will draft the actual content from the most
+important sacred teachings.
+
+Other policy state:
+- Psyche identity markers
 - Authority delegation policy (which downstream Mutates spirit is
-  authorized to issue, against which contracts)
-- Natural-language parsing policy (which models/configs translate
-  psyche prompts into typed intent — see Q5 below)
+  authorised to issue against which contracts)
+- LLM-mediation policy (which model handles natural-language → typed-
+  intent parsing)
 
 **Working state** (peer-callable Asserts and owner-Mutate from
 supervisor):
@@ -220,110 +233,152 @@ Until spirit ships, filesystem discipline is canonical
 skills get a "spirit-mediated mode" section; the filesystem becomes a
 projection.
 
-## 8 · Open questions for the designer-operator pair
+## 8 · Design points from the 2026-05-19 psyche conversation
 
-Six questions need settlement before or during implementation.
+What the psyche settled, what is still developing, and the new
+design directions that came out of the absorption pass.
 
-### Q1 — Does spirit own mind via `owner-signal-persona-mind`?
+### Spirit owns mind — settled
 
-The implication of "spirit is the apex" is that spirit issues
-owner-Mutates to mind. Today, `owner-signal-persona-mind` exists in
-contract form but has no cognitive caller (the supervisor calls it
-only for lifecycle Mutates). Spirit becomes the cognitive caller.
+The cognitive authority graph runs supervisor → spirit → mind →
+orchestrate → router/harness/terminal. Mind takes orders from
+spirit via `owner-signal-persona-mind`. The concrete verb set is
+*"develops as it develops"* — mind gains intent-awareness from
+spirit as a starting point; specifics flesh out as both components
+build.
 
-**Confirm**: spirit owns mind in the authority graph; yes/no.
+### LLM mediation is intrinsic — settled
 
-### Q2 — What's in `bootstrap-policy.nota` for spirit?
+Spirit is not exceptional: **no persona component works without
+LLMs.** Spirit's natural-language parsing is an LLM call (which
+classifier, which prompt, what context — implementation detail
+that lands during operator pickup, not psyche-decision territory).
 
-First-start bootstrap needs:
+The agent–CLI flow:
 
-- Psyche identity markers — name? Default certainty heuristics?
-  Communication-style preferences?
-- Authority delegation policy — which contracts spirit is authorised
-  to issue Mutates against (mind, eventually others)?
-- NLP / parsing policy — see Q5.
+1. Psyche speaks (speech-to-text → natural language reaches the
+   agent).
+2. Agent constructs a NOTA `PsycheStatement` record from the
+   transcribed prompt.
+3. Agent invokes `persona-spirit '(PsycheStatement … )'`.
+4. Spirit's daemon parses, classifies, records typed intent into
+   sema state, and forwards owner-Mutates downstream as needed.
 
-**Confirm**: shape of the bootstrap declaration.
+**There is no separate psyche-facing wrapper tool.** Earlier draft
+mentioned one; that framing was wrong. Agents are already the
+LLM-mediation layer between speech-to-text and typed records. The
+spirit CLI is a normal triad CLI taking one NOTA argument; agents
+construct that argument from whatever input shape they received.
+Humans don't write code or invoke CLIs directly in this workspace.
 
-### Q3 — Sub-topic NLP / classification
+### Query surface: summary-first — settled
 
-Spirit needs to parse a natural-language psyche prompt into:
+`IntentRecordObservation` and `IntentRecordSubscription` default
+to returning the **summary only** for each record. Verbatim, context,
+and timestamp are available **on demand** via richer match variants
+(e.g. `IntentRecordObservation { mode: WithVerbatim }` or a
+separate `IntentRecordVerbatimObservation`).
 
-- The intent kind (`Decision`/`Principle`/`Correction`/etc.).
-- The topic (which `intent/<topic>.nota` file the entry lands in).
-- The certainty (`Maximum`/`Medium`/`Minimum`).
-- The summary, quote, and context.
+*Psyche on 2026-05-19: "any agent reading [the intent file] is
+going to get a lot of noise … most of the time just the summary is
+enough."* The verbatim+context+timestamp triad is for verification
+and provenance, not for routine querying. Spirit's wire surface
+defaults to the cheap shape; expensive provenance is requested
+explicitly.
 
-This is non-trivial NLP. Options:
+### Intent lifecycle: more than just supersession — new direction
 
-1. **Sub-agent.** Spirit invokes a fine-tuned classifier (a small
-   LLM call) and records the result.
-2. **Rule-based.** Spirit uses fixed pattern rules (the certainty
-   vocabulary in `skills/intent-log.md` is already this shape).
-3. **Hybrid.** Rules first; LLM for ambiguous cases.
+Today's `skills/intent-maintenance.md` treats supersession as
+binary (the prior is overridden or it isn't). The psyche surfaced
+a richer model:
 
-**Confirm**: which path; how the model/classifier is selected and
-configured.
+- **Negation.** A prior intent is fully invalidated by a new
+  statement. Negated entries are candidates for archival and
+  eventual garbage-collection — archived first (slow storage is
+  cheap), deleted only after a retention window.
+- **Certainty lowering.** A new statement partially contradicts a
+  prior. The prior stays but its certainty drops (`Maximum` →
+  `Medium`, `Medium` → `Minimum`) without full negation.
+- **Escalation on partial contradiction.** When the agent isn't
+  sure whether the new statement negates, lowers, or co-exists
+  with the prior — the contradiction is too tangled — spirit
+  escalates. To the psyche directly, or to a review agent that
+  takes in more context and decides.
 
-### Q4 — Spirit-to-mind verb set
+This extends the `Certainty` enum and/or introduces a lifecycle-
+state field on intent records:
 
-What does spirit Mutate on `owner-signal-persona-mind`? At minimum:
+| Possible enum extension | Meaning |
+|---|---|
+| `Maximum` / `Medium` / `Minimum` | Active intent at the stated confidence |
+| `Negated` | Explicit psyche negation; archived; GC-eligible after retention |
+| `Lowered` *(or implicit via Medium/Minimum demotion)* | Partial supersession; prior loses confidence |
 
-- `Mutate IntentArrived` — a new psyche intent should land in mind's
-  memory graph.
-- `Mutate PsychePresent` / `Mutate PsycheAbsent` — psyche-state
-  transitions.
-- `Mutate PsycheFocus` — current area of attention (drives mind's
-  prioritisation).
+Implementation note: the negation/lowering/escalation transitions
+are *psyche-mediated*. Agents detect contradictions and surface;
+spirit (or a guardian sub-actor in spirit) chooses among the three
+responses. This is the "spirit guardian" the psyche mentioned —
+the gatekeeper that judges what new intent does to old intent.
 
-**Confirm**: the verb set; the record shapes.
+Spirit guardian as a sub-component lives in spirit's actor tree;
+not a separate triad.
 
-### Q5 — CLI shape
+### Components in raw form first — settled
 
-Per `skills/component-triad.md` invariant — the CLI takes one
-NOTA argument. For spirit specifically, the human author uses
-natural language, not NOTA. Resolution:
+*Psyche on 2026-05-19: "we can use the components in the raw form
+like they don't have to be talking to each other right away. We
+can let the agents just use the components individually."*
 
-The CLI accepts one of:
-- A NOTA `PsycheStatement` record carrying the prompt
-- A path to a NOTA file
-- A path to a signal-encoded file
+Spirit ships first as a standalone CLI + daemon + sema state.
+Agents call its CLI directly to record intent — same shape as
+today's filesystem edits, just type-checked. Spirit-to-mind
+integration (the owner-Mutate forwarding) comes after the raw
+component is working. No pre-coordinated integration ceremony.
 
-A psyche-facing wrapper (a separate tool, NOT the spirit CLI itself)
-takes the human's plain text, wraps it in a `PsycheStatement` record,
-and invokes the spirit CLI. The wrapper lives outside the triad —
-it's a UX adapter, not a persona component.
+This applies to every component: ship in raw form first; wire
+together as use cases demand.
 
-**Confirm**: this two-layer shape; the wrapper's name and location.
+### What's NOT in scope to ask the psyche
 
-### Q6 — Cutover sequence
+The earlier draft of this report asked about cutover sequencing
+(Q6: spirit-ships-empty → mirrors-filesystem → agents-query-spirit
+→ canonical-writer → filesystem-retires). *Psyche on 2026-05-19:
+"You're asking stuff that doesn't matter. … Stop talking to me
+like you're some kind of bureaucrat … I'm just creating. I'm an
+artist. I don't give a fuck about timelines."*
 
-The intent layer migration (§7) is itself an arc:
+Cutover sequencing, implementation order, ETAs — these are agent
+work. The designer-operator pair plans internally; the psyche is
+not the right audience for timeline ceremony. The intent layer
+migration happens when it happens, in whatever order makes sense
+on the implementation side.
 
-1. Spirit ships with empty intent store; filesystem `intent/` is
-   still canonical.
-2. Spirit starts mirroring filesystem entries into its sema store.
-3. Agents start querying spirit instead of grep; filesystem becomes
-   read-only.
-4. Spirit becomes canonical writer; filesystem is projection.
-5. Filesystem retires; spirit is the only intent surface.
+### What's still developing
 
-**Confirm**: this sequencing, or a different cutover plan.
+The concrete shape of spirit-to-mind communication. Spirit will
+issue owner-Mutates to mind; mind will gain intent-awareness as a
+result. The exact verb set and record shapes — psyche-on-2026-05-19:
+*"that's as clear as I can get right now. We'll have to develop
+and flesh it out as it develops."* This is healthy openness, not a
+blocker; the operator can ship the raw spirit triad and the mind-
+side integration follows.
 
 ## 9 · Bead handoff
 
-A new bead is filed for operator pickup. Implementation work
-breakdown (operator may refine):
+Bead `primary-ojxq` (P1) filed against operator. Implementation
+breakdown (operator may refine; psyche has said *"raw form first;
+integration follows"*):
 
 1. Create `signal-persona-spirit/` skeleton (gh repo + Cargo + flake +
    ARCH skeleton).
 2. Create `owner-signal-persona-spirit/` skeleton.
 3. Create `persona-spirit/` skeleton with daemon + CLI bin entries.
-4. Settle Q1 (spirit owns mind?) with the designer; flip mind's
-   ARCH if yes.
-5. Draft contract types per §5 (signal-persona-spirit ordinary +
-   owner-signal-persona-spirit).
-6. Implement spirit daemon's actor tree:
+4. Draft contract types per §5 — `signal-persona-spirit` ordinary
+   (PsycheStatement / PsycheStateObservation / IntentRecordObservation
+   variants including the summary-first default; verbatim-on-demand
+   variants); `owner-signal-persona-spirit` (lifecycle Mutates from
+   supervisor only).
+5. Implement spirit daemon's actor tree:
    - `PersonaSpiritRoot` (Kameo root)
    - `OrdinarySignalSocketActor` (psyche prompts in)
    - `OwnerSignalSocketActor` (supervisor lifecycle)
@@ -334,7 +389,10 @@ breakdown (operator may refine):
    - `PsycheStateActor` (presence/absence tracking)
 7. Wire `persona-spirit-daemon` into the spawn order (last).
 8. Component-triad witness tests for the new triad.
-9. Bootstrap-policy.nota shape per Q2.
+9. `bootstrap-policy.nota` shape — minimal first, expanded in a
+   later research arc (the psyche has named the destination —
+   sacred teachings / Bhagavad-Gita-flavored right-knowledge,
+   right-action principles — but the research itself is deferred).
 
 ## 10 · References
 

@@ -88,4 +88,18 @@
     "Correcting my leaf-file granularity (one specific rule per filename, nested in sub-directories) toward broad topic files at intent/ root. Drove the consolidation from 19 leaf files in 6 sub-directories to 7 flat topic files."
     Maximum
     2026-05-19T13:45:00Z)
+
+  (Correction
+    "Don't ask the psyche about cutover sequencing, implementation order, ETAs, timelines, or other bureaucratic concerns. The psyche is creating; agents handle implementation choreography internally. Reports for the psyche should carry decisions, designs, and open questions worth psyche input — not timeline ceremony."
+    "You're asking stuff that doesn't matter. I don't even think about that stuff. Stop talking to me like you're some kind of bureaucrat or something. Who cares about fucking ETA's and shit like that. I'm just creating. I'm an artist. I don't give a fuck about timelines."
+    "Correcting my Q6 in /232 which asked the psyche to confirm a 5-stage intent-layer cutover sequence. That was bureaucratic noise. Agents plan internal order; the psyche isn't the audience for it."
+    Maximum
+    2026-05-19T15:35:00Z)
+
+  (Constraint
+    "When a psyche prompt arrives, extracting intent to disk is the absolute first task — before editing reports, before responding, before implementing. Everything else derives from intent. The agent reads the prompt, extracts every intent statement (Decisions, Principles, Corrections, Clarifications, Constraints) into the appropriate intent/<topic>.nota files, THEN proceeds with the work the prompt asked for. Reports, code, and chat are all downstream of the intent capture."
+    "intent editing is the first thing an agent should do in his session. Because it's the most important thing, everything derives from that. So instead of, like right now, you edited the report first. That should have been done after you extracted all of my intent from my last prompt. Putting intent to disk is the absolute first task that comes after any psyche prompt comes in. Then everything is derived from that."
+    "Correcting the order I followed in this very turn — I started editing /232 before capturing the intent from the prior psyche message. Reordering: extract intent first; everything else follows. This is a hard agent-workflow rule, lands in AGENTS.md and skills/intent-log.md."
+    Maximum
+    2026-05-19T15:40:00Z)
 ]

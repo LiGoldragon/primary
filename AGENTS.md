@@ -83,6 +83,16 @@ Each agent knows its lane before claiming or editing. Coordination:
   The intent layer has higher authority than every other workspace
   surface; supersession of psyche intent is always explicit
   (`skills/intent-maintenance.md`).
+- **Extract intent to disk FIRST when a psyche prompt arrives.**
+  Before editing any report, before writing code, before responding
+  in chat — read the psyche's message, identify every intent
+  statement (Decision / Principle / Correction / Clarification /
+  Constraint), and write each to the appropriate
+  `intent/<topic>.nota`. Everything else the prompt asked for
+  derives from intent and is done *after* the capture. Reports,
+  code, and chat are all downstream of intent. This is the
+  absolute first task of any session-turn that contains psyche
+  input.
 - **No harness-dependent memory.** Workspace truth lives in files
   every agent can open. Don't use per-session memory at
   `~/.claude/projects/<workspace>/memory/` or any agent-private store.

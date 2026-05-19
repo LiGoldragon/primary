@@ -153,9 +153,32 @@ Carve the new topic, move the entries that fit there, leave the
 rest. Don't split prophylactically; split when the surface earns
 it.
 
-## Recording protocol — three steps
+## Recording is the first task of every psyche-prompt turn
 
-Before adding an entry:
+When a psyche prompt arrives, **extracting intent to disk is the
+absolute first thing the agent does** — before editing a report,
+before writing code, before responding in chat. Everything else the
+prompt asked for is downstream of intent.
+
+The session-turn shape:
+
+1. Read the psyche's message in full.
+2. Identify every intent statement — Decision, Principle,
+   Correction, Clarification, Constraint. A single prompt often
+   contains several across multiple topics.
+3. For each: open the appropriate `intent/<topic>.nota` and add
+   the entry (or run the supersession protocol if it contradicts
+   a prior — see `skills/intent-maintenance.md`).
+4. Commit the intent entries.
+5. *Now* do the work the psyche asked for (report, code, etc.).
+
+Reports, code, and chat all derive from intent. If you find
+yourself editing a report before the intent is captured, stop and
+back up. Capture first; act second.
+
+## Recording protocol — three steps per entry
+
+Per entry within the capture pass:
 
 1. **Query prior entries on the topic.** Read `intent/<topic>.nota`.
    If the psyche's new statement clearly contradicts a prior,
@@ -169,7 +192,7 @@ Before adding an entry:
    ISO-8601 timestamp.
 
 The agent who recorded an entry stays accountable for re-reading it
-within the session — if a later author statement reframes the
+within the session — if a later psyche statement reframes the
 earlier one, the recorded entry might need supersession.
 
 ## What this skill is NOT for
