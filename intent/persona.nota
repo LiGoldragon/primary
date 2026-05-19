@@ -123,3 +123,59 @@
     "Correcting the first typed persona-spirit entry shape after the raw CLI type-checking slice landed."
     Maximum
     2026-05-19T14:45:43Z)
+
+(Decision
+    "Implement a minimum viable raw persona-orchestrate now, then keep evolving it on a branch or bookmark after the first usable version is tagged. The goal is to start using typed orchestration instead of waiting for a polished Persona component."
+    "I want to implement now. So I need a minimum viable product, and then we're going to tag it and keep working on it. … it's going to be like not at all a perfectly polished persona component. It's going to be like the really raw prototype version."
+    "Psyche redirected persona-orchestrate from documentation/planning into implementation so the workspace can leave the current static shell-helper situation."
+    Maximum
+    2026-05-19T15:04:19Z)
+
+(Decision
+    "Roles become dynamic work identities. An agent role is named by the work it is doing; a whole new project creates a new role instead of reusing a generic designer/operator assistant lane."
+    "I want to be using agents totally differently. So each agent, the role of the name of the agent, its role, is defined by what it's going to be working on. And when I have a different whole new sort of project, then I create a new role."
+    "Defining the MVP role topology for persona-orchestrate: dynamic project/work roles replace the fixed assistant-lane topology as the primary way to organize fresh agent contexts."
+    Maximum
+    2026-05-19T15:04:19Z)
+
+(Decision
+    "Creating a role creates the operational surfaces that make it usable: a report lane, a lane record in persona-orchestrate's sema database, lock/acquisition records, and local repository/index wiring for the project it is attached to."
+    "I want to be able to create roles, and when a new role is created, the Orchestrate agent creates a new repository for its reports and creates the lane in the SEMA database and the records for it to be able to acquire locks. … Role creation creates a new report lane and attaches it, clones the repository obviously into our Git index with GHQ."
+    "Specifying the side effects of dynamic role creation for the raw persona-orchestrate MVP."
+    Maximum
+    2026-05-19T15:04:19Z)
+
+(Decision
+    "The persona-orchestrate MVP should emulate today's shell helper enough to track locks by role while replacing the fixed role topology with dynamic roles. BEADS remains the transitional task substrate for now."
+    "And since we're still using beads, let's just emulate sort of what the shell script, the Orchestrate shell script does right now, but changing the whole role topology to be dynamic."
+    "Scoping the MVP: preserve familiar claim/status behavior while moving role identity and lock state into typed orchestrate state."
+    Maximum
+    2026-05-19T15:04:19Z)
+
+(Clarification
+    "The same triad applies for persona-orchestrate, but the MVP is raw: daemon plus ordinary and owner contracts, with the CLI allowed to use both. The contract split is enforced in code now; filesystem permission enforcement comes later."
+    "obviously the same triad, right? The daemon, the signal and the owner signal repos … The CLI uses both contracts. It's fully permissioned for now. … the split in the contracts is more symbolic. Well, it's not symbolic. It's enforced in the code. It just isn't enforced right now in the file permissions. We're going to do that later."
+    "Clarifying how component-triad authority applies during the raw persona-orchestrate MVP."
+    Maximum
+    2026-05-19T15:04:19Z)
+
+(Decision
+    "Role records track harness type as a typed field, not as part of the role name. The initial harness variants are Codex and Claude."
+    "We should probably also keep track of which harness that role is assigned to. So maybe that even goes in the name. Well, no, never mind, because that's hiding types in strings. So yeah, just create a field for the harness type, Codex or Claude. For now, just these two, that's all I'm using right now."
+    "Settling the dynamic-role record shape for the MVP: role name remains work identity; harness assignment is typed data."
+    Maximum
+    2026-05-19T15:04:19Z)
+
+(Decision
+    "persona-orchestrate should also manage local repository index wiring for roles/projects: clone/check out repositories into the local Git index, symlink them into the workspace, keep active-repository metadata, and provide a refresh command over local checkouts."
+    "the recent repository system obviously also needs to go into, I guess, into Persona Orchestrate. Because it's going to orchestrate also repository management. Sim linking them into the workspace, I mean, and keeping an index with some metadata about which repositories are currently active. … We can create a command to refresh the state of repositories. Which should all be checked out locally anyway."
+    "Adding repository-index management to the raw persona-orchestrate MVP scope, accepting local-checkout refresh as an imperfect first pass."
+    Medium
+    2026-05-19T15:04:19Z)
+
+(Constraint
+    "The raw persona-orchestrate MVP needs architecture constraints and corresponding Nix tests, including tests for dynamic role creation, lock tracking, and temporary repository creation with teardown-safe names."
+    "Implement what you have right now from clear intent. Implement what constraint tests furnish the architecture with the constraints. Create the corresponding constraint tests in Nix. You can create temporary repositories to see. You can create a test for repository creation. Just have a teardown that deletes them. Use some really funky repository name that would never be a problem."
+    "Testing requirement for the implementation pass: architecture constraints must have Nix-backed witnesses, including environment-running tests where appropriate."
+    Maximum
+    2026-05-19T15:04:19Z)
