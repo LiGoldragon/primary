@@ -299,6 +299,9 @@ Runtime witness after deploying locally on `ouranos`:
   `testing` committed event 12 with `daemon_socket_present true`.
 - After the hook was changed to call the ledger CLI first, another fresh push to
   `testing` committed event 15 immediately through the ordinary daemon socket.
+- After the hook was enriched to send `RepositoryPushObservation`, a fresh push
+  to `testing` committed event 18 and the new file/commit-message query
+  surfaces returned the changed file and commit message for that push.
 
 Verification:
 
@@ -317,6 +320,121 @@ CriomOS commits:
 - `c518d23b criomos: expose repository ledger client socket to nixdev`
 - `a1a2f3ef criomos: let gitolite witness repository ledger socket presence`
 - `49d499e4 criomos: submit repository hook through ledger cli`
+- `349cb988 criomos: enrich repository ledger hook observations`
+
+Repository contract/runtime commits:
+
+- `f9420c13 signal-repository-ledger: add agent discovery query contract`
+- `d52298c4 repository-ledger: add repository activity discovery queries`
+
+## Current Ledger Entry Schema
+
+The direct hook now submits a typed push observation. In pseudo-NOTA, the entry
+shape is:
+
+```nota
+(RepositoryPushObservation
+  (RepositoryReceiveHookNotification
+    "testing"
+    "gitolite-admin"
+    "20260519T142920Z"
+    true
+    [(RefUpdate "old-commit" "new-commit" "refs/heads/main")])
+  [(RepositoryCommitObservation
+      "new-commit"
+      "refs/heads/main"
+      "2026-05-19T16:29:10+02:00"
+      "verify repository ledger query capture"
+      [(RepositoryFileChange "A" "ledger-query-live-witness.txt" None)])])
+```
+
+The daemon stores this as:
+
+- a push event row keyed by `RepositoryEventSequence`;
+- one commit-observation row per pushed commit, carrying repository name,
+  received-at timestamp, event sequence, commit object id, ref name, commit
+  timestamp, full commit message, and changed-file records.
+
+The fallback spool shape remains the older `RepositoryReceiveHookNotification`.
+Fallback records keep the push event but do not carry commit-message or
+changed-file observations.
+
+## Agent Queries Now Available
+
+Recently edited repositories:
+
+```nota
+(RepositoryRecentRepositoriesQuery None 5)
+```
+
+Live reply after the enriched hook deploy included:
+
+```nota
+(RepositoryRecentRepositoriesListing
+  [(RepositoryRecentRepository testing "20260519T142920Z" 18 5)
+   (RepositoryRecentRepository repository-ledger "20260519T142650Z" 17 4)
+   (RepositoryRecentRepository signal-repository-ledger "20260519T142503Z" 16 4)])
+```
+
+Changed files by repository, time window, and path substring:
+
+```nota
+(RepositoryChangedFileQuery testing None None ledger-query 10)
+```
+
+Live reply:
+
+```nota
+(RepositoryChangedFileListing
+  [(RepositoryChangedFile
+      testing
+      "20260519T142920Z"
+      18
+      b28db60d3ee1e7ae3adc2d1538e048356ef1f56d
+      "refs/heads/main"
+      A
+      "ledger-query-live-witness.txt"
+      None)])
+```
+
+Commit-message substring search:
+
+```nota
+(RepositoryCommitMessageQuery testing None None "query capture" 10)
+```
+
+Live reply:
+
+```nota
+(RepositoryCommitListing
+  [(RepositoryCommit
+      testing
+      "20260519T142920Z"
+      18
+      b28db60d3ee1e7ae3adc2d1538e048356ef1f56d
+      "refs/heads/main"
+      "2026-05-19T16:29:10+02:00"
+      "verify repository ledger query capture")])
+```
+
+More useful query directions to consider next:
+
+- repository activity grouped by role/class once owner catalog registration is
+  ergonomic;
+- "show me reports landed since timestamp X";
+- "show me architecture files changed since timestamp X";
+- "show me pushes that touched both a contract repo and a runtime repo";
+- "show me commits whose changed files match a glob or prefix";
+- "show me commits by author/committer once the hook captures those fields";
+- "show me repositories with pushes not mirrored yet" after mirror execution
+  lands.
+
+One syntax gap surfaced during the live query check: the current generated
+channel request parser accepts present optional query fields as bare values
+(`testing`) rather than canonical `(Some "testing")`. The contract records are
+still typed as `Option<T>`, but the CLI examples above show the working request
+surface. This should be reconciled in the `signal_channel!` request syntax work
+so generated channel CLI NOTA matches the workspace's explicit `Some` rule.
 
 ## Newly Closed In This Pass
 
@@ -326,12 +444,16 @@ CriomOS commits:
 - Thin query CLI that talks to the daemon.
 - Tests for ordinary Signal request/reply, owner Signal mutation, and spool
   ingestion with move-to-processed after commit.
+- Tests for recent-repository, changed-file, and commit-message discovery
+  queries.
 - Nix flake packaging for `repository-ledger`.
 - Nix flake checks for `signal-repository-ledger` and
   `owner-signal-repository-ledger`.
 - Production CriomOS service packaging and local deployment on `ouranos`.
 - Live post-deploy Gitolite push witness through the spool fallback and then
   through the direct hook -> CLI -> daemon path into Sema state.
+- Live post-deploy Gitolite push witness proving direct hook enrichment into
+  changed-file and commit-message Sema state.
 
 ## Not Yet Implemented
 
@@ -342,6 +464,9 @@ CriomOS commits:
   triad actor layout when the service is packaged.
 - Repository registration is still manual owner-signal state. Push events are
   recorded, but the catalog stays empty until an owner request registers a repo.
+- Generated channel request NOTA currently accepts bare present option values
+  at the CLI surface; canonical `(Some value)` should be restored or explained
+  in the `signal_channel!` macro design.
 
 The implementation now has enough contract, sema-engine state, socket, and CLI
 shape for the next slice to be concrete: add owner CLI/configuration ergonomics
