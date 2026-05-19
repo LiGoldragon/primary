@@ -47,6 +47,8 @@
     "No polling. Subscribe and receive; producers push events.")
   (Craft reporting skills/reporting.md Keystroke
     "When to write a report vs answer in chat. Chat for user; reports for agents.")
+  (Workflow report-naming skills/report-naming.md Mechanism
+    "Basic report-naming + supersession discipline. Filename convention, -v2/v3 iteration, commit-before-delete. Smaller than skills/reporting.md; every agent needs this.")
   (Craft typed-records-over-flags skills/typed-records-over-flags.md Keystroke
     "Closed typed records over bool flags. Surface the variant set in the type system.")
   (Craft prose skills/prose.md Topic
