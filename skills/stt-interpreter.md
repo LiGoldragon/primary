@@ -93,7 +93,7 @@ English, try the canonical form.
 
 | Heard / transcribed as | Canonical |
 |---|---|
-| "Rust" / "rust" | the Rust language |
+| "Rust" / "rust" / "rest" | the Rust language |
 | "Nix" / "Nicks" / "Nyx" | the Nix language / build system |
 | "Cargo" | Rust's build tool / dependency manager |
 | "Rkyv" / "ar-keev" / "Archive" (in a Rust context) | rkyv (binary serialization crate) |

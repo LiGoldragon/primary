@@ -60,3 +60,17 @@
     "Resolving the restatement-handling design: drops the vector idea (NOTA doesn't cleanly carry the nested heterogeneous tuple this would need); each restatement is its own complete record. Preserves lock-free append; preserves verbatim history on the workspace surface (not just in git); recency emerges from the stream."
     Medium
     2026-05-19 19:45)
+
+(Correction
+    "The simple fix the psyche pointed at: replace `[` with `(` inside the verbatim vector. Going from `[[date time quote] …]` to `[(date time quote) …]` keeps the outer list and changes each statement from a sequence to a record. Open: how the inner `(…)` reconciles with NOTA's PascalCase-head rule (records require a PascalCase ident at head; `2026-05-19` isn't one). Either NOTA's anonymous-tuple-in-record-syntax is broader than my reading of the spec, or the psyche means a swap I'm not yet seeing. Need a literal example from the psyche to converge."
+    "no , youre wrong, all you had to do was replace [ with ("
+    "Fourth NOTA correction in this session. I overcomplicated the restatement design when a small structural swap was all that was needed. Capturing the correction and the residual question to surface to the psyche."
+    Maximum
+    2026-05-19 20:00)
+
+(Correction
+    "NOTA is a way to write a Rust schema. A Rust struct has positional fields and does NOT require being inside a variant. The 'every record needs a PascalCase head' rule I quoted from nota/README.md is a falsehood — an agent hallucination in the spec. NOTA records (Rust structs at a known schema position) can be written positionally without naming the type; the schema position determines the type. The README and the nota-design.md skill both need this correction; my recent addition to skills/nota-design.md repeated the hallucination and needs softening."
+    "Then the readme is wrong because nota is just a way to write a rust schema. And in Rust, there's a thing called a struct, and a struct is just a struct. It has fields, it has positional fields. Not every struct needs to be in a variant. That's a falsehood, and it's an agent hallucination that needs to be eradicated."
+    "Fifth NOTA correction (third structural). The PascalCase-head rule as currently stated in nota/README.md and as I propagated into skills/nota-design.md is wrong. Need: bead against the nota repo to fix the README; retraction of my recent addition to skills/nota-design.md."
+    Maximum
+    2026-05-19 20:15)

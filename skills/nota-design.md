@@ -134,27 +134,32 @@ the discipline skill carries the load.
 
 **Records vs sequences.** Two delimiter pairs with different roles:
 
-- `(Type fields…)` — a **record**. PascalCase head names the type;
-  fields are positional. Heterogeneous fields by design.
-- `[items…]` — a **sequence**. No head type. Element interpretation
-  is determined by the schema position.
+- `(fields…)` or `(Type fields…)` — a **record**. Fields are
+  positional. A PascalCase head names the type when the schema
+  position is polymorphic (enum variants, top-level records);
+  for monomorphic positions (the schema position uniquely
+  determines the type), the head may be omitted and the record
+  is written positionally without naming the type.
+- `[items…]` — a **sequence**. No head type. Element
+  interpretation is determined by the schema position.
 
 A sequence at a `Vec<T>`-typed position is homogeneous — every
-element is `T`. A sequence at a tuple-typed position can be
-heterogeneous at the grammar level (`["hello" 42 true]`), but in
-practice **lists are homogeneous; heterogeneous positional
-structures are records**. The reason: multi-field unnamed tuple
-structs are forbidden in NOTA's Rust mapping (per `nota/README.md`
-§"Multi-field unnamed structs are forbidden" — *"position cannot be
-mapped to meaning. nota rejects this at serialize time. Use a
-named-field struct instead."*).
+element is `T`. **Lists are homogeneous; heterogeneous positional
+structures are records** — even when both forms are grammatically
+permitted at the wire layer, the discipline is: list = repeated
+shape, record = positional struct.
 
-The discipline that follows: if you want a heterogeneous positional
-triple like `(date, time, quote)`, that's a **record** — needs a
-PascalCase type head. If the head type carries no useful variant
-distinction (Rule 1 says drop the wrapper), then the shape is
-wrong — re-think the structure rather than emit a heterogeneous
-sequence.
+So a `(date, time, quote)` triple at a fixed schema position is a
+record, written as `(2026-05-19 18:30 "first quote")` — positional
+without a head because the schema position determines the type.
+Anonymous-tuple shapes at monomorphic positions get this
+write-without-head treatment; the parent's schema disambiguates.
+
+> *(Note 2026-05-19: an earlier version of this section over-stated
+> the PascalCase-head rule as universal, mirroring an over-strict
+> claim in `nota/README.md`. The psyche corrected: a struct does
+> not need a variant wrapper; the head is required only where
+> position is polymorphic. README fix pending.)*
 
 **Bare identifiers as strings.** Where the schema expects `String`,
 a bare ident-class token serves as the value (`(Package nota-codec)`

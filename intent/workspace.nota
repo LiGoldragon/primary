@@ -220,3 +220,10 @@
     "The agent said the next slice was clear and would proceed when asked. The psyche clarified that the prior \"ok\" was the instruction to proceed."
     Maximum
     2026-05-19T18:05:00Z)
+
+(Decision
+    "STT correction: 'rest' transcribed by speech-to-text often means 'rust' (the language). Add to skills/stt-interpreter.md so future agents normalise this when recording verbatim."
+    "add in the STT correction a common error is rest = rust"
+    "New STT misspelling lookup entry."
+    Maximum
+    2026-05-19 20:15)
