@@ -1,0 +1,7 @@
+
+(Constraint
+    "Use Nix max-jobs 0 for builder-backed Nix work"
+    "use nix with max-jobs 0 to use the builder"
+    "The operator was reporting on signal-frame work and running verification; the psyche clarified the Nix invocation constraint."
+    Maximum
+    2026-05-19T18:45:46Z)
