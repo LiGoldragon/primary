@@ -33,21 +33,6 @@ report N", "section 5.2") is a discipline violation.
 
 Full discipline: `skills/reporting.md`.
 
-## Skill importance — read the higher tiers first
-
-Tier names match `skills/skills.nota`'s `tier` field. The index has
-every skill; this table names the cross-cutting reads.
-
-| Tier | What | Skill(s) |
-|---|---|---|
-| apex | Workspace intent | `ESSENCE.md` |
-| apex | Universal architecture | `skills/component-triad.md` — daemon + thin CLI + `signal-*` + `owner-signal-*`. Read once; recognise the shape in every component ARCH. **If you read only one skill, read this one.** |
-| keystroke | Universal craft | `abstractions` · `naming` · `beauty` · `push-not-pull` · `reporting` · `typed-records-over-flags` |
-| topic | Consulted by topic | `contract-repo` · `micro-components` · `actor-systems` · `kameo` · `rust-discipline` · `language-design` · `architectural-truth-tests` |
-| mechanism | Supports the lane | `role-lanes` · `feature-development` · `jj` · `skill-editor` · `architecture-editor` · `context-maintenance` · `autonomous-agent` |
-
-For the full list with one-line descriptions, query `skills/skills.nota`.
-
 ## Roles
 
 Four main roles, each carrying its own discipline. Lanes
@@ -76,6 +61,11 @@ Each agent knows its lane before claiming or editing. Coordination:
   needs new configuration, the contract's NOTA schema gets a new
   field. Full rule: `skills/component-triad.md` §"The single argument
   rule".
+- **NOTA records are positional, not labeled.** Type first, then
+  fields in declared order — no keywords inside records. The
+  `(key value)` shape from Lisp/Clojure/JSON is not NOTA. Before
+  sketching any new record, open `skills/skills.nota` (the canonical
+  example) or read `skills/nota-design.md`.
 - **No harness-dependent memory.** Workspace truth lives in files
   every agent can open. Don't use per-session memory at
   `~/.claude/projects/<workspace>/memory/` or any agent-private store.

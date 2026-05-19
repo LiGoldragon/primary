@@ -1,3 +1,13 @@
+;; NOTA records are positional. Type, then fields, no keywords.
+;; The `(key value)` shape from Lisp/Clojure/JSON is not NOTA.
+;; If you're sketching a new NOTA record, read skills/nota-design.md first.
+;;
+;; tier values (fourth positional field below):
+;;   apex      — read once; recognise everywhere
+;;   keystroke — applies on every keystroke and every report
+;;   topic     — consulted when the topic comes up
+;;   mechanism — procedural; consulted when the named mechanism is in play
+
 [
   (Role operator skills/operator.md apex
     "Implementation as craft. The discipline an agent brings when the work is landing code.")

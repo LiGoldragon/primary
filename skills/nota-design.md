@@ -123,6 +123,28 @@ If you're designing a new NOTA file, read it first.
 
 ---
 
+## Before you sketch any NOTA record
+
+Before producing any new NOTA shape — in a report, in chat, in a
+proposal, anywhere — do these three things:
+
+1. **Open `skills/skills.nota` and read three records of any category.**
+   That's your template for what NOTA looks like in this workspace.
+2. **Identify the wrapping type that names the most useful distinction
+   in context** (Rule 1 above). The wrapper is never a generic name
+   like `Item`, `Entry`, or `Record` when the file already says so.
+3. **Sketch fields positionally — no `(key value)` pairs inside the
+   record.** If you find yourself wanting to label fields, you're
+   reaching for JSON/Clojure shape; that's not NOTA. Positional means
+   `(Decision "summary" (Verbatim "quote" "context") maximum "2026-…")`,
+   not `(Decision (summary "…") (verbatim …) (certainty maximum))`.
+
+Most agent NOTA mistakes are the same mistake — labeled fields. The
+fix is the same too: read the canonical example before you sketch,
+and let the wrapping type carry the schema.
+
+---
+
 ## When you find yourself fighting the rules
 
 You'll notice yourself wanting to:
