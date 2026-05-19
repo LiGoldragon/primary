@@ -176,12 +176,14 @@ the bare alphabet widens to include `/` and `.` for filesystem-
 shaped values. A bare `skills/operator.md` at a `Path` position
 parses; the same token at a `String` position is a typed error.
 
-**Optional values.** `Option<T>` writes the literal `None` for
-absence; presence writes the inner value with no `Some` wrapper.
-Tail-omission is decode-only compatibility, not canonical output.
-`#[nota(default = …)]` is **forbidden** (per `nota/README.md`
-§"No omittable fields") — every position in the text carries every
-position in the schema, always.
+**Optional values.** `Option<T>` is a normal data-carrying enum.
+Absence writes bare `None` (case 3 of the PascalCase rule);
+presence writes `(Some inner)` (case 1 — the standard variant
+wrap). Tail omission is **not** a compatibility shape: every
+position in the text carries every position in the schema,
+always. `#[nota(default = …)]` is **forbidden** (per
+`nota/README.md` §"No omittable fields"). A record short on
+tokens is a typed error, not a silent zero-fill.
 
 **Multi-field unnamed structs are forbidden.** `struct Pair(i32, i32)`
 has no field-name mapping; NOTA rejects at serialize time. The
