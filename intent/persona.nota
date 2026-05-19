@@ -1,0 +1,36 @@
+[
+  (Decision
+    "persona-orchestrate is a real triad component — daemon + thin CLI + signal-persona-orchestrate ordinary contract + owner-signal-persona-orchestrate. Not folded into persona-mind. The design substance landing in /228 and onward is canonical, not exploratory."
+    "persona-orchestrate doesn't exist wow! really!? so all this time iv been working on a component that nobody has bothered to make? … persona-orchestrate should exist 3 days ago. file an operator beads and get this fucking bullshit about orchestrate being a part of mind."
+    "Settling the persona-orchestrate question after the recovery audit in /228; rejecting earlier 'fold into mind' framings."
+    Maximum
+    2026-05-18T12:23:18Z)
+
+  (Principle
+    "persona-mind owns STATE — work graph, memory, thoughts, durable policy truth, channel-grant authority decisions. persona-orchestrate owns MACHINERY — role claims, activity log, agent-run lifecycle, spawn plans, scope-acquisition workflow, executor capacity, scheduling, escalation, lane registry."
+    "the orchestration part where it allocates a certain, where it, like, manages locks the way we manage locks now, like, such and such agent is working on such and such, really belongs in orchestrate, so that doesn't need to go up to the mind. But the memories actually do belong there."
+    "Working out the boundary between mind and orchestrate during the broader redesign discussion; landed as the load-bearing principle in /228."
+    Maximum
+    2026-05-18T12:08:41Z)
+
+  (Decision
+    "persona-spirit is a new triad component — the interface between persona-mind and the psyche. It is the apex of the cognitive authority chain (the supervisor has higher infrastructure permission only; spirit is the apex among thinking components). Spawned last in the persona engine boot order, after every component it depends on is up."
+    "persona intent is a new component. It is the interface between the persona mind and the psyche. … it is the apex, the most powerful part, notwithstanding the supervisor, which only has higher permission because it's an infrastructure component that's there to make sure the engine is running. … it would be the last one to start. It's a sort of persona mind of its own, but it's specialized on the psyche, on keeping track of the psyche."
+    "Naming + scoping persona-spirit during the illumination on 2026-05-19. Initial proposal was `persona-intent`; rename to `persona-spirit` settled in the same turn."
+    Maximum
+    2026-05-19T14:00:00Z)
+
+  (Principle
+    "Persona is a meta AI system — the next evolutionary step in AI engineering. Models need to be organized in a structure that emulates real human intelligence. What animates humans at the highest level is spirit; persona-spirit is the analog, the animating layer that ties the system to a real psyche."
+    "Persona is a meta AI system. It's the next evolutionary step in AI engineering. Models need to be organized together in a structure that emulates real human intelligence. And what drives humans, right, at the highest level is spirit. That's what animates us, right? The spirit has taken him. It means that he's been given animated with life."
+    "The naming rationale for persona-spirit: spirit is animation, breath, the principle that turns mechanism into a living system. Scriptural framing — first breath gives life; astrological framing — first breath gives the personality chart."
+    Maximum
+    2026-05-19T14:00:00Z)
+
+  (Decision
+    "persona-spirit is the most important component of the persona system. Implement it now."
+    "we're going to implement this right now because it's actually the most important component of all."
+    "Setting implementation priority: persona-spirit lands ahead of other queued component work."
+    Maximum
+    2026-05-19T14:00:00Z)
+]
