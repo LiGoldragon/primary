@@ -33,8 +33,6 @@ What is ready:
 What is not yet ready:
 
 - The whole constraint suite is not yet complete.
-- `signal-repository-ledger` and `owner-signal-repository-ledger` do not yet
-  have Nix flake checks.
 - The Gitolite hook still writes spool files; it does not yet submit direct
   Signal frames to the daemon.
 - Mirror execution is not implemented.
@@ -70,7 +68,10 @@ Remote: `gitolite@localhost:signal-repository-ledger`
 
 Initial commit: `8f746959 signal-repository-ledger: add ordinary repository ledger contract`
 
-Latest commit: `73f7f517 signal-repository-ledger: add daemon configuration contract`
+Latest commits:
+
+- `73f7f517 signal-repository-ledger: add daemon configuration contract`
+- `eb55974f signal-repository-ledger: add nix flake checks`
 
 Surface:
 
@@ -89,6 +90,7 @@ Verification:
 
 ```sh
 cargo test
+nix flake check --option substituters ''
 ```
 
 Passed.
@@ -105,6 +107,7 @@ Latest commits:
 
 - `2e8d37fa owner-signal-repository-ledger: reuse ledger path contract`
 - `c5f72586 owner-signal-repository-ledger: use named signal dependency`
+- `f6d28873 owner-signal-repository-ledger: add nix flake checks`
 
 Surface:
 
@@ -118,6 +121,7 @@ Verification:
 
 ```sh
 cargo test
+nix flake check --option substituters ''
 ```
 
 Passed.
@@ -190,6 +194,18 @@ Later pushes moved the same `main` bookmarks forward:
 - `signal-repository-ledger` main -> `73f7f517b9e3`
 - `owner-signal-repository-ledger` main -> `c5f725860ea5`
 - `repository-ledger` main -> `419367e73405`
+
+The Nix-check pushes then moved the contract repos again:
+
+- `signal-repository-ledger` main -> `eb55974fe1a2`
+- `owner-signal-repository-ledger` main -> `f6d28873566f`
+
+The deployed ledger recorded those two pushes too:
+
+- event 13: `owner-signal-repository-ledger` moved from `c5f725860ea5` to
+  `f6d28873566f`, with `daemon_socket_present true`.
+- event 14: `signal-repository-ledger` moved from `73f7f517b9e3` to
+  `eb55974fe1a2`, with `daemon_socket_present true`.
 
 That proves Gitolite accepted real pushes for all three new repos and can serve
 them back to Nix as named branch references.
@@ -295,6 +311,8 @@ CriomOS commits:
 - Tests for ordinary Signal request/reply, owner Signal mutation, and spool
   ingestion with move-to-processed after commit.
 - Nix flake packaging for `repository-ledger`.
+- Nix flake checks for `signal-repository-ledger` and
+  `owner-signal-repository-ledger`.
 - Production CriomOS service packaging and local deployment on `ouranos`.
 - Live post-deploy Gitolite push witness through the spool and daemon into
   Sema state.
@@ -303,9 +321,6 @@ CriomOS commits:
 
 - Direct hook-to-daemon Signal submission.
 - Mirror execution to GitHub or any other remote.
-- Nix flake checks for `signal-repository-ledger` and
-  `owner-signal-repository-ledger`. `repository-ledger` now has and passes a
-  Nix flake check.
 - Kameo actor topology. The handlers are split by socket and behavior, but the
   first live runtime is synchronous threads over one store mutex. That is
   acceptable for proving the boundary and should be replaced with the standard
