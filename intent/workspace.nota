@@ -353,3 +353,38 @@
     "Resolving the skills/intent-log.md 'Do not record' reconciliation from the prior turn. Psyche affirms: record everything classified as intent. Filtering is downstream."
     Maximum
     2026-05-19T18:35:00Z)
+
+(Constraint
+    "Chat responses must be brief. The psyche prefers answering well-formed questions over reading agent prose. When the agent has substantive output, it goes in a report; the chat names the path and carries only the user-attention items concisely. Long agent-composed exposition in chat is a guideline failure."
+    "Your response is too large. This also breaks guidelines, which means the guidelines aren't good enough. … just ask me the questions. With the context and the questions. I would rather just answer questions. I don't want to read all this stuff you just wrote."
+    "Tightening the chat-vs-report discipline. The recent multi-paragraph chat responses I've been giving exceed what the psyche wants to read. Push substance to reports; keep chat tight."
+    Maximum
+    2026-05-19T19:45:00Z)
+
+(Constraint
+    "Questions to the psyche must be self-contained — name the specific thing being asked about, not a vague back-reference like 'the skill edit' or 'Candidate C'. The psyche should not have to back-scroll to know what the question is about. Restate the substance inline; the question is about X (named in full), not about a pointer the psyche has to resolve."
+    "you're asking me a vague question, which is against guidelines. … you're doing this thing again, candidate C. I don't know what candidate C is."
+    "Sharpening the question-asking discipline. Vague references break the conversation; agents must carry the context with the question."
+    Maximum
+    2026-05-19T19:45:00Z)
+
+(Principle
+    "When an agent fails a guideline, the guidelines are insufficient — the agent is a machine; it doesn't misbehave. The fix is to upgrade the guidelines, not to blame the agent. Every agent failure points at a missing or unclear rule that needs strengthening."
+    "There's no such thing as you misbehaving, you're just a machine. So we need to upgrade the guidelines on..."
+    "Foundational framing for how guideline iteration works: agent failure is signal, not fault. The discipline grows by absorbing the failure mode."
+    Maximum
+    2026-05-19T19:45:00Z)
+
+(Principle
+    "Recent psyche intent overrides earlier psyche intent. The file-based intent log is awkward for negation — when new intent supersedes old, the supersession lives in jj history, not in the file directly. This is exactly the case persona-spirit's typed memory variant will eventually handle properly with negation as a typed relation. Until then: write the new intent; let history hold the lineage."
+    "this is why recent intent overrides old intent. Now we have a perfect example. And this exposes a problem with our file-based approach. It should be a database, which is why we need persona spirit, so that we can negate things now."
+    "Naming the supersession-via-recency model and the file-based-approach limitation. The psyche pointed at the in-flight contract-local-verbs reversal as a perfect example of intent that needed superseding."
+    Maximum
+    2026-05-19T19:45:00Z)
+
+(Decision
+    "Beads are not psyche-friendly — the psyche cannot observe them; only agents can. Prefer reports as the documentation substrate. Beads may exist but must be referenced from a report so the substance is psyche-visible. Outstanding protocol question: when a report containing bead references is deleted, what happens to the bead? Needs designed answer."
+    "I have a hard time with beads. They're not very friendly to me. I can't actually observe them. Only agents can see them. … you can create beads if you reference them in reports. But then we need some kind of protocol, whereas if a report that has beads in it is going to be deleted, we need to do something about the beads."
+    "Reorienting the bead workflow around psyche visibility. The current bead surface is opaque to the psyche; the workspace's documentation should pass through reports."
+    Maximum
+    2026-05-19T19:45:00Z)

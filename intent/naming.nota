@@ -124,3 +124,10 @@
   "Response to whether daemons should log both public contract actions and lower Sema effects for introspection. The psyche prefers transparent development observation without turning all possible introspection into always-on durable logs."
   Medium
   2026-05-19T17:00:46Z)
+
+(Correction
+    "Contract verbs must be in verb-form, not noun-form derived from the verb. 'Statement' is the noun derived from 'to state' — the contract verb is State, not Statement. Same rule: Submit not Submission; Observe not Observation; Register not Registration. The leading word of an operation is the action in its verb spelling; the payload that follows is the noun the action takes."
+    "statement is not a verb. State is a verb. Right? Observe, receive. Yeah, that's all good."
+    "Correcting my persona-spirit example. The rule generalises across all contract verbs: pick the verb spelling, never the noun spelling that derived from it."
+    Maximum
+    2026-05-19T19:45:00Z)

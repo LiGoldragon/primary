@@ -38,3 +38,52 @@
     "Answering Q4 of /229 on sub-scope handoff semantics; settled during the daemon-state brainstorm."
     Maximum
     2026-05-19T01:20:00Z)
+
+(Correction
+    "My 'verb is the state-effect label; variant is the domain noun' compromise was wrong. The doubling — Match Query(Query), Assert Message(MessageSubmission) — is bad design that needs fixing, not preserving with a sharper naming rule. The signal verbs at the public layer don't describe what the client is sending — they describe what a database does. When the client wants to Query, the public language should say Query; whether the daemon resolves it internally via Match against indexes is execution detail the client doesn't care about. Same for Message, Configure, etc."
+    "match query query, but that is fucking ugly as fuck. … we're trying to fit everything into the six verbs that aren't necessarily those things. There are other things that might resolve into an assert that might resolve into a match in an engine somewhere, but that are not the signal that the client is trying to send. The client is trying to say I want to query something. I don't know internally it resolves as a match. It's just for him it's a query or a message."
+    "Hard correction. The psyche rejected my proposed reframing (verb-as-state-effect-label, variant-as-domain-noun) because it preserves the doubling rather than removing it. The right model: public verbs describe the client's action; database verbs (Assert/Match/etc.) live at the execution layer and are not public."
+    Maximum
+    2026-05-19T19:30:00Z)
+
+(Correction
+    "Mutate <Verb> and Retract <Verb> are grammatically wrong shapes. You mutate or retract nouns, not verbs. Mutate Configure reads as 'mutate a configure operation,' which is incoherent. Retract Retire is the same problem. Mutate Register only works if Register is read as a noun (registration as a thing), not as the verb. The owner-contract pattern I pointed at (Configure / Register / Retire under Mutate / Retract) is not the precedent for a clean design — it's the same kind of mis-naming the new direction is meant to fix."
+    "mutate configure doesn't work out because you mutate a noun, you don't mutate a verb. So that sounds wrong too. And retract retire sounds wrong too. And I guess you could say mutate register might work, but only if you're considering register as a noun and not a verb."
+    "Correcting my use of owner-contract precedent. The grammatical mismatch (verb verb instead of verb noun) is itself diagnostic of the same layer confusion the new direction wants to remove."
+    Maximum
+    2026-05-19T19:30:00Z)
+
+(Decision
+    "Public contract verbs should be the client's domain actions — Query, Message, Configure, Register, etc. — not the database execution verbs (Assert/Mutate/Retract/Match/Subscribe/Validate). The signal-core 6 verbs describe what happens to state inside an engine; they belong at the execution layer, not the public-contract layer. Public contracts speak the language of what the client is asking the daemon to do; the daemon internally translates to whatever Sema operations the state-effect requires. This is the architectural direction; Candidate C from /125 (two-level) or B (six roots moved to Sema) is the right shape — the psyche's lean is the direction where the verb the client sends is the verb in the contract."
+    "There are other things that might resolve into an assert that might resolve into a match in an engine somewhere, but that are not the signal that the client is trying to send. … entertain my point of view here to make sure that you aren't just agreeing with the technical debt. I really don't care about technical debt."
+    "Adopting /125's direction explicitly. The psyche pushed back hard on my compromise reframing; the right shape is contract-local public verbs with Sema verbs at the execution layer."
+    Maximum
+    2026-05-19T19:30:00Z)
+
+(Principle
+    "Do not optimize for technical debt — argue for the right shape, even when it breaks signal-core, the signal_channel! macro, every existing contract, and the sema-engine integration. The cost of a wrong shape compounds; the cost of a clean break is paid once. ESSENCE 'Backward compatibility is not a constraint' applies. When an agent's reasoning starts to weigh in 'but the macro would have to change' or 'cross-component tooling would need to learn vocabularies,' that's technical-debt thinking — name it and discard it."
+    "entertain my point of view here to make sure that you aren't just agreeing with the technical debt. I really don't care about technical debt."
+    "Reinforcing ESSENCE's 'backward compatibility is not a constraint' in the architectural-direction conversation. Technical-debt-preservation reasoning was creeping into my analysis; the psyche named it directly."
+    Maximum
+    2026-05-19T19:30:00Z)
+
+(Decision
+    "Confirmed: promote Query to a contract-level public verb in signal-repository-ledger; retire the Match wrapping. This applies across the workspace — contracts define their own public verbs reflecting the client's domain action. The /124 'Match Query(Query)' intermediate fix is called off; the bead I was about to file for that intermediate refactor is called off too. The right shape goes directly to contract-local verbs."
+    "Promote query to a contract-level verb. Retire the match wrapping. Yes, that's right. That's what we're going to do. Which means everybody's going to have to reimplement a bunch of stuff now, possibly. But that's okay. That's what we do."
+    "Locking in the architectural direction. Existing /124 intermediate plans are superseded. Re-implementation churn is acceptable."
+    Maximum
+    2026-05-19T19:45:00Z)
+
+(Decision
+    "signal-core is actually signal-sema in the new model — it's a language to talk to the Sema engine. The 6 verbs (Assert/Mutate/Retract/Match/Subscribe/Validate) belong to signal-sema. The frame/exchange mechanics keep a separate (narrower) home — probably signal-core retains that role, or a new name. Each component contract (signal-<component>) defines its own public verbs that internally translate into signal-sema operations against the daemon's typed state."
+    "what we call a signal core sounds like it's signal-sema. So it's sort of a language to talk to the SEMA engine."
+    "Naming the architectural split. signal-core's current conflation of frame mechanics + Sema verbs splits into separate concerns."
+    Maximum
+    2026-05-19T19:45:00Z)
+
+(Principle
+    "Contracts define their own verbs. Same verb name across different contracts may carry entirely different semantics depending on which socket / which daemon receives it — like telling a cloud to fall vs telling a bird to fall, both 'fall' but different effects. The verb is contract-local; agent reasoning about what an operation does must include the receiver context, not just the verb name."
+    "every domain has its own verbs. Obviously, some of them will be reused across domains, but in different ways. Depending on which socket, which daemon you're talking to, the verb is going to do something different, right? So if you tell a cloud to fall, or if you tell a bird to fall, they're going to have different reactions, obviously."
+    "Establishing the contract-locality of verbs. Cross-contract verb-name reuse is allowed and expected; the meaning is dispatched on the receiver, not on the name in isolation."
+    Maximum
+    2026-05-19T19:45:00Z)

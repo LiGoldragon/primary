@@ -1,188 +1,167 @@
 # 136 — persona-spirit current system and remaining gaps
 
-*Operator update after the Kameo actor-path slice.*
+*Operator update after the owner-socket daemon slice.*
 
 ## 0 · Short Read
 
-`persona-spirit` is now a usable raw intent component with typed
-entry logging, summary/provenance querying, sema-engine persistence,
-and a Kameo actor tree on the CLI request path.
+`persona-spirit` is now a working raw intent component with:
 
-It is still not a long-lived daemon socket component. The daemon
-binary exists but fails honestly until the socket/config/runtime
-surface lands.
+- typed NOTA request input;
+- sema-engine backed record storage;
+- Kameo actor planes for text, dispatch, record storage, working state,
+  subscriptions, owner lifecycle, and reply projection;
+- a daemon with separate ordinary and owner Signal sockets;
+- constraint tests for the actor paths and socket boundaries.
 
-Current path:
+It is still not the full Spirit apex. The classifier, bootstrap-policy import,
+subscription event push, and owner-Mutate forwarding to mind are still absent.
+
+## 1 · Current Runtime Shape
 
 ```mermaid
-flowchart LR
-    agent["agent"]
+flowchart TB
+    agent["agent or psyche"]
     cli["persona-spirit CLI"]
+    daemon["persona-spirit-daemon"]
+    ordinary["ordinary socket"]
+    owner["owner socket"]
     root["SpiritRoot"]
+    ownerPlane["OwnerPlane"]
     ingress["IngressPhase"]
     decoder["NotaDecoder"]
     dispatch["DispatchPhase"]
+    state["StatePlane"]
+    subscription["SubscriptionPlane"]
     store["RecordStore"]
-    shaper["ReplyShaper"]
+    database["sema-engine database"]
     encoder["ReplyTextEncoder"]
-    database["sema-engine records"]
 
     agent --> cli
-    cli --> root
+    cli --> ordinary
+    daemon --> ordinary
+    daemon --> owner
+    ordinary --> root
+    owner --> root
+    root --> ownerPlane
     root --> ingress
     ingress --> decoder
     ingress --> dispatch
+    dispatch --> state
+    dispatch --> subscription
     dispatch --> store
-    dispatch --> shaper
     store --> database
     root --> encoder
 ```
 
-Example write:
+The one-shot CLI uses the same actor tree, but starts and stops it per
+invocation. When `PERSONA_SPIRIT_SOCKET` is set, the CLI decodes one NOTA
+`SpiritRequest`, sends a length-prefixed Signal frame to the ordinary socket,
+and receives a typed Signal reply.
 
-```sh
-persona-spirit '(Entry (naming Correction "drop ancestor prefixes" "naming context" Maximum "2026-05-19T15:46:23Z" "names do not carry their full ancestry"))'
-```
+## 2 · Representative Code Shape
 
-Reply:
-
-```nota
-(RecordAccepted ((1 naming Correction "drop ancestor prefixes" Maximum)))
-```
-
-Example query:
-
-```sh
-persona-spirit '(RecordObservation ((None SummaryOnly)))'
-```
-
-Reply:
-
-```nota
-(RecordsObserved ([(1 naming Correction "drop ancestor prefixes" Maximum)]))
-```
-
-## 1 · What Changed
-
-Path: `/git/github.com/LiGoldragon/persona-spirit`
-
-The runtime now starts a Kameo tree for each CLI call:
-
-```text
-SpiritRoot
-  IngressPhase
-    NotaDecoder
-    DispatchPhase
-      RecordStore
-      ReplyShaper
-  ReplyTextEncoder
-```
-
-The important implementation change is that `SpiritClient` no longer
-opens `SpiritStore` and dispatches directly. It calls
-`SpiritActorRuntime::submit_text_blocking`, so the production CLI path
-crosses the same actor planes the future daemon keeps alive.
-
-Representative code shape:
+The root actor owns references to the long-lived logic planes:
 
 ```rust
 pub struct SpiritRoot {
+    owner: ActorRef<owner::OwnerPlane>,
     ingress: ActorRef<ingress::IngressPhase>,
+    dispatch: ActorRef<dispatch::DispatchPhase>,
     encoder: ActorRef<reply::ReplyTextEncoder>,
-}
-
-pub struct RecordStore {
-    store: SpiritStore,
 }
 ```
 
-The actor names are not decorative. `RecordStore` owns the
-sema-engine store; `NotaDecoder` owns strict-end decoding policy;
-`ReplyShaper` owns unimplemented-operation policy; `ReplyTextEncoder`
-owns text projection policy.
+The daemon boundary now separates ordinary and owner traffic by type and socket:
 
-## 2 · Constraint Tests
+```rust
+pub struct DaemonConfiguration {
+    pub ordinary_socket_path: SocketPath,
+    pub owner_socket_path: SocketPath,
+    pub store_path: StorePath,
+    pub socket_mode: SocketMode,
+}
+```
 
-New actor-path witnesses:
+The owner socket never goes through ordinary dispatch. It decodes
+`owner_signal_persona_spirit::Frame` and calls `SubmitOwnerRequest`, which
+routes to `OwnerPlane`.
+
+## 3 · Constraints Now Covered
+
+The highest-signal constraints are enforced by named tests:
 
 ```text
 persona_spirit_entry_assertion_runs_through_actor_planes
-persona_spirit_record_observation_uses_read_plane_without_write_plane
-persona_spirit_unimplemented_statement_uses_reply_shaper_not_store
-persona_spirit_shutdown_releases_store_for_restart
-persona_spirit_invalid_text_keeps_typed_decode_error
-persona_spirit_command_line_path_uses_actor_runtime
-persona_spirit_uses_kameo_as_only_actor_runtime
-persona_spirit_actor_types_are_data_bearing
+persona_spirit_state_observation_uses_state_plane
+persona_spirit_record_subscription_uses_read_plane_then_subscription_plane
+persona_spirit_subscription_retractions_use_subscription_plane
+persona_spirit_owner_lifecycle_orders_use_owner_plane
+persona_spirit_daemon_serves_signal_frames_through_actor_root
+persona_spirit_daemon_serves_owner_signal_frames_through_owner_plane
+persona_spirit_ordinary_socket_rejects_owner_signal_frames
+persona_spirit_owner_socket_rejects_ordinary_signal_frames
+persona_spirit_daemon_rejects_verb_payload_mismatch_before_actor_execution
+persona_spirit_client_can_send_nota_request_to_running_daemon
 ```
 
-Existing boundary/storage witnesses still pass:
+These tests are intentionally architectural. They do not only check output; they
+also prove the route used to produce that output.
 
-```text
-persona_spirit_client_asserts_entry_and_mints_record_identifier
-persona_spirit_client_persists_entries_for_later_summary_observation
-persona_spirit_client_filters_record_observation_by_topic
-persona_spirit_client_returns_provenance_only_when_requested
-persona_spirit_client_repeated_entries_remain_distinct_records
-```
+## 4 · What Is Good
 
-The strongest new tests are trace-based. They prove the actor path,
-not only the visible output:
+The component now has a real triad shape:
 
-```mermaid
-sequenceDiagram
-    participant "SpiritRoot"
-    participant "IngressPhase"
-    participant "NotaDecoder"
-    participant "DispatchPhase"
-    participant "RecordStore"
-    participant "SemaWriter"
-    participant "ReplyTextEncoder"
+- ordinary contract: `signal-persona-spirit`;
+- owner contract: `owner-signal-persona-spirit`;
+- runtime component: `persona-spirit`.
 
-    "SpiritRoot"->>"IngressPhase": text
-    "IngressPhase"->>"NotaDecoder": decode
-    "IngressPhase"->>"DispatchPhase": typed request
-    "DispatchPhase"->>"RecordStore": Entry
-    "RecordStore"->>"SemaWriter": commit
-    "SpiritRoot"->>"ReplyTextEncoder": typed reply
-```
+The internal naming is much cleaner than the earlier intent-prefix attempt:
+`Entry`, `Quote`, `Topic`, `Summary`, `StatePlane`, `SubscriptionPlane`,
+`OwnerPlane`, `RecordStore`. The repository context already says this is
+Spirit intent work, so the types do not carry ancestor names.
 
-## 3 · Remaining Gaps
+The daemon now has hard boundary witnesses. If an owner frame is sent to the
+ordinary socket, or an ordinary frame is sent to the owner socket, the server
+rejects it before any actor plane can process it.
 
-Clear next work:
+## 5 · What Is Still Weak
 
-```text
-persona-spirit-daemon socket listener
-one-argument daemon configuration record
-ordinary and owner socket split
-owner-signal lifecycle handling
-bootstrap-policy.nota first-start import
-subscriptions
-filesystem projection from database back to intent/*.nota
-```
+`SubscriptionPlane` opens and retracts subscriptions, but it does not yet push
+events. It is a lifecycle/token plane, not a live event stream.
 
-Deferred by intent:
+`OwnerPlane` handles start, drain/stop, register identity, and retire identity,
+but `ReloadBootstrapPolicyOrder` returns an honest `RequestUnimplemented`.
 
-```text
-intent classifier
-spirit guardian / contradiction adjudication
-spirit-to-mind owner calls
-```
+`RecordStore` still handles only the current entry and query surface. It does
+not yet store a refined intent-manifestation graph with multiple verbatim
+quotes per restated intent.
 
-Those deferred items need the later multi-agent/auditing arc or the
-spirit-to-mind contract work. Today's spirit remains dumb storage
-driven by typed agent input.
+There is no Spirit-to-mind forwarding. Spirit does not yet turn accepted intent
+into owner-Mutate calls toward `persona-mind`.
 
-## 4 · Verification
+## 6 · Next Clear Work
+
+The next slices that do not need new product intent are:
+
+1. Implement `bootstrap-policy.nota` import through `OwnerPlane`.
+2. Add subscription event delivery and tests that prove events cross the
+   daemon socket as Signal stream frames.
+3. Add a refined stored entry model with multiple verbatim references.
+4. Add Spirit-to-mind owner-Mutate forwarding once the target contract is ready.
+
+The classifier, contradiction guardian, and richer psyche model still need
+design intent before implementation.
+
+## 7 · Verification
 
 Passing locally:
 
 ```text
-persona-spirit: cargo test --locked
-persona-spirit: cargo clippy --all-targets --locked -- -D warnings
+persona-spirit: CARGO_BUILD_JOBS=2 cargo test --locked
+persona-spirit: CARGO_BUILD_JOBS=2 cargo clippy --all-targets --locked -- -D warnings
 ```
 
-Passing through Nix with remote builder:
+Passing through Nix remote builder:
 
 ```text
 persona-spirit: nix flake check -L --max-jobs 0
