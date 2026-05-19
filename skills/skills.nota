@@ -111,5 +111,5 @@
   (Meta repo-intent skills/repo-intent.md Mechanism
     "Per-repo INTENT.md — agent-written prose, 100% backed by psyche statements, no embellishment, no inference. Like ARCHITECTURE.md but for intent.")
   (Meta intent-manifestation skills/intent-manifestation.md Mechanism
-    "Walk through intent log; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / ONBOARDING / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.")
+    "Walk through intent log; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / INTENT / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.")
 ]

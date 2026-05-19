@@ -4,23 +4,49 @@ The compact contract. Every agent reads this on every session.
 
 ## Required reading, in order
 
-1. **`ESSENCE.md`** — workspace essence. Upstream of every rule below.
-2. **`ONBOARDING.md`** — broader workspace context (read once when
-   beginning a session/role; designers + general agents).
+1. **`ESSENCE.md`** — workspace essence (most universal psyche
+   intent). Upstream of every rule below.
+2. **`INTENT.md`** — workspace intent in prose form, synthesised
+   from `intent/*.nota`. Read once on starting; consult when a
+   topic comes up.
 3. **`repos/lore/AGENTS.md`** — cross-workspace agent contract.
-4. **`skills/skills.nota`** — typed skill index. Query it whenever a
-   topic comes up; don't scan `skills/`.
+4. **`skills/skills.nota`** — typed skill index. Query it whenever
+   a topic comes up; don't scan `skills/`.
 5. **`orchestrate/AGENTS.md`** — how roles share this workspace.
-6. **Your main role's `skills/<role>.md`** — required-reading list for
-   the role you're in. Lanes share their main role's skill file.
-7. **The repo's `AGENTS.md` + `skills.md`** when editing inside a repo
-   under `repos/`.
+6. **Your main role's `skills/<role>.md`** — required-reading list
+   for the role you're in. Lanes share their main role's skill
+   file.
+7. **The repo's `AGENTS.md` + `skills.md`** when editing inside a
+   repo under `repos/`.
 
-Read `ONBOARDING.md` once when beginning a new session or role —
-it holds the broader context (file map, longer-form discipline,
-rationale) that fresh agents need once. Specialised agents working
-in a focused scope can skip re-reading; designers and
-general-purpose agents read it on starting.
+## Where things live
+
+| Path | What |
+|---|---|
+| `ESSENCE.md` | Workspace essence — most universal psyche intent. |
+| `AGENTS.md` | This file. Compact every-keystroke contract. |
+| `INTENT.md` | Workspace intent prose, synthesised from `intent/`. |
+| `intent/` | Workspace log of psyche statements (NOTA). |
+| `<repo>/INTENT.md` | Per-repo synthesis of psyche intent. |
+| `orchestrate/AGENTS.md` | Role-coordination protocol. |
+| `protocols/active-repositories.md` | Live repo map for architecture sweeps. |
+| `skills/<name>.md` | Cross-cutting agent capabilities. |
+| `skills/skills.nota` | Typed skill index (name, path, kind, tier, description). |
+| `reports/<role>/` | Role-owned reports. Each role writes only into its own subdirectory. Exempt from claim flow. |
+| `orchestrate/<lane>.lock` | Per-lane coordination state file. |
+| `tools/orchestrate` | Claim/release helper. |
+| `.beads/` | Shared short-tracked-item store. Transitional. |
+| `repos/` | Symlink index to ghq checkouts under `/git/...`. |
+| `RECENT-REPOSITORIES.md` | Broad recent checkout index. |
+| `GOALS.md` | Standing high-level goals. |
+
+## Skill discovery — query the index, don't scan
+
+`skills/skills.nota` is the typed index. Each entry carries a
+kind (`Role` / `Architecture` / `Craft` / `Programming` /
+`Workflow` / `Meta`), a tier (`Apex` / `Keystroke` / `Topic` /
+`Mechanism`), and a one-line description. When a topic comes up,
+read the matching skill — don't scan `skills/` listing every file.
 
 ## Reports go in files; chat is for the user
 
@@ -117,11 +143,8 @@ Each agent knows its lane before claiming or editing. Coordination:
 
 ## Where to look for more
 
-- Broader context, file map, longer-form discipline (Nix-store
-  rules, two-deploy-stack discipline, worktree flow, BEADS,
-  harness-memory rationale, dynamic-role escalation, intent layer):
-  `ONBOARDING.md`.
-- Where each kind of file lives: `ONBOARDING.md` §"Where things
-  live".
+- Workspace intent in prose form (longer-form discipline, the
+  two-deploy-stack discipline, worktree flow, BEADS, harness-memory
+  rationale, intent layer, dynamic-role escalation): `INTENT.md`.
 - Repo map for architecture sweeps: `protocols/active-repositories.md`.
 - Standing goals: `GOALS.md`.

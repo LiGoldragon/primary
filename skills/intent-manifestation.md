@@ -26,13 +26,13 @@ to do. Today, agents do this manually as a sweep skill.
 
 ## The destinations
 
-Guidance files (per `ONBOARDING.md` §"Guidance files"):
+Guidance files (per `INTENT.md` §"Guidance files"):
 
 | Guidance file | What lands there |
 |---|---|
 | `ESSENCE.md` (workspace) | Highest-certainty universal psyche statements — the gold of the gold. Bar is high (per `intent/workspace.nota`). Statements that stand as founding rules. |
 | `AGENTS.md` | Per-keystroke hard overrides. Short, every-session-read. The "buck the bad agent habits" stuff. |
-| `ONBOARDING.md` | Read-once-when-beginning context. File map, longer-form discipline, rationale. |
+| `INTENT.md` | Workspace intent in prose, synthesised from intent/*.nota; verbatim psyche quotes in italics. Read once on starting; consult by topic. |
 | `skills/<name>.md` | Topic-specific or workflow-specific discipline. Read when the topic comes up. |
 | `<repo>/INTENT.md` | Per-repo prose synthesis of psyche intent for the project. Like ARCHITECTURE.md but for intent. |
 | `<repo>/ESSENCE.md` (when exists) | Per-repo essential intent — the gold-of-the-gold for that project. |
@@ -49,7 +49,7 @@ For each intent record, ask in order:
 2. **Is this a per-keystroke override?** A rule agents need every
    session to buck a bad habit? → `AGENTS.md` Hard Overrides.
 3. **Is this onboarding-shaped — context-for-a-fresh-agent?** Not
-   per-keystroke but read-once-on-start? → `ONBOARDING.md`.
+   per-keystroke but read-once-on-start? → `INTENT.md`.
 4. **Is this topic-specific discipline?** A rule that applies when
    working in a specific area (jj, NOTA, components, reports)? →
    the relevant `skills/<topic>.md`. If no skill exists yet, create
@@ -144,7 +144,7 @@ Each guidance file has a voice:
 - **`AGENTS.md` Hard Overrides** — imperative, terse. *"Spell every
   identifier as a full English word."* *"Never quote a bare opaque
   identifier in chat output without an inline description."*
-- **`ONBOARDING.md`** — descriptive, contextual. *"Guidance files is
+- **`INTENT.md`** — descriptive, contextual. *"Guidance files is
   the umbrella term for every file that shapes agent behavior."*
 - **Skills** — imperative + discipline. *"When the psyche dictates
   a workspace term that the STT mangles, normalise to the canonical
@@ -204,5 +204,5 @@ spirit-surfaced).
 - `skills/repo-intent.md` — per-repo INTENT.md shape.
 - `skills/skill-editor.md` — how to create or edit a skill.
 - `skills/architecture-editor.md` — how to edit a repo's ARCH.
-- `ONBOARDING.md` §"Guidance files" — the umbrella naming.
+- `INTENT.md` §"Guidance files" — the umbrella naming.
 - `intent/workspace.nota` — psyche statements driving this skill.

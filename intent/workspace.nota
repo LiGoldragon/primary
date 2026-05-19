@@ -304,3 +304,17 @@
     "Psyche echoing the line back is affirming the rule and asking for the justification I should have given when asked 'Why?'. Meta-pattern correction: don't interpret questions as commands; give the reason; let the psyche decide whether to keep or drop."
     Maximum
     2026-05-19 22:45)
+
+(Decision
+    "Repository ledger entries must support agent-facing discovery of repository activity, including recently edited repositories, files changed during a time window, commit-message search, and substring search inside commit messages. If these queries are not implemented yet, add the intent to architecture constraints and cover them with Nix tests."
+    "So show me what this schema looks like in pseudonota syntax for the ledger entries, and can we query that and what kind of queries can we do so that agents can actually find out, can agents find out which files have been changed in a certain time period or like which repositories have been edited recently. Can they search for commit messages? Can they search for strings inside commit messages? I think these are all valid use cases. Maybe you can brainstorm with me with some more and then we can implement that if it's not already done. Put all of these in intent, obviously, and in constraints in the architecture and then write some Nix tests for them."
+    "Repository-ledger query surface expansion after the first live Gitolite hook path landed. The psyche wants the schema and query language shaped for agents to discover recent repository and file activity, not only record ref updates."
+    Maximum
+    2026-05-19T14:16:33Z)
+
+(Decision
+    "Workspace gets an INTENT.md at the root, replacing ONBOARDING.md. The intent layer becomes symmetrical between workspace and per-repo: every container (workspace, repo) has the same shape — AGENTS.md (compact contract), ESSENCE.md (essential intent), INTENT.md (workspace/project intent prose with verbatim italicised quotes). Non-intent content currently in ONBOARDING.md (file map, skill-discovery navigation reference) moves to AGENTS.md, which can be a bit bigger. ONBOARDING.md retires; no exception to the layout."
+    "let's just rename the onboarding file the intent file. … Whatever is in the onboarding file that isn't actual intent, you can verify. Move it back into the agents file. Because I think some of this can actually go in the agents file. The agents file could be a little bigger. That would be okay. … Move the whatever is not actual intent in the onboarding file in the agents file, get rid of the onboarding file, create an intent file instead. Then there's no exception."
+    "Settling the workspace layout: AGENTS.md + ESSENCE.md + INTENT.md (parallel to per-repo). ONBOARDING.md retires. AGENTS.md gains the file map + skill-discovery navigation. Verbatim psyche quotes in INTENT.md follow the italics convention (skills/intent-manifestation.md)."
+    Maximum
+    2026-05-19 23:00)
