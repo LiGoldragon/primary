@@ -90,3 +90,10 @@ We need to forbid this type of report name. So find out what the report is about
     "Adding the disk-not-just-intent enforcement principle for behavior-governing rules, and the basic-naming-as-its-own-skill split (separate from advanced reporting)."
     Maximum
     2026-05-19T17:30:00Z)
+
+(Constraint
+    "Report sweeps should remove stale reports from the work tree after their useful substance is committed into fresh, topic-focused reports. Reports that cover too many topics are poor handoff objects; each fresh report should be scoped by topic so another agent can use the path directly."
+    "do a report sweep, like any old reports you have with stale stuff. If there's nothing good in them, delete them. If there's anything good, move all of the good stuff into a new fresh report. By topic, obviously. I don't want reports that cover too many topics. They're not very useful for handing over to other agents."
+    "Direction before resuming Horizon redesign work: clean stale report inventory first, preserve good substance only in focused handoff reports, and delete obsolete reports after the preserved material is committed."
+    Maximum
+    2026-05-19T12:26:44Z)

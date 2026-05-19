@@ -1,0 +1,6 @@
+(Principle
+    "Cluster data should de-emphasize booleans. Optional capabilities should appear as vectors of named feature variants, with data-carrying variants when inline feature configuration is genuinely part of the cluster dial."
+    "I don't want to emphasize booleans. Because then we read the cluster data, it just says true or false. ... instead, you might as well just have a vector of features. And if we have different kinds of features, we have different kinds of vectors. But then it just becomes a variant name. So by reading the cluster data, we can see, oh yeah, this thing has a Gitolite server. ... Booleans should be de-emphasized, essentially. And a variant naming the feature should be used instead in a vector of features. And those variants can be even data-holding variants."
+    "Direction while resuming the Horizon redesign after production Horizon and CriomOS cluster-data cleanup. Production lessons should apply to the new Horizon shape: cluster data is readable role/capability selection, while derived ports, domains, and standardized configuration belong in Horizon reduction or CriomOS."
+    Maximum
+    2026-05-19T12:26:44Z)
