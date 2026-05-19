@@ -134,7 +134,60 @@ against the canonical `criome/ARCHITECTURE.md` (`4474bb8`) and
 
 ---
 
-## 6 · Next-session pickup points
+## 6 · Signal architecture migration (D/238 + D/239) impact on this arc
+
+`reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
+and `reports/designer/239-signal-architecture-migration-plan.md` redirect
+the workspace's signal architecture: public contract verbs become
+contract-local (caller's domain action in verb form — `Query`, `Submit`,
+`Configure`, `Authorize`, `Route`, `Observe`, etc.), and the six former
+universal verbs (Assert / Mutate / Retract / Match / Subscribe /
+Validate) move to a new `signal-sema` crate as the daemon's internal
+state-effect vocabulary. `signal-core` is renamed `signal-frame`
+(frame-mechanics only). Per-component migration playbook is in /239 §3.
+
+**Impact on this arc — three contracts touched:**
+
+- **`signal-criome`** — top-level verbs already mostly in contract-local
+  form (`AuthorizeSignalCall`, `RouteSignatureRequest`, `SubmitSignature`,
+  `RejectAuthorization`, `ObserveAuthorization`, `VerifyAuthorization`).
+  Migration is the SignalVerb-tag drop + macro-input shape change, not
+  a vocabulary rerendering. Lift: `AuthorizeSignalCall` → `Authorize`
+  (with `SignalCall` as payload noun, per /239 §3.C verb-form rule).
+- **`signal-lojix`** — `DeploymentRequestDigest` already exists; the
+  deployment-submission family needs the same SignalVerb-drop +
+  verb-form audit. Likely operation roots: `Submit` (a deployment),
+  `Observe` (deployment events), `Authorize` (delegated to criome).
+- **`signal-arca`** (does not yet exist — see
+  `reports/designer/221-lojix-arca-horizon-leaner-shape-state-2026-05-18.md`
+  for the planned shape). When created, must follow the new model
+  from day one: contract-local verbs (`Ingest`, `Query`, `Pin`,
+  `Retire`, `Observe`).
+
+**Implications for §2 of this report:**
+
+- Q1 (`SignedObject` canonical bytes) is unaffected by the migration —
+  the question is about what fields go inside the signed digest, not
+  about the verb that wraps it.
+- Q3 (`owner-signal-criome` contract sketch) now lands with
+  contract-local verbs throughout per /239 §3 — `Configure`, `Register`,
+  `Submit` (passphrase), `Approve` (signing decision), etc.
+- Q5 (D/214 ↔ SS/142 reconciliation) is unaffected.
+
+**Implications for §3 (lojix-mesh-side gaps):**
+
+- The `DeploymentReleased { request_id }` wire signal becomes a
+  contract-local `Release` operation on signal-lojix, not a `Retract`.
+- The `CancelDeployment` wire becomes `Cancel`.
+- `idempotency_key` on `DeploymentSubmission` is unchanged — payload
+  field, not verb.
+
+**Net:** the migration is real work but does not invalidate the arc's
+substance. The decisions awaiting psyche direction (§2 Q1-Q7) all
+remain live; their implementation simply lands against the
+post-migration wire shape.
+
+## 7 · Next-session pickup points
 
 When the next system-assistant session opens:
 

@@ -37,13 +37,13 @@ triad:
 ## Published State
 
 - `signal-persona-orchestrate`
-  - `main`: `46cb6f56 contract: make orchestrate roles dynamic`
+  - `main`: `8fd81545 signal-persona-orchestrate: align migration note with signal plan`
   - bookmark: `persona-orchestrate-mvp`
 - `owner-signal-persona-orchestrate`
-  - `main`: `d9210f9a contract: fix owner orchestrate formatting gate`
+  - `main`: `503c5a87 owner-signal-persona-orchestrate: mark signal migration requirement`
   - bookmark: `persona-orchestrate-mvp`
 - `persona-orchestrate`
-  - `main`: `c159d955 orchestrate: isolate ledger tests from workspace locks`
+  - `main`: `d198fa24 orchestrate: mark signal migration requirement`
   - bookmark: `persona-orchestrate-mvp`
 
 ## Architecture Redirection
@@ -59,9 +59,13 @@ runtime work, but the contract surface is not final architecture:
   `Assert` / `Retract` / `Mutate` / `Match`.
 - `owner-signal-persona-orchestrate` still declares owner operations
   under `Mutate` / `Retract`.
-- Full alignment requires the broader `signal-core` / `signal-sema`
-  migration described by report 238 before these Orchestrate contracts
-  can expose contract-local public verbs.
+- Full alignment requires the broader `signal-frame` / `signal-sema`
+  migration described by reports 238 and 239 before these Orchestrate
+  contracts can expose contract-local public verbs.
+
+The Orchestrate triad `ARCHITECTURE.md` files now carry explicit
+`MUST IMPLEMENT` migration notes so future Orchestrate work does not
+mistake the MVP contract surface for the final shape.
 
 ## Verification
 
