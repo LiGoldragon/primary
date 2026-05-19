@@ -178,3 +178,45 @@
     "The previous repository-ledger report identified that Gitolite hook spool files were likely unreadable by a dedicated repository-ledger daemon user. The psyche directed this agent to implement and deploy the production system fix locally."
     Maximum
     2026-05-19T17:40:00Z)
+
+(Decision
+    "The timestamp format on intent records is too long and noisy. The trailing :00Z (seconds + UTC marker) is redundant — every timestamp has it. The hyphens inside the date make the string longer than needed for an agent-readable field. The T date-time separator does not visually read as a delimiter (it looks like part of the number 17T13). A more compact format is wanted. Open: which format. Once decided, a script rewrites existing timestamps."
+    "I don't really like the date formatting. Maybe you can use a script to, like, redo that. It seems a little bit excessive. … what's the last colon zero zero Z? Everything has that, the same suffix on every single timestamp. … And do we really need all these hyphens? … this T is actually… What is this format, anyway? … What really compact time format can we use? And this whole zero zero Z at the end is really just annoying. Like, what the fuck is that about?"
+    "Format complaint with several specific issues: redundant :00Z suffix, hyphens make string longer, T doesn't read as a delimiter. Decision is to switch formats; choice is open until psyche picks from proposed options."
+    Maximum
+    2026-05-19T18:00:00Z)
+
+(Decision
+    "When the psyche restates an intent that is already recorded, agents should NOT just append a duplicate entry. The properly-behaving agent detects the restatement and reaffirms the existing entry instead. Open: how reaffirmation is recorded — touch the existing timestamp (rewrite), add a reaffirmed-at field, or another mechanism. The current behavior (append a duplicate) loses recency signal and pollutes the log."
+    "if an intent comes through one of my prompts that already has been worded in close enough words before … a properly behaving agent would not just add more, just add another entry. But I wonder, well, I don't wonder, there's a problem with that, which is that now the timestamp isn't really reflecting how recent that intent is."
+    "Identifying the restatement-handling problem. The skill already says don't duplicate (`skills/intent-log.md` §'Recording protocol' tells agents to query priors before adding; supersession protocol for contradictions). The gap: pure reaffirmation (no contradiction; just psyche repeating themselves) isn't covered."
+    Maximum
+    2026-05-19T18:00:00Z)
+
+(Correction
+    "Chat output discipline: no `---` horizontal-rule separators, no labeled-field structures (no 'Mechanism: …' / 'Example: …' headers, no rendered tables with field-name chips). The user reads dense inline prose better than bureaucratic scaffolding; labeled fields and visual dividers feel like being talked-down-to. The no-`---` rule already in AGENTS.md for markdown files extends to chat output. The NOTA-design principle (no labeled fields; the position is the schema) applies to chat prose too: state the option, state its tradeoff, state the lean — inline, no scaffolding."
+    "This is exactly the formatting style that I dislike. --- separator lines, named fields (mechanism, example) which I did away with my NOTA format. Everything about this way of presenting is 'lots of noise'. My mind repels from it and I dont even want to read it. I feel like it treats me like a stupid machine."
+    "Correcting my chat presentation: I used a labeled-field table with --- dividers when proposing the timestamp+restatement options. The psyche flagged this as noise. Dense inline prose is the discipline — for chat AND for markdown files."
+    Maximum
+    2026-05-19T18:15:00Z)
+
+(Decision
+    "Timestamp in intent records is two positional fields, not one: a date field and a time field. Both bare-friendly in NOTA (the date is digits-and-hyphens; the time is digits-and-colon). The space between them is the NOTA positional separator, not a delimiter inside the value. Drops the T problem, drops the :00Z noise, and the visual reads as two clean fields."
+    "why? that looks better. two fields, date then time."
+    "Settling the timestamp shape: two positional fields (date, time). Insight that I'd missed — the space is the NOTA separator, not part of the value."
+    Maximum
+    2026-05-19 18:30)
+
+(Decision
+    "Brainstorming the restatement shape: instead of touching a single timestamp, the verbatim field becomes a vector of (date, time, quote) structs — one per psyche statement of this intent. Recency = last struct's timestamp. Summary and context are agent-synthesised across all statements and get edited when a new statement adds nuance. Certainty may also update on reaffirmation."
+    "what about what I said about when an intent is restated again? Oh, touch the timestamp. Yeah, but then we would have to change how I said it. Because what about the verbatim part? Or do we change things a bit where the verbatim block is a vector and it holds composite objects, right, structs that start with, I don't know if it starts with the actual string and then the timestamp or the timestamp then the string. So essentially the timestamp becomes on the time when I said something instead of the whole intent. And then if the newly stated verbatim string would change the summary a bit and the context, then these get edited? Just brainstorm with me on this."
+    "Brainstorm in flight. Captures the shift from outer-record-timestamp to per-statement-timestamp; verbatim becomes a vector. Medium certainty until we settle the record shape."
+    Medium
+    2026-05-19 18:30)
+
+(Decision
+    "Proceed with the repository-ledger daemon slice: ordinary socket, owner socket, spool consumer, sema-engine ingestion, and thin CLI query path, with spool-first delivery before direct hook-to-daemon Signal."
+    "I did, when I said \"ok\""
+    "The agent said the next slice was clear and would proceed when asked. The psyche clarified that the prior \"ok\" was the instruction to proceed."
+    Maximum
+    2026-05-19T18:05:00Z)
