@@ -110,4 +110,6 @@
     "Ask the psyche when intent on a question is unclear, absent, or contradicted. Don't infer intent; ask. Structured options + lean.")
   (Meta repo-intent skills/repo-intent.md Mechanism
     "Per-repo INTENT.md — agent-written prose, 100% backed by psyche statements, no embellishment, no inference. Like ARCHITECTURE.md but for intent.")
+  (Meta intent-manifestation skills/intent-manifestation.md Mechanism
+    "Walk through intent log; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / ONBOARDING / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.")
 ]

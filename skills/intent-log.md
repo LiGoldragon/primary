@@ -272,6 +272,9 @@ substance migrates.
 
 - `skills/intent-maintenance.md` — sweep, supersession protocol,
   archival to `superseded/`, verification against current state.
+- `skills/intent-manifestation.md` — translate recorded intent into
+  the right guidance file (ESSENCE / AGENTS / skills / per-repo
+  INTENT). The bridge from raw log to behaviour-shaping docs.
 - `skills/nota-design.md` — the positional-NOTA discipline these
   records follow.
 - `skills/stt-interpreter.md` — STT-misspelling lookup tables; consult
