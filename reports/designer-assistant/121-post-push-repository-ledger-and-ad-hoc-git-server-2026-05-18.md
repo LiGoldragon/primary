@@ -2,7 +2,8 @@
 
 Date: 2026-05-18  
 Role: designer-assistant  
-Status: operator implementation plan  
+Status: operator implementation plan, updated after production
+Horizon service-variant deployment
 
 ## 0. Decision
 
@@ -112,53 +113,34 @@ Sources:
 
 ## 3. CriomOS / Horizon gate
 
-Current production `horizon-rs` has:
+This section is updated by the newer production reports:
 
-- `NodeSpecies` as a closed enum with composite variants such as
-  `EdgeTesting`, `LargeAiRouter`, and `RouterTesting`.
-- `NodeServices` as the per-node service-role record. Today it only
-  carries tailnet membership and tailnet controller role.
-- No generic vector of capabilities.
+- `reports/system-specialist/145-persona-gitolite-server-production-shape-2026-05-19.md`
+- `reports/system-specialist/146-production-horizon-service-variant-rework-2026-05-19.md`
+- `reports/system-specialist/147-production-horizon-circle-back.md`
 
-The active `horizon-leaner-shape` worktree keeps this direction but is
-clearer: `NodeServices` remains the typed home for per-node service
-roles, and `NodePlacement` separates metal/contained placement from node
-species. It still has no generic capability vector.
+The old recommendation in this report was "add a
+`persona_development` field to `NodeServices`." That is superseded.
+Production now uses a service-variant vector.
 
-Recommendation: **do not add a new node species** such as
-`DevelopmentEdge`. Add a typed field to `NodeServices` instead:
+The cluster data selects:
 
-```rust
-pub struct NodeServices {
-    pub tailnet: Option<TailnetMembership>,
-    pub tailnet_controller: Option<TailnetControllerRole>,
-    pub persona_development: Option<PersonaDevelopmentRole>,
-}
-
-pub enum PersonaDevelopmentRole {
-    Workstation {
-        repository_receive: RepositoryReceiveRole,
-    },
-}
-
-pub struct RepositoryReceiveRole {
-    pub local_only: bool,
-}
+```nota
+(PersonaDevelopment [(GitoliteServer)])
 ```
 
-The exact record names can be adjusted, but the shape matters:
+The projected `horizon.node.services` carries externally tagged service
+variants. CriomOS consumes them through:
 
-- The deployment fact is "this node hosts the local persona-development
-  receive stack", not "this node is a different species".
-- CriomOS gates the Gitolite and `repository-ledger` Nix modules on
-  `horizon.node.services.personaDevelopment != null`.
-- Only `ouranos` gets the role in the cluster proposal.
-- Existing `EdgeTesting` can remain a broad species, but it should not be
-  the sole gate for this service. Many edge-testing machines should not
-  automatically host the canonical local Git receive point.
+```text
+modules/nixos/node-services.nix
+```
 
-This follows the current CriomOS architecture sentence: role decisions
-come from Horizon capabilities/service roles, not node names.
+The Gitolite receive module gates on
+`PersonaDevelopment` containing `GitoliteServer`. The rule stays the
+same: do not add a node species such as `DevelopmentEdge`, do not use a
+node-name predicate, and do not make cluster data author Gitolite paths,
+ports, hook paths, or socket wiring.
 
 ## 4. Gitolite slice
 
@@ -186,11 +168,10 @@ it on the Horizon service role:
 
 ```nix
 let
-  development = horizon.node.services.personaDevelopment or null;
-  repositoryReceive =
-    if development == null then null else development.repositoryReceive or null;
+  hasGitoliteServer =
+    nodeServices.personaDevelopmentHas (horizon.node.services or [ ]) "GitoliteServer";
 in
-lib.mkIf (repositoryReceive != null) {
+lib.mkIf hasGitoliteServer {
   services.gitolite = {
     enable = true;
     adminPubkey = /* owner-owned local public key; private half stays outside Nix */;
@@ -223,7 +204,6 @@ repository-ledger/
   repository-ledger-daemon
   repository-ledger
 signal-repository-ledger/
-permission-signal-repository-ledger/
 owner-signal-repository-ledger/
 ```
 
@@ -232,7 +212,6 @@ Required constraints:
 - The daemon owns all state in `sema-engine`.
 - The CLI only talks to `repository-ledger-daemon`.
 - Normal queries use `signal-repository-ledger`.
-- Delegated maintenance uses `permission-signal-repository-ledger`.
 - Privileged mutable configuration uses `owner-signal-repository-ledger`.
 - The owner-signal actor inside the daemon is the only privileged
   runtime configuration surface. Static files may provide bootstrap
@@ -257,8 +236,10 @@ Normal signal should cover:
 - query by branch/bookmark/tag,
 - fetch commit/change metadata for agent context.
 
-Permission-signal can stay minimal in the first slice unless a real
-delegated operator appears.
+There is no `permission-signal-repository-ledger` middle tier. That was
+an earlier hallucinated shape. Components have the ordinary
+peer-callable `signal-*` contract and the owner-only `owner-signal-*`
+contract.
 
 ## 6. Hook adapter
 
@@ -319,17 +300,17 @@ without closing role names into an enum yet.
 ## 8. Implementation order
 
 1. Add the Horizon/CriomOS gate:
-   - add `persona_development` or equivalent to `NodeServices`;
-   - project it unchanged into `view::Node.services`;
-   - set it only on `ouranos` in the production cluster proposal;
-   - add a CriomOS module gated on that service role.
+   - already landed in production as
+     `PersonaDevelopment [(GitoliteServer)]`;
+   - keep using the service-variant vector in any follow-up;
+   - do not regress to boolean fields or node-name gates.
 2. Enable Gitolite on the gated node:
-   - use NixOS `services.gitolite`;
-   - set `dataDir = "/var/lib/gitolite"`;
-   - install the common `post-receive` adapter;
-   - keep the admin key local and explicit.
+   - already landed as the production receive slice;
+   - current hook durably spools receive notifications under
+     `/var/lib/repository-ledger/spool`;
+   - next system-specialist work is a live push witness, if wanted.
 3. Implement `repository-ledger` skeleton:
-   - triad repo plus three contract repos;
+   - triad repo plus two contract repos;
    - sema-engine database opens on startup;
    - owner-signal actor can register a repository;
    - normal-signal actor can query recent pushes.
@@ -351,8 +332,8 @@ The operator should land these as tests or Nix checks:
 
 | Witness | Proves |
 |---|---|
-| non-development node does not enable Gitolite | The service is gated by Horizon role, not node name. |
-| only `ouranos` projects `personaDevelopment` in current cluster data | The local dev receive point is not accidentally cluster-wide. |
+| non-development node does not enable Gitolite | The service is gated by Horizon service variant, not node name. |
+| only `ouranos` projects `PersonaDevelopment [(GitoliteServer)]` in current cluster data | The local dev receive point is not accidentally cluster-wide. |
 | Gitolite accepts a local test push | The canonical receive point works. |
 | post-receive adapter receives old/new/ref rows | The hook path is real. |
 | hook writes spool when daemon is down and exits successfully | Git pushes are not rejected by ledger outages. |
@@ -364,20 +345,13 @@ The operator should land these as tests or Nix checks:
 
 ## 10. Remaining decisions for the user
 
-Only three decisions still look worth user attention:
+Only two decisions still look worth user attention:
 
-1. **Name of the Horizon role.** I recommend
-   `personaDevelopment` because this local Git receive stack is part of
-   the Persona development environment, and more dev-only services can
-   join that role later. A narrower name like `repositoryReceive` is
-   also defensible if you want the field to name only this service.
+1. **Live Gitolite push witness now or after the daemon exists.** The
+   system slice can prove a real Git push creates a durable spool record
+   before the Rust daemon exists. The alternative is to wait and test the
+   full receive-to-ledger path once `repository-ledger-daemon` exists.
 2. **GitHub mirror in the first slice or later.** I recommend later. The
    local receive plus ledger witness is enough to prove the architecture,
    and deferring mirror avoids introducing a GitHub write credential into
    the first implementation.
-3. **How hard "local-only" should be.** I read the immediate intent as
-   "deployed only on the workstation, not in cloud infrastructure." If
-   the operator must also make Gitolite reachable only over loopback,
-   Gitolite will likely need a dedicated loopback-only SSH service or a
-   stricter firewall/sshd rule, because the normal Gitolite path rides
-   OpenSSH.
