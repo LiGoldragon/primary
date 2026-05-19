@@ -53,3 +53,17 @@
     "Correcting chat/report handoff style after an intent-backfill detour; sharpens the full-report-path and concise-chat rules."
     Maximum
     2026-05-19T16:55:00Z)
+
+(Clarification
+    "Chat responses should be concise and name the full path of any new or edited report, not only the report number. Elaborate analysis belongs in a report or an edited report; chat brings forward only the most important topic and questions."
+    "I don't want these huge responses anymore. I just only want in the response, I want to see the path of any new or edited report. … I want the path of the report, not just the number of it, so I can copy the report path by just selecting it and then passing it to another agent. … be very concise in your response. Don't use convoluted formatting for presenting anything. Just be straightforward, bring your most important topic and questions forward and everything else that if you need to get elaborate that goes into a report or into an edited version of an older report."
+    "Clarifying the chat/report handoff after the intent-backfill detour: report paths must be copyable from chat, and chat should stay terse."
+    Maximum
+    2026-05-19T13:10:00+02:00)
+
+(Constraint
+    "Chat responses should stay compact. When a report is created or edited, the response must name the exact report path so the psyche can copy it directly. Do not refer to reports only by number. Put elaborate context in reports; bring only the most important topic and questions into chat."
+    "I've made it clear that I don't want these huge responses anymore. I just only want in the response, I want to see the path of any new or edited report. … I want the path of the report, not just the number of it, so I can copy the report path by just selecting it and then passing it to another agent. … be very concise in your response. Don't use convoluted formatting for presenting anything. Just be straightforward, bring your most important topic and questions forward and everything else that if you need to get elaborate that goes into a report or into an edited version of an older report."
+    "Reinforcing the chat/report boundary after the intent-backfill detour: chat is a compact navigation and decision surface; reports carry elaboration."
+    Maximum
+    2026-05-19T16:55:00Z)
