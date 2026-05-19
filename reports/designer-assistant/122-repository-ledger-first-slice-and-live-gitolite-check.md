@@ -26,15 +26,16 @@ What is ready:
 - `repository-ledger.service` is deployed on `ouranos` through production
   CriomOS.
 - The ordinary CLI can query the daemon over the ordinary socket.
-- The daemon can ingest Gitolite post-receive spool records into Sema state.
+- The Gitolite post-receive hook now invokes the `repository-ledger` CLI first;
+  the CLI speaks the ordinary Signal contract to the daemon.
+- The older spool file remains only as a fallback handoff if the CLI submission
+  fails.
 - Fresh pushes to the `testing` repository are visible through
   `RepositoryEventQuery`.
 
 What is not yet ready:
 
 - The whole constraint suite is not yet complete.
-- The Gitolite hook still writes spool files; it does not yet submit direct
-  Signal frames to the daemon.
 - Mirror execution is not implemented.
 - The daemon runtime is synchronous threads plus one store mutex, not the final
   Kameo triad actor topology.
@@ -210,6 +211,17 @@ The deployed ledger recorded those two pushes too:
 That proves Gitolite accepted real pushes for all three new repos and can serve
 them back to Nix as named branch references.
 
+After CriomOS commit `49d499e4`, the deployed post-receive hook submits the
+canonical `RepositoryReceiveHookNotification` through the `repository-ledger`
+CLI before falling back to spool. A fresh push to `testing` produced:
+
+- event 15: `testing` moved from `04ee09ccd97a` to `60accb6ba044`, with
+  `daemon_socket_present true`.
+
+The event was visible through `RepositoryEventQuery` immediately after the push.
+The daemon's fallback spool loop runs every two seconds, so this is the runtime
+witness for the direct hook -> CLI -> daemon path.
+
 ## Original Spool Boundary Gap
 
 Status as of CriomOS commit `717504ab`: resolved on `ouranos` for the
@@ -285,12 +297,15 @@ Runtime witness after deploying locally on `ouranos`:
 - A fresh push to `testing` after the daemon was deployed committed event 11.
 - After the runtime directory was opened to `0755`, a second fresh push to
   `testing` committed event 12 with `daemon_socket_present true`.
+- After the hook was changed to call the ledger CLI first, another fresh push to
+  `testing` committed event 15 immediately through the ordinary daemon socket.
 
 Verification:
 
 - `lojix-cli '(FullOs goldragon ouranos ".../datom.nota" "github:LiGoldragon/CriomOS/main" Switch None [])'`
   completed successfully for the service package, the `nixdev` client socket
-  correction, and the runtime-directory presence correction.
+  correction, the runtime-directory presence correction, and the direct
+  hook-to-CLI correction.
 - The focused `repository-receive-role-policy` check passed through a direct
   Nix expression using the real flake inputs. A normal `checks.x86_64-linux.*`
   build still needs generated `system` and `horizon` overrides because CriomOS
@@ -301,6 +316,7 @@ CriomOS commits:
 - `9c28cc7c criomos: run repository ledger daemon on gitolite hosts`
 - `c518d23b criomos: expose repository ledger client socket to nixdev`
 - `a1a2f3ef criomos: let gitolite witness repository ledger socket presence`
+- `49d499e4 criomos: submit repository hook through ledger cli`
 
 ## Newly Closed In This Pass
 
@@ -314,12 +330,11 @@ CriomOS commits:
 - Nix flake checks for `signal-repository-ledger` and
   `owner-signal-repository-ledger`.
 - Production CriomOS service packaging and local deployment on `ouranos`.
-- Live post-deploy Gitolite push witness through the spool and daemon into
-  Sema state.
+- Live post-deploy Gitolite push witness through the spool fallback and then
+  through the direct hook -> CLI -> daemon path into Sema state.
 
 ## Not Yet Implemented
 
-- Direct hook-to-daemon Signal submission.
 - Mirror execution to GitHub or any other remote.
 - Kameo actor topology. The handlers are split by socket and behavior, but the
   first live runtime is synchronous threads over one store mutex. That is
@@ -329,7 +344,6 @@ CriomOS commits:
   recorded, but the catalog stays empty until an owner request registers a repo.
 
 The implementation now has enough contract, sema-engine state, socket, and CLI
-shape for the next slice to be concrete: add the remaining contract-repo Nix
-checks, add owner CLI/configuration ergonomics for repository registration, and
-then replace the temporary spool loop with direct hook-to-daemon Signal
-delivery.
+shape for the next slice to be concrete: add owner CLI/configuration ergonomics
+for repository registration, add mirror execution, and then replace the current
+synchronous runtime with the standard triad actor layout.
