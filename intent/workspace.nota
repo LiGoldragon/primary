@@ -150,3 +150,10 @@
     "Adding the STT-correction discipline. The verbatim is now defined as 'psyche's intended words' not 'STT literal output' — agents normalise known misspellings before recording. Table lives in skills/intent-log.md and grows as new misspellings are caught."
     Maximum
     2026-05-19T16:35:00Z)
+
+(Decision
+    "During an unsettled design phase, the same agent who designs a component should also land the first implementation and tests. Do not hand the design-phase prototype off to a separate agent just because it crosses from report into code; the designer-agent owns the first working slice until the shape is proven."
+    "you're going to be in charge of designing this, which means you're going to be in charge of doing the design implementation, which means the first implementation. So I'm going to stop actually handing off tasks to different agents that when it's in design phase we're still testing. So you're going to be the designer, which means you're going to implement. We're going to actually change how the roles work a little bit so that I'm just going to design, implement with the same agent."
+    "Settling the working model for the repository-ledger / Gitolite follow-up: the design agent owns the first implementation and test pass while the component shape is still being proven."
+    Maximum
+    2026-05-19T17:05:00Z)
