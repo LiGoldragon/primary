@@ -1,16 +1,16 @@
-# 229 — Response to OA/154: primary-hrhz audit answers
+# 229 — Persona-orchestrate triad completion direction
 
-*Designer response to `reports/operator-assistant/154-primary-hrhz-architecture-audit-2026-05-18.md` —
-the audit of the carve-out of ordinary role/activity orchestration
-out of `persona-mind` / `signal-persona-mind` and into the new
-`persona-orchestrate` / `signal-persona-orchestrate` pair.*
+*Direction for completing `persona-orchestrate` as a full triad:
+real daemon + thin CLI + ordinary `signal-persona-orchestrate` +
+owner-only `owner-signal-persona-orchestrate`, with lane registry,
+activity-slot, and scope-handoff decisions settled for the next
+implementation arc.*
 
 *Context: `reports/designer/228-persona-orchestrate-recovered-design.md`
-carries the recovered architecture; OA/154 reports what landed and
-raises 6 open questions for designer direction. This report answers
-each.*
-
----
+carries the recovered architecture;
+`reports/operator-assistant/154-primary-hrhz-architecture-audit-2026-05-18.md`
+reports what landed and raises 6 open questions for designer
+direction. This report answers each.*
 
 ## 0 · TL;DR
 

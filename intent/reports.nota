@@ -67,3 +67,12 @@
     "Reinforcing the chat/report boundary after the intent-backfill detour: chat is a compact navigation and decision surface; reports carry elaboration."
     Maximum
     2026-05-19T16:55:00Z)
+
+(Correction
+    "Report filenames name the report's subject, not its conversational ancestry. Names like `response-to-...`, `review-of-...`, or `audit-of-...` are poor durable locators when they hide the actual topic behind another report number. The file path should tell a future agent what the report is about without opening a chain of prior reports."
+    "> 229-response-to-oa-154-primary-hrhz-audit.md
+
+We need to forbid this type of report name. So find out what the report is about and give it a proper name. Do you understand why I don't want this type of name for a report file name?"
+    "Correcting a report filename whose locator described that it responded to OA/154 instead of naming its actual persona-orchestrate subject."
+    Maximum
+    2026-05-19T17:05:00Z)

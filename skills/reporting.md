@@ -270,6 +270,12 @@ Examples for `reports/designer/`:
 - `12-no-polling-delivery-design.md`
 - `13-niri-input-gate-audit.md`
 
+The topic names the report's subject, not its conversational
+ancestry. Avoid names like `response-to-...`, `review-of-...`, or
+`audit-of-...` when they hide the actual subject behind another
+report number. A future agent should learn what the report is about
+from the path without opening a chain of prior reports.
+
 To find the next number, scan **only the current role's
 subdir** and take one above the maximum:
 
