@@ -23,7 +23,10 @@ Design-phase agents own the first implementation and test pass while the shape
 is still being proven; do not hand the prototype to another agent merely
 because it crossed from report into code.
 
-Commit in `primary`: `574e5bed intent: record design-agent owns first implementation`.
+Relevant intent commits in `primary`:
+
+- `574e5bed intent: record design-agent owns first implementation`
+- `9a2fa931 intent: proceed with repository ledger daemon slice`
 
 ## Created Repositories
 
@@ -66,7 +69,10 @@ Remote: `gitolite@localhost:owner-signal-repository-ledger`
 
 Initial commit: `b92f35d3 owner-signal-repository-ledger: add owner policy contract`
 
-Latest commit: `2e8d37fa owner-signal-repository-ledger: reuse ledger path contract`
+Latest commits:
+
+- `2e8d37fa owner-signal-repository-ledger: reuse ledger path contract`
+- `c5f72586 owner-signal-repository-ledger: use named signal dependency`
 
 Surface:
 
@@ -92,7 +98,10 @@ Remote: `gitolite@localhost:repository-ledger`
 
 Initial commit: `5c4e1465 repository-ledger: add sema-engine backed first slice`
 
-Latest commit: `ff89f6fd repository-ledger: add live daemon and cli slice`
+Latest commits:
+
+- `ff89f6fd repository-ledger: add live daemon and cli slice`
+- `419367e7 repository-ledger: add flake package and named contract refs`
 
 Surface:
 
@@ -112,6 +121,7 @@ Verification:
 
 ```sh
 cargo test
+nix flake check --option substituters ''
 ```
 
 Passed.
@@ -137,13 +147,20 @@ Commit in `primary`: `9c628bfa protocols: add repository ledger repositories`.
 
 ## Live Push Verification
 
-Remote refs exist on the live Gitolite server:
+Remote refs exist on the live Gitolite server. The initial ref witness was:
 
 - `signal-repository-ledger` main -> `8f746959c542`
 - `owner-signal-repository-ledger` main -> `b92f35d3d806`
 - `repository-ledger` main -> `5c4e14653d7a`
 
-That proves Gitolite accepted real pushes for all three new repos.
+Later pushes moved the same `main` bookmarks forward:
+
+- `signal-repository-ledger` main -> `73f7f517b9e3`
+- `owner-signal-repository-ledger` main -> `c5f725860ea5`
+- `repository-ledger` main -> `419367e73405`
+
+That proves Gitolite accepted real pushes for all three new repos and can serve
+them back to Nix as named branch references.
 
 ## Original Spool Boundary Gap
 
@@ -187,7 +204,7 @@ This gap is closed for the current local production slice.
 
 ## Resolution Witness
 
-Production CriomOS now creates:
+Production CriomOS now creates and deploys:
 
 - `repository-ledger` system user.
 - `repository-ledger` system group.
@@ -195,29 +212,47 @@ Production CriomOS now creates:
   `repository-ledger`.
 - `/var/lib/repository-ledger` as `2770 repository-ledger:repository-ledger-receive`.
 - `/var/lib/repository-ledger/spool` as `2770 gitolite:repository-ledger-receive`.
-- `/run/repository-ledger` as `0750 repository-ledger:repository-ledger-receive`.
+- `/run/repository-ledger` as `0755 repository-ledger:nixdev`.
+- `repository-ledger.service`, running
+  `repository-ledger-daemon` as user `repository-ledger`, primary group
+  `nixdev`, with supplementary membership in `repository-ledger` and
+  `repository-ledger-receive`.
+- The `repository-ledger` CLI package in the system environment, so trusted
+  development users can query the ordinary socket from the shell.
 
 The post-receive hook now writes notification files with group
 `repository-ledger-receive` and mode `0640`.
 
 Runtime witness after deploying locally on `ouranos`:
 
-- A fresh push to the `testing` Gitolite repository created a
-  `RepositoryReceiveHookNotification` file.
-- The file landed as `0640 gitolite:repository-ledger-receive`.
-- `runuser -u repository-ledger -- test -r <latest-spool-file>` returned
-  success.
-- The `repository-ledger` user could read the NOTA notification content.
-- The pre-existing spool files from before the fix were normalized to
-  `0640 gitolite:repository-ledger-receive`, so the future daemon can read
-  the whole current queue.
+- `systemctl is-active repository-ledger.service` returned `active`.
+- `/run/repository-ledger/repository-ledger.sock` exists as
+  `srw-rw---- repository-ledger:nixdev`.
+- `/run/repository-ledger/repository-ledger-owner.sock` exists as
+  `srw------- repository-ledger:nixdev`; the group name is present but the mode
+  keeps the owner socket daemon-only.
+- `repository-ledger '(RepositoryCatalogQuery)'` returned
+  `(RepositoryCatalogListing [])`.
+- The daemon drained the existing Gitolite spool into typed Sema state.
+- A fresh push to `testing` after the daemon was deployed committed event 11.
+- After the runtime directory was opened to `0755`, a second fresh push to
+  `testing` committed event 12 with `daemon_socket_present true`.
 
 Verification:
 
 - `lojix-cli '(FullOs goldragon ouranos ".../datom.nota" "github:LiGoldragon/CriomOS/main" Switch None [])'`
-  completed successfully.
-- `checks.x86_64-linux.repository-receive-role-policy` passed with the
-  generated production `system` and `horizon` inputs.
+  completed successfully for the service package, the `nixdev` client socket
+  correction, and the runtime-directory presence correction.
+- The focused `repository-receive-role-policy` check passed through a direct
+  Nix expression using the real flake inputs. A normal `checks.x86_64-linux.*`
+  build still needs generated `system` and `horizon` overrides because CriomOS
+  intentionally ships stub defaults for those inputs.
+
+CriomOS commits:
+
+- `9c28cc7c criomos: run repository ledger daemon on gitolite hosts`
+- `c518d23b criomos: expose repository ledger client socket to nixdev`
+- `a1a2f3ef criomos: let gitolite witness repository ledger socket presence`
 
 ## Newly Closed In This Pass
 
@@ -227,23 +262,27 @@ Verification:
 - Thin query CLI that talks to the daemon.
 - Tests for ordinary Signal request/reply, owner Signal mutation, and spool
   ingestion with move-to-processed after commit.
+- Nix flake packaging for `repository-ledger`.
+- Production CriomOS service packaging and local deployment on `ouranos`.
+- Live post-deploy Gitolite push witness through the spool and daemon into
+  Sema state.
 
 ## Not Yet Implemented
 
 - Direct hook-to-daemon Signal submission.
 - Mirror execution to GitHub or any other remote.
-- Nix flake checks for the three new repos. The current witness is `cargo test`
-  plus the live binary smoke; the workspace testing discipline wants these
-  surfaced as named Nix checks next.
-- Production CriomOS service packaging for `repository-ledger-daemon`; the
-  current production deployment has the Gitolite hook and filesystem handoff,
-  not the daemon unit.
+- Nix flake checks for `signal-repository-ledger` and
+  `owner-signal-repository-ledger`. `repository-ledger` now has and passes a
+  Nix flake check.
 - Kameo actor topology. The handlers are split by socket and behavior, but the
   first live runtime is synchronous threads over one store mutex. That is
   acceptable for proving the boundary and should be replaced with the standard
   triad actor layout when the service is packaged.
+- Repository registration is still manual owner-signal state. Push events are
+  recorded, but the catalog stays empty until an owner request registers a repo.
 
 The implementation now has enough contract, sema-engine state, socket, and CLI
-shape for the next slice to be concrete: package the daemon as a local CriomOS
-service on `ouranos`, add the Nix checks, then replace the temporary spool loop
-with direct hook-to-daemon Signal delivery.
+shape for the next slice to be concrete: add the remaining contract-repo Nix
+checks, add owner CLI/configuration ergonomics for repository registration, and
+then replace the temporary spool loop with direct hook-to-daemon Signal
+delivery.
