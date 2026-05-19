@@ -50,12 +50,11 @@ Everything else is shared with the main role:
   lanes typically scope themselves to bounded support inside the
   main role's authority. See the main role's *"Working with
   assistants"* section for discipline-specific guidance.
-- **Beads label** — work items go under `role:<main-role>` (e.g.
-  `role:designer`), never `role:designer-assistant`. See
-  `orchestrate/AGENTS.md` §"Beads belong to main roles, not
-  assistants." A bead is visible to the discipline pool — main lane
-  plus every assistant lane under it — and any agent in the pool
-  can pick it up.
+- **Beads** — as of 2026-05-19 (per `intent/workspace.nota`), beads
+  do not carry `role:*` labels. Any agent picks up any bead based on
+  topic affinity. The prior discipline-pool-via-role-label rule is
+  retired; lanes coordinate through lock files and reports, not
+  bead labels.
 
 ## How to read this for your lane
 

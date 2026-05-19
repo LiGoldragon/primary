@@ -291,32 +291,23 @@ bd show <id>
 bd close <id> --reason "<what changed>"
 ```
 
-## Beads belong to main roles, not assistants
+## Beads are not role-labeled
 
-BEADS work items are filed by **main role**, not by assistant. The four
-main-role labels are `role:operator`, `role:designer`,
-`role:system-specialist`, and `role:poet`. There are no
-`role:operator-assistant`, `role:second-operator-assistant`,
-`role:designer-assistant`, `role:second-designer-assistant`,
-`role:system-assistant`, `role:second-system-assistant`, or
-`role:poet-assistant` labels.
+As of 2026-05-19 (psyche-stated in `intent/workspace.nota`), beads do
+not carry `role:*` labels. Any agent can pick up any bead based on
+topic affinity rather than a prescribed lane. The earlier
+discipline-pool-via-role-label rule is retired.
 
-**Assistants work the main role's beads.** A `designer-assistant` or
-`second-designer-assistant` agent runs `bd ready --label role:designer`
-to see ready work; same for every assistant lane in the other disciplines.
-When an assistant files a bead for its discipline, it files under the main
-role's label.
+When filing a bead: don't add a `role:*` label. Use **topic labels**
+(`nota`, `persona`, `criome`, `horizon`, etc.) so agents working in
+that topic find the bead via `bd ready` or `bd list --label <topic>`.
 
-The reason: an assistant does the same kind of work as its main role. A
-bead filed under an assistant label such as `role:second-operator-assistant`,
-`role:second-designer-assistant`, or `role:second-system-assistant` would be
-invisible to the main-role agent who could pick it up; a bead filed under the
-main role's label is visible to the whole discipline pool. The discipline
-pool — main role plus any assistants stacked under it — sees the same beads.
+When picking up a bead: scan `bd ready` and pick by topic fit and
+priority. Lane assignment is per-task judgment, not pre-labelled.
 
-The rule generalises. A second-assistant or third-assistant stacked under one
-main role still files beads under the main role's label. The discipline pool
-sees the work; the role-shape decides who claims it.
+The motivation (per psyche 2026-05-19): keep a single agent on a
+task/topic across what would previously have been multiple lane
+handoffs — less context-shuffling, less ceremony.
 
 Lock files are different. Each agent (main or assistant) edits its own
 lock file — locks name *who is actively touching what files right now*,

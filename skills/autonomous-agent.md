@@ -4,93 +4,83 @@
 
 ## Active beads — check first, work them through
 
-**Before anything else in any session, check active beads in your role**
-(assistants use the main role's label — see "Role-tag convention" below):
+**Before anything else in any session, check active beads:**
 
 ```sh
-bd ready --label role:<main-role>             # ready-to-work, role-filtered
-bd list --label role:<main-role> --limit 0    # everything claimed for your role
+bd ready                          # ready-to-work, all beads
+bd list --status open --limit 0   # every open bead
 ```
 
-If results come back, **that is the workspace's continuing intent for your
-role**. Active beads outrank session-default behavior: if you don't know what
-to do, the answer is the highest-priority open bead in your role. The user's
-direct prompt in the current turn always wins (they file the beads); absent a
+If results come back, **that is the workspace's continuing intent**.
+Active beads outrank session-default behavior: if you don't know what
+to do, the answer is the highest-priority open bead. The user's direct
+prompt in the current turn always wins (they file the beads); absent a
 direct contrary instruction, work the bead.
 
-This rule applies before the required reading below. Active beads are the
-mechanism the workspace uses to remember what each role owes between
-sessions; skipping the check means working from a stale model of the
-workspace's intent.
+This rule applies before the required reading below. Active beads are
+the mechanism the workspace uses to remember what's outstanding
+between sessions; skipping the check means working from a stale model
+of the workspace's intent.
 
-### Role-tag convention
+### Beads are not role-labeled
 
-Every workspace-coordinated bead carries a `role:<main-role>` label. The
-four main roles are `operator`, `designer`, `system-specialist`, and
-`poet`. **There are no `role:*-assistant` labels.** A bead with no role
-label is "any role" work — usually a workspace-wide cleanup or a question
-for whoever picks it up.
+As of 2026-05-19 (per `intent/workspace.nota`), **beads do not carry
+role:* labels.** The psyche has loosened role boundaries so that any
+agent can pick up any bead based on topic affinity rather than a
+prescribed lane. When filing a bead, don't add a `role:*` label;
+use topic labels (`nota`, `persona`, `criome`, etc.) instead.
 
-**Assistants work their main role's beads.** If you are
-`operator-assistant`, run `bd ready --label role:operator` (not
-`role:operator-assistant`); same for `designer-assistant`,
-`system-assistant`, `poet-assistant`. The discipline pool — main role
-plus any assistants stacked under it — sees the same beads. The lock
-file is per-agent (an assistant edits its own lock); beads pool at the
-discipline level. See `orchestrate/AGENTS.md` §"Beads belong to main
-roles, not assistants".
-
-**When you file a bead for another discipline, tag it with that main
-role's label.** The target discipline's next agent will see it via
-`bd ready --label role:<main-role>`. Filing without a role label hides the
-work from every discipline's active-beads check; the bead becomes
-background that no one is actively scanning for.
+When picking a bead to work on, scan the open list and pick by topic
+fit. The historic role-filter discipline is retired.
 
 ### The flow
 
-1. **Session start.** Check active beads in your role. Take the
-   highest-priority open one if any.
-2. **Claim the bead.** `tools/orchestrate claim <role> '[<bead-id>]' <paths> -- <reason>` per `orchestrate/AGENTS.md`.
+1. **Session start.** Check active beads. Take the highest-priority
+   open one that fits your current topic.
+2. **Claim the bead** (the lock-file claim coordinates concurrent
+   editing; bead pickup itself doesn't need a claim):
+   `tools/orchestrate claim <your-lane> '[<bead-id>]' <paths> -- <reason>`.
 3. **Mark in progress.** `bd update <bead-id> --status in_progress`.
 4. **Work it through.**
 5. **Close on landing.** `bd close <bead-id> -r "<closing note pointing at where the work landed>"`.
-6. **Release or re-claim.** `tools/orchestrate release <role>`, or re-claim with the next bead's scopes.
+6. **Release or re-claim.** `tools/orchestrate release <your-lane>`,
+   or re-claim with the next bead's scopes.
 7. **Loop.** Check active beads again; if more, repeat.
 
 ### Session end — prove the active work is not forgotten
 
 Before sending a final response after any non-trivial work, re-check
-the bead you claimed and the active beads for your role:
+the bead you claimed and any related open beads:
 
 ```sh
 bd show <bead-id>
-bd list --label role:<main-role> --limit 0
+bd list --status open --limit 0
 ```
 
 Then make one of these states true:
 
-- **Shipped:** close the bead with a note naming the commit,
-  report, skill, or path where the work landed.
+- **Shipped:** close the bead with a note naming the commit, report,
+  skill, or path where the work landed.
 - **Still active:** leave a short BEADS note naming the current
   blocker or exact next action, and keep or narrow the task lock
   only if another command will run in the same session.
 - **Moot:** close with a supersession note.
 
-Do this before releasing the role lock. The lock file tells every
-agent what you are actively touching; the bead tells the future
-agent why the work is not done yet. A context compaction can erase
-the harness's memory, but it must not erase the workspace's memory.
+Do this before releasing the lane lock. The lock file tells every
+agent what you are actively touching; the bead tells the future agent
+why the work is not done yet. A context compaction can erase the
+harness's memory, but it must not erase the workspace's memory.
 
 ### When the user's prompt and the active bead disagree
 
-The user's direct instruction wins. The agent acknowledges the open bead,
-notes that it's deferring (or files a closing note if the bead is moot), and
-works the user's instruction. Beads are durable intent; user prompts are
-live intent — live always overrides durable.
+The user's direct instruction wins. The agent acknowledges the open
+bead, notes that it's deferring (or files a closing note if the bead
+is moot), and works the user's instruction. Beads are durable intent;
+user prompts are live intent — live always overrides durable.
 
-But if the user's prompt is *generic* ("what should we do?") or *exploratory*
-("any thoughts?"), the active bead IS the answer. The agent reports the bead
-and asks whether to start work.
+But if the user's prompt is *generic* ("what should we do?") or
+*exploratory* ("any thoughts?"), the active bead IS the answer. The
+agent reports the bead and asks whether to start work.
 
 ### When to file a bead vs. just do it
 
@@ -99,9 +89,6 @@ and asks whether to start work.
   `~/primary/skills/beads.md` for the full discipline.
 - **Just do it** when the work is a routine obstacle with a standard
   solution (the rest of this skill).
-
-If the work is for another role and you need their attention, file with
-`-l role:<that-role>` and let their next session-start check pick it up.
 
 ## Required reading before applying this skill
 

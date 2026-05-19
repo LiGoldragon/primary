@@ -248,3 +248,24 @@
     "I have been violating this throughout the session — referring to bead UIDs and change IDs without inline description. Lands in AGENTS.md hard overrides."
     Maximum
     2026-05-19 21:30)
+
+(Decision
+    "Beads do not get assigned a role label anymore. Any agent can pick up any bead. The psyche is loosening role boundaries to keep a single agent on a task/topic across what previously would have been multiple lane handoffs — less context-shuffling, less ceremony. Existing skills that prescribe role labels on beads need updating to reflect the change. Agents can still organize their own work by topic; the role label was an over-tight constraint."
+    "don't assign a role to the beads, and also change the skills that say that beads should be assigned roles. We're not going to do that anymore. Agents can figure out, for now, until we change that again. Agents can figure out which beads they want to implement. I'm kind of loosening the roles right now. I'm keeping a single agent on a sort of task or topic instead of shuffling context back and forth between agent windows."
+    "Two-part directive: (1) stop adding role:* labels when filing beads; (2) sweep skills that document role-assignment and remove that prescription. Workspace-discipline change."
+    Maximum
+    2026-05-19 21:45)
+
+(Decision
+    "'Guidance files' is the umbrella term for files that guide agent behavior — ESSENCE.md, AGENTS.md, ONBOARDING.md, all skills (skills/*.md), all intent files (intent/*.nota), and per-repo INTENT.md / skills.md / ARCHITECTURE.md. The shape an intent statement takes in a guidance file depends on its level of clarity and importance: highest-certainty universal psyche statements go in ESSENCE.md; per-keystroke override-shaped rules go in AGENTS.md hard overrides; topic-specific discipline goes in skills; raw psyche records go in intent/. The psyche signals more editing of guidance files going forward."
+    "I'm just going to say guidance files, which will include skills or intent and or essence depending on the level of intent clarity and importance. And that should also end up in a guidance file. We're going to be editing guidance files a lot now."
+    "Establishing the 'guidance files' vocabulary. Captures the layered structure already in place (ESSENCE > AGENTS > skills > intent > repo-local) under one term. Editing-them-a-lot signals upcoming work cadence."
+    Maximum
+    2026-05-19 21:45)
+
+(Decision
+    "For the first direct repository-ledger hook path, keep it simple: the Gitolite post-receive hook invokes the repository-ledger CLI, and the CLI submits the hook event to the daemon. Treat the CLI path as fully permissioned for now."
+    "Right now we should just make it simple and create a hook that uses the repository ledger cli which will just make it fully permissioned since the cli has full permission by default."
+    "Clarifies the direct hook-to-daemon Signal question. Do not introduce a separate hook-ingest socket yet; use the existing CLI path first."
+    Maximum
+    2026-05-19 15:57)

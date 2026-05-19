@@ -8,6 +8,19 @@ once. Specialised agents working in a focused scope don't have to
 re-read every session; designers and general-purpose agents should
 read it on starting.
 
+## Guidance files — the umbrella term
+
+The workspace uses **"guidance files"** as the umbrella term for
+every file that shapes agent behavior: `ESSENCE.md`, `AGENTS.md`,
+`ONBOARDING.md`, every skill in `skills/*.md`, every intent file in
+`intent/*.nota`, and per-repo `INTENT.md` / `skills.md` /
+`ARCHITECTURE.md`. The shape an intent statement takes depends on
+its level of clarity and importance: highest-certainty universal
+psyche statements land in `ESSENCE.md`; per-keystroke override-shaped
+rules in `AGENTS.md` hard overrides; topic-specific discipline in
+skills; raw psyche records in `intent/`. Editing guidance files
+is the cadence of workspace evolution.
+
 ## Where things live
 
 | Path | What |
