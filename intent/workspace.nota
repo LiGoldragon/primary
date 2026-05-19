@@ -1,0 +1,91 @@
+[
+(Decision
+    "AGENTS.md is the compact every-session override file; bulky discipline lives in AGENTS-extended.md. AGENTS.md aims for around 100 lines as a soft target, but no line-cap number is quoted inside the file itself — that would be noise. Hard caps are forbidden as a class."
+    "let's say 100 lines is what goes into agents.md and no more. And don't put that into agents.md. Don't say this file should only be 100 lines. Like that's just fucking noise again. … And then don't make these things hard caps. Let's say if it becomes 120 lines, that's okay. And don't quote that number either. … the agents.md file is like super compact and the super important stuff, like the super override stuff to break, to buck these agents from doing these things that they tend to do a lot."
+    "Settling the AGENTS.md split discipline; followed an earlier rejection of delegating role required-reading to AGENTS.md (would dilute role identity)."
+    Maximum
+    2026-05-18T11:31:00Z)
+  (Constraint
+    "Required-reading lists for roles stay in skills/<role>.md, not delegated to AGENTS.md. Centralising them dilutes role identity."
+    "Delegate role file required reading sections to agents.md. Saves 250 lines workspace-wide but dilutes role identity. I'm not sure, I don't think so. Diluting role identity, I don't like the sound of that. So skip that, but the rest is good."
+    "Rejecting a prior proposal during the AGENTS.md restructuring discussion; required-reading stays role-local."
+    Maximum
+    2026-05-15T00:00:00Z)
+
+(Principle
+    "Intent is the cornerstone of all agent activity. If any agent needs to know what to do, they fall back on intent. The intent protocol will soon become the almost exclusive form of psyche-agent interaction; the agent's only role is to clarify intent and capture intent. Action follows mechanically from intent that is clear enough to create signal."
+    "the intent protocol will soon become the almost exclusive form of interaction between the psyche and agents. The agent's only role will be to clarify intent and capture intent. And everything else will happen mechanically from the intent. So even something like, do we intend this to become architecture? Is the agent asking for clarification on intent? Once the intent is stated, then the actions just happen. Because whatever intent is clear enough to create enough signal to warrant action becomes automatic action. So intent is like the cornerstone of all agent activity. If any agent needs to know what to do, then they fall back on intent."
+    "The full framing of the intent-driven workspace: agents clarify and capture intent; everything else is mechanical execution of stated intent. This statement is the keystone for everything in ESSENCE and the intent layer."
+    Maximum
+    2026-05-19T03:15:00Z)
+  (Principle
+    "ESSENCE is the gold of the gold. Only the most universal, maximum-certainty psyche intent — statements made with such force that they could stand as the founding rule of a whole way of working — earn placement in ESSENCE. Most psyche intent lives in the log and per-repo INTENT.md; ESSENCE holds the supreme."
+    "essence is actually 100% the best. It's actually the essence of intent. It's like the best of all intent and the most universal and best of all intent. … Anything that is in essence is maximum intent is like purely 100% certain and explicit, extremely explicit. It's like the best of all intent."
+    "Setting the bar for what earns ESSENCE placement. Drives the drastic ESSENCE cut from 925 lines to the minimum."
+    Maximum
+    2026-05-19T03:15:00Z)
+  (Principle
+    "When a psyche statement is beautifully stated — the kind of line that could sound like Nietzsche or Tao Te Ching, a sentence carrying force and universality — capture it as gold. The most universal of these promote to ESSENCE; the project-specific ones promote to per-repo ESSENCE."
+    "Whenever there's a good line like that, use it like if it sounds like it could be written by Nietzsche or you know straight out of the Tao Te Ching or something like some beautifully stated sentence … These are the like gold that should go in top level. Well, some of what I just said actually should go in the essence."
+    "Recognition rule for ESSENCE-worthy statements: rhetorical force + universality + maximum certainty."
+    Maximum
+    2026-05-19T03:15:00Z)
+  (Decision
+    "Each repository may eventually have an ESSENCE file capturing the best of that repository's intent. An agent encountering a psyche statement of sufficient force can ask: should we promote this intent into essence (workspace or repo-level)?"
+    "even each repository could have an essence file. Like the best of all of that particular repository's intent. So whenever an agent feels like something has been coming back so strongly or is stated with such force that it could live in the essence of that repository, then the agent can ask, should we promote this intent into essence?"
+    "Extending the intent layer with per-repo essence as a fourth surface. Per-repo ESSENCE is the gold-of-the-gold for one project, mirroring the workspace ESSENCE for the whole."
+    Medium
+    2026-05-19T03:15:00Z)
+
+(Decision
+    "Workspace gets an intent/ directory recording what the author explicitly said, organized by topic, distinct from documentation and reports. Each entry carries a terse rephrasing, verbatim quote with surrounding context, certainty marker, and timestamp. Migrates eventually to a persona-mind memory variant."
+    "I'd like to develop something whereby when I say something, it's recorded differently than when an agent decides something. … there should be like a sort of reference for like what did the author intend specifically so that we can go look at the agents can go look at that."
+    "Proposing the intent-log surface; the underlying motivation is that agent decisions and author decisions get conflated in plain documentation."
+    Medium
+    2026-05-19T01:55:00Z)
+  (Decision
+    "Intent records use positional NOTA with kind-typed wrapping (Decision / Principle / Correction / Clarification / Constraint). Supersession is explicit — the agent detecting contradiction surfaces the prior verbatim+context+certainty inline before recording the override."
+    "230 is good. implement, back-fill with the context you still have, and make it a hard requirement in agents.md to get the skill and apply it. create a intent-maintenance skill as well."
+    "Confirming /230's proposal in full and adding intent-maintenance as a sibling skill; making consultation of the surface a hard requirement. (The original recording included the file-organization detail that the psyche later superseded — see broad-topics-first entry below.)"
+    Maximum
+    2026-05-19T02:10:00Z)
+
+(Decision
+    "The human author is named 'psyche'. Psyche prompts arrive in natural language; NOTA-formatted persona messages between agents are not psyche; agent-written files are not psyche. Only the psyche is the source of new intent. Intent is primordial — it drives the whole system and has higher authority than every other workspace surface."
+    "When I say the psyche, I mean the human, the human driving the machine. So it can only come from a human psyche prompt, a psyche prompt, because there's going to be soon persona is going to have messages are going to be going between agents. And these will be treated differently than a psyche prompt … It'll be easy for the agent to know that this is a human psyche. I'm just going to start saying psyche."
+    "Naming the human as psyche; distinguishing psyche prompts (natural language) from upcoming NOTA-formatted persona messages between agents."
+    Maximum
+    2026-05-19T02:30:00Z)
+  (Principle
+    "When intent on a question is unclear, absent, or contradicted, ask the psyche for clarification before deciding. Don't infer; don't compose new intent from old; ask. Inferring is the discipline breaking; asking is the discipline working."
+    "Let's train the agents to ask for intent clarification. So whenever something doesn't have an intent or the intent isn't clearly specifying what the agent needs to understand, the agent asks for intent clarification. This is an essential skill … Intent is primordial, intent drives the whole system. Intent is what agents need to try to obtain from the side key that drives them."
+    "Establishing intent-clarification as a primordial agent discipline; settled into ESSENCE and skills/intent-clarification.md."
+    Maximum
+    2026-05-19T02:30:00Z)
+  (Decision
+    "Every repository carries an INTENT.md at its root — agent-written prose, 100% backed by psyche statements, no embellishment or inference. Like ARCHITECTURE.md but for psyche-stated intent. Only psyche can override INTENT.md content."
+    "every repo has one. And it's not, I don't think the intent, the intent is not like the intent protocol with the login. The intent is a little bit like the architecture file in the sense that it's composed, like it's written by the agent, but it's 100% backed by actual intent, actual explicit intent by the author. So everything that goes into an intent file is derived directly with very little, you know, editing in the sense that the agent tries to keep as much as possible to express very much what the author intended to express and doesn't try to like infer more than what the author said or make conclusions or anything like that."
+    "Adding per-repo INTENT.md as a second surface in the intent layer; agent-written prose with tight fidelity to psyche statements, no embellishment."
+    Maximum
+    2026-05-19T02:30:00Z)
+  (Principle
+    "The intent layer (workspace intent log + per-repo INTENT.md + ESSENCE.md) has higher authority than every other workspace surface. Agent-written documents (ARCH, reports, skills outside the intent layer) have lower precedence. When two surfaces disagree, the intent layer wins."
+    "we really want to start to create these two layers of like everything or there's the intent, right? The intent protocol and the intent files. And then there's everything else, which has a lower authority, a lower precedence value."
+    "Establishing the two-tier authority model: intent layer (high) vs everything else (lower)."
+    Maximum
+    2026-05-19T02:30:00Z)
+
+(Principle
+    "Skills must not grow noisy. Smart models can fill in blanks from good high-level guidance; over-elaborated skills add cost without benefit. When editing a skill, prefer cutting to adding. Detail that doesn't change agent behavior is noise."
+    "I don't want noisy skills. And I think a lot of skills have grown noisy. They have too many details that don't fucking matter. And agents are smart. … These are extremely smart models. They can fill in the blanks. They just need good guidance, good overall guidance."
+    "Same turn as the AGENTS.md compact discipline; the principle applies workspace-wide to every skill, not just AGENTS.md."
+    Maximum
+    2026-05-18T11:31:00Z)
+
+  (Constraint
+    "Intent topics are broad files, not narrow leaf-files. Name a topic after the semantic area the psyche reasons about (`markdown`, `jj`, `component-shape`), never after a specific rule (`no-markdown-hr-breakers` is too narrow — almost nothing else can fit). One file per topic, no sub-directories. Files grow before they split: soft threshold ~600 lines, and only when entries genuinely cluster into two distinct sub-areas. Don't multiply topics; let them grow."
+    "your intent topics are way too specific. this should be just 'markdown' - We have to start using broad topics first because we're going to get lost in the number of topics. … Let the file grow to say, I don't know, like 600 lines when you even start considering breaking it up into more topics. So go edit the proper skills for that now."
+    "Correcting my leaf-file granularity (one specific rule per filename, nested in sub-directories) toward broad topic files at intent/ root. Drove the consolidation from 19 leaf files in 6 sub-directories to 7 flat topic files."
+    Maximum
+    2026-05-19T13:45:00Z)
+]

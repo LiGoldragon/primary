@@ -52,7 +52,7 @@ elaboration of what was implied.
 - Implementation discipline. That's skills.
 - Reports / decisions / audits. Those live in `reports/`.
 - Verbatim quotes. Those live in the intent log
-  (`intent/<topic>/<file>.nota`).
+  (`intent/<topic>.nota`).
 
 The discipline: every statement in `INTENT.md` is a clear
 restatement of a psyche-said thing. The agent's interpretation
@@ -91,7 +91,7 @@ Synthesised from psyche statements; not embellished.*
 ---
 
 *Source statements live in the workspace intent log under*
-*`~/primary/intent/<topic>/` where the recorded entries pertain*
+*`~/primary/intent/` where the recorded entries pertain*
 *to this project.*
 ```
 
@@ -100,7 +100,7 @@ actual shape.
 
 ## How to derive from psyche statements
 
-1. **Read the intent log** at `~/primary/intent/<topic>/` for
+1. **Read the intent log** at `~/primary/intent/` for
    entries that mention this project.
 2. **For each entry**, ask: is this a goal, constraint, principle,
    or anti-pattern? Place it in the appropriate section.

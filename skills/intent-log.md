@@ -94,8 +94,8 @@ The quote uses `…` for elided tangents — the psyche often
 interleaves multiple topics in one turn, and the record only
 carries the part that belongs to this entry.
 
-A file is a top-level NOTA list `[ … ]` of one or more entries on
-the same sub-topic.
+A file is a top-level NOTA list `[ … ]` containing every entry on
+that topic.
 
 ## Certainty vocabulary
 
@@ -112,34 +112,54 @@ The psyche can also tag certainty explicitly mid-sentence ("I'm
 certain about X but not sure about Y") — record X as `Maximum` and
 Y as `Minimum`.
 
-## Directory and file organization
+## Topic organization — broad files, slow split
 
 ```
 intent/
-  <topic>/
-    <sub-topic>.nota
+  <topic>.nota
 ```
 
-- `<topic>` is a directory naming a broad subject area
-  (`component-shape`, `reports`, `workspace`, `orchestrate`,
-  `nota`, `jj`, …). New topics created as needed.
-- `<sub-topic>.nota` is a single file holding one or more closely-
-  related entries on a specific point within the topic.
-- Filenames are kebab-case, describing what the entries inside are
-  about.
+One file per topic. No sub-directories. A topic is a **broad
+semantic area** — `component-shape`, `reports`, `workspace`,
+`orchestrate`, `nota`, `markdown`, `jj`, …. Each file is a NOTA
+list `[ … ]` containing every entry on that topic; entries
+accumulate as the psyche says more about the area.
 
-One topic per directory; one sub-topic per file; one or more
-entries per file. Group entries when they're on the same point;
-split when they diverge.
+**Topics start broad and stay broad.** Resist the temptation to
+name files after a specific rule (`no-markdown-hr-breakers.nota`
+is too narrow — once it's named that, almost nothing else can fit
+in it). Name files after the area the psyche reasons about:
+`markdown.nota`, not `markdown-hr-breakers.nota`. The broad name
+is where future rules on the same area will land.
+
+**Files grow before they split.** A topic file accumulates entries
+for a long time before splitting becomes worthwhile — soft
+threshold around **~600 lines**, and only when the entries
+genuinely split into two distinct sub-areas. The discipline is
+*"can a reader scan this file and follow the area's intent?"* Below
+~600 lines that's easy; far past it, splitting helps. Above is the
+exception, not the default.
+
+**Filename convention.** Kebab-case, broad, no `intent-`, `no-`, or
+`how-to-` prefixes. The file lives in `intent/` so the prefix is
+redundant; the negative naming smell (per `ESSENCE.md` §"Naming")
+applies here too.
+
+**When to actually split.** Two conditions both hold:
+1. The file is comfortably past 600 lines and growing.
+2. The accumulated entries cluster into two genuinely distinct
+   topics — not just "lots of entries on the same area."
+Carve the new topic, move the entries that fit there, leave the
+rest. Don't split prophylactically; split when the surface earns
+it.
 
 ## Recording protocol — three steps
 
 Before adding an entry:
 
-1. **Query prior entries on the topic.** Read every file under
-   `intent/<topic>/`. If the author's new statement clearly
-   contradicts a prior, switch to the supersession protocol
-   (`skills/intent-maintenance.md`).
+1. **Query prior entries on the topic.** Read `intent/<topic>.nota`.
+   If the psyche's new statement clearly contradicts a prior,
+   switch to the supersession protocol (`skills/intent-maintenance.md`).
 2. **Pick the right kind.** Decision / Principle / Correction /
    Clarification / Constraint. If multiple kinds fit, take the
    strongest applicable (Constraint > Correction > Decision >
@@ -169,7 +189,7 @@ When persona-mind's typed memory variants land, each `<Kind>`
 record becomes a memory of variant `Authorial<Kind>` (so
 `AuthorialDecision`, `AuthorialPrinciple`, …). Topic becomes a
 relation tag (`(IntentTopic <topic>)`). The
-`intent/<topic>/<file>.nota` path seeds the memory's `uid`.
+`intent/<topic>.nota` path seeds the memory's `uid`.
 
 No work in `persona-mind` yet. This note signposts where the
 substance migrates.

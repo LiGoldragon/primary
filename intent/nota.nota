@@ -1,5 +1,12 @@
 [
-  (Decision
+(Correction
+    "NOTA records are positional. Wrapping type first, then fields in declared order. The (key value) shape from Lisp/Clojure/JSON is not NOTA. Many agents make this mistake when sketching records in chat without consulting the canonical example."
+    "thats not NOTA, and your response is too long, which means it should be a report. … look into how we can get agents to understand nota, simply and reliably - you just made the same misake many agents make in assuming nota has named fields"
+    "Correcting my labeled-field NOTA example in chat for the intent log proposal; flagged as a recurring agent failure mode that prompted /231 and the visibility-raise interventions."
+    Maximum
+    2026-05-19T02:00:00Z)
+
+(Decision
     "In NOTA, the wrapping type names the most useful distinction in context. If every record in a file would share the same wrapper, that wrapper is implied — drop it and use the next-level distinction as the type. Data lives in records, not section comments. Enums get names, not numbers."
     "I'm looking at your skills.nota and this is really stupid. You're wrapping every single entry in skill. Obviously we know that all the objects in here are skill. So you're wasting tokens. This is one of the problems with NOTA design …"
     "Critique of an earlier skills.nota that wrapped every entry in (Skill …); produced the canonical three NOTA-design rules now living in skills/nota-design.md."

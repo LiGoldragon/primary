@@ -1,84 +1,65 @@
 # Skill — intent maintenance
 
 *Sweep the intent log: detect supersession, verify entries still
-apply, archive overrides explicitly. The discipline that keeps
-`intent/` from rotting as the workspace and the author's positions
-evolve.*
-
-## What this skill is for
-
-`skills/intent-log.md` covers recording. This skill covers
-*everything that happens to an entry after it's recorded*. An intent
-log without maintenance becomes a graveyard of contradictory or
-stale statements no future agent can trust.
-
-Three operations: **supersession** (author overrides a prior),
-**verification** (does the entry still describe how the workspace
-actually works?), and **archival** (moving superseded entries out
-of active queries without deleting their content).
+apply. Keeps `intent/` from rotting as the workspace and the
+psyche's positions evolve. Companion to `skills/intent-log.md`
+(recording).*
 
 ## Supersession protocol — never silent
 
-When an agent encounters a new author statement that contradicts a
+When an agent encounters a new psyche statement that contradicts a
 prior recorded entry:
 
-1. **Surface the contradiction inline, before recording.** Quote the
-   prior verbatim and its certainty, and ask:
+1. **Surface the contradiction inline, before recording.** Quote
+   the prior verbatim and its certainty, and ask:
 
-   > *"You said earlier (file `intent/<topic>/<file>.nota`):*
+   > *"You said earlier (file `intent/<topic>.nota`):*
    > *— `<prior summary>`*
    > *— `<prior verbatim quote>`*
    > *— certainty `<prior certainty>`, recorded `<prior timestamp>`*
    >
-   > *Now you're saying `<new summary inline>`. Override the prior, or
-   > am I misreading?"*
+   > *Now you're saying `<new summary inline>`. Override the prior,
+   > or am I misreading?"*
 
-2. **Wait for the author's confirmation.** Three possible answers:
+2. **Wait for the psyche's confirmation.** Three possible answers:
 
-   | Author says | Action |
+   | Psyche says | Action |
    |---|---|
-   | "Yes, override" | Supersede per step 3 |
-   | "No, clarify — the prior still applies, this is a refinement" | Record the new entry as `Clarification`; prior stays active |
-   | "Both apply in different contexts" | Record the new entry; add a `Clarification` linking them |
+   | "Yes, override" | Replace the prior entry with the new one (step 3) |
+   | "No, clarify — the prior still applies, this is a refinement" | Add the new entry as `Clarification`; prior stays |
+   | "Both apply in different contexts" | Add the new entry; the existing one stays |
 
-3. **On confirmed override:** write a `Superseded` record into the
-   topic's directory, then physically move the prior file to
-   `intent/<topic>/superseded/`.
+3. **On confirmed override:** remove the prior entry from the
+   topic file and add the new entry in the same commit. Name the
+   supersession in the commit message
+   (`intent: <topic> — psyche overrides prior <summary slug>; new
+   <new summary slug>`).
 
-   ```nota
-   (Superseded
-     "<prior-filename>"
-     "<new-filename>"
-     <ISO-8601 timestamp of supersession>)
-   ```
+**Git history holds the lineage.** No `superseded/` subdirectory,
+no `Superseded` records in the file. The topic file always
+contains the *currently-applicable* intent; the prior content lives
+in `jj log` if anyone needs to recover it. This matches the
+report-rename protocol — the file is the current truth, history
+the path.
 
-   (Three positional fields: prior path, new path, timestamp.
-   Timestamp written bare per the canonical NOTA shape; codec
-   support tracked by bead `primary-dzrn`.)
-
-   The `Superseded` record lives in `intent/<topic>/supersessions.nota`
-   (one file per topic, append-only).
-
-Supersession is **always explicit, and only the psyche can supersede
-psyche intent.** A new psyche statement is the only source that can
-override a prior psyche statement. An agent encountering documented
-intent that seems wrong does NOT supersede on its own authority; the
-agent asks the psyche (`skills/intent-clarification.md`). An author
-entry is never quietly overwritten by another author entry, and
-never overwritten by agent inference. This is the load-bearing
-protection against agent hallucination passing as psyche intent.
+Supersession is **always explicit, and only the psyche can
+supersede psyche intent.** A new psyche statement is the only
+source that can override a prior psyche statement. An agent
+encountering documented intent that seems wrong does NOT supersede
+on its own authority; the agent asks the psyche
+(`skills/intent-clarification.md`). The protection is load-bearing
+against agent hallucination passing as psyche intent.
 
 ## Verification — does the entry still apply?
 
-Periodically (when sweeping the log, or when an entry's substance
+Periodically (when sweeping a topic, or when an entry's substance
 crosses the agent's path), verify that the recorded entry still
-matches workspace reality. Three failure modes to check for:
+matches workspace reality. Three failure modes:
 
-- **The workspace evolved past the entry.** The author said "X is
+- **The workspace evolved past the entry.** The psyche said "X is
   forbidden" in a context that no longer exists. If the constraint
-  no longer applies, the author likely needs to confirm a
-  supersession (the constraint may have implicitly retired with the
-  context).
+  no longer applies, ask the psyche for explicit retirement —
+  don't assume.
 - **The recorded summary doesn't match the verbatim.** Agent
   rephrasing drift; the summary says one thing, the quote says
   another. Fix the summary to match the quote.
@@ -86,80 +67,67 @@ matches workspace reality. Three failure modes to check for:
   against `skills/intent-log.md` §"Certainty vocabulary". Correct
   if mismatched.
 
-Verification corrections that aren't superseding the author's
+Verification corrections that aren't superseding the psyche's
 intent (just fixing the agent's transcription) can land directly —
-they're discipline cleanup, not author overrides. Log the change in
-the commit message ("intent: corrected summary in `<file>.nota` to
-match verbatim").
+they're discipline cleanup, not author overrides. Log the change
+in the commit message
+(`intent: corrected summary in <topic>.nota to match verbatim`).
 
 ## Sweep — when and how
 
 Trigger a sweep when:
 
-- A topic directory grows past ~10 entries — that's the soft
-  threshold where the topic is probably overdue for supersession
-  cleanup or sub-topic splitting.
+- A topic file grows substantially (soft threshold ~600 lines per
+  `skills/intent-log.md`). Most sweeps don't need to fire that
+  high; smaller sweeps run alongside `skills/context-maintenance.md`.
 - An agent reviewing a topic notices an entry that no longer
   matches the workspace.
-- `skills/context-maintenance.md` runs (intent log is part of the
-  workspace state that maintenance can touch).
-- Major redesigns (the kind that generate /v2 reports) — the
-  redesign's premises likely supersede earlier intents.
+- Major redesigns (the kind that generate `v2` reports) — the
+  redesign's premises likely supersede earlier intents and need
+  explicit psyche confirmation.
 
 How:
 
-1. Read every entry in the topic's directory.
+1. Read every entry in the topic file.
 2. For each entry, check: does this still apply? Does the summary
    still match the verbatim? Does the certainty still match the
    phrasing?
-3. For entries that no longer apply: ask the author for a
-   supersession (the entry might just need an explicit override
-   rather than silent retirement).
-4. For entries with agent-transcription drift: correct directly.
-5. For sub-topics splitting: move related entries into a more
-   specific sub-topic file; leave a `(SubTopicSplit "old-file" ["new-file-1" "new-file-2"] "<timestamp>")`
-   record in the topic's `supersessions.nota`.
+3. For entries that no longer apply: ask the psyche.
+4. For agent-transcription drift: correct directly.
+5. For a genuine 600+-line file with two distinct sub-topics:
+   carve a new topic file per `skills/intent-log.md` §"When to
+   actually split", move the relevant entries, commit. The split
+   itself is not author intent — it's housekeeping; git history
+   holds the lineage.
 
-## Don't delete — archive
+## When to skip recording in the first place
 
-The `intent/<topic>/superseded/` subdirectory holds prior entries
-that have been overridden. Git history holds everything; the
-`superseded/` move keeps the workspace tree showing only currently-
-active entries while preserving the lineage at filesystem level for
-agents who don't reach for `jj log`.
-
-Do **not** delete a superseded entry from git history. Even when
-the author overrides their own prior intent, the prior matters as
-context for understanding the override.
-
-## When to skip the surface
-
-Some author statements are too transient for the log:
+Some psyche statements are too transient for the log (covered in
+`skills/intent-log.md` §"When to record" — restated here for
+maintenance context):
 
 - "Let's try this and see" — pre-commitment exploration.
 - "Maybe X, I'll think about it" — `Minimum`-certainty might be
   worth recording, but if the psyche then commits to something
-  else within the same conversation, skip recording the
-  intermediate.
+  else within the same conversation, skip the intermediate.
 
-If you skip recording a borderline case, the author can ask later
+If you skip recording a borderline case and the psyche later asks
 "why isn't this in `intent/`?" — at that point, record it.
 
 ## Forward — persona-mind migration
 
 When persona-mind's typed memory variants land, supersession
 becomes a typed relation (`Supersedes` linking two
-`Authorial<Kind>` memories), and the `superseded/` subdir
-retires — the relation graph carries the lineage. Until then,
-filesystem-level archival is the carrier.
+`Authorial<Kind>` memories); the workspace topic file retires in
+favor of memory-graph queries. Until then, the topic file plus
+`jj log` are the carrier.
 
 ## See also
 
 - `skills/intent-log.md` — recording discipline; record shape;
-  certainty vocabulary.
-- `skills/context-maintenance.md` — workspace-wide sweep
-  discipline; intent log is one of the things context-maintenance
-  may sweep.
+  certainty vocabulary; topic granularity.
+- `skills/context-maintenance.md` — workspace-wide sweep discipline;
+  intent log is one of the things context-maintenance may sweep.
 - `skills/nota-design.md` — positional-NOTA discipline these
   records follow.
 - `intent/` — the surface this skill maintains.

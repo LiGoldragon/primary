@@ -1,8 +1,0 @@
-[
-  (Correction
-    "NOTA records are positional. Wrapping type first, then fields in declared order. The (key value) shape from Lisp/Clojure/JSON is not NOTA. Many agents make this mistake when sketching records in chat without consulting the canonical example."
-    "thats not NOTA, and your response is too long, which means it should be a report. … look into how we can get agents to understand nota, simply and reliably - you just made the same misake many agents make in assuming nota has named fields"
-    "Correcting my labeled-field NOTA example in chat for the intent log proposal; flagged as a recurring agent failure mode that prompted /231 and the visibility-raise interventions."
-    Maximum
-    2026-05-19T02:00:00Z)
-]

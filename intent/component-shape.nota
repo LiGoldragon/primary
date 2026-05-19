@@ -1,0 +1,42 @@
+[
+(Correction
+    "There are exactly two authority contracts per component: signal-<component> (peer-callable) and owner-signal-<component> (owner-only). There is no permission-signal-<component> middle tier — that was a hallucination in an earlier version of skills/component-triad.md."
+    "what is permission-signal? ohh wow! the agent who made that edit hallucinated. the permissioned signal is just owner-signal. there is no permission-signal. edit that"
+    "Correcting skills/component-triad.md after an earlier agent invented a three-tier model. The actual model is two tiers, settled in the rerendered skill."
+    Maximum
+    2026-05-18T22:13:54Z)
+
+(Constraint
+    "owner-signal-<component> is part of the triad, not a follow-up arc. A daemon with only the ordinary signal-<component> surface is not yet triad-shaped. The next implementation arc for any new component ships both authority contracts together."
+    "then why did you ask if we needed an owner-signal?"
+    "Calling out the framing mistake in /229 Q1 where I had echoed the OA's 'ordinary triad first or owner-signal first?' question rather than correcting it. The triad invariant settles it: both surfaces ship together."
+    Maximum
+    2026-05-18T22:15:57Z)
+
+(Principle
+    "Configuration is always a Mutate. The way a daemon is configured is not optional state — it is integral to the daemon and changes through the same authority chain as any other Mutate."
+    "the config is a mutate. All the config should be a mutate command because it's changing something that is a part of the daemon. The way the daemon is configured is not some optional state."
+    "Underlying principle introduced during the brainstorm on daemon initialization, before the policy/working state taxonomy got named."
+    Maximum
+    2026-05-19T01:25:00Z)
+  (Decision
+    "Every triad daemon has two state categories in one sema-engine DB: policy state (rules; owner-Mutate only; bootstrapped one-shot from bootstrap-policy.nota in the repo) and working state (records produced by operation; never bootstraps; mutated per contract variants)."
+    "Yeah we can go with policy and working state. Yeah the bootstrap file is in the repo and I guess it should be called bootstrap policy."
+    "Confirming the state-taxonomy proposal after the brainstorm; naming the bootstrap file `bootstrap-policy.nota` and placing it in the component repo."
+    Maximum
+    2026-05-19T01:30:00Z)
+
+(Constraint
+    "Every component binary (CLI or daemon) takes exactly one argument: a NOTA string, a path to a NOTA file, or a path to a signal-encoded file. No command-line flags, ever. New configuration goes in the NOTA schema, not in CLI flags."
+    "we don't use, we never, the only argument that a component can get actually that we don't use flags and stuff. We use nota. … So if we need a new type of argument for a component then it has to be the nota configuration schema that changes. We never ever use things like command line flags and things. There's only ever going to be one argument which is the, which is going to be the nota string itself or the path to a nota file or to a signal file."
+    "Resolving how daemon configuration enters during the component-triad rerender brainstorm; framing the rule as universal across all components, not orchestrate-specific."
+    Maximum
+    2026-05-19T01:23:00Z)
+
+(Constraint
+    "Claim is by directory or by explicit file list — no sub-scope handoff. Claim a directory and everything inside it is claimed. Want only specific files? Claim them explicitly. The 'minus' operation (claim a directory then exclude a file) violates simplicity and explicitness."
+    "if an agent claims a directory, then everything in that directory is claimed. … if he lets go of a certain file? No, you can't do that. That would be bad because then it could be confusing for agents. If you want to claim only certain files in a subdirectory, you have to claim them explicitly. We can't do like this minus this. That violates the principle of simplicity and explicitness."
+    "Answering Q4 of /229 on sub-scope handoff semantics; settled during the daemon-state brainstorm."
+    Maximum
+    2026-05-19T01:20:00Z)
+]

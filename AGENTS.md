@@ -76,7 +76,7 @@ Each agent knows its lane before claiming or editing. Coordination:
   between agents are not psyche, agent-written files are not
   psyche, the intent log is psyche-*derived* but only as a record
   of psyche statements. Record explicit psyche intent in
-  `intent/<topic>/<file>.nota` (`skills/intent-log.md`); reflect
+  `intent/<topic>.nota` (`skills/intent-log.md`); reflect
   into per-repo `INTENT.md` (`skills/repo-intent.md`). **When
   intent on a question is unclear, absent, or contradicted, ask
   the psyche** (`skills/intent-clarification.md`) — don't infer.

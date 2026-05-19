@@ -1,5 +1,5 @@
 [
-  (Constraint
+(Constraint
     "No `---` horizontal-rule lines in markdown files. Section structure comes from headings; the breaker between every section is pure noise in agent context — costs tokens, conveys nothing the headings don't. Allowed inside code blocks (template examples); never as a document separator."
     "are the --- breaker lines in the markdown files good for agents? they look like a very stupid waste of context to me … we could do a hard-habbit break against them in agents.md"
     "Hard-habit-break added to AGENTS.md after the psyche flagged --- as waste; swept 433 lines across 50 files in ESSENCE.md, AGENTS.md, ONBOARDING.md, skills/."
