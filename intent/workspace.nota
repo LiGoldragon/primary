@@ -122,3 +122,10 @@
     "Catching the contradiction: I claimed the lock and used Edit instead of demonstrating the shell append, despite the psyche's intuition being correct. Reordering: lock-free `>>` for new records; lock only for rewrites."
     Maximum
     2026-05-19T16:05:00Z)
+
+(Decision
+    "Document the lock-free-append exemption in the orchestrate protocol. Routine intent recording (appending a record to intent/<topic>.nota) is exempt from the claim flow — same status as reports, which each role writes to its own subdir without claiming. Topic file does not have to exist; `>>` creates it. Only supersession edits / rewrites need locks."
+    "You should also edit the orchestrate protocol, the orchestrate skill, to specify how to, how if an intent already has a topic file, that, well, even if there isn't one, right, like, because if you append to a file that doesn't exist, it's going to create the file, unless I'm wrong, that you can just do this without claiming a lock."
+    "Psyche extending the lock-free-append discipline into orchestrate/AGENTS.md so all peer agents see it. File creation via `>>` is also lock-free (open(O_CREAT|O_APPEND) is atomic per POSIX)."
+    Maximum
+    2026-05-19T16:20:00Z)
