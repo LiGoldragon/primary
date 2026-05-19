@@ -81,3 +81,10 @@
     "Sixth NOTA correction. Pattern is now clear: I keep inventing language to describe NOTA instead of using its actual concepts. The correction is to drop the invented terms (head, monomorphic) and stick with NOTA's actual vocabulary."
     Maximum
     2026-05-19 20:30)
+
+(Constraint
+    "PascalCase at the start of `(…)` is ALWAYS an enum variant. Always. There is no 'sometimes it's a struct head'. Structs have NO type tag in the wire form — they are just positional fields. When the wire shows a PascalCase token, you are looking at an enum variant. When the wire shows `(value1 value2 …)` with no PascalCase token first, you are looking at a struct. The nota/README.md claim that 'records require a PascalCase head' is wrong because it conflates structs with enum variants. NOTA has three kinds of values: structs (positional fields, no tag), enums (variants tagged by their PascalCase name), and primitives (strings, ints, bools, etc., which fill struct fields). Rule 1 of skills/nota-design.md ('drop the wrapper if every record is the same kind') is the SAME rule: if every record is the same kind, there is no enum — it's just a struct, no tag."
+    "The only reason there's a, what you're calling a type name is a variant. Always, always, always, always, always. … We don't need to say that it's a skill every time because there's no variant. There's not like another thing there. It's only a skill. So it's a struct. … The only, what you're calling a type is a variant, is an enum. It's the variant of an enum. There's only structs and enums and strings. … when you see a variant, when you see a pascal case thing at the beginning, that's a variant. That means you're talking about an enum. Automatic."
+    "Seventh NOTA correction. The mental model I was missing: PascalCase tag = enum variant, always. No tag = struct. That's the binary. Rule 1 of nota-design.md becomes 'drop the variant tag if there's only one variant — because then it's a struct, not an enum.' The README needs the same correction in primary-hj63."
+    Maximum
+    2026-05-19 20:45)

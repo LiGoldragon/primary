@@ -18,27 +18,31 @@ Read this skill before designing a new NOTA file or schema. The
 rules below are the difference between NOTA-the-substrate and NOTA-
 the-format-you-wrote-once-then-regretted.
 
-## Rule 1 — The wrapping type names the most useful distinction in context
+## Rule 1 — If there's no variant, it's a struct (no tag)
 
-NOTA records are typed. The TYPE you wrap with is what the reader
-needs to know about the record that isn't already obvious from
-context.
+A PascalCase tag at the start of `(…)` is an enum variant. If
+every record in this file would have the same tag, there's no
+enum — it's just a struct, and structs have **no tag at all** in
+the wire form. Drop it.
 
-If the file is a skills index, every record is a skill. Wrapping
-each one in `(Skill ...)` adds zero information — the file already
-says so. The first useful distinction is the *kind* of skill:
-`(Role ...)`, `(Architecture ...)`, `(Craft ...)`. That's the type.
+If the file is a skills index and every record were of type
+`Skill`, you wouldn't write `(Skill operator …)` — there's no
+enum, just a struct: `(operator …)`. But because skills.nota has
+actual variants — `Role`, `Architecture`, `Craft`, `Programming`,
+`Workflow`, `Meta` — the records ARE enum variants, and each
+variant tag tells the reader which kind of skill this is.
 
-If the file is a deployment plan, every record is a step. The type
-isn't `(Step ...)` — it's `(Build ...)`, `(Verify ...)`, `(Deploy ...)`.
+If the file is a deployment plan with one kind of step, drop the
+tag and write `(zeus apply 2026-05-19)`. If steps have variants
+(`Build`, `Verify`, `Deploy`), the variant tags appear.
 
 The CLI parallel: a `message` CLI never wraps every record in
-`Message`. The message-ness is implied; the *kind of message* is
-the data the CLI dispatches on.
+`Message`. The message-ness is implied; the *kind of message* —
+when it varies — is the variant tag.
 
-The test: if every record in this file would have the same wrapping
-type, that type is implied — drop it, and use the next level of
-distinction as the type.
+The test: *can the same position carry more than one shape?* If
+yes, you have an enum; the variant tag names which shape this
+record is. If no, you have a struct; no tag.
 
 ## Rule 2 — Data lives in records, not in comments
 
@@ -132,36 +136,37 @@ Agents (this one, repeatedly) keep proposing shapes that violate
 them. The source of truth is `nota/README.md`; restated here so
 the discipline skill carries the load.
 
-**Records and sequences.** Two delimiter pairs:
+**The mental model.** NOTA has three kinds of values:
 
-- `(…)` — a **record**. A Rust struct or enum variant. Fields are
-  positional. When the type isn't determined by schema position
-  (enum variants, top-level records in a file with multiple
-  types), the type name appears as the first token: `(Decision
-  …)`. When the type IS determined by schema position (e.g.
-  every element of a `Vec<Statement>` is a `Statement`), the type
-  name is omitted and the fields come directly: `(2026-05-19
-  18:30 "quote")`.
-- `[…]` — a **sequence**. A `Vec<T>`. Every element is the same
-  type `T`.
+- **Primitives**: strings (`"…"` or bare), integers, floats, bools,
+  bytes (`#…`).
+- **Structs**: positional fields, **no type tag in the wire form**.
+  Written as `(field1 field2 field3 …)`. The schema position tells
+  the reader what struct this is.
+- **Enums**: tagged by the variant's PascalCase name. Written as
+  `(VariantName field1 field2 …)`. The tag IS the variant.
+
+**A PascalCase token at the start of `(…)` is ALWAYS an enum
+variant.** There is no "sometimes the first token is a struct's
+name" case. If you see PascalCase first, you're inside an enum.
+If you don't, you're inside a struct.
+
+**Sequences** `[…]` are `Vec<T>` — every element is the same type.
 
 **Lists are homogeneous; heterogeneous positional structure is a
-record (struct).** A `(date, time, quote)` triple is a struct;
-write it `(2026-05-19 18:30 "first quote")` at a position the
-schema declares as that struct.
-
-A struct does NOT need to be wrapped in an enum variant. A struct
-is just a struct with positional fields. The "wrapping type names
-the most useful distinction" rule (Rule 1) is about enum variants
-where one of several types could appear; a struct that is the
-only type at a position writes positionally without naming the
-type.
+struct.** A `(date, time, quote)` triple is a struct; write it
+`(2026-05-19 18:30 "first quote")` — no tag, just three positional
+fields. If the same file held multiple triple shapes (e.g.
+different statement kinds), you'd have an enum and the variants
+would tag each: `(Said …)` / `(Quoted …)` / etc.
 
 > *(Note 2026-05-19: the prior version of this section invented
 > 'head' and 'monomorphic position' terminology. NOTA's actual
-> concepts are struct, enum variant, positional fields, schema
-> position. The over-strict 'every record names its type' claim
-> in `nota/README.md` is being corrected per bead `primary-hj63`.)*
+> concepts are simpler than that: PascalCase tag = enum variant,
+> no tag = struct, sequence = `Vec<T>`. The over-strict "every
+> record names its type" claim in `nota/README.md` conflates
+> structs with enum variants and is being corrected per bead
+> `primary-hj63`.)*
 
 **Bare identifiers as strings.** Where the schema expects `String`,
 a bare ident-class token serves as the value (`(Package nota-codec)`
