@@ -1,5 +1,15 @@
 # Intent Context Hygiene Handoff
 
+Status: superseded. This report incorrectly treated an intent
+append as blocked by an orchestrate claim. `skills/intent-log.md`
+now says routine intent recording is a lock-free shell append:
+`cat >> intent/<topic>.nota <<'EOF' ... EOF`. The live-context
+clarification this report proposed is already recorded in
+`intent/workspace.nota` as the 2026-05-19T16:35:00Z
+`Clarification`; the append-mechanism correction is recorded there
+as the 2026-05-19T16:45:00Z `Correction`. Do not treat this report's
+proposed entry as pending work.
+
 ## Read
 
 I reread the workspace intent surfaces relevant to this request:
