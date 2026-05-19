@@ -19,4 +19,18 @@
     "Establishing the report supersession discipline; avoids reports recursively making each other partially obsolete."
     Maximum
     2026-05-18T12:08:41Z)
+
+  (Correction
+    "When the substance is current-state architecture, edit the permanent doc (`<repo>/ARCHITECTURE.md` or workspace-level architecture file) in place rather than writing a new report. Reports are working artifacts; ARCHITECTURE.md holds current truth. The discipline lives in skills/architecture-editor.md but agents miss it in the moment, defaulting to 'write a report' because reports are the most common substantive-output home."
+    "no, not a report, edit the architucture file with what you know!"
+    "Correcting my decision to synthesize the known orchestrate architecture as a new report; the psyche redirected to editing orchestrate/ARCHITECTURE.md in place. Drove the creation of orchestrate/ARCHITECTURE.md instead of a report under reports/second-operator-assistant/."
+    Maximum
+    2026-05-17T22:00:00Z)
+
+  (Correction
+    "When the chat reply references reports, use full path names — `reports/<role>/<N>-<topic>.md` — not bare numbered shorthand like `/2`, `/3`, `DA/119`, `sec-OA/2`. The psyche reads chat without a number-to-path glossary; numbered shorthand reads as gibberish even when each reference carries inline substance. Locator-without-substance is already forbidden in AGENTS.md; this sharpens the rule: locator-WITH-substance is also wrong when the locator is a bare number rather than a full path."
+    "I dont understand anything, youre giving me report numbers. explain yourself to a human! full path names!"
+    "Correcting a chat reply that referenced multiple reports by number across designer-assistant, second-operator-assistant, and second-designer-assistant lanes. The numbered shorthand is convenient between agents but unreadable for the psyche."
+    Maximum
+    2026-05-19T01:00:00Z)
 ]

@@ -102,4 +102,11 @@
     "Correcting the order I followed in this very turn — I started editing /232 before capturing the intent from the prior psyche message. Reordering: extract intent first; everything else follows. This is a hard agent-workflow rule, lands in AGENTS.md and skills/intent-log.md."
     Maximum
     2026-05-19T15:40:00Z)
+
+  (Constraint
+    "Inelegant code does not qualify as 'this works'; inelegant tests do not prove that something is broken. Elegance is the criterion for whether agent verification work is done and for whether a falsification result is load-bearing. Passing tests on ugly code do not finish the work; failing inelegant tests do not prove the code under test is broken."
+    "… inelegant code does not qualify as 'this works' and inelegant tests does not prove that something is necessarily broken"
+    "Setting the elegance criterion during a challenge to take the other side on claimed sema-engine gaps. Drove the retraction of three of four originally-claimed engine helpers in the fit audit — each had a composition or component-side route-around that was small and read as English; only inelegant solutions (storage_kernel escape hatch for cross-table atomicity) confirmed a real gap."
+    Maximum
+    2026-05-18T13:00:00Z)
 ]
