@@ -143,3 +143,10 @@
     "Correcting my previous intent entry: I used apply_patch instead of the required shell append, so the content landed but the recording mechanism failed the intent-log protocol. This entry was appended with `cat >> intent/workspace.nota`."
     Maximum
     2026-05-19T16:45:00Z)
+
+(Correction
+    "Speech-to-text transcription errors must be normalised when recording verbatim. The psyche speaks; the STT layer mishears proper nouns and workspace-specific terms; agents must correct known STT misspellings before storing the verbatim. The quote field records the psyche's intended words, not the STT layer's literal output. Maintain a lookup table of STT-misspelling → canonical-form pairs and consult it on every verbatim recording. The first known correction: 'Criom' (STT) → 'Criome' (canonical, with trailing E)."
+    "the speech-to-text is flawed, then sometimes I say things like Nix and Logix and Criom, which are actually misspelled by the speech-to-text, and the agents are logging the misspelled version in the intent log. So we need a way to fix that. … Criom is C-R-I-O-M-E. The E is missing."
+    "Adding the STT-correction discipline. The verbatim is now defined as 'psyche's intended words' not 'STT literal output' — agents normalise known misspellings before recording. Table lives in skills/intent-log.md and grows as new misspellings are caught."
+    Maximum
+    2026-05-19T16:35:00Z)

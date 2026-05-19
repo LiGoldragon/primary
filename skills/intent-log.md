@@ -90,6 +90,16 @@ field with no alternative shape:
   files use the canonical bare form even if the current codec
   rejects them — no transitional shapes.
 
+The quote records **the psyche's intended words**, not the
+speech-to-text layer's literal transcription. When the psyche
+dictates a workspace-specific term that the STT mangles (the
+canonical example — "Criom" → "Criome"; the full lookup lives in
+`skills/stt-interpreter.md`'s tables of repos, libraries, tools,
+and other workspace vocabulary), normalise to the canonical
+spelling before storing the verbatim. Consult
+`skills/stt-interpreter.md` on every verbatim recording where a
+proper noun, repo name, or workspace-specific term appears.
+
 The quote uses `…` for elided tangents — the psyche often
 interleaves multiple topics in one turn, and the record only
 carries the part that belongs to this entry.
@@ -264,6 +274,8 @@ substance migrates.
   archival to `superseded/`, verification against current state.
 - `skills/nota-design.md` — the positional-NOTA discipline these
   records follow.
+- `skills/stt-interpreter.md` — STT-misspelling lookup tables; consult
+  before recording verbatim where workspace-specific terms appear.
 - `skills/skills.nota` — the canonical positional-NOTA example.
 - `intent/` — the surface this skill maintains.
 - Forward: `persona-mind` typed memory variants — eventual home.
