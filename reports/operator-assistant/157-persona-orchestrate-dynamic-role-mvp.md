@@ -11,12 +11,21 @@ triad:
   - Kept `RoleName` as a compatibility alias.
   - Added typed `HarnessKind` (`Codex`, `Claude`).
   - Added role harness metadata to `RoleStatus`.
+  - Migrated the public request surface from `signal-core`
+    `SignalVerb` wrappers to `signal-frame` contract-local operation
+    roots: `Claim`, `Release`, `Handoff`, `Observe`, `Submit`,
+    `Query`, `Watch`, and `Unwatch`.
+  - Added observer stream wire types for inbound operation and
+    outbound Sema-effect introspection.
 - `owner-signal-persona-orchestrate`
   - Created the new owner contract repo.
   - Added `CreateRoleOrder`, `RetireRoleOrder`, and
     `RefreshRepositoryIndexOrder`.
   - Added owner replies for role creation, retirement, role-creation
     rejection, repository refresh, and unimplemented owner requests.
+  - Migrated the owner request surface to `signal-frame`
+    contract-local operation roots: `Create`, `Retire`, and
+    `Refresh`.
 - `persona-orchestrate`
   - Added sema-backed `roles` and `repositories` tables.
   - Added raw owner-request handling through `OrchestrateService`.
@@ -31,19 +40,23 @@ triad:
     the `persona-orchestrate.redb` store and dispatch Signal frames.
   - Corrected the initial direct-store CLI mistake: the CLI binary
     only encodes NOTA requests as Signal frames to the daemon sockets.
+  - Added runtime-owned `OperationLowering` from contract operations
+    to `signal-sema::SemaOperation` effects.
+  - Added ordinary observation subscription open/close handling with
+    typed observation tokens.
   - Added named Nix checks for dynamic role creation, repository
     refresh, CLI boundary, and production daemon + CLI socket flow.
 
 ## Published State
 
 - `signal-persona-orchestrate`
-  - `main`: `8fd81545 signal-persona-orchestrate: align migration note with signal plan`
+  - `main`: `c48116cc signal-persona-orchestrate: align observer docs with migrated stream`
   - bookmark: `persona-orchestrate-mvp`
 - `owner-signal-persona-orchestrate`
-  - `main`: `503c5a87 owner-signal-persona-orchestrate: mark signal migration requirement`
+  - `main`: `169dcbfb owner-signal-persona-orchestrate: refresh migrated lockfile`
   - bookmark: `persona-orchestrate-mvp`
 - `persona-orchestrate`
-  - `main`: `d198fa24 orchestrate: mark signal migration requirement`
+  - `main`: `43fd89ad persona-orchestrate: track owner contract lockfile cleanup`
   - bookmark: `persona-orchestrate-mvp`
 
 The `main` lines include later architecture-note commits. The
@@ -51,33 +64,26 @@ The `main` lines include later architecture-note commits. The
 
 ## Architecture Redirection
 
-`reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
-supersedes the public six-verb Signal shape this MVP was implemented
-against. The daemon/CLI boundary, owner/ordinary socket split, dynamic
-role storage, repository indexing, and lock projection remain useful
-runtime work, but the contract surface is not final architecture:
+The Signal architecture redirection has landed for the Orchestrate
+triad. The ordinary and owner contracts now depend on `signal-frame`
+instead of `signal-core`; public operation heads are contract-local
+verbs instead of lower Sema verbs; and `persona-orchestrate` owns the
+runtime lowering to `signal-sema::SemaOperation`.
 
-- `signal-core` still requires `SignalVerb` on every operation.
-- `signal-persona-orchestrate` still declares public operations under
-  `Assert` / `Retract` / `Mutate` / `Match`.
-- `owner-signal-persona-orchestrate` still declares owner operations
-  under `Mutate` / `Retract`.
-- Full alignment requires the broader `signal-frame` / `signal-sema`
-  migration described by reports 238 and 239 before these Orchestrate
-  contracts can expose contract-local public verbs.
-
-The Orchestrate triad `ARCHITECTURE.md` files now carry explicit
-`MUST IMPLEMENT` migration notes so future Orchestrate work does not
-mistake the MVP contract surface for the final shape.
+The Orchestrate triad `ARCHITECTURE.md` files no longer carry
+`MUST IMPLEMENT` migration notes. They now record the migration
+history and the current constraints: thin CLI to daemon only, separate
+ordinary/owner sockets, runtime-owned lowering, and typed observation
+tokens on the public surface.
 
 ## Verification
 
 - `signal-persona-orchestrate`: `cargo test`
-- `signal-persona-orchestrate`: `nix flake check`
+- `signal-persona-orchestrate`: `nix --max-jobs 0 flake check`
 - `owner-signal-persona-orchestrate`: `cargo test`
-- `owner-signal-persona-orchestrate`: `nix flake check`
+- `owner-signal-persona-orchestrate`: `nix --max-jobs 0 flake check`
 - `persona-orchestrate`: `cargo test`
-- `persona-orchestrate`: `nix flake check`
+- `persona-orchestrate`: `nix --max-jobs 0 flake check`
 
 The `persona-orchestrate` flake now exposes these MVP constraint
 witnesses:
@@ -91,6 +97,12 @@ witnesses:
 
 - Roles are no longer compile-time enum variants on the ordinary
   contract surface.
+- Ordinary contract operations encode as contract-local roots, not
+  public `Assert` / `Retract` / `Mutate` / `Match` wrappers.
+- Owner contract operations encode as `Create`, `Retire`, and
+  `Refresh`.
+- The runtime has deterministic lowering witnesses for ordinary and
+  owner operations to lower Sema effects.
 - Role creation is owner-only vocabulary.
 - Role records carry `HarnessKind` as data.
 - The service stores role records in sema state.
@@ -110,6 +122,8 @@ witnesses:
 - The CLI boundary is now guarded by a source-scan witness: it must
   not import the service, tables, store location, sema-engine, or the
   redb path.
+- Observation subscriptions allocate and close typed tokens on the
+  ordinary surface.
 
 ## Gaps
 
@@ -120,7 +134,9 @@ witnesses:
   local presence. It does not yet compute recency from last edit.
 - Retiring a role removes the role record but does not delete report
   repositories, report lanes, claims, or repository links.
-- There are no subscriptions yet.
+- Observation subscriptions have wire types and open/close handling,
+  but the daemon does not yet keep subscriber sockets open and emit
+  live operation/Sema-effect event frames.
 - The owner contract is implemented, but filesystem permissions still
   do not enforce ordinary-vs-owner access.
 - The daemon is a synchronous thread-per-connection MVP, not the final
