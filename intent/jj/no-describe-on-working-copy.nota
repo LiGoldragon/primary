@@ -1,9 +1,8 @@
 [
   (Constraint
     "The canonical commit form is jj commit -m '<msg>'. Don't use jj describe @ -m '<msg>' on the working copy — describe is for already-committed parents only. skills/jj.md forbids describe-on-@ explicitly."
-    (Verbatim
-      "you shouldnt use describe, and you should push the working copy, so I dont know why youre documenting the use of @ - doesnt the skill forbid the use of describe?"
-      "Correcting my repeated use of jj describe in routine work; landed in skills/jj.md as an explicit forbidden form.")
-    maximum
-    "2026-05-18T17:05:03Z")
+    "you shouldnt use describe, and you should push the working copy, so I dont know why youre documenting the use of @ - doesnt the skill forbid the use of describe?"
+    "Correcting my repeated use of jj describe in routine work; landed in skills/jj.md as an explicit forbidden form."
+    Maximum
+    2026-05-18T17:05:03Z)
 ]

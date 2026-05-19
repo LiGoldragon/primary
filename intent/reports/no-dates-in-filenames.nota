@@ -1,9 +1,8 @@
 [
   (Decision
     "Report filenames do not include dates. The git/jj commit history records when a report landed; the filename only carries the number and the topic."
-    (Verbatim
-      "let's get rid of these dates in the report names. We don't even need a date in the report because that's the job of the commit history. We don't need dates."
-      "Cleaning up the report-filename convention as part of the rename-protocol settlement.")
-    maximum
-    "2026-05-18T12:08:41Z")
+    "let's get rid of these dates in the report names. We don't even need a date in the report because that's the job of the commit history. We don't need dates."
+    "Cleaning up the report-filename convention as part of the rename-protocol settlement."
+    Maximum
+    2026-05-18T12:08:41Z)
 ]

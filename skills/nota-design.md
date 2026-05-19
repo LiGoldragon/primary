@@ -72,13 +72,17 @@ wrapper, and the categories are duplicated as comments AND as a
 field. Fix both:
 
 ```nota
-(Role operator "skills/operator.md" apex "...")
-(Role designer "skills/designer.md" apex "...")
+(Role operator skills/operator.md Apex "...")
+(Role designer skills/designer.md Apex "...")
 
-(Architecture component-triad "skills/component-triad.md" apex "...")
+(Architecture component-triad skills/component-triad.md Apex "...")
 ```
 
-Same data, fewer tokens, grep-able category.
+Same data, fewer tokens, grep-able category. Note also: instance
+names (`operator`, `designer`, `component-triad`) are lowercase /
+kebab-case because they're runtime instances; the tier value
+(`Apex`) is PascalCase because it's a compile-time enum variant
+(see Rule 3 below and `ESSENCE.md`'s language-design rule).
 
 What comments DO carry: the schema preamble at the top of the file
 (positional field meaning, enum variants, optional-marker convention).
@@ -87,22 +91,31 @@ in records.
 
 ---
 
-## Rule 3 — Enums get names, not numbers
+## Rule 3 — Enums get PascalCase names, not numbers
 
 Ad-hoc integer codes for enum variants are a smell. `tier 1` /
-`tier 2` / `tier 3` means nothing without a key. `tier apex` /
-`tier keystroke` / `tier topic` is self-documenting and grep-able
+`tier 2` / `tier 3` means nothing without a key. `tier Apex` /
+`tier Keystroke` / `tier Topic` is self-documenting and grep-able
 from any cold read.
 
 Bad: `(Skill component-triad ... 1 ...)`.
-Good: `(Architecture component-triad ... apex ...)`.
+Good: `(Architecture component-triad ... Apex ...)`.
+
+Variants are **PascalCase** because they're compile-time
+structural (per `ESSENCE.md`'s language-design rule:
+*"PascalCase = compile-time structural; camelCase = instance"*).
+The parser dispatches on first-character case; a lowercase
+`apex` would parse as an instance identifier, not a variant.
+Instance names (the second field above — `operator`,
+`component-triad`) stay lowercase / kebab-case for the same
+reason.
 
 Numbers are fine for actual numbers — counts, identifiers, slots,
 ordinals where the ordering matters. They are not fine as
 stand-ins for named categorical distinctions.
 
 The schema preamble names the enum's allowed values. Grep for
-`apex` finds every apex-tier record across the file (and across
+`Apex` finds every apex-tier record across the file (and across
 every NOTA file in the workspace that uses the same vocabulary).
 
 ---
@@ -115,7 +128,8 @@ example of NOTA designed well. Open it. Notice:
 - No `(Skill ...)` wrapper — that's implied by the file.
 - The type is the category: `(Role ...)`, `(Architecture ...)`,
   `(Craft ...)`, `(Programming ...)`, `(Workflow ...)`, `(Meta ...)`.
-- Tier values are named: `apex`, `keystroke`, `topic`, `mechanism`.
+- Tier values are PascalCase variants: `Apex`, `Keystroke`,
+  `Topic`, `Mechanism`.
 - Comments only explain the schema — what the fields mean, what the
   enums allow, what's not in the index and why.
 
@@ -134,10 +148,16 @@ proposal, anywhere — do these three things:
    in context** (Rule 1 above). The wrapper is never a generic name
    like `Item`, `Entry`, or `Record` when the file already says so.
 3. **Sketch fields positionally — no `(key value)` pairs inside the
-   record.** If you find yourself wanting to label fields, you're
-   reaching for JSON/Clojure shape; that's not NOTA. Positional means
-   `(Decision "summary" (Verbatim "quote" "context") maximum "2026-…")`,
-   not `(Decision (summary "…") (verbatim …) (certainty maximum))`.
+   record. No nested wrappers when every record has the same
+   inner shape.** If you find yourself wanting to label fields,
+   you're reaching for JSON/Clojure shape; that's not NOTA.
+   Positional means
+   `(Decision "summary" "quote" "context" Maximum 2026-05-19T01:23:00Z)`,
+   not `(Decision (summary "…") (verbatim …) (certainty Maximum))`
+   and not `(Decision "summary" (Verbatim "quote" "context") Maximum …)`
+   if `Verbatim` is the only thing that ever appears in that slot.
+   Variants are **PascalCase** (`Maximum`, not `maximum`); timestamps
+   are bare (`2026-05-19T01:23:00Z`, not quoted).
 
 Most agent NOTA mistakes are the same mistake — labeled fields. The
 fix is the same too: read the canonical example before you sketch,

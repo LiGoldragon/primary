@@ -1,9 +1,8 @@
 [
   (Constraint
     "owner-signal-<component> is part of the triad, not a follow-up arc. A daemon with only the ordinary signal-<component> surface is not yet triad-shaped. The next implementation arc for any new component ships both authority contracts together."
-    (Verbatim
-      "then why did you ask if we needed an owner-signal?"
-      "Calling out the framing mistake in /229 Q1 where I had echoed the OA's 'ordinary triad first or owner-signal first?' question rather than correcting it. The triad invariant settles it: both surfaces ship together.")
-    maximum
-    "2026-05-18T22:15:57Z")
+    "then why did you ask if we needed an owner-signal?"
+    "Calling out the framing mistake in /229 Q1 where I had echoed the OA's 'ordinary triad first or owner-signal first?' question rather than correcting it. The triad invariant settles it: both surfaces ship together."
+    Maximum
+    2026-05-18T22:15:57Z)
 ]

@@ -1,9 +1,8 @@
 [
   (Principle
     "Substantive output — analysis, proposal, audit, synthesis — goes in a report under reports/<role>/. Chat carries the user-attention items inline with full substance. The chat is the user's working surface; reports are the durable record for agents. The user runs many parallel agents and cannot read giant chat responses."
-    (Verbatim
-      "the human doesn't have that much attention to give to your response. Everything else goes into a report, an artifact that can be passed around to other agents because that's who you want to be worthy to is other agents, not the human. I'm juggling like 12 agents over here. You think I have time to read?"
-      "Establishing the chat-vs-report discipline; the underlying constraint is the user's attention budget across parallel agents.")
-    maximum
-    "2026-05-18T11:31:00Z")
+    "the human doesn't have that much attention to give to your response. Everything else goes into a report, an artifact that can be passed around to other agents because that's who you want to be worthy to is other agents, not the human. I'm juggling like 12 agents over here. You think I have time to read?"
+    "Establishing the chat-vs-report discipline; the underlying constraint is the user's attention budget across parallel agents."
+    Maximum
+    2026-05-18T11:31:00Z)
 ]

@@ -53,8 +53,12 @@ prior recorded entry:
    (Superseded
      "<prior-filename>"
      "<new-filename>"
-     "<ISO-8601 timestamp of supersession>")
+     <ISO-8601 timestamp of supersession>)
    ```
+
+   (Three positional fields: prior path, new path, timestamp.
+   Timestamp written bare per the canonical NOTA shape; codec
+   support tracked by bead `primary-dzrn`.)
 
    The `Superseded` record lives in `intent/<topic>/supersessions.nota`
    (one file per topic, append-only).
@@ -145,8 +149,8 @@ context for understanding the override.
 Some author statements are too transient for the log:
 
 - "Let's try this and see" — pre-commitment exploration.
-- "Maybe X, I'll think about it" — minimum-certainty might be
-  worth recording, but if the author then commits to something
+- "Maybe X, I'll think about it" — `Minimum`-certainty might be
+  worth recording, but if the psyche then commits to something
   else within the same conversation, skip recording the
   intermediate.
 

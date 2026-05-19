@@ -1,9 +1,8 @@
 [
   (Decision
     "persona-orchestrate is a real triad component — daemon + thin CLI + signal-persona-orchestrate ordinary contract + owner-signal-persona-orchestrate. Not folded into persona-mind. The component has been intended to exist for days; the design substance landing in /228 and onward is canonical, not exploratory."
-    (Verbatim
-      "persona-orchestrate doesn't exist wow! really!? so all this time iv been working on a component that nobody has bothered to make? … persona-orchestrate should exist 3 days ago. file an operator beads and get this fucking bullshit about orchestrate being a part of mind."
-      "Settling the persona-orchestrate question after the recovery audit in /228; rejecting earlier 'fold into mind' framings that one agent had introduced.")
-    maximum
-    "2026-05-18T12:23:18Z")
+    "persona-orchestrate doesn't exist wow! really!? so all this time iv been working on a component that nobody has bothered to make? … persona-orchestrate should exist 3 days ago. file an operator beads and get this fucking bullshit about orchestrate being a part of mind."
+    "Settling the persona-orchestrate question after the recovery audit in /228; rejecting earlier 'fold into mind' framings that one agent had introduced."
+    Maximum
+    2026-05-18T12:23:18Z)
 ]

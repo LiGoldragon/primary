@@ -1,9 +1,8 @@
 [
   (Principle
     "persona-mind owns STATE — work graph, memory, thoughts, durable policy truth, channel-grant authority decisions. persona-orchestrate owns MACHINERY — role claims, activity log, agent-run lifecycle, spawn plans, scope-acquisition workflow, executor capacity, scheduling, escalation, lane registry."
-    (Verbatim
-      "the orchestration part where it allocates a certain, where it, like, manages locks the way we manage locks now, like, such and such agent is working on such and such, really belongs in orchestrate, so that doesn't need to go up to the mind. But the memories actually do belong there."
-      "Working out the boundary between mind and orchestrate during the broader redesign discussion; landed as the load-bearing principle in /228.")
-    maximum
-    "2026-05-18T12:08:41Z")
+    "the orchestration part where it allocates a certain, where it, like, manages locks the way we manage locks now, like, such and such agent is working on such and such, really belongs in orchestrate, so that doesn't need to go up to the mind. But the memories actually do belong there."
+    "Working out the boundary between mind and orchestrate during the broader redesign discussion; landed as the load-bearing principle in /228."
+    Maximum
+    2026-05-18T12:08:41Z)
 ]

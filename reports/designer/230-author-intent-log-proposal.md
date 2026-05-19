@@ -16,7 +16,7 @@ contains typed records — one record per author statement — declaring:
 
 - a terse rephrasing of what the author meant
 - the verbatim quote with surrounding context
-- a certainty marker (`maximum` / `medium` / `minimum`)
+- a certainty marker (`Maximum` / `Medium` / `Minimum`)
 - a timestamp
 
 Records are positional NOTA. Each record's wrapping type names the
@@ -74,8 +74,9 @@ useful distinction in context"). Five kinds:
 Positional fields, in order:
 
 1. **summary** — a single-string terse rephrasing by the agent
-2. **verbatim** — a nested `Verbatim` record (quote then context)
-3. **certainty** — bare enum: `maximum`, `medium`, or `minimum`
+2. **quote** — psyche's exact words, with `…` for elided tangents
+3. **context** — surrounding what-was-being-decided
+4. **certainty** — bare PascalCase variant: `Maximum`, `Medium`, or `Minimum`
 4. **when** — ISO-8601 timestamp string
 
 Example record (this very rule, recorded against itself):
@@ -83,17 +84,17 @@ Example record (this very rule, recorded against itself):
 ```nota
 (Decision
   "Intent records use positional NOTA with kind-typed wrapping"
-  (Verbatim
-    "thats not NOTA, and your response is too long ... the agents.md has a sections describing the skills.nota file, which should go in that file"
-    "Correcting the labeled-field NOTA I sketched in chat; framing it as the same mistake many agents make")
-  maximum
-  "2026-05-19T22:30:00Z")
+  "thats not NOTA, and your response is too long ... the agents.md has a sections describing the skills.nota file, which should go in that file"
+  "Correcting the labeled-field NOTA I sketched in chat; framing it as the same mistake many agents make"
+  Maximum
+  2026-05-19T22:30:00Z)
 ```
 
-A `Verbatim` record is itself positional: `(Verbatim quote context)`.
-Quote allows `…` for elided tangents (the author often interleaves
-multiple topics in one turn; the recording only carries the part that
-belongs to this record).
+Five positional fields under the kind wrapper: summary, quote,
+context, certainty, when. No nested `Verbatim` wrapper — every
+record has exactly one quote+context with no alternative shape,
+so wrapping carries no information (per `skills/nota-design.md`
+Rule 1). Quote allows `…` for elided tangents.
 
 ---
 
@@ -138,13 +139,13 @@ the agent's interpretation is minimal:
 
 | Phrase pattern | Certainty |
 |---|---|
-| *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"* | `maximum` |
-| (default — direct statement, decision, preference) | `medium` |
-| *"I'm not sure"*, *"maybe"*, *"leaning toward"*, *"I think"*, *"perhaps"*, *"could be"* | `minimum` |
+| *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"* | `Maximum` |
+| (default — direct statement, decision, preference) | `Medium` |
+| *"I'm not sure"*, *"maybe"*, *"leaning toward"*, *"I think"*, *"perhaps"*, *"could be"* | `Minimum` |
 
 The author can also tag certainty explicitly mid-sentence ("I'm
 certain about X but not sure about Y") — the agent records X with
-maximum and Y with minimum.
+Maximum and Y with Minimum.
 
 ---
 
@@ -164,7 +165,7 @@ When an agent receives a new author statement on a topic:
    (Superseded
      "old-entry-filename"
      "new-entry-filename"
-     "2026-05-19T22:35:00Z")
+     2026-05-19T22:35:00Z)
    ```
 
    …and physically move the prior record's file to
@@ -190,8 +191,8 @@ Strongest candidates (one word):
 |---|---|---|
 | `intent/` | direct; the word you reached for | soft collision with ESSENCE.md "workspace intent" |
 | `testimony/` | captures the verbatim-quote-with-context character | possibly biblical/legal tone |
-| `mandate/` | "what the author mandated"; authoritative | too imperial for `minimum`-certainty entries |
-| `canon/` | "the canon of author statements" | implies settled doctrine; too strong for `minimum` |
+| `mandate/` | "what the author mandated"; authoritative | too imperial for `Minimum`-certainty entries |
+| `canon/` | "the canon of author statements" | implies settled doctrine; too strong for `Minimum` |
 | `voice/` | "the author's voice on X" | maybe too soft |
 
 Recommendation: **`intent/`** — the ESSENCE collision is semantic

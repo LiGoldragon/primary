@@ -59,7 +59,7 @@ Do **not** record:
   isn't an intent).
 - Brainstorming-out-loud where the author explicitly says they're
   not sure yet (record only the parts they *do* commit to, with
-  certainty `minimum`).
+  certainty `Minimum`).
 - Conversational tangents.
 
 The bar: *would this statement be valuable to a future agent
@@ -72,27 +72,33 @@ recording.
 ## Record shape
 
 Positional NOTA (per `skills/nota-design.md`). The wrapping type
-names the *kind* of intent. Fields in declared order:
+names the *kind* of intent; the five fields are flat positional —
+no nested wrappers, since every record has exactly one of each
+field with no alternative shape:
 
 ```nota
 (<Kind>
   "<summary — terse one-line rephrasing by the agent>"
-  (Verbatim
-    "<author's exact words, with … for omitted tangents>"
-    "<surrounding what-was-being-decided>")
-  <certainty>
-  "<ISO-8601 timestamp>")
+  "<psyche's exact words, with … for omitted tangents>"
+  "<surrounding what-was-being-decided>"
+  <Certainty>
+  <ISO-8601 timestamp>)
 ```
 
 - `<Kind>` is one of `Decision`, `Principle`, `Correction`,
   `Clarification`, `Constraint`.
-- `<certainty>` is a bare enum: `maximum`, `medium`, or `minimum`.
-- `<ISO-8601 timestamp>` is a string like `"2026-05-19T01:23:00Z"`.
+- `<Certainty>` is a PascalCase variant: `Maximum`, `Medium`, or
+  `Minimum`. (Variants are compile-time structural; PascalCase per
+  the language-design rule in `ESSENCE.md`.)
+- `<ISO-8601 timestamp>` is written bare — `2026-05-19T01:23:00Z`,
+  not quoted. The canonical Timestamp type is the right shape;
+  NOTA bead `primary-dzrn` lands the codec support. Until then,
+  files use the canonical bare form even if the current codec
+  rejects them — no transitional shapes.
 
-`Verbatim` is itself a positional record: quote then context. The
-quote uses `…` for elided tangents — the author often interleaves
-multiple topics in one turn, and the record only carries the part
-that belongs to this entry.
+The quote uses `…` for elided tangents — the psyche often
+interleaves multiple topics in one turn, and the record only
+carries the part that belongs to this entry.
 
 A file is a top-level NOTA list `[ … ]` of one or more entries on
 the same sub-topic.
@@ -106,13 +112,13 @@ interpretation is minimal:
 
 | Phrase pattern | Certainty |
 |---|---|
-| *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"*, strong corrections | `maximum` |
-| (default — direct statement, decision, preference) | `medium` |
-| *"I'm not sure"*, *"maybe"*, *"leaning toward"*, *"I think"*, *"perhaps"*, *"could be"* | `minimum` |
+| *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"*, strong corrections | `Maximum` |
+| (default — direct statement, decision, preference) | `Medium` |
+| *"I'm not sure"*, *"maybe"*, *"leaning toward"*, *"I think"*, *"perhaps"*, *"could be"* | `Minimum` |
 
-The author can also tag certainty explicitly mid-sentence ("I'm
-certain about X but not sure about Y") — record X with maximum and
-Y with minimum.
+The psyche can also tag certainty explicitly mid-sentence ("I'm
+certain about X but not sure about Y") — record X as `Maximum` and
+Y as `Minimum`.
 
 ---
 
@@ -179,9 +185,7 @@ When persona-mind's typed memory variants land, each `<Kind>`
 record becomes a memory of variant `Authorial<Kind>` (so
 `AuthorialDecision`, `AuthorialPrinciple`, …). Topic becomes a
 relation tag (`(IntentTopic <topic>)`). The
-`intent/<topic>/<file>.nota` path seeds the memory's `uid`. The
-`Verbatim` record becomes a sub-memory or an inline field on the
-parent — that decision sits with persona-mind's schema work.
+`intent/<topic>/<file>.nota` path seeds the memory's `uid`.
 
 No work in `persona-mind` yet. This note signposts where the
 substance migrates.
