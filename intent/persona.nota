@@ -249,3 +249,10 @@
     "Settling the manifestation wording for intent#8 after the bare-line correction. Psyche selected the option that carries enough framing to survive out-of-context reading."
     Maximum
     2026-05-19T17:50:00Z)
+
+(Decision
+    "Implement persona-orchestrate component now so it is usable through daemon-owned state and constrained tests, with no direct-store CLI path."
+    "go ahead and implement the component with all the constrained tests in place and passing now so that we're ready to actually start using it"
+    "Move from raw MVP to usable component by wiring daemon/socket behavior and test constraints before relying on it."
+    Maximum
+    2026-05-19T18:35:00Z)
