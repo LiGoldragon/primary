@@ -1,366 +1,187 @@
-# 136 — persona-spirit current system and intent gaps
+# 136 — persona-spirit current system and remaining gaps
 
-*Operator view after the first raw `persona-spirit` slices landed:
-what exists, what the near system wants to become, and where clearer
-psyche intent would change the next implementation.*
+*Operator update after the first useful raw Spirit slice landed.*
 
 ## 0 · Short Read
 
-`persona-spirit` now has a usable type-checking front door, not a
-working database-backed intent system.
+`persona-spirit` is now a usable raw intent component for typed
+entry logging and querying. It is not yet a daemon actor tree.
 
 Current path:
 
 ```text
 agent
-  |
-  | one NOTA SpiritRequest argument
-  v
-persona-spirit CLI
-  |
-  | decode as signal-persona-spirit::SpiritRequest
-  v
-typed operation kind
-  |
-  | no daemon/storage yet
-  v
-(SpiritRequestUnimplemented <Operation> NotBuiltYet)
+  -> persona-spirit CLI
+  -> decode one signal-persona-spirit request
+  -> SpiritRuntime
+  -> SpiritStore
+  -> sema-engine table records
+  -> typed SpiritReply as NOTA
 ```
 
-This is already useful as a grammar/type witness. An agent can now
-ask the compiler-owned contract whether its `Entry` shape is
-valid NOTA:
+Example write:
 
 ```sh
-persona-spirit '(Entry workspace Decision "summary only" "current implementation context" Maximum [(Verbatim "2026-05-19T13:08:11Z" "first statement") (Verbatim "2026-05-19T13:12:00Z" "restated statement")])'
+persona-spirit '(Entry (naming Correction "drop ancestor prefixes" "naming context" Maximum "2026-05-19T15:46:23Z" "names do not carry their full ancestry"))'
 ```
 
-The current reply is honest:
+Reply:
 
 ```nota
-(SpiritRequestUnimplemented Entry NotBuiltYet)
+(RecordAccepted ((1 naming Correction "drop ancestor prefixes" Maximum)))
 ```
 
-The important gap is not spirit-to-mind ownership. The current gap is
-the storage/query meaning of a typed entry.
+Example query:
 
-## 1 · What Exists Now
+```sh
+persona-spirit '(RecordObservation ((None SummaryOnly)))'
+```
+
+Reply:
+
+```nota
+(RecordsObserved ([(1 naming Correction "drop ancestor prefixes" Maximum)]))
+```
+
+## 1 · What Changed
 
 ### `signal-persona-spirit`
 
 Path: `/git/github.com/LiGoldragon/signal-persona-spirit`
 
-It owns the ordinary peer-callable contract:
+The contract no longer repeats the intent namespace in every type.
+The main records are:
 
 ```rust
-pub struct Verbatim {
-    pub timestamp: IntentTimestamp,
-    pub quote: IntentQuote,
-}
-
 pub struct Entry {
-    pub topic: IntentTopic,
-    pub kind: IntentKind,
-    pub summary: IntentSummary,
-    pub context: IntentContext,
-    pub certainty: IntentCertainty,
-    pub verbatim: Vec<Verbatim>,
+    pub topic: Topic,
+    pub kind: Kind,
+    pub summary: Summary,
+    pub context: Context,
+    pub certainty: Certainty,
+    pub timestamp: Timestamp,
+    pub quote: Quote,
+}
+
+pub struct RecordAccepted {
+    pub captured: RecordSummary,
 }
 ```
 
-The new request variant is an `Assert`:
+`Entry` is one top-level assertion record. Restatements are repeated
+records, not a vector inside one record. `RecordIdentifier` is
+spirit output, not agent input.
+
+### `owner-signal-persona-spirit`
+
+Path: `/git/github.com/LiGoldragon/owner-signal-persona-spirit`
+
+The owner contract also dropped redundant prefixes:
 
 ```rust
-signal_channel! {
-    channel Spirit {
-        request SpiritRequest {
-            Assert PsycheStatement(PsycheStatement),
-            Assert Entry(Entry),
-            Match PsycheStateObservation(PsycheStateObservation),
-            Match IntentRecordObservation(IntentRecordObservation),
-            Match ClarificationQuestionPending(ClarificationQuestionPending),
-            Subscribe SubscribePsycheState(PsycheStateSubscription) opens PsycheStateStream,
-            Retract PsycheStateSubscriptionRetraction(PsycheStateSubscriptionToken),
-            Subscribe SubscribeIntentRecords(IntentRecordSubscription) opens IntentRecordStream,
-            Retract IntentRecordSubscriptionRetraction(IntentRecordSubscriptionToken),
-        }
-        /* replies, events, streams */
-    }
+pub struct StartOrder {
+    pub generation: Generation,
+}
+
+pub struct RegisterIdentity {
+    pub name: IdentityName,
 }
 ```
 
-Tests prove:
-
-- rkyv frame round trips;
-- NOTA text round trips;
-- `Entry` is `Assert`;
-- stream relations are still generated;
-- canonical examples include an `Entry` with two
-  `Verbatim` records.
+The generated channel types still carry the channel root
+(`OwnerSpiritRequest`, `OwnerSpiritReply`). That is macro output, not
+payload naming noise.
 
 ### `persona-spirit`
 
 Path: `/git/github.com/LiGoldragon/persona-spirit`
 
-The CLI now decodes one `SpiritRequest` and emits one typed NOTA
-`SpiritReply`. It does not pretend the daemon exists:
+The runtime now has a store object over `sema-engine`:
 
 ```rust
-pub fn reply_text(&self) -> Result<String> {
-    let request = self.decode_request()?;
-    SpiritReplyText::new(SpiritReply::SpiritRequestUnimplemented(
-        SpiritRequestUnimplemented {
-            operation: request.operation_kind(),
-            reason: SpiritUnimplementedReason::NotBuiltYet,
-        },
-    ))
-    .encode()
+pub struct SpiritStore {
+    engine: Engine,
+    records: TableReference<StoredRecord>,
 }
 ```
 
-Tests prove:
+Implemented request handling:
 
-- exactly one CLI argument;
-- flag-style argument rejection;
-- valid `PsycheStatement` type-checks;
-- valid `Entry` with two verbatim references type-checks;
-- unknown record shapes fail before any runtime behavior.
+```rust
+match request {
+    SpiritRequest::Entry(entry) => RecordAccepted(...),
+    SpiritRequest::RecordObservation(observation) => RecordsObserved(...) | RecordProvenancesObserved(...),
+    other => RequestUnimplemented(...),
+}
+```
 
-## 2 · How I See The System
+The CLI can persist `Entry` records and query them later from the
+same database path. Tests pass an explicit `StoreLocation`; normal
+CLI use falls back to `PERSONA_SPIRIT_STORE`,
+`PERSONA_STATE_PATH`, then `/tmp/persona-spirit.redb`.
 
-Spirit is the first component that turns the workspace's current
-manual intent discipline into a typed surface. In raw form, it
-should do three things before it talks to mind:
+## 2 · Constraint Tests
+
+The runtime tests are named after the behavior they enforce:
 
 ```text
-1. Accept typed NOTA intent input from agents.
-2. Store/query typed intent locally.
-3. Project enough filesystem compatibility for agents while the
-   old intent/*.nota files retire.
+persona_spirit_client_asserts_entry_and_mints_record_identifier
+persona_spirit_client_persists_entries_for_later_summary_observation
+persona_spirit_client_filters_record_observation_by_topic
+persona_spirit_client_returns_provenance_only_when_requested
+persona_spirit_client_repeated_entries_remain_distinct_records
 ```
 
-The near-term runtime wants this shape:
-
-```mermaid
-flowchart TB
-    agent["agent"]
-    cli["persona-spirit CLI"]
-    socket["ordinary spirit socket"]
-    root["SpiritRoot actor"]
-    decode["DecodeRequest actor"]
-    classify["IntentClassifier actor"]
-    store["IntentStore actor"]
-    query["IntentQuery actor"]
-    projection["FilesystemProjection actor"]
-
-    agent --> cli
-    cli --> socket
-    socket --> root
-    root --> decode
-    decode --> classify
-    classify --> store
-    root --> query
-    store --> projection
-```
-
-The storage side wants to be explicit:
+These tests prove the current intent decisions:
 
 ```text
-Entry
-  topic
-  kind
-  summary
-  context
-  certainty
-  verbatim[]
-    timestamp
-    quote
-
-Derived/query indexes
-  topic -> entry ids
-  kind -> entry ids
-  latest-verbatim-time -> entry ids
-  maybe summary-similarity -> candidate restatements
+agents do not send identifiers
+spirit mints identifiers
+summary queries stay summary-only
+provenance is explicit
+restatement is repetition
 ```
 
-The query side should stay summary-first:
+## 3 · Remaining Gaps
+
+The largest missing piece is the daemon. The component still runs the
+store in-process through the CLI; it does not yet expose a Kameo actor
+tree or socket boundary.
+
+Not implemented:
 
 ```text
-IntentRecordObservation
-  mode SummaryOnly
-    -> Vec<IntentRecordSummary>
-
-IntentRecordObservation
-  mode WithProvenance
-    -> Vec<IntentRecordProvenance>
-       where provenance includes context + verbatim[]
+persona-spirit-daemon socket listener
+Kameo SpiritRoot / Store actor topology
+owner-signal lifecycle handling
+subscriptions
+classifier / guardian
+spirit-to-mind owner calls
+filesystem projection from database back to intent/*.nota
 ```
 
-## 3 · What I Do Not See Clearly
+I do not see a need for new psyche clarification before the next
+implementation step. The next clear slice is daemonizing this exact
+store/query behavior behind the component socket without changing the
+contract shape again.
 
-### Gap 1 — What is an `Entry`?
+## 4 · Verification
 
-There are two plausible meanings:
+Passing locally:
 
 ```text
-Meaning A: aggregate record
-  Entry is the whole current intent object.
-  Restating intent means submitting the same object again with one
-  more Verbatim in its vector.
-
-Meaning B: append event
-  Entry is one assertion event.
-  Spirit decides whether it creates a new canonical intent or appends
-  this quote to an existing one.
+signal-persona-spirit: cargo test --locked
+signal-persona-spirit: cargo clippy --all-targets --locked -- -D warnings
+owner-signal-persona-spirit: cargo test --locked
+owner-signal-persona-spirit: cargo clippy --all-targets --locked -- -D warnings
+persona-spirit: cargo test --locked
+persona-spirit: cargo clippy --all-targets --locked -- -D warnings
 ```
 
-Current code uses the aggregate shape because the latest clear psyche
-intent said the verbatim object is a vector of timestamped structs.
-But a daemon has to know whether to replace/merge a stored record or
-append a new assertion event. That is the strongest missing
-implementation intent.
-
-### Gap 2 — How does spirit identify a restatement?
-
-Possible restatement keys:
+Passing through Nix with remote builder:
 
 ```text
-explicit identifier      agent supplies/chooses the old record id
-topic + kind             broad and likely too weak
-topic + summary          usable, but fuzzy and agent-synthesized
-classifier similarity    spirit decides using LLM context
-manual clarification      spirit asks psyche or review agent
+signal-persona-spirit: nix flake check -L --max-jobs 0
+owner-signal-persona-spirit: nix flake check -L --max-jobs 0
+persona-spirit: nix flake check -L --max-jobs 0
 ```
-
-The current contract has `IntentRecordIdentifier`, but
-`Entry` does not carry one. That was intentional caution: agent-
-minted identifiers are often wrong, and spirit may need to mint them.
-Before durable storage lands, this must be settled enough to avoid
-baking identity into the wrong field.
-
-### Gap 3 — Who synthesizes summary and context?
-
-The current CLI accepts an already typed `Entry`, meaning the
-agent wrote:
-
-```text
-kind + summary + context + certainty + verbatim[]
-```
-
-That is useful immediately because agents can type-check their
-intent logging. But the longer design says spirit receives
-`PsycheStatement` and classifies natural language through an LLM.
-
-So the system has two input lanes:
-
-```text
-PsycheStatement
-  raw psyche utterance
-  spirit classifier creates typed intent
-
-Entry
-  agent supplies already typed intent
-  spirit validates and stores
-```
-
-The unclear part is authority: is an agent-supplied `Entry`
-authoritative enough to store directly, or should spirit always treat
-it as a proposal needing classifier/review?
-
-### Gap 4 — What is the first durable query surface?
-
-Summary-first is settled. The first query dimensions are not.
-Likely enough for the first daemon:
-
-```text
-topic: Option<IntentTopic>
-mode: SummaryOnly | WithProvenance
-```
-
-Missing but likely soon:
-
-```text
-kind filter
-certainty filter
-latest-first ordering
-limit
-identifier lookup
-open clarification questions related to one entry
-```
-
-If these are added too early, the contract gets noisy. If added too
-late, agents will fall back to grep.
-
-### Gap 5 — How much filesystem projection belongs in the first raw component?
-
-The raw-component principle says components can be used directly
-before full integration. For spirit, direct usefulness probably
-means either:
-
-```text
-daemon-backed only
-  agents use persona-spirit CLI for writes and queries
-  old intent/*.nota remains separate until migration
-
-daemon plus projection
-  spirit writes/updates intent/*.nota as compatibility output
-  agents can still inspect the old files
-```
-
-Projection may be operationally useful, but it risks reviving the old
-filesystem schema as a second source of truth.
-
-## 4 · My Current Implementation Bias
-
-If I continue without more psyche intent, the conservative next
-shape is:
-
-```text
-Do:
-  - implement a daemon-local store for Entry;
-  - let spirit mint IntentRecordIdentifier;
-  - store every submitted Entry as its own event first;
-  - expose summary-first queries by topic;
-  - do not merge restatements automatically yet.
-
-Do not:
-  - implement spirit-to-mind owner calls;
-  - project to intent/*.nota as canonical behavior;
-  - ask agents to mint durable record identifiers;
-  - perform LLM classification before the classifier prompt/context is
-    designed.
-```
-
-That would make the system useful while preserving room for the
-restatement semantics to become beautiful instead of rushed.
-
-## 5 · Greatest Intent Clarification Needs
-
-These are the questions where psyche intent would materially change
-the next implementation, not implementation-order bureaucracy.
-
-1. **Is `Entry` an aggregate record or an assertion event?**
-   Should a restatement arrive as a full record with the whole
-   `verbatim` vector, or as a new assertion that spirit attaches to
-   an existing intent?
-
-2. **Who owns intent identity?**
-   Should agents ever provide an `IntentRecordIdentifier`, or should
-   spirit always mint identity after deciding whether the entry is new
-   or a restatement?
-
-3. **How authoritative is an agent-supplied typed `Entry`?**
-   Does spirit store it directly because the agent is the current LLM
-   mediation layer, or does spirit treat it as a proposal and run its
-   own classifier/review actor before committing?
-
-4. **Should first raw spirit write back to `intent/*.nota` or only
-   answer through its CLI?**
-   Projection is convenient during migration, but the clean shape is
-   one source of truth: spirit's own database.
-
-5. **What is the first query experience agents should rely on?**
-   Topic + summary-first may be enough. Identifier lookup and
-   provenance mode probably follow. Kind/certainty filters and fuzzy
-   search may wait until the store has real usage.
-

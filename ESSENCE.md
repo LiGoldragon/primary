@@ -58,6 +58,14 @@ any file, before responding in chat, before any other work.
 Reports, code, and chat all derive from intent; capturing must
 precede everything else.
 
+The corollary: the agent's actual first step is to *decide
+whether the prompt contains intent at all*. Some prompts are pure
+questions and carry none. Others — even a single word like
+*"yes"* — can constitute a very large intent record, depending on
+what the yes is in response to. The flow is: classify first; log
+if intent is present; then proceed with the work the prompt
+asked for.
+
 ## What I am building
 
 Software that is **eventually impossible to improve** — in a

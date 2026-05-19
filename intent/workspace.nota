@@ -332,3 +332,10 @@
     "Psyche promoted the intent-first-on-psyche-prompt rule to ESSENCE level. Previously lived in AGENTS.md hard overrides + INTENT.md + skills/intent-log.md only. Note: the last sentence of the verbatim was originally received with an STT typo ('they know it comes' → corrected to 'they know comes')."
     Maximum
     2026-05-19T18:00:00Z)
+
+(Decision
+    "The golden rule's corollary: the agent's actual first step on receiving a psyche prompt is to decide WHETHER the prompt contains intent at all — not to log immediately. Some prompts are pure questions and carry no intent; others, even a single word like 'yes', can constitute a very large intent record depending on what the yes is in response to. The flow: classify first; log if intent is present; only then proceed with the work the prompt asked for. Extend the ESSENCE.md 'Logging psyche intent is the first action' section to carry this."
+    "since logging the intent is the golden rule and the most important thing to do, the actual first thing the agent must do is determine if the prompt actually contains an intent. … saying something as simple as yes could constitute as a very large intent logging depending what the yes was in response to"
+    "Refining the golden rule with the classification step. The bare logging-is-first rule could be read as 'always log' — psyche clarified that the actual first step is the classification decision, and that 'yes'-shaped responses can carry substantial intent depending on context."
+    Maximum
+    2026-05-19T18:10:00Z)
