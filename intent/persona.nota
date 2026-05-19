@@ -116,3 +116,10 @@
     "Defining the first typed persona-spirit intent-entry record shape, replacing the crude manual file schema."
     Maximum
     2026-05-19T13:08:11Z)
+
+(Correction
+    "Inside persona-spirit, intent is the component's domain, so the type should be `Entry`, not `IntentEntry`. Do not repeat the component's domain in the record name when the context already supplies it."
+    "Well since persona spirit only deals with intent then why are we calling it intent entry and not just entry?"
+    "Correcting the first typed persona-spirit entry shape after the raw CLI type-checking slice landed."
+    Maximum
+    2026-05-19T13:12:00Z)
