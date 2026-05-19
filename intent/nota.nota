@@ -18,3 +18,17 @@
     "After my investigation explained that filepath strings always need quotes in NOTA (the bare-ident alphabet `[A-Za-z0-9_-]` excludes `/` and `.`), the psyche proposed introducing a typed Path shape with a relaxed alphabet at the schema position. Implemented in nota-codec main commit 97c1f496; spec section landed in nota main commit a0617b99; skills/skills.nota migrated to bare paths in workspace commit 9c018120."
     Medium
     2026-05-18T15:00:00Z)
+
+(Correction
+    "The `Said` wrapper I proposed for per-statement entries inside a verbatim vector is superfluous. There is no other variant that fits that position; every entry is a psyche statement. NOTA Rule 1 (wrapping type names the most useful distinction) says drop the wrapper. The correct shape is nested lists: an outer list of statements where each statement is an inner list of positional fields (date, time, quote). Lists don't need a head type; records do."
+    "What are the other types, besides 'Said' then? (youre introducing a variant by putting a 'Said' there, you understand that right? otherwise you *still* dont undertand NOTA)"
+    "Catching my repeated NOTA mistake: superfluous wrapping. The variant question — 'what else could go here?' — is the test. No other variant → no wrapper. The skills/nota-design.md 'Before you sketch' checklist explicitly says this; I didn't apply it."
+    Maximum
+    2026-05-19 19:00)
+
+(Correction
+    "Agents (me, repeatedly) keep making the superfluous-wrapping NOTA mistake despite the skill explicitly forbidding it. The pattern: when modelling a structured value, default to wrapping each piece in a typed record. The fix is the discipline already on disk: before sketching, ask 'what other variants could go in this position?' — if the answer is none, drop the wrapper. The 'Before you sketch any NOTA record' checklist in skills/nota-design.md is the gate; failure to apply it produces this same mistake every time."
+    "you *still* dont undertand NOTA"
+    "Meta-correction. The Said wrapper is the same shape of mistake as the labeled-field mistake from earlier in the session; both come from defaulting to scaffolding instead of asking the variant question first."
+    Maximum
+    2026-05-19 19:00)
