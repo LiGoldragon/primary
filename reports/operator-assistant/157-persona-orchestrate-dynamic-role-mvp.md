@@ -41,7 +41,7 @@ triad:
   - `main`: `d9210f9a contract: fix owner orchestrate formatting gate`
   - bookmark: `persona-orchestrate-mvp`
 - `persona-orchestrate`
-  - `main`: pending current implementation commit
+  - `main`: `893fa60f orchestrate: implement daemon socket runtime`
   - bookmark: `persona-orchestrate-mvp`
 
 ## Verification
