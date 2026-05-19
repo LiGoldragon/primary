@@ -32,3 +32,31 @@
     "Meta-correction. The Said wrapper is the same shape of mistake as the labeled-field mistake from earlier in the session; both come from defaulting to scaffolding instead of asking the variant question first."
     Maximum
     2026-05-19 19:00)
+
+(Correction
+    "Lists in NOTA are homogeneous — every element is the same type. A list of mixed-type tuples (e.g. [date time quote]) is not valid NOTA. Heterogeneous positional structures are records (wrapped type + positional fields). My three NOTA mistakes this session — labeled-field tables, superfluous Said wrappers, heterogeneous nested lists — all come from the same root: not having actually read NOTA's grammar. The skill skills/nota-design.md does not currently teach the homogeneous-list rule explicitly."
+    "vectors are of the same type - do those look of the same type to you? … you *still* dont know how to use nota, even after I point it out to you 3 times now"
+    "Third NOTA correction in this session. Pattern is clear: I keep speculating about NOTA shape instead of reading the language's actual grammar. Action: go read nota's ARCHITECTURE.md / skills.md / examples; then update skills/nota-design.md to teach what I learn (homogeneous lists, and whatever else is missing)."
+    Maximum
+    2026-05-19 19:15)
+
+(Decision
+    "skills/nota-design.md must be expanded to teach NOTA's actual grammar — not just design rules. Specifically: lists are homogeneous (one type per list); records carry the heterogeneous positional structure; what the bare-token alphabet allows; how nested structures work. Source: the nota repo's ARCHITECTURE.md and example files. Agents repeatedly make the same NOTA mistakes because the discipline-shaped skill does not carry the grammar-shaped facts."
+    "I think you need to learn how nota works and inform the nota skills better, because you *still* dont know how to use nota, even after I point it out to you 3 times now"
+    "Directive to learn NOTA grammar from the source and update the skill. Three repeated mistakes in one session is the trigger."
+    Maximum
+    2026-05-19 19:15)
+
+(Decision
+    "NOTA grammar facts that matter for intent records (learned from nota/README.md, not speculation): sequences `[…]` carry homogeneous Vec<T> elements OR heterogeneous tuples — the schema position determines which. Multi-field unnamed tuple structs are FORBIDDEN at the Rust mapping level (line 314 of nota/README.md: 'position cannot be mapped to meaning'). The discipline: lists are homogeneous in practice; heterogeneous positional structures are records `(Type fields…)`. Records require a PascalCase type head; sequences don't. Bare identifiers serve strings; bare `Path` widens the alphabet at Path-typed positions."
+    "vectors are of the same type - do those look of the same type to you? … I think you need to learn how nota works and inform the nota skills better"
+    "After actually reading nota/README.md instead of speculating. The previous 'nested heterogeneous list' shape was wrong by both grammar (multi-field tuple structs forbidden) and discipline (lists practice-homogeneous; heterogeneous → record)."
+    Maximum
+    2026-05-19 19:45)
+
+(Decision
+    "Restatement shape for intent records: each psyche statement is its own top-level record in the topic file. Same Kind + same/similar summary + new timestamp + new quote each time. No nested vectors, no superfluous wrappers. Append-only (lock-free). Dedup is a query-time operation: the agent reading intent merges records by summary similarity to present 'the current intent' on a topic. Recency = the latest matching record's timestamp."
+    "(implied by the psyche's repeated guidance: lists are homogeneous; wrappers must carry variants; properly behaving agent reads the prior before appending — but the structural solution is multiple top-level records, not a nested vector)"
+    "Resolving the restatement-handling design: drops the vector idea (NOTA doesn't cleanly carry the nested heterogeneous tuple this would need); each restatement is its own complete record. Preserves lock-free append; preserves verbatim history on the workspace surface (not just in git); recency emerges from the stream."
+    Medium
+    2026-05-19 19:45)

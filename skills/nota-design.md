@@ -125,27 +125,97 @@ example of NOTA designed well. Open it. Notice:
 
 If you're designing a new NOTA file, read it first.
 
+## Grammar facts that catch the recurring mistakes
+
+These are not design rules — they're the language's actual grammar.
+Agents (this one, repeatedly) keep proposing shapes that violate
+them. The source of truth is `nota/README.md`; restated here so
+the discipline skill carries the load.
+
+**Records vs sequences.** Two delimiter pairs with different roles:
+
+- `(Type fields…)` — a **record**. PascalCase head names the type;
+  fields are positional. Heterogeneous fields by design.
+- `[items…]` — a **sequence**. No head type. Element interpretation
+  is determined by the schema position.
+
+A sequence at a `Vec<T>`-typed position is homogeneous — every
+element is `T`. A sequence at a tuple-typed position can be
+heterogeneous at the grammar level (`["hello" 42 true]`), but in
+practice **lists are homogeneous; heterogeneous positional
+structures are records**. The reason: multi-field unnamed tuple
+structs are forbidden in NOTA's Rust mapping (per `nota/README.md`
+§"Multi-field unnamed structs are forbidden" — *"position cannot be
+mapped to meaning. nota rejects this at serialize time. Use a
+named-field struct instead."*).
+
+The discipline that follows: if you want a heterogeneous positional
+triple like `(date, time, quote)`, that's a **record** — needs a
+PascalCase type head. If the head type carries no useful variant
+distinction (Rule 1 says drop the wrapper), then the shape is
+wrong — re-think the structure rather than emit a heterogeneous
+sequence.
+
+**Bare identifiers as strings.** Where the schema expects `String`,
+a bare ident-class token serves as the value (`(Package nota-codec)`
+is the same as `(Package "nota-codec")`). PascalCase, camelCase,
+and kebab-case all qualify. The reserved literals `true`, `false`,
+`None` always mean their typed meaning, not strings.
+
+**Bare `Path`.** Where the schema expects `Path` (not `String`),
+the bare alphabet widens to include `/` and `.` for filesystem-
+shaped values. A bare `skills/operator.md` at a `Path` position
+parses; the same token at a `String` position is a typed error.
+
+**Optional values.** `Option<T>` writes the literal `None` for
+absence; presence writes the inner value with no `Some` wrapper.
+Tail-omission is decode-only compatibility, not canonical output.
+`#[nota(default = …)]` is **forbidden** (per `nota/README.md`
+§"No omittable fields") — every position in the text carries every
+position in the schema, always.
+
+**Multi-field unnamed structs are forbidden.** `struct Pair(i32, i32)`
+has no field-name mapping; NOTA rejects at serialize time. The
+single-field tuple struct (newtype) is the only allowed unnamed
+shape. For heterogeneous positional data, use a **named-field**
+struct, which emits as a typed record.
+
+**Sigils.** Two reserved at the syntax layer: `;;` for line
+comments, `#` for byte literals. Other sigils (`~ @ ! ? *`) are
+nexus extensions and reserved (syntax error in pure NOTA). `=` is
+reserved.
+
 ## Before you sketch any NOTA record
 
 Before producing any new NOTA shape — in a report, in chat, in a
-proposal, anywhere — do these three things:
+proposal, anywhere — do these four things:
 
 1. **Open `skills/skills.nota` and read three records of any category.**
    That's your template for what NOTA looks like in this workspace.
+   Also read `nota/README.md` if you haven't recently — the grammar
+   facts above are easy to misremember.
 2. **Identify the wrapping type that names the most useful distinction
    in context** (Rule 1 above). The wrapper is never a generic name
    like `Item`, `Entry`, or `Record` when the file already says so.
-3. **Sketch fields positionally — no `(key value)` pairs inside the
+   **The variant test**: if you can't name another type that could
+   go in this position, the wrapper is superfluous — drop it.
+3. **If the structure is heterogeneous positional, it's a record**
+   (`(Type field1 field2 …)`) **— not a sequence**. Heterogeneous
+   sequences (`[date time quote]`) are valid grammar at tuple-typed
+   schema positions, but practice says: lists are homogeneous, and
+   heterogeneous positional structure is a record. If the record
+   wrapper has no meaningful variant (per step 2), the structure is
+   in the wrong shape — re-think it before emitting either.
+4. **Sketch fields positionally — no `(key value)` pairs inside the
    record. No nested wrappers when every record has the same
-   inner shape.** If you find yourself wanting to label fields,
-   you're reaching for JSON/Clojure shape; that's not NOTA.
-   Positional means
-   `(Decision "summary" "quote" "context" Maximum 2026-05-19T01:23:00Z)`,
+   inner shape.** Positional means
+   `(Decision "summary" "quote" "context" Maximum 2026-05-19 01:23)`,
    not `(Decision (summary "…") (verbatim …) (certainty Maximum))`
    and not `(Decision "summary" (Verbatim "quote" "context") Maximum …)`
    if `Verbatim` is the only thing that ever appears in that slot.
-   Variants are **PascalCase** (`Maximum`, not `maximum`); timestamps
-   are bare (`2026-05-19T01:23:00Z`, not quoted).
+   Variants are **PascalCase** (`Maximum`, not `maximum`); date and
+   time are two bare positional fields (`2026-05-19 01:23`), not one
+   quoted string.
 
 Most agent NOTA mistakes are the same mistake — labeled fields. The
 fix is the same too: read the canonical example before you sketch,
