@@ -15,6 +15,24 @@ The live Gitolite premise is true on `ouranos`.
 The three repository-ledger repos were created through `gitolite-admin` and
 pushed with initial `main` branches.
 
+## Current Rename Status
+
+The redundant `Repository*` contract-domain prefixes have now been removed
+from the live contract and hook surface:
+
+- `signal-repository-ledger` commit `056da85b` exports `Request`, `Reply`,
+  `DaemonConfiguration`, `PushObservation`, `ReceiveHookNotification`,
+  `CommitObservation`, `FileChange`, `ChangedFileQuery`, and related shorter
+  names.
+- `owner-signal-repository-ledger` commit `941903ae` exports `Request`,
+  `Reply`, `Registration`, `Retirement`, and policy payloads.
+- `repository-ledger` commit `2d7aa28c` consumes those renamed contracts.
+- CriomOS commit `6b6427f3` deploys a Gitolite hook that emits the renamed
+  NOTA records.
+- A fresh push to `testing` after the deploy produced event 24 and was visible
+  through `RecentRepositoriesQuery`, `ChangedFileQuery`, and
+  `CommitMessageQuery`.
+
 ## Readiness Boundary
 
 This slice is locally usable as a deployed development witness, not finished as
@@ -31,7 +49,7 @@ What is ready:
 - The older spool file remains only as a fallback handoff if the CLI submission
   fails.
 - Fresh pushes to the `testing` repository are visible through
-  `RepositoryEventQuery`.
+  `EventQuery`.
 
 What is not yet ready:
 
@@ -73,18 +91,19 @@ Latest commits:
 
 - `73f7f517 signal-repository-ledger: add daemon configuration contract`
 - `eb55974f signal-repository-ledger: add nix flake checks`
+- `056da85b signal-repository-ledger: remove redundant repository prefixes`
 
 Surface:
 
-- `RepositoryReceiveHookNotification` matches the current CriomOS Gitolite
+- `ReceiveHookNotification` matches the current CriomOS Gitolite
   post-receive spool record.
 - Ordinary `signal_channel!` variants:
-  - `Assert RepositoryReceiveHookNotification`
-  - `Match RepositoryEventQuery`
-  - `Match RepositoryCatalogQuery`
+  - `Assert ReceiveHookNotification`
+  - `Match EventQuery`
+  - `Match CatalogQuery`
 - Replies for recorded events, event listings, catalog listings, and typed
   unimplemented responses.
-- `RepositoryLedgerDaemonConfiguration`, the typed daemon startup record for
+- `DaemonConfiguration`, the typed daemon startup record for
   ordinary socket, owner socket, store path, and spool directory.
 
 Verification:
@@ -109,13 +128,14 @@ Latest commits:
 - `2e8d37fa owner-signal-repository-ledger: reuse ledger path contract`
 - `c5f72586 owner-signal-repository-ledger: use named signal dependency`
 - `f6d28873 owner-signal-repository-ledger: add nix flake checks`
+- `941903ae owner-signal-repository-ledger: remove redundant repository prefixes`
 
 Surface:
 
 - Owner-only repository registration and retirement.
 - Spool directory policy.
 - Future mirror policy records.
-- Reuses the ordinary contract's `RepositoryLedgerPath` so the daemon
+- Reuses the ordinary contract's `FilesystemPath` so the daemon
   configuration and owner policy use one path vocabulary.
 
 Verification:
@@ -139,14 +159,15 @@ Latest commits:
 
 - `ff89f6fd repository-ledger: add live daemon and cli slice`
 - `419367e7 repository-ledger: add flake package and named contract refs`
+- `2d7aa28c repository-ledger: use renamed ledger contracts`
 
 Surface:
 
-- `RepositoryLedgerStore` opens a `sema-engine` database.
-- Hook notifications commit as typed `StoredRepositoryEvent` records.
+- `Store` opens a `sema-engine` database.
+- Hook notifications commit as typed `StoredEvent` records.
 - Repository registrations commit as typed catalog records.
 - `repository-ledger-daemon` accepts one typed
-  `RepositoryLedgerDaemonConfiguration` argument, binds ordinary and owner
+  `DaemonConfiguration` argument, binds ordinary and owner
   sockets, drains the current Gitolite spool projection, and answers Signal
   request frames.
 - `repository-ledger` is a thin ordinary-contract client: it accepts one NOTA
@@ -166,14 +187,14 @@ Passed.
 Additional live binary smoke in this pass:
 
 ```sh
-repository-ledger-daemon '(RepositoryLedgerDaemonConfiguration ...)'
-REPOSITORY_LEDGER_SOCKET_PATH=<ordinary-socket> repository-ledger '(RepositoryCatalogQuery)'
+repository-ledger-daemon '(DaemonConfiguration ...)'
+REPOSITORY_LEDGER_SOCKET_PATH=<ordinary-socket> repository-ledger '(CatalogQuery)'
 ```
 
 Observed reply:
 
 ```nota
-(RepositoryCatalogListing [])
+(CatalogListing [])
 ```
 
 ## Workspace Registry Update
@@ -212,15 +233,25 @@ That proves Gitolite accepted real pushes for all three new repos and can serve
 them back to Nix as named branch references.
 
 After CriomOS commit `49d499e4`, the deployed post-receive hook submits the
-canonical `RepositoryReceiveHookNotification` through the `repository-ledger`
+canonical `ReceiveHookNotification` through the `repository-ledger`
 CLI before falling back to spool. A fresh push to `testing` produced:
 
 - event 15: `testing` moved from `04ee09ccd97a` to `60accb6ba044`, with
   `daemon_socket_present true`.
 
-The event was visible through `RepositoryEventQuery` immediately after the push.
+The event was visible through `EventQuery` immediately after the push.
 The daemon's fallback spool loop runs every two seconds, so this is the runtime
 witness for the direct hook -> CLI -> daemon path.
+
+After the rename pass and CriomOS commit `6b6427f3`, another fresh push to
+`testing` produced:
+
+- event 24: `testing` moved from `b28db60d3ee1` to `d917e4ea8d82`, with
+  `daemon_socket_present true`.
+
+That is the live witness for the renamed hook record surface:
+`PushObservation`, `ReceiveHookNotification`, `CommitObservation`, and
+`FileChange`.
 
 ## Original Spool Boundary Gap
 
@@ -291,15 +322,15 @@ Runtime witness after deploying locally on `ouranos`:
 - `/run/repository-ledger/repository-ledger-owner.sock` exists as
   `srw------- repository-ledger:nixdev`; the group name is present but the mode
   keeps the owner socket daemon-only.
-- `repository-ledger '(RepositoryCatalogQuery)'` returned
-  `(RepositoryCatalogListing [])`.
+- `repository-ledger '(CatalogQuery)'` returned
+  `(CatalogListing [])`.
 - The daemon drained the existing Gitolite spool into typed Sema state.
 - A fresh push to `testing` after the daemon was deployed committed event 11.
 - After the runtime directory was opened to `0755`, a second fresh push to
   `testing` committed event 12 with `daemon_socket_present true`.
 - After the hook was changed to call the ledger CLI first, another fresh push to
   `testing` committed event 15 immediately through the ordinary daemon socket.
-- After the hook was enriched to send `RepositoryPushObservation`, a fresh push
+- After the hook was enriched to send `PushObservation`, a fresh push
   to `testing` committed event 18 and the new file/commit-message query
   surfaces returned the changed file and commit message for that push.
 
@@ -333,29 +364,29 @@ The direct hook now submits a typed push observation. In pseudo-NOTA, the entry
 shape is:
 
 ```nota
-(RepositoryPushObservation
-  (RepositoryReceiveHookNotification
+(PushObservation
+  (ReceiveHookNotification
     "testing"
     "gitolite-admin"
-    "20260519T142920Z"
+    "20260519T145838Z"
     true
     [(RefUpdate "old-commit" "new-commit" "refs/heads/main")])
-  [(RepositoryCommitObservation
+  [(CommitObservation
       "new-commit"
       "refs/heads/main"
-      "2026-05-19T16:29:10+02:00"
-      "verify repository ledger query capture"
-      [(RepositoryFileChange "A" "ledger-query-live-witness.txt" None)])])
+      "2026-05-19T16:58:37+02:00"
+      "verify ledger rename query capture"
+      [(FileChange "A" "ledger-query-rename-witness.txt" None)])])
 ```
 
 The daemon stores this as:
 
-- a push event row keyed by `RepositoryEventSequence`;
+- a push event row keyed by `EventSequence`;
 - one commit-observation row per pushed commit, carrying repository name,
   received-at timestamp, event sequence, commit object id, ref name, commit
   timestamp, full commit message, and changed-file records.
 
-The fallback spool shape remains the older `RepositoryReceiveHookNotification`.
+The fallback spool shape remains the older `ReceiveHookNotification`.
 Fallback records keep the push event but do not carry commit-message or
 changed-file observations.
 
@@ -364,57 +395,57 @@ changed-file observations.
 Recently edited repositories:
 
 ```nota
-(RepositoryRecentRepositoriesQuery None 5)
+(RecentRepositoriesQuery None 5)
 ```
 
-Live reply after the enriched hook deploy included:
+Live reply after the rename deploy included:
 
 ```nota
-(RepositoryRecentRepositoriesListing
-  [(RepositoryRecentRepository testing "20260519T142920Z" 18 5)
-   (RepositoryRecentRepository repository-ledger "20260519T142650Z" 17 4)
-   (RepositoryRecentRepository signal-repository-ledger "20260519T142503Z" 16 4)])
+(RecentRepositoriesListing
+  [(RecentRepository testing "20260519T145838Z" 24 6)
+   (RecentRepository repository-ledger "20260519T145637Z" 23 6)
+   (RecentRepository owner-signal-repository-ledger "20260519T145513Z" 22 5)])
 ```
 
 Changed files by repository, time window, and path substring:
 
 ```nota
-(RepositoryChangedFileQuery testing None None ledger-query 10)
+(ChangedFileQuery testing None None rename 10)
 ```
 
 Live reply:
 
 ```nota
-(RepositoryChangedFileListing
-  [(RepositoryChangedFile
+(ChangedFileListing
+  [(ChangedFile
       testing
-      "20260519T142920Z"
-      18
-      b28db60d3ee1e7ae3adc2d1538e048356ef1f56d
+      "20260519T145838Z"
+      24
+      d917e4ea8d8272b457efcab5242441bc788ac354
       "refs/heads/main"
       A
-      "ledger-query-live-witness.txt"
+      "ledger-query-rename-witness.txt"
       None)])
 ```
 
 Commit-message substring search:
 
 ```nota
-(RepositoryCommitMessageQuery testing None None "query capture" 10)
+(CommitMessageQuery testing None None "rename query" 10)
 ```
 
 Live reply:
 
 ```nota
-(RepositoryCommitListing
-  [(RepositoryCommit
+(CommitListing
+  [(Commit
       testing
-      "20260519T142920Z"
-      18
-      b28db60d3ee1e7ae3adc2d1538e048356ef1f56d
+      "20260519T145838Z"
+      24
+      d917e4ea8d8272b457efcab5242441bc788ac354
       "refs/heads/main"
-      "2026-05-19T16:29:10+02:00"
-      "verify repository ledger query capture")])
+      "2026-05-19T16:58:37+02:00"
+      "verify ledger rename query capture")])
 ```
 
 More useful query directions to consider next:

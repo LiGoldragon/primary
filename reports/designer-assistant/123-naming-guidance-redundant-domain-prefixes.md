@@ -46,10 +46,10 @@ Updated `skills/contract-repo.md`:
 
 ## Consequence For Repository Ledger
 
-The current repository-ledger contract names are wrong under the
-tightened rule. The next implementation pass should rename the
-ordinary contract payloads and replies before more components depend
-on them.
+The repository-ledger rename pass has now landed across the contract
+repos, runtime component, CriomOS hook, and deployed `ouranos` service.
+The old `Repository*` contract-domain prefixes are no longer the live
+surface.
 
 Preferred shape:
 
@@ -82,3 +82,19 @@ are exported from the crate, but even there the better long-term
 shape is likely `Request`, `Reply`, `Frame`, and `RequestBuilder`
 inside the crate, with aliases only if downstream ergonomics require
 them.
+
+Verification from the rename pass:
+
+- `signal-repository-ledger` exports `Ledger` channel aliases as
+  `Frame`, `FrameBody`, `ChannelRequest`, `ChannelReply`, and
+  `RequestBuilder`, with domain payloads such as `PushObservation`
+  and `ChangedFileQuery`.
+- `owner-signal-repository-ledger` exports `Owner` channel aliases
+  with `Registration`, `Retirement`, and policy payloads.
+- `repository-ledger` builds and passes `cargo test` and
+  `nix flake check --option substituters ''`.
+- CriomOS now emits `PushObservation`, `ReceiveHookNotification`,
+  `CommitObservation`, and `FileChange` from the Gitolite hook.
+- A fresh push to `testing` produced ledger event 24 and was visible
+  through `RecentRepositoriesQuery`, `ChangedFileQuery`, and
+  `CommitMessageQuery`.
