@@ -5,3 +5,10 @@
     "Correction after repository-ledger query records were added with names like RepositoryPushObservation and RepositoryChangedFileQuery. Psyche wants naming guidance strengthened if it does not already forbid redundant domain prefixes."
     Maximum
     2026-05-19T14:40:38Z)
+
+(Decision
+    "Rename the repository-ledger contract and implementation away from redundant `Repository*` prefixes where the repository-ledger crate, channel, or component already supplies that context. Apply the naming rule immediately, not just as future guidance."
+    "rename everything"
+    "Follow-up to the redundant-domain-prefix correction. The psyche wants the already-landed repository-ledger names fixed now, not left as documented debt."
+    Maximum
+    2026-05-19T14:45:50Z)

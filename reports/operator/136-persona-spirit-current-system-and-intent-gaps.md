@@ -28,21 +28,21 @@ typed operation kind
 ```
 
 This is already useful as a grammar/type witness. An agent can now
-ask the compiler-owned contract whether its `IntentEntry` shape is
+ask the compiler-owned contract whether its `Entry` shape is
 valid NOTA:
 
 ```sh
-persona-spirit '(IntentEntry workspace Decision "summary only" "current implementation context" Maximum [(IntentVerbatim "2026-05-19T13:08:11Z" "first statement") (IntentVerbatim "2026-05-19T13:12:00Z" "restated statement")])'
+persona-spirit '(Entry workspace Decision "summary only" "current implementation context" Maximum [(Verbatim "2026-05-19T13:08:11Z" "first statement") (Verbatim "2026-05-19T13:12:00Z" "restated statement")])'
 ```
 
 The current reply is honest:
 
 ```nota
-(SpiritRequestUnimplemented IntentEntry NotBuiltYet)
+(SpiritRequestUnimplemented Entry NotBuiltYet)
 ```
 
 The important gap is not spirit-to-mind ownership. The current gap is
-the storage/query meaning of a typed intent entry.
+the storage/query meaning of a typed entry.
 
 ## 1 · What Exists Now
 
@@ -53,18 +53,18 @@ Path: `/git/github.com/LiGoldragon/signal-persona-spirit`
 It owns the ordinary peer-callable contract:
 
 ```rust
-pub struct IntentVerbatim {
+pub struct Verbatim {
     pub timestamp: IntentTimestamp,
     pub quote: IntentQuote,
 }
 
-pub struct IntentEntry {
+pub struct Entry {
     pub topic: IntentTopic,
     pub kind: IntentKind,
     pub summary: IntentSummary,
     pub context: IntentContext,
     pub certainty: IntentCertainty,
-    pub verbatim: Vec<IntentVerbatim>,
+    pub verbatim: Vec<Verbatim>,
 }
 ```
 
@@ -75,7 +75,7 @@ signal_channel! {
     channel Spirit {
         request SpiritRequest {
             Assert PsycheStatement(PsycheStatement),
-            Assert IntentEntry(IntentEntry),
+            Assert Entry(Entry),
             Match PsycheStateObservation(PsycheStateObservation),
             Match IntentRecordObservation(IntentRecordObservation),
             Match ClarificationQuestionPending(ClarificationQuestionPending),
@@ -93,10 +93,10 @@ Tests prove:
 
 - rkyv frame round trips;
 - NOTA text round trips;
-- `IntentEntry` is `Assert`;
+- `Entry` is `Assert`;
 - stream relations are still generated;
-- canonical examples include an `IntentEntry` with two
-  `IntentVerbatim` records.
+- canonical examples include an `Entry` with two
+  `Verbatim` records.
 
 ### `persona-spirit`
 
@@ -123,7 +123,7 @@ Tests prove:
 - exactly one CLI argument;
 - flag-style argument rejection;
 - valid `PsycheStatement` type-checks;
-- valid `IntentEntry` with two verbatim references type-checks;
+- valid `Entry` with two verbatim references type-checks;
 - unknown record shapes fail before any runtime behavior.
 
 ## 2 · How I See The System
@@ -166,7 +166,7 @@ flowchart TB
 The storage side wants to be explicit:
 
 ```text
-IntentEntry
+Entry
   topic
   kind
   summary
@@ -198,18 +198,18 @@ IntentRecordObservation
 
 ## 3 · What I Do Not See Clearly
 
-### Gap 1 — What is an `IntentEntry`?
+### Gap 1 — What is an `Entry`?
 
 There are two plausible meanings:
 
 ```text
 Meaning A: aggregate record
-  IntentEntry is the whole current intent object.
+  Entry is the whole current intent object.
   Restating intent means submitting the same object again with one
-  more IntentVerbatim in its vector.
+  more Verbatim in its vector.
 
 Meaning B: append event
-  IntentEntry is one assertion event.
+  Entry is one assertion event.
   Spirit decides whether it creates a new canonical intent or appends
   this quote to an existing one.
 ```
@@ -233,14 +233,14 @@ manual clarification      spirit asks psyche or review agent
 ```
 
 The current contract has `IntentRecordIdentifier`, but
-`IntentEntry` does not carry one. That was intentional caution: agent-
+`Entry` does not carry one. That was intentional caution: agent-
 minted identifiers are often wrong, and spirit may need to mint them.
 Before durable storage lands, this must be settled enough to avoid
 baking identity into the wrong field.
 
 ### Gap 3 — Who synthesizes summary and context?
 
-The current CLI accepts an already typed `IntentEntry`, meaning the
+The current CLI accepts an already typed `Entry`, meaning the
 agent wrote:
 
 ```text
@@ -258,12 +258,12 @@ PsycheStatement
   raw psyche utterance
   spirit classifier creates typed intent
 
-IntentEntry
+Entry
   agent supplies already typed intent
   spirit validates and stores
 ```
 
-The unclear part is authority: is an agent-supplied `IntentEntry`
+The unclear part is authority: is an agent-supplied `Entry`
 authoritative enough to store directly, or should spirit always treat
 it as a proposal needing classifier/review?
 
@@ -317,9 +317,9 @@ shape is:
 
 ```text
 Do:
-  - implement a daemon-local store for IntentEntry;
+  - implement a daemon-local store for Entry;
   - let spirit mint IntentRecordIdentifier;
-  - store every submitted IntentEntry as its own event first;
+  - store every submitted Entry as its own event first;
   - expose summary-first queries by topic;
   - do not merge restatements automatically yet.
 
@@ -339,7 +339,7 @@ restatement semantics to become beautiful instead of rushed.
 These are the questions where psyche intent would materially change
 the next implementation, not implementation-order bureaucracy.
 
-1. **Is `IntentEntry` an aggregate record or an assertion event?**
+1. **Is `Entry` an aggregate record or an assertion event?**
    Should a restatement arrive as a full record with the whole
    `verbatim` vector, or as a new assertion that spirit attaches to
    an existing intent?
@@ -349,7 +349,7 @@ the next implementation, not implementation-order bureaucracy.
    spirit always mint identity after deciding whether the entry is new
    or a restatement?
 
-3. **How authoritative is an agent-supplied typed `IntentEntry`?**
+3. **How authoritative is an agent-supplied typed `Entry`?**
    Does spirit store it directly because the agent is the current LLM
    mediation layer, or does spirit treat it as a proposal and run its
    own classifier/review actor before committing?
