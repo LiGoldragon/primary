@@ -83,3 +83,10 @@ We need to forbid this type of report name. So find out what the report is about
     "Adding a safety constraint to the rename/amalgamation protocol. The git-history-holds-lineage assumption only works when content has actually landed in git."
     Maximum
     2026-05-19T17:00:00Z)
+
+(Constraint
+    "Report-naming discipline must hit disk as a skill — not just in the intent log. Intent records the psyche's statements; rules that govern agent behavior live in skills/. Report naming (filename convention, -v2/v3 suffix for iteration, supersession via write-new-delete-old-same-commit, commit-before-delete) is the basic naming discipline every agent needs, separate from the larger skills/reporting.md (chat-vs-report, inline-summary, visuals, soft caps)."
+    "by enforced, I meant like, is it in the agent guideline files? … if it's just in the intent, then the intent hasn't hit the disk. … translate that to, it's pretty basic stuff. So we need a reporting instruction that isn't big that all agents can read, where they don't necessarily need to make diagrams and things like that. They need to understand how the naming works, the report naming. So this isn't like advanced reporting skill. This is very basic naming skill, so it needs to go somewhere, hit the disk outside of the intent."
+    "Adding the disk-not-just-intent enforcement principle for behavior-governing rules, and the basic-naming-as-its-own-skill split (separate from advanced reporting)."
+    Maximum
+    2026-05-19T17:30:00Z)
