@@ -25,6 +25,8 @@ triad:
     role record.
   - Added local repository-index refresh from a configured Git index
     root into workspace `repos/` symlinks.
+  - Added compatibility lock-file projection from daemon-owned typed
+    claims into `orchestrate/<role>.lock`.
   - Implemented daemon ordinary/owner Unix socket listeners that own
     the `persona-orchestrate.redb` store and dispatch Signal frames.
   - Corrected the initial direct-store CLI mistake: the CLI binary
@@ -41,7 +43,7 @@ triad:
   - `main`: `d9210f9a contract: fix owner orchestrate formatting gate`
   - bookmark: `persona-orchestrate-mvp`
 - `persona-orchestrate`
-  - `main`: `893fa60f orchestrate: implement daemon socket runtime`
+  - `main`: `c159d955 orchestrate: isolate ledger tests from workspace locks`
   - bookmark: `persona-orchestrate-mvp`
 
 ## Verification
@@ -79,13 +81,14 @@ witnesses:
 - The CLI can create a dynamic role through the daemon owner socket
   and then observe it through the daemon ordinary socket.
 - The daemon rejects non-Signal traffic on the ordinary socket.
+- Accepted role creation creates an empty lock file, and accepted
+  claims project to the lock-file text shape the old helper used.
 - The CLI boundary is now guarded by a source-scan witness: it must
   not import the service, tables, store location, sema-engine, or the
   redb path.
 
 ## Gaps
 
-- There is no lock-file projection back to `orchestrate/*.lock`.
 - Report-repository creation is local-directory creation plus a
   report-lane symlink. It does not yet create a GitHub repository or
   clone through `ghq`.
@@ -113,6 +116,6 @@ witnesses:
 4. When `RetireRoleOrder` lands for real, should it preserve report
    lanes by default and only mark the role inactive, or should it
    remove links and prevent future claims?
-5. The next slice should wire compatibility lock-file projection and
-   a supervised workspace launch path so this can replace
-   `tools/orchestrate` in normal agent flow.
+5. The next slice should wire a supervised workspace launch path and
+   cutover procedure so this can replace `tools/orchestrate` in normal
+   agent flow.
