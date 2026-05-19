@@ -164,3 +164,10 @@
     "Resolving the two design smells flagged in operator report 138 §'What remains' #4. The macro migration succeeded; these cleanups bring the kernel types into alignment with the new direction."
     Maximum
     2026-05-19T20:50:00Z)
+
+(Correction
+    "The signal-repository-ledger pilot should lift repeated reply listing variants behind a single QueryResult reply carrying a QueryResult sum, mirroring the request-side Query(Query) shape."
+    "One thing the pilot didn't carry across, worth flagging: the reply side still has the repeated-suffix smell. The request side lifted cleanly … replies stayed flat with five *Listing siblings … By the repeated-category-words rule, the five *Listing siblings want lifting the same way *Query was lifted on the request side … Same shape both sides — Query operation root with Query enum payload; QueryResult reply variant with QueryResult enum payload. Symmetric."
+    "Feedback on the signal-repository-ledger pilot after migrating request operations to signal-frame contract-local verbs."
+    Maximum
+    2026-05-20T00:07:55+02:00)
