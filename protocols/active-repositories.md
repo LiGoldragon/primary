@@ -31,8 +31,9 @@ stack.
 | `persona-terminal` | `/git/github.com/LiGoldragon/persona-terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. Terminal-brand mux helpers are retired. |
 | `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Low-level daemon-owned PTY/transcript cell primitive consumed by `persona-terminal`. |
 | `sema` | `/git/github.com/LiGoldragon/sema` | **Today's** typed storage kernel (redb + rkyv + schema guard). Not a daemon, not shared storage, and not the full database engine. Distinct from the **eventual** `Sema` — the universal medium for meaning (self-hosting computational substrate, fully-typed human-language representation, universal interlingua). Per `ESSENCE.md` §"Today and eventually". |
-| `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema` and `signal-core`: registered record families, Signal-verb execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not NOTA, and not Persona-specific. First real consumer is `persona-mind`; Criome follows. |
-| `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. |
+| `signal-sema` | `/git/github.com/LiGoldragon/signal-sema` | Sema operation vocabulary: `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, and `Validate`. Public component contracts lower into this layer; they do not expose these words as universal request roots. |
+| `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema`, `signal-sema`, and a small transitional `signal-core` utility seam: registered record families, Sema operation execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not NOTA, and not Persona-specific. First real consumer is `persona-mind`; Criome follows. |
+| `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. It is being redirected away from universal request verbs; public contracts own contract-local operation roots. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Persona-wide Signal vocabulary. |
 | `signal-persona-auth` | `/git/github.com/LiGoldragon/signal-persona-auth` | Persona origin-context vocabulary: engine/route/channel ids, component names, connection classes, message origins, and ingress context. Not an authentication library. |
@@ -171,7 +172,11 @@ nix's build infrastructure).
   names". This is a scope discipline, not a quality one — "today's
   piece" is never a license to cut corners.
 - Wire: Signal is the typed binary communication fabric. Component
-  contracts live in dedicated `signal-*` repos.
+  contracts live in dedicated `signal-*` repos and expose
+  contract-local operation roots. The six database words
+  (`Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate`)
+  belong to `signal-sema` / `sema-engine` execution, not to the
+  public contract spine.
 - Text: NOTA is the only text syntax. Nexus is typed semantic content
   written in NOTA syntax, not a second parser or alternate text
   format.
