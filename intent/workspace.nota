@@ -136,3 +136,10 @@
     "Clarifying the retroactive intent-recording rule during an intent-protocol reread: compacted summaries are not treated as direct psyche evidence."
     Maximum
     2026-05-19T16:35:00Z)
+
+(Correction
+    "Intent recording must use the actual lock-free append mechanism, not apply_patch/Edit-tool rewriting. The append method is part of the witness: new records are written with shell append (`>>`) and no orchestration claim; only supersession, format changes, and bulk rewrites use locked rewrite tools."
+    "you you did that wrong. skills/intent-log.md says:\nNo orchestrate claim, no Edit-tool sequence, no coordination —\nconcurrent agents append to the same topic file without conflict.\nThe guarantee comes from POSIX `O_APPEND` semantics (which `>>`\nsets): the kernel atomically positions at end-of-file and writes,\nso two concurrent appends sequence cleanly without mangling, as\nlong as each write is **under PIPE_BUF** (4096 bytes on Linux).\nA typical intent record is well under 4KB — single records of\n1–1.5KB are typical.\n\nWhen a lock IS needed:\n\n- **Supersession edits** (rewriting or removing prior records per\n  `skills/intent-maintenance.md`) — not append-only; needs a lock.\n- **Format changes** to the file itself (rare).\n- **Bulk operations** that rewrite a topic file."
+    "Correcting my previous intent entry: I used apply_patch instead of the required shell append, so the content landed but the recording mechanism failed the intent-log protocol. This entry was appended with `cat >> intent/workspace.nota`."
+    Maximum
+    2026-05-19T16:45:00Z)
