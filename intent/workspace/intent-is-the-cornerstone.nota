@@ -1,0 +1,30 @@
+[
+  (Principle
+    "Intent is the cornerstone of all agent activity. If any agent needs to know what to do, they fall back on intent. The intent protocol will soon become the almost exclusive form of psyche-agent interaction; the agent's only role is to clarify intent and capture intent. Action follows mechanically from intent that is clear enough to create signal."
+    (Verbatim
+      "the intent protocol will soon become the almost exclusive form of interaction between the psyche and agents. The agent's only role will be to clarify intent and capture intent. And everything else will happen mechanically from the intent. So even something like, do we intend this to become architecture? Is the agent asking for clarification on intent? Once the intent is stated, then the actions just happen. Because whatever intent is clear enough to create enough signal to warrant action becomes automatic action. So intent is like the cornerstone of all agent activity. If any agent needs to know what to do, then they fall back on intent."
+      "The full framing of the intent-driven workspace: agents clarify and capture intent; everything else is mechanical execution of stated intent. This statement is the keystone for everything in ESSENCE and the intent layer.")
+    maximum
+    "2026-05-19T03:15:00Z")
+  (Principle
+    "ESSENCE is the gold of the gold. Only the most universal, maximum-certainty psyche intent — statements made with such force that they could stand as the founding rule of a whole way of working — earn placement in ESSENCE. Most psyche intent lives in the log and per-repo INTENT.md; ESSENCE holds the supreme."
+    (Verbatim
+      "essence is actually 100% the best. It's actually the essence of intent. It's like the best of all intent and the most universal and best of all intent. … Anything that is in essence is maximum intent is like purely 100% certain and explicit, extremely explicit. It's like the best of all intent."
+      "Setting the bar for what earns ESSENCE placement. Drives the drastic ESSENCE cut from 925 lines to the minimum.")
+    maximum
+    "2026-05-19T03:15:00Z")
+  (Principle
+    "When a psyche statement is beautifully stated — the kind of line that could sound like Nietzsche or Tao Te Ching, a sentence carrying force and universality — capture it as gold. The most universal of these promote to ESSENCE; the project-specific ones promote to per-repo ESSENCE."
+    (Verbatim
+      "Whenever there's a good line like that, use it like if it sounds like it could be written by Nietzsche or you know straight out of the Tao Te Ching or something like some beautifully stated sentence … These are the like gold that should go in top level. Well, some of what I just said actually should go in the essence."
+      "Recognition rule for ESSENCE-worthy statements: rhetorical force + universality + maximum certainty.")
+    maximum
+    "2026-05-19T03:15:00Z")
+  (Decision
+    "Each repository may eventually have an ESSENCE file capturing the best of that repository's intent. An agent encountering a psyche statement of sufficient force can ask: should we promote this intent into essence (workspace or repo-level)?"
+    (Verbatim
+      "even each repository could have an essence file. Like the best of all of that particular repository's intent. So whenever an agent feels like something has been coming back so strongly or is stated with such force that it could live in the essence of that repository, then the agent can ask, should we promote this intent into essence?"
+      "Extending the intent layer with per-repo essence as a fourth surface. Per-repo ESSENCE is the gold-of-the-gold for one project, mirroring the workspace ESSENCE for the whole.")
+    medium
+    "2026-05-19T03:15:00Z")
+]

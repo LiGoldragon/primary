@@ -4,19 +4,23 @@ The compact contract. Every agent reads this on every session.
 
 ## Required reading, in order
 
-1. **`ESSENCE.md`** — workspace intent. Upstream of every rule below.
-2. **`repos/lore/AGENTS.md`** — cross-workspace agent contract.
-3. **`skills/skills.nota`** — typed skill index. Query it whenever a
+1. **`ESSENCE.md`** — workspace essence. Upstream of every rule below.
+2. **`ONBOARDING.md`** — broader workspace context (read once when
+   beginning a session/role; designers + general agents).
+3. **`repos/lore/AGENTS.md`** — cross-workspace agent contract.
+4. **`skills/skills.nota`** — typed skill index. Query it whenever a
    topic comes up; don't scan `skills/`.
-4. **`orchestrate/AGENTS.md`** — how roles share this workspace.
-5. **Your main role's `skills/<role>.md`** — required-reading list for
+5. **`orchestrate/AGENTS.md`** — how roles share this workspace.
+6. **Your main role's `skills/<role>.md`** — required-reading list for
    the role you're in. Lanes share their main role's skill file.
-6. **The repo's `AGENTS.md` + `skills.md`** when editing inside a repo
+7. **The repo's `AGENTS.md` + `skills.md`** when editing inside a repo
    under `repos/`.
 
-Bulkier discipline (rationale, longer explanations, topic-specific
-rules) lives in `AGENTS-extended.md` — consult when the topic comes
-up, not every session.
+Read `ONBOARDING.md` once when beginning a new session or role —
+it holds the broader context (file map, longer-form discipline,
+rationale) that fresh agents need once. Specialised agents working
+in a focused scope can skip re-reading; designers and
+general-purpose agents read it on starting.
 
 ## Reports go in files; chat is for the user
 
@@ -90,10 +94,11 @@ Each agent knows its lane before claiming or editing. Coordination:
 
 ## Where to look for more
 
-- Bulkier discipline (Nix-store rules, two-deploy-stack discipline,
-  worktree flow, BEADS, harness-memory rationale, dynamic-role
-  escalation): `AGENTS-extended.md`.
-- Where each kind of file lives: `AGENTS-extended.md` §"Where things
+- Broader context, file map, longer-form discipline (Nix-store
+  rules, two-deploy-stack discipline, worktree flow, BEADS,
+  harness-memory rationale, dynamic-role escalation, intent layer):
+  `ONBOARDING.md`.
+- Where each kind of file lives: `ONBOARDING.md` §"Where things
   live".
 - Repo map for architecture sweeps: `protocols/active-repositories.md`.
 - Standing goals: `GOALS.md`.

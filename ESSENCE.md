@@ -1,66 +1,72 @@
 # ESSENCE
 
-*The intent that shapes the work. Upstream of every other document.
-Where a downstream rule conflicts with this, this wins.*
+*The most universal, maximum-certainty psyche intent. Each statement
+here was stated by the psyche with force. Upstream of every other
+document; when a downstream rule conflicts with this, this wins.*
 
 > Read this before any other document.
 
 ---
 
-## Intent is primordial; psyche is the source
+## Intent is the cornerstone
 
-Intent drives the system. Every decision an agent makes serves
-some intent; intent that doesn't trace back to the psyche is
-agent invention.
+Intent is primordial. **If any agent needs to know what to do, they
+fall back on intent.** Whatever intent is clear enough to create
+enough signal to warrant action becomes action; the agent's only
+role is to clarify intent and capture intent.
 
-**The psyche is the human author.** Psyche prompts arrive in
-natural language. Persona messages between agents (NOTA-formatted)
-are not psyche. Documents written by agents are not psyche.
-Intent files are psyche-derived because their entries record
-psyche statements directly. **Only the psyche is the source of
-new intent.**
+**The psyche is the human.** Psyche prompts arrive in natural
+language. NOTA-formatted persona messages between agents are not
+psyche; agent-written files are not psyche. Only the psyche is the
+source of new intent.
 
 When intent on a question is unclear, absent, or contradicted,
-**ask the psyche** for clarification before deciding. Don't
-infer; don't compose new intent from existing intent; ask.
-Surfacing the question is the discipline working; inferring is
-the discipline breaking.
+**ask the psyche** for clarification before deciding. Don't infer;
+don't compose new intent from existing intent; ask. Inferring is
+the discipline breaking; asking is the discipline working.
 
 The **intent layer** has higher authority than every other
 workspace surface:
 
-- `intent/<topic>/<file>.nota` — the workspace-level log of
-  psyche statements (`skills/intent-log.md`).
-- `<repo>/INTENT.md` — per-repo synthesis of psyche intent for
-  that project (`skills/repo-intent.md`).
-- This file (`ESSENCE.md`) — the workspace-level intent.
+- `intent/<topic>/<file>.nota` — the workspace log of psyche
+  statements (`skills/intent-log.md`).
+- `<repo>/INTENT.md` — per-repo synthesis of psyche intent
+  (`skills/repo-intent.md`).
+- This file — the workspace-level essence: only the most universal
+  psyche intent expressed at its purest.
 
-Agent-written surfaces (ARCH, reports, skills not in the intent
+Agent-written surfaces (ARCH, reports, skills outside the intent
 layer) have lower precedence. When two surfaces disagree, the
-intent layer wins. When the intent layer is silent on a
-question, ask the psyche (`skills/intent-clarification.md`).
+intent layer wins. When the intent layer is silent, ask
+(`skills/intent-clarification.md`).
+
+A statement earns its place in essence when the psyche stated it
+with such force, clarity, and universality that it could stand on
+its own as the founding rule of a whole way of working. The bar is
+high. Most psyche intent lives in the log and per-repo `INTENT.md`;
+the essence is the gold of the gold.
 
 ---
 
-## Intent
+## What I am building
 
-The point of the work is to build software that is **eventually
-impossible to improve** — in a bounded domain, the right shape,
-chosen carefully, observed cleanly.
+Software that is **eventually impossible to improve** — in a
+bounded domain, the right shape, chosen carefully, observed
+cleanly.
 
-What I hold, in priority order:
+In priority order, when two conflict the earlier wins:
 
-1. **Clarity** — the design reads cleanly to a careful reader. The
-   structure of the system is the documentation of itself.
-2. **Correctness** — every typed boundary names exactly what flows
-   through it; nothing accidental survives the type system.
-3. **Introspection** — the system reveals itself to those building
-   it. State is visible; derived values do not hide; what's
-   happening at any moment is observable from outside.
+1. **Clarity** — the design reads cleanly to a careful reader.
+   The structure of the system is the documentation of itself.
+2. **Correctness** — every typed boundary names exactly what
+   flows through it; nothing accidental survives the type system.
+3. **Introspection** — the system reveals itself to those
+   building it. State is visible; derived values do not hide;
+   what's happening at any moment is observable from outside.
 4. **Beauty** — beauty in the operative sense: not pretty, but
    right. Ugliness is evidence the underlying problem is unsolved.
 
-When two conflict, the earlier wins.
+---
 
 ## What I am not optimising for
 
@@ -77,44 +83,6 @@ long it will take*.
 
 ---
 
-## Backward compatibility is not a constraint
-
-**Break the system if it makes it more beautiful.** That is the
-motto. Not carelessness — refusal to compromise design to preserve
-a wrong shape. The cost of a wrong shape compounds; the cost of a
-clean break is paid once.
-
-When something must keep running while a redesign lands, the
-running copy stays at a pinned branch or a separate repo. The
-redesigned version breaks freely. Old callers either upgrade or
-stay pinned to the old branch. **Two clean shapes are better than
-one transitional shape.**
-
-A *transitional shape* compromises both the old and the new to
-avoid breaking either. It is the wrong shape for both, and the
-wrong shape, period. The cost looks small per step and compounds
-every release.
-
-**No technical-debt homage.** A design does not bend to make peace
-with debt the system has already accumulated. The debt is paid by
-deleting, not by carrying it forward in a shim. The new shape is
-what is right *now* — not what is reachable from the current state
-by small steps.
-
-The only place backward compatibility is a real constraint:
-**explicitly declared** boundaries — published APIs under semantic
-versioning, wire contracts pinned by version, schemas externally
-consumed by systems we don't control. Inside the workspace, before
-such a boundary is declared, **the system is being shaped, not
-preserved.**
-
-When a rule that says "preserve X for compatibility" appears in a
-design discussion, ask: *is X a published compatibility boundary?*
-If no, the rule is rejected. Design freely. The break-and-migrate
-cost is bounded; the preserve-and-bend cost is unbounded.
-
----
-
 ## Beauty is the criterion
 
 If it isn't beautiful, it isn't done. Ugly code is evidence the
@@ -125,800 +93,29 @@ repetition resolves into a single named pattern.
 
 When something feels ugly, slow down and find the structure that
 makes it beautiful. **That structure is the one you were missing.**
-
 If you cannot make it beautiful, you do not understand it yet.
 
-## Constraints become tests
-
-Architecture is not finished when it sounds plausible. It is finished when its
-constraints have witnesses.
-
-A component's architecture names the constraints it must satisfy in simple
-language. Each load-bearing constraint becomes a test with the same shape:
-the test proves the component used the required path, not only that the final
-output looked acceptable. The witness may be unusual by conventional testing
-standards: an actor trace, a dependency graph assertion, a redb file written by
-one process and read by another, a compile-fail guard, a source scan for a
-forbidden shortcut, a Nix-chained artifact, or a negative test that makes the
-tempting lie fail.
-
-This is not bureaucracy. It is how agent-written software stays honest. An
-agent can hallucinate a satisfying implementation; it is much harder to fake a
-typed path with an observable witness. Constraints give the author the shape;
-tests make the shape enforceable.
-
-Diagnostic readings — each is a *signal*, not a sin. Notice it;
-decide what the underlying problem is; fix the underlying problem:
-
-- A name that does not read as English.
-- A free function that should be a method.
-- A `pub` field on a wrapper newtype.
-- A boolean parameter at a call site (`frob(x, true)`).
-- A name for what something is *not* (`non_root`, `not_admin`).
-- Special cases stacked on the normal case.
-- Stringly-typed dispatch — `match name.as_str()` over cases that
-  should be a closed enum.
-- Dead code retained "for safety" or "for backward compatibility."
-- Transitional compatibility scaffolding retained to avoid breaking
-  code whose design is already known to be wrong.
-- A doc comment that explains *what* the code does (well-named
-  code already explains what; the comment signals the names
-  aren't carrying their weight).
-- A long function with multiple responsibilities.
-
-This list is **open**. When a new anti-pattern shows up in the
-work, name it here. The discipline accumulates: every diagnostic
-reading we add is a class of bug we stop producing. Strict rules
-up front buy correct code by default — laborious at first, then
-the surface area of mistakes shrinks until the right shape is
-the only shape that fits.
+The discipline that follows from this lives in `skills/beauty.md`.
 
 ---
 
-## Naming — full English words
-
-Identifiers are read far more than they are written. Cryptic
-abbreviations optimize for the writer (a few keystrokes saved) at
-the reader's expense (one mental lookup per occurrence, forever).
-
-**Default: every identifier is a full English word.**
-
-`AssertOperation` over `AssertOp`. `Deserializer` over `Deser`.
-`Configuration` over `Cfg`. `Token` over `Tok`. `Identifier` over
-`Ident`. `Operation` over `Op`. `Buffer` over `Buf`. `Address`
-over `Addr`.
-
-**Name length is proportional to scope.** A 3-line loop counter
-can be `i`. A module-level type that appears across the codebase
-spells itself out.
-
-Permitted exceptions, narrow and named:
-
-- Tight-scope loop counters (<10 lines): `i`, `j`.
-- Mathematical contexts where the math itself uses the symbol:
-  `x`, `y`, `theta`, `lambda`, `n` for sample size.
-- Generic type parameters with no semantic content: `T`, `U`,
-  `K`, `V`, `E`. When the parameter has semantic content, give
-  it a real name (`$Value`, `$Output`, `$Failure`).
-- Acronyms that have passed into general English: `id`, `url`,
-  `http`, `json`, `uuid`, `db`, `os`, `cpu`, `io`, `ui`, `tcp`.
-- Names inherited from `std` or well-known libraries: `Vec`,
-  `HashMap`, `Arc`, `Box`, `Mutex`, `mpsc`, `regex`. Don't rename
-  these; **don't extend the abbreviation pattern to your own
-  types.**
-- Domain-standard short names already documented at the project
-  root.
-
-Two scarred anti-patterns:
-
-- **"Feels too verbose."** The full English form reads as
-  English. The abbreviation reads as ceremony to be decoded. The
-  cost of mis-naming is paid every time the name is read; the
-  benefit of saving three keystrokes is paid once. The verbosity
-  feeling is inherited prejudice from constraints that no longer
-  apply (6-char FORTRAN, 80-column cards, 10-cps teletypes).
-- **A name for what something is not.** Negative names compose
-  poorly and read as denial. Find the positive name.
-
-Two different things always have different names. `$LeftValue`
-and `$RightValue` are different even when they share qualities;
-*name is identity*.
-
----
-
-## Behavior lives on types
-
-Every reusable verb belongs to a noun. Free functions are for
-things that genuinely belong nowhere else: a binary's `main`, a
-small private helper inside one module, a relational operation
-between two values of equal status (typically expressed via
-operator overloading, which IS a method on a type with operator
-syntax).
-
-Free functions are *incorrectly specified verbs*. They encode an
-action without naming the noun that owns it. When the temptation
-to write one appears, slow down and find the noun — the type that
-has the affordance the verb describes. If no obvious noun exists,
-the model is incomplete; the missing type is what the verb is
-asking you to declare.
-
-The rule's purpose is not what it makes you write. It is what it
-makes you do *before* you write. The forced invention of the type
-that should own the behavior is the load-bearing cognitive event.
-
-The rule has a sharper version: the verb belongs to **the right**
-noun, not just any nearby noun. Adjacency of types is not the
-same as adjacency of concerns. When two crates / two types / two
-modules have similar surface (touch the same data, have similar
-names) but different concerns, the verb goes with the concern,
-not with the surface.
-
-Companion form: a wrapper newtype's wrapped field is **private**.
-A `pub` field defeats every reason to wrap. The type owns its
-representation — construction with validation goes through
-`TryFrom` / `from_str`; access goes through `AsRef`. A `pub`
-field makes the type a label, not an abstraction.
-
-A type whose only `impl` block is a parking lot for functions
-that do real work on data they don't carry is a free function in
-namespace clothing. The verb got attached to a fake noun. Step
-back; find the noun whose data the verbs read or write. That
-type may not exist yet — invent it.
-
-When a verb's noun is **stateful and lives across time**, the
-noun is an actor. Actors incentivize the right kind of thinking:
-the framework forces the component's state, message protocol,
-and lifecycle to be declared explicitly before any handler runs.
-"What does this actor own? What messages does it accept? Who
-supervises it?" — answering these is the load-bearing design
-work, made unavoidable by the shape of the framework. The same
-verb-belongs-to-noun rule, applied to behavior that persists.
-
----
-
-## Polling is forbidden
-
-When a system needs information from another system, that
-information arrives by **subscription**, not by repeated
-asking. The producer pushes; the consumer subscribes; the
-information flows when there is information to flow.
-
-**Polling — repeatedly asking "did anything change?" on a
-clock — is forbidden.** Not "discouraged." Not "avoid where
-practical." Forbidden.
-
-The mental image: polling is the partner who keeps texting
-when there's been no answer. The lack of an answer is the
-answer. Sending again every N seconds doesn't change the
-state of the world; it adds noise to it. Real systems
-behave the same way. When a producer has nothing to say,
-the right thing is to wait until it does. Asking
-repeatedly is harassment, not communication.
-
-Why polling is the wrong shape:
-
-- **Latency.** Worst-case latency *N* between event and
-  reaction, for a poll interval *N*.
-- **Resource burn.** Most polls are no-ops; the work is
-  wasted before the loop body runs. Systems that poll
-  degrade under no real load.
-- **Fake change-detection.** Two consecutive snapshots
-  being identical doesn't mean nothing happened — only
-  nothing visible to the consumer's projection.
-- **Pacing leak.** Polling encodes the consumer's pacing
-  into the producer's protocol.
-- **Pattern lock-in.** Once polling is in a codebase,
-  agents (human and LLM) reach for it again. Forbidding
-  it once stops the multiplication.
-
-Producers expose a **subscription primitive** — register a
-callback, open a stream, accept a long-lived RPC, watch a
-file via inotify, hold a Unix socket. Consumers subscribe
-once and receive events indefinitely.
-
-### When the producer can't push yet
-
-If the producer cannot yet push, the dependent feature
-**defers** rather than falls back to polling. A poll "for
-now" never gets removed.
-
-The right response is to sit down and figure out *why* the
-producer can't push, and either:
-
-- Build the subscription primitive in the producer.
-- Replace the producer with one that can push.
-- Accept that the dependent feature waits until push lands.
-
-If none of these resolve the case at hand, **escalate** —
-to the next level of design responsibility, and ultimately
-to the human. **Until a named rule exists for a specific
-class of "can't push" cases, that class escalates rather
-than falls back to polling.**
-
-Escalation is the correct outcome when no push answer is
-found. It is not a failure mode; it is the discipline
-working. The wrong outcome — falling back to a poll — is
-never the answer.
-
-### Named carve-outs — explicit, narrow
-
-Three patterns look polling-shaped but aren't, because the
-contract isn't "what changed?":
-
-- **Reachability probes.** "Is service X alive?" is
-  transport-layer reachability, not state-change detection.
-  The contract is "are you alive," not "what changed."
-- **Backpressure-aware pacing.** A consumer drains its own
-  buffer at its own rate; the producer still pushes. This
-  is flow control.
-- **Deadline-driven OS timers.** A `timerfd` or equivalent
-  fires when a wall-clock deadline arrives; the kernel
-  pushes the wake. Used for TTLs, expirations, scheduled
-  actions. The contract is "wake me at this deadline," not
-  "tell me what changed."
-
-These three are the complete list. Anything else that
-looks polling-shaped is polling — escalate.
-
----
-
-## Release before notify
-
-When an actor or component owns an exclusive resource — a
-database handle, a file lock, a socket binding, a child
-process — that resource must be **released** before the
-framework notifies supervisors and watchers of the actor's
-death.
-
-The order matters. A supervisor that sees "child died" and
-immediately spawns a replacement against the same resource
-races the dying child's still-held handle. The replacement
-fails to acquire the resource, hangs on the lock, or worse,
-silently corrupts state.
-
-The discipline is older than this workspace. Erlang/OTP
-enforces it at the BEAM VM level: exit signals are delayed
-until directly visible resources are released. Akka enforces
-it via in-thread chained cleanup ordering before watcher
-notification. Rust and Tokio provide no equivalent runtime
-guarantee, so the discipline must be **implemented
-explicitly** by every actor framework the workspace adopts —
-cleanup hook awaited, actor state dropped, then death
-signals dispatched.
-
-The implementation requirement composes with the polling
-rule. Death signals are **pushed** on a non-deadlocking
-control plane, not polled by supervisors. The combination —
-release before notify, and notify by push — is what makes
-supervised restart safe under exclusive-resource ownership.
-
----
-
-## Perfect specificity at boundaries
-
-Every typed boundary names exactly what flows through it. No
-wrapper enums that mix concerns. No string-tagged dispatch. No
-generic-record fallback. No `Unknown` variant that means "we did
-not model this yet." The type system is the model, not just the
-validator.
-
-Errors are **typed enums per crate**. Structured variants carry
-the data needed to render a useful message. Foreign error types
-convert via `#[from]`. **Never** `anyhow`, `eyre`, or
-`Result<T, Box<dyn Error>>` — they erase the error type at the
-boundary, which loses the typed-failure discipline the rest of
-the rules build up. Callers can no longer pattern-match on what
-went wrong.
-
-**One object in, one object out.** Method signatures take at
-most one explicit object alongside `self` and return exactly one
-object. When inputs or outputs need more, define a struct.
-**Anonymous tuples are not used at type boundaries** — not as
-return types, not as parameter types, not as struct fields. The
-single allowed form is a tuple newtype, which is a named type.
-
-**Domain values are types, not primitives.** A content hash is
-not a `String`. A node name is not a `String`. A file path used
-as an identifier is not a `Path`. If a value has identity beyond
-its bits, it gets a newtype.
-
-**One type per concept.** No `Item`/`ItemDetails` companions, no
-`-Info` / `-Extra` / `-Meta` / `-Full` / `-Raw`/`-Parsed` pairs.
-Pairs of types around one suffix are one concept fragmented
-across two because the base was designed too thin. Fix the base.
-
----
-
-## Infrastructure mints identity, time, and sender
-
-The wire form an agent constructs carries only what the agent
-knows. **Identity, timestamps, and sender principal are
-infrastructure-supplied — never minted by the agent.**
-
-- **Identity is the slot.** When a record has identity beyond
-  its content, the store assigns a typed `Slot<T>` on commit;
-  the agent receives it in the reply. The agent never invents
-  a string ID like `m-2026-05-06-001` — that's the agent doing
-  clock-work, maintaining counter state, packing typed values
-  into a stringly-typed format, and inventing a parallel
-  identity scheme alongside the slot the store will assign
-  anyway. The wire form on the read path shows the surrounding
-  record kind at the head identifier and the slot as a bare
-  integer; humans see *what kind of thing this is and which
-  one it is* without any agent-minted prefix.
-- **Commit time belongs on the transition log, not the
-  record.** When the store commits an Assert, the transition
-  entry stamps when. The agent doesn't write an ISO-8601
-  string into the record body — that's the agent doing the
-  clock's work, hiding a typed value in a string format, and
-  embedding redundant data the store already knows. Queries
-  by time range read the transition log, not a timestamp
-  field on the data record. The exception is *content*
-  timestamps (a Deadline's expiration, a scheduled-message
-  send-at): these are values the agent genuinely supplies,
-  and they appear as typed `Timestamp` (a bare integer in
-  NotaTransparent shape — nanos since epoch — not a string).
-- **Sender comes from the connection's auth proof, not the
-  message body.** A `Message` record names the recipient
-  (addressing is content) but never the sender — the sender
-  is established by the authentication of the connection
-  that asserted the message. Putting the sender in the
-  record body is redundant *and* untrustworthy: the model
-  could write any name and the record would carry it.
-
-The unifying test: ***could the system supply this value
-without asking the agent?*** If yes, the agent must not
-supply it. The wire is shorter; the agent does less work
-it's bad at; identity, time, and sender stop being places
-where bugs and spoofing live.
-
-The companion at the Rust level — concrete anti-patterns
-(`format!("m-{}-...")`, sender field on a record, commit
-time as a record field) and the type-system fixes — is in
-this workspace's `skills/rust/methods.md` §"Don't hide
-typification in strings."
-
----
-
-## Micro-components
-
-Every functional capability lives in **its own independent
-repository** with its own build descriptor and its own test
-suite. Components communicate only through typed protocols, never
-shared mutable state. Each component is sized so that **the
-entire component, including tests, fits comfortably in a single
-LLM context window** (≈3k–10k lines, ≈30k–80k tokens).
-
-**Adding a feature defaults to a new crate, not editing an
-existing one.** The burden of proof is on the contributor (human
-or agent) who wants to grow a crate. They must justify why the
-new behavior is part of the *same capability* — not a new one.
-The default answer is "new crate."
-
-The boundary is **filesystem-enforced**; nothing else holds.
-Module-level boundaries inside one crate decay under deadline
-pressure into shared internals — the "modular monolith" failure
-mode.
-
-The historical record on monolith collapse is unambiguous
-(Parnas 1972 onward); the LLM-context argument is contemporary:
-codebases grow faster than context windows; the fix is components
-small enough that the whole component fits.
-
-Each component carries its own architecture document at the root,
-its own test suite, and its own version pin. Cross-component
-references happen at two layers: locally as build-system inputs
-during development; via published version pins once stable.
-**Never** cross-crate `path = "../sibling"` in a manifest — that
-assumes a layout a fresh clone won't reproduce.
-
----
-
-## Skeleton-as-design
-
-New design lands as **compiled skeleton code** — type
-definitions, trait signatures, `todo!()` bodies — in the relevant
-repo, not as prose blocks claiming "here's what the type would
-look like." The type system enforces the shape; prose decays the
-moment implementation lands.
-
-Reports describe shapes, not implementations. Their medium is
-**prose plus visuals** — diagrams, swimlanes, flowcharts, tables,
-dependency graphs. Implementation code in a design doc goes
-stale the moment it lands and the real type drifts; readers
-cannot tell whether the report's snippet or the code's actual
-type is authoritative; visual shapes carry the same information
-without that freshness trap.
-
-The narrow allowance: a few-line *sample* of the surface the
-design talks about — a snippet of a config showing its shape, a
-one-line invocation, a single field declaration to anchor a name
-— is fine. The rule is about implementation blocks, not about
-showing the shape of the thing the design is about.
-
----
-
-## Positive framing
-
-State what IS. Architecture docs and agent rules describe the
-system's commitments — what kinds exist, what owns what, what
-flow happens, what the agent does. The current shape lives in
-the doc; the path that led there lives in version-control
-history.
-
-When a direction turns out to be wrong, the doc is rewritten to
-state the new direction. The previous direction disappears from
-the doc; the commit history preserves it for anyone who needs to
-recover the path.
-
-When an option is excluded — by constraint, preference, or
-decision — the criterion that excludes it is stated as a positive
-requirement. "Must be Rust" replaces "Go is excluded." The
-candidates that satisfy the criteria appear in the doc; the
-others stay silent.
-
-Each architectural commitment lives **once**, positively, in the
-appropriate canonical doc. Cross-references flow into
-architecture from reports; reading lists, decision histories,
-type-spec details live in reports.
-
----
-
-## Today and eventually — different things, different names
-
-When a workspace concept names both **what is built today** and the
-**larger eventual form** it is one step toward, those are different
-things and get different names. Same-name conflation lets the
-encompassing vision silently overwrite today's snapshot in ARCH docs
-— readers (human or agent) cannot tell whether a document describes
-today's code or the eventual scope.
-
-**This is a scope discipline, not a quality one.** Today's narrower
-piece is held to the same standard as everything else in this file —
-Beauty is the criterion; the right shape now is worth more than a
-wrong shape sooner. What's built today is built **rightly** for what
-it does today (no corners cut, no slop). The eventual form is named
-separately so readers know which scope a doc is in — not so today's
-work can be lazy about its own scope.
-
-Today's piece earns a concrete narrower name. The eventual name stays
-reserved for the realized form. ARCH docs describe what is true today
-in present tense; separate sections (or separate docs) name the
-eventual shape and the path between.
-
-Two such pairs are in flight as of 2026-05-10:
-
-- **`Sema`** — the eventual **universal medium for meaning**. A
-  self-hosting computational substrate (compiler and assembler
-  written in Sema); a fully-typed human-language representation
-  replacing today's ambiguous text formats (which are "meaning
-  written on rocks" — what humans had, not what conveys meaning to
-  a computer); a universal interlingua between human languages.
-  Distinct from **`sema-db`** — today's typed database library
-  (redb, rkyv, typed slots) used by every state-bearing component.
-  (`sema-db` is the proposed name for the rename pressure on the
-  existing `sema` repo; rename tracked in bead `primary-ddx`.)
-- **`Criome`** — the eventual **universal computing paradigm**,
-  expressed in Sema. Replaces Git, code editor, SSH, web server;
-  encompasses programming, version control, network identity,
-  validation, and auth/security across the stack. Auth/identity is
-  realized as Criome's **quorum-signature multi-sig system** —
-  infinitely programmable multi-sig access on any object — which
-  obsoletes today's ClaviFaber-shaped key-generation shims (and the
-  legacy systems they serve) when the OS itself is written in Sema.
-  Distinct from **the current `criome` daemon** — today's
-  sema-ecosystem records validator (Graph/Node/Edge/Derivation/
-  CompiledBinary).
-
-The eventual layer is **one stack**, not many. Every "eventual X"
-runs as Sema-on-Sema: components are Sema programs on a Sema runtime
-on a Sema-written OS. The split is therefore not per-component (each
-on its own slow climb); it is **today's stack** (Rust on Linux, with
-redb, with separate daemons, with legacy auth) **vs the eventually
-self-hosting stack** (Sema all the way down). What's built today is
-one realization step toward a unified vanishing point — built rightly
-for its scope, not as a draft of the eventual.
-
-Until the rename pressure resolves, ARCH docs that name the eventual
-shape carry an explicit *"this describes the eventual shape; today's
-piece is narrower"* marker, and consumers describe their actual
-current dependency, not the eventual one.
-
-### Versioning on the eventual stack
-
-Sema's purity (no ambient state, no implicit context) makes every
-Sema artifact **content-addressable by hash**. That property
-unlocks a versioning model the today-stack approximates with manual
-schema-version guards:
-
-- **Schema versions are content-addressed.** A schema is identified
-  by the hash of its Sema source. Two components computing the same
-  hash have the same schema by construction.
-- **Components carry multiple schema versions in their runtime.**
-  Cross-trust-domain peers do not need consensus on a single
-  current version. A component holds v3 and v4 simultaneously; it
-  serves v3 to peers that ask in v3, v4 to peers that ask in v4.
-- **Translation lives in reducers or dedicated translator nodes.**
-  When a peer in domain A speaks v3 and a peer in domain B speaks
-  v4, the bridge is a typed reducer (a Sema function from v3 to v4
-  records) — either inline in the receiving component's runtime or
-  hosted by a dedicated translator component that holds multiple
-  versions and bridges between them without bloating either
-  endpoint's runtime.
-- **Cross-domain federation needs no quorum primitive at the verb
-  level.** Schema agreement reduces to "both sides can decode each
-  other," which the version-tagged content-addressing plus
-  translation gives for free. The seven-root Signal verbs handle
-  the wire; schema bridging is reducer work, not verb work.
-
-This is **future work, not first-prototype work.** Today's Persona
-uses manual `SchemaVersion` records and the rkyv format guard.
-Naming the eventual model here keeps the today-stack honest about
-what it's approximating, and tells future agents what the
-near-term `SchemaVersion` records evolve *toward* once Sema lands
-as the substrate.
-
-## Rules find their level
-
-Every observation, rule, or pattern belongs at a specific
-level of the documentation stack — and the level is determined
-by *how broad* the rule is, not by what's currently being
-worked on. The agent's job, when learning something durable,
-is to **find the level** and write the rule there.
-
-```
-ESSENCE.md             ← intent + apex principles.
-                          The "why" upstream of everything.
-lore/AGENTS.md         ← workspace contract.
-                          What every agent must do.
-skills/<name>.md       ← cross-cutting capabilities.
-                          How to act in a kind of situation.
-lore/<tool>.md         ← tool reference.
-                          How a specific tool works.
-<repo>/AGENTS.md       ← per-repo contract.
-                          Repo-specific carve-outs.
-<repo>/skills.md       ← per-repo capabilities.
-                          What's load-bearing in this repo.
-<repo>/ARCHITECTURE.md ← per-repo shape.
-                          What this repo IS.
-reports/<role>/<n>.md  ← decision records, audits, syntheses.
-                          How thinking moved at a point in time.
-```
-
-The matching test: ask **what scope this rule applies to.**
-
-- *"Always"* — across every system, every language, every
-  context. → ESSENCE.
-- *"In this workspace"* — across every repo, every agent. →
-  workspace skill or `lore/AGENTS.md`.
-- *"When doing X"* — a kind of activity (writing Rust,
-  editing skills, designing protocols). → workspace skill.
-- *"In this tool"* — how the tool works. → lore.
-- *"In this repo"* — repo-specific shape, owners, invariants.
-  → repo `ARCHITECTURE.md` or `skills.md`.
-- *"Decided at this moment"* — design rationale, audit, or
-  synthesis. → report.
-
-When you discover something durable — a pattern, an
-anti-pattern, a missing rule, a load-bearing constraint —
-write it at its level. **Don't put a workspace-wide pattern
-in a single repo's skills.md.** Don't bury an apex principle
-in an audit report. Don't restate a tool reference inside a
-skill. Each level points at the next; each rule lives once.
-
-This is what lets a future agent discover the rule. A rule
-written at the wrong level either gets duplicated (silent
-drift between copies) or stays hidden (the agent who needs it
-doesn't read that file). Putting it at the right level is the
-difference between a workspace that gets smarter and one that
-re-learns the same lesson.
-
----
-
-## Efficiency of instruction
-
-Each rule, principle, or pattern lives in **one canonical
-place**. Other docs cite by reference; they don't restate.
-When a rule starts to appear verbatim in multiple docs, that's
-a smell — find the canonical home and trim the others.
-
-The cost of duplication is paid every time a reader has to
-reconcile two slightly-different versions of the same idea.
-Instructions to agents should be efficient: short, focused,
-precise; cross-referenced rather than copied. The reader's
-attention is the resource being optimized.
-
-This applies at every layer:
-
-- **Upstream wins.** ESSENCE is upstream of `lore/AGENTS.md` is
-  upstream of skills is upstream of tool reference is upstream
-  of per-repo `AGENTS.md` / `ARCHITECTURE.md` / `skills.md`.
-  Higher layers state principles; lower layers cite them.
-- **Lore is *what* the tool does. Skills are *how* we use it
-  and *when* we pick it.** Don't restate one in the other;
-  point.
-- **A brief pointer beats a full-text restate.** If a doc
-  needs to invoke a rule, naming it and pointing at the
-  canonical home is enough.
-- **An agent should never have to choose between two versions
-  of the same rule.** If they do, that's the bug to fix —
-  consolidation, not arbitration.
-
-When in doubt about where a new rule lives: ask which doc's
-*role* it fits. If it's intent (the deepest "why"), it's
-ESSENCE. If it's how-to-act-as-an-agent, it's a skill. If it's
-how-the-tool-works, it's lore. If it's repo-specific intent
-or invariants, it's that repo's `skills.md`. If a rule fits
-two roles, it fits one of them better — pick that one and
-have the other point at it.
-
----
-
-## Choosing a data format
-
-Three orthogonal questions: **for whom, for what, for how long.**
-
-**For a human, to read or write — a positional, typed text
-format.** No keywords beyond truth values. Field names live in
-the schema, not the text. PascalCase for types, camelCase for
-instances. Delimiter-first, first-token-decidable parsing. Every
-value structured: no opaque strings; if a name or type is stored
-as a flat string, the ontology is incomplete.
-
-**For a machine, on the wire or on disk — a binary contract with
-zero-copy reads.** Content-addressable by canonical encoding
-(hash of canonical bytes is identity). Cross-platform feature
-pin (little-endian, fixed pointer width, unaligned-read-safe).
-Schema fragility is the price; a known-slot version-skew guard
-checked at boot, hard-fail on mismatch. Schema changes are
-breaking changes, coordinated upgrades.
-
-**For an embedded transactional working set — an embedded
-key-value store.** No separate server. Single-file or
-directory-tree durability. Snapshot reads. Crash-consistent.
-
-**For tracked items with audit history — git-for-data.** When
-the unit being tracked is short, structured, and benefits from
-branchable history (issues, tasks, workflow markers), use a
-git-versioned database. Designs and long-form prose live in
-files; the database summarises and points at the file. Long
-prose in a `--description` field is the wrong storage.
-
-The choosing principle: **identify the canonical state-shape for
-the thing; pick the format whose semantics match that shape.**
-Resist using one format as the universal currency. Each format
-earns its place by matching one specific kind of thing.
-
-Identity is the hash of canonical bytes. Mutable handles
-("slots") provide follow-this-thing semantics on top of the
-immutable identity — content edits update a slot's binding
-without rippling rehashes through dependents.
-
----
-
-## Language-design instincts
-
-Whenever a notation is being designed (text format, request
-language, schema notation, query surface), these are the
-load-bearing commitments:
-
-- **Delimiter-first.** Every construct has explicit opening and
-  closing delimiters. The parser knows what it is reading from
-  the first token. No fallback rules. No multi-token lookahead.
-- **No keywords.** Closed sigil budget. New features land as new
-  delimiter-matrix slots or PascalCase records, not as new
-  sigils.
-- **Position defines meaning.** The same delimiter means
-  different things in different contexts. The parse position is
-  the sole authority.
-- **PascalCase = compile-time structural; camelCase = instance.**
-  The parser dispatches on first-character case. This is not
-  convention — it is syntax.
-- **Names are meaningful.** No pointer names (`T`, `X`, `n`,
-  `tmp`, `buf`). Every name describes what the thing IS.
-- **Every value is structured.** If a name or type is stored as
-  a flat string, that is a bug. As the ontology grows, strings
-  collapse to typed domain variants.
-- **Newlines are not significant.** Parsing is purely
-  token-based.
-- **Text is flat; trees come from the compiler.** Grammar rules
-  stay flat; structure lives in the compiler's data tree.
-- **Content-addressing by canonical encoding.** Identity is the
-  hash of canonical bytes; the canonical form is itself defined.
-- **No shortcuts in compiler work.** No raw-text passthrough. No
-  "skip for now" stubs. No partial grammars. When hitting a
-  language limitation, extend the language properly; don't work
-  around it.
-- **The parser stays small.** Adding new typed kinds is the
-  central activity of evolving the schema; adding new parser
-  rules is the rare activity. New syntactic territory becomes a
-  new DSL surface, not parser logic.
-
-These instincts emerged in language-design exploration that did
-not, itself, ship; refined, they live in the data formats and
-request languages currently in use. The instincts are the
-heritable substance.
-
----
-
-## Version control: always push
-
-After every meaningful change, push immediately. **Blanket
-authorization** — proceed without asking for confirmation.
-
-Push per logical commit. Unpushed work is invisible to other
-machines and to anyone consuming the repo as an input. Forgotten
-pushes cause divergence and surprising forks.
-
-Commit messages are short. A short verb plus scope; the repo is
-implicit (the commit lives in the repo). Detail lives in the
-diff and the report.
-
-If a single change touches multiple repos, each repo gets its
-own short commit.
-
----
-
-## Documentation layers
-
-| Where | What lives there |
-|---|---|
-| Source code | Implementation — types, tests, build files. Type sketches as compiler-checked skeletons. |
-| `ARCHITECTURE.md` at the repo root | This repo's role, owned-and-not-owned boundaries, code map, invariants. ~50–150 lines. |
-| `reports/<n>-<topic>.md` | Decision records, design syntheses, audit findings, end-of-session snapshots. Prose plus visuals. |
-| Workspace-wide `AGENTS.md` | Cross-cutting guidance agents read first. The canonical contract. |
-| Per-repo `AGENTS.md` | Thin shim plus the repo's role and carve-outs. |
-| `CLAUDE.md` | One-line shim: *"You MUST read AGENTS.md."* Lets agents who only read `CLAUDE.md` and agents who only read `AGENTS.md` converge on a single source of truth. |
-
-When a report contains durable substance, move it to the right
-home rather than leaving it in `reports/`.
-
----
-
-## How agents apply this
-
-**Intent first, rules second.** The intent above is upstream of
-every rule below. When a rule and the intent conflict, the intent
-wins; the rule gets rewritten.
-
-**Slowness is information.** When a rule's question is hard —
-what type owns this verb, what is the right name, why does this
-feel ugly — that hardness is a signal. The signal is that the
-model of the problem is not yet fully formed. Don't paper over
-the gap with a free function or a string; slow down and find the
-structure.
-
-**Never delegate understanding.** When prompting another agent
-or invoking a tool, the prompt proves you understood: file paths,
-specifics, what to change. Phrases like "based on your findings,
-fix the bug" push synthesis onto the other side instead of doing
-it yourself.
-
-**State assumptions explicitly.** When a fact is load-bearing,
-state it. When something is uncertain, state that. Hidden
-assumptions are how plausible-looking work breaks invariants the
-author cannot see.
-
-**Report state truthfully.** Whether asked or volunteered, claim
-only the state you actually have. *"Have you read X?"* — answer
-about prior reading, not just-now reading. *"Did this work?"* —
-answer about what was actually verified, not what looked
-plausible. If information or verification arrived just-in-time
-during this turn (a tool result, a system reminder, a file
-surfaced now), say so explicitly: *"No, reading now."* Don't
-fold *just-now* into *already-had*. The user plans the next
-move based on your reported state; misrepresented state forces
-them to operate on a false model and erodes the trust that
-load-bearing decisions depend on. The cost of an honest *"no,
-hadn't seen it"* is one extra exchange; the cost of an
-inflated *"yes, just read it"* is rebuilding trust later.
-
-**Verify each parallel-tool result.** When batching tool calls,
-scan each result block for errors before any follow-up step. The
-bundle returning is not the same as the bundle succeeding.
-
-**Working directory matters.** Carry the working directory in
-the prompt; don't assume context. Agents start cold every time.
+## Backward compatibility is not a constraint
+
+**Break the system if it makes it more beautiful.** Not
+carelessness — refusal to compromise design to preserve a wrong
+shape. The cost of a wrong shape compounds; the cost of a clean
+break is paid once.
+
+A *transitional shape* compromises both the old and the new to
+avoid breaking either. It is the wrong shape for both, and the
+wrong shape, period.
+
+The only place backward compatibility is a real constraint:
+**explicitly declared** boundaries — published APIs under semantic
+versioning, wire contracts pinned by version, schemas externally
+consumed by systems outside our control. Inside the workspace,
+before such a boundary is declared, the system is being shaped,
+not preserved.
 
 ---
 
