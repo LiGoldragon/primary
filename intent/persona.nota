@@ -179,3 +179,52 @@
     "Testing requirement for the implementation pass: architecture constraints must have Nix-backed witnesses, including environment-running tests where appropriate."
     Maximum
     2026-05-19T15:04:19Z)
+
+(Decision
+    "Restatement shape applies to persona-spirit too: Entry should NOT carry a verbatim vector. Each psyche statement is its own top-level record. Aligns spirit's data model with the workspace intent/<topic>.nota filesystem schema; the dedup/cluster of similar restatements is a query-time concern, not a storage shape."
+    "separate records then. repeated similar intents will mean stronger signal"
+    "Resolving Q1 of /236 — the contradiction between intent#17 (Vec<Verbatim>) and intent#18 (separate records). The newer restatement-shape intent applies to persona-spirit; the Entry contract flips to per-statement records."
+    Maximum
+    2026-05-19T17:30:00Z)
+
+(Principle
+    "Repeated similar intent records carry stronger signal. The data model expresses intent intensity through repetition rather than a per-record intensity field — if the psyche restates an intent, that restatement is itself evidence of greater conviction. Query-time clustering on summary similarity surfaces 'how many times has the psyche said this' as the read-side signal."
+    "repeated similar intents will mean stronger signal"
+    "Rationale embedded in the Q1 answer: signal-by-repetition is why separate records beat aggregate records — repetition itself is the load-bearing primitive."
+    Maximum
+    2026-05-19T17:30:00Z)
+
+(Correction
+    "Inside persona-spirit, intent is the component's domain. Type names must NOT prefix `Intent` — that's repetition of the component's namespace. The Entry-not-IntentEntry correction (intent#19) generalises: every type in signal-persona-spirit currently starting with `Intent` drops the prefix unless removing it produces genuine ambiguity. Examples: IntentRecordIdentifier → RecordIdentifier; IntentTopic → Topic; IntentSummary → Summary; IntentQuote → Quote; IntentContext → Context; IntentObservationMode → ObservationMode; IntentRecordObservation → RecordObservation; IntentRecordSummary → RecordSummary; IntentRecordProvenance → RecordProvenance; IntentRecordCaptured → RecordCaptured."
+    "The type intent record identifier is not good because spirit deals with intent. So it's repetition to say intent record identifier. At most it should be record identifier, if we even say record."
+    "Resolving Q2 of /236. Generalising intent#19 across the contract: every Intent-prefixed type drops the prefix; the domain is implicit from the crate."
+    Maximum
+    2026-05-19T17:30:00Z)
+
+(Clarification
+    "RecordIdentifier is a spirit-internal database recovery handle, not an agent-facing field. Agents never supply an identifier when asserting; spirit mints it from the record's storage slot. The identifier appears on observation and provenance replies so agents can correlate query results — but it is never an input to Assert."
+    "Like you're talking about a unique identifier for recovering in the database. That's not an agent thing, if that's what you meant."
+    "Closing the second half of Q2 — agents never mint identifiers; spirit mints from storage. RecordIdentifier (post-rename) becomes output-only on the wire."
+    Maximum
+    2026-05-19T17:30:00Z)
+
+(Decision
+    "Spirit is a dumb system today: it takes typed input from agents and stores it. Spirit does not classify, judge, or make decisions about what agents submit — agents are the thinking layer. The eventual multi-agent auditing system (the 'spirit guardian' from intent#11) is a future arc, not part of the first daemon. Today's spirit: agent submits typed Entry / PsycheStatement, spirit stores, spirit serves queries. Agent-supplied Entry is authoritative; spirit does not second-guess it."
+    "the spirit is not a thinking thing. So it doesn't make decisions. That's the agent's job. So it doesn't have any choice right now. We don't have like a multi-agent auditing system yet. That's just going to be a dumb system. It just takes what it's given."
+    "Resolving Q3 of /236. Refining intent#11 (richer supersession lifecycle / spirit guardian): the lifecycle remains the eventual design; today's daemon is dumb storage that trusts agent typing. The guardian sub-actor waits for the multi-agent auditing arc."
+    Maximum
+    2026-05-19T17:30:00Z)
+
+(Decision
+    "Promote intent#4 to workspace ESSENCE.md as a Nietzsche-line founding rationale for the apex cognitive component: 'What animates humans at the highest level is spirit; persona-spirit is the analog.' Reads with the universal force ESSENCE requires."
+    "Number four, essence promotion candidates. Yeah, I like those."
+    "Resolving Q4a of /236 — promote the persona-spirit-as-animating-principle line to workspace essence."
+    Maximum
+    2026-05-19T17:30:00Z)
+
+(Decision
+    "Promote intent#13 to workspace ESSENCE.md, reshaped as an impersonal universal: 'The intent protocol prevents the loss of the psyche's important expression.' The personal-experience phrasing is too soft for essence; the impersonal form carries the universal value statement. Psyche dictated the exact essence wording."
+    "Maybe make it into like a general impersonal statement. The intent protocol prevents the loss of the psyche's important expression."
+    "Resolving Q4b of /236 — promote the intent-protocol value statement to essence in its dictated impersonal form."
+    Maximum
+    2026-05-19T17:30:00Z)
