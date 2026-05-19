@@ -157,3 +157,24 @@
     "Settling the working model for the repository-ledger / Gitolite follow-up: the design agent owns the first implementation and test pass while the component shape is still being proven."
     Maximum
     2026-05-19T17:05:00Z)
+
+(Correction
+    "Concept designer IS a real role. Earlier /224 recommendation that concept designer should be a 'mode' rather than a 'lane' was wrong. Concept designer is an entry point — the role that takes new concepts from psyche, compares them against existing concepts, and decides when to spawn a dedicated designer lane. It maintains tally across concepts the psyche is juggling and surfaces relationships between concepts. This role lands; flesh out next."
+    "There is a concept designer. It's actually a really important role. And I think I'm, yeah, I'm ready to move on to fleshing that out more."
+    "Reversing my /224 §2 'concept designer is a mode' recommendation. The psyche corrected this earlier in the session ('I want to push back a little bit on what you said about the roles, how you took out, you're saying there's no concept designer. I disagree.') and is now ready to flesh out the role."
+    Maximum
+    2026-05-19T17:30:00Z)
+
+(Decision
+    "Workspace report sweep discipline: move fast, retain only what is still load-bearing or moveable-forward. Older reports get audited; substance migrates to permanent docs (skills, ARCH, code, intent); reports retire. Aggressive deletion is the default once substance has landed elsewhere — git history holds the lineage."
+    "do a sweep, do a deep sweep. We're moving fast now and only keep the important stuff or move it forward."
+    "Setting the cleanup cadence. Aligns with skills/reporting.md hygiene § and skills/context-maintenance.md. The deep sweep this turn covers the older designer reports (204, 207–211, 214) plus the /224 trim."
+    Maximum
+    2026-05-19T17:30:00Z)
+
+(Decision
+    "For the repository-ledger spool handoff, the designer-agent should implement the system fix directly in production CriomOS and deploy it locally on ouranos instead of handing it to another role."
+    "Yeah, you can go ahead and actually implement all of that. Or would you rather hand it off to... Yeah, just do it. I don't really have time to shuffle between agents right now. Use the production CriomOS and Logix, not the new one, and implement this and just deploy it locally. We're on Uranus. O-U-R-A-N-U-S, or N-O-S."
+    "The previous repository-ledger report identified that Gitolite hook spool files were likely unreadable by a dedicated repository-ledger daemon user. The psyche directed this agent to implement and deploy the production system fix locally."
+    Maximum
+    2026-05-19T17:40:00Z)
