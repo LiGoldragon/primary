@@ -179,6 +179,9 @@ Runtime witness after deploying locally on `ouranos`:
 - `runuser -u repository-ledger -- test -r <latest-spool-file>` returned
   success.
 - The `repository-ledger` user could read the NOTA notification content.
+- The pre-existing spool files from before the fix were normalized to
+  `0640 gitolite:repository-ledger-receive`, so the future daemon can read
+  the whole current queue.
 
 Verification:
 
