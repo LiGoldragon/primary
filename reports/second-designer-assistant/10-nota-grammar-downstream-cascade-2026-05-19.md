@@ -29,6 +29,14 @@ The **daemon and CLI crates** (the `persona-*` daemons, `criome`, `repository-le
 
 The **application and UI crates** (`mentci-*`, `prism`, `forge`, `chroma`, `chronos`, `horizon-rs`) mostly consume the codec for config or wire. Sweep needed: rebuild tests; update any committed fixture files; possibly migrate `*.nota` config in production (e.g., `criomos-*` config files if they pin certain wire shapes).
 
+## What's already done — current sweep status
+
+A sibling report at `reports/second-operator-assistant/5-nota-three-case-codec-implementation.md` carries the per-commit working detail of what's landed so far in the same arc. The codec change itself is fully landed across two repos (`nota-derive` commit `30c665f3` for the `NotaRecord` + `NotaSum` derive rewrite, `nota-codec` commits `ee90eef3` for the untagged-record primitives and `88852e6897c1` for the `is_bare_string` PascalCase-rejection symmetry fix). The downstream macro in `signal-core` that pinned the old NotaSum wire form (`signal_channel!` in `signal-core/macros/src/emit.rs`) was rewritten to wrap each variant's payload with the variant tag explicitly — commit `5762bba1`. Six contract crates have had their wire-form fixtures swept and pushed to main: `signal` (`eb745e3f`), `signal-persona` (`b7524aaf`), `signal-persona-message` (`346bd881`), `signal-persona-introspect` (`651cd730`), `signal-persona-system` (`965647e6`), `signal-persona-auth` (`facfa73f`). One consumer (`persona-router`) compiles against the new codec but has five `tests/smoke.rs` fixture failures at lines 74, 89, 97, 109, 125 — `RouterInput`, `RouterOutput`, and `RouterBootstrapOperation` NOTA-string fixtures need rewriting per the new shape.
+
+The remaining consumers — `persona-mind`, `persona-message`, `persona-introspect`, `owner-signal-persona-terminal`, `horizon-rs`, plus the further crates listed in operator/5's "Other consumers" section (`owner-signal-persona-spirit`, `signal-persona-spirit`, `owner-signal-repository-ledger`, `persona-harness`, `signal-persona-mind`, `signal-persona-orchestrate`, `signal-persona-terminal`, `signal-persona-harness`) — are untouched. Each one's `Cargo.lock` isn't bumped against the new codec yet, so they currently compile and test against the old codec; running `cargo update` in each will pull the new codec and surface the wire-form failures that need the sweep.
+
+The cascade pattern is mechanical and identical across every remaining consumer; the four-change wire-form recipe below tells the operator what each failure type maps to. The risk surface is small — the derive-level changes mean Rust APIs are unchanged; only wire-form-pinning tests and any persisted Sema/redb data need updating. Daemons with persisted state are the load-bearing migration cases.
+
 ## The sweep recipe per crate
 
 For each consumer, the discipline is the same. Open the crate; run `cargo build` against the current `nota-codec` main (the four changes are already there). Compile errors will surface every place where `Token::Bool(_)` was pattern-matched (now gone) or where some other API moved. Then run `cargo test`. The test failures are the inventory of wire-form fixtures that need updating. For each failing test:
@@ -61,8 +69,8 @@ I checked the workspace skills for stale NOTA wire-form references. The main NOT
 
 ## See also
 
-- `reports/second-designer-assistant/8-nota-three-case-pascal-implementation-2026-05-19.md` — the original implementation report (Bool / Option / PascalCase-at-String) with codec commit references.
-- `reports/second-designer-assistant/9-intent-manifestation-audit-nota-2026-05-19.md` — the intent-manifestation audit that surfaced this report's gap.
-- `skills/nota-design.md` — current canonical NOTA design discipline; teaches the three-case rule.
+- `reports/second-operator-assistant/5-nota-three-case-codec-implementation.md` — operator-lane working notes: per-commit detail across the seven landed sweeps, line-numbered fixture failures in `persona-router`, the untouched-consumers list, and the symmetry-fix rationale. The action-ready companion to this orientation report.
+- `skills/nota-design.md` — current canonical NOTA design discipline; teaches the three-case PascalCase rule with the variant-test, the canonical example (`skills/skills.nota`), and the "before you sketch any NOTA record" four-step checklist.
 - `repos/nota/README.md` and `repos/nota/INTENT.md` — the spec and per-repo intent files (`LiGoldragon/nota` commits `0b0af8bb` and `ad14c35d`).
-- `repos/nota-codec` main — the four codec changes (`503f4754` for the first three; `88852e6897c1` and `57747a3a4c48` for the headless-struct change).
+- `repos/nota-codec` main — the four codec changes (`503f4754` for the first three grammar changes; `88852e6897c1` and `57747a3a4c48` for the headless-struct change).
+- BEADS closed by this arc: `primary-x3xj` (Bool as enum), `primary-y4l4` (Option Some-wrapping), `primary-r8vi` (PascalCase forbidden at String), `primary-hj63` (headless-struct + README rewrite).

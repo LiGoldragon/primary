@@ -25,12 +25,12 @@ triad:
     role record.
   - Added local repository-index refresh from a configured Git index
     root into workspace `repos/` symlinks.
-  - Corrected the initial direct-store CLI mistake: the daemon binary
-    now fails closed until its socket runtime exists, and the CLI
-    binary only encodes NOTA requests as Signal frames to the daemon
-    sockets.
-  - Added named Nix checks for dynamic role creation and repository
-    refresh.
+  - Implemented daemon ordinary/owner Unix socket listeners that own
+    the `persona-orchestrate.redb` store and dispatch Signal frames.
+  - Corrected the initial direct-store CLI mistake: the CLI binary
+    only encodes NOTA requests as Signal frames to the daemon sockets.
+  - Added named Nix checks for dynamic role creation, repository
+    refresh, CLI boundary, and production daemon + CLI socket flow.
 
 ## Published State
 
@@ -41,7 +41,7 @@ triad:
   - `main`: `d9210f9a contract: fix owner orchestrate formatting gate`
   - bookmark: `persona-orchestrate-mvp`
 - `persona-orchestrate`
-  - `main`: `39f0fd05 orchestrate: repin owner signal contract`
+  - `main`: pending current implementation commit
   - bookmark: `persona-orchestrate-mvp`
 
 ## Verification
@@ -59,6 +59,7 @@ witnesses:
 - `checks.<system>.test-dynamic-role-creation`
 - `checks.<system>.test-repository-refresh`
 - `checks.<system>.test-cli-boundary`
+- `checks.<system>.test-daemon-cli`
 
 ## What Works
 
@@ -73,14 +74,17 @@ witnesses:
 - Role creation creates local report-lane filesystem shape in tests.
 - Repository refresh scans local checkout directories and links them
   into a workspace `repos/` directory.
+- The daemon binds separate ordinary and owner sockets and rejects the
+  wrong contract vocabulary on each socket.
+- The CLI can create a dynamic role through the daemon owner socket
+  and then observe it through the daemon ordinary socket.
+- The daemon rejects non-Signal traffic on the ordinary socket.
 - The CLI boundary is now guarded by a source-scan witness: it must
   not import the service, tables, store location, sema-engine, or the
   redb path.
 
 ## Gaps
 
-- There is still no long-lived daemon socket. The CLI now fails at the
-  socket boundary until that daemon exists; it does not open the store.
 - There is no lock-file projection back to `orchestrate/*.lock`.
 - Report-repository creation is local-directory creation plus a
   report-lane symlink. It does not yet create a GitHub repository or
@@ -92,6 +96,8 @@ witnesses:
 - There are no subscriptions yet.
 - The owner contract is implemented, but filesystem permissions still
   do not enforce ordinary-vs-owner access.
+- The daemon is a synchronous thread-per-connection MVP, not the final
+  Kameo actor tree.
 
 ## Questions
 
@@ -100,13 +106,13 @@ witnesses:
    different repository naming shape?
 2. Should `role create` create the GitHub repo immediately with `gh`
    and then `ghq get` it, or should local-only creation remain the
-   default until the daemon exists?
+   default until lock projection and supervision are in place?
 3. What should "active repository" mean for the first repository
    index: latest working-tree edit time, latest commit time, recent
    claim/activity touch, or explicit user pin?
 4. When `RetireRoleOrder` lands for real, should it preserve report
    lanes by default and only mark the role inactive, or should it
    remove links and prevent future claims?
-5. The next slice should build the daemon/socket boundary before any
-   compatibility lock-file projection; otherwise the CLI cannot be
-   used without violating the triad.
+5. The next slice should wire compatibility lock-file projection and
+   a supervised workspace launch path so this can replace
+   `tools/orchestrate` in normal agent flow.
