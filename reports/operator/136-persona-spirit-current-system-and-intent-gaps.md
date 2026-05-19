@@ -2,6 +2,8 @@
 
 *Operator update after the owner-socket daemon slice.*
 
+Code landing: `/git/github.com/LiGoldragon/persona-spirit` `ecaf880a`.
+
 ## 0 · Short Read
 
 `persona-spirit` is now a working raw intent component with:
