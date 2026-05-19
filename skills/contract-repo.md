@@ -423,11 +423,43 @@ Better public shapes:
 
 ### Reply discipline
 
+**Reply success variants are verb-past-tense matching the
+operation root.** `Submit` → `Submitted`; `Register` →
+`Registered`; `Launch` → `Launched`; `Retire` → `Retired`;
+`Query` → `Queried` or `Observed` (the action's outcome,
+verb-past-tense).
+
+**Reply rejection variants are verb-past-tense + `Rejected`.**
+`Submit` → `SubmitRejected`; `Register` → `RegisterRejected`.
+Domain-level rejection reasons are payload variants of the
+`*Rejected` reply (typed enum named e.g. `SubmitRejectionReason`).
+
+**When the verb-past-tense collides with a noun derived from the
+verb,** fall through to the next-best past-tense that names what
+the daemon actually did after receiving the operation.
+`Announce` → `Announcement` (noun collision; "Announced" would
+be ambiguous with the noun) → use `Identified` (the daemon
+identified the announcer; concrete past-tense outcome).
+
+**Lifecycle-shaped verbs (`Start` / `Stop` / `Drain` / pairs of
+them) may share a single `Action*` pair** when the daemon's
+response shape is uniform across them:
+`ActionAccepted(ActionAcceptance)` /
+`ActionRejected(ActionRejection)`. This is the signal-persona
+precedent — both `Start` and `Stop` use the same pair because
+the reply contract doesn't vary by which lifecycle verb fired.
+
 Replies are causally tied to the request operation they answer.
 If a "reply" becomes an independent observation or event that
 can travel without a request, model it as an event/stream record
 in the contract. Do not hide independent event traffic inside a
 reply enum just because it was convenient for the first test.
+
+**Event variant naming follows the same verb-past-tense rule.**
+A `RecordStream` emitting `RecordCaptured` events reads as
+"the record was captured"; a `StateStream` emitting `StateChanged`
+reads as "the state changed." Past-tense outcome describing what
+happened, not what was requested.
 
 ### See also
 

@@ -171,3 +171,10 @@
     "Feedback on the signal-repository-ledger pilot after migrating request operations to signal-frame contract-local verbs."
     Maximum
     2026-05-20T00:07:55+02:00)
+
+(Decision
+    "Implement all three /243 designs: reply-naming convention (skill edit to skills/contract-repo.md), observer-hook injected by signal_channel! macro via an opt-in observable block, and a signal-executor crate with a Lowering trait + Executor<L> struct. Test thoroughly. Then look for holes in the implementations and report back."
+    "I agree with the solutions proposed in the report. implement them all and test them thoroughly, then look for holes in the design and report back"
+    "Authorizing implementation of the three architectural hole-fixes from /243. Substance is settled; this is now implementation work."
+    Maximum
+    2026-05-20T00:15:00Z)
