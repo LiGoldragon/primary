@@ -1,0 +1,9 @@
+[
+  (Decision
+    "Iterating on a report uses -v2/-v3 suffix for light edits absorbing feedback. Substantial topic shift (or moving toward implementation) writes a new numbered report that absorbs anything still relevant from the predecessor; the predecessor is deleted in the same commit. Git history holds the lineage."
+    (Verbatim
+      "the rename protocol would be, let's say we're talking about report 225. … the edited second version of 225 can become 225-v2. … If the report warrants a change in the name … then that basically would be the judgment call where it's a new report. … after 226 is written, the agent deletes 225."
+      "Establishing the report supersession discipline; avoids reports recursively making each other partially obsolete.")
+    maximum
+    "2026-05-18T12:08:41Z")
+]

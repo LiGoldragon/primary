@@ -1,0 +1,9 @@
+[
+  (Principle
+    "Skills must not grow noisy. Smart models can fill in blanks from good high-level guidance; over-elaborated skills add cost without benefit. When editing a skill, prefer cutting to adding. Detail that doesn't change agent behavior is noise."
+    (Verbatim
+      "I don't want noisy skills. And I think a lot of skills have grown noisy. They have too many details that don't fucking matter. And agents are smart. … These are extremely smart models. They can fill in the blanks. They just need good guidance, good overall guidance."
+      "Same turn as the AGENTS.md compact discipline; the principle applies workspace-wide to every skill, not just AGENTS.md.")
+    maximum
+    "2026-05-18T11:31:00Z")
+]

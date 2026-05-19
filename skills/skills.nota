@@ -100,4 +100,8 @@
     "When to act vs ask. How to surface blocked decisions.")
   (Meta context-maintenance skills/context-maintenance.md mechanism
     "Sweep reports and conversation. Migrate substance to permanent homes.")
+  (Meta intent-log skills/intent-log.md topic
+    "Record explicit author intent in intent/<topic>/. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint.")
+  (Meta intent-maintenance skills/intent-maintenance.md mechanism
+    "Sweep the intent log. Supersession protocol; verification against current state; archive to intent/<topic>/superseded/.")
 ]

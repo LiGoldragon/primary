@@ -1,0 +1,194 @@
+# Skill — intent log
+
+*Record what the author explicitly said. The intent log is a workspace
+surface distinct from documentation and reports: it captures the
+author's voice on each topic, verbatim, with context and certainty,
+so future agents can query what the author actually wanted versus
+what some agent decided.*
+
+---
+
+## What this skill is for
+
+Documentation records *decisions*; the intent log records *who
+decided*. When `skills/component-triad.md` says "the daemon takes one
+NOTA argument," the reader can't tell whether that came from the
+author or from an agent that wrote it down. The asymmetry matters:
+
+- An agent proposing to contradict something needs to know whether
+  the prior statement was an author intent (load-bearing) or an
+  earlier agent's writing (possibly hallucination).
+- Two documents that contradict each other can be ranked by looking
+  for a corresponding intent record.
+- A future agent verifying "did the author actually want this?" can
+  query the log.
+
+The log is a back-reference, not a front-line discipline document.
+Most agent reading still happens through skills, ARCHITECTURE.md,
+and reports. The intent log surfaces *only* when the author's voice
+is the question.
+
+Sweep and supersession discipline lives in
+`skills/intent-maintenance.md`.
+
+---
+
+## When to record
+
+Record when the author explicitly states something durable on a
+topic that's expected to apply beyond the current task. The five
+recordable kinds:
+
+| Kind | Author shape |
+|---|---|
+| `Decision` | "we're going with X, not Y" |
+| `Principle` | "X over Y as a general rule" |
+| `Correction` | "you were wrong about X; the right thing is Y" |
+| `Clarification` | "when I said X, I meant Y" |
+| `Constraint` | "never do Z" |
+
+Do **not** record:
+
+- Routine confirmations of a fully-specified agent proposal ("yeah,
+  sounds good" — the substance is in the proposal; the green light
+  isn't an intent).
+- Brainstorming-out-loud where the author explicitly says they're
+  not sure yet (record only the parts they *do* commit to, with
+  certainty `minimum`).
+- Conversational tangents.
+
+The bar: *would this statement be valuable to a future agent
+trying to understand what the author actually wants on this topic?*
+If yes, record. If unclear, ask the author whether to record before
+recording.
+
+---
+
+## Record shape
+
+Positional NOTA (per `skills/nota-design.md`). The wrapping type
+names the *kind* of intent. Fields in declared order:
+
+```nota
+(<Kind>
+  "<summary — terse one-line rephrasing by the agent>"
+  (Verbatim
+    "<author's exact words, with … for omitted tangents>"
+    "<surrounding what-was-being-decided>")
+  <certainty>
+  "<ISO-8601 timestamp>")
+```
+
+- `<Kind>` is one of `Decision`, `Principle`, `Correction`,
+  `Clarification`, `Constraint`.
+- `<certainty>` is a bare enum: `maximum`, `medium`, or `minimum`.
+- `<ISO-8601 timestamp>` is a string like `"2026-05-19T01:23:00Z"`.
+
+`Verbatim` is itself a positional record: quote then context. The
+quote uses `…` for elided tangents — the author often interleaves
+multiple topics in one turn, and the record only carries the part
+that belongs to this entry.
+
+A file is a top-level NOTA list `[ … ]` of one or more entries on
+the same sub-topic.
+
+---
+
+## Certainty vocabulary
+
+Triggered mechanically by the author's phrasing so the agent's
+interpretation is minimal:
+
+| Phrase pattern | Certainty |
+|---|---|
+| *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"*, strong corrections | `maximum` |
+| (default — direct statement, decision, preference) | `medium` |
+| *"I'm not sure"*, *"maybe"*, *"leaning toward"*, *"I think"*, *"perhaps"*, *"could be"* | `minimum` |
+
+The author can also tag certainty explicitly mid-sentence ("I'm
+certain about X but not sure about Y") — record X with maximum and
+Y with minimum.
+
+---
+
+## Directory and file organization
+
+```
+intent/
+  <topic>/
+    <sub-topic>.nota
+```
+
+- `<topic>` is a directory naming a broad subject area
+  (`component-shape`, `reports`, `workspace`, `orchestrate`,
+  `nota`, `jj`, …). New topics created as needed.
+- `<sub-topic>.nota` is a single file holding one or more closely-
+  related entries on a specific point within the topic.
+- Filenames are kebab-case, describing what the entries inside are
+  about.
+
+One topic per directory; one sub-topic per file; one or more
+entries per file. Group entries when they're on the same point;
+split when they diverge.
+
+---
+
+## Recording protocol — three steps
+
+Before adding an entry:
+
+1. **Query prior entries on the topic.** Read every file under
+   `intent/<topic>/`. If the author's new statement clearly
+   contradicts a prior, switch to the supersession protocol
+   (`skills/intent-maintenance.md`).
+2. **Pick the right kind.** Decision / Principle / Correction /
+   Clarification / Constraint. If multiple kinds fit, take the
+   strongest applicable (Constraint > Correction > Decision >
+   Principle > Clarification).
+3. **Write the entry.** Terse summary; verbatim quote with `…`
+   for elided tangents; context line; certainty per the vocabulary;
+   ISO-8601 timestamp.
+
+The agent who recorded an entry stays accountable for re-reading it
+within the session — if a later author statement reframes the
+earlier one, the recorded entry might need supersession.
+
+---
+
+## What this skill is NOT for
+
+- Agent-internal decisions. Those live in reports, commits, and
+  documentation. Agent decisions don't go in `intent/`.
+- Replacement for ARCHITECTURE.md or skills. The intent log
+  captures *what the author said*; the architecture captures *what
+  the system is*. The two complement each other; neither replaces
+  the other.
+- Long-form analysis. The log carries terse facts with verbatim
+  evidence. Analysis goes in reports.
+
+---
+
+## Forward — persona-mind migration
+
+When persona-mind's typed memory variants land, each `<Kind>`
+record becomes a memory of variant `Authorial<Kind>` (so
+`AuthorialDecision`, `AuthorialPrinciple`, …). Topic becomes a
+relation tag (`(IntentTopic <topic>)`). The
+`intent/<topic>/<file>.nota` path seeds the memory's `uid`. The
+`Verbatim` record becomes a sub-memory or an inline field on the
+parent — that decision sits with persona-mind's schema work.
+
+No work in `persona-mind` yet. This note signposts where the
+substance migrates.
+
+---
+
+## See also
+
+- `skills/intent-maintenance.md` — sweep, supersession protocol,
+  archival to `superseded/`, verification against current state.
+- `skills/nota-design.md` — the positional-NOTA discipline these
+  records follow.
+- `skills/skills.nota` — the canonical positional-NOTA example.
+- `intent/` — the surface this skill maintains.
+- Forward: `persona-mind` typed memory variants — eventual home.

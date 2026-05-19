@@ -1,0 +1,9 @@
+[
+  (Constraint
+    "Claim is by directory or by explicit file list — no sub-scope handoff. Claim a directory and everything inside it is claimed. Want only specific files? Claim them explicitly. The 'minus' operation (claim a directory then exclude a file) violates simplicity and explicitness."
+    (Verbatim
+      "if an agent claims a directory, then everything in that directory is claimed. … if he lets go of a certain file? No, you can't do that. That would be bad because then it could be confusing for agents. If you want to claim only certain files in a subdirectory, you have to claim them explicitly. We can't do like this minus this. That violates the principle of simplicity and explicitness."
+      "Answering Q4 of /229 on sub-scope handoff semantics; settled during the daemon-state brainstorm.")
+    maximum
+    "2026-05-19T01:20:00Z")
+]

@@ -1,0 +1,9 @@
+[
+  (Clarification
+    "jj commit accepts paths as positional arguments — jj commit <my-paths> -m '<msg>' commits only the named files. The simple default for path-selective commits, alongside jj split which is used when bookmarks need to move forward."
+    (Verbatim
+      "you can pick the files to commit with jj commit I believe."
+      "Pointing out that I had been documenting jj split as if it were the only path-selective option; jj commit is the simpler form for same-parent commits with no bookmark motion.")
+    medium
+    "2026-05-18T17:06:23Z")
+]

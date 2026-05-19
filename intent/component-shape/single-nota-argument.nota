@@ -1,0 +1,9 @@
+[
+  (Constraint
+    "Every component binary (CLI or daemon) takes exactly one argument: a NOTA string, a path to a NOTA file, or a path to a signal-encoded file. No command-line flags, ever. New configuration goes in the NOTA schema, not in CLI flags."
+    (Verbatim
+      "we don't use, we never, the only argument that a component can get actually that we don't use flags and stuff. We use nota. … So if we need a new type of argument for a component then it has to be the nota configuration schema that changes. We never ever use things like command line flags and things. There's only ever going to be one argument which is the, which is going to be the nota string itself or the path to a nota file or to a signal file."
+      "Resolving how daemon configuration enters during the component-triad rerender brainstorm; framing the rule as universal across all components, not orchestrate-specific.")
+    maximum
+    "2026-05-19T01:23:00Z")
+]

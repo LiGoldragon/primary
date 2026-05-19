@@ -1,0 +1,16 @@
+[
+  (Principle
+    "Configuration is always a Mutate. The way a daemon is configured is not optional state — it is integral to the daemon and changes through the same authority chain as any other Mutate."
+    (Verbatim
+      "the config is a mutate. All the config should be a mutate command because it's changing something that is a part of the daemon. The way the daemon is configured is not some optional state."
+      "Underlying principle introduced during the brainstorm on daemon initialization, before the policy/working state taxonomy got named.")
+    maximum
+    "2026-05-19T01:25:00Z")
+  (Decision
+    "Every triad daemon has two state categories in one sema-engine DB: policy state (rules; owner-Mutate only; bootstrapped one-shot from bootstrap-policy.nota in the repo) and working state (records produced by operation; never bootstraps; mutated per contract variants)."
+    (Verbatim
+      "Yeah we can go with policy and working state. Yeah the bootstrap file is in the repo and I guess it should be called bootstrap policy."
+      "Confirming the state-taxonomy proposal after the brainstorm; naming the bootstrap file `bootstrap-policy.nota` and placing it in the component repo.")
+    maximum
+    "2026-05-19T01:30:00Z")
+]

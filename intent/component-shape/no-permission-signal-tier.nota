@@ -1,0 +1,9 @@
+[
+  (Correction
+    "There are exactly two authority contracts per component: signal-<component> (peer-callable) and owner-signal-<component> (owner-only). There is no permission-signal-<component> middle tier — that was a hallucination in an earlier version of skills/component-triad.md."
+    (Verbatim
+      "what is permission-signal? ohh wow! the agent who made that edit hallucinated. the permissioned signal is just owner-signal. there is no permission-signal. edit that"
+      "Correcting skills/component-triad.md after an earlier agent invented a three-tier model. The actual model is two tiers, settled in the rerendered skill.")
+    maximum
+    "2026-05-18T22:13:54Z")
+]

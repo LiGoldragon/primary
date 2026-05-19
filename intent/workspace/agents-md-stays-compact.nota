@@ -1,0 +1,16 @@
+[
+  (Decision
+    "AGENTS.md is the compact every-session override file; bulky discipline lives in AGENTS-extended.md. AGENTS.md aims for around 100 lines as a soft target, but no line-cap number is quoted inside the file itself — that would be noise. Hard caps are forbidden as a class."
+    (Verbatim
+      "let's say 100 lines is what goes into agents.md and no more. And don't put that into agents.md. Don't say this file should only be 100 lines. Like that's just fucking noise again. … And then don't make these things hard caps. Let's say if it becomes 120 lines, that's okay. And don't quote that number either. … the agents.md file is like super compact and the super important stuff, like the super override stuff to break, to buck these agents from doing these things that they tend to do a lot."
+      "Settling the AGENTS.md split discipline; followed an earlier rejection of delegating role required-reading to AGENTS.md (would dilute role identity).")
+    maximum
+    "2026-05-18T11:31:00Z")
+  (Constraint
+    "Required-reading lists for roles stay in skills/<role>.md, not delegated to AGENTS.md. Centralising them dilutes role identity."
+    (Verbatim
+      "Delegate role file required reading sections to agents.md. Saves 250 lines workspace-wide but dilutes role identity. I'm not sure, I don't think so. Diluting role identity, I don't like the sound of that. So skip that, but the rest is good."
+      "Rejecting a prior proposal during the AGENTS.md restructuring discussion; required-reading stays role-local.")
+    maximum
+    "2026-05-15T00:00:00Z")
+]

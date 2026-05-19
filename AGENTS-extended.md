@@ -174,6 +174,38 @@ A workspace where new roles can be created dynamically (e.g. by a
 future `persona-orchestrate` daemon) needs this entry point so that a
 new role isn't a dead end.
 
+## Author intent log
+
+The workspace records what the author explicitly said in `intent/`, a
+directory of NOTA files organised by topic. Each entry holds a terse
+agent rephrasing, the author's verbatim quote with surrounding
+context, a certainty marker, and a timestamp. Five record kinds —
+`Decision`, `Principle`, `Correction`, `Clarification`, `Constraint`
+— wrapped positionally per `skills/nota-design.md`.
+
+The log exists because workspace documentation records *decisions*
+but not *who decided*. When two docs contradict, or when an agent
+proposes contradicting prior reasoning, the intent log is the
+authoritative answer to "what did the author actually say?" —
+distinct from "what does some doc currently claim?"
+
+When an agent records an entry that contradicts a prior entry, the
+contradiction is surfaced inline (prior verbatim + context +
+certainty) before the new entry lands. Supersession is always
+explicit. The superseded entry moves to
+`intent/<topic>/superseded/`; a `Superseded` record lands in
+`intent/<topic>/supersessions.nota`.
+
+The discipline lives in `skills/intent-log.md` (recording) and
+`skills/intent-maintenance.md` (sweeping, supersession,
+verification). The hard override in `AGENTS.md` makes consultation
+and recording non-optional.
+
+Eventually the log migrates to a typed `persona-mind` memory variant
+(`AuthorialDecision`, `AuthorialPrinciple`, …); topic becomes a
+relation tag; the file path seeds the memory's `uid`. Until then,
+filesystem-organised NOTA files are the carrier.
+
 ## See also
 
 - `AGENTS.md` — the compact every-keystroke version.
@@ -181,4 +213,7 @@ new role isn't a dead end.
 - `orchestrate/AGENTS.md` — role coordination protocol.
 - `skills/skills.nota` — typed skill index.
 - `skills/skill-editor.md` — how to edit skill files without growing them noisy.
+- `skills/intent-log.md` — recording author intent.
+- `skills/intent-maintenance.md` — sweeping the intent log.
+- `intent/` — the surface itself.
 - `protocols/active-repositories.md` — live repo map and stack discipline.

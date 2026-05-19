@@ -1,0 +1,9 @@
+[
+  (Decision
+    "In NOTA, the wrapping type names the most useful distinction in context. If every record in a file would share the same wrapper, that wrapper is implied — drop it and use the next-level distinction as the type. Data lives in records, not section comments. Enums get names, not numbers."
+    (Verbatim
+      "I'm looking at your skills.nota and this is really stupid. You're wrapping every single entry in skill. Obviously we know that all the objects in here are skill. So you're wasting tokens. This is one of the problems with NOTA design …"
+      "Critique of an earlier skills.nota that wrapped every entry in (Skill …); produced the canonical three NOTA-design rules now living in skills/nota-design.md.")
+    maximum
+    "2026-05-18T13:07:19Z")
+]
