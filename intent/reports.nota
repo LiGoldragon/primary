@@ -46,3 +46,10 @@
     "Reacting to my listing 'Stream-while-build granularity — Nix realizes per-derivation, not per-byte' as a gap in reports/system-assistant/18 when the per-derivation framing was already implicit in the psyche's description. Guidance about how to surface gaps in audit reports."
     Maximum
     2026-05-17T13:30:00Z)
+
+(Correction
+    "Chat responses stay concise. When a report is new or edited, the reply names the full path so the psyche can copy it directly. Bring the most important topic and real questions forward in chat; elaboration belongs in a report or an edited older report, not a huge response."
+    "I don't want these huge responses anymore. I just only want in the response, I want to see the path of any new or edited report. … I want the path of the report, not just the number of it, so I can copy the report path by just selecting it and then passing it to another agent. … be very concise in your response. Don't use convoluted formatting … bring your most important topic and questions forward and everything else that if you need to get elaborate that goes into a report or into an edited version of an older report."
+    "Correcting chat/report handoff style after an intent-backfill detour; sharpens the full-report-path and concise-chat rules."
+    Maximum
+    2026-05-19T16:55:00Z)
