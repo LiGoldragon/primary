@@ -40,3 +40,52 @@
     "Settling the acronym exception list for skills/naming.md exception #4. Psyche affirmed CPU/URL/HTTP/JSON explicitly with the 'has it become the English word' test."
     Maximum
     2026-05-19T18:35:00Z)
+
+(Principle
+  "Repeated prefixes or suffixes in sibling type names indicate a missing schema separation."
+  "Recent repositories query. Changed file query. Comment message query. Why aren't these all queries with different payloads? Like query and then recent repositories. So query is the variant and it has another inner variant which is recent repositories. … when data types show up a pattern in the names where the same prefix or suffix keeps popping up, that is probably a sign that there is a logic separation that is being stuffed inside the names of the data types instead of coming out as a separate schema separation. More separation is better."
+  "Psyche reacted to repository-ledger names such as RecentRepositoriesQuery, ChangedFileQuery, and CommitMessageQuery after the first redundant Repository-prefix rename pass. The concern is not just redundant namespace ancestry but repeated category words hiding a missing relation layer."
+  Medium
+  2026-05-19T16:34:02Z)
+
+(Decision
+    "The vocabulary 'signal types' refers to the types defined in signal-<component> contract crates — the Rust types that cross the wire as the typed schema of one signaling fabric. The psyche has named this surface explicitly so future conversations have a single term for it. Signal types include the per-relation request/reply/event variants, the typed records they wrap, and the typed identifiers/enums those records reference."
+    "we're going to create our own language. So the signal types are obviously the biggest culprit."
+    "Vocabulary lock-in: 'signal types' = the types defined in signal-* contract crates. Psyche introduced because they were 'tired of reaching for vocabulary.' Use this term in future conversations and guidance about contract-crate naming."
+    Maximum
+    2026-05-19T18:50:00Z)
+
+(Principle
+    "Agents over-declarate signal type names — every type gets a fully descriptive name even when the surrounding namespace already supplies the context. This is wrong on multiple levels: (1) it stuffs logic into the name instead of into the schema, (2) it produces wrong separation of concerns (logic that should live in nested types ends up flat at the top), (3) it produces wrong schema shape (flat tables of names instead of trees that reflect the conceptual planes). The naming failure and the schema-shape failure are the same failure: not recognizing where logical planes diverge."
+    "agents seem to want to create these fully declarative names on every single one of them. And that's just wrong from many points of view. It sort of stuffs logic. They end up not creating the right separation of concern, and they end up creating the wrong schema structure."
+    "Diagnosing the over-declarative-name pattern: the symptom is repetitive prefixes; the cause is the agent failing to recognize logical planes and forcing everything flat."
+    Maximum
+    2026-05-19T18:50:00Z)
+
+(Principle
+    "Signal-type schemas should grow into trees, not stay flat. When the schema needs a new logic plane (e.g. a query plane), that plane gets its own sub-structure — a nested set of types under one conceptual root — not a sequence of flat top-level variants each carrying the plane's name as a suffix. Example: 'RecentFileQuery, RecentRepositoryQuery, FileChangedQuery' as flat top-level types is the wrong shape; the right shape is a Query subtree with its own structure where each query kind reflects its variant in the tree position, not in the name."
+    "the schema needs to grow more complex. That's what is happening, and then the agent doesn't see how the schema needs to evolve because it doesn't create the base schema properly from the beginning. So it ends up being this really stuffy, flat table of things where it should really grow into a tree."
+    "Naming the underlying schema-shape failure: agents create flat top-level variant sets where the schema should branch into sub-trees representing conceptual planes (read vs write, query vs assertion, lifecycle stage, etc.)."
+    Maximum
+    2026-05-19T18:50:00Z)
+
+(Clarification
+    "The agent working on persona-spirit gave the operator a proposed rename list (Intent*/Spirit*/Psyche* prefix drops, Entry flat-shape with timestamp+quote, Verbatim retired, no nested vector). The psyche shared this with the next agent as evidence of the over-declarative-names problem AND the right correction path. The renames themselves are reasonable; the surfaced concern is the deeper pattern that produced the original elaborate names in the first place."
+    "[a long block of rename list, then:] So that block was a response from an agent working on Persona Spirit, which had come up with these very elaborate names for the schema, for the contract, for the signal, right?"
+    "Setting context for the new investigation: the operator's renames are not in question; the question is the broader pattern they reveal."
+    Maximum
+    2026-05-19T18:50:00Z)
+
+(Decision
+    "There is a missing intent record from a prior session: the psyche told some agent that 'query is obviously a different logic plane that needs to be developed,' and that agent did not log the intent. Find this intent fragment in recent reports or intent logs, recover the substance, and surface what's missing so it can be properly recorded. The fact that this intent was lost is itself an indictment of an agent skipping the golden rule."
+    "look at the recent intent logs to see that that other agent should have logged that intent that I gave him about the query being obviously a different logic plane that needs to be developed"
+    "Recovery task: find the lost intent about query-as-a-logic-plane. Likely lives in a recent report or unrecorded session output. The substance is load-bearing for the signal-type investigation."
+    Maximum
+    2026-05-19T18:50:00Z)
+
+(Decision
+    "Query is its own logic plane in signal-type schemas — not a name suffix repeated across sibling variants. When a contract has N read-side variants all suffixed with Query (RecentRepositoriesQuery, ChangedFileQuery, CommitMessageQuery, EventQuery, CatalogQuery), the schema is missing the Query parent — the repeated suffix is the symptom of an unrepresented schema layer. The correct shape: one Match variant whose payload is a Query enum, with each former *Query becoming an inner variant. Generalises: repeated category words across sibling names (Query, Command, Event, Listing, Selection) are diagnostic of missing parent types in the schema."
+    "The psyche also named the possible next split: query -> recent -> repositories"
+    "Recovering intent that the previous agent did not log. The psyche critiqued repository-ledger's *Query suffix pattern around reports /123 + /124; the agent wrote the analysis (/124) but did not log the underlying psyche intent. This record fills the gap, drawing the substance from /124's reconstruction. Manifestation target: skills/naming.md (new section on repeated-category-words) + skills/contract-repo.md (contract-specific form of the same rule)."
+    Maximum
+    2026-05-19T18:55:00Z)

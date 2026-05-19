@@ -97,3 +97,10 @@ We need to forbid this type of report name. So find out what the report is about
     "Direction before resuming Horizon redesign work: clean stale report inventory first, preserve good substance only in focused handoff reports, and delete obsolete reports after the preserved material is committed."
     Maximum
     2026-05-19T12:26:44Z)
+
+(Correction
+    "When you'd say 'ready to close', 'ready to merge', 'ready to ship' or similar bureaucratic workflow-state phrasing in chat, either do the action yourself (close the bead, merge the branch) or ask a specific question naming the choice. 'Ready to X' without action and without a clarifying question is empty noise — it leaves the psyche guessing whether you're reporting status, asking permission, or asking them to do the action themselves. When the phrasing combines with a bare opaque identifier (bead UID without inline description) the indirection compounds and tells the psyche nothing at all."
+    "saying bead primary HJ63 is ready to close doesn't fucking tell me anything about what you mean, because I have no fucking idea what HJ63 the fuck is. … Are you asking me if you should close a bead that should be closed? Are you asking me if you should implement it? … if it's supposed to be closed, you should close it. If you're asking me if you should implement it, then that's a different question."
+    "Correcting my chat reply 'Bead primary-hj63 is ready to close' that combined two indirections — bureaucratic workflow language and bare opaque identifier — even though AGENTS.md opaque-identifiers-in-chat hard override and the bureaucratic-noise correction in workspace.nota each already forbid one of them. This sharpens to a positive rule: actions are taken, not announced as 'ready'."
+    Maximum
+    2026-05-19 18:30)
