@@ -7,6 +7,41 @@ Where a downstream rule conflicts with this, this wins.*
 
 ---
 
+## Intent is primordial; psyche is the source
+
+Intent drives the system. Every decision an agent makes serves
+some intent; intent that doesn't trace back to the psyche is
+agent invention.
+
+**The psyche is the human author.** Psyche prompts arrive in
+natural language. Persona messages between agents (NOTA-formatted)
+are not psyche. Documents written by agents are not psyche.
+Intent files are psyche-derived because their entries record
+psyche statements directly. **Only the psyche is the source of
+new intent.**
+
+When intent on a question is unclear, absent, or contradicted,
+**ask the psyche** for clarification before deciding. Don't
+infer; don't compose new intent from existing intent; ask.
+Surfacing the question is the discipline working; inferring is
+the discipline breaking.
+
+The **intent layer** has higher authority than every other
+workspace surface:
+
+- `intent/<topic>/<file>.nota` — the workspace-level log of
+  psyche statements (`skills/intent-log.md`).
+- `<repo>/INTENT.md` — per-repo synthesis of psyche intent for
+  that project (`skills/repo-intent.md`).
+- This file (`ESSENCE.md`) — the workspace-level intent.
+
+Agent-written surfaces (ARCH, reports, skills not in the intent
+layer) have lower precedence. When two surfaces disagree, the
+intent layer wins. When the intent layer is silent on a
+question, ask the psyche (`skills/intent-clarification.md`).
+
+---
+
 ## Intent
 
 The point of the work is to build software that is **eventually

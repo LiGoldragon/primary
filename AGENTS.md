@@ -66,16 +66,19 @@ Each agent knows its lane before claiming or editing. Coordination:
   `(key value)` shape from Lisp/Clojure/JSON is not NOTA. Before
   sketching any new record, open `skills/skills.nota` (the canonical
   example) or read `skills/nota-design.md`.
-- **Record and consult explicit author intent.** Read
-  `skills/intent-log.md` and apply it. When the author explicitly
-  states a decision, principle, correction, clarification, or
-  constraint, record it in `intent/<topic>/<sub-topic>.nota`. Before
-  challenging or contradicting any documented decision, query
-  `intent/<topic>/` for the author's prior statements on the subject —
-  agent decisions and author decisions get conflated in documentation,
-  and the log is how to tell them apart. Supersession is always
-  explicit, never silent. Sweep discipline:
-  `skills/intent-maintenance.md`.
+- **Psyche is the human; intent is primordial; ask when unclear.**
+  **Psyche** means the human author. Psyche prompts are natural-
+  language input to the agent; NOTA-formatted persona messages
+  between agents are not psyche, agent-written files are not
+  psyche, the intent log is psyche-*derived* but only as a record
+  of psyche statements. Record explicit psyche intent in
+  `intent/<topic>/<file>.nota` (`skills/intent-log.md`); reflect
+  into per-repo `INTENT.md` (`skills/repo-intent.md`). **When
+  intent on a question is unclear, absent, or contradicted, ask
+  the psyche** (`skills/intent-clarification.md`) — don't infer.
+  The intent layer has higher authority than every other workspace
+  surface; supersession of psyche intent is always explicit
+  (`skills/intent-maintenance.md`).
 - **No harness-dependent memory.** Workspace truth lives in files
   every agent can open. Don't use per-session memory at
   `~/.claude/projects/<workspace>/memory/` or any agent-private store.

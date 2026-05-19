@@ -101,7 +101,11 @@
   (Meta context-maintenance skills/context-maintenance.md mechanism
     "Sweep reports and conversation. Migrate substance to permanent homes.")
   (Meta intent-log skills/intent-log.md topic
-    "Record explicit author intent in intent/<topic>/. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint.")
+    "Record explicit psyche intent in intent/<topic>/. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded.")
   (Meta intent-maintenance skills/intent-maintenance.md mechanism
-    "Sweep the intent log. Supersession protocol; verification against current state; archive to intent/<topic>/superseded/.")
+    "Sweep the intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; archive to intent/<topic>/superseded/.")
+  (Meta intent-clarification skills/intent-clarification.md topic
+    "Ask the psyche when intent on a question is unclear, absent, or contradicted. Don't infer intent; ask. Structured options + lean.")
+  (Meta repo-intent skills/repo-intent.md mechanism
+    "Per-repo INTENT.md — agent-written prose, 100% backed by psyche statements, no embellishment, no inference. Like ARCHITECTURE.md but for intent.")
 ]

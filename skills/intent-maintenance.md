@@ -59,9 +59,14 @@ prior recorded entry:
    The `Superseded` record lives in `intent/<topic>/supersessions.nota`
    (one file per topic, append-only).
 
-Supersession is **always explicit**. An author entry is never quietly
-overwritten by another author entry. This is the load-bearing
-protection against agent hallucination passing as author intent.
+Supersession is **always explicit, and only the psyche can supersede
+psyche intent.** A new psyche statement is the only source that can
+override a prior psyche statement. An agent encountering documented
+intent that seems wrong does NOT supersede on its own authority; the
+agent asks the psyche (`skills/intent-clarification.md`). An author
+entry is never quietly overwritten by another author entry, and
+never overwritten by agent inference. This is the load-bearing
+protection against agent hallucination passing as psyche intent.
 
 ---
 

@@ -174,37 +174,41 @@ A workspace where new roles can be created dynamically (e.g. by a
 future `persona-orchestrate` daemon) needs this entry point so that a
 new role isn't a dead end.
 
-## Author intent log
+## Intent layer — psyche, log, per-repo, workspace
 
-The workspace records what the author explicitly said in `intent/`, a
-directory of NOTA files organised by topic. Each entry holds a terse
-agent rephrasing, the author's verbatim quote with surrounding
-context, a certainty marker, and a timestamp. Five record kinds —
-`Decision`, `Principle`, `Correction`, `Clarification`, `Constraint`
-— wrapped positionally per `skills/nota-design.md`.
+**Psyche** means the human author. Psyche prompts arrive as
+natural language; NOTA-formatted persona messages between agents
+are not psyche, agent-written files are not psyche. Only the psyche
+is the source of new intent.
 
-The log exists because workspace documentation records *decisions*
-but not *who decided*. When two docs contradict, or when an agent
-proposes contradicting prior reasoning, the intent log is the
-authoritative answer to "what did the author actually say?" —
-distinct from "what does some doc currently claim?"
+The intent layer has three surfaces:
 
-When an agent records an entry that contradicts a prior entry, the
-contradiction is surfaced inline (prior verbatim + context +
-certainty) before the new entry lands. Supersession is always
-explicit. The superseded entry moves to
-`intent/<topic>/superseded/`; a `Superseded` record lands in
-`intent/<topic>/supersessions.nota`.
+1. **The workspace intent log** at `intent/` — NOTA files
+   organised by topic. Each entry holds a terse agent rephrasing,
+   the psyche's verbatim quote with surrounding context, a
+   certainty marker, and a timestamp. Five record kinds:
+   `Decision`, `Principle`, `Correction`, `Clarification`,
+   `Constraint`. Discipline: `skills/intent-log.md`.
+2. **Per-repo `INTENT.md`** at each repo root — agent-written
+   prose, 100% backed by psyche statements, no embellishment or
+   inference. Like `ARCHITECTURE.md` but for psyche-stated
+   intent. Discipline: `skills/repo-intent.md`.
+3. **`ESSENCE.md`** at the workspace root — workspace-level intent.
 
-The discipline lives in `skills/intent-log.md` (recording) and
-`skills/intent-maintenance.md` (sweeping, supersession,
-verification). The hard override in `AGENTS.md` makes consultation
-and recording non-optional.
+When an agent encounters a question the intent layer doesn't
+speak to (or speaks to ambiguously), the rule is to ask the
+psyche before deciding (`skills/intent-clarification.md`). Don't
+infer; don't compose new intent from old.
 
-Eventually the log migrates to a typed `persona-mind` memory variant
-(`AuthorialDecision`, `AuthorialPrinciple`, …); topic becomes a
-relation tag; the file path seeds the memory's `uid`. Until then,
-filesystem-organised NOTA files are the carrier.
+Supersession is always explicit, and **only the psyche can
+supersede psyche intent**. An agent encountering documented intent
+that seems wrong asks the psyche — never overrides on its own
+authority. Discipline: `skills/intent-maintenance.md`.
+
+Eventually the log migrates to typed `persona-mind` memory
+variants (`AuthorialDecision`, `AuthorialPrinciple`, …); topic
+becomes a relation tag; the file path seeds the memory's `uid`.
+Until then, filesystem-organised NOTA files are the carrier.
 
 ## See also
 
@@ -213,7 +217,9 @@ filesystem-organised NOTA files are the carrier.
 - `orchestrate/AGENTS.md` — role coordination protocol.
 - `skills/skills.nota` — typed skill index.
 - `skills/skill-editor.md` — how to edit skill files without growing them noisy.
-- `skills/intent-log.md` — recording author intent.
+- `skills/intent-log.md` — recording psyche intent.
 - `skills/intent-maintenance.md` — sweeping the intent log.
-- `intent/` — the surface itself.
+- `skills/intent-clarification.md` — asking the psyche.
+- `skills/repo-intent.md` — per-repo `INTENT.md`.
+- `intent/` — the workspace log itself.
 - `protocols/active-repositories.md` — live repo map and stack discipline.
