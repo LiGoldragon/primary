@@ -95,3 +95,31 @@
     "The clean three-case rule. Replaces my prior invented terminology and partial framings. Lands in skills/nota-design.md and feeds bead primary-hj63 for the README rewrite."
     Maximum
     2026-05-19 21:00)
+
+(Decision
+    "Reconsider Option<T>'s special-case in NOTA: currently a present value writes the inner T directly with no Some wrapper (per nota/README.md). Brainstorming whether Option should be a normal enum — i.e., a present value writes (Some inner) — to eliminate the asymmetry and let the three-case PascalCase rule hold without exception. Result<T,E> already follows the normal rule (Ok / Err). Bool has its own literal forms (true/false). Option is the lone special case."
+    "I question that now, if we should just wrap a sum value with a sum wrapper. I think there's a good case to say that we should."
+    "Brainstorm in flight on whether to land the symmetry. Cost: more verbose for the common case (`(Some 42)` vs `42`); needs README + codec change + skill update; existing fixtures need rewriting. Gain: zero exceptions to the three-case rule; wire form is more self-describing. Medium certainty until psyche commits."
+    Medium
+    2026-05-19 21:15)
+
+(Decision
+    "Land the Option-wrapping change in NOTA: a present Option<T> writes (Some inner) — wrapped, like every other data-carrying enum variant. The current carve-out (no Some wrapper) is removed. Codec, README, fixtures all update. The three-case rule then holds with zero exceptions."
+    "Yeah, I want to go for it"
+    "Psyche confirms the Option-wrapping. File a bead against the nota repo for codec + README + fixture sweep."
+    Maximum
+    2026-05-19 21:30)
+
+(Decision
+    "Bool should look like an enum in NOTA — `True`/`False` PascalCase unit variants (case 3 of the three-case rule), not lowercase `true`/`false` literals. Bool is conceptually an enum of two unit variants; treating it as a sum aligns with the rest of NOTA's value model. Breaking change to existing fixtures."
+    "in REST [STT: rust], is true and false not an enum? So it's just lowercase? Oh, I guess it's a keyword. Which is funny because they could have made it an enum and it would actually be, I think, more correct. Because true and false is an enum. It's one of, one of true or false. That's funny. I think I would rather go with making true and false look like an enum in NOTA. Because otherwise it looks like a string."
+    "Settling Bool as an enum (case 3) in NOTA. Worth a separate bead alongside the Option-wrapping change. STT correction noted: 'REST' → 'Rust' (already in lookup)."
+    Medium
+    2026-05-19 21:30)
+
+(Decision
+    "Brainstorm: forbid bare PascalCase tokens at string-typed schema positions. Currently NOTA accepts bare PascalCase as a string when the schema says String — e.g. `(Tag User)` parses `User` as the string content. The proposal: reject this at parse time so PascalCase is always a variant. Removes ambiguity between 'string content that happens to be capitalised' and 'variant tag'. The psyche acknowledged enforcement might be tricky; this stays open."
+    "We could almost also enforce that if a position that expects a string, and it's given an unquoted string, which is acceptable currently in NOTA, that it should not start with a, it should not be pascal case. To sort of enforce, like, don't make anything, don't make a string look like a variant."
+    "Brainstorm-in-flight; needs a follow-up confirmation before landing as a bead. Tightens NOTA's grammar in service of the three-case rule's unambiguity."
+    Medium
+    2026-05-19 21:30)

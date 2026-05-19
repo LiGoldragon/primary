@@ -106,6 +106,14 @@ Each agent knows its lane before claiming or editing. Coordination:
   pure noise in agent context — costs tokens, conveys nothing
   headings don't already convey. Allowed inside code blocks (e.g.
   illustrating a markdown template); never as a document separator.
+- **Opaque identifiers in chat carry an inline description.** A
+  bead UID, content hash, jj change id, commit short-id, or any
+  other locator the psyche can't decode in their head gets a short
+  prose description on first mention: "bead `primary-hj63`
+  (README rewrite for the PascalCase rule)" — never just
+  "`primary-hj63`". Humans don't have a CLI in their head.
+  Generalisation of `skills/reporting.md` §"Human-facing
+  references are self-contained".
 
 ## Where to look for more
 

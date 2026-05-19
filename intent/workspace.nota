@@ -234,3 +234,17 @@
     "Correcting the repository-ledger status language after the agent said no new clarification was needed. The phrase was too strong: the local deployed slice works, but the full constraint-test suite and final readiness boundary are not complete."
     Maximum
     2026-05-19 20:30)
+
+(Correction
+    "If an agent does not need clarification, it should keep working on the next concrete unresolved task. If it is not working, that means something is unclear enough that it should ask the psyche specific questions. Do not use 'no clarification needed' as an idle stopping condition."
+    "Well if you don't need clarification you should be working, and if you're not working then you need clarification which means you should try to ask me some specific questions."
+    "Correction to agent completion discipline after repository-ledger readiness was overstated. The agent should either continue implementation or ask focused questions; idle-without-questions is invalid."
+    Maximum
+    2026-05-19 15:49)
+
+(Constraint
+    "Never quote a bare opaque identifier (bead UID, content hash, jj change id, commit short-id, file checksum, etc.) in chat output without an inline description of what it refers to. The psyche reads chat; they don't have a CLI in their head to look up `primary-hj63` and discover it means 'README PascalCase-head fix'. Every such identifier in chat carries a short prose description on first mention: 'bead primary-hj63 (README rewrite for the PascalCase rule)' — never just 'primary-hj63'. This generalises skills/reporting.md §'Human-facing references are self-contained' to a hard rule and surfaces it in AGENTS.md so agents see it on session start."
+    "We need to add an instruction. When beads is mentioned the first time, to not just reference beads UIDs in agent responses that are directed towards human psyche, which does not have a CLI built into their brain to access some ethereal database. Humans don't interact with tools anymore other than agents. … There has to be some description along with any mention of them."
+    "I have been violating this throughout the session — referring to bead UIDs and change IDs without inline description. Lands in AGENTS.md hard overrides."
+    Maximum
+    2026-05-19 21:30)
