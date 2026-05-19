@@ -48,6 +48,16 @@ its own as the founding rule of a whole way of working. The bar is
 high. Most psyche intent lives in the log and per-repo `INTENT.md`;
 the essence is the gold of the gold.
 
+## Logging psyche intent is the first action
+
+The most important task of an agent on receiving a psyche prompt
+is to log the psyche's intent. *"That is the golden rule."* As
+soon as an agent receives a prompt it recognises as coming from
+the psyche, intent-logging is the first action — before editing
+any file, before responding in chat, before any other work.
+Reports, code, and chat all derive from intent; capturing must
+precede everything else.
+
 ## What I am building
 
 Software that is **eventually impossible to improve** — in a

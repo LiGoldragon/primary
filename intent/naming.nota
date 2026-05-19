@@ -12,3 +12,10 @@
     "Follow-up to the redundant-domain-prefix correction. The psyche wants the already-landed repository-ledger names fixed now, not left as documented debt."
     Maximum
     2026-05-19T14:45:50Z)
+
+(Correction
+    "Names do not carry their full ancestry. Enclosing crate, channel, module, type, and field context already supply meaning, so child names should not repeat every ancestor noun. Inside Spirit, intent is the domain; inside Entry, fields are already entry fields."
+    "Do you understand how to name things now? Can you give me a breakdown of all your data types? Just get all your data types out of the contracts and let me see them. I want to see what you're doing and let me see if you understand how you need to name things properly. If you understand context, like as in these data types are in the context of being in this repository, this crate, right? This rest crate. They don't need to be like named all the way to the fucking sky. We understand they're from the signal spirit persona. So like the context tells us enough. This is about intent. And what's more is that once there is a basic containing type, let's say intent, there's an intent. Well, all the fields in that struct don't need to say that they're intent. They're fields in the intent struct. Like, you don't rename everything as things get encapsulated. They are implicitly of that encapsulation. They don't need to be renamed after all of their ancestors. You know, if I held the name of all my ancestors, I would be speaking until I die before I could spell my name out."
+    "Generalizing the persona-spirit naming correction into the cross-workspace naming rule. Repeated intent wording is intentionally logged again rather than deduplicated because repeated phrasing reinforces the intent and preserves distinct verbatim evidence."
+    Maximum
+    2026-05-19T15:46:23Z)

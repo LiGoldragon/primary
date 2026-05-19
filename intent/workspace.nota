@@ -325,3 +325,10 @@
     "After the LLM-mediation wording correction + option-B selection, the agent asked whether to walk through the remaining four manifestation items one-by-one or batch. Psyche delegated the decision."
     Medium
     2026-05-19T17:55:00Z)
+
+(Decision
+    "The most important task of an agent on receiving a psyche prompt is to log the psyche's intent — the golden rule of agent behavior. Promote it from AGENTS.md hard overrides + INTENT.md + skills/intent-log.md up to ESSENCE.md, the highest-authority surface. As soon as an agent receives a prompt it recognises as coming from the psyche, intent-logging is the first action, before any other work."
+    "The most important task of an agent when he receives a prompt from a psyche is to log the intent of the psyche. That is the golden rule, and it needs to be promoted higher. The agents need to do that thing first. As soon as they get a prompt they know comes from the psyche"
+    "Psyche promoted the intent-first-on-psyche-prompt rule to ESSENCE level. Previously lived in AGENTS.md hard overrides + INTENT.md + skills/intent-log.md only. Note: the last sentence of the verbatim was originally received with an STT typo ('they know it comes' → corrected to 'they know comes')."
+    Maximum
+    2026-05-19T18:00:00Z)
