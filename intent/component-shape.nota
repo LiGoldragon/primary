@@ -178,3 +178,10 @@
     "Authorizing implementation of the three architectural hole-fixes from /243. Substance is settled; this is now implementation work."
     Maximum
     2026-05-20T00:15:00Z)
+
+(Decision
+    "Start the signal-frame/signal-executor migration along report 141's deeper corrections: typed per-operation domain rejections, contract-authored observable open/close verbs with macro-owned token payloads, and an explicit executor-to-observer projection boundary."
+    "start a migration that follows the deeper, more correct fixes suggested in reports/operator/141-signal-frame-executor-correction-examples.md"
+    "Directing the next implementation phase after comparing reports 140, 141, 244, and 245. The migration should prefer the corrected report-141 shapes over the shallower alternatives."
+    Medium
+    2026-05-20T11:43:16+02:00)
