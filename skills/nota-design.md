@@ -161,10 +161,10 @@ no, you have a struct; write the fields directly without any tag
 (case 2).
 
 This is the entirety of the PascalCase rule. Earlier versions of
-this skill invented terminology ("head", "monomorphic position")
-and the `nota/README.md` over-states the rule by conflating
-structs with enum variants — both being corrected per bead
-`primary-hj63`.
+this skill invented terminology ("head", "monomorphic position");
+do not reintroduce it. The rule above is sufficient: structs are
+untagged, enum variants own PascalCase tags, and map keys are key
+text by delimiter position.
 
 **Bare identifiers as strings.** Where an ordinary schema position
 expects `String`, a bare camelCase or kebab-case token serves as
@@ -206,9 +206,10 @@ tokens is a typed error, not a silent zero-fill.
 
 **Multi-field unnamed structs are forbidden.** `struct Pair(i32, i32)`
 has no field-name mapping; NOTA rejects at serialize time.
-Single-field tuple structs are transparent newtypes only: the inner
-value emits at the schema position. For heterogeneous positional
-data, use a **named-field** struct, which emits as a typed record.
+Single-field unnamed structs are transparent newtypes only: the
+inner value emits at the schema position. For heterogeneous
+positional data, use a **named-field** struct, which emits as an
+untagged struct record.
 
 **Sigils.** Two reserved at the syntax layer: `;;` for line
 comments, `#` for byte literals. Other sigils (`~ @ ! ? *`) are
@@ -232,10 +233,10 @@ proposal, anywhere — do these four things:
 3. **If the structure is heterogeneous positional, it's a record
    (struct) — not a sequence.** Lists are homogeneous; mixed-type
    positional structure is a struct with positional fields. The
-   struct's type name appears only when not determined by schema
-   position (enum variants, top-level records); at a known
-   schema position, the fields come directly without naming the
-   type.
+   struct's type name is not written as a struct tag. If a
+   PascalCase token appears immediately after `(`, it is an enum
+   variant tag; otherwise the fields come directly without naming
+   the type.
 4. **Sketch fields positionally — no `(key value)` pairs inside the
    record. No nested wrappers when every record has the same
    inner shape.** Positional means

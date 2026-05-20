@@ -53,6 +53,7 @@ stack.
 | `nota` | `/git/github.com/LiGoldragon/nota` | NOTA language home. |
 | `nota-codec` | `/git/github.com/LiGoldragon/nota-codec` | NOTA parser/encoder/decoder; no Nexus semantics. |
 | `nota-derive` | `/git/github.com/LiGoldragon/nota-derive` | NOTA derive support. |
+| `nota-config` | `/git/github.com/LiGoldragon/nota-config` | Strict one-argument typed configuration input over NOTA, `.nota`, or `.rkyv`. |
 
 ## Retired / Cleanup Targets
 
