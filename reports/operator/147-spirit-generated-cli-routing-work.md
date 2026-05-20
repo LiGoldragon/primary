@@ -67,7 +67,7 @@ routing without a test-only command.
 
 ### persona-spirit
 
-Implemented locally and verified, pending commit.
+Implemented, verified, and pushed commit `3ebc05af` in `persona-spirit`.
 
 - `spirit` peeks the NOTA request head with `nota-codec`, routes through
   `SpiritCommandLineDispatch`, then decodes only the selected contract.
@@ -88,6 +88,4 @@ Implemented locally and verified, pending commit.
 
 ## Remaining Before Close
 
-- Commit and push `persona-spirit`.
-- Commit this report without absorbing unrelated primary work.
 - Comment or update bead `primary-ojxq` (persona-spirit triad implementation).
