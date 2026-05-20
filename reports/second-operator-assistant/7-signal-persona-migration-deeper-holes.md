@@ -1,7 +1,7 @@
 ## 7 — signal-persona migration: deeper holes after /244 + /245
 
 **Lane:** second-operator-assistant
-**Reads against:** report 6 (the migration writeup),
+**Reads against:**
 `reports/designer/244-hole-finding-after-243-implementations.md`,
 `reports/designer/245-design-alternatives-for-244-holes.md`,
 `reports/operator/140-signal-frame-executor-hole-analysis.md`
@@ -10,21 +10,43 @@ of the five holes — see §3 below for cross-walk),
 and the macro source at
 `/git/github.com/LiGoldragon/signal-frame/macros/src/{validate.rs,emit.rs}`.
 
+**Note (added during 2026-05-20 context-maintenance sweep).** This
+report originally re-analysed the now-retired second-operator-assistant
+the prior migration writeup ("signal-persona contract-local-verbs migration"). Report 6
+itself has retired — its rename table is in
+`signal-persona/ARCHITECTURE.md`'s Migration history section
+(commit `0b8adc28` on main), its design problems are sharpened
+into the five findings here, and its reply-naming
+follow-up is codified in `skills/contract-repo.md` §"Reply
+discipline" (commit `a7f3a0ee`). Subsequent reports superseded
+parts of this one too: `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
+settled the cascade-sequencing question Finding 5 raised (via the
+three-layer model + `Lowering::Command` + `ObservedLowering`
+extension trait), and `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
+pivots from "full cascade" to "smallest convergence bundle + pilot
+end-to-end" — so Finding 5's sequencing argument now reads
+"infrastructure convergence first, then pilot, persona cascade
+deferred until pilot proves the pattern." Findings 1-4 (the
+signal-persona-specific structural issues) remain unfixed in code
+and are still load-bearing for the eventual persona-spirit /
+persona-mind / persona-router cascade — they are not blocking
+the pilot.
+
 ## 0 · TL;DR
 
 Re-analysing the migration with the macro source open and /244+/245
 in context surfaces **one root-cause bug in `signal-frame`'s macro
 validation** that produced cascading scar tissue across the migrated
-contract, plus four sharper findings that report 6 either missed or
+contract, plus four sharper findings that the prior migration writeup either missed or
 under-named. Five severity-ranked items:
 
-| # | Finding | Severity | Status vs report 6 |
+| # | Finding | Severity | Status vs the prior migration writeup |
 |---|---|---|---|
-| 1 | **`validate_record_head_uniqueness` is incorrect for the case-1 variant-wrapped encoding the macro actually emits.** The check rejects two variants that share a payload TYPE name; the wire dispatches on the VARIANT name. The check is a relic of a different (case-2 tag-less) encoding strategy. | **High** | New — report 6 §1 named the symptom; this names the root cause. |
-| 2 | **Six one-field wrapper structs add a parens layer with no information content** (`ComponentStartup`, `ComponentShutdown`, `ComponentReady`, `ComponentNotReady`, `ComponentHealthReport`, `GracefulStopAcknowledgement`, `SupervisionUnimplemented`). The first two are scar tissue from #1. The other four are independent ESSENCE-beauty violations. | **High** | New axis — report 6 §6 noted inconsistency, not the broader pattern. |
-| 3 | **Two of three hand-rolled NotaSum codecs were unnecessary.** The engine `Query` and `supervision::Query` enums both have all-newtype variants; `NotaSum` derive supports that case (verified in `nota-derive/src/nota_sum.rs`). Only `SupervisionUnimplementedReason` (mixed unit + data) genuinely needs hand-rolling. | **High** | Sharpens report 6 §2 — it conflated three cases as one. |
+| 1 | **`validate_record_head_uniqueness` is incorrect for the case-1 variant-wrapped encoding the macro actually emits.** The check rejects two variants that share a payload TYPE name; the wire dispatches on the VARIANT name. The check is a relic of a different (case-2 tag-less) encoding strategy. | **High** | New — the prior migration writeup §1 named the symptom; this names the root cause. |
+| 2 | **Six one-field wrapper structs add a parens layer with no information content** (`ComponentStartup`, `ComponentShutdown`, `ComponentReady`, `ComponentNotReady`, `ComponentHealthReport`, `GracefulStopAcknowledgement`, `SupervisionUnimplemented`). The first two are scar tissue from #1. The other four are independent ESSENCE-beauty violations. | **High** | New axis — the prior migration writeup §6 noted inconsistency, not the broader pattern. |
+| 3 | **Two of three hand-rolled NotaSum codecs were unnecessary.** The engine `Query` and `supervision::Query` enums both have all-newtype variants; `NotaSum` derive supports that case (verified in `nota-derive/src/nota_sum.rs`). Only `SupervisionUnimplementedReason` (mixed unit + data) genuinely needs hand-rolling. | **High** | Sharpens the prior migration writeup §2 — it conflated three cases as one. |
 | 4 | **Single-variant `*Scope` enums violate ESSENCE's "today's piece is held to ESSENCE's full priorities, not as a draft of the eventual."** `EngineCatalogScope::AllEngines` and `EngineStatusScope::WholeEngine` carry zero distinction today; scaffolding for a future second variant. | **Medium** | Report 6 §3 raised it as an open question; ESSENCE settles the question. |
-| 5 | **/140's refined fix for /244+/245 should land BEFORE the persona-* daemon cascade — not after, and not /245 literally.** signal-persona is contract-only so it sidestepped /244 holes 1-4. The daemons that consume it (`signal-persona-mind`, `-router`, `-message`, `-harness`, `-terminal`) all face them on first contact. /140 sharpens /245 on holes 1, 2, 4 and flags hole 3 as needing another design pass — take /140's shape. | **High** | New — report 6 §"pending follow-up" listed the cascade but didn't sequence it. |
+| 5 | **/140's refined fix for /244+/245 should land BEFORE the persona-* daemon cascade — not after, and not /245 literally.** signal-persona is contract-only so it sidestepped /244 holes 1-4. The daemons that consume it (`signal-persona-mind`, `-router`, `-message`, `-harness`, `-terminal`) all face them on first contact. /140 sharpens /245 on holes 1, 2, 4 and flags hole 3 as needing another design pass — take /140's shape. | **High** | New — the prior migration writeup §"pending follow-up" listed the cascade but didn't sequence it. |
 
 Plus three smaller cross-walk items in §5.
 
@@ -272,9 +294,9 @@ of compromise ESSENCE §"Backward compatibility is not a
 constraint" warns against. The right move is to file A as the
 gating item and not land B.
 
-## 3 · Cross-walk: report 6 against /244 + /245 + the skill edits since
+## 3 · Cross-walk: the prior migration writeup against /244 + /245 + the skill edits since
 
-### What /244 + /245 supersede in report 6
+### What /244 + /245 supersede in the prior migration writeup
 
 **Report 6 §4 — "Reply-variant naming discipline is unwritten."**
 Closed by /243's skill edit to `skills/contract-repo.md`
@@ -283,7 +305,7 @@ Closed by /243's skill edit to `skills/contract-repo.md`
 lifecycle-shaped verbs, verb→noun-collision fallthrough rule. Also
 ratifies the supervision channel's `Identified` naming as the
 correct fallthrough for `Announce` → `Announcement` (noun collision).
-**This part of report 6 is now historical.**
+**This part of the prior migration writeup is now historical.**
 
 **Report 6 §7 — "Cross-relation Query operation name reuse."**
 Still open. `skills/contract-repo.md` §"Public contracts use
@@ -296,7 +318,7 @@ disambiguates at use sites, which is fine; worth a sentence in the
 skill that within-crate reuse is also allowed and that module
 splits are the disambiguation.
 
-### What /244 + /245 add that report 6 didn't anticipate
+### What /244 + /245 add that the prior migration writeup didn't anticipate
 
 The five /244 holes split: signal-persona is contract-only, so it
 sidesteps holes 1-4 directly, but the persona daemon cascade
@@ -438,7 +460,7 @@ that holds; the macro should be brought into alignment with it.
 surface" asks every contract to name (1) endpoints, (2) cardinality,
 (3) direction, (4) authority, (5) lifecycle vectors per relation.
 The migrated `signal-persona/ARCHITECTURE.md` has a relation
-surface table per the report 6 change-list, but I haven't verified
+surface table per the the prior migration writeup change-list, but I haven't verified
 which of the five points it covers. **Action item: re-read ARCH
 and check the five-point coverage for each of Engine and
 Supervision relations; gap-fill what's missing.**
@@ -519,8 +541,7 @@ edit.
 
 ## 7 · See also
 
-- `reports/second-operator-assistant/6-signal-persona-contract-local-verbs-migration.md`
-  — the migration this report re-analyses.
+- `reports/second-operator-assistant/8-141-migration-coordination-audit.md` — coordination audit for the in-flight /141 / /246-v4 implementation; supersedes this report's §3 sequencing argument with v4-aware deltas.
 - `reports/designer/244-hole-finding-after-243-implementations.md`
   — the five holes /244 found in the `signal-frame` `observable`
   block and `signal-executor` design.
@@ -531,8 +552,16 @@ edit.
   (Reply::Accepted + Aborted + per-op Failed.detail), hole 2
   (tighter open/close grammar), hole 4 (filter default keyword);
   flags /245 hole 3 as needing another design pass on the
-  projection boundary. **This report's §3 sequencing follows
-  /140's shape.**
+  projection boundary.
+- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
+  — the now-authoritative spec; supersedes this report's
+  cascade-sequencing argument (Finding 5) with the three-layer
+  model + `Lowering::Command` + `ObservedLowering` extension
+  trait shape.
+- `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
+  — operator's pivot from cascade to "smallest convergence bundle +
+  pilot end-to-end." This report's signal-persona-specific findings
+  (1-4) defer until after the pilot demonstrates the pattern.
 - `reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
   — the contract-local-verb redirection signal-persona migrates onto.
 - `reports/designer/241-signal-architecture-migration-guide.md`
@@ -543,7 +572,7 @@ edit.
   lines 546-571 — the actual codec emission contradicting that
   validation.
 - `/git/github.com/LiGoldragon/nota-derive/src/nota_sum.rs`
-  — the derive whose coverage was undersold in report 6 §2.
+  — the derive whose coverage was undersold in the prior migration writeup §2.
 - `/git/github.com/LiGoldragon/signal-persona/src/lib.rs`
   (commit `0b8adc28` on `main`) — the migrated contract with the
   scar tissue Findings 2-4 describe.
