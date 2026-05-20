@@ -144,3 +144,17 @@
     "Verification follow-up to the 2026-05-20 15:30 NOTA reclarification. Reading nota-codec/src/decoder.rs (read_pascal_identifier line 122, expect_record_head line 201) and nota-derive/src/nota_sum.rs (line 91 panic) confirms the strict-but-mixed-forbidden architecture. Records the empty-struct-variant edge case the psyche's rule does not fully cover under the current derive split."
     Maximum
     2026-05-20 16:00)
+
+(Correction
+    "The NotaSum/NotaEnum derive split — NotaSum forbidding unit variants, NotaEnum forbidding data-carrying variants, mixed enums forbidden entirely — is a wrong-shape design decision. Mixed enums must be supported: a NOTA enum with both unit variants and data-carrying variants serializes each in its natural form (bare PascalCase for unit; `(VariantName fields…)` for data-carrying), with the decoder peeking the next token to dispatch. The empty-struct workaround (`TailnetClient {}` producing `(TailnetClient)`) and the split-into-two-enums workaround both contort the author's Rust types to fit the codec's simplicity preference. Both retire. One unified enum derive that handles every variant shape per the three-case rule is the right shape."
+    "this was a ridiculous design decision … the current design is totally fucking insane - making all code contort itself to save a little bit of encode-decode computation for a format that doesnt even exist insed the system (inter-component is all pure-binary signal)"
+    "Strong correction to the NotaSum/NotaEnum derive split (nota-derive/src/nota_sum.rs:90 panic; nota-derive/src/nota_enum.rs unit-only restriction). Rejects implementation-simplicity-driven constraints as a wrong-shape compromise. Triggered by the lean-rewrite analysis surfacing that `TailnetClient {}` in `NodeService` serializes as `(TailnetClient)` against the no-data-no-parens rule."
+    Maximum
+    2026-05-20 16:30)
+
+(Principle
+    "NOTA the text format exists for human authoring — cluster data, intent logs, skill files, configuration, fixtures. Inter-component communication inside the system is pure-binary signal; NOTA never crosses the wire between daemons. Therefore the NOTA codec must not impose constraints on the shape of Rust types in service of encode-decode simplicity — encode/decode happens only at the human-authoring boundary, infrequently. Optimise NOTA's grammar and codec for human-readability and ergonomic match against natural Rust enum shapes; pay the codec-complexity cost once, inside the codec, not at every Rust type."
+    "the current design is totally fucking insane - making all code contort itself to save a little bit of encode-decode computation for a format that doesnt even exist insed the system (inter-component is all pure-binary signal)"
+    "Principle clarifying NOTA's role: human-facing authoring format, not an inter-component wire protocol. Codec complexity is the wrong thing to optimise against the readability and ergonomics of authored types."
+    Maximum
+    2026-05-20 16:30)
