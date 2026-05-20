@@ -437,3 +437,17 @@
     "Persistent packaging rule from the persona-spirit CLI macro request. This is more than the one task because it applies to every component triad's install surface."
     Maximum
     2026-05-20T22:27:40+02:00)
+
+(Principle
+    "Macro design defaults to clean (unprefixed names, no opt-in knobs). Disambiguation when multiple instances exist in one crate happens through Rust modules, not macro-level prefix options. The crate-or-module name supplies the namespace context the type would otherwise restate. Applies generally: if a knob's only purpose is to let callers carry their ancestry into the emitted name, the right move is to drop the knob and let consumers use Rust's existing namespace mechanisms (module path) for disambiguation when needed."
+    "we dont need the opt-in stuff. they can use modules."
+    "Psyche's principle on macro design, raised after the /257 /macro-fix-prefix discussion. The signal_channel! macro currently prefixes channel name onto every emitted type, forcing every contract to re-alias to drop the prefix. Designer had proposed an opt-in prefix knob for multi-channel-per-crate cases; psyche rejected the knob — modules handle disambiguation. Generalisation: macros emit the clean form; if the consumer needs disambiguation, they use Rust's module system."
+    Maximum
+    2026-05-21T10:30:00Z)
+
+(Constraint
+    "The signal_channel! macro should generate structurally derivable channel boilerplate, including OperationKind enums and From<payload> for Reply implementations, instead of requiring each contract to hand-write them."
+    "Macro auto-generates *OperationKind and From<Payload> for Reply impls. Same crate as the prefix-drop bead, but a separate concern. Every contract hand-writes a *OperationKind enum (~14 variants in mind, 7 in terminal, etc.) AND a stack of From<Payload> for Reply impls … All structurally derivable from the operation/reply declarations. The macro already knows everything it needs to emit these; nobody flipped the switch."
+    "Follow-up to the signal-frame prefix-drop macro work. Psyche identified two additional recurring contract boilerplate forms that belong in the macro."
+    Maximum
+    2026-05-21T01:15:44+02:00)
