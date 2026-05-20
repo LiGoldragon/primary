@@ -1,4 +1,4 @@
-# Skill — component triad (daemon + CLI + signal-* contract)
+# Skill — component triad (daemon + working signal + policy signal)
 
 *The universal shape for every stateful capability in the workspace.
 Five invariants and one argument rule determine whether a design is
@@ -27,6 +27,39 @@ The contract crates carry no runtime, no actors, no `tokio` — they
 declare typed wire vocabulary and nothing else. The runtime crate
 owns the daemon, the CLI, and the typed sema-engine state. The
 split is filesystem-enforced (per `skills/micro-components.md`).
+The CLI is bundled runtime machinery: the daemon's thin first client,
+not one of the triad's three legs.
+
+## Vocabulary
+
+Use these words consistently:
+
+- **Component triad** — `<component>` runtime repo plus two signal
+  contract repos: `signal-<component>` and
+  `owner-signal-<component>`.
+- **Working signal** / **working contract** —
+  `signal-<component>`, the ordinary peer-callable contract.
+- **Policy signal** / **owner contract** —
+  `owner-signal-<component>`, the owner-only authority and
+  configuration contract.
+- **Signal types** — the data types declared in either signal
+  contract: operation roots, payload records, replies, rejection
+  reasons, filters, events, stream tokens, and related newtypes.
+- **Signal tree** — the whole typed schema shape: which relation
+  families exist, what the root enums are, how payloads nest, which
+  replies and events correspond, and whether the names reveal the
+  right logic separation.
+- **Policy state** — daemon-owned durable rules/configuration,
+  bootstrapped once from `bootstrap-policy.nota` and then changed
+  only through owner-signal authority.
+- **Working state** — daemon-owned durable operational records
+  produced by ordinary operation, with owner-signal mutations only
+  where owner authority is required.
+
+Names in signal types are architecture. If a contract name feels
+wrong, audit the signal tree before writing more consumers; the name
+may be exposing a misplaced relation, an over-broad root enum, or a
+policy/working boundary error.
 
 ## The five invariants
 
@@ -52,7 +85,7 @@ accordingly. A "temporary direct-store CLI" is not a prototype; it is
 a triad violation. If the daemon socket is not implemented yet, the
 CLI fails closed or remains unshipped rather than opening the store.
 
-### 2. The daemon's external surface is exclusively `signal-core` frames
+### 2. The daemon's external surface is exclusively `signal-frame` frames
 
 No `serde_json` socket, no NOTA on the wire between components, no
 parallel control protocol. NOTA exists at three named projection edges
@@ -68,8 +101,7 @@ state.
 ### 3. Verbs come in three layers
 
 A component contract speaks three distinct languages, each with
-its own concern (settled 2026-05-20T02:00Z per
-`reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`):
+its own concern:
 
 | Layer | Owns | Examples |
 |---|---|---|
@@ -246,7 +278,7 @@ into ad-hoc CLIs.
 These look like triad violations but aren't. Each is *narrow*; do not
 extend the pattern of carve-outs.
 
-1. **Pure libraries don't need a daemon.** `signal-core`, `sema`,
+1. **Pure libraries don't need a daemon.** `signal-frame`, `signal-sema`, `sema`,
    `sema-engine`, `horizon-rs` (projection library) own no state and
    cross no process; the triad does not apply. A test CLI like
    `horizon-cli` for ad-hoc projection is convenience, not a triad.
@@ -326,5 +358,7 @@ until the router has confirmed the channel exists.
 - `~/primary/skills/push-not-pull.md` — Subscribe, not poll.
 - `~/primary/skills/architectural-truth-tests.md` — witness-test
   discipline for the invariants above.
-- `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md` — the
-  wire kernel; closed six-root verb set; `signal_channel!` macro.
+- `/git/github.com/LiGoldragon/signal-frame/ARCHITECTURE.md` — the
+  wire kernel and `signal_channel!` macro.
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md` — the
+  payloadless Sema classification vocabulary.

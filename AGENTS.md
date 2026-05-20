@@ -87,6 +87,15 @@ Each agent knows its lane before claiming or editing. Coordination:
   not `profileSize`. The pair pulls in opposite directions and
   only works together. Full discipline: `ESSENCE.md` §"Naming"
   and `skills/naming.md`.
+- **Component triad means daemon + working signal + policy signal.**
+  The three triad repositories are `<component>` (daemon/runtime,
+  with its bundled thin CLI), `signal-<component>` (ordinary
+  working signal), and `owner-signal-<component>` (owner-only policy
+  signal). The CLI is the daemon's first client, not a triad leg.
+  **Signal types** are the data types in either signal contract.
+  **Signal tree** means the whole schema shape: operation roots,
+  payloads, replies, filters, events, nesting, and logic separation.
+  Full rule: `skills/component-triad.md`.
 - **NOTA is the only argument language.** Every component binary
   (CLI and daemon) takes exactly one argument: a NOTA string, a path
   to a NOTA file, or a path to a signal-encoded (rkyv) file. No flags
