@@ -139,3 +139,17 @@ We need to forbid this type of report name. So find out what the report is about
   "Follow-up after operator report 141 and designer's bundled design report 246; the psyche explicitly prioritizes long-term logical elegance over implementation cost."
   Maximum
   2026-05-20T11:45:38+02:00)
+
+(Decision
+  "Operator should use reports/designer/246-v2-bundled-fix-deep-design-with-examples.md as the current source for the bundled signal-frame and signal-executor fix analysis."
+  "consider reports/designer/246-v2-bundled-fix-deep-design-with-examples.md"
+  "Path correction and reinforcement after the bundled fix report was renamed to v2."
+  High
+  2026-05-20T11:53:19+02:00)
+
+(Question
+  "Operator should evaluate whether the signal-frame and signal-executor fix should be a completely different approach, including different repository boundaries or a different execution engine, rather than only incrementally refining the current design."
+  "consider if we should have a completly different approach alltogether; different repositories, different engine, etc etc"
+  "Expansion of the /246-v2 analysis beyond local patches: the psyche wants long-term architecture considered without implementation-cost bias."
+  Maximum
+  2026-05-20T11:55:00+02:00)

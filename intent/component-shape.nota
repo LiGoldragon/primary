@@ -192,3 +192,31 @@
     "Directing the next implementation phase after comparing reports 140, 141, 244, and 245. The migration should prefer the corrected report-141 shapes over the shallower alternatives."
     Medium
     2026-05-20T11:43:16+02:00)
+
+(Decision
+    "AcceptedOutcome splits into three variants: Committed, OperationAborted { failed_at, reason }, BatchAborted { reason }. Per /142 §2: the single-Aborted shape from /246-v2 forced engine failures to invent a fake failed_at: 0 index. Operation failure and batch failure are different facts and deserve different variants. Domain rejection produces OperationAborted with a real failed-op index; engine rejection produces BatchAborted with no index. The type system expresses honestly what happened."
+    "Replace the single Aborted { failed_at, reason } outcome with separate OperationAborted { failed_at, reason } and BatchAborted { reason } outcomes."
+    "Refining /246-v2 hole 1 per operator /142 logic probe. The probe demonstrated this in code (/tmp/signal-frame-executor-246-probe/model.rs); three tests passed including engine_rejection_uses_batch_abort_without_fake_failed_index."
+    Maximum
+    2026-05-20T01:00:00Z)
+
+(Decision
+    "Engine atomic failures stay in Reply::Accepted (with BatchAborted outcome), NOT Reply::Rejected. Per /142 §1.1: the request was accepted, understood, and processed up to the engine step. Reply::Rejected is reserved strictly for pre-acceptance failures (decode error, version mismatch, malformed frame). My /246-v2 edit that routed engine failures to Reply::Rejected was wrong; /142 corrects it."
+    "engine atomic failure after lowering | Reply::Accepted + batch abort | The frame was understood, but the atomic batch could not commit."
+    "Refining /246-v2 hole 1 engine-rejection path per /142. The acceptance surface is the right home for post-lowering failures; rejection surface is for pre-lowering only."
+    Maximum
+    2026-05-20T01:00:00Z)
+
+(Decision
+    "Observation projection is an extension trait inheriting from Lowering, not a separate sibling trait. ObservedLowering: Lowering carries the projection methods. Daemons that don't observe impl Lowering only; observable daemons impl ObservedLowering (which by definition impls Lowering). Macro emits a channel-specific extension trait alias (e.g., LedgerObservedLowering: ObservedLowering<...>) for compile-time witness against the contract's observable declarations."
+    "trait ObservedLowering: Lowering { type OperationEvent; type EffectEvent; fn project_operation(...) -> Self::OperationEvent; fn project_sema_effect(...) -> Self::EffectEvent; }"
+    "Refining /246-v2 hole 3 per /142 §3. ObservedLowering extension is more idiomatic Rust than separate ObservationProjection — same separation of concerns, but expressed via trait inheritance. The probe confirmed it compiles cleanly without dependency cycles."
+    Maximum
+    2026-05-20T01:00:00Z)
+
+(Decision
+    "Lowering does not own EngineError — drop the EngineError associated type from the trait. Engine errors arise from SemaEngine::execute_atomic, which is called by the executor outside the Lowering trait's surface. The executor handles engine errors directly and routes them to BatchAborted; Lowering doesn't need to know about them."
+    "One more naming correction for /246: Lowering::EngineError is not needed unless lowering itself owns engine execution. The engine error belongs to the engine or executor path and should feed BatchFailureReason, not the contract lowering trait."
+    "Refining /246-v2 hole 1 per /142 §6 naming note. The trait surface narrows to two associated types (Operation, Reply); EngineError moves to the executor's responsibility."
+    Maximum
+    2026-05-20T01:00:00Z)
