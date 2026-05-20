@@ -111,3 +111,10 @@ We need to forbid this type of report name. So find out what the report is about
   "The psyche is reinforcing the existing report-iteration discipline after a report had already been passed to other agents. The correction is about agent behavior, not the Signal/Sema design itself."
   Maximum
   2026-05-19T17:00:46Z)
+
+(Decision
+  "Operator should analyze designer report 244, test ideas where useful, and answer in a durable operator report."
+  "analyze reports/designer/244-hole-finding-after-243-implementations.md - test some ideas if you want, then report back with your answers in a report"
+  "Directing an operator review of the post-243 hole-finding report after the signal-frame and repository-ledger pilot work."
+  Medium
+  2026-05-20T11:24:18+02:00)
