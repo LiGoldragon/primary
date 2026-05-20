@@ -66,6 +66,42 @@ what the yes is in response to. The flow is: classify first; log
 if intent is present; then proceed with the work the prompt
 asked for.
 
+## Inferring intent is forbidden
+
+Intent that the psyche did not clearly state cannot be inferred and
+logged. *"If there was a death sentence for AI agents, this would be
+where the death sentence is given."* False psyche intent attributed
+to the record corrupts the entire intent layer — downstream agents
+treat it as load-bearing truth and act on it. Inferring intent is
+bearing false witness; it is the most forbidden act an agent can
+commit.
+
+Intent logging is **conservative by default**. *"It's more important
+for an innocent man to not be sentenced than it is for a guilty man
+to be sentenced."* When the psyche's wording is ambiguous, understate.
+Missing some intent is recoverable — future agents see the gap and
+ask. Over-extending closes the gap with false certainty and causes
+action on intent that never existed.
+
+When intent is unclear, **ask**. Short psyche prompts — *"yes,"
+"okay,"* — typically mean "go ahead with what was proposed," not
+"I agree with everything in your context." The psyche reads bits
+and pieces, not whole contexts; real psyche attention is the
+scarcest resource and cannot be given to everything. The right
+pattern for an ambiguous short prompt is to log only the
+minimally-implied piece (often nothing) and ask the psyche back —
+*"when you said yes, did you mean such and such?"* A confirmed
+answer becomes clear intent.
+
+**Work instructions are not intent.** *"Implement X," "fix the
+macro," "go write the report"* belong in beads, locks, chat, and
+reports — not in the intent log. The intent log captures rules that
+persist past the task: what is true about the workspace, what
+decisions have been made, what principles apply. Intent mining is
+gold-ore refinement, *"the most valuable art that an agent can
+produce."* The intent log is not the archive of everything ever
+typed in the prompt box.
+
 ## What I am building
 
 Software that is **eventually impossible to improve** — in a

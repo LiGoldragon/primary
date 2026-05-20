@@ -34,6 +34,47 @@ is the question.
 Sweep and supersession discipline lives in
 `skills/intent-maintenance.md`.
 
+## Conservative by default — never overextend
+
+Intent logging is **conservative by default**. Never overextend the
+psyche's words. When wording is ambiguous, understate. Missing some
+intent is recoverable — future agents see the gap and ask. Over-
+extending closes the gap with false certainty and causes action on
+intent that never existed.
+
+Inferring intent the psyche did not clearly state is **forbidden** —
+ESSENCE.md §"Inferring intent is forbidden" carries the absolute. The
+intent layer is load-bearing truth; downstream agents act on it.
+Attributing words the psyche did not say corrupts the system.
+
+The asymmetry: understatement leaves a gap that future agents see and
+ask about — *"the discipline is working when the agent surfaces the
+gap as a question."* Over-extension closes the gap and the question
+never gets asked. Prefer the recoverable failure mode.
+
+When intent is unclear, **ask**. Short psyche prompts — *"yes,"
+"okay,"* — typically mean "go ahead with what was proposed," not
+"I agree with everything in your context." The psyche reads bits and
+pieces; real psyche attention is the scarcest resource and cannot
+be given to everything. The right pattern for an ambiguous short
+prompt is to log only the minimally-implied piece (often nothing)
+and ask the psyche back: *"when you said yes, did you mean such and
+such?"* A confirmed answer becomes clear intent.
+
+Prompt size is a clear indicator. **Long prompts express intent;
+short prompts give green lights for action.** A short *"yes"* after
+a long agent-written context is almost never blanket agreement with
+the surrounding propositions — it's affirmation of whatever specific
+piece caught the psyche's attention. Log only that piece; ask if
+even that is ambiguous.
+
+The intent log is **gold-ore refinement**, not the archive of
+everything ever typed in the prompt box. *"Intent mining is an art.
+It's the most valuable art that an agent can produce."* A future
+short-term-log substrate may eventually capture all prompts and agent
+inferences for historical review; until that exists, the intent
+layer is reserved for material with significant intent content.
+
 ## When to record
 
 Record every psyche statement that classifies as intent — the five
@@ -57,13 +98,20 @@ negation, dedup — is downstream (the spirit guardian arrives
 with the multi-agent auditing arc per `skills/intent-maintenance.md`
 §"Forward — richer supersession lifecycle").
 
-Even short responses can carry substantial intent. A "yes" to
-an agent's proposal locks in the proposal's substance as a
-Decision; record with the proposal substance as the summary and
-the "yes" as the verbatim. A "let me think about that" is a
-Clarification at `Minimum` certainty, not silence — record it.
-Brainstorming-out-loud where the psyche says "I'm not sure"
-still carries intent at `Minimum` — record what was said.
+Even short responses can carry intent. *"Let me think about that"*
+is a Clarification at `Minimum` certainty — record it. *"I'm not
+sure"* during brainstorming carries intent at `Minimum` — record
+what was said.
+
+A short *"yes"* or *"okay"* is harder and almost never authorizes
+the full agent context that preceded it. Apply the conservative-
+by-default rule: log only the minimally-implied piece (often just
+the specific action the psyche is greenlighting), never the
+surrounding agent reasoning. If even the minimal implication is
+ambiguous, ask the psyche back at end-of-session before logging
+anything beyond the bare affirmation. The short-affirmation
+discipline is detailed in the "Conservative by default" section
+above.
 
 What is **not** intent (and so not recorded):
 
@@ -71,10 +119,30 @@ What is **not** intent (and so not recorded):
   answer in chat, no record needed.
 - **Conversational tangents** with no decision, principle,
   correction, clarification, or constraint.
+- **Work instructions** — *"implement X," "fix the macro," "go
+  write the report"* — task assignments that complete when the
+  work completes. Future sessions don't need to know the
+  directive existed; the code or result is the witness. Work
+  instructions live in beads, locks, chat, reports — not the
+  intent log. The test: ask *"will an agent in a different
+  session need to know this fact?"* If no, it is a work
+  instruction. If yes (a rule, decision, principle, name, or
+  correction that persists past the task), it is intent.
+
+A work instruction may *contain* extractable intent. *"Rename
+signal-core to signal-frame"* is a work instruction, but it
+contains the Decision *"signal-core is now called signal-frame."*
+Log the Decision; treat the action as the work item separately
+(beads, lock, report). Conversely, *"implement ToSemaOutcome now
+and prove it with spirit"* contains no extractable intent — the
+rule (the trait shape) was already settled elsewhere, and the
+directive itself completes when the work completes.
 
 The classification step is the only filter. The bar: *does the
-statement carry intent, or is it a pure question?* If it carries
-intent in any of the five kinds, record it.
+statement carry intent, or is it a question or work instruction?*
+If it carries intent in any of the five kinds — and only what the
+psyche actually stated, not what could be inferred from it —
+record it.
 
 ## Record shape
 
