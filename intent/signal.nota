@@ -1,0 +1,8 @@
+(Decision "Use the two-trait shape for ComponentEffect to Sema projection: ToSemaOperation lives on each daemon Command and returns SemaOperation; ToSemaOutcome lives on each daemon ComponentEffect and returns SemaOutcome. signal-sema owns SemaOutcome, ToSemaOutcome, and SemaObservation. reports/designer/253-tosemaoutcome-trait-shape.md is the stable reference." "psyche" "reports/designer/253-tosemaoutcome-trait-shape.md" High "2026-05-20T12:33:11Z")
+
+(Correction
+    "All signal-executor code must move to the current three-layer design; no old SemaEffect execution path should remain."
+    "all the code must move to the new design. implement and update the arch file as well"
+    "After operator observed that signal-executor/ARCHITECTURE.md still described the older SemaEffect path while code had only partly moved toward component-local effects."
+    Maximum
+    2026-05-20T15:06:29+02:00)
