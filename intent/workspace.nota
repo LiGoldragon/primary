@@ -437,3 +437,17 @@
     "Strengthening the chat-brevity rule from a discipline to an absolute. The persistence of the failure mode is the signal that the prior guidance wasn't strong enough."
     Maximum
     2026-05-20T00:00:00Z)
+
+(Constraint
+  "For the signal-architecture hole-finding pass, refresh the relevant workspace skills first, especially design and coding skills, then analyze reports/designer/244-hole-finding-after-243-implementations.md and reports/designer/245-design-alternatives-for-244-holes.md, test theories where useful, and put the analysis in a report."
+  "look for holes in your design. consider reports/designer/244-hole-finding-after-243-implementations.md and reports/designer/245-design-alternatives-for-244-holes.md in your context while doing so. make sure you refresh all your skills first, especially the important design and coding skills. you can test some theories you might have, and put your analysis in a report"
+  "Task instruction for a designer-assistant analysis pass on the post-243 signal architecture and implementation state."
+  Medium
+  2026-05-20T00:00:00Z)
+
+(Clarification
+  "Evaluate whether reports/operator/140-signal-frame-executor-hole-analysis.md offers better designs than the current designer-assistant hole-finding view, and answer concisely with the important differences."
+  "psyche"
+  "reports/operator/140-signal-frame-executor-hole-analysis.md"
+  Medium
+  2026-05-20T09:36:28Z)

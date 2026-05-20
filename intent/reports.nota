@@ -125,3 +125,10 @@ We need to forbid this type of report name. So find out what the report is about
   "Follow-up while operator was analyzing designer/244; designer/245 proposes cleaner alternatives for several of the same holes."
   Medium
   2026-05-20T11:30:02+02:00)
+
+(Decision
+  "Operator should create a deep report explaining why /140 corrects /245 on typed rejection replies, observable open/close grammar, and observer bridge crate boundaries, with examples."
+  "Designer: /140 is sharper than /245 in three places worth noting: … Me: create a deep report explaining all of this in depth with examples"
+  "The psyche asked operator to turn designer's comparison of /140 and /245 into a durable explanatory report."
+  Medium
+  2026-05-20T11:37:00+02:00)
