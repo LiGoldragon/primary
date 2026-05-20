@@ -1,5 +1,28 @@
 # signal-frame / signal-executor migration start from operator /141
 
+## Superseded update
+
+This report records the migration start from
+`reports/operator/141-signal-frame-executor-correction-examples.md`.
+It is now superseded where it differs from:
+
+- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
+- `reports/designer/248-three-layer-changes-for-operators.md`
+- `reports/operator/142-signal-frame-executor-bundled-fix-logic-probe.md`
+- `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
+
+Current system-specialist interpretation is in:
+
+- `reports/system-specialist/151-signal-executor-246-impact.md`
+
+The main supersessions are: `Lowering` returns
+`OperationPlan<Command>`, not `Vec<Command>`; engine failures are
+`AcceptedOutcome::BatchAborted`, not kernel rejection; observation
+uses `ObservedLowering` plus frame-side `ObserverFanout`, not the
+standalone `ObservationProjection` sketch below; persona observability
+uses standardized `Tap` / `Untap`, not author-chosen `Watch` /
+`Unwatch`.
+
 ## Scope
 
 This report starts the migration requested from:
@@ -288,4 +311,3 @@ The immediate unblocked action is coordination, not conflicting code:
 - keep Package 3's projection boundary in this report so the first
   worked daemon does not flatten executor facts and contract event
   records into the wrong crate.
-
