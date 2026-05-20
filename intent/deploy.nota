@@ -53,3 +53,24 @@
     "Correcting my framing of 'how does a fresh node get the new daemon' as an open architectural question in reports/system-assistant/18. The production stack handles bootstrap; the agent was inventing a problem that doesn't exist."
     Maximum
     2026-05-17T13:30:00Z)
+
+(Decision
+    "owner-signal-lojix is no longer deferred. Create the owner contract now alongside signal-lojix; the CLI two-socket dispatch policy (how the CLI decides which socket to send each NOTA request to) is developed in parallel with the owner-contract work, not as a prerequisite."
+    "let's just do the owner signal logics right now. And we'll figure out, we'll adapt the code as we figure out how we dispatch to the right socket"
+    "Psyche reversed mid-message after starting to defer owner-signal-lojix. Final position lands on shipping the owner contract now and figuring out CLI dispatch as code lands. Responds to reports/system-assistant/28 Gap 1 + Gap 6."
+    Maximum
+    2026-05-20T17:10:00Z)
+
+(Decision
+    "Criome-mediated authorization for signal-lojix calls is deferred from the lean-rewrite migration. Lojix-daemon on the rewrite stack will not yet wire criome-daemon as a Signal client; the authorization design (intent/deploy.nota 2026-05-17T15:30:00Z) remains the destination but is not part of the current migration arc."
+    "Creole mediated authorization missing. Yeah, I know. We're just going to defer that also for now."
+    "Psyche deferral on Gap 3 of reports/system-assistant/28. STT note: 'Creole' is the canonical 'Criome' mishearing (skills/stt-interpreter.md)."
+    Maximum
+    2026-05-20T17:10:00Z)
+
+(Decision
+    "signal-lojix splits Deploy into separate public operations: Build, Activate, Deploy, Rollback. Build and Deploy are clearly different verbs (Build produces an artifact; Deploy acts on a node). Activate-vs-Deploy mergeability remains slightly open: whether Activate and Deploy collapse to one verb or stay distinct is undecided. Default direction is split per the workspace verbs-are-cheap principle (intent/signal.nota 2026-05-19T20:30 Maximum); the activate-vs-deploy question can be settled when public semantics are sketched."
+    "I say split because I don't see how build is deploy. Build is build, activate. Well, isn't activate and deploy the same? Those are different verbs, so they should be different. That's all I can say right now. And then, yeah, splitting is better than collapsing. That's right. Verbs are cheap."
+    "Psyche answer to Open question #2 in reports/system-specialist/154 (and Gap 12 of reports/system-assistant/28). Activate-vs-Deploy collapse left as an open question."
+    Maximum
+    2026-05-20T17:10:00Z)

@@ -154,3 +154,10 @@ We need to forbid this type of report name. So find out what the report is about
   Maximum
   2026-05-20T11:55:00+02:00)
 (Correction "This agent is acting as designer-assistant for this work and should not edit operator-assistant reports; report lanes are owned surfaces and edits should stay in the agent lane unless explicitly authorized." "psyche" "reports/operator-assistant/158-signal-frame-executor-v4-reconciliation.md" High "2026-05-20T12:43:14Z")
+
+(Correction
+    "When an agent surfaces an open question to the psyche in chat, the question MUST carry enough inline context for the psyche to engage without opening the underlying document. The agent does not bullet-point question numbers and section locators; the agent restates the substance — the proposition, the conflict, the alternatives — directly in the chat reply. Failure to do this forces the psyche to open the document, which is the failure mode the chat-vs-report split was meant to prevent."
+    "You're supposed to give me context when you ask me a question so I don't have to open the document. Well, here, let me open it. Fuck it."
+    "Correction triggered by reports/system-assistant/28's chat summary, which named Open question #2 in the vision report without restating its substance ('Submit vs split Build/Activate/Deploy/Rollback'). Reinforces skills/reporting.md's 'each restated with enough substance' principle; the violation is specifically with question-shaped chat items."
+    Maximum
+    2026-05-20T17:10:00Z)
