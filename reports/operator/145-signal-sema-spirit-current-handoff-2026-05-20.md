@@ -48,8 +48,8 @@ Sema is **not** executable. Sema names cross-component observation classes:
 | `signal-sema` | Payloadless `SemaOperation`, payloadless `SemaOutcome`, `SemaObservation`, pattern primitives, slot/revision identity values. |
 | `signal-executor` | Shared library composing `Lowering`, `CommandExecutor`, `OperationPlan`, `BatchPlan`, observer publication, and reply shaping. Executes component-local commands, never Sema operations. |
 | `signal-persona-spirit` | Ordinary spirit contract. Already on `signal-frame`; uses contract-local verbs and `OperationReceived` / `EffectEmitted`. |
-| `owner-signal-persona-spirit` | Owner spirit contract. Architecture still marks a three-layer migration as pending. This is the most obvious next spirit contract cleanup. |
-| `persona-spirit` | Runtime daemon + thin `spirit` CLI. Has Kameo actor tree, ordinary/owner sockets, sema-engine-backed record store, provisional classifier, local command/effect projection to `SemaObservation`, and constraint tests. |
+| `owner-signal-persona-spirit` | Owner spirit contract. Now on `signal-frame`; uses contract-local owner verbs `Start`, `Drain`, `Reload`, `Register`, and `Retire`. |
+| `persona-spirit` | Runtime daemon + thin `spirit` CLI. Has Kameo actor tree, ordinary/owner sockets, sema-engine-backed record store, provisional classifier, local command/effect projection to `SemaObservation`, migrated owner-signal handling, and constraint tests. |
 
 ## Commits To Know
 
@@ -62,9 +62,11 @@ Sema is **not** executable. Sema names cross-component observation classes:
 | `signal-executor` | `47961d12` | Bumped to the `signal-frame` revision without `Partial`. |
 | `signal-persona-spirit` | `a1909872` | Observable event pair renamed to `OperationReceived` / `EffectEmitted`. |
 | `signal-persona-spirit` | `2e7a69a0` | Bumped to the `signal-frame` revision without `Partial`. |
+| `owner-signal-persona-spirit` | `10ff8731` | Migrated owner contract to `signal-frame` and contract-local owner verbs. |
 | `persona-spirit` | `556bafcc` | `spirit` CLI became thin daemon client shape. |
 | `persona-spirit` | `951603c3` | Explicit no-change command witnesses for valid-but-unimplemented observer requests. |
 | `persona-spirit` | `0f0a82be` | Bumped to current frame/spirit contract pins without `Partial`. |
+| `persona-spirit` | `97f4a138` | Consumes migrated owner contract; owner socket no longer uses old `signal-core` request wrappers. |
 
 ## Batch Failure Contract
 
@@ -147,6 +149,8 @@ Implemented:
   acknowledgements.
 - `OwnerPlane` handles current owner lifecycle and identity requests.
 - `PolicyPlane` parses and reloads bootstrap policy.
+- Owner socket handling consumes `owner-signal-persona-spirit` through
+  `signal-frame`, matching the ordinary socket frame model.
 - Local `Command` / `Effect` values project to payloadless
   `SemaObservation` through tested traits.
 
@@ -183,28 +187,21 @@ Treat the following as stale when they conflict with current code:
 | `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md` | Same `Partial` example is stale; use the current frame code for the enum. |
 | `signal-persona-orchestrate` | Still has `SemaEffectObserved` / `SemaEffectEmitted` wording. Migrate when that contract is next touched. |
 | `signal-persona-introspect/ARCHITECTURE.md` | Still mentions `SemaEffectEmitted`. Migrate when introspect is next touched. |
-| `owner-signal-persona-spirit` | Architecture explicitly marks the three-layer migration as pending; code still needs the refactor. |
+| `signal-persona-orchestrate` and `signal-persona-introspect` | Some text still reflects the pre-`EffectEmitted` vocabulary. Treat current `signal-frame` / `signal-sema` / `signal-persona-spirit` code as newer truth. |
 
 ## Safe Next Work
 
 Highest-signal spirit tasks:
 
-1. Migrate `owner-signal-persona-spirit` to `signal-frame` and
-   contract-local owner verbs.
-2. Update `persona-spirit` owner socket handling to consume the migrated
-   owner contract.
-3. Keep the CLI thin: one NOTA input, one signal-frame exchange, one NOTA
+1. Keep the CLI thin: one NOTA input, one signal-frame exchange, one NOTA
    reply.
-4. Add constraint tests for any owner-contract migration:
-   - owner requests use verb-form heads;
-   - owner frames stay rejected on ordinary socket;
-   - ordinary frames stay rejected on owner socket;
-   - owner route still goes through `OwnerPlane`;
-   - bootstrap reload still goes through `PolicyPlane`.
+2. Add the first explicit daemon-level test that runs `persona-spirit-daemon`
+   and `spirit` as binaries, not only through in-process clients.
+3. Decide whether subscription event delivery or spirit-to-mind forwarding is
+   the next pilot slice.
 
-After that, the next major pilot step is either subscription event delivery
-or the first spirit-to-mind forwarding slice. Do not start filesystem
-intent-log replacement until the import/cutover semantics are explicit.
+Do not start filesystem intent-log replacement until the import/cutover
+semantics are explicit.
 
 ## Current Open Questions
 
@@ -231,6 +228,7 @@ The last verified lower-layer slice passed:
 signal-frame: cargo test --locked; nix flake check -L --max-jobs 0
 signal-executor: cargo test --locked; nix flake check -L --max-jobs 0
 signal-persona-spirit: cargo test --locked; nix flake check -L --max-jobs 0
+owner-signal-persona-spirit: cargo test --locked; nix flake check -L --max-jobs 0
 persona-spirit: cargo test --locked; nix flake check -L --max-jobs 0
 ```
 
