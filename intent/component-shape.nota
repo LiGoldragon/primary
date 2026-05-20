@@ -276,3 +276,38 @@
     "Lane assignment for landing the three-layer model. Designer (this agent) writes the spec/skills/intent edits; operator implements the Rust changes."
     Maximum
     2026-05-20T02:00:00Z)
+
+(Correction
+    "A component triad means the daemon/runtime repository plus two signal contract repositories: the ordinary working contract and the owner-only policy contract. The CLI is bundled with the daemon as its thin first client, but it is not one of the three triad legs."
+    "by triad we mean, actually, I think it used to mean that the three components were the daemon, the CLI, and the signal contract. But now the triad actually means the daemon and the two signal contracts, one of which is the owner contract."
+    "Clarifying component vocabulary before creating owner-signal-persona-mind and updating component-triad skill text. Supersedes older shorthand that described the triad as daemon + CLI + signal contract."
+    Maximum
+    2026-05-20T12:11:26Z)
+
+(Decision
+    "Every stateful component has an owner contract because management and configuration must enter through an owner-only signal surface that can be protected by filesystem permissions. Owner contracts are the policy/configuration authority surface; ordinary contracts are the peer-callable working surface."
+    "I'm sure that every component is going to have an owner contract because that's how it is managed and configured. And that's how we make sure at the file system layer with file permissions that this configuration aspect of every daemon is not exposed to everything."
+    "Settling the owner-signal universality question while preparing the PersonaMind owner contract."
+    Maximum
+    2026-05-20T12:11:26Z)
+
+(Clarification
+    "Use 'signal types' for the data types inside either signal contract, ordinary or owner. Use 'signal tree' for the whole schema shape: operation roots, payloads, replies, filters, events, nesting, and logic separation. 'Working signal' names signal-<component>; 'policy signal' names owner-signal-<component>."
+    "when I say signal types, I'm talking about the data types in the signal contract, whether it's an owner contract or just a working contract … I might say policy, and that refers obviously to the owner contract, and working contract, I obviously mean the regular one … signal types, signal tree, right, the whole shape of it. The working signal, the policy signal, the working signal types, the policy signal types, or interchangeably also the tree to talk more about the shape of it."
+    "Vocabulary clarification requested before updating AGENTS.md and component-triad skill."
+    Maximum
+    2026-05-20T12:11:26Z)
+
+(Clarification
+    "Policy state is the daemon-owned durable rules/configuration state controlled by the owner/policy signal. Working state is daemon-owned durable operational state controlled by ordinary peer operations and by owner authority when needed. The vocabulary policy/working should be used for both signal surfaces and state categories when discussing component shape."
+    "I think it's policy and policy state and working state. Right? That's how we agree to the vocabulary."
+    "Clarifying the policy-vs-working vocabulary around the two signal contracts and daemon state categories."
+    Medium
+    2026-05-20T12:11:26Z)
+
+(Principle
+    "Signal-type naming is architecture: when names feel wrong, they may be exposing a flawed signal tree or a mistaken logic separation. Agents should critically audit operation roots, payload names, reply names, and nesting before implementing more consumers."
+    "be very critical of the signal types, names, and the logic separation, the shape of the schema, the shape of the schematry … there’s been a refactoring in the name and the shape of the signal tree for some component … because the naming betrayed a flaw in the design of the signal tree."
+    "Guidance for the PersonaMind refactor and owner-signal-persona-mind creation; also a general component-contract naming principle."
+    Maximum
+    2026-05-20T12:11:26Z)

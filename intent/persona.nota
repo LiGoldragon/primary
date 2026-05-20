@@ -256,3 +256,10 @@
     "Move from raw MVP to usable component by wiring daemon/socket behavior and test constraints before relying on it."
     Maximum
     2026-05-19T18:35:00Z)
+
+(Decision
+    "Create owner-signal-persona-mind as the owner-only policy/configuration contract for PersonaMind. PersonaSpirit owns PersonaMind, so this owner signal is the authority surface Spirit will use to manage and configure Mind."
+    "create the repository and get it set up to be written, the owner signal repository for PersonaMind, which will be owned by PersonaSpirit."
+    "Preparing the PersonaMind refactor and filling the missing owner contract required by the clarified component triad vocabulary."
+    Maximum
+    2026-05-20T12:11:26Z)
