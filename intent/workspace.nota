@@ -513,3 +513,10 @@
     "Companion principle to the work-instruction-vs-intent Clarification 2026-05-20T14:35:00Z. The gold/silver ore analogy frames intent logging as refinement of the precious from the routine. A future short-term-log substrate is planned but does not yet exist; until it does, only persistent intent goes in the intent log."
     Maximum
     2026-05-20T14:40:00Z)
+
+(Correction
+    "Agent outputs are functions of context and prompt, not rule-applications. The framing 'this output violated rule X' is wrong because nothing was applied or broken — the output emerged from what was in context. The right question when an output looks wrong is which part of context produced it; the agent has to infer the answer. 'It was a violation' is not an answer."
+    "no, there's no such thing as a 'violation' - your output was the result of your context and prompt. so which part made you do that? you obviously have to infer the answer, but 'it was a violation' is not an answer."
+    "Following an exchange where the agent explained writing 'Heraclitus said it cleanest:' as a 'violation' of the stage-setting rule in prose.md; the psyche corrected the framing."
+    Maximum
+    2026-05-20)
