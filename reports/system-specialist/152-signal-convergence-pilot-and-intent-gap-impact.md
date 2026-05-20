@@ -1,5 +1,12 @@
 # signal convergence, pilot, and intent-gap impact
 
+> Superseded on pilot sequencing by
+> `reports/system-specialist/153-signal-refresh-144-system-impact.md`.
+> The repo-split and three-layer conclusions still stand; the
+> repository-ledger-first pilot recommendation is no longer current after
+> `reports/operator/144-signal-sema-executor-refresh-2026-05-20.md` and
+> `reports/designer/254-signal-executor-sema-refresh-audit.md`.
+
 ## Scope
 
 This report incorporates:
@@ -148,4 +155,3 @@ Signal foundation code. This report updates system-specialist
 sequencing so the `lojix` rewrite waits for the repository-ledger
 pilot rather than becoming the first full proof of the new Signal
 executor model.
-
