@@ -271,6 +271,71 @@ Castaneda, Marcus Aurelius, Musashi. The catalog is not erudition;
 it is evidence. The plurality of voices is what makes the claim
 classical.
 
+## Quote framing — modes
+
+When a primary source enters the prose, the writer chooses how to
+bring it on. Four modes are available; one is forbidden.
+
+### Mode 1 — Epigraph
+
+Quote stands alone, attribution at the end. No introducer in the
+prose. The prose continues afterward, addressing what the quote
+raised. Hemingway's preferred mode for load-bearing quotations
+(*The Sun Also Rises*'s Ecclesiastes, *For Whom the Bell Tolls*'s
+John Donne); the cold-open-to-quote rhythm of `The_Toroidal_Heart`.
+
+### Mode 2 — Colon-attribution
+
+Author's name + colon, then the quote. Minimum framing. Useful when
+the reader already knows the author and a longer participial clause
+would just be filler. *"Heraclitus: 'Nature loves to hide.'"* The
+Talmudic mode — *"R. Akiva says:"* — identificational only, never
+evaluative.
+
+### Mode 3 — Inline embedding
+
+The quote is grammatically inside the writer's sentence. *"What
+Heraclitus called 'an everliving fire' the Vedic tradition called
+*agni*."* Useful when the quote is short or doctrinal and the
+writer's sentence wraps it cleanly.
+
+### Mode 4 — Substantive participial
+
+Author's name + a participial phrase that adds real context (place,
+time, addressee, biographical setting, what the quote is about to
+do), then the quote. The *Refinement* mode when it works:
+
+> *"Marcus Aurelius, writing for himself in Pannonia between
+> campaigns, translated the cosmic measure into a rule for his own
+> day:"*
+
+The participial clause earns its place by adding fact the reader
+needs. *"Writing for himself"* — names the audience. *"In Pannonia
+between campaigns"* — places the writing. *"Translated the cosmic
+measure into a rule for his own day"* — names what the quote is
+about to do. Substance, not performance.
+
+### Forbidden — the hype-up
+
+Author's name + an evaluative phrase about the quote. *"X said it
+cleanest:"*, *"Y put it best:"*, *"As Z observed:"*, *"W had the
+right of it when he wrote:"* The phrase performs the writer's
+judgment about the quote rather than orienting the reader to the
+substance. Same family as the *notice/observe/note* tic in
+"Stage-setting" below — but wears attribution as cover.
+
+### Discipline
+
+Default to Mode 1 (epigraph) or Mode 4 (substantive participial).
+Mode 2 and Mode 3 are useful tactically. When in doubt, drop the
+introducer and let the quote stand — the modernist move is rarely
+wrong, and the cold-open-to-quote rhythm carries on its own when
+the prose around it is doing its work.
+
+The test: *does the introducer add a fact the reader doesn't have,
+or does it tell the reader how to feel about the quote?* Facts
+stay; feelings get cut.
+
 ## The sentence
 
 ### Rhythm
@@ -802,6 +867,20 @@ talking about itself.
 
 *"Notice that...", "Observe how...", "Note that..."* Do not cue the
 reader to attend; let the sentence merit attention on its own.
+
+### The quote hype-up
+
+The same tic in attribution costume: *"X said it cleanest:"*,
+*"Y put it best:"*, *"As Z observed:"*, *"W had the right of it
+when he wrote:"*, *"X said it for the first time"* (where *"first"*
+is evaluative rather than historical). The phrase performs the
+writer's judgment about the quote rather than orienting the reader
+to the substance. Two fixes: either drop the introducer entirely
+(the quote and the attribution carry on their own — Mode 1
+epigraph), or replace the evaluation with a substantive participial
+that adds historical / biographical / topical context the reader
+needs (Mode 4). See "Quote framing — modes" above for the full
+discipline.
 
 ## What it sounds like
 
