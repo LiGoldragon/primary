@@ -220,3 +220,52 @@
     "Refining /246-v2 hole 1 per /142 §6 naming note. The trait surface narrows to two associated types (Operation, Reply); EngineError moves to the executor's responsibility."
     Maximum
     2026-05-20T01:00:00Z)
+
+(Decision
+    "Sema is the universal state-action classification and observation vocabulary; execution is per-component through typed component-local command records. Contract operations are external request language, component commands are internal executable language, and Sema operations are payloadless universal state-action classes for observation and introspection."
+    "I agree, write a report and start editing all the relevant skills and architecture files. start with intent logging of course"
+    "The psyche affirmed the three-layer framing after operator explained the distinction between contract operation, component command, and Sema operation. This supersedes readings where Sema was treated as the universal executable database command language."
+    Maximum
+    2026-05-20T12:22:58+02:00)
+
+(Decision
+    "Signal architecture rests on a three-layer model affirmed 2026-05-20: (1) Contract Operation — external request language, owned by signal-* contract crates (LedgerOperation, SpiritOperation, etc.); (2) Component Command — internal executable language, owned by each daemon (LedgerCommand, SpiritCommand, etc.), carrying the typed payloads its engine needs (Entry, ReadPlan, EventRecord, EntryKey); (3) Sema Operation — universal, PAYLOADLESS state-action classification (Assert / Mutate / Retract / Match / Subscribe / Validate) used ONLY for cross-component observation and introspection, not for execution. Component Commands project to Sema via a ToSemaOperation trait. Each daemon owns its CommandExecutor. The engine layer becomes a reusable framework parameterized over the component's Command type — atomic boundaries, snapshots, redb transaction handling are common; executable Command vocabulary is component-local."
+    "Yes. That is the correct correction, and it supersedes my earlier 'payload-bearing SemaOperation' phrasing."
+    "Affirming the three-layer model after designer/operator convergence. Substantive architectural shift from 'Sema as universal execution language' to 'Sema as universal classification language; execution is per-component.' Supersedes earlier intent records and skill text framing Sema/Signal as the typed database-operation language for execution."
+    Maximum
+    2026-05-20T02:00:00Z)
+
+(Decision
+    "skills/contract-repo.md and related skills must replace the earlier 'Signal is the workspace's typed binary database-operation language used to communicate' framing — that line is ambiguous under the three-layer model. The new framing: Signal carries typed contract messages; Sema names the universal state-action classes used for observation and introspection; executable database commands are component-local typed records owned by each daemon."
+    "Designer is right that the skill text must change … Signal carries typed contract messages. Sema names the universal state-action classes used for observation and introspection. Executable database commands are component-local typed records owned by each daemon."
+    "Skill-text supersession driven by the three-layer affirmation. Update needed in skills/contract-repo.md §'Signal is the database language', possibly skills/language-design.md and component-triad.md, plus ARCH files in signal-sema and signal-executor."
+    Maximum
+    2026-05-20T02:00:00Z)
+
+(Decision
+    "AcceptedOutcome::BatchAborted carries generic execution metadata, not contract-domain detail. Required fields: retry classification (Retryable | NotRetryable | Unknown) and commit status (NotCommitted | Unknown | Partial). Specific engine error types stay daemon-side; the wire reply carries enough generic metadata that retry/escalation policy can decide without knowing the concrete engine error. Total opacity (just 'EngineRejected' with no metadata) is too opaque; typed engine errors crossing the wire would force every contract to know engine internals."
+    "BatchAborted { reason: EngineUnavailable, retry: Retryable, commit: NotCommitted }"
+    "Refining /246-v3 hole 1 engine-failure path per operator clarification. Generic metadata is workspace-universal infrastructure; not contract-domain."
+    Maximum
+    2026-05-20T02:00:00Z)
+
+(Decision
+    "Tap/Untap is mandatory for persona components, no author override. Persona components reserve the same observability surface; persona-introspect has zero per-daemon vocabulary learning. Domain contracts that want a verb named Tap must rename their domain verb, not override the observability verb. Non-persona small utilities don't declare an observable block at all; they have no observability surface. Mandatory means mandatory SUPPORT (every persona component declares the observable block and emits when subscribed); runtime emission/storage cost is paid only when there's a subscriber."
+    "Tap(ObserverFilter) Untap(ObserverSubscriptionToken) should be mandatory for Persona components."
+    "Refining /246-v3 hole 2 + 4 per operator clarification. Standardize hard for persona; opt-out only by being a non-persona utility."
+    Maximum
+    2026-05-20T02:00:00Z)
+
+(Decision
+    "Lowering trait adopts a Command associated type. lower() returns Result<OperationPlan<Self::Command>, Self::Reply> with structural ownership (no source_index sidecar — one OperationPlan per source op). Daemon defines its Command enum carrying typed payloads. The engine takes BatchPlan<Self::Command> via a per-component CommandExecutor framework. Cross-component observation projects via ToSemaOperation: each Command projects to a payloadless SemaOperation class."
+    "OperationPlan<Self::Command> where Self::Command is contract-local; ToSemaOperation projection; per-component CommandExecutor"
+    "Locking the Lowering trait surface per three-layer model. Drops the v3 'Vec<SemaOperation>' return shape."
+    Maximum
+    2026-05-20T02:00:00Z)
+
+(Decision
+    "Implementation labor split: designer owns skills + intent + architecture file edits; operator owns code. Psyche directive 2026-05-20T02:00Z: 'Then go implement all skills, intent, architecture file edits - I'll put operator on code.'"
+    "Then go implement all skills, intent, architecture file edits - I'll put operator on code."
+    "Lane assignment for landing the three-layer model. Designer (this agent) writes the spec/skills/intent edits; operator implements the Rust changes."
+    Maximum
+    2026-05-20T02:00:00Z)

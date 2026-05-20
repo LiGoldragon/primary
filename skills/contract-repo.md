@@ -266,36 +266,60 @@ against them, the names become the system's enforced model.
 
 ## Public contracts use contract-local operation verbs
 
-Signal is the workspace's typed binary communication fabric. A
-contract crate names the public actions that can cross one
+Signal carries typed contract messages across component
+boundaries. Sema names the universal state-action classes used
+for observation and introspection. Executable database commands
+are component-local typed records owned by each daemon.
+
+A contract crate names the public actions that can cross one
 component boundary. Those public actions are **contract-local
 operation verbs**: they describe what the caller is doing in
 that component's domain, not what the receiver may later do to
-its database.
+its state.
 
 > **Current direction, per
-> `reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`:**
-> the former universal roots (`Assert`, `Mutate`, `Retract`,
-> `Match`, `Subscribe`, `Validate`) are Sema execution
-> vocabulary. They do not belong as the public operation roots
-> of every contract. The public contract asks in domain terms;
-> the daemon lowers that request to Sema effects internally.
+> `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
+> and `intent/component-shape.nota` 2026-05-20T02:00Z:** the
+> universal roots (`Assert`, `Mutate`, `Retract`, `Match`,
+> `Subscribe`, `Validate`) are the **Sema classification
+> vocabulary** for observation — they are *payloadless* state-
+> action class labels, not executable. Executable database work
+> happens via **component-local typed Commands** owned by each
+> daemon. Contract operations are domain-named (`Submit`, `Query`,
+> `Observe`, `Configure`, etc.); the daemon lowers them into
+> typed Commands; Commands project to Sema class labels for
+> observation. Sema is the cross-component nervous system at
+> the classification layer, not a universal executable database
+> DSL.
 
 The three layers:
 
 ```text
-Frame / exchange mechanics
-  length-prefixed rkyv bytes, handshake, exchange identifiers,
-  streams, replies
-
-Contract operations
+Contract operations  (external — what crosses the wire)
   public per-contract verbs such as Submit, Query, Observe,
-  Configure, Register, Retire, State, Watch
+  Configure, Register, Retire, State, Watch.
+  Owned by signal-* contract crates.
 
-Sema operations
-  internal state-effect vocabulary such as Assert, Mutate,
-  Retract, Match, Subscribe, Validate
+Component commands  (internal — what the daemon executes)
+  per-component typed executable records such as
+  SpiritCommand::AssertEntry(Entry),
+  LedgerCommand::RecordEvent(EventRecord),
+  LedgerCommand::ReadRecentRepositories(ReadPlan).
+  Owned by each daemon; carry the typed payloads engines need.
+
+Sema operations  (cross-component classification — what
+                  observation/introspection sees)
+  payloadless state-action class labels:
+  Assert | Mutate | Retract | Match | Subscribe | Validate.
+  Used only for cross-component observation and introspection;
+  never for execution.
 ```
+
+Each Component Command projects to a Sema class via a
+`ToSemaOperation` trait. The engine layer is a reusable
+framework parameterized over the component's Command type —
+atomic boundaries, snapshots, redb transaction handling are
+common; the Command vocabulary is component-local.
 
 The client sends what it wants to do at that boundary:
 

@@ -1,25 +1,94 @@
 # 246 — Bundled fix design for the /244 holes, with examples
 
-*Deep design report combining the alternatives from `/245` with
-the operator's corrections in `/140`. Covers each of the five
-holes from `/244` with the final shape, mechanical justification,
-and a worked example. Plus the bigger-rethinks all settled. This
-is the implementation-ready spec for the bundled fix — the next
-designer/operator pair can read this and write code from it.*
+*v4. Adopts the three-layer model (Contract Operation / Component
+Command / Sema Operation) per psyche affirmation 2026-05-20T02:00Z.
+This is the implementation-ready spec for the bundled fix. Earlier
+revisions: v1 at commit 8c5381e2 (separate ObservationProjection);
+v2 at 048be316 (revised hole 3); v3 at fd255fab (split
+AcceptedOutcome). v4 supersedes all earlier specs for the
+load-bearing trait shapes; sections that didn't shift between v3
+and v4 are unchanged.*
 
 ## 0 · TL;DR
 
-Five holes, five fixes:
+Five holes, five fixes — all now expressed through the three-layer
+model (see §0.5 below):
 
 | Hole | Final shape |
 |---|---|
-| 1 (typed rejection on wire) | `lower()` returns `Result<Vec<SemaOperation>, Self::Reply>`; executor encodes the Err as `Reply::Accepted` with `AcceptedOutcome::OperationAborted { failed_at, reason: DomainRejection }`, multi-op slots become `Invalidated` / `Failed { detail }` / `Skipped`. Engine failures use `Reply::Accepted` with `AcceptedOutcome::BatchAborted { reason: EngineRejected }` — NO fake `failed_at` index. Kernel `Reply::Rejected` narrows to true frame-level failures only (decode, version, malformed). `Lowering::EngineError` retires — engine errors live in the executor path. (Revised 2026-05-20 per /142 logic probe.) |
-| 2 (`Observe` verb collision) | `observable { open <Verb>(Filter); close <Verb>; … }`. Contract author names the open/close verbs; macro auto-emits the close-op's token payload type. |
-| 3 (publish-bridge) | `signal-frame` owns a generic `ObserverFanout<OperationEvent, EffectEvent>` trait (no `SemaEffect` reference; no reverse dependency). `signal-executor` owns `ObservedLowering: Lowering` extension trait with two associated types (`OperationEvent`, `EffectEvent`) and two projection methods. Daemons that don't observe impl `Lowering` only; observable daemons impl `ObservedLowering` (which by definition impls `Lowering`). Macro-generated `<Channel>ObservedLowering` trait alias gives compile-time witness against the contract's `observable { operation_event … effect_event … }` declarations. Executor calls projection, hands already-projected event records to the frame-side fanout. (Revised 2026-05-20 per /142 — extension trait beats sibling trait + bridge struct; ObserverFanout in signal-frame avoids cycle.) |
-| 4 (filter-match impl trust) | `observable { … filter default; … }` triggers macro-generated closed-enum `ObserverFilter` with sensible variants (`All` / `OnlyOperations { kinds }` / `OnlySemaEffects { classes }`) and the auto-impl of the filter-match trait. Contract authors opt out (`filter <CustomType>;`) only when the defaults don't fit. |
-| 5 (worked example) | Complete the `signal-repository-ledger` + `repository-ledger` pilot as the canonical Phase-3 reference — adopt the observable block, write the daemon `Lowering` impl, add one end-to-end observer-subscribe test. |
+| 1 (typed rejection on wire) | `Lowering` adopts a `Command` associated type; `lower()` returns `Result<OperationPlan<Self::Command>, Self::Reply>` — structural ownership, no `source_index` sidecar. Executor encodes lowering Err as `Reply::Accepted` with `AcceptedOutcome::OperationAborted { failed_at, reason: DomainRejection }`; multi-op slots become `Invalidated` / `Failed { detail }` / `Skipped`. Engine failures use `Reply::Accepted` with `AcceptedOutcome::BatchAborted { reason, retry, commit }` carrying generic execution metadata — no fake `failed_at`. Kernel `Reply::Rejected` narrows to true frame-level failures only (decode, version, malformed). `Lowering::EngineError` retires. |
+| 2 (`Observe` verb collision) | `observable { … }` mandatory for persona components; macro injects standardized `Tap(ObserverFilter)` / `Untap(ObserverSubscriptionToken)` — no author override for persona. Domain contracts that want the verb `Tap` rename their domain verb. Non-persona small utilities don't declare an observable block at all. |
+| 3 (publish-bridge) | `signal-frame` owns generic `ObserverFanout<OperationEvent, EffectEvent>` (no `SemaEffect` reference; no reverse dependency). `signal-executor` owns `ObservedLowering: Lowering` extension trait parameterized over the component's `Command` type; projection methods are `project_operation(&Self::Operation) -> Self::OperationEvent` and `project_effect(&ComponentEffect) -> Self::EffectEvent`. Daemons that don't observe impl `Lowering` only; observable daemons impl `ObservedLowering`. Macro-generated `<Channel>ObservedLowering` witness gives compile-time check. |
+| 4 (filter-match impl trust) | `observable { … filter default; … }` triggers macro-generated closed-enum `ObserverFilter` with sensible variants. Contract authors opt out (`filter <CustomType>;`) only when defaults don't fit. |
+| 5 (worked example) | Complete `signal-repository-ledger` + `repository-ledger` pilot as the canonical Phase-3 reference. |
 
-Work order: 1 → 2 → 4 → (design pass on 3) → 3 → 5.
+Work order: foundation crates first (signal-sema as classification
+vocabulary; signal-executor's `Lowering` / `OperationPlan` / `Command`
+trait; signal-frame's `ObserverFanout` + mandatory observable);
+then the pilot.
+
+## 0.5 · The three-layer model
+
+The spec rests on three distinct layers of operation language —
+each owns a different concern and lives in a different home:
+
+```text
+Layer 1: Contract Operation  (external — what crosses the wire)
+  - Domain language. Contract author names the public verbs.
+  - Owned by signal-<component> contract crates.
+  - Examples: SpiritOperation::State(Statement),
+              LedgerOperation::Receive(HookNotification),
+              MindOperation::Submit(Thought).
+
+Layer 2: Component Command  (internal — what the daemon executes)
+  - Per-component typed executable records.
+  - Owned by each daemon.
+  - Carry typed payloads the engine actually needs.
+  - Examples: SpiritCommand::AssertEntry(Entry),
+              LedgerCommand::RecordEvent(EventRecord),
+              LedgerCommand::ReadRecentRepositories(ReadPlan).
+
+Layer 3: Sema Operation  (cross-component — what observation sees)
+  - Universal, payloadless state-action classification.
+  - Owned by signal-sema.
+  - Variants: Assert | Mutate | Retract | Match | Subscribe | Validate.
+  - Used ONLY for observation/introspection; never executable.
+```
+
+Flow per request:
+
+```
+incoming signal frame
+  → Contract Operation decoded (Layer 1)
+    → Lowering converts to OperationPlan<Command>  (Layer 2)
+      → CommandExecutor executes Commands against tables
+        → ComponentEffect emitted
+          → ToSemaOperation projects Command → Sema class (Layer 3)
+            → SemaEffect emitted to observers
+              → reply_from_effects builds Contract Reply (Layer 1)
+                → outgoing signal frame
+```
+
+Two layers of observation:
+- **Universal Sema classification** for cross-component patterns
+  ("which components performed an Assert in the last hour?").
+- **Component-specific events** for detailed introspection
+  (`SpiritEvent::EntryAsserted { entry_id, statement_id }`).
+
+Why three layers, not one or two:
+- One layer (e.g., a giant SemaOperation enum carrying every
+  possible payload) either bloats into a universal DSL or
+  degenerates into `(verb, opaque-bytes)`.
+- Two layers (no Component Command — Lowering produces Sema
+  directly) forces Sema's payload to span every component's
+  schema. Same trap.
+- Three layers: each owns one concern. Universal class
+  vocabulary at the observation layer; typed executable
+  commands at the engine layer; domain verbs at the contract
+  layer.
+
+This is the load-bearing model. The trait shapes below all rest
+on it.
 
 ## 1 · Hole 1 — Lowering returns the contract reply on rejection
 
@@ -31,31 +100,62 @@ Work order: 1 → 2 → 4 → (design pass on 3) → 3 → 5.
 pub trait Lowering {
     type Operation: RequestPayload;
     type Reply;
+    type Command;            // contract-local executable command type (Layer 2)
+    type ComponentEffect;    // per-component effect produced by the engine
 
-    /// Lower one contract operation into the Sema operations it
-    /// produces. On Err, the contract reply IS the rejection
-    /// detail; the executor stops further lowering and produces
-    /// an OperationAborted outcome.
+    /// Lower one contract operation into a typed OperationPlan of
+    /// Component Commands. On Err, the contract reply IS the
+    /// rejection detail; the executor stops further lowering and
+    /// produces an OperationAborted outcome.
     fn lower(
         &self,
         operation: &Self::Operation,
-    ) -> Result<Vec<SemaOperation>, Self::Reply>;
+    ) -> Result<OperationPlan<Self::Command>, Self::Reply>;
 
-    /// Build the per-op success reply from the Sema effects that
-    /// were committed.
+    /// Build the per-op success reply from the component effects
+    /// that were committed for this operation.
     fn reply_from_effects(
         &self,
         operation: &Self::Operation,
-        effects: &[SemaEffect],
+        effects: &[Self::ComponentEffect],
     ) -> Self::Reply;
+}
+
+pub struct OperationPlan<Command> {
+    pub commands: NonEmpty<Command>,
+}
+
+pub struct BatchPlan<Command> {
+    pub operations: NonEmpty<OperationPlan<Command>>,
 }
 ```
 
-Two associated types (`Operation`, `Reply`). One Err-on-failure
-return shape. (Revised 2026-05-20 per /142: `EngineError` is not
-needed on `Lowering` — engine errors arise from
-`SemaEngine::execute_atomic`, which the executor handles
-directly outside the Lowering trait surface.)
+Ownership of which Sema operations a Command produces lives
+**structurally** in the plan: one `OperationPlan` per source op,
+each carrying that op's commands. The executor assembles a
+`BatchPlan` from successive `lower()` calls; owner-index falls
+out of the structure, no sidecar.
+
+Component Commands project to Sema classes for observation via:
+
+```rust
+pub trait ToSemaOperation {
+    fn to_sema_operation(&self) -> SemaOperation;
+}
+```
+
+Each contract's Command enum impls `ToSemaOperation` —
+matching variant to classification (`AssertEntry` → `Assert`;
+`MatchEntries` → `Match`; etc.).
+
+Four associated types in `Lowering`: `Operation` (Layer 1 — what
+the contract receives), `Reply` (contract reply enum),
+`Command` (Layer 2 — typed executable commands the daemon
+produces), `ComponentEffect` (per-component effect produced by
+the engine — used by `reply_from_effects` to build the success
+reply). No `EngineError` — engine errors arise from the
+component's `CommandExecutor`, which the executor framework
+handles outside the `Lowering` trait surface.
 
 ### The `Reply` / `SubReply` extensions
 
@@ -80,6 +180,8 @@ pub enum AcceptedOutcome {
     },
     BatchAborted {
         reason: BatchFailureReason,             // no op index — failure is at the batch level
+        retry: RetryClassification,             // generic execution metadata (workspace-universal)
+        commit: CommitStatus,                   // generic execution metadata
     },
 }
 
@@ -98,7 +200,22 @@ pub enum OperationFailureReason {
 }
 
 pub enum BatchFailureReason {
-    EngineRejected,                             // SemaEngine::execute_atomic returned Err
+    EngineRejected,                             // engine failed pre/during commit
+    EngineUnavailable,                          // engine couldn't be reached
+}
+
+/// Whether the caller may retry the request as-is.
+pub enum RetryClassification {
+    Retryable,                                  // transient — e.g., lock contention, brief unavail
+    NotRetryable,                               // permanent — schema/config/integrity failure
+    Unknown,                                    // engine couldn't classify
+}
+
+/// Whether any state changed despite the failure.
+pub enum CommitStatus {
+    NotCommitted,                               // atomic rollback succeeded; no state changed
+    Unknown,                                    // engine couldn't confirm — operator concern
+    Partial,                                    // some effects landed; rare and worth log signal
 }
 ```
 
@@ -155,10 +272,10 @@ pub fn execute(
         Err(_engine_error) => {
             // Typed engine error stays daemon-side (logs); wire reply
             // carries BatchAborted with all ops Invalidated.
+            // Engine classified the failure; carry the metadata.
+            let (reason, retry, commit) = engine_error.classify();
             return Reply::Accepted {
-                outcome: AcceptedOutcome::BatchAborted {
-                    reason: BatchFailureReason::EngineRejected,
-                },
+                outcome: AcceptedOutcome::BatchAborted { reason, retry, commit },
                 per_operation: vec![SubReply::Invalidated; payloads.len()],
             };
         }
@@ -252,28 +369,36 @@ invalidated before commit because a sibling op rejected the
 request."* Widen the doc to cover both cases, or introduce a
 more precise variant if the wording feels too elastic.
 
-## 2 · Hole 2 — Author-named observable verbs
+## 2 · Hole 2 — Mandatory standardized observable surface
 
 ### The shape
 
-The observable block accepts contract-authored open/close verbs:
+The observable block is **mandatory for persona components**;
+non-persona small utilities don't declare it. When present, the
+macro injects the standard `Tap` / `Untap` observability verbs —
+**no author override** for persona components. Domain contracts
+that want the verb `Tap` rename their domain verb, not the
+observability verb.
 
 ```rust
 observable {
-    open <OpenVerb>(<FilterType>);
-    close <CloseVerb>;
     filter <FilterType>;                  // or `filter default;` (hole 4)
-    event <EventType>;
-    event <EventType>;
-    // … more events …
+    operation_event <OperationEventType>;
+    effect_event <EffectEventType>;
 }
 ```
 
-Three things the macro auto-emits when this block is present:
+The macro auto-emits when this block is present:
 
-1. `operation <OpenVerb>(<FilterType>) opens <Channel>ObserverStream`
-2. `operation <CloseVerb>(<Channel>ObserverSubscriptionToken)` — close payload type is macro-determined; the contract author writes `close <Verb>;` with no payload
-3. The `<Channel>ObserverStream` block with all declared events; the `<Channel>ObserverFilterMatch` trait; the `<Channel>ObserverSet`; the publish closures
+1. `operation Tap(<FilterType>) opens <Channel>ObserverStream` — standardized open verb.
+2. `operation Untap(<Channel>ObserverSubscriptionToken)` — standardized close verb; payload is macro-owned.
+3. The `<Channel>ObserverStream` block with the two declared events; the `<Channel>ObserverFilterMatch` trait; the `<Channel>ObserverSet`; the publish closures.
+
+The previous draft (v2/v3) allowed contract-author-named open/close
+verbs. Psyche affirmation 2026-05-20T02:00Z removed the override:
+persona-introspect benefits from uniform vocabulary across every
+persona daemon; the small cost is borne by contracts whose domain
+verb collides with `Tap` (they pick a different domain verb).
 
 ### Worked example — spirit with Watch/Unwatch
 
@@ -292,16 +417,14 @@ signal_channel! {
     }
     reply SpiritReply { ... }
     observable {
-        open Tap(SpiritObserverFilter);       // ← author picks Tap to avoid collision with Watch
-        close Untap;
         filter default;                        // ← hole 4 — uses macro-generated standard filter
-        event OperationReceived;
-        event SemaEffectEmitted;
+        operation_event OperationReceived;
+        effect_event SemaEffectEmitted;
     }
 }
 ```
 
-The macro injects:
+The macro injects (verbs are standardized; no author choice):
 
 ```rust
 operation Tap(SpiritObserverFilter) opens SpiritObserverStream
@@ -316,10 +439,10 @@ stream SpiritObserverStream {
 }
 ```
 
-No collision with the contract's own `Observe(Selection)` or
-`Watch(Subscription)` operations. The contract author chose
-`Tap` for the debug-stream verb because the natural names were
-taken by domain operations.
+Spirit's own `Observe(Selection)` and `Watch(Subscription)`
+domain operations coexist without collision because the
+observability verbs are `Tap`/`Untap` — a name reserved by the
+macro and not in spirit's domain vocabulary.
 
 For a contract without those collisions, the typical choice is
 `Watch`/`Unwatch`:
@@ -383,25 +506,34 @@ Three pieces in three crates:
    macro-generated impl.
 
 2. **`signal-executor`** owns `ObservedLowering` as an extension
-   trait of `Lowering` — daemons that don't observe don't impl
-   it at all:
+   trait of `Lowering`, parameterized over the component's
+   `Command` type — daemons that don't observe don't impl it at
+   all. Projection inputs are the component's own operation and
+   effect types (Layers 1 and 2), not raw SemaEffect:
 
    ```rust
-   pub trait Lowering {
-       type Operation: RequestPayload;
-       type Reply;
-       fn lower(&self, op: &Self::Operation) -> Result<Vec<SemaOperation>, Self::Reply>;
-       fn reply_from_effects(&self, op: &Self::Operation, effects: &[SemaEffect]) -> Self::Reply;
-   }
-
    pub trait ObservedLowering: Lowering {
        type OperationEvent;
        type EffectEvent;
 
-       fn project_operation(&self, operation: &Self::Operation) -> Self::OperationEvent;
-       fn project_sema_effect(&self, effect: &SemaEffect) -> Self::EffectEvent;
+       fn project_operation(
+           &self,
+           operation: &Self::Operation,
+       ) -> Self::OperationEvent;
+
+       fn project_effect(
+           &self,
+           effect: &Self::ComponentEffect,
+       ) -> Self::EffectEvent;
    }
    ```
+
+   Both projection inputs are typed component-local values:
+   `Self::Operation` (Layer 1, the contract operation) and
+   `Self::ComponentEffect` (the per-component effect produced by
+   the engine, NOT a universal SemaEffect — the universal
+   classification happens via `ToSemaOperation` separately for
+   cross-component patterns).
 
    The executor calls projection, then hands already-projected
    event records to the frame-side fanout:
@@ -411,37 +543,36 @@ Three pieces in three crates:
    let event = self.lowering.project_operation(op);
    self.fanout.publish_operation(event);
 
-   // After each Sema effect commits:
-   let event = self.lowering.project_sema_effect(effect);
+   // After each ComponentEffect lands from the CommandExecutor:
+   let event = self.lowering.project_effect(&effect);
    self.fanout.publish_effect(event);
    ```
 
-   `Executor` has two parameterizations: `Executor<L, S>` where
-   `L: Lowering` (non-observable) and `Executor<L, S, F>` where
-   `L: ObservedLowering` and `F: ObserverFanout<L::OperationEvent,
-   L::EffectEvent>`. Daemons opt in to observability by
-   constructing the second variant.
+   `Executor` has two parameterizations: `Executor<L, X>` where
+   `L: Lowering` and `X: CommandExecutor<Command = L::Command>`
+   (non-observable); and `Executor<L, X, F>` where
+   `L: ObservedLowering` and
+   `F: ObserverFanout<L::OperationEvent, L::EffectEvent>`. For
+   persona components the second variant is the only valid
+   shape — `Tap`/`Untap` is mandatory.
 
 3. **The contract crate** owns the channel event record types
    (`OperationReceived`, `SemaEffectEmitted`, filter type),
-   declared via the macro's `observable` block grammar (which
-   `/142` refined to distinguish event roles):
+   declared via the macro's `observable` block grammar:
 
    ```rust
    observable {
-       open Watch(ObserverFilter);
-       close Unwatch;
-       filter ObserverFilter;
+       filter default;                        // hole 4
        operation_event OperationReceived;
        effect_event SemaEffectEmitted;
    }
    ```
 
-   The `operation_event` and `effect_event` grammar (replacing
-   the generic `event`) tells the macro which event record
-   maps to which publication moment, so the `ObserverFanout`
-   impl on `<Channel>ObserverSet` wires the right type to the
-   right method.
+   The `operation_event` and `effect_event` grammar tells the
+   macro which event record maps to which publication moment, so
+   the `ObserverFanout` impl on `<Channel>ObserverSet` wires the
+   right type to the right method. The standardized `Tap`/`Untap`
+   verbs are macro-generated (per §2).
 
 The macro also emits a channel-specific extension witness:
 
