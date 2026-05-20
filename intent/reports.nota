@@ -153,3 +153,4 @@ We need to forbid this type of report name. So find out what the report is about
   "Expansion of the /246-v2 analysis beyond local patches: the psyche wants long-term architecture considered without implementation-cost bias."
   Maximum
   2026-05-20T11:55:00+02:00)
+(Correction "This agent is acting as designer-assistant for this work and should not edit operator-assistant reports; report lanes are owned surfaces and edits should stay in the agent lane unless explicitly authorized." "psyche" "reports/operator-assistant/158-signal-frame-executor-v4-reconciliation.md" High "2026-05-20T12:43:14Z")
