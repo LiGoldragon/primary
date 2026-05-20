@@ -409,3 +409,31 @@
     "Psyche flagging uncertainty on whether Mind lifecycle verbs belong on a signal contract at all. The question opens a research direction rather than settling one way."
     Minimum
     2026-05-20T13:45:00Z)
+
+(Constraint
+    "A component CLI is only a thin client for its daemon: it translates the one NOTA argument into typed Signal frames, sends them to the daemon socket selected for that request, and translates typed Signal replies back to NOTA. It does not own state, mint daemon-owned fields, or perform component logic."
+    "Make sure the CLI is only a client for the daemon and doesn't do anything else. And because that's an invariant for all of our components, the CLI doesn't do anything, it's just a thin client to speak the signal."
+    "Restating the universal component CLI invariant while fixing persona-spirit's timestamp ownership."
+    Maximum
+    2026-05-20 21:53)
+
+(Clarification
+    "Component CLIs need typed request-to-socket dispatch between the working socket and owner socket. The likely durable form is a generated Signal CLI layer that uses compile-time request-head knowledge from both contracts to choose the socket."
+    "we have a designer working on a macro, a signal CLI macro, I think he called it, to write signal CLI micro, takes both contracts and emits the CLI with a compile time ahead identifier to socket dispatch table. Because we need to figure out which socket each command is going to, the owner socket or the normal socket."
+    "Clarifying the CLI dispatch problem during the persona-spirit timestamp-ownership correction. The exact macro design belongs to the designer lane, but the direction affects Spirit's CLI conformance."
+    Medium
+    2026-05-20 21:53)
+
+(Decision
+    "Component CLIs use a generated Signal CLI dispatch layer rather than bespoke routing code. The generated layer takes the working and owner contracts, derives a compile-time request-head-to-socket table, rejects ambiguous heads, and routes each single NOTA argument to either the working socket or the owner socket."
+    "implement the cli macro described in reports/designer-assistant/129-mind-orchestrate-payload-and-cli-dispatch-option-a-2026-05-20.md ... develop the owner-signal contract with enough material (relevant material) to test the two-socket cli routing behavior"
+    "Durable CLI architecture extracted from the persona-spirit generated CLI request. The implementation directive itself is not intent; the persistent rule is that dispatch is generated from both contracts and proves two-socket routing."
+    Maximum
+    2026-05-20T22:27:40+02:00)
+
+(Decision
+    "Component runtime flakes expose the thin CLI and the daemon as separate installable packages. The split lets the CLI be installed into a user's profile independently from the long-lived daemon package."
+    "then when its all working, split the two (daemon and cli) packages in the nix flake, so its ready to be incorporated in my nix profile"
+    "Persistent packaging rule from the persona-spirit CLI macro request. This is more than the one task because it applies to every component triad's install surface."
+    Maximum
+    2026-05-20T22:27:40+02:00)
