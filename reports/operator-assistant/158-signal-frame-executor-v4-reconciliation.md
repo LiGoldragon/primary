@@ -155,7 +155,7 @@ The current shape still treats universal `SemaEffect` as the thing execution
 produces. v4 says the daemon executes component commands and produces
 component effects; Sema classification is projected for observation.
 
-### 3. The Sema projection boundary is underspecified
+### 3. The Sema projection boundary is resolved by `/253`
 
 `/246` defines:
 
@@ -167,36 +167,38 @@ pub trait ToSemaOperation {
 
 on `Command`.
 
-That classifies the command, but observers also need an effect outcome. The
-current `SemaEffect` carries both operation and outcome. v4 does not fully
-name how a `ComponentEffect` becomes the universal observed effect.
-
-There are two plausible shapes:
+That classifies the command, but observers also need an effect outcome.
+`reports/designer/253-tosemaoutcome-trait-shape.md` settles the answer:
+use two traits, both owned by `signal-sema`.
 
 ```rust
 pub trait ToSemaOperation {
     fn to_sema_operation(&self) -> SemaOperation;
 }
 
-pub trait ToSemaEffectOutcome {
-    fn to_sema_effect_outcome(&self) -> SemaEffectOutcome;
+pub trait ToSemaOutcome {
+    fn to_sema_outcome(&self) -> SemaOutcome;
 }
 ```
 
-or:
+`SemaOperation` is the payloadless intent classifier implemented on each
+daemon's `Command`. `SemaOutcome` is the payloadless result classifier
+implemented on each daemon's `ComponentEffect`. `signal-sema` also owns the
+payloadless universal observation record:
 
 ```rust
-pub trait ToSemaEffect {
-    fn to_sema_effect(&self, command: &Command) -> SemaEffect;
+pub struct SemaObservation {
+    pub operation: SemaOperation,
+    pub outcome: SemaOutcome,
 }
 ```
 
-The first keeps command classification and effect result separate. The second
-lets component effects own the full projection. The current code implements
-neither; counter tests use an ad hoc `CounterCommand::sema_operation()` method.
-
-This should be resolved before the executor API is treated as stable enough
-for the repository-ledger pilot.
+`signal-frame::ObserverFanout` composes the observation from
+`(command.to_sema_operation(), effect.to_sema_outcome())`. The rejected
+alternative is a unified `ToSemaEffect(command, effect)` projection because it
+tangles classification with executor choreography. Projection belongs on the
+Layer-2 data types; the executor only composes the two projections at the
+fanout point.
 
 ### 4. Engine error classification needs a real trait
 
@@ -320,10 +322,10 @@ and the macro should inject `Tap` and `Untap`.
 
 2. What exactly maps `ComponentEffect` into a universal Sema effect?
 
-   `/246` names `Command -> SemaOperation`, but not the effect-outcome half.
-   The executor needs a typed way to publish universal Sema observations after
-   execution. My recommendation is two traits: command classifies the intended
-   operation, component effect classifies the outcome.
+   Resolved by `reports/designer/253-tosemaoutcome-trait-shape.md`: use the
+   two-trait shape. `Command` implements `ToSemaOperation`; `ComponentEffect`
+   implements `ToSemaOutcome`; `signal-sema` owns `SemaOutcome` and
+   `SemaObservation`.
 
 3. Is `Tap` / `Untap` now fully settled?
 
