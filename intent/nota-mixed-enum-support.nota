@@ -1,0 +1,34 @@
+(Clarification
+    "The current lane for this work is second-system-assistant, sharing the system-specialist discipline while writing reports under reports/second-system-assistant/."
+    "youre the second-system-assistant"
+    "Session role assignment for researching the NOTA mixed enum support report."
+    Maximum
+    2026-05-20T16:28:41Z)
+
+(Constraint
+    "Before writing the mixed enum support report, the agent must read about NOTA, read the reporting discipline, and read all Rust coding skills."
+    "read about nota, and research how implementing reports/system-assistant/27-nota-mixed-enum-support.md would look like. present your vision in a report as per skills/reporting.md read all the rust coding skills before writing your report"
+    "Task-specific order constraint for report 27 on NOTA mixed enum support."
+    Maximum
+    2026-05-20T16:28:41Z)
+
+(Decision
+    "Produce a research and implementation vision for NOTA mixed enum support as a substantive file report, not as the main chat artifact."
+    "research how implementing reports/system-assistant/27-nota-mixed-enum-support.md would look like. present your vision in a report as per skills/reporting.md"
+    "Requested deliverable for the second-system-assistant lane."
+    Maximum
+    2026-05-20T16:28:41Z)
+
+(Correction
+    "The mixed-enum support report should focus on NOTA supporting a single enum that mixes data-carrying and non-data-carrying variants. Broad scans of downstream implementation users are out of scope for this research report."
+    "why are you looking at implementation users? I want nota to support a mix of data and non-data carrying variants. you just wasted abunch of context reading all the implementations"
+    "Course correction after the agent started auditing downstream users instead of staying on the NOTA codec/derive design."
+    Maximum
+    2026-05-20)
+
+(Constraint
+    "Write the report now from the context already gathered; do not spend more context on broad implementation-user research for this task."
+    "you have just enough context to write your report"
+    "Immediate task constraint after interruption."
+    Maximum
+    2026-05-20)
