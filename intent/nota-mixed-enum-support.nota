@@ -32,3 +32,17 @@
     "Immediate task constraint after interruption."
     Maximum
     2026-05-20)
+
+(Decision
+    "Implement the NOTA mixed enum support vision from reports/second-system-assistant/4-nota-mixed-enum-support-vision.md, using reports/system-assistant/27-nota-mixed-enum-support.md as the original design reference."
+    "read the rust programming skills, then start implementing reports/second-system-assistant/4-nota-mixed-enum-support-vision.md - read reports/system-assistant/27-nota-mixed-enum-support.md for reference (original design report)"
+    "Follow-up implementation task for NOTA mixed data-carrying and non-data-carrying enum variants."
+    Maximum
+    2026-05-20)
+
+(Constraint
+    "Before implementation, read ESSENCE.md, INTENT.md, and the Rust programming skills."
+    "ESSENCE.md INTENT.md read the rust programming skills, then start implementing reports/second-system-assistant/4-nota-mixed-enum-support-vision.md"
+    "Task-specific reading order for the implementation pass."
+    Maximum
+    2026-05-20)
