@@ -270,3 +270,38 @@
     "Preparing the PersonaMind refactor and filling the missing owner contract required by the clarified component triad vocabulary."
     Maximum
     2026-05-20T12:11:26Z)
+
+(Decision
+    "The role above spirit in the persona authority graph is canonically named 'engine manager.' The wire vocabulary 'SupervisionOperation' renames to 'EngineManagementOperation.' Implementation details — the parallel-series renames (Reply, Request, Relation), EngineSupervisor Kameo actor handling, component-internal *Supervisor actor handling, ARCH text edits — are designer judgment in /252, not part of this intent record."
+    "Yeah, we can go with engine manager and do the rename to engine management like engine management operation. So you can actually go ahead and or just write a report and I'll pass that to a to another agent to implement."
+    "Psyche affirming Path B of /251 (canonicalize 'engine manager') and the wire-vocabulary rename of SupervisionOperation. Conservative restatement: the only psyche-stated parts are 'engine manager' as canonical role name and the SupervisionOperation rename. Everything else (parallel renames, internal actor handling, etc.) is designer-derived per /252 and not claimed as psyche intent here. The original restatement over-extended; trimmed 2026-05-20T14:40Z per the conservative-by-default principle established at workspace.nota 2026-05-20T14:40:00Z."
+    Maximum
+    2026-05-20T14:30:00Z)
+
+(Decision
+    "The persona-spirit user-facing CLI is named spirit."
+    "the cli should be called \"spirit\""
+    "Clarifying component CLI naming after the thin-client triad discussion: the component daemon remains persona-spirit-daemon while the user-facing CLI drops the persona component prefix."
+    Maximum
+    2026-05-20T14:30:30+02:00)
+
+(Clarification
+    "Three follow-up confirmations on the engine-manager rename (persona.nota 2026-05-20T14:30:00Z). (1) The engine-management rename extends across the entire signal-persona surface that pertains to persona-daemon's role — all related types adopt the engine-management family, not only the singular SupervisionOperation. The umbrella concept is 'engine management is what we're naming things that have to do with the persona daemon, which is the engine manager.' (2) The Kameo actor inside persona-daemon previously named EngineSupervisor renames to EngineManager (consistent with 'engine management'), NOT to EngineLauncher (the designer's prior /251 proposal is overridden). (3) Component-internal *Supervisor Kameo actors (StoreSupervisor in persona-mind, SubscriptionSupervisor, etc.) keep their names — the rationale for choosing 'engine management' over 'supervisor' for the Kameo actor-tree convention inside components."
+    "engine management is what we're naming things that have to do with the persona daemon, which is the engine manager. … if we're calling it engine management, shouldn't it be called engine manager? … if we decided on engine management, I thought that the whole point was that so those other components could just keep their supervisor names."
+    "Psyche confirmations to the designer's three clarifying questions raised under the conservative-by-default principle. Q2 overrides the designer's prior /251 EngineLauncher proposal — the actor is EngineManager. Psyche's framing: engine-management is the umbrella for everything persona-daemon-role-related, and the choice to use it for the role-above-spirit was precisely to keep 'supervisor' available for Kameo-convention use inside components."
+    Maximum
+    2026-05-20T14:50:00Z)
+
+(Decision
+    "Persona-spirit will eventually replace the ad-hoc intent-log filesystem (current intent/*.nota flat files) as the substrate for psyche intent recording. The future agent-facing surface is the spirit CLI invoking persona-spirit daemon, which stores intent as typed records in spirit's sema-engine database. The current .nota file substrate is transitional. The five-kind taxonomy (Decision/Principle/Correction/Clarification/Constraint) persists; only the substrate changes."
+    "I want it migrated to the new architecture and ready to replace our ugly ad-hoc intent-log file system with an elegant spirit cli."
+    "Psyche stating the long-term role of persona-spirit beyond the immediate pilot. Spirit becomes the canonical intent-record substrate; the .nota files retire once spirit ships. Migration arc (ingestion of existing records, dual-substrate window, deletion criteria) is designer follow-up."
+    Maximum
+    2026-05-20T15:00:00Z)
+
+(Decision
+    "Persona-spirit is the first signal-executor pilot. The motivator is direct: the psyche wants to use spirit now. The earlier /143 + /159 + /152 recommendation of repository-ledger as the simpler infrastructure proving ground is deferred — psyche has weighed the trade-off and prioritized spirit because the workspace needs the substrate replacement (per the prior intent record on spirit CLI as intent-log substrate)."
+    "persona-spirit first because I want to use it"
+    "Refining the earlier persona-spirit-pilot Decision with the explicit motivator. The choice is conscious trade-off, not oversight: psyche knows the pilot doubles as the cognitive proving ground and accepts that for the substrate-replacement benefit."
+    Maximum
+    2026-05-20T15:00:00Z)

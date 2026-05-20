@@ -311,3 +311,101 @@
     "Guidance for the PersonaMind refactor and owner-signal-persona-mind creation; also a general component-contract naming principle."
     Maximum
     2026-05-20T12:11:26Z)
+
+(Decision
+    "CLI binary name equals the daemon binary name with the `-daemon` suffix removed. For persona-mind: daemon is `mind-daemon`, CLI is `mind`. For persona-orchestrate: daemon is `orchestrate-daemon`, CLI is `orchestrate`. The redundant `persona-` ancestry is dropped from the binary names; the repository keeps the `persona-` prefix (filesystem disambiguation), the binaries are short."
+    "the naming of the CLI is just the name of the daemon minus the daemon. So, persona-mind is the mind daemon, and the CLI is mind. The persona-orchestrate is the orchestrate daemon, and the CLI is orchestrate, and so on."
+    "Clarifying the CLI naming convention while detailing how the CLI leg of every triad is to be implemented. Affects the prior example at 2026-05-19T01:23:00Z which used `persona-orchestrate` as the CLI binary form."
+    Maximum
+    2026-05-20T13:00:00Z)
+
+(Decision
+    "A CLI takes exactly two argument shapes: a NOTA string literal that starts with `(` (raw NOTA on the shell — the default agent usage), or otherwise a file path (a file whose contents are NOTA text valid for this CLI). The signal-encoded (rkyv) file path is NOT a CLI input — that shape is for daemons only. The single-argument rule narrows for CLIs."
+    "the CLI only takes two kinds of arguments. Well, possibly three, but I don't think we need to worry about the third one. We don't need to worry about the third one, actually. … if it's a string that starts with an open parenthesis, then it's the raw nota string directly in the shell, which is going to be how most agents use it. And then the other method of using it is to give it a path. So, I guess if it doesn't start with a parenthesis, then it's interpreted as a path, as a file path, which should be a valid nota text in the file that is valid for that CLI to use as input."
+    "Narrowing the universal single-argument rule for CLIs. Daemons still accept the rkyv signal-encoded file shape; CLIs do not."
+    Maximum
+    2026-05-20T13:00:00Z)
+
+(Constraint
+    "A CLI is a pure NOTA↔Signal translation bridge: NOTA in via argv, Signal out to the daemon, Signal reply back, NOTA on stdout. The CLI does nothing else — no logic, no state, no fan-out."
+    "The only thing that the CLI does is translate to the daemon those messages and get the reply and translate it back to nota. It should not do ever anything else."
+    "Hard constraint on CLI scope. Reinforces triad invariant 1 (CLI cannot multiplex across daemons, open any database, open peer sockets) with an explicit positive statement of what the CLI IS."
+    Maximum
+    2026-05-20T13:00:00Z)
+
+(Decision
+    "The CLI is the one workspace surface allowed to read an environment variable, and only for socket-path override — agents/tests pointing at a non-canonical socket (e.g., a test daemon). Daemons never read environment variables; all daemon configuration is NOTA. The CLI checks the env var FIRST: if set, it overrides the canonical socket path; otherwise the canonical path is used."
+    "the CLI is the only place where we allow the use of an environment variable to make it easy for testing to give it a non-canonical socket path for the daemon in case we want to use test daemons and so on. … I guess it would have to check the environment variable first so that it can override the canonical path. So, yeah, I would check the environment variable first to find for a non-default socket."
+    "Named carve-out to the workspace's no-flags / NOTA-is-the-only-argument-language rule. Narrow: only CLIs, only socket-path override, only for testing or non-default deployments."
+    Maximum
+    2026-05-20T13:00:00Z)
+
+(Clarification
+    "Every CLI talks to two sockets, both belonging to its one peer daemon: the working socket (the peer-callable, signal-<component> socket — `working` and `public` are synonyms naming the same socket) and the policy socket (the owner-only, owner-signal-<component> socket). The CLI must dispatch each incoming NOTA request to the correct socket based on which contract the request belongs to. Triad invariant 1's `one Signal peer` still holds — the peer is the single daemon, exposing two sockets."
+    "Every CLI is going to use two sockets, the public socket, the working socket, and the policy socket. So, that's the policy socket and the working socket. Working meaning also I said public, but those are synonyms. Working and public is the same socket, so there's two."
+    "Vocabulary alignment with the existing component-triad working/policy framing. Adds that `public` is synonymous with `working` for the peer-callable socket. The dispatch mechanism (working-vs-policy decision logic) is the open question."
+    Maximum
+    2026-05-20T13:00:00Z)
+
+(Clarification
+    "Re-affirmation: the component triad has exactly three legs — the daemon/runtime repository, the working signal contract (signal-<component>), and the policy signal contract (owner-signal-<component>). The CLI is a thin client bundled with the daemon; it is NOT one of the three triad legs. Supersedes any lingering older shorthand that counted the CLI as a leg."
+    "the CLI is just a thin client. It's not one of the three of the triad. The triad is the daemon, the working signal contract, and the policy signal contract."
+    "Re-affirming the triad's three legs in the new working/policy vocabulary while opening the CLI-design clarification. Repetition reinforces the prior Correction at 2026-05-20T12:11:26Z; the cluster carries intensity."
+    Maximum
+    2026-05-20T13:00:00Z)
+
+(Principle
+    "CLI design is workspace-universal. Every component's CLI is designed and implemented to the same shape: the same naming convention (daemon name minus `-daemon`), the same two argument shapes (raw NOTA starting with `(` or file path), the same pure NOTA↔Signal translation-bridge constraint, the same env-var carve-out for socket-path override, and the same two-socket dispatch (working + policy) to its peer daemon. Component-specific CLI ergonomics do not exist; the CLI shape is one shape across the workspace."
+    "I want to clarify how the CLI is to be designed and implemented for every component."
+    "Universality principle for CLI design. The CLI specifications captured in the surrounding records all apply per component to every CLI; per-component CLI variations are not allowed."
+    Maximum
+    2026-05-20T13:00:00Z)
+
+(Decision
+    "Mind-to-Router channel authority orders move out of signal-persona-mind and into owner-signal-persona-router. Grant, extend, revoke/retract, and deny are authority orders from Mind to Router, not ordinary working-signal operations received by Mind. signal-persona-mind keeps the inbound observation/adjudication shape; router policy mutations belong on Router's owner signal."
+    "do that"
+    "The psyche affirmed the operator-assistant recommendation that Mind-to-Router Grant/Extend/Revoke/Deny should move out of signal-persona-mind and into owner-signal-persona-router. This settles the authority-direction question raised in reports/operator-assistant/159."
+    Maximum
+    2026-05-20T13:09:13Z)
+
+(Decision
+    "BatchErrorClassification trait lands now, before the persona-spirit pilot. Engine errors implementing CommandExecutor::Error self-classify via three methods: batch_failure_reason() -> BatchFailureReason, retry_classification() -> RetryClassification, commit_status() -> CommitStatus. The executor calls these at batch_aborted_reply construction so the wire reply carries meaningful retry/commit metadata per engine-error variant. Operator's stash-only pattern (take_last_engine_error) stays as a complementary diagnostic surface; it does not replace the trait-based classification."
+    "yes, land now. I told him to go back to that now"
+    "Psyche affirming the BatchErrorClassification trait shape recommended in /248 + /158 + /159 + /254 Gap 1. Overrides operator's stash-only pattern that hardcoded retry: Unknown / commit: NotCommitted on every engine failure. Operator has been redirected to land this before continuing the pilot."
+    Maximum
+    2026-05-20T15:00:00Z)
+
+(Decision
+    "Every accepted operation lowers to NonEmpty<Command>. No-ops, validations, and idempotent applies lower to explicit named commands, not empty plans. Example shapes: ValidateProposal -> CheckProposalAgainstCurrent (SemaOperation::Validate, SemaOutcome::Validated or NoChange); ApplyConfiguration when current -> RecordIdempotentApply { reason } (SemaOperation::Mutate, SemaOutcome::NoChange); pure read -> ReadLatestEntry. Three reasons: the structural type already says NonEmpty so zero-command operations would weaken the contract; every operation must have an executor-visible witness for Sema observation coverage; named-command shape makes semantics explicit (RecordIdempotentApply differs from RecordSuccessfulApply even when both produce no durable change)."
+    "I greelight your recommendation"
+    "Psyche affirming the no-op-as-explicit-command rule recommended in /253 §5 + /254 §3 Gap 3, after seeing concrete examples. Closes operator Q2 from /144."
+    Maximum
+    2026-05-20T15:00:00Z)
+
+(Decision
+    "The standardized observable event-pair generated by signal-frame's observable block is OperationReceived / EffectEmitted. The Sema prefix is dropped from EffectEmitted because the event carries the typed component effect, not the universal Sema classification. Macro-generated observable blocks across all persona-component contracts adopt this pair; signal-executor's RecordedEvent variants already use these names."
+    "go with your lean"
+    "Psyche affirming the canonical event-pair naming recommended in /254 §3 Gap 2. Closes operator Q1 from /144."
+    Maximum
+    2026-05-20T15:00:00Z)
+
+(Correction
+    "Orchestrate owns Router; Mind does NOT own Router. The earlier 2026-05-20T13:09:13Z framing of Grant/Extend/Revoke/Deny as `Mind-to-Router` orders was wrong. These are Orchestrate-to-Router orders. Mind decides cognitively (does a channel exist? extend? deny?), then orders Orchestrate (via owner-signal-persona-orchestrate); Orchestrate translates the cognitive decision into low-level Router orders (via owner-signal-persona-router). The verbs Grant, Extend, Revoke, Deny correctly live in owner-signal-persona-router (destination is right); the caller is Orchestrate, not Mind. Channel choreography is orchestrator work, not mind work. Mind has no need to handle the low-level channel operations."
+    "I disagree that this means that the mine owns the router, the orchestrator owns the router. There's no need for the mind to take care of all of this low-level operation. This is orchestrator work."
+    "Settling the authority-chain ambiguity raised in reports/second-designer-assistant/14 (and re-surfaced in reports/operator-assistant/160 Q2). The earlier intent record framed Grant/Extend/Revoke/Deny as Mind-to-Router orders, which is now superseded — Mind does not have direct owner authority on Router; the chain is Mind→Orchestrate→Router. Aligns with skills/component-triad.md §`4. Two authority tiers` canonical wording that `orchestrate owns router and harness`."
+    Maximum
+    2026-05-20T13:30:00Z)
+
+(Principle
+    "The Mind-to-Orchestrate authority relationship follows the human mind-body analogy. Orchestrate (body) has substantial autonomy and does many things mindlessly — without Mind's intervention. Mind (mind) does many things that don't involve directing Orchestrate. Mind CAN override and instruct Orchestrate to do things Orchestrate wouldn't do on its own. The Mind→Orchestrate authority surface lives at the override-and-instruct level, NOT at the level of low-level routine operations. Orchestrate handles its own machinery without Mind's micromanagement; Mind reaches across only when its cognitive judgment needs to redirect Orchestrate."
+    "mind to orchestrate isnt clear right now. … think of the human mind vs the body; the body does many things mindlessly, and the mind does many things that dont involve controlling the body, while it still can override the body and instruct it to do things it wouldnt do on its own"
+    "Establishing the mind-body analogy as the design anchor for the Mind-Orchestrate authority boundary. Refines the state-vs-machinery split (2026-05-18T12:08:41Z) by adding the autonomy dimension — Orchestrate isn't just an executor of Mind's machinery decisions, it has its own routine autonomy and Mind interrupts only when cognitive judgment is required."
+    Maximum
+    2026-05-20T13:45:00Z)
+
+(Clarification
+    "Whether Mind needs explicit Start/Stop/Drain/Reload lifecycle verbs on its owner signal is itself an open question — possibly handled out-of-band by the infrastructure supervisor (systemd / spawn envelope / signals) rather than carried on `owner-signal-persona-mind`. The owner contract may stay cognitive-policy-only (Configure/Inspect and the Spirit-shaped surfaces that emerge), with lifecycle living in the supervisor's infrastructure layer."
+    "we need star/stop/etc verbs?"
+    "Psyche flagging uncertainty on whether Mind lifecycle verbs belong on a signal contract at all. The question opens a research direction rather than settling one way."
+    Minimum
+    2026-05-20T13:45:00Z)
