@@ -65,17 +65,32 @@ CLIs, not daemons. What no daemon may do is bypass another daemon's
 contract — no opening another component's redb, no shared in-memory
 state.
 
-### 3. The verb is declared per-variant by the contract crate
+### 3. Verbs come in three layers
 
-Each `signal_channel!` request enum variant carries one of the six
-`SignalVerb` roots (`Assert`, `Mutate`, `Retract`, `Match`,
-`Subscribe`, `Validate`). The CLI's NOTA sugar omits the verb keyword
-because every variant maps to exactly one verb — the contract resolves
-it from the payload type.
+A component contract speaks three distinct languages, each with
+its own concern (settled 2026-05-20T02:00Z per
+`reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`):
 
-The verbs and their meanings:
+| Layer | Owns | Examples |
+|---|---|---|
+| **Contract Operation** (external, on the wire) | the domain action the caller invokes | `Submit(Message)`, `Query(Selection)`, `Configure(Configuration)`, `State(Statement)` |
+| **Component Command** (internal, per-daemon) | the daemon's typed executable record | `LedgerCommand::RecordEvent(EventRecord)`, `SpiritCommand::AssertEntry(Entry)` |
+| **Sema Operation** (cross-component classification) | the universal payloadless class label for observation/introspection | `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate` |
 
-| Verb | Direction | What it means |
+The contract crate names the Layer-1 operations (per
+`skills/naming.md` verb-form rule). The daemon owns its Layer-2
+commands. The six Sema classes (Layer 3) live in `signal-sema` as
+a **payloadless** enum used by observation only — never
+executable, never wire-payload-carrying. Component Commands
+project to Sema classes via a `ToSemaOperation` trait so
+cross-component observation can filter on classification ("all
+Asserts across the workspace") without knowing per-daemon
+command payloads.
+
+The six Sema classes and their semantic meanings (the same
+table, now framed as classification vocabulary):
+
+| Class | Direction | What kind of state-action |
 |---|---|---|
 | `Assert` | bottom-up or peer | append a new typed fact / event / row |
 | `Mutate` | top-down authority order — *"change this, I don't care what you think"*. Authority issues; subordinate obeys and confirms | replace / transition a record at stable identity |
