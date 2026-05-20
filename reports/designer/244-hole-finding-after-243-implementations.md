@@ -530,6 +530,37 @@ will show up immediately in a long-lived daemon.
   It is not wrong, but it is visually noisy and sits awkwardly beside
   the reply-naming convention.
 
+### Operator/140 design check
+
+`reports/operator/140-signal-frame-executor-hole-analysis.md` offers
+better designs in three places:
+
+1. **Typed rejection replies.** Operator/140 corrects `/245`'s
+   "just pass the reply through" wording. A lowering rejection should
+   not become top-level `Reply::Rejected`, because that variant has no
+   contract payload and should remain kernel/pre-flight shaped. The
+   better mechanical shape is `Reply::Accepted { outcome:
+   AcceptedOutcome::Aborted { failed_at, reason:
+   OperationFailureReason::DomainRejection }, per_operation: ... }`
+   with the typed contract rejection reply in
+   `SubReply::Failed { detail: Some(reply), ... }`.
+2. **Observable grammar.** Operator/140's `observable { open
+   Watch(Filter); close Unwatch; ... }` is cleaner than `/245`'s
+   `operation_open` / `operation_close` form. The macro should own the
+   observer token payload type; the contract author only names the
+   open/close verbs.
+3. **Publish bridge.** Operator/140 is right that moving
+   `ObserverChannel` to `signal-frame` is not enough by itself.
+   Something must project executor facts (`Operation`, `SemaEffect`)
+   into channel event records (`OperationReceived`,
+   `SemaEffectEmitted`) without making `signal-frame` depend on
+   `signal-executor`. The bridge needs an explicit projection
+   boundary.
+
+Operator/140 does **not** supersede this addendum's hole 6. It does
+not address the fact that `signal-executor` currently lowers to bare
+`SemaOperation` tags instead of typed executable commands/plans.
+
 ## 5 · Recommendations
 
 After `/245`, the best fix is one bundled shape change rather than a
@@ -540,13 +571,16 @@ sequence of incremental patches:
    `RejectionReason`; contract-domain rejection is a contract reply.
    `Self::Command` is the typed executable Sema command/plan. It can
    expose a `SemaOperation` class for observation, but it is not just
-   the class tag.
+   the class tag. Encode lowering rejections as per-operation aborted
+   replies with `SubReply::Failed.detail = Some(contract_reply)`, not
+   as top-level kernel `Reply::Rejected`.
 2. **Fix holes 2, 3, 7, and 10 together**: move the observer-channel
-   trait/surface to `signal-frame`; extend the `observable` block so
-   the contract author names the open/close verbs; have the macro emit
-   the observer impl; and make the production bridge own
-   register/unregister, recipient snapshotting, and delivery outside
-   locks.
+   surface toward `signal-frame`, but only with an explicit projection
+   boundary from executor facts to channel event records; extend the
+   `observable` block to `open <Verb>(Filter); close <Verb>;` so the
+   contract author names the verbs while the macro owns token payloads;
+   and make the production bridge own register/unregister, recipient
+   snapshotting, and delivery outside locks.
 3. **Fix hole 9 inside the executor plan**: carry source operation
    index and effect-span correlation through execution, so
    `reply_from_effects` receives only the relevant effects for that
