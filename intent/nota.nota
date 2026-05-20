@@ -130,3 +130,17 @@
     "Restatement during the Logix/Horizon lean-rewrite analysis kickoff. Confirms the 2026-05-19 21:30 decisions on Bool-as-enum and Option-wrapping have shipped; downstream design and fixtures must use the new grammar."
     Maximum
     2026-05-20 14:50)
+
+(Clarification
+    "NOTA non-data-carrying enum variants are bare PascalCase tokens with no surrounding parentheses. Restatement and reaffirmation of the 2026-05-19 21:00 three-case rule (case 3: bare VariantName with no preceding `(` = non-data-carrying unit variant). Goldragon's services vector currently writes `(TailnetClient)` for unit variants — that's the data-carrying-variant form with no data, not the unit form. Implementation must enforce bare-only for unit variants in vector positions; existing cluster data files need migration to bare form."
+    "non-data-carrying variants don't have surrounding parenthesis. make sure that is how the latest nota actually works, as this is how I want it to work."
+    "Restatement during the lean-rewrite analysis report follow-up (reports/system-assistant/26). Reaffirms the three-case rule from 2026-05-19 21:00; flags existing data files (goldragon datom.nota lines 81-84, 121-123, 156-157) as needing migration to bare form."
+    Maximum
+    2026-05-20 15:30)
+
+(Clarification
+    "NOTA codec enforces strict separation: NotaEnum requires all-unit variants and serializes/parses bare PascalCase; NotaSum requires all-data-carrying variants and serializes/parses `(VariantName fields…)`. The derive panics on mixed enums (nota-derive/src/nota_sum.rs:91: 'NotaSum does not support unit variants; use NotaEnum'). The gap surfaced by the psyche's reaffirmation: empty-struct variants in NotaSum (e.g. `TailnetClient {}` in horizon-rs/lib/src/proposal/services.rs) currently serialize as `(TailnetClient)` because the codec sees a struct variant with zero fields, not as bare per the no-data semantics. The author's intent (`non-data-carrying variants don't have surrounding parenthesis`) implies one of three fixes: (a) codec relaxes the NotaSum all-data-carrying rule and accepts mixed enums with bare-for-unit serialization; (b) codec detects empty-struct variants in NotaSum and emits bare form; (c) the author splits any mixed service-role into two enums (one NotaEnum for unit roles, one NotaSum for configured roles) to fit the current codec without altering it. Goldragon's services vector contains both shapes today (`(TailnetClient)`, `(NixBuilder None)`) — the empty cases would migrate to bare under (a) or (b)."
+    "non-data-carrying variants don't have surrounding parenthesis. make sure that is how the latest nota actually works, as this is how I *want it to work*"
+    "Verification follow-up to the 2026-05-20 15:30 NOTA reclarification. Reading nota-codec/src/decoder.rs (read_pascal_identifier line 122, expect_record_head line 201) and nota-derive/src/nota_sum.rs (line 91 panic) confirms the strict-but-mixed-forbidden architecture. Records the empty-struct-variant edge case the psyche's rule does not fully cover under the current derive split."
+    Maximum
+    2026-05-20 16:00)

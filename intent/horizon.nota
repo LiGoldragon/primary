@@ -67,3 +67,10 @@
     "Pointed at as a concrete gap during the Logix/Horizon lean-rewrite analysis kickoff. Direct guidance for the new horizon code shape."
     Maximum
     2026-05-20 14:50)
+
+(Decision
+    "View-side derived predicates (the 16 booleans on view::Node + BehavesAs in horizon-rs lean) move out of horizon. Derivation lives Nix-side in a single shared location — likely CriomOS-lib — so each consuming Nix module reads the same predicate definitions instead of horizon emitting them. Horizon stays a clean projector; CriomOS-lib carries the let-bindings that turn variants (species, placement, size, trust, arch) into the predicate booleans Nix modules gate on."
+    "derive them in a single location nix-side (criomos-lib?)"
+    "Psyche answer to the §8.2 derived-predicate question in reports/system-assistant/26. Settles direction: remove all 16 predicates from horizon; consolidate derivation in CriomOS-lib (or whichever shared Nix-lib home best fits). Question mark on the exact location indicates CriomOS-lib is the leading candidate, not the final decision."
+    Maximum
+    2026-05-20 15:30)
