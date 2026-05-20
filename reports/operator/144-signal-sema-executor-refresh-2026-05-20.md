@@ -28,10 +28,14 @@ cross-component class of what happened.
 | Repo | Commit | Change |
 |---|---|---|
 | `signal-frame` | `68891f60` | Owns `BatchErrorClassification`; tests canonical batch failure projection; observable examples use `EffectEmitted`. |
+| `signal-frame` | `fb53a6be` | Removed speculative `CommitStatus::Partial`; atomic batches now expose only `NotCommitted` or `Unknown`. |
 | `signal-executor` | `66b5ee48` | Imports/re-exports `signal-frame::BatchErrorClassification`; executor no longer owns that trait; docs cleaned. |
+| `signal-executor` | `47961d12` | Bumped to the `signal-frame` revision without `Partial`. |
 | `signal-persona-spirit` | `a1909872` | Canonical observable event pair is now `OperationReceived` / `EffectEmitted`. |
+| `signal-persona-spirit` | `2e7a69a0` | Bumped to the `signal-frame` revision without `Partial`. |
 | `persona-spirit` | `6aeea3fd` | Bumped to the new `signal-frame` and `signal-persona-spirit` revisions. |
 | `persona-spirit` | `951603c3` | Added constraint witnesses for explicit no-change commands and unimplemented observer requests. |
+| `persona-spirit` | `0f0a82be` | Bumped to `signal-frame` / `signal-persona-spirit` revisions without `Partial`. |
 
 Earlier same-slice commits still matter:
 
@@ -64,6 +68,25 @@ unknown/not-committed/engine-rejected.
 
 This means higher components implement one small trait for their engine
 error type and get honest wire-safe batch abort metadata.
+
+### Atomic Commit Status
+
+`CommitStatus::Partial` was removed after review. The current executor
+contract is `execute_atomic_batch`, so the only honest failed-commit
+states are:
+
+```rust
+pub enum CommitStatus {
+    NotCommitted,
+    Unknown,
+}
+```
+
+`Partial` would only make sense for a real non-atomic executor or a
+distributed commit surface that can prove some sub-operations committed
+and others did not. That is not the present contract. If such a surface
+lands later, adding the variant back will force every consumer through
+Rust exhaustiveness checking at the moment the semantics are real.
 
 ### Observable Naming
 
@@ -229,25 +252,20 @@ fallback, no in-process actor tree, no convenience business logic.
 
 ## Intent Clarification Needed
 
-1. `CommitStatus::Partial` exists in `signal-frame`, but the current
-   `CommandExecutor::execute_atomic_batch` contract is all-or-nothing. Do
-   we keep `Partial` as a future-proof honest classification for uncertain
-   lower engines, or should the executor interface forbid it for now?
-
-2. For the intent-log replacement, should agents start using `spirit
+1. For the intent-log replacement, should agents start using `spirit
    '(Record ...)'` as soon as the daemon is available, or do we need an
    explicit dual-write/import window for the existing `intent/*.nota`
    files?
 
-3. Should `Tap` / `Untap` observer operations be implemented before
+2. Should `Tap` / `Untap` observer operations be implemented before
    `spirit` becomes the replacement for intent logging, or is the current
    typed `NoChange` placeholder acceptable until introspection integration?
 
-4. Should `signal-persona-orchestrate` be migrated immediately away from
+3. Should `signal-persona-orchestrate` be migrated immediately away from
    `SemaEffectObserved`, or should it wait for the orchestrate contract
    redesign?
 
-5. Is `EffectEmitted` mandatory for every Persona observable contract, or
+4. Is `EffectEmitted` mandatory for every Persona observable contract, or
    is it only the default generated name when a contract does not need a
    more specific observable event vocabulary?
 
