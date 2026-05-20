@@ -1,18 +1,28 @@
-## 8 — /141 migration: coordination audit + Lowering::Command divergence
+## 8 — /141 migration: coordination audit + Lowering::Command divergence (resolved by /246-v4)
 
 **Lane:** second-operator-assistant
-**Reads against:** `reports/operator/141-signal-frame-executor-correction-examples.md`
-(the migration directive the psyche pointed at);
-`reports/designer/246-v2-bundled-fix-deep-design-with-examples.md`
-(the **now-authoritative** implementation-ready spec, which folded
-/141's corrections back into the bundled fix and was committed
-during the parallel work — see §2.5 below for the
-`Lowering::Command` divergence between /246-v2's spec and the
-in-flight implementation);
+**Reads against:**
+`reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
+— the **now-authoritative** spec (v4 supersedes v3, v2, v1 and
+/141 itself; the three-layer model + `Lowering::Command` adoption
+was affirmed by the psyche 2026-05-20T02:00Z; v4 also retires
+`Lowering::EngineError`, splits `AcceptedOutcome`, and standardises
+observability verbs to `Tap`/`Untap`);
+`reports/operator/141-signal-frame-executor-correction-examples.md`
+— the migration directive the psyche pointed at; substantially
+folded into /246-v4 with operator/142's logic probe driving the
+refinements;
 `reports/operator-assistant/<NN>` (whatever the operator-assistant
 lane lands as their /141 Package 1 writeup — not yet committed);
 and `intent/workspace.nota` 2026-05-20T00:30:00Z (the psyche
 directive that authorised /141 as the migration target).
+
+**v4-supersession note.** Section 2.5 below documents what was a
+"divergence" between the in-flight implementation and /246-v2; v4
+adopted the `Lowering::Command` extension explicitly, so the
+divergence flag is now historical. The in-flight implementation
+still needs further revision to match v4's other refinements —
+see §3 below.
 
 ## 0 · TL;DR
 
@@ -118,14 +128,21 @@ persona daemon will need its own `Command` enum (e.g.
 fields). Daemons that try to lower directly to bare
 `SemaOperation` will hit the type-system lie immediately.
 
-### 2.5 · Divergence from /246-v2 (the now-authoritative spec)
+### 2.5 · Divergence from /246-v2 — RESOLVED by /246-v4
+
+*(Historical: this section documented a `Lowering::Command` vs
+`Lowering::EngineError` divergence between the in-flight
+implementation and /246-v2. /246-v4 settled the question by
+adopting the `Lowering::Command` extension as the official spec —
+my §2 rationale was effectively re-derived by the designer in v4's
+§0.5 three-layer model. The text below is preserved so the
+sequence is legible; the actionable items move to §3 below.)*
 
 `reports/designer/246-v2-bundled-fix-deep-design-with-examples.md`
-landed during the parallel implementation work. /246-v2 is the
-final spec — it folds /245's alternatives, /140's operator
-corrections, and /141's concrete encoding back into a single
-implementation-ready document. It supersedes /141 as the
-authoritative directive.
+landed during the parallel implementation work. /246-v2 was a
+preliminary final spec — it folded /245's alternatives, /140's
+operator corrections, and /141's concrete encoding back into a
+single implementation-ready document.
 
 **/246-v2's `Lowering` trait shape:**
 
@@ -185,25 +202,209 @@ Two divergences:
    `SemaEngine::Command` via the executor's bound) and lets the
    engine's own `Error` type stay on the `SemaEngine` trait.
 
-**Which is right?** Both have merit. /246-v2 keeps the executor's
-type surface minimal (the engine is fully generic over its own
-`Error`). The implementation's `Command` couples Lowering and
-SemaEngine on a shared command vocabulary, which makes the
-engine's actual execution payload visible at the type level — a
-type-system-honest abstraction.
+**Which is right? — Resolved by /246-v4.** /246-v4 §0.5 names the
+**three-layer model** explicitly: Contract Operation (Layer 1,
+wire), Component Command (Layer 2, internal executable, owned by
+each daemon), Sema Operation (Layer 3, universal payloadless
+classification, observation-only). The implementation's
+`Lowering::Command` IS Layer 2. The /246-v2 `Vec<SemaOperation>`
+shape was the "Two-layer no-Command" trap v4's §0.5 explicitly
+rejects ("forces Sema's payload to span every component's
+schema").
 
-**The decision belongs to the designer lane.** The implementation
-landed first; /246-v2 followed. If /246-v2 wins, the implementation
-should drop `Command`, change `lower()` back to
-`Result<Vec<SemaOperation>, Self::Reply>`, and add `EngineError`.
-If `Command` wins, /246-v2 needs an update naming the
-`Lowering::Command` + `SemaEngine::Command<=` pairing as the final
-shape. A small designer-lane report (let's call it /247) would
-close this.
+The implementation's instinct was correct. v4 names it as the
+load-bearing model and builds the rest of the spec on top.
 
-**Pending recommendation #5 in §6** is now sharpened: the rationale
-in §2 of THIS report should be the input that designer lane uses
-to write /247.
+**Pending action.** /246-v4 also retires `Lowering::EngineError` —
+"engine errors arise from the component's `CommandExecutor`, which
+the executor framework handles outside the `Lowering` trait
+surface." Neither side of the prior divergence wins literally: the
+implementation keeps `Command` but drops the engine-error
+associated type entirely; /246-v2's `EngineError` doesn't survive
+either.
+
+The implementation will need further revisions to match v4 — see
+§3 below.
+
+## 2.6 · What the implementation still needs to absorb from /246-v4
+
+/246-v4 settled four additional points beyond the
+`Lowering::Command` adoption. The in-flight signal-executor and
+signal-frame work needs further revisions to match. None of these
+break the existing direction — they refine it.
+
+### 2.6.1 · `OperationPlan<Command>` + `BatchPlan<Command>` instead of `Vec<Command>`
+
+v4 §1 redefines the `lower()` return type:
+
+```rust
+fn lower(
+    &self,
+    operation: &Self::Operation,
+) -> Result<OperationPlan<Self::Command>, Self::Reply>;
+
+pub struct OperationPlan<Command> {
+    pub commands: NonEmpty<Command>,
+}
+
+pub struct BatchPlan<Command> {
+    pub operations: NonEmpty<OperationPlan<Command>>,
+}
+```
+
+The in-flight implementation has `Result<Vec<Self::Command>, Self::Reply>`.
+v4's `OperationPlan` makes ownership of which commands belong to
+which operation **structural** — the per-op `OperationPlan` IS the
+owner mapping, no `sema_op_owners: Vec<usize>` sidecar needed in
+the executor. The v4 executor pseudo-code still shows
+`sema_op_owners` (a v3 holdover); the structural ownership
+intent is in v4's §1 "Ownership of which Sema operations a Command
+produces lives **structurally** in the plan."
+
+### 2.6.2 · `ComponentEffect` associated type on `Lowering`
+
+v4 adds a fourth associated type:
+
+```rust
+type ComponentEffect;    // per-component effect produced by the engine
+```
+
+`reply_from_effects` takes `&[Self::ComponentEffect]` instead of
+`&[SemaEffect]`. This pulls the engine's effect type into the
+daemon's vocabulary, matching the Layer-2 Component-Command
+discipline on both sides of execution. The implementation
+currently passes `&[SemaEffect]` from `signal-executor::effect`.
+
+### 2.6.3 · `AcceptedOutcome` split into three variants
+
+v4 §1 splits the outcome:
+
+```rust
+pub enum AcceptedOutcome {
+    Committed,
+    OperationAborted {
+        failed_at: usize,
+        reason: OperationFailureReason,
+    },
+    BatchAborted {
+        reason: BatchFailureReason,
+        retry: RetryClassification,
+        commit: CommitStatus,
+    },
+}
+```
+
+This is operator/142's "separate operation aborts from batch
+aborts" — domain rejections from lowering produce
+`OperationAborted` (with a real `failed_at`); engine failures
+produce `BatchAborted` (no fake `failed_at`, carries generic
+execution metadata). Plus three new enums (`BatchFailureReason`,
+`RetryClassification`, `CommitStatus`).
+
+The in-flight implementation currently uses `AcceptedOutcome::Aborted`
+(no split). Both arms — lowering rejection AND engine rejection —
+need updating; engine rejection no longer produces kernel
+`Reply::Rejected` (see §2.6.4).
+
+### 2.6.4 · Engine failure stays inside `Reply::Accepted` — kernel `Reply::Rejected` narrows further
+
+This is the biggest semantic change. /141 said:
+
+> "If `SemaEngine::execute_atomic` returns an infrastructure error, the executor does not have a contract-domain reply. That path can remain: `Reply::Rejected { reason: RequestRejectionReason::Internal }`."
+
+v4 reverses this per operator/142:
+
+> "engine failure is post-acceptance; Reply::Rejected is reserved for pre-acceptance frame failures only."
+
+The wire shape for engine failure is now:
+
+```rust
+Reply::Accepted {
+    outcome: AcceptedOutcome::BatchAborted {
+        reason: BatchFailureReason::EngineRejected | EngineUnavailable,
+        retry: RetryClassification::Retryable | NotRetryable | Unknown,
+        commit: CommitStatus::NotCommitted | Unknown | Partial,
+    },
+    per_operation: vec![SubReply::Invalidated; payloads.len()],
+}
+```
+
+Kernel `Reply::Rejected` is now reserved for **true pre-acceptance
+frame failures only**: decode error, version skew, malformed frame
+shape. The in-flight implementation still maps engine rejection to
+kernel `Reply::Rejected { Internal }` per /141; this needs
+updating.
+
+The new `BatchFailureReason::EngineRejected` / `EngineUnavailable`
+distinction, plus `RetryClassification` and `CommitStatus`, are
+workspace-universal execution metadata — `signal-frame`'s `Reply`
+extension gains these enums.
+
+### 2.6.5 · Observability verbs standardised to `Tap`/`Untap`
+
+v4 §2 retracts the contract-author-named open/close verbs from /141
+and /246-v2. Per psyche affirmation 2026-05-20T02:00Z, **persona
+components must declare an `observable` block, and the macro
+injects the standardised `Tap`/`Untap` verbs with no author
+override**. Domain contracts that want their own `Tap` verb rename
+their domain verb. Non-persona small utilities don't declare the
+block.
+
+This affects Package 2 (signal-frame macro grammar). The in-flight
+macro work at `/git/.../signal-frame onxlynko` likely needs
+revision: the v3-shape grammar `observable { open Watch(Filter); close Unwatch; … }`
+that /141 specified is no longer the target. The v4 grammar is:
+
+```rust
+observable {
+    filter <FilterType>;                  // or `filter default;`
+    operation_event <OperationEventType>;
+    effect_event <EffectEventType>;
+}
+```
+
+No `open` / `close` lines — the macro injects `Tap(<FilterType>) opens <Channel>ObserverStream`
+and `Untap(<Channel>ObserverSubscriptionToken)` automatically.
+
+### 2.6.6 · Projection bridge via `ObservedLowering: Lowering` extension trait
+
+Package 3 in /141 was deferred for design; v4 §3 lands the design:
+
+```rust
+// In signal-executor:
+pub trait ObservedLowering: Lowering {
+    type OperationEvent;
+    type EffectEvent;
+
+    fn project_operation(&self, operation: &Self::Operation) -> Self::OperationEvent;
+    fn project_effect(&self, effect: &Self::ComponentEffect) -> Self::EffectEvent;
+}
+```
+
+```rust
+// In signal-frame:
+pub trait ObserverFanout<OperationEvent, EffectEvent> {
+    fn publish_operation(&mut self, event: OperationEvent);
+    fn publish_effect(&mut self, event: EffectEvent);
+}
+```
+
+The macro-emitted `<Channel>ObserverSet` impls
+`ObserverFanout<OperationEvent, EffectEvent>`. The daemon-side
+`Executor::execute` calls `project_operation` / `project_effect`
+on `ObservedLowering` and publishes through `ObserverFanout`.
+
+This unblocks Package 3 — it no longer needs a separate design
+pass. The shape was demonstrated working in operator/142's logic
+probe at `/tmp/signal-frame-executor-246-probe/model.rs`.
+
+### 2.6.7 · The `Tap`/`Untap` standardisation gates the macro grammar work
+
+If signal-frame's in-flight macro work is implementing v3's
+contract-author-named open/close grammar, it needs to be retargeted
+to v4's mandatory-standardised shape before commit. This is small
+work but worth catching before the macro commits cement a shape
+v4 already retired.
 
 ## 3 · What's landed in signal-frame (Package 2 in flight)
 
@@ -291,20 +492,22 @@ Two reasons, in order:
 1. **Discipline.** When I claimed the second-operator-assistant lock for "signal-executor Package 1" at 11:43, the `operator-assistant` lock was empty. By 11:46 the operator-assistant lane had claimed a separate worktree for the same scope, and the main signal-executor worktree was actively being edited (likely by operator). Three lanes converging on the same scope produces conflicts and wasted work; my lane released its claim and switched to audit mode.
 2. **No value in duplicate landing.** /141's Package 1 is a well-specified change. The main-worktree implementation matches the prescription (and exceeds it with `Lowering::Command`). Re-implementing in my own worktree would produce a parallel branch that has to be reconciled. Auditing + naming the design extension + flagging the residual items is the higher-value contribution from a third lane.
 
-## 6 · Recommendations
+## 6 · Recommendations — v4-aligned
 
-In priority order:
+In priority order (revised after /246-v4):
 
-1. **Whichever lane commits Package 1 first**: add the `kernel_rejection_does_not_carry_contract_reply` named test (§4.1) so all three /141-named tests are on disk.
-2. **Whichever lane has bandwidth for signal-frame**: widen the `SubReply::Invalidated` doc in `signal-frame/src/reply.rs` lines 112-114 per /141 §1's footnote. One-line edit; non-conflicting with Package 2 grammar work.
-3. **Whichever lane commits Package 1**: update `signal-executor/ARCHITECTURE.md` for the new failure-mode taxonomy and the `Lowering::Command` extension (§4.3).
-4. **A designer lane**: open /146 (or appropriate number) on the projection-boundary resolution (§4.4) so Package 3 unblocks.
-5. **A future report by whichever operator lane lands the work**: include a one-paragraph callout that `Lowering::Command` was added beyond /141's prescription, with the rationale from §2 of this report so reviewers don't flag it as drift.
+1. **Operator lane / operator-assistant lane** working on Package 1: realign to v4 before commit. The biggest deltas: (a) `OperationPlan<Command>` + `BatchPlan<Command>` replace `Vec<Command>`; (b) add `Lowering::ComponentEffect` associated type; (c) split `AcceptedOutcome` into `Committed` / `OperationAborted` / `BatchAborted`; (d) engine failure produces `Reply::Accepted` with `BatchAborted`, NOT kernel `Reply::Rejected` — this reverses /141's engine-rejection-as-kernel-rejection. The `kernel_rejection_does_not_carry_contract_reply` named test from /141 needs renaming + reshaping to `engine_failure_produces_batch_aborted_not_kernel_rejection` to match v4.
+2. **Signal-frame `Reply`/`SubReply` extension work**: add three new enums (`BatchFailureReason`, `RetryClassification`, `CommitStatus`) to `signal-frame/src/reply.rs`; split `AcceptedOutcome::Aborted` into `OperationAborted` + `BatchAborted` per v4 §1. Widen `SubReply::Invalidated` doc per v4 §1's footnote.
+3. **Signal-frame macro grammar work** (Package 2 in flight at `onxlynko`): retarget to v4's mandatory-standardised `Tap`/`Untap` grammar. The contract-author-named `open Verb(Filter); close Verb;` shape from /141 is RETIRED. The v4 grammar declares only filter + event types; the macro injects standardised verbs. This is small work but worth catching before macro changes commit.
+4. **Package 3 (projection bridge) unblocks** — v4 §3 lands the design as the `ObservedLowering: Lowering` extension trait + `ObserverFanout<OperationEvent, EffectEvent>` primitive. Operator/142's logic probe demonstrated it compiles. No designer-lane gate needed; whichever operator has bandwidth can implement.
+5. **Signal-executor's `ARCHITECTURE.md` update** must wait for the v4-aligned implementation to settle; written alongside the Package 1 commit by whichever lane commits.
+6. **Per-component cascade waits for v4 settling.** The persona daemon cascade (signal-persona-mind, -router, -message, -harness, -terminal) needs the v4 trait shapes locked before it begins — report 7's §3 sequencing applies, now refined: wait for v4's `Lowering` shape + `ObservedLowering` extension to land in code, not just in spec.
 
 ## 7 · See also
 
-- `reports/designer/246-v2-bundled-fix-deep-design-with-examples.md` — the now-authoritative implementation-ready spec; supersedes /141 + /245.
-- `reports/operator/141-signal-frame-executor-correction-examples.md` — the migration directive the psyche pointed at; folded into /246-v2.
+- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md` — the now-authoritative spec; v4 supersedes v3, v2, v1, /141, /245. Adopts three-layer model + `Lowering::Command` + `OperationPlan` + `AcceptedOutcome` split + standardised `Tap`/`Untap` + `ObservedLowering: Lowering` extension trait.
+- `reports/operator/141-signal-frame-executor-correction-examples.md` — the migration directive the psyche pointed at; substantially folded into /246-v4 with operator/142's logic probe driving the refinements.
+- `reports/operator/142-signal-frame-executor-bundled-fix-logic-probe.md` — the logic probe that drove three of v4's refinements (separate operation aborts from batch aborts; `ObservedLowering: Lowering` extension trait; engine failure stays inside `Reply::Accepted`).
 - `reports/operator/140-signal-frame-executor-hole-analysis.md` — /141's predecessor; load-bearing for the rejection-as-`Aborted` design.
 - `reports/designer/244-hole-finding-after-243-implementations.md`, `reports/designer/245-design-alternatives-for-244-holes.md` — the holes /141 closes (and the literal /245 moves /141 corrected).
 - `reports/second-operator-assistant/7-signal-persona-migration-deeper-holes.md` — my prior analysis; §3 sequencing names /141's load-bearing position for the persona daemon cascade.
