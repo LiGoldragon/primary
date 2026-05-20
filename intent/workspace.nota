@@ -451,3 +451,24 @@
   "reports/operator/140-signal-frame-executor-hole-analysis.md"
   Medium
   2026-05-20T09:36:28Z)
+
+(Decision
+  "Start migrating the Signal frame/executor design toward the deeper fixes in reports/operator/141-signal-frame-executor-correction-examples.md: typed executable commands instead of bare SemaOperation tags, domain rejection as typed per-operation failure detail rather than kernel rejection, and a corrected observer bridge/projection boundary."
+  "psyche"
+  "reports/operator/141-signal-frame-executor-correction-examples.md"
+  High
+  2026-05-20T09:42:51Z)
+
+(Decision
+    "Adopt /141 (Signal Frame / Executor Corrections From /140 Versus /245) as the migration target. /141 sharpens /245 on three holes: (1) typed rejection rides per-operation as Reply::Accepted with Aborted outcome and SubReply::Failed.detail — kernel Reply::Rejected stays kernel-shaped; (2) observable block grammar is `open <Verb>(<FilterType>); close <Verb>;` with the macro owning the close payload token; (3) the publish bridge needs another design pass before code because the macro publishes channel event records and the executor publishes execution facts — projection is missing and signal-frame cannot depend on signal-executor. Start migration with Package 1 (rejection semantics in signal-executor); Package 2 (observable grammar in signal-frame) is also ready; Package 3 awaits design."
+    "start a migration that follows the deeper, more correct fixes suggested in reports/operator/141-signal-frame-executor-correction-examples.md"
+    "Psyche directive to begin implementation of /141. Settles which design shape governs the signal-frame/signal-executor migration; supersedes /245's literal proposals where /141 sharpens them."
+    Maximum
+    2026-05-20T00:30:00Z)
+
+(Principle
+    "When choosing between design alternatives, the better long-term logic always wins. Implementation cost is not a tiebreaker. The cost of a wrong shape compounds; the cost of a clean break is paid once. When evaluating proposals, weigh elegance, separation of concerns, and clarity — not how easy or hard the change is to land. ESSENCE 'Backward compatibility is not a constraint' applies directly: a transitional shape compromises both the old and the new to avoid breaking either, and is the wrong shape for both."
+    "disregard implementation cost completly; the better long-term logic always wins"
+    "Strengthens ESSENCE's 'Backward compatibility is not a constraint' specifically in the design-alternative evaluation context. Implementation-cost reasoning had been creeping into agent analysis ('but the macro would need changes'); this principle explicitly retires it as a tiebreaker."
+    Maximum
+    2026-05-20T00:30:00Z)

@@ -132,3 +132,10 @@ We need to forbid this type of report name. So find out what the report is about
   "The psyche asked operator to turn designer's comparison of /140 and /245 into a durable explanatory report."
   Medium
   2026-05-20T11:37:00+02:00)
+
+(Decision
+  "Operator should analyze designer report 246, prefer the more elegant long-term logic regardless of implementation cost, test the better solutions in code, and return findings in a report."
+  "analyse reports/designer/246-bundled-fix-deep-design-with-examples.md and edit your report if its proposal is more elegant - disregard implementation cost completly; the better long-term logic always wins - test the better solutions in code and return your findings in a report"
+  "Follow-up after operator report 141 and designer's bundled design report 246; the psyche explicitly prioritizes long-term logical elegance over implementation cost."
+  Maximum
+  2026-05-20T11:45:38+02:00)

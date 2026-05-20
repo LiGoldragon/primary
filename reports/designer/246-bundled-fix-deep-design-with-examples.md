@@ -15,7 +15,7 @@ Five holes, five fixes:
 |---|---|
 | 1 (typed rejection on wire) | `lower()` returns `Result<Vec<SemaOperation>, Self::Reply>`; executor encodes the Err as `Reply::Accepted` with `AcceptedOutcome::Aborted`, multi-op per-operation slots become `Invalidated` / `Failed { detail }` / `Skipped`. Kernel `Reply::Rejected` narrows to true frame-level failures only. |
 | 2 (`Observe` verb collision) | `observable { open <Verb>(Filter); close <Verb>; … }`. Contract author names the open/close verbs; macro auto-emits the close-op's token payload type. |
-| 3 (publish-bridge) | Crate-boundary projection: `signal-frame` owns observer subscription/fanout; `signal-executor` owns execution facts (`Operation`, `SemaEffect`); `Lowering` trait grows two associated types (`OperationEvent`, `SemaEffectEvent`) and two methods (`project_operation`, `project_sema_effect`) that bridge execution facts to channel event records. Macro-generated `<Channel>Lowering` skeleton trait wires the projection types to the contract's `observable { event … }` declarations at compile time. |
+| 3 (publish-bridge) | Crate-boundary projection separated as its own concern. `signal-frame` owns observer subscription/fanout; `signal-executor` owns execution facts (`Operation`, `SemaEffect`) AND defines a small `ObservationProjection` trait + `FrameObserverBridge<Projection, ObserverSet, Deliver>` struct that wires the pieces. Daemons that don't observe don't impl `ObservationProjection`. Macro-generated `<Channel>ObservationProjection` trait alias gives compile-time check against the contract's `observable { operation_event … effect_event … }` declarations. (Revised 2026-05-20 after `/141` analysis: projection is its own concern, not a method on `Lowering`.) |
 | 4 (filter-match impl trust) | `observable { … filter default; … }` triggers macro-generated closed-enum `ObserverFilter` with sensible variants (`All` / `OnlyOperations { kinds }` / `OnlySemaEffects { classes }`) and the auto-impl of the filter-match trait. Contract authors opt out (`filter <CustomType>;`) only when the defaults don't fit. |
 | 5 (worked example) | Complete the `signal-repository-ledger` + `repository-ledger` pilot as the canonical Phase-3 reference — adopt the observable block, write the daemon `Lowering` impl, add one end-to-end observer-subscribe test. |
 
@@ -141,14 +141,15 @@ pub fn execute(
     let effects = match self.sema_engine.execute_atomic(sema_ops) {
         Ok(effects) => effects,
         Err(engine_error) => {
-            // Build an EngineRejection-shaped Aborted outcome. The detail
-            // slot is None because the engine error isn't a contract reply.
-            return Reply::Accepted {
-                outcome: AcceptedOutcome::Aborted {
-                    failed_at: 0,  // all ops invalidated; pick the first as carrier
-                    reason: OperationFailureReason::EngineRejection,
-                },
-                per_operation: vec![SubReply::Invalidated; payloads.len()],
+            // Engine rejection is an infrastructure failure, not a
+            // contract-domain reply. It stays kernel-shaped — the typed
+            // engine error remains daemon-side (logs + ExecutorOutcome);
+            // the wire reply is just kernel rejection.
+            //
+            // (Revised 2026-05-20 per /141: engine errors don't belong
+            // in Reply::Accepted; they're not a per-op domain outcome.)
+            return Reply::Rejected {
+                reason: RequestRejectionReason::Internal,
             };
         }
     };
@@ -230,6 +231,16 @@ NOTA wire form:
 
 The caller knows exactly which op failed, why (`PolicyDenied`),
 and that ops 0 and 2 weren't committed.
+
+### Documentation update on `SubReply::Invalidated`
+
+`signal-frame`'s current `SubReply::Invalidated` doc leans
+toward *"operation ran but its result is no longer
+authoritative"* (per `/141` reading). Under this design, the
+variant also covers *"operation was planned and lowered but
+invalidated before commit because a sibling op rejected the
+request."* Widen the doc to cover both cases, or introduce a
+more precise variant if the wording feels too elastic.
 
 ## 2 · Hole 2 — Author-named observable verbs
 
@@ -331,85 +342,131 @@ take **channel-specific event records** (`OperationReceived`,
 `SemaEffectEmitted`). The executor publishes **raw execution
 facts** (`Operation`, `SemaEffect`).
 
-Something has to project raw facts → channel event records. That
+Something has to project raw facts → channel event records. The
 projection is contract-specific (each contract knows how its
-`OperationReceived` is constructed from its `Operation`). So the
-projection belongs in the daemon's `Lowering` impl, not in
-either kernel crate.
+`OperationReceived` is constructed from its `Operation`).
 
-### The shape
+### The shape — separate projection trait + bridge struct
 
-`Lowering` grows two associated types and two methods:
+**(Revised 2026-05-20 after `/141` analysis: projection is its
+own concern, not a method on `Lowering`. Daemons that don't
+observe don't impl it. Lowering stays focused on execution.)**
+
+Three pieces in three crates:
+
+1. **`signal-executor`** defines a small `ObservationProjection`
+   trait — execution facts in, channel event records out:
+
+   ```rust
+   pub trait ObservationProjection {
+       type Operation;
+       type OperationEvent;
+       type EffectEvent;
+
+       fn operation_event(&self, operation: &Self::Operation) -> Self::OperationEvent;
+       fn effect_event(&self, effect: &SemaEffect) -> Self::EffectEvent;
+   }
+   ```
+
+2. **`signal-executor`** also defines a generic bridge struct
+   that wires the executor's `ObserverChannel<Operation>`
+   contract to the macro-generated `<Channel>ObserverSet`'s
+   publish closures + the daemon's delivery callback:
+
+   ```rust
+   pub struct FrameObserverBridge<Projection, ObserverSet, Deliver> {
+       projection: Projection,
+       observer_set: ObserverSet,
+       deliver: Deliver,
+   }
+
+   impl<Projection, ObserverSet, Deliver, Operation> ObserverChannel<Operation>
+       for FrameObserverBridge<Projection, ObserverSet, Deliver>
+   where
+       Projection: ObservationProjection<Operation = Operation>,
+       ObserverSet: ObservableSet<
+           OperationEvent = Projection::OperationEvent,
+           EffectEvent = Projection::EffectEvent,
+       >,
+       Deliver: ObserverDelivery<
+           OperationEvent = Projection::OperationEvent,
+           EffectEvent = Projection::EffectEvent,
+       >,
+   {
+       fn publish_operation_received(&self, operation: &Operation) {
+           let event = self.projection.operation_event(operation);
+           self.observer_set.publish_operation_received(&event, |token, e| {
+               self.deliver.deliver_operation(token, e);
+           });
+       }
+
+       fn publish_sema_effect_emitted(&self, effect: &SemaEffect) {
+           let event = self.projection.effect_event(effect);
+           self.observer_set.publish_sema_effect_emitted(&event, |token, e| {
+               self.deliver.deliver_effect(token, e);
+           });
+       }
+   }
+   ```
+
+   `ObservableSet` is a small trait `signal-executor` defines
+   that the macro-emitted `<Channel>ObserverSet` types impl —
+   abstract enough that signal-executor doesn't need to know
+   the channel.
+
+3. **The contract crate** owns the channel event record types
+   (`OperationReceived`, `SemaEffectEmitted`, filter type),
+   declared via the macro's `observable` block grammar (which
+   `/141` refines to distinguish event roles):
+
+   ```rust
+   observable {
+       open Watch(ObserverFilter);
+       close Unwatch;
+       filter ObserverFilter;
+       operation_event OperationReceived;
+       effect_event SemaEffectEmitted;
+   }
+   ```
+
+   The `operation_event` and `effect_event` grammar (replacing
+   the generic `event`) tells the macro which event record
+   maps to which publication moment.
+
+### Why this is more elegant than folding projection into Lowering
+
+`Lowering` is about **execution** (contract op → Sema ops →
+contract reply). `ObservationProjection` is about
+**observation** (contract op + Sema effect → channel event
+records). Same daemon implements both when it observes;
+daemons that don't observe don't impl `ObservationProjection`
+at all and don't pay the associated-type cost on `Lowering`.
+
+The two concerns share no information beyond the contract
+operation type. Coupling them in one trait widens `Lowering`
+for daemons that don't need it. The `/141` analysis is right:
+**these are separate concerns and they should have separate
+traits.**
+
+The compile-time check `/246`'s earlier draft proposed
+(macro-generated `<Channel>Lowering` trait alias) translates
+cleanly to a `<Channel>ObservationProjection` trait alias —
+same mechanism, separate trait:
 
 ```rust
-pub trait Lowering {
-    type Operation: RequestPayload;
-    type Reply;
-    type EngineError;
-
-    // New: projection types matching the contract's observable block.
-    type OperationEvent;
-    type SemaEffectEvent;
-
-    fn lower(&self, op: &Self::Operation)
-        -> Result<Vec<SemaOperation>, Self::Reply>;
-
-    fn reply_from_effects(&self, op: &Self::Operation, effects: &[SemaEffect])
-        -> Self::Reply;
-
-    // New: project execution facts to channel event records.
-    fn project_operation(&self, op: &Self::Operation) -> Self::OperationEvent;
-    fn project_sema_effect(&self, effect: &SemaEffect) -> Self::SemaEffectEvent;
-}
-```
-
-The executor's publish path becomes:
-
-```rust
-// Before lowering an op:
-let event = self.lowering.project_operation(op);
-self.observers.publish_operation_received(&event, |token, evt| {
-    // wire delivery (daemon-provided closure)
-});
-
-// After committing each Sema effect:
-let event = self.lowering.project_sema_effect(effect);
-self.observers.publish_sema_effect_emitted(&event, |token, evt| {
-    // wire delivery
-});
-```
-
-The macro-generated `<Channel>ObserverSet::publish_*` closures
-fire only when there are subscribed observers; the deliver
-closure is the daemon's socket-layer wire callback.
-
-### Macro-generated channel-specific Lowering skeleton
-
-To prevent the contract author from mismatching projection types
-to the observable declarations, the macro emits a
-channel-specific trait alias:
-
-```rust
-// Macro-generated from `channel Spirit { … observable { event OperationReceived; event SemaEffectEmitted; } }`:
-pub trait SpiritLowering: Lowering<
+// Macro-generated from `channel Spirit { … observable { operation_event OperationReceived; effect_event SemaEffectEmitted; } }`:
+pub trait SpiritObservationProjection: ObservationProjection<
     Operation = SpiritOperation,
-    Reply = SpiritReply,
     OperationEvent = OperationReceived,
-    SemaEffectEvent = SemaEffectEmitted,
+    EffectEvent = SemaEffectEmitted,
 > {}
 
-// Blanket impl over any matching Lowering:
-impl<T> SpiritLowering for T where T: Lowering<
+impl<T> SpiritObservationProjection for T where T: ObservationProjection<
     Operation = SpiritOperation,
-    Reply = SpiritReply,
     OperationEvent = OperationReceived,
-    SemaEffectEvent = SemaEffectEmitted,
+    EffectEvent = SemaEffectEmitted,
 > {}
 ```
-
-Daemons implement `Lowering` once; the type system checks the
-projection types match the observable declarations at compile
-time.
 
 ### Worked example — spirit's daemon
 
@@ -423,9 +480,6 @@ struct SpiritDaemonLowering {
 impl Lowering for SpiritDaemonLowering {
     type Operation = SpiritOperation;
     type Reply = SpiritReply;
-    type EngineError = SpiritEngineError;
-    type OperationEvent = OperationReceived;
-    type SemaEffectEvent = SemaEffectEmitted;
 
     fn lower(&self, op: &SpiritOperation) -> Result<Vec<SemaOperation>, SpiritReply> {
         match op {
@@ -450,38 +504,57 @@ impl Lowering for SpiritDaemonLowering {
             // ...
         }
     }
+}
 
-    fn project_operation(&self, op: &SpiritOperation) -> OperationReceived {
-        OperationReceived::new(op.kind(), self.timestamp_now())
+// Separate impl for observability — daemon opts in only when it wants observers.
+struct SpiritProjection {
+    timestamp_source: TimestampSource,
+}
+
+impl ObservationProjection for SpiritProjection {
+    type Operation = SpiritOperation;
+    type OperationEvent = OperationReceived;
+    type EffectEvent = SemaEffectEmitted;
+
+    fn operation_event(&self, op: &SpiritOperation) -> OperationReceived {
+        OperationReceived::new(op.kind(), self.timestamp_source.now())
     }
 
-    fn project_sema_effect(&self, effect: &SemaEffect) -> SemaEffectEmitted {
+    fn effect_event(&self, effect: &SemaEffect) -> SemaEffectEmitted {
         SemaEffectEmitted::new(effect.operation_class(), effect.outcome().clone())
     }
 }
 ```
 
-The daemon implements one trait. The macro-generated
-`SpiritLowering` trait alias gives a compile-time check that the
-projection types match `observable { event OperationReceived;
-event SemaEffectEmitted; }`. If the daemon's `Lowering` impl has
-mismatched `OperationEvent` or `SemaEffectEvent`, the daemon
-doesn't satisfy `SpiritLowering` and the executor wiring fails
-to compile.
+The daemon wires it together at construction:
+
+```rust
+let observer_bridge = FrameObserverBridge::new(
+    SpiritProjection { timestamp_source },
+    SpiritObserverSet::new(),  // macro-generated
+    spirit_observer_delivery,
+);
+let executor = Executor::new(SpiritDaemonLowering::new(...), sema_engine, observer_bridge);
+```
+
+The compile-time check fires if the `SpiritProjection`'s
+associated types don't match the contract's `observable`
+declarations.
 
 ### Why this isn't /245's "move ObserverChannel to signal-frame"
 
-`/245`'s proposal was: move the `ObserverChannel` trait to
-signal-frame, and the macro emits the impl. The mechanical
-problem `/140` caught: the trait would need to reference
-`SemaEffect`, which lives in signal-executor — backwards
-dependency.
+`/245`'s proposal: move the `ObserverChannel` trait to
+signal-frame; the macro emits the impl. `/141` caught the
+mechanical problem: the trait would reference
+`signal_executor::SemaEffect`, which lives downstream of
+signal-frame — backwards dependency.
 
-The fix: the projection happens in the *daemon's `Lowering`
-impl* (signal-executor side). The trait's projection methods
-return channel-specific event records (`OperationReceived`,
-`SemaEffectEmitted`), which are contract-defined types. No
-kernel crate needs to reference SemaEffect from the wrong side.
+This revision: `signal-executor` keeps both the
+`ObserverChannel` trait AND the new `ObservationProjection`
+trait AND the `FrameObserverBridge` struct. The macro-emitted
+`<Channel>ObserverSet` impl an `ObservableSet` interface
+that signal-executor's bridge composes over. No reverse
+dependency.
 
 ## 4 · Hole 4 — Default observer filter
 

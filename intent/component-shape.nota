@@ -180,6 +180,13 @@
     2026-05-20T00:15:00Z)
 
 (Decision
+    "Start the Signal frame/executor migration using the deeper correction examples from reports/operator/141: domain rejections ride as typed per-operation failed replies, observable open/close verbs are contract-authored while the macro owns the close-token payload, and observer bridging keeps an explicit projection boundary between executor facts and contract event records."
+    "start a migration that follows the deeper, more correct fixes suggested in reports/operator/141-signal-frame-executor-correction-examples.md"
+    "Authorizing the next Signal foundation migration. The report's first two packages are implementation-ready; the projection bridge remains a design boundary to preserve rather than flatten into signal-frame."
+    Maximum
+    2026-05-20T09:43:22Z)
+
+(Decision
     "Start the signal-frame/signal-executor migration along report 141's deeper corrections: typed per-operation domain rejections, contract-authored observable open/close verbs with macro-owned token payloads, and an explicit executor-to-observer projection boundary."
     "start a migration that follows the deeper, more correct fixes suggested in reports/operator/141-signal-frame-executor-correction-examples.md"
     "Directing the next implementation phase after comparing reports 140, 141, 244, and 245. The migration should prefer the corrected report-141 shapes over the shallower alternatives."
