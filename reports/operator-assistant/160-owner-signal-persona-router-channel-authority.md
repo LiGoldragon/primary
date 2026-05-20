@@ -3,7 +3,12 @@
 ## What changed
 
 Created `owner-signal-persona-router` as the router policy signal for
-channel authority orders. It is a `signal-frame` contract repo with:
+channel authority orders. It is a `signal-frame` contract repo called
+by Orchestrate, because Orchestrate owns Router. Mind decides channel
+policy at the cognitive level and orders Orchestrate first; Mind does
+not call Router's owner signal directly.
+
+The contract repo has:
 
 - `Grant(ChannelGrant)`
 - `Extend(ChannelExtension)`
@@ -28,8 +33,19 @@ Mind still carries Router-to-Mind `AdjudicationRequest` and the
 read-side `ChannelList` / `ChannelListView` shape.
 
 Updated `signal-persona-router` documentation to point router
-channel-policy writes at `owner-signal-persona-router` and keep the
-ordinary router contract as the observation surface.
+channel-policy writes at `owner-signal-persona-router`, name
+Orchestrate as the caller, and keep the ordinary router contract as
+the observation surface.
+
+Correction after `reports/second-designer-assistant/15`: Q2 is
+settled. The authority chain is:
+
+```text
+Mind -> owner-signal-persona-orchestrate -> owner-signal-persona-router
+```
+
+`owner-signal-persona-orchestrate` still needs a Mind-facing channel
+decision surface; that shape is not settled here.
 
 ## Verification
 
@@ -48,10 +64,6 @@ Passed:
    Mind-side read, or should channel views move fully to
    `signal-persona-router` / `owner-signal-persona-router` now that
    Router owns grant state?
-2. Does Mind call the Router owner socket directly, or should Mind
-   issue an order to Orchestrate and let Orchestrate call
-   `owner-signal-persona-router` as Router's immediate owner?
-3. Should `AdjudicationRequest` stay as Router calling Mind's working
+2. Should `AdjudicationRequest` stay as Router calling Mind's working
    signal, or should it become a router observation/tap event once the
    mandatory persona observable surface lands?
-
