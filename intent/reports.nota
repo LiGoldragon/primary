@@ -118,3 +118,10 @@ We need to forbid this type of report name. So find out what the report is about
   "Directing an operator review of the post-243 hole-finding report after the signal-frame and repository-ledger pilot work."
   Medium
   2026-05-20T11:24:18+02:00)
+
+(Decision
+  "Operator should include designer report 245's alternatives when analyzing the post-243 signal-frame and signal-executor holes."
+  "consider reports/designer/245-design-alternatives-for-244-holes.md"
+  "Follow-up while operator was analyzing designer/244; designer/245 proposes cleaner alternatives for several of the same holes."
+  Medium
+  2026-05-20T11:30:02+02:00)
