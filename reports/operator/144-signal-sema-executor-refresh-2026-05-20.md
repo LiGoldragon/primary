@@ -1,260 +1,271 @@
 # Signal / Sema / Executor Refresh
 
-## Context
+## Current State
 
-I refreshed from the current workspace guidance and the recent signal
-redesign reports before touching code:
+This report updates the earlier lower-component refresh after
+`reports/designer/254-signal-executor-sema-refresh-audit.md`.
 
-- `ESSENCE.md`
-- `INTENT.md`
-- `AGENTS.md`
-- `repos/lore/AGENTS.md`
-- `orchestrate/AGENTS.md`
-- `skills/operator.md`
-- `skills/contract-repo.md`
-- `skills/component-triad.md`
-- `skills/rust-discipline.md`
-- `skills/naming.md`
-- `reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
-- `reports/designer/239-signal-architecture-migration-plan.md`
-- `reports/designer/240-signal-frame-operation-collapse-check-removal.md`
-- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
-- `reports/designer/247-radical-rethink-or-converge.md`
-- `reports/designer/248-three-layer-changes-for-operators.md`
-- `reports/designer/253-tosemaoutcome-trait-shape.md`
-
-The design I implemented against is:
+The architecture now has three distinct layers:
 
 ```text
-Layer 1: Contract Operation
-  external, component-local signal contract vocabulary
+Contract Operation
+  external operation vocabulary in a signal contract
 
-Layer 2: Component Command
-  internal, executable, component-local command record
+Component Command
+  internal executable command vocabulary owned by a daemon/component
 
-Layer 3: Sema Classification
-  universal, payloadless operation/outcome observation vocabulary
+Sema Classification
+  universal payloadless observation labels:
+  SemaOperation + SemaOutcome = SemaObservation
 ```
 
-`SemaOperation` is not executable. It is the shared observation class.
-Execution belongs to each component through its own typed command
-records.
+The important shift is that Sema is no longer treated as the executable
+database language. A component executes its own commands. Sema records the
+cross-component class of what happened.
 
-## Code Landed
+## What Landed
 
-### `signal-executor`
+| Repo | Commit | Change |
+|---|---|---|
+| `signal-frame` | `68891f60` | Owns `BatchErrorClassification`; tests canonical batch failure projection; observable examples use `EffectEmitted`. |
+| `signal-executor` | `66b5ee48` | Imports/re-exports `signal-frame::BatchErrorClassification`; executor no longer owns that trait; docs cleaned. |
+| `signal-persona-spirit` | `a1909872` | Canonical observable event pair is now `OperationReceived` / `EffectEmitted`. |
+| `persona-spirit` | `6aeea3fd` | Bumped to the new `signal-frame` and `signal-persona-spirit` revisions. |
+| `persona-spirit` | `951603c3` | Added constraint witnesses for explicit no-change commands and unimplemented observer requests. |
 
-Pushed commits:
+Earlier same-slice commits still matter:
 
-- `1757d519` `signal-executor: use component-local effects`
-- `6c374c47` `signal-executor: bump signal-sema classification docs`
+- `signal-executor` `1757d519`: removed the old executor-owned
+  `SemaEffect`, `SemaEffectOutcome`, and `SemaEngine` surface.
+- `signal-sema` `a1715949`: reframed Sema docs as
+  classification/projection.
+- `persona-spirit` `556bafcc`: made the CLI binary `spirit`; CLI accepts
+  one raw-NOTA or path argument and only translates NOTA to signal frames
+  and signal replies back to NOTA.
 
-What changed:
+## Audit Items Closed
 
-- Deleted `src/effect.rs`.
-- Deleted the exported `SemaEffect` and `SemaEffectOutcome` types.
-- Deleted the deprecated `SemaEngine` alias.
-- Renamed the executable trait surface to `CommandExecutor`.
-- Added `CommandEffect<Command, ComponentEffect>`.
-- Changed `OperationEffects` and `BatchEffects` to preserve
-  source-operation grouping over component-local command effects.
-- Made `CommandEffect::sema_observation()` project through
-  `ToSemaOperation` and `ToSemaOutcome`.
-- Updated observer plumbing so committed facts are command/effect
-  pairs, not executor-owned Sema effects.
-- Rewrote `ARCHITECTURE.md` and `README.md` around the three-layer
-  design.
-- Updated the lockfile to the current `signal-sema` commit.
+### Batch Error Classification
 
-The current executor flow is:
+`BatchErrorClassification` now belongs to `signal-frame` beside the wire
+types it classifies:
+
+```rust
+pub trait BatchErrorClassification {
+    fn batch_failure_reason(&self) -> BatchFailureReason;
+    fn retry_classification(&self) -> RetryClassification;
+    fn commit_status(&self) -> CommitStatus;
+}
+```
+
+`signal-executor` now requires `CommandExecutor::Error:
+BatchErrorClassification` instead of hardcoding every engine failure as
+unknown/not-committed/engine-rejected.
+
+This means higher components implement one small trait for their engine
+error type and get honest wire-safe batch abort metadata.
+
+### Observable Naming
+
+The canonical observable pair is:
 
 ```text
-Request<Operation>
-  -> Lowering::lower(Operation)
-  -> OperationPlan<Command>
-  -> CommandExecutor::execute_atomic_batch(BatchPlan<Command>)
-  -> BatchEffects<Command, ComponentEffect>
-  -> Lowering::reply_from_effects(...)
-  -> Reply<ContractReply>
+OperationReceived
+EffectEmitted
 ```
 
-Observation flow:
+`EffectEmitted` carries a `SemaObservation`, not a typed component effect.
+The old name `SemaEffectEmitted` was wrong because the old `SemaEffect`
+type is gone.
 
-```text
-OperationReceived(Operation)                 before lowering
-EffectEmitted(CommandEffect<Command, Effect>) after commit
-CommandEffect::sema_observation()             generic Sema label
-```
+### Explicit No-Change Commands
 
-### `signal-sema`
+`persona-spirit` now witnesses that valid no-change paths are still real
+commands:
 
-Pushed commit:
+- `Tap` projects as `SemaOperation::Subscribe` +
+  `SemaOutcome::NoChange` while observer subscriptions are not implemented.
+- `Untap` projects as `SemaOperation::Retract` +
+  `SemaOutcome::NoChange`.
+- `persona_spirit_unimplemented_observer_request_uses_reply_shaper_not_store`
+  proves that the valid unimplemented request goes through `ReplyShaper`
+  and does not touch `RecordStore`, `SemaWriter`, or `SemaReader`.
 
-- `a1715949` `signal-sema: describe sema as classification`
-
-What changed:
-
-- Updated crate docs, README, Cargo description, and operation docs
-  so `signal-sema` is described as classification/projection, not as
-  the executable database language.
-- No runtime code change; this aligned the documentation with the
-  already-landed `ToSemaOperation`, `ToSemaOutcome`, and
-  `SemaObservation` code.
+This keeps the invariant: accepted operations do not disappear. Even an
+idempotent or unimplemented accepted path has a typed command/effect witness.
 
 ## Verification
+
+All repo checks below passed.
+
+`signal-frame`:
+
+```text
+CARGO_BUILD_JOBS=2 cargo fmt
+CARGO_BUILD_JOBS=2 cargo test --locked
+nix flake check -L --max-jobs 0
+```
 
 `signal-executor`:
 
 ```text
+CARGO_BUILD_JOBS=2 cargo update -p signal-frame -p signal-frame-macros
+CARGO_BUILD_JOBS=2 cargo fmt
 CARGO_BUILD_JOBS=2 cargo test --locked
 nix flake check -L --max-jobs 0
 ```
 
-Result: pass.
-
-`signal-sema`:
+`signal-persona-spirit`:
 
 ```text
+CARGO_BUILD_JOBS=2 cargo update -p signal-frame -p signal-frame-macros
+CARGO_BUILD_JOBS=2 cargo fmt
 CARGO_BUILD_JOBS=2 cargo test --locked
 nix flake check -L --max-jobs 0
 ```
 
-Result: pass.
-
-The Nix checks used `--max-jobs 0`; the builds ran on the remote
-builder.
-
-## What This Accomplishes
-
-The old executor-owned Sema effect path is gone.
-
-Before:
+`persona-spirit`:
 
 ```text
-Operation -> Sema command/effect-ish executor surface
+CARGO_BUILD_JOBS=2 cargo update -p signal-frame -p signal-frame-macros -p signal-persona-spirit
+CARGO_BUILD_JOBS=2 cargo fmt
+CARGO_BUILD_JOBS=2 cargo test --locked
+nix flake check -L --max-jobs 0
 ```
 
-After:
+The Nix checks used `--max-jobs 0` and ran on the remote builder.
 
-```text
-Operation -> component Command -> component Effect -> SemaObservation
-```
+## Effect On Higher Components
 
-This matters because the code now matches the architecture:
-
-- `signal-executor` does not pretend to know database payloads.
-- `signal-sema` does not pretend to be the executable command
-  language.
-- Components keep their own executable command records.
-- Generic observers get a uniform, payloadless classification:
-  `SemaObservation { operation, outcome }`.
-
-The Counter test fixture now witnesses the intended pattern:
+Higher components should now follow this pattern:
 
 ```rust
-pub enum CounterCommand {
-    Increment { magnitude: u32 },
-    Decrement { magnitude: u32 },
-    Query,
-    ResetTracking,
+pub enum ComponentCommand {
+    RecordEntry(Entry),
+    ReadEntries(ReadPlan),
+    OpenObserver(ObserverFilter),
 }
 
-impl ToSemaOperation for CounterCommand {
+impl ToSemaOperation for ComponentCommand {
     fn to_sema_operation(&self) -> SemaOperation {
         match self {
-            Self::Increment { .. } => SemaOperation::Assert,
-            Self::Decrement { .. } => SemaOperation::Retract,
-            Self::Query => SemaOperation::Match,
-            Self::ResetTracking => SemaOperation::Validate,
+            Self::RecordEntry(_) => SemaOperation::Assert,
+            Self::ReadEntries(_) => SemaOperation::Match,
+            Self::OpenObserver(_) => SemaOperation::Subscribe,
         }
     }
 }
 
-pub enum CounterEffectOutcome {
-    IncrementApplied { rows_written: u64 },
-    DecrementApplied { rows_matched: u64 },
-    ReadCompleted { rows_read: u64 },
-    TrackingValidated { predicate_held: bool },
+pub enum ComponentEffect {
+    EntryRecorded(Receipt),
+    EntriesRead(Listing),
+    ObserverOpened(Token),
 }
 
-impl ToSemaOutcome for CounterEffectOutcome {
+impl ToSemaOutcome for ComponentEffect {
     fn to_sema_outcome(&self) -> SemaOutcome {
         match self {
-            Self::IncrementApplied { .. } => SemaOutcome::Asserted,
-            Self::DecrementApplied { .. } => SemaOutcome::Retracted,
-            Self::ReadCompleted { .. } => SemaOutcome::Matched,
-            Self::TrackingValidated { .. } => SemaOutcome::Validated,
+            Self::EntryRecorded(_) => SemaOutcome::Asserted,
+            Self::EntriesRead(_) => SemaOutcome::Matched,
+            Self::ObserverOpened(_) => SemaOutcome::Subscribed,
         }
     }
 }
 ```
 
-## Still Not Done
+The component-local command/effect records are where execution semantics
+live. `SemaObservation` is the generic observer label.
 
-The infrastructure is cleaner, but the full workspace is not migrated.
+For daemon pilots, that means:
 
-High-signal remaining work:
+- the signal contract stays external and user-facing;
+- the daemon lowers contract operations into internal commands;
+- the executor runs those commands;
+- observer streams publish `OperationReceived` before execution and
+  `EffectEmitted` after command effects commit;
+- the CLI remains a thin NOTA-to-frame and frame-to-NOTA adapter.
 
-- Sweep all contract and component repos for stale `SemaEffect`,
-  `SemaEngine`, and old executor API usage.
-- Migrate the current Persona pilot component to the
-  `CommandExecutor` / `CommandEffect` surface.
-- Decide whether the standard observable event record should keep the
-  name `SemaEffectEmitted` now that there is no `SemaEffect` type, or
-  be renamed to something like `ObservationEmitted`.
-- Run the next pilot through the full path:
+## Remaining Drift
+
+A workspace scan still finds old names outside the lower slice:
 
 ```text
-CLI NOTA
-  -> signal-frame Request<Operation>
-  -> component Lowering
-  -> component CommandExecutor
-  -> command/effect observation
-  -> Reply<ContractReply>
-  -> CLI NOTA
+signal-persona-orchestrate/src/lib.rs
+  ObservationEvent::SemaEffect(SemaEffectObserved)
+
+signal-persona-orchestrate/ARCHITECTURE.md
+  effect_event SemaEffectEmitted
+
+signal-persona-introspect/ARCHITECTURE.md
+  OperationReceived / SemaEffectEmitted wording
 ```
 
-## Current Gaps
+Those are not part of the verified lower-component slice. They should be
+migrated when the orchestrate/introspect contracts are next touched.
 
-### Downstream Drift
+Some components still have error variants named `SemaEngine(...)` because
+the crate is still named `sema-engine`. That is not the old
+`signal-executor::SemaEngine` alias, but the repeated phrase will keep
+confusing agents. Rename only if the owning component is otherwise being
+edited.
 
-`signal-executor` and `signal-sema` now agree. Downstream repos may
-not. The next task should be a real grep-and-compile sweep over the
-active component repos, then small migrations one repo at a time.
+## Advice
 
-### No Live Daemon Witness Yet
+Use `signal-frame::BatchErrorClassification` at every executor boundary.
+Do not define local copies.
 
-The executor tests are strong library witnesses, but we still need a
-live daemon witness. The minimum useful witness is one component CLI
-talking to one component daemon over signal frames and proving:
+Use `OperationReceived` / `EffectEmitted` for Persona observable contracts
+unless there is a concrete local reason to deviate.
 
-- domain rejection returns typed `SubReply::Failed.detail`;
-- engine failure returns batch-aborted accepted reply;
-- committed commands emit command/effect observations;
-- the CLI only translates NOTA to frames and frames to NOTA.
+Never reintroduce executable Sema payloads. If a component needs executable
+data, that data belongs in its local command enum.
 
-### Non-Empty Operation Plans
+Treat no-op and idempotent paths as explicit commands. The outcome can be
+`NoChange`, but the command should still exist.
 
-`OperationPlan<Command>` is non-empty. That means validation/no-op
-work should lower to a typed command that can produce
-`SemaOutcome::NoChange` or `SemaOutcome::Validated`, rather than
-lowering to an empty command list. This is coherent, but it should be
-treated as an explicit architectural rule.
+Keep the `spirit` CLI thin. It should accept one NOTA record or one path,
+send a signal frame to the daemon socket, and print a NOTA reply. No store
+fallback, no in-process actor tree, no convenience business logic.
 
 ## Intent Clarification Needed
 
-1. Should Persona standardize the observable event record name away
-   from `SemaEffectEmitted`, now that `SemaEffect` is not a type?
-   My lean: yes, eventually. `ObservationEmitted` is more accurate.
-   For the immediate code, I removed the executor-owned type and kept
-   projection neutral.
+1. `CommitStatus::Partial` exists in `signal-frame`, but the current
+   `CommandExecutor::execute_atomic_batch` contract is all-or-nothing. Do
+   we keep `Partial` as a future-proof honest classification for uncertain
+   lower engines, or should the executor interface forbid it for now?
 
-2. Should every source operation always lower to at least one
-   component command?
-   My lean: yes. No-op and validation are still real commands; their
-   effects project to `NoChange` or `Validated`.
+2. For the intent-log replacement, should agents start using `spirit
+   '(Record ...)'` as soon as the daemon is available, or do we need an
+   explicit dual-write/import window for the existing `intent/*.nota`
+   files?
 
-3. Is the immediate pilot still `persona-spirit`, or should the
-   simpler ledger pilot run first as a pattern witness?
-   My current read from recent user direction is `persona-spirit`,
-   but the design reports still contain a ledger-first argument.
+3. Should `Tap` / `Untap` observer operations be implemented before
+   `spirit` becomes the replacement for intent logging, or is the current
+   typed `NoChange` placeholder acceptable until introspection integration?
+
+4. Should `signal-persona-orchestrate` be migrated immediately away from
+   `SemaEffectObserved`, or should it wait for the orchestrate contract
+   redesign?
+
+5. Is `EffectEmitted` mandatory for every Persona observable contract, or
+   is it only the default generated name when a contract does not need a
+   more specific observable event vocabulary?
+
+## Next Work
+
+The next productive implementation target is `persona-spirit` as the first
+pilot:
+
+```text
+spirit NOTA
+  -> signal-persona-spirit request frame
+  -> persona-spirit daemon
+  -> Spirit-local command/effect execution
+  -> SemaObservation projection
+  -> signal-persona-spirit reply frame
+  -> spirit NOTA
+```
+
+The minimum pilot bar is a real daemon run proving record submission,
+record query, typed rejection, observer-event projection, and restart over
+durable state.
