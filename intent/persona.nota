@@ -305,3 +305,24 @@
     "Refining the earlier persona-spirit-pilot Decision with the explicit motivator. The choice is conscious trade-off, not oversight: psyche knows the pilot doubles as the cognitive proving ground and accepts that for the substrate-replacement benefit."
     Maximum
     2026-05-20T15:00:00Z)
+
+(Correction
+    "Persona-spirit capture time does not need sub-second accuracy. Do not store nanoseconds for this path; choose the simplest efficient whole-second representation unless later intent states a finer requirement."
+    "seriously, fuck nanoseconds - fucking ridiculous. what is the most efficient way to store time if we dont care about sub-second accuracy?"
+    "Correcting the proposed CaptureTime shape after the agent included nanosecond precision. The durable part is the rejection of sub-second precision for persona-spirit intent capture time."
+    Maximum
+    2026-05-20T18:44:49+02:00)
+
+(Constraint
+    "Persona-spirit must not contain import logic for the existing file-based intent/*.nota logs. Any migration from the transitional files is outside Spirit: either a separate one-time dumb tool or manual agent re-logging."
+    "importing existing nota files *STAYS THE FUCK OUT OF SPIRIT* - we can make a dumb tool for a one-time import if we feel like it, but we might just get an agent to re-log everything by hand. DO NOT INTRODUCE IMPORT LOGIC IN SPIRIT!"
+    "Hard boundary for the persona-spirit pilot while replacing the ad-hoc intent-log substrate. Spirit is the typed capture/query component, not a legacy importer."
+    Maximum
+    2026-05-20T19:15:33+02:00)
+
+(Constraint
+    "Persona-spirit must not contain import logic for existing intent/*.nota files. Spirit's contract, daemon, and storage are for typed psyche-statement records going forward; the legacy file substrate is not spirit's concern. If a one-time migration of existing .nota content is wanted later, it is a dumb separate tool that calls spirit's normal Record operation through the CLI like any other agent — never a spirit-internal feature, never a special contract verb, never an ingestion mode, never an import-aware code path inside spirit. The default approach is to let agents re-log content by hand as it becomes relevant. A separate tool is only built if the psyche explicitly asks for it; otherwise hand-relogging is the path."
+    "importing existing nota files *STAYS THE FUCK OUT OF SPIRIT* - we can make a dumb tool for a one-time import if we feel like it, but we might just get an agent to re-log everything by hand. DO NOT INTRODUCE IMPORT LOGIC IN SPIRIT!"
+    "Psyche hard correction after the /255 audit framing proposed a 4-phase migration with a Phase 2 bulk-import step. Spirit's design surface does not absorb legacy-substrate concerns; the migration question is outside spirit entirely. The phased-migration framing in /255 §6.1 was a designer over-extension and is superseded by this Constraint."
+    Maximum
+    2026-05-20T15:30:00Z)
