@@ -150,8 +150,9 @@ three cases:
 3. Bare `VariantName` with no preceding `(` — **non-data-carrying
    unit variant**. Like `None`, `Maximum`, `Apex`.
 
-Everything else is a primitive (strings, numbers, bools, bytes) or
-a sequence `[…]` which is `Vec<T>` (every element the same type).
+Everything else is a primitive (strings, numbers, bools, bytes), a
+sequence `[…]` which is `Vec<T>` (every element the same schema
+type), or a map `{…}` which is a flat string-key/value stream.
 
 **The corollary**: when you write a NOTA record, ask: *can this
 position hold more than one shape?* If yes, you have an enum;
@@ -165,16 +166,32 @@ and the `nota/README.md` over-states the rule by conflating
 structs with enum variants — both being corrected per bead
 `primary-hj63`.
 
-**Bare identifiers as strings.** Where the schema expects `String`,
-a bare ident-class token serves as the value (`(Package nota-codec)`
-is the same as `(Package "nota-codec")`). PascalCase, camelCase,
-and kebab-case all qualify. The reserved literals `true`, `false`,
-`None` always mean their typed meaning, not strings.
+**Bare identifiers as strings.** Where an ordinary schema position
+expects `String`, a bare camelCase or kebab-case token serves as
+the value (`nota-codec` is the same as `"nota-codec"`). A bare
+PascalCase token at an ordinary `String` position is an
+enum-looking value and is rejected; quote it.
+
+**Map keys.** Maps use their own delimiter:
+
+```nota
+{host localhost port 8080 User 100}
+```
+
+Inside `{ }`, odd positions are string keys and even positions are
+values. A bare PascalCase key is allowed there because the map
+delimiter already says this token is a string key, not a value.
+Keys with whitespace are invalid, even when quoted.
 
 **Bare `Path`.** Where the schema expects `Path` (not `String`),
 the bare alphabet widens to include `/` and `.` for filesystem-
 shaped values. A bare `skills/operator.md` at a `Path` position
 parses; the same token at a `String` position is a typed error.
+
+**No tuples.** NOTA has vectors, structs, enums, and key/value
+maps. Tuples are poorly specified structs: they carry position but
+not field names, and field names are information. Use a
+named-field struct so the schema states what each position means.
 
 **Optional values.** `Option<T>` is a normal data-carrying enum.
 Absence writes bare `None` (case 3 of the PascalCase rule);
@@ -186,10 +203,10 @@ always. `#[nota(default = …)]` is **forbidden** (per
 tokens is a typed error, not a silent zero-fill.
 
 **Multi-field unnamed structs are forbidden.** `struct Pair(i32, i32)`
-has no field-name mapping; NOTA rejects at serialize time. The
-single-field tuple struct (newtype) is the only allowed unnamed
-shape. For heterogeneous positional data, use a **named-field**
-struct, which emits as a typed record.
+has no field-name mapping; NOTA rejects at serialize time.
+Single-field tuple structs are transparent newtypes only: the inner
+value emits at the schema position. For heterogeneous positional
+data, use a **named-field** struct, which emits as a typed record.
 
 **Sigils.** Two reserved at the syntax layer: `;;` for line
 comments, `#` for byte literals. Other sigils (`~ @ ! ? *`) are
@@ -257,7 +274,7 @@ reference by name; don't restate it in every NOTA file's preamble.
   optional `?`, enum `|`). Complementary: this skill is about real
   NOTA; that one is about teaching-shape NOTA in docs.
 - `nota`'s `example.nota` — the language's reference example.
-- `nota`'s `ARCHITECTURE.md` — positional, two delimiters, two
+- `nota`'s `ARCHITECTURE.md` — positional, three delimiters, two
   string forms, two sigils.
 - `skills/skills.nota` — the canonical workspace example.
 - `ESSENCE.md` §"Naming — full English words" — the naming

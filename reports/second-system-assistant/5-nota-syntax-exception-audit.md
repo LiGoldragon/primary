@@ -1,146 +1,122 @@
-# 5 — NOTA syntax exception audit
+# 5 - NOTA syntax exception audit
 
-## 0 · Summary
+## 0. Summary
 
-The audit found two concrete codec exceptions that reused PascalCase
-variant notation for non-enum data:
+The audit found two concrete codec surfaces that were wrong:
 
-| Surface | Old form | Corrected form |
+| Surface | Wrong form | Correct form |
 |---|---|---|
-| `BTreeMap<K, V>` / `HashMap<K, V>` | `[(Entry key value)]` | `[(key value)]` |
-| Rust tuples `(A, B, ...)` | `(Tuple a b ...)` | `[a b ...]` |
+| Maps | `[(Entry key value)]`, then `[(key value)]` | `{key value key value}` |
+| Rust tuple blanket impls | `(Tuple a b ...)`, then `[a b ...]` | no support |
 
-Both old forms were wrong for the same reason: `(Entry ...)` and
-`(Tuple ...)` are data-carrying enum variants under the three-case
-PascalCase rule. They cannot also mean map entry or tuple.
+The first pass fixed only the fake PascalCase heads. The correction after
+review is stronger: `[(key value)]` is still not a map; it is a vector of
+structs. A map needs its own delimiter. NOTA now uses `{ }` for maps, with
+flat alternating string keys and values.
 
-I changed `nota-codec` so maps use untagged pair records and tuples use
-sequence form. `cargo test` and `nix flake check` pass.
+The tuple correction is also stronger: there is no NOTA tuple form. NOTA
+has vectors, structs, enums, and key/value maps. Rust tuples are poorly
+specified structs because their fields have positions but no names. The
+codec no longer implements `NotaEncode` / `NotaDecode` for Rust tuple
+values.
 
-## 1 · What The Audit Checked
+## 1. Implemented Shape
 
-The audit searched `nota-codec` for the protocol methods that introduce
-syntax shapes:
+Maps now encode as:
 
-| Method | Meaning |
+```nota
+{host localhost port 8080 User 100}
+```
+
+The map delimiter supplies the key/value interpretation:
+
+| Position | Meaning |
 |---|---|
-| `start_record(name)` | Writes `(VariantName ... )`; legal only for data-carrying enum variants |
-| `start_record_untagged()` | Writes `(fields...)`; legal for structs / schema-position records |
-| `write_pascal_identifier(name)` | Writes bare unit variant |
-| `start_seq()` | Writes `[elements...]`; legal for sequence-shaped containers |
+| 1 | first string key |
+| 2 | first value |
+| 3 | second string key |
+| 4 | second value |
 
-The important question for every hard-coded PascalCase head was:
-
-What enum owns this variant?
-
-`Some`, `True`, and `False` have clean answers. `Entry` and `Tuple` did
-not.
-
-## 2 · Fixed Offenders
-
-### Maps
-
-The old map blanket impl encoded every entry with a fake `Entry` tag:
+Map keys are strings by position. That means a bare PascalCase key is
+allowed:
 
 ```nota
-[(Entry alpha 1) (Entry beta 2)]
+{User 100}
 ```
 
-That is a vector of data-carrying enum values. It is not a map.
+`User` is not a unit enum variant there; the `{ }` delimiter has already
+selected map key position. Keys with whitespace are rejected, including
+quoted keys such as `"with space"`.
 
-The corrected form is:
+## 2. Removed Shape
+
+Rust tuple blanket impls are removed. This no longer compiles:
+
+```rust
+(1u64, 2u64).encode(&mut encoder)?;
+```
+
+The intended replacement is a named-field struct:
+
+```rust
+pub struct Range {
+    pub start: u64,
+    pub end: u64,
+}
+```
+
+which writes as a normal NOTA struct at a known schema position:
 
 ```nota
-[(alpha 1) (beta 2)]
+(1 2)
 ```
 
-The element position supplies the pair schema: first field is key,
-second field is value. No PascalCase head is introduced.
+The field names live in the Rust schema, not in the text, but they are
+still part of the specification. A tuple has no such names.
 
-### Tuples
+## 3. Surfaces That Remain Clean
 
-The old tuple blanket impl encoded tuples with a fake `Tuple` tag:
-
-```nota
-(Tuple 1 2)
-```
-
-That is a data-carrying enum variant named `Tuple`. It is not a tuple.
-
-The corrected form is:
-
-```nota
-[1 2]
-```
-
-The schema position distinguishes fixed-length tuple decode from
-variable-length vector decode.
-
-## 3 · Surfaces That Are Not Offenders
-
-`Option<T>` is clean:
+`Option<T>` remains clean:
 
 ```nota
 None
 (Some value)
 ```
 
-`None` and `Some` are real variants of the `Option` enum.
-
-`bool` is clean:
+`bool` remains clean:
 
 ```nota
 True
 False
 ```
 
-Those are the correct user-facing names for a two-member enum. Rust's
-lowercase backend spelling is not a NOTA exception.
-
-`NotaEnum` data-carrying variants are clean:
+Mixed `NotaEnum` remains clean:
 
 ```nota
 (NixBuilder (Some 8))
 TailnetClient
 ```
 
-The PascalCase heads are real variants of the surrounding Rust enum.
+Bare `Path` is not suspect. It is intentional schema-position syntax:
+when the schema says `Path`, filesystem-shaped tokens like
+`skills/operator.md`, `./foo`, and `/etc/hosts` can be bare.
 
-## 4 · Remaining Suspect
+## 4. Verification
 
-The one remaining surface worth a separate design decision is bare
-`Path`.
+`nota-codec` now has tests for:
 
-Today `nota-codec::Path` accepts a wider bare token alphabet than
-`String`, allowing values like:
-
-```nota
-skills/operator.md
-./foo
-/etc/hosts
-```
-
-That is not the same class of bug as `Entry` and `Tuple`: it does not
-reuse enum notation. But it is explicitly documented as a carve-out in
-`nota/README.md`, and the new rule is “no exceptions.” It needs a
-designer-level answer:
-
-| Option | Consequence |
+| Constraint | Witness |
 |---|---|
-| Keep bare `Path` | Treat it as a distinct lexical literal class, not an exception |
-| Remove bare `Path` | Paths always quote as strings; less ergonomic, fewer token classes |
-| Rename the concept | If bare path is first-class syntax, make the grammar say so directly |
+| `{ }` lexes as map delimiters | `tests/lexer_tokens.rs` |
+| maps encode/decode as flat braces | `tests/horizon_rs_feedback_fixes.rs` |
+| PascalCase map keys are strings | `map_key_position_accepts_pascal_case_as_string_content` |
+| whitespace map keys are rejected | encode and decode tests |
+| non-string map keys do not compile | `tests/compile_fail/map_keys_must_be_strings.rs` |
+| Rust tuples do not compile as NOTA values | `tests/compile_fail/rust_tuple_no_blanket_impl.rs` |
 
-I did not change `Path` in this pass because it is a grammar-level
-question, not a clear hard-coded fake enum tag.
-
-## 5 · Verification
-
-`nota-codec`:
+Verification passed:
 
 ```text
 cargo test
 nix flake check
 ```
-
-Both passed after the map and tuple changes.
