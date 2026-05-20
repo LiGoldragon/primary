@@ -222,6 +222,13 @@
     Maximum
     2026-05-19T17:30:00Z)
 
+(Decision
+    "Return implementation focus to persona-spirit. Migrate it to the new Signal/Sema/executor architecture and make the `spirit` CLI ready to replace the ad-hoc intent-log file system."
+    "yes, go back on persona-spirit - I want it migrated to the new architecture and ready to replace our ugly ad-hoc intent-log file system with an elegant spirit cli."
+    "Psyche answered the pilot-priority clarification: persona-spirit remains the immediate pilot, ahead of a simpler ledger pilot."
+    Maximum
+    2026-05-20T15:42:00+02:00)
+
 (Constraint
     "Implement persona-spirit as far as clear intent allows: scavenge intent logs into architecture/repo intent, implement constraints and invariant tests, deepen actor logic planes, and stop only when work is exhausted or clarification is required."
     "I really just want you to implement all of this as far as you can see it, and implement all the constraints as far as you can see constraints. You can even go maybe scavenge the intent first, the intent logs for things you could add into the architecture or the repository intent file, and implement all of the constraint tests, the invariant tests, and only stop when you've done all that, unless you need clarifications on some things."

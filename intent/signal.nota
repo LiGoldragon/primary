@@ -6,3 +6,10 @@
     "After operator observed that signal-executor/ARCHITECTURE.md still described the older SemaEffect path while code had only partly moved toward component-local effects."
     Maximum
     2026-05-20T15:06:29+02:00)
+
+(Decision
+    "Observable event records should not keep the stale SemaEffectEmitted name after SemaEffect has been removed. Use an observation-oriented name for generic Sema classification events."
+    "obviously"
+    "Answering operator's clarification question about whether standard observable event records should be renamed away from SemaEffectEmitted now that SemaEffect no longer exists."
+    Maximum
+    2026-05-20T15:42:00+02:00)
