@@ -4,3 +4,66 @@
     "Direction while resuming the Horizon redesign after production Horizon and CriomOS cluster-data cleanup. Production lessons should apply to the new Horizon shape: cluster data is readable role/capability selection, while derived ports, domains, and standardized configuration belong in Horizon reduction or CriomOS."
     Maximum
     2026-05-19T12:26:44Z)
+
+(Principle
+    "Cluster data favors data-carrying variants over booleans. When a node carries a capability, name the capability as a variant in a feature vector; let the variant carry whatever inline tuning is genuinely part of the cluster dial. Reading the cluster file should reveal role and capability selection directly — `(GitoliteServer …)` not `gitoliteEnabled = true`."
+    "I would really like the cluster data to be very clean, and emphasize variants with possibly data carrying variants if a little bit of tuning can be done."
+    "Restating the variants-over-booleans direction (originally 2026-05-19T12:26:44Z) during the Logix/Horizon lean-rewrite analysis kickoff, with the additional emphasis on data-carrying variants where inline tuning is part of the dial."
+    Maximum
+    2026-05-20 14:50)
+
+(Principle
+    "Cluster data must not embed anything that isn't actually being configured. Port numbers, derived addresses, well-known constants, and any value that an out-of-the-box standardized component already implies should not appear in the cluster description. Components are becoming standardized; if a component just works, the cluster data only names that the node carries it, not how it is wired."
+    "I don't want anything like port numbers and specific details that don't actually need to be configured, because we're creating an easy to reason about system where components are just becoming standardized. The Git server, for example, will just be made to work out of the box…"
+    "Direction during the Logix/Horizon lean-rewrite analysis kickoff. Cluster data is dial-shaped: what role the node plays and what features it carries — not the operational constants that follow from those choices."
+    Maximum
+    2026-05-20 14:50)
+
+(Principle
+    "The cluster relies on Yggdrasil-style unique per-node IP addresses. Routing tables bootstrap dynamically from those identities, so the cluster description does not need to embed routing details, peer endpoints, or transport ports — peers find each other through the routing substrate. Workspace-wide assumption that informs every component contract: addressing is not a cluster-data concern."
+    "we have things like unique IP addresses with the Yggdrasil routing system, and then these can be used to bootstrap a routing table dynamically. So there's no need to embed all of this stuff in the cluster configuration."
+    "Foundational network-substrate assumption stated during the Logix/Horizon lean-rewrite analysis. Justifies removing routing/endpoint material from cluster data."
+    Maximum
+    2026-05-20 14:50)
+
+(Clarification
+    "Network interface names currently appearing in cluster data are a short-term hack. The right shape is for a future network daemon to discover interfaces and pick a role per device dynamically; until that daemon exists, the cluster file has to carry interface names so deploy can wire the system. Treat the interface-name fields as temporary; do not deepen them or build dependent abstractions around their permanence."
+    "currently we, it's a hack, right, it's a short term hack, but we have things like network interface names in the cluster data, because I haven't taken the time to actually develop a system whereby … But right now we don't have that daemon, that type of daemon doesn't exist. So we just put the interface names in the cluster data, just because we have to."
+    "Marking the production-and-lean cluster data's interface-name fields as transitional during the Logix/Horizon lean-rewrite analysis kickoff."
+    Maximum
+    2026-05-20 14:50)
+
+(Decision
+    "Eventual future: a dedicated network daemon discovers connectivity and assigns interface roles dynamically. The daemon figures out where its internet connection comes from (a Wi-Fi access point one day, a LAN interface the next, etc.) and distributes that connection across other interfaces. Not addressed now; named so the cluster-data shape can be designed knowing this is the destination. Until the daemon ships, cluster data carries the interface-name hack."
+    "we're going to have to develop our own network daemon, eventually, not now, so that the daemon is intelligent enough to try and get an internet connection from something, whatever it is, and it could be different at every point. Maybe some days it actually gets the internet from a Wi-Fi access point, and then distributes that connection to its LAN interfaces, and maybe another day it's the other way around, or it gets an internet connection from one of its LAN interface, and then it distributes it downstream from the other LAN interfaces as well as its Wi-Fi interface."
+    "Naming the future network-daemon destination during the Logix/Horizon lean-rewrite analysis kickoff. Justifies why cluster data should not grow further interface/topology fields."
+    Medium
+    2026-05-20 14:50)
+
+(Principle
+    "Eventually, cluster data is very minimal. The destination shape: which type of node is this, plus disk configuration (which disk to boot from, where each filesystem lives, where the boot partition sits). Disk configuration is the last genuinely convoluted thing expected to remain; maybe even that goes away one day. Drive every design choice on the lean rewrite toward this minimal destination."
+    "we want to try and minimize, essentially, eventually the cluster data will be just like, actually very minimal. Just like what type of node is this, maybe the last really convoluted looking things that are going to be left in the cluster data is things like disk configuration, like to know which disk to boot from, and where the file system for such and such part of the system is installed, where the boot partition is, like that's as complicated as we really need to get, and maybe even one day there's a way to take that out."
+    "Naming the cluster-data destination during the Logix/Horizon lean-rewrite analysis. Sets the directional target for every shape choice in the lean rewrite."
+    Maximum
+    2026-05-20 14:50)
+
+(Principle
+    "Horizon's job is to lower cluster data into something easy for Nix code to consume. Horizon is the pure-data reduction layer, not a place to put operational constants. Keep Horizon's logic clean and small; do not pollute it with port numbers, DNS server lists, domain-construction recipes, or other constants that belong wherever consumes them. The Nix code happily holds those constants today; that is where they live."
+    "And then the horizon lowers this into something that is easy for Nixcode to consume. But at the same time, I don't want the horizon to do everything. We don't need to put all these constants like port numbers, and how to construct such and such domain name into the horizon. Like it's not that hard to put these constants in the Nixcode, that way we keep the horizon more simple."
+    "Setting Horizon's scope during the lean-rewrite analysis kickoff. Horizon = lower cluster intent to Nix-consumable form; constants stay in the consumer."
+    Maximum
+    2026-05-20 14:50)
+
+(Principle
+    "Prefer beautiful Horizon over beautiful Nix code. If a constant or piece of operational glue has to live somewhere ugly, the ugliness goes in Nix, not in Horizon. Horizon is meant to be elegant and small; Nix code is the bootstrap substrate that will eventually be replaced. Optimising Nix code's beauty at Horizon's expense is the wrong trade."
+    "I would way rather make the horizon code more beautiful and keep some of this dirty stuff like port numbers into the Nixcode. And all these constants, like which name servers we use for name resolution on the public internet and so on. That can stay in Nix."
+    "Direction during the Logix/Horizon lean-rewrite analysis kickoff. Establishes which side of the split absorbs unavoidable ugliness."
+    Maximum
+    2026-05-20 14:50)
+
+(Principle
+    "Horizon must not duplicate data types between input and output when the value is just passed through. Reuse the input type at the output position; only introduce a distinct output type when the lowering genuinely transforms shape. Duplicate types for passthrough values are pure code expansion with no information gain."
+    "I think there's a lot of data type duplication between input and output, and there's no need for that to actually be. We can reuse these data types if they're just passed through."
+    "Pointed at as a concrete gap during the Logix/Horizon lean-rewrite analysis kickoff. Direct guidance for the new horizon code shape."
+    Maximum
+    2026-05-20 14:50)

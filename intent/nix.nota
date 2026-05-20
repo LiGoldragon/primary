@@ -12,3 +12,10 @@
     "The operator was about to retest signal-frame and continue the signal-frame / signal-repository-ledger migration."
     Maximum
     2026-05-19T21:07:30Z)
+
+(Decision
+    "Nix code is bootstrap infrastructure, not a long-term home. Forge — a future better builder system, a concept only right now and not addressed now — is the destination that replaces Nix. Design choices that hinge on Nix permanence are wrong; design as if Nix gets replaced. The corollary is the horizon-vs-nix split direction: keep horizon clean because horizon outlives Nix; keep ugly constants in Nix because Nix is going away."
+    "The Nixcode is more, I see it more as a thing that we will eventually move on from when we implement Forge, which is our answer to Nix. An actual better builder system than Nix can ever become, which is just a concept for now, and it's not something that I'm going to address right now. So for me, the Nixcode is something we bootstrap on, but eventually move on from."
+    "Naming Forge as the destination during the Logix/Horizon lean-rewrite analysis kickoff. Direction-only; explicitly deferred. Justifies why beauty asymmetry favors horizon over nix code."
+    Maximum
+    2026-05-20 14:50)

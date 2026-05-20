@@ -123,3 +123,10 @@
     "Brainstorm-in-flight; needs a follow-up confirmation before landing as a bead. Tightens NOTA's grammar in service of the three-case rule's unambiguity."
     Medium
     2026-05-19 21:30)
+
+(Decision
+    "NOTA's Bool-as-enum and Option-wrapping changes are landed and the skills are updated. The format is now more predictable with fewer exceptions: True/False are PascalCase unit variants (case 3 of the three-case rule); a present Option<T> writes (Some inner); None writes None. The three-case PascalCase rule holds with zero exceptions. This is a breaking change against earlier fixtures and any cluster/intent data files written under the old grammar."
+    "we've changed the, this is actually a breaking change, how true and false are represented, how options are now wrapped in some when they return something. But we've basically made the Nota format more predictable with less exceptions, and the skills have been updated."
+    "Restatement during the Logix/Horizon lean-rewrite analysis kickoff. Confirms the 2026-05-19 21:30 decisions on Bool-as-enum and Option-wrapping have shipped; downstream design and fixtures must use the new grammar."
+    Maximum
+    2026-05-20 14:50)
