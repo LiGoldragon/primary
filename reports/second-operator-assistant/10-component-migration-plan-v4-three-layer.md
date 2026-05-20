@@ -55,11 +55,11 @@ Treat them as the version-pinned target.
 
 | Crate | Commit | What it provides |
 |---|---|---|
-| `signal-sema` | `a1715949` | Payloadless `SemaOperation` (6 variants); payloadless `SemaOutcome`; `SemaObservation { operation, outcome }`; `ToSemaOperation` + `ToSemaOutcome` traits |
-| `signal-frame` | `68891f60` | `Reply<Payload>` with `AcceptedOutcome { Committed, OperationAborted, BatchAborted }`; `SubReply { Ok, Invalidated, Failed { detail }, Skipped }`; `BatchFailureReason / RetryClassification / CommitStatus`; `BatchErrorClassification` trait; `ObserverFanout` primitive; `observable` block grammar with mandatory `Tap`/`Untap` injection; `OperationReceived` / `EffectEmitted` event-pair names |
-| `signal-executor` | `66b5ee48` | `Lowering` trait with `Operation / Reply / Command / ComponentEffect` associated types; `OperationPlan<Command>` + `BatchPlan<Command>` structural ownership; `CommandExecutor` trait per-daemon; `ObservedLowering: Lowering` extension trait; `Executor` orchestration; `RecordedEvent::{OperationReceived, EffectEmitted}` |
-| `signal-persona-spirit` | `a1909872` | First contract on the new macro grammar; observable event pair is `OperationReceived` / `EffectEmitted` |
-| `persona-spirit` | `6aeea3fd` + `951603c3` | First daemon implementing the full pattern: `SpiritCommand` + `SpiritEffect` enums, `ToSemaOperation` + `ToSemaOutcome` impls, `Lowering` + `CommandExecutor`, `Tap`/`Untap` with explicit no-change commands, constraint witnesses for unimplemented observer requests |
+| `signal-sema` | `a1715949` (docs reframe) + `f4d3fe51` (functional landing) | Payloadless `SemaOperation` (6 variants); payloadless `SemaOutcome`; `SemaObservation { operation, outcome }`; `ToSemaOperation` + `ToSemaOutcome` traits with tests |
+| `signal-frame` | `68891f60` + `fb53a6be` (`Partial` removed) | `Reply<Payload>` with `AcceptedOutcome { Committed, OperationAborted, BatchAborted }`; `SubReply { Ok, Invalidated, Failed { detail }, Skipped }`; `BatchFailureReason / RetryClassification / CommitStatus { NotCommitted, Unknown }`; `BatchErrorClassification` trait; `ObserverFanout` primitive; `observable` block grammar with mandatory `Tap`/`Untap` injection; `OperationReceived` / `EffectEmitted` event-pair names |
+| `signal-executor` | `66b5ee48` + `47961d12` (Partial-free bump) | `Lowering` trait with `Operation / Reply / Command / ComponentEffect` associated types; `OperationPlan<Command>` + `BatchPlan<Command>` structural ownership; `CommandExecutor` trait per-daemon; `ObservedLowering: Lowering` extension trait; `Executor` orchestration; `RecordedEvent::{OperationReceived, EffectEmitted}` |
+| `signal-persona-spirit` | `a1909872` + `2e7a69a0` (Partial-free bump) | First contract on the new macro grammar; observable event pair is `OperationReceived` / `EffectEmitted` |
+| `persona-spirit` | `556bafcc` (thin CLI shape) + `6aeea3fd` + `951603c3` + `0f0a82be` (Partial-free bump) | First daemon implementing the full pattern: `SpiritCommand` + `SpiritEffect` enums, `ToSemaOperation` + `ToSemaOutcome` impls, `Lowering` + `CommandExecutor`, `Tap`/`Untap` with explicit no-change commands, constraint witnesses for unimplemented observer requests |
 
 **Three discipline rules locked alongside the substrate (per
 psyche affirmations 2026-05-20T15:00:00Z):**
@@ -498,21 +498,41 @@ Migration follows the chain with three carveouts:
 
 ### 5.1 — Persona-spirit first (the pilot)
 
-In progress per /144. Spirit-CLI replaces the file-based intent
-log is the major workspace direction; the pilot proves the full
-pattern AND lands the substrate replacement.
+In progress per /144 + /145. Spirit-CLI replaces the file-based
+intent log is the major workspace direction; the pilot proves
+the full pattern AND lands the substrate replacement.
 
-Pilot completion checklist:
+Per /145 the immediate next pilot work is migrating
+`owner-signal-persona-spirit` to `signal-frame` + contract-local
+owner verbs, then updating the persona-spirit owner socket
+handling to consume the migrated owner contract. Constraint
+tests required: owner requests use verb-form heads; owner frames
+rejected on ordinary socket; ordinary frames rejected on owner
+socket; owner route still through `OwnerPlane`; bootstrap reload
+still through `PolicyPlane`.
 
+Pilot completion checklist (full):
+
+- `owner-signal-persona-spirit` migrated to `signal-frame` with
+  contract-local owner verbs (immediate next per /145).
+- Persona-spirit owner socket handling consumes the migrated
+  owner contract.
 - Spirit accepts intent-record submission via CLI as a core
   operation; spirit's `Submit` (or equivalent) takes a
   `PsycheStatement` payload with the five-kind taxonomy
   (Decision/Principle/Correction/Clarification/Constraint).
 - Spirit's query returns intent records by topic + filter.
 - Round-trip witness end-to-end: CLI NOTA → frame → daemon →
-  typed reply → CLI NOTA.
-- Observer subscription witness: `Tap` → emit on submit.
+  typed reply → CLI NOTA. Already covered by /145's verified
+  baseline (`cargo test --locked` + `nix flake check -L --max-jobs 0`
+  green across the four crates).
+- Observer subscription witness: `Tap` → emit on submit
+  (subscription event delivery is not yet implemented per /145;
+  `Tap`/`Untap` produce `SemaOutcome::NoChange` placeholders
+  through valid commands).
 - Restart witness: durable state survives daemon restart.
+- Import/cutover semantics from `intent/*.nota` (not yet
+  designed; explicit psyche direction needed before starting).
 
 ### 5.2 — Persona-mind second
 
@@ -646,10 +666,13 @@ until owner discipline crystallizes.
 These open items affect implementation choices below the migration
 recipe — surface them when they bite:
 
-- **`CommitStatus::Partial`** exists in `signal-frame`; the current
-  `CommandExecutor::execute_atomic_batch` contract is all-or-
-  nothing. Operator's Q1 from /144: keep `Partial` as future-proof
-  honest classification, or forbid for now? Designer call.
+- **`CommitStatus::Partial`** — RESOLVED per /145. Removed in
+  `signal-frame fb53a6be`; `execute_atomic_batch` is all-or-nothing
+  so `Partial` contradicted the contract. The shape is now
+  `CommitStatus { NotCommitted, Unknown }`. If a future non-atomic
+  executor lands, adding `Partial` back is a deliberate compile-
+  error fan-out with real semantics. Operator's Q1 from /144
+  closes.
 - **Tap/Untap before vs after spirit's intent-log substrate
   replacement** (operator Q3 from /144). The current implementation
   uses `NoChange`-projecting placeholders for `Tap`/`Untap`; the
@@ -682,7 +705,9 @@ landed code in the five commits per §1.
 **Historical (do not implement literally):**
 - /245 — pre-v4 design alternatives; superseded.
 - /246-v1 / v2 / v3 — interim spec revisions; v4 is canonical and
-  superseded too once /144 + /253 + /254 absorbed.
+  superseded too once /144 + /253 + /254 absorbed. Per /145, the
+  `CommitStatus::Partial` example in /246-v4 is now stale —
+  `Partial` was removed in `fb53a6be`.
 - /141 — early correction examples; absorbed into /246 + /144.
 - /140 — predecessor hole analysis.
 - /239 / /241 — pre-three-layer migration plan + guide.
@@ -693,6 +718,8 @@ landed code in the five commits per §1.
   underlying principles are still load-bearing; the proposed
   edits should be revisited in pair with the report 11
   guideline).
+- /248 — three-layer-changes-for-operators; substance is
+  current except the `CommitStatus::Partial` example per /145.
 
 ## 9 · References
 
@@ -707,6 +734,7 @@ landed code in the five commits per §1.
 ### Designer / operator reports
 
 - `reports/operator/144-signal-sema-executor-refresh-2026-05-20.md` — the landed-state report.
+- `reports/operator/145-signal-sema-spirit-current-handoff-2026-05-20.md` — current operator handoff naming the spirit-pilot's immediate-next work (owner-signal-persona-spirit migration), `CommitStatus::Partial` removal, the consumer-bump commits, and the four open psyche questions.
 - `reports/designer/254-signal-executor-sema-refresh-audit.md` — operator-facing direction with five affirmed gaps.
 - `reports/designer/248-three-layer-changes-for-operators.md` — v3→v4 per-crate diff.
 - `reports/designer/253-tosemaoutcome-trait-shape.md` — two-trait shape.

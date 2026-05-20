@@ -702,6 +702,7 @@ this report retires.
 - `reports/designer/253-tosemaoutcome-trait-shape.md` — two-trait shape settled.
 - `reports/designer/254-signal-executor-sema-refresh-audit.md` — five gaps psyche-affirmed.
 - `reports/operator/144-signal-sema-executor-refresh-2026-05-20.md` — the landed state.
+- `reports/operator/145-signal-sema-spirit-current-handoff-2026-05-20.md` — current operator handoff; names the spirit-pilot's immediate-next work and the stale-on-`CommitStatus::Partial` surfaces.
 - `reports/operator-assistant/159-persona-mind-signal-tree-owner-contract-vision.md` — Mind refactor proposal.
 - `reports/operator-assistant/160-owner-signal-persona-router-channel-authority.md` — router policy contract.
 - `reports/second-designer-assistant/14-audit-of-operator-assistant-159-owner-signal-persona-mind.md` — Mind contract audit; the `*Mode` smell.
