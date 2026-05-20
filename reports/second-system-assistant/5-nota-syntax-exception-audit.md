@@ -12,7 +12,7 @@ The audit found two concrete codec surfaces that were wrong:
 The first pass fixed only the fake PascalCase heads. The correction after
 review is stronger: `[(key value)]` is still not a map; it is a vector of
 structs. A map needs its own delimiter. NOTA now uses `{ }` for maps, with
-flat alternating string keys and values.
+flat alternating key text and values. The schema chooses the scalar key type.
 
 The tuple correction is also stronger: there is no NOTA tuple form. NOTA
 has vectors, structs, enums, and key/value maps. Rust tuples are poorly
@@ -32,13 +32,14 @@ The map delimiter supplies the key/value interpretation:
 
 | Position | Meaning |
 |---|---|
-| 1 | first string key |
+| 1 | first key text |
 | 2 | first value |
-| 3 | second string key |
+| 3 | second key text |
 | 4 | second value |
 
-Map keys are strings by position. That means a bare PascalCase key is
-allowed:
+Map keys are text by position. The typed schema can decode that text as
+`String`, `Path`, or a constrained string-like newtype such as `NodeName`.
+That means a bare PascalCase key is allowed:
 
 ```nota
 {User 100}
@@ -109,9 +110,10 @@ when the schema says `Path`, filesystem-shaped tokens like
 |---|---|
 | `{ }` lexes as map delimiters | `tests/lexer_tokens.rs` |
 | maps encode/decode as flat braces | `tests/horizon_rs_feedback_fixes.rs` |
-| PascalCase map keys are strings | `map_key_position_accepts_pascal_case_as_string_content` |
+| PascalCase map keys are key text | `map_key_position_accepts_pascal_case_as_string_content` |
 | whitespace map keys are rejected | encode and decode tests |
-| non-string map keys do not compile | `tests/compile_fail/map_keys_must_be_strings.rs` |
+| map keys must implement `NotaMapKey` | `tests/compile_fail/map_keys_must_implement_nota_map_key.rs` |
+| custom key newtypes round-trip | `tests/map_key_round_trip.rs` |
 | Rust tuples do not compile as NOTA values | `tests/compile_fail/rust_tuple_no_blanket_impl.rs` |
 
 Verification passed:

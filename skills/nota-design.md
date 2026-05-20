@@ -152,7 +152,7 @@ three cases:
 
 Everything else is a primitive (strings, numbers, bools, bytes), a
 sequence `[…]` which is `Vec<T>` (every element the same schema
-type), or a map `{…}` which is a flat string-key/value stream.
+type), or a map `{…}` which is a flat key/value stream.
 
 **The corollary**: when you write a NOTA record, ask: *can this
 position hold more than one shape?* If yes, you have an enum;
@@ -178,10 +178,12 @@ enum-looking value and is rejected; quote it.
 {host localhost port 8080 User 100}
 ```
 
-Inside `{ }`, odd positions are string keys and even positions are
-values. A bare PascalCase key is allowed there because the map
-delimiter already says this token is a string key, not a value.
-Keys with whitespace are invalid, even when quoted.
+Inside `{ }`, odd positions are key text and even positions are
+values. The schema chooses the scalar key type (`String`, `Path`,
+or a string-like newtype such as `NodeName`). A bare PascalCase key
+is allowed there because the map delimiter already says this token
+is key text, not a value. Keys with whitespace are invalid, even
+when quoted.
 
 **Bare `Path`.** Where the schema expects `Path` (not `String`),
 the bare alphabet widens to include `/` and `.` for filesystem-
