@@ -3,6 +3,10 @@
 This report explains the three places where `reports/operator/140-signal-frame-executor-hole-analysis.md`
 sharpens `reports/designer/245-design-alternatives-for-244-holes.md`.
 
+It is an operator-side implementation reading: the examples below name the
+Rust surfaces that have to compile, the reply shapes that have to cross the
+wire, and the test witnesses that should prove the next implementation pass.
+
 The short version:
 
 - Contract-domain rejection is a **per-operation failed reply**, not a
@@ -592,4 +596,3 @@ The first two are ready. The third needs a small design pass because the
 simple /245 move would put `signal-frame` in the wrong dependency position.
 The fourth should land with the observable grammar update. The fifth should
 wait until the libraries stop moving under the pilot.
-
