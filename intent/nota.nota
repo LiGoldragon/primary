@@ -158,3 +158,101 @@
     "Principle clarifying NOTA's role: human-facing authoring format, not an inter-component wire protocol. Codec complexity is the wrong thing to optimise against the readability and ergonomics of authored types."
     Maximum
     2026-05-20 16:30)
+
+(Correction
+    "Eighth restatement of the struct-vs-variant three-case rule, this time triggered by reports/system-assistant/29's pseudonota. Wrapping every record with its type name (`(NodeProposal ...)`, `(Machine ...)`, `(Io ...)`, `(NodePubKeys ...)`, `(Disk ...)`, `(YggPubKeyEntry ...)`) is the same agent mistake: PascalCase at the start of `(...)` is ALWAYS a variant tag. If the type has no alternative variants — it is a struct, not an enum — the PascalCase head must drop and the record is written `(field1 field2 ...)`. The test the agent must apply before writing any `(TypeName ...)` shape: `what other variants could go in this position?` If the answer is `none / this is a struct`, drop the type name. The agent failure mode is mechanical mimicry of existing datom files that themselves violate the rule; the cure is applying the variant-question test, not copying surrounding shapes."
+    "every time I see an open parenthesis and then a pascal case, that's a variant. So what are the other variants other than machine in that object? What are the other variants other than IO in that object? What are the other variants other than node pubkeys in that object?"
+    "Eighth NOTA struct-vs-variant correction this arc. Triggered by pseudonota in reports/system-assistant/29 wrapping every struct with its type name. The current goldragon/datom.nota carries the same violation; it does not constitute a counter-example, it is the wrong shape that the codec leniently accepts."
+    Maximum
+    2026-05-20T17:30:00Z)
+
+(Correction
+    "The current nota-codec map encoding as `[(Entry key value)]` is wrong if that is the implemented form: syntactically it is a vector of data-carrying enum variants, and NOTA must not assign it a special map meaning."
+    "if current Notecodec map encoding is this thing that you show me, then that is very wrong"
+    "Correction after inspecting the map implementation that writes maps as sequences of `Entry` records."
+    Maximum
+    2026-05-20)
+
+(Principle
+    "NOTA has no syntax exceptions: each notation means exactly one thing. A parenthesized PascalCase form is a data-carrying enum variant, and a sequence of those forms is a vector of enum values; it must not secretly mean a map or any other special container."
+    "that notation means a vector of enums. And it shouldn't mean anything else. Ever. That's what the standard... Nota doesn't have exceptions."
+    "Principle for auditing and correcting special-case codec encodings."
+    Maximum
+    2026-05-20)
+
+(Clarification
+    "Capitalized `True` and `False` are not a NOTA exception; they are the correct user-interface representation of a two-member enum whose Rust backend names are lowercase for language reasons."
+    "Other than maybe true and false being capitalized, because Rust should have capitalized them because they really are a two-member enum, true and false. And they misrepresented that in the code and we're just fixing it. We're fixing the user interface to a bad user interface, but that's not really an exception."
+    "Clarification while discussing NOTA's no-exceptions standard."
+    Maximum
+    2026-05-20)
+
+(Decision
+    "Audit nota-codec for more special-case encodings that reuse one NOTA notation to mean something else, and eliminate those exceptions."
+    "I want you to look for more bullshit exceptions like that. And we have to fucking eliminate them like the plague."
+    "Follow-up task after identifying the map `Entry` encoding as a wrong-shape exception."
+    Maximum
+    2026-05-20)
+
+(Decision
+    "NOTA maps use a distinct curly-brace delimiter and encode as a flat key/value sequence: `{key1 value1 key2 value2 ...}`. Map entries must not be wrapped in inner pair records, because `[(key value)]` is just a vector of structs and not a map."
+    "you're correct at form from maps. That's just a vector of structs. So we need to use a new delimiter for maps. So we should just use ... curly brackets ... And then we don't need all these inner parentheses. The first key ... the second item is the value. The third item is the second key. The fourth item is the second value"
+    "Correction to the previous pair-record map fix. A dedicated map delimiter, not sequence-of-pairs, carries key/value semantics."
+    Maximum
+    2026-05-20)
+
+(Decision
+    "Map keys in NOTA are string keys in key position. They must be a single unquoted token or quoted string; unquoted keys with spaces are rejected. Because map key position is known to be string-typed, unquoted PascalCase keys are allowed there and do not conflict with enum variant notation."
+    "if it has a space ... we should just reject keys with spaces ... because we know it's a key value, and therefore because we know the key is a string, we can remove the prohibition against capital, against pascal case strings. Because it's automatically going to be a string."
+    "Map-key-specific lexical rule for the new curly-brace map form."
+    Maximum
+    2026-05-20)
+
+(Correction
+    "NOTA has no tuple form and does not support tuples as a first-class text shape. The language has vectors, structs, enums, and key/value maps. Rust tuples should not be presented as a NOTA concept."
+    "Your tuple form is wrong. Actually, there is no tuple. There's only vectors and structs and enums and key value. We have no tuples."
+    "Correction to reports/second-system-assistant/5 and the tuple codec change that encoded Rust tuples as vectors."
+    Maximum
+    2026-05-20)
+
+(Principle
+    "Tuples are poorly specified structs: they omit field names, and field names carry information. NOTA should incentivize proper specification by requiring named structs instead of supporting tuple-shaped authored data."
+    "Tuples are poorly specified structs. They're structs without the field name, which the field name is actually information, right? So they're poorly informed structs, and so we don't support them, which then incentivizes people to have proper specification for their code."
+    "Programming philosophy to document alongside NOTA's type-shape rules."
+    Maximum
+    2026-05-20)
+
+(Clarification
+    "Bare path syntax is intentional NOTA design and should remain valid; it is not an unwanted syntax exception."
+    "I don't have a problem with paths. That's actually something I designed myself. I'm happy with the fact that we can have unquoted paths. I'm really happy about that."
+    "Resolves the remaining-suspect item in reports/second-system-assistant/5."
+    Maximum
+    2026-05-20)
+
+(Decision
+    "NOTA map key types should be customizable within constrained key-like types, not fixed permanently to raw `String`. A typed wrapper/newtype over a string-like primitive, such as a `NodeName`, should be able to serve as the map key type."
+    "I would like the type of the keys to be customizable as, you know, within a certain constraint ... let's say I want you to think about a more well-defined type than just a string. Like, this is a node name, for example ... In Rust, the definition is like struct, and then there's the type name, and then parentheses, and there's an inner type, like a wrapper type ... Could we do that?"
+    "Follow-up to the curly-brace map design: keep map syntax key-like while allowing domain-specific key newtypes."
+    Maximum
+    2026-05-20)
+
+(Constraint
+    "NOTA map keys must not be structs. The customizable key-type surface is for constrained scalar/key-like types, not composite record-shaped keys."
+    "Obviously, we're not going to use a struct for a key. I can't even think of a single data format that does that even anyway."
+    "Constraint on typed map-key generalization."
+    Maximum
+    2026-05-20)
+
+(Decision
+    "NOTA map type-key future direction: in addition to the current string-only map key (per reports/second-system-assistant/5), maps should support specifying the type of the key. For example, the cluster nodes map has NodeName keys (a wrapper around String); the schema should declare the key type so consumers see the typed wrapper rather than a raw string. Not yet implemented; can land after the current `{key value …}` map syntax stabilizes."
+    "I actually want to implement this properly so that we're allowed to specify what the type is for the key. In this case, it's a node name, which is a wrapper type for a string, obviously. But never mind that. I mean, you can mention it in the report, but it's not really up to you. Or I guess this just goes in the intent log."
+    "Psyche flagging the typed-map-key future direction during reports/system-assistant/29 review. The current /5 implementation is string-only; this is the next iteration."
+    Medium
+    2026-05-20T18:31:00Z)
+
+(Decision
+    "Typed map keys: NOTA maps land typed-key support. Maps can specify the type of the key (e.g. NodeName wrapper, SecretName wrapper) rather than treating keys as bare strings. Implementation lands in parallel with the current horizon cluster-data work. Restates and elevates the Medium-certainty future-direction record from 2026-05-20T18:31:00Z to Maximum settled direction."
+    "I am discussing whether the key of a key map in Notok can actually become a more specific type. I think so, yeah. Yeah, yeah, we can do it. So I'm going to land this in parallel."
+    "Psyche settling the typed-map-key direction during reports/system-assistant/29 review. Settles open clarification B. STT note: 'Notok' → 'NOTA' (skills/stt-interpreter.md)."
+    Maximum
+    2026-05-20T18:45:00Z)
