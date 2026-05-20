@@ -472,3 +472,9 @@
     "Strengthens ESSENCE's 'Backward compatibility is not a constraint' specifically in the design-alternative evaluation context. Implementation-cost reasoning had been creeping into agent analysis ('but the macro would need changes'); this principle explicitly retires it as a tiebreaker."
     Maximum
     2026-05-20T00:30:00Z)
+(Clarification
+  "Consider reports/designer/246-v4-bundled-fix-deep-design-with-examples.md before continuing the signal-frame/signal-executor migration, and reconcile implementation direction with that deeper bundled design."
+  "psyche"
+  "reports/designer/246-v4-bundled-fix-deep-design-with-examples.md"
+  High
+  "2026-05-20T10:29:00Z")

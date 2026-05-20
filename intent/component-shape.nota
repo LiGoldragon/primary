@@ -194,6 +194,13 @@
     2026-05-20T11:43:16+02:00)
 
 (Decision
+    "Consider reports/designer/246-v4-bundled-fix-deep-design-with-examples.md as part of the Signal frame/executor migration direction."
+    "consider reports/designer/246-v4-bundled-fix-deep-design-with-examples.md"
+    "The Signal frame/executor migration had just been started from report 141; this directs the system-specialist lane to incorporate the newer designer v4 bundled fix design."
+    Medium
+    2026-05-20T10:32:35Z)
+
+(Decision
     "AcceptedOutcome splits into three variants: Committed, OperationAborted { failed_at, reason }, BatchAborted { reason }. Per /142 §2: the single-Aborted shape from /246-v2 forced engine failures to invent a fake failed_at: 0 index. Operation failure and batch failure are different facts and deserve different variants. Domain rejection produces OperationAborted with a real failed-op index; engine rejection produces BatchAborted with no index. The type system expresses honestly what happened."
     "Replace the single Aborted { failed_at, reason } outcome with separate OperationAborted { failed_at, reason } and BatchAborted { reason } outcomes."
     "Refining /246-v2 hole 1 per operator /142 logic probe. The probe demonstrated this in code (/tmp/signal-frame-executor-246-probe/model.rs); three tests passed including engine_rejection_uses_batch_abort_without_fake_failed_index."

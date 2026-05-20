@@ -1,5 +1,21 @@
 # 241 — Signal architecture migration guide
 
+> **⚠ SUPERSEDED (2026-05-20) — for current trait shapes, refer to
+> `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
+> (the v4 spec) and `reports/designer/248-three-layer-changes-for-operators.md`
+> (the operator-facing diff).**
+>
+> The three-layer model (Contract Operation / Component Command /
+> Sema Operation) affirmed by psyche 2026-05-20T02:00Z changes the
+> `Lowering` trait surface, retires payload-bearing
+> `SemaOperation`, mandates `Tap`/`Untap` for persona components,
+> and grows `BatchAborted` with retry/commit metadata. The
+> phase-structure (Phase 1 foundation; Phase 2 pilot; Phase 3
+> component refactors; Phase 4 cleanup) and the per-component
+> checklist concept in §3 below still hold; the trait shapes and
+> the `signal-sema` role descriptions below are STALE — read
+> /246-v4 + /248 for the current spec before implementing.
+
 *Refresh of the migration playbook now that the foundation has
 landed. Supersedes `/239` as the practical reference for any agent
 migrating a signal-* / owner-signal-* contract or its consumer
