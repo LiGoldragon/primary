@@ -21,3 +21,10 @@
     "Psyche update during Q&A on reports/system-assistant/28 Gap 7. STT note: 'Persona script' is the persona-spirit pilot."
     Maximum
     2026-05-20T17:10:00Z)
+
+(Correction
+    "CLI socket dispatch for working/policy operations: reject option B (NOTA wrapper that requires the agent to specify which socket) and option C (try-parse as working, fall back to policy). Both push mechanical socket routing into the agent layer, which is the wrong layer for any mechanical decision. The remaining candidate is option A (signal-cli macro that dispatches statically based on operation type from the contract); decision on A pending an implementation sketch."
+    "Oh, no, we don't want a no-to-wrapper. There's no way we're going to make the agents responsible for figuring out which socket goes where. That's a mechanical thing. Anything that can be done mechanically will not be done by agents. … And option C, try parse as working and policy. No, that's bad."
+    "Resolving two of three options for the working/policy CLI dispatch question raised in a prior research turn. Option A (signal-cli macro) survives as the candidate; psyche asked for a sketch before adopting."
+    Maximum
+    2026-05-20 17:30)

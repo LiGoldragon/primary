@@ -144,3 +144,59 @@
     "Psyche-flagged brainstorm during reports/system-assistant/29 review. Conservative certainty (Minimum) reflects the explicit hedge. If approved, species and services become orthogonal — species describes kind, services describes capabilities; the variants-over-booleans principle applied to enum compounding."
     Minimum
     2026-05-20T18:45:00Z)
+
+(Decision
+    "NodeSpecies enum simplifies: remove complex/compound species names (LargeAiRouter, Hybrid, Router, RouterTesting, LargeAi) and move capability-shaped species into the NodeService features vector. LargeAi joins Router as a NodeService variant. NodeSpecies collapses to the small categorical set describing what kind of cluster member the node is (Center, Edge, EdgeTesting, CloudHost; MediaBroadcast and Publication candidates for the same fold). This makes species and services orthogonal — species is the kind, services are the capabilities."
+    "I think we remove complex species names, like LaregeAiRouter, and move more things in features. like LargeAI becomes a feature variant, so does router."
+    "Psyche directive during reports/system-assistant/29 router-fold review. Settles the broad fold direction; categorical-vs-pre-selection model and specific species-survivor list are open questions surfaced to psyche in the chat reply."
+    Maximum
+    2026-05-20T19:00:00Z)
+
+(Decision
+    "Categorical model for species-vs-services is approved. Species is a unit-only categorical label naming 'what kind of cluster member this is'; services is a vector of named capabilities (some unit, some data-carrying) naming 'what specific things this node does'. There are no implicit pre-selected defaults from species; cluster intent is fully explicit. The alternative (pre-selection of defaults overridable via features) is rejected because additive features cannot naturally express unselection of a default — the feature vector adds capabilities; there's no negation."
+    "Categorical model approved. Well, kind of. I kind of agree with you, but you can see what I'm saying too. … the feature vector doesn't let you turn stuff off. So if you have, like, a center node, and then it has services, you know, center node has services x, y, z enabled and configured, and then, like, you can't turn those off."
+    "Settled during 2026-05-20T19:00 species-fold review. Psyche surfaced the additive-features turn-off problem with pre-selection; categorical wins because the alternative requires negation that the feature vector doesn't express."
+    Maximum
+    2026-05-20T19:15:00Z)
+
+(Decision
+    "Testing posture moves from species (EdgeTesting, RouterTesting) to a NodeService feature variant. The testing flag is a stance ('this node runs newer/experimental versions of the stack') that is orthogonal to the kind of cluster member; modelling it as a feature keeps species clean and lets any species adopt testing posture without proliferating compound species variants."
+    "maybe testing is a feature, and we keep the species types cleaner, and testing is just a feature that you turn on, right? That actually makes more sense, I think. I think so."
+    "Settled during 2026-05-20T19:00 species-fold review. EdgeTesting and RouterTesting species variants retire; NodeService::Testing (or similarly-named) variant lands."
+    Maximum
+    2026-05-20T19:15:00Z)
+
+(Decision
+    "CloudHost stays as a species (not folded into a service). Reason: a cloud-hosted node has a different trust posture from self-hosted hardware — the operator cannot physically inspect the machine, cannot verify the absence of packet sniffers or memory-tapping devices, etc. Different trust ceiling implies a different kind of cluster member, which is what species describes."
+    "yeah, then we have things like cloud host. That is a species, I guess, because it's going to have an automatic trust value, I guess, that it can't be higher than a... I don't know. I feel like a cloud hosting automatically implies a certain amount of trust. It's not the same as self-hosting in my house, on my own hardware. I feel like... Because I don't know if somebody's tapped into the memory or something"
+    "Settled during 2026-05-20T19:00 species-fold review. CloudHost differs from self-hosted Center in the trust-ceiling axis; the difference is a kind, not a capability."
+    Maximum
+    2026-05-20T19:15:00Z)
+
+(Decision
+    "MediaBroadcast and Publication species variants drop entirely — neither species nor feature for now. No current node in the cluster uses them; they have no consumers in BehavesAs derivations; the species file's Publication comment cites 'Plan 04 §P6' which is no longer load-bearing. Adding either back (as species or feature, depending on the use case) is cheap when a real deployment needs them. The species set after the fold: Center, Edge, CloudHost — three variants."
+    "I think we can have also kind of specialized species, like media broadcast, publication. I think it's not even publication too. It's more like what type of ... Like publication is a very broad thing, right? It could be like a whatever. I really don't know. I think it's easy enough for us to add species if we need to."
+    "Settled during 2026-05-20T19:00 species-fold review. Psyche affirmed 'easy enough to add species if we need to' — drop now, restore when load-bearing."
+    Maximum
+    2026-05-20T19:15:00Z)
+
+(Decision
+    "Brainstorm direction (open, not yet settled): data-carrying species variants are allowed if a species genuinely needs per-instance config. The psyche surfaced this around the router example — 'router needs network interfaces defined; so a Router species could be a data variant carrying RouterInterfaces'. Pattern: species can be unit (Center, Edge) or data-carrying if instance-config is intrinsic to the kind. Open concerns: (a) which species genuinely have this need versus pushing config to a service variant, (b) how to handle the precedence question when both species and services name the same thing. Brainstorm response from agent in chat: recommendation is to keep species unit-only and route any capability-shaped data through service variants (Router stays as NodeService::Router(RouterInterfaces); species enum stays Center | Edge | CloudHost as pure labels)."
+    "I think there's a good case to be made for data-carrying species variants. Because then we keep the schema clean. We don't have to add all these optional fields in the main struct in case a certain species needs to define some things. If a certain species needs to define something, then it's in its species schema, and it's a variant for its species. Anyway, hit me back on … Maybe you brainstorm back on this with me. Maybe I'm trying to complicate things too much."
+    "Psyche-opened brainstorm during 2026-05-20T19:00 review. Conservative certainty (Minimum) reflects 'maybe I'm trying to complicate things too much' hedge."
+    Minimum
+    2026-05-20T19:15:00Z)
+
+(Decision
+    "Merge NodeSpecies and NodeService into a single Vec<Role> field called `roles`. The roles vector becomes the first (most important) positional field on NodeProposal. Every variant — Center, Edge, CloudHost (formerly species), TailnetClient, NixBuilder, NixCache, PersonaDevelopment, Router(RouterInterfaces), LargeAi, Testing (formerly services or fold-targets), Nordvpn, WpaEnterpriseClient, Printing, HardwareVideoAccel (formerly bare bools) — lives in one Role enum, with mix of unit and data-carrying variants. CloudHost(CloudProvider) and similar role-with-config patterns are natural. The merge eliminates the species/services duplication, eliminates the precedence question between two parallel surfaces, and makes data-carrying belong wherever the role lives. NodeSpecies enum retires entirely. Settles the prior data-carrying-species clarification: under the merge there is no species/service distinction to argue about, so data-carrying-on-any-role is fully supported by the schema. Open subsidiary: whether Center is genuinely a role (psyche asked agent to check what uses Center in CriomOS); whether 'Role' is the final name."
+    "we might just merge the features vector with the species and call it roles. So it's the first field because it's the most important, I think. And so it's a mix of unit variance and data variance. … we don't have the duplication. It's all in one place. All these features are really roles, like something is in the next cache, something is in the next builder, something is a router, something is an edge. … And then all the data carrying happens right there at the role level, which is perfect. That's where it needs to live."
+    "Psyche brainstorm-with-direction during 2026-05-20T19:30 species-fold review. Conviction-with-hedge phrasing ('might just merge', 'I think that makes more sense') — Medium certainty. Insight triggered by CloudHost(CloudProvider) data-carrying-species example from the prior agent reply, which the psyche cited as the realization."
+    Medium
+    2026-05-21T00:00:00Z)
+
+(Decision
+    "Roles merge — three subsidiary confirmations: (a) mutual exclusivity is enforced for some role groups — specifically the kind-roles (Center, Edge, CloudHost): exactly one per node, validated at projection time with a typed error on violation; (b) the enum is named Role (no Node prefix — the type is internal to node and repeating the namespace is ugly); (c) CloudHost is data-carrying NOW as CloudHost(CloudProvider) — adds the data-carrying shape preemptively rather than waiting for a real cloud-hosted node. Authorizes report rewrite (system-assistant/29) and horizon-rs ARCHITECTURE/INTENT updates."
+    "1. yes, mutual exclusivity for some roles. 2. role is sufficient, since it's a type internal to node, repeating node is ugly. 3. with the provider. yes, rewrite the report and update the architecture and intent files of the repos"
+    "Psyche confirmations during the 2026-05-21T00:00 role-merge brainstorm follow-up. Settles three subsidiary design questions opened by the merge; authorizes the architecture/intent rewrite work."
+    Maximum
+    2026-05-21T00:15:00Z)
