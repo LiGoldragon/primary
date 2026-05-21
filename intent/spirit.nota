@@ -11,3 +11,31 @@
     "Psyche specified the minimum useful query modes for replacing ad-hoc intent-file reading with Spirit."
     Maximum
     2026-05-21T10:44:07+02:00)
+
+(Decision
+    "The current persona-spirit component should be made usable from the production CriomOS user session: package its daemon and spirit CLI from the component flake, put the CLI in the home profile, and run the daemon automatically with the user session when that is the correct service boundary."
+    "I want you to look at the persona spirit component. It has a flake and I want to package the daemon and the CLI, the spirit CLI in the home profile. So I want the daemon to become a user service that starts automatically when the user session starts. It's part of the user session."
+    "Psyche asked the second-system-assistant lane to make persona-spirit operational on production CriomOS, preferring a user-session daemon plus home-profile CLI when the daemon design supports that boundary."
+    Maximum
+    2026-05-21T09:07:22Z)
+
+(Constraint
+    "Before deploying Spirit, verify whether the spirit CLI discovers the running daemon socket out of the box. If it does not, set the required environment in the packaged user session/home profile rather than leaving manual setup for the user."
+    "And I don't know if the CLI can automatically find the socket for the daemon. I guess you might have to set an environment variable. Anyway, look at that, see if there's a problem with it just running out of the box."
+    "Psyche flagged daemon socket discovery as a deployment acceptance condition for the persona-spirit packaging work."
+    Maximum
+    2026-05-21T09:07:22Z)
+
+(Constraint
+    "If persona-spirit's daemon is architecturally expected to be a system service rather than a user service, package it that way in production CriomOS instead of forcing the user-service shape."
+    "If it's expected to be a system service, then you can package it as a system service in CriomOS."
+    "Psyche allowed the service boundary to follow the component's design after inspection."
+    Maximum
+    2026-05-21T09:07:22Z)
+
+(Constraint
+    "If persona-spirit has a design flaw that prevents a clean packaged deployment, stop implementation and write a system-specialist report explaining the flaw and situation."
+    "If there's a problem and you see that there's a flaw in the design or something, just create a report explaining the situation and leave it at that."
+    "Psyche set the failure mode for the persona-spirit production deployment task."
+    Maximum
+    2026-05-21T09:07:22Z)

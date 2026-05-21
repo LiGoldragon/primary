@@ -74,3 +74,24 @@
     "Psyche answer to Open question #2 in reports/system-specialist/154 (and Gap 12 of reports/system-assistant/28). Activate-vs-Deploy collapse left as an open question."
     Maximum
     2026-05-20T17:10:00Z)
+
+(Constraint
+    "Production CriomOS is the only valid target for the persona-spirit deployment task. Agents must identify which CriomOS checkout/configuration is production and must not use the newer feature-branch working-tree CriomOS checkout for this deployment."
+    "Make sure again that you work on the production CriomOS, not the new feature branch that we have in the working tree directory. Do not use that one."
+    "Psyche explicitly scoped the persona-spirit packaging and redeploy task to production CriomOS and warned against the parallel feature-branch checkout."
+    Maximum
+    2026-05-21T09:07:22Z)
+
+(Constraint
+    "When persona-spirit is packaged through the home profile, the home-profile lock file must be updated as part of the deployment workflow before redeploying home."
+    "Make sure if you're doing an OS update that you update the lock file from the home profile because I guess you're going to put the spirit CLI in the home profile."
+    "Psyche called out the home-profile lock file as part of the production deployment path for the Spirit CLI."
+    Maximum
+    2026-05-21T09:07:22Z)
+
+(Decision
+    "For this Spirit deployment, redeploy only the necessary production layer: redeploy home if the daemon and CLI can be delivered entirely through the user session/home profile; redeploy OS only if Spirit must be a CriomOS system service."
+    "And then when it's all ready to go, if you can figure out how to make it work properly, if the CLI will find the daemon properly, then redeploy either the OS if we need it to be an OS system service or redeploy the home if it can all be done in the home profile."
+    "Psyche set the deployment decision rule for the persona-spirit production rollout."
+    Maximum
+    2026-05-21T09:07:22Z)
