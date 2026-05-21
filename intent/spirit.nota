@@ -39,3 +39,10 @@
     "Psyche set the failure mode for the persona-spirit production deployment task."
     Maximum
     2026-05-21T09:07:22Z)
+
+(Principle
+    "Spirit must expose a topic catalog query that lists all topics and their entry counts, so agents can inspect the shape of recorded intent without reading every entry."
+    "we need a command to list all the topics, and show how many entries are by topics, etc"
+    "Psyche added an agent-useful Spirit query while live-testing the installed persistent daemon."
+    Maximum
+    2026-05-21T12:09:48+02:00)
