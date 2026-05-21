@@ -84,6 +84,10 @@ Current macro target:
   `RequestBuilder`, `OperationKind`, `ReplyKind`, and `EventKind`;
 - crates with multiple channels put each channel in a module instead
   of asking the macro for ancestry prefixes;
+- runtime crates that expose ordinary and owner client surfaces use
+  side modules such as `ordinary::Client`, `ordinary::SignalClient`,
+  and `owner::SignalClient` rather than crate-local ancestry prefixes
+  such as `SpiritClient` or `OwnerSpiritClient`;
 - the macro emits structurally obvious `From<Payload> for Reply`
   impls;
 - persona contracts declare an `observable` block so the macro injects
@@ -308,6 +312,22 @@ domain noun being modeled.
 The crate, module, and enclosing type provide context. Names should
 not repeat the entire path of their ancestry.
 
+When two local surfaces need the same short nouns, use modules instead
+of prefixes:
+
+```rust
+pub mod ordinary {
+    pub use crate::runtime::{Client, RequestText, ReplyText};
+}
+
+pub mod owner {
+    pub use crate::runtime::{OwnerRequestText as RequestText};
+}
+```
+
+The caller writes `ordinary::Client` or `owner::RequestText`. The
+type names themselves stay short inside their scope.
+
 ### Empty marker records become unit variants
 
 With mixed enum support, no-payload alternatives belong as unit enum
@@ -390,12 +410,22 @@ It has:
 - `ToSemaOutcome` on local effects;
 - `EffectEmitted` carrying `SemaObservation`;
 - owner signal split from ordinary signal;
-- the thin CLI path in progress around generated socket dispatch.
+- the thin CLI path using generated socket dispatch;
+- public ordinary/owner runtime surfaces exposed through modules
+  rather than `Spirit*` ancestry prefixes;
+- degenerate atomicity made explicit: multi-operation batches and
+  multi-command operation plans are rejected before any command runs;
+- `StampedEntry` composed as `{ entry, date, time }`, not a duplicate
+  of `Entry`'s fields.
 
 Spirit should be used as the first reference when migrating other
 Persona components, with one caution: keep checking the code against
 the current macro output because `signal-frame` has been improving
 while Spirit was being used as the pilot.
+
+Observer fanout remains trace-only in Spirit for now. That deferral is
+intentional until persona-introspect lands; do not treat it as a
+signal-executor bypass.
 
 ### `signal-repository-ledger`
 
@@ -635,6 +665,9 @@ thin transport projection, not a domain helper:
 - no timestamp generation unless the contract explicitly says the
   caller supplies a time, which spirit intent does not;
 - working/owner socket selection comes from operation-head routing.
+- runtime exports use modules for parallel surfaces:
+  `ordinary::Client`, `ordinary::RequestText`, `owner::RequestText`;
+  avoid ancestry prefixes like `SpiritClient` in the component crate.
 
 6. Add constraint tests.
 
@@ -653,6 +686,15 @@ At minimum:
 - `Effect` projects to `SemaOutcome`;
 - executor emits operation event before effect event;
 - `RequestUnimplemented` does not carry redundant operation fields.
+- multi-operation batches are rejected before commit until the
+  component has a real transaction boundary;
+- multi-command operation plans are rejected before any command runs
+  unless the component executor has a real transaction boundary;
+- runtime public exports use modules instead of ancestry prefixes for
+  ordinary/owner surfaces;
+- daemon-stamped wrapper records compose the submitted record plus the
+  daemon-owned stamp fields, rather than duplicating all submitted
+  fields.
 
 ## 8 · Current open questions
 
