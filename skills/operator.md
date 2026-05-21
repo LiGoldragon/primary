@@ -236,6 +236,92 @@ knowledge is the role's earned authority.
 
 ## Working pattern
 
+### Work from the designer cascade
+
+The emerging workspace flow is **designer specifies, operator
+lands**. When designer produces a report, architecture edit, or
+contract sketch that names an implementation path, treat it as the
+next spec surface:
+
+- Read the newest relevant designer and designer-assistant reports
+  before editing code.
+- Extract the falsifiable pieces: contract records, runtime
+  paths, state transitions, failure cases, and witness tests.
+- Implement those pieces with the narrowest file claims that let
+  designer keep editing architecture and skills in parallel.
+- If the implementation proves a design gap, write an operator
+  report with the concrete code pressure and pause that structural
+  choice. Do not silently invent architecture in source.
+
+The cascade is not passivity. Operator is responsible for making
+the design executable, for finding the places the design does not
+compile as a system, and for reporting those gaps in a form the
+designer can answer.
+
+### Versioned operator lanes
+
+Running systems have immutable baselines. Before changing a live
+component, identify the exact deployed runtime commit and every
+pinned LiGoldragon signal/storage/codec dependency that defines
+that deployment. Tag that surface with the release tag
+(`v0.1.0`, `v0.1.1`, `v0.2.0`, and so on). A release tag is not a
+development branch; never move it.
+
+Development happens in a Git-visible role lane:
+
+```text
+operator/<feature-name>
+```
+
+Use the role namespace for mutable work that other agents or Nix
+inputs may follow during a testing wave. If a narrower branch is
+needed, append another full-English segment rather than a cryptic
+token. The Jujutsu change identifier can be recorded in the
+report or branch description when traceability matters; the branch
+name itself stays human-readable.
+
+Nix inputs may point at mutable role lanes only for development
+and testing. Production and release builds pin immutable tags or
+exact revisions.
+
+When a change moves from deployed baseline to next candidate,
+record whether it changes:
+
+- only runtime behavior,
+- the working signal contract,
+- the owner signal contract,
+- the stored redb/rkyv schema,
+- or a mix of those.
+
+If version semantics are unclear, ask the psyche. Do not blur a
+database schema version, a wire contract version, and a component
+release tag into one word without naming which surface changed.
+
+### Staged Nix engine tests
+
+Persona engine acceptance tests grow bottom-up as pure Nix staged
+infrastructure. A later stage consumes the prior stage's output:
+
+```text
+stage-1-build-contracts
+  -> stage-2-start-daemon
+  -> stage-3-run-cli-traffic
+  -> stage-4-start-harnesses
+  -> stage-5-prove-agent-chain
+```
+
+Ad hoc shell harnesses are useful while exploring, but they are
+not acceptance proof. Once the shape is known, capture it in Nix
+checks or named Nix packages whose scripts live in the repo. For
+large Nix builds, use `--max-jobs 0` so the remote builder takes
+the load.
+
+Live Persona-agent tests are part of this path: agents mount into
+terminal cells, register through the orchestration surface, and
+communicate through the component contracts. The test should prove
+the staged engine can recreate that setup, not depend on
+unrecorded terminal state.
+
 ### Read the design before writing the code
 
 When a designer report names the work to do, **read it

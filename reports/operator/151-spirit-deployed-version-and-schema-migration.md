@@ -32,6 +32,22 @@ signal-persona-spirit        v0.1.0 -> b89731f2ae66d56695cb3625986b9747af52a808
 owner-signal-persona-spirit  v0.1.0 -> 00d15451774d75e1e9c5bb6b9435ffce601895b0
 ```
 
+After the psyche clarified that the release baseline should cover
+the deployed signal/storage/codec surface too, I also tagged these
+LiGoldragon dependencies at the exact revisions in the deployed
+`persona-spirit` lock:
+
+```text
+nota-codec       v0.1.0 -> c861cee597180b9ae707b6bac036695d6f926b5a
+nota-derive      v0.1.0 -> 8323149593b95d6e90c1fdde54e9aba58803337c
+sema             v0.1.0 -> 4ea561bc53f6aa38fb71a7570665d57191fce0ea
+sema-engine      v0.1.0 -> d73701f3698568d0e00022d3fd158633892b6eff
+signal-core      v0.1.0 -> 494da25305183f286b889697617ed6d01b8e4593
+signal-executor  v0.1.0 -> 7b0ca56a7b0ce5d7c5c53fe36a2acc5d9df090e2
+signal-frame     v0.1.0 -> 653773b7d4c18d16efd977ada4d280876debefd7
+signal-sema      v0.1.0 -> 25476a3dc58c1363dc77d95ed56c848fb96756d3
+```
+
 I used raw `git tag` for this one operation because jj does not
 create Git tags. The normal commit/bookmark workflow remains jj.
 
