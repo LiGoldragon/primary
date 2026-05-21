@@ -1,0 +1,13 @@
+(Principle
+    "Spirit readiness is proven by live daemon plus thin CLI scenarios, not only by unit tests. Agents should be able to record real recent intent-like statements through the daemon and query the stored state through the CLI before Spirit is declared ready for use."
+    "do a live-usage scenario test with a running spirit-daemon and spirit cli. use recent intents from the log files, and re-log them in the spirit daemon, then test the queries"
+    "Psyche asked for a real Spirit readiness proving pass using a running daemon and the public CLI path, with recent intent records as realistic agent input."
+    Maximum
+    2026-05-21T10:44:07+02:00)
+
+(Principle
+    "Spirit's query surface must support agent-useful views: summaries-only, summaries with verbatim/context, and filters such as topic and kind."
+    "make sure we can get summaries-only, or summaries with verbatim and context, and do so by also filtering by topic or kind, etc - see what agents might like to do"
+    "Psyche specified the minimum useful query modes for replacing ad-hoc intent-file reading with Spirit."
+    Maximum
+    2026-05-21T10:44:07+02:00)
