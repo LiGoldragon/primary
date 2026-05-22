@@ -367,6 +367,114 @@ Still-relevant questions after this refresh:
     contract yet, PeerCheck on working contracts, compile-time
     `MigrationIndex`?
 
+## Refresh After Spirit 194-210 And Version-Handover Reports
+
+Freshly absorbed:
+
+- Spirit records 194-210.
+- `reports/third-designer/19-refresh-after-prime-session-2026-05-22.md`.
+- `reports/cluster-operator/5-refresh-after-new-intents-and-reports-2026-05-22.md`.
+- `reports/designer/285-versionprojection-trait-and-handover-protocol-specification.md`.
+- `reports/operator/157-version-projection-refresh-and-question-rollover-2026-05-22.md`.
+- `reports/second-designer/151-design-mind-and-orchestrate-replacement-readiness.md`.
+- `reports/operator/158-version-handover-foundation-implementation-2026-05-22.md`.
+
+Action taken in this lane:
+
+- Marked `/284` as superseded by `/285` wherever they differ. The
+  implementation target is now `version-projection` plus
+  `signal-version-handover`, not `migration`,
+  `signal-version-coordination`, or per-component `PeerCheck`.
+- Marked old Spirit Path A stop/freeze/migrate/start wording as
+  superseded by smart socket handover. Record 203 supersedes record
+  198.
+- Marked sema-upgrade bootstrap as settled: sema-upgrade dogfoods the
+  version-projection mechanism from day one, with no separate
+  handwritten bootstrap phase.
+- Marked Engine-manager Axis 2 timing as settled: land now as step 0
+  of the `/257` / `primary-u8vo` contract migration sweep.
+- Marked Orchestrate executor migration as clear next work in this
+  lane. `reports/second-designer/151` says Orchestrate can canary
+  before full sema-upgrade because claim/activity state is tolerable
+  to rebuild; Mind cannot.
+- Verified the Orchestrate service bead already exists:
+  `primary-2chb` ("Deploy persona-orchestrate as workspace user
+  service"). No duplicate bead filed.
+
+Foundation now landed elsewhere:
+
+- `/git/github.com/LiGoldragon/version-projection` landed on main.
+- `/git/github.com/LiGoldragon/signal-version-handover` landed on main.
+- `/git/github.com/LiGoldragon/sema-engine` now has durable
+  `CommitSequence`.
+- `/git/github.com/LiGoldragon/sema-upgrade` has a handover prototype.
+
+Current implementation reading:
+
+- Persona engine now precedes Spirit cutover. Record 209 makes
+  `primary-2y5` (persona engine) blocking for `primary-x3ci` (Spirit
+  v0.1.1 cutover).
+- Component upgrade orders go through the target component's owner
+  socket. For Spirit that means an owner operation on
+  `owner-signal-persona-spirit`, then the private
+  `signal-version-handover` upgrade socket runs the daemon-to-daemon
+  protocol.
+- Orchestrate remains the best second-operator slice: finish
+  `primary-c620` executor migration, then `primary-2chb` can deploy it
+  as a workspace service, then the bash helper can be cut over.
+- Mind replaces beads later than Orchestrate because bead history is
+  durable. Mind needs contract migration plus sema-upgrade coverage
+  before deployment.
+
+Still-relevant questions after this refresh:
+
+1. `EffectEmitted` event payload: component-local typed `Effect`,
+   universal `SemaObservation`, or two streams?
+2. Orchestrate cutover vocabulary: keep current
+   `Claim`/`Release`/`Handoff` for the shell-helper replacement, then
+   layer abstract-job and agent registry later?
+3. In Orchestrate, do `Watch`/`Unwatch` survive as domain streams for
+   role/lane/claim/activity facts, or should generic observation be
+   only `Tap`/`Untap`?
+4. What is the durable split between role definition, lane/window,
+   agent run, job, and policy records in persona-orchestrate?
+5. What exact owner operation triggers component upgrade on
+   `owner-signal-persona-spirit` and later other owner contracts?
+6. What is the minimal persona-engine scope needed to unblock Spirit
+   cutover now that engine orchestrates upgrades from day one?
+7. Is the Spirit release asymmetry intentional:
+   `persona-spirit` + `signal-persona-spirit` at v0.1.1 while
+   `owner-signal-persona-spirit` stays v0.1.0?
+8. For version handover, should historical signal contracts be frozen
+   sibling repos such as `signal-persona-spirit-v0-1-0`, as `/285`
+   recommends?
+9. For version handover, should `owner-signal-version-handover` stay
+   deferred until sema-upgrade owner policy exists, or be created now
+   for force-flip / rollback / quarantine?
+10. For version handover, should mirror payloads remain raw bytes plus
+    `RecordKind`, or become typed enums?
+11. For version handover, should per-operation policy stay as runtime
+    crate literals for now, or move into contract/schema annotations?
+12. For Mind replacing beads, should cutover use a thin `bd`-style
+    wrapper that emits NOTA frames, or require agents to call
+    `mind '(...)'` directly?
+13. For bead corpus migration into Mind, should agents hand-relog or
+    should a one-shot dumb import tool be built?
+14. Is `persona-llm-client` a library only, or does it become a full
+    triad with daemon, working signal, and policy signal?
+15. For headless Pi RPC, should the Rust wrapper keep one Pi process
+    alive per role/lane session, per task, or per call?
+16. For headless Pi, should Pi own session persistence, or should the
+    Rust wrapper own persistence and treat Pi as stateless?
+17. For headless Pi, which built-ins are initially allowed: read-only
+    tools, shell, edit/write, or policy-configurable tools?
+18. For Bird-on-Zeus, is the first helper surface exactly
+    `(LocalUpdate HomeProfile)` and `(LocalUpdate FullSwitch)`, or
+    should `Test` and `BootOnce` be exposed immediately?
+19. For the Bird-on-Zeus root helper, should it be Rust from the first
+    real slice, or is a zero-dynamic-field shell wrapper acceptable
+    temporarily?
+
 ## Cleared Question
 
 Retired lane identifiers do not need tombstones right now. The current
