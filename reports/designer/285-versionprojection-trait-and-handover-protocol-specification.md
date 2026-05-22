@@ -27,6 +27,21 @@ recovery routes failed messages into persona-introspect; a
 compile-time `MigrationIndex` finds the right historical signal-X
 library to decode the bytes.
 
+> **2026-05-22 — three §9 open questions confirmed via psyche
+> AskUserQuestion (spirit records 194, 195, 196):**
+>
+> 1. **Crate name is `version-projection`** (not `migration`,
+>    not `compatibility-projection`).
+> 2. **SubscribePolicy default is `TerminateAtHandover`** — active
+>    subscriptions cleanly terminate at the handover boundary;
+>    clients reconnect to next.
+> 3. **PeerCheck retired** — `signal-version-handover` is the
+>    single discovery mechanism (no per-component PeerCheck
+>    operation). Spirit record 177 (per-type Migration trait carries
+>    a self-check / peer-coordination message) is the principle;
+>    `signal-version-handover` is the mechanism — they coexist
+>    cleanly.
+
 ## 1. VersionProjection trait — placement and signature
 
 ### 1.1 Crate placement
