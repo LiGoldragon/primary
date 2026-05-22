@@ -184,6 +184,54 @@ Additional questions now worth carrying:
    or leave them as historical keepers until the main operator lane
    runs its own context maintenance?
 
+## Latest Delta Absorption
+
+Freshly absorbed after the second absorption commit:
+
+- `reports/designer/281-headless-pi-research.md`
+  - Pi has two documented headless modes: RPC over JSONL
+    stdin/stdout and Node SDK via `createAgentSession`. Package
+    identity is corrected to `@earendil-works/pi-coding-agent`.
+    DeepSeek is already supported through `@earendil-works/pi-ai`.
+    The open design question is whether the workspace wrapper should
+    be a Rust RPC crate, a Node library, or a triad-backed service.
+- `reports/cluster-operator/1-bird-zeus-local-update-authority-design.md`
+  - Bird-on-Zeus update authority should be an explicit Horizon
+    `SystemUpdateGrant`, not `trust = Max`, root SSH, `wheel`,
+    `nixdev`, or arbitrary `lojix-cli` sudo. First implementation is
+    Horizon grant, CriomOS local update helper, and `lojix-cli`
+    local activation path.
+- `reports/cluster-operator/3-third-designer-17-blocker-audit-2026-05-22.md`
+  - Updates current blockers. `tools/orchestrate status` was fixed
+    locally by making the helper accept dynamic lanes. The Spirit
+    branch/tag blocker is stale; the real blocker is v0.1.0 write
+    drift after v0.1.1 staging. Engine-manager Axis 2 remains open.
+    `ItemPriority` already collapsed to `signal_sema::Magnitude`;
+    health/readiness still need a decision.
+
+Current corrections from this delta:
+
+- Do not treat `tools/orchestrate status` as the active blocker
+  anymore. It is a transitional helper and still not the destination,
+  but the immediate closed-enum breakage is fixed in the cluster-
+  operator commit.
+- Spirit cutover should be framed as: v0.1.1 is staged but stale;
+  v0.1.0 has later records. The work is restage/replay tail writes,
+  then dual-write or flip default.
+- Persona-pi / DeepSeek work is now better grounded, but it remains a
+  design/proposal target, not this lane's immediate implementation.
+- Bird-on-Zeus local update authority is a cluster/system lane item,
+  not second-operator's Orchestrate slice.
+
+Questions added by this delta:
+
+1. For headless Pi, should the reusable workspace surface be a Rust
+   RPC wrapper, a Node SDK wrapper, or a proper triad service?
+2. For Bird on Zeus, is the first allowed action set `BootOnce` +
+   `Test`, or should `Switch` be included from the start?
+3. Should `cluster-operator` be registered as a real lane, and if so
+   what main-role relation does it have?
+
 ## Cleared Question
 
 Retired lane identifiers do not need tombstones right now. The current
