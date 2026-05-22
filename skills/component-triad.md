@@ -366,6 +366,50 @@ are not opinions — they are confirmations. The authority chain makes
 the next step safe: the harness is not spawned with channel rights
 until the router has confirmed the channel exists.
 
+### Partial-failure semantics — commit-first-success-and-record-divergence
+
+When an issuer's Mutate chain crosses multiple downstream
+components (e.g. mind issues a Mutate that orchestrate
+propagates to router *and* harness for a single logical
+operation), the partial-failure rule is:
+
+**The issuer commits on the first success and records the
+divergence on failure.** It does not roll back the successful
+leg; it does not stall waiting for an all-or-nothing two-phase
+commit; it advances on the success and records the failed-leg
+state as a divergence row that downstream tooling (introspect,
+the recovery agent) can reconcile.
+
+This matches the precedent established for version-handover
+between main and next: spirit records 180 + 183 settled that
+*"operations main cannot process at all are acceptable; dev does
+the op and main records only the divergence"* and *"when next
+catastrophically fails, main recovers what it can from the
+original message via partial application; preserves caller intent
+across version-divergence failures."* The shape generalizes
+beyond version-handover to any Mutate chain that fans out: the
+issuer commits the legs that succeeded and records what diverged,
+trusting the introspect plane and recovery agent to surface and
+heal the divergence later.
+
+Rationale: an issuer that rolls back on first downstream failure
+must hold inverse-mutate logic for every Mutate it issues, and
+must succeed in applying the inverse against a remote daemon
+that may itself be unhealthy — turning partial-failure into a
+distributed-rollback problem with worse failure modes than the
+original. An issuer that runs two-phase commit pays the
+synchronization cost on every Mutate, slowing the common-case
+all-success path for the rare partial-failure case. The commit-
+first-success path keeps the common-case fast and pays the
+reconciliation cost only where divergence actually occurred.
+
+The downstream legs are responsible for typed Unimplemented or
+typed failure replies per the skeleton-honesty rule (per
+`signal-persona/ARCHITECTURE.md` §"Skeleton honesty"). The
+issuer's "record divergence on failure" relies on those typed
+replies — a silent drop or panic breaks the partial-failure
+protocol.
+
 ## When this skill applies
 
 - **Designing a new stateful component.** Default to the triad. If
