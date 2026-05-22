@@ -38,6 +38,15 @@ usually need maintenance at the same time, by the same pass.
   has the right artifacts to resume from.
 - **Explicit user direction.** "Do a context maintenance" or "do
   a handover" or similar.
+- **Lane retirement.** A lane is being retired (the role taxonomy
+  shifted, an assistant lane is being folded back into its main
+  role, etc.). Before the identifier itself can be freed, the
+  lane's leftover memories must be triaged via this skill —
+  reports under `reports/<retiring-lane>/` and beads tagged with
+  the lane label. Per psyche 2026-05-22 (spirit record 213),
+  identifier retirement is *gated* on context-maintenance
+  completion of the leftover memories. See §"Retiring a lane"
+  below for the methodology.
 
 Often the triggers coincide. Treat them as one pass.
 
@@ -149,6 +158,48 @@ role is to apply decisions, not to re-read every report.
 For context-only substance (the part that lives in the live
 conversation, not on disk), the orchestrator does this sweep
 itself — agents can't see the conversation's working memory.
+
+## Retiring a lane
+
+Per psyche 2026-05-22 (spirit record 213), retiring a lane
+identifier is gated on context maintenance completing on the
+lane's leftover memories. The retired identifier should not free
+until its memories find their right homes.
+
+Methodology when retiring a lane:
+
+1. **Triage every report** under `reports/<retiring-lane>/` using
+   the standard drop / forward / migrate / keep rule from §2.
+   Reports carrying live substance forward into a successor lane's
+   `reports/<successor>/` directory; reports carrying mature
+   substance get inlined into permanent docs (architecture,
+   skills, per-repo `INTENT.md`); the rest retire.
+2. **Triage every bead** tagged with the retiring lane's label.
+   Each gets one of:
+   - **Close** — work done, abandoned, or already absorbed
+     elsewhere; close-with-breadcrumb naming the new home.
+   - **Reassign** — work continues under a successor lane; update
+     the bead's labels.
+   - **Promote to architecture** — bead carried a design idea
+     that should live as a "Possible features" entry per
+     `~/primary/skills/architecture-editor.md` §"Carrying
+     uncertainty"; migrate the substance there, close the bead.
+3. **Take any pending design decisions** the lane was carrying —
+   for each open question: settle it now, abandon entirely, or
+   park as a "Possible future design" entry in the relevant
+   architecture file.
+4. **Surface the retirement in spirit** alongside any successor
+   lane mapping (so other agents see the retirement and the
+   successor in the same record).
+5. **Only after the above** is the identifier itself eligible
+   for retirement; the lane's `reports/<lane>/` directory can be
+   removed if empty.
+
+**Forward** (psyche 2026-05-22): a dedicated context-maintenance
+agent for retired-lane sweeps will eventually be hired into the
+workspace. Until that agent exists, the prime designer (or any
+agent the psyche directs) handles retired-lane sweeps as part of
+standard context maintenance.
 
 ## Anti-patterns
 
