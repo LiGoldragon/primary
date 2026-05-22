@@ -119,6 +119,59 @@ don't pre-announce what you're about to do.** The chat
 reply is for what changed and what's next. The *how* and
 the *why* belong in the report, not in chat.
 
+## Standard agent behavior — every response paraphrases a report
+
+Per intent record 232, the default operating pattern for every
+agent in the workspace is: **every chat response is the
+paraphrase of an accompanying per-response report**. The report
+is the session log; the chat reply is the paraphrase. The
+report holds the substance; chat holds the items the user must
+attend to right now.
+
+This extends the shape-trigger rules in `AGENTS.md` §"Reports go
+in files; chat is for the user" (per intent 218), it does not
+replace them. The shape triggers (mermaid / table / `##` or
+`###` headings / multi-paragraph explanation / list of >5
+substantive items / code block >10 lines that illustrates a
+design) say *when chat content must move to a report*. The
+per-response paraphrase says *what the chat carries when the
+report is the substance home*: a paraphrase of the report, not
+a teaser pointing at it.
+
+The chat reply carries **3-7 most important items**, spread
+**more-evenly-than-not** across three categories:
+
+- **(a) Questions / clarifications of intent** — open
+  questions the user must answer, ambiguous intent that
+  needs clarification, decisions awaiting approval.
+- **(b) Observations / suggestions / explanations of how
+  new mechanisms work** — substantive findings, design
+  proposals, explanations of what changed in the
+  architecture or contracts.
+- **(c) Examples of recent work or evolving ideas in the
+  thread** — concrete artefacts (paths, beads, commits) +
+  what's evolving in the current line of work.
+
+The "more-evenly-than-not" balance is the load-bearing
+constraint: pure questions miss the substance the agent owes
+the user; pure explanations drift toward report-shape; pure
+artefact-listing is a status dump. The three-category mix is
+how the agent's paraphrase encodes its understanding of the
+system back to the user.
+
+**Below 3 items** the response is under-substantive for the
+user's attention (the user could have read the bead title
+instead). **Above 7 items** the user can't hold the response in
+working memory while running parallel agents. The 3-7 bound is
+the working-memory budget.
+
+When a per-response report does not exist (acknowledgements,
+"done; pushed" confirmations, tool-result summaries), the
+standard pattern doesn't apply — those are the small-report
+exceptions named under §"When to write a report vs answer in
+chat" above. The pattern applies whenever the response has
+substance worth a report.
+
 ## Always name paths
 
 When you reference a report or any other file the user
@@ -256,6 +309,51 @@ For per-repo reports (specific to one repo's work), the
 convention is the same `<N>-<topic>.md` shape under
 `<repo-root>/reports/`. See that repo's own `AGENTS.md` /
 `ARCHITECTURE.md` for any per-repo refinements.
+
+### Meta-report directories — sub-agent sessions
+
+Per intent record 231, when an agent dispatches sub-agents
+to do a coordinated multi-slice piece of work, the whole
+session lands as **one meta-report directory** instead of a
+flat list of sibling reports:
+
+```
+reports/<role>/<N>-<session-name>/
+  0-frame-and-method.md       (orchestrator: session frame)
+  1-<slice-name>.md           (sub-agent 1)
+  2-<slice-name>.md           (sub-agent 2)
+  ...
+  N-overview.md               (orchestrator: synthesis)
+```
+
+The orchestrating agent takes the next number `N` in its
+report-subdir's sequence, creates the directory with a
+session-name slug (kebab-case, names the session's topic —
+e.g. `152-persona-engine-architecture-overview`), and each
+sub-agent writes a numbered sub-report inside. The directory
+**IS** the meta-report — no `meta-` prefix needed because
+being a directory is the signal.
+
+The orchestrator's frame goes in `0-frame-and-method.md`; the
+final synthesis goes in the highest-numbered sub-report
+(commonly `N-overview.md` or `N-synthesis.md`). Sub-agents own
+their numbered sub-reports; the orchestrator owns the frame
+and overview plus optionally one or two slices.
+
+**Garbage collection.** The directory is garbage-collectable
+as **one session unit**. When the substance migrates to
+permanent homes (ARCHITECTURE.md files, skills, ESSENCE.md,
+per-repo INTENT.md), the whole directory retires together,
+not piece by piece. The retirement lands via a
+context-maintenance sweep per §"Context maintenance" below.
+
+**Worked example.** The current session's home —
+`reports/second-designer/152-persona-engine-architecture-overview/`
+— is the first instance of this pattern. The orchestrating
+second-designer dispatched per-component sub-agents; each
+sub-agent wrote its numbered slice inside; the overview ties
+them together. Read that directory as the canonical worked
+example.
 
 ### Filename convention
 
