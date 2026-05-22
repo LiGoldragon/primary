@@ -225,12 +225,69 @@ Current corrections from this delta:
 
 Questions added by this delta:
 
-1. For headless Pi, should the reusable workspace surface be a Rust
-   RPC wrapper, a Node SDK wrapper, or a proper triad service?
-2. For Bird on Zeus, is the first allowed action set `BootOnce` +
+1. For Bird on Zeus, is the first allowed action set `BootOnce` +
    `Test`, or should `Switch` be included from the start?
-3. Should `cluster-operator` be registered as a real lane, and if so
-   what main-role relation does it have?
+
+## Delta Absorption After Designer 282 / 283 And Third-Designer 18
+
+Freshly absorbed:
+
+- `reports/designer/282-workspace-implementation-status.md`
+  - roughly 30-35% of the named architecture exists as working code.
+    Production has Spirit, repository-ledger, and the pre-Persona
+    deploy stack; the Persona engine is not production. `/249` still
+    has 24 of 35 gaps open.
+- `reports/designer/283-session-summary-2026-05-22-prime.md`
+  - prime designer's next focus is `/249` gap closure. The DeepSeek
+    direction moved out of persona-pi and into a new
+    `persona-llm-client` library direction. `signal-sema` needs the
+    Magnitude `Unknown` widening and Health/Readiness collapse follow-up.
+- `reports/third-designer/18-audit-synthesis-2026-05-22.md`
+  - corrects the live blockers: Spirit branch/tag blockage is stale,
+    the real blocker is v0.1.0 write drift after v0.1.1 staging.
+    `tools/orchestrate status` is fixed locally, but the durable
+    destination remains typed persona-orchestrate.
+
+Current corrections:
+
+- Treat Spirit cutover as a v0.1.0 write-drift problem after staging,
+  not a missing branch merge.
+- Treat `tools/orchestrate status` as fixed locally; it is still only
+  a transitional helper.
+- Treat `/249` gap closure as designer's primary focus, not
+  second-operator's implementation lane.
+- Treat Orchestrate executor migration as independent enough to
+  proceed, but ranked behind the live Spirit cutover wrapper.
+- Treat `persona-llm-client` as the new DeepSeek direction. Persona-pi
+  remains a separate harness-runtime component.
+
+Questions to carry:
+
+1. Spirit default routing: dual-write wrapper, default flip with
+   v0.1.0 read-only fallback, or high-water-mark replay?
+2. `EffectEmitted` payload: component-local typed `Effect` or
+   universal `SemaObservation`?
+3. Orchestrate executor migration timing: after the Spirit wrapper or
+   in parallel?
+4. `persona-llm-client`: library only or full triad?
+5. Spirit v0.1.1 asymmetry: `persona-spirit` and
+   `signal-persona-spirit` are v0.1.1 while
+   `owner-signal-persona-spirit` remains v0.1.0; intentional?
+
+## Cleared Questions From Latest Psyche Clarification
+
+Cluster-operator is an operator role with a specialized cluster topic:
+cluster reports, cluster questions, cluster deployments, and cluster
+implementations. Ordinal prefixes copy whatever follows them, so a
+future `second-cluster-operator` would be another window of the
+cluster-operator role. Spirit record 174 captures this clarification.
+
+For headless Pi, a Rust RPC wrapper is now the preferred baseline
+workspace surface even if later work also adds a Node SDK wrapper or a
+proper triad service. Spirit record 175 captures this decision. The
+remaining open point is conceptual rather than directional: explain
+what the Pi RPC process actually looks like and whether it should be
+short-lived per request or held open as a reusable session.
 
 ## Cleared Question
 
