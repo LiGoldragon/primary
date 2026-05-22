@@ -1034,8 +1034,6 @@ Open questions for psyche (carried in §0 chat reply):
 
 - `operator/150-triad-signal-sema-migration-current-state.md`
   §5.2 (ledger pilot status) and §7 (migration playbook).
-- `designer/258-persona-signal-triad-audit-2026-05-21.md` (audit
-  shape template; engine-manager triad).
 - `designer/257-signal-contracts-names-and-shape-audit.md` (cross-
   workspace contract audit; §1.1–1.11 patterns).
 - `second-operator-assistant/11-signal-type-naming-and-shape-design-guideline.md`

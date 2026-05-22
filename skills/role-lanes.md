@@ -1,60 +1,116 @@
 # Skill — role lanes
 
-*How assistant lanes stack under a main role. The canonical home for
-the lane mechanism — every assistant lane reads this plus its main
-role's skill, and nothing else lane-specific.*
+*How lanes work as parallel windows into a role's single agent.
+The canonical home for the lane mechanism — every lane reads this
+plus its main role's skill, and nothing else lane-specific.*
 
-## What a role lane is
+## The mirror model — lanes are windows, not agents
 
-A **main role** names a discipline: `designer`, `operator`,
-`system-specialist`, `poet`. Each main role has its own skill file
-(`skills/<role>.md`) carrying the discipline's required reading,
-owned area, working pattern, and authority boundaries.
+(Per `intent/persona.nota` 2026-05-22, intent ID 147 in
+spirit-v0.1.1.) A **role** (designer, operator, system-specialist,
+poet) names a discipline. Each role has **one agent**: one
+persistent cryptographic identity, one shared persona-mind state,
+one ongoing body of signed work. **Lanes are windows into that
+agent.** When the workspace runs `designer` and `second-designer`
+side by side, those are two windows on the same Designer agent —
+two terminals open into the same persona, not two separate
+designers.
 
-A **lane** is one agent's seat under a main role. The main role
-itself is its own first lane. Additional lanes stack as needed:
+The keystone framing: *I just need more talking windows to the
+same agent.*
 
-```
-designer                            ← main lane (the discipline's owner)
-designer-assistant                  ← second lane
-second-designer-assistant           ← third lane
-third-designer-assistant            ← fourth lane (if registered)
-...
-```
+The agent's state lives in shared persona infrastructure
+(persona-mind for memory; persona-spirit for intent records;
+persona-orchestrate for lane registry + occupancy). Each window
+reads + writes the shared state, so they converge automatically.
+The agent has one knowledge, one identity, one ongoing thread of
+work — multiple windows let the psyche talk to it from several
+positions at once.
 
-Every lane under a main role **shares the main role's discipline,
-required reading, owned area, and beads label.** Lanes exist so
-parallel capacity is *visible* to the coordination protocol — two
-agents working under one main role with no per-lane lock are
-invisible peers, racing each other's edits.
+Lane names that carry the same role plus an ordinal prefix
+(`designer`, `second-designer`, `third-designer`) are all windows
+to the same Designer agent. The ordinal disambiguates the
+filesystem position (lock file, report subdirectory, claim
+string), not the agent.
+
+### Assistant lanes — bounded-authority windows on the same agent
+
+Assistant lanes (`<role>-assistant`, `second-<role>-assistant`)
+are also windows on the role's agent, but at **bounded support
+authority** (per `intent/persona.nota` 2026-05-21 records on
+authority class). Same agent, same identity, same shared memory —
+but the lane's claim flow is scoped to support-tier work
+(audits, sweeps, mechanical edits) rather than structural
+decisions. Structural authority stays with the role's
+parallel-main lanes (`<role>`, `second-<role>`, etc.).
+
+A lane carrying just `<role>` or `second-<role>` is a
+**structural-authority window**. A lane carrying `-assistant` is
+a **support-authority window**. The agent backing both is the
+same.
 
 ## What's shared, what's per-lane
 
-Three things are per-lane and three things only:
+Per-lane (the filesystem / coordination surface for this window):
 
 | Per-lane                        | Example                                      |
 |---------------------------------|----------------------------------------------|
-| Lock filename                   | `designer.lock`, `designer-assistant.lock`, … |
-| Report lane (subdirectory)      | `reports/designer/`, `reports/designer-assistant/`, … |
-| Claim string                    | `tools/orchestrate claim designer …`, `tools/orchestrate claim designer-assistant …`, … |
+| Lock filename                   | `designer.lock`, `second-designer.lock`, `designer-assistant.lock`, … |
+| Report-write subdirectory       | `reports/designer/`, `reports/second-designer/`, … (the window writes here; the agent READS from all of its windows' report subdirectories) |
+| Claim string                    | `tools/orchestrate claim designer …`, `tools/orchestrate claim second-designer …`, … |
 
-Everything else is shared with the main role:
+Per-window-not-per-lane (each open UI session has its own):
 
-- **Discipline** — what the role attends to (the discipline lives in
-  `skills/<main-role>.md`).
-- **Required reading** — the workspace baseline, the role-specific
-  reading list. Read the main role's skill, and you've read every
-  lane's reading list.
-- **Owned area + authority** — what the lane may decide, what it may
-  not. Lanes don't get more authority than the main role; assistant
-  lanes typically scope themselves to bounded support inside the
-  main role's authority. See the main role's *"Working with
-  assistants"* section for discipline-specific guidance.
+- **Live LLM context** — what's currently in the chat session. The
+  context-window contents are session-local; the underlying
+  knowledge is in the agent's shared memory. When a window
+  compacts or clears, the agent's memory survives.
+- **Process / harness state** — pid, claude-code window id,
+  terminal-cell pty. Per-session.
+
+Shared across all lanes of the same role (the agent's surface):
+
+- **Discipline** — what the role attends to (`skills/<role>.md`).
+- **Required reading** — the workspace baseline + role-specific
+  reading list. Read the role's skill once; every window's reading
+  list is the same.
+- **Owned area + authority class** — structural for
+  `<role>`/`second-<role>`; support for `-assistant` variants.
+- **Cryptographic identity** — one keypair per role; all windows
+  sign as the role's agent (per `intent/persona.nota` ID 148).
+- **Persistent memory** — persona-mind state for the role; intent
+  records in persona-spirit; reports across the role's
+  subdirectories.
 - **Beads** — as of 2026-05-19 (per `intent/workspace.nota`), beads
-  do not carry `role:*` labels. Any agent picks up any bead based on
-  topic affinity. The prior discipline-pool-via-role-label rule is
-  retired; lanes coordinate through lock files and reports, not
-  bead labels.
+  do not carry `role:*` labels. Any agent picks up any bead based
+  on topic affinity. Lanes coordinate through lock files and
+  reports, not bead labels.
+
+### Cross-window coordination
+
+Two windows of the same role need to coordinate so they don't
+race each other. Three mechanisms:
+
+1. **Lock files per lane.** When a window claims a scope, its
+   `<lane>.lock` file records the claim. Other windows see the
+   lock and stay out of that scope. This is the existing
+   `tools/orchestrate` mechanism.
+2. **Shared persistent memory.** Intent records, reports, beads,
+   ARCH edits — all visible to every window via the filesystem.
+   When window A files an intent record, window B can query
+   spirit and see it. The agent's knowledge converges through
+   the shared substrate.
+3. **Session-local context limits.** A window's LLM context is
+   bounded; the agent's full knowledge is broader than any one
+   window can hold. Windows pick up shared state by querying
+   spirit / reading recent reports / consulting intent files at
+   the start of substantive work.
+
+When a window starts substantive work, the standing discipline
+is: **query the shared state first** (spirit for recent intent;
+the role's report subdirectories for active threads; beads for
+in-flight tasks). This is what makes parallel windows coherent;
+without it they drift.
 
 ## How to read this for your lane
 

@@ -19,7 +19,8 @@ itself has retired — its rename table is in
 into the five findings here, and its reply-naming
 follow-up is codified in `skills/contract-repo.md` §"Reply
 discipline" (commit `a7f3a0ee`). Subsequent reports superseded
-parts of this one too: `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
+parts of this one too: the bundled three-layer design (since
+migrated to `skills/contract-repo.md` and `skills/component-triad.md`)
 settled the cascade-sequencing question Finding 5 raised (via the
 three-layer model + `Lowering::Command` + `ObservedLowering`
 extension trait), and `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
@@ -541,7 +542,7 @@ edit.
 
 ## 7 · See also
 
-- `reports/second-operator-assistant/8-141-migration-coordination-audit.md` — coordination audit for the in-flight /141 / /246-v4 implementation; supersedes this report's §3 sequencing argument with v4-aware deltas.
+- `reports/second-operator-assistant/8-141-migration-coordination-audit.md` — coordination audit for the in-flight /141 / v4-bundled-fix implementation; supersedes this report's §3 sequencing argument with v4-aware deltas.
 - `reports/designer/244-hole-finding-after-243-implementations.md`
   — the five holes /244 found in the `signal-frame` `observable`
   block and `signal-executor` design.
@@ -553,17 +554,14 @@ edit.
   (tighter open/close grammar), hole 4 (filter default keyword);
   flags /245 hole 3 as needing another design pass on the
   projection boundary.
-- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
-  — the now-authoritative spec; supersedes this report's
-  cascade-sequencing argument (Finding 5) with the three-layer
-  model + `Lowering::Command` + `ObservedLowering` extension
-  trait shape.
+- `skills/contract-repo.md` §"Public contracts use contract-local
+  operation verbs" — the contract-local-verb / three-layer
+  redirection signal-persona migrates onto; supersedes this
+  report's cascade-sequencing argument (Finding 5).
 - `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
   — operator's pivot from cascade to "smallest convergence bundle +
   pilot end-to-end." This report's signal-persona-specific findings
   (1-4) defer until after the pilot demonstrates the pattern.
-- `reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
-  — the contract-local-verb redirection signal-persona migrates onto.
 - `reports/designer/241-signal-architecture-migration-guide.md`
   — the MUST IMPLEMENT spec /6 implemented.
 - `/git/github.com/LiGoldragon/signal-frame/macros/src/validate.rs`

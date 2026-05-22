@@ -462,8 +462,6 @@ continue following spirit's shape.
 - `reports/designer/257-signal-contracts-names-and-shape-audit.md`
   — workspace-wide contract audit (spirit done; other components
   stale).
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-  — engine-manager triad audit using spirit as the template.
 - `reports/second-designer/129-mind-orchestrate-payload-and-cli-dispatch-option-a-2026-05-20.md`
   — `signal_cli!` macro Option A sketch.
 - `reports/second-operator-assistant/11-signal-type-naming-and-shape-design-guideline.md`

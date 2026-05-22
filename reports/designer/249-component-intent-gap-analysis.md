@@ -1217,10 +1217,7 @@ Phase-3 refactors; **Low** is a design clarity issue.
 - `/home/li/primary/reports/designer/232-persona-spirit-new-component.md`
 - `/home/li/primary/reports/designer/233-persona-orchestrate-operator-handoff.md`
 - `/home/li/primary/reports/designer/234-concept-designer-role.md`
-- `/home/li/primary/reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
-- `/home/li/primary/reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
 - `/home/li/primary/reports/designer/247-radical-rethink-or-converge.md`
-- `/home/li/primary/reports/designer/248-three-layer-changes-for-operators.md`
 
 ### Component ARCH (per persona component)
 

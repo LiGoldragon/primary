@@ -299,6 +299,41 @@ extend the pattern of carve-outs.
    constraint does not extend to daemons — fanning out across peers
    is how daemons compose.
 
+## Compile-time module index for triad-internal dispatch
+
+When a daemon dispatches across a static set of internal modules
+(sema-upgrade across per-component migrations; a parser across
+per-grammar handlers; a codec across per-version translators),
+prefer a **compile-time index** over runtime registration. Each row
+is an explicit submodule reference plus a function pointer:
+
+```rust
+pub struct MigrationModule {
+    supported: SupportedMigration,
+    run: fn(&Attempt) -> Result<ModuleResult, RejectionReason>,
+}
+pub struct MigrationIndex { modules: Vec<MigrationModule> }
+
+impl MigrationIndex {
+    pub fn prototype() -> Self {
+        Self { modules: vec![
+            MigrationModule {
+                supported: persona_spirit::version_0_1_0_to_0_1_1::supported(),
+                run: persona_spirit::version_0_1_0_to_0_1_1::run,
+            },
+            // each new module = one row added here
+        ]}
+    }
+}
+```
+
+The index reads as the daemon's literal catalogue: adding a module
+is a single-file edit; no dynamic loading, no `Box<dyn Trait>`, no
+inventory crate, no plugin protocol. Owner-side policy (which
+dispatches are enabled or blocked) is the daemon's overlay on top:
+the index says "what the binary knows how to do," the owner-signal
+vocabulary says "what the binary is permitted to do."
+
 ## Authority chain — worked example
 
 Persona's correctness is maintained top-down via Mutate chains.

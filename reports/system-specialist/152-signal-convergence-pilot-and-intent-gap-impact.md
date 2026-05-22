@@ -13,7 +13,9 @@ This report incorporates:
 
 - `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
 - `reports/designer/249-component-intent-gap-analysis.md`
-- `reports/designer/248-three-layer-changes-for-operators.md`
+- the three-layer-changes-for-operators design (since dropped;
+  substance now in `skills/contract-repo.md` and
+  `skills/component-triad.md`)
 
 It updates the system-specialist view from:
 
@@ -130,8 +132,10 @@ avoid inheriting Persona engine-manager assumptions.
 
 For Signal foundation work:
 
-- follow `reports/designer/248-three-layer-changes-for-operators.md`
-  for crate-by-crate implementation;
+- follow `skills/contract-repo.md` §"Public contracts use contract-
+  local operation verbs" and `skills/component-triad.md` (the
+  three-layer-changes substance now codified there) for crate-by-
+  crate implementation;
 - treat `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
   as the sequencing rule;
 - treat `reports/designer/249-component-intent-gap-analysis.md` as a

@@ -402,7 +402,6 @@ For the record:
 - `intent/component-shape.nota` — 2026-05-19T20:00:00Z (universal-observer-hook), 2026-05-19T20:30:00Z (missing-by-design owner-signal-* repos), 2026-05-20T02:00:00Z (three-layer model), 2026-05-20T12:11:26Z (working/policy vocabulary + universal owner-contract principle), 2026-05-20T13:00:00Z (the six CLI-design records), 2026-05-20T13:09:13Z (Mind→Router verb-move affirmation).
 - `skills/component-triad.md` (current post-operator-edit) — §"4. Two authority tiers" carries reading (A); the authority-chain mermaid carries reading (B).
 - `reports/designer/249-component-intent-gap-analysis.md` §"3. persona-orchestrate" Gap #15 (Mind→orchestrate authority handoff) — same gap surfaced from a different angle.
-- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md` — three-layer architecture context.
-- `reports/designer/248-three-layer-changes-for-operators.md` — operator-facing change reference.
+- `skills/contract-repo.md` + `skills/component-triad.md` — three-layer architecture and operator-facing change substance (originally in the v4 bundled-fix and three-layer-changes-for-operators reports, both since dropped).
 - `ESSENCE.md` §"Persona is meta-AI; spirit animates" — *"the supervisor has higher infrastructure permission only."*
 - `skills/naming.md` §"Anti-pattern: framework-category suffixes on type names" — the `Mode` suffix concern.

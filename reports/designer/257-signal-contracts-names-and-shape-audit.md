@@ -931,8 +931,6 @@ Each migration follows spirit's template:
 
 ## 5 · References
 
-- `/255`, `/256` — spirit audits (template for migration).
-- `/252` — engine-management rename implementation report.
 - `intent/component-shape.nota` 2026-05-19T19:30, 19:45, 20:00,
   20:30, 2026-05-20T00:07:55+02:00, 02:00:00Z — verb-form,
   contract-local-verbs, repeated-suffix, Tap/Untap.

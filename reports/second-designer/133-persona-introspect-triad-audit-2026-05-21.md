@@ -973,9 +973,6 @@ shapes who calls `owner-signal-persona-introspect`'s `Configure`.
   §6.7 — introspect uses peers' standard observable surface; no
   bespoke per-component observability verbs; may own a local
   database but primarily inspects peers through contracts.
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-  — engine-manager triad audit; same migration template applies
-  here.
 - `reports/designer/257-signal-contracts-names-and-shape-audit.md`
   — workspace-wide audit; this triad's findings fold into §1.
 - `reports/second-operator-assistant/11-signal-type-naming-and-shape-design-guideline.md`

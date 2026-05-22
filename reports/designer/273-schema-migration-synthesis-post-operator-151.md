@@ -1,12 +1,13 @@
 # 273 - Schema migration synthesis after operator/151
 
 *Designer synthesis, 2026-05-21. Operator/151 landed a real
-implementation proposal responsive to /260 and /261; it carries two
+implementation proposal responsive to the prior schema-migration
+discipline + version-surface research (both since dropped — substance
+absorbed into intent record 21 + this report); it carries two
 refinements the designer-side picture foreshadowed but did not pin
 down. This report absorbs both and reconciles operator/151's per-
 component `spirit-migrate` shape with /270's universal sema-upgrade
-triad. Audit /272 §5c item 1 flagged this as the first of two
-recommended follow-ups.*
+triad.*
 
 ## 1. Why this report
 
@@ -24,9 +25,11 @@ framing because they are general, not Spirit-specific:
 1. **Type-family split.** Public-signal historical types and
    private-storage historical wrappers are two distinct record sets,
    owned by two different crates, both tracked by the schema-
-   migration discipline. /260 foreshadowed this; /261's per-record-
-   type recommendation accepted it implicitly without naming the
-   two-family axis.
+   migration discipline. The prior schema-migration-discipline report
+   foreshadowed this; the version-surface-research per-record-type
+   recommendation accepted it implicitly without naming the
+   two-family axis. (Both since dropped — substance now consolidated
+   into this synthesis.)
 2. **Commit-sequence high-water mark.** Any live-copy cutover
    protocol needs a durable high-water mark, taken at copy-snapshot
    time and re-read at switch time, to detect writes between
@@ -35,16 +38,17 @@ framing because they are general, not Spirit-specific:
    persona daemon's sema database (intent record 72's sema database
    vocabulary).
 
-Both widen the picture. Neither contradicts /260, /261, /263, /269,
+Both widen the picture. Neither contradicts the prior schema-
+migration / version-surface direction (since dropped), /263, /269,
 or /270; both pin down dimensions left implicit.
 
 ## 2. The type-family split
 
-/260 named the dual-axis problem (wire contract plus storage schema)
-but stopped at the conceptual layer. /261's per-record-type machinery
-framed versioning as "each NotaRecord type" without distinguishing
-where those types live. Operator/151's deployed-Spirit read forces
-the split explicit.
+The prior schema-migration-discipline work named the dual-axis problem
+(wire contract plus storage schema) but stopped at the conceptual layer.
+The per-record-type version-surface research framed versioning as
+"each NotaRecord type" without distinguishing where those types live.
+Operator/151's deployed-Spirit read forces the split explicit.
 
 ### 2a. What actually lives on disk
 
@@ -98,14 +102,15 @@ carries `(public)` or `(private)` so the classifier and generator
 know which crate to emit the type into. The component schema is the
 union; the schema-address is its canonical hash.
 
-### 2c. Implication for /260 and /261
+### 2c. Implication for the prior schema-migration discipline
 
-Neither needs `-v2`. /260 reads with the family split already
-implicit ("the rkyv layout of the payloads it stores"). /261's
-per-record-type machinery already supports two families — each
-NotaRecord carries its own version regardless of crate. The split
-is a clarification, not a contradiction. Sema-upgrade absorbs it
-into its content-address discipline.
+The prior discipline (since dropped) does not need a `-v2`. Approach
+C reads with the family split already implicit ("the rkyv layout of
+the payloads it stores"). The per-record-type machinery already
+supports two families — each NotaRecord carries its own version
+regardless of crate. The split is a clarification, not a
+contradiction. Sema-upgrade absorbs it into its content-address
+discipline.
 
 ## 3. The commit-sequence high-water mark
 
@@ -265,16 +270,13 @@ work in parallel for the second.
 
 **6d. Per-component historical-types module layout.** In-tree
 `schema_v1`, `schema_v2`, ... inside `signal-<component>`, or sibling
-`signal-<component>-history` crate? /261 left this open; operator/151
-implicitly chose in-tree. Designer lean: **in-tree module** until
-the historical tree grows load-bearing.
+`signal-<component>-history` crate? The prior version-surface research
+left this open; operator/151 implicitly chose in-tree. Designer lean:
+**in-tree module** until the historical tree grows load-bearing.
 
 ## 7. References
 
-**Reports.** `reports/designer/260-schema-migration-discipline.md` —
-Approach C selection; the kickoff this synthesis builds on.
-`reports/designer/261-schema-version-surface-research.md` — layered
-shape recommendation the type-family split refines.
+**Reports.**
 `reports/designer/263-schema-specification-language-design.md` —
 schema language; site of the proposed visibility annotation in §6a.
 `reports/designer/269-universal-magnitude-type-design.md` —
@@ -285,14 +287,12 @@ per-component library composes under.
 `reports/operator/151-spirit-deployed-version-and-schema-migration.md`
 — operator's implementation proposal; source of the two refinements
 this report absorbs.
-`reports/designer/272-audit-of-operator-state-2026-05-21.md` — audit
-naming this synthesis as the first of two recommended follow-ups
-(§3a, §5c item 1).
 
 **Intent records.** Record 21 (`intent/component-shape.nota`) —
-Approach C selection. Record 72 — sema database vocabulary; sema-
-engine as universal commit point. Record 73 — NOTA branches/leaves
-vocabulary; basis for closed-set types as final leaves.
+Approach C selection (the migration-discipline kickoff this synthesis
+builds on). Record 72 — sema database vocabulary; sema-engine as
+universal commit point. Record 73 — NOTA branches/leaves vocabulary;
+basis for closed-set types as final leaves.
 
 **Workspace artefacts.** `skills/component-triad.md` — triad
 invariants relevant to §4's carve-up. `skills/nota-design.md` —

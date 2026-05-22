@@ -1,54 +1,39 @@
 # 143 — Designer-state digest (2026-05-21)
 
-*Synthesis of the designer-lane state of play after reading the 13
-load-bearing designer reports remaining in `reports/designer/` per
-the /259 sweep. Written to give the next designing-protocol session
-(and any operator picking up the migration beads in /130–/142) a
-single entry point to what the designer has been doing.*
+*Time-bounded digest of the designer-lane state of play, written as a
+catch-up artifact for the 2026-05-21 audit-wave (`/130-/142`) handover.
+Many of the load-bearing reports listed below have since been dropped
+as their substance migrated to permanent docs or to successor reports;
+this digest is preserved as a historical snapshot of how the surface
+looked on that date.*
 
 ## 1 · Scope of this digest
 
-**Read fully this turn (13 reports):**
+**Designer reports surveyed:**
 
-- `/256-signal-spirit-post-fix-audit-2026-05-20.md`
-- `/258-persona-signal-triad-audit-2026-05-21.md` (read previously)
-- `/259-session-handover-2026-05-21.md`
-- `/260-schema-migration-discipline.md`
-- `/261-schema-version-surface-research.md`
-- `/263-schema-specification-language-design.md` (absorbs the
-  superseded `/262-content-addressable-schema-layout-schema.md`)
+- `/263-schema-specification-language-design.md`
 - `/264-designing-protocol-and-role-spaces.md`
-- `/265-spirit-master-upgrade-test-result.md`
 - `/266-persona-pi-triad-design.md`
 - `/267-v2-intent-substrate-certainty-drift.md`
-- `/252-engine-management-rename.md`
 - `pi-api-surface-notes.md`
 
-**Background not re-read this turn (substance absorbed via others):**
+**Background surface (substance absorbed via others or dropped):**
 
 - `/214-criome-architecture-record-2026-05-17.md`
 - `/234-concept-designer-role.md`
-- `/238-signal-architecture-redirection-contract-local-verbs.md`
-- `/246-v4-bundled-fix-deep-design-with-examples.md`
-- `/248-three-layer-changes-for-operators.md`
-- `/249-component-intent-gap-analysis.md` (60K; substance ladders into /252, /258)
-- `/257-signal-contracts-names-and-shape-audit.md` (the audit-wave agents read this on /130–/142 prompts)
+- `/249-component-intent-gap-analysis.md`
+- `/257-signal-contracts-names-and-shape-audit.md`
 
 ## 2 · Major threads in current designer work
 
-### 2.1 · Schema migration discipline (new major thread; 4 reports today)
+### 2.1 · Schema migration discipline (new major thread)
 
 The thread the operator's spirit pin will hit first.
 
-- `/260` surfaces the problem (a persona daemon + persistent redb
-  evolve together when contract or storage schema changes; today
-  there is no migration pattern). Psyche selected **Approach C —
-  in-process versioned reads**: per-record schema-version tag,
-  read-side migration into current shape, optional write-back.
-- `/261` analyses the version-surface question Approach C left
-  open (per-component vs per-record-type vs layered). Recommends
-  **Option C, layered** — per-record-type machinery + per-component
-  label.
+- Psyche selected **Approach C — in-process versioned reads**:
+  per-record schema-version tag, read-side migration into current
+  shape, optional write-back (intent `component-shape.nota` record
+  21). Successor synthesis lives at /273.
 - `/263` designs the schema specification language **fresh**, scoped
   to the workspace's Rust subset (named-field structs, tagged enums,
   transparent newtypes, fixed-width scalars; **no tuples ever**).
@@ -59,8 +44,8 @@ The thread the operator's spirit pin will hit first.
   ordinal monotonicity). The content-addressable framing (Blake3 of
   canonical schema text = contract version; layout-bound annotations
   carry rkyv headroom commitments) and the schema-change classes
-  (zero-cost / append-only / structural) were absorbed from the
-  retired `/262` predecessor (whose aski-stack-as-foundation framing
+  (zero-cost / append-only / structural) were absorbed from a
+  retired predecessor (whose aski-stack-as-foundation framing
   was corrected by psyche — aski-core / askic / askicc are analog
   past experience, not the foundation to extend). Six design
   questions remain open.
@@ -113,60 +98,52 @@ discipline are flagged for resolution.
 
 ### 2.4 · Substrate cutover progress (/259, /265, /267-v2)
 
-- `/259` confirms spirit triad is post-migration in excellent shape;
-  engine-manager triad is next; bead `primary-77hh` landed
-  (signal-frame `653773b`); bead `primary-k3bu` landed in
-  signal-frame (`b375e20`); `primary-u0lh` pending. **/259 also
-  notes /258 was a designer "misfire"** — psyche meant the
-  persona-spirit triad re-audit, designer read it as engine-manager.
-  Substance still valuable (engine-manager IS a real next slice).
-- `/265` validates additive variant insertion at end (zero-cost)
-  vs mid-position (wire-break). The master-vs-deployed test confirms
-  rkyv-headroom holds for end-appended variants. Recommends a Nix
-  flake check `checks.<system>.spirit-upgrade-compat` cartesian-
-  product over deployed/master daemon × deployed/master CLI.
+- Spirit-triad substrate cutover progress: spirit triad is post-
+  migration in good shape; engine-manager triad is next; bead
+  `primary-77hh` landed (signal-frame `653773b`); bead `primary-k3bu`
+  landed in signal-frame (`b375e20`); `primary-u0lh` pending.
+- An upgrade-test artifact (since dropped) validated additive variant
+  insertion at end (zero-cost) vs mid-position (wire-break). The
+  master-vs-deployed test confirmed rkyv-headroom holds for
+  end-appended variants. Recommended a Nix flake check
+  `checks.<system>.spirit-upgrade-compat` cartesian-product over
+  deployed/master daemon × deployed/master CLI.
 - `/267-v2` finds 7 records in `intent/*.nota` using `Certainty High`
   that the deployed Spirit rejects. Designer proposes the working
   mapping `High → Maximum`.
 
-### 2.5 · Engine-management rename plan (/252)
+### 2.5 · Engine-management rename plan
 
 Multi-repo rename: `Supervision*` types → `EngineManagement*` types
 across `signal-persona` + 9 consumer repos + `persona/src/supervisor.rs`
 → `engine_manager.rs`. Adds the `EngineManagement` prefix exception
 to the prefix-drop rule (justified: disambiguates from Kameo
-`*Supervisor` actor-tree convention). **NOT yet executed.** Order
-of operations: signal-persona first, persona second, consumers in
-parallel third, docs last.
+`*Supervisor` actor-tree convention). Axis 1 wire-vocabulary executed;
+residual Axis 2 (internal supervisor → engine_manager rename in
+persona daemon) tracked by bead `primary-k2mh`. Order of operations:
+signal-persona first, persona second, consumers in parallel third,
+docs last.
 
 ## 3 · Connections to the audit wave (`/130–/142`)
 
-The audit wave I dispatched on this turn intersects designer's
-recent work in five ways:
+The audit wave intersects designer's recent work in several ways:
 
-1. **`/258` was the template I followed in agent prompts.** Despite
-   being a designer "misfire" (per /259), its audit shape is the
-   right shape; the agents used it correctly.
-
-2. **The `/264` designer-as-bridge workflow is exactly the workflow
+1. **The `/264` designer-as-bridge workflow is exactly the workflow
    the audit wave executes.** Psyche prompt → intent capture →
    reports filed (designer-assistant lane) → beads `primary-e1pm`
    through `primary-k2mh` filed → operator picks up. This report
    itself is the same pattern.
 
-3. **Schema migration discipline (/260–/263) is a dimension the
-   migration beads do not yet address.** Per-component migrations
-   onto signal-frame should eventually also adopt the schema
-   specification language. The beads currently say "migrate to
-   the current foundation libraries"; they do not say "and adopt
-   the new schema language as it lands." This is fine for now
-   (the schema language is still being designed), but the beads
-   should be updated when /263's design settles.
+2. **Schema migration discipline is a dimension the migration beads
+   do not yet address.** Per-component migrations onto signal-frame
+   should eventually also adopt the schema specification language.
+   The beads currently say "migrate to the current foundation
+   libraries"; they do not say "and adopt the new schema language as
+   it lands." This is fine for now (the schema language is still
+   being designed), but the beads should be updated when /263's
+   design settles.
 
-4. **Designer's open psyche calls (Q1, Q4, Q5 from /259) overlap
-   with my aggregated open questions.** See §4 below.
-
-5. **Persona-pi is NEW** — not in `protocols/active-repositories.md`
+3. **Persona-pi is NEW** — not in `protocols/active-repositories.md`
    and not in the audit wave. The triad design (/266) is current
    work; no migration needed yet. Future audit wave that includes
    persona-pi should reference /266 + pi-api-surface-notes.
@@ -175,7 +152,7 @@ recent work in five ways:
 
 Items needing psyche attention, drawn from the designer reports.
 
-### From /259 §"Open psyche calls" (the designer's standing list)
+### Designer's standing list (carried forward from earlier handover, now dropped)
 
 - **Q1**: Single-field timestamps in runtime/protocol contexts
   (vs the two-field rule for intent records). `TimestampNanos(u64)`
@@ -231,8 +208,8 @@ Items needing psyche attention, drawn from the designer reports.
   payload-type rule (b)? 8+ pending observable blocks depend.
 - Lifecycle verbs (Start/Drain/Reload/Retire) on owner contracts
   for non-spirit components?
-- Observable block on owner contracts (per /131, /133, /136, /258
-  disagree on lean)?
+- Observable block on owner contracts (per /131, /133, /136 —
+  earlier audits disagreed on lean)?
 - persona-orchestrate destination scope (lock-helper stays or
   replaces)?
 - persona-orchestrate owner contract policy-programmability shape?
@@ -247,8 +224,8 @@ Items needing psyche attention, drawn from the designer reports.
 
 ## 5 · What I'd flag from this synthesis
 
-Five items where designer-state intersection with my migration
-wave most needs your weight:
+Items where designer-state intersection with the migration wave
+most needs your weight:
 
 1. **Schema specification language landing intersects every
    per-component migration.** /263's language design needs to
@@ -260,34 +237,26 @@ wave most needs your weight:
    risks ossifying the first shape if operators land it before
    /263's questions settle.
 
-2. **/258 misfire — does the engine-manager re-audit (`primary-k2mh`)
-   stay, or should the audit also produce a real persona-spirit
-   re-audit?** Per /259, /258 was meant to be a persona-spirit
-   re-audit. My `/142` re-audit (engine-manager) caught real gaps
-   /258 missed. A separate persona-spirit re-audit might still be
-   wanted in the designer-assistant lane.
-
-3. **Designer's standing Q5 (mind channel-choreography verb set)
+2. **Designer's standing Q5 (mind channel-choreography verb set)
    blocks `primary-e1pm` mind migration in a real way.** The mind
    migration bead names "redesign signal tree first" but the
    verb set is the load-bearing part of that redesign. Operator
    needs the names before contract work begins.
 
-4. **Persona-pi is a new triad that should have a bead too.** The
+3. **Persona-pi is a new triad that should have a bead too.** The
    migration wave covered 13 components; persona-pi makes 14.
    /266 is the designer sketch; the bead would carry the
    pi-api-surface-notes + /266 + the dual-path constraint to
    the operator who builds the triad. Designer lean: file the
    bead once /266 §7 questions settle.
 
-5. **The certainty-vocabulary drift (/267-v2) is a substrate-migration
+4. **The certainty-vocabulary drift (/267-v2) is a substrate-migration
    concern that touches every future file → spirit hand-relog
    pass.** The High → Maximum default mapping needs confirmation
    before any operator starts the broader relog work.
 
 ## 6 · See also
 
-- All 13 designer reports read this turn (listed §1).
 - `reports/second-designer/129-mind-orchestrate-payload-and-cli-dispatch-option-a-2026-05-20.md` — prior designer-assistant work on mind→orchestrate payload + signal_cli! Option A.
 - `reports/second-designer/130–142` — the migration audit wave this digest contextualises.
 - Beads `primary-e1pm` through `primary-k2mh` — the 13 per-component migration beads filed off the audit wave (all P1).

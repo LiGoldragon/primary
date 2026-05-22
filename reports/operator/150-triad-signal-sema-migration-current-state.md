@@ -17,10 +17,7 @@ Current authority sources used here:
 - `ESSENCE.md`
 - `skills/component-triad.md`
 - `skills/naming.md`
-- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
-- `reports/designer/248-three-layer-changes-for-operators.md`
 - `reports/designer/257-signal-contracts-names-and-shape-audit.md`
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
 - `reports/designer-assistant/129-mind-orchestrate-payload-and-cli-dispatch-option-a-2026-05-20.md`
 
 ## 1 · Current foundation

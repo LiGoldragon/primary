@@ -695,10 +695,8 @@ this report retires.
 
 - `reports/designer/237-signal-type-naming-and-schema-tree-investigation.md` — the foundation; the three proposed skill edits this guideline carries forward.
 - `reports/designer/247-radical-rethink-or-converge.md` — the convergence verdict that anchors the rest.
-- `reports/designer/248-three-layer-changes-for-operators.md` — per-crate diff with the three-layer table.
 - `reports/designer/249-component-intent-gap-analysis.md` — adjacent gap inventory; gap #4 (Tap/Untap as universal hook) is closed by the working assumption here.
-- `reports/designer/251-supervisor-identity-disambiguation.md` — disambiguation analysis; resolved by /252.
-- `reports/designer/252-engine-management-rename.md` — the engine-manager rename direction.
+- `reports/designer/251-supervisor-identity-disambiguation.md` — disambiguation analysis; resolved by the engine-manager rename (since dropped; substance now in `skills/component-triad.md`).
 - `reports/designer/253-tosemaoutcome-trait-shape.md` — two-trait shape settled.
 - `reports/designer/254-signal-executor-sema-refresh-audit.md` — five gaps psyche-affirmed.
 - `reports/operator/144-signal-sema-executor-refresh-2026-05-20.md` — the landed state.

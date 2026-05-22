@@ -2,10 +2,11 @@
 
 ## Scope
 
-This report updates the system-specialist migration view after reading:
+This report updates the system-specialist migration view after reading
+the v4 bundled-fix design (since dropped; substance now in
+`skills/contract-repo.md` §"Public contracts use contract-local
+operation verbs" and `skills/component-triad.md`) and:
 
-- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
-- `reports/designer/248-three-layer-changes-for-operators.md`
 - `reports/operator/142-signal-frame-executor-bundled-fix-logic-probe.md`
 - `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
 
@@ -157,13 +158,14 @@ Do not migrate `signal-lojix` until these are landed:
 
 `/246` has a few stale examples that still show older
 `open Watch(...)` / `close Unwatch;` observable grammar. I read those
-as stale examples because `/246` §0, §2, and `reports/designer/248`
-all say v4 uses standardized `Tap` / `Untap` and drops author-chosen
-open/close verbs.
+as stale examples because the v4 bundled-fix and three-layer-changes
+designs (both since dropped; substance now in `skills/contract-repo.md`
+and `skills/component-triad.md`) all say v4 uses standardized `Tap` /
+`Untap` and drops author-chosen open/close verbs.
 
-If another agent implements from `/246`, the safer companion is
-`reports/designer/248-three-layer-changes-for-operators.md`, which
-states the crate-by-crate v4 diff more cleanly.
+If another agent implements from the v4 design, the safer companion is
+the three-layer-changes diff (its crate-by-crate v4 substance is now
+in `skills/contract-repo.md` and `skills/component-triad.md`).
 
 ## System-specialist consequence for `lojix`
 

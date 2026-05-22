@@ -22,8 +22,8 @@ through its contract dep (the daemon's direct deps are still
 `signal-core` + `signal-lojix` and there is no signal-executor wiring),
 and the owner contract does not yet exist.
 
-State summary against the spirit-template (`reports/designer/258`
-§4 cross-cutting table):
+State summary against the spirit-template (the engine-manager triad
+audit's §4 cross-cutting table, since dropped):
 
 | Step | Spirit | Lojix (new branch) |
 |---|---|---|
@@ -1039,12 +1039,11 @@ per `intent/deploy.nota` 2026-05-20T17:10:00Z.
 
 - `reports/operator/150-triad-signal-sema-migration-current-state.md`
   — consolidated current-foundation reference; the triad target shape
-  used as the template for the audit.
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md` —
-  audit-shape template. This report follows /258's structure (§0
-  TL;DR, §1 /257-finding-status, §2 new findings, §3 +next slice for
-  spirit's case (here §3 is owner-signal proposal because that's the
-  missing piece for lojix), §4 recommended next slice, §5 cross-
+  used as the template for the audit. This report's structure mirrors
+  the engine-manager triad audit template (since dropped) — §0
+  TL;DR, §1 /257-finding-status, §2 new findings, §3 owner-signal
+  proposal (the missing piece for lojix; the template's §3 covered
+  spirit's case), §4 recommended next slice, §5 cross-
   cutting note, §6 references).
 - `reports/designer/257-signal-contracts-names-and-shape-audit.md` —
   cross-contract audit (does NOT cover lojix; this report fills that

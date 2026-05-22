@@ -3,11 +3,12 @@
 *Deeper design of the NOTA-based schema specification language and
 the content-addressable schema-version-hash mechanism naming the
 sema database's schema identity. Picks up from /263's initial
-sketch and grounds /276 §10a (schema-address vs semver) plus
-just-logged intent record 107. Five questions answered: the
-grammar; the canonical encoding under Blake3; what the hash binds
-to; how the sema database stores it; how sema-upgrade-daemon
-dispatches on it.*
+sketch and grounds the schema-address-vs-semver fork (sema-upgrade
+prototype uses semver `Version (major minor patch)`; this report
+moves toward Blake3 hash as canonical identity) plus just-logged
+intent record 107. Five questions answered: the grammar; the
+canonical encoding under Blake3; what the hash binds to; how the
+sema database stores it; how sema-upgrade-daemon dispatches on it.*
 
 ## 1. Frame
 
@@ -18,11 +19,11 @@ Record 107: the sema database holds a schema-version hash as
 canonical version identity, derived from a deterministic
 content-addressable schema. "Deterministic" and "content-
 addressable" name one property — the schema's content fully
-determines its hash; the hash IS the address. /276 §10a flagged
-the fork (operator prototype uses semver `Version (major minor
-patch)` rather than the hash from /263/270); record 107 settles
-toward the hash. Semver is at best a human label layered above;
-the hash is load-bearing identity.
+determines its hash; the hash IS the address. The sema-upgrade
+prototype uses semver `Version (major minor patch)` rather than
+the hash from /263/270; record 107 settles toward the hash.
+Semver is at best a human label layered above; the hash is
+load-bearing identity.
 
 ## 2. The NOTA schema language grammar
 
@@ -342,8 +343,10 @@ under it later.
 
 ### 6d. The full boot sequence
 
-engine-manager brings up `sema-upgrade-daemon` first (per /275 §9a,
-/276 §10c), then each persona daemon D. D binds its inspect
+engine-manager brings up `sema-upgrade-daemon` first (per the
+sema-upgrade boot-order intent — sema-upgrade is the first persona
+daemon to start, owned by the engine manager), then each persona
+daemon D. D binds its inspect
 socket, reads its compile-time const, and sends `Inspect` to
 sema-upgrade with component identity and declared hash.
 Sema-upgrade opens a client to D's inspect socket, calls
@@ -412,8 +415,9 @@ On first start, the daemon writes one row into `schema_header`:
 
 ### 7d. Sema-upgrade comparison and migration trigger
 
-Schema later changes (Certainty widens to Magnitude per /276 §5b);
-generator on the new branch emits a different const — `#aa11…b3`.
+Schema later changes (Certainty widens to Magnitude through the
+sema-upgrade persona-spirit 0.1.0 → 0.1.1 migration); generator on
+the new branch emits a different const — `#aa11…b3`.
 New binary Nix-installed; on-disk `schema_header` still has
 `#ef34…a8`. At boot: sema-upgrade-daemon comes up; spirit binary
 binds inspect socket, sends
@@ -432,12 +436,12 @@ module; working tables match the new layout.
 ## 8. Open psyche questions
 
 **8a. Semver as a human label alongside the hash?** §4 elevates
-the hash to canonical identity; /276 §10a option (c) — semver
-as wire-friendly label, hash as load-bearing back-stop —
-remains viable. Designer lean: keep semver as a human label
-stored alongside the hash in `schema_header`; hash is what
-sema-upgrade dispatches on and migration registry keys by.
-Semver is communication; hash is identity.
+the hash to canonical identity; the layered option — semver as
+wire-friendly label, hash as load-bearing back-stop — remains
+viable. Designer lean: keep semver as a human label stored
+alongside the hash in `schema_header`; hash is what sema-upgrade
+dispatches on and migration registry keys by. Semver is
+communication; hash is identity.
 
 **8b. Where does the schema file live?** With §2h's visibility
 annotation absorbing private types into the same file, designer
@@ -478,14 +482,15 @@ vocabulary; 73 branches/leaves; 101-103 prototype sequencing;
 107 schema-version hash as canonical identity (this report
 grounds).
 
-**Designer reports.** /260 Approach C; /261 version-surface
-research; /262 retired predecessor; /263 schema-spec language
-(direct predecessor — §2 deepens); /265 spirit upgrade test;
-/267-v2 certainty drift; /269 universal Magnitude;
-/270 sema-upgrade design (§3-§5 wire surface; §6 refines via
-inspect socket); /273 schema-migration synthesis (§2h's
-visibility annotation absorbs); /275 operator-work audit
-(§9a boot-order to §6d); /276 prototype audit (10a grounded).
+**Designer reports.** /263 schema-spec language (direct
+predecessor — §2 deepens); /269 universal Magnitude; /270
+sema-upgrade design (§3-§5 wire surface; §6 refines via inspect
+socket); /273 schema-migration synthesis (§2h's visibility
+annotation absorbs). Approach C (originally /260), the
+version-surface research (/261), the /262 predecessor, and the
+spirit upgrade test (/265) are all dropped; their substance is
+absorbed into intent record 21 + the content-address direction
+(§4 of this report) + /273 + /278.
 
 **Workspace artefacts.** `ESSENCE.md`; `skills/nota-design.md`
 three rules + grammar facts; `skills/language-design.md`

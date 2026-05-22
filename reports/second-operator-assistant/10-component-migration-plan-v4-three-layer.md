@@ -3,9 +3,10 @@
 **Lane:** second-operator-assistant
 **Reads against:** /144 (the landed v4 alignment in signal-frame +
 signal-executor + signal-sema + signal-persona-spirit + persona-spirit),
-/254 (operator-facing direction with five psyche-affirmed gaps), /248
-(v3→v4 per-crate diff), /252 (engine-manager rename), /253
-(ToSemaOutcome two-trait shape), /247 (converge-vs-rethink verdict),
+/254 (operator-facing direction with five psyche-affirmed gaps), the
+v3→v4 per-crate diff and engine-manager rename (both since dropped;
+substance in `skills/contract-repo.md` + `skills/component-triad.md`),
+/253 (ToSemaOutcome two-trait shape), /247 (converge-vs-rethink verdict),
 /143 (pivot to pilot), /237 (schema-as-tree investigation), /14 + /15
 + /16 (authority-chain corrections);
 `intent/component-shape.nota` records 2026-05-20T02:00:00Z through
@@ -736,9 +737,7 @@ landed code in the five commits per §1.
 - `reports/operator/144-signal-sema-executor-refresh-2026-05-20.md` — the landed-state report.
 - `reports/operator/145-signal-sema-spirit-current-handoff-2026-05-20.md` — current operator handoff naming the spirit-pilot's immediate-next work (owner-signal-persona-spirit migration), `CommitStatus::Partial` removal, the consumer-bump commits, and the four open psyche questions.
 - `reports/designer/254-signal-executor-sema-refresh-audit.md` — operator-facing direction with five affirmed gaps.
-- `reports/designer/248-three-layer-changes-for-operators.md` — v3→v4 per-crate diff.
 - `reports/designer/253-tosemaoutcome-trait-shape.md` — two-trait shape.
-- `reports/designer/252-engine-management-rename.md` — engine-manager rename direction.
 - `reports/designer/251-supervisor-identity-disambiguation.md` — disambiguation analysis.
 - `reports/designer/237-signal-type-naming-and-schema-tree-investigation.md` — naming/schema-tree principles (proposed but unlanded).
 - `reports/operator-assistant/159-persona-mind-signal-tree-owner-contract-vision.md` — Mind contract refactor proposal.

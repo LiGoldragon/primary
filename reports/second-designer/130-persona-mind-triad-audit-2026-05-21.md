@@ -501,11 +501,10 @@ observable {
 
 This applies to the working contract. **Open psyche question**:
 should the owner contract (`owner-signal-persona-mind`) also
-declare an observable block? Spirit's owner contract did not;
-`reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-§2.3 designer-lean was to skip the policy/owner channel and add
-observable only on the working surface. Apply the same lean here;
-confirm.
+declare an observable block? Spirit's owner contract did not; the
+designer lean (from the now-dropped engine-manager triad audit)
+was to skip the policy/owner channel and add observable only on
+the working surface. Apply the same lean here; confirm.
 
 ### 2.5 — Mind→Router authority verbs have been removed (CORRECTLY)
 
@@ -621,13 +620,12 @@ the CLI surface, not to the daemon.
 ### 2.8 — `GracefulStopAcknowledgement` propagates the engine-manager smell
 
 `persona-mind/src/supervision.rs:15` imports
-`GracefulStopAcknowledgement` from `signal-persona`. Per
-`reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-§2.1, the `Graceful` prefix is redundant and the engine-manager
-contract should rename it to `StopAcknowledgement`. That rename
-propagates through every supervised daemon's supervision-import
-line — Mind's is one of them. Not Mind's design call; flag for
-the engine-manager rename pass.
+`GracefulStopAcknowledgement` from `signal-persona`. The
+engine-manager triad audit (since dropped) flagged the `Graceful`
+prefix as redundant and recommended renaming to
+`StopAcknowledgement`. That rename propagates through every
+supervised daemon's supervision-import line — Mind's is one of them.
+Not Mind's design call; flag for the engine-manager rename pass.
 
 ### 2.9 — `signal-persona-auth::ChannelId` vs Mind-local
 `SubscriptionId` / `AdjudicationRequestId` / etc.
@@ -966,9 +964,6 @@ those passes once they're underway.
 - `reports/operator/150-triad-signal-sema-migration-current-state.md` §6.1 —
   *"Mind is the worst-shaped remaining Persona contract"* —
   enumerates the design direction this audit confirms.
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md` —
-  engine-manager template audit (the structural shape this audit
-  follows).
 - `reports/designer/257-signal-contracts-names-and-shape-audit.md`
   §2 (signal-persona-mind) — the workspace-wide audit; lists the
   same findings consolidated here with file:line evidence.

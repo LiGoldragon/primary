@@ -27,9 +27,10 @@ to identify zero-cost vs append-only vs structural changes (record
 
 Consumers: the **generator** emits Rust source; the **diff
 classifier** reads two schemas and emits a typed migration plan
-(report `/260` mechanism — not in scope here); the **daemon** at
-boot compares stored vs current address and runs the plan (also
-out of scope). Designers and operators read the schema directly.
+(Approach C mechanism per intent record 21 — not in scope here); the
+**daemon** at boot compares stored vs current address and runs the
+plan (also out of scope). Designers and operators read the schema
+directly.
 
 ## Three layers, three concerns
 
@@ -466,12 +467,13 @@ the change lands.
 - `intent/signal.nota` records 28-30, 33, 42 — psyche's framing:
   rkyv-headroom Principle, content-addressable schema Decision,
   fresh design (not aski-stack-extension), no tuples.
-- `reports/designer/260-schema-migration-discipline.md` — Approach
-  C (in-process versioned reads), the migration mechanism this
-  language composes with.
-- `reports/designer/261-schema-version-surface-research.md` —
-  per-component / per-record-type analysis the content address
-  subsumes (per-type addresses derive by hashing each subtree).
+- `intent/component-shape.nota` record 21 — Approach C
+  (in-process versioned reads), the migration mechanism this
+  language composes with. The content address subsumes the
+  per-component vs per-record-type question (per-type addresses
+  derive by hashing each subtree).
+- `reports/designer/273-schema-migration-synthesis-post-operator-151.md`
+  — current schema-migration synthesis that this language feeds.
 - `skills/nota-design.md` — NOTA discipline the syntax inherits.
 - `skills/component-triad.md` — signal-type / signal-tree
   vocabulary the schema declares.

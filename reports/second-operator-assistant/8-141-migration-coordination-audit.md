@@ -1,13 +1,13 @@
-## 8 — /141 migration: coordination audit + Lowering::Command divergence (resolved by /246-v4)
+## 8 — /141 migration: coordination audit + Lowering::Command divergence (resolved by the v4 bundled-fix design)
 
 **Lane:** second-operator-assistant
-**Reads against:**
-`reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
-— the **now-authoritative** spec (v4 supersedes v3, v2, v1 and
+**Reads against:** the **now-authoritative** v4 bundled-fix design
+(since dropped after substance migrated to `skills/contract-repo.md`
+and `skills/component-triad.md`) — v4 superseded v3, v2, v1 and
 /141 itself; the three-layer model + `Lowering::Command` adoption
-was affirmed by the psyche 2026-05-20T02:00Z; v4 also retires
-`Lowering::EngineError`, splits `AcceptedOutcome`, and standardises
-observability verbs to `Tap`/`Untap`);
+was affirmed by the psyche 2026-05-20T02:00Z; v4 also retired
+`Lowering::EngineError`, split `AcceptedOutcome`, and standardised
+observability verbs to `Tap`/`Untap`;
 `reports/operator/141-signal-frame-executor-correction-examples.md`
 — the migration directive the psyche pointed at; substantially
 folded into /246-v4 with operator/142's logic probe driving the
@@ -138,11 +138,11 @@ my §2 rationale was effectively re-derived by the designer in v4's
 §0.5 three-layer model. The text below is preserved so the
 sequence is legible; the actionable items move to §3 below.)*
 
-`reports/designer/246-v2-bundled-fix-deep-design-with-examples.md`
-landed during the parallel implementation work. /246-v2 was a
-preliminary final spec — it folded /245's alternatives, /140's
-operator corrections, and /141's concrete encoding back into a
-single implementation-ready document.
+The v2 bundled-fix deep design (since dropped along with v4) landed
+during the parallel implementation work. v2 was a preliminary final
+spec — it folded /245's alternatives, /140's operator corrections,
+and /141's concrete encoding back into a single implementation-ready
+document.
 
 **/246-v2's `Lowering` trait shape:**
 
@@ -505,12 +505,17 @@ In priority order (revised after /246-v4):
 
 ## 7 · See also
 
-- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md` — the now-authoritative spec; v4 supersedes v3, v2, v1, /141, /245. Adopts three-layer model + `Lowering::Command` + `OperationPlan` + `AcceptedOutcome` split + standardised `Tap`/`Untap` + `ObservedLowering: Lowering` extension trait.
-- `reports/operator/141-signal-frame-executor-correction-examples.md` — the migration directive the psyche pointed at; substantially folded into /246-v4 with operator/142's logic probe driving the refinements.
+- `skills/contract-repo.md` §"Public contracts use contract-local
+  operation verbs" + `skills/component-triad.md` — the three-layer
+  model + `Lowering::Command` + `OperationPlan` + `AcceptedOutcome`
+  split + standardised `Tap`/`Untap` + `ObservedLowering: Lowering`
+  extension trait substance, now codified in workspace skills
+  (originally captured in the v4 bundled-fix designer report,
+  since dropped).
+- `reports/operator/141-signal-frame-executor-correction-examples.md` — the migration directive the psyche pointed at; substantially folded into the v4 bundled-fix with operator/142's logic probe driving the refinements.
 - `reports/operator/142-signal-frame-executor-bundled-fix-logic-probe.md` — the logic probe that drove three of v4's refinements (separate operation aborts from batch aborts; `ObservedLowering: Lowering` extension trait; engine failure stays inside `Reply::Accepted`).
 - `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md` — operator's pivot from full cascade to "smallest convergence bundle + drive repository-ledger pilot end-to-end". Reframes §6 recommendations: §6 #1 (Package 1 v4 alignment) is the immediate work; §6 #6 (persona daemon cascade) explicitly waits for the pilot to validate the pattern.
-- `reports/designer/248-three-layer-changes-for-operators.md` — operator-facing diff between v3 and v4: per-crate work items for `signal-sema` (payloadless), `signal-executor` (Command + ComponentEffect + CommandExecutor), `signal-frame` (Tap/Untap mandatory), contract crates, and daemon crates. Complementary to this report's §2.6; same substance organised by crate.
-- `reports/designer/249-component-intent-gap-analysis.md` — orthogonal but adjacent: ten high-severity persona intent gaps. Two intersect with this work: gap 4 (does /246-v4's `Tap`/`Untap` match the universal-observer-hook the psyche intended in `intent/component-shape.nota` 2026-05-19T20:00Z?) and gap 5 (`persona` engine-manager triad status). Neither blocks Package 1 but worth flagging if the pilot exposes contradictions.
+- `reports/designer/249-component-intent-gap-analysis.md` — orthogonal but adjacent: ten high-severity persona intent gaps. Two intersect with this work: gap 4 (does the v4 `Tap`/`Untap` shape match the universal-observer-hook the psyche intended in `intent/component-shape.nota` 2026-05-19T20:00Z?) and gap 5 (`persona` engine-manager triad status). Neither blocks Package 1 but worth flagging if the pilot exposes contradictions.
 - `reports/operator/140-signal-frame-executor-hole-analysis.md` — /141's predecessor; load-bearing for the rejection-as-`Aborted` design.
 - `reports/designer/244-hole-finding-after-243-implementations.md`, `reports/designer/245-design-alternatives-for-244-holes.md` — the holes /141 closes (and the literal /245 moves /141 corrected).
 - `reports/second-operator-assistant/7-signal-persona-migration-deeper-holes.md` — my prior analysis; §3 sequencing names /141's load-bearing position for the persona daemon cascade.

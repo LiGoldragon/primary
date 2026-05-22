@@ -21,7 +21,8 @@ substantively sound, but it filed two false absences:
   contract atop `signal-frame`. Latest commit `87882b6`
   (2026-05-20, three-layer-model alignment).
 
-Both crates predate the `/260-/271` design thread by weeks. The
+Both crates predate the schema-migration and forge design thread
+(now spanning intent record 21, /263, /270, /271, /273) by weeks. The
 gap is not corrective of `/271`'s direction — the family plan is
 still right — it is corrective of `/271`'s naming surface. The
 existing crates are load-bearing context the sketch missed.
@@ -287,8 +288,6 @@ text in `/271` is wrong.
 
 - `reports/designer/271-forge-component-family-design.md` — the
   exploratory family sketch this report extends.
-- `reports/designer/272-audit-of-operator-state-2026-05-21.md`
-  §3m and §4e — the audit that named this gap.
 - `/git/github.com/LiGoldragon/forge/ARCHITECTURE.md` — existing daemon's framing.
 - `/git/github.com/LiGoldragon/signal-forge/ARCHITECTURE.md` — existing wire contract.
 - `skills/component-triad.md` — the universal shape both

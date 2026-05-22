@@ -277,9 +277,8 @@ operation verbs**: they describe what the caller is doing in
 that component's domain, not what the receiver may later do to
 its state.
 
-> **Current direction, per
-> `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
-> and `intent/component-shape.nota` 2026-05-20T02:00Z:** the
+> **Current direction, per `intent/component-shape.nota`
+> 2026-05-20T02:00Z:** the
 > universal roots (`Assert`, `Mutate`, `Retract`, `Match`,
 > `Subscribe`, `Validate`) are the **Sema classification
 > vocabulary** for observation — they are *payloadless* state-
@@ -487,11 +486,8 @@ happened, not what was requested.
 
 ### See also
 
-- `~/primary/reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
-  — current direction: contract-local public verbs, Sema verbs
-  below daemon boundary.
 - `~/primary/reports/designer-assistant/125-v2-contract-local-verbs-vs-sema-core-verbs.md`
-  — analysis behind the split.
+  — analysis behind the contract-local-verb / Sema split.
 - `/git/github.com/LiGoldragon/signal-core/ARCHITECTURE.md`
   — currently in transition; frame/exchange mechanics should
   survive the split.

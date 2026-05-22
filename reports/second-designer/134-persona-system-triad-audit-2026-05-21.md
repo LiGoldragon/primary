@@ -756,8 +756,6 @@ In priority order:
 - `reports/operator/150-triad-signal-sema-migration-current-state.md`
   §6.6 — *system contract should NOT preserve speculative
   single-variant enums for possible future window-manager backends.*
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md` —
-  engine-manager triad audit; template shape this report follows.
 - `reports/designer/257-signal-contracts-names-and-shape-audit.md` —
   workspace-wide name/shape audit.
 - `reports/second-operator-assistant/11-signal-type-naming-and-shape-design-guideline.md`

@@ -123,6 +123,35 @@ the redb/table write happened before delivery across process or
 derivation boundaries; it does not replace the actor trace, which
 still proves the intended mailbox path was used.
 
+## Live boundary witness for vocabulary widening
+
+When a closed-vocabulary enum widens (Certainty's three variants
+become Magnitude's seven, ItemPriority collapses onto Magnitude,
+health/readiness scales unify), the load-bearing witness is **a
+live test that round-trips a newly-admitted variant end-to-end
+through the actual wire path** — Record it, Observe it back. Unit
+tests on the type prove rkyv round-trips in isolation; they do
+not prove the wider vocabulary actually persists through the
+daemon and reads back through the client.
+
+```rust
+#[test]
+fn client_accepts_high_magnitude_and_observes_it_back() {
+    let fixture = StoreFixture::new("high-magnitude");
+    fixture.reply_text(
+        "(Record (workspace Decision \"…\" \"…\" High \"…\"))",
+    ).expect("high-magnitude entry persisted");
+    let reply = fixture.reply_text("(Observe (Records (None None SummaryOnly)))")
+        .expect("records observed");
+    assert!(reply.contains("High"));
+}
+```
+
+The witness fails if the daemon silently downgrades the variant,
+if the codec round-trips locally but the daemon never sees it, or
+if the observe reply re-renders an older form. Every vocabulary-
+widening pilot ships one such test in `tests/boundary.rs`.
+
 ## Nix-chained tests — the strongest witness
 
 When a rule says *"this writes to the database"*, the

@@ -251,10 +251,19 @@ Failure modes the segmenter must handle:
   happens, the resulting span is empty or nonsensical and the
   extractor (§6) catches it.
 
-## 6 · Typed-record extraction
+## 6 · Typed-record extraction (the intent-capture function)
 
-Each captured span feeds the extraction model. Output: one or
-more typed intent records in the spirit wire shape:
+The extraction stage is a **runtime function**, not a long-lived
+agent (intent 126 + 124). It's a per-call stateless LLM
+invocation: given an audio span (plus full context provisioned
+per call), it returns typed intent records and routed prompt
+sections. No persistent identity; no signed work; no carried
+state between calls. The function/agent distinction is
+load-bearing per /150 §1; the rest of this section assumes that
+shape.
+
+Each captured span feeds the function. Output: one or more
+typed intent records in the spirit wire shape:
 
 ```text
 (Record (<topic> <Kind> "<summary>" "<context>" <Certainty> "<verbatim>"))
@@ -291,6 +300,68 @@ ambiguous about which Kind or what Certainty, the extractor
   a future agent reviewing the record can re-classify.
 - Surface a separate "needs psyche review" record for genuinely
   borderline cases (see §10 Q5).
+
+### 6.5 · Per-call context provisioning
+
+Because the intent-capture is a function, every invocation
+receives a fresh context bundle. Today the bundle has at least:
+
+- The STT typo correction table (per `skills/stt-interpreter.md`).
+- The current topic vocabulary (from `intent/*.nota` topics + the
+  spirit topic catalog).
+- The intent record schema (the spirit wire shape).
+- The certainty taxonomy (Maximum / Medium / Minimum — *not*
+  High; per designer/267).
+- The conservative-by-default principle (per
+  `intent/workspace.nota` 2026-05-20T14:40:00Z).
+
+When orchestrate's typed lane registry + occupancy mapping
+lands (per /150 §7), the bundle gains the current lane
+occupancy so the function knows which long-lived agent currently
+holds each lane.
+
+### 6.6 · Topic-based routing to long-lived agents
+
+A single psyche utterance can cross multiple topics. The
+function recognises topic boundaries and routes each section to
+the right downstream agent (per intent 126). The output of one
+function call is therefore zero-or-more **(intent record,
+routed prompt section)** pairs, not just intent records.
+
+A worked example:
+
+```text
+psyche says:
+  "On the orchestrate redesign, settle the claim surface.
+   And for the recording system, the laptop should buffer
+   locally if the LAN drops. Also, sweep poet-assistant
+   reports for stale items."
+
+intent-capture function emits:
+  - intent record: persona / Decision / "claim surface
+    settlement" (topic: persona-orchestrate)
+  - prompt section: "Settle the claim surface in
+    persona-orchestrate" → routed to lane `designer` or
+    `second-designer`
+  - intent record: recording-system / Decision / "LAN-drop
+    local buffer" (topic: recording-system)
+  - prompt section: "Add LAN-drop local buffer to the capture
+    client" → routed to lane `operator` or `system-specialist`
+  - intent record: workspace / Decision / "sweep
+    poet-assistant" (topic: workspace)
+  - prompt section: "Sweep poet-assistant reports" → routed
+    to lane `designer` (or future `poet-discipline-designer`)
+```
+
+The routing table (topic → lane) lives in persona-orchestrate's
+storage. The function queries orchestrate on each invocation to
+learn the current routing. As lanes are created / retired, the
+routing surface stays current.
+
+When a prompt section can't be unambiguously routed by topic, the
+function falls through to a default routing target (likely
+designer for ambiguity; the psyche reviews and re-routes
+manually if needed).
 
 ## 7 · Wife's parallel persona instance
 
@@ -617,6 +688,11 @@ disciplined incremental path keeps every stage shippable.
   notes — adjacent persona-shaped design work; similar triad shape.
 - `reports/second-designer/148-research-real-time-speech-recognition.md`
   — the research report on candidate models for §10 Q7.
+- `reports/second-designer/150-design-agent-identity-and-runtime-functions.md`
+  — the function-vs-agent distinction this report's §6 absorbs;
+  the topic-routing flow this report's §6.6 introduces; the
+  cryptographic-identity model for the long-lived agents
+  downstream of the intent-capture function.
 - `protocols/active-repositories.md` — the persona-component
   inventory this design would join.
 

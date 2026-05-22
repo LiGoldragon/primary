@@ -853,9 +853,6 @@ shape that needs reshaping.**
 - `reports/operator/150-triad-signal-sema-migration-current-state.md`
   §6.8 (orchestrate is a real component; avoid resurrecting
   lock-file semantics as the target).
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-  — engine-manager triad audit (template for this report's
-  shape).
 - `reports/designer/257-signal-contracts-names-and-shape-audit.md`
   — workspace-wide naming/shape patterns.
 - `reports/second-designer/129-mind-orchestrate-payload-and-cli-dispatch-option-a-2026-05-20.md`

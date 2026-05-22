@@ -10,7 +10,7 @@ shape.*
 ## 0 · TL;DR
 
 The criome triad is **two legs of three present**, but the present
-two are stale on every workspace pattern surveyed in /257 and /258:
+two are stale on every workspace pattern surveyed in /257 and the engine-manager triad audit:
 
 - `signal-criome` still depends on `signal-core` (retired in favour
   of `signal-frame`), still uses universal-verb prefixes
@@ -53,7 +53,7 @@ express the relation seams, per the
 (modules disambiguate, not macro prefix knobs).
 
 **Priority order for the next migration slice** (mirrors the
-spirit / engine-manager template from /258):
+spirit / engine-manager template from the engine-manager triad audit):
 
 1. Cut the contract over to `signal-frame` and the
    `operation Verb(Payload)` grammar; drop the
@@ -407,7 +407,7 @@ Reasoning:
    signal-criome that splitting could express.
 5. **`signal-persona` precedent is the wrong precedent.**
    `signal-persona` carries two channels (`Engine` and
-   `Supervision` / `EngineManagement`) in one crate per /258 §2.4
+   `Supervision` / `EngineManagement`) in one crate per the engine-manager triad audit §2.4
    because the two channels serve *different sockets* (the manager
    socket and the supervision socket). Criome has one working
    socket; the precedent does not apply.
@@ -592,7 +592,7 @@ is no `Lowering`, no `OperationPlan`, no `BatchPlan`, no
 `CommandExecutor`, no `ToSemaOperation`/`ToSemaOutcome`, no
 observer publication.
 
-This is the same gap /255 found in spirit and /258 §2.2 found in
+This is the same gap /255 found in spirit and the engine-manager triad audit §2.2 found in
 the engine-manager daemon. The migration target (per /150 §7 and
 the spirit template) is:
 
@@ -763,7 +763,7 @@ etc. The crate-level re-exports retire.
 listed as a reply variant. But the stream block at lines 887-898
 declares `event IdentityUpdate(IdentityUpdate) belongs IdentityUpdateStream`.
 
-The macro grammar (per /258 and /150) expects event-belonging
+The macro grammar (per the engine-manager triad audit and /150) expects event-belonging
 variants to live in the `event` block, not the `reply` block. The
 duplication looks like leftover boilerplate from a pre-stream-block
 shape. After the `signal-frame` migration, the macro should
@@ -1115,7 +1115,7 @@ In priority order:
 
 The criome migration is structurally identical to spirit's
 landed migration and engine-manager's pending migration. The
-spirit template (per /258 §4) is the model. The criome triad
+spirit template (per the engine-manager triad audit §4) is the model. The criome triad
 should not invent new shapes; it should mirror the spirit shape
 with criome's domain payloads.
 
@@ -1198,10 +1198,9 @@ checking.)
 - `/150` — `reports/operator/150-triad-signal-sema-migration-current-state.md`
   — workspace-wide migration current state (§6.9 names criome split
   question).
-- `/255`, `/256` — spirit migration template (the canonical model
-  the criome triad should follow).
-- `/258` — `reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-  — engine-manager audit (same structural gap pattern).
+- `/255` — `reports/designer/255-signal-spirit-pilot-audit-2026-05-20.md`
+  — spirit migration template (the canonical model the criome triad
+  should follow).
 - `/257` — `reports/designer/257-signal-contracts-names-and-shape-audit.md`
   — workspace-wide signal-contract audit (criome listed as
   unmigrated).

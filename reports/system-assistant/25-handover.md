@@ -43,10 +43,11 @@ bridge; `sema-engine` owns durable state mechanics;
 `signal-<component>` contracts own domain vocabulary; daemons
 implement policy + lowering + projection.
 
-The convergence bundle (per `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
-+ `reports/operator/142-signal-frame-executor-bundled-fix-logic-probe.md`
-+ `reports/designer/248-three-layer-changes-for-operators.md`) crystallises
-the three-layer model (psyche-affirmed 2026-05-20T02:00Z):
+The convergence bundle (substance now in `skills/contract-repo.md`
+§"Public contracts use contract-local operation verbs" +
+`skills/component-triad.md`; original v4 bundled-fix and three-layer-
+changes reports plus `reports/operator/142-signal-frame-executor-bundled-fix-logic-probe.md`)
+crystallises the three-layer model (psyche-affirmed 2026-05-20T02:00Z):
 
 - **Layer 1 — Contract Operation** — external request language; owned by `signal-<component>` contracts (e.g. `LojixOperation::Deploy(DeploymentRequest)`).
 - **Layer 2 — Component Command** — internal executable language, per-daemon; owned by each daemon (e.g. `LojixCommand::*` would live in the lojix-daemon crate).
@@ -204,9 +205,10 @@ When the next system-assistant session opens:
 
 1. Read this report + `reports/designer/247-radical-rethink-or-converge.md`
    + `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
-   + `reports/designer/248-three-layer-changes-for-operators.md`
-   (the operator-facing v3→v4 diff) to re-orient on the converged
-   arc shape.
+   + `skills/contract-repo.md` + `skills/component-triad.md` (which
+   carry the three-layer / contract-local-verb substance the
+   operator-facing v3→v4 diff originally documented) to re-orient on
+   the converged arc shape.
 2. Check whether Package 2 (observable open/close grammar) landed
    in `/git/.../signal-frame/main`. If yes, the lojix daemon's
    future migration can use the new shape.

@@ -657,10 +657,10 @@ source operation by position). Drop the `operation` field.
 
 Both are mixed enums (unit variants + tuple-payload variants).
 With the recent `nota-codec` mixed-enum support (per `intent/nota-
-mixed-enum-support.nota` and `reports/designer/258` §1 referencing
-bead `primary-u0lh`), these should be `#[derive(NotaSum)]` or
-`#[derive(NotaEnum)]` depending on the variant set. The two
-hand-rolled impls retire.
+mixed-enum-support.nota` and bead `primary-u0lh`, surfaced by the
+engine-manager triad audit since dropped), these should be
+`#[derive(NotaSum)]` or `#[derive(NotaEnum)]` depending on the
+variant set. The two hand-rolled impls retire.
 
 Both impls also use `nota_codec::Error::UnknownKindForVerb`
 at lines 106 and 196 — bead `primary-k3bu` rename target.
@@ -1060,14 +1060,9 @@ Beads worth filing (subject to psyche approval):
 
 ### Prior reports
 
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-  — engine-manager triad audit; structurally parallel to this
-  report.
 - `reports/designer/257-signal-contracts-names-and-shape-audit.md`
   — workspace-wide audit; classifies router as "still on
   signal_core; old universal-verb shape" with worked example.
-- `reports/designer/255` / `reports/designer/256` — spirit
-  audits (the migration template).
 - `reports/operator/150-triad-signal-sema-migration-current-state.md`
   — current substrate handoff; §6.2 (router public tree
   three-surface separation) is the audit task's anchor.

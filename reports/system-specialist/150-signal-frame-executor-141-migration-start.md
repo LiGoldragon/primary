@@ -6,8 +6,10 @@ This report records the migration start from
 `reports/operator/141-signal-frame-executor-correction-examples.md`.
 It is now superseded where it differs from:
 
-- `reports/designer/246-v4-bundled-fix-deep-design-with-examples.md`
-- `reports/designer/248-three-layer-changes-for-operators.md`
+- `skills/contract-repo.md` §"Public contracts use contract-local
+  operation verbs" + `skills/component-triad.md` (which carry the
+  three-layer / v4 bundled-fix substance after the original designer
+  reports were dropped)
 - `reports/operator/142-signal-frame-executor-bundled-fix-logic-probe.md`
 - `reports/operator/143-signal-infrastructure-convergence-and-pilot-pivot.md`
 

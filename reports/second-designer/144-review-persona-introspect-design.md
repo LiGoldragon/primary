@@ -376,9 +376,6 @@ What changed:
 - `reports/operator/150-triad-signal-sema-migration-current-state.md`
   — workspace-wide migration handoff that establishes the
   current substrate.
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-  — the template audit shape this Review's package breakdown
-  mirrors.
 - `intent/persona.nota` 2026-05-20T02:00:00Z — Tap/Untap mandate
   for persona components.
 - `intent/persona.nota` 2026-05-20T20:00:00Z — Tap fanout

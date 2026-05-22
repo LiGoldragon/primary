@@ -5,16 +5,19 @@ databases. Triad-shaped like every other stateful component. The first
 concrete migration is the legacy file-log to spirit translation —
 treating `intent/*.nota` as a 0.01 version of the spirit sema database.
 This report designs the component shape; the migration mechanics
-themselves live in /260 / /263.*
+themselves live in the Approach C selection (intent
+`component-shape.nota` record 21) and the schema specification
+language (/263).*
 
 ## 1. What sema-upgrade is
 
 Every persona daemon stores working and policy state in a sema
 database. When its contracts evolve, existing on-disk data and the
 new daemon binary must end up in a consistent state. The Approach C
-decision (/260, /261, intent record 21) settled the per-record
-mechanism — schema-address tags, in-process versioned reads, migration
-on read. What that decision left absent is **the orchestration layer**:
+decision (intent `component-shape.nota` record 21) settled the
+per-record mechanism — schema-address tags, in-process versioned reads,
+migration on read. What that decision left absent is **the
+orchestration layer**:
 where the daemon consults before serving its first request to decide
 whether the stored data is at an address it can still read, whether a
 migration plan must execute first, and what to do if it cannot.
@@ -161,7 +164,7 @@ The diff between 0.01 and the current spirit schema yields a
   sema-upgrade owns the `Certainty(0.01) → Magnitude(current)`
   mapping as a structural-class step. The mapping handles the
   conformant rungs (`Maximum`/`Medium`/`Minimum` pass through) and
-  the drift surfaced by /267-v2 — seven legacy records carry `Certainty
+  the legacy `High` drift — seven legacy records carry `Certainty
   High` against a closed-world `Certainty` set the daemon rejects.
   Whichever shape Magnitude lands in, the translation lives in the
   plan, not in spirit and not in the file parser.
@@ -377,20 +380,16 @@ exactly what ran, against which addresses, with which outcomes.
   sema-upgrade's first forge wraps Nix.
 - `intent/nix.nota` 2026-05-19 — forge as the eventual replacement
   for Nix.
-- `reports/designer/260-schema-migration-discipline.md` — Approach C
-  selection; the mechanism sema-upgrade orchestrates.
-- `reports/designer/261-schema-version-surface-research.md` — per-
-  component vs per-record-type analysis; sema-upgrade uses both
-  through content-addressed schema subtrees.
 - `reports/designer/263-schema-specification-language-design.md` —
   the language schemas are written in; the schema-layout schema
   sema-upgrade consumes to derive migration plans; diff
-  classification semantics.
-- `reports/designer/265-spirit-master-upgrade-test-result.md` —
-  worked example of an upgrade case (additive variant insertion)
-  the sema-upgrade machinery would have classified and acted on.
-- `reports/designer/267-v2-intent-substrate-certainty-drift.md` — the
-  `High` rung drift that the 0.01 plan must absorb.
+  classification semantics. Composes with the Approach C
+  (in-process versioned reads) selection in intent record 21,
+  using content-addressed schema subtrees rather than
+  per-component or per-record-type version counters.
+- `skills/spirit-cli.md` §"Substrate migration discipline" — the
+  general migration rules; the `High` rung drift the 0.01 plan
+  absorbs is the canonical worked case.
 - `skills/component-triad.md` — triad shape and invariants.
 - `skills/spirit-cli.md` — how to find the deployed spirit wire
   shape sema-upgrade calls into for the 0.01 pilot.

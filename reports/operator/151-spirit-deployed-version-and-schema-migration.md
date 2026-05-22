@@ -105,16 +105,22 @@ So the current update from deployed `v0.1.0` to current `main` is
 not a storage-schema migration. It is a runtime + wire-contract
 upgrade.
 
-## Reading designer/261
+## Layered schema-version shape
 
-`reports/designer/261-schema-version-surface-research.md` recommends
-the layered shape:
+The schema-version research at the time of writing recommended a
+layered shape:
 
 - a coarse component/contract version for human talkability;
 - per-record-type machinery for actual read-path migration;
 - stored records carry a version tag;
 - current code reads old versions through explicit migration
   dispatch.
+
+(Subsequently superseded by the content-address direction — see
+`reports/designer/279-nota-schema-language-and-version-hash.md` §4
+and `reports/designer/273-schema-migration-synthesis-post-operator-151.md`,
+which retire the version-surface question by replacing it with the
+canonical schema content address.)
 
 That direction is right, but Spirit exposes one missing split:
 the stored shape is not only `signal-persona-spirit::Entry`.

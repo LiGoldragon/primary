@@ -30,10 +30,12 @@ Code landings:
 It is still not the full Spirit apex. The classifier, bootstrap-policy import,
 subscription event push, and typed owner-signal forwarding to mind are still
 absent.
-The public contract also sits on the pre-`reports/designer/238` Signal shape:
-`Assert` / `Match` / `Subscribe` / `Retract` are still present in the contract
-crates. That is now architectural drift, but the required signal-core and
-contract-local-verb rewrite is larger than this component slice.
+The public contract also sits on the pre-contract-local-verb-redirection
+Signal shape: `Assert` / `Match` / `Subscribe` / `Retract` are still
+present in the contract crates. That is now architectural drift (the
+redirection landed in `skills/contract-repo.md`), but the required
+signal-core and contract-local-verb rewrite is larger than this
+component slice.
 
 ## 1 · Current Runtime Shape
 
@@ -184,12 +186,14 @@ The classifier, contradiction guardian, and richer psyche model still need
 design intent before implementation.
 
 The stronger next architectural slice is outside `persona-spirit` alone:
-`reports/designer/238-signal-architecture-redirection-contract-local-verbs.md`
-supersedes the current public `SignalVerb` contract shape. Spirit's intended
-public operations become contract-local verbs such as `State`, `Record`,
-`Observe`, and stream/watch operations; the Sema verbs move below the daemon
-boundary. That requires coordinated `signal-core`, macro, contract, and
-consumer migration before this runtime can honestly remove the old wrappers.
+the contract-local-verbs redirection (now codified in
+`skills/contract-repo.md` §"Public contracts use contract-local
+operation verbs") supersedes the current public `SignalVerb` contract
+shape. Spirit's intended public operations become contract-local verbs
+such as `State`, `Record`, `Observe`, and stream/watch operations; the
+Sema verbs move below the daemon boundary. That requires coordinated
+`signal-core`, macro, contract, and consumer migration before this
+runtime can honestly remove the old wrappers.
 
 ## 7 · Verification
 

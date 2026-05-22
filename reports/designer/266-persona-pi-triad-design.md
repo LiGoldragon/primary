@@ -372,10 +372,6 @@ boot; persona-pi bootstrap path is unsketched.*
 - `intent/persona.nota` records 43-47 (persona-pi triad,
   per-role model, composite designer, namespace adaptation,
   default config). Verbatim source.
-- `reports/designer/258-persona-signal-triad-audit-2026-05-21.md`
-  - engine-manager triad audit; persona-pi shares triad-shape
-  patterns (signal-executor migration, observable block,
-  single-argument rule).
 - `reports/designer/264-designing-protocol-and-role-spaces.md`
   - persona-pi substrates the composite-designer of `/264` §2;
   the per-role-protocol model of `/264` §1 grounds the
