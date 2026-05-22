@@ -762,6 +762,29 @@ For Mermaid syntax workarounds (node labels, edge labels,
 reserved-word IDs, Mermaid 8.8.0 safe forms for subgraphs,
 edge labels, and sequence diagrams), see `skills/mermaid.md`.
 
+### Visuals are Mermaid only — no ASCII text-block diagrams
+
+Per psyche 2026-05-22 (spirit record 243), **every diagram
+in a report goes in a Mermaid code block**. ASCII text-block
+"diagrams" using box-drawing characters (`┌─┐`, `│`, `└─┘`,
+arrows, etc.) are FORBIDDEN. They are error-prone (misaligned
+borders, broken arrows, version-specific Unicode), they don't
+render as actual diagrams, they accumulate drift, and they
+read worse than the Mermaid source they could have been.
+
+If you find yourself reaching for box-drawing characters or
+a pre-formatted text block to convey structure, you've
+crossed into territory that wants a Mermaid `flowchart`,
+`sequenceDiagram`, or `stateDiagram-v2`. Pick the right
+Mermaid shape; let the renderer do its job.
+
+The allowance for pre-formatted text blocks stays narrow:
+file-tree listings (the output of `tree` or `ls -R`),
+shell-command transcripts, NOTA record samples, and short
+code snippets are still fine in fenced code blocks because
+they're not pretending to be visuals — they're showing the
+literal text the report names.
+
 Implementation code (Rust `impl` blocks, function bodies,
 struct definitions with methods, full Nix derivations)
 **does not belong in reports.** Code in a design doc goes
