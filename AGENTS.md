@@ -223,9 +223,21 @@ yet — those land when the role's shape settles.
   not through harness internals. Per psyche 2026-05-22.
 - **No `/nix/store` filesystem search.** Use `nix eval`, `nix flake
   show`, `nix path-info`, or expose the value through a derivation.
-- **Reach for the right tool, not raw git.** Version control is `jj`
-  per `skills/jj.md`; raw `git` is reserved for two named escape-hatch
-  cases listed there.
+- **Reach for the right tool, not raw git; and `jj` invocations are
+  always headless / inline.** Version control is `jj` per
+  `skills/jj.md`; raw `git` is reserved for two named escape-hatch
+  cases listed there. Every `jj` command that takes a description
+  (`commit`, `describe`, `split`, `new`, `squash`, …) MUST pass the
+  message inline — `-m '<msg>'`, or `--use-destination-message` for
+  `squash --into`. NEVER run a description-taking `jj` invocation
+  that would fall back to `$EDITOR` — agent sessions (including
+  dispatched sub-agents) cannot satisfy an editor prompt; the
+  invocation either stalls or lands an empty description. This
+  applies on every keystroke and to every sub-agent prompt: when
+  briefing a sub-agent, restate the inline-only rule so it doesn't
+  type a bare `jj commit`. Full discipline + table of inline forms:
+  `skills/jj.md` §"Never let jj open an editor". Per psyche
+  2026-05-22 (intent record 237).
 - **No `---` horizontal-rule lines in markdown.** Section structure
   comes from headings (`##`, `###`). `---` between every section is
   pure noise in agent context — costs tokens, conveys nothing
