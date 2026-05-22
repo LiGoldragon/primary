@@ -50,16 +50,34 @@ read the matching skill — don't scan `skills/` listing every file.
 
 ## Reports go in files; chat is for the user
 
-**Substantive output — anything that explains, proposes, analyses,
-audits, or synthesises — goes in `reports/<role>/<N>-<topic>.md`.** Not
-in chat. Chat is the user's working surface; the user can't read a
-giant chat response while running parallel agents.
+**Substantive output goes in reports; chat carries the locator +
+user-attention items.** Anything that explains, proposes, analyses,
+audits, synthesises, or visualises goes in
+`reports/<role>/<N>-<topic>.md`. The trigger isn't word-count; it's
+the SHAPE of what you're writing. If your chat reply contains any
+of these, you've crossed into report territory and must move it to
+a file:
 
-The chat reply names the report path and carries the user-attention
-items inline — open questions, blockers, recommendations awaiting
-approval — each restated with enough substance that the user can
-engage without opening the report. Locator-without-substance ("see
-report N", "section 5.2") is a discipline violation.
+- A mermaid diagram (any)
+- A markdown table (beyond a trivial 2-row reference)
+- `##` or `###` headings
+- A walk-through of how something works
+- A multi-paragraph explanation of a concept
+- A list of more than 5 items each carrying substance
+- A code block longer than ~10 lines that illustrates a design
+
+Chat is the user's working surface; the user can't read a giant
+chat response while running parallel agents, and shaped content
+belongs where future agents can find it via the file system.
+
+The chat reply carries the locator (the report path) plus
+user-attention items — open questions, blockers, recommendations
+awaiting approval — each restated with enough substance that the
+user can engage WITHOUT opening the report. Locator-without-substance
+("see report N", "section 5.2") is the opposite-direction violation;
+both kinds break the discipline.
+
+Per psyche 2026-05-22.
 
 Full discipline: `skills/reporting.md`.
 
