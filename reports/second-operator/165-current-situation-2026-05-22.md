@@ -132,6 +132,58 @@ The short synthesis:
    eventual agent-checkout command exists, or is this absorption note
    enough for now?
 
+## Delta Absorption After Third-Designer 17
+
+Freshly absorbed after the first absorption commit:
+
+- `reports/third-designer/17-situation-and-questions-2026-05-22.md`
+  - confirms the same active priorities, adds that
+    `third-designer` is now a structural parallel-main lane, and
+    states the designer-side question list more aggressively.
+- `reports/designer/214-criome-architecture-record-2026-05-17.md`
+  - keeper for Criome's Unix-user security boundary, owner socket,
+    encrypted owner session, and future `owner-signal-criome`.
+- `reports/designer/234-concept-designer-role.md`
+  - keeper for concept designer as a real future role and entry
+    point for new concepts.
+- `reports/designer/pi-api-surface-notes.md`
+  - keeper for Persona-pi: Pi is Mario Zechner's `pi-mono`, with a
+    flat TypeScript extension API that Persona-pi must adapt into
+    typed noun-method records.
+- `reports/operator/108` through `/135`
+  - older operator history. Live residue is already summarized by
+    `reports/second-operator/167`, `/168`, `/169`, and current
+    designer audits. The active residue is: persona-mind prototype
+    context, Kameo lifecycle correctness, early engine-manager /
+    sandbox witnesses, terminal/owner-signal experiments, and
+    sema-engine split history.
+- `reports/cluster-operator/2-current-state-after-designer-operator-report-absorption-2026-05-22.md`
+  - peer operator synthesis in the working copy; it agrees that
+    Spirit cutover, sema-upgrade bootstrap, schema hash adoption,
+    Orchestrate executor migration, engine-manager Axis 2, Forge,
+    and Persona-pi are the active decision surfaces.
+
+No change to second-operator's immediate code posture: Orchestrate
+executor migration is still the lane's implementable next slice, but
+it should stay narrow and not try to settle Spirit cutover,
+sema-upgrade bootstrap, Forge, or Persona-pi.
+
+Additional questions now worth carrying:
+
+1. Does `third-designer`'s new structural lane change any operator
+   routing, or should second-operator treat it as another window of
+   the same Designer agent and simply keep reading its reports?
+2. Should `concept-designer` now get a real lane registration through
+   Persona Orchestrate once the lane registry becomes canonical, or
+   stay as a design report until the role is fleshed out?
+3. Should Criome's owner-session encryption and `owner-signal-criome`
+   become a near-term implementation target, or remain behind Spirit
+   cutover / sema-upgrade / Orchestrate?
+4. For old operator reports, do we want a cleanup pass to retire
+   `reports/operator/108` through `/135` into newer successor reports,
+   or leave them as historical keepers until the main operator lane
+   runs its own context maintenance?
+
 ## Cleared Question
 
 Retired lane identifiers do not need tombstones right now. The current
