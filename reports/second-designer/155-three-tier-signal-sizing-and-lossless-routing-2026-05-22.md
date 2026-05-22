@@ -170,10 +170,10 @@ flowchart TB
     Q2{"Is it a data-carrying enum?<br/>(struct variants or tuple variants)"}
     Q3{"Does every variant payload<br/>itself implement LogVariant?"}
 
-    Auto1["Auto-derive: variant index as u8 at byte 0;<br/>upper 7 bytes zero"]
-    Auto2["Auto-derive: variant discriminator at byte 0;<br/>recurse into variant payload at bytes 1..8"]
-    Auto3["Auto-derive: variant discriminator at byte 0;<br/>recurse for each field; bit-pack into remaining 7 bytes if fits"]
-    Fallback["Auto-derive: variant discriminator only;<br/>upper 56 bits zero; emit warning suggesting hand impl"]
+    Auto1["Auto-derive: variant index as u8 at byte 0, upper 7 bytes zero"]
+    Auto2["Auto-derive: variant discriminator at byte 0, recurse into variant payload at bytes 1..8"]
+    Auto3["Auto-derive: variant discriminator at byte 0, recurse for each field, bit-pack into remaining 7 bytes if fits"]
+    Fallback["Auto-derive: variant discriminator only, upper 56 bits zero, emit warning suggesting hand impl"]
 
     Start --> Q1
     Q1 -->|yes| Auto1
@@ -401,7 +401,7 @@ sequenceDiagram
         C->>P: NEW client connects
         Note over P: queue new client's bytes
         Note over V0,V1: state copy via private upgrade socket
-        Note over P: V1 active; selector flipped
+        Note over P: V1 active, selector flipped
         P->>V1: open backend for queued client
         P->>V1: forward queued bytes
         V1-->>P: reply
@@ -435,7 +435,7 @@ stop.
 sequenceDiagram
     participant C as Client
     participant K as kernel listen backlog
-    participant SS as persona-spirit.socket<br/>(systemd socket unit)
+    participant SS as systemd socket unit
     participant SD as systemd
     participant V0 as spirit v0.1.0
     participant V1 as spirit v0.1.1
@@ -443,7 +443,7 @@ sequenceDiagram
 
     Note over SS: ListenStream=...persona-spirit.sock
     Note over SD: socket-unit holds the FD<br/>passes to active service via LISTEN_FDS
-    Note over V0: holds FD; accept()ing
+    Note over V0: holds FD and is accepting
     C->>SS: connect (kernel routes to V0 via accept queue)
     SS->>V0: accept() hands off
     C->>V0: bytes
@@ -454,14 +454,14 @@ sequenceDiagram
         P->>V0: HandoverPrepared (via owner socket)
         Note over V0: stop accept() — kernel queues NEW conns in backlog (max ~128)
         Note over V0: drain existing conns — finish in-flight Ops
-        C->>K: NEW connect → queued in kernel listen backlog
+        C->>K: NEW connect goes to kernel listen backlog
         Note over V0,V1: state copy via private upgrade socket
         V0-->>P: ready to stop
-        P->>SD: D-Bus: stop-unit spirit-v0.1.0
+        P->>SD: stop-unit spirit-v0.1.0 over dbus
         SD->>V0: SIGTERM (V0 closes its FD reference)
         Note over SS: systemd's socket-unit retains the LISTENING FD
-        P->>SD: D-Bus: start-transient-unit spirit-v0.1.1 --sockets=persona-spirit.socket
-        SD->>V1: exec; pass FD via LISTEN_FDS
+        P->>SD: start-transient-unit spirit-v0.1.1 with sockets persona-spirit.socket
+        SD->>V1: exec and pass FD via LISTEN_FDS
         V1->>SS: accept() — drains the kernel backlog
         V1-->>C: serve (no missed connect)
     end
@@ -509,11 +509,11 @@ sequenceDiagram
     participant V0 as spirit v0.1.0
     participant V1 as spirit v0.1.1
 
-    Note over P: Persona binds persona-spirit.sock<br/>(LISTENING)
-    Note over P: V0 + V1 connect to Persona's<br/>fd-handoff control socket
+    Note over P: Persona binds persona-spirit.sock and listens
+    Note over P: V0 and V1 connect to Persona fd-handoff control socket
     C->>P: connect persona-spirit.sock
-    P->>P: accept() → got client FD
-    P->>V0: sendmsg(client_fd) via SCM_RIGHTS
+    P->>P: accept returns client FD
+    P->>V0: sendmsg with client FD via SCM_RIGHTS
     Note over V0: receives client FD via recvmsg
     Note over P: Persona closes its local copy of FD
     Note over P: Persona is now OFF the byte path
@@ -523,12 +523,12 @@ sequenceDiagram
     rect rgb(255, 230, 230)
         Note over P: CUTOVER — selector flips to V1
         C->>P: NEW connect
-        P->>P: accept() → got client FD
-        P->>V1: sendmsg(client_fd) via SCM_RIGHTS
+        P->>P: accept returns client FD
+        P->>V1: sendmsg with client FD via SCM_RIGHTS
         Note over V1: receives client FD
         C->>V1: bytes (direct to V1)
         V1-->>C: reply (direct)
-        Note over V0,C: existing client connections to V0<br/>continue until V0 drains
+        Note over V0,C: existing client connections to V0 continue until V0 drains
     end
 ```
 
@@ -622,37 +622,37 @@ sequenceDiagram
     rect rgb(230, 240, 255)
         Note over P: psyche issues AttemptHandover(spirit, v0.1.0, v0.1.1)
         P->>V1: start v0.1.1 daemon (via DirectProcessLauncher or systemd)
-        Note over V1: comes up; binds private upgrade socket
+        Note over V1: comes up and binds private upgrade socket
         V1->>P: opens SCM_RIGHTS control connection to Persona
-        Note over V1: registers as "spirit version v0.1.1 ready for handoff"
+        Note over V1: registers as ready for handoff
     end
 
     rect rgb(255, 235, 215)
-        Note over P: phase 1 — STATE COPY (via private upgrade socket; V0↔V1 direct)
+        Note over P: phase 1 — STATE COPY (via private upgrade socket, V0 and V1 direct)
         V1->>V0: AskHandoverMarker
         V0-->>V1: HandoverMarker(commit_seq=N)
         V1->>V1: copy state @ N via version-projection
         V1->>V0: ReadyToHandover(source_marker=N)
         V0-->>V1: HandoverAccepted
         Note over V0: stops accepting NEW operations on existing client conns
-        Note over V0: in-flight ops complete; replies sent
+        Note over V0: in-flight ops complete, replies sent
         V1->>V0: HandoverCompleted
-        Note over V0: existing client conns drained; V0 closes them
+        Note over V0: existing client conns drained, V0 closes them
     end
 
     rect rgb(220, 255, 220)
         Note over P: phase 2 — SELECTOR FLIP (Persona-side)
         P->>P: write ActiveVersionChanged event<br/>active_version=v0.1.1
-        P->>P: stop routing accept()s to V0; route to V1
+        P->>P: stop routing accepts to V0, route to V1
     end
 
     rect rgb(245, 245, 245)
         Note over P: phase 3 — POST-CUTOVER
         C->>P: NEW connect to persona-spirit.sock (during phase 2)
-        P->>V1: sendmsg(client_fd) via SCM_RIGHTS
+        P->>V1: sendmsg with client FD via SCM_RIGHTS
         C->>V1: bytes (direct)
         V1-->>C: reply (direct)
-        Note over V0: idle; can be retired by Persona via stop-unit
+        Note over V0: idle, can be retired by Persona via stop-unit
     end
 ```
 
