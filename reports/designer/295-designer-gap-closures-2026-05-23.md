@@ -178,7 +178,7 @@ rationale → CLOSED
 | `signal-persona` | `953884d9` | signal-persona: refresh ARCHITECTURE for engine-management rename, version-handover neighbours, and skeleton-honesty extension to ordinary + owner contracts |
 | `persona` | `879fa7a4` | persona: add INTENT.md from psyche records; extend ARCH §1.7 with spawn order subsection |
 | `persona-router` | `41709418` | persona-router: document ChannelMessageKind, ChannelDuration, and rejection-reason rationale in ARCH §§2.6-2.8 |
-| `primary` | (this commit) | designer: close gaps 3 + 10 + 12 + 17 + 22 + 23 + 33 via manifestation; add Mutate-chain partial-failure pre-recommendation to component-triad.md |
+| `primary` | `0118cf9d` | designer: pending reports batch + gap closures — 292/293/294/295 reports; component-triad Mutate-chain partial-failure pre-recommendation |
 
 Note: the signal-persona commit includes a pre-existing in-flight
 ARCH refresh from an earlier session (engine-management vocabulary
