@@ -41,6 +41,27 @@ library to decode the bytes.
 >    a self-check / peer-coordination message) is the principle;
 >    `signal-version-handover` is the mechanism — they coexist
 >    cleanly.
+>
+> **2026-05-22 — implementation LANDED (operator/158):** the core
+> spec is now reified in workspace code:
+>
+> - `version-projection` crate at commit `69bd2dd0`
+> - `signal-version-handover` contract at commit `f2dfe3b4`
+> - `sema-engine` `CommitSequence` at commit `e0a7153c`
+> - `sema-upgrade` handover prototype at commits `060982d0` +
+>   `677206d5`
+>
+> Beads `primary-la7q` (per-type migration trait) and `primary-5w28`
+> (sema-engine commit_sequence) closed. The §9 open items
+> (Mirror payload raw bytes vs typed enum; Read semantics during
+> handover; persona-introspect failure logs) are confirmed open
+> in the landed code per operator/158 §"Open design pressure".
+>
+> Persona-engine-as-upgrade-orchestrator (spirit records 208, 209)
+> shifted the active-version selector from CriomOS-home to the
+> persona engine. Bead `primary-a5hu` (persona engine epic for
+> second-operator) carries that scope; it blocks `primary-x3ci`
+> (Spirit cutover).
 
 ## 1. VersionProjection trait — placement and signature
 
