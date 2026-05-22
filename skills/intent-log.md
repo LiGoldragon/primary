@@ -167,9 +167,9 @@ intent capture, the operation is `Record` carrying an untagged
 - **The daemon stamps date and time on receipt.** Clients do not
   supply timestamps.
 
-The legacy file-substrate fallback uses the original shape — Kind
-as the record head, no topic field (the filename supplies it),
-explicit Date + Time after Certainty:
+The legacy file substrate used the original shape — Kind as the
+record head, no topic field (the filename supplies it), explicit
+Date + Time after Certainty:
 
 ```nota
 (<Kind>
@@ -181,8 +181,8 @@ explicit Date + Time after Certainty:
     <Time>)
 ```
 
-The five kinds and the certainty vocabulary are shared between
-substrates. The deployed Spirit wire shape may drift;
+This shape is history, not the normal write path. The deployed
+Spirit wire shape may drift;
 `skills/spirit-cli.md` covers how to read the currently deployed
 shape directly from the pinned source.
 
@@ -199,10 +199,6 @@ proper noun, repo name, or workspace-specific term appears.
 The quote uses `…` for elided tangents — the psyche often
 interleaves multiple topics in one turn, and the record only
 carries the part that belongs to this entry.
-
-A file is a **flat sequence of top-level NOTA records** — no outer
-`[ … ]` list wrapping. The flat sequence is what makes append-only
-writes possible (see below).
 
 ## Recording goes through the Spirit CLI
 
@@ -221,35 +217,19 @@ apostrophes, use bash ANSI-C strings (`$'…\'…'`) rather than
 single-quoted strings; reserve the file-path argument for NOTA
 that has shell metacharacters too painful to escape.
 
-### Fallback — the legacy file append
+### Spirit-unavailable blocker
 
-The substrate replacement is in-progress. While kinks surface, the
-older lock-free shell-append flow remains a fallback for when the
-daemon is unreachable:
+Do not silently fall back to `intent/*.nota` appends. If Spirit is
+unavailable, surface that as a blocker in chat and in the relevant
+bead or report. A legacy file write is emergency maintenance only
+when the psyche explicitly authorizes it.
 
-```sh
-cat >> intent/<topic>.nota <<'EOF'
-
-(<Kind>
-    "<summary>"
-    "<verbatim>"
-    "<context>"
-    <Certainty>
-    <Date>
-    <Time>)
-EOF
-```
-
-POSIX `O_APPEND` semantics make this safe under concurrent appends
-under PIPE_BUF (4KB on Linux). Use only when Spirit can't be
-reached; flag the use in chat so the kink that forced it surfaces.
-
-### Supersession needs a lock regardless
+### Supersession needs coordination regardless
 
 Rewriting or removing prior records — supersession per
-`skills/intent-maintenance.md` — needs a lock and a coordinated
-edit. That holds whether the substrate is Spirit or the legacy
-file: an append-only protocol does not cover replacement.
+`skills/intent-maintenance.md` — needs coordinated tooling. That
+holds whether the substrate is Spirit or the legacy file: a capture
+protocol does not cover replacement.
 
 ## Certainty vocabulary
 
@@ -266,50 +246,42 @@ The psyche can also tag certainty explicitly mid-sentence ("I'm
 certain about X but not sure about Y") — record X as `Maximum` and
 Y as `Minimum`.
 
-## Topic organization — broad files, slow split
+## Topic organization — broad topics, slow split
 
-```
-intent/
-  <topic>.nota
-```
-
-One file per topic. No sub-directories. A topic is a **broad
-semantic area** — `component-shape`, `reports`, `workspace`,
-`orchestrate`, `nota`, `markdown`, `jj`, …. Each file is a NOTA
-list `[ … ]` containing every entry on that topic; entries
-accumulate as the psyche says more about the area.
+One Spirit topic per broad semantic area — `component-shape`,
+`reports`, `workspace`, `orchestrate`, `nota`, `markdown`, `jj`,
+and so on. Topics are semantic routing labels, not filenames.
+Entries accumulate under a broad topic as the psyche says more
+about the area.
 
 **Topics start broad and stay broad.** Resist the temptation to
-name files after a specific rule (`no-markdown-hr-breakers.nota`
-is too narrow — once it's named that, almost nothing else can fit
-in it). Name files after the area the psyche reasons about:
-`markdown.nota`, not `markdown-hr-breakers.nota`. The broad name
-is where future rules on the same area will land.
+name topics after a specific rule (`no-markdown-hr-breakers` is too
+narrow — once it is named that, almost nothing else can fit in it).
+Name topics after the area the psyche reasons about: `markdown`,
+not `markdown-hr-breakers`. The broad name is where future rules
+on the same area will land.
 
-**Files grow before they split.** A topic file accumulates entries
-for a long time before splitting becomes worthwhile — soft
-threshold around **~600 lines**, and only when the entries
-genuinely split into two distinct sub-areas. The discipline is
-*"can a reader scan this file and follow the area's intent?"* Below
-~600 lines that's easy; far past it, splitting helps. Above is the
-exception, not the default.
+**Topics grow before they split.** A topic accumulates entries for
+a long time before splitting becomes worthwhile, and only when the
+entries genuinely split into two distinct sub-areas. The discipline
+is *"can a reader query this topic and follow the area's intent?"*
+Splitting is the exception, not the default.
 
-**Filename convention.** Kebab-case, broad, no `intent-`, `no-`, or
-`how-to-` prefixes. The file lives in `intent/` so the prefix is
-redundant; the negative naming smell (per `ESSENCE.md` §"Naming")
-applies here too.
+**Topic convention.** Kebab-case, broad, no `intent-`, `no-`, or
+`how-to-` prefixes. The topic is already in the intent substrate,
+so the prefix is redundant; the negative naming smell (per
+`ESSENCE.md` §"Naming") applies here too.
 
 **When to actually split.** Two conditions both hold:
-1. The file is comfortably past 600 lines and growing.
+1. The topic is large enough that query results become noisy.
 2. The accumulated entries cluster into two genuinely distinct
    topics — not just "lots of entries on the same area."
-Carve the new topic, move the entries that fit there, leave the
-rest. Don't split prophylactically; split when the surface earns
-it.
+Carve the new topic through the maintenance tooling. Don't split
+prophylactically; split when the surface earns it.
 
 ## Recording is the first task of every psyche-prompt turn
 
-When a psyche prompt arrives, **extracting intent to disk is the
+When a psyche prompt arrives, **capturing intent through Spirit is the
 absolute first thing the agent does** — before editing a report,
 before writing code, before responding in chat. Everything else the
 prompt asked for is downstream of intent.
@@ -320,10 +292,11 @@ The session-turn shape:
 2. Identify every intent statement — Decision, Principle,
    Correction, Clarification, Constraint. A single prompt often
    contains several across multiple topics.
-3. For each: open the appropriate `intent/<topic>.nota` and add
-   the entry (or run the supersession protocol if it contradicts
-   a prior — see `skills/intent-maintenance.md`).
-4. Commit the intent entries.
+3. For each: record the entry through `spirit` (or run the
+   supersession protocol if it contradicts a prior — see
+   `skills/intent-maintenance.md`).
+4. If Spirit is unavailable, stop and surface the blocker. Do not
+   revive file logging silently.
 5. *Now* do the work the psyche asked for (report, code, etc.).
 
 Reports, code, and chat all derive from intent. If you find
@@ -334,16 +307,16 @@ back up. Capture first; act second.
 
 Per entry within the capture pass:
 
-1. **Query prior entries on the topic.** Read `intent/<topic>.nota`.
+1. **Query prior entries on the topic.** Use Spirit's query surface.
    If the psyche's new statement clearly contradicts a prior,
    switch to the supersession protocol (`skills/intent-maintenance.md`).
 2. **Pick the right kind.** Decision / Principle / Correction /
    Clarification / Constraint. If multiple kinds fit, take the
    strongest applicable (Constraint > Correction > Decision >
    Principle > Clarification).
-3. **Write the entry.** Terse summary; verbatim quote with `…`
-   for elided tangents; context line; certainty per the vocabulary;
-   ISO-8601 timestamp.
+3. **Write the entry through Spirit.** Terse summary; verbatim
+   quote with `…` for elided tangents; context line; certainty per
+   the vocabulary. The daemon stamps date and time.
 
 The agent who recorded an entry stays accountable for re-reading it
 within the session — if a later psyche statement reframes the
@@ -352,7 +325,7 @@ earlier one, the recorded entry might need supersession.
 ## What this skill is NOT for
 
 - Agent-internal decisions. Those live in reports, commits, and
-  documentation. Agent decisions don't go in `intent/`.
+  documentation. Agent decisions don't go in Spirit.
 - Replacement for ARCHITECTURE.md or skills. The intent log
   captures *what the author said*; the architecture captures *what
   the system is*. The two complement each other; neither replaces
@@ -365,8 +338,8 @@ earlier one, the recorded entry might need supersession.
 When persona-mind's typed memory variants land, each `<Kind>`
 record becomes a memory of variant `Authorial<Kind>` (so
 `AuthorialDecision`, `AuthorialPrinciple`, …). Topic becomes a
-relation tag (`(IntentTopic <topic>)`). The
-`intent/<topic>.nota` path seeds the memory's `uid`.
+relation tag (`(IntentTopic <topic>)`). The Spirit record identity
+seeds the memory's `uid`.
 
 No work in `persona-mind` yet. This note signposts where the
 substance migrates.
@@ -385,6 +358,6 @@ substance migrates.
 - `skills/stt-interpreter.md` — STT-misspelling lookup tables; consult
   before recording verbatim where workspace-specific terms appear.
 - `skills/skills.nota` — the canonical positional-NOTA example.
-- `intent/` — the legacy file substrate; the surface this skill
-  maintained before Spirit shipped.
+- `intent/` — legacy file substrate; do not append during normal
+  work.
 - Forward: `persona-mind` typed memory variants — eventual home.

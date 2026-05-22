@@ -60,8 +60,7 @@ log summaries. Full convention: `skills/intent-manifestation.md`
 - Architectural shape. That's `ARCHITECTURE.md`.
 - Implementation discipline. That's skills.
 - Reports / decisions / audits. Those live in `reports/`.
-- Verbatim quotes. Those live in the intent log
-  (`intent/<topic>.nota`).
+- Verbatim quotes. Those live in Spirit intent records.
 
 The discipline: every statement in `INTENT.md` is a clear
 restatement of a psyche-said thing. The agent's interpretation
@@ -99,9 +98,9 @@ Synthesised from psyche statements; not embellished.*
 
 ---
 
-*Source statements live in the workspace intent log under*
-*`~/primary/intent/` where the recorded entries pertain*
-*to this project.*
+*Source statements live in Spirit intent records under the topics*
+*that pertain to this project. Legacy source statements may still*
+*exist under `~/primary/intent/`.*
 ```
 
 The sections are illustrative; reshape per the psyche statements'
@@ -109,8 +108,8 @@ actual shape.
 
 ## How to derive from psyche statements
 
-1. **Read the intent log** at `~/primary/intent/` for
-   entries that mention this project.
+1. **Read Spirit intent records** for entries that mention this
+   project. Use `~/primary/intent/` only as legacy history.
 2. **For each entry**, ask: is this a goal, constraint, principle,
    or anti-pattern? Place it in the appropriate section.
 3. **Restate clearly.** The intent log carries verbatim + context;
@@ -147,7 +146,7 @@ input on direction) can stay without one.
 ## See also
 
 - `skills/intent-log.md` — workspace-level recording discipline;
-  source of statements for `INTENT.md`.
+  Spirit is the source of new statements for `INTENT.md`.
 - `skills/intent-clarification.md` — when to ask the psyche.
 - `skills/intent-maintenance.md` — supersession protocol.
 - `skills/architecture-editor.md` — the analogy this file

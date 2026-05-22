@@ -8,14 +8,15 @@ the bridge.*
 
 ## What this skill is for
 
-The workspace records psyche intent in `intent/<topic>.nota` as raw
-NOTA records (per `skills/intent-log.md`). That's the capture
-surface — append-only, lock-free, one entry per psyche statement.
-The capture is necessary but not sufficient. For intent to actually
-shape what agents do, it has to land in a **guidance file** — a
-file agents read to inform behavior.
+The workspace records psyche intent in Spirit as typed intent
+records (per `skills/intent-log.md` and `skills/spirit-cli.md`).
+That is the capture surface: one entry per psyche statement. The
+legacy `intent/*.nota` files are historical input, not the normal
+write path. Capture is necessary but not sufficient. For intent to
+actually shape what agents do, it has to land in a **guidance
+file** — a file agents read to inform behavior.
 
-Manifestation walks the gap: read intent log, find entries whose
+Manifestation walks the gap: query Spirit, find entries whose
 substance hasn't yet appeared in the right guidance file, edit the
 guidance file to absorb the substance.
 
@@ -32,7 +33,7 @@ Guidance files (per `INTENT.md` §"Guidance files"):
 |---|---|
 | `ESSENCE.md` (workspace) | Highest-certainty universal psyche statements — the gold of the gold. Bar is high (per `intent/workspace.nota`). Statements that stand as founding rules. |
 | `AGENTS.md` | Per-keystroke hard overrides. Short, every-session-read. The "buck the bad agent habits" stuff. |
-| `INTENT.md` | Workspace intent in prose, synthesised from intent/*.nota; verbatim psyche quotes in italics. Read once on starting; consult by topic. |
+| `INTENT.md` | Workspace intent in prose, synthesised from Spirit records and legacy history; verbatim psyche quotes in italics. Read once on starting; consult by topic. |
 | `skills/<name>.md` | Topic-specific or workflow-specific discipline. Read when the topic comes up. |
 | `<repo>/INTENT.md` | Per-repo prose synthesis of psyche intent for the project. Like ARCHITECTURE.md but for intent. |
 | `<repo>/ESSENCE.md` (when exists) | Per-repo essential intent — the gold-of-the-gold for that project. |
@@ -66,10 +67,11 @@ psyche statement about NOTA grammar lands in both
 
 ## How to walk through
 
-For a topic (or a single intent file):
+For a topic:
 
-1. **Read the topic's intent file** (`intent/<topic>.nota`). Read
-   every record in chronological order.
+1. **Query the topic's Spirit records.** Read every record in
+   chronological order. Consult `intent/*.nota` only when sweeping
+   legacy history.
 2. **For each record**, scan the guidance files you'd expect to
    carry its substance. Does the destination already say what the
    intent says? If yes, nothing to do — the intent is already
@@ -80,16 +82,16 @@ For a topic (or a single intent file):
    (skills are imperative; ESSENCE is declarative; INTENT.md is
    project-specific synthesis).
 4. **Cross-reference where useful.** A destination can name the
-   intent record in passing ("recorded in `intent/workspace.nota`
-   2026-05-19") but the substance lives in the destination, not
+   intent record in passing ("recorded in Spirit topic `workspace`
+   on 2026-05-19") but the substance lives in the destination, not
    the citation.
 5. **Don't track 'manifested' explicitly.** No flag on the intent
    record; no sibling file. The sweep is idempotent — re-running
    it on already-manifested entries is a no-op. (If this becomes
    painful at scale, add a marker mechanism then.)
 
-A sweep can be by-topic (process all of `intent/persona.nota` in
-one pass) or by-destination (sweep into `AGENTS.md` from every
+A sweep can be by-topic (process all Spirit records under `persona`
+in one pass) or by-destination (sweep into `AGENTS.md` from every
 topic). Both work; pick by what's in the current attention.
 
 ## The verbatim-quoting convention

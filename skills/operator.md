@@ -98,6 +98,7 @@ research-library skills stay with the roles that own them.
 - `skills/jj.md`
 - `skills/reporting.md`
 - `skills/beads.md`
+- `skills/spirit-cli.md`
 - `skills/skill-editor.md`
 - `skills/repository-management.md`
 - `skills/feature-development.md`

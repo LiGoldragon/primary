@@ -1,9 +1,9 @@
 # Skill — intent maintenance
 
-*Sweep the intent log: detect supersession, verify entries still
-apply. Keeps `intent/` from rotting as the workspace and the
-psyche's positions evolve. Companion to `skills/intent-log.md`
-(recording).*
+*Sweep the Spirit intent log: detect supersession, verify entries
+still apply. Keeps the intent substrate from rotting as the
+workspace and the psyche's positions evolve. Companion to
+`skills/intent-log.md` (recording).*
 
 ## Supersession protocol — never silent
 
@@ -13,7 +13,7 @@ prior recorded entry:
 1. **Surface the contradiction inline, before recording.** Quote
    the prior verbatim and its certainty, and ask:
 
-   > *"You said earlier (file `intent/<topic>.nota`):*
+   > *"You said earlier (Spirit topic `<topic>`):*
    > *— `<prior summary>`*
    > *— `<prior verbatim quote>`*
    > *— certainty `<prior certainty>`, recorded `<prior timestamp>`*
@@ -25,25 +25,23 @@ prior recorded entry:
 
    | Psyche says | Action |
    |---|---|
-   | "Yes, override" | Replace the prior entry with the new one (step 3) |
+   | "Yes, override" | Mark the prior entry superseded and add the new one (step 3) |
    | "No, clarify — the prior still applies, this is a refinement" | Add the new entry as `Clarification`; prior stays |
    | "Both apply in different contexts" | Add the new entry; the existing one stays |
 
-3. **On confirmed override:** remove the prior entry from the
-   topic file and add the new entry in the same commit. **This is
-   one of the cases that needs a designer lock** (per
-   `skills/intent-log.md` §"Recording is a lock-free shell
-   append" — routine appends are lock-free, but rewrites that
-   remove prior content need coordination). Name the supersession
-   in the commit message (`intent: <topic> — psyche overrides
-   prior <summary slug>; new <new summary slug>`).
+3. **On confirmed override:** use Spirit maintenance tooling when
+   it exists; until then, add the new Spirit entry and mark the
+   prior entry as superseded in the current maintenance report or
+   bead. Do not edit legacy `intent/*.nota` files to fake current
+   Spirit truth. Name the supersession in the commit or report
+   message (`intent: <topic> — psyche overrides prior <summary
+   slug>; new <new summary slug>`).
 
-**Git history holds the lineage.** No `superseded/` subdirectory,
-no `Superseded` records in the file. The topic file always
-contains the *currently-applicable* intent; the prior content lives
-in `jj log` if anyone needs to recover it. This matches the
-report-rename protocol — the file is the current truth, history
-the path.
+**History holds the lineage.** Spirit is the current truth. Legacy
+files are history. Once Spirit supersession tooling exists, it owns
+the active/superseded distinction; until then, supersession is
+explicitly documented and never silently rewritten into legacy
+files.
 
 Supersession is **always explicit, and only the psyche can
 supersede psyche intent.** A new psyche statement is the only
@@ -74,15 +72,14 @@ Verification corrections that aren't superseding the psyche's
 intent (just fixing the agent's transcription) can land directly —
 they're discipline cleanup, not author overrides. Log the change
 in the commit message
-(`intent: corrected summary in <topic>.nota to match verbatim`).
+(`intent: corrected Spirit summary in <topic> to match verbatim`).
 
 ## Sweep — when and how
 
 Trigger a sweep when:
 
-- A topic file grows substantially (soft threshold ~600 lines per
-  `skills/intent-log.md`). Most sweeps don't need to fire that
-  high; smaller sweeps run alongside `skills/context-maintenance.md`.
+- A Spirit topic grows substantially or query results become noisy.
+  Smaller sweeps run alongside `skills/context-maintenance.md`.
 - An agent reviewing a topic notices an entry that no longer
   matches the workspace.
 - Major redesigns (the kind that generate `v2` reports) — the
@@ -91,17 +88,16 @@ Trigger a sweep when:
 
 How:
 
-1. Read every entry in the topic file.
+1. Read every Spirit entry in the topic.
 2. For each entry, check: does this still apply? Does the summary
    still match the verbatim? Does the certainty still match the
    phrasing?
 3. For entries that no longer apply: ask the psyche.
 4. For agent-transcription drift: correct directly.
-5. For a genuine 600+-line file with two distinct sub-topics:
-   carve a new topic file per `skills/intent-log.md` §"When to
-   actually split", move the relevant entries, commit. The split
-   itself is not author intent — it's housekeeping; git history
-   holds the lineage.
+5. For a genuinely noisy topic with two distinct sub-topics:
+   carve a new Spirit topic per `skills/intent-log.md` §"When to
+   actually split". The split itself is not author intent — it's
+   housekeeping; history holds the lineage.
 
 ## When to skip recording in the first place
 
@@ -115,7 +111,7 @@ maintenance context):
   else within the same conversation, skip the intermediate.
 
 If you skip recording a borderline case and the psyche later asks
-"why isn't this in `intent/`?" — at that point, record it.
+"why isn't this in Spirit?" — at that point, record it.
 
 ## Forward — richer supersession lifecycle
 
@@ -146,9 +142,9 @@ operative discipline.
 
 When persona-mind's typed memory variants land, supersession
 becomes a typed relation (`Supersedes` linking two
-`Authorial<Kind>` memories); the workspace topic file retires in
-favor of memory-graph queries. Until then, the topic file plus
-`jj log` are the carrier.
+`Authorial<Kind>` memories); Spirit records retire in favor of
+memory-graph queries. Until then, Spirit is the carrier, with
+legacy files only as historical material.
 
 ## See also
 
@@ -158,4 +154,4 @@ favor of memory-graph queries. Until then, the topic file plus
   intent log is one of the things context-maintenance may sweep.
 - `skills/nota-design.md` — positional-NOTA discipline these
   records follow.
-- `intent/` — the surface this skill maintains.
+- `intent/` — legacy history only.

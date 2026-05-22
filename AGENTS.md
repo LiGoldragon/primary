@@ -7,7 +7,8 @@ The compact contract. Every agent reads this on every session.
 1. **`ESSENCE.md`** — workspace essence (most universal psyche
    intent). Upstream of every rule below.
 2. **`INTENT.md`** — workspace intent in prose form, synthesised
-   from `intent/*.nota`. Read once on starting; consult when a
+   from Spirit records, with `intent/*.nota` as legacy history.
+   Read once on starting; consult when a
    topic comes up.
 3. **`repos/lore/AGENTS.md`** — cross-workspace agent contract.
 4. **`skills/skills.nota`** — typed skill index. Query it whenever
@@ -25,8 +26,8 @@ The compact contract. Every agent reads this on every session.
 |---|---|
 | `ESSENCE.md` | Workspace essence — most universal psyche intent. |
 | `AGENTS.md` | This file. Compact every-keystroke contract. |
-| `INTENT.md` | Workspace intent prose, synthesised from `intent/`. |
-| `intent/` | Workspace log of psyche statements (NOTA). |
+| `INTENT.md` | Workspace intent prose, synthesised from Spirit records and legacy `intent/` history. |
+| `intent/` | Legacy psyche-statement file substrate. Do not append here during normal work. |
 | `<repo>/INTENT.md` | Per-repo synthesis of psyche intent. |
 | `orchestrate/AGENTS.md` | Role-coordination protocol. |
 | `protocols/active-repositories.md` | Live repo map for architecture sweeps. |
@@ -113,26 +114,27 @@ Each agent knows its lane before claiming or editing. Coordination:
   language input to the agent; NOTA-formatted persona messages
   between agents are not psyche, agent-written files are not
   psyche, the intent log is psyche-*derived* but only as a record
-  of psyche statements. Record explicit psyche intent in
-  `intent/<topic>.nota` (`skills/intent-log.md`); reflect
-  into per-repo `INTENT.md` (`skills/repo-intent.md`). **When
+  of psyche statements. Record explicit psyche intent through the
+  deployed Spirit CLI (`skills/intent-log.md`,
+  `skills/spirit-cli.md`); reflect into per-repo `INTENT.md`
+  (`skills/repo-intent.md`). **When
   intent on a question is unclear, absent, or contradicted, ask
   the psyche** (`skills/intent-clarification.md`) — don't infer.
   The intent layer has higher authority than every other workspace
   surface; supersession of psyche intent is always explicit
   (`skills/intent-maintenance.md`).
-- **Extract intent to disk FIRST when a psyche prompt arrives.**
+- **Capture intent through Spirit FIRST when a psyche prompt arrives.**
   Before editing any report, before writing code, before responding
   in chat — read the psyche's message, identify every intent
   statement (Decision / Principle / Correction / Clarification /
   Constraint), and capture each through the deployed Spirit CLI
-  (`skills/spirit-cli.md`). The transitional `intent/<topic>.nota`
-  append flow remains a fallback for the kink-working-out window;
-  the capture itself is non-negotiable. Everything else the prompt
-  asked for derives from intent and is done *after* the capture.
-  Reports, code, and chat are all downstream of intent. This is
-  the absolute first task of any session-turn that contains psyche
-  input.
+  (`skills/spirit-cli.md`). Do not append to `intent/*.nota` during
+  normal work. If Spirit is unavailable, report that as a blocker
+  instead of silently reviving the legacy file substrate. Everything
+  else the prompt asked for derives from intent and is done *after*
+  the capture. Reports, code, and chat are all downstream of intent.
+  This is the absolute first task of any session-turn that contains
+  psyche input.
 - **Do not dispatch subagents unless the psyche explicitly asks — except in the designer protocol.**
   Subagents — `Agent` tool invocations spawning parallel work, or
   `SendMessage` to other agent instances — run outside the

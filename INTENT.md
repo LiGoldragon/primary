@@ -1,11 +1,12 @@
 # INTENT — primary workspace
 
-*The psyche's intent for this workspace, synthesised from the
-intent log (`intent/*.nota`). Verbatim psyche quotes appear in
-italics; surrounding prose is agent-composed from intent-log
-summaries. Companion to `ESSENCE.md` (the most universal psyche
-intent — gold of the gold) and `AGENTS.md` (every-session contract
-and override rules). Maintenance: `skills/intent-manifestation.md`.*
+*The psyche's intent for this workspace, synthesised from Spirit
+intent records and legacy `intent/*.nota` history. Verbatim psyche
+quotes appear in italics; surrounding prose is agent-composed from
+intent-log summaries. Companion to `ESSENCE.md` (the most universal
+psyche intent — gold of the gold) and `AGENTS.md` (every-session
+contract and override rules). Maintenance:
+`skills/intent-manifestation.md`.*
 
 ## Intent is primordial
 
@@ -23,13 +24,13 @@ breaking; asking is the discipline working.*
 
 The workspace calls every file that shapes agent behavior a
 **guidance file**: `ESSENCE.md`, `AGENTS.md`, `INTENT.md`, every
-skill in `skills/`, every intent file in `intent/`, and per-repo
-`INTENT.md` / `skills.md` / `ARCHITECTURE.md`. The shape an intent
-statement takes depends on its level of clarity and importance:
-*highest-certainty universal psyche statements land in ESSENCE.md;
-per-keystroke override-shaped rules in AGENTS.md hard overrides;
-topic-specific discipline in skills; raw psyche records in
-intent/.*
+skill in `skills/`, Spirit intent records and legacy intent files,
+and per-repo `INTENT.md` / `skills.md` / `ARCHITECTURE.md`. The
+shape an intent statement takes depends on its level of clarity and
+importance: *highest-certainty universal psyche statements land in
+ESSENCE.md; per-keystroke override-shaped rules in AGENTS.md hard
+overrides; topic-specific discipline in skills; raw psyche records
+in Spirit.*
 
 Editing guidance files is the cadence of workspace evolution.
 
@@ -37,12 +38,12 @@ Editing guidance files is the cadence of workspace evolution.
 
 Three surfaces, in increasing distillation:
 
-The **intent log** at `intent/<topic>.nota` carries raw psyche
-statements as positional NOTA records. Append-only; lock-free
-(POSIX `O_APPEND` atomic under PIPE_BUF). Each entry holds a
-terse agent rephrasing, the psyche's verbatim quote, surrounding
-context, certainty, date, and time. Discipline:
-`skills/intent-log.md`.
+The **intent log** lives in Spirit. It carries raw psyche statements
+as typed intent entries. Each entry holds a terse agent rephrasing,
+the psyche's verbatim quote, surrounding context, certainty, date,
+and time. The daemon stamps receipt time; agents do not manually
+append to `intent/*.nota` during normal work. Discipline:
+`skills/intent-log.md` and `skills/spirit-cli.md`.
 
 **Per-repo `INTENT.md`** synthesises the project's psyche intent
 into prose, the same shape as this file. Discipline:
@@ -67,14 +68,14 @@ authority.
 
 ## Recording is the first task of any psyche-prompt turn
 
-When a psyche prompt arrives, *extracting intent to disk is the
-absolute first task — before editing reports, before responding,
+When a psyche prompt arrives, *capturing intent through Spirit is
+the absolute first task — before editing reports, before responding,
 before implementing. Everything else derives from intent.* The
 agent reads the prompt, identifies every intent statement
 (Decision / Principle / Correction / Clarification / Constraint),
-writes each to the appropriate `intent/<topic>.nota` via
-lock-free `cat >> … <<'EOF' … EOF`, *then* proceeds with the
-work the prompt asked for.
+records each through the deployed `spirit` CLI, *then* proceeds
+with the work the prompt asked for. The legacy `intent/*.nota`
+append path is not the normal workflow.
 
 ## Reports are for agents; chat is for the psyche
 

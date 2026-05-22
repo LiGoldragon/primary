@@ -103,15 +103,15 @@
   (Meta context-maintenance skills/context-maintenance.md Mechanism
     "Sweep reports and conversation. Migrate substance to permanent homes.")
   (Meta intent-log skills/intent-log.md Topic
-    "Record explicit psyche intent. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded. Substrate-agnostic; see skills/spirit-cli.md for the deployed substrate.")
+    "Record explicit psyche intent through Spirit. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded.")
   (Meta spirit-cli skills/spirit-cli.md Topic
-    "How to invoke the deployed spirit CLI. Inline NOTA vs file-path argument; the currently deployed wire shape; finding the wire shape when it drifts; substrate-replacement relationship to intent-log.")
+    "How to invoke the deployed Spirit CLI. Inline NOTA vs file-path argument; the live wire shape; finding the wire shape when it drifts; front matter names the documented tool version.")
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
-    "Sweep the intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; current truth stays in topic files, lineage in jj history.")
+    "Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.")
   (Meta intent-clarification skills/intent-clarification.md Topic
     "Ask the psyche when intent on a question is unclear, absent, or contradicted. Don't infer intent; ask. Structured options + lean.")
   (Meta repo-intent skills/repo-intent.md Mechanism
     "Per-repo INTENT.md — agent-written prose, 100% backed by psyche statements, no embellishment, no inference. Like ARCHITECTURE.md but for intent.")
   (Meta intent-manifestation skills/intent-manifestation.md Mechanism
-    "Walk through intent log; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / INTENT / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.")
+    "Walk through Spirit records; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / INTENT / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.")
 ]
