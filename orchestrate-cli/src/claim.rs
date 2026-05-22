@@ -91,7 +91,7 @@ pub fn claim(
         }
     }
 
-    let request = request::claim_request(lane, &scopes, reason)?;
+    let request = request::claim_request(lane.clone(), &scopes, reason)?;
 
     let entries: Vec<LockEntry> = scopes
         .iter()
@@ -106,12 +106,12 @@ pub fn claim(
         })
         .collect();
     let lock = LockFile::new(entries);
-    lock.write(&workspace.lock_path(lane))?;
+    lock.write(&workspace.lock_path(&lane))?;
 
-    let overlaps = detect_overlaps(workspace, registry, lane, &scopes)?;
+    let overlaps = detect_overlaps(workspace, registry, &lane, &scopes)?;
     if !overlaps.is_empty() {
         // Roll the claim back so peer agents see the lane idle again.
-        LockFile::default().write(&workspace.lock_path(lane))?;
+        LockFile::default().write(&workspace.lock_path(&lane))?;
         return Ok(ClaimOutcome::Rejected {
             request,
             lane,
@@ -128,8 +128,8 @@ pub fn claim(
 }
 
 pub fn release(workspace: &Workspace, lane: Lane) -> Result<ReleaseOutcome> {
-    let request = request::release_request(lane);
-    LockFile::default().write(&workspace.lock_path(lane))?;
+    let request = request::release_request(lane.clone())?;
+    LockFile::default().write(&workspace.lock_path(&lane))?;
     Ok(ReleaseOutcome { request, lane })
 }
 
@@ -137,7 +137,7 @@ pub fn status(workspace: &Workspace, registry: &LaneRegistry) -> Result<StatusRe
     let request = request::observation_request();
     let mut lanes = Vec::new();
     for lane in registry.lanes() {
-        let lock = LockFile::read(&workspace.lock_path(lane))?;
+        let lock = LockFile::read(&workspace.lock_path(&lane))?;
         lanes.push(LaneStatus { lane, lock });
     }
     Ok(StatusReport { request, lanes })
@@ -146,19 +146,19 @@ pub fn status(workspace: &Workspace, registry: &LaneRegistry) -> Result<StatusRe
 fn detect_overlaps(
     workspace: &Workspace,
     registry: &LaneRegistry,
-    own_lane: Lane,
+    own_lane: &Lane,
     own_scopes: &[NormalizedScope],
 ) -> Result<Vec<ClaimOverlapDescription>> {
     let mut overlaps = Vec::new();
     for peer in registry.peer_lanes(own_lane) {
-        let peer_lock = LockFile::read(&workspace.lock_path(peer))?;
+        let peer_lock = LockFile::read(&workspace.lock_path(&peer))?;
         for peer_entry in peer_lock.entries() {
             for own_scope in own_scopes {
                 if overlap::overlap(own_scope, &peer_entry.scope) {
                     overlaps.push(ClaimOverlapDescription {
-                        own_lane,
+                        own_lane: own_lane.clone(),
                         own_scope: own_scope.clone(),
-                        peer_lane: peer,
+                        peer_lane: peer.clone(),
                         peer_scope: peer_entry.scope.clone(),
                         peer_reason: peer_entry.reason.clone(),
                     });

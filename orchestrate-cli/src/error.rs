@@ -16,14 +16,6 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("unknown lane token: {token}")]
-    UnknownLane { token: String },
-
-    #[error(
-        "lane {lane} appears in registry but is missing from the closed Lane enum — update orchestrate-cli to mirror orchestrate/roles.list"
-    )]
-    LaneNotInEnum { lane: String },
-
     #[error("role registry has no entries — check {path}")]
     EmptyRoleRegistry { path: PathBuf },
 

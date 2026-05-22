@@ -8,17 +8,23 @@ use orchestrate_cli::{Lane, LockFile, Workspace};
 use tempfile::TempDir;
 
 const REGISTRY: &str = r#"operator
+second-operator                   parallel-of:operator
 operator-assistant                assistant-of:operator
 second-operator-assistant         assistant-of:operator
 designer
+second-designer                   parallel-of:designer
+third-designer                    parallel-of:designer
 designer-assistant                assistant-of:designer
-second-designer-assistant         assistant-of:designer
 system-specialist
 system-assistant                  assistant-of:system-specialist
 second-system-assistant           assistant-of:system-specialist
 poet
 poet-assistant                    assistant-of:poet
 "#;
+
+fn lane(token: &str) -> Lane {
+    Lane::from_token(token).expect("valid lane")
+}
 
 struct Fixture {
     _temp: TempDir,
@@ -51,7 +57,7 @@ impl Fixture {
     }
 
     fn read_lock(&self, lane: Lane) -> String {
-        match fs::read_to_string(self.workspace.lock_path(lane)) {
+        match fs::read_to_string(self.workspace.lock_path(&lane)) {
             Ok(text) => text,
             Err(_) => String::new(),
         }
@@ -65,7 +71,7 @@ fn claim_writes_lock_file_in_shell_format() {
     let outcome = claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Operator,
+        lane("operator"),
         vec![RawScope::new(scope_text.clone())],
         "syncing claim docs",
         fixture.workspace_path(),
@@ -73,7 +79,7 @@ fn claim_writes_lock_file_in_shell_format() {
     .expect("claim succeeds");
     assert!(matches!(outcome, ClaimOutcome::Accepted { .. }));
 
-    let lock_text = fixture.read_lock(Lane::Operator);
+    let lock_text = fixture.read_lock(lane("operator"));
     assert_eq!(lock_text, format!("{scope_text} # syncing claim docs\n"));
 }
 
@@ -84,14 +90,14 @@ fn release_clears_the_lock_file() {
     claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Operator,
+        lane("operator"),
         vec![RawScope::new(scope_text)],
         "syncing",
         fixture.workspace_path(),
     )
     .expect("claim");
-    claim::release(&fixture.workspace, Lane::Operator).expect("release");
-    let lock = LockFile::read(&fixture.workspace.lock_path(Lane::Operator)).unwrap();
+    claim::release(&fixture.workspace, lane("operator")).expect("release");
+    let lock = LockFile::read(&fixture.workspace.lock_path(&lane("operator"))).unwrap();
     assert!(lock.is_idle());
 }
 
@@ -103,7 +109,7 @@ fn second_claim_on_overlapping_path_is_rejected_and_rolled_back() {
     claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Operator,
+        lane("operator"),
         vec![RawScope::new(path.clone())],
         "first claim",
         fixture.workspace_path(),
@@ -113,7 +119,7 @@ fn second_claim_on_overlapping_path_is_rejected_and_rolled_back() {
     let outcome = claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Designer,
+        lane("designer"),
         vec![RawScope::new(path.clone())],
         "second claim",
         fixture.workspace_path(),
@@ -123,18 +129,18 @@ fn second_claim_on_overlapping_path_is_rejected_and_rolled_back() {
     match outcome {
         ClaimOutcome::Rejected { overlaps, .. } => {
             assert_eq!(overlaps.len(), 1);
-            assert_eq!(overlaps[0].own_lane, Lane::Designer);
-            assert_eq!(overlaps[0].peer_lane, Lane::Operator);
+            assert_eq!(overlaps[0].own_lane, lane("designer"));
+            assert_eq!(overlaps[0].peer_lane, lane("operator"));
         }
         ClaimOutcome::Accepted { .. } => panic!("expected rejection on overlap"),
     }
 
     // Designer's lock should be cleared after rollback.
-    let designer_lock = LockFile::read(&fixture.workspace.lock_path(Lane::Designer)).unwrap();
+    let designer_lock = LockFile::read(&fixture.workspace.lock_path(&lane("designer"))).unwrap();
     assert!(designer_lock.is_idle());
 
     // Operator's lock survives untouched.
-    let operator_lock = LockFile::read(&fixture.workspace.lock_path(Lane::Operator)).unwrap();
+    let operator_lock = LockFile::read(&fixture.workspace.lock_path(&lane("operator"))).unwrap();
     assert!(!operator_lock.is_idle());
 }
 
@@ -145,7 +151,7 @@ fn task_lock_overlaps_only_on_exact_match() {
     claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Operator,
+        lane("operator"),
         vec![RawScope::new("[primary-68cb]")],
         "rust port",
         fixture.workspace_path(),
@@ -155,7 +161,7 @@ fn task_lock_overlaps_only_on_exact_match() {
     let conflict = claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Designer,
+        lane("designer"),
         vec![RawScope::new("[primary-68cb]")],
         "review",
         fixture.workspace_path(),
@@ -166,7 +172,7 @@ fn task_lock_overlaps_only_on_exact_match() {
     let non_conflict = claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Designer,
+        lane("designer"),
         vec![RawScope::new("[primary-different]")],
         "review",
         fixture.workspace_path(),
@@ -183,7 +189,7 @@ fn mixed_kinds_do_not_overlap() {
     claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Operator,
+        lane("operator"),
         vec![RawScope::new(path)],
         "path claim",
         fixture.workspace_path(),
@@ -193,7 +199,7 @@ fn mixed_kinds_do_not_overlap() {
     let task_claim = claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Designer,
+        lane("designer"),
         vec![RawScope::new("[primary-68cb]")],
         "task claim",
         fixture.workspace_path(),
@@ -211,7 +217,7 @@ fn beads_scope_is_rejected_as_a_path() {
     let result = claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Operator,
+        lane("operator"),
         vec![RawScope::new(beads_path)],
         "claim beads",
         fixture.workspace_path(),
@@ -229,7 +235,7 @@ fn status_lists_every_lane_in_registry_order() {
     claim::claim(
         &fixture.workspace,
         &fixture.registry,
-        Lane::Operator,
+        lane("operator"),
         vec![RawScope::new(path)],
         "syncing",
         fixture.workspace_path(),
@@ -237,27 +243,33 @@ fn status_lists_every_lane_in_registry_order() {
     .expect("claim");
 
     let report = claim::status(&fixture.workspace, &fixture.registry).expect("status");
-    let lanes: Vec<Lane> = report.lanes.iter().map(|status| status.lane).collect();
+    let lanes: Vec<Lane> = report
+        .lanes
+        .iter()
+        .map(|status| status.lane.clone())
+        .collect();
     assert_eq!(
         lanes,
         vec![
-            Lane::Operator,
-            Lane::OperatorAssistant,
-            Lane::SecondOperatorAssistant,
-            Lane::Designer,
-            Lane::DesignerAssistant,
-            Lane::SecondDesignerAssistant,
-            Lane::SystemSpecialist,
-            Lane::SystemAssistant,
-            Lane::SecondSystemAssistant,
-            Lane::Poet,
-            Lane::PoetAssistant,
+            lane("operator"),
+            lane("second-operator"),
+            lane("operator-assistant"),
+            lane("second-operator-assistant"),
+            lane("designer"),
+            lane("second-designer"),
+            lane("third-designer"),
+            lane("designer-assistant"),
+            lane("system-specialist"),
+            lane("system-assistant"),
+            lane("second-system-assistant"),
+            lane("poet"),
+            lane("poet-assistant"),
         ]
     );
     let operator_status = report
         .lanes
         .iter()
-        .find(|status| status.lane == Lane::Operator)
+        .find(|status| status.lane == lane("operator"))
         .expect("operator status");
     assert!(!operator_status.lock.is_idle());
 }

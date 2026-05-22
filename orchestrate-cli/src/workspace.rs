@@ -31,7 +31,7 @@ impl Workspace {
         self.orchestrate_dir().join("roles.list")
     }
 
-    pub fn lock_path(&self, lane: Lane) -> PathBuf {
+    pub fn lock_path(&self, lane: &Lane) -> PathBuf {
         self.orchestrate_dir().join(lane.lock_file_name())
     }
 

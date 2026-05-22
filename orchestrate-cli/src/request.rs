@@ -7,7 +7,7 @@
 //! that will eventually ship over the `persona-orchestrate` socket.
 
 use signal_persona_orchestrate::{
-    OrchestrateRequest, RoleClaim, RoleObservation, RoleRelease, ScopeReason, ScopeReference,
+    Observation, OrchestrateRequest, RoleClaim, RoleRelease, ScopeReason, ScopeReference,
 };
 
 use crate::error::{Error, Result};
@@ -19,23 +19,23 @@ pub fn claim_request(
     scopes: &[NormalizedScope],
     reason: &str,
 ) -> Result<OrchestrateRequest> {
-    let role = lane.role_name();
+    let role = lane.role_name()?;
     let scope_references: Vec<ScopeReference> =
         scopes.iter().map(NormalizedScope::as_reference).collect();
     let reason = ScopeReason::from_text(reason).map_err(|_| Error::InvalidScopeReason)?;
 
-    Ok(OrchestrateRequest::RoleClaim(RoleClaim {
+    Ok(OrchestrateRequest::Claim(RoleClaim {
         role,
         scopes: scope_references,
         reason,
     }))
 }
 
-pub fn release_request(lane: Lane) -> OrchestrateRequest {
-    let role = lane.role_name();
-    OrchestrateRequest::RoleRelease(RoleRelease { role })
+pub fn release_request(lane: Lane) -> Result<OrchestrateRequest> {
+    let role = lane.role_name()?;
+    Ok(OrchestrateRequest::Release(RoleRelease { role }))
 }
 
 pub fn observation_request() -> OrchestrateRequest {
-    OrchestrateRequest::RoleObservation(RoleObservation)
+    OrchestrateRequest::Observe(Observation::Roles)
 }
