@@ -42,6 +42,11 @@ storePath = "${stateDirectory}/persona-spirit.redb";
 The live deployed lock points at `persona-spirit` commit
 `694452add7734d0b00954a0d7d4d46bb5d776065`, tagged `v0.1.0`.
 
+Terminology correction: `storePath` here is the component's runtime state
+database path, not a `/nix/store` path. The Home Manager module currently names
+the redb file path `storePath`; in this report, the clearer term is database
+path or state path. The Nix package version is a separate surface.
+
 The already-produced migrated database is:
 
 ```text
@@ -132,7 +137,7 @@ For each version, generate:
   `~/.local/state/persona-spirit/v0.1.1/`;
 - one ordinary socket path, for example `v0.1.1/spirit.sock`;
 - one owner socket path, for example `v0.1.1/owner.sock`;
-- one store path, for example `v0.1.1/persona-spirit.redb`;
+- one database path, for example `v0.1.1/persona-spirit.redb`;
 - one CLI wrapper, for example `spirit-v0.1.1`.
 
 Then make unversioned `spirit` a symlink to the active wrapper.
