@@ -42,6 +42,15 @@ storePath = "${stateDirectory}/persona-spirit.redb";
 The live deployed lock points at `persona-spirit` commit
 `694452add7734d0b00954a0d7d4d46bb5d776065`, tagged `v0.1.0`.
 
+Operator update, 2026-05-22: the Spirit-Magnitude work is no longer branch
+only. `signal-persona-spirit` main now carries
+`5f7d4f4215f7ee0c82641d1dc081c9380bf0e0a1` and tag `v0.1.1`;
+`persona-spirit` main now carries
+`e137f5de4c663b0cb9a8b52f87d9bdadff80841f` and tag `v0.1.1`.
+The former `operator/spirit-response-protocol` branches were deleted.
+`sema-upgrade` now depends on `signal-persona-spirit` `branch = "main"` at
+the v0.1.1 contract commit.
+
 Terminology correction: `storePath` here is the component's runtime state
 database path, not a `/nix/store` path. The Home Manager module currently names
 the redb file path `storePath`; in this report, the clearer term is database
@@ -117,7 +126,7 @@ inputs:
 
 ```nix
 persona-spirit-v0_1_0.url = "github:LiGoldragon/persona-spirit?rev=694452add7734d0b00954a0d7d4d46bb5d776065";
-persona-spirit-v0_1_1.url = "github:LiGoldragon/persona-spirit?rev=<current-v0.1.1-revision>";
+persona-spirit-v0_1_1.url = "github:LiGoldragon/persona-spirit?ref=v0.1.1";
 ```
 
 Then the module exposes a declarative selector:
