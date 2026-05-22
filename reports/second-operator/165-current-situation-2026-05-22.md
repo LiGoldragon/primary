@@ -263,14 +263,12 @@ Current corrections:
 
 Questions to carry:
 
-1. Spirit default routing: dual-write wrapper, default flip with
-   v0.1.0 read-only fallback, or high-water-mark replay?
-2. `EffectEmitted` payload: component-local typed `Effect` or
+1. `EffectEmitted` payload: component-local typed `Effect` or
    universal `SemaObservation`?
-3. Orchestrate executor migration timing: after the Spirit wrapper or
+2. Orchestrate executor migration timing: after the Spirit wrapper or
    in parallel?
-4. `persona-llm-client`: library only or full triad?
-5. Spirit v0.1.1 asymmetry: `persona-spirit` and
+3. `persona-llm-client`: library only or full triad?
+4. Spirit v0.1.1 asymmetry: `persona-spirit` and
    `signal-persona-spirit` are v0.1.1 while
    `owner-signal-persona-spirit` remains v0.1.0; intentional?
 
@@ -288,6 +286,84 @@ proper triad service. Spirit record 175 captures this decision. The
 remaining open point is conceptual rather than directional: explain
 what the Pi RPC process actually looks like and whether it should be
 short-lived per request or held open as a reusable session.
+
+## Refresh After Spirit 176-193, Cluster-Operator 4, And Designer 284
+
+Freshly absorbed:
+
+- Spirit records 176-193.
+- `reports/cluster-operator/4-update-authority-and-lojix-daemon-current-state-2026-05-22.md`.
+- `reports/designer/284-per-type-migration-trait-specification.md`.
+
+Action taken in this lane:
+
+- Cleared the stale Bird-on-Zeus branch question. The current update
+  source is LiGoldragon `main`, not a Bird/Aether branch. Cluster-
+  operator owns the implementation path.
+- Reframed the Spirit cutover question. The active design is no longer
+  generic dual-write vs flip vs replay; the new vocabulary is `main`
+  and `next`, with the CLI routing to `next`, `next` coordinating back
+  to `main`, and `main` recording divergence or recovering what it can.
+- Kept Orchestrate executor migration as this lane's implementation
+  target. The migration-trait specification is foundation work; it
+  affects every daemon later, but it does not block local
+  signal-executor routing inside persona-orchestrate.
+- Did not edit `skills/role-lanes.md`. Spirit record 174 should be
+  manifested there as specialized-role discipline, but the file is
+  already dirty from another lane. Committing it from here would mix
+  ownership.
+
+Current migration-shape implications:
+
+- The canonical version-pair vocabulary is `main` / `next`.
+- Component development is moving toward standard `main` and `next`
+  branches.
+- The proposed migration foundation is a new `migration` crate plus a
+  `signal-version-coordination` contract.
+- `PeerCheck` is proposed on each component working contract; universal
+  coordination back to `main` is proposed through
+  `signal-version-coordination`.
+- persona-introspect is proposed as the cross-version failure-log home.
+- Historical signal versions are proposed as frozen sibling repos such
+  as `signal-persona-spirit-v0-1-0`.
+
+Still-relevant questions after this refresh:
+
+1. `EffectEmitted` event payload: component-local typed `Effect`, or
+   universal `SemaObservation`? This still blocks observable blocks on
+   the unmigrated persona contracts.
+2. Orchestrate executor migration timing: should second-operator keep
+   going in parallel, or pause until the Spirit `main`/`next` cutover
+   path is implemented?
+3. In Orchestrate, do `Watch`/`Unwatch` survive as domain streams for
+   role/lane/claim/activity facts, or should generic observation be
+   only `Tap`/`Untap`?
+4. What are the first high-level Mind-to-Orchestrate owner verbs for
+   channel choreography before Orchestrate calls Router's
+   `Grant`/`Extend`/`Revoke`/`Deny`?
+5. What is the durable split between role definition, lane/window,
+   agent run, job, and policy records in persona-orchestrate?
+6. Is the Spirit release asymmetry intentional:
+   `persona-spirit` + `signal-persona-spirit` at v0.1.1 while
+   `owner-signal-persona-spirit` stays v0.1.0?
+7. For headless Pi RPC, should the Rust wrapper keep one Pi process
+   alive per role/lane session, per task, or per call?
+8. For headless Pi state, should Pi's own session persistence be used,
+   or should the Rust wrapper own persistence and treat Pi as stateless?
+9. For headless Pi tools, which built-ins are initially allowed:
+   read-only tools, shell, edit/write, or policy-configurable tools?
+10. For Bird-on-Zeus, is the first helper surface exactly
+    `(LocalUpdate HomeProfile)` and `(LocalUpdate FullSwitch)`, or
+    should engineering actions like `Test` and `BootOnce` be exposed
+    immediately?
+11. For the Bird-on-Zeus root boundary, should the helper be Rust from
+    the first real slice, or is a zero-dynamic-field shell wrapper
+    acceptable as a temporary experiment?
+12. For designer 284's migration spec, do the open leans stand:
+    crate name `migration`, frozen sibling historical repos,
+    separate `signal-version-coordination`, no owner coordination
+    contract yet, PeerCheck on working contracts, compile-time
+    `MigrationIndex`?
 
 ## Cleared Question
 
