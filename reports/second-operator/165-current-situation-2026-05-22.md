@@ -59,6 +59,79 @@ Orchestrate executor migration:
 5. add constraint tests proving the daemon no longer bypasses the
    executor path.
 
+## Designer And Operator Report Absorption
+
+Absorbed the current designer/operator surface after the lane-registry
+slice:
+
+- `reports/designer/249`, `/257`, `/263`, `/264`, `/266`, `/268`,
+  `/270`, `/271`, `/273`, `/274`, `/278`, `/279`, `/280`.
+- `reports/operator/136`, `/150`, `/151`, `/153`, `/154`, `/155`,
+  `/156`.
+- `reports/second-designer/130` through `/150`, with focus on
+  Orchestrate `/137`, lane registry `/146`-`/149`, recording `/145`
+  and `/148`, and identity/runtime functions `/150`.
+- `reports/second-operator-assistant/7` through `/11`.
+- `reports/third-designer/14` through `/16`.
+
+The short synthesis:
+
+- **Spirit cutover is the active system blocker.** Both v0.1.0 and
+  v0.1.1 daemons are running; v0.1.1 has a migrated database through
+  record 146; unsuffixed `spirit` still writes to v0.1.0. The open
+  cutover choice is dual-write wrapper, immediate default flip with
+  v0.1.0 fallback, or high-water-mark replay before allowing more old
+  writes.
+- **Sema-upgrade is the durable migration substrate.** The prototype
+  exists; the real daemon and thin `upgrade` CLI are the next durable
+  shape. Open design pressure remains self-upgrade/bootstrap,
+  commit-sequence scope, and typed rejection fanout.
+- **Schema identity moved from semver to content address.** The
+  schema hash is the per-component Blake3 hash over the canonical
+  NOTA schema, including public signal types and private runtime
+  storage wrappers.
+- **The v4 component migration recipe is stable.** Each component
+  needs contract-local verbs and observable blocks, then daemon-local
+  `Command`/`Effect`, `ToSemaOperation`/`ToSemaOutcome`, `Lowering`,
+  `CommandExecutor`, and executor-centered socket routing.
+- **Orchestrate remains the second-operator implementation target.**
+  Lane registry landed. The next slice is executor migration and
+  owner-signal shape cleanup; do not expand the owner contract by
+  copying lock-helper or router mechanics.
+- **Role identity has changed underneath lane registry.** Lanes are
+  windows into one role agent; `operator` and `second-operator` share
+  identity. Orchestrate eventually needs `lane_registry`,
+  `lane_sessions`, and `role_identities` tables rather than treating a
+  lane as an agent.
+- **Mind decides; Orchestrate enacts.** Channel choreography decisions
+  live in Mind; Orchestrate owns Router and turns high-level Mind
+  decisions into low-level Router owner-signal calls.
+- **Lane retirement has a report conflict.** `reports/second-designer/149`
+  says retired lane identifiers should be reserved forever. Newer
+  psyche clarification to this lane says retired identifiers can go
+  away for now. I treat the newer clarification as current for the
+  present MVP unless designer reopens it.
+
+## Current Questions For Psyche
+
+1. For Spirit cutover, should unsuffixed `spirit` dual-write to both
+   v0.1.0 and v0.1.1 during migration, flip immediately to v0.1.1
+   with v0.1.0 as read-only fallback, or block old writes until
+   sema-upgrade has high-water-mark replay?
+2. Should second-operator proceed with Orchestrate executor migration
+   now, or should this lane pause until the Spirit/sema-upgrade cutover
+   finishes?
+3. For Orchestrate's next owner-signal pass, what high-level
+   Mind-to-Orchestrate verbs should carry channel-choreography
+   decisions before Orchestrate calls Router's `Grant`/`Extend`/
+   `Revoke`/`Deny`?
+4. Should `reports/second-designer/149` be treated as superseded on
+   retired lane identifier tombstones by the newer clarification, or
+   do you want designer to re-audit that point explicitly?
+5. Should this lane keep a simple report-read ledger section until the
+   eventual agent-checkout command exists, or is this absorption note
+   enough for now?
+
 ## Cleared Question
 
 Retired lane identifiers do not need tombstones right now. The current
