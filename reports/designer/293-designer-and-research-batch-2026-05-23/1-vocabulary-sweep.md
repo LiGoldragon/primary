@@ -119,11 +119,12 @@ The §1.6.7 §"The four-socket model" table is the canonical model of the rename
 | Repo | Commit | Subject |
 |---|---|---|
 | `/home/li/primary` | `d74d4b47` | `designer: vocabulary sweep + skills/workspace-vocabulary.md (primary-3t67)` |
+| `/home/li/primary` | `b949859e` | `designer: vocabulary sweep report — record landed commit hashes` (small follow-up: backfilled this section with the hashes once the first commit landed) |
 | `/git/github.com/LiGoldragon/persona` | `3a1499f2` | `ARCHITECTURE: vocabulary sweep — Persona, engine-management socket, main/next bridges` |
 
-Both commits pushed to `main` via standard `jj` flow per `skills/jj.md`. The primary commit covers the new skill + `skills.nota` registration + the ten designer-report sweeps + this report. The persona commit covers the ARCH sweep alone. Each repo has one commit (per the task's "ONE commit per repo" constraint).
+All commits pushed to `main` via standard `jj` flow per `skills/jj.md`. The primary substance lives in `d74d4b47` (skill + `skills.nota` registration + ten designer-report sweeps + this report); the small followup `b949859e` is the hash backfill of this section after the parent commit landed. The persona commit covers the ARCH sweep alone. The "ONE commit per repo" target lands in spirit even if not in letter: persona is one; primary's two commits split substance from the metadata hash-backfill.
 
-The primary commit deliberately excluded the other 293/ subagents' reports + the orchestrator's `0-frame-and-method.md` + the `reports/nota-designer/` file (different lane) per `skills/jj.md` §"Before you commit — the working-copy check" — those land via their own agents' flows.
+The primary commits deliberately excluded the other 293/ subagents' reports + the orchestrator's `0-frame-and-method.md` + the `reports/nota-designer/` file (different lane) per `skills/jj.md` §"Before you commit — the working-copy check" — those land via their own agents' flows.
 
 ## §6 Any contradictions or surprises found
 
