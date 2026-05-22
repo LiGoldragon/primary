@@ -8,23 +8,35 @@ LLMs) into a "reusable library" shape per the psyche's
 2026-05-22 direction. Designer lane; dispatched under the
 parallel-subagents authorisation (psyche 2026-05-21).*
 
-> **2026-05-22 update — wrapping decision superseded:** This
-> report's TL;DR recommendation ("depend on `@earendil-works/pi-ai`
+> **2026-05-22 update — wrapping decisions (post-research intent):**
+> This report's TL;DR recommendation ("depend on `@earendil-works/pi-ai`
 > directly") and §3 integration-shape sketch are SUPERSEDED by
-> psyche correction (spirit records 152 supersedes 151; 158 introduces
-> the new shape). The workspace's actual choice is to build its own
-> lightweight LLM client library — **`persona-llm-client`** — that
-> is Rust-native, daemon-embeddable, and talks DeepSeek's
-> OpenAI-compatible API directly (without spawning a Node
-> subprocess or depending on `pi-ai`'s typed Node API).
-> `persona-pi` (per /266) remains as the harness-runtime
-> adaptation, a different shape than `persona-llm-client`. The
-> findings in §1-§2 of this report on headless-Pi modes and capture
-> surface remain valid as reference (Pi as a comparison point and
-> as the harness for persona-pi specifically), but the integration
-> recommendation in §3 should be read against the new shape, not
-> taken as the workspace path. Design tasks #194 (persona-llm-client)
-> and #191 (persona-pi unchanged scope) carry the next moves.
+> psyche corrections.
+>
+> Three distinct workspace concerns crystallised after this report:
+>
+> 1. **`persona-llm-client`** (spirit records 152 supersedes 151;
+>    158): workspace-native lightweight LLM client library, Rust,
+>    daemon-embeddable, talks DeepSeek/OpenAI-compatible APIs
+>    directly. No Pi dependency. This is the workspace's LLM-call
+>    layer. Bead `primary-lyc8` (PARKED).
+> 2. **Rust RPC wrapper for headless Pi** (spirit record 175,
+>    Medium): build a Rust client for Pi's `--mode rpc` (the
+>    headless mode this report documents in §1.2) as a useful
+>    baseline. This is for Pi-as-agent-runtime calls, NOT for LLM
+>    calls. Open question: standalone library, part of persona-pi,
+>    or part of persona-llm-client? Carried by bead `primary-u7gc`
+>    pending clarification.
+> 3. **`persona-pi` triad** (per /266): full Pi harness adaptation
+>    with dual-path (terminal-cell + harness API). Distinct from
+>    the Rust RPC wrapper; the triad is the workspace-shaped wrapper
+>    of the full agent loop. Bead `primary-u7gc`.
+>
+> The findings in §1-§2 of this report on headless-Pi modes and
+> capture surface remain valid as reference. The integration
+> recommendation in §3 ("depend on pi-ai directly") should be
+> read against the new three-concern split above, not taken as
+> the workspace path.
 
 ## TL;DR
 
