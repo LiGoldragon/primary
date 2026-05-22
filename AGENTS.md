@@ -77,6 +77,17 @@ user can engage WITHOUT opening the report. Locator-without-substance
 ("see report N", "section 5.2") is the opposite-direction violation;
 both kinds break the discipline.
 
+**Chat normal-response policy (default for all agents).** When chat
+*is* the right surface (the substance fits within the shape rules
+above), bring 3-7 big items per response, balanced between
+explanations of new designs and questions. Below 3, the response is
+under-substantive for the user's attention. Above 7, the user can't
+hold the response in working memory while running parallel agents.
+The balance between *explaining new designs* and *posing questions*
+keeps the conversation moving — pure explanation drifts toward
+report-shape; pure questions miss the substance the agent owes the
+user. Visuals stay in reports; chat is prose + locators.
+
 Per psyche 2026-05-22.
 
 Full discipline: `skills/reporting.md`.
