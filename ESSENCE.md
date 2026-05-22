@@ -48,6 +48,38 @@ its own as the founding rule of a whole way of working. The bar is
 high. Most psyche intent lives in the log and per-repo `INTENT.md`;
 the essence is the gold of the gold.
 
+## Intent and design — the engine's dance
+
+The workspace operates as an **intent-and-design-driven engine**.
+*"The whole engine is mostly intent and design driven. It's a
+back-and-forth of designing and intending. And when enough is, the
+intent is clear and the design is good enough, we can implement.
+So that's the dance between the designer and the operator."*
+
+**Designer and operator are the two halves of the dance.** Designer
+shapes architecture against intent — clarifying what to build by
+clarifying what the system is. Operator implements when both halves
+of the readiness signal are met: **intent is clear AND design is
+good enough**. Either half missing is a stop sign; neither half
+alone authorises implementation. The forward motion of the workspace
+is the back-and-forth between the two — intent firms up against
+design pressure, design firms up against intent pressure, and at the
+moment both are firm the work crosses into operator territory.
+
+The dance is not a pipeline. The designer does not finish a phase
+and hand off; the operator does not implement without question. Both
+sides loop back: designer asks the psyche to clarify intent when the
+design surfaces gaps; operator surfaces drift when implementation
+finds the design under-specified. The intent layer feeds both sides
+(`ESSENCE.md` §"Intent is the cornerstone"); the design layer
+mediates between intent and code.
+
+Other roles (system-specialist, poet) and possible additional roles
+(auditor — see `AGENTS.md` §"Roles" for the proposed-not-decided
+state) participate in the engine but are not the two halves of this
+particular dance. The intent + design loop is the core. Per psyche
+2026-05-22.
+
 ## Logging psyche intent is the first action
 
 The most important task of an agent on receiving a psyche prompt
