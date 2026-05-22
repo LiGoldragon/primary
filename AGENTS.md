@@ -79,14 +79,26 @@ both kinds break the discipline.
 
 **Chat normal-response policy (default for all agents).** When chat
 *is* the right surface (the substance fits within the shape rules
-above), bring 3-7 big items per response, balanced between
-explanations of new designs and questions. Below 3, the response is
-under-substantive for the user's attention. Above 7, the user can't
-hold the response in working memory while running parallel agents.
-The balance between *explaining new designs* and *posing questions*
-keeps the conversation moving — pure explanation drifts toward
-report-shape; pure questions miss the substance the agent owes the
-user. Visuals stay in reports; chat is prose + locators.
+above), bring 3-7 big items per response. Per intent record 232, the
+items spread **more-evenly-than-not** across three categories: (a)
+questions / clarifications of intent, (b) observations / suggestions /
+explanations of how new mechanisms work, (c) examples of recent work
+or evolving ideas in the thread. Below 3, the response is under-
+substantive for the user's attention. Above 7, the user can't hold
+the response in working memory while running parallel agents. The
+chat reply is the **paraphrase of an accompanying per-response
+report** — the report is the session log; chat is the paraphrase.
+Visuals stay in reports; chat is prose + locators.
+
+**Meta-report directories — sub-agent sessions.** Per intent record
+231, when an agent dispatches sub-agents, the session lands as one
+**meta-report directory**: `reports/<role>/<N>-<session-name>/` with
+the orchestrator's frame in `0-frame-and-method.md`, each sub-agent's
+report numbered inside, and the orchestrator's synthesis as the
+highest-numbered file (`N-overview.md`). The directory IS the
+meta-report — no `meta-` prefix — and is garbage-collected as one
+session unit. Full discipline: `skills/reporting.md` §"Meta-report
+directories — sub-agent sessions".
 
 Per psyche 2026-05-22.
 
@@ -111,6 +123,22 @@ production deploy/update authority, and cluster-scoped implementation.
 
 Each agent knows its lane before claiming or editing. Coordination:
 `orchestrate/AGENTS.md`; helper: `tools/orchestrate`.
+
+**Possible additional role — auditor (Medium certainty).** Per
+intent records 234 and 235 (2026-05-22, Medium certainty), a third
+role — the **auditor** — is under consideration. The auditor closes
+the loop back to designer: it doubts, finds flaws, identifies bad
+patterns, and catches broken workspace rules. Audits are mostly
+mechanical (rules-and-flaws detection), so the work suits a smaller
+model good at pattern checking. The intent names **DeepSeek** as the
+chosen model and direction is to **automate** the auditor. Carried
+here under the carry-uncertainty discipline
+(`skills/architecture-editor.md` §"Carrying uncertainty"): the role
+is proposed-not-decided. Open: authority class (structural or
+support-tier?), lane mechanism (windows on a shared agent or
+external CI-style pipeline?), substrate for audit findings flowing
+back to designer. No `skills/auditor.md` and no `reports/auditor/`
+yet — those land when the role's shape settles.
 
 ## Hard overrides
 
