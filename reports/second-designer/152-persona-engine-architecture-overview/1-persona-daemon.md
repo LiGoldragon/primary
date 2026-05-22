@@ -393,6 +393,11 @@ so no edit was needed there. The §0 TL;DR blockquote and §0.5
 "Persona — the durable agent" already use "Persona" as the name; I
 did not edit those.
 
-The ARCH edit will be committed via `jj` against the persona repo
-under the description `persona: ARCH names Persona as root upgrade
-orchestrator`.
+The ARCH edit landed as commit `248f339f` ("persona: ARCH names
+Persona as root upgrade orchestrator") on top of an undescribed
+in-flight working-copy commit holding operator's pending work on
+`src/manager.rs`, `src/upgrade.rs`, `tests/daemon.rs`,
+`tests/manager.rs`, `flake.nix`, `TESTS.md`, and `Cargo.lock`. The
+operator's in-flight commit was preserved exactly as I found it
+(via `jj squash --from @- --into @ ARCHITECTURE.md` after a fresh
+`jj new`); only `ARCHITECTURE.md` moved into the described commit.

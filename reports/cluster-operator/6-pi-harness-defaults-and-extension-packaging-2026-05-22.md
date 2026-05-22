@@ -78,6 +78,59 @@ interactive testing.
 
 ## Remaining Gaps
 
+## Reconciliation With Third-Designer 20
+
+I read
+`reports/third-designer/20-pi-as-codex-replacement-design-2026-05-22.md`
+after the implementation slice. The implemented v1 follows the
+designer's core split:
+
+- v1 is a `CriomOS-home` profile and extension bundle.
+- v1 does not create a `persona-pi` triad, signal contract, or daemon.
+- Ghostty is the first visible surface.
+- Terminal-cell integration is a follow-up.
+- Rewind is Pi's built-in session tree/fork surface, not a separate
+  extension in this slice.
+
+The implementation deliberately shipped the smallest useful bundle:
+`pi-subagents`, `pi-linkup`, and the CriomOS themes. The larger
+designer extension wishlist remains unimplemented:
+
+- live system theme switching during an already-running Pi task
+- model-status/footer polish
+- working indicator/status-line extensions
+- destructive-operation guards
+- jj-aware checkpointing
+- prompt customizer
+- context compaction helpers
+- `pi-agent-suite`
+
+The biggest unresolved design point is theme switching. I shipped
+static `criomos-dark` and `criomos-light` themes and selected
+`criomos-dark` as the default, which fixes the immediate night-time
+readability problem. It does not prove Pi can switch themes mid-task.
+That needs a follow-up against Chroma or another system visual-state
+source.
+
+The second unresolved design point is default subagent autonomy.
+`pi-subagents` is installed and available. I did not add a policy layer
+that disables autonomous subagent use in the prompt. The workspace rule
+still says agents only dispatch subagents when psyche explicitly asks.
+For the current cluster-operator testing session, psyche explicitly did
+ask for subagent capability.
+
+The third unresolved design point is model inventory cleanup. The
+designer report says to retire Qwen 3 and Qwen 3.5 and add Gemma and
+Magistral. I left all existing `criomos-local` inventory models enabled
+because that inventory comes from `criomos-lib` and changing it is a
+separate large-AI catalog decision, not a Pi profile decision.
+
+The fourth unresolved design point is Pi login/secrets. The active
+subscription login works. I did not move Pi auth into sops or another
+declarative secret substrate; doing that would be a separate credential
+design and may be undesirable if Pi stores browser-backed subscription
+state.
+
 The existing Persona terminal-cell Pi smoke did not reach Pi. It fails
 immediately with:
 
