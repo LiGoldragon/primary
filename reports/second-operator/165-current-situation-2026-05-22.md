@@ -346,20 +346,22 @@ Still-relevant questions after this refresh:
 6. Is the Spirit release asymmetry intentional:
    `persona-spirit` + `signal-persona-spirit` at v0.1.1 while
    `owner-signal-persona-spirit` stays v0.1.0?
-7. For headless Pi RPC, should the Rust wrapper keep one Pi process
+7. Is `persona-llm-client` a library only, or does it become a full
+   triad with daemon, working signal, and policy signal?
+8. For headless Pi RPC, should the Rust wrapper keep one Pi process
    alive per role/lane session, per task, or per call?
-8. For headless Pi state, should Pi's own session persistence be used,
+9. For headless Pi state, should Pi's own session persistence be used,
    or should the Rust wrapper own persistence and treat Pi as stateless?
-9. For headless Pi tools, which built-ins are initially allowed:
+10. For headless Pi tools, which built-ins are initially allowed:
    read-only tools, shell, edit/write, or policy-configurable tools?
-10. For Bird-on-Zeus, is the first helper surface exactly
+11. For Bird-on-Zeus, is the first helper surface exactly
     `(LocalUpdate HomeProfile)` and `(LocalUpdate FullSwitch)`, or
     should engineering actions like `Test` and `BootOnce` be exposed
     immediately?
-11. For the Bird-on-Zeus root boundary, should the helper be Rust from
+12. For the Bird-on-Zeus root boundary, should the helper be Rust from
     the first real slice, or is a zero-dynamic-field shell wrapper
     acceptable as a temporary experiment?
-12. For designer 284's migration spec, do the open leans stand:
+13. For designer 284's migration spec, do the open leans stand:
     crate name `migration`, frozen sibling historical repos,
     separate `signal-version-coordination`, no owner coordination
     contract yet, PeerCheck on working contracts, compile-time
