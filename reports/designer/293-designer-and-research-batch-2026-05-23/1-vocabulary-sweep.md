@@ -116,12 +116,14 @@ The §1.6.7 §"The four-socket model" table is the canonical model of the rename
 
 ## §5 Commits made
 
-| Repo | Change | Subject |
+| Repo | Commit | Subject |
 |---|---|---|
-| `/home/li/primary` | (pending — landed by this report's commit) | vocabulary sweep across designer reports + new skills/workspace-vocabulary.md |
-| `/git/github.com/LiGoldragon/persona` | (pending — landed by this report's commit) | ARCHITECTURE: vocabulary sweep (Persona naming, engine-management socket, main/next bridges) |
+| `/home/li/primary` | `d74d4b47` | `designer: vocabulary sweep + skills/workspace-vocabulary.md (primary-3t67)` |
+| `/git/github.com/LiGoldragon/persona` | `3a1499f2` | `ARCHITECTURE: vocabulary sweep — Persona, engine-management socket, main/next bridges` |
 
-Hashes are recorded at commit time below in §"Commits landed" — see the final commit hashes added by the closing edit of this report.
+Both commits pushed to `main` via standard `jj` flow per `skills/jj.md`. The primary commit covers the new skill + `skills.nota` registration + the ten designer-report sweeps + this report. The persona commit covers the ARCH sweep alone. Each repo has one commit (per the task's "ONE commit per repo" constraint).
+
+The primary commit deliberately excluded the other 293/ subagents' reports + the orchestrator's `0-frame-and-method.md` + the `reports/nota-designer/` file (different lane) per `skills/jj.md` §"Before you commit — the working-copy check" — those land via their own agents' flows.
 
 ## §6 Any contradictions or surprises found
 
@@ -134,10 +136,6 @@ Hashes are recorded at commit time below in §"Commits landed" — see the final
 4. **Test names in §9 of persona ARCH are operator-scoped** — the Nix build paths in the right column (`nix build .#checks.x86_64-linux.persona-engine-manager-*`) are operator-scoped artifacts. The sweep converged the **prose descriptions** (left column) to canonical "Persona" but left the test names intact. Renaming the test names is a separate operator task; the prose now lints clean even with the historical test names.
 
 5. **Diagram labels in `292` §3 deliberately preserved** — the figure naming the predecessors ("Mixed naming: 'persona engine', 'engine-manager daemon', 'persona daemon' all appear") IS the analytical content of the report. Sweeping those would erase the report's diagnostic substance. Preserved as evidence of the divergence the report names.
-
-## Commits landed
-
-(Filled in after the commits are issued via the standard `jj` flow at the close of this subagent's work.)
 
 ## See also
 
