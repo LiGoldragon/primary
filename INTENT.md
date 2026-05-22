@@ -20,6 +20,21 @@ When intent on a question is unclear, absent, or contradicted,
 **ask the psyche** before deciding. *Inferring is the discipline
 breaking; asking is the discipline working.*
 
+## The engine is intent and design
+
+The workspace operates as an **intent-and-design-driven engine** —
+*the whole engine is mostly intent and design driven. It's a
+back-and-forth of designing and intending. And when enough is, the
+intent is clear and the design is good enough, we can implement.*
+**Designer and operator are the two halves of that dance.** Intent
+clarifies what the system should be; design clarifies how it takes
+shape; implementation crosses the threshold when both halves of the
+readiness signal are met — intent clear AND design good enough.
+Either half missing is a stop sign. The full discipline lives in
+`ESSENCE.md` §"Intent and design — the engine's dance"; this prose
+synthesis names the dance and its readiness signal. Per psyche
+2026-05-22.
+
 ## Guidance files — the layered surface
 
 The workspace calls every file that shapes agent behavior a
@@ -234,3 +249,34 @@ closest existing role-skill (likely `skills/designer.md`,
 the psyche for scope clarification per
 `skills/intent-clarification.md`; and drafts a new
 `skills/<role>.md` in-place as it does substantive work.
+
+## Possible additional role — auditor (Medium certainty)
+
+Per intent records 234 and 235 (2026-05-22, Medium certainty),
+a third role is under consideration: the **auditor**. The
+auditor closes the loop back to designer — it doubts, finds
+flaws, identifies bad patterns, catches broken workspace rules.
+*"The auditor is just going to be mostly mechanical. It's just
+a doubter, something that finds flaws or bad patterns … things
+that broke rules that we have."* The auditor knows the rules
+because they live in the workspace's standing guidance files
+(`ESSENCE.md`, `AGENTS.md`, `skills/`); the mechanical nature
+of the work makes it suit a smaller model good at pattern
+checking. The psyche named **DeepSeek** as the chosen model and
+the direction is to **automate** the auditor: *"deep seek is
+going to be our main auditor, because our audits are just going
+to be mostly mechanical."*
+
+Carried under the carry-uncertainty discipline
+(`skills/architecture-editor.md` §"Carrying uncertainty"): the
+role is **proposed, not decided**. Open questions: authority
+class (structural or support-tier?), lane mechanism (windows on
+a shared agent identity or external CI-style pipeline?),
+substrate for audit findings flowing back to designer (reports
+under a `reports/auditor/` subdir, comments on beads, Spirit
+intent records from an auditor agent identity, or PR-style
+review on jj commits). No `skills/auditor.md` skill file and no
+`reports/auditor/` subdirectory yet — those land when the
+role's shape settles. The entry point for the bootstrap, if an
+auditor agent starts work before the skill file exists, is the
+"When a new role appears without a skill" section above.
