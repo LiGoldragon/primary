@@ -299,9 +299,12 @@ before adoption cascades to other components.
 
 Affected beads after this session:
 
-- **Close (recommend)**: `primary-7kge` ("Create
-  `owner-signal-version-handover` contract") — the contract LANDED
-  at change `ttkkzkpqpymm`. Closed-as-completed.
+- **Closed** by operator (per `reports/operator/162-persona-owner-version-handover-authority.md`
+  §"Beads"): `primary-7kge` ("Create `owner-signal-version-handover`
+  contract") — the contract landed at change `ttkkzkpqpymm` and
+  Persona consumes it; operator closed the bead in the same slice.
+  (My closure recommendation in §6 turned out to be confirming work
+  already done.)
 - **Closed earlier in session**: `primary-k2mh` (duplicate of
   `primary-wvdl`; competing-design preserved per intent 229).
 - **Active focus**: `primary-wvdl` (Persona — Track A upgrade
