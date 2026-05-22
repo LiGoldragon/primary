@@ -146,9 +146,20 @@ Each agent knows its lane before claiming or editing. Coordination:
   2026-05-21) is the exception: the prime designer runs at full
   capacity with parallel subagent workflows by default, until
   disabled or reduced.
-- **No harness-dependent memory.** Workspace truth lives in files
-  every agent can open. Don't use per-session memory at
-  `~/.claude/projects/<workspace>/memory/` or any agent-private store.
+- **No harness-dependent memory; session-scoped tools land in
+  workspace files.** Workspace truth lives in files every agent can
+  open. Don't use per-session memory at
+  `~/.claude/projects/<workspace>/memory/` or any agent-private
+  persistent store. Session-scoped harness tools (Claude Code's
+  `TaskCreate` task list, agent UIs, scratchpads) are fine for
+  keeping a session organised — but any substance worth preserving
+  MUST land in workspace-shared files before the session ends:
+  intent records (via Spirit), architecture files (`ARCHITECTURE.md`,
+  `INTENT.md`), skill files (`skills/`), or reports
+  (`reports/<role>/`). Harness-private tools are session-scoped
+  scratchpad only; they never carry workspace truth. Lanes share
+  context through workspace files plus per-session work summaries —
+  not through harness internals. Per psyche 2026-05-22.
 - **No `/nix/store` filesystem search.** Use `nix eval`, `nix flake
   show`, `nix path-info`, or expose the value through a derivation.
 - **Reach for the right tool, not raw git.** Version control is `jj`

@@ -99,6 +99,14 @@ test names>
 <system-wide truths this scope preserves; usually fewer and broader than
 constraints>
 
+## 7 · Possible features (optional, only when there is real uncertainty)
+
+<items under consideration but not decided. Each names the open question;
+moves to the cemented body above when settled, retires when ruled out.
+Other acceptable headings: "Open questions", "Undecided boundaries",
+"Future considerations". See the "Carrying uncertainty" section of this
+skill for shape and discipline.>
+
 ## Code map
 
 <for per-repo: directory tree with one-line annotations>
@@ -162,11 +170,14 @@ witness or move it to a report as unfinished thinking.
   **inline the rationale** rather than citing a report.
 - **References to reports.** See §"Architecture files never
   reference reports" below — this is a load-bearing rule.
-- **Roadmap or implementation order.** "Will land" / "is
-  planned" belongs in a report. The architecture is what the
-  system *is*; if a piece isn't built yet, either describe it
-  as "the destination" with a status note or leave it for the
-  report.
+- **Implementation scheduling.** *When* something will ship
+  (next week, next milestone) belongs in beads or coordination
+  notes, not architecture. The architecture is what the system
+  *is* — or, in dedicated uncertainty sections per §"Carrying
+  uncertainty" below, what it *might be*. Not a delivery roadmap.
+  For "today vs eventually" scope, use the status-note + scope-
+  discipline pattern (per `~/primary/ESSENCE.md` §"Today and
+  eventually").
 - **Tour-style narration.** "First, you'll find the foo
   module..." Architecture is reference, not a guided tour.
 - **Restatement of workspace skills.** The architecture cites
@@ -209,6 +220,104 @@ This rule has no exception. The corresponding section in
 `reporting.md` lists permanent homes for each report shape;
 the architecture is one of those homes.
 
+## Carrying uncertainty — possible features and undecided designs
+
+Architecture files are not only for cemented decisions.
+`ARCHITECTURE.md`, per-repo `INTENT.md`, and workspace skills CAN
+carry possible features, undecided designs, and open questions —
+provided the uncertainty is named explicitly, not smuggled into
+present-tense "this IS" prose.
+
+The reports lane is for in-flight investigation, not for stacking
+tentative architectural ideas indefinitely. When an idea is
+interesting but not yet decided, it goes in a dedicated uncertainty
+section of the relevant permanent file — not a report that sits
+without movement. Reports retire as their substance migrates;
+architecture's uncertainty sections persist until the question
+settles, then the substance moves to the cemented body. Per psyche
+2026-05-22 (*"Architecture files and repositories can have like
+uncertain, possible features, possible architecture design decisions
+and stuff like that. We don't have to put everything as like raw
+decided, only rock solid stuff."*).
+
+### The shape
+
+A dedicated section, clearly labelled, that carries tentative
+substance:
+
+```markdown
+## Possible features (not decided)
+
+*Items here are under consideration, not committed. Each names the
+open question; moves to the cemented body when settled; retires
+when ruled out.*
+
+- **Feature X**: open question — how do we handle Y? Considered:
+  A, B. Status: undecided, blocked on decision Z.
+- **Feature W**: possible direction; rough sketch in
+  reports/designer/<N>; will move into Components section if
+  adopted.
+```
+
+Acceptable section names: `## Possible features`, `## Open
+questions`, `## Undecided boundaries`, `## Future considerations`,
+`## Under discussion`. Pick one or two per file; consistency over
+creativity.
+
+### Disciplines for uncertainty sections
+
+- **Name the certainty explicitly.** A status sentence at the top
+  of the section ("Items here are under consideration, not
+  committed") or a prefix on each item ("Considered:",
+  "Possible:", "Undecided:") prevents a reader from mistaking
+  tentative for decided.
+- **Name the question, not just the option.** "Possible feature:
+  X" is weaker than "Open question: how do we handle Y?
+  Considered: X, Z." The question is the real anchor; the options
+  cluster under it.
+- **Keep entries brief.** One paragraph per item — enough to
+  anchor the question, not enough to be a report. When substance
+  grows past that, write the report; the uncertainty entry
+  collapses to a one-line pointer at the section.
+- **Move out when decided.** When a question settles, the substance
+  moves into the cemented body of the architecture (or the entry
+  retires if the option was ruled out). Don't leave settled
+  content sitting in an "undecided" section.
+- **Reference, don't restate.** When the substance is in a report
+  that's still alive, the entry can be a one-line pointer at it
+  ("see reports/designer/<N>"). Same no-report-citation rule
+  applies to *cemented* claims — uncertainty entries can name
+  reports because they're explicitly tentative, but the moment
+  they're decided, the citation gets inlined and the report
+  retires.
+
+### Cemented vs uncertain — keep them visually separate
+
+Cemented sections (Components / Wire vocabulary / State / Boundaries
+/ Constraints / Invariants) describe what IS. Uncertainty sections
+sit AFTER the cemented body, not interleaved, so a reader who stops
+at the constraints has read only cemented architecture. The §7
+"Possible features" placement in the template (see §"Format" above)
+reflects this — uncertainty after invariants, before code map.
+
+This keeps the file's main spine purely descriptive while letting
+tentative substance live in the right permanent home, off the
+reports lane.
+
+### Where uncertainty lives by file
+
+| File | Cemented content | Uncertainty headings |
+|---|---|---|
+| `ARCHITECTURE.md` (meta) | Components, wire vocabulary, cross-component invariants | `## Possible future components` / `## Open questions` |
+| `ARCHITECTURE.md` (per-repo) | This repo's components, contracts, invariants | `## Possible features` / `## Undecided boundaries` |
+| `<repo>/INTENT.md` | Psyche-stated goals/constraints/principles | `## Possible directions` / `## Open questions` (psyche-derived only) |
+| `skills/<name>.md` | Decided discipline | `## Open questions` / `## Under discussion` |
+
+For `<repo>/INTENT.md`, the discipline is stricter: every uncertainty
+entry is still 100% backed by a psyche statement (per
+`~/primary/skills/repo-intent.md`) — the agent doesn't invent open
+questions, just records ones the psyche named without yet deciding.
+
 ## When to edit
 
 Edit `ARCHITECTURE.md` when:
@@ -231,7 +340,11 @@ Edit `ARCHITECTURE.md` when:
 Don't edit for:
 
 - Historical interest. The path is in commit history.
-- Tentative plans. Use a report.
+- Speculative ideas with no real open question behind them.
+  Genuinely undecided designs and possible features earn a
+  place in a dedicated uncertainty section (per §"Carrying
+  uncertainty" above); pure speculation belongs in
+  conversation or a draft report, not the architecture.
 - Fixing a typo in a comment block. Skip the ARCHITECTURE
   ceremony; just edit.
 

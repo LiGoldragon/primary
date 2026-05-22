@@ -4,6 +4,17 @@ Research feed for the parallel persona-pi triad design report (`/266`).
 Grounds that report in Pi's actual extension surface so the triad
 adaptation is principled, not invented. Date: 2026-05-21. Designer lane.
 
+> **2026-05-22 correction:** Package scope is `@earendil-works/`
+> (GitHub canonical: `earendil-works/pi`), **not** `@mariozechner/`
+> as referenced below. Mario Zechner is still the author; the
+> package was moved to the `earendil-works` org and the monorepo
+> split into `pi-coding-agent`, `pi-agent-core`, `pi-ai`, `pi-tui`.
+> The `pi-ai` package can be depended on standalone for pure
+> LLM-call reuse without the agent loop. See
+> `reports/designer/281-headless-pi-research.md` for the full
+> research (including documented headless RPC + SDK modes and
+> pi-ai's DeepSeek auto-detect).
+
 ## What Pi is
 
 **High confidence**: Pi is the open-source coding-agent harness by

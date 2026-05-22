@@ -15,6 +15,26 @@ canonical source for the substance — this brief points at them
 and frames the forks the operator must close, not the substance the
 operator must re-derive.*
 
+> **2026-05-22 correction:** Package scope is `@earendil-works/`
+> (GitHub canonical: `earendil-works/pi`), **not** `@mariozechner/`
+> as referenced below. Mario Zechner is still the author; the
+> package moved to the `earendil-works` org with the monorepo
+> split (`pi-coding-agent`, `pi-agent-core`, `pi-ai`, `pi-tui`).
+> Persona-pi work should target the new scope. See
+> `reports/designer/281-headless-pi-research.md` for the full
+> updated picture.
+>
+> **2026-05-22 scope rollback (supersedes prior banner):** The
+> earlier 2026-05-22 banner that subsumed DeepSeek into persona-pi
+> (spirit record 151) was a misframe. Per psyche Correction
+> 2026-05-22 (spirit record 152, supersedes 151): DeepSeek-as-library
+> belongs in a NEW workspace component `persona-llm-client` (a
+> lightweight Rust-shaped library embeddable in daemons), not in
+> persona-pi. persona-pi remains as designed in /266 — the
+> Pi-runtime-harness adaptation, full agent loop, dual-path. The
+> operator's persona-pi proposal does NOT need to cover DeepSeek.
+> DeepSeek is `persona-llm-client`'s concern, designed separately.
+
 ## 1. The prior work, in summary
 
 ### `reports/designer/266-persona-pi-triad-design.md` - the triad sketch
