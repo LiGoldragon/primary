@@ -39,27 +39,27 @@ Why: record 214 explicitly creates `owner-signal-version-handover` as the
 home for these operations; without naming it in persona ARCH, a reader can't
 trace from the Kameo message dispatch to the wire contract.
 
-### §1.B — Vocabulary normalization to "main / next" (record 181)
+### §1.B — Vocabulary normalization to main / next (record 181)
 
 Current state: `src/upgrade.rs` socket paths use `current_*` /
 `next_*` (e.g. `current_owner_socket_path`, `current_upgrade_socket_path`).
 The ARCH table inherits this naming.
 
-Per spirit record 181, canonical workspace vocabulary is **"main / next"**.
+Per spirit record 181, canonical workspace vocabulary is **main / next**.
 
 Diff: optional rename in the ARCH text. Source code naming is operator's
 call (Rust field names may stay if the cost of renaming outweighs the
-inconsistency); the ARCH text uses "main / next" canonically when
+inconsistency); the ARCH text uses main / next canonically when
 referring to the version pair conceptually, and parenthesizes
 the field names as historical artifacts:
 
 ```markdown
 | Socket | Used by |
 |---|---|
-| `current_owner_socket_path` (the **main** version's owner socket) | Recorded for audit; ... |
-| `current_upgrade_socket_path` (the **main** version's private upgrade socket) | Persona's `HandoverDriver` opens a client to this path and walks ... |
-| `next_owner_socket_path` (the **next** version's owner socket) | Recorded for audit; ... |
-| `next_upgrade_socket_path` (the **next** version's private upgrade socket) | Recorded for audit; ... |
+| `current_owner_socket_path` (main owner socket) | Recorded for audit; ... |
+| `current_upgrade_socket_path` (main private upgrade socket) | Persona's `HandoverDriver` opens a client to this path and walks ... |
+| `next_owner_socket_path` (next owner socket) | Recorded for audit; ... |
+| `next_upgrade_socket_path` (next private upgrade socket) | Recorded for audit; ... |
 ```
 
 Alternative: rename Rust fields `current_*` → `main_*` in `src/upgrade.rs`
@@ -98,9 +98,9 @@ stops at the wire; this diff carries it to the trait + storage layer.
 
 The sequence diagram in §1.6.7 (lines 510-533, `actor psyche` driving
 through Persona owner socket) is **operationally complete** — it shows
-Persona-as-orchestrator + driver + store events + target current upgrade
+Persona-as-orchestrator + driver + store events + target main upgrade
 socket. The /287 §3 sequence diagram is **conceptually focused** — it
-shows the Current ↔ Next exchange directly, with Persona as a single
+shows the main ↔ next exchange directly, with Persona as a single
 participant at the top.
 
 These are two valid views; no contradiction. No diff proposed —

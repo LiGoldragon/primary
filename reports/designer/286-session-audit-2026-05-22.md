@@ -21,7 +21,7 @@ records, wrote /281 (Pi research) + /282 (workspace status snapshot)
 with the "Carrying uncertainty" discipline; extended
 `skills/context-maintenance.md` with lane-retirement methodology;
 refined `AGENTS.md` with the session-scoped-tools rule. The Spirit
-cutover is close — pending v0.1.0/v0.1.1 retrofit + persona engine
+cutover is close — pending v0.1.0/v0.1.1 retrofit + Persona
 production landing + `owner-signal-version-handover` contract.
 
 ## §1 Intent records captured this session
@@ -64,8 +64,8 @@ third-designer, cluster-operator).
 - **203** deploy Correction — Path A (stop/freeze) is superseded; use the smart socket handover
 - **206** deploy Decision — Spirit v0.1.0 retrofit confirmed
 - **207** component-shape Decision — `commit_sequence` is built in sema-engine before the first Spirit cutover
-- **208** persona Decision — Root-level persona engine takes over component upgrade management
-- **209** persona Decision — Persona engine lands BEFORE Spirit cutover; engine orchestrates from day one
+- **208** persona Decision — Root-level Persona takes over component upgrade management
+- **209** persona Decision — Persona lands BEFORE Spirit cutover; Persona orchestrates from day one
 - **210** component-shape Decision — Upgrade orders come through the owner socket of the target component
 - **214** signal Decision — Create `owner-signal-version-handover` contract now (ForceFlip / Rollback / Quarantine)
 
@@ -152,20 +152,20 @@ third-designer, cluster-operator).
 | `sema-upgrade` handover prototype | ✅ LANDED | commits `060982d0` + `677206d5` |
 | `spirit-smart-handover-sandbox` (end-to-end test) | ✅ LANDED | operator/160 |
 | `owner-signal-version-handover` contract | ⏳ PENDING | bead `primary-7kge` (P1) |
-| Persona engine with upgrade orchestration | ⏳ PENDING | bead `primary-a5hu` (P1; blocks cutover) |
+| Persona with upgrade orchestration | ⏳ PENDING | bead `primary-a5hu` (P1; blocks cutover) |
 | `persona-spirit` v0.1.0 retrofit (private upgrade socket) | ⏳ PENDING | tracked in `primary-x3ci` |
 | `persona-spirit` v0.1.1 retrofit (private upgrade socket) | ⏳ PENDING | tracked in `primary-x3ci` |
 | Production cutover | 🎯 GOAL | bead `primary-x3ci` |
 
 The protocol works end-to-end in sandbox (operator/160 proven). The remaining
-work is daemon-side ownership of the private upgrade socket + persona engine
+work is daemon-side ownership of the private upgrade socket + Persona
 in production to orchestrate the selector flip.
 
 ## §4 Beads filed / closed / updated this session
 
 ### Filed (P1)
 - `primary-c2da` — /249 gap-closure sweep (primary designer focus)
-- `primary-a5hu` — second-operator persona engine epic (blocks `primary-x3ci`)
+- `primary-a5hu` — second-operator Persona epic (blocks `primary-x3ci`)
 - `primary-5w28` — sema-engine `commit_sequence` (closed by operator/158)
 - `primary-7kge` — `owner-signal-version-handover` contract (ForceFlip / Rollback / Quarantine)
 
@@ -224,7 +224,7 @@ Per subagent B sweep — 25 missing `role:operator` added, 1 epic with both role
 - Initially: psyche selected Path A (stop/freeze/migrate/start) for Spirit cutover (record 198)
 - Then: psyche rejected Path A ("thats stupid, lets implement the smart socket handover")
 - Now: smart handover IS the path (record 203 supersedes 198); first cutover is the first use of the mechanism
-- Implication: significant up-front work (v0.1.0 retrofit, persona engine, commit_sequence) but eliminates a freeze window and proves the protocol on the highest-value migration first
+- Implication: significant up-front work (v0.1.0 retrofit, Persona, commit_sequence) but eliminates a freeze window and proves the protocol on the highest-value migration first
 
 ### Per-type Migration trait → `VersionProjection<Source, Target>`
 - Initially: /284 spec proposed per-type Migration trait (one-direction; type knows its Next)
@@ -232,11 +232,11 @@ Per subagent B sweep — 25 missing `role:operator` added, 1 epic with both role
 - Now: `VersionProjection<Source, Target>` in dedicated `version-projection` crate (records 194 + 196); `Identity` blanket impl handles State-A no-migration trivially
 - Implication: simpler model, fewer special cases, /284 retired in favor of /285
 
-### Persona engine as upgrade orchestrator
-- Insight (record 208): instead of CriomOS-home managing component versions (per-version subdirectories, symlink flips, redeploy cycles), the root-level persona engine handles component upgrades
-- Decision (record 209): persona engine lands BEFORE Spirit cutover; engine orchestrates from day one
+### Persona as upgrade orchestrator
+- Insight (record 208): instead of CriomOS-home managing component versions (per-version subdirectories, symlink flips, redeploy cycles), root-level Persona handles component upgrades
+- Decision (record 209): Persona lands BEFORE Spirit cutover; Persona orchestrates from day one
 - Decision (record 210): upgrade orders come via the OWNER socket of the target component
-- Implication: bead `primary-a5hu` (persona engine epic) blocks `primary-x3ci` (Spirit cutover); CriomOS-home decouples from component upgrade cadence
+- Implication: bead `primary-a5hu` (Persona epic) blocks `primary-x3ci` (Spirit cutover); CriomOS-home decouples from component upgrade cadence
 
 ### Architecture carries uncertainty
 - Principle (record 131): ARCHITECTURE.md / per-repo INTENT.md / skills CAN carry possible features + undecided designs + open questions — not only cemented decisions
@@ -282,7 +282,7 @@ Implicitly settled:
 For the next designer pickup (in priority order):
 
 1. **Track `primary-c2da` (/249 gap-closure)** — primary focus per record 166; first pass: re-read /249, update with /282 deltas (owner-signal-persona-mind/router exist, signal-forge skeleton exists, multi-version coexistence shipped, etc.), prioritize remaining 24 gaps by blocking weight, close one at a time.
-2. **Absorb operator progress** as it lands — operator on persona-spirit retrofit + persona engine; second-operator on orchestrate executor migration; cluster-operator on Bird-on-Zeus.
+2. **Absorb operator progress** as it lands — operator on persona-spirit retrofit + Persona; second-operator on orchestrate executor migration; cluster-operator on Bird-on-Zeus.
 3. **`primary-bin2`** — manifest /264 §1-§2 + concept-designer-as-ephemeral into `skills/designer.md`. Settles /234 lane-mechanics; /234 can retire.
 4. **`primary-094p`** — verify /214 substance against criome/ARCHITECTURE.md; retire /214 if landed.
 5. **`primary-yp6k`** — forge family architecture merge (absorbs `/271` + `/274` + existing signal-forge skeleton at `87882b6`).

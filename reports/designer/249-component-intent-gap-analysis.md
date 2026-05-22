@@ -1129,7 +1129,7 @@ Phase-3 refactors; **Low** is a design clarity issue.
 | 2 | Owner-graph apex disambiguation (supervisor identity) | High | spirit, persona, all | /232 §2, persona/ARCH §1.7 |
 | 3 | persona meta-repo has no INTENT.md | High | persona | persona/ARCH (whole) |
 | 4 | persona-introspect universal observer-hook vs `Tap`/`Untap` consistency | High | introspect, all persona components | /246-v4 §2 vs `intent/component-shape.nota` 2026-05-19T20:00Z |
-| 5 | persona engine-manager triad-status undefined | High | persona | persona/ARCH (whole) |
+| 5 | Persona triad-status undefined | High | persona | persona/ARCH (whole) |
 | 6 | persona-system unpause criteria | Medium | system | persona/ARCH §0.7 |
 | 7 | `HarnessKind` closed-enum vs data-table tension | Medium | harness | harness/ARCH §1, workspace `INTENT.md` data-not-enum pattern |
 | 8 | Spirit guardian / multi-agent auditing arc undefined | Medium | spirit | `intent/persona.nota` 2026-05-19T15:30+17:30Z |

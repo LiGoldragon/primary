@@ -41,6 +41,8 @@
     "Verb belongs to noun. Methods on types; no free helpers when a method would do.")
   (Craft naming skills/naming.md Keystroke
     "Full English words. The offender table.")
+  (Craft workspace-vocabulary skills/workspace-vocabulary.md Topic
+    "Canonical glossary for load-bearing workspace terms. main/next, Persona, engine_manager — predecessors, scope, when-to-use.")
   (Craft beauty skills/beauty.md Keystroke
     "Beauty as criterion. Special cases dissolve into the normal case.")
   (Craft push-not-pull skills/push-not-pull.md Keystroke

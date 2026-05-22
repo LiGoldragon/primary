@@ -21,7 +21,7 @@ side-by-side) plus the pre-Persona deploy/system stack
 (intent record 109 violation on `operator/spirit-response-protocol`
 branch; seven `High` legacy intents stuck in file-substrate
 purgatory). The **most-critical un-implemented piece** is
-`persona` (engine-manager daemon) — 1513-line ARCH, in-progress
+`persona` (the Persona daemon) — 1513-line ARCH, in-progress
 bead `primary-2y5`, zero production deployment. The **surprise**
 is how much new design landed in the last 36 hours: spirit
 records 1-162 introduced eight new components (persona-pi,
@@ -60,7 +60,7 @@ Code compiles and tests pass on main, but the production stack hasn't picked it 
 | `signal-sema-upgrade` working contract | `7991a82` on main | Triad working signal — only consumed by the temp CLI, no daemon yet. |
 | `owner-signal-sema-upgrade` policy contract | `9e61b03` on main | Triad policy signal — ditto. |
 | `persona-mind` Magnitude consumption | `d08881b` "consume sema magnitude priorities" on main | Compiles; not exercised in production because no persona-mind daemon runs in production. |
-| `persona` engine-manager (Axis 1 wire surface) | `4e92889` "migrate engine manager to current signal contracts" on main | Internals still lag wire surface — see /280 §3 Open critical point 4 ("Axis 2 not done"). Bead `primary-k2mh`. |
+| `persona` daemon (Axis 1 wire surface) | `4e92889` "migrate engine manager to current signal contracts" on main | Internals still lag wire surface — see /280 §3 Open critical point 4 ("Axis 2 not done"). Bead `primary-k2mh`. |
 | `persona-orchestrate` lane-registry slice | `50ed6f7`, `5e52655` "implement lane registry slice" on main | First operational slice; no daemon supervisor running in production. Mind/orchestrate authority chain still designer-stub per /249 §3. |
 | `signal-persona-spirit` v0.1.1 bump | `5f7d4f4` on main | Package-version bump; needs cutover to ship. |
 
@@ -72,7 +72,7 @@ Components with active branches, open beads, or partial work in progress.
 
 | Bead | Title | What's partial |
 |---|---|---|
-| `primary-2y5` (P1) | persona daemon: EngineId socket setup, manager redb, spawn envelope | The persona engine-manager daemon itself — without it nothing else in the Persona triad family supervises. |
+| `primary-2y5` (P1) | persona daemon: EngineId socket setup, manager redb, spawn envelope | The Persona daemon itself — without it nothing else in the Persona triad family supervises. |
 | `primary-a18` (P1) | persona-engine-sandbox: bind credential root and add provider auth smoke | Sandbox runner for engine-manager testing. |
 | `primary-devn.1.4` (P1) | prototype introspection slices: manager, terminal, message, harness | Persona-introspect's per-peer client actors per /249 §10. |
 | `primary-a61` (P2) | CriomOS: move router Wi-Fi policy out of Nix modules | Horizon/lojix-side work. |
@@ -149,7 +149,7 @@ Status legend: **C** closed; **P** partial; **O** still open.
 | 2 | Owner-graph apex disambiguation (supervisor identity) | P | Engine-manager rename clarified the wire surface (`4e92889`) but Axis 2 still ambiguous (/280 §3 Open critical point 4). |
 | 3 | persona meta-repo has no INTENT.md | O | No `INTENT.md` created in `/git/.../persona/`. ARCHITECTURE.md remains the single 1513-line surface. |
 | 4 | persona-introspect universal observer-hook vs Tap/Untap | C | Resolved by spirit record (from `intent/component-shape.nota`) 2026-05-21T10:00:00Z "of course! debug the debugger!" — Tap/Untap mandate applies to introspect equally. |
-| 5 | persona engine-manager triad-status undefined | P | Engine-manager rename names the manager as "engine_management" first-class wire vocabulary; explicit affirmation as a real triad in workspace intent still unstated. |
+| 5 | Persona triad-status undefined | P | Engine-management axis rename names the manager as `engine_management` first-class wire vocabulary; explicit affirmation as a real triad in workspace intent still unstated. |
 | 6 | persona-system unpause criteria | O | persona-system stays paused; no intent on triggers. |
 | 7 | HarnessKind closed-enum vs data-table tension | O | No intent recorded; harness ARCH unchanged. |
 | 8 | Spirit guardian / multi-agent auditing arc undefined | O | No intent records on the auditing arc. |
@@ -248,7 +248,7 @@ Ordered by blocking weight. Each is a one-line proposition with the design home 
 ### Active beads
 
 - 50 open beads, 6 in-progress (per `bd list`).
-- High-priority blockers: `primary-51pn` (P0 whisrs bug), `primary-x3ci` (Spirit cutover), `primary-l3h5` (sema-upgrade daemon), `primary-2y5` (persona engine-manager daemon).
+- High-priority blockers: `primary-51pn` (P0 whisrs bug), `primary-x3ci` (Spirit cutover), `primary-l3h5` (sema-upgrade daemon), `primary-2y5` (the Persona daemon).
 - Migration epic `primary-u8vo` covers the 10 remaining contracts.
 
 ### Production pins (from CriomOS-home/flake.lock)

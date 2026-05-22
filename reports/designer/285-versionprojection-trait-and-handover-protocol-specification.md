@@ -57,9 +57,9 @@ library to decode the bytes.
 > handover; persona-introspect failure logs) are confirmed open
 > in the landed code per operator/158 §"Open design pressure".
 >
-> Persona-engine-as-upgrade-orchestrator (spirit records 208, 209)
-> shifted the active-version selector from CriomOS-home to the
-> persona engine. Bead `primary-a5hu` (persona engine epic for
+> Persona-as-upgrade-orchestrator (spirit records 208, 209)
+> shifted the active-version selector from CriomOS-home to
+> Persona. Bead `primary-a5hu` (Persona epic for
 > second-operator) carries that scope; it blocks `primary-x3ci`
 > (Spirit cutover).
 

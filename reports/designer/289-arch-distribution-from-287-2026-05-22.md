@@ -90,7 +90,7 @@ Two changes:
 2. Added a new dedicated section **CommitSequence — durable high-water
    mark for handover** between `Current Surface` and `Non-Goals`. The
    section names the cross-daemon role explicitly: a next-version
-   daemon asks current for N, copies state at N, replays from N+1.
+   daemon asks main for N, copies state at N, replays from N+1.
    Names `Engine::current_commit_sequence` and `replay_from_sequence`
    as the API surface. Distinguishes `CommitSequence` (cross-daemon
    handover boundary) from `SnapshotId` (subscription replay cursor).
@@ -111,7 +111,7 @@ machine and described both `spirit-migration-sandbox` and
    Names the future `sema-upgrade-daemon` as not-yet-existing.
 2. Added a new **Possible features** section at the bottom covering:
    the future `sema-upgrade-daemon` (open question: does it emerge
-   separately or does the persona engine absorb the orchestration);
+   separately or does Persona absorb the orchestration);
    Mirror payload application on the production socket (still missing
    for production cutover); retiring `sema-upgrade-handover-temporary`
    (the temporary runner exists only because deployed v0.1.0 lacks the
@@ -203,7 +203,7 @@ without a top-level naming.
 
 **Fix**: added a single paragraph at the top of the file naming both
 roles + flagging the future `sema-upgrade-daemon` as not-yet-existing.
-Names the persona engine's orchestration role as the alternative path
+Names Persona's orchestration role as the alternative path
 (open question whether `sema-upgrade-daemon` emerges separately).
 
 ### §2.5 persona-spirit's handover-state-machine implicit
@@ -261,28 +261,28 @@ M tests/manager.rs
 ```
 
 The ARCHITECTURE.md modification was a single-line addition naming
-"persona engine drives version handover through a component's private
+"Persona drives version handover through a component's private
 upgrade socket" as an architectural-truth test row — consistent with
-the meta architecture's existing engine-manager-as-upgrade-orchestrator
+the meta architecture's existing Persona-as-upgrade-orchestrator
 framing. Per `skills/jj.md` §"Before you commit — the working-copy
 check": **don't bundle peer files into your commit**. The right move
 was to leave the persona repo alone.
 
-The existing persona ARCH already covers the engine manager's
+The existing persona ARCH already covers Persona's
 upgrade-orchestration role at §"Engine Manager Model" and §"Startup
 Strategy" and in the §9 architectural-truth tests (rows naming
 "engine manager prepares a component upgrade by emitting the first
 version-handover marker request" and "engine manager records the
 active component version only after handover completion"). The
 active-version-snapshot reducer described under §1.7 Startup Strategy
-covers what /287 §5 names as the persona engine's "owns the
+covers what /287 §5 names as Persona's "owns the
 active-version selector" responsibility.
 
 **Recommended psyche follow-up**: once operator's in-flight persona
 work lands, a follow-up slice can verify the persona ARCH carries
-explicit framing of the persona engine as the upgrade orchestrator
+explicit framing of Persona as the upgrade orchestrator
 named in /287 §5 — particularly the active-version selector being
-the persona engine's responsibility (replacing the prior
+Persona's responsibility (replacing the prior
 CriomOS-home symlink mechanism per spirit record 209). If the
 existing coverage is sufficient, no edit is needed; if a §"Possible
 features" section about cross-domain handover or owner-contract

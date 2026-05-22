@@ -14,7 +14,7 @@ handover cutover. Foundation crates already landed (operator/158,
 | Bead | Shape | Status |
 |---|---|---|
 | `primary-7kge` — `owner-signal-version-handover` contract (ForceFlip / Rollback / Quarantine) | NEW this session; operator can file the contract crate immediately; no blockers | not started |
-| `primary-a5hu` — second-operator persona engine epic (port persona-* to signal-executor v4 + upgrade orchestration) | second-operator pickup per /165, /166, /167-169 absorb; blocks `primary-x3ci` | in flight (lane absorbing) |
+| `primary-a5hu` — second-operator Persona epic (port persona-* to signal-executor v4 + upgrade orchestration) | second-operator pickup per /165, /166, /167-169 absorb; blocks `primary-x3ci` | in flight (lane absorbing) |
 | `primary-c2da` — /249 gap-closure sweep (PRIMARY designer focus per record 166) | designer can start; 24 of 35 gaps still open per /282 | not started |
 | `primary-chpq` — Spirit default wrapper dual-writes | **likely retire-candidate** — operator/157 refined: "durable handover is not CLI-owned dual-write"; smart-handover supersedes | needs review |
 | `primary-wvdl` — Persona: port to current Signal stack + complete upgrade orchestration | appears to overlap `primary-a5hu`; ownership/scope reconciliation needed | needs review |
@@ -37,10 +37,10 @@ size:
 ## Triad-migration batch (P1, operator lane, all bd-ready)
 
 These 13 beads (the 2026-05-21 batch) gain meaning once foundation
-crates land. Most need the persona engine (`primary-a5hu`) + signal-
+crates land. Most need Persona (`primary-a5hu`) + signal-
 executor v4 in place; some are independent.
 
-`primary-0bls` criome · `primary-k2mh` engine-manager · `primary-9up1` lojix · `primary-mdhj` repository-ledger · `primary-c620` orchestrate (in flight) · `primary-gu7t` harness · `primary-qjdp` terminal · `primary-21gn` system · `primary-krbi` message · `primary-li7a` introspect · `primary-aunn` router · `primary-e1pm` mind · (plus the 13th was the persona-engine itself, now covered by `primary-a5hu`).
+`primary-0bls` criome · `primary-k2mh` engine-management · `primary-9up1` lojix · `primary-mdhj` repository-ledger · `primary-c620` orchestrate (in flight) · `primary-gu7t` harness · `primary-qjdp` terminal · `primary-21gn` system · `primary-krbi` message · `primary-li7a` introspect · `primary-aunn` router · `primary-e1pm` mind · (plus the 13th was Persona itself, now covered by `primary-a5hu`).
 
 Per /166 (second-operator), the next operator slice is the executor
 migration on `primary-c620` (orchestrate). Per second-designer/151,
@@ -106,8 +106,8 @@ recent landings; check before assigning:
 | `primary-chpq` — Spirit wrapper dual-writes | smart-handover supersedes per operator/157 |
 | `primary-ojxq` — persona-spirit triad implementation | substance landed via operator/158-161 |
 | `primary-qk04` — Multi-version persona-spirit daemon coexistence | already-deployed per /282; reframed to verify-and-close |
-| `primary-2y5` — persona daemon: EngineId socket setup, manager redb, spawn envelope | now under broader scope of `primary-a5hu` (persona engine epic) |
-| `primary-699g` — design persona-orchestrate component | overlaps `primary-c620` (implementation) + `primary-a5hu` (engine scope) |
+| `primary-2y5` — persona daemon: EngineId socket setup, manager redb, spawn envelope | now under broader scope of `primary-a5hu` (Persona epic) |
+| `primary-699g` — design persona-orchestrate component | overlaps `primary-c620` (implementation) + `primary-a5hu` (Persona scope) |
 | `primary-wvdl` — Persona: port to current Signal stack + upgrade orchestration | overlaps `primary-a5hu` |
 | `primary-0v2` — clavifaber identity unification | anti-pattern B (design question without DoD) per subagent B sweep; needs reformulation |
 
@@ -128,7 +128,7 @@ recent landings; check before assigning:
 4. Whisrs P0/P1 bugs (`primary-51pn` urgent)
 
 **Second-operator:**
-1. `primary-a5hu` persona engine epic (continuation of /167, /168, /169 absorption; first slice likely `primary-c620` per /166)
+1. `primary-a5hu` Persona epic (continuation of /167, /168, /169 absorption; first slice likely `primary-c620` per /166)
 
 **Cluster-operator:**
 1. Bird-on-Zeus update authority chain (per cluster-operator/4)

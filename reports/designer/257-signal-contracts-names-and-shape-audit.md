@@ -420,9 +420,8 @@ Spirit's contract has the observable block (signal-persona-spirit
 line 416-420). Every other persona-component contract is missing it.
 Required: persona-mind, persona-router, persona-message,
 persona-harness, persona-system, persona-terminal,
-persona-introspect, persona-orchestrate. (Spirit done; persona is
-engine-manager — the engine-manager itself may not need Tap, but
-verify.)
+persona-introspect, persona-orchestrate. (Spirit done; Persona's
+engine-management surface may not need Tap, but verify.)
 
 Each should add:
 

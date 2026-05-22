@@ -351,7 +351,7 @@ exactly what ran, against which addresses, with which outcomes.
 
 5. **Cross-daemon authority.** Sema-upgrade is owned by — whom?
    Not a persona component (workspace infrastructure under every
-   persona daemon). Owner caller is likely the engine manager
+   persona daemon). Owner caller is likely Persona
    directly. Needs psyche confirmation when sema-upgrade enters the
    persona authority graph.
 
