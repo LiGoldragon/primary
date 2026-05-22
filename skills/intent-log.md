@@ -146,30 +146,45 @@ record it.
 
 ## Record shape
 
-Positional NOTA (per `skills/nota-design.md`). The wrapping type
-names the *kind* of intent; the five fields are flat positional —
-no nested wrappers, since every record has exactly one of each
-field with no alternative shape:
+The deployed Spirit CLI accepts a NOTA `Operation` argument. For
+intent capture, the operation is `Record` carrying an untagged
+`Entry` (positional fields per `skills/nota-design.md`):
+
+```nota
+(Record
+  (<topic>           ;; bare identifier: workspace, spirit, signal, component-shape, …
+   <Kind>            ;; Decision | Principle | Correction | Clarification | Constraint
+   "<summary>"       ;; terse one-line rephrasing by the agent
+   "<context>"       ;; surrounding what-was-being-decided
+   <Certainty>       ;; Maximum | Medium | Minimum
+   "<verbatim>"))    ;; psyche's exact words; `…` for elided tangents
+```
+
+- `Entry` is untagged — no record-head ident (per the NotaRecord
+  codec change). `Kind` and `Certainty` are bare PascalCase NotaEnum
+  variants. `<topic>` is a bare lowercase identifier (quoted only
+  if it contains spaces or PascalCase content).
+- **The daemon stamps date and time on receipt.** Clients do not
+  supply timestamps.
+
+The legacy file-substrate fallback uses the original shape — Kind
+as the record head, no topic field (the filename supplies it),
+explicit Date + Time after Certainty:
 
 ```nota
 (<Kind>
-  "<summary — terse one-line rephrasing by the agent>"
-  "<psyche's exact words, with … for omitted tangents>"
-  "<surrounding what-was-being-decided>"
-  <Certainty>
-  <ISO-8601 timestamp>)
+    "<summary>"
+    "<verbatim>"
+    "<context>"
+    <Certainty>
+    <Date>
+    <Time>)
 ```
 
-- `<Kind>` is one of `Decision`, `Principle`, `Correction`,
-  `Clarification`, `Constraint`.
-- `<Certainty>` is a PascalCase variant: `Maximum`, `Medium`, or
-  `Minimum`. (Variants are compile-time structural; PascalCase per
-  the language-design rule in `ESSENCE.md`.)
-- `<ISO-8601 timestamp>` is written bare — `2026-05-19T01:23:00Z`,
-  not quoted. The canonical Timestamp type is the right shape;
-  NOTA bead `primary-dzrn` lands the codec support. Until then,
-  files use the canonical bare form even if the current codec
-  rejects them — no transitional shapes.
+The five kinds and the certainty vocabulary are shared between
+substrates. The deployed Spirit wire shape may drift;
+`skills/spirit-cli.md` covers how to read the currently deployed
+shape directly from the pinned source.
 
 The quote records **the psyche's intended words**, not the
 speech-to-text layer's literal transcription. When the psyche
@@ -189,45 +204,52 @@ A file is a **flat sequence of top-level NOTA records** — no outer
 `[ … ]` list wrapping. The flat sequence is what makes append-only
 writes possible (see below).
 
-## Recording is a lock-free shell append
+## Recording goes through the Spirit CLI
 
-Recording a new intent record is a **lock-free shell append**:
+The deployed `spirit` CLI is the substrate. Capture intent by
+invoking it with a `Record` operation:
+
+```sh
+spirit '(Record (<topic> <Kind> "<summary>" "<context>" <Certainty> "<verbatim>"))'
+```
+
+The daemon stamps date and time on receipt; clients do not supply
+timestamps. Invocation discipline — finding the deployed wire
+shape, inline NOTA vs file-path argument, observation queries — is
+in `skills/spirit-cli.md`. When the verbatim has embedded
+apostrophes, use bash ANSI-C strings (`$'…\'…'`) rather than
+single-quoted strings; reserve the file-path argument for NOTA
+that has shell metacharacters too painful to escape.
+
+### Fallback — the legacy file append
+
+The substrate replacement is in-progress. While kinks surface, the
+older lock-free shell-append flow remains a fallback for when the
+daemon is unreachable:
 
 ```sh
 cat >> intent/<topic>.nota <<'EOF'
 
 (<Kind>
     "<summary>"
-    "<quote>"
+    "<verbatim>"
     "<context>"
     <Certainty>
-    <ISO-8601 timestamp>)
+    <Date>
+    <Time>)
 EOF
 ```
 
-No orchestrate claim, no Edit-tool sequence, no coordination —
-concurrent agents append to the same topic file without conflict.
-The guarantee comes from POSIX `O_APPEND` semantics (which `>>`
-sets): the kernel atomically positions at end-of-file and writes,
-so two concurrent appends sequence cleanly without mangling, as
-long as each write is **under PIPE_BUF** (4096 bytes on Linux).
-A typical intent record is well under 4KB — single records of
-1–1.5KB are typical.
+POSIX `O_APPEND` semantics make this safe under concurrent appends
+under PIPE_BUF (4KB on Linux). Use only when Spirit can't be
+reached; flag the use in chat so the kink that forced it surfaces.
 
-When a lock IS needed:
+### Supersession needs a lock regardless
 
-- **Supersession edits** (rewriting or removing prior records per
-  `skills/intent-maintenance.md`) — not append-only; needs a lock.
-- **Format changes** to the file itself (rare).
-- **Bulk operations** that rewrite a topic file.
-
-Routine recording does not. The lock-free append is the discipline
-default.
-
-The flat-sequence format (no outer `[ … ]`) is what makes the
-append work — if the file ended with `]`, every new record would
-have to land *before* that bracket, requiring a non-append edit.
-Dropping the brackets lets `>>` work directly.
+Rewriting or removing prior records — supersession per
+`skills/intent-maintenance.md` — needs a lock and a coordinated
+edit. That holds whether the substrate is Spirit or the legacy
+file: an append-only protocol does not cover replacement.
 
 ## Certainty vocabulary
 
@@ -351,6 +373,8 @@ substance migrates.
 
 ## See also
 
+- `skills/spirit-cli.md` — the deployed substrate. Invocation
+  shapes, how to find the current wire shape, every operation.
 - `skills/intent-maintenance.md` — sweep, supersession protocol,
   archival to `superseded/`, verification against current state.
 - `skills/intent-manifestation.md` — translate recorded intent into
@@ -361,5 +385,6 @@ substance migrates.
 - `skills/stt-interpreter.md` — STT-misspelling lookup tables; consult
   before recording verbatim where workspace-specific terms appear.
 - `skills/skills.nota` — the canonical positional-NOTA example.
-- `intent/` — the surface this skill maintains.
+- `intent/` — the legacy file substrate; the surface this skill
+  maintained before Spirit shipped.
 - Forward: `persona-mind` typed memory variants — eventual home.

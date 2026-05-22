@@ -31,7 +31,7 @@
   (Architecture engine-analysis skills/engine-analysis.md Topic
     "How to analyze daemon/engine internals — the planes-and-actors lens.")
   (Architecture language-design skills/language-design.md Topic
-    "Language-design discipline. Closed enums; structural beauty over ad-hoc strings.")
+    "Language-design discipline. Closed enums; structural beauty over ad-hoc strings; branches/leaves vocabulary for typed-record trees.")
   (Architecture library skills/library.md Topic
     "Library-vs-daemon split. When to extract a library crate from a daemon.")
   (Architecture subscription-lifecycle skills/subscription-lifecycle.md Topic
@@ -103,7 +103,9 @@
   (Meta context-maintenance skills/context-maintenance.md Mechanism
     "Sweep reports and conversation. Migrate substance to permanent homes.")
   (Meta intent-log skills/intent-log.md Topic
-    "Record explicit psyche intent in intent/<topic>/. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded.")
+    "Record explicit psyche intent. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded. Substrate-agnostic; see skills/spirit-cli.md for the deployed substrate.")
+  (Meta spirit-cli skills/spirit-cli.md Topic
+    "How to invoke the deployed spirit CLI. Inline NOTA vs file-path argument; the currently deployed wire shape; finding the wire shape when it drifts; substrate-replacement relationship to intent-log.")
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
     "Sweep the intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; current truth stays in topic files, lineage in jj history.")
   (Meta intent-clarification skills/intent-clarification.md Topic

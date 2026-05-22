@@ -324,6 +324,26 @@ Cosmetic and verb-shaped temptations together cover most
 proposals for "what a free delimiter could mean." Reject
 both classes; keep the grammar small.
 
+## Branches and leaves — the typed-data-tree vocabulary
+
+Typed records (the structs and enums in the sema database) form
+trees. The shape vocabulary:
+
+- **Leaf**: a fixed-size terminal. Typically an enum of unit
+  variants only — `Bool` as `True`/`False`, the seven-variant
+  `Magnitude`, the five-kind `Kind` taxonomy. Final leaves have
+  no variable size.
+- **Branch**: variable-size or data-carrying content — vectors,
+  data-carrying enum variants, structs containing variable-size
+  members. Branches are themselves trees (recursive).
+
+A vector field is a dynamic-leaf in one reading (it occupies a
+single field position) but practically a branch because it points
+into another tree. A data-carrying enum variant is a branch because
+its payload doesn't fit as a single tree node.
+
+Per `intent/nota.nota` 2026-05-21.
+
 ## Where these instincts live in working code
 
 | Surface | Apply most directly to |

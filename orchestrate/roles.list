@@ -1,9 +1,15 @@
 # Role-lane registry — one lane per line.
 #
-# Format: <lane-name> [assistant-of:<main-role>]
+# Format: <lane-name> [assistant-of:<main-role> | parallel-of:<main-role>]
 # - Lines starting with '#' and blank lines are ignored.
-# - A main role has no 'assistant-of:' marker.
+# - A main role has no 'assistant-of:' / 'parallel-of:' marker.
 # - An assistant lane declares its main role with 'assistant-of:<main-role>'.
+#   Assistant lanes carry bounded support-scope authority, not structural authority.
+# - A parallel-main lane declares its discipline twin with 'parallel-of:<main-role>'.
+#   Parallel-main lanes carry full main-role authority (structural decisions,
+#   design reports, skill edits) — they are a second seat at the discipline,
+#   not a subordinate lane. New shape as of 2026-05-21; see
+#   reports/second-designer/2-persona-orchestrate-lane-management-2026-05-21.md.
 #
 # This file is a transitional bash-readable format. The destination is
 # orchestrate/roles.nota — a typed Nota record read by a Rust-rewritten
@@ -11,9 +17,10 @@
 # reports/second-designer-assistant/2-orchestrate-rust-rewrite-design-2026-05-17.md.
 
 operator
-operator-assistant                assistant-of:operator
+second-operator                   parallel-of:operator
 second-operator-assistant         assistant-of:operator
 designer
+second-designer                   parallel-of:designer
 designer-assistant                assistant-of:designer
 second-designer-assistant         assistant-of:designer
 system-specialist

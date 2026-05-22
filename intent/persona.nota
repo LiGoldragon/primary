@@ -326,3 +326,101 @@
     "Psyche hard correction after the /255 audit framing proposed a 4-phase migration with a Phase 2 bulk-import step. Spirit's design surface does not absorb legacy-substrate concerns; the migration question is outside spirit entirely. The phased-migration framing in /255 §6.1 was a designer over-extension and is superseded by this Constraint."
     Maximum
     2026-05-20T15:30:00Z)
+
+(Decision
+    "Tap/Untap live subscriber fanout in persona-spirit is deferred until persona-introspect comes online. Tap/Untap is the universal observer-hook mechanism for cross-component class-level monitoring — its only intended consumer is persona-introspect, which aggregates SemaObservation streams across persona daemons. The substrate-replacement use case (psyche records intent via spirit CLI, reads back via Observe(Records)) uses one-shot Record/Query operations, not subscriptions, so live fanout is not a prerequisite for spirit becoming the intent substrate. Spirit's current shape — Tap/Untap accepted on the wire, returning RequestUnimplemented / SemaOutcome::NoChange via the no-op-as-explicit-command rule — is the honest placeholder until introspect arrives. When persona-introspect lands, the placeholder is replaced with a real FrameObserverBridge composition driving subscriber sockets."
+    "what is tap/untap? is that for introspect? then we dont need it ATM"
+    "Psyche confirming /256 §6 / /255 §6.2 / operator /145 Q2: Tap/Untap fanout is not required before the spirit substrate replacement. Persona-introspect is the prerequisite consumer; its absence is what makes fanout unnecessary today, not a workspace direction change. Tap/Untap remains mandatory in the contract (per component-shape.nota 2026-05-20T02:00:00Z) — only the live-fanout implementation is deferred."
+    Maximum
+    2026-05-20T20:00:00Z)
+
+(Principle
+    "Persona-mind talks to persona-orchestrate in abstract concept terms — 'we need research on X by a skill-type-Y agent' or 'we need a new REST component named Z that does W' — not in mechanism terms (which agent, which socket, which spawn parameters). The orchestrator owns translation from abstract job description into concrete agent allocation, lifecycle, and routing. Split: mind expresses what work is needed; orchestrate decides how to organize agents to do it."
+    "The mind expresses concepts. Like we want this topic researched by such and such skill type agent. … the orchestrator would see maybe that type of agent. There's a type of agent like that that's already up, so we don't need to spawn a new one. … the mind would tell the agent more abstract things than spawn an agent. It would say, we need research done on such and such a topic. … We need this new rest component developed to do this and this and be named this thing."
+    "Mind/orchestrate boundary clarification during a research session on the mind-body analogy. Mind is conceptual layer; orchestrate is mechanical allocation layer."
+    Maximum
+    2026-05-20 17:30)
+
+(Decision
+    "Persona-orchestrate maintains a registry of currently-running agents with at least three fields: a specialized name, a typed agent-type (enum — designer / coding / research / system-specialist / etc.), and a short description. The registry is what lets orchestrate prefer agent reuse over spawning fresh agents when a qualified agent is already alive."
+    "agents would sort of have a name and a short description, right? A type, I guess. There would be a type of agent, also. We could have an enum on that. Like a designer agent, a coding agent, a research agent. And then a sort of more specialized name and a description. So the orchestrator would have a table for all that. All the agents that are known to be running."
+    "Shape of the orchestrator's known-agents table. Typed agent-type field follows the workspace pattern of typed enums over strings."
+    Maximum
+    2026-05-20 17:30)
+
+(Decision
+    "Persona-orchestrate prefers reusing an already-running qualified agent over spawning a new agent for the same job. Psyche acknowledges this as a debated lean rather than hard certainty — 'I feel like there's something good about keeping some agents alive instead of just spawning a new one all the time. But maybe I'm wrong about that.' Run with the lean until evidence challenges it."
+    "I'm debating. I'm not an expert, but I feel like there's something good about keeping some agents alive instead of just spawning a new one all the time. But maybe I'm wrong about that."
+    "Psyche stating reuse-over-spawn as orchestrator default, with explicit uncertainty marker. Logged at High rather than Maximum per the conservative-by-default principle."
+    High
+    2026-05-20 17:30)
+
+(Decision
+    "Persona-orchestrate decides whether an agent's context should be compacted before reassignment. The decision is threshold-based on current context window size; the exact threshold is not yet specified — 'sort of like a threshold of context where we compact. Or maybe it just compacts.' Orchestrator queries context size, applies a policy, and issues the compaction if warranted."
+    "decide if the context has to be compacted. So he would find out how big the context window is now and then take the decision, okay, do we compact or not? So there would be sort of like a threshold of context where we compact. Or maybe it just compacts."
+    "Orchestrator capability: context-state inspection and compaction decision. Threshold mechanism is open — could be a fixed-size policy or always-compact-on-reassignment; psyche left this open."
+    High
+    2026-05-20 17:30)
+
+(Decision
+    "Persona-orchestrate decomposes an abstract job request into a concrete sequence of agent-type assignments. Example: a 'create a new REST component named X that does Y' job decomposes into (1) infrastructure/repo-manager agent creates the repository, scaffolds boilerplate, returns done; (2) auditor agent checks; (3) coding agent implements; (4) further audit steps. The sequence and its branch logic are mechanical — programmed into orchestrate as policy, not decided per job."
+    "it could even be more abstract. It could be, we need this new rest component developed to do this and this and be named this thing. And then the orchestrator could figure out, well, okay, so it's a rest component. So first we need a repo manager or something like that, sort of infrastructure engineer who's going to create the repository, get all of the basic boilerplate files in place, name it, create the remote. Then he's going to return until the orchestrator, okay, I think my job is done. Then the orchestrator might hire a small auditor to make sure that, okay, this looks good. Then the auditor returns to the orchestrator. The orchestrator says, okay, now we need the coding agent to, like, this is all mechanical, right? It's all programmed already in the orchestrator."
+    "Job-decomposition responsibility lands in orchestrate. Decomposition is policy-driven and mechanical — does not require per-job mind input."
+    Maximum
+    2026-05-20 17:30)
+
+(Decision
+    "Persona-mind can program new orchestration policies into persona-orchestrate through the owner-signal-persona-orchestrate contract. A policy has shape: when this typed job class arrives, run such-and-such sequence of agent-type assignments; expected success criteria for each step; on success → next step; on failure → handler. Audit agents fit into the sequence as steps. This is how mind extends orchestrate's behavior rather than reinventing the orchestration mechanism each session."
+    "the persona mind would be also, because of the owner contract, be able to program new things. Like, oh, here's a new policy, which is when this type of job comes in, we need such and such sequence of agent type of, here's the first type of agent we need to run, here's the type of result that we need, like the answer that we need him to say. If he says, like, success, then this happens. If he says failure, then this happens."
+    "Owner-contract use case for the mind→orchestrate authority relationship. Programmability of orchestration policies is a load-bearing capability of the owner channel between these two components."
+    Maximum
+    2026-05-20 17:30)
+
+(Decision
+    "Skills bundle into roles. The mind talks to orchestrate at the role level ('rust coding agent') rather than enumerating individual skills, and role definitions carry the skill bundle that ships with that role. Job descriptions name a role (or even just a category of work) and the orchestrator resolves the role into its skill bundle when bootstrapping the agent."
+    "maybe it's not like an outright list of skills. Maybe we have roles that have a bundle of skills that come with them. So we need a rest coding agent to develop such and such component from scratch."
+    "Skill-organization decision: roles are the unit of dispatch; skills are bundled into roles. Aligns with the workspace's role-lane vocabulary."
+    High
+    2026-05-20 17:30)
+
+(Principle
+    "Persona-router is a gate between agents — opens and closes channels of communication agent-to-agent. Agents query the router for 'which agents can I reach right now,' receiving back the typed agent list (name, type, description). Router's authority surface (owner-signal-persona-router) is what configures who can talk to whom; ordinary agent traffic queries it for current reachability."
+    "the router is a way to... It's a kind of a gate, open, close, channel open, channel close between agents. So the agent can, for example, query the router to see what are the other agents that I can talk to right now that are... Give me a list of all agents I can reach."
+    "Router's role in the persona system: gating + reachability query. The reachability query is the agent-facing side; channel-grant decisions are owner-channel work."
+    Maximum
+    2026-05-20 17:30)
+
+(Principle
+    "Every agent has an open channel to persona-mind by default. Psyche acknowledges uncertainty — 'Maybe there's a scenario that I can't see yet, but that's, why don't you run with that' — so the principle is a working default, not a hard absolute. Implementation runs with it until a counter-scenario surfaces."
+    "I think all agents should have an open channel to the mine because it makes sense, right, that the mine is. Maybe there's a scenario that I can't see yet, but that's, why don't you run with that"
+    "Default channel-grant policy for the mind-to-agents direction. Marked working principle per psyche's explicit uncertainty; logged at High rather than Maximum because psyche flagged openness to counter-evidence."
+    High
+    2026-05-20 17:30)
+
+(Decision
+    "Skills live in persona-mind. Agents receive their initial skill bundle when they boot, via a single message sent over the working (ordinary) channel — the mind packages the entire role's skill bundle in one message rather than streaming one skill at a time. The agent reads the bundle and is then ready to act in its role."
+    "All the skills are in the mine. So when the agents load up, they get their skills from the mine, from the working channel, the public channel. They're like, okay, I need this and this skill. Right, so then the mine just, boom, sends them all the messages. Well, the message, the one message with all of the skills in the message, like skill loading."
+    "Skill-loading mechanism: mind owns the skill store; agents load bundles at boot via working channel; single-message delivery rather than per-skill streaming."
+    Maximum
+    2026-05-20 17:30)
+
+(Decision
+    "Skills carry extension skills — named, described, declarable in the base skill. When an agent needs deeper specialization mid-task, it requests the named extension skills from persona-mind through the working channel, and the mind delivers them in the same single-message bundle shape used for initial skill loading. Lets agents start lean and specialize on demand instead of preloading every potentially-relevant skill."
+    "skills can have, like, extensions, right? So if you need more of this, more of this, here's what, like, the extension skills are called, what their description is. And then the agent can say, okay, yeah, I need more specialization now at some point. Sends a message to PersonaMine. Give me these specialization skills. PersonaMine answers to the agent."
+    "Skill extension protocol — composes with the initial-load mechanism. Same channel, same message shape, just triggered by agent rather than by boot."
+    Maximum
+    2026-05-20 17:30)
+
+(Correction
+    "Spirit clients do not provide capture time. The persona-spirit daemon creates the date and time when it receives the signal; the CLI and agents submit intent content, not timestamps."
+    "The usage of Spirit is not, we don't provide a timestamp for anything. The timestamp is created by the daemon when it receives the message, the signal."
+    "Correcting the current Spirit pilot after the Entry record still required clients to supply date/time fields for typed Record submissions."
+    Maximum
+    2026-05-20 21:53)
+
+(Clarification
+    "persona-introspect is itself a persona component and the universal Tap/Untap mandate applies to it equally. The signal-persona-introspect contract must include the observable block; persona-introspect daemon must accept Tap/Untap subscriptions and emit OperationReceived / EffectEmitted events like every other persona component. The fact that introspect's primary role is consuming other components' Tap streams does not exempt it from being itself observable — meta-introspection (an introspect subscriber observing introspect itself) is the right shape."
+    "of course! debug the debugger!"
+    "Psyche closing the /257 §4 Q2 ambiguity. The universal Tap/Untap mandate (component-shape.nota 2026-05-20T02:00:00Z) applies to persona-introspect with no exception. The 'debug the debugger' framing is the load-bearing principle: a tool that observes other tools must itself be observable."
+    Maximum
+    2026-05-21T10:00:00Z)

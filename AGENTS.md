@@ -125,12 +125,25 @@ Each agent knows its lane before claiming or editing. Coordination:
   Before editing any report, before writing code, before responding
   in chat — read the psyche's message, identify every intent
   statement (Decision / Principle / Correction / Clarification /
-  Constraint), and write each to the appropriate
-  `intent/<topic>.nota`. Everything else the prompt asked for
-  derives from intent and is done *after* the capture. Reports,
-  code, and chat are all downstream of intent. This is the
-  absolute first task of any session-turn that contains psyche
+  Constraint), and capture each through the deployed Spirit CLI
+  (`skills/spirit-cli.md`). The transitional `intent/<topic>.nota`
+  append flow remains a fallback for the kink-working-out window;
+  the capture itself is non-negotiable. Everything else the prompt
+  asked for derives from intent and is done *after* the capture.
+  Reports, code, and chat are all downstream of intent. This is
+  the absolute first task of any session-turn that contains psyche
   input.
+- **Do not dispatch subagents unless the psyche explicitly asks — except in the designer protocol.**
+  Subagents — `Agent` tool invocations spawning parallel work, or
+  `SendMessage` to other agent instances — run outside the
+  conversation surface where the psyche can redirect, and can
+  violate the dispatching agent's lane. Default for operator,
+  system-specialist, poet, and their assistant lanes: do the
+  work yourself in the main agent; the psyche authorises
+  subagent dispatch per task. The **designer protocol** (psyche
+  2026-05-21) is the exception: the prime designer runs at full
+  capacity with parallel subagent workflows by default, until
+  disabled or reduced.
 - **No harness-dependent memory.** Workspace truth lives in files
   every agent can open. Don't use per-session memory at
   `~/.claude/projects/<workspace>/memory/` or any agent-private store.

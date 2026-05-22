@@ -259,16 +259,40 @@ convention is the same `<N>-<topic>.md` shape under
 
 ### Filename convention
 
-**`<N>-<topic>.md`** where `N` is the next integer after the
-**highest-numbered report in this role's subdirectory.** The
-numbering is **per-role, not workspace-wide.** **No leading
-zeros. No date prefix.**
+**`<N>-<kind>-<topic-and-title-slug>.md`** where:
+
+- `N` is the next integer after the **highest-numbered report in
+  this role's subdirectory.** Per-role, not workspace-wide. No
+  leading zeros. No date prefix.
+- `<kind>` is a single lowercase word from the closed kind set
+  (`design`, `audit`, `research`, `proposal`, `review`,
+  `synthesis`, `handover`, `postmortem`) — see §"Kinds of reports".
+- `<topic-and-title-slug>` is the report's subject in kebab-case.
+  A short date suffix (`-YYYY-MM-DD`) is permitted at the end for
+  reports likely to land same-day with another report on the same
+  topic; otherwise omit (git captures the date).
 
 Examples for `reports/designer/`:
 
-- `4-persona-messaging-design.md`
-- `12-no-polling-delivery-design.md`
-- `13-niri-input-gate-audit.md`
+- `4-design-persona-messaging.md`
+- `12-design-no-polling-delivery.md`
+- `13-audit-niri-input-gate.md`
+- `143-synthesis-designer-state-digest-2026-05-21.md`
+- `17-review-recording-system.md`
+
+The kind is inserted between the number and the topic so the
+filename answers two questions a reader scans for at a glance:
+**which shape is this** (the kind), **what is it about** (the
+topic-and-title). The pair maps directly to persona-spirit's
+intent record vocabulary (kind + topic + summary) and seeds the
+move to persona-mind-managed reports (per intent records 107 +
+108).
+
+**Forward-only.** Existing reports without the kind in the
+filename are not retroactively renamed. The next time a report
+gets a Review refresh (per §"Context maintenance") or is
+otherwise touched, the new file takes the new format. The bash
+report directories stay readable through the transition.
 
 The topic names the report's subject, not its conversational
 ancestry. Avoid names like `response-to-...`, `review-of-...`, or
@@ -372,34 +396,70 @@ correctly. Padding adds noise at the cost of needing to
 know the maximum digit count up front; the count grows
 without warning.
 
-## Kinds of reports — and where their substance ultimately lives
+## Kinds of reports — closed set, with destination
 
 Reports are a working surface, not the substance's permanent
-home. **For every report you write, name where its
-substance is *destined* to live.** The typology below
-catalogues the recurring shapes and their permanent homes
-so future cleanups have a clear migration target.
+home. Every report carries a **kind** (closed set) and a
+**topic** (open string). The kind names what the report IS
+structurally; the topic names what the report is ABOUT. Both
+sit in the filename (per §"Filename convention") and in the
+report's metadata header (per §"Report header").
 
-| Report shape | Pattern | Permanent home for the substance |
+Eight kinds, each with its destination home for the substance.
+
+| Kind | Pattern | Permanent home for the substance |
 |---|---|---|
-| **Architecture decision** | A typed design decision (a record kind, a protocol shape, a boundary placement) that some other work depends on. | **`<repo>/ARCHITECTURE.md`**. The report is the staging-ground; the ARCH is the destination. Land the report; absorb the substance; retire the report. |
-| **In-flight implementation roadmap** | A consolidated current-state report covering an active multi-track implementation push. Acceptance witnesses, bead trail, deferred-pieces inventory. | **Retires when the implementation acceptance fires green.** While in flight, the report is canonical state-of-art for the push. After acceptance, substance moves to ARCH (decisions) + git history (the path). |
-| **Incident / postmortem** | A reconstruction of a past failure or surprise, with the lessons it teaches. | **Retires once the lessons land in a skill or rule.** The skill inlines the discipline (the "don't reintroduce this" rule, with the *why* stated as part of the rule); the postmortem itself doesn't outlive its migration. Skills do not cite reports — see `skill-editor.md` §"Skills never reference reports". |
-| **Cross-role response** | A designer (or other role) reading another role's report and shaping the response: refinements, shape decisions, things missed. | **Retires when the recipient role absorbs the guidance** into their work — typically into a sibling repo's ARCH, a skill, or shipped code. While the back-and-forth is active, the response is load-bearing. |
-| **Synthesis / state-of-art** | A wide pass across the workspace identifying gaps, dependencies, prioritised questions for the user. | **Retires when answered.** The substance flows into action: closed beads, new design reports, codified skills, ARCH edits. The synthesis itself is a working artefact; once the user has decided the questions, it stops being load-bearing. |
-| **Cleanup ledger** | The record of a cleanup pass — what was deleted, what was absorbed, what was kept. | **Retires when the next cleanup ledger lands** (or sooner if its findings have all been acted on). Each cleanup ledger supersedes the previous one. |
-| **Research / exploratory draft** | A first-sketch design exploring a problem before the answer is known. Marks itself as draft; leaves explicit open questions. | **Retires when a final design report lands** (or when the user closes the question without proceeding). The draft is intermediate; the decision record is permanent. |
+| `design` | Propositional architecture work — a typed contract shape, a protocol, a boundary placement, a new component triad. Carries falsifiable examples; lets operator implement. | **`<repo>/ARCHITECTURE.md`** (when settled). The report is the staging-ground; the ARCH is the destination. Land the report; absorb the substance; retire the report. |
+| `audit` | Verification of existing work against current intent or spec. Names what landed cleanly, what drifted, what gap remains. | **Retires when the named gaps land (in new design, new code, or a skill rule).** Audit substance is by definition tied to a moment; once the moment passes, the report goes. |
+| `research` | Investigation of a landscape of options — protocols, libraries, models, prior art. Sketches trade-offs without picking. Marks itself as exploratory. | **Retires when a `design` or `proposal` report lands** that picks and justifies. The research informs the choice; the chosen direction is permanent. |
+| `proposal` | Test-implementation-ready specification for the operator. Typed records, falsifiable test list, scope boundaries. Hand-off artifact between designer and operator. | **Retires when the implementation acceptance fires green.** The contract has landed in code; the proposal's job is done. |
+| `review` | The output of context maintenance (per §"Context maintenance"). Refreshes older substance against current intent + a new wave of research where the older form drifted. | **Supersedes the prior report it refreshed** (delete the predecessor in the same commit). The review itself retires when its own substance gets absorbed elsewhere or a successor review supersedes. |
+| `synthesis` | Wide pass across the workspace — digest across multiple reports, state-of-art summary, prioritised questions for the psyche. | **Retires when its questions are answered.** Substance flows into action: closed beads, new design reports, codified skills, ARCH edits. The synthesis is a working artefact. |
+| `handover` | Session/lane transition. Catches the next agent up: what's done, what's open, what's load-bearing. | **Retires when the next handover supersedes** or when a session lands its open items. |
+| `postmortem` | Reconstruction of a past failure or surprise, with the lessons it teaches. | **Retires once the lessons land in a skill or rule.** The skill inlines the discipline (the "don't reintroduce this" rule, with the *why* stated as part of the rule); the postmortem itself doesn't outlive its migration. Skills do not cite reports — see `skill-editor.md` §"Skills never reference reports". |
 
-The discipline that follows: when you write a report, ask
-*what shape is this?* and *what's the destination home for
-its substance?* If you can't name either, the report shouldn't
-be written — the substance probably belongs in chat (too
-small for a report), in a skill (a discipline statement
-masquerading as a report), or in ARCH directly (a decision
-clear enough to land permanently).
+The discipline that follows: when you write a report, **name
+its kind and its topic before you start writing**, and ask
+*what's the destination home for its substance?* If you can't
+name all three, the report shouldn't be written — the substance
+probably belongs in chat (too small for a report), in a skill
+(a discipline statement masquerading as a report), or in ARCH
+directly (a decision clear enough to land permanently).
 
-The pattern existed informally before; the explicit table makes
-it teachable.
+The closed kind set matches persona-spirit's intent record
+structure (kind + topic + summary) and prepares reports for the
+eventual move into persona-mind-managed storage (per intent
+records 107 + 108). The kind set is closed; the topic
+vocabulary is open.
+
+## Report header — kind, topic, date
+
+Every report (under the new format) carries a metadata line
+**immediately after the title heading**:
+
+```markdown
+# 17 — Real-time intent recording system
+
+*Kind: Design · Topic: recording-system · 2026-05-22*
+
+(report body...)
+```
+
+Three fields, one line, italicised. The fields:
+
+- **Kind** — the closed-set kind (Design / Audit / Research /
+  Proposal / Review / Synthesis / Handover / Postmortem).
+  Capitalised. Same value as in the filename.
+- **Topic** — the open-string topic. Matches intent topic
+  vocabulary (`recording-system`, `lane-management`,
+  `persona-orchestrate`, `signal-frame`, etc.). Kebab-case.
+- **Date** — `YYYY-MM-DD` when the report was first written.
+  Reaffirmed on substantive rewrites; unchanged on small fixes.
+
+The header is the report's primary self-describing surface —
+parseable by an agent walking the report tree without opening
+each file. When reports move into persona-mind, this header
+becomes the typed record shape.
 
 ## Hygiene — soft cap, supersession, periodic review
 
@@ -482,6 +542,117 @@ stays a report. But the moment the rule is settled, the inlining
 is the move; the report retires.
 
 These earn their seat permanently. Most reports don't.
+
+## Context maintenance — research-driven refresh
+
+The Hygiene discipline above (soft cap, supersession, periodic
+review) is the **simple** maintenance: stale reports go, load-
+bearing reports stay. Context maintenance is the **deeper**
+discipline, triggered when the psyche names it explicitly OR
+when a report is still semantically relevant but has drifted
+against current intent.
+
+The output of context maintenance is a **`review`-kind report**
+that brings older substance forward into current state and
+supersedes the predecessor (deletes it in the same commit).
+
+### When context maintenance fires
+
+- The psyche asks for it ("do a context maintenance pass," "let's
+  refresh," "review the older reports").
+- An agent encounters an older report whose substance is still
+  load-bearing but has drifted noticeably against recent intent
+  — and the agent has the authority + context to refresh it.
+- The soft cap (per §Hygiene) is crossed AND the older reports
+  carry substance that isn't fully expressible as ARCH/skill
+  edits yet.
+
+The discipline is designer-authority work. Assistant lanes can
+identify candidates but the refresh itself is designer-level.
+
+### The discipline — four steps
+
+**Step 1 — Read intent first; weight recent over old.** Open
+`intent/*.nota` (or use spirit CLI to query) before reading the
+older report. Recent intent has more weight than old; a Maximum-
+certainty intent record from this week overrides a Medium-
+certainty record from last month on the same topic. This is the
+load-weight test for whether the older report's framing still
+holds.
+
+**Step 2 — Ask: how does the older report relate to the engine,
+the architecture, the intent as it is now?** Three possible
+answers:
+
+- **Fully aligned.** The older report's substance still holds.
+  No refresh needed; the report stays as-is. If the agent is
+  doing a sweep, mark it kept and move on.
+- **Drifted but recoverable.** The substance is still relevant
+  but the framing or specifics no longer fit. Some sections are
+  superseded; some still hold; some need new research. → Step 3.
+- **Superseded.** The substance is no longer load-bearing; intent
+  has moved past it. → Delete per §Hygiene. No review needed.
+
+**Step 3 — Do new research where the older form drifted.** Re-
+research the gaps. *Maybe we haven't done enough research even
+before* (psyche). The review isn't just a re-edit of the older
+text — it's a fresh pass against current state, with the older
+substance carried forward where it still holds and new findings
+filling where it doesn't.
+
+**Step 4 — Write the review report.** New `review`-kind report
+under the lane's reports subdirectory, with the new filename
+format (`<N>-review-<topic>.md`) and the metadata header. The
+report names what it supersedes in §"What this review supersedes",
+states current-state findings in the body, and ends with §"What
+substance carries forward / what changed". **Delete the
+predecessor in the same commit** that lands the review.
+
+### Why research, not just rewrite
+
+The simple sweep (delete stale, keep load-bearing) doesn't catch
+the case where a report is still relevant but its substance has
+drifted because the workspace moved. The review's research step
+catches that: the older report's framing gets tested against
+current intent and recent work, and gaps get filled with new
+research before the substance carries forward.
+
+The output is a report that READS AS CURRENT — not as a refresh
+of an older report. The lineage lives in §"What this review
+supersedes" and in the git log; the prose itself describes
+current-state directly.
+
+### Predecessor deletion in same commit
+
+Reviews supersede. The predecessor goes when the review lands —
+in the same commit, with cross-references in surviving reports
+updated to point at the new path (or removed if no longer
+relevant). No `v1`/`v2` side-by-side; git holds the lineage.
+
+This matches the prose-tense rule from §"Tense and framing":
+reports describe what IS, and the workspace's report tree
+should hold only current-state reports. A review is the
+mechanism for bringing older substance into current state.
+
+### What context maintenance is NOT
+
+- Not a deletion ledger. The output is a `review` report, not a
+  list of what was removed.
+- Not a digest of unchanged reports. If a report is unchanged
+  from a sweep, it stays; the maintenance pass is about reports
+  that need refresh.
+- Not a place to accumulate. Reviews themselves can be reviewed
+  later if intent moves again; the tree's value comes from being
+  small enough to read.
+
+### The migration to persona-mind
+
+Eventually reports move into persona-mind (per intent record
+108). When they do, context maintenance becomes a query: find
+reports whose intent dependencies have changed since they were
+written, surface them as candidates, write the review records
+into persona-mind directly. The filesystem path is transitional;
+the discipline is durable.
 
 ## The report's medium — prose + visuals
 

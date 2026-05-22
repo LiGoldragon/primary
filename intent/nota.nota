@@ -256,3 +256,10 @@
     "Psyche settling the typed-map-key direction during reports/system-assistant/29 review. Settles open clarification B. STT note: 'Notok' → 'NOTA' (skills/stt-interpreter.md)."
     Maximum
     2026-05-20T18:45:00Z)
+
+(Principle
+    "The workspace's typed records — structs and enums in the sema database — form trees of branches and leaves. A LEAF is a fixed-size terminal, typically an enum of unit variants only (Bool as True/False, Magnitude's seven variants, Kind's five-kind taxonomy); final leaves have no variable size. A BRANCH is variable-size or data-carrying content — vectors, data-carrying enum variants, structs containing variable-size members. Branches are themselves trees (recursive). A vector reads as a dynamic-leaf in one sense (a single field) but practically a branch because it points into another tree; a data-carrying enum variant is a branch because its payload doesn't fit as a single tree node."
+    "the structs and enums form trees of branches and leaves … final leaves are enums of unit variants only, like bool being true/false, or magnitude being one of seven, or kind being one of five — they're fixed-size terminals … a branch is anything variable-size or data-carrying — vectors, data-carrying enum variants, structs containing variable members. branches are themselves trees. a vector is a dynamic-leaf in one reading because it's a single field, but practically a branch because it points into another tree. a data-carrying enum variant is a branch because its payload doesn't fit as a single tree node."
+    "Psyche surfacing the branches/leaves vocabulary for typed-record trees in the sema database. The vocabulary covers every Rust struct/enum shape the workspace authors. Lands in skills/language-design.md as the canonical vocabulary section so future agents reach for it on instinct."
+    Maximum
+    2026-05-21T12:30:00+02:00)

@@ -520,3 +520,18 @@
     "Following an exchange where the agent explained writing 'Heraclitus said it cleanest:' as a 'violation' of the stage-setting rule in prose.md; the psyche corrected the framing."
     Maximum
     2026-05-20)
+
+(Principle
+    "Anything that can be done mechanically will not be done by agents. Socket routing, format selection, lookup, address resolution, dispatch — anything that has a deterministic correct answer derivable from the input — is mechanism, not agent work. Agents are the cognitive layer; mechanism handles every decision that can be made by code. The trajectory: agents will do less and less mechanical work as the system matures — more agents doing more substantive work, but less mechanical work per agent."
+    "Anything that can be done mechanically will not be done by agents. Agents are going to do less and less. I mean, in the way we're going to have more agents than ever doing more work, but they're not going to have to figure all of this stuff out that can be done mechanically."
+    "Foundational architectural principle stated explicitly during a CLI socket-dispatch decision. The CLI question was the immediate trigger; the principle applies workspace-wide. Strong candidate for ESSENCE promotion — universal, maximum certainty, founding-rule-shaped."
+    Maximum
+    2026-05-20 17:30)
+
+(Correction
+    "This agent's active lane is second-operator, not operator-assistant."
+    "your new role lane is not operator-assistant anymore, but second-operator."
+    "Correcting this agent's lane assignment after a report was created under the operator-assistant lane."
+    Maximum
+    2026-05-21
+    16:05)
