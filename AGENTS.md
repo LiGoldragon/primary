@@ -76,6 +76,10 @@ report subdirectory, and claim string differ. Lane mechanism:
 - `system-specialist` — OS / platform / deploy (any agent)
 - `poet` — writing as craft (any agent)
 
+Specialized lanes inherit the closest main role's discipline.
+`cluster-operator` is an operator lane for live cluster maintenance,
+production deploy/update authority, and cluster-scoped implementation.
+
 Each agent knows its lane before claiming or editing. Coordination:
 `orchestrate/AGENTS.md`; helper: `tools/orchestrate`.
 

@@ -10,6 +10,14 @@
 #   design reports, skill edits) — they are a second seat at the discipline,
 #   not a subordinate lane. New shape as of 2026-05-21; see
 #   reports/second-designer/2-persona-orchestrate-lane-management-2026-05-21.md.
+# - A specialized lane (e.g. cluster-operator, nota-designer) is a structural
+#   role with a token-vector identity in the typed registry (e.g. [Cluster
+#   Operator], [Nota Designer]) and a specialized scope within its main role's
+#   discipline. Carries Structural authority. Appears bare in the bash format
+#   for now; the typed persona-orchestrate registry handles the role-vector
+#   shape natively. Ordinal prefixes (second-, third-) copy the whole following
+#   role per spirit record 174 — so a second cluster-operator becomes
+#   second-cluster-operator, not second-operator with cluster scope.
 #
 # This file is a transitional bash-readable format. The destination is
 # orchestrate/roles.nota — a typed Nota record read by a Rust-rewritten
@@ -19,9 +27,11 @@
 operator
 second-operator                   parallel-of:operator
 second-operator-assistant         assistant-of:operator
+cluster-operator
 designer
 second-designer                   parallel-of:designer
 third-designer                    parallel-of:designer
+nota-designer
 designer-assistant                assistant-of:designer
 system-specialist
 system-assistant                  assistant-of:system-specialist

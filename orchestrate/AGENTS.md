@@ -28,6 +28,7 @@ below.
 | `operator` | operator | Codex | `orchestrate/operator.lock` | `reports/operator/` | Rust crates, persona, sema-ecosystem implementation |
 | `operator-assistant` | operator | (any) | `orchestrate/operator-assistant.lock` | `reports/operator-assistant/` | Extra implementation/audit workforce under operator discipline |
 | `second-operator-assistant` | operator | (any) | `orchestrate/second-operator-assistant.lock` | `reports/second-operator-assistant/` | Second extra implementation/audit workforce under operator discipline |
+| `cluster-operator` | operator | Codex | `orchestrate/cluster-operator.lock` | `reports/cluster-operator/` | Live cluster maintenance, production deploy/update authority, and cluster-scoped implementation under operator discipline |
 | `designer` | designer | Claude | `orchestrate/designer.lock` | `reports/designer/` | ESSENCE, AGENTS, lore, skills, design reports |
 | `designer-assistant` | designer | Codex | `orchestrate/designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
 | `second-designer-assistant` | designer | (any) | `orchestrate/second-designer-assistant.lock` | `reports/second-designer-assistant/` | Second extra design audit, report, skill, and protocol support under designer discipline |
