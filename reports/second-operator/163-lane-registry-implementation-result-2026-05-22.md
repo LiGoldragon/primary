@@ -5,6 +5,18 @@ Topic: persona-orchestrate lane registry slice
 Date: 2026-05-22
 Lane: second-operator
 
+## Current Status
+
+This report remains as the shipped-slice witness for the lane registry.
+For the broader current situation and next migration target, use:
+
+- `reports/second-operator/165-current-situation-2026-05-22.md`
+- `reports/second-operator/166-review-persona-orchestrate-migration-2026-05-22.md`
+
+The retired-lane identifier question is resolved for now: retired lane
+identifiers can disappear. The active table behavior is acceptable for
+this slice.
+
 ## Result
 
 Implemented bead `primary-ao1q` as the focused lane-registry slice.
@@ -20,14 +32,16 @@ Commits landed and pushed:
 ## Working Surface
 
 The working signal now has `RoleToken`, vector-shaped `Role`,
-`LaneAuthority`, `LaneIdentifier`, `LaneRegistration`, `Observation::Lanes`,
-and `LanesObserved`.
+`LaneAuthority`, `LaneIdentifier`, `LaneRegistration`,
+`Observation::Lanes`, and `LanesObserved`.
 
-The owner signal now has `Register`, `Retire`, and `SetAuthority` for lane
-registry mutation. `Retire` is shaped as `Retirement::{Role, Lane}` so the new
-lane-retire path does not collide with the existing dynamic-role retire path.
+The owner signal now has `Register`, `Retire`, and `SetAuthority` for
+lane registry mutation. `Retire` is shaped as `Retirement::{Role,
+Lane}` so the new lane-retire path does not collide with the existing
+dynamic-role retire path.
 
-`persona-orchestrate` now stores lanes in the `lane_registry` table and handles:
+`persona-orchestrate` now stores lanes in the `lane_registry` table and
+handles:
 
 - owner register with derived lane identifiers.
 - owner retire with missing-lane rejection.
@@ -44,15 +58,9 @@ Passed:
 - `cargo test --locked` in `persona-orchestrate`.
 - `nix flake check --max-jobs 0` in all three repos.
 
-## Open Architecture Point
-
-Retired lane identifier reuse is still not fully settled. The current table is
-an active registry: retiring a lane removes it, active lanes are never renamed,
-and later registrations may reuse a retired identifier if the active registry
-shape permits it. If retired lane identifiers must be reserved forever, the
-next design needs either tombstones or a persistent `(role, authority) ->
-next ordinal` counter.
+## Remaining Architecture Work
 
 The deeper signal-executor / observable-block migration remains broader
-`primary-c620` work. This slice did not replace the shell orchestration layer,
-create report directories from the daemon, or close the broader migration bead.
+`primary-c620` work. This slice did not replace the shell
+orchestration layer, create report directories from the daemon, or close
+the broader migration bead.
