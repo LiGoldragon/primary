@@ -30,6 +30,97 @@ split is filesystem-enforced (per `skills/micro-components.md`).
 The CLI is bundled runtime machinery: the daemon's thin first client,
 not one of the triad's three legs.
 
+## Component binary naming
+
+A component has two binaries: a CLI half and a daemon half. The
+component name (`persona`, `spirit`, `harness`, `orchestrator`,
+`chroma`, `chronos`) names the **role** of the whole — it is not
+itself the name of any single binary. The binaries are:
+
+- **CLI binary** — named `<component>`. The thin Signal client.
+- **Daemon binary** — named `<component>-daemon`. The long-lived
+  process holding the sema-engine state.
+
+So the `persona` component is two binaries — `persona` (CLI) and
+`persona-daemon` (daemon). The `spirit` component is `spirit` (CLI)
+and `spirit-daemon` (daemon). Same shape for `harness`,
+`orchestrator`, `chroma`, `chronos`, and every future component.
+
+The CLI binary takes the unprefixed role-name because that is what
+the human or peer agent types most often; the daemon binary takes
+the `-daemon` suffix because it names the long-lived process and is
+typed only by launch infrastructure. Both halves together comprise
+the component (per intent records 215 + 216 + 270).
+
+### Repository name vs binary name
+
+The repository name follows the component name. When the repository
+carries a disambiguation prefix because the component sits inside a
+larger system (e.g. `persona-spirit` to mark spirit as the
+persona-system's spirit, distinct from any other future spirit), the
+binaries inside it follow the **repository's** component identity:
+
+- Repository `persona-spirit` ships binaries `spirit` (CLI) and
+  `persona-spirit-daemon` (daemon).
+- Repository `persona-mind` ships a `mind` CLI; the daemon (when it
+  lands) is `persona-mind-daemon`.
+
+The CLI keeps the short role-name because users type it; the daemon
+keeps the full repo-prefixed name because two persona-system
+daemons running side by side need disambiguation in process listings,
+socket paths, and systemd units.
+
+### Persona harness wrapping — the `persona-<agent>` family
+
+`persona-codex`, `persona-pi`, `persona-claude` are persona-wrapping
+harnesses. The `persona-` prefix marks them as components that wrap
+an external agent runtime (Codex, the Pi runtime, Claude Code) into
+the persona system. The unprefixed `persona` is reserved for the
+engine-manager component (per intent 215). So:
+
+- `persona` (repo + CLI + daemon) — the engine-manager. CLI binary
+  `persona`, daemon binary `persona-daemon`.
+- `persona-pi` (repo + CLI + daemon) — the Pi-runtime-wrapping
+  harness. CLI binary `pi`, daemon binary `persona-pi-daemon` (per
+  designer/266 + designer/268).
+- `persona-codex`, `persona-claude` — same shape: CLI `<agent>`,
+  daemon `persona-<agent>-daemon`.
+
+### Binary naming table
+
+| Component | Repo | CLI binary | Daemon binary |
+|---|---|---|---|
+| persona | `persona` | `persona` | `persona-daemon` |
+| persona-spirit | `persona-spirit` | `spirit` | `persona-spirit-daemon` |
+| persona-mind | `persona-mind` | `mind` | `persona-mind-daemon` |
+| persona-router | `persona-router` | `router` | `persona-router-daemon` |
+| persona-orchestrate | `persona-orchestrate` | `orchestrate` | `persona-orchestrate-daemon` |
+| persona-harness | `persona-harness` | `harness` | `persona-harness-daemon` |
+| persona-system | `persona-system` | `system` | `persona-system-daemon` |
+| persona-message | `persona-message` | `message` | `persona-message-daemon` |
+| persona-terminal | `persona-terminal` | `terminal` | `persona-terminal-daemon` |
+| persona-pi | `persona-pi` | `pi` | `persona-pi-daemon` |
+| orchestrator | `orchestrator` | `orchestrator` | `orchestrator-daemon` |
+| chroma | `chroma` | `chroma` | `chroma-daemon` |
+| chronos | `chronos` | `chronos` | `chronos-daemon` |
+
+A standalone top-level component (no parent system) reuses the
+component-name for both the repo and the CLI binary; the daemon
+binary appends `-daemon`. A child component inside a parent system
+(the persona-system family above) carries the parent prefix in the
+repo and daemon names; the CLI keeps the short role-name.
+
+### What this is NOT
+
+- The role-name on its own (`persona`, `spirit`, `harness`) is not a
+  binary unless that binary is the CLI. There is no binary called
+  `persona` that is the daemon; the daemon is `persona-daemon`.
+- A `<component>-cli` suffix is not used (the unprefixed name IS the
+  CLI). `lojix-cli` is a transitional carry-over name, not the
+  convention.
+- A `<component>-server` or `<component>-service` suffix is not
+  used; the daemon binary always ends in `-daemon`.
+
 ## Vocabulary
 
 Use these words consistently:

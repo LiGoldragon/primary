@@ -182,49 +182,47 @@ gets chosen.
 
 ### Designer-proposed solution
 
-**Start with raw bytes (current shape) for first cutover; defer
-typed-enum decision until second component handover surfaces the
-need.** Reasons:
+**RATIFIED via intent 274 (psyche 2026-05-23 with refinement):**
+raw bytes stored in a SEPARATE container outside the typed database
+— must not pollute the typed database with un-incorporated bytes.
+Type signature is "unspecified raw payload". Typed-enum decision
+deferred until second component handover surfaces the need.
+
+Reasons:
 - First-cutover blocker is the daemon-side handler (`primary-wehu`
   Mirror payload application), not the payload type
 - Premature typing locks signal-version-handover into version-pair
   awareness; the contract is currently signal-only / version-pair-blind
   (clean separation from `version-projection`)
+- The typed database stays clean — raw payloads live separately so
+  the database never accumulates untyped material (intent 274's
+  load-bearing refinement)
 - Once second component cutover lands, we'll know whether typed
   enums add enough value to justify the macro complexity
 
-### If ratified, file as
+### Status
 
-Status capture only — no bead needed. Capture as Spirit Decision
-(Medium): "Mirror payload remains raw bytes for first-cutover
-prototype; typed-enum question stays open pending second-component
-cutover evidence."
+RATIFIED via intent record 274. `primary-wehu` (Mirror payload
+application on persona-spirit-daemon) carries the work; its body
+should reference intent 274 for the raw-container discipline.
 
 ## §3.3 Q3 — Read semantics during handover window
 
 ### Problem visual
 
 ```mermaid
-sequenceDiagram
-    participant C as Client
-    participant V0 as v0.1.0 (current, in HandoverMode)
-    participant V1 as v0.1.1 (next, in StateCopy)
-    participant P as Persona
+flowchart TB
+    Trigger["Client read during handover window<br/>(via stable socket; v0.1.0 is current, in HandoverMode;<br/>v0.1.1 is next, in StateCopy)"]
 
-    Note over V0: HandoverMode — public writes paused
-    Note over V1: copying state up to commit_sequence N
+    Trigger --> Q{"Where does Persona route the read?"}
 
-    C->>P: read request via stable socket
-    Note over P: ???<br/>(this is the open question)
+    Q -->|"Option A"| OA["Route to v0.1.0<br/>(serve read from snapshot at commit_sequence N)<br/>freshest writable state; matches client expectations"]
+    Q -->|"Option B"| OB["Route to v0.1.1<br/>(serve read from v0.1.1 projection)<br/>but projection may be incomplete during state copy"]
+    Q -->|"Option C"| OC["Block until v0.1.1 is active<br/>(~10ms-100ms gap)<br/>safer correctness, user-visible latency"]
 
-    P -->|"Option A"| V0
-    Note over V0: serve read from snapshot at N<br/>(serves the freshest writable state)
-
-    P -->|"Option B"| V1
-    Note over V1: serve read from V1's projection<br/>(serves the next-version view)
-
-    P -->|"Option C"| Block["block until V1 active"]
-    Note over Block: ~10ms-100ms gap, safer correctness
+    style OA fill:#efe
+    style OB fill:#eef
+    style OC fill:#fef
 ```
 
 ### Context

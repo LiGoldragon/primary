@@ -480,3 +480,8 @@ found.
 - this workspace's `skills/rust-discipline.md` — Rust-specific
   application (the cryptic-dialect example, the offender table
   again with Rust-flavor entries).
+- this workspace's `skills/component-triad.md` §"Component binary
+  naming" — applies the no-redundant-ancestry rule to component
+  binaries: the CLI takes the short role-name (because the shell
+  context supplies the rest), the daemon takes `<component>-daemon`
+  (because process listings need the disambiguator).
