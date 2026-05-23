@@ -20,7 +20,7 @@ flowchart TB
         K4["persona-codex (wraps persona for codex AI harness)"]
         K5["persona-pi (wraps persona for Pi headless harness)"]
         K6["persona-claude (wraps persona for claude AI harness)"]
-        K7["persona-llm-client (LLM client embeddable in persona, not supervised by persona)"]
+        K7["persona-llm-client — RECLASSIFIED to RENAME per intent 310: becomes the agent supervised triad component"]
     end
 
     subgraph Drops["DROPS persona- prefix (supervised components)"]
@@ -204,20 +204,32 @@ preference. Bead body cites this report for the design context.
 
 ## §7 Open questions before the rename pass starts
 
-1. **`persona-sema`** — drop prefix to `sema`? Or does it carry
-   the persona prefix because it's persona-specific sema work?
-   The existing `sema-engine` repo (no persona prefix) is the
-   general-purpose engine; if `persona-sema` is persona-specific,
-   the prefix stays.
+**Resolved 2026-05-23 via intents 309 + 310:**
+
+1. ~~**`persona-sema`** — drop prefix or keep?~~ **RESOLVED**: DELETE
+   per intent 309. Legacy design-phase residue. Per /161/2 audit:
+   nothing to absorb; bead `primary-moxz` (delete + clean 2 primary
+   doc refs) filed.
 2. **`signal-persona-origin`** — the auth → origin rename was in
    flight per /159 sub-report 1's note. Drop the persona prefix?
-   If origin is persona-identity-specific, keep the prefix.
-   Suggest: keep until origin's role is clearer.
-3. **Wrapper boundary** — `persona-llm-client` is named like a
-   wrapper but described elsewhere as "the workspace-native LLM
-   client embeddable in daemons". If it's used BY persona (not
-   wrapping it), it might drop the prefix to `llm-client`. Suggest:
-   keep until psyche clarifies its role.
+   Per /161/4 sub-agent D's audit: the rename to origin is fully
+   complete (`primary-7ru6` closed). Open: drop persona prefix?
+   /161/4 leans KEEP (persona's own boundary surface). Pending
+   psyche.
+3. ~~**`persona-llm-client` boundary**~~ **RESOLVED**: RENAME to
+   `agent` (drops prefix; supervised triad) per intent 310. Not a
+   wrapper; full triad component. Beads filed: `primary-fwll`
+   (signal-agent), `primary-7i6a` (owner-signal-agent), `primary-rtz8`
+   (owner-signal-agent — duplicate filing caught + reconciled),
+   `primary-c0pp` (mind integration), `primary-g3gm` (cascade
+   replace).
+
+**Still open:**
+
+- `signal-persona-engine-management` (NEW repo created today by
+  operator split per intent 307). Drop persona prefix? Or keep
+  because it's persona's own boundary surface? /161/4 leans KEEP
+  for the same reason as `signal-persona`.
 
 ## §8 What changes in /152, /153, /155, /156, /157, /158, /159
 
