@@ -359,7 +359,7 @@ persona-mind's typed substrate.
 
 Filed one P3 design bead for future persona-mind implementation work:
 
-- **`primary-prn2`** — `Design persona-mind AgentError event schema — implement when persona-mind production deployment lands`
+- **`primary-x0qm`** — `Design persona-mind AgentError event schema — implement when persona-mind production deployment lands`
   - Priority: P3
   - Labels: `role:designer`, `persona-mind`, `observability`, `design`
   - Body references this sub-report at
