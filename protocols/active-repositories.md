@@ -38,7 +38,9 @@ stack.
 | `owner-signal-version-handover` | `/git/github.com/LiGoldragon/owner-signal-version-handover` | Owner-only administrative signal contract for version handover authority: force selector flip, rollback, and quarantine. |
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. It is being redirected away from universal request verbs; public contracts own contract-local operation roots. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
-| `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Persona-wide Signal vocabulary. |
+| `owner-signal-persona` | `/git/github.com/LiGoldragon/owner-signal-persona` | Owner-only Persona engine-manager contract: launch, retire, start, stop, and status query. |
+| `signal-persona-engine-management` | `/git/github.com/LiGoldragon/signal-persona-engine-management` | Ordinary Persona manager-to-supervised-component lifecycle contract: announce, readiness, health, stop, and spawn envelope. |
+| `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Retired compatibility shim for the former combined Persona signal surface; new code depends on `owner-signal-persona` or `signal-persona-engine-management` directly. |
 | `signal-persona-origin` | `/git/github.com/LiGoldragon/signal-persona-origin` | Persona origin-context vocabulary: engine/route/channel ids, component names, connection classes, message origins, and ingress context. Not an authentication library. |
 | `signal-persona-message` | `/git/github.com/LiGoldragon/signal-persona-message` | Message CLI to router channel contract. |
 | `signal-persona-router` | `/git/github.com/LiGoldragon/signal-persona-router` | Router-owned observation contract for accepted messages, route decisions, channel state, delivery status, and adjudication status. Used by `persona-introspect` without turning `signal-persona-introspect` into a shared schema bucket. |
