@@ -114,6 +114,11 @@ without it they drift.
 
 ## How to read this for your lane
 
+The lane identifier is the exact role-name the harness gave the
+agent. Do not substitute the nearest existing lane. If the session
+role is `pi-operator`, claim `pi-operator`, write reports under
+`reports/pi-operator/`, and use `orchestrate/pi-operator.lock`.
+
 Whatever lane you're claiming, the reading list is two skills:
 
 1. **`skills/role-lanes.md`** (this file) — the lane mechanism.

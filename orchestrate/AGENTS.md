@@ -26,6 +26,7 @@ below.
 | Lane | Main role | Default agent | Lock file | Reports subdir | Natural primary scope |
 |---|---|---|---|---|---|
 | `operator` | operator | Codex | `orchestrate/operator.lock` | `reports/operator/` | Rust crates, persona, sema-ecosystem implementation |
+| `pi-operator` | operator | Pi | `orchestrate/pi-operator.lock` | `reports/pi-operator/` | Pi-harness implementation window under operator discipline |
 | `operator-assistant` | operator | (any) | `orchestrate/operator-assistant.lock` | `reports/operator-assistant/` | Extra implementation/audit workforce under operator discipline |
 | `second-operator-assistant` | operator | (any) | `orchestrate/second-operator-assistant.lock` | `reports/second-operator-assistant/` | Second extra implementation/audit workforce under operator discipline |
 | `cluster-operator` | operator | Codex | `orchestrate/cluster-operator.lock` | `reports/cluster-operator/` | Live cluster maintenance, production deploy/update authority, and cluster-scoped implementation under operator discipline |
@@ -168,7 +169,7 @@ taking on a tracked unit of work, an agent claims its intended scope.
 tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 ```
 
-`<role>` is one of `operator`, `operator-assistant`,
+`<role>` is one of `operator`, `pi-operator`, `operator-assistant`,
 `second-operator-assistant`, `designer`, `designer-assistant`,
 `second-designer-assistant`, `system-specialist`, `system-assistant`,
 `second-system-assistant`, `poet`, or `poet-assistant`.
@@ -343,6 +344,7 @@ not add your own report files to a lock file.
 Convention: each role owns a subdirectory.
 
 - `reports/operator/` — operator's reports.
+- `reports/pi-operator/` — Pi operator's reports.
 - `reports/operator-assistant/` — operator assistant's reports.
 - `reports/second-operator-assistant/` — second operator assistant's reports.
 - `reports/designer/` — designer's reports.

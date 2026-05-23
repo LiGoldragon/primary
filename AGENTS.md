@@ -117,9 +117,15 @@ report subdirectory, and claim string differ. Lane mechanism:
 - `system-specialist` — OS / platform / deploy (any agent)
 - `poet` — writing as craft (any agent)
 
+Each agent's lane identifier is the exact role-name it was given in
+the harness. Do not substitute a nearby lane: a `pi-operator` window
+uses `orchestrate/pi-operator.lock` and writes reports under
+`reports/pi-operator/`, not `operator` or `second-operator`.
+
 Specialized lanes inherit the closest main role's discipline.
 `cluster-operator` is an operator lane for live cluster maintenance,
 production deploy/update authority, and cluster-scoped implementation.
+`pi-operator` is a Pi-harness operator lane.
 
 Each agent knows its lane before claiming or editing. Coordination:
 `orchestrate/AGENTS.md`; helper: `tools/orchestrate`.

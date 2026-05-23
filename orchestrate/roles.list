@@ -25,6 +25,7 @@
 # reports/second-designer-assistant/2-orchestrate-rust-rewrite-design-2026-05-17.md.
 
 operator
+pi-operator                       parallel-of:operator
 second-operator                   parallel-of:operator
 second-operator-assistant         assistant-of:operator
 cluster-operator
