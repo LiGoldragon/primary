@@ -272,6 +272,17 @@ through the owner-signal actor; there is no separate privileged side
 channel and no "static local config first, owner-signal later"
 implementation path.
 
+**Proposed rename: `owner-signal` → `meta-signal`.** Per Spirit
+records 290 + 299, the psyche prefers `meta-signal` over
+`owner-signal` for the policy contract name. The rename is
+**tentative direction, not a completed vocabulary change** —
+record 293 explicitly directs that `owner-signal` remains the
+active naming convention until an explicit rename pass lands.
+Continue using `owner-signal-<component>` in new repos, ARCH
+files, and code; do not pre-rename. When the rename lands, the
+cascade resembles the persona- prefix removal (Spirit record 280)
+and lands as its own coordinated bead.
+
 ### 5. Policy state and working state — both in one sema-engine DB
 
 Every triad daemon's durable state splits into two typed categories,

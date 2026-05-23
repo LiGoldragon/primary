@@ -105,11 +105,14 @@ applies:
 
 ## Subagent feature work
 
-When a subagent is launched to edit code, run a prototype that may
-ship, or scaffold a new repo, it starts on a feature branch in a
-separate worktree. The parent agent assigns the branch name and report
-path before launch. Research-only subagents that write only their
-preassigned report do not need a repo worktree.
+**Subagents always create feature branches when touching repos**
+(Spirit records 288 + 300). When a subagent is launched to edit code,
+run a prototype that may ship, or scaffold a new repo, it starts on a
+feature branch in a separate worktree. The parent agent assigns the
+branch name and report path before launch; the dispatch prompt must
+state the feature-branch requirement so the subagent does not commit
+to `main`. Research-only subagents that write only their preassigned
+report do not need a repo worktree.
 
 The push surface is the same as the canonical checkout — `jj git push`
 goes to the same remote. Pushing the feature branch:
@@ -166,6 +169,18 @@ about what's in flight. Clean up at merge time.
 
 The trigger for this skill is *"this work needs its own branch."* If
 the work is going straight to main, no worktree.
+
+## When the repo is already locked — worktree from main
+
+**If the canonical ghq checkout is claimed by another lane** and the
+work needs to start now, create a feature-branch worktree from the
+last `main` version (Spirit record 292). The locked repo's `@` may
+be on a feature branch the other lane is mid-edit; cutting from the
+remote `main` keeps the new branch independent of that in-flight
+state and preserves the lock-holder's ability to land without
+collision. The worktree path is its own scope (per §"Interaction
+with the orchestration protocol" below), so the lock is not
+contested.
 
 ## Why a worktree, not just a branch
 

@@ -347,6 +347,17 @@ per-repo INTENT.md), the whole directory retires together,
 not piece by piece. The retirement lands via a
 context-maintenance sweep per §"Context maintenance" below.
 
+**Pre-launch lane allocation.** Per Spirit record 289, parallel
+sub-agents receive their report lanes — directory path and
+sub-report number — **before** launch. The orchestrator allocates
+each slice a numbered slot (`1-<slice>.md`, `2-<slice>.md`, ...) in
+the meta-report directory and states the assignment in the dispatch
+prompt. Sub-agents do not pick their own number; if they did,
+two parallel slices could collide on the same filename. The
+allocation is part of the frame document (`0-frame-and-method.md`)
+so the orchestrator's own assignment table is also the canonical
+reference for which slice owns which path.
+
 **Worked example.** The current session's home —
 `reports/second-designer/152-persona-engine-architecture-overview/`
 — is the first instance of this pattern. The orchestrating

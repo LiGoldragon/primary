@@ -420,6 +420,37 @@ Captured per Spirit record 256 (audits feed bead filing). Pairs
 with the auditor role's eventual loop back to designer (intent
 234) — auditor surfaces, designer manifests, operator implements.
 
+## Parallel manifestation + audit pattern
+
+When the workspace accumulates fresh intent + fresh reports faster
+than serial work can absorb, the designer dispatches two parallel
+sub-agent waves and marries the outputs into operator beads
+(Spirit record 308):
+
+- **Manifestation wave.** Sub-agent(s) read recent intent records
+  and existing skills / ARCH / INTENT.md, identify records with
+  firm direction but no durable home, and either land the
+  manifestation directly (small skill / ARCH edit within designer
+  authority per §"Designer authority") or file a bead for the
+  manifestation work.
+- **Audit wave.** Sub-agent(s) read recent reports + active beads +
+  code state, identify intent that should be implemented but is
+  not yet in flight, and surface gaps with concrete bead-shaped
+  recommendations.
+
+The two waves run independently (no cross-dependencies); the
+orchestrator marries their outputs into **small-component-shape
+operator beads** that other sub-agents (or parallel operator
+lanes) can pick up in parallel. Small + distributable is the
+forcing function — a bead that any operator window can pick up
+without first absorbing several reports is the natural unit of
+output.
+
+The whole session lands in a meta-report directory per
+`skills/reporting.md` §"Meta-report directories — sub-agent
+sessions"; the orchestrator's frame (`0-frame-and-method.md`)
+assigns each sub-agent's lane pre-launch per intent 289.
+
 ## Working with operator
 
 The designer specifies; the operator implements. The seam
