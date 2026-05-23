@@ -103,6 +103,14 @@ applies:
 - Reports go in `~/primary/reports/<role>/` (workspace-level), not in
   the worktree.
 
+## Subagent feature work
+
+When a subagent is launched to edit code, run a prototype that may
+ship, or scaffold a new repo, it starts on a feature branch in a
+separate worktree. The parent agent assigns the branch name and report
+path before launch. Research-only subagents that write only their
+preassigned report do not need a repo worktree.
+
 The push surface is the same as the canonical checkout — `jj git push`
 goes to the same remote. Pushing the feature branch:
 
