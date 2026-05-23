@@ -277,8 +277,7 @@ Within this directory:
 
 Outside:
 - `reports/second-designer/162-contract-repo-lens-and-consolidation/3-consolidated-persona-engine-overview.md` — consolidated successor to `/152` (deleted 2026-05-23 per intent 362)
-- `reports/second-designer/157-audit-engine-stack-state-before-constraint-and-integration-beads-2026-05-23.md` — prior audit
-- `reports/second-designer/158-open-question-resolution-and-remaining-clarification-needs-2026-05-23.md` — open question resolution map (status banner updated this session by sub-agent C)
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4b-consolidated-current-status.md` — prior audit + open-question resolution map (consolidates the former `/157` + `/158`)
 - `reports/second-designer/159-intent-manifestation/` — prior meta-directory
 - `reports/second-designer/160-persona-prefix-removal-coordinated-rename-2026-05-23.md` — 24-repo rename plan (§2 + §7 updated this session)
 - `reports/designer/302-audit-recent-operator-work-2026-05-23.md` — primary operator audit

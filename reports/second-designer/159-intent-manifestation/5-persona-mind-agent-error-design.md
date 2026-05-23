@@ -451,13 +451,13 @@ External cross-references:
 
 - `reports/second-designer/152-persona-engine-architecture-overview/8-standard-agent-behavior.md`
   — auditor role framing under carry-uncertainty.
-- `reports/second-designer/155-three-tier-signal-sizing-and-lossless-routing-2026-05-22.md`
-  Part 1 §1.4 — `LogVariant` + `LogSummary` trait shapes used here.
-- `reports/second-designer/156-most-important-gaps-2026-05-23.md`
-  §8 — auditor MVP staging.
-- `reports/second-designer/158-open-question-resolution-and-remaining-clarification-needs-2026-05-23.md`
-  §3.4 — auditor sub-questions; this sub-report assumes Q4a/Q4b/Q4c
-  resolve as proposed (support-tier, external CI, bead comments).
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4a-consolidated-design-rationale-archive.md`
+  §3.4 — `LogVariant` + `LogSummary` trait shapes used here
+  (consolidates the former `/155` Part 1 §1.4).
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4a-consolidated-design-rationale-archive.md`
+  §7 — auditor MVP staging + sub-questions; this sub-report assumes
+  Q4a/Q4b/Q4c resolve as proposed (support-tier, external CI, bead
+  comments). Consolidates the former `/156` §8 and `/158` §3.4.
 - `skills/mermaid.md` — pattern that broke / failed with shape that
   inspired the `AgentError` context fields.
 - `/git/github.com/LiGoldragon/persona-mind/ARCHITECTURE.md` §2,

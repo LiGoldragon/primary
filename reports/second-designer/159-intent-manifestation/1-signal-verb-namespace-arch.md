@@ -167,10 +167,10 @@ ARCH manifestation enables tracking are:
   (this slice's primary landing surface)
 - `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md`
   "SemaObservation as a Tier-2-shaped type" section
-- `reports/second-designer/155-three-tier-signal-sizing-and-lossless-routing-2026-05-22.md`
-  Part 1 §1.1-§1.9 (original design)
-- `reports/second-designer/158-open-question-resolution-and-remaining-clarification-needs-2026-05-23.md`
-  (resolution map showing intent 244 + 251 ratified Part 1)
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4a-consolidated-design-rationale-archive.md`
+  §3 (original three-tier sizing design; consolidates the former `/155` Part 1)
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4b-consolidated-current-status.md`
+  §5 (resolution map showing intent 244 + 251 ratified; consolidates the former `/158`)
 - Spirit records 244, 251, 271, 272, 273 (the intent capture
   trail manifested by this slice)
 - Beads `primary-l02o` (signal-frame: LogVariant trait + autogen

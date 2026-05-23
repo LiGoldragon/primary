@@ -315,10 +315,8 @@ Within this directory:
 
 Outside this directory:
 - `reports/second-designer/162-contract-repo-lens-and-consolidation/3-consolidated-persona-engine-overview.md` — consolidated successor to `/152` (deleted 2026-05-23 per intent 362)
-- `reports/second-designer/155-three-tier-signal-sizing-and-lossless-routing-2026-05-22.md` — original three-tier sizing design
-- `reports/second-designer/156-most-important-gaps-2026-05-23.md` — gaps audit context
-- `reports/second-designer/157-audit-engine-stack-state-before-constraint-and-integration-beads-2026-05-23.md` — prior audit
-- `reports/second-designer/158-open-question-resolution-and-remaining-clarification-needs-2026-05-23.md` — resolution map + remaining clarifications (banner updated this turn for Q2 ratification)
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4a-consolidated-design-rationale-archive.md` — design rationale archive (consolidates the former `/154` + `/155` + selected `/156` themes)
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4b-consolidated-current-status.md` — current status + open-question resolution map (consolidates the former `/157` + `/158`)
 - `reports/designer/302-audit-recent-operator-work-2026-05-23.md` — primary audit (sub-report 6 follows on from)
 - Spirit records 244-276 (the intent layer this session manifested)
 - ARCH commits this session: signal-frame `2313c5ed`, signal-sema `1604cceb`, signal-version-handover `0cdcc1a7`, sema-engine `e36c47b8`

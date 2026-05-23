@@ -30,7 +30,7 @@ that Operator has done in relation to what you're designing."
 Reports read:
 
 - `reports/designer/302-audit-recent-operator-work-2026-05-23.md` (primary audit)
-- `reports/second-designer/157-audit-engine-stack-state-before-constraint-and-integration-beads-2026-05-23.md`
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4b-consolidated-current-status.md` (consolidates the former `/157`)
 - `reports/second-designer/159-intent-manifestation/6-operator-work-audit.md`
 - `reports/second-designer/160-persona-prefix-removal-coordinated-rename-2026-05-23.md`
 - `reports/operator/157-163` (the audit's report-side input — last operator report is /163, dated 2026-05-22)
@@ -482,7 +482,7 @@ flowchart TB
 
 - `reports/designer/302-audit-recent-operator-work-2026-05-23.md`
   — the primary morning audit
-- `reports/second-designer/157-audit-engine-stack-state-before-constraint-and-integration-beads-2026-05-23.md`
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4b-consolidated-current-status.md` (consolidates the former `/157`)
   §9 — constraint test + integration test bead pattern
 - `reports/second-designer/159-intent-manifestation/6-operator-work-audit.md`
   — `primary-e2bc` + three 2026-05-23 morning commits

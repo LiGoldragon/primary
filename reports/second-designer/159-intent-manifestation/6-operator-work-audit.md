@@ -215,9 +215,9 @@ v0.1.0 retrofit decision) — those remain `/302`'s territory.
 
 - `reports/designer/302-audit-recent-operator-work-2026-05-23.md` — the
   primary audit this sub-report follows on from.
-- `reports/second-designer/157-audit-engine-stack-state-before-constraint-and-integration-beads-2026-05-23.md`
-  §9 — the constraint-test + integration-test bead pattern this audit
-  continues.
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4b-consolidated-current-status.md`
+  §2-§4 — the constraint-test + integration-test bead pattern this
+  audit continues (consolidates the former `/157` §3-§4 + §9).
 - `reports/designer/294-most-important-gaps-visual.md` Gap 11 +
   `reports/designer/293-designer-and-research-batch-2026-05-23/5-gap-closure-step-1-2.md`
   §2 Gap 11 — the design context for `primary-ktkc` + `primary-6u69`.

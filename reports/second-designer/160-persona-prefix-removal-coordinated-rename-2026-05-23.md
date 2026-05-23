@@ -251,7 +251,7 @@ written when X was X" trace).
 
 - `reports/second-designer/159-intent-manifestation/2-component-binary-naming.md` — sub-report that surfaced the question
 - `reports/second-designer/159-intent-manifestation/7-overview.md` §4.1 — the open question this resolves
-- `reports/second-designer/158-open-question-resolution-and-remaining-clarification-needs-2026-05-23.md` — broader open-question context
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/4b-consolidated-current-status.md` §5 — open-question resolution map (consolidates the former `/158`)
 - `skills/component-triad.md` — component naming discipline (will need a small update post-rename to use new names in examples)
 - `skills/naming.md` — full English words + names-don't-carry-ancestry discipline
 - `ESSENCE.md` §Naming — the upstream rule
