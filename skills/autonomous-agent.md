@@ -219,7 +219,7 @@ tools/orchestrate claim <role> <path> [more-paths] -- <reason>
 ```
 
 `<role>` is one of `operator`, `operator-assistant`, `designer`,
-`designer-assistant`, `system-specialist`, `system-assistant`, `poet`,
+`designer-assistant`, `system-designer`, `system-specialist`, `poet`,
 or `poet-assistant`. The helper writes the role's own lock file,
 reads every role's lock file, lists open BEADS tasks, and rejects
 overlapping active scopes. If the work cannot proceed, create a

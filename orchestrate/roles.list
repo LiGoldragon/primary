@@ -33,9 +33,9 @@ designer
 second-designer                   parallel-of:designer
 third-designer                    parallel-of:designer
 nota-designer
+system-designer
 designer-assistant                assistant-of:designer
 system-specialist
-system-assistant                  assistant-of:system-specialist
 second-system-assistant           assistant-of:system-specialist
 poet
 poet-assistant                    assistant-of:poet

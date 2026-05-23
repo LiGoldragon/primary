@@ -34,7 +34,7 @@ below.
 | `designer-assistant` | designer | Codex | `orchestrate/designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
 | `second-designer-assistant` | designer | (any) | `orchestrate/second-designer-assistant.lock` | `reports/second-designer-assistant/` | Second extra design audit, report, skill, and protocol support under designer discipline |
 | `system-specialist` | system-specialist | (any) | `orchestrate/system-specialist.lock` | `reports/system-specialist/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
-| `system-assistant` | system-specialist | (any) | `orchestrate/system-assistant.lock` | `reports/system-assistant/` | Extra platform/host workforce under system-specialist discipline |
+| `system-designer` | designer | (any) | `orchestrate/system-designer.lock` | `reports/system-designer/` | Specialized designer lane scoped to system topics (CriomOS, horizon, lojix, goldragon, deployment); parallel to `nota-designer`. Inherits full designer discipline with system as its specialization scope. Per Spirit record 302. |
 | `second-system-assistant` | system-specialist | (any) | `orchestrate/second-system-assistant.lock` | `reports/second-system-assistant/` | Second extra platform/host workforce under system-specialist discipline |
 | `poet` | poet | (any) | `orchestrate/poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
 | `poet-assistant` | poet | (any) | `orchestrate/poet-assistant.lock` | `reports/poet-assistant/` | Extra prose, citation, and Substack publishing support under poet discipline |
@@ -171,7 +171,7 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 
 `<role>` is one of `operator`, `pi-operator`, `operator-assistant`,
 `second-operator-assistant`, `designer`, `designer-assistant`,
-`second-designer-assistant`, `system-specialist`, `system-assistant`,
+`second-designer-assistant`, `system-designer`, `system-specialist`,
 `second-system-assistant`, `poet`, or `poet-assistant`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
@@ -351,7 +351,7 @@ Convention: each role owns a subdirectory.
 - `reports/designer-assistant/` — designer assistant's reports.
 - `reports/second-designer-assistant/` — second designer assistant's reports.
 - `reports/system-specialist/` — system specialist's reports.
-- `reports/system-assistant/` — system assistant's reports.
+- `reports/system-designer/` — system designer's reports (specialized designer lane).
 - `reports/second-system-assistant/` — second system assistant's reports.
 - `reports/poet/` — poet's reports.
 - `reports/poet-assistant/` — poet assistant's reports.

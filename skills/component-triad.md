@@ -364,6 +364,30 @@ keeps NOTA the single language for invoking the workspace: the
 moment one binary starts accepting flags, the workspace fragments
 into ad-hoc CLIs.
 
+## Help operations — discovery through NOTA, not through flags
+
+Because the single-argument rule forbids `--help`, every component
+carries discovery through the NOTA channel like any other operation.
+Per Spirit record 263, **every component supports the two Help
+operations** in its ordinary contract:
+
+- **`(Help Main)`** — top-level discovery. Reply lists the
+  component's operations with a one-line description of each and
+  the canonical NOTA shape for invoking them.
+- **`(Help (Verb <name>))`** — verb-level detail. Reply carries
+  the typed schema for one named operation: payload fields and
+  their types, a worked example invocation, and the reply shape.
+
+Help operations follow the same discipline as every other
+operation: positional NOTA records, single-argument, daemon-side
+implementation, typed reply. No flags, no special parsing.
+
+The cleanest implementation direction is **auto-injection** via
+the `signal_channel!` macro — the macro emits the Help arm into
+every contract automatically, with help text derived from the
+existing Rust doc comments on operation variants. Every contract
+picks Help up on the next rebuild; no per-contract boilerplate.
+
 ## Named carve-outs
 
 These look like triad violations but aren't. Each is *narrow*; do not

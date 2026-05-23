@@ -247,6 +247,27 @@ bd close primary-XYZ -r "Moot per designer/46 — the X derive \
 was deleted; the migration this bead names is no longer needed."
 ```
 
+### Duplicate — preserve information from both
+
+When two beads cover the same work, closing one as a duplicate
+of the other must **preserve all information from the closed
+bead**. Per Spirit record 229, competing design ideas in
+particular are kept rather than collapsed: agents working in
+those fields compare and essay the alternatives, and premature
+collapse destroys that comparison surface.
+
+The closing note absorbs every load-bearing field the closed
+bead carried — design substance, alternative approaches,
+referenced reports, blocker analysis. If the surviving bead
+doesn't already carry that content, update its description
+before closing the duplicate.
+
+```sh
+bd close primary-XYZ -r "Duplicate of primary-ABC (which now \
+carries the alternative-approach analysis from this bead's \
+description). All design substance preserved on primary-ABC."
+```
+
 ### Reformulated as a discipline
 
 When the bead is a durable-backlog bead (anti-pattern A),

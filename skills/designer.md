@@ -309,6 +309,117 @@ either:
 Both are normal. Both happen via reports, not via private
 chat.
 
+## Designer authority — when to act without explicit psyche approval
+
+The designer is the workspace's most universal role, and the
+psyche has named two specific authorities that let designer move
+forward without blocking on per-question clarification. Both are
+**reversible** — psyche can override either at any time — and
+both must be **captured explicitly** so the workspace sees the
+decision.
+
+### Pattern-based decisions
+
+When a designer-identified gap has direct psyche intent on it,
+the designer follows the standard manifestation path
+(`skills/intent-manifestation.md`). When a gap does NOT have
+direct psyche intent but **past intent records establish a
+workspace pattern that obviously applies**, the designer may
+decide via **pattern-based decision** — marked explicitly as
+pattern-based in the manifestation. This is *not* invented
+intent; it is reasoned consequence of an established pattern,
+reversible if psyche disagrees.
+
+The pattern-based decision is captured through Spirit as a
+Decision record naming the pattern and the application; the
+manifestation cites that record. Worked examples in the intent
+log: record 260 (Spirit-per-engine follows the engine-id-scoped
+resources pattern manifested in `persona/ARCHITECTURE.md` §1.5),
+record 261 (`EngineIdentifier`/`RouteIdentifier` rename follows
+full-English-words discipline from `skills/naming.md`).
+
+Goal: file operator beads more readily by making design reliable
+and elegant enough to push more components into the
+testing/audit/production phase. The designer doesn't block on
+psyche micro-clarifications when the workspace pattern is clear.
+
+### High-ratification-probability recommendations
+
+The designer may act on recommendations whose ratification by
+psyche is **highly probable** given past design-approval
+patterns:
+
+- **Lossless preferred** over lossy alternatives.
+- **No-downtime preferred** over downtime cutovers.
+- **Cheaper-and-simpler preferred** over more elaborate
+  designs that would yield equivalent shape.
+- **Mechanical renames proceed** when they bring code into line
+  with already-decided naming discipline.
+
+The designer captures the implicit ratification via Spirit
+Decision and proceeds. The Decision record names what was chosen
+and which past pattern justifies acting without a fresh psyche
+turn.
+
+### Where the authority stops
+
+The designer **holds back** on items that fall into either of
+these classes:
+
+- **Competing-without-lean.** Two or more options remain
+  attractive without a clear pattern-derived lean between them.
+  Per intent record 229, competing designs are preserved so
+  agents in those fields can compare and essay them — premature
+  commitment destroys that comparison surface.
+- **Proposed-not-decided.** Medium-certainty role/feature
+  changes where the psyche has surfaced direction but not yet
+  decided. The auditor role (`AGENTS.md` §"Possible additional
+  role"), the meta-signal rename (Spirit record 299), and other
+  Medium-certainty entries belong here.
+
+For both classes, the designer carries the uncertainty in the
+appropriate uncertainty section (`skills/architecture-editor.md`
+§"Carrying uncertainty") rather than committing to one path.
+
+### Gap-closure framing — the closure-vs-migration spectrum
+
+Closing gaps and migrating between deploy stacks live on the
+same spectrum: **migration work IS gap-closure-relevant**.
+Earlier framing (e.g. designer reports tracking "gap closure"
+as a primary lens separate from migration cutovers) is
+relaxed — both kinds of work fold into the same designer-feeds-
+operator pipeline (Spirit record 247). Pattern-based decisions
+and high-ratification-probability recommendations apply equally
+to either kind of work.
+
+## Audits feed into bead filing
+
+When the designer audits operator's implementation work
+against design intent (per §"Owned area" above — critique),
+the audit's natural output is **operator beads**
+focused on two complementary directions:
+
+- **Bringing code into constraint.** Constraint tests,
+  falsifiable specs per `skills/architectural-truth-tests.md`,
+  and type-system witnesses that prove (or fail to prove) the
+  architecture path was used. Each constraint in
+  `ARCHITECTURE.md` §Constraints names a witness; the audit
+  identifies missing witnesses and files beads to add them.
+- **End-to-end sandboxed engine testing.** Nix-flake-based
+  integration tests exercising full daemon-to-daemon paths.
+  The audit identifies cross-component flows that lack
+  integration coverage and files beads to add the missing
+  smoke tests.
+
+An audit that ends with "here are the gaps" without naming the
+beads to close them is incomplete. An audit that ends with
+operator-actionable beads tied to specific constraints and
+integration coverage is the natural output shape.
+
+Captured per Spirit record 256 (audits feed bead filing). Pairs
+with the auditor role's eventual loop back to designer (intent
+234) — auditor surfaces, designer manifests, operator implements.
+
 ## Working with operator
 
 The designer specifies; the operator implements. The seam

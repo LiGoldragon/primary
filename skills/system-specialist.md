@@ -168,11 +168,17 @@ For STT prompts and likely transcription mistakes, read this workspace's
 
 ## Working with system-specialist's assistant lanes
 
-`system-assistant` and `second-system-assistant` are additional lanes
-under the system-specialist-discipline pool. They share this skill's
+`second-system-assistant` is the additional lane under the
+system-specialist-discipline pool. It shares this skill's
 discipline, required reading, owned area, and beads label; only the
 lock file, report subdirectory, and claim string differ per lane. The
 mechanism is canonical in `skills/role-lanes.md`.
+
+Note: the former `system-assistant` lane was renamed to `system-designer`
+per Spirit record 302 and now belongs to the designer-discipline pool
+(specialized designer lane scoped to system topics, parallel to
+`nota-designer`). See `skills/designer.md` for its discipline; this
+file no longer covers it.
 
 Good system-lane work has a concrete boundary: one CriomOS or
 CriomOS-home module slice, a focused audit of recent system-specialist

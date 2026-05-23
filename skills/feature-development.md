@@ -190,7 +190,7 @@ A worktree's path is its own scope for `tools/orchestrate claim`.
 When you start work in a worktree, claim its path:
 
 ```sh
-tools/orchestrate claim system-assistant '[primary-XXX]' \
+tools/orchestrate claim system-designer '[primary-XXX]' \
     ~/wt/github.com/<owner>/<repo>/<branch-name> -- '<reason>'
 ```
 
