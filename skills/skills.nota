@@ -87,6 +87,8 @@
     "Pseudo-NOTA convention for documenting record schemas: angle-bracket placeholders, optional ?, enum |.")
   (Workflow nota-design skills/nota-design.md Topic
     "Canonical NOTA design. The type names the most useful distinction in context; data lives in records, not comments; enums get names, not numbers.")
+  (Workflow nota-comments skills/nota-comments.md Topic
+    "Code comments as NOTA signal records. (Why ...) opening pattern carries the per-edit rationale; Mind reads code-as-signal; pairs with intent-log for the why-vs-intent boundary.")
   (Workflow jj skills/jj.md Mechanism
     "Jujutsu version-control discipline. Concurrent-agent safety.")
   (Workflow testing skills/testing.md Mechanism
