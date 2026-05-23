@@ -582,8 +582,9 @@ this session.
 
 # §4 See also
 
-- `reports/second-designer/152-persona-engine-architecture-overview/`
-  — the meta-report context for both questions
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/3-consolidated-persona-engine-overview.md`
+  — consolidated successor to `/152` (deleted 2026-05-23 per intent 362),
+  the meta-report context for both questions
 - `reports/second-designer/153-refresh-after-prime-systemd-followups-2026-05-22.md`
   — surfaces both as open
 - `reports/designer/291-persona-systemd-units-for-daemon-management.md`

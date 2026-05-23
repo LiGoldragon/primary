@@ -13,11 +13,13 @@
 
 Refresh per psyche prompt 2026-05-22 — captured intent 241
 ("Refresh reports and intent before selecting next work") and pulled
-the deltas since my meta-report at
-`reports/second-designer/152-persona-engine-architecture-overview/`
+the deltas since my meta-report (formerly at
+`reports/second-designer/152-persona-engine-architecture-overview/`,
+deleted 2026-05-23 per intent 362; substance consolidated into
+`reports/second-designer/162-contract-repo-lens-and-consolidation/3-consolidated-persona-engine-overview.md`)
 landed. The shape of this report is a small carry-forward update,
-not a new meta-report — substance still lives in /152 and the
-references below.
+not a new meta-report — substance still lives in the consolidated
+/162/3 and the references below.
 
 ## §1 New intent records absorbed
 
@@ -229,8 +231,9 @@ unchanged. Status delta:
 
 ## §7 See also
 
-- `reports/second-designer/152-persona-engine-architecture-overview/`
-  — the meta-report this refreshes against
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/3-consolidated-persona-engine-overview.md`
+  — consolidated successor to `/152` (deleted 2026-05-23 per intent 362),
+  the meta-report context this refreshes against
 - `reports/designer/288` through `/291`
 - `reports/operator/162` + `/163`
 - `reports/third-designer/20` + `/21`

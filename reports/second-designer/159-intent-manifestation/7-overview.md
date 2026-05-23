@@ -314,7 +314,7 @@ Within this directory:
 - `6-operator-work-audit.md` — operator audit follow-on
 
 Outside this directory:
-- `reports/second-designer/152-persona-engine-architecture-overview/` — prior meta-directory
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/3-consolidated-persona-engine-overview.md` — consolidated successor to `/152` (deleted 2026-05-23 per intent 362)
 - `reports/second-designer/155-three-tier-signal-sizing-and-lossless-routing-2026-05-22.md` — original three-tier sizing design
 - `reports/second-designer/156-most-important-gaps-2026-05-23.md` — gaps audit context
 - `reports/second-designer/157-audit-engine-stack-state-before-constraint-and-integration-beads-2026-05-23.md` — prior audit

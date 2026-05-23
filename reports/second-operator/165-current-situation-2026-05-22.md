@@ -150,14 +150,15 @@ Freshly absorbed after the first absorption commit:
   - keeper for Persona-pi: Pi is Mario Zechner's `pi-mono`, with a
     flat TypeScript extension API that Persona-pi must adapt into
     typed noun-method records.
-- `reports/operator/108` through `/135`
-  - older operator history. Live residue is already summarized by
-    `reports/second-operator/167`, `/168`, `/169`, and current
-    designer audits. The active residue is: persona-mind prototype
-    context, Kameo lifecycle correctness, early engine-manager /
-    sandbox witnesses, terminal/owner-signal experiments, and
-    sema-engine split history.
-- `reports/cluster-operator/2-current-state-after-designer-operator-report-absorption-2026-05-22.md`
+- Older operator history (operator/108 through /135) — retired in
+  the 2026-05-23 context-maintenance sweep. Live residue lives in
+  `reports/second-operator/167`, `/168`, `/169`, and current
+  designer audits. The active residue is: persona-mind prototype
+  context, Kameo lifecycle correctness (now in `skills/kameo.md`),
+  early engine-manager / sandbox witnesses, terminal/owner-signal
+  experiments, and sema-engine split history.
+- `reports/cluster-operator/3-third-designer-17-blocker-audit-2026-05-22.md` and
+  `/4-update-authority-and-lojix-daemon-current-state-2026-05-22.md`
   - peer operator synthesis in the working copy; it agrees that
     Spirit cutover, sema-upgrade bootstrap, schema hash adoption,
     Orchestrate executor migration, engine-manager Axis 2, Forge,

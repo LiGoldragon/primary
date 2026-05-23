@@ -276,7 +276,7 @@ Within this directory:
 - `6-bead-splitting-sweep.md` — bead hygiene + 15 splits filed
 
 Outside:
-- `reports/second-designer/152-persona-engine-architecture-overview/` — prior meta-directory
+- `reports/second-designer/162-contract-repo-lens-and-consolidation/3-consolidated-persona-engine-overview.md` — consolidated successor to `/152` (deleted 2026-05-23 per intent 362)
 - `reports/second-designer/157-audit-engine-stack-state-before-constraint-and-integration-beads-2026-05-23.md` — prior audit
 - `reports/second-designer/158-open-question-resolution-and-remaining-clarification-needs-2026-05-23.md` — open question resolution map (status banner updated this session by sub-agent C)
 - `reports/second-designer/159-intent-manifestation/` — prior meta-directory
