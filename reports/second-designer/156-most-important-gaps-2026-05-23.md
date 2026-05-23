@@ -707,16 +707,18 @@ flowchart LR
 
 ## §10 Items needing a Spirit Decision from psyche
 
-Five gaps await psyche ratification before the next concrete slice
-can land:
+*Status update 2026-05-23 (intent record 255 delegation pattern):
+Gaps 2, 3, 5 RATIFIED via Spirit Decision (designer-side per high-
+confidence pattern match). Gaps 4 and 8 deliberately HELD per
+intent 255's competing/proposed-not-decided carve-out.*
 
-| Gap | Question | Designer lean |
-|---|---|---|
-| 2 | Path A (retrofit) vs Path B (staged) for Spirit v0.1.0 | Path A — protect no-downtime precedent |
-| 3 | Build selector-flip-aware routing into primary-ezzp, OR file as follow-on bead | Build in (cheaper than retrofit) |
-| 4 | signal-persona one repo vs two | Two (audience asymmetry) — but psyche has not decided |
-| 5 | Execute ComponentName rename now | Yes (mechanical; bundle with Axis 2) |
-| 8 | Auditor staging (rules first, then DeepSeek, output to bead comments first) | As proposed in §8 above |
+| Gap | Question | Designer lean | Status |
+|---|---|---|---|
+| 2 | Path A (retrofit) vs Path B (staged) for Spirit v0.1.0 | Path A — protect no-downtime precedent | RATIFIED — intent 257; bead `primary-wdl6` filed |
+| 3 | Build selector-flip-aware routing into primary-ezzp, OR file as follow-on bead | Build in (cheaper than retrofit) | RATIFIED — intent 258; `primary-ezzp` body updated |
+| 4 | signal-persona one repo vs two | Two (audience asymmetry) — but psyche has not decided | HELD — competing-without-lean; preserved per intent 229 |
+| 5 | Execute ComponentName rename now | Yes (mechanical; bundle with Axis 2) | RATIFIED — intent 259; bead `primary-g81p` filed |
+| 8 | Auditor staging (rules first, then DeepSeek, output to bead comments first) | As proposed in §8 above | HELD — proposed-not-decided; intent 234/235 Medium certainty |
 
 ## §11 See also
 

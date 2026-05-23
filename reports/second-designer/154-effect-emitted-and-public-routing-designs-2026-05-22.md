@@ -6,6 +6,19 @@
 both of those with visuals of problems and offered designs". Both
 questions are open from /152 + /153.*
 
+**Status update 2026-05-23:** Both questions RATIFIED. Part 1
+EffectEmitted = Design D (tier-based default — authority-tier
+`SemaObservation`, component-local typed `Effect`) ratified
+implicitly via intent 244 (three-tier signal sizing) + 251 (adopt
+Part 1 leans). Part 2 public routing = Design D (Persona-orchestrated
+FD handoff via SCM_RIGHTS) ratified via intent 252; Design C
+(client-side discovery) rejected via intent 246. Beads filed:
+`primary-l02o`, `primary-bg9l`, `primary-b86d`, `primary-2py5`,
+`primary-ezzp`, `primary-x5ba`, `primary-ak4g`. Carry-forward
+issues remain on Mirror payload typing + Read semantics during
+handover — see `reports/second-designer/158-...` for the live
+status of those.
+
 # Question 1 — `EffectEmitted` payload type
 
 ## §1.1 The problem
