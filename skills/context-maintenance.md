@@ -105,6 +105,27 @@ handover dump. Preferred order:
    unsettled to be permanent. The rollover is a working artifact
    for the next session, not an archive.
 
+### 3a · Design-rationale guard against premature DELETE
+
+A report carrying **competing design alternatives** — multiple
+options sketched, one chosen, others rejected — is load-bearing
+*as design rationale* even after the chosen option migrates to a
+permanent doc. Permanent docs typically state only the chosen
+shape; the rejected alternatives and the reasoning are what the
+report preserves.
+
+Per intent record 229 (closing duplicate beads preserves
+information; competing design ideas kept), do NOT DELETE such a
+report when its chosen-design substance migrates. Add a
+STATUS-BANNER naming the permanent-doc landing instead, so a
+later reader sees the supersession and can find the chosen shape
+without losing the alternatives.
+
+Signal that a report falls under this guard: it explicitly
+enumerates two or more designs (Design A / B / C / D, Option 1 /
+2, etc.) and chose one. Standard design reports that propose a
+single shape do not need this guard — they migrate cleanly.
+
 ### 4 · Small thoughts are OK
 
 A one-sentence *"side note: this pattern recurred and might be
