@@ -75,6 +75,12 @@ the main Persona architecture reset unless the user names them.
 | Repository | Path | Why adjacent |
 |---|---|---|
 | `criome` | `/git/github.com/LiGoldragon/criome` | Current target is a minimal Spartan BLS12-381 authentication and attestation daemon. It verifies signatures, maintains identity/revocation state, signs attestations, and reports verification facts. Persona decides policy. Distinct from the **eventual** `Criome` — the universal computing paradigm in Sema (replaces Git, editor, SSH, web; encompasses broader auth/security via quorum-signature multi-sig). Per `ESSENCE.md` §"Today and eventually". |
+| `cloud` | `/git/github.com/LiGoldragon/cloud` | New runtime repo for provider API management. Documentation-only at birth; real daemon work is tracked by bead `primary-kbmi` (cloud/domain-criome runtime daemons). |
+| `signal-cloud` | `/git/github.com/LiGoldragon/signal-cloud` | Ordinary `cloud` contract: provider/capability observation, desired-state validation, and plan preparation. |
+| `owner-signal-cloud` | `/git/github.com/LiGoldragon/owner-signal-cloud` | Owner-only `cloud` contract: credential handles, provider account policy, plan approval, and plan application. |
+| `domain-criome` | `/git/github.com/LiGoldragon/domain-criome` | New runtime repo for Criome-domain registry, intelligent resolution, and provider-neutral projection. Documentation-only at birth; real daemon work is tracked by bead `primary-kbmi`. |
+| `signal-domain-criome` | `/git/github.com/LiGoldragon/signal-domain-criome` | Ordinary `domain-criome` contract: domain observation, intelligent resolution, and provider-neutral projection. |
+| `owner-signal-domain-criome` | `/git/github.com/LiGoldragon/owner-signal-domain-criome` | Owner-only `domain-criome` contract: domain registration, delegation, retirement, and projection policy. |
 | `chroma` | `/git/github.com/LiGoldragon/chroma` | Active system-specialist visual/scheduler work. |
 | `CriomOS` | `/git/github.com/LiGoldragon/CriomOS` | Operating-system layer for the broader project. |
 | `CriomOS-home` | `/git/github.com/LiGoldragon/CriomOS-home` | User/home-manager surface for the OS layer. |
