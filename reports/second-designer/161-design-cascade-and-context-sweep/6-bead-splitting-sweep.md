@@ -313,24 +313,84 @@ flowchart TD
 
 ## Splits filed (this session)
 
-Operations to run via `bd create` + `bd dep`. Each split bead gets:
+15 sub-beads created + 9 existing-bead relations linked.
+Parent comments recorded on every affected bead. Priority
+inherited from parent in every case (no priority changes — per
+brief constraint).
 
-- Title naming the slice
-- Body citing parent bead + design context
-- Priority inherited from parent (do not change priority — per
-  brief constraint)
-- Labels inherited where relevant
-- Dependency link `bd dep <parent> --blocks <child>`
-- Parent comment via `bd comment <parent>` naming the split
+### Filed sub-beads
 
-For the `primary-u8vo` 10-contract split: see filing block below.
+**`primary-u8vo` → 11 sub-beads** (10-contract migration epic):
 
-For the `primary-u0lh` Phase 1+2 split: see filing block below.
+- `primary-u8vo.0` (also addressable as `primary-rlet`) — signal-persona
+  engine -> engine_manager rename (STEP 0 prerequisite per spirit
+  record 199). Blocks `.1` through `.10`.
+- `primary-u8vo.1` — signal-persona-mind
+- `primary-u8vo.2` — signal-persona-router
+- `primary-u8vo.3` — signal-persona-message
+- `primary-u8vo.4` — signal-persona-introspect
+- `primary-u8vo.5` — signal-persona-system
+- `primary-u8vo.6` — signal-persona-terminal
+- `primary-u8vo.7` — signal-persona-harness
+- `primary-u8vo.8` — owner-signal-persona-terminal
+- `primary-u8vo.9` — signal-criome
+- `primary-u8vo.10` — owner-signal-repository-ledger
 
-For the `primary-kbmi` cloud + domain-criome split: see filing
-block below.
+**`primary-u0lh` → 2 sub-beads** (nota-derive coverage + workspace migration):
 
-For `primary-4naq` existing-bead linking: `bd dep` calls only.
+- `primary-u0lh.1` — Phase 1: nota-derive coverage audit + extension
+  for missing variant shapes. Blocks `.2`.
+- `primary-u0lh.2` — Phase 2: migrate 13 hand-written
+  NotaEncode/NotaDecode impls to derives across workspace contracts.
+
+**`primary-kbmi` → 2 sub-beads** (cloud + domain-criome split):
+
+- `primary-kbmi.1` — implement cloud daemon runtime (Cloudflare
+  read-only actor first)
+- `primary-kbmi.2` — implement domain-criome daemon runtime
+
+### Existing-bead relations linked
+
+**`primary-4naq` ↔ 9 existing per-component beads** (executor
+migration epic relates to per-component triad migrations):
+
+- `primary-c620` (persona-orchestrate triad)
+- `primary-hj4` (persona-mind channel choreography)
+- `primary-9os` (persona-router typed endpoint/kind keys)
+- `primary-es9` (persona-harness daemon)
+- `primary-8n8` (persona-terminal supervisor socket)
+- `primary-li7a` (persona-introspect triad)
+- `primary-21gn` (persona-system triad)
+- `primary-krbi` (persona-message triad)
+- `primary-e1pm` (persona-mind triad)
+
+Used `bd dep relate` (bidirectional `relates_to`) rather than
+`--blocks` because the executor-port scope of `primary-4naq`
+overlaps with but does not block the broader triad-migration
+scope of these beads. `bd dep --blocks` also enforces
+epic↔epic / task↔task pairing, so an epic cannot block tasks
+or be blocked by tasks.
+
+### Parent comments recorded
+
+Eight bead comments naming the splits or the split-recommendation
+context:
+
+- `primary-u8vo` — 11-sub-bead split logged.
+- `primary-u0lh` — 2-phase split logged.
+- `primary-kbmi` — 2-repo split logged.
+- `primary-4naq` — 9 existing beads relinked, executor-port scope
+  framing recorded.
+- `primary-wvdl` — recommendation to split Track A + Track B at
+  next operator handoff.
+- `primary-devn` — recommendation to file primary-devn.2+ after
+  reviewing comment trail for landed Tracks.
+- `primary-c2da` — recommendation to file top-5 per-gap beads
+  after re-reading /249 + /282.
+- `primary-ipjx` — recommendation to file primary-ipjx.1 (designer
+  state-machine spec) before implementation splits.
+- `primary-ihee` — recommendation to file 8 per-repo combine
+  beads after re-auditing dirty state.
 
 ## How it fits
 
