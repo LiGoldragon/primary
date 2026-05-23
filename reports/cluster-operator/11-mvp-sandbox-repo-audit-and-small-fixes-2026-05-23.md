@@ -8,6 +8,22 @@ Input frame: `reports/system-designer/34-mvp-and-sandbox-audit/0-frame-and-metho
 
 I audited the lean-stack repos that `/34` points at and fixed only small, obvious, low-risk drift. I did not touch dirty worktrees owned by other lanes.
 
+## Reconciliation with `/34` slice reports
+
+The system-designer slice reports `reports/system-designer/34-mvp-and-sandbox-audit/1-mvp-code-state-fresh-audit.md` through `4-cutover-to-main-deployment-requirements.md` appeared in the primary working tree while this audit was underway. I read them after my repo pass and checked their claims against local code.
+
+Material corrections from local verification:
+
+- `lojix` is **green but stale**, not broken as-pinned. `/34/3` says the crate is broken at the lock boundary because `signal-lojix/horizon-leaner-shape` moved to operation roots. The branch-head compatibility risk is real, but current `lojix/Cargo.lock` still pins `signal-lojix` to `df49dae1`, so the current locked tree compiles and its daemon/CLI tests pass. It will break only when the `signal-lojix` lock refresh lands unless `lojix` migrates in the same pass.
+- The dual `nota-codec` pin is **not resolved** in the current `lojix` lock. `/34/1` says it is resolved, but `Cargo.lock` still contains `nota-codec` at `2618adbf` via `?branch=main` and at `97c1f496` via the unbranched Git source. This remains cleanup work.
+- `/34/1` records `lojix/horizon-leaner-shape` at `be12741e`; after the small fix in this audit the branch tip is `60b93000`.
+
+Convergences:
+
+- `/34/2` agrees the current sandbox infrastructure is real but old-stack-oriented.
+- `/34/4` agrees cutover needs separate `lojix` package outputs, a `CriomOS` NixOS module for `lojix-daemon`, and a `criomos-horizon-config` bridge.
+- All reports agree that `CriomOS-lib/lib/predicates.nix` and the `CriomOS` `behavesAs` sweep are required before the horizon role-merge becomes buildable downstream.
+
 ## Small fixes landed
 
 ### `lojix`
