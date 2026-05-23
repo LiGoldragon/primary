@@ -10,7 +10,7 @@ Lane: second-operator
 This report remains as the shipped-slice witness for the lane registry.
 For the broader current situation and next migration target, use:
 
-- `reports/second-operator/165-current-situation-2026-05-22.md`
+- `reports/second-operator/173-current-state-after-consolidation-2026-05-23.md`
 - `reports/second-operator/166-review-persona-orchestrate-migration-2026-05-22.md`
 
 The retired-lane identifier question is resolved for now: retired lane
