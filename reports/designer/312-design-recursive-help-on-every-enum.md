@@ -46,29 +46,42 @@ vocabulary of the channel.
 
 ## §2 The recursive Help operation shape
 
+**Help is positioned at the END of the path, not the beginning.**
+The path walks the enum tree to a position; the Help variant at that
+position asks that node to describe itself. Pattern: `(Command Help)`
+or `(Command (Subnamespace Help))` — Help is the leaf.
+
 ```text
-(Help)                                — top-level: list operations + reply types + sub-enums + one-liners
-(Help (Verb "Record"))                — flat verb help (per /298)
-(Help (Slot1))                        — list Slot1 variants + descriptions
-(Help (Slot1 (Workspace)))            — explain the Workspace variant
-(Help (Slot2 (Decision)))             — explain the Decision variant
-(Help (Magnitude (Maximum)))          — explain the Maximum variant
-(Help (Reply (Accepted)))             — explain what Accepted means
+(Help)                                — channel-level: describes the contract itself
+(Record Help)                         — describes the Record operation
+(Record (Slot1 Help))                 — describes the Slot1 enum within Record
+(Record (Slot1 (Workspace Help)))     — describes the Workspace variant
+(Record (Slot2 (Decision Help)))      — describes the Decision variant
+(Magnitude (Maximum Help))            — describes the Maximum variant of Magnitude
+(Reply (Accepted Help))               — describes what Accepted means
 ```
 
-The Help operation's payload is itself a typed enum that mirrors
-the contract's enum structure. Deeper paths drill into nested
-enums.
+Reading the structure: each NOTA position walks one level into the
+enum tree; `Help` at any depth means "describe THIS node." So
+`(Record (Slot1 Help))` reads as "into Record, into Slot1, ask for
+help on Slot1 itself." `(Record (Slot1 (Workspace Help)))` reads as
+"into Record, into Slot1, into Workspace, ask for help on Workspace."
 
 ```mermaid
 flowchart LR
-    HelpOp["(Help <path>)"]
-    Path["HelpPath<br/>walks the contract enum graph"]
+    Path["NOTA path walks enum tree"]
+    Pos["Position at a node<br/>(Operation, Slot, variant)"]
+    HelpLeaf["Help variant at leaf<br/>= describe yourself"]
     Reply["HelpReply<br/>structured text + sub-paths"]
 
-    HelpOp --> Path
-    Path --> Reply
+    Path --> Pos
+    Pos --> HelpLeaf
+    HelpLeaf --> Reply
 ```
+
+The macro auto-injects Help as a variant of every enum it emits.
+Walking to any depth and asking Help is a uniform operation. Per
+spirit record 364.
 
 ## §3 Where the documentation comes from
 
@@ -116,7 +129,8 @@ signal_channel! {
 }
 ```
 
-What `(Help (Slot1 (Workspace)))` returns:
+What `(Slot1 (Workspace Help))` retrieves (the Workspace variant's
+documentation noun within Slot1):
 
 ```text
 HelpReply {
@@ -139,14 +153,16 @@ This composes with `signal_channel!`'s existing auto-derive for
 operations and replies. The macro layer becomes the workspace's
 documentation surface.
 
-## §5 Command documentation hooks into Help
+## §5 Command documentation retrieves the Help noun via NOTA
 
-CLIs ship documentation through Help. `spirit help` invocations (or
-`spirit '(Help)'` in pure NOTA form) route to the same Help
-operation. The CLI's main() emits the Help reply as formatted text:
+CLIs take exactly one NOTA argument (per `AGENTS.md` hard override
+"NOTA is the only argument language" + `skills/component-triad.md`
+§"The single argument rule"). Help retrieval is therefore one NOTA
+argument naming the path-to-Help. The CLI sends it to the daemon
+and formats the returned `HelpReply` as text:
 
 ```text
-$ spirit help
+$ spirit '(Help)'
 spirit — capture and observe psyche intent
 
 Operations:
@@ -154,12 +170,11 @@ Operations:
   Observe  — Observe stored records; filter by topic and/or kind.
   State    — Submit a free-form psyche statement; lowers to an Assert.
 
-For details: spirit help <operation>
-For sub-vocabulary: spirit help Slot1 / Slot2 / Magnitude / ...
+For sub-vocabulary, retrieve: (Record Help), (Slot1 Help), (Slot2 Help), (Magnitude Help), ...
 ```
 
 ```text
-$ spirit help Slot1
+$ spirit '(Slot1 Help)'
 Slot1 (TopicArea) — what topic area an intent record is about
 
 Variants:
@@ -169,12 +184,22 @@ Variants:
   ComponentShape — Component-shape rules — how components are organized.
   ...
 
-For details on a variant: spirit help Slot1 <variant>
+For a specific variant, retrieve: (Slot1 (Workspace Help)), (Slot1 (Persona Help)), ...
+```
+
+```text
+$ spirit '(Slot1 (Workspace Help))'
+Workspace — The workspace as a whole — meta-decisions about how the workspace operates.
+
+Parent enum: Slot1 (TopicArea)
+Sibling variants: Persona, Signal, ComponentShape, ...
 ```
 
 The CLI never invents Help text — it formats what the daemon
 returns. The daemon never hand-maintains Help text — it returns
-what the macro emitted from the contract's doc comments.
+what the macro emitted from the contract's doc comments. The CLI
+respects the single-NOTA-argument rule; no shell-style multi-arg
+discovery surface.
 
 ## §6 Discipline on doc comments
 
@@ -215,27 +240,33 @@ The CLI prints based on `kind`. The daemon emits based on the
 macro-derived data. The contract author writes one doc comment per
 variant. That's the full discipline.
 
-## §8 Recursive descent — Help walking the enum graph
+## §8 Recursive descent — retrieving Help nouns at depth
 
-A user discovering the channel can walk depth-first:
+A user discovering the channel walks the enum tree depth-first by
+sending one NOTA arg at a time (per the CLI single-argument rule):
 
 ```text
-spirit help
-  -> shows Operation enum (top-level)
+spirit '(Help)'
+  → retrieves the channel's Help noun
+  (top-level: Operation enum + Reply enum + sub-enums named)
 
-spirit help Record
-  -> shows Record operation + its payload fields/enums
+spirit '(Record Help)'
+  → retrieves Record operation's Help noun
+  (operation summary + payload field/enum list)
 
-spirit help Record Slot1
-  -> shows what Slot1 enum is
+spirit '(Record (Slot1 Help))'
+  → retrieves Slot1's Help noun within Record's namespace
+  (what Slot1 names + its variant list)
 
-spirit help Record Slot1 Workspace
-  -> shows what Workspace variant means
+spirit '(Record (Slot1 (Workspace Help)))'
+  → retrieves Workspace variant's Help noun
+  (what Workspace means + its siblings)
 ```
 
-Each path step is one level deeper into the contract's enum tree.
-The Help replies' `children` field names what's reachable from
-each node.
+Each NOTA arg navigates one level deeper into the contract's enum
+tree; the leaf `Help` names the documentation noun at that position.
+The HelpReply's `children` field names what's reachable from each
+node (the next NOTA path the user might send).
 
 ## §9 Integration with the macro layer convergence
 

@@ -535,8 +535,6 @@ Issue 1 is the most psyche-load-bearing (strategic direction). Issues 2 and 3 ar
 
 - `reports/designer/249-component-intent-gap-analysis.md` — the 35-gap inventory; central to Issue 1 (`primary-c2da` charter)
 - `reports/designer/282-workspace-implementation-status.md` — current-state snapshot; Issue 1 status table + Issue 3 vocabulary drift catalogue
-- `reports/designer/286-session-audit-2026-05-22.md` — what landed this session; corroborates Issue 1's "session went into migration"
-- `reports/designer/288-actionable-beads-2026-05-22.md` — bead inventory; Issue 2's `primary-a5hu` and Issue 1's `primary-c2da` both featured
 - `reports/designer/291-persona-systemd-units-for-daemon-management.md` — systemd backend design; Issue 3's `UnitController` rename scope + library-research grounding for unitbus / zbus_systemd
 - `reports/second-designer/152-persona-engine-architecture-overview/` — meta-report; Issue 2's Persona scope context
 - `reports/second-designer/153-refresh-after-prime-systemd-followups-2026-05-22.md` — refresh; carries the priority-pivot framing relevant to Issue 1

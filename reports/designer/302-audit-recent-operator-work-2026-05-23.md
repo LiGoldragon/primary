@@ -307,8 +307,6 @@ For the designer side (me) next:
   — the canonical handover spec the operator implemented
 - `reports/designer/293-designer-and-research-batch-2026-05-23/`
   — the parallel designer meta-report this audit complements
-- `reports/designer/296-pattern-decisions-and-operator-beads-2026-05-23.md`
-  — bead-filing source for primary-ktkc, primary-1cl1, etc.
 - Spirit records 260 (spirit-per-engine), 261 (Identifier
   rename), 264 (signal-persona-origin), 266 (signal_cli! +
   Caller) — the recent intent layer the operator should align

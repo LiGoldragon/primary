@@ -297,6 +297,6 @@ graph LR
   — listed `persona-sema` as ambiguous in the prefix-removal
   context. Intent 309 supersedes that ambiguity by deleting
   the repo outright.
-- `/home/li/primary/reports/designer/270-sema-upgrade-component-design.md`
-  — current canonical schema-upgrade design; explicitly orthogonal
+- `/home/li/primary/reports/designer/315-design-sema-upgrade-and-handover-current-state.md`
+  — current sema-upgrade and handover stack; explicitly orthogonal
   to the retired persona-sema scope.

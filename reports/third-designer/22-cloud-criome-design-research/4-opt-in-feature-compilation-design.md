@@ -855,11 +855,10 @@ None blocks the §1-§5 recommendations; each names a refinement.
 - `reports/designer/263-schema-specification-language-design.md`
   — the language schemas are written in; orthogonal to this
   design's feature-flag concern.
-- `reports/designer/270-sema-upgrade-component-design.md` — the
-  upgrade orchestrator this design's §4.4 extends.
-- `reports/designer/271-forge-component-family-design.md` — the
-  forge family map; forge-cloud lives there.
-- `reports/designer/274-forge-skeleton-reconciliation.md` — the
+- `reports/designer/315-design-sema-upgrade-and-handover-current-state.md`
+  — the upgrade orchestrator this design's §4.4 extends.
+- `reports/designer/316-design-forge-family-current-direction.md`
+  — the forge family map; forge-cloud lives there. Also the
   per-component forge skeleton the capability-widening upgrade
   consults.
 - `reports/designer/281-headless-pi-research.md` — Pi extension

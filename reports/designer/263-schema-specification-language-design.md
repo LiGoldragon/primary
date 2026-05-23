@@ -472,8 +472,9 @@ the change lands.
   language composes with. The content address subsumes the
   per-component vs per-record-type question (per-type addresses
   derive by hashing each subtree).
-- `reports/designer/273-schema-migration-synthesis-post-operator-151.md`
-  — current schema-migration synthesis that this language feeds.
+- `reports/designer/315-design-sema-upgrade-and-handover-current-state.md`
+  — current sema-upgrade and handover state; this language feeds the
+  schema-address branch of that work.
 - `skills/nota-design.md` — NOTA discipline the syntax inherits.
 - `skills/component-triad.md` — signal-type / signal-tree
   vocabulary the schema declares.

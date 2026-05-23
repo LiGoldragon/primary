@@ -198,7 +198,6 @@ Slices B and C are a unit; slice C verifies B.
 ## See also
 
 - `~/primary/reports/designer/287-version-handover-component-explained.md` — the canonical handover visual
-- `~/primary/reports/designer/290-persona-arch-diff-suggestions-2026-05-22.md` — recent persona ARCH diff
 - `/git/.../persona/ARCHITECTURE.md` §1.5 (engine manager model) + §1.7 (startup strategy) — the design surface this report sits inside
 - Spirit record 223 (this session): persona-permissioned-system-daemon
 - Spirit records 208, 209, 210 — persona-engine-as-upgrade-orchestrator

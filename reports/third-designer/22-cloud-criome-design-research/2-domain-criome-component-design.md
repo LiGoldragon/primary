@@ -997,7 +997,7 @@ Workspace context read for this report:
 - `criome/ARCHITECTURE.md`
   — Criome trust component shape (master keypair, federated
   trust, owner-signal pattern that meta-signal inherits from).
-- `reports/designer/271-forge-component-family-design.md` —
+- `reports/designer/316-design-forge-family-current-direction.md` —
   component-family shape (`forge-<X>` per-component variants
   pattern that `domain-<tld>` mirrors).
 - `reports/second-designer/27` (deleted in 2026-05-23 context-maintenance sweep)

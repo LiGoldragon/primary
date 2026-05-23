@@ -551,12 +551,6 @@ psyche session:
   discipline this audit's §5.1 reflects.
 - `/home/li/primary/reports/designer/293-designer-and-research-batch-2026-05-23/`
   — the parallel designer batch this audit's classification leans on.
-- `/home/li/primary/reports/designer/295-designer-gap-closures-2026-05-23.md`
-  — the designer-only gap closures whose state is reflected in
-  (a)-classified records of this audit.
-- `/home/li/primary/reports/designer/296-pattern-decisions-and-operator-beads-2026-05-23.md`
-  — the pattern-based-decision dispatch whose bead chain this
-  audit confirms.
 - `/home/li/primary/reports/designer/298-design-help-operations-in-components.md`
   — the design behind the (c.1) bead recommendation in §3.1.
 - `/home/li/primary/reports/designer/301-design-elegant-cli-macro-with-caller-injection.md`

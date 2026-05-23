@@ -395,10 +395,9 @@ From `/158`:
 - `/home/li/primary/reports/second-designer/152-persona-engine-architecture-overview/`
   — original meta-directory that seeded the engine push
 - `/home/li/primary/reports/designer/285-versionprojection-trait-and-handover-protocol-specification.md`
-- `/home/li/primary/reports/designer/286-session-audit-2026-05-22.md`
 - `/home/li/primary/reports/designer/287-version-handover-component-explained.md`
-- `/home/li/primary/reports/designer/289-arch-distribution-from-287-2026-05-22.md`
 - `/home/li/primary/reports/designer/291-persona-systemd-units-for-daemon-management.md`
+- `/home/li/primary/reports/designer/315-design-sema-upgrade-and-handover-current-state.md`
 - `/home/li/primary/reports/operator/158-version-handover-foundation-implementation-2026-05-22.md`
   through `/home/li/primary/reports/operator/163-persona-systemd-component-management-position.md`
 - `/home/li/primary/reports/second-operator/170-refresh-and-action-after-persona-systemd-followups-2026-05-22.md`

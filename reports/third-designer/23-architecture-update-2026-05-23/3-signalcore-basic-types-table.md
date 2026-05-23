@@ -723,7 +723,7 @@ There is no demotion. An Identity, once minted and adopted, persists in criome's
 ### Sibling and prior reports
 
 - `criome/ARCHITECTURE.md` — Criome architecture; BLS12-381 master keypair.
-- `reports/designer/270-sema-upgrade-component-design.md` — sema-upgrade triad; the migration mechanism SignalCore depends on.
+- `reports/designer/315-design-sema-upgrade-and-handover-current-state.md` — sema-upgrade and handover stack current state; the migration mechanism SignalCore depends on.
 - `reports/designer/285-versionprojection-trait-and-handover-protocol-specification.md` — ContractVersion / handover.
 - `reports/second-designer/145-design-real-time-intent-recording-system-2026-05-21.md` — recording pipeline that mints SubIds for intent-capture spans.
 - `reports/second-designer/150-design-agent-identity-and-runtime-functions.md` — BLS12-381 identity model; identifier graduation; function-vs-agent.
