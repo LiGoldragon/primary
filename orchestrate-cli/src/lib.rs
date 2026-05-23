@@ -24,6 +24,7 @@ pub mod registry;
 pub mod render;
 pub mod request;
 pub mod scope;
+pub mod verify_jj;
 pub mod workspace;
 
 pub use claim::{ClaimOutcome, ReleaseOutcome, StatusReport};

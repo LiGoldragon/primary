@@ -229,6 +229,11 @@ tools/orchestrate release <role>
 ```
 
 This clears the role's active scopes and lists the current open BEADS tasks.
+Release first checks any tracked repository touched by the role's path claims
+for local-only `push-*` bookmarks whose commits are not ancestors of `main`.
+If it finds one, release refuses and leaves the lock in place until the commit
+has a clear home: land it on `main`, push the bookmark, or deliberately
+abandon/rebase the work.
 Before release at the end of a non-trivial session, re-read any task bead you
 claimed. Close it if the work shipped; otherwise update it with the blocker or
 next action. The lock file is the live-edit surface; the bead is the durable
@@ -243,6 +248,19 @@ tools/orchestrate status
 Lists every role's lock file plus open BEADS tasks in the current
 shell-helper era. In the typed target, `RoleObservation` reports role
 state and `QueryKind::Ready` reports ready work from the native mind graph.
+
+## JJ Bookmark Verification
+
+```sh
+tools/orchestrate verify-jj
+```
+
+Scans the repositories named by `protocols/active-repositories.md`; it does
+not crawl the filesystem. For each tracked repository, it counts local
+`push-*` bookmarks, flags bookmarks already merged to `main` as delete
+candidates, flags unmerged bookmarks older than seven days as
+rebase-or-abandon candidates, and names local-only unmerged bookmarks that
+would block `release` for a lane claiming that repository.
 
 ## Blocked Work
 

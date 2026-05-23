@@ -5,6 +5,7 @@
 //! orchestrate claim <lane> <scope> [more-scopes] -- <reason>
 //! orchestrate release <lane>
 //! orchestrate status
+//! orchestrate verify-jj
 //! ```
 //! Lock files land at `<workspace>/orchestrate/<lane>.lock` in the
 //! existing format. The typed [`signal_persona_orchestrate::OrchestrateRequest`]
@@ -25,6 +26,7 @@ use orchestrate_cli::lane::Lane;
 use orchestrate_cli::registry::LaneRegistry;
 use orchestrate_cli::render;
 use orchestrate_cli::scope::RawScope;
+use orchestrate_cli::verify_jj;
 use orchestrate_cli::workspace::Workspace;
 
 const EXIT_USAGE: u8 = 64;
@@ -55,6 +57,7 @@ fn run(arguments: Vec<String>) -> Result<u8, String> {
         "claim" => handle_claim(&workspace, &registry, arguments, &working_directory),
         "release" => handle_release(&workspace, &registry, arguments),
         "status" => handle_status(&workspace, &registry),
+        "verify-jj" => handle_verify_jj(&workspace, arguments),
         "-h" | "--help" | "help" | "" => {
             print!("{}", usage(&registry));
             Ok(0)
@@ -151,6 +154,15 @@ fn handle_release(
         return Ok(EXIT_USAGE);
     }
     let lane = Lane::from_token(&lane_token).map_err(stringify)?;
+    let guard = verify_jj::release_guard(workspace, &lane, std::time::SystemTime::now())
+        .map_err(stringify)?;
+    if guard.has_blockers() {
+        let mut message = String::new();
+        verify_jj::render_release_guard(&guard, &mut message)
+            .map_err(|error| format!("render error: {error}"))?;
+        eprint!("{message}");
+        return Ok(EXIT_CONFLICT);
+    }
     let _outcome = claim::release(workspace, lane).map_err(stringify)?;
     let report = claim::status(workspace, registry).map_err(stringify)?;
     let mut lock_state = String::new();
@@ -171,6 +183,27 @@ fn handle_status(workspace: &Workspace, registry: &LaneRegistry) -> Result<u8, S
     let _ = std::io::stdout().flush();
     run_beads_listing(workspace);
     Ok(0)
+}
+
+fn handle_verify_jj(
+    workspace: &Workspace,
+    mut arguments: std::vec::IntoIter<String>,
+) -> Result<u8, String> {
+    if arguments.next().is_some() {
+        eprint!("{}", verify_jj_usage());
+        return Ok(EXIT_USAGE);
+    }
+    let report =
+        verify_jj::verify_workspace(workspace, std::time::SystemTime::now()).map_err(stringify)?;
+    let mut output = String::new();
+    verify_jj::render_report(&report, &mut output)
+        .map_err(|error| format!("render error: {error}"))?;
+    print!("{output}");
+    if report.has_findings() {
+        Ok(EXIT_CONFLICT)
+    } else {
+        Ok(0)
+    }
 }
 
 fn run_beads_listing(workspace: &Workspace) {
@@ -243,6 +276,7 @@ fn usage(registry: &LaneRegistry) -> String {
   tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
   tools/orchestrate release <role>
   tools/orchestrate status
+  tools/orchestrate verify-jj
 
 Roles: {roles}
 
@@ -255,4 +289,8 @@ Each line is one scope, optionally followed by ` # <reason>`.
 "#,
         roles = lanes.join(", ")
     )
+}
+
+fn verify_jj_usage() -> String {
+    "Usage:\n  tools/orchestrate verify-jj\n".to_string()
 }

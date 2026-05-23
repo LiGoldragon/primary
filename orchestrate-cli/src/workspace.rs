@@ -39,6 +39,10 @@ impl Workspace {
         self.root.join(".beads")
     }
 
+    pub fn active_repositories_path(&self) -> PathBuf {
+        self.root.join("protocols").join("active-repositories.md")
+    }
+
     pub fn is_beads_scope(&self, path: &Path) -> bool {
         path == self.beads_root() || path.starts_with(self.beads_root())
     }

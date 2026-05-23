@@ -47,6 +47,13 @@ pub enum Error {
         source: io::Error,
     },
 
+    #[error("active repository map read failed at {path}")]
+    ActiveRepositoryMapRead {
+        path: PathBuf,
+        #[source]
+        source: io::Error,
+    },
+
     #[error("path normalization failed for {input}: {message}")]
     PathNormalization { input: String, message: String },
 

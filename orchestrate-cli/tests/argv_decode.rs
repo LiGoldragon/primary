@@ -19,12 +19,9 @@ fn role(token: &str) -> RoleName {
 #[test]
 fn claim_decodes_to_role_claim_with_typed_scope_and_reason() {
     let scopes = vec![scope("/home/li/primary/skills/foo.md")];
-    let request = orchestrate_cli::request::claim_request(
-        lane("operator"),
-        &scopes,
-        "syncing claim docs",
-    )
-    .expect("claim request");
+    let request =
+        orchestrate_cli::request::claim_request(lane("operator"), &scopes, "syncing claim docs")
+            .expect("claim request");
     match request {
         OrchestrateRequest::Claim(record) => {
             assert_eq!(record.role, role("operator"));
@@ -69,7 +66,10 @@ fn release_decodes_to_role_release_with_role_name() {
 #[test]
 fn observation_decodes_to_role_observation() {
     let request = orchestrate_cli::request::observation_request();
-    assert!(matches!(request, OrchestrateRequest::Observe(Observation::Roles)));
+    assert!(matches!(
+        request,
+        OrchestrateRequest::Observe(Observation::Roles)
+    ));
 }
 
 #[test]

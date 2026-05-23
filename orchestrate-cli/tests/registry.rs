@@ -83,10 +83,7 @@ fn unknown_marker_is_rejected() {
 fn invalid_lane_token_is_rejected() {
     let registry = "operator\nbad/lane   assistant-of:designer\n";
     let err = LaneRegistry::parse(registry).unwrap_err();
-    assert!(
-        format!("{err}").contains("bad/lane"),
-        "{err}"
-    );
+    assert!(format!("{err}").contains("bad/lane"), "{err}");
 }
 
 #[test]
