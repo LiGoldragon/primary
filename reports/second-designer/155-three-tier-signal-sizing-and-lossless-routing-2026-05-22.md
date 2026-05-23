@@ -1,5 +1,12 @@
 *Kind: Design · Topic: Three-tier signal sizing + lossless cutover routing · Date: 2026-05-22*
 
+> **STATUS BANNER (added 2026-05-23 by /161/3 context-maintenance sweep):**
+> Both designs ratified and substance fully migrated to permanent docs:
+> - Part 1 (three-tier signal sizing + 64-bit verb namespace) → `signal-frame/ARCHITECTURE.md §5 "Three-Tier Signal Sizing + Verb Namespace"` (jj change `2313c5ed`, via `reports/second-designer/159-intent-manifestation/1-signal-verb-namespace-arch.md`); cross-ref in `signal-sema/ARCHITECTURE.md` (jj change `1604cceb`).
+> - Part 2 (lossless cutover routing — Design D Persona FD-handoff via SCM_RIGHTS) → `persona/ARCHITECTURE.md` Design D section + cross-refs in `signal-persona-orchestrate/ARCHITECTURE.md`, `signal-persona-introspect/ARCHITECTURE.md`, `signal-persona-spirit/ARCHITECTURE.md`.
+>
+> Report retained for design rationale and competing-design preservation per intent record 229 (closing duplicate beads preserves information; competing design ideas kept).
+
 # 155 — Three-tier signal sizing + lossless cutover routing
 
 *Per psyche 2026-05-22 follow-up to /154: (1) explore three-tier

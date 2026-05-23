@@ -1,5 +1,12 @@
 *Kind: Refresh · Topic: prime designer + operator follow-ups since /152 meta-report · Date: 2026-05-22*
 
+> **STATUS BANNER (added 2026-05-23 by /161/3 context-maintenance sweep):**
+> Forward-pointing refresh. Substance superseded by:
+> - `reports/second-designer/157-audit-engine-stack-state-before-constraint-and-integration-beads-2026-05-23.md` (engine stack audit + bead slate)
+> - `reports/second-designer/158-open-question-resolution-and-remaining-clarification-needs-2026-05-23.md` (open question resolution map vs intent records 217-259)
+>
+> Retained for: the intent records 220-228 absorption summary in §1 (no permanent home yet) and the priority-pivot framing cited by `reports/designer/292-designer-lane-top-issues-2026-05-22.md`.
+
 # 153 — Refresh after prime + operator systemd follow-ups
 
 ## Frame
