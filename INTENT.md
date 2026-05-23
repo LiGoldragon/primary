@@ -163,6 +163,20 @@ The canonical checkout stays on `main` so every peer agent sees
 production reality without negotiating who-has-the-checkout. Full
 discipline: `skills/feature-development.md`.
 
+## Optional third "stable" branch is deferred
+
+Per Spirit record 313 (Maximum certainty, 2026-05-23), an optional
+third `stable` branch alongside `main` and `next` is **deferred**
+until two preconditions hold: the architecture port from Spirit
+(the architecture-discovery pilot) reaches all other components,
+AND each component bootstraps from its own architecture discovery.
+Until then `main` + `next` is sufficient: `next` carries the
+in-flight version daemon for handover; `main` is the current
+production version. A third branch dedicated to "stable releases"
+would compete for psyche attention without reducing risk that the
+existing two-branch model isn't already managing through Persona's
+upgrade orchestration. Revisit when the preconditions land.
+
 ## BEADS is transitional; persona-mind is the destination
 
 `.beads/` exists today for short-tracked-item coordination. The
@@ -233,9 +247,7 @@ highest level is spirit; persona-spirit is the analog.* Bead:
 **Concept designer** is a real role — *an entry point for new
 concepts the psyche is juggling*. Compares new concepts against
 existing ones; surfaces relationships; decides when a concept
-earns its own dedicated lane. Captured in
-`reports/designer/234-concept-designer-role.md`; fleshing out
-next.
+earns its own dedicated lane. Fleshing out next.
 
 ## When a new role appears without a skill
 

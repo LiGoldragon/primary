@@ -994,14 +994,14 @@ Workspace context read for this report:
   — name + shape discipline (contract-local verbs, lift the
   repeated suffix, drop the ancestry prefix, observable blocks
   mandatory).
-- `reports/designer/214-criome-architecture-record-2026-05-17.md`
+- `criome/ARCHITECTURE.md`
   — Criome trust component shape (master keypair, federated
   trust, owner-signal pattern that meta-signal inherits from).
 - `reports/designer/271-forge-component-family-design.md` —
   component-family shape (`forge-<X>` per-component variants
   pattern that `domain-<tld>` mirrors).
-- `reports/second-designer/27-response-to-revised-dedicated-cloud-host-plan.md`
-  — touches `CriomeDomainName` and the cloud-host plan;
+- `reports/second-designer/27` (deleted in 2026-05-23 context-maintenance sweep)
+  — historical: touched `CriomeDomainName` and the cloud-host plan;
   surfaces the `*.criome` convention.
 - `skills/component-triad.md` — triad invariants (1-5), single-
   argument rule, named carve-outs (the DNS bridge claims the

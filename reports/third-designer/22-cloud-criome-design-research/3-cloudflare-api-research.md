@@ -847,7 +847,7 @@ Secrets management:
 
 Workspace context:
 
-- `reports/designer/214-criome-architecture-record-2026-05-17.md` — criome PKI + sops-nix relationship.
+- `criome/ARCHITECTURE.md` — criome PKI + sops-nix relationship.
 - `reports/designer/281-headless-pi-research.md` — style precedent for this research shape.
 - `skills/component-triad.md` — triad invariants, single-argument rule, three layers of verbs, Sema classes.
 - `skills/push-not-pull.md` — Subscribe vs poll discipline.

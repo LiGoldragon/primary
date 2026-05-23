@@ -81,8 +81,7 @@ engine-manager component (per intent 215). So:
 - `persona` (repo + CLI + daemon) — the engine-manager. CLI binary
   `persona`, daemon binary `persona-daemon`.
 - `persona-pi` (repo + CLI + daemon) — the Pi-runtime-wrapping
-  harness. CLI binary `pi`, daemon binary `persona-pi-daemon` (per
-  designer/266 + designer/268).
+  harness. CLI binary `pi`, daemon binary `persona-pi-daemon`.
 - `persona-codex`, `persona-claude` — same shape: CLI `<agent>`,
   daemon `persona-<agent>-daemon`.
 

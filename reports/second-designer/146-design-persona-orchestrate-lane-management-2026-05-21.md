@@ -306,12 +306,6 @@ specialization is needed. No rename required.
 
 - `reports/second-designer/145-design-real-time-intent-recording-system-2026-05-21.md`
   — the first report in this lane (the recording-system design).
-- `reports/second-designer/137-persona-orchestrate-triad-audit-2026-05-21.md`
-  — the persona-orchestrate audit identifying the lock-helper vocab
-  vs. abstract-job destination mismatch.
-- `reports/second-designer/129-mind-orchestrate-payload-and-cli-dispatch-option-a-2026-05-20.md`
-  — the mind-orchestrate boundary; abstract-job + agent-registry +
-  context-compaction context.
 - `intent/persona.nota` records around 2026-05-19T15:04Z and
   2026-05-20T17:30Z — the persona-orchestrate scope evolution.
 - `intent/persona.nota` (today's record 93) — the explicit "lane

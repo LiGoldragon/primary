@@ -447,7 +447,7 @@ second-operator/165 delta Q2. Real lane registration through
 Orchestrate or stay as design report only?
 
 **Q26 — Criome owner-session encryption priority.** Per
-`designer/214` keeper + second-operator/165 delta Q3. Near-term
+`criome/ARCHITECTURE.md` + second-operator/165 delta Q3. Near-term
 implementation target or stay behind Spirit/sema-upgrade/orchestrate?
 
 **Q27 — Old operator /108–/135 cleanup.** Cleanup pass to retire

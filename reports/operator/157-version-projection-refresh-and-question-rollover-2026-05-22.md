@@ -17,7 +17,6 @@ work:
 - `reports/designer/285-versionprojection-trait-and-handover-protocol-specification.md`
 - `reports/third-designer/19-refresh-after-prime-session-2026-05-22.md`
 - `reports/cluster-operator/4-update-authority-and-lojix-daemon-current-state-2026-05-22.md`
-- `reports/cluster-operator/5-refresh-after-new-intents-and-reports-2026-05-22.md`
 
 `protocols/active-repositories.md` has not changed since 2026-05-20.
 The live protocol changes are in `orchestrate/AGENTS.md` and

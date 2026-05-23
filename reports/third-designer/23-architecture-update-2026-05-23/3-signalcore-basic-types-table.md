@@ -14,7 +14,7 @@ Reads alongside:
 
 - `signal-sema/ARCHITECTURE.md` (current home of `Magnitude`, `Slot`, `Revision`, `PatternField`, `SemaOperation`/`SemaOutcome`).
 - `signal-frame/ARCHITECTURE.md` §5 (three-tier sizing; 64-bit verb-namespace structure).
-- `reports/designer/214-criome-architecture-record-2026-05-17.md` (Criome master keypair, attestations).
+- `criome/ARCHITECTURE.md` (Criome master keypair, attestations).
 - `reports/second-designer/150-design-agent-identity-and-runtime-functions.md` (BLS12-381 per-role keypair; identifier graduation).
 - `reports/designer/285-versionprojection-trait-and-handover-protocol-specification.md` (ContractVersion shape).
 - `intent/arca.nota` (ARCA content-addressed substrate; the natural home for Sub-ID records).
@@ -722,7 +722,7 @@ There is no demotion. An Identity, once minted and adopted, persists in criome's
 
 ### Sibling and prior reports
 
-- `reports/designer/214-criome-architecture-record-2026-05-17.md` — Criome architecture; BLS12-381 master keypair.
+- `criome/ARCHITECTURE.md` — Criome architecture; BLS12-381 master keypair.
 - `reports/designer/270-sema-upgrade-component-design.md` — sema-upgrade triad; the migration mechanism SignalCore depends on.
 - `reports/designer/285-versionprojection-trait-and-handover-protocol-specification.md` — ContractVersion / handover.
 - `reports/second-designer/145-design-real-time-intent-recording-system-2026-05-21.md` — recording pipeline that mints SubIds for intent-capture spans.

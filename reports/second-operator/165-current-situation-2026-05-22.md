@@ -140,7 +140,7 @@ Freshly absorbed after the first absorption commit:
   - confirms the same active priorities, adds that
     `third-designer` is now a structural parallel-main lane, and
     states the designer-side question list more aggressively.
-- `reports/designer/214-criome-architecture-record-2026-05-17.md`
+- `criome/ARCHITECTURE.md`
   - keeper for Criome's Unix-user security boundary, owner socket,
     encrypted owner session, and future `owner-signal-criome`.
 - `reports/designer/234-concept-designer-role.md`
