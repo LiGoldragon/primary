@@ -150,6 +150,42 @@ Use the word that names the thing. *"Smith"* not *"artisan"*; *"fire"*
 not *"flame"*; *"this is the old work"* not *"this constitutes the
 ancient labor."*
 
+## Stake — the weight of what the prose is about
+
+Prose carries the weight of its subject. Hemingway's observational
+form holds because his subjects carry weight: death, war, sickness,
+bullfighting. The form needs the weight to land.
+
+The opening tests this most acutely. For an **argument**, the stake
+lives in the claim. The cold open is the position stated as flatly
+as it can be — *"The world is a torus."* / *"Two claims circulate
+today under the banner of Āyurveda that the primary corpus does not
+support."* / *"The law perverted!"* The first sentence takes the
+stake of the piece into it.
+
+For a **narrative**, the stake lives in the action. The opening is
+the scene where the action is about to begin — Hemingway's *Indian
+Camp* at the lake shore at dawn, *In Our Time*'s drunk battery on
+the road. The scene is the substance because the scene carries the
+action.
+
+The two cold opens look superficially alike: declarative,
+present-tense, no meta-prose. The weight is different. The
+argumentative opening **states**; the narrative opening **shows**.
+The form is the same; the substance the form must carry is not.
+
+**Find the stake before drafting.** What is the argument's cost?
+What does the position correct? What happens to a body, a country,
+a sentence when the contrary is followed? Open on that. The first
+sentence is the argument's opening move on the chessboard.
+
+A cold open on a domestic scene that disputes nothing, no matter how
+carefully the sentences are arranged, has begun the piece in
+decoration. *"Rice and water in a clay pot over coals. The pot ticks
+as the grain swells."* The form is correct; the stake is absent. The
+fix is to find the cost the argument is correcting and open on that
+instead.
+
 ## Diction
 
 ### The lexicon is the argument
@@ -204,6 +240,13 @@ claims circulate today under the banner of Āyurveda that the primary
 corpus does not support."* *The Law* opens *"The law perverted!"* In
 all three, the reader is already inside the position when the first
 sentence ends.
+
+The opening particular, when used, is the **contested particular** —
+the specific thing the argument is going to dispute or defend.
+*Apathya*'s plate is the contested plate; *The Chloride Indictment*'s
+opening names the chemical the argument indicts. The opening
+particular carries the stake of the piece. See *Stake* below for the
+full discipline.
 
 Opening with meta-prose is the most reliable signal of an author who
 is not yet sure of the position. Strike it, and either commit or
