@@ -114,12 +114,18 @@ not declare:
 
 | Primitive | NOTA | Rust |
 |---|---|---|
-| `String` | `"…"` or bare ident | `String` |
+| `String` | `[text]` bracket string or bare camelCase/kebab-case ident | `String` |
 | `u8`, `u16`, `u32`, `u64` | decimal | fixed-width unsigned |
 | `bool` | `True` / `False` | `bool` |
 | `Date` | `YYYY-MM-DD` | three-field |
 | `Time` | `HH:MM:SS` | three-field |
 | `Bytes` | `#hex…` | `Vec<u8>` |
+
+Multi-line text uses block-string form `[|...text...|]` per
+`nota/example.nota`. Path-refs in the schema (per §2.7) are
+bracket strings: `(Magnitude [../signal-sema/magnitude.schema.nota])`.
+The legacy `"..."` quote form is being retired per
+`primary-36iq` and should not appear in new NOTA authoring.
 
 Plus two containers: `[Vec T]`, `[Option T]`.
 
