@@ -1,5 +1,7 @@
 # 305-v2 — Per-component namespacing for the 64-bit signal object
 
+**Status:** per-component namespacing landed in `signal-frame/ARCHITECTURE.md §5.2`; this report preserves the per-component-vs-workspace-wide rationale.
+
 *Kind: Design · Topic: 64-bit-signal-namespacing · 2026-05-23*
 
 *Psyche corrected the prior version's central-enum framing per

@@ -1,5 +1,7 @@
 # 285 - VersionProjection trait and handover protocol specification
 
+**Status:** trait + types landed in `version-projection/ARCHITECTURE.md`; handover protocol landed in `signal-upgrade/ARCHITECTURE.md` per `/318` Wave-4. This report preserves the protocol-design alternatives.
+
 *Designer specification absorbing operator corrections logged as
 spirit records 191-193: (1) upgrade and downgrade are one
 projection relation, not two traits; (2) version handover is an

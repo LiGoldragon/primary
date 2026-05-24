@@ -1,5 +1,7 @@
 # 309 — Agent component abstraction (persona-agent triad over harness backends)
 
+**Status:** triad shape absorbed into `primary-gvgj` epic (10 sub-beads tracked). Rename open question — `/318` recommends dropping the `persona-` prefix to `agent` / `signal-agent` / `owner-signal-agent` per spirit 371; this report's §1 KEEP-prefix framing is superseded once psyche ratifies.
+
 *Kind: Design · Topic: persona-agent · 2026-05-23 · Parallel slice
 D3 of three (D1: golden-ratio split; D2: pre-typed envelope).*
 

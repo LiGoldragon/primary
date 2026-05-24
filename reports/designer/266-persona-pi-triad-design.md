@@ -1,5 +1,7 @@
 # 266 - Persona-Pi triad architecture sketch
 
+**Status:** superseded by `/309 §7` for pi-triad shape; this report preserves the alternatives that informed the choice.
+
 *Designer sketch of the persona-pi triad following the psyche's
 2026-05-21 design dump (intent/persona.nota records 43-47).
 Persona-pi is the Pi harness adapted into a persona-component

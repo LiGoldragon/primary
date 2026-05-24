@@ -1,5 +1,7 @@
 # 287 - Version handover component — visual explanation
 
+**Status:** absorbed into the upgrade triad per `/318` Wave-4; `upgrade` daemon + `signal-upgrade` + `owner-signal-upgrade` are on disk. This report preserves the visual reference shape.
+
 *Reference explanation of the version-handover stack: what each
 piece does, how they fit together, and what the protocol looks
 like end-to-end. Written for future agents (or operators) who need
