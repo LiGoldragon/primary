@@ -257,6 +257,18 @@ yet — those land when the role's shape settles.
   "`primary-hj63`". Humans don't have a CLI in their head.
   Generalisation of `skills/reporting.md` §"Human-facing
   references are self-contained".
+- **Designers work on feature branches in `~/wt`; operators own
+  main + rebase.** Designer lanes (`designer`, `second-designer`,
+  `third-designer`, plus assistants) create + ship feature
+  branches in worktrees under `~/wt/github.com/<owner>/<repo>/`,
+  one branch per feature. Operator lanes (`operator`,
+  `second-operator`, `cluster-operator`, `pi-operator`, plus
+  assistants) own main: they create, maintain, and rebase main
+  from designer feature branches when integrating. Designers do
+  NOT push to main; operators do NOT carry long-lived designer
+  feature branches. Cross-lane integration is operator's job. Per
+  psyche 2026-05-24 (intent record 515). Complements the
+  mockup-on-worktree method (intent records 502-504).
 
 ## Where to look for more
 
