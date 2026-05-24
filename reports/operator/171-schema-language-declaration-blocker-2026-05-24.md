@@ -2,6 +2,14 @@
 
 ## Status
 
+Closed by designer `/326-v5` and the implementation captured in
+`reports/operator/170-schema-spirit-mvp-implementation-2026-05-24.md`.
+
+This report is preserved as the blocker record for `/326-v4`. The current
+working syntax is no longer blocked: namespace map values no longer restate
+their keys, and the implementation now rejects the recursive/self-repeating
+form.
+
 I started implementing the post-`/326-v3` correction in `signal-frame` and
 `signal-persona-spirit`, then stopped before committing because the psyche
 corrected `/326-v4`'s namespace declaration syntax.

@@ -2,7 +2,7 @@
 
 ## Status
 
-This pass lands the first runnable subset of the `/321` through `/324`
+This pass lands the first runnable subset of the `/321` through `/326-v5`
 Spirit MVP stack.
 
 The implemented subset is Nix-green across the participating repos:
@@ -16,6 +16,8 @@ The implemented subset is Nix-green across the participating repos:
 - a typed v0.1.0 to v0.1.1 Spirit projection witness
 - `/326-v3` tagless positional schema parsing, with the namespace as a
   curly-brace NOTA map
+- `/326-v5` schema file-body parsing, with non-recursive namespace values:
+  `Kind [Decision ...]`, `Topic (String)`, `Entry (Topic Kind ...)`
 - `persona-spirit` consuming the projected signal contract
 
 This is not the full `/324` target. The macro does not yet emit every
@@ -32,6 +34,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `reports/designer/324-migration-mvp-spirit-handover-re-specification.md`
 - `reports/designer/325-nota-box-library-design-and-implementation.md`
 - `reports/designer/326-v3-spirit-complete-schema-vision.md`
+- `reports/designer/326-v5-spirit-complete-schema-vision.md`
 - `reports/second-designer/164-nota-schema-language-vector-of-root-verb-enums-2026-05-24.md`
 - `reports/second-operator/178-schema-section-shape-and-nota-map-check-2026-05-24.md`
 - `reports/nota-designer/6-quoted-string-purge-audit-2026-05-24.md`
@@ -48,6 +51,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `f133b33881a4` - `signal-frame: parse schema record namespaces`
 - `b26f381f2b27` - `signal-frame: fix engine annotation nesting`
 - `f6ff41e42603` - `signal-frame: parse positional schema files`
+- `8dc8acf40f29` - `signal-frame: parse schema file bodies`
 
 `signal-sema`
 
@@ -64,6 +68,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `cf2f92ee3830` - `signal-persona-spirit: witness generated dispatch`
 - `e8d6084b9da1` - `signal-persona-spirit: use schema namespace map`
 - `a66c87484109` - `signal-persona-spirit: use positional schema shape`
+- `655cc6fb2b4e` - `signal-persona-spirit: use schema file body`
 
 `persona-spirit`
 
@@ -72,6 +77,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `a834a560c487` - `persona-spirit: consume dispatch contract`
 - `265f4aafe73c` - `persona-spirit: consume schema namespace contract`
 - `f9eb7c440a1b` - `persona-spirit: consume positional schema contract`
+- `95be1d3c9bcd` - `persona-spirit: consume schema file contract`
 
 ## What changed
 
@@ -230,6 +236,36 @@ check:
 
 - `map_key_round_trip`
 - `bracket_string_round_trip`
+
+## Follow-up after /326-v5
+
+The psyche rejected `/326-v4`'s namespace value form because entries such as
+`Kind (Kind ...)`, `Topic (Topic ...)`, and `Entry (Entry ...)` repeat the
+declared key inside the declaration value. That is name collision in the
+schema's open namespace and reads as recursive type structure.
+
+Designer `/326-v5` closed the syntax by making the map key the implicit type
+tag:
+
+- `[…]` declares enum variants, for example
+  `Kind [Decision Principle Correction Clarification Constraint]`.
+- `(…)` declares struct fields, for example `Topic (String)` and
+  `Entry (Topic Kind Summary Context Magnitude Quote)`.
+- `(Path …)` remains the import form.
+
+`signal-frame@8dc8acf40f29` now parses that file-body grammar directly. The
+parser expects `<component>.schema` first and falls back to `schema.nota` only
+for compatibility. It rejects repeated self-keys inside struct declarations and
+rejects trailing top-level schema tokens.
+
+`signal-persona-spirit@655cc6fb2b4e` now uses `spirit.schema`; the previous
+current `schema.nota` was removed. The historical v0.1.0 schema remains under
+`schemas/v0.1.0/schema.nota` for migration witnesses. The local Magnitude
+schema snapshot moved to `schemas/signal-sema/magnitude.schema`. The flake
+source filter now includes `.schema` files, which was necessary for Nix builds.
+
+`persona-spirit@95be1d3c9bcd` is a lock-only consumer update to the new signal
+contract and new `signal-frame` parser.
 
 ## Verification
 
