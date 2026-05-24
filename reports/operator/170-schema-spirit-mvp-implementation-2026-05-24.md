@@ -2,8 +2,16 @@
 
 ## Status
 
-This pass lands the first runnable subset of the `/321` through `/326-v6`
+This pass lands the first runnable subset of the `/321` through `/326-v7`
 Spirit MVP stack.
+
+**Staleness note, 2026-05-24:** Spirit records 477-480 supersede the v7 header
+pair shape implemented here. Current code accepts the v7 `(State Statement)`
+and older `(State [Statement])` one-endpoint forms. The newly clarified target
+is a root header enum namespace such as `(State [Statement Proposal Retraction])`
+where nested endpoint tokens are the fast dispatch variants and a lowered
+mid-representation resolves them to body schemas. See
+`reports/operator/173-schema-header-namespace-and-import-example-2026-05-24.md`.
 
 The implemented subset is Nix-green across the participating repos:
 
@@ -20,6 +28,9 @@ The implemented subset is Nix-green across the participating repos:
   `Kind [Decision ...]`, `Topic (String)`, `Entry (Topic Kind ...)`
 - `/326-v6` bare-identifier alias/reference declarations in namespace value
   position, with short-header emission following aliases
+- `/326-v7` import-first schema parsing and explicit header payload pairs such
+  as `(Record Entry)`, now known to be a transitional/stale implementation
+  after Spirit records 477-480
 - `persona-spirit` consuming the projected signal contract
 
 This is not the full `/324` target. The macro does not yet emit every
@@ -56,6 +67,10 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `f6ff41e42603` - `signal-frame: parse positional schema files`
 - `8dc8acf40f29` - `signal-frame: parse schema file bodies`
 - `f7c032854250` - `signal-frame: parse schema alias declarations`
+- `a680aa0419b2` - `signal-frame: parse schema header endpoint nodes`
+- `2e3450ee848c` - `signal-frame: preserve container vector payloads in
+  schema nodes`
+- `bf233f723684` - `signal-frame: parse import-first schema files`
 
 `signal-sema`
 
@@ -74,6 +89,9 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `a66c87484109` - `signal-persona-spirit: use positional schema shape`
 - `655cc6fb2b4e` - `signal-persona-spirit: use schema file body`
 - `bfea608bee9b` - `signal-persona-spirit: consume schema alias parser`
+- `2b4dd00c9081` - `signal-persona-spirit: use header endpoint schema
+  nodes`
+- `c6fe1f2819c7` - `signal-persona-spirit: use import-first schema shape`
 
 `persona-spirit`
 
@@ -84,6 +102,9 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `f9eb7c440a1b` - `persona-spirit: consume positional schema contract`
 - `95be1d3c9bcd` - `persona-spirit: consume schema file contract`
 - `08b04c73bf60` - `persona-spirit: consume schema alias contract`
+- `4e0c7db1a496` - `persona-spirit: consume header endpoint schema
+  contract`
+- `a3e7cad7d9d3` - `persona-spirit: consume import-first schema contract`
 
 ## What changed
 
@@ -301,6 +322,40 @@ for the pilot.
 consumer lock bumps proving the real Spirit pilot still compiles and tests
 against the alias-aware parser.
 
+## Follow-up after the psyche's header-node correction
+
+The psyche corrected the `/326-v6` first-section example. The first schema
+section is the working-signal header declaration surface. It is ordered like an
+enum, but it is not a namespace map and it is not the execution-class layer.
+The `(engine assert)` annotations were carrying the wrong concern in the
+header.
+
+The Spirit schema now writes the operation header as ordered enum nodes:
+
+```nota
+[
+  (State [Statement])
+  (Record [Entry])
+  (Observe [Observation])
+  (Watch [Subscription])
+  (Unwatch [SubscriptionToken])
+]
+```
+
+Each node's first token is the header enum identifier. The vector that follows
+names the endpoint payload node. For this MVP, exactly one endpoint is accepted
+per operation header node. The parser rejects a multi-endpoint operation node
+until the recursive header trie semantics are designed tightly enough to emit.
+
+`signal-frame@a680aa0419b2` added the bracket endpoint form. The first pass
+misclassified ordinary data-carrying enum variants such as
+`(Records [Vec RecordSummary])` as header endpoint nodes. That was fixed in
+`signal-frame@2e3450ee848c`: `[Vec T]` and `[Option T]` inside a data-carrying
+variant remain normal container payloads.
+
+`signal-persona-spirit@2b4dd00c9081` removes the engine-class annotations from
+`spirit.schema`. `persona-spirit@4e0c7db1a496` consumes that contract.
+
 ## Verification
 
 All verification below used the low-core discipline for Cargo and remote
@@ -318,7 +373,7 @@ Passing repos:
 - `persona-spirit`
 
 The final `persona-spirit` Nix check passed after updating to
-`signal-persona-spirit@a66c87484109`.
+`signal-persona-spirit@2b4dd00c9081`.
 
 ## Remaining gaps against /324
 
