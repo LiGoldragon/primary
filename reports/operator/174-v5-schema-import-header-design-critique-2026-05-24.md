@@ -1,12 +1,10 @@
-# 174-v4 - Schema import and header design critique, 2026-05-24
+# 174-v5 - Schema import and header design critique, 2026-05-24
 
 ## Context
 
-This v4 report responds to the psyche's request for an operator-side improved
+This v5 report responds to the psyche's request for an operator-side improved
 design and critique of the current schema-language direction, after
-`reports/designer/326-v11-spirit-complete-schema-vision.md` and the psyche's
-post-v11 correction about macro-lowered schemas, upgrade knowledge, and the
-`AssembledSchema` name.
+`reports/designer/326-v13-spirit-complete-schema-vision.md`.
 
 The latest psyche corrections captured in Spirit:
 
@@ -29,16 +27,24 @@ The latest psyche corrections captured in Spirit:
   against the previous schema.
 - 492 - the schema language is a reusable macro-lowered structured declaration
   bedrock, not only a Spirit contract format.
+- 494 - header root entries always carry a bracketed vector of sub-variants,
+  even when there is only one.
+- 495 - schema examples should include multi-variant headers, not only
+  one-element vectors.
 
 Designer `/326-v9` correctly fixed v8's invalid same-tag/different-arity import
 shape. Designer `/326-v10` correctly fixes v9's `[Option X]` / `[Vec X]`
 container-type syntax. Designer `/326-v11` absorbs this report's main
 architectural recommendation: header vectors are route-only, namespace nodes
 define body payloads, and features carry semantics beyond body typing.
+Designer `/326-v12` absorbs `AssembledSchema`, macro-as-language, and
+next-version upgrade annotations. Designer `/326-v13` absorbs the uniform
+header rule: every root writes `(Root [SubVariant ...])`, even for one
+sub-variant.
 
-This v4 preserves the operator-ready examples, marks the Form 2 route/body
-question closed, renames the machine object from `SchemaMid` to
-`AssembledSchema`, and adds the next-version upgrade model.
+This v5 aligns the operator presentation with `/326-v13`, then adds one
+implementation critique: route-root body declarations reserve namespace keys,
+so normal data types cannot reuse those root names in the same flat namespace.
 
 ## One-Screen Shape
 
@@ -218,19 +224,22 @@ now is that collisions are loud.
 
 ## Import Critique
 
-Designer `/326-v11` keeps the load-bearing import-arity fix, container-type
-syntax, import collision rule, and route/body/feature split. The remaining
-rough edges are now precision issues, not major design blockers:
+Designer `/326-v13` keeps the load-bearing import-arity fix, container-type
+syntax, import collision rule, route/body/feature split, `AssembledSchema`, and
+uniform header vector. The remaining rough edges are now precision issues, not
+major design blockers:
 
-| Concern | Current `/326-v11` | Operator critique | Proposed rule |
+| Concern | Current `/326-v13` | Operator critique | Proposed rule |
 |---|---|---|---|
-| Absolute position wording | `/326-v11` says route headers are Positions 1-3, namespace Position 4, features Position 5 | This omits the imports map from the position count and can confuse implementers. | Use absolute file positions: 1 imports, 2 ordinary header, 3 owner header, 4 sema header, 5 namespace, 6 features. Use "header leg" when counting only ordinary/owner/sema. |
-| Import map key | `Magnitude`, `SemaSet` | Now settled by `/326-v11`: provenance label only, not namespace prefix. | Implement this exactly and reject duplicate imported/local names. |
-| Collision behavior | Now explicit in `/326-v11` | Good. Needs tests. | Add import-import and import-local collision fixtures. |
+| Route-root namespace reservation | `/326-v13` rich example declares `State (Presence ...)` and later `State [(Utterance ...)]` in the same namespace | A flat map cannot safely contain two `State` keys. The route-root body declaration must reserve the root name. | Reject duplicate namespace keys; rename the ordinary data type, e.g. `PresenceSnapshot`, or introduce a separate route-body section before codegen. |
+| Header cardinality | `/326-v13` resolves this | Good. Needs tests. | Use `(State [Statement])`; reject scalar `(State Statement)`. |
+| Absolute position wording | `/326-v13` carries six-position shape but some prose still counts only route/body/feature positions | This can confuse implementers. | Use absolute file positions: 1 imports, 2 ordinary header, 3 owner header, 4 sema header, 5 namespace, 6 features. Use "header leg" when counting only ordinary/owner/sema. |
+| Import map key | `Magnitude`, `SemaSet` | Settled: provenance label only, not namespace prefix. | Implement this exactly and reject duplicate imported/local names. |
+| Collision behavior | Now explicit | Good. Needs tests. | Add import-import and import-local collision fixtures. |
 | `ImportAll` use | Valid | Convenient but can flood namespace in larger schemas. | Prefer `Import` for multi-type schemas; use `ImportAll` for base/core or single-type schema files. |
 | Future index imports | Mentioned | Good direction, but not MVP. | Add a third variant only when the schema registry exists. |
 | `ImportDirective` names | `Import`, `ImportAll` | Slightly repetitive inside Rust enum context, but clear in authored NOTA. | Keep the authored heads; Rust internals may still name variants `Some`/`All` only if the NOTA codec supports head override later. |
-| Unit endpoint body | `/326-v11` route body type is explicit for Form 1/Form 2 payloads | Pure control endpoints still need a deterministic body marker. | Lower unit endpoints to an explicit unit body type, not to absent body metadata. |
+| Unit endpoint body | The route table always has a sub-variant slot now | Pure control endpoints still need a deterministic body marker. | Lower unit endpoints to an explicit unit body type, not to absent body metadata. |
 
 ## Header Model
 
@@ -239,30 +248,31 @@ slots are ordered.
 
 ```nota
 [
-  (State Statement)
-  (Record Entry)
-  (Observe Observation)
-  (Watch Subscription)
-  (Unwatch SubscriptionToken)
+  (State [Statement])
+  (Record [Entry])
+  (Observe [Observation])
+  (Watch [Subscription])
+  (Unwatch [SubscriptionToken])
 ]
 ```
 
-This is the Form 1 case: each root endpoint has one payload type.
+There is no separate scalar-payload form. Even when a root has one
+sub-variant, it uses a bracketed vector.
 
-Form 2 appears when one root has several endpoint selectors:
+The multi-sub-variant case is the same shape with more entries in the vector:
 
 ```nota
 [
-  (State Statement)
-  (Record Entry)
-  (Observe Observation)
+  (State [Statement])
+  (Record [Entry])
+  (Observe [Observation])
   (Watch [State Records Questions])
-  (Unwatch SubscriptionToken)
+  (Unwatch [State Records Questions])
 ]
 ```
 
-The bracket under `Watch` is a nested header namespace. It is not a vector of
-runtime values; it is enum declaration shorthand in header position.
+The bracket after each root is a sub-variant namespace. It is not a runtime
+value vector. It is enum declaration shorthand in header position.
 
 ## Header Examples
 
@@ -270,11 +280,11 @@ runtime values; it is enum declaration shorthand in header position.
 
 ```nota
 [
-  (State Statement)
-  (Record Entry)
-  (Observe Observation)
-  (Watch Subscription)
-  (Unwatch SubscriptionToken)
+  (State [Statement])
+  (Record [Entry])
+  (Observe [Observation])
+  (Watch [Subscription])
+  (Unwatch [SubscriptionToken])
 ]
 ```
 
@@ -282,11 +292,11 @@ Lowered idea:
 
 | Root slot | Root | Endpoint slot | Body type |
 |---:|---|---:|---|
-| 0 | State | none | Statement |
-| 1 | Record | none | Entry |
-| 2 | Observe | none | Observation |
-| 3 | Watch | none | Subscription |
-| 4 | Unwatch | none | SubscriptionToken |
+| 0 | State | 0 | Statement |
+| 1 | Record | 0 | Entry |
+| 2 | Observe | 0 | Observation |
+| 3 | Watch | 0 | Subscription |
+| 4 | Unwatch | 0 | SubscriptionToken |
 
 Dispatch:
 
@@ -296,10 +306,12 @@ decoder jumps directly to Entry body codec
 actor route is ordinary.signal.Record
 ```
 
-### Example B - Watch With Sub-Endpoints
+### Example B - Watch With Multiple Sub-Variants
 
 ```nota
 [
+  (State [Statement])
+  (Record [Entry])
   (Watch [State Records Questions])
 ]
 ```
@@ -364,10 +376,11 @@ Lowered idea:
 This is useful for cheap triage commands. The unit body still has a schema:
 the empty struct/unit shape.
 
-## Header Critique After `/326-v11`
+## Header Critique After `/326-v13`
 
 The biggest v2 open issue was where header structure ends and body schema
-starts. `/326-v11` resolves it correctly.
+starts. `/326-v11` resolves it correctly. The post-v12 correction removes the
+remaining cardinality split: every root carries a sub-variant vector.
 
 The boundary to implement:
 
@@ -375,13 +388,19 @@ The boundary to implement:
 2. Namespace syntax defines the body shape.
 3. Lowering connects the route to the body shape.
 
-Nested Form 2 header entries are endpoint selectors. They do not recursively
-carry arbitrary header payload syntax inside the header field itself.
+Header sub-variant entries are endpoint selectors. They do not recursively carry
+arbitrary header payload syntax inside the header field itself.
+
+The new implementation concern is namespace collision. If the body declaration
+for a route root lives under the same key as the root, then that key is reserved
+by the route body declaration. A separate normal type with the same name is a
+schema error.
 
 Good:
 
 ```nota
 [
+  (State [Statement])
   (Watch [State Records Questions])
 ]
 
@@ -412,7 +431,7 @@ Use three layers:
 
 | Layer | Authored location | Purpose | Example |
 |---|---|---|---|
-| Route | header vector | fast dispatch and actor routing | `(Watch [State Records])` |
+| Route | header vector | fast dispatch and actor routing | `(State [Statement])`, `(Watch [State Records])` |
 | Body | namespace map | type definitions and nested payloads | `Watch [(State StateSubscription) ...]` |
 | Feature | feature vector | semantics beyond body typing | `(Observable ...)`, `(Event ...)` |
 
@@ -429,8 +448,10 @@ flowchart LR
 
 ## Full Worked Spirit Sketch
 
-This is the shape I would use for Spirit if Watch gets several endpoints. It
-keeps the import corrections from `/326-v11` and keeps header/body separation.
+This is the shape I would use for a richer Spirit header. It keeps the import
+corrections from `/326-v13`, uses the uniform header-vector form, keeps
+header/body separation, and fixes the `State` namespace collision by naming the
+ordinary state-shaped value `PresenceSnapshot`.
 
 ```nota
 {
@@ -439,9 +460,9 @@ keeps the import corrections from `/326-v11` and keeps header/body separation.
 }
 
 [
-  (State Statement)
-  (Record Entry)
-  (Observe Observation)
+  (State [Utterance Declaration Reflection])
+  (Record [Entry Provenance Snapshot])
+  (Observe [Self Records Topics Questions])
   (Watch [State Records Questions])
   (Unwatch [State Records Questions])
 ]
@@ -459,16 +480,46 @@ keeps the import corrections from `/326-v11` and keeps header/body separation.
   Context (String)
   Quote (String)
   StatementText (String)
+  FocusArea (String)
   RecordIdentifier (u64)
   QuestionIdentifier (String)
+  QuestionText (String)
+
+  Utterance (Topic StatementText)
+  Declaration (Topic Kind Magnitude StatementText)
+  Reflection (Topic Quote StatementText)
 
   Entry (Topic Kind Summary Context Magnitude Quote)
-  Statement (StatementText)
+  Provenance (RecordIdentifier Date Time Context Quote)
+  Snapshot (PresenceSnapshot Date Time)
 
+  PresenceSnapshot (Presence (Option FocusArea))
   RecordQuery ((Option Topic) (Option Kind) ObservationMode)
+  TopicQuery (ObservationMode)
+  QuestionQuery ((Option QuestionIdentifier) ObservationMode)
+  StateQuery (ObservationMode)
   StateSubscription (ObservationMode)
   RecordSubscription ((Option Topic) (Option Kind) ObservationMode)
-  QuestionSubscription (ObservationMode)
+  QuestionSubscription ((Option QuestionIdentifier) ObservationMode)
+
+  State [
+    (Utterance Utterance)
+    (Declaration Declaration)
+    (Reflection Reflection)
+  ]
+
+  Record [
+    (Entry Entry)
+    (Provenance Provenance)
+    (Snapshot Snapshot)
+  ]
+
+  Observe [
+    (Self StateQuery)
+    (Records RecordQuery)
+    (Topics TopicQuery)
+    (Questions QuestionQuery)
+  ]
 
   Watch [
     (State StateSubscription)
@@ -482,8 +533,11 @@ keeps the import corrections from `/326-v11` and keeps header/body separation.
     (Questions QuestionSubscriptionToken)
   ]
 
-  Observation [State (Records RecordQuery) Topics Questions]
-  SubscriptionToken [(State StateSubscriptionToken) (Records RecordSubscriptionToken) (Questions QuestionSubscriptionToken)]
+  SubscriptionToken [
+    (State StateSubscriptionToken)
+    (Records RecordSubscriptionToken)
+    (Questions QuestionSubscriptionToken)
+  ]
 
   RecordAccepted (RecordIdentifier)
   RecordsObserved ((Vec RecordSummary))
@@ -523,9 +577,16 @@ what the schema daemon stores, diffs, and uses to drive migrations.
     (ImportBinding SemaSet ../signal-sema/operation.schema [SemaOperation SemaOutcome SemaObservation])
   ]
   [
-    (Route ordinary 0 State None Statement)
-    (Route ordinary 1 Record None Entry)
-    (Route ordinary 2 Observe None Observation)
+    (Route ordinary 0 State (Some 0 Utterance) Utterance)
+    (Route ordinary 0 State (Some 1 Declaration) Declaration)
+    (Route ordinary 0 State (Some 2 Reflection) Reflection)
+    (Route ordinary 1 Record (Some 0 Entry) Entry)
+    (Route ordinary 1 Record (Some 1 Provenance) Provenance)
+    (Route ordinary 1 Record (Some 2 Snapshot) Snapshot)
+    (Route ordinary 2 Observe (Some 0 Self) StateQuery)
+    (Route ordinary 2 Observe (Some 1 Records) RecordQuery)
+    (Route ordinary 2 Observe (Some 2 Topics) TopicQuery)
+    (Route ordinary 2 Observe (Some 3 Questions) QuestionQuery)
     (Route ordinary 3 Watch (Some 0 State) StateSubscription)
     (Route ordinary 3 Watch (Some 1 Records) RecordSubscription)
     (Route ordinary 3 Watch (Some 2 Questions) QuestionSubscription)
@@ -645,12 +706,14 @@ introspection value of the header work.
 
 ## Implementation Order I Would Use
 
-1. Parse `/326-v11` import directives exactly: `ImportAll(Path)` and
+1. Parse `/326-v13` import directives exactly: `ImportAll(Path)` and
    `Import(Path, Vec<EnumIdentifier>)`, with the schema type declaration
    written as `(Import Path (Vec EnumIdentifier))`.
 2. Add import collision diagnostics.
-3. Add Form 2 header parsing for `(Root [Endpoint...])`.
-4. Lower Form 1 and Form 2 into one `AssembledSchema` route table.
+3. Parse every header root as `(Root [SubVariant...])`; reject scalar
+   `(Root Payload)` forms.
+4. Lower one-element and multi-element sub-variant vectors into one
+   `AssembledSchema` route table.
 5. Keep endpoint body resolution out of the header parser: resolve it through
    namespace lookup during lowering.
 6. Emit the 64-bit short header table from `AssembledSchema`, not from the raw
@@ -663,13 +726,14 @@ introspection value of the header work.
 
 ## Operator Recommendation
 
-Implement against `/326-v11`'s import, container-type, collision, and
-route/body/feature corrections. The next code pass should preserve two rules:
+Implement against `/326-v13`. The next code pass should preserve three rules:
 
 1. Import map keys are provenance labels; imported names enter the local
    namespace directly; collisions are errors.
-2. Header vectors are route declarations only; namespace nodes define body
-   shapes; lowering connects them into `AssembledSchema`.
+2. Header root entries always carry a bracketed sub-variant vector; namespace
+   nodes define body shapes; lowering connects them into `AssembledSchema`.
+3. Route-root body declarations reserve their root names in the namespace; no
+   separate normal type can reuse the same key.
 
 That gives the macro library a clean architecture: the parser reads concise
 schema sugar, the lowerer expands it into a fully explicit intermediate object,
@@ -677,10 +741,11 @@ and code generation uses only the lowered object.
 
 ## Remaining Precision Before Code
 
-No immediate psyche clarification blocks implementation. The major question
-from v2 is closed:
+No immediate psyche clarification blocks implementation. The major questions
+from earlier versions are closed:
 
-- Form 2 nested entries are route selectors only.
+- Header roots always use `(Root [SubVariant...])`, even for one sub-variant.
+- Header sub-variant entries are route selectors only.
 - Payload/body types resolve from namespace declarations during lowering.
 - The generated short-header table is emitted from `AssembledSchema`, not raw
   schema text.
@@ -694,3 +759,6 @@ Three implementation-level precision notes remain:
    `Observable`, and only storage metadata if an implementation needs it.
 4. Do not design the full upgrade grammar prematurely; implement the first
    previous/next diff cases and let real ambiguity force the annotation surface.
+5. Add a namespace duplicate-key test using the `/326-v13` `State` collision
+   shape, so route-root body declarations and ordinary types cannot silently
+   overwrite each other.
