@@ -18,48 +18,70 @@ as the open `sema-upgrade-daemon` bead).
 
 ```mermaid
 flowchart TB
-    subgraph macro_convergence ["Macro convergence epic — primary-ezqx<br/>(one PR, one signal-frame-macros/src/emit.rs extension)"]
-        slot1["Slot 1 · emit_contract_section<br/>primary-v5n2"]
-        slot2["Slot 2 · emit_log_variant_impl<br/>primary-l02o"]
-        slot3["Slot 3 · emit_frame_micro_projection<br/>primary-3cl1"]
-        slot4["Slot 4 · emit_help_arms<br/>primary-8r1j + /312"]
-        slot5["Slot 5 · emit_nota_helpers_for_help<br/>primary-8r1j"]
-        slot6["Slot 6 · emit_next_schema_projections<br/>NEW per spirit 366"]
+    subgraph macro [Macro convergence epic]
+        slot1["section attribute"]
+        slot2["log-variant impl"]
+        slot3["micro in frame"]
+        slot4["help on every enum"]
+        slot5["help reply codec"]
+        slot6["next-version projection"]
     end
 
-    subgraph foundation_landed ["Foundation already landed (3 closed beads)"]
-        l1["primary-li0p · NamespaceSection + SECTION_CUTOFF + classify"]
-        l2["primary-avog · assert_triad_sections! macro"]
-        l3["primary-915w · signal_cli foundation"]
+    subgraph foundation [Foundation landed]
+        l1["section vocabulary"]
+        l2["triad witness"]
+        l3["CLI macro"]
     end
 
-    subgraph next_dep_supplements ["next-as-dep supplementary work (spirit 366 + /317-3)"]
-        nd1["Bead · Cargo manifest rename convention<br/>(workspace policy)"]
-        nd2["Bead · next_schema grammar + parse"]
-        nd3["Bead · per-payload struct field-walk emission"]
-        nd4["Bead · reverse keyword + reverse emission"]
-        nd5["Bead · signal-persona-spirit v0.1.0 frozen crate<br/>(first real cutover)"]
+    subgraph nextdep [Next-as-dep supplements]
+        nd1["manifest rename rule"]
+        nd2["grammar"]
+        nd3["per-payload walker"]
+        nd4["reverse direction"]
+        nd5["v0.1.0 frozen crate"]
     end
 
-    subgraph sema_upgrade_pilot ["Spirit pilot first-live-test path — primary-x3ci"]
-        p1["primary-a5hu · Persona deploy<br/>(pilot blocker, code on disk)"]
-        p2["primary-wdl6 · v0.1.0 protocol-aware maintenance build<br/>(retrofit upgrade socket on deployed daemon)"]
-        p3["NEW · pre-migration step in production path<br/>(commit_sequence=0 trap from /317-1 §4)"]
+    subgraph pilot [Spirit pilot path]
+        p1["Persona deploy"]
+        p2["v0.1.0 retrofit"]
+        p3["pre-migration wiring"]
     end
 
-    subgraph cleanups ["1-PR cleanups (parallelizable)"]
-        c1["Mirror-payload Possible-features retirement<br/>(2 of 3 ARCH files; spirit 274 settled)"]
-        c2["/315 §2.2 update (owner-signal-version-handover EXISTS)"]
+    subgraph clean [Documentation cleanups]
+        c1["Mirror docs"]
+        c2["owner-handover docs"]
     end
 
-    foundation_landed --> macro_convergence
-    macro_convergence --> next_dep_supplements
-    next_dep_supplements --> sema_upgrade_pilot
-
-    sema_upgrade_pilot -.observability.-> p3
-
-    cleanups -.parallel to.-> macro_convergence
+    foundation --> macro
+    macro --> nextdep
+    pilot -.feeds.-> nd5
+    clean -.parallel.-> macro
 ```
+
+Mapping the short labels back to the workspace identifiers and
+their target locations:
+
+| Lane | Label | Bead | What it adds |
+|---|---|---|---|
+| Foundation | section vocabulary | `primary-li0p` | `NamespaceSection` + `SECTION_CUTOFF` + `classify` in signal-frame |
+| Foundation | triad witness | `primary-avog` | `assert_triad_sections!` macro |
+| Foundation | CLI macro | `primary-915w` | `signal_cli!` foundation (Caller / ClientShape / main) |
+| Macro epic | section attribute | `primary-v5n2` | `contract_section:` grammar + `CONTRACT_SECTION` const + range allocation |
+| Macro epic | log-variant impl | `primary-l02o` | `LogVariant` trait + per-enum autogen impl |
+| Macro epic | micro in frame | `primary-3cl1` + `primary-2cjv` | `Frame { micro, body }` reshape + projection from `log_variant()` |
+| Macro epic | help on every enum | `primary-8r1j` per /312 | `Help` variant + `HELP_TEXT` consts + `help_reply()` per enum |
+| Macro epic | help reply codec | `primary-8r1j` per /312 | `HelpReply` / `HelpReplyKind` types in signal-frame |
+| Macro epic | next-version projection | NEW per spirit 366 | `next_schema { … }` keyword + `VersionProjection` impl emission |
+| Next-as-dep | manifest rename rule | NEW | Cargo `*-next` rename convention documented in workspace |
+| Next-as-dep | grammar | NEW | `next_schema` parser block in `signal-frame-macros` |
+| Next-as-dep | per-payload walker | NEW | field-by-field projection emission per payload type |
+| Next-as-dep | reverse direction | NEW | `reverse;` keyword inside `next_schema` block |
+| Next-as-dep | v0.1.0 frozen crate | NEW | published `signal-persona-spirit` v0.1.0 + first real cutover |
+| Spirit pilot | Persona deploy | `primary-a5hu` | deploy the Persona engine (code on disk) |
+| Spirit pilot | v0.1.0 retrofit | `primary-wdl6` | retrofit deployed v0.1.0 daemon with upgrade socket + protocol |
+| Spirit pilot | pre-migration wiring | NEW per `/317-1 §4` | run `sema-upgrade-temporary` before starting next daemon, so `commit_sequence` markers match |
+| Cleanups | Mirror docs | NEW | retire Possible-features in `version-projection` + `signal-version-handover` ARCH (spirit 274 settled) |
+| Cleanups | owner-handover docs | NEW | update `/315 §2.2` (`owner-signal-version-handover` EXISTS on disk per `/317-1 §2.3`) |
 
 The picture has **four lanes that can land in parallel**:
 
@@ -193,24 +215,42 @@ other**. Operator can pick either lane.
 gantt
     title Recommended sequence (parallel lanes)
     dateFormat YYYY-MM-DD
-    section Spirit pilot path
-        primary-a5hu Persona deploy           :a, 2026-05-24, 7d
-        primary-wdl6 v0.1.0 retrofit          :b, after a, 7d
-        NEW production pre-migration step     :c, after a, 5d
-        primary-x3ci Spirit cutover           :d, after b c, 3d
-    section Macro convergence (one PR)
-        Slot 1-5 today (primary-ezqx)         :e, 2026-05-24, 14d
-        Slot 6 next_schema emission           :f, after e, 7d
-        per-payload field-walk emission       :g, after f, 5d
-        reverse keyword                       :h, after g, 3d
-    section Next-as-dep supplements
-        Cargo *-next convention doc           :i, 2026-05-24, 1d
-        v0.1.0 frozen crate (post-pilot)      :j, after d h, 5d
-    section Cleanups (parallel)
-        Mirror Possible-features retire       :k, 2026-05-24, 1d
-        /315 §2.2 update                      :l, 2026-05-24, 1d
-        primary-ezqx bead body refresh        :m, 2026-05-24, 1d
+    section Spirit pilot
+        Persona deploy             :a, 2026-05-24, 7d
+        v0.1.0 retrofit            :b, after a, 7d
+        Pre-migration wiring       :c, after a, 5d
+        Spirit cutover             :d, after b c, 3d
+    section Macro epic
+        Today's five slots         :e, 2026-05-24, 14d
+        Next-schema slot           :f, after e, 7d
+        Per-payload walker         :g, after f, 5d
+        Reverse direction          :h, after g, 3d
+    section Next-as-dep
+        Cargo rename rule          :i, 2026-05-24, 1d
+        v0.1.0 frozen crate        :j, after d h, 5d
+    section Cleanups
+        Mirror docs                :k, 2026-05-24, 1d
+        Owner-handover docs        :l, 2026-05-24, 1d
+        Epic body refresh          :m, 2026-05-24, 1d
 ```
+
+Gantt row identifiers to bead / report locator:
+
+| Row | Bead / locator |
+|---|---|
+| Persona deploy | `primary-a5hu` |
+| v0.1.0 retrofit | `primary-wdl6` |
+| Pre-migration wiring | NEW, surfaced by `/317-1 §4` |
+| Spirit cutover | `primary-x3ci` |
+| Today's five slots | `primary-ezqx` slots 1-5 (`v5n2`, `l02o`, `3cl1`, `8r1j`×2) |
+| Next-schema slot | `primary-ezqx` slot 6 (NEW per spirit 366) |
+| Per-payload walker | NEW per `/317-3 §9.4` |
+| Reverse direction | NEW per `/317-3 §9.5` |
+| Cargo rename rule | NEW per `/317-3 §9.1` |
+| v0.1.0 frozen crate | NEW per `/317-3 §9.6` |
+| Mirror docs | `/317-1 §5` (item 1) |
+| Owner-handover docs | `/317-1 §2.3` |
+| Epic body refresh | `primary-ezqx` description rewrite |
 
 The sequence has three independent critical paths:
 

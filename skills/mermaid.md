@@ -39,6 +39,101 @@ Do this even when the renderer appears to accept the unquoted
 label. Unquoted punctuation has inconsistent behavior across
 Mermaid renderers and can make diagrams misleading or ugly.
 
+## Label sizing — short prose, IDs out of the node
+
+Per spirit record 368 (Maximum). Mermaid renderers clip node text
+at the box width; long labels truncate mid-word and the reader
+sees neither the head nor the tail. The cure is upstream: write
+labels short enough to fit.
+
+**Aim for 2-5 words per node label.** Describe what the node IS —
+a noun phrase that names the concept. The reader scans the
+diagram for topology and concepts, not for IDs.
+
+**Disfavour ID-laden tokens inside nodes:**
+
+- Bead IDs (`primary-li0p`, `primary-ezqx`, …) — consume width,
+  decodable only by someone with `bd show` already open.
+- Full file paths (`signal-frame/src/namespace.rs:55-86`) —
+  belong in surrounding prose or a citation table.
+- Long identifier names (`emit_contract_section`,
+  `assert_triad_sections!`) — usually a short prose label
+  (`section attribute`, `triad witness`) carries the same
+  meaning without the underscores eating the box.
+- Section locators (`§1.6.7`, `/315 §2.2`) — also belong
+  outside the node.
+- Multi-part conjunctions (`Foo + Bar + Baz<br/>(qualifier)`) —
+  truncate badly; usually want to be split into multiple nodes
+  or compressed into one short noun.
+
+**The diagram-and-table pair.** When the substance you want to
+convey includes bead IDs, file paths, or citations, the right
+shape is:
+
+1. **The diagram.** Short prose labels only. Reader sees
+   topology.
+2. **A sibling table immediately below.** Columns: short prose
+   label (matching the node), the ID or path, optionally a
+   one-line description.
+
+The diagram conveys *what relates to what*; the table conveys
+*what each thing IS in the workspace*. Splitting these into two
+surfaces lets each be the right shape for its job.
+
+Wrong (label truncates mid-word):
+
+```mermaid
+flowchart TB
+    n1["primary-li0p · NamespaceSection + SECTION_CUTOFF + classify"]
+    n2["primary-avog · assert_triad_sections! macro"]
+    n3["Slot 1 · emit_contract_section<br/>primary-v5n2"]
+    n1 --> n3
+    n2 --> n3
+```
+
+Right (short labels + sibling table):
+
+```mermaid
+flowchart TB
+    n1["section vocabulary"]
+    n2["triad witness"]
+    n3["section attribute"]
+    n1 --> n3
+    n2 --> n3
+```
+
+| Node label | Bead | Adds |
+|---|---|---|
+| section vocabulary | `primary-li0p` | `NamespaceSection` + `SECTION_CUTOFF` + `classify` |
+| triad witness | `primary-avog` | `assert_triad_sections!` macro |
+| section attribute | `primary-v5n2` | `contract_section:` grammar + emit |
+
+**Subgraph titles follow the same discipline.** A subgraph
+title is even more constrained than a node label because
+Mermaid 8.8.0 doesn't quote them and the rendered surface
+truncates them too. 3-5 words; no parentheticals (`(one PR,
+…)`, `(parallelisable)`); no bead IDs.
+
+Wrong:
+
+```text
+subgraph macro ["Macro convergence epic — primary-ezqx<br/>(one PR, one signal-frame-macros/src/emit.rs extension)"]
+```
+
+Right:
+
+```text
+subgraph macro [Macro convergence epic]
+```
+
+The parenthetical detail moves to the prose under the diagram or
+the sibling table.
+
+**Edge labels follow the same discipline.** Inline-summarise the
+edge relationship in 1-3 words: `depends on`, `runs before`,
+`feeds`, `broadcasts to`. Avoid long parentheticals or bead IDs
+inside the pipes.
+
 ## Never use bare quoted strings as flowchart node IDs
 
 This is broken in older Mermaid renderers, including Mermaid 8.8.0:
