@@ -258,6 +258,25 @@ discipline":
 > text example + a round-trip test** before its Rust
 > definition is final.
 
+### Work on feature branches in `~/wt`
+
+Designer implementation mockups, schema-language probes, macro
+experiments, and code-backed design sketches run on designer-owned
+feature branches in worktrees under `~/wt`. The branch is the design
+artifact's executable surface: operator can check it out, run the
+tests, inspect the delta, and decide how to integrate it.
+
+Do not treat a designer worktree branch as mainline authority. The
+designer's job on these branches is to make the design falsifiable:
+small working code, focused tests, a report that names the branch and
+the commit, and a bead that tells operator what can be harvested.
+
+Operator owns main. When a designer feature branch is accepted,
+operator rebases or ports the useful change onto current main, resolves
+integration conflicts, runs the required Nix witnesses, and pushes the
+mainline commit. Designer does not maintain or rebase main on behalf of
+operator.
+
 The example is the falsifiable specification. A Rust
 definition without an example is unverified guesswork.
 Worked text examples in design reports — `(Match (NodeQuery

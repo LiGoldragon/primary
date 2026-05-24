@@ -259,6 +259,28 @@ the design executable, for finding the places the design does not
 compile as a system, and for reporting those gaps in a form the
 designer can answer.
 
+### Maintain main from designer feature branches
+
+Designer code-backed probes live on designer-owned feature branches in
+worktrees under `~/wt`. Treat those branches as executable design
+evidence, not as mainline history. Read the report and bead that point
+at the branch, run the tests if the branch claims to be runnable, and
+harvest the useful delta onto current main.
+
+Operator owns the mainline integration path: create or update the
+operator working change, rebase or port designer branch substance onto
+current main, resolve conflicts, run the required Nix witnesses, and
+push main. If the designer branch needs reshaping to fit current main,
+operator does that integration work instead of asking designer to
+maintain main.
+
+When harvesting from a designer worktree, keep the commit message and
+bead comment explicit about provenance: name the designer branch path
+or branch name, the report that justified it, and the tests run after
+the operator integration. The accepted artifact is the operator's
+mainline commit; the designer branch remains evidence and design
+history.
+
 ### Versioned operator lanes
 
 Running systems have immutable baselines. Before changing a live
