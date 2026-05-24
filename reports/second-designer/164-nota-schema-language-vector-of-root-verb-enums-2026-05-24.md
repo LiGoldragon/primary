@@ -110,7 +110,7 @@ declarations:
 
   (Magnitude Minimum VeryLow Low Medium High VeryHigh Maximum)
 
-  ;; data-carrying enums with one named variant = "structs" in the
+  ;; data-carrying enums with one named variant = structs in the
   ;; old framing — but they ARE enums shape-wise
   (Entry (Entry topic Topic kind Kind summary Summary
                 context Context certainty Magnitude quote Quote))
@@ -228,7 +228,7 @@ single-variant data-carrying enum:
 Wire-equivalent (NOTA round-trip identical):
 
 ```nota
-(Entry workspace Decision "summary" "context" Maximum "quote")
+(Entry workspace Decision [summary] [context] Maximum [quote])
 ```
 
 The single-variant data-carrying enum encodes the same positional
@@ -245,7 +245,7 @@ declare:
 
 | Primitive | NOTA encoding | rkyv | Use |
 |---|---|---|---|
-| `String` | `"..."` or bare ident | `String` | text |
+| `String` | `[...]` or bare ident | `String` | text |
 | `u8`, `u16`, `u32`, `u64` | decimal | fixed-width | counters, IDs, widths |
 | `bool` | `True` / `False` | `bool` | binary flags |
 | `Date` | `YYYY-MM-DD` | three fields | timestamps |
@@ -285,13 +285,13 @@ string can appear instead:
 ;; Split — Magnitude declared in a sibling file:
 [
   (Operation (Record Entry) ...)
-  (Entry (Entry topic Topic kind Kind ... certainty "./magnitude.schema.nota" quote Quote))
+  (Entry (Entry topic Topic kind Kind ... certainty [./magnitude.schema.nota] quote Quote))
   (Topic (Topic String))
   ...
 ]
 ```
 
-The reader sees the string `"./magnitude.schema.nota"` in a payload
+The reader sees the bracket string `[./magnitude.schema.nota]` in a payload
 type position; it interprets the string as a file path (relative to
 the current schema file), reads the referenced file, expects it to
 contain a single root-enum declaration matching the position's
@@ -364,7 +364,7 @@ Key semantics:
 /279 used `signal-sema:Magnitude` (colon-separated name) for
 cross-schema references. The two forms compose:
 
-- **Path-ref**: `"./magnitude.schema.nota"` — explicit file path,
+- **Path-ref**: `[./magnitude.schema.nota]` — explicit file path,
   textually substituted.
 - **Symbolic ref**: `signal-sema:Magnitude` — name-based, resolved
   via the workspace's Cargo dependency graph + each schema crate's
@@ -553,7 +553,7 @@ distinct vocabulary.
   (UnimplementedReason NotBuiltYet IntegrationNotLanded)
 
   ;; ────────── Cross-schema reference: pull Magnitude from signal-sema ──────────
-  (Magnitude "../signal-sema/magnitude.schema.nota")
+  (Magnitude [../signal-sema/magnitude.schema.nota])
 
   ;; ────────── Newtype-shaped enums (single-variant data-carrying) ──────────
   (Topic (Topic String))
@@ -566,7 +566,7 @@ distinct vocabulary.
   (QuestionText (QuestionText String))
   (FocusArea (FocusArea String))
 
-  ;; ────────── Composite "struct" enums (single-variant, multi-field) ──────────
+  ;; ────────── Composite struct enums (single-variant, multi-field) ──────────
   (Entry (Entry topic Topic kind Kind summary Summary
                 context Context certainty Magnitude quote Quote))
 
@@ -912,12 +912,12 @@ NOTA comments on each enum + each variant in the schema:
 ```nota
 ;; A NOTA-comment block (per skills/nota-comments.md) on an enum
 ;; becomes its Help text:
-;; (Why "Magnitude names a workspace-universal qualitative
+;; (Why [Magnitude names a workspace-universal qualitative
 ;;       strength scale, used by component records that need to
 ;;       express a coarse reading of certainty, priority,
 ;;       severity, intensity, health, readiness, or any other
-;;       non-numeric strength."
-;;      (chosen-because "field name carries dimension; type carries scale"))
+;;       non-numeric strength.]
+;;      (chosen-because [field name carries dimension; type carries scale]))
 (Magnitude
   ;; Lowest strength on the scale.
   Minimum
@@ -952,7 +952,7 @@ the same path-ref mechanism — but pointing into the
   (Operation ...)
   ...
   ;; Reference to the next version's schema:
-  (next_schema "../signal-persona-spirit-next/schema.nota")
+  (next_schema [../signal-persona-spirit-next/schema.nota])
 ]
 ```
 
@@ -976,7 +976,7 @@ absorbs 6 slots today. The schema-language v3 framing affects:
 | 3. `micro` field in Frame | reshape Frame in signal-frame | unchanged |
 | 4. Help on every enum | macro-injected | schema-injected (NOTA comments as source) |
 | 5. HelpReply codec | in signal-frame | unchanged |
-| 6. `next_schema` projection | macro keyword | schema declaration `(next_schema "path")` |
+| 6. `next_schema` projection | macro keyword | schema declaration `(next_schema [path])` |
 
 The v3 framing **does not invalidate** the current slot work —
 the macro emission is the same, only the input changes from
@@ -1056,7 +1056,7 @@ in. Confirm.
 ### 9.7 · Path-ref security + sandbox
 
 Path-refs resolve files at build time. If a schema references
-`"/etc/passwd"` or `"../../../some/malicious/file.nota"`, the
+`[/etc/passwd]` or `[../../../some/malicious/file.nota]`, the
 resolver shouldn't follow that.
 
 **Lean: restrict resolution to (a) sibling files in the same

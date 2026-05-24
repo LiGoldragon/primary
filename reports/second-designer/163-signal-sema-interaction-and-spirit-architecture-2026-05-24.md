@@ -189,15 +189,15 @@ traits, and observers receive classification labels with no
 component-private data.**
 
 Forward direction: per spirit record 359, `signal_channel!`
-will deepen to embed the 64-bit Tier 1 micro header by default,
+will deepen to embed the 64-bit short header by default,
 standardize the two-enum-namespace shape (ordinary + owner
 contracts sharing byte 0 namespace via golden-ratio split per
-intent 327), derive the small-object Tier 1 from the macro
+intent 327), derive the short header from the macro
 directly (no hand-impl needed), and inject a `Help` variant on
 every enum (positioned at the END of the path per intents
 363-365). The current macro emits the Tier 1 / Tier 2 trait
 scaffolding (per `signal-frame/ARCHITECTURE.md` §5) but the
-per-channel autogen of the Tier 1 marker is tracked under bead
+per-channel autogen of the short-header marker is tracked under bead
 `primary-l02o` (signal-frame: LogVariant trait + autogen derive
 macro) and not yet shipped.
 
@@ -805,12 +805,12 @@ the observable scaffolding when an `observable { … }` block is
 present. Per spirit record 359 (2026-05-24) the macro is
 directed to:
 
-- Embed the 64-bit Tier 1 micro header in every emitted
+- Embed the 64-bit short header in every emitted
   channel by default.
 - Standardize the two-enum-namespace shape — ordinary +
   owner contracts share a byte-0 namespace via golden-ratio
   split, with compile-time agreement enforcement.
-- Auto-derive the Tier 1 small-object recognition (no
+- Auto-derive the short-header small-object recognition (no
   hand-impl needed).
 - Inject a `Help` variant on EVERY enum (not just top-level
   Operation), positioned at the END of the path per intents
