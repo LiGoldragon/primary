@@ -18,6 +18,10 @@ new Spirit entry.
   `reports/designer/322-spirit-mvp-positional-schema-worked-example.md`,
   and the newly-arrived
   `reports/designer/323-mvp-scope-expansion-per-operator-directive.md`.
+  A later refresh also saw uncommitted status-banner edits to `/320`
+  and `/321` that point to a future `/324` canonical re-specification;
+  no `reports/designer/324...` file was present in the working tree at
+  the time of this audit update.
 - Second-designer reports:
   `reports/second-designer/164-nota-schema-language-vector-of-root-verb-enums-2026-05-24.md`
   and
@@ -74,6 +78,12 @@ dependency.
 should retire and fold into `primary-ezqx.1`, but the `bd ready` snapshot
 still listed `.2` as open. Treat bead state as briefly behind designer
 state unless a later `bd` update has already closed it.
+
+The status banner now staged in `/320` says `/320`'s scope sections
+(`§3` + `§4`) are superseded by `/323` plus a forthcoming `/324`.
+Until `/324` exists on disk, operator should use `/323` as the latest
+available scope authority while preserving `/320 §2` as the source of
+decision-review markers.
 
 The nota-designer report adds an important hygiene constraint to all
 schema examples: new authored NOTA should use bracket strings. Quote
@@ -134,6 +144,12 @@ sections. It resolves most of the mismatch: the MVP is now expanded to
 include short-header consumption and dispatch triage, schema-derived
 v0.1.0 to v0.1.1 projection, and ordered-vector-of-boxes NOTA encoding
 in a new library.
+
+`/323 §10` adds a separate deployment/cutover constraint: the first
+MVP-era Spirit schema migration uses hard handover with a stopped daemon,
+database backup, offline v0.1.1 test run, "database-test passed" marker,
+and startup refusal if the marker is absent or failed. That affects
+`primary-x3ci.1` and the Spirit cutover path, not just macro generation.
 
 Remaining operator caution: `/323` does not clearly say that the full
 Spirit 396 "sema operations and sema lowering operations" are in the
@@ -196,6 +212,10 @@ authority. Before implementation, refresh the bead body or confirm it
 has been updated so the work does not follow the older `/320`-only
 shape. Watch specifically for `primary-ezqx.2` closing into `.1` and a
 new `nota-box` bead or dependency.
+
+Also watch for `reports/designer/324...`. `/320` now names it as the
+future canonical re-specification, but it is not present here yet. Once
+it lands, it should supersede this audit's `/323`-as-latest fallback.
 
 If this lane is kept on audit rather than implementation, the next
 useful pass is a small context-maintenance cleanup of reports 167-175,
