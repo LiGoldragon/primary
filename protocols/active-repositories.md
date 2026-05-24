@@ -21,18 +21,18 @@ stack.
 | `primary` | `/home/li/primary` | Workspace coordination, skills, protocols, reports. |
 | `lore` | `/git/github.com/LiGoldragon/lore` | Cross-workspace agent discipline and language/coding lore. |
 | `persona` | `/git/github.com/LiGoldragon/persona` | Persona meta-repo; wires the stack through Nix and apex architecture. |
-| `persona-mind` | `/git/github.com/LiGoldragon/persona-mind` | Central Persona state component; replaces lock-file orchestration over time. |
-| `persona-router` | `/git/github.com/LiGoldragon/persona-router` | Message routing and delivery coordination. Binds one socket: `router.sock` (0600, internal traffic only). External engine-owner ingress arrives via `persona-message-daemon`. |
-| `persona-message` | `/git/github.com/LiGoldragon/persona-message` | Engine message ingress: the `message` CLI **and** the `persona-message-daemon` supervised first-stack daemon. Daemon binds `message.sock` (mode 0660, engine-owner group) and forwards typed Signal frames to `persona-router` with SO_PEERCRED-minted origin tags. |
-| `persona-introspect` | `/git/github.com/LiGoldragon/persona-introspect` | Supervised prototype inspection-plane component. Talks to live component daemons over Signal, fans in typed observation records, and projects NOTA only at the human/agent edge. It is not in the delivery path and does not directly open any peer component's redb. |
-| `signal-persona-introspect` | `/git/github.com/LiGoldragon/signal-persona-introspect` | Central introspection envelope contract: introspection query/reply selectors, correlation, projection wrappers, and prototype witness records. It asks and wraps; component-specific observations stay in the owning component contracts. |
-| `persona-system` | `/git/github.com/LiGoldragon/persona-system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-owned in the current wave. |
-| `persona-harness` | `/git/github.com/LiGoldragon/persona-harness` | Harness process/session control boundary. |
-| `persona-terminal` | `/git/github.com/LiGoldragon/persona-terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. Terminal-brand mux helpers are retired. |
-| `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Low-level daemon-owned PTY/transcript cell primitive consumed by `persona-terminal`. |
+| `mind` | `/git/github.com/LiGoldragon/mind` | Central Persona state component; replaces lock-file orchestration over time. |
+| `router` | `/git/github.com/LiGoldragon/router` | Message routing and delivery coordination. Binds one socket: `router.sock` (0600, internal traffic only). External engine-owner ingress arrives via `message-daemon`. |
+| `message` | `/git/github.com/LiGoldragon/message` | Engine message ingress: the `message` CLI **and** the `message-daemon` supervised first-stack daemon. Daemon binds `message.sock` (mode 0660, engine-owner group) and forwards typed Signal frames to `router` with SO_PEERCRED-minted origin tags. |
+| `introspect` | `/git/github.com/LiGoldragon/introspect` | Supervised prototype inspection-plane component. Talks to live component daemons over Signal, fans in typed observation records, and projects NOTA only at the human/agent edge. It is not in the delivery path and does not directly open any peer component's redb. |
+| `signal-introspect` | `/git/github.com/LiGoldragon/signal-introspect` | Central introspection envelope contract: introspection query/reply selectors, correlation, projection wrappers, and prototype witness records. It asks and wraps; component-specific observations stay in the owning component contracts. |
+| `system` | `/git/github.com/LiGoldragon/system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-owned in the current wave. |
+| `harness` | `/git/github.com/LiGoldragon/harness` | Harness process/session control boundary. |
+| `terminal` | `/git/github.com/LiGoldragon/terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. Terminal-brand mux helpers are retired. |
+| `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Low-level daemon-owned PTY/transcript cell primitive consumed by `terminal`. |
 | `sema` | `/git/github.com/LiGoldragon/sema` | **Today's** typed storage kernel (redb + rkyv + schema guard). Not a daemon, not shared storage, and not the full database engine. Distinct from the **eventual** `Sema` — the universal medium for meaning (self-hosting computational substrate, fully-typed human-language representation, universal interlingua). Per `ESSENCE.md` §"Today and eventually". |
 | `signal-sema` | `/git/github.com/LiGoldragon/signal-sema` | Sema operation vocabulary: `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, and `Validate`. Public component contracts lower into this layer; they do not expose these words as universal request roots. |
-| `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema`, `signal-sema`, and a small transitional `signal-core` utility seam: registered record families, Sema operation execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not NOTA, and not Persona-specific. First real consumer is `persona-mind`; Criome follows. |
+| `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema`, `signal-sema`, and a small transitional `signal-core` utility seam: registered record families, Sema operation execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not NOTA, and not Persona-specific. First real consumer is `mind`; Criome follows. |
 | `version-projection` | `/git/github.com/LiGoldragon/version-projection` | Shared projection and compatibility-policy library for adjacent component versions. Pure library; no daemon, no socket, no component-specific migration logic. |
 | `signal-version-handover` | `/git/github.com/LiGoldragon/signal-version-handover` | Private daemon-to-daemon signal contract for version handover marker, readiness, completion, mirror, divergence, and recovery messages. |
 | `owner-signal-version-handover` | `/git/github.com/LiGoldragon/owner-signal-version-handover` | Owner-only administrative signal contract for version handover authority: force selector flip, rollback, and quarantine. |
@@ -45,15 +45,20 @@ stack.
 | `signal-engine-management` | `/git/github.com/LiGoldragon/signal-engine-management` | Ordinary Persona manager-to-supervised-component lifecycle contract: announce, readiness, health, stop, and spawn envelope. |
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Retired compatibility shim for the former combined Persona signal surface; new code depends on `owner-signal-persona` or `signal-engine-management` directly. |
 | `signal-persona-origin` | `/git/github.com/LiGoldragon/signal-persona-origin` | Persona origin-context vocabulary: engine/route/channel ids, component names, connection classes, message origins, and ingress context. Not an authentication library. |
-| `signal-agent` | `/git/github.com/LiGoldragon/signal-agent` | Ordinary agent front-door signal contract for pre-configured API agent calls. This is the renamed `signal-persona-agent` contract. |
-| `owner-signal-agent` | `/git/github.com/LiGoldragon/owner-signal-agent` | Owner-only agent policy signal contract for backend/provider configuration and lifecycle control. This is the renamed `owner-signal-persona-agent` contract. |
-| `signal-persona-message` | `/git/github.com/LiGoldragon/signal-persona-message` | Message CLI to router channel contract. |
-| `signal-persona-router` | `/git/github.com/LiGoldragon/signal-persona-router` | Router-owned observation contract for accepted messages, route decisions, channel state, delivery status, and adjudication status. Used by `persona-introspect` without turning `signal-persona-introspect` into a shared schema bucket. |
-| `signal-persona-system` | `/git/github.com/LiGoldragon/signal-persona-system` | System observation to router channel contract. |
-| `signal-persona-harness` | `/git/github.com/LiGoldragon/signal-persona-harness` | Router to harness delivery/observation channel contract. |
-| `signal-persona-terminal` | `/git/github.com/LiGoldragon/signal-persona-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
-| `owner-signal-persona-terminal` | `/git/github.com/LiGoldragon/owner-signal-persona-terminal` | Owner-only terminal session lifecycle mutation contract for `CreateSession` and `RetireSession`; ordinary terminal traffic stays in `signal-persona-terminal`. |
-| `signal-persona-mind` | `/git/github.com/LiGoldragon/signal-persona-mind` | Mind/orchestration contract vocabulary. |
+| `signal-agent` | `/git/github.com/LiGoldragon/signal-agent` | Ordinary agent front-door signal contract for pre-configured API agent calls. |
+| `owner-signal-agent` | `/git/github.com/LiGoldragon/owner-signal-agent` | Owner-only agent policy signal contract for backend/provider configuration and lifecycle control. |
+| `signal-message` | `/git/github.com/LiGoldragon/signal-message` | Message CLI to router channel contract. |
+| `signal-router` | `/git/github.com/LiGoldragon/signal-router` | Router-owned observation contract for accepted messages, route decisions, channel state, delivery status, and adjudication status. Used by `introspect` without turning `signal-introspect` into a shared schema bucket. |
+| `owner-signal-router` | `/git/github.com/LiGoldragon/owner-signal-router` | Owner-only router policy contract. |
+| `signal-system` | `/git/github.com/LiGoldragon/signal-system` | System observation to router channel contract. |
+| `signal-harness` | `/git/github.com/LiGoldragon/signal-harness` | Router to harness delivery/observation channel contract. |
+| `signal-terminal` | `/git/github.com/LiGoldragon/signal-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
+| `owner-signal-terminal` | `/git/github.com/LiGoldragon/owner-signal-terminal` | Owner-only terminal session lifecycle mutation contract for `CreateSession` and `RetireSession`; ordinary terminal traffic stays in `signal-terminal`. |
+| `signal-mind` | `/git/github.com/LiGoldragon/signal-mind` | Mind/orchestration contract vocabulary. |
+| `owner-signal-mind` | `/git/github.com/LiGoldragon/owner-signal-mind` | Owner-only mind policy contract. |
+| `orchestrate` | `/git/github.com/LiGoldragon/orchestrate` | Orchestration component runtime. |
+| `signal-orchestrate` | `/git/github.com/LiGoldragon/signal-orchestrate` | Ordinary orchestration contract vocabulary. |
+| `owner-signal-orchestrate` | `/git/github.com/LiGoldragon/owner-signal-orchestrate` | Owner-only orchestration policy contract. |
 | `signal-criome` | `/git/github.com/LiGoldragon/signal-criome` | Criome trust and attestation contract vocabulary: BLS signature envelopes, identity records, delegation grants, component releases, and out-of-band attestations. Pure contract crate; no daemon, no storage, no Persona policy ownership. |
 | `repository-ledger` | `/git/github.com/LiGoldragon/repository-ledger` | Triad runtime component for recording pushed repository changes from the local Gitolite server into a sema-engine database. |
 | `signal-repository-ledger` | `/git/github.com/LiGoldragon/signal-repository-ledger` | Ordinary repository-ledger contract: receive-hook event assertions and repository/event read queries. |
@@ -188,6 +193,6 @@ nix's build infrastructure).
 - Text: NOTA is the only text syntax. Nexus is typed semantic content
   written in NOTA syntax, not a second parser or alternate text
   format.
-- Persona center: `persona-mind` is the central state component for
+- Persona center: `mind` is the central state component for
   orchestration/work graph evolution. Lock files and BEADS are
   transitional compatibility surfaces.
