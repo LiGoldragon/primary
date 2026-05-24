@@ -84,10 +84,10 @@ The schema's outer container is a positional record `(Schema …)` per psyche di
 
   (Namespace
     {
-      Magnitude [../signal-sema/magnitude.schema.nota]
-      SemaOperation [../signal-sema/operation.schema.nota]
-      SemaOutcome [../signal-sema/outcome.schema.nota]
-      SemaObservation [../signal-sema/observation.schema.nota]
+      Magnitude (Path ../signal-sema/magnitude.schema.nota)
+      SemaOperation (Path ../signal-sema/operation.schema.nota)
+      SemaOutcome (Path ../signal-sema/outcome.schema.nota)
+      SemaObservation (Path ../signal-sema/observation.schema.nota)
 
       Kind (Kind Decision Principle Correction Clarification Constraint)
       ObservationMode (ObservationMode SummaryOnly WithProvenance)
@@ -159,13 +159,13 @@ The schema's outer container is a positional record `(Schema …)` per psyche di
 
 Per psyche directive: "The name value notation for Notta is the curly bracket." The namespace section uses NOTA map syntax `{key value …}`. Each entry is `TypeName Declaration`:
 
-- `Kind (Kind Decision Principle Correction Clarification Constraint)` — key `Kind`, value is the record declaring the leaf enum.
-- `Entry (Entry Topic Kind Summary Context Magnitude Quote)` — key `Entry`, value is the record declaring the composite struct-shaped enum.
-- `Magnitude [../signal-sema/magnitude.schema.nota]` — key `Magnitude`, value is a bracket-string path-ref (cross-schema import).
+- `Kind (Kind Decision Principle Correction Clarification Constraint)` — key `Kind`, value is the record declaring the leaf enum (inline).
+- `Entry (Entry Topic Kind Summary Context Magnitude Quote)` — key `Entry`, value is the record declaring the composite struct-shaped enum (inline).
+- `Magnitude (Path ../signal-sema/magnitude.schema.nota)` — key `Magnitude`, value is a `(Path …)` variant naming a file whose contents are interpreted as the type expected at this position (the type declaration for `Magnitude`).
 
-Value union: `Declaration` (a record) OR `BracketString` (a path-ref). NOTA maps support heterogeneous values; verified by `nota-codec`'s `map_key_round_trip` tests.
+The map value position takes a union type — the macro accepts either an inline declaration record OR a `(Path …)` variant for cross-schema references. Per psyche directive 2026-05-24 ("when a file is the variant `(Path ./object.nota)` the object in the file is whatever type that object should be at that position"): the file's contents are parsed as the type the value position expects, not as a literal string. `(Path …)` is the file-reference variant; bracket-string `[…]` is reserved for literal string values + Vec containers.
 
-Within the map, declarations group informally (cross-schema refs, then leaf enums, then newtypes, then composites, then payloads, then storage) — readability only; macro doesn't depend on order.
+Within the map, declarations group informally (cross-schema refs first, then leaf enums, then newtypes, then composites, then payloads, then storage) — readability only; macro doesn't depend on order.
 
 ### §2.4 NOTA-codec compatibility — verification needed
 
@@ -205,9 +205,9 @@ For Spirit's verbs:
 
 Macro-injected `Tap`/`Untap` (per Observable) get `(engine subscribe)` / `(engine retract)` by convention.
 
-### §3.2 Cross-schema references — `SemaOperation` etc. enter via path-refs
+### §3.2 Cross-schema references — `SemaOperation` etc. enter via `(Path …)` refs
 
-The Namespace map's bracket-string path-refs declare cross-schema imports. The schema reader (per `/320 §3.1.A`) resolves sandboxed (sibling files + Cargo-dep crates per `/320 §2.7`) and substitutes the resolved declarations into Spirit's view BEFORE handing the resolved spec to the macro.
+The Namespace map's `(Path …)` variants declare cross-schema imports. Per psyche directive: when a value position carries `(Path ./object.nota)`, the file at that path contains the type the position expects. The schema reader (per `/320 §3.1.A`) resolves sandboxed (sibling files + Cargo-dep crates per `/320 §2.7`), parses the file's contents as the position's expected type, and substitutes the resolved declaration into Spirit's view BEFORE handing the resolved spec to the macro.
 
 `SemaObservation` is load-bearing: every component's macro-emitted `Effect` projects into it; observers across the workspace see uniform classification regardless of any component's domain vocabulary. This is what makes tap-anywhere observability + workspace-wide audit + cross-component upgrade coordination work.
 
