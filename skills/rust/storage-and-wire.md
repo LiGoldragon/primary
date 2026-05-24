@@ -369,8 +369,8 @@ Prefer an internal module for component-local table layouts
 Create a dedicated Sema crate only after reuse is real and its
 architecture has been explicitly named. Do not create broad umbrella
 Sema crates for meta projects just because the meta repo composes
-several components. In particular, `persona` is a meta project today;
-there is no shared `persona-sema` architecture.
+several components. Meta projects compose component storage owners;
+they do not own a shared storage layer by default.
 
 ## Why this discipline is strict
 

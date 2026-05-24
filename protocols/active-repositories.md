@@ -65,15 +65,6 @@ stack.
 | `nota-derive` | `/git/github.com/LiGoldragon/nota-derive` | NOTA derive support. |
 | `nota-config` | `/git/github.com/LiGoldragon/nota-config` | Strict one-argument typed configuration input over NOTA, `.nota`, or `.rkyv`. |
 
-## Retired / Cleanup Targets
-
-These repos may still exist in checkouts or flake history, but they are not
-current architecture targets.
-
-| Repository | Path | Status |
-|---|---|---|
-| `persona-sema` | `/git/github.com/LiGoldragon/persona-sema` | Retired abstraction. Sema layers are component-owned: mind Sema lives in `persona-mind`, router Sema lives in `persona-router`, etc. |
-
 ## Adjacent Active Work
 
 These repos have recent commits or platform relevance, but they are not
@@ -175,8 +166,8 @@ nix's build infrastructure).
 - State: today's `sema` is the typed storage kernel; `sema-engine` is
   the full database engine library. Each component that needs durable
   state owns its own redb and its own engine/kernel handle. There is no
-  shared sema daemon, no generic store component, and no shared
-  `persona-sema` architecture. The eventual `Sema` (universal medium
+  shared sema daemon, no generic store component, and no Persona-wide
+  storage architecture. The eventual `Sema` (universal medium
   for meaning — self-hosting computational substrate, fully-typed
   human-language representation, universal interlingua) is the
   long-term target, not a current implementation.
