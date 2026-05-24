@@ -604,7 +604,127 @@ fights this shape.`
 | Mass workspace cutover from Rust-syntax to NOTA-data | Spirit pilot only | per-component beads TBD |
 | Owner-contract schema migration (`owner-signal-persona-spirit`) | post-MVP | separate cutover bead |
 
-## §10 See also
+## §10 Cutover mechanics — hard handover with offline test + marker entry
+
+Per psyche directive 2026-05-24 (told to nota-operator while
+diagnosing live Spirit's NOTA bracket-string support; the
+substance generalizes to any database-altering cutover):
+
+**The cutover style** for the first MVP-era schema migration is
+**hard handover** — manual, downtime at a chosen moment, by
+explicit agent order. Hard-handover trades zero-downtime for
+operational simplicity:
+
+```mermaid
+sequenceDiagram
+    participant Op as operator
+    participant Old as Spirit v0.1.0 daemon
+    participant Backup as database backup
+    participant TestNew as Spirit v0.1.1 (test mode)
+    participant New as Spirit v0.1.1 (production)
+
+    Op->>Old: stop daemon (planned downtime begins)
+    Op->>Backup: snapshot v0.1.0 database
+    Op->>TestNew: start against backup in OFFLINE-TEST mode
+    Note over TestNew: NO durable writes to backup
+    TestNew->>TestNew: verify schema migration + run readiness checks
+    TestNew->>TestNew: write "database-test passed" marker entry
+    Op->>Op: read marker; if absent or failed, abort
+    Op->>New: start v0.1.1 daemon against marked database
+    Note over New: downtime ends
+```
+
+### §10.1 The offline-test step
+
+Before promoting the v0.1.1 database to production, run the v0.1.1
+binary against it in an offline mode where the daemon:
+- Loads the migrated database.
+- Exercises read paths + computes any deterministic
+  schema-derived projection.
+- Does NOT accept external writes (ordinary socket may be bound
+  to a test path or rejected entirely).
+- Verifies its own schema-version matches the database's
+  schema-version stamp.
+- Verifies its `commit_sequence` reads roundtrip correctly.
+- If all checks pass, writes a special "database-test passed"
+  marker entry to the database, then exits cleanly.
+
+The marker entry tells the engine on next-startup that this
+database has been validated against the current binary's schema.
+Absence of the marker (or a failed marker) means the next
+production startup should refuse to start with this database.
+
+### §10.2 The "free new-upgrade-mechanism" insight
+
+The first hard-handover cutover is the cheapest moment to
+install the new upgrade mechanism itself:
+- The daemon is already being replaced.
+- Downtime is already accepted.
+- A fresh database is being marked.
+
+So the v0.1.1 daemon that lands via the first hard-handover
+**already contains the smart-handover protocol code** (per
+spirit pilot `primary-x3ci` + `primary-wdl6` v0.1.0 retrofit).
+Subsequent cutovers (v0.1.1 → v0.1.2 etc.) can use the now-installed
+smart-handover mechanism for zero-downtime live handover — no
+more hard-handover required.
+
+In other words: **the hard-handover pattern is for bootstrapping
+the upgrade mechanism. Once installed, future cutovers can be
+smarter.**
+
+### §10.3 Applicability
+
+The hard-handover discipline applies to multiple in-flight
+migrations:
+
+| Cutover | Pattern | Tracked |
+|---|---|---|
+| Spirit v0.1.0 → v0.1.1 (schema change) | hard handover with offline test + marker | `primary-x3ci.1` + `primary-x3ci` |
+| Deployed Spirit binary → bracket-string NOTA codec | hard handover (Spirit rebuild + cutover) | `primary-36iq.3` (nota-operator lane) |
+| Future component cutovers | smart handover via the installed upgrade-mechanism | post-pilot |
+
+The hard-handover pattern is NOT a step backward from the
+smart-handover protocol design (`/317` + the upgrade triad on
+disk) — it's the deliberate cutover style for the bootstrap
+moment. The smart-handover machinery exists in code; the first
+cutover installs it.
+
+### §10.4 The marker entry shape
+
+Open design corner: what shape does the "database-test passed"
+marker take? Two natural homes:
+
+| Option | Where | Notes |
+|---|---|---|
+| A | A reserved row in the sema-engine commit log | Engine-level; visible to engine internals via `current_commit_sequence` + `replay_from_sequence` |
+| B | A dedicated table in the daemon's redb (e.g., `__schema_test_markers`) | Daemon-level; engine sees it as an opaque table |
+
+**Lean: A** — the marker is a structural fact about the engine
++ database integration, not a domain fact about Spirit's records.
+Engine-level placement means any sema-engine consumer can check
+the marker uniformly.
+
+`// DESIGN-DECISION-REVIEW (designer/323 §10.4): marker in
+sema-engine commit log as a reserved entry kind. Alternative:
+dedicated daemon-side redb table. Revisit if the marker grows
+domain-specific information that doesn't fit the commit-log
+shape.`
+
+### §10.5 Implication for `primary-x3ci.1`
+
+The pre-migration bead's scope grows to include:
+- The offline-test step (run v0.1.1 binary against the migrated
+  database in test mode; verify checks pass).
+- The "database-test passed" marker entry mechanism (per `§10.4`
+  Option A — engine-level commit-log entry).
+- Production startup gating: refuse to start if marker is
+  absent or failed.
+
+This is folded into the `primary-x3ci.1` bead body as an update
+note alongside the existing pre-migration step scope.
+
+## §11 See also
 
 - `reports/designer/320-mvp-schema-language-pilot-unblock.md`
   (original MVP design; `§3` scope partly superseded by this
