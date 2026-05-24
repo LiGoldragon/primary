@@ -2,6 +2,8 @@
 
 # 321 — MVP visual state of play
 
+**Status:** the visual state pre-dates `/323`'s scope expansion (ShortHeader consumption + dispatch, schema-derived projection in MVP, box-form NOTA library) and `/323 §10`'s hard-handover cutover discipline. Diagrams remain useful as foundation visuals; the integrated picture is in `/324`. Intents 405-408 (per second-designer/166) post-hoc ratify the schema-derived MVP direction this report sketched; the picture sharpened in `/322` (Spirit worked example) + `/323` (scope expansion + cutover discipline).
+
 **The picture in one sentence:** operator's `primary-2cjv` landed
 the wire-side foundation (`ShortHeader(u64)` on every Frame);
 operator's `/318` Wave-4 landed the upgrade triad merger; designer's

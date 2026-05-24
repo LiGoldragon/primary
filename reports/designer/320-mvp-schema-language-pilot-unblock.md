@@ -2,10 +2,9 @@
 
 # 320 — MVP design: unblock schema-language signal+sema macros, header generation, Spirit pilot
 
-**Status:** operator-ready. Pilot bead spec at `§4`. Closed
-decisions at `§2` carry "possibly needs review" markers per
-psyche directive — operator inlines those markers into the code
-they land.
+**Status:** SUPERSEDED scope sections (§3 + §4) by `/323` (scope expansion absorbing schema-derived projection + ShortHeader consumption/dispatch + box-form NOTA) + `/324` (consolidated current re-specification). The CLOSED DECISIONS in §2 remain authoritative — operator inlines the `// DESIGN-DECISION-REVIEW (designer/320 §2.N)` markers per the original directive. The pilot bead spec in §4 is now in `primary-ezqx.1`'s expanded body (per `/323 §5.1`). See `/324` for the current canonical re-specification.
+
+**Original status (preserved for context):** operator-ready. Pilot bead spec at `§4`. Closed decisions at `§2` carry "possibly needs review" markers per psyche directive — operator inlines those markers into the code they land.
 
 ## §1 Blockers identified
 
