@@ -14,6 +14,8 @@ The implemented subset is Nix-green across the participating repos:
 - a box-form NOTA primitive in `nota-codec`
 - `signal-sema` universal observation projection through `LogVariant`
 - a typed v0.1.0 to v0.1.1 Spirit projection witness
+- `/326-v3` tagless positional schema parsing, with the namespace as a
+  curly-brace NOTA map
 - `persona-spirit` consuming the projected signal contract
 
 This is not the full `/324` target. The macro does not yet emit every
@@ -29,7 +31,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `reports/designer/323-mvp-scope-expansion-per-operator-directive.md`
 - `reports/designer/324-migration-mvp-spirit-handover-re-specification.md`
 - `reports/designer/325-nota-box-library-design-and-implementation.md`
-- `reports/designer/326-v2-spirit-complete-schema-vision.md`
+- `reports/designer/326-v3-spirit-complete-schema-vision.md`
 - `reports/second-designer/164-nota-schema-language-vector-of-root-verb-enums-2026-05-24.md`
 - `reports/second-operator/178-schema-section-shape-and-nota-map-check-2026-05-24.md`
 - `reports/nota-designer/6-quoted-string-purge-audit-2026-05-24.md`
@@ -43,6 +45,9 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `13a21567a2a6` - `signal-frame: align schema field inference with Spirit MVP`
 - `569ee09a0d1f` - `signal-frame: expose short-header operation triage`
 - `18b4e2be4555` - `signal-frame: emit operation dispatch handlers`
+- `f133b33881a4` - `signal-frame: parse schema record namespaces`
+- `b26f381f2b27` - `signal-frame: fix engine annotation nesting`
+- `f6ff41e42603` - `signal-frame: parse positional schema files`
 
 `signal-sema`
 
@@ -57,12 +62,16 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `b86a78553a17` - `signal-persona-spirit: drive channel from schema`
 - `c9cf88a323da` - `signal-persona-spirit: add v010 projection witness`
 - `cf2f92ee3830` - `signal-persona-spirit: witness generated dispatch`
+- `e8d6084b9da1` - `signal-persona-spirit: use schema namespace map`
+- `a66c87484109` - `signal-persona-spirit: use positional schema shape`
 
 `persona-spirit`
 
 - `f8bf8546e9b4` - `persona-spirit: consume schema-driven signal contract`
 - `262cf054ca00` - `persona-spirit: consume Spirit projection contract`
 - `a834a560c487` - `persona-spirit: consume dispatch contract`
+- `265f4aafe73c` - `persona-spirit: consume schema namespace contract`
+- `f9eb7c440a1b` - `persona-spirit: consume positional schema contract`
 
 ## What changed
 
@@ -75,9 +84,32 @@ can now derive its short header when `Payload: LogVariant`, and
 
 The proc macro now supports the MVP `signal_channel!([schema])` form.
 It reads `schema.nota` from the downstream crate's `CARGO_MANIFEST_DIR`,
-parses the `/322` vector-of-root-verb-enums form, builds the channel
-model, and emits the same public contract family the old Rust-form macro
-emitted for the Spirit case.
+parses the earlier `/322` vector-of-root-verb-enums form, the tagged
+`/326-v2` compatibility form, and the current tagless `/326-v3` positional
+record form:
+
+```nota
+(
+  ((Operation ...) (Reply ...) (Event ...) (Observable ...))
+  {...})
+```
+
+The current form makes the outer structure meaningful by position. Field 0 is
+the channel block, carrying the messaging surface. Field 1 is the namespace, a
+curly-brace NOTA map from local type names to declarations or schema references.
+The parser rejects mismatched map keys and declarations, such as
+`Entry (Record ...)`.
+
+The parser infers namespace declarations in two passes. Unit enum leaves such
+as `Kind (Kind Decision Principle ...)` remain leaves; declarations whose
+variant payloads resolve to known namespace names become data variants. This
+keeps mixed enums such as `Observation (Observation State (Records RecordQuery)
+Topics Questions)` expressible without adding labeled fields or comments as
+schema structure.
+
+The parser also understands the MVP `(engine <class>)` annotation on operation
+payload records and `(Path <path>)` namespace references, while preserving the
+existing generated public contract family for the Spirit case.
 
 For receive-side triage, the macro emits:
 
@@ -133,11 +165,17 @@ macro body to:
 signal_frame::signal_channel!([schema]);
 ```
 
-The schema refers to Magnitude through a vendored local schema snapshot
-at `schemas/signal-sema/magnitude.schema.nota`. Cross-repo schema refs
-work in local builds but not in Nix-isolated downstream macro execution
-without explicitly providing the referenced schema files. The vendored
-snapshot is the current reproducible path.
+The schema now uses the corrected `/326-v3` tagless positional shape. It refers
+to Magnitude through a vendored local schema snapshot at
+`(Path schemas/signal-sema/magnitude.schema.nota)`. Cross-repo schema refs work
+in local builds but not in Nix-isolated downstream macro execution without
+explicitly providing the referenced schema files. The vendored snapshot is the
+current reproducible path.
+
+The `Observable` section remains macro-injected/hand-written for this pass.
+`OperationReceived` and `EffectEmitted` stay out of the schema namespace until
+the generated observable event payloads and generated `OperationKind` type are
+made first-class schema products.
 
 Added `tests/short_header.rs` to prove:
 
@@ -163,28 +201,30 @@ Updated the runtime crate to consume the schema-driven and projection-capable
 repo flake check passes.
 
 Updated again to consume the generated dispatch contract from
-`signal-persona-spirit@cf2f92ee3830`. This is a lockfile-only consumer bump:
-the daemon is not yet using the generated `OperationDispatch` trait on its
-production request path.
+`signal-persona-spirit@cf2f92ee3830`, the corrected namespace schema contract
+from `signal-persona-spirit@e8d6084b9da1`, and the tagless positional schema
+contract from `signal-persona-spirit@a66c87484109`. These are lockfile-only
+consumer bumps: the daemon is not yet using the generated `OperationDispatch`
+trait on its production request path.
 
-## Follow-up schema-shape correction
+## Follow-up schema-shape corrections
 
-Designer `/326-v2` supersedes the flat schema example in `/326-v1` and
-responds to the psyche's correction from this session. The current canonical
-complete-schema direction is:
+Designer `/326-v3` supersedes `/326-v2`, which had superseded the flat schema
+example in `/326-v1`. The current canonical complete-schema direction is:
 
-- outer record: `(Schema (Channel ...) (Namespace {...}))`
-- `Channel` first, carrying the messaging surface
-- `Namespace` second, carrying a curly-brace NOTA map of type names to
+- outer record with two positional fields, no `Schema` tag
+- field 0: channel block, no `Channel` tag, carrying the messaging surface
+- field 1: curly-brace NOTA map, no `Namespace` tag, carrying type names to
   declarations or path references
 - no schema section comments as structural markers
 
-The runnable MVP in `signal-persona-spirit/schema.nota` has not yet been moved
-to that corrected shape. It is still the `/322`-style flat vector of
-declarations. The green tests therefore prove the old MVP schema machinery plus
-the new dispatch surface; they do not prove `/326-v2` parsing or generation.
+The runnable MVP in `signal-persona-spirit/schema.nota` has now been moved to
+that corrected shape. The green tests prove both the old MVP schema machinery
+and the `/326-v3` parser path, plus the new dispatch surface. The parser keeps
+the tagged `/326-v2` form as a compatibility path, but the Spirit schema file no
+longer uses it.
 
-`nota-codec` already supports the curly-brace map form needed by `/326-v2`.
+`nota-codec` already supports the curly-brace map form needed by `/326-v3`.
 The relevant tests passed through both local Cargo and the repo's Nix flake
 check:
 
@@ -208,7 +248,7 @@ Passing repos:
 - `persona-spirit`
 
 The final `persona-spirit` Nix check passed after updating to
-`signal-persona-spirit@cf2f92ee3830`.
+`signal-persona-spirit@a66c87484109`.
 
 ## Remaining gaps against /324
 
@@ -228,23 +268,21 @@ The remaining work is real and should not be hidden by the green MVP:
    been added to sema-engine/persona-spirit startup gating in this pass.
 6. Cross-schema references need a durable Nix-aware dependency model. The
    current Spirit schema uses a vendored local Magnitude schema snapshot.
-7. `/326-v2`'s corrected `(Schema (Channel ...) (Namespace {...}))` shape is
-   not implemented in `signal-frame`'s schema parser or in
-   `signal-persona-spirit/schema.nota` yet.
+7. Observable event payloads are still not emitted from the schema namespace.
+   They remain macro-injected/hand-written until the observable surface becomes
+   a first-class schema product.
 
 ## Operator recommendation
 
 Treat this as the first runnable proof, not as closure of
 `primary-ezqx.1`. The next operator pass should continue in this order:
 
-1. Move the schema parser and Spirit schema file to `/326-v2`'s corrected
-   outer `(Schema ...)` + namespace-map shape.
-2. Make schema-derived payload type emission real for the Spirit contract.
-3. Make the version projection derive from the old/current schema pair.
-4. Wire the production daemon's operation execution through the generated
+1. Make schema-derived payload type emission real for the Spirit contract.
+2. Make the version projection derive from the old/current schema pair.
+3. Wire the production daemon's operation execution through the generated
    dispatch trait once the trait's shape survives review.
-5. Replace generated NOTA codec internals with box-form calls for unsized
+4. Replace generated NOTA codec internals with box-form calls for unsized
    fields.
-6. Add the hard-handover offline-test marker and Nix witness.
-7. Revisit whether `nota-codec::box_form` should remain there or be split
+5. Add the hard-handover offline-test marker and Nix witness.
+6. Revisit whether `nota-codec::box_form` should remain there or be split
    once the `nota` repo's spec-only boundary changes.
