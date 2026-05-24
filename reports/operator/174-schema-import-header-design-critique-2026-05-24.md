@@ -4,7 +4,7 @@
 
 This report responds to the psyche's request for an operator-side improved
 design and critique of the current schema-language direction, after
-`reports/designer/326-v9-spirit-complete-schema-vision.md`.
+`reports/designer/326-v10-spirit-complete-schema-vision.md`.
 
 The latest psyche corrections captured in Spirit:
 
@@ -13,9 +13,14 @@ The latest psyche corrections captured in Spirit:
   fields.
 - 483 - imports should use explicit variants such as `Import` and `ImportAll`,
   not an opaque `Path` variant.
+- 484 - bracket enum-declaration context contains variants; named struct or
+  newtype shapes still need named declarations.
+- 485 - generic/container type expressions use parentheses, not vector
+  brackets: `(Option Topic)`, `(Vec RecordSummary)`.
 
-Designer `/326-v9` correctly fixes v8's invalid same-tag/different-arity import
-shape. This report critiques the remaining design pressure and gives an
+Designer `/326-v9` correctly fixed v8's invalid same-tag/different-arity import
+shape. Designer `/326-v10` correctly fixes v9's `[Option X]` / `[Vec X]`
+container-type syntax. This report critiques the remaining design pressure and gives an
 operator-ready model with examples.
 
 ## One-Screen Shape
@@ -72,10 +77,20 @@ The base schema declares:
 
 ```nota
 ImportDirective [
-  (Import Path [Vec EnumIdentifier])
+  (Import Path (Vec EnumIdentifier))
   (ImportAll Path)
 ]
 ```
+
+The authored import value still uses brackets for the selected names because
+that position contains a vector value:
+
+```nota
+(Import ../signal-sema/operation.schema [SemaOperation SemaOutcome])
+```
+
+The type declaration uses `(Vec EnumIdentifier)` because that position names the
+type of the field.
 
 ### What the Map Key Means
 
@@ -152,9 +167,10 @@ now is that collisions are loud.
 
 ## Import Critique
 
-Designer `/326-v9` fixed the load-bearing arity flaw. The remaining rough edges:
+Designer `/326-v10` keeps the load-bearing import-arity fix and fixes container
+type syntax. The remaining rough edges:
 
-| Concern | Current `/326-v9` | Operator critique | Proposed rule |
+| Concern | Current `/326-v10` | Operator critique | Proposed rule |
 |---|---|---|---|
 | Import map key | `Magnitude`, `SemaSet` | The key is useful but under-specified. Is it a namespace prefix, label, or alias? | MVP: label/provenance only. Imported names enter local namespace directly. |
 | Collision behavior | Not specified | Without a rule, import order can silently decide meaning. | Duplicate local identifier after import resolution is an error. |
@@ -239,7 +255,7 @@ Namespace:
 ```nota
 {
   StateSubscription (ObservationMode)
-  RecordSubscription ([Option Topic] [Option Kind] ObservationMode)
+  RecordSubscription ((Option Topic) (Option Kind) ObservationMode)
   QuestionSubscription (ObservationMode)
 
   Watch [
@@ -361,7 +377,7 @@ flowchart LR
 ## Full Worked Spirit Sketch
 
 This is the shape I would use for Spirit if Watch gets several endpoints. It
-keeps the import corrections from `/326-v9` and keeps header/body separation.
+keeps the import corrections from `/326-v10` and keeps header/body separation.
 
 ```nota
 {
@@ -396,9 +412,9 @@ keeps the import corrections from `/326-v9` and keeps header/body separation.
   Entry (Topic Kind Summary Context Magnitude Quote)
   Statement (StatementText)
 
-  RecordQuery ([Option Topic] [Option Kind] ObservationMode)
+  RecordQuery ((Option Topic) (Option Kind) ObservationMode)
   StateSubscription (ObservationMode)
-  RecordSubscription ([Option Topic] [Option Kind] ObservationMode)
+  RecordSubscription ((Option Topic) (Option Kind) ObservationMode)
   QuestionSubscription (ObservationMode)
 
   Watch [
@@ -417,7 +433,7 @@ keeps the import corrections from `/326-v9` and keeps header/body separation.
   SubscriptionToken [(State StateSubscriptionToken) (Records RecordSubscriptionToken) (Questions QuestionSubscriptionToken)]
 
   RecordAccepted (RecordIdentifier)
-  RecordsObserved ([Vec RecordSummary])
+  RecordsObserved ((Vec RecordSummary))
   RequestUnimplemented (UnimplementedReason)
 
   OperationReceived (OperationKind)
@@ -512,8 +528,9 @@ introspection value of the header work.
 
 ## Implementation Order I Would Use
 
-1. Parse `/326-v9` import directives exactly: `ImportAll(Path)` and
-   `Import(Path, Vec<EnumIdentifier>)`.
+1. Parse `/326-v10` import directives exactly: `ImportAll(Path)` and
+   `Import(Path, Vec<EnumIdentifier>)`, with the schema type declaration
+   written as `(Import Path (Vec EnumIdentifier))`.
 2. Add import collision diagnostics.
 3. Add Form 2 header parsing for `(Root [Endpoint...])`.
 4. Lower Form 1 and Form 2 into one `SchemaMid` route table.
@@ -526,7 +543,8 @@ introspection value of the header work.
 
 ## Operator Recommendation
 
-Keep `/326-v9`'s import correction. Tighten the next design pass around two
+Keep `/326-v10`'s import and container-type corrections. Tighten the next
+design pass around two
 rules:
 
 1. Import map keys are provenance labels; imported names enter the local
