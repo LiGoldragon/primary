@@ -2,7 +2,7 @@
 
 ## Status
 
-This pass lands the first runnable subset of the `/321` through `/326-v5`
+This pass lands the first runnable subset of the `/321` through `/326-v6`
 Spirit MVP stack.
 
 The implemented subset is Nix-green across the participating repos:
@@ -18,6 +18,8 @@ The implemented subset is Nix-green across the participating repos:
   curly-brace NOTA map
 - `/326-v5` schema file-body parsing, with non-recursive namespace values:
   `Kind [Decision ...]`, `Topic (String)`, `Entry (Topic Kind ...)`
+- `/326-v6` bare-identifier alias/reference declarations in namespace value
+  position, with short-header emission following aliases
 - `persona-spirit` consuming the projected signal contract
 
 This is not the full `/324` target. The macro does not yet emit every
@@ -35,6 +37,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `reports/designer/325-nota-box-library-design-and-implementation.md`
 - `reports/designer/326-v3-spirit-complete-schema-vision.md`
 - `reports/designer/326-v5-spirit-complete-schema-vision.md`
+- `reports/designer/326-v6-spirit-complete-schema-vision.md`
 - `reports/second-designer/164-nota-schema-language-vector-of-root-verb-enums-2026-05-24.md`
 - `reports/second-operator/178-schema-section-shape-and-nota-map-check-2026-05-24.md`
 - `reports/nota-designer/6-quoted-string-purge-audit-2026-05-24.md`
@@ -52,6 +55,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `b26f381f2b27` - `signal-frame: fix engine annotation nesting`
 - `f6ff41e42603` - `signal-frame: parse positional schema files`
 - `8dc8acf40f29` - `signal-frame: parse schema file bodies`
+- `f7c032854250` - `signal-frame: parse schema alias declarations`
 
 `signal-sema`
 
@@ -69,6 +73,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `e8d6084b9da1` - `signal-persona-spirit: use schema namespace map`
 - `a66c87484109` - `signal-persona-spirit: use positional schema shape`
 - `655cc6fb2b4e` - `signal-persona-spirit: use schema file body`
+- `bfea608bee9b` - `signal-persona-spirit: consume schema alias parser`
 
 `persona-spirit`
 
@@ -78,6 +83,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `265f4aafe73c` - `persona-spirit: consume schema namespace contract`
 - `f9eb7c440a1b` - `persona-spirit: consume positional schema contract`
 - `95be1d3c9bcd` - `persona-spirit: consume schema file contract`
+- `08b04c73bf60` - `persona-spirit: consume schema alias contract`
 
 ## What changed
 
@@ -266,6 +272,34 @@ source filter now includes `.schema` files, which was necessary for Nix builds.
 
 `persona-spirit@95be1d3c9bcd` is a lock-only consumer update to the new signal
 contract and new `signal-frame` parser.
+
+## Follow-up after /326-v6
+
+Designer `/326-v6` adds the deeper mechanism behind the syntax: the schema file
+is short syntax lowered by a recursive executer into a fully specified
+intermediate representation. The parser is not just recognizing surface forms;
+it is assembling schema object nodes by context.
+
+The actionable implementation landed in `signal-frame@f7c032854250`:
+
+- Namespace value position accepts a bare PascalCase identifier as an
+  alias/reference declaration, for example `WorkspaceTopic Topic`.
+- Alias declarations resolve against the assembled namespace and imports.
+- Unknown alias targets are rejected with a typed parser error.
+- The emitted `SchemaDefinition` carries an `alias` field.
+- Short-header slot emission follows aliases before deciding whether the target
+  is a leaf enum, struct-like declaration, mixed enum, primitive, or container.
+
+This is still an MVP IR. It does not yet assign stable UID-prefixed
+workspace-wide identities to every type, and it does not yet expose the
+schema-lowering executer as a reusable library for other custom languages. The
+current commit makes the fourth namespace value form real without using it in
+Spirit's schema, matching `/326-v6`'s statement that aliases are valid but rare
+for the pilot.
+
+`signal-persona-spirit@bfea608bee9b` and `persona-spirit@08b04c73bf60` are
+consumer lock bumps proving the real Spirit pilot still compiles and tests
+against the alias-aware parser.
 
 ## Verification
 
