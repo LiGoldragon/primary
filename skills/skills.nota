@@ -10,112 +10,112 @@
 
 [
   (Role operator skills/operator.md Apex
-    "Implementation as craft. The discipline an agent brings when the work is landing code.")
+    [Implementation as craft. The discipline an agent brings when the work is landing code.])
   (Role designer skills/designer.md Apex
-    "Architecture as craft. What designer specifies; what operator implements against.")
+    [Architecture as craft. What designer specifies; what operator implements against.])
   (Role system-specialist skills/system-specialist.md Apex
-    "OS / platform / deploy craft.")
+    [OS / platform / deploy craft.])
   (Role poet skills/poet.md Apex
-    "Prose as craft.")
+    [Prose as craft.])
 
   (Architecture component-triad skills/component-triad.md Apex
-    "Daemon + thin CLI + signal-* contract. The universal stateful component shape; the load-bearing read.")
+    [Daemon + thin CLI + signal-* contract. The universal stateful component shape; the load-bearing read.])
   (Architecture contract-repo skills/contract-repo.md Topic
-    "Wire-contract crate discipline. Six-verb spine; signal_channel! macro; layered-effect pattern.")
+    [Wire-contract crate discipline. Six-verb spine; signal_channel! macro; layered-effect pattern.])
   (Architecture micro-components skills/micro-components.md Topic
-    "When to create a new crate; family-of-micro-components pattern; kernel-extraction triggers.")
+    [When to create a new crate; family-of-micro-components pattern; kernel-extraction triggers.])
   (Architecture actor-systems skills/actor-systems.md Topic
-    "Dense actor topology. Supervised state-bearing actors; release-before-notify; trace witnesses.")
+    [Dense actor topology. Supervised state-bearing actors; release-before-notify; trace witnesses.])
   (Architecture architectural-truth-tests skills/architectural-truth-tests.md Topic
-    "Tests that catch architectural drift, not just regression.")
+    [Tests that catch architectural drift, not just regression.])
   (Architecture engine-analysis skills/engine-analysis.md Topic
-    "How to analyze daemon/engine internals — the planes-and-actors lens.")
+    [How to analyze daemon/engine internals — the planes-and-actors lens.])
   (Architecture language-design skills/language-design.md Topic
-    "Language-design discipline. Closed enums; structural beauty over ad-hoc strings; branches/leaves vocabulary for typed-record trees.")
+    [Language-design discipline. Closed enums; structural beauty over ad-hoc strings; branches/leaves vocabulary for typed-record trees.])
   (Architecture library skills/library.md Topic
-    "Library-vs-daemon split. When to extract a library crate from a daemon.")
+    [Library-vs-daemon split. When to extract a library crate from a daemon.])
   (Architecture subscription-lifecycle skills/subscription-lifecycle.md Topic
-    "Subscription close-vs-retract semantics. Token-keyed cleanup.")
+    [Subscription close-vs-retract semantics. Token-keyed cleanup.])
 
   (Craft abstractions skills/abstractions.md Keystroke
-    "Verb belongs to noun. Methods on types; no free helpers when a method would do.")
+    [Verb belongs to noun. Methods on types; no free helpers when a method would do.])
   (Craft naming skills/naming.md Keystroke
-    "Full English words. The offender table.")
+    [Full English words. The offender table.])
   (Craft workspace-vocabulary skills/workspace-vocabulary.md Topic
-    "Canonical glossary for load-bearing workspace terms. main/next, Persona, engine_manager — predecessors, scope, when-to-use.")
+    [Canonical glossary for load-bearing workspace terms. main/next, Persona, engine_manager — predecessors, scope, when-to-use.])
   (Craft beauty skills/beauty.md Keystroke
-    "Beauty as criterion. Special cases dissolve into the normal case.")
+    [Beauty as criterion. Special cases dissolve into the normal case.])
   (Craft push-not-pull skills/push-not-pull.md Keystroke
-    "No polling. Subscribe and receive; producers push events.")
+    [No polling. Subscribe and receive; producers push events.])
   (Craft reporting skills/reporting.md Keystroke
-    "When to write a report vs answer in chat. Chat for user; reports for agents.")
+    [When to write a report vs answer in chat. Chat for user; reports for agents.])
   (Workflow report-naming skills/report-naming.md Mechanism
-    "Basic report-naming + supersession discipline. Filename convention, -v2/v3 iteration, commit-before-delete. Smaller than skills/reporting.md; every agent needs this.")
+    [Basic report-naming + supersession discipline. Filename convention, -v2/v3 iteration, commit-before-delete. Smaller than skills/reporting.md; every agent needs this.])
   (Craft typed-records-over-flags skills/typed-records-over-flags.md Keystroke
-    "Closed typed records over bool flags. Surface the variant set in the type system.")
+    [Closed typed records over bool flags. Surface the variant set in the type system.])
   (Craft prose skills/prose.md Topic
-    "Prose-craft discipline.")
+    [Prose-craft discipline.])
 
   (Programming kameo skills/kameo.md Topic
-    "Kameo actor-runtime discipline. Lifecycle contract; spawn-in-thread restart trap.")
+    [Kameo actor-runtime discipline. Lifecycle contract; spawn-in-thread restart trap.])
   (Programming rust-discipline skills/rust-discipline.md Topic
-    "Rust craft index. Methods on types; typed errors; no ZST holders.")
+    [Rust craft index. Methods on types; typed errors; no ZST holders.])
   (Programming rust-methods skills/rust/methods.md Topic
-    "Methods on types. One-object-in/one-object-out.")
+    [Methods on types. One-object-in/one-object-out.])
   (Programming rust-errors skills/rust/errors.md Topic
-    "Typed errors at crate boundary. thiserror; no anyhow at edges.")
+    [Typed errors at crate boundary. thiserror; no anyhow at edges.])
   (Programming rust-storage-and-wire skills/rust/storage-and-wire.md Topic
-    "redb + rkyv pattern for storage and wire.")
+    [redb + rkyv pattern for storage and wire.])
   (Programming rust-parsers skills/rust/parsers.md Topic
-    "No hand-rolled parsers. Use winnow or NOTA codec.")
+    [No hand-rolled parsers. Use winnow or NOTA codec.])
   (Programming rust-crate-layout skills/rust/crate-layout.md Topic
-    "Crate layout. Tests in separate files; bin / lib / examples.")
+    [Crate layout. Tests in separate files; bin / lib / examples.])
   (Programming nix-discipline skills/nix-discipline.md Topic
-    "Nix module structure. Flake conventions; check derivations.")
+    [Nix module structure. Flake conventions; check derivations.])
   (Programming nix-usage skills/nix-usage.md Topic
-    "When to use Nix tooling. nix eval / flake show / path-info — not filesystem search.")
+    [When to use Nix tooling. nix eval / flake show / path-info — not filesystem search.])
   (Programming mermaid skills/mermaid.md Mechanism
-    "Mermaid diagram conventions and safe-syntax workarounds.")
+    [Mermaid diagram conventions and safe-syntax workarounds.])
   (Programming stt-interpreter skills/stt-interpreter.md Mechanism
-    "Speech-to-text interpreter integration notes.")
+    [Speech-to-text interpreter integration notes.])
 
   (Workflow role-lanes skills/role-lanes.md Mechanism
-    "Lane mechanism for assistant + second-assistant lanes under each main role.")
+    [Lane mechanism for assistant + second-assistant lanes under each main role.])
   (Workflow architecture-editor skills/architecture-editor.md Mechanism
-    "How to edit ARCHITECTURE.md. ARCH never references reports.")
+    [How to edit ARCHITECTURE.md. ARCH never references reports.])
   (Workflow nota-schema-docs skills/nota-schema-docs.md Mechanism
-    "Pseudo-NOTA convention for documenting record schemas: angle-bracket placeholders, optional ?, enum |.")
+    [Pseudo-NOTA convention for documenting record schemas: angle-bracket placeholders, optional ?, enum |.])
   (Workflow nota-design skills/nota-design.md Topic
-    "Canonical NOTA design. The type names the most useful distinction in context; data lives in records, not comments; enums get names, not numbers.")
+    [Canonical NOTA design. The type names the most useful distinction in context; data lives in records, not comments; enums get names, not numbers.])
   (Workflow nota-comments skills/nota-comments.md Topic
-    "Code comments as NOTA signal records. (Why ...) opening pattern carries the per-edit rationale; Mind reads code-as-signal; pairs with intent-log for the why-vs-intent boundary.")
+    [Code comments as NOTA signal records. (Why ...) opening pattern carries the per-edit rationale; Mind reads code-as-signal; pairs with intent-log for the why-vs-intent boundary.])
   (Workflow jj skills/jj.md Mechanism
-    "Jujutsu version-control discipline. Concurrent-agent safety.")
+    [Jujutsu version-control discipline. Concurrent-agent safety.])
   (Workflow testing skills/testing.md Mechanism
-    "All tests in Nix. Pure tests as checks; -test suffix for test-only binaries.")
+    [All tests in Nix. Pure tests as checks; -test suffix for test-only binaries.])
   (Workflow feature-development skills/feature-development.md Mechanism
-    "Feature branches in worktrees. Multi-repo arc coordination.")
+    [Feature branches in worktrees. Multi-repo arc coordination.])
   (Workflow beads skills/beads.md Mechanism
-    "Short-tracked-item discipline. Transitional pre-Persona-mind.")
+    [Short-tracked-item discipline. Transitional pre-Persona-mind.])
   (Workflow repository-management skills/repository-management.md Mechanism
-    "ghq / gh mechanics for repo work.")
+    [ghq / gh mechanics for repo work.])
   (Workflow skill-editor skills/skill-editor.md Mechanism
-    "How to edit skill files without growing them noisy. Skills never reference reports.")
+    [How to edit skill files without growing them noisy. Skills never reference reports.])
 
   (Meta autonomous-agent skills/autonomous-agent.md Mechanism
-    "When to act vs ask. How to surface blocked decisions.")
+    [When to act vs ask. How to surface blocked decisions.])
   (Meta context-maintenance skills/context-maintenance.md Mechanism
-    "Sweep reports and conversation. Migrate substance to permanent homes.")
+    [Sweep reports and conversation. Migrate substance to permanent homes.])
   (Meta intent-log skills/intent-log.md Topic
-    "Record explicit psyche intent through Spirit. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded.")
+    [Record explicit psyche intent through Spirit. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded.])
   (Meta spirit-cli skills/spirit-cli.md Topic
-    "How to invoke the deployed Spirit CLI. Inline NOTA vs file-path argument; the live wire shape; finding the wire shape when it drifts; front matter names the documented tool version.")
+    [How to invoke the deployed Spirit CLI. Inline NOTA vs file-path argument; the live wire shape; finding the wire shape when it drifts; front matter names the documented tool version.])
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
-    "Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.")
+    [Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.])
   (Meta intent-clarification skills/intent-clarification.md Topic
-    "Ask the psyche when intent on a question is unclear, absent, or contradicted. Don't infer intent; ask. Structured options + lean.")
+    [Ask the psyche when intent on a question is unclear, absent, or contradicted. Don't infer intent; ask. Structured options + lean.])
   (Meta repo-intent skills/repo-intent.md Mechanism
-    "Per-repo INTENT.md — agent-written prose, 100% backed by psyche statements, no embellishment, no inference. Like ARCHITECTURE.md but for intent.")
+    [Per-repo INTENT.md — agent-written prose, 100% backed by psyche statements, no embellishment, no inference. Like ARCHITECTURE.md but for intent.])
   (Meta intent-manifestation skills/intent-manifestation.md Mechanism
-    "Walk through Spirit records; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / INTENT / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.")
+    [Walk through Spirit records; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / INTENT / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.])
 ]

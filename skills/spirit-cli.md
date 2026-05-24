@@ -31,7 +31,14 @@ The spirit binary takes **exactly one argument** per the
 single-argument rule (`skills/component-triad.md` §"The single
 argument rule"). Two accepted shapes:
 
-- **Inline NOTA string** — the argument is a NOTA expression starting
+**Temporary deployment caveat.** The examples in this skill use
+legacy quote-delimited string values only because the deployed
+`Spirit 0.1.0` binary in the user profile still rejects bracket
+strings. Do not generalize this syntax to authored NOTA. Everywhere
+outside the live Spirit command surface, canonical NOTA strings use
+`[text]` or `[|text|]`.
+
+- **Inline NOTA argument** — the argument is a NOTA expression starting
   with `(`. This is the default.
   ```sh
   spirit '(Record (workspace Decision "summary" "context" Maximum "verbatim quote"))'

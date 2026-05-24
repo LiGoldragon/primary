@@ -58,11 +58,11 @@ Bad:
 
 ```nota
 ;; Roles
-(Skill operator "skills/operator.md" role 1 "...")
-(Skill designer "skills/designer.md" role 1 "...")
+(Skill operator skills/operator.md role 1 [...])
+(Skill designer skills/designer.md role 1 [...])
 
 ;; Architecture
-(Skill component-triad "skills/component-triad.md" architecture 1 "...")
+(Skill component-triad skills/component-triad.md architecture 1 [...])
 ```
 
 Two things are wrong: every record wears the redundant `Skill`
@@ -70,10 +70,10 @@ wrapper, and the categories are duplicated as comments AND as a
 field. Fix both:
 
 ```nota
-(Role operator skills/operator.md Apex "...")
-(Role designer skills/designer.md Apex "...")
+(Role operator skills/operator.md Apex [...])
+(Role designer skills/designer.md Apex [...])
 
-(Architecture component-triad skills/component-triad.md Apex "...")
+(Architecture component-triad skills/component-triad.md Apex [...])
 ```
 
 Same data, fewer tokens, grep-able category. Note also: instance
@@ -166,11 +166,13 @@ do not reintroduce it. The rule above is sufficient: structs are
 untagged, enum variants own PascalCase tags, and map keys are key
 text by delimiter position.
 
-**Bare identifiers as strings.** Where an ordinary schema position
-expects `String`, a bare camelCase or kebab-case token serves as
-the value (`nota-codec` is the same as `"nota-codec"`). A bare
-PascalCase token at an ordinary `String` position is an
-enum-looking value and is rejected; quote it.
+**Bracket and bare strings.** Where an ordinary schema position
+expects `String`, the canonical delimited form is `[content]`, and
+a bare camelCase or kebab-case token serves as the same value
+(`nota-codec` is the same as `[nota-codec]`). A bare PascalCase
+token at an ordinary `String` position is an enum-looking value and
+is rejected; delimit it as `[User]` when the capitalized text is
+string content.
 
 **Map keys.** Maps use their own delimiter:
 
@@ -183,7 +185,7 @@ values. The schema chooses the scalar key type (`String`, `Path`,
 or a string-like newtype such as `NodeName`). A bare PascalCase key
 is allowed there because the map delimiter already says this token
 is key text, not a value. Keys with whitespace are invalid, even
-when quoted.
+when bracket-delimited.
 
 **Bare `Path`.** Where the schema expects `Path` (not `String`),
 the bare alphabet widens to include `/` and `.` for filesystem-
@@ -240,13 +242,13 @@ proposal, anywhere — do these four things:
 4. **Sketch fields positionally — no `(key value)` pairs inside the
    record. No nested wrappers when every record has the same
    inner shape.** Positional means
-   `(Decision "summary" "quote" "context" Maximum 2026-05-19 01:23)`,
-   not `(Decision (summary "…") (verbatim …) (certainty Maximum))`
-   and not `(Decision "summary" (Verbatim "quote" "context") Maximum …)`
+   `(Decision [summary] [quote] [context] Maximum 2026-05-19 01:23)`,
+   not `(Decision (summary […]) (verbatim …) (certainty Maximum))`
+   and not `(Decision [summary] (Verbatim [quote] [context]) Maximum …)`
    if `Verbatim` is the only thing that ever appears in that slot.
    Variants are **PascalCase** (`Maximum`, not `maximum`); date and
    time are two bare positional fields (`2026-05-19 01:23`), not one
-   quoted string.
+   bracket string.
 
 Most agent NOTA mistakes are the same mistake — labeled fields. The
 fix is the same too: read the canonical example before you sketch,

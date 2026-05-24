@@ -348,7 +348,7 @@ truth.
 Every component binary — CLI and daemon both — takes exactly one
 argument on argv. That argument is one of:
 
-- A **NOTA string literal**: `persona-orchestrate '(RoleClaim ...)'`
+- An **inline NOTA argument**: `persona-orchestrate '(RoleClaim ...)'`
 - A path to a **NOTA file**: `persona-orchestrate ./request.nota`
 - A path to a **signal-encoded file** (rkyv binary):
   `persona-orchestrate-daemon ./config.signal`

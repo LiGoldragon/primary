@@ -154,10 +154,10 @@ intent capture, the operation is `Record` carrying an untagged
 (Record
   (<topic>           ;; bare identifier: workspace, spirit, signal, component-shape, …
    <Kind>            ;; Decision | Principle | Correction | Clarification | Constraint
-   "<summary>"       ;; terse one-line rephrasing by the agent
-   "<context>"       ;; surrounding what-was-being-decided
+   [<summary>]       ;; terse one-line rephrasing by the agent
+   [<context>]       ;; surrounding what-was-being-decided
    <Certainty>       ;; Maximum | Medium | Minimum
-   "<verbatim>"))    ;; psyche's exact words; `…` for elided tangents
+   [<verbatim>]))    ;; psyche's exact words; `…` for elided tangents
 ```
 
 - `Entry` is untagged — no record-head ident (per the NotaRecord
@@ -173,9 +173,9 @@ Date + Time after Certainty:
 
 ```nota
 (<Kind>
-    "<summary>"
-    "<verbatim>"
-    "<context>"
+    [<summary>]
+    [<verbatim>]
+    [<context>]
     <Certainty>
     <Date>
     <Time>)
@@ -205,6 +205,11 @@ carries the part that belongs to this entry.
 The deployed `spirit` CLI is the substrate. Capture intent by
 invoking it with a `Record` operation:
 
+The command below is a temporary deployment caveat: the current
+`Spirit 0.1.0` profile binary still requires legacy quote-delimited
+strings. Do not generalize it to authored NOTA, whose canonical
+string forms are `[text]` and `[|text|]`.
+
 ```sh
 spirit '(Record (<topic> <Kind> "<summary>" "<context>" <Certainty> "<verbatim>"))'
 ```
@@ -212,10 +217,9 @@ spirit '(Record (<topic> <Kind> "<summary>" "<context>" <Certainty> "<verbatim>"
 The daemon stamps date and time on receipt; clients do not supply
 timestamps. Invocation discipline — finding the deployed wire
 shape, inline NOTA vs file-path argument, observation queries — is
-in `skills/spirit-cli.md`. When the verbatim has embedded
-apostrophes, use bash ANSI-C strings (`$'…\'…'`) rather than
-single-quoted strings; reserve the file-path argument for NOTA
-that has shell metacharacters too painful to escape.
+in `skills/spirit-cli.md`. When the live Spirit profile supports
+bracket strings, update this command and stop using bash ANSI-C
+escaping for ordinary apostrophes.
 
 ### Spirit-unavailable blocker
 
