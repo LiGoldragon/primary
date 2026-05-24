@@ -2,7 +2,7 @@
 
 # 326 — Spirit complete schema — full data type vision + nested structure
 
-**Status:** v2 — absorbs psyche feedback on /326 v1's schema shape. The v1 schema was "just a vector" (flat positional declarations); v2 uses nested structure (outer vector of tagged sections; namespace section uses NOTA map form `{name value}`). No NOTA-comment separators — section tags carry the structural meaning. Verified against nota-codec's existing test fixtures + canonical patterns; awaits operator round-trip witness once the schema lands on disk.
+**Status:** v2 — absorbs psyche feedback on /326 v1's schema shape. The v1 schema was "just a vector" (flat positional declarations); v2 uses nested structure (outer struct `(Schema …)` with `Channel` + `Namespace` positional fields per psyche directive "at the root, the schema language is a struct"; namespace section uses NOTA map form `{name value}` per "the name-value notation for NOTA is the curly bracket"). No NOTA-comment separators — section tags carry the structural meaning. Verified against nota-codec's existing test fixtures + canonical patterns; awaits operator round-trip witness once the schema lands on disk.
 
 ## §1 The data type inventory — what Spirit actually needs
 
@@ -53,8 +53,10 @@ Verified against deployed code:
 
 ### §2.1 The schema file
 
+The schema's outer container is a positional record `(Schema …)` per psyche directive 2026-05-24 ("at the root, the schema language is a struct"). The struct has two positional fields: `(Channel …)` first, `(Namespace { … })` second.
+
 ```nota
-[
+(Schema
   (Channel
     (Operation
       (State (Statement (engine assert)))
@@ -140,19 +142,18 @@ Verified against deployed code:
 
       OperationReceived (OperationReceived OperationKind)
       EffectEmitted (EffectEmitted SemaObservation)
-    })
-]
+    }))
 ```
 
 ### §2.2 Reading the structure
 
-**Outer vector `[…]`** — sequence of schema sections. Rust type `Vec<Section>` where `Section` is `Channel | Namespace`. NOTA's positional vector rule holds because every element is the same enum type (Section variants).
+**Outer record `(Schema …)`** — a positional struct with two fields. Rust type `Schema { channel: Channel, namespace: Namespace }`. The tag `Schema` is the language's universal schema declaration head; every component's `schema.nota` starts with this.
 
-**Section 1 `(Channel …)`** — positional record carrying four sub-records: `Operation`, `Reply`, `Event`, `Observable`. Each sub-record declares one channel-level enum + variants. The `(engine X)` annotations on Operation variants encode the sema-message bridge.
+**Field 1 `(Channel …)`** — positional record carrying four sub-records: `Operation`, `Reply`, `Event`, `Observable`. Each sub-record declares one channel-level enum + variants. The `(engine X)` annotations on Operation variants encode the sema-message bridge.
 
-**Section 2 `(Namespace { … })`** — positional record carrying ONE field: a map `{name value name value …}` mapping type names to declarations. The map's key position carries PascalCase type names (per nota-design.md: map delimiters allow bare PascalCase keys); the value position carries either a declaration record or a bracket-string path-ref for cross-schema imports.
+**Field 2 `(Namespace { … })`** — positional record carrying ONE field: a map `{name value name value …}` mapping type names to declarations. The map's key position carries PascalCase type names (per nota-design.md: map delimiters allow bare PascalCase keys); the value position carries either a declaration record or a bracket-string path-ref for cross-schema imports.
 
-**No NOTA-comments.** The tags `Channel` and `Namespace` carry the structural meaning. Positional order matters: Channel first (the messaging surface — what consumers see), Namespace second (the type declarations the surface references).
+**No NOTA-comments.** The tags `Schema`, `Channel`, `Namespace` carry the structural meaning. Positional order matters: Channel first (the messaging surface — what consumers see), Namespace second (the type declarations the surface references).
 
 ### §2.3 The map form for the namespace
 
@@ -251,9 +252,9 @@ Replaces ~700 LoC across `signal-persona-spirit/src/lib.rs` + `persona-spirit/sr
 
 ## §8 Open psyche questions
 
-### §8.1 Outer container — vector or record?
+### §8.1 Outer container — resolved (struct)
 
-`§2.1` uses `[(Channel …) (Namespace …)]` — Vec of tagged sections. Alternative: `(Schema (Channel …) (Namespace …))` — tagged outer record. Both encode the same logical structure; vector keeps the option open for more sections later (e.g., future `Storage` section, per-environment overrides). **Lean: vector** per psyche's "square bracket at the root level" framing.
+RESOLVED per psyche directive 2026-05-24: "at the root, the schema language is a struct." `§2.1` uses `(Schema (Channel …) (Namespace { … }))` — a positional record with the `Schema` tag and two positional fields. Future extensibility (e.g., adding a `Storage` section or per-environment overrides) lands as additional positional fields under the same `Schema` head, or as a new tagged sub-record. No vector-of-sections.
 
 ### §8.2 Map ordering — significant?
 
