@@ -600,6 +600,43 @@ reports to point at the new one (or remove the citation if
 no longer relevant). Dead pointers in surviving reports are
 a smell; the cleanup is part of the supersession.
 
+### Deleted reports live in the commit tree
+
+Per spirit record 370. The working tree carries only
+current-state reports; the commit history is the durable
+archive. **A report that is not in the working tree is one
+`jj show` away** — the supersession-deletes-in-the-same-commit
+rule above is safe precisely because the deleted report
+never actually leaves.
+
+Retrieval shapes:
+
+```sh
+# Find the change that last touched the report:
+jj log -p reports/designer/<N>-<topic>.md
+# Read it from that change:
+jj show <change-id>:reports/designer/<N>-<topic>.md
+
+# Equivalent in raw git (if jj isn't available):
+git log --all --diff-filter=D -- reports/designer/<N>-<topic>.md
+git show <commit-sha>:reports/designer/<N>-<topic>.md
+```
+
+The deleting commit's message names what the deletion
+replaced — search by commit message when the path is
+forgotten:
+
+```sh
+jj log -r 'description(glob:"*<keyword>*")'
+git log --all --grep '<keyword>'
+```
+
+Agents pulling context from history (a supersession lineage,
+an audit predecessor, an old design that informed a current
+decision) should reach for `jj show`/`git show` before
+assuming substance is lost. The report tree's small size is
+a feature, not a forgetting mechanism.
+
 ### Periodic review when the subdir gets full
 
 When the count crosses 12, work through the older reports.
