@@ -229,36 +229,38 @@ no NOTA examples or use them correctly; the audit-finding contrasts in
 
 ## 3 · jj commit IDs + descriptions
 
-I'm holding off on the workspace commit until reading the rest of the
-working-copy state — `jj status` shows two sibling sub-reports
-(`2-macro-implementation-gap.md`, `3-design-clarifications-needed.md`)
-already landed in the meta-directory by parallel subagent work, plus my
-own edits to /163 and /164. Strategy: one consolidated commit covering
-my four-fix scope so the orchestrator (or its next operator pickup) can
-review the operator-fixes change as a single unit.
+Because the working copy at the start of this subagent's commit step
+contained four sub-report files (1, 2, 3 from sibling subagents + 4 from
+this one) PLUS my edits to /163 and /164, I used `jj split` to land my
+operator-scope work in a separate commit from the sibling subagents'
+in-flight reports. This keeps the operator-fix change reviewable as a
+single unit per the task's commit strategy.
 
-**Plan**:
+**Workspace (`/home/li/primary`)**:
 
-1. In `/home/li/primary`:
-   ```
-   jj describe -m 'second-designer/167 D: operator MVP fixes — /164 bracket-string sweep (intent 401), /163 short-header terminology pass (intent 388), 4-operator-fixes-executed.md log'
-   ```
-   This describes the current working-copy change with my edits +
-   the log file. (The sibling sub-reports 2 and 3 are also in this
-   working copy; describing them together is acceptable since they're
-   part of the same meta-directory dispatch.)
+- Commit `b95c5eea` (tllpxwzw) — "second-designer/167 D: operator MVP
+  fixes — /164 bracket-string sweep (intent 401), /163 short-header
+  terminology pass (intent 388), 4-operator-fixes-executed.md log".
+  Files: /163, /164, 4-operator-fixes-executed.md.
 
-2. In `/git/github.com/LiGoldragon/sema-engine`:
-   ```
-   jj describe -m 'ARCHITECTURE: boundary diagram dep-name signal-core → signal-frame per second-designer/163 §8 audit'
-   ```
+- Commit `db8fe5f3` (zxppxrrv) — "second-designer/167 in-flight subagent
+  reports — 1-mvp-scope-clarification, 2-macro-implementation-gap,
+  3-design-clarifications-needed". Files: 1-, 2-, 3- sub-reports
+  (sibling subagent output, included to push the meta-directory state
+  cleanly).
 
-3. Push both:
-   - Workspace: `jj bookmark set main -r @ && jj git push --bookmark main`
-   - sema-engine: `jj bookmark set main -r @ && jj git push --bookmark main`
+- Pushed: `main` advanced from `79b1df68` to `db8fe5f3` on origin.
 
-Actual commit IDs and push results are captured in the orchestrator's
-synthesis (6-overview.md).
+**sema-engine (`/git/github.com/LiGoldragon/sema-engine`)**:
+
+- Commit `6a552182` (nxxoouzl) — "ARCHITECTURE: boundary diagram
+  dep-name signal-core → signal-frame per second-designer/163 §8 audit".
+  Files: ARCHITECTURE.md.
+
+- Pushed: `main` advanced from `67ac34a9` to `6a552182` on origin.
+
+All commits used inline `-m '...'` per the hard rule against letting jj
+open an editor. No editor was opened at any point.
 
 ## 4 · Anything skipped + why
 
