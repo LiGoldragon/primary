@@ -1,10 +1,10 @@
-# 174-v2 - Schema import and header design critique, 2026-05-24
+# 174-v3 - Schema import and header design critique, 2026-05-24
 
 ## Context
 
-This v2 report responds to the psyche's request for an operator-side improved
+This v3 report responds to the psyche's request for an operator-side improved
 design and critique of the current schema-language direction, after
-`reports/designer/326-v10-spirit-complete-schema-vision.md`.
+`reports/designer/326-v11-spirit-complete-schema-vision.md`.
 
 The latest psyche corrections captured in Spirit:
 
@@ -20,8 +20,13 @@ The latest psyche corrections captured in Spirit:
 
 Designer `/326-v9` correctly fixed v8's invalid same-tag/different-arity import
 shape. Designer `/326-v10` correctly fixes v9's `[Option X]` / `[Vec X]`
-container-type syntax. This report critiques the remaining design pressure and gives an
-operator-ready model with examples.
+container-type syntax. Designer `/326-v11` absorbs this report's main
+architectural recommendation: header vectors are route-only, namespace nodes
+define body payloads, and features carry semantics beyond body typing.
+
+This v3 is therefore narrower than v2. It preserves the operator-ready examples,
+marks the Form 2 route/body question closed, and critiques the remaining
+precision issues that matter before code generation.
 
 ## One-Screen Shape
 
@@ -167,16 +172,19 @@ now is that collisions are loud.
 
 ## Import Critique
 
-Designer `/326-v10` keeps the load-bearing import-arity fix and fixes container
-type syntax. The remaining rough edges:
+Designer `/326-v11` keeps the load-bearing import-arity fix, container-type
+syntax, import collision rule, and route/body/feature split. The remaining
+rough edges are now precision issues, not major design blockers:
 
-| Concern | Current `/326-v10` | Operator critique | Proposed rule |
+| Concern | Current `/326-v11` | Operator critique | Proposed rule |
 |---|---|---|---|
-| Import map key | `Magnitude`, `SemaSet` | The key is useful but under-specified. Is it a namespace prefix, label, or alias? | MVP: label/provenance only. Imported names enter local namespace directly. |
-| Collision behavior | Not specified | Without a rule, import order can silently decide meaning. | Duplicate local identifier after import resolution is an error. |
+| Absolute position wording | `/326-v11` says route headers are Positions 1-3, namespace Position 4, features Position 5 | This omits the imports map from the position count and can confuse implementers. | Use absolute file positions: 1 imports, 2 ordinary header, 3 owner header, 4 sema header, 5 namespace, 6 features. Use "header leg" when counting only ordinary/owner/sema. |
+| Import map key | `Magnitude`, `SemaSet` | Now settled by `/326-v11`: provenance label only, not namespace prefix. | Implement this exactly and reject duplicate imported/local names. |
+| Collision behavior | Now explicit in `/326-v11` | Good. Needs tests. | Add import-import and import-local collision fixtures. |
 | `ImportAll` use | Valid | Convenient but can flood namespace in larger schemas. | Prefer `Import` for multi-type schemas; use `ImportAll` for base/core or single-type schema files. |
 | Future index imports | Mentioned | Good direction, but not MVP. | Add a third variant only when the schema registry exists. |
 | `ImportDirective` names | `Import`, `ImportAll` | Slightly repetitive inside Rust enum context, but clear in authored NOTA. | Keep the authored heads; Rust internals may still name variants `Some`/`All` only if the NOTA codec supports head override later. |
+| Unit endpoint body | `/326-v11` route body type is explicit for Form 1/Form 2 payloads | Pure control endpoints still need a deterministic body marker. | Lower unit endpoints to an explicit unit body type, not to absent body metadata. |
 
 ## Header Model
 
@@ -310,20 +318,19 @@ Lowered idea:
 This is useful for cheap triage commands. The unit body still has a schema:
 the empty struct/unit shape.
 
-## Header Critique
+## Header Critique After `/326-v11`
 
-The biggest open design issue is where header structure ends and body schema
-starts.
+The biggest v2 open issue was where header structure ends and body schema
+starts. `/326-v11` resolves it correctly.
 
-I recommend this boundary:
+The boundary to implement:
 
 1. Header syntax chooses a route.
 2. Namespace syntax defines the body shape.
 3. Lowering connects the route to the body shape.
 
-That means nested Form 2 header entries should be endpoint selectors. They
-should not recursively carry arbitrary header payload syntax inside the header
-field itself.
+Nested Form 2 header entries are endpoint selectors. They do not recursively
+carry arbitrary header payload syntax inside the header field itself.
 
 Good:
 
@@ -377,7 +384,7 @@ flowchart LR
 ## Full Worked Spirit Sketch
 
 This is the shape I would use for Spirit if Watch gets several endpoints. It
-keeps the import corrections from `/326-v10` and keeps header/body separation.
+keeps the import corrections from `/326-v11` and keeps header/body separation.
 
 ```nota
 {
@@ -528,7 +535,7 @@ introspection value of the header work.
 
 ## Implementation Order I Would Use
 
-1. Parse `/326-v10` import directives exactly: `ImportAll(Path)` and
+1. Parse `/326-v11` import directives exactly: `ImportAll(Path)` and
    `Import(Path, Vec<EnumIdentifier>)`, with the schema type declaration
    written as `(Import Path (Vec EnumIdentifier))`.
 2. Add import collision diagnostics.
@@ -543,9 +550,8 @@ introspection value of the header work.
 
 ## Operator Recommendation
 
-Keep `/326-v10`'s import and container-type corrections. Tighten the next
-design pass around two
-rules:
+Implement against `/326-v11`'s import, container-type, collision, and
+route/body/feature corrections. The next code pass should preserve two rules:
 
 1. Import map keys are provenance labels; imported names enter the local
    namespace directly; collisions are errors.
@@ -556,15 +562,20 @@ That gives the macro library a clean architecture: the parser reads concise
 schema sugar, the lowerer expands it into a fully explicit intermediate object,
 and code generation uses only the lowered object.
 
-## Open Intent Clarification
+## Remaining Precision Before Code
 
-One point still needs psyche confirmation before a full implementation pass:
+No immediate psyche clarification blocks implementation. The major question
+from v2 is closed:
 
-Should Form 2 nested header entries be route selectors only, with payload types
-resolved from namespace declarations, or should they be allowed to carry payload
-syntax directly inside the header field?
+- Form 2 nested entries are route selectors only.
+- Payload/body types resolve from namespace declarations during lowering.
+- The generated short-header table is emitted from `SchemaMid`, not raw schema
+  text.
 
-My recommendation is route selectors only. Direct payload syntax inside nested
-headers looks expressive at first, but it blurs route and body. The lowered
-schema can still produce the same final Rust types without making the authored
-header field carry two jobs.
+Three implementation-level precision notes remain:
+
+1. Use absolute file-position names in code and docs so imports are not
+   accidentally skipped in numbering.
+2. Treat unit endpoints as explicit unit body routes in `SchemaMid`.
+3. Keep the feature grammar deliberately small in the MVP: `Reply`, `Event`,
+   `Observable`, and only storage metadata if an implementation needs it.
