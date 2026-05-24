@@ -1,10 +1,12 @@
-# 174-v3 - Schema import and header design critique, 2026-05-24
+# 174-v4 - Schema import and header design critique, 2026-05-24
 
 ## Context
 
-This v3 report responds to the psyche's request for an operator-side improved
+This v4 report responds to the psyche's request for an operator-side improved
 design and critique of the current schema-language direction, after
-`reports/designer/326-v11-spirit-complete-schema-vision.md`.
+`reports/designer/326-v11-spirit-complete-schema-vision.md` and the psyche's
+post-v11 correction about macro-lowered schemas, upgrade knowledge, and the
+`AssembledSchema` name.
 
 The latest psyche corrections captured in Spirit:
 
@@ -17,6 +19,16 @@ The latest psyche corrections captured in Spirit:
   newtype shapes still need named declarations.
 - 485 - generic/container type expressions use parentheses, not vector
   brackets: `(Option Topic)`, `(Vec RecordSummary)`.
+- 488 - schema diffs can infer standard migrations, but ambiguous transforms
+  need explicit annotations or traits.
+- 489 - dual-version upgrade replies must distinguish old-database and
+  new-database write failures.
+- 490 - the lowered schema object should be called `AssembledSchema`, not
+  `SchemaMid`.
+- 491 - schema upgrade knowledge belongs to the next version, which assembles
+  against the previous schema.
+- 492 - the schema language is a reusable macro-lowered structured declaration
+  bedrock, not only a Spirit contract format.
 
 Designer `/326-v9` correctly fixed v8's invalid same-tag/different-arity import
 shape. Designer `/326-v10` correctly fixes v9's `[Option X]` / `[Vec X]`
@@ -24,9 +36,9 @@ container-type syntax. Designer `/326-v11` absorbs this report's main
 architectural recommendation: header vectors are route-only, namespace nodes
 define body payloads, and features carry semantics beyond body typing.
 
-This v3 is therefore narrower than v2. It preserves the operator-ready examples,
-marks the Form 2 route/body question closed, and critiques the remaining
-precision issues that matter before code generation.
+This v4 preserves the operator-ready examples, marks the Form 2 route/body
+question closed, renames the machine object from `SchemaMid` to
+`AssembledSchema`, and adds the next-version upgrade model.
 
 ## One-Screen Shape
 
@@ -60,9 +72,43 @@ flowchart TD
     Sema --> HeaderTable
     Namespace --> Resolver
     Features --> Resolver
-    Resolver --> Mid["lowered SchemaMid<br/>fully expanded, stored, diffable"]
+    Resolver --> Mid["AssembledSchema<br/>fully expanded, stored, diffable"]
     HeaderTable --> Mid
 ```
+
+## Macro-Lowered Declaration Bedrock
+
+The schema language is not merely the syntax for `signal-persona-spirit`. It is
+the first instance of a reusable structured declaration system: authored
+schema, macro-language nodes, assembly into a fully specified object, then code
+generation and migration logic.
+
+```mermaid
+flowchart TD
+    Authored["authored .schema<br/>compact, design-facing"]
+    MacroTypes["internal schema node macros<br/>EnumNamespace / ImportDirective / HeaderRoute / Feature"]
+    Assembler["schema assembler<br/>loads imports, expands sugar, resolves names"]
+    Assembled["AssembledSchema<br/>long form, explicit, diffable"]
+    Generators["generators<br/>Rust types, codecs, short-header tables"]
+    Upgrade["upgrade derivation<br/>previous AssembledSchema -> next AssembledSchema"]
+
+    Authored --> MacroTypes
+    MacroTypes --> Assembler
+    Assembler --> Assembled
+    Assembled --> Generators
+    Assembled --> Upgrade
+```
+
+The macro idea is load-bearing: different specialized schema languages can use
+the same assembly pattern. A message contract, storage table, entry type, signal
+channel, owner channel, or Sema-facing declaration can all be authored as a
+compact schema surface that lowers through internal schema node types.
+
+The authored schema is the unassembled surface. It is equivalent to the
+architecture header: compact enough to read, self-descriptive enough to review,
+and dependent on imports for full expansion. The assembled schema is the long
+form: every imported type resolved, every route connected to a body type, every
+feature tied to concrete generated code.
 
 ## Improved Import Model
 
@@ -464,13 +510,13 @@ Note the intentional duplication of the words `Watch` and `Unwatch`: one copy
 is the route root in the header; the other is the body enum in the namespace.
 They are connected by lowering. They are not the same object in the text parser.
 
-## Lowered Mid Representation
+## Assembled Schema Representation
 
 The authored schema should lower into a fully explicit machine object. This is
 what the schema daemon stores, diffs, and uses to drive migrations.
 
 ```nota
-(SchemaMid
+(AssembledSchema
   spirit
   [
     (ImportBinding Magnitude ../signal-sema/magnitude.schema All)
@@ -494,8 +540,72 @@ what the schema daemon stores, diffs, and uses to drive migrations.
   ])
 ```
 
-The mid form is deliberately not as pretty as the authored schema. It is the
-auditable compiler output.
+The assembled form is deliberately not as pretty as the authored schema. It is
+the auditable compiler output. It is the object the schema daemon stores and
+diffs. Earlier reports and designer `/326-v11` called this `SchemaMid`; the
+psyche corrected the name to `AssembledSchema` because it is the fully assembled
+long form, not an intermediate halfway object.
+
+## Upgrade Model
+
+Upgrade knowledge belongs to the next version. The next version compiles with
+awareness of the previous assembled schema, derives the diff, and carries the
+upgrade path from last to next.
+
+```mermaid
+flowchart LR
+    Previous["previous AssembledSchema<br/>main / production"]
+    NextAuthored["next authored .schema<br/>next branch"]
+    NextAssembled["next AssembledSchema"]
+    Diff["schema diff<br/>standard changes inferred"]
+    UpgradeSection["upgrade section / trait impls<br/>ambiguous changes explained"]
+    Migrator["generated upgrade logic<br/>mutates old data into next shape"]
+
+    Previous --> Diff
+    NextAuthored --> NextAssembled
+    NextAssembled --> Diff
+    Diff --> Migrator
+    UpgradeSection --> Migrator
+```
+
+Standard changes can be inferred from the assembled-schema diff. Examples:
+
+```nota
+;; add a new enum unit variant
+Kind [Decision Principle Correction Clarification Constraint Hypothesis]
+
+;; add a field with an explicit default/migration rule in the upgrade section
+Entry (Topic Kind Summary Context Magnitude Quote Source)
+```
+
+Ambiguous or destructive changes require explicit upgrade knowledge. Examples:
+
+```nota
+;; rename or transform: cannot be guessed safely
+(Upgrade
+  (RenameField Entry Quote Verbatim)
+  (Transform Entry Source SourceFromContext))
+
+;; drop data: explicit destructive decision
+(Upgrade
+  (DropField Entry Quote))
+```
+
+The exact `Upgrade` grammar is not settled here. The important architecture is
+settled: if the diff cannot prove a safe transformation, the next schema must
+carry either an annotation, a trait implementation, or an explicit destructive
+decision.
+
+During dual-version operation, replies need to distinguish which write failed:
+
+```nota
+(UpgradeWriteRejected OldDatabaseNotKept)
+(UpgradeWriteRejected NewDatabaseRejected)
+```
+
+Those names are illustrative, not final contract names. The invariant is that
+the caller must know whether the old database failed to keep the message or the
+new database failed to accept it.
 
 ## Runtime Header Dispatch
 
@@ -540,13 +650,16 @@ introspection value of the header work.
    written as `(Import Path (Vec EnumIdentifier))`.
 2. Add import collision diagnostics.
 3. Add Form 2 header parsing for `(Root [Endpoint...])`.
-4. Lower Form 1 and Form 2 into one `SchemaMid` route table.
+4. Lower Form 1 and Form 2 into one `AssembledSchema` route table.
 5. Keep endpoint body resolution out of the header parser: resolve it through
    namespace lookup during lowering.
-6. Emit the 64-bit short header table from `SchemaMid`, not from the raw
+6. Emit the 64-bit short header table from `AssembledSchema`, not from the raw
    authored schema.
-7. Add round-trip tests for authored schema -> `SchemaMid` -> generated
+7. Add round-trip tests for authored schema -> `AssembledSchema` -> generated
    dispatch table.
+8. Add previous/next assembled-schema diff tests that prove standard changes
+   are inferred and ambiguous/destructive changes require explicit upgrade
+   knowledge.
 
 ## Operator Recommendation
 
@@ -556,7 +669,7 @@ route/body/feature corrections. The next code pass should preserve two rules:
 1. Import map keys are provenance labels; imported names enter the local
    namespace directly; collisions are errors.
 2. Header vectors are route declarations only; namespace nodes define body
-   shapes; lowering connects them into `SchemaMid`.
+   shapes; lowering connects them into `AssembledSchema`.
 
 That gives the macro library a clean architecture: the parser reads concise
 schema sugar, the lowerer expands it into a fully explicit intermediate object,
@@ -569,13 +682,15 @@ from v2 is closed:
 
 - Form 2 nested entries are route selectors only.
 - Payload/body types resolve from namespace declarations during lowering.
-- The generated short-header table is emitted from `SchemaMid`, not raw schema
-  text.
+- The generated short-header table is emitted from `AssembledSchema`, not raw
+  schema text.
 
 Three implementation-level precision notes remain:
 
 1. Use absolute file-position names in code and docs so imports are not
    accidentally skipped in numbering.
-2. Treat unit endpoints as explicit unit body routes in `SchemaMid`.
+2. Treat unit endpoints as explicit unit body routes in `AssembledSchema`.
 3. Keep the feature grammar deliberately small in the MVP: `Reply`, `Event`,
    `Observable`, and only storage metadata if an implementation needs it.
+4. Do not design the full upgrade grammar prematurely; implement the first
+   previous/next diff cases and let real ambiguity force the annotation surface.
