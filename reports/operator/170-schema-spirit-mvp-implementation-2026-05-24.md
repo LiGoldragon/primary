@@ -5,12 +5,12 @@
 This pass lands the first runnable subset of the `/321` through `/326-v7`
 Spirit MVP stack.
 
-**Staleness note, 2026-05-24:** Spirit records 477-480 supersede the v7 header
-pair shape implemented here. Current code accepts the v7 `(State Statement)`
-and older `(State [Statement])` one-endpoint forms. The newly clarified target
-is a root header enum namespace such as `(State [Statement Proposal Retraction])`
-where nested endpoint tokens are the fast dispatch variants and a lowered
-mid-representation resolves them to body schemas. See
+**Refinement note, 2026-05-24:** Spirit records 477-480 and
+`reports/designer/326-v8-spirit-complete-schema-vision.md` refine the header
+shape. Current code implements the valid Form 1 pair shape `(State Statement)`
+and the import-first schema field order. It does not yet implement Form 2
+sub-enum headers such as `(Watch [State Records ObservationStream])`,
+selective imports, `AllOrSome`, or the stored lowered mid-representation. See
 `reports/operator/173-schema-header-namespace-and-import-example-2026-05-24.md`.
 
 The implemented subset is Nix-green across the participating repos:
@@ -28,9 +28,8 @@ The implemented subset is Nix-green across the participating repos:
   `Kind [Decision ...]`, `Topic (String)`, `Entry (Topic Kind ...)`
 - `/326-v6` bare-identifier alias/reference declarations in namespace value
   position, with short-header emission following aliases
-- `/326-v7` import-first schema parsing and explicit header payload pairs such
-  as `(Record Entry)`, now known to be a transitional/stale implementation
-  after Spirit records 477-480
+- `/326-v7`/`/326-v8` import-first schema parsing and explicit Form 1 header
+  payload pairs such as `(Record Entry)`
 - `persona-spirit` consuming the projected signal contract
 
 This is not the full `/324` target. The macro does not yet emit every
@@ -49,6 +48,7 @@ box-form calls. It proves the path through real repos and Nix checks.
 - `reports/designer/326-v3-spirit-complete-schema-vision.md`
 - `reports/designer/326-v5-spirit-complete-schema-vision.md`
 - `reports/designer/326-v6-spirit-complete-schema-vision.md`
+- `reports/designer/326-v8-spirit-complete-schema-vision.md`
 - `reports/second-designer/164-nota-schema-language-vector-of-root-verb-enums-2026-05-24.md`
 - `reports/second-operator/178-schema-section-shape-and-nota-map-check-2026-05-24.md`
 - `reports/nota-designer/6-quoted-string-purge-audit-2026-05-24.md`
@@ -373,7 +373,8 @@ Passing repos:
 - `persona-spirit`
 
 The final `persona-spirit` Nix check passed after updating to
-`signal-persona-spirit@2b4dd00c9081`.
+`signal-persona-spirit@c6fe1f2819c7` through
+`persona-spirit@a3e7cad7d9d3`.
 
 ## Remaining gaps against /324
 

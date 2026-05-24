@@ -5,6 +5,14 @@
 This report records the operator interpretation of the psyche's correction to
 `reports/designer/326-v6-spirit-complete-schema-vision.md`.
 
+**Refinement note, 2026-05-24:** Spirit records 477-480 and
+`reports/designer/326-v8-spirit-complete-schema-vision.md` refine this
+further. The one-endpoint shape in this report remains the valid Form 1 case,
+but it is not the full target. The current target is described in
+`reports/operator/173-schema-header-namespace-and-import-example-2026-05-24.md`:
+Form 1 is `(State Statement)`, while Form 2 is a bracketed endpoint namespace
+such as `(Watch [State Records ObservationStream])`.
+
 Spirit records captured during this pass:
 
 - 472 - schema headers are ordered enum-root declarations, not namespace
