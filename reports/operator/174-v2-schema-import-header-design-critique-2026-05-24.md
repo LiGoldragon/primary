@@ -1,8 +1,8 @@
-# 174 - Schema import and header design critique, 2026-05-24
+# 174-v2 - Schema import and header design critique, 2026-05-24
 
 ## Context
 
-This report responds to the psyche's request for an operator-side improved
+This v2 report responds to the psyche's request for an operator-side improved
 design and critique of the current schema-language direction, after
 `reports/designer/326-v10-spirit-complete-schema-vision.md`.
 
