@@ -166,17 +166,11 @@ do not reintroduce it. The rule above is sufficient: structs are
 untagged, enum variants own PascalCase tags, and map keys are key
 text by delimiter position.
 
-**Bracket and bare strings.** Where an ordinary schema position
-expects `String`, the canonical delimited form is `[content]`, and
-a bare camelCase or kebab-case token serves as the same value
-(`nota-codec` is the same as `[nota-codec]`). A bare PascalCase
-token at an ordinary `String` position is an enum-looking value and
-is rejected; delimit it as `[User]` when the capitalized text is
-string content.
-
-**Two bracket-string forms.** NOTA has TWO string-bracket shapes,
-distinguished by the delimiter pair (per psyche 2026-05-25, intent
-record 597):
+**Strings come EXCLUSIVELY from bracket forms.** Brackets ARE the
+string form in NOTA. Quotation marks do NOT form string types —
+they're ordinary content when they appear inside a bracket string,
+and authored NOTA avoids them entirely. Two canonical forms,
+plus a bare-token shorthand:
 
 - `[content]` — **inline bracket string**: single-line string
   content. Cannot contain literal `[` or `]` inside (would
@@ -186,13 +180,31 @@ record 597):
   lets the content include `[`, `]`, or newlines freely without
   escaping. Use when the string needs to wrap multiple lines OR
   contains bare `[` / `]` characters.
+- **Bare camelCase or kebab-case token** at a `String` schema
+  position is equivalent to `[token]` — `nota-codec` is the same
+  value as `[nota-codec]`. A single lowercase letter `a` parses as
+  the bare form; write `[a]` when you want to make the string
+  shape explicit. A bare PascalCase token at an ordinary `String`
+  position is rejected as an enum-looking value; delimit it as
+  `[User]` when the capitalized text is string content.
 
-The shape-logic layer (per `nota-codec::NotaValue::is_block_string`
-landed in `nota-codec` `323a3a74` per second-operator/187)
-distinguishes the two at the parser level. Macros that dispatch by
-shape see `is_block_string` as a distinct predicate from
-`is_sequence` even though both involve `[` brackets — the `|`
-pair-delimiter is the disambiguator.
+The shape-logic layer distinguishes inline-bracket-string from
+sequence at the parser level via the `[|` pair-delimiter, so
+macros that dispatch on shape see `is_block_string` as a distinct
+predicate from `is_sequence` even though both involve `[`.
+
+**Quotation marks are strongly disfavored and never emitted by
+canonical encoding.** The lexer in `nota-codec` accepts legacy
+`"..."` quoted strings as **migration input only** — there's a
+`read_legacy_quote_string` path explicitly named "legacy". The
+encoder structurally cannot emit a quotation mark: `write_string`
+has three branches (bare identifier, `[|...|]` block, `[...]`
+inline) and no fourth quote branch exists. A legacy → canonical
+round-trip sheds the quotation marks. Legacy acceptance is slated
+for removal once all emitter sites (CriomOS-home Nix modules,
+`lojix-cli`, downstream consumers) migrate; legacy `intent/*.nota`
+files migrate via a separate programmatic extractor that preserves
+psyche timestamps.
 
 **Shell invocation uses outer double quotes.** When NOTA is passed as
 an inline CLI argument, wrap the whole NOTA object in shell double
@@ -207,6 +219,18 @@ This is why authored NOTA strings use `[text]` and `[|text|]`, not
 boundary. Single quotes are no longer the normal inline form; they
 make natural apostrophes painful and undercut the bracket-string
 design.
+
+**Embedding-safety is the load-bearing consequence.** Because NOTA
+never contains a `"`, a complete NOTA expression embeds escape-free
+inside any host whose string syntax uses double quotes — JSON, Rust
+string literals (including raw `r"..."`), Nix attribute values,
+YAML scalars, TOML strings, shell double-quote arguments, HTTP
+request bodies, database string columns, environment variable
+values, XML attributes. JSON-in-JSON requires escape cascades;
+NOTA-in-anything-with-double-quote-strings is escape-free. This is
+a load-bearing design property of the format, not an incidental
+side effect — design new emitters and storage paths to take
+advantage of it.
 
 **Map keys.** Maps use their own delimiter:
 
