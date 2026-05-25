@@ -232,6 +232,47 @@ Add tests that lock out the current regression path:
    multi-endpoint/unit route support.
 9. Delete `ChannelSpec` once no hand-written contract macro uses it.
 
+## Implementation Slice Landed
+
+This slice starts the migration instead of only describing it.
+
+Landed in `signal-frame`:
+
+- New `schema-rust` workspace crate.
+- New `emit_schema!` proc-macro entrypoint.
+- `legacy_signal_channel!` as the explicit old handwritten macro path.
+- Compatibility `signal_channel!` still present, but fenced to the old
+  handwritten grammar only.
+- `signal_channel!([schema])` is now a compile-fail witness, not a bridge.
+- `emit_schema!` calls `schema::LoadedSchema` and `schema_rust::RustComposer`;
+  it does not call `ChannelSpec`, `schema_reader`, or `emit::emit`.
+- `schema-rust` emits an initial structured Rust module from `AssembledSchema`:
+  local enums/newtypes/records, imported marker types, operation/endpoint
+  enums, `LogVariant` projection, route descriptors, and
+  `route_for_short_header`.
+- `flake.nix` adds a source constraint check that fails if the
+  `emit_schema!` / `schema-rust` path references the legacy emitter model.
+
+Tests added:
+
+- `tests/emit_schema.rs` compiles generated Rust from a `.schema` fixture and
+  checks route triage, `LogVariant`, and positional field generation.
+- `tests/ui/channel_macro/schema_input_rejected.rs` proves the legacy
+  `signal_channel!` path no longer accepts schema input.
+- `schema-rust` unit tests exercise the pure composer without proc-macro
+  harness coupling.
+
+Verification run:
+
+```text
+nix flake check --option max-jobs 0 --print-build-logs
+nix build .#checks.x86_64-linux.default \
+  .#checks.x86_64-linux.schema-macro-does-not-use-legacy-emitter \
+  --option max-jobs 0 --print-build-logs
+```
+
+Both completed successfully.
+
 ## Bead Impact
 
 `primary-ezqx.1` should no longer be interpreted as "extend
@@ -258,8 +299,8 @@ direction.
 Stop adding features to `signal-frame/macros/src/schema_reader.rs` and
 `emit.rs` for schema-derived generation. Treat them as legacy bridge code.
 
-The next implementation slice should start the pure composer library with one
-end-to-end witness:
+The next implementation slice should expand the pure composer from the current
+fixture witness to one real contract witness:
 
 - input: current `signal-persona-spirit/spirit.schema`;
 - output: module-per-schema Rust for the ordinary Spirit contract;
