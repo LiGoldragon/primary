@@ -56,7 +56,7 @@ Replies wired today: `HandoverAcceptance`, `HandoverFinalization`. Replies typed
 
 ## §5 The gap — current = marker-only; full = marker + mirror + divergence + recovery
 
-**For Spirit MVP** (write-mostly state store, shared DB across versions), marker-only is sufficient: the new daemon reads the same redb the old daemon was writing; marker tells it where to resume. Mirror would be redundant.
+**For Spirit MVP** (write-mostly state store, sync writes to disk), marker-only is sufficient: the new daemon COPIES the old daemon's redb, runs schema migration on the copy, and marker tells it the last commit position the old daemon reached. Mirror would carry nothing because there is no in-memory state to transfer (acked == durable, see §3.2).
 
 **For orchestrate** (single-writer lane-claim authority with in-flight claim state), Mirror is needed: the new daemon must receive a snapshot of in-flight claim state from the old daemon — claims that have NOT yet been persisted but ARE held in memory. Without Mirror, lane claims are lost across cutover.
 
@@ -69,17 +69,20 @@ sequenceDiagram
     participant Sup as Supervisor (systemd / persona-daemon)
     participant Old as Old daemon (v0.1.0)
     participant New as New daemon (v0.1.1)
-    participant DB as redb (shared state)
+    participant OldDB as Old redb
+    participant NewDB as New redb (migrated copy)
     participant Cli as Clients
 
     Note over Sup,Cli: Steady state: Old daemon serving Clients via public sockets
     Cli->>Old: ordinary/owner operations
-    Old->>DB: write durable state
+    Old->>OldDB: write durable state
     Old-->>Cli: replies
 
-    Note over Sup,New: Phase 1 — Spawn new daemon
+    Note over Sup,New: Phase 1 — Spawn new daemon and copy+migrate database
     Sup->>New: spawn(v0.1.1, spawn_envelope)
-    New->>DB: open (shared with Old)
+    New->>OldDB: read snapshot of old redb
+    New->>NewDB: write migrated copy
+    New->>NewDB: open for reads and writes
     New->>Old: connect to private upgrade socket
 
     Note over Old,New: Phase 2 — Marker exchange
@@ -97,7 +100,7 @@ sequenceDiagram
 
     Note over Old,Cli: Phase 5 — Drain: Old keeps serving briefly
     Cli->>Old: ordinary operations (some succeed)
-    Old->>DB: writes
+    Old->>OldDB: writes (lost to NewDB unless mirrored)
     Old-->>Cli: replies
     Note over Old: New requests still hit Old until cutover
 
@@ -108,9 +111,9 @@ sequenceDiagram
     New->>New: bind public ordinary + owner sockets
 
     Note over Cli,New: Phase 7 — Clients reconnect
-    Cli-xOld: connection refused (cutover instant)
+    Cli -x Old: connection refused at cutover instant
     Cli->>New: retry on new socket
-    New->>DB: handle operations
+    New->>NewDB: handle operations
     New-->>Cli: replies
 
     Note over Sup,Old: Phase 8 — Old daemon exits
@@ -119,13 +122,13 @@ sequenceDiagram
 
     opt Divergence at any step
         Old-->>New: Divergence(reason)
-        Note over New,Sup: New daemon aborts handover; reports to supervisor
-        New->>Sup: abort; Old keeps serving
+        Note over New,Sup: New daemon aborts handover and reports to supervisor
+        New->>Sup: abort and Old keeps serving
     end
 
     opt Recovery if either daemon crashes mid-cutover
         Sup->>New: RecoverFromFailure(RecoveryRequest)
-        Note over Sup,New: Supervisor restarts the failed side; ceremony resumes from marker
+        Note over Sup,New: Supervisor restarts the failed side and ceremony resumes from marker
     end
 ```
 
@@ -148,7 +151,7 @@ stateDiagram-v2
 
     MarkerOffered --> Diverged: schema/marker mismatch
     MirrorStreaming --> Diverged: mirror failure
-    Diverged --> Serving: abort handover; resume serving
+    Diverged --> Serving: abort handover and resume serving
 ```
 
 ### §7.2 New daemon (the one taking over)
@@ -156,25 +159,43 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> Spawning
-    Spawning --> DatabaseOpened: open shared redb
+    Spawning --> CopyingDatabase: copy old redb to new path
+    CopyingDatabase --> RunningMigration: copy complete
+    RunningMigration --> DatabaseOpened: apply schema migration and open
     DatabaseOpened --> ConnectingToOld: dial private upgrade socket
     ConnectingToOld --> RequestingMarker: AskHandoverMarker sent
-    RequestingMarker --> MirrorReceiving: HandoverMarker received; send Mirror
+    RequestingMarker --> MirrorReceiving: HandoverMarker received and send Mirror
     MirrorReceiving --> ReadyToCommit: MirrorAcknowledgement received
     ReadyToCommit --> ReadinessSent: ReadyToHandover sent
     ReadinessSent --> SocketBinding: HandoverAcceptance received
-    SocketBinding --> Completing: bind public ordinary+owner sockets; send HandoverCompleted
+    SocketBinding --> Completing: bind public ordinary+owner sockets and send HandoverCompleted
     Completing --> Serving: HandoverFinalization received
-    Serving --> [*]: long-lived; serves clients
+    Serving --> [*]: long-lived and serves clients
 
     ConnectingToOld --> Failed: connection refused / timeout
     RequestingMarker --> Diverged: HandoverRejection received
     MirrorReceiving --> Diverged: mirror divergence reported
     Diverged --> AbortingHandover: report to supervisor
-    AbortingHandover --> [*]: exit clean; Old continues serving
+    AbortingHandover --> [*]: exit clean and Old continues serving
     Failed --> Recovery: send RecoverFromFailure
     Recovery --> ConnectingToOld: retry
 ```
+
+## §7.3 Why copy+migrate, not shared database
+
+The new daemon does NOT share the old daemon's redb file. It COPIES the old DB, runs schema migration on the copy, and opens the migrated copy as its own state. Rationale:
+
+| Concern | Shared DB | Copy + migrate (chosen) |
+|---|---|---|
+| Schema change (v0.1.0 → v0.1.1) | Impossible — different schemas can't read same file | Required — new schema lives only in the copy |
+| Rollback if new daemon fails post-cutover | Impossible — old DB has been written by new schema | Possible — old DB unchanged; supervisor can restart old daemon |
+| In-flight writes during cutover window | Race conditions — both daemons writing | Clean separation — old writes to its DB until HandoverCompleted; new writes to migrated copy only |
+| Cost | Cheap (no copy) | One file copy at spawn (O(N) in DB size; redb is single-file, fast block copy) |
+| Same-version handover (no schema change) | Possible but loses rollback | Identity migration; rollback intact |
+
+For Spirit (~MB-scale redb), the copy is sub-second. For larger components, the copy time becomes part of the spawn latency, but it's amortised across the whole upgrade — happens once per cutover, not per request.
+
+**Important consequence for the Mirror operation**: during the copy + migration phase, the old daemon CONTINUES to accept writes. Any write the old daemon accepts AFTER the copy point is invisible to the new daemon's copy. That delta is what Mirror transfers (Phase 3 of the sequence). For Spirit's sync-write pattern with "acked == durable" + drain at HandoverCompleted, the delta is bounded: it's the writes between the copy timestamp and the HandoverCompleted timestamp, which clients can re-submit if their ack was missed. For orchestrate, this delta includes in-flight lane claims that haven't been persisted at all and Mirror must carry them.
 
 ## §8 The new-daemon-talks-to-old-daemon channel — what it carries
 

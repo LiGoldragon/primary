@@ -326,6 +326,91 @@ messages or a comma-separated label over arrows, semicolons,
 shell punctuation, or markdown/HTML. The diagram is a topology
 artifact, not a transcript.
 
+The same semicolon rule applies inside `Note over`, `Note left of`,
+`Note right of` text. A note line like
+
+```text
+Note over New,Sup: New daemon aborts handover; reports to supervisor
+```
+
+trips the parser the same way a message would. Use "and", a comma,
+or split into two notes.
+
+Arrow operators with letters in them — `-x` (solid cross),
+`--x` (dotted cross), `-)` (solid point), `--)` (dotted point) —
+must have whitespace separating the actors from the arrow.
+Confirmed-failing form from a recent report:
+
+```text
+Cli-xOld: connection refused
+```
+
+The lexer reads `Cli-xOld` as a single identifier token and the
+parse explodes a few lines later with a confusing error pointing
+elsewhere. Always insert spaces:
+
+```mermaid
+sequenceDiagram
+    participant Cli as Client
+    participant Old as Old daemon
+    Cli -x Old: connection refused
+```
+
+The plain `->>` and `-->>` arrows do not require the spacing (the
+lexer recognises `->>` even when wedged between identifiers), but
+the spaced form is more readable; default to spaces around all
+arrows.
+
+### State diagrams
+
+`stateDiagram-v2` carries the same semicolon-as-statement-boundary
+behaviour as sequence diagrams. Transition labels (`StateA -->
+StateB: label`) MUST NOT contain semicolons. Use "and" or split
+into separate transitions.
+
+Wrong (semicolons in transition labels, all silently breaking):
+
+```text
+stateDiagram-v2
+    Diverged --> Serving: abort handover; resume serving
+    SocketBinding --> Completing: bind sockets; send HandoverCompleted
+    Serving --> [*]: long-lived; serves clients
+```
+
+Right:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Diverged
+    Diverged --> Serving: abort handover and resume serving
+    Serving --> Bound: bind sockets and send HandoverCompleted
+    Bound --> [*]: long-lived and serves clients
+```
+
+State names follow the same short-prose rule as node labels:
+PascalCase nouns of 1-3 words. Long descriptions in state names
+overlap with neighbouring states; if a state needs more than a
+short noun, move the description into the surrounding prose or a
+sibling table.
+
+### Long descriptions in any label position
+
+The §"Label sizing" rule (short prose, IDs in sibling tables)
+applies UNIFORMLY across label positions, not just flowchart node
+labels. The same overlap-truncation problem hits:
+
+- sequence-diagram message text (`A->>B: long message text...`)
+- state-diagram transition labels (`A --> B: long label text...`)
+- flowchart edge labels (`A -->|long pipe label| B`)
+- subgraph titles (already covered above)
+- Note text (`Note over A,B: long note text...`)
+
+For any of these: if the substance needs more than ~5 words, the
+diagram has stopped carrying topology and started carrying prose.
+Factor the explanation OUT of the diagram into the surrounding
+report text, and keep the diagram label to the 1-5 word noun or
+verb phrase that names the topology.
+
 ## Diagnostic — parse before publishing
 
 Parse the raw Mermaid block with the target renderer version
