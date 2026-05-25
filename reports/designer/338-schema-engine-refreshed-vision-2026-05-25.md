@@ -144,7 +144,7 @@ The composition is recursive + small + auditable. Adding a new container `(Set T
 
 ### §6.1 Module-per-schema output (record 620)
 
-The brilliant macro library (proc_macro consumer of `AssembledSchema`) emits ONE Rust module per `.schema` file. Mirrors the schema-file structure on disk. Generated code lives at `<crate>::<schema-module>::<type>`.
+The `schema-rust` composer library (consumed by the `emit_schema!` proc-macro per records 639 + 641) walks `AssembledSchema` top-down and emits ONE Rust module per `.schema` file. Mirrors the schema-file structure on disk. Generated code lives at `<crate>::<schema-module>::<type>`. The legacy `signal-frame/macros/` infrastructure is deleted as part of this — emission is a fresh top-down composer, NOT a wrapping of `signal_channel!`. See `reports/designer/340-schema-emission-no-legacy-signal-channel-2026-05-25.md` + `reports/operator/184-schema-macro-old-emitter-audit-2026-05-25.md`.
 
 Example: `spirit.schema` generates module `spirit`, with `spirit::Operation`, `spirit::Reply`, `spirit::Entry`, `spirit::Topic`, etc. The signal-persona-spirit crate exposes `spirit::*` as its public API.
 
@@ -187,7 +187,7 @@ Within one schema's context, every name resolves to exactly one thing. Imports n
 | Q18 Multi-component upgrade ordering | HOLDS — declarative dep graph in schema | |
 | Q19 upgrade-daemon binary needed | HOLDS — NOT needed, persona-daemon supervises | |
 | Q21 Multi-endpoint macro extension | LARGELY LANDED | Per operator/181 + 182; multi-endpoint headers work in schema main |
-| Q22 Post-promotion `signal_channel!` deletion | HOLDS | Once every contract is schema-derived, manual macro deletes |
+| Q22 Post-promotion `signal_channel!` deletion | NOW THE PLAN per /340 + /184 | `signal-frame/macros/` deleted as `schema-rust` + `emit_schema!` reaches feature parity — not a downstream janitorial step |
 | Q23 Wire-shape Retire/Supersede for intent | HOLDS | Future signal-persona-spirit extension |
 | Q24 Avoid redb maintenance script | HOLDS | |
 | Q25 Audit cadence | HOLDS | Per-session small + weekly larger sweep |
@@ -199,17 +199,19 @@ Within one schema's context, every name resolves to exactly one thing. Imports n
 - **/336's implicit assumption that the type system has Enum + Struct + Newtype as parallel kinds** — superseded by record 616 (`everything-reduces-to-structs`). Vec/Option/Map are structs; data-carrying enum variants are structs; only the unit case is separate.
 - **/336's silence on module-per-schema output** — now decided per record 620; emission produces one Rust module per `.schema`.
 
-## §8 The next operator slices, refreshed
+## §8 The next operator slices, refreshed (post /340 + /184)
 
 In priority order:
 
 1. **`primary-602y`** (signal-frame v0.1.0.1 retrofit) — P0; unblocks cross-version live handover; single-version MVP already runs cleanly without it
-2. **`primary-cklr`** (UpgradeMacro Rust code emission) — emits the `From`-chain from `(Upgrade …)` schema fragments; deletes the real-pipeline MVP's `divergence_action.rs` + `mirror_gating.rs` stubs in one slice; depends on AssembledSchema fully-qualified names (record 621 already landed)
-3. **Fixed-point iteration** — extend `MacroPipeline::run` from single-sweep to iterate-until-no-more-macros-fire; bounded count ~16; per /190 §"Remaining Holes" item 1
-4. **User macro library loading** — `(MacroLibrary path)` directive + lazy-load on reference; foothold is `MacroIndex` per /190 item 2
-5. **Module-per-schema emission** — proc_macro emits `<crate>::<schema-module>::<type>` per record 620; subsumes the schema-derived `signal_channel!` consumer
-6. **Persona-daemon multi-component orchestration** (`primary-a5hu`) — fleet conductor extending the existing single-component supervisor; coordinates upgrade across spirit + orchestrate + future components
-7. **Delete `schema::Parser` streaming compatibility** — per /190 §"Remaining Holes" item 5; once Spirit and Orchestrate both consume the shape parser, the streaming parser deletes
+2. **Stand up `schema-rust` composer library + `emit_schema!` proc-macro** — feature-parity with current `emit::emit` on `signal-persona-spirit/spirit.schema` as the gate; subsumes the previously-separate `primary-cklr` (UpgradeMacro Rust code emission becomes one of `schema-rust`'s composition modules). Library is testable in isolation per operator/184 §"Structured Composer Model"; proc-macro is a thin shell. Module-per-schema + fully-qualified names land here too.
+3. **Port `signal-persona-spirit` to `emit_schema!()`** — byte-equivalent integration test against current `signal_channel!([schema])` output; the migration starter case
+4. **Port the next 5 highest-value contract crates** — establishes the migration cadence; multi-endpoint roots + unit endpoints become exercisable in production paths (currently blocked by `ChannelSpec` downconversion per /340 §1.4)
+5. **Fixed-point iteration** — extend `MacroPipeline::run` from single-sweep to iterate-until-no-more-macros-fire; bounded count ~16; per /190 §"Remaining Holes" item 1
+6. **User macro library loading** — `(MacroLibrary path)` directive + lazy-load on reference; foothold is `MacroIndex` per /190 item 2
+7. **Persona-daemon multi-component orchestration** (`primary-a5hu`) — fleet conductor extending the existing single-component supervisor; coordinates upgrade across spirit + orchestrate + future components
+8. **Delete `signal-frame/macros/` wholesale** — once the last legacy text-form `signal_channel! { ... }` callsite migrates; 3331 LoC removed; `signal-frame/Cargo.toml` macros dep dropped
+9. **Delete `schema::Parser` streaming compatibility** — per /190 §"Remaining Holes" item 5; once Spirit and Orchestrate both consume the shape parser, the streaming parser deletes
 
 ## §9 Truly-residual open psyche questions
 
@@ -242,10 +244,11 @@ flowchart TB
         plan_upgrade[plan_upgrade_from]
     end
 
-    subgraph emission[signal-frame macros]
-        emit[signal_channel! schema-driven]
+    subgraph emission[schema-rust composer library + emit_schema! proc-macro]
+        composer[RustComposer walks AssembledSchema top-down]
         short_header[ShortHeader projection]
         dispatch[OperationDispatch trait]
+        upgrade[VersionProjection From-chain]
     end
 
     subgraph runtime[persona supervisor]

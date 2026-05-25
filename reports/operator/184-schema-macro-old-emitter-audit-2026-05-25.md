@@ -6,6 +6,8 @@ Psyche intent captured before audit:
 
 - Spirit record 637: schema-derived Rust emission must not rewire into the old signal macro implementation.
 - Spirit record 638: audit current schema macro generation for old-macro reuse and, if present, review the proper top-down replacement.
+- Spirit record 642: the schema-driven Rust code composer macro is named
+  `emit_schema!`, because it emits more than signal.
 
 Scope inspected:
 
@@ -109,7 +111,7 @@ The proc macro should be a thin shell:
 
 ```rust
 #[proc_macro]
-pub fn signal_schema(input: TokenStream) -> TokenStream {
+pub fn emit_schema(input: TokenStream) -> TokenStream {
     let request = SchemaMacroRequest::parse(input)?;
     let loaded = schema::LoadedSchema::read_path(request.path())?;
     let plan = schema_rust::RustComposer::new(loaded).compose()?;
@@ -220,8 +222,8 @@ Add tests that lock out the current regression path:
 1. Keep `signal-frame` kernel types. Do not rewrite the runtime kernel.
 2. Create the pure `schema-rust` composer library.
 3. Move schema-derived emission out of `signal-frame/macros/src/emit.rs`.
-4. Add a new macro entrypoint name for schema generation, or make
-   `signal_channel!([schema])` immediately call only `schema-rust`.
+4. Add `emit_schema!` as the schema-generation entrypoint. It should call
+   only `schema-rust`, not the old `signal_channel!` backend.
 5. Fence the old `signal_channel! { ... }` path as `legacy_signal_channel!`
    if existing crates still need a transition window.
 6. Port `signal-persona-spirit` first and require the constraints above.
