@@ -154,6 +154,35 @@ after the rewrite reaches feature parity. Until then:
 production edits → `main` in the canonical checkout; rewrite
 edits → `horizon-leaner-shape` worktree.
 
+## Spirit deploys side-by-side; cutover is an alias change
+
+The Spirit substrate ships side-by-side under
+`~/.local/state/persona-spirit/<version>/` with one tag-suffixed
+wrapper per release (`spirit-vX.Y.Z`), a `spirit-next` slot for the
+in-flight authoring branch, and the unsuffixed `spirit` symlink
+pointing at the current production target. Each daemon has its own
+sockets and its own redb database; versioned daemons never share
+files. Cutover from one production version to the next is an alias
+change, not a destructive replace — the older daemon stays installed
+and reachable through its tag-suffixed wrapper.
+
+This is the next/main/previous vocabulary applied at the deployment
+layer: *what is being authored IS next; the current published
+baseline IS main; previous is the prior release retained for
+handover.* The v0.2.0 deployment validated the pattern: production
+stayed on v0.1.0 while v0.2.0 ran in parallel for explicit testing
+through `spirit-v0.2.0`.
+
+The current deployed substrate (Spirit 0.2.0) carries one agent-
+clarified description per record, a kind, a magnitude, and a daemon-
+stamped timestamp; replies are terse (`(RecordAccepted N)`, no
+echo); topics are user-creatable single strings. *"Migrate live
+Spirit to v0.2 now."* The schema-driven persona-spirit feature branch
+(`designer-schema-full-stack-spirit-2026-05-25`) is a sibling fork of
+v0.2.0 awaiting operator integration; the schema-driven substrate is
+the candidate to fill `spirit-next` once integrated. Full
+discipline: `skills/spirit-cli.md` §"Deployment slots".
+
 ## Production work belongs in worktrees, not the canonical checkout
 
 When work touches code already in production and the arc spans
@@ -200,6 +229,44 @@ the active substrate. Don't use harness-dependent memory systems
 state store an outside agent cannot read). *Memory tied to one
 harness is invisible to every other harness and to the human.*
 
+## NOTA is the universal embedding-safe payload
+
+NOTA is the workspace's text data format for typed records — used
+for `.schema` files, for signal payloads on the wire, for intent
+records in Spirit, and for inline CLI arguments to every persona
+component. The format's load-bearing design property is that **NOTA
+never contains a double quote character.** Brackets are the string
+form (`[text]` inline; `[|text|]` for bracket-safe and multi-line
+content); quotation marks do not form string types. *"nota uses
+brackets for strings, not quotation marks. safe nota is free of
+unescaped quotation marks, they are strongly disfavored, and do not
+surround string types - that is what [ and [| do."*
+
+The consequence is **universal embedding-safety**: a complete NOTA
+expression embeds escape-free inside any host whose string syntax
+uses double quotes — JSON, Rust string literals (including raw
+`r"..."`), Nix attribute values, YAML scalars, TOML strings, shell
+double-quote arguments, HTTP request bodies, database string
+columns, environment variable values, XML attributes. *"JSON-in-JSON
+requires escape cascades; NOTA-in-anything-with-doublequote-strings
+is escape-free. This is a load-bearing design property of NOTA, not
+an incidental side effect."* The shell-double-quote wrapping
+convention (`spirit "(Record (...))"`) is the same principle at the
+CLI scale; design new emitters and storage paths to take advantage
+of it.
+
+`nota-codec` enforces the discipline structurally on the emitter
+side: the encoder's `write_string` has three branches (bare
+identifier, `[|...|]` block, `[...]` inline) and no quote branch
+exists. Legacy quoted-string input is accepted as migration only and
+is authorised for removal once all emitter sites migrate. Legacy
+`intent/*.nota` files get a separate programmatic extractor that
+preserves psyche timestamps, kept distinct from the legacy-quote-
+removal heresy sweep across emitters.
+
+Full discipline: `skills/nota-design.md` §"Strings come EXCLUSIVELY
+from bracket forms".
+
 ## The Nix store is not a search surface
 
 Running `rg`, `grep`, `find`, `fd`, broad globs, or recursive
@@ -233,6 +300,47 @@ before component-to-component wiring lands. *"we can use the
 components in the raw form like they don't have to be talking
 to each other right away."* No pre-coordinated integration
 ceremony; ship the triad, let usage demand wiring.
+
+## The schema-driven stack
+
+The workspace is migrating to a schema-driven architecture where
+each persona component declares its contracts — wire, storage, and
+internal-actor channels — in NOTA `.schema` files; the schema is the
+canonical source the macro pipeline projects into Rust, NOTA-text,
+and rkyv-binary. *The schema IS the architecture, not a tool that
+produces it.* Schemas warrant per channel; *contract = channel; one
+channel = one contract = one schema*. Three categories — wire (the
+process boundary), storage (the lifetime boundary), internal (the
+actor mailbox) — with wire schemas in the `signal-*` crate and
+storage + internal schemas in the daemon crate.
+
+Each actor declares two enums (ACTION + RESPONSE) plus an authored
+EffectTable + FanOutTargets. The schema engine injects a universal
+`Unknown(String)` variant into every RESPONSE enum — the actor's
+**safety floor**, structurally-valid no matter what arrives. The
+rkyv binary encoding lives in one byte layout that survives two
+homes: **sema** in storage, **signal** on the wire. NOTA is the text
+projection on top.
+
+Authors write from the point of view of **NEXT**; **MAIN** is the
+published baseline (imported as comparison); **PREVIOUS** or **LAST**
+is the prior iteration. The 8-byte ShortHeader prefix-preservation
+is this vocabulary applied at the wire layer (byte 0 of NEXT
+preserves byte 0 of MAIN). The DB-side migration story flows from
+the same vocabulary: daemon startup reads the version marker, runs
+the `mod previous` → `mod next` bridge if behind, writes the marker
+forward.
+
+The first full-stack POC lives across four
+`designer-schema-full-stack-spirit-2026-05-25` branches in `schema`,
+`signal-frame`, `persona-spirit`, and `signal-persona-spirit`. Six
+actor schemas, the three new Feature variants
+(EffectTable / FanOutTargets / StorageDescriptor), the universal-
+Unknown post-pass, the composer's authored emissions, the auto-
+migration runner, the dual wire emission — all proven by passing
+tests. The one deferred piece is cross-crate schema-import
+resolution; the workaround is hand-written Rust types matching what
+`emit_schema!` will produce.
 
 ## Persona-spirit is the apex; concept designer is the entry
 

@@ -169,10 +169,23 @@ yet — those land when the role's shape settles.
   to a NOTA file, or a path to a signal-encoded (rkyv) file. No flags
   (`--verbose`, `--format`, `--config=path`) — ever. If a binary
   needs new configuration, the contract's NOTA schema gets a new
-  field. Inline NOTA shell calls wrap the whole NOTA object in
-  double quotes — `spirit "(Record (...))"` — because NOTA strings
-  use bracket strings, not `"` delimiters. Full rule:
-  `skills/component-triad.md` §"The single argument rule".
+  field. Full rule: `skills/component-triad.md` §"The single
+  argument rule".
+- **NOTA strings come EXCLUSIVELY from bracket forms; never emit
+  quotation marks.** Brackets ARE the string form — `[text]` for
+  inline, `[|text|]` for bracket-safe / multi-line, bare camelCase
+  or kebab-case at `String` schema positions. Quotation marks do
+  NOT form string types in NOTA. The `nota-codec` encoder
+  structurally cannot emit `"`; legacy quoted-string input is
+  accepted as migration only and authorised for removal once all
+  emitters migrate. Inline NOTA shell calls wrap the whole NOTA
+  object in shell double quotes — `spirit "(Record (...))"` —
+  because NOTA never contains `"`. The same property scales up:
+  NOTA embeds escape-free inside any host whose string syntax uses
+  double quotes (JSON, Rust, Nix, YAML, TOML, shell, env vars, DB
+  columns) — NOTA-in-anything-with-double-quote-strings is
+  escape-free. Full discipline: `skills/nota-design.md`
+  §"Strings come EXCLUSIVELY from bracket forms".
 - **NOTA records are positional, not labeled.** Type first, then
   fields in declared order — no keywords inside records. The
   `(key value)` shape from Lisp/Clojure/JSON is not NOTA. Before
