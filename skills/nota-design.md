@@ -174,6 +174,26 @@ token at an ordinary `String` position is an enum-looking value and
 is rejected; delimit it as `[User]` when the capitalized text is
 string content.
 
+**Two bracket-string forms.** NOTA has TWO string-bracket shapes,
+distinguished by the delimiter pair (per psyche 2026-05-25, intent
+record 597):
+
+- `[content]` — **inline bracket string**: single-line string
+  content. Cannot contain literal `[` or `]` inside (would
+  ambiguate with sequence syntax).
+- `[|content|]` — **block string**: multi-line string content AND
+  safe-for-single-square-brackets. The `[|` / `|]` delimiter pair
+  lets the content include `[`, `]`, or newlines freely without
+  escaping. Use when the string needs to wrap multiple lines OR
+  contains bare `[` / `]` characters.
+
+The shape-logic layer (per `nota-codec::NotaValue::is_block_string`
+landed in `nota-codec` `323a3a74` per second-operator/187)
+distinguishes the two at the parser level. Macros that dispatch by
+shape see `is_block_string` as a distinct predicate from
+`is_sequence` even though both involve `[` brackets — the `|`
+pair-delimiter is the disambiguator.
+
 **Map keys.** Maps use their own delimiter:
 
 ```nota
