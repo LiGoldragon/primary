@@ -38,7 +38,7 @@ Three reforms changed the schema language since `/336`:
 Authored schema does NOT write field names. Records carry positional type names; field names lowercase from the type. Operator/180's explicit `((field-name Type) ...)` syntax is **reversed**.
 
 ```nota
-Entry (Topic Kind Summary Context Magnitude Quote)
+Entry [Topic Kind Summary Context Magnitude Quote]
 ```
 
 Generates a Rust struct:
@@ -61,11 +61,11 @@ Field names come from type names by lowercasing. No per-field overrides in the s
 When a struct wants a field named `certainty` of underlying type `Magnitude`, you declare a newtype:
 
 ```nota
-Certainty (Magnitude)
-Entry (Topic Kind Summary Context Certainty Quote)
+Certainty [Magnitude]
+Entry [Topic Kind Summary Context Certainty Quote]
 ```
 
-`Certainty` is a single-tuple newtype wrapping `Magnitude`. In the struct, the field name derives from `Certainty` → `certainty`. The newtype IS the rename mechanism.
+`Certainty` is a single-field newtype struct wrapping `Magnitude`. In the struct, the field name derives from `Certainty` → `certainty`. The newtype IS the rename mechanism.
 
 This eliminates an entire class of parser ambiguity (parens-with-lowercase-pairs was confused with namespace records) and matches the `everything-reduces-to-structs` principle below.
 
