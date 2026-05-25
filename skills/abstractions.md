@@ -298,7 +298,7 @@ is not by itself a reason to fold them.
 
 ## Companion disciplines
 
-This rule pairs with two others that push the same direction:
+This rule pairs with three others that push the same direction:
 
 - **Wrapped field is private.** A newtype wraps a primitive to
   give it identity; if the wrapped field is `pub` (`Slot(pub
@@ -314,7 +314,17 @@ This rule pairs with two others that push the same direction:
   fallback. Same discipline: the type system carries the
   meaning, not stringly-typed metadata.
 
-All three rules say the same thing in different domains: **the
+- **Engine logic = enum-vs-enum cross-product.** When two enums
+  meet under `match`, the cross-product of their variants is the
+  typed relationship — make it explicit, either as a nested match
+  or as a named trait (`Reaches<Right>`, `Contact<Other>`,
+  `Dispatch<Token>`). Same discipline at the *engine* layer:
+  the contact point between two structured inputs IS a noun,
+  and naming it surfaces logic that would otherwise scatter into
+  `if` chains, sentinel booleans, or string predicates. Full
+  rule: this workspace's `skills/enum-contact-points.md`.
+
+All four rules say the same thing in different domains: **the
 type system is the model**. Use it.
 
 ## The one-line summary

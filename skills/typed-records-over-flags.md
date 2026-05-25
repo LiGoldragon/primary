@@ -248,6 +248,12 @@ closed.
   "if the verb's noun has no payload, the verb is a method, not an
   actor." Same diagnostic applied to actor surfaces (see also
   `skills/actor-systems.md` §"Zero-sized actors are not actors").
+- `skills/enum-contact-points.md` — the engine-logic cousin. This
+  skill says "boolean-on-a-noun whose `yes` carries data wants to
+  be a typed record"; that skill says "two enums whose pairs carry
+  logic want to be a typed `match` or a typed trait." Same rule
+  applied to engine matrices: scattered conditional logic across
+  state combinations is the cross-product anti-pattern.
 - `skills/contract-repo.md` — typed records on the wire. The same
   discipline applied to wire-bearing types.
 - `skills/architectural-truth-tests.md` — once a typed record exists,

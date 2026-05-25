@@ -135,6 +135,10 @@ clients".
 - `skills/rust/crate-layout.md` — crate organization, CLIs as
   daemon clients.
 - `skills/abstractions.md` — cross-language methods-on-types rule.
+- `skills/enum-contact-points.md` — engine logic = enum-vs-enum
+  cross-product matching. Where two enums meet under `match`,
+  name the contact point (nested `match` or trait) instead of
+  scattering the matrix across `if` chains and string predicates.
 - `skills/naming.md` — cross-language naming, framework-category-
   suffix anti-pattern.
 - `skills/actor-systems.md` — actor discipline.

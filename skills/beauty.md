@@ -73,6 +73,11 @@ beauty, not keystroke-economy.
 - this workspace's `skills/abstractions.md` — the
   verb-belongs-to-noun rule (one of the diagnostic readings
   above).
+- this workspace's `skills/enum-contact-points.md` — engine
+  logic = enum-vs-enum cross-product. A scattered matrix
+  (nested `if` chains over state combinations, string-prefix
+  dispatch over a closed set) is one of the diagnostic readings
+  above; that skill is the canonical refactor.
 - this workspace's `skills/naming.md` — the spelled-out-words
   rule.
 - this workspace's `skills/rust-discipline.md` — Rust-specific
