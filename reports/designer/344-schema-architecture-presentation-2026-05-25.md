@@ -28,7 +28,7 @@ One declaration. Multiple simultaneous projections. Per record 656.
 
 We didn't invent this — it was emerging instinctively.
 
-**Phase 1** (pre-substrate): ASCII sketches in early designer reports. Actor topology drawn freehand. Dispatch matrices in mermaid. Architecture lived in the documents.
+**Phase 1** (Aski language work — per record 667 correction; STT had mistranscribed "Aski" as "ASCII"): the structural patterns first emerged in `aski-core` — parse-tree contract types (body / domain / expression / module / pattern / primitive / program / statement / trait / type) and the askic↔veric↔semac triad (compiler / verifier / semantics). `vscode-aski` editor tooling. Deep typed trees, closed variants, recursive composition, syntax-verification-semantics separation — all established there before the workspace's component-with-databases phase.
 
 **Phase 2** (substrate maturation): persona-spirit, persona-orchestrate, signal-frame, signal-version-handover. Hand-written `signal_channel!`, hand-written internal actors, hand-written redb tables. Four parallel surfaces, all correct, none unified.
 

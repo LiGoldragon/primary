@@ -12,9 +12,11 @@ The "redefines or more like crystallizes" framing matters. The schema IS the arc
 
 ## §1 The trajectory — three phases
 
-### Phase 1 — ASCII sketches (intuitive emergence)
+### Phase 1 — Aski language work (intuitive structural emergence)
 
-Earlier designer reports (/320s and earlier) carried ASCII-form architectures: mermaid graphs with named actor topology, hand-drawn dispatch matrices, sketches of mediator roles. The structural shape was forming intuitively. The reports articulated relationships between actors, named contact points, drew fan-out arrows. But the substrate underneath was implicit; the documents WERE the architecture in a loose sense.
+**Per record 667 correction**: record 656's quote contained "in Aski in my previous works" which STT mistranscribed as "in ASCII". The actual referent is the psyche's Aski language project — `aski-core` (rkyv contract types for the **askic↔veric↔semac triad**: compiler, verifier, semantics), `vscode-aski` editor tooling, the parse-tree primitives at `aski-core/core/*.core` (`body`, `domain`, `expression`, `module`, `pattern`, `primitive`, `program`, `statement`, `trait`, `type`).
+
+The structural patterns that crystallize in the schema substrate emerged FIRST in Aski: deep typed trees of parse nodes, closed variants for every syntactic category, recursive composition of expressions, and most load-bearing — the separation of syntax / verification / semantics into three coordinated artifacts (the triad). The schema engine is the second iteration of structural insights established in Aski. Where Aski formalized a programming language's parse tree as a typed contract, the schema engine formalizes the workspace's component contracts as a typed declaration. Same shape, different domain.
 
 ### Phase 2 — Components + databases (practical maturation)
 
