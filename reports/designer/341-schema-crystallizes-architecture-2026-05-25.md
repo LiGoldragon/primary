@@ -1,5 +1,17 @@
 # 341 — schema crystallization: how the .schema declaration formalizes the architecture that was already emerging
 
+> **STATUS — preserved as design-rationale (2026-05-25, sweep /349).**
+> The chosen-design substance from this report migrated into:
+> - `reports/designer/349-context-maintenance-sweep-2026-05-25/1-poc-schema-stack-explainer.md` §7 — the seven (now six active + one refined + one retracted) crystallised principles, plus §8 P8/P9 from /345's refresh and the vocabulary discipline P10.
+> - `repos/persona-spirit/INTENT.md` — actor-schema architecture, structure-is-schema-logic-is-Rust, rkyv-one-format, auto-migration runner, reading-actor + auto-tap.
+> - `repos/persona-spirit/ARCHITECTURE.md` — four-component layout + actor-engine pattern + runtime topology.
+> - `repos/schema/INTENT.md` — multi-pass parser philosophy, three Feature variants, finalize_universal_unknowns hook.
+> - `repos/signal-frame/INTENT.md` — composer's responsibility (authored-feature consumption + extensible-header discipline).
+> - `repos/signal-persona-spirit/INTENT.md` — dual emission compatibility approach.
+> - `skills/schema-driven-actors.md` — actor-schema authoring discipline.
+>
+> This report is **kept** per `skills/context-maintenance.md` §3a (design-rationale guard): it enumerates competing design alternatives, one of which (P5 InteractTrait + InteractionActor) was explicitly retracted per record 666 in §2.5. The chosen designs migrated to permanent docs; the retracted alternative is preserved here as design rationale. Read the permanent-doc landings for the chosen shape; read this report for the why-the-other-shape-was-rejected substance.
+
 ## Frame
 
 Psyche reflection 2026-05-25, captured as nine intent records (656-664).

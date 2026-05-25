@@ -17,13 +17,44 @@ statements as typed records and serves observation/subscription
 queries. Its bundled thin CLI is named **`spirit`** and lives in the
 user's nix profile as `~/.nix-profile/bin/spirit`. The daemon is
 `persona-spirit-daemon`, run as a user service; it listens on a
-unix-socket pair under `~/.local/state/persona-spirit/`.
+unix-socket pair under `~/.local/state/persona-spirit/<version>/`.
 
 The Spirit CLI is the normal substrate for intent capture
 (`skills/intent-log.md`). Do not append new psyche intent to
 `intent/*.nota` during normal work. If the daemon is unavailable,
 surface that as a blocker; do not silently revive the legacy file
 substrate.
+
+## Deployment slots — `spirit`, `spirit-vX.Y.Z`, `spirit-next`
+
+Spirit is **deployed side-by-side**. The user profile installs a
+versioned wrapper per tagged release plus a `spirit-next` slot for
+the in-flight authoring branch, and the unsuffixed `spirit` symlink
+points at whichever versioned wrapper is the current production
+target. Each daemon has its own segregated state directory
+(`~/.local/state/persona-spirit/<version>/`), its own sockets, and
+its own redb database — they never share files. A typical profile:
+
+```text
+spirit            -> spirit-vX.Y.Z       (production — the MAIN slot)
+spirit-vX.Y.Z     -> installed           (current production daemon)
+spirit-vX.Y.Z-1   -> installed           (older side-by-side, retained)
+spirit-vX.Y.Z+1   -> installed           (newer side-by-side, under test)
+spirit-next       -> (slot)              (in-flight authoring branch)
+```
+
+This is the next/main/previous vocabulary (workspace discipline)
+applied at the deployment-naming layer: **what is being authored IS
+next**; **the current published baseline IS main**; **previous is
+the prior release retained for handover**. Tag-suffixed wrappers
+(`spirit-v0.2.0` etc.) are explicit testing surfaces; the unsuffixed
+`spirit` is the production binding. Cutover is an alias change, not
+a destructive replace.
+
+When you need a specific substrate, call its tag-suffixed wrapper
+directly — `spirit-v0.2.0 "(Record …)"` — rather than the
+unsuffixed `spirit`. When in doubt about what `spirit` currently
+points at, `readlink -f $(command -v spirit)` resolves the chain.
 
 ## How to invoke
 
@@ -32,9 +63,13 @@ single-argument rule (`skills/component-triad.md` §"The single
 argument rule"). Two accepted shapes:
 
 - **Inline NOTA argument** — the argument is a NOTA expression starting
-  with `(`. This is the default. Wrap the whole NOTA expression in
-  shell double quotes. NOTA itself avoids `"` by using bracket strings,
-  so the shell double quotes are the clean outer argument boundary.
+  with `(`. This is the default. **Wrap the whole NOTA expression in
+  shell double quotes.** NOTA strings come from bracket forms
+  exclusively (`[text]` or `[|text|]`); there is no `"` inside any
+  valid NOTA expression. The shell double quote is therefore the
+  clean outer argument boundary, and apostrophes inside the
+  description survive untouched. Single-quoting the argument is wrong
+  — it loses apostrophes.
   ```sh
   spirit "(Record (workspace Decision [summary] Maximum))"
   ```
@@ -105,14 +140,28 @@ is `Some`-wrapping — `None` bare or `(Some <value>)`. `Topic`,
 newtypes — encoded as bare tokens when possible, or bracket strings
 when they contain whitespace or punctuation.
 
-**Record an intent entry** — daemon stamps date/time itself; clients
-do not supply timestamps:
+**Record an intent entry — description-only is the v0.2.0 shape.**
+A v0.2.0 record carries one agent-clarified `Description`, a `Kind`,
+and a `Magnitude`. No verbatim field, no context payload, no
+client-supplied timestamp. **The daemon stamps date/time itself.**
+The agent clarifies the psyche's wording into the description before
+recording — that is the agent's job, and it is what keeps the intent
+log dense and searchable rather than verbose and lossy:
 
 ```sh
 spirit "(Record (<topic> <Kind> [description] <Magnitude>))"
 # Kind ∈ { Decision Principle Correction Clarification Constraint }
 # Magnitude ∈ { Minimum VeryLow Low Medium High VeryHigh Maximum }
 ```
+
+The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
+the assigned identifier. The acknowledgement deliberately does not
+echo the submitted intent content; the wire reply is token-cheap.
+
+**Topics are user-creatable single strings** at the wire layer —
+any new topic word a `Record` uses is registered. No pre-declared
+enum of topics; pick the topic word that fits, reuse existing words
+when they cover the substance.
 
 **Observe records** — query the store; filter by topic and/or kind;
 choose description-only or with-provenance:
@@ -136,6 +185,38 @@ spirit "(State [free-form psyche statement text])"
 to long subscriptions; for agent code prefer the typed client
 library inside `persona_spirit::ordinary::SignalClient`. Tap/Untap
 fanout is currently a no-op placeholder pending persona-introspect.
+
+## The daemon's single-argument configuration
+
+The daemon binary `persona-spirit-daemon` honors the same
+single-NOTA-argument rule. Its argument is a positional 9-field
+record:
+
+```
+("/path/to/spirit.sock"
+ "/path/to/owner.sock"
+ "/path/to/upgrade.sock"
+ "/path/to/persona-spirit.redb"
+ <magnitude-limit:int>
+ None None None None)
+```
+
+Three Unix sockets (ordinary, owner, upgrade), one redb database
+path, one magnitude limit, four `None`-slot extension points
+reserved for future configuration fields. No flags. The CriomOS-home
+module is what authors this tuple per release; the daemon's
+`ExecStart` line is the canonical witness:
+
+```sh
+systemctl --user cat persona-spirit-daemon-vX.Y.Z.service
+```
+
+Future configuration fields land by filling one of the `None` slots
+in the contract crate, not by adding a flag. When the schema-driven
+substrate matures, a `spirit-daemon-config.schema` will emit this
+configuration record from a schema declaration rather than
+hand-authored positional parsing — but the contract shape (one
+positional record argument) is stable.
 
 ## On the substrate replacement
 

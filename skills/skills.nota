@@ -26,6 +26,8 @@
     [When to create a new crate; family-of-micro-components pattern; kernel-extraction triggers.])
   (Architecture actor-systems skills/actor-systems.md Topic
     [Dense actor topology. Supervised state-bearing actors; release-before-notify; trace witnesses.])
+  (Architecture schema-driven-actors skills/schema-driven-actors.md Topic
+    [Authoring discipline for actor schemas. ACTION + RESPONSE + universal Unknown safety floor + authored EffectTable + FanOutTargets. Structure is schema; logic is Rust.])
   (Architecture architectural-truth-tests skills/architectural-truth-tests.md Topic
     [Tests that catch architectural drift, not just regression.])
   (Architecture engine-analysis skills/engine-analysis.md Topic
