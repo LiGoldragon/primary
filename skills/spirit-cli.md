@@ -1,13 +1,13 @@
 ---
 tool_versions:
-  - [Spirit, "0.1.0"]
+  - [Spirit, "0.2.0"]
 ---
 
 # Skill — spirit CLI
 
 *The deployed `spirit` binary is the normal substrate for psyche
 intent capture and observation. Agents call it directly. This skill
-covers the live `Spirit 0.1.0` command shape and how to verify the
+covers the live `Spirit 0.2.0` command shape and how to verify the
 deployed wire shape when it drifts.*
 
 ## What this skill is for
@@ -31,17 +31,12 @@ The spirit binary takes **exactly one argument** per the
 single-argument rule (`skills/component-triad.md` §"The single
 argument rule"). Two accepted shapes:
 
-**Temporary deployment caveat.** The examples in this skill use
-legacy quote-delimited string values only because the deployed
-`Spirit 0.1.0` binary in the user profile still rejects bracket
-strings. Do not generalize this syntax to authored NOTA. Everywhere
-outside the live Spirit command surface, canonical NOTA strings use
-`[text]` or `[|text|]`.
-
 - **Inline NOTA argument** — the argument is a NOTA expression starting
-  with `(`. This is the default.
+  with `(`. This is the default. Wrap the whole NOTA expression in
+  shell double quotes. NOTA itself avoids `"` by using bracket strings,
+  so the shell double quotes are the clean outer argument boundary.
   ```sh
-  spirit '(Record (workspace Decision "summary" "context" Maximum "verbatim quote"))'
+  spirit "(Record (workspace Decision [summary] Maximum))"
   ```
 - **Path to a NOTA file** — the argument does not start with `(`; the
   CLI reads the file's contents as the NOTA argument. Reserved for
@@ -99,40 +94,41 @@ going to have to keep track of the interface"* —
 
 ## Operations on the ordinary channel (worked examples)
 
-Examples below match the live `Spirit 0.1.0` wire shape as deployed
+Examples below match the live `Spirit 0.2.0` wire shape as deployed
 for the unsuffixed `spirit` command. When in doubt, read the
 deployed source per the previous section.
 
 Records are **untagged** per `NotaRecord` (the `ee90eef` codec
 change). Enum variants carry a head; record bodies do not. `Option`
 is `Some`-wrapping — `None` bare or `(Some <value>)`. `Topic`,
-`Summary`, `Context`, `Quote`, `StatementText` are
-`NotaTransparent String` newtypes — encoded as bare strings (no
-ancestry wrapper).
+`Description`, and `StatementText` are `NotaTransparent String`
+newtypes — encoded as bare tokens when possible, or bracket strings
+when they contain whitespace or punctuation.
 
 **Record an intent entry** — daemon stamps date/time itself; clients
 do not supply timestamps:
 
 ```sh
-spirit '(Record (<topic> <Kind> "<summary>" "<context>" <Certainty> "<verbatim quote>"))'
+spirit "(Record (<topic> <Kind> [description] <Magnitude>))"
 # Kind ∈ { Decision Principle Correction Clarification Constraint }
-# Certainty ∈ { Maximum Medium Minimum }
+# Magnitude ∈ { Minimum VeryLow Low Medium High VeryHigh Maximum }
 ```
 
 **Observe records** — query the store; filter by topic and/or kind;
-choose summary-only or with-provenance:
+choose description-only or with-provenance:
 
 ```sh
-spirit '(Observe (Records (None None SummaryOnly)))'
-spirit '(Observe (Records ((Some "spirit") None WithProvenance)))'
-spirit '(Observe (Records (None (Some Decision) SummaryOnly)))'
+spirit "(Observe Topics)"
+spirit "(Observe (Records (None None DescriptionOnly)))"
+spirit "(Observe (Records ((Some spirit) None WithProvenance)))"
+spirit "(Observe (Records (None (Some Decision) DescriptionOnly)))"
 ```
 
 **Submit a free-form statement** — `State` lowers to an `Assert`
 sema-classified observation:
 
 ```sh
-spirit '(State "free-form psyche statement text")'
+spirit "(State [free-form psyche statement text])"
 ```
 
 **Subscribe / unsubscribe** — `Watch` opens a long-lived stream;

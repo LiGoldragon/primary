@@ -169,8 +169,10 @@ yet — those land when the role's shape settles.
   to a NOTA file, or a path to a signal-encoded (rkyv) file. No flags
   (`--verbose`, `--format`, `--config=path`) — ever. If a binary
   needs new configuration, the contract's NOTA schema gets a new
-  field. Full rule: `skills/component-triad.md` §"The single argument
-  rule".
+  field. Inline NOTA shell calls wrap the whole NOTA object in
+  double quotes — `spirit "(Record (...))"` — because NOTA strings
+  use bracket strings, not `"` delimiters. Full rule:
+  `skills/component-triad.md` §"The single argument rule".
 - **NOTA records are positional, not labeled.** Type first, then
   fields in declared order — no keywords inside records. The
   `(key value)` shape from Lisp/Clojure/JSON is not NOTA. Before

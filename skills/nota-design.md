@@ -194,6 +194,20 @@ shape see `is_block_string` as a distinct predicate from
 `is_sequence` even though both involve `[` brackets — the `|`
 pair-delimiter is the disambiguator.
 
+**Shell invocation uses outer double quotes.** When NOTA is passed as
+an inline CLI argument, wrap the whole NOTA object in shell double
+quotes:
+
+```sh
+spirit "(Record (nota Correction [description text] Maximum))"
+```
+
+This is why authored NOTA strings use `[text]` and `[|text|]`, not
+`"` string delimiters: the shell keeps `"` as the outer argument
+boundary. Single quotes are no longer the normal inline form; they
+make natural apostrophes painful and undercut the bracket-string
+design.
+
 **Map keys.** Maps use their own delimiter:
 
 ```nota
@@ -262,13 +276,13 @@ proposal, anywhere — do these four things:
 4. **Sketch fields positionally — no `(key value)` pairs inside the
    record. No nested wrappers when every record has the same
    inner shape.** Positional means
-   `(Decision [summary] [quote] [context] Maximum 2026-05-19 01:23)`,
-   not `(Decision (summary […]) (verbatim …) (certainty Maximum))`
-   and not `(Decision [summary] (Verbatim [quote] [context]) Maximum …)`
-   if `Verbatim` is the only thing that ever appears in that slot.
-   Variants are **PascalCase** (`Maximum`, not `maximum`); date and
-   time are two bare positional fields (`2026-05-19 01:23`), not one
-   bracket string.
+   `(Decision [description] Maximum)`, not
+   `(Decision (description […]) (magnitude Maximum))` and not
+   `(Decision (Description [description]) Maximum)` if `Description`
+   is the only thing that ever appears in that slot. Variants are
+   **PascalCase** (`Maximum`, not `maximum`); date and time, when
+   present in a schema, are two bare positional fields
+   (`2026-05-19 01:23`), not one bracket string.
 
 Most agent NOTA mistakes are the same mistake — labeled fields. The
 fix is the same too: read the canonical example before you sketch,

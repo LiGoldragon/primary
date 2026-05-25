@@ -139,9 +139,9 @@ daemon and reads back through the client.
 fn client_accepts_high_magnitude_and_observes_it_back() {
     let fixture = StoreFixture::new("high-magnitude");
     fixture.reply_text(
-        "(Record (workspace Decision \"…\" \"…\" High \"…\"))",
+        "(Record (workspace Decision [high magnitude witness] High))",
     ).expect("high-magnitude entry persisted");
-    let reply = fixture.reply_text("(Observe (Records (None None SummaryOnly)))")
+    let reply = fixture.reply_text("(Observe (Records (None None DescriptionOnly)))")
         .expect("records observed");
     assert!(reply.contains("High"));
 }

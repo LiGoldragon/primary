@@ -113,7 +113,7 @@
   (Meta intent-log skills/intent-log.md Topic
     [Record explicit psyche intent through Spirit. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded.])
   (Meta spirit-cli skills/spirit-cli.md Topic
-    [How to invoke the deployed Spirit CLI. Inline NOTA vs file-path argument; the live wire shape; finding the wire shape when it drifts; front matter names the documented tool version.])
+    [How to invoke the deployed Spirit CLI. Inline NOTA wrapped in shell double quotes vs file-path argument; the live wire shape; finding the wire shape when it drifts; front matter names the documented tool version.])
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
     [Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.])
   (Meta intent-clarification skills/intent-clarification.md Topic

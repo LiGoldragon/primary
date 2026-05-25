@@ -94,7 +94,7 @@ compatibility helper name during migration.
 Target surface:
 
 ```sh
-mind '<one NOTA request record>'
+mind "(<one NOTA request record>)"
 ```
 
 Target invariants:

@@ -1,10 +1,10 @@
 # Skill — intent log
 
 *Record what the author explicitly said. The intent log is a workspace
-surface distinct from documentation and reports: it captures the
-author's voice on each topic, verbatim, with context and certainty,
-so future agents can query what the author actually wanted versus
-what some agent decided.*
+surface distinct from documentation and reports: it captures a dense
+agent-clarified description of the author's intent on each topic,
+with kind, magnitude, and daemon-stamped time, so future agents can
+query what the author actually wanted versus what some agent decided.*
 
 ## What this skill is for
 
@@ -154,16 +154,17 @@ intent capture, the operation is `Record` carrying an untagged
 (Record
   (<topic>           ;; bare identifier: workspace, spirit, signal, component-shape, …
    <Kind>            ;; Decision | Principle | Correction | Clarification | Constraint
-   [<summary>]       ;; terse one-line rephrasing by the agent
-   [<context>]       ;; surrounding what-was-being-decided
-   <Certainty>       ;; Maximum | Medium | Minimum
-   [<verbatim>]))    ;; psyche's exact words; `…` for elided tangents
+   [<description>]   ;; clarified intent, reusing psyche wording when useful
+   <Magnitude>))     ;; Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
 ```
 
 - `Entry` is untagged — no record-head ident (per the NotaRecord
-  codec change). `Kind` and `Certainty` are bare PascalCase NotaEnum
-  variants. `<topic>` is a bare lowercase identifier (quoted only
-  if it contains spaces or PascalCase content).
+  codec change). `Kind` and `Magnitude` are bare PascalCase NotaEnum
+  variants. `<topic>` is a bare lowercase identifier (use a bracket
+  string only if it contains spaces or PascalCase content).
+- Spirit v0.2 does not store context or verbatim fields. The agent's
+  job is to record the clarified intent as one dense description,
+  reusing the psyche's own words when they are load-bearing.
 - **The daemon stamps date and time on receipt.** Clients do not
   supply timestamps.
 
@@ -186,40 +187,21 @@ Spirit wire shape may drift;
 `skills/spirit-cli.md` covers how to read the currently deployed
 shape directly from the pinned source.
 
-The quote records **the psyche's intended words**, not the
-speech-to-text layer's literal transcription. When the psyche
-dictates a workspace-specific term that the STT mangles (the
-canonical example — "Criom" → "Criome"; the full lookup lives in
-`skills/stt-interpreter.md`'s tables of repos, libraries, tools,
-and other workspace vocabulary), normalise to the canonical
-spelling before storing the verbatim. Consult
-`skills/stt-interpreter.md` on every verbatim recording where a
-proper noun, repo name, or workspace-specific term appears.
-
-The quote uses `…` for elided tangents — the psyche often
-interleaves multiple topics in one turn, and the record only
-carries the part that belongs to this entry.
-
 ## Recording goes through the Spirit CLI
 
 The deployed `spirit` CLI is the substrate. Capture intent by
 invoking it with a `Record` operation:
 
-The command below is a temporary deployment caveat: the current
-`Spirit 0.1.0` profile binary still requires legacy quote-delimited
-strings. Do not generalize it to authored NOTA, whose canonical
-string forms are `[text]` and `[|text|]`.
-
 ```sh
-spirit '(Record (<topic> <Kind> "<summary>" "<context>" <Certainty> "<verbatim>"))'
+spirit "(Record (<topic> <Kind> [description] <Magnitude>))"
 ```
 
 The daemon stamps date and time on receipt; clients do not supply
 timestamps. Invocation discipline — finding the deployed wire
 shape, inline NOTA vs file-path argument, observation queries — is
-in `skills/spirit-cli.md`. When the live Spirit profile supports
-bracket strings, update this command and stop using bash ANSI-C
-escaping for ordinary apostrophes.
+in `skills/spirit-cli.md`. Inline NOTA uses shell double quotes
+around the whole object; authored NOTA strings use bracket strings,
+so apostrophes can appear naturally inside the NOTA payload.
 
 ### Spirit-unavailable blocker
 
@@ -235,18 +217,24 @@ Rewriting or removing prior records — supersession per
 holds whether the substrate is Spirit or the legacy file: a capture
 protocol does not cover replacement.
 
-## Certainty vocabulary
+## Magnitude vocabulary
 
 Triggered mechanically by the author's phrasing so the agent's
 interpretation is minimal:
 
-| Phrase pattern | Certainty |
+| Phrase pattern | Magnitude |
 |---|---|
 | *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"*, strong corrections | `Maximum` |
+| strong but not absolute emphasis | `High` |
 | (default — direct statement, decision, preference) | `Medium` |
+| weak leaning with real signal | `Low` |
 | *"I'm not sure"*, *"maybe"*, *"leaning toward"*, *"I think"*, *"perhaps"*, *"could be"* | `Minimum` |
 
-The psyche can also tag certainty explicitly mid-sentence ("I'm
+`VeryLow` and `VeryHigh` are available when the psyche's wording
+clearly asks for a finer notch than `Low` or `High`; do not invent
+precision when the phrasing does not carry it.
+
+The psyche can also tag magnitude explicitly mid-sentence ("I'm
 certain about X but not sure about Y") — record X as `Maximum` and
 Y as `Minimum`.
 
@@ -318,9 +306,10 @@ Per entry within the capture pass:
    Clarification / Constraint. If multiple kinds fit, take the
    strongest applicable (Constraint > Correction > Decision >
    Principle > Clarification).
-3. **Write the entry through Spirit.** Terse summary; verbatim
-   quote with `…` for elided tangents; context line; certainty per
-   the vocabulary. The daemon stamps date and time.
+3. **Write the entry through Spirit.** One dense description that
+   clarifies the intent and reuses the psyche's wording where it is
+   load-bearing; magnitude per the vocabulary. The daemon stamps
+   date and time.
 
 The agent who recorded an entry stays accountable for re-reading it
 within the session — if a later psyche statement reframes the
@@ -334,8 +323,8 @@ earlier one, the recorded entry might need supersession.
   captures *what the author said*; the architecture captures *what
   the system is*. The two complement each other; neither replaces
   the other.
-- Long-form analysis. The log carries terse facts with verbatim
-  evidence. Analysis goes in reports.
+- Long-form analysis. The log carries terse, queryable intent
+  descriptions. Analysis goes in reports.
 
 ## Forward — persona-mind migration
 
@@ -360,7 +349,7 @@ substance migrates.
 - `skills/nota-design.md` — the positional-NOTA discipline these
   records follow.
 - `skills/stt-interpreter.md` — STT-misspelling lookup tables; consult
-  before recording verbatim where workspace-specific terms appear.
+  before writing descriptions that include workspace-specific terms.
 - `skills/skills.nota` — the canonical positional-NOTA example.
 - `intent/` — legacy file substrate; do not append during normal
   work.

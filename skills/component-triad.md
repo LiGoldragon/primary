@@ -348,10 +348,16 @@ truth.
 Every component binary — CLI and daemon both — takes exactly one
 argument on argv. That argument is one of:
 
-- An **inline NOTA argument**: `persona-orchestrate '(RoleClaim ...)'`
+- An **inline NOTA argument**: `persona-orchestrate "(RoleClaim ...)"`
 - A path to a **NOTA file**: `persona-orchestrate ./request.nota`
 - A path to a **signal-encoded file** (rkyv binary):
   `persona-orchestrate-daemon ./config.signal`
+
+Inline NOTA in a shell is wrapped in double quotes around the whole
+NOTA object. NOTA strings use `[text]` or `[|text|]`, not `"` string
+delimiters, so the shell double quotes remain available as the clean
+single-argument boundary. Do not teach agents to wrap inline NOTA in
+single quotes as the normal form.
 
 **No flags.** No `--verbose`, no `--format=json`, no `--config=path`,
 no positional second arguments. If the binary needs additional
