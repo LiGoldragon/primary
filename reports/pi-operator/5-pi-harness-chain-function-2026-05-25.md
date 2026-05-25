@@ -124,6 +124,57 @@ subagent({
 
 This launches Pi child agents; it does not execute Python functions directly.
 
+## Agent definitions and skills
+
+The "type of job" is an agent definition. Builtins like `scout`, `planner`, `worker`, `reviewer`, `context-builder`, `researcher`, `delegate`, and `oracle` come from the `pi-subagents` package. User and project agents are markdown files discovered from:
+
+```text
+~/.pi/agent/agents/**/*.md
+.pi/agents/**/*.md
+.agents/**/*.md   # legacy compatibility
+```
+
+An agent file has YAML frontmatter plus a system prompt body. The frontmatter is where job defaults live: `name`, `description`, `model`, `tools`, `skills`, `output`, `defaultReads`, `defaultProgress`, `defaultContext`, and related behavior. The body is the agent's base system prompt.
+
+Skills are separate `SKILL.md` files. They are resolved by name from project/user/package skill locations and injected into the child system prompt in this shape:
+
+```xml
+<skill name="skill-name">
+...skill content...
+</skill>
+```
+
+So yes: skill material is effectively preloaded before the child receives the chain step task. The child process receives the agent system prompt plus the selected skill injections, then receives the task text built for that step.
+
+A chain step can override the agent defaults for that one run:
+
+```ts
+{ agent: "reviewer", task: "Review {previous}", skill: ["security"], model: "anthropic/claude-sonnet-4", output: "review.md" }
+```
+
+Saved `.chain.md` files express the same thing in markdown step sections. A chain is therefore a workflow recipe; each step points to a job type (agent) and may override that job's skills/model/output/reads/progress for the step.
+
+## What async means
+
+`async: true` means the parent Pi session starts the chain in a detached background runner and immediately gets control back. It is about parent/child scheduling, not about making the children conversational peers.
+
+What changes with `async: true`:
+
+- The main chat is not blocked while the chain runs.
+- The run gets an async run id and status/result files under Pi's temp async directories.
+- The parent can inspect it with `subagent({ action: "status", id: "..." })`.
+- Pi delivers completion when the run finishes.
+- `resume` can send follow-up to a live async child or revive a completed child session when persisted session files exist.
+
+What does not change:
+
+- Sequential chain dataflow is still previous-output text into next-step prompt.
+- Async does not by itself let sibling agents freely talk to each other.
+- A parallel step still fans out from the same previous output and fans back in through aggregated outputs.
+- Only intercom-enabled runs can have explicit parent-child coordination messages; `pi-subagents` can work without `pi-intercom`, and ordinary chain dataflow does not require intercom.
+
+In this workspace there is also a local rule: subagent dispatch must be non-blocking, so agent-launched chains should normally use `async: true` and `clarify: false` unless the psyche explicitly asks for the foreground clarify UI.
+
 ## Sources read
 
 - `/home/li/.pi/agent/packages/pi-subagents/skills/pi-subagents/SKILL.md`
