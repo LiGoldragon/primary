@@ -275,3 +275,47 @@ Real today:
 The next implementation is straightforward and should be small: a node-method
 schema reader that mirrors the existing `Parser`, proves equality on the real
 fixture, and then becomes the substrate for fixed-point macro expansion.
+
+## Follow-up After Designer 336, Operator 181, And Second-Designer 183
+
+`reports/designer/336-designer-leans-on-27-psyche-questions-and-mvp-plan.md`
+sets the broader MVP direction: use the schema engine and upgrade mechanism
+end-to-end on Spirit, with real-world nspawn testing and in-test unblockers for
+production gaps like DivergenceAction, selector flip, and cross-version
+ShortHeader retrofit.
+
+Two newer dirty reports materially update this report's branch status:
+
+- `reports/operator/181-fully-schema-and-nota-mvp-2026-05-25/4-overview.md`
+  says the operator pushed two feature branches:
+  `nota-codec:feature/notavalue-shape-logic-and-sequence-parser` and
+  `schema:feature/fully-schema-and-nota-mvp`.
+- `reports/second-designer/183-fully-schema-and-nota-mvp-2026-05-25.md`
+  says the schema feature branch now has `schema/src/shape_parser.rs` and
+  `schema/src/multi_pass.rs`, proving byte-equivalent assembly for the live
+  Spirit schema through shape-logic dispatch.
+
+Updated situation:
+
+- **Mainline reality:** still as described above. `schema` main proves
+  `NotaValue` classification in tests, but production `Schema::parse_str` on
+  main is still decoder-parser based.
+- **Feature-branch reality:** the operator/second-designer MVP branch appears
+  to implement the next slice: canonical `Schema::parse_str` driven by
+  `NotaValue` shapes plus a separate multi-pass macro pipeline producing an
+  `AssembledSchema`.
+
+The merge order from `reports/operator/181.../4-overview.md` is correct:
+
+1. Land the `nota-codec` feature branch, preserving main's newer span helpers
+   and `parse_str` API.
+2. Repoint the schema feature branch dependency back to `nota-codec` main.
+3. Land the schema feature branch.
+4. Start UpgradeMacro emission against `AssembledSchema` / `UpgradePlan`.
+
+The key warning remains convergence: the `nota-codec` feature branch was forked
+behind main and must not regress `ByteRange`, `Lexer::next_token_with_span`,
+or `parse_str`. Once that is rebased and merged, the answer to "is real schema
+100% parsed by methods on NOTA nodes?" changes from "feature branch yes,
+main no" to "main yes for schema parsing; fixed-point user macro expansion and
+VersionProjection emission still remain."
