@@ -202,6 +202,29 @@ yet — those land when the role's shape settles.
   the capture. Reports, code, and chat are all downstream of intent.
   This is the absolute first task of any session-turn that contains
   psyche input.
+- **EXCEPTION + REFINEMENT — forwarded prompts: don't blindly duplicate;
+  do gap-check the originally-addressed agent's capture.** When the
+  psyche opens a message with *"here's the prompt I just gave
+  <agent>"*, *"this is what I told <agent>"*, *"I just passed this
+  to <agent>"*, or any equivalent framing — that prompt was
+  addressed to the other agent. The originally-addressed agent
+  owns the intent capture. The receiving agent's responsibility:
+  (1) Extract the technical content for your own work (you may
+  engage with substance in chat, materialize into reports, apply
+  to your branches). (2) After a beat, query recent Spirit records
+  to see what the originally-addressed agent captured. (3) Compare
+  the captures against the prompt's intent statements (Decision /
+  Principle / Correction / Clarification / Constraint). (4) If the
+  original agent missed or misread an intent statement, capture
+  YOUR version as a gap-fill — quoting the original prompt + noting
+  it's gap-filling, not blind duplication. The original agent has
+  primary obligation; the receiving agent is the second pair of
+  eyes that catches what was missed. The earlier failure mode
+  (records 513-519 multi-agent reflexive duplication) was about
+  blind copying; gap-filling is the opposite — it's catching the
+  errors of omission. Same rule in reverse: a prompt the psyche
+  addressed to you is YOURS to capture; do not assume another agent
+  will log it on your behalf. Per psyche 2026-05-25.
 - **Do not dispatch subagents unless the psyche explicitly asks — except in the designer protocol.**
   Subagents — `Agent` tool invocations spawning parallel work, or
   `SendMessage` to other agent instances — run outside the
@@ -213,6 +236,19 @@ yet — those land when the role's shape settles.
   2026-05-21) is the exception: the prime designer runs at full
   capacity with parallel subagent workflows by default, until
   disabled or reduced.
+- **Every subagent dispatch is non-blocking — always
+  `run_in_background: true`. Never start a blocking subagent
+  under any circumstance.** The whole point of subagent
+  dispatch is keeping the main agent lively and available to
+  the psyche while the subagent works. Foreground/blocking
+  dispatch makes the psyche unable to redirect, interrupt, or
+  even talk to the agent until the subagent returns, which can
+  be many minutes. That defeats the purpose entirely. The rule
+  is absolute: even when the next step depends on the
+  subagent's output, dispatch in background; the harness
+  notifies you asynchronously on completion and you can
+  synthesize then. No exceptions. Per psyche 2026-05-25 (intent
+  record 539).
 - **No harness-dependent memory; session-scoped tools land in
   workspace files.** Workspace truth lives in files every agent can
   open. Don't use per-session memory at
