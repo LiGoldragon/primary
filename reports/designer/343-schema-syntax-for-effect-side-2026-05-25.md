@@ -133,33 +133,17 @@ pub struct FanOut {
 
 The `<ActorType>Method` enum (e.g. `SpiritStoreMethod`) is emitted as a closed enum of method tags referenced from the fan-out rows. Each operation root's `<Operation>Interact` trait returns `FanOut` carrying the closed set of possible outputs for THAT effect.
 
-## §5 The interaction-trait derivation (implicit, no new declaration)
+## §5 Operations map directly to actor methods (no derived trait)
 
-Per /342, the interact-trait per operation is implicit:
+**REVISED per psyche record 666 (2026-05-25)** — the earlier interact-trait derivation is retracted. Methods are interactions; no special trait layer above them.
 
-```rust
-pub trait RecordInteract {
-    fn interact(&self, payload: RecordEffect) -> FanOut;
-}
+The `EffectTable` declares which actor + method handles each operation root. There is no `<Operation>Interact` trait emitted. The actor's method (a regular Rust method on a regular actor type) is called directly.
 
-pub trait ObserveInteract {
-    fn interact(&self, payload: ObserveEffect) -> FanOut;
-}
-
-pub trait WatchInteract {
-    fn interact(&self, payload: WatchEffect) -> FanOut;
-}
-```
-
-Each trait's method signature is determined by:
-- Input: the effect type from `EffectTable`
-- Output: `FanOut` (the fan-out output set)
-
-No new schema declaration needed for the trait itself — schema-rust derives it from `EffectTable` + `FanOutTargets`. User writes the impl per /342 §2:
+For `(Record RecordEffect)` in `EffectTable` and `(RecordEffect [(Store SpiritStore Insert) (Notify ObserverSet Publish) (Reply RecordAccepted)])` in `FanOutTargets`, the operator-written code is just:
 
 ```rust
-impl RecordInteract for SpiritRecorder {
-    fn interact(&self, payload: RecordEffect) -> FanOut {
+impl SpiritRecorder {
+    pub fn record(&self, payload: RecordEffect) -> FanOut {
         let stamped = StampedEntry::stamp_now(payload.entry);
         FanOut {
             outputs: vec![
@@ -179,6 +163,20 @@ impl RecordInteract for SpiritRecorder {
     }
 }
 ```
+
+No trait. Just a method on the actor type. The `EffectTable` says "operation `Record` is handled by `SpiritRecorder::record`"; schema-rust composer emits dispatch glue that calls `recorder.record(payload)` and returns the `FanOut`. The method signature (input type from `EffectTable`'s second column, return type `FanOut`) is determined by the schema, but the trait wrapper layer is gone.
+
+Open: should the `EffectTable` row carry the actor-method name explicitly?
+
+```nota
+(EffectTable [
+  (Record SpiritRecorder record RecordEffect)
+  (Observe SpiritQuerier observe ObserveEffect)
+  (Watch SpiritWatcher watch WatchEffect)
+])
+```
+
+Each row now says: operation root → (actor type, method name, effect type). Schema-rust composer emits the dispatch directly without a trait layer. Lean: yes, explicit actor + method name in the row.
 
 ## §6 Worked example — spirit.schema after extension
 

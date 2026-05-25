@@ -93,7 +93,11 @@ The wire vocabulary is what `emit_schema!` currently produces. The effect vocabu
 
 **Implementation foothold:** `schema-rust` composer extension. /340 §4's 15-item emit inventory grows to ~21 items (see §5.1 below). Effect vocabulary lives in the schema's namespace section but emits as internal-actor message types rather than wire-payload types. New schema declarations may need an `(EffectVocabulary ...)` section parallel to the existing wire-vocabulary surface, or the existing namespace section can carry both with an `internal` / `external` tag per type.
 
-### §2.5 Interact-trait + interaction-actor mediation (record 660)
+### §2.5 Interact-trait + interaction-actor mediation (record 660) — RETRACTED
+
+**RETRACTED per record 666 (2026-05-25).** Psyche correction: *"retract the 'interact' trait idea, it doesnt work actually, methods are interractions, I dont know why I went on about this now"*. The InteractTrait + InteractionActor formalization is unnecessary elaboration on top of ordinary OO/actor patterns. Methods ARE interactions. The mediator pattern survives only as ordinary actor-method-call topology (actor A and actor B both call methods on a mediator actor M; M's method body decides), not as a special trait abstraction. Schema-rust composer should NOT emit `Interact<Input>` or `InteractionActor<Input>` traits.
+
+The retracted statement (preserved for historical reference):
 
 **Crystallized statement:** Internal interactions between object types flow through an INTERACT TRAIT (Rust trait formalizing the contact point). When two object types need to interact, they pass through a third actor — an INTERACTION ACTOR — that decides the outcome and returns it to BOTH parties. Authority is delegated to a third-party mediator; no bilateral decisions; no trickery between paired actors; the mediator's decision is structurally final.
 
@@ -240,10 +244,10 @@ This is the synthesis. The substrate already exists in fragmentary form across s
 | Item | Description | Side |
 |---|---|---|
 | 16 | Internal effect-language vocabulary types (internal actor message types, not wire types) | Effect |
-| 17 | `InteractTrait<A, B>` Rust traits per contact point | Effect |
-| 18 | `<X>InteractionActor` mediator structs + authority scaffolding | Effect |
-| 19 | Effect-table dispatch — closed mapping from message variant → effect variant + reply set | Effect |
-| 20 | Fan-out output sets — closed enum per interact-trait variant declaring all outputs | Effect |
+| ~~17~~ | ~~`InteractTrait<A, B>` Rust traits per contact point~~ — **RETRACTED per record 666**; methods are interactions, no special trait layer | — |
+| ~~18~~ | ~~`<X>InteractionActor` mediator structs + authority scaffolding~~ — **RETRACTED per record 666**; actors are just actors with methods | — |
+| 19 | Effect-table dispatch — closed mapping from operation variant → method-call target (actor + method) + reply set | Effect |
+| 20 | Fan-out output sets — closed enum per operation variant declaring all outputs returned by the actor's method | Effect |
 | 21 | `ExtendedHeader` projection (256-byte / 512-byte / variable) alongside existing 8-byte ShortHeader, with the prefix-preservation invariant | Wire |
 
 The composer's 570 current LoC will grow significantly. Implementation order: ShortHeader stability proven first (current state — landed); ExtendedHeader projection added next (likely operator slice); then effect-vocabulary emission (the bigger half).

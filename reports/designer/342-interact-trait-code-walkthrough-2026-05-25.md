@@ -1,4 +1,14 @@
-# 342 — Interact-trait pattern, in code
+# 342 — Interact-trait pattern, in code — RETRACTED
+
+**RETRACTED in entirety per psyche record 666 (2026-05-25):** *"retract the 'interact' trait idea, it doesnt work actually, methods are interractions, I dont know why I went on about this now"*.
+
+The whole walkthrough below is superseded. Methods ARE interactions; no `InteractTrait` abstraction layer is needed above ordinary Rust methods. The schema-rust composer should NOT emit `Interact<Input>` or `InteractionActor<Input>` traits. What survives from this report's spirit (not its letter): the schema declares the effect-table; the actor IS the impl; the runtime calls the method; the method returns the fan-out outputs. But there is no special trait abstraction sitting above the method call.
+
+Replacement work pending: an unwound version of /343 that drops the trait derivation and just maps operations to actor methods directly.
+
+Original body preserved below for historical reference.
+
+---
 
 *Designer report responding to psyche clarification 2026-05-25 (record 665) refining the interact-trait/interaction-actor pattern from record 660 + /341 §2.5.*
 
