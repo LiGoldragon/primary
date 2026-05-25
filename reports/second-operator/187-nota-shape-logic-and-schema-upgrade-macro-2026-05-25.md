@@ -182,12 +182,30 @@ All passed.
 
 ## Questions
 
-1. Should generic `[content]` be treated as a string without schema context, or
-   is the current rule correct: generic `[` means sequence, `[|...|]` means
-   block string, and inline bracket strings are typed-decoder-only?
-2. Should `Upgrade` stay only as a feature-vector item, or should upgrade rules
+1. Should `Upgrade` stay only as a feature-vector item, or should upgrade rules
    also be legal namespace-level macro objects in the future fixed-point macro
    space?
-3. Should the next implementation slice replace part of `schema::Parser` with
+2. Should the next implementation slice replace part of `schema::Parser` with
    `NotaValue` traversal, or keep `schema::Parser` as-is while adding a
    parallel macro-front API for generated macro crates?
+
+## Follow-up After Second-Designer 184
+
+`reports/second-designer/184-fully-schema-and-nota-comprehensive-understanding-2026-05-25.md`
+named three small API gaps in the just-landed shape layer. Those are now closed:
+
+- `nota-codec` commit `6a851eb6` adds `parse_str`, `parse_sequence`,
+  `Lexer::next_token_with_span`, `ByteRange`, and designer-facing shape aliases
+  such as `is_identifier`, `is_pascal_case_identifier`, `record_arity`,
+  `record_head_identifier`, and `is_tagged_record`.
+- `schema` commit `370220c0` updates the real `.schema` fixture tests to use
+  `parse_sequence` and the designer-facing shape API names.
+
+The former bracket-string question is closed by
+`skills/nota-design.md` per intent record 597: NOTA has inline bracket strings
+`[content]` and block strings `[|content|]`. One implementation nuance remains:
+the context-free `NotaValue` parser keeps `[` as sequence syntax unless it sees
+the unambiguous `[|` block-string delimiter. Inline `[content]` string decoding
+still belongs to typed `Decoder` string positions, because `[Entry]` is valid as
+both a one-item sequence in schema headers and string content at a `String`
+position.
