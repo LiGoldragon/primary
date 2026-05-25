@@ -24,7 +24,10 @@ I implemented the correction on a separate worktree branch:
 
 - Worktree: `/home/li/wt/github.com/LiGoldragon/schema/operator-node-shape-boundary`
 - Bookmark: `operator/node-shape-boundary`
-- Commit: `2288914c` — `schema: expose node-shape macro boundary`
+- Commits:
+  - `2288914c` — `schema: expose node-shape macro boundary`
+  - `09867867` — `schema: remove named field syntax`
+  - `567ec839` — `schema: derive field names from types`
 
 ## What second-operator landed correctly
 
@@ -62,9 +65,11 @@ classifies the node before transformation. A newtype and a record are different
 macro shapes:
 
 - `(String)` is a newtype declaration.
-- `((state State))` is a one-field record declaration with a named field.
+- `((state State))` is invalid schema syntax. NOTA records are positional;
+  schema does not author field names with lowercase pairs.
 - `(Vec Topic)` is a newtype over a container expression.
-- `((topic Topic) (kind Kind))` is a record declaration.
+- `(Topic Kind)` is a record declaration whose generated field names are
+  derived from the type names: `topic`, `kind`.
 
 The old code eventually produced the correct assembled type for the existing
 fixture, but the classification was not visible as a public shape boundary and
@@ -98,31 +103,41 @@ classified explicitly into `Enum`, `Record`, `Newtype`, or `Alias` before
 `TypeMacroRecognizer` transforms them.
 
 The classifier has the subtle single-field rule the first failed Nix run
-surfaced:
+surfaced, then the psyche corrected the field-name model:
 
 - `(String)` is `Newtype`.
 - `(Vec Topic)` is `Newtype`.
-- `((state State))` is `Record`, because the single inner record is a named
-  field, not the newtype's one inferred expression.
+- `((state State))` is recognized as a record-shaped namespace value but the
+  lowering rejects it because lowercase field-name syntax is not valid schema.
+- `FieldName` still exists as generated metadata: `Field::name()` and
+  `FieldLayout::name()` derive `topic` from `Topic`, `record_identifier` from
+  `RecordIdentifier`, and so on. Authored schema never writes the lowercase
+  field name directly.
 
 I updated `ARCHITECTURE.md` to describe `NodeDefinitionShape` as the visible
 macro boundary and removed the private `TypeMicroMacro` collapse from the
-pipeline.
+pipeline. I also updated the live Spirit fixture so it uses positional fields
+and newtypes instead of lowercase field-name pairs.
 
 ## Tests added
 
-`tests/node_shape.rs` adds five constrained witnesses:
+`tests/node_shape.rs` and `tests/document.rs` add constrained witnesses:
 
 - `namespace_shape_recognizer_splits_enum_record_newtype_and_alias`
 - `container_namespace_value_is_a_newtype_shape`
-- `single_named_field_namespace_value_is_a_record_shape`
+- `lowercase_record_field_sugar_is_not_a_newtype_shape`
+- `lowercase_field_name_syntax_is_rejected`
+- `parser_rejects_lowercase_field_name_syntax`
+- `field_names_are_derived_from_positional_type_names`
+- `specific_field_names_come_from_specific_newtypes`
 - `node_shape_error_reports_definition_point_and_value_kind`
 - `multi_pass_pipeline_accepts_all_public_namespace_shapes`
 
 These tests intentionally prove the boundary, not only the final assembled
-output. The error test checks that a bad shape names both the schema point
-(`HeaderRoot`) and the observed NOTA kind (`Sequence`), which makes the
-macro-dispatch failure visible to future macro authors.
+output. The error tests check that invalid lowercase field-name sugar fails
+and that a bad shape names both the schema point (`HeaderRoot`) and the
+observed NOTA kind (`Sequence`), which makes the macro-dispatch failure
+visible to future macro authors.
 
 ## Verification
 
