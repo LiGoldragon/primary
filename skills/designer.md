@@ -499,6 +499,63 @@ that's a new design report. If the implementation is
 wrong, that's an audit (designer report) + a fix
 (operator).
 
+### The designer-operator loop — continuous roll-forward
+
+Per spirit records 572-573, the designer-operator loop runs
+**continuously**: designer rolls a new design plus a test on one
+component at a time while a parallel agent updates intent +
+architecture files + beads everywhere. Operator picks up the
+designer test as a guide and implements on production with more
+tests. The cycle repeats per new direction.
+
+**Designer leg.**
+1. Pick the component pilot (Spirit is the current MVP per Slice
+   1 below; Orchestrate is next per the chain in
+   `primary/protocols/active-repositories.md`).
+2. Land the design report + falsifiable test on a worktree
+   feature branch under `~/wt/github.com/LiGoldragon/<repo>/`.
+3. Push the branch. File a bead for operator pickup.
+4. While the test stack matures, dispatch a parallel subagent to
+   update intent (Spirit captures), architecture files
+   (ARCHITECTURE.md / INTENT.md across all active repos), and
+   beads. The workspace continuously rolls all components
+   forward to the latest intent rather than letting components
+   fall behind.
+
+**Operator leg.** See `skills/operator.md` §"Notes from designer"
+for the receiving side of the loop.
+
+**Notes to operator (sent through bead descriptions + report
+references).**
+- The design test is a **guide**, not a binding contract on
+  implementation shape. Operator chooses architecture
+  independently per spirit record 508 (parallel-implementation
+  model); after both implementations exist, comparison happens.
+- The wire form pinned by the design test IS binding — that's
+  the contract. Implementation behind the wire is operator's
+  call.
+- Where the design has open psyche questions (e.g. Mirror phase
+  ordering per /333-v2 §4.1), the bead description names them
+  explicitly so operator can flag if their implementation
+  forces the question.
+
+### Slice 1 — current pilot: Spirit
+
+Spirit is the current designer-operator loop pilot. The recent
+session (2026-05-25) demonstrated the pattern end-to-end: design
+report (/333) + verification subagent (full-ceremony e2e test on
+Prometheus via nspawn) + corrections report (/333-v2) + parallel
+intent + architecture roll-forward (this current session,
+spawning across schema/persona-spirit/signal-version-handover/
+upgrade/signal-frame/nota-codec/orchestrate/signal-orchestrate).
+
+The pilot validated the parallel-implementation lane model
+(spirit record 508): designer's full-ceremony test surfaced the
+wire-compat blocker (primary-602y), the Mirror phase ordering
+question (open per /333-v2 §4.1), and the Divergence/Recovery
+semantic gaps. Operator picks each up as separate beads with
+the design report as the guide.
+
 ## Working with designer's assistant lanes
 
 `designer-assistant` and `second-designer-assistant` are additional

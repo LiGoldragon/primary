@@ -455,6 +455,64 @@ the code. The temptation to rework the design while
 implementing it is what produces silent drift. Designer
 owns design changes; operator owns implementing them.
 
+### The designer-operator loop — continuous roll-forward
+
+Per spirit records 572-573, the designer-operator loop runs
+**continuously**. Designer rolls a new design + a test on one
+component while a parallel agent updates intent + architecture
+files + beads everywhere. Operator picks up the designer test as
+a guide and implements on production with more tests. The cycle
+repeats per new direction.
+
+**Operator leg.**
+1. Read the designer's report. The wire form pinned by the
+   design test IS binding; implementation behind the wire is
+   operator's call.
+2. Per spirit record 508 (parallel-implementation model),
+   operator builds an own implementation on `main` of the
+   target repo; designer's worktree-branch artefact is the
+   guide, not a binding implementation shape.
+3. Land witness tests for the design's load-bearing
+   constraints (per `skills/architectural-truth-tests.md`).
+4. File implementation-consequences reports when surfacing
+   gaps the design didn't anticipate.
+
+**Notes from designer** (received through bead descriptions
++ report references).
+- Open psyche questions the design names (e.g. Mirror phase
+  ordering per /333-v2 §4.1, Divergence/Recovery semantics
+  per §4.2-4.3) are NOT operator's to resolve. If
+  implementation forces the question, flag it in an
+  implementation-consequences report rather than committing
+  one direction.
+- The design report cites past intent records (Spirit
+  captures) that constrain the implementation; treat
+  those as load-bearing. The intent layer has higher
+  authority than the implementation freedom (per
+  `AGENTS.md` §"Hard overrides").
+
+### Slice 1 — current pilot: Spirit
+
+Spirit is the current loop pilot. The 2026-05-25 session
+produced designer's full-ceremony test (subagent on
+`spirit-full-ceremony-e2e` in CriomOS-test-cluster, commit
+25d07c98). The test surfaced operator-actionable beads:
+
+- `primary-602y` (P0, rebuild v0.1.0.1 retrofit against
+  current signal-frame — clears the wire-compat blocker).
+- `primary-dlut` (extend nspawn upgrade test with the real
+  handover socket protocol — now partially implemented by
+  designer's full-ceremony branch).
+- Future operator beads for Divergence + Recovery semantic
+  landings, pending psyche direction on Mirror phase
+  ordering.
+
+The pilot pattern: designer's worktree is the **guide** for
+operator; operator's `main` branches are the **production
+landing**. Cross-version rebuild + cutover stays with
+operator (and cluster-operator); designer doesn't push to
+production.
+
 ## Working with operator's assistant lanes
 
 `operator-assistant` and `second-operator-assistant` are additional

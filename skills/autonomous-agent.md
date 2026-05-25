@@ -2,6 +2,26 @@
 
 *How to act when no human is in the loop for routine obstacles.*
 
+## Scope vs `skills/human-interaction.md`
+
+This skill covers the **work-loop discipline** — bead-flow, claim,
+work, close, release; routine obstacles agents resolve without
+asking. `skills/human-interaction.md` covers the **psyche-interface
+discipline** — how prompts come in, how intent gets captured, how
+chat replies are shaped, how subagents are dispatched, how tests are
+framed.
+
+Both skills are required reading. Use `human-interaction.md` for
+boundary questions ("how do I respond to the psyche?", "do I dispatch
+a subagent?", "when do I ask vs decide?"); use this skill for in-
+session work autonomy ("the next bead, the next claim, the next
+fix").
+
+Per spirit records 565-567 (the human-interaction rename and
+must-read-by-harnesses decision), `human-interaction.md` is the Apex
+skill that every harness reads on every session. This skill stays as
+the Mechanism-tier work-loop discipline alongside it.
+
 ## Active beads — check first, work them through
 
 **Before anything else in any session, check active beads:**

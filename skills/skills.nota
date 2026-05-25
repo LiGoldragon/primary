@@ -102,8 +102,10 @@
   (Workflow skill-editor skills/skill-editor.md Mechanism
     [How to edit skill files without growing them noisy. Skills never reference reports.])
 
+  (Meta human-interaction skills/human-interaction.md Apex
+    [How agents interact with the psyche — capture intent, handle forwarded prompts, dispatch subagents, run real-world tests, and report back. Must-read for every harness on every session.])
   (Meta autonomous-agent skills/autonomous-agent.md Mechanism
-    [When to act vs ask. How to surface blocked decisions.])
+    [When to act vs ask within work. Bead-flow + claim + work + close + release loop. Pairs with human-interaction.md (the psyche-boundary skill) — autonomous-agent is the work-loop discipline.])
   (Meta context-maintenance skills/context-maintenance.md Mechanism
     [Sweep reports and conversation. Migrate substance to permanent homes.])
   (Meta intent-log skills/intent-log.md Topic
