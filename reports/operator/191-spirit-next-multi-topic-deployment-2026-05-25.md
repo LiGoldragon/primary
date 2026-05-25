@@ -2,8 +2,9 @@
 
 ## Scope
 
-Implemented the v0.3 Spirit-next multi-topic record shape and deployed it
-beside production v0.2.0.
+Implemented the v0.3 Spirit-next multi-topic record shape, deployed it beside
+production v0.2.0, then cut production `spirit` over to v0.3.0 after the
+psyche opened a no-writers migration window.
 
 Repos changed:
 
@@ -45,7 +46,14 @@ topic memberships, and ships `spirit-migrate-0-2-to-next`.
 - state: `~/.local/state/persona-spirit/next/`
 - sockets: `spirit.sock`, `owner.sock`, `upgrade.sock`
 
-The unsuffixed `spirit` wrapper still resolves to production v0.2.0.
+Production now has a stable v0.3.0 lane:
+
+- wrapper: `spirit-v0.3.0`
+- service: `persona-spirit-daemon-v0.3.0.service`
+- state: `~/.local/state/persona-spirit/v0.3.0/`
+- sockets: `spirit.sock`, `owner.sock`, `upgrade.sock`
+
+The unsuffixed `spirit` wrapper now resolves to `spirit-v0.3.0`.
 
 ## Verification
 
@@ -66,11 +74,11 @@ The installed `lojix-cli` in the profile was too old for the current
 bracket-string / curly-map proposal file, so the deployment used the local
 `lojix-cli` checkout through Nix.
 
-Runtime checks:
+Pre-cutover next-lane runtime checks:
 
 - `persona-spirit-daemon-v0.2.0.service` active.
 - `persona-spirit-daemon-next.service` active.
-- `spirit` resolves to `spirit-v0.2.0`.
+- `spirit` resolved to `spirit-v0.2.0`.
 - `spirit-next` resolves to the next wrapper and uses
   `PERSONA_SPIRIT_NEXT_SOCKET`.
 - v0.2.0 database was snapshot-copied while the v0.2 daemon was briefly
@@ -80,6 +88,43 @@ Runtime checks:
 - Querying `deployment` through `spirit-next` returns record 708.
 - Querying `deployment` through production `spirit` returns no records.
 - Duplicate-topic input through `spirit-next` is rejected at request decode.
+
+Post-cutover production runtime checks:
+
+- `persona-spirit-daemon-v0.2.0.service` active.
+- `persona-spirit-daemon-v0.3.0.service` active.
+- `persona-spirit-daemon-next.service` active.
+- `spirit` resolves to `spirit-v0.3.0`.
+
+Production cutover version refs:
+
+- `signal-persona-spirit` `v0.3.0` -> `026d38fb8be4`
+- `persona-spirit` `v0.3.0` -> `b3b1ac0cef16`
+
+Production cutover deployment:
+
+- `CriomOS-home` commit: `c79ac52f`
+- `nix build /git/github.com/LiGoldragon/CriomOS-home#checks.x86_64-linux.persona-spirit-versioned-deployment --option max-jobs 0`
+- `nix run /git/github.com/LiGoldragon/lojix-cli# --option max-jobs 0 -- "(HomeOnly ... Activate None None)"`
+
+Production cutover database migration:
+
+- source: `~/.local/state/persona-spirit/v0.2.0/persona-spirit.redb`
+- snapshot:
+  `~/.local/state/persona-spirit/persona-spirit.redb.v0.2.0.production-cutover-20260525235707`
+- target: `~/.local/state/persona-spirit/v0.3.0/persona-spirit.redb`
+- result: `(MigrationCompleted 708)`
+
+Live v0.3.0 verification:
+
+- `readlink -f ~/.nix-profile/bin/spirit` resolves to the v0.3.0 wrapper.
+- `systemctl --user is-active persona-spirit-daemon-v0.3.0.service` returns
+  `active`.
+- `spirit "(Observe (Records ((Some [spirit deployment]) None DescriptionOnly)))"`
+  returns records 707 and 708 from the migrated database.
+- The same query through
+  `PERSONA_SPIRIT_SOCKET=~/.local/state/persona-spirit/v0.3.0/spirit.sock nix run /git/github.com/LiGoldragon/persona-spirit#spirit --option max-jobs 0 -- ...`
+  also returns records 707 and 708.
 
 Snapshot used:
 
