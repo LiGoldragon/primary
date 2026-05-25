@@ -62,27 +62,15 @@ claim.
 
 ### Exempt from the claim flow
 
-Two surfaces are written without claiming a lock:
+One surface is written without claiming a lock:
 
 - **Reports.** Each role writes only into its own `reports/<role>/`
   subdirectory; subdirs don't overlap, so no coordination is needed.
-- **Intent appends.** Recording a psyche statement into
-  `intent/<topic>.nota` is a lock-free shell append — `cat >>
-  intent/<topic>.nota <<'EOF' … EOF` (per
-  `~/primary/skills/intent-log.md` §"Recording is a lock-free shell
-  append"). POSIX `O_APPEND` (set by `>>`) atomically positions and
-  writes for any record under PIPE_BUF (4096 bytes on Linux); typical
-  intent records are ~1KB, well under that, so concurrent appends
-  from any number of agents sequence cleanly without mangling. The
-  topic file doesn't need to exist first — `>>` creates it via
-  `O_CREAT|O_APPEND`, which is also atomic.
 
-Both exemptions follow the same shape: when concurrent writes can't
-collide by construction, the claim flow is overhead.
-
-A lock IS still needed for intent **supersession edits** — rewriting
-or removing an existing record per `skills/intent-maintenance.md`.
-Routine append is lock-free; rewrite is not.
+Intent capture is no longer a file append surface. Recording psyche
+intent goes through the deployed `spirit` CLI per `skills/intent-log.md`
+and `skills/spirit-cli.md`. Do not append to `intent/*.nota` during
+normal work; those files are legacy history.
 
 ### Command-line mind target
 

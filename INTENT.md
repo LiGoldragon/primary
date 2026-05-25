@@ -53,12 +53,13 @@ Editing guidance files is the cadence of workspace evolution.
 
 Three surfaces, in increasing distillation:
 
-The **intent log** lives in Spirit. It carries raw psyche statements
-as typed intent entries. Each entry holds a terse agent rephrasing,
-the psyche's verbatim quote, surrounding context, certainty, date,
-and time. The daemon stamps receipt time; agents do not manually
-append to `intent/*.nota` during normal work. Discipline:
-`skills/intent-log.md` and `skills/spirit-cli.md`.
+The **intent log** lives in Spirit. It carries psyche statements as
+typed intent entries. The current deployed shape stores one dense
+agent-clarified description, kind, magnitude, and daemon-stamped
+date/time; it deliberately does not store large verbatim/context
+payloads. Agents do not manually append to `intent/*.nota` during
+normal work. Discipline: `skills/intent-log.md` and
+`skills/spirit-cli.md`.
 
 **Per-repo `INTENT.md`** synthesises the project's psyche intent
 into prose, the same shape as this file. Discipline:
