@@ -40,7 +40,7 @@ The implementation applies these concrete critiques:
 |---|---|---|---|
 | `nota-next` | `/git/github.com/LiGoldragon/nota-next` | `https://github.com/LiGoldragon/nota-next` | `6b4364d9` |
 | `schema-next` | `/git/github.com/LiGoldragon/schema-next` | `https://github.com/LiGoldragon/schema-next` | `19591a7a` |
-| `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | `https://github.com/LiGoldragon/schema-rust-next` | `bfe0c7bb` |
+| `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | `https://github.com/LiGoldragon/schema-rust-next` | `9b348726` |
 
 Each repo has:
 
@@ -232,6 +232,7 @@ Current generated Rust includes:
 - structs;
 - enums;
 - root surface enums;
+- rkyv archive/serialize/deserialize derives on generated data types;
 - short-header constants derived from surface and variant order.
 
 The emitted Spirit fixture includes:
@@ -259,7 +260,8 @@ Tests:
 
 - emit Rust source from a schema and compare exactly to a checked-in
   fixture;
-- compile and use the checked-in fixture as Rust code.
+- compile and use the checked-in fixture as Rust code;
+- round-trip a generated `Input` value through rkyv bytes.
 
 Nix constraints:
 
@@ -267,6 +269,8 @@ Nix constraints:
   `signal_channel!`.
 - `no-rust-macro-surface`: `src/` must not define `macro_rules!` or
   `proc_macro`; Rust emission stays separate from Rust macros.
+- `generated-rkyv-boundary`: the generated fixture carries rkyv derives
+  and the test suite exercises `rkyv::to_bytes` / `rkyv::from_bytes`.
 
 Verification:
 
@@ -297,7 +301,7 @@ signal macro.
   parse edge case.
 - `schema-next` has only the built-in MVP lowering surface; third-party macro
   registration is still a follow-on.
-- `schema-rust-next` emits source code, but not rkyv impls, NOTA impls,
+- `schema-rust-next` emits source code with rkyv derives, but not NOTA impls,
   version-projection traits, or full signal client/server code yet.
 - Header derivation is currently a simple surface-index plus variant-index
   encoding. The deeper 64-bit header namespace plan still needs expansion.
