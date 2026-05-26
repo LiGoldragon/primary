@@ -117,7 +117,7 @@ This complements the existing persona daemons: `persona-spirit`, `persona-mind` 
 
 ## §8 The new paradigm (per record 752)
 
-The psyche's framing: this is the engine that turns NOTA into a powerful programming-interface specification language. **A revival of ASCII (the original meaning) — but more defined, more strict, perfectly strict; representing data as it is stored, in order.**
+The psyche's framing: this is the engine that turns NOTA into a powerful programming-interface specification language. **A revival of ASKI (the original meaning) — but more defined, more strict, perfectly strict; representing data as it is stored, in order.**
 
 The aesthetic: **struct as a vector** — a series of things of fixed number, each name describing what that part is. Positional, predictable, embedding-safe.
 
