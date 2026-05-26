@@ -154,35 +154,6 @@ after the rewrite reaches feature parity. Until then:
 production edits → `main` in the canonical checkout; rewrite
 edits → `horizon-leaner-shape` worktree.
 
-## Spirit deploys side-by-side; cutover is an alias change
-
-The Spirit substrate ships side-by-side under
-`~/.local/state/persona-spirit/<version>/` with one tag-suffixed
-wrapper per release (`spirit-vX.Y.Z`), a `spirit-next` slot for the
-in-flight authoring branch, and the unsuffixed `spirit` symlink
-pointing at the current production target. Each daemon has its own
-sockets and its own redb database; versioned daemons never share
-files. Cutover from one production version to the next is an alias
-change, not a destructive replace — the older daemon stays installed
-and reachable through its tag-suffixed wrapper.
-
-This is the next/main/previous vocabulary applied at the deployment
-layer: *what is being authored IS next; the current published
-baseline IS main; previous is the prior release retained for
-handover.* The v0.2.0 deployment validated the pattern: production
-stayed on v0.1.0 while v0.2.0 ran in parallel for explicit testing
-through `spirit-v0.2.0`.
-
-The current deployed substrate (Spirit 0.2.0) carries one agent-
-clarified description per record, a kind, a magnitude, and a daemon-
-stamped timestamp; replies are terse (`(RecordAccepted N)`, no
-echo); topics are user-creatable single strings. *"Migrate live
-Spirit to v0.2 now."* The schema-driven persona-spirit feature branch
-(`designer-schema-full-stack-spirit-2026-05-25`) is a sibling fork of
-v0.2.0 awaiting operator integration; the schema-driven substrate is
-the candidate to fill `spirit-next` once integrated. Full
-discipline: `skills/spirit-cli.md` §"Deployment slots".
-
 ## Production work belongs in worktrees, not the canonical checkout
 
 When work touches code already in production and the arc spans
@@ -234,38 +205,22 @@ harness is invisible to every other harness and to the human.*
 NOTA is the workspace's text data format for typed records — used
 for `.schema` files, for signal payloads on the wire, for intent
 records in Spirit, and for inline CLI arguments to every persona
-component. The format's load-bearing design property is that **NOTA
-never contains a double quote character.** Brackets are the string
-form (`[text]` inline; `[|text|]` for bracket-safe and multi-line
-content); quotation marks do not form string types. *"nota uses
-brackets for strings, not quotation marks. safe nota is free of
-unescaped quotation marks, they are strongly disfavored, and do not
-surround string types - that is what [ and [| do."*
+component. The workspace-shape consequence of NOTA's bracket-only
+string discipline is that **a complete NOTA expression embeds
+escape-free inside any host whose string syntax uses double quotes**
+— JSON, Rust string literals, Nix attribute values, YAML, TOML,
+shell double-quote arguments, HTTP request bodies, database string
+columns, environment variable values. *"JSON-in-JSON requires
+escape cascades; NOTA-in-anything-with-doublequote-strings is
+escape-free. This is a load-bearing design property of NOTA, not
+an incidental side effect."* Design every workspace emitter and
+storage path to take advantage of this — the shell-double-quote
+wrapping convention (`spirit "(Record (...))"`) is the same
+principle at the CLI scale.
 
-The consequence is **universal embedding-safety**: a complete NOTA
-expression embeds escape-free inside any host whose string syntax
-uses double quotes — JSON, Rust string literals (including raw
-`r"..."`), Nix attribute values, YAML scalars, TOML strings, shell
-double-quote arguments, HTTP request bodies, database string
-columns, environment variable values, XML attributes. *"JSON-in-JSON
-requires escape cascades; NOTA-in-anything-with-doublequote-strings
-is escape-free. This is a load-bearing design property of NOTA, not
-an incidental side effect."* The shell-double-quote wrapping
-convention (`spirit "(Record (...))"`) is the same principle at the
-CLI scale; design new emitters and storage paths to take advantage
-of it.
-
-`nota-codec` enforces the discipline structurally on the emitter
-side: the encoder's `write_string` has three branches (bare
-identifier, `[|...|]` block, `[...]` inline) and no quote branch
-exists. Legacy quoted-string input is accepted as migration only and
-is authorised for removal once all emitter sites migrate. Legacy
-`intent/*.nota` files get a separate programmatic extractor that
-preserves psyche timestamps, kept distinct from the legacy-quote-
-removal heresy sweep across emitters.
-
-Full discipline: `skills/nota-design.md` §"Strings come EXCLUSIVELY
-from bracket forms".
+NOTA language design lives in `repos/nota/INTENT.md`; emitter and
+decoder discipline lives in `repos/nota-codec/INTENT.md`. Full
+agent-side authoring discipline: `skills/nota-design.md`.
 
 ## The Nix store is not a search surface
 
@@ -312,64 +267,38 @@ produces it.* Schemas warrant per channel; *contract = channel; one
 channel = one contract = one schema*. Three categories — wire (the
 process boundary), storage (the lifetime boundary), internal (the
 actor mailbox) — with wire schemas in the `signal-*` crate and
-storage + internal schemas in the daemon crate.
+storage + internal schemas in the daemon crate. **Schemas define
+data types only** — effects, fan-out targets, and effect tables are
+runtime dispatch / logic, not authored schema content (per psyche
+2026-05-26, records 713-715).
 
-Each actor declares two enums (ACTION + RESPONSE). The schema engine
-injects a universal `Unknown(String)` variant into every RESPONSE enum
-— the actor's **safety floor**, structurally-valid no matter what
-arrives. Effects and fan-out dispatch are runtime logic, not authored
-schema content: schemas define data types only (per psyche 2026-05-26,
-records 713-715). The rkyv binary encoding lives in one byte layout
-that survives two homes: **sema** in storage, **signal** on the wire.
-NOTA is the text projection on top.
-
-The NOTA schema namespace is a **key-value map of user-defined types**.
-Enums declare inline as `EnumName (Variant1 Variant2 …)` with variants
-in parens; variants may themselves be data-carrying or nested enums.
-Structs use `StructName [FieldType1 FieldType2 …]` (positional fields).
-Universal Unknown injection on `*Response` enums stays — it is behind-
-the-scenes macro work, not a user-authored declaration. Canonical
-shape: `signal-persona-spirit/spirit.schema`.
+The rkyv binary encoding lives in one byte layout that survives two
+homes: **sema** in storage, **signal** on the wire. NOTA is the text
+projection on top. The vocabulary closes the loop:
+**schema specifies, signal moves, sema holds.**
 
 Authors write from the point of view of **NEXT**; **MAIN** is the
 published baseline (imported as comparison); **PREVIOUS** or **LAST**
-is the prior iteration. The 8-byte ShortHeader prefix-preservation
-is this vocabulary applied at the wire layer (byte 0 of NEXT
-preserves byte 0 of MAIN). The DB-side migration story flows from
-the same vocabulary: daemon startup reads the version marker, runs
-the `mod previous` → `mod next` bridge if behind, writes the marker
-forward.
+is the prior iteration. The same vocabulary applies wherever a
+prior shape is referenced — schema versions, wire-header
+extensions, on-disk migration markers, deployment slots.
 
-The first full-stack POC lives across four
-`designer-schema-full-stack-spirit-2026-05-25` branches in `schema`,
-`signal-frame`, `persona-spirit`, and `signal-persona-spirit`. Six
-actor schemas, the universal-Unknown post-pass, the composer's
-authored emissions, the auto-migration runner, and the dual wire
-emission are all proven by passing tests. The one deferred piece is
-cross-crate schema-import resolution; the workaround is hand-written
-Rust types matching what `emit_schema!` will produce. Note: the POC
-schemas in those branches still carry a "Features" section
-(EffectTable / FanOutTargets / StorageDescriptor) — that surface is
-**drift** per records 713-715; the authored schema shape is the
-namespace map of types only. Re-shaping those POC schemas is a
-separate operator pass; the runtime/dispatch behavior they prove is
-still useful as private composer machinery.
+Schema-language design (namespace shape, enum/struct syntax,
+imports, lowering) lives in `repos/schema/INTENT.md`. Composer +
+wire-substrate intent lives in `repos/signal-frame/INTENT.md`.
+Actor-schema architecture for the spirit daemon lives in
+`repos/persona-spirit/INTENT.md`.
 
-## Persona-spirit is the apex; concept designer is the entry
-
-`persona-spirit` is a new persona component — *the interface
-between the persona mind and the psyche* — sitting at the apex
-of the cognitive authority chain (the supervisor has higher
-infrastructure permission only). Spawned last; owns mind in the
-authority graph. *Persona is a meta AI system — the next
-evolutionary step in AI engineering. What animates humans at the
-highest level is spirit; persona-spirit is the analog.* Bead:
-`primary-ojxq` (persona-spirit triad implementation).
+## Concept designer is the entry for new concepts
 
 **Concept designer** is a real role — *an entry point for new
 concepts the psyche is juggling*. Compares new concepts against
 existing ones; surfaces relationships; decides when a concept
 earns its own dedicated lane. Fleshing out next.
+
+(Persona-spirit's own apex-role + architecture intent lives in
+`repos/persona-spirit/INTENT.md`; the workspace-shape consequence
+is in `ESSENCE.md` §"Persona is meta-AI; spirit animates".)
 
 ## When a new role appears without a skill
 
