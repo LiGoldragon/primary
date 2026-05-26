@@ -303,3 +303,10 @@ Do not let that dirty `INTENT.md` become authoritative without correction.
 6. **Resolve nota-codec guidance before reuse.** The code rejects quote delimiters; the dirty `nota-codec-intent-synthesis` file says otherwise.
 7. **Cross-repo dependency ordering matters.** `schema-next` depends on `nota-next` by git branch `main`; `schema-rust-next` depends on `schema-next` by git branch `main`. Land lower-layer changes first or use an explicit local integration plan.
 8. **No verification was run here.** I only inspected. Next operator should run the repos’ Nix/cargo checks before declaring the replacement stack green.
+
+## Orchestrator update after scout completion
+
+This scout captured a fast-moving moment. A later pi-operator read saw two state changes:
+
+- `/git/github.com/LiGoldragon/design-nota-from-schema` is now clean at `qnppkzxk` / `95dc1137` (`Initial: design-nota-from-schema parallel exploration of narrower recursion-floor cut`), with `main` pushed. Designer report `reports/designer/363-design-nota-from-schema-comparison-2026-05-26.md` gives the verdict: type declarations can emit from `nota.schema`, but byte-recognition remains a hand-authored kernel floor.
+- `/git/github.com/LiGoldragon/schema-rust-next` later showed `M src/lib.rs` in the working copy on empty descendant `vrlowmqv` / `e3397444` above `main` `a290b7c7`. Treat that as ongoing operator-owned work under the broad operator lock, not pi-operator material to edit.

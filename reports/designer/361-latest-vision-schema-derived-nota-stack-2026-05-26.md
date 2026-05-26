@@ -285,6 +285,10 @@ From /357 + /358 + /359 + /199 + /360, the consolidated open shape questions for
 
 ## §12 Empirically demonstrated vs aspirational
 
+> **Status update 2026-05-26 late**: After operator/203 + designer parallel /363, multiple rows resolve. **Composer emits Rust over Asschema** ✅ (schema-rust-next/src/lib.rs + Nix `no-old-signal-macro` + `no-rust-macro-surface` checks). **Header derivation** ⚪ partial (simple 16-bit-per-slot surface+variant encoding emitted; deeper 64-bit namespace plan still pending). **Nota.schema describing NOTA grammar** ⚪ partial → ⚪ partial-but-resolved: designer parallel /363's verdict is PARTIALLY FEASIBLE — TYPE declarations emit cleanly from schema (31 declarations + 35 tests pass), but byte-level lexer + delimiter recognition CANNOT emit declaratively (no language to declare byte-recognition policy). **Recursion-floor recommendation crystallizes**: hybrid — operator's wider cut stays for byte recognition; schema-driven emission applies to TYPE declarations above the byte floor. Record 746's "NOTA itself is schema-derived" is partly answered: yes for types, no for byte recognition. The kernel→emitted lifter is also hand-authored (schema describes types but not mappings between two type families). Design repo `design-nota-from-schema` becomes eligible for deletion once operator absorbs the schema-driven-types pattern (which schema-rust-next already does). Engagement reports at /365 (operator/203) + /363 (designer parallel verdict).
+
+
+
 | Element | Status | Evidence |
 |---|---|---|
 | NOTA library surface (`qualifies_as_*`, `is_X_bracket`, classification) | ✅ DEMONSTRATED | /358 prototype, 10 constraint tests pass |
