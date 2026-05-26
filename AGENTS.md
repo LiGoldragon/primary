@@ -186,6 +186,18 @@ yet — those land when the role's shape settles.
   columns) — NOTA-in-anything-with-double-quote-strings is
   escape-free. Full discipline: `skills/nota-design.md`
   §"Strings come EXCLUSIVELY from bracket forms".
+- **Every Rust function is a method or an associated function on
+  an `impl` block; free functions are forbidden except in
+  `#[cfg(test)]` modules and `fn main()`.** Methods carry clear
+  ownership / namespacing / dispatch context; free functions are
+  orphan logic that bypasses the type system's organisational power
+  and tend to grow into helper-utility soup. When you'd write a
+  free function, find its natural owner type and put the function
+  in an `impl` block there. For projection / conversion functions,
+  reach for `impl From<X> for Y` instead of `fn project_x_to_y(...)`.
+  Same rule binds schema-emitted code: macros emit functions inside
+  `impl` blocks of the owning struct/enum, never free helpers. Per
+  psyche 2026-05-26 (intent record 712, Maximum).
 - **NOTA records are positional, not labeled.** Type first, then
   fields in declared order — no keywords inside records. The
   `(key value)` shape from Lisp/Clojure/JSON is not NOTA. Before
