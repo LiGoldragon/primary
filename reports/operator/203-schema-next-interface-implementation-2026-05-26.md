@@ -40,7 +40,7 @@ The implementation applies these concrete critiques:
 |---|---|---|---|
 | `nota-next` | `/git/github.com/LiGoldragon/nota-next` | `https://github.com/LiGoldragon/nota-next` | `6b4364d9` |
 | `schema-next` | `/git/github.com/LiGoldragon/schema-next` | `https://github.com/LiGoldragon/schema-next` | `19591a7a` |
-| `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | `https://github.com/LiGoldragon/schema-rust-next` | `9b348726` |
+| `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | `https://github.com/LiGoldragon/schema-rust-next` | `f76d6483` |
 
 Each repo has:
 
@@ -233,6 +233,8 @@ Current generated Rust includes:
 - enums;
 - root surface enums;
 - rkyv archive/serialize/deserialize derives on generated data types;
+- NOTA `FromStr` / `Display` / `to_nota` / `from_nota_block` surfaces for
+  generated data types;
 - short-header constants derived from surface and variant order.
 
 The emitted Spirit fixture includes:
@@ -258,10 +260,12 @@ pub mod short_header {
 
 Tests:
 
-- emit Rust source from a schema and compare exactly to a checked-in
-  fixture;
+- emit Rust source from a schema and assert it contains the generated
+  interface surfaces;
 - compile and use the checked-in fixture as Rust code;
-- round-trip a generated `Input` value through rkyv bytes.
+- parse a CLI-style NOTA string into generated `Input` and emit it back as
+  NOTA;
+- round-trip a generated `Input` value from NOTA into rkyv bytes and back.
 
 Nix constraints:
 
@@ -271,6 +275,9 @@ Nix constraints:
   `proc_macro`; Rust emission stays separate from Rust macros.
 - `generated-rkyv-boundary`: the generated fixture carries rkyv derives
   and the test suite exercises `rkyv::to_bytes` / `rkyv::from_bytes`.
+- `generated-nota-boundary`: the generated fixture carries `FromStr` and
+  `to_nota`, and the test suite parses a CLI-style NOTA string into
+  generated `Input`.
 
 Verification:
 
@@ -289,7 +296,7 @@ NOTA source
   -> schema-next SchemaEngine + position-aware macros
   -> schema-next ordered Asschema
   -> schema-rust-next Rust source emission
-  -> compiled Rust fixture
+  -> compiled Rust fixture with NOTA + rkyv boundaries
 ```
 
 The chain uses the new layers directly. It does not route through the old
@@ -301,8 +308,9 @@ signal macro.
   parse edge case.
 - `schema-next` has only the built-in MVP lowering surface; third-party macro
   registration is still a follow-on.
-- `schema-rust-next` emits source code with rkyv derives, but not NOTA impls,
-  version-projection traits, or full signal client/server code yet.
+- `schema-rust-next` emits source code with rkyv derives and basic NOTA
+  readers/writers, but not version-projection traits or full signal
+  client/server code yet.
 - Header derivation is currently a simple surface-index plus variant-index
   encoding. The deeper 64-bit header namespace plan still needs expansion.
 - `schema-rust-next` consumes `schema-next` by Git dependency on `main`; as
@@ -315,7 +323,6 @@ The next useful slice is to extend `schema-rust-next` from "data types +
 headers" to "wire contract module":
 
 - generated request/reply envelopes;
-- generated NOTA readers/writers for the emitted types;
 - generated short-header dispatch table;
 - one generated compatibility trait pair for an adjacent schema diff.
 

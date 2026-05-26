@@ -346,8 +346,22 @@ whose possible arms come from schema.
 
 ## What is proven now
 
-The new `schema-rust-next` test proves the generated signal type can cross the
-binary boundary:
+The latest `schema-rust-next` implementation proves both the CLI-style NOTA
+boundary and the binary rkyv boundary on the generated Spirit fixture.
+
+Generated `Input` now implements `FromStr` over NOTA:
+
+```rust
+let input = "(Record ([schema] Constraint [agent's clarified intent] Maximum))"
+    .parse::<generated::Input>()?;
+
+assert_eq!(
+    input.to_string(),
+    "(Record ([schema] Constraint [agent's clarified intent] Maximum))"
+);
+```
+
+The same parsed generated signal type crosses the binary boundary:
 
 ```rust
 let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&input)?;
@@ -355,27 +369,29 @@ let decoded = rkyv::from_bytes::<generated::Input, rkyv::rancor::Error>(&bytes)?
 assert_eq!(decoded, input);
 ```
 
-The Nix constraint `generated-rkyv-boundary` checks that the generated fixture
-contains rkyv derives and the tests exercise both `rkyv::to_bytes` and
-`rkyv::from_bytes`.
+The Nix constraints now include:
 
-The current proof is deliberately narrow. It does not yet prove the full
-socket frame or CLI NOTA parser into generated input.
+- `generated-nota-boundary`: the generated fixture carries `FromStr` and
+  `to_nota`, and tests parse a CLI-style NOTA string into generated `Input`.
+- `generated-rkyv-boundary`: the generated fixture carries rkyv derives and
+  tests exercise `rkyv::to_bytes` / `rkyv::from_bytes`.
+
+The current proof is still deliberately narrow. It proves generated NOTA text
+IO and generated rkyv binary IO, but not yet the full socket frame.
 
 ## Missing tests
 
 The next constrained tests should be added in this order:
 
-1. CLI NOTA boundary: parse a single NOTA argument into generated `Input`.
-2. Frame boundary: wrap generated `Input` in the signal frame, write
+1. Frame boundary: wrap generated `Input` in the signal frame, write
    length-prefixed rkyv bytes, read them back, and dispatch by generated
    short header.
-3. Runtime reaction: feed generated `Input::Record` into a generated executor
+2. Runtime reaction: feed generated `Input::Record` into a generated executor
    harness and assert it lowers to a generated sema command.
-4. SEMA state reaction: apply the generated sema command to a fake store and
+3. SEMA state reaction: apply the generated sema command to a fake store and
    assert a generated sema response.
-5. Reply shaping: map generated sema response to generated signal `Output`.
-6. Async correlation: prove two in-flight generated requests with distinct
+4. Reply shaping: map generated sema response to generated signal `Output`.
+5. Async correlation: prove two in-flight generated requests with distinct
    exchange identifiers can receive replies out of order and still correlate.
 
 Only after those pass should we say the schema stack proves component
@@ -386,12 +402,12 @@ communication end-to-end.
 The architecture now has a real first spine:
 
 ```text
-.schema -> nota-next -> schema-next -> Asschema -> schema-rust-next -> rkyv-capable Rust types
+.schema -> nota-next -> schema-next -> Asschema -> schema-rust-next -> NOTA + rkyv-capable Rust types
 ```
 
 The biggest remaining gap is not whether schema can create interfaces. It can.
 The gap is that the generated interfaces have not yet been wired through the
-whole component runtime: CLI NOTA parse, signal frame, executor lowering,
-SEMA state operation, reply shaping, and async exchange correlation.
+whole component runtime: signal frame, executor lowering, SEMA state
+operation, reply shaping, and async exchange correlation.
 
 That should be the next operator slice.
