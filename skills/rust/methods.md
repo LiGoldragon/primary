@@ -41,6 +41,32 @@ exceptions (local helper, relational operation, standard-library
 convention) — see `skills/abstractions.md`. This section is the
 Rust enforcement.
 
+## Schema-generated objects are the method surface
+
+In the schema-derived stack, the authored schema names the real
+objects. The generator emits Rust types for those objects, and
+hand-written implementation code attaches behavior to those generated
+types with inherent methods or trait impls.
+
+The workflow is:
+
+1. Change the schema.
+2. Regenerate the Rust types and derives.
+3. Write or adjust methods on the regenerated nouns.
+
+Do not hand-write a parallel mirror of a generated data type to get a
+method surface. Do not add reusable free functions around generated
+types because "the generated code has no method yet." The missing
+method belongs on the generated type, or on a data-bearing runtime
+type that owns the state being read or written.
+
+This rule is especially important for schema-emitted signal surfaces:
+`Input`, `Output`, operation payloads, route/header types, codecs, and
+store records are the nouns. A request being treated is a method on
+the request or on the engine/store object that owns the state. If the
+method cannot be placed cleanly, the schema or the runtime noun is not
+specific enough yet.
+
 ## No ZST method holders
 
 A `pub struct Foo;` whose `impl Foo` is just a parking lot for

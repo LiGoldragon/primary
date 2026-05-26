@@ -36,6 +36,38 @@ The point is not to force every stateful experiment into a pure
 builder. The point is that the test command, its environment, and its
 artifacts are owned by the repo and entered through Nix.
 
+## Multi-repo local override tests
+
+When a feature spans several sibling repositories, create a central
+test runner in the consumer repo that can rebuild the whole local
+stack together. The runner uses Nix input overrides to point at the
+latest local checkouts:
+
+```sh
+nix flake check \
+  --override-input nota-next-source path:/git/github.com/LiGoldragon/nota-next \
+  --override-input schema-next-source path:/git/github.com/LiGoldragon/schema-next \
+  --override-input schema-rust-next-source path:/git/github.com/LiGoldragon/schema-rust-next
+```
+
+The committed flake still uses portable `github:` inputs. The local
+override runner is for integration pressure while developing several
+repos at once: edit the codec or schema emitter, run the consumer's
+central test, and prove the generated Rust still compiles, serializes,
+and crosses the process boundary.
+
+For schema-derived repos, the central runner should prove the whole
+chain:
+
+```text
+schema files -> assembled schema -> generated Rust -> hand-written
+methods on generated objects -> rkyv signal frame -> CLI/daemon test
+```
+
+If the test only checks the schema engine in isolation, it is not the
+central integration test. If it only checks the consumer with pinned
+remote dependencies, it is not the local override test.
+
 ## Constraint to witness to Nix
 
 For every load-bearing behavior or architecture constraint:

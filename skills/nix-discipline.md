@@ -139,6 +139,29 @@ When iteration is done, commit and push the dependency repo,
 then run `nix flake update nota-codec` to re-pin the lock to
 the new commit. The `flake.nix` never changes.
 
+### Multi-repo local stack checks — ephemeral overrides
+
+For central integration tests that must rebuild several local sibling
+repos together, prefer an **ephemeral check command** over rewriting
+the committed lock:
+
+```sh
+nix flake check \
+  --override-input nota-next-source path:/git/github.com/LiGoldragon/nota-next \
+  --override-input schema-next-source path:/git/github.com/LiGoldragon/schema-next
+```
+
+This keeps `flake.nix` portable (`github:` inputs) while letting the
+test consume the latest local working copies. Use this for schema
+stack work where one consumer repo needs to test local `nota-next`,
+`schema-next`, and `schema-rust-next` together.
+
+Committed flakes that support this pattern expose sibling source
+inputs with clear names such as `nota-next-source`. The build then
+patches Cargo git dependencies to those input sources inside the Nix
+builder. Do not commit `git+file://` or absolute local paths to
+`flake.nix` or `Cargo.toml`.
+
 ### `path:` is fine for sub-flakes inside one repo
 
 If a repo contains a `subdir/flake.nix` and the parent's flake
