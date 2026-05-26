@@ -99,6 +99,8 @@
     [Feature branches in worktrees. Multi-repo arc coordination.])
   (Workflow major-break-via-new-repo skills/major-break-via-new-repo.md Topic
     [When an architectural break is large enough that the existing repo's invariants no longer fit: create a new repo with a -next / -v2 / longer suffix and develop in parallel. After stabilizing, rename to the canonical short name (replacing the original). Per psyche 2026-05-26 (record 811).])
+  (Workflow double-implementation-strategy skills/double-implementation-strategy.md Topic
+    [Two parallel implementation tracks for major architectural breaks: operator on main branch of new repos amalgamating best-of-prototypes; designer on worktree branches OR design-prefixed throwaway repos iterating forward-looking design. Comparison drives convergence. Anti-drift mechanism. Per psyche 2026-05-26 records 815-818.])
   (Workflow beads skills/beads.md Mechanism
     [Short-tracked-item discipline. Transitional pre-Persona-mind.])
   (Workflow repository-management skills/repository-management.md Mechanism
