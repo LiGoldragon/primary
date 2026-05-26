@@ -32,6 +32,16 @@ The new strategy is captured in Spirit:
 - Record 814: the first operator-created `main` branch in each replacement
   repository starts from an amalgamation of the strongest previous prototype
   ideas, not from an empty scaffold alone.
+- Record 819: the Rust emission repository is `schema-rust-next`, and Rust
+  emission is separate from Rust macros; the stack generates Rust code first.
+- Record 820: the raw NOTA replacement repository is `nota-next`; it is the
+  new NOTA implementation, not a branch-only temporary surface.
+- Record 821: the schema-derived stack uses separate repositories for
+  `nota-next`, `schema-next`, and `schema-rust-next` rather than one combined
+  integration repository.
+- Record 822: future forge build logic may let generated Rust become
+  content-addressed crates directly, reducing the need for generated-code
+  repositories once forge owns that build path outside Nix.
 
 ## Strategy
 
@@ -128,17 +138,23 @@ the names:
 
 | Stack part | New repository | Why |
 |---|---|---|
-| Raw NOTA structural reader and block query library | `nota-next` | It is the next NOTA implementation and should replace the old NOTA surface after proof. |
+| Raw NOTA structural reader and block query library | `nota-next` | It is the new NOTA implementation and should replace the old NOTA surface after proof. |
 | Schema macro engine and assembled schema | `schema-next` | It is the next schema implementation; old schema guidance has too much stale six-position/Feature language. |
-| Rust code composer from assembled schema | `schema-composer` or `schema-rust-next` | Name depends on whether this stabilizes as a new concept (`schema-composer`) or as the next version of an existing schema-rust surface (`schema-rust-next`). |
+| Rust code emission from assembled schema | `schema-rust-next` | It emits Rust code as its own step before any Rust macro consumption surface. |
 | Spirit daemon/runtime | `spirit` | Already created as the cleaned daemon/runtime replacement. |
 | Spirit ordinary signal | `signal-spirit` | Already created as the public/ordinary signal replacement. |
 | Spirit core policy signal | `core-signal-spirit` | Already created as the owner/core signal replacement. |
 
-The exact composer repo name is still the one unclear naming point. The
-default operator lean is `schema-composer` if the repo owns Rust emission as
-its concept, because "composer" describes the work more accurately than
-"rust-next".
+The repo split is now resolved as separate repositories, not one combined
+integration repo. The unresolved work is implementation depth, not naming.
+
+`schema-rust-next` keeps Rust emission separate from Rust macros. The first
+path is assembled schema in, Rust source text out, fixture comparison, compile
+the generated fixture, then layer macro ergonomics later.
+
+Future forge design may eventually bypass a long-lived generated-code repo by
+turning emitted Rust into content-addressed crates directly. That is carried
+as future architecture, not the immediate MVP path.
 
 ## Relationship to the major-break skill
 
@@ -166,34 +182,31 @@ The new strategy adds a sharper role split:
 
 1. Do not continue treating `nota-core-next` as merely conditional for this
    stack. The new-repo method is selected.
-2. Do not let old branch names become the durable coordination surface. They
+2. Use `nota-next`, `schema-next`, and `schema-rust-next` as separate
+   replacement repositories for the stack's first implementation line.
+3. Do not let old branch names become the durable coordination surface. They
    are prototype sources and may be mined, but the next implementation target
    is new repositories with operator-owned `main`.
-3. When creating the first replacement repo, start from the best prototype
+4. When creating the first replacement repo, start from the best prototype
    amalgamation, including Nix checks, rather than scaffold-only setup.
-4. Keep reports and per-repo `INTENT.md` files clear about predecessor and
+5. Keep reports and per-repo `INTENT.md` files clear about predecessor and
    successor relationship so agents know which repo is production and which is
    the replacement track.
 
-## Open questions
+## Closed questions
 
-1. Should the first raw NOTA replacement repo be exactly `nota-next`, or is
-   `nota-core-next` still the preferred integration name for the combined
-   raw-NOTA plus schema-bootstrap baseline?
-2. Should the Rust emission layer stabilize as `schema-composer` or as
-   `schema-rust-next`?
-3. Should `schema-next` and `nota-next` be separate from the first commit, or
-   should the operator create one initial combined integration repo and split
-   after the layers prove themselves?
+1. The raw NOTA replacement repo is `nota-next`.
+2. The Rust emission layer repo is `schema-rust-next`.
+3. `nota-next`, `schema-next`, and `schema-rust-next` are separate repos from
+   the start.
 
 ## Operator lean
 
-Create separate new repositories for the replacement surfaces unless there is
-a direct psyche naming override:
+Create these separate new repositories for the replacement surfaces:
 
 - `nota-next`
 - `schema-next`
-- `schema-composer`
+- `schema-rust-next`
 
 Keep `spirit`, `signal-spirit`, and `core-signal-spirit` as the first
 consumer triad.
