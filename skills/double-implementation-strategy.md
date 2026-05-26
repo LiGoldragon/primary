@@ -117,8 +117,9 @@ permanent parallel infrastructure.
 
 A major break around the NotaCore + schema-stack design:
 
-1. **Operator creates new repos**: `nota-next` branch on `nota`, new
-   repo `spirit` (and siblings), keeps work on main branches.
+1. **Operator creates new repos**: `nota-next`, `schema-next`,
+   `schema-rust-next`, plus `spirit` triad repos where applicable;
+   keeps work on the new repos' main branches.
 2. **Operator amalgamates** best ideas from prototype branches
    (designer-schema-derived-nota, designer-schema-schema-prototype,
    operator-schema-driven-nota-parser-prototype) into the new mains.
@@ -126,10 +127,10 @@ A major break around the NotaCore + schema-stack design:
    shape for the assembled-schema endpoint that operator's main hasn't
    adopted yet.
 4. **Periodic comparison**: designer's `design-asschema` vs operator's
-   `schema` main asschema crate. Convergence on most shape; divergence
+   `schema-next` main assembled-schema crate. Convergence on most shape; divergence
    on lookup-index strategy.
 5. **Integration**: design's lookup strategy proves superior in tests;
-   operator absorbs into `schema` main. `design-asschema` deletes.
+   operator absorbs into `schema-next` main. `design-asschema` deletes.
 
 ## Why this works
 

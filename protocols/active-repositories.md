@@ -34,6 +34,8 @@ stack.
 | `signal-sema` | `/git/github.com/LiGoldragon/signal-sema` | Sema operation vocabulary: `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, and `Validate`. Public component contracts lower into this layer; they do not expose these words as universal request roots. |
 | `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema`, `signal-sema`, and a small transitional `signal-core` utility seam: registered record families, Sema operation execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not NOTA, and not Persona-specific. First real consumer is `mind`; Criome follows. |
 | `schema` | `/git/github.com/LiGoldragon/schema` | Typed schema-language substrate: resolved schema document model, validation, and root-versus-box layout metadata for schema-driven signal/sema macro work. Library-shaped now; future runtime schema triad authority remains unsettled. |
+| `schema-next` | `/git/github.com/LiGoldragon/schema-next` | Replacement schema engine for the schema-derived stack. Consumes `nota-next`, runs position-aware schema macros, and emits ordered macro-free `Asschema`. Operator-owned `main`; designers branch from that baseline in `~/wt`. |
+| `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | Replacement Rust emission layer. Consumes `schema-next::Asschema` and emits Rust source text as a separate step before any Rust macro ergonomics. Operator-owned `main`. |
 | `version-projection` | `/git/github.com/LiGoldragon/version-projection` | Shared projection and compatibility-policy library for adjacent component versions. Pure library; no daemon, no socket, no component-specific migration logic. |
 | `signal-version-handover` | `/git/github.com/LiGoldragon/signal-version-handover` | Private daemon-to-daemon signal contract for version handover marker, readiness, completion, mirror, divergence, and recovery messages. |
 | `owner-signal-version-handover` | `/git/github.com/LiGoldragon/owner-signal-version-handover` | Owner-only administrative signal contract for version handover authority: force selector flip, rollback, and quarantine. |
@@ -67,6 +69,7 @@ stack.
 | `nexus` | `/git/github.com/LiGoldragon/nexus` | Typed semantic text vocabulary written in NOTA syntax. |
 | `nexus-cli` | `/git/github.com/LiGoldragon/nexus-cli` | CLI surface for Nexus-shaped NOTA records. |
 | `nota` | `/git/github.com/LiGoldragon/nota` | NOTA language home. |
+| `nota-next` | `/git/github.com/LiGoldragon/nota-next` | Replacement NOTA implementation for the schema-derived stack. Owns raw structural block parsing, source spans, and `qualifies_as_*` methods only; schema semantics live in `schema-next`. Operator-owned `main`. |
 | `nota-codec` | `/git/github.com/LiGoldragon/nota-codec` | NOTA parser/encoder/decoder; no Nexus semantics. |
 | `nota-derive` | `/git/github.com/LiGoldragon/nota-derive` | NOTA derive support. |
 | `nota-config` | `/git/github.com/LiGoldragon/nota-config` | Strict one-argument typed configuration input over NOTA, `.nota`, or `.rkyv`. |
