@@ -15,6 +15,11 @@ are stale only on the question of whether the new-repo route is conditional.
 Latest psyche intent has now made the new-repo route the active method for
 the stack parts being replaced.
 
+This report is the operator-side application of the new workspace skill
+`skills/double-implementation-strategy.md`, which now carries the general
+workflow discipline. The skill is broader; this report narrows it to the
+schema-derived NOTA stack.
+
 ## Spirit records
 
 The new strategy is captured in Spirit:
@@ -139,6 +144,9 @@ its concept, because "composer" describes the work more accurately than
 
 The previous reports treated `skills/major-break-via-new-repo.md` as an
 escape hatch. This prompt turns it into the active method for this stack.
+The more specific `skills/double-implementation-strategy.md` now layers the
+operator/designer two-track comparison method on top of that major-break
+repo discipline.
 
 The skill still supplies the mechanics:
 
