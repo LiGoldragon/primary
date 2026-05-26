@@ -357,6 +357,9 @@ The two-shape pattern is the engine's translation between request-style (synchro
 
 **Score: 4 out of 12 truth claims are empirically tested today. 8 await implementation.**
 
+> **Status update 2026-05-26 later (after /368 running concept lands)**: the score is now **9 of 12**. Claims 2 (CLI is NOTA), 3 (binary rkyv between components), 4 (engine matches data types), 5 (SEMA reaction object), and 6 (signal IN/OUT rkyv on wire) are all now ✅ DEMONSTRATED. Live transcript at `/368`: `spirit-cli "(Request [/tmp/spirit.sock] (Record ([topic] [description])))"` → `(RecordAccepted 1)` over a real Unix socket. Async unique-ID mail delivery (claim 7), synchronous fast-response option (claim 8), and schema-daemon (not in table; defers) remain aspirational — runtime-engine concerns, not core-chain concerns. The chain is no longer half-built; it is woven end-to-end for one operation through the schema-derived substrate.
+
+
 The 8 untested claims share a common dependency: the daemon + CLI + socket plumbing on the new substrate. That's `signal-spirit` + `core-signal-spirit` + `spirit` being woven into a working triad, plus `schema-rust-next` emitting rkyv impls + NOTA impls + (eventually) signal client/server code.
 
 ## §10 What to build to close the verification gap
