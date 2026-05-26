@@ -11,6 +11,8 @@
 > - `skills/schema-driven-actors.md` — actor-schema authoring discipline.
 >
 > This report is **kept** per `skills/context-maintenance.md` §3a (design-rationale guard): it enumerates competing design alternatives, one of which (P5 InteractTrait + InteractionActor) was explicitly retracted per record 666 in §2.5. The chosen designs migrated to permanent docs; the retracted alternative is preserved here as design rationale. Read the permanent-doc landings for the chosen shape; read this report for the why-the-other-shape-was-rejected substance.
+>
+> **Additional retraction (2026-05-26, records 713-715).** §2.6 (effect-table) and §2.7 (fan-out execution) are *also* retracted as authored schema features. Per psyche 2026-05-26: schemas define data types only; effects and fan-out targets are runtime dispatch / logic, not authored schema content. The "three new Feature variants (EffectTable / FanOutTargets / StorageDescriptor)" framing in §5.1 / §5.2 and elsewhere is drift. The authored schema is the namespace key-value map of types only — see `signal-persona-spirit/spirit.schema` for the canonical shape. The effect-table / fan-out machinery may live as hidden composer mechanism; it does not appear in user-authored `.schema` files. Universal Unknown injection on `*Response` enums stays as macro-level behind-the-scenes work, not as a Feature.
 
 ## Frame
 

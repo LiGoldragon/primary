@@ -1,5 +1,17 @@
 # 107 — signal-frame self-hosting bootstrap
 
+> **RETRACTION BANNER (2026-05-26, records 713-715).** This report's
+> five reply-outcome enum declarations are fine as **pure enum
+> declarations** — they belong in the namespace key-value map as
+> `EnumName (Variant1 Variant2 …)`. The self-hosted bootstrap itself
+> is not retracted. What IS retracted, where it appears: any
+> `EffectTable` / `FanOutTargets` / `StorageDescriptor` Features-section
+> scaffolding the bootstrap touched, per psyche 2026-05-26. Schemas
+> define data types only; effects and fan-out are runtime dispatch /
+> logic. Canonical authored shape:
+> `signal-persona-spirit/spirit.schema` (no Features section anywhere
+> in the canonical schema).
+
 *Per psyche 2026-05-26 (intent record 711, Maximum): even
 signal-frame itself should be a schema. This report covers the
 landing of the recursive endpoint --- the meta-framework that

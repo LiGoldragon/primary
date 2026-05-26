@@ -314,13 +314,22 @@ process boundary), storage (the lifetime boundary), internal (the
 actor mailbox) — with wire schemas in the `signal-*` crate and
 storage + internal schemas in the daemon crate.
 
-Each actor declares two enums (ACTION + RESPONSE) plus an authored
-EffectTable + FanOutTargets. The schema engine injects a universal
-`Unknown(String)` variant into every RESPONSE enum — the actor's
-**safety floor**, structurally-valid no matter what arrives. The
-rkyv binary encoding lives in one byte layout that survives two
-homes: **sema** in storage, **signal** on the wire. NOTA is the text
-projection on top.
+Each actor declares two enums (ACTION + RESPONSE). The schema engine
+injects a universal `Unknown(String)` variant into every RESPONSE enum
+— the actor's **safety floor**, structurally-valid no matter what
+arrives. Effects and fan-out dispatch are runtime logic, not authored
+schema content: schemas define data types only (per psyche 2026-05-26,
+records 713-715). The rkyv binary encoding lives in one byte layout
+that survives two homes: **sema** in storage, **signal** on the wire.
+NOTA is the text projection on top.
+
+The NOTA schema namespace is a **key-value map of user-defined types**.
+Enums declare inline as `EnumName (Variant1 Variant2 …)` with variants
+in parens; variants may themselves be data-carrying or nested enums.
+Structs use `StructName [FieldType1 FieldType2 …]` (positional fields).
+Universal Unknown injection on `*Response` enums stays — it is behind-
+the-scenes macro work, not a user-authored declaration. Canonical
+shape: `signal-persona-spirit/spirit.schema`.
 
 Authors write from the point of view of **NEXT**; **MAIN** is the
 published baseline (imported as comparison); **PREVIOUS** or **LAST**
@@ -334,13 +343,17 @@ forward.
 The first full-stack POC lives across four
 `designer-schema-full-stack-spirit-2026-05-25` branches in `schema`,
 `signal-frame`, `persona-spirit`, and `signal-persona-spirit`. Six
-actor schemas, the three new Feature variants
-(EffectTable / FanOutTargets / StorageDescriptor), the universal-
-Unknown post-pass, the composer's authored emissions, the auto-
-migration runner, the dual wire emission — all proven by passing
-tests. The one deferred piece is cross-crate schema-import
-resolution; the workaround is hand-written Rust types matching what
-`emit_schema!` will produce.
+actor schemas, the universal-Unknown post-pass, the composer's
+authored emissions, the auto-migration runner, and the dual wire
+emission are all proven by passing tests. The one deferred piece is
+cross-crate schema-import resolution; the workaround is hand-written
+Rust types matching what `emit_schema!` will produce. Note: the POC
+schemas in those branches still carry a "Features" section
+(EffectTable / FanOutTargets / StorageDescriptor) — that surface is
+**drift** per records 713-715; the authored schema shape is the
+namespace map of types only. Re-shaping those POC schemas is a
+separate operator pass; the runtime/dispatch behavior they prove is
+still useful as private composer machinery.
 
 ## Persona-spirit is the apex; concept designer is the entry
 

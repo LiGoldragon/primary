@@ -1,5 +1,20 @@
 # 106 — Schema-driven POC from v0.3 main
 
+> **RETRACTION BANNER (2026-05-26, records 713-715).** The `.schema` files
+> the POC authored in this landing carry `EffectTable`, `FanOutTargets`,
+> and `StorageDescriptor` as authored Features sections — that surface
+> is **drift** per psyche 2026-05-26. Schemas define data types only; the
+> authored shape is the namespace **key-value map** of user-defined types,
+> with enums as `Name (Variant1 Variant2 …)` and structs as
+> `Name [Field1 Field2 …]`. Canonical reference:
+> `signal-persona-spirit/spirit.schema`. The runtime / dispatcher /
+> migration / dual-emission behavior the POC's tests proved is still
+> useful — what changed is the AUTHORED schema shape: a separate
+> retraction pass on the POC `.schema` files (and the schema crate's
+> `Feature` enum variants in code) is queued. Universal Unknown injection
+> on `*Response` enums and the `finalize_universal_unknowns` post-pass
+> stay — they are behind-the-scenes macro work, not authored features.
+
 *Designer-assistant landing for psyche 2026-05-26 + intent records 709
 and 710 (the three-language schema-driven structure). Five repositories
 on new feature branches in `~/wt`. The POC matches v0.3 production

@@ -1,5 +1,18 @@
 # 105 — schema-driven spirit full-stack implementation showcase
 
+> **RETRACTION BANNER (2026-05-26, records 713-715).** The `EffectTable`,
+> `FanOutTargets`, and `StorageDescriptor` features this report exercises
+> as **authored** schema content are drift. Per psyche 2026-05-26: schemas
+> define data types only; effects and fan-out are runtime dispatch / logic.
+> The C4 closure tests still witness a useful property — that dispatcher
+> tables are closed enums Rust enforces exhaustively at compile time —
+> but the **EFFECT TABLE itself shouldn't have been an authored schema
+> feature**. The closure discipline survives; the surface it was tested
+> against does not. Canonical authored schema shape: namespace key-value
+> map of types only (see `signal-persona-spirit/spirit.schema`). Re-shaping
+> the POC schemas and re-targeting these tests against the right surface
+> is a separate operator pass.
+
 *Designer-lane subagent dispatch 2026-05-25. Empirical verification of
 the four-repo landing reported in /104. Authority: /103, /104, /346,
 /345. Every constraint from /346 is exercised against a live test —
