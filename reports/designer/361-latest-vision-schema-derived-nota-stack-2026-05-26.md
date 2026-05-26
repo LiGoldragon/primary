@@ -67,6 +67,18 @@ pub trait SchemaMacro: Send + Sync {
 
 Plus `MacroContext`, `SchemaSchema::default()` with built-in macros (root schema / imports-exports / input-output / namespace / enum / struct / newtype / import / alias / etc.).
 
+**Correction from `/200` §"Slice 5"** (empirical drift surfaced by `/358` open §6.2): `lower` takes `MacroPosition` too, not just `matches`. The same square-bracket shape needs different lowering depending on input-vector vs output-vector position, and `lower` must see the position:
+
+```rust
+fn matches(&self, object: &Object, position: MacroPosition) -> bool;
+fn lower(
+    &self,
+    object: &Object,
+    position: MacroPosition,
+    context: &mut MacroContext,
+) -> Result<MacroOutput, MacroError>;
+```
+
 ### The recursion-floor cut — explicit
 
 Record 746 said *"NOTA itself is schema-derived"* — the all-the-way-back direction. In practice, the recursion floor lives at `nota-core`'s hand-authored Rust. /357 §4 implied a narrower cut (codec emission from `nota.schema`); /199 + /358 took a wider cut (nota-core stays hand-authored).
@@ -198,12 +210,26 @@ Diff engine emits machine-readable upgrade plan + Rust trait impls. If the diff 
 
 This layer connects the new stack to the existing /346 upgrade-mechanism cleanly. /357 didn't reach this; /199 carries it.
 
-## §10 Repo strategy — `nota-core-next` integration + new Spirit triad consumer
+## §10 Repo strategy — existing branches first; `nota-core-next` as conditional escape hatch
 
-Per /199 Phase 0 + record 811:
+> **Update 2026-05-26 later**: Operator's `/200` corrects `/199`'s repo recommendation. The current first-move work lands on existing branches (`nota` repo's `nota-next` branch + `schema` operator branch). `nota-core-next` becomes a CONDITIONAL escape hatch — triggered only if stale-guidance contamination persists after Slice 1 cleanup. Critique at `/362`.
 
-### The integration repo
-**`LiGoldragon/nota-core-next`** is the clean integration sandbox for the architectural break. Crate layout:
+### Current first-move (per /200)
+- **`nota` repo, `nota-next` branch** — raw NOTA structural library (port from `/356`'s `blocks.rs` + `/358`'s `block_query.rs`)
+- **`schema` repo, `operator-schema-driven-nota-parser-prototype-2026-05-26` branch** — schema macros + Asschema + reader/composer preparation
+- **`signal-frame`** — later, after Asschema stabilizes
+- **New `spirit` / `signal-spirit` / `core-signal-spirit` triad** — later, after generated contracts are real
+
+### Conditional escape hatch (per skill + record 811)
+**`LiGoldragon/nota-core-next`** is the clean integration sandbox IF the trigger fires.
+
+**Trigger conditions** (per /200):
+- Slice 1 guidance cleanup fails to dislodge old six-position/Features framing
+- Old tests cannot be converted to rejection-tests without destroying working substrate
+- Agents continue wiring against old surfaces despite corrected guidance
+- The `schema` operator branch becomes a tangled compatibility fork rather than implementation
+
+Until a trigger fires, existing branches are the faster path. Crate layout (preserved for future use): Crate layout:
 
 ```text
 nota-core-next/
@@ -252,6 +278,8 @@ From /357 + /358 + /359 + /199 + /360, the consolidated open shape questions for
 | Q13 | Macro::lower return shape — single enum vs typed-payload-per-macro? | /358 §6.3 |
 | Q14 | Schema-schema's own self-hosting — when does `schema.schema` declared in NOTA replace the hand-authored built-ins? | /358 §6.6 |
 | Q15 | User-authored macro registration story — how does third-party code register a new macro for a schema's interpretation? | /360 §6.2 |
+| Q16 | Macro trait shape — typed associated `Input`/`Output` with type erasure vs single `MacroOutput` enum first? | /200 §"Open §3" |
+| Q17 | Schema daemon naming — `schema` / `signal-schema` / `core-signal-schema` triad when daemon lands? | /200 §"Open §4" |
 
 **Most impactful (psyche-blocking for Phase 2 of /199's plan)**: Q1 + Q2. Once these lock, Phase 2 macro positions become fixed.
 
@@ -287,7 +315,9 @@ For **system-specialist**: activate the `ui.editor = "false"` jj config landed o
 
 ## §14 References
 
-- `/199` — operator's NotaCore / schema-stack implementation target (the primary new source absorbed here)
+- `/200` — operator's vision correction (supersedes `/199`'s repo strategy; absorbed via §10 + §4 + §11 updates and `/362` critique)
+- `/199` — operator's NotaCore / schema-stack implementation target (the primary new source absorbed here; repo strategy superseded by `/200`)
+- `/362` — designer's critique of `/200` (the synthesis bridge for the repo-strategy correction)
 - `/357` — prior vision (NOTA as library, schema as root struct) — STATUS-BANNERed pointing here
 - `/358` — designer-assistant's NOTA-library + schema-schema empirical prototype (51/51 tests)
 - `/359` — designer-assistant's implementation-target design from prototype audit (parallel to /199)
