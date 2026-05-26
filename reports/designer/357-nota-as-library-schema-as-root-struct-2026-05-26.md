@@ -1,3 +1,12 @@
+> **STATUS-BANNER (2026-05-26 later)**: Substantively superseded by `/361`
+> (the refreshed vision absorbing /199's architecture + the empirical
+> /358 landing + the audit findings from /359). The records 799-807
+> framing in this report stays correct at its moment; the synthesis
+> advanced past it within the same day. `/360` critiques `/199` and
+> sets up the synthesis. **Read /361 for the latest vision**; this
+> report stays as the snapshot at the NOTA-library + schema-as-root-
+> struct refinement moment for design-rationale continuity.
+
 # 357 — NOTA as library, schema as root struct: the refined vision
 
 *Designer's vision synthesis representing back the psyche refinement from 2026-05-26 (intent records 799-807, Maximum except 806 carry-uncertainty Medium). This narrows /353's design in two ways: (a) NOTA's scope is now explicitly "thin library for sense-of-structure" rather than full interpretation engine; (b) schema files are a single root struct (implied by .schema) with positional sub-struct fields, not three peer-level sections.*
