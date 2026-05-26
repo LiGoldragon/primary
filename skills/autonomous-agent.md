@@ -91,6 +91,19 @@ agent what you are actively touching; the bead tells the future agent
 why the work is not done yet. A context compaction can erase the
 harness's memory, but it must not erase the workspace's memory.
 
+### Session reports — print full relative paths
+
+When the session produced one or more reports, every user-facing
+status or final response names **each report by its full relative
+workspace path**, such as
+`reports/operator/205-spirit-next-schema-pilot-implementation-2026-05-26.md`.
+
+Do not use only a report number, a shorthand like `/205`, a bare
+filename, or "the report." If multiple reports landed in the
+session, list every report path. The user should be able to copy the
+path from chat and open the exact file without guessing the role
+directory or filename.
+
 ### When the user's prompt and the active bead disagree
 
 The user's direct instruction wins. The agent acknowledges the open

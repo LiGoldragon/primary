@@ -105,7 +105,9 @@ What does **not** go in chat:
 
 What **does** go in chat:
 
-- The report path, named explicitly.
+- The report path, named explicitly as the **full relative
+  workspace path** (`reports/<role>/<filename>.md`), for every
+  report produced in the session.
 - The headline finding, in 1–3 sentences.
 - The user-attention items, each with full inline context.
 
@@ -176,6 +178,9 @@ substance worth a report.
 
 When you reference a report or any other file the user
 might want to navigate to, **name its path explicitly.**
+For reports created in the current session, print the full
+relative workspace path for each report:
+`reports/<role>/<filename>.md`.
 
 > "Two reports landed: `reports/designer/11-persona-audit.md`
 > and `reports/designer/12-no-polling-delivery-design.md`."
