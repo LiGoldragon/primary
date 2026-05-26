@@ -296,6 +296,53 @@ the same discipline at the crate boundary. One capability per
 crate; "the new crate's surface is similar to the existing one"
 is not by itself a reason to fold them.
 
+## Schema-emitted nouns
+
+When the workspace's schema-derived stack is in play, the **nouns
+come from the schema**. Authoring a `.schema` file declares the types
+(structs, enums, newtypes); `schema-rust-next` emits the Rust
+declarations + codec impls + dispatch tables. The agent's Rust code
+attaches **methods** to those emitted nouns. Per psyche record 858 +
+the workspace records 712 / 729 / 853 lineage.
+
+The labor split is sharp:
+
+| Layer | Provides |
+|---|---|
+| `.schema` file (authored) | The data objects + traits (implied by signal/executor/SEMA interaction) |
+| Emitted Rust (machine-written) | Type declarations + codec impls + headers + dispatch tables |
+| Agent-written Rust (methods) | Behavior on the schema-emitted objects |
+
+The forcing function from §"The rule" applies sharply here: when
+reaching for a verb in the schema-derived stack, the noun is almost
+always **already named** by the schema. If you find yourself writing a
+free function whose arguments include schema-emitted types, the verb
+belongs as a method on whichever emitted type is the primary subject.
+
+```rust
+// Right — verb on the schema-emitted noun
+impl Engine {
+    pub fn handle(&self, input: Input) -> Output { match input { ... } }
+}
+
+// Wrong — free function with schema-emitted types as arguments
+fn dispatch(engine: &Engine, input: Input) -> Output { ... }
+```
+
+The corollary discipline (per psyche record 855 — the change-loop):
+**don't hand-edit generated data type mirrors.** When you need to
+change a data type, edit the `.schema` and regenerate; the methods
+you've written against the previous emission will either compile
+against the new shape (good) or surface their assumptions as compile
+errors (also good — the type system caught the change).
+
+The runtime triad lens (per `skills/component-triad.md` §"Runtime
+triad — signal / executor / SEMA"): schema emits the nouns each layer
+operates on. Signal's Operation, executor's Action / Response,
+SEMA's stored archive types — all emitted. Methods on each layer's
+Rust types attach to whichever schema-emitted noun is the primary
+subject.
+
 ## Companion disciplines
 
 This rule pairs with three others that push the same direction:

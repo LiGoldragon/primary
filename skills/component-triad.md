@@ -5,6 +5,19 @@ Five invariants and one argument rule determine whether a design is
 in this system at all. Read this once; recognise the shape in every
 component's `ARCHITECTURE.md`.*
 
+## Two triads — distinguish them
+
+The workspace uses "triad" in two senses; both apply at different layers.
+
+| Triad | Scope | Members |
+|---|---|---|
+| **Repo triad** (this skill) | Packaging — how a component is laid out across repositories | `<component>` + `signal-<component>` + `core-signal-<component>` |
+| **Runtime triad** | Logic — what happens INSIDE the daemon | signal + executor + SEMA |
+
+The runtime triad lives INSIDE the `<component>` daemon repo. This skill
+covers the repo triad below; the runtime triad gets its own section at
+the bottom of this file. Per psyche record 856.
+
 ## The shape
 
 Every stateful capability is a triad of three repositories:
@@ -572,3 +585,50 @@ protocol.
   wire kernel and `signal_channel!` macro.
 - `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md` — the
   payloadless Sema classification vocabulary.
+
+## Runtime triad — signal / executor / SEMA
+
+Inside the `<component>` daemon, three layers organise the logic. Per
+psyche record 856.
+
+**Signal** is the reactive external surface. The daemon's edge —
+where messages arrive from outside (people, agents, sibling daemons).
+Owns: wire-level framing (length + short-header + rkyv per the new
+stack); schema-emitted Operation enum dispatch; connection lifecycle;
+short-header triage before full body decode. Does NOT decide
+acceptability, touch storage, or interpret payload semantically.
+
+**Executor** is the internal-decision layer. Takes each decoded
+Operation and decides: is this message acceptable? Does processing
+need state? What's the response? Owns: Operation-to-Action lowering
+(the typed-tree match); authorization decisions; routing forward-
+only operations through their handlers without SEMA round-trip;
+dispatching state-involving operations through SEMA; composing Reply.
+Two paths through the executor — **state-involving** (executor →
+SEMA → executor → Reply) and **forward-only** (executor → Reply, no
+SEMA touch).
+
+**SEMA** is the single-writer state layer. Things that don't change
+on their own — only the SEMA engine writes. Owns: redb (or equivalent)
+read/write of generated archive types; daemon-stamped timestamps;
+migration on database load (`mod previous` → `mod next` bridge);
+derived indices (topic catalog, identifier mint, etc.); sema-projection
+traits where schema declares a sema turn. **Single-writer invariant**:
+concurrent operations queue through SEMA's engine; readers can be
+multiple but writers are one.
+
+The flow:
+
+```text
+External Operation arrives
+  → SIGNAL decodes rkyv → typed Operation; triages by short header
+  → EXECUTOR decides accept/reject; chooses Action(s); composes Reply
+      → state-involving: EXECUTOR → SEMA → Response → EXECUTOR
+      → forward-only: EXECUTOR → Reply directly
+  → typed Reply leaves via SIGNAL
+```
+
+Schema layer above this provides the typed shapes (Input, Output,
+Action, Response, payload types) via schema-emitted Rust; Rust layer
+provides the methods on those shapes (per `skills/abstractions.md`
+§"Schema-emitted nouns").
