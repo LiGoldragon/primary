@@ -30,10 +30,12 @@ flowchart LR
 The prototype deliberately keeps the first slice small:
 
 - one namespace map;
-- schema values interpreted by delimiter:
-  - `[FieldType ...]` becomes a struct or one-field newtype;
-  - `(Variant ...)` becomes an enum declaration;
-  - a bare identifier becomes an alias;
+- schema values interpreted by delimiter **only inside the namespace
+  macro position used by this prototype**:
+  - `[FieldType ...]` is lowered by that macro into a struct or
+    one-field newtype;
+  - `(Variant ...)` is lowered by that macro into an enum declaration;
+  - a bare identifier is lowered by that macro into an alias;
 - Rust reader code is emitted from the assembled declarations;
 - generated code reads NOTA using `nota_codec::Decoder` and
   `NotaDecode`.
@@ -41,6 +43,44 @@ The prototype deliberately keeps the first slice small:
 This is not yet the full self-hosting schema daemon. It proves the
 load-bearing shape: delimiter objects first, schema interpretation
 second, Rust emission last.
+
+## Post-report correction
+
+Psyche corrected one phrase after the first version of this report.
+The rule is not "`[]` means struct everywhere" or "`()` means enum
+everywhere." A delimiter shape gets that meaning only where a schema
+macro is expected and the active macro lowerer assigns that meaning.
+
+In this prototype, the namespace map value position is the macro
+position. The namespace macro receives the object and lowers it:
+
+```text
+{ Entry [Topics Kind Description Magnitude] }
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        namespace-value macro input
+
+NamespaceValueLowerer sees square brackets at this position
+  -> emits an assembled struct definition
+```
+
+The same square-bracket object somewhere else might be a vector value,
+a string source, or input to a different macro. The delimiter-first
+pass only preserves shape. Schema macros interpret shape.
+
+The fully lowered destination is the assembled schema file type:
+`AssembledSchema` / `Asschema` in the current naming discussion. That
+destination is pure NOTA-representable assembled data: resolved enum
+definitions, resolved struct definitions, typed endings, no remaining
+macros. Macros re-emit schema structure toward that assembled form;
+the implementation may keep the intermediate in memory as typed Rust
+values or binary data, but semantically the macro is re-emitting
+schema.
+
+The header should likewise be derived from assembled type structure
+rather than authored as a special separate declaration. The root shape
+should usually begin with an enum that distinguishes input/output
+spaces and supports explicit numeric variant ranges for short-header
+dispatch.
 
 ## Subagent survey
 
