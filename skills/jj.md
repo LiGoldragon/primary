@@ -6,6 +6,37 @@ forbidden as a daily-commit tool; it survives only as an
 explicit escape hatch for two named remote-config cases
 below.*
 
+## At-a-glance — the inline-form cheat sheet
+
+Out-of-the-box jj for most agents. Every description-taking command
+takes `-m '<msg>'` inline; never let jj fall back to an editor.
+
+| Command | Canonical form |
+|---|---|
+| Commit working copy | `jj commit -m '<msg>'` |
+| Edit a parent's description | `jj describe @- -m '<msg>'` |
+| New empty change | `jj new -m '<msg>'` |
+| Split out paths | `jj split -m '<msg>' <paths>` |
+| Squash into ancestor | `jj squash --into <rev> --use-destination-message` |
+| Move bookmark | `jj bookmark set main -r @-` |
+| Push | `jj git push --bookmark main` |
+| Create + push new branch | `jj bookmark create <name> --to @ && jj git push --bookmark <name> --allow-new` |
+
+**Forbidden** (these BLOCK the session on `Waiting for Emacs...`):
+- `jj describe` (no `-m`)
+- `jj commit` (no `-m`)
+- `jj new` (no `-m`, except when `-A`/`-B` revsets imply the description)
+- `jj split` (no `-m`)
+
+**Structural fix landed in source** at CriomOS-home branch
+`designer-jj-editor-false-2026-05-26` (per intent record 808):
+`ui.editor = "false"` so editor fallback aborts instead of blocking.
+Once activated, missing `-m` errors loudly. Until activated, the
+procedural rule above is the backstop.
+
+For the rest — partial commits, splits, divergence resolution,
+escape-hatch git cases — read on.
+
 ## What this skill is for
 
 Whenever you have made meaningful changes — even a one-line
