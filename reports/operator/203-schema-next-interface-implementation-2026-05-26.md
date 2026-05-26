@@ -3,7 +3,8 @@
 ## Frame
 
 This pass implements the first concrete double-implementation baseline after
-reviewing designer critiques `/359`, `/360`, `/361`, and `/362`.
+reviewing designer critiques `/359`, `/360`, `/361`, `/362`, the mid-flight
+inspection `/364`, and the implementation engagement `/365`.
 
 The closed repo decisions from Spirit records 819-821 are now reflected in
 code:
@@ -28,14 +29,18 @@ The implementation applies these concrete critiques:
 - From `/361`: separate NOTA, schema macro engine, assembled schema, and Rust
   emission into layers.
 - From `/362`: do not let the old signal macro be an implementation path.
+- From `/364`: make the recursion floor visible in code documentation and
+  seal canonical assembled-schema fields behind accessors.
+- From `/365`: scope the `BTreeMap` constraint to canonical assembled-schema
+  storage rather than banning legitimate derived indexes everywhere.
 
 ## Repositories created
 
 | Repository | Local path | Remote | Commit |
 |---|---|---|---|
-| `nota-next` | `/git/github.com/LiGoldragon/nota-next` | `https://github.com/LiGoldragon/nota-next` | `0f21138d` |
-| `schema-next` | `/git/github.com/LiGoldragon/schema-next` | `https://github.com/LiGoldragon/schema-next` | `2558aaf5` |
-| `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | `https://github.com/LiGoldragon/schema-rust-next` | `a290b7c7` |
+| `nota-next` | `/git/github.com/LiGoldragon/nota-next` | `https://github.com/LiGoldragon/nota-next` | `6b4364d9` |
+| `schema-next` | `/git/github.com/LiGoldragon/schema-next` | `https://github.com/LiGoldragon/schema-next` | `19591a7a` |
+| `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | `https://github.com/LiGoldragon/schema-rust-next` | `bfe0c7bb` |
 
 Each repo has:
 
@@ -87,6 +92,9 @@ block.demote_to_string()
 
 Design intent applied:
 
+- The crate docs explicitly mark `nota-next` as the hand-authored recursion
+  floor. That implements `/364`'s critique that the floor should be
+  witness-able in code, not only in reports.
 - `is_*` means factual delimiter/source state.
 - `qualifies_as_*` means structural candidate, not semantic identity.
 - Pipe text `[|...|]` is preserved as square-bracket-safe text and is not
@@ -113,10 +121,10 @@ Main assembled schema types:
 
 ```rust
 pub struct Asschema {
-    pub identity: SchemaIdentity,
-    pub imports: Vec<ImportDeclaration>,
-    pub surfaces: Vec<RootSurface>,
-    pub namespace: Vec<TypeDeclaration>,
+    identity: SchemaIdentity,
+    imports: Vec<ImportDeclaration>,
+    surfaces: Vec<RootSurface>,
+    namespace: Vec<TypeDeclaration>,
 }
 
 pub enum TypeDeclaration {
@@ -125,6 +133,19 @@ pub enum TypeDeclaration {
     Newtype(StructDeclaration),
 }
 ```
+
+Canonical vectors are private and exposed through read-only accessors:
+
+```rust
+asschema.identity()
+asschema.imports()
+asschema.surfaces()
+asschema.namespace()
+asschema.type_named("Entry")
+```
+
+That implements `/364`'s field-visibility critique: external crates can read
+the ordered assembled tree, but cannot directly mutate canonical vectors.
 
 Position-aware macro interface:
 
@@ -171,8 +192,10 @@ Tests:
 
 Nix constraints:
 
-- `no-btree-canonical`: `BTreeMap` is rejected from canonical
-  assembled-schema storage.
+- `no-btree-canonical`: `BTreeMap` is rejected in the canonical
+  assembled-schema storage module. `/365` flagged the original check as too
+  broad because derived-index methods can legitimately return sorted maps; the
+  check now targets the canonical storage file.
 - `no-authored-features`: retracted authored features
   `EffectTable`, `FanOutTargets`, `StorageDescriptor`, and `Features` are
   rejected.
