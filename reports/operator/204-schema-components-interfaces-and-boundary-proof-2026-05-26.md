@@ -16,6 +16,64 @@ Spirit records captured from the prompt:
   tree plus runtime state produces output tree.
 - 833: inter-component messaging needs unique identifiers for agents and
   messages so asynchronous mail delivery can be correlated.
+- 834: NOTA is the text interface and specification representation for the
+  portable rkyv shapes used as SEMA or signal depending on engine position.
+- 835: schema plays the CapnProto-like role of specifying data shapes more
+  specifically than equivalent Rust code, while adding Persona's module and
+  macro system.
+- 836: schema macros resolve by raw NOTA node shape: delimiter, member count,
+  and member types.
+- 837: macro expansion recurses until it yields a macro-free assembled schema
+  tree of core scalar schema nodes.
+- 838: the assembled schema is the complete input for Rust generation,
+  including NOTA text IO and portable rkyv binary IO for SEMA and signal
+  formats.
+
+## Clarified relationship: NOTA, rkyv, signal, SEMA
+
+NOTA is not merely the CLI surface. The CLI uses NOTA because a shell-friendly
+text interface is useful for agents and humans, but the deeper role is that
+NOTA is the authored text representation of the portable binary data
+specification.
+
+The target stack is:
+
+```mermaid
+flowchart LR
+    Authored["Authored .schema<br/>NOTA-shaped specification text"]
+    MacroPass["Schema macro passes<br/>shape-matching on NOTA nodes"]
+    Asschema["Asschema<br/>macro-free assembled data tree"]
+    Rust["Generated Rust code<br/>types + codecs + dispatch"]
+    Binary["Portable rkyv bytes<br/>signal or SEMA by engine position"]
+
+    Authored --> MacroPass
+    MacroPass --> Asschema
+    Asschema --> Rust
+    Rust --> Binary
+```
+
+That makes schema more precise than hand-written Rust as a source of truth.
+Rust becomes one generated projection of the assembled schema, not the
+specification itself.
+
+## Macro resolution model
+
+The schema engine should treat raw NOTA blocks as structural payloads first.
+At each macro position, the active macro namespace decides whether the block
+is:
+
+- a core scalar schema node;
+- a built-in macro such as a compact struct or enum declaration;
+- a context-loaded macro from an imported schema/module.
+
+The discriminator is structural: delimiter kind, number of members, and the
+shape or type-qualification of those members. A macro is therefore a variant
+in the same conceptual namespace as the core schema nodes. If a macro expands
+to another NOTA-shaped payload, that payload is passed through the same
+macro-resolution process until no macros remain.
+
+The endpoint is `Asschema`: a macro-free, fully resolved, ordered tree of
+data-type nodes. Rust emission consumes only that tree.
 
 ## Current implementation state
 
@@ -256,9 +314,11 @@ sequenceDiagram
     CLI-->>Agent: NOTA reply
 ```
 
-The CLI is text because agents and humans need a shell-friendly surface. The
-daemon boundary is binary because components should not parse text to talk to
-each other.
+The CLI is one NOTA consumer because agents and humans need a shell-friendly
+surface. The daemon boundary is binary because components should not parse
+text to talk to each other. Both surfaces must be generated from the same
+assembled schema: NOTA text readers/writers and portable rkyv binary
+readers/writers are projections of one specification.
 
 ## Reaction-language shape
 
