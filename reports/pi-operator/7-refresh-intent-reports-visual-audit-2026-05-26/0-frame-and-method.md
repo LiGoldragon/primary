@@ -19,12 +19,12 @@ Subagents are read-only. They must not edit source, reports, lock files, or bran
 
 ## Output map
 
-Planned files:
+Files:
 
-- `1-recent-intent.md` — current Spirit intent refresh.
-- `2-operator-refresh.md` — operator reports and implementation branch state.
-- `3-designer-refresh.md` — designer/designer-assistant reports and prototype branch state.
-- `4-nota-designer-refresh.md` — nota-designer and adjacent NOTA/schema repo state.
+- `1-recent-intent.md` — current Spirit intent refresh, written by scout.
+- `2-operator-refresh.md` — operator reports and implementation branch state, written by scout and then patched with an orchestrator state update.
+- `3-designer-refresh.md` — designer/designer-assistant reports and prototype branch state, filled by pi-operator after the assigned scout paused.
+- `4-nota-designer-refresh.md` — nota-designer and adjacent NOTA/schema repo state, filled by pi-operator after the assigned scout run was paused.
 - `5-overview-visual-audit.md` — pi-operator synthesis with visuals, code examples, likes/dislikes, and practical next moves.
 
 ## Stop rules
