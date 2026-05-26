@@ -152,7 +152,7 @@ intent capture, the operation is `Record` carrying an untagged
 
 ```nota
 (Record
-  (<topic>           ;; bare identifier: workspace, spirit, signal, component-shape, …
+  ([<topic> ...]     ;; vector of topic identifiers: workspace, spirit, signal, …
    <Kind>            ;; Decision | Principle | Correction | Clarification | Constraint
    [<description>]   ;; clarified intent, reusing psyche wording when useful
    <Magnitude>))     ;; Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
@@ -160,9 +160,9 @@ intent capture, the operation is `Record` carrying an untagged
 
 - `Entry` is untagged — no record-head ident (per the NotaRecord
   codec change). `Kind` and `Magnitude` are bare PascalCase NotaEnum
-  variants. `<topic>` is a bare lowercase identifier (use a bracket
-  string only if it contains spaces or PascalCase content).
-- Spirit v0.2 does not store context or verbatim fields. The agent's
+  variants. Topics are a vector of lowercase identifiers; use a
+  bracket string only if a topic contains spaces or PascalCase content.
+- Spirit v0.3 does not store context or verbatim fields. The agent's
   job is to record the clarified intent as one dense description,
   reusing the psyche's own words when they are load-bearing.
 - **The daemon stamps date and time on receipt.** Clients do not
@@ -193,7 +193,7 @@ The deployed `spirit` CLI is the substrate. Capture intent by
 invoking it with a `Record` operation:
 
 ```sh
-spirit "(Record (<topic> <Kind> [description] <Magnitude>))"
+spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude>))"
 ```
 
 The daemon stamps date and time on receipt; clients do not supply

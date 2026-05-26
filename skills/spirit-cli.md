@@ -1,14 +1,14 @@
 ---
 tool_versions:
-  - [Spirit, "0.2.0"]
+  - [Spirit, "0.3.0"]
 ---
 
 # Skill — spirit CLI
 
 *The deployed `spirit` binary is the normal substrate for psyche
-intent capture and observation. Agents call it directly. This skill
-covers the live `Spirit 0.2.0` command shape and how to verify the
-deployed wire shape when it drifts.*
+intent capture and observation. Agents call the unsuffixed CLI
+directly. This skill covers the live `Spirit 0.3.0` command shape
+and how to verify the deployed wire shape when it drifts.*
 
 ## What this skill is for
 
@@ -47,14 +47,16 @@ This is the next/main/previous vocabulary (workspace discipline)
 applied at the deployment-naming layer: **what is being authored IS
 next**; **the current published baseline IS main**; **previous is
 the prior release retained for handover**. Tag-suffixed wrappers
-(`spirit-v0.2.0` etc.) are explicit testing surfaces; the unsuffixed
-`spirit` is the production binding. Cutover is an alias change, not
-a destructive replace.
+(`spirit-v0.2.0`, `spirit-v0.3.0`, etc.) are explicit diagnostic and
+testing surfaces. The unsuffixed `spirit` is the production binding
+and the normal command for agents. Intent capture uses `spirit`, not
+a version-suffixed wrapper. Cutover is an alias change, not a
+destructive replace.
 
-When you need a specific substrate, call its tag-suffixed wrapper
-directly — `spirit-v0.2.0 "(Record …)"` — rather than the
-unsuffixed `spirit`. When in doubt about what `spirit` currently
-points at, `readlink -f $(command -v spirit)` resolves the chain.
+Use a tag-suffixed wrapper only when deliberately testing or
+inspecting that version's segregated daemon/database. When in doubt
+about what `spirit` currently points at, `readlink -f $(command -v
+spirit)` resolves the chain.
 
 ## How to invoke
 
@@ -71,7 +73,7 @@ argument rule"). Two accepted shapes:
   description survive untouched. Single-quoting the argument is wrong
   — it loses apostrophes.
   ```sh
-  spirit "(Record (workspace Decision [summary] Maximum))"
+  spirit "(Record ([workspace] Decision [summary] Maximum))"
   ```
 - **Path to a NOTA file** — the argument does not start with `(`; the
   CLI reads the file's contents as the NOTA argument. Reserved for
@@ -129,7 +131,7 @@ going to have to keep track of the interface"* —
 
 ## Operations on the ordinary channel (worked examples)
 
-Examples below match the live `Spirit 0.2.0` wire shape as deployed
+Examples below match the live `Spirit 0.3.0` wire shape as deployed
 for the unsuffixed `spirit` command. When in doubt, read the
 deployed source per the previous section.
 
@@ -140,16 +142,17 @@ is `Some`-wrapping — `None` bare or `(Some <value>)`. `Topic`,
 newtypes — encoded as bare tokens when possible, or bracket strings
 when they contain whitespace or punctuation.
 
-**Record an intent entry — description-only is the v0.2.0 shape.**
-A v0.2.0 record carries one agent-clarified `Description`, a `Kind`,
-and a `Magnitude`. No verbatim field, no context payload, no
-client-supplied timestamp. **The daemon stamps date/time itself.**
+**Record an intent entry — description-only, multi-topic shape.**
+A v0.3.0 record carries a vector of topics, one agent-clarified
+`Description`, a `Kind`, and a `Magnitude`. No verbatim field, no
+context payload, no client-supplied timestamp. **The daemon stamps
+date/time itself.**
 The agent clarifies the psyche's wording into the description before
 recording — that is the agent's job, and it is what keeps the intent
 log dense and searchable rather than verbose and lossy:
 
 ```sh
-spirit "(Record (<topic> <Kind> [description] <Magnitude>))"
+spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude>))"
 # Kind ∈ { Decision Principle Correction Clarification Constraint }
 # Magnitude ∈ { Minimum VeryLow Low Medium High VeryHigh Maximum }
 ```
@@ -158,10 +161,10 @@ The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
 the assigned identifier. The acknowledgement deliberately does not
 echo the submitted intent content; the wire reply is token-cheap.
 
-**Topics are user-creatable single strings** at the wire layer —
-any new topic word a `Record` uses is registered. No pre-declared
-enum of topics; pick the topic word that fits, reuse existing words
-when they cover the substance.
+**Topics are user-creatable strings carried in a vector** at the wire
+layer — any new topic word a `Record` uses is registered. No
+pre-declared enum of topics; pick the topic words that fit, reuse
+existing words when they cover the substance.
 
 **Observe records** — query the store; filter by topic and/or kind;
 choose description-only or with-provenance:
