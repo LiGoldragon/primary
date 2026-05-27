@@ -66,6 +66,17 @@ objects. The generator emits Rust types for those objects, and
 hand-written implementation code attaches behavior to those generated
 types with inherent methods or trait impls.
 
+**This is Pattern C in the workspace's recurring pattern index**
+(per `~/primary/INTENT.md` §"Recurring architectural patterns"
++ record 988, Maximum, 2026-05-27). Anchoring records: 712 + 882
+(methods on non-ZST data-bearing types only); 942 (logic-on-
+objects over free helpers); 945, 947, 953, 954 (schema-created
+types are the Rust nouns for actor behaviour). The records
+together name a discipline that repeats across every repo in the
+schema-driven stack: schema is the noun-source, Rust is the
+verb-attachment, and the verb-attachment goes on the schema-
+emitted type — not beside it.
+
 The workflow is:
 
 1. Change the schema.

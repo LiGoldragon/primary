@@ -33,6 +33,33 @@ ractor-substitute thread (operator/103); the framework is now Kameo
 and the wrapper question is settled. A component may have many
 actors; it still has one Rust actor library: `kameo`.
 
+## Recurring patterns this skill realises
+
+The workspace's recurring pattern index (per `~/primary/INTENT.md`
+§"Recurring architectural patterns" + record 988, Maximum,
+2026-05-27) names several disciplines that this skill anchors:
+
+- **Pattern B — Three execution centers (Signal + Nexus + SEMA).**
+  Each execution center is realised as one or more actors with
+  state, mailboxes, and supervision. Nexus as mail keeper
+  (record 970) is itself an actor-shaped plane.
+- **Pattern C — Methods on schema-generated data types.** Kameo
+  0.20's `Self IS the actor` shape means schema-emitted nouns
+  carry their actor mailbox without a ZST wrapper; per-kind
+  `Message<T>` impls attach actor verbs to the data type.
+- **Pattern A — Async lives at the data-type level.** The mail
+  mechanism + hookable lifecycle events (records 935, 962, 963,
+  970) flow through actor mailboxes as typed messages; observers
+  attach via methods on typed mail-event objects, not via
+  polling.
+- **Pattern D — Single-writer authority.** SEMA's single-writer
+  invariant is enforced through actor ownership: the SEMA writer
+  is one actor; readers can be many; mutations route through the
+  one owner via typed messages.
+
+These patterns ARE this skill applied to the schema-driven stack.
+The actor-systems discipline is what makes them executable.
+
 ## Core rule
 
 **Actors all the way down.**
