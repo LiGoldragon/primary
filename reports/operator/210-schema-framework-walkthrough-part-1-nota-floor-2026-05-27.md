@@ -189,45 +189,47 @@ field, but the enum object itself still needs a name. A more faithful shape is:
 Plain English: define enum `Input`; its variants include `Record`, which
 carries `Entry`, and `Observe`, which carries `Query`.
 
-The same rule applies to ordinary namespace definitions:
+The same naming rule applies inside ordinary namespace definitions, but the
+brace delimiter changes the authored shape. A brace is always a flat key/value
+map, so the name is the key and the type definition is the value:
 
 ```nota
-(Kind (Decision Principle Correction Clarification Constraint))
-(Entry [Topic Kind Description Magnitude])
-(Topic [Text])
+{
+  Kind (Decision Principle Correction Clarification Constraint)
+  Entry [Topic Kind Description Magnitude]
+  Topic [Text]
+}
 ```
 
 Plain English:
 
-- `(Kind (...))` defines an enum named `Kind`.
-- `(Entry [...])` defines a struct named `Entry`.
-- `(Topic [Text])` defines a newtype struct named `Topic`.
+- `Kind (...)` defines an enum named `Kind`.
+- `Entry [...]` defines a struct named `Entry`.
+- `Topic [Text]` defines a newtype struct named `Topic`.
 
-The general authored-schema rule is therefore:
+The general namespace-entry rule is therefore:
 
 ```text
-(Name (Variant ...))  -> enum definition
-(Name [FieldType ...]) -> struct definition
-(Name [InnerType]) -> newtype struct definition
+Name (Variant ...)   -> enum definition
+Name [FieldType ...] -> struct definition
+Name [InnerType]     -> newtype struct definition
 ```
 
 For enum variants, a bare symbol is a unit variant; a parenthesis object such
 as `(Record Entry)` is a data-carrying variant.
 
-Implementation update after this correction: `schema-next` now accepts the
-named object form directly. The minimal Spirit schema now uses:
+Implementation update after this correction: `schema-next` rejects the old
+parenthesized namespace-entry form. The minimal Spirit schema now uses:
 
 ```nota
 {}
-[
-  (Input ((Record Entry) (Observe Query)))
-  (Output ((RecordAccepted RecordIdentifier) (RecordsObserved RecordSet)))
-]
+(Input ((Record Entry) (Observe Query)))
+(Output ((RecordAccepted RecordIdentifier) (RecordsObserved RecordSet)))
 {
-  (Topic [Text])
-  (Description [Text])
-  (Entry [Topic Kind Description Magnitude])
-  (Kind (Decision Principle Correction Clarification Constraint))
+  Topic [Text]
+  Description [Text]
+  Entry [Topic Kind Description Magnitude]
+  Kind (Decision Principle Correction Clarification Constraint)
 }
 ```
 
@@ -236,7 +238,7 @@ The root-schema description itself now lives at
 struct as:
 
 ```nota
-(Schema [Imports Input Output Namespace])
+Schema [Imports Input Output Namespace]
 ```
 
 and then defines the nested objects that make that root meaningful:
