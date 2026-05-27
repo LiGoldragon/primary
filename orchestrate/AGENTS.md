@@ -16,28 +16,31 @@ BEADS is shared coordination state while it exists, not a lockable scope.
 ## Roles
 
 The workspace organises work under **four main roles**, each carrying its
-own discipline. Additional **lanes** — `<role>-assistant`,
-`second-<role>-assistant`, and any future stacked lane — share their main
-role's discipline, skill file, and beads label; only the lock file, report
+own discipline. Additional **lanes** — `second-<role>`, `third-<role>`,
+and qualified lanes like `<qualifier>-<role>` — share their main role's
+discipline, skill file, and beads label; only the lock file, report
 subdirectory, and claim string differ per lane. The lane mechanism is
-canonical in `skills/role-lanes.md`. The current set of lanes is enumerated
-below.
+canonical in `skills/role-lanes.md`.
+
+Per spirit record 920 (Maximum, 2026-05-27): the prior `<role>-assistant`
+and `<role>-specialist` suffixes are RETIRED workspace-wide. The current
+set of lanes is enumerated below.
 
 | Lane | Main role | Default agent | Lock file | Reports subdir | Natural primary scope |
 |---|---|---|---|---|---|
 | `operator` | operator | Codex | `orchestrate/operator.lock` | `reports/operator/` | Rust crates, persona, sema-ecosystem implementation |
+| `second-operator` | operator | (any) | `orchestrate/second-operator.lock` | `reports/second-operator/` | Second parallel operator window |
 | `pi-operator` | operator | Pi | `orchestrate/pi-operator.lock` | `reports/pi-operator/` | Pi-harness implementation window under operator discipline |
-| `operator-assistant` | operator | (any) | `orchestrate/operator-assistant.lock` | `reports/operator-assistant/` | Extra implementation/audit workforce under operator discipline |
-| `second-operator-assistant` | operator | (any) | `orchestrate/second-operator-assistant.lock` | `reports/second-operator-assistant/` | Second extra implementation/audit workforce under operator discipline |
 | `cluster-operator` | operator | Codex | `orchestrate/cluster-operator.lock` | `reports/cluster-operator/` | Live cluster maintenance, production deploy/update authority, and cluster-scoped implementation under operator discipline |
+| `cloud-operator` | operator | (any) | `orchestrate/cloud-operator.lock` | `reports/cloud-operator/` | Cloud-deploy operator window — cloudflare and similar provider surfaces |
 | `designer` | designer | Claude | `orchestrate/designer.lock` | `reports/designer/` | ESSENCE, AGENTS, lore, skills, design reports |
-| `designer-assistant` | designer | Codex | `orchestrate/designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
-| `second-designer-assistant` | designer | (any) | `orchestrate/second-designer-assistant.lock` | `reports/second-designer-assistant/` | Second extra design audit, report, skill, and protocol support under designer discipline |
+| `second-designer` | designer | (any) | `orchestrate/second-designer.lock` | `reports/second-designer/` | Second parallel designer window |
+| `third-designer` | designer | (any) | `orchestrate/third-designer.lock` | `reports/third-designer/` | Third parallel designer window |
+| `system-designer` | designer | (any) | `orchestrate/system-designer.lock` | `reports/system-designer/` | Specialized designer lane scoped to system topics (CriomOS, horizon, lojix, goldragon, deployment) |
+| `nota-designer` | designer | (any) | `orchestrate/nota-designer.lock` | `reports/nota-designer/` | Specialized designer lane scoped to NOTA language design |
+| `cloud-designer` | designer | (any) | `orchestrate/cloud-designer.lock` | `reports/cloud-designer/` | Specialized designer lane scoped to cloud component design |
 | `system-operator` | system-operator | (any) | `orchestrate/system-operator.lock` | `reports/system-operator/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
-| `system-designer` | designer | (any) | `orchestrate/system-designer.lock` | `reports/system-designer/` | Specialized designer lane scoped to system topics (CriomOS, horizon, lojix, goldragon, deployment); parallel to `nota-designer`. Inherits full designer discipline with system as its specialization scope. Per Spirit record 302. |
-| `second-system-assistant` | system-operator | (any) | `orchestrate/second-system-assistant.lock` | `reports/second-system-assistant/` | Second extra platform/host workforce under system-operator discipline |
 | `poet` | poet | (any) | `orchestrate/poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
-| `poet-assistant` | poet | (any) | `orchestrate/poet-assistant.lock` | `reports/poet-assistant/` | Extra prose, citation, and Substack publishing support under poet discipline |
 
 The "Default agent" column is convenience labelling for the lock file, not a
 binding. Any agent may take any lane; the main role determines scope
@@ -157,10 +160,10 @@ taking on a tracked unit of work, an agent claims its intended scope.
 tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 ```
 
-`<role>` is one of `operator`, `pi-operator`, `operator-assistant`,
-`second-operator-assistant`, `designer`, `designer-assistant`,
-`second-designer-assistant`, `system-designer`, `system-operator`,
-`second-system-assistant`, `poet`, or `poet-assistant`.
+`<role>` is one of `operator`, `second-operator`, `pi-operator`,
+`cluster-operator`, `cloud-operator`, `designer`, `second-designer`,
+`third-designer`, `system-designer`, `nota-designer`, `cloud-designer`,
+`system-operator`, or `poet`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
@@ -350,17 +353,18 @@ not add your own report files to a lock file.
 Convention: each role owns a subdirectory.
 
 - `reports/operator/` — operator's reports.
+- `reports/second-operator/` — second operator's reports.
 - `reports/pi-operator/` — Pi operator's reports.
-- `reports/operator-assistant/` — operator assistant's reports.
-- `reports/second-operator-assistant/` — second operator assistant's reports.
+- `reports/cluster-operator/` — cluster operator's reports.
+- `reports/cloud-operator/` — cloud operator's reports.
 - `reports/designer/` — designer's reports.
-- `reports/designer-assistant/` — designer assistant's reports.
-- `reports/second-designer-assistant/` — second designer assistant's reports.
+- `reports/second-designer/` — second designer's reports.
+- `reports/third-designer/` — third designer's reports.
 - `reports/system-operator/` — system operator's reports.
 - `reports/system-designer/` — system designer's reports (specialized designer lane).
-- `reports/second-system-assistant/` — second system assistant's reports.
+- `reports/nota-designer/` — nota designer's reports (specialized designer lane).
+- `reports/cloud-designer/` — cloud designer's reports (specialized designer lane).
 - `reports/poet/` — poet's reports.
-- `reports/poet-assistant/` — poet assistant's reports.
 
 Each role writes only into its own role subdirectory. Other roles may
 **read** any report freely; if they want to **build on** another role's

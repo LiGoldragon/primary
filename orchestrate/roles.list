@@ -1,15 +1,12 @@
 # Role-lane registry — one lane per line.
 #
-# Format: <lane-name> [assistant-of:<main-role> | parallel-of:<main-role>]
+# Format: <lane-name> [parallel-of:<main-role>]
 # - Lines starting with '#' and blank lines are ignored.
-# - A main role has no 'assistant-of:' / 'parallel-of:' marker.
-# - An assistant lane declares its main role with 'assistant-of:<main-role>'.
-#   Assistant lanes carry bounded support-scope authority, not structural authority.
+# - A main role has no 'parallel-of:' marker.
 # - A parallel-main lane declares its discipline twin with 'parallel-of:<main-role>'.
 #   Parallel-main lanes carry full main-role authority (structural decisions,
 #   design reports, skill edits) — they are a second seat at the discipline,
-#   not a subordinate lane. New shape as of 2026-05-21; see
-#   reports/second-designer/2-persona-orchestrate-lane-management-2026-05-21.md.
+#   not a subordinate lane.
 # - A specialized lane (e.g. cluster-operator, nota-designer) is a structural
 #   role with a token-vector identity in the typed registry (e.g. [Cluster
 #   Operator], [Nota Designer]) and a specialized scope within its main role's
@@ -19,15 +16,17 @@
 #   role per spirit record 174 — so a second cluster-operator becomes
 #   second-cluster-operator, not second-operator with cluster scope.
 #
+# Per spirit record 920 (Maximum, 2026-05-27): the prior <role>-assistant
+# and <role>-specialist suffixes are RETIRED workspace-wide. Additional
+# capacity in a role is added as second-<role> / third-<role>, etc.
+#
 # This file is a transitional bash-readable format. The destination is
 # orchestrate/roles.nota — a typed Nota record read by a Rust-rewritten
-# tools/orchestrate. The Rust rewrite is specified in
-# reports/second-designer-assistant/2-orchestrate-rust-rewrite-design-2026-05-17.md.
+# tools/orchestrate.
 
 operator
 pi-operator                       parallel-of:operator
 second-operator                   parallel-of:operator
-second-operator-assistant         assistant-of:operator
 cluster-operator
 cloud-operator
 designer
@@ -36,8 +35,5 @@ third-designer                    parallel-of:designer
 nota-designer
 system-designer
 cloud-designer
-designer-assistant                assistant-of:designer
 system-operator
-second-system-assistant           assistant-of:system-operator
 poet
-poet-assistant                    assistant-of:poet
