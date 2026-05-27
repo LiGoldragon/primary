@@ -460,6 +460,32 @@ examples and the historical context — ractor's behavior-marker
 `Self`-IS-the-actor shape removed even that), see this workspace's
 `skills/kameo.md` §"Naming actor types".
 
+## Schema and emitted Rust mirror each other
+
+Per spirit record 952 (High, 2026-05-27): the naming system between
+schema-emitted code and Rust source **mirrors each other**. *"You
+can use the naming system that way to like a mirror."* The
+colon-path namespace in a schema (e.g. `spirit-next:signal:Frame`)
+maps directly to the Rust module-and-type path
+(`spirit_next::signal::Frame`) — colon-to-double-colon, kebab-case
+crate names becoming snake_case module names, PascalCase type names
+unchanged.
+
+Two consequences:
+
+- **Grep across both surfaces uses the same identifier.** Looking
+  for `Frame` in the schema file and `Frame` in the emitted Rust
+  finds the two views of one identity.
+- **The schema is a sufficient entry point and so is the emitted
+  Rust.** An agent reading either can locate the other
+  mechanically — no separate mapping table.
+
+The property pairs with the side-by-side file placement (per record
+909): emitted Rust lives at `src/schema/<module>.rs` inside the
+consumer crate, alongside hand-written Rust. The two surfaces sit
+together; the mirror-naming makes them navigable in either
+direction.
+
 ## Companion rule
 
 Pairs with this workspace's `skills/beauty.md`: a name that

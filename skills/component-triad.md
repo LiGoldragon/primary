@@ -628,6 +628,13 @@ is sent). Async representation lives at the data-type level — the
 message types themselves carry correlation identifiers and lifecycle
 state.
 
+Per record 951 (High, 2026-05-27): the wire is **REST-shaped**.
+Schema-emitted Operation enums on the Signal plane are typed
+resource operations, not RPC method calls. The single-owner
+property (SEMA owns the durable state for each resource kind) is
+REST's stateless-server-with-canonical-state semantics realized in
+the schema-driven stack.
+
 ### Nexus (execution — IO, external calls, UI, mail keeper, translator)
 
 **Nexus** (renamed from Executor per record 964) is the

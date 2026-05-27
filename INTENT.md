@@ -403,6 +403,38 @@ trait + signal-frame + mail state manager + database marker) by
 naming the lifecycle-event surface and the hookable callback
 mechanism on top.
 
+## The wire architecture is REST-shaped
+
+Per intent record 951 (High, 2026-05-27): the schema-emitted data
+types are positioned as **REST-shaped at the wire layer**. *"The data
+type REST is emitted by this schema system and the single-owner
+system mirrors the REST concept."* Schema defines the resource /
+message types; the single-owner state-of-record property (SEMA owns
+the durable state for each kind; mutations route through that one
+owner) mirrors REST's stateless-server-with-canonical-state
+semantics. This frames the wire pattern architecturally — the
+schema-emitted Operation enums on the Signal plane are REST-shaped
+typed resource operations, not RPC method calls — and binds future
+schema decisions to that shape: every wire operation has a typed
+resource it acts on, and the canonical state for that resource lives
+at exactly one owner (the SEMA plane of the owning daemon).
+
+## Schema-emitted Rust mirrors the schema namespace
+
+Per intent record 952 (High, 2026-05-27): the naming system between
+schema-emitted code and Rust source **mirrors each other**. *"You
+can use the naming system that way to like a mirror."* The
+colon-path namespace in schema (e.g. `spirit-next:signal:Frame`)
+maps to Rust module-and-type names by direct correspondence
+(`spirit_next::signal::Frame`) — agents can grep across both
+artifacts via the shared identifier, and a path in one form
+translates mechanically to the other. The property is load-bearing
+for navigability: the schema and the emitted Rust are two views of
+the same identity, and the mirror property makes either view a
+sufficient entry point. Per record 909, the emitted Rust lives at
+`src/schema/<module>.rs` in the consumer crate so the two surfaces
+sit side-by-side in the source tree.
+
 ## Concept designer is the entry for new concepts
 
 **Concept designer** is a real role — *an entry point for new
