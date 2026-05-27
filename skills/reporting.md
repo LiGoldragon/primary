@@ -815,6 +815,28 @@ For Mermaid syntax workarounds (node labels, edge labels,
 reserved-word IDs, Mermaid 8.8.0 safe forms for subgraphs,
 edge labels, and sequence diagrams), see `skills/mermaid.md`.
 
+### Graphs are short and focused
+
+A report graph explains **one relationship or scenario**. Large
+whole-system graphs are unreadable and should be split into several
+small graphs, each with the code or test anchor that proves that
+slice.
+
+Default budget for a Mermaid graph:
+
+- 3–6 nodes;
+- 2–7 edges;
+- one direction of flow;
+- no nested subgraphs unless the graph is specifically about that
+  nesting;
+- one caption sentence naming what the graph proves.
+
+When a report needs to explain a broad system, use a sequence of
+small graphs ordered bottom-up or scenario-by-scenario. Each graph
+gets the nearby Nix check, file path, CLI call, schema snippet, or
+short code anchor that makes the visual testable. If a graph needs
+more than one screen of Mermaid source, it is several graphs.
+
 ### Visuals are Mermaid only — no ASCII text-block diagrams
 
 Per psyche 2026-05-22 (spirit record 243), **every diagram
