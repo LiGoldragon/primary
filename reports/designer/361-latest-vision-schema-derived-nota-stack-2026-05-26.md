@@ -319,18 +319,12 @@ For **system-specialist**: activate the `ui.editor = "false"` jj config landed o
 
 ## §14 References
 
-- `/200` — operator's vision correction (supersedes `/199`'s repo strategy; absorbed via §10 + §4 + §11 updates and `/362` critique)
+- `/200` — operator's vision correction (supersedes `/199`'s repo strategy; absorbed via §10 + §4 + §11 updates)
 - `/199` — operator's NotaCore / schema-stack implementation target (the primary new source absorbed here; repo strategy superseded by `/200`)
-- `/362` — designer's critique of `/200` (the synthesis bridge for the repo-strategy correction)
-- `/357` — prior vision (NOTA as library, schema as root struct) — STATUS-BANNERed pointing here
 - `/358` — designer-assistant's NOTA-library + schema-schema empirical prototype (51/51 tests)
-- `/359` — designer-assistant's implementation-target design from prototype audit (parallel to /199)
-- `/360` — designer's critique of /199 (the synthesis bridge)
-- `/355` — designer's critique of /195 (compiled-fixture test methodology baseline)
-- `/350` — schema-feature-drift retraction (the prior cleanup that enabled this stack)
-- `/353` — original schema-derived NOTA design vision (foundation; not yet STATUS-BANNERed because the bracket-only + embedding-safety principles in it remain canonical)
 - `/354` — schema-derived NOTA prototype (29/29 tests; nota.schema + bootstrap kernel)
 - `/356` — new repos + block-parser prototype (12/12 tests)
+- Predecessor designer reports retired in sweep /377 (substance absorbed here or in `jj show`): /353 (original vision), /355 (critique of /195), /357 (NOTA-as-library + STATUS-BANNERed to this report), /359 (implementation-target audit), /360 (critique of /199), /362 (critique of /200)
 - `skills/major-break-via-new-repo.md` — methodology skill (record 811)
 - Spirit records: 746-753 (all-the-way-back direction), 799-807 (NOTA-library + root-struct refinement), 765, 767, 780, 811 (repo strategy + naming), 712/729 (free-function ban), 808 (jj editor reinforcement)
 - New repos created: `LiGoldragon/spirit`, `LiGoldragon/signal-spirit`, `LiGoldragon/core-signal-spirit` + `nota-next` branch

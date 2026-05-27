@@ -222,15 +222,14 @@ Nothing in this audit contradicts those patterns. The gaps are about extending t
 - `reports/operator/206-schema-spirit-running-concept-audit-2026-05-26.md` — the operator audit this report layers on
 - `reports/operator/205-spirit-next-schema-pilot-implementation-2026-05-26.md` — the empirical baseline
 - `reports/designer/361-latest-vision-schema-derived-nota-stack-2026-05-26.md` §11 — the 17 consolidated open shape questions
-- `reports/designer-assistant/363-design-nota-from-schema-comparison-2026-05-26.md` — the recursion-floor hybrid verdict
+- `reports/designer/363-design-nota-from-schema-comparison-2026-05-26.md` — the recursion-floor hybrid verdict
 - `reports/designer/366-component-view-and-truth-verification-2026-05-26.md` §9 — the truth-verification table (9/12 verified)
 - `reports/designer/367-nota-as-specification-superset-of-capnproto-2026-05-26.md` — the latest framing
 - `reports/designer-assistant/368-running-spirit-concept-on-new-architecture-2026-05-26.md` — designer parallel concept
-- `reports/designer/369-comparison-designer-368-vs-operator-205-running-concepts-2026-05-26.md` — comparison synthesis
-- `reports/designer/346-actor-schemas-and-upgrade-mechanism-2026-05-25.md` — the upgrade-mechanism design that Layer 6 implements
 - `reports/operator/187-spirit-v0-2-0-side-by-side-deployment-2026-05-25.md` — the deployment discipline upgrade traits would serve
 - `skills/double-implementation-strategy.md` + `skills/major-break-via-new-repo.md` — the new-repo workflow
 - `skills/abstractions.md` — the existing methods-on-types skill record 853 sharpens
+- `/369` comparison + branch-retirement decision retired in sweep /377; the convergence/retirement substance is absorbed into /371 §8 sequencing.
+- `/346` actor-schemas + upgrade mechanism retired in sweep /349; substance is in `repos/persona-spirit/INTENT.md` + `repos/persona-spirit/ARCHITECTURE.md`. Layer 6 upgrade traits implement it.
 - Spirit records: 712 / 729 (methods on impl blocks; sharpened by 853); 746 (NOTA itself schema-derived; partial per /363); 749-750 (precompiled library + daemon); 807 (schema-schema core Rust); 819 (emission separate from macros); 822 (forge content-addressing); 844 (single emit_all_schemas!); 852 (central integration tests via Nix input override); 853 (methods on schema-emitted objects); 854 (root signal object carries signal-frame protocol + caller/process-origin); 855 (change-loop discipline)
 - Operator repos: `nota-next`, `schema-next`, `schema-rust-next`, `spirit-next`
-- Designer feature branches retiring per `/369`: `signal-spirit@710b628e` + `spirit@643978cf` on `designer-running-concept-2026-05-26`

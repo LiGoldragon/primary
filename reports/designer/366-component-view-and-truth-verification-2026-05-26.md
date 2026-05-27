@@ -405,8 +405,7 @@ The substantive next slices are owned by operator (per /203's named sequence). T
 - `/203` — operator's three-repo interface implementation (the empirical baseline)
 - `/361` — latest vision (the synthesis this report informs)
 - `/363` — designer parallel feasibility verdict (recursion-floor finding)
-- `/364` — mid-flight code inspection (the convergence signal across tracks)
-- `/365` — engagement with /203 (Nix-enforced grep-prohibitions detail)
+- Predecessor engagement reports retired in sweep /377 (substance absorbed into /361 §12 + here): /364 (mid-flight inspection), /365 (engagement with /203)
 - Operator repos: `nota-next@0f21138d`, `schema-next@2558aaf5`, `schema-rust-next@a290b7c7`
 - Designer parallel: `LiGoldragon/design-nota-from-schema@95dc1137`
 - New scaffolded triad: `LiGoldragon/spirit`, `LiGoldragon/signal-spirit`, `LiGoldragon/core-signal-spirit`

@@ -139,7 +139,7 @@ A major break around the NotaCore + schema-stack design:
 - **Divergence as forcing function**: differences are interview questions
   the psyche or the comparison report must answer
 - **Anti-drift**: single-track inference (the failure mode behind the
-  schema-defines-effects drift per /350) is mitigated because the other
+  schema-defines-effects drift) is mitigated because the other
   track would surface the inference
 
 ## See also

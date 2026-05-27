@@ -234,9 +234,10 @@ The signal/executor/SEMA framing doesn't add new claims; it clarifies WHERE exis
 - `reports/operator/206-schema-spirit-running-concept-audit-2026-05-26.md` — gap audit consumed in §8
 - `reports/designer/361-latest-vision-schema-derived-nota-stack-2026-05-26.md` — vision absorbed
 - `reports/designer/367-nota-as-specification-superset-of-capnproto-2026-05-26.md` — CapnProto-superset framing this report builds on
-- `reports/designer/369-comparison-designer-368-vs-operator-205-running-concepts-2026-05-26.md` — convergence comparison + designer-branch retirement decision
 - `reports/designer/370-implementation-gap-audit-designer-side-2026-05-26.md` — gap audit driving §8 sequencing
-- `reports/designer/346-actor-schemas-and-upgrade-mechanism-2026-05-25.md` — upgrade mechanism SEMA implements
+- `/369` (comparison + designer-branch retirement) retired in sweep /377; the convergence + branch-retirement decision is absorbed in §8 (designer feature branches RETIRED note).
+- `/373` (engagement with operator/209) retired in sweep /377; convergence + risks substance absorbed in §8 sequencing and the carry-forward notes.
+- `/346` actor-schemas + upgrade mechanism retired in sweep /349; substance is in `repos/persona-spirit/INTENT.md` + `repos/persona-spirit/ARCHITECTURE.md`. SEMA's upgrade-on-load behavior implements it.
 - `skills/component-triad.md` — repo triad skill (extended below)
 - `skills/abstractions.md` — verb-belongs-to-noun skill (extended below)
 - `skills/double-implementation-strategy.md` — designer/operator parallel workflow

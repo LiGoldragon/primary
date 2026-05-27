@@ -1,5 +1,18 @@
 # 363 — Design exploration: nota from schema
 
+> **STATUS — preserved as design-rationale (2026-05-27, sweep /377).**
+> This report enumerates two competing recursion-floor cuts — operator's
+> WIDER cut (nota-core hand-authored Rust, codec hand-written) versus
+> the NARROWER cut (`nota.schema` driving Rust emission for codec
+> types). The verdict — **partially feasible**: type declarations emit
+> cleanly from schema, byte-level lexer + delimiter recognition cannot
+> — landed in `reports/designer/361-latest-vision-schema-derived-nota-stack-2026-05-26.md`
+> §4 ("the recursion-floor cut") and §12 ("Empirically demonstrated vs
+> aspirational"). The hybrid finding is the chosen direction; this
+> report preserves the empirical proof and the alternative design
+> rationale per `skills/context-maintenance.md` §3a (design-rationale
+> guard).
+
 *Designer-assistant parallel-implementation track per intent record 823,
 adopting the methodology in `skills/double-implementation-strategy.md`.
 Challenges /361 §4's wider recursion-floor cut by building an empirical

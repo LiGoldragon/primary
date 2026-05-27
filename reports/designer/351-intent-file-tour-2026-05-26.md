@@ -291,8 +291,11 @@ Plus historic load-bearing records for the canonical content:
   the prior sweep this tour partially undoes (the /349 sweep was
   the source of misplaced schema-syntax content in primary
   INTENT.md).
-- `reports/designer/350-schema-feature-drift-retraction-2026-05-26.md` —
-  the /350 retraction this tour follows up on.
+- `/350` (schema-feature-drift retraction) retired in sweep /377;
+  retraction substance landed in `INTENT.md` §"The schema-driven stack",
+  per-repo `INTENT.md` files (schema, persona-spirit, signal-persona-spirit),
+  and `reports/designer/341-schema-crystallizes-architecture-2026-05-25.md`
+  STATUS-BANNER. The current tour follows up on that retraction.
 - `skills/intent-manifestation.md` — the decision tree for where
   intent statements land.
 - `skills/intent-maintenance.md` — sweep + supersession discipline.

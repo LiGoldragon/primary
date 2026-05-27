@@ -1,5 +1,16 @@
 # 367 — NOTA as specification language; schema as CapnProto-superset
 
+> **STATUS — pending migration to per-repo INTENT.md (2026-05-27, sweep
+> /377).** Per §8 of this report, the records-839-844 substance is
+> queued for landing in `nota/INTENT.md` (NOTA-specifies-rkyv, schema-
+> more-specific-than-Rust) and `schema/INTENT.md` (CapnProto-superset
+> framing, shape-driven matching, macros-as-variants-in-namespace,
+> single-macro emission goal). Designer carry-forward (§7): propose
+> the manifestation alongside operator's rkyv-emission slice when it
+> lands. Kept until operator's rkyv-emission slice closes; at that
+> point the substance lands in its right per-repo home and this
+> report retires.
+
 *Designer synthesis absorbing psyche 2026-05-26 clarification (intent records 839-844). Sharpens the framing: NOTA is the text representation of the portable rkyv format's specification; schema is a CapnProto-superset specification language with module system + macro system + shape-driven node-type matching. Connects the clarified framing to operator's current implementation (already close) + names what this means for the next slice.*
 
 ## §1 The clarified framing
@@ -193,8 +204,8 @@ Per /199 §"Phase 0" + record 822 (content-addressed crates via future forge), t
 - `/199` six-layer architecture
 - `/203` operator's three-repo interface implementation (the empirical baseline this clarifies)
 - `/361` latest vision (this report informs §11 open questions + §12 status)
-- `/362` macro position correction
-- `/365` engagement with /203 (the Nix-enforced grep-prohibitions)
+- `/362` (macro position correction) retired in sweep /377; correction substance landed in operator's `schema-next::SchemaMacro::lower` signature (now empirical, not just design).
+- `/365` (engagement with /203 — Nix-enforced grep-prohibitions) retired in sweep /377; the three Nix witnesses are enforced in `schema-rust-next/flake.nix` and `spirit-next/flake.nix`.
 - `/366` component view + truth verification (the empirical-vs-aspirational table this report's clarification reshapes)
 - `signal-persona-spirit/spirit.schema` canonical example
 - Operator repos: `nota-next`, `schema-next`, `schema-rust-next`
