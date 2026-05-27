@@ -318,6 +318,61 @@ entry is still 100% backed by a psyche statement (per
 `~/primary/skills/repo-intent.md`) — the agent doesn't invent open
 questions, just records ones the psyche named without yet deciding.
 
+## Continuous manifestation discipline
+
+Per spirit record 944 (Maximum, 2026-05-27) + record 943 (High,
+operator-facing companion): **architectural intent must be
+manifested into the repo's `ARCHITECTURE.md` AT ALL TIME, not
+just at the workspace level**. Companion to the discipline in
+`skills/repo-intent.md` §"Continuous manifestation discipline"
+for repo-scope intent.
+
+### The work-cycle obligation
+
+When an architectural decision lands in Spirit affecting repo
+R's structural shape — a typed contract change, a new
+component, a moved boundary, an invariant — reflect it into
+R's `ARCHITECTURE.md` **as part of the work cycle, not as a
+deferred pass**.
+
+The trigger is wider than "did the psyche specifically address
+R?" — any Spirit record whose architectural shape **applies to
+R** (because R is in the affected stack, or because the rule
+binds R's component category) is in scope. Records 922 (no
+`\n` escape inline NOTA), 882 / 712 (methods on non-ZST), 894
+(brace = key/value map), 902 (single-colon namespace), 909
+(src/schema emission target), 932-940 (schema macro engine
+semantics), 935 (Communicate trait + signal-frame mechanism)
+are recent examples — each binds multiple repos and each one
+that binds R needs to surface in R's `ARCHITECTURE.md`.
+
+### Manifestation flow
+
+1. When you capture an architectural intent through Spirit
+   (`skills/spirit-cli.md`), also identify the repos whose
+   architectural shape it affects.
+2. For each affected repo, edit its `ARCHITECTURE.md` on a
+   designer feature branch in
+   `~/wt/github.com/<owner>/<repo>/<branch>/`.
+3. Land both the Spirit capture and the ARCHITECTURE.md edits
+   in the same work cycle — don't sequence them as a "now /
+   later" pair.
+
+### Failure mode this prevents
+
+If architectural intent stays in Spirit + reports but doesn't
+reach `ARCHITECTURE.md`, an agent reading the repo's
+architecture file sees the prior structural shape and codes to
+it. The architecture file is the load-bearing **what the
+system IS** surface — if it lags behind the typed contract
+decisions, the rest of the work loses its anchor.
+
+### Cross-link
+
+For the prose-intent companion (psyche goals / constraints /
+principles / anti-patterns in `INTENT.md`), see
+`skills/repo-intent.md` §"Continuous manifestation discipline".
+
 ## When to edit
 
 Edit `ARCHITECTURE.md` when:

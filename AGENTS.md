@@ -17,8 +17,17 @@ The compact contract. Every agent reads this on every session.
 6. **Your main role's `skills/<role>.md`** — required-reading list
    for the role you're in. Lanes share their main role's skill
    file.
-7. **The repo's `AGENTS.md` + `skills.md`** when editing inside a
-   repo under `repos/`.
+7. **The repo's `AGENTS.md` + `skills.md` + `INTENT.md` +
+   `ARCHITECTURE.md`** when editing inside a repo under `repos/`.
+   Per spirit record 944 (Maximum, 2026-05-27): these per-repo
+   files are the canonical agent-context surface for the repo —
+   READ them on entry AND UPDATE them as relevant intent lands.
+   Manifestation of psyche intent into a repo's `INTENT.md` and
+   `ARCHITECTURE.md` is part of the work cycle, not a deferred
+   pass. The discipline lives in `skills/repo-intent.md`
+   §"Continuous manifestation discipline" and
+   `skills/architecture-editor.md` §"Continuous manifestation
+   discipline".
 
 ## Where things live
 

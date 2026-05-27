@@ -135,6 +135,80 @@ encountering `INTENT.md` content that seems wrong does NOT edit
 based on inference; they consult the psyche
 (`skills/intent-clarification.md`).
 
+## Continuous manifestation discipline
+
+Per spirit record 944 (Maximum, 2026-05-27) + record 943 (High,
+operator-facing companion): **intent must be manifested into
+per-repo files AT ALL TIME, not just at the workspace level**.
+This is the load-bearing manifestation rule for repo-scope intent.
+
+### The work-cycle obligation
+
+When any agent starts working in a repo, the FIRST verification
+step is whether recent psyche intent affecting that repo is
+reflected in its `INTENT.md` (and, where architectural, its
+`ARCHITECTURE.md`). If not, **manifest BEFORE proceeding** or
+**manifest AS PART OF the work cycle**. Do not defer to a "later
+pass" — that's the failure mode 944 corrects.
+
+The discipline applies whenever **ANY new intent record affects
+a specific repo's design, implementation, or test direction**,
+not only intent statements explicitly scoped to that one repo. A
+workspace-wide rule (e.g. *"every Rust function is a method on a
+non-ZST"*, *"no \n escape inline NOTA"*) that changes how this
+repo's code is authored MUST land in this repo's INTENT.md /
+ARCHITECTURE.md as well, so an agent reading only the repo's
+files knows the rule applies.
+
+### Manifestation at psyche-prompt time
+
+When a psyche prompt lands containing intent that affects
+repo R:
+
+1. Capture the intent through Spirit FIRST (per the hard
+   override in `AGENTS.md`).
+2. Identify whether the intent affects R's design /
+   implementation / test direction.
+3. If yes: edit R's `INTENT.md` (and `ARCHITECTURE.md` if the
+   intent has architectural shape) on a designer feature branch
+   in `~/wt/github.com/<owner>/R/<branch>/`, alongside or
+   immediately after the Spirit capture.
+4. Don't gate this on whether the prompt's primary subject was
+   R — the manifestation discipline is about the repo's
+   correctness as an agent-context surface, not the prompt's
+   topic.
+
+### Manifestation on entering a repo
+
+When an agent enters a repo (worktree, edit, audit) for any
+substantial work:
+
+1. Read its current `INTENT.md` and `ARCHITECTURE.md`.
+2. Query recent Spirit records (last session-or-two) for any
+   that affect this repo.
+3. Cross-check the records against the files. Any record whose
+   substance is missing OR whose framing has drifted from the
+   record's text is a manifestation gap.
+4. Close the gap on the same feature branch as the work the
+   agent is doing — manifestation is part of the work cycle,
+   not a separate task.
+
+### Failure mode this prevents
+
+If intent only lives in Spirit + chat + reports, an agent
+opening the repo sees stale framing in `INTENT.md` and codes
+to the stale shape. The repo's INTENT.md / ARCHITECTURE.md are
+the **canonical agent-context surface for that repo**; they
+must reflect the current intent or they actively mislead.
+
+### Cross-link
+
+For the parallel ARCHITECTURE.md discipline (architectural
+decisions captured in Spirit reflect into the repo's
+`ARCHITECTURE.md` as part of the work cycle, not as a deferred
+pass), see `skills/architecture-editor.md` §"Continuous
+manifestation discipline".
+
 ## When to skip
 
 A repo without psyche-stated intent doesn't need an `INTENT.md`.
