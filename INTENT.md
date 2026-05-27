@@ -330,6 +330,16 @@ specifically covers ANY layer where code runs in response to typed
 input and returns typed output — unifying IO, external execution,
 and UI under one schema-driven plane.
 
+Per record 982 (Maximum, 2026-05-27), the three schema types are
+symmetric at the schema-language level. Signal, Nexus, and SEMA each
+have the same four-position shape: imports/exports, input, output,
+and namespace. Import/export uses the same single-colon namespace
+convention that mirrors Rust modules (`signal:sema:Magnitude`,
+`spirit:core:SemaOutput`) instead of Rust's `::`. The planes differ
+by ownership and runtime semantics, not by authored schema shape:
+Signal communicates, Nexus executes and holds mail, and SEMA owns
+durable single-writer state.
+
 Per record 965, **Mencie (the persona's multi-modal UI, with
 mencie-audio / mencie-introspect / etc. as panels) is implemented
 as nexus schemas — each UI panel has its own nexus schema describing
@@ -376,6 +386,15 @@ marker travels on the SEMA reply that Nexus receives and Nexus
 propagates it in the Signal response. The UI and external-IO uses
 of Nexus from 965 are **specific uses of the more fundamental
 in-between translator + mail keeper role**.
+
+Per record 988 (Maximum, 2026-05-27), this flow is also an
+implementation discipline: async mail flow is actor-object flow.
+Runtime code should not be a procedural chain of helper functions.
+A Signal root becomes a generated mail object; Nexus owns that mail
+object while processing; SEMA returns a generated reply with a state
+marker; Nexus translates that object into the Signal response. The
+behavior belongs on generated schema nouns and data-bearing actor or
+store objects as methods or trait impls.
 
 ## Signal protocol — universal mail mechanism
 
@@ -434,6 +453,112 @@ the same identity, and the mirror property makes either view a
 sufficient entry point. Per record 909, the emitted Rust lives at
 `src/schema/<module>.rs` in the consumer crate so the two surfaces
 sit side-by-side in the source tree.
+
+## Recurring architectural patterns
+
+Per intent record 988 (Maximum, 2026-05-27): several disciplines
+in records 700-988 recur across multiple records, multiple repos,
+and multiple kinds of code. This section names those patterns so
+the recurring nature is visible. Each pattern below is realised
+by multiple records, applies to multiple repos, and is a
+discipline-shaped statement rather than a one-off decision. The
+detailed records and their per-section homes above remain the
+source; this section is the index that calls out *which records
+together name a pattern*.
+
+### Pattern A — Async lives at the data-type level (push, hookable, mail-based)
+
+**Anchoring records:** 935, 962, 963, 970.
+
+Async correlation, message lifecycle, and observer notification
+are CARRIED BY THE TYPED MESSAGE OBJECTS themselves, not imposed
+externally by polling or by hidden state machinery. Messages on
+the Signal protocol move through a universal MAIL MECHANISM with
+hookable lifecycle events (`on_sent`, etc.); the mail manager
+pushes events; observers attach methods on typed mail-event
+objects. The consequence binds every component: same mail
+substrate, same lifecycle hooks, same database-marker
+propagation. Full discipline: §"Signal protocol — universal mail
+mechanism" above; per-repo realisations in `signal-frame`,
+`spirit-next`, `spirit`, `signal-spirit`, `core-signal-spirit`.
+Skill: `skills/component-triad.md` §"Runtime triad" plus
+`skills/push-not-pull.md`.
+
+### Pattern B — Three execution centers (Signal + Nexus + SEMA)
+
+**Anchoring records:** 371 (Executor → Nexus per 964), 964, 970,
+981, 982.
+
+Every persona daemon's runtime decomposes into three execution
+centers — Signal (wire/communication), Nexus (execution + mail
+keeper + Signal-to-SEMA translator), SEMA (durable single-writer
+state). Each has its OWN schema language with the same 4-position
+shape (Imports / Input / Output / Namespace) and the SAME
+import-export mechanism via colon-path namespaces. All three
+engines share the pattern *"running code based on input message
+and returning output message with populated data."* Full
+discipline: §"Three schema types, three runtime planes" above.
+Skill: `skills/component-triad.md` §"Runtime triad".
+
+### Pattern C — Methods on schema-generated data types
+
+**Anchoring records:** 712, 882, 942, 945, 947, 953, 954.
+
+Schema-emitted types are the nouns; hand-written Rust attaches
+verbs to them as methods on the data-bearing type or as trait
+impls. No free functions. No ZST namespace holders. No parallel
+hand-rolled mirrors of generated types. When the runtime gains a
+behaviour (encode/decode, upgrade, mail-event hook, actor
+reaction), the behaviour lives as a method on the schema-emitted
+noun, not on a helper-function library beside it. Skill:
+`skills/rust/methods.md` §"Methods on types, not free functions"
++ §"Schema-generated objects are the method surface".
+
+### Pattern D — Single-writer authority + REST-shaped wire
+
+**Anchoring records:** 949, 951.
+
+SEMA owns the durable state for each resource kind; mutations
+route through that one owner. Schema-emitted Operation enums on
+the Signal plane are REST-shaped typed resource operations, not
+RPC method calls. The single-owner property at SEMA mirrors
+REST's canonical-state semantics — distributed semantics with one
+canonical owner per kind, no shared-write races, all observation
+via push-subscription not poll. Combined with Pattern A: writers
+are single; observers are many; communication is push-via-mail-
+events. Full discipline: §"The wire architecture is REST-shaped"
+above. Skill: `skills/component-triad.md` (the Mutate-down /
+Subscribe-up authority discipline).
+
+### Pattern E — Schema is one recursive struct down to scalars
+
+**Anchoring records:** 894, 932, 933, 940.
+
+A `.schema` document is a typed struct read positionally; nested
+struct and enum definitions are macros applied at known
+positions; macros bottom out in scalar leaves (booleans,
+integers, strings, vectors, typed-string newtypes). The recursion
+is one shape — the macro engine is shared substrate for all three
+schema types (Signal, Nexus, SEMA), each of which is its own
+language (record 982) but uses the same structural skeleton.
+Repo-scope detail: `repos/schema/INTENT.md`,
+`repos/schema-next/INTENT.md`,
+`repos/nota-next/INTENT.md`.
+
+### Pattern F — Mirror naming (schema namespace mirrors Rust modules)
+
+**Anchoring records:** 902, 909, 952.
+
+A schema position named `spirit-next:signal:Frame` maps
+mechanically to the Rust type `spirit_next::signal::Frame`. The
+identifier IS the same in both views; only the case-rules and
+separator differ (`:` → `::`; kebab → snake; PascalCase
+unchanged). Agents grep across either surface and reach the
+matching point in the other. The schema and the emitted Rust are
+two views of one identity — either view is a sufficient entry
+point for navigation. Full discipline: §"Schema-emitted Rust
+mirrors the schema namespace" above + `skills/naming.md` §"Schema
+and emitted Rust mirror each other".
 
 ## Concept designer is the entry for new concepts
 

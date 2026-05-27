@@ -19,13 +19,13 @@
     [Prose as craft.])
 
   (Architecture component-triad skills/component-triad.md Apex
-    [Daemon + thin CLI + signal-* contract. The universal stateful component shape; the load-bearing read.])
+    [Daemon + thin CLI + signal-* contract. Signal/Nexus/SEMA runtime triad and async mail flow.])
   (Architecture contract-repo skills/contract-repo.md Topic
     [Wire-contract crate discipline. Six-verb spine; signal_channel! macro; layered-effect pattern.])
   (Architecture micro-components skills/micro-components.md Topic
     [When to create a new crate; family-of-micro-components pattern; kernel-extraction triggers.])
   (Architecture actor-systems skills/actor-systems.md Topic
-    [Dense actor topology. Supervised state-bearing actors; release-before-notify; trace witnesses.])
+    [Dense actor topology. Schema-root actors; async mail objects; supervised state-bearing actors.])
   (Architecture architectural-truth-tests skills/architectural-truth-tests.md Topic
     [Tests that catch architectural drift, not just regression.])
   (Architecture engine-analysis skills/engine-analysis.md Topic
@@ -63,7 +63,7 @@
   (Programming rust-discipline skills/rust-discipline.md Topic
     [Rust craft index. Methods on types; typed errors; no ZST holders.])
   (Programming rust-methods skills/rust/methods.md Topic
-    [Methods on types. One-object-in/one-object-out.])
+    [Methods on schema nouns. No production free functions; async mail flow as object flow.])
   (Programming rust-errors skills/rust/errors.md Topic
     [Typed errors at crate boundary. thiserror; no anyhow at edges.])
   (Programming rust-storage-and-wire skills/rust/storage-and-wire.md Topic

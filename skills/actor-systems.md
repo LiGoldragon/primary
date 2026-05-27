@@ -56,6 +56,16 @@ durable state, maintains a view, shapes replies, supervises
 children, or records trace, it is probably actor-shaped. The
 overhead is acceptable; the correctness in design is the point.
 
+In schema-driven daemons, the three default actor-shaped planes are
+Signal, Nexus, and SEMA. Signal receives generated root messages;
+Nexus is the async mail keeper and execution translator; SEMA is the
+single-writer durable state owner. The mail lifecycle is itself an
+actor-object flow: a generated `MessageSent` enters a typed mailbox,
+Nexus owns `NexusMail<Payload>` while processing, and a generated
+`MessageProcessed<Reply>` leaves after SEMA or execution replies. If
+that flow appears as a group of helper functions, the actor boundary
+has been erased.
+
 ```mermaid
 flowchart LR
     vague["one actor with helper methods"] --> hidden["hidden planes"]

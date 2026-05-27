@@ -605,6 +605,22 @@ own engine with its own traits, but all three engines share the
 pattern of *running code based on input message and returning
 output message with populated data*.
 
+**This is Pattern B in the workspace's recurring pattern index**
+(per `~/primary/INTENT.md` §"Recurring architectural patterns"
++ record 988, Maximum, 2026-05-27). Pattern A — async lives at
+the data-type level — is realised inside the Signal and Nexus
+planes via the universal mail mechanism + hookable lifecycle
+events (records 935, 962, 963, 970). Pattern D — single-writer
+authority + REST-shaped wire — is the SEMA / signal-side pairing
+(records 949, 951). Both patterns are intrinsic to this section.
+
+At the schema-language level, all three planes share the same root
+shape: imports/exports, input, output, and namespace. Import/export
+uses single-colon paths that mirror Rust modules (`crate:module:Type`,
+not `crate::module::Type`). The planes differ by runtime ownership,
+not by notation: Signal owns communication, Nexus owns execution and
+in-flight mail, and SEMA owns durable state.
+
 | Execution center | Schema type | What runs there |
 |---|---|---|
 | **Signal** | `Signal` schemas | Wire and communication: inter-component messaging |
@@ -718,3 +734,11 @@ Above all three planes: the schema layer provides the typed shapes
 schema-emitted Rust. The Rust layer provides the methods on those
 shapes (per `skills/rust/methods.md` §"Schema-generated objects are
 the method surface").
+
+This is an object-flow rule, not only a naming rule. A decoded Signal
+object enters Nexus as mail; the Nexus mail object produces or requests
+SEMA work; the SEMA reply carries the database marker; Nexus turns that
+reply into the outgoing Signal object. Agents should implement those
+steps as methods on the generated objects or on data-bearing actors
+(`Engine`, `Nexus`, `Store`, `MailLedger`), never as a loose chain of
+free functions.

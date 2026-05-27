@@ -94,6 +94,29 @@ emits `MessageProcessed<Reply>` after SEMA or execution produces a
 reply. Do not create free `upgrade_*`, `send_*`, or `notify_*`
 helpers beside generated types.
 
+### Async mail flow is object flow
+
+Async behavior does not justify free procedural glue. The signal
+protocol's asynchronous lifecycle is represented by generated data
+types and by state-bearing actor objects:
+
+- `Input` / `Output` are the Signal root message types.
+- `MessageSent` is the lifecycle event when Signal hands mail to
+  Nexus.
+- `NexusMail<Payload>` is mail currently owned by Nexus.
+- `NexusInput` / `NexusOutput` are the Nexus execution language.
+- `SemaInput` / `SemaOutput` are the SEMA state language.
+- `MessageProcessed<Reply>` is the lifecycle event after Nexus gets a
+  SEMA or execution reply.
+
+Methods attach to those objects, or to data-bearing runtime owners
+such as `Engine`, `Mailbox`, `MailLedger`, `Nexus`, or `Store`.
+Avoid module-level helpers named like `route_mail`, `process_mail`,
+`dispatch_signal`, or `apply_sema`. If such a helper feels useful,
+the missing noun is usually visible in its arguments: make that noun
+the method receiver, or create the state-bearing actor that owns the
+phase.
+
 ## No ZST method holders
 
 A `pub struct Foo;` whose `impl Foo` is just a parking lot for
