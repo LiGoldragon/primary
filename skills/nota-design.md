@@ -220,6 +220,48 @@ boundary. Single quotes are no longer the normal inline form; they
 make natural apostrophes painful and undercut the bracket-string
 design.
 
+**Inline NOTA — no `\n` escape sequences.** Per intent record 922
+(High, 2026-05-27): inline NOTA in any single-line string literal
+context — Rust string, shell argument, markdown inline example,
+test fixture, doc example — MUST NOT contain `\n` escape sequences.
+
+NOTA is whitespace-insensitive; the parser treats any run of
+whitespace (space, tab, newline) the same way between tokens.
+A `\n` inside a single-line literal adds nothing semantically and
+produces a hybrid form that pretends to be multi-line while being
+one source line — ugly to read, ugly to grep.
+
+Wrong:
+
+```rust
+let source = "(State [Statement])\n{ Topic [Text] }\n";
+```
+
+Right (single-line, spaces between tokens):
+
+```rust
+let source = "(State [Statement]) { Topic [Text] }";
+```
+
+For genuinely multi-line NOTA — long fixtures, multi-record
+sources, schemas with many declarations — use ACTUAL newlines in
+authored files (`.nota`, `.schema`) and load via `include_str!`,
+OR use a multi-line raw string literal:
+
+```rust
+let source = r#"{}
+(Input ((Record Entry)))
+(Output ())
+{
+  Topic [Text]
+}"#;
+```
+
+Multi-line raw strings carry the structure visually. Single-line
+literals with `\n` escapes carry it as noise. Pick the shape that
+matches the substance: single-line for one or two records, file
+or multi-line raw string when the structure benefits from layout.
+
 **Embedding-safety is the load-bearing consequence.** Because NOTA
 never contains a `"`, a complete NOTA expression embeds escape-free
 inside any host whose string syntax uses double quotes — JSON, Rust

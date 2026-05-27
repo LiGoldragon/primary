@@ -44,7 +44,8 @@ not decide schema legality.
 Focused test excerpt:
 
 ```rust
-let source = "(Record\n  [Entry])";
+let source = r#"(Record
+  [Entry])"#;
 let document = Document::parse(source).expect("nota parses");
 let outer = document.root_object_at(0).expect("outer parenthesis");
 let inner = outer.root_object_at(1).expect("inner square-bracket");
