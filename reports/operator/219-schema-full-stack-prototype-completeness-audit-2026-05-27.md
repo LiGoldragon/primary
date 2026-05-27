@@ -21,12 +21,20 @@ Sources mined this pass:
 
 The previous `spirit-next` slice proved NOTA CLI input, rkyv socket framing,
 generated Signal routes, generated Nexus dispatch, and in-memory SEMA writes.
-This pass made the Nexus/SEMA seam more real by adding schema-declared mail and
-state marker objects:
+This pass made the Nexus/SEMA seam more real by adding schema-declared
+language, mail, reuse, and state marker objects. Record 981 corrected the first
+draft of this report: Nexus and SEMA are not just implementation seams; they
+are languages with input and output surfaces, and they share an import/export
+surface with Signal.
 
 ```nota
 {
-  SemaResponse ((Recorded SemaReceipt) (Observed ObservedRecords) (Missed ErrorReport))
+  Import [SourcePath LocalPath]
+  Export [LocalPath PublicPath]
+  NexusInput ((Signal Input) (Sema SemaOutput))
+  NexusOutput ((Sema SemaInput) (Signal Output))
+  SemaInput ((Record Entry) (Observe Query))
+  SemaOutput ((Recorded SemaReceipt) (Observed ObservedRecords) (Missed ErrorReport))
   DatabaseMarker [CommitSequence StateDigest]
   SemaReceipt [RecordIdentifier DatabaseMarker]
   ObservedRecords [RecordSet DatabaseMarker]
@@ -53,12 +61,18 @@ The working path is now:
 ```text
 NOTA CLI -> generated Input -> rkyv frame -> daemon
   -> Engine Nexus mail ledger
-  -> generated SemaCommand
+  -> generated NexusInput
+  -> generated NexusOutput::Sema(SemaInput)
   -> Store single writer
-  -> generated SemaResponse with DatabaseMarker
+  -> generated SemaOutput with DatabaseMarker
+  -> generated NexusOutput::Signal(Output)
   -> generated Output
   -> rkyv frame -> NOTA CLI reply
 ```
+
+Import/export paths use the same single-colon namespace convention as schema
+names: `signal:sema:Magnitude`, `spirit:core:SemaOutput`. This mirrors Rust's
+crate/module nesting while avoiding Rust's `::` syntax in NOTA/schema.
 
 ## Nix witnesses
 
@@ -86,8 +100,9 @@ NOTA CLI -> generated Input -> rkyv frame -> daemon
 | Assembled schema | `schema-rust-next` emits from `Asschema`; generated source is freshness-checked. | The assembled schema is not persisted as `.asschema` and not inspected by a schema daemon. |
 | Rust emission | Checked-in `src/schema/lib.rs` is regenerated from `schema/lib.schema`. | Emission should next split reusable core mail support from component schema. |
 | Signal | Generated `Input`/`Output` own short headers, rkyv frames, NOTA conversion, and route rejection. | Signal roots still live in one repo rather than triad repos `signal-spirit` and `core-signal-spirit`. |
-| Nexus | `Engine` records generated `MailLedgerEvent::Sent` and `MailLedgerEvent::Processed`. | Mail ledger is in-memory; no durable mail queue or async response manager yet. |
-| SEMA | `Store::apply(SemaCommand)` is the only writer and replies with `DatabaseMarker`. | Store is in-memory, `StateDigest` is a deterministic placeholder, not content-addressed state. |
+| Nexus | Generated `NexusInput`/`NexusOutput` now mediate Signal-to-SEMA and SEMA-to-Signal transitions; `Engine` records generated `MailLedgerEvent::Sent` and `MailLedgerEvent::Processed`. | Mail ledger is in-memory; no durable mail queue or async response manager yet. |
+| SEMA | Generated `SemaInput`/`SemaOutput` now define the state language; `Store::apply(SemaInput)` is the only writer and replies with `DatabaseMarker`. | Store is in-memory, `StateDigest` is a deterministic placeholder, not content-addressed state. |
+| Import/export | `Import [SourcePath LocalPath]` and `Export [LocalPath PublicPath]` are generated schema nouns; tests assert single-colon paths. | Import/export is still only declared and tested in Spirit; the schema engine does not yet resolve imported modules or enforce export visibility. |
 | Runtime Spirit | CLI/daemon process-boundary test passes with rkyv over socket and NOTA at CLI. | The prototype is not production Spirit 0.3 and does not migrate the live database. |
 | Upgrade path | Generated `UpgradeFrom`/`AcceptPrevious` traits exist in emitter output. | No schema-diff-derived upgrade path is exercised by this Spirit slice yet. |
 
