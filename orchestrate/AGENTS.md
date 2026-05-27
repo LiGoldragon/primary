@@ -320,16 +320,16 @@ The motivation (per psyche 2026-05-19): keep a single agent on a
 task/topic across what would previously have been multiple lane
 handoffs — less context-shuffling, less ceremony.
 
-Lock files are different. Each agent (main or assistant) edits its own
-lock file — locks name *who is actively touching what files right now*,
-which is per-agent. Two agents in the same discipline can hold different
-lock scopes at the same time without conflict; one bead can be claimed at
-the discipline pool level and worked by whichever agent picked it up.
+Lock files are different. Each lane edits its own lock file — locks
+name *who is actively touching what files right now*, which is
+per-lane. Two lanes in the same discipline can hold different lock
+scopes at the same time without conflict; one bead can be claimed at
+the discipline pool level and worked by whichever lane picked it up.
 
 The mind-graph destination (per "Command-line mind target" above)
 preserves this: typed work items in `mind.redb` route by the main role's
-identity, not the assistant's. Assistants act as additional capacity
-under one role's identity.
+identity, not the lane's. Additional capacity (second-<role>, etc.)
+acts under one role's identity.
 
 ## Version Control
 

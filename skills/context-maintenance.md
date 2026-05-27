@@ -39,9 +39,10 @@ usually need maintenance at the same time, by the same pass.
 - **Explicit user direction.** "Do a context maintenance" or "do
   a handover" or similar.
 - **Lane retirement.** A lane is being retired (the role taxonomy
-  shifted, an assistant lane is being folded back into its main
-  role, etc.). Before the identifier itself can be freed, the
-  lane's leftover memories must be triaged via this skill —
+  shifted, a retired-suffix lane is being folded back into its
+  main role per spirit record 920, etc.). Before the identifier
+  itself can be freed, the lane's leftover memories must be
+  triaged via this skill —
   reports under `reports/<retiring-lane>/` and beads tagged with
   the lane label. Per psyche 2026-05-22 (spirit record 213),
   identifier retirement is *gated* on context-maintenance
