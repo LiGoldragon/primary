@@ -85,6 +85,15 @@ the request or on the engine/store object that owns the state. If the
 method cannot be placed cleanly, the schema or the runtime noun is not
 specific enough yet.
 
+Upgrade and mail behavior follow the same rule. A changed generated
+type implements the generated upgrade trait for the previous type; an
+unchanged generated type carries no upgrade method. A sent signal root
+creates a generated `MessageSent` object, and push hooks are methods
+on that event. Nexus owns in-flight mail as `NexusMail<Payload>` and
+emits `MessageProcessed<Reply>` after SEMA or execution produces a
+reply. Do not create free `upgrade_*`, `send_*`, or `notify_*`
+helpers beside generated types.
+
 ## No ZST method holders
 
 A `pub struct Foo;` whose `impl Foo` is just a parking lot for

@@ -606,7 +606,7 @@ returning output message with populated data*.
 | Plane | Schema type | What runs there |
 |---|---|---|
 | **Signal** | `Signal` schemas | Wire and communication: inter-component messaging |
-| **Nexus** | `Nexus` schemas | Execution: IO, external calls, UI — code-on-input-returns-output |
+| **Nexus** | `Nexus` schemas | Execution + mail keeping: IO, external calls, UI, in-flight message processing |
 | **SEMA** | `Sema` schemas | Durable state: single-writer database engine |
 
 ### Signal (wire and communication)
@@ -629,10 +629,12 @@ state.
 ### Nexus (execution — IO, external calls, UI)
 
 **Nexus** (renamed from Executor per record 964) is the
-**execution-layer schema type**. Per record 965: Nexus specifically
-covers ANY layer where code runs in response to typed input and
-returns typed output — unifying internal IO, external execution, and
-user interfaces under one schema-driven plane.
+**execution-layer schema type** and the daemon's **mail keeper**.
+Per records 965-969: Nexus covers ANY layer where code runs in
+response to typed input and returns typed output — unifying internal
+IO, external execution, and user interfaces under one schema-driven
+plane — and it owns the in-flight mail object while a message is
+being processed.
 
 Nexus covers:
 
@@ -645,6 +647,13 @@ Nexus covers:
 Two paths through Nexus's internal-decision sub-scope:
 **state-involving** (Nexus → SEMA → Nexus → Reply) and
 **forward-only** (Nexus → Reply, no SEMA touch).
+
+At the Signal/Nexus boundary, a decoded Signal root becomes
+`NexusMail<Payload>` with a `MessageIdentifier`. While Nexus holds
+that object, the mail is in processing state. When Nexus receives the
+SEMA reply or other execution result, it emits `MessageProcessed<Reply>`
+and translates that reply back to the Signal output surface, alongside
+logging and hookable lifecycle events.
 
 Per record 965: Nexus is now **PART OF the schema-derived stack as
 the execution-layer schema type**, superseding record 880's earlier

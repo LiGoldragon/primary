@@ -21,6 +21,15 @@ and the variants speak for themselves. Reach here when **two enums
 meet**, or when one enum meets a method-derived value whose shape
 the matching depends on.
 
+In the schema-derived stack, those enums usually come from schema
+files. Treat Signal `Input`/`Output`, Nexus mail/action types
+(`NexusMail<Payload>`, `MessageProcessed<Reply>`), SEMA
+`SemaCommand`/`SemaResponse`, route/header enums, and mail-event
+enums as the real language of the engine. Hand-written Rust
+implements the relationship between those generated nouns; it does
+not create a parallel private enum language to avoid matching the
+schema objects.
+
 ## The principle
 
 > **Engine logic at the high level is tree-vs-tree matching:
@@ -144,6 +153,12 @@ The `match` lives in the blanket impl; every handler implements the
 flat per-variant trait. This is the right shape when the engine
 side is "one method per operation," with the per-variant logic
 genuinely different.
+
+For schema-emitted signal roots, the generator should emit this
+dispatch trait shape. The runtime engine then implements the
+generated trait on a data-bearing object: the schema supplies the
+variant language, Rust supplies the behavior on the object that owns
+state.
 
 ## Worked examples in the workspace
 

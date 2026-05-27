@@ -373,17 +373,19 @@ example.
 
 ### Filename convention
 
-Per record 941 (Maximum, 2026-05-27): **`<N>-<topic>[-<topic>]…-<title-slug>.md`** where:
+Per records 939 and 941 (High / Maximum, 2026-05-27):
+**`<N>-<primary-topic>[-<secondary-topic>]…-<title-slug>.md`** where:
 
 - `N` is the next integer after the **highest-numbered report in
   this role's subdirectory.** Per-role, not workspace-wide. No
   leading zeros. No date prefix.
-- `<topic>` is a primary topic label from the workspace topic
+- `<primary-topic>` is a durable topic label from the workspace topic
   vocabulary — words like `nota`, `schema`, `macros`, `runtime`,
   `wire`, `emission`, `discipline`, `workspace`, `intent`,
-  `tour`. Reports can carry ONE OR MORE topic labels. Multiple
-  topics are hyphen-separated in the order most-specific-first.
-  Topics enable filename-based grep across reports
+  `tour`. Put the primary topic first so filename grep finds the
+  topic cluster directly. Reports can carry ONE OR MORE topic labels.
+  Secondary topic facets follow the primary topic. Topics enable
+  filename-based grep across reports
   (`ls reports/designer/ | grep -E "^[0-9]+-schema-"`) without
   opening files.
 - `<title-slug>` is the report's specific subject in kebab-case.
@@ -566,7 +568,7 @@ Eight kinds, each with its destination home for the substance.
 | `postmortem` | Reconstruction of a past failure or surprise, with the lessons it teaches. | **Retires once the lessons land in a skill or rule.** The skill inlines the discipline (the "don't reintroduce this" rule, with the *why* stated as part of the rule); the postmortem itself doesn't outlive its migration. Skills do not cite reports — see `skill-editor.md` §"Skills never reference reports". |
 
 The discipline that follows: when you write a report, **name
-its kind and its topic before you start writing**, and ask
+its kind and its topics before you start writing**, and ask
 *what's the destination home for its substance?* If you can't
 name all three, the report shouldn't be written — the substance
 probably belongs in chat (too small for a report), in a skill
@@ -579,7 +581,7 @@ eventual move into persona-mind-managed storage (per intent
 records 107 + 108). The kind set is closed; the topic
 vocabulary is open.
 
-## Report header — kind, topic, date
+## Report header — kind, topics, date
 
 Every report (under the new format) carries a metadata line
 **immediately after the title heading**:
@@ -587,7 +589,7 @@ Every report (under the new format) carries a metadata line
 ```markdown
 # 17 — Real-time intent recording system
 
-*Kind: Design · Topic: recording-system · 2026-05-22*
+*Kind: Design · Topics: intent, recording-system · 2026-05-22*
 
 (report body...)
 ```
@@ -596,10 +598,12 @@ Three fields, one line, italicised. The fields:
 
 - **Kind** — the closed-set kind (Design / Audit / Research /
   Proposal / Review / Synthesis / Handover / Postmortem).
-  Capitalised. Same value as in the filename.
-- **Topic** — the open-string topic. Matches intent topic
-  vocabulary (`recording-system`, `lane-management`,
-  `persona-orchestrate`, `signal-frame`, etc.). Kebab-case.
+  Capitalised. The kind is metadata, not a filename prefix.
+- **Topics** — one or more open-string topics. The first topic is
+  the primary filename topic; following topics are secondary facets.
+  Matches intent topic vocabulary (`recording-system`,
+  `lane-management`, `persona-orchestrate`, `signal-frame`, etc.).
+  Kebab-case.
 - **Date** — `YYYY-MM-DD` when the report was first written.
   Reaffirmed on substantive rewrites; unchanged on small fixes.
 

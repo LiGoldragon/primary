@@ -8,18 +8,36 @@ visuals, soft caps).*
 
 ## Filename
 
-`reports/<role>/<N>-<topic>.md`
+`reports/<role>/<N>-<primary-topic>[-<secondary-topic>]…-<title-slug>.md`
 
-- `<role>` is the writer's lane subdirectory (`designer`,
-  `operator`, `system-operator`, `poet`, plus the assistant
-  lanes).
+- `<role>` is the writer's exact lane subdirectory (`designer`,
+  `operator`, `system-operator`, `poet`, assistant lanes, second
+  lanes, and specialised lanes as configured).
 - `<N>` is the next integer after the highest-numbered report in
   this role's subdirectory. **Per-role numbering**, not workspace-
   wide — `reports/operator/97-…md` and `reports/designer/97-…md`
   can coexist; the role subdir is the disambiguator.
-- `<topic>` is a kebab-case description of the report's subject.
+- `<primary-topic>` is the durable topic cluster. Put it first so
+  `rg --files reports | rg '/[0-9]+-schema-'` finds the current
+  schema report surface without knowing the report's exact title.
+- Optional `<secondary-topic>` facets follow the primary topic.
+  Keep topic atoms short and stable: `nota`, `schema`, `macros`,
+  `emission`, `spirit`, `wire`, `upgrade`, `runtime`,
+  `reporting`, `orchestrate`.
+- `<title-slug>` is the report's specific subject in kebab-case.
 - **No leading zeros. No date prefix.** Commit history records
   when a report landed; the filename does not repeat that.
+
+Report kind (`Design`, `Audit`, `Research`, `Proposal`, `Review`,
+`Synthesis`, `Handover`, `Postmortem`) belongs in the report header,
+not in the filename.
+
+Examples:
+
+- `reports/operator/217-schema-canonical-current-state.md`
+- `reports/operator/218-schema-macros-index-and-loading.md`
+- `reports/designer/390-nota-shape-logic-floor.md`
+- `reports/designer/391-reporting-agglomeration-policy.md`
 
 To find the next number:
 
@@ -36,9 +54,9 @@ When a report is being actively refined with feedback (back-and-
 forth with the psyche or another agent), the edited version takes
 a `-v2` / `-v3` suffix:
 
-- v1 (implicit, no suffix): `225-workspace-redesign.md`
-- v2: `225-v2-workspace-redesign.md`
-- v3: `225-v3-workspace-redesign.md`
+- v1 (implicit, no suffix): `225-workspace-redesign-direction.md`
+- v2: `225-v2-workspace-redesign-direction.md`
+- v3: `225-v3-workspace-redesign-direction.md`
 
 The current version is the canonical one; delete the predecessor
 in the same commit that lands the successor. Don't accumulate
@@ -61,6 +79,26 @@ predecessor. The predecessor's number is retired — number
 sequences are gap-tolerant; the next report takes
 next-highest-plus-one within the role's subdir, not the freed
 number.
+
+## Topic agglomeration
+
+When a topic accumulates many reports, do not bulk-rename old
+files just to make the directory pretty. Write one current primary
+topic report, carry forward the load-bearing substance, and retire
+older reports only when their substance fully migrated.
+
+Practical flow:
+
+1. Pick one primary topic, for example `schema`.
+2. Write `reports/<role>/<N>-schema-<title>.md`.
+3. List the source reports read inside the new report.
+4. Carry forward only current substance.
+5. Classify sources as migrated, still-kept, or stale.
+6. Delete stale predecessors only in the same committed change that
+   lands the replacement.
+
+Historical filenames remain valid locators in git history. New
+reports use the topic-prefix convention forward.
 
 ## Commit before delete
 
