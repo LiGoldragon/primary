@@ -129,47 +129,39 @@ multiple records.)
 
 ## 2. Workspace INTENT.md additions
 
-| File | Commit | Change ID | What added |
-|---|---|---|---|
-| `INTENT.md` + `skills/component-triad.md` + `skills/rust/methods.md` + `skills/actor-systems.md` | (see below) | (see below) | New §"Recurring architectural patterns" in workspace INTENT.md naming all six patterns + cross-refs to anchoring records; "Recurring pattern" pointer in three skills. |
+| Commit | Change ID | What landed |
+|---|---|---|
+| `ea3733e0` | `lxptmtym` | New §"Recurring architectural patterns" in workspace INTENT.md naming all six patterns A-F + symmetric-language paragraph in §"Three schema types" + actor-object flow paragraph in §"Nexus is the MAIL KEEPER" + pattern pointers in `skills/component-triad.md`, `skills/actor-systems.md`, `skills/rust/methods.md` + `skills/skills.nota` description updates (this was a peer-agent commit landing the exact same workspace content I had drafted — convergent independent work) |
+| `eefc0457` | `klkpnsuq` | Additional pattern-pointer header sections at the top of `skills/actor-systems.md` and `skills/rust/methods.md` — net-add to the peer-agent commit; the two together name every pattern at every skill entry point |
 
-The workspace INTENT.md section names each pattern, gives the 2-4
-sentence synthesis from §1 above, and cross-refs to the existing
-detailed sections in INTENT.md and the relevant skills. The new
-section sits AFTER §"The wire architecture is REST-shaped" and
-BEFORE §"Concept designer is the entry for new concepts" because
-it's a structural-pattern claim about the schema-driven stack.
+## 3. Skills additions (already covered by the workspace commits above)
 
-## 3. Skills additions
-
-| Skill | What added |
-|---|---|
-| `skills/component-triad.md` | Pattern names in §"Runtime triad" — references the workspace INTENT.md §"Recurring architectural patterns" so the pattern terms are searchable from the triad skill. |
-| `skills/rust/methods.md` | §"Recurring pattern — schema-generated objects as method surface" header restated as Pattern C. |
-| `skills/actor-systems.md` | §"Recurring patterns this skill realizes" cross-ref to patterns B, C, and the push-not-pull surface. |
-
-These additions are LIGHT-TOUCH — no skill content rewriting. The
-goal is the pattern-name visibility; the discipline content was
-already correct.
+The peer-agent workspace commit `ea3733e0` added pattern-naming
+paragraphs inside `skills/component-triad.md`, `skills/actor-systems.md`,
+and `skills/rust/methods.md`. My follow-up `eefc0457` added a separate
+§"Recurring patterns this skill realises" header in actor-systems.md
+and a Pattern C pointer at the top of methods.md so the pattern
+terms are also visible at the **entry point** of each skill, not only
+inside specific subsections. Both layers compose.
 
 ## 4. Per-repo branches updated
 
-Each pattern that affects multiple repos got a §"Recurring patterns
-realized in this repo" naming section added to the relevant
-per-repo INTENT.md on the existing
-`designer-intent-manifestation-2026-05-27` branches.
+Each per-repo INTENT.md on the existing
+`designer-intent-manifestation-2026-05-27` branches received a
+§"Recurring patterns realised in this repo" section naming the
+patterns the repo realises. All branches pushed to origin.
 
-| Repo | Patterns named |
-|---|---|
-| `signal-frame` | A, B, D (already covers individual records; now names the patterns) |
-| `spirit-next` | A, B, C, D, E, F |
-| `spirit` | A, B, C, D |
-| `schema-next` | B, C, E, F |
-| `schema-rust-next` | B, C, F |
-| `signal-spirit` | A, B, D, F |
-| `core-signal-spirit` | A, B, D, F |
-| `nota-next` | E, F |
-| `cloud` | A, B, C |
+| Repo | Patterns named | Commit | Change ID |
+|---|---|---|---|
+| `signal-frame` | A, B, D | `55e45e80` | `unnxtlvt` |
+| `spirit-next` | A, B, C, D, E, F | `2656582f` | `xpmkzoml` |
+| `spirit` | A, B, C, D | `87d20e19` | `ywrzqkpq` |
+| `schema-next` | B, C, E, F | `de87b0bd` | `mnqokmyy` |
+| `schema-rust-next` | B, C, F | `ca6ed3ef` | `pzwpyumz` |
+| `signal-spirit` | A, B, D, F | `dce5f51c` | `wkwrknqm` |
+| `core-signal-spirit` | A, B, D, F | `c8d081fb` | `ppvwkozm` |
+| `nota-next` | E, F | `a1bb53d6` | `tomkmzsq` |
+| `cloud` | A, B, C | `16315456` | `rkqxxpov` |
 
 Each per-repo addition uses the **same pattern letters and same
 short synthesis** as the workspace INTENT.md so the repo-scope
