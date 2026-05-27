@@ -123,6 +123,23 @@ the redb/table write happened before delivery across process or
 derivation boundaries; it does not replace the actor trace, which
 still proves the intended mailbox path was used.
 
+## Schema-chain witnesses use schema objects
+
+For schema-derived runtimes, architectural witnesses must be schema-emitted
+objects flowing through schema-type traits. Do not invent a test-only enum to
+stand in for the runtime language being proved. If the chain is
+Signal -> Nexus -> SEMA, the test witness should be made from generated
+objects such as:
+
+- `MailLedgerEvent` for hookable Signal/Nexus lifecycle events.
+- `NexusInput` and `NexusOutput` for execution-plane ingress and egress.
+- `SemaInput` and `SemaOutput` for state-plane operations and replies.
+
+The SEMA engine contract is especially strict: the operation method takes a
+SEMA schema object and returns a SEMA schema object. A test that calls a store
+or engine with a primitive, helper enum, or test-local command type is proving
+the wrong surface even if the visible behavior succeeds.
+
 ## Live boundary witness for vocabulary widening
 
 When a closed-vocabulary enum widens (Certainty's three variants

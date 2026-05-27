@@ -396,6 +396,14 @@ marker; Nexus translates that object into the Signal response. The
 behavior belongs on generated schema nouns and data-bearing actor or
 store objects as methods or trait impls.
 
+Per record 998 (Maximum, 2026-05-27), tests for the schema-derived
+runtime chain must use schema-emitted data types and schema-type
+traits as their witnesses. A test for Signal→Nexus→SEMA must assert
+against generated objects such as `MailLedgerEvent`,
+`NexusInput`/`NexusOutput`, and `SemaInput`/`SemaOutput`; ad hoc
+test-only enums are not a valid substitute. SEMA engine operations
+take SEMA schema input and emit SEMA schema output.
+
 ## Signal protocol — universal mail mechanism
 
 Per intent record 963 (High, 2026-05-27): the wire protocol is

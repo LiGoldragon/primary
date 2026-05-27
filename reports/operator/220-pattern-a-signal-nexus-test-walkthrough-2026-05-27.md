@@ -4,10 +4,12 @@
 
 Psyche asked to show how Pattern A works with visuals and code from real
 tests, and to improve the tests first. Intent was captured as Spirit record
-992.
+992. A later correction, Spirit record 998, tightened the witness rule: tests
+must use schema-emitted data types and schema-type traits, not ad hoc test
+enums.
 
-The implementation target is `spirit-next` commit `922900fd` plus this
-session's test tightening. The relevant test file is:
+The implementation target is current `spirit-next` main after this session's
+test tightening. The relevant test file is:
 
 - `/git/github.com/LiGoldragon/spirit-next/tests/runtime_triad.rs`
 
@@ -18,8 +20,9 @@ The relevant production file is:
 ## What the test now proves
 
 The first Pattern A test proved that a sent event existed. The improved test
-proves ordering. It uses a shared trace so the architecture fails if a future
-edit bypasses the hook and sends to Nexus first.
+now proves ordering without a test-local trace enum. The hook asserts Nexus has
+not accepted any generated `NexusInput` yet, then records a generated
+`MailLedgerEvent`. Nexus then records the generated `NexusInput` it accepted.
 
 Short version:
 
@@ -33,40 +36,36 @@ sequenceDiagram
     T->>S: accept(Input)
     S-->>T: SignalAccepted
     T->>H: push MessageSent
+    H-->>T: MailLedgerEvent::Sent
     T->>N: push NexusMail
+    N-->>T: NexusInput + NexusOutput::Sema
 ```
 
-The witness is the ordered trace:
+The witnesses are schema-emitted objects:
 
 ```rust
-vec![
-    TraceEvent::SentHook(MessageIdentifier(1)),
-    TraceEvent::NexusAccepted(MessageIdentifier(1)),
-]
+MailLedgerEvent::Sent(SentMail { ... })
+NexusInput::Signal(Input::Record(...))
+NexusOutput::Sema(SemaInput::Record(...))
 ```
 
-That trace is stronger than asserting both events happened. It specifically
-guards the Pattern A shape: accepted signal object, sent hook, then Nexus.
+This guards the Pattern A shape: accepted signal object, sent hook, then Nexus,
+while keeping the test on schema-generated language surfaces.
 
 ## Real test code
 
-The test introduces two probe objects:
+The test introduces two probe objects. The probes are test harnesses, but the
+data they record and assert on are schema-emitted objects.
 
 ```rust
 #[derive(Default)]
 struct NexusProbe {
-    accepted_identifiers: RefCell<Vec<MessageIdentifier>>,
-    trace: RefCell<Vec<TraceEvent>>,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-enum TraceEvent {
-    SentHook(MessageIdentifier),
-    NexusAccepted(MessageIdentifier),
+    accepted_inputs: RefCell<Vec<NexusInput>>,
 }
 ```
 
-The Nexus probe records when it receives pushed mail:
+The Nexus probe records generated Nexus input and returns generated Nexus
+output:
 
 ```rust
 impl InputNexus for NexusProbe {
@@ -74,13 +73,9 @@ impl InputNexus for NexusProbe {
     type Error = Infallible;
 
     fn record(&self, mail: NexusMail<Entry>) -> Result<Self::Reply, Self::Error> {
-        self.trace
-            .borrow_mut()
-            .push(TraceEvent::NexusAccepted(mail.identifier()));
-        self.accepted_identifiers
-            .borrow_mut()
-            .push(mail.identifier());
-        Ok(mail.into_nexus_input().into_nexus_output())
+        let nexus_input = mail.into_nexus_input();
+        self.accepted_inputs.borrow_mut().push(nexus_input.clone());
+        Ok(nexus_input.into_nexus_output())
     }
 }
 ```
@@ -88,14 +83,16 @@ impl InputNexus for NexusProbe {
 The hook records when the sent lifecycle event fires:
 
 ```rust
-impl MessageSentHook for SentHookTrace<'_> {
+impl MessageSentHook for SentHookProbe<'_> {
     type Error = Infallible;
 
     fn message_sent(&mut self, event: MessageSent) -> Result<(), Self::Error> {
-        self.trace
-            .borrow_mut()
-            .push(TraceEvent::SentHook(event.identifier));
-        self.events.push(event);
+        assert_eq!(
+            self.nexus.accepted_inputs(),
+            [],
+            "the sent hook must fire before Nexus accepts mail"
+        );
+        self.events.push(event.into_mail_ledger_event());
         Ok(())
     }
 }
@@ -107,25 +104,38 @@ The core assertion:
 #[test]
 fn signal_actor_pushes_accepted_message_through_sent_hook_to_nexus() {
     let signal_actor = SignalActor::default();
-    let accepted = signal_actor.accept(Input::Record(entry("signal pushes to nexus")));
+    let signal_entry = entry("signal pushes to nexus");
+    let signal_input = Input::Record(signal_entry.clone());
+    let accepted = signal_actor.accept(signal_input.clone());
     let nexus = NexusProbe::default();
-    let mut hook = SentHookProbe::default().record_into_trace(&nexus);
+    let mut hook = SentHookProbe {
+        events: Vec::new(),
+        nexus: &nexus,
+    };
+    let expected_sent = MailLedgerEvent::Sent(SentMail {
+        mail_identifier: MailIdentifier(1),
+        short_header: ShortHeader(0),
+    });
 
     let processed = accepted
         .push_to_nexus(&nexus, &mut hook)
         .expect("signal to nexus push");
 
     assert_eq!(
-        nexus.trace(),
-        vec![
-            TraceEvent::SentHook(MessageIdentifier(1)),
-            TraceEvent::NexusAccepted(MessageIdentifier(1)),
-        ]
+        hook.events,
+        vec![expected_sent],
+        "hook witness must be a schema-emitted mail ledger event"
     );
-    assert!(matches!(
+    assert_eq!(
+        nexus.accepted_inputs(),
+        vec![NexusInput::Signal(signal_input)],
+        "Nexus witness must be the generated Nexus input object"
+    );
+    assert_eq!(
         processed.into_reply(),
-        NexusOutput::Sema(SemaInput::Record(_))
-    ));
+        NexusOutput::Sema(SemaInput::Record(signal_entry)),
+        "Nexus output must carry the generated SEMA input object"
+    );
 }
 ```
 
@@ -217,7 +227,7 @@ The hand-written code supplies behavior on those objects:
 The full Nix stack check passed after the test tightening:
 
 ```text
-./scripts/check-local-schema-stack --print-build-logs
+nix flake check --print-build-logs
 ```
 
 The check ran:
@@ -235,6 +245,7 @@ The relevant release-test line from the Nix run:
 
 ```text
 test signal_actor_pushes_accepted_message_through_sent_hook_to_nexus ... ok
+test sema_engine_operation_accepts_and_returns_schema_objects ... ok
 ```
 
 ## Remaining improvement
