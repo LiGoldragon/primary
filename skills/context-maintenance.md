@@ -65,7 +65,39 @@ For context: review the conversation's themes — what was worked
 on, what was decided, what's still open, what insights surfaced.
 Don't dump everything; *categorize*.
 
-### 2 · Per item, decide
+### 2 · Topic-recency ranking (cross-lane reading)
+
+Per psyche 2026-05-27 (spirit record 921, Maximum): when reviewing
+reports, the ranking is **by topic, across all lanes**. The
+discipline is:
+
+1. **For each topic, find all reports across all lanes.** A
+   topic like "schema-derived nota stack" or "spirit upgrade"
+   typically threads through multiple lanes — operator's
+   implementation reports, designer's design reports,
+   second-designer's audits, system-operator's deploy notes.
+   Pulling them together is how you see the topic's whole arc.
+2. **Recency-rank within the topic.** Newest at top. Date is
+   in the filename suffix or the metadata header; commit history
+   is the tiebreaker.
+3. **Flag what's stale.** A report is *stale* when a newer
+   report on the same topic supersedes it (rewrites the framing,
+   replaces the design, completes the audit) AND the older
+   report's substance is already absorbed in the newer report or
+   a permanent doc. Stale reports drop. Not-yet-stale older
+   reports — substance still load-bearing on its own, design
+   alternatives a newer report inherits, decision rationale that
+   permanent docs don't carry — keep, forward, or migrate per
+   §"Per item, decide" below.
+4. **Favor newer design.** When older and newer reports
+   conflict, the newer is canonical unless the older holds
+   substance the newer doesn't (design alternatives, decision
+   rationale, intermediate insight the newer skipped).
+
+Reports without an obvious topic peer across lanes get the same
+treatment with a single-lane recency timeline.
+
+### 2a · Per item, decide
 
 For each report or context theme, pick one of four actions:
 
@@ -179,6 +211,79 @@ role is to apply decisions, not to re-read every report.
 For context-only substance (the part that lives in the live
 conversation, not on disk), the orchestrator does this sweep
 itself — agents can't see the conversation's working memory.
+
+## Cross-lane meta-report directory
+
+Per psyche 2026-05-27 (spirit record 921, Maximum): cross-lane
+context maintenance produces **one meta-report directory in the
+DISPATCHER's lane** with per-lane sub-reports inside.
+
+When the discipline fires across multiple lanes (review state of
+designer, operator, system-operator, and the various qualified
+lanes in a single sweep), the output is NOT a flat list of
+per-lane files scattered across each lane's reports/ subdir.
+That would split context maintenance across lanes the
+maintenance pass is supposed to oversee. Instead:
+
+```
+reports/<dispatcher-role>/<N>-cross-lane-context-maintenance-<date>/
+  0-frame-and-method.md            (dispatcher: frame, method, lane list)
+  1-<first-lane>.md                (per-lane sub-report)
+  2-<second-lane>.md
+  ...
+  N-overview.md                    (dispatcher: synthesis across lanes)
+```
+
+The directory IS the meta-report (no `meta-` prefix). It is
+garbage-collected as one session unit.
+
+### Per-lane sub-report shape
+
+Each per-lane sub-report is structured as a **handoff document**
+the agent in that role reads when they do their own next context
+maintenance. The receiving agent applies the recommendations
+within their own lane; the dispatcher does not execute drops in
+other lanes (only in their own).
+
+Standard structure per sub-report:
+
+1. **Inventory** — list of reports in the lane with date and a
+   one-line summary each.
+2. **Topic clusters** — group reports by topic.
+3. **Recency rank per topic** — newest at top; flag what's stale
+   (older than the newest by a meaningful gap, especially when a
+   newer report supersedes substance).
+4. **Drop / forward / migrate / keep recommendation per report**
+   — per the §"Per item, decide" rule.
+5. **Handoff section** — closes with "When you (the agent in
+   this role) do your next context maintenance, the relevant
+   decisions are: …" — concrete pointers to the recommendations
+   above and any cross-cutting context the role's next pass
+   should know.
+
+### When to dispatch sub-agents per lane
+
+A sweep across more than 4–5 lanes is well-suited to parallel
+sub-agent dispatch (per §"Using agents for the sweep" above) —
+each sub-agent owns one lane's sub-report; the dispatcher
+allocates slot numbers + paths up-front per the meta-report
+discipline in `skills/reporting.md` §"Meta-report directories —
+sub-agent sessions" §"Pre-launch lane allocation".
+
+### Retired lanes — amalgamate, don't list
+
+For lanes that have been retired (per spirit record 920, the
+`<role>-assistant` suffix is retired and existing
+`reports/<role>-assistant/` directories fold into the main lane),
+the cross-lane sweep amalgamates the retired lane's interesting
+content into **2-3 topic-grouped summary reports** rather than a
+report-by-report inventory. The summary reports land in the
+**main lane's** reports subdirectory (the one the retired
+identifier is folding into).
+
+This applies to all retired lanes: the prior `-assistant`
+variants, the prior `-specialist` variants, and any future lanes
+that retire.
 
 ## Retiring a lane
 

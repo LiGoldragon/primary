@@ -107,10 +107,16 @@ Full discipline: `skills/reporting.md`.
 ## Roles
 
 Four main roles, each carrying its own discipline. Lanes
-(`<role>-assistant`, `second-<role>-assistant`) share their main
-role's discipline, skill file, and beads label; only the lock file,
-report subdirectory, and claim string differ. Lane mechanism:
-`skills/role-lanes.md`.
+(`<role>`, `second-<role>`, `third-<role>`, `<qualifier>-<role>`)
+share their main role's discipline, skill file, and beads label;
+only the lock file, report subdirectory, and claim string differ.
+Lane mechanism: `skills/role-lanes.md`.
+
+Per spirit record 920 (Maximum, 2026-05-27): the prior
+`<role>-assistant` and `<role>-specialist` suffixes are RETIRED.
+Additional capacity is added by `second-<role>`, `third-<role>`,
+etc. Specialized scope is qualified by prefix
+(`cluster-operator`, `nota-designer`).
 
 - `operator` — implementation (default agent: Codex)
 - `designer` — architecture, skills, reports (default agent: Claude)
@@ -126,6 +132,9 @@ Specialized lanes inherit the closest main role's discipline.
 `cluster-operator` is an operator lane for live cluster maintenance,
 production deploy/update authority, and cluster-scoped implementation.
 `pi-operator` is a Pi-harness operator lane.
+`cloud-operator` is a cloud-deploy operator lane;
+`cloud-designer` and `nota-designer` and `system-designer` are
+specialized designer lanes for their named scope.
 
 Each agent knows its lane before claiming or editing. Coordination:
 `orchestrate/AGENTS.md`; helper: `tools/orchestrate`.
@@ -287,12 +296,15 @@ yet — those land when the role's shape settles.
   `SendMessage` to other agent instances — run outside the
   conversation surface where the psyche can redirect, and can
   violate the dispatching agent's lane. Default for operator,
-  system-operator, poet, and their assistant lanes: do the
-  work yourself in the main agent; the psyche authorises
-  subagent dispatch per task. The **designer protocol** (psyche
-  2026-05-21) is the exception: the prime designer runs at full
-  capacity with parallel subagent workflows by default, until
-  disabled or reduced.
+  system-operator, poet, and every additional/qualified lane
+  under them: do the work yourself in the main agent; the psyche
+  authorises subagent dispatch per task. The **designer protocol**
+  (psyche 2026-05-21) is the exception: the prime designer runs
+  at full capacity with parallel subagent workflows by default,
+  until disabled or reduced. When subagents are dispatched, they
+  inherit the dispatcher's lane (per spirit record 920) — see
+  `skills/role-lanes.md` §"Subagent dispatch inherits the
+  dispatcher's lane".
 - **Every subagent dispatch is non-blocking — always
   `run_in_background: true`. Never start a blocking subagent
   under any circumstance.** The whole point of subagent
@@ -352,15 +364,16 @@ yet — those land when the role's shape settles.
   references are self-contained".
 - **Designers work on feature branches in `~/wt`; operators own
   main + rebase.** Designer lanes (`designer`, `second-designer`,
-  `third-designer`, plus assistants) create + ship feature
-  branches in worktrees under `~/wt/github.com/<owner>/<repo>/`,
-  one branch per feature. Operator lanes (`operator`,
-  `second-operator`, `cluster-operator`, `pi-operator`, plus
-  assistants) own main: they create, maintain, and rebase main
-  from designer feature branches when integrating. Designers do
-  NOT push to main; operators do NOT carry long-lived designer
-  feature branches. Cross-lane integration is operator's job. Per
-  psyche 2026-05-24 (intent record 515). Complements the
+  `third-designer`, `cloud-designer`, `nota-designer`,
+  `system-designer`) create + ship feature branches in worktrees
+  under `~/wt/github.com/<owner>/<repo>/`, one branch per
+  feature. Operator lanes (`operator`, `second-operator`,
+  `cluster-operator`, `pi-operator`, `cloud-operator`) own main:
+  they create, maintain, and rebase main from designer feature
+  branches when integrating. Designers do NOT push to main;
+  operators do NOT carry long-lived designer feature branches.
+  Cross-lane integration is operator's job. Per psyche
+  2026-05-24 (intent record 515). Complements the
   mockup-on-worktree method (intent records 502-504).
 
 ## Where to look for more
