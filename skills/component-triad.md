@@ -12,11 +12,12 @@ The workspace uses "triad" in two senses; both apply at different layers.
 | Triad | Scope | Members |
 |---|---|---|
 | **Repo triad** (this skill) | Packaging — how a component is laid out across repositories | `<component>` + `signal-<component>` + `core-signal-<component>` |
-| **Runtime triad** | Logic — what happens INSIDE the daemon | signal + executor + SEMA |
+| **Runtime triad** | Logic — what happens INSIDE the daemon (three schema-driven planes) | **Signal** + **Nexus** + **SEMA** |
 
 The runtime triad lives INSIDE the `<component>` daemon repo. This skill
 covers the repo triad below; the runtime triad gets its own section at
-the bottom of this file. Per psyche record 856.
+the bottom of this file. Per psyche record 856; refined by record 964
+(Executor renamed to Nexus; all three planes are schema-driven).
 
 ## The shape
 
@@ -29,15 +30,18 @@ Every stateful capability is a triad of three repositories:
   src/bin/<name>.rs               thin CLI client
   bootstrap-policy.nota           first-start policy declaration
 signal-<component>/               ordinary wire vocabulary
-  src/lib.rs                      signal_channel! { … } declaration
+  schema/lib.schema               schema-derived ordinary signal
+  src/schema/*.rs                 generated signal types
   tests/round_trip.rs             rkyv + NOTA round-trips
 owner-signal-<component>/         owner-only authority/configuration vocabulary
-  src/lib.rs                      signal_channel! { … } declaration
+  schema/lib.schema               schema-derived owner signal
+  src/schema/*.rs                 generated owner signal types
   tests/round_trip.rs             rkyv + NOTA round-trips
 ```
 
 The contract crates carry no runtime, no actors, no `tokio` — they
-declare typed wire vocabulary and nothing else. The runtime crate
+declare typed wire vocabulary and generated method surfaces, and
+nothing else. The runtime crate
 owns the daemon, the CLI, and the typed sema-engine state. The
 split is filesystem-enforced (per `skills/micro-components.md`).
 The CLI is bundled runtime machinery: the daemon's thin first client,
@@ -145,9 +149,10 @@ Use these words consistently:
 - **Policy signal** / **owner contract** —
   `owner-signal-<component>`, the owner-only authority and
   configuration contract.
-- **Signal types** — the data types declared in either signal
-  contract: operation roots, payload records, replies, rejection
-  reasons, filters, events, stream tokens, and related newtypes.
+- **Signal types** — the schema-generated data types declared in
+  either signal contract: operation roots, payload records, replies,
+  rejection reasons, filters, mail events, stream tokens, and related
+  newtypes.
 - **Signal tree** — the whole typed schema shape: which relation
   families exist, what the root enums are, how payloads nest, which
   replies and events correspond, and whether the names reveal the
@@ -212,9 +217,11 @@ its own concern:
 | **Component Command** (internal, per-daemon) | the daemon's typed executable record | `LedgerCommand::RecordEvent(EventRecord)`, `SpiritCommand::AssertEntry(Entry)` |
 | **Sema Operation** (cross-component classification) | the universal payloadless class label for observation/introspection | `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate` |
 
-The contract crate names the Layer-1 operations (per
+The contract crate's schema names the Layer-1 operations (per
 `skills/naming.md` verb-form rule). The daemon owns its Layer-2
-commands. The six Sema classes (Layer 3) live in `signal-sema` as
+commands, but those commands are also schema-authored objects, not
+hand-written parallel enums hidden inside daemon code. The six Sema
+classes (Layer 3) live in `signal-sema` as
 a **payloadless** enum used by observation only — never
 executable, never wire-payload-carrying. Component Commands
 project to Sema classes via a `ToSemaOperation` trait so
@@ -582,53 +589,96 @@ protocol.
 - `~/primary/skills/architectural-truth-tests.md` — witness-test
   discipline for the invariants above.
 - `/git/github.com/LiGoldragon/signal-frame/ARCHITECTURE.md` — the
-  wire kernel and `signal_channel!` macro.
+  wire kernel and signal-frame runtime support.
 - `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md` — the
   payloadless Sema classification vocabulary.
 
-## Runtime triad — signal / executor / SEMA
+## Runtime triad — Signal / Nexus / SEMA (three schema-driven planes)
 
-Inside the `<component>` daemon, three layers organise the logic. Per
-psyche record 856.
+Inside the `<component>` daemon, three layers organise the logic.
+Per psyche record 856; refined by record 964 (Maximum, 2026-05-27):
+**all three planes are schema-driven** and correspond to the
+workspace's three schema types — `Signal` / `Nexus` / `Sema`. Each
+plane has its own engine with its own traits, but all three engines
+share the pattern of *running code based on input message and
+returning output message with populated data*.
 
-**Signal** is the reactive external surface. The daemon's edge —
-where messages arrive from outside (people, agents, sibling daemons).
-Owns: wire-level framing (length + short-header + rkyv per the new
-stack); schema-emitted Operation enum dispatch; connection lifecycle;
-short-header triage before full body decode. Does NOT decide
+| Plane | Schema type | What runs there |
+|---|---|---|
+| **Signal** | `Signal` schemas | Wire and communication: inter-component messaging |
+| **Nexus** | `Nexus` schemas | Execution: IO, external calls, UI — code-on-input-returns-output |
+| **SEMA** | `Sema` schemas | Durable state: single-writer database engine |
+
+### Signal (wire and communication)
+
+**Signal** is the reactive external surface — the daemon's edge,
+where messages arrive from outside (people, agents, sibling
+daemons). Owns: wire-level framing (length + short-header + rkyv per
+the schema-derived stack); schema-emitted Operation enum dispatch;
+connection lifecycle; short-header triage before full body decode;
+mail-event emission such as `MessageSent`. Does NOT decide
 acceptability, touch storage, or interpret payload semantically.
 
-**Executor** is the internal-decision layer. Takes each decoded
-Operation and decides: is this message acceptable? Does processing
-need state? What's the response? Owns: Operation-to-Action lowering
-(the typed-tree match); authorization decisions; routing forward-
-only operations through their handlers without SEMA round-trip;
-dispatching state-involving operations through SEMA; composing Reply.
-Two paths through the executor — **state-involving** (executor →
-SEMA → executor → Reply) and **forward-only** (executor → Reply, no
-SEMA touch).
+Per record 963: messages on the signal protocol move through a
+universal **mail mechanism** with hookable lifecycle events
+(including a method-on-message-sent that fires as soon as a message
+is sent). Async representation lives at the data-type level — the
+message types themselves carry correlation identifiers and lifecycle
+state.
+
+### Nexus (execution — IO, external calls, UI)
+
+**Nexus** (renamed from Executor per record 964) is the
+**execution-layer schema type**. Per record 965: Nexus specifically
+covers ANY layer where code runs in response to typed input and
+returns typed output — unifying internal IO, external execution, and
+user interfaces under one schema-driven plane.
+
+Nexus covers:
+
+| Sub-scope | Example |
+|---|---|
+| Internal-decision execution | Takes each decoded Operation; decides acceptability, routes forward-only vs state-involving operations; composes Reply |
+| External calls (IO) | Cloud component starts the Cloudflare CLI to change DNS — the external call is a nexus schema |
+| All user interfaces | **Mencie** (the persona's multi-modal UI with mencie-audio, mencie-introspect, etc. as panels) — each UI panel has its own nexus schema describing data flow and return types |
+
+Two paths through Nexus's internal-decision sub-scope:
+**state-involving** (Nexus → SEMA → Nexus → Reply) and
+**forward-only** (Nexus → Reply, no SEMA touch).
+
+Per record 965: Nexus is now **PART OF the schema-derived stack as
+the execution-layer schema type**, superseding record 880's earlier
+scope-restriction that named Nexus as a separate vocabulary track
+parallel to the schema stack.
+
+### SEMA (durable single-writer state)
 
 **SEMA** is the single-writer state layer. Things that don't change
-on their own — only the SEMA engine writes. Owns: redb (or equivalent)
-read/write of generated archive types; daemon-stamped timestamps;
-migration on database load (`mod previous` → `mod next` bridge);
-derived indices (topic catalog, identifier mint, etc.); sema-projection
-traits where schema declares a sema turn. **Single-writer invariant**:
-concurrent operations queue through SEMA's engine; readers can be
-multiple but writers are one.
+on their own — only the SEMA engine writes. Owns: redb (or
+equivalent) read/write of generated archive types; daemon-stamped
+timestamps; migration on database load (`mod previous` → `mod next`
+bridge); derived indices (topic catalog, identifier mint, etc.);
+sema-projection traits where schema declares a sema turn.
+**Single-writer invariant**: concurrent operations queue through
+SEMA's engine; readers can be multiple but writers are one.
 
-The flow:
+Per record 948: internal database logic uses the same schema-defined
+message language as component signals; a growing database component
+can split into its own daemon without changing the language pattern.
+
+### The flow
 
 ```text
 External Operation arrives
   → SIGNAL decodes rkyv → typed Operation; triages by short header
-  → EXECUTOR decides accept/reject; chooses Action(s); composes Reply
-      → state-involving: EXECUTOR → SEMA → Response → EXECUTOR
-      → forward-only: EXECUTOR → Reply directly
+  → NEXUS decides accept/reject; chooses Action(s); composes Reply
+      → state-involving: NEXUS → SEMA → Response → NEXUS
+      → forward-only: NEXUS → Reply directly
   → typed Reply leaves via SIGNAL
 ```
 
-Schema layer above this provides the typed shapes (Input, Output,
-Action, Response, payload types) via schema-emitted Rust; Rust layer
-provides the methods on those shapes (per `skills/abstractions.md`
-§"Schema-emitted nouns").
+Above all three planes: the schema layer provides the typed shapes
+(Input, Output, Action, Response, payload types, mail events) via
+schema-emitted Rust. The Rust layer provides the methods on those
+shapes (per `skills/rust/methods.md` §"Schema-generated objects are
+the method surface").

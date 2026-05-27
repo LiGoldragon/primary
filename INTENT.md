@@ -299,6 +299,71 @@ wire-substrate intent lives in `repos/signal-frame/INTENT.md`.
 Actor-schema architecture for the spirit daemon lives in
 `repos/persona-spirit/INTENT.md`.
 
+## Three schema types, three runtime planes
+
+Per intent records 964 + 965 (Maximum, 2026-05-27): the schema layer
+has **THREE SCHEMA TYPES** corresponding to the three runtime
+planes. Each has its own engine with its own traits, but all three
+engines share the pattern of *running code based on input message
+and returning output message with populated data*. The root type of
+a schema is what is meant to be sent as a message; everything is
+serializable but the root type is the message surface.
+
+| Schema type | Plane | Owns |
+|---|---|---|
+| **SIGNAL schemas** | Wire and communication layer | Inter-component messaging; the wire protocol substrate |
+| **NEXUS schemas** | Execution layer — IO, external calls, all user interfaces | Code-runs-on-input-returns-output: internal IO, external CLIs (e.g. cloud calling the Cloudflare CLI to change DNS), and ALL UI panels |
+| **SEMA schemas** | Durable state layer | Database engine; single-writer durable storage |
+
+File extensions remain **OPEN** per record 964: candidates include
+`.signal.schema` / `.nexus.schema` / `.sema.schema`, OR the schema
+type as the first record of the schema content (`Signal …`, `Nexus
+…`, `Sema …` in parens). The schema author declares the variant;
+the engine routes.
+
+Each schema type uses namespace imports for shared types per the
+single-colon namespace rule (record 902) and emits Rust types and
+traits via `schema-rust-next`. Per record 964 the runtime triad
+framing from record 371 is **refined: Executor is renamed to Nexus**
+and all three planes are schema-driven. Per record 965 Nexus
+specifically covers ANY layer where code runs in response to typed
+input and returns typed output — unifying IO, external execution,
+and UI under one schema-driven plane.
+
+Per record 965, **Mencie (the persona's multi-modal UI, with
+mencie-audio / mencie-introspect / etc. as panels) is implemented
+as nexus schemas — each UI panel has its own nexus schema describing
+data flow and return types.** Cloud-to-Cloudflare style external
+interactions are also nexus schemas. Record 965 SUPERSEDES record
+880's scope-restriction on Nexus terminology: *"Nexus is now PART
+OF the schema-derived stack as the execution-layer schema type."*
+
+## Signal protocol — universal mail mechanism
+
+Per intent record 963 (High, 2026-05-27): the wire protocol is
+named the **SIGNAL PROTOCOL**; messages on the signal protocol move
+through a universal **MAIL MECHANISM** (the mailer / dispatcher /
+push system) — the same lifecycle infrastructure every component
+shares.
+
+Message lifecycle has **hookable events** including a
+**method-on-message-sent** that fires as soon as the message is
+sent and commits an action through the mail dispatching system. The
+hook point allows UI consequences, observers, and other components
+to react when a message is sent. Per record 962: the mail mechanism
+is a **push system** — sending a message invokes methods on typed
+mail events instead of relying on polling, so observers can attach
+hooks at the message-sent boundary.
+
+**Async representation lives at the data-type level** of the signal
+protocol — the message data types themselves carry the correlation
+identifiers and lifecycle state needed to track sent / queued /
+processing / replied transitions. The mail manager pushes messages
+and emits lifecycle events. This extends record 935 (Communicate
+trait + signal-frame + mail state manager + database marker) by
+naming the lifecycle-event surface and the hookable callback
+mechanism on top.
+
 ## Concept designer is the entry for new concepts
 
 **Concept designer** is a real role — *an entry point for new
