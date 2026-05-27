@@ -451,6 +451,34 @@ and UI under one schema-driven plane. Record 965 SUPERSEDES record
 880's scope-restriction on Nexus terminology — Nexus is now PART OF
 the schema-derived stack as the execution-layer schema type.
 
+Per record 970 (Maximum, 2026-05-27): **Nexus is the MAIL KEEPER** —
+the in-between runtime layer that owns mail tracking and
+Signal-to-SEMA translation. *"When Nexus has the mail, the mail is
+in the BEING-PROCESSED state; Nexus IS the runtime representation
+that a mail is being processed."* The daemon has **THREE EXECUTION
+CENTERS**: Signal (communication), Nexus (execution + mail keeper +
+translator), SEMA (state). Complete flow:
+
+```text
+Signal IN
+  -> Nexus accepts mail (mail enters BEING-PROCESSED state)
+     [on_sent hook fires here]
+  -> Nexus translates to SEMA query
+  -> SEMA engine runs + produces state change + SEMA reply
+     (database marker on SEMA reply)
+  -> Nexus receives SEMA reply
+  -> Nexus translates SEMA reply to Signal response
+     (propagating database marker; logs "seriously received")
+Signal OUT
+```
+
+Record 970 **CONSOLIDATES** records 935 (Communicate + signal-frame
++ mail + database marker), 963 (mail mechanism + on_sent hook), 964
+(three schema types), and 965 (Nexus as execution + IO + UI) into
+one unified picture. The UI / external-IO uses of Nexus from 965 are
+**specific instances of the more fundamental in-between translator
++ mail keeper role**.
+
 Per record 948 (Principle, High): *"internal database logic should
 use the same schema-defined message language as component signals:
 the daemon may keep the database engine internal for now, but a
@@ -910,3 +938,4 @@ The vision draws on records 894-965. The load-bearing ones:
 | 963 | Signal protocol named; universal mail mechanism; method-on-message-sent hooks; async at the data-type level |
 | 964 | Three schema types — Signal/Nexus/Sema — corresponding to three runtime planes; Executor renamed to Nexus; file extensions remain open |
 | 965 | Nexus covers IO + external calls + ALL user interfaces; Mencie implemented as nexus schemas; supersedes record 880's scope-restriction |
+| 970 | Nexus is the MAIL KEEPER + Signal-to-SEMA translator; daemon has three execution centers (Signal/Nexus/SEMA); complete flow Signal IN → Nexus accepts → SEMA query → SEMA reply → Nexus translates → Signal OUT; consolidates records 935 + 963 + 964 + 965 — UI/IO uses of Nexus are specific instances of the more fundamental translator role |

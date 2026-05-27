@@ -3,18 +3,22 @@
 *Kind: Design · Topics: wire, runtime, signal, nexus, sema · 2026-05-27*
 
 *Implementation-facing design for the wire layer + component-runtime
-substrate per intent records 927-936, refined by records 963-965.
-The 2-level structural fingerprint IS the 64-bit textual header;
-input + output are PARTITIONS of one 1-byte tag space; the
-Communicate trait + signal-frame mechanism + mail state manager +
-database marker reply together support full async messaging with
-provable state evolution. Per record 964 the runtime triad is now
-**Signal / Nexus / SEMA** (Executor renamed to Nexus); all three
-planes are schema-driven. Per record 963 the wire protocol is named
-the SIGNAL PROTOCOL with a universal mail mechanism carrying
-hookable lifecycle events. Nothing in this report exists in operator
-code yet — it's the design direction for the next implementation
-slice.*
+substrate per intent records 927-936, refined by records 963-965,
+**consolidated by record 970** (Maximum, 2026-05-27). The 2-level
+structural fingerprint IS the 64-bit textual header; input + output
+are PARTITIONS of one 1-byte tag space; the Communicate trait +
+signal-frame mechanism + mail state manager + database marker reply
+together support full async messaging with provable state evolution.
+Per record 964 the runtime triad is now **Signal / Nexus / SEMA**
+(Executor renamed to Nexus); all three planes are schema-driven.
+Per record 963 the wire protocol is named the SIGNAL PROTOCOL with
+a universal mail mechanism carrying hookable lifecycle events. Per
+record 970, **Nexus is the MAIL KEEPER + Signal-to-SEMA translator**;
+the daemon has three execution centers; the on_sent hook fires when
+Signal hands mail TO Nexus; the database marker travels on the SEMA
+reply that Nexus propagates back to the Signal response. Nothing
+in this report exists in operator code yet — it's the design
+direction for the next implementation slice.*
 
 ## What this report supersedes
 
@@ -64,6 +68,46 @@ flowchart LR
 
 Per record 935 (High): together these support full async messaging
 with provable state evolution.
+
+### Consolidation — Nexus is the MAIL KEEPER (record 970)
+
+Per record 970 (Maximum, 2026-05-27): the mail state manager work
+above lives on the **Nexus plane**, which is the daemon's **mail
+keeper + Signal-to-SEMA translator**. The daemon has **THREE
+EXECUTION CENTERS** — Signal (communication), Nexus (execution +
+mail keeper + translator), SEMA (state) — and Nexus is the layer
+that owns the in-flight mail object.
+
+```mermaid
+flowchart LR
+    signal_in["Signal IN"]
+    nexus_accept["Nexus accepts mail<br/>(BEING-PROCESSED)"]
+    sema_query["SEMA query"]
+    sema_reply["SEMA reply<br/>(with database marker)"]
+    nexus_translate["Nexus translates<br/>to Signal response"]
+    signal_out["Signal OUT"]
+    signal_in -- on_sent hook fires --> nexus_accept
+    nexus_accept --> sema_query --> sema_reply --> nexus_translate --> signal_out
+```
+
+Record 970 names how the four earlier records compose:
+
+- **935** — Communicate + signal-frame + mail + database marker
+  provide the mechanism.
+- **963** — the on_sent hook fires at the Signal → Nexus boundary
+  (Signal hands mail TO Nexus).
+- **964** — the three schema types map to the three execution
+  centers.
+- **965** — Nexus's UI / external-IO uses are specific instances
+  of the more fundamental in-between translator + mail keeper role.
+
+*"When Nexus has the mail, the mail is in the BEING-PROCESSED state;
+Nexus IS the runtime representation that a mail is being processed."*
+Basic Nexus actions: **submit query to Nexus** and **get a reply**
+which Nexus translates back into the Signal reply. The database
+marker travels on the SEMA reply Nexus receives and Nexus propagates
+it in the Signal response with logging that the response has been
+"seriously received."
 
 ## The 2-level structural fingerprint = 64-bit header
 

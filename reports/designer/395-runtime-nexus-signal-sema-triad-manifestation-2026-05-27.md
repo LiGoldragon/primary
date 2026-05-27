@@ -4,6 +4,17 @@
 
 *Manifestation pass for intent records 963 (signal protocol named; universal mail mechanism with hookable lifecycle events), 964 (three schema types — Signal / Nexus / SEMA — corresponding to three runtime planes; Executor renamed to Nexus), and 965 (Nexus covers IO + external calls + ALL user interfaces; Mencie implemented as nexus schemas; supersedes record 880's scope-restriction). Per record 944's continuous-manifestation discipline.*
 
+> **Follow-up consolidation** — Record 970 (Maximum, 2026-05-27)
+> CONSOLIDATES records 935 + 963 + 964 + 965 into one unified
+> picture: **Nexus is the MAIL KEEPER + Signal-to-SEMA translator**;
+> the daemon has THREE EXECUTION CENTERS (Signal / Nexus / SEMA);
+> complete flow Signal IN → Nexus accepts mail (BEING-PROCESSED) →
+> SEMA query → SEMA reply with database marker → Nexus translates →
+> Signal OUT. UI / external-IO uses of Nexus from 965 are specific
+> instances of the more fundamental in-between translator role. The
+> follow-up manifestation lands in
+> `reports/designer/396-nexus-mail-keeper-consolidation-2026-05-27.md`.
+
 ## Workspace files updated
 
 | Path | Commit | Substance |
