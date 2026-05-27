@@ -151,6 +151,11 @@ The schema file is read as a known `Schema` struct. The file does not define
 what a schema is every time it is read. The reader already knows the root
 fields.
 
+Second correction after psyche review, 2026-05-27: only the root `Schema`
+name is omitted. That does not mean every nested object can drop its own name.
+When the authored file defines an enum, struct, or newtype, the object being
+defined still needs its own qualified symbol name.
+
 The intended root shape is a known struct with positional fields such as:
 
 ```text
@@ -166,6 +171,48 @@ So if the authored schema has a section for input and a section for output,
 those are fields of the known `Schema` struct. They should be described as
 fields named `input` and `output`, not as invented "surfaces" unless the code
 is specifically discussing the current temporary implementation type.
+
+The values inside those fields still define named objects. For example, this
+is not enough:
+
+```nota
+((Record Entry) (Observe Query))
+```
+
+It omits the enum being specified. The reader can know this is the `input`
+field, but the enum object itself still needs a name. A more faithful shape is:
+
+```nota
+(Input ((Record Entry) (Observe Query)))
+```
+
+Plain English: define enum `Input`; its variants include `Record`, which
+carries `Entry`, and `Observe`, which carries `Query`.
+
+The same rule applies to ordinary namespace definitions:
+
+```nota
+(Kind (Decision Principle Correction Clarification Constraint))
+(Entry [Topic Kind Description Magnitude])
+(Topic [Text])
+```
+
+Plain English:
+
+- `(Kind (...))` defines an enum named `Kind`.
+- `(Entry [...])` defines a struct named `Entry`.
+- `(Topic [Text])` defines a newtype struct named `Topic`.
+
+The general authored-schema rule is therefore:
+
+```text
+(Name (Variant ...))  -> enum definition
+(Name [FieldType ...]) -> struct definition
+(Name [InnerType]) -> newtype struct definition
+```
+
+For enum variants, a bare symbol is a unit variant; a parenthesis object such
+as `(Record Entry)` is a data-carrying variant.
 
 The current implementation does not yet express that cleanly. It currently
 accepts this transitional shape:
