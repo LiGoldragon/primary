@@ -163,7 +163,7 @@ fn handle_release(
         eprint!("{message}");
         return Ok(EXIT_CONFLICT);
     }
-    let _outcome = claim::release(workspace, lane).map_err(stringify)?;
+    let _outcome = claim::release(workspace, registry, lane).map_err(stringify)?;
     let report = claim::status(workspace, registry).map_err(stringify)?;
     let mut lock_state = String::new();
     render::render_lock_state(&report, &mut lock_state)

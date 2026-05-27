@@ -44,7 +44,7 @@ The operator's natural primary scope:
   files", split when the file grows).
 - **`Cargo.toml` / `Cargo.lock`** — cross-crate
   dependencies, version bumps, branch/rev pins. Coordinated
-  with system-specialist when the bump touches the deployed
+  with system-operator when the bump touches the deployed
   surface.
 - **Per-repo `skills.md`** — implementation-level
   conventions for one repo's craft. (Workspace-level
@@ -69,7 +69,7 @@ The operator does **not** own:
 - **`ESSENCE.md`, `orchestrate/AGENTS.md`,
   workspace-level `skills/`, `AGENTS.md`** — designer's
   surface.
-- **OS / deploy / Nix system glue** — system specialist's
+- **OS / deploy / Nix system glue** — system operator's
   surface. Operator may bump a flake input that affects a
   consumer, but the deployment chain is system
   specialist's.
@@ -548,22 +548,22 @@ When operator and assistant lanes touch adjacent code, all agents
 read the same designer report or BEADS task, name their path
 boundaries explicitly, and avoid overlapping claims.
 
-## Working with system-specialist
+## Working with system-operator
 
 System-specialist owns the deployed surface. Operator
-crosses into system-specialist's lane when:
+crosses into system-operator's lane when:
 
 - A flake input bump in operator's repo affects deployment
-  → flag it for system-specialist (a BEADS ticket or a
+  → flag it for system-operator (a BEADS ticket or a
   comment on the PR).
 - A new daemon needs a service unit → designer report
-  names the implication; system-specialist owns the unit
+  names the implication; system-operator owns the unit
   file.
-- A new CLI binary needs PATH wiring → system-specialist
+- A new CLI binary needs PATH wiring → system-operator
   owns the home-manager profile.
 
 The operator's part is to surface the implication; the
-system-specialist's is to execute the deploy chain.
+system-operator's is to execute the deploy chain.
 
 ## Working with poet's lanes
 
@@ -639,7 +639,7 @@ you were missing.
 - this workspace's `skills/role-lanes.md` — how assistant lanes
   stack under a main role.
 - this workspace's `skills/designer.md`,
-  `skills/system-specialist.md`, `skills/poet.md` — sister
+  `skills/system-operator.md`, `skills/poet.md` — sister
   main-role skills.
 - `lore/rust/style.md`, `lore/rust/rkyv.md`,
   `lore/rust/testing.md`, `lore/rust/nix-packaging.md` —

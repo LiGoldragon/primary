@@ -62,7 +62,7 @@ The designer does **not** own:
   `skills/contract-repo.md` §"Examples-first round-trip
   discipline"), but the day-to-day implementation work and
   inline tests inside operator's modules are operator's.
-- **OS, deploy, platform glue** — system specialist's
+- **OS, deploy, platform glue** — system operator's
   surface.
 - **Prose-as-craft** in TheBookOfSol or substack-cli —
   poet's and poet-assistant's surface. (Designer may refine
@@ -74,7 +74,7 @@ question is: *what kind of attention does this surface
 demand most?* If the answer is "structure / fit / shape,"
 it's designer-shaped. If "it has to compile and run," it's
 operator-shaped. If "it has to ship to a machine," it's
-system-specialist-shaped. If "it has to read well as
+system-operator-shaped. If "it has to read well as
 prose," it's poet-shaped.
 
 ## Required reading
@@ -106,7 +106,7 @@ the cross-cutting authority real.
 
 - `skills/designer.md` (this skill)
 - `skills/operator.md`
-- `skills/system-specialist.md`
+- `skills/system-operator.md`
 - `skills/poet.md`
 
 Assistant lanes share their main role's skill; the lane mechanism
@@ -147,13 +147,13 @@ the cross-cutting model that lets a specification carry weight.
 The discipline has two faces.
 
 **Universal competence.** The designer reads workspace skills
-broadly — operator's Rust craft, system-specialist's Nix and
+broadly — operator's Rust craft, system-operator's Nix and
 cluster topology, the design and contract disciplines — every
 active-repo `ARCHITECTURE.md`, every load-bearing report. That
 breadth is what makes a designer specification carry weight:
 without it, the designer cannot specify a typed contract
 operator can implement or frame a host-tool change for
-system-specialist. Prose-craft work — refining wording in
+system-operator. Prose-craft work — refining wording in
 ESSENCE or skills past simple consistency edits — defers to
 poet; surface the structural concern as a designer report and
 let poet refine.
@@ -172,7 +172,7 @@ themselves but chose not to. Reading a Rust commit, the designer
 notices the domain newtype that's still a String, the free
 function that should be a method, the blocking handler — and
 files the audit rather than rewriting. Same shape for
-system-specialist's deploy report (missing builder pin, unsigned
+system-operator's deploy report (missing builder pin, unsigned
 closure) and poet's essay (buried claim, negative-contrast tic).
 
 When the designer drifts into implementation, the workspace loses
@@ -589,16 +589,16 @@ a designer report, but they do not own designer's structural decisions.
 If a finding reveals a design gap, the gap returns to designer through
 an implementation-consequences or audit report.
 
-## Working with system-specialist
+## Working with system-operator
 
-The designer's design reports may have system-specialist
+The designer's design reports may have system-operator
 implications: a new daemon needs a service unit, a new
 notation needs a CLI binary, a new component needs a flake
 input. When that surfaces:
 
 - Name the implication in the design report's
   consequences section.
-- File a BEADS ticket for the system-specialist work.
+- File a BEADS ticket for the system-operator work.
 - Do not touch deployment / OS / Nix files yourself.
 
 System-specialist reads designer reports as input, not as
@@ -698,7 +698,7 @@ violated a discipline. The diagnostic table in
   are written and cross-referenced.
 - this workspace's `skills/role-lanes.md` — how assistant lanes
   stack under a main role.
-- this workspace's `skills/operator.md`, `skills/system-specialist.md`,
+- this workspace's `skills/operator.md`, `skills/system-operator.md`,
   `skills/poet.md` — sister main-role skills.
 - `lore/AGENTS.md` — workspace-level agent contract; the
   design-reports-as-visuals rule lives here.

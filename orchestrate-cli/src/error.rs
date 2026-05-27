@@ -26,6 +26,9 @@ pub enum Error {
         message: String,
     },
 
+    #[error("unknown lane {lane}; add it to {registry} before using it")]
+    UnknownLane { lane: Lane, registry: PathBuf },
+
     #[error("lock file read failed at {path}")]
     LockRead {
         path: PathBuf,

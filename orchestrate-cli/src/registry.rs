@@ -111,6 +111,21 @@ impl LaneRegistry {
         &self.descriptors
     }
 
+    pub fn require_lane(&self, lane: &Lane) -> Result<()> {
+        if self
+            .descriptors
+            .iter()
+            .any(|descriptor| &descriptor.lane == lane)
+        {
+            Ok(())
+        } else {
+            Err(Error::UnknownLane {
+                lane: lane.clone(),
+                registry: self.source_path.clone(),
+            })
+        }
+    }
+
     pub fn peer_lanes<'a>(&'a self, lane: &'a Lane) -> impl Iterator<Item = Lane> + 'a {
         self.lanes().filter(move |other| other != lane)
     }

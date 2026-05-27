@@ -7,7 +7,7 @@ plus its main role's skill, and nothing else lane-specific.*
 ## The mirror model — lanes are windows, not agents
 
 (Per `intent/persona.nota` 2026-05-22, intent ID 147 in
-spirit-v0.1.1.) A **role** (designer, operator, system-specialist,
+spirit-v0.1.1.) A **role** (designer, operator, system-operator,
 poet) names a discipline. Each role has **one agent**: one
 persistent cryptographic identity, one shared persona-mind state,
 one ongoing body of signed work. **Lanes are windows into that
@@ -180,7 +180,7 @@ lanes there are.
   lock-file format, status command, blocked-work flow, BEADS rules.
 - this workspace's `skills/designer.md`,
   `skills/operator.md`,
-  `skills/system-specialist.md`,
+  `skills/system-operator.md`,
   `skills/poet.md` — the four main role skills. Every lane under
   one of these inherits its discipline.
 - this workspace's `ESSENCE.md` §"Efficiency of instruction" — the

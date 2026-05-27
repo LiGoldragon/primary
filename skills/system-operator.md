@@ -1,4 +1,4 @@
-# Skill — system specialist
+# Skill — system operator
 
 *Maintaining the operating-system layer underneath the workspace.*
 
@@ -9,14 +9,14 @@ CriomOS, CriomOS-home, lojix deployment, horizon projection, desktop
 runtime, user services, input devices, Niri, Noctalia, and system/home
 interfaces.
 
-`system-specialist` is one of the workspace's coordination roles. Claim it through
-`tools/orchestrate claim system-specialist <paths> -- <reason>` before
+`system-operator` is one of the workspace's coordination roles. Claim it through
+`tools/orchestrate claim system-operator <paths> -- <reason>` before
 editing files in the OS / platform surface. Reports go in
-`reports/system-specialist/` and are exempt from the claim flow.
+`reports/system-operator/` and are exempt from the claim flow.
 
 ## Owned area
 
-The system specialist knows how these pieces fit:
+The system operator knows how these pieces fit:
 
 - **CriomOS**: NixOS host platform, system modules, device access, groups,
   udev, kernel modules, and the `nixosConfigurations.target` surface.
@@ -35,7 +35,7 @@ CriomOS.
 ## Required reading
 
 Read every file below before doing substantive
-system-specialist work. The list emphasises Nix and
+system-operator work. The list emphasises Nix and
 deployment discipline, plus the Rust crates that ship as host
 tools (lojix-cli, horizon-rs, clavifaber, chroma).
 
@@ -58,7 +58,7 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 
 **Role contracts**
 
-- `skills/system-specialist.md` (this skill)
+- `skills/system-operator.md` (this skill)
 - `skills/operator.md` — knows what binaries get deployed.
 
 Assistant lanes share their main role's skill; the lane mechanism
@@ -124,7 +124,7 @@ paid key unless the user explicitly authorized that call in the current task.
 
 ## Just-do-it operations
 
-Some operations are part of the standing system-specialist contract: they
+Some operations are part of the standing system-operator contract: they
 follow inevitably from earlier work in the same session, and stopping to
 ask about them produces friction without producing a decision. Do them
 without confirming.
@@ -155,7 +155,7 @@ errors silently.
 
 ## Runtime interfaces
 
-The system specialist gives the user working interfaces, not just packages:
+The system operator gives the user working interfaces, not just packages:
 
 - keybindings that work in Niri;
 - visible status for long-running actions;
@@ -166,10 +166,10 @@ The system specialist gives the user working interfaces, not just packages:
 For STT prompts and likely transcription mistakes, read this workspace's
 `skills/stt-interpreter.md`.
 
-## Working with system-specialist's assistant lanes
+## Working with system-operator's assistant lanes
 
 `second-system-assistant` is the additional lane under the
-system-specialist-discipline pool. It shares this skill's
+system-operator-discipline pool. It shares this skill's
 discipline, required reading, owned area, and beads label; only the
 lock file, report subdirectory, and claim string differ per lane. The
 mechanism is canonical in `skills/role-lanes.md`.
@@ -181,21 +181,21 @@ per Spirit record 302 and now belongs to the designer-discipline pool
 file no longer covers it.
 
 Good system-lane work has a concrete boundary: one CriomOS or
-CriomOS-home module slice, a focused audit of recent system-specialist
+CriomOS-home module slice, a focused audit of recent system-operator
 commits, a self-contained host-tool slice (Whisrs packaging, Clavifaber
 typed-record additions, chroma instrumentation), a Nix flake hygiene
 pass on a system-adjacent repo, or a deploy-affecting documentation
 update caused by platform work that's already settled. Lane scope
-mirrors system-specialist's surface but stays within
+mirrors system-operator's surface but stays within
 already-decided shapes.
 
-Defer to system-specialist on cluster-effecting changes — cluster Nix
+Defer to system-operator on cluster-effecting changes — cluster Nix
 signing topology, signing-key generation, deploy-graph topology, host
 activation orchestration. The just-do-it operations above (downstream
 `flake.lock` bumps after upstream commits, redeploys after
 activation-affecting CriomOS-home changes) apply to assistant lanes
 too, since those are inside the standing happy path. A change that
-*modifies* the path itself is system-specialist authority. Secrets
+*modifies* the path itself is system-operator authority. Secrets
 discipline applies unchanged: keys from `gopass` at daemon-wrapper
 layer, private key bytes never in stdout/logs/reports/Nix
 store/fixtures.
@@ -203,7 +203,7 @@ store/fixtures.
 If a host change reveals a structural gap (a missing actor plane, a
 subscription primitive that doesn't exist, a NOTA-vs-Signal boundary
 that was wrong), the lane writes an implementation-consequences
-report and lets system-specialist or designer answer rather than
+report and lets system-operator or designer answer rather than
 deciding inside the implementation pass.
 
 ## Working with other disciplines' lanes

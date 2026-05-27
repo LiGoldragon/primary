@@ -124,7 +124,7 @@ forcing function on every guidance-file edit going forward.
 ## Roles are loose; beads are not role-labeled
 
 The workspace organises work under four nominal roles (operator,
-designer, system-specialist, poet) plus lanes, but as of
+designer, system-operator, poet) plus lanes, but as of
 2026-05-19 the psyche has loosened role boundaries — *I'm
 keeping a single agent on a sort of task or topic instead of
 shuffling context back and forth between agent windows.* Beads do

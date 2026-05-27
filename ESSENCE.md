@@ -74,7 +74,7 @@ finds the design under-specified. The intent layer feeds both sides
 (`ESSENCE.md` §"Intent is the cornerstone"); the design layer
 mediates between intent and code.
 
-Other roles (system-specialist, poet) and possible additional roles
+Other roles (system-operator, poet) and possible additional roles
 (auditor — see `AGENTS.md` §"Roles" for the proposed-not-decided
 state) participate in the engine but are not the two halves of this
 particular dance. The intent + design loop is the core. Per psyche

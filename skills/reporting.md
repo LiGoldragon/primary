@@ -297,7 +297,7 @@ Each role owns a subdirectory under `~/primary/reports/`:
 - `reports/operator-assistant/`
 - `reports/designer/`
 - `reports/designer-assistant/`
-- `reports/system-specialist/`
+- `reports/system-operator/`
 - `reports/poet/`
 - `reports/poet-assistant/`
 

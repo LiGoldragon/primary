@@ -42,7 +42,7 @@ Examples that fit:
 - *"Design new role: critical-analysis"* — discrete
   designer task, will close when the report lands.
 - *"Migrate ~/git to /git/github.com layout"* — discrete
-  system-specialist task, mechanical scope.
+  system-operator task, mechanical scope.
 
 ## When NOT to file a bead
 
@@ -111,9 +111,9 @@ flight. Per `orchestrate/AGENTS.md` §"Claim Flow",
 task locks use bracketed tokens:
 
 ```sh
-tools/orchestrate claim system-specialist '[primary-f99]' -- chroma migration
+tools/orchestrate claim system-operator '[primary-f99]' -- chroma migration
 # … do the work …
-tools/orchestrate release system-specialist
+tools/orchestrate release system-operator
 bd close primary-f99 -r "<closing note>"
 ```
 
@@ -228,7 +228,7 @@ change, the `ARCHITECTURE.md` section). Example:
 ```sh
 bd close primary-8b6 -r "Shipped via chroma daemon (replaces \
 darkman + nightshift). See chroma repo HEAD and \
-~/primary/skills/system-specialist.md §'Chroma daemon'."
+~/primary/skills/system-operator.md §'Chroma daemon'."
 ```
 
 The closing note is the breadcrumb a future agent reads

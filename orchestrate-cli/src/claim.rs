@@ -67,6 +67,8 @@ pub fn claim(
     reason: &str,
     working_directory: &std::path::Path,
 ) -> Result<ClaimOutcome> {
+    registry.require_lane(&lane)?;
+
     if raw_scopes.is_empty() {
         return Err(Error::InvalidScopeReason);
     }
@@ -127,7 +129,13 @@ pub fn claim(
     })
 }
 
-pub fn release(workspace: &Workspace, lane: Lane) -> Result<ReleaseOutcome> {
+pub fn release(
+    workspace: &Workspace,
+    registry: &LaneRegistry,
+    lane: Lane,
+) -> Result<ReleaseOutcome> {
+    registry.require_lane(&lane)?;
+
     let request = request::release_request(lane.clone())?;
     LockFile::default().write(&workspace.lock_path(&lane))?;
     Ok(ReleaseOutcome { request, lane })

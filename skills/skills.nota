@@ -13,7 +13,7 @@
     [Implementation as craft. The discipline an agent brings when the work is landing code.])
   (Role designer skills/designer.md Apex
     [Architecture as craft. What designer specifies; what operator implements against.])
-  (Role system-specialist skills/system-specialist.md Apex
+  (Role system-operator skills/system-operator.md Apex
     [OS / platform / deploy craft.])
   (Role poet skills/poet.md Apex
     [Prose as craft.])

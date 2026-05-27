@@ -15,9 +15,8 @@ designer
 second-designer                   parallel-of:designer
 third-designer                    parallel-of:designer
 designer-assistant                assistant-of:designer
-system-specialist
-system-assistant                  assistant-of:system-specialist
-second-system-assistant           assistant-of:system-specialist
+system-operator
+second-system-assistant           assistant-of:system-operator
 poet
 poet-assistant                    assistant-of:poet
 "#;
@@ -96,7 +95,7 @@ fn release_clears_the_lock_file() {
         fixture.workspace_path(),
     )
     .expect("claim");
-    claim::release(&fixture.workspace, lane("operator")).expect("release");
+    claim::release(&fixture.workspace, &fixture.registry, lane("operator")).expect("release");
     let lock = LockFile::read(&fixture.workspace.lock_path(&lane("operator"))).unwrap();
     assert!(lock.is_idle());
 }
@@ -182,6 +181,39 @@ fn task_lock_overlaps_only_on_exact_match() {
 }
 
 #[test]
+fn claim_rejects_lane_missing_from_registry() {
+    let fixture = Fixture::new();
+    let result = claim::claim(
+        &fixture.workspace,
+        &fixture.registry,
+        lane("system-specialist"),
+        vec![RawScope::new(fixture.under_root("skills/foo.md"))],
+        "renamed role smoke test",
+        fixture.workspace_path(),
+    );
+
+    assert!(
+        format!("{}", result.unwrap_err()).contains("unknown lane system-specialist"),
+        "old role should be rejected"
+    );
+}
+
+#[test]
+fn release_rejects_lane_missing_from_registry() {
+    let fixture = Fixture::new();
+    let result = claim::release(
+        &fixture.workspace,
+        &fixture.registry,
+        lane("system-specialist"),
+    );
+
+    assert!(
+        format!("{}", result.unwrap_err()).contains("unknown lane system-specialist"),
+        "old role should be rejected"
+    );
+}
+
+#[test]
 fn mixed_kinds_do_not_overlap() {
     let fixture = Fixture::new();
     let path = fixture.under_root("skills/foo.md");
@@ -259,8 +291,7 @@ fn status_lists_every_lane_in_registry_order() {
             lane("second-designer"),
             lane("third-designer"),
             lane("designer-assistant"),
-            lane("system-specialist"),
-            lane("system-assistant"),
+            lane("system-operator"),
             lane("second-system-assistant"),
             lane("poet"),
             lane("poet-assistant"),

@@ -46,7 +46,7 @@ The poet does **not** own:
 - Code — operator's surface.
 - Architecture, naming, type-system design — designer's
   surface.
-- Deploy / OS / system glue — system specialist's surface.
+- Deploy / OS / system glue — system operator's surface.
 
 ## Required reading
 
@@ -220,7 +220,7 @@ missing.
 - this workspace's `skills/role-lanes.md` — how assistant lanes
   stack under a main role.
 - this workspace's `skills/designer.md`, `skills/operator.md`,
-  `skills/system-specialist.md` — sister main-role skills.
+  `skills/system-operator.md` — sister main-role skills.
 - this workspace's `orchestrate/AGENTS.md` — claim flow
   for the poet role.
 - TheBookOfSol's `AGENTS.md` — the most-developed writing

@@ -89,7 +89,7 @@ the main Persona architecture reset unless the user names them.
 | `domain-criome` | `/git/github.com/LiGoldragon/domain-criome` | New runtime repo for Criome-domain registry, intelligent resolution, and provider-neutral projection. Documentation-only at birth; real daemon work is tracked by bead `primary-kbmi`. |
 | `signal-domain-criome` | `/git/github.com/LiGoldragon/signal-domain-criome` | Ordinary `domain-criome` contract: domain observation, intelligent resolution, and provider-neutral projection. |
 | `owner-signal-domain-criome` | `/git/github.com/LiGoldragon/owner-signal-domain-criome` | Owner-only `domain-criome` contract: domain registration, delegation, retirement, and projection policy. |
-| `chroma` | `/git/github.com/LiGoldragon/chroma` | Active system-specialist visual/scheduler work. |
+| `chroma` | `/git/github.com/LiGoldragon/chroma` | Active system-operator visual/scheduler work. |
 | `CriomOS` | `/git/github.com/LiGoldragon/CriomOS` | Operating-system layer for the broader project. |
 | `CriomOS-home` | `/git/github.com/LiGoldragon/CriomOS-home` | User/home-manager surface for the OS layer. |
 | `mentci-lib` | `/git/github.com/LiGoldragon/mentci-lib` | Future shell-state consumer of Sema patterns. |
@@ -126,7 +126,7 @@ All on the `horizon-leaner-shape` branch in worktrees per
 `~/primary/skills/feature-development.md`. `lojix-cli` is untouched by
 the arc — stays at the current schema and retires after CriomOS migrates
 to the new daemon's projection. Smoke-built `zeus` end-to-end through
-`prometheus` (see `reports/system-specialist/134`); has **not** been cut
+`prometheus` (see `reports/system-operator/134`); has **not** been cut
 over to any node.
 
 `horizon-re-engineering` worktrees still exist for several repos but are

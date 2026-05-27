@@ -114,7 +114,7 @@ report subdirectory, and claim string differ. Lane mechanism:
 
 - `operator` — implementation (default agent: Codex)
 - `designer` — architecture, skills, reports (default agent: Claude)
-- `system-specialist` — OS / platform / deploy (any agent)
+- `system-operator` — OS / platform / deploy (any agent)
 - `poet` — writing as craft (any agent)
 
 Each agent's lane identifier is the exact role-name it was given in
@@ -257,7 +257,7 @@ yet — those land when the role's shape settles.
   `SendMessage` to other agent instances — run outside the
   conversation surface where the psyche can redirect, and can
   violate the dispatching agent's lane. Default for operator,
-  system-specialist, poet, and their assistant lanes: do the
+  system-operator, poet, and their assistant lanes: do the
   work yourself in the main agent; the psyche authorises
   subagent dispatch per task. The **designer protocol** (psyche
   2026-05-21) is the exception: the prime designer runs at full

@@ -11,7 +11,7 @@ visuals, soft caps).*
 `reports/<role>/<N>-<topic>.md`
 
 - `<role>` is the writer's lane subdirectory (`designer`,
-  `operator`, `system-specialist`, `poet`, plus the assistant
+  `operator`, `system-operator`, `poet`, plus the assistant
   lanes).
 - `<N>` is the next integer after the highest-numbered report in
   this role's subdirectory. **Per-role numbering**, not workspace-

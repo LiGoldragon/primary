@@ -33,9 +33,9 @@ below.
 | `designer` | designer | Claude | `orchestrate/designer.lock` | `reports/designer/` | ESSENCE, AGENTS, lore, skills, design reports |
 | `designer-assistant` | designer | Codex | `orchestrate/designer-assistant.lock` | `reports/designer-assistant/` | Extra design audit, report, skill, and protocol support under designer discipline |
 | `second-designer-assistant` | designer | (any) | `orchestrate/second-designer-assistant.lock` | `reports/second-designer-assistant/` | Second extra design audit, report, skill, and protocol support under designer discipline |
-| `system-specialist` | system-specialist | (any) | `orchestrate/system-specialist.lock` | `reports/system-specialist/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
+| `system-operator` | system-operator | (any) | `orchestrate/system-operator.lock` | `reports/system-operator/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
 | `system-designer` | designer | (any) | `orchestrate/system-designer.lock` | `reports/system-designer/` | Specialized designer lane scoped to system topics (CriomOS, horizon, lojix, goldragon, deployment); parallel to `nota-designer`. Inherits full designer discipline with system as its specialization scope. Per Spirit record 302. |
-| `second-system-assistant` | system-specialist | (any) | `orchestrate/second-system-assistant.lock` | `reports/second-system-assistant/` | Second extra platform/host workforce under system-specialist discipline |
+| `second-system-assistant` | system-operator | (any) | `orchestrate/second-system-assistant.lock` | `reports/second-system-assistant/` | Second extra platform/host workforce under system-operator discipline |
 | `poet` | poet | (any) | `orchestrate/poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
 | `poet-assistant` | poet | (any) | `orchestrate/poet-assistant.lock` | `reports/poet-assistant/` | Extra prose, citation, and Substack publishing support under poet discipline |
 
@@ -49,7 +49,7 @@ its own lock file.
 ## Coordination State
 
 - Lock files: one per lane at `orchestrate/<lane>.lock` (e.g.
-  `orchestrate/operator.lock`, `orchestrate/system-specialist.lock`).
+  `orchestrate/operator.lock`, `orchestrate/system-operator.lock`).
 - BEADS database: `.beads/` (legacy transitional work-item store).
 - Helper: `tools/orchestrate`.
 
@@ -159,7 +159,7 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 
 `<role>` is one of `operator`, `pi-operator`, `operator-assistant`,
 `second-operator-assistant`, `designer`, `designer-assistant`,
-`second-designer-assistant`, `system-designer`, `system-specialist`,
+`second-designer-assistant`, `system-designer`, `system-operator`,
 `second-system-assistant`, `poet`, or `poet-assistant`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
@@ -167,7 +167,7 @@ Each `<scope>` is either an absolute path or a bracketed task lock
 Mix freely:
 
 ```sh
-tools/orchestrate claim system-specialist '[primary-f99]' \
+tools/orchestrate claim system-operator '[primary-f99]' \
   /git/github.com/LiGoldragon/chroma -- chroma nota-codec migration
 ```
 
@@ -192,9 +192,9 @@ coordination ("who is working on this *right now*"). Use one when you
 take on a tracked task that other agents might otherwise also pick up:
 
 ```sh
-tools/orchestrate claim system-specialist '[primary-f99]' -- chroma migration
+tools/orchestrate claim system-operator '[primary-f99]' -- chroma migration
 # … do the work …
-tools/orchestrate release system-specialist
+tools/orchestrate release system-operator
 bd close primary-f99 -r "<closing note>"
 ```
 
@@ -356,7 +356,7 @@ Convention: each role owns a subdirectory.
 - `reports/designer/` — designer's reports.
 - `reports/designer-assistant/` — designer assistant's reports.
 - `reports/second-designer-assistant/` — second designer assistant's reports.
-- `reports/system-specialist/` — system specialist's reports.
+- `reports/system-operator/` — system operator's reports.
 - `reports/system-designer/` — system designer's reports (specialized designer lane).
 - `reports/second-system-assistant/` — second system assistant's reports.
 - `reports/poet/` — poet's reports.

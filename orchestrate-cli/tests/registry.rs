@@ -13,9 +13,8 @@ designer
 second-designer                   parallel-of:designer
 third-designer                    parallel-of:designer
 designer-assistant                assistant-of:designer
-system-specialist
-system-assistant                  assistant-of:system-specialist
-second-system-assistant           assistant-of:system-specialist
+system-operator
+second-system-assistant           assistant-of:system-operator
 poet
 poet-assistant                    assistant-of:poet
 "#;
@@ -39,8 +38,7 @@ fn parses_all_lanes_in_order() {
             lane("second-designer"),
             lane("third-designer"),
             lane("designer-assistant"),
-            lane("system-specialist"),
-            lane("system-assistant"),
+            lane("system-operator"),
             lane("second-system-assistant"),
             lane("poet"),
             lane("poet-assistant"),
@@ -98,6 +96,6 @@ fn peer_lanes_exclude_self() {
     let registry = LaneRegistry::parse(SAMPLE_REGISTRY).expect("registry parse");
     let operator = lane("operator");
     let peers: Vec<Lane> = registry.peer_lanes(&operator).collect();
-    assert_eq!(peers.len(), 12);
+    assert_eq!(peers.len(), 11);
     assert!(!peers.contains(&operator));
 }
