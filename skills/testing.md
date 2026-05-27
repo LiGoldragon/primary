@@ -68,6 +68,15 @@ If the test only checks the schema engine in isolation, it is not the
 central integration test. If it only checks the consumer with pinned
 remote dependencies, it is not the local override test.
 
+Schema-derived runtime tests must also use the generated plane traits in the
+consumer. A Spirit-style pilot does not prove the stack by calling a primitive
+store helper or recording strings in an observer. It proves the stack by
+constructing generated `Input`, `NexusInput`, and `SemaInput` values, invoking
+generated traits such as `NexusEngine` and `SemaEngine`, observing generated
+mail/rejection values, and asserting generated `NexusOutput`, `SemaOutput`, and
+Signal `Output` replies. If a needed boundary type is still hand-written, move
+it into schema first or mark that as the next component-development gap.
+
 ## Constraint to witness to Nix
 
 For every load-bearing behavior or architecture constraint:
@@ -259,6 +268,107 @@ the test-only suffix plus a Nix `check` derivation that wraps it for
 the operator path. The Nix wrapper carries the production status; the
 underlying binary stays clearly test-only.
 
+## Schema-typed observer state and per-plane chain typing
+
+Per intent records 995 and 997 (Maximum), tests in the
+schema-derived stack MUST use schema-emitted data types end-to-end —
+both in observer state and in the execution chain the test exercises.
+
+### Observer state stays typed (record 995, 996)
+
+When a test attaches an observer (a `MessageSentHook`,
+`MessageProcessedHook`, or similar hook trait implementation), the
+observer's accumulated state IS the schema-emitted enum. Concretely:
+
+- An observer holds `Vec<MailLedgerEvent>` (or the equivalent typed
+  enum for the surface under test), NOT `Vec<String>` with tokens
+  like `flow:sent:1`.
+- Assertions compare typed `Vec` to typed `Vec`, OR encode the
+  captured events through the schema-emitted `to_nota()` and compare
+  against an inline NOTA fixture for readable multi-event sequences.
+- The token-string anti-pattern (`format!("{label}:sent:{id}")`)
+  bypasses the type system the design relies on; the test exercises
+  the engine but the assertion runs on text.
+
+Two acceptable shapes:
+
+1. **Direct typed assertion** — observer holds typed events,
+   assertion compares typed values:
+   ```rust
+   let expected: Vec<MailLedgerEvent> = vec![
+       MailLedgerEvent::Sent(SentMail {
+           mail_identifier: MailIdentifier(1),
+           short_header: ShortHeader(0),
+       }),
+       // ...
+   ];
+   assert_eq!(observer.lock().expect("observer").events(), &expected);
+   ```
+
+2. **NOTA round-trip** — typed events lowered through their
+   schema-emitted `to_nota()`, compared against an inline NOTA
+   string fixture:
+   ```rust
+   let expected_nota = "(Sent (1 0))\n(Processed (1 (1 39)))";
+   assert_eq!(events_to_nota(&recorded), expected_nota);
+   ```
+
+### Per-plane chain typing (record 997, extends record 995)
+
+Tests do not just hold typed observer state — they exercise the
+ACTUAL EXECUTION CHAIN through the engine trait surfaces, using
+the right schema-emitted type at each plane crossing.
+
+For the schema-derived Signal / Nexus / SEMA triad:
+
+- **Signal-engine operations** take `Input` (Signal-plane) and
+  produce `Output` (Signal-plane). `SignalActor::accept(Input)`
+  returns `SignalAccepted`; the witness is a Signal-plane type.
+- **Nexus-engine operations** take `NexusMail<Payload>` (Nexus-
+  plane input) and produce `NexusOutput` (Nexus-plane output).
+  The Nexus engine ALSO performs the Signal→Nexus and Nexus→SEMA
+  translations through schema-emitted methods like
+  `NexusInput::into_nexus_output` and `NexusOutput::into_sema_input`.
+- **SEMA-engine operations** take `SemaInput` (SEMA-plane input)
+  and produce `SemaOutput` (SEMA-plane output). `Store::apply` is
+  the SEMA engine trait surface.
+
+Each step in the chain uses the right schema-object type for its
+plane; tests INVOKE the engines through their trait surfaces with
+the typed values, then assert on typed output values.
+
+Where a test crosses a plane boundary, the test makes the
+crossing VISIBLE — e.g. by inspecting the `NexusOutput` produced
+from a `NexusMail<Entry>` and threading its `SemaInput` into the
+next engine. The chain typing is visible in the test code, not
+hidden behind a single `engine.handle()` call.
+
+```rust
+// Step 1: typed NexusMail<Entry> at the Nexus engine trait surface.
+let nexus_mail: NexusMail<Entry> =
+    NexusMail::new(MessageIdentifier(42), entry("..."));
+let nexus_reply: NexusOutput = engine.record(nexus_mail).expect("infallible");
+
+// Step 2: explicit Nexus → SEMA translation, typed all the way.
+let sema_input: SemaInput = nexus_reply.into_sema_input();
+
+// Step 3: SEMA engine trait surface — SemaInput in, SemaOutput out.
+let sema_output: SemaOutput = sema_engine.apply(sema_input);
+```
+
+For tests that exercise only ONE plane (e.g. a focused SEMA-
+engine test), that's fine — but use that plane's schema-emitted
+types throughout. A SEMA-only test takes `SemaInput` and asserts
+on `SemaOutput`; it does not construct `Input` (Signal) values.
+
+If a test bypasses the engine trait surface (e.g. directly
+testing private helpers, or constructing intermediate values
+without going through the trait dispatch), that's a discoverable
+shortcut — note it for follow-up; it's not necessarily blocking.
+
+Tests realise Pattern A, Pattern B, and Pattern C simultaneously
+by being WRITTEN IN the schema-type vocabulary the runtime uses.
+
 ## Anti-patterns
 
 - A README command that is not a flake output.
@@ -279,6 +389,17 @@ underlying binary stays clearly test-only.
 - Sleeps or polling used to pretend a push-based event happened. Push
   behavior needs a pushed witness.
 - An ignored test without a tracked reason.
+- Stringly-typed observer state (`Vec<String>` with tokens like
+  `flow:sent:1`) when the schema emits a typed enum. The observer
+  exercised the engine but the assertion runs on text — the type
+  system the design relies on is bypassed (records 995, 996).
+- Tests that collapse multiple plane crossings into one
+  `engine.handle()` call when the invariant under test IS the per-
+  plane chain typing. Make each plane crossing visible (record 997).
+- Tests that construct intermediate per-plane values WITHOUT going
+  through the engine trait surface (`InputNexus::record`,
+  `Store::apply`, etc.). The trait surface is the production path
+  the test must prove (records 997, 998).
 
 ## Review checklist
 
@@ -294,6 +415,11 @@ Ask these before accepting a test:
 - Are intermediate artifacts inspectable?
 - Would a shortcut, stub, or bypass fail?
 - Is the test name the constraint it protects?
+- For schema-derived stack tests: does the observer state hold
+  schema-emitted typed values (`Vec<MailLedgerEvent>`) rather than
+  string tokens? Does the test exercise each plane's engine trait
+  surface with the right plane's schema-emitted types? Are the
+  Signal→Nexus and Nexus→SEMA crossings visible in the test code?
 
 ## See also
 

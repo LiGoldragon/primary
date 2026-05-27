@@ -140,6 +140,23 @@ SEMA schema object and returns a SEMA schema object. A test that calls a store
 or engine with a primitive, helper enum, or test-local command type is proving
 the wrong surface even if the visible behavior succeeds.
 
+When the schema emitter provides plane traits, use those traits explicitly in
+the witness. For the Signal -> Nexus -> SEMA chain, the strongest in-process
+test shape is:
+
+- Signal admission produces a typed accepted object from generated `Input`.
+- Nexus execution is invoked through generated `NexusEngine` or generated
+  per-root Nexus dispatch traits, taking `NexusInput` and returning
+  `NexusOutput`.
+- SEMA execution is invoked through generated `SemaEngine`, taking `SemaInput`
+  and returning `SemaOutput`.
+- Rejections and lifecycle events are generated schema values such as
+  `Output::Rejected(SignalRejection)` and `MailLedgerEvent`, not hand-written
+  test enums or string logs.
+
+Tests should be named after the chain invariant they prove, for example
+`schema_emitted_traits_drive_the_full_plane_chain`.
+
 ## Live boundary witness for vocabulary widening
 
 When a closed-vocabulary enum widens (Certainty's three variants

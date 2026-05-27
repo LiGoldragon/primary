@@ -404,6 +404,18 @@ against generated objects such as `MailLedgerEvent`,
 test-only enums are not a valid substitute. SEMA engine operations
 take SEMA schema input and emit SEMA schema output.
 
+Per records 999 and 1000 (Maximum, 2026-05-27), the next prototype
+iteration keeps **schema at the heart**. Schema-emitted Rust types are
+the canonical truth source for every system boundary type; hand-written
+runtime code is behavior on those generated nouns or generated trait
+impls. End-to-end tests must construct schema-emitted values, invoke
+the runtime through schema-emitted trait surfaces, observe
+schema-emitted lifecycle events, and assert schema-emitted outputs.
+No hand-written boundary enum, observer state, validation error, or
+database marker shim counts as a valid witness. Prototype restarts
+begin from the latest operator main stack, then audit any remaining
+shim as the next component-development task.
+
 ## Signal protocol — universal mail mechanism
 
 Per intent record 963 (High, 2026-05-27): the wire protocol is
