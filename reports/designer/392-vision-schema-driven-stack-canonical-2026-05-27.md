@@ -1,17 +1,20 @@
 # 392 — Vision: the schema-driven stack, canonical
 
-*Kind: Design · Topics: vision, schema, nota, runtime, wire, emission · 2026-05-27*
+*Kind: Design · Topics: vision, schema, nota, runtime, signal, nexus, sema, wire, emission · 2026-05-27*
 
-*The landing-page synthesis of records 894-952. Schema is the
-source of truth for every data type in the system; everything else
-is implementation of traits on schema-emitted nouns. Macros are
-sugar. The schema language is one recursive shape from a root struct
-down to scalar leaves. Schema-emitted types are REST resources at
-the wire layer. The runtime is one byte's worth of tag-space
-partitioned into input and output halves. Components communicate
-through a `Communicate` trait carrying rkyv-encoded signal frames,
-correlated through a mail manager, replied with database markers
-that prove which transaction the response corresponds to. Schema
+*The landing-page synthesis of records 894-965. Schema is the source
+of truth for every data type in the system; everything else is
+implementation of traits on schema-emitted nouns. The schema layer
+has THREE schema types — Signal, Nexus, Sema — corresponding to the
+three runtime planes (records 964-965). Macros are sugar. The schema
+language is one recursive shape from a root struct down to scalar
+leaves. Schema-emitted types are REST resources at the wire layer.
+The runtime is one byte's worth of tag-space partitioned into input
+and output halves. Components communicate through the SIGNAL
+PROTOCOL via a `Communicate` trait carrying rkyv-encoded signal
+frames, correlated through a universal mail mechanism with hookable
+lifecycle events (record 963), replied with database markers that
+prove which transaction the response corresponds to. Schema
 evolution is append-only namespaces with hand-written upgrade
 methods per changed type. This is the canonical vision; reports 389
 (schema/macros), 390 (wire/runtime), 391 (emission/discipline) are
@@ -408,39 +411,62 @@ and permission or owner message types to authorize work,
 preserving a single-owner system so state mutation cannot race
 across competing writers."*
 
-## The runtime triad — Signal / Executor / SEMA
+## The runtime triad — Signal / Nexus / SEMA (three schema-driven planes)
 
-Per record 371's framing (from the prior synthesis), every
-component daemon has the same three-layer runtime triad:
+Per intent record 964 (Maximum, 2026-05-27), the schema layer has
+THREE SCHEMA TYPES corresponding to three runtime planes. The
+runtime triad from record 371's framing is **refined**: Executor is
+renamed to **Nexus**, and all three planes are schema-driven. Each
+plane has its own engine with its own traits, but all three engines
+share the pattern of *running code based on input message and
+returning output message with populated data*.
 
-| Layer | Role | What it owns |
-|---|---|---|
-| Signal | Reactive perimeter | Decoding inbound frames; routing to executor |
-| Executor | Internal decision layer | Routing forward-only vs state-involving operations |
-| SEMA | Single-writer state | Durable storage; serialized writes; multiple readers |
+| Plane | Schema type | Role | What it owns |
+|---|---|---|---|
+| **Signal** | `Signal` schemas | Wire and communication layer | Decoding inbound frames; routing to Nexus; mail-event emission |
+| **Nexus** | `Nexus` schemas | Execution layer — IO, external calls, UI | Routing forward-only vs state-involving operations; external CLI calls; all user interfaces |
+| **SEMA** | `Sema` schemas | Durable state layer | Single-writer storage; serialized writes; multiple readers |
 
 ```mermaid
 flowchart LR
     inbound["inbound signal"]
     signal["Signal decode"]
-    executor["Executor route"]
+    nexus["Nexus route"]
     sema["SEMA write"]
     reply["reply out"]
-    inbound --> signal --> executor
-    executor --> sema --> executor
-    executor --> reply
+    inbound --> signal --> nexus
+    nexus --> sema --> nexus
+    nexus --> reply
 ```
 
-Per record 948 (Principle, High): *"internal database logic
-should use the same schema-defined message language as component
-signals: the daemon may keep the database engine internal for
-now, but a growing database component can split into its own
-daemon without changing the language pattern."*
+Per record 965 (Maximum): NEXUS specifically covers ANY layer where
+code runs in response to typed input and returns typed output —
+internal IO, external calls (e.g. cloud component starting
+Cloudflare CLI to change DNS), AND all user interfaces. **Mencie**
+(the persona's multi-modal UI with mencie-audio / mencie-introspect
+etc. as panels) is implemented as nexus schemas — each UI panel has
+its own nexus schema describing data flow and return types. This
+unifies the previously-separate concerns of IO, external execution,
+and UI under one schema-driven plane. Record 965 SUPERSEDES record
+880's scope-restriction on Nexus terminology — Nexus is now PART OF
+the schema-derived stack as the execution-layer schema type.
+
+Per record 948 (Principle, High): *"internal database logic should
+use the same schema-defined message language as component signals:
+the daemon may keep the database engine internal for now, but a
+growing database component can split into its own daemon without
+changing the language pattern."*
 
 The decomposability is structural: SEMA is talked to in the same
-schema-defined message types as external signals. The single-
-daemon shape is the starting point; if SEMA grows, it splits into
-its own daemon and the language pattern carries unchanged.
+schema-defined message types as external signals. The single-daemon
+shape is the starting point; if SEMA grows, it splits into its own
+daemon and the language pattern carries unchanged.
+
+Per record 964: file extensions remain **open** — candidates include
+`.signal.schema` / `.nexus.schema` / `.sema.schema`, OR the schema
+type as the first record of the schema content (`Signal …`,
+`Nexus …`, `Sema …` in parens). The schema author declares the
+variant; the engine routes.
 
 ## Input and output partition one tag space
 
@@ -488,17 +514,32 @@ tag-byte partition at the binary layer (record 934) are the same
 mechanism at different layers: a small header that lets the
 reader triage what comes next before paying for full decode.
 
-## The wire stack — Communicate, signal-frame, mail, marker
+## The signal protocol — Communicate, signal-frame, mail, marker
 
-Per record 935 (Decision, High): four coupled mechanisms carry
-async messaging from CLI through daemon to durable state.
+Per record 935 (Decision, High) + record 963 (Decision, High,
+2026-05-27): the wire protocol is named the **SIGNAL PROTOCOL**.
+Four coupled mechanisms carry async messaging from CLI through
+daemon to durable state, and the mail mechanism is a universal
+push system with hookable lifecycle events.
 
 | Mechanism | Role |
 |---|---|
 | Communicate trait | The wire interface between any two components |
 | signal-frame | Connection setup, async unique IDs, handshake |
-| Mail state manager | Queue between sender and daemon; `accepted = will-be-processed` |
+| Mail mechanism | Universal mailer/dispatcher/push system between sender and daemon; `accepted = will-be-processed`; hookable lifecycle events |
 | Database marker | Reply payload: hash + counter proves which transaction |
+
+Per record 963: the **mail mechanism** is the same lifecycle
+infrastructure every component shares. Message lifecycle has
+**hookable events** including a method-on-message-sent that fires as
+soon as the message is sent and commits an action through the mail
+dispatching system. The hook point allows UI consequences,
+observers, and other components to react when a message is sent.
+Async representation lives at the data-type level — the message
+types themselves carry the correlation identifiers and lifecycle
+state needed to track sent / queued / processing / replied
+transitions. Per record 962: the mail mechanism is a **push system**,
+not poll-based — observers attach hooks at the message-sent boundary.
 
 ```mermaid
 flowchart LR
@@ -842,7 +883,7 @@ The vision names the discipline; the mechanism is open.
 
 ## Source intent records
 
-The vision draws on records 894-952. The load-bearing ones:
+The vision draws on records 894-965. The load-bearing ones:
 
 | Record | Substance |
 |---|---|
@@ -866,3 +907,6 @@ The vision draws on records 894-952. The load-bearing ones:
 | 945-950 | Schema creates actor enums; methods on schema objects; database-as-schema-messaging; permission messages; schema-diff upgrade traits |
 | 951 | REST as the wire architecture (gap-fill) |
 | 952 | Mirror-naming between schema and Rust source (gap-fill) |
+| 963 | Signal protocol named; universal mail mechanism; method-on-message-sent hooks; async at the data-type level |
+| 964 | Three schema types — Signal/Nexus/Sema — corresponding to three runtime planes; Executor renamed to Nexus; file extensions remain open |
+| 965 | Nexus covers IO + external calls + ALL user interfaces; Mencie implemented as nexus schemas; supersedes record 880's scope-restriction |

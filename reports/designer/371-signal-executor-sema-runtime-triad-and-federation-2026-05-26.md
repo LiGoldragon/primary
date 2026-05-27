@@ -2,6 +2,17 @@
 
 *Designer architecture synthesis absorbing psyche 2026-05-26 (intent records 856-859). The component runtime triad clarifies: **signal + executor + SEMA**. Federation at the core: each persona triad is a federated unit; orchestrators across personas eventually communicate as thing-with-context. Schema/Rust labor split: schema derives objects + traits; Rust writes methods on those objects. Migration to the schema-driven Spirit stack authorized.*
 
+> **Naming superseded by record 964 (Maximum, 2026-05-27).** The runtime
+> triad is now **Signal / Nexus / SEMA**: Executor is renamed to **Nexus**,
+> and all three planes are schema-driven (with `Signal` / `Nexus` / `Sema`
+> as the three schema types). Per record 965, Nexus covers IO, external
+> calls, AND all user interfaces (Mencie is implemented as nexus
+> schemas). This report's `Executor` terminology is preserved as
+> historical record; the canonical runtime-triad framing now lives in
+> `reports/designer/392-vision-schema-driven-stack-canonical-2026-05-27.md`
+> §"The runtime triad — Signal / Nexus / SEMA" and
+> `skills/component-triad.md` §"Runtime triad — Signal / Nexus / SEMA".
+
 ## §1 Frame — the refined triad meaning
 
 Two distinct triads coexist in the workspace:

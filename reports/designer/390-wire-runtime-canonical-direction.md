@@ -1,15 +1,20 @@
 # 390 — Wire + runtime canonical direction
 
-*Kind: Design · Topic: wire, runtime · 2026-05-27*
+*Kind: Design · Topics: wire, runtime, signal, nexus, sema · 2026-05-27*
 
 *Implementation-facing design for the wire layer + component-runtime
-substrate per intent records 927-936. The 2-level structural
-fingerprint IS the 64-bit textual header; input + output are
-PARTITIONS of one 1-byte tag space; the Communicate trait + signal-
-frame mechanism + mail state manager + database marker reply
-together support full async messaging with provable state evolution.
-Nothing in this report exists in operator code yet — it's the
-design direction for the next implementation slice.*
+substrate per intent records 927-936, refined by records 963-965.
+The 2-level structural fingerprint IS the 64-bit textual header;
+input + output are PARTITIONS of one 1-byte tag space; the
+Communicate trait + signal-frame mechanism + mail state manager +
+database marker reply together support full async messaging with
+provable state evolution. Per record 964 the runtime triad is now
+**Signal / Nexus / SEMA** (Executor renamed to Nexus); all three
+planes are schema-driven. Per record 963 the wire protocol is named
+the SIGNAL PROTOCOL with a universal mail mechanism carrying
+hookable lifecycle events. Nothing in this report exists in operator
+code yet — it's the design direction for the next implementation
+slice.*
 
 ## What this report supersedes
 
@@ -27,11 +32,13 @@ methods — operator's `5ca1c96` lands these as schema-derived. That's
 the EXISTING wire surface; this report describes the NEXT design
 layer underneath it.
 
-## Frame — three coupled mechanisms
+## Frame — three coupled mechanisms (under the signal protocol)
 
-The wire + runtime work involves three coupled mechanisms that
-together carry async messaging from CLI through daemon to durable
-state:
+Per record 963 (Decision, High, 2026-05-27): the wire protocol is
+named the **SIGNAL PROTOCOL**. The wire + runtime work involves
+three coupled mechanisms that together carry async messaging from
+CLI through daemon to durable state, organised under the signal
+protocol's universal mail mechanism:
 
 ```mermaid
 flowchart LR
