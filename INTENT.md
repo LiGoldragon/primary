@@ -313,7 +313,7 @@ serializable but the root type is the message surface.
 |---|---|---|
 | **SIGNAL schemas** | Wire and communication layer | Inter-component messaging; the wire protocol substrate |
 | **NEXUS schemas** | Execution layer — IO, external calls, all user interfaces | Code-runs-on-input-returns-output: internal IO, external CLIs (e.g. cloud calling the Cloudflare CLI to change DNS), and ALL UI panels |
-| **SEMA schemas** | Durable state layer | Database engine; single-writer durable storage |
+| **SEMA schemas** | Durable database-work layer | Database engine; single-writer durable storage |
 
 File extensions remain **OPEN** per record 964: candidates include
 `.signal.schema` / `.nexus.schema` / `.sema.schema`, OR the schema
@@ -338,7 +338,15 @@ convention that mirrors Rust modules (`signal:sema:Magnitude`,
 `spirit:core:SemaOutput`) instead of Rust's `::`. The planes differ
 by ownership and runtime semantics, not by authored schema shape:
 Signal communicates, Nexus executes and holds mail, and SEMA owns
-durable single-writer state.
+durable single-writer database work.
+
+Per record 1007 (Maximum, 2026-05-27), **SEMA means database work**:
+the real SEMA plane is the part that writes durable state to the
+component database file. Today's storage substrate is redb, but the
+file extension may become `.sema` instead of `.redb` so the file name
+states its architectural role. An in-memory `Store` can prototype the
+`SemaInput` / `SemaOutput` language, but it is not a full SEMA proof
+until the operation writes the durable database artifact.
 
 Per record 965, **Mencie (the persona's multi-modal UI, with
 mencie-audio / mencie-introspect / etc. as panels) is implemented
@@ -364,7 +372,7 @@ messaging), Nexus (execution + mail keeper + translator), SEMA
 Signal IN
   -> Nexus accepts mail (mail enters BEING-PROCESSED state)
   -> Nexus translates to SEMA query
-  -> SEMA engine runs and produces state change + SEMA reply
+  -> SEMA engine runs database work and produces durable state change + SEMA reply
   -> Nexus receives SEMA reply (mail has reached state + got response)
   -> Nexus translates SEMA reply to Signal response with logging
      (the response has been "seriously received" because there has
@@ -391,8 +399,8 @@ Per record 988 (Maximum, 2026-05-27), this flow is also an
 implementation discipline: async mail flow is actor-object flow.
 Runtime code should not be a procedural chain of helper functions.
 A Signal root becomes a generated mail object; Nexus owns that mail
-object while processing; SEMA returns a generated reply with a state
-marker; Nexus translates that object into the Signal response. The
+object while processing; SEMA writes durable database state and returns
+a generated reply with a state marker; Nexus translates that object into the Signal response. The
 behavior belongs on generated schema nouns and data-bearing actor or
 store objects as methods or trait impls.
 

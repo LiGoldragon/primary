@@ -18,7 +18,8 @@ My opinion: the direction is right. The tests should prove the whole chain:
 schema files lower into generated Rust; generated Rust owns Signal, Nexus, and
 SEMA data types and traits; the CLI and daemon communicate over the real binary
 Signal boundary; Nexus processes schema messages in the middle; SEMA takes and
-returns SEMA schema objects. We are partly there. Operator main proves the
+returns SEMA schema objects for database work. Per Spirit record 1007, full
+SEMA proof means a durable database write, not just an in-memory store call. We are partly there. Operator main proves the
 kernel more honestly than `/403`; `/403` adds useful scenario coverage but
 also regresses two important constraints.
 
@@ -179,22 +180,29 @@ SignalAccepted -> MessageSent -> NexusInput -> SemaInput -> SemaOutput -> Messag
 
 and assert that artifact in a second Nix check.
 
-### 3. SEMA Is Still In-Memory
+### 3. SEMA Is Still In-Memory, So It Is Only A Language Prototype
 
 `Store` is an in-memory vector. The tests prove SEMA takes `SemaInput` and emits
-`SemaOutput`, but they do not prove durable SEMA storage, database reopening, or
-state transfer across derivation boundaries.
+`SemaOutput`, but they do not prove SEMA in the strict sense from record 1007:
+database work that writes durable state to the component database file. They do
+not prove durable SEMA storage, database reopening, or state transfer across
+derivation boundaries.
+
+The current physical substrate is redb. Renaming the component database from a
+`.redb` extension to `.sema` is a plausible clarity move, because it makes the
+file's architectural role visible instead of naming the implementation library.
 
 Better next witness: a chained Nix test:
 
 1. Start daemon and record data.
-2. Persist `state.redb` or the eventual SEMA artifact as the first derivation's
+2. Persist `state.sema` (or `state.redb` until the extension changes) as the first derivation's
    output.
 3. Read it in a second derivation using the authoritative Spirit reader.
 4. Assert typed `SemaOutput` / Signal `Output`.
 
-Until that exists, claims about database durability should stay out of the
-prototype proof.
+Until that exists, claims that the prototype has proved SEMA itself should stay
+qualified. It proves the SEMA schema language and generated trait boundary; it
+does not yet prove durable SEMA database work.
 
 ### 4. One Schema File Still Contains Three Planes
 
@@ -310,11 +318,12 @@ is the explicit middle trace through Nexus and SEMA at the daemon boundary.
 
 ### Durable SEMA Later
 
-After the in-memory prototype is tighter, promote SEMA to a durable artifact.
+After the in-memory language prototype is tighter, promote SEMA to a durable
+database artifact.
 That is when a Nix-chained database proof becomes the stronger test:
 
 ```text
-writer derivation emits database artifact
+writer derivation emits state.sema / state.redb artifact
 reader derivation consumes only that artifact
 authoritative schema reader asserts typed records and marker
 ```
