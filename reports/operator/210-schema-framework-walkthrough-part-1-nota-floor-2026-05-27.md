@@ -146,7 +146,29 @@ with shape.
 
 ## Handoff into `schema-next`
 
-The current `schema-next` root shape is a three-field implicit struct:
+Correction after psyche review, 2026-05-27: the wording below must be plain.
+The schema file is read as a known `Schema` struct. The file does not define
+what a schema is every time it is read. The reader already knows the root
+fields.
+
+The intended root shape is a known struct with positional fields such as:
+
+```text
+Schema {
+    imports,
+    input,
+    output,
+    namespace,
+}
+```
+
+So if the authored schema has a section for input and a section for output,
+those are fields of the known `Schema` struct. They should be described as
+fields named `input` and `output`, not as invented "surfaces" unless the code
+is specifically discussing the current temporary implementation type.
+
+The current implementation does not yet express that cleanly. It currently
+accepts this transitional shape:
 
 ```nota
 {}
@@ -162,8 +184,14 @@ The current `schema-next` root shape is a three-field implicit struct:
 }
 ```
 
-`nota-next` only says: root object 1 is a brace block, root object 2 is a
-square-bracket block, root object 3 is a brace block.
+That middle square-bracket object is not the intended final English model. It
+is currently acting as a list of top-level generated Rust enums, including
+`Input` and `Output`. The clearer target is: the schema root has an `input`
+field and an `output` field, and each field contains the enum/variant shape for
+that side of the component boundary.
+
+`nota-next` only says: root object 1 is a brace object, root object 2 is a
+square-bracket object, root object 3 is a brace object.
 
 `schema-next::SchemaEngine` then requires exactly three root objects and sends
 them into the macro registry:
@@ -201,11 +229,11 @@ The important gaps:
    special node to `[|text|]`. That is a real semantic gap for later stack
    convergence.
 
-2. `schema-next` currently uses square brackets both as a root surface list and
-   as struct-field syntax. Since `nota-next` is neutral, this is legal, but it
-   is a schema-language choice. It should be reviewed against the newer
-   psyche direction that `[]` should read as struct/fields and `()` as
-   enum/variants.
+2. `schema-next` currently describes the middle root section with the vague
+   implementation term `RootSurfaces`. That is the wrong explanatory language
+   for the schema design. In plain English, the target schema root is a known
+   struct with fields like `input` and `output`; the authored file fills those
+   fields. It does not redeclare the concept of schema every time.
 
 3. Comments are discarded by parsing. That matches the current design that
    comments do not carry data, but it means schema-level documentation is not
