@@ -21,27 +21,33 @@ a record from a partner system — **use a real parser library, not
 hand-rolled string slicing**.
 
 ```rust
-// Wrong — hand-rolled JSON field extraction
-fn extract_private_key(json_bytes: &[u8]) -> Result<String> {
-    let text = std::str::from_utf8(json_bytes)?;
-    let needle = "\"PrivateKey\"";
-    let start = text.find(needle).ok_or(...)?;
-    let after_key = &text[start + needle.len()..];
-    let after_colon = after_key.find(':').ok_or(...)?;
-    let after_open = after_key[after_colon + 1..].find('"').ok_or(...)?;
-    let value_start = after_colon + 1 + after_open + 1;
-    let close = after_key[value_start..].find('"').ok_or(...)?;
-    Ok(after_key[value_start..value_start + close].to_string())
+// Wrong — hand-rolled JSON field extraction (also a free function;
+// the real fix is method-on-type per skills/rust/methods.md)
+impl KeyMaterial {
+    pub fn from_external_json(json_bytes: &[u8]) -> Result<Self, Error> {
+        let text = std::str::from_utf8(json_bytes)?;
+        let needle = "\"PrivateKey\"";
+        let start = text.find(needle).ok_or(...)?;
+        let after_key = &text[start + needle.len()..];
+        let after_colon = after_key.find(':').ok_or(...)?;
+        let after_open = after_key[after_colon + 1..].find('"').ok_or(...)?;
+        let value_start = after_colon + 1 + after_open + 1;
+        let close = after_key[value_start..].find('"').ok_or(...)?;
+        Ok(Self::new(after_key[value_start..value_start + close].to_string()))
+    }
 }
 
-// Right — serde_json owns the parse; we just navigate
-fn extract_private_key(json_bytes: &[u8]) -> Result<String> {
-    let value: serde_json::Value = serde_json::from_slice(json_bytes)?;
-    let private_key = value
-        .get("PrivateKey")
-        .and_then(|field| field.as_str())
-        .ok_or(...)?;
-    Ok(private_key.to_string())
+// Right — serde_json owns the parse; the verb is a method on the
+// noun being constructed
+impl KeyMaterial {
+    pub fn from_external_json(json_bytes: &[u8]) -> Result<Self, Error> {
+        let value: serde_json::Value = serde_json::from_slice(json_bytes)?;
+        let private_key = value
+            .get("PrivateKey")
+            .and_then(|field| field.as_str())
+            .ok_or(...)?;
+        Ok(Self::new(private_key.to_string()))
+    }
 }
 ```
 

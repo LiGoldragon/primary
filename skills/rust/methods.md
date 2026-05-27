@@ -17,10 +17,20 @@ storage and wire, parsers, crate layout), see
 
 ## Methods on types, not free functions
 
-The only free function in production Rust is `main`. Reusable
-behavior is a method on a type or a trait impl. Test code may use
-free helper functions when that keeps the test readable; production
-code does not.
+Every Rust function in production is a method or associated
+function on an `impl` block of a **non-zero-sized data-bearing
+type**, or a trait impl. The only exemptions are `fn main()` and
+items inside `#[cfg(test)]` modules. **Module-level `fn`,
+`const fn`, and `async fn` are all forbidden** — the rule is about
+*function placement*, and "it's a `const fn`" or "it's an
+`async fn`" is not an escape hatch. Test code may use free helper
+functions when that keeps the test readable; production code does
+not.
+
+Trait methods are preferred over inherent methods; methods on real
+data-bearing types are the minimum. Methods on zero-sized
+placeholder structs used as a namespace are forbidden — that's a
+free function in disguise; see §"No ZST method holders" below.
 
 ```rust
 // Wrong
@@ -44,7 +54,10 @@ For the cross-language rule — the forcing-function reasoning,
 the Karlton bridge, the wrong-noun trap, and the principled
 exceptions (local helper, relational operation, standard-library
 convention) — see `skills/abstractions.md`. This section is the
-Rust enforcement.
+Rust enforcement; for Rust the **local-helper carve-out from
+`abstractions.md` does not apply** — even a small private helper
+goes inside an `impl` block (per psyche 2026-05-27, intent
+record 882, Maximum).
 
 ## Schema-generated objects are the method surface
 

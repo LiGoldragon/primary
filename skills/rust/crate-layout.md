@@ -122,7 +122,7 @@ src/
 ├── error.rs      # Error enum + impls
 ├── types.rs      # domain newtypes + small structs
 ├── <thing>.rs    # one file per major type / subsystem
-└── main.rs       # only if the crate is a binary; only free fn lives here
+└── main.rs       # only if the crate is a binary; contains only fn main() (the one exempt free function per skills/rust/methods.md)
 ```
 
 Impls live in the same file as the type they're for. Don't split

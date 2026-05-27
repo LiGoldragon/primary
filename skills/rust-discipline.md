@@ -20,9 +20,9 @@ lore's `rust/style.md` and `rust/nix-packaging.md`.
 
 ## The rules in one sentence
 
-**Behavior lives on types. Domain values are typed. Boundaries
-take and return one object. Errors are enums you implement by
-hand.**
+**Every function is a method on a non-zero-sized data-bearing
+type or a trait impl. Domain values are typed. Boundaries take
+and return one object. Errors are enums you implement by hand.**
 
 ## Toolchain Authority
 
@@ -48,7 +48,7 @@ authority.
 
 | Sub-file | Covers |
 |---|---|
-| `skills/rust/methods.md` | methods-on-types, no ZST holders, domain newtypes, one-type-per-concept, no string typification, one-object-in-out, constructors, trait domains, direction-encoded names |
+| `skills/rust/methods.md` | methods on non-zero-sized data-bearing types only; no free functions outside `fn main()` / `#[cfg(test)]`; no ZST namespace holders; domain newtypes, one-type-per-concept, no string typification, one-object-in-out, constructors, trait domains, direction-encoded names |
 | `skills/rust/errors.md` | typed `Error` enum per crate via `thiserror` |
 | `skills/rust/storage-and-wire.md` | redb + rkyv durable state and binary wire (signaling, NOTA projection, anti-patterns, sema-family) |
 | `skills/rust/parsers.md` | no hand-rolled parsers; use a real library |
