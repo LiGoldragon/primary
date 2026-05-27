@@ -328,7 +328,7 @@ warnings`, and `cargo test --tests` all clean.
 
 | Repo | Branch | Commits |
 |---|---|---|
-| `schema-next` | `designer-macro-system-exploration-2026-05-27` | `a468bfaa` (brace-enum sugar), `3c035e35` (macro exploration tests) |
+| `schema-next` | `designer-macro-system-exploration-2026-05-27` | `a468bfaa` (brace-enum sugar), `28df29ce` (macro exploration tests) |
 
 Branch pushed to origin. Operator integrates onto main per workspace
 discipline (intent record 515). Not modified: `nota-next`,

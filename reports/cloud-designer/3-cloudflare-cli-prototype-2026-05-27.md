@@ -197,15 +197,70 @@ verification.
   capture an actual JSON response and confirm the field names
   before relying on the parse.
 
+## Nix packaging — flarectl as a runtime dependency, gopass-fed
+
+Per psyche 2026-05-27 (spirit 923 + 924), the cloud flake now
+treats flarectl as a real runtime dependency, packaged inside
+the nix closure rather than relying on the user profile:
+
+- `flake.nix` defines `cloudflareCli = pkgs.symlinkJoin { … }`
+  that takes `pkgs.flarectl` and wraps the inner binary with
+  `wrapProgram --run 'export CF_API_TOKEN=$(gopass show -o
+  cloudflare/api-token)'`. So when anything on PATH calls
+  `flarectl`, the wrapper fetches the token from the password
+  manager and exec's the real flarectl with the env var set.
+- `craneLib.buildPackage` gains `nativeBuildInputs = [
+  pkgs.makeWrapper ]` and a `postInstall` that calls
+  `wrapProgram $out/bin/cloud-daemon --prefix PATH :
+  ${cloudflareCli}/bin`. So when systemd starts cloud-daemon,
+  the daemon's PATH already includes the gopass-wrapped
+  flarectl.
+- The `cloud` CLI binary is **not** wrapped — per
+  `ARCHITECTURE.md` hard constraints, no direct provider calls
+  from the CLI. Only the daemon needs flarectl access.
+
+Verified by `nix build .#default`:
+
+```
+result/bin/cloud-daemon
+  → bash wrapper that PATH-prepends flarectl-gopass-wrapped/bin
+  → exec .cloud-daemon-wrapped
+flarectl-gopass-wrapped/bin/flarectl
+  → bash wrapper that exports CF_API_TOKEN=$(gopass show -o
+    cloudflare/api-token)
+  → exec .flarectl-wrapped
+```
+
+Realises intent 682 (env-var-populated-by-password-manager)
+and intent 689 (FEMOS-pattern auth) inside the deployment
+closure. No human-driven env-var management at daemon start.
+
+**Deployment assumption.** The host running cloud-daemon must
+have gopass configured with an entry at `cloudflare/api-token`.
+The wrapper will fail loudly (empty token → flarectl auth
+error) if either gopass is misconfigured or the entry is
+missing. Document this in the deployment runbook.
+
+**Token rotation** under this shape becomes a gopass operation:
+`gopass insert cloudflare/api-token` updates the source of
+truth; the next flarectl spawn picks up the new value. No
+daemon restart needed. This matches intent 682's framing of
+credential rotation as a password-manager operation, not a
+daemon configuration change.
+
 ## Intent records this prototype anchors against
 
 | # | Kind | Magnitude | Substance |
 |---|---|---|---|
 | 502–504 | Decision | n/a | Mockup-on-worktree method for designer-side probes. |
 | 515 | Decision | n/a | Designer lanes work on feature branches under `~/wt`. |
+| 682 | Constraint | Medium | API key via env-var-populated-by-password-manager pattern (FEMOS). |
+| 689 | Constraint | Medium | Same — auth investigation flagged as starting point. |
 | 914 | Decision | Maximum | Cloud component uses the old NOTA / old signal_channel stack. |
 | 915 | Decision | Maximum | Working cloud tool invoked through the cloud CLI. |
 | 916 | Decision | Maximum | DNS get/set is the first useful action. |
 | 917 | Decision | Medium | Redirects desired if Cloudflare surface supports cleanly. |
 | 918 | Clarification | High | Investigate the Cloudflare CLI as the first adapter; preserve direct-API fallback. |
 | 919 | Decision | High | cloud-designer's branched-worktree prototype directive (the trigger for this report). |
+| 923 | Decision | High | flarectl is a runtime dependency of cloud (cloudflare feature), wrapped onto cloud-daemon's PATH. |
+| 924 | Decision | High | The flarectl wrapper exports CF_API_TOKEN from gopass `cloudflare/api-token` before exec. |

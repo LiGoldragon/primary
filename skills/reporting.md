@@ -373,40 +373,73 @@ example.
 
 ### Filename convention
 
-**`<N>-<kind>-<topic-and-title-slug>.md`** where:
+Per record 941 (Maximum, 2026-05-27): **`<N>-<topic>[-<topic>]…-<title-slug>.md`** where:
 
 - `N` is the next integer after the **highest-numbered report in
   this role's subdirectory.** Per-role, not workspace-wide. No
   leading zeros. No date prefix.
-- `<kind>` is a single lowercase word from the closed kind set
-  (`design`, `audit`, `research`, `proposal`, `review`,
-  `synthesis`, `handover`, `postmortem`) — see §"Kinds of reports".
-- `<topic-and-title-slug>` is the report's subject in kebab-case.
-  A short date suffix (`-YYYY-MM-DD`) is permitted at the end for
-  reports likely to land same-day with another report on the same
+- `<topic>` is a primary topic label from the workspace topic
+  vocabulary — words like `nota`, `schema`, `macros`, `runtime`,
+  `wire`, `emission`, `discipline`, `workspace`, `intent`,
+  `tour`. Reports can carry ONE OR MORE topic labels. Multiple
+  topics are hyphen-separated in the order most-specific-first.
+  Topics enable filename-based grep across reports
+  (`ls reports/designer/ | grep -E "^[0-9]+-schema-"`) without
+  opening files.
+- `<title-slug>` is the report's specific subject in kebab-case.
+  A short date suffix (`-YYYY-MM-DD`) is permitted at the end
+  for reports likely to land same-day with another on the same
   topic; otherwise omit (git captures the date).
 
 Examples for `reports/designer/`:
 
-- `4-design-persona-messaging.md`
-- `12-design-no-polling-delivery.md`
-- `13-audit-niri-input-gate.md`
-- `143-synthesis-designer-state-digest-2026-05-21.md`
-- `17-review-recording-system.md`
+- `390-nota-canonical-design.md`
+- `391-schema-macros-canonical-design.md`
+- `392-wire-runtime-canonical-design.md`
+- `393-schema-emission-src-target-decision-2026-05-27.md`
+- `394-workspace-lane-discipline-update.md`
 
-The kind is inserted between the number and the topic so the
-filename answers two questions a reader scans for at a glance:
-**which shape is this** (the kind), **what is it about** (the
-topic-and-title). The pair maps directly to persona-spirit's
-intent record vocabulary (kind + topic + summary) and seeds the
-move to persona-mind-managed reports (per intent records 107 +
-108).
+The topic is inserted between the number and the title so the
+filename answers two questions at a glance: **what subject
+domain is this in** (the topic) and **what specifically is it
+about** (the title). The topic maps directly to persona-spirit's
+intent record `Topic` vocabulary (records use `[topic …]` as
+their first field), and to the per-topic agglomeration discipline
+in §"Topic agglomeration" below.
 
-**Forward-only.** Existing reports without the kind in the
-filename are not retroactively renamed. The next time a report
-gets a Review refresh (per §"Context maintenance") or is
-otherwise touched, the new file takes the new format. The bash
-report directories stay readable through the transition.
+The **kind** of the report (design / audit / research /
+proposal / review / synthesis / handover / postmortem — see
+§"Kinds of reports") moves to the report's frontmatter or
+opening section, not the filename. The shape of the report is
+visible from its opening; the topic is what's worth grepping
+for.
+
+**Forward-only.** Existing reports without topics in the
+filename are not retroactively renamed in bulk; renaming
+happens incrementally when a report gets a Review refresh or
+is otherwise touched, OR through a deliberate agglomeration
+pass per §"Topic agglomeration" below.
+
+### Topic agglomeration
+
+Per record 941: when a topic accumulates many reports, produce
+ONE PRIMARY REPORT per topic that carries the load-bearing
+substance from older topic-related reports. Older reports
+retire when their substance fully migrates; they stay only if
+they carry unique load-bearing detail not in the primary (e.g.
+design-rationale enumerating competing alternatives — see
+`skills/context-maintenance.md` §3a).
+
+The primary topic report becomes the canonical reference for
+that topic. Future reports on the same topic either:
+- Append small additions to the primary report directly, OR
+- Land as a new report on the same topic (carrying the topic in
+  its filename), with the primary updated to reference it if
+  the new report becomes load-bearing.
+
+The topic vocabulary GROWS with use. Don't pre-declare every
+possible topic; let the topic words emerge from the work and
+stabilise as primary reports get written.
 
 The topic names the report's subject, not its conversational
 ancestry. Avoid names like `response-to-...`, `review-of-...`, or
