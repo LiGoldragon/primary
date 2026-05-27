@@ -283,6 +283,16 @@ is the prior iteration. The same vocabulary applies wherever a
 prior shape is referenced — schema versions, wire-header
 extensions, on-disk migration markers, deployment slots.
 
+A brace `{ ... }` in NOTA is ALWAYS a key/value map; the schema
+namespace at position 3 is a brace and authors pair-style
+`Name TypeDefinition` entries directly — parenthesised named-object
+form `(Name TypeDefinition)` is redundant and rejected by the
+engine. Conceptually the namespace is a DYNAMIC ENUM where each key
+is a variant tag and each value is the variant payload, stored as a
+key/value map for composition convenience and APPEND-ONLY in the
+Cap'n Proto style so existing positions stay stable across upgrades
+(intent records 891-894, 2026-05-27).
+
 Schema-language design (namespace shape, enum/struct syntax,
 imports, lowering) lives in `repos/schema/INTENT.md`. Composer +
 wire-substrate intent lives in `repos/signal-frame/INTENT.md`.

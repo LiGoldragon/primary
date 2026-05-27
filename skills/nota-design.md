@@ -245,6 +245,24 @@ is allowed there because the map delimiter already says this token
 is key text, not a value. Keys with whitespace are invalid, even
 when bracket-delimited.
 
+**Schema namespaces use the same brace-map rule.** In a `.schema`
+namespace, write `Name body` pairs directly inside `{ }`:
+
+```nota
+{
+  Entry [Topics Kind Description Magnitude]
+  Kind (Decision Principle Correction Clarification Constraint)
+}
+```
+
+Do not wrap namespace entries as `(Entry [...])` or `(Kind (...))`.
+The brace already supplies the key/value structure; a parenthesized
+entry inside the brace is the wrong shape. Conceptually the
+namespace is a DYNAMIC ENUM where each key is a variant tag and each
+value is the variant payload, stored as a key/value map for
+composition convenience and APPEND-ONLY so existing positions stay
+stable (intent records 891, 893, 894).
+
 **Bare `Path`.** Where the schema expects `Path` (not `String`),
 the bare alphabet widens to include `/` and `.` for filesystem-
 shaped values. A bare `skills/operator.md` at a `Path` position
