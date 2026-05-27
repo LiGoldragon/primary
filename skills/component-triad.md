@@ -596,17 +596,19 @@ protocol.
 ## Runtime triad — Signal / Nexus / SEMA (three schema-driven planes)
 
 Inside the `<component>` daemon, three layers organise the logic.
-Per psyche record 856; refined by record 964 (Maximum, 2026-05-27):
-**all three planes are schema-driven** and correspond to the
-workspace's three schema types — `Signal` / `Nexus` / `Sema`. Each
-plane has its own engine with its own traits, but all three engines
-share the pattern of *running code based on input message and
-returning output message with populated data*.
+Per psyche record 856; refined by record 964 (Maximum, 2026-05-27);
+**consolidated by record 970** (Maximum, 2026-05-27) which names
+these the **THREE EXECUTION CENTERS** of the daemon. All three
+planes are schema-driven and correspond to the workspace's three
+schema types — `Signal` / `Nexus` / `Sema`. Each plane has its
+own engine with its own traits, but all three engines share the
+pattern of *running code based on input message and returning
+output message with populated data*.
 
-| Plane | Schema type | What runs there |
+| Execution center | Schema type | What runs there |
 |---|---|---|
 | **Signal** | `Signal` schemas | Wire and communication: inter-component messaging |
-| **Nexus** | `Nexus` schemas | Execution + mail keeping: IO, external calls, UI, in-flight message processing |
+| **Nexus** | `Nexus` schemas | Execution + mail keeper + Signal-to-SEMA translator: IO, external calls, UI, in-flight message processing |
 | **SEMA** | `Sema` schemas | Durable state: single-writer database engine |
 
 ### Signal (wire and communication)
@@ -626,15 +628,25 @@ is sent). Async representation lives at the data-type level — the
 message types themselves carry correlation identifiers and lifecycle
 state.
 
-### Nexus (execution — IO, external calls, UI)
+### Nexus (execution — IO, external calls, UI, mail keeper, translator)
 
 **Nexus** (renamed from Executor per record 964) is the
-**execution-layer schema type** and the daemon's **mail keeper**.
+**execution-layer schema type** and the daemon's **mail keeper +
+Signal-to-SEMA translator**. Per record 970 (Maximum, 2026-05-27):
+Nexus is *"the in-between runtime layer that owns mail tracking
+and Signal-to-SEMA translation. When Nexus has the mail, the mail
+is in the BEING-PROCESSED state; Nexus IS the runtime
+representation that a mail is being processed."*
+
+Basic Nexus actions: **submit query to Nexus** (execution action)
+and **get a reply** (state change or SEMA reply) which Nexus then
+translates back into the Signal reply for the Signal plane.
+
 Per records 965-969: Nexus covers ANY layer where code runs in
 response to typed input and returns typed output — unifying internal
 IO, external execution, and user interfaces under one schema-driven
-plane — and it owns the in-flight mail object while a message is
-being processed.
+plane. Per record 970 these uses are **specific instances of the
+more fundamental in-between translator + mail keeper role**.
 
 Nexus covers:
 
@@ -653,7 +665,10 @@ At the Signal/Nexus boundary, a decoded Signal root becomes
 that object, the mail is in processing state. When Nexus receives the
 SEMA reply or other execution result, it emits `MessageProcessed<Reply>`
 and translates that reply back to the Signal output surface, alongside
-logging and hookable lifecycle events.
+logging and hookable lifecycle events. **The on_sent hook fires when
+Signal hands mail TO Nexus** (per record 970). The **database marker
+travels on the SEMA reply that Nexus receives** and Nexus propagates
+it in the Signal response.
 
 Per record 965: Nexus is now **PART OF the schema-derived stack as
 the execution-layer schema type**, superseding record 880's earlier
@@ -675,15 +690,20 @@ Per record 948: internal database logic uses the same schema-defined
 message language as component signals; a growing database component
 can split into its own daemon without changing the language pattern.
 
-### The flow
+### The flow (record 970's consolidated picture)
 
 ```text
-External Operation arrives
-  → SIGNAL decodes rkyv → typed Operation; triages by short header
-  → NEXUS decides accept/reject; chooses Action(s); composes Reply
-      → state-involving: NEXUS → SEMA → Response → NEXUS
-      → forward-only: NEXUS → Reply directly
-  → typed Reply leaves via SIGNAL
+Signal IN
+  -> Nexus accepts mail (mail enters BEING-PROCESSED state)
+     [on_sent hook fires here — Signal hands mail TO Nexus]
+  -> Nexus translates to SEMA query
+  -> SEMA engine runs and produces state change + SEMA reply
+     (SEMA reply carries the database marker)
+  -> Nexus receives SEMA reply (mail has reached state + got response)
+  -> Nexus translates SEMA reply to Signal response, propagating
+     the database marker; logs the "seriously received" event
+     (because there has been a response)
+Signal OUT
 ```
 
 Above all three planes: the schema layer provides the typed shapes

@@ -338,6 +338,45 @@ interactions are also nexus schemas. Record 965 SUPERSEDES record
 880's scope-restriction on Nexus terminology: *"Nexus is now PART
 OF the schema-derived stack as the execution-layer schema type."*
 
+### Nexus is the MAIL KEEPER — runtime flow consolidation
+
+Per intent record 970 (Maximum, 2026-05-27): **Nexus is the mail
+keeper** — the in-between runtime layer that owns mail tracking
+and Signal-to-SEMA translation. *"When Nexus has the mail, the
+mail is in the BEING-PROCESSED state; Nexus IS the runtime
+representation that a mail is being processed."*
+
+The daemon has **THREE EXECUTION CENTERS**: Signal (communication
+messaging), Nexus (execution + mail keeper + translator), SEMA
+(state). The complete flow:
+
+```text
+Signal IN
+  -> Nexus accepts mail (mail enters BEING-PROCESSED state)
+  -> Nexus translates to SEMA query
+  -> SEMA engine runs and produces state change + SEMA reply
+  -> Nexus receives SEMA reply (mail has reached state + got response)
+  -> Nexus translates SEMA reply to Signal response with logging
+     (the response has been "seriously received" because there has
+     been a response)
+Signal OUT
+```
+
+Basic Nexus actions are *"submitting query to Nexus (execution
+action) and getting a reply (state change or SEMA reply) which
+the Nexus then translates back into the Signal reply for the
+Signal plane."*
+
+Record 970 **CONSOLIDATES** four earlier records into one picture:
+record 935 (Communicate + signal-frame + mail + database marker),
+record 963 (mail mechanism + on_sent hook), record 964 (three
+schema types), and record 965 (Nexus as execution + IO + UI). The
+on_sent hook fires when Signal hands mail TO Nexus. The database
+marker travels on the SEMA reply that Nexus receives and Nexus
+propagates it in the Signal response. The UI and external-IO uses
+of Nexus from 965 are **specific uses of the more fundamental
+in-between translator + mail keeper role**.
+
 ## Signal protocol — universal mail mechanism
 
 Per intent record 963 (High, 2026-05-27): the wire protocol is
