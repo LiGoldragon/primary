@@ -37,7 +37,7 @@ surface.*
 | `384-emit-to-src-schema-2026-05-27.md` | src/schema emission target per record 909. Substance has landed on operator main (`spirit-next` `0296be2`) + /391 §"The src/schema target — locked". Named in /391 §"What this report supersedes". | Successor `/391` |
 | `385-nota-schema-next-stack-design-via-nix-tests-2026-05-27.md` | Five-scenario design via Nix tests. Superseded by /387's 8-section side-by-side mermaid + tests (covers BOTH layers — NOTA and schema). Named in /387 §"What this report supersedes". | Successor `/387` |
 
-Total drops: **19 reports + 1 meta-directory** = 20 entries.
+Total drops: **18 reports + 1 meta-directory** = 19 entries.
 
 ## Refreshed (status banner) — none added this pass
 
