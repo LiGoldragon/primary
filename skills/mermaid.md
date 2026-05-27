@@ -39,6 +39,44 @@ Do this even when the renderer appears to accept the unquoted
 label. Unquoted punctuation has inconsistent behavior across
 Mermaid renderers and can make diagrams misleading or ugly.
 
+## Total graph size — 4-8 nodes, factor bigger graphs into focused pieces
+
+Per intent record on this skill (2026-05-27): big graphs are
+unreadable. The reader's eye can hold a topology of ~5-8 nodes
+before the diagram becomes a wall of boxes; past that, edges
+crisscross, layout heuristics give up, and the reader scrolls
+sideways to see the right edge of the canvas.
+
+**Aim for 4-8 nodes per diagram. Hard cap around 10.** When the
+substance needs more than that, the diagram has stopped being a
+topology artifact and started being a system map; **split it into
+multiple focused diagrams**, each showing ONE aspect:
+
+- One diagram for the data flow (what travels where).
+- One diagram for the type lineage (how types derive).
+- One diagram for the control flow (who calls whom).
+- One diagram for the failure modes (what errors when what breaks).
+
+Each diagram answers ONE question; together they cover the
+substance. The reader takes each in at a glance, then composes
+the mental model across diagrams via the surrounding prose.
+
+The same principle applies to subgraphs: a diagram with three
+subgraphs of 5 nodes each is still 15 nodes total on the canvas
+and reads as one big diagram. If the substance partitions
+cleanly, the partitions are usually better as siblings —
+multiple top-level diagrams in the same report — than as
+subgraphs inside one master diagram.
+
+**The test**: can a reader take in the topology in one glance,
+without scrolling or scanning? If no, the diagram is too big —
+factor.
+
+**Counter-pressure**: don't fragment to the point of confusion.
+A 3-node diagram is fine when 3 nodes IS the topology; padding
+to "look more substantial" is the opposite mistake. Match the
+diagram size to the substance, not to a target token count.
+
 ## Label sizing — short prose, IDs out of the node
 
 Per spirit record 368 (Maximum). Mermaid renderers clip node text

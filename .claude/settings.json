@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.rs$' >/dev/null 2>&1 && echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":\"REMINDER: This Write/Edit targets a Rust source file. Before continuing, ensure you have read this session: skills/rust-discipline.md (index) + skills/abstractions.md (verb belongs to noun) + skills/actor-systems.md (when actors are in play). Five rules those skills enforce: (1) every function lives on a non-zero-sized data-bearing type or trait impl - no free functions outside fn main and cfg test, no ZST namespace holders; (2) domain values are typed newtypes - no String typification, no bool flag soup, prefer typed records; (3) typed Error enum per crate via thiserror - no anyhow or eyre at crate boundaries; (4) no hand-rolled parsers - use winnow or the nota-codec; (5) when the schema-derived stack is in play, schema-emitted types ARE the nouns - attach methods to the emitted types, do not hand-write parallel mirrors. Per AGENTS.md hard override, intent record 884.\"}}' || true"
+          }
+        ]
+      }
+    ]
+  }
+}

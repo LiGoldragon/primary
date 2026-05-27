@@ -186,18 +186,48 @@ yet — those land when the role's shape settles.
   columns) — NOTA-in-anything-with-double-quote-strings is
   escape-free. Full discipline: `skills/nota-design.md`
   §"Strings come EXCLUSIVELY from bracket forms".
-- **Every Rust function is a method or an associated function on
-  an `impl` block; free functions are forbidden except in
-  `#[cfg(test)]` modules and `fn main()`.** Methods carry clear
+- **Before authoring or editing any Rust source file, read
+  `skills/rust-discipline.md` (the index) AND the sub-files it
+  links (`skills/rust/methods.md`, `skills/rust/errors.md`,
+  `skills/rust/storage-and-wire.md`, `skills/rust/parsers.md`,
+  `skills/rust/crate-layout.md`) AND `skills/abstractions.md`
+  (verb belongs to noun) AND `skills/actor-systems.md` (when
+  actors are in play).** The method-only-no-free-functions
+  override below is ONE rule among many in those skills; agents
+  that satisfy method-only but skip the rest still ship code
+  that violates typed-domain-values, no-ZST-namespace, typed
+  per-crate `Error` enum, no-hand-rolled-parsers, no-flag-soup,
+  no-blocking-in-actor-handlers, and schema-emitted nouns. The
+  skills are the substance; this rule is the load-bearing fence
+  that mandates the read at the authoring moment. A Claude Code
+  project hook (`.claude/settings.json` PreToolUse on
+  `Write`/`Edit` of `.rs`) injects a reminder as backstop for
+  the Claude harness; AGENTS.md is the universal surface across
+  every harness. Per psyche 2026-05-27 (intent record 884).
+- **Every Rust function is a method or associated function on an
+  `impl` block of a NON-ZERO-SIZED data-bearing type, or a trait
+  impl. Free functions are forbidden except in `#[cfg(test)]`
+  modules and `fn main()`. Methods on ZERO-SIZED placeholder
+  types used as a namespace are equally forbidden — that's a free
+  function in disguise.** Trait methods are preferred; methods on
+  real data-bearing types are the minimum. Every method placement
+  is a design decision about WHERE the logic lives, on WHAT
+  object, owning WHAT data — find or invent the owning noun.
+  Legitimate ZST uses (`PhantomData`, type-level state machines,
+  sealed-trait markers required by external frameworks) are
+  narrow and named in `skills/rust/methods.md` §"No ZST method
+  holders" + §"Legitimate ZST uses — narrow, named" — that skill
+  is the canonical discipline. The test: does the ZST's job
+  vanish if you erase its name from the type system? If yes, it
+  was a namespace; the verbs need a real noun. Methods carry
   ownership / namespacing / dispatch context; free functions are
-  orphan logic that bypasses the type system's organisational power
-  and tend to grow into helper-utility soup. When you'd write a
-  free function, find its natural owner type and put the function
-  in an `impl` block there. For projection / conversion functions,
-  reach for `impl From<X> for Y` instead of `fn project_x_to_y(...)`.
-  Same rule binds schema-emitted code: macros emit functions inside
-  `impl` blocks of the owning struct/enum, never free helpers. Per
-  psyche 2026-05-26 (intent record 712, Maximum).
+  orphan logic that grows into helper-utility soup. For
+  projection / conversion functions, reach for `impl From<X> for
+  Y` instead of `fn project_x_to_y(...)`. Schema-emitted code
+  follows the same rule: macros emit functions inside `impl`
+  blocks of the owning struct/enum, never free helpers. Per
+  psyche 2026-05-26 (intent record 712, Maximum) + 2026-05-27
+  (intent record 882, Maximum).
 - **NOTA records are positional, not labeled.** Type first, then
   fields in declared order — no keywords inside records. The
   `(key value)` shape from Lisp/Clojure/JSON is not NOTA. Before
