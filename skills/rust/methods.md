@@ -17,9 +17,10 @@ storage and wire, parsers, crate layout), see
 
 ## Methods on types, not free functions
 
-The only free function in a binary crate is `main`. Reusable
-behavior is a method on a type or a trait impl. Test helpers are
-methods on a fixture struct.
+The only free function in production Rust is `main`. Reusable
+behavior is a method on a type or a trait impl. Test code may use
+free helper functions when that keeps the test readable; production
+code does not.
 
 ```rust
 // Wrong
@@ -31,9 +32,13 @@ impl Cert {
 }
 ```
 
-A small private helper inside one module is fine if it is
-genuinely local (`fn hex(h: &Hash) -> String` next to a single
-`Display` impl). Anything that smells reusable becomes a method.
+Private helpers are not an exception. A private `fn` at module
+scope is still usually the sign that the object has not been found.
+Put the behavior on the data type being read or written, on a
+data-bearing helper object, or on a trait implemented for the real
+object. If a calculation only exists to support one method body,
+make it a small private method on the same object, not a free
+function beside it.
 
 For the cross-language rule — the forcing-function reasoning,
 the Karlton bridge, the wrong-noun trap, and the principled
@@ -99,6 +104,14 @@ accumulated diagnostics, a configurable mode), the noun is
 `CertParser` *with fields*. Either the work belongs on the data
 type, or it belongs on a stateful parser type. The ZST middle
 ground is the gap.
+
+This applies to internal macro and parser code as much as public
+APIs. A `RootMacro;` unit struct implementing a trait is acceptable
+only if the type itself is doing type-level work. If it has runtime
+behavior — a name, a delimiter it accepts, a position it lowers, or
+state it records — put that data in fields and make the methods read
+those fields. Do not use a unit struct merely because a trait object
+needs a concrete implementor.
 
 ### Legitimate ZST uses — narrow, named
 

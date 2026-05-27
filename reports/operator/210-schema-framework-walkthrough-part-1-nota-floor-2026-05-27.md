@@ -214,28 +214,42 @@ The general authored-schema rule is therefore:
 For enum variants, a bare symbol is a unit variant; a parenthesis object such
 as `(Record Entry)` is a data-carrying variant.
 
-The current implementation does not yet express that cleanly. It currently
-accepts this transitional shape:
+Implementation update after this correction: `schema-next` now accepts the
+named object form directly. The minimal Spirit schema now uses:
 
 ```nota
 {}
 [
-  (Input (Record Entry) (Observe Query))
-  (Output (RecordAccepted RecordIdentifier) (RecordsObserved RecordSet) (Error ErrorMessage))
+  (Input ((Record Entry) (Observe Query)))
+  (Output ((RecordAccepted RecordIdentifier) (RecordsObserved RecordSet)))
 ]
 {
-  Topic [Text]
-  Description [Text]
-  Entry [Topic Kind Description Magnitude]
-  Kind (Decision Principle Correction Clarification Constraint)
+  (Topic [Text])
+  (Description [Text])
+  (Entry [Topic Kind Description Magnitude])
+  (Kind (Decision Principle Correction Clarification Constraint))
 }
 ```
 
-That middle square-bracket object is not the intended final English model. It
-is currently acting as a list of top-level generated Rust enums, including
-`Input` and `Output`. The clearer target is: the schema root has an `input`
-field and an `output` field, and each field contains the enum/variant shape for
-that side of the component boundary.
+The root-schema description itself now lives at
+`repos/schema-next/schemas/root.schema`. It defines the known root `Schema`
+struct as:
+
+```nota
+(Schema [Imports Input Output Namespace])
+```
+
+and then defines the nested objects that make that root meaningful:
+`Imports`, `Input`, `Output`, `Namespace`, `TypeDeclaration`,
+`StructDeclaration`, `EnumDeclaration`, `VariantDeclaration`, and the scalar
+name/reference wrappers.
+
+The remaining current implementation name is `RootSurfaces`: code still uses
+that as the second root position. In plain design language, that position is
+the part of the root schema containing the input and output enum definitions.
+The next implementation pass should rename the code once the root shape is
+settled, but the authored schema form is no longer the old nameless variant
+list.
 
 `nota-next` only says: root object 1 is a brace object, root object 2 is a
 square-bracket object, root object 3 is a brace object.
