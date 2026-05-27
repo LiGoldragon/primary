@@ -83,8 +83,15 @@ Per `nota-next/ARCHITECTURE.md` (the authoritative floor) and
    at `String` positions.
 
 There are also two sigils — `;;` for line comments, `#` for byte
-literals — and that's all. `~ @ ! ? * =` are reserved for nexus
-extensions.
+literals — and that's all. `~ @ ! ? * =` are reserved at the
+syntax layer (parsing them in pure NOTA is an error) — whatever
+eventually claims them is outside the schema-derived stack's
+concern.
+
+**Sigils don't carry macro semantics.** Schema-next's macros are
+plain NOTA records dispatched by position and shape — see Part B
+below for the layer separation, and Layer 2 of this tour for the
+mechanism in depth.
 
 ### PascalCase falls into exactly three cases
 
