@@ -82,7 +82,7 @@ The root object is one brace key/value map:
   RawDatatype (| RawDatatype RawAtom RawText RawRecord RawVector RawKeyValue RawPipeParenthesis RawPipeBrace |)
   RawDatatypeList [RawDatatype]
   RawDatatypeMap { key Name value RawDatatype }
-  OptionalTopic (Option [Topic])
+  OptionalTopic (Optional Topic)
   DescriptionIndex { key Topic value Description }
   Field {| Field name FieldName datatype RawDatatype |}
   Fields [Field]
@@ -125,7 +125,7 @@ The raw reader preserves the NOTA data object. It does not lower to schema yet.
 | `StructDeclaration {| StructDeclaration name TypeName fields Fields |}` | `RawNotaDatatype::PipeBrace([Atom("StructDeclaration"), Atom("name"), ...])` |
 | `DatatypeDeclaration (| DatatypeDeclaration StructDeclaration EnumDeclaration NewtypeDeclaration |)` | `RawNotaDatatype::PipeParenthesis([Atom("DatatypeDeclaration"), ...])` |
 
-This is intentionally not ASSchema yet. It is the raw NOTA datatype map that a
+This is intentionally not `Asschema` yet. It is the raw NOTA datatype map that a
 core schema reader can use before applying macro/lowering semantics.
 
 ## Test Witness

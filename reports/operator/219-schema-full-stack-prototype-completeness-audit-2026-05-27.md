@@ -97,7 +97,7 @@ crate/module nesting while avoiding Rust's `::` syntax in NOTA/schema.
 | --- | --- | --- |
 | NOTA structure | Used as CLI input/output and schema source syntax. | Still lacks a richer object-block diagnostic surface in this prototype. |
 | Schema macro lowering | `spirit-next/build.rs` lowers through `schema-next::SchemaEngine` and asserts macro registry coverage. | The macro registry is still Rust-owned; schema-authored macro definitions are not yet real. |
-| Assembled schema | `schema-rust-next` emits from `Asschema`; generated source is freshness-checked. | The assembled schema is not persisted as `.asschema` and not inspected by a schema daemon. |
+| Assembled schema | `schema-rust-next` emits from `Asschema`; generated source is freshness-checked. | The assembled schema is not persisted as a serialized assembled-schema document and not inspected by a schema daemon. |
 | Rust emission | Checked-in `src/schema/lib.rs` is regenerated from `schema/lib.schema`. | Emission should next split reusable core mail support from component schema. |
 | Signal | Generated `Input`/`Output` own short headers, rkyv frames, NOTA conversion, and route rejection. | Signal roots still live in one repo rather than triad repos `signal-spirit` and `core-signal-spirit`. |
 | Nexus | Generated `NexusInput`/`NexusOutput` now mediate Signal-to-SEMA and SEMA-to-Signal transitions; `Engine` records generated `MailLedgerEvent::Sent` and `MailLedgerEvent::Processed`. | Mail ledger is in-memory; no durable mail queue or async response manager yet. |
