@@ -116,6 +116,19 @@ Asschema NOTA, read against known root type `Asschema`:
 ]
 ```
 
+Those four root objects are the positional fields of `Asschema`:
+
+```text
+field 1: identity      -> ([spirit:lib] [0.1.0])
+field 2: imports       -> []   empty Vec<ImportDeclaration>
+field 3: roots         -> [...]
+field 4: declarations  -> [...]
+```
+
+So the second empty `[]` is only "this assembled schema imports no external
+type declarations." A richer example should put real import declarations there
+instead of leaving it empty.
+
 This output is deliberately more explicit than authored schema. Authored schema
 optimizes for humans. Asschema optimizes for exact machine processing.
 
