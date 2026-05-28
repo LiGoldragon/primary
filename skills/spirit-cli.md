@@ -174,6 +174,8 @@ spirit "(Observe Topics)"
 spirit "(Observe (Records (None None DescriptionOnly)))"
 spirit "(Observe (Records ((Some spirit) None WithProvenance)))"
 spirit "(Observe (Records (None (Some Decision) DescriptionOnly)))"
+spirit "(Observe (RecordIdentifiers ((Exact 1053) DescriptionOnly)))"
+spirit "(Observe (RecordIdentifiers ((Range (1048 1053)) WithProvenance)))"
 ```
 
 **Submit a free-form statement** — `State` lowers to an `Assert`
