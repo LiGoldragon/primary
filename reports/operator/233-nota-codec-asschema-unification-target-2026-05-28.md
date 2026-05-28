@@ -92,12 +92,20 @@ pub enum TypeDeclaration {
 
 #[derive(NotaEnum, rkyv::Archive, rkyv::Serialize, rkyv::Deserialize)]
 pub enum TypeReference {
+    String,
+    U64,
+    Boolean,
     Plain(Name),
     Vector(Box<TypeReference>),
     Optional(Box<TypeReference>),
     Map(Box<MapReference>),
 }
 ```
+
+The scalar variants are pass-throughs. They are reserved built-ins, not
+user-defined names. That keeps assembled schema from spelling a scalar as
+`Plain(String)`. `Plain(Name)` is for declared schema types such as `Topic`,
+`Entry`, and `RecordSet`.
 
 Asschema NOTA, read against known root type `Asschema`:
 
@@ -109,7 +117,7 @@ Asschema NOTA, read against known root type `Asschema`:
   (RootEnum Output ((RecordAccepted (Plain SemaReceipt)) (RecordsObserved (Plain RecordSet)) (Rejected (Plain ErrorReport))))
 ]
 [
-  (Struct (Topic [(text (Plain Text))]))
+  (Struct (Topic [(text String)]))
   (Struct (Entry [(topic (Plain Topic)) (kind (Plain Kind)) (description (Plain Description)) (magnitude (Plain Magnitude))]))
   (Struct (RecordSet [(entries (Vector (Plain Entry)))]))
   (Enum (Kind [Decision Principle Correction Clarification Constraint]))
@@ -131,6 +139,26 @@ instead of leaving it empty.
 
 This output is deliberately more explicit than authored schema. Authored schema
 optimizes for humans. Asschema optimizes for exact machine processing.
+
+Scalar pass-through means the scalar floor is direct:
+
+```nota
+String
+U64
+Boolean
+```
+
+A domain type still wraps the scalar with a name when the name matters:
+
+```nota
+(Struct (Topic [(text String)]))
+```
+
+Then later references use the named type:
+
+```nota
+(Plain Topic)
+```
 
 ## Generated Rust
 
