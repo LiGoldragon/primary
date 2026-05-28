@@ -161,6 +161,17 @@ The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
 the assigned identifier. The acknowledgement deliberately does not
 echo the submitted intent content; the wire reply is token-cheap.
 
+**Remove an intent entry** — delete one stored record by numeric
+identifier through the daemon:
+
+```sh
+spirit "(Remove 1088)"
+```
+
+The reply is `(RecordRemoved 1088)`. Use this for records that should
+not remain in the active store at all; use `Correction` or
+supersession when lineage should remain visible.
+
 **Topics are user-creatable strings carried in a vector** at the wire
 layer — any new topic word a `Record` uses is registered. No
 pre-declared enum of topics; pick the topic words that fit, reuse
