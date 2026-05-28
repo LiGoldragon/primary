@@ -81,7 +81,11 @@ discipline is:
 2. **Recency-rank within the topic.** Newest at top. Date is
    in the filename suffix or the metadata header; commit history
    is the tiebreaker.
-3. **Flag what's stale.** A report is *stale* when a newer
+3. **Name the supersession spine.** Identify the current canonical
+   surface, any permanent landings, and any old-era/new-era boundary.
+   The spine is the evidence that lets old reports retire without
+   losing substance.
+4. **Flag what's stale.** A report is *stale* when a newer
    report on the same topic supersedes it (rewrites the framing,
    replaces the design, completes the audit) AND the older
    report's substance is already absorbed in the newer report or
@@ -90,7 +94,7 @@ discipline is:
    alternatives a newer report inherits, decision rationale that
    permanent docs don't carry — keep, forward, or migrate per
    §"Per item, decide" below.
-4. **Favor newer design.** When older and newer reports
+5. **Favor newer design.** When older and newer reports
    conflict, the newer is canonical unless the older holds
    substance the newer doesn't (design alternatives, decision
    rationale, intermediate insight the newer skipped).
@@ -98,16 +102,43 @@ discipline is:
 Reports without an obvious topic peer across lanes get the same
 treatment with a single-lane recency timeline.
 
+**Staleness has a landing gate.** A report is not droppable just
+because a newer report exists. It is droppable only after the
+load-bearing substance has landed in a successor report or a
+permanent doc. If the topic has clearly moved on but the landing is
+not verified, the action is **Forward** or **Migrate**, not Drop.
+This matters most during major era shifts: first identify the new
+canonical landing, then retire the older pile with that landing as
+evidence.
+
+**Topic-era shifts retire blocks, not just individual files.** When a
+new permanent synthesis re-grounds a whole topic, older reports from
+the prior era can retire as a group — but only report-by-report after
+each stale flag names the newer surface or permanent home that absorbs
+it. Bulk retirement without a landing witness is just context loss.
+
 ### 2a · Per item, decide
 
 For each report or context theme, pick one of four actions:
 
 | Action | When |
 |---|---|
-| **Forward** | Substance is still load-bearing as a working artifact. Roll it forward into a successor report or extend an existing one; retire the predecessor. |
+| **Forward** | Substance is still load-bearing as a working artifact. Roll it forward into a successor report or extend an existing one; retire the predecessor. For cross-lane forward-then-drop, the receiving lane confirms absorption and the source lane owns deletion. |
 | **Migrate** | Substance is mature enough to be permanent. Inline it into a skill, `ARCHITECTURE.md`, `ESSENCE.md`, or code. Retire the source. |
-| **Keep** | Substance is load-bearing on its own and has no permanent home yet. Rare. Foundational decisions still searching for their final shape. |
-| **Drop** | Substance is stale, addressed, superseded, or already captured elsewhere. Delete the report (or simply let context lose it). |
+| **Keep** | Substance is load-bearing on its own and has no permanent home yet. Rare. Foundational decisions still searching for their final shape. Pending psyche-review items stay Keep/Escalate until resolved, explicitly abandoned, or parked as uncertainty in a permanent doc. |
+| **Drop** | Substance is stale, addressed, superseded, or already captured elsewhere, with both superseder and landing named. Delete the report (or simply let context lose it). If the proof pair is missing, Forward or Migrate instead. |
+
+Common heuristics:
+
+- **Audit reports retire with their audited target** unless the audit
+  contains independent design rationale or a reusable pattern that must
+  migrate.
+- **Deploy-event logs, refresh reports, and orientation handoffs retire
+  as blocks** once the live state is the baseline and the durable state
+  lives in permanent docs, runbooks, code, or current reports.
+- **Pending psyche-review flags are not stale merely because they are
+  old.** Keep and surface them until the psyche resolves them or an
+  agent parks them in the appropriate permanent uncertainty section.
 
 For context items specifically:
 
@@ -198,16 +229,26 @@ every report into its own context.
 
 Pattern:
 
-- Give each agent a small batch of older reports + the
+- Inventory and topic-cluster first; do not deep-read hundreds of
+  reports before you know which topic arcs matter.
+- Deep-read stale candidates and their proposed successors/permanent
+  landings; skim or summarize obvious non-candidates.
+- Give each agent a bounded slice: a topic cluster, a lane within a
+  topic, or a small batch of older reports + the
   drop/forward/migrate/keep rule from §2.
 - Each agent reads the report, checks the surrounding permanent
   docs (does this substance already live in ARCH? in a skill?
   has it been superseded?), then proposes the action.
+- For a large cross-lane sweep, prefer topic-cluster agents over
+  lane-only agents; the stale judgment is topic-recency across lanes,
+  and the lane handoff can be derived from each topic report.
 - Review the agent's proposals; execute the migrations; retire
   the reports.
 
 This keeps the orchestrator's context light. The orchestrator's
-role is to apply decisions, not to re-read every report.
+role is to apply decisions, not to re-read every report. Agents
+recommend; the dispatcher decides and applies only the actions it
+owns.
 
 For context-only substance (the part that lives in the live
 conversation, not on disk), the orchestrator does this sweep
@@ -217,59 +258,72 @@ itself — agents can't see the conversation's working memory.
 
 Per psyche 2026-05-27 (spirit record 921, Maximum): cross-lane
 context maintenance produces **one meta-report directory in the
-DISPATCHER's lane** with per-lane sub-reports inside.
+DISPATCHER's lane**. When the discipline fires across multiple lanes
+(review state of designer, operator, system-operator, and the various
+qualified lanes in a single sweep), the output is NOT a flat list of
+files scattered across each lane's reports/ subdir. That would split
+context maintenance across lanes the maintenance pass is supposed to
+oversee.
 
-When the discipline fires across multiple lanes (review state of
-designer, operator, system-operator, and the various qualified
-lanes in a single sweep), the output is NOT a flat list of
-per-lane files scattered across each lane's reports/ subdir.
-That would split context maintenance across lanes the
-maintenance pass is supposed to oversee. Instead:
+The default organization for a large sweep is **topic first, lane
+handoff second**:
 
 ```
 reports/<dispatcher-role>/<N>-cross-lane-context-maintenance-<date>/
-  0-frame-and-method.md            (dispatcher: frame, method, lane list)
-  1-<first-lane>.md                (per-lane sub-report)
-  2-<second-lane>.md
+  0-frame-and-method.md            (dispatcher: trigger, scope, method)
+  1-<topic>.md                     (topic aggregation across lanes)
+  2-<topic>.md
   ...
-  N-overview.md                    (dispatcher: synthesis across lanes)
+  N-overview.md                    (synthesis + per-lane handoffs)
 ```
 
 The directory IS the meta-report (no `meta-` prefix). It is
 garbage-collected as one session unit.
 
-### Per-lane sub-report shape
+### Per-topic sub-report shape
 
-Each per-lane sub-report is structured as a **handoff document**
-the agent in that role reads when they do their own next context
-maintenance. The receiving agent applies the recommendations
-within their own lane; the dispatcher does not execute drops in
-other lanes (only in their own).
+Each topic sub-report is structured as a cross-lane aggregation. The
+report may contain lane sections, but the first-order grouping is the
+topic, because stale/forward/migrate/keep is judged by topic-recency
+across lanes.
 
-Standard structure per sub-report:
+Standard structure per topic sub-report:
 
-1. **Inventory** — list of reports in the lane with date and a
-   one-line summary each.
-2. **Topic clusters** — group reports by topic.
-3. **Recency rank per topic** — newest at top; flag what's stale
-   (older than the newest by a meaningful gap, especially when a
-   newer report supersedes substance).
-4. **Drop / forward / migrate / keep recommendation per report**
-   — per the §"Per item, decide" rule.
-5. **Handoff section** — closes with "When you (the agent in
-   this role) do your next context maintenance, the relevant
-   decisions are: …" — concrete pointers to the recommendations
-   above and any cross-cutting context the role's next pass
-   should know.
+1. **Topic arc** — one-paragraph summary of the topic and any major
+   era shift.
+2. **Current canonical surface** — newest reports or permanent docs
+   that remain load-bearing.
+3. **Stale / forward / migrate / keep bands by lane** — per-report
+   recommendations, grouped under the lane that owns the action.
+4. **Landing evidence** — for every stale/drop recommendation, name
+   the successor report or permanent home that absorbed the substance.
+5. **Drop ownership / handoff** — close with concrete lane-owned
+   actions: "When this lane next does maintenance, the relevant
+   actions are: …".
 
-### When to dispatch sub-agents per lane
+### Per-lane handoffs and dispatcher authority
 
-A sweep across more than 4–5 lanes is well-suited to parallel
-sub-agent dispatch (per §"Using agents for the sweep" above) —
-each sub-agent owns one lane's sub-report; the dispatcher
-allocates slot numbers + paths up-front per the meta-report
-discipline in `skills/reporting.md` §"Meta-report directories —
-sub-agent sessions" §"Pre-launch lane allocation".
+The overview gathers the topic reports into per-lane handoffs. The
+receiving agent applies recommendations within its own lane; the
+dispatcher does not execute drops in other lanes. The dispatcher may
+execute only the actions it owns in its own lane, after verifying the
+landing gate.
+
+A per-lane sub-report is still acceptable for a narrow sweep whose
+whole scope is one lane, or when the user specifically asks for a
+lane-by-lane output. Even then, rank reports by topic inside the lane.
+For broad cross-lane maintenance, topic reports are preferred and the
+per-lane view is the synthesized handoff, not the primary structure.
+
+### When to dispatch sub-agents
+
+A sweep across more than 4–5 lanes or more than 3 major topics is
+well-suited to parallel sub-agent dispatch (per §"Using agents for
+the sweep" above). Allocate slot numbers + paths up-front per the
+meta-report discipline in `skills/reporting.md` §"Meta-report
+directories — sub-agent sessions" §"Pre-launch lane allocation".
+Assign sub-agents by topic cluster unless a lane-specific cleanup is
+small enough that lane ownership is the clearer split.
 
 ### Retired lanes — amalgamate, don't list
 
@@ -284,7 +338,23 @@ identifier is folding into).
 
 This applies to all retired lanes: the prior `-assistant`
 variants, the prior `-specialist` variants, and any future lanes
-that retire.
+that retire. Reports whose only live purpose was auditing or
+summarizing a retired-lane target are stale candidates too; keep or
+migrate only their independent design rationale.
+
+## Successor sweeps retire maintenance ledgers
+
+A context-maintenance meta-report is itself a working artifact. It
+retires when a newer sweep covers the same lanes/topics, re-ranks the
+current surface, and re-issues the still-live handoffs. Do not keep two
+live cross-lane sweep directories for the same scope; the newer sweep
+becomes the active ledger, and the older one is dropped by its owning
+lane once its handoffs are either applied or superseded.
+
+This is the same rule as any other report: confirm that the newer sweep
+absorbs the older sweep's live handoffs before dropping. The dispatcher
+still does not delete another lane's prior sweep; it records that lane's
+action in the handoff.
 
 ## Retiring a lane
 
@@ -292,6 +362,12 @@ Per psyche 2026-05-22 (spirit record 213), retiring a lane
 identifier is gated on context maintenance completing on the
 lane's leftover memories. The retired identifier should not free
 until its memories find their right homes.
+
+A cross-lane sweep may surface a lane as a retirement candidate when
+all of its reports are stale, forwarded, migrated, or owned by a
+successor lane. That finding is a recommendation, not the retirement
+itself. Retiring an identifier requires explicit psyche direction and
+the full methodology below.
 
 Methodology when retiring a lane:
 
@@ -349,6 +425,10 @@ standard context maintenance.
   aren't. Both are working surfaces; both follow the same
   forward/migrate/keep/drop rule. A maintenance pass over only
   one is half a maintenance pass.
+- **Keeping successor-superseded maintenance ledgers or deploy-event
+  logs.** Once a newer sweep reissues the live handoffs, or a live
+  system state becomes the baseline, the older ledger/event chain is a
+  stale working artifact unless it still carries unresolved substance.
 - **Over-formatting small thoughts.** A note-line is a note-line.
   Don't promote a half-formed observation to a numbered section or
   a dedicated report. The shape matches the substance.
