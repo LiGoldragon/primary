@@ -1,6 +1,7 @@
 # 235 - Asschema Scalar Pass-Through Implementation
 
 Date: 2026-05-28  
+Updated: 2026-05-29  
 Lane: operator  
 Scope: `schema-next` and `schema-rust-next`
 
@@ -13,7 +14,7 @@ The active scalar floor is:
 
 ```rust
 pub enum TypeReference {
-    Text,
+    String,
     Integer,
     Boolean,
     Plain(Name),
@@ -24,15 +25,19 @@ pub enum TypeReference {
 ```
 
 `Plain(Name)` now means a declared or imported schema type. It no longer
-secretly means scalar when `Name` happens to be `Text` or `Integer`.
+secretly means scalar when `Name` happens to be `String` or `Integer`.
+Per record 1151, `Bool` is not an accepted spelling, and `Text` is not a
+reserved scalar floor right now. A schema may still declare `Text` as a normal
+string newtype when it needs that domain noun.
 
 ## Code Landed
 
-`schema-next` commit `1cbdf6d9` (`schema: add scalar type references to asschema`):
+`schema-next` commit `1cbdf6d9` (`schema: add scalar type references to asschema`),
+followed by commit `d6bf9a9b` (`schema: rename scalar text to string`):
 
-- Added `TypeReference::{Text,Integer,Boolean}`.
+- Added `TypeReference::{String,Integer,Boolean}`.
 - Made bare reference atoms lower through `TypeReference::from_name`, so
-  `Text`, `Integer`, and `Boolean` become scalar data variants.
+  `String`, `Integer`, and `Boolean` become scalar data variants.
 - Reserved scalar names at namespace declaration position.
 - Updated `schemas/root.schema` so the schema-of-schema describes the scalar
   variants directly.
@@ -40,7 +45,8 @@ secretly means scalar when `Name` happens to be `Text` or `Integer`.
   scalar-name rejection.
 
 `schema-rust-next` commit `a8a4f973`
-(`schema-rust: emit scalar asschema references`):
+(`schema-rust: emit scalar asschema references`), followed by commit `51490c2b`
+(`schema-rust: emit string scalar floor`):
 
 - Updated Rust emission to match scalar asschema variants directly.
 - Added generated `Boolean = bool` plus `parse_boolean`.

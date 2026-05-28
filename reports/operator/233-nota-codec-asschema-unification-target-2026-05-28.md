@@ -43,8 +43,8 @@ the root fields are positional.
 ((Record Entry) (Observe Query))
 ((RecordAccepted SemaReceipt) (RecordsObserved RecordSet) (Rejected ErrorReport))
 {
-  Topic [Text]
-  Description [Text]
+  Topic [String]
+  Description [String]
   RecordIdentifier [Integer]
   Entry [Topic Kind Description Magnitude]
   Query [Topic Kind]
@@ -80,19 +80,21 @@ Rust shape:
 pub struct Asschema {
     pub identity: SchemaIdentity,
     pub imports: Vec<ImportDeclaration>,
-    pub roots: Vec<RootDeclaration>,
-    pub declarations: Vec<TypeDeclaration>,
+    pub input: EnumDeclaration,
+    pub output: EnumDeclaration,
+    pub namespace: Vec<TypeDeclaration>,
 }
 
 #[derive(NotaEnum, rkyv::Archive, rkyv::Serialize, rkyv::Deserialize)]
 pub enum TypeDeclaration {
     Struct(StructDeclaration),
     Enum(EnumDeclaration),
+    Newtype(StructDeclaration),
 }
 
 #[derive(NotaEnum, rkyv::Archive, rkyv::Serialize, rkyv::Deserialize)]
 pub enum TypeReference {
-    Text,
+    String,
     Integer,
     Boolean,
     Plain(Name),
@@ -104,7 +106,7 @@ pub enum TypeReference {
 
 The scalar variants are pass-throughs. They are reserved built-ins, not
 user-defined names. That keeps assembled schema from spelling a scalar as
-`Plain(Text)`. `Plain(Name)` is for declared schema types such as `Topic`,
+`Plain(String)`. `Plain(Name)` is for declared schema types such as `Topic`,
 `Entry`, and `RecordSet`.
 
 Asschema NOTA, read against known root type `Asschema`:
@@ -112,25 +114,24 @@ Asschema NOTA, read against known root type `Asschema`:
 ```nota
 ([spirit:lib] [0.1.0])
 []
+(RootEnum Input ((Record (Plain Entry)) (Observe (Plain Query))))
+(RootEnum Output ((RecordAccepted (Plain SemaReceipt)) (RecordsObserved (Plain RecordSet)) (Rejected (Plain ErrorReport))))
 [
-  (RootEnum Input ((Record (Plain Entry)) (Observe (Plain Query))))
-  (RootEnum Output ((RecordAccepted (Plain SemaReceipt)) (RecordsObserved (Plain RecordSet)) (Rejected (Plain ErrorReport))))
-]
-[
-  (Struct (Topic [(text Text)]))
+  (Struct (Topic [(string String)]))
   (Struct (Entry [(topic (Plain Topic)) (kind (Plain Kind)) (description (Plain Description)) (magnitude (Plain Magnitude))]))
   (Struct (RecordSet [(entries (Vector (Plain Entry)))]))
   (Enum (Kind [Decision Principle Correction Clarification Constraint]))
 ]
 ```
 
-Those four root objects are the positional fields of `Asschema`:
+Those five root objects are the positional fields of `Asschema`:
 
 ```text
 field 1: identity      -> ([spirit:lib] [0.1.0])
 field 2: imports       -> []   empty Vec<ImportDeclaration>
-field 3: roots         -> [...]
-field 4: declarations  -> [...]
+field 3: input         -> first root enum
+field 4: output        -> second root enum
+field 5: namespace     -> [...]
 ```
 
 So the second empty `[]` is only "this assembled schema imports no external
@@ -143,7 +144,7 @@ optimizes for humans. Asschema optimizes for exact machine processing.
 Scalar pass-through means the scalar floor is direct:
 
 ```nota
-Text
+String
 Integer
 Boolean
 ```
@@ -151,7 +152,7 @@ Boolean
 A domain type still wraps the scalar with a name when the name matters:
 
 ```nota
-(Struct (Topic [(text Text)]))
+(Struct (Topic [(string String)]))
 ```
 
 Then later references use the named type:
