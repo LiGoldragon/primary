@@ -852,6 +852,15 @@ For Mermaid syntax workarounds (node labels, edge labels,
 reserved-word IDs, Mermaid 8.8.0 safe forms for subgraphs,
 edge labels, and sequence diagrams), see `skills/mermaid.md`.
 
+**Warning — unreadable Mermaid graphs are report failures.** Per
+spirit record 1031, a graph with clipped labels, paragraph-sized
+boxes, sideways scrolling, or too many nodes is not a visual aid; it
+is noise in the report. Fix it before landing the report by applying
+`skills/mermaid.md` §"Total graph size" and §"Label sizing" — split
+large graphs, use short noun labels, manually wrap labels with
+`<br/>`, and keep ordinary node labels within the 24-28 character
+one-line budget or two wrapped lines of 18-24 characters each.
+
 ### Graphs are short and focused
 
 A report graph explains **one relationship or scenario**. Large

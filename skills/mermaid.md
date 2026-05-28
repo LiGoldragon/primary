@@ -3,7 +3,8 @@
 *Mermaid renderer quirks that trip report authors. Node labels
 are quoted strings; edge labels are pipe-delimited. Mermaid 8.8.0
 is stricter than current Mermaid Live in subgraph titles, edge
-Unicode, and sequence-diagram punctuation.*
+Unicode, and sequence-diagram punctuation. Readability is part of
+correctness: a clipped or text-dense graph is a failed graph.*
 
 ## What this skill is for
 
@@ -77,16 +78,86 @@ A 3-node diagram is fine when 3 nodes IS the topology; padding
 to "look more substantial" is the opposite mistake. Match the
 diagram size to the substance, not to a target token count.
 
-## Label sizing — short prose, IDs out of the node
+## Label sizing — short prose, readable boxes, IDs out of the node
 
-Per spirit record 368 (Maximum). Mermaid renderers clip node text
-at the box width; long labels truncate mid-word and the reader
-sees neither the head nor the tail. The cure is upstream: write
-labels short enough to fit.
+Per spirit record 368 (Maximum) and spirit record 1031 (Medium).
+Mermaid renderers clip node text at the box width; long labels
+truncate mid-word and the reader sees neither the head nor the
+tail. The cure is upstream: write labels short enough to fit and
+wrap them deliberately.
 
 **Aim for 2-5 words per node label.** Describe what the node IS —
 a noun phrase that names the concept. The reader scans the
 diagram for topology and concepts, not for IDs.
+
+**Default visible-character budget:**
+
+- one-line node label: **24-28 visible characters**;
+- manually wrapped node label: **2 lines, 18-24 visible characters
+  per line**;
+- total node label after wrapping: usually **45-55 visible
+  characters maximum**;
+- edge label: **1-3 words**.
+
+If a label needs more, the node is doing prose's job. Shorten the
+node and move the detail to the surrounding paragraph, caption, or
+sibling table.
+
+### Node box size and wrapping — use as assist, not permission
+
+Mermaid does not offer a dependable fixed `width` / `height` knob
+for ordinary flowchart nodes across renderers. The useful controls
+are partial:
+
+- `flowchart.wrappingWidth` sets the max text width before markdown
+  node labels wrap in newer Mermaid renderers.
+- `flowchart.padding` increases label-to-shape padding only in the
+  newer experimental rendering path.
+- `classDef roomy padding:18px;` is a practical workaround in many
+  renderers, but still does not promise a fixed box width.
+
+References: Mermaid's Flowchart Diagram Config documents
+`wrappingWidth` as the node text wrapping width and `padding` as
+label/shape padding; Mermaid's Flowchart syntax page documents
+Markdown Strings and automatic wrapping. Community practice also
+uses `classDef` padding as the least-bad box-size workaround.
+
+Cross-renderer-safe form: manually split labels with `<br/>`, then
+add padding only to give the words room:
+
+```mermaid
+flowchart TB
+    schema[".schema document<br/>in NOTA"]:::roomy
+    rust["Rust nouns<br/>schema-rust-next"]:::roomy
+    text["NOTA text projection<br/>to_nota"]:::roomy
+    wire["rkyv binary wire<br/>encode_signal_frame"]:::roomy
+    schema --> rust
+    rust --> text
+    rust --> wire
+    classDef roomy padding:18px;
+```
+
+For current Mermaid renderers that support config blocks, this can
+help, but it does not replace manual wrapping:
+
+````text
+```mermaid
+---
+config:
+  flowchart:
+    wrappingWidth: 260
+    padding: 20
+---
+flowchart TB
+  node["short label<br/>second line"]:::roomy
+  classDef roomy padding:20px;
+```
+````
+
+Before finishing a report, inspect any Mermaid graph in the target
+surface or from a screenshot. If any label clips, truncates, forces
+sideways scrolling, or becomes illegible at the report column width,
+the graph must be rewritten before the report is considered done.
 
 **Disfavour ID-laden tokens inside nodes:**
 
