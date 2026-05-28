@@ -86,7 +86,7 @@ argument rule"). Two accepted shapes:
   ```
 
 The CLI replies on stdout with the daemon's typed `Reply` value as
-NOTA text — `(RecordAccepted (...))`, `(RecordsObserved (...))`,
+NOTA text — `(RecordAccepted ...)`, `(RecordsObserved [...])`,
 `(RequestUnimplemented (...))`, etc. Exit code is nonzero on
 transport, parse, or daemon errors.
 
@@ -171,10 +171,10 @@ choose description-only or with-provenance:
 
 ```sh
 spirit "(Observe Topics)"
-spirit "(Observe (Records (None None DescriptionOnly)))"
+spirit "(Observe (Records (None None SummaryOnly)))"
 spirit "(Observe (Records ((Some spirit) None WithProvenance)))"
-spirit "(Observe (Records (None (Some Decision) DescriptionOnly)))"
-spirit "(Observe (RecordIdentifiers ((Exact 1053) DescriptionOnly)))"
+spirit "(Observe (Records (None (Some Decision) SummaryOnly)))"
+spirit "(Observe (RecordIdentifiers ((Exact 1053) SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Range (1048 1053)) WithProvenance)))"
 ```
 
