@@ -4,7 +4,7 @@ This operator report is retired.
 
 The durable idea remains: schema macros must be data, not hidden parser
 branches. The concrete examples in the earlier report predate the current
-native NOTA collection/reference syntax and the current raw-core `.schema`
+typed NOTA composite-reference syntax and the current raw-core `.schema`
 reader. To avoid carrying stale syntax forward, the body has been replaced.
 
 Current references:

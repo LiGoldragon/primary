@@ -106,7 +106,7 @@ report:
   NexusRequest ((PushSignal PushSignal) (PushSemaResult PushSemaResult) ResolveMail)
   SemaRequest ((WriteEntry WriteEntry) (ReadEntries ReadEntries))
   RuntimeEvent ((MailSent MailSent) (MessageCommitted MessageCommitted))
-  RecordSet [(records [Entry]) (byTopic {Topic RecordIdentifier})]
+  RecordSet [(records (Vec Entry)) (byTopic (Map (Topic RecordIdentifier)))]
 }
 ```
 
@@ -123,7 +123,7 @@ nix flake check --print-build-logs
 ```
 
 Commit `7244e8c1` (schema-rust fixture cleanup) removed the old
-assembled-schema fixture comparisons. Commit `38114fc2` (`schema-rust: use
-native schema collection syntax`) updated schema fixtures, regenerated Rust
-snapshots, and added Nix guards against obsolete collection macro forms and
-same-name star suffix syntax.
+assembled-schema fixture comparisons. Commit `38114fc2` was the temporary
+native-collection pass; the current schema direction supersedes bracket
+collection references with typed NOTA datatype objects such as `(Vec Entry)`
+and `(Map (Topic RecordIdentifier))`.

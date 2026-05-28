@@ -28,10 +28,10 @@ The current large fixture shape is:
  (Rejected Rejection))
 {
   Topic [Text]
-  Topics [[Topic]]
+  Topics [(Vec Topic)]
   Kind (Decision Principle Correction Clarification)
-  Query [Topics (kinds [Kind]) (limit (Optional Integer))]
-  RecordSet [(records [Entry]) (byTopic {Topic RecordIdentifier})]
+  Query [Topics (kinds (Vec Kind)) (limit (Optional Integer))]
+  RecordSet [(records (Vec Entry)) (byTopic (Map (Topic RecordIdentifier)))]
   Rejection [RejectionReason Description]
 }
 ```
@@ -58,16 +58,17 @@ The declaration body is structural:
 - `(Record Entry)` is a data-carrying variant.
 - `Rejected` is a unit variant.
 
-Type-reference positions use native NOTA collection structure:
+Type-reference positions use typed NOTA datatype objects:
 
 ```nota
-[Kind]
-{Topic RecordIdentifier}
+(Vec Kind)
+(Map (Topic RecordIdentifier))
 (Optional Integer)
 ```
 
-These lower to `Vector`, `Map`, and `Optional` references. They are native NOTA
-structure, not collection macro calls.
+These lower to `Vector`, `Map`, and `Optional` references. Square brackets are
+still raw NOTA vector structure and schema struct field lists; they are not the
+surface syntax for declaring a `Vec` type.
 
 ## Raw Core Schema
 
@@ -84,7 +85,7 @@ The raw reader preserves NOTA delimiter objects:
 ```nota
 {
   RawDatatype (| RawDatatype RawAtom RawText RawRecord RawVector RawKeyValue |)
-  RawDatatypeList [RawDatatype]
+  RawDatatypeList [(Vec RawDatatype)]
   RawDatatypeMap { key Name value RawDatatype }
   OptionalTopic (Optional Topic)
 }
@@ -100,12 +101,6 @@ can bootstrap the schema reader.
 ```rust
 match block {
     Block::Atom(_) => Ok(Self::Plain(block.schema_name()?)),
-    Block::Delimited { delimiter: Delimiter::SquareBracket, root_objects, .. } => {
-        Self::from_vector_objects(root_objects, registry, context)
-    }
-    Block::Delimited { delimiter: Delimiter::Brace, root_objects, .. } => {
-        Self::from_map_objects(root_objects, registry, context)
-    }
     Block::Delimited { delimiter: Delimiter::Parenthesis, root_objects, .. } => {
         Self::from_parenthesis_objects(block, root_objects, registry, context)
     }
@@ -117,6 +112,12 @@ The old built-in collection macro calls were removed from the default macro
 registry. User-declared type-reference macros can still be registered and
 dispatched through the registry at type-reference positions.
 
+The new `SyntaxSchema` layer sits under this macro engine. It reads a real
+`.schema` through `RawSchemaFile`, then turns raw datatype objects into typed
+syntax declarations. It has tests proving that `[String]` at declaration
+position is a struct/newtype field list, while `(Vec Topic)` is the vector
+type reference.
+
 ## Current Proof
 
 Commands passed in `/git/github.com/LiGoldragon/schema-next`:
@@ -127,6 +128,6 @@ nix flake check --print-build-logs
 ```
 
 Commit `206ef8f3` (schema fixture cleanup) removed checked-in assembled-schema
-text fixtures. Commit `0c148f99` (`schema: use
-native nota collection references`) moved collection references onto native
-NOTA structure and added Nix guards against the old forms.
+text fixtures. Commit `0c148f99` was the temporary native-collection pass; the
+current branch supersedes its `[T]` vector-reference rule with typed NOTA
+objects such as `(Vec T)`.
