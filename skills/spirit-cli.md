@@ -166,8 +166,12 @@ layer — any new topic word a `Record` uses is registered. No
 pre-declared enum of topics; pick the topic words that fit, reuse
 existing words when they cover the substance.
 
-**Observe records** — query the store; filter by topic and/or kind;
-choose description-only or with-provenance:
+**Observe records** — query the store. `Records` filters by topic
+and/or kind. `RecordIdentifiers` selects by numeric identifier:
+`Exact` selects one record; `Range` is inclusive, so `(Range (1050
+1060))` returns records 1050 through 1060 when present. Use
+`SummaryOnly` for compact summaries and `WithProvenance` when you
+need daemon-stamped date/time:
 
 ```sh
 spirit "(Observe Topics)"
@@ -175,7 +179,8 @@ spirit "(Observe (Records (None None SummaryOnly)))"
 spirit "(Observe (Records ((Some spirit) None WithProvenance)))"
 spirit "(Observe (Records (None (Some Decision) SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Exact 1053) SummaryOnly)))"
-spirit "(Observe (RecordIdentifiers ((Range (1048 1053)) WithProvenance)))"
+spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) SummaryOnly)))"
+spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) WithProvenance)))"
 ```
 
 **Submit a free-form statement** — `State` lowers to an `Assert`

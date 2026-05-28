@@ -51,6 +51,23 @@ on its own authority; the agent asks the psyche
 (`skills/intent-clarification.md`). The protection is load-bearing
 against agent hallucination passing as psyche intent.
 
+## Current negation shape
+
+Negation is a specific supersession: the psyche says a prior record
+is invalid, not merely refined. Today Spirit has no typed
+`Negates`/`Supersedes` relation, so the operative shape is:
+
+1. Observe the prior record by identifier.
+2. Ask the psyche to confirm the old record is negated.
+3. Record a new `Correction` or `Decision` that names the old
+   Spirit identifier and states the replacement truth.
+
+Use wording like: `Spirit record 1053 is negated; the correct
+intent is ...`. Do not delete the old record. Until typed
+supersession lands, active truth is carried by the newer explicit
+psyche correction plus any maintenance report or bead that tracks
+the supersession.
+
 ## Verification — does the entry still apply?
 
 Periodically (when sweeping a topic, or when an entry's substance
