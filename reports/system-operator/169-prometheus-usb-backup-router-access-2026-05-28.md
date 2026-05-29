@@ -24,6 +24,7 @@ Pushed commits:
 - `lojix-cli` `4c66b8a6fa55` — exposes the generated cluster sops files needed by CriomOS.
 - `goldragon` `0298d216ff62` — authors Prometheus' `CRIOM Backup` interface and encrypted password.
 - `CriomOS` `c250d9a6ce8e` — bridges USB Ethernet driver families, adds an independent backup hostapd service, and prevents automatic router-service restart on switch.
+- `CriomOS` `15f1a52c05ff` — changes backup hostapd from `multi-user.target` startup to device-unit startup, so absent USB Wi-Fi does not make boot degraded and plugging it in later starts the backup AP.
 - `CriomOS-home` `0828935ee506` — pins the new `lojix-cli` in the user profile.
 
 ## Verification
@@ -34,7 +35,7 @@ Passed:
 - `lojix-cli`: `cargo test` and remote `nix flake check github:LiGoldragon/lojix-cli --refresh`.
 - `CriomOS-home`: local and remote `nix flake check`; `HomeOnly ... Activate` completed.
 - Prometheus runtime: `hostapd-backup-wireless.service` active; AP enabled; both USB Ethernet links enslaved to `br-lan`.
-- CriomOS router module: targeted local Nix evaluation with generated Prometheus horizon + secrets confirmed the backup hostapd service and `cdc_ncm` USB Ethernet matching.
+- CriomOS router module: targeted Nix evaluation with generated Prometheus horizon + secrets confirmed the backup hostapd service is `wantedBy`/`bindsTo` `sys-subsystem-net-devices-wlp199s0f0u4.device`, and USB Ethernet matching carries `Bridge = br-lan`, `ConfigureWithoutCarrier = true`, `RequiredForOnline = no`, and `cdc_ncm`.
 
 ## Deployment blocker
 
