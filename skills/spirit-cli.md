@@ -154,7 +154,7 @@ log dense and searchable rather than verbose and lossy:
 ```sh
 spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude>))"
 # Kind ∈ { Decision Principle Correction Clarification Constraint }
-# Magnitude ∈ { Minimum VeryLow Low Medium High VeryHigh Maximum }
+# Magnitude ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
 ```
 
 The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
@@ -183,11 +183,12 @@ selection, optional kind, and certainty. Topic selection is `(Any [])`
 for no topic filter, `(Partial [a b])` for records matching one or
 more requested topics, and `(Full [a b])` for records matching every
 requested topic. Certainty selection is `Any` for no certainty filter,
-`(Exact Minimum)` for records at one certainty, `(AtMost Low)` for a
+`(Exact Zero)` for removal candidates, `(AtMost Low)` for a
 low-certainty review band, or `(AtLeast High)` for high-certainty
-records. Removal-candidate review is the exact `Minimum` certainty
-query. The old three-field record query still decodes as compatibility
-input, but agents should emit the four-field shape.
+records. `Minimum` remains weak but real intent; do not use it as the
+removal-candidate marker. The old three-field record query still
+decodes as compatibility input, but agents should emit the four-field
+shape.
 `RecordIdentifiers` selects by numeric identifier: `Exact` selects one
 record; `Range` is inclusive, so `(Range (1050 1060))` returns records
 1050 through 1060 when present. Use `SummaryOnly` for compact summaries
@@ -199,7 +200,7 @@ spirit "(Observe (Records ((Any []) None Any SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit search]) None Any SummaryOnly)))"
 spirit "(Observe (Records ((Full [spirit search]) None Any WithProvenance)))"
 spirit "(Observe (Records ((Any []) (Some Decision) Any SummaryOnly)))"
-spirit "(Observe (Records ((Any []) None (Exact Minimum) WithProvenance)))"
+spirit "(Observe (Records ((Any []) None (Exact Zero) WithProvenance)))"
 spirit "(Observe (Records ((Any []) None (AtMost Low) SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Exact 1053) SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) SummaryOnly)))"
