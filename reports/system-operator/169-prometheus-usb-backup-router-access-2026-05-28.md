@@ -22,7 +22,8 @@ Pushed commits:
 
 - `horizon-rs` `bb3e72a17dca` — adds typed backup wireless data under `RouterInterfaces`.
 - `lojix-cli` `4c66b8a6fa55` — exposes the generated cluster sops files needed by CriomOS.
-- `goldragon` `0298d216ff62` — authors Prometheus' `CRIOM Backup` interface and encrypted password.
+- `goldragon` `0298d216ff62` — authors Prometheus' initial backup wireless interface and encrypted password.
+- `goldragon` `dd2c2494d69b` — renames the backup SSID to `criome-backup`.
 - `CriomOS` `c250d9a6ce8e` — bridges USB Ethernet driver families, adds an independent backup hostapd service, and prevents automatic router-service restart on switch.
 - `CriomOS` `15f1a52c05ff` — changes backup hostapd from `multi-user.target` startup to device-unit startup, so absent USB Wi-Fi does not make boot degraded and plugging it in later starts the backup AP.
 - `CriomOS` `0f5428883f83` — adds an explicit udev `SYSTEMD_WANTS` trigger for the backup Wi-Fi interface, strengthening late-plug startup after an absent-at-boot device.
@@ -37,11 +38,12 @@ Passed:
 - `CriomOS-home`: local and remote `nix flake check`; `HomeOnly ... Activate` completed.
 - Prometheus runtime: `hostapd-backup-wireless.service` active; AP enabled; both USB Ethernet links enslaved to `br-lan`.
 - CriomOS router module: targeted Nix evaluation with generated Prometheus horizon + secrets confirmed the backup hostapd service is `wantedBy`/`bindsTo` `sys-subsystem-net-devices-wlp199s0f0u4.device`, udev has a `SYSTEMD_WANTS` trigger for `hostapd-backup-wireless.service`, and USB Ethernet matching carries `Bridge = br-lan`, `ConfigureWithoutCarrier = true`, `RequiredForOnline = no`, and `cdc_ncm`.
-- Prometheus BootOnce deploy: built on Prometheus with `lojix-cli` builder `(Some prometheus)` and staged generation 45 as the one-shot boot entry. Current and persistent default entry remain generation 40.
+- Prometheus BootOnce deploy: built on Prometheus with `lojix-cli` builder `(Some prometheus)` and staged generation 45 as the one-shot boot entry. Reboot reached generation 45 successfully; primary SSID `goldragon.criome` worked from the local USB ASUS Wi-Fi client.
 - Prometheus staged LLM surface: generation 45 includes the Gemma 4 model IDs `gemma-4-31b` and `gemma-4-26b-a4b` alongside the existing model set.
+- Prometheus follow-up BootOnce deploy: after the SSID correction, generation 46 is staged as the one-shot boot entry with backup SSID `criome-backup`; current and default entry are generation 45.
 
 ## Deployment blocker
 
 The earlier full Prometheus `FullOs ... Eval` through local evaluation failed while evaluating the existing `prometheus-llama-router.service` model closure. The follow-up deploy used Prometheus itself as the builder, which allowed the model-heavy closure to evaluate/build where the model store state exists.
 
-The live backup access is active now through runtime commands. The durable OS generation is staged as BootOnce, not switched live. It will be exercised on the next reboot; if it fails, systemd-boot should fall back to the persistent generation 40 default after the one-shot attempt is consumed.
+The live backup access is active. Generation 45 has been exercised and is the current/default boot entry after the successful reboot. Generation 46 is staged as the next BootOnce to test the backup SSID rename to `criome-backup`; if it fails, systemd-boot should fall back to generation 45 after the one-shot attempt is consumed.
