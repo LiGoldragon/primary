@@ -144,6 +144,53 @@ If it carries intent in any of the five kinds — and only what the
 psyche actually stated, not what could be inferred from it —
 record it.
 
+## The pre-capture gate — the after-the-task test
+
+The classification rule above is known and still gets violated:
+agents over-capture because they log the prompt's VERB instead of
+testing the SENTENCE. This gate is the keystroke check. Before
+every `spirit "(Record …)"`, apply the test to the exact sentence
+you are about to log:
+
+> *Erase the current task. Is this sentence still meaningful and
+> still guiding future work?*
+
+If it dies with the task, it is a working order — do not log it; it
+goes in the session task list or a bead. The shapes that keep
+slipping through (all working orders, none intent):
+
+| Logged as Decision/Constraint | Why it fails the test |
+|---|---|
+| "Create a report on X and test it" | dead once the report exists |
+| "Dispatch a subagent to finish X" | dead once X is finished |
+| "Audit Y and write up the findings" | dead once the audit lands |
+| "Operator: integrate these branches" | dead once integrated |
+| "Psyche asks this lane to review Z" | dead once reviewed |
+
+Contrast — these pass (still guide after any task): "schema is the
+source of truth" (Principle), "the Plane is a data-carrying enum"
+(Decision), "working orders aren't intent" (Correction). The
+pattern: **durable intent describes what the system IS or how to
+work; a working order describes what to do next.** Capture the
+first; the second is task state. A task prompt that carries no
+durable want logs nothing — a no-capture turn is correct, not a
+miss.
+
+## When a working order slips in anyway
+
+Deployed Spirit now supports explicit removal (records 1103/1189),
+so a mis-logged record can be **removed** on psyche authority — not
+only flagged. Log a short `Correction` naming the record number and
+that it was an over-capture, pointing to where the durable intent
+(if any) actually lives; then remove the mis-log once the psyche
+authorizes, **capturing its full text and provenance first** per
+`skills/intent-maintenance.md` §"Removing a record — tombstone
+first". When removability is uncertain, flag rather than remove
+(record 1103: over-removal is worse than under-removal). Do not
+spree-flag or spree-remove old mis-logs — act as noticed and rely on
+the pre-capture gate above to stop new ones; a cleanup spree would
+itself churn the log being kept lean.
+
 ## Record shape
 
 The deployed Spirit CLI accepts a NOTA `Operation` argument. For

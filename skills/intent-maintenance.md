@@ -68,6 +68,42 @@ supersession lands, active truth is carried by the newer explicit
 psyche correction plus any maintenance report or bead that tracks
 the supersession.
 
+## Removing a record — tombstone first
+
+Deployed Spirit supports explicit removal — `spirit "(Remove N)"`,
+psyche-authorized (records 1103/1189). This is for records that
+should **not remain at all**: mis-logged working orders, or
+fully-stale records whose substance is rehomed. When lineage should
+stay visible instead, supersede with a `Correction` and keep the
+record (see "Current negation shape" above) — do not remove it.
+
+Removal is **destructive and irreversible.** The record leaves the
+store, and redb's copy-on-write page reuse overwrites its bytes
+within hours (see `sema` ARCHITECTURE §"Deletion durability" and
+`reports/system-designer/47`). There is no undelete.
+
+So **capture before you remove.** Before any `(Remove N)`, record the
+full text and daemon-stamped provenance into the removing agent's
+report:
+
+```sh
+spirit "(Observe (RecordIdentifiers ((Exact N) WithProvenance)))"
+```
+
+Paste the result into a tombstone appendix (the model is
+`reports/system-designer/45` §"Appendix — full text of removed
+records"); the report then IS the provenance of what was removed.
+The 1157–1175 loss (`reports/system-designer/46`) happened precisely
+because records were removed without this step; report 45's 19
+survive because they were tombstoned first.
+
+Stay conservative: when removability is uncertain, flag rather than
+remove (record 1103 — over-removal is worse than under-removal). The
+forthcoming soft-delete path — lowering a record's certainty to
+`Zero` to mark a `removalCandidate` (records 1192/1215) — will make
+hard removal rare, but the tombstone still guards the final hard
+delete.
+
 ## Verification — does the entry still apply?
 
 Periodically (when sweeping a topic, or when an entry's substance
