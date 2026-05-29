@@ -134,6 +134,9 @@
 		},
 		{
 			"path": "/git/github.com/LiGoldragon/persona-terminal"
+		},
+		{
+			"path": "../../../git/github.com/LiGoldragon/schema-next"
 		}
 	],
 	"settings": {}

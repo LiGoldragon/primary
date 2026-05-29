@@ -43,6 +43,8 @@
     [Engine logic = enum-vs-enum cross-product matching. Name the contact point — nested match or trait — not scattered ad-hoc arms, string predicates, or boolean flag soup.])
   (Craft naming skills/naming.md Keystroke
     [Full English words. The offender table.])
+  (Craft secrets skills/secrets.md Keystroke
+    [An agent never sees a secret value. gopass wraps env-vars in the user session; sops-nix carries secrets to cluster hosts; bridge stores ciphertext-to-ciphertext; verify by length and exit code, never by reading.])
   (Craft workspace-vocabulary skills/workspace-vocabulary.md Topic
     [Canonical glossary for load-bearing workspace terms. main/next, Persona, engine_manager — predecessors, scope, when-to-use.])
   (Craft beauty skills/beauty.md Keystroke

@@ -270,7 +270,14 @@ yet — those land when the role's shape settles.
   in chat — read the psyche's message, identify every intent
   statement (Decision / Principle / Correction / Clarification /
   Constraint), and capture each through the deployed Spirit CLI
-  (`skills/spirit-cli.md`). Do not append to `intent/*.nota` during
+  (`skills/spirit-cli.md`). **Working orders are NOT intent** — a
+  task directive ("audit X", "dispatch a subagent", "integrate
+  these branches") that dies when the task completes goes in the
+  task list or a bead, not Spirit. Capture only the durable intent
+  WITHIN a prompt, not the do-the-task part; a no-capture turn is
+  normal. The test: would the record still guide after the task is
+  done? Full discipline: `skills/intent-log.md` §"Working orders
+  are not intent". Do not append to `intent/*.nota` during
   normal work. If Spirit is unavailable, report that as a blocker
   instead of silently reviving the legacy file substrate. Everything
   else the prompt asked for derives from intent and is done *after*

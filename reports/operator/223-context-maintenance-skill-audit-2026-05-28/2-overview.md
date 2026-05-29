@@ -1,10 +1,10 @@
 # Overview — skill update needed
 
-`skills/context-maintenance.md` already exists and captures most of the
+`skills/context-maintenance.md` already existed and captured most of the
 discipline system-designer used in the cross-lane sweep. The requested
-new skill is therefore not a create-from-zero task. It is an update task,
-currently blocked for this lane by `cloud-operator`'s live claim on the
-skill file.
+new skill was therefore not a create-from-zero task. It was an update
+task. At audit time, `cloud-operator` held the skill-file claim; after
+this read-only audit, that lane updated the skill and released the lock.
 
 ## Recommended Skill Patch
 
@@ -49,10 +49,12 @@ The section named “When to dispatch sub-agents per lane” should become
 is the default for cross-lane sweeps; lane ownership is reserved for
 explicitly lane-local maintenance or lane retirement.
 
-## Current Blocker
+## Post-Audit State
 
-`cloud-operator` holds the exact files needed for the edit. I did not
-modify `skills/context-maintenance.md` because that would violate the
-workspace claim discipline. The lock holder can apply the patch direction
-above directly.
-
+`cloud-operator` applied the key update in `skills/context-maintenance.md`:
+the cross-lane output is now topic-first, per-topic reports carry
+lane-owned handoffs, stale/drop entries require landing evidence, and
+subagents are assigned by topic cluster by default. The stale blocker is
+therefore gone. This report remains as the operator audit trail for the
+subagent pass and the coordination decision not to edit through another
+lane's claim.

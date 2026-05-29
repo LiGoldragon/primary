@@ -199,6 +199,43 @@ a `flake.nix`, leave `flake = false` off; you want its outputs.
 | `git+ssh://`, `git+https://` | Repos not on github | Same shape as `github:` but explicit transport. |
 | `git+file:///...` | **Forbidden** in committed flakes | Use `--override-input path:...` for local iteration instead. |
 
+## Build, run, and deploy from the remote — never a local checkout
+
+When you `nix build`, `nix run`, or **deploy** a workspace repo, name
+the **remote** `github:<owner>/<repo>` (optionally `?ref=<branch>` or a
+pinned rev) — never a local `path:/git/...` or `git+file://` checkout.
+
+```sh
+# Right — commit + push, then build/run/deploy the pushed ref
+jj git push --bookmark my-feature --allow-new
+nix build github:<owner>/<repo>/my-feature
+nix run   github:<owner>/<repo> -- <args>
+
+# Wrong — builds your LOCAL, UNCOMMITTED working tree
+nix build path:/git/github.com/<owner>/<repo>
+nix run   path:/git/github.com/<owner>/<repo> -- <args>
+```
+
+Why: a `path:` build consumes your **uncommitted working tree**. What
+you build, ship, or deploy then depends on local state that exists on
+no other machine and vanishes at the next edit — not reproducible, and
+impossible to hand off. Anyone (or the cluster) asked to reproduce or
+take over the work cannot, because the inputs only ever lived in your
+checkout. The discipline costs one extra step: **commit and push
+first, then build from the remote.**
+
+This matters most for **deploys**: a cluster deploy must build from a
+pushed ref so the deployed closure is reproducible and the deploy can
+be re-run or handed to another operator. Deploying from a local
+checkout means the deployment can never be reproduced — and if you only
+reach for `path:` because the change is uncommitted, that is the signal
+to commit and push it, not to bypass the remote.
+
+The one sanctioned local-path use is **fast inner-loop iteration** via
+`--override-input` against a committed `github:` flake (see §"Iterating
+against a local clone") — and even there, you commit and push before
+anything is built for sharing or deploy.
+
 ## Lock-side pinning
 
 Keep `flake.nix` generic; record the exact rev in

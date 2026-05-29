@@ -277,6 +277,22 @@ homes: **sema** in storage, **signal** on the wire. NOTA is the text
 projection on top. The vocabulary closes the loop:
 **schema specifies, signal moves, sema holds.**
 
+The `.schema`/NOTA pair is a **specification language more specific
+than Rust** — Rust mixes data shape with derives, trait impls,
+visibility, and validation; a `.schema` declaration is JUST the
+structural truth (`Entry [Topics Kind Description Magnitude]`), and
+the noisy-but-mechanical Rust + rkyv codec + NOTA codec EMIT from it.
+This is the same reason CapnProto exists as a separate language from
+C++. Schema is a **superset of CapnProto-style declaration** with
+three additions: a module system (named imports/exports as the
+document's first position), a macro system (extensible type-
+declaration vocabulary, where macros are variants in the same
+namespace as core types), and shape-driven node-type matching
+(`(Name …)` resolves by delimiter/shape/count/position). NOTA is the
+text view of the portable rkyv format's specification; the binary it
+specifies appears in two contexts — SEMA at rest and signal in
+transit (psyche 2026-05-26, records 839-844).
+
 Authors write from the point of view of **NEXT**; **MAIN** is the
 published baseline (imported as comparison); **PREVIOUS** or **LAST**
 is the prior iteration. The same vocabulary applies wherever a
