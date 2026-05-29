@@ -177,7 +177,8 @@ layer — any new topic word a `Record` uses is registered. No
 pre-declared enum of topics; pick the topic words that fit, reuse
 existing words when they cover the substance.
 
-**Observe records** — query the store. `Records` filters by topic
+**Observe records** — query the store. This is the live production
+`Spirit 0.3.0` topic-selection shape. `Records` filters by topic
 selection and/or kind. Topic selection is `(Any [])` for no topic
 filter, `(Partial [a b])` for records matching one or more requested
 topics, and `(Full [a b])` for records matching every requested topic.
