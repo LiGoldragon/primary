@@ -32,6 +32,26 @@ sed -n '1,120p' /etc/nix/machines
 Do not search the Nix store for configuration. If a value is Nix-controlled,
 inspect the source checkout, evaluate the option, or ask the Nix daemon.
 
+## Push first; Nix from github
+
+For workspace repos, the normal build/check/deploy witness is a pushed flake
+reference, not the local checkout. Commit the work, move the appropriate
+bookmark (usually `main` for operator-owned integration work), push it, then run
+Nix against `github:<owner>/<repo>/main` or another pushed ref with `--refresh`.
+
+```sh
+jj describe -m '<message>'
+jj bookmark set main -r @
+jj git push --bookmark main
+nix build --refresh --no-link --print-out-paths \
+  github:LiGoldragon/CriomOS-home/main#homeConfigurations.li.activationPackage
+```
+
+Local checkout evaluation is for inner-loop diagnosis only. It is not evidence
+that another machine can reproduce the result, and it is not a deploy surface.
+If a build is slow or needs a remote builder, keep the same rule: push first,
+then add remote-builder options to the `github:` installable.
+
 ## Remote builder smoke test
 
 The active host configuration exposes the remote builder through the Nix
