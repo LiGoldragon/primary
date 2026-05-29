@@ -25,6 +25,7 @@ Pushed commits:
 - `goldragon` `0298d216ff62` — authors Prometheus' `CRIOM Backup` interface and encrypted password.
 - `CriomOS` `c250d9a6ce8e` — bridges USB Ethernet driver families, adds an independent backup hostapd service, and prevents automatic router-service restart on switch.
 - `CriomOS` `15f1a52c05ff` — changes backup hostapd from `multi-user.target` startup to device-unit startup, so absent USB Wi-Fi does not make boot degraded and plugging it in later starts the backup AP.
+- `CriomOS` `0f5428883f83` — adds an explicit udev `SYSTEMD_WANTS` trigger for the backup Wi-Fi interface, strengthening late-plug startup after an absent-at-boot device.
 - `CriomOS-home` `0828935ee506` — pins the new `lojix-cli` in the user profile.
 
 ## Verification
@@ -35,10 +36,12 @@ Passed:
 - `lojix-cli`: `cargo test` and remote `nix flake check github:LiGoldragon/lojix-cli --refresh`.
 - `CriomOS-home`: local and remote `nix flake check`; `HomeOnly ... Activate` completed.
 - Prometheus runtime: `hostapd-backup-wireless.service` active; AP enabled; both USB Ethernet links enslaved to `br-lan`.
-- CriomOS router module: targeted Nix evaluation with generated Prometheus horizon + secrets confirmed the backup hostapd service is `wantedBy`/`bindsTo` `sys-subsystem-net-devices-wlp199s0f0u4.device`, and USB Ethernet matching carries `Bridge = br-lan`, `ConfigureWithoutCarrier = true`, `RequiredForOnline = no`, and `cdc_ncm`.
+- CriomOS router module: targeted Nix evaluation with generated Prometheus horizon + secrets confirmed the backup hostapd service is `wantedBy`/`bindsTo` `sys-subsystem-net-devices-wlp199s0f0u4.device`, udev has a `SYSTEMD_WANTS` trigger for `hostapd-backup-wireless.service`, and USB Ethernet matching carries `Bridge = br-lan`, `ConfigureWithoutCarrier = true`, `RequiredForOnline = no`, and `cdc_ncm`.
+- Prometheus BootOnce deploy: built on Prometheus with `lojix-cli` builder `(Some prometheus)` and staged generation 45 as the one-shot boot entry. Current and persistent default entry remain generation 40.
+- Prometheus staged LLM surface: generation 45 includes the Gemma 4 model IDs `gemma-4-31b` and `gemma-4-26b-a4b` alongside the existing model set.
 
 ## Deployment blocker
 
-A full Prometheus `FullOs ... Eval` through `lojix-cli` still fails before build/activation while evaluating the existing `prometheus-llama-router.service`. The failing surface is the already-known large-model fixed-output derivation reference problem, not the router backup changes. Because of that, I did not stage a new boot generation or BootOnce for Prometheus.
+The earlier full Prometheus `FullOs ... Eval` through local evaluation failed while evaluating the existing `prometheus-llama-router.service` model closure. The follow-up deploy used Prometheus itself as the builder, which allowed the model-heavy closure to evaluate/build where the model store state exists.
 
-The live backup access is therefore active now through runtime commands, and the durable code/data is pushed, but the durable OS generation is not deployed until the LLM model derivation issue is fixed or bypassed.
+The live backup access is active now through runtime commands. The durable OS generation is staged as BootOnce, not switched live. It will be exercised on the next reboot; if it fails, systemd-boot should fall back to the persistent generation 40 default after the one-shot attempt is consumed.
