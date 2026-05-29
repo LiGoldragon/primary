@@ -8,8 +8,8 @@ The psyche asked to move into production CriomOS work and use the newly connecte
 
 Prometheus now has the USB devices active as backup access paths in the running system:
 
-- USB Wi-Fi `wlp199s0f0u4` is running as an access point with SSID `CRIOM Backup` on 2.4 GHz channel 11.
-- Primary router Wi-Fi `wlp195s0` remains the existing `criome` AP on channel 6.
+- USB Wi-Fi `wlp199s0f0u4` is running as an access point with SSID `criome-backup` on 2.4 GHz channel 11.
+- Primary router Wi-Fi `wlp195s0` is running the primary AP `goldragon.criome` on channel 6.
 - USB Ethernet `enp197s0f4u1c2` is attached to `br-lan`.
 - USB Ethernet `enp199s0f0u2` is attached to `br-lan`.
 - `br-lan` remains the shared LAN bridge with the existing router DHCP/DNS/NAT path.
@@ -40,10 +40,11 @@ Passed:
 - CriomOS router module: targeted Nix evaluation with generated Prometheus horizon + secrets confirmed the backup hostapd service is `wantedBy`/`bindsTo` `sys-subsystem-net-devices-wlp199s0f0u4.device`, udev has a `SYSTEMD_WANTS` trigger for `hostapd-backup-wireless.service`, and USB Ethernet matching carries `Bridge = br-lan`, `ConfigureWithoutCarrier = true`, `RequiredForOnline = no`, and `cdc_ncm`.
 - Prometheus BootOnce deploy: built on Prometheus with `lojix-cli` builder `(Some prometheus)` and staged generation 45 as the one-shot boot entry. Reboot reached generation 45 successfully; primary SSID `goldragon.criome` worked from the local USB ASUS Wi-Fi client.
 - Prometheus staged LLM surface: generation 45 includes the Gemma 4 model IDs `gemma-4-31b` and `gemma-4-26b-a4b` alongside the existing model set.
-- Prometheus follow-up BootOnce deploy: after the SSID correction, generation 46 is staged as the one-shot boot entry with backup SSID `criome-backup`; current and default entry are generation 45.
+- Prometheus follow-up BootOnce deploy: after the SSID correction, generation 46 booted successfully with backup SSID `criome-backup`.
+- Prometheus live promotion: generation 46 was promoted with a durable transient systemd `switch-to-configuration switch` launch plus a transient `bootctl set-default`; current and persistent default entry are now generation 46.
 
 ## Deployment blocker
 
 The earlier full Prometheus `FullOs ... Eval` through local evaluation failed while evaluating the existing `prometheus-llama-router.service` model closure. The follow-up deploy used Prometheus itself as the builder, which allowed the model-heavy closure to evaluate/build where the model store state exists.
 
-The live backup access is active. Generation 45 has been exercised and is the current/default boot entry after the successful reboot. Generation 46 is staged as the next BootOnce to test the backup SSID rename to `criome-backup`; if it fails, systemd-boot should fall back to generation 45 after the one-shot attempt is consumed.
+The live backup access is active. Generation 46 has been exercised and promoted to the persistent default after the successful reboot. The promotion commands were launched as transient systemd units so SSH or Wi-Fi reconnection during activation would not kill the switch operation.
