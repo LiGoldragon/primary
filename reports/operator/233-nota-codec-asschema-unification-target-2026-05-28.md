@@ -67,6 +67,13 @@ Important delimiter meanings:
 - `((Record Entry) ...)` is an enum body at a known root position. `Record` is
   a data-carrying variant whose payload type is `Entry`.
 
+The type names in type-reference position are Schema vocabulary, not NOTA
+keywords. NOTA owns the delimiter/value substrate: vectors are written as
+`[]`, maps as `{}`, absence as `None`, and presence as `(Some value)`. Schema
+owns the authored type-name vocabulary over that substrate: `String`,
+`Integer`, `Boolean`, `Vec`, `Optional`, `Map`, and future scalar/composite
+names.
+
 ## Assembled Schema Data
 
 The assembled schema is not "code in disguise." It is normal serializable data.

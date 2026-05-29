@@ -27,6 +27,16 @@ Roots are declared only at the schema root position. Nesting does not add more
 roots to a schema; nested things are namespace datatypes used by roots.
 ```
 
+The follow-up composite/scalar boundary decision landed as record 1156:
+
+```text
+NOTA owns raw delimiter structure and serialization shapes, plus the value
+literal None with present values as (Some x). Schema owns the entire type-name
+vocabulary: scalar names such as String, Integer, Boolean, and future scalar
+names, and composite names such as Vec, Optional, Map, and future composite
+names.
+```
+
 Those two are follow-on syntax constraints. I did not mix the full pipe-family
 declaration migration into this scalar rename because the repo currently has a
 large plain-bracket lowering surface and that change deserves its own coherent
@@ -101,12 +111,16 @@ Important proof points:
 
 ## Next Syntax Pass
 
-The next implementation pass should address records 1153 and 1154 directly:
+The next implementation pass should address records 1153, 1154, and 1156
+directly:
 
 - authored datatype declarations should move from plain namespace bodies like
   `Topic [String]` toward pipe-family declaration forms;
 - root input/output positions remain the only schema root declarations;
 - nested structs/enums/newtypes are namespace datatypes referenced from those
   roots, not extra roots;
+- Schema docs and code should call `String`, `Integer`, `Boolean`, `Vec`,
+  `Optional`, and `Map` Schema type-reference vocabulary, while NOTA docs call
+  `[]`, `{}`, `None`, and `(Some x)` value serialization shapes;
 - tests should keep real `.schema` files as input and compare both lowered
   `Asschema` data and emitted Rust.
