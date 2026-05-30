@@ -52,6 +52,22 @@ Verification:
 - `nix flake check`
 - `./scripts/run-nix-integration-tests`
 
+## Follow-Up From Report 432
+
+Designer report 432 flagged one stale name in the operator slice:
+`Configuration::from_single_argument` still sounded like the old NOTA argument
+parser even though the value is now a binary configuration path. That is now
+renamed on `spirit-next` main:
+
+- `Configuration::from_binary_path(...)`
+- `spirit-next-daemon` calls the path-named method.
+- Nix source guards look for `from_binary_path`.
+
+Verification:
+
+- `cargo fmt && cargo test --no-default-features && cargo test --features nota-text`
+- `nix flake check`
+
 ## Deferred From The Prototype
 
 The workspace split is valuable but too large to land by replacement:
