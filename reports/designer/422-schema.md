@@ -95,13 +95,16 @@ pub enum TypeReference {
 }
 ```
 
-A **multi-field struct is a key-value brace map** (field name → type) — the
-elegant lowest-level form the `@{ … }` macro expands into; e.g.
-`Entry@{ @Topics  @Kind }` (using the `@Type` derived-name shorthand, record
-1232) lowers to `(Public Entry { topics Topics  kind Kind })`. A **newtype is a
-single-element brace** — `Topic@String` or `Topic@{ String }` lowers to
-`(Public Topic { String })`, NOT `(Public Topic { text String })` — and emits a
-tuple-struct (record 1235), keeping the wrapper transparent.
+In assembled NOTA the `TypeValue` variant is tagged explicitly — `(Struct
+{ … })` / `(Newtype X)` / `(Enum [ … ])` — matching standard enum-variant
+encoding. A **multi-field struct is a key-value brace map** (field name → type)
+under the `Struct` tag; e.g. `Entry@{ @Topics  @Kind }` (using the `@Type`
+derived-name shorthand, record 1232) lowers to `(Public Entry (Struct { topics
+Topics  kind Kind }))`. A **newtype carries a single `TypeReference` under the
+`Newtype` tag** — `Topic@String` or `Topic@{ String }` (both surface forms)
+lowers to `(Public Topic (Newtype String))`, NOT `(Public Topic { text String
+})` with a forced field name — and emits a tuple-struct `pub struct Topic(pub
+String)` (record 1235), keeping the wrapper transparent.
 **Visibility:** `Public` declarations are exported (the schema used as a
 library); `Private` declarations — including **inline PascalCase types** logged
 into the local-types table (sugar, [[428-at-sigil-declaration-syntax-spec]]) —

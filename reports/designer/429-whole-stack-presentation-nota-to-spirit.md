@@ -161,17 +161,16 @@ user-invented declarations inside the namespace, not positional fields.
 ```nota
 ([example:spirit] [0.1.0]) []
 [ (RootEnum Input [ (Record (Plain Entry)) (Observe (Plain Query)) ]) (RootEnum Output [ … ]) ]
-[ (Public Topic { String })                                                                     ; newtype — single-element brace (record 1235)
-  (Public Topics { (Vector (Plain Topic)) })                                                    ; newtype wrapping a composite
-  (Public Kind [ Decision Principle Correction Clarification Constraint ])                      ; enum — variants in brackets
-  (Public Entry { topics (Plain Topics)  kind (Plain Kind)  description (Plain Description) })  ; multi-field struct — key-value map (1226)
-  (Public RecordSet { records (Vector (Plain Entry))  byTopic (Map [(Plain Topic) (Plain RecordIdentifier)]) }) ]
+[ (Public Topic     (Newtype String))                                                                              ; TypeValue::Newtype tag (record 1235)
+  (Public Topics    (Newtype (Vector (Plain Topic))))                                                              ; Newtype wrapping a composite
+  (Public Kind      (Enum [ Decision Principle Correction Clarification Constraint ]))                             ; TypeValue::Enum tag
+  (Public Entry     (Struct { topics (Plain Topics)  kind (Plain Kind)  description (Plain Description) }))        ; TypeValue::Struct tag — key-value map (1226)
+  (Public RecordSet (Struct { records (Vector (Plain Entry))  byTopic (Map [(Plain Topic) (Plain RecordIdentifier)]) })) ]
 ```
 
-Visibility is `(Public …)` / `(Private …)`. **Newtype vs struct is the
-brace-contents shape**: `{ Type }` (single element) is a newtype, `{ name Type
-name Type … }` (alternating name-type pairs) is a multi-field struct. The roots
-are the named entry-point set.
+Visibility is `(Public …)` / `(Private …)`. **`TypeValue` variants are tagged
+explicitly** — `(Newtype X)` / `(Struct { … })` / `(Enum [ … ])` — matching
+standard NOTA enum-variant encoding. The roots are the named entry-point set.
 
 ### 5c. Emitted — `spirit_generated.rs` (the nouns + the plane machinery)
 
