@@ -280,8 +280,9 @@ projection on top. The vocabulary closes the loop:
 The `.schema`/NOTA pair is a **specification language more specific
 than Rust** — Rust mixes data shape with derives, trait impls,
 visibility, and validation; a `.schema` declaration is JUST the
-structural truth (`Entry [Topics Kind Description Magnitude]`), and
-the noisy-but-mechanical Rust + rkyv codec + NOTA codec EMIT from it.
+structural truth (`Entry@{ @Topics @Kind @Description @Magnitude }`),
+and the noisy-but-mechanical Rust + rkyv codec + optional NOTA codec
+EMIT from it.
 This is the same reason CapnProto exists as a separate language from
 C++. Schema is a **superset of CapnProto-style declaration** with
 three additions: a module system (named imports/exports as the
@@ -292,6 +293,14 @@ namespace as core types), and shape-driven node-type matching
 text view of the portable rkyv format's specification; the binary it
 specifies appears in two contexts — SEMA at rest and signal in
 transit (psyche 2026-05-26, records 839-844).
+
+Authored schema sugar lowers into **assembled schema** (`Asschema`)
+before Rust emission. `Asschema` is macro-free typed data, not hidden
+parser state: it can be written as legal NOTA, read back as the same
+typed value, written as rkyv bytes, and read back before
+`schema-rust-next` emits Rust. The CLI opts into the generated NOTA
+surface; daemons and binary-only clients keep the rkyv surface without
+linking a NOTA decoder.
 
 Authors write from the point of view of **NEXT**; **MAIN** is the
 published baseline (imported as comparison); **PREVIOUS** or **LAST**
