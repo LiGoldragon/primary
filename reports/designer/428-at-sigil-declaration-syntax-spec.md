@@ -5,10 +5,13 @@
 *Settled by the psyche 2026-05-29 ("do this"). Records 1199 (the decision),
 1202 (refinements), 1211 (bracket-enum, no overload), 1216 (universal
 `Name@Delimiter` for declarations), 1226 (visibility + struct-as-key-value),
-1229 (positional root-struct fields are bare). This **supersedes the pipe
-declaration forms** of record 1120: `{| |}` / `(| |)` are now **transitional**;
-`@`-sigil is the target. The spec the operator pivots against. Substrate:
-[[421-nota]]; schema layer: [[422-schema]]; assembled model unchanged
+1229 (positional root-struct fields are bare), 1232 (`@Type` derived-name
+shorthand for field/variant), 1235 (newtype = single-element brace `{ Type }`,
+distinct `Newtype` variant in assembled model, tuple-struct emit). This
+**supersedes the pipe declaration forms** of record 1120: `{| |}` / `(| |)`
+are now **transitional**; `@`-sigil is the target. The spec the operator
+pivots against. Substrate: [[421-nota]]; schema layer: [[422-schema]];
+assembled model now distinguishes `Newtype` from multi-field `Struct`
 ([[424-schema-nota-extension-full-correctness-design-intent]]).*
 
 ## 1. The form — name first, `@` binds name to shape
@@ -17,12 +20,28 @@ declaration forms** of record 1120: `{| |}` / `(| |)` are now **transitional**;
 shape.
 
 ```text
-form                  declares
-----                  --------
-Name@{ … }            a STRUCT  (at + brace, named fields)
-Name@[ … ]            an ENUM   (at + bracket, variants; bare = unit, name@Type = data variant)
-name@Type             a field of the named type Type
-name@(Vec X)          a field of a composite type — ( ) is the composite / macro-call form
+TOP-LEVEL declarations:
+form                                  declares
+----                                  --------
+Name@{ field@Type  field@Type  … }    a STRUCT — multi-field, named (key-value map per 1226)
+Name@{ Type }                         a NEWTYPE — single-element brace (record 1235)
+Name@Type                             a NEWTYPE — short form for Name@{ Type } (tuple-struct emit)
+Name@[ Variant  Variant  … ]          an ENUM
+Name@(Vec X)                          a named composite alias
+
+WITHIN a struct (`Name@{ … }`):
+form                                  declares
+----                                  --------
+field@Type                            a field — explicit name, typed
+@Type                                 a field — name DERIVED from type (record 1232; @Topics ≡ topics@Topics)
+field@(Vec X) / @(Vec X)              a field — composite, explicit or derived (1119)
+
+WITHIN an enum (`Name@[ … ]`):
+form                                  declares
+----                                  --------
+VariantName                           a unit variant (bare PascalCase)
+VariantName@Type                      a data variant — explicit name, held type
+@Type                                 a data variant — name = held type (record 1232; @Foo ≡ Foo@Foo)
 ```
 
 The three delimiters carry distinct meaning, so nothing is overloaded:
@@ -90,10 +109,15 @@ Record 1211 removes the overload by moving the enum to the **bracket**, so the
 delimiter alone decides — no first-token disambiguation:
 
 ```text
-Kind@[ Decision Correction ]   → ENUM declaration          ( [ ] = variants )
-records@(Vec Entry)            → field of Vec<Entry>        ( ( ) = composite / macro-call )
+Kind@[ Decision Correction ]   → ENUM declaration            ( [ ] = variants )
+records@(Vec Entry)            → field of Vec<Entry>          ( ( ) = composite / macro-call )
 limit@(Optional Integer)       → field of Optional<Integer>
 topics@Topics                  → field of the named type Topics
+@Topics                        → struct field `topics` of type Topics (name derived; record 1232)
+@RecordIdentifier              → struct field `recordIdentifier` of type RecordIdentifier
+@Entry                         → enum data variant `Entry` of type Entry (name unchanged; record 1232)
+Topic@{ String }               → NEWTYPE — single-element brace (record 1235)
+Topic@String                   → NEWTYPE — short form for Topic@{ String }
 ```
 
 `( )` is **always** the composite / macro-call form (`Vec`/`Optional`/`Map` —
@@ -133,10 +157,11 @@ list (report 242) names. The `@`-syntax and macros-as-data are one move.
 
 ```mermaid
 flowchart LR
-  a["Entry@{ topics@Topics … }"] -->|lower| b["TypeDeclaration::Struct(Entry, fields)"]
-  c["Kind@[ Decision … ]"] -->|lower| d["TypeDeclaration::Enum(Kind, variants)"]
+  a["Entry@{ @Topics … }"] -->|lower| b["TypeValue::Struct([topics → Plain(Topics), …])  — name derived (1232)"]
+  c["Kind@[ Decision … ]"] -->|lower| d["TypeValue::Enum(variants)"]
   e["records@(Vec Entry)"] -->|lower| f["FieldDeclaration { records, Vector(Plain Entry) }"]
   g["[ Record@Entry … ]  at input slot"] -->|lower| h["RootDeclaration::Input(variants)  — name from position (1229)"]
+  i["Topic@{ String }  or  Topic@String"] -->|lower| j["TypeValue::Newtype(String)  — tuple-struct emit (1235)"]
 ```
 
 ## 6. The pivot — what changes, what doesn't
@@ -164,11 +189,23 @@ Pipes (1120) stay as a transitional alias until the `@` path is in; then the
    from filename.
 3. `name@(Vec X)` lowers to a composite field reference; `Name@[ Variant … ]`
    to an enum declaration; an unnamed composite derives its name.
-4. The `@`-forms lower to the identical `Asschema` the pipe forms produced
-   (round-trip test against the same golden) — proving it's surface-only. The
-   bare input/output values lower to `RootDeclaration::Input` / `Output` with
-   names assigned from position, not from the surface.
-5. The declaration macros are registered as **data** through the interface, not
+4. **`@Type` derivation (record 1232)**: at a struct field position `@Topics`
+   lowers to `(topics, Plain(Topics))` — field name = camelCase of the type; at
+   an enum data-variant position `@Foo` lowers to a variant named `Foo` holding
+   `Plain(Foo)` — variant name unchanged. Duplicate-derived-name conflicts must
+   error.
+5. **Newtype vs multi-field struct (record 1235)**: a brace with ONE element
+   lowers to `TypeValue::Newtype(TypeReference)`; a brace with N alternating
+   name-type pairs lowers to `TypeValue::Struct(Vec<(Name, TypeReference)>)`.
+   `Name@Type` at a top-level declaration position is a newtype (short form for
+   `Name@{ Type }`). Rust emission: newtypes are tuple-structs with
+   `NotaTransparent`; multi-field structs are named-field structs with
+   `NotaRecord`.
+6. The `@`-forms lower to the same `Asschema` the pipe forms produced
+   (round-trip test against the same golden) — proving the surface change is
+   semantics-preserving. The bare input/output values lower to
+   `RootDeclaration::Input` / `Output` with names assigned from position.
+7. The declaration macros are registered as **data** through the interface, not
    bespoke Rust — converging with the `MacroTable`-from-asschema target (242).
 
 ## 8. Visibility and inline local types (record 1226)

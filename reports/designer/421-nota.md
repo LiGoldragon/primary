@@ -46,10 +46,11 @@ where a struct is expected and a tagged variant where an enum is. NOTA parses
 the pipe blocks too, but reading them as struct/enum *declarations* is Schema's
 job, not NOTA's. **The pipe blocks are transitional** (record 1199, settled):
 the target declaration syntax is the `@`-sigil form ([[428-at-sigil-declaration-syntax-spec]])
-— `Name@{ … }` struct, `Name@[ … ]` enum, `name@Type` field, `name@(Vec X)`
-composite — defined through NOTA's sigil+delimiter macro interface (`{ }`
-struct, `[ ]` enum, `( )` composite/macro). The one reserved word-literal is `None`
-(Option-absent; present is `(Some x)`).
+— `Name@{ … }` multi-field struct, `Name@{ Type }` / `Name@Type` newtype (record
+1235), `Name@[ … ]` enum, `name@Type` field, `@Type` derived-name field/variant
+(record 1232), `name@(Vec X)` composite — defined through NOTA's sigil+delimiter
+macro interface (`{ }` struct, `[ ]` enum, `( )` composite/macro). The one
+reserved word-literal is `None` (Option-absent; present is `(Some x)`).
 
 ## 3. The serialization codec lives in NOTA
 

@@ -6,8 +6,9 @@
 component (Spirit). All the syntaxes, the types that load each kind of file, the
 intent constraints, with visuals and code. Synthesizes the captured intent —
 1109, 1116, 1120, 1122, 1126–1130, 1137, 1152, 1155, 1176, 1178, 1180, 1184,
-1185, 1199, 1202, 1211, 1216, 1226, 1229. Component depth: [[421-nota]], [[422-schema]],
-[[423-signal-nexus-sema]], [[428-at-sigil-declaration-syntax-spec]].*
+1185, 1199, 1202, 1211, 1216, 1226, 1229, 1232, 1235. Component depth:
+[[421-nota]], [[422-schema]], [[423-signal-nexus-sema]],
+[[428-at-sigil-declaration-syntax-spec]].*
 
 ## 1. One picture
 
@@ -29,9 +30,15 @@ Four layers, one codec, one data model that round-trips at every stage:
 
 - **Everything is data** (1109) — every artifact, macros included, serializes
   and round-trips (NOTA text ⇄ rkyv). If it can't, it isn't built.
-- **Everything is a struct** (1122) — unit variant = 0-field struct, data variant
-  = 1-field struct, enum = single-field struct. A struct **is a key-value map**
-  (field → type) (1226).
+- **Multi-field struct = key-value map; newtype = single-element brace** (1122,
+  1226, 1235) — unit variant = 0-field struct, data variant = 1-field struct,
+  enum = single-field struct. A **multi-field** struct's brace contains `name
+  Type` pairs (key-value map, field → type); a **newtype** brace contains just
+  one type — `(Public Topic { String })` — and emits a transparent tuple-struct.
+- **`@Type` is the derived-name shorthand** (1232) — at a struct field position,
+  `@Topics` is sugar for `topics@Topics` (field name = camelCase of type); at an
+  enum data-variant position, `@Foo` is sugar for `Foo@Foo` (variant name = held
+  type). Explicit `name@Type` / `Name@Type` is used when the name should differ.
 - **Define the assembled schema first** (1116) — the macro-free FINAL model the
   rest derives from.
 - **One shared codec** (1184) — `nota-next` owns `NotaEncode`/`NotaDecode` + a
@@ -69,24 +76,31 @@ text                    [|multi-line|]        —                         [|…|
 option absent/present   None / (Some x)       —                         None / (Some x)              Option
 ```
 
-**The schema `@`-syntax in full** (records 1216 + 1229 / [[428-at-sigil-declaration-syntax-spec]]):
+**The schema `@`-syntax in full** (records 1216 + 1229 + 1232 + 1235 / [[428-at-sigil-declaration-syntax-spec]]):
 
 ```nota
-Entry@{ topics@Topics  kind@Kind  description@Description }    ; @{ } = struct (named fields)
-Kind@[ Decision Principle Correction ]                        ; @[ ] = enum (variants)
+; top-level declarations
+Entry@{ @Topics  @Kind  @Description }                        ; @{ } = multi-field struct; @Type = derived field name (1232)
+                                                              ;   equiv: Entry@{ topics@Topics  kind@Kind  description@Description }
+Topic@String                                                  ; Name@Type = NEWTYPE (single wrapped, tuple-struct emit; record 1235)
+Topic@{ String }                                              ;   equivalent explicit-brace form
+Kind@[ Decision Principle Correction ]                        ; @[ ] = enum, bare PascalCase = unit variants
+ResultEnum@[ @Receipt  Unit  Failure@ErrorReport ]            ; data variant w/ derived name (1232), unit, explicit
 RecordSet@{ records@(Vec Entry)  byTopic@(Map Topic RecordId) } ; @( ) = composite / macro-call
-Topic@String                                                  ; name@Type = a typed binding / newtype
 NexusInput@[ Signal@Input  Sema@SemaOutput ]                  ; a plane-root DECLARATION (in namespace)
 ```
 
-`@` is the name-to-shape binder; the delimiter is the shape; the rule is uniform
+`@` is the name-to-shape binder; the delimiter is the shape. The rule is uniform
 (`Name @ Delimiter`) for **declarations** — when the user invents a name. camelCase
-names are fields; PascalCase names are types (top-level → public, inline → a
-private local type, sugar). Positional values at the root struct's known fields
-(imports / input / output / namespace) are bare, not declarations (record 1229) —
-so a top-level `Input@[ … ]` is wrong; the input variants land bare at the
-positional input slot. `NexusInput` / `SemaInput` keep `Name@[ … ]` because they
-are declarations inside the namespace.
+names are fields; PascalCase names are types (top-level → public, inline →
+private/local sugar). The **`@Type` derived-name shorthand** (1232) — at a field
+position, the field name is the camelCase of the type (`@Topics ≡ topics@Topics`);
+at an enum-variant position, the variant name equals the held type (`@Foo ≡
+Foo@Foo`). Positional values at the root struct's known fields (imports / input /
+output / namespace) stay bare, not declarations (record 1229) — so a top-level
+`Input@[ … ]` is wrong; the input variants land bare at the positional input slot.
+`NexusInput` / `SemaInput` keep `Name@[ … ]` because they are declarations inside
+the namespace.
 
 ## 4. The layers and the types that load each file
 
@@ -129,11 +143,11 @@ fixtures    tests            FixtureNota / FixtureSchema            real files, 
   Topic@String
   Topics@(Vec Topic)
   Kind@[ Decision Principle Correction Clarification Constraint ]
-  Entry@{ topics@Topics  kind@Kind  description@Description }
-  Query@{ topics@Topics  limit@(Optional Integer) }
+  Entry@{ @Topics  @Kind  @Description }                        ; @Type shorthand — derived field names (record 1232)
+  Query@{ @Topics  limit@(Optional Integer) }                   ; derived + explicit (composite needs explicit name)
   RecordSet@{ records@(Vec Entry)  byTopic@(Map Topic RecordIdentifier) }
-  NexusInput@[ Signal@Input  Sema@SemaOutput ]                  ; additional plane roots — DECLARED (Name@)
-  SemaInput@[ Record@Entry  Observe@Query ]
+  NexusInput@[ Signal@Input  Sema@SemaOutput ]                  ; additional plane roots — explicit variant names
+  SemaInput@[ Record@Entry  Observe@Query ]                     ; mirrors signal input
 }
 ```
 
@@ -147,19 +161,29 @@ user-invented declarations inside the namespace, not positional fields.
 ```nota
 ([example:spirit] [0.1.0]) []
 [ (RootEnum Input [ (Record (Plain Entry)) (Observe (Plain Query)) ]) (RootEnum Output [ … ]) ]
-[ (Public Topic { text String })
-  (Public Topics { items (Vector (Plain Topic)) })
-  (Public Kind [ Decision Principle Correction Clarification Constraint ])
-  (Public Entry { topics (Plain Topics)  kind (Plain Kind)  description (Plain Description) })
+[ (Public Topic { String })                                                                     ; newtype — single-element brace (record 1235)
+  (Public Topics { (Vector (Plain Topic)) })                                                    ; newtype wrapping a composite
+  (Public Kind [ Decision Principle Correction Clarification Constraint ])                      ; enum — variants in brackets
+  (Public Entry { topics (Plain Topics)  kind (Plain Kind)  description (Plain Description) })  ; multi-field struct — key-value map (1226)
   (Public RecordSet { records (Vector (Plain Entry))  byTopic (Map [(Plain Topic) (Plain RecordIdentifier)]) }) ]
 ```
 
-Visibility is `(Public …)` / `(Private …)`; a struct is the `{ field type … }`
-key-value map; the roots are the named entry-point set.
+Visibility is `(Public …)` / `(Private …)`. **Newtype vs struct is the
+brace-contents shape**: `{ Type }` (single element) is a newtype, `{ name Type
+name Type … }` (alternating name-type pairs) is a multi-field struct. The roots
+are the named entry-point set.
 
 ### 5c. Emitted — `spirit_generated.rs` (the nouns + the plane machinery)
 
 ```rust
+// newtypes emit as TUPLE-STRUCTS with NotaTransparent (record 1235) — easy to use: Topic([foo].into()), topic.0
+#[derive(nota_next::NotaTransparent, rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+pub struct Topic(pub String);
+
+#[derive(nota_next::NotaTransparent, rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub struct Topics(pub Vec<Topic>);
+
+// multi-field structs emit as NAMED struct with NotaRecord
 #[derive(nota_next::NotaDecode, nota_next::NotaEncode, rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Entry { pub topics: Topics, pub kind: Kind, pub description: Description }
 

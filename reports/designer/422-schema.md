@@ -44,11 +44,14 @@ vocabulary:
   the value-level `[ ]`/`{ }` (1137: `[X]` is a vector *value*, `(Vec X)` is the
   vector *type*).
 - **Declarations** use the `@`-sigil forms ([[428-at-sigil-declaration-syntax-spec]],
-  settled): `Name@{ field@Type … }` struct, `Name@[ variant … ]` enum,
-  `name@(Vec X)` composite, and the root is an implicit struct (`{ }` struct,
-  `[ ]` enum, `( )` composite/macro); the pipe forms `{| … |}` / `(| … |)`
-  (1120) are **transitional**. A newtype is the degenerate single-field
-  struct (1122), but it must keep its transparent emission (see §5).
+  settled): `Name@{ field@Type … }` multi-field struct, `Name@{ Type }` /
+  `Name@Type` newtype (record 1235, single-element brace → tuple-struct emit),
+  `Name@[ variant … ]` enum, `name@(Vec X)` composite. Field and variant
+  positions accept the **`@Type` derived-name shorthand** (record 1232):
+  `@Topics` is sugar for `topics@Topics` (struct field), and `@Foo` is sugar for
+  the enum data variant `Foo@Foo`. The root is an implicit struct with
+  positional fields (`{ }` struct, `[ ]` enum, `( )` composite/macro). The pipe
+  forms `{| … |}` / `(| … |)` (1120) are **transitional**.
 - **References** to declared types are bare names (lowering tags them `Plain`).
 
 A field's type is a scalar, a composite, a declared name, or a nested
@@ -81,8 +84,9 @@ pub struct Asschema {
 // NOTA form (Public Name Value) — a data-carrying variant, name then value (record 1226)
 pub enum Declaration { Public(Name, TypeValue), Private(Name, TypeValue) }
 pub enum TypeValue {
-    Struct(Vec<(Name, TypeReference)>),      // a STRUCT IS a key-value map: field name → type
-    Enum(Vec<Variant>),                      // variants (a newtype is the single-field struct)
+    Newtype(TypeReference),                  // (Public Topic { String }) — transparent wrapper (record 1235)
+    Struct(Vec<(Name, TypeReference)>),      // a STRUCT IS a key-value map: field name → type (record 1226)
+    Enum(Vec<Variant>),                      // variants
 }
 pub enum TypeReference {
     String, Integer, Boolean, Path,          // scalar built-ins (reserved, not Plain names)
@@ -91,9 +95,13 @@ pub enum TypeReference {
 }
 ```
 
-A **struct is a key-value brace map** (field name → type) — the elegant
-lowest-level form the `@{ … }` macro expands into; e.g. `Entry@{ topics@Topics
-kind@Kind }` lowers to `(Public Entry { topics Topics  kind Kind })`.
+A **multi-field struct is a key-value brace map** (field name → type) — the
+elegant lowest-level form the `@{ … }` macro expands into; e.g.
+`Entry@{ @Topics  @Kind }` (using the `@Type` derived-name shorthand, record
+1232) lowers to `(Public Entry { topics Topics  kind Kind })`. A **newtype is a
+single-element brace** — `Topic@String` or `Topic@{ String }` lowers to
+`(Public Topic { String })`, NOT `(Public Topic { text String })` — and emits a
+tuple-struct (record 1235), keeping the wrapper transparent.
 **Visibility:** `Public` declarations are exported (the schema used as a
 library); `Private` declarations — including **inline PascalCase types** logged
 into the local-types table (sugar, [[428-at-sigil-declaration-syntax-spec]]) —
