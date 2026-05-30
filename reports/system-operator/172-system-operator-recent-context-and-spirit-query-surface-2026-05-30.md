@@ -348,20 +348,81 @@ Kept active:
 | `reports/system-operator/166-dji-mic-profile-churn-fix-2026-05-28.md` | concrete live fix report, distinct from durable-first architecture |
 | `reports/system-operator/167-horizon-pure-schema-concept-prototype-2026-05-28.md` | standalone Horizon/schema prototype report |
 
+## Addendum — Gemma browser and quantization context
+
+This report also absorbs the newest large-AI browser-agent and
+quantization work from the live conversation after the original synthesis.
+Cloud-designer report `reports/cloud-designer/14-gemma4-multimodal-llamacpp-design-2026-05-29.md`
+remains the design source for Gemma 4 on llama.cpp; cloud-designer report
+`reports/cloud-designer/15-lane-agglomeration-audit-and-maintenance-2026-05-29.md`
+is the current lane-maintenance ledger for the cloud-designer side.
+
+New verified runtime facts:
+
+- Gemma 4 text generation works through Prometheus generation 47 and
+  llama.cpp b9404.
+- Gemma 4 image input works through router mode: an `image_url` request
+  loaded the multimodal projector and processed the image.
+- `browser-use` works ephemerally with `gemma-4-26b-a4b` through the
+  OpenAI-compatible Prometheus endpoint. It successfully navigated a
+  headless Chrome page, and a vision-enabled canvas test read text that
+  existed only in the screenshot.
+- The working browser-use configuration needs strict raw-JSON prompting
+  and enough completion budget; `1024` tokens worked for the smoke test,
+  and supervised account scouting should use `2048` or more.
+- The desired account-navigation posture is supervised scout mode: the
+  user handles login / 2FA / secrets in a visible browser, the agent
+  observes and reports page state and possible next steps, and the agent
+  does not submit consequential changes without explicit approval.
+
+New deployed/pushed model-catalog facts:
+
+- `CriomOS-lib` commit `1d1726a186f6` adds suffixed Gemma variants in
+  `data/largeAI/llm.json`: BF16 aliases plus `ud-q4-k-xl` and
+  `ud-q8-k-xl` variants for both `gemma-4-26b-a4b` and `gemma-4-31b`.
+- `CriomOS` main now pins that `CriomOS-lib` revision and records the
+  large-AI naming / prefetch discipline in `ARCHITECTURE.md`.
+- Quantization is now explicit in model identifiers so clients can choose
+  daily-driver Q4, near-lossless Q8, or BF16 reference quality.
+
+Live Prometheus prefetch state at this maintenance pass:
+
+- The durable prefetch unit is
+  `lojix-prefetch-gemma-quantized-4.service`.
+- It is paused with systemd freezer state `frozen` for the video meeting.
+- The monitor unit `lojix-prefetch-gemma-quantized-monitor.service` is
+  stopped.
+- The completed result is `gemma-4-26b-a4b-ud-q4-k-xl` with hash
+  `sha256-RTzwSbqHopue1XOQh7hLf6AmWk8rEe76LHdoPexqgCA=`.
+- The paused in-flight item is `gemma-4-26b-a4b-ud-q8-k-xl`.
+- The download route was verified as Prometheus wired LAN via `eno1`, not
+  the operator workstation Wi-Fi.
+
+The large-AI prefetch discipline has two layers now: the catalog stores
+fixed hashes, and large hash discovery should happen on Prometheus as
+durable target-side systemd work. A target-side periodic monitor logs
+progress so local SSH polling is optional rather than load-bearing.
+
 ## Next useful work
 
-1. Update `skills/spirit-cli.md` so it does not claim `(Exact Zero)` is
+1. After the video meeting, either thaw the paused prefetch unit or cancel
+   it deliberately. If continuing, restart the monitor as well, then let
+   Prometheus finish the Q8 and 31B quantized downloads over wired LAN.
+2. Once prefetch completes, deploy from pushed `github:LiGoldragon/CriomOS/main`
+   with Prometheus as builder and verify each new suffixed Gemma variant
+   with text and image requests.
+3. Decide the daily default: likely `gemma-4-26b-a4b-ud-q4-k-xl` for
+   browser-use/Pi daily work, with Q8 as higher-confidence mode and BF16
+   retained as reference quality.
+4. Package `browser-use` in CriomOS-home with a local-Gemma wrapper after
+   taking the CriomOS-home lock. The wrapper should use the large-AI node
+   endpoint when available and gopass-backed auth, then launch visible
+   supervised browser sessions when requested.
+5. Update `skills/spirit-cli.md` so it does not claim `(Exact Zero)` is
    live until the local profile actually accepts `Zero`.
-2. Correct `1215` -> `1214` references in the intent-removal docs while
-   preserving that 1215 carries the later "declare first" implementation
-   detail that needs storage-safe correction.
-3. Add a Spirit `RecordQuery` recency/time filter design and implement it
+6. Add a Spirit `RecordQuery` recency/time filter design and implement it
    with tests that combine topic, kind, certainty, recency, and projection
    mode.
-4. Finish the Spirit safe-removal lifecycle: nominate an existing record
-   to `Zero`, review candidates, restore if needed, and guard hard remove.
-5. Keep Prometheus as the remote-builder and LLM-serving baseline; future
-   model work should assume backup AP/USB Ethernet recovery exists.
-6. Use the Horizon schema concept as a working example when pushing
+7. Use the Horizon schema concept as a working example when pushing
    assembled schema toward a live serializable artifact.
 
