@@ -390,6 +390,65 @@ date-shape), that's a sign of a real workspace primitive. Document
 it once in the relevant repo's `skills.md` or `ARCHITECTURE.md` and
 reference by name; don't restate it in every NOTA file's preamble.
 
+## When to hand-write the codec instead of deriving
+
+`#[derive(NotaDecode, NotaEncode)]` is the right default for
+record types. But the derive treats every `String` field as
+a bracket string — the conservative encoding choice for
+"any string" — which produces aesthetically noisy NOTA for
+tokens that qualify as bare symbols.
+
+The canonical case: a newtype around `String` whose content
+is always a NOTA-identifier-shaped name (no spaces, no
+special chars). The derive emits
+`(Public [Entry] (Struct ([Entry] ...)))`; the cleaner
+canonical NOTA is `(Public Entry (Struct (Entry ...)))`.
+Bracket strings should be reserved for content that
+actually needs them.
+
+The fix: hand-write `NotaDecode` + `NotaEncode` on the
+newtype to inspect the content and choose the emission
+form. The pattern, using `nota_next::AtomClassification`:
+
+```rust
+impl NotaEncode for Name {
+    fn to_nota(&self) -> String {
+        if self.qualifies_as_symbol_name() {
+            self.as_str().to_owned()
+        } else {
+            NotaString::new(self.as_str()).format()
+        }
+    }
+}
+
+impl NotaDecode for Name {
+    fn from_nota_block(block: &Block) -> Result<Self, NotaDecodeError> {
+        NotaBlock::new(block).parse_string().map(Self::new)
+    }
+}
+
+pub fn qualifies_as_symbol_name(&self) -> bool {
+    AtomClassification::classify(self.as_str()) == AtomClassification::SymbolCandidate
+}
+```
+
+The decode side accepts BOTH forms (bare symbol + bracket
+string) — the parser doesn't care; the encode side is what
+chooses. This keeps the assembled NOTA both round-trippable
+and human-readable. The pattern landed in
+`/git/github.com/LiGoldragon/schema-next/src/asschema.rs`
+for the `Name` newtype (commit `34c64aa`) after the derive
+output was identified as too noisy in the canonical assembled
+form.
+
+Generalisation: anywhere derive would emit a less-readable
+form than the canonical NOTA shape (per `nota-next`'s
+`AtomClassification`, per the bracket-string-only-when-needed
+rule), the hand-written impl is the right move. Same approach
+applies to schema-emitted types in `schema-rust-next` for
+emission-target consumers where the canonical NOTA aesthetic
+matters.
+
 ## See also
 
 - `skills/nota-schema-docs.md` — pseudo-NOTA convention for

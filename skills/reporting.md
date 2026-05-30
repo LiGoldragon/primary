@@ -189,6 +189,19 @@ relative workspace path for each report:
 **navigation surface, not a teaser.** Make the user able
 to open the file without guessing.
 
+**Commit hashes and report numbers are NOT paths.** A line
+like "Report 433 landed as `33c84b46`" gives the user a
+report number and a commit hash and zero paths. The user
+cannot open either of those without translating mentally.
+The path goes in too — locator + supplementary identifiers:
+
+> "Report `reports/designer/433-whole-stack-comprehensive-every-part-with-code.md`
+> (commit `33c84b46`) — …"
+
+…not "report 433 (commit 33c84b46) — …". The path is the
+substantive part of the locator (Spirit record 1242); commit
+hashes and numbers are supplementary, not substitutes.
+
 The same rule applies to any file the chat references —
 name it explicitly with its path. If the chat says "I
 edited the schema," the path of the schema file goes in

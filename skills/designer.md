@@ -439,6 +439,54 @@ Captured per Spirit record 256 (audits feed bead filing). Pairs
 with the auditor role's eventual loop back to designer (intent
 234) — auditor surfaces, designer manifests, operator implements.
 
+## Audit precision — verb choice matters
+
+Audit claims are statements about what the production path
+**does**, not about what the code **can do** in tests. The
+two are easy to conflate; the precise distinction often
+determines whether a stage is "closed" or "in progress."
+
+Anti-pattern: claiming "stage X is done" because the
+behaviour passes in a round-trip test or a build-script
+proof guard. **Round-trip in test ≠ artifact discipline.**
+"The type can serialize" ≠ "the build reads the serialized
+form." A proof guard in `build.rs` that calls
+`to_nota → from_nota → to_rkyv → from_rkyv → emit` is a
+**guard against private coupling** between lowerer and
+emitter; it is NOT the same as a durable `.asschema` file
+being the emitter's first-class input.
+
+The precise verb forms:
+
+- "The type **can** serialize / **round-trips** through
+  NOTA + rkyv" — capability claim. True if the codec impls
+  exist and a round-trip test passes.
+- "The build **reads** a durable `<artifact>.asschema` file
+  as the emitter input" — artifact claim. True only if the
+  file is checked in OR generated and re-read from disk by
+  a public API, not via a private build-script trick.
+- "Stage X is **done**" — totality claim. Only true when
+  both the capability AND the artifact (and the public
+  consumer entry points) are in.
+
+Cite **file:line** in audit reports. `/git/<repo>/src/foo.rs:N`
+or `<repo>/tests/bar.rs:N` makes the claim verifiable; a prose
+claim without a citation is a sketch.
+
+If the operator wrote their own audit on the same slice
+(an "implementation report" describing what landed),
+**read it before posting yours**. Operator self-audits
+routinely catch overstatements that designer audits miss
+because the operator knows which build artifact actually
+got produced. The 250 → 251 self-correction (operator's
+first audit overstated stage 3 as "done"; operator's second
+audit precisely distinguished "round-trip proof guard"
+from "durable artifact as build input") is the canonical
+example — pair operator's implementation report with
+their self-audit when both exist.
+
+Captured per Spirit record 1246 + the 250/251 cadence.
+
 ## Parallel manifestation + audit pattern
 
 When the workspace accumulates fresh intent + fresh reports faster
