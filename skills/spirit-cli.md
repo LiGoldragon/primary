@@ -172,6 +172,19 @@ The reply is `(RecordRemoved 1088)`. Use this for records that should
 not remain in the active store at all; use `Correction` or
 supersession when lineage should remain visible.
 
+**Change certainty** — mutate one stored record's certainty without
+changing its description, topics, kind, identifier, or daemon-stamped
+time:
+
+```sh
+spirit "(ChangeCertainty (1088 Zero))"
+```
+
+The reply is `(CertaintyChanged (1088 Zero))`. `Zero` is Spirit's
+recoverable removal-candidate nomination: the record remains queryable
+and can be restored by changing certainty back to a non-zero
+`Magnitude`. Use hard `Remove` only after review.
+
 **Topics are user-creatable strings carried in a vector** at the wire
 layer — any new topic word a `Record` uses is registered. No
 pre-declared enum of topics; pick the topic words that fit, reuse
@@ -179,16 +192,21 @@ existing words when they cover the substance.
 
 **Observe records** — query the store. This is the live production
 `Spirit 0.3.0` record-query shape. `Records` filters by topic
-selection, optional kind, and certainty. Topic selection is `(Any [])`
-for no topic filter, `(Partial [a b])` for records matching one or
-more requested topics, and `(Full [a b])` for records matching every
-requested topic. Certainty selection is `Any` for no certainty filter,
-`(Exact Zero)` for removal candidates, `(AtMost Low)` for a
-low-certainty review band, or `(AtLeast High)` for high-certainty
-records. `Minimum` remains weak but real intent; do not use it as the
-removal-candidate marker. The old three-field record query still
-decodes as compatibility input, but agents should emit the four-field
-shape.
+selection, optional kind, certainty, and recorded time. Topic selection
+is `(Any [])` for no topic filter, `(Partial [a b])` for records
+matching one or more requested topics, and `(Full [a b])` for records
+matching every requested topic. Certainty selection is `Any` for no
+certainty filter, `(Exact Zero)` for removal candidates, `(AtMost Low)`
+for a low-certainty review band, or `(AtLeast High)` for high-certainty
+records. Recorded-time selection is `Any`, `(Between ((YYYY-MM-DD
+HH:MM:SS) (YYYY-MM-DD HH:MM:SS)))`, `(Since (YYYY-MM-DD HH:MM:SS))`,
+`(Until (YYYY-MM-DD HH:MM:SS))`, or `Recent`. `Recent` is applied after
+topic/kind/certainty matching and returns the newest matching records,
+so quiet topics naturally reach farther back than active topics.
+`Minimum` remains weak but real intent; do not use it as the
+removal-candidate marker. The old three-field and four-field record
+queries still decode as compatibility input, but agents should emit the
+five-field shape.
 `RecordIdentifiers` selects by numeric identifier: `Exact` selects one
 record; `Range` is inclusive, so `(Range (1050 1060))` returns records
 1050 through 1060 when present. Use `SummaryOnly` for compact summaries
@@ -196,12 +214,15 @@ and `WithProvenance` when you need daemon-stamped date/time:
 
 ```sh
 spirit "(Observe Topics)"
-spirit "(Observe (Records ((Any []) None Any SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit search]) None Any SummaryOnly)))"
-spirit "(Observe (Records ((Full [spirit search]) None Any WithProvenance)))"
-spirit "(Observe (Records ((Any []) (Some Decision) Any SummaryOnly)))"
-spirit "(Observe (Records ((Any []) None (Exact Zero) WithProvenance)))"
-spirit "(Observe (Records ((Any []) None (AtMost Low) SummaryOnly)))"
+spirit "(Observe (Records ((Any []) None Any Any SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit search]) None Any Any SummaryOnly)))"
+spirit "(Observe (Records ((Full [spirit search]) None Any Any WithProvenance)))"
+spirit "(Observe (Records ((Any []) (Some Decision) Any Any SummaryOnly)))"
+spirit "(Observe (Records ((Any []) None (Exact Zero) Any WithProvenance)))"
+spirit "(Observe (Records ((Any []) None (AtMost Low) Any SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any Recent SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any (Since (2026-05-30 00:00:00)) SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any (Between ((2026-05-29 00:00:00) (2026-05-30 23:59:59))) WithProvenance)))"
 spirit "(Observe (RecordIdentifiers ((Exact 1053) SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) WithProvenance)))"
