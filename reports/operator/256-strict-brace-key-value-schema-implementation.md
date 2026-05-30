@@ -107,6 +107,31 @@ The separate `SyntaxSchema` raw-layer tests still exercise the older `@`
 surface because that layer is a raw-schema experiment and has not been fully
 migrated in this slice.
 
+## Downstream Integration
+
+`schema-rust-next` is repinned to the strict-brace `schema-next` commit and
+still emits from the same assembled model.
+
+`spirit-next` now uses the strict source syntax in `schema/lib.schema`:
+
+```nota
+{}
+[Record@ Entry Observe@ Query Remove@ RecordIdentifier]
+[RecordAccepted@ SemaReceipt RecordsObserved@ ObservedRecords RecordRemoved@ RemoveReceipt Error@ ErrorReport Rejected@ SignalRejection]
+{
+  Import { SourcePath * LocalPath * }
+  Export { LocalPath * PublicPath * }
+  Entry { Topics * Kind * Description * Magnitude * }
+  Query { TopicMatch * kind (Optional Kind) }
+}
+```
+
+The checked-in generated Rust did not change because this is a surface syntax
+migration to the same assembled schema. The Nix structural guard did need one
+update: it now asserts `Import { SourcePath * LocalPath * }` and
+`Export { LocalPath * PublicPath * }` instead of the obsolete self-named
+`Import@{...}` form.
+
 ## Verification
 
 Passed in `repos/schema-next`:
@@ -119,3 +144,19 @@ nix flake check
 
 The Nix design guard was updated to track the renamed design example:
 `design_example_namespace_brace_contains_key_value_declarations`.
+
+Passed in `repos/schema-rust-next`:
+
+```text
+cargo test
+cargo clippy --all-targets -- -D warnings
+nix flake check
+```
+
+Passed in `repos/spirit-next`:
+
+```text
+cargo test
+cargo clippy --all-targets -- -D warnings
+nix flake check
+```
