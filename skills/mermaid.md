@@ -243,6 +243,36 @@ edge relationship in 1-3 words: `depends on`, `runs before`,
 `feeds`, `broadcasts to`. Avoid long parentheticals or bead IDs
 inside the pipes.
 
+## Edge labels are prose, not notation
+
+Pipe-delimited flowchart edge labels are still lexer-sensitive.
+Do not put sigil-prefixed notation tokens in edge labels; a label
+starting with `@Type`, `@Field`, or similar can be tokenised as a
+link-style identifier and fail with a `LINK_ID` parse error.
+
+Wrong:
+
+```text
+flowchart LR
+    entry["Entry@{ @Topics @Kind @Description }"] -->|@Type derive| lowered["TypeValue::Struct"]
+```
+
+Right:
+
+```mermaid
+flowchart LR
+    entry["Entry@{ @Topics @Kind @Description }"]
+    lowered["TypeValue::Struct"]
+    entry -->|derives| lowered
+```
+
+Use edge labels for the relationship in plain prose: `derives`,
+`lowers`, `feeds`, `projects`. Put literal notation tokens in the
+node label, the surrounding prose, or a sibling table. If the
+edge only makes sense with a syntax token inside it, the diagram
+is carrying prose; shorten the edge and explain the token outside
+the graph.
+
 ## Never use bare quoted strings as flowchart node IDs
 
 This is broken in older Mermaid renderers, including Mermaid 8.8.0:
