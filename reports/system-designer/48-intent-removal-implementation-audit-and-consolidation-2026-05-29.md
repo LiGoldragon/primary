@@ -1,5 +1,19 @@
 # Intent removal — implementation audit and topic consolidation
 
+> **Status update 2026-05-30:** GAP 1 (the nominate write path) is
+> **closed** by production Spirit deploying `(ChangeCertainty (N Magnitude))`
+> today. Witness commits: `signal-persona-spirit 1bb22635`,
+> `persona-spirit c5a3eb9b`, `CriomOS-home cc6bb3d2`, `CriomOS 1cf0b747`,
+> primary `skills 180e6f2b`. The `removalCandidates` query
+> (`(Exact Zero)`) is now backed by an active soft-delete buffer —
+> a record can be nominated to `Zero` (recoverable) and only later
+> hard-removed. GAP 2 (sema discriminant-stability rule) and GAP 3
+> (only Spirit interprets Zero) remain open. This report is kept
+> under the `skills/context-maintenance.md` §3a design-rationale
+> guard — its 19-record tombstone appendix is the sole copy outside
+> git history, and the Zero-vs-`Option<None>` alternative weighing
+> remains load-bearing rationale.
+
 *Consolidates the intent-removal arc — reports 45 (removal audit + the
 19-record tombstone), 46 (the 1157–1175 forensic dead-end), and 47
 (redb deletion durability + the removalCandidates design) — and audits

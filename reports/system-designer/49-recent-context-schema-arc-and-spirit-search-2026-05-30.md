@@ -1,5 +1,30 @@
 # 49 — Recent context: schema-arc + Spirit search
 
+> **Status update 2026-05-30 (same-day):** The recency-filter
+> direction in §"Spirit search — the next direction" was implemented
+> and deployed within hours of this report landing. Production
+> Spirit 0.3.0's `RecordQuery` is now five-field with
+> `RecordedTimeSelection` having variants `Any` / `(Since (YYYY-MM-DD HH:MM:SS))` /
+> `(Until ...)` / `(Between ...)` / `Recent`. The bare `Recent`
+> variant returns the newest matching records **after**
+> topic/kind/certainty filtering — quiet topics naturally reach
+> farther back than active ones, which is the
+> natural-recency-by-topic-touch-frequency idea (record 1251)
+> emerging as a side-effect of filter-first then newest. The
+> sketched `(Newest N)` / `(Window …)` variants were NOT adopted;
+> psyche/operator chose timestamp-based `Since`/`Until`/`Between`
+> + bare `Recent`. `ChangeCertainty` also landed (the nominate
+> path closing /48 GAP 1). The Nexus-language adaptive search
+> direction (weighted keyword + topic-touch-frequency, record 1251
+> Low certainty) remains forward-looking — not yet implemented.
+> Production witnesses: `signal-persona-spirit 1bb22635`,
+> `persona-spirit c5a3eb9b`, `CriomOS-home cc6bb3d2`,
+> `CriomOS 1cf0b747`, primary `skills 180e6f2b`. The
+> §"Parallel surface in the operator lane" section below points
+> to `/172` which was absorbed into
+> `reports/system-operator/173-deep-context-maintenance-2026-05-30.md`
+> the same day; read the section as redirected to `/173`.
+
 *2026-05-30 system-designer. Consolidates the schema-deep → horizon-next arc
 (reports 35/37/39/40/41/42, retired into this report after the landing-gate
 check) and the recent intent surface that drove it. Documents Spirit search
