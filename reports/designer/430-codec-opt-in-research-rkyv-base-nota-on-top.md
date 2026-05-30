@@ -235,27 +235,28 @@ The single-argument rule still holds: the emitter's input becomes a NOTA record
 that specifies the codec mode, e.g. `(EmitRust (Asschema ./spirit.asschema)
 (CodecMode FeatureGated))`.
 
-## 6. Open question — daemon config: keep NOTA or drop it entirely?
+## 6. ~~Open question~~ Resolved — daemon goes zero-NOTA (record 1241, [[431-daemon-zero-nota-state-aware-startup-multi-signal]])
 
-The daemon currently parses NOTA for its systemd-passed Configuration record
-(`Configuration::from_single_argument` uses `nota_next::{Block, Delimiter,
-Document}`). That's a separate NOTA path from the schema-emitted wire types;
-removing the wire-type derives doesn't remove this dependency.
+The daemon goes **all-binary**: no NOTA argument at startup, no
+`nota_next::*` in the daemon binary's closure. Configuration delivery becomes
+a SIGNAL (rkyv, on its own interface), and the daemon's startup is
+**state-aware** — reads the default state path if present, otherwise enters
+**standby mode** on the config-signal interface and persists state once
+configured. The architectural generalization is that a daemon's surface is a
+SET of signal interfaces (working + owner + config + ...) dispatched by a
+top-level enumeration (the "numerator" — see 431). Full design in [[431]].
 
-Two paths to choose between:
+So the implementation is now two clean slices:
 
-- **(a) Keep daemon's config NOTA-readable.** Daemon binary still depends on
-  nota-next, but ONLY for the small Configuration type. Other schema-emitted
-  types (Input/Output/Entry/…) are nota-free. Net: nota-next still pulled in
-  but only the parser, not the codec.
-- **(b) Eliminate NOTA from daemon entirely.** Configuration comes in as rkyv
-  bytes from a sidecar file the CriomOS-home module generates from a .nota
-  source. Daemon has zero nota-next dependency. Net: fully lean, but adds a
-  deploy-time pre-process step.
+- **Slice 1** (this report 430 + operator's 246): wire-type derives feature-gated,
+  spirit-next split into separate daemon/CLI crates with no feature unification
+  between them.
+- **Slice 2** ([[431]]): daemon binary stops taking a NOTA arg; Configuration
+  loses `NotaDecode`; new config-signal contract; standby + state-aware
+  startup; daemon zero-`nota_next` source-guard test.
 
-My read: **(a)** for the first slice — quick win, biggest wire-type derives
-removed, simple to roll out. **(b)** as a follow-up if the operator confirms
-the systemd-side rkyv-config pre-processing is worth it.
+The two slices can run in parallel (different repos, no API dependency between
+them once the schema-rust-next NotaSurface lands).
 
 ## 7. Operator implementation steps (one possible ordering)
 
