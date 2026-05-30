@@ -171,18 +171,19 @@ Designer 434 shows the intended canonical assembled NOTA as:
 (Public Entry (Struct { topics Topics kind Kind }))
 ```
 
-The current derived codec emits a more derive-shaped form. The live test checks
-for strings like:
+At the time of the audit, the current derived codec incorrectly bracketed
+symbol-safe schema names. That was wrong: a single string that qualifies as a
+symbol name must emit bare (`Entry`), not as a bracket string. The corrected
+shape is:
 
 ```nota
-(Public [Entry] (Struct ([Entry] ...)))
-(Vector (Plain [Entry]))
+(Public Entry (Struct (Entry ...)))
+(Vector (Plain Entry))
 ```
 
-That means the current `.to_nota()` surface is legal and round-trippable, but
-it is not yet the final pretty/canonical `.asschema` notation designer 434
-uses. This matters because `.asschema` is meant to be a human-inspectable
-artifact, not just any parseable serialization.
+That means the `.to_nota()` surface must be legal, round-trippable, and
+respectful of the symbol/string distinction. `.asschema` is meant to be a
+human-inspectable artifact, not just any parseable serialization.
 
 This is not a blocker for stage 2's data-substrate proof. It is a blocker for
 calling the `.asschema` text format aesthetically settled.
