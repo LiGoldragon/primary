@@ -1,10 +1,12 @@
-# Total Architecture With Core Macro Artifacts
+# 262 — Total architecture with core macro artifacts
 
-Operator report for the next slice after `261-nota-layer-macro-node-stack-implementation.md`.
+*Kind: implementation report · Topics: schema-next, schema-rust-next, spirit-next, asschema-artifact, macro-library-artifact, bootstrap, layered-walkthrough · 2026-05-30 · operator lane*
+
+Operator report for the next slice after `reports/operator/261-nota-layer-macro-node-stack-implementation.md`. The previous slice lifted the macro-node mechanism to the NOTA layer (Spirit record 1263, designer 438 §6 five critical decisions); this slice promotes the macro library itself to a checked-in data artifact, closing the artifact-discipline loop on the core macro table the same way report 252 closed it on assembled schema (Spirit record 1246).
 
 ## Slice Taken
 
-The slice taken here is the core macro-library artifact step from `255-schema-next-move-after-leans.md`: make the macro table and core assembled schema visible, serialized data artifacts, then make the runtime path consume the macro artifact instead of keeping it as an invisible parser intermediate.
+The slice taken here is the core macro-library artifact step from `reports/operator/255-schema-next-move-after-leans.md`: make the macro table and core assembled schema visible, serialized data artifacts, then make the runtime path consume the macro artifact instead of keeping it as an invisible parser intermediate.
 
 Landed in `schema-next`:
 
@@ -20,6 +22,13 @@ Downstream:
 - `schema-rust-next` is repinned to the new `schema-next`.
 - `spirit-next` is repinned to the new `schema-next` and `schema-rust-next`.
 
+Commits:
+
+- `schema-next` `f2772ee` — `schema: load builtin macros from data artifacts`
+- `schema-rust-next` `621492f` — `schema-rust: repin schema artifacts stack`
+- `spirit-next` `595238c` — `spirit: repin schema artifact stack`
+- `primary` `fa898a5d` — `operator: report total schema spirit architecture` (this report)
+
 ## One Picture
 
 ```mermaid
@@ -34,7 +43,7 @@ flowchart LR
   D --> E["Signal -> Nexus -> SEMA"]
 ```
 
-The invariant is: every important boundary creates data, serializes data, consumes data, and tests that real path.
+The invariant is: every important boundary creates data, serializes data, consumes data, and tests that real path. This is record 1109 (everything is data, macros included) realized one more layer deeper: the macro library that the runtime consumes is now itself a typed, serialized artifact, not an in-memory build product of the parser.
 
 ## Layer 1: NOTA
 
@@ -47,7 +56,7 @@ The raw meanings stay strict:
 - `()` is raw record/struct structure read against an expected type.
 - `[text]` and `[|text|]` are string forms. Schema symbols like `Entry` stay bare when they qualify as symbols.
 
-The reusable NOTA macro-node mechanism lives in `nota-next` and is consumed by `schema-next`:
+The reusable NOTA macro-node mechanism lives in `nota-next` and is consumed by `schema-next` (Spirit record 1263; designer 438 §6 names the five critical decisions — layer placement, closed pattern enum, ordered dispatch, named captures, `Match` output — all of which this stack honors):
 
 ```rust
 pub struct MacroNodeDefinition {
@@ -58,11 +67,21 @@ pub struct MacroNodeDefinition {
 }
 ```
 
-Schema-next now uses those NOTA-layer patterns for the structural cases. Schema still decides what those cases mean.
+Schema-next consumes that NOTA-layer type by wrapping it in a schema-vocabulary outer record (lifted in `reports/operator/261-nota-layer-macro-node-stack-implementation.md` §schema-next):
+
+```rust
+// schema-next's outer wrapper around nota-next's type
+pub struct MacroNodeDefinition {
+    position: MacroPosition,
+    cases: Vec<nota_next::MacroNodeDefinition>,
+}
+```
+
+The split is structurally enforced: nota-next decides "does this block sequence match this data pattern?"; schema-next decides "when it matches, lower it into Asschema." Future consumers (configs, intent records, deploy manifests) register their own outer wrappers against the same nota-next mechanism.
 
 ## Layer 2: Authored Schema
 
-A `.schema` file is legal NOTA first, then schema semantics are applied by position.
+A `.schema` file is legal NOTA first, then schema semantics are applied by position. The brace contract is strict (Spirit record 1259, landed in `reports/operator/256-strict-brace-key-value-schema-implementation.md`): every entry inside `{}` is exactly two objects — a key and a value, no single-token entries.
 
 Current target syntax shape:
 
@@ -102,13 +121,13 @@ Those lower as:
 - `Entry { ... }` -> struct declaration
 - `Kind [ ... ]` -> enum declaration
 
-`Topics *` in a struct body is the derived-field shorthand: the key is PascalCase, the value marker is `*`, and the lowered field is `topics: Topics`.
+`Topics *` in a struct body is the derived-field shorthand: the key is PascalCase, the value marker is `*` (the value-side marker chosen per Spirit record 1259 — strict pair rhythm, no prefix-sigil arity-1 sugar), and the lowered field is `topics: Topics`.
 
-Compatibility still exists for older pipe and self-named `@` syntax, but the target authored structure is strict key/value.
+Compatibility for older pipe and self-named `@` syntax exists transitionally while fixtures and older reports migrate; the target authored structure is strict key/value.
 
 ## Layer 3: Assembled Schema
 
-`Asschema` is the macro-free endpoint. It is not a witness string; it is a typed data object with NOTA and rkyv IO.
+`Asschema` is the macro-free endpoint. It is not a witness string; it is a typed data object with NOTA and rkyv IO. The artifact discipline (assembled schema as a live serializable artifact, Spirit record 1246) was closed for the spirit example in report 252; this slice extends the same discipline to the core schema and the macro library, so every macro the runtime consumes is also a checked-in data file.
 
 The Spirit example now has a checked-in `schema/lib.asschema`. The start of it is:
 
@@ -148,7 +167,7 @@ Newtypes are not fake one-field structs:
 (Newtype (Topics (Vector (Plain Topic))))
 ```
 
-## Slice Code
+## Artifact Code — Macro Library and Core Asschema
 
 The runtime built-in macro path now consumes a data artifact:
 
@@ -388,11 +407,15 @@ The first `scripts/check-local-schema-stack` run was interrupted after the remot
 
 ## Remaining Gaps
 
-1. The macro-table Rust noun is still hand-written. The table is now serialized data and the runtime path consumes the artifact, but the Rust type itself must be emitted from `core.asschema`.
-2. Declarative macros still expand through template strings before lowering into assembled fragments. The cleaner next target is direct capture-to-Asschema construction from nota-next `MacroMatch`.
-3. Compatibility syntax remains. Pipe forms and self-named `@` forms still exist while fixtures and older reports migrate; the strict key/value schema target needs a final cleanup pass.
-4. Diff/upgrade is not live. With checked-in `.asschema` artifacts, the next stable basis for upgrade is comparing old/new asschema and emitting path-based change objects.
-5. Shared support nouns are still mostly local to generated modules. The eventual `schema-core` crate should own common envelopes, origin routes, macro-table nouns, and support traits imported by components.
+The five-gap framing from `reports/operator/253-schema-gap-closure-vision.md` (and designer 435's four-gap vision) has evolved with this slice. Gap status now:
+
+1. **Macro-table Rust noun still hand-written** (was 253 Gap A, designer 435 Gap A — macro-table-as-data). The table is now serialized data and the runtime path consumes the artifact, but the Rust type itself must be emitted from `core.asschema`. This is the last step to close Stage 5 self-hosting.
+2. **Declarative macros still expand through template strings** before lowering into assembled fragments. The cleaner next target is direct capture-to-Asschema construction from nota-next `MacroMatch` — a new gap surfaced by this slice (the lowering path is the next refactor once the macro-table noun is generated).
+3. **Compatibility syntax remains.** Pipe forms and self-named `@` forms still exist while fixtures and older reports migrate; the strict key/value schema target (Spirit record 1259) needs a final cleanup pass.
+4. **Diff/upgrade is not live** (was 253 Gap D, designer 435 Gap D). With checked-in `.asschema` artifacts, the next stable basis for upgrade is comparing old/new asschema and emitting path-based change objects.
+5. **Shared support nouns are still mostly local to generated modules** (was 253 Gap C, designer 435 Gap C). The eventual `schema-core` crate should own common envelopes, origin routes, macro-table nouns, and support traits imported by components.
+
+Designer 435 Gap B (RustModule-as-data emitter) is closed — the emitter already produces typed `RustModule` data before rendering text, proven by `emitter_builds_rust_module_data_before_rendering_text`.
 
 ## Next Move
 
