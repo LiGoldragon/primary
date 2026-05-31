@@ -37,6 +37,11 @@ Current implementation commits:
 - `schema-next` `62d78bc6`: makes `Asschema` consume the NOTA document-body codec instead of owning the file join.
 - `nota-next` `b041e642`: adds `#[nota(known_root)]` derive support, named document fields, and serializable nested child constraints for macro-node patterns.
 - `schema-next` `57bab609`: makes `Asschema` use the derived known-root document codec and removes the manual six-field document decoder/encoder.
+- `nota-next` `3f46c2e`: exposes the delimiter/block substrate and replaces the temporary child-pattern layer with recursive `Pattern` data.
+- `schema-next` `877c03f5`: keeps declarative macro expansion structural instead of round-tripping blocks through text.
+- `schema-next` `fe770d1d`: repins to the recursive NOTA macro substrate and adjusts codec helper usage.
+- `schema-rust-next` `33d7a678`: repins the emitter stack to the recursive schema substrate.
+- `spirit-next` `de7af0f7`: repins the runtime stack and Nix inputs to the same substrate.
 
 ## One Picture
 
@@ -434,9 +439,9 @@ let registry = MacroRegistry::new(vec![MacroNodeDefinition::new(
                 MacroObjectCount::Exact(2),
                 Some(CaptureName::new("body")),
             )
-            .with_children(ChildPattern::new(vec![
-                ChildPatternElement::literal("topic"),
-                ChildPatternElement::atom(AtomShape::pascal_case(Some(CaptureName::new(
+            .with_children(Pattern::new(vec![
+                PatternElement::literal("topic"),
+                PatternElement::atom(AtomShape::pascal_case(Some(CaptureName::new(
                     "field_type",
                 )))),
             ])),
@@ -459,7 +464,7 @@ flowchart TD
   Source["{Entry {topic Topic}}"]
   Pair["candidate pair: Entry + brace value"]
   Pattern["MacroNodeDefinition: Pascal key + brace value"]
-  Children["ChildPattern: topic + PascalCase type"]
+  Children["nested Pattern: topic + PascalCase type"]
   Match["MacroMatch with captures: type_name, body, field_type"]
 
   Source --> Pair
@@ -468,7 +473,7 @@ flowchart TD
   Children --> Match
 ```
 
-The important design limit in this slice: `ChildPattern` is serializable data over immediate children. It avoids a recursive `Pattern -> DelimitedShape -> Pattern` type that rkyv cannot archive cleanly today. Deeper recursive structural matching can still land later as an explicitly rkyv-compatible pattern tree.
+The temporary design limit from the first slice is gone. `DelimitedShape` now carries `children: Option<Box<Pattern>>`, so the structural macro language can recurse through nested delimiters while remaining rkyv-archivable through explicit rkyv bounds. The live test `nota-next/tests/macro_nodes.rs::dispatches_recursively_nested_structural_constraints` matches through a brace, then a parenthesis, then a square bracket and captures the nested element type.
 
 ## Artifact Owner
 
@@ -717,7 +722,7 @@ Live now:
 - `AsschemaStore` stores rkyv-archived `Asschema` values in a redb-backed `.sema` database and re-exports recovered values through `AsschemaArtifact`.
 - `schema-rust-next` emits Rust from `Asschema`, including from NOTA/binary artifacts.
 - `spirit-next` proves the redb SEMA pattern with rkyv-archived values in a `.sema` file.
-- `nota-next` macro-node patterns can express ordered structural matches with immediate child constraints, named captures, and no-match diagnostics.
+- `nota-next` macro-node patterns can express ordered structural matches with recursive child constraints, named captures, and no-match diagnostics.
 
 Next implementation:
 

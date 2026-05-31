@@ -280,19 +280,24 @@ projection on top. The vocabulary closes the loop:
 The `.schema`/NOTA pair is a **specification language more specific
 than Rust** — Rust mixes data shape with derives, trait impls,
 visibility, and validation; a `.schema` declaration is JUST the
-structural truth (`Entry@{ @Topics @Kind @Description @Magnitude }`),
-and the noisy-but-mechanical Rust + rkyv codec + optional NOTA codec
-EMIT from it.
+structural truth, and the noisy-but-mechanical Rust + rkyv codec +
+optional NOTA codec EMIT from it.
 This is the same reason CapnProto exists as a separate language from
 C++. Schema is a **superset of CapnProto-style declaration** with
 three additions: a module system (named imports/exports as the
 document's first position), a macro system (extensible type-
-declaration vocabulary, where macros are variants in the same
-namespace as core types), and shape-driven node-type matching
-(`(Name …)` resolves by delimiter/shape/count/position). NOTA is the
-text view of the portable rkyv format's specification; the binary it
-specifies appears in two contexts — SEMA at rest and signal in
-transit (psyche 2026-05-26, records 839-844).
+declaration vocabulary, where macros are data), and shape-driven
+node-type matching. NOTA owns the universal substrate for that:
+parsed delimiter/atom structure, known-root document-body codecs,
+derive-generated typed readers/writers, and a programmable macro-node
+registry that matches structure by delimiter / count / position /
+captured child shapes. Schema is a consumer of that substrate: it
+declares the schema vocabulary and lowers matches into `Asschema`.
+Future structural-macro languages should reuse the same NOTA layer
+instead of inventing another parser. NOTA is the text view of the
+portable rkyv format's specification; the binary it specifies appears
+in two contexts — SEMA at rest and signal in transit (psyche
+2026-05-26, records 839-844; 2026-05-31, record 1281).
 
 Authored schema sugar lowers into **assembled schema** (`Asschema`)
 before Rust emission. `Asschema` is macro-free typed data, not hidden
