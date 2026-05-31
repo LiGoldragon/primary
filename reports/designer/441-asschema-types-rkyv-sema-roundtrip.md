@@ -472,18 +472,165 @@ This is the answer to "how does an Asschema in a sema db become an `.asschema` f
 | Cross-crate refs via `resolved_imports` → emitter | ✓ wired (`schema-rust-next` src/lib.rs:117, 337) |
 | Module-qualified `Name` (colon-segmented) | ⚠️ supported by `Name`; not enforced at declaration storage. Three plausible readings of Spirit 1270's "always module-prefixed" — psyche call needed. |
 | Macro declarations as first-class Declarations in Asschema | ⏳ Operator 263 Gap 1. Currently macros live in `MacroLibraryArtifact`. |
-| Sema database for Asschema storage | ⏳ Not yet a deployed substrate. The sema-db pattern exists in Spirit; an Asschema-storing daemon (`persona-schema` or similar) is the natural deploy step. |
+| Sema database for Asschema storage | 🔨 prototyped on `schema-next` branch `designer-store-prototype` (`f2b477a`); seven constraint tests pass. Not yet a deployed `.sema`-backed substrate. |
 | Schema-emitted Asschema Rust (Stage 5 self-hosting) | ⏳ Pending Gap A + module-prefixing call + macro-table noun emission (operator 262 §"Next Move" step 1). |
 
-## 11. Recommendations for the next slice
+## 11. Prototype landed — `AsschemaStore` with four-corner constraint tests
+
+The four-object logic separation from Spirit record 1272 is now demonstrated in a runnable prototype on a designer feature branch:
+
+- **Branch**: `designer-store-prototype` on `schema-next`
+- **Commit**: `f2b477a` — `schema: AsschemaStore prototype with four-corner round-trip constraint tests`
+- **File**: `tests/store_roundtrip_prototype.rs` (single integration test file)
+- **Verified**: 7/7 constraint tests pass; `cargo fmt` + `cargo clippy --tests -- -D warnings` clean
+
+The prototype materializes the fourth object — `AsschemaStore` — as a minimal typed surface wrapping a `HashMap<String, Vec<u8>>` so the constraint tests run in-process without filesystem state. The production substrate swaps the HashMap for a redb table (per `spirit-next/src/store.rs`) without changing the put / get / export_nota_source surface.
+
+### 11.1 The four objects, realized
+
+```mermaid
+classDiagram
+  class Asschema {
+    SchemaIdentity identity
+    Vec~Declaration~ namespace
+    +to_nota() String
+    +from_nota_source(text) Asschema
+    +to_binary_bytes() Vec~u8~
+    +from_binary_bytes(bytes) Asschema
+  }
+  class AsschemaArtifact {
+    Asschema asschema
+    +write_nota_file(path)
+    +write_binary_file(path)
+    +read_nota_file(path) AsschemaArtifact
+    +read_binary_file(path) AsschemaArtifact
+  }
+  class AsschemaStore {
+    HashMap~String,Vec~u8~~ archives
+    +put(asschema) Result
+    +get(identity) Result~Option~Asschema~~
+    +export_nota_source(identity) Result~Option~String~~
+  }
+  class RustEmitter {
+    +emit(asschema) RustModule
+  }
+
+  Asschema ..> AsschemaArtifact : projection
+  Asschema ..> AsschemaStore : persistence
+  Asschema ..> RustEmitter : consumption
+```
+
+Each arrow is a derive-driven projection: `NotaEncode` produces text, `rkyv::to_bytes` produces bytes, and `AsschemaStore::put` is two lines of glue over the derives.
+
+### 11.2 The `AsschemaStore` surface
+
+```rust
+struct AsschemaStore {
+    archives: HashMap<String, Vec<u8>>,
+}
+
+impl AsschemaStore {
+    fn put(&mut self, asschema: &Asschema) -> Result<(), SchemaError> {
+        let key = AsschemaStore::key_for(asschema.identity());
+        let bytes = asschema.to_binary_bytes()?;
+        self.archives.insert(key, bytes);
+        Ok(())
+    }
+
+    fn get(&self, identity: &SchemaIdentity) -> Result<Option<Asschema>, SchemaError> {
+        let key = AsschemaStore::key_for(identity);
+        let Some(bytes) = self.archives.get(&key) else {
+            return Ok(None);
+        };
+        Asschema::from_binary_bytes(bytes).map(Some)
+    }
+
+    fn export_nota_source(
+        &self,
+        identity: &SchemaIdentity,
+    ) -> Result<Option<String>, SchemaError> {
+        let Some(asschema) = self.get(identity)? else {
+            return Ok(None);
+        };
+        Ok(Some(AsschemaArtifact::new(asschema).to_nota_source()))
+    }
+
+    fn key_for(identity: &SchemaIdentity) -> String {
+        format!("{}@{}", identity.component().as_str(), identity.version())
+    }
+}
+```
+
+That's the whole surface. Three operations — `put`, `get`, `export_nota_source` — each one or two lines after the derives do their work. The "no glue code" claim of §7 is now literal: `put` is `to_binary_bytes + insert`; `export_nota_source` is `get + to_nota_source`.
+
+### 11.3 The seven constraint tests
+
+| # | Test | Constraint proven |
+|---|---|---|
+| 1 | `constraint_text_roundtrip_through_artifact` | `NotaEncode`/`NotaDecode` derives form an identity round-trip on `Asschema`. |
+| 2 | `constraint_bytes_roundtrip_through_artifact` | `rkyv::Archive`/`Serialize`/`Deserialize` derives form an identity round-trip. |
+| 3 | `constraint_store_then_export_matches_direct_text` | Store-then-export NOTA text byte-equals direct-encode NOTA text — the four-corner equivalence proof. |
+| 4 | `constraint_module_qualified_identity_keys_the_store` | Module-qualified identity (`Name(":")`-segmented) acts as the persistence key; missing identities return `None`, not stale data. |
+| 5 | `constraint_independent_asschemas_coexist_in_store` | Two asschemas with different identities round-trip independently — no shared state inside the store. |
+| 6 | `constraint_four_corner_equivalence_via_derives_only` | Four corners (Rust, text, bytes, store) recover byte-equal Asschemas; no custom logic between any pair. |
+| 7 | `constraint_text_store_text_is_byte_stable` | text → store → text is byte-stable across cycles (deterministic encode). |
+
+Test output:
+
+```text
+running 7 tests
+test constraint_bytes_roundtrip_through_artifact ... ok
+test constraint_store_then_export_matches_direct_text ... ok
+test constraint_text_store_text_is_byte_stable ... ok
+test constraint_text_roundtrip_through_artifact ... ok
+test constraint_four_corner_equivalence_via_derives_only ... ok
+test constraint_module_qualified_identity_keys_the_store ... ok
+test constraint_independent_asschemas_coexist_in_store ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+```
+
+### 11.4 What the prototype proves and what it doesn't
+
+**Proved.**
+
+1. The four-object separation from Spirit 1272 is mechanical to realize: each object's responsibility is one or two derive calls or a HashMap insert/get.
+2. The four-corner round-trip invariant from §7 holds in practice — `direct_text == store_export_text` is byte-equal under derives alone.
+3. Module-qualified identity is a workable persistence key — `format!("{}@{}", component, version)` is a stable canonical wire key.
+4. No custom serialization logic is needed between any pair of corners. The derives are the contract.
+
+**Not yet proved.**
+
+1. **Production redb substrate.** The prototype uses `HashMap`; the real `.sema` substrate is redb-backed (per `spirit-next/src/store.rs`). Translation is mechanical — the operator has the live redb pattern next to this prototype.
+2. **`DeclarationValue::Macro` round-trip.** The prototype uses today's `Declaration` (TypeDeclaration only). Once Gap A lands, an eighth constraint test (`constraint_macro_declaration_round_trips_through_all_corners`) will prove the four-corner invariant holds for the new macro kind too.
+3. **Cross-asschema reference resolution from the store.** The prototype stores independent asschemas; the next step is reading a dependency's asschema from the store at lowering time and feeding it into `ResolvedImport` construction.
+
+### 11.5 Open questions still standing — psyche call needed
+
+These don't block the prototype but need a call before the production substrate lands:
+
+1. **Module-prefixing semantics** (§10 row 4). The current behavior — bare name within the declaring asschema, qualified at cross-module reference — is what the prototype demonstrates and what the live `core.asschema` uses. If reading (a) "always-qualified storage" is chosen, `key_for` stays the same but every declared `Name` in `core.asschema` gets rewritten to its qualified form, inflating the wire.
+2. **Store key shape.** The prototype uses `format!("{}@{}", component, version)` (matches operator 264 §"Asschema In A SEMA Database" sketch). The redb substrate could use the same string key or a tuple key `(component, version)` with `TableDefinition<(&str, &str), &[u8]>`. The string key is simpler; the tuple is more typed.
+3. **Store-as-cache vs store-as-truth.** Is the `.sema` store a cache that always defers to checked-in `.asschema` text files, or is it the authoritative source that text files are exported from? The prototype is symmetric (text → store, store → text both work); production deployment needs the call.
+
+### 11.6 Adapting the prototype later — the operator path
+
+1. Lift `AsschemaStore` from `tests/store_roundtrip_prototype.rs` into its own module (`src/store.rs` in `schema-next`) or a new crate (`schema-store`).
+2. Replace `HashMap<String, Vec<u8>>` with `redb::TableDefinition<&str, &[u8]>` — the same pattern as `spirit-next/src/store.rs`. The `put` / `get` / `export_nota_source` signatures stay identical.
+3. Add the missing surface methods (open/close database, list identities, remove by identity, write to disk path).
+4. Promote the seven constraint tests to integration tests against the real redb-backed store with a temporary directory fixture.
+5. Once Gap A's `DeclarationValue::Macro` lands, add a `constraint_macro_declaration_round_trips_through_all_corners` test.
+6. Once cross-asschema reference resolution from the store is wired, add a `constraint_cross_asschema_resolution_through_store` test that reads a dependency's asschema from the store and verifies the resolved import resolves correctly.
+
+## 12. Recommendations for the next slice
 
 1. **Psyche call on module-prefixing semantics.** Three plausible readings of Spirit 1270's "always module-prefixed": (a) always-qualified storage — every declared name in the asschema is stored as `<identity>:Name`; (b) reference-time only — bare within the declaring asschema, qualified when crossing modules (current behaviour); (c) canonical wire form — stored qualified for interchange, exposed bare in the Rust API. Without that call, Gap A's data-model choices are premature.
 2. **Then lift `Declaration` to carry `DeclarationValue::Type | DeclarationValue::Macro`** (§3 here; operator 263 Gap 1 names the macro-table-as-data closure). Migrate `core.asschema` and `builtin-macros.macro-library` toward a unified Asschema carrying both kinds.
-3. **Introduce `AsschemaStore`** — a sema-db-backed Asschema persistence layer (§5 here). The initial deploy can be a `persona-schema` daemon or an embedded redb in `schema-next` for build-time use.
+3. **Promote `AsschemaStore` from prototype to production substrate** (§5 + §11 here). The HashMap-backed prototype on branch `designer-store-prototype` proves the surface and the four-corner invariant; the production substrate replaces the HashMap with a redb table per `spirit-next/src/store.rs` without changing the put / get / export_nota_source signatures. Initial deploy can be an embedded redb in `schema-next` for build-time use or a separate `persona-schema` daemon for runtime cross-asschema lookup.
 4. **Add `cross_crate_type_reference_emits_dependency_use` test** to lock the resolved-imports wire that §9.1 / §10 verify exists but doesn't have explicit emission test coverage.
-5. **Defer Stage 5 mirror** until §11.1-3 complete and `core.asschema` actually carries both kinds of declarations.
+5. **Defer Stage 5 mirror** until §12.1-3 complete and `core.asschema` actually carries both kinds of declarations.
 
-## 12. Connection to existing work
+## 13. Connection to existing work
 
 - `reports/operator/262-total-architecture-core-macro-artifacts-2026-05-30.md` — total stack tour after the macro library artifact landed.
 - `reports/operator/263-unimplemented-gap-audit-2026-05-31.md` — operator's 8-gap audit. §10-11 here align with operator 263's Gap 1 (macro-table nouns) and pick up the module-prefixing semantics question as a new designer-side open question.
@@ -492,4 +639,5 @@ This is the answer to "how does an Asschema in a sema db become an `.asschema` f
 - `reports/designer/435-vision-for-the-four-remaining-gaps.md` — the four-gap parallel vision.
 - `reports/operator/255-schema-next-move-after-leans.md` — the macro-table-from-core.schema vision.
 - `reports/operator/261-nota-layer-macro-node-stack-implementation.md` — the macro-node stack at NOTA layer.
-- Spirit records: 1246 (live asschema artifact), 1259 (strict brace), 1263 (macro nodes at NOTA layer), 1267/1268/1269 (notation honesty), 1270 (three categories + module-qualified + cross-crate), 1249 (rkyv discriminant stability lesson).
+- Spirit records: 1246 (live asschema artifact), 1249 (rkyv discriminant stability lesson), 1259 (strict brace), 1263 (macro nodes at NOTA layer), 1267/1268/1269 (notation honesty), 1270 (three categories + module-qualified + cross-crate), 1271 (rkyv-in-SEMA + NOTA re-export through derived types), 1272 (four-object logic separation: Asschema + AsschemaArtifact + AsschemaStore + RustEmitter).
+- Prototype: `schema-next` branch `designer-store-prototype` (`f2b477a`), `tests/store_roundtrip_prototype.rs` — `AsschemaStore` + seven constraint tests proving the four-corner round-trip invariant.
