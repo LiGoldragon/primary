@@ -22,7 +22,7 @@ flowchart LR
 
 The system's cleanest current reading:
 
-- NOTA owns the programmable syntax substrate: parse trees, delimiters, document bodies, derive codecs, structural patterns and macro captures.
+- NOTA owns the programmable syntax substrate: parse trees, delimiters, body streams, derive codecs, structural patterns and macro captures.
 - Schema consumes that substrate: it supplies macro positions, vocabulary, and lowering into `Asschema`.
 - `Asschema` is a live data artifact: checked-in body-form NOTA, rkyv bytes, redb storage, and Rust-emission input.
 - `schema-rust-next` turns `Asschema` into Rust nouns, not just strings, though its universal support surface is still text-heavy.
@@ -33,24 +33,27 @@ The system's cleanest current reading:
 1. `nota-next` now exposes delimiter/block substrate. `Delimiter::opening_text`, `closing_text`, `description`, and `wrap` exist, plus `Block::is_delimited_with` and `as_delimited`.
 2. `nota-next` macro patterns are recursively structural through `DelimitedShape { children: Option<Box<Pattern>> }`.
 3. `nota-next` derive handles multi-field enum variant payloads, demonstrated by `TypeReference::Map(Box<Self>, Box<Self>)`.
-4. `schema-next` uses `#[nota(known_root)]` on `Asschema`; manual known-root joins/readers are gone from the current `Asschema` body.
-5. `schema-next` no longer lowers declarative macros by reparsing generated text. Macro bindings store `Block` values, and expanded templates lower through object views.
+4. `nota-next` now has a shared `NotaBody` abstraction. Known-root files and matched parenthesized object bodies both hand the inner object stream to the expected type's semantic codec.
+5. `schema-next` uses `#[nota(known_root)]` on `Asschema`; manual known-root joins/readers are gone from the current `Asschema` body.
+6. `schema-next` no longer lowers declarative macros by reparsing generated text. Macro bindings store `Block` values, and expanded templates lower through object views.
 
-The fifth point is the most important correction to stale report context. The remaining trace `source` string in `ExpandedTemplate` should not be confused with the old lowering substrate.
+The sixth point is the most important correction to stale report context. The remaining trace `source` string in `ExpandedTemplate` should not be confused with the old lowering substrate.
 
 ## Best Current Vision
 
 ```mermaid
 flowchart TB
     parser["parser"]
-    matcher["matcher"]
-    lowerer["consumer lowerer"]
+    matcher["structural matcher"]
+    body["body stream"]
+    lowerer["expected type semantic logic"]
     artifact["typed artifact"]
     emitter["emitter"]
     daemon["daemon"]
 
     parser --> matcher
-    matcher --> lowerer
+    matcher --> body
+    body --> lowerer
     lowerer --> artifact
     artifact --> emitter
     emitter --> daemon
@@ -58,8 +61,9 @@ flowchart TB
 
 The architecture is becoming a programmable structural-language stack:
 
-- Parser and matcher are reusable language mechanics.
-- Consumer lowerer is Schema's responsibility.
+- Parser and structural matcher are reusable language mechanics.
+- Body streams are the handoff between structural matching and semantic decoding.
+- Consumer lowerer is Schema's responsibility once the expected type receives its body.
 - Artifact is the stable handoff object.
 - Emitter and daemon are downstream consumers of artifact data.
 

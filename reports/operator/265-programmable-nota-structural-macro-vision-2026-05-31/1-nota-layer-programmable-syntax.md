@@ -10,16 +10,19 @@ NOTA is the parsed-structure and structural-programming library. It knows what a
 flowchart LR
     text["NOTA source"]
     blocks["Block tree"]
-    codec["body codec"]
-    derive["derive surface"]
+    match["file/delimiter match"]
+    body["body stream"]
+    codec["semantic codec"]
     macros["macro registry"]
     consumer["consumer lowering"]
 
     text --> blocks
-    blocks --> codec
+    blocks --> match
+    match --> body
+    body --> codec
     blocks --> macros
-    codec --> derive
     macros --> consumer
+    codec --> consumer
 ```
 
 The boundary is clean: NOTA owns mechanics; Schema supplies vocabulary and lowering.
@@ -58,18 +61,24 @@ impl Delimiter {
 
 This is the substrate Schema used to lack. The direct witness is `repos/nota-next/tests/block_queries.rs:36`, where `Delimiter::PipeParenthesis.wrap(...)`, `Block::is_delimited_with`, and `Block::as_delimited` are tested together.
 
-## Known-Root Body Codec
+## Body-Content Codec
 
-Known-root codec support moved into NOTA derive. `#[nota(known_root)]` emits document-body decode/encode impls, while ordinary struct decode still uses parenthesized record bodies.
+NOTA now treats a known-root file body and a matched delimited object body as the same semantic surface. The parser first proves "this file body" or "this parenthesized object" structurally; the codec then hands the inner object stream to the expected type. `#[nota(known_root)]` document decode delegates to the same body decode implementation that named struct decode uses after the outer parentheses match.
 
 ```rust
-// repos/nota-next/derive/src/lib.rs:192
+// repos/nota-next/derive/src/lib.rs
+impl #implementation_generics ::nota_next::NotaBodyDecode for #name #type_generics #where_clause {
+    fn from_nota_body(body: &::nota_next::NotaBody<'_>) -> Result<Self, ::nota_next::NotaDecodeError> {
+        let children = body.expect_fields(#type_name, #field_count)?;
+        Ok(Self {
+            #(#body_fields,)*
+        })
+    }
+}
+
 impl #implementation_generics ::nota_next::NotaDocumentDecode for #name #type_generics #where_clause {
     fn from_nota_document_body(body: &::nota_next::NotaDocumentBody<'_>) -> Result<Self, ::nota_next::NotaDecodeError> {
-        let fields = body.expect_fields(#type_name, #field_count)?;
-        Ok(Self {
-            #(#document_fields,)*
-        })
+        <Self as ::nota_next::NotaBodyDecode>::from_nota_body(body.as_body())
     }
 }
 ```
@@ -88,7 +97,7 @@ struct KnownRootDocument {
 }
 ```
 
-This is the mechanism that lets `Asschema` be a named document body without private hand parsing.
+The direct test witness is `repos/nota-next/tests/derive.rs`, where the same `KnownRootDocument` decodes from `[schema]\n[]\n[[Record] [Observe]]` as a known-root document and from `([schema] [] [[Record] [Observe]])` as a parenthesized object. `repos/nota-next/tests/codec.rs` also manually decodes both through `KnownRootExample::from_nota_body`.
 
 ## Derives and Multi-Field Variants
 
@@ -151,5 +160,5 @@ The key point: NOTA can say "a brace with exactly two children whose first child
 ## Current Open Gaps
 
 - `NotaCollection` still carries encode helpers as associated functions on a block-backed type (`repos/nota-next/src/codec.rs` around `NotaCollection`). The direction from the delimiter substrate suggests `Delimiter::wrap` and value-owned encode nouns should absorb more of that surface.
-- `#[nota(known_root)]` solves named document-body fields, but the derive still lacks a finished variant-level "bare unit" attribute. Schema still has places where bare symbols are semantic and currently rely on hand logic.
+- The shared body abstraction now covers known-root files and parenthesized named structs. Enum variant bodies and variant-level "bare unit" attributes are still the next semantic-codec pressure point where Schema has bare-symbol meaning.
 - Macro-node matching is structural and recursive, but Schema still wraps nota macro definitions in `schema-next::MacroNodeDefinition`. That wrapper may be reduced once NOTA exposes a slightly richer registry profile.
