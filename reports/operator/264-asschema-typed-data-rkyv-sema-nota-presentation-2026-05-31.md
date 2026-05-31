@@ -21,11 +21,20 @@ Spirit intent anchors:
 - `1272`: the implementation separates the responsibilities: `Asschema` owns data, `AsschemaArtifact` owns NOTA/rkyv projection, `AsschemaStore` owns durable SEMA persistence, and Rust emission consumes the typed object.
 - `1274`: `.asschema` is read as a known `Asschema` root struct, so canonical text uses root document fields, not an outer record wrapper.
 - `1277`: input and output are known root positions; canonical asschema text must not serialize them as data-carrying variants named `Input` or `Output`.
+- `1278`: known-root NOTA serialization must not be ad hoc field-string joining; the NOTA layer should expose a document-body parse/format abstraction.
+- `1279`: NOTA extension programming is ordered structural matching over nodes, object counts, delimiters, sigils, and nested shapes.
+- `1280`: schema macros should prefer structural macro definitions over text macros.
 
 Comparison input:
 
 - `reports/designer/441-asschema-types-rkyv-sema-roundtrip.md` adds the forward vision: the same typed object should round-trip through `.asschema`, rkyv bytes, and a SEMA database; macro declarations should eventually join type declarations in the namespace; module-prefixing semantics need a psyche call before that larger model change.
 - This operator pass implements the clean storage slice now: `schema-next::AsschemaStore` persists rkyv-archived `Asschema` values in redb and re-exports them through `AsschemaArtifact`.
+
+Current implementation commits:
+
+- `nota-next` `14ad2f8f`: adds `NotaDocumentBody`, `NotaDocumentEncoding`, `NotaDocumentDecode`, and `NotaDocumentEncode`.
+- `nota-next` `05c91c86`: manifests the known-root body codec in repo intent and architecture.
+- `schema-next` `62d78bc6`: makes `Asschema` consume the NOTA document-body codec instead of owning the file join.
 
 ## One Picture
 
@@ -139,30 +148,56 @@ impl Asschema {
 }
 ```
 
-The NOTA surface now reflects the known-root rule:
+The NOTA surface now reflects the known-root rule through a shared NOTA document-body codec:
 
 ```rust
 impl Asschema {
     pub fn from_nota_source(source: &str) -> Result<Self, SchemaError> {
-        let document = nota_next::Document::parse(source)?;
-        Self::from_nota_document(&document)
+        NotaSource::new(source)
+            .parse_document_body()
+            .map_err(SchemaError::from)
     }
 
     pub fn to_nota(&self) -> String {
-        [
+        self.to_nota_document_body().to_nota()
+    }
+}
+
+impl NotaDocumentEncode for Asschema {
+    fn to_nota_document_body(&self) -> NotaDocumentEncoding {
+        NotaDocumentEncoding::new(vec![
             self.identity.to_nota(),
             self.imports.to_nota(),
             self.resolved_imports.to_nota(),
             self.input.variants.to_nota(),
             self.output.variants.to_nota(),
             self.namespace.to_nota(),
-        ]
-        .join("\n")
+        ])
     }
 }
 ```
 
-The raw NOTA parser still sees six root objects. The `Asschema` reader assigns those objects to typed fields.
+The important separation: NOTA owns the document-body parse/format boundary; `Asschema` only says which typed fields live in the body. The old anti-pattern was putting the newline-joined file-format rule directly in `Asschema::to_nota`.
+
+The decode side is the same split:
+
+```rust
+impl NotaDocumentDecode for Asschema {
+    fn from_nota_document_body(body: &NotaDocumentBody<'_>) -> Result<Self, NotaDecodeError> {
+        match body.root_objects().len() {
+            1 => <Self as NotaDecode>::from_nota_block(&body.root_objects()[0]),
+            6 => Self::from_nota_document_fields(body.expect_fields("Asschema", 6)?),
+            found => Err(NotaDecodeError::ExpectedRootCount {
+                type_name: "Asschema",
+                expected: 6,
+                found,
+            }),
+        }
+    }
+}
+```
+
+The raw NOTA parser still sees six root objects. The `Asschema` document-body implementation assigns those objects to typed fields.
 
 So the root is a product, not a vector:
 
@@ -610,10 +645,12 @@ flowchart LR
   Text[".asschema NOTA"]
   Bytes["rkyv bytes"]
   Value["Asschema"]
+  Body["NotaDocumentBody"]
   Module["RustModule"]
   Source["src/schema/lib.rs"]
 
-  Text -->|known-root NotaDecode| Value
+  Text -->|Document::parse| Body
+  Body -->|NotaDocumentDecode| Value
   Bytes -->|rkyv::from_bytes| Value
   Value --> Module
   Module --> Source
@@ -627,6 +664,7 @@ Live now:
 
 - `Asschema` is typed Rust.
 - `Asschema` derives NOTA and rkyv surfaces, and the canonical `.asschema` text is a known-root document with six positional root fields.
+- Known-root asschema parsing/formatting goes through `nota-next`'s document-body codec traits, so the file/body rule is no longer hand-coded as a local string join.
 - `AsschemaArtifact` reads/writes `.asschema` and `.asschema.rkyv`.
 - `AsschemaStore` stores rkyv-archived `Asschema` values in a redb-backed `.sema` database and re-exports recovered values through `AsschemaArtifact`.
 - `schema-rust-next` emits Rust from `Asschema`, including from NOTA/binary artifacts.
