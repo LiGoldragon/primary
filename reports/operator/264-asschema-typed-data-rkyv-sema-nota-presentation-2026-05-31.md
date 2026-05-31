@@ -19,6 +19,8 @@ Spirit intent anchors:
 - `1270`: asschema is a typed Rust data model with a NOTA projection.
 - `1271`: asschema should be storable as rkyv in SEMA and re-exportable as NOTA through the same typed object.
 - `1272`: the implementation separates the responsibilities: `Asschema` owns data, `AsschemaArtifact` owns NOTA/rkyv projection, `AsschemaStore` owns durable SEMA persistence, and Rust emission consumes the typed object.
+- `1274`: `.asschema` is read as a known `Asschema` root struct, so canonical text uses root document fields, not an outer record wrapper.
+- `1277`: input and output are known root positions; canonical asschema text must not serialize them as data-carrying variants named `Input` or `Output`.
 
 Comparison input:
 
@@ -62,18 +64,27 @@ The previous bad shape was a vector pretending to hold different root kinds:
 
 That was wrong because `[]` is a vector, and a vector has one element type. Adding a wrapper only hid the mismatch.
 
-The current shape is direct product fields on `Asschema`:
+The corrected shape is direct document fields for the known `Asschema` root:
 
 ```nota
-((schema-next:core [0.1.0])
- []
- []
- (Input [])
- (Output [])
- [(Public CoreSchema ...)])
+(schema-next:core [0.1.0])
+[]
+[]
+[]
+[]
+[(Public CoreSchema ...)]
 ```
 
-The two empty `[]` values are real homogeneous vectors: imports and resolved imports. The `(Input ...)` and `(Output ...)` objects are direct fields of the root `Asschema` record. The final `[...]` is a homogeneous vector of `Declaration`.
+There is no outer parenthesized record because the reader already knows it is reading `Asschema`. The six root objects are the fields in order:
+
+1. identity
+2. imports
+3. resolved imports
+4. input enum body
+5. output enum body
+6. namespace declarations
+
+The two empty `[]` values after identity are real homogeneous vectors: imports and resolved imports. The next two empty `[]` values are also vectors, but they are the enum bodies at known input/output positions. They do not need labels because the root type supplies the field names. The final `[...]` is a homogeneous vector of `Declaration`.
 
 ## The Rust Type That Owns The Shape
 
@@ -127,6 +138,31 @@ impl Asschema {
     }
 }
 ```
+
+The NOTA surface now reflects the known-root rule:
+
+```rust
+impl Asschema {
+    pub fn from_nota_source(source: &str) -> Result<Self, SchemaError> {
+        let document = nota_next::Document::parse(source)?;
+        Self::from_nota_document(&document)
+    }
+
+    pub fn to_nota(&self) -> String {
+        [
+            self.identity.to_nota(),
+            self.imports.to_nota(),
+            self.resolved_imports.to_nota(),
+            self.input.variants.to_nota(),
+            self.output.variants.to_nota(),
+            self.namespace.to_nota(),
+        ]
+        .join("\n")
+    }
+}
+```
+
+The raw NOTA parser still sees six root objects. The `Asschema` reader assigns those objects to typed fields.
 
 So the root is a product, not a vector:
 
@@ -577,7 +613,7 @@ flowchart LR
   Module["RustModule"]
   Source["src/schema/lib.rs"]
 
-  Text -->|NotaDecode| Value
+  Text -->|known-root NotaDecode| Value
   Bytes -->|rkyv::from_bytes| Value
   Value --> Module
   Module --> Source
@@ -590,7 +626,7 @@ This is the core correctness claim: the text and binary surfaces both pass throu
 Live now:
 
 - `Asschema` is typed Rust.
-- `Asschema` derives NOTA and rkyv surfaces.
+- `Asschema` derives NOTA and rkyv surfaces, and the canonical `.asschema` text is a known-root document with six positional root fields.
 - `AsschemaArtifact` reads/writes `.asschema` and `.asschema.rkyv`.
 - `AsschemaStore` stores rkyv-archived `Asschema` values in a redb-backed `.sema` database and re-exports recovered values through `AsschemaArtifact`.
 - `schema-rust-next` emits Rust from `Asschema`, including from NOTA/binary artifacts.
@@ -610,6 +646,7 @@ The comparison with `reports/designer/441-asschema-types-rkyv-sema-roundtrip.md`
 1. **Module qualification**: should declarations be stored internally as bare local names (`Entry`) with qualification only at cross-module reference sites, or should the serialized asschema wire form always store module-qualified names (`spirit-next:lib:Entry`)?
 2. **Macro declaration unification**: designer 441's `DeclarationValue::{Type, Macro}` shape is elegant, but it changes the namespace model. It should land after the module-qualification answer, because macro declarations also need stable names.
 3. **SEMA owner boundary**: `schema-next::AsschemaStore` proves the storage object. The next product question is whether build-time schema caches use this directly, or whether a future schema daemon owns a `.sema` store and serves asschema artifacts over a signal surface.
+4. **Compatibility window**: `Asschema::from_nota_source` still accepts the older one-record artifact form. The current artifact no longer emits it. The remaining question is when to remove that compatibility branch.
 
 ## The Crucial Mental Model
 
