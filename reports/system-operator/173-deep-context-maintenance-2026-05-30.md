@@ -206,6 +206,25 @@ The current baseline to remember is:
 If Prometheus changes again, create a new task-specific report instead of
 reviving the absorbed context presentation.
 
+### 2026-05-31 quantized Gemma deployment addendum
+
+Prometheus changed again in a narrow LLM-serving deployment, so the current
+baseline is:
+
+- CriomOS-lib commit `1d1726a186f6` adds suffixed Gemma 4 quant variants:
+  BF16 aliases plus `ud-q4-k-xl` and `ud-q8-k-xl` for both 26B-A4B and 31B.
+- CriomOS generation 48 was built from pushed `github:LiGoldragon/CriomOS/main`
+  on Prometheus, booted through BootOnce, verified, and promoted to the
+  persistent default.
+- Prometheus `/v1/models` lists all new Gemma 4 variant identifiers.
+- `gemma-4-26b-a4b-ud-q4-k-xl` was verified with a text load and an image
+  request; llama.cpp loaded `mmproj-F16` and returned the text drawn in the
+  image.
+- CriomOS-home commit `a43ff141bfd9` repins CriomOS-lib for the same model
+  inventory and was activated locally; Pi can now select the new local model
+  identifiers, and a headless Pi probe using
+  `criomos-local/gemma-4-26b-a4b-ud-q4-k-xl` returned `OK`.
+
 ## Current Working-Copy Boundary
 
 At the time of this pass, an unrelated system-designer file is dirty:
