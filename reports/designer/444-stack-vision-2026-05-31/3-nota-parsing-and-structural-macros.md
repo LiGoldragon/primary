@@ -441,30 +441,80 @@ NOTA strings these match:
 {Topics * Kind * Description *}                       ; derived fields
 ```
 
-### Enum variants — unit and data (sigil constraint)
+### Enum variants — unit and data (Spirit 1294 retirement of the @-suffix form)
 
-`/git/github.com/LiGoldragon/schema-next/src/macros.rs:421-446`
-constructs two cases at `MacroPosition::EnumVariants`:
+Spirit 1294 (Decision, Maximum, 2026-05-31) retires the
+`@`-suffix shorthand at enum-body vector positions because it
+interleaves two objects per logical entry inside a bracket
+delimiter — that breaks vector-as-homogeneous per Spirit 1267.
+The honest form: a unit variant is a bare PascalCase symbol
+(`Decision`); a data variant is a parenthesized record
+`(VariantName PayloadType)` (`(Record Entry)`, `(Observe Query)`).
+The recognized shorthand is a structural macro whose pattern is
+either an atom OR a parenthesized record at the same enum-body
+position.
+
+The honest structural pattern:
 
 ```rust
-NotaMacroNodeDefinition::new("unit variant", /* position */,
+// Unit variant — single PascalCase atom
+NotaMacroNodeDefinition::new("unit variant", /* enum-body position */,
     Pattern::new(vec![PatternElement::atom(
         AtomShape::pascal_case(/* variant_name */))]),
     "PascalCase variant atom")
 
-Self::pair_case(/* */, "data variant",
-    PatternElement::atom(AtomShape::pascal_case(/* variant_name */)
-        .with_sigil(SigilSpec::suffix("@"))),
-    PatternElement::any(/* payload */),
-    "PascalCase@ variant key followed by payload type")
+// Data variant — parenthesized record (Name PayloadType)
+NotaMacroNodeDefinition::new("data variant", /* enum-body position */,
+    Pattern::new(vec![PatternElement::delimited(
+        DelimitedShape::parenthesis()
+            .with_children(Pattern::new(vec![
+                PatternElement::atom(AtomShape::pascal_case(/* variant_name */)),
+                PatternElement::atom(AtomShape::pascal_case(/* payload_type */)),
+            ])))]),
+    "(VariantName PayloadType) parenthesized record")
 ```
 
-**Unit variant** — single-element pattern: ONE PascalCase atom
-matches `Decision`, `Principle`, `Correction`. **Data variant** —
-pair pattern: PascalCase-with-suffix-`@` atom plus any value
-matches `Record@ Entry`, `Observe@ Query`. The
-`with_sigil(SigilSpec::suffix("@"))` is the structural constraint
-— not regex on text, a typed sigil specification.
+**Unit variant** — single-element pattern matches `Decision`,
+`Principle`, `Correction`. **Data variant** — single-element
+pattern with NESTED structural constraint (recursive children per
+nota-next `b041e64`) matches `(Record Entry)`, `(Observe Query)`,
+`(Remove RecordIdentifier)`. The vector stays honestly homogeneous
+because every element is one block of consistent semantic kind —
+either a symbol block or a parenthesized record block, both
+parsed as a single "variant declaration object."
+
+**The retired @-suffix code** at `schema-next/src/macros.rs:421-446`
+currently still constructs the `Pattern` with
+`PatternElement::atom(AtomShape::pascal_case().with_sigil(
+SigilSpec::suffix("@")))` plus `PatternElement::any(payload)` —
+that's the dishonest two-token form per Spirit 1294. Migration is
+pending: replace the data-variant pattern with the parenthesized
+form, update schema source fixtures (`spirit-next/schema/lib.schema`
+and similar), regenerate `.asschema` artifacts. The assembled
+schema form is unchanged — variants are already `(VariantName
+payload-option)` records in a homogeneous vector at the
+`EnumDeclaration.variants` Vec position; this Decision corrects
+the SOURCE-form shorthand to match the assembled form's honesty.
+
+### Schema signature header (Spirit 1294)
+
+The input and output enum bodies at the schema source root form
+the schema signature header — variant name plus payload type per
+data variant, resolving payload types into the namespace below.
+The honest source form:
+
+```nota
+[(Record Entry) (Observe Query) (Remove RecordIdentifier)]
+[(RecordAccepted SemaReceipt) (RecordsObserved ObservedRecords)
+ (RecordRemoved RemoveReceipt) (Error ErrorReport)
+ (Rejected SignalRejection)]
+```
+
+Each element is one variant declaration object (parenthesized
+record for data, bare symbol for unit). The vector is honestly
+homogeneous. Compare to the retired `@`-suffix shorthand which
+placed two tokens per entry inside the bracket — structurally
+dishonest about being a vector.
 
 ### Type reference — symbol vs composite
 
