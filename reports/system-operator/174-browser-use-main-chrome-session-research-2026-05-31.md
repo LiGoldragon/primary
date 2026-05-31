@@ -47,11 +47,25 @@ Browser-use can copy the main profile into a temporary Chrome profile and contro
 
 Trade-off: it is not the real main session, it is fragile while Chrome is running, and it creates sensitive duplicated browser state. Not recommended for account work.
 
+## Browser-use versus Playwright extension mode
+
+Browser-use is an agent framework. The caller gives it a task plus an LLM, and browser-use runs its own internal perceive/decide/act loop. It then drives the browser through Playwright/CDP-like browser control. In this workspace that was attractive because Gemma 4 could be the inner browser agent model through the Prometheus OpenAI-compatible endpoint, and browser-use had a ready-made browser agent loop including screenshots/vision.
+
+Playwright MCP/CLI is a browser tool substrate. MCP/CLI itself does not contain the planning model. The outer harness agent sees snapshots, chooses `browser_click`/`browser_type`/CLI commands, and remains the only reasoning loop unless another wrapper adds one. That makes Playwright extension mode more direct and auditable for supervised account scouting.
+
+CDP is not one thing operationally. External CDP means Chrome exposes a remote debugging endpoint such as `http://localhost:9222`; Chrome 136+ blocks that for the default data directory. Extension CDP means an installed extension with the `debugger` permission attaches to a selected tab from inside the real profile and relays DevTools-style commands to a local server. The Playwright extension uses the latter route, so it avoids the default-profile remote-debugging block while still speaking DevTools-like browser commands.
+
+The practical distinction for the Digi/login use case:
+
+- browser-use is best when the desired unit is "give this browser agent a task and let it solve it" using Gemma as the internal model;
+- Playwright extension mode is best when the desired unit is "let the harness agent inspect and act in my real Chrome tab under supervision";
+- browser-use can still be useful on a persistent automation profile or CDP endpoint, but it does not natively become the already-installed Playwright Extension unless we write an adapter.
+
 ## Recommendation
 
-Do not fight Chrome's default-profile CDP block. For immediate use, create a persistent Digi automation profile and log into it once. For the user's desired exact main-session control, research/implement a Chrome DevTools MCP `--autoConnect` path and decide whether to bridge it into browser-use or treat Chrome DevTools MCP as a separate main-session scout tool.
+For exact main Chrome session control, prefer the already-installed **Playwright Extension** path: `npx @playwright/mcp@latest --extension` for MCP, or `playwright-cli attach --extension` for CLI. Treat browser-use as the autonomous nested-agent option for separate/persistent automation profiles or cases where its internal browser-agent loop is the desired capability.
 
-Security posture should stay supervised: user approves connection, login/2FA stays manual, the agent reports page state and proposed next actions, and consequential submissions require explicit approval.
+Security posture should stay supervised: user approves extension attachment, login/2FA stays manual, the agent reports page state and proposed next actions, and consequential submissions require explicit approval.
 
 ## Sources
 
