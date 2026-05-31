@@ -122,3 +122,10 @@ This report is source-read verification, not code execution. I verified:
 - All referenced repos have clean working copies through `jj status`.
 - `schema-next` current parent is `fe770d1d`, carrying the structural macro lowering from `877c03f5` plus the recursive NOTA macro substrate repin, so the report reflects current code rather than the stale prompt-era state.
 - The report files contain small Mermaid graphs, compact real snippets, and current open gaps tied to exact source paths.
+
+The implementation cascade that this report describes was verified separately by the main operator session:
+
+- `nota-next`: `cargo fmt && cargo test && cargo clippy --all-targets -- -D warnings`
+- `schema-next`: `cargo fmt && cargo test && cargo clippy --all-targets -- -D warnings`
+- `schema-rust-next`: `cargo fmt && cargo test && cargo clippy --all-targets -- -D warnings`
+- `spirit-next`: `cargo fmt && cargo test && cargo clippy --all-targets --all-features -- -D warnings`, plus `nix flake check`
