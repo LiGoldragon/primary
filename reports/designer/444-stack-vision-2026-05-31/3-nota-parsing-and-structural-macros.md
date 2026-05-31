@@ -564,16 +564,24 @@ recursive nota macro substrate landed. Designer 443 sub-agent 2's
 #1 finding is **CLOSED**; sub-agent 3's framing here is corrected
 in the meta-report synthesis (`5-overview.md` §"Current truth").
 
-## The next refinement — Spirit 1288: outer delimiter omitted before the next step
+## The body-stream substrate — Spirit 1287 + 1290 — LANDED on `nota-next` and `schema-next` main
 
-Spirit 1288 (Principle, Maximum, 2026-05-31): *"NOTA parsing
-strips the outer delimiter before handing content to the next
-step. After the structural pass identifies the type — via the
-delimiter shape, or via file/context knowledge of a known root
-type — the INSIDE of the delimiter, never the wrapper, is what
-the type-specific body parser receives. Parsing a file is the
-same operation as parsing the body of a nested struct or vector:
-in both cases the next step sees only the inside content."*
+Spirit 1287 (Correction, Maximum, 2026-05-31 12:12:28): *"After
+NOTA structural parsing matches a file body or a delimited
+object, the next semantic parsing step should receive the matched
+body's inner object stream rather than the outer delimiter
+wrapper. Known-root files and matched delimited objects share the
+same body abstraction: the expected type decides whether the body
+is read as a struct, vector, enum variant, or other value."*
+
+Spirit 1290 (Decision, Maximum, 2026-05-31 12:48:27): *"NotaBodyDecode
+is the semantic decode entry point. Document and block decode
+surfaces strip their wrapper context and delegate to the body
+decoder rather than carrying independent semantic parsing logic."*
+
+(Note: I originally captured this intent as Spirit 1288 a few
+seconds after operator captured 1287. The substance was identical;
+1288 was removed as a duplicate per operator 266 §2.)
 
 This is the architectural rule that makes Spirit 1278's
 "object/body abstraction" singular. The known-root abstraction
@@ -670,11 +678,75 @@ macro-node mechanism IS the type-identification step for nested
 content; the known-root attribute IS the type-identification step
 for files. Same next step in both cases.
 
-### Status — foundation landed on a designer feature branch
+### Status — landed on main (operator 267) BEYOND the designer prototype
 
-`nota-next` branch `designer-uniform-body-parser` (`38b2f74` —
-`nota: derive from_body_objects per type — Spirit 1288 foundation`).
-The derive emits, for every named struct it covers:
+The body-stream substrate is now live on:
+
+- `nota-next main` `64647b1a` — `nota: route semantic parsing through body objects`
+- `schema-next main` `3ead0e93` — `schema: read asschema through nota body codec`
+- `schema-next main` `c837c656` — `schema: lower matched delimiters through body streams`
+
+Operator's integration went further than the designer-side
+prototype: instead of just an inherent `from_body_objects` method
+per type, operator promoted the body abstraction to a first-class
+type and a canonical trait:
+
+- **`NotaBody`** — typed wrapper over the inside-of-anything object
+  stream. Whether the body came from `Document::root_objects()` or
+  from inside a matched delimited block, it surfaces as the same
+  `NotaBody<'block>`.
+- **`NotaBodyDecode`** (and `NotaBodyEncode`) — the SEMANTIC entry
+  point. `NotaDecode::from_nota_block` and
+  `NotaDocumentDecode::from_nota_document_body` become shell
+  surfaces that strip their wrapper and delegate to
+  `NotaBodyDecode::from_nota_body`.
+- **`NotaSource::parse_body::<T>()`** — canonical API for callers.
+  `Document::parse(source)` plus `NotaBody::from_document(&document)`
+  plus `T::from_nota_body(&body)`, packaged.
+- **`CapturedValue::Body(NotaBody)`** — macro captures now expose
+  the body, not the wrapper. The wrapper-stripping rule is uniform
+  across files, nested delimited values, and macro matches.
+
+In `schema-next` `Asschema::from_nota_source` now reads:
+
+```rust
+impl Asschema {
+    pub fn from_nota_source(source: &str) -> Result<Self, SchemaError> {
+        NotaSource::new(source).parse_body().map_err(SchemaError::from)
+    }
+
+    pub fn to_nota(&self) -> String {
+        self.to_nota_body().to_nota()
+    }
+}
+```
+
+That is exactly the shape the principle predicted: a `.asschema`
+file IS the Asschema body; there is no outer record to simulate.
+
+`schema-next c837c656` additionally migrated four major built-ins
+to lower through body streams after the structural delimiter
+match succeeds: `RootImports`, `RootNamespace`, `RootEnumBlock`,
+and `StructFieldMap`. Each handler now reads `object.delimited_body(
+Delimiter, expected)` to strip the matched delimiter, then iterates
+the body's root objects positionally:
+
+```rust
+let body = object.delimited_body(Delimiter::Brace, self.signature.expected_delimiter())?;
+for chunk in body.root_objects().chunks_exact(2) {
+    // imports / namespace key-value lowering
+}
+```
+
+The wrapper-stripping rule is uniform across the four common
+schema positions.
+
+### Original prototype derivation — `designer-uniform-body-parser` `38b2f74`
+
+The designer feature branch that fed into operator's integration:
+`nota-next` branch `designer-uniform-body-parser` at commit
+`38b2f74` (`nota: derive from_body_objects per type — Spirit 1287
+foundation`). The derive emitted, for every named struct it covers:
 
 ```rust
 impl T {
@@ -705,14 +777,24 @@ warnings` — all clean. Six prior `tests/derive.rs` tests pass
 unchanged; codec / design_examples / macro_nodes / block_queries
 suites unchanged.
 
-The operator pin of `schema-next` / `schema-rust-next` /
-`spirit-next` onto this branch is the next slice. Follow-ups
-flagged by the implementation sub-agent: (1) tuple-newtype and
-enum decode paths could also gain their own `from_body_objects`
-(enum's variant payload children become its body); (2) the
-option-(b) cleanup that unifies `NotaDocumentDecode` into
-`NotaDecode` entirely is the natural endpoint once downstream
-migrates.
+Operator's `267` integration completed the loop by adopting the
+foundation into `nota-next main` and `schema-next main` AND
+extending it (NotaBody as first-class type; CapturedValue::Body
+for macro captures). The prototype branch (`38b2f74`) remains as
+the design derivation history; the canonical reference is the
+`nota-next 64647b1a` + `schema-next 3ead0e93` pair.
+
+**Still open per operator 267 §"Still Open"**: schema-next still
+has internal `MacroObject::Block` paths around the macro trait
+boundary. The major delimiter-backed built-ins (RootImports,
+RootNamespace, RootEnumBlock, StructFieldMap) now strip to
+`NotaBody`; the cleaner endpoint is a `SchemaMacro::lower(body:
+NotaBody<'_>, context: &mut MacroContext) -> Result<MacroOutput,
+SchemaError>` trait surface that receives typed matches/captures
+directly. That migration lands after `MacroMatch` captures are
+routed into schema handlers — a larger signature change. The
+Signal/Nexus/SEMA projection proof is also deferred to a separate
+slice (delegated to background worker per operator 267 §3).
 
 ## Cross-references
 
