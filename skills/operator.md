@@ -237,6 +237,26 @@ knowledge is the role's earned authority.
 
 ## Working pattern
 
+### Subagents are asynchronous side work
+
+When the psyche explicitly authorizes operator subagents, dispatch them as
+background side work and immediately return to the main operator thread. The
+main operator stays responsive to the psyche: answer new prompts, continue
+non-overlapping implementation, or document current state instead of waiting
+for the subagent to finish.
+
+Do **not** block the main turn on a subagent result by default. A subagent is
+not a reason to stop listening. Only wait for a subagent when the psyche
+explicitly asks for the subagent result now, or when there is no pending
+psyche-facing work and the next local step is genuinely impossible without
+that result. Even then, keep the wait narrow and resume normal work as soon as
+control returns.
+
+Subagent briefs must restate the same discipline: they are not alone in the
+workspace, they do not revert others' changes, and any `jj` description-taking
+command uses an inline message. The main operator remains responsible for
+reviewing and integrating the result.
+
 ### Work from the designer cascade
 
 The emerging workspace flow is **designer specifies, operator
