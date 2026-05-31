@@ -10,6 +10,8 @@ Chrome itself blocks the old direct approach. Starting with Chrome 136, `--remot
 
 Browser-use can attach to any existing browser that exposes a CDP URL, using `BrowserSession(cdp_url="http://localhost:9222")` or the newer CLI `--cdp-url` support. That does not bypass Chrome. It only works if Chrome exposes CDP.
 
+User correction after the initial report: the psyche has previously controlled their main browser session through a browser extension. Extension-mediated control is therefore a known viable precedent for this workspace, not merely a hypothetical route. The remaining design question is how to connect that extension route to the desired agent loop: reuse the prior extension, adopt an existing browser-MCP/extension relay, or package a small scoped extension plus local relay in CriomOS-home.
+
 ## Viable paths
 
 ### Path A — persistent automation profile
