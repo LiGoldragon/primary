@@ -472,10 +472,13 @@ This is the answer to "how does an Asschema in a sema db become an `.asschema` f
 | Cross-crate refs via `resolved_imports` → emitter | ✓ wired (`schema-rust-next` src/lib.rs:117, 337) |
 | Module-qualified `Name` (colon-segmented) | ⚠️ supported by `Name`; not enforced at declaration storage. Three plausible readings of Spirit 1270's "always module-prefixed" — psyche call needed. |
 | Macro declarations as first-class Declarations in Asschema | ⏳ Operator 263 Gap 1. Currently macros live in `MacroLibraryArtifact`. |
-| Sema database for Asschema storage | 🔨 prototyped on `schema-next` branch `designer-store-prototype` (`f2b477a`); seven constraint tests pass. Not yet a deployed `.sema`-backed substrate. |
+| Sema database for Asschema storage | ✓ live in `schema-next` main (`84ce382`, `src/store.rs`, 202 lines, redb-backed `TableDefinition<&str, &[u8]>`). Operator promoted from designer prototype `f2b477a` with a typed `AsschemaStoreKey` and structured `SemaDatabaseOperation` errors. |
+| Positional root reading + bare input/output bodies (no outer paren wrapper, no Input/Output labels) | ⏳ Per Spirit 1274 + 1277 (Maximum corrections, 2026-05-31). Current `.asschema` text shows `((identity) [] [] (Input ...) (Output ...) [...])` with outer wrapper and label-style input/output — both confuse positional struct fields with data-carrying variants. The reader should consume root fields positionally from document root objects (no outer paren); input/output positions should carry bare enum bodies (no labeled wrapper). |
 | Schema-emitted Asschema Rust (Stage 5 self-hosting) | ⏳ Pending Gap A + module-prefixing call + macro-table noun emission (operator 262 §"Next Move" step 1). |
 
 ## 11. Prototype landed — `AsschemaStore` with four-corner constraint tests
+
+**Update (2026-05-31)**: Operator promoted the prototype to production main at `schema-next` `84ce382` (`schema: persist asschema artifacts in sema store`). The promoted version lives at `src/store.rs` (202 lines) with the same `put` / `get` / `export_nota_source` surface, swapped to redb (`TableDefinition<&str, &[u8]>`), with a typed `AsschemaStoreKey` newtype replacing the prototype's `format!()` string and a structured `SemaDatabaseOperation` enum for error variants. The prototype below is preserved as the original derivation; the production version is the canonical reference.
 
 The four-object logic separation from Spirit record 1272 is now demonstrated in a runnable prototype on a designer feature branch:
 
@@ -483,6 +486,7 @@ The four-object logic separation from Spirit record 1272 is now demonstrated in 
 - **Commit**: `f2b477a` — `schema: AsschemaStore prototype with four-corner round-trip constraint tests`
 - **File**: `tests/store_roundtrip_prototype.rs` (single integration test file)
 - **Verified**: 7/7 constraint tests pass; `cargo fmt` + `cargo clippy --tests -- -D warnings` clean
+- **Promoted to production**: `schema-next` main `84ce382` — `src/store.rs`
 
 The prototype materializes the fourth object — `AsschemaStore` — as a minimal typed surface wrapping a `HashMap<String, Vec<u8>>` so the constraint tests run in-process without filesystem state. The production substrate swaps the HashMap for a redb table (per `spirit-next/src/store.rs`) without changing the put / get / export_nota_source surface.
 
@@ -639,5 +643,6 @@ These don't block the prototype but need a call before the production substrate 
 - `reports/designer/435-vision-for-the-four-remaining-gaps.md` — the four-gap parallel vision.
 - `reports/operator/255-schema-next-move-after-leans.md` — the macro-table-from-core.schema vision.
 - `reports/operator/261-nota-layer-macro-node-stack-implementation.md` — the macro-node stack at NOTA layer.
-- Spirit records: 1246 (live asschema artifact), 1249 (rkyv discriminant stability lesson), 1259 (strict brace), 1263 (macro nodes at NOTA layer), 1267/1268/1269 (notation honesty), 1270 (three categories + module-qualified + cross-crate), 1271 (rkyv-in-SEMA + NOTA re-export through derived types), 1272 (four-object logic separation: Asschema + AsschemaArtifact + AsschemaStore + RustEmitter).
+- Spirit records: 1246 (live asschema artifact), 1249 (rkyv discriminant stability lesson), 1259 (strict brace), 1263 (macro nodes at NOTA layer), 1267/1268/1269 (notation honesty), 1270 (three categories + module-qualified + cross-crate), 1271 (rkyv-in-SEMA + NOTA re-export through derived types), 1272 (four-object logic separation: Asschema + AsschemaArtifact + AsschemaStore + RustEmitter), 1274 (asschema reader consumes root fields positionally — no outer paren wrapper), 1277 (input/output positions are known struct fields, not data-carrying variants — drop the `(Input ...)` / `(Output ...)` label form).
 - Prototype: `schema-next` branch `designer-store-prototype` (`f2b477a`), `tests/store_roundtrip_prototype.rs` — `AsschemaStore` + seven constraint tests proving the four-corner round-trip invariant.
+- Production promotion: `schema-next` main `84ce382` (`schema: persist asschema artifacts in sema store`) — `src/store.rs`, redb-backed, with typed `AsschemaStoreKey` and structured `SemaDatabaseOperation` errors.
