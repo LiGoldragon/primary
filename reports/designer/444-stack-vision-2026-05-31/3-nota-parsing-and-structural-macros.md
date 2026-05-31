@@ -670,14 +670,49 @@ macro-node mechanism IS the type-identification step for nested
 content; the known-root attribute IS the type-identification step
 for files. Same next step in both cases.
 
-### Status
+### Status — foundation landed on a designer feature branch
 
-Pending: 1288 is captured intent, not yet implemented. The
-operator's nota-next slice that ships `from_body_objects` per
-type (or unifies the two derived trait methods behind it) is the
-foundation work. Designer 443 sub-agent 1's #2 broad improvement
-(nota-next derive features + public surface) folds 1288 into its
-scope.
+`nota-next` branch `designer-uniform-body-parser` (`38b2f74` —
+`nota: derive from_body_objects per type — Spirit 1288 foundation`).
+The derive emits, for every named struct it covers:
+
+```rust
+impl T {
+    pub fn from_body_objects(objects: &[Block])
+        -> Result<Self, NotaDecodeError>
+}
+```
+
+Two thin wrappers delegate to it (backward-compatible option (a)):
+- `NotaDecode::from_nota_block` strips the parenthesis wrapper via
+  `expect_delimited` and hands children to `from_body_objects`.
+- `NotaDocumentDecode::from_nota_document_body` (for
+  `#[nota(known_root)]` types) hands `body.root_objects()` straight
+  in.
+
+Field-count validation lives in `from_body_objects` (single source
+of truth). The `#[nota(name = "X")]` annotation now applies
+uniformly through both call paths — previously only the
+document-body path consulted it. Two new constraint tests:
+`derive_body_parser_is_wrapper_agnostic_for_struct_types` (calls
+`Entry::from_body_objects` once from inside a `Parenthesis` wrapper
+and once from `Document::root_objects()`; asserts equal typed
+value) and `derive_body_parser_validates_field_count` (pins the
+`ExpectedRootCount` error shape).
+
+`cargo fmt`, `cargo test`, `cargo clippy --all-targets -- -D
+warnings` — all clean. Six prior `tests/derive.rs` tests pass
+unchanged; codec / design_examples / macro_nodes / block_queries
+suites unchanged.
+
+The operator pin of `schema-next` / `schema-rust-next` /
+`spirit-next` onto this branch is the next slice. Follow-ups
+flagged by the implementation sub-agent: (1) tuple-newtype and
+enum decode paths could also gain their own `from_body_objects`
+(enum's variant payload children become its body); (2) the
+option-(b) cleanup that unifies `NotaDocumentDecode` into
+`NotaDecode` entirely is the natural endpoint once downstream
+migrates.
 
 ## Cross-references
 
