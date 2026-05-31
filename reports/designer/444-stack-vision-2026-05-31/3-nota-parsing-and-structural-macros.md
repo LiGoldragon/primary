@@ -1,6 +1,6 @@
 # 3 — NOTA Parsing + Structural Macros
 
-*Kind: vision · Topics: nota-next, schema-next, two-layer-parser, known-root, macro-nodes, structural-matching, ordered-patterns, no-match-as-error, derive-attribute, text-round-trip-violation · 2026-05-31 · designer lane sub-agent*
+*Kind: vision · Topics: nota-next, schema-next, two-layer-parser, known-root, macro-nodes, structural-matching, ordered-patterns, no-match-as-error, derive-attribute, uniform-body-parsing, outer-delimiter-omitted · 2026-05-31 · designer lane sub-agent*
 
 ## Frame: the two-layer architecture
 
@@ -542,38 +542,142 @@ structural — `MacroDelimiter` (delimiter), `MacroObjectCount`
 have typed representations in `nota-next/src/macros.rs`; none is
 "match this text".
 
-### Pending Spirit 1280 violation — declarative.rs
+### Spirit 1280 violation — CLOSED at `schema-next 877c03f5`
 
-Designer 443 sub-agent 2 (Finding 3) names a remaining text
-round-trip in `schema-next/src/declarative.rs`: **Block → notation
-String → re-parse via `Document::parse` → Block → typed
-MacroOutput**.
+Sub-agent 3's earlier framing called the macro-lowering text
+round-trip a pending violation. Verified post-dispatch against
+live code at `schema-next fe770d1`: the violation is FIXED.
+`MacroBindings` now stores typed `Block` values — `SingleMacroBinding
+{ name: String, value: Block }` at `declarative.rs:1090-1097` and
+`RepeatedMacroBinding { name: String, values: Vec<Block> }` at
+`declarative.rs:1099-1102`. `ExpandedTemplate::lower_to_output`
+lowers through `AssembledTemplate::new(ObjectView::Expanded(&self
+.object)).lower(registry, context)` — direct structural lowering
+without text reparse. The remaining `source: String` on
+`ExpandedTemplate` is a TRACE surface (`object.compact_notation()`),
+used for diagnostics and `context.remember_expanded_template`,
+not the lowering substrate.
 
-The middle hop at `MacroTemplate::expand`
-(`/git/github.com/LiGoldragon/schema-next/src/declarative.rs:863-875`)
-pops a single expanded `ExpandedObject`, calls
-`object.compact_notation()` to flatten it to a `String`, and
-returns `ExpandedTemplate { object, source }` carrying BOTH forms.
-Earlier, `MacroBindings` stores captured values AS strings —
-`NotationBlock::new(object).compact_notation()` at
-`declarative.rs:673,732,837,915` — even though the captured object
-is a `&Block` available at match time. The round-trip is forced
-from the moment a capture binds.
+Operator's fix landed at `877c03f5` (`schema: keep declarative
+macro expansion structural`), then repinned at `fe770d1` after the
+recursive nota macro substrate landed. Designer 443 sub-agent 2's
+#1 finding is **CLOSED**; sub-agent 3's framing here is corrected
+in the meta-report synthesis (`5-overview.md` §"Current truth").
 
-This contradicts Spirit 1280 AND Spirit 1263's "first matching
-macro extracts named captures from the matched blocks". The
-captures should be typed Block references, not stringified
-notation.
+## The next refinement — Spirit 1288: outer delimiter omitted before the next step
 
-Designer 443 sub-agent 2 names this as the **highest-impact fix in
-schema-next**: removes the `Block → String → Document::parse →
-Block` round-trip on every macro expansion; eliminates ~150 lines
-of stringly-typed substrate; pulls `MacroBindings` value type from
-`String` into `&Block`. The artifact already gets the right
-answer; the change is semantic-quality, not behaviour. One of two
-large remaining horizons in schema-next (the other is schema-core
-extraction from designer 443 §5). Known-root anti-pattern is
-FIXED; text round-trip violation is NOT.
+Spirit 1288 (Principle, Maximum, 2026-05-31): *"NOTA parsing
+strips the outer delimiter before handing content to the next
+step. After the structural pass identifies the type — via the
+delimiter shape, or via file/context knowledge of a known root
+type — the INSIDE of the delimiter, never the wrapper, is what
+the type-specific body parser receives. Parsing a file is the
+same operation as parsing the body of a nested struct or vector:
+in both cases the next step sees only the inside content."*
+
+This is the architectural rule that makes Spirit 1278's
+"object/body abstraction" singular. The known-root abstraction
+above shows the file case working today; 1288 names the broader
+rule that every type-specific body parser receives the inside,
+regardless of whether that inside came from a file (no wrapper to
+strip) or from a nested delimited block (wrapper consumed by the
+structural match).
+
+### What's special-cased today
+
+Two parallel parsing entry points in `nota-next`:
+
+```rust
+// nota-next derive crate emits these two methods per derived type:
+//   - for file-bound types with #[nota(known_root)]:
+impl NotaDocumentDecode for KnownRootDocument {
+    fn from_nota_document_body(body: &NotaDocumentBody<'_>)
+        -> Result<Self, NotaDecodeError> { /* read positional fields */ }
+}
+
+//   - for inner-content types (the default):
+impl NotaDecode for InnerContentType {
+    fn from_nota_block(block: &Block)
+        -> Result<Self, NotaDecodeError> { /* match outer paren, skip head, read fields */ }
+}
+```
+
+The structures are nearly identical — both walk positional fields
+per the type's structure — but the surfaces are split because the
+FILE case skips the wrapper and the INNER case consumes one.
+
+### The elegant target — one body parser per type
+
+Per 1288: every type with derived NOTA codec should have ONE
+body-parsing method that consumes body objects, agnostic of
+where those objects came from:
+
+```rust
+// proposed nota-next derive output (one per type, two callers):
+impl T {
+    fn from_body_objects(objects: &[Block])
+        -> Result<Self, NotaDecodeError> { /* read positional fields */ }
+}
+
+// file caller (today's #[nota(known_root)] case):
+let document = Document::parse(source)?;
+let value = T::from_body_objects(document.root_objects())?;
+
+// nested caller (today's NotaDecode case):
+// after structural match identified T inside `(T field field field)`,
+// the macro-node handler strips wrapper + head and calls:
+let value = T::from_body_objects(&inside_objects[1..])?;
+```
+
+The wrapper-stripping responsibility moves to the CALLER (the
+party that already knows what type the content is). The body
+parser stays uniform.
+
+### What changes in schema-next under 1288
+
+`Asschema::from_nota_source` today:
+
+```rust
+pub fn from_nota_source(source: &str) -> Result<Self, SchemaError> {
+    NotaSource::new(source).parse_document_body()
+        .map_err(SchemaError::from)
+}
+```
+
+Under 1288:
+
+```rust
+pub fn from_nota_source(source: &str) -> Result<Self, SchemaError> {
+    let document = nota_next::Document::parse(source)?;
+    Asschema::from_body_objects(document.root_objects())
+        .map_err(SchemaError::from)
+}
+```
+
+The `#[nota(known_root)]` attribute and `#[nota(name = "Input")]`
+per-field annotations become general body-parsing options rather
+than known-root specials. Any type with `from_body_objects` is
+body-parseable from any source of body objects.
+
+### Connection to the structural-match → handler dispatch (Spirit 1263)
+
+When a macro-node pattern matches a delimited block and the
+consumer's handler knows the type, the handler today must bridge
+between `NotaDecode` (expects wrapped) and the inside content.
+Under 1288 the handler calls `T::from_body_objects(inside)`
+directly — no wrap-and-unwrap, no head-skipping bookkeeping. The
+macro-node mechanism IS the type-identification step for nested
+content; the known-root attribute IS the type-identification step
+for files. Same next step in both cases.
+
+### Status
+
+Pending: 1288 is captured intent, not yet implemented. The
+operator's nota-next slice that ships `from_body_objects` per
+type (or unifies the two derived trait methods behind it) is the
+foundation work. Designer 443 sub-agent 1's #2 broad improvement
+(nota-next derive features + public surface) folds 1288 into its
+scope.
 
 ## Cross-references
 
