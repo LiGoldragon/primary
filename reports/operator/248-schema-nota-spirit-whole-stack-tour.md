@@ -98,7 +98,7 @@ The schema syntax rules in use:
 - Bare `Variant` inside an enum body declares a unit variant.
 - `TypeName *` at a struct field derives the field name from the type:
   `RecordIdentifier *` becomes field `record_identifier`.
-- `field@(Optional Kind)` uses an explicit field name with a composite
+- `kind (Optional Kind)` uses an explicit field name with a composite
   reference.
 - `(Vec Topic)`, `(Optional Kind)`, and `(Map (Key Value))` are schema
   type-reference forms, not raw NOTA vector/map values.

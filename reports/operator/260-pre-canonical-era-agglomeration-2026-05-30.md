@@ -93,14 +93,15 @@ scalar variants.
 floor in `schema-next/src/asschema.rs::TypeReference::{String,Integer,Boolean,Path}`.
 Operator 250 references the live-artifact realization.
 
-### Topic 5 — Pipe declarations + shared codec (237, 238)
+### Topic 5 — Retired declaration experiments + shared codec (237, 238)
 
 Primary-8vzk pipe declarations + fixture tests, shared-codec spirit-triad
-landing. Pipe forms (`{| … |}` / `(| … |)`) were the pre-`@`-sigil
-transitional surface that's now compatibility-only.
+landing. The declaration experiments in this thread are pre-canonical history;
+the live schema surface is strict key/value namespace entries, bracket enum
+bodies, and parenthesized type-reference/data-variant records.
 
-**Landed**: pipe parser kept as compatibility path in `schema-next/src/macros.rs`
-(operator 256 §"Compatibility Left"); shared-codec discipline in nota-next's
+**Landed**: strict schema parser and macro artifact cleanup in
+`schema-next`; shared-codec discipline in nota-next's
 `NotaEncode`/`NotaDecode` derive crate + `reports/operator/246-nota-surface-split-for-lean-daemons-2026-05-30.md`
 as the canonical codec opt-in mechanism.
 

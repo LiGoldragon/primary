@@ -81,8 +81,8 @@ Example from `schemas/core.schema`:
 }
 ```
 
-This is intentionally not `SchemaMacro@{ ... }`; the namespace brace now has
-the key `SchemaMacro` and the value `{ ... }`.
+The namespace brace has the key `SchemaMacro` and the value `{ ... }`; the
+declaration does not repeat its own name inside the value.
 
 ## Designer 437 Comparison
 
@@ -97,15 +97,16 @@ Entry { Topics * Kind * description Description }
 That keeps the brace pair rhythm while staying terse. `(Derive)` can still be
 added later as a more verbose alias if the design moves that way.
 
-## Compatibility Left
+## Strict-Syntax Follow-Up Landed
 
-The engine still accepts older self-named `Name@{...}` / `Name@[...]` and pipe
-forms in some fixture paths. They are now documented as compatibility syntax,
-not target syntax. The production target is the strict key/value surface above.
+The follow-up cleanup removed the compatibility branch from the default schema
+engine. The default authored path now accepts only strict key/value namespace
+entries, bracket enum bodies, parenthesized type references, and positional
+root bracket bodies.
 
-The separate `SyntaxSchema` raw-layer tests still exercise the older `@`
-surface because that layer is a raw-schema experiment and has not been fully
-migrated in this slice.
+The downstream fixtures in `schema-rust-next` now use the same strict surface,
+and `spirit-next` is repinned to that stack. The production syntax path is no
+longer a migration bridge.
 
 ## Downstream Integration
 
@@ -127,10 +128,9 @@ still emits from the same assembled model.
 ```
 
 The checked-in generated Rust did not change because this is a surface syntax
-migration to the same assembled schema. The Nix structural guard did need one
-update: it now asserts `Import { SourcePath * LocalPath * }` and
-`Export { LocalPath * PublicPath * }` instead of the obsolete self-named
-`Import@{...}` form.
+migration to the same assembled schema. The Nix structural guard asserts
+`Import { SourcePath * LocalPath * }` and `Export { LocalPath * PublicPath * }`
+as the strict form.
 
 ## Verification
 

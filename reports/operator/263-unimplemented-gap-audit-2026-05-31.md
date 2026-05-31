@@ -190,13 +190,14 @@ pub trait MacroLoweringHandler {
 
 Then a struct macro handler returns `MacroOutput::Type(TypeDeclaration::Struct(...))` directly from captures. No expanded source string, no second parse, no template trace as proof.
 
-## Gap 3: Strict Schema Syntax Is Not Fully Enforced
+## Gap 3: Strict Schema Syntax Enforcement — Closed In Follow-Up
 
-The target rule is now clear:
+The target rule is now implemented on the default path:
 
 - NOTA `{}` is a strict key-value map.
 - Schema authoring can add macro meaning, but the brace rhythm remains pairs.
-- Old one-token-in-brace forms and old self-named forms should become migration-only, then errors.
+- Declarations that repeat their own name inside the value are rejected by the
+  production parser and removed from fixtures.
 
 The current `core.schema` is closer to that target:
 
@@ -221,33 +222,33 @@ fn lower_legacy_declarations(
 }
 ```
 
-Live compatibility fixtures still exercise older keyed declaration sigils. They
-are useful as migration tests, but they should not appear as live syntax
-examples. Labeled root wrappers were removed from the implementation and
-fixtures in the positional-root cleanup.
-
-And `schemas/builtin-macros.schema` still defines the built-ins using pipe declarations:
+The follow-up implementation removed the live compatibility fixtures and also
+rewrote `schemas/builtin-macros.schema` so the built-in macro table describes
+strict key/value declaration patterns:
 
 ```schema
 (SchemaMacro SchemaStructDefinition NamespaceDeclaration
-  {| $Name $*Fields |}
+  ($Name {$*Fields})
   (Type (Struct $Name [$*Fields])))
 
 (SchemaMacro SchemaEnumDefinition NamespaceDeclaration
-  (| $Name $*Variants |)
+  ($Name [$*Variants])
   (Type (Enum $Name ($*Variants))))
+
+(SchemaMacro SchemaNewtypeDefinition NamespaceDeclaration
+  ($Name $Reference)
+  (Type (Newtype $Name $Reference)))
 ```
 
-The implementation question is no longer “what should the syntax be?” The implementation question is now the migration gate:
+The migration gate collapsed to the final state:
 
 ```mermaid
 flowchart TD
-  Compat[compatibility syntax accepted]
-  Warn[compatibility syntax accepted but reported]
-  Error[compatibility syntax rejected]
+  Error[retired declaration form rejected]
   Strict[strict fixtures only]
 
-  Compat --> Warn --> Error --> Strict
+  Error --> Strict
+```
 ```
 
 Recommended next action:
@@ -559,7 +560,7 @@ The remaining work is no longer “invent the architecture.” It is to remove t
 
 - handwritten core nouns
 - text-template expansion
-- compatibility syntax
+- strict syntax cleanup is now closed on the default parser path
 - local support-noun copies
 - generic upgrade traits without asschema diff data
 - daemon config as startup file instead of signal-delivered state

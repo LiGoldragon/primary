@@ -247,21 +247,21 @@ inside the pipes.
 
 Pipe-delimited flowchart edge labels are still lexer-sensitive.
 Do not put sigil-prefixed notation tokens in edge labels; a label
-starting with `@Type`, `@Field`, or similar can be tokenised as a
-link-style identifier and fail with a `LINK_ID` parse error.
+starting with sigils or punctuation can be tokenised as a link-style
+identifier and fail with a `LINK_ID` parse error.
 
 Wrong:
 
 ```text
 flowchart LR
-    entry["Entry@{ @Topics @Kind @Description }"] -->|@Type derive| lowered["TypeValue::Struct"]
+    entry["syntax label with punctuation"] -->|@derive| lowered["TypeValue::Struct"]
 ```
 
 Right:
 
 ```mermaid
 flowchart LR
-    entry["Entry@{ @Topics @Kind @Description }"]
+    entry["syntax label with punctuation"]
     lowered["TypeValue::Struct"]
     entry -->|derives| lowered
 ```

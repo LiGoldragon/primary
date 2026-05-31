@@ -323,6 +323,14 @@ key/value map for composition convenience and APPEND-ONLY in the
 Cap'n Proto style so existing positions stay stable across upgrades
 (intent records 891-894, 2026-05-27).
 
+A bracket `[...]` is a homogeneous vector. In schema enum bodies,
+that vector's element type is "variant signature": a bare PascalCase
+symbol for a unit variant, or a parenthesised `(Variant PayloadType)`
+record for a data-carrying variant. Interleaving variant names and
+payload types as separate vector elements is notation lying about
+the data shape, so the production parser rejects it (intent records
+1267-1269, 1277, 1294).
+
 Schema-language design (namespace shape, enum/struct syntax,
 imports, lowering) lives in `repos/schema/INTENT.md`. Composer +
 wire-substrate intent lives in `repos/signal-frame/INTENT.md`.

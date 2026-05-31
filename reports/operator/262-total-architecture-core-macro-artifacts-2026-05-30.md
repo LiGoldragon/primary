@@ -123,7 +123,7 @@ Those lower as:
 
 `Topics *` in a struct body is the derived-field shorthand: the key is PascalCase, the value marker is `*` (the value-side marker chosen per Spirit record 1259 — strict pair rhythm, no prefix-sigil arity-1 sugar), and the lowered field is `topics: Topics`.
 
-Compatibility for older pipe and self-named `@` syntax exists transitionally while fixtures and older reports migrate; the target authored structure is strict key/value.
+The strict authored structure is key/value only on the default path; the transitional declaration spellings have been removed from the production parser and fixtures.
 
 ## Layer 3: Assembled Schema
 
@@ -411,7 +411,7 @@ The five-gap framing from `reports/operator/253-schema-gap-closure-vision.md` (a
 
 1. **Macro-table Rust noun still hand-written** (was 253 Gap A, designer 435 Gap A — macro-table-as-data). The table is now serialized data and the runtime path consumes the artifact, but the Rust type itself must be emitted from `core.asschema`. This is the last step to close Stage 5 self-hosting.
 2. **Declarative macros still expand through template strings** before lowering into assembled fragments. The cleaner next target is direct capture-to-Asschema construction from nota-next `MacroMatch` — a new gap surfaced by this slice (the lowering path is the next refactor once the macro-table noun is generated).
-3. **Compatibility syntax remains.** Pipe forms and self-named `@` forms still exist while fixtures and older reports migrate; the strict key/value schema target (Spirit record 1259) needs a final cleanup pass.
+3. **Strict syntax cleanup is landed.** The default schema parser rejects the transition-era declaration spellings, fixtures use key/value namespace entries, and downstream crates are repinned to that stack.
 4. **Diff/upgrade is not live** (was 253 Gap D, designer 435 Gap D). With checked-in `.asschema` artifacts, the next stable basis for upgrade is comparing old/new asschema and emitting path-based change objects.
 5. **Shared support nouns are still mostly local to generated modules** (was 253 Gap C, designer 435 Gap C). The eventual `schema-core` crate should own common envelopes, origin routes, macro-table nouns, and support traits imported by components.
 
