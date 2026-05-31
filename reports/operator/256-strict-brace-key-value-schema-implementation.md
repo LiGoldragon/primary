@@ -56,8 +56,8 @@ The load-bearing changes are in `schema-next`:
   - atom/parenthesized reference value -> newtype declaration
 - `AssembledFields` supports `PascalCase *` as the derived-field shorthand and
   rejects ambiguous `PascalCase OtherType` in struct maps.
-- `AssembledVariants` supports `Variant@ Payload` as a pair-preserving
-  data-variant shape.
+- `AssembledVariants` supports `(Variant Payload)` as the homogeneous
+  data-variant signature shape inside enum vectors.
 
 ## Real Files Migrated
 
@@ -77,7 +77,7 @@ Example from `schemas/core.schema`:
 {
   SchemaMacro { MacroName * MacroPosition * MacroPattern * MacroTemplate * }
   MacroPattern MacroPatternObject
-  MacroPatternObject [Capture@ MacroCaptureName RestCapture@ MacroCaptureName Atom@ MacroAtom Delimited@ MacroPatternDelimited]
+  MacroPatternObject [(Capture MacroCaptureName) (RestCapture MacroCaptureName) (Atom MacroAtom) (Delimited MacroPatternDelimited)]
 }
 ```
 
@@ -116,8 +116,8 @@ still emits from the same assembled model.
 
 ```nota
 {}
-[Record@ Entry Observe@ Query Remove@ RecordIdentifier]
-[RecordAccepted@ SemaReceipt RecordsObserved@ ObservedRecords RecordRemoved@ RemoveReceipt Error@ ErrorReport Rejected@ SignalRejection]
+[(Record Entry) (Observe Query) (Remove RecordIdentifier)]
+[(RecordAccepted SemaReceipt) (RecordsObserved ObservedRecords) (RecordRemoved RemoveReceipt) (Error ErrorReport) (Rejected SignalRejection)]
 {
   Import { SourcePath * LocalPath * }
   Export { LocalPath * PublicPath * }

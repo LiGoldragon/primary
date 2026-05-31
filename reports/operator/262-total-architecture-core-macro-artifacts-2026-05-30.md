@@ -87,8 +87,8 @@ Current target syntax shape:
 
 ```schema
 {}
-[Record@ Entry Observe@ Query Remove@ RecordIdentifier]
-[RecordAccepted@ SemaReceipt RecordsObserved@ ObservedRecords Rejected@ SignalRejection]
+[(Record Entry) (Observe Query) (Remove RecordIdentifier)]
+[(RecordAccepted SemaReceipt) (RecordsObserved ObservedRecords) (Rejected SignalRejection)]
 {
   Topic String
   Topics (Vec Topic)

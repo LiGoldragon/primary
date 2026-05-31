@@ -70,42 +70,42 @@ current `spirit-next/schema/lib.schema` starts like this:
 
 ```schema
 {}
-Input@[Record@Entry Observe@Query Remove@RecordIdentifier]
-Output@[RecordAccepted@SemaReceipt RecordsObserved@ObservedRecords RecordRemoved@RemoveReceipt Error@ErrorReport Rejected@SignalRejection]
+[(Record Entry) (Observe Query) (Remove RecordIdentifier)]
+[(RecordAccepted SemaReceipt) (RecordsObserved ObservedRecords) (RecordRemoved RemoveReceipt) (Error ErrorReport) (Rejected SignalRejection)]
 {
-  SourcePath@String
-  LocalPath@String
-  PublicPath@String
-  Import@{ @SourcePath @LocalPath }
-  Export@{ @LocalPath @PublicPath }
-  NexusInput@[Signal@Input Sema@SemaOutput]
-  NexusOutput@[Sema@SemaInput Signal@Output]
-  SemaInput@[Record@Entry Observe@Query Remove@RecordIdentifier]
-  SemaOutput@[Recorded@SemaReceipt Observed@ObservedRecords Removed@RemoveReceipt Missed@ErrorReport]
-  Topic@String
-  Topics@{ (Vec Topic) }
-  Query@{ @TopicMatch kind@(Optional Kind) }
-  Entry@{ @Topics @Kind @Description @Magnitude }
+  SourcePath String
+  LocalPath String
+  PublicPath String
+  Import { SourcePath * LocalPath * }
+  Export { LocalPath * PublicPath * }
+  NexusInput [(Signal Input) (Sema SemaOutput)]
+  NexusOutput [(Sema SemaInput) (Signal Output)]
+  SemaInput [(Record Entry) (Observe Query) (Remove RecordIdentifier)]
+  SemaOutput [(Recorded SemaReceipt) (Observed ObservedRecords) (Removed RemoveReceipt) (Missed ErrorReport)]
+  Topic String
+  Topics (Vec Topic)
+  Query { TopicMatch * kind (Optional Kind) }
+  Entry { Topics * Kind * Description * Magnitude * }
 }
 ```
 
 The schema syntax rules in use:
 
-- `Name@String` declares a newtype around the scalar `String`.
-- `Name@{ ... }` declares a struct/newtype.
-- `Name@[ ... ]` declares an enum.
-- `Variant@Payload` declares a data-carrying enum variant.
-- Bare `Variant` inside `Name@[...]` declares a unit variant.
-- `@TypeName` at a struct field derives the field name from the type:
-  `@RecordIdentifier` becomes field `record_identifier`.
+- `Name String` declares a newtype around the scalar `String`.
+- `Name { ... }` declares a struct map.
+- `Name [ ... ]` declares an enum body.
+- `(Variant Payload)` declares a data-carrying enum variant.
+- Bare `Variant` inside an enum body declares a unit variant.
+- `TypeName *` at a struct field derives the field name from the type:
+  `RecordIdentifier *` becomes field `record_identifier`.
 - `field@(Optional Kind)` uses an explicit field name with a composite
   reference.
 - `(Vec Topic)`, `(Optional Kind)`, and `(Map (Key Value))` are schema
   type-reference forms, not raw NOTA vector/map values.
 
-The current implementation still names the input and output roots as
-`Input@[...]` and `Output@[...]`. It does not wrap the whole file in a
-`Schema@{...}` object.
+The current target writes the input and output roots as known positional
+bracket bodies, not as labeled root wrappers. It does not wrap the whole file
+in an outer schema object.
 
 ### Surface C: Asschema
 

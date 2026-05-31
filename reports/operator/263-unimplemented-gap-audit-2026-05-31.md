@@ -23,7 +23,7 @@ The stack is no longer missing the broad architecture. What remains is the hard 
 
 1. **Macro-table nouns are still hand-written Rust**, even though `core.asschema` now describes them as assembled schema data.
 2. **Declarative macro expansion still goes through rendered template text**, then reparses that text into assembled fragments.
-3. **Strict schema syntax is not fully enforced**, because compatibility paths still accept pipe declarations, `Name@{...}`, `Input@[]`, and related older forms.
+3. **Strict schema syntax is not fully enforced**, because compatibility paths still accept pipe declarations, older keyed declaration sigils, labeled root wrappers, and related retired forms.
 4. **Shared support nouns are still emitted locally into every generated module**, instead of imported from a shared `schema-core` floor.
 5. **Schema diff/upgrade is only a trait surface**, not a real asschema-to-asschema change detector or migration planner.
 6. **The daemon has binary config loading, but not the full state-aware standby/multi-signal configuration runtime** on main.
@@ -68,8 +68,8 @@ Closed pieces:
   CoreSchema { BuiltinMacroPositions * BuiltinMacroShapes * BuiltinMacroOutputs * BuiltinMacroDefinitions * }
   BuiltinMacroDefinitions { schemaMacro (Vec SchemaMacro) }
   SchemaMacro { MacroName * MacroPosition * MacroPattern * MacroTemplate * }
-  MacroPatternObject [Capture@ MacroCaptureName RestCapture@ MacroCaptureName Atom@ MacroAtom Delimited@ MacroPatternDelimited]
-  MacroTemplateObject [Capture@ MacroCaptureName RestCapture@ MacroCaptureName Atom@ MacroAtom Delimited@ MacroTemplateDelimited]
+  MacroPatternObject [(Capture MacroCaptureName) (RestCapture MacroCaptureName) (Atom MacroAtom) (Delimited MacroPatternDelimited)]
+  MacroTemplateObject [(Capture MacroCaptureName) (RestCapture MacroCaptureName) (Atom MacroAtom) (Delimited MacroTemplateDelimited)]
 }
 ```
 
@@ -221,11 +221,9 @@ fn lower_legacy_declarations(
 }
 ```
 
-Live test fixtures still use older forms:
-
-```schema
-Input@[] Output@[] { Entry@{ topic@Topic kind@Kind } }
-```
+Live compatibility fixtures still exercise older root wrappers and keyed
+declaration sigils. They are useful as migration tests, but they should not
+appear as live syntax examples.
 
 And `schemas/builtin-macros.schema` still defines the built-ins using pipe declarations:
 
