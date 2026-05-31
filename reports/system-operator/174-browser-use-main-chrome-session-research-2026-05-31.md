@@ -10,7 +10,11 @@ Chrome itself blocks the old direct approach. Starting with Chrome 136, `--remot
 
 Browser-use can attach to any existing browser that exposes a CDP URL, using `BrowserSession(cdp_url="http://localhost:9222")` or the newer CLI `--cdp-url` support. That does not bypass Chrome. It only works if Chrome exposes CDP.
 
-User correction after the initial report: the psyche has previously controlled their main browser session through a browser extension. Extension-mediated control is therefore a known viable precedent for this workspace, not merely a hypothetical route. The remaining design question is how to connect that extension route to the desired agent loop: reuse the prior extension, adopt an existing browser-MCP/extension relay, or package a small scoped extension plus local relay in CriomOS-home.
+User correction after the initial report: the psyche has previously controlled their main browser session through a browser extension. Extension-mediated control is therefore a known viable precedent for this workspace, not merely a hypothetical route.
+
+Follow-up inspection found the likely extension already installed in the main Chrome profile: **Playwright Extension** (`mmlmfjhmonkocbjadbfplnigmagldckm`), version `0.2.1`. Its manifest says: "Connect your browser to AI agents through Playwright MCP server and CLI. Enables AI-driven web testing, debugging, and automation." It has `debugger`, `activeTab`, `tabs`, and `tabGroups` permissions, plus `<all_urls>` host permissions. Its service worker opens a WebSocket relay connection and uses `chrome.debugger.attach` / `chrome.debugger.sendCommand` to forward CDP-style commands for selected tabs. This matches the user's memory: control comes from an extension inside the real profile, not from external CDP against the profile directory.
+
+Microsoft Playwright documents this path directly: install the Playwright Extension and configure Playwright MCP with `npx @playwright/mcp@latest --extension`. The CLI path is `playwright-cli attach --extension`. The documented use cases are SSO/2FA, browser extensions, and already-open tabs — exactly the main-session problem here.
 
 ## Viable paths
 
