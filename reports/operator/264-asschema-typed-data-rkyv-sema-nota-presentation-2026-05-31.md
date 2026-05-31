@@ -35,6 +35,8 @@ Current implementation commits:
 - `nota-next` `14ad2f8f`: adds `NotaDocumentBody`, `NotaDocumentEncoding`, `NotaDocumentDecode`, and `NotaDocumentEncode`.
 - `nota-next` `05c91c86`: manifests the known-root body codec in repo intent and architecture.
 - `schema-next` `62d78bc6`: makes `Asschema` consume the NOTA document-body codec instead of owning the file join.
+- `nota-next` `b041e642`: adds `#[nota(known_root)]` derive support, named document fields, and serializable nested child constraints for macro-node patterns.
+- `schema-next` `57bab609`: makes `Asschema` use the derived known-root document codec and removes the manual six-field document decoder/encoder.
 
 ## One Picture
 
@@ -111,11 +113,14 @@ Live code in `schema-next/src/asschema.rs`:
     Eq,
     PartialEq,
 )]
+#[nota(known_root)]
 pub struct Asschema {
     identity: SchemaIdentity,
     imports: Vec<ImportDeclaration>,
     resolved_imports: Vec<ResolvedImport>,
+    #[nota(name = "Input")]
     input: EnumDeclaration,
+    #[nota(name = "Output")]
     output: EnumDeclaration,
     namespace: Vec<Declaration>,
 }
@@ -148,7 +153,7 @@ impl Asschema {
 }
 ```
 
-The NOTA surface now reflects the known-root rule through a shared NOTA document-body codec:
+The NOTA surface now reflects the known-root rule through a shared NOTA document-body codec and derive:
 
 ```rust
 impl Asschema {
@@ -162,42 +167,33 @@ impl Asschema {
         self.to_nota_document_body().to_nota()
     }
 }
-
-impl NotaDocumentEncode for Asschema {
-    fn to_nota_document_body(&self) -> NotaDocumentEncoding {
-        NotaDocumentEncoding::new(vec![
-            self.identity.to_nota(),
-            self.imports.to_nota(),
-            self.resolved_imports.to_nota(),
-            self.input.variants.to_nota(),
-            self.output.variants.to_nota(),
-            self.namespace.to_nota(),
-        ])
-    }
-}
 ```
 
-The important separation: NOTA owns the document-body parse/format boundary; `Asschema` only says which typed fields live in the body. The old anti-pattern was putting the newline-joined file-format rule directly in `Asschema::to_nota`.
+The important separation: NOTA owns the document-body parse/format boundary; `Asschema` only says it is a known root and names the two document fields whose values need names supplied by the root shape. The old anti-pattern was putting the newline-joined file-format rule directly in `Asschema::to_nota`.
 
-The decode side is the same split:
+The input/output projection is now a method on the field type, not a special case inside `Asschema`:
 
 ```rust
-impl NotaDocumentDecode for Asschema {
-    fn from_nota_document_body(body: &NotaDocumentBody<'_>) -> Result<Self, NotaDecodeError> {
-        match body.root_objects().len() {
-            1 => <Self as NotaDecode>::from_nota_block(&body.root_objects()[0]),
-            6 => Self::from_nota_document_fields(body.expect_fields("Asschema", 6)?),
-            found => Err(NotaDecodeError::ExpectedRootCount {
-                type_name: "Asschema",
-                expected: 6,
-                found,
-            }),
-        }
+impl NotaNamedDocumentFieldDecode for EnumDeclaration {
+    fn from_nota_named_document_field(
+        name: &'static str,
+        block: &Block,
+    ) -> Result<Self, NotaDecodeError> {
+        Ok(Self::new(
+            Name::new(name),
+            Vec::<EnumVariant>::from_nota_block(block)?,
+        ))
+    }
+}
+
+impl NotaNamedDocumentFieldEncode for EnumDeclaration {
+    fn to_nota_named_document_field_body(&self) -> String {
+        self.variants.to_nota()
     }
 }
 ```
 
-The raw NOTA parser still sees six root objects. The `Asschema` document-body implementation assigns those objects to typed fields.
+The raw NOTA parser still sees six root objects. The `#[nota(known_root)]` derive assigns those objects to typed fields, and `EnumDeclaration` owns the special rule for "the root type supplies this field's enum name."
 
 So the root is a product, not a vector:
 
@@ -421,6 +417,58 @@ That matters because names are reference identities. They are not general text. 
 ```
 
 The module-qualified name is the stable key that lets one asschema value refer to declarations from another module, crate, or schema library.
+
+## Structural Macro Nodes
+
+The macro-node layer is also now more real at the NOTA layer. A macro definition is data: a name, a position, and an ordered structural pattern. The pattern matches raw NOTA blocks before schema semantics run.
+
+```rust
+let registry = MacroRegistry::new(vec![MacroNodeDefinition::new(
+    "SingleTopicStruct",
+    PositionPredicate::named("NamespaceDeclaration"),
+    Pattern::new(vec![
+        PatternElement::atom(AtomShape::pascal_case(Some(CaptureName::new("type_name")))),
+        PatternElement::delimited(
+            DelimitedShape::new(
+                MacroDelimiter::Brace,
+                MacroObjectCount::Exact(2),
+                Some(CaptureName::new("body")),
+            )
+            .with_children(ChildPattern::new(vec![
+                ChildPatternElement::literal("topic"),
+                ChildPatternElement::atom(AtomShape::pascal_case(Some(CaptureName::new(
+                    "field_type",
+                )))),
+            ])),
+        ),
+    ]),
+    "Pascal type key followed by a brace whose body is topic plus Pascal type",
+)])?;
+```
+
+That test parses this raw NOTA:
+
+```nota
+{Entry {topic Topic}}
+```
+
+The outer brace is still a key/value map. The macro candidate is the pair `Entry` and `{topic Topic}`. The delimiter pattern first checks that the value is a brace with exactly two child objects, then its child pattern checks the immediate child slots: literal `topic`, then a PascalCase symbol captured as `field_type`.
+
+```mermaid
+flowchart TD
+  Source["{Entry {topic Topic}}"]
+  Pair["candidate pair: Entry + brace value"]
+  Pattern["MacroNodeDefinition: Pascal key + brace value"]
+  Children["ChildPattern: topic + PascalCase type"]
+  Match["MacroMatch with captures: type_name, body, field_type"]
+
+  Source --> Pair
+  Pair --> Pattern
+  Pattern --> Children
+  Children --> Match
+```
+
+The important design limit in this slice: `ChildPattern` is serializable data over immediate children. It avoids a recursive `Pattern -> DelimitedShape -> Pattern` type that rkyv cannot archive cleanly today. Deeper recursive structural matching can still land later as an explicitly rkyv-compatible pattern tree.
 
 ## Artifact Owner
 
@@ -664,11 +712,12 @@ Live now:
 
 - `Asschema` is typed Rust.
 - `Asschema` derives NOTA and rkyv surfaces, and the canonical `.asschema` text is a known-root document with six positional root fields.
-- Known-root asschema parsing/formatting goes through `nota-next`'s document-body codec traits, so the file/body rule is no longer hand-coded as a local string join.
+- Known-root asschema parsing/formatting goes through `nota-next`'s `#[nota(known_root)]` derive, so the file/body rule is no longer hand-coded as a local string join or a local six-slot decoder.
 - `AsschemaArtifact` reads/writes `.asschema` and `.asschema.rkyv`.
 - `AsschemaStore` stores rkyv-archived `Asschema` values in a redb-backed `.sema` database and re-exports recovered values through `AsschemaArtifact`.
 - `schema-rust-next` emits Rust from `Asschema`, including from NOTA/binary artifacts.
 - `spirit-next` proves the redb SEMA pattern with rkyv-archived values in a `.sema` file.
+- `nota-next` macro-node patterns can express ordered structural matches with immediate child constraints, named captures, and no-match diagnostics.
 
 Next implementation:
 
@@ -676,6 +725,7 @@ Next implementation:
 - Decide whether `AsschemaStore` remains a library SEMA surface in `schema-next` or becomes the storage core of a `persona-schema` daemon.
 - Lift macro declarations into the same asschema namespace as type declarations, likely by widening declaration values to `Type(...) | Macro(...)`.
 - Generate the asschema core Rust nouns from `core.asschema` instead of hand-writing them.
+- Decide whether document-root macro dispatch should become the internal implementation of `#[nota(known_root)]`, completing the macro-node-at-document-root path Designer 442 proposed.
 
 ## Current Questions
 
@@ -683,8 +733,8 @@ The comparison with `reports/designer/441-asschema-types-rkyv-sema-roundtrip.md`
 
 1. **Module qualification**: should declarations be stored internally as bare local names (`Entry`) with qualification only at cross-module reference sites, or should the serialized asschema wire form always store module-qualified names (`spirit-next:lib:Entry`)?
 2. **Macro declaration unification**: designer 441's `DeclarationValue::{Type, Macro}` shape is elegant, but it changes the namespace model. It should land after the module-qualification answer, because macro declarations also need stable names.
-3. **SEMA owner boundary**: `schema-next::AsschemaStore` proves the storage object. The next product question is whether build-time schema caches use this directly, or whether a future schema daemon owns a `.sema` store and serves asschema artifacts over a signal surface.
-4. **Compatibility window**: `Asschema::from_nota_source` still accepts the older one-record artifact form. The current artifact no longer emits it. The remaining question is when to remove that compatibility branch.
+3. **Document-root macro dispatch**: `#[nota(known_root)]` is now live and removes the anti-pattern. The deeper unification is whether that derive should internally dispatch a `MacroNodeDefinition` at a `DocumentRoot` position once the macro registry grows that position.
+4. **SEMA owner boundary**: `schema-next::AsschemaStore` proves the storage object. The next product question is whether build-time schema caches use this directly, or whether a future schema daemon owns a `.sema` store and serves asschema artifacts over a signal surface.
 
 ## The Crucial Mental Model
 
