@@ -17,9 +17,26 @@ The duplicate sibling directory `reports/system-operator/178-context-maintenance
 
 2. **Cleaned sensitive browser-use profile copies.** Removed 18 stale `/tmp/browser-use-user-data-dir-*` directories after verifying no remaining process was using those paths. These directories are treated as sensitive because browser-use copied Chrome profile data into them during the main-profile-copy tests.
 
-3. **Restored an over-eager report deletion.** `reports/system-operator/166-dji-mic-profile-churn-fix-2026-05-28.md` briefly appeared deleted after the subagent pass, but the context-maintenance finding only made it a future drop candidate after migration. The file was restored immediately.
+3. **Migrated the DJI keepalive boundary and retired the old report.**
+   The useful lesson from `reports/system-operator/166-dji-mic-profile-churn-fix-2026-05-28.md`
+   landed in CriomOS-home, then report 166 was deleted. The permanent
+   rule now lives in `/git/github.com/LiGoldragon/CriomOS-home/skills.md`
+   and beside the keepalive module in
+   `/git/github.com/LiGoldragon/CriomOS-home/modules/home/profiles/min/dictation.nix`:
+   after PipeWire exposes the Bluetooth card, repair DJI profile churn through
+   PipeWire profile reassertion, not BlueZ profile-specific connection calls.
+   CriomOS-home commit `092214bd` (`home: document DJI keepalive profile repair
+   boundary`) was pushed. `nix fmt -- --check modules/home/profiles/min/dictation.nix
+   skills.md` and `nix build .#checks.x86_64-linux.dji-keepalive --no-link
+   --print-build-logs` passed.
 
-4. **Left unrelated dirty files untouched.** `jj status` shows many modified/added files under designer, system-designer, operator, and shared skills surfaces. They are outside this system-operator browser/context-maintenance thread and were not edited here.
+4. **Tracked the Spirit-next production-copy acceptance gate.** Created bead
+   `primary-jew3` (Spirit-next production-copy handover acceptance test). The
+   bead carries record 1325's acceptance shape: exercise a candidate runtime
+   against a copied production-like SEMA database, prove existing records remain
+   readable, write only to the copy, and leave the original unchanged.
+
+5. **Left unrelated dirty files untouched.** `jj status` shows many modified/added files under designer, system-designer, operator, and shared skills surfaces. They are outside this system-operator browser/context-maintenance thread and were not edited here.
 
 ## Findings accepted for immediate decision
 
@@ -33,13 +50,20 @@ No wrapper/package should be landed immediately from this state. The next Playwr
 
 The subagent audit found the recent Spirit qualitative-depth work implemented, deployed, and live. The one substantial deferred acceptance gap is a production-copy handover test before the next Spirit production-candidate cutover. That is not part of this browser-use cleanup and should be tracked by the Spirit/operator thread, not fixed in this system-operator pass.
 
+That follow-up is now bead `primary-jew3`.
+
 ### DJI Mic reports
 
-The current deployed DJI Mic fix/report pair is report 175 plus report 176. Report 166 is a future drop candidate once the durable lesson lands near the CriomOS-home module: steady-state keepalive must not use BlueZ `ConnectProfile` as a profile-hammering repair path. No DJI code change was made in this pass.
+The current deployed DJI Mic fix/report pair is report 175 plus report 176.
+Report 166 is now retired because the durable lesson landed near the
+CriomOS-home module and in the repo skill: steady-state keepalive must not use
+BlueZ profile-specific connection calls as a profile-hammering repair path.
+No live runtime behavior changed in this pass; the CriomOS-home change is
+documentation plus a module-side guard comment.
 
 ## Deferred work
 
 - Prototype Playwright Extension control of the existing main Chrome tab under supervision. Because this is new design/prototype work, follow the fresh intent: use a designer/system-designer worktree rebased on main, one proof at a time.
 - After the Playwright Extension proof, decide whether a durable operator-main package/wrapper belongs in CriomOS-home.
-- Add Spirit production-copy handover acceptance testing before the next Spirit production-candidate cutover.
+- Add Spirit production-copy handover acceptance testing before the next Spirit production-candidate cutover: tracked as bead `primary-jew3`.
 - Migrate the browser-use profile-copy versus extension-control distinction into a durable browser automation skill or CriomOS-home doc only after the Playwright Extension path is proven.
