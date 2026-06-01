@@ -72,7 +72,7 @@ list_bookmarks() {
 commit_lines_ahead_of_main() {
   local bookmark="$1"
   jj log \
-    -r "$bookmark ~ main" \
+    -r "ancestors($bookmark) ~ ancestors(main)" \
     --no-graph \
     -T 'commit_id.short() ++ " " ++ description.first_line() ++ "\n"'
 }
