@@ -104,6 +104,51 @@ Witnesses, by category:
 | Legacy-surface absence witness | lock-file / BEADS reinvestment sneaking into new components |
 | Network namespace test | hidden cross-machine calls |
 
+## Pair-rule sweeps — valid patterns and adjacent anti-patterns
+
+When a discipline has a positive shape AND a negative shape (this pattern
+is valid; this look-alike pattern is forbidden), audit sweeps must cover
+**both shapes in the same scope**. A valid pattern can coexist with an
+anti-pattern nearby; the audit that grepped only one shape misses the
+other.
+
+The recurring failure mode: an audit looks for the load-bearing valid
+pattern (single-field wrappers around foreign types, real actors,
+data-bearing nouns), confirms each instance pays its way, and writes
+"no violations found." The adjacent anti-pattern hiding in the same
+file — a zero-sized method holder, a fake actor, a free function dressed
+as an associated function — never gets greppped because the audit
+scope was "valid patterns" not "the whole rule."
+
+Worked example. The single-field wrapper `Wrapper { inner: ForeignType }`
+is valid when the orphan rule blocks inherent methods on the inner type
+(see this workspace's `skills/rust/methods.md`). The zero-sized method
+holder `struct Wrapper; impl Wrapper { fn helper(...) }` is forbidden as
+a free function in disguise (per AGENTS.md hard override). Both shapes
+look like "a small struct with methods" from a distance. An audit that
+greps `^struct \w+ \{$` (multi-line braces) finds the single-field
+wrappers but skips the unit structs entirely. The unit structs need a
+separate grep: `^struct \w+;$`. Both sweeps land in the same audit pass.
+
+The general rule: every rule with a positive-and-negative shape gets a
+**pair-rule sweep** — two greps run in the same audit scope, both
+results compared against the discipline. The audit conclusion names what
+was found in BOTH sweeps, not just the load-bearing one.
+
+| Positive shape | Negative shape (must sweep simultaneously) |
+|---|---|
+| `struct Wrapper { field: T }` with methods | `struct Wrapper;` with associated functions (ZST namespace) |
+| Real data-bearing actor noun | Empty `pub struct ActorMarker;` ZST adapter masquerading as a noun |
+| Method on `impl Type` block | Free function `fn helper(...)` outside any `impl` |
+| Trait with multiple impls | One-impl trait (extension trait disguising a free function) |
+| Closed enum match arm | String predicate or boolean flag soup branch |
+
+When the audit lands as a report, the per-rule findings name both sweep
+results: "Sweep A (valid pattern, N instances) — all legitimate. Sweep B
+(anti-pattern, M instances) — N violations." A report that names only
+Sweep A leaves Sweep B as a future cleanup the auditor invited by
+omitting it.
+
 ## Actor trace first, artifacts later
 
 For actor-system ordering constraints, start with the mailbox path.
