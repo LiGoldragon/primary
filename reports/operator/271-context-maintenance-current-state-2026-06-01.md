@@ -6,7 +6,10 @@
 
 This report refreshes the current operator-side state after the fast NOTA / Schema / Asschema / Spirit sequence. It is a context-maintenance pass, not a new design proposal. It classifies what is closed, what is still load-bearing, and what the next implementation moves should be.
 
-Sources read in this pass:
+Sources read in this pass. The closed operator reports in this list were
+reviewed for live patterns, then retired in the follow-up retention pass
+because closed reports are not kept merely for rationale or history
+(Spirit record 1323):
 
 - `reports/operator/262-total-architecture-core-macro-artifacts-2026-05-30.md`
 - `reports/operator/263-unimplemented-gap-audit-2026-05-31.md`
@@ -104,11 +107,11 @@ The invalid former shape was:
 struct FieldEncode;
 ```
 
-Reports 269 and 270 remain useful as rationale for the single-field wrapper pattern, but the concrete `FieldEncode` code smell is now fixed.
+The concrete `FieldEncode` code smell is now fixed. The durable lesson is not a report to keep; it is the audit pattern: a valid single-field wrapper can coexist near an invalid zero-sized method holder, so wrapper audits should also grep for zero-sized method namespaces.
 
 ### 3. `CodecDerive` single-field wrapper question
 
-Resolved, not a bug. Designer 448 and operator 269/270 converge:
+Resolved, not a bug. The current code shape is valid:
 
 ```rust
 struct CodecDerive {
@@ -116,7 +119,7 @@ struct CodecDerive {
 }
 ```
 
-This is valid because `DeriveInput` is a `syn` type. `nota-next` cannot put inherent methods on it, and free functions / one-impl extension traits / zero-sized namespace holders are worse. The wrapper is the local data-bearing noun for the derive-expansion workflow.
+This is valid because `DeriveInput` is a `syn` type. `nota-next` cannot put inherent methods on it, and free functions / one-impl extension traits / zero-sized namespace holders are worse. The wrapper is the local data-bearing noun for the derive-expansion workflow. This pattern belongs in Rust discipline material, not in a retained report.
 
 ### 4. Strict schema syntax and honest enum bodies
 
@@ -258,16 +261,27 @@ The gating design question in designer 446 is the spirit triad naming: whether t
 
 ## Context Maintenance Classification
 
-### Reports to treat as closed-rationale
+### Reports retired in this pass
 
-These reports are no longer open issue trackers; they are rationale and history:
+These reports were no longer open issue trackers. Per Spirit record 1323,
+closed reports are not retained merely as rationale or history. Their live
+patterns are named below, and the files were deleted in this pass:
 
 - `reports/operator/267-macro-library-nota-types-2026-06-01.md`
 - `reports/operator/268-schema-source-artifact-datatype-split-audit-2026-06-01.md`
 - `reports/operator/269-rust-single-field-wrapper-validity-audit-2026-06-01.md`
 - `reports/operator/270-single-field-wrapper-comparison-with-designer-448-2026-06-01.md`
 
-Their concrete issues are closed or resolved. Keep them as design rationale unless a later maintenance pass rolls them into a higher-level report.
+Their concrete issues are closed or resolved.
+
+Patterns preserved outside those reports:
+
+- `schema-next` architecture already carries the `MacroLibrary` pattern:
+  one serializable macro-library noun, with `MacroLibraryArtifact` only
+  owning file and binary IO.
+- the wrapper-audit pattern should live in Rust discipline, not in an
+  operator report: when validating single-field wrappers, also scan the
+  same area for zero-sized method holders.
 
 ### Reports still active
 
@@ -276,7 +290,10 @@ These remain active working surfaces:
 - `reports/designer/445-next-stack-audit-2026-06-01.md` — still accurate for the parser free function, one-impl trait, CLI source helper, and SchemaError Display findings. Its `FieldEncode` note is now closed.
 - `reports/designer/446-next-stack-porting-research-2026-06-01/4-overview.md` — active sequencing for the spirit fold and porting waves.
 - `reports/designer/447-upgrade-as-sema-design-2026-06-01.md` — active design input for upgrade-as-SEMA; no implementation yet.
-- `reports/designer/448-single-field-wrapper-audit-2026-06-01.md` — active taxonomy; its `FieldEncode` action is closed.
+
+Designer-owned migration candidate:
+
+- `reports/designer/448-single-field-wrapper-audit-2026-06-01.md` now functions mainly as taxonomy. Its live pattern should migrate to Rust discipline / architecture guidance, then the designer lane can retire it under the same retention rule. I did not delete it from the operator lane.
 
 ### Primary working-copy note
 
