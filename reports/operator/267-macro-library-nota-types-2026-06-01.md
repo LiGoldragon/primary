@@ -200,6 +200,90 @@ The macro body is not raw text. It is a recursive enum/tree of:
 
 That recursive structure is the NOTA type of the macro body.
 
+## Which Variants Exist
+
+There are three different "variant" layers in this area.
+
+### Source Record Head
+
+At the top level of `schemas/builtin-macros.schema`, there is currently only
+one accepted source record head:
+
+```schema
+SchemaMacro
+```
+
+The reader checks that every macro definition is a parenthesized record with
+five objects and that object 0 is exactly `SchemaMacro`.
+
+So at this layer, `SchemaMacro` is not one variant among many today. It is the
+single macro-definition record type currently accepted by
+`MacroDefinitionRecord`.
+
+### Pattern And Template Object Variants
+
+Inside the pattern and template bodies, the recursive body enum has these
+variants:
+
+```rust
+Capture(String)
+RestCapture(String)
+Atom(String)
+Delimited(Box<...>)
+```
+
+`Delimited` then carries:
+
+```rust
+MacroDelimiter
+Vec<child object>
+```
+
+where `MacroDelimiter` is:
+
+```rust
+Parenthesis
+SquareBracket
+Brace
+PipeParenthesis
+PipeBrace
+```
+
+So `$Name` is `Capture("Name")`, `$*Fields` is
+`RestCapture("Fields")`, `Type` is `Atom("Type")`, and
+`($Name {$*Fields})` is a `Delimited(Parenthesis, ...)` object.
+
+### Template Output Heads
+
+After a template expands, the assembled-template interpreter currently accepts
+these top-level output heads:
+
+```schema
+Type
+Fields
+Variants
+Reference
+```
+
+`Type` then branches to:
+
+```schema
+Struct
+Enum
+Newtype
+```
+
+`Reference` can lower assembled references for:
+
+```schema
+Vector
+Optional
+Map
+```
+
+or fall back to ordinary type references such as `String`, `Integer`,
+`Boolean`, `Path`, and declared names.
+
 ## Current Gap
 
 The data discipline is real, but one piece remains pre-final: the Rust nouns
@@ -207,4 +291,3 @@ for `MacroLibraryData`, `MacroDefinitionData`, `MacroPatternObjectData`, and
 `MacroTemplateObjectData` are still hand-written in `schema-next`. The intended
 next step is to emit those nouns from `schemas/core.asschema`, then delete the
 hand-written mirror.
-
