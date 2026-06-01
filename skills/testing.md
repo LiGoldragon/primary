@@ -36,6 +36,21 @@ The point is not to force every stateful experiment into a pure
 builder. The point is that the test command, its environment, and its
 artifacts are owned by the repo and entered through Nix.
 
+## No positive grep deployment checks
+
+Do not use broad positive `grep` checks as deployment or architecture
+proof. A check like `grep -R "SemaWriteInput" src/schema/lib.rs` only
+proves that text exists in a file; it does not prove the runtime uses
+the generated type, the daemon crosses the binary boundary, or the
+schema chain is live.
+
+Allowed use of grep in Nix checks is narrow and negative: prove a
+retired or forbidden surface is absent, such as `! grep -R
+"NexusMail" src tests`. For positive proof, write a real witness:
+compile generated types, execute the trait path, round-trip NOTA or
+rkyv, reject bad socket bytes, run the process-boundary test, or
+consume a produced artifact in a later derivation.
+
 ## Multi-repo local override tests
 
 When a feature spans several sibling repositories, create a central

@@ -44,6 +44,32 @@ contracts, storage layers, actor protocols, deploy chains.
 > component is used, and one **negative** test proving the
 > tempting shortcut fails.
 
+## No positive grep as deployment proof
+
+A positive architectural witness must exercise the real path. A
+source scan that says "this string exists" is not proof that a
+daemon, schema chain, actor path, wire frame, or deployment path
+uses that thing. It only proves text is present.
+
+Forbidden as deployment or architecture proof:
+
+- `grep -R "SemaWriteInput" src/schema/lib.rs`
+- `grep -R "impl NexusEngine" src`
+- `grep -R "SignalActor" src`
+
+Those checks can stay only when they are **negative guards** for
+retired or forbidden surfaces:
+
+- `! grep -R "NexusMail" src tests`
+- `! grep -R "git+file://" flake.nix Cargo.toml`
+
+Positive proof must compile, execute, round-trip, or observe the
+real boundary: cargo tests over generated types, compile-fail
+tests, dependency-graph assertions, socket rejection tests,
+rkyv/NOTA round-trips, process-boundary tests, Nix integration
+runners, or chained artifact readers. Grep can prove absence; it
+does not prove live use.
+
 ## Constraints first
 
 The `Constraints` section of a component `ARCHITECTURE.md`
