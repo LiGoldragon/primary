@@ -169,26 +169,45 @@ handover dump. Preferred order:
    unsettled to be permanent. The rollover is a working artifact
    for the next session, not an archive.
 
-### 3a · Design-rationale guard against premature DELETE
+### 3a · Migrate live patterns first, then retire
 
 A report carrying **competing design alternatives** — multiple
 options sketched, one chosen, others rejected — is load-bearing
-*as design rationale* even after the chosen option migrates to a
-permanent doc. Permanent docs typically state only the chosen
-shape; the rejected alternatives and the reasoning are what the
-report preserves.
+*as design rationale* until its substance has migrated. Per Spirit
+record 1323 (Correction Maximum), closed reports should not be
+kept merely for rationale or history. The chosen design AND the
+competing-alternatives reasoning both migrate to durable surfaces;
+the report then retires.
 
-Per intent record 229 (closing duplicate beads preserves
-information; competing design ideas kept), do NOT DELETE such a
-report when its chosen-design substance migrates. Add a
-STATUS-BANNER naming the permanent-doc landing instead, so a
-later reader sees the supersession and can find the chosen shape
-without losing the alternatives.
+Migration targets for competing-alternatives substance:
 
-Signal that a report falls under this guard: it explicitly
+- **Chosen design** → architecture file (per-repo `ARCHITECTURE.md`)
+  or skill, as already named in §3 of this skill.
+- **Competing alternatives + the reasoning that selected one** →
+  either an architecture decision record (when the alternatives
+  are durably worth knowing), or Spirit intent records (Decision /
+  Clarification capturing the chosen direction with the reasoning
+  inline), or both.
+- **Empirical evidence (benchmarks, prototypes, witnesses)** →
+  the git history of the relevant repo carries the prototype code;
+  cite commit IDs from the architecture file rather than retaining
+  a report just to point at them.
+
+Once migrations land, **retire the report** — delete via `rm`. Do
+not leave it as an archive carrying duplicate rationale.
+
+The previously-named §3a "STATUS-BANNER + keep" behavior is
+superseded by record 1323. The status-banner pattern preserved
+contradictions and made workspace search noisier; the
+migrate-then-retire pattern keeps live patterns close to the code
+or contracts they govern.
+
+Signal that a report needs the explicit competing-alternatives
+migration (vs a routine single-shape migration): it explicitly
 enumerates two or more designs (Design A / B / C / D, Option 1 /
-2, etc.) and chose one. Standard design reports that propose a
-single shape do not need this guard — they migrate cleanly.
+2, etc.) and chose one. Standard design reports proposing a
+single shape migrate cleanly; the chosen shape lands in an
+architecture file or skill and the report retires.
 
 ### 4 · Small thoughts are OK
 
