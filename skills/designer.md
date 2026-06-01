@@ -604,6 +604,70 @@ question (open per /333-v2 §4.1), and the Divergence/Recovery
 semantic gaps. Operator picks each up as separate beads with
 the design report as the guide.
 
+### Designer sub-agents land code witnesses
+
+The designer-operator loop scales through **sub-agent code-witness
+dispatch**. When a design needs multiple parallel artifacts — an
+audit against existing code, a falsifiable spec for not-yet-existing
+code, a refactor of stale design remnants — designer dispatches
+focused sub-agents that each work on the most-recent main of the
+relevant repos via `~/wt` worktrees, land actual code (constraint
+tests or refactors) on feature branches, and push for operator
+pickup.
+
+The pattern in shape:
+
+1. **Designer surfaces the question** — narrow audit claim, design
+   adaptation, remnant search.
+2. **Designer dispatches sub-agent(s)** with mandatory readings,
+   the specific claims to verify, and the worktree workflow.
+3. **Sub-agent works on a worktree branch** under
+   `~/wt/github.com/LiGoldragon/<repo>/<feature>/`, NOT on the
+   primary checkout. Each sub-agent fetches origin/main fresh
+   before branching.
+4. **Sub-agent writes constraint tests OR refactors** that PROVE
+   the design as named — closed-claim verification (positive
+   witness; passes against current code), falsifiable spec (red
+   now / green when implemented), or remnant retirement (refactor
+   passes existing tests).
+5. **Sub-agent pushes the branch** to origin and writes a designer
+   report linking the branch + commits.
+6. **Designer synthesizes** the sub-agent outputs and decides
+   what to recommend to operator + psyche.
+7. **Operator picks up the branches** and integrates onto main
+   per the standard lane discipline (AGENTS.md: *designers do NOT
+   push to main; operators do*).
+
+The audit-as-prose claims things; the falsifiable-test branch
+PROVES things. Three discriminating properties:
+
+- **Tests gated behind a feature flag** (e.g. `cargo test
+  --features audit-X`) so default builds stay green and the
+  feature-on suite is explicit.
+- **Flake check** (`#audit-X` per repo's `flake.nix`) so the
+  Nix-level witness runs the same suite in a hermetic sandbox.
+- **Branch names match the audit purpose** —
+  `verify-271-closed-claims`, `falsifiable-specs-271-open-claims`,
+  `audit-rkyv-enum-wrapping-presumption`,
+  `retire-design-remnants`, etc. The branch IS the artifact.
+
+This compounds the design-operator loop's roll-forward: designer
+sub-agents produce executable proofs of the design's claims in
+parallel with operator's implementation work, with the integration
+ordering left to operator's lane discipline. The orchestrator's
+context stays light — each sub-agent's report carries the substance
+and the branch hash; the orchestrator synthesizes, recommends, and
+hands back.
+
+The pattern is especially apt for **audits of operator
+implementations against design intent**: designer reads the
+operator's commit + the design's spec, dispatches a sub-agent to
+write constraint tests that PROVE or DISPROVE the alignment, pushes
+the tests as a branch, and operator either integrates the witnesses
+or surfaces design counter-evidence. The seam is the test name —
+each test asserts a specific Spirit record or design report's
+claim, gated behind a feature so the test name reads like a contract.
+
 ## Working with designer's assistant lanes
 
 `designer-assistant` and `second-designer-assistant` are additional

@@ -191,6 +191,77 @@ the type system? If yes (it was just a namespace), the verbs need
 a real noun. If no (the type-system position is what does the work
 — phantom parameter, marker, state), the ZST is fine.
 
+## Typestate retires when borrow rules enforce its invariant
+
+A typestate pattern is valuable when the invariant it carries
+*cannot* be expressed by Rust's existing borrow rules. When the
+invariant *can* be expressed by `&mut self` exclusive borrow, the
+typestate is redundant — its safety property already lives in the
+borrow checker.
+
+The canonical example: a runtime that holds a resource across a
+mutation phase. Pre-trait design uses a typestate carrier:
+
+```rust
+// Wrong — typestate that duplicates a borrow rule
+struct Mail<Phase> { identifier: Identifier, phase: Phase }
+struct BeingProcessed { input: ApplyInput }
+struct Processed { output: ApplyOutput }
+
+impl Mail<BeingProcessed> {
+    fn run(self, engine: &mut Engine) -> Mail<Processed> {
+        let output = engine.apply(self.phase.input);
+        Mail { identifier: self.identifier, phase: Processed { output } }
+    }
+}
+```
+
+The intent: *"the engine holds the mail ⇒ it is being processed"*
+as a compile-time fact. The mechanism: `Mail<Processed>` cannot
+exist without consuming a `Mail<BeingProcessed>` through `run`.
+
+But once `Engine::apply` is a trait method:
+
+```rust
+// Right — the trait surface carries the invariant
+trait EngineApi {
+    fn apply(&mut self, input: ApplyInput) -> ApplyOutput;
+}
+```
+
+The `&mut self` exclusive borrow on `apply` already enforces
+*"only one apply at a time on this engine"*. The Mail<Phase>
+wrapper adds no safety property the borrow checker doesn't
+already enforce. The lifecycle events (sent + processed) can fire
+inside the composer or as hook calls; the type-level "is being
+processed" is now decorative.
+
+The retirement test:
+- **Does removing the typestate lose any property `&mut self`
+  doesn't enforce?** If no, the typestate is redundant.
+- **Does the trait method's signature already constrain
+  ordering?** If yes, the typestate is documenting what the
+  signature already pins.
+- **Are the typestate's data carriers (the per-phase struct
+  fields) intermediate state that no longer needs to be named?**
+  If yes, inline them into the trait method's local variables.
+
+Typestate stays valuable when the invariant crosses borrow
+boundaries the language can't see:
+- **Async lifecycle phases across `.await` points** — the borrow
+  checker doesn't track resource ownership across suspension; the
+  typestate does.
+- **Durability transitions across syscalls** — after `fsync`, the
+  data is durable; before, it isn't. No borrow rule captures this.
+- **Cross-thread state machines** — when ownership transfers via
+  channel, the typestate documents what phase the receiver is in.
+
+The principle generalizes: when introducing a typestate, identify
+the invariant it carries; check if Rust's existing rules
+(`&mut self`, `&self`, move semantics, lifetime bounds) already
+enforce it. If yes, drop the typestate; the trait surface is the
+honest representation.
+
 ## Domain values are types, not primitives
 
 If a value has identity beyond its bits, it gets a newtype. A
