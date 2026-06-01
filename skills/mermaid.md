@@ -93,21 +93,58 @@ diagram for topology and concepts, not for IDs.
 **Default visible-character budget:**
 
 - one-line node label: **24-28 visible characters**;
-- manually wrapped node label: **2 lines, 18-24 visible characters
-  per line**;
-- total node label after wrapping: usually **45-55 visible
-  characters maximum**;
 - edge label: **1-3 words**.
 
 If a label needs more, the node is doing prose's job. Shorten the
 node and move the detail to the surrounding paragraph, caption, or
 sibling table.
 
-### Node box size and wrapping — use as assist, not permission
+### Node labels stay single-line
+
+Do not insert manual line breaks into Mermaid labels. Escaped
+newlines (`\n`) are not respected consistently and often render as
+literal noise. HTML breaks (`<br/>`) and markdown wrapping behave
+differently across Mermaid versions and report surfaces. A graph
+that depends on label line breaks is not portable.
+
+Wrong:
+
+```text
+flowchart LR
+    schema["schema/lib.schema\nstrict NOTA source"]
+    asschema["Asschema\nmacro-free typed data"]
+    schema --> asschema
+```
+
+Also wrong:
+
+```text
+flowchart LR
+    schema["schema/lib.schema<br/>strict NOTA source"]
+    asschema["Asschema<br/>macro-free typed data"]
+    schema --> asschema
+```
+
+Right:
+
+```mermaid
+flowchart LR
+    schema["schema source"]
+    asschema["Asschema data"]
+    schema --> asschema
+```
+
+The detail moves into the paragraph before or after the graph:
+`schema source` means `schema/lib.schema`, a strict NOTA document;
+`Asschema data` means the macro-free typed assembled schema.
+
+If one compact label cannot carry the concept, split the concept
+into separate nodes or remove the detail from the graph. Do not
+simulate a paragraph inside a box.
 
 Mermaid does not offer a dependable fixed `width` / `height` knob
-for ordinary flowchart nodes across renderers. The useful controls
-are partial:
+for ordinary flowchart nodes across renderers. Some controls are
+partial:
 
 - `flowchart.wrappingWidth` sets the max text width before markdown
   node labels wrap in newer Mermaid renderers.
@@ -122,15 +159,14 @@ label/shape padding; Mermaid's Flowchart syntax page documents
 Markdown Strings and automatic wrapping. Community practice also
 uses `classDef` padding as the least-bad box-size workaround.
 
-Cross-renderer-safe form: manually split labels with `<br/>`, then
-add padding only to give the words room:
+Use padding only to give short labels breathing room:
 
 ```mermaid
 flowchart TB
-    schema[".schema document<br/>in NOTA"]:::roomy
-    rust["Rust nouns<br/>schema-rust-next"]:::roomy
-    text["NOTA text projection<br/>to_nota"]:::roomy
-    wire["rkyv binary wire<br/>encode_signal_frame"]:::roomy
+    schema["schema source"]:::roomy
+    rust["Rust nouns"]:::roomy
+    text["NOTA projection"]:::roomy
+    wire["binary wire"]:::roomy
     schema --> rust
     rust --> text
     rust --> wire
@@ -138,7 +174,7 @@ flowchart TB
 ```
 
 For current Mermaid renderers that support config blocks, this can
-help, but it does not replace manual wrapping:
+help, but it does not make long labels acceptable:
 
 ````text
 ```mermaid
@@ -149,7 +185,7 @@ config:
     padding: 20
 ---
 flowchart TB
-  node["short label<br/>second line"]:::roomy
+  node["short label"]:::roomy
   classDef roomy padding:20px;
 ```
 ````
@@ -171,7 +207,7 @@ the graph must be rewritten before the report is considered done.
   meaning without the underscores eating the box.
 - Section locators (`§1.6.7`, `/315 §2.2`) — also belong
   outside the node.
-- Multi-part conjunctions (`Foo + Bar + Baz<br/>(qualifier)`) —
+- Multi-part conjunctions (`Foo + Bar + Baz (qualifier)`) —
   truncate badly; usually want to be split into multiple nodes
   or compressed into one short noun.
 
@@ -191,11 +227,11 @@ surfaces lets each be the right shape for its job.
 
 Wrong (label truncates mid-word):
 
-```mermaid
+```text
 flowchart TB
     n1["primary-li0p · NamespaceSection + SECTION_CUTOFF + classify"]
     n2["primary-avog · assert_triad_sections! macro"]
-    n3["Slot 1 · emit_contract_section<br/>primary-v5n2"]
+    n3["Slot 1 · emit_contract_section · primary-v5n2"]
     n1 --> n3
     n2 --> n3
 ```
@@ -226,7 +262,7 @@ truncates them too. 3-5 words; no parentheticals (`(one PR,
 Wrong:
 
 ```text
-subgraph macro ["Macro convergence epic — primary-ezqx<br/>(one PR, one signal-frame-macros/src/emit.rs extension)"]
+subgraph macro ["Macro convergence epic — primary-ezqx (one PR, one signal-frame-macros/src/emit.rs extension)"]
 ```
 
 Right:
