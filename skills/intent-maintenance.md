@@ -90,12 +90,13 @@ report:
 spirit "(Observe (RecordIdentifiers ((Exact N) WithProvenance)))"
 ```
 
-Paste the result into a tombstone appendix (the model is
-`reports/system-designer/45` §"Appendix — full text of removed
-records"); the report then IS the provenance of what was removed.
-The 1157–1175 loss (`reports/system-designer/46`) happened precisely
-because records were removed without this step; report 45's 19
-survive because they were tombstoned first.
+Paste the result into a tombstone appendix in the removing agent's
+report; the report then IS the provenance of what was removed. The
+discipline emerged from a known loss: an undocumented removal of
+records 1157–1175 (no tombstone) proved unrecoverable because redb's
+copy-on-write page reuse overwrote the freed bytes within hours; an
+earlier removal of 19 psyche-approved records that WAS tombstoned
+first preserved their full text. Capture first, then remove.
 
 Stay conservative: when removability is uncertain, flag rather than
 remove (record 1103 — over-removal is worse than under-removal). The
