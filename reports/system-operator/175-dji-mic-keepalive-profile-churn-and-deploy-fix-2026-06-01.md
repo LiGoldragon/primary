@@ -84,10 +84,20 @@ Live observed after the first switch:
 ## Current State
 
 The audio fix is live in the current system generation. The final FullOS switch
-for the tuple-form repository-ledger config has been committed and pushed, but I
-paused the last switch because Whisrs was actively recording. The failed
-repository-ledger restart loop was stopped via root SSH while waiting for Whisrs
-to become idle.
+for the tuple-form repository-ledger config succeeded after Whisrs returned to
+idle.
+
+Live verification after the switch:
+
+- `repository-ledger.service` active.
+- `dji-keepalive.service` active.
+- `wireplumber.service` active.
+- PipeWire shows an uncorked `dji-mic-keepalive-capture` source-output targeting
+  the DJI Bluetooth source.
+- Recent bluetoothd logs showed no new `Hands-Free Voice gateway`,
+  `br-connection-page-timeout`, or DJI-related failures.
+- System temperature returned to ordinary idle range after the remote-build
+  switch completed; no runaway local build process was present.
 
 ## Follow-Up
 
