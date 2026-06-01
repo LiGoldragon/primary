@@ -70,6 +70,154 @@ rkyv/NOTA round-trips, process-boundary tests, Nix integration
 runners, or chained artifact readers. Grep can prove absence; it
 does not prove live use.
 
+## Proof-of-usage ladder — choose cheapest sufficient
+
+The §"No positive grep" rule above names what is forbidden. The
+positive complement is the **three-layer proof-of-usage model**: every
+architectural claim about USAGE picks the cheapest witness that is
+strong enough. Don't over-witness; don't under-witness.
+
+```mermaid
+flowchart LR
+    A["LAYER 1 — STATIC<br/>compile-time"]
+    B["LAYER 2 — RUNTIME<br/>execution"]
+    C["LAYER 3 — BEHAVIORAL<br/>removal breaks"]
+    D["strength<br/>and cost<br/>both rise"]
+    A --> B --> C
+    A -.-> D
+```
+
+Five nodes; honors the §"Graphs are short" budget. Proof strength rises
+left to right; cost rises with it. The discipline: pick the lowest
+layer whose witness is strong enough for the claim.
+
+### Layer 1 — STATIC (compile-time type-system reference)
+
+Proves: the code exists AND the type system links it. Does NOT prove
+the code executes at runtime.
+
+| Witness | Proves | Cost |
+|---|---|---|
+| `use T` statement compiles | Module references the type | Free |
+| `static_assertions::assert_impl_all!(T: Trait)` | T implements Trait at compile time | Free |
+| `let _: T = expression;` in a test | Expression's type is T | Free |
+| Compile-fail (`trybuild`) on a shortcut | Removing T breaks the failing branch's compile | Free |
+| `cargo metadata` dependency assertion | Crate depends on another | Free |
+| Type alias / re-export check | Public surface includes T | Free |
+
+Strength: LOW-MEDIUM. A method can be `use`d and the binary linked
+without the method ever being called at runtime — dead code that the
+compiler keeps because something references it.
+
+Critical: **grep is NOT a Layer 1 witness.** Grep traverses strings,
+not the type system. The type-system witness uses `use`,
+`assert_impl_all!`, or a constructor call that actually requires the
+compiler to resolve the reference.
+
+### Layer 2 — RUNTIME (execution path taken)
+
+Proves: the code actually runs under test or production; the call path
+is taken on specific inputs.
+
+| Witness | Proves | Cost |
+|---|---|---|
+| Unit test calling the function | Function runs in test process | Cheap |
+| Integration test through wire | Full call chain executes | Medium |
+| Actor trace assertion (recorder actor) | Specific mailbox traversed | Medium |
+| Process-boundary test (real binary spawn + round-trip) | Cross-process path runs | Expensive |
+| Property test (proptest, quickcheck) | Many generated inputs flow through | Medium |
+| Code coverage (`cargo-tarpaulin`, `llvm-cov`) | Line/branch was executed | Expensive |
+
+Strength: STRONG. Proves execution at the witness's call site. Doesn't
+prove production exercises the path — only the test that ran. The
+honest discipline: a Layer 2 witness proves the path is EXECUTABLE,
+not that production EXERCISES it. For most architectural claims this
+is sufficient.
+
+### Layer 3 — BEHAVIORAL (removal breaks observable behavior)
+
+Proves: this code carries an observable effect — removing it changes
+the system's externally visible behavior.
+
+| Witness | Proves | Cost |
+|---|---|---|
+| Mutation testing (`cargo-mutants`, `mutagen`) | Removing code breaks tests | Very expensive |
+| Manual removed-code test (deliberately break, assert failure) | Same as mutation, per-instance | Cheap (per-test) |
+| Negative-presence test on output | Output existence depends on code path | Cheap |
+| Backward-compat test against checked-in fixtures | Code processes archived inputs correctly | Medium |
+| Differential testing (compare against known-good) | Two systems agree | Medium-expensive |
+
+Strength: STRONGEST. If removing X breaks an observable behavior the
+test asserts, then X is genuinely USED — not just present. Reserved
+for high-stakes invariants where the cost of dead-code-passing-as-live
+is large; most claims don't need Layer 3.
+
+### The choose-cheapest-sufficient discipline
+
+For each architectural claim, ask: structural reference, runtime
+execution, or observable behavior? Pick the cheapest layer whose
+witness shape matches the claim. The default is Layer 2 — most
+architectural claims involve a path being EXECUTABLE through the
+runtime; the cheapest sufficient witness is an integration test
+through the wire. Layer 1 covers purely structural claims (the trait
+surface exposes only these methods). Layer 3 is for invariants where
+Layer 2's "executable" isn't enough and "removing this breaks
+behavior" is the real claim.
+
+The forbidden case (positive grep) sits BELOW Layer 1 — it claims
+structural reference but doesn't prove it. The §"No positive grep"
+rule above enforces "if you want a structural-reference proof, use a
+real Layer 1 witness."
+
+### Worked examples
+
+**"Type T is emitted by the schema chain"** (Layer 1, cheapest):
+
+```rust
+#[test]
+fn sema_write_input_type_emitted() {
+    use my_crate::schema::lib::SemaWriteInput;
+    let _: SemaWriteInput = SemaWriteInput::default();
+}
+```
+
+This compiles ONLY if the emitter actually emitted the type with the
+expected name and constructor. Grep can't disambiguate "the name
+appears" from "the type is emitted with this exact shape."
+
+**"Runtime X uses trait method Y"** (Layer 2 via recorder):
+
+```rust
+#[test]
+fn nexus_calls_sema_engine_apply_via_trait() {
+    let recorded = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
+    let fake_sema = FakeSemaEngine::new(recorded.clone());
+    let mut nexus = Nexus::with_sema_engine(fake_sema);
+    let _ = nexus.execute(test_nexus_input());
+    assert!(recorded.lock().unwrap().iter()
+        .any(|call| matches!(call, RecordedCall::SemaApply(_))));
+}
+```
+
+The witness sinks call records. The test proves Nexus actually called
+the trait method during execution.
+
+**"Daemon round-trips through the wire"** (Layer 2 via process
+boundary):
+
+```rust
+#[test]
+fn daemon_round_trip_through_socket() {
+    let fixture = DaemonFixture::start();
+    let reply = fixture.invoke_cli("(Record ...)");
+    assert!(reply.contains("RecordAccepted"));
+}
+```
+
+The full real binary runs; the wire round-trips; the reply shape
+proves the path was executed end-to-end. This is the strongest cheap
+Layer 2 witness for "the daemon's runtime path is live."
+
 ## Constraints first
 
 The `Constraints` section of a component `ARCHITECTURE.md`

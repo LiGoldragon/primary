@@ -553,7 +553,7 @@ Skill: `skills/component-triad.md` §"Runtime triad" plus
 ### Pattern B — Three execution centers (Signal + Nexus + SEMA)
 
 **Anchoring records:** 371 (Executor → Nexus per 964), 964, 970,
-981, 982.
+981, 982, 1326, 1327, 1330-1336.
 
 Every persona daemon's runtime decomposes into three execution
 centers — Signal (wire/communication), Nexus (execution + mail
@@ -565,6 +565,23 @@ engines share the pattern *"running code based on input message
 and returning output message with populated data."* Full
 discipline: §"Three schema types, three runtime planes" above.
 Skill: `skills/component-triad.md` §"Runtime triad".
+
+Per records 1326 (Constraint High, operator-specific) and 1327
+(Principle Maximum, workspace-wide): every component runtime
+conducts its core logic through three **schema-emitted engine
+traits** whose methods take and return plane root types —
+`SignalEngine` (triage only, Spirit 1330), `NexusEngine` (heavy
+logic + bidirectional translator, Spirit 1331), `SemaEngine`
+(durable single-writer with parallel reads via apply/observe
+split, Spirit 1332). The trait surface is uniform across
+components; each component's runtime is a composition of three
+trait impls attached to data-bearing nouns. Signal hands the
+typed Input to Nexus one-way; Nexus reaches SEMA exclusively
+through the trait surface; SEMA returns to Nexus which decides
+the reply. Full discipline: `skills/component-triad.md` §"Runtime
+triad engine traits — Signal triage / Nexus computation / SEMA
+durable". Worked example today: `spirit-next` at main `d29dc6c`
+(Spirit 1332 landed).
 
 ### Pattern C — Methods on schema-generated data types
 
