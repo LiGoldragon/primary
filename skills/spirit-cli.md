@@ -200,9 +200,11 @@ certainty filter, `(Exact Zero)` for removal candidates, `(AtMost Low)`
 for a low-certainty review band, or `(AtLeast High)` for high-certainty
 records. Recorded-time selection is `Any`, `(Between ((YYYY-MM-DD
 HH:MM:SS) (YYYY-MM-DD HH:MM:SS)))`, `(Since (YYYY-MM-DD HH:MM:SS))`,
-`(Until (YYYY-MM-DD HH:MM:SS))`, or `Recent`. `Recent` is applied after
-topic/kind/certainty matching and returns the newest matching records,
-so quiet topics naturally reach farther back than active topics.
+`(Until (YYYY-MM-DD HH:MM:SS))`, `Shallow`, `Recent`, `Deep`, or
+`VeryDeep`. Qualitative recency depths are applied after
+topic/kind/certainty matching and return newest matching records at the
+requested depth, so quiet topics naturally reach farther back than active
+topics.
 `Minimum` remains weak but real intent; do not use it as the
 removal-candidate marker. The old three-field and four-field record
 queries still decode as compatibility input, but agents should emit the
@@ -220,7 +222,10 @@ spirit "(Observe (Records ((Full [spirit search]) None Any Any WithProvenance)))
 spirit "(Observe (Records ((Any []) (Some Decision) Any Any SummaryOnly)))"
 spirit "(Observe (Records ((Any []) None (Exact Zero) Any WithProvenance)))"
 spirit "(Observe (Records ((Any []) None (AtMost Low) Any SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any Shallow SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any Recent SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any Deep SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any VeryDeep SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any (Since (2026-05-30 00:00:00)) SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any (Between ((2026-05-29 00:00:00) (2026-05-30 23:59:59))) WithProvenance)))"
 spirit "(Observe (RecordIdentifiers ((Exact 1053) SummaryOnly)))"
