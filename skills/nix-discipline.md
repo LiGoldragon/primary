@@ -236,6 +236,51 @@ The one sanctioned local-path use is **fast inner-loop iteration** via
 against a local clone") — and even there, you commit and push before
 anything is built for sharing or deploy.
 
+## Compiled artefacts at build time, never JIT
+
+When a Nix derivation builds a config / script / module for a
+runtime that does its own JIT or ahead-of-time compilation (Emacs
+Lisp `.eln`, Python bytecode, Common Lisp FASLs, TypeScript
+declaration emissions, sass / SCSS outputs, etc.), produce the
+compiled artefacts AT NIX BUILD TIME inside the derivation. Do
+not let them appear lazily at first-use at runtime.
+
+The principle: a Nix-built artefact is **content-hashed and
+store-shipped**. If compilation happens at runtime, the compiled
+cache lives outside the store (in `~/.emacs.d/eln-cache/` or
+similar) and **invalidates on every Nix rebuild** — the next
+`home-manager switch` produces a new content hash for the source,
+the runtime cache misses, JIT runs again, a regression that is
+invisible until the user feels the slowness on first cold start
+after each rebuild.
+
+Build-time compilation eliminates this:
+
+- The `.eln` / `.pyc` / `.fasl` lives in the store at a
+  content-hashed path next to its source.
+- Cache hit happens on every cold start regardless of rebuild
+  cycle.
+- The store-shipped artefact is reachable as long as the source
+  derivation is reachable; ordinary garbage-collection rules
+  apply.
+
+Worked example: `CriomOS-home`'s `initElCompiled` derivation
+byte-compiles AND native-compiles `init.el` in a single
+`pkgs.runCommand` invocation with `emacs --batch`, then ships
+`init.elc` + `init-<hash>.eln` in the same store path; a
+Nix-generated `early-init.el` prepends the store-path
+`eln-cache/` directory to `native-comp-eln-load-path` so emacs's
+native-comp resolver finds the prebuilt `.eln`. See
+`modules/home/profiles/med/emacs.nix` lines 678-738 for the full
+derivation + early-init wiring. Captured as Spirit record 1322
+(Principle High).
+
+Smell test: if the Nix-built tool starts equally fast on every
+fresh nix-store entry, the derivation does build-time compilation.
+If first-use after rebuild is slow and subsequent uses are fast,
+the runtime JIT cache is doing the work — that's the regression
+1322 forbids.
+
 ## Lock-side pinning
 
 Keep `flake.nix` generic; record the exact rev in
