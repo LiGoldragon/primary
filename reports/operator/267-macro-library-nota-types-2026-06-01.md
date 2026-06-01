@@ -45,11 +45,11 @@ by the parser. The source syntax:
 means:
 
 ```rust
-MacroLibrarySourceEntry::SchemaMacro(MacroDefinition {
-    name: SchemaStructDefinition,
-    position: NamespaceDeclaration,
-    pattern: ...,
-    template: ...,
+MacroLibrarySourceEntry::SchemaMacro(SchemaMacro {
+    macro_name: SchemaStructDefinition,
+    macro_position: NamespaceDeclaration,
+    macro_pattern: ...,
+    macro_template: ...,
 })
 ```
 
@@ -78,7 +78,7 @@ pub struct DeclarativeMacroLibrary {
 }
 
 pub enum MacroLibrarySourceEntry {
-    SchemaMacro(MacroDefinition),
+    SchemaMacro(SchemaMacro),
 }
 ```
 
@@ -100,14 +100,14 @@ impl DeclarativeMacroLibrary {
 So every top-level object in `builtin-macros.schema` must be a
 `MacroLibrarySourceEntry`. A top-level object whose first symbol is
 `SchemaMacro` becomes the `SchemaMacro` variant. The variant payload is the
-definition struct:
+`SchemaMacro` struct:
 
 ```rust
-pub struct MacroDefinition {
-    name: Name,
-    position: MacroPosition,
-    pattern: MacroPattern,
-    template: MacroTemplate,
+pub struct SchemaMacro {
+    macro_name: Name,
+    macro_position: MacroPosition,
+    macro_pattern: MacroPatternData,
+    macro_template: MacroTemplateData,
 }
 ```
 
@@ -116,19 +116,15 @@ This is the exact fit:
 ```text
 DeclarativeMacroLibrary
 └── source_entries: Vec<MacroLibrarySourceEntry>
-    └── MacroLibrarySourceEntry::SchemaMacro(MacroDefinition)
+    └── MacroLibrarySourceEntry::SchemaMacro(SchemaMacro)
         └── source notation: (SchemaMacro Name Position Pattern Template)
 ```
 
-The serialized `.macro-library` artifact then fits into:
+The serialized `.macro-library` artifact uses the same entry type:
 
 ```rust
 pub struct MacroLibraryData {
-    source_entries: Vec<MacroLibrarySourceEntryData>,
-}
-
-pub enum MacroLibrarySourceEntryData {
-    SchemaMacro(MacroDefinitionData),
+    source_entries: Vec<MacroLibrarySourceEntry>,
 }
 ```
 
@@ -146,25 +142,22 @@ So the most precise answer is:
 - source declarations fit into `DeclarativeMacroLibrary`;
 - the `SchemaMacro` source node fits into
   `MacroLibrarySourceEntry::SchemaMacro`;
-- the data carried by that variant fits into `MacroDefinition`;
+- the data carried by that variant fits into `SchemaMacro`;
 - the serialized NOTA/rkyv data form fits into `MacroLibraryData`;
-- each serialized source entry fits into
-  `MacroLibrarySourceEntryData::SchemaMacro`;
-- each serialized variant payload fits into `MacroDefinitionData`.
+- the serialized artifact keeps the same
+  `MacroLibrarySourceEntry::SchemaMacro(SchemaMacro)` shape.
 
 ## Implementation State
 
-This is implemented in `schema-next` commit `7664138c`
-(`schema: model schema macro as source entry variant`):
+This is implemented in `schema-next` commit `374927d9`
+(`schema: collapse schema macro source entry type`):
 
 - `DeclarativeMacroLibrary` now owns
   `Vec<MacroLibrarySourceEntry>`.
-- `MacroLibrarySourceEntry::SchemaMacro(MacroDefinition)` is the typed source
+- `MacroLibrarySourceEntry::SchemaMacro(SchemaMacro)` is the typed source
   variant for `(SchemaMacro ...)`.
 - `MacroLibraryData` now owns
-  `Vec<MacroLibrarySourceEntryData>`.
-- `MacroLibrarySourceEntryData::SchemaMacro(MacroDefinitionData)` preserves
-  the same variant in the checked-in `.macro-library` NOTA/rkyv artifact.
+  `Vec<MacroLibrarySourceEntry>`, the same entry type.
 - `schemas/core.schema` and `schemas/core.asschema` now declare
   `MacroLibrarySourceEntry` as an enum with the `SchemaMacro` data-carrying
   variant.
@@ -178,18 +171,18 @@ The checked-in `.macro-library` artifact is typed as:
 
 ```rust
 pub struct MacroLibraryData {
-    source_entries: Vec<MacroLibrarySourceEntryData>,
+    source_entries: Vec<MacroLibrarySourceEntry>,
 }
 
-pub enum MacroLibrarySourceEntryData {
-    SchemaMacro(MacroDefinitionData),
+pub enum MacroLibrarySourceEntry {
+    SchemaMacro(SchemaMacro),
 }
 
-pub struct MacroDefinitionData {
-    name: Name,
-    position: MacroPosition,
-    pattern: MacroPatternData,
-    template: MacroTemplateData,
+pub struct SchemaMacro {
+    macro_name: Name,
+    macro_position: MacroPosition,
+    macro_pattern: MacroPatternData,
+    macro_template: MacroTemplateData,
 }
 ```
 
@@ -313,40 +306,33 @@ Delimited(Parenthesis, [
 
 ## Precise Answer
 
-There are two files and therefore two container datatypes:
+There are two files, but the entry datatype is the same:
 
 - `schemas/builtin-macros.schema` is authored source and is read as
   `DeclarativeMacroLibrary { source_entries:
   Vec<MacroLibrarySourceEntry> }`;
 - `schemas/builtin-macros.macro-library` is the checked-in serialized
   artifact and is read as `MacroLibraryData { source_entries:
-  Vec<MacroLibrarySourceEntryData> }`.
+  Vec<MacroLibrarySourceEntry> }`.
 
 Inside the authored source container, `SchemaMacro` is a variant:
 
 ```rust
 pub enum MacroLibrarySourceEntry {
-    SchemaMacro(MacroDefinition),
+    SchemaMacro(SchemaMacro),
 }
 ```
 
-Inside the serialized artifact container, the same variant is preserved as:
+The checked-in `.macro-library` file carries the same
+`MacroLibrarySourceEntry::SchemaMacro(SchemaMacro)` variant. It does not
+project the variant into a second `Data` type.
 
-```rust
-pub enum MacroLibrarySourceEntryData {
-    SchemaMacro(MacroDefinitionData),
-}
-```
+Each `SchemaMacro` payload is a struct with:
 
-So the checked-in `.macro-library` file also carries `SchemaMacro` as a real
-variant. It does not project the variant away.
-
-Each `MacroDefinitionData` is a struct with:
-
-- `name`
-- `position`
-- `pattern`
-- `template`
+- `macro_name`
+- `macro_position`
+- `macro_pattern`
+- `macro_template`
 
 The macro body is not raw text. It is a recursive enum/tree of:
 
@@ -373,14 +359,12 @@ SchemaMacro
 The reader now models that as:
 
 ```rust
-MacroLibrarySourceEntry::SchemaMacro(MacroDefinition)
-MacroLibrarySourceEntryData::SchemaMacro(MacroDefinitionData)
+MacroLibrarySourceEntry::SchemaMacro(SchemaMacro)
 ```
 
 So at this layer, `SchemaMacro` is a real enum variant. It is not one variant
 among many today, but it is still a variant: the macro-library source datatype
-and the serialized artifact datatype each have one current case and can grow
-more cases later.
+has one current case and can grow more cases later.
 
 ### Pattern And Template Object Variants
 
@@ -449,8 +433,7 @@ or fall back to ordinary type references such as `String`, `Integer`,
 ## Current Gap
 
 The data discipline is real, but one piece remains pre-final: the Rust nouns
-for `MacroLibraryData`, `MacroLibrarySourceEntryData`,
-`MacroDefinitionData`, `MacroPatternObjectData`, and
-`MacroTemplateObjectData` are still hand-written in `schema-next`. The
-intended next step is to emit those nouns from `schemas/core.asschema`, then
-delete the hand-written mirror.
+for `MacroLibraryData`, `MacroLibrarySourceEntry`, `SchemaMacro`,
+`MacroPatternObjectData`, and `MacroTemplateObjectData` are still hand-written
+in `schema-next`. The intended next step is to emit those nouns from
+`schemas/core.asschema`, then delete the hand-written mirror.
