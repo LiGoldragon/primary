@@ -61,11 +61,28 @@ The practical distinction for the Digi/login use case:
 - Playwright extension mode is best when the desired unit is "let the harness agent inspect and act in my real Chrome tab under supervision";
 - browser-use can still be useful on a persistent automation profile or CDP endpoint, but it does not natively become the already-installed Playwright Extension unless we write an adapter.
 
+## Live browser-use main-profile-copy test
+
+After the user closed Chrome, browser-use was tested with `user_data_dir=/home/li/.config/google-chrome` and `profile_directory=Default`, headed mode, local Gemma Q4, and a harmless `https://example.com/` task. The agent succeeded: it opened Example Domain in two steps and reported the heading.
+
+The important implementation detail: browser-use did **not** run Chrome directly against `/home/li/.config/google-chrome`. Process inspection showed Chrome launched with `--user-data-dir=/tmp/browser-use-user-data-dir-...`. The installed browser-use source explains why: `BrowserProfile._copy_profile()` copies the requested Chrome profile directory plus `Local State` into a temporary `browser-use-user-data-dir-*` directory before launch. That avoids both Chrome's profile lock and Chrome's default-data-dir remote-debugging block.
+
+So browser-use's real-profile mode is better described as **main profile copy mode**: it can reuse profile data from the real profile after Chrome is closed, but it controls a temporary copied profile, not the live main browser session.
+
+Observed caveats from the smoke test:
+
+- Browser-use emitted a disallowed internal Chrome URL warning for `chrome://omnibox-popup.top-chrome/`; harmless for the test.
+- Screenshot capture timed out once and triggered CDP reconnect noise, while the task still completed successfully.
+- Since the profile is copied, account state may work if cookies/local storage decrypt under the same user, but live tabs/in-memory state are not the same as the killed Chrome session.
+
 ## Recommendation
 
-For exact main Chrome session control, prefer the already-installed **Playwright Extension** path: `npx @playwright/mcp@latest --extension` for MCP, or `playwright-cli attach --extension` for CLI. Treat browser-use as the autonomous nested-agent option for separate/persistent automation profiles or cases where its internal browser-agent loop is the desired capability.
+Use two distinct modes deliberately:
 
-Security posture should stay supervised: user approves extension attachment, login/2FA stays manual, the agent reports page state and proposed next actions, and consequential submissions require explicit approval.
+- **browser-use main-profile-copy mode** for autonomous nested-agent work that can tolerate closing Chrome first and working from a copied profile snapshot;
+- **Playwright Extension mode** for exact already-open main Chrome tab/session control via `npx @playwright/mcp@latest --extension` or `playwright-cli attach --extension`.
+
+Security posture should stay supervised: user approves extension attachment or profile-copy use, login/2FA stays manual, the agent reports page state and proposed next actions, and consequential submissions require explicit approval.
 
 ## Sources
 
