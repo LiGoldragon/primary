@@ -277,6 +277,23 @@ disciplined consequences:
 - **Treat schema changes as coordinated upgrades.** A
   field reorder is a breaking change; a field addition
   is too, in 0.8. Plan rollout across every consumer.
+- **Enum variant evolution: append at the end, express
+  semantic order separately.** A derived-`Archive` enum
+  with persisted data must never reorder or insert
+  variants in a way that shifts existing discriminants.
+  New variants append at the end (declared LAST under
+  `#[repr(u8)]`) so prior variants keep their byte
+  values and archived bytes still decode. Semantic
+  ordering (a new variant should sort "lowest" or
+  "highest" in the type's domain) is expressed via a
+  manual `Ord` / `order_rank` impl, NEVER via `#[derive(Ord)]`
+  on declaration order. Worked example: `Magnitude::Zero`
+  appended after `Maximum` to keep `Minimum=0..Maximum=6`
+  stable, with manual `order_rank` returning `Zero=0`
+  for semantic-bottom. The "declare new variant first
+  for derived `Ord`" shape is archive-unsafe — it shifts
+  every persisted byte by one. Per spirit record 1249
+  and `sema` ARCHITECTURE §"Schema evolution".
 
 For the tool-level details (the canonical feature set
 character-for-character, derive-alias pattern,
