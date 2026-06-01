@@ -15,8 +15,9 @@ belongs at the CLI/human edge and schema authoring edge.
 The current trace slice is useful but intentionally partial. It proves the
 right runtime path inside `spirit-next`, but the trace surface is still
 hand-written and in-process. The next slice should move that surface toward
-the same architecture as the rest of the system: generated nouns, binary
-frames, CLI-owned testing visibility, and runtime witnesses.
+the same architecture as the rest of the system: schema-derived trace traits
+on interfaces and actor traits, generated event payload nouns, binary frames,
+CLI-owned testing visibility, and runtime witnesses.
 
 ## Current Shape
 
@@ -43,42 +44,63 @@ not the final architecture.
 ```mermaid
 flowchart LR
     schema["schema roots"] --> emitter["schema-rust emitter"]
-    emitter --> nouns["generated nouns and traits"]
-    nouns --> daemon["binary-only daemon"]
+    emitter --> traits["generated interface trace traits"]
+    traits --> actors["Signal Nexus SEMA actor traits"]
+    actors --> daemon["binary-only daemon"]
     cli["NOTA CLI"] --> daemon
     daemon --> cli
     daemon -.trace frames.-> log["CLI log socket"]
     log --> witness["runtime witness"]
 ```
 
-The important change is that trace events are generated schema nouns and move
-over a binary side channel. The CLI owns the human/testing view. The daemon
-does not learn NOTA and does not expose a second control protocol.
+The important change is that traceability is part of the generated interface
+and actor contracts. Trace events may still be generated payload nouns, but
+they are not the architecture by themselves. The CLI owns the human/testing
+view. The daemon does not learn NOTA and does not expose a second control
+protocol.
 
-## Gap 1: Trace Nouns Are Hand-Written
+## Gap 1: Traceability Is Not Yet An Interface Trait
 
 Current state: `spirit-next/src/trace.rs` defines `TraceEvent` by hand.
 
 Why this is a gap: the point of the stack is that interface nouns come from
-schema and schema-rust emission. If trace events stay hand-written, they
-become a second local vocabulary that can drift away from the generated
-Signal/Nexus/SEMA roots.
+schema and schema-rust emission, and behavior contracts are traits on the
+interfaces and actors. If trace events stay hand-written, they become a second
+local vocabulary that can drift away from the generated Signal/Nexus/SEMA
+roots. If trace is only an emitted enum, it is still too weak: the enum says
+what can be logged, but not which interface/actor methods are responsible for
+producing it.
 
-Lean: teach `schema-rust-next` to emit optional testing-trace support for a
-schema. Keep the first version modest:
+Lean after Spirit record 1365: teach `schema-rust-next` to emit optional
+testing-trace support as traits on schema-derived interfaces and, where
+possible, on the Signal/Nexus/SEMA actor traits themselves. Keep the first
+version modest:
 
 ```rust
 #[cfg(feature = "testing-trace")]
-pub enum TraceEvent {
-    SignalAdmitted { origin_route: OriginRoute, input: Signal<Input> },
-    NexusEntered { origin_route: OriginRoute, input: Nexus<Input> },
-    SemaWriteApplied { origin_route: OriginRoute, input: SemaWriteInput, output: SemaWriteOutput },
+pub trait SignalTrace {
+    fn signal_admitted(&self, origin_route: &OriginRoute, input: &Signal<Input>) -> TraceEvent;
+    fn signal_replied(&self, origin_route: &OriginRoute, output: &Signal<Output>) -> TraceEvent;
+}
+
+#[cfg(feature = "testing-trace")]
+pub trait NexusTrace {
+    fn nexus_entered(&self, origin_route: &OriginRoute, input: &Nexus<Input>) -> TraceEvent;
+    fn nexus_decided(&self, origin_route: &OriginRoute, output: &Nexus<Output>) -> TraceEvent;
+}
+
+#[cfg(feature = "testing-trace")]
+pub trait SemaTrace {
+    fn sema_write_applied(&self, origin_route: &OriginRoute, input: &SemaWriteInput, output: &SemaWriteOutput) -> TraceEvent;
+    fn sema_read_observed(&self, origin_route: &OriginRoute, input: &SemaReadInput, output: &SemaReadOutput) -> TraceEvent;
 }
 ```
 
-The exact fields can stay pilot-specific at first, but the nouns should be
-emitted next to the generated protocol nouns. `spirit-next` then deletes the
-hand-written `TraceEvent` and imports the generated one.
+`TraceEvent` remains useful as the binary payload sent to the log socket, but
+the load-bearing contract is the trait surface: schema-derived interface
+types and actor traits know how to describe the lifecycle events they produce.
+`spirit-next` then deletes the hand-written trace vocabulary and implements or
+uses the generated traits on its Signal, Nexus, and SEMA actors.
 
 ## Gap 2: Trace Delivery Is In-Process
 
@@ -99,9 +121,9 @@ pub trait TraceSink {
 ```
 
 `TraceLog` can remain the in-memory test sink. A `TraceSocket` sink should send
-length-prefixed rkyv `TraceEvent` frames to a configured Unix socket. The CLI
-or test harness listens on that socket and decodes the frames using the same
-generated Rust type.
+length-prefixed rkyv generated `TraceEvent` frames to a configured Unix socket.
+The CLI or test harness listens on that socket and decodes the frames using the
+same generated Rust type.
 
 ## Gap 3: Testing Configuration Is Not Typed Data Yet
 
@@ -185,9 +207,10 @@ Only two implementation details remain soft:
   `spirit-next`, or rename to `runtime-trace` because the mechanism could be
   useful beyond tests. Operator lean: keep `testing-trace` now, rename only if
   a second non-test consumer appears.
-- Trace schema home: emit per component first, or extract to `schema-core`
-  immediately. Operator lean: per component first. Move to `schema-core` after
-  a second component consumes the same trace nouns.
+- Trace trait home: emit per component first, or extract shared trace traits
+  to `schema-core` immediately. Operator lean: per component first. Move the
+  common trait vocabulary to `schema-core` after a second component consumes
+  the same shape.
 
 Neither blocks implementation.
 
@@ -206,21 +229,26 @@ Goal: close the next testing-trace architecture slice cleanly.
 
 Primary scope:
 
-1. In `schema-rust-next`, add optional generated testing trace nouns beside the
-   generated schema protocol nouns. The generated type must derive rkyv and must
-   compile out when the feature is disabled.
-2. In `spirit-next`, replace the hand-written `TraceEvent` with the generated
-   type. Keep the current event names: `SignalAdmitted`, `SignalRejected`,
-   `SignalReplied`, `NexusEntered`, `NexusDecided`, `SemaWriteApplied`,
-   `SemaReadObserved`.
-3. Add a `TraceSink` noun with one in-memory implementation and one binary
+1. In `schema-rust-next`, add optional generated testing trace traits beside
+   the generated schema protocol traits. The trace traits belong to the
+   schema-derived interfaces and should be usable by the generated
+   Signal/Nexus/SEMA actor traits where possible.
+2. Emit generated trace payload nouns, including `TraceEvent`, only as the
+   serializable event data returned by those traits and sent over the log
+   socket. The generated type must derive rkyv and must compile out when the
+   feature is disabled.
+3. In `spirit-next`, replace the hand-written `TraceEvent` and local trace
+   method vocabulary with the generated trait/payload surface. Keep the current
+   event names: `SignalAdmitted`, `SignalRejected`, `SignalReplied`,
+   `NexusEntered`, `NexusDecided`, `SemaWriteApplied`, `SemaReadObserved`.
+4. Add a `TraceSink` noun with one in-memory implementation and one binary
    Unix-socket implementation behind `testing-trace`.
-4. Extend binary daemon configuration with optional trace socket configuration
+5. Extend binary daemon configuration with optional trace socket configuration
    behind `testing-trace`. Do not add flags. Do not make the daemon decode NOTA.
-5. Add an end-to-end test that starts or exercises the daemon with trace socket
+6. Add an end-to-end test that starts or exercises the daemon with trace socket
    enabled, sends a real binary Signal request, receives the normal binary
    reply, and decodes trace frames proving Signal, Nexus, and SEMA all ran.
-6. Replace remaining positive grep checks that claim live behavior with runtime
+7. Replace remaining positive grep checks that claim live behavior with runtime
    witnesses. Keep only negative guards and explicit artifact freshness checks.
 
 Non-goals:
@@ -242,6 +270,8 @@ Acceptance:
 - Daemon dependency guard still proves no `nota-next` normal dependency.
 - A source search for hand-written `enum TraceEvent` in `spirit-next` fails
   after generated trace emission is wired.
+- A type witness proves Signal, Nexus, and SEMA actors use the generated trace
+  traits rather than ad hoc local trace methods.
 
 ## Operator Recommendation
 
@@ -249,7 +279,8 @@ Dispatch a worker only for the schema-rust emission plus spirit-next consumer
 change. Keep the CLI log-socket work in the same worker if they can preserve a
 small commit series; otherwise split after the generated noun replacement.
 
-The first commit should be the smallest useful proof: generated trace nouns
-compiled into `spirit-next` and current in-process tests still passing. The
-second commit should add socket delivery. The third should replace positive
-grep behavior checks with live witnesses.
+The first commit should be the smallest useful proof: generated trace traits
+and payload nouns compile into `spirit-next`, the actor traits use them, and
+current in-process tests still pass. The second commit should add socket
+delivery. The third should replace positive grep behavior checks with live
+witnesses.
