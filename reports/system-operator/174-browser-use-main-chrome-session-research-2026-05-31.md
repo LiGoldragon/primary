@@ -63,7 +63,7 @@ The practical distinction for the Digi/login use case:
 
 ## Live browser-use main-profile-copy test
 
-After the user closed Chrome, browser-use was tested with `user_data_dir=/home/li/.config/google-chrome` and `profile_directory=Default`, headed mode, local Gemma Q4, and a harmless `https://example.com/` task. The agent succeeded: it opened Example Domain in two steps and reported the heading.
+After the user closed Chrome, browser-use was tested with `user_data_dir=/home/li/.config/google-chrome` and `profile_directory=Default`, headed mode, local Gemma Q4, and a harmless `https://example.com/` task. The agent returned success in two steps and reported the Example Domain heading, but the visible focused tab initially remained `about:blank`; CDP target inspection showed one `about:blank` target and one `https://example.com` target, and the example target had to be activated manually afterward. The smoke test therefore proves profile-copy launch and target creation, not a polished visible-session flow.
 
 The important implementation detail: browser-use did **not** run Chrome directly against `/home/li/.config/google-chrome`. Process inspection showed Chrome launched with `--user-data-dir=/tmp/browser-use-user-data-dir-...`. The installed browser-use source explains why: `BrowserProfile._copy_profile()` copies the requested Chrome profile directory plus `Local State` into a temporary `browser-use-user-data-dir-*` directory before launch. That avoids both Chrome's profile lock and Chrome's default-data-dir remote-debugging block.
 
@@ -72,7 +72,8 @@ So browser-use's real-profile mode is better described as **main profile copy mo
 Observed caveats from the smoke test:
 
 - Browser-use emitted a disallowed internal Chrome URL warning for `chrome://omnibox-popup.top-chrome/`; harmless for the test.
-- Screenshot capture timed out once and triggered CDP reconnect noise, while the task still completed successfully.
+- The visible focused tab was `about:blank` even though an `https://example.com` target existed; the example target had to be activated manually via the browser's CDP endpoint.
+- Screenshot capture timed out once and triggered CDP reconnect noise, while the task still returned successful.
 - Since the profile is copied, account state may work if cookies/local storage decrypt under the same user, but live tabs/in-memory state are not the same as the killed Chrome session.
 
 ## Recommendation
