@@ -91,8 +91,18 @@ for repo in "${repos[@]}"; do
   fi
 
   matched=false
+  mapfile -t bookmarks < <(cd "$repo" && list_bookmarks)
 
-  while IFS= read -r bookmark; do
+  for bookmark in "${bookmarks[@]}"; do
+    if [[ "$bookmark" == *@origin ]]; then
+      local_bookmark="${bookmark%@origin}"
+      for existing_bookmark in "${bookmarks[@]}"; do
+        if [ "$existing_bookmark" = "$local_bookmark" ]; then
+          continue 2
+        fi
+      done
+    fi
+
     if ! bookmark_matches_patterns "$bookmark"; then
       continue
     fi
@@ -109,7 +119,7 @@ for repo in "${repos[@]}"; do
         printf '    %s\n' "$ahead_line"
       done <<<"$ahead_lines"
     fi
-  done < <(cd "$repo" && list_bookmarks)
+  done
 
   if [ "$matched" = false ]; then
     printf '  no matching bookmarks\n'
