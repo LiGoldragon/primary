@@ -668,6 +668,74 @@ or surfaces design counter-evidence. The seam is the test name —
 each test asserts a specific Spirit record or design report's
 claim, gated behind a feature so the test name reads like a contract.
 
+### Worked instances — the pattern in shape
+
+The 2026-06-01 session produced multiple parallel instances of this
+pattern. Each is a discrete shape worth recognising when designing
+a similar dispatch:
+
+- **Closed-claim verification** — designer dispatches a sub-agent
+  with an operator report naming N closed gaps; sub-agent writes a
+  positive witness per gap on a `verify-<source>-closed-claims`
+  branch in each affected repo. Today's instance: five witnesses
+  across `nota-next` + `schema-next` + `spirit-next` proving
+  operator 271's "Closed Since" list against current main. The
+  witnesses pass; one stale flake check surfaced and got fixed in
+  passing. The branches are operator-pickup-ready proofs that the
+  gaps are genuinely closed.
+- **Falsifiable specs for open claims** — same operator report; the
+  "Still Unaddressed" backlog gets a `falsifiable-specs-<source>`
+  branch per affected repo with one RED-now/GREEN-when-implemented
+  test per claim. Some witnesses are precise (named call sites,
+  current type, named method); others are scaffolds (compile-fail
+  against types that don't exist yet, marking the destination shape).
+  The branch makes operator's backlog mechanically falsifiable.
+- **Design-fidelity audit against a commit** — designer dispatches a
+  sub-agent against a specific commit (`b53f4fc2` in the 2026-06-01
+  case) with the relevant Spirit records and design reports as the
+  spec. Sub-agent writes structural + behavioural witnesses on an
+  `audit-<commit>-design-fidelity` branch, gated behind a cargo
+  feature so default builds stay green. The report names verdicts
+  per sub-claim; some witnesses are positive (claim verified), some
+  are intentionally RED-as-spec (the gap is the witness).
+- **Remnant retirement refactor** — designer dispatches a sub-agent
+  to retire stale design surfaces named by a prior audit. Sub-agent
+  works on a `retire-<topic>` branch, removes the named remnants
+  with each retirement validated independently against `cargo test`,
+  `cargo clippy --all-targets -- -D warnings`, and `cargo fmt
+  --check` before proceeding to the next. Today's instance
+  collapsed `spirit-next/src/nexus.rs` from 240 to 72 lines through
+  the typestate-vs-borrow-rule retirement.
+
+### Three-way convergence as correctness signal
+
+When a designer dispatches **multiple sub-agents on parallel angles
+of the same question** and they independently converge on the same
+recommendation, that convergence IS evidence. Sub-agents working in
+isolation against the same source material reaching the same answer
+through different paths makes the recommendation more credible than
+any single sub-agent's verdict.
+
+The shape: dispatch sub-agents on distinct framings (landscape /
+playbook / sequencing; verification / spec / refactor; audit / design
+/ implementation). Each sub-agent works in isolation — no shared
+context beyond the dispatcher's frame. After all return, the
+orchestrator names whether they converged.
+
+When convergence appears, the synthesis is direct: name the
+convergent recommendation as the load-bearing finding. When sub-agents
+DIVERGE on a question, that's a different signal — usually that the
+question carries hidden judgement calls the sub-agents reach
+differently, and the orchestrator's synthesis names what the
+divergence reveals about the question's shape.
+
+The 2026-06-01 next-stack porting meta-report (designer 446) is the
+worked example: three sub-agents (landscape / playbook / sequencing)
+working independently converged on spirit-fold as the right first
+slice. The orchestrator's overview named the convergence as the
+correctness signal and recommended the convergent action with
+confidence.
+
 ## Working with designer's assistant lanes
 
 `designer-assistant` and `second-designer-assistant` are additional

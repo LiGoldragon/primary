@@ -742,3 +742,84 @@ reply into the outgoing Signal object. Agents should implement those
 steps as methods on the generated objects or on data-bearing actors
 (`Engine`, `Nexus`, `Store`, `MailLedger`), never as a loose chain of
 free functions.
+
+## Runtime triad engine traits — Signal triage / Nexus computation / SEMA durable
+
+Per spirit records 1326 (operator-addressed Constraint High) and 1327
+(designer-captured Principle Maximum, 2026-06-01): **every component
+runtime in the workspace triad architecture defines its Signal /
+Nexus / SEMA interfaces in schema and conducts core logic through
+schema-emitted traits whose methods take and return root types of the
+concerned interfaces.** The trait surface is uniform across components;
+each component's runtime is a composition of three trait
+implementations attached to data-bearing nouns.
+
+The three engine traits and their roles (refined by records 1330-1336):
+
+| Trait | Role | Schema-emitted shape |
+|---|---|---|
+| `SignalEngine` | **Triage only** (Spirit 1330) — admission, dispatch, identity-stamping, validation, wire-frame handling. No heavy logic. | `triage(signal::Signal<Input>) -> nexus::Nexus<Input>` and a reply path `reply(nexus::Nexus<Output>) -> signal::Signal<Output>`. |
+| `NexusEngine` | **Heavy logic** (Spirit 1331) — algorithms, decision-making, database queries, bidirectional translation between Signal and SEMA. Most of a component's work happens here. | `execute(&mut self, nexus::Nexus<Input>) -> nexus::Nexus<Output>` — `&mut self` is the single-flight guard. |
+| `SemaEngine` | **Durable single-writer with parallel reads** (Spirit 1332). Writes serialize through `&mut self`; reads run concurrent against `&self` snapshots (redb supports MVCC natively). Database upgrades flow through SEMA per Spirit 1308. | Split: `apply(&mut self, sema::Sema<WriteInput>) -> sema::Sema<WriteOutput>` for writes; `observe(&self, sema::Sema<ReadInput>) -> sema::Sema<ReadOutput>` for parallel reads. |
+
+### Interface direction (Spirit 1333)
+
+```mermaid
+flowchart LR
+    Signal["SignalEngine<br/>triage + reply"]
+    Nexus["NexusEngine<br/>execute"]
+    Sema["SemaEngine<br/>apply + observe"]
+    Wire["wire"]
+    Wire --> Signal
+    Signal --> Nexus
+    Nexus --> Sema
+    Sema --> Nexus
+```
+
+Five nodes. Signal → Nexus is one-way (Signal hands the typed Input
+forward; never the other direction). Nexus → SEMA goes down for state
+operations; Nexus → Signal goes up for replies. SEMA never calls back
+up directly — it returns to Nexus which decides the reply shape.
+
+### Pipeline shape (Spirit 1335)
+
+Full request shape: Signal triage → Nexus execute → SEMA apply or
+observe → Nexus receives the SEMA reply → Nexus translates → Signal
+reply → wire. The Signal reply doesn't map 1:1 to the SEMA reply per
+Spirit 1334; Nexus translates, filters, augments. The on_sent hook
+fires when Signal hands mail to Nexus; the on_processed hook fires
+when Nexus produces the output.
+
+### Origin identifier protocol (Spirit 1336)
+
+Rolling identifiers thread through the whole pipeline. Each layer
+routes its responses back via the origin id. SEMA can use it to
+associate partial multi-op replies. Per Spirit 1329, the origin route
+is preserved across all six plane envelope hops (Signal in / Nexus in
+/ SEMA in / SEMA out / Nexus out / Signal out).
+
+### What this pattern is — and is not
+
+- It IS the workspace-wide adaptation of the spirit-engine constraint:
+  every component's runtime is a composition of these three trait
+  impls attached to schema-emitted nouns.
+- It IS a substrate for testability: each engine can be witnessed
+  independently through trait-implementing recorder objects (see
+  `skills/architectural-truth-tests.md` §"Schema-chain witnesses use
+  schema objects").
+- It is NOT a fixed implementation shape. Each trait method's body is
+  hand-written domain logic; the trait surface is what's uniform.
+  Trivial pilots have thin Nexus bodies; mature components have heavy
+  Nexus bodies; the trait surface stays the same.
+- It is NOT a fourth-plane substrate. Three planes only; no
+  "validation engine," "queue engine," or "audit engine" trait
+  proliferation. Concerns that look like they want a new engine
+  usually fit inside Nexus's heavy logic.
+
+The canonical worked example today is `spirit-next`: NexusEngine and
+SemaEngine are schema-emitted; SignalEngine implementation lives in
+the runtime substrate. Per `spirit-next/ARCHITECTURE.md` §"Runtime
+triad" the full pipeline shape and per-engine borrow rules are
+documented in code-adjacent prose. The pattern's broader workspace
+adoption is part of the porting waves named in the designer-operator
+loop.
