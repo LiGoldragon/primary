@@ -1,6 +1,6 @@
 ; designer
 [nexus-inner-engine recursive-meta-engine runtime-control prioritization backpressure overload-handling actor-scheduling future-direction]
-[Explores Spirit 1446 — Nexus has an inner engine that is recursive and handles runtime/meta control (actor prioritization, backpressure, overload notifications to clients, scheduling decisions). The outer NexusEngine handles per-request domain decisions; the inner engine handles meta-decisions about the runtime itself. Future direction enabling deeper control over the actor system when overloaded — Nexus stays available to take organizing decisions even under load. Builds on Spirit 1437 (decision/effect language) + 1438 (asymmetry) + 1439 (recursive computation) + operator 287 (NexusWork/NexusAction vocabulary). Three angles: (A) structural placement; (B) runtime situations it handles; (C) connection to existing architecture and pilot implementation considerations.]
+[Explores Spirit 1465 — Nexus has an inner engine that is recursive and handles runtime/meta control (actor prioritization, backpressure, overload notifications to clients, scheduling decisions). The outer NexusEngine handles per-request domain decisions; the inner engine handles meta-decisions about the runtime itself. Future direction enabling deeper control over the actor system when overloaded — Nexus stays available to take organizing decisions even under load. Builds on Spirit 1437 (decision/effect language) + 1438 (asymmetry) + 1439 (recursive computation) + operator 287 (NexusWork/NexusAction vocabulary). Three angles: (A) structural placement; (B) runtime situations it handles; (C) connection to existing architecture and pilot implementation considerations.]
 2026-06-02
 designer
 
@@ -8,7 +8,7 @@ designer
 
 ## TL;DR
 
-Spirit 1446 (Decision High, captured 2026-06-02): Nexus has an INNER interface with a second engine inside it that is RECURSIVE — it can call back on itself. The inner engine is the workspace meta/runtime control layer:
+Spirit 1465 (Decision High, captured 2026-06-02): Nexus has an INNER interface with a second engine inside it that is RECURSIVE — it can call back on itself. The inner engine is the workspace meta/runtime control layer:
 - Actor/actor-scheduling prioritization (when Nexus actors should run more than SEMA actors because the database is busy).
 - Backpressure (Nexus notifies clients the database is too busy when overloaded).
 - Runtime scheduling decisions about which actors run when.
@@ -114,7 +114,7 @@ pub enum NexusAction {
     CommandEffect(NexusEffectCommand),
     Continue(NexusWork),
 
-    // Inner-engine additions per Spirit 1446:
+    // Inner-engine additions per Spirit 1465:
     EmitBackpressure(BackpressureReply),         // typed too-busy reply (also exits to wire)
     DeferUntilDrain(NexusWork, DrainCondition),  // scheduler holds this until condition
     EscalateRuntime(RuntimeSituation),           // hand to inner engine recursively
@@ -125,7 +125,7 @@ The first three new variants are the runtime engine's expression. The outer engi
 
 ### Builds on Spirit 1439 (recursive Nexus)
 
-The inner engine's recursion IS Spirit 1439's recursive Nexus at the META LEVEL. Spirit 1439 says: Nexus can emit work that re-enters Nexus. Spirit 1446 says: the META decisions about the runtime itself can recurse the same way.
+The inner engine's recursion IS Spirit 1439's recursive Nexus at the META LEVEL. Spirit 1439 says: Nexus can emit work that re-enters Nexus. Spirit 1465 says: the META decisions about the runtime itself can recurse the same way.
 
 This is consistent — the architecture has ONE recursion pattern at multiple scales:
 - Per-request recursion (`Continue` per operator 287 / `InternalContinued` per the work side).
@@ -264,9 +264,9 @@ This is a future emitter design question. Defer until pilot.
 
 ## Section 6 — Decision asks
 
-This report adds NO new ratifications beyond Spirit 1446 (just captured).
+This report adds NO new ratifications beyond Spirit 1465 (just captured).
 
-Spirit 1446 is intentionally a DIRECTION not a mandate. It frames where backpressure + scheduling + overload-handling will live in the architecture so future implementation slices have a typed home. The exact trait shape, the dispatch points, the per-component customization patterns — all are subject to refinement when pilot evidence accrues.
+Spirit 1465 is intentionally a DIRECTION not a mandate. It frames where backpressure + scheduling + overload-handling will live in the architecture so future implementation slices have a typed home. The exact trait shape, the dispatch points, the per-component customization patterns — all are subject to refinement when pilot evidence accrues.
 
 Implementation gates (deferred):
 - Pilot operator 287's Stash effect first; prove the runner loop on a single domain decision.
@@ -285,4 +285,4 @@ Implementation gates (deferred):
 
 ## For the orchestrator (chat ask)
 
-Layered model: outer NexusEngine handles per-request domain decisions; inner NexusRuntimeEngine handles meta/runtime control (scheduling, backpressure, overload notifications, prioritization). Inner engine is recursive — can call itself for meta-meta reasoning. Future direction (Spirit 1446 Decision High, not mandate); pilot the operator 287 Stash effect first; runtime engine emerges when load/overload situations actually appear. Five open design questions surfaced for follow-up (trait vs method; dispatch checkpoints; recursion budget; actor-trait composition; default reasoning).
+Layered model: outer NexusEngine handles per-request domain decisions; inner NexusRuntimeEngine handles meta/runtime control (scheduling, backpressure, overload notifications, prioritization). Inner engine is recursive — can call itself for meta-meta reasoning. Future direction (Spirit 1465 Decision High, not mandate); pilot the operator 287 Stash effect first; runtime engine emerges when load/overload situations actually appear. Five open design questions surfaced for follow-up (trait vs method; dispatch checkpoints; recursion budget; actor-trait composition; default reasoning).
