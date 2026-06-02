@@ -221,7 +221,7 @@ intent capture, the operation is `Record` carrying an untagged
   ([<topic> ...]     ;; vector of topic identifiers: workspace, spirit, signal, …
    <Kind>            ;; Decision | Principle | Correction | Clarification | Constraint
    [<description>]   ;; clarified intent, reusing psyche wording when useful
-   <Magnitude>))     ;; Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
+   <Magnitude>))     ;; Zero | Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
 ```
 
 - `Entry` is untagged — no record-head ident (per the NotaRecord
@@ -329,6 +329,16 @@ Splitting is the exception, not the default.
 `how-to-` prefixes. The topic is already in the intent substrate,
 so the prefix is redundant; the negative naming smell (per
 `ESSENCE.md` §"Naming") applies here too.
+
+**Split compounds into the topic vector when the concepts stand
+alone.** Prefer `[intent logging]` over `[intent-log]` when the
+substance is about both intent and logging. Prefer `[spirit
+privacy]` over `[spirit-privacy]` when privacy is a reusable topic
+outside Spirit too. Keep a hyphenated topic only when the compound
+names one established thing (`signal-frame`, a component name, or a
+domain term that stops meaning the same thing when split). The vector
+is how Spirit represents several topics; don't hide that structure in
+one narrow string.
 
 **When to actually split.** Two conditions both hold:
 1. The topic is large enough that query results become noisy.

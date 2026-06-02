@@ -145,8 +145,8 @@ when they contain whitespace or punctuation.
 **Record an intent entry — description-only, multi-topic shape.**
 A v0.3.0 record carries a vector of topics, one agent-clarified
 `Description`, a `Kind`, and a `Magnitude`. No verbatim field, no
-context payload, no client-supplied timestamp. **The daemon stamps
-date/time itself.**
+context payload, no privacy field in the deployed v0.3.0 wrapper, and
+no client-supplied timestamp. **The daemon stamps date/time itself.**
 The agent clarifies the psyche's wording into the description before
 recording — that is the agent's job, and it is what keeps the intent
 log dense and searchable rather than verbose and lossy:
@@ -160,6 +160,17 @@ spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude>))"
 The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
 the assigned identifier. The acknowledgement deliberately does not
 echo the submitted intent content; the wire reply is token-cheap.
+
+**Simple capture convention.** For normal public workspace work, the
+simple record shape above is the default interface: broad topic vector,
+kind, clarified description, and certainty. Do not force agents to
+author advanced query records unless they need advanced behavior. The
+future shorthand surface should remain a typed NOTA operation that
+lowers to the full record, not shell flags or a second CLI syntax.
+Examples: a public shorthand lowers to the record above with normal
+defaults; a private-record shorthand lowers to the same full record
+with an elevated privacy magnitude once the deployed contract carries
+privacy.
 
 **Remove an intent entry** — delete one stored record by numeric
 identifier through the daemon:
@@ -187,8 +198,11 @@ and can be restored by changing certainty back to a non-zero
 
 **Topics are user-creatable strings carried in a vector** at the wire
 layer — any new topic word a `Record` uses is registered. No
-pre-declared enum of topics; pick the topic words that fit, reuse
-existing words when they cover the substance.
+pre-declared enum of topics. Pick broad reusable words and let the
+vector carry multiple concepts. Prefer `[intent logging]` over
+`[intent-log]` when both `intent` and `logging` are real topics. Keep a
+compound topic only when the compound is the established name of one
+thing.
 
 **Observe records** — query the store. This is the live production
 `Spirit 0.3.0` record-query shape. `Records` filters by topic
@@ -208,7 +222,9 @@ topics.
 `Minimum` remains weak but real intent; do not use it as the
 removal-candidate marker. The old three-field and four-field record
 queries still decode as compatibility input, but agents should emit the
-five-field shape.
+five-field deployed shape. Source branches newer than the installed
+wrapper may carry privacy selection as a sixth field; do not emit that
+shape against `spirit-v0.3.0` until the deployed wrapper accepts it.
 `RecordIdentifiers` selects by numeric identifier: `Exact` selects one
 record; `Range` is inclusive, so `(Range (1050 1060))` returns records
 1050 through 1060 when present. Use `SummaryOnly` for compact summaries
