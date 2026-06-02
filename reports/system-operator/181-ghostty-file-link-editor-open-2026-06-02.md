@@ -28,6 +28,22 @@ CriomOS was repinned to the new CriomOS-home commit so FullOS deployments carry 
   - `xdg-open file:///git/github.com/LiGoldragon/spirit-next/src/engine.rs` exits successfully.
 - Pushed `github:LiGoldragon/CriomOS/main` evaluates through `lojix-cli FullOs ... Eval`.
 
+## Follow-up — chooser popup
+
+After the first fix, Ghostty reached the system opener but displayed the GTK "Open With" chooser. The reason was that the running Ghostty daemon's `PATH` did not include `~/.local/bin`, so it used system `xdg-open` instead of the Home-managed handlr wrapper. CriomOS-home now installs the same handlr-backed `xdg-open` wrapper into the Home profile's `bin`, which is already ahead of `/run/current-system/sw/bin` in Ghostty's process `PATH`.
+
+Additional commits:
+
+- CriomOS-home `f416f4c5b66b` — `home: expose handlr xdg-open in profile`.
+- CriomOS `16272447c38e` — `system: repin CriomOS-home for xdg-open wrapper`.
+
+Additional validation:
+
+- Home was activated on `ouranos`.
+- `type -a xdg-open` now resolves `~/.nix-profile/bin/xdg-open` before system `xdg-open`.
+- `xdg-open file:///git/github.com/LiGoldragon/spirit-next/src/engine.rs` now goes through `handlr`, selects `emacsclient.desktop` from the `text/rust` default, and exits successfully.
+- Pushed `github:LiGoldragon/CriomOS/main` still evaluates through `lojix-cli FullOs ... Eval`.
+
 ## Note
 
-This fixes opening the file URI. Jump-to-line is a separate emitter issue: a `file://` URI from Pi opens the file, while editor-specific line jumps require links such as a `vscodium://file/...:line` style URI or an editor-aware emitter.
+This fixes opening the file URI without the chooser. Jump-to-line is a separate emitter issue: a `file://` URI from Pi opens the file, while editor-specific line jumps require links such as a `vscodium://file/...:line` style URI or an editor-aware emitter.
