@@ -283,6 +283,43 @@ Worked text examples in design reports — `(Match (NodeQuery
 (Bind)) Any)` — pin the wire form so a reader can verify
 the design without reading the implementation.
 
+### Depth-first single-capability prototype-proving
+
+Per Spirit 1355 (Principle High, 2026-06-01): **design work
+progresses by proving one prototype capability at a time in a
+worktree.** Pick the next thing the schema-stack prototype needs to
+prove, prove it on a feature branch worktree, integrate, then move
+to the next. Avoid breadth-first design fan-out; depth-first
+single-capability proving keeps the design grounded in working
+code.
+
+The methodology pairs with the "pilot one slice, ship one slice"
+pattern that the slice cadence below realises — the slice is the
+unit of proof, not a phase boundary. When the temptation is to
+sketch three capabilities at half-fidelity in parallel, name which
+one the next slice will prove, hold the other two in the report's
+uncertainty section or as upcoming slices, and prove the chosen
+one fully before reaching for the next.
+
+The shape consequences:
+
+- One feature branch under proof at a time per design thread. New
+  capabilities open new branches; old branches close when their
+  capability lands on main.
+- Reports pin the capability being proved, not a fan-out roadmap.
+  Capabilities not yet under proof appear in uncertainty sections
+  (`skills/architecture-editor.md` §"Carrying uncertainty"), not
+  in the cemented spec.
+- Integration is the proof's completion signal. A capability that
+  has run on the branch but hasn't survived operator's main rebase
+  is not yet proved — the design isn't grounded until the working
+  code is on main.
+
+The recent Spirit-pilot session (designer 446 → 454 → 461) is the
+worked instance: each schema-stack capability under proof had its
+own slice; the proofs accumulated as operator integrated each one
+before the next opened.
+
 ### Reports as visuals
 
 Per `lore/AGENTS.md` §"Design reports as visuals": every
@@ -517,6 +554,29 @@ The whole session lands in a meta-report directory per
 `skills/reporting.md` §"Meta-report directories — sub-agent
 sessions"; the orchestrator's frame (`0-frame-and-method.md`)
 assigns each sub-agent's lane pre-launch per intent 289.
+
+### Audit before the next slice
+
+Per Spirit 1353 (Decision High, 2026-06-01): **after substantive
+implementation or prototype subagent work, run context maintenance
+and a fresh-intent audit over recent reports and code before
+deciding the next slice.** The orchestrator synthesises returned
+work, names sensible next steps grounded in current intent, and
+opens the next slice from that synthesis — not from session
+inertia.
+
+The discipline is shared with operator (`skills/operator.md`
+§"Audit before the next slice") because both lanes accumulate the
+same kind of stale context after substantive work. For designer,
+the audit typically runs as a sub-agent meta-report (the
+manifestation + audit pattern above is one shape; a recent-work
+audit over a window of Spirit records and reports is another).
+
+The worked examples sit in this lane:
+`reports/system-designer/50-cross-lane-context-maintenance-
+2026-05-30/` and `reports/system-designer/51-recent-work-audit-
+2026-06-02/` — each runs the audit before opening the next batch
+of designer-shape work.
 
 ## Working with operator
 
