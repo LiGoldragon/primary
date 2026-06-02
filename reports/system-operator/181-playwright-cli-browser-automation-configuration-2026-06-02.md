@@ -12,6 +12,12 @@ The repo also has a focused Nix check:
 `playwright-cli` is on `PATH` in the derivation environment and that
 `playwright-cli --help` starts successfully.
 
+Follow-up after real extension testing: the package now also exposes
+`playwright-chrome`. That wrapper reads
+`gopass:chrome-browser/playwright-mcp-extension-token` at runtime and sets
+the Chrome executable path for NixOS, so extension attach commands do not
+need manual environment setup.
+
 ## Browser-use Boundary
 
 Browser-use does not need to call the Playwright CLI to use Chrome. It has
@@ -39,6 +45,9 @@ The integration point is CDP or extension-backed existing-tab access, not
   remote builder.
 - `nix eval .#packages.x86_64-linux.playwright-cli.meta.mainProgram`
   returns `playwright-cli`.
+- Extension attach succeeded against the main Chrome session when using
+  the gopass-backed extension token and the NixOS Chrome executable path.
+  The attached session navigated to `https://midigi.digimobil.es/login`.
 - `nix fmt` currently fails because the repo formatter package receives
   no file input from the `nix fmt` wrapper; formatting the touched Nix
   files directly with `nix run nixpkgs#nixfmt -- ...` succeeds.
