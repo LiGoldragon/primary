@@ -80,10 +80,49 @@ Public workspace files may carry only the mechanism:
 They do not carry personal details, counselor analysis, or assistant
 working notes.
 
-## Open design question
+## Direction set — implementation pending
 
-The private intent substrate is not settled. Candidate shapes include
-a private Spirit database, private variants of existing intent kinds,
-or a separate privacy-marked intent plane. Until the psyche decides,
-the conservative rule is: private substance stays in private repos and
-ordinary Spirit receives only privacy-safe meta-intent.
+Spirit record 1463 (Decision Maximum, 2026-06-02) settled the privacy
+substrate direction: **privacy is a Magnitude field on each Spirit
+record, reusing the existing Magnitude vocabulary on a privacy axis.**
+Zero privacy means open / public (the default per Spirit 1449 + 1479
+grounding the dev-mode public-repo context); Maximum privacy means
+sealed. The intermediate Magnitudes (Minimum, VeryLow, Low, Medium,
+High, VeryHigh) graduate the privacy spectrum between those poles.
+
+Filters mirror the existing certainty pattern: `PrivacyAtMost` /
+`PrivacyAtLeast` / `PrivacyExact` / `PrivacyAny` selectors compose
+with topic + kind + certainty + recorded-time filters in `Observe`
+queries. A `ChangePrivacy` operation root mutates a stored record's
+privacy field by identifier, alongside `ChangeCertainty`.
+
+Implementation is Phase 3 schema work in spirit-next per
+`reports/system-designer/53-spirit-next-production-parity-2026-06-02/`.
+The deployed `persona-spirit v0.3.0` daemon does NOT yet carry the
+field; the schema additions to spirit-next + the parity port to
+production are pending.
+
+### Operational rule today
+
+Until the privacy field is live on the wire and the deployed daemon
+serves it, the conservative rule still applies: **private substance
+stays in private repositories and ordinary Spirit receives only
+privacy-safe meta-intent.** This skill's earlier sections describe
+the operational handling today.
+
+### Operational rule once implemented
+
+Once the privacy field lands, the boundary becomes graduated rather
+than binary. Records carrying elevated privacy (`Low` through
+`Maximum`) can live in Spirit; queries from elevated contexts can
+reach them. Deeply personal substance that wants Sealed-equivalent
+treatment (privacy `Maximum`) may still prefer storage segregation
+in `private-repos/` for defense-in-depth, but the choice becomes a
+trade-off between in-corpus discoverability and substrate separation
+rather than a hard either/or.
+
+The audience-narrowing register frame from
+`reports/system-designer/54-spirit-privacy-classification-research-2026-06-02.md`
+applies: elevation NARROWS the audience without claiming danger or
+hidden meaning. The psyche is the primary observer; other agents are
+collaborators respecting the levels; there is no adversary.
