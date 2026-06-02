@@ -89,15 +89,24 @@ discipline is:
    report on the same topic supersedes it (rewrites the framing,
    replaces the design, completes the audit) AND the older
    report's substance is already absorbed in the newer report or
-   a permanent doc. Stale reports drop. Not-yet-stale older
-   reports — substance still load-bearing on its own, design
-   alternatives a newer report inherits, decision rationale that
-   permanent docs don't carry — keep, forward, or migrate per
-   §"Per item, decide" below.
-5. **Favor newer design.** When older and newer reports
-   conflict, the newer is canonical unless the older holds
-   substance the newer doesn't (design alternatives, decision
-   rationale, intermediate insight the newer skipped).
+   a permanent doc. A report is *also* stale when a newer Spirit
+   capture reframes its topic — recent intent does not have to
+   land in a successor report to make the older report's framing
+   obsolete. Stale reports drop. Not-yet-stale older reports —
+   substance still load-bearing on its own, design alternatives a
+   newer report inherits, decision rationale that permanent docs
+   don't carry — keep, forward, or migrate per §"Per item,
+   decide" below.
+5. **Recent intent prevails.** When older content (report, skill
+   text, architecture entry) conflicts with newer intent (newer
+   Spirit capture, newer report, recently landed code shape), the
+   newer is canonical. The older content stays only if it carries
+   substance the newer doesn't — design alternatives the newer
+   chose between, decision rationale the newer omits, intermediate
+   insight the newer skipped. Spirit captures are the highest-
+   priority recency signal: a Maximum-magnitude capture that
+   reframes a topic supersedes the entire prior framing on that
+   topic, including reports that were canonical the day before.
 
 Reports without an obvious topic peer across lanes get the same
 treatment with a single-lane recency timeline.
@@ -436,6 +445,13 @@ standard context maintenance.
   `~/primary/skills/reporting.md` §"What gets absorbed, not kept",
   even foundational decisions and incident lessons get absorbed
   into permanent docs rather than living forever as reports.
+- **Preserving content the intent has reframed.** A Spirit
+  capture or permanent-doc change that reframes a topic supersedes
+  the older report's framing even when no successor report exists.
+  Migrate the still-live substance (design alternatives, decision
+  rationale, intermediate insight) and let the reframed parts
+  drop. Waiting for a successor report before retiring is a smell
+  — recent intent IS the supersession evidence.
 - **Retiring a report whose substance hasn't migrated.** Before
   dropping, confirm the load-bearing parts are captured elsewhere
   (an updated skill, an ARCH constraint, a successor report). If
