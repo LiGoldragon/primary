@@ -146,17 +146,25 @@ Should query-before-capture be:
 ## Section 4 — Recommended order
 
 Independent of psyche answers on Q1-Q4, the cheap wins to land now:
-- Algorithm 4 (magnitude calibration rubric) — doc edit; low risk.
+- ~~Algorithm 4 (magnitude calibration rubric) — doc edit; low risk.~~ **NOT adopted per psyche answer Q2**: agent judgment stays, no rubric.
 - Algorithm 5 (capture cadence pattern) — discipline addition; low risk.
 
 Dependent on Q3:
-- Algorithm 1 (query-before-capture) — scope decision shapes the implementation.
+- Algorithm 1 (query-before-capture) — **forwarded-prompt scope per psyche answer Q3**. Lands as discipline addition to `skills/intent-log.md`: when capturing on a forwarded prompt (psyche addresses operator + me; operator addresses psyche then me; etc.), query recent records on the substance topics BEFORE recording. Direct-prompt captures don't pay the latency.
 
 Dependent on Q1 + sized as separate Spirit feature work:
-- Algorithm 3 (supersession) — contract change; deferred.
+- ~~Algorithm 3 (supersession)~~ — **NOT adopted per psyche answer Q1**: Remove + git lineage stays canonical.
 
 Dependent on Q4 / standalone:
 - Algorithm 2 (dedup detection heuristic) — sweep tooling; can land independently.
+
+## Section 5 — Psyche answers + redirect on Q4
+
+Recorded 2026-06-02:
+- **Q1 — Supersession**: Remove + git lineage (current) wins. No new Supersede operation.
+- **Q2 — Magnitude rubric**: NOT adopted. Agent judgment stays; no calibration table in `skills/intent-log.md`.
+- **Q3 — Query-before-capture scope**: Forwarded-prompt only. Algorithm 1 lands as discipline addition for forwarded-prompt captures only.
+- **Q4 — Topic vocabulary**: substantive redirect — psyche wants *"a feature to spirit to make those discoverable with a cached-value algorithm — something smart and clever to use nowadays, there must be libraries for this kind of thing"*. NOT one of the three options offered. The redirect means designing a new Spirit feature: cached, modern, library-backed topic discovery. Designer 474 dispatched in parallel to research the algorithm + libraries + Spirit-side API shape.
 
 ## Cross-references
 
