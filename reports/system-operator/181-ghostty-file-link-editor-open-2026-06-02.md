@@ -61,6 +61,23 @@ Additional validation:
 - `xdg-open file:///git/github.com/LiGoldragon/spirit-next/src/engine.rs` now goes through `handlr`, selects `codium.desktop`, and launches `codium` with the Rust source file.
 - Pushed `github:LiGoldragon/CriomOS/main` evaluates through `lojix-cli FullOs ... Eval`.
 
+## Follow-up — dirty plain-path links still selected GNOME Text Editor
+
+A later click still opened GNOME Text Editor because it was not the clean OSC8 `file://` path case. Ghostty / handlr received plain terminal text such as `reports/system-operator/181-ghostty-file-link-editor-open-2026-06-02.md     ` or `reports/operator/287-nexus-recursive-computation-continuation-2026-06-02.md:1`. Because the clicked string carried trailing spaces or a line suffix, Ghostty could not resolve it against the terminal's current directory before invoking `xdg-open`; `handlr` then classified it as `application/x-zerosize`, whose system fallback was GNOME Text Editor.
+
+Additional commits:
+
+- CriomOS-home `b731b44181f9` — `home: route dirty editor links through Codium`.
+- CriomOS `460e577ed8dd` — `system: repin CriomOS-home for dirty editor links`.
+
+Additional validation:
+
+- Home was activated on `ouranos`.
+- `handlr get application/x-zerosize` now returns `codium.desktop`.
+- The user-local `codium.desktop` now runs a CriomOS Codium launcher that trims trailing spaces, strips `:line[:column]` suffixes when the underlying file exists, resolves Primary-relative report paths from Ghostty's daemon cwd, and calls `codium --goto` when a position was present.
+- Simulated Ghostty-style dirty paths from `/home/li` now go through `handlr`, select `codium.desktop`, and execute the CriomOS Codium launcher instead of `org.gnome.TextEditor.desktop`.
+- Pushed `github:LiGoldragon/CriomOS/main` evaluates through `lojix-cli FullOs ... Eval`.
+
 ## Note
 
-This fixes opening the file URI without the chooser and makes VSCodium the active default. Jump-to-line is a separate emitter issue: a `file://` URI from Pi opens the file, while editor-specific line jumps require links such as a `vscodium://file/...:line` style URI or an editor-aware emitter.
+This fixes clean file URI links, chooser fallback, VSCodium default editor selection, and dirty plain-path terminal links. True universal jump-to-line from arbitrary relative paths still belongs in the emitter when possible, because the opener cannot always know the terminal program's current directory; the CriomOS launcher handles the common Primary-workspace report-path case.
