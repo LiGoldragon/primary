@@ -134,6 +134,55 @@ honest discipline: a Layer 2 witness proves the path is EXECUTABLE,
 not that production EXERCISES it. For most architectural claims this
 is sufficient.
 
+#### Testing-trace as the workspace canonical Layer 2 witness for engine-trait usage
+
+Per Spirit 1349 (Principle Maximum, 2026-06-01): **the testing-build
+logging socket is the workspace canonical Layer 2 runtime witness
+for engine-trait usage.** When the testing-build is active and logs
+flow back through the CLI's translation surface, the agent observes
+proof that Signal / Nexus / SEMA engine traits are actually called
+by the runtime — not just present in source.
+
+The reference realization lives across three repos:
+
+- **Emission.** `schema-rust-next/src/lib.rs` (roughly lines
+  1825-1907) emits trace hook methods directly on the engine traits
+  (per Spirit 1365; see `skills/component-triad.md` §"Instrumentation
+  belongs to the engine-trait contract"). Default no-op bodies; live
+  bodies under `testing-trace`.
+- **Consumption.** `spirit-next` overrides the hooks behind the
+  `testing-trace` Cargo feature and routes the records to a
+  `TraceSocketListener` (under `src/trace.rs`). The integration test
+  at `spirit-next/tests/instrumentation_logging.rs` reads the
+  emitted trace records and asserts the engine-trait method was
+  called for a given fixture; `tests/process_boundary.rs` proves the
+  same round-trip across the real CLI ↔ daemon ↔ trace socket
+  process boundary.
+- **Packaging.** `spirit-next/flake.nix` exposes
+  `packages.trace`, `packages."trace-cli"`, `packages."trace-daemon"`
+  as separate Cargo builds with `--features testing-trace`. The
+  lean `packages.cli` / `packages.daemon` carry no trace surface.
+
+This realises the proof-of-usage ladder above as a **deployable
+feature** — the trace surface is part of the engine-trait contract
+(Layer 1) AND every override produces a runtime record on the trace
+socket (Layer 2). A test reading the trace records proves the
+engine-trait method was actually called; an observer reading the
+trace socket in a debug session proves it too.
+
+The witness's strength is the schema-emitted shape: the trace hook
+is part of the trait's emitted code, so the recorder is the trait's
+own override, not a hand-written instrumentation layer next to the
+trait. A bypass that re-implements the engine outside the trait
+loses the trace surface as a consequence of leaving the trait — the
+witness can't be counterfeited without re-emitting through schema.
+
+The pattern generalises to every component whose runtime engines
+emit through the schema toolchain: when the trace records flow on
+the trace socket, the engine-trait method was used; absence of
+records on a call path means the path is dead or the engine was
+bypassed.
+
 ### Layer 3 — BEHAVIORAL (removal breaks observable behavior)
 
 Proves: this code carries an observable effect — removing it changes
@@ -345,8 +394,13 @@ still proves the intended mailbox path was used.
 ## Schema-chain witnesses use schema objects
 
 For schema-derived runtimes, architectural witnesses must be schema-emitted
-objects flowing through schema-type traits. Do not invent a test-only enum to
-stand in for the runtime language being proved. If the chain is
+objects flowing through schema-type traits. Per Spirit 1327 (Principle
+Maximum), every component runtime in the workspace triad architecture
+conducts core logic through schema-emitted traits — `SignalEngine`,
+`NexusEngine`, `SemaEngine` — whose methods take and return root types
+of the concerned interfaces; the traits ARE the workspace-wide witness
+surface. Do not invent a test-only enum to stand in for the runtime
+language being proved. If the chain is
 Signal -> Nexus -> SEMA, the test witness should be made from generated
 objects such as:
 
