@@ -400,6 +400,76 @@ keeps NOTA the single language for invoking the workspace: the
 moment one binary starts accepting flags, the workspace fragments
 into ad-hoc CLIs.
 
+## No NOTA between components — binary protocol is the wire
+
+Per Spirit 1373 (Principle Maximum, 2026-06-01): **there is no NOTA
+between live components.** Daemons and components exchange binary
+protocol data on the wire; NOTA is the boundary form, not the
+inter-component form.
+
+The single-argument rule above (§"The single argument rule") governs
+the **process boundary** — what a binary accepts on argv and prints
+on stdout. NOTA is the human-facing surface there because humans and
+agents type NOTA. Between two running daemons, neither end is human:
+both sides decode binary frames directly, and NOTA never enters the
+wire path.
+
+The CLI is the translation/debugging surface between the two regimes:
+
+- **Production round-trip.** CLI reads inline NOTA argv, translates
+  the request into a binary frame on the daemon socket, decodes the
+  daemon's binary reply, renders it back as NOTA on stdout. The
+  daemon never sees or emits NOTA on its socket — only signal-frame
+  binary.
+- **Debugging round-trip.** Per Spirit 1373, the CLI can wrap a
+  normal call in a debugging request — for example, naming where
+  trace logs should be displayed or stored. That wrapping is itself
+  a NOTA field on the CLI request; the daemon receives only the
+  binary frame the CLI translated it into.
+
+The canonical worked example today is `spirit-next`: the daemon ↔
+CLI wire is rkyv-encoded signal-frame frames, and the optional
+`testing-trace` round-trip across the trace socket is the same shape
+— `TraceEvent` is an rkyv-encoded record, not a NOTA string. See
+`spirit-next/ARCHITECTURE.md` §"Runtime triad" for the wire layout.
+
+The rule scales: any future inter-component channel (sidecar
+sockets, peer subscriptions, lifecycle bus) is binary. NOTA at any
+inter-component boundary is a triad violation in the same shape as
+NOTA on a daemon socket would be (Invariant 2 above forbids it from
+the daemon side; this section names the workspace-wide form).
+
+## Build configuration is itself a NOTA struct
+
+Per Spirit 1348 (Decision Maximum, 2026-06-01): **build configuration
+is itself a NOTA struct with fields.** The single-NOTA-argument rule
+above governs runtime daemon and CLI argv; the SAME shape governs
+how a component's build switches between production and testing
+modes — by reading a NOTA-shaped build config, not by collecting ad
+hoc Cargo feature flags.
+
+Today's `spirit-next/flake.nix` realises the switch between lean and
+trace-enabled packages through Cargo features (`--features
+testing-trace` for the `packages.trace*` variants, no features for
+the lean `packages.cli` / `packages.daemon`). That shape is the
+correct runtime behaviour realised through the wrong substrate — a
+flag soup at the Cargo layer rather than a typed NOTA struct.
+
+The destination shape: each component's build emits a typed
+build-config NOTA value (a `BuildConfiguration` record in the
+component's contract crate, or a small `<component>-build-config`
+crate when the build config needs to be shared between
+daemon-internal logic and a deploy helper). The flake declares the
+value, the build harness reads it, and the same NOTA-as-the-only-
+argument-shape discipline applies. Adding a build option means
+adding a field to the build-config record, not appending another
+Cargo `--features` flag.
+
+The discipline matches the runtime shape: one NOTA-shaped surface
+governs invocation; one NOTA-shaped surface governs build. The
+single argument rule generalises across every shape boundary the
+component crosses.
+
 ## Help operations — discovery through NOTA, not through flags
 
 Because the single-argument rule forbids `--help`, every component
@@ -815,6 +885,66 @@ is preserved across all six plane envelope hops (Signal in / Nexus in
   "validation engine," "queue engine," or "audit engine" trait
   proliferation. Concerns that look like they want a new engine
   usually fit inside Nexus's heavy logic.
+
+### Instrumentation belongs to the engine-trait contract
+
+Per Spirit 1365 (Correction Maximum, 2026-06-01): **traceability is
+expressed as traits on schema-derived interfaces — and where
+possible, as methods on the Signal/Nexus/SEMA engine traits
+themselves — not as a hand-written or generated event enum living
+beside the engines.** Instrumentation belongs to the interface/actor
+contract, not to a local side vocabulary parallel to it.
+
+The emitted shape: the engine traits carry default-no-op trace hook
+methods (`trace_signal_admitted`, `trace_signal_triaged`,
+`trace_signal_replied`, `trace_nexus_entered`, `trace_nexus_decided`,
+`trace_sema_write_applied`, `trace_sema_read_observed`, and their
+per-plane activation entry points). Implementors who want trace
+override the hooks; non-trace consumers inherit the no-op default and
+pay nothing. The trace surface is part of the trait, not a parallel
+vocabulary the runtime carries alongside.
+
+The canonical emission lives at `schema-rust-next/src/lib.rs`
+(roughly lines 1825-1907): the schema emitter writes the trace
+methods straight into the engine trait declarations. The
+`testing-trace` Cargo feature (the runtime side of Spirit 1348's
+build-config discipline above) gates whether overrides ship, but the
+trait surface is uniform — feature-off implementors get the no-op
+default; feature-on implementors override per-hook.
+
+The earlier shape this corrects is the side-enum pattern: a
+hand-written `TraceEvent` enum next to the engines, with a
+`record_trace` call studded through the engine bodies. That shape
+makes instrumentation a separate dialect of the engine; the
+trait-method shape keeps instrumentation a first-class extension of
+the engine's contract. Per Spirit 1365 the correction direction is
+explicit — anywhere instrumentation tempts a side enum, push the
+hooks onto the trait instead.
+
+### Nexus's inner-world / outer-world vocabulary
+
+Per Spirit 1388 (Clarification, 2026-06-01): **Nexus sits between
+two worlds** — the OUTER world (Signal — clients, wire ingress and
+egress, the boundary across processes) and the INNER world (SEMA —
+durable state mutations and observations). Nexus is the center that
+decides; Signal and SEMA are its peripheries.
+
+The vocabulary makes architectural roles explicit. Signal owns the
+outer boundary: messages crossing process lines, wire framing,
+identity stamping, frame triage. SEMA owns the inner boundary: redb
+writes, observation against durable snapshots, the database marker.
+Nexus owns the in-between: it receives the typed Input from Signal,
+runs the decision logic, requests SEMA work, receives the SEMA
+reply, and translates the result back through Signal to the outer
+wire.
+
+The shape rhymes with the object-oriented insight of interfaces
+first — Nexus is the center holding the interface contract that the
+two boundary planes (Signal and SEMA) terminate. Consistent with
+the engine-trait architecture above (Spirit 1326-1336) and with the
+origin-route threading through the full Signal-Nexus-SEMA pipeline
+(Spirit 1336): Nexus is the place the origin route lives long enough
+for partial multi-op replies to associate back.
 
 The canonical worked example today is `spirit-next`: NexusEngine and
 SemaEngine are schema-emitted; SignalEngine implementation lives in
