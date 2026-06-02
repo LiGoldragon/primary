@@ -422,6 +422,51 @@ Don't edit for:
   `~/primary/skills/autonomous-agent.md` §"Version-control
   obstacles".
 
+## Retire legacy paths when the working interface exists
+
+Per Spirit 1339 (Principle Maximum, 2026-06-01): **do not keep old
+design convenience APIs after the working interface exists.** The
+stack keeps ONE active working API moving forward and removes
+legacy/convenience surfaces rather than maintaining parallel ways to
+express the same runtime path.
+
+The principle generalises the "edit in place; don't fork or version"
+rule above (for architecture docs) to the code substrate: a
+component has one current API shape; older shapes that survived a
+redesign because something old still called them get retired, not
+maintained alongside the working interface. Two parallel ways to
+express the same runtime path is the wrong shape: a reader can't
+tell which one is canonical, an agent picks one or the other
+without reason, and the legacy surface accumulates consumers that
+slow the eventual cleanup.
+
+The discipline is consistent with the `ESSENCE.md` §"Backward
+compatibility is not a constraint" rule (the system being shaped is
+not a published API under semantic versioning) and matches the
+architecture file's "edit in place" rule applied at the code layer.
+
+The recent worked examples live in `schema-rust-next` (as the
+schema-emitted-engine-trait shape stabilised, the older convenience
+surfaces retired in dedicated commits):
+
+- `06a7797 schema-rust: remove legacy single sema surface` — the
+  one-SEMA-root convenience retired after split-roots landed.
+- `febde07 schema-rust: retire generated NexusMail convenience` —
+  the auto-generated mail convenience retired after explicit
+  per-component mail surfaces emitted.
+- `35baaf7 schema-rust: remove retired enum spelling from docs` —
+  the docs purge that follows the API retirement.
+
+Sister commit in `schema-next`: `d8006b6 schema: remove legacy
+declaration compatibility`. The pattern is: when the working
+interface lands, the retirement of the legacy surface is a
+follow-up commit in the same wave, not a deferred cleanup pass.
+
+The applied test: if someone reading the code today would have to
+ask "which of these is the right one to use?" — both shouldn't
+exist. Pick the right one (the working interface) and retire the
+other in the same wave.
+
 ## When to create one
 
 If a repo doesn't have an `ARCHITECTURE.md` and you've done
