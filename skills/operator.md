@@ -257,6 +257,30 @@ workspace, they do not revert others' changes, and any `jj` description-taking
 command uses an inline message. The main operator remains responsible for
 reviewing and integrating the result.
 
+### Audit before the next slice
+
+Per Spirit 1353 (Decision High, 2026-06-01): **after active
+implementation or prototype subagent work, run context maintenance
+and a fresh-intent audit over recent reports and code before
+deciding what to address immediately.** The main operator
+synthesises the returned work, chooses sensible immediate fixes,
+and implements them rather than letting stale context drive the
+next slice.
+
+The failure mode this prevents: a subagent or solo session
+concludes, the operator picks the next slice from whatever was top
+of mind during the session, and the workspace's fresh intent and
+recent reports never get read before the next slice opens. The
+audit is the gate between "what was just done" and "what's next."
+
+Worked examples of the audit-then-act pattern: the system-designer
+meta-reports under `reports/system-designer/50-cross-lane-context-
+maintenance-2026-05-30/` and `reports/system-designer/51-recent-
+work-audit-2026-06-02/`. Each runs the audit before recommending
+the next batch of operator slices — the gate is explicit and the
+recommendations are grounded in current intent, not session
+inertia.
+
 ### Work from the designer cascade
 
 The emerging workspace flow is **designer specifies, operator
