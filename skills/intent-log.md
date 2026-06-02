@@ -178,6 +178,14 @@ slipping through (all working orders, none intent):
 | "Operator: integrate these branches" | dead once integrated |
 | "Psyche asks this lane to review Z" | dead once reviewed |
 
+The good-call pattern is to extract the durable shape hiding inside a
+working order. If the psyche asks for research on expanding Spirit's
+interface, don't log "research Spirit". Log the persistent desired
+surface instead: "Spirit command surfaces should offer simple-to-
+complex operation variants: concise summary defaults for normal use,
+and explicit full-metadata/custom forms for advanced use." The report
+or task carries the research; Spirit carries the lasting principle.
+
 Contrast — these pass (still guide after any task): "schema is the
 source of truth" (Principle), "the Plane is a data-carrying enum"
 (Decision), "working orders aren't intent" (Correction). The
