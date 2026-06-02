@@ -17,6 +17,8 @@
     [OS / platform / deploy craft.])
   (Role poet skills/poet.md Apex
     [Prose as craft.])
+  (Role assistant skills/assistant.md Apex
+    [Personal-affairs support for the psyche.])
 
   (Architecture component-triad skills/component-triad.md Apex
     [Daemon + thin CLI + signal-* contract. Signal/Nexus/SEMA runtime triad and async mail flow.])
@@ -84,7 +86,7 @@
     [Speech-to-text interpreter integration notes.])
 
   (Workflow role-lanes skills/role-lanes.md Mechanism
-    [Lane mechanism for assistant + second-assistant lanes under each main role.])
+    [Lane mechanism for main, ordinal, and qualified role lanes.])
   (Workflow architecture-editor skills/architecture-editor.md Mechanism
     [How to edit ARCHITECTURE.md. ARCH never references reports.])
   (Workflow nota-schema-docs skills/nota-schema-docs.md Mechanism

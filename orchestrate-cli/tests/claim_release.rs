@@ -8,17 +8,19 @@ use orchestrate_cli::{Lane, LockFile, Workspace};
 use tempfile::TempDir;
 
 const REGISTRY: &str = r#"operator
+pi-operator                       parallel-of:operator
 second-operator                   parallel-of:operator
-operator-assistant                assistant-of:operator
-second-operator-assistant         assistant-of:operator
+cluster-operator
+cloud-operator
 designer
 second-designer                   parallel-of:designer
 third-designer                    parallel-of:designer
-designer-assistant                assistant-of:designer
+nota-designer
+system-designer
+cloud-designer
 system-operator
-second-system-assistant           assistant-of:system-operator
 poet
-poet-assistant                    assistant-of:poet
+assistant
 "#;
 
 fn lane(token: &str) -> Lane {
@@ -284,17 +286,19 @@ fn status_lists_every_lane_in_registry_order() {
         lanes,
         vec![
             lane("operator"),
+            lane("pi-operator"),
             lane("second-operator"),
-            lane("operator-assistant"),
-            lane("second-operator-assistant"),
+            lane("cluster-operator"),
+            lane("cloud-operator"),
             lane("designer"),
             lane("second-designer"),
             lane("third-designer"),
-            lane("designer-assistant"),
+            lane("nota-designer"),
+            lane("system-designer"),
+            lane("cloud-designer"),
             lane("system-operator"),
-            lane("second-system-assistant"),
             lane("poet"),
-            lane("poet-assistant"),
+            lane("assistant"),
         ]
     );
     let operator_status = report

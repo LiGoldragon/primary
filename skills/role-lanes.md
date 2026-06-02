@@ -8,7 +8,7 @@ plus its main role's skill, and nothing else lane-specific.*
 
 (Per `intent/persona.nota` 2026-05-22, intent ID 147 in
 spirit-v0.1.1.) A **role** (designer, operator, system-operator,
-poet) names a discipline. Each role has **one agent**: one
+poet, assistant) names a discipline. Each role has **one agent**: one
 persistent cryptographic identity, one shared persona-mind state,
 one ongoing body of signed work. **Lanes are windows into that
 agent.** When the workspace runs `designer` and `second-designer`
@@ -41,7 +41,7 @@ Per psyche 2026-05-27 (spirit record 920, Maximum): the prior
 
 | Shape | Meaning | Examples |
 |---|---|---|
-| `<role>` | The role's main lane | `designer`, `operator`, `poet`, `system-operator` |
+| `<role>` | The role's main lane | `designer`, `operator`, `poet`, `system-operator`, `assistant` |
 | `second-<role>`, `third-<role>`, `fourth-<role>` | Additional parallel windows on the same role's agent | `second-designer`, `third-designer`, `second-operator` |
 | `<qualifier>-<role>` | Specialized lane with a scope-qualifying prefix | `system-operator`, `cluster-operator`, `pi-operator`, `cloud-operator`, `cloud-designer`, `nota-designer`, `system-designer` |
 
@@ -190,7 +190,8 @@ Whatever lane you're claiming, the reading list is two skills:
    `nota-designer` / `system-designer` is `designer`; for
    `pi-operator` / `cluster-operator` / `cloud-operator` /
    `second-operator` is `operator`; for `system-operator` it's
-   its own discipline file; for `poet` lanes it's `poet`; etc.
+   its own discipline file; for `poet` lanes it's `poet`; for
+   `assistant` lanes it's `assistant`; etc.
 
 Then claim under your lane's identifier:
 
@@ -221,12 +222,15 @@ future fifth lane under any main role) requires:
    — a typed Nota record — per the design report referenced from
    `orchestrate/roles.list`.
 2. Create its report subdirectory: `reports/<lane>/`.
+   A brand-new main role also gets `skills/<role>.md` and a `Role`
+   entry in `skills/skills.nota`.
 3. The `.gitignore` rule `/orchestrate/*.lock` already covers the
    new lock file; no edit needed.
 4. Update the role table in `AGENTS.md` and `orchestrate/AGENTS.md`
    to mention the lane.
 
-That is the whole list. No new skill file. The main role's skill
+That is the whole list for an additional lane under an existing
+role. No lane-specific skill file is created. The main role's skill
 applies to every lane under it, regardless of how many lanes
 there are.
 
@@ -239,7 +243,8 @@ there are.
 - this workspace's `skills/designer.md`,
   `skills/operator.md`,
   `skills/system-operator.md`,
-  `skills/poet.md` — the four main role skills. Every lane under
+  `skills/poet.md`,
+  `skills/assistant.md` — the five main role skills. Every lane under
   one of these inherits its discipline.
 - this workspace's `ESSENCE.md` §"Efficiency of instruction" — the
   one-canonical-home principle that this skill realises.

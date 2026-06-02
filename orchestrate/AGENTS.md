@@ -15,7 +15,7 @@ BEADS is shared coordination state while it exists, not a lockable scope.
 
 ## Roles
 
-The workspace organises work under **four main roles**, each carrying its
+The workspace organises work under **five main roles**, each carrying its
 own discipline. Additional **lanes** — `second-<role>`, `third-<role>`,
 and qualified lanes like `<qualifier>-<role>` — share their main role's
 discipline, skill file, and beads label; only the lock file, report
@@ -41,6 +41,7 @@ set of lanes is enumerated below.
 | `cloud-designer` | designer | (any) | `orchestrate/cloud-designer.lock` | `reports/cloud-designer/` | Specialized designer lane scoped to cloud component design |
 | `system-operator` | system-operator | (any) | `orchestrate/system-operator.lock` | `reports/system-operator/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
 | `poet` | poet | (any) | `orchestrate/poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
+| `assistant` | assistant | Pi | `orchestrate/assistant.lock` | `reports/assistant/` | Personal-affairs support for the psyche |
 
 The "Default agent" column is convenience labelling for the lock file, not a
 binding. Any agent may take any lane; the main role determines scope
@@ -163,7 +164,7 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 `<role>` is one of `operator`, `second-operator`, `pi-operator`,
 `cluster-operator`, `cloud-operator`, `designer`, `second-designer`,
 `third-designer`, `system-designer`, `nota-designer`, `cloud-designer`,
-`system-operator`, or `poet`.
+`system-operator`, `poet`, or `assistant`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
@@ -365,6 +366,7 @@ Convention: each role owns a subdirectory.
 - `reports/nota-designer/` — nota designer's reports (specialized designer lane).
 - `reports/cloud-designer/` — cloud designer's reports (specialized designer lane).
 - `reports/poet/` — poet's reports.
+- `reports/assistant/` — assistant's reports.
 
 Each role writes only into its own role subdirectory. Other roles may
 **read** any report freely; if they want to **build on** another role's

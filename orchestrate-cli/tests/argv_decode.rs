@@ -83,8 +83,8 @@ fn registry_lanes_project_to_matching_role_name() {
         role("third-designer")
     );
     assert_eq!(
-        lane("second-system-assistant").role_name().expect("role"),
-        role("second-system-assistant")
+        lane("assistant").role_name().expect("role"),
+        role("assistant")
     );
 }
 

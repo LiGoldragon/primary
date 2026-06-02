@@ -115,7 +115,7 @@ Full discipline: `skills/reporting.md`.
 
 ## Roles
 
-Four main roles, each carrying its own discipline. Lanes
+Five main roles, each carrying its own discipline. Lanes
 (`<role>`, `second-<role>`, `third-<role>`, `<qualifier>-<role>`)
 share their main role's discipline, skill file, and beads label;
 only the lock file, report subdirectory, and claim string differ.
@@ -131,6 +131,7 @@ etc. Specialized scope is qualified by prefix
 - `designer` — architecture, skills, reports (default agent: Claude)
 - `system-operator` — OS / platform / deploy (any agent)
 - `poet` — writing as craft (any agent)
+- `assistant` — personal-affairs support for the psyche (Pi)
 
 Each agent's lane identifier is the exact role-name it was given in
 the harness. Do not substitute a nearby lane: a `pi-operator` window
@@ -312,8 +313,8 @@ yet — those land when the role's shape settles.
   `SendMessage` to other agent instances — run outside the
   conversation surface where the psyche can redirect, and can
   violate the dispatching agent's lane. Default for operator,
-  system-operator, poet, and every additional/qualified lane
-  under them: do the work yourself in the main agent; the psyche
+  system-operator, poet, assistant, and every additional/qualified
+  lane under them: do the work yourself in the main agent; the psyche
   authorises subagent dispatch per task. The **designer protocol**
   (psyche 2026-05-21) is the exception: the prime designer runs
   at full capacity with parallel subagent workflows by default,

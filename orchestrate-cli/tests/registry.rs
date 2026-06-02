@@ -6,17 +6,19 @@ const SAMPLE_REGISTRY: &str = r#"# Role-lane registry — sample.
 # Comments and blank lines are stripped.
 
 operator
+pi-operator                       parallel-of:operator
 second-operator                   parallel-of:operator
-operator-assistant                assistant-of:operator
-second-operator-assistant         assistant-of:operator
+cluster-operator
+cloud-operator
 designer
 second-designer                   parallel-of:designer
 third-designer                    parallel-of:designer
-designer-assistant                assistant-of:designer
+nota-designer
+system-designer
+cloud-designer
 system-operator
-second-system-assistant           assistant-of:system-operator
 poet
-poet-assistant                    assistant-of:poet
+assistant
 "#;
 
 fn lane(token: &str) -> Lane {
@@ -31,37 +33,39 @@ fn parses_all_lanes_in_order() {
         lanes,
         vec![
             lane("operator"),
+            lane("pi-operator"),
             lane("second-operator"),
-            lane("operator-assistant"),
-            lane("second-operator-assistant"),
+            lane("cluster-operator"),
+            lane("cloud-operator"),
             lane("designer"),
             lane("second-designer"),
             lane("third-designer"),
-            lane("designer-assistant"),
+            lane("nota-designer"),
+            lane("system-designer"),
+            lane("cloud-designer"),
             lane("system-operator"),
-            lane("second-system-assistant"),
             lane("poet"),
-            lane("poet-assistant"),
+            lane("assistant"),
         ]
     );
 }
 
 #[test]
-fn assistant_marker_records_main_role() {
+fn lane_markers_record_parallel_main_role() {
     let registry = LaneRegistry::parse(SAMPLE_REGISTRY).expect("registry parse");
     let descriptors = registry.descriptors();
-    let operator_assistant = descriptors
-        .iter()
-        .find(|descriptor| descriptor.lane == lane("operator-assistant"))
-        .expect("operator-assistant descriptor present");
-    assert_eq!(operator_assistant.assistant_of, Some(lane("operator")));
-    assert_eq!(operator_assistant.parallel_of, None);
     let second_operator = descriptors
         .iter()
         .find(|descriptor| descriptor.lane == lane("second-operator"))
         .expect("second-operator descriptor present");
     assert_eq!(second_operator.assistant_of, None);
     assert_eq!(second_operator.parallel_of, Some(lane("operator")));
+    let assistant = descriptors
+        .iter()
+        .find(|descriptor| descriptor.lane == lane("assistant"))
+        .expect("assistant descriptor present");
+    assert_eq!(assistant.assistant_of, None);
+    assert_eq!(assistant.parallel_of, None);
     let operator = descriptors
         .iter()
         .find(|descriptor| descriptor.lane == lane("operator"))
@@ -96,6 +100,6 @@ fn peer_lanes_exclude_self() {
     let registry = LaneRegistry::parse(SAMPLE_REGISTRY).expect("registry parse");
     let operator = lane("operator");
     let peers: Vec<Lane> = registry.peer_lanes(&operator).collect();
-    assert_eq!(peers.len(), 11);
+    assert_eq!(peers.len(), 13);
     assert!(!peers.contains(&operator));
 }
