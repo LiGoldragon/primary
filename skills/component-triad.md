@@ -921,6 +921,89 @@ the engine's contract. Per Spirit 1365 the correction direction is
 explicit — anywhere instrumentation tempts a side enum, push the
 hooks onto the trait instead.
 
+### Trace identity is schema-emitted, not stringly
+
+Per Spirit 1400 (Decision High, 2026-06-02): **trace names are
+macro-emitted from the schema-defined enum variant structure, not
+free-floating strings.** The macro knows what is being activated
+because it generated the variant; the trace surface reuses the
+generated names rather than re-deriving them at the call site as
+literals.
+
+Per Spirit 1408 (Clarification High): the typed header object is
+primary; compact numeric encodings and wider extended headers are
+downstream representations of that typed identity.
+
+The shape that landed (`schema-rust-next` commit `fa3f615` +
+`spirit-next` commit `2179f49`): the emitter projects, from each
+plane root enum's variants, a `<Plane>ObjectName` enum plus a
+wrapping `TraceInterfaceObject` enum. The same emission produces
+the `TraceActorObject` enum from per-plane actor variants. The
+runtime trace event becomes a typed `TraceObject` (one of the
+emitted plane objects), not a `String` newtype or a `&'static str`
+literal. Implementors of the engine traits dispatch on the typed
+identity rather than parsing a name.
+
+Two trace forms are supported by the macro:
+
+- **COMPACT** — root variant name only (`trace_input_remove`). The
+  default for testing-build Layer 2 witnesses where the
+  architectural-crossing claim is the substance.
+- **EXTENDED** — nested variant chain through enum-typed payloads
+  when the payload is itself an enum. The chain stops at the root
+  variant when the payload is a struct. The macro has the
+  enum-vs-struct information at compile time, so the form is chosen
+  statically.
+
+The 2-row interface chain is: row 1 = root variant; row 2 = payload
+(struct-leaf, chain stops; or enum-continue, chain continues into
+row 3 etc.). The trace name's structural depth measures interface
+realism: a deeper chain reflects a richer typed contract. When the
+chain bottoms out at a struct in row 2, the component's schema may
+be under-developed — compare against §"Interface roots are enums
+with more than one variant" below.
+
+The transitional `TraceObjectName(String)` shape that the prototype
+in designer 467 introduced retired with the typed-identity
+emission. No `String` shadows of the typed identity persist at the
+trace surface.
+
+### Interface roots are enums with more than one variant
+
+Per Spirit 1401 (Clarification High, 2026-06-02): **an interface is
+an enum at the root with MORE THAN ONE variant.** If a designer
+cannot name more than one operation the root represents, the design
+is incomplete and not an interface. Single-variant enums prove
+themselves newtypes in practice — the variant adds no discrimination
+the type system needs.
+
+Input and Output are the two primary interface roots; payloads are
+themselves either structs (leaf data) or enums (nested interfaces).
+The interface chain depth measures design realism — the row-1 root
+plus row-2 payload pattern from the trace identity section above
+applies to every interface.
+
+Two consequences for the schema authoring loop:
+
+- When sketching a schema source, ask **"can I name two operations
+  on this root?"** If not, the design isn't done yet — keep
+  developing until at least two meaningful variants land. Add
+  Lookup + Count + Summarize beside Observe; add Subscribe beside
+  the request/reply pair; promote the unit variant to its full
+  data-bearing form.
+- A one-variant root that survives review is a newtype wearing enum
+  clothing. Replace it with the struct or scalar it actually is, and
+  let the schema's namespace import the type directly.
+
+Worked example: `SemaReadInput [(Observe Query)]` fails the rule —
+that's an `Observe(Query)` newtype, not an interface. The expansion
+to `SemaReadInput [(Observe Query) (Lookup RecordIdentifier) (Count
+Query) (Summarize Query)]` (four variants) makes it a real
+interface and gives Nexus a real per-variant decision surface.
+
+Per psyche 2026-06-02 (Spirit 1395 introduced the developed-
+interface direction; 1401 formalizes the multi-variant threshold).
+
 ### Nexus's inner-world / outer-world vocabulary
 
 Per Spirit 1388 (Clarification, 2026-06-01): **Nexus sits between

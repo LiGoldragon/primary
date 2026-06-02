@@ -21,6 +21,47 @@ If you cannot make it beautiful, you do not understand it yet.
 
 **If it isn't beautiful, it isn't done.**
 
+Beauty is a **gate alongside correctness**, not a nice-to-have. The
+aesthetic dimensions that pass the gate — **terseness, symmetry,
+schema-driven emission, self-describing surfaces, interfaces-first
+shaping, composable boundaries** — are the form the rule takes when
+applied to typed-data workspaces like this one. A design that
+satisfies correctness but fails any of those dimensions is not yet
+done; the discomfort signals an unsolved underlying problem.
+
+## Beauty as primary audit lens
+
+Audits apply the beauty filter as the **primary lens**. Before asking
+"does this work?" the audit asks "is the shape right?" — terseness,
+symmetry, schema-driven, self-describing, interfaces-first,
+composable boundaries. When the shape is wrong, the audit's
+recommendation is the structural fix, not a patch that preserves the
+ugly surface.
+
+This applies at three workspace scales:
+
+- **Code beauty** — the diagnostic catalogue below. Verb-belongs-to-
+  noun violations, stringly-typed dispatch, special cases stacked on
+  the normal case, hand-written shape where schema can emit it.
+- **Capture discipline** — avoid duplicate intent records. A trio
+  saying the same thing in three different magnitudes is noise; one
+  record at the right magnitude is signal. The supersession protocol
+  (`skills/intent-maintenance.md`) and the dedup sweep are how the
+  intent layer stays beautiful.
+- **Report retention** — avoid report proliferation without
+  retirement. A working artifact whose substance has migrated to a
+  permanent home is finished; leaving it in the tree clutters the
+  surface. The retire-after-migration discipline
+  (`skills/context-maintenance.md` §3a) is how reports stay clean.
+
+The fourth scale is **substrate cleanliness**: no hand-written code
+where schema can drive. When a hand-written enum, validate impl,
+trace event vocabulary, or projection function parallels something a
+schema could emit, the parallel is the ugliness; the fix is to push
+the substance into the schema.
+
+Per psyche 2026-06-02 (Spirit 1411, Principle Maximum).
+
 ## What ugliness signals
 
 Each item below is a *signal*, not a sin. Notice it; decide what the
