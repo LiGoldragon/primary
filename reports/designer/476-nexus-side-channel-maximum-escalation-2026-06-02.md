@@ -364,6 +364,65 @@ Schema-next emitter should already handle recursive enums per Spirit 1358 (recur
 3. The mail ledger / stash store / fanout transport are daemon-internal but their wire types (`StashSpec`, `FanoutSpec`, etc.) are schema-declared.
 4. Workspace convention: when Nexus has substantive logic, declare the side-channel variants explicitly; when it's pure delegation, the 3-variant base is sufficient.
 
+## Section 8 — Operator's correction (refines Section 2's framing)
+
+Operator audited designer 476 against the actual spirit-next code and surfaced a substantive critique. Their finding is **architecturally correct** and supersedes Section 2's framing.
+
+### The wire-path crash issue
+
+Section 2 proposed adding side-channel variants directly to `NexusOutput`. But the wire-path at `spirit-next/src/schema/lib.rs:1757` is `into_signal_output`, which only accepts `NexusOutput::Signal` and panics on anything else. A `NexusOutput::Stash` variant would crash on the existing path because `Signal` immediately converts the Nexus output into a Signal reply.
+
+### Operator's proposed shape (refined)
+
+The split: a typed Nexus decision/effect language with NexusDecision wrapping Signal/SEMA/Effect distinctly:
+
+```rust
+pub enum NexusDecision {
+    SemaWrite(SemaWriteInput),
+    SemaRead(SemaReadInput),
+    Signal(Output),         // ← only this exits to wire
+    Effect(NexusEffect),    // ← side effects re-enter Nexus
+}
+
+pub enum NexusEffect {
+    Stash(StashRequest),
+    Fanout(FanoutRequest),
+    Summarize(SummarizeRequest),
+    Drop(DropReport),
+    Enqueue(EnqueueRequest),
+    Preempt(PreemptRequest),
+    Cascade(CascadeRequest),
+}
+```
+
+### Why this is better than Section 2's framing
+
+The generated runner LOOPS: Nexus decides → runner executes SEMA + effect actions → completions re-enter Nexus → only `NexusDecision::Signal(Output)` exits to Signal for wire reply. This:
+- Preserves the existing wire path — `Signal` is the only exit variant; `into_signal_output` doesn't change.
+- Types side effects as first-class without pretending every side effect is a Signal reply.
+- Composes with Spirit 1419 (programmatic triad + tiny daemon main) — the runner is what the macro emits.
+
+### The Maximum ratification refined
+
+What's Maximum (per Spirit 1436 captured today):
+- The PRINCIPLE: Nexus has a schema-defined decision/effect language for non-SEMA decisions.
+- The SHAPE: NexusDecision wraps Signal + SEMA + Effect; NexusEffect carries side-channel variants.
+- The RUNTIME: runner-loop architecture with effect re-entry; only Signal exits to wire.
+
+What's NOT Maximum (operator's correction):
+- The exact variant list (Stash + Fanout + Summarize + Drop + Enqueue + Preempt + Cascade) — these are designer-side proposals at lower magnitude, refinable as evidence accrues per Spirit 1395 (developed interfaces).
+- The claim "no schema-rust-next changes are needed" — schema-rust-next DOES need changes to emit the runner-loop scaffolding + per-effect handler trait dispatch.
+
+### Implementation lean (per operator)
+
+Add a generated Nexus decision/effect runner + per-effect handler traits in schema-rust-next, then pilot `Stash` for slim observe results as the first effect implementation. The pilot proves the runner-loop shape on a single effect before generalizing.
+
+### Designer concurs
+
+Section 2's framing was too blunt — it conflated "Nexus output toward wire" with "what Nexus emits". Operator's split separates them cleanly. The four-component evidence in Section 3 (spirit/persona/orchestrate/introspect) still stands; the variant list still demonstrates the need; only the type-shape was wrong.
+
+The Maximum ratification ask is now refined per Spirit 1436. Sections 2-7 remain valid as motivation + evidence, with the understanding that the typed `NexusDecision` wraps the Signal/SEMA/Effect split and the side-channel variants live inside `NexusEffect`, not at the top-level NexusOutput.
+
 ## Cross-references
 
 - `reports/designer/466-triad-engine-honesty-situation-2026-06-01/3-overview.md` — the standout finding this escalation closes.
