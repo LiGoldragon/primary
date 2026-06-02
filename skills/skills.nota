@@ -19,6 +19,8 @@
     [Prose as craft.])
   (Role assistant skills/assistant.md Apex
     [Personal-affairs support for the psyche.])
+  (Role counselor skills/counselor.md Apex
+    [Personal-affairs advisory for the psyche, working with the assistant lane.])
 
   (Architecture component-triad skills/component-triad.md Apex
     [Daemon + thin CLI + signal-* contract. Signal/Nexus/SEMA runtime triad and async mail flow.])
@@ -47,6 +49,8 @@
     [Full English words. The offender table.])
   (Craft secrets skills/secrets.md Keystroke
     [An agent never sees a secret value. gopass wraps env-vars in the user session; sops-nix carries secrets to cluster hosts; bridge stores ciphertext-to-ciphertext; verify by length and exit code, never by reading.])
+  (Craft privacy skills/privacy.md Keystroke
+    [Private personal-affairs work stays out of ordinary public workspace surfaces; private repositories require explicit owning-psyche authority before access.])
   (Craft workspace-vocabulary skills/workspace-vocabulary.md Topic
     [Canonical glossary for load-bearing workspace terms. main/next, Persona, engine_manager — predecessors, scope, when-to-use.])
   (Craft beauty skills/beauty.md Keystroke

@@ -8,7 +8,7 @@ plus its main role's skill, and nothing else lane-specific.*
 
 (Per `intent/persona.nota` 2026-05-22, intent ID 147 in
 spirit-v0.1.1.) A **role** (designer, operator, system-operator,
-poet, assistant) names a discipline. Each role has **one agent**: one
+poet, assistant, counselor) names a discipline. Each role has **one agent**: one
 persistent cryptographic identity, one shared persona-mind state,
 one ongoing body of signed work. **Lanes are windows into that
 agent.** When the workspace runs `designer` and `second-designer`
@@ -41,7 +41,7 @@ Per psyche 2026-05-27 (spirit record 920, Maximum): the prior
 
 | Shape | Meaning | Examples |
 |---|---|---|
-| `<role>` | The role's main lane | `designer`, `operator`, `poet`, `system-operator`, `assistant` |
+| `<role>` | The role's main lane | `designer`, `operator`, `poet`, `system-operator`, `assistant`, `counselor` |
 | `second-<role>`, `third-<role>`, `fourth-<role>` | Additional parallel windows on the same role's agent | `second-designer`, `third-designer`, `second-operator` |
 | `<qualifier>-<role>` | Specialized lane with a scope-qualifying prefix | `system-operator`, `cluster-operator`, `pi-operator`, `cloud-operator`, `cloud-designer`, `nota-designer`, `system-designer` |
 
@@ -191,7 +191,8 @@ Whatever lane you're claiming, the reading list is two skills:
    `pi-operator` / `cluster-operator` / `cloud-operator` /
    `second-operator` is `operator`; for `system-operator` it's
    its own discipline file; for `poet` lanes it's `poet`; for
-   `assistant` lanes it's `assistant`; etc.
+   `assistant` lanes it's `assistant`; for `counselor` lanes it's
+   `counselor`; etc.
 
 Then claim under your lane's identifier:
 
@@ -244,7 +245,8 @@ there are.
   `skills/operator.md`,
   `skills/system-operator.md`,
   `skills/poet.md`,
-  `skills/assistant.md` — the five main role skills. Every lane under
+  `skills/assistant.md`,
+  `skills/counselor.md` — the six main role skills. Every lane under
   one of these inherits its discipline.
 - this workspace's `ESSENCE.md` §"Efficiency of instruction" — the
   one-canonical-home principle that this skill realises.

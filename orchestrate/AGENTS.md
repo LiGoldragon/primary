@@ -15,7 +15,7 @@ BEADS is shared coordination state while it exists, not a lockable scope.
 
 ## Roles
 
-The workspace organises work under **five main roles**, each carrying its
+The workspace organises work under **six main roles**, each carrying its
 own discipline. Additional **lanes** — `second-<role>`, `third-<role>`,
 and qualified lanes like `<qualifier>-<role>` — share their main role's
 discipline, skill file, and beads label; only the lock file, report
@@ -42,6 +42,7 @@ set of lanes is enumerated below.
 | `system-operator` | system-operator | (any) | `orchestrate/system-operator.lock` | `reports/system-operator/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
 | `poet` | poet | (any) | `orchestrate/poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
 | `assistant` | assistant | Pi | `orchestrate/assistant.lock` | `reports/assistant/` | Personal-affairs support for the psyche |
+| `counselor` | counselor | Claude | `orchestrate/counselor.lock` | `reports/counselor/` | Personal-affairs advisory for the psyche, working with the assistant lane |
 
 The "Default agent" column is convenience labelling for the lock file, not a
 binding. Any agent may take any lane; the main role determines scope
@@ -164,7 +165,7 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 `<role>` is one of `operator`, `second-operator`, `pi-operator`,
 `cluster-operator`, `cloud-operator`, `designer`, `second-designer`,
 `third-designer`, `system-designer`, `nota-designer`, `cloud-designer`,
-`system-operator`, `poet`, or `assistant`.
+`system-operator`, `poet`, `assistant`, or `counselor`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
@@ -366,12 +367,15 @@ Convention: each role owns a subdirectory.
 - `reports/nota-designer/` — nota designer's reports (specialized designer lane).
 - `reports/cloud-designer/` — cloud designer's reports (specialized designer lane).
 - `reports/poet/` — poet's reports.
-- `reports/assistant/` — assistant's reports.
+- `reports/assistant/` — assistant's privacy-safe bootstrap/mechanism reports; personal-affairs substance goes in `private-repos/assistant-reports/`.
+- `reports/counselor/` — counselor's privacy-safe bootstrap/mechanism reports; personal-affairs substance goes in `private-repos/counselor-reports/`.
 
 Each role writes only into its own role subdirectory. Other roles may
-**read** any report freely; if they want to **build on** another role's
-report, they rewrite the relevant content in a new report inside their own
-subdirectory rather than editing the original.
+**read** any public report freely; if they want to **build on** another
+role's public report, they rewrite the relevant content in a new report
+inside their own subdirectory rather than editing the original. Private
+assistant/counselor report repositories are not public report lanes and
+require the access gate in `skills/privacy.md` before even reading.
 
 The role subdirectories are *permanently owned* by their role. The lock is
 always implied by the lane itself, not by a line in `<role>.lock`. Treating

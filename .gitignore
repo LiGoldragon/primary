@@ -1,6 +1,9 @@
 # Primary workspace local index
 /repos/
 
+# Private role repositories — local checkouts/symlinks only, never tracked here
+/private-repos/
+
 # jj colocated repository metadata
 .jj/
 

@@ -44,6 +44,23 @@ Additional validation:
 - `xdg-open file:///git/github.com/LiGoldragon/spirit-next/src/engine.rs` now goes through `handlr`, selects `emacsclient.desktop` from the `text/rust` default, and exits successfully.
 - Pushed `github:LiGoldragon/CriomOS/main` still evaluates through `lojix-cli FullOs ... Eval`.
 
+## Follow-up — VSCodium as default editor when enabled
+
+Per Spirit record 1450, when VSCodium is enabled in the active CriomOS-home profile, it is the default editor for file-opening links and editor MIME handling for now.
+
+Additional commits:
+
+- CriomOS-home `de18823635e9` — `home: make VSCodium default editor when enabled`.
+- CriomOS `94328542906e` — `system: repin CriomOS-home for VSCodium editor default`.
+
+Additional validation:
+
+- Home was activated on `ouranos`.
+- `handlr get text/rust`, `handlr get text/markdown`, and `handlr get text/plain` now return `codium.desktop`.
+- `xdg-mime query default text/rust` and `xdg-mime query default text/markdown` now return `codium.desktop`.
+- `xdg-open file:///git/github.com/LiGoldragon/spirit-next/src/engine.rs` now goes through `handlr`, selects `codium.desktop`, and launches `codium` with the Rust source file.
+- Pushed `github:LiGoldragon/CriomOS/main` evaluates through `lojix-cli FullOs ... Eval`.
+
 ## Note
 
-This fixes opening the file URI without the chooser. Jump-to-line is a separate emitter issue: a `file://` URI from Pi opens the file, while editor-specific line jumps require links such as a `vscodium://file/...:line` style URI or an editor-aware emitter.
+This fixes opening the file URI without the chooser and makes VSCodium the active default. Jump-to-line is a separate emitter issue: a `file://` URI from Pi opens the file, while editor-specific line jumps require links such as a `vscodium://file/...:line` style URI or an editor-aware emitter.

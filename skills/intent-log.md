@@ -75,9 +75,20 @@ short-term-log substrate may eventually capture all prompts and agent
 inferences for historical review; until that exists, the intent
 layer is reserved for material with significant intent content.
 
+## Privacy gate before recording
+
+Before any ordinary Spirit `Record`, classify whether the content is
+public or private. Personal-affairs substance, private life context,
+sensitive plans, health, relationships, finances, identity material,
+and anything the psyche frames as private does **not** go into ordinary
+Spirit. Record only privacy-safe meta-policy in ordinary Spirit. Until
+a private Spirit substrate exists, private intent becomes a `Private
+intent` note in the relevant private report repository per
+`skills/privacy.md`.
+
 ## When to record
 
-Record every psyche statement that classifies as intent — the five
+Record every public psyche statement that classifies as intent — the five
 recordable kinds:
 
 | Kind | Author shape |
@@ -88,8 +99,8 @@ recordable kinds:
 | `Clarification` | "when I said X, I meant Y" |
 | `Constraint` | "never do Z" |
 
-**Record everything that classifies as intent — no filtering
-at capture time.** *"Just write down the intent as it comes."*
+**Record everything public that classifies as intent — no filtering
+at capture time except the privacy gate above.** *"Just write down the intent as it comes."*
 Repetition is itself signal: when the psyche restates an intent
 across sessions, the cluster of records carries the intensity.
 The workspace does not dedup or filter at the log layer.
@@ -320,10 +331,12 @@ prophylactically; split when the surface earns it.
 
 ## Recording is the first task of every psyche-prompt turn
 
-When a psyche prompt arrives, **capturing intent through Spirit is the
-absolute first thing the agent does** — before editing a report,
-before writing code, before responding in chat. Everything else the
-prompt asked for is downstream of intent.
+When a psyche prompt arrives, **capturing intent through the right
+intent substrate is the absolute first thing the agent does** — before
+editing a report, before writing code, before responding in chat.
+Everything else the prompt asked for is downstream of intent. Public
+intent goes through ordinary Spirit; private personal substance follows
+`skills/privacy.md` instead of ordinary Spirit.
 
 The session-turn shape:
 
@@ -331,9 +344,11 @@ The session-turn shape:
 2. Identify every intent statement — Decision, Principle,
    Correction, Clarification, Constraint. A single prompt often
    contains several across multiple topics.
-3. For each: record the entry through `spirit` (or run the
+3. For each public entry: record it through `spirit` (or run the
    supersession protocol if it contradicts a prior — see
-   `skills/intent-maintenance.md`).
+   `skills/intent-maintenance.md`). For private personal substance,
+   write a `Private intent` note in the matching private report repo
+   until private Spirit exists.
 4. If Spirit is unavailable, stop and surface the blocker. Do not
    revive file logging silently.
 5. *Now* do the work the psyche asked for (report, code, etc.).

@@ -21,6 +21,7 @@ cloud-designer
 system-operator
 poet
 assistant
+counselor
 "#;
 
 fn lane(token: &str) -> Lane {
@@ -299,6 +300,7 @@ fn status_lists_every_lane_in_registry_order() {
             lane("system-operator"),
             lane("poet"),
             lane("assistant"),
+            lane("counselor"),
         ]
     );
     let operator_status = report

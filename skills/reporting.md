@@ -27,7 +27,10 @@ The two media have different audiences:
 If your output would be more than a few lines of substance,
 **write a report** in the appropriate `reports/<role>/`
 subdirectory. The report is the durable artifact other agents
-will read.
+will read. Private personal-affairs substance is the exception:
+assistant/counselor private reports go in
+`private-repos/<role>-reports/`, and public reports carry only
+privacy-safe mechanism or status.
 
 Then write the **chat reply for the user, with full context
 inline**. Don't reduce it to a path pointer when the user has

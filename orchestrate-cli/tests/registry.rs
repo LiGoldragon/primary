@@ -19,6 +19,7 @@ cloud-designer
 system-operator
 poet
 assistant
+counselor
 "#;
 
 fn lane(token: &str) -> Lane {
@@ -46,6 +47,7 @@ fn parses_all_lanes_in_order() {
             lane("system-operator"),
             lane("poet"),
             lane("assistant"),
+            lane("counselor"),
         ]
     );
 }
@@ -100,6 +102,6 @@ fn peer_lanes_exclude_self() {
     let registry = LaneRegistry::parse(SAMPLE_REGISTRY).expect("registry parse");
     let operator = lane("operator");
     let peers: Vec<Lane> = registry.peer_lanes(&operator).collect();
-    assert_eq!(peers.len(), 13);
+    assert_eq!(peers.len(), 14);
     assert!(!peers.contains(&operator));
 }
