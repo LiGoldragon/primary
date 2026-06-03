@@ -32,6 +32,14 @@ assistant/counselor private reports go in
 `private-repos/<role>-reports/`, and public reports carry only
 privacy-safe mechanism or status.
 
+Reports are role-owned and **exempt from the orchestration claim
+flow**. Creating, editing, correcting, superseding, or deleting a
+report in your own lane does not require claiming `/home/li/primary`,
+`reports/`, or the report path. The lane's report subdirectory is the
+implied write lock. If the same work also changes shared workspace
+files — skills, `AGENTS.md`, repo `INTENT.md`, schemas, code — claim
+those non-report paths for the shared edits.
+
 Then write the **chat reply for the user, with full context
 inline**. Don't reduce it to a path pointer when the user has
 something to attend to — see §"What goes in chat when a report
@@ -307,20 +315,19 @@ follows the question, not the medium.
 
 ## Where reports live
 
-Each role owns a subdirectory under `~/primary/reports/`:
+Each lane owns a subdirectory under `~/primary/reports/`:
+`reports/operator/`, `reports/second-operator/`,
+`reports/pi-operator/`, `reports/designer/`,
+`reports/second-designer/`, `reports/system-operator/`,
+`reports/system-designer/`, `reports/poet/`, and the other lanes
+listed in `orchestrate/AGENTS.md`.
 
-- `reports/operator/`
-- `reports/operator-assistant/`
-- `reports/designer/`
-- `reports/designer-assistant/`
-- `reports/system-operator/`
-- `reports/poet/`
-- `reports/poet-assistant/`
-
-These are **exempt from the claim/release flow** — agents
-write reports without coordinating a lock. Each role
-writes only into its own role subdirectory; reading any
-other role's reports is free.
+These are **exempt from the claim/release flow**. Agents write reports
+without coordinating a lock because the lane's report subdirectory is
+the implied write lock. Do not claim `/home/li/primary`, `reports/`, or
+the report path just to create, edit, correct, supersede, or delete a
+report in your own lane. Each lane writes only into its own report
+subdirectory; reading any public role report is free.
 
 If you want to **build on** another role's report, rewrite
 the relevant content in a new report inside your own
@@ -825,6 +832,12 @@ it before the YAML decision.
 Per Spirit 1558 (Decision High, 2026-06-03): [Default behavior — when something changes in context that would correct a fresh-in-context report (a report the agent just wrote or is actively engaged with), the agent EDITS the report directly rather than narrating I should edit this report. Action over narration. Applies whenever the correction is clearly indicated by something in the conversation and the report is fresh enough that the agent still holds its context.]
 
 When the conversation reveals a correction that bears on a report the agent just wrote or is actively engaged with, the agent edits the report in the same turn — not later, not in a follow-up commit, not as a queued task. Saying *"I should edit X to reflect Y"* is the failure mode this rule eliminates. The agent has the context; the agent has the file open or readily accessible; the agent has the correction in working memory. The edit is the action.
+
+Do not turn this report edit into a claim-flow event. Fresh-in-context
+report edits stay inside the role-owned report lane; claiming the
+primary workspace just to edit a report is the mistake this rule must
+not create. Claim only if the correction also changes shared
+non-report files.
 
 The rule applies when all three hold:
 

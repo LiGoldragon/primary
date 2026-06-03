@@ -71,6 +71,11 @@ One surface is written without claiming a lock:
 
 - **Reports.** Each role writes only into its own `reports/<role>/`
   subdirectory; subdirs don't overlap, so no coordination is needed.
+  Do not claim `/home/li/primary`, `reports/`, or a role report path
+  just to create, edit, correct, supersede, or delete a report in your
+  own lane. If the same task also edits shared files — skills,
+  `AGENTS.md`, repo `INTENT.md`, code, schemas — claim those shared
+  paths for the non-report edits.
 
 Intent capture is no longer a file append surface. Recording psyche
 intent goes through the deployed `spirit` CLI per `skills/intent-log.md`
@@ -350,7 +355,9 @@ remotes and storage.
 The `reports/` directory is **exempt from the claim/release flow** because
 reports are already partitioned by role lane. Each role's report subdirectory
 is its implied write lock. Do not claim report paths in your own lane, and do
-not add your own report files to a lock file.
+not add your own report files to a lock file. This includes fresh report
+corrections and context-maintenance edits: the report lane itself is the lock.
+Claim only the shared non-report surfaces touched by the same work.
 
 Convention: each role owns a subdirectory.
 

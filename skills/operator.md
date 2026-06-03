@@ -16,7 +16,10 @@ and the system needs to actually run.
 Claim it through
 `tools/orchestrate claim operator <paths> -- <reason>`
 before editing source files in operator's lane. Reports go
-in `reports/operator/` and are exempt from the claim flow.
+in `reports/operator/` and are exempt from the claim flow:
+do not claim the primary workspace just to create, edit,
+correct, supersede, or delete an operator report. Claim only
+the shared non-report paths touched by the same work.
 
 The role name is the discipline. *Operator* names the kind
 of attention the work demands — attention to the running
@@ -73,8 +76,7 @@ The operator does **not** own:
   surface. Operator may bump a flake input that affects a
   consumer, but the deployment chain is system
   specialist's.
-- **Prose-as-craft in essays** — poet's and poet-assistant's
-  surface.
+- **Prose-as-craft in essays** — poet lane surface.
 
 When in doubt about a contested file, the load-bearing
 question is: *is this a structural decision (designer) or
@@ -288,7 +290,7 @@ lands**. When designer produces a report, architecture edit, or
 contract sketch that names an implementation path, treat it as the
 next spec surface:
 
-- Read the newest relevant designer and designer-assistant reports
+- Read the newest relevant designer-lane reports
   before editing code.
 - Extract the falsifiable pieces: contract records, runtime
   paths, state transitions, failure cases, and witness tests.
@@ -557,38 +559,40 @@ landing**. Cross-version rebuild + cutover stays with
 operator (and cluster-operator); designer doesn't push to
 production.
 
-## Working with operator's assistant lanes
+## Working with additional operator lanes
 
-`operator-assistant` and `second-operator-assistant` are additional
-lanes under the operator-discipline pool. They share this skill's
+`second-operator`, `pi-operator`, `cluster-operator`,
+`cloud-operator`, and other qualified operator lanes are additional
+capacity under the operator-discipline pool. They share this skill's
 discipline, required reading, owned area, and beads label; only the
 lock file, report subdirectory, and claim string differ per lane. The
-mechanism is canonical in `skills/role-lanes.md`.
+retired `*-assistant` suffix is not used. The mechanism is canonical
+in `skills/role-lanes.md`.
 
-Operator uses assistant lanes when implementation work can split into
+Operator uses additional lanes when implementation work can split into
 disjoint claimed paths: one crate migration, one test backfill, one
 audit pass, one dependency bump, one report response. Each lane
 claims its own scopes, commits and pushes its own logical changes,
 and writes reports in its own report lane. Operator remains
-responsible for the implementation thread it owns — assistant lanes
+responsible for the implementation thread it owns — additional lanes
 are parallel capacity, not hidden edits under the operator lock.
 
 On high-risk paths (Persona's message plane, central mind state,
 signal contracts, sema storage, actor topology, Nix
 deployment-affecting changes), the default shape is operator first
-pass, assistant-lane review. The review checks `skills/testing.md`
+pass, additional-lane review. The review checks `skills/testing.md`
 compliance, architectural-truth witnesses rather than only behavior
 tests, no string dispatch where a closed enum belongs, no free-function
 or ZST method-holder drift, no public fields on wrapper newtypes, and
 repo `ARCHITECTURE.md` / `skills.md` still matching the shipped shape.
 
-Take implementation slices in an assistant lane only when the design
+Take implementation slices in an additional lane only when the design
 is settled — mechanical, path-disjoint tasks: one crate in a rename
 sweep, one closed-enum migration, one test backfill, one repo-local
 doc drift fix. If the work needs a design judgment, stop and report
 instead of deciding inside the implementation pass.
 
-When operator and assistant lanes touch adjacent code, all agents
+When operator and additional lanes touch adjacent code, all agents
 read the same designer report or BEADS task, name their path
 boundaries explicitly, and avoid overlapping claims.
 
@@ -680,7 +684,7 @@ you were missing.
   discipline.
 - this workspace's `skills/autonomous-agent.md` — how to
   act on routine obstacles.
-- this workspace's `skills/role-lanes.md` — how assistant lanes
+- this workspace's `skills/role-lanes.md` — how additional lanes
   stack under a main role.
 - this workspace's `skills/designer.md`,
   `skills/system-operator.md`, `skills/poet.md` — sister
