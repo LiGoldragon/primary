@@ -16,6 +16,14 @@ Spirit records 1504 and 1505 sharpened the maintenance/runtime boundary:
 - Context maintenance must repair stale examples in existing reports, not only append a newer synthesis.
 - The default trace recording path stays nonfatal and silent; callers that need delivery proof use `record_result`.
 
+Spirit records 1512-1514 settle the decisions surfaced in designer 487:
+
+- no daemon-side `println!` or `eprintln!` trace fallback; observation goes
+  through typed tracing/logging;
+- trace enablement must be documented explicitly per case;
+- the generic CLI trace-siting path belongs in `triad-runtime`, not as a
+  schema-rust-next emitter mixin or component-local template.
+
 ## Current Implementation
 
 The reusable trace client now lives in `triad-runtime`:
@@ -72,6 +80,11 @@ println!("{output}");
 trace_client.print_events(&mut std::io::stdout())?;
 ```
 
+This is now the chosen generic-client direction, not merely one option among
+the alternatives from designer 487: `triad-runtime` owns the reusable trace
+client helper; schema emission owns the typed trace vocabulary and adapters;
+component CLIs stay thin.
+
 ## Runtime Shape
 
 ```mermaid
@@ -91,6 +104,11 @@ flowchart LR
 The daemon emits binary `TraceEvent` archives only. The CLI receives typed events and prints generated NOTA only at the display boundary. A future introspect/trace client can reuse `TraceClient::events()` and write the same typed events into a SEMA store instead of printing.
 
 The runtime default trace sink is also silent on delivery failure. This keeps runtime trace mechanics from producing string fallback logs before the client boundary while preserving `record_result` as the explicit test/assertion API.
+
+Trace enablement is explicit per case. Lean packages do not collect traces;
+trace-enabled daemons emit only binary trace frames; trace-enabled clients
+render generated NOTA or forward typed events into a trace/introspect SEMA
+store; trace-of-trace stays disabled until its recursion policy is designed.
 
 ## Proofs
 
@@ -122,7 +140,10 @@ Verification passed:
 - `triad-runtime` `b4e494dd`: keeps default trace recording silent and leaves delivery assertion to `record_result`.
 - `schema-rust-next` `56328360`: documents the emitter target for generated `TraceEventFrame` and NOTA display adapters.
 - `spirit-next` `e6a3a70d`: renders trace client events as generated NOTA and tightens the process-boundary witness.
-- `primary` context repair: updates `skills/context-maintenance.md`, operator 291, and this meta-report so stale string-display examples no longer survive as live guidance.
+- `primary` context repair: updates `skills/context-maintenance.md`,
+  `skills/component-triad.md`, operator 291, and this meta-report so stale
+  string-display examples no longer survive as live guidance and the per-case
+  trace enablement rule is explicit.
 
 ## Remaining Work
 

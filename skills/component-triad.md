@@ -439,6 +439,34 @@ inter-component boundary is a triad violation in the same shape as
 NOTA on a daemon socket would be (Invariant 2 above forbids it from
 the daemon side; this section names the workspace-wide form).
 
+## Trace enablement is explicit per case
+
+Trace is a typed observability interface, not an implicit runtime side
+effect. Each component documents which trace case it is building:
+
+- **Lean daemon / lean CLI.** No trace socket is configured and no trace
+  events are collected or rendered. This is the ordinary production
+  package shape.
+- **Trace-enabled daemon.** The daemon may emit binary rkyv trace frames
+  over a typed trace socket. It still does not parse or render NOTA, and
+  it never prints trace fallback text with `println!` or `eprintln!`.
+  Observation happens through the trace/logging mechanism itself.
+- **Trace-enabled CLI or text client.** The client uses the generic
+  `triad-runtime` trace client helper to collect typed events and then
+  either renders those events as generated NOTA at the user boundary or
+  hands them to a SEMA-backed trace/introspect store. The component CLI
+  stays a thin wrapper around that reusable client behavior.
+- **Trace interface itself.** Do not trace the trace interface by
+  default. Trace-of-trace is a separate recursion policy and must be
+  designed explicitly before it is enabled.
+
+Schema emission owns the closed trace vocabulary and default engine
+hooks. `triad-runtime` owns the reusable trace client/listener/log
+mechanics. Component code supplies only domain behavior and, where
+needed, a typed sink choice. Do not re-open the old alternatives where
+each daemon hand-writes trace listener logic or where schema-rust emits
+component-local client glue that should be a shared runtime helper.
+
 ## Build configuration is itself a NOTA struct
 
 Per Spirit 1348 (Decision Maximum, 2026-06-01): **build configuration

@@ -177,8 +177,10 @@ For every generated `TraceEvent`, schema-rust-next emits:
 
 - `impl triad_runtime::trace::TraceEventFrame for TraceEvent`, using the same
   rkyv archive/decode body now hand-written in `spirit-next/src/trace.rs:9-20`.
-- `impl Display for TraceEvent`, rendering through `TraceEvent::name()`, as now
-  hand-written in `spirit-next/src/trace.rs:22-25`.
+- `impl Display for TraceEvent`, rendering through the generated NOTA encoder,
+  plus `impl FromStr for TraceEvent` through the generated NOTA decoder.
+  `TraceEvent::name()` remains only a compact inspection/test helper, not the
+  client display surface.
 
 That lets a component delete its local `src/trace.rs` except possibly for
 public type aliases. If type aliases are still useful, the generator can emit:
@@ -192,9 +194,12 @@ pub type TraceSocketListener = triad_runtime::trace::TraceSocketListener<TraceEv
 Those aliases belong in the generated schema module or a generated
 `trace_runtime` module, not hand-written component source.
 
-### Generic text client
+### Generic text client through `triad-runtime`
 
-`triad-runtime` should own a generic client object over the generated traits:
+Spirit 1514 chooses the generic CLI trace-siting path: the reusable client
+helper lives in `triad-runtime`, not as a schema-rust-next emitter mixin and not
+as per-component CLI code. `triad-runtime` should own a generic client object
+over the generated traits:
 
 - request root: `FromStr` under the text-client feature;
 - reply root: `Display` under the text-client feature;
@@ -219,6 +224,12 @@ Intent 1495 says daemons avoid NOTA and strings; it does not prohibit clients
 from parsing NOTA. So the generic client lives at the text boundary and remains
 feature-gated. The daemon path remains binary configuration plus binary Signal
 frames.
+
+Trace enablement is per case, not global. Lean packages collect no trace;
+trace-enabled daemon packages may emit binary trace frames but never print
+fallback strings; trace-enabled clients render typed trace events as generated
+NOTA or store them through a trace/introspect SEMA surface; the trace interface
+itself remains untraced unless a future recursion policy explicitly enables it.
 
 ### Generated help/documentation data
 
