@@ -820,6 +820,61 @@ matter. The older italicised one-liner `*Kind: Design · Topics:
 …*` is also retired — the workspace had already drifted away from
 it before the YAML decision.
 
+## Editing fresh-in-context reports — act, don't narrate
+
+Per Spirit 1558 (Decision High, 2026-06-03): [Default behavior — when something changes in context that would correct a fresh-in-context report (a report the agent just wrote or is actively engaged with), the agent EDITS the report directly rather than narrating I should edit this report. Action over narration. Applies whenever the correction is clearly indicated by something in the conversation and the report is fresh enough that the agent still holds its context.]
+
+When the conversation reveals a correction that bears on a report the agent just wrote or is actively engaged with, the agent edits the report in the same turn — not later, not in a follow-up commit, not as a queued task. Saying *"I should edit X to reflect Y"* is the failure mode this rule eliminates. The agent has the context; the agent has the file open or readily accessible; the agent has the correction in working memory. The edit is the action.
+
+The rule applies when all three hold:
+
+- The report is **fresh in context** — the agent wrote it this session or is actively reading it, so the agent still holds the report's reasoning.
+- The correction is **clearly indicated** — something specific in the conversation (psyche statement, operator finding, code observation) names what's wrong.
+- The edit is **scoped** — the change is local to a paragraph or section, not a rewrite that would mean redoing the whole report.
+
+When any of these fails — the report is old and out of immediate context, the correction is speculative, the change would mean rewriting the report — the right move is to flag the report for a follow-up rather than edit blind.
+
+### Versioning committed reports — uncommitted edits in place, major committed edits get v-renames
+
+Per Spirit 1559 (Decision High, 2026-06-03): [Report versioning discipline — if a report has NOT been committed yet, edit in place freely. If a report HAS been committed and the edit is major (substantive reframing, recommendation reversal, large rewrite), rename to a versioned filename like 493-v2-..., 493-v3-..., and so on. Minor corrections to committed reports can edit in place; major corrections get a versioned successor so commit history preserves the prior version intact.]
+
+The decision table:
+
+| Report state | Edit size | Action |
+|---|---|---|
+| Uncommitted | any | Edit in place. No rename. |
+| Committed | minor (typo, citation fix, paragraph refinement) | Edit in place. Commit the refinement. |
+| Committed | major (substantive reframing, recommendation reversal, large rewrite) | Rename to `<N>-v2-<rest>.md`, edit the renamed file. The prior `<N>-<rest>.md` retires (delete or supersede). |
+| Committed | uncertain whether major | Default to in-place edit + flag in commit message; promote to v-rename if the edit grew during writing. |
+
+The `-v2-` segment goes immediately after the report number, before the variant or topic. Examples:
+
+- `reports/designer/493-Design-schema-header-namespace-resolution-2026-06-03.md` →
+- `reports/designer/493-v2-Design-schema-header-namespace-resolution-2026-06-04.md`
+
+For meta-report sub-files, the `-v2-` segment goes after the sub-file slot number:
+
+- `reports/designer/487-.../2-help-namespace-design.md` →
+- `reports/designer/487-.../2-v2-help-namespace-design.md`
+
+The commit message names the supersession: `designer 493 → 493-v2: <one-line reason>`. The git history preserves the prior version intact; readers grepping for `493-` find both, and the `-v2-` segment makes the supersession discoverable without opening either file.
+
+The threshold for major is a judgment call. Signals that an edit is major:
+
+- The recommendation changes direction (was Path B, now Path A).
+- A section is removed wholesale or a new section is added at the structural level.
+- The report's headline finding is reframed.
+- More than ~30% of the body changes.
+
+Minor signals:
+
+- A code excerpt is corrected.
+- A citation is added or refined.
+- A paragraph is tightened or expanded.
+- A typo is fixed.
+
+When uncertain, the conservative path is in-place edit with a clear commit message naming the change. The v-rename is for edits substantial enough that a reader of the prior version would benefit from seeing both side by side.
+
 ## Hygiene — soft cap, supersession, periodic review
 
 A role's `reports/` subdirectory is a working surface, not

@@ -46,7 +46,7 @@ The pattern that repeats: every variant carries an explicit payload type whose n
 
 ## The rewrite
 
-Header items become bare PascalCase names; each is a newtype defined in the namespace that wraps the payload type. The newtype lowering rule operator landed at 295 (`AssembledStructBody::lower_type` collapsing single-field bodies to newtypes) plus the type-table variant resolution rule at Spirit 1468 (bare PascalCase variant in header looks up the namespace) compose cleanly:
+Header items become bare PascalCase names; each is a namespace entry that binds the verb-name to its payload type. The type-table variant resolution rule at Spirit 1468 (bare PascalCase variant in header looks up the namespace) governs the source layer, and the lowering distinguishes two namespace-entry shapes at the Rust emission layer — see §"The Rust emission distinction" below for the refinement that addresses the nested-wrapper-construction smell operator surfaced at Spirit 1557.
 
 ```
 {}
@@ -148,18 +148,76 @@ Three things change at the source level.
 
 First, the Input and Output root enum bodies become bare-name lists. `[Record Observe Lookup Count Remove LookupStash]` is now a vector of variant signatures resolved through the namespace — `Record` is a typed variant whose payload comes from the namespace entry `Record Entry`. The reader's pass 2 looks up each header name and binds the variant to its namespace type.
 
-Second, every header verb gets its own namespace entry as a newtype over its payload. `Record Entry` declares the newtype `Record(Entry)`. The single-field lowering rule operator landed at 295 (`AssembledStructBody::lower_type` collapses single-field bodies to `Newtype`) applies uniformly — these aren't single-field structs, they're declarations whose RHS is a type reference, which lowers to a newtype declaration directly. The Rust emission then produces:
+Second, every header verb gets its own namespace entry binding the verb-name to its payload type. `Record Entry` is a bare aliasing entry — no struct body, no field name, just `Name TypeReference`. These bare aliasing entries lower to **Rust type aliases**, not newtypes — see §"The Rust emission distinction" below for why this matters and for the genuine-newtype case it's distinguished from.
+
+## The Rust emission distinction — bare aliases vs struct bodies
+
+This refinement addresses the nested-wrapper-construction smell operator surfaced at Spirit 1557: [repeated nested variant-wrapper construction in code, such as Output::Rejected wrapping Rejected wrapping SignalRejection, indicates bad design or a missing logic/emission layer; generated APIs should not force callers to hand-write that repetition.] An earlier draft of this report proposed lowering every namespace entry to a newtype, which produced `Output::Rejected(Rejected(SignalRejection { ... }))` at call sites. That's the bad design Spirit 1557 names.
+
+The clean distinction is at the source-language layer. The schema-next `SyntaxDeclaration` at `syntax.rs:70-75` already tags two kinds of declarations:
+
+- `Alias(SyntaxReference)` — a bare aliasing entry. The source is `Name TypeRef` with no struct body. Example: `Record Entry`, `Rejected SignalRejection`, `Topic String`, `RecordIdentifier Integer`.
+- `Struct(SyntaxStructDeclaration)` — a declaration with an explicit struct body. The source is `Name { field Type ... }` with one or more fields. Example: `TraceEvent { object_name ObjectName }`, `Entry { Topics * Kind * Description * Magnitude * Privacy * }`.
+
+The lowering at Rust emission distinguishes these:
+
+- Bare aliasing entries (`Alias(...)`) lower to **Rust type aliases**: `pub type Record = Entry;`, `pub type Rejected = SignalRejection;`. The exported name lives — consumers can `use spirit_next_signal::Record;` and the SymbolPath identity is preserved for Help / NotaConfig / trace surfaces. But at the Rust type level Record IS Entry, so `Input::Record(some_entry)` constructs without ceremony because there's no distinct type to wrap.
+- Struct-body entries (`Struct(...)`) keep the newtype lowering operator landed at 295 for single-field cases — `TraceEvent { object_name: ObjectName }` stays `pub struct TraceEvent(pub ObjectName);` because the source explicitly wrote a struct body, and the field name was load-bearing enough to author. Multi-field struct bodies lower to named structs, unchanged.
+
+So the Rust emission for the rewritten schema becomes:
 
 ```rust
-pub struct Record(pub Entry);
-pub struct Observe(pub Query);
-pub struct Lookup(pub RecordIdentifier);
-pub struct Count(pub Query);
-pub struct Remove(pub RecordIdentifier);
-pub struct LookupStash(pub StashHandle);
+// Bare aliasing entries → Rust type aliases
+pub type Record = Entry;
+pub type Observe = Query;
+pub type Lookup = RecordIdentifier;
+pub type Count = Query;
+pub type Remove = RecordIdentifier;
+pub type LookupStash = StashHandle;
+
+pub type RecordAccepted = SemaReceipt;
+pub type RecordsObserved = ObservedRecords;
+pub type Rejected = SignalRejection;
+// ... etc
+
+// Generated Input / Output enums carry the underlying type directly
+pub enum Input {
+    Record(Entry),
+    Observe(Query),
+    Lookup(RecordIdentifier),
+    Count(Query),
+    Remove(RecordIdentifier),
+    LookupStash(StashHandle),
+}
+
+pub enum Output {
+    RecordAccepted(SemaReceipt),
+    RecordsObserved(ObservedRecords),
+    // ... etc
+    Rejected(SignalRejection),
+}
 ```
 
-Each newtype is a public exported type the spirit-next library exposes to its consumers. `RecordAccepted`, `RecordsObserved`, etc. follow the same pattern.
+Construction at call sites is one level of wrapping, not three:
+
+```rust
+let input = Input::Record(Entry {
+    topics: Topics(vec![...]),
+    kind: Kind::Decision,
+    ...
+});
+
+let output = Output::Rejected(SignalRejection {
+    validation_error: ValidationError::EmptyTopic,
+    database_marker: marker(0, 0),
+});
+```
+
+Consumers who want to construct a Rejected can also do `let r: Rejected = SignalRejection { ... };` — the alias works both directions.
+
+This refines the Spirit 1535 newtype-lowering rule's application boundary: the rule applies to **declarations with struct bodies** (where the field name carries domain meaning), not to bare aliasing entries (where the alias is just a renamed reference). Operator's slice at schema-rust-next implements the alias-vs-newtype branch in the emitter; the schema-next source layer doesn't need to change because the distinction already lives in `SyntaxDeclaration::Alias` vs `SyntaxDeclaration::Struct`.
+
+This composes with operator's planned constructor-ergonomic work for genuine newtypes. Where a newtype IS the right shape (struct-body declarations like `TraceEvent { object_name: ObjectName }`), operator's `Output::rejected(SignalRejection { ... })` style associated constructors still help by hiding the wrapper at construction. The alias-lowering removes the wrapper for bare aliases; the constructor sugar hides it for genuine newtypes. Both compose; both are needed.
 
 Third, SemaWriteInput and SemaReadInput collapse to bare-name lists too. `SemaWriteInput [Record Remove]` reuses the same `Record` and `Remove` namespace types the Input root uses — these are the same operations expressed at the SEMA write boundary. The repetition that the verbose form created (`(Record Entry)` in Input + `(Record Entry)` in SemaWriteInput) collapses to one declared type, one binding, two references.
 
