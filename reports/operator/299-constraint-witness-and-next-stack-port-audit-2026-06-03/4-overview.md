@@ -117,12 +117,18 @@ repos are clean and their `main` bookmarks now point at:
 - `signal-upgrade` commit `f863a8244429` — `schema: add generated upgrade signal roots`
 - `owner-signal-upgrade` commit `a85b20528e74` — `schema: add generated owner upgrade roots`
 
-The requested worker report file had not landed by the time this overview was
-updated:
+The worker report landed at:
 
 ```text
 reports/operator/299-constraint-witness-and-next-stack-port-audit-2026-06-03/3-upgrade-port-worker-report.md
 ```
+
+It records passing `cargo fmt`, `cargo test`, generated-schema Cargo
+witnesses, and Nix generated-schema freshness/test checks across all three
+repos. It also records the important scope boundary: generated roots are now
+present and tested, but the existing hand-written runtime dispatcher remains
+load-bearing until the next upgrade slice bridges or replaces it with generated
+Nexus/SEMA roots.
 
 ## Remaining Gaps
 
