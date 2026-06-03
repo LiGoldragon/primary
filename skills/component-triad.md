@@ -19,6 +19,12 @@ covers the repo triad below; the runtime triad gets its own section at
 the bottom of this file. Per psyche record 856; refined by record 964
 (Executor renamed to Nexus; all three planes are schema-driven).
 
+Runtime readability test: schema names the interface, generated Rust names the
+objects and traits, and handwritten code mostly matches typed input, makes the
+decision, calls the next typed interface, and returns typed output. If a daemon
+needs large handwritten plumbing to understand its own contract, the mechanism
+belongs in schema emission or shared runtime instead.
+
 ## The shape
 
 Every stateful capability is a triad of three repositories:

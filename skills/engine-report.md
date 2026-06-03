@@ -13,6 +13,11 @@ how a schema-derived/runtime engine currently works.
 standard measurement and presentation pass that makes the current code readable
 quickly.
 
+The report's main readability question: do the types name the work? Schema
+should name the interface; generated Rust should name the objects and traits;
+handwritten code should mostly match typed input, decide, call the next typed
+interface, and return typed output.
+
 ## Standard report sections
 
 An engine report carries:

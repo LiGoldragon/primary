@@ -13,6 +13,12 @@ The output is an analysis report, not a rewrite plan by default. Code beats
 architecture: every claim must say whether it is **hooked**, **stubbed**,
 **contract-only**, **conceptual**, or **stale**.
 
+Use the triad-engine readability test as a primary lens: the schema should
+name the interface; generated Rust should name the objects and traits; the
+handwritten code should mostly be real algorithm, typed forwarding, and typed
+return construction. Plumbing that repeats across components is a candidate for
+schema emission or shared runtime.
+
 ## Reading order
 
 1. Read workspace intent and coordination: `ESSENCE.md`,
