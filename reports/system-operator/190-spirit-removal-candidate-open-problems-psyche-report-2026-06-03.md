@@ -89,6 +89,58 @@ flowchart TB
     center --> shorthand
 ```
 
+## Reconciliation With Designer Report 57
+
+The designer meta-report
+`reports/system-designer/57-spirit-engine-variant-and-collect-vision-2026-06-03/`
+adds important nuance to this report.
+
+```mermaid
+flowchart LR
+    d57["Designer 57<br/>variant + collect + defaults"]
+    op189["Operator 189<br/>implemented collection"]
+    op190["This report<br/>open problems"]
+
+    d57 -->|"Reading B: combined archive-then-retract is acceptable"| op190
+    op189 -->|"source and tests prove combined handler"| op190
+    d57 -->|"small record includes daemon time"| op190
+    d57 -->|"RecordDefault is still missing as wire root"| op190
+    d57 -->|"deployment cutover remains external bottleneck"| op190
+```
+
+Agreement:
+
+- Designer 57 and operator 189 both converge on Reading B: the current
+  combined archive-then-retract handler is acceptable if the operation is
+  documented as a maintenance sweep, not a pure read.
+- Designer 57 and this report agree that live deployment is still a
+  separate problem.
+- Designer 57 and this report agree that `RecordDefault` and the broader
+  shorthand ladder are not implemented as signal roots.
+
+Correction to this report's emphasis:
+
+- Designer 57 treats daemon-stamped date/time in the small archive record
+  as part of the directed target shape, not merely a nice-to-have. This
+  report therefore upgrades "archive material may be too small" from a
+  soft improvement to a pre-deploy correction.
+
+Additional decisions imported from Designer 57:
+
+- **File target semantics.** Current code uses create-or-truncate file
+  behavior. The open policy choice is whether Spirit should create a
+  missing archive file or fail-fast unless the archive path already
+  exists. The implementation currently chooses create-or-truncate.
+- **RecordDefault privacy override.** `Entry::open` defaults privacy to
+  `Zero`; the wire-level `RecordDefault` twin must decide whether callers
+  can override privacy or must fall back to full `Record`.
+- **Small-record privacy field.** The directed list omitted privacy, but
+  existing `RecordSummary` includes privacy. If the archive record drops
+  privacy, downstream tools lose the access classification at collection
+  time.
+- **Witness-test style.** Designer 57 wants the source/deploy gap tested
+  explicitly, not assumed solved by unit tests.
+
 ## Problem 1 - Source Complete Is Not Live
 
 The production source is updated, but live usability depends on the
@@ -190,11 +242,18 @@ classDiagram
     RemovalArchiveRecord --> RecordSummary
 ```
 
-Recommendation: upgrade archive material to `RecordProvenance` now, or
-introduce `RemovalArchiveRecord` if collection time should also be
-recorded. I favor `RemovalArchiveRecord` only if we want a real archive
-receipt; otherwise `RecordProvenance` is enough and reuses existing
-contract vocabulary.
+Recommendation: upgrade archive material to include daemon-stamped
+date/time before deployment. Designer 57 makes this part of the intended
+small-record direction, so this should no longer be treated as optional
+polish. Use one of two shapes:
+
+- `RecordProvenance` if we only need the original daemon-stamped record
+  time and want to reuse existing vocabulary.
+- `RemovalArchiveRecord` if we also want collection time and a stronger
+  archive receipt.
+
+I now favor `RemovalArchiveRecord` only if collection time matters;
+otherwise `RecordProvenance` is the smaller correction.
 
 ## Problem 4 - True Stream Targets Are Not Implemented
 
@@ -348,19 +407,31 @@ First settle the schema-derived Spirit-next operation ladder, then bring
 back the minimal stable subset to production. Bead `primary-am9d` tracks
 this.
 
+Designer 57 adds one exception to that caution: `RecordDefault` is not an
+arbitrary shorthand from the large ladder. It is the wire-level twin of
+the already-existing `Entry::open` constructor, which defaults privacy to
+`Zero`. That makes `RecordDefault` a stronger candidate for production
+than the broader `Recent` / `Today` / `Lookup` read-shortcut family.
+
+Recommendation refined: implement `RecordDefault` before the broader
+ladder if the privacy override semantics are settled. Keep the larger
+read-shortcut family behind bead `primary-am9d`.
+
 ## Suggested Next Sequence
 
 ```mermaid
 flowchart TD
     A["1. Decide privacy/authority gate"]
     B["2. Upgrade archive payload to provenance or archive record"]
-    C["3. Add bounded collection limit"]
-    D["4. Update CriomOS-home pin and activate profile"]
-    E["5. Smoke-test live wrapper on disposable database"]
-    F["6. Mark command live in skills without deploy caveat"]
-    G["7. Later: shorthand ladder + true stream target design"]
+    C["3. Decide file target create/truncate vs fail-fast"]
+    D["4. Add bounded collection limit"]
+    E["5. Decide RecordDefault privacy override"]
+    F["6. Update CriomOS-home pin and activate profile"]
+    G["7. Smoke-test live wrapper on disposable database"]
+    H["8. Mark command live in skills without deploy caveat"]
+    I["9. Later: broader shorthand ladder + true stream target design"]
 
-    A --> B --> C --> D --> E --> F --> G
+    A --> B --> C --> D --> E --> F --> G --> H --> I
 ```
 
 My recommendation is:
@@ -369,9 +440,12 @@ My recommendation is:
    gate is settled.
 2. Upgrade archive material to include daemon-stamped date/time before
    first real use.
-3. Add a runtime collection limit.
-4. Deploy through CriomOS-home only after the above three are done.
-5. Leave stdout/stderr and the broad shorthand ladder for separate
+3. Decide whether archive file targets create/truncate or fail-fast.
+4. Add a runtime collection limit.
+5. Decide `RecordDefault` privacy override semantics if it ships in the
+   same slice.
+6. Deploy through CriomOS-home only after the above are done.
+7. Leave stdout/stderr and the broad shorthand ladder for separate
    follow-up work.
 
 ## Open Beads
@@ -393,6 +467,9 @@ would make before deployment are:
 2. provenance-rich archive material so removed records keep their
    daemon-stamped time.
 
-After those, the existing `Inline` and `File` target model is strong
-enough to use. True stream targets and named shorthand operations should
-remain separate follow-up slices.
+After those, decide file-target create/truncate semantics and add a
+bounded collection limit. The existing `Inline` and `File` target model
+is then strong enough to use. True stream targets should remain a
+separate follow-up slice. `RecordDefault` can ship earlier than the
+broader shorthand ladder because it is the wire-level twin of existing
+`Entry::open`, not just a convenience alias.
