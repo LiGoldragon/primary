@@ -222,6 +222,36 @@ NOTA language design lives in `repos/nota/INTENT.md`; emitter and
 decoder discipline lives in `repos/nota-codec/INTENT.md`. Full
 agent-side authoring discipline: `skills/nota-design.md`.
 
+## Authored data files prefer typed NOTA, by path convention
+
+Per psyche 2026-06-03 (intent record 1494): when the workspace
+writes data — anything that isn't user-facing prose — *it might
+as well just be in a NOTA vector of records.* A file's directory
+plus its predictable name fixes the expected root type by
+convention. *"Like config.nota in a certain type of directory has
+a certain type to it. So it expects a certain type in it by
+convention. So we decide what the convention is."* The root is
+usually a struct (single-record file) or a vector of records
+(multi-entry file), occasionally a top-level enum selection when
+the file picks one alternative from a closed choice.
+
+The convention turns each authored file into a typed object: the
+schema registry knows that `<repo>/spirit-daemon-config.nota` is a
+`SpiritDaemonConfiguration` struct, that `skills/skills.nota` is a
+`Vec<SkillEntry>`, that `intent/<topic>.nota` is a
+`Vec<IntentRecord>` (legacy). A typed loader reads the path,
+resolves the convention, decodes the file as the expected type,
+and fails loudly when the file doesn't match. No ad hoc parsing
+per file; no untyped scratch data accumulating.
+
+Daemons still receive binary on the wire (per §"NOTA is the
+universal embedding-safe payload" + the single-argument rule +
+intent record 1495). The convention applies to authored text files
+that tools, CLIs, and codegen inputs load — not to inter-component
+traffic.
+
+Sub-design: `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/3-nota-config-convention-design.md`.
+
 ## The Nix store is not a search surface
 
 Running `rg`, `grep`, `find`, `fd`, broad globs, or recursive
@@ -336,6 +366,77 @@ imports, lowering) lives in `repos/schema/INTENT.md`. Composer +
 wire-substrate intent lives in `repos/signal-frame/INTENT.md`.
 Actor-schema architecture for the spirit daemon lives in
 `repos/persona-spirit/INTENT.md`.
+
+## Tracing is its own typed schema-defined interface
+
+Per psyche 2026-06-03 (intent records 1489 High, 1490 Maximum,
+1491 High, 1492 Maximum): tracing is its own schema-defined
+interface with closed generated enum vocabularies — typed
+objects, typed events — not an ad hoc string log. Trace data
+remains typed all the way from daemon emission through the wire
+to the client; *string rendering happens only when a client or
+user-interface surface prints them.* The daemon emits binary
+trace frames; the CLI parses them into typed events and renders
+strings only at the display surface.
+
+Three consequences:
+
+- **Generated, not hand-rolled.** Schema-rust-next emits the
+  trace object names (`SignalObjectName`, `NexusObjectName`,
+  `SemaObjectName`, the umbrella `ObjectName`, and `TraceEvent`)
+  from the component's schema. The engine traits emit trace
+  default hooks at every actor boundary. Component code overrides
+  only the sink behavior; the trace vocabulary is schema-owned.
+- **Client-side trace handling is generic.** *"Client-side
+  tracing should be generated or generic from schema interface
+  definitions; the CLI should stay a thin client and should not
+  own component-specific trace logic beyond enabling or
+  displaying the generic trace surface."* The CLI is the
+  translation/display surface; the listener, frame decode, and
+  print path live in the shared runtime substrate or are emitted
+  from schema, not hand-written per component.
+- **No trace on trace, controlled per crate.** *"We wouldn't
+  have tracing enabled on tracing at all for now and no matter
+  what. So this tracing enablement has to be controlled per crate
+  I guess."* Production builds compile no trace logic; the
+  `testing-trace` feature compiles the trace hooks per crate. The
+  trace interface itself is never observed by tracing — the trace
+  system does not recursively trace its own events.
+
+Current implementation status (operator 291 + 292): triad-runtime
+owns reusable trace log/frame/socket/listener mechanics;
+schema-rust-next emits typed trace object names + engine trait
+default hooks + lifecycle hooks; spirit-next supplies the
+component-specific adapter (one `TraceEventFrame` impl + one
+`Display for TraceEvent` impl). The open work is generating the
+CLI/client trace adapter so the per-component adapter shrinks to
+zero. Audit: `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/1-trace-and-daemon-boundary-audit.md`.
+
+## Help and documentation are schema data in a mirror namespace
+
+Per psyche 2026-06-03 (intent record 1493): help and
+documentation belong inside the schema substrate as a mirror
+description namespace over the global symbol namespace. Every
+fully qualified symbol — type, variant, field, operation, route —
+has a slot in the mirror that carries its description. When the
+slot is empty, a default is generated from the symbol's schema
+declaration (humanized variant name, field-type-derived prose).
+*"This is where you generate the help, where you have all of the
+global namespace together. And if there's no entry for a certain
+symbol to get help from."*
+
+The mirror keeps help in the closed-language discipline: a
+`Description` is a typed bracket-string field on the description
+schema, not an ad hoc Rust doc comment. The rendering edge
+(CLI `Help` reply, generated documentation site) is the only
+place strings are emitted. This refines the older direction in
+component-triad.md §"Help operations — discovery through NOTA,
+not through flags" (Spirit 263 + 1396): the source of help text
+is now the schema description namespace, not Rust doc comments,
+though generated `Help` operations remain the discovery surface
+for clients.
+
+Design: `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/2-help-namespace-design.md`.
 
 ## Three schema types, three runtime planes
 

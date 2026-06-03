@@ -152,6 +152,19 @@ In priority order, when two conflict the earlier wins:
 4. **Beauty** — beauty in the operative sense: not pretty, but
    right. Ugliness is evidence the underlying problem is unsolved.
 
+## Strings only at the edges; the system is typed
+
+Data is typed end-to-end. Strings exist only at user-facing edges — the user-authored payload (the spirit intent description body, the text content a human directly wrote) and the user-facing display (CLI rendering, generated documentation, the line a human is meant to read). Everywhere else the system speaks typed values.
+
+The two edges concretely:
+
+- **The daemon edge.** Daemons receive binary signal-frame frames; they do not decode NOTA text. The client (CLI, tool, library consumer) parses NOTA into binary and renders typed replies back to text only at the display surface. The daemon itself never sees a string except a user-authored payload field.
+- **The trace edge.** Trace data is its own schema-defined interface with closed generated enum vocabularies — typed objects and typed events. The daemon emits binary trace frames; the client renders strings only when printing to a user-facing surface. Tracing is not an ad hoc string log; it is its own typed interface, and tracing of the tracing interface itself is not enabled.
+
+The discipline cascades: when help/documentation are needed, they too are schema data — a mirror description namespace over the global symbol namespace, with strings rendered only at the user-facing edge. When authored workspace data files are written, they prefer typed NOTA whose root type is fixed by file-path convention.
+
+This is the typing rule that makes the workspace introspectable. Strings are opaque to the type system; typed data is queryable, validated, evolvable. The principle specialises *"every typed boundary names exactly what flows through it"* (§"What I am building") to the daemon/client and runtime/display boundaries. Per psyche 2026-06-03 (intent records 1490 Maximum, 1492 Maximum, 1495 Maximum; supporting High/Medium: 1489, 1491, 1493, 1494).
+
 ## Persona is meta-AI; spirit animates
 
 Persona is a meta-AI system — the next evolutionary step in AI

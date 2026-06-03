@@ -139,6 +139,15 @@ Trigger a sweep when:
 - Major redesigns (the kind that generate `v2` reports) — the
   redesign's premises likely supersede earlier intents and need
   explicit psyche confirmation.
+- A context-maintenance pass discovers older intent clearly
+  contradicted by newer stronger intent. Per psyche 2026-06-03
+  (intent record 1496 Clarification Medium), context-maintenance
+  agents may audit even old intent for clear contradictions and
+  recommend removals or supersession, but **deletion from Spirit
+  remains reviewable and justified by the newer intent**. Propose;
+  do not execute unilaterally. The orchestrator (or psyche)
+  authorises removals after seeing the contradiction explicitly
+  named.
 
 How:
 

@@ -490,9 +490,24 @@ implementation, typed reply. No flags, no special parsing.
 
 The cleanest implementation direction is **auto-injection** via
 the `signal_channel!` macro — the macro emits the Help arm into
-every contract automatically, with help text derived from the
-existing Rust doc comments on operation variants. Every contract
-picks Help up on the next rebuild; no per-contract boilerplate.
+every contract automatically; every contract picks Help up on the
+next rebuild with no per-contract boilerplate.
+
+**Source of help text — refined by Spirit 1493 (2026-06-03,
+Principle High).** Help text comes from a **mirror description
+namespace** over the schema's global symbol namespace, not from
+Rust doc comments. Every fully qualified symbol — type, variant,
+field, operation, route — has a slot in the description namespace
+that carries its typed `Description` value. When a symbol's slot
+is empty, a default is generated from the symbol's schema
+declaration (humanized variant name, field-type-derived prose).
+Rust doc comments are agent-facing source documentation; help
+served to clients comes from the schema's description mirror.
+The earlier direction of deriving Help text from Rust doc
+comments (Spirit 263, 1396) is superseded as the source while
+the auto-injection mechanism stands.
+
+Sub-design and demo: `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/2-help-namespace-design.md`.
 
 ## Named carve-outs
 
