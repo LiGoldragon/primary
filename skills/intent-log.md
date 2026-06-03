@@ -397,32 +397,55 @@ earlier one, the recorded entry might need supersession.
 
 ## Citing intent in prose — bracket-quote the summary
 
-Per psyche 2026-06-03 (Spirit 1522 + 1526): *"Reference intent
+Per psyche 2026-06-03 (Spirit 1522 + 1526): [Reference intent
 records in prose markdown by quoting the description summary
 literally as bracketed text — the bracketed form IS the citation
 — not by the record number alone. Repetition reinforces intent:
 the number is an opaque address, the substance is what's
 load-bearing. Especially in psyche-facing reports, and wherever
 an intent is central to a document, quote it literally in a
-prominent place. Applies to all agents."*
+prominent place. Applies to all agents.]
+
+Per psyche 2026-06-03 (Spirit 1533 Correction Maximum): [The
+bracket-quote citation discipline means LITERAL bracketed text in
+square brackets — not italicized plus double-quoted approximation.
+Markdown handles `[bracketed text]` cleanly; the only edge case is
+link syntax which requires zero-space `[text](url)`. The form
+prescribed is the literal bracket form.]
 
 Wrong shape (number-only citation):
 
 > Per Spirit 1487, lifecycle hooks land on the engine traits.
 
-Right shape (bracket-quoted summary IS the citation):
+Wrong shape (italicized double-quote approximation, what some
+agents drifted to):
 
 > Per Spirit 1487 (Decision High): *"Generated Signal, Nexus, and
 > SEMA engine traits should carry minimal lifecycle hooks:
 > on_start and on_stop with typed start and stop failure
 > results."*
 
+Right shape (literal bracketed text IS the citation):
+
+> Per Spirit 1487 (Decision High): [Generated Signal, Nexus, and
+> SEMA engine traits should carry minimal lifecycle hooks:
+> on_start and on_stop with typed start and stop failure
+> results.]
+
+The brackets are the citation marker; no italics, no double quotes.
 The number remains as an address for the reader who wants to look
-up the record; the bracket-quoted substance is what the cite
-carries forward into the document. Repetition of the substance
-across documents reinforces the intent layer's authority — a
-reader following the citation chain encounters the load-bearing
-words at each link, not just numeric pointers.
+up the record; the bracketed substance is what the cite carries
+forward into the document. Repetition of the substance across
+documents reinforces the intent layer's authority — a reader
+following the citation chain encounters the load-bearing words at
+each link, not just numeric pointers.
+
+Markdown rendering note: `[text] (Spirit N)` with a space between
+the closing bracket and the parenthetical renders as bracketed
+text followed by the parenthetical. The only form that triggers
+link syntax is `[text](url)` with no space — easy to avoid.
+Brackets are safe in CommonMark, GitHub Flavored Markdown, VS Code
+preview, and Obsidian.
 
 Apply this discipline especially in:
 
