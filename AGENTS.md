@@ -181,7 +181,7 @@ yet — those land when the role's shape settles.
 - **Component triad means daemon + working signal + policy signal.**
   The three triad repositories are `<component>` (daemon/runtime,
   with its bundled thin CLI), `signal-<component>` (ordinary
-  working signal), and `owner-signal-<component>` (owner-only policy
+  working signal), and `meta-signal-<component>` (owner-only policy
   signal). The CLI is the daemon's first client, not a triad leg.
   **Signal types** are the data types in either signal contract.
   **Signal tree** means the whole schema shape: operation roots,

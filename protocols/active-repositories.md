@@ -43,7 +43,7 @@ stack.
 | `owner-signal-version-handover` | `/git/github.com/LiGoldragon/owner-signal-version-handover` | Owner-only administrative signal contract for version handover authority: force selector flip, rollback, and quarantine. |
 | `upgrade` | `/git/github.com/LiGoldragon/upgrade` | Upgrade triad runtime scaffold. Target home for schema/version migration orchestration, handover driver code, and the thin `upgrade` CLI plus `upgrade-daemon`. |
 | `signal-upgrade` | `/git/github.com/LiGoldragon/signal-upgrade` | Ordinary upgrade contract scaffold. Target merger home for sema-upgrade inspection/planning/migration and version-handover working traffic. |
-| `owner-signal-upgrade` | `/git/github.com/LiGoldragon/owner-signal-upgrade` | Owner-only upgrade contract scaffold. Target merger home for upgrade administration, selector control, rollback, and quarantine. |
+| `meta-signal-upgrade` | `/git/github.com/LiGoldragon/meta-signal-upgrade` | Owner-only upgrade meta-signal contract scaffold. Target merger home for upgrade administration, selector control, rollback, and quarantine. |
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. It is being redirected away from universal request verbs; public contracts own contract-local operation roots. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
 | `owner-signal-persona` | `/git/github.com/LiGoldragon/owner-signal-persona` | Owner-only Persona engine-manager contract: launch, retire, start, stop, and status query. |

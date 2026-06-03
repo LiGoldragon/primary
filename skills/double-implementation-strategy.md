@@ -80,7 +80,7 @@ Designer:
 | Prefix / suffix | Lane | Lifetime | Example |
 |---|---|---|---|
 | `-next` | operator | Long (graduates to canonical name when stable) | `nota-next`, `spirit-next` |
-| `core-` | operator | Permanent (parallels `signal-` for privileged contracts) | `core-signal-spirit` |
+| `meta-signal-` | operator | Permanent (parallels `signal-` for privileged contracts) | `meta-signal-spirit` |
 | no prefix / new name | operator | Permanent | `spirit`, `signal-spirit` |
 | `design-` | designer | Short (delete after integration) | `design-nota-core`, `design-asschema` |
 

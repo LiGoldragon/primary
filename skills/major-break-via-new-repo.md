@@ -133,7 +133,7 @@ reaching the workspace see TWO repos side-by-side:
 
 Per `component-triad.md`: if the new repo IS a daemon, it has a triad
 shape (`<name>-next` daemon + `signal-<name>-next` working signal +
-`core-signal-<name>-next` policy signal — or, more commonly, just
+`meta-signal-<name>-next` policy signal — or, more commonly, just
 the daemon repo first because contracts live in the existing signal
 repos until the daemon's contract surface settles).
 

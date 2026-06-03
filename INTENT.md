@@ -712,7 +712,7 @@ objects. The consequence binds every component: same mail
 substrate, same lifecycle hooks, same database-marker
 propagation. Full discipline: §"Signal protocol — universal mail
 mechanism" above; per-repo realisations in `signal-frame`,
-`spirit-next`, `spirit`, `signal-spirit`, `core-signal-spirit`.
+`spirit-next`, `spirit`, `signal-spirit`, `meta-signal-spirit`.
 Skill: `skills/component-triad.md` §"Runtime triad" plus
 `skills/push-not-pull.md`.
 

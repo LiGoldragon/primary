@@ -11,7 +11,7 @@ The workspace uses "triad" in two senses; both apply at different layers.
 
 | Triad | Scope | Members |
 |---|---|---|
-| **Repo triad** (this skill) | Packaging — how a component is laid out across repositories | `<component>` + `signal-<component>` + `core-signal-<component>` |
+| **Repo triad** (this skill) | Packaging — how a component is laid out across repositories | `<component>` + `signal-<component>` + `meta-signal-<component>` |
 | **Runtime triad** | Logic — what happens INSIDE the daemon (three schema-driven planes) | **Signal** + **Nexus** + **SEMA** |
 
 The runtime triad lives INSIDE the `<component>` daemon repo. This skill
@@ -39,9 +39,9 @@ signal-<component>/               ordinary wire vocabulary
   schema/lib.schema               schema-derived ordinary signal
   src/schema/*.rs                 generated signal types
   tests/round_trip.rs             rkyv + NOTA round-trips
-owner-signal-<component>/         owner-only authority/configuration vocabulary
-  schema/lib.schema               schema-derived owner signal
-  src/schema/*.rs                 generated owner signal types
+meta-signal-<component>/          owner-only authority/configuration vocabulary
+  schema/lib.schema               schema-derived meta signal
+  src/schema/*.rs                 generated meta signal types
   tests/round_trip.rs             rkyv + NOTA round-trips
 ```
 
@@ -149,11 +149,11 @@ Use these words consistently:
 
 - **Component triad** — `<component>` runtime repo plus two signal
   contract repos: `signal-<component>` and
-  `owner-signal-<component>`.
+  `meta-signal-<component>`.
 - **Working signal** / **working contract** —
   `signal-<component>`, the ordinary peer-callable contract.
-- **Policy signal** / **owner contract** —
-  `owner-signal-<component>`, the owner-only authority and
+- **Policy signal** / **meta-signal contract** —
+  `meta-signal-<component>`, the owner-only authority and
   configuration contract.
 - **Signal types** — the schema-generated data types declared in
   either signal contract: operation roots, payload records, replies,
@@ -165,9 +165,9 @@ Use these words consistently:
   right logic separation.
 - **Policy state** — daemon-owned durable rules/configuration,
   bootstrapped once from `bootstrap-policy.nota` and then changed
-  only through owner-signal authority.
+  only through meta-signal authority.
 - **Working state** — daemon-owned durable operational records
-  produced by ordinary operation, with owner-signal mutations only
+  produced by ordinary operation, with meta-signal mutations only
   where owner authority is required.
 
 Names in signal types are architecture. If a contract name feels
@@ -270,7 +270,7 @@ the triad:
 
 - **`signal-<component>`** — ordinary peer surface. Variants here are
   callable by any authenticated peer.
-- **`owner-signal-<component>`** — owner-only authority/configuration
+- **`meta-signal-<component>`** — owner-only authority/configuration
   surface. Variants here are callable only by the component's owner
   (the entity above it in the workspace's owner graph — e.g., mind
   owns orchestrate; orchestrate owns router and harness).
@@ -281,32 +281,28 @@ enforce the owner socket as an OS security boundary; same-UID prototype
 is for author-only development.
 
 **Contracts split by who-can-call, not by what-state-they-touch.**
-Variants in the owner contract are owner-only; variants in the
+Variants in the meta-signal contract are owner-only; variants in the
 ordinary contract are peer-callable. *Both contracts can carry
 `Mutate` variants* against any kind of state — what places a variant
 in one contract rather than the other is whether the caller needs
 owner authority. A peer-callable `Mutate` (peer mutates a record they
 own, like releasing their own claim) lives in the ordinary contract;
 an owner-only `Mutate` (mind orders orchestrate to spawn an agent)
-lives in the owner contract.
+lives in the meta-signal contract.
 
 The two surfaces ship together. A daemon with only the ordinary
 surface is not yet triad-shaped — the next implementation arc for any
 component must deliver both. Privileged mutable configuration enters
-through the owner-signal actor; there is no separate privileged side
-channel and no "static local config first, owner-signal later"
+through the meta-signal actor; there is no separate privileged side
+channel and no "static local config first, meta-signal later"
 implementation path.
 
-**Proposed rename: `owner-signal` → `meta-signal`.** Per Spirit
-records 290 + 299, the psyche prefers `meta-signal` over
-`owner-signal` for the policy contract name. The rename is
-**tentative direction, not a completed vocabulary change** —
-record 293 explicitly directs that `owner-signal` remains the
-active naming convention until an explicit rename pass lands.
-Continue using `owner-signal-<component>` in new repos, ARCH
-files, and code; do not pre-rename. When the rename lands, the
-cascade resembles the persona- prefix removal (Spirit record 280)
-and lands as its own coordinated bead.
+**`meta-signal` is the canonical policy-contract prefix.** The
+workspace-wide rename from `owner-signal-*` to `meta-signal-*` is
+active and ratified; new repos, ARCH files, skills, code, and schema
+identities use `meta-signal-<component>`. Legacy `owner-signal-*`
+and `core-signal-*` names are migration leftovers to retire through
+coordinated rename slices, not names to copy into new work.
 
 ### 5. Policy state and working state — both in one sema-engine DB
 
@@ -316,8 +312,7 @@ both living in the same `<component>.redb` opened through
 
 **Policy state** — the rules the daemon enforces.
 - Source of truth: the daemon's sema tables, after bootstrap.
-- How it changes: only owner-signal `Mutate` verbs (variants in the
-  owner contract).
+- How it changes: only meta-signal `Mutate` verbs.
 - First-start population: from `bootstrap-policy.nota` in the
   component's repo. The daemon reads this file exactly once — on first
   start, when the policy tables are empty — writes the declared
@@ -347,7 +342,7 @@ per component; two categories of table within.
 
 This invariant settles a recurring design question: *"how does the
 daemon get its config on first start?"* The answer is bootstrap-once
-from a declared NOTA file in the repo; thereafter, owner Mutate is
+from a declared NOTA file in the repo; thereafter, meta-signal Mutate is
 the only path. The bootstrap file is a one-shot seed, not source-of-
 truth.
 
@@ -365,7 +360,7 @@ truth.
 | `<component>-owner-socket-mode-matches-spawn-envelope` | 4 |
 | `<component>-policy-tables-empty-on-first-start-trigger-bootstrap` | 5 |
 | `<component>-bootstrap-runs-exactly-once` | 5 |
-| `<component>-policy-changes-after-bootstrap-only-via-owner-signal` | 5 |
+| `<component>-policy-changes-after-bootstrap-only-via-meta-signal` | 5 |
 | `<component>-working-tables-never-read-bootstrap-file` | 5 |
 | `<component>-binary-rejects-flag-style-arguments` | argument rule below |
 
@@ -392,7 +387,7 @@ the contract's NOTA schema is the only source of truth for what
 arguments mean.
 
 For the CLI: the argument is a NOTA request record matching one of
-the request variants in the component's ordinary or owner contract.
+the request variants in the component's ordinary or meta-signal contract.
 
 For the daemon: the argument is a NOTA config record naming the
 daemon's identity, socket paths, redb path, and the path to its
@@ -601,7 +596,7 @@ The index reads as the daemon's literal catalogue: adding a module
 is a single-file edit; no dynamic loading, no `Box<dyn Trait>`, no
 inventory crate, no plugin protocol. Owner-side policy (which
 dispatches are enabled or blocked) is the daemon's overlay on top:
-the index says "what the binary knows how to do," the owner-signal
+the index says "what the binary knows how to do," the meta-signal
 vocabulary says "what the binary is permitted to do."
 
 ## Authority chain — worked example
