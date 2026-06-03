@@ -109,6 +109,16 @@ an inline description — humans don't have a CLI in their head.
 The full discipline: `skills/reporting.md` and
 `skills/report-naming.md`.
 
+Engine situation reports are the standard way to make a runtime or
+schema-derived component quickly readable. They show component roles,
+production/generated/test/schema size, schema-to-code ratios, root
+interfaces, exact engine-trait signatures, live runtime paths, and
+witnesses that prove architecture is used rather than merely present.
+The discipline lives in `skills/engine-report.md`; inventory is useful,
+but live architecture claims require call-path, runtime, trace,
+process-boundary, database, type-system, or removal-breaks-behavior
+witnesses.
+
 ## Skills must not grow noisy
 
 Smart models can fill in blanks from good high-level guidance;

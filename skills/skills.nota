@@ -34,6 +34,8 @@
     [Tests that catch architectural drift, not just regression.])
   (Architecture engine-analysis skills/engine-analysis.md Topic
     [How to analyze daemon/engine internals — the planes-and-actors lens.])
+  (Architecture engine-report skills/engine-report.md Topic
+    [Standard engine situation reports: component ledgers, code/schema/generated size, interfaces, signatures, runtime paths, witnesses, and introspection tools.])
   (Architecture language-design skills/language-design.md Topic
     [Language-design discipline. Closed enums; structural beauty over ad-hoc strings; branches/leaves vocabulary for typed-record trees.])
   (Architecture library skills/library.md Topic
