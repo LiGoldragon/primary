@@ -222,6 +222,61 @@ NOTA language design lives in `repos/nota/INTENT.md`; emitter and
 decoder discipline lives in `repos/nota-codec/INTENT.md`. Full
 agent-side authoring discipline: `skills/nota-design.md`.
 
+## NOTA is a typed text user interface
+
+*"What's at the heart of NOTA is sort of a hack on the text user
+interface, using common sense, good patterns, beauty, and
+delimiters, and structure, typed structure. It's a typed language.
+So everything is read as a known type, which could have
+structurally different nodes at some points, because they're
+structure macro nodes, but it's still a known type in the data type
+theory. So we can reliably decode it if it's well-formatted, if
+it's valid."* Per psyche 2026-06-03 (intent record 1508 Maximum).
+
+NOTA's character as a typed language is the load-bearing property
+behind the workspace's NOTA-everywhere direction. The text surface
+is what humans and agents type; the typed-language guarantee is
+what makes it round-trip with the binary substrate (rkyv) reliably.
+Structure macro nodes — the extensibility mechanism that lets one
+parser cover new shapes — extend the typed vocabulary itself, so
+the macro extension is typed, the resulting node is typed, and
+decoding remains deterministic.
+
+## Symbols are paths through the schema namespace
+
+Per psyche 2026-06-03 (intent records 1506 Maximum, 1507 High):
+when an interface is defined, the enums and structs that create
+the root data structures collectively create a global namespace
+for symbols. Each typed symbol — type, variant, field, operation,
+route — has a fully qualified identity expressed as a **path**
+through that namespace. *"The fully-qualified-symbol-path
+mechanism … is the workspace's universal machine-readable symbol
+identity expressed through a text-user-interface form."*
+
+The mechanism is canonical, not per-design. When a new surface
+needs symbol identity, it uses the same SymbolPath rather than
+inventing a parallel vocabulary:
+
+- **Help / description namespace** (Spirit 1493 + designer 487.2)
+  keys descriptions by SymbolPath, with the default-generator
+  humanizing the path's terminal segment when no entry exists.
+- **NOTA config-by-convention** (Spirit 1494 + designer 487.3)
+  resolves a file path to a typed root via a registry keyed by
+  the convention's path pattern; the registered root type is
+  itself a SymbolPath.
+- **Trace identity** (Spirit 1492 + operator 291) names trace
+  events by the schema-defined path through the per-plane object
+  hierarchy (`SignalObjectName::Input(InputRoute::Record)`, etc.).
+- **Future surfaces** (introspection, schema-daemon upgrade,
+  inter-component request routing) inherit the same identity
+  mechanism — schema-emitted Rust types and NOTA renderings are
+  two projections of one underlying symbol-path identity space.
+
+The architectural manifestation discipline: when authoring a
+design or skill that uses symbol identity, call out that this is
+the canonical naming mechanism and reuse SymbolPath rather than
+invent a per-design convention.
+
 ## Authored data files prefer typed NOTA, by path convention
 
 Per psyche 2026-06-03 (intent record 1494): when the workspace

@@ -21,7 +21,7 @@ flowchart LR
   Runtime --> Cli
 ```
 
-`schema-rust-next` emits the typed trace vocabulary and default trait hooks. `spirit-next` overrides those hooks on real actor objects. `triad-runtime` owns the reusable trace log, frame, socket, and listener mechanics. The trace-enabled CLI can receive binary rkyv trace frames from the daemon and print names after the ordinary signal reply.
+`schema-rust-next` emits the typed trace vocabulary and default trait hooks. `spirit-next` overrides those hooks on real actor objects. `triad-runtime` owns the reusable trace log, frame, socket, and listener mechanics. The trace-enabled CLI can receive binary rkyv trace frames from the daemon and render generated NOTA trace events after the ordinary signal reply.
 
 The older designer 483 statement that `TraceLog` and socket transport were hand-written in `spirit-next` is stale. That support now lives in `triad-runtime`; `spirit-next` only supplies component-specific trace event archiving and hook overrides.
 
@@ -154,9 +154,7 @@ No step here is a positive grep proving only that a string appears in a file.
 
 ```rust
 pub fn record(&self, event: Event) {
-    if let Err(error) = self.record_result(event) {
-        eprintln!("triad-runtime trace: {error}");
-    }
+    let _ = self.record_result(event);
 }
 
 pub fn record_result(&self, event: Event) -> Result<(), TraceError> {
@@ -171,7 +169,9 @@ pub fn record_result(&self, event: Event) -> Result<(), TraceError> {
 }
 ```
 
-The default actor hook path stays non-fatal: tracing is observability, not the runtime contract. The fallible path is available for tests and any caller that wants to assert delivery.
+The default actor hook path stays non-fatal and silent: tracing is observability, not the runtime contract, and the runtime does not print string fallback logs before the client display boundary. The fallible path is available for tests and any caller that wants to assert delivery.
+
+Context-maintenance note: the earlier version of this report showed an `eprintln!("triad-runtime trace: {error}")` fallback in `record`. That example is retired by Spirit 1505 and `triad-runtime` commit `b4e494dd`; `record_result` is now the explicit assertion surface.
 
 `TraceSocketListener` also gained a count-bounded collector:
 

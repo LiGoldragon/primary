@@ -165,6 +165,18 @@ The discipline cascades: when help/documentation are needed, they too are schema
 
 This is the typing rule that makes the workspace introspectable. Strings are opaque to the type system; typed data is queryable, validated, evolvable. The principle specialises *"every typed boundary names exactly what flows through it"* (§"What I am building") to the daemon/client and runtime/display boundaries. Per psyche 2026-06-03 (intent records 1490 Maximum, 1492 Maximum, 1495 Maximum; supporting High/Medium: 1489, 1491, 1493, 1494).
 
+## NOTA is a typed text user interface
+
+NOTA is at heart a hack on the text user interface — common sense, good patterns, beauty, delimiters, and typed structure assembled into a text form humans and agents read and write directly. **NOTA is a typed language**: every expression is read as a known type in the data-type-theory sense. Structure macro nodes extend the vocabulary at certain positions and can carry structurally different shapes there, but *the macro extension is itself typed*, so the node still resolves to a known type. A well-formatted, valid NOTA expression decodes reliably to its declared types — typed-text reliability through a beautiful user-facing surface.
+
+This is the deeper rationale for the workspace's NOTA-everywhere direction. NOTA is not chosen for terseness or familiarity; it is chosen because the typed system gets a text projection that round-trips losslessly. Per psyche 2026-06-03 (intent record 1508 Maximum).
+
+## Symbols are paths through the schema namespace
+
+When an interface is defined, the enums and structs that create the root data structures collectively create a global namespace for symbols. Each typed symbol — type, variant, field, operation, route — has a fully qualified identity expressed as a **path** through that namespace. The path IS the symbol's name in the machine-readable form; NOTA renders the same path as text at user-facing edges. *"That fully qualified symbol identity, that symbol path."*
+
+The path mechanism is **canonical, not per-design**. When a new mechanism needs symbol identity — help/description namespace (Spirit 1493), NOTA config-by-convention (Spirit 1494), trace identity (Spirit 1492) — it uses the same SymbolPath, not an ad hoc convention. Schema-emitted Rust types and NOTA renderings are two projections of one underlying symbol-path identity space. Per psyche 2026-06-03 (intent records 1506 Maximum, 1507 High).
+
 ## Persona is meta-AI; spirit animates
 
 Persona is a meta-AI system — the next evolutionary step in AI

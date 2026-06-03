@@ -174,7 +174,13 @@ Land the substance in its right home, **not** in a catchall
 handover dump. Preferred order:
 
 1. **Existing reports on the same topic** — extend them with the
-   new substance. The handover happens in place.
+   new substance. The handover happens in place. When a report
+   contains stale illustrative code, diagrams, examples, or
+   recommendations that a newer implementation or intent capture
+   has invalidated, **rewrite that report section in place** or
+   explicitly mark it retired inside the report. A later synthesis
+   report is not enough; stale examples keep teaching agents the
+   old pattern when search lands on the older file.
 2. **Permanent docs** — inline as the rule, constraint, or
    invariant they actually are. Per
    `~/primary/skills/skill-editor.md` §"Skills never reference
@@ -316,6 +322,13 @@ arcs, or a lane is being retired.
   rationale, intermediate insight) and let the reframed parts
   drop. Waiting for a successor report before retiring is a smell
   — recent intent IS the supersession evidence.
+- **Leaving stale examples alive in older reports.** If a report
+  still shows old code as "current", "implemented", "recommended",
+  or "canonical", the maintenance pass is incomplete even if a
+  newer report corrects it. Search and agent recall will find the
+  stale example. Rewrite the example to the current shape, or
+  replace it with a short supersession note naming the current
+  implementation and landing.
 - **Retiring a report whose substance hasn't migrated.** Before
   dropping, confirm the load-bearing parts are captured elsewhere
   (an updated skill, an ARCH constraint, a successor report). If

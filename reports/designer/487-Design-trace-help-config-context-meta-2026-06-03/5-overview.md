@@ -68,7 +68,7 @@ flowchart LR
 
 Numbered for citation; magnitudes from the originating sub-agent.
 
-1. **(A.1) Remove daemon-side `eprintln!` fallback at `triad-runtime/src/trace.rs:176`?** Strict 1490 reading prefers silent swallow; operator 291 accepted it as observability fallback. Designer lean: keep (observability is part of the trace mechanism's own observability; the strict reading is also valid).
+1. **(A.1) Remove daemon-side `eprintln!` fallback at `triad-runtime/src/trace.rs:176`?** **ANSWERED by psyche** at Spirit 1505 (Correction High, 2026-06-03): **YES, remove.** *"The default trace recording path should not print string fallback logs from the runtime. Trace failures remain available through the fallible typed API for tests and callers that choose to assert delivery; the normal nonfatal path silently preserves the no-string-before-client boundary."* This becomes operator slice 0 (a tiny prelude before slice 1).
 2. **(A.2) Document per-crate trace enablement rule explicitly in `skills/component-triad.md`?** Yes (the rule is currently implicit in `testing-trace` Cargo feature usage; should be named).
 3. **(A.3) Choose path for generic CLI-side trace: A (schema-rust-next emitter mixin) vs B (`triad-runtime` helper, sub-agent A recommended) vs C (status quo)?** Designer lean: B + the Spirit 1501 library factoring. Combined recommendation = land library at `triad-runtime` first; promote to dedicated `signal-trace` crate if/when trace becomes its own contracted signal channel.
 4. **(A.4) Schedule `persona-spirit` migration to 1495-honoring shape, or defer to wider re-platform?** Designer lean: defer to wider re-platform; spirit-next is the production target.
@@ -83,6 +83,19 @@ Numbered for citation; magnitudes from the originating sub-agent.
 Two additional Spirit supersession items operator 292.1 flagged that this meta-report endorses:
 
 12. **(operator 292.1) Spirit 1347 supersession** — the "CLI is the log surface and no separate logging daemon or external log sink" wording is contradicted by 1500 + introspect direction; recommend asking the psyche for explicit supersession or narrowing.
+
+## Late captures and corrections (Spirit 1502-1508, after sub-agents returned)
+
+Three further developments after the sub-agents returned tighten or override findings in this report:
+
+- **Spirit 1502 Correction Maximum** — refines my 1499 Clarification: rendering trace events as NOTA at the client edge is a Correction (not just a Clarification) — using their generated NOTA surface, not ad hoc trace-name strings. My 1499 is subsumed by this stronger framing.
+- **Spirit 1503 Principle High** — combines my 1500 + 1501: trace client behavior belongs in a reusable client library that can enable NOTA display or SEMA-backed trace logging; CLI is a thin wrapper. Cleaner framing than my two-record split; recommend my 1500 + 1501 retire in favor of 1503 at the next maintenance pass.
+- **Spirit 1504 Correction Maximum** — corrects the context-maintenance pattern: *"audit the skill for clarity and rewrite or edit stale reports so they no longer preserve old or misleading examples as live guidance. Adding a new report without correcting stale reports is not sufficient."* Sub-agent 487.4 surveyed; this correction makes the orchestrator's execution of the 5 skill migrations + the 7 stale-report retirements (or edits) the active discipline, not deferred work.
+- **Spirit 1505 Correction High** — answers (A.1) above directly: remove the eprintln fallback. Becomes operator slice 0.
+- **Spirit 1506 Clarification Maximum + 1507 Principle High** — generalises sub-agent 487.2's SymbolPath: the fully-qualified-symbol-path mechanism is canonical and workspace-wide. Manifested into `ESSENCE.md` and `INTENT.md`.
+- **Spirit 1508 Clarification Maximum** — NOTA as typed text user interface, hack on the text UI, data-type-theory grounded. Manifested into `ESSENCE.md` and `INTENT.md`.
+
+The substrate ratification (Spirit 1486) and the 487 design directions remain unchanged. The corrections refine framing and the eprintln answer; the canonical-SymbolPath statement reinforces sub-agent B's design as the workspace template rather than a per-design choice.
 
 ## Operator slice sequence
 

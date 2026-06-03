@@ -11,6 +11,11 @@ Spirit records 1502 and 1503 sharpened the display edge:
 - Trace display at the client edge renders generated NOTA, not ad-hoc names.
 - Trace client behavior belongs in a reusable library that can either display typed events or hand them to a SEMA-backed trace/introspect store.
 
+Spirit records 1504 and 1505 sharpened the maintenance/runtime boundary:
+
+- Context maintenance must repair stale examples in existing reports, not only append a newer synthesis.
+- The default trace recording path stays nonfatal and silent; callers that need delivery proof use `record_result`.
+
 ## Current Implementation
 
 The reusable trace client now lives in `triad-runtime`:
@@ -85,6 +90,8 @@ flowchart LR
 
 The daemon emits binary `TraceEvent` archives only. The CLI receives typed events and prints generated NOTA only at the display boundary. A future introspect/trace client can reuse `TraceClient::events()` and write the same typed events into a SEMA store instead of printing.
 
+The runtime default trace sink is also silent on delivery failure. This keeps runtime trace mechanics from producing string fallback logs before the client boundary while preserving `record_result` as the explicit test/assertion API.
+
 ## Proofs
 
 `spirit-next` commit `e6a3a70d` changes the process-boundary test so each CLI trace line is parsed back into `TraceEvent` and round-tripped through `Display`:
@@ -112,8 +119,10 @@ Verification passed:
 ## Commits
 
 - `triad-runtime` `54991763`: documents the generated NOTA display boundary for component trace clients.
+- `triad-runtime` `b4e494dd`: keeps default trace recording silent and leaves delivery assertion to `record_result`.
 - `schema-rust-next` `56328360`: documents the emitter target for generated `TraceEventFrame` and NOTA display adapters.
 - `spirit-next` `e6a3a70d`: renders trace client events as generated NOTA and tightens the process-boundary witness.
+- `primary` context repair: updates `skills/context-maintenance.md`, operator 291, and this meta-report so stale string-display examples no longer survive as live guidance.
 
 ## Remaining Work
 

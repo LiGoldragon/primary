@@ -55,17 +55,19 @@ runtime floor:
 - `TraceSocketListener<Event>` owns Unix socket binding and event collection
   (`src/trace.rs:210-271`).
 - `TraceClient<Event>` owns client-side optional listener setup from an
-  environment variable and printing through `Display` at the client boundary
+  environment variable and printing through the component-supplied display
+  adapter at the client boundary
   (`src/trace.rs:64-70`, `src/trace.rs:273-321`).
 
 This is clean relative to intent 1490/1495: the runtime stays generic and
-binary; text rendering is only the client display edge.
+binary; text rendering is only the client display edge. In the current
+`spirit-next` adapter, that display edge renders generated NOTA.
 
 Remaining weakness: `TraceEventFrame` still requires each component to provide
-the tiny rkyv archive impl, and `TraceClient<Event>` requires `Display` for
-printing. That is acceptable as a transitional component-specific adapter, but
-the generated event type is already known enough for schema-rust-next to emit
-both impls automatically.
+the tiny rkyv archive impl, and `TraceClient<Event>` requires a display adapter
+for printing. That is acceptable as a transitional component-specific adapter,
+but the generated event type is already known enough for schema-rust-next to
+emit the rkyv frame impl plus the NOTA display/parse impls automatically.
 
 ### `schema-rust-next`: typed trace object names and route enums are generated
 
@@ -81,8 +83,8 @@ trace/interface support:
 - typed trace support emits per-plane object-name enums, umbrella
   `ObjectName`, and `TraceEvent` (`src/lib.rs:1265-1339`).
 - trace object-name rendering is still generated as a `name() -> &'static str`
-  method, with string rendering delayed until call sites use `name()`
-  (`src/lib.rs:1341-1385`).
+  method for tests and compact inspection (`src/lib.rs:1341-1385`), but the
+  client display target is now generated NOTA for the full `TraceEvent`.
 - generated engine traits include lifecycle hooks plus trace hooks/wrappers
   (`src/lib.rs:2140-2307`).
 
@@ -108,7 +110,8 @@ component adapter:
   (`src/trace.rs:3-7`).
 - `TraceEventFrame` is implemented by archiving/decoding the generated
   `TraceEvent` through rkyv (`src/trace.rs:9-20`).
-- `Display for TraceEvent` renders `self.name()` (`src/trace.rs:22-25`).
+- `Display for TraceEvent` renders generated NOTA, and `FromStr` parses that
+  NOTA back into `TraceEvent` (`src/trace.rs:21-35`).
 
 This is the right boundary, but it is mechanically derivable from the generated
 event type. It should become generated support rather than repeated per
@@ -258,22 +261,24 @@ The smallest useful slice is not the full `triad_main!`/`client_main!` system.
 It is a generated trace-client adapter slice that removes the last mechanical
 component-specific trace code while preserving the current runtime behavior.
 
-### Slice 1: generated `TraceEventFrame` + `Display`
+### Slice 1: generated `TraceEventFrame` + NOTA display/parse
 
 Implement in `schema-rust-next`:
 
 - extend `emit_trace_support` so after generated `TraceEvent` it emits:
   `impl triad_runtime::trace::TraceEventFrame for TraceEvent`;
-- emit `impl Display for TraceEvent` using `self.name()`;
+- emit `impl Display for TraceEvent` through the generated NOTA encoder and
+  `impl FromStr for TraceEvent` through the generated NOTA decoder;
 - feature-gate or dependency-gate this only for schemas/components that opt into
   trace runtime support, so non-trace components do not need `triad-runtime`;
 - add an emission test alongside
   `tests/emission.rs:438-455` proving generated `TraceEvent` archives through
-  the emitted trait and formats to the same name string.
+  the emitted trait, formats as canonical NOTA, and parses that NOTA back into
+  the same typed event.
 
 Then in `spirit-next`:
 
-- delete the hand-written `TraceEventFrame` and `Display` impls in
+- delete the hand-written `TraceEventFrame`, `Display`, and `FromStr` impls in
   `src/trace.rs`;
 - keep only aliases if needed, or replace uses with generated aliases;
 - run the existing `testing-trace` tests, especially
@@ -348,4 +353,3 @@ and existing `triad-runtime` trait.
 Do not start with route trace wiring either. The existing route object names
 are ready, but the generic client/trace adapter should land first so later
 route traces do not require more component-specific print/listen/test glue.
-
