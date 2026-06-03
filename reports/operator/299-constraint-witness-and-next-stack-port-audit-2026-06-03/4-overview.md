@@ -55,6 +55,30 @@ The new tests prove that shape both at compile/runtime type level and across the
 
 The `SymbolPath` slice addresses the highest-risk audit finding: symbol identity was still mostly prose. The path is now typed schema data and can become the shared key for trace names, help descriptions, and generated documentation without turning those systems into string tables.
 
+## Designer Follow-Up Audit
+
+Designer's follow-up audit verified the three alias commits and found the
+implementation exceeded the commit-message scope in a coherent way.
+
+Verified scope:
+
+- `schema-next` added `TypeDeclaration::Alias(AliasDeclaration { name, reference })`.
+- `schema-rust-next` emits aliases as `pub type` and avoids conflicting
+  alias-payload `From` impls.
+- `spirit-next` adopted the full schema header rewrite, not only direct alias
+  payload propagation.
+- Associated constructors such as `Output::rejected(...)` landed alongside
+  alias lowering, giving call sites a uniform ergonomic surface without wrapper
+  repetition.
+
+The archaeology note: the commit messages say "alias payload" and
+"alias-vs-newtype cleanup", but the actual slice also includes the full 493
+schema rewrite, ergonomic constructor emission, alias-aware `From` filtering,
+and per-repo intent/architecture manifestation. Future readers looking for
+"when did the schema header rewrite happen?" should look inside the
+`spirit-next` alias payload commit rather than expecting a separate
+header-rewrite commit.
+
 ## Verification
 
 Cargo verification passed:
