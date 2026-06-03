@@ -35,6 +35,23 @@ An engine report carries:
 8. **Tooling state.** Which introspection tools were used, what worked, what
    failed, and what should be installed or configured next.
 
+## Psyche-variant reports
+
+When the engine report is written for the psyche to read directly, it is a
+`Psyche` report in the `skills/reporting.md` sense. It starts from first
+principles before it names gaps:
+
+- what the engine is;
+- what the schema defines;
+- what Rust was generated from that schema;
+- what handwritten code remains;
+- what tests prove live use;
+- what still needs to move into schema emission or shared runtime code.
+
+Show the actual code for the important interfaces and paths, not only line
+counts. Quote central intent by its bracket-quoted summary per
+`skills/intent-log.md`; the record number is only the address.
+
 ## Measurement definitions
 
 - **Production Rust**: `src/**/*.rs`, excluding generated `src/schema/**`.
