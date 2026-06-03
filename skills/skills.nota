@@ -63,6 +63,8 @@
     [When to write a report vs answer in chat. Chat for user; reports for agents.])
   (Workflow report-naming skills/report-naming.md Mechanism
     [Basic report-naming + supersession discipline. Filename convention, -v2/v3 iteration, commit-before-delete. Smaller than skills/reporting.md; every agent needs this.])
+  (Workflow workspace-update-report skills/workspace-update-report.md Mechanism
+    [Recurring workspace update report variant. Surveys major workspace changes since the previous update report — files changed, intent captures, skill evolution, reports landed/retired, component state. Periodic synthesis the psyche reads to see direction across busy periods.])
   (Craft typed-records-over-flags skills/typed-records-over-flags.md Keystroke
     [Closed typed records over bool flags. Surface the variant set in the type system.])
   (Craft prose skills/prose.md Topic

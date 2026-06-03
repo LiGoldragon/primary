@@ -29,13 +29,14 @@ visuals, soft caps).*
   when a report landed; the filename does not repeat that.
 
 Report variant (`Psyche`, `Design`, `Audit`, `Research`,
-`Synthesis`, `Closeout`, `Handover`) belongs in the YAML front
-matter `variant:` field per `skills/reporting.md` §"Report header
-— YAML front matter", AND in the filename per Spirit 1481
-(Decision High): *"Report filename convention is
-reports/<role>/<N>-<Variant>-<topic>-<date>.md where <Variant> is
-a capitalized word naming the report kind. Every report has a
-variant."* The variant appears in both surfaces — the filename for
+`Synthesis`, `Closeout`, `Handover`, `Update`) belongs in the
+YAML front matter `variant:` field per `skills/reporting.md`
+§"Report header — YAML front matter", AND in the filename per
+Spirit 1481 (Decision High): *"Report filename convention is
+reports/<role>/<N>-<Variant>-<topic>-<date>.md where <Variant>
+is a capitalized word naming the report kind. Every report has a
+variant."* The `Update` variant is the recurring workspace
+update report per `skills/workspace-update-report.md`. The variant appears in both surfaces — the filename for
 filename-grep discoverability, the front matter for typed
 machine-readable metadata. The older guidance that variant
 belongs only in the header is retired.
