@@ -8,7 +8,7 @@ designer
 
 ## 1. What this report is
 
-You asked for context on the questions in 487's 5-overview. This report unpacks all of 487 in plain language — what the four sub-agents found, what each decision means, which decisions you have already ratified (Spirit 1505 + 1509-1511 from your recent messages), and which decisions remain open. Self-contained: you should not need to open the four sub-reports to engage.
+You asked for context on the questions in 487's 5-overview. This report unpacks all of 487 in plain language — what the four sub-agents found, what each decision means, which decisions you have ratified (Spirit 1505 + 1509 + 1510 — A.1 and A.2), which decisions are leaning-pending-more-context (A.3, Path B awaiting the §3a code you can now see), and which remain open. Self-contained: you should not need to open the four sub-reports to engage. Per Spirit 1515 (Principle Maximum, just now) this version shows actual code with surrounding context for the most important parts of the project; the earlier version of this report summarised as line counts and is superseded by this re-edit.
 
 Terse shorthand decoded:
 
@@ -43,15 +43,140 @@ flowchart LR
 
 **What it asked.** Does the current trace mechanism honor the new intent (Spirit 1489-1492 + 1495) — typed schema-defined interface, typed until client display, per-crate enablement, daemon free of NOTA and strings?
 
-**What it found.** The modern reference stack (`spirit-next` + `triad-runtime` + `schema-rust-next` emission) MOSTLY honors the new intent. Three of the four Spirit captures are fully honored; one has a single narrow exception (a daemon-side `eprintln!` at `triad-runtime/src/trace.rs:176` for trace-mechanism error fallback); one is honored on the modern stack but the deployed legacy `persona-spirit` daemon does NOT honor (legacy migration arc).
+**What it found.** The modern reference stack (`spirit-next` + `triad-runtime` + `schema-rust-next` emission) MOSTLY honors the new intent. Spirit 1492 (typed schema-defined trace interface) is HONORED. Spirit 1491 (per-crate enablement) is HONORED via the `testing-trace` Cargo feature. Spirit 1495 (daemon free of NOTA decoding) is HONORED on the modern stack; the deployed legacy `persona-spirit` daemon does NOT honor. Spirit 1490 (typed until display) is SUBSTANTIALLY HONORED with one narrow daemon-side exception (an `eprintln!` at `triad-runtime/src/trace.rs:176`).
 
-**The open question** is whether the CLI's per-component trace adapter (the ~5 lines of CLI wiring that exist hand-written in each component's CLI today) should be made generic. Sub-agent A proposes three paths and leans toward Path B (a helper on `triad-runtime`, `TraceCliSession<Event>`, ~10 lines).
+### 3a — The actual code under question
 
-**Sub-agent A's surfaced decisions (with your ratifications and remaining items):**
+**The current CLI-side trace wiring**, hand-written per component. From `/git/github.com/LiGoldragon/spirit-next/src/bin/spirit-next.rs:1-42`:
 
-- **A.1 — Remove the daemon-side `eprintln!` fallback?** ✅ **You ratified at Spirit 1509 (Constraint Maximum, just now)** + Spirit 1505 (Correction High, earlier today): *"There's no daemon-side printline. There shouldn't be. We observe through our own tracing and logging mechanism."* This becomes operator slice 0.
-- **A.2 — Document the per-crate trace enablement rule explicitly in `skills/component-triad.md`?** ✅ **You ratified at Spirit 1510 (Decision High, just now)**: *"Yep."* The rule is currently implicit in the `testing-trace` Cargo feature; it needs to be named in the discipline file.
-- **A.3 — Choose path for the generic CLI-side trace: Path A (schema-rust-next emitter mixin) vs Path B (triad-runtime helper) vs Path C (status quo)?** ✅ **You ratified Path B at Spirit 1511 (Decision High, just now)**: *"I would go with the triad runtime helper."* Path B composes cleanly with Spirit 1503 (operator-captured Principle High): the trace-client library lives in `triad-runtime` initially, with display + SEMA-log methods on `TraceClient<Event>`. The CLI is a thin wrapper.
+```rust
+use std::{env, fs, path::Path};
+
+use spirit_next::{Input, SignalTransport};
+
+#[cfg(feature = "testing-trace")]
+use spirit_next::TraceClient;
+#[cfg(feature = "testing-trace")]
+use std::time::Duration;
+
+// ... struct SpiritNextCli { arguments: Vec<String> } ...
+
+fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
+    let argument = self.single_argument()?;
+    let source = self.read_single_argument(argument)?;
+    let input = source.parse::<Input>()?;
+    let socket_path = env::var("SPIRIT_NEXT_SOCKET")
+        .unwrap_or_else(|_| String::from("/tmp/spirit-next.sock"));
+    #[cfg(feature = "testing-trace")]
+    let trace_client =
+        TraceClient::from_environment("SPIRIT_NEXT_TRACE_SOCKET", Duration::from_millis(200))?;
+    let (_route, output) = SignalTransport::connect(socket_path)?.exchange(&input)?;
+    println!("{output}");
+    #[cfg(feature = "testing-trace")]
+    trace_client.print_events(&mut std::io::stdout())?;
+    Ok(())
+}
+```
+
+The `testing-trace`-gated trace wiring (the substantive lines beyond the always-required exchange) is roughly five elements: two `#[cfg]`-gated imports (lines 5-8), the `TraceClient::from_environment(...)` setup binding the env var name and the collect duration (lines 34-36), and the `trace_client.print_events(&mut std::io::stdout())?` drain after the signal reply is printed (lines 39-40). Each component's CLI would repeat this same shape; only the env var name (`SPIRIT_NEXT_TRACE_SOCKET`) would change between `schema-daemon`, `introspect`, `persona`, etc.
+
+**The `TraceClient<Event>` type the CLI binds to**, from `/git/github.com/LiGoldragon/triad-runtime/src/trace.rs:271-322`. This is the generic runtime substrate (already extracted per operator 291):
+
+```rust
+impl<Event> TraceClient<Event>
+where
+    Event: TraceEventFrame,
+{
+    pub fn disabled() -> Self { /* no-op client */ }
+
+    pub fn listen(
+        path: impl Into<PathBuf>,
+        collect_duration: Duration,
+    ) -> Result<Self, TraceError> { /* binds a TraceSocketListener */ }
+
+    pub fn from_environment(
+        variable: impl Into<String>,
+        collect_duration: Duration,
+    ) -> Result<Self, TraceError> {
+        let variable = variable.into();
+        match env::var(&variable) {
+            Ok(path) => Self::listen(path, collect_duration),
+            Err(env::VarError::NotPresent) => Ok(Self::disabled()),
+            Err(source) => Err(TraceError::Environment { variable, source }),
+        }
+    }
+
+    pub fn events(&self) -> Result<Vec<Event>, TraceError> {
+        match &self.listener {
+            Some(listener) => listener.collect_for(self.collect_duration),
+            None => Ok(Vec::new()),
+        }
+    }
+}
+
+impl<Event> TraceClient<Event>
+where
+    Event: TraceEventFrame + Display,
+{
+    pub fn print_events(&self, writer: &mut impl Write) -> Result<(), TraceError> {
+        for event in self.events()? {
+            writeln!(writer, "{event}")?;
+        }
+        Ok(())
+    }
+}
+```
+
+`TraceClient<Event>` is generic over the component's emitted event type. `from_environment` reads the env var — absent means `disabled()` (no-op), present means `listen(path, duration)` binding a `TraceSocketListener`. `print_events` currently calls `Display for Event` via `writeln!(writer, "{event}")`. Per Spirit 1499 + 1502, this rendering should call the type's derived NOTA codec instead (one-line swap once the trace event type carries `ToNota` under the `testing-trace` feature) — same line count, NOTA text out instead of ad hoc `Display`.
+
+**The 5-line CLI shape repeats per component.** spirit-next's CLI takes `SPIRIT_NEXT_TRACE_SOCKET`; any future component would write the same 5 lines with only the env var name swapped. That repetition is what Spirit 1489's *"client-side tracing should be generated or generic"* wants to eliminate.
+
+**Three paths sub-agent A surfaced.** All three remove the per-component repetition:
+
+- **Path A — emit a `<Component>TraceCli` macro from `schema-rust-next`.** CLI binary calls one macro invocation; the macro expands to the env-var-bound setup + drain. Deeper alignment with Spirit 1489 (schema-driven emission covers the full trace stack). Cost: schema-rust-next gets new macro-emission machinery.
+- **Path B — host a generic helper on `triad-runtime`.** Add `TraceCliSession<Event>` (or extension methods on `TraceClient<Event>`) that combine `from_environment` + `print_events` + drain timing into a 2-line CLI API. Cost: ~10 new lines on `triad-runtime`; no new emission machinery. Composes cleanly with Spirit 1501/1503 (the trace-client library housing display + SEMA-log per Spirit 1500).
+- **Path C — status quo.** Leave the 5 lines hand-written per component.
+
+**Path B's actual proposed code** — addition to `triad-runtime/src/trace.rs`, in the same `impl<Event>` blocks where the existing methods live. Two small additions:
+
+```rust
+impl<Event> TraceClient<Event>
+where
+    Event: TraceEventFrame,
+{
+    pub fn for_env(variable: impl Into<String>) -> Result<Self, TraceError> {
+        Self::from_environment(variable, Duration::from_millis(200))
+    }
+}
+
+impl<Event> TraceClient<Event>
+where
+    Event: TraceEventFrame + Display,  // becomes `+ ToNota` per Spirit 1499 refinement
+{
+    pub fn drain_to_stdout(&self) -> Result<(), TraceError> {
+        self.print_events(&mut std::io::stdout())
+    }
+}
+```
+
+**The CLI binary then becomes**:
+
+```rust
+#[cfg(feature = "testing-trace")]
+let trace_client = TraceClient::for_env("SPIRIT_NEXT_TRACE_SOCKET")?;
+let (_route, output) = SignalTransport::connect(socket_path)?.exchange(&input)?;
+println!("{output}");
+#[cfg(feature = "testing-trace")]
+trace_client.drain_to_stdout()?;
+```
+
+The hand-written `Duration::from_millis(200)` and `std::io::stdout()` move into the library; the CLI's import block drops `Duration`. Per Spirit 1500/1503, a sibling `drain_to_sema_log(&self, store: &SemaStore<...>)` method joins `drain_to_stdout` on the same library, so the CLI's two-line shape is the unifying surface for both client sinks.
+
+### 3b — The decisions and their status
+
+- **A.1 — Remove the daemon-side `eprintln!` fallback?** ✅ **You ratified at Spirit 1509 (Constraint Maximum)** + Spirit 1505 (Correction High, operator-captured): *"There's no daemon-side printline. There shouldn't be. We observe through our own tracing and logging mechanism."* This becomes operator slice 0.
+- **A.2 — Document the per-crate trace enablement rule explicitly in `skills/component-triad.md`?** ✅ **You ratified at Spirit 1510 (Decision High)**: *"Yep."* The rule is currently implicit in the `testing-trace` Cargo feature usage; it needs to be named in the discipline file.
+- **A.3 — Choose path for the generic CLI-side trace: Path A, Path B, or Path C?** ⏳ **LEANING toward Path B, pending more information.** Your wording was *"Yeah, I guess I would go with the triad runtime helper, but is there more context?"* — that is a lean with explicit information-need, not a ratification. The previous Psyche report mis-marked this as ratified at Spirit 1511; per Spirit 1516 (Correction Maximum) the lean-pending-info shape is not a Decision, and Spirit 1511 has been lowered to Zero certainty. The §3a code excerpts above are the more context. A.3 now awaits your follow-up — ratify Path B with that code in view, ask for further code (the env-var convention, the `TraceCliSession` variant, the schema-rust-next emission shape Path A would produce), or redirect.
 - **A.4 — Schedule `persona-spirit` migration to the 1495-honoring shape now, or defer to wider re-platform?** OPEN. Designer lean: defer; spirit-next is the production target.
 - **A.5 — Require the schema-daemon pilot (designer 481) to honor 1495 from day one when its binary lands?** OPEN. Designer lean: yes.
 
@@ -64,6 +189,104 @@ flowchart LR
 Worked demo in the sub-report uses a fictional `tiny-keystore` component end-to-end.
 
 **Cross-cut with your latest clarification (Spirit 1506-1507):** sub-agent B's `SymbolPath` IS the canonical workspace-wide fully-qualified-symbol-path mechanism, not a per-design name. The help namespace is one client of that mechanism; trace identity, NOTA config registry, and future surfaces are other clients of the same mechanism. The designer has manifested this into `ESSENCE.md` ("Symbols are paths through the schema namespace") and `INTENT.md`.
+
+### 4a — The actual code: `SymbolPath` and `HelpRegistry`
+
+**`SymbolPath` is the canonical identity type** (sub-agent B's `2-help-namespace-design.md` §4b). Real data-bearing struct, NOT a ZST namespace per AGENTS.md hard override:
+
+```rust
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize,
+         Clone, Debug, Eq, Hash, PartialEq)]
+pub struct SymbolPath {
+    component: Name,
+    plane: SchemaPlane,
+    variant: Option<Name>,
+    payload: Option<Name>,
+    field: Option<Name>,
+}
+
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize,
+         Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub enum SchemaPlane {
+    Operation,
+    Reply,
+    NexusWork,
+    NexusAction,
+    SemaWriteInput,
+    SemaWriteOutput,
+    SemaReadInput,
+    SemaReadOutput,
+    Effect,
+    Type,
+}
+
+impl SymbolPath {
+    pub fn type_only(component: Name, type_name: Name) -> Self { /* ... */ }
+    pub fn variant(component: Name, plane: SchemaPlane, variant: Name) -> Self { /* ... */ }
+    pub fn field(component: Name, plane: SchemaPlane,
+                 variant: Name, payload: Name, field: Name) -> Self { /* ... */ }
+
+    pub fn parent(&self) -> Option<SymbolPath> { /* navigates field → payload → variant → plane */ }
+    pub fn humanized(&self) -> Description { /* default-generator fallback */ }
+}
+```
+
+A `SymbolPath` like `[tiny-keystore Operation Put KeyValue key]` reads: component `tiny-keystore`, plane `Operation`, variant `Put`, payload type `KeyValue`, field `key`. The bracket-vector NOTA form renders the same path at user-facing edges. Trace identity reuses this — `SignalObjectName::Input(InputRoute::Record)` is a SymbolPath rendered through one client's projection.
+
+**`HelpRegistry` is the schema-emitted runtime noun** that carries explicit descriptions + the schema summary used by the default generator (sub-agent B's §4c):
+
+```rust
+pub struct HelpRegistry {
+    component: Name,
+    explicit: std::collections::BTreeMap<SymbolPath, Description>,
+    schema_summary: SchemaSummary,
+}
+
+pub enum DescribedSymbol {
+    Explicit(Description),
+    Generated(Description),  // came from humanizing the path
+}
+
+impl HelpRegistry {
+    pub fn for_component() -> Self { /* schema-emitted constant, one per component */ }
+
+    pub fn describe(&self, symbol: &SymbolPath) -> DescribedSymbol {
+        match self.explicit.get(symbol) {
+            Some(description) => DescribedSymbol::Explicit(description.clone()),
+            None => DescribedSymbol::Generated(self.default_for(symbol)),
+        }
+    }
+
+    pub fn main(&self) -> MainHelp { /* assembles the (Help Main) reply */ }
+
+    pub fn verb(&self, name: &Name) -> Option<VerbHelp> { /* assembles (Help (Verb <name>)) */ }
+
+    fn default_for(&self, symbol: &SymbolPath) -> Description {
+        symbol.humanized()  // six-branch rule by symbol shape
+    }
+}
+```
+
+A `(Help (Verb Put))` request against a tiny-keystore daemon runs `registry.verb(&Name::from("Put"))` and returns a typed `VerbHelp` carrying the operation's `Description` plus the payload type's `Description` plus each field's `Description`. Strings appear only when the CLI renders the typed `VerbHelp` for the user.
+
+**The companion `.description.schema` sibling file** (sub-agent B's §5b) carries explicit descriptions. Mock from the tiny-keystore demo:
+
+```schema
+. tiny-keystore.description
+
+descriptions {
+  [Operation Put]
+    [Insert or replace a value at the given key.]
+  [Operation Put KeyValue key]
+    [The key under which to store the value.]
+  [Operation Put KeyValue value]
+    [The bytes to store at the key.]
+  [Operation Get]
+    [Read the value stored at the given key, if any.]
+}
+```
+
+Each entry pairs a `SymbolPath` (as a bracket-vector path through the namespace) with a bracket-string `Description`. Unspecified symbols fall through to the humanizer.
 
 **Sub-agent B's surfaced decisions (all OPEN — yours to choose):**
 
@@ -81,6 +304,93 @@ Worked demo in the sub-report uses a fictional `tiny-keystore` component end-to-
 **What it proposes.** A `NotaConfigConvention` schema record mapping `(PathPattern, Filename, RootType)` triples to fully qualified types, plus a `NotaConfigRegistry` data-bearing type with `load`, `register`, and `from_bootstrap_file` methods. `RootType` is a three-variant enum (`Struct` / `Enum` / `VectorOfRecords`) per your *"almost always start with a struct, sometimes top-level enum"* phrasing. Glob filename patterns handle homogeneous directories like `intent/*.nota`. Hard error on mismatch per the closed-world discipline.
 
 Worked demo uses `skills/skills.nota` end-to-end: current file shape; the `SkillEntry` schema; the convention entry; the generated `load_skills` method; the closed-world failure mode when a file's first token mismatches the declared `Category` enum variants.
+
+### 5a — The actual code: `NotaConfigConvention` and `NotaConfigRegistry`
+
+**The convention record** (sub-agent C's `3-nota-config-convention-design.md` §4) is the schema declaration that types one file path pattern to one fully qualified root type:
+
+```rust
+pub struct NotaConfigConvention {
+    name: Name,                       // identifying handle for the convention
+    pattern: PathPattern,             // glob over directory + filename
+    root_type: RootType,              // the typed declaration
+    decoder_descriptor: DecoderDescriptor, // how to decode raw NOTA into the typed root
+}
+
+pub enum RootType {
+    Struct(StructDescriptor),
+    Enum(EnumDescriptor),
+    VectorOfRecords(RecordDescriptor),
+}
+```
+
+`RootType` is the three-shape closed enum from your phrasing: *"whether it's a single struct or a vector of struct. Probably. You're almost always going to start with a struct. Sometimes you start with the top enum selection."* The schema rejects ambiguous shapes; the loader rejects files whose first token mismatches the declared root.
+
+**The data-bearing registry** carries the convention table and the resolved decoders. Real fields, methods placed where the data lives:
+
+```rust
+pub struct NotaConfigRegistry {
+    conventions: Vec<NotaConfigConvention>,
+    decoder_lookup: ResolvedDecoderTable,
+}
+
+pub enum TypedNotaValue {
+    Skills(Vec<SkillEntry>),
+    Intent(Vec<IntentEntry>),
+    BootstrapPolicy(Vec<BootstrapEntry>),
+    // ... one variant per registered RootType
+}
+
+impl NotaConfigRegistry {
+    pub fn from_bootstrap_file(path: &Path) -> Result<Self, NotaConfigLoadError> {
+        let conventions = Self::decode_bootstrap(path)?;
+        let decoder_lookup = ResolvedDecoderTable::resolve(&conventions)?;
+        Ok(Self { conventions, decoder_lookup })
+    }
+
+    pub fn load(&self, path: &Path) -> Result<TypedNotaValue, NotaConfigLoadError> {
+        let entry = self.decoder_lookup.match_path(path)
+            .ok_or_else(|| NotaConfigLoadError::PathNotRegistered { path: path.to_path_buf() })?;
+        let raw_nota = std::fs::read_to_string(path)
+            .map_err(|source| NotaConfigLoadError::IoFailure { path: path.to_path_buf(), source })?;
+        entry.decoder.decode_typed(&raw_nota)
+    }
+
+    pub fn register(&mut self, convention: NotaConfigConvention)
+        -> Result<(), NotaConfigLoadError>
+    { /* ... */ }
+}
+```
+
+**The convention entry for `skills/skills.nota`** (the demo's worked example), expressed as a NOTA value:
+
+```nota
+(NotaConfigConvention
+  [skills-index]
+  (PathPattern [/home/li/primary/skills] [skills.nota])
+  (VectorOfRecords (RecordDescriptor [SkillEntry]))
+  (DecoderDescriptor [primary-workspace skills SkillEntry]))
+```
+
+**Call site** (after the convention is registered):
+
+```rust
+let registry = NotaConfigRegistry::from_bootstrap_file(
+    Path::new("/home/li/primary/nota-conventions.nota"))?;
+
+let skills = match registry.load(
+    Path::new("/home/li/primary/skills/skills.nota"))?
+{
+    TypedNotaValue::Skills(entries) => entries,
+    other => return Err(NotaConfigLoadError::root_type_mismatch_observation(other)),
+};
+
+for skill in skills {
+    println!("{} — {}", skill.name(), skill.description());
+}
+```
+
+The mismatch path fails loudly per closed-world discipline: if `skills.nota`'s first token doesn't match the declared `SkillEntry` variant set, `decode_typed` returns `NotaConfigLoadError::RootTypeMismatch { path, expected, actual_first_token }`.
 
 **Sub-agent C's surfaced decisions (all OPEN):**
 
@@ -141,20 +451,22 @@ These captures landed during the meta-report's lifetime and refine direction:
 | 1508 | Clarification Maximum | NOTA as typed text user interface, data-type-theory grounded | Manifested into ESSENCE.md + INTENT.md |
 | 1509 | Constraint Maximum (just now) | No daemon-side printline ever | Elevates 1505; binding rule |
 | 1510 | Decision High (just now) | Document per-crate trace enablement rule | Ratifies A.2 |
-| 1511 | Decision High (just now) | Path B (triad-runtime helper) for generic CLI-side trace | Ratifies A.3 |
+| 1511 | Decision High → Zero | Initial capture (Path B ratified) was corrected; the underlying statement was lean-pending-info, not ratification | Spirit 1511 lowered to Zero per Spirit 1516 |
+| 1515 | Principle Maximum | Psyche reports MUST show actual code with context, not summarise as line counts | This Psyche report re-edited; `skills/reporting.md` gained the Psyche-variant discipline |
+| 1516 | Correction Maximum | Lean-pending-info is not ratification; capture must distinguish | Spirit 1511 lowered; discipline added to `skills/reporting.md` |
 
 ## 9. The consolidated decisions — what's been ratified and what's open
 
 ```mermaid
 flowchart LR
-  Ratified[A.1 + A.2 + A.3 ratified]
-  Open[6 sub-agent + 3 maintenance open]
+  Ratified[A.1 + A.2 ratified]
+  LeanPending[A.3 lean-pending more context]
+  Open[8 other open]
   Manifested[1506-1508 manifested]
   Migrations[5 skill migrations pending]
-  Reports[7 report retirements pending]
   Ratified --> Migrations
-  Open --> Migrations
-  Manifested --> Reports
+  LeanPending --> Open
+  Manifested --> Migrations
 ```
 
 **Ratified so far (by you):**
@@ -163,9 +475,14 @@ flowchart LR
 |---|---|---|
 | A.1 — Remove eprintln | Spirit 1505 + 1509 (Constraint Maximum) | Operator slice 0 |
 | A.2 — Document per-crate trace enablement | Spirit 1510 (Decision High) | Skill migration into `skills/component-triad.md` |
-| A.3 — Path B (triad-runtime helper) | Spirit 1511 (Decision High) | Operator slice 1: `TraceCliSession<Event>` on triad-runtime |
 
-**Open, awaiting your decision (ten items):**
+**Leaning pending context (you flagged information-need):**
+
+| Decision | Status | What's needed |
+|---|---|---|
+| A.3 — Path B vs Path A vs Path C | Lean toward Path B, awaiting more context | The code excerpts in §3a are the more context; ratify Path B with that in view, ask for further code, or redirect |
+
+**Open, awaiting your decision (nine items beyond A.3):**
 
 1. **A.4** — Schedule persona-spirit migration to 1495 shape, or defer to wider re-platform?
 2. **A.5** — Require the schema-daemon pilot to honor 1495 day one?

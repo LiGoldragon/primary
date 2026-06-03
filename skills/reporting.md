@@ -582,6 +582,7 @@ Eight kinds, each with its destination home for the substance.
 | `synthesis` | Wide pass across the workspace — digest across multiple reports, state-of-art summary, prioritised questions for the psyche. | **Retires when its questions are answered.** Substance flows into action: closed beads, new design reports, codified skills, ARCH edits. The synthesis is a working artefact. |
 | `handover` | Session/lane transition. Catches the next agent up: what's done, what's open, what's load-bearing. | **Retires when the next handover supersedes** or when a session lands its open items. |
 | `postmortem` | Reconstruction of a past failure or surprise, with the lessons it teaches. | **Retires once the lessons land in a skill or rule.** The skill inlines the discipline (the "don't reintroduce this" rule, with the *why* stated as part of the rule); the postmortem itself doesn't outlive its migration. Skills do not cite reports — see `skill-editor.md` §"Skills never reference reports". |
+| `psyche` | Deep context written for the psyche to read directly. Self-contained — the psyche should not need to open other reports to engage. Carries verbatim psyche quotes where load-bearing, shows actual code (not line-count summaries), and lays decisions out so the psyche can ratify each one in place. See §"Psyche reports — show the code, not the summary" below. | **Retires when its open decisions are answered.** Substance flows into Spirit captures (the ratifications), permanent docs (ESSENCE / ARCH), and follow-on operator slices. Per Spirit 1471 + 1481. |
 
 The discipline that follows: when you write a report, **name
 its kind and its topics before you start writing**, and ask
@@ -596,6 +597,73 @@ structure (kind + topic + summary) and prepares reports for the
 eventual move into persona-mind-managed storage (per intent
 records 107 + 108). The kind set is closed; the topic
 vocabulary is open.
+
+### Psyche reports — show the code, not the summary
+
+Per psyche 2026-06-03 (Spirit 1515 Principle Maximum): **Psyche
+reports MUST show actual code with surrounding context, not
+summarise as line counts or vague references.** When the report
+names code — *"the five lines of CLI wiring"*, *"the proposed
+ten-line helper"*, *"the tiny-keystore demo emits HelpRegistry"* —
+the report must include those actual lines, with file path + line
+range cited and the surrounding types / objects / dependencies
+named. The psyche's reading of a Psyche report is the **chance to
+see the most important parts of the code and understand the
+project**; line-count summaries miss the whole point.
+
+What this means in practice for a Psyche-variant report:
+
+- **Cite file paths with line ranges, then include the code block
+  itself.** Don't write *"~5 lines of CLI trace wiring per
+  component"*; write the actual lines from
+  `spirit-next/src/bin/spirit-next.rs:34-40` shown verbatim.
+- **Name the objects the code uses.** If the code calls
+  `TraceClient::from_environment(...)`, the report shows the
+  declaration of `TraceClient<Event>` (or at least the relevant
+  method signatures) alongside, so the psyche sees what kind of
+  thing it is.
+- **Show the proposed change side by side with the current code.**
+  When the report says *"this should become two lines instead of
+  five,"* show the current five and the proposed two as adjacent
+  code blocks.
+- **Walk concrete examples through.** A `(Help (Verb Put))` round
+  trip, a `NotaConfigRegistry::load("skills/skills.nota")` call —
+  the demo's actual Rust + NOTA in the report, not described.
+
+The visual discipline (mermaid 5-node cap per Spirit 1282 + skill
+§"Graphs are short and focused") still applies; code blocks count
+toward report length but not toward visual node count.
+
+Psyche reports stay self-contained: a Psyche report citing
+sub-agent reports must inline the load-bearing code excerpts from
+those sub-reports so the psyche can read the Psyche report alone.
+
+### Decisions in Psyche reports — distinguish lean from ratification
+
+Per psyche 2026-06-03 (Spirit 1516 Correction Maximum): a psyche
+statement that leans toward a choice while explicitly asking for
+more information is **NOT a ratification**. *"I would go with X
+but is there more context?"* is a lean-pending-information, not a
+ratified Decision. Captures derived from such statements should
+either remain at Minimum certainty or wait for the follow-up
+context-then-confirmation cycle.
+
+A Psyche report MUST mark the psyche's statements correctly:
+
+- **Ratified** — psyche made a firm yes/no/choose-X without
+  flagging information-need. Captured as Decision with appropriate
+  magnitude.
+- **Leaning, pending context** — psyche named a tentative
+  direction AND explicitly asked for more information. Not
+  captured as Decision; surfaced in the report as an open item
+  the next round of context will address.
+- **Open** — psyche hasn't yet engaged with the choice.
+
+Mis-labeling a lean as a ratification corrupts the intent layer.
+The discipline is to show the lean honestly and supply the missing
+context (via the Psyche report's code-shown demos) so the next
+round of psyche engagement can ratify or redirect with full
+information.
 
 ## Report header — kind, topics, date
 
