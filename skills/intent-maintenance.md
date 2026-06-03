@@ -99,11 +99,14 @@ earlier removal of 19 psyche-approved records that WAS tombstoned
 first preserved their full text. Capture first, then remove.
 
 Stay conservative: when removability is uncertain, flag rather than
-remove (record 1103 — over-removal is worse than under-removal). The
-forthcoming soft-delete path — lowering a record's certainty to
-`Zero` to mark a `removalCandidate` (records 1192/1215) — will make
-hard removal rare, but the tombstone still guards the final hard
-delete.
+remove (record 1103 — over-removal is worse than under-removal).
+Lowering a record's certainty to `Zero` marks it as a removal
+candidate (records 1192/1215). Production Spirit supports explicit
+collection through `CollectRemovalCandidates`: exact-`Zero` candidates
+are archived as compact summaries before retraction, while archive
+failure returns skipped candidates and leaves records in the store.
+Use collection for reviewed batches; use hard single-record `Remove`
+only when the tombstone has already been captured.
 
 ## Verification — does the entry still apply?
 
