@@ -110,13 +110,19 @@ The `upgrade` triad is next because it exercises schema edits, generated migrati
 
 ## Current Work In Flight
 
-Worker `Planck` is independently starting the `upgrade` triad port and will write:
+Worker `Planck` independently started the `upgrade` triad port. Its assigned
+repos are clean and their `main` bookmarks now point at:
+
+- `upgrade` commit `9ee09e7c4cfa` — `schema: add generated runtime upgrade roots`
+- `signal-upgrade` commit `f863a8244429` — `schema: add generated upgrade signal roots`
+- `owner-signal-upgrade` commit `a85b20528e74` — `schema: add generated owner upgrade roots`
+
+The requested worker report file had not landed by the time this overview was
+updated:
 
 ```text
 reports/operator/299-constraint-witness-and-next-stack-port-audit-2026-06-03/3-upgrade-port-worker-report.md
 ```
-
-The main slice does not depend on that worker returning.
 
 ## Remaining Gaps
 
