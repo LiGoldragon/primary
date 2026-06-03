@@ -395,6 +395,50 @@ The agent who recorded an entry stays accountable for re-reading it
 within the session — if a later psyche statement reframes the
 earlier one, the recorded entry might need supersession.
 
+## Citing intent in prose — bracket-quote the summary
+
+Per psyche 2026-06-03 (Spirit 1522 + 1526): *"Reference intent
+records in prose markdown by quoting the description summary
+literally as bracketed text — the bracketed form IS the citation
+— not by the record number alone. Repetition reinforces intent:
+the number is an opaque address, the substance is what's
+load-bearing. Especially in psyche-facing reports, and wherever
+an intent is central to a document, quote it literally in a
+prominent place. Applies to all agents."*
+
+Wrong shape (number-only citation):
+
+> Per Spirit 1487, lifecycle hooks land on the engine traits.
+
+Right shape (bracket-quoted summary IS the citation):
+
+> Per Spirit 1487 (Decision High): *"Generated Signal, Nexus, and
+> SEMA engine traits should carry minimal lifecycle hooks:
+> on_start and on_stop with typed start and stop failure
+> results."*
+
+The number remains as an address for the reader who wants to look
+up the record; the bracket-quoted substance is what the cite
+carries forward into the document. Repetition of the substance
+across documents reinforces the intent layer's authority — a
+reader following the citation chain encounters the load-bearing
+words at each link, not just numeric pointers.
+
+Apply this discipline especially in:
+
+- Psyche reports (per `skills/reporting.md` §"Psyche reports —
+  show the code, not the summary" — the same self-contained
+  rationale).
+- Skill files where an intent is central (the rule's source).
+- ESSENCE.md and INTENT.md prose synthesis.
+- Per-repo INTENT.md / ARCHITECTURE.md when manifesting workspace
+  intent into a repo's surface.
+
+For chat replies and short cross-references, bracket-quoting can
+be condensed or omitted when the substance is already named
+inline; the discipline is about written documents where the
+citation does the load-bearing work.
+
 ## What this skill is NOT for
 
 - Agent-internal decisions. Those live in reports, commits, and

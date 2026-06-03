@@ -28,9 +28,17 @@ visuals, soft caps).*
 - **No leading zeros. No date prefix.** Commit history records
   when a report landed; the filename does not repeat that.
 
-Report kind (`Design`, `Audit`, `Research`, `Proposal`, `Review`,
-`Synthesis`, `Handover`, `Postmortem`) belongs in the report header,
-not in the filename.
+Report variant (`Psyche`, `Design`, `Audit`, `Research`,
+`Synthesis`, `Closeout`, `Handover`) belongs in the YAML front
+matter `variant:` field per `skills/reporting.md` §"Report header
+— YAML front matter", AND in the filename per Spirit 1481
+(Decision High): *"Report filename convention is
+reports/<role>/<N>-<Variant>-<topic>-<date>.md where <Variant> is
+a capitalized word naming the report kind. Every report has a
+variant."* The variant appears in both surfaces — the filename for
+filename-grep discoverability, the front matter for typed
+machine-readable metadata. The older guidance that variant
+belongs only in the header is retired.
 
 Examples:
 

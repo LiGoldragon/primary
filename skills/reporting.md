@@ -707,36 +707,92 @@ context (via the Psyche report's code-shown demos) so the next
 round of psyche engagement can ratify or redirect with full
 information.
 
-## Report header — kind, topics, date
+## Report header — YAML front matter
 
-Every report (under the new format) carries a metadata line
-**immediately after the title heading**:
+Per Spirit 1527 (Decision High, 2026-06-03): *"Reports use
+standard YAML front matter for metadata, not the semicolon-bracket
+pseudo-NOTA shape … YAML front matter plugs into standard markdown
+UI tooling (previewers, GitHub rendering, Obsidian, editor
+frontmatter parsers); valid markdown so renderers display reports
+cleanly; is the conventional metadata-on-markdown standard."*
+
+Every report carries a YAML front matter block at the **top of the
+file**, before the title heading:
 
 ```markdown
-# 17 — Real-time intent recording system
+---
+title: 17 — Real-time intent recording system
+role: designer
+variant: Design
+date: 2026-05-22
+topics: [intent, recording-system]
+description: |
+  Proposal for a typed real-time intent recording system that
+  captures author Decisions / Principles / Corrections /
+  Clarifications / Constraints as they happen.
+---
 
-*Kind: Design · Topics: intent, recording-system · 2026-05-22*
+# 17 — Real-time intent recording system
 
 (report body...)
 ```
 
-Three fields, one line, italicised. The fields:
+The fields, in canonical order:
 
-- **Kind** — the closed-set kind (Design / Audit / Research /
-  Proposal / Review / Synthesis / Handover / Postmortem).
-  Capitalised. The kind is metadata, not a filename prefix.
-- **Topics** — one or more open-string topics. The first topic is
-  the primary filename topic; following topics are secondary facets.
-  Matches intent topic vocabulary (`recording-system`,
-  `lane-management`, `persona-orchestrate`, `signal-frame`, etc.).
-  Kebab-case.
-- **Date** — `YYYY-MM-DD` when the report was first written.
-  Reaffirmed on substantive rewrites; unchanged on small fixes.
+- **`title`** — the report's title, matching the `# <N> — …`
+  heading on the next line. Lets renderers display the title
+  without scanning the markdown body.
+- **`role`** — the writing lane's exact subdirectory name
+  (`designer`, `operator`, `cloud-designer`, `second-designer`,
+  etc.).
+- **`variant`** — the report kind per Spirit 1481: `Psyche`,
+  `Design`, `Audit`, `Research`, `Synthesis`, `Closeout`,
+  `Handover`. Capitalised. Matches the `<Variant>` segment of the
+  filename convention.
+- **`date`** — first-written date, `YYYY-MM-DD`. Reaffirmed on
+  substantive rewrites; unchanged on small fixes.
+- **`topics`** — YAML list of broad atomic topic words
+  (kebab-case), mirroring the topic prefixes in the filename.
+  Multiple topics allowed; first topic is the primary.
+- **`description`** — multi-line block scalar (`|`) giving the
+  report's substance. Self-contained: a future agent reading just
+  the front matter knows what the report is about.
 
-The header is the report's primary self-describing surface —
-parseable by an agent walking the report tree without opening
-each file. When reports move into persona-mind, this header
-becomes the typed record shape.
+Optional fields for reports inside a meta-report directory:
+
+- **`parent_meta_report`** — path to the meta-report directory.
+- **`slot`** — numeric position within the directory (0 for the
+  frame; highest for the overview).
+
+YAML front matter is the standard markdown-with-metadata format.
+It renders cleanly in GitHub, VS Code markdown preview, Obsidian,
+and every static-site generator the workspace might eventually
+surface through. The header is also the report's primary
+self-describing surface, parseable mechanically by an agent
+walking the report tree without opening each file.
+
+**Forbidden shape — the semicolon-bracket pseudo-NOTA header.**
+Per Spirit 1528 (Correction High, 2026-06-03): *"The
+semicolon-bracket pseudo-NOTA report header format that many
+recent reports use at the top is a drift or hallucination — it
+does not match skills/reporting.md §Report header … Reports
+drifted to a NOTA-styled header that mimics Spirit intent record
+shape; this was never a ratified workspace decision."* The shape
+
+```text
+; designer
+[topic-1 topic-2 …]
+[description text]
+2026-06-03
+designer
+```
+
+is **not valid markdown**, **not valid NOTA** (`;` alone is
+invalid; NOTA's comment sigil is `;;`), and **not rendered** by
+any markdown UI. Migrate any remaining instances to YAML front
+matter. The older italicised one-liner `*Kind: Design · Topics:
+…*` is also retired — the workspace had already drifted away from
+it before the YAML decision.
 
 ## Hygiene — soft cap, supersession, periodic review
 
