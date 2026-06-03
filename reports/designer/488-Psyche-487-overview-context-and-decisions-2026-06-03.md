@@ -1,53 +1,48 @@
-; designer
-[psyche-report 487-overview decisions context tracing help-namespace nota-config context-maintenance daemon-string-boundary symbol-path nota-typed-text-ui spirit-1489-1511]
-[Psyche report for the psyche to read directly — full context, full decisions, full forward path for meta-report 487. Unpacks the terse codes (A.1, B.2, etc.) in 487's 5-overview into the psyche's reading frame. Lists ratifications made so far and the remaining decisions in plain language. Self-contained; the psyche should not need to open the four sub-reports to engage with the decisions.]
-2026-06-03
-designer
+---
+title: 488 — Psyche report: 487 meta-report context and decisions
+role: designer
+variant: Psyche
+date: 2026-06-03
+topics: [psyche-report, 487-overview, decisions, context, tracing, help-namespace, nota-config, symbol-path, nota-typed-text-ui]
+description: |
+  Psyche report for the psyche to read directly — written in narrative
+  voice with the actual code shown inline. Full state of meta-report 487
+  as of 2026-06-03 mid-afternoon: what the four sub-agents found, which
+  decisions you have ratified, what is now done in the workspace, what
+  remains open. This is a rewrite of an earlier version that drifted out
+  of date during a busy day; it incorporates everything that landed
+  since (the four skill migrations, seven report retirements, the
+  follow-up audit 489, and the operator's parallel engine-report work).
+---
 
 # 488 — Psyche report: 487 meta-report context and decisions
 
-## 1. What this report is
+## 1. What this report is and what changed today
 
-You asked for context on the questions in 487's 5-overview. This report unpacks all of 487 in plain language — what the four sub-agents found, what each decision means, which decisions you have ratified (Spirit 1505 + 1509 + 1510 — A.1 and A.2), which decisions are leaning-pending-more-context (A.3, Path B awaiting the §3a code you can now see), and which remain open. Self-contained: you should not need to open the four sub-reports to engage. Per Spirit 1515 (Principle Maximum, just now) this version shows actual code with surrounding context for the most important parts of the project; the earlier version of this report summarised as line counts and is superseded by this re-edit.
+Meta-report 487 was the designer-lane four-sub-agent sweep that ran this morning to bring the workspace into production-orientation against the fresh intent you spoke into the STT. Four parallel sub-agents handled the trace mechanism audit, the help/description namespace design, the typed NOTA config-by-convention design, and the context-and-intent maintenance pass. The orchestrator (main designer) synthesised at `5-overview.md`. This Psyche report is what the orchestrator hands to you for engagement.
 
-Terse shorthand decoded:
+Significant motion since the morning sweep landed and since the first version of this Psyche report shipped:
 
-- **"Sub-agent A"** — the parallel agent assigned the trace mechanism + daemon string-boundary audit. The report it produced is `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/1-trace-and-daemon-boundary-audit.md`.
-- **"Sub-agent B"** — help / description namespace design (file `2-help-namespace-design.md`).
-- **"Sub-agent C"** — typed NOTA config-by-convention design (file `3-nota-config-convention-design.md`).
-- **"Sub-agent D"** — context + intent maintenance sweep (file `4-context-and-intent-maintenance.md`).
-- **"A.3"** etc. — sub-agent A's third surfaced decision; the letter is the sub-agent, the number is the decision's position within that sub-agent's report.
+- **You ratified three sub-agent A decisions** in mid-afternoon — eprintln removal, per-crate trace enablement documentation, and Path B for the generic CLI-side trace helper. The third ratification was corrected to a lean-pending-context once you flagged *"I would go with X but is there more context?"* as a lean rather than a decision; this Psyche report carries the §3a code excerpts that supply the missing context.
+- **The orchestrator executed Stream 2 from the morning forward path** — four skill migrations landed in `skills/nota-design.md`, `skills/component-triad.md`, `skills/component-triad.md`, and `skills/actor-systems.md`; seven older designer reports retired as their substance migrated. That's the *"context maintenance means repairing the existing context surface — adding a new report without correcting stale reports is not sufficient"* discipline executed.
+- **Operator's parallel work** added the per-crate trace enablement section directly into `skills/component-triad.md` §"Trace enablement is explicit per case" (so the A.2 ratification's downstream action is already landed), plus a new engine-report skill and the `leta` LSP-for-agents tooling that proves generated trait methods sit on live runtime paths.
+- **An audit follow-up (489) landed** addressing your *"this looks like metadata, so maybe it should go in front matter"* observation. Recent reports drifted to a semicolon-bracket pseudo-NOTA header that doesn't render and isn't valid markdown. The audit named the origin (one commit two days ago that spread to 47 reports), specified canonical YAML front matter, and triggered a migration pass that's running in the background. This Psyche report demonstrates the new YAML shape at the top.
 
-## 2. The setup — your STT, the dispatch, the parallel operator
+So a substantial portion of what was "pending your decision" in the first 488 has actually been answered, manifested, or executed. The list of remaining open items below is genuinely the remainder, not the original list with no progress.
 
-The 2026-06-03 STT directive ("go write all this wisdom out into intent and architecture files and implement as far as you can. And use subagents, create reports … both designer and operator … audit basically his implementation … keep your branches clean … everybody should do some context maintenance with a subagent") arrived after operator 291 ratified the current tracing mechanism.
+## 2. Setup — what 487 was about
 
-The intent in the STT itself was captured by operator at Spirit 1489-1496 (eight discrete intent statements covering: trace as schema-defined interface with closed enums; typed data until client display; no trace-on-trace + per-crate enablement; daemon NOTA-free; help/description as schema mirror namespace; typed NOTA files by path convention; context-maintenance can audit old intent for contradictions). The designer's reading of the prompt confirmed all eight were covered; no gap-fill needed.
+The 2026-06-03 STT directive arrived after operator 291 ratified the current tracing mechanism. The intent in the STT itself was rich — eight discrete statements covering tracing as a typed schema-defined interface, the daemon-to-client typed-data-string-only-at-display boundary, no trace-on-trace and per-crate enablement, daemons free of NOTA decoding, help and documentation as a schema mirror description namespace, typed NOTA files by path convention, and context-maintenance authority to audit older intent for contradictions.
 
-The designer dispatched four sub-agents in parallel; the operator separately dispatched their own 292 meta-report on the same psyche directive — designer audits operator, both reach back to you.
-
-```mermaid
-flowchart LR
-  Psyche[Psyche STT]
-  Designer[Designer 487 meta]
-  Operator[Operator 292 meta]
-  SubA[Sub-agents A B C D]
-  Out[5-overview + decisions]
-  Psyche --> Designer
-  Psyche --> Operator
-  Designer --> SubA
-  SubA --> Out
-```
+Operator captured those eight as a tight band of Spirit records; the designer's reading confirmed all eight were covered with no gap-fill needed. The directive (working-order portion) asked for sub-agents, reports, audits of operator's implementation, and context maintenance. The designer dispatched four sub-agents in parallel; operator separately dispatched their own meta-report. Designer audits operator; both reach back to you.
 
 ## 3. Sub-agent A — trace mechanism + daemon string-boundary audit
 
-**What it asked.** Does the current trace mechanism honor the new intent (Spirit 1489-1492 + 1495) — typed schema-defined interface, typed until client display, per-crate enablement, daemon free of NOTA and strings?
-
-**What it found.** The modern reference stack (`spirit-next` + `triad-runtime` + `schema-rust-next` emission) MOSTLY honors the new intent. Spirit 1492 (typed schema-defined trace interface) is HONORED. Spirit 1491 (per-crate enablement) is HONORED via the `testing-trace` Cargo feature. Spirit 1495 (daemon free of NOTA decoding) is HONORED on the modern stack; the deployed legacy `persona-spirit` daemon does NOT honor. Spirit 1490 (typed until display) is SUBSTANTIALLY HONORED with one narrow daemon-side exception (an `eprintln!` at `triad-runtime/src/trace.rs:176`).
+The audit asked whether the current trace mechanism honors the fresh intent — typed schema-defined interface, typed until client display, per-crate enablement, daemon free of NOTA and strings. The modern reference stack (`spirit-next` + `triad-runtime` + `schema-rust-next` emission) MOSTLY honors the intent. Typed schema-defined trace interface is honored — per-plane object name enums, typed `TraceEvent`, default hooks on engine traits. Per-crate enablement is honored via the `testing-trace` Cargo feature; production builds compile no trace. Daemon free of NOTA decoding is honored on the modern stack; the deployed legacy `persona-spirit` daemon does not honor it and remains on a separate migration arc. Typed-until-display was substantially honored with one narrow daemon-side exception at `triad-runtime/src/trace.rs:176` — a fallback `eprintln!` for trace-mechanism error reporting.
 
 ### 3a — The actual code under question
 
-**The current CLI-side trace wiring**, hand-written per component. From `/git/github.com/LiGoldragon/spirit-next/src/bin/spirit-next.rs:1-42`:
+The current CLI-side trace wiring, hand-written per component, from `/git/github.com/LiGoldragon/spirit-next/src/bin/spirit-next.rs:1-42`:
 
 ```rust
 use std::{env, fs, path::Path};
@@ -78,9 +73,9 @@ fn run(&self) -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-The `testing-trace`-gated trace wiring (the substantive lines beyond the always-required exchange) is roughly five elements: two `#[cfg]`-gated imports (lines 5-8), the `TraceClient::from_environment(...)` setup binding the env var name and the collect duration (lines 34-36), and the `trace_client.print_events(&mut std::io::stdout())?` drain after the signal reply is printed (lines 39-40). Each component's CLI would repeat this same shape; only the env var name (`SPIRIT_NEXT_TRACE_SOCKET`) would change between `schema-daemon`, `introspect`, `persona`, etc.
+The `testing-trace`-gated trace wiring beyond the always-required exchange is roughly five elements: two `#[cfg]`-gated imports, the `TraceClient::from_environment(...)` setup binding the env var name and a 200ms collect duration, and the `trace_client.print_events(&mut std::io::stdout())?` drain after the signal reply is printed. Each component CLI repeats this same shape; only the env var name (`SPIRIT_NEXT_TRACE_SOCKET`) would change between `schema-daemon`, `introspect`, `persona`, etc.
 
-**The `TraceClient<Event>` type the CLI binds to**, from `/git/github.com/LiGoldragon/triad-runtime/src/trace.rs:271-322`. This is the generic runtime substrate (already extracted per operator 291):
+The `TraceClient<Event>` type the CLI binds to lives in `/git/github.com/LiGoldragon/triad-runtime/src/trace.rs:271-322` — the generic runtime substrate already extracted per operator 291:
 
 ```rust
 impl<Event> TraceClient<Event>
@@ -127,17 +122,13 @@ where
 }
 ```
 
-`TraceClient<Event>` is generic over the component's emitted event type. `from_environment` reads the env var — absent means `disabled()` (no-op), present means `listen(path, duration)` binding a `TraceSocketListener`. `print_events` currently calls `Display for Event` via `writeln!(writer, "{event}")`. Per Spirit 1499 + 1502, this rendering should call the type's derived NOTA codec instead (one-line swap once the trace event type carries `ToNota` under the `testing-trace` feature) — same line count, NOTA text out instead of ad hoc `Display`.
+`TraceClient<Event>` is generic over the component's emitted event type. `from_environment` reads the env var — absent means `disabled()` (no-op), present means `listen(path, duration)` binding a `TraceSocketListener`. `print_events` currently calls `Display for Event` via `writeln!(writer, "{event}")`. The fresh intent that trace display is NOTA via the type's derived NOTA codec turns this into a one-line swap (`writeln!(writer, "{}", event.to_nota())?`) once `TraceEvent` carries the NOTA codec under the `testing-trace` feature scope — same line count, NOTA text out instead of ad hoc `Display`.
 
-**The 5-line CLI shape repeats per component.** spirit-next's CLI takes `SPIRIT_NEXT_TRACE_SOCKET`; any future component would write the same 5 lines with only the env var name swapped. That repetition is what Spirit 1489's *"client-side tracing should be generated or generic"* wants to eliminate.
+The five-line CLI shape repeats per component, and that repetition is what fresh intent wants to eliminate: *"Client-side tracing should be generated or generic from schema interface definitions; the CLI should stay a thin client and should not own component-specific trace logic beyond enabling or displaying the generic trace surface."*
 
-**Three paths sub-agent A surfaced.** All three remove the per-component repetition:
+Three paths surfaced. All three remove the per-component repetition. Path A emits a `<Component>TraceCli` macro from `schema-rust-next` — CLI binary calls one macro invocation; the macro expands to the env-var-bound setup and drain. Deeper alignment with the schema-driven direction; cost is new macro-emission machinery on schema-rust-next. Path B hosts a generic helper on `triad-runtime` — `TraceCliSession<Event>` (or extension methods on `TraceClient<Event>`) that combine `from_environment` + `print_events` + drain timing into a 2-line CLI API. Cost is roughly 10 new lines on `triad-runtime`; no new emission machinery. Composes cleanly with the trace-client library framing you ratified (display + SEMA-log methods on a reusable client library; CLI is a thin wrapper). Path C is status quo — leave the 5 lines hand-written per component.
 
-- **Path A — emit a `<Component>TraceCli` macro from `schema-rust-next`.** CLI binary calls one macro invocation; the macro expands to the env-var-bound setup + drain. Deeper alignment with Spirit 1489 (schema-driven emission covers the full trace stack). Cost: schema-rust-next gets new macro-emission machinery.
-- **Path B — host a generic helper on `triad-runtime`.** Add `TraceCliSession<Event>` (or extension methods on `TraceClient<Event>`) that combine `from_environment` + `print_events` + drain timing into a 2-line CLI API. Cost: ~10 new lines on `triad-runtime`; no new emission machinery. Composes cleanly with Spirit 1501/1503 (the trace-client library housing display + SEMA-log per Spirit 1500).
-- **Path C — status quo.** Leave the 5 lines hand-written per component.
-
-**Path B's actual proposed code** — addition to `triad-runtime/src/trace.rs`, in the same `impl<Event>` blocks where the existing methods live. Two small additions:
+Path B's actual proposed code — addition to `triad-runtime/src/trace.rs`, in the same `impl<Event>` blocks where the existing methods live:
 
 ```rust
 impl<Event> TraceClient<Event>
@@ -151,7 +142,7 @@ where
 
 impl<Event> TraceClient<Event>
 where
-    Event: TraceEventFrame + Display,  // becomes `+ ToNota` per Spirit 1499 refinement
+    Event: TraceEventFrame + Display,  // becomes `+ ToNota` per the NOTA-codec refinement
 {
     pub fn drain_to_stdout(&self) -> Result<(), TraceError> {
         self.print_events(&mut std::io::stdout())
@@ -159,7 +150,7 @@ where
 }
 ```
 
-**The CLI binary then becomes**:
+The CLI binary then becomes:
 
 ```rust
 #[cfg(feature = "testing-trace")]
@@ -170,29 +161,29 @@ println!("{output}");
 trace_client.drain_to_stdout()?;
 ```
 
-The hand-written `Duration::from_millis(200)` and `std::io::stdout()` move into the library; the CLI's import block drops `Duration`. Per Spirit 1500/1503, a sibling `drain_to_sema_log(&self, store: &SemaStore<...>)` method joins `drain_to_stdout` on the same library, so the CLI's two-line shape is the unifying surface for both client sinks.
+The hand-written `Duration::from_millis(200)` and `std::io::stdout()` move into the library; the CLI's import block drops `Duration`. A sibling `drain_to_sema_log(&self, store: &SemaStore<...>)` method joins `drain_to_stdout` on the same library, so the two-line CLI shape becomes the unifying surface for both client sinks.
 
-### 3b — The decisions and their status
+### 3b — The decisions
 
-- **A.1 — Remove the daemon-side `eprintln!` fallback?** ✅ **You ratified at Spirit 1509 (Constraint Maximum)** + Spirit 1505 (Correction High, operator-captured): *"There's no daemon-side printline. There shouldn't be. We observe through our own tracing and logging mechanism."* This becomes operator slice 0.
-- **A.2 — Document the per-crate trace enablement rule explicitly in `skills/component-triad.md`?** ✅ **You ratified at Spirit 1510 (Decision High)**: *"Yep."* The rule is currently implicit in the `testing-trace` Cargo feature usage; it needs to be named in the discipline file.
-- **A.3 — Choose path for the generic CLI-side trace: Path A, Path B, or Path C?** ⏳ **LEANING toward Path B, pending more information.** Your wording was *"Yeah, I guess I would go with the triad runtime helper, but is there more context?"* — that is a lean with explicit information-need, not a ratification. The previous Psyche report mis-marked this as ratified at Spirit 1511; per Spirit 1516 (Correction Maximum) the lean-pending-info shape is not a Decision, and Spirit 1511 has been lowered to Zero certainty. The §3a code excerpts above are the more context. A.3 now awaits your follow-up — ratify Path B with that code in view, ask for further code (the env-var convention, the `TraceCliSession` variant, the schema-rust-next emission shape Path A would produce), or redirect.
-- **A.4 — Schedule `persona-spirit` migration to the 1495-honoring shape now, or defer to wider re-platform?** OPEN. Designer lean: defer; spirit-next is the production target.
-- **A.5 — Require the schema-daemon pilot (designer 481) to honor 1495 from day one when its binary lands?** OPEN. Designer lean: yes.
+**A.1 — Remove the daemon-side `eprintln!` fallback.** Ratified at Maximum strength — *"There's no daemon-side printline. There shouldn't be. We observe through our own tracing and logging mechanism."* This becomes operator slice 0 (a tiny edit at `triad-runtime/src/trace.rs:176` replacing the eprintln with silent swallow; the fallible `record_result` API remains available for tests that want to assert delivery).
+
+**A.2 — Document the per-crate trace enablement rule explicitly in `skills/component-triad.md`.** Ratified — *"Yep."* — and **the action has already landed** in mid-morning operator work at `skills/component-triad.md` §"Trace enablement is explicit per case", which spells out the four trace shape cases (lean daemon/CLI, trace-enabled daemon, trace-enabled CLI, trace-of-trace deferred). This decision is done; no remaining action.
+
+**A.3 — Generic CLI-side trace path: A (schema-rust-next emitter mixin), B (triad-runtime helper), or C (status quo).** Leaning toward Path B but pending more context. The §3a code is the more context. With the current `TraceClient` shape visible and the two-method addition (`for_env` + `drain_to_stdout`) sketched, Path B reduces per-component CLI trace wiring from 5 lines to 2 with ~10 new lines on `triad-runtime`. Ratify Path B with that in view, ask for further code (the `TraceCliSession` variant, the schema-rust-next emission shape Path A would produce, the SEMA-log method shape), or redirect.
+
+**A.4 — `persona-spirit` migration to the 1495-honoring shape.** Open. Designer lean: defer to a wider re-platform — spirit-next is the production target and the legacy persona-spirit is a separate migration arc.
+
+**A.5 — Require the schema-daemon pilot to honor the daemon-NOTA-free boundary from day one when its binary lands.** Open. Designer lean: yes.
 
 ## 4. Sub-agent B — help / description namespace design
 
-**What it asked.** What concrete shape does Spirit 1493 take — *"help and documentation should be schema data in a mirror description namespace over the global symbol namespace, with generated defaults when no explicit description exists for a fully qualified symbol"*?
+Help and documentation become a fourth schema kind, `Description`, mirroring the global schema namespace. One `.description.schema` file per component, bound to the same schema identity as the working schema. Schema-rust-next emits a data-bearing struct per component, `HelpRegistry`, carrying explicit descriptions plus a schema summary the default generator humanizes from when a symbol has no explicit entry. `(Help Main)` and `(Help (Verb <name>))` operations render the typed Description through the CLI at the user-facing edge.
 
-**What it proposes.** A fourth schema kind, `Description`, that mirrors the global schema namespace. One `.description.schema` file per component, bound to the same `SchemaIdentity` as the working schema. Schema-rust-next emits a data-bearing struct per component, `HelpRegistry { explicit: BTreeMap<SymbolPath, Description>, schema_summary: SchemaSummary }`, that knows both explicit descriptions and the schema summary needed by the default generator. When a symbol has no explicit `Description` entry, a lazy generator builds humanized text from the symbol path's terminal segment. `(Help Main)` and `(Help (Verb <name>))` operations render the typed `Description` through the CLI at the user-facing edge.
+This cleanly cross-cuts with the canonical `SymbolPath` mechanism you named — when an interface is defined, the enums and structs that create the root data structures create a global namespace for symbols, and each symbol has a fully qualified identity expressed as a path. The help namespace is one client of that mechanism; trace identity, NOTA config registry, and future surfaces are other clients of the same mechanism. The designer has manifested SymbolPath into `ESSENCE.md` ("Symbols are paths through the schema namespace") and `INTENT.md`.
 
-Worked demo in the sub-report uses a fictional `tiny-keystore` component end-to-end.
+### 4a — The actual code
 
-**Cross-cut with your latest clarification (Spirit 1506-1507):** sub-agent B's `SymbolPath` IS the canonical workspace-wide fully-qualified-symbol-path mechanism, not a per-design name. The help namespace is one client of that mechanism; trace identity, NOTA config registry, and future surfaces are other clients of the same mechanism. The designer has manifested this into `ESSENCE.md` ("Symbols are paths through the schema namespace") and `INTENT.md`.
-
-### 4a — The actual code: `SymbolPath` and `HelpRegistry`
-
-**`SymbolPath` is the canonical identity type** (sub-agent B's `2-help-namespace-design.md` §4b). Real data-bearing struct, NOT a ZST namespace per AGENTS.md hard override:
+`SymbolPath` is the canonical identity type. Real data-bearing struct, NOT a ZST namespace per the workspace's no-ZST-namespace hard override:
 
 ```rust
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize,
@@ -205,8 +196,6 @@ pub struct SymbolPath {
     field: Option<Name>,
 }
 
-#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize,
-         Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum SchemaPlane {
     Operation,
     Reply,
@@ -231,9 +220,9 @@ impl SymbolPath {
 }
 ```
 
-A `SymbolPath` like `[tiny-keystore Operation Put KeyValue key]` reads: component `tiny-keystore`, plane `Operation`, variant `Put`, payload type `KeyValue`, field `key`. The bracket-vector NOTA form renders the same path at user-facing edges. Trace identity reuses this — `SignalObjectName::Input(InputRoute::Record)` is a SymbolPath rendered through one client's projection.
+A SymbolPath like `[tiny-keystore Operation Put KeyValue key]` reads: component `tiny-keystore`, plane `Operation`, variant `Put`, payload type `KeyValue`, field `key`. The bracket-vector NOTA form renders the same path at user-facing edges. Trace identity already reuses this — `SignalObjectName::Input(InputRoute::Record)` is a SymbolPath rendered through one client's projection.
 
-**`HelpRegistry` is the schema-emitted runtime noun** that carries explicit descriptions + the schema summary used by the default generator (sub-agent B's §4c):
+`HelpRegistry` is the schema-emitted runtime noun carrying explicit descriptions plus the schema summary used by the default generator:
 
 ```rust
 pub struct HelpRegistry {
@@ -267,9 +256,9 @@ impl HelpRegistry {
 }
 ```
 
-A `(Help (Verb Put))` request against a tiny-keystore daemon runs `registry.verb(&Name::from("Put"))` and returns a typed `VerbHelp` carrying the operation's `Description` plus the payload type's `Description` plus each field's `Description`. Strings appear only when the CLI renders the typed `VerbHelp` for the user.
+A `(Help (Verb Put))` request runs `registry.verb(&Name::from("Put"))` and returns a typed `VerbHelp` carrying the operation's `Description` plus the payload type's `Description` plus each field's `Description`. Strings appear only when the CLI renders the typed `VerbHelp` for the user.
 
-**The companion `.description.schema` sibling file** (sub-agent B's §5b) carries explicit descriptions. Mock from the tiny-keystore demo:
+The companion `.description.schema` sibling file carries explicit descriptions. Mock from the worked tiny-keystore demo:
 
 ```schema
 . tiny-keystore.description
@@ -286,28 +275,19 @@ descriptions {
 }
 ```
 
-Each entry pairs a `SymbolPath` (as a bracket-vector path through the namespace) with a bracket-string `Description`. Unspecified symbols fall through to the humanizer.
+Each entry pairs a SymbolPath (as a bracket-vector path) with a bracket-string Description. Unspecified symbols fall through to the humanizer.
 
-**Sub-agent B's surfaced decisions (all OPEN — yours to choose):**
+### 4b — The decisions
 
-- **B.1 — Where does the `Description` schema live?** Options: (a) sibling `.description.schema` file alongside the working schema (sub-agent B's lean); (b) same file, separate section; (c) a separate `.description.schema` per declared kind.
-- **B.2 — Default-generator algorithm.** Six-branch humanization (variant name → humanized; field → field-type-derived; etc.). Eager (compile-time emission) vs lazy (lookup-time) generation — sub-agent B leans lazy.
-- **B.3 — Help-rendering surfaces.** CLI `(Help (Verb))` only first vs HTML documentation site too — sub-agent B leans CLI-first; HTML deferred.
-- **B.4 — Mandatory vs optional per component.** Sub-agent B leans optional initially (so a component can ship without a `.description.schema` and Help still works via pure-generated defaults).
-- **B.5 — `SymbolPath` shape.** Five-segment structured path (crate / module / kind / parent / leaf). Per Spirit 1507's "canonical not per-design" framing, this becomes the workspace-wide identity shape.
-- **B.6 — Help operation auto-injection timing.** First slice is `Description` + `HelpRegistry` for `tiny-keystore` pilot only; auto-injection of `Help` into `signal-channel!` macro is the second slice after pilot ratification.
+All six are open. The designer leans align with sub-agent B's design throughout. **B.1** description schema location: sibling `.description.schema` file alongside the working schema. **B.2** default-generator algorithm: lazy at lookup time, six-branch humanization. **B.3** help-rendering surfaces: CLI `(Help (Verb))` only first; HTML deferred. **B.4** mandatory vs optional per component: optional initially (a component ships without a `.description.schema` and Help still works via pure-generated defaults). **B.5** SymbolPath shape: five-segment structured path (canonical now per the workspace-wide identity-space framing you ratified). **B.6** Help operation auto-injection timing: first slice is `Description` + `HelpRegistry` for tiny-keystore pilot; auto-injection of `Help` into the signal-channel macro is the second slice after pilot ratification.
 
 ## 5. Sub-agent C — typed NOTA config-by-convention design
 
-**What it asked.** What concrete shape does Spirit 1494 take — *"authored workspace data files should prefer typed NOTA data: predictable file names and directories define the expected root type"*?
+A `NotaConfigConvention` schema record maps a `(PathPattern, Filename, RootType)` triple to a fully qualified type. A `NotaConfigRegistry` data-bearing type carries the convention table and resolves file paths to typed values through `load`, `register`, and `from_bootstrap_file` methods. `RootType` is a three-shape closed enum (Struct / Enum / VectorOfRecords) matching your *"almost always start with a struct, sometimes top-level enum"* phrasing. Glob filename patterns handle homogeneous directories like `intent/*.nota`. Hard error on mismatch per the closed-world discipline.
 
-**What it proposes.** A `NotaConfigConvention` schema record mapping `(PathPattern, Filename, RootType)` triples to fully qualified types, plus a `NotaConfigRegistry` data-bearing type with `load`, `register`, and `from_bootstrap_file` methods. `RootType` is a three-variant enum (`Struct` / `Enum` / `VectorOfRecords`) per your *"almost always start with a struct, sometimes top-level enum"* phrasing. Glob filename patterns handle homogeneous directories like `intent/*.nota`. Hard error on mismatch per the closed-world discipline.
+### 5a — The actual code
 
-Worked demo uses `skills/skills.nota` end-to-end: current file shape; the `SkillEntry` schema; the convention entry; the generated `load_skills` method; the closed-world failure mode when a file's first token mismatches the declared `Category` enum variants.
-
-### 5a — The actual code: `NotaConfigConvention` and `NotaConfigRegistry`
-
-**The convention record** (sub-agent C's `3-nota-config-convention-design.md` §4) is the schema declaration that types one file path pattern to one fully qualified root type:
+The convention record is the schema declaration that types one file path pattern to one fully qualified root type:
 
 ```rust
 pub struct NotaConfigConvention {
@@ -324,9 +304,7 @@ pub enum RootType {
 }
 ```
 
-`RootType` is the three-shape closed enum from your phrasing: *"whether it's a single struct or a vector of struct. Probably. You're almost always going to start with a struct. Sometimes you start with the top enum selection."* The schema rejects ambiguous shapes; the loader rejects files whose first token mismatches the declared root.
-
-**The data-bearing registry** carries the convention table and the resolved decoders. Real fields, methods placed where the data lives:
+The data-bearing registry carries the convention table and resolved decoders. Real fields, methods placed where the data lives:
 
 ```rust
 pub struct NotaConfigRegistry {
@@ -362,7 +340,7 @@ impl NotaConfigRegistry {
 }
 ```
 
-**The convention entry for `skills/skills.nota`** (the demo's worked example), expressed as a NOTA value:
+The convention entry for `skills/skills.nota` (the worked demo), expressed as a NOTA value:
 
 ```nota
 (NotaConfigConvention
@@ -372,7 +350,7 @@ impl NotaConfigRegistry {
   (DecoderDescriptor [primary-workspace skills SkillEntry]))
 ```
 
-**Call site** (after the convention is registered):
+A call site after the convention is registered:
 
 ```rust
 let registry = NotaConfigRegistry::from_bootstrap_file(
@@ -390,156 +368,88 @@ for skill in skills {
 }
 ```
 
-The mismatch path fails loudly per closed-world discipline: if `skills.nota`'s first token doesn't match the declared `SkillEntry` variant set, `decode_typed` returns `NotaConfigLoadError::RootTypeMismatch { path, expected, actual_first_token }`.
+The mismatch path fails loudly per closed-world discipline.
 
-**Sub-agent C's surfaced decisions (all OPEN):**
+### 5b — The decisions
 
-- **C.1 — Where does the convention registry live?** Schema-emitted from per-component schemas (designer lean) vs workspace-root file vs per-repo file vs hybrid.
-- **C.2 — Eager (compile-time static) vs lazy (start-up file-read) discovery?** Designer lean: eager for production, lazy for dev iteration.
-- **C.3 — Hard error vs warning on mismatch?** Designer lean: hard error per closed-world discipline.
-- **C.4 — Glob syntax and overlap handling.** Designer lean: shell-style; overlapping conventions error at registry-validation.
+All four are open. **C.1** registry location: designer lean is schema-emitted-from-per-component-schemas + a workspace-root file for workspace-only conventions like `skills/skills.nota`. **C.2** eager (compile-time static) vs lazy (start-up file-read): designer lean eager for production, lazy for dev iteration. **C.3** hard error vs warning on mismatch: designer lean hard error per closed-world. **C.4** glob syntax and overlap handling: designer lean shell-style; overlapping conventions error at registry-validation.
 
-## 6. Sub-agent D — context + intent maintenance sweep
+## 6. Sub-agent D — context + intent maintenance
 
-**What it asked.** Per Spirit 1496, audit older reports + Spirit records for things contradicted by the recent stronger intent.
+The maintenance pass found seven older designer reports proposable for retirement gated on five named skill migrations. A clear duplicate Spirit record (1484 — a 6-second restatement of 1483). A close-call between Spirit 1485 (Decision High substrate ratification) and Spirit 1486 (Decision Maximum on the same substrate ratification one minute later). Plus operator's parallel sweep flagged Spirit 1347 (*"CLI is the log surface and no separate logging daemon or external log sink"*) as contradicted by the SEMA-log direction you ratified.
 
-**What it found.** Seven older designer reports propose for retirement (476, 479, 480, 482, 483, 485, 486) GATED on five named skill migrations. Spirit 1484 is a 6-second restatement of 1483 — recommend Remove with tombstone-first. Spirit 1485 (Decision High) is a 1-minute-earlier framing of 1486 (Decision Maximum) — close call between keep (original-plus-refinement) and ChangeCertainty Zero (canonical-supersedes-precursor); psyche call.
+The Correction you spoke in mid-day — *"Context maintenance means repairing the existing context surface: audit the skill for clarity and rewrite or edit stale reports so they no longer preserve old or misleading examples as live guidance. Adding a new report without correcting stale reports is not sufficient."* — turned the orchestrator's next action from "deferred" to "now". And the orchestrator did execute. As of this writing:
 
-**The five gating skill migrations the orchestrator (main designer) owns:**
+- All five gating skill migrations have landed (`skills/nota-design.md` Rule 4 for inline enum payload + sugar; `skills/component-triad.md` §"Lifecycle hooks on the engine traits" with `on_start`/`on_stop` + typed failure types; `skills/component-triad.md` §"Nexus mechanism substrate" with the full `NexusWork`/`NexusAction` substrate + `triad_main!` runner + effects; `skills/component-triad.md` §"Schema source carries" absorbed in the substrate section; `skills/actor-systems.md` §"Engine traits live on real data-bearing types").
+- All seven gated designer reports have retired (476, 479, 480, 482, 483, 485, 486). Their substance now lives in the skill files above. The designer subdirectory's substantive count dropped by seven.
 
-1. `skills/nota-design.md` Rule 4 — inline enum payload + sugar (from designer 479 + operator 290).
-2. `skills/component-triad.md` §"Engine mechanism substrate" — psyche report 1 firm parts (from designer 482, ratified at Spirit 1486 Maximum).
-3. `skills/component-triad.md` §"Lifecycle hooks" — `on_start`/`on_stop` (from designer 485, ratified at Spirit 1487).
-4. `skills/component-triad.md` §"Schema source carries" — schema-carries baseline (from designer 486, ratified at Spirit 1488).
-5. `skills/actor-systems.md` §"Hidden-non-actor-owner anti-pattern" — from designer 485.
+What remains under sub-agent D's findings: **D.1** Remove Spirit 1484 (the duplicate). Designer lean yes after tombstone-first capture. **D.2** Spirit 1485 keep vs ChangeCertainty Zero vs Remove. Close call; designer lean keep both as ratification firming-up evidence; psyche supersession is your call. **D.3** Spirit 1347 supersession. Designer lean yes (narrow or replace per how the SEMA-log direction firms up).
 
-**Plus operator 292.1's flagged candidate:** Spirit 1347 (*"CLI is the log surface and no separate logging daemon or external log sink"*) is contradicted by Spirit 1500 (operator-captured Decision High: SEMA-log as alternative client sink) and by introspect direction. Recommend asking for explicit supersession.
+## 7. Cross-cutting findings
 
-**Important Correction from you at Spirit 1504 (Correction Maximum):** *"Context maintenance means repairing the existing context surface: audit the skill for clarity and rewrite or edit stale reports so they no longer preserve old or misleading examples as live guidance. Adding a new report without correcting stale reports is not sufficient."* Sub-agent D surveyed; the orchestrator's job is to EXECUTE the migrations + report edits/retirements now, not to defer. This is the designer's active next pass.
+Three patterns recur across the four sub-reports and connect to the fresh intent of the day.
 
-**Sub-agent D's surfaced decisions (OPEN):**
+The first is that schema-carries is the unifying mechanism. The substrate ratification at Spirit 1486 names schema source as the substrate carrier; sub-agents B and C both extend this — both new substrates (Description namespace, NotaConfig registry) are schema-emitted data-bearing types. Sub-agent A's Path B (trace helper on triad-runtime) is the same shape — generic substrate hosting the typed client method. The pattern is uniform across the day's design directions.
 
-- **D.1 — Remove Spirit 1484?** Designer lean: yes after tombstone-first capture.
-- **D.2 — Spirit 1485 keep vs ChangeCertainty Zero vs Remove?** Close call, psyche call.
-- **D.3 (via operator 292.1) — Supersede Spirit 1347?** Designer lean: yes (narrow or replace per how SEMA-log direction firms up).
+The second is that strings live only at the user-facing edge — the daemon-binary, client-translation, NOTA-render boundary. The trace path is one client of this; the help description path is another; the authored NOTA config files are a third. With your clarification that trace display IS NOTA via the type's derived NOTA codec — not ad hoc `Display` formatting — the boundary is sharper than it was this morning: typed → NOTA text. The same applies to Description. The same applies to any future surface that needs to show a typed value to a human.
 
-## 7. Cross-cutting findings — patterns recurring across the sub-reports
+The third is the canonical SymbolPath you elevated. Sub-agent B's path through the schema namespace is the workspace-wide identity space, not a per-design naming. Sub-agent C's NotaConfig registry resolves files to fully qualified types via the same identity space. Trace identity reuses it. Future surfaces inherit it. The ESSENCE.md manifestation now reads *"Symbols are paths through the schema namespace"* and the INTENT.md prose carries the worked examples.
 
-Three patterns recur across all four sub-reports and tie directly to your recent clarifications:
+## 8. Where things stand
 
-**(i) Schema-carries is the unifying mechanism.** Spirit 1488 ratified yesterday names schema source as the substrate carrier; sub-agents B and C both extend this — both new substrates (Description namespace, NotaConfig registry) are schema-emitted data-bearing types. Sub-agent A's Path B (trace helper on triad-runtime) is the same shape — generic substrate hosting the typed client method.
+**Ratified by you and either done or queued for an operator slice:**
 
-**(ii) Strings only at the user-facing edge.** Sub-agents A and B confirm Spirit 1490 (Maximum) is honored across the modern stack. With your Spirit 1499 + 1502 clarification — trace display IS NOTA via the type's derived codec, not ad hoc `Display` formatting — the boundary is even sharper: typed → NOTA text. The same applies to `Description`: typed Description on the wire/in storage; NOTA-rendered at CLI display. Sub-agent A's `TraceCliSession::drain_to_stdout` should call the type's derived NOTA encoder, not `Display`.
+- A.1 — eprintln removal at `triad-runtime/src/trace.rs:176`. Queued as operator slice 0.
+- A.2 — per-crate trace enablement documentation. **Done** by operator in mid-morning at `skills/component-triad.md` §"Trace enablement is explicit per case".
+- The substrate ratification (Spirit 1486) and its derivatives — lifecycle hooks (Spirit 1487) and schema-carries (Spirit 1488). **Done** as skill substance in `skills/component-triad.md` §"Lifecycle hooks" and §"Nexus mechanism substrate" by the orchestrator afternoon batch.
+- Spirit 1506-1508 (canonical SymbolPath + NOTA as typed text user interface). **Done** as ESSENCE.md and INTENT.md manifestation by the afternoon batch.
+- YAML front matter (Spirit 1527) + audit drift (Spirit 1528) + bracket-quote citation discipline (Spirit 1522 + 1526). **Done** as `skills/reporting.md` rewrite + `skills/intent-log.md` new section + `skills/report-naming.md` correction; 47-report migration sub-agent running in background.
 
-**(iii) Per-symbol mirror namespace recurs.** Sub-agent B's Description is keyed by `SymbolPath`. Sub-agent C's NotaConfig registry is keyed by `(PathPattern, Filename)`. Both lookups operate over a workspace-level registry; both have a default path or hard-error path on miss. Your Spirit 1506-1507 (canonical SymbolPath) names these as expressions of one underlying mechanism — they're not separate inventions; they share the workspace's symbol-identity space.
+**Leaning toward an answer but pending more information from you:**
 
-## 8. Integration with your Spirit 1499-1511 (the mid-flight refinements)
+- A.3 — Path B (`TraceCliSession` helper on `triad-runtime`) for the generic CLI-side trace. The §3a code above is the more context you asked for. Ratify Path B with that visible, ask for further code (a sketch of Path A's emission shape, or the SEMA-log method signature), or redirect.
 
-These captures landed during the meta-report's lifetime and refine direction:
+**Open and awaiting your engagement:**
 
-| Record | Kind | Substance | Effect on 487 |
-|---|---|---|---|
-| 1499 | Clarification High | Trace display via type's derived NOTA codec | Sub-agent A's Path B sketch swaps encoder (same line count) |
-| 1500 | Decision High | SEMA-log as alternative client sink | Adds `drain_to_sema_log` method on trace-client library; reinforces 1347 supersession |
-| 1501 | Decision High | Trace-client library in the repo; CLI is thin wrapper | Concrete shape for Path B |
-| 1502 | Correction Maximum (operator-captured) | Trace render as NOTA, not strings | Strengthens 1499 framing |
-| 1503 | Principle High (operator-captured) | Trace-client library hosts display + SEMA-log; thin CLI | Combines 1500 + 1501 into one cleaner statement |
-| 1504 | Correction Maximum (operator-captured) | Context-maintenance must EDIT stale reports, not just add new | Orchestrator executes migrations + edits/retirements now |
-| 1505 | Correction High (operator-captured) | Remove eprintln (strict 1490) | Becomes operator slice 0 |
-| 1506 | Clarification Maximum | SymbolPath as canonical workspace-wide identity | Manifested into ESSENCE.md + INTENT.md |
-| 1507 | Principle High | Highlight SymbolPath in architecture and intent files | Same manifestation pass |
-| 1508 | Clarification Maximum | NOTA as typed text user interface, data-type-theory grounded | Manifested into ESSENCE.md + INTENT.md |
-| 1509 | Constraint Maximum (just now) | No daemon-side printline ever | Elevates 1505; binding rule |
-| 1510 | Decision High (just now) | Document per-crate trace enablement rule | Ratifies A.2 |
-| 1511 | Decision High → Zero | Initial capture (Path B ratified) was corrected; the underlying statement was lean-pending-info, not ratification | Spirit 1511 lowered to Zero per Spirit 1516 |
-| 1515 | Principle Maximum | Psyche reports MUST show actual code with context, not summarise as line counts | This Psyche report re-edited; `skills/reporting.md` gained the Psyche-variant discipline |
-| 1516 | Correction Maximum | Lean-pending-info is not ratification; capture must distinguish | Spirit 1511 lowered; discipline added to `skills/reporting.md` |
+- A.4 — persona-spirit migration timing. Whether to schedule legacy persona-spirit's migration to the 1495-honoring shape now or defer to a wider re-platform. Designer lean defer; spirit-next is the production target.
+- A.5 — schema-daemon pilot honoring the daemon-NOTA-free boundary from day one. Designer lean yes.
+- B.1 through B.6 — the help/description namespace design's six surfaced decisions. All have designer leans named in §4b; the leans can stand as defaults if you don't dispute them. The bigger ones to engage with are B.1 (where the `.description.schema` lives) and B.2 (the default-generator's humanization algorithm).
+- C.1 through C.4 — the NOTA config-by-convention design's four surfaced decisions. The biggest is C.1 (registry location: per-component schema-emitted, workspace-root file, or both). Designer lean is both, with `skills/skills.nota` workspace-level.
+- D.1 — Remove Spirit 1484 (the duplicate of 1483). Designer lean yes after tombstone-first capture.
+- D.2 — Spirit 1485 keep vs ChangeCertainty Zero. Close call. Designer lean keep both as ratification firming-up evidence.
+- D.3 — Spirit 1347 supersession (the older "no separate logging daemon" record contradicted by your SEMA-log direction). Designer lean yes (narrow or replace as the SEMA-log direction firms up).
 
-## 9. The consolidated decisions — what's been ratified and what's open
+That's three ratified, one leaning-pending-context, and ten genuinely open. Sixteen items per the original count; six have moved to ratified or done since this morning.
 
-```mermaid
-flowchart LR
-  Ratified[A.1 + A.2 ratified]
-  LeanPending[A.3 lean-pending more context]
-  Open[8 other open]
-  Manifested[1506-1508 manifested]
-  Migrations[5 skill migrations pending]
-  Ratified --> Migrations
-  LeanPending --> Open
-  Manifested --> Migrations
-```
+## 9. The forward path
 
-**Ratified so far (by you):**
+With A.1 ratified and A.2 already landed, the operator's near-term implementation slices line up as follows.
 
-| Decision | Ratification | Resulting action |
-|---|---|---|
-| A.1 — Remove eprintln | Spirit 1505 + 1509 (Constraint Maximum) | Operator slice 0 |
-| A.2 — Document per-crate trace enablement | Spirit 1510 (Decision High) | Skill migration into `skills/component-triad.md` |
+Slice 0 is the eprintln removal — a tiny edit. Slice 1 is the `TraceCliSession` helper on `triad-runtime` — about ten new lines that compress the CLI's trace wiring from five lines to two. Slice 2 is the NOTA-codec refinement on `TraceClient::drain_to_stdout` once the trace event type carries the derived NOTA codec under the `testing-trace` feature. Slice 3 is the SEMA-log method on the trace-client library once the SEMA store shape settles. These wait on A.3 to firm up before operator commits to slice 1's direction; slice 0 can land independently.
 
-**Leaning pending context (you flagged information-need):**
+Slice 4 and onward are the help namespace + NOTA config crates, sequenced after you engage with B.1-B.6 and C.1-C.4. Persona-spirit migration is its own arc per A.4.
 
-| Decision | Status | What's needed |
-|---|---|---|
-| A.3 — Path B vs Path A vs Path C | Lean toward Path B, awaiting more context | The code excerpts in §3a are the more context; ratify Path B with that in view, ask for further code, or redirect |
+The designer-side stream is mostly closed. The four skill migrations and seven report retirements landed. The two follow-up disciplines (YAML front matter for reports + bracket-quote citation for prose) landed. The 47-report migration sub-agent runs in the background; eleven smaller skill cleanups remain queued from the 489 audit's §C.1 (stale citations of retired reports, the skill-editor rule violation, the assistant-suffix drift in a few files).
 
-**Open, awaiting your decision (nine items beyond A.3):**
+The per-repo `INTENT.md` and `ARCHITECTURE.md` updates remain deferred — they should track ratified shape rather than draft, so they wait for B and C ratifications before the manifestation pass.
 
-1. **A.4** — Schedule persona-spirit migration to 1495 shape, or defer to wider re-platform?
-2. **A.5** — Require the schema-daemon pilot to honor 1495 day one?
-3. **B.1** — Description schema location (sibling file recommended)?
-4. **B.2** — Default-generator algorithm (six-branch humanization, lazy)?
-5. **B.3** — Help-rendering surfaces (CLI first, HTML deferred)?
-6. **B.4** — Description mandatory vs optional per component (optional recommended)?
-7. **B.5** — SymbolPath shape (five-segment structured path)?
-8. **B.6** — Help auto-injection timing (after `tiny-keystore` pilot)?
-9. **C.1-C.4** — NOTA config registry location / eager vs lazy / hard error / glob syntax (designer leans named in §5)?
-10. **D.1 + D.2 + D.3** — Spirit 1484 Remove (designer lean: yes); Spirit 1485 keep vs Zero (close call); Spirit 1347 supersession (designer lean: yes)?
+## 10. Two questions for your direct attention
 
-## 10. The forward path (what designer and operator do next)
+C.1 — the NotaConfig registry location — needs a word from you. The designer lean is "both: per-component conventions schema-emitted from each component's schema, plus a workspace-root file for workspace-only conventions like `skills/skills.nota`". The harder question inside this is whether `skills/skills.nota` is workspace-level (lean answer) or belongs to a hypothetical workspace-meta-component. The way you answer this shapes how schema registries compose across the workspace boundary; designer-lean default holds if you don't push back.
 
-Given your ratifications + the Correction 1504 that demands repair-not-survey, the active next work splits into three streams:
+D.2 — Spirit 1485 close-call — also needs a word from you. The record was a Decision-High framing of the same substrate ratification that Spirit 1486 made Decision-Maximum one minute later. Two readings: (a) keep both as evidence of how the ratification firmed up — Spirit's append-only history is itself documentation — or (b) ChangeCertainty 1485 to Zero as a superseded precursor. Designer lean is (a); psyche supersession is your call regardless.
 
-**Stream 1 — Operator implementation slices:**
+## 11. What this report itself demonstrates
 
-- Slice 0: Remove `eprintln!` at `triad-runtime/src/trace.rs:176`; replace with silent swallow (the fallible typed `record_result` API remains available for tests that want to assert delivery). Tiny.
-- Slice 1: `TraceCliSession<Event>` on `triad-runtime` (~10 lines). Reduces CLI trace wiring from 5 lines to 2.
-- Slice 2: Refine `drain_to_stdout` to use the type's derived NOTA codec rather than `Display` (per Spirit 1499 + 1502). Small follow-up.
-- Slice 3: `drain_to_sema_log` method on the trace-client library (per Spirit 1500); per-component SEMA store design. Depends on slice 1.
-
-(Sub-agent B/C slices remain in queue pending your ratification of B.1-B.6 and C.1-C.4.)
-
-**Stream 2 — Designer skill migrations (orchestrator-owned per Spirit 1504):**
-
-1. `skills/nota-design.md` Rule 4 — inline enum payload + sugar.
-2. `skills/component-triad.md` §"Engine mechanism substrate".
-3. `skills/component-triad.md` §"Lifecycle hooks".
-4. `skills/component-triad.md` §"Schema source carries".
-5. `skills/actor-systems.md` §"Hidden-non-actor-owner anti-pattern".
-
-Plus: edit `skills/component-triad.md` §"Help operations" to add the per-crate trace enablement rule per Spirit 1510.
-
-**Stream 3 — Stale report retirement after migration lands:**
-
-7 designer reports retire (delete via `rm`) after their gating skill migration confirms: 476, 479, 480, 482, 483, 485, 486. Per sub-agent D's §3 retirement table.
-
-## 11. Two questions surfaced for your direct attention
-
-These two need a direct word from you (the rest can ride on designer leans):
-
-- **Sub-agent C's question on registry location (C.1).** Is the NotaConfig registry schema-emitted-from-per-component-schemas, or a workspace-root file, or both? The designer lean is "both: per-component conventions schema-emitted from each component's schema, plus a workspace-root file for workspace-only conventions like `skills/skills.nota`". You may want to weigh in on whether `skills/skills.nota` is workspace-level (lean answer) or belongs to a hypothetical workspace-meta-component.
-
-- **Sub-agent D's question on Spirit 1485 (D.2).** Spirit 1485 (Decision High) was a 1-minute-earlier framing of 1486 (Decision Maximum) — the same substrate ratification, weaker phrasing. Two readings: (a) keep both as evidence of how the ratification firmed up; (b) zero 1485 as superseded-precursor. Designer's lean is (a) — Spirit's append-only history is itself documentation — but psyche supersession is your call regardless.
+This report uses the YAML front matter you ratified at Spirit 1527 — the front matter block at the top of the file — instead of the pseudo-NOTA header that recent reports drifted into. The citation style is the bracket-quoted summary form you ratified at Spirit 1522 + 1526 — where a record is load-bearing for a claim, the description summary is quoted alongside the number, not just the number alone. And the narrative voice is the human-narrative-first shape you ratified at Spirit 1521 — fewer inline numeric citations, more flow, with ranges or phrasings where a band of intent is being summarised. The earlier version of this report was citation-heavy; this rewrite tries the new shape.
 
 ## 12. Cross-references
 
-- `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/0-frame-and-method.md` — meta-report frame.
-- `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/1-trace-and-daemon-boundary-audit.md` — sub-agent A (599-823 lines per final commit).
-- `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/2-help-namespace-design.md` — sub-agent B (978 lines).
-- `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/3-nota-config-convention-design.md` — sub-agent C (780 lines).
-- `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/4-context-and-intent-maintenance.md` — sub-agent D (698 lines).
-- `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/5-overview.md` — orchestrator's terse synthesis (this Psyche report's source).
-- `reports/operator/291-tracing-mechanism-audit-and-polish-2026-06-03.md` — operator's tracing audit + polish; sub-agent A's baseline.
-- `reports/operator/292-client-trace-genericization-2026-06-03/` — operator's parallel meta-report (context maintenance + client-trace audit + 3-overview).
-- `ESSENCE.md` §"Strings only at the edges", §"NOTA is a typed text user interface", §"Symbols are paths through the schema namespace" — workspace-essence manifestation of Spirit 1490+1492+1495 and 1506-1508.
-- `INTENT.md` §"NOTA is a typed text user interface", §"Symbols are paths through the schema namespace", §"Tracing is its own typed schema-defined interface", §"Help and documentation are schema data", §"Authored data files prefer typed NOTA" — workspace-prose manifestation.
-- Spirit records 1486 (substrate ratification Maximum) + 1487-1488 (lifecycle + schema-carries) + 1489-1496 (the captured threads driving 487) + 1499-1511 (mid-flight refinements + your ratifications + operator-captured corrections).
+- `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/` — the meta-report directory: frame, four sub-reports, overview synthesis.
+- `reports/designer/489-Audit-report-headers-and-skill-hallucinations-2026-06-03.md` — the follow-up audit on report headers and skill drift, demonstrating the YAML convention.
+- `reports/operator/291-tracing-mechanism-audit-and-polish-2026-06-03.md` — the operator audit + polish that 487 built on.
+- `reports/operator/292-client-trace-genericization-2026-06-03/` — operator's parallel meta-report on client trace + context maintenance.
+- `reports/operator/293-engine-report-tools-situation-2026-06-03.md` — operator's first engine-report using their new tooling.
+- `ESSENCE.md` §"Strings only at the edges", §"NOTA is a typed text user interface", §"Symbols are paths through the schema namespace" — the universal manifestation of the day's clarifications.
+- `INTENT.md` §"NOTA is a typed text user interface", §"Symbols are paths through the schema namespace", §"Tracing is its own typed schema-defined interface", §"Help and documentation are schema data", §"Authored data files prefer typed NOTA" — the workspace-prose manifestation.
+- Spirit records in the recent corpus (1486 substrate ratification Maximum + 1487-1488 lifecycle and schema-carries + 1489-1496 the morning STT captures + 1499-1511 the mid-flight refinements + your ratifications + operator-captured corrections + 1515-1528 this afternoon's Psyche-report discipline + audit captures).
