@@ -1,8 +1,14 @@
-; designer
-[contract-repo signal-interface pipeline-split daemon-imports nexus-sema-local overview synthesis no-substrate-changes mechanical-migration]
-[Orchestrator synthesis of designer 475.1 sub-agent's contract-repo fork proposal. Headline finding: bypass verified; substrate is READY (schema-next already supports cross-schema imports; schema-rust-next already emits cross-repo pub use). Migration is purely mechanical (schema source surgery + Cargo wiring + ~30-40 use-edits) at 2-4 operator days for spirit-next + signal-spirit pilot. Per-component sequencing across spirit + introspect + persona + orchestrate; connections to Spirit 1422 (this) + 1419 (programmatic triad) + 458 (naming gate now more urgent) + 469 (introspect adapts) + 463 gap B (closes naturally) + 1396 (Help action fragmentation open question). Five ratification asks consolidated.]
-2026-06-02
-designer
+---
+title: 475.2 — Overview synthesis
+role: designer
+variant: Synthesis
+date: 2026-06-02
+topics: [contract-repo, signal-interface, pipeline-split, daemon-imports, nexus-sema-local, overview, synthesis, no-substrate-changes, mechanical-migration]
+parent_meta_report: reports/designer/475-contract-repo-pipeline-situation-and-proposal-2026-06-02
+slot: 2
+description: |
+  Orchestrator synthesis of designer 475.1 sub-agent's contract-repo fork proposal. Headline finding: bypass verified; substrate is READY (schema-next already supports cross-schema imports; schema-rust-next already emits cross-repo pub use). Migration is purely mechanical (schema source surgery + Cargo wiring + ~30-40 use-edits) at 2-4 operator days for spirit-next + signal-spirit pilot. Per-component sequencing across spirit + introspect + persona + orchestrate; connections to Spirit 1422 (this) + 1419 (programmatic triad) + 458 (naming gate now more urgent) + 469 (introspect adapts) + 463 gap B (closes naturally) + 1396 (Help action fragmentation open question). Five ratification asks consolidated.
+---
 
 # 475.2 — Overview synthesis
 

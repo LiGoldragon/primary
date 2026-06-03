@@ -1,8 +1,12 @@
-; designer
-[nexus re-agglomeration three-angles code-shape information-flow schema-composition recursive-nexus input-output-asymmetry universal-computation-destination]
-[Re-agglomeration of the Nexus topic across designer 476 + operator 281 + designer 466.3/468/469 + Spirit captures 1326-1439. Operator's correction 1438 (Nexus input/output asymmetry) is central — NexusInput carries facts/replies/events Nexus decides FROM; NexusOutput carries commands Nexus emits NEXT. Operator's 1439 (recursive Nexus as universal computation destination) extends the architecture: anything needing more computation re-enters Nexus wrapped in a Nexus envelope; schemas compose because the Nexus envelope can carry objects from other schema parts. Three angles examined: (A) Code shape — types/traits/recursive envelope; (B) Information flow — input/output asymmetry + runner loop choreography; (C) Schema composition — Nexus<Signal<Input>> as a typed construct + contract-repo split implications.]
-2026-06-02
-designer
+---
+title: 477 — Nexus re-agglomeration — three angles
+role: designer
+variant: Synthesis
+date: 2026-06-02
+topics: [nexus, re-agglomeration, three-angles, code-shape, information-flow, schema-composition, recursive-nexus, input-output-asymmetry, universal-computation-destination]
+description: |
+  Re-agglomeration of the Nexus topic across designer 476 + operator 281 + designer 466.3/468/469 + Spirit captures 1326-1439. Operator's correction 1438 (Nexus input/output asymmetry) is central — NexusInput carries facts/replies/events Nexus decides FROM; NexusOutput carries commands Nexus emits NEXT. Operator's 1439 (recursive Nexus as universal computation destination) extends the architecture: anything needing more computation re-enters Nexus wrapped in a Nexus envelope; schemas compose because the Nexus envelope can carry objects from other schema parts. Three angles examined: (A) Code shape — types/traits/recursive envelope; (B) Information flow — input/output asymmetry + runner loop choreography; (C) Schema composition — Nexus<Signal<Input>> as a typed construct + contract-repo split implications.
+---
 
 # 477 — Nexus re-agglomeration — three angles
 

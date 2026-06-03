@@ -1,8 +1,14 @@
-; designer
-[interaction deployment supervisor-protocol cross-component-talk introspect-trace-flow schema-upgrade-fanout deployment-topology cutover-path push-not-pull-cross-component]
-[Sub-agent E for the production-readiness audit meta-report. Frames inter-component interaction as the actual question that gates "production" — design alone doesn't surface what happens when components talk. Walks each cross-component path: schema-daemon's typed BusyReply under load (Signal-frame contract reply, decoded by spirit-daemon as a typed peer-client variant per the existing signal-frame discipline; introspect typed reception via push hook). Names persona's supervisor protocol as a separate signal-persona-supervision contract (NOT the component's working signal — the component talks to persona over the supervision socket from spawn time, NOT a freshly-discovered relationship). Names introspect's trace socket as per-component-points-to-introspect, via Configuration-NOTA's IntrospectSocket field set at spawn — central discovery is the future Persona-mediated shape, NOT slice-1. Schema-upgrade is a special class of Mutate where downstream consumers SUBSCRIBE to schema-revision events; the schema-daemon emits a typed SchemaRevised event and every consumer rebuilds its in-process schema cache on receipt. Deployment topology: ONE host today; same-Nix-flake for the prototype stack; per-component side-by-side versioning (Spirit's main+next pattern generalizes); cutover orchestrated by persona-daemon's spawn order. Recommended first-pair-of-components-to-actually-talk: spirit-next + introspect (the Layer 2 witness path) — both schema-next-based, both single-trust-domain, narrowest typed dependency, the trace-push direction validates the cross-component contract pattern.]
-2026-06-02
-designer
+---
+title: 484.5 — Inter-component interaction and deployment path
+role: designer
+variant: Audit
+date: 2026-06-02
+topics: [interaction, deployment, supervisor-protocol, cross-component-talk, introspect-trace-flow, schema-upgrade-fanout, deployment-topology, cutover-path, push-not-pull-cross-component]
+parent_meta_report: reports/designer/484-Audit-production-readiness-meta-2026-06-02
+slot: 5
+description: |
+  Sub-agent E for the production-readiness audit meta-report. Frames inter-component interaction as the actual question that gates "production" — design alone doesn't surface what happens when components talk. Walks each cross-component path: schema-daemon's typed BusyReply under load (Signal-frame contract reply, decoded by spirit-daemon as a typed peer-client variant per the existing signal-frame discipline; introspect typed reception via push hook). Names persona's supervisor protocol as a separate signal-persona-supervision contract (NOT the component's working signal — the component talks to persona over the supervision socket from spawn time, NOT a freshly-discovered relationship). Names introspect's trace socket as per-component-points-to-introspect, via Configuration-NOTA's IntrospectSocket field set at spawn — central discovery is the future Persona-mediated shape, NOT slice-1. Schema-upgrade is a special class of Mutate where downstream consumers SUBSCRIBE to schema-revision events; the schema-daemon emits a typed SchemaRevised event and every consumer rebuilds its in-process schema cache on receipt. Deployment topology: ONE host today; same-Nix-flake for the prototype stack; per-component side-by-side versioning (Spirit's main+next pattern generalizes); cutover orchestrated by persona-daemon's spawn order. Recommended first-pair-of-components-to-actually-talk: spirit-next + introspect (the Layer 2 witness path) — both schema-next-based, both single-trust-domain, narrowest typed dependency, the trace-push direction validates the cross-component contract pattern.
+---
 
 # 484.5 — Inter-component interaction and deployment path
 

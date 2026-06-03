@@ -1,8 +1,12 @@
-; designer
-[context-maintenance beauty-audit spirit-dedup substance-migration report-retirement designer-lane-ledger]
-[Context-maintenance ledger for the 2026-06-02 designer-lane sweep dispatched under psyche directive [|do an audit of everything viewed from intent and beauty must prevail|] + [|use a subagent to do a skills/context-maintenance.md|]. Beauty principle (Spirit 1411 Maximum) is the primary audit lens. Applied: 7 Spirit duplicates removed (1402 1404 1406 1403 1407 1397 1410); 3 substance migrations into permanent skills (beauty workspace-extensions; typed trace identity; interface=enum+multi-variant); 7 designer reports retired (412 455 456 457 461 467 471); 12 designer reports kept (older 351 352 + active 443-470 set). Pending psyche-attention items carried forward: 458 spirit-triad naming gate; 470 top-6 backlog items 2-6.]
-2026-06-02
-designer
+---
+title: 472 — Context maintenance ledger (designer lane, 2026-06-02)
+role: designer
+variant: Synthesis
+date: 2026-06-02
+topics: [context-maintenance, beauty-audit, spirit-dedup, substance-migration, report-retirement, designer-lane-ledger]
+description: |
+  Context-maintenance ledger for the 2026-06-02 designer-lane sweep dispatched under psyche directive [|do an audit of everything viewed from intent and beauty must prevail|] + [|use a subagent to do a skills/context-maintenance.md|]. Beauty principle (Spirit 1411 Maximum) is the primary audit lens. Applied: 7 Spirit duplicates removed (1402 1404 1406 1403 1407 1397 1410); 3 substance migrations into permanent skills (beauty workspace-extensions; typed trace identity; interface=enum+multi-variant); 7 designer reports retired (412 455 456 457 461 467 471); 12 designer reports kept (older 351 352 + active 443-470 set). Pending psyche-attention items carried forward: 458 spirit-triad naming gate; 470 top-6 backlog items 2-6.
+---
 
 # 472 — Context maintenance ledger (designer lane, 2026-06-02)
 

@@ -1,8 +1,14 @@
-; designer
-[overview synthesis tracing help-namespace nota-config-convention context-maintenance daemon-string-boundary trace-client-library spirit-1489-1501 production-orientation skill-migration]
-[Orchestrator synthesis for meta-report 487. Cross-cuts sub-agent A (trace audit), B (help namespace design), C (NOTA config-by-convention design), D (context + intent maintenance). Integrates the late psyche capture Spirit 1499-1501 on trace display as NOTA and the trace-client library factoring. Names consolidated decisions for psyche ratification, the operator slice sequence, and the skill migrations the orchestrator owns. Connects back to Spirit 1486 substrate ratification.]
-2026-06-03
-designer
+---
+title: 487.5 — Overview and synthesis
+role: designer
+variant: Synthesis
+date: 2026-06-03
+topics: [overview, synthesis, tracing, help-namespace, nota-config-convention, context-maintenance, daemon-string-boundary, trace-client-library, spirit-1489-1501, production-orientation, skill-migration]
+parent_meta_report: reports/designer/487-Design-trace-help-config-context-meta-2026-06-03
+slot: 5
+description: |
+  Orchestrator synthesis for meta-report 487. Cross-cuts sub-agent A (trace audit), B (help namespace design), C (NOTA config-by-convention design), D (context + intent maintenance). Integrates the late psyche capture Spirit 1499-1501 on trace display as NOTA and the trace-client library factoring. Names consolidated decisions for psyche ratification, the operator slice sequence, and the skill migrations the orchestrator owns. Connects back to Spirit 1486 substrate ratification.
+---
 
 # 487.5 — Overview and synthesis
 

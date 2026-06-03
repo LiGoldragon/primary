@@ -1,8 +1,14 @@
-; spirit
-[meta-report-synthesis next-stack-porting first-slice convergence operator-beads recommended-action]
-[Orchestrator synthesis for designer 446 — the three sub-agents converge on folding the spirit-next pilot into the real spirit repo as Phase 0 first slice; cloud/upgrade/repository-ledger parallel after; schema-core extraction is the gate to multiplicative-scope wave-2 ports.]
-2026-06-01
-designer
+---
+title: 4 — Overview: synthesis, convergence, recommended first slice, operator beads
+role: designer
+variant: Synthesis
+date: 2026-06-01
+topics: [meta-report-synthesis, next-stack-porting, first-slice, convergence, operator-beads, recommended-action]
+parent_meta_report: reports/designer/446-next-stack-porting-research-2026-06-01
+slot: 4
+description: |
+  Orchestrator synthesis for designer 446 — the three sub-agents converge on folding the spirit-next pilot into the real spirit repo as Phase 0 first slice; cloud/upgrade/repository-ledger parallel after; schema-core extraction is the gate to multiplicative-scope wave-2 ports.
+---
 
 # 4 — Overview: synthesis, convergence, recommended first slice, operator beads
 

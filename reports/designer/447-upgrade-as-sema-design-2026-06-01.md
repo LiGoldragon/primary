@@ -1,8 +1,12 @@
-; spirit
-[upgrade-mechanism sema-on-asschema schema-daemon self-editing nota-correspondence migration-derivation transitory-database]
-[Designer research responding to Spirit 1308-1314 — the upgrade mechanism is realized as SEMA operations on the Asschema. The schema daemon receives upgrade messages, applies them to its Asschema, derives both new data type code and upgrade migration code, then hands off to a separate upgrade daemon that compiles + spawns + tests + accepts. The NOTA-to-object correspondence closes the loop.]
-2026-06-01
-designer
+---
+title: 447 — Upgrade as SEMA design — the schema daemon as editor
+role: designer
+variant: Design
+date: 2026-06-01
+topics: [upgrade-mechanism, sema-on-asschema, schema-daemon, self-editing, nota-correspondence, migration-derivation, transitory-database]
+description: |
+  Designer research responding to Spirit 1308-1314 — the upgrade mechanism is realized as SEMA operations on the Asschema. The schema daemon receives upgrade messages, applies them to its Asschema, derives both new data type code and upgrade migration code, then hands off to a separate upgrade daemon that compiles + spawns + tests + accepts. The NOTA-to-object correspondence closes the loop.
+---
 
 # 447 — Upgrade as SEMA design — the schema daemon as editor
 

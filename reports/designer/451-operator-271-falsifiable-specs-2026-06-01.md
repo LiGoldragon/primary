@@ -1,12 +1,16 @@
-; spirit
-[falsifiable-specs operator-271 nota-next schema-next spirit-next spirit-fold worktree-method designer-loop]
-[Designer sub-agent dispatch: eight falsifiable Nix-and-cargo-test
-spec witnesses for the open claims in operator/271 §"Still
-Unaddressed". Each test names the end-state operator must implement;
-each is red today and green when implemented. Lands on feature
-branches in four repos under ~/wt; all four branches pushed.]
-2026-06-01
-designer
+---
+title: 451 — Operator-271 open claims: falsifiable specs on feature branches
+role: designer
+variant: Design
+date: 2026-06-01
+topics: [falsifiable-specs, operator-271, nota-next, schema-next, spirit-next, spirit-fold, worktree-method, designer-loop]
+description: |
+  Designer sub-agent dispatch: eight falsifiable Nix-and-cargo-test
+  spec witnesses for the open claims in operator/271 §"Still
+  Unaddressed". Each test names the end-state operator must implement;
+  each is red today and green when implemented. Lands on feature
+  branches in four repos under ~/wt; all four branches pushed.
+---
 
 # 451 — Operator-271 open claims: falsifiable specs on feature branches
 

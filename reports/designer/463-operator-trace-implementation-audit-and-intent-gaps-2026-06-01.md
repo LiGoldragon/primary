@@ -1,8 +1,12 @@
-; designer
-[testing-trace operator-audit intent-gaps cross-pollination cli-log-socket schema-emission nota-build-config positive-grep]
-[Audit of operator's spirit-next 5fc96397 testing-trace landing + operator reports 275/276/277, against captured intent (Spirit 1343-1351 + 1352-1355). Identifies what aligns with intent, what stays gapped, and applies the cross-pollination methodology (Spirit 1364) to surface four intent gaps that block clean sub-agent implementation of the remaining named work. Concludes with sub-agent training readiness ranking + recommended next prototype-proving slice per Spirit 1355 depth-first discipline.]
-2026-06-01
-designer
+---
+title: 463 — Operator trace implementation: audit, intent gaps, sub-agent readiness
+role: designer
+variant: Audit
+date: 2026-06-01
+topics: [testing-trace, operator-audit, intent-gaps, cross-pollination, cli-log-socket, schema-emission, nota-build-config, positive-grep]
+description: |
+  Audit of operator's spirit-next 5fc96397 testing-trace landing + operator reports 275/276/277, against captured intent (Spirit 1343-1351 + 1352-1355). Identifies what aligns with intent, what stays gapped, and applies the cross-pollination methodology (Spirit 1364) to surface four intent gaps that block clean sub-agent implementation of the remaining named work. Concludes with sub-agent training readiness ranking + recommended next prototype-proving slice per Spirit 1355 depth-first discipline.
+---
 
 # 463 — Operator trace implementation: audit, intent gaps, sub-agent readiness
 

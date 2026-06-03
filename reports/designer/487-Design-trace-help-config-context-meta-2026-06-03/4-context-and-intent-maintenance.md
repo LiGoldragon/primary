@@ -1,8 +1,14 @@
-; designer
-[context-maintenance spirit-contradiction-audit intent-supersession report-retirement spirit-dedup gap-fill duplicate-captures working-order-misclogs sub-agent-D]
-[Sub-agent D context + intent maintenance sweep under meta-report 487 dispatch. Per Spirit 1496 (Clarification Medium 2026-06-03) — context-maintenance agents may audit old intent for clear contradictions from newer stronger intent. Two parallel sweeps merged: (1) disk-side designer/operator report inventory with forward/migrate/keep/drop proposals; (2) Spirit DB contradiction audit identifying clear supersession candidates and duplicate captures. Conservative per 1496 — REMOVE only proposed for clear contradiction at higher magnitude; ChangeCertainty proposed for recoverable nominations; everything else stays. PROPOSAL ONLY — no destructive actions executed; orchestrator and psyche review before any removal.]
-2026-06-03
-designer
+---
+title: 487.4 — Context + intent maintenance sweep
+role: designer
+variant: Design
+date: 2026-06-03
+topics: [context-maintenance, spirit-contradiction-audit, intent-supersession, report-retirement, spirit-dedup, gap-fill, duplicate-captures, working-order-misclogs, sub-agent-D]
+parent_meta_report: reports/designer/487-Design-trace-help-config-context-meta-2026-06-03
+slot: 4
+description: |
+  Sub-agent D context + intent maintenance sweep under meta-report 487 dispatch. Per Spirit 1496 (Clarification Medium 2026-06-03) — context-maintenance agents may audit old intent for clear contradictions from newer stronger intent. Two parallel sweeps merged: (1) disk-side designer/operator report inventory with forward/migrate/keep/drop proposals; (2) Spirit DB contradiction audit identifying clear supersession candidates and duplicate captures. Conservative per 1496 — REMOVE only proposed for clear contradiction at higher magnitude; ChangeCertainty proposed for recoverable nominations; everything else stays. PROPOSAL ONLY — no destructive actions executed; orchestrator and psyche review before any removal.
+---
 
 # 487.4 — Context + intent maintenance sweep
 

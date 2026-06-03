@@ -1,8 +1,14 @@
-; designer
-[production-readiness audit schema-component schema-daemon upgrade-as-sema asschema-edit migration-emitter signal-schema next-slice recommendation]
-[Sub-agent A — schema-component production-readiness audit. Reads designer 447 + 481 + 482 + operator 281/282/284/285 + main HEADs of schema-next and schema-rust-next. Finding: pilot landed at schema-next main 6b34fa9 + schema-rust-next main 540d572/c6ec14e — typed UpgradeObject + SchemaEdit + AsschemaEdit + MigrationEmitter + Layer 2 rustc-compile witness all live on main. The library substrate is production-shaped. Gap to production: NO daemon binary, NO signal-schema contract repo, NO signal-schema NexusEngine implementation, NO sema-table layout for UpgradeObject persistence, NO triad_main! macro yet. Schema-component as a CONSUMABLE LIBRARY is production-ready today; schema-component as a TRIAD DAEMON is shape-of-daemon. Biggest decision: does upgrade-as-SEMA work require schema's own daemon or does upgrade-daemon (already U1 scaffold) own the apply path? Recommended next slice: create signal-schema contract repo + a tiny schema-daemon binary that exposes EditSchema/ObserveSchema over signal-frame, applying through the existing AsschemaEdit path — smallest possible operator-week proving the triad shape against the existing typed substrate.]
-2026-06-02
-designer
+---
+title: 484.1 — Schema component production readiness
+role: designer
+variant: Audit
+date: 2026-06-02
+topics: [production-readiness, audit, schema-component, schema-daemon, upgrade-as-sema, asschema-edit, migration-emitter, signal-schema, next-slice, recommendation]
+parent_meta_report: reports/designer/484-Audit-production-readiness-meta-2026-06-02
+slot: 1
+description: |
+  Sub-agent A — schema-component production-readiness audit. Reads designer 447 + 481 + 482 + operator 281/282/284/285 + main HEADs of schema-next and schema-rust-next. Finding: pilot landed at schema-next main 6b34fa9 + schema-rust-next main 540d572/c6ec14e — typed UpgradeObject + SchemaEdit + AsschemaEdit + MigrationEmitter + Layer 2 rustc-compile witness all live on main. The library substrate is production-shaped. Gap to production: NO daemon binary, NO signal-schema contract repo, NO signal-schema NexusEngine implementation, NO sema-table layout for UpgradeObject persistence, NO triad_main! macro yet. Schema-component as a CONSUMABLE LIBRARY is production-ready today; schema-component as a TRIAD DAEMON is shape-of-daemon. Biggest decision: does upgrade-as-SEMA work require schema's own daemon or does upgrade-daemon (already U1 scaffold) own the apply path? Recommended next slice: create signal-schema contract repo + a tiny schema-daemon binary that exposes EditSchema/ObserveSchema over signal-frame, applying through the existing AsschemaEdit path — smallest possible operator-week proving the triad shape against the existing typed substrate.
+---
 
 # 484.1 — Schema component production readiness
 

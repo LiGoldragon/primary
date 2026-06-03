@@ -1,8 +1,12 @@
-; spirit
-[operator-271-verification next-stack architectural-truth-tests verify-271-closed-claims constraint-tests]
-[Designer sub-agent verification of the five "Closed Since The Earlier Gap Reports" claims in operator 271. Each closure is now backed by Nix-runnable constraint tests on feature branches in `~/wt`. All five claims VERIFIED with live witnesses; one stale flake check surfaced and fixed in passing.]
-2026-06-01
-designer
+---
+title: 450 — Operator 271 closed-claims verification
+role: designer
+variant: Audit
+date: 2026-06-01
+topics: [operator-271-verification, next-stack, architectural-truth-tests, verify-271-closed-claims, constraint-tests]
+description: |
+  Designer sub-agent verification of the five "Closed Since The Earlier Gap Reports" claims in operator 271. Each closure is now backed by Nix-runnable constraint tests on feature branches in `~/wt`. All five claims VERIFIED with live witnesses; one stale flake check surfaced and fixed in passing.
+---
 
 # 450 — Operator 271 closed-claims verification
 

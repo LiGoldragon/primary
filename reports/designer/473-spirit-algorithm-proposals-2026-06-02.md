@@ -1,8 +1,12 @@
-; designer
-[spirit-algorithms intent-maintenance dedup supersession magnitude-calibration topic-vocabulary query-before-capture forwarded-prompt-protocol]
-[Proposals for Spirit/intent-maintenance algorithms responding to psyche directive 2026-06-02 (intent maintenance is a large topic; ask questions; propose spirit algorithms). Five concrete algorithm proposals + four targeted psyche questions whose answers shape which proposals to ratify. Substance grounded in the dedup incidents this session surfaced (7 duplicates removed by 472 sweep + 5 by main-agent self-corrections) — the discipline needs algorithms not just discipline-statements. Each proposal: problem it solves, mechanism, implementation cost, trade-offs.]
-2026-06-02
-designer
+---
+title: 473 — Spirit algorithm proposals
+role: designer
+variant: Design
+date: 2026-06-02
+topics: [spirit-algorithms, intent-maintenance, dedup, supersession, magnitude-calibration, topic-vocabulary, query-before-capture, forwarded-prompt-protocol]
+description: |
+  Proposals for Spirit/intent-maintenance algorithms responding to psyche directive 2026-06-02 (intent maintenance is a large topic; ask questions; propose spirit algorithms). Five concrete algorithm proposals + four targeted psyche questions whose answers shape which proposals to ratify. Substance grounded in the dedup incidents this session surfaced (7 duplicates removed by 472 sweep + 5 by main-agent self-corrections) — the discipline needs algorithms not just discipline-statements. Each proposal: problem it solves, mechanism, implementation cost, trade-offs.
+---
 
 # 473 — Spirit algorithm proposals
 

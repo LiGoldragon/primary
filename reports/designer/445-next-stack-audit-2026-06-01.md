@@ -1,8 +1,12 @@
-; spirit
-[stack-audit nota-next schema-next spirit-next discipline rust-craft]
-[Designer audit of the live nota-next + schema-next + spirit-next surfaces against workspace discipline. Net state — substrate is sound; four small findings remain; designer 444 §5 horizons are accurate.]
-2026-06-01
-designer
+---
+title: 445 — Next stack audit — nota-next + schema-next + spirit-next
+role: designer
+variant: Audit
+date: 2026-06-01
+topics: [stack-audit, nota-next, schema-next, spirit-next, discipline, rust-craft]
+description: |
+  Designer audit of the live nota-next + schema-next + spirit-next surfaces against workspace discipline. Net state — substrate is sound; four small findings remain; designer 444 §5 horizons are accurate.
+---
 
 # 445 — Next stack audit — nota-next + schema-next + spirit-next
 

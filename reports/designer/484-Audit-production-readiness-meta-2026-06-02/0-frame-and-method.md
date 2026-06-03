@@ -1,8 +1,14 @@
-; designer
-[production-readiness multi-component-audit meta-report frame schema persona spirit introspect shared-runtime triad-engine]
-[Meta-report frame for the production-readiness audit dispatched 2026-06-02 per Spirit 1482. Five parallel sub-agents survey the components that need to come into production interaction now (schema; persona; spirit-next pilot; possibly more) plus cross-cutting concerns (shared runtime extraction; inter-component interaction + deployment path). Orchestrator writes overview synthesis when all sub-agents return.]
-2026-06-02
-designer
+---
+title: 484.0 — Frame and method
+role: designer
+variant: Audit
+date: 2026-06-02
+topics: [production-readiness, multi-component-audit, meta-report, frame, schema, persona, spirit, introspect, shared-runtime, triad-engine]
+parent_meta_report: reports/designer/484-Audit-production-readiness-meta-2026-06-02
+slot: 0
+description: |
+  Meta-report frame for the production-readiness audit dispatched 2026-06-02 per Spirit 1482. Five parallel sub-agents survey the components that need to come into production interaction now (schema; persona; spirit-next pilot; possibly more) plus cross-cutting concerns (shared runtime extraction; inter-component interaction + deployment path). Orchestrator writes overview synthesis when all sub-agents return.
+---
 
 # 484.0 — Frame and method
 

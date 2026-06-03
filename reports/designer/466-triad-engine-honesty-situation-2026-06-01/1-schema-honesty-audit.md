@@ -1,8 +1,14 @@
-; designer
-[audit schema-honesty triad-engine spirit-next schema-rust-next leakage]
-[Read-only audit of how schema-driven the triad engine really is. Verdict: roughly 75 percent schema-honest at the architectural-load level, two leakage zones — the trace vocabulary (Spirit 1365 unresolved) and validate methods. Top three: schema-emit Trace plane + trace traits on engine traits, schema-emit Validate trait + constraint annotations, schema-emit Signal admission scaffolding.]
-2026-06-01
-designer
+---
+title: 466.1 — Schema honesty audit
+role: designer
+variant: Audit
+date: 2026-06-01
+topics: [audit, schema-honesty, triad-engine, spirit-next, schema-rust-next, leakage]
+parent_meta_report: reports/designer/466-triad-engine-honesty-situation-2026-06-01
+slot: 1
+description: |
+  Read-only audit of how schema-driven the triad engine really is. Verdict: roughly 75 percent schema-honest at the architectural-load level, two leakage zones — the trace vocabulary (Spirit 1365 unresolved) and validate methods. Top three: schema-emit Trace plane + trace traits on engine traits, schema-emit Validate trait + constraint annotations, schema-emit Signal admission scaffolding.
+---
 
 # 466.1 — Schema honesty audit
 

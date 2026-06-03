@@ -1,8 +1,12 @@
-; spirit
-[single-field-wrapper-audit method-only-discipline orphan-rule typestate workspace-discipline craft-check]
-[Audit of the single-field struct wrapper pattern across nota-next + schema-next + spirit-next, prompted by `struct CodecDerive { input: DeriveInput }`. 28 instances surveyed; all pay their way through one of five reasons. The pattern is the workspace's method-only-rule answer to "the verb needs a noun the inner type cannot provide."]
-2026-06-01
-designer
+---
+title: 448 — Single-field wrapper audit — why `CodecDerive { input: DeriveInput }` and friends
+role: designer
+variant: Audit
+date: 2026-06-01
+topics: [single-field-wrapper-audit, method-only-discipline, orphan-rule, typestate, workspace-discipline, craft-check]
+description: |
+  Audit of the single-field struct wrapper pattern across nota-next + schema-next + spirit-next, prompted by `struct CodecDerive { input: DeriveInput }`. 28 instances surveyed; all pay their way through one of five reasons. The pattern is the workspace's method-only-rule answer to "the verb needs a noun the inner type cannot provide."
+---
 
 # 448 — Single-field wrapper audit — why `CodecDerive { input: DeriveInput }` and friends
 

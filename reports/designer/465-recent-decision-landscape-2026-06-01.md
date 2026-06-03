@@ -1,8 +1,12 @@
-; designer
-[recent-decisions consolidation engine-trait testing-trace deploy-nix workflow rkyv-schema-emission spirit-triad-naming]
-[Review of designer-lane recent reports (458, 461, 463) + Spirit captures (1326-1380) surfacing the important decisions taken or pending. Organizes by theme (engine-trait architecture / testing+verification / deploy+Nix / workflow / schema-emission) and tiers by magnitude. Names the pending psyche ratifications. Produced in response to the psyche's request to represent the recent decision landscape.]
-2026-06-01
-designer
+---
+title: 465 — Recent decision landscape consolidation
+role: designer
+variant: Research
+date: 2026-06-01
+topics: [recent-decisions, consolidation, engine-trait, testing-trace, deploy-nix, workflow, rkyv-schema-emission, spirit-triad-naming]
+description: |
+  Review of designer-lane recent reports (458, 461, 463) + Spirit captures (1326-1380) surfacing the important decisions taken or pending. Organizes by theme (engine-trait architecture / testing+verification / deploy+Nix / workflow / schema-emission) and tiers by magnitude. Names the pending psyche ratifications. Produced in response to the psyche's request to represent the recent decision landscape.
+---
 
 # 465 — Recent decision landscape consolidation
 

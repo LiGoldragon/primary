@@ -1,8 +1,14 @@
-; designer
-[spirit-next persona-spirit production-readiness merger triad-engine schema-emission shared-runtime deployment]
-[Sub-agent C of meta-report 484. Spirit component production-readiness audit per Spirit 1482. Deployed persona-spirit (v0.3.0) is the live workspace intent substrate today: Kameo actor tree, multi-topic v0.3.0 wire, side-by-side spirit-vX.Y.Z deployment slots, signal-frame wire, owner socket, upgrade socket, schema-driven-actor branch landed but not deployed. Spirit-next (v0.1.0) is the schema-derived triad pilot: SignalActor + Nexus + Store on schema-emitted SignalEngine/NexusEngine/SemaEngine traits, redb-backed .sema, NexusWork/NexusAction Stash effect runner loop landed on branch designer-best-of-designs-2026-06-02 at ba24b011, 47 tests pass --all-features. Merger path is one-way replacement: spirit-next becomes the spirit-v0.4 deployment slot once production parity reaches (owner socket, upgrade socket, multi-topic v0.3.0 wire, intent-record migration). Recommended next slice: contract-repo split (Spirit 1422) — extract spirit-next/schema/lib.schema's signal-side variants into signal-spirit so spirit-next can grow toward production binary while persona-spirit keeps serving intent through v0.3.0 wrapper.]
-2026-06-02
-designer
+---
+title: 484.3 — Spirit component production readiness
+role: designer
+variant: Audit
+date: 2026-06-02
+topics: [spirit-next, persona-spirit, production-readiness, merger, triad-engine, schema-emission, shared-runtime, deployment]
+parent_meta_report: reports/designer/484-Audit-production-readiness-meta-2026-06-02
+slot: 3
+description: |
+  Sub-agent C of meta-report 484. Spirit component production-readiness audit per Spirit 1482. Deployed persona-spirit (v0.3.0) is the live workspace intent substrate today: Kameo actor tree, multi-topic v0.3.0 wire, side-by-side spirit-vX.Y.Z deployment slots, signal-frame wire, owner socket, upgrade socket, schema-driven-actor branch landed but not deployed. Spirit-next (v0.1.0) is the schema-derived triad pilot: SignalActor + Nexus + Store on schema-emitted SignalEngine/NexusEngine/SemaEngine traits, redb-backed .sema, NexusWork/NexusAction Stash effect runner loop landed on branch designer-best-of-designs-2026-06-02 at ba24b011, 47 tests pass --all-features. Merger path is one-way replacement: spirit-next becomes the spirit-v0.4 deployment slot once production parity reaches (owner socket, upgrade socket, multi-topic v0.3.0 wire, intent-record migration). Recommended next slice: contract-repo split (Spirit 1422) — extract spirit-next/schema/lib.schema's signal-side variants into signal-spirit so spirit-next can grow toward production binary while persona-spirit keeps serving intent through v0.3.0 wrapper.
+---
 
 # 484.3 — Spirit component production readiness
 

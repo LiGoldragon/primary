@@ -1,8 +1,14 @@
-; designer
-[shared-runtime triad-runtime trace-runtime TraceLog ContinuationBudget StashTable DaemonCommand SignalTransport workspace-library schema-rust-next-runtime crate-extraction generic-infrastructure shared-crate triad_main!]
-[Sub-agent D of meta-report 484 (production-readiness audit per Spirit 1482). Answers the eight recurring questions for the SHARED RUNTIME LIBRARY scope. The library does not exist yet; this report names what should move in, what stays per-component, and how the macro proposal from designer 483 § triad_main! connects to the library surface. Candidates measured against spirit-next current state: TraceLog + TraceSocketListener + frame codec (208 lines today), DaemonCommand + SocketPath + daemon-loop scaffolding (95 lines), SignalTransport (101 lines), ContinuationBudget (28 lines, GENERIC over ContinuationBudgetExceeded handling), StashTable (lifecycle-shaped, MOSTLY generic), Configuration (split: socket_path + database_path stay per-component; trace_socket_path is generic). Total runtime-generic surface that should move ~400 lines per component, accumulating per future component daemon. Biggest design decision: WHERE the shared crate lives — extracted standalone as triad-runtime, OR landed as a non-emission module of schema-rust-next under the trace-runtime cargo feature. Standalone is recommended (separation of emitter from runtime; schema-rust-next stays a build-time crate; triad-runtime is a runtime dependency). Recommended first slice: extract TraceLog + TraceSocketListener + frame codec + Configuration trace fields into a triad-runtime crate WITH spirit-next as the first consumer, in parallel with the per-variant trace-wiring change from designer 483. The triad_main! macro proposal is named as second-slice scope.]
-2026-06-02
-designer
+---
+title: 484.4 — Shared runtime library (sub-agent D)
+role: designer
+variant: Audit
+date: 2026-06-02
+topics: [shared-runtime, triad-runtime, trace-runtime, TraceLog, ContinuationBudget, StashTable, DaemonCommand, SignalTransport, workspace-library, schema-rust-next-runtime, crate-extraction, generic-infrastructure, shared-crate, triad_main!]
+parent_meta_report: reports/designer/484-Audit-production-readiness-meta-2026-06-02
+slot: 4
+description: |
+  Sub-agent D of meta-report 484 (production-readiness audit per Spirit 1482). Answers the eight recurring questions for the SHARED RUNTIME LIBRARY scope. The library does not exist yet; this report names what should move in, what stays per-component, and how the macro proposal from designer 483 § triad_main! connects to the library surface. Candidates measured against spirit-next current state: TraceLog + TraceSocketListener + frame codec (208 lines today), DaemonCommand + SocketPath + daemon-loop scaffolding (95 lines), SignalTransport (101 lines), ContinuationBudget (28 lines, GENERIC over ContinuationBudgetExceeded handling), StashTable (lifecycle-shaped, MOSTLY generic), Configuration (split: socket_path + database_path stay per-component; trace_socket_path is generic). Total runtime-generic surface that should move ~400 lines per component, accumulating per future component daemon. Biggest design decision: WHERE the shared crate lives — extracted standalone as triad-runtime, OR landed as a non-emission module of schema-rust-next under the trace-runtime cargo feature. Standalone is recommended (separation of emitter from runtime; schema-rust-next stays a build-time crate; triad-runtime is a runtime dependency). Recommended first slice: extract TraceLog + TraceSocketListener + frame codec + Configuration trace fields into a triad-runtime crate WITH spirit-next as the first consumer, in parallel with the per-variant trace-wiring change from designer 483. The triad_main! macro proposal is named as second-slice scope.
+---
 
 # 484.4 — Shared runtime library (sub-agent D)
 

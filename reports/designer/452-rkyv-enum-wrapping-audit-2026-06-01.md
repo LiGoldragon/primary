@@ -1,8 +1,12 @@
-; spirit
-[rkyv enum-wrapping closed-sum structural-macros audit MacroPatternObject sized-archive variant-tag witness pilot]
-[Designer sub-agent audit of Spirit 1324 — the closed-sum-enum-per-shape pattern as the honest representation for type-erasing structural-macro outputs in rkyv-archived schema-emitted code. Pilot is MacroPatternObject in schema-next/src/declarative.rs. Eight cargo tests on feature branch audit-rkyv-enum-wrapping-presumption, gated behind cargo feature rkyv-enum-wrapping-audit, plus a flake check.]
-2026-06-01
-designer
+---
+title: 452 — Audit of the closed-sum-enum rkyv wrapping presumption
+role: designer
+variant: Audit
+date: 2026-06-01
+topics: [rkyv, enum-wrapping, closed-sum, structural-macros, audit, MacroPatternObject, sized-archive, variant-tag, witness, pilot]
+description: |
+  Designer sub-agent audit of Spirit 1324 — the closed-sum-enum-per-shape pattern as the honest representation for type-erasing structural-macro outputs in rkyv-archived schema-emitted code. Pilot is MacroPatternObject in schema-next/src/declarative.rs. Eight cargo tests on feature branch audit-rkyv-enum-wrapping-presumption, gated behind cargo feature rkyv-enum-wrapping-audit, plus a flake check.
+---
 
 # 452 — Audit of the closed-sum-enum rkyv wrapping presumption
 

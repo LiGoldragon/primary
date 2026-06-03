@@ -1,8 +1,14 @@
-; spirit
-[porting-playbook next-stack schema-source build-witness runtime-migration parallel-track witness-tests]
-[Operator-side recipe for porting a component to the next stack. Spirit-next is the worked example throughout; every step has a citation in live code. End with a worked migration sketch on signal-message as the near-trivial first candidate.]
-2026-06-01
-designer
+---
+title: 446 — Porting playbook — the operator-side recipe
+role: designer
+variant: Research
+date: 2026-06-01
+topics: [porting-playbook, next-stack, schema-source, build-witness, runtime-migration, parallel-track, witness-tests]
+parent_meta_report: reports/designer/446-next-stack-porting-research-2026-06-01
+slot: 2
+description: |
+  Operator-side recipe for porting a component to the next stack. Spirit-next is the worked example throughout; every step has a citation in live code. End with a worked migration sketch on signal-message as the near-trivial first candidate.
+---
 
 # 446 — Porting playbook — the operator-side recipe
 

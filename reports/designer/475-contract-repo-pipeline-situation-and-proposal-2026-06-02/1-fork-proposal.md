@@ -1,8 +1,14 @@
-; designer
-[contract-repo signal-interface pipeline-split daemon-imports nexus-sema-local fork-proposal spirit-1422]
-[Fork proposal — investigate current main HEADs across spirit-next + signal-spirit + schema-rust-next + schema-next + core-signal-spirit + signal-introspect; verify the bypass claim; propose the per-repo split that lands Spirit 1422 (Decision Maximum 2026-06-02) — Signal interface in signal-<component> contract repository, Nexus + SEMA local to daemon, exception clause for scale-out SEMA. Schema-next already supports cross-schema imports via DEP_<CRATE>_SCHEMA_DIR; the proposal leans on the marker-core import-consumer working pattern. Estimated cost 2-4 operator days for spirit-next + signal-spirit; emitter and schema-next need no shape changes. Largest open question is the help action aggregation across the cross-repo Signal/Nexus split. Recommended phasing — spirit-next + signal-spirit pilot, then introspect by-construction, then persona + orchestrate.]
-2026-06-02
-designer
+---
+title: 475.1 — Contract-repo fork proposal
+role: designer
+variant: Design
+date: 2026-06-02
+topics: [contract-repo, signal-interface, pipeline-split, daemon-imports, nexus-sema-local, fork-proposal, spirit-1422]
+parent_meta_report: reports/designer/475-contract-repo-pipeline-situation-and-proposal-2026-06-02
+slot: 1
+description: |
+  Fork proposal — investigate current main HEADs across spirit-next + signal-spirit + schema-rust-next + schema-next + core-signal-spirit + signal-introspect; verify the bypass claim; propose the per-repo split that lands Spirit 1422 (Decision Maximum 2026-06-02) — Signal interface in signal-<component> contract repository, Nexus + SEMA local to daemon, exception clause for scale-out SEMA. Schema-next already supports cross-schema imports via DEP_<CRATE>_SCHEMA_DIR; the proposal leans on the marker-core import-consumer working pattern. Estimated cost 2-4 operator days for spirit-next + signal-spirit; emitter and schema-next need no shape changes. Largest open question is the help action aggregation across the cross-repo Signal/Nexus split. Recommended phasing — spirit-next + signal-spirit pilot, then introspect by-construction, then persona + orchestrate.
+---
 
 # 475.1 — Contract-repo fork proposal
 

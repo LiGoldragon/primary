@@ -1,8 +1,12 @@
-; designer
-[psyche-backlog top-6 visual ratification-asks integration-path schema-stack architectural-priorities]
-[Consolidated visual backlog of the top 6 pending psyche ratifications across the active design surface (designer reports 458 + 463 + 466 + 467 + 468 + 469 + recent Spirit captures 1394-1398). Tiered READY / GATING / ARCHITECTURAL with substantive context + schema sketches + Rust code snippets + decision diagrams per item. Reduces an 18-item backlog to 6 actionable items chosen for blocking-vs-informational + direct architectural impact + implementation readiness + magnitude. Per-item: status, captured intent, substantive context, code/schema, unblocks, ask. Closes with deferred-items inventory and recommended decision order.]
-2026-06-02
-designer
+---
+title: 470 — Psyche backlog: top 6 with extensive context
+role: designer
+variant: Synthesis
+date: 2026-06-02
+topics: [psyche-backlog, top-6, visual, ratification-asks, integration-path, schema-stack, architectural-priorities]
+description: |
+  Consolidated visual backlog of the top 6 pending psyche ratifications across the active design surface (designer reports 458 + 463 + 466 + 467 + 468 + 469 + recent Spirit captures 1394-1398). Tiered READY / GATING / ARCHITECTURAL with substantive context + schema sketches + Rust code snippets + decision diagrams per item. Reduces an 18-item backlog to 6 actionable items chosen for blocking-vs-informational + direct architectural impact + implementation readiness + magnitude. Per-item: status, captured intent, substantive context, code/schema, unblocks, ask. Closes with deferred-items inventory and recommended decision order.
+---
 
 # 470 — Psyche backlog: top 6 with extensive context
 

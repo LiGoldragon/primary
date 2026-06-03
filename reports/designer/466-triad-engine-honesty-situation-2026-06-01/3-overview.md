@@ -1,8 +1,14 @@
-; designer
-[situation triad-engine honesty schema-driven actor-model inner-outer-world slim-nexus-output overview synthesis ratification-candidates]
-[Orchestrator synthesis of designer 466.1 schema-honesty audit + 466.2 actor-model and inner/outer flow audit. Triad engine architecture is partially honest at the interface level (75 percent schema-driven by architectural load) but structurally under-filled at the behavior level: Engine violates the hidden-non-actor-owner anti-pattern; Output::RecordsObserved violates the slim-Nexus-output principle; Nexus has no real decision logic — into_nexus_output projects Signal variants directly to SEMA variants with zero algorithmic choice. Three concrete schema-emission targets (Trace plane + Validate trait + Signal-admission scaffolding) close the leakage to 90 percent+; two structural fixes (actor-trait pilot landing + Output split with QueryByHandle) close the behavioral gaps. Names five ratification candidates.]
-2026-06-01
-designer
+---
+title: 466.3 — Overview synthesis
+role: designer
+variant: Synthesis
+date: 2026-06-01
+topics: [situation, triad-engine, honesty, schema-driven, actor-model, inner-outer-world, slim-nexus-output, overview, synthesis, ratification-candidates]
+parent_meta_report: reports/designer/466-triad-engine-honesty-situation-2026-06-01
+slot: 3
+description: |
+  Orchestrator synthesis of designer 466.1 schema-honesty audit + 466.2 actor-model and inner/outer flow audit. Triad engine architecture is partially honest at the interface level (75 percent schema-driven by architectural load) but structurally under-filled at the behavior level: Engine violates the hidden-non-actor-owner anti-pattern; Output::RecordsObserved violates the slim-Nexus-output principle; Nexus has no real decision logic — into_nexus_output projects Signal variants directly to SEMA variants with zero algorithmic choice. Three concrete schema-emission targets (Trace plane + Validate trait + Signal-admission scaffolding) close the leakage to 90 percent+; two structural fixes (actor-trait pilot landing + Output split with QueryByHandle) close the behavioral gaps. Names five ratification candidates.
+---
 
 # 466.3 — Overview synthesis
 

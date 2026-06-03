@@ -1,8 +1,14 @@
-; designer
-[production-readiness persona-component supervisor-engine engine-management systemd-units fd-handoff schema-emission shared-runtime triad-engine design-heavy]
-[Sub-agent B report on the PERSONA component for the production-readiness audit (Spirit 1482). Persona is the host-level engine-management daemon — the supervisor that keeps every other component running. Design-heavy because the daemon source today carries hand-written Operation/Reply types plus a kameo EngineManager + EngineSupervisor; nothing schema-driven; no triad-engine shape; the new contract surface is concept-only. Answers the 8 recurring questions, sketches the missing schema surfaces, names what moves to schema emission and to shared runtime, recommends the operator next-slice, surfaces load-bearing decisions for psyche ratification.]
-2026-06-02
-designer
+---
+title: 484.2 — Persona component production readiness
+role: designer
+variant: Audit
+date: 2026-06-02
+topics: [production-readiness, persona-component, supervisor-engine, engine-management, systemd-units, fd-handoff, schema-emission, shared-runtime, triad-engine, design-heavy]
+parent_meta_report: reports/designer/484-Audit-production-readiness-meta-2026-06-02
+slot: 2
+description: |
+  Sub-agent B report on the PERSONA component for the production-readiness audit (Spirit 1482). Persona is the host-level engine-management daemon — the supervisor that keeps every other component running. Design-heavy because the daemon source today carries hand-written Operation/Reply types plus a kameo EngineManager + EngineSupervisor; nothing schema-driven; no triad-engine shape; the new contract surface is concept-only. Answers the 8 recurring questions, sketches the missing schema surfaces, names what moves to schema emission and to shared runtime, recommends the operator next-slice, surfaces load-bearing decisions for psyche ratification.
+---
 
 # 484.2 — Persona component production readiness
 

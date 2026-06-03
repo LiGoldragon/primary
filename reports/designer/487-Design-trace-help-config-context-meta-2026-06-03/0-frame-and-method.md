@@ -1,8 +1,14 @@
-; designer
-[trace-as-schema-interface help-namespace nota-config-convention context-maintenance intent-supersession daemon-string-boundary meta-report frame schema-rust-next spirit-next persona]
-[Meta-report frame for the design + audit + maintenance dispatch 2026-06-03 per psyche STT manifesting as Spirit 1489-1496. Four parallel sub-agents handle: trace mechanism audit + daemon string-boundary, help/description namespace design, NOTA config-by-convention design, and combined context/intent maintenance sweep. Orchestrator writes overview synthesis when all sub-agents return.]
-2026-06-03
-designer
+---
+title: 487.0 — Frame and method
+role: designer
+variant: Design
+date: 2026-06-03
+topics: [trace-as-schema-interface, help-namespace, nota-config-convention, context-maintenance, intent-supersession, daemon-string-boundary, meta-report, frame, schema-rust-next, spirit-next, persona]
+parent_meta_report: reports/designer/487-Design-trace-help-config-context-meta-2026-06-03
+slot: 0
+description: |
+  Meta-report frame for the design + audit + maintenance dispatch 2026-06-03 per psyche STT manifesting as Spirit 1489-1496. Four parallel sub-agents handle: trace mechanism audit + daemon string-boundary, help/description namespace design, NOTA config-by-convention design, and combined context/intent maintenance sweep. Orchestrator writes overview synthesis when all sub-agents return.
+---
 
 # 487.0 — Frame and method
 

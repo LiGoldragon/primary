@@ -1,8 +1,12 @@
-; designer
-[introspect component-design schema-next engine-traits trace-destination trace-policy-hub queryable-intel layer-2-witness push-model]
-[Design research for Spirit 1398 — the new introspect component (drops the persona prefix from legacy persona-introspect). Three roles: configurable trace destination for every spirit-stack component, trace policy hub deciding keep/drop/summarize/route, queryable intel source for clients. Schema sketch at engine-trait level with five-variant Input (ConfigureTracePolicy / IngestTraceEvent / QueryTraceEvents / Subscribe / Help), slim Nexus output, rich Nexus decision matrix (the inbound trace policy match drives the most interesting decision — Keep / Drop / Summarize / Fanout — with three NexusOutput side-channel variants distinct from SEMA writes). Push model recommended for trace ingestion. Greenfield migration recommended. Five ratification candidates surface, including a Configure universal Input variant pattern and "policy is SEMA-stored typed record" pattern. Next-slice scope: IngestTraceEvent + QueryTraceEvents on schema-next, spirit-next emits via testing-trace, CLI round-trips.]
-2026-06-02
-designer
+---
+title: 469 — Introspect component design
+role: designer
+variant: Design
+date: 2026-06-02
+topics: [introspect, component-design, schema-next, engine-traits, trace-destination, trace-policy-hub, queryable-intel, layer-2-witness, push-model]
+description: |
+  Design research for Spirit 1398 — the new introspect component (drops the persona prefix from legacy persona-introspect). Three roles: configurable trace destination for every spirit-stack component, trace policy hub deciding keep/drop/summarize/route, queryable intel source for clients. Schema sketch at engine-trait level with five-variant Input (ConfigureTracePolicy / IngestTraceEvent / QueryTraceEvents / Subscribe / Help), slim Nexus output, rich Nexus decision matrix (the inbound trace policy match drives the most interesting decision — Keep / Drop / Summarize / Fanout — with three NexusOutput side-channel variants distinct from SEMA writes). Push model recommended for trace ingestion. Greenfield migration recommended. Five ratification candidates surface, including a Configure universal Input variant pattern and "policy is SEMA-stored typed record" pattern. Next-slice scope: IngestTraceEvent + QueryTraceEvents on schema-next, spirit-next emits via testing-trace, CLI round-trips.
+---
 
 # 469 — Introspect component design
 

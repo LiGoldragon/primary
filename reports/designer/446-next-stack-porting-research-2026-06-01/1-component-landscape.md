@@ -1,8 +1,14 @@
-; spirit
-[porting-research next-stack landscape candidate-classification component-fleet meta-report-body]
-[Sub-agent 1 of designer 446 — landscape scan: which workspace components are realistic next-stack porting candidates, classified by current type substrate, signal-contract maturity, and porting wave.]
-2026-06-01
-designer
+---
+title: 446-1 — Component landscape for next-stack porting
+role: designer
+variant: Research
+date: 2026-06-01
+topics: [porting-research, next-stack, landscape, candidate-classification, component-fleet, meta-report-body]
+parent_meta_report: reports/designer/446-next-stack-porting-research-2026-06-01
+slot: 1
+description: |
+  Sub-agent 1 of designer 446 — landscape scan: which workspace components are realistic next-stack porting candidates, classified by current type substrate, signal-contract maturity, and porting wave.
+---
 
 # 446-1 — Component landscape for next-stack porting
 

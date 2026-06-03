@@ -1,8 +1,12 @@
-; designer
-[spirit-topic-discovery cached-embeddings frecency co-occurrence hybrid-algorithm fastembed-rs hnsw-rs library-survey nota-schema-additions cache-architecture phase-ordering]
-[Design research for a Spirit topic-discovery feature responding to psyche directive 2026-06-02 ([|a feature to spirit to make those discoverable with a cached-value algorithm — something smart and clever to use nowadays, there must be libraries for this kind of thing|]). Proposes a three-layer hybrid (frecency + co-occurrence + embeddings) with Rust library picks (fastembed-rs + hnsw_rs + petgraph), NOTA schema additions on the ordinary + owner signal planes, a redb-backed cache extending Spirit's existing SEMA store, and a three-phase implementation order (phase 1 frecency ~2 days; phase 2 co-occurrence ~3 days; phase 3 embeddings ~1-2 weeks). Open questions on model bundle delivery, magnitude-filter respect, and cold-start strategy carried to the psyche.]
-2026-06-02
-designer
+---
+title: 474 — Spirit topic-discovery feature design
+role: designer
+variant: Design
+date: 2026-06-02
+topics: [spirit-topic-discovery, cached-embeddings, frecency, co-occurrence, hybrid-algorithm, fastembed-rs, hnsw-rs, library-survey, nota-schema-additions, cache-architecture, phase-ordering]
+description: |
+  Design research for a Spirit topic-discovery feature responding to psyche directive 2026-06-02 ([|a feature to spirit to make those discoverable with a cached-value algorithm — something smart and clever to use nowadays, there must be libraries for this kind of thing|]). Proposes a three-layer hybrid (frecency + co-occurrence + embeddings) with Rust library picks (fastembed-rs + hnsw_rs + petgraph), NOTA schema additions on the ordinary + owner signal planes, a redb-backed cache extending Spirit's existing SEMA store, and a three-phase implementation order (phase 1 frecency ~2 days; phase 2 co-occurrence ~3 days; phase 3 embeddings ~1-2 weeks). Open questions on model bundle delivery, magnitude-filter respect, and cold-start strategy carried to the psyche.
+---
 
 # 474 — Spirit topic-discovery feature design
 

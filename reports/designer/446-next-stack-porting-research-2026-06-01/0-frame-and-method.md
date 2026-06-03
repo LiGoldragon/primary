@@ -1,8 +1,14 @@
-; spirit
-[porting-research next-stack landscape playbook sequencing meta-report frame]
-[Frame for the parallel research meta-report: how should the (nota-next + schema-next + spirit-next) substrate be ported to other workspace components? Three sub-agents cover landscape / playbook / sequencing.]
-2026-06-01
-designer
+---
+title: 446 — Frame: how to port the next stack to other components
+role: designer
+variant: Design
+date: 2026-06-01
+topics: [porting-research, next-stack, landscape, playbook, sequencing, meta-report, frame]
+parent_meta_report: reports/designer/446-next-stack-porting-research-2026-06-01
+slot: 0
+description: |
+  Frame for the parallel research meta-report: how should the (nota-next + schema-next + spirit-next) substrate be ported to other workspace components? Three sub-agents cover landscape / playbook / sequencing.
+---
 
 # 446 — Frame: how to port the next stack to other components
 

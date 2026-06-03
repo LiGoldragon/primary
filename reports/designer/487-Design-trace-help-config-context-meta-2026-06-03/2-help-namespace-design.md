@@ -1,8 +1,14 @@
-; designer
-[help-namespace description-namespace mirror-namespace fully-qualified-symbol schema-data default-generator help-rendering Spirit-1493 Spirit-263 schema-carries concept-demo]
-[Concept-and-demo report for sub-agent B of meta-report 487, designing the help/description namespace per Spirit 1493 (Principle High, 2026-06-03). The new intent: help and documentation should be schema data in a mirror description namespace over the global symbol namespace, with generated defaults when no explicit description entry exists for a fully qualified symbol. Recommendation: ratify schema-emitted Description namespace as a fourth schema kind alongside Signal/Nexus/Sema; one `.description.schema` file per component bound to the same SchemaIdentity as the working schema; schema-rust-next emits a `DescriptionDirectory` table on a data-bearing `HelpRegistry` struct (NOT a ZST); default-generator builds humanized descriptions from variant + field names when the table has no explicit entry; Help operations (Spirit 263) render through the typed Description chain at the CLI boundary only. Worked demo on `tiny-keystore`: full schema (working + description), generated `HelpRegistry` shape with methods, `(Help (Verb Put))` round-trip rendering. Six decisions for psyche to ratify; smallest operator slice = ship `.description.schema` parser + `HelpRegistry` emission for one component, leaving Help operation auto-injection as the second slice.]
-2026-06-03
-designer
+---
+title: 487.2 — Help/description namespace design + demo
+role: designer
+variant: Design
+date: 2026-06-03
+topics: [help-namespace, description-namespace, mirror-namespace, fully-qualified-symbol, schema-data, default-generator, help-rendering, Spirit-1493, Spirit-263, schema-carries, concept-demo]
+parent_meta_report: reports/designer/487-Design-trace-help-config-context-meta-2026-06-03
+slot: 2
+description: |
+  Concept-and-demo report for sub-agent B of meta-report 487, designing the help/description namespace per Spirit 1493 (Principle High, 2026-06-03). The new intent: help and documentation should be schema data in a mirror description namespace over the global symbol namespace, with generated defaults when no explicit description entry exists for a fully qualified symbol. Recommendation: ratify schema-emitted Description namespace as a fourth schema kind alongside Signal/Nexus/Sema; one `.description.schema` file per component bound to the same SchemaIdentity as the working schema; schema-rust-next emits a `DescriptionDirectory` table on a data-bearing `HelpRegistry` struct (NOT a ZST); default-generator builds humanized descriptions from variant + field names when the table has no explicit entry; Help operations (Spirit 263) render through the typed Description chain at the CLI boundary only. Worked demo on `tiny-keystore`: full schema (working + description), generated `HelpRegistry` shape with methods, `(Help (Verb Put))` round-trip rendering. Six decisions for psyche to ratify; smallest operator slice = ship `.description.schema` parser + `HelpRegistry` emission for one component, leaving Help operation auto-injection as the second slice.
+---
 
 # 487.2 — Help/description namespace design + demo
 

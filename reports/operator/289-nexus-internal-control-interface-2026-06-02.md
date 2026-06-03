@@ -1,8 +1,12 @@
-; operator
-[nexus internal-interface recursive-engine backpressure actor-scheduling sema-load]
-[Refinement after Spirit 1464: recursive Nexus does not need to start as a public subprocess protocol. The cleaner first model is a daemon-internal Nexus control interface. Nexus receives external facts through Signal and SEMA completions, but it can also produce internal control actions that schedule more Nexus work, defer SEMA work, shed load, preserve tracing/logging, or notify clients that the system is busy.]
-2026-06-02
-operator
+---
+title: 289 — Nexus Internal Control Interface
+role: operator
+variant: Design
+date: 2026-06-02
+topics: [nexus, internal-interface, recursive-engine, backpressure, actor-scheduling, sema-load]
+description: |
+  Refinement after Spirit 1464: recursive Nexus does not need to start as a public subprocess protocol. The cleaner first model is a daemon-internal Nexus control interface. Nexus receives external facts through Signal and SEMA completions, but it can also produce internal control actions that schedule more Nexus work, defer SEMA work, shed load, preserve tracing/logging, or notify clients that the system is busy.
+---
 
 # 289 — Nexus Internal Control Interface
 

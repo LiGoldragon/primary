@@ -1,8 +1,12 @@
-; spirit
-[spirit-triad naming-gate policy-contract owner-signal meta-signal phase-0-gate]
-[Item 1 of 6 open-queue decisions — present the spirit-triad naming gate with current repo state, the two options (Option A workspace convention `owner-signal-spirit` vs Option B proposed `meta-signal-spirit` rename per Spirit 290+299), code excerpts, trade-offs table, and recommendation. Decision gates designer 446 Phase 0 spirit fold.]
-2026-06-01
-designer
+---
+title: 458 — Spirit-triad naming gate (item 1 of 6)
+role: designer
+variant: Design
+date: 2026-06-01
+topics: [spirit-triad, naming-gate, policy-contract, owner-signal, meta-signal, phase-0-gate]
+description: |
+  Item 1 of 6 open-queue decisions — present the spirit-triad naming gate with current repo state, the two options (Option A workspace convention `owner-signal-spirit` vs Option B proposed `meta-signal-spirit` rename per Spirit 290+299), code excerpts, trade-offs table, and recommendation. Decision gates designer 446 Phase 0 spirit fold.
+---
 
 # 458 — Spirit-triad naming gate (item 1 of 6)
 

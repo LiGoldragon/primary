@@ -1,8 +1,12 @@
-; designer
-[developed-interfaces spirit-pilot-expansion persona-component orchestrate-component engine-trait-architecture nexus-decisions slim-acknowledgement schema-sketches]
-[Design research for Spirit 1395 — developed schema-defined interfaces beyond toy one-variant planes. Three components sketched: spirit pilot expanded from 3-variant Input to 5-variant Input + 4-variant SemaWrite + 4-variant SemaRead with explicit Nexus decision matrix; persona drafted from scratch as broader identity/profile/state/capabilities surface; orchestrate drafted from scratch as engine-trait runtime for lane coordination with mailbox + conflict resolution. Cross-cutting comparison + five new ratification candidates surface as workspace-wide patterns.]
-2026-06-02
-designer
+---
+title: 468 — Developed interfaces — spirit pilot expansion, persona, orchestrate
+role: designer
+variant: Design
+date: 2026-06-02
+topics: [developed-interfaces, spirit-pilot-expansion, persona-component, orchestrate-component, engine-trait-architecture, nexus-decisions, slim-acknowledgement, schema-sketches]
+description: |
+  Design research for Spirit 1395 — developed schema-defined interfaces beyond toy one-variant planes. Three components sketched: spirit pilot expanded from 3-variant Input to 5-variant Input + 4-variant SemaWrite + 4-variant SemaRead with explicit Nexus decision matrix; persona drafted from scratch as broader identity/profile/state/capabilities surface; orchestrate drafted from scratch as engine-trait runtime for lane coordination with mailbox + conflict resolution. Cross-cutting comparison + five new ratification candidates surface as workspace-wide patterns.
+---
 
 # 468 — Developed interfaces — spirit pilot expansion, persona, orchestrate
 

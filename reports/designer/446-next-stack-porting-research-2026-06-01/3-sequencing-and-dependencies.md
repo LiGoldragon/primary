@@ -1,8 +1,14 @@
-; spirit
-[porting-sequencing dependency-graph next-stack horizons phased-plan first-slice]
-[Designer sub-agent 3 of meta-report 446. Maps the dependency graph between designer 444 §5 open horizons and candidate component ports; recommends a phased sequencing plan and a headline first slice — folding the spirit-next pilot into the real spirit repo, converged with sub-agent 1's recommendation. Schema-core extraction is the gate that unlocks the multiplicative-scope wave-2 ports across the fleet.]
-2026-06-01
-designer
+---
+title: 3 — Sequencing and dependencies: phased plan + first slice
+role: designer
+variant: Design
+date: 2026-06-01
+topics: [porting-sequencing, dependency-graph, next-stack, horizons, phased-plan, first-slice]
+parent_meta_report: reports/designer/446-next-stack-porting-research-2026-06-01
+slot: 3
+description: |
+  Designer sub-agent 3 of meta-report 446. Maps the dependency graph between designer 444 §5 open horizons and candidate component ports; recommends a phased sequencing plan and a headline first slice — folding the spirit-next pilot into the real spirit repo, converged with sub-agent 1's recommendation. Schema-core extraction is the gate that unlocks the multiplicative-scope wave-2 ports across the fleet.
+---
 
 # 3 — Sequencing and dependencies: phased plan + first slice
 

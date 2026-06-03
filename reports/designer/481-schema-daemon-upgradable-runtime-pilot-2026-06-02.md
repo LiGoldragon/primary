@@ -1,8 +1,12 @@
-; spirit
-[schema-daemon upgrade-object asschema upgrade-emission designer-481 pilot]
-[Designer 481 — schema-next daemon + upgradable runtime schema pilot. Lands the typed UpgradeObject + SchemaEdit family on schema-next and the MigrationEmitter on schema-rust-next, with a Layer 2 end-to-end witness that compiles the emitted migration source through rustc and runs the projected migration on a sample value. Pilot is shape-of-daemon scope per spirit 1469: incremental closure of designer 447's NOTA-to-object correspondence, not a production-ready triad.]
-2026-06-02
-designer
+---
+title: 481 — Schema-daemon upgradable runtime schema pilot
+role: designer
+variant: Design
+date: 2026-06-02
+topics: [schema-daemon, upgrade-object, asschema, upgrade-emission, designer-481, pilot]
+description: |
+  Designer 481 — schema-next daemon + upgradable runtime schema pilot. Lands the typed UpgradeObject + SchemaEdit family on schema-next and the MigrationEmitter on schema-rust-next, with a Layer 2 end-to-end witness that compiles the emitted migration source through rustc and runs the projected migration on a sample value. Pilot is shape-of-daemon scope per spirit 1469: incremental closure of designer 447's NOTA-to-object correspondence, not a production-ready triad.
+---
 
 # 481 — Schema-daemon upgradable runtime schema pilot
 

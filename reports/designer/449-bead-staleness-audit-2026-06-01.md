@@ -1,8 +1,12 @@
-; spirit
-[bead-staleness audit calibration psyche-intent-vs-substrate persona-prefix-retirement next-stack-pivot upgrade-as-sema schema-core-extraction]
-[Calibration audit of the 269 open beads in `.beads/` against the current intent corpus (Spirit 1280-1319) and the recent designer + operator reports. Substrate has drifted heavily; the dominant pattern is pre-pivot persona-stack work that the schema/NOTA-next/upgrade-as-SEMA arc has now subsumed. Detailed verdict on the 41 most-stale P0/P1 beads + sampled across the P2/P3 substrate. Recommendation: bulk retirement of the persona-* component-migration backlog plus the macro-substrate work plus the upgrade-handover work, with new tracking shaped around designer 446's porting waves + designer 447's upgrade-as-SEMA slice.]
-2026-06-01
-designer
+---
+title: 449 — Bead-staleness audit
+role: designer
+variant: Audit
+date: 2026-06-01
+topics: [bead-staleness, audit, calibration, psyche-intent-vs-substrate, persona-prefix-retirement, next-stack-pivot, upgrade-as-sema, schema-core-extraction]
+description: |
+  Calibration audit of the 269 open beads in `.beads/` against the current intent corpus (Spirit 1280-1319) and the recent designer + operator reports. Substrate has drifted heavily; the dominant pattern is pre-pivot persona-stack work that the schema/NOTA-next/upgrade-as-SEMA arc has now subsumed. Detailed verdict on the 41 most-stale P0/P1 beads + sampled across the P2/P3 substrate. Recommendation: bulk retirement of the persona-* component-migration backlog plus the macro-substrate work plus the upgrade-handover work, with new tracking shaped around designer 446's porting waves + designer 447's upgrade-as-SEMA slice.
+---
 
 # 449 — Bead-staleness audit
 

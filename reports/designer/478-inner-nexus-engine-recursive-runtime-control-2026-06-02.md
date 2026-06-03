@@ -1,8 +1,12 @@
-; designer
-[nexus-inner-engine recursive-meta-engine runtime-control prioritization backpressure overload-handling actor-scheduling future-direction]
-[Explores Spirit 1465 — Nexus has an inner engine that is recursive and handles runtime/meta control (actor prioritization, backpressure, overload notifications to clients, scheduling decisions). The outer NexusEngine handles per-request domain decisions; the inner engine handles meta-decisions about the runtime itself. Future direction enabling deeper control over the actor system when overloaded — Nexus stays available to take organizing decisions even under load. Builds on Spirit 1437 (decision/effect language) + 1438 (asymmetry) + 1439 (recursive computation) + operator 287 (NexusWork/NexusAction vocabulary). Three angles: (A) structural placement; (B) runtime situations it handles; (C) connection to existing architecture and pilot implementation considerations.]
-2026-06-02
-designer
+---
+title: 478 — Inner Nexus engine + recursive runtime control
+role: designer
+variant: Design
+date: 2026-06-02
+topics: [nexus-inner-engine, recursive-meta-engine, runtime-control, prioritization, backpressure, overload-handling, actor-scheduling, future-direction]
+description: |
+  Explores Spirit 1465 — Nexus has an inner engine that is recursive and handles runtime/meta control (actor prioritization, backpressure, overload notifications to clients, scheduling decisions). The outer NexusEngine handles per-request domain decisions; the inner engine handles meta-decisions about the runtime itself. Future direction enabling deeper control over the actor system when overloaded — Nexus stays available to take organizing decisions even under load. Builds on Spirit 1437 (decision/effect language) + 1438 (asymmetry) + 1439 (recursive computation) + operator 287 (NexusWork/NexusAction vocabulary). Three angles: (A) structural placement; (B) runtime situations it handles; (C) connection to existing architecture and pilot implementation considerations.
+---
 
 # 478 — Inner Nexus engine + recursive runtime control
 

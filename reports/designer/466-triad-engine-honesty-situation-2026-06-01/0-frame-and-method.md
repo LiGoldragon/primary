@@ -1,8 +1,14 @@
-; designer
-[situation triad-engine honesty schema-driven actor-model interface-first meta-report]
-[Meta-report frame for the triad-engine honesty situation requested by psyche 2026-06-01. Two sub-agents dispatched in parallel: A audits SCHEMA HONESTY (what schema-rust-next emits vs what spirit-next hand-writes; how much of the architecture is truly schema-driven vs Rust-leakage); B audits ACTOR MODEL + INNER/OUTER FLOW (the signal-in → nexus → sema → signal-out flow shape; Nexus as inner/outer world boundary per Spirit 1388; slim Nexus output per Spirit 1389; meta-actor interface fit). The orchestrator synthesizes both into 3-overview.md when they return.]
-2026-06-01
-designer
+---
+title: 466.0 — Frame and method
+role: designer
+variant: Design
+date: 2026-06-01
+topics: [situation, triad-engine, honesty, schema-driven, actor-model, interface-first, meta-report]
+parent_meta_report: reports/designer/466-triad-engine-honesty-situation-2026-06-01
+slot: 0
+description: |
+  Meta-report frame for the triad-engine honesty situation requested by psyche 2026-06-01. Two sub-agents dispatched in parallel: A audits SCHEMA HONESTY (what schema-rust-next emits vs what spirit-next hand-writes; how much of the architecture is truly schema-driven vs Rust-leakage); B audits ACTOR MODEL + INNER/OUTER FLOW (the signal-in → nexus → sema → signal-out flow shape; Nexus as inner/outer world boundary per Spirit 1388; slim Nexus output per Spirit 1389; meta-actor interface fit). The orchestrator synthesizes both into 3-overview.md when they return.
+---
 
 # 466.0 — Frame and method
 

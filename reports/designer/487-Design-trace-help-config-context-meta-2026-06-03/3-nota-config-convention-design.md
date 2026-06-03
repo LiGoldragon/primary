@@ -1,8 +1,14 @@
-; designer
-[nota-config-convention typed-root-type path-convention authored-files config-loader registry schema-emitted daemon-boundary Spirit-1494 Spirit-1495]
-[Sub-agent C of meta-report 487. Concept-with-demo for typed NOTA config-by-convention per Spirit 1494 (Principle High): authored workspace data files prefer typed NOTA; predictable file names and directories define the expected root type. Investigates the current ad hoc landscape (17 .nota files in primary, 30+ in /git), finds the convention is implicit, and proposes a schema-declared convention registry that maps directory patterns plus filenames to fully-qualified root types. Demo names skills/skills.nota as Vec<SkillEntry>, intent/*.nota as Vec<IntentRecord>, persona-spirit/bootstrap-policy.nota as Vec<BootstrapEntry>, and a hypothetical spirit-daemon-config.nota as SpiritDaemonConfiguration. Honors Spirit 1495's daemon-boundary by clarifying the convention applies to authored files only; the daemon receives binary on the wire, never NOTA text. Six-question deliverable structure per 0-frame-and-method.md.]
-2026-06-03
-designer
+---
+title: 487.3 — Typed NOTA config-by-convention design + demo
+role: designer
+variant: Design
+date: 2026-06-03
+topics: [nota-config-convention, typed-root-type, path-convention, authored-files, config-loader, registry, schema-emitted, daemon-boundary, Spirit-1494, Spirit-1495]
+parent_meta_report: reports/designer/487-Design-trace-help-config-context-meta-2026-06-03
+slot: 3
+description: |
+  Sub-agent C of meta-report 487. Concept-with-demo for typed NOTA config-by-convention per Spirit 1494 (Principle High): authored workspace data files prefer typed NOTA; predictable file names and directories define the expected root type. Investigates the current ad hoc landscape (17 .nota files in primary, 30+ in /git), finds the convention is implicit, and proposes a schema-declared convention registry that maps directory patterns plus filenames to fully-qualified root types. Demo names skills/skills.nota as Vec<SkillEntry>, intent/*.nota as Vec<IntentRecord>, persona-spirit/bootstrap-policy.nota as Vec<BootstrapEntry>, and a hypothetical spirit-daemon-config.nota as SpiritDaemonConfiguration. Honors Spirit 1495's daemon-boundary by clarifying the convention applies to authored files only; the daemon receives binary on the wire, never NOTA text. Six-question deliverable structure per 0-frame-and-method.md.
+---
 
 # 487.3 — Typed NOTA config-by-convention design + demo
 

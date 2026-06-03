@@ -1,8 +1,14 @@
-; designer
-[situation triad-engine actor-model inner-outer-world slim-nexus-output flow-audit]
-[Sub-agent B audit of the actor model fit + signal-in → nexus → sema → signal-out flow shape in spirit-next. Verdict: the engine-trait composition is honest — SignalEngine triages, NexusEngine executes, SemaEngine apply/observe — but actor-model fit is partial. SignalActor and Store are data-bearing nouns; Nexus is data-bearing but the runtime root Engine wraps it in Mutex and exposes verb facades. No mailboxes / no kameo / single-flight enforced by `&mut self` exclusive borrow. Nexus output today is FULL-PAYLOAD (carries SemaReceipt / ObservedRecords / RemoveReceipt + DatabaseMarker), not slim per Spirit 1389. Slim-acknowledgement fits cleanly at the Output enum level: split Output into a slim wire-shape (identifier + DatabaseMarker) and let clients query the SEMA detail through a follow-up Observe.]
-2026-06-01
-designer
+---
+title: 466.2 — Actor model + inner/outer world flow audit
+role: designer
+variant: Audit
+date: 2026-06-01
+topics: [situation, triad-engine, actor-model, inner-outer-world, slim-nexus-output, flow-audit]
+parent_meta_report: reports/designer/466-triad-engine-honesty-situation-2026-06-01
+slot: 2
+description: |
+  Sub-agent B audit of the actor model fit + signal-in → nexus → sema → signal-out flow shape in spirit-next. Verdict: the engine-trait composition is honest — SignalEngine triages, NexusEngine executes, SemaEngine apply/observe — but actor-model fit is partial. SignalActor and Store are data-bearing nouns; Nexus is data-bearing but the runtime root Engine wraps it in Mutex and exposes verb facades. No mailboxes / no kameo / single-flight enforced by `&mut self` exclusive borrow. Nexus output today is FULL-PAYLOAD (carries SemaReceipt / ObservedRecords / RemoveReceipt + DatabaseMarker), not slim per Spirit 1389. Slim-acknowledgement fits cleanly at the Output enum level: split Output into a slim wire-shape (identifier + DatabaseMarker) and let clients query the SEMA detail through a follow-up Observe.
+---
 
 # 466.2 — Actor model + inner/outer world flow audit
 

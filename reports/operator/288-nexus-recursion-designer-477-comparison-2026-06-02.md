@@ -1,8 +1,12 @@
-; operator
-[nexus recursive-computation designer-comparison schema-composition runner-loop implementation-lean]
-[Comparison of designer 477 against operator 287. Designer 477 strengthens the architecture with the generic envelope, subprocess examples, and cross-repo composition analysis. Operator 287 keeps the cleaner root naming and stricter action/work split. Recommended merge: use NexusWork/NexusAction root names, keep designer's fact/command variant clarity, keep recursion as schema-enumerated work/actions, and avoid treating Nexus<Root> as an unrestricted universal wrapper.]
-2026-06-02
-operator
+---
+title: 288 — Nexus Recursion Comparison With Designer 477
+role: operator
+variant: Synthesis
+date: 2026-06-02
+topics: [nexus, recursive-computation, designer-comparison, schema-composition, runner-loop, implementation-lean]
+description: |
+  Comparison of designer 477 against operator 287. Designer 477 strengthens the architecture with the generic envelope, subprocess examples, and cross-repo composition analysis. Operator 287 keeps the cleaner root naming and stricter action/work split. Recommended merge: use NexusWork/NexusAction root names, keep designer's fact/command variant clarity, keep recursion as schema-enumerated work/actions, and avoid treating Nexus<Root> as an unrestricted universal wrapper.
+---
 
 # 288 — Nexus Recursion Comparison With Designer 477
 

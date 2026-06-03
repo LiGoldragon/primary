@@ -1,8 +1,14 @@
-; designer
-[contract-repo signal-interface pipeline-split daemon-imports nexus-sema-local meta-report-frame]
-[Meta-report frame for the contract-repository pipeline situation + fork proposal. The psyche directive 2026-06-02: investigate whether contract repositories are part of the next-stack pipeline or have been bypassed; if bypassed, dispatch sub-agent to propose the fork shape across all components from current main HEADs to put Signal interface declaration in the signal-<component> contract repo while keeping Nexus + SEMA local to the daemon. Capture Spirit 1422 Decision Maximum codifies the split. Sub-agent produces the proposal as a sub-report; orchestrator writes the analysis overview after the sub-agent returns.]
-2026-06-02
-designer
+---
+title: 475.0 — Frame and method
+role: designer
+variant: Design
+date: 2026-06-02
+topics: [contract-repo, signal-interface, pipeline-split, daemon-imports, nexus-sema-local, meta-report-frame]
+parent_meta_report: reports/designer/475-contract-repo-pipeline-situation-and-proposal-2026-06-02
+slot: 0
+description: |
+  Meta-report frame for the contract-repository pipeline situation + fork proposal. The psyche directive 2026-06-02: investigate whether contract repositories are part of the next-stack pipeline or have been bypassed; if bypassed, dispatch sub-agent to propose the fork shape across all components from current main HEADs to put Signal interface declaration in the signal-<component> contract repo while keeping Nexus + SEMA local to the daemon. Capture Spirit 1422 Decision Maximum codifies the split. Sub-agent produces the proposal as a sub-report; orchestrator writes the analysis overview after the sub-agent returns.
+---
 
 # 475.0 — Frame and method
 

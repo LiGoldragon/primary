@@ -1,8 +1,12 @@
-; operator
-[nexus recursive-computation continuation schema-composition decision-loop spirit-next]
-[Re-agglomeration of the Nexus side-channel topic after psyche correction: Nexus input/output must not be symmetric, and Nexus may instead be modeled as a recursive computation destination. The report reframes designer 476 into a NexusWork/NexusAction model: Nexus consumes work, emits actions, and actions either finish as Signal replies, command SEMA/effects, or recur as more Nexus work. Three angles: semantic meaning, schema shape, generated runner. Includes implementation leans and acceptance tests.]
-2026-06-02
-operator
+---
+title: 287 — Nexus Recursive Computation Continuation
+role: operator
+variant: Design
+date: 2026-06-02
+topics: [nexus, recursive-computation, continuation, schema-composition, decision-loop, spirit-next]
+description: |
+  Re-agglomeration of the Nexus side-channel topic after psyche correction: Nexus input/output must not be symmetric, and Nexus may instead be modeled as a recursive computation destination. The report reframes designer 476 into a NexusWork/NexusAction model: Nexus consumes work, emits actions, and actions either finish as Signal replies, command SEMA/effects, or recur as more Nexus work. Three angles: semantic meaning, schema shape, generated runner. Includes implementation leans and acceptance tests.
+---
 
 # 287 — Nexus Recursive Computation Continuation
 
