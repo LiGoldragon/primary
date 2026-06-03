@@ -14,6 +14,19 @@ Code changes:
 - `scripts/run-nix-integration-tests` now builds with the same four local stack inputs.
 - `flake.nix` no longer carries the positive source-grep proof for generated schema content or the local patch text-presence check. Build/test freshness remains the positive proof; grep remains only for retired-surface absence.
 
+## What Landed In Schema Next
+
+The upstream constraint slice landed in `schema-next`.
+
+Code changes:
+
+- `src/asschema.rs` now defines `SymbolPath` as a newtype over ordered `Name` segments.
+- `Asschema` can derive paths for root variants, namespace types, struct fields, and enum variants.
+- `SymbolPath` round-trips through NOTA as structured data, for example `(SymbolPath [spirit-next:lib Input Record])`.
+- `SymbolPath` round-trips through rkyv.
+- Opaque path-shaped atoms such as `spirit-next:lib/Input/Record` are rejected by the `SymbolPath` decoder.
+- `INTENT.md` and `ARCHITECTURE.md` describe the path object as the future key surface for trace/help/description/indexing.
+
 ## Why This Slice
 
 The newest design thread corrected repeated wrapper output such as `Output::Rejected(Rejected(SignalRejection { ... }))`. The schema-level fix is alias-vs-newtype lowering:
@@ -40,6 +53,8 @@ pub enum Output {
 
 The new tests prove that shape both at compile/runtime type level and across the real CLI/daemon boundary.
 
+The `SymbolPath` slice addresses the highest-risk audit finding: symbol identity was still mostly prose. The path is now typed schema data and can become the shared key for trace names, help descriptions, and generated documentation without turning those systems into string tables.
+
 ## Verification
 
 Cargo verification passed:
@@ -50,6 +65,12 @@ Cargo verification passed:
 - `cargo test --features "nota-text testing-trace"`
 - `cargo fmt --check`
 - `cargo clippy --all-targets --features "nota-text testing-trace" -- -D warnings`
+
+`schema-next` verification passed:
+
+- `cargo test`
+- `cargo fmt --check`
+- `cargo clippy --all-targets -- -D warnings`
 
 The local Nix stack check was started with path overrides for:
 
@@ -73,7 +94,6 @@ scripts/check-local-schema-stack
 
 The schema/triad audit found that the strongest missing upstream witnesses are:
 
-- canonical `SymbolPath`;
 - generated trace runtime adapter emission instead of `spirit-next/src/trace.rs`;
 - help/description namespace as typed schema data;
 - replacing positive flake grep checks in schema repos with cargo/type witnesses;
@@ -102,7 +122,6 @@ The main slice does not depend on that worker returning.
 
 Immediate next implementation gaps:
 
-- Add `SymbolPath` as real schema data and round-trip it through NOTA and rkyv.
 - Move trace adapter emission into `schema-rust-next`, then shrink or remove `spirit-next/src/trace.rs`.
 - Convert schema repo positive grep checks to cargo/type witnesses.
 - Start the `upgrade` triad with real schema files and one process-boundary `AttemptUpgrade` witness.
