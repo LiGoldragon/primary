@@ -585,6 +585,37 @@ Tests must make this boundary falsifiable: a topology or
 forbidden-edge test should fail if a runtime root regresses into a
 non-actor owner around actor refs.
 
+### Engine traits live on real data-bearing types
+
+The hidden-non-actor-owner anti-pattern extends to the
+schema-emitted engine traits (`SignalEngine`, `NexusEngine`,
+`SemaEngine` per `skills/component-triad.md` §"Runtime triad
+engine traits"): they must be implemented on REAL data-bearing
+types — the actor / daemon root / domain-state-carrying struct —
+NOT on:
+
+- **ZST namespaces.** `impl NexusEngine for SpiritNexus` where
+  `pub struct SpiritNexus;` is a free function in disguise. The
+  trait's verbs need a real noun to live on.
+- **"Helper" structs that hold no state.** A `struct` with no
+  fields implementing the engine trait reads as ownership, but
+  owns nothing — same anti-pattern with a different syntax.
+- **Free functions disguised through trait alias macros.** If the
+  expansion lands a free function and renames it as a method, the
+  anti-pattern still fires; the macro extension must still satisfy
+  the method-on-real-noun rule.
+
+The engine impl owns the actor's state — the redb handles, the
+typed configuration, the in-memory caches, the trace log, the
+child actor refs. Method placement is a design decision about
+where the logic lives, on what object, owning what data
+(`AGENTS.md` §"Hard overrides" + `skills/rust/methods.md` §"No
+ZST method holders" §"Legitimate ZST uses — narrow, named").
+
+The test: erase the type's name from the type system. If the
+type's job vanishes, it was a namespace; the verbs need a real
+noun. Per Spirit 1487 + designer 485.
+
 ## Rust shape
 
 The workspace runtime default is **`kameo` 0.20**. Kameo's native

@@ -114,6 +114,72 @@ The schema preamble names the enum's allowed values. Grep for
 `Apex` finds every apex-tier record across the file (and across
 every NOTA file in the workspace that uses the same vocabulary).
 
+## Rule 4 — Enum payloads are choices; structs are products
+
+When an enum variant carries data, the payload's shape depends on
+what the data IS:
+
+- **One axis of choice** → direct enum payload. `(Busy BusyReason)`
+  where `BusyReason [DatabaseOverloaded ResourceDisconnected
+  OtherBusyReason]`. Not `(Busy BusyReport)` wrapping the choice
+  in a struct that adds nothing.
+- **Product of independent facts** → struct payload.
+  `(RecordAccepted SemaReceipt)` where `SemaReceipt {
+  RecordIdentifier * DatabaseMarker * }` — multiple facts the
+  reply genuinely carries together.
+- **Only some choices need extra data** → nested data-carrying
+  enum. `BusyReason [(DatabaseOverloaded RetryGuidance)
+  ResourceDisconnected OtherBusyReason]` — the guidance attaches
+  to the variant that needs it.
+
+Wrong shape: inventing a `<Variant>Report` struct wrapper around
+a single enum. The semantic root is the variant; the choice axis
+is the payload enum; no wrapper. The notation must truthfully
+represent the underlying data shape — empty wrappers are a smell.
+
+**Header-declared inline enum sugar.** The payload enum can be
+declared at the header position:
+
+```schema
+Output [
+  RecordAccepted
+  RecordsObserved
+  (Busy [DatabaseOverloaded ResourceDisconnected OtherBusyReason])
+  Rejected
+]
+```
+
+The header stays a homogeneous vector of variant-signature objects:
+`RecordAccepted` is a signature, `(Busy [...])` is a signature,
+`Rejected` is a signature. The inline bracket body declares the
+payload enum locally rather than forcing a separate namespace
+declaration. The lowered form is equivalent to:
+
+```schema
+Output [RecordAccepted RecordsObserved (Busy BusyReason) Rejected]
+BusyReason [DatabaseOverloaded ResourceDisconnected OtherBusyReason]
+```
+
+**Type-table variant resolution.** The header can list variant
+names without spelling whether each is unit or data-carrying — the
+schema reader resolves against the local type table:
+
+```schema
+Output [RecordAccepted RecordsObserved Busy Rejected]
+```
+
+If `RecordAccepted` is a declared type, the variant carries it; if
+the name is not declared as a type, it is a unit variant. The fully
+explicit `(Variant PayloadType)` form remains available when the
+variant name differs from the payload type name (e.g., `(Rejected
+SignalRejection)`).
+
+Ambiguity policy: same-name resolution defaults to data-carrying
+when a type exists. An explicit unit marker can land later if the
+rare conflict appears.
+
+Per Spirit 1466 + 1467 + 1468 + operator 290.
+
 ## The canonical example
 
 `/home/li/primary/skills/skills.nota` is the workspace's canonical

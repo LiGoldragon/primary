@@ -929,6 +929,123 @@ is preserved across all six plane envelope hops (Signal in / Nexus in
   proliferation. Concerns that look like they want a new engine
   usually fit inside Nexus's heavy logic.
 
+### Lifecycle hooks on the engine traits
+
+Per Spirit 1487 (Decision High, 2026-06-03): *"Generated Signal,
+Nexus, and SEMA engine traits should carry minimal lifecycle
+hooks: on_start and on_stop with typed start and stop failure
+results. Full actor mailbox, backpressure, and runtime-control
+traits stay deferred; lifecycle hooks are the minimum addressable
+surface persona supervision can use."*
+
+Each engine trait carries two lifecycle methods plus typed failure
+types:
+
+```rust
+pub trait NexusEngine {
+    fn on_start(&mut self) -> Result<(), ActorStartFailure> { Ok(()) }
+    fn on_stop(&mut self) -> Result<(), ActorStopFailure> { Ok(()) }
+    // ... existing execute / execute_inner / trace hooks ...
+}
+```
+
+Default bodies are `Ok(())` so a component that has no setup or
+teardown needs no override. Components that bind sockets, open
+databases, register listeners, or otherwise hold start-time
+resources override `on_start`; the failure type carries typed
+reasons (port bound, database missing, dependency unreachable)
+that persona supervision reads to decide retry / escalate / fail
+the component start. `on_stop` is the corresponding teardown hook
+with `ActorStopFailure` reasons (graceful-stop-timeout,
+state-flush-failure, etc.).
+
+Full actor mailbox + backpressure + runtime-control traits stay
+deferred per Spirit 1483 (*"Workspace explicitly defers
+backpressure handling, runtime control layer, inner Nexus engine,
+actor scheduling/prioritization and related deeper-runtime work
+… future-deeper-runtime that won't be touched for a while."*).
+The two lifecycle hooks are the minimum supervision surface; if
+the actor-trait promotion lands later, it composes as a
+supertrait extension without breaking the engine-trait substrate.
+
+Persona-system supervision binds the lifecycle hooks: a
+`persona-system-daemon` brings components up via `on_start`,
+takes them down via `on_stop`, and reads the typed failure
+results to decide policy. Supervision is the first concrete
+consumer of these hooks; future consumers (graceful-restart
+orchestration, blue/green-style cutover) compose on the same
+surface.
+
+### Nexus mechanism substrate — NexusWork / NexusAction / Continue / effects
+
+Per Spirit 1486 (Decision Maximum, 2026-06-03; substrate
+ratification): *"NexusWork/NexusAction asymmetric pair + 5-variant
+action set (ReplyToSignal, CommandSemaWrite, CommandSemaRead,
+CommandEffect, Continue); macro-generated runner loop (triad_main!
+emitted from schema-rust-next); effects per-component declared in
+schema with Stash as first universal candidate; Continue as
+in-process immediate recursion; cross-component invocation via
+Signal contracts not Nexus-internal access."* This is the
+workspace-canonical engine mechanism; the parts that hold best
+move forward as intent develops.
+
+The Nexus trait surface in shape:
+
+```rust
+pub trait NexusEngine {
+    fn execute(&mut self, input: NexusWork) -> NexusAction;
+    // plus the trace and lifecycle hooks above
+}
+
+pub enum NexusAction {
+    ReplyToSignal(Output),                // hand back to Signal for wire egress
+    CommandSemaWrite(SemaWriteInput),     // mutate durable state
+    CommandSemaRead(SemaReadInput),       // observe durable state
+    CommandEffect(Effect),                // per-component declared effect (Stash, …)
+    Continue(NexusWork),                  // re-enter Nexus.execute immediately, in-process
+}
+```
+
+The runner loop (emitted from schema by `triad_main!` per Spirit
+1419) reads NexusActions and dispatches:
+
+- `ReplyToSignal` → hand to Signal's reply path → wire egress.
+- `CommandSemaWrite` / `CommandSemaRead` → call SEMA's `apply` /
+  `observe` → result becomes the next `NexusWork`.
+- `CommandEffect` → call the component-declared effect handler →
+  result becomes the next `NexusWork`.
+- `Continue` → loop back into `Nexus.execute` immediately,
+  in-process, on the same call stack.
+
+Component code becomes a one-line `main` because the runner is
+schema-emitted; the component supplies only the trait
+implementations for its data-bearing nouns. This is the concrete
+form of Spirit 1488 (Decision High): *"Schema source carries the
+triad engine mechanism as the baseline so schema authors get the
+runner shape, trace plumbing, and continuation substrate through
+generation; per-component variation should use explicit escape
+hatches for real domain differences rather than hand-implemented
+daemon preference."*
+
+**Effects are per-component declared in schema.** `Stash` is the
+first universal candidate (slim Nexus output via handle per Spirit
+1389). Each component declares its effect vocabulary; the runner
+dispatches via the schema-emitted effect handler trait.
+
+**Cross-component invocation goes through Signal contracts, not
+Nexus-internal access.** A component that needs to call another
+component's Nexus does so by emitting a Signal request to that
+component's wire endpoint — never by reaching into another
+component's Nexus directly. This preserves the typed boundary,
+the closed schema vocabulary per component, and the supervision
+clean-edge.
+
+**Deferred deeper-runtime work** per Spirit 1483: backpressure,
+runtime control layer, inner Nexus engine, actor scheduling and
+prioritization stay future-direction. The substrate above is what
+lands now; deeper work arrives if/when overload evidence appears
+in real production load.
+
 ### Instrumentation belongs to the engine-trait contract
 
 Per Spirit 1365 (Correction Maximum, 2026-06-01): **traceability is
