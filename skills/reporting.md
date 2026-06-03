@@ -639,6 +639,31 @@ Psyche reports stay self-contained: a Psyche report citing
 sub-agent reports must inline the load-bearing code excerpts from
 those sub-reports so the psyche can read the Psyche report alone.
 
+### Intent Anchors — first body section
+
+Per psyche 2026-06-03 (Spirit 1546 Decision High): reports that
+rest on explicit intent should begin their body with an
+`Intent Anchors` section. The shape is:
+
+1. YAML front matter.
+2. Title heading.
+3. `## Intent Anchors`.
+4. The central bracket-quoted intent summaries, each as its own
+   paragraph with one blank line between anchors.
+5. The report's analysis.
+
+For Psyche reports this section is required. For other report
+kinds, include it when the report's argument depends on explicit
+psyche intent. Omit it only for reports whose substance is purely
+mechanical and does not lean on an intent thread.
+
+The anchors use the citation discipline from
+`skills/intent-log.md` §"Citing intent in prose — bracket-quote
+the summary": quote the summary itself in square brackets. Do not
+use bullets, tables, or record numbers as the primary shape. The
+point is that the reader sees the load-bearing intent before the
+agent's analysis starts.
+
 ### Psyche reports talk to a human — narrative voice, not citation-heavy
 
 Per psyche 2026-06-03 (Spirit 1521 Principle High): the psyche
