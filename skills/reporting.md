@@ -638,6 +638,48 @@ Psyche reports stay self-contained: a Psyche report citing
 sub-agent reports must inline the load-bearing code excerpts from
 those sub-reports so the psyche can read the Psyche report alone.
 
+### Psyche reports talk to a human — narrative voice, not citation-heavy
+
+Per psyche 2026-06-03 (Spirit 1521 Principle High): the psyche
+report is a HUMAN-FACING document. The voice is narrative —
+the report TELLS the psyche what's going on. Numeric Spirit
+record IDs interrupt reading flow when sprinkled on every claim.
+
+The discipline:
+
+- **Default to narrative phrasing.** *"Fresh intent shows…"*,
+  *"today's design decisions surface…"*, *"the recent corpus
+  reveals…"*, *"recent capture leans toward…"* carry the substance
+  with less cognitive load than *"per Spirit 1234, …"* on every
+  sentence.
+- **Use record-number ranges to highlight regions, not as
+  per-sentence citations.** *"Records 1463–1481 trace the privacy
+  thread"* is fine when the report wants to mark a span the
+  psyche may want to look up. *"Per Spirit 1463, …"* on every
+  claim is not.
+- **A single record number is fine when it's load-bearing.** If
+  the report rests on one specific intent — a Maximum-certainty
+  Decision the report is asking the psyche to ratify — naming
+  the number is appropriate. The pattern is *"sparingly,
+  deliberately"*, not *"every claim."*
+- **Restate substance, not the locator.** *"The decision to
+  reuse Magnitude on a privacy axis (Decision Maximum, today)"*
+  reads as a sentence; *"per Spirit 1463"* reads as a footnote.
+  The first carries the meaning; the second carries the
+  cross-reference.
+- **Code and visuals stay rich.** Narrative discipline tightens
+  the PROSE, not the code blocks or the diagrams. A psyche
+  report's substance still flows through verbatim code with
+  file-path-and-line citation per §"Psyche reports — show the
+  code, not the summary."
+
+The deeper rule: a psyche report is what the psyche reads when
+they want to ENGAGE WITH THE WORK — to ratify, alter, or
+suggest. The reading experience should support engagement,
+not impose decoding. Citation chains belong in design reports
+and intent-maintenance reports; narrative belongs in psyche
+reports.
+
 ### Decisions in Psyche reports — distinguish lean from ratification
 
 Per psyche 2026-06-03 (Spirit 1516 Correction Maximum): a psyche
