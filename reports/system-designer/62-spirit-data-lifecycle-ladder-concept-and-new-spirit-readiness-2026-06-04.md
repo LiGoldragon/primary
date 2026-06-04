@@ -95,7 +95,15 @@ The punch list, in priority order:
    `From<redb::*Error>` impls. It does **not** use the workspace storage kernel
    `sema`/`sema-engine`, which are on redb `4` (a different major with an
    incompatible on-disk format and a changed API). So the gap is not a version
-   bump — it is a kernel decision. The archive (§3) is built on `sema-engine`
+   bump — it is a kernel decision. **This bypass is deliberate and documented,
+   not drift:** the new spirit's own `ARCHITECTURE.md` (lines 241-244, 440-441)
+   says the pilot uses redb directly "to keep the proof self-contained" and
+   names `sema-engine` as "the production destination." The SEMA plane is real
+   durable storage — redb write/read transactions, commits, a hand-maintained
+   commit-sequence counter, persistence across reopen (tested) — it simply
+   reimplements by hand what `sema-engine` already provides. So adopting
+   `sema-engine` is the pilot's own already-stated production step, not a defect
+   to discover. The archive (§3) is built on `sema-engine`
    (redb 4); bolting it onto the bespoke redb-2 store would link **two redb
    majors in one binary** (two `Database` types, two file formats, no interop).
    The clean move is to put the new spirit's SEMA plane on `sema-engine` too —
