@@ -231,7 +231,7 @@ intent capture, the operation is `Record` carrying an untagged
 - `Entry` accepts a four-field public shorthand that defaults privacy
   to `Zero`, but agents should use the explicit five-field form when
   privacy classification matters.
-- Spirit v0.4.1 does not store context or verbatim fields. The agent's
+- Spirit v0.4.2 does not store context or verbatim fields. The agent's
   job is to record the clarified intent as one dense description,
   reusing the psyche's own words when they are load-bearing.
 - **The daemon stamps date and time on receipt.** Clients do not

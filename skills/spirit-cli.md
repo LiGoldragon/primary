@@ -1,13 +1,13 @@
 ---
 tool_versions:
-  - [Spirit, "0.4.1"]
+  - [Spirit, "0.4.2"]
 ---
 
 # Skill — spirit CLI
 
 *The deployed `spirit` binary is the normal substrate for psyche
 intent capture and observation. Agents call the unsuffixed CLI
-directly. This skill covers the live production `Spirit 0.4.1`
+directly. This skill covers the live production `Spirit 0.4.2`
 command shape and how to verify the deployed wrapper when source
 and profile drift.*
 
@@ -132,7 +132,7 @@ going to have to keep track of the interface"* —
 
 ## Operations on the ordinary channel (worked examples)
 
-Examples below match the live production `Spirit 0.4.1` wire shape.
+Examples below match the live production `Spirit 0.4.2` wire shape.
 The installed unsuffixed `spirit` wrapper can lag until CriomOS-home
 points at the new `persona-spirit` commit and the profile is
 activated. When in doubt, read the deployed source per the previous
@@ -146,7 +146,7 @@ newtypes — encoded as bare tokens when possible, or bracket strings
 when they contain whitespace or punctuation.
 
 **Record an intent entry — description-only, multi-topic shape.**
-A v0.4.1 record carries a vector of topics, one agent-clarified
+A v0.4.2 record carries a vector of topics, one agent-clarified
 `Description`, a `Kind`, a certainty `Magnitude`, and a privacy
 `Magnitude`. No verbatim field, no context payload, and no
 client-supplied timestamp. **The daemon stamps date/time itself.**
@@ -171,6 +171,10 @@ a `Zero` privacy record.
 The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
 the assigned identifier. The acknowledgement deliberately does not
 echo the submitted intent content; the wire reply is token-cheap.
+Production v0.4.2 still displays numeric identifiers. Hard removal no
+longer permits those numbers to be reused, but short fingerprint-style
+identifiers are a forward design direction rather than the live
+production surface.
 
 **Simple capture convention.** For normal public workspace work, the
 simple record shape above is the default interface: broad topic vector,
@@ -254,10 +258,11 @@ removal-candidate marker. The old three-field, four-field, five-field,
 and six-field record queries still decode as compatibility input, but
 agents should emit the public five-field query or the explicit private
 query variants.
-`RecordIdentifiers` selects by numeric identifier: `Exact` selects one
-record; `Range` is inclusive, so `(Range (1050 1060))` returns records
-1050 through 1060 when present. Use `SummaryOnly` for compact summaries
-and `WithProvenance` when you need daemon-stamped date/time:
+`RecordIdentifiers` selects by non-reusable numeric identifier: `Exact`
+selects one record; `Range` is inclusive, so `(Range (1050 1060))`
+returns records 1050 through 1060 when present. Use `SummaryOnly` for
+compact summaries and `WithProvenance` when you need daemon-stamped
+date/time:
 
 ```sh
 spirit "(Observe Topics)"
