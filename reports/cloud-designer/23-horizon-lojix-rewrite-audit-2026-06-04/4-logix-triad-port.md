@@ -279,15 +279,19 @@ The generation path, lifted verbatim from the cloud template:
    files present at that surface before generation.** lojix-cli's
    `schema/lojix-cli.concept.schema` and signal-lojix having no schema at
    all is the same trap waiting.
-3. **The nested-resolver bug (report 22 item 4) is real but secondary.**
-   `schema-next/src/resolution.rs:206` lowers a directly-imported module
-   with a fresh empty resolver, dropping the caller's resolver through
-   nested imports (`nexus → sema → signal-lojix` produces
-   `UnresolvedImportCrate`). The one-line fix
-   (`module_source.lower_with_resolver(engine, self)`,
-   `module.rs:203-213`) exists but is operator territory on schema-next.
-   lojix's `nexus → sema → contract` chain WILL hit this — flag it as a
-   dependency, not a lojix-internal fix.
+3. **The nested-resolver bug (report 22 item 4) — LANDED, no longer a
+   dependency.** CORRECTION (orchestrator, verified): this fix has shipped.
+   `schema-next` HEAD is "preserve resolver through nested imports" and
+   `resolution.rs:206` now reads `module_source.lower_with_resolver(engine,
+   self)`. The `nexus → sema → contract` chain no longer drops the resolver.
+   What remains genuinely unproven for lojix is NOT this bug but the
+   **multi-effect pipeline** through `Continue` (cloud ran only one effect) and
+   **streaming-subscription emission** (see the open question below) — lojix is
+   the first to exercise both. Original (now stale) text follows: the bug was
+   that `resolution.rs:206` lowered a directly-imported module with a fresh
+   empty resolver, dropping the caller's resolver through nested imports;
+   the one-line fix `lower_with_resolver(engine, self)` (`module.rs:203-213`)
+   was present but uncalled.
 4. **`meta-signal-cloud` package-name vs repo subtlety (report 22).**
    Resolution matches by registered Cargo crate-name string, not repo
    directory. So `meta-signal-lojix:meta-signal-lojix:*` imports resolve
