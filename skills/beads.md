@@ -19,6 +19,24 @@ messaging fabric. Don't deepen the BEADS investment; don't
 bridge to Persona; use BEADS for what it's good at today
 and design new shapes assuming BEADS goes away.
 
+## Talking about beads to the psyche — never a bare id
+
+A bead id like `primary-l89s` is a database handle. The psyche
+cannot decode it in their head and has no `bd` to query. So when
+you mention a bead to the human — in chat or in a report — **lead
+with what it IS, and keep the id to a quiet trailing reference, or
+drop it in chat entirely.** Say "the runner-extraction work," not
+"`primary-l89s`"; "strip the database words off the upgrade
+contract's wire," not "`primary-ka39`". The id exists so *agents*
+can find the bead; on its own it is noise to the human, and a
+chat reply full of bare ids reads as if it were addressed to a
+peer machine with database access. This holds every mention, every
+time — the psyche has called it out repeatedly. The same applies
+to Spirit record numbers. Full discipline:
+`skills/reporting.md` §"Human-facing references are self-contained"
+(see "Opaque identifiers especially — and ESPECIALLY in chat").
+Per psyche 2026-06-04.
+
 ## When to file a bead
 
 A bead is the right home when **all** of:

@@ -244,10 +244,28 @@ Examples:
   relevant claim from that report. The path is a verification
   link, not the substance.
 
-The rule is general: **reference + inline description**. The
-description can be short, but it must carry the decision-relevant
-meaning. A locator alone creates work for the user; the agent's job
-is to remove that work.
+The rule is general: **the description leads; the reference is
+secondary**. The description can be short, but it must carry the
+decision-relevant meaning. A locator alone creates work for the
+user; the agent's job is to remove that work.
+
+**Opaque identifiers especially — and ESPECIALLY in chat.** A bead
+id, a Spirit record number, a content hash, a jj change id, a commit
+short-id: the human cannot decode any of these in their head, and has
+no database to query. So in **chat**, lead with what the thing IS or
+DECIDED and keep the bare identifier to a quiet trailing reference —
+or omit it entirely. Say "the runner-extraction work" or "the
+correction that a contract is wire-only," not "`primary-l89s`" or
+"record 2593" as the subject of the sentence. In **reports** the
+identifier stays — agents need it to find the thing — but is ALWAYS
+paired with its description. This is not optional and not occasional;
+it is every mention, every time. **A Spirit record number is exactly
+as opaque as a bead hash:** "record 2604" tells the psyche nothing
+without "the decision that a triad is three plane-schemas." Never
+address the human as if they were a peer machine with query access.
+Agents keep slipping on this — if you are about to type a bare id to
+the psyche, stop and lead with the meaning instead. Per psyche
+2026-06-04.
 
 ## Questions to the user — paste the evidence, not a pointer
 
