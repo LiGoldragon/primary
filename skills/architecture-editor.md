@@ -99,13 +99,14 @@ test names>
 <system-wide truths this scope preserves; usually fewer and broader than
 constraints>
 
-## 7 · Possible features (optional, only when there is real uncertainty)
+## 7 · Possible future design (standard section — every architecture file carries one)
 
-<items under consideration but not decided. Each names the open question;
-moves to the cemented body above when settled, retires when ruled out.
-Other acceptable headings: "Open questions", "Undecided boundaries",
-"Future considerations". See the "Carrying uncertainty" section of this
-skill for shape and discipline.>
+<deferred or possible features not being built now, plus genuinely
+undecided designs and open questions. Each names the question or the
+deferred feature; moves to the cemented body above when settled, retires
+when ruled out. Other acceptable headings: "Open questions", "Undecided
+boundaries", "Future considerations". See the "Carrying uncertainty"
+section of this skill for shape and discipline.>
 
 ## Code map
 
@@ -239,6 +240,20 @@ settles, then the substance moves to the cemented body. Per psyche
 uncertain, possible features, possible architecture design decisions
 and stuff like that. We don't have to put everything as like raw
 decided, only rock solid stuff."*).
+
+### A standard section, not merely an uncertainty escape hatch
+
+Per psyche 2026-06-04: a **Possible future design** section is a
+**standard part of every architecture file**, not something added only
+when uncertainty happens to exist. Its job is to record future direction
+*in place* — deferred features, possible designs, and the direction the
+component is heading — so it is not lost to chat or a retiring report.
+The quality bar still holds: the section holds *real* deferred features
+and named open questions, not idle speculation. A worked example: a
+**Restore** operation for Spirit (re-asserting archived records back into
+the hot store, the inverse of collect) is slated as possible-future-design
+rather than built now — it lives in this section, named with enough
+framing to be picked up later, until the psyche decides to build it.
 
 ### The shape
 
