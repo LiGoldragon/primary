@@ -527,3 +527,102 @@ works. This is a small additive code item folded into the edit list.
    on that principle") is the one case the kind tag does not partition. Carried
    as deferred — confirm it is genuinely out of scope for version 6, or it
    justifies a minimal `RelationType` tag now.
+
+## Verification outcome — four blockers and the revised direction
+
+The design above was adversarially verified by three independent agents
+(feasibility / migration / intent-fidelity), one of which *empirically lowered
+the proposed schema and round-tripped it through NOTA*. All three returned
+`sound=false`. Four blockers, all evidenced against source. The sections below
+**supersede** the corresponding parts above.
+
+### Blocker 1 — no struct flattening (supersedes the `CommonFields` schema + the flat CLI examples)
+
+`CommonFields *` does **not** flatten — schema-next/schema-rust-next have no
+struct-field flattening (verified by grep + emission); `CommonFields *` lowers
+to a *nested* field `common_fields: CommonFields`. The flat positional CLI
+examples (lines 427, 437, 448, 461) and the migration table's field-peer
+mapping are therefore wrong as written.
+
+**Revision: inline the common fields into each per-kind struct** (no
+`CommonFields`), giving the intended flat positional wire form:
+
+```
+  Certainty Magnitude
+  Weight    Magnitude
+  Relations (Vec RecordIdentifier)
+
+  DecisionFields      { Topics * Description * Certainty * Weight * Relations * }
+  PrincipleFields     { Topics * Description * Certainty * Weight * Relations * }
+  CorrectionFields    { Topics * Description * Certainty * Weight * Relations * }
+  ClarificationFields { Topics * Description * Certainty * Weight * Relations * }
+  ConstraintFields    { Topics * Description * Certainty * Weight * Privacy * Relations * }
+
+  Entry [Decision Principle Correction Clarification Constraint]
+```
+
+The four-line repetition per kind is the cost of an honest flat wire form; it is
+acceptable and keeps the positional CLI examples (Decision/Correction/Constraint
+above) correct as written. The per-kind enum itself, `Vec<RecordIdentifier>`,
+two same-`Magnitude` fields, and cross-plane reuse are all confirmed *feasible*
+— only the flatten assumption was false.
+
+### Blockers 2 & 3 — the pilot has no migration machinery; clean break instead
+
+The `SchemaVersion` bump is a **hard reject**, not a migration trigger: sema
+(`sema/src/lib.rs:528-540`) refuses to open a file on version mismatch, and
+`UpgradeFrom`/`AcceptPrevious` are zero-impl stubs with no caller, no registry,
+nothing in the open path. There is no `OldEntry` / read-as-old-type module, and
+`spirit/INTENT.md:209-212` **explicitly forbids faking** the last-version
+package (no real previous release tag exists). The pilot's version literals are
+`0.1.0` / `SchemaVersion(1)` — there is no "5/6" in the pilot at all; the
+"5→6" is *production* Spirit's record-schema numbering, a different axis.
+
+**Revision: this branch is a clean-break SHAPE prototype** (subject to the scope
+decision below). The pilot is `0.1.0`, not production, with no precious data:
+change the record shape, bump `SchemaVersion(1)→(2)` so any stale pilot DB is
+rejected (correct — start fresh), and write **no** `UpgradeFrom`. The real
+migration of production records is *operator/production* work for when
+production Spirit cuts over to the schema-derived stack — not the designer's
+pilot prototype. This dissolves blockers 2 and 3 and the migration-table
+privacy-loss risk (there are no records to migrate in the pilot).
+
+### Blocker 4 — relations must reference the stable hash, not reusable `u64`
+
+`50qy` says relations is a vector of record-identifier **hashes** "sized just
+long enough for non-collision." The design typed it `Vec<RecordIdentifier>`
+where the pilot's `RecordIdentifier` is the engine's reusable sequential
+`u64` — the *exact* identity this lane's report 64 (`Spirit 2581-2583`)
+replaced with hashes *because* reuse-on-removal makes references unstable. A
+relations vector of reusable `u64` points at slots that can be reassigned — a
+silent-corruption bug by construction.
+
+**Revision: relations must reference the stable hash identity.** Production
+Spirit v0.5.0 already mints base36 hashes; the schema-derived pilot still uses
+`u64` and is *behind* production on identity. So this redesign is **coupled to
+the hash-identity adoption (report 64)** in the pilot. See the scope decision.
+
+### The genuine decisions (for the psyche)
+
+1. **Scope / migration.** Recommended: clean-break SHAPE prototype in the pilot
+   (no migration; production migration is later operator work). Alternative:
+   also build the out-of-band migration tool + frozen `OldEntry` reader now.
+2. **Hash-identity coupling.** relations needs stable hashes (`50qy` + report
+   64). The pilot is still on `u64`; production v0.5.0 already has hashes.
+   Recommended: bring the pilot to hash identity *on this branch* (it is the
+   coherent "next record architecture" change and makes relations correct by
+   construction). Alternative: land hash identity first as its own branch, then
+   relations on top.
+3. **Privacy shape.** `3awz` says public records omit privacy, private records
+   carry it — but privacy is orthogonal to the five kinds (a Decision can be
+   private). Putting privacy only on `Constraint` (the design above) was a
+   misread. Recommended: privacy is an optional field available to *any* kind
+   (absent = public), so any kind can be private. Alternative: a dedicated
+   private record shape distinct from the five kinds.
+
+Minor (resolved, not asked): relations stays on **all** kinds with an empty
+default (a refresh can produce any kind, per `22t6`); the verifier asked this be
+surfaced rather than silently chosen — it is surfaced here. The `KindSelector`
+re-export break (`lib.rs:70`), the `weight()` vs `Magnitude::weight()` naming
+collision (rename the ordinal to `Magnitude::rank()`), and the three-version-axis
+disambiguation are folded into the implementer edit list as mechanical fixes.
