@@ -57,16 +57,37 @@ Operator:
    - Cites which prototype contributed which piece
    - Integrates into one coherent substrate
 4. Pushes main as the implementation track's canonical artifact
+5. **Integrates from the designer's `next` branch at the operator's
+   discretion** — there is no single mandated path. Per Spirit 2556,
+   operators integrate from `next` by [rebasing the good parts,
+   cherry-picking, re-implementing, or merging the designer branch as-is
+   when the code is good]. Designer code is not second-class: a clean
+   designer `next` branch may be merged to `main` as-is. The choice is
+   per-slice on the merits — merge-as-is when the branch is clean,
+   cherry-pick when only parts are ready, re-implement when main has
+   diverged.
 
-### Designer track — worktree branches OR design-prefixed repos
+### Designer track — the `next` branch by default
 
 Designer:
 
-1. **Default**: worktree branches off the operator's main as the base
-   - Branch name follows the standard designer convention:
-     `designer-<topic>-<date>` per `skills/feature-development.md`
-   - Iterate the design against the operator-baseline; comparison happens
-     during integration review
+1. **Default**: work on the repository's standard **`next` branch** in a
+   worktree off the operator's `main` baseline. `next` is the
+   repository's designated home for breaking changes — schema reshapes,
+   contract reworks, engine ports — not yet safe for `main`. One standing
+   `next` branch per repo, rather than a fresh `designer-<topic>-<date>`
+   branch per feature: the designer iterates the forward-looking shape on
+   `next`, and the operator integrates from `next` into `main`. Per
+   Spirit 2556 — [Designer roles work on a standard next branch by
+   default in each repository; next is where breaking changes happen;
+   operators own main and integrate from next at their discretion.]
+   - Worktree path per `skills/feature-development.md`:
+     `~/wt/github.com/<owner>/<repo>/next/`. A standard worktree rotation
+     for `next` branches is a deferred future convention (Spirit 2557 —
+     [worktree rotation for next branches is deferred; for now use the
+     existing worktree location]).
+   - Iterate the design against the operator baseline; comparison happens
+     during integration review.
 2. **Optional**: create a design-prefixed repository for design exploration
    - Prefix: `design-<concept>` (e.g. `design-nota-core`, `design-asschema`)
    - Use when the design needs its own substrate (not just markdown reports)

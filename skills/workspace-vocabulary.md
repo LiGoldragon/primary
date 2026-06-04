@@ -70,6 +70,17 @@ identifier that still uses `current_*` (parenthesize the legacy name
 when you reference it: "`current_owner_socket_path` (main owner
 socket)").
 
+**Branch sense (consonant).** `next` also names the standard designer
+development **branch** — the per-repo branch where breaking changes are
+developed before an operator integrates them to `main` (Spirit 2556 —
+[designers work on a standard next branch by default; operators own main
+and integrate from next]). The two senses are consonant: the `next`
+branch is where the `next` version gets built. Do not confuse the `next`
+*branch* with the `-next` *repo suffix* (`nota-next`, `schema-next`) used
+for a parallel successor repo during a major break. Branch-workflow
+discipline lives in `skills/double-implementation-strategy.md` §"Designer
+track"; repo-suffix discipline in `skills/major-break-via-new-repo.md`.
+
 ### Component name — `Persona`
 
 Predecessors: `Persona Engine Manager Daemon`, `Persona engine
