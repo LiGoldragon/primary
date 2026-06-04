@@ -552,9 +552,19 @@ The standard flow is the discipline; the difference is one
 extra command, not three.
 
 The pattern compounds. Auto-named bookmarks accumulate on the
-remote silently — there's no clean-up step. A workspace with 26
-stray `push-*` bookmarks (as observed 2026-05-13)
-is the direct consequence of treating `-c @` as routine.
+remote silently — there's no clean-up step. The workspace grew from
+26 stray `push-*` bookmarks (2026-05-13) to **63** by 2026-06-04, all
+pruned in one designer pass — and the psyche's verdict was explicit:
+[stop creating stray push-* bookmarks; the psyche does not want
+per-change or per-report push-named bookmarks; they accumulate as
+clutter and the practice must stop; land work on main through the
+standard flow, or use a clearly-named review branch only when review
+is genuinely needed and delete it after merge] (record 2543).
+
+**Do not create a `push-*` bookmark for routine or per-report work.**
+The single legitimate use is genuine pre-main review, and that
+bookmark is deleted the moment it merges. When in doubt, land on
+`main` — that is the discipline.
 
 ## Bookmark cleanup after merge
 
