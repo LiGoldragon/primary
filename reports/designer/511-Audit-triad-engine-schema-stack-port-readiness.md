@@ -8,6 +8,37 @@ question: Are we stable yet? Can we start to port all the components properly?
 
 # Audit — Triad engine + schema stack port readiness
 
+> **Update since synthesis (2026-06-04, post-audit designer actions).**
+> The substrate moved further while/after this audit ran, and the
+> backlog was reconciled:
+> - **`primary-1tsw` (multi-plane loading + cross-plane import) LANDED
+>   and is CLOSED.** No longer uncommitted WIP — schema-next `main` is
+>   at *"load multiple schema modules per package"* with `with_package`
+>   (`resolution.rs:158`) and the two tests green
+>   (`package_loader_reads_all_schema_modules_in_crate`,
+>   `resolver_resolves_import_of_dependency_root_enum`). With
+>   `primary-tiy7` (per-plane emission, schema-rust-next 0.1.2) this
+>   means **both prerequisite substrate changes are done.**
+> - **The per-crate generation DRIVER — critical-path step 2, the
+>   single biggest blocker — was UNTRACKED; now filed as
+>   `primary-qhi6` (P1).** `cloud/` and `domain-criome/` already carry
+>   authored `schema/nexus.schema` + `schema/sema.schema`, but their
+>   `build.rs` has zero schema wiring; spirit's `build.rs` still calls
+>   `load_lib` (single-plane). The driver wires the multi-plane path
+>   to emit N files per crate.
+> - **Backlog dedup:** the spirit split is tracked under the
+>   pre-existing **`primary-9hx0` (P1)**; my duplicate `qj2g` is closed
+>   and folded into it (record-2604 framing + exemplar role + driver
+>   dependency noted on 9hx0).
+>
+> **Current critical-path bead ledger:** `qhi6` (driver, P1) →
+> `9hx0` (split spirit = clean exemplar, P1, gated on qhi6) →
+> `l89s` (emit the runner, P2, sequence before fan-out) → pilot ONE
+> real port (cloud or domain-criome) → fan out. **Parallelizable P1s,
+> no dependency on the driver:** `ka39` (strip Sema words off
+> signal-upgrade's `HandoverMarker`) and `vllc` (dual-lowering
+> bare-header bug).
+
 The psyche asks two things at once: *are we stable*, and *can we
 port all the components properly now*. This audit answers both,
 sharply separating **design-stability** (settled this session) from
