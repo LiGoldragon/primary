@@ -99,3 +99,79 @@ the psyche owns (5, 6, 8). If the psyche greenlights, the natural
 sequence is: push the `next` branches, then run a comparison workflow
 against whatever the operator track holds, producing the convergence
 report the double-implementation strategy actually calls for.
+
+## Refresh — later 2026-06-04 (post-audit, fast-moving state)
+
+A five-agent re-verification (plus a Spirit sweep, daemon up at
+0.4.2) found the state moved hard the same afternoon and **most of
+the register is now resolved or superseded**. The operator surged
+ahead on the **generated** cloud path on `main`, and a Maximum-
+certainty psyche record demoted the designer prototype as authority.
+Updated status, keyed to this report's threads and the six questions
+last put to the psyche:
+
+- **RESOLVED — operator wrote the correction (thread 2 / "flag the
+  audit?").** `reports/cloud-operator/15-correction-to-cloud-schema-blocker-report-2026-06-04.md`
+  supersedes report 14, cites the five-agent audit, and fixes both
+  the false bead-state claim and the misidentified primary blocker.
+  No flag needed; the loop closed itself. Report 14 remains as the
+  superseded original (correct lineage).
+
+- **SUPERSEDED — no comparison report (thread 2 / "write the
+  comparison?").** Record `7jcpracf6q8v5nhbred` (Maximum) — [for the
+  cloud component, ignore the earlier prototype as the implementation
+  authority and write the system fresh from the current desired
+  shape] — kills the compare-two-equal-candidates framing. The
+  operator's generated path landed a real `build.rs` generation
+  driver on cloud `main` (bead `primary-qhi6` "per-crate generation
+  driver", CLOSED); the designer hand-scaffold stays a feature-gated
+  prototype on `next`. The generated path is the authority. The
+  scaffold's only residual value is its proven shapes (provider IO as
+  a Nexus `CommandEffect`; in-memory `Store` SemaEngine).
+
+- **RESOLVED — multi-provider already in the wire contract (thread 5
+  / F4).** `signal-cloud` `lib.schema` already carries
+  `Provider [Cloudflare GoogleCloud Hetzner]`, `Capability [...]`,
+  `CapabilityState`, and Capability Query/Observation/Report. Record
+  `[cloud signal wire]` (Maximum) — [signal repos carry only the
+  signal/wire schema; runtime planes belong in the component] —
+  confirms capability vocabulary belongs there. "Cloudflare-only" is
+  an engine-impl detail (one `CommandEffect` per provider), not a
+  schema design fork. Not open.
+
+- **RESOLVED — write off the parked concepts (thread 6).** 12/16/17
+  double-verified as zero material trace (this sweep + the original
+  hunt above). Nothing to hunt; nothing to recover. And `7jcpracf…`
+  retires the old prototype as authority regardless.
+
+- **REFRAMED — type-name reconciliation is operator-owned on main
+  (thread 4 / the "is it mine?" question).** Bead `primary-1eqv`
+  ("contract crates publish schema-dir metadata for daemon schema
+  imports" + the meta-signal naming decision) is held under
+  `orchestrate/operator.lock` and explicitly scopes the
+  reconciliation to the operator. The operator has already partially
+  reconciled (SEMA-side names now defined in the canonical
+  `lib.schema`; the Nexus operation-aggregate names still undefined).
+  So this is NOT the cloud-designer's to pick up on main. The
+  genuinely-open sub-questions (for psyche/operator) are: (a) align
+  the daemon schemas to the contract names, or change the contract?
+  (report 15 leaves this explicit); (b) does cloud generation consume
+  the canonical `/git` checkouts or the `next` worktrees? (only
+  `next` carries resolvable `lib.schema` + `meta-signal-cloud.schema`
+  today); (c) the `owner-signal-cloud` → `meta-signal-cloud` rename is
+  half-done (imports + commit titles use the new name; the repo
+  dir/crate/remote are still the old name) — when does it actually
+  move? (records `[meta-signal naming]` High; fleet rename of all 13
+  `owner-signal-*` repos).
+
+- **REFRAMED, leaning moot — pushing the `next` branches (thread 1).**
+  Still factually unpushed (`remote=NONE` on all three, re-confirmed).
+  But with the prototype demoted by `7jcpracf…`, pushing it is now
+  low-value record-keeping rather than advancing the implementation.
+
+Net: the cloud-designer's active surface has shrunk. The generated
+path is the operator's on `main`; the prototype is demoted; the
+contract-shape reconciliation is operator-owned. What remains that is
+plausibly designer work: handing the proven shapes to the operator's
+generated engine, and — if the psyche wants it on the designer
+track — owning the contract-shape decision (sub-question a) on `next`.
