@@ -46,7 +46,8 @@ The compact contract. Every agent reads this on every session.
 | `orchestrate/<lane>.lock` | Per-lane coordination state file. |
 | `tools/orchestrate` | Claim/release helper. |
 | `.beads/` | Shared short-tracked-item store. Transitional. |
-| `repos/` | Symlink index to ghq checkouts under `/git/...`. |
+| `repos/` | Untracked symlink index to ghq checkouts under `/git/...`; never add it to version control. |
+| `private-repos/` | Untracked private-report/check-out surface; never add it to version control or inspect it without explicit psyche authority. |
 | `RECENT-REPOSITORIES.md` | Broad recent checkout index. |
 
 ## Skill discovery — query the index, don't scan
@@ -171,6 +172,11 @@ yet — those land when the role's shape settles.
 
 ## Hard overrides
 
+- **`repos/` and `private-repos/` must remain untracked.**
+  `repos/` is a local symlink index into `/git/...`, and
+  `private-repos/` is a local/private surface. Their entries churn by
+  machine, role, and privacy boundary; adding either directory to
+  version control is forbidden.
 - **Spell every identifier as a full English word AND names don't
   carry their full ancestry.** Two rules, applied together.
   `Request` not `Req`; `Identifier` not `Id`; AND `Entry` (inside
