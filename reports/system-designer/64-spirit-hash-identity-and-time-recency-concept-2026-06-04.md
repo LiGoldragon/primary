@@ -166,9 +166,11 @@ the content-fingerprint direction: because records are mutable (ChangeCertainty
 and other edits), a content-address hash adds computation for very little value.
 (This restores the section's original Q1 lean.)
 
-**Q3 → grandfather** (Spirit 2591). Existing integer records keep their ids;
-only new records get fingerprints. Hybrid id space; existing citations stay
-valid.
+**Q3 → full migration to hashes** (Spirit 2591 superseded by 2611). Migrate ALL
+existing records to random-hash ids now, not grandfather. Existing integer
+references may break (acceptable); a transitional dump file maps former integer
+ids to the new hashes, kept around briefly so agents can resolve old references
+during the transition, then retired. Yields a uniform hash id space.
 
 **Q2 → short, not big hashes** (Spirit 2592). Cited ids must be ~3 chars in a
 base larger than hex, combined with the kind — big hashes are token-expensive
@@ -180,16 +182,17 @@ gibberish in LLM context. Recommended scheme:
   hash, minimum 3 chars, scoped per kind**, extended (4, 5, …) only when
   a same-kind collision requires it (git-style shortest-unique). base36
   lowercase is beads-proven, case-safe (no A-vs-a errors), larger than hex
-  (36 vs 16), and 3 chars give 46,656 values *per kind* — ample, since
-  grandfathering means only new records draw from it. (base62/58 allow even
+  (36 vs 16), and 3 chars give 46,656 values *per kind* — ample even with all
+  records migrated (a few hundred per kind today; collisions extend to 4 chars). (base62/58 allow even
   shorter but case-sensitivity is error-prone; Crockford base32 is the
   alternative if excluding ambiguous characters matters more than matching
   beads.)
 - **Citation form** keeps the existing cite-by-description rule (Spirit
   1533/1546): `[description summary] (Spirit <Kind> <short>)` — e.g.
   `(Spirit Decision a4f)`. The Kind word supplies semantic context and the
-  partition; the 3-char code is the cheap address. Old records cite as before
-  (`(Spirit 2543 …)`); new ones use the short code — an honest hybrid.
+  partition; the 3-char code is the cheap address. With full migration, every
+  record cites with a short code; a transitional integer→hash dump file bridges
+  old `(Spirit 2543 …)` references until it retires.
 
 This supersedes the Q5 "~10-12 char prefix" lean: the display prefix is ~3
 base36 chars within a kind, not 10-12 hex. **Confirmed by the psyche 2026-06-04
