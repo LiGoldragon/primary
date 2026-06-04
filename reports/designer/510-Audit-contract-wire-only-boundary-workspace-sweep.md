@@ -23,6 +23,32 @@ description: |
 
 # 510 — Workspace-wide audit of the contract wire-only boundary
 
+> **Reconciliation banner (2026-06-04, records 2597/2598/2604/2605).**
+> The **verdict, per-repo table, root-cause, and tally below stand** —
+> they are correct. **The fix framing in §"The fix" is reconciled.**
+> This report (like 509) describes the fix as a "two-mode
+> (contract-path / daemon-path)" generator, where daemon-mode emits one
+> schema carrying *both* the Nexus and Sema planes. The psyche corrected
+> that: a triad is **three separate plane-schemas — a Signal schema, a
+> Nexus schema, a Sema schema — each its own file, no sections.** The
+> generator emits **per plane** (Signal → wire types + codec, zero
+> engines; Nexus → the Nexus engine; Sema → the Sema engine), and the
+> daemon crate holds `nexus.schema` + `sema.schema` as **separate
+> files** (record 2604, decision A), importing the signal contract;
+> `schema-next` must read more than one plane-schema per crate. So
+> "daemon-path" below is really "two plane-schemas (Nexus, Sema) in the
+> daemon crate," not one combined daemon schema.
+>
+> **Open questions now resolved by psyche decision:** OQ1 (how the
+> emitter learns its mode) → separate plane-schema files, sharpened to
+> three plane-schemas (record 2604). OQ2 (does spirit's single-schema
+> survive) → spirit stays the **bootstrap all-in-one exception until
+> split**; it is not the canonical shape. OQ4 (does the contract emit
+> any engine trait) → **no — zero engines, not even SignalEngine**
+> (strict reading confirmed). OQ5 (cross-plane projections) → daemon-side
+> only. **The one genuinely-open question is OQ3: are Sema words on the
+> wire forbidden, or tolerated until the six legacy contracts migrate?**
+
 ## The question, and the answer up front
 
 The psyche escalated a cloud finding into a workspace question:

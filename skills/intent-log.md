@@ -499,12 +499,15 @@ Right shape (literal bracketed text IS the citation):
 > results.]
 
 The brackets are the citation marker; no italics, no double quotes.
-The number remains as an address for the reader who wants to look
-up the record; the bracketed substance is what the cite carries
-forward into the document. Repetition of the substance across
-documents reinforces the intent layer's authority — a reader
-following the citation chain encounters the load-bearing words at
-each link, not just numeric pointers.
+The identifier remains as an address for the reader who wants to
+look up the record; the bracketed substance is what the cite carries
+forward into the document. Production v0.4.2 still uses numeric
+identifiers; the forward design migrates all records to random opaque
+hash identities rendered as lowercase base36 shortest-unique-prefix
+codes with a minimum of three characters per record kind. Repetition
+of the substance across documents reinforces the intent layer's
+authority: a reader following the citation chain encounters the
+load-bearing words at each link, not just opaque pointers.
 
 Markdown rendering note: `[text] (Spirit N)` with a space between
 the closing bracket and the parenthetical renders as bracketed

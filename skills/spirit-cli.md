@@ -172,9 +172,13 @@ The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
 the assigned identifier. The acknowledgement deliberately does not
 echo the submitted intent content; the wire reply is token-cheap.
 Production v0.4.2 still displays numeric identifiers. Hard removal no
-longer permits those numbers to be reused. The forward design is
-random opaque hash identity for new records, rendered as short
-human-facing codes; it is not live in production yet.
+longer permits those numbers to be reused. The forward design migrates
+all records, including legacy numeric records, to random opaque hash
+identity rendered as lowercase base36 shortest-unique-prefix codes
+with a minimum of three characters per record kind. The migration
+keeps a temporary mapping from former numeric identifiers to new hash
+identities for transition lookup; the hash identity surface is not live
+in production yet.
 
 **Simple capture convention.** For normal public workspace work, the
 simple record shape above is the default interface: broad topic vector,
