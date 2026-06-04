@@ -285,12 +285,34 @@ protocol does not cover replacement.
 
 ## Magnitude vocabulary
 
-Triggered mechanically by the author's phrasing so the agent's
-interpretation is minimal:
+Certainty is part of the meaning of an intent record. Do not inflate
+it to make the record feel important. If every record is `Maximum`,
+then the certainty field has been destroyed.
+
+**Medium is the default for ordinary direct intent.** A clear psyche
+statement, decision, preference, or instruction-with-durable-intent
+is normally `Medium`. The agent must justify any upward move from
+`Medium` with evidence in the prompt or in prior Spirit records.
+
+**Maximum is rare.** Use it only when the psyche explicitly signals
+near-absolute conviction: strong universal language, intense
+correction, repeated emphatic phrasing, or an established rule that
+has recurred across the intent log enough that the current prompt is
+obviously reinforcing it. A direct "do X" is not Maximum by itself.
+
+**Repetition can raise certainty.** Before choosing `High`,
+`VeryHigh`, or `Maximum`, query recent/prior records on the topic.
+If the same intent keeps returning across records, that recurrence is
+evidence for higher certainty. If the current prompt is the first
+clear mention and lacks strong certainty language, stay at `Medium`.
+
+Triggered mechanically by the author's phrasing and prior-record
+evidence so the agent's interpretation is minimal:
 
 | Phrase pattern | Magnitude |
 |---|---|
-| *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"*, strong corrections | `Maximum` |
+| Explicit maximum-intensity statement; repeated emphatic correction; settled founding rule with repeated Spirit history | `Maximum` |
+| *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"*, or strong but not absolute correction | `High` / `VeryHigh` unless the prompt or log history truly warrants `Maximum` |
 | strong but not absolute emphasis | `High` |
 | (default — direct statement, decision, preference) | `Medium` |
 | weak leaning with real signal | `Low` |
@@ -380,8 +402,12 @@ back up. Capture first; act second.
 Per entry within the capture pass:
 
 1. **Query prior entries on the topic.** Use Spirit's query surface.
-   If the psyche's new statement clearly contradicts a prior,
-   switch to the supersession protocol (`skills/intent-maintenance.md`).
+   Use the results for two things: contradiction detection and
+   certainty calibration. Repeated same-direction records can justify
+   `High` / `VeryHigh`; contradiction switches to the supersession
+   protocol (`skills/intent-maintenance.md`). If the statement is new
+   and the prompt lacks strong certainty language, default to
+   `Medium`.
 2. **Pick the right kind.** Decision / Principle / Correction /
    Clarification / Constraint. If multiple kinds fit, take the
    strongest applicable (Constraint > Correction > Decision >
