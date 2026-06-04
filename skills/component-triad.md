@@ -53,6 +53,44 @@ split is filesystem-enforced (per `skills/micro-components.md`).
 The CLI is bundled runtime machinery: the daemon's thin first client,
 not one of the triad's three legs.
 
+## Why the contract is a separate repo — rebuild isolation and authority clarity
+
+The three-repo split (`<component>` + `signal-<component>` +
+`meta-signal-<component>`) is not bureaucracy. It buys three concrete
+properties. Per psyche 2026-06-04 (record 2605):
+
+1. **Rebuild-churn isolation.** Peers that only need to *talk to* a
+   component depend on the small `signal-<component>` contract repo —
+   so they recompile only when the **wire contract** changes, not when
+   the component's internal logic, runtime, or documentation changes.
+   If the contract lived inside the daemon repo, every internal edit
+   would change that repo and force every dependent to rebuild. The
+   contract is small and stable; the daemon is large and churning.
+   Separating them couples a peer's build to the contract's pace, not
+   the daemon's.
+
+2. **Security-sensitivity visibility.** Owner-only operations live in a
+   distinct `meta-signal-<component>` repo, so a security-sensitive
+   edit is obvious from *which repo it lands in* — and clients that do
+   not need owner authority do not depend on it at all. The authority
+   boundary is a repo boundary, not just an enum-variant boundary. The
+   *mechanism* of the split (who-can-call, owner socket vs ordinary
+   socket) is §"Two authority tiers" below; this is the *why*.
+
+3. **`meta-signal` is optional.** Some components have no owner
+   relationship — they only need the ordinary `signal-<component>`
+   contract to talk to peers. Those ship two repos (daemon + working
+   signal), not three. The meta-signal repo appears only when the
+   component has an owner that issues policy.
+
+The split is about **compilation/dependency isolation and authority
+clarity — not about where state or logic lives.** State and logic
+always live in the daemon; the contract repos carry only typed wire
+vocabulary (per record 2593: wire types + codec, no engine traits —
+and per record 2604 the daemon's own Nexus and Sema plane-schemas live
+as files inside the daemon crate, never as separate per-plane crates or
+repos).
+
 ## Component binary naming
 
 A component has two binaries: a CLI half and a daemon half. The
