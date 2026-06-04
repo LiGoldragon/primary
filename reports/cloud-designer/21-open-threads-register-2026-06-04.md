@@ -82,9 +82,13 @@ done. The contracts are wire-only and correct.
 The daemon side (separate `cloud/schema/nexus.schema` +
 `cloud/schema/sema.schema`) cannot be authored-to-build until
 `schema-next` learns multi-plane-per-crate read + cross-crate wire-root
-import (settled as requirements per the per-plane architecture, not
-yet capabilities). This is operator-scoped and gates the whole daemon
-port. Designer-side, nothing further is buildable until then.
+import. cloud-operator/14 confirms these were *requirements*, names the
+exact failure (resolver lost through nested imports →
+`UnresolvedImportCrate`), and reports the fix is **actively claimed**
+under bead `primary-1tsw` with uncommitted edits already in the
+`schema-next` tree — so the gate is being worked, not merely
+identified. Do not overwrite that tree. Designer-side, nothing further
+is buildable until `primary-1tsw` lands.
 
 ## Recommended next move
 
