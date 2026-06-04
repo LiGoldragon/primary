@@ -1,13 +1,13 @@
 ---
 tool_versions:
-  - [Spirit, "0.5.1"]
+  - [Spirit, "0.5.2"]
 ---
 
 # Skill — spirit CLI
 
 *The deployed `spirit` binary is the normal substrate for psyche
 intent capture and observation. Agents call the unsuffixed CLI
-directly. This skill covers the live production `Spirit 0.5.1`
+directly. This skill covers the live production `Spirit 0.5.2`
 command shape and how to verify the deployed wrapper when source
 and profile drift.*
 
@@ -132,7 +132,7 @@ going to have to keep track of the interface"* —
 
 ## Operations on the ordinary channel (worked examples)
 
-Examples below match the live production `Spirit 0.5.1` wire shape.
+Examples below match the live production `Spirit 0.5.2` wire shape.
 The installed unsuffixed `spirit` wrapper can lag until CriomOS-home
 points at the new `persona-spirit` commit and the profile is
 activated. When in doubt, read the deployed source per the previous
@@ -146,7 +146,7 @@ newtypes — encoded as bare tokens when possible, or bracket strings
 when they contain whitespace or punctuation.
 
 **Record an intent entry — description-only, multi-topic shape.**
-A v0.5.1 record carries a vector of topics, one agent-clarified
+A v0.5.2 record carries a vector of topics, one agent-clarified
 `Description`, a `Kind`, a certainty `Magnitude`, and a privacy
 `Magnitude`. No verbatim field, no context payload, and no
 client-supplied timestamp. **The daemon stamps date/time itself.**
@@ -172,11 +172,13 @@ The reply is **terse — no echo**: `(RecordAccepted abcd)` or
 `(RecordAccepted [1234])`, depending on whether the NOTA encoder can
 print the identifier as a bare string. The acknowledgement deliberately
 does not echo the submitted intent content; the wire reply is
-token-cheap. Production v0.5.1 mints random lowercase base36
+token-cheap. Production v0.5.2 mints random lowercase base36
 identifiers and displays the shortest collision-free code in the
-4-to-7-character range. Older long identifier codes remain decodable
-for compatibility, but agents should cite and pass the short code
-returned by the daemon. In agent-authored commands, bracket the
+4-to-7-character range. The v0.5.2 deployment migrated copied v0.5.0
+long identifiers to short visible identifiers and wrote a sidecar
+mapping table next to the database. Older long identifier codes remain
+decodable for compatibility, but agents should cite and pass the short
+code returned by the daemon. In agent-authored commands, bracket the
 identifier (`[abcd]`) so codes that start with digits remain valid.
 
 **Simple capture convention.** For normal public workspace work, the
