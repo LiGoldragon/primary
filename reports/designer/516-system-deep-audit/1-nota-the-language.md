@@ -482,14 +482,24 @@ NOTA text *and* rkyv bytes.
 
 **No test in `nota-next` or `nota-codec` exercises an rkyv byte
 round-trip.** I verified this — the test suites exercise NOTA *text*
-round-trips:
+round-trips, and a grep of the test directory for rkyv calls returns
+nothing at all:
 
 ```
 $ grep -rn "rkyv\|to_bytes\|from_bytes\|archived" .../nota-next/tests/
-tests/design_examples.rs:98:/// and `{| ... |}` without losing access to inner objects.
+$
 ```
 
-(the one hit is a doc comment, not an rkyv call.)
+(zero hits — the `rkyv` dependency appears in `Cargo.toml:17`, but no
+test under `tests/` exercises a byte round-trip.)
+
+> **Correction (verification pass).** An earlier draft of this section
+> pasted a single doc-comment line as the grep result here. That was a
+> fabricated hit — re-running the exact command returns zero output, as
+> shown above. The conclusion was and is correct (no rkyv-byte test
+> exists); the invented line was removed. This is the one `partial`
+> verdict in the 516 verification ledger; see `0-frame-and-method.md`
+> §method.
 
 So to *prove* the rkyv leg actually works, I exercised it myself in
 the demo crate against the real `nota-next` `PositionPredicate` type —
