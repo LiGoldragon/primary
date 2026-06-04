@@ -10,9 +10,9 @@ description: |
   porting surface is small. The real findings are one correctness bug
   (schema-next dual-path divergence), a set of missing constraint
   witnesses, and a ranked list of repetition-driven abstraction
-  opportunities. One verified port landed (triad-runtime); the rest is
-  handed to the operator and psyche as ready code and ratification
-  questions.
+  opportunities. One verified concept pushed to a triad-runtime branch
+  awaiting operator integration; the rest is handed to the operator and
+  psyche as ready code and ratification questions.
 ---
 
 # 495 - Design-to-code port audit - overview
@@ -132,12 +132,14 @@ whether the psyche must ratify before the operator can act.
    hand-write `Display`+`Error`+`From` while triad-runtime uses thiserror.
    **RATIFIED discipline** (`skills/rust/errors.md`), tier3 cleanup.
 
-## What was ported this session
+## What I built as a concept this session
 
-One complete, cargo-verified designer port — the highest-value
-manifestation target (slice 4) plus its witnesses, on branch
-`designer-strings-at-edges-2026-06-04` in triad-runtime (commit
-`0c079c79`, pushed for operator integration):
+A demo/concept — the highest-value manifestation target (slice 4) plus its
+witnesses — on the concept branch `designer-strings-at-edges-2026-06-04` in
+triad-runtime (commit `0c079c79`), pushed for operator review and
+integration. Per record 1568 this is **not landed**: branch work has no
+material existence until an operator integrates it to main; it is a concept
+awaiting that integration. What the concept demonstrates:
 
 - **Constraint witnesses** (`tests/trace.rs`): a binary-frame-not-text
   witness (length-prefix structure + round-trip) and a genuine-generic-ity

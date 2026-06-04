@@ -241,13 +241,15 @@ typed sum (inline-NOTA / NOTA-file / rkyv-file) instead of a
 hand-write the `Display`+`Error`+`From` ceremony that `thiserror` (already
 used in `triad-runtime`) dissolves.
 
-## What I ported this session
+## What I built as a concept this session
 
-To honor "port missing design into implementation" concretely rather than
-only proposing, I landed one complete, verified designer port — the
-audit's highest-value manifestation target — in `triad-runtime`, on branch
-`designer-strings-at-edges-2026-06-04` (commit `0c079c79`, pushed for the
-operator to integrate). It does two things.
+To engage the directive to port missing design into implementation
+concretely rather than only proposing, I built a demo/concept — the audit's
+highest-value manifestation target — in `triad-runtime`, on the concept
+branch `designer-strings-at-edges-2026-06-04` (commit `0c079c79`), pushed
+for the operator to review and integrate. Per record 1568 this is **not
+landed**: it has no material existence until an operator integrates it to
+main — it is a concept awaiting that integration. It does two things.
 
 First, it turns your [strings only at the edges] intent into falsifiable
 tests for the trace wire, where before it was prose. The binary-frame
@@ -292,7 +294,7 @@ Most of the remaining surface is either operator-tier3 (production feature
 code and the bug fix — the implementing half of the dance) or
 unratified (the runner, the token model — design that needs your nod before
 it is built). I held those as ready-to-apply code in the slice reports
-rather than landing feature branches across four of the operator's active
+rather than pushing concept branches across four of the operator's active
 repos right after their last session froze. The designer's half here was
 to manifest, witness, and surface the decisions; the operator implements,
 and you ratify. If you would rather I push the witness branches for the
@@ -305,5 +307,6 @@ There is one real bug (two lowering engines disagree on bare headers; I
 lean: unify them). There are three decisions waiting on you: extract the
 component runner now or on the second consumer; ratify the emission token
 model; and confirm the flat SymbolPath shape as canonical. Everything else
-is operator cleanup with ready code. One verified port landed in
-triad-runtime as the concrete demonstration.
+is operator cleanup with ready code. One verified concept is pushed to a
+triad-runtime branch — awaiting operator integration, not landed — as the
+concrete demonstration.
