@@ -89,10 +89,21 @@ The punch list, in priority order:
 1. **Internal name rename** — package, library, binaries, repository URL still
    say `spirit-next`; the repo-level rename to `spirit` landed but the code did
    not (operator 304's slice).
-2. **redb unification** — the new spirit uses redb `2.6.3`; `sema`/`sema-engine`
-   use `4.1.0`. The archive sema-database (§3) rides on `sema-engine`, so the
-   versions must reconcile before the ladder's archive rung can live in the new
-   spirit.
+2. **Storage-kernel adoption (the redb split, really).** The new spirit
+   hand-rolls its own redb store *directly* — `store.rs` does
+   `use redb::{Database, …}` on redb `2.6.3` and writes its own
+   `From<redb::*Error>` impls. It does **not** use the workspace storage kernel
+   `sema`/`sema-engine`, which are on redb `4` (a different major with an
+   incompatible on-disk format and a changed API). So the gap is not a version
+   bump — it is a kernel decision. The archive (§3) is built on `sema-engine`
+   (redb 4); bolting it onto the bespoke redb-2 store would link **two redb
+   majors in one binary** (two `Database` types, two file formats, no interop).
+   The clean move is to put the new spirit's SEMA plane on `sema-engine` too —
+   that unifies on redb 4, removes the dual-redb risk, and gives it the typed
+   kernel, the schema-version guard, the rkyv table machinery, and the
+   `CommitSequence` handover marker the rest of the stack already uses. Do it
+   **now**, before the pilot has any deployed redb-2 data, so there is no
+   file-format migration debt — exactly the early-territory window.
 3. **Daily-use feature parity** — the new spirit has `Record/Observe/Lookup/
    Count/Remove/LookupStash` but lacks `CollectRemovalCandidates`, privacy
    filtering, and `ChangeCertainty` (the thread you have been driving). For
