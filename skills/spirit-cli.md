@@ -176,9 +176,10 @@ longer permits those numbers to be reused. The forward design migrates
 all records, including legacy numeric records, to random opaque hash
 identity rendered as lowercase base36 shortest-unique-prefix codes
 with a minimum of three characters per record kind. The migration
-keeps a temporary mapping from former numeric identifiers to new hash
-identities for transition lookup; the hash identity surface is not live
-in production yet.
+keeps a temporary NOTA mapping table between former numeric
+identifiers and new hash identities for transition reference; numeric
+lookup does not remain a live compatibility surface. The hash identity
+surface is not live in production yet.
 
 **Simple capture convention.** For normal public workspace work, the
 simple record shape above is the default interface: broad topic vector,
