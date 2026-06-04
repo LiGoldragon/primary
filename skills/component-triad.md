@@ -1,4 +1,4 @@
-# Skill — component triad (daemon + working signal + policy signal)
+# Skill — component triad (daemon + working signal + meta policy signal)
 
 *The universal shape for every stateful capability in the workspace.
 Five invariants and one argument rule determine whether a design is
@@ -39,7 +39,7 @@ signal-<component>/               ordinary wire vocabulary
   schema/lib.schema               schema-derived ordinary signal
   src/schema/*.rs                 generated signal types
   tests/round_trip.rs             rkyv + NOTA round-trips
-meta-signal-<component>/          owner-only authority/configuration vocabulary
+meta-signal-<component>/          meta policy authority/configuration vocabulary
   schema/lib.schema               schema-derived meta signal
   src/schema/*.rs                 generated meta signal types
   tests/round_trip.rs             rkyv + NOTA round-trips
@@ -191,7 +191,7 @@ Use these words consistently:
 - **Working signal** / **working contract** —
   `signal-<component>`, the ordinary peer-callable contract.
 - **Policy signal** / **meta-signal contract** —
-  `meta-signal-<component>`, the owner-only authority and
+  `meta-signal-<component>`, the meta policy authority and
   configuration contract.
 - **Signal types** — the schema-generated data types declared in
   either signal contract: operation roots, payload records, replies,
@@ -308,7 +308,7 @@ the triad:
 
 - **`signal-<component>`** — ordinary peer surface. Variants here are
   callable by any authenticated peer.
-- **`meta-signal-<component>`** — owner-only authority/configuration
+- **`meta-signal-<component>`** — meta policy authority/configuration
   surface. Variants here are callable only by the component's owner
   (the entity above it in the workspace's owner graph — e.g., mind
   owns orchestrate; orchestrate owns router and harness).
