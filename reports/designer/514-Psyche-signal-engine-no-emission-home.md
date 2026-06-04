@@ -13,6 +13,43 @@ description: |
 
 # 514 — The three-plane split emits no SignalEngine
 
+## SUPERSEDED — resolved by `RustEmissionTarget::SignalRuntime` (see report 515)
+
+This report correctly witnessed a real blocker: with `WireContract` +
+`NexusRuntime` + `SemaRuntime` and the old `src/schema/lib.schema`
+removed, nothing emitted `SignalEngine`. That diagnosis stands as the
+bug witness.
+
+**Its solution space was too narrow.** The landed answer is neither
+**(A)** "`NexusRuntime` also emits signal" nor **(B)** "the runner
+absorbs triage and `SignalEngine` retires" — both of which this report
+weighed, and it leaned (B). The real answer is **(C)**: a separate
+daemon-local **`SignalRuntime`** emission target. The daemon's own
+`schema/signal.schema` emits to `SignalRuntime` (`signal_only()` planes)
+and produces `SignalEngine`, while public contract repos keep emitting
+to `WireContract` (wire-only). The current architecture is
+**`SignalRuntime` + `NexusRuntime` + `SemaRuntime`** — NOT
+`ComponentRuntime`, and NOT `NexusRuntime`-emits-signal.
+
+**Why this report only saw A/B:** it collapsed two distinct artifacts
+both called "the signal schema" — the public `signal-<component>`
+**contract** (`WireContract`, zero engines) and the daemon-local
+`<component>/schema/signal.schema` **runtime** (`SignalRuntime`, emits
+`SignalEngine`). Keeping those distinct makes (C) obvious; conflating
+them hides it. My (B) lean was wrong: keeping `SignalEngine` a
+generated, plane-local trait is the smaller, more plane-honest move
+than dissolving the typed seam into the runner. The two-meanings
+distinction is now in `skills/component-triad.md` §"'Signal' names two
+different schema files".
+
+Verified landed on spirit main: `RustEmissionTarget::SignalRuntime`
+(`schema-rust-next/src/lib.rs:300`), `spirit/build.rs:32`
+(`signal_runtime_module("signal")`), `lib.schema` gone, `cargo check`
+clean, `SignalEngine` impl at `spirit/src/engine.rs:209`. Full
+resolution + workspace-wide boundary verification: **report 515**.
+
+The original analysis follows unchanged, as the bug witness.
+
 ## The fact
 
 `schema-rust-next`'s `RustEmissionTarget::runtime_planes()`:

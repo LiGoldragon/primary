@@ -19,6 +19,32 @@ covers the repo triad below; the runtime triad gets its own section at
 the bottom of this file. Per psyche record 856; refined by record 964
 (Executor renamed to Nexus; all three planes are schema-driven).
 
+### "Signal" names two different schema files — keep them distinct
+
+The word *Signal* appears in both triads, and it refers to two distinct
+schema artifacts emitted to two different `RustEmissionTarget`s. Conflating
+them hides where `SignalEngine` comes from.
+
+| "Signal schema" | Where it lives | Emission target | Emits |
+|---|---|---|---|
+| **Public signal contract** | `signal-<component>/schema/…` (separate repo) | `WireContract` | Wire vocabulary + codecs ONLY — zero engines. What peers link against. |
+| **Daemon-local signal runtime** | `<component>/schema/signal.schema` (inside the daemon crate, beside `nexus.schema` + `sema.schema`) | `SignalRuntime` | The same wire shape PLUS the `SignalEngine` trait (admission / triage / reply) the daemon implements. |
+
+Same word, different files, different targets, different jobs. A daemon's
+`SignalEngine` is generated from its OWN `signal.schema` (`SignalRuntime`),
+**never** from the public contract (`WireContract`, engine-free). The full
+target set is `WireContract`, `ComponentRuntime` (legacy all-in-one),
+`SignalRuntime`, `NexusRuntime`, `SemaRuntime` — see
+`schema-rust-next/src/lib.rs` `RustEmissionTarget` (the source of truth,
+`runtime_planes()`: WireContract→none, ComponentRuntime→all,
+SignalRuntime→signal-only, NexusRuntime→nexus-only, SemaRuntime→sema-only).
+The three daemon-plane targets are what realize the three-plane split: a
+daemon emits `signal.schema`→`SignalRuntime`, `nexus.schema`→`NexusRuntime`,
+`sema.schema`→`SemaRuntime`, dropping the all-in-one `ComponentRuntime`
+entirely. Per the SignalRuntime resolution (operator + designer,
+2026-06-04; designer report 515 — the prior report 514 saw only the
+narrower A/B options precisely because it collapsed these two meanings).
+
 Runtime readability test: schema names the interface, generated Rust names the
 objects and traits, and handwritten code mostly matches typed input, makes the
 decision, calls the next typed interface, and returns typed output. If a daemon
@@ -34,12 +60,15 @@ Every stateful capability is a triad of three repositories:
   src/lib.rs                      component library
   src/bin/<name>-daemon.rs        long-lived daemon
   src/bin/<name>.rs               thin CLI client
+  schema/signal.schema            daemon-local signal runtime (SignalRuntime → emits SignalEngine)
+  schema/nexus.schema             nexus runtime (NexusRuntime → emits NexusEngine)
+  schema/sema.schema              sema runtime (SemaRuntime → emits SemaEngine)
   bootstrap-policy.nota           first-start policy declaration
-signal-<component>/               ordinary wire vocabulary
+signal-<component>/               ordinary wire vocabulary (WireContract → zero engines)
   schema/lib.schema               schema-derived ordinary signal
   src/schema/*.rs                 generated signal types
   tests/round_trip.rs             rkyv + NOTA round-trips
-meta-signal-<component>/          meta policy authority/configuration vocabulary
+meta-signal-<component>/          meta policy authority/configuration vocabulary (WireContract → zero engines)
   schema/lib.schema               schema-derived meta signal
   src/schema/*.rs                 generated meta signal types
   tests/round_trip.rs             rkyv + NOTA round-trips
@@ -788,6 +817,14 @@ the schema-derived stack); schema-emitted Operation enum dispatch;
 connection lifecycle; short-header triage before full body decode;
 mail-event emission such as `MessageSent`. Does NOT decide
 acceptability, touch storage, or interpret payload semantically.
+
+This plane's `SignalEngine` trait is generated from the **daemon-local**
+`schema/signal.schema` via the `SignalRuntime` target — NOT from the
+public `signal-<component>` contract, which is `WireContract` and
+engine-free. See §"'Signal' names two different schema files" above; the
+daemon implements `SignalEngine` (e.g. `spirit/src/engine.rs` `impl
+SignalEngine for SignalActor`), while peers link only the engine-free
+contract.
 
 Per record 963: messages on the signal protocol move through a
 universal **mail mechanism** with hookable lifecycle events
