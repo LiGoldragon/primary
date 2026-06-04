@@ -24,6 +24,35 @@ load-bearing substance; move it to its right permanent home;
 retire what's done. Treating them separately is a smell — they
 usually need maintenance at the same time, by the same pass.
 
+## The goal — fewer reports, same information
+
+The purpose of a context-maintenance pass is to **reduce the number of
+reports without losing information** (psyche 2026-06-04, record 2577).
+Reports accumulate; the filesystem should hold each topic's current
+substance in as few files as possible. The primary move is
+**agglomeration**: take the several reports on one topic, rewrite and
+merge their un-contradicted, un-superseded substance into ONE report on
+that topic, in a better form — then delete the merged sources, with the
+new report as the landing witness. Agglomerate by **topic, not by lane**:
+one topic's reports across all lanes collapse into one report on it.
+
+### The Refresh variant
+
+A report that rewrites or agglomerates one or more prior reports carries
+the **`Refresh`** variant tag — the capitalized word after the number:
+`<N>-Refresh-<topic>-<date>.md`. A single Refresh report MAY merge
+several source reports; that is the agglomerated form. After the Refresh
+lands, its source reports are **deleted** (git history preserves them;
+the Refresh is the landing witness). Refresh is the context-maintenance
+*output* variant, the way Audit / Design / Psyche are working variants;
+`skills/report-naming.md` lists it among the variants.
+
+The test for agglomerate-and-Refresh vs migrate-then-drop: substance that
+is still working-artifact-shaped (a topic's design state, open questions,
+the arc of decisions) agglomerates into a Refresh report; substance that
+is mature or leaned-on does not belong in a report at all — it migrates to
+the permanent layer (§3b below).
+
 ## When to invoke
 
 - **Compaction trigger.** The context window is approaching its
@@ -232,6 +261,32 @@ enumerates two or more designs (Design A / B / C / D, Option 1 /
 2, etc.) and chose one. Standard design reports proposing a
 single shape migrate cleanly; the chosen shape lands in an
 architecture file or skill and the report retires.
+
+### 3b · Manifest leaned-on design into architecture — and prefer constraints
+
+When agglomerating, the substance that is mature or leaned-on belongs in
+the permanent layer, not a report. Two rules sharpen where it lands
+(psyche 2026-06-04):
+
+- **Architecture carries leaned-on design even without explicit intent**
+  (record 2578). When the project's forward direction implies a design has
+  been accepted or at least leaned on for now, manifest it into the repo's
+  `ARCHITECTURE.md` — and into `INTENT.md` / Spirit only where the psyche
+  actually stated it. The architecture IS the design layer; a leaned-on
+  direction belongs there without waiting for an explicit intent record.
+  This is the legitimate path for a report's good design to become
+  permanent even when no Spirit capture backs it: the architecture file
+  carries it as the design the project is built on. (The intent layer
+  still requires an actual psyche statement — never infer intent; but the
+  architecture layer does not.)
+- **Prefer constraints** (record 2579). Constraints are among the most
+  important architecture content, because a stated constraint lets us write
+  a test that verifies it. When manifesting a report's design into
+  architecture, express it as a **constraint** wherever possible — the
+  constraint is what makes the design testable, and it pairs with the
+  constraint-witness discipline (record 1565: add a test that proves the
+  intended path). Manifesting design as prose teaches; manifesting it as a
+  constraint teaches AND becomes a test.
 
 ### 4 · Small thoughts are OK
 
