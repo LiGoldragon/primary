@@ -1,5 +1,14 @@
 # Schema-Centered Runtime Cleanup Analysis
 
+Context-maintenance note, 2026-06-04: this report remains useful for the
+frame/argument/thiserror rationale and sequencing, but the execution status is
+stale. `triad-runtime` main commit `6daf2954` landed
+`LengthPrefixedCodec`, `ComponentCommand`, and `ComponentArgument`, and
+`spirit` main commit `6a339e20` consumes those while routing storage through
+`sema-engine`. The remaining cleanup target here is the thiserror/error-boundary
+work. See
+`reports/operator/307-context-maintenance-spirit-schema-sema-current-state-2026-06-04.md`.
+
 Date: 2026-06-04
 
 Role: operator

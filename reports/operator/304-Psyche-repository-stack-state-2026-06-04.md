@@ -13,6 +13,15 @@ description: |
 
 # 304 - Repository stack state and decisions
 
+Context-maintenance note, 2026-06-04: the repository-topology portions of this
+report remain useful, but the SymbolPath statement in "Decisions now settled"
+is stale. Current Spirit observation has record 1577 at Medium, not Maximum,
+and designer reports 499/500 treat structured-vs-flat SymbolPath as a
+design/intent-maintenance question rather than an operator-settled
+implementation license. Use
+`reports/operator/307-context-maintenance-spirit-schema-sema-current-state-2026-06-04.md`
+for the current maintenance read.
+
 ## The low-down
 
 The workspace is not in a random mess. The active map is coherent: 76 active
