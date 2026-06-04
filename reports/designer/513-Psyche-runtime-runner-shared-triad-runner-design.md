@@ -96,6 +96,69 @@ brackets the flow at both ends; its body is usually thin (framing,
 identity, and routing are library-assisted) but it is the third
 engine and belongs in the picture.
 
+## Operator reconciliation (operator report 310)
+
+The operator reviewed this design and the two lanes have converged.
+The direction stands; six refinements are **accepted into the
+design** and supersede the corresponding parts below.
+
+1. **The runner is a harness, not a fourth engine.** It owns the
+   generic loop, transport, and lifecycle order — never
+   communication, decision, or database *semantics*. A too-powerful
+   runner is exactly where "no daemon boilerplate outside the
+   engines" could be re-violated; it stays mechanism-only.
+
+2. **The bundled engine adapter is GENERATED, not hand-written.** The
+   author implements only the three plane engine traits plus an
+   effect handler and a typed budget-exhausted reply. The *generator*
+   implements the bundled adapter over a data-bearing component
+   runtime object that owns the three engines. The bundle is library
+   glue the runner consumes — not a fourth contract the author hand-
+   implements. (Corrects Decision 2, which read as if the author
+   implements the bundle.)
+
+3. **"One thread per listener" and "drop the mutex" cannot both hold
+   naively — the body overstated it.** If several listener threads
+   drove the engine directly they would need a shared lock; if the
+   runner owns the engine by value with the borrow as the single-
+   flight guard, there must be exactly ONE execution owner. The
+   correct shapes: **phase one** = one listener, one runner thread,
+   owned engine, no mutex (matches the pilot, proves the extraction);
+   **multi-listener** = listener threads only decode and hand typed
+   accepted-work to ONE engine-owner loop that drives sequentially —
+   a minimal internal handoff, NOT the deferred scheduler. (Corrects
+   Decisions 4 and 9.)
+
+4. **Plane envelopes stay type-distinct, not aliases.** Sharing the
+   envelope *mechanics* is right (an inner `PlaneEnvelope<Root>`, or a
+   phantom-typed `Envelope<PlaneKind, Root>`), but the public Signal /
+   Nexus / SEMA envelope types must stay distinct in the type system —
+   the compiler must reject passing a Signal envelope where Nexus is
+   expected. Bare type aliases are not enough. (Sharpens the plane-
+   aware guard above.)
+
+5. **The action→`NextStep` projection is total, never a panic.** The
+   generated conversion from a component's action enum into the
+   runner's fixed five-outcome shape must be exhaustive over the
+   action variants; no `_ => panic`. An unknown variant fails emission
+   or forces an explicit escape hatch — the projection is the safety
+   core of the loop, not a narrow helper. (Corrects Decision 2's
+   projection helper.)
+
+6. **Bootstrap: NOTA source, binary at the daemon.** First-start
+   policy is authored as `bootstrap-policy.nota` (the human-authored
+   repo source of truth), pre-encoded by build/deploy tooling into a
+   typed binary artifact, and the production daemon consumes ONLY the
+   binary at first start — keeping the NOTA parser out of the live
+   daemon. Later policy changes enter through meta-signal mutations,
+   never by re-reading the file. (Resolves a NOTA-vs-binary tension
+   this report had not addressed.)
+
+The concurrency-mode question (Decision O1) is already aligned: a
+runtime/deploy knob, with the schema carrying only semantic
+constraints (ordering, idempotence, single-writer, cancellability)
+if they ever become real — never the concurrency mechanism itself.
+
 ## The single most important finding
 
 The thing we want to extract is **not** where you would expect it.
