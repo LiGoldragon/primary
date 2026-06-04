@@ -1,13 +1,13 @@
 ---
 tool_versions:
-  - [Spirit, "0.4.2"]
+  - [Spirit, "0.5.1"]
 ---
 
 # Skill — spirit CLI
 
 *The deployed `spirit` binary is the normal substrate for psyche
 intent capture and observation. Agents call the unsuffixed CLI
-directly. This skill covers the live production `Spirit 0.4.2`
+directly. This skill covers the live production `Spirit 0.5.1`
 command shape and how to verify the deployed wrapper when source
 and profile drift.*
 
@@ -132,7 +132,7 @@ going to have to keep track of the interface"* —
 
 ## Operations on the ordinary channel (worked examples)
 
-Examples below match the live production `Spirit 0.4.2` wire shape.
+Examples below match the live production `Spirit 0.5.1` wire shape.
 The installed unsuffixed `spirit` wrapper can lag until CriomOS-home
 points at the new `persona-spirit` commit and the profile is
 activated. When in doubt, read the deployed source per the previous
@@ -146,7 +146,7 @@ newtypes — encoded as bare tokens when possible, or bracket strings
 when they contain whitespace or punctuation.
 
 **Record an intent entry — description-only, multi-topic shape.**
-A v0.4.2 record carries a vector of topics, one agent-clarified
+A v0.5.1 record carries a vector of topics, one agent-clarified
 `Description`, a `Kind`, a certainty `Magnitude`, and a privacy
 `Magnitude`. No verbatim field, no context payload, and no
 client-supplied timestamp. **The daemon stamps date/time itself.**
@@ -168,18 +168,14 @@ means open/public and is the normal workspace-default. Higher values
 narrow the intended audience. Do not put private personal substance in
 a `Zero` privacy record.
 
-The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
-the assigned identifier. The acknowledgement deliberately does not
-echo the submitted intent content; the wire reply is token-cheap.
-Production v0.4.2 still displays numeric identifiers. Hard removal no
-longer permits those numbers to be reused. The forward design migrates
-all records, including legacy numeric records, to random opaque hash
-identity rendered as lowercase base36 shortest-unique-prefix codes
-with a minimum of four characters per record kind. The migration
-keeps a temporary NOTA mapping table between former numeric
-identifiers and new hash identities for transition reference; numeric
-lookup does not remain a live compatibility surface. The hash identity
-surface is not live in production yet.
+The reply is **terse — no echo**: `(RecordAccepted [abcd])` where the
+bracket string is the assigned identifier code. The acknowledgement
+deliberately does not echo the submitted intent content; the wire
+reply is token-cheap. Production v0.5.1 mints random lowercase base36
+identifiers and displays the shortest collision-free code in the
+4-to-7-character range. Older long identifier codes remain decodable
+for compatibility, but agents should cite and pass the short code
+returned by the daemon.
 
 **Simple capture convention.** For normal public workspace work, the
 simple record shape above is the default interface: broad topic vector,
@@ -191,15 +187,15 @@ Examples: a public shorthand lowers to the record above with
 `privacy = Zero`; a private-record shorthand lowers to the same full
 record with an elevated privacy magnitude.
 
-**Remove an intent entry** — delete one stored record by numeric
-identifier through the daemon:
+**Remove an intent entry** — delete one stored record by identifier
+code through the daemon:
 
 ```sh
-spirit "(Remove 1088)"
+spirit "(Remove [abcd])"
 ```
 
-The reply is `(RecordRemoved 1088)`. Use this for records that should
-not remain in the active store at all; use `Correction` or
+The reply is `(RecordRemoved [abcd])`. Use this for records that
+should not remain in the active store at all; use `Correction` or
 supersession when lineage should remain visible.
 
 **Change certainty** — mutate one stored record's certainty without
@@ -207,10 +203,10 @@ changing its description, topics, kind, identifier, or daemon-stamped
 time:
 
 ```sh
-spirit "(ChangeCertainty (1088 Zero))"
+spirit "(ChangeCertainty ([abcd] Zero))"
 ```
 
-The reply is `(CertaintyChanged (1088 Zero))`. `Zero` is Spirit's
+The reply is `(CertaintyChanged ([abcd] Zero))`. `Zero` is Spirit's
 recoverable removal-candidate nomination: the record remains queryable
 and can be restored by changing certainty back to a non-zero
 `Magnitude`. Use hard `Remove` only after review.
@@ -233,7 +229,7 @@ certainty and exact `Zero` privacy; broad queries are rejected.
 database; `Print StandardOutput` and `Print StandardError` write no
 archive database and return typed capture material for the CLI to
 render. Archive output failure returns skipped candidates such as
-`[(1088 ArchiveFailed)]` and leaves the records queryable.
+`[([abcd] ArchiveFailed)]` and leaves the records queryable.
 
 **Topics are user-creatable strings carried in a vector** at the wire
 layer — any new topic word a `Record` uses is registered. No
@@ -263,9 +259,10 @@ removal-candidate marker. The old three-field, four-field, five-field,
 and six-field record queries still decode as compatibility input, but
 agents should emit the public five-field query or the explicit private
 query variants.
-`RecordIdentifiers` selects by non-reusable numeric identifier: `Exact`
-selects one record; `Range` is inclusive, so `(Range (1050 1060))`
-returns records 1050 through 1060 when present. Use `SummaryOnly` for
+`RecordIdentifiers` selects by identifier code: `Exact` selects one
+record; `Range` is inclusive in identifier ordering, so
+`(Range ([abcd] [abcz]))` returns records whose identifiers fall in
+that closed interval when present. Use `SummaryOnly` for
 compact summaries and `WithProvenance` when you need daemon-stamped
 date/time:
 
@@ -283,11 +280,11 @@ spirit "(Observe (Records ((Partial [spirit]) None Any Deep SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any VeryDeep SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any (Since (2026-05-30 00:00:00)) SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any (Between ((2026-05-29 00:00:00) (2026-05-30 23:59:59))) WithProvenance)))"
-spirit "(Observe (RecordIdentifiers ((Exact 1053) SummaryOnly)))"
-spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) SummaryOnly)))"
-spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) WithProvenance)))"
+spirit "(Observe (RecordIdentifiers ((Exact [abcd]) SummaryOnly)))"
+spirit "(Observe (RecordIdentifiers ((Range ([abcd] [abcz])) SummaryOnly)))"
+spirit "(Observe (RecordIdentifiers ((Range ([abcd] [abcz])) WithProvenance)))"
 spirit "(Observe (PrivateRecords ((AtMost Low) ((Any []) None Any Any SummaryOnly))))"
-spirit "(Observe (PrivateRecordIdentifiers ((AtMost Low) ((Exact 1053) SummaryOnly))))"
+spirit "(Observe (PrivateRecordIdentifiers ((AtMost Low) ((Exact [abcd]) SummaryOnly))))"
 ```
 
 **Submit a free-form statement** — `State` lowers to an `Assert`
