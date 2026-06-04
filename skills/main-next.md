@@ -1,13 +1,28 @@
 # Skill — main and next branches
 
-*Every repo keeps two long-lived lines: `main` (the integrated line the
-operator owns) and `next` (the development line the designer works on).
-The designer works on `next`; the operator integrates `next` into `main`.*
+*Every **code repository under `/git/github.com/LiGoldragon/`** keeps two
+long-lived lines: `main` (the integrated line the operator owns) and
+`next` (the development line the designer works on). The designer works
+on `next`; the operator integrates `next` into `main`.*
+
+## Scope — code repos only, NOT primary
+
+This main-and-next model applies **only to the code repositories under
+`/git/github.com/LiGoldragon/`** (`horizon-rs`, `lojix`, `CriomOS`, the
+component triads, and so on). It does **not** apply to **primary** — the
+workspace coordination repository at `/home/li/primary`. Per psyche
+2026-06-04 (record 2585, VeryHigh): on primary everyone always works on
+`main` directly — edit, commit, push straight to `main` with the simple
+flow ([on primary everyone always works on main directly] — record 2585).
+There is no `next` branch on primary and no per-feature branch on
+primary. See `skills/jj.md` §"Primary is always main — no branches,
+ever". The two-long-lived-lines split below is a code-repo discipline.
 
 ## The model
 
 Per psyche 2026-06-04 (record 2561, adopting the idea floated in the
-now-superseded record 2544): each repo keeps two long-lived branches.
+now-superseded record 2544): each **code repo under
+`/git/github.com/LiGoldragon/`** keeps two long-lived branches.
 
 - **`main`** — the integrated, canonical line. The operator owns it:
   creates, maintains, and integrates `next` into it. It is the line

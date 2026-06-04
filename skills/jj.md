@@ -6,6 +6,77 @@ forbidden as a daily-commit tool; it survives only as an
 explicit escape hatch for two named remote-config cases
 below.*
 
+## Primary is always main — no branches, ever
+
+Per psyche 2026-06-04 (record 2585, VeryHigh): on **primary** —
+the workspace coordination repository at `/home/li/primary`
+(reports, skills, `AGENTS.md`, `INTENT.md`, `ESSENCE.md`,
+`protocols/`, `orchestrate/`) — **everyone ALWAYS works on `main`
+directly.** Edit, commit, push straight to `main`:
+
+```sh
+jj commit -m '<short verb + scope>'
+jj bookmark set main -r @-
+jj git push --bookmark main
+```
+
+That is the entire flow on primary. There are **no feature
+branches, no `next` branch, no `wip` branches, no `push-*`
+bookmarks, and no rebase-onto-main choreography** on primary.
+Do NOT do any of:
+
+- `jj bookmark create wip-… ; jj rebase -r … -d main@origin ; jj bookmark set main …`
+- `jj bookmark create push-<topic>` for a report or a routine edit
+- `jj new`-ing a side branch to "stage" a primary edit before main
+- any worktree-under-`~/wt` for primary itself
+
+Primary is the coordination surface every lane shares; the only
+correct shape is the three-line flow above. The intent is
+unambiguous: [on primary everyone always works on main directly —
+edit, commit, push straight to main with the simple flow; no
+feature, next, wip, or push branches and no rebase-onto-main
+dances] (record 2585).
+
+**The ONLY divergence handling on primary** is the named
+fetch-and-rebase escape hatch (see §"Push rejected — remote has
+commits you don't have"): when `jj git push` is rejected because
+`main` advanced, run `git fetch origin` + `git rebase
+origin/main` + push again — or `jj new main@origin` to start a
+fresh change on the latest `main`. No bookmark choreography is
+ever part of recovering a rejected push on primary.
+
+The branch / worktree / `next` models elsewhere in this skill
+and in `skills/main-next.md`, `skills/feature-development.md`,
+and `AGENTS.md` apply ONLY to the **code repositories under
+`/git/github.com/LiGoldragon/`** — there operators own `main` and
+designers work on `next` or feature branches in `~/wt`. **Primary
+is the exception: everyone-on-main, always.** Do not carry the
+code-repo branch model onto primary.
+
+### Keep primary clean — commit dirty state, lock selectively
+
+Two rules keep primary simple and prevent the shared-working-copy race that
+loses uncommitted reports (psyche 2026-06-04):
+
+- **Commit eagerly and impersonally** (record 2589). On primary you commit
+  the **whole dirty working copy**, not just your own paths — including
+  other agents' finished-but-uncommitted reports. Committing is janitorial;
+  it does not belong to the report's creator. If you start work and see
+  uncommitted state in primary, just commit it, briefly noting the contents
+  in the message without apologetics (`commit pending reports + skill
+  edits`). This **supersedes, on primary, the working-copy-check and
+  `jj split` path-selective discipline** further down this skill — those
+  remain correct for code repos, where authorship and isolation matter. On
+  primary: see dirty, commit it.
+- **Lock selectively** (record 2586). When you must claim, claim only the
+  specific files or subfolders you will edit — never the whole workspace.
+  Over-locking the whole space is what bred the fork-for-push dance.
+  **Reports need no lock at all** — report lanes are per-role and
+  claim-exempt (record 1566); agents keep forgetting this. A lane writes
+  only in its own `reports/<role>/`, never another lane's, except a one-time
+  explicit psyche instruction and never again after unless re-instructed
+  (record 2587).
+
 ## At-a-glance — the inline-form cheat sheet
 
 Out-of-the-box jj for most agents. Every description-taking command
@@ -412,33 +483,31 @@ that you do not have locally.`
 
 Cause: another agent or another machine pushed in parallel.
 
-Fix: fetch and integrate. This is the **second named
-escape-hatch case for raw `git`** — divergence resolution
-uses `git fetch` + `git rebase` because the workflow is
-mature there:
+Fix: fetch and rebase your work onto the latest `main`, then
+push. This is the **second named escape-hatch case for raw
+`git`** — and on primary it is the *only* divergence handling
+there is (per record 2585; no bookmark choreography):
 
 ```sh
 git fetch origin
-git log --oneline --graph origin/main..HEAD
-git log --oneline --graph HEAD..origin/main
+git rebase origin/main                     # replay your commits on the latest main
+jj git push --bookmark main                # publish
 ```
 
-If the remote's changes are a clean fast-forward over
-yours, rebase your work onto theirs:
+Equivalently, start a fresh change on the latest `main` and
+re-land: `jj new main@origin`.
 
-```sh
-git rebase -X theirs origin/main           # your local commits win on conflict
-# or:
-git rebase origin/main                     # let conflicts surface for manual resolution
-```
+If conflicts surface during the rebase (modify/delete or
+content), resolve in favour of your scope's changes (per the
+orchestration lock); ask only if the resolution genuinely changes
+the meaning of the peer's work. After resolution: `git rebase
+--continue`, then `jj git push --bookmark main`.
 
-If conflicts surface (modify/delete or content), resolve in
-favour of your scope's changes (per the orchestration
-lock); ask only if the resolution genuinely changes the
-meaning of the peer's work. After resolution:
-`git rebase --continue`, then `jj git push --bookmark main`.
-
-After this case completes, the normal `jj` flow resumes.
+Do NOT respond to a rejected push by creating a `wip-…` or
+`push-…` bookmark and rebasing it onto `main@origin` — that
+choreography is exactly the branch-dance record 2585 forbids on
+primary. Fetch, rebase, push. After this case completes, the
+normal `jj` flow resumes.
 
 ### Working tree has uncommitted state when you expected clean
 
@@ -508,7 +577,13 @@ those are **unbookmarked descendants of main** — pushable
 work that no one but you can find. They are exactly the
 shape of the 117-orphan failure.
 
-Each row needs one of:
+**On primary, there is exactly one option: land on main.** Per
+record 2585, primary never carries `push-<topic>` or any other
+side bookmark — `jj bookmark set main -r <rev> && jj git push
+--bookmark main`. The review-bookmark option below exists only
+for the code repositories under `/git/github.com/LiGoldragon/`.
+
+In a code repo, each row needs one of:
 
 - **Land on main** — `jj bookmark set main -r <rev> && jj git push --bookmark main`.
 - **Bookmark for review** — `jj bookmark create push-<topic> -r <rev> && jj git push --bookmark push-<topic>`.
@@ -518,9 +593,9 @@ Each row needs one of:
   bookmark-then-decide later.
 
 Prefer landing on main when the work is yours and complete.
-Reserve `push-<topic>` bookmarks for work that needs review
-before landing — not as a default "stash so I can move on."
-A long-lived chain of `push-*` bookmarks is itself a smell;
+Reserve `push-<topic>` bookmarks for code-repo work that needs
+review before landing — not as a default "stash so I can move
+on." A long-lived chain of `push-*` bookmarks is itself a smell;
 it usually means someone forgot to advance `main`.
 
 ## `jj git push -c @` is forbidden for routine commits
@@ -562,9 +637,16 @@ standard flow, or use a clearly-named review branch only when review
 is genuinely needed and delete it after merge] (record 2543).
 
 **Do not create a `push-*` bookmark for routine or per-report work.**
-The single legitimate use is genuine pre-main review, and that
+The single legitimate use is genuine pre-main review **in a code
+repository under `/git/github.com/LiGoldragon/`**, and that
 bookmark is deleted the moment it merges. When in doubt, land on
 `main` — that is the discipline.
+
+**On primary there is no legitimate `push-*` use at all.** Per
+record 2585, primary work always lands directly on `main` through
+the three-line standard flow; a `push-*` bookmark on primary is
+always wrong, including for reports. Reports land on `main` like
+every other primary edit.
 
 ## Bookmark cleanup after merge
 

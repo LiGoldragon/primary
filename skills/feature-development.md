@@ -3,6 +3,21 @@
 *Working on a feature branch in a separate worktree so the main checkout
 stays available for parallel work on `main`.*
 
+## Scope — code repos only, NOT primary
+
+The feature-branch / `~/wt` worktree model in this skill applies **only
+to the code repositories under `/git/github.com/LiGoldragon/`**. It does
+**not** apply to **primary**, the workspace coordination repository at
+`/home/li/primary` (reports, skills, `AGENTS.md`, `INTENT.md`,
+`ESSENCE.md`, `protocols/`, `orchestrate/`). Per psyche 2026-06-04
+(record 2585, VeryHigh), on primary everyone always works on `main`
+directly — edit, commit, push straight to `main` with the simple flow
+([on primary everyone always works on main directly — no feature, next,
+wip, or push branches] — record 2585). Never create a feature branch or
+a `~/wt` worktree for primary itself; see `skills/jj.md` §"Primary is
+always main — no branches, ever". The worktree mechanics below are for
+the code repos.
+
 ## What this skill is for
 
 When a feature spans more than one commit and one session — typical of

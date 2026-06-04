@@ -77,6 +77,29 @@ One surface is written without claiming a lock:
   `AGENTS.md`, repo `INTENT.md`, code, schemas — claim those shared
   paths for the non-report edits.
 
+**Lock selectively — never the whole space** (psyche record 2586). When a
+task does need a claim, claim only the specific files or subfolders you will
+edit — never `/home/li/primary` or a whole directory. Over-locking the whole
+workspace is a root cause of the branch-dancing on primary: an agent that
+locks everything then forks for its push instead of just committing to
+`main`. Lock narrowly; work on `main`.
+
+**Reports never need a lock** — agents keep forgetting this, so it bears
+repeating: a report in your own lane is created, edited, superseded, or
+deleted with no claim at all. A lane writes **only** in its own
+`reports/<role>/`, never another lane's report directory — except a one-time
+explicit psyche instruction for a specific task, and never touched again
+after unless re-instructed (record 2587).
+
+**Commit dirty primary state eagerly and impersonally** (record 2589).
+Keeping primary clean is everyone's job: if you see uncommitted reports or
+edits sitting in the working copy, just commit them to `main` — the whole
+dirty state, not only your own paths — briefly noting the contents.
+Committing a report is janitorial and does not belong to its creator; eager
+committing is what prevents the shared-working-copy race from losing finished
+work. Full flow: `skills/jj.md` §"Keep primary clean — commit dirty state,
+lock selectively".
+
 Intent capture is no longer a file append surface. Recording psyche
 intent goes through the deployed `spirit` CLI per `skills/intent-log.md`
 and `skills/spirit-cli.md`. Do not append to `intent/*.nota` during

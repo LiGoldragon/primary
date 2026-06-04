@@ -166,13 +166,26 @@ edits → `horizon-leaner-shape` worktree.
 
 ## Production work belongs in worktrees, not the canonical checkout
 
-When work touches code already in production and the arc spans
-more than one commit, the work belongs on a feature branch in a
-**separate worktree** at `~/wt/github.com/<owner>/<repo>/<branch>/`
-— parallel-and-predictable to the ghq layout under `/git/...`.
-The canonical checkout stays on `main` so every peer agent sees
-production reality without negotiating who-has-the-checkout. Full
-discipline: `skills/feature-development.md`.
+When work touches **code under `/git/github.com/LiGoldragon/`**
+already in production and the arc spans more than one commit, the
+work belongs on a feature branch in a **separate worktree** at
+`~/wt/github.com/<owner>/<repo>/<branch>/` — parallel-and-predictable
+to the ghq layout under `/git/...`. The canonical checkout stays on
+`main` so every peer agent sees production reality without
+negotiating who-has-the-checkout. Full discipline:
+`skills/feature-development.md`.
+
+This worktree model is for the **code repos only**. It does NOT
+apply to **primary**, the workspace coordination repository at
+`/home/li/primary`. Per psyche 2026-06-04 (record 2585, VeryHigh):
+on primary everyone always works on `main` directly — edit,
+commit, push straight to `main` with the simple flow, with no
+feature, `next`, `wip`, or `push-*` branches and no rebase-onto-main
+dances ([on primary everyone always works on main directly] —
+record 2585). The only divergence handling on primary is the
+named `git fetch` + `git rebase origin/main` + push escape hatch
+in `skills/jj.md`. See `skills/jj.md` §"Primary is always main —
+no branches, ever".
 
 ## Optional third "stable" branch is deferred
 

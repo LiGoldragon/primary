@@ -110,7 +110,7 @@
   (Workflow testing skills/testing.md Mechanism
     [All tests in Nix. Pure tests as checks; -test suffix for test-only binaries.])
   (Workflow feature-development skills/feature-development.md Mechanism
-    [Feature branches in worktrees. Multi-repo arc coordination.])
+    [Feature branches in worktrees, for CODE repos under /git only — NOT primary. Multi-repo arc coordination. On primary everyone works on main directly (record 2585).])
   (Workflow major-break-via-new-repo skills/major-break-via-new-repo.md Topic
     [When an architectural break is large enough that the existing repo's invariants no longer fit: create a new repo with a -next / -v2 / longer suffix and develop in parallel. After stabilizing, rename to the canonical short name (replacing the original). Per psyche 2026-05-26 (record 811).])
   (Workflow double-implementation-strategy skills/double-implementation-strategy.md Topic
@@ -143,5 +143,5 @@
   (Meta keep-working skills/keep-working.md Keystroke
     [Psyche info-injection mid-task is not a stop signal. Keep working unless explicitly told to stop or redirected. Absorb the context, capture any durable intent, and continue; do not drop the work and go passive.])
   (Workflow main-next skills/main-next.md Keystroke
-    [Each repo keeps main (operator-owned, integrated line) plus a long-lived next development branch (the designer line). Designer works on next; operator integrates next into main. When main is locked or busy, designer uses next and never blocks. Record 2561.])
+    [Each CODE repo under /git keeps main (operator-owned, integrated line) plus a long-lived next development branch (the designer line). Designer works on next; operator integrates next into main. When main is locked or busy, designer uses next and never blocks. NOT for primary — on primary everyone works on main directly (record 2585). Record 2561.])
 ]

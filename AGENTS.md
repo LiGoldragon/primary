@@ -418,19 +418,40 @@ yet — those land when the role's shape settles.
   "`primary-hj63`". Humans don't have a CLI in their head.
   Generalisation of `skills/reporting.md` §"Human-facing
   references are self-contained".
-- **Designers work on feature branches in `~/wt`; operators own
-  main + rebase.** Designer lanes (`designer`, `second-designer`,
+- **On primary, everyone always works on main directly.** Primary
+  — the workspace coordination repository at `/home/li/primary`
+  (reports, skills, `AGENTS.md`, `INTENT.md`, `ESSENCE.md`,
+  `protocols/`, `orchestrate/`) — is edited, committed, and pushed
+  straight to `main` by every lane with the simple flow:
+  `jj commit -m '...'` then `jj bookmark set main -r @-` then
+  `jj git push --bookmark main`. **No feature, `next`, `wip`, or
+  `push-*` branches on primary, and no rebase-onto-main
+  choreography.** If a push is rejected because `main` advanced,
+  the only handling is the named escape hatch in `skills/jj.md`:
+  `git fetch origin` + `git rebase origin/main` + push (or
+  `jj new main@origin` to start fresh on the latest `main`). Per
+  psyche 2026-06-04 (intent record 2585, VeryHigh). Full
+  discipline: `skills/jj.md` §"Primary is always main — no
+  branches, ever".
+- **In the CODE repos under `/git`, designers work on `next` /
+  feature branches in `~/wt`; operators own main + rebase.** This
+  applies ONLY to the code repositories under
+  `/git/github.com/LiGoldragon/`, NOT to primary (see the rule
+  just above). Designer lanes (`designer`, `second-designer`,
   `third-designer`, `cloud-designer`, `nota-designer`,
-  `system-designer`) create + ship feature branches in worktrees
-  under `~/wt/github.com/<owner>/<repo>/`, one branch per
-  feature. Operator lanes (`operator`, `second-operator`,
-  `cluster-operator`, `pi-operator`, `cloud-operator`) own main:
-  they create, maintain, and rebase main from designer feature
-  branches when integrating. Designers do NOT push to main;
-  operators do NOT carry long-lived designer feature branches.
-  Cross-lane integration is operator's job. Per psyche
-  2026-05-24 (intent record 515). Complements the
-  mockup-on-worktree method (intent records 502-504).
+  `system-designer`) create + ship `next` and feature branches in
+  worktrees under `~/wt/github.com/<owner>/<repo>/`. Operator
+  lanes (`operator`, `second-operator`, `cluster-operator`,
+  `pi-operator`, `cloud-operator`) own main: they create,
+  maintain, and rebase main from `next` / designer feature
+  branches when integrating. In code repos designers do NOT push
+  to main; operators do NOT carry long-lived designer feature
+  branches. Cross-lane integration is operator's job. Per psyche
+  2026-05-24 (intent record 515) and 2026-06-04 (record 2561,
+  main-and-next). Complements the mockup-on-worktree method
+  (intent records 502-504). The `~/wt` / `next` / feature-branch
+  models live in `skills/feature-development.md` and
+  `skills/main-next.md` — both scoped to code repos, not primary.
 
 ## Where to look for more
 

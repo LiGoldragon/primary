@@ -258,7 +258,15 @@ discipline":
 > text example + a round-trip test** before its Rust
 > definition is final.
 
-### Work on feature branches in `~/wt`
+### Work on feature branches in `~/wt` — code repos only, not primary
+
+This applies to the **code repositories under
+`/git/github.com/LiGoldragon/`**, never to primary. Primary
+(reports, skills, `AGENTS.md`, `INTENT.md`) is always edited on
+`main` directly — edit, commit, push straight to `main` with the
+simple flow, no feature branch and no `~/wt` worktree (per psyche
+2026-06-04, record 2585; `skills/jj.md` §"Primary is always main
+— no branches, ever"). The worktree discipline below is for code.
 
 Designer implementation mockups, schema-language probes, macro
 experiments, and code-backed design sketches run on designer-owned

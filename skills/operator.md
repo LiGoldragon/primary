@@ -308,6 +308,13 @@ designer can answer.
 
 ### Maintain main from designer feature branches
 
+This applies to the **code repositories under
+`/git/github.com/LiGoldragon/`**, never to primary. Primary is
+edited on `main` directly by every lane with the simple flow — no
+designer feature branches to harvest, no rebase-onto-main
+integration (per psyche 2026-06-04, record 2585; `skills/jj.md`
+§"Primary is always main — no branches, ever").
+
 Designer code-backed probes live on designer-owned feature branches in
 worktrees under `~/wt`. Treat those branches as executable design
 evidence, not as mainline history. Read the report and bead that point
