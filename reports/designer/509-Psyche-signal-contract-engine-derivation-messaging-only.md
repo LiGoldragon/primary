@@ -20,6 +20,23 @@ description: |
 
 # 509 — Signal contract is messaging-only; the generator wrongly derives Sema and Nexus from it
 
+> **Correction banner (2026-06-04, records 2597 + 2598).** The
+> contract-boundary diagnosis below stands: a contract is wire-only,
+> and the generator defect is real (`emit_schema_plane_trait_support`
+> keys on type-name presence, with no plane awareness). **But the FIX
+> shape proposed in §"Where the SemaEngine comes from" onward is
+> superseded.** This report still smuggled in the old mistake — "one
+> daemon schema with distinct plane *sections*." That is wrong. The
+> corrected model (psyche, records 2597/2598): a triad is **three
+> separate plane-schemas minimum — a Signal schema, a Nexus schema, a
+> Sema schema — with NO sections inside one file.** The generator emits
+> **per plane** (Signal → wire types + codec, zero engines; Nexus → the
+> Nexus engine; Sema → the Sema engine), not per contract-vs-daemon
+> *mode*. spirit's all-in-one `lib.schema` is a bootstrap exception, not
+> the canonical split. The corrected fix lands in the consolidated
+> workspace audit report and in operator audit
+> `reports/operator/309-Audit-signal-contract-nexus-sema-boundary.md`.
+
 ## Intent Anchors
 
 [A component contract (signal-component and meta-signal-component) carries
