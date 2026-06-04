@@ -160,9 +160,11 @@ probability. **Lean: full digest on the wire, ~10-12 char prefix for display.**
 
 ## 6.1 — Resolved (psyche answers, 2026-06-04)
 
-**Q1 → creation-fixed content fingerprint** (Spirit 2590). The id is a hash of
-the original topics+kind+description+creation-timestamp, frozen at creation —
-content-addressed, dedups identical captures, immune to ChangeCertainty.
+**Q1 → random hash** (Spirit 2590 superseded by 2599). The id is a random hash
+assigned once at creation and frozen — unique, never reused. The psyche struck
+the content-fingerprint direction: because records are mutable (ChangeCertainty
+and other edits), a content-address hash adds computation for very little value.
+(This restores the section's original Q1 lean.)
 
 **Q3 → grandfather** (Spirit 2591). Existing integer records keep their ids;
 only new records get fingerprints. Hybrid id space; existing citations stay
@@ -172,10 +174,10 @@ valid.
 base larger than hex, combined with the kind — big hashes are token-expensive
 gibberish in LLM context. Recommended scheme:
 
-- **Canonical = the full content fingerprint, binary on the wire** (rkyv) — no
+- **Canonical = the full random hash, binary on the wire** (rkyv) — no
   token cost there; it never appears as text unless rendered.
 - **Display / citation = the shortest-unique base36-lowercase prefix of the
-  fingerprint, minimum 3 chars, scoped per kind**, extended (4, 5, …) only when
+  hash, minimum 3 chars, scoped per kind**, extended (4, 5, …) only when
   a same-kind collision requires it (git-style shortest-unique). base36
   lowercase is beads-proven, case-safe (no A-vs-a errors), larger than hex
   (36 vs 16), and 3 chars give 46,656 values *per kind* — ample, since
