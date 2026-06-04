@@ -52,7 +52,7 @@
   (Craft secrets skills/secrets.md Keystroke
     [An agent never sees a secret value. gopass wraps env-vars in the user session; sops-nix carries secrets to cluster hosts; bridge stores ciphertext-to-ciphertext; verify by length and exit code, never by reading.])
   (Craft privacy skills/privacy.md Keystroke
-    [Private personal-affairs work stays out of ordinary public workspace surfaces; private repositories require explicit owning-psyche authority before access.])
+    [Private personal-affairs work stays out of public workspace surfaces and privacy Zero Spirit. Elevated Spirit privacy exists, but private repositories remain the conservative default unless the psyche explicitly wants Spirit capture.])
   (Craft workspace-vocabulary skills/workspace-vocabulary.md Topic
     [Canonical glossary for load-bearing workspace terms. main/next, Persona, engine_manager — predecessors, scope, when-to-use.])
   (Craft beauty skills/beauty.md Keystroke
@@ -129,9 +129,9 @@
   (Meta context-maintenance skills/context-maintenance.md Mechanism
     [Sweep reports and conversation. Migrate substance to permanent homes.])
   (Meta intent-log skills/intent-log.md Topic
-    [Record explicit psyche intent through Spirit. Five-kind positional NOTA: Decision / Principle / Correction / Clarification / Constraint. Only psyche statements get recorded.])
+    [Record explicit psyche intent through Spirit. Five-kind positional NOTA plus certainty and privacy Magnitudes. Only psyche statements get recorded; public entries use privacy Zero.])
   (Meta spirit-cli skills/spirit-cli.md Topic
-    [How to invoke the deployed Spirit CLI. Inline NOTA wrapped in shell double quotes vs file-path argument; the live wire shape; finding the wire shape when it drifts; front matter names the documented tool version.])
+    [How to invoke the deployed Spirit CLI. Live v0.4.1 public/private query shape, record privacy, removal-candidate archive/print targets, inline NOTA vs file-path argument, and deployed-source verification.])
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
     [Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.])
   (Meta intent-clarification skills/intent-clarification.md Topic

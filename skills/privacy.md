@@ -46,23 +46,38 @@ canonical local path is `private-repos/<role>-reports/`. The top-level
 
 ## Spirit and intent privacy
 
-Do not put private personal substance into the ordinary Spirit
-intent database. It is acceptable to record public/meta policy such
-as "private reports live in private repositories"; it is not acceptable
-to record the private details that caused a personal-affairs decision.
+Production Spirit now carries a privacy `Magnitude` on every record.
+Privacy `Zero` is open/public and is returned by ordinary queries.
+Higher privacy magnitudes narrow the intended audience and require
+explicit private query forms.
 
-Until a private Spirit substrate exists, handle private intent as a
-private report note in the matching private repository, with a clear
-`Private intent` heading. Keep the note terse and factual. Do not mirror
-it into public reports, beads, or ordinary Spirit.
+Do not put private personal substance into a `Zero` privacy Spirit
+record. It is acceptable to record public/meta policy such as "private
+reports live in private repositories" at privacy `Zero`; it is not
+acceptable to record private details at privacy `Zero`.
+
+Private personal intent has two valid homes:
+
+- an elevated-privacy Spirit record, only when the psyche explicitly
+  wants it in Spirit or the lane is already authorized for the private
+  work;
+- a private report note in the matching private repository, with a clear
+  `Private intent` heading.
+
+Use the private report route as the conservative default for deeply
+personal substance, sealed-equivalent material, or anything whose
+audience is unclear. Do not mirror private report substance into public
+reports, beads, public commits, chat summaries, or privacy `Zero`
+Spirit records.
 
 ## Public surface leak test
 
-Before writing to `reports/`, `.beads/`, ordinary Spirit, commits in
-public repositories, issue comments, chat summaries, or other public
+Before writing to `reports/`, `.beads/`, privacy `Zero` Spirit, commits
+in public repositories, issue comments, chat summaries, or other public
 workspace surfaces, ask: **would this sentence still be safe if every
 workspace agent and every public repo reader saw it?** If no, move it
-to the matching private repository or ask the psyche.
+to an elevated-privacy Spirit record, the matching private repository,
+or ask the psyche.
 
 Do not quote private text into a public report as evidence. Refer to it
 only as "private material" or "a private report" unless the psyche
@@ -80,46 +95,31 @@ Public workspace files may carry only the mechanism:
 They do not carry personal details, counselor analysis, or assistant
 working notes.
 
-## Direction set — implementation pending
+## Spirit privacy shape
 
-Spirit record 1463 (Decision Maximum, 2026-06-02) settled the privacy
-substrate direction: **privacy is a Magnitude field on each Spirit
-record, reusing the existing Magnitude vocabulary on a privacy axis.**
-Zero privacy means open / public (the default per Spirit 1449 + 1479
-grounding the dev-mode public-repo context); Maximum privacy means
-sealed. The intermediate Magnitudes (Minimum, VeryLow, Low, Medium,
-High, VeryHigh) graduate the privacy spectrum between those poles.
+Privacy is a `Magnitude` field, reusing the existing vocabulary on a
+privacy axis. `Zero` privacy means open/public. `Maximum` privacy means
+sealed. The intermediate magnitudes (`Minimum`, `VeryLow`, `Low`,
+`Medium`, `High`, `VeryHigh`) graduate the privacy spectrum between
+those poles.
 
-Filters mirror the existing certainty pattern: `PrivacyAtMost` /
-`PrivacyAtLeast` / `PrivacyExact` / `PrivacyAny` selectors compose
-with topic + kind + certainty + recorded-time filters in `Observe`
-queries. A `ChangePrivacy` operation root mutates a stored record's
-privacy field by identifier, alongside `ChangeCertainty`.
+Normal `Observe(Records ...)` and `Observe(RecordIdentifiers ...)`
+queries return exact `Zero` privacy only. Elevated reads use
+`PrivateRecords` or `PrivateRecordIdentifiers` with `PrivacySelection`
+(`Any`, `Exact`, `AtMost`, `AtLeast`). Record subscriptions follow the
+same split between public and explicit private forms.
 
-Implementation is Phase 3 schema work in spirit-next per
-`reports/system-designer/53-spirit-next-production-parity-2026-06-02/`.
-The deployed `persona-spirit v0.3.0` daemon does NOT yet carry the
-field; the schema additions to spirit-next + the parity port to
-production are pending.
+There is no live `ChangePrivacy` operation in production Spirit v0.4.1.
+Choose privacy carefully at record time. If a record is misclassified,
+use the maintenance path: capture a corrected record at the right privacy
+level, then lower/remove the old one according to
+`skills/intent-maintenance.md`.
 
-### Operational rule today
-
-Until the privacy field is live on the wire and the deployed daemon
-serves it, the conservative rule still applies: **private substance
-stays in private repositories and ordinary Spirit receives only
-privacy-safe meta-intent.** This skill's earlier sections describe
-the operational handling today.
-
-### Operational rule once implemented
-
-Once the privacy field lands, the boundary becomes graduated rather
-than binary. Records carrying elevated privacy (`Low` through
-`Maximum`) can live in Spirit; queries from elevated contexts can
-reach them. Deeply personal substance that wants Sealed-equivalent
-treatment (privacy `Maximum`) may still prefer storage segregation
-in `private-repos/` for defense-in-depth, but the choice becomes a
-trade-off between in-corpus discoverability and substrate separation
-rather than a hard either/or.
+The boundary is graduated rather than binary. Records carrying elevated
+privacy can live in Spirit when discoverability is worth it and authority
+is explicit. Deeply personal substance that wants sealed-equivalent
+treatment may still prefer storage segregation in `private-repos/` for
+defense-in-depth.
 
 The audience-narrowing register frame from
 `reports/system-designer/54-spirit-privacy-classification-research-2026-06-02.md`

@@ -77,14 +77,13 @@ layer is reserved for material with significant intent content.
 
 ## Privacy gate before recording
 
-Before any ordinary Spirit `Record`, classify whether the content is
-public or private. Personal-affairs substance, private life context,
-sensitive plans, health, relationships, finances, identity material,
-and anything the psyche frames as private does **not** go into ordinary
-Spirit. Record only privacy-safe meta-policy in ordinary Spirit. Until
-a private Spirit substrate exists, private intent becomes a `Private
-intent` note in the relevant private report repository per
-`skills/privacy.md`.
+Before any Spirit `Record`, classify the privacy axis. Public workspace
+intent is recorded at privacy `Zero` and is returned by ordinary
+queries. Private or personal-affairs substance must never be recorded
+at privacy `Zero`. If the psyche explicitly wants that substance in
+Spirit, record it with an elevated privacy `Magnitude`; otherwise keep
+it as a `Private intent` note in the relevant private report repository
+per `skills/privacy.md`.
 
 ## When to record
 
@@ -221,14 +220,18 @@ intent capture, the operation is `Record` carrying an untagged
   ([<topic> ...]     ;; vector of topic identifiers: workspace, spirit, signal, …
    <Kind>            ;; Decision | Principle | Correction | Clarification | Constraint
    [<description>]   ;; clarified intent, reusing psyche wording when useful
-   <Magnitude>))     ;; Zero | Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
+   <Certainty>        ;; Zero | Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
+   <Privacy>))        ;; Zero public/open; higher values narrow audience
 ```
 
 - `Entry` is untagged — no record-head ident (per the NotaRecord
   codec change). `Kind` and `Magnitude` are bare PascalCase NotaEnum
   variants. Topics are a vector of lowercase identifiers; use a
   bracket string only if a topic contains spaces or PascalCase content.
-- Spirit v0.3 does not store context or verbatim fields. The agent's
+- `Entry` accepts a four-field public shorthand that defaults privacy
+  to `Zero`, but agents should use the explicit five-field form when
+  privacy classification matters.
+- Spirit v0.4.1 does not store context or verbatim fields. The agent's
   job is to record the clarified intent as one dense description,
   reusing the psyche's own words when they are load-bearing.
 - **The daemon stamps date and time on receipt.** Clients do not
@@ -259,7 +262,7 @@ The deployed `spirit` CLI is the substrate. Capture intent by
 invoking it with a `Record` operation:
 
 ```sh
-spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude>))"
+spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> Zero))"
 ```
 
 The daemon stamps date and time on receipt; clients do not supply
@@ -409,8 +412,10 @@ When a psyche prompt arrives, **capturing intent through the right
 intent substrate is the absolute first thing the agent does** — before
 editing a report, before writing code, before responding in chat.
 Everything else the prompt asked for is downstream of intent. Public
-intent goes through ordinary Spirit; private personal substance follows
-`skills/privacy.md` instead of ordinary Spirit.
+intent goes through Spirit with privacy `Zero`; private personal
+substance follows `skills/privacy.md` and must either be captured as an
+elevated-privacy Spirit record by explicit authority or written as a
+private report note.
 
 The session-turn shape:
 
@@ -418,11 +423,12 @@ The session-turn shape:
 2. Identify every intent statement — Decision, Principle,
    Correction, Clarification, Constraint. A single prompt often
    contains several across multiple topics.
-3. For each public entry: record it through `spirit` (or run the
-   supersession protocol if it contradicts a prior — see
+3. For each public entry: record it through `spirit` at privacy `Zero`
+   (or run the supersession protocol if it contradicts a prior — see
    `skills/intent-maintenance.md`). For private personal substance,
-   write a `Private intent` note in the matching private report repo
-   until private Spirit exists.
+   follow `skills/privacy.md`: use an elevated privacy value only when
+   explicitly authorized; otherwise write a `Private intent` note in
+   the matching private report repo.
 4. If Spirit is unavailable, stop and surface the blocker. Do not
    revive file logging silently.
 5. *Now* do the work the psyche asked for (report, code, etc.).

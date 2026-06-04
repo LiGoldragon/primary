@@ -1,15 +1,15 @@
 ---
 tool_versions:
-  - [Spirit, "0.3.0"]
+  - [Spirit, "0.4.1"]
 ---
 
 # Skill — spirit CLI
 
 *The deployed `spirit` binary is the normal substrate for psyche
 intent capture and observation. Agents call the unsuffixed CLI
-directly. This skill covers the current production-source
-`Spirit 0.3.0` command shape and how to verify the deployed wrapper
-when the installed profile lags the source.*
+directly. This skill covers the live production `Spirit 0.4.1`
+command shape and how to verify the deployed wrapper when source
+and profile drift.*
 
 ## What this skill is for
 
@@ -132,12 +132,11 @@ going to have to keep track of the interface"* —
 
 ## Operations on the ordinary channel (worked examples)
 
-Examples below match the current production-source `Spirit 0.3.0`
-wire shape. The installed unsuffixed `spirit` wrapper can lag until
-CriomOS-home points at the new `persona-spirit` commit and the
-profile is activated. When in doubt, read the deployed source per
-the previous section and verify the wrapper with a small `Observe`
-call.
+Examples below match the live production `Spirit 0.4.1` wire shape.
+The installed unsuffixed `spirit` wrapper can lag until CriomOS-home
+points at the new `persona-spirit` commit and the profile is
+activated. When in doubt, read the deployed source per the previous
+section and verify the wrapper with a small `Observe` call.
 
 Records are **untagged** per `NotaRecord` (the `ee90eef` codec
 change). Enum variants carry a head; record bodies do not. `Option`
@@ -147,12 +146,12 @@ newtypes — encoded as bare tokens when possible, or bracket strings
 when they contain whitespace or punctuation.
 
 **Record an intent entry — description-only, multi-topic shape.**
-A current-source v0.3.0 record carries a vector of topics, one
-agent-clarified `Description`, a `Kind`, a certainty `Magnitude`, and
-a privacy `Magnitude`. No verbatim field, no context payload, and no
+A v0.4.1 record carries a vector of topics, one agent-clarified
+`Description`, a `Kind`, a certainty `Magnitude`, and a privacy
+`Magnitude`. No verbatim field, no context payload, and no
 client-supplied timestamp. **The daemon stamps date/time itself.**
-Older deployed wrappers accept the four-field form and default privacy
-to `Zero`; current source accepts both forms.
+The five-field form is explicit. The four-field form remains a public
+shorthand and defaults privacy to `Zero`.
 The agent clarifies the psyche's wording into the description before
 recording — that is the agent's job, and it is what keeps the intent
 log dense and searchable rather than verbose and lossy:
@@ -163,6 +162,11 @@ spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> <Privacy>))"
 # Kind ∈ { Decision Principle Correction Clarification Constraint }
 # Magnitude ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
 ```
+
+Privacy uses the same `Magnitude` ladder on a privacy axis. `Zero`
+means open/public and is the normal workspace-default. Higher values
+narrow the intended audience. Do not put private personal substance in
+a `Zero` privacy record.
 
 The reply is **terse — no echo**: `(RecordAccepted N)` where `N` is
 the assigned identifier. The acknowledgement deliberately does not
@@ -206,17 +210,21 @@ and can be restored by changing certainty back to a non-zero
 remove them from the hot store:
 
 ```sh
-spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) Inline))"
-spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) (File [/tmp/spirit-removal-candidates.nota])))"
+spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) (ArchiveDatabase Default)))"
+spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) (ArchiveDatabase (Path [/tmp/spirit-removal-candidates.sema]))))"
+spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) (Print StandardOutput)))"
 ```
 
 The reply is `(RemovalCandidatesCollected ([...] [...] [...]))`: compact
 archived `RecordSummary` values, removed identifiers, and skipped
 candidates. `CollectRemovalCandidates` is constrained to exact `Zero`
-certainty; broad queries are rejected. A file archive writes a tagged
-`RecordsObserved` NOTA value before retraction. Archive output failure
-returns skipped candidates such as `[(1088 ArchiveFailed)]` and leaves
-the records queryable.
+certainty and exact `Zero` privacy; broad queries are rejected.
+`ArchiveDatabase Default` writes the daemon-derived archive database;
+`ArchiveDatabase (Path [...])` writes a caller-selected archive
+database; `Print StandardOutput` and `Print StandardError` write no
+archive database and return typed capture material for the CLI to
+render. Archive output failure returns skipped candidates such as
+`[(1088 ArchiveFailed)]` and leaves the records queryable.
 
 **Topics are user-creatable strings carried in a vector** at the wire
 layer — any new topic word a `Record` uses is registered. No
@@ -226,26 +234,26 @@ vector carry multiple concepts. Prefer `[intent logging]` over
 compound topic only when the compound is the established name of one
 thing.
 
-**Observe records** — query the store. This is the current
-production-source `Spirit 0.3.0` record-query shape. `Records` filters
-by topic selection, optional kind, certainty, recorded time, privacy,
-and output mode. Topic selection is `(Any [])` for no topic filter,
+**Observe records** — query the store. The public `Records` query
+filters by topic selection, optional kind, certainty, recorded time,
+and output mode. It has no privacy field and means exact `Zero`
+privacy by type. Use `PrivateRecords` or `PrivateRecordIdentifiers`
+for elevated reads. Topic selection is `(Any [])` for no topic filter,
 `(Partial [a b])` for records matching one or more requested topics,
 and `(Full [a b])` for records matching every requested topic.
-Certainty and privacy selections are `Any`, `(Exact Zero)`,
-`(AtMost Low)`, or `(AtLeast High)`. Recorded-time selection is `Any`,
+Certainty selection is `Any`, `(Exact Zero)`, `(AtMost Low)`, or
+`(AtLeast High)`. Recorded-time selection is `Any`,
 `(Between ((YYYY-MM-DD HH:MM:SS) (YYYY-MM-DD HH:MM:SS)))`,
 `(Since (YYYY-MM-DD HH:MM:SS))`, `(Until (YYYY-MM-DD HH:MM:SS))`,
 `Shallow`, `Recent`, `Deep`, or `VeryDeep`. Qualitative recency
-depths are applied after topic/kind/certainty/privacy matching and
+depths are applied after topic/kind/certainty matching and
 return newest matching records at the requested depth, so quiet topics
 naturally reach farther back than active topics.
 `Minimum` remains weak but real intent; do not use it as the
-removal-candidate marker. The old three-field, four-field, and
-five-field record queries still decode as compatibility input,
-defaulting privacy to `(Exact Zero)` when omitted, but agents should
-emit the six-field current-source shape once the installed wrapper
-accepts it.
+removal-candidate marker. The old three-field, four-field, five-field,
+and six-field record queries still decode as compatibility input, but
+agents should emit the public five-field query or the explicit private
+query variants.
 `RecordIdentifiers` selects by numeric identifier: `Exact` selects one
 record; `Range` is inclusive, so `(Range (1050 1060))` returns records
 1050 through 1060 when present. Use `SummaryOnly` for compact summaries
@@ -253,21 +261,23 @@ and `WithProvenance` when you need daemon-stamped date/time:
 
 ```sh
 spirit "(Observe Topics)"
-spirit "(Observe (Records ((Any []) None Any Any (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit search]) None Any Any (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Full [spirit search]) None Any Any (Exact Zero) WithProvenance)))"
-spirit "(Observe (Records ((Any []) (Some Decision) Any Any (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Any []) None (Exact Zero) Any (Exact Zero) WithProvenance)))"
-spirit "(Observe (Records ((Any []) None (AtMost Low) Any (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any Shallow (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any Recent (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any Deep (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any VeryDeep (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any (Since (2026-05-30 00:00:00)) (Exact Zero) SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any (Between ((2026-05-29 00:00:00) (2026-05-30 23:59:59))) (Exact Zero) WithProvenance)))"
+spirit "(Observe (Records ((Any []) None Any Any SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit search]) None Any Any SummaryOnly)))"
+spirit "(Observe (Records ((Full [spirit search]) None Any Any WithProvenance)))"
+spirit "(Observe (Records ((Any []) (Some Decision) Any Any SummaryOnly)))"
+spirit "(Observe (Records ((Any []) None (Exact Zero) Any WithProvenance)))"
+spirit "(Observe (Records ((Any []) None (AtMost Low) Any SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any Shallow SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any Recent SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any Deep SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any VeryDeep SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any (Since (2026-05-30 00:00:00)) SummaryOnly)))"
+spirit "(Observe (Records ((Partial [spirit]) None Any (Between ((2026-05-29 00:00:00) (2026-05-30 23:59:59))) WithProvenance)))"
 spirit "(Observe (RecordIdentifiers ((Exact 1053) SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Range (1050 1060)) WithProvenance)))"
+spirit "(Observe (PrivateRecords ((AtMost Low) ((Any []) None Any Any SummaryOnly))))"
+spirit "(Observe (PrivateRecordIdentifiers ((AtMost Low) ((Exact 1053) SummaryOnly))))"
 ```
 
 **Submit a free-form statement** — `State` lowers to an `Assert`
