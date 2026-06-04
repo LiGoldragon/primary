@@ -34,6 +34,12 @@ Use `major.minor.patch`.
 - **Major bump** only when a component has crossed the 1.0 line.
   Before 1.0, breaking public changes bump the minor version at
   minimum and get called out explicitly in the commit/report.
+- **A major bump requires explicit psyche authorization.** Crossing
+  to `1.0`, and every later first-digit bump, is the psyche's call.
+  An agent may *propose* a major bump in a report or commit message
+  with the reasoning, but must get the psyche's go before making it.
+  Patch and minor bumps an agent makes on its own as part of the
+  change; major is reserved.
 
 If a change only edits reports, skills, comments, or prose docs,
 do not bump a component version unless that prose is packaged as
