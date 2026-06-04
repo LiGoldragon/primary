@@ -369,10 +369,21 @@ public grammar of every component:
 | `Validate` | dry-run validation/planning without commit |
 
 These words belong in the Sema engine layer and in any explicit
-Sema-facing contract, not as a mandatory wrapper around every
-domain action. A component may expose Sema-shaped operations on
-a specialized socket when that is the actual public service it
-offers. Most component contracts should not.
+Sema-facing contract (signal-sema itself, or a deliberately
+Sema-facing socket that IS the public service offered) — never on
+an ordinary component's public wire. Per psyche 2026-06-04 (record
+2612): **Sema classification vocabulary is forbidden on the public
+contract wire.** The six words must not appear as request-root
+tags, a contract must not mirror them as an `AuthorizedSignalVerb`
+enum, and a contract event must not carry the payloadless
+`SemaObservation` label. Contract operation roots are domain verbs;
+the Sema class is something the daemon derives internally, never
+something a peer sends or names on the wire. The earlier soft
+"most component contracts should not" is retired in favour of this
+firm prohibition — the six legacy contracts that still carry the
+pattern (signal-mind, signal-router, signal-criome,
+owner-signal-persona, signal-persona-spirit, signal-orchestrate)
+are a cleanup track, not a tolerated convention.
 
 ### Lowering is daemon logic
 
