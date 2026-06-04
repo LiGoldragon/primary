@@ -168,14 +168,16 @@ means open/public and is the normal workspace-default. Higher values
 narrow the intended audience. Do not put private personal substance in
 a `Zero` privacy record.
 
-The reply is **terse — no echo**: `(RecordAccepted [abcd])` where the
-bracket string is the assigned identifier code. The acknowledgement
-deliberately does not echo the submitted intent content; the wire
-reply is token-cheap. Production v0.5.1 mints random lowercase base36
+The reply is **terse — no echo**: `(RecordAccepted abcd)` or
+`(RecordAccepted [1234])`, depending on whether the NOTA encoder can
+print the identifier as a bare string. The acknowledgement deliberately
+does not echo the submitted intent content; the wire reply is
+token-cheap. Production v0.5.1 mints random lowercase base36
 identifiers and displays the shortest collision-free code in the
 4-to-7-character range. Older long identifier codes remain decodable
 for compatibility, but agents should cite and pass the short code
-returned by the daemon.
+returned by the daemon. In agent-authored commands, bracket the
+identifier (`[abcd]`) so codes that start with digits remain valid.
 
 **Simple capture convention.** For normal public workspace work, the
 simple record shape above is the default interface: broad topic vector,
