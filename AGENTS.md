@@ -405,6 +405,20 @@ yet — those land when the role's shape settles.
   type a bare `jj commit`. Full discipline + table of inline forms:
   `skills/jj.md` §"Never let jj open an editor". Per psyche
   2026-05-22 (intent record 237).
+- **Commit the WHOLE working copy — never path-scoped.** All agents
+  share one jj working copy, so `jj commit` takes NO path arguments;
+  it drains every in-flight change. Path-scoped commits
+  (`jj commit <paths>`) leave peers' changes undrained and let two
+  agents fork sibling commits off the same base, stranding work
+  off-main. Committing everything serializes agents through jj's
+  working-copy lock, keeps history linear, and orphans nothing —
+  whoever commits sweeps in all in-flight work. The resulting
+  multi-lane / "impersonal" commit (one message covering several
+  lanes) is ACCEPTED. This supersedes the prior path-selective
+  "don't commit other lanes' files" guidance, which was itself the
+  cause of the forks. Full discipline: `skills/jj.md` §"Commit the
+  whole working copy — never path-scoped". Per psyche 2026-06-04
+  (intent records 2589, 2620).
 - **No `---` horizontal-rule lines in markdown.** Section structure
   comes from headings (`##`, `###`). `---` between every section is
   pure noise in agent context — costs tokens, conveys nothing

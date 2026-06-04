@@ -53,21 +53,20 @@ designers work on `next` or feature branches in `~/wt`. **Primary
 is the exception: everyone-on-main, always.** Do not carry the
 code-repo branch model onto primary.
 
-### Keep primary clean — commit dirty state, lock selectively
+### Keep primary clean — commit the whole working copy, lock selectively
 
 Two rules keep primary simple and prevent the shared-working-copy race that
 loses uncommitted reports (psyche 2026-06-04):
 
-- **Commit eagerly and impersonally** (record 2589). On primary you commit
-  the **whole dirty working copy**, not just your own paths — including
-  other agents' finished-but-uncommitted reports. Committing is janitorial;
-  it does not belong to the report's creator. If you start work and see
-  uncommitted state in primary, just commit it, briefly noting the contents
-  in the message without apologetics (`commit pending reports + skill
-  edits`). This **supersedes, on primary, the working-copy-check and
-  `jj split` path-selective discipline** further down this skill — those
-  remain correct for code repos, where authorship and isolation matter. On
-  primary: see dirty, commit it.
+- **Commit eagerly and impersonally** (records 2589, 2620). Commit the
+  **entire working copy** — `jj commit` with NO path arguments — never just
+  your own paths. Committing is janitorial; it does not belong to a report's
+  creator. If you start work and see uncommitted state in primary, just
+  commit it, briefly noting the contents in the message without apologetics
+  (`commit pending reports + skill edits`). This is the general
+  whole-working-copy rule (see §"Commit the whole working copy — never
+  path-scoped"), restated here because primary is where the shared-copy race
+  bites hardest. On primary: see dirty, commit it.
 - **Lock selectively** (record 2586). When you must claim, claim only the
   specific files or subfolders you will edit — never the whole workspace.
   Over-locking the whole space is what bred the fork-for-push dance.
@@ -105,8 +104,8 @@ takes `-m '<msg>'` inline; never let jj fall back to an editor.
 Once activated, missing `-m` errors loudly. Until activated, the
 procedural rule above is the backstop.
 
-For the rest — partial commits, splits, divergence resolution,
-escape-hatch git cases — read on.
+For the rest — whole-working-copy commits, splits, divergence
+resolution, escape-hatch git cases — read on.
 
 ## What this skill is for
 
@@ -139,9 +138,9 @@ lore is *how jj works*.
 
 The default tool for **every commit** is `jj`. **Don't
 reach for `git add` / `git commit` / `git push` / `git
-checkout` for normal work.** When a partial commit feels
-hard, the answer is to learn the jj idiom for it (see
-"Partial commits" below), not to drop down to `git`.
+checkout` for normal work.** When a commit feels hard, the
+answer is to learn the jj idiom for it (see "Commit the whole
+working copy" below), not to drop down to `git`.
 
 `git` survives in this workspace as an explicit escape
 hatch for **two named cases**:
@@ -152,7 +151,7 @@ hatch for **two named cases**:
    in parallel and `jj git push` rejects.
 
 Both are detailed under "Standard fixes" below. Anything
-else — daily commits, partial commits, branch motion,
+else — daily commits, splits, branch motion,
 amending, undo — uses `jj`.
 
 If you find yourself reaching for raw `git` outside the two
@@ -309,76 +308,46 @@ The instant you continue past it, the next agent's view of
 your work depends on you having set a description; their
 `jj log` filters will hide it otherwise.
 
-## Before you commit — the working-copy check
+## Commit the whole working copy — never path-scoped
 
-`jj commit` (and any other path that finalises `@`)
-captures **every change in the working copy**, regardless of
-who authored it. Run `jj st` before committing and read the
-list of changed paths against your scope.
+Per psyche 2026-06-04 (records 2589, 2620): agents commit the
+**ENTIRE working copy** — `jj commit -m '<msg>'` with **no path
+arguments** — never path-scoped (`jj commit <paths>`,
+`jj split <paths>` to "isolate my scope", `git add <paths>`).
 
-If `jj st` shows files outside your claim — a peer agent's
-in-flight edit, a linter touch, anything not yours —
-**don't commit the whole working copy.** Use `jj split` to
-isolate your paths first (see below). A bare `jj commit`
-bundles peer work into a commit with your authorship and your
-message, leaving the peer's intent muddled in version control
-history.
+The reason is the shared working copy. **All agents share one jj
+working copy.** A path-scoped commit captures only the named paths
+and leaves every other agent's in-flight change *undrained* in the
+working copy. With the copy still dirty, two agents can each commit
+their own paths off the same base — producing **sibling commits**,
+an off-main **fork** that strands work and can orphan uncommitted
+files. That fork is exactly what the old path-selective
+"don't-commit-other-lanes'-files" rule *caused*.
 
-This check is procedural, not aesthetic. The recurring
-failure mode is "I edited files X and Y; I run `jj commit`;
-the working copy also contained Z (peer file or linter
-output); the resulting commit covers X+Y+Z under my message."
-Once pushed, fixing it requires either a force-push or a
-follow-up commit that explains the muddle. Both are worse
-than running `jj st` and `jj split` up front.
+Committing **everything** drains the shared working copy and
+**serializes agents through jj's working-copy lock**: whoever
+commits sweeps in all in-flight work, history stays linear, and
+nothing is orphaned. The resulting commit is often **multi-lane /
+"impersonal"** — one message covering several lanes' changes. That
+is **accepted**, not a defect; a brief impersonal message
+(`commit pending reports + skill edits`) is correct.
 
-A pragmatic note: if you accidentally bundle a peer file
-once, that's not catastrophic. The substance is intact;
-the commit attribution is muddled but recoverable. Don't
-spend extra command roundtrips guarding against rare
-bundles. Read `jj st`'s output when it appears in any
-preceding tool result — that's usually enough.
-
-The default before any commit in a shared workspace:
+This **supersedes** the prior path-selective discipline (the
+working-copy check, `jj split`-to-isolate, "commit only files in
+your scope") workspace-wide. Don't read `jj st` to decide *which*
+paths to commit; read it only to write an accurate message:
 
 ```sh
-jj st                                # what's actually here?
-# if peers are present:
-jj split -m '<my-msg>' <my-paths>    # isolate my scope
-# if only mine:
-jj commit -m '<my-msg>'              # canonical commit
-```
-
-When in doubt — split.
-
-## Partial commits — `jj commit <paths>` or `jj split`
-
-When the working tree contains both your changes and a peer
-agent's uncommitted work (visible via the orchestration
-locks), commit only files in your scope. `git add <paths>` is
-**not** the workspace shape. Two tools fit:
-
-| Tool | When |
-|---|---|
-| `jj commit <paths> -m '<msg>'` | Path-selective, same parent, advance `@`. The simple default. |
-| `jj split -m '<msg>' <paths>` | Path-selective; also moves bookmarks forward from old change to child. |
-| `jj split -A <rev> -m '<msg>' <paths>` (or `-B`, `-o`) | Path-selective and target a different destination. |
-
-`jj commit <paths>` puts the selected paths in the now-described
-commit; the rest stays in the new working-copy `@` on top. Same
-shape as `git commit -- <paths>` but jj-native.
-
-Canonical idiom:
-
-```sh
-jj commit <my-path-1> <my-path-2> -m '<short verb + scope>'
+jj st                                 # what's in the working copy (for the message)
+jj commit -m '<short verb + scope>'   # the WHOLE working copy — no paths
 jj bookmark set main -r @-
 jj git push --bookmark main
 ```
 
-For interactive selection of *changes* (hunks, not whole paths),
-use `jj split -i` — opens the diff editor. Pass `-m` to set the
-description inline and avoid the second editor prompt.
+`jj split` remains a legitimate tool for grouping **your own**
+multi-concern work into logical commits when no peers have in-flight
+work — but never to leave a peer's change undrained in the shared
+copy. When in doubt, commit everything.
 
 ## Logical commits
 
@@ -390,14 +359,15 @@ The grouping criterion (in priority order):
 
 1. **By concern.** A documentation update is one commit; a
    code change is another.
-2. **By author.** If you and a peer agent both have
-   uncommitted work in the tree (visible via the
-   orchestration locks), commit only files in your scope;
-   leave the other agent's files for them. Use `jj split`
-   per the partial-commits idiom above.
-3. **By feature.** A multi-step feature lands as several
+2. **By feature.** A multi-step feature lands as several
    commits, each one a coherent step that compiles, passes
    tests, and reads cleanly in the diff.
+
+This grouping applies to **your own** multi-concern work when the
+working copy holds nothing but yours. It does **not** authorise
+leaving a peer's in-flight change undrained — see §"Commit the whole
+working copy". If a peer's work is in the copy, sweep it in with one
+impersonal commit rather than splitting it out.
 
 Don't fold unrelated edits into one "miscellaneous" commit.
 "While I was here" cleanups go in their own commit with a
@@ -520,26 +490,29 @@ pushed yet.
 
 Fix:
 
-1. Inspect file by file: `jj st`, `jj diff <file>`.
-2. If you can identify ownership (your work vs theirs),
-   **commit only files in your lock scope** in logical
-   groups using `jj split` (see "Partial commits" above);
-   leave peer-owned files alone.
-3. If ownership is ambiguous, file a BEADS task and ask
-   before touching.
+1. `jj st` to see what's there (for the commit message).
+2. **Commit the whole working copy** — `jj commit -m '<msg>'`
+   with no paths — sweeping in any peer-owned changes too. Per
+   records 2589/2620 (see §"Commit the whole working copy"),
+   leaving a peer's change undrained is what forks the history;
+   committing everything is the fix, not the problem.
+3. Set main and push as normal. The commit is impersonal /
+   multi-lane, and that's accepted; do not `jj split` to leave
+   peer files behind.
 
 ### `jj restore` is hazardous mid-commit
 
 `jj restore -f <rev>` reverts the working copy to match
 `<rev>` without changing `@`'s position. It silently discards
-any uncommitted changes in the working copy. Use sparingly;
-**never** to "clean up before a commit" — that's what
-`jj split` is for.
+any uncommitted changes in the working copy — including peers'
+in-flight work in the shared copy. Use sparingly; **never** to
+"clean up before a commit" — the right answer is to commit the
+whole working copy (§"Commit the whole working copy").
 
 If you find yourself reaching for `jj restore` during normal
-work, stop and check `jj st`; you probably want `jj split`
-(to keep your paths and isolate peer paths) or `jj abandon @`
-with deliberate intent. The 2026-05-12 117-orphan incident
+work, stop and check `jj st`; you almost always want to commit
+the whole working copy, or `jj abandon @` with deliberate
+intent. The 2026-05-12 117-orphan incident
 included a `restore into commit …` op that was a load-bearing
 step toward the failure.
 

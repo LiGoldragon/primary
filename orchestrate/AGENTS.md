@@ -91,14 +91,16 @@ deleted with no claim at all. A lane writes **only** in its own
 explicit psyche instruction for a specific task, and never touched again
 after unless re-instructed (record 2587).
 
-**Commit dirty primary state eagerly and impersonally** (record 2589).
-Keeping primary clean is everyone's job: if you see uncommitted reports or
-edits sitting in the working copy, just commit them to `main` — the whole
-dirty state, not only your own paths — briefly noting the contents.
-Committing a report is janitorial and does not belong to its creator; eager
-committing is what prevents the shared-working-copy race from losing finished
-work. Full flow: `skills/jj.md` §"Keep primary clean — commit dirty state,
-lock selectively".
+**Commit the whole working copy eagerly and impersonally** (records 2589,
+2620). Keeping primary clean is everyone's job: if you see uncommitted
+reports or edits sitting in the working copy, just commit them to `main` —
+the **entire** working copy via `jj commit` with no path arguments, not only
+your own paths — briefly noting the contents. Path-scoped commits leave
+peers' changes undrained in the shared copy and let two agents fork off the
+same base; committing everything drains the copy and keeps history linear.
+Committing is janitorial and does not belong to a report's creator; the
+multi-lane / impersonal commit is accepted. Full flow: `skills/jj.md`
+§"Commit the whole working copy — never path-scoped".
 
 Intent capture is no longer a file append surface. Recording psyche
 intent goes through the deployed `spirit` CLI per `skills/intent-log.md`

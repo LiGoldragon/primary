@@ -290,10 +290,14 @@ one — that's how the skill grows.
 
 Do not leave role-owned work uncommitted. Before finishing,
 run `jj status` in every repo or workspace area you changed.
-Commit and push your own files, including role-owned reports
-and coordination artifacts. If the working copy also contains
-another agent's files, split your paths with the partial-commit
-flow in `skills/jj.md` and leave the other agent's work alone.
+Commit and push the **whole working copy** — `jj commit` with no
+path arguments — sweeping in any other agent's in-flight files
+too. In the shared jj working copy, leaving a peer's change
+undrained forks the history; committing everything drains it and
+keeps history linear. Multi-lane / impersonal commits are
+accepted. Per records 2589/2620; full discipline in
+`skills/jj.md` §"Commit the whole working copy — never
+path-scoped".
 
 ### A design wants polling
 
