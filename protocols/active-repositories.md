@@ -37,7 +37,8 @@ stack.
 | `schema-next` | `/git/github.com/LiGoldragon/schema-next` | Replacement schema engine for the schema-derived stack. Consumes `nota-next`, runs position-aware schema macros, and emits ordered macro-free `Asschema`. Operator-owned `main`; designers branch from that baseline in `~/wt`. |
 | `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | Replacement Rust emission layer. Consumes `schema-next::Asschema` and emits Rust source text as a separate step before any Rust macro ergonomics. Operator-owned `main`. |
 | `triad-runtime` | `/git/github.com/LiGoldragon/triad-runtime` | Shared runtime support for schema-derived Signal/Nexus/SEMA daemons. Current live surface is generic trace logging, rkyv frame transport, and Unix trace socket listening; component crates keep generated nouns and actor hooks. |
-| `spirit-next` | `/git/github.com/LiGoldragon/spirit-next` | Public runnable pilot for the schema-derived stack. `schema/spirit.schema` is lowered by `schema-next`, emitted by `schema-rust-next`, then used by a real NOTA CLI and rkyv Unix-socket daemon boundary. |
+| `persona-spirit` | `/git/github.com/LiGoldragon/persona-spirit` | Production Spirit source until schema-derived cutover. Provides the deployed `spirit` / `spirit-v0.3.0` CLI and `persona-spirit-daemon`, including the current profile's side-by-side `spirit-next` deployment slot. |
+| `spirit` | `/git/github.com/LiGoldragon/spirit` | Public runnable pilot for the schema-derived stack. `schema/spirit.schema` is lowered by `schema-next`, emitted by `schema-rust-next`, then used by a real NOTA CLI and rkyv Unix-socket daemon boundary. This is the active implementation formerly carried under the temporary `spirit-next` repository name; the stale concept-track `spirit` repository is retired. |
 | `version-projection` | `/git/github.com/LiGoldragon/version-projection` | Shared projection and compatibility-policy library for adjacent component versions. Pure library; no daemon, no socket, no component-specific migration logic. |
 | `signal-version-handover` | `/git/github.com/LiGoldragon/signal-version-handover` | Private daemon-to-daemon signal contract for version handover marker, readiness, completion, mirror, divergence, and recovery messages. |
 | `owner-signal-version-handover` | `/git/github.com/LiGoldragon/owner-signal-version-handover` | Owner-only administrative signal contract for version handover authority: force selector flip, rollback, and quarantine. |
@@ -144,8 +145,9 @@ in the canonical `/git/github.com/LiGoldragon/...` checkouts of:
 `goldragon`. Old monolithic `lojix-cli` projects `horizon-rs/main` over
 `goldragon/datom.nota` and writes the `horizon` / `system` /
 `deployment` flake inputs into CriomOS at deploy time. No daemon, no
-`lojix` repo, no `criomos-horizon-config`. CriomOS's flake.lock pins
-`lojix-cli` at `42529ebd2114`. **Production fixes go here.**
+`lojix` repo, no `criomos-horizon-config`. CriomOS and CriomOS-home
+flake locks pin `lojix-cli` at `4c66b8a6fa55`. **Production fixes go
+here.**
 
 **Stack B — lean rewrite, smoke-built, not yet deployed**.
 `horizon-leaner-shape` branches in worktrees under
