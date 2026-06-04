@@ -52,6 +52,7 @@ tools (lojix-cli, horizon-rs, clavifaber, chroma).
 - `skills/reporting.md`
 - `skills/beads.md`
 - `skills/skill-editor.md`
+- `skills/versioning.md`
 - `skills/repository-management.md`
 - `skills/feature-development.md`
 - `skills/stt-interpreter.md`

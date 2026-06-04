@@ -102,6 +102,7 @@ research-library skills stay with the roles that own them.
 - `skills/beads.md`
 - `skills/spirit-cli.md`
 - `skills/skill-editor.md`
+- `skills/versioning.md`
 - `skills/repository-management.md`
 - `skills/feature-development.md`
 - `skills/stt-interpreter.md`
@@ -680,6 +681,8 @@ you were missing.
   forbidden.
 - this workspace's `skills/testing.md` — Nix-backed test
   surfaces for pure, stateful, and chained tests.
+- this workspace's `skills/versioning.md` — bump component,
+  contract, storage, and deploy-slot versions when behavior changes.
 - this workspace's `skills/jj.md` — version-control
   discipline.
 - this workspace's `skills/autonomous-agent.md` — how to
