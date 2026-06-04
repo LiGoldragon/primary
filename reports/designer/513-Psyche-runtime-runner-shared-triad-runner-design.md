@@ -10,7 +10,7 @@ description: |
   three engine trait impls plus a config. Covers where the runner lives
   (hybrid: library run() in triad-runtime + thin emitted main), the dispatch
   loop and its trait bounds over the closed five-variant action set, the
-  continuation budget, the two-listener (ordinary + owner/meta) accept loop,
+  continuation budget, the two-listener (ordinary + meta) accept loop,
   the one-line component main, lifecycle/supervision binding, the effect
   handler (Stash first), trace composition, the sequential-single-flight
   posture and the named seam for deferred concurrency/mailbox/backpressure,
@@ -79,17 +79,22 @@ flowchart TD
   run --> boot[bootstrap once]
   run --> start[on_start order]
   bind --> accept[accept loop]
-  accept --> loop[dispatch loop]
+  accept --> triage[Signal triage]
+  triage --> loop[dispatch loop]
   loop --> nexus[Nexus decide]
   loop --> sema[SEMA apply/observe]
   loop --> effect[effect handler]
-  loop --> wire[reply to wire]
+  loop --> reply[Signal reply]
+  reply --> wire[wire egress]
   run --> stop[on_stop order]
 ```
 
-Everything in that picture except the three engine boxes (Nexus
-decide, SEMA apply/observe) and the effect handler is generic. The
-runner owns the rest.
+Everything in that picture except the engine work — Signal (triage
+in, reply out), Nexus decide, SEMA apply/observe — and the effect
+handler is generic library code; the runner owns the rest. Signal
+brackets the flow at both ends; its body is usually thin (framing,
+identity, and routing are library-assisted) but it is the third
+engine and belongs in the picture.
 
 ## The single most important finding
 
@@ -348,6 +353,15 @@ structs disappears too.
 > `NextStep`. Hoist the three identical plane envelopes into one
 > shared `Plane<Root>` so the route-threading lives in the library,
 > not the loop.
+>
+> **Stay typed and plane-aware (operator review).** `Plane<Root>` is
+> parameterized by *each plane's root type* and `NextStep` by the
+> component's typed payloads — the envelope is shared transport, but
+> the plane identity and the payload types are never erased. Do NOT
+> collapse the three planes into one opaque generic envelope: that
+> would recreate the all-in-one schema leak on the runtime side. The
+> shared shell removes duplicated *structure*; it must preserve plane
+> *semantics*.
 
 ## Decision 3 — The continuation budget and what exhaustion does
 
@@ -408,7 +422,7 @@ triad daemon**.
 **The pilot's before (one socket only).**
 
 ```rust
-// BEFORE (pilot) — src/daemon.rs:96-117. ONE listener, no owner tier:
+// BEFORE (pilot) — src/daemon.rs:96-117. ONE listener, no meta tier:
 pub fn run(&self) -> Result<(), DaemonError> {
     if let Some(parent) = self.configuration.socket_path().parent() {
         fs::create_dir_all(parent)?;
@@ -430,7 +444,7 @@ pub fn run(&self) -> Result<(), DaemonError> {
 
 **The production before (four sockets, four copies).** The real
 daemon (`persona-spirit`) binds **four** listeners — an ordinary
-peer socket, an owner/meta socket, a private upgrade socket
+peer socket, a meta socket, a private upgrade socket
 (component-specific, *not* part of the generic runner), and an
 optional engine-management socket for supervision. The serve code
 is literally four copies of `loop { accept; serve_one }` on four
@@ -440,22 +454,25 @@ exactly the hand-rolled copying the shared runner exists to delete.
 
 **Authority is a socket boundary, not an enum check.** This is the
 key design call. The two authority tiers — ordinary (peer-callable,
-`signal-<component>` frames) and owner/meta (owner-only,
+`signal-<component>` frames) and meta (owner-only authority,
 `meta-signal-<component>` frames) — are separated by *which socket*
 and *which contract decodes*, **not** by a runtime check on a
-payload variant. After binding each socket, the production daemon
-calls `set_permissions` to give each socket its own Unix mode, so
-the owner socket is an OS-enforced boundary. The negative tests
-(an owner socket must reject an ordinary frame; an ordinary socket
-must reject an owner frame) mean the per-socket decoder is the
-enforcement point — the runner must *never* cross-decode. This
-forecloses any design that multiplexes both tiers onto one socket
-and discriminates by reading the payload.
+payload variant. The tier is **meta**, not "owner": the policy
+contracts are `meta-signal-<component>` and the runner API names the
+leg `meta_listener` / `meta_signal` accordingly (operator review).
+After binding each socket, the production daemon calls
+`set_permissions` to give each socket its own Unix mode, so the meta
+socket is an OS-enforced boundary. The negative tests (a meta socket
+must reject an ordinary frame; an ordinary socket must reject a meta
+frame) mean the per-socket decoder is the enforcement point — the
+runner must *never* cross-decode. This forecloses any design that
+multiplexes both tiers onto one socket and discriminates by reading
+the payload.
 
 So the runner takes a *list* of listeners, each carrying
 `(path, mode, decoder, engine-entry, authority-tier)`. The ordinary
 tier decodes the working contract into the peer path; the meta tier
-decodes the policy contract into the owner path. The meta tier is
+decodes the policy contract into the meta path. The meta tier is
 optional (it's an `Option` in config, because the policy leg itself
 is optional per the triad contract). Each accepted frame is tagged
 with its authority tier *before* it reaches the dispatch loop, so
@@ -471,7 +488,7 @@ generic request transport, parameterised over the two type names.
 ```mermaid
 flowchart TD
   ord[ordinary socket] --> odec[working codec]
-  meta[owner socket] --> mdec[policy codec]
+  meta[meta socket] --> mdec[policy codec]
   odec --> tag[tag tier]
   mdec --> tag
   tag --> loop[dispatch loop]
@@ -484,12 +501,12 @@ thread per listener (all sharing the one engine set behind the
 single-flight guard — Decision 9), and joins them. The upgrade
 socket and any other component-specific sockets are an explicit
 escape hatch the component wires itself; the runner owns only the
-generic ones (ordinary, owner/meta, and the optional management
+generic ones (ordinary, meta, and the optional management
 socket).
 
 > **Recommendation.** The runner takes a list of listeners, each
 > `(path, mode, decoder, engine-entry, tier)`. Bind all, apply each
-> socket's mode (the owner socket is an OS boundary, not an enum
+> socket's mode (the meta socket is an OS boundary, not an enum
 > check), spawn one accept thread per listener, tag each frame with
 > its tier at decode time, feed all into the one shared loop, join on
 > shutdown. The meta tier is optional in config. Lift the pilot's
@@ -789,7 +806,7 @@ the place where the before/after is cleanest. The order:
    loop, daemon command, and transport. Spirit's `decide` shrinks to
    a 7-line match. This is the proof the extraction works on real
    code.
-5. **Add the second listener (owner/meta) + the management socket +
+5. **Add the second listener (meta) + the management socket +
    bootstrap sequencing** in the library, driven by the production
    daemon's real shape. This is the design-ahead-of-code part —
    the pilot has only one socket, so we build the two-tier accept
@@ -840,12 +857,20 @@ These are the calls only you can make; everything above is a
 recommendation I'd proceed on absent direction.
 
 - **O1 — Concurrency mode mechanism.** Sequential now is settled.
-  But *how* a future mailbox mode is selected — a concurrency-policy
-  field in the triad contract that picks a generation mode, vs a
-  runtime config field — is a genuine open call. It changes only the
-  frame around `drive`, so it's deferrable, but the field's home is a
-  contract-shape decision. (Recommendation: a contract field, so the
-  mode is part of the typed component definition, not a runtime knob.)
+  But *how* a future mailbox/parallel mode is selected — a field in
+  the typed contract vs a runtime/deployment config knob — is a
+  genuine open call. It changes only the frame around `drive`, so it
+  is deferrable. **Recommendation (designer + operator converged): a
+  runtime/deployment knob, NOT the contract.** The public contract
+  must not declare *how parallel a daemon runs* — that is an
+  operational property, not wire vocabulary, and putting it in the
+  contract would make peers recompile on a deployment decision. What
+  the schema MAY carry, if it is ever needed, is a semantic
+  *constraint* — an ordering guarantee, an idempotence requirement, a
+  single-writer requirement — that the runtime must honor; the
+  concurrency *mechanism* that satisfies it stays in runtime config.
+  (My earlier lean toward a contract field is withdrawn; the
+  operator's framing is right.)
 
 - **O2 — Engine-set expression.** I propose one `TriadEngines` trait
   the component implements (or the generator implements for the
