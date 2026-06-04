@@ -192,8 +192,9 @@ gibberish in LLM context. Recommended scheme:
   (`(Spirit 2543 …)`); new ones use the short code — an honest hybrid.
 
 This supersedes the Q5 "~10-12 char prefix" lean: the display prefix is ~3
-base36 chars within a kind, not 10-12 hex. Pending the psyche's confirmation
-of base36-lowercase + per-kind 3-char + kind-in-citation as the exact scheme.
+base36 chars within a kind, not 10-12 hex. **Confirmed by the psyche 2026-06-04
+(Spirit 2608):** base36-lowercase + per-kind 3-char minimum + kind-in-citation
+is the scheme. The id design is now fully decided; the operator is unblocked.
 
 ## 7. For the operator (who is implementing)
 
