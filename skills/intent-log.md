@@ -289,20 +289,54 @@ Certainty is part of the meaning of an intent record. Do not inflate
 it to make the record feel important. If every record is `Maximum`,
 then the certainty field has been destroyed.
 
-**Medium is the default for ordinary direct intent.** A clear psyche
-statement, decision, preference, or instruction-with-durable-intent
-is normally `Medium`. The agent must justify any upward move from
-`Medium` with evidence in the prompt or in prior Spirit records.
+### The ladder — what situation each level is for
 
-**Maximum is rare.** Use it only when the psyche explicitly signals
-near-absolute conviction: strong universal language, intense
-correction, repeated emphatic phrasing, or an established rule that
-has recurred across the intent log enough that the current prompt is
-obviously reinforcing it. A direct "do X" is not Maximum by itself.
+Judge **how sure the psyche actually was** (conviction), not how
+important the topic is. Importance and certainty are different axes:
+a very important decision the psyche is only moderately sure of is
+`Medium`, not `Maximum`.
+
+- **`Maximum`** — Near-absolute, founding-rule conviction: the psyche
+  stated a universal axiom that could stand as a founding rule of the
+  whole way of working, or explicitly elevated it (*"put this in
+  essence"*). The gold of the gold. **Genuinely rare — most sessions
+  capture none.** Examples: intent is primordial; inferring intent is
+  forbidden; spell every identifier as a full English word; break the
+  system if it makes it more beautiful. Test: would this still be a
+  founding rule a year from now, across every repo and role? A design
+  or implementation choice that could be revised is *not* `Maximum`,
+  however firmly stated.
+- **`VeryHigh`** — Very firm, emphatic, near-irreversible, but
+  scope-limited to one discipline rather than a universal axiom.
+  Stated with *"never"* / *"always"* and real consequences. Uncommon.
+  Example: landed means on main; never report branch work as landed.
+- **`High`** — Clear, firm intent stated with conviction: a genuine
+  decision or principle the psyche committed to. **The normal home for
+  a real decision.** Most decisions land here, not at `Maximum`.
+- **`Medium`** — **The default.** A preference, direction, or lean
+  without strong emphasis; normal-conviction wording. When in doubt,
+  `Medium`. A `Medium` capture is not weak — it is honest.
+- **`Low` / `VeryLow`** — Tentative to half-formed: *"we could"*,
+  *"maybe"*, *"I think"*, brainstorm-level.
+- **`Minimum`** — Weak but real: mentioned in passing, little
+  conviction, might matter later.
+- **`Zero`** — Not a conviction level: the recoverable removal marker
+  (superseded, duplicate, mis-captured).
+
+**The psyche is not an omniscient god.** No human states every
+sentence with absolute certainty, so `Maximum` cannot be the reflex.
+If you are reaching for `Maximum`, stop and ask: did the psyche state
+a *universal founding rule*, or just a firm decision? A firm decision
+is `High`. Over-rating destroys the signal — when everything is
+`Maximum`, the field carries no information and the psyche cannot tell
+what they were actually sure about. Under-rating is the recoverable
+error (the innocent-man principle); over-rating corrupts. The agent
+must justify any move above `Medium` with evidence in the prompt or in
+prior records.
 
 **Repetition can raise certainty.** Before choosing `High`,
-`VeryHigh`, or `Maximum`, query recent/prior records on the topic.
-If the same intent keeps returning across records, that recurrence is
+`VeryHigh`, or `Maximum`, query recent/prior records on the topic. If
+the same intent keeps returning across records, that recurrence is
 evidence for higher certainty. If the current prompt is the first
 clear mention and lacks strong certainty language, stay at `Medium`.
 

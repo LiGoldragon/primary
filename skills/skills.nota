@@ -140,4 +140,6 @@
     [Per-repo INTENT.md — agent-written prose, 100% backed by psyche statements, no embellishment, no inference. Like ARCHITECTURE.md but for intent.])
   (Meta intent-manifestation skills/intent-manifestation.md Mechanism
     [Walk through Spirit records; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / INTENT / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.])
+  (Meta keep-working skills/keep-working.md Keystroke
+    [Psyche info-injection mid-task is not a stop signal. Keep working unless explicitly told to stop or redirected. Absorb the context, capture any durable intent, and continue; do not drop the work and go passive.])
 ]
