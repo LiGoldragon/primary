@@ -309,7 +309,7 @@ The labor split is sharp:
 
 | Layer | Provides |
 |---|---|
-| `.schema` file (authored) | The data objects + traits (implied by signal/executor/SEMA interaction) |
+| `.schema` file (authored) | The data objects + traits (implied by signal/nexus/SEMA interaction) |
 | Emitted Rust (machine-written) | Type declarations + codec impls + headers + dispatch tables |
 | Agent-written Rust (methods) | Behavior on the schema-emitted objects |
 
@@ -337,8 +337,8 @@ against the new shape (good) or surface their assumptions as compile
 errors (also good — the type system caught the change).
 
 The runtime triad lens (per `skills/component-triad.md` §"Runtime
-triad — signal / executor / SEMA"): schema emits the nouns each layer
-operates on. Signal's Operation, executor's Action / Response,
+triad — Signal / Nexus / SEMA"): schema emits the nouns each layer
+operates on. Signal's Operation, Nexus's Action / Response,
 SEMA's stored archive types — all emitted. Methods on each layer's
 Rust types attach to whichever schema-emitted noun is the primary
 subject.
