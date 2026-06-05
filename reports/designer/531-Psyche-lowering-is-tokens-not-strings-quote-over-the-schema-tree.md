@@ -135,6 +135,43 @@ exist. And it lands exactly where the Asschema-removal `from_source`
 rewrite goes — so the migration is the moment to write the new emitter as
 `ToTokens`-over-`quote!` rather than extend the hand-rolled one.
 
+## `ToTokens` has no context — the pattern (operator was right to flag this)
+
+`quote::ToTokens::to_tokens(&self, tokens: &mut TokenStream)` has a **fixed
+signature with no context parameter.** So when rendering needs context —
+feature-gated NOTA derives, private-type field visibility — you cannot
+thread it through a plain `ToTokens` impl. The operator caught this; the
+immediate shape (methods on the nouns returning `TokenStream` with an
+explicit render context, `fn render(&self, cx: &RenderContext) ->
+TokenStream`) is the correct first move.
+
+For the end state, **split the context by kind** — this is where "bake it
+into the noun" needs a caveat:
+
+- **Intrinsic per-noun properties** (a declaration's *visibility*) genuinely
+  belong **on the noun**. Bake those in, and `ToTokens` is clean for them —
+  exactly as the operator plans.
+- **Generation-wide options** (whether the `nota-text` derive is emitted —
+  a build-level switch, not a property of any one struct) must **not** be
+  baked into every noun; that duplicates one global flag across hundreds of
+  values. For those, keep `ToTokens` but thread context through a
+  **context-carrying wrapper** — the idiomatic quote pattern:
+
+  ```rust
+  struct InContext<'a, T>(&'a T, &'a RenderContext);
+  impl<T: RenderInContext> ToTokens for InContext<'_, T> {
+      fn to_tokens(&self, out: &mut TokenStream) { self.0.render(self.1, out) }
+  }
+  // call site: quote! { #( #fields.map(|f| InContext(f, cx)) )* } — context flows, ToTokens stays
+  ```
+
+So "direct `ToTokens` impls become clean" is true for the
+*intrinsic-property* rendering; the *generation-wide* rendering stays on a
+wrapper-plus-context, not on baked-in flags. The runtime/plane emission
+(projections, engine emission, the `PlaneType` cross-object logic) is where
+context concentrates and where this distinction earns its keep — the
+declarations slice the operator started with is the clean warm-up.
+
 ## Lineage
 
 Captured: `4np2` (tokens not strings), building on `de8i` + operator
