@@ -172,40 +172,55 @@ methods (plane/runner/projection group; role/engine/lifecycle group), each
 anchored to `schema-rust-next/src/lib.rs` file:line. Captured as intent: the
 `Plane` + `PlaneProjection` decomposition.
 
-## Implementation status — reference family landed (2026-06-05)
+## Implementation status — two reference families landed (2026-06-05)
 
-The reference family is **implemented, verified, and pushed** on branch
-**`designer-plane-type-2026-06-05`** in `schema-rust-next` (off `main@origin`
-`fa0d4fa2`). Scope of this branch:
+The reference is **implemented, verified, and pushed** on branch
+**`designer-plane-type-2026-06-05`** in `schema-rust-next`, **rebased onto the
+operator's latest `main` `7783ae66`** (0.1.14, his mail-tokens work). Two
+families migrated, plus the signal-frame gating:
 
-- **`Plane { Signal, Nexus, Sema }`** with the five naming methods the first
-  family needs (`module_name`, `wrapper_name`, `wrapper_path`, `alias_names`,
-  `canonical_source_type_names`) — pure `&self` constants, no target/schema
-  logic (adversarially grep-verified clean).
-- **`PlaneNamespaceTokens` / `PlaneNamespaceAlias` / `PlaneOriginRouteConstructorTokens`**
-  — the `emit_plane_namespaces` family migrated to self-rendering `ToTokens`
-  nouns via `quote!`, consulting `Plane`. `RuntimePlaneSet::active_planes()`
-  added (additive; the three bools unchanged).
-- **Signal-frame gating** (`gb95`): `emit_signal_frame_support` now wrapped in
-  `if writer.emits_signal()` — nexus/sema/wire targets lose it (157 lines
-  each), pinned by absence-assertions in the nexus + sema + wire tests.
+- **`Plane { Signal, Nexus, Sema }`** with **eight** pure `&self` naming
+  constants, grown per family: `module_name`, `wrapper_name`, `wrapper_path`,
+  `alias_names`, `canonical_source_type_names` (namespaces) +
+  `engine_trait_name`, `trace_enum_name`, `trace_prefix` (engine traits). No
+  target/schema logic (adversarially grep-verified clean both passes).
+- **Family 1 — namespaces:** `PlaneNamespaceTokens` / `PlaneNamespaceAlias` /
+  `PlaneOriginRouteConstructorTokens` (the `emit_plane_namespaces` family).
+  `RuntimePlaneSet::active_planes()` added (additive).
+- **Family 2 — engine traits:** the `SignalEngineTraitTokens` /
+  `NexusEngineTraitTokens` / `SemaEngineTraitTokens`, the three trace
+  `ObjectName` enums (`TraceObjectNameEnumTokens`), and the cross-plane trace
+  dispatcher (`TraceSupportTokens`) now consult `Plane` for their names
+  instead of hardcoded identifiers. Key correctness call: the **target-tier**
+  decisions (`emits_all`, the `SignalRuntime` concreteness special-case, the
+  per-engine emit gates) stay on `RustWriter`/`RustEmissionTarget`; and the
+  **cross-plane payload paths inside trait bodies** (`signal::Signal<…>` inside
+  a `NexusEngine` body) stay literal — they legitimately name *other* planes,
+  so they are not this plane's intrinsic naming.
+- **Signal-frame gating** (`gb95`): `emit_signal_frame_support` wrapped in
+  `if writer.emits_signal()` — nexus/sema/wire targets lose it, pinned by
+  absence-assertions in the nexus + sema + wire tests.
 
-Verified: `plane_namespaces` output **byte-identical** (golden snapshots +
-an independent old-vs-new dump across all three planes); the only intended
-output change is the signal-frame gating; `cargo build` + `test` (54) +
-`clippy -D warnings` green from a clean rebuild; three-tier design and
-rust-discipline confirmed by adversarial verifiers.
+Verified across both passes by adversarial workflows: output **byte-identical**
+(golden snapshots + a forced-regeneration checksum of all 7 fixtures — every
+one byte-for-byte unchanged); the only intended output change is the
+signal-frame gating; `cargo build` + `test` (54) + `clippy -D warnings` green
+from a full clean rebuild; the three-tier design and rust-discipline confirmed
+by grep-level adversarial checks.
 
-**Operator handoff:** this branch is the canonical pattern for the rest of the
-runtime token migration. Adopt `Plane` (grow its methods per family —
-`trace_enum_name`, `envelope_name`, `engine_trait_name` land as the trace /
-mail / engine-trait families migrate) and introduce `PlaneProjection` when the
-projection methods (`emit_split_nexus_work_projection` etc.) migrate. Either
-rebase `main` onto the branch or cherry-pick the pattern. Not yet integrated to
-`main` — operator owns that.
+**Operator handoff:** this branch is the canonical pattern. Adopt `Plane` and
+grow it per family (`envelope_name` lands with the mail family; etc.), and
+introduce `PlaneProjection` (the edge noun) when the projection methods
+(`emit_split_nexus_work_projection` etc.) migrate. The operator is migrating
+the same surface on `main` his own way (streaming/nexus-runner/mail tokenized,
+without `Plane` yet) — reconciliation is to adopt `Plane` as the foundation
+those per-family tokenizations consult.
 
-**Deferred** (noted, not silently dropped): `PlaneProjection` + the other ~25
-families; the `RuntimePlaneSet`-as-set-of-`Plane` secondary cleanup; the dead
+**Deferred** (noted, not silently dropped): `PlaneProjection` + the remaining
+families (mail, plane-route, plane-projection, role-trait-impls, upgrade,
+actor-lifecycle); the `RuntimePlaneSet`-as-set-of-`Plane` secondary cleanup;
+the two pre-existing ZST nouns (`ActorLifecycleSupportTokens`,
+`SchemaPlaneSupportTokens`) flagged for the ZST-discipline pass; the dead
 `type_name` param in `emit_split_sema_output_projection`.
 
 Per psyche 2026-06-05 ("ok lets design it" → "ok implement this").
