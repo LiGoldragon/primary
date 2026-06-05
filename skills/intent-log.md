@@ -127,11 +127,13 @@ wrong shape — the failure mode 944 corrects. Every repo carries an
 
 When a psyche prompt explicitly addresses **more than one lane** (e.g.
 *"operator needs to understand this… and designer will do the refresh"*),
-the intent is recorded by **exactly one** lane — by default the lane
-assigned the intent/manifestation work (usually the designer) — and the
-other lanes **gap-check** rather than re-record. Both lanes *engaging with
-the substance* is correct; both lanes *logging the same Spirit record* is
-the recurring duplicate failure (the pairs `24ds`, `js6q`/`pv61`,
+the intent is recorded by **exactly one** lane — by default the lane that
+**responds first**. In practice that is the **operator** (Codex responds
+far faster than the designer, Claude), so the operator usually writes the
+Spirit entry first and the slower lane **gap-checks** rather than
+re-recording. The rule is *first responder records; do not pre-record in
+parallel*. Both lanes *engaging with the substance* is correct; both lanes
+*logging the same Spirit record* is the recurring duplicate failure (the pairs `24ds`, `js6q`/`pv61`,
 `ydvg`/`fkbz`, `de8i`/`v5n7`, `gvaz`/`z6qu` were all exactly this —
 mistaken two-agent duplication, not genuine psyche repetition). The
 forwarded-prompt discipline (`AGENTS.md` §"forwarded prompts") says a
