@@ -30,10 +30,18 @@ Two arrows, and the first one is the load-bearing change.
 **Arrow 1 — deserialize (NOTA → schema-in-rust).** The authored `.schema`
 NOTA deserializes, through the structural macro node codec, into Rust
 types that *define the schema fully*. Because the codec is bidirectional,
-**schema-in-rust is a faithful, round-trippable image of the authored
-schema** — re-encode it and you get the `.schema` back. This is *not* a
-lower/assemble step; nothing is transformed away. schema-in-rust is
-rkyv-serializable: a real typed representation, cacheable when needed.
+**schema-in-rust is a faithful typed image of the schema — it
+round-trips *canonically*.** Re-encode it and you get the *canonical*
+`.schema` projection back: formatting, whitespace, and any syntactic
+aliases normalize; the invariant is semantic/canonical equality, **not**
+original-byte identity (operator 316, conceded). This is *not* a
+lower/assemble step; nothing semantic is transformed away. schema-in-rust
+is rkyv-serializable: a real typed representation, cacheable when needed.
+
+(Distinct from the migration safety net, which *is* byte-identical: the
+generated `.rs` from the old Asschema path vs the new schema-in-rust path
+must diff to zero. The schema round-trip is canonical; the emission diff
+is byte-exact — two different round-trips.)
 
 **Arrow 2 — lower into rust (schema-in-rust → rust code).** The emitter
 (schema-rust-next) takes schema-in-rust and lowers it into the Rust
@@ -108,8 +116,45 @@ The 522 sequence still applies, with one simplification: there is **no
 The byte-identical-emission witness + per-transformation tests (314)
 remain the safety net.
 
+## Adopted refinements (operator 316)
+
+Operator feedback (report 316) endorses this framing and adds four
+precisions, all correct and adopted:
+
+1. **Canonical round-trip, not byte-identical** — fixed inline above.
+2. **rkyv on the *clean* schema value, not parse helpers.** The durable
+   schema-in-rust value is the clean typed schema object; source spans and
+   diagnostics stay parse-time and are not serialized into it.
+   *Sharpening:* the cleanest way to satisfy this is to keep the
+   structural-macro decode producing **span-free typed values by
+   construction** (the typed value holds content, not spans — spans are a
+   decode-time error-reporting concern on the `Block`, not carried into
+   the value). Then schema-in-rust *is* the decode target *is* the clean
+   rkyv value — no separate clean-value projection, which keeps faith with
+   "no `SchemaResolution` object."
+3. **The emitter calls *high-level* methods, not primitive getters.** The
+   resolution methods on schema-in-rust must expose *semantic facts* —
+   resolved variant payload meaning, declaration visibility, symbol paths,
+   scalar/type-reference classification, import ownership — not low-level
+   getters the emitter reassembles into schema logic. This is the real
+   guard that keeps the emitter a Rust projector, not a second schema
+   engine.
+4. **No public `SchemaResolution`; a private traversal context/cache is
+   fine** if implementation needs one, kept internal to schema-next. The
+   public handoff is `SchemaSource` (the eventual schema-in-rust root
+   noun).
+
+The operator's next-slice sequence leads with **fixing the nota-next
+derive to direct typed decode** (report 521's recommendation, now adopted)
+so schema source nodes do not inherit the string-dispatch seam — then
+rkyv-ready the schema datatypes, add the source-owned semantic methods,
+and add `RustModule::from_source` with Asschema-parity tests.
+
 ## Lineage
 
-Captured: record `fkbz` (the pipeline). Refines: 520, 522, 523. Decisions:
-`pv61`/`js6q` (remove Asschema), `i0e6` (type-directed decode),
-`ejvc`/`lcwu` (mechanism).
+Captured: record `fkbz` (the pipeline). Refines: 520, 522, 523. Operator
+feedback: 316 (adopted above). Decisions: `pv61`/`js6q` (remove Asschema),
+`i0e6` (type-directed decode), `ejvc`/`lcwu` (mechanism). **Intent
+duplication:** the pipeline is double-captured — `fkbz` (designer) and
+`ydvg` (operator) — the third such pair after `24ds` and `js6q`/`pv61`;
+flagged for a consolidation pass (see chat).
