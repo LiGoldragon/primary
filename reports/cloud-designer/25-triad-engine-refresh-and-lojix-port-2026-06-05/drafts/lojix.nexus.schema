@@ -45,17 +45,6 @@
 [NexusWork]
 [NexusAction]
 {
-  SignalArrived SignalInput
-  SemaReadCompleted SemaReadOutput
-  SemaWriteCompleted SemaWriteOutput
-  EffectCompleted EffectResult
-
-  CommandSemaRead SemaReadInput
-  CommandSemaWrite SemaWriteInput
-  CommandEffect EffectCommand
-  ReplyToSignal SignalOutput
-  Continue NexusWork
-
   SignalInput [(OrdinaryInput OrdinaryInput) (MetaInput MetaInput)]
   SignalOutput [(OrdinaryOutput OrdinaryOutput) (MetaOutput MetaOutput)]
 
@@ -83,6 +72,6 @@
 
   EffectResult [(FlakeResolved ResolvedFlake) (ClosureEvaluated EvaluatedClosure) (ClosureBuilt BuiltClosure) (ClosureCopied CopiedClosure) (GenerationActivated ActivatedGeneration) (PathsCollected GarbageCollected) (EffectFailed EffectFailure)]
 
-  NexusWork [SignalArrived SemaReadCompleted SemaWriteCompleted EffectCompleted]
-  NexusAction [CommandSemaRead CommandSemaWrite CommandEffect ReplyToSignal Continue]
+  NexusWork [(SignalArrived SignalInput) (SemaReadCompleted SemaReadOutput) (SemaWriteCompleted SemaWriteOutput) (EffectCompleted EffectResult)]
+  NexusAction [(CommandSemaRead SemaReadInput) (CommandSemaWrite SemaWriteInput) (CommandEffect EffectCommand) (ReplyToSignal SignalOutput) (Continue NexusWork)]
 }

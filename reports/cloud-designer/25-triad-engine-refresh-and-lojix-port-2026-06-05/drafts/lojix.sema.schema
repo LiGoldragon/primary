@@ -45,22 +45,12 @@
 [SemaReadInput SemaWriteInput]
 [SemaReadOutput SemaWriteOutput]
 {
-  SemaReadInput [QueryGenerations ReadEventLog CheckKeyMaterial]
-  QueryGenerations Selection
-  ReadEventLog EventLogRange
-  CheckKeyMaterial KeyMaterialQuery
+  SemaReadInput [(QueryGenerations Selection) (ReadEventLog EventLogRange) (CheckKeyMaterial KeyMaterialQuery)]
 
   SemaReadOutput [(GenerationsQueried GenerationListing) (EventLogRead EventLogPage) (KeyMaterialChecked KeyMaterialReport) (ReadMissed RejectionReport)]
   EventLogPage { deployment_events (Vec DeploymentPhaseEvent) retention_events (Vec CacheRetentionTransitionEvent) StateMarker * }
 
-  SemaWriteInput [RecordDeploySubmitted RecordPhaseTransition RecordGenerationActivated PinGeneration UnpinGeneration RetireGeneration RecordContainerTransition]
-  RecordDeploySubmitted DeploySubmission
-  RecordPhaseTransition DeploymentPhaseEvent
-  RecordGenerationActivated ActivationCommit
-  PinGeneration PinRequest
-  UnpinGeneration UnpinRequest
-  RetireGeneration RetireRequest
-  RecordContainerTransition ContainerTransition
+  SemaWriteInput [(RecordDeploySubmitted DeploySubmission) (RecordPhaseTransition DeploymentPhaseEvent) (RecordGenerationActivated ActivationCommit) (PinGeneration PinRequest) (UnpinGeneration UnpinRequest) (RetireGeneration RetireRequest) (RecordContainerTransition ContainerTransition)]
   DeploySubmission [(System SystemDeployment) (Home HomeDeployment)]
   ActivationCommit { GenerationIdentifier * ClusterName * NodeName * GenerationSlot * ClosurePath * }
   ContainerTransition { ClusterName * NodeName * container ContainerName state ContainerState }
