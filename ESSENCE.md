@@ -160,6 +160,18 @@ In priority order, when two conflict the earlier wins:
 4. **Beauty** — beauty in the operative sense: not pretty, but
    right. Ugliness is evidence the underlying problem is unsolved.
 
+**The readability thesis — how this shape is reached in practice.**
+The schema-derived stack reads cleanly because each layer names exactly
+one thing and nothing else: *types name the work, the schema names the
+interface, the generated Rust names the objects and traits, and the
+handwritten code is mostly the real algorithm — match typed input, make
+the decision, call the next typed interface, return typed output.* When a
+daemon needs large handwritten plumbing to understand its own contract,
+the mechanism belongs in schema emission or shared runtime instead. This
+is the thesis the whole stack is built to satisfy — Clarity #1 ("the
+structure of the system is the documentation of itself") made concrete.
+Promoted to essence 2026-06-05; prior carried at `triad-runtime/INTENT.md`.
+
 ## Strings only at the edges; the system is typed
 
 Data is typed end-to-end. Strings exist only at user-facing edges — the user-authored payload (the spirit intent description body, the text content a human directly wrote) and the user-facing display (CLI rendering, generated documentation, the line a human is meant to read). Everywhere else the system speaks typed values.
