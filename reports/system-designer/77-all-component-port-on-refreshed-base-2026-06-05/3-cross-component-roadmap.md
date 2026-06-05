@@ -141,27 +141,27 @@ prove the shared ledger primitive).
 6. **Defer persona, agent (daemon), terminal-cell to LAST** and settle their blocking
    decisions with the psyche NOW (below) so answers are ready when those ports come up.
 
-## Decisions for the psyche (intent-clarification candidates)
+## Decisions for the psyche — RESOLVED (psyche answers 2026-06-05)
 
-All three are about authority/policy lanes or carve-out shape — **decisions, not work** —
-and they gate the Wave-4 ports, so settling them now keeps the roadmap unblocked:
+All three were settled by the psyche on 2026-06-05:
 
-1. **Owner-vs-meta privileged-policy lane for apex authority.** Does the
-   Launch/Retire/Start/Stop policy belong on a true `meta-signal-persona` (and
-   `owner-signal-criome` → `meta-signal-criome`, `owner-signal-agent` → `meta-signal-agent`),
-   or stay on the existing `owner-signal-*` lane? `r9qy` says the standard is uniformly
-   `meta-signal-*` — but persona/criome/agent's policy contracts are absent or
-   owner-prefixed. This decides whether the from-scratch contracts are born `meta-signal-*`.
-   *Lean: born `meta-signal-*` per `r9qy`.*
-2. **`UpgradeFrom`/`AcceptPrevious` vs `version-projection` for the migration-module
-   contract.** `schema-rust-next` emits `UpgradeFrom`/`AcceptPrevious` but nothing implements
-   them; the current migration path uses `version-projection`'s `VersionProjection` trait.
-   Which is the durable upgrade mechanism? Gates upgrade's migration-module dispatch design.
-3. **The terminal / terminal-cell raw data-plane carve-out shape.** How does a
-   `MultiListenerDaemon` coexist with a raw (non-signal-frame) second listener — a
-   raw-passthrough listener role on the daemon, or `control.sock` on MultiListenerDaemon +
-   `data.sock` as a sibling hand-written accept loop? This is the only `canStartNow=false`
-   blocker (terminal-cell) and also gates terminal's viewer plane.
+1. **Authority/policy lane — RESOLVED.** `MetaSignal` is the canonical name; `OwnerSignal`
+   is **deprecated**. Every component policy contract is `meta-signal-<component>`
+   uniformly, including the from-scratch ones — `meta-signal-persona`, `meta-signal-criome`,
+   `meta-signal-agent` are born meta-signal, never owner-signal. Captured as Spirit `hnpo`
+   (confirms + generalizes `r9qy`). **Consequence for the sweep:** the B1 promotion batch
+   and the from-scratch contracts all target `meta-signal-*`; the existing `owner-signal-*`
+   repos (`owner-signal-mind`, `owner-signal-terminal`, `owner-signal-persona`, …) are
+   renamed to `meta-signal-*` as part of their port.
+2. **Upgrade mechanism — RESOLVED.** `UpgradeFrom`/`AcceptPrevious` are stub code, not yet
+   reached; **upgrades are done manually for now.** Captured as Spirit `4lcv`.
+   **Consequence:** the upgrade port does NOT build on `UpgradeFrom`/`AcceptPrevious`
+   dispatch — that schema-emitted surface is deferred future work.
+3. **Raw data-plane carve-out — LEANS raw-passthrough, full study in report 78.** The
+   psyche leans toward a **raw-passthrough listener role on `MultiListenerDaemon`** but
+   asked for a thorough study of the whole problem and solution space before committing.
+   That study is `reports/system-designer/78-terminal-raw-data-plane-carveout-2026-06-05/`.
+   The carve-out decision is captured to Spirit only after the psyche confirms post-report.
 
 ## See also
 
