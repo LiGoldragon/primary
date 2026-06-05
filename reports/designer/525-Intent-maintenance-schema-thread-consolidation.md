@@ -81,8 +81,10 @@ Captured via `spirit "(Observe (RecordIdentifiers ((Exact [<id>]) WithProvenance
 After this report is committed (provenance durable), the 7 records above
 are removed via `spirit "(Remove [<id>])"`: `ejvc`, `i0e6`, `lcwu`,
 `pv61`, `fkbz`, `js6q`, `ydvg`. Active truth is now carried by `xai7`
-(mechanism) and `vez8` (direction/pipeline). Report lineage references to
-the old ids (reports 517–524) remain valid as history; this report maps
+(mechanism) and `vez8` (direction/pipeline). Reports 517–524 were
+agglomerated into report 526 (the structural-macro + Asschema-removal
+Refresh) in the 2026-06-05 context-maintenance pass; the old-id lineage
+references in their git-history bodies remain valid, and this report maps
 old → new.
 
 ## Going forward — one capturer per thread

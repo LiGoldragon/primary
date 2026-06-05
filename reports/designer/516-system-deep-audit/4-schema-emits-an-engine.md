@@ -12,9 +12,10 @@ description: |
   Shows the daemon's three plane schemas (signal/nexus/sema) emitting
   three engine traits, each implemented by exactly one actor
   (SignalActor / Nexus / Store). Every claim is backed by a command
-  actually run, with verbatim output. Verifies report 515's
-  SignalRuntime resolution live — the signal.schema carries zero
-  concrete Nexus types yet still emits an (abstract) SignalEngine.
+  actually run, with verbatim output. Verifies the SignalRuntime
+  resolution live (now carried by report 527, the runner/SignalRuntime
+  Refresh) — the signal.schema carries zero concrete Nexus types yet
+  still emits an (abstract) SignalEngine.
 ---
 
 # 516.4 — How schema EMITS AN ENGINE
@@ -261,14 +262,15 @@ ModuleEmission::nexus_runtime()
           → self.line("pub trait NexusEngine {")  EMITTED into nexus.rs
 ```
 
-## 5. The SignalRuntime resolution — verified live (report 515)
+## 5. The SignalRuntime resolution — verified live (report 527)
 
-Designer report 515 records that the three-plane split originally emitted
+The SignalRuntime resolution (carried by report 527, the runner/SignalRuntime
+Refresh) records that the three-plane split originally emitted
 *no* `SignalEngine`, because the daemon's `signal.schema` is the
 *runtime* signal schema and does **not** carry the concrete `NexusWork`
 / `NexusAction` types — those live in `nexus.schema`. The fix was the
 fifth target, `SignalRuntime`, plus a special-case in the signal gate.
-I verified this live rather than taking 515 on faith.
+I verified this live rather than taking the resolution on faith.
 
 The signal gate, `emits_signal_engine_support` (lib.rs:2870-2884):
 

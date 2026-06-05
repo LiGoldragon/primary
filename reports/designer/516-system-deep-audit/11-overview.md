@@ -84,7 +84,7 @@ intent review. Twelve, grouped by layer:
    (one engine each — daemon-local planes), `ComponentRuntime` (legacy
    all-in-one). A daemon's three plane schemas emit three engine traits,
    each implemented by one actor. *(schema-rust-next; this is the
-   resolution from report 515.)*
+   SignalRuntime resolution, now carried by report 527.)*
 8. **"Signal schema" means two different files.** Public
    `signal-<component>` contract = `WireContract` (engine-free); daemon-local
    `<component>/schema/signal.schema` = `SignalRuntime` (emits `SignalEngine`).
