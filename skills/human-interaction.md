@@ -34,7 +34,15 @@ Per the Spirit wire contract:
 | **Clarification** | The psyche is clarifying meaning, scope, or intent that was unclear. |
 | **Constraint** | A bound or limit on what the agent should or should not do. |
 
-Magnitude is `Maximum / Medium / Minimum`. Default to `Maximum` for explicit psyche statements; use lower magnitudes only when the psyche themselves softened the claim ("I guess we could…", "lean…", "probably…").
+Certainty uses the full `Magnitude` ladder (`Zero`, `Minimum`,
+`VeryLow`, `Low`, `Medium`, `High`, `VeryHigh`, `Maximum`) and defaults
+to `Medium` for normal explicit psyche statements. Raise it only when
+the psyche's wording or repeated same-direction commitment carries that
+confidence. Weight is separate: repeated discussion makes a topic
+important or unresolved, but it does not by itself make the current
+statement more certain. Do not encode topic weight by inflating
+certainty; read `skills/intent-log.md` §"Certainty versus weight" before
+logging hard cases.
 
 ## §3 Forwarded prompts — gap-check, don't blind-duplicate
 

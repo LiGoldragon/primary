@@ -292,6 +292,32 @@ Certainty is part of the meaning of an intent record. Do not inflate
 it to make the record feel important. If every record is `Maximum`,
 then the certainty field has been destroyed.
 
+### Certainty versus weight
+
+Certainty and weight are separate axes.
+
+**Certainty** means confidence in the specific statement being recorded:
+how sure the psyche sounded about this decision, principle, correction,
+clarification, or constraint.
+
+**Weight** means how much pressure a topic or concern carries in the
+workspace: it keeps coming up, blocks other work, attracts repeated
+attention, or needs resolution. Weight is topic importance, not truth
+confidence.
+
+Do not encode weight by raising certainty. A topic can be high-weight
+and low-certainty when the psyche is probing, testing, or trying to
+figure out what they want. A statement can be low-weight and
+high-certainty when it appears once in passing but is worded as a firm
+rule or decision.
+
+At capture time, choose certainty from the wording and context of the
+specific statement. Preserve weight by using broad reusable topics and
+by recording repeated probes as repeated records at honest certainty.
+When an explicit `Weight` field lands in the production record shape, it
+uses its own axis; until then, weight is inferred from topic recurrence
+and report/work churn, never smuggled into the certainty value.
+
 ### The ladder — what situation each level is for
 
 Judge **how sure the psyche actually was** (conviction), not how
@@ -337,11 +363,15 @@ error (the innocent-man principle); over-rating corrupts. The agent
 must justify any move above `Medium` with evidence in the prompt or in
 prior records.
 
-**Repetition can raise certainty.** Before choosing `High`,
-`VeryHigh`, or `Maximum`, query recent/prior records on the topic. If
-the same intent keeps returning across records, that recurrence is
-evidence for higher certainty. If the current prompt is the first
-clear mention and lacks strong certainty language, stay at `Medium`.
+**Repetition usually raises weight, not certainty.** Before choosing
+`High`, `VeryHigh`, or `Maximum`, query recent/prior records on the
+topic. If the same settled statement keeps returning across records with
+the same direction and stronger commitment, that recurrence is evidence
+for higher certainty. If the topic merely keeps returning because it is
+unresolved, confusing, contested, or under exploration, it is high
+weight but not high certainty. Keep those records at the certainty the
+wording actually carries. If the current prompt is the first clear
+mention and lacks strong certainty language, stay at `Medium`.
 
 Triggered mechanically by the author's phrasing and prior-record
 evidence so the agent's interpretation is minimal:
