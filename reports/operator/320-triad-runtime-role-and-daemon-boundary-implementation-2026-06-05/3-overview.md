@@ -25,5 +25,8 @@ Spirit added two focused regressions:
 
 ## Remaining
 
-The streaming/push claim is real and remains unimplemented in the schema-derived stack. It should be the next shared-runtime/schema emission slice, not a Spirit-only one-off.
-
+The streaming/push claim was real and has now been implemented as shared
+schema/emission/runtime substrate in
+`reports/operator/321-schema-derived-streaming-push-implementation-2026-06-05/`.
+What remains is a component pilot that declares a real stream and wires
+long-lived delivery through a daemon.

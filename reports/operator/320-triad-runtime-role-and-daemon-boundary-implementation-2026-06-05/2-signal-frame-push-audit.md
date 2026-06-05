@@ -1,5 +1,11 @@
 # Signal-Frame Push Audit
 
+## 2026-06-05 Follow-Up
+
+The shared streaming substrate is now implemented in report
+`reports/operator/321-schema-derived-streaming-push-implementation-2026-06-05/`.
+The finding below is retained as the audit state before that follow-up slice.
+
 ## Finding
 
 The claim was true but not fixed in this implementation slice. `signal-frame` already contains streaming/push primitives: streaming frame bodies, subscription tokens, and a publish/subscribe registry. The schema-derived Spirit path does not currently consume them.
@@ -17,4 +23,3 @@ The next slice should:
 - pilot one Spirit or cloud operation end to end, with a test that proves a subscription request creates a token and a later Nexus/SEMA event publishes through `signal-frame`.
 
 This remains an important open item, but it is intentionally not claimed as solved by the role-trait and daemon-shell commits.
-
