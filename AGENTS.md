@@ -17,17 +17,21 @@ The compact contract. Every agent reads this on every session.
 6. **Your main role's `skills/<role>.md`** — required-reading list
    for the role you're in. Lanes share their main role's skill
    file.
-7. **The repo's `AGENTS.md` + `skills.md` + `INTENT.md` +
-   `ARCHITECTURE.md`** when editing inside a repo under `repos/`.
-   Per spirit record 944 (Maximum, 2026-05-27): these per-repo
-   files are the canonical agent-context surface for the repo —
-   READ them on entry AND UPDATE them as relevant intent lands.
-   Manifestation of psyche intent into a repo's `INTENT.md` and
-   `ARCHITECTURE.md` is part of the work cycle, not a deferred
-   pass. The discipline lives in `skills/repo-intent.md`
-   §"Continuous manifestation discipline" and
-   `skills/architecture-editor.md` §"Continuous manifestation
-   discipline".
+7. **The repo's `INTENT.md` FIRST**, then its `AGENTS.md` +
+   `skills.md` + `ARCHITECTURE.md`, when editing inside a repo under
+   `repos/`. The repo's `INTENT.md` is the **first and most important
+   file per repo** — the canonical statement of what the psyche wants
+   this project to be; read it on entry **before** code or
+   `ARCHITECTURE.md`. Per spirit record 944 (Maximum, 2026-05-27)
+   these per-repo files are the canonical agent-context surface —
+   READ on entry AND UPDATE as relevant intent lands. Manifestation
+   of psyche intent into a repo's `INTENT.md` (and `ARCHITECTURE.md`)
+   is part of the work cycle, not a deferred pass: when workspace
+   intent lands that affects a repo, that repo's `INTENT.md` is
+   updated on the **same branch as the work**. **Every repo needs an
+   `INTENT.md`** — its absence is a gap to fill (it is the first file
+   to create). Discipline: `skills/repo-intent.md` §"Continuous
+   manifestation discipline" and `skills/architecture-editor.md`.
 
 ## Where things live
 
@@ -37,7 +41,7 @@ The compact contract. Every agent reads this on every session.
 | `AGENTS.md` | This file. Compact every-keystroke contract. |
 | `INTENT.md` | Workspace intent prose, synthesised from Spirit records and legacy `intent/` history. |
 | `intent/` | Legacy psyche-statement file substrate. Do not append here during normal work. |
-| `<repo>/INTENT.md` | Per-repo synthesis of psyche intent. |
+| `<repo>/INTENT.md` | Per-repo synthesis of psyche intent. The **first and most important file per repo** — canonical agent-context surface; read before code. Every repo needs one. |
 | `orchestrate/AGENTS.md` | Role-coordination protocol. |
 | `protocols/active-repositories.md` | Live repo map for architecture sweeps. |
 | `skills/<name>.md` | Cross-cutting agent capabilities. |

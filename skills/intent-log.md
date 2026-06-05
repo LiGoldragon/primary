@@ -108,6 +108,21 @@ negation, dedup — is downstream (the spirit guardian arrives
 with the multi-agent auditing arc per `skills/intent-maintenance.md`
 §"Forward — richer supersession lifecycle").
 
+## Capture is not done until it manifests into the affected repo's INTENT.md
+
+Recording the Spirit record is the first half. When an intent record
+affects a specific repository's design, implementation, or test
+direction — whether explicitly scoped to that repo or workspace-level
+intent that reaches it — that intent is **manifested into the affected
+repo's `INTENT.md`** as part of the work cycle, not a deferred later
+pass. Per spirit record 944 (Maximum, 2026-05-27): per-repo `INTENT.md`
+is the canonical agent-context surface, and manifestation belongs in
+the work cycle. If intent lives only in Spirit and chat, an agent
+opening the repo reads stale framing in `INTENT.md` and codes to the
+wrong shape — the failure mode 944 corrects. Every repo carries an
+`INTENT.md`; its absence is a gap to fill. Discipline:
+`skills/repo-intent.md` §"Continuous manifestation discipline".
+
 Even short responses can carry intent. *"Let me think about that"*
 is a Clarification at `Minimum` certainty — record it. *"I'm not
 sure"* during brainstorming carries intent at `Minimum` — record

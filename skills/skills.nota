@@ -136,8 +136,8 @@
     [Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.])
   (Meta intent-clarification skills/intent-clarification.md Topic
     [Ask the psyche when intent on a question is unclear, absent, or contradicted. Don't infer intent; ask. Structured options + lean.])
-  (Meta repo-intent skills/repo-intent.md Mechanism
-    [Per-repo INTENT.md — agent-written prose, 100% backed by psyche statements, no embellishment, no inference. Like ARCHITECTURE.md but for intent.])
+  (Meta repo-intent skills/repo-intent.md Keystroke
+    [Per-repo INTENT.md is the FIRST and most important file per repo — canonical agent-context surface of psyche-stated goals, constraints, principles; read on entry before code. Agent-written prose, 100% backed by psyche statements, no inference. Every repo needs one; workspace intent affecting a repo lands in its INTENT.md in the work cycle. Spirit 944 Maximum.])
   (Meta intent-manifestation skills/intent-manifestation.md Mechanism
     [Walk through Spirit records; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / INTENT / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.])
   (Meta keep-working skills/keep-working.md Keystroke

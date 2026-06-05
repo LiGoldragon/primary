@@ -48,6 +48,14 @@ its own as the founding rule of a whole way of working. The bar is
 high. Most psyche intent lives in the log and per-repo `INTENT.md`;
 the essence is the gold of the gold.
 
+An agent entering a repository reads that repo's `INTENT.md` **first**
+— it is the canonical statement of what the psyche wants the project
+to be, the surface to read before code. **Every repo carries one**;
+any psyche statement affecting a repo's direction is manifested into
+its `INTENT.md` as part of the work cycle, so an agent reading only
+the repo's files encounters current intent rather than stale framing
+(spirit record 944, Maximum).
+
 ## Intent and design — the engine's dance
 
 The workspace operates as an **intent-and-design-driven engine**.
