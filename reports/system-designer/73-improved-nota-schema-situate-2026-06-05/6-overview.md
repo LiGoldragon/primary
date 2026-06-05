@@ -41,14 +41,15 @@ in declaration order, type-directed, bidirectional, `#[derive(StructuralMacroNod
 Landed vs deferred (source-grounded, gather report 4):
 
 - **Structural macro node: LANDED** in nota-next.
-- **Asschema removal: DEFERRED.** Asschema is still the live compat intermediate;
-  its removal is designed (`522`) but not executed, and it is **multi-repo** —
-  the deletion touches spirit, cloud, domain-criome, upgrade, signal-cloud.
-- **The spirit pilot is already off `.asschema` materialization** — it builds
-  `schema/*.schema → src/schema/*.rs` directly via the shared driver; the
-  `*.asschema` files remain only as committed test fixtures. (Note: spirit's own
-  `INTENT.md` and `protocols/active-repositories.md` still describe the OLD
-  asschema pipeline — both stale.)
+- **Asschema removal: COMPLETE in code** (corrected — see §7; the gather's
+  "deferred" was stale). `asschema` is absent from `schema`, `schema-next`,
+  `schema-rust-next` src and from the spirit pilot's `src`/`build.rs`, with no
+  `.asschema` files in spirit; `cloud`/`upgrade` are clean too. The mechanism is
+  fully landed. The ONLY residue is **stale documentation** (`.md`):
+  `protocols/active-repositories.md`, `spirit/INTENT.md`, and a handful in
+  schema-next/schema-rust-next/nota-next still describe the old asschema pipeline.
+- **The spirit pilot builds `schema/*.schema → src/schema/*.rs`** directly via the
+  shared driver — no `.asschema` step.
 
 ## 2. Situate against our Spirit-record-redesign (the corrections)
 
@@ -171,8 +172,48 @@ Confirm this is the intended path.
 our `Kind` headers is operator-owned; our regeneration waits on or coordinates with
 operator's fix. We do not regenerate blind.
 
+## 7. Reconciliation with designer 532 (the meta-supreme audit)
+
+The psyche pointed to `reports/designer/532-meta-supreme-audit/6-overview.md`.
+Four connections to this thread:
+
+1. **Asschema status — 532 is right; this report's §1 draft was wrong (corrected
+   above).** 532's engine scorecard [Asschema removal complete (empty grep)]
+   matches source. The gather's "deferred" was a stale/unverified inherited claim
+   (the accuracy critic had flagged exactly this class of inherited-not-reverified
+   fact). The remaining asschema mentions are stale docs, which both reports flag.
+
+2. **The meta-frame sharpens the gating flat-vs-per-kind question (clarification
+   A).** 532's pattern-of-patterns: [every smell is an un-named axis enumerated by
+   hand; every strength is a named noun that owns its verb] and [an un-named axis
+   IS an opacity; a named noun IS a visibility]. Applied to our gating decision: a
+   FLAT record with an Optional privacy field keeps "public vs private" as an
+   un-named optional smear; PER-KIND VARIANTS (`f0wm` [specific variants whose
+   fields match their semantic needs; public variants should not carry unused
+   privacy fields]) NAME each shape. So the workspace's own deepest principle leans
+   toward **per-kind variants** — pulling AGAINST the psyche's latest `m27p`
+   (flat-optional, framed as the NOTA realization). That is the genuine tension in
+   clarification A: the latest literal answer vs the deepest pattern. The psyche
+   should resolve it with that tension named.
+
+3. **532's agglomeration proposal IS our agglomeration thread.** 532 proposes
+   [consolidate the ~15-record weight/agglomeration cluster; remove residual
+   mistaken dups] and already executed the `de8i`/`v5n7` removal. That is the
+   MANUAL form of exactly what reports 71/72 design as systematic tooling: the
+   relations field (`a3l4`), refresh-as-behavior (`66bd`), auditor-proposes /
+   psyche-confirms (`1gwe`). Several of this session's own captures (the weight
+   records now rendering `g8ln`/`vbx6`, the agglomeration records) are part of that
+   cluster. The two threads should unify: 532's consolidation is the first
+   hand-run of the loop our design would systematize.
+
+4. **532 confirms the deployment gap = clarification B.** 532 [the schema-derived
+   spirit (0.1.0) is NOT deployed — persona-spirit v0.5.2 still serves] is exactly
+   the production/pilot divergence this report flagged.
+
 ## See also
 
+- `reports/designer/532-meta-supreme-audit/6-overview.md` — the meta-supreme audit
+  (intent-of-intent = refusal of opacity; pattern-of-patterns = naming).
 - `1-latest-intent.md`, `2-designer-thread.md`, `3-operator-thread.md`,
   `4-source-grounding.md` — the gather.
 - `5-situate-and-implications.md` — the situate draft (its central flat-vs-per-kind
