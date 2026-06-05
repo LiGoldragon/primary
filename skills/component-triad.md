@@ -103,7 +103,7 @@ properties. Per psyche 2026-06-04 (record 2605):
    edit is obvious from *which repo it lands in* — and clients that do
    not need owner authority do not depend on it at all. The authority
    boundary is a repo boundary, not just an enum-variant boundary. The
-   *mechanism* of the split (who-can-call, owner socket vs ordinary
+   *mechanism* of the split (who-can-call, meta socket vs ordinary
    socket) is §"Two authority tiers" below; this is the *why*.
 
 3. **`meta-signal` is optional.** Some components have no owner
@@ -347,7 +347,7 @@ the triad:
 
 Each surface gets its own typed listener actor inside the daemon and
 its own permission-separated socket. Per-component Unix users/groups
-enforce the owner socket as an OS security boundary; same-UID prototype
+enforce the meta socket as an OS security boundary; same-UID prototype
 is for author-only development.
 
 **Contracts split by who-can-call, not by what-state-they-touch.**
@@ -425,9 +425,9 @@ truth.
 | `<component>-cli-cannot-open-any-database-or-peer-socket` | 1 |
 | `<component>-daemon-rejects-non-signal-traffic-on-its-socket` | 2 |
 | `<component>-signal-verb-mapping-covers-every-request-variant` | 3 |
-| `<component>-owner-socket-rejects-ordinary-frame` | 4 |
-| `<component>-ordinary-socket-rejects-owner-frame` | 4 |
-| `<component>-owner-socket-mode-matches-spawn-envelope` | 4 |
+| `<component>-meta-socket-rejects-ordinary-frame` | 4 |
+| `<component>-ordinary-socket-rejects-meta-frame` | 4 |
+| `<component>-meta-socket-mode-matches-spawn-envelope` | 4 |
 | `<component>-policy-tables-empty-on-first-start-trigger-bootstrap` | 5 |
 | `<component>-bootstrap-runs-exactly-once` | 5 |
 | `<component>-policy-changes-after-bootstrap-only-via-meta-signal` | 5 |
