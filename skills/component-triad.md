@@ -221,7 +221,10 @@ Use these words consistently:
   `signal-<component>`, the ordinary peer-callable contract.
 - **Policy signal** / **meta-signal contract** —
   `meta-signal-<component>`, the meta policy authority and
-  configuration contract.
+  configuration contract. Daemon configuration verbs live here:
+  after first-start bootstrap, runtime configuration changes are
+  meta-signal operations, not CLI flags, ad hoc files, or ordinary
+  signal requests.
 - **Signal types** — the schema-generated data types declared in
   either signal contract: operation roots, payload records, replies,
   rejection reasons, filters, mail events, stream tokens, and related

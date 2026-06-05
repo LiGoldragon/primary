@@ -52,3 +52,8 @@ sub-claims carry the right certainty.
 `skills/spirit-cli.md` now explains that public/private/search shorthands are a
 desired ergonomic direction but are not live request heads until implemented in
 the deployed signal contract.
+
+`skills/component-triad.md` already had the core meta-signal policy boundary; I
+made the daemon-configuration rule explicit there: after first-start bootstrap,
+configuration verbs live in the meta-signal contract, not CLI flags, ad hoc
+files, or ordinary signal requests.
