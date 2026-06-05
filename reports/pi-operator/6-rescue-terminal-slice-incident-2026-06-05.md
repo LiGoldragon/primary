@@ -36,9 +36,10 @@ The rescue terminal remains, but only as a specific launch path:
 - Niri binding: `Mod+Ctrl+Return`.
 - Command: `criomos-rescue-terminal`.
 - Launch mechanism: a fresh transient `systemd-run --user --scope` for the rescue terminal instance.
-- Resource policy is attached to that transient scope, not to the live parent desktop slice.
+- Resource policy is attached to that transient scope, not to a Home-owned live desktop slice.
+- The launcher no longer explicitly asks for `session.slice`; it lets the user manager place the transient scope normally and applies protection to that specific scope.
 
-The repaired profile evaluates with no declared `systemd.user.slices` entries, while retaining the rescue terminal binding and the reusable Nix-store redaction helper.
+The repaired profile evaluates with no declared `systemd.user.slices` entries and no `session.slice` / `background.slice` references in the edited Home modules, while retaining the rescue terminal binding and the reusable Nix-store redaction helper.
 
 ## What not to do now
 
