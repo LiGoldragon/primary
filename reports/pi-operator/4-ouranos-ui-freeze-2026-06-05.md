@@ -7,7 +7,7 @@ Incident window: previous boot ending at about 14:59:50 CEST
 
 ## Summary
 
-The previous boot did not show a kernel panic, kernel OOM kill, watchdog lockup, or clean shutdown. It ended after a user power-key event at 14:59:40 and then a new boot started at 15:00:23. The logs show a graphical-session starvation event: Niri/libinput reported input processing lagging behind by 20.8 seconds at 14:56:38, and systemd-journald began logging repeated memory-pressure cache flushes from 14:57:47 through the hard reboot.
+The previous boot did not show a kernel panic, kernel OOM kill, watchdog lockup, or clean shutdown. It ended after a user power-key event at 14:59:40 and then a new boot started at 15:00:23. The logs show a graphical-session starvation event: Niri/libinput reported one input-processing backlog sample of 20.8 seconds at 14:56:38, and systemd-journald began logging repeated memory-pressure cache flushes from 14:57:47 through the hard reboot. Psyche observation corrects the severity framing: the visible UI/input freeze was not merely 20.8 seconds; it was minutes-long, roughly five minutes or more, with touchpad movement still waiting to be processed.
 
 The most likely trigger was the `lojix-run` `HomeOnly Build` smoke I started for `bird` on `zeus`. That run began at 14:29:55 and was still writing stderr at 14:58:36. It had planned 54 local derivation builds plus a 3.3 GiB unpacked closure fetch, and it was copying many paths from the Prometheus substituter with repeated 5–6 second download timeouts. That overlapped the first Niri lag reports, PipeWire underruns, and the final memory-pressure cluster.
 
@@ -26,12 +26,13 @@ A secondary active problem was a broken `persona-spirit-daemon-v0.1.1.service` r
 
 ### UI starvation evidence
 
-Niri/libinput reported that the compositor/input processing was falling behind:
+Niri/libinput reported that the compositor/input processing was falling behind. These are sparse journal samples and lower bounds, not a complete measurement of how long the graphical session felt frozen:
 
 - 14:50:28 — event processing lagging by 51 ms.
 - 14:50:56–14:50:58 — timer events lagging by about 2.7–2.9 seconds and event processing lagging by 1.18 seconds.
 - 14:56:38 — event processing lagging by 20.8 seconds.
 - 14:58:59 — touchpad frame errors, likely after the session had already become badly delayed.
+- Psyche observation after the first report: the user-visible Niri/touchpad backlog was roughly five minutes or more, with movement still not visibly processed. The 20.8 second log line should therefore be treated only as a logged symptom, not as the duration of the freeze.
 
 PipeWire logged many ALSA broken-pipe/resync messages starting at 14:52. This is consistent with realtime/audio starvation under system pressure, not with a single isolated webcam or camera package issue.
 
@@ -90,7 +91,7 @@ After reboot:
 
 ## Likely cause
 
-The incident was a resource-starvation failure, not a kernel crash. The proximate workload was the HomeOnly `lojix-run` build/eval/copy for `bird` on `zeus`, started by this agent. It ran concurrently with several other agent sessions and existing user services. On a no-swap laptop/desktop session, the Nix operation’s closure fetch/unpack/build pressure plus agent load was enough to starve Niri and PipeWire.
+The incident was a severe resource-starvation failure, not a kernel crash. The proximate workload was the HomeOnly `lojix-run` build/eval/copy for `bird` on `zeus`, started by this agent. It ran concurrently with several other agent sessions and existing user services. On a no-swap laptop/desktop session, the Nix operation’s closure fetch/unpack/build pressure plus agent load was enough to starve Niri and PipeWire for a user-visible minutes-long interval.
 
 The `persona-spirit-daemon-v0.1.1` restart loop was not large enough to explain the freeze alone, but it made the system dirtier: constant process starts, failures, and journal traffic during the same pressure window.
 
