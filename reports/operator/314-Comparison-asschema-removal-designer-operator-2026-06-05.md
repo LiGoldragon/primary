@@ -76,6 +76,15 @@ Correction after psyche question: the primary owner is not a new
 datatypes that `.schema` deserializes into. Those nouns are exactly where the
 resolution behavior belongs.
 
+The pipeline should be stated directly:
+
+```text
+schema
+  -> deserialize into Rust datatypes that fully define schema
+  -> schema-in-Rust value (rkyv-serializable)
+  -> lower into Rust interface code
+```
+
 An implementation may use a short-lived private context or cache while
 resolving imports, collecting names, or avoiding recomputation. But that object
 is not the new schema value, not the emitter's public input contract, and not a
