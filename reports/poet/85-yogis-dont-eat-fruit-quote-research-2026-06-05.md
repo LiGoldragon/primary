@@ -46,10 +46,14 @@ The project's raw-vs-cooked coverage was already deep (`Cooking_and_Agni.md`, `R
 - **`annas` (Anna's Archive CLI)** works unauthenticated for search; invoke from `~/primary/repos/library` so it finds `.env` and filter the startup WARN/stack-trace noise. Caraka Vol. II (the clinical half, `724d10c448ea5542470cbbfe0a8029f6`) and Suśruta (Bhishagratna, `6d7c8a8610d3a4f0c4556cc6a3d08bc1`) are available if ever needed; no download was required this session.
 - The library already holds the texts this work needed: Ṛgveda (Griffith complete), Atharvaveda (Whitney), Yajurveda, Suśruta (Bhishagratna), Vāgbhaṭa (Aṣṭāṅga Hṛdaya), Caraka (Sharma 2014), Gheraṇḍa, Śiva Saṃhitā, plus a Sanskrit Caraka OCR and a Cakrapāṇi-Harinatha zip under `sa/ayurveda/`.
 
-## Open follow-ups
+## Follow-up (same day, after a mid-session crash): two items resolved
 
-- **Suśruta verbatim.** The `Fruit_as_Medicine` Suśruta section states the *phala-varga* verdict as a summary, not a quotation; a page-level read of the Bhishagratna text (on disk) to lift verbatim per-fruit blocks is a clean next pass.
-- **Cakrapāṇidatta's commentary** remains the highest-value acquisition — it would adjudicate the *ketakī* / *tṛṇaśūnya* variant and confirm the canonical Sū. 27 numbering. The `sa/ayurveda/caraka-cakrapani-harinatha.zip` on disk is worth examining; it may already supply some of this.
+A reboot interrupted the follow-up pass; on resume the two highest-value follow-ups were carried to completion.
+
+- **Suśruta verbatim — done.** The `Fruit_as_Medicine` §X Suśruta section now carries verbatim Bhishagratna block-quotes for grapes (*drākṣā*), *āmalaka*, mango (*āmra*), pomegranate (*dāḍima*), and the sour-fruit rule — verified against the on-disk OCR bundle and wisdomlib's Bhishagratna text — replacing the earlier prose summary. The concord with Caraka Sū. 27 is now shown rather than asserted.
+- **Cakrapāṇidatta's commentary — found on disk and used.** `sa/ayurveda/caraka-cakrapani-harinatha.zip` (the Harinātha Viśārada Caraka-with-*Āyurveda-Dīpikā*) has recoverable OCR for the Sūtrasthāna 26–27 pages. It **settles the *ketakī*/*tṛṇaśūnya* variant**: Cakrapāṇi glosses *tṛṇaśūnya* as the *ketakī-phala* — one fruit under two names, not a textual disagreement. The same page numbers the verse 124 (a third edition-numbering, against Sharma 158 / GRETIL 145–146) and quotes Suśruta on pomegranate in the commentary's own voice. The caraka-samhita philology note records the resolution, and `translation-sources.md` is corrected — its framing of Cakrapāṇi as the unacquired "single most useful addition" was stale, since a recoverable Cakrapāṇi edition had been on disk all along.
+
+## Still open
 - **GRETIL cross-numbering** could be extended across the whole Sū. 27 fruit/vegetable catalogue and folded into `caraka-samhita/fruit-vegetable-warnings.md` as a parallel column.
 - **Atharvaveda barley hymn (AV 6.142)** would be a clean Vedic grain-primacy witness; the sacred-texts fetch was blocked (403) this session, so it was left out rather than quoted unverified. Whitney is on disk.
 
