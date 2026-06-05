@@ -137,8 +137,9 @@ discipline is:
    reframes a topic supersedes the entire prior framing on that
    topic, including reports that were canonical the day before.
 6. **Spirit capture sweep.** Alongside the report sweep, audit
-   recent Spirit captures (`spirit "(Observe (RecordIdentifiers
-   ((Range (N M)) SummaryOnly)))"`) for duplicate-substance records.
+   recent Spirit captures (`spirit "(Observe (Records ((Any []) None
+   Any Recent SummaryOnly)))"` or a topic-narrowed `Records` query)
+   for duplicate-substance records.
    Multi-agent sessions accumulate near-duplicate captures when
    each agent records on a forwarded prompt without first querying
    what the original-addressed agent captured. Earlier capture wins

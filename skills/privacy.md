@@ -109,7 +109,7 @@ queries return exact `Zero` privacy only. Elevated reads use
 (`Any`, `Exact`, `AtMost`, `AtLeast`). Record subscriptions follow the
 same split between public and explicit private forms.
 
-There is no live `ChangePrivacy` operation in production Spirit v0.4.1.
+There is no live `ChangePrivacy` operation in production Spirit v0.5.2.
 Choose privacy carefully at record time. If a record is misclassified,
 use the maintenance path: capture a corrected record at the right privacy
 level, then lower/remove the old one according to

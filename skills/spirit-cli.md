@@ -26,6 +26,31 @@ The Spirit CLI is the normal substrate for intent capture
 surface that as a blocker; do not silently revive the legacy file
 substrate.
 
+## Copy these query forms first
+
+`Observe` always carries one `Observation` enum variant. For intent
+records, that variant is usually `Records`:
+
+```sh
+spirit "(Observe (Records ((Any []) None Any Recent SummaryOnly)))"
+spirit "(Observe (Records ((Partial [schema asschema nota structural-macro]) None Any Recent SummaryOnly)))"
+spirit "(Observe (Records ((Full [schema nota]) None Any Recent SummaryOnly)))"
+spirit "(Observe (RecordIdentifiers ((Exact [abcd]) SummaryOnly)))"
+```
+
+The shape is:
+
+```text
+(Observe (Records ((<TopicSelection>) <Kind?> <CertaintySelection> <RecordedTimeSelection> <ObservationMode>)))
+```
+
+Two recurring wrong shapes:
+
+- `Search` is not a production request head.
+- `(Observe ((Any [...]) ...))` is missing the `Records` observation
+  variant; the daemon expects a PascalCase observation name after
+  `Observe`, not a bare query record.
+
 ## Deployment slots — `spirit`, `spirit-vX.Y.Z`, `spirit-next`
 
 Spirit is **deployed side-by-side**. The user profile installs a
@@ -260,13 +285,14 @@ return newest matching records at the requested depth, so quiet topics
 naturally reach farther back than active topics.
 `Minimum` remains weak but real intent; do not use it as the
 removal-candidate marker. The old three-field, four-field, five-field,
-and six-field record queries still decode as compatibility input, but
-agents should emit the public five-field query or the explicit private
-query variants.
-`RecordIdentifiers` selects by identifier code: `Exact` selects one
-record; `Range` is inclusive in identifier ordering, so
-`(Range ([abcd] [abcz]))` returns records whose identifiers fall in
-that closed interval when present. Use `SummaryOnly` for
+and six-field record-query payloads still decode as compatibility input
+inside `Records`, but agents should emit the public five-field query or
+the explicit private query variants.
+`RecordIdentifiers` selects one record by exact identifier code:
+`(Exact [abcd])`. Identifier ranges are not live in the random-identifier
+era; use `Records` with `Recent`, `Shallow`, `Deep`, `VeryDeep`,
+`Since`, `Until`, or `Between` for history and recency windows. Use
+`SummaryOnly` for
 compact summaries and `WithProvenance` when you need daemon-stamped
 date/time:
 
@@ -285,8 +311,6 @@ spirit "(Observe (Records ((Partial [spirit]) None Any VeryDeep SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any (Since (2026-05-30 00:00:00)) SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any (Between ((2026-05-29 00:00:00) (2026-05-30 23:59:59))) WithProvenance)))"
 spirit "(Observe (RecordIdentifiers ((Exact [abcd]) SummaryOnly)))"
-spirit "(Observe (RecordIdentifiers ((Range ([abcd] [abcz])) SummaryOnly)))"
-spirit "(Observe (RecordIdentifiers ((Range ([abcd] [abcz])) WithProvenance)))"
 spirit "(Observe (PrivateRecords ((AtMost Low) ((Any []) None Any Any SummaryOnly))))"
 spirit "(Observe (PrivateRecordIdentifiers ((AtMost Low) ((Exact [abcd]) SummaryOnly))))"
 ```
