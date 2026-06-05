@@ -172,4 +172,40 @@ methods (plane/runner/projection group; role/engine/lifecycle group), each
 anchored to `schema-rust-next/src/lib.rs` file:line. Captured as intent: the
 `Plane` + `PlaneProjection` decomposition.
 
-Per psyche 2026-06-05 ("ok lets design it").
+## Implementation status — reference family landed (2026-06-05)
+
+The reference family is **implemented, verified, and pushed** on branch
+**`designer-plane-type-2026-06-05`** in `schema-rust-next` (off `main@origin`
+`fa0d4fa2`). Scope of this branch:
+
+- **`Plane { Signal, Nexus, Sema }`** with the five naming methods the first
+  family needs (`module_name`, `wrapper_name`, `wrapper_path`, `alias_names`,
+  `canonical_source_type_names`) — pure `&self` constants, no target/schema
+  logic (adversarially grep-verified clean).
+- **`PlaneNamespaceTokens` / `PlaneNamespaceAlias` / `PlaneOriginRouteConstructorTokens`**
+  — the `emit_plane_namespaces` family migrated to self-rendering `ToTokens`
+  nouns via `quote!`, consulting `Plane`. `RuntimePlaneSet::active_planes()`
+  added (additive; the three bools unchanged).
+- **Signal-frame gating** (`gb95`): `emit_signal_frame_support` now wrapped in
+  `if writer.emits_signal()` — nexus/sema/wire targets lose it (157 lines
+  each), pinned by absence-assertions in the nexus + sema + wire tests.
+
+Verified: `plane_namespaces` output **byte-identical** (golden snapshots +
+an independent old-vs-new dump across all three planes); the only intended
+output change is the signal-frame gating; `cargo build` + `test` (54) +
+`clippy -D warnings` green from a clean rebuild; three-tier design and
+rust-discipline confirmed by adversarial verifiers.
+
+**Operator handoff:** this branch is the canonical pattern for the rest of the
+runtime token migration. Adopt `Plane` (grow its methods per family —
+`trace_enum_name`, `envelope_name`, `engine_trait_name` land as the trace /
+mail / engine-trait families migrate) and introduce `PlaneProjection` when the
+projection methods (`emit_split_nexus_work_projection` etc.) migrate. Either
+rebase `main` onto the branch or cherry-pick the pattern. Not yet integrated to
+`main` — operator owns that.
+
+**Deferred** (noted, not silently dropped): `PlaneProjection` + the other ~25
+families; the `RuntimePlaneSet`-as-set-of-`Plane` secondary cleanup; the dead
+`type_name` param in `emit_split_sema_output_projection`.
+
+Per psyche 2026-06-05 ("ok lets design it" → "ok implement this").
