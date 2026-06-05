@@ -214,7 +214,12 @@ future shorthand surface should remain a typed NOTA operation that
 lowers to the full record, not shell flags or a second CLI syntax.
 Examples: a public shorthand lowers to the record above with
 `privacy = Zero`; a private-record shorthand lowers to the same full
-record with an elevated privacy magnitude.
+record with an elevated privacy magnitude. NOTA positional records do
+not omit fields: a shorthand such as a future `RecordPublic`,
+`RecordPrivate`, or `Search` is a distinct operation payload that fills
+defaults before lowering to the verbose API. Until those heads are
+implemented in the deployed signal contract, do not invent them in live
+CLI calls.
 
 **Remove an intent entry** — delete one stored record by identifier
 code through the daemon:

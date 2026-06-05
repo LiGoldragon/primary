@@ -329,9 +329,24 @@ rule or decision.
 At capture time, choose certainty from the wording and context of the
 specific statement. Preserve weight by using broad reusable topics and
 by recording repeated probes as repeated records at honest certainty.
-When an explicit `Weight` field lands in the production record shape, it
-uses its own axis; until then, weight is inferred from topic recurrence
-and report/work churn, never smuggled into the certainty value.
+The explicit `Weight` field is a future, low-certainty record-shape
+design: when it lands, it is set as its own axis, especially to preserve
+the accumulated importance of agglomerated source records. Until then,
+weight is inferred from topic recurrence and report/work churn, never
+smuggled into the certainty value.
+
+### When the psyche says a statement is low-certainty
+
+If the psyche explicitly marks a statement as low-certainty, do not just
+record the new low-certainty entry and move on. First query Spirit for
+the topic. If an older higher-certainty record already contains the same
+idea, inspect whether that record mixed two different certainty levels.
+
+When a higher-certainty record bundles a settled part and a tentative
+part, split the truth in Spirit: keep or record the settled part at its
+earned certainty, then add a low-certainty correction/clarification for
+the tentative part. Do not let a single high-certainty record shelter a
+low-certainty sub-claim.
 
 ### The ladder — what situation each level is for
 

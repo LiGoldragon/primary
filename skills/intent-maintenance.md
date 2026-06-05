@@ -124,6 +124,12 @@ matches workspace reality. Three failure modes:
 - **The certainty doesn't match the phrasing.** Re-read the quote
   against `skills/intent-log.md` §"Certainty vocabulary". Correct
   if mismatched.
+- **One record bundles claims with different certainty.** A record can
+  accidentally carry a settled rule and a tentative design in one
+  high-certainty summary. Split or correct it: preserve the settled
+  part at its earned certainty, then record the tentative part at its
+  lower certainty. This especially matters when the psyche explicitly
+  says a new clarification is low-certainty.
 
 Verification corrections that aren't superseding the psyche's
 intent (just fixing the agent's transcription) can land directly —
@@ -157,7 +163,8 @@ How:
 1. Read every Spirit entry in the topic.
 2. For each entry, check: does this still apply? Does the summary
    still match the verbatim? Does the certainty still match the
-   phrasing?
+   phrasing? Does one summary bundle sub-claims with different
+   certainty?
 3. For entries that no longer apply: ask the psyche.
 4. For agent-transcription drift: correct directly.
 5. For a genuinely noisy topic with two distinct sub-topics:
