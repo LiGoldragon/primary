@@ -68,7 +68,7 @@ stack.
 | `signal-criome` | `/git/github.com/LiGoldragon/signal-criome` | Criome trust and attestation contract vocabulary: BLS signature envelopes, identity records, delegation grants, component releases, and out-of-band attestations. Pure contract crate; no daemon, no storage, no Persona policy ownership. |
 | `repository-ledger` | `/git/github.com/LiGoldragon/repository-ledger` | Triad runtime component for recording pushed repository changes from the local Gitolite server into a sema-engine database. |
 | `signal-repository-ledger` | `/git/github.com/LiGoldragon/signal-repository-ledger` | Ordinary repository-ledger contract: receive-hook event assertions and repository/event read queries. |
-| `owner-signal-repository-ledger` | `/git/github.com/LiGoldragon/owner-signal-repository-ledger` | Owner-only repository-ledger contract: repository registration, spool policy, and future mirror policy mutation. |
+| `meta-signal-repository-ledger` | `/git/github.com/LiGoldragon/meta-signal-repository-ledger` | Meta-signal repository-ledger contract: repository registration, spool policy, and future mirror policy mutation. |
 | `nexus` | `/git/github.com/LiGoldragon/nexus` | Typed semantic text vocabulary written in NOTA syntax. |
 | `nexus-cli` | `/git/github.com/LiGoldragon/nexus-cli` | CLI surface for Nexus-shaped NOTA records. |
 | `nota` | `/git/github.com/LiGoldragon/nota` | NOTA language home. |
