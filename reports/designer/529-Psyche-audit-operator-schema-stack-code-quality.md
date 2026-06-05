@@ -1,170 +1,151 @@
 ---
-title: 529 — Audit of the operator's schema-stack work — code quality
+title: 529 — The operator schema-stack audit — what "smell", "hypothesis", and "missing layer" mean, grounded
 role: designer
 variant: Psyche
 date: 2026-06-05
-topics: [audit, code-quality, nota-next, schema-next, schema-rust-next, missing-layers, repetition, emitter, resolution]
+topics: [audit, code-quality, code-smell, missing-layer, nota-next, schema-next, schema-rust-next, emitter, resolution]
 description: |
-  Psyche-requested audit of the operator's schema-stack implementation,
-  hunting bad patterns, repetition, deep nesting, missing logic layers,
-  pattern abuse. 30 findings (6 high / 14 medium / 10 low), file:line
-  grounded. The hypothesis holds: the repetition and nesting DO speak of
-  missing layers. The smells concentrate in two places — schema-next's
-  resolution layer and schema-rust-next's emitter — which are exactly
-  what the Asschema-removal migration will rewrite.
+  Explains the audit in plain engineering terms — what a code SMELL is,
+  what the HYPOTHESIS was (your own audit premise: repetition/nesting are
+  symptoms of missing layers), and what a MISSING LOGIC LAYER is — each
+  grounded in a real example from the operator's code. Then the 30 findings
+  organized, and what I think needs checking. The smells concentrate in the
+  two places the Asschema-removal migration will rewrite.
 ---
 
-# 529 — Audit of the operator's schema-stack work
+# 529 — The operator schema-stack audit, explained
 
-Four subagents swept the operator's recent work (nota-next structural-macro
-machinery, schema-next `SchemaSource`/lowering/rkyv, schema-rust-next
-emitter, plus a cross-cutting pass) for exactly what you named: bad
-patterns, repetition, deep nesting, missing logic layers, pattern abuse.
-Every finding cites file:line. **30 findings: 6 high, 14 medium, 10 low.**
+This report does two things: (1) explains, in plain engineering terms,
+what I meant by "smell", "your hypothesis", and "missing logic layer" —
+each tied to a real line of the operator's code; and (2) presents the 30
+findings and what to check. You designed the architecture; what follows
+explains the *engineering vocabulary*, not the architecture.
 
-## Verdict
+## What a "code smell" is
 
-**The stack is genuinely well-disciplined — this is good code with smells
-concentrated in two hotspots, not bad code.** The auditors independently
-noted strong foundations: the typed pattern language (`Pattern`/`AtomShape`
-+ shadow-detection), the `RustModule`/`RustDeclaration` type model, clean
-trait boundaries, data-bearing types well-placed. No `anyhow`/flag-soup/ZST
-regressions. The problems are structural, not sloppy — and they cluster.
+A **code smell** is a surface symptom in *working* code that signals a
+deeper structural problem. It is **not a bug** — the code compiles and
+runs correctly. It is a sign that the *shape* is wrong: that something is
+in the wrong place, or duplicated, or absent. The term is from refactoring
+practice (Fowler/Beck): you can't always say "this is a bug," but you can
+*smell* that the structure will cause trouble — it will be hard to change,
+easy to break, painful to extend.
 
-## Your hypothesis holds
+The value of a smell is that it is a **pointer, not a verdict.** "This code
+is repeated 12 times" doesn't say the code is wrong; it says *look here —
+there is probably a concept that should have been named once and wasn't.*
 
-You said repetition and nesting "speak of missing logic layers or abuse of
-certain patterns." That is exactly what the audit found — the smells are
-not aesthetic, they are **two recurring code shapes with no shared layer,
-and four first-class concepts that should be types but aren't.** Of 30
-findings, **11 are repetition and 8 are missing-layer** — and most of the
-repetition is *because* of the missing layer.
+The four smells the audit hunted, each with a real example from the
+operator's code:
 
-## The findings, by theme
+- **Repetition** — the same shape of code written many times.
+  *Real example:* the "parse a brace into validated pairs" routine is
+  copy-pasted **12+ times** across schema-next's source types
+  (`source.rs:232, 309, 345, 422, 496, 671, 712, …`).
+- **Deep nesting** — logic buried several levels of `match`/`if` deep, so
+  the reader can't see the decision being made.
+  *Real example:* `SourceField::to_lowered_field` (`source.rs:600-649`) is
+  a four-level nested match that is really a 2×3 decision table written the
+  hard way.
+- **Missing logic layer** — see the next section; it's the most important.
+  *Real example:* the schema resolution work is smeared across three types
+  (`SourceTypeResolver` + `SourceLoweredNamespace` + `SourceDeclarationGroup`)
+  with no single type that *owns* "resolution."
+- **Pattern abuse** — a pattern stretched past where it fits.
+  *Real example:* `RustWriter` started as a string accumulator and grew into
+  a **52-method god-struct** (`lib.rs:848-2200+`) — the "accumulate strings"
+  pattern stretched to orchestrate the whole emitter.
 
-### 1. Two recurring shapes with no shared layer — highest leverage
+## What your "hypothesis" was
 
-- **The `from_block` map-pair parser, repeated 12+ times** (HIGH,
-  cross-cutting). The same algorithm — *delimit with context → validate
-  even count → chunk into pairs → map each pair* — is copy-pasted across
-  schema-next's `SourceImports`, `SourceNamespace`, `SourceStructBody`,
-  `SourceEnumBody`, … (`source.rs:232, 309, 345, 422, 496, 671, 712, 811,
-  985, 1040, 1312`, and more, plus `declarative.rs`). One change to the
-  pair rule means 12 edits. **Fix: one `Block::parse_pairs_map(delimiter,
-  context, f)` method** — a single extraction kills the most duplication
-  in the stack.
-- **The variant-iteration codegen, repeated 3+ times** (HIGH,
-  schema-rust-next `lib.rs:1567-1631, 1591-1691`). The emitter writes
-  *for variant → match payload → format → write line* three near-identical
-  ways (route emission, short-header, frame impl), 4+ levels deep. **Fix:
-  one `emit_variant_arms(enum, renderer_closure)`** called three times.
+You didn't ask me to "find ugly code." You asked me to look for "repetitive
+code and deeply nested logic and stuff like that, **like things that speak
+of missing logic layers or abuse of certain patterns**." That last clause
+is a **hypothesis** — a claim about cause and effect:
 
-### 2. Concepts that should be types but aren't (the missing layers)
+> *The surface problems (repetition, deep nesting) are not the real
+> problem. They are SYMPTOMS. The real problem underneath is usually a
+> missing layer or a misused pattern.*
 
-- **`PlaneType`** (HIGH, schema-rust-next `lib.rs:1982-2014, 2262-2304`).
-  The plane-type topology (`WriteInput`/`ReadInput`/`WriteOutput`/
-  `ReadOutput`/`NexusWork`/…) is scattered as predicates across 5+
-  functions, each re-listing the plane types. A new plane type means
-  touching 5 places. **It wants a `PlaneType` enum that owns the topology**
-  (`is_nexus()`, `is_sema_write()`, …) — the matrix lives in one type.
-- **`SourceResolutionContext`** (HIGH, schema-next `source.rs:126-140,
-  1139-1273`). The resolution work — *collect declared names, classify
-  public vs private, hoist inlines, detect duplicates, order* — is split
-  across `SourceTypeResolver` + `SourceLoweredNamespace` +
-  `SourceDeclarationGroup` with the visibility interplay **implicit**. The
-  core domain concept has no owning type. **(This is the one that gates the
-  migration — see below.)**
-- **`TypeExpression` AST** (LOW but architectural, schema-rust-next
-  `lib.rs:~1120-1200`). `rust_type` builds type strings by concatenation;
-  there is no typed representation, so the emitter can't ask "does this
-  need a derive? is it a Newtype?" The 516 audit flagged the same
-  string-concat codegen (panic arms). **It wants a `TypeExpression` enum
-  with `Display`.**
-- **`SourceFieldKind`** (MEDIUM, schema-next `source.rs:600-649`).
-  `to_lowered_field` is a four-level nested match encoding a 2×3 matrix
-  (Derived/Reference/Declaration × type-cased/value-cased name). **It wants
-  an enum naming the six cases** so the matrix is exhaustive and visible
-  (`skills/enum-contact-points.md`).
+That is exactly right, and it is the professional way to read code smells.
+The audit tested it and **it held**: of the 30 findings, 11 are repetition
+and 8 are missing-layer — and most of the repetition is *caused by* the
+missing layer. The duplication isn't sloppiness; it's the shadow cast by a
+concept that was never given a name.
 
-### 3. Copy-paste resolvers + duplicated dispatch
+## What a "missing logic layer" is — the core insight
 
-- **Four identical SEMA root resolvers + four identical SEMA type-name
-  resolvers** (HIGH+MEDIUM, schema-rust-next `lib.rs:2924-3022`). Textbook
-  copy-paste; collapse to `resolve_sema_root(...)` / `resolve_sema_type_name(...)`.
-- **Duplicated dispatch: `StructuralVariantSet::dispatch` ≈
-  `MacroRegistry::dispatch`** (HIGH, nota-next `macros.rs:469-490` vs
-  `1010-1033`). The same contact point (position × variant set) written
-  twice — the enum-contact-point isn't named once. Extract a shared
-  `Dispatch` over `(position, variants, candidate)`.
+When you see the **same shape of code in 12 places**, or logic nested
+**4 levels deep**, it almost always means there is a **concept** — a
+function, a type, or a trait — that *should exist on its own* but doesn't.
+Because the concept has no home, it gets **smeared across many places**
+instead of **named once**. That absent home is the "missing layer."
 
-### 4. The `RustWriter` god-struct (the biggest missing-layer smell)
+Two concrete examples from the operator's code:
 
-`RustWriter` has **52+ `emit_*` methods in one struct** (MEDIUM,
-schema-rust-next `lib.rs:848-2200+`), each a separate codegen phase, no
-intermediate layer. It grew from a string accumulator into an orchestrator.
-It wants decomposition into sub-codegens (`TraceCodegen`, a
-`VariantCodegenHelper`, the `TypeExpression` AST above). This is where the
-emitter's complexity has outrun its structure.
+- The "parse a brace into validated pairs" routine appears 12 times. The
+  *concept* "validated pair-parse of a block" exists 12 times but is
+  **named zero times**. The missing layer is **one method**,
+  `Block::parse_pairs_map(delimiter, context, f)`. The moment it exists,
+  the 12 copies collapse into 12 one-line calls, and a change to the rule
+  is one edit instead of twelve.
+- The emitter checks "which plane-type is this — `WriteInput`? `ReadInput`?
+  `NexusWork`?" with scattered predicates in **5+ different functions**,
+  each re-listing the plane types. The *concept* "the set of plane types
+  and their properties" exists, smeared. The missing layer is **one type**,
+  a `PlaneType` enum that owns the list, so a new plane type is added in one
+  place, not five.
 
-### 5. Deep-nesting hotspots (the worst)
+This is why repetition and nesting "speak of missing layers": the
+duplication and the deep `match` are the *visible footprint* of a concept
+that wanted to be a method or a type and was instead inlined everywhere.
 
-- **Plane projection** `emit_split_nexus_work_projection` (schema-rust-next
-  `lib.rs:2500-2584`) — projecting NexusWork→NexusAction across enum
-  boundaries, nesting that obscures the intent; extract per-projection
-  helpers returning match-arm strings.
-- **The derive's closure-wrap** (nota-next `derive/src/lib.rs:784-795`) —
-  the generated `if cond { return (|| -> Result {...})().map_err(...) }`
-  wraps the constructor in an anonymous closure *only* to coerce a Result.
-  Over-engineered; emit `cond { return #constructor.map_err(...) }` and fix
-  the constructor's type at the source.
-- **`to_lowered_field`** (covered in §2 as `SourceFieldKind`).
+## The 30 findings, organized
+
+6 high, 14 medium, 10 low. Honest verdict first: **the stack is genuinely
+well-built — clean type models, the shadow-detection, no discipline
+regressions. This is good code.** The smells **concentrate in two places:**
+schema-next's resolution layer and schema-rust-next's emitter.
+
+| Theme | The smell | Where | Sev | The missing layer |
+|---|---|---|---|---|
+| Recurring shape, no shared layer | "parse brace into pairs" copy-pasted 12+× | schema-next `source.rs` (many) | high | `Block::parse_pairs_map` |
+| Recurring shape, no shared layer | variant-iteration codegen written 3+× | schema-rust-next `lib.rs:1567-1691` | high | `emit_variant_arms(enum, renderer)` |
+| Concept not a type | plane-type predicates scattered across 5+ fns | schema-rust-next `lib.rs:1982-2304` | high | a `PlaneType` enum |
+| Concept not a type | resolution smeared across 3 types | schema-next `source.rs:126-140, 1139-1273` | high | a `SourceResolutionContext` |
+| Concept not a type | type strings built by concatenation | schema-rust-next `lib.rs:~1120` | low | a `TypeExpression` AST |
+| Concept not a type | 2×3 field matrix as nested match | schema-next `source.rs:600-649` | med | a `SourceFieldKind` enum |
+| Copy-paste | 4 identical SEMA resolvers ×2 | schema-rust-next `lib.rs:2924-3022` | high/med | `resolve_sema_root` / `resolve_sema_type_name` |
+| Copy-paste | two near-identical dispatch methods | nota-next `macros.rs:469-490` vs `1010-1033` | high | one named dispatch over (position, variants, candidate) |
+| God-struct | `RustWriter` has 52+ `emit_*` methods | schema-rust-next `lib.rs:848-2200+` | med | sub-codegens (Trace/Variant/Type) |
+| Over-engineering | derive wraps constructor in a useless closure | nota-next `derive/src/lib.rs:784-795` | med | drop the closure; fix the type at source |
 
 ## What I think needs checking — my read
 
-The single most important pattern: **the smells concentrate in exactly the
-two places the Asschema-removal migration is about to rewrite.** That
-changes the recommendation from "schedule a cleanup" to "fix these *as*
-the migration, not after."
+The pattern that matters: **the smells sit exactly where the
+Asschema-removal migration is about to rewrite.** So this is "fix as you
+migrate," not "schedule a cleanup later."
 
-1. **The resolution scatter is load-bearing for the migration — check it
-   first.** Records 520/524 say the Asschema-removal works by moving the
-   resolution onto methods on the typed source nouns. The audit found that
-   resolution is tangled across three types with implicit visibility
-   interplay (HIGH, `SourceResolutionContext` missing). So the migration's
-   first slice should be *untangling resolution into one named owner* —
-   which is the audit's exact suggestion. Worth checking the operator's
-   in-flight slice-2 work (the schema-source binary archive) isn't piling
-   onto the tangle instead of resolving it.
+1. **The resolution scatter gates the migration.** Records 520/524 say the
+   Asschema removal works by moving resolution onto methods on the typed
+   source nouns. The audit found resolution has *no owning type* and an
+   *implicit* visibility interplay. So the migration's first move should be
+   to give resolution a home (`SourceResolutionContext`) — the audit's fix
+   and the migration's first slice are the **same work**. Worth checking the
+   operator's in-flight slice-2 (the schema-source binary archive) untangles
+   this rather than piling on it.
+2. **Watch the emitter most.** `RustModule::from_source` (the migration's
+   emission entry) will land *inside* the 52-method `RustWriter` god-struct,
+   which already has copy-paste SEMA resolvers, scattered `PlaneType`
+   predicates, and string-concat type building. Adding to a god-struct makes
+   it worse; the `from_source` rewrite is the natural moment to introduce
+   the missing types (`PlaneType`, `TypeExpression`, a variant-codegen
+   helper).
+3. **Two one-method extractions are pure wins now:** `Block::parse_pairs_map`
+   (kills ~12 duplications) and `emit_variant_arms` (kills the 3× codegen
+   copies). Low risk, high leverage.
+4. **The nota-next derive smells are low-stakes** — small, tested, works.
+   A tidy-up, not a blocker.
 
-2. **The emitter is where `RustModule::from_source` will land — and it's
-   the densest smell.** `RustWriter` is a 52-method string-building struct
-   with 4× copy-paste SEMA resolvers, scattered `PlaneType` predicates, and
-   no `TypeExpression` AST. The migration adds a *new emission entry* to
-   this struct. Bolting `from_source` onto a god-struct makes it worse; the
-   from_source rewrite is the natural moment to introduce the missing
-   layers (`PlaneType`, `TypeExpression`, `VariantCodegenHelper`). **This
-   is the area I'd watch most.**
-
-3. **Two one-method extractions are pure wins** regardless of the
-   migration: `Block::parse_pairs_map` (kills ~12 duplications) and
-   `emit_variant_arms` (kills the 3× codegen copies). Low risk, high
-   leverage — worth doing soon.
-
-4. **The nota-next derive smells are real but low-stakes** — the derive is
-   small, tested, and works (the closure-wrap, scattered field-binding,
-   format-literal repetition). A tidy-up pass, not a blocker.
-
-The meta-recommendation: **fold the structural fixes into the
-Asschema-removal migration**, because the migration touches precisely these
-hotspots (resolution-onto-source-nouns and `from_source` emission). Doing
-them together means the migration *introduces* the missing layers rather
-than the migration making a god-struct bigger and a tangle deeper.
-
-## Scope + provenance
-
-Scope: the operator's recent schema-stack work in nota-next, schema-next,
-schema-rust-next (the structural-macro mechanism + the schema pipeline).
-Read-only; file:line grounded; nothing changed. Full per-finding evidence
-+ suggested fixes are in the audit workflow output. The verdict is
-honest-both-ways: strong foundations, smells concentrated in the emitter
-and the resolution layer.
+Scope: the operator's recent schema-stack work (nota-next, schema-next,
+schema-rust-next). Read-only; file:line grounded; nothing changed.
