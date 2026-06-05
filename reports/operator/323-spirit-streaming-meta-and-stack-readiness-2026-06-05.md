@@ -70,6 +70,7 @@ Spirit `main` also now carries:
 
 - `44ded6ff` — `spirit: align nix schema stack pins`
 - `ed9bafa7` — `spirit: align cargo runtime pin`
+- `fae33ee4` — `spirit: regenerate schema on rust token emitter 0.1.14`
 
 The Nix build initially failed usefully four times:
 
@@ -102,16 +103,19 @@ Schema-rust-next `main` currently carries these relevant commits:
 - `fd84aae` — trace object emission tokenized.
 - `fa0d4fa` — Nexus runner emission tokenized.
 - `e332b5e` — engine trait emission tokenized.
+- `7783ae6` — runtime mail/envelope emission tokenized and crate bumped to
+  `0.1.14`.
 
-The Spirit artifacts were regenerated against `schema-rust-next` `e332b5e`,
+The Spirit artifacts were regenerated against `schema-rust-next` `7783ae6`,
 and Spirit builds against that generator.
 
 Honest status: this is not a full string-emitter removal. A fresh count after
-these commits still found hundreds of `format!` / `self.line` / `push_str` /
-`write!` occurrences in `schema-rust-next/src/lib.rs`. Some are not codegen
-debt, but the count is high enough that the runtime emitter cannot be called
-fully migrated yet. Worker subagent `Lagrange` is currently assigned to a
-non-overlapping follow-up slice in `schema-rust-next`.
+the `0.1.14` commit still found `251` `format!` / `self.line` / `push_str` /
+`write!` matching lines in `schema-rust-next/src/lib.rs` (`225 self.line`,
+`69 format!`, `7 write!`, `2 push_str`; raw categories overlap because some
+lines contain more than one pattern). Main remaining categories are generic
+declaration/NOTA bridge emission, short-header/signal-frame emission, plane
+namespace/projection emission, upgrade trait emission, and writer plumbing.
 
 ## Verification
 
@@ -125,7 +129,8 @@ Spirit local verification after the streaming and alignment work:
   the final public-surface cleanup and again after aligning `Cargo.lock`.
 - `nix build .#default -L --option builders "" --option substituters
   "https://cache.nixos.org"` with a `timeout` guard — passed after flake and
-  Cargo pins were aligned.
+  Cargo pins were aligned, and passed again after the schema-rust-next
+  `0.1.14` generator bump.
 
 Schema-rust-next verification for the token slices already on main:
 
@@ -133,6 +138,9 @@ Schema-rust-next verification for the token slices already on main:
   `cargo test`, and `cargo clippy --all-targets --all-features -- -D warnings`.
 - Spirit regeneration and full Spirit tests are an additional downstream
   witness that the tokenized runner/trait emission still emits usable code.
+- The `0.1.14` runtime mail/envelope token slice was also tested by the
+  worker with `cargo fmt`, `cargo test`, and
+  `cargo clippy --all-targets --all-features -- -D warnings`.
 
 ## Design fit
 
