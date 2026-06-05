@@ -853,6 +853,23 @@ and Signal-to-SEMA translation. When Nexus has the mail, the mail
 is in the BEING-PROCESSED state; Nexus IS the runtime
 representation that a mail is being processed."*
 
+**The Nexus schema is the engine's feature catalog — its MAIN reason
+for existing is feature VISIBILITY.** Per psyche 2026-06-05 (record
+`z6qu`): every internal engine feature — any computation, any filtering
+or condition on results, any conditional write (conditional writing),
+any internal logic-feature — **MUST be defined as a Nexus interface verb
++ object in the nexus schema**, never as inline hand-written logic hidden
+from the schema. The consequence is load-bearing: the complete surface of
+*everything the engine can do internally* is then readable in one place —
+the nexus schema declaration. A feature that is not a Nexus verb/object
+is **invisible**, and that invisibility is the failure mode this rule
+forbids. So when a capability is added to a daemon (a new filter, a
+derived computation, a conditional-write rule), the **first** move is to
+declare its Nexus verb + object in the schema; the hand-written code then
+implements that declared interface. The Signal plane is the wire surface
+peers see; the **Nexus plane is the internal-feature surface the engine's
+own authors see** — both are schema, neither is ad-hoc code.
+
 Basic Nexus actions: **submit query to Nexus** (execution action)
 and **get a reply** (state change or SEMA reply) which Nexus then
 translates back into the Signal reply for the Signal plane.
