@@ -71,12 +71,18 @@ The hard work is relocating resolution and then moving Rust emission off
 I choose the pragmatic path, but with a stricter boundary than the phrase
 "resolved-type vocabulary survives" might imply.
 
-`SchemaSource::resolve()` should return an ephemeral, source-owned projection,
-not a new artifact language. It may be a named Rust type, because typed data is
-better than having the emitter rediscover semantics while rendering text. But
-it must not get a file extension, a checked-in text form, a binary artifact, a
-store, or a public handoff contract that components start depending on. If
-that happens, Asschema has not been removed; it has been renamed.
+Correction after psyche question: the primary owner is not a new
+`SchemaResolution` data type. The primary owner is the set of typed source
+datatypes that `.schema` deserializes into. Those nouns are exactly where the
+resolution behavior belongs.
+
+An implementation may use a short-lived private context or cache while
+resolving imports, collecting names, or avoiding recomputation. But that object
+is not the new schema value, not the emitter's public input contract, and not a
+replacement artifact language. It gets no file extension, no checked-in text
+form, no binary artifact, no store, and no public handoff contract. If it
+becomes a durable object components depend on, Asschema has not been removed;
+it has been renamed.
 
 The strong alternative, where `schema-rust-next` walks `SchemaSource` and
 resolves inline as it emits, is worse design. It puts schema semantics inside
@@ -90,30 +96,33 @@ So the correct future-facing pattern is:
 
 1. `.schema` decodes through typed structural macro-node source nouns.
 2. `SchemaSource` owns resolution as methods on source nouns.
-3. The resolution result is computed on demand and stays in memory.
-4. Rust emission consumes that resolved view and renders Rust.
+3. Resolution facts are computed on demand by those nouns, optionally with a
+   private source-owned context/cache.
+4. Rust emission consumes the typed source value through those source-owned
+   methods and renders Rust.
 5. `.asschema` text, `.asschema.rkyv`, `AsschemaArtifact`, `AsschemaStore`, and
    emitter APIs that accept Asschema retire after consumers move.
 
 This preserves "schema is just NOTA" at the authored and codec boundary while
 keeping the generated-code backend clean and reusable.
 
-## Naming recommendation
+## Ownership recommendation
 
-Avoid `Asschema` entirely in the new spine. A reasonable noun is
-`SchemaResolution` rather than `ResolvedSchema`: it names the operation result
-without implying a second schema language.
+Avoid `Asschema` entirely in the new spine, and avoid naming a new public
+schema product too early. The correct public handoff should read as source-first:
 
-The owning methods should read like:
+- `SchemaSource` and its child source nouns own methods such as resolved
+  imports, resolved root enums, resolved namespace declarations, symbol paths,
+  and source validation.
+- `SchemaEngine` coordinates dependency import resolution and calls those source
+  methods; it does not manufacture a second schema language.
+- `RustEmitter` should grow `emit_file_from_source(...)` /
+  `RustModule::from_source(...)` as the durable entry point.
+- Any object named something like `SourceResolution` or `ResolutionContext`
+  should be private or narrowly source-owned unless implementation proves a
+  public type is unavoidable.
 
-- `SchemaSource::resolve(identity, imports, resolved_imports) -> SchemaResolution`
-- `SchemaEngine::resolve_schema_source_with_resolver(...) -> SchemaResolution`
-- `RustEmitter::emit_file_from_resolution(&SchemaResolution) -> GeneratedFile`
-- later, `RustEmitter::emit_file_from_source(...)` as the convenience method
-  that resolves then emits.
-
-The exact names can shift during implementation, but the ownership should not:
-source resolves; emitter renders.
+The ownership must stay: source datatypes resolve; emitter renders.
 
 ## Safety net
 
@@ -122,7 +131,8 @@ is not enough by itself. It proves end-to-end parity only after the whole path
 runs; it does not localize which transformation changed when a mismatch
 appears.
 
-The first slice should add direct tests for the resolved projection:
+The first slice should add direct tests for the source-owned resolution
+methods:
 
 - inline declaration hoisting order,
 - public versus private visibility,
@@ -136,23 +146,25 @@ The first slice should add direct tests for the resolved projection:
 - symbol path parity.
 
 Then the end-to-end witness compares old Asschema emission against new
-resolution emission for real schemas, starting with spirit and then any
+source-driven emission for real schemas, starting with spirit and then any
 multi-plane package that exercises imports.
 
 ## Implementation slice
 
 The smallest correct implementation sequence is:
 
-1. Add `SchemaResolution` in `schema-next` and move the body of
-   `SchemaSource::to_asschema` into `SchemaSource::resolve`.
-2. Keep `to_asschema` temporarily as compatibility conversion from
-   `SchemaResolution` into `Asschema`, not as the primary owner of the work.
-3. Add `RustModule::from_resolution` and `RustEmitter` methods that consume
-   `SchemaResolution`.
+1. Move the body of `SchemaSource::to_asschema` onto `SchemaSource` and child
+   source nouns as source-owned resolution methods. If a private context/cache
+   is needed, keep it clearly subordinate to the source nouns.
+2. Keep `to_asschema` temporarily as a compatibility adapter that calls those
+   source-owned methods and packages the old `Asschema` value.
+3. Add `RustModule::from_source` and `RustEmitter` methods that consume the
+   typed source value, with import-resolution context supplied by `SchemaEngine`
+   or the build driver.
 4. Change the build driver to source round-trip, resolve, and emit Rust without
    producing `.asschema` artifacts.
-5. Move tests from "lowers to Asschema" assertions to "resolves to
-   SchemaResolution" assertions, while keeping old-vs-new parity tests during
+5. Move tests from "lowers to Asschema" assertions to assertions on
+   source-owned resolved facts, while keeping old-vs-new parity tests during
    migration.
 6. Remove `.asschema` files and artifact freshness only after the driver no
    longer consumes or produces them.
@@ -162,9 +174,9 @@ The smallest correct implementation sequence is:
 ## Final operator read
 
 Designer report 520 is directionally correct and improves the operator
-position by naming the real work: resolution relocation. The only guardrail I
-would add is that the pragmatic projection must stay a computed view over
-`SchemaSource`, not a durable IR with artifacts. With that guardrail, the
-pragmatic path is not a compromise against the psyche's "no Asschema" intent;
-it is the clean way to satisfy it without making the Rust emitter perform
-schema semantics.
+position by naming the real work: resolution relocation. The correction after
+the psyche's follow-up is that "relocation" means onto the datatypes schema
+deserializes into, not into a new public `SchemaResolution` product. With that
+guardrail, the pragmatic path is not a compromise against the psyche's "no
+Asschema" intent; it is the clean way to satisfy it without making the Rust
+emitter perform schema semantics.
