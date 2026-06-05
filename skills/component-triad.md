@@ -855,9 +855,10 @@ representation that a mail is being processed."*
 
 **The Nexus schema is the engine's feature catalog — its MAIN reason
 for existing is feature VISIBILITY.** Per psyche 2026-06-05 (record
-`z6qu`): every internal engine feature — any computation, any filtering
+`z6qu`, reinforced by operator capture `gvaz`): every internal engine
+feature — any computation, any filtering
 or condition on results, any conditional write (conditional writing),
-any internal logic-feature — **MUST be defined as a Nexus interface verb
+any internal logic feature — **MUST be defined as a Nexus interface verb
 + object in the nexus schema**, never as inline hand-written logic hidden
 from the schema. The consequence is load-bearing: the complete surface of
 *everything the engine can do internally* is then readable in one place —
