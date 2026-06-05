@@ -55,7 +55,7 @@ stack.
 | `owner-signal-agent` | `/git/github.com/LiGoldragon/owner-signal-agent` | Owner-only agent policy signal contract for backend/provider configuration and lifecycle control. |
 | `signal-message` | `/git/github.com/LiGoldragon/signal-message` | Message CLI to router channel contract. |
 | `signal-router` | `/git/github.com/LiGoldragon/signal-router` | Router-owned observation contract for accepted messages, route decisions, channel state, delivery status, and adjudication status. Used by `introspect` without turning `signal-introspect` into a shared schema bucket. |
-| `owner-signal-router` | `/git/github.com/LiGoldragon/owner-signal-router` | Owner-only router policy contract. |
+| `meta-signal-router` | `/git/github.com/LiGoldragon/meta-signal-router` | Meta-signal router policy contract. |
 | `signal-system` | `/git/github.com/LiGoldragon/signal-system` | System observation to router channel contract. |
 | `signal-harness` | `/git/github.com/LiGoldragon/signal-harness` | Router to harness delivery/observation channel contract. |
 | `signal-terminal` | `/git/github.com/LiGoldragon/signal-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
@@ -64,7 +64,7 @@ stack.
 | `owner-signal-mind` | `/git/github.com/LiGoldragon/owner-signal-mind` | Owner-only mind policy contract. |
 | `orchestrate` | `/git/github.com/LiGoldragon/orchestrate` | Orchestration component runtime. |
 | `signal-orchestrate` | `/git/github.com/LiGoldragon/signal-orchestrate` | Ordinary orchestration contract vocabulary. |
-| `owner-signal-orchestrate` | `/git/github.com/LiGoldragon/owner-signal-orchestrate` | Owner-only orchestration policy contract. |
+| `meta-signal-orchestrate` | `/git/github.com/LiGoldragon/meta-signal-orchestrate` | Meta-signal orchestration policy contract. |
 | `signal-criome` | `/git/github.com/LiGoldragon/signal-criome` | Criome trust and attestation contract vocabulary: BLS signature envelopes, identity records, delegation grants, component releases, and out-of-band attestations. Pure contract crate; no daemon, no storage, no Persona policy ownership. |
 | `repository-ledger` | `/git/github.com/LiGoldragon/repository-ledger` | Triad runtime component for recording pushed repository changes from the local Gitolite server into a sema-engine database. |
 | `signal-repository-ledger` | `/git/github.com/LiGoldragon/signal-repository-ledger` | Ordinary repository-ledger contract: receive-hook event assertions and repository/event read queries. |
