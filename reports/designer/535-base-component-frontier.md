@@ -14,6 +14,14 @@ description: |
 
 # 535 — Base-component frontier
 
+> **Correction (2026-06-05):** §"open frontier" items #1 and #3 below were
+> WRONG — corrected in report **536**. #1 (runtime emitter) framed a decided,
+> in-flight token migration as an open debt (it is settled: `0bw0`/`e6v5`).
+> #3 (contract/daemon split) leaned on the stale `wv63`; spirit's schema-plane
+> split exemplar has landed (`8d0e32cf`) and `wv63` is retired (superseded by
+> `y88n`). See 536 for verified ground truth. The "landed" + "already decided"
+> sections above stand.
+
 ## What landed (operator — the engine substrate moved)
 
 This was a high-movement day on the base components. On main, verified
