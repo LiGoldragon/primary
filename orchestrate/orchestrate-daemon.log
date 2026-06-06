@@ -1,2 +1,3 @@
 orchestrate-daemon: bare PascalCase token `DaemonConfiguration` is not a valid String — PascalCase is reserved for enum variants. Delimit it as `[DaemonConfiguration]`, or use a camelCase / kebab-case form.
 orchestrate-daemon: validation rejected `WirePath`: wire path must be absolute and normalized: DaemonConfiguration
+orchestrate-daemon: validation rejected `WirePath`: wire path must be absolute and normalized: DaemonConfiguration

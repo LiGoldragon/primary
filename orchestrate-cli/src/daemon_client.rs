@@ -1,5 +1,6 @@
 use std::fs::OpenOptions;
 use std::os::unix::net::UnixStream;
+use std::os::unix::process::CommandExt;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use std::time::{Duration, Instant};
@@ -113,7 +114,7 @@ impl OrchestrateDaemonClient {
 
     fn configuration_text(&self) -> String {
         format!(
-            "([DaemonConfiguration] [{}] [{}] [{}] [{}] [{}] [{}])",
+            "([{}] [{}] [{}] [{}] [{}] [{}])",
             self.store_path.display(),
             self.ordinary_socket_path.display(),
             self.meta_socket_path.display(),
@@ -211,12 +212,14 @@ impl DaemonProcess {
             .append(true)
             .open(&self.log_path)?;
         let error_log = log.try_clone()?;
-        Command::new(&self.executable)
+        let mut command = Command::new(&self.executable);
+        command
             .arg(&self.configuration_text)
             .stdin(Stdio::null())
             .stdout(Stdio::from(log))
-            .stderr(Stdio::from(error_log))
-            .spawn()?;
+            .stderr(Stdio::from(error_log));
+        command.process_group(0);
+        command.spawn()?;
         Ok(())
     }
 }
