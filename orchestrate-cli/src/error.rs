@@ -7,7 +7,7 @@
 use std::io;
 use std::path::PathBuf;
 
-use signal_persona_orchestrate as contract;
+use signal_orchestrate as contract;
 
 use crate::lane::Lane;
 use crate::scope::RawScope;
@@ -85,4 +85,25 @@ pub enum Error {
 
     #[error(transparent)]
     Contract(#[from] contract::Error),
+
+    #[error(transparent)]
+    Nota(#[from] nota_codec::Error),
+
+    #[error(transparent)]
+    CommandLine(#[from] signal_frame::CommandLineError),
+
+    #[error("daemon build failed with status {status}")]
+    DaemonBuildFailed { status: String },
+
+    #[error("daemon exited before becoming ready with status {status}")]
+    DaemonExitedBeforeReady { status: String },
+
+    #[error("daemon did not become ready at {socket}")]
+    DaemonReadinessTimeout { socket: PathBuf },
+
+    #[error("daemon executable path has no parent: {path}")]
+    DaemonExecutableHasNoParent { path: PathBuf },
+
+    #[error("unexpected daemon reply: {message}")]
+    UnexpectedDaemonReply { message: String },
 }

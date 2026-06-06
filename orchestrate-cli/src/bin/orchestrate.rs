@@ -7,11 +7,10 @@
 //! orchestrate status
 //! orchestrate verify-jj
 //! ```
-//! Lock files land at `<workspace>/orchestrate/<lane>.lock` in the
-//! existing format. The typed [`signal_persona_orchestrate::OrchestrateRequest`]
-//! projection is constructed for every flow; once `persona-orchestrate` is
-//! the canonical store the binary forwards the typed request to its
-//! socket instead of writing the lock file directly.
+//! The existing argv surface is translated into the
+//! [`signal_orchestrate::OrchestrateRequest`] contract. The daemon owns
+//! durable state and projects lock files back into
+//! `<workspace>/orchestrate/<lane>.lock`.
 
 use std::env;
 use std::path::{Path, PathBuf};

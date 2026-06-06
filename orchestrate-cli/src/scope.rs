@@ -5,13 +5,13 @@
 //! form: `^\[.+\]$` is a task lock; everything else is a path.
 //! `NormalizedScope` preserves that bimodal shape but binds the values
 //! to the contract's typed primitives ([`WirePath`] and [`TaskToken`])
-//! so the projection into `signal_persona_orchestrate::ScopeReference` is a
+//! so the projection into `signal_orchestrate::ScopeReference` is a
 //! pure structural lift.
 
 use std::fmt;
 use std::path::{Component, Path, PathBuf};
 
-use signal_persona_orchestrate::{ScopeReference, TaskToken, WirePath};
+use signal_orchestrate::{ScopeReference, TaskToken, WirePath};
 
 use crate::error::{Error, Result};
 

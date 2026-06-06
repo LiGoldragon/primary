@@ -5,7 +5,7 @@ edition      = "2024"
 rust-version = "1.85"
 license      = "MIT OR Apache-2.0"
 publish      = false
-description  = "Workspace coordination helper — thin client over signal-persona-orchestrate's role/claim vocabulary. Replaces the shell tools/orchestrate during the shell-helper era; routes through persona-orchestrate once that lands."
+description  = "Workspace coordination helper — compatibility surface over the orchestrate daemon."
 
 [lib]
 name = "orchestrate_cli"
@@ -16,9 +16,11 @@ name = "orchestrate"
 path = "src/bin/orchestrate.rs"
 
 [dependencies]
-signal-persona-orchestrate = { git = "https://github.com/LiGoldragon/signal-persona-orchestrate.git", branch = "main" }
-nota-codec                  = { git = "https://github.com/LiGoldragon/nota-codec.git", branch = "main" }
-thiserror                   = "2"
+signal-orchestrate      = { git = "https://github.com/LiGoldragon/signal-orchestrate.git", branch = "main" }
+meta-signal-orchestrate = { git = "https://github.com/LiGoldragon/meta-signal-orchestrate.git", branch = "main" }
+signal-frame            = { git = "https://github.com/LiGoldragon/signal-frame.git", branch = "main" }
+nota-codec              = { git = "https://github.com/LiGoldragon/nota-codec.git", branch = "main" }
+thiserror               = "2"
 
 [dev-dependencies]
 tempfile = "3"

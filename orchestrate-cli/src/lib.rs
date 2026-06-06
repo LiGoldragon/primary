@@ -1,14 +1,11 @@
 //! Workspace coordination helper.
 //!
-//! `orchestrate-cli` is the Rust port of the shell `tools/orchestrate`
-//! helper. It accepts the same `claim` / `release` / `status` argv
-//! surface, projects the operation into a typed
-//! `signal_persona_orchestrate::OrchestrateRequest`, and keeps the on-disk
-//! `orchestrate/<lane>.lock` files bit-compatible with the shell era.
-//!
-//! Direct routing to `persona-orchestrate`'s socket is deferred until the
-//! daemon is the canonical store; the lock files are a serialised
-//! projection of the typed records.
+//! `orchestrate-cli` is the Rust compatibility surface for
+//! `tools/orchestrate`. It accepts the existing `claim` / `release` /
+//! `status` argv shape, projects the operation into a typed
+//! `signal_orchestrate::OrchestrateRequest`, and sends it to the
+//! long-lived `orchestrate` daemon. Lock files are a daemon projection
+//! kept for humans and transitional agents.
 //!
 //! Design surface: [`crate::workspace::Workspace`] holds the workspace
 //! paths; [`crate::registry::LaneRegistry`] loads `orchestrate/roles.list`;
@@ -16,6 +13,7 @@
 //! claim/release flow against typed scopes and lock files.
 
 pub mod claim;
+pub mod daemon_client;
 pub mod error;
 pub mod lane;
 pub mod lockfile;

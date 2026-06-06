@@ -7,7 +7,7 @@
 
 use std::fmt;
 
-use signal_persona_orchestrate::RoleName;
+use signal_orchestrate::RoleName;
 
 use crate::error::Error;
 

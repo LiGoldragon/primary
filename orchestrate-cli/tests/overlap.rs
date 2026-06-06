@@ -1,6 +1,6 @@
 use orchestrate_cli::NormalizedScope;
 use orchestrate_cli::overlap::overlap;
-use signal_persona_orchestrate::{TaskToken, WirePath};
+use signal_orchestrate::{TaskToken, WirePath};
 
 fn path(value: &str) -> NormalizedScope {
     NormalizedScope::Path(WirePath::from_absolute_path(value.to_string()).unwrap())

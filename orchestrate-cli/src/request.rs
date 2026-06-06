@@ -1,12 +1,11 @@
-//! Project argv into the typed [`signal_persona_orchestrate::OrchestrateRequest`].
+//! Project argv into the typed [`signal_orchestrate::OrchestrateRequest`].
 //!
 //! The CLI accepts the convenience argv form (`claim <lane> <scope> ...
 //! -- <reason>`); this module decodes that form into the typed Rust
-//! value the contract owns. The lock-file projection is the side
-//! effect; the [`OrchestrateRequest`] is the source-of-truth shape
-//! that will eventually ship over the `persona-orchestrate` socket.
+//! value the contract owns. The daemon owns durable state; lock files
+//! are a compatibility projection of accepted daemon claims.
 
-use signal_persona_orchestrate::{
+use signal_orchestrate::{
     Observation, OrchestrateRequest, RoleClaim, RoleRelease, ScopeReason, ScopeReference,
 };
 

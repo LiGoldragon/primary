@@ -6,7 +6,7 @@
 //! (`# ...`) and blank lines are ignored.
 //!
 //! [`LaneRegistry`] validates every lane through the
-//! `signal-persona-orchestrate` role-token type, then preserves the
+//! `signal-orchestrate` role-token type, then preserves the
 //! registry order for status rendering.
 
 use std::fs;

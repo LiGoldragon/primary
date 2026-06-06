@@ -2,7 +2,7 @@ use std::path::Path;
 
 use orchestrate_cli::scope::RawScope;
 use orchestrate_cli::{Lane, NormalizedScope};
-use signal_persona_orchestrate::{Observation, OrchestrateRequest, RoleName, ScopeReference};
+use signal_orchestrate::{Observation, OrchestrateRequest, RoleName, ScopeReference};
 
 fn scope(raw: &str) -> NormalizedScope {
     NormalizedScope::from_raw(&RawScope::new(raw), Path::new("/home/li")).unwrap()
