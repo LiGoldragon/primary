@@ -3,6 +3,28 @@
 Variant: **Psyche** (a teaching + decision report). Source-grounded via workflow
 `w43o3klf0`. The short version up front, then the whole thing.
 
+## Correction (2026-06-06) — the premise was mis-scoped; read this first
+
+The psyche pointed out that **terminal-cell is not a triad component** — it is a
+standalone PTY-wrapper crate (a `terminal_cell` library + ~10 runnable binaries in
+`src/bin/`, flagship `terminal-cell-daemon`, deps `kameo`/`signal-core`/`signal-terminal`
+only, no `triad-runtime`/`schema-rust-next`/`sema-engine`, no Sema DB). The actual triad
+component is **terminal**. By explicit INTENT, raw viewer bytes flow viewer ↔ session
+`data.sock` ↔ terminal-cell and **never cross terminal's signal-frame communication
+socket**. So terminal's triad shell (`MultiListenerDaemon`) only ever carries signal-frame
+— **there is no raw listener to fit into it.** The decision this report recommends below
+(Solution 1: a raw-passthrough listener role on `MultiListenerDaemon`) is therefore **NOT
+needed for terminal**; the real shape is "the cell owns its raw sockets, off the triad
+shell" (effectively Solution 3 by construction, free). The six-solution analysis is
+retained as accurate reference on `MultiListenerDaemon`'s contract-agnostic + serial
+nature, and would apply **only if some future genuine triad component ever needed an
+in-shell raw plane** — which terminal does not. One real open question survives and is
+about terminal-cell's run model, not the triad shell: **does `terminal-daemon` run cells as
+separate child processes (`terminal-cell-daemon` per session — the abduco/conmon model) or
+as in-process library actors (current `terminal/ARCHITECTURE.md`)?** That is the psyche's
+call; both keep terminal's shell pure signal-frame. The TL;DR below is preserved as
+originally written but should be read through this correction.
+
 ## TL;DR
 
 - **Your fear was the wrong fear.** `MultiListenerDaemon` does **not** hard-code

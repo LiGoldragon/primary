@@ -98,9 +98,12 @@ Terminal-session owner (named sessions around terminal-cell, control plane, view
 Hits **B1 on BOTH legs** — ordinary `signal-terminal` AND `owner-signal-terminal` are
 concept stubs to promote — and **B2** on the `delivery_attempts`/`terminal_events`/
 `viewer_attachments` ledger triple. Rich 18-verb Nexus catalog (`Connect`/`DeliverInput`/
-`MutateGeometry`/`DetachViewer`/`CaptureTranscript`…). **Carve-out:** the per-session raw-byte
-viewer DATA socket must stay hand-written beside the daemon (off the signal-frame
-MultiListenerDaemon) — shares terminal-cell's data-plane decision.
+`MutateGeometry`/`DetachViewer`/`CaptureTranscript`…). **Carve-out (corrected):** the per-session
+raw-byte viewer DATA socket is owned by the **embedded terminal-cell library** (off the
+signal-frame MultiListenerDaemon), and raw bytes never cross terminal's communication
+socket — so terminal's triad shell stays pure signal-frame and needs **no** raw-listener
+change. terminal's own port is the two signal-frame contracts (ordinary + meta) + the
+Sema session registry; the byte plane comes free with the library.
 
 ### criome — BLS auth daemon; ordinary slice now, owner from scratch
 Spartan BLS12-381 auth/attestation (verifies signatures, holds identity/revocation/
@@ -139,22 +142,29 @@ start the daemon today. First move is **DOUBLE B1**: promote BOTH `signal-agent`
 **outbound backend sockets** is novel, plus a coordinated **router cutover** (router stops
 calling harness directly). Transcript ledger hits **B2**. Tail of the roadmap.
 
-### terminal-cell — NOT a triad component; it is a library (corrected 2026-06-06)
-**Reclassified after psyche feedback.** terminal-cell is the low-level PTY/transcript
-**library** that `terminal-daemon` consumes in-process — NOT a triad daemon to port. Both
-`terminal/INTENT.md` and `terminal-cell/INTENT.md` state production consumes it as a
-library inside `terminal-daemon`; the standalone `terminal-cell-daemon` is explicitly a
-dev/test harness, "not the Persona runtime boundary." Its deps are
-`kameo`/`signal-core`/`signal-terminal` only — no `triad-runtime`/`schema-rust-next`/
-`sema-engine`, and no Sema DB (forbidden by INTENT). So it does **not** get a triad port:
-no plane schemas, no Nexus/Sema engine, no MultiListenerDaemon shell. Its only
-modernization is migrating its control surface to the current `signal-terminal`/
-`signal-frame` contract and cleaning up the dev daemon + the 12 `--flags`/1-byte-tag CLI
-ergonomics — library work, not a component port. **The "carve-out" is gone from the triad
-roadmap:** the per-session raw `data.sock` is bound and pumped by the embedded
-terminal-cell library, off the triad shell, and raw bytes never cross terminal's
-signal-frame socket — so there is no raw listener to fit into `MultiListenerDaemon`. See
-report 78's correction banner.
+### terminal-cell — NOT a triad component; a PTY-wrapper binary + library crate (corrected 2026-06-06)
+**Reclassified twice after psyche feedback.** terminal-cell is a crate that ships BOTH a
+library (`[lib] terminal_cell`, rich `pub` API: `TerminalCell`/`TerminalCellSession`/ports)
+AND ~10 runnable binaries in `src/bin/` — flagship `terminal-cell-daemon` (a per-app
+PTY-wrapper daemon, abduco/dtach-shaped: one child + one PTY, attach/detach over its
+sockets) plus CLI tools (`send`/`capture`/`wait`/`exit`/`resize`/`view`/`session-select`)
+and fixtures. So it is a runnable binary; my first "triad daemon to port" framing AND my
+second "just a library" correction were both imprecise. The accurate statement: it is a
+standalone PTY-wrapper binary + library crate, and **it is NOT a triad component either
+way** — deps are `kameo`/`signal-core`/`signal-terminal` only (no
+`triad-runtime`/`schema-rust-next`/`sema-engine`), no Sema DB (forbidden by INTENT), no
+Nexus engine. So it does NOT get a triad port (no plane schemas, no engine, no
+MultiListenerDaemon shell); its modernization is migrating its control surface to the
+current `signal-terminal`/`signal-frame` contract — primitive work, not a component port.
+**The triad carve-out dissolves regardless:** terminal (the actual triad component) keeps
+its shell pure signal-frame; the raw `data.sock` lives in the cell (whether run as a child
+process or an in-process library actor), and raw bytes never cross a signal-frame socket.
+**Open integration-model question (psyche's call):** does `terminal-daemon` run cells as
+**separate child processes** (`terminal-cell-daemon` per session — the abduco/conmon model,
+matching the psyche's "runnable wrapper binary" framing) or as **in-process library actors**
+(what `terminal/ARCHITECTURE.md` currently documents)? Both keep terminal's shell pure
+signal-frame; the difference is process isolation vs in-process lifecycle. See report 78's
+correction banner.
 
 ### persona — the apex supervisor; port LAST
 The privileged engine-manager (launches/retires engines, starts/stops/observes the whole

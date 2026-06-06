@@ -115,9 +115,11 @@ prove the shared ledger primitive).
   vocabulary). Every pre-triad port's inline `match` must become the declared Nexus
   verb+object catalog (`z6qu`); exhaustive vocabulary is the precondition for trait
   emission.
-- **Two carve-outs break the recipe** (raw non-signal-frame second listeners): terminal-cell's
-  `data.sock` and terminal's per-session viewer data socket. The recipe has no template for a
-  triad daemon with a raw second listener.
+- **The "carve-out" is NOT a triad-shell problem (corrected 2026-06-06).** terminal-cell
+  is a library, not a triad daemon; its raw `data.sock` (and terminal's per-session viewer
+  data socket) is bound and pumped by the embedded terminal-cell library, off the triad
+  shell, and raw bytes never cross a signal-frame socket. So no `MultiListenerDaemon`
+  raw-listener template is needed; terminal-cell drops out of the port sweep.
 
 ## Recommended first moves
 
@@ -157,11 +159,20 @@ All three were settled by the psyche on 2026-06-05:
    reached; **upgrades are done manually for now.** Captured as Spirit `4lcv`.
    **Consequence:** the upgrade port does NOT build on `UpgradeFrom`/`AcceptPrevious`
    dispatch — that schema-emitted surface is deferred future work.
-3. **Raw data-plane carve-out — LEANS raw-passthrough, full study in report 78.** The
-   psyche leans toward a **raw-passthrough listener role on `MultiListenerDaemon`** but
-   asked for a thorough study of the whole problem and solution space before committing.
-   That study is `reports/system-designer/78-terminal-raw-data-plane-carveout-2026-06-05/`.
-   The carve-out decision is captured to Spirit only after the psyche confirms post-report.
+3. **Raw data-plane carve-out — DISSOLVED (psyche reframe 2026-06-06).** The premise was
+   wrong: terminal-cell is **not a triad component** — it is a standalone PTY-wrapper
+   binary + library crate (`terminal-cell-daemon` + CLI tools + a `terminal_cell` lib),
+   deps `kameo`/`signal-core`/`signal-terminal` only, no Sema, no engine. So there is no
+   raw listener to fit into `MultiListenerDaemon`: the raw `data.sock` lives in the cell,
+   off terminal's triad shell, and raw bytes never cross a signal-frame socket
+   (`terminal/INTENT.md`, `terminal-cell/INTENT.md`). terminal's shell stays pure
+   signal-frame; terminal-cell drops out of the triad port sweep. No `MultiListenerDaemon`
+   change needed; report 78 carries the corrected analysis. Nothing captured to Spirit —
+   this affirms existing repo INTENT, not new intent. **One open integration-model
+   question remains for the psyche:** does `terminal-daemon` run cells as separate child
+   processes (`terminal-cell-daemon` per session — the abduco/conmon model) or as
+   in-process library actors (current `terminal/ARCHITECTURE.md`)? Both keep the shell pure
+   signal-frame; the difference is process isolation vs in-process lifecycle.
 
 ## See also
 
