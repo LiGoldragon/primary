@@ -1086,6 +1086,20 @@ Signal contracts not Nexus-internal access."* This is the
 workspace-canonical engine mechanism; the parts that hold best
 move forward as intent develops.
 
+**Implementation status (study 327, 2026-06-06).** The *substance*
+of this substrate is realized in the spirit pilot — the
+`NexusWork`/`NexusAction` asymmetric pair, the five actions,
+`Continue` in-process recursion, and a recursive runner all exist.
+But the **`triad_main!` macro itself is NOT yet built**: the runner
+is `triad-runtime`'s `Runner::drive`
+(`triad-runtime/src/runner.rs`), reached from a *schema-emitted*
+`NexusEngine::execute` default method, and the daemon `main` is
+currently a hand-written near-one-line
+`DaemonCommand::from_environment().run()`
+(`spirit/src/bin/spirit-daemon.rs`). `triad_main!` is the intended
+entry-point emission (Spirit 1419/1486), named-but-unbuilt — do not
+expect to find it in source yet.
+
 The Nexus trait surface in shape:
 
 ```rust
@@ -1103,8 +1117,11 @@ pub enum NexusAction {
 }
 ```
 
-The runner loop (emitted from schema by `triad_main!` per Spirit
-1419) reads NexusActions and dispatches:
+The runner loop — `triad-runtime`'s `Runner::drive`, reached from
+the schema-emitted `NexusEngine::execute` default method (the
+`triad_main!` entry-point macro of Spirit 1419/1486 is the intended
+emission but is not yet built, per the status note above) — reads
+NexusActions and dispatches:
 
 - `ReplyToSignal` → hand to Signal's reply path → wire egress.
 - `CommandSemaWrite` / `CommandSemaRead` → call SEMA's `apply` /
@@ -1114,10 +1131,13 @@ The runner loop (emitted from schema by `triad_main!` per Spirit
 - `Continue` → loop back into `Nexus.execute` immediately,
   in-process, on the same call stack.
 
-Component code becomes a one-line `main` because the runner is
-schema-emitted; the component supplies only the trait
-implementations for its data-bearing nouns. This is the concrete
-form of Spirit 1488 (Decision High): *"Schema source carries the
+Component code reaches a near-one-line `main` (today a hand-written
+`DaemonCommand::from_environment().run()`) because the runner is a
+shared `triad-runtime` library reached from a schema-emitted
+`execute` default; the component supplies only the trait
+implementations for its data-bearing nouns. (When `triad_main!`
+lands, the `main` itself becomes macro-emitted too.) This is the
+concrete form of Spirit 1488 (Decision High): *"Schema source carries the
 triad engine mechanism as the baseline so schema authors get the
 runner shape, trace plumbing, and continuation substrate through
 generation; per-component variation should use explicit escape
