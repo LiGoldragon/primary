@@ -23,7 +23,7 @@ detail in workflow transcript `wnrg3eifm` / `wf_b405f67d-ea7`. Already designed 
 | harness | pre-triad | **yes** (Slice-1) | shared eng-mgmt | blocker (transcript) | 2 (ord+superv) | L |
 | system | pre-triad | yes (deprioritize) | shared eng-mgmt | none (stateless) | 2 (ord+superv) | M |
 | agent | greenfield | partial | **double** stub | blocker (transcript) | 2 (ord+owner) | L |
-| terminal-cell | pre-triad | **no** | promote stub | none (stateless) | 1 signal + 1 raw data | L |
+| terminal-cell | **library, not a triad component** | n/a (not a port) | n/a | none (no Sema) | sockets owned by the library, off the triad shell | n/a |
 | persona | special-manager | **no** | absent (author) | blocker (event-log) | multi + FD-handoff | L |
 
 ## The plans
@@ -139,16 +139,22 @@ start the daemon today. First move is **DOUBLE B1**: promote BOTH `signal-agent`
 **outbound backend sockets** is novel, plus a coordinated **router cutover** (router stops
 calling harness directly). Transcript ledger hits **B2**. Tail of the roadmap.
 
-### terminal-cell — the only canStartNow=false; needs a foundation decision
-Low-level PTY/transcript primitive consumed by terminal as a library. **Stateless by
-explicit intent** (no sema — forbidden by INTENT). **The carve-out that breaks the
-recipe:** its `data.sock` is a **raw byte plane**, but lojix's `MultiListenerDaemon`
-assumes every listener carries signal-frame. **A foundation decision must land first**:
-raw-passthrough listener role on MultiListenerDaemon, or `control.sock` on
-MultiListenerDaemon + `data.sock` as a sibling hand-written accept loop. Until then,
-`canStartNow=false`. 11 small policy verbs (`AdmitViewer`/`RejectCrossPlaneRequest`/
-`AcquireInputGate`/`ReleaseInputGate`/`DecideInjection`…). Also: 12 `--flags` violate
-single-NOTA-arg; hand-rolled 1-byte-tag framing.
+### terminal-cell — NOT a triad component; it is a library (corrected 2026-06-06)
+**Reclassified after psyche feedback.** terminal-cell is the low-level PTY/transcript
+**library** that `terminal-daemon` consumes in-process — NOT a triad daemon to port. Both
+`terminal/INTENT.md` and `terminal-cell/INTENT.md` state production consumes it as a
+library inside `terminal-daemon`; the standalone `terminal-cell-daemon` is explicitly a
+dev/test harness, "not the Persona runtime boundary." Its deps are
+`kameo`/`signal-core`/`signal-terminal` only — no `triad-runtime`/`schema-rust-next`/
+`sema-engine`, and no Sema DB (forbidden by INTENT). So it does **not** get a triad port:
+no plane schemas, no Nexus/Sema engine, no MultiListenerDaemon shell. Its only
+modernization is migrating its control surface to the current `signal-terminal`/
+`signal-frame` contract and cleaning up the dev daemon + the 12 `--flags`/1-byte-tag CLI
+ergonomics — library work, not a component port. **The "carve-out" is gone from the triad
+roadmap:** the per-session raw `data.sock` is bound and pumped by the embedded
+terminal-cell library, off the triad shell, and raw bytes never cross terminal's
+signal-frame socket — so there is no raw listener to fit into `MultiListenerDaemon`. See
+report 78's correction banner.
 
 ### persona — the apex supervisor; port LAST
 The privileged engine-manager (launches/retires engines, starts/stops/observes the whole
