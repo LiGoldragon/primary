@@ -113,7 +113,7 @@ impl OrchestrateDaemonClient {
 
     fn configuration_text(&self) -> String {
         format!(
-            "(DaemonConfiguration [{}] [{}] [{}] [{}] [{}] [{}])",
+            "([DaemonConfiguration] [{}] [{}] [{}] [{}] [{}] [{}])",
             self.store_path.display(),
             self.ordinary_socket_path.display(),
             self.meta_socket_path.display(),

@@ -50,6 +50,9 @@ pub enum Error {
         source: io::Error,
     },
 
+    #[error("input/output failure: {0}")]
+    Io(#[from] io::Error),
+
     #[error("active repository map read failed at {path}")]
     ActiveRepositoryMapRead {
         path: PathBuf,
