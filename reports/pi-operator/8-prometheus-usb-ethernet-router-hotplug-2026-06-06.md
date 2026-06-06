@@ -128,6 +128,33 @@ A safe read-only runtime test requires the user to plug a client or switch into 
 
 No deploy or restart is needed for that diagnostic pass.
 
+## Live plugged-in follow-up
+
+When the user connected the client, Prometheus reported carrier on `enp197s0f4u1c2` and the port moved to bridge forwarding state under `br-lan`.
+
+Prometheus-side evidence after connection:
+
+- `enp197s0f4u1c2` has `carrier=1`, `operstate=up`, and master `br-lan`.
+- networkd state for `enp197s0f4u1c2` is `enslaved (configured)` with network file `/etc/systemd/network/30-usb-eth.network`.
+- bridge state for that port is `forwarding`.
+- Prometheus still has WAN route, forwarding, NAT, DHCP, and DNS active.
+
+Client-side evidence on `ouranos`:
+
+- local Ethernet `enp0s31f6` has kernel link up / carrier on;
+- NetworkManager marks `enp0s31f6` as `disconnected`;
+- `enp0s31f6` has no IPv4 address;
+- the existing Ethernet profiles for `enp0s31f6` are DHCP profiles but both have `connection.autoconnect=no`:
+  - `prometheus-lan`
+  - `Wired connection 1`
+- `ouranos` remains on Wi-Fi `wlp0s20f3` with address `10.18.0.101/24` and default route through Prometheus over Wi-Fi.
+
+The current plugged-in failure is therefore not a missing Prometheus hotplug attachment. The active client is not bringing up its wired DHCP profile, so it never requests a wired lease. Prometheus cannot serve internet to a client interface NetworkManager leaves disconnected.
+
+The smallest live test is to activate the existing `prometheus-lan` NetworkManager profile on `ouranos` and verify it receives DHCP over `enp0s31f6`. That is a client-side network-state change, so it should be run only with explicit user approval.
+
+Durable client-side follow-up, if desired: CriOMOS/CriOMOS-home should make trusted Ethernet DHCP profiles autoconnect when carrier appears, while preserving the user's Wi-Fi preference/routing policy when both links are available.
+
 ## Possible code hardening after the live test
 
 If the live test shows the bridge/routing path works once carrier exists, no code change is required for the core behavior.

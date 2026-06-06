@@ -111,18 +111,18 @@ Wrong:
 
 ```text
 flowchart LR
-    schema["schema/lib.schema\nstrict NOTA source"]
-    asschema["Asschema\nmacro-free typed data"]
-    schema --> asschema
+    schema["schema/lib.schema\nfull-NOTA source"]
+    schemaInRust["schema-in-Rust\ntyped rkyv image"]
+    schema --> schemaInRust
 ```
 
 Also wrong:
 
 ```text
 flowchart LR
-    schema["schema/lib.schema<br/>strict NOTA source"]
-    asschema["Asschema<br/>macro-free typed data"]
-    schema --> asschema
+    schema["schema/lib.schema<br/>full-NOTA source"]
+    schemaInRust["schema-in-Rust<br/>typed rkyv image"]
+    schema --> schemaInRust
 ```
 
 Right:
@@ -130,13 +130,15 @@ Right:
 ```mermaid
 flowchart LR
     schema["schema source"]
-    asschema["Asschema data"]
-    schema --> asschema
+    schemaInRust["schema-in-Rust"]
+    schema --> schemaInRust
 ```
 
 The detail moves into the paragraph before or after the graph:
-`schema source` means `schema/lib.schema`, a strict NOTA document;
-`Asschema data` means the macro-free typed assembled schema.
+`schema source` means `schema/lib.schema`, a full-NOTA document;
+`schema-in-Rust` means the typed, rkyv-serializable image the
+structural-macro-node codec deserializes that source into (per record
+`vez8`; there is no separate assembled `Asschema` step).
 
 If one compact label cannot carry the concept, split the concept
 into separate nodes or remove the detail from the graph. Do not

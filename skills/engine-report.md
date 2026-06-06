@@ -27,10 +27,12 @@ An engine report carries:
 2. **Component ledger.** Repos, role, process/binary status, storage, and
    whether each part is hooked, stubbed, contract-only, conceptual, or stale.
 3. **Size ledger.** Production Rust, generated Rust, test Rust, authored
-   schema, assembled schema, generated fixtures, public type count, and test
+   schema, generated fixtures, public type count, and test
    count.
-4. **Schema-to-code ledger.** For every `.schema` and checked-in `.asschema`,
-   show where it lowers/emits and how much Rust it generates.
+4. **Schema-to-code ledger.** For every `.schema`, show where it lowers/emits
+   and how much Rust it generates. (There is no separate assembled-schema
+   artifact: per record `vez8` Asschema is removed — a `.schema` file is full
+   NOTA that deserializes straight into schema-in-Rust.)
 5. **Interface ledger.** Root enums, engine traits, contract traits,
    trace/help/config interfaces, and exact method signatures with file links.
 6. **Runtime path.** One or more small diagrams showing the live call path.
@@ -62,8 +64,8 @@ counts. Quote central intent by its bracket-quoted summary per
 - **Production Rust**: `src/**/*.rs`, excluding generated `src/schema/**`.
 - **Generated Rust**: checked-in `src/schema/**/*.rs`.
 - **Test Rust**: `tests/**/*.rs`.
-- **Authored schema**: `.schema` files.
-- **Assembled schema**: `.asschema` files.
+- **Authored schema**: `.schema` files (full NOTA; no separate assembled
+  `.asschema` artifact — removed per record `vez8`).
 - **Generated fixtures**: checked-in `*.generated.rs` or `*_generated.rs`
   outside `src/schema/**`.
 - **Public type count**: a rough inventory of `pub struct`, `pub enum`, and
