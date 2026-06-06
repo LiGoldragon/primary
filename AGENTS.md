@@ -158,21 +158,25 @@ Assistant and counselor personal-affairs substance is private by
 default and lives in `private-repos/assistant-reports/` or
 `private-repos/counselor-reports/`; see `skills/privacy.md`.
 
-**Possible additional role — auditor (Medium certainty).** Per
-intent records 234 and 235 (2026-05-22, Medium certainty), a third
-role — the **auditor** — is under consideration. The auditor closes
-the loop back to designer: it doubts, finds flaws, identifies bad
-patterns, and catches broken workspace rules. Audits are mostly
-mechanical (rules-and-flaws detection), so the work suits a smaller
-model good at pattern checking. The intent names **DeepSeek** as the
-chosen model and direction is to **automate** the auditor. Carried
-here under the carry-uncertainty discipline
-(`skills/architecture-editor.md` §"Carrying uncertainty"): the role
-is proposed-not-decided. Open: authority class (structural or
-support-tier?), lane mechanism (windows on a shared agent or
-external CI-style pipeline?), substrate for audit findings flowing
-back to designer. No `skills/auditor.md` and no `reports/auditor/`
-yet — those land when the role's shape settles.
+**Additional role — auditor (shape decided; lane mechanics open).**
+Per Spirit `ek8w` (Decision, High, 2026-06-04) the auditor's shape is
+decided: intent agglomeration and refresh is **triggered by an
+automated auditor that auto-proposes refreshes; the psyche confirms
+the retire of source records** — automated discovery with human-gated
+removal, preserving the conservative over-removal-is-worse discipline.
+The auditor closes the loop back to designer: it doubts, finds flaws,
+identifies bad patterns, and catches broken workspace rules. Audits
+are mostly mechanical (rules-and-flaws detection), so the work suits a
+smaller model good at pattern checking; the earlier proposal (the
+pre-base36 numeric records 234/235, 2026-05-22) named **DeepSeek** and
+the direction to **automate** the role, now confirmed by `ek8w`. Still
+open (carried under `skills/architecture-editor.md` §"Carrying
+uncertainty"): authority class (structural or support-tier?), lane
+mechanism (windows on a shared agent or external CI-style pipeline?),
+and the substrate for audit findings flowing back to designer
+(`reports/auditor/`, bead comments, auditor-identity Spirit records,
+or PR-style review on jj commits). No `skills/auditor.md` and no
+`reports/auditor/` yet — those land when those lane mechanics settle.
 
 ## Hard overrides
 
