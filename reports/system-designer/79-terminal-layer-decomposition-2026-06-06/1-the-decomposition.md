@@ -4,6 +4,31 @@ Variant: Psyche. Source-grounded via workflow `w2qcp5qxh`. Answers: who owns the
 control/session surface, given terminal-cell is an abduco wrapper process (`bcca`) and
 orchestrate does instance management.
 
+## Resolved by psyche (2026-06-06)
+
+The Option-D decomposition below is **adopted**; the two open calls are settled (Spirit
+`ckhx`, `5fd6`):
+
+- **Name = `terminal-control`** (the psyche's choice — supersedes the `termctl`
+  recommendation written below). Contracts: **`signal-terminal-control`** (working) +
+  **`meta-signal-terminal-control`** (policy, born meta-signal per `hnpo`).
+  `signal-orchestrate` `DownstreamComponent::Terminal` → **`TerminalControl`**.
+  `terminal-cell` unchanged.
+- **Cell fork = systemd, logged in sema.** The cell must **survive a `terminal-control`
+  restart**, so it is NOT a child of terminal-control — it is forked as a **systemd-managed
+  process**, and each instance is **durably logged in sema**. On restart, terminal-control
+  rediscovers the still-running cells from sema and **reattaches** to their control/data
+  sockets. This realizes abduco's survive-detach property through **systemd as the OS
+  process supervisor** + **sema as the durable instance registry**. It refines `bcca`:
+  orchestrate owns lifecycle *policy/orders*, **systemd** owns OS process supervision +
+  restart-survival, **terminal-control** owns the durable sema record used to reattach. The
+  systemd unit wiring is system-operator deploy work.
+
+Everything else in the report (not-harness, not-orchestrate, the responsibility map, the
+cell absorbing the gate-writer + matcher) stands as adopted. Where the text below says
+`termctl`/`signal-termctl`/`owner-signal-termctl`, read `terminal-control`/
+`signal-terminal-control`/`meta-signal-terminal-control`.
+
 ## The answer
 
 **Keep a dedicated session-control component — but rename it and trim it.** Don't fold it
@@ -120,10 +145,11 @@ layer was missing). The change is mostly a **rename + reassigning unbuilt respon
 
 ## Residual decisions for the psyche
 
-1. **Naming (the one truly open call):** confirm `termctl` (vs `terminal-session`) +
-   the lockstep `signal-termctl` / `meta-signal-termctl` / `DownstreamComponent::TerminalControl`.
-2. **Who forks the cell:** termctl in-process, or a program-agnostic process executor /
-   system-daemon that orchestrate+termctl order? (harness ruled out — AI-only.)
+1. **Naming — RESOLVED:** `terminal-control` + `signal-terminal-control` +
+   `meta-signal-terminal-control` + `DownstreamComponent::TerminalControl` (`ckhx`).
+2. **Who forks the cell — RESOLVED:** **systemd** forks the cell so it survives a
+   terminal-control restart, and the instance is logged in **sema** for reattach (`5fd6`).
+   Not a child of terminal-control. systemd unit wiring is system-operator work.
 3. **Instance table shape:** one generic wrapped-program instance table (covers AI runs +
    plain shell/editor/build cells), or separate `agent_runs` + `terminal_cell_instances`?
    *(Recommend one generic table.)*
