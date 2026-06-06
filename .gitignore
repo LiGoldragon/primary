@@ -33,6 +33,9 @@ __pycache__/
 
 # orchestration lane lock files — runtime coordination state, not history
 /orchestrate/*.lock
+/orchestrate/*.redb
+/orchestrate/*.sock
+/orchestrate/orchestrate-daemon.log
 
 # orchestrate-cli build outputs
 /orchestrate-cli/target/
