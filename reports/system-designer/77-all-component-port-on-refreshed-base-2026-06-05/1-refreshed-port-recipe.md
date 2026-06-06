@@ -70,11 +70,17 @@ default 32, a final Reply is free); `SemaEngine` → `apply_inner`/`observe_inne
 `on_start`/`on_stop`.
 
 **Two hard rules now LANDED:**
-- **`gb95` placement gate:** signal-frame route/encode/decode + streaming surfaces emit
-  ONLY when `emits_signal()` is true (`WireContract`/`SignalRuntime`/`ComponentRuntime`
-  bootstrap). `NexusRuntime`/`SemaRuntime` plane modules carry NO signal-frame code. Put
-  the wire surface on the contract crate or the signal module — never on
-  `nexus.schema`/`sema.schema`.
+- **`gb95` placement gate (CORRECTED 2026-06-06 — see finding below):** signal-frame
+  surfaces are gated by `emits_signal()`. `NexusRuntime`/`SemaRuntime` plane modules
+  correctly carry NO signal-frame code. **BUT empirically `WireContract` →
+  `RuntimePlaneSet::none()` → `emits_signal()` is FALSE**, so a freshly-generated wire
+  contract gets only the `short_header` constants — NOT `encode_signal_frame`/
+  `decode_signal_frame`/`route`. (This corrects the earlier re-baseline claim that
+  `WireContract` gets the frame surface.) The existing emitting contracts
+  (`meta-signal-cloud`, `meta-signal-lojix`) carry the frame codec only because their
+  checked-in artifacts are **stale pre-gb95**; cloud's and lojix's daemons decode via the
+  contract crate's `decode_signal_frame`, so **regenerating those contracts would break
+  the daemons.** See the gap table for the open foundation decision.
 - **Runner-shape gate:** for `NexusRunnerAdapterTokens` to emit, the nexus action
   vocabulary must be the exhaustive runner shape (`ReplyToSignal` + matching
   `CommandSema*`/`CommandEffect`/`Continue`, each with its completion-work variant).
@@ -189,6 +195,7 @@ reply, not via sema-engine subscribe; sema-engine subscribe is KEYED-tables-only
 | `meta-signal-*` are concept-only stubs, not emitting contracts | **BLOCKER** | promote each `.concept.schema` → real `.schema` + `build.rs` + `GenerationPlan::wire_contract` (lojix already did this for `meta-signal-lojix`) | every two-listener port's META socket: router, orchestrate, mind, terminal, repository-ledger, upgrade, cloud, domain-criome, agent, persona |
 | sema-engine has NO secondary-index / multi-key / append-log / predicate-filter; identified reads are point/range only; no identified multi-op atomic | **BLOCKER** (for 1:N ledgers) | trigger a live `ox7e` cycle on sema-engine (secondary-index/append/identified-commit primitive) OR build a porter-side index table via `Engine::storage_kernel()` | router (delivery_* by sequence, lookup by message-id, atomic message+delivery); orchestrate role/activity registries; any 1:N ledger |
 | **sema-engine depends on DEPRECATED `signal-core`** (`sema-engine/Cargo.toml:18`) — adopting it for durable storage reintroduces the deprecated kernel (found 2026-06-06 via the cloud pilot, which kept its store in-memory for this reason) | **BLOCKER** (for durable stores) | migrate `sema-engine` off `signal-core` onto `signal-sema`/`signal-frame`; fold into the `ox7e` cycle (both are sema-engine foundation work) | every stateful port's *durable* backing (cloud, mind, router, orchestrate, upgrade, criome, persona, agent, repository-ledger, introspect, terminal-control); daemon-wiring + in-memory-interim slices are UNAFFECTED |
+| **`gb95` strips the frame codec from `WireContract`** — a fresh wire contract emits `short_header` constants but NOT `encode_signal_frame`/`decode_signal_frame`/`route`; existing daemons (cloud, lojix) frame via the contract crate's codec, which survives only on stale pre-gb95 artifacts; no daemon-local framing example exists (found 2026-06-06 via the meta-signal-router promotion) | **BLOCKER** (for split daemons importing wire contracts) | PSYCHE DECISION: either (A) split the gate so the basic frame codec emits for wire-facing targets incl. `WireContract` while only streaming/observable stays `emits_signal()`-gated (small schema-rust-next fix; then regenerate contracts consistently), or (B) keep gb95's strip and add daemon-local framing of imported contract types (unbuilt pattern). | every split daemon that imports `signal-*`/`meta-signal-*` wire contracts: cloud (already fragile on stale artifacts), router, orchestrate, mind, terminal-control, repository-ledger, upgrade, domain-criome, agent, etc. |
 | `LogVariant`/`RequestPayload`/`Frame` aliases emit only inside the streaming block | SOFT | declare a stream, hand-impl the 2 markers, or trigger an emitter fix to emit them unconditionally under `emits_signal()` | request/reply-only ports that reference those traits |
 | No `subscribe_identified` (engine deltas are keyed-tables-only) | SOFT | publish at daemon layer (spirit pattern), model watched table as keyed, or `ox7e` an engine addition | any port wanting engine-level deltas on an identity table |
 | Streaming push is per-component daemon glue (no macro) | SOFT | copy `spirit/src/subscription.rs` + `daemon.rs:148-182` | every subscribe port |
