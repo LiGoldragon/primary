@@ -15,6 +15,31 @@ description: |
 
 # 81 — cloud pilot: what the retirement surfaced
 
+## STATUS: COMPLETE (2026-06-06, psyche chose "grind the full port now")
+
+The full cloud port landed on main, green end-to-end (build all-targets +
+clippy -D + all tests, incl. the live `schema_daemon` socket tests that drive
+both tiers over real Unix sockets through the emitted daemon). Landed commits:
+
+- schema-rust-next `98fbb369` (dependency-contract working tier) + `2c3c162d`
+  (gate emitted `try_clone_stream` behind `emits_stream` — no dead code in
+  non-streaming multi-listener daemons).
+- signal-cloud `27d7056e` (regen) + `0ff53ff2` (Observation → pair form,
+  restoring the tuple wire contract the bare-name regen had silently broken).
+- meta-signal-cloud `abce145f` (regen; its body enums were already unit/root, so
+  unaffected).
+- cloud `4a378d37` — schema pair-form migration (nexus + sema), `schema_role.rs`
+  deleted (role impls now emitted), triad-runtime bumped,
+  `SchemaRuntime::reply_to_signal` (per-request execute on the engine noun),
+  and `schema_daemon.rs` rewritten to `impl ComponentDaemon for CloudDaemon` +
+  a thin `SchemaDaemon` wrapper. Legacy `daemon.rs` (Cloudflare-IO) + the
+  `cloud-daemon` bin unchanged (the live-IO effect-plane port is separate).
+
+The two findings below (working-socket mode; fleet-wide grammar staleness)
+remain open follow-ups beyond cloud.
+
+## What the retirement surfaced (kept for the record)
+
 ## Landed and pushed (independently valuable, all green)
 
 1. **Daemon emitter supports dependency-crate working contracts**
