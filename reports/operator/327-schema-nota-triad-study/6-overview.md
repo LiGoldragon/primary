@@ -27,7 +27,7 @@ by two independent adversarial verifiers. The verdicts:
 | Your audit criterion | Verdict | Confidence |
 |---|---|---|
 | **Schema implements NO parser of its own** — it rides NOTA's structural-macro interfaces | ✅ **COMPLIANT** | High — an adversarial re-read *tried to refute it and failed* |
-| **No custom string-emitting pseudo-macro in the Rust schema** — real Rust macro infra (quote!/proc-macro2/ToTokens) | ⚠️ **PARTIAL — mid-migration, by design** | High — exact counts reproduced independently |
+| **No custom string-emitting pseudo-macro in the Rust schema** — real Rust macro infra (quote!/proc-macro2/ToTokens) | ✅ **NOW COMPLIANT** — `RustWriter` eliminated this session (Gap 1 fixed); was partial-mid-migration when found | High — verified green; fixtures semantically identical |
 
 In one sentence: **the schema language is clean (it is genuinely "specialized
 NOTA," owning no parser), the structural-macro-node codec is real and tested in
@@ -39,6 +39,33 @@ proves the whole pipeline works in practice.
 The single most useful output of this study is the **debt ledger** below: four
 concrete intent-vs-implementation gaps, each grounded in `file:line`, each with
 what closes it.
+
+## Fixes landed (2026-06-06)
+
+The psyche directed "fix all the problems found." All four gaps are now
+addressed and cargo-verified, across per-repo commits on `main`:
+
+| Gap | Fix | Repo / commit | Verified |
+|---|---|---|---|
+| **Gap 4** — at-binder abandoned | the whole `@`-binding surface removed | nota-next `d996a302` | check/test/clippy green |
+| **Gap 1** — RustWriter string residue | `RustWriter` god-struct **eliminated** (→ `RustModuleRenderer`, builds zero Rust strings); emission fully token-based (145 `quote!`, 42 `ToTokens`); `migration.rs` tokenized; named cross-object emission nouns added (de8i) | schema-rust-next `main` | 55 tests; 7 golden fixtures semantically identical (prettyplease canonicalization only) |
+| **Gap 2** — derive not adopted | `SourceVariantSignature` is now `#[derive(StructuralMacroNode)]`; the string-keyed `match macro_name()` ladder + hand-written `to_schema_text` reverse **deleted**; opens/belongs is a recursively-decoded `keyword` node. Required a new `#[shape(keyword="…")]` in nota-next + a lock bump | nota-next `f0e435a6` + schema-next `main` | derive path green; full suite passes |
+| **Gap 3** — `triad_main!` not built | docs reconciled to reality: the runner is triad-runtime's `Runner::drive` reached from the schema-emitted `execute` default; `triad_main!` is named-but-unbuilt | triad-runtime, spirit, primary `skills/component-triad.md` | docs only |
+
+Plus the doc-drift cleanups: the `Assembled*` family in schema-next renamed to
+`MacroExpansion*` (no longer collides with the removed Asschema IR); schema-next
+README/ARCH now say Asschema is **retired**, not a "compatibility endpoint";
+schema-rust-next INTENT/ARCH state the token-based end-state (`0bw0`/`o7a3` debt
+closed); nota-next docs add the `keyword` shape and retire the `@` at-binder.
+
+Two honest residuals carried forward (neither is "string pseudo-macro"):
+`RustModuleRenderer` still holds ~85 schema-*analysis* predicate methods (which
+decide *which* sections emit — a clean separable follow-up), and the
+`// @generated` header is prepended as text because prettyplease drops non-doc
+comments (a necessity, not debt).
+
+The detailed gap descriptions below are preserved **as found** during the study;
+the table above is the resolution record.
 
 ## The pipeline — intended vs implemented, in one picture
 
