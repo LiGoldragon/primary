@@ -50,7 +50,7 @@ flowchart TD
         B["Block / Delimiter / span<br/>parser.rs:56"]
         Q["qualifies_as_* shape predicates<br/>parser.rs:190,546"]
         SMN["StructuralMacroNode codec<br/>trait macros.rs:1267 · loop macros.rs:476<br/>#derive derive/src/lib.rs:23 (quote!)"]
-        AT["@ at-binder parse<br/>parser.rs:691"]
+        AT["@ at-binder — REMOVED this session<br/>(psyche own9; was parser.rs:691)"]
     end
     subgraph schema["schema-next — THE SCHEMA FORM"]
         DES["deserialize: SchemaSource / Schema<br/>source.rs:28 · engine.rs:290"]
@@ -70,7 +70,7 @@ flowchart TD
 
     S --> P --> B --> Q --> SMN
     SMN -. "derive built, NOT adopted" .-> HW
-    AT -. "@ parseable, schema REJECTS @ (source.rs:1260)" .-> HW
+    AT -. "abandoned syntax — support deleted from nota-next" .-x HW
     DES --> SIR
     Q --> DES
     SMN --> DES
@@ -219,29 +219,36 @@ This is the actionable core. Four gaps, ordered by how load-bearing they are.
   reads as if `triad_main!` is emitted) — flagged for your call, not edited
   unilaterally.
 
-### Gap 4 — the n2z3 at-binder is parseable but not the schema form
+### Gap 4 — the n2z3 at-binder is ABANDONED, and was REMOVED this session ✅
 
-- **Intent:** `n2z3` — authored surface settled on `Name@{...}` (struct),
-  `Name@(...)` (enum), `name@Type` (binder).
-- **Reality (reconciled in code this session):** the **nota-next parser
-  implements `@`-binding** (`parser.rs:691` `parse_atom_or_at_binding`,
-  distinguishing declaration- vs member-binding) — but **schema-next rejects
-  `@`** (`source.rs:1255-1261` `SourceVariantName::is_valid` requires
-  `!contains('@')`), and **zero** authored `.schema` fixtures use it (all use the
-  pre-n2z3 positional bracket/brace form). So n2z3 is realized at the NOTA floor,
-  not at the schema form.
-- **Closes it:** teach schema-next's declaration handling to consume the
-  at-binder blocks the parser already produces, then migrate the fixtures.
+- **Original intent (now superseded):** `n2z3` named an at-binder authored
+  surface (`Name@{...}` struct, `Name@(...)` enum, `name@Type` binder).
+- **Psyche correction (2026-06-06, Spirit `own9`):** the **entire `@`-binding
+  surface is abandoned syntax** — not a target to adopt. This supersedes `n2z3`
+  wholesale (`n2z3` certainty lowered to `Zero`). The still-valid nuggets from
+  `n2z3` (the root schema value is an implicit filename-named struct; the legacy
+  pipe declaration forms are transitional) survive in the superseding record.
+- **Action taken this session:** the at-binder was **removed from nota-next**
+  (commit `d996a302` on `main`) — `parse_atom_or_at_binding`,
+  `parse_named_declaration_binding`, `parse_named_member_binding`,
+  `parse_at_delimited`, the `opening_starts_declaration` free fn, and the
+  `AtBindingOpening` trait all deleted; the at-binder design-example test and the
+  `ARCHITECTURE.md` "At-Binding Syntax" section removed. `@` is now an ordinary
+  atom character; `cargo check`/`test`/`clippy` green (the structural-macro-node
+  suite still passes). The authored surface is the positional bracket/brace form
+  schema-next already uses — and already rejects `@` at `source.rs:1255-1261`.
 
 ### The recurring theme
 
-Three of the four gaps are the **same shape**: *nota-next (the floor) is built
-ahead of schema-next (the form)*. The structural-macro-node derive exists but
-isn't adopted; the `@` at-binder parses but isn't consumed. The remaining two are
-*mid-migration back-ends*: the Rust emitter's string residue, and the runner
-that's a library not yet a macro. None of these are violations of decided
-direction — they are the **unfinished tail of migrations the psyche has already
-ordered**. The direction is right; the adoption/cleanup is incomplete.
+After this session's removal, the live gaps split two ways. **One is "floor
+ahead of form":** nota-next's structural-macro-node derive exists and is tested,
+but schema-next hasn't adopted it (Gap 2). **Two are mid-migration back-ends:**
+the Rust emitter's string residue (Gap 1) and the runner that's a library not yet
+a macro (Gap 3). The fourth candidate — the `@` at-binder — turned out **not** to
+be a floor-ahead-of-form gap at all; it was **abandoned experimental syntax**,
+now removed (Gap 4). None of the live gaps are violations of decided direction —
+they are the **unfinished tail of migrations the psyche has already ordered**.
+The direction is right; the adoption/cleanup is incomplete.
 
 ## What is solid (the good news)
 
