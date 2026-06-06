@@ -85,6 +85,13 @@ impl NormalizedScope {
         }
     }
 
+    pub fn from_reference(reference: ScopeReference) -> Self {
+        match reference {
+            ScopeReference::Path(path) => Self::Path(path),
+            ScopeReference::Task(task) => Self::Task(task),
+        }
+    }
+
     /// Canonical lock-file rendering. Path scopes render as the
     /// absolute path; task scopes render as `[token]` so the bracketed
     /// human form is preserved.

@@ -120,7 +120,7 @@ Full discipline: `skills/reporting.md`.
 
 ## Roles
 
-Six main roles, each carrying its own discipline. Lanes
+Seven main roles, each carrying its own discipline. Lanes
 (`<role>`, `second-<role>`, `third-<role>`, `<qualifier>-<role>`)
 share their main role's discipline, skill file, and beads label;
 only the lock file, report subdirectory, and claim string differ.
@@ -136,6 +136,7 @@ etc. Specialized scope is qualified by prefix
 - `designer` — architecture, skills, reports (default agent: Claude)
 - `system-operator` — OS / platform / deploy (any agent)
 - `poet` — writing as craft (any agent)
+- `videographer` — video as craft: capture, editing, captioning, encoding, publishing-prep (default agent: Claude)
 - `assistant` — personal-affairs support for the psyche (Pi)
 - `counselor` — personal-affairs advisory for the psyche, working with the assistant lane (default agent: Claude)
 

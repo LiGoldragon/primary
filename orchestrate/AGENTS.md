@@ -15,7 +15,7 @@ BEADS is shared coordination state while it exists, not a lockable scope.
 
 ## Roles
 
-The workspace organises work under **six main roles**, each carrying its
+The workspace organises work under **seven main roles**, each carrying its
 own discipline. Additional **lanes** — `second-<role>`, `third-<role>`,
 and qualified lanes like `<qualifier>-<role>` — share their main role's
 discipline, skill file, and beads label; only the lock file, report
@@ -41,6 +41,7 @@ set of lanes is enumerated below.
 | `cloud-designer` | designer | (any) | `orchestrate/cloud-designer.lock` | `reports/cloud-designer/` | Specialized designer lane scoped to cloud component design |
 | `system-operator` | system-operator | (any) | `orchestrate/system-operator.lock` | `reports/system-operator/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
 | `poet` | poet | (any) | `orchestrate/poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
+| `videographer` | videographer | Claude | `orchestrate/videographer.lock` | `reports/videographer/` | Video production: capture / screen-recording, editing, captioning, encoding, publishing-prep |
 | `assistant` | assistant | Pi | `orchestrate/assistant.lock` | `reports/assistant/` | Personal-affairs support for the psyche |
 | `counselor` | counselor | Claude | `orchestrate/counselor.lock` | `reports/counselor/` | Personal-affairs advisory for the psyche, working with the assistant lane |
 
@@ -195,7 +196,7 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 `<role>` is one of `operator`, `second-operator`, `pi-operator`,
 `cluster-operator`, `cloud-operator`, `designer`, `second-designer`,
 `third-designer`, `system-designer`, `nota-designer`, `cloud-designer`,
-`system-operator`, `poet`, `assistant`, or `counselor`.
+`system-operator`, `poet`, `videographer`, `assistant`, or `counselor`.
 Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
@@ -399,6 +400,7 @@ Convention: each role owns a subdirectory.
 - `reports/nota-designer/` — nota designer's reports (specialized designer lane).
 - `reports/cloud-designer/` — cloud designer's reports (specialized designer lane).
 - `reports/poet/` — poet's reports.
+- `reports/videographer/` — videographer's reports.
 - `reports/assistant/` — assistant's privacy-safe bootstrap/mechanism reports; personal-affairs substance goes in `private-repos/assistant-reports/`.
 - `reports/counselor/` — counselor's privacy-safe bootstrap/mechanism reports; personal-affairs substance goes in `private-repos/counselor-reports/`.
 

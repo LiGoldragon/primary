@@ -20,13 +20,17 @@ use std::io::Write;
 use std::process::Command;
 use std::process::Stdio;
 
-use orchestrate_cli::claim::{self, ClaimOutcome};
+use orchestrate_cli::claim::{ClaimOutcome, ClaimOverlapDescription, LaneStatus, StatusReport};
+use orchestrate_cli::daemon_client::OrchestrateDaemonClient;
 use orchestrate_cli::lane::Lane;
+use orchestrate_cli::lockfile::{LockEntry, LockFile};
 use orchestrate_cli::registry::LaneRegistry;
+use orchestrate_cli::request;
 use orchestrate_cli::render;
-use orchestrate_cli::scope::RawScope;
+use orchestrate_cli::scope::{NormalizedScope, RawScope};
 use orchestrate_cli::verify_jj;
 use orchestrate_cli::workspace::Workspace;
+use signal_orchestrate::{ClaimRejection, OrchestrateReply};
 
 const EXIT_USAGE: u8 = 64;
 const EXIT_CONFLICT: u8 = 2;
@@ -98,16 +102,44 @@ fn handle_claim(
     }
     let reason = reason_parts.join(" ");
 
-    let outcome = claim::claim(
-        workspace,
-        registry,
-        lane,
-        scopes,
-        &reason,
-        working_directory,
-    )
-    .map_err(stringify)?;
-    let report = claim::status(workspace, registry).map_err(stringify)?;
+    registry.require_lane(&lane).map_err(stringify)?;
+    let normalized_scopes = scopes
+        .iter()
+        .map(|raw| NormalizedScope::from_raw(raw, working_directory))
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(stringify)?;
+    for scope in &normalized_scopes {
+        if let NormalizedScope::Path(path) = scope {
+            let as_path = std::path::Path::new(path.as_str());
+            if workspace.is_beads_scope(as_path) {
+                return Err(stringify(orchestrate_cli::Error::BeadsScopeForbidden {
+                    path: as_path.to_path_buf(),
+                }));
+            }
+        }
+    }
+
+    let request = request::claim_request(lane.clone(), &normalized_scopes, &reason)
+        .map_err(stringify)?;
+    let client = OrchestrateDaemonClient::from_workspace(workspace);
+    let reply: OrchestrateReply = client.submit_working(&request).map_err(stringify)?;
+    let outcome = match reply {
+        OrchestrateReply::ClaimAcceptance(_) => ClaimOutcome::Accepted {
+            request,
+            lane,
+            scopes: normalized_scopes,
+            reason: reason.to_string(),
+        },
+        OrchestrateReply::ClaimRejection(rejection) => ClaimOutcome::Rejected {
+            request,
+            lane: lane.clone(),
+            overlaps: claim_overlaps(&lane, rejection).map_err(stringify)?,
+        },
+        other => {
+            return Err(format!("unexpected daemon reply to claim: {other:?}"));
+        }
+    };
+    let report = daemon_status(workspace, registry).map_err(stringify)?;
 
     let mut lock_state = String::new();
     render::render_lock_state(&report, &mut lock_state)
@@ -126,7 +158,7 @@ fn handle_claim(
     if !conflict_stdout.is_empty() {
         // The shell helper re-prints state after rolling back; mirror
         // that here so the cleared lock surfaces in the same stream.
-        let cleared_report = claim::status(workspace, registry).map_err(stringify)?;
+        let cleared_report = daemon_status(workspace, registry).map_err(stringify)?;
         let mut cleared_lock_state = String::new();
         render::render_lock_state(&cleared_report, &mut cleared_lock_state)
             .map_err(|error| format!("render error: {error}"))?;
@@ -162,8 +194,13 @@ fn handle_release(
         eprint!("{message}");
         return Ok(EXIT_CONFLICT);
     }
-    let _outcome = claim::release(workspace, registry, lane).map_err(stringify)?;
-    let report = claim::status(workspace, registry).map_err(stringify)?;
+    let request = request::release_request(lane).map_err(stringify)?;
+    let client = OrchestrateDaemonClient::from_workspace(workspace);
+    let reply: OrchestrateReply = client.submit_working(&request).map_err(stringify)?;
+    if !matches!(reply, OrchestrateReply::ReleaseAcknowledgment(_)) {
+        return Err(format!("unexpected daemon reply to release: {reply:?}"));
+    }
+    let report = daemon_status(workspace, registry).map_err(stringify)?;
     let mut lock_state = String::new();
     render::render_lock_state(&report, &mut lock_state)
         .map_err(|error| format!("render error: {error}"))?;
@@ -174,7 +211,7 @@ fn handle_release(
 }
 
 fn handle_status(workspace: &Workspace, registry: &LaneRegistry) -> Result<u8, String> {
-    let report = claim::status(workspace, registry).map_err(stringify)?;
+    let report = daemon_status(workspace, registry).map_err(stringify)?;
     let mut lock_state = String::new();
     render::render_lock_state(&report, &mut lock_state)
         .map_err(|error| format!("render error: {error}"))?;
@@ -182,6 +219,64 @@ fn handle_status(workspace: &Workspace, registry: &LaneRegistry) -> Result<u8, S
     let _ = std::io::stdout().flush();
     run_beads_listing(workspace);
     Ok(0)
+}
+
+fn daemon_status(
+    workspace: &Workspace,
+    registry: &LaneRegistry,
+) -> orchestrate_cli::error::Result<StatusReport> {
+    let request = request::observation_request();
+    let client = OrchestrateDaemonClient::from_workspace(workspace);
+    let reply: OrchestrateReply = client.submit_working(&request)?;
+    let OrchestrateReply::RoleSnapshot(snapshot) = reply else {
+        return Err(orchestrate_cli::Error::UnexpectedDaemonReply {
+            message: format!("expected role snapshot, got {reply:?}"),
+        });
+    };
+
+    let mut lanes = Vec::new();
+    for lane in registry.lanes() {
+        let role = lane.role_name()?;
+        let entries = snapshot
+            .roles
+            .iter()
+            .find(|status| status.role == role)
+            .map(|status| {
+                status
+                    .claims
+                    .iter()
+                    .map(|claim| LockEntry {
+                        scope: NormalizedScope::from_reference(claim.scope.clone()),
+                        reason: Some(claim.reason.as_str().to_string()),
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
+        lanes.push(LaneStatus {
+            lane,
+            lock: LockFile::new(entries),
+        });
+    }
+    Ok(StatusReport { request, lanes })
+}
+
+fn claim_overlaps(
+    own_lane: &Lane,
+    rejection: ClaimRejection,
+) -> orchestrate_cli::error::Result<Vec<ClaimOverlapDescription>> {
+    let mut overlaps = Vec::new();
+    for conflict in rejection.conflicts {
+        let peer_lane = Lane::from_token(conflict.held_by.as_wire_token())?;
+        let scope = NormalizedScope::from_reference(conflict.scope);
+        overlaps.push(ClaimOverlapDescription {
+            own_lane: own_lane.clone(),
+            own_scope: scope.clone(),
+            peer_lane,
+            peer_scope: scope,
+            peer_reason: Some(conflict.held_reason.as_str().to_string()),
+        });
+    }
+    Ok(overlaps)
 }
 
 fn handle_verify_jj(
