@@ -400,20 +400,26 @@ parsed delimiter/atom structure, known-root document-body codecs,
 derive-generated typed readers/writers, and a programmable macro-node
 registry that matches structure by delimiter / count / position /
 captured child shapes. Schema is a consumer of that substrate: it
-declares the schema vocabulary and lowers matches into `Asschema`.
+declares the schema vocabulary and deserializes matches into
+schema-in-Rust (`Asschema` removed per record `vez8`).
 Future structural-macro languages should reuse the same NOTA layer
 instead of inventing another parser. NOTA is the text view of the
 portable rkyv format's specification; the binary it specifies appears
 in two contexts — SEMA at rest and signal in transit (psyche
 2026-05-26, records 839-844; 2026-05-31, record 1281).
 
-Authored schema sugar lowers into **assembled schema** (`Asschema`)
-before Rust emission. `Asschema` is macro-free typed data, not hidden
-parser state: it can be written as legal NOTA, read back as the same
-typed value, written as rkyv bytes, and read back before
-`schema-rust-next` emits Rust. The CLI opts into the generated NOTA
-surface; daemons and binary-only clients keep the rkyv surface without
-linking a NOTA decoder.
+Authored `.schema` DESERIALIZES — via the structural-macro-node codec
+(`xai7`) — directly into **schema-in-Rust**: the typed,
+rkyv-serializable canonical round-trip image. There is NO separate
+assembled-schema language (`Asschema` removed per record `vez8`,
+2026-06-04, Maximum); the resolution it once did — inline-declaration
+hoisting, visibility, ordering, symbol paths — now lives as methods on
+the schema-in-Rust source types, which then LOWER into Rust via
+`schema-rust-next` (records `4np2` / `e6v5` / `de8i`). Schema-in-Rust
+can be written as legal NOTA, read back as the same typed value,
+written as rkyv bytes, and read back before Rust emission. The CLI opts
+into the generated NOTA surface; daemons and binary-only clients keep
+the rkyv surface without linking a NOTA decoder.
 
 Authors write from the point of view of **NEXT**; **MAIN** is the
 published baseline (imported as comparison); **PREVIOUS** or **LAST**

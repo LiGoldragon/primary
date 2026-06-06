@@ -500,12 +500,14 @@ pub fn qualifies_as_symbol_name(&self) -> bool {
 
 The decode side accepts BOTH forms (bare symbol + bracket
 string) — the parser doesn't care; the encode side is what
-chooses. This keeps the assembled NOTA both round-trippable
-and human-readable. The pattern landed in
-`/git/github.com/LiGoldragon/schema-next/src/asschema.rs`
-for the `Name` newtype (commit `34c64aa`) after the derive
-output was identified as too noisy in the canonical assembled
-form.
+chooses. This keeps the emitted NOTA both round-trippable
+and human-readable. The pattern first landed for the `Name`
+newtype (commit `34c64aa`) in the since-removed
+`schema-next/src/asschema.rs` (Asschema removed per record
+`vez8`); the same hand-written-codec move now belongs on the
+schema-in-Rust source nouns in `schema-next` and on
+emission-target newtypes in `schema-rust-next`, wherever the
+derive output is too noisy versus the canonical NOTA shape.
 
 Generalisation: anywhere derive would emit a less-readable
 form than the canonical NOTA shape (per `nota-next`'s
