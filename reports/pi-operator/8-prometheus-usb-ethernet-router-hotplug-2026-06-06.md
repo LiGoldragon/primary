@@ -149,11 +149,27 @@ Client-side evidence on `ouranos`:
   - `Wired connection 1`
 - `ouranos` remains on Wi-Fi `wlp0s20f3` with address `10.18.0.101/24` and default route through Prometheus over Wi-Fi.
 
-The current plugged-in failure is therefore not a missing Prometheus hotplug attachment. The active client is not bringing up its wired DHCP profile, so it never requests a wired lease. Prometheus cannot serve internet to a client interface NetworkManager leaves disconnected.
+The plugged-in failure was therefore not a missing Prometheus hotplug attachment. The active client was not bringing up a usable wired default route.
 
-The smallest live test is to activate the existing `prometheus-lan` NetworkManager profile on `ouranos` and verify it receives DHCP over `enp0s31f6`. That is a client-side network-state change, so it should be run only with explicit user approval.
+Live fix applied on `ouranos`:
 
-Durable client-side follow-up, if desired: CriOMOS/CriOMOS-home should make trusted Ethernet DHCP profiles autoconnect when carrier appears, while preserving the user's Wi-Fi preference/routing policy when both links are available.
+- activated the existing `prometheus-lan` profile on `enp0s31f6`;
+- changed `prometheus-lan` to `connection.autoconnect=yes`;
+- set `connection.autoconnect-priority=200`;
+- changed `ipv4.never-default=no`;
+- set `ipv4.route-metric=50`;
+- set `ipv6.never-default=yes`.
+
+After the fix:
+
+- `enp0s31f6` has DHCP address `10.18.0.103/24`;
+- the Ethernet default route is installed via `10.18.0.1` with metric `50`;
+- Wi-Fi remains up with a higher-metric default route;
+- ping to the router over Ethernet succeeds;
+- ping to `1.1.1.1` over Ethernet succeeds;
+- Prometheus learns the `ouranos` Ethernet MAC behind `enp197s0f4u1c2` on `br-lan`.
+
+Durable client-side follow-up, if desired: CriOMOS/CriOMOS-home should make trusted Ethernet DHCP profiles autoconnect when carrier appears, while preserving the user's Wi-Fi fallback/routing policy when both links are available.
 
 ## Possible code hardening after the live test
 
