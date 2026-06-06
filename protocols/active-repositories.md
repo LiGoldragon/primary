@@ -85,9 +85,9 @@ the main Persona architecture reset unless the user names them.
 | Repository | Path | Why adjacent |
 |---|---|---|
 | `criome` | `/git/github.com/LiGoldragon/criome` | Current target is a minimal Spartan BLS12-381 authentication and attestation daemon. It verifies signatures, maintains identity/revocation state, signs attestations, and reports verification facts. Persona decides policy. Distinct from the **eventual** `Criome` — the universal computing paradigm in Sema (replaces Git, editor, SSH, web; encompasses broader auth/security via quorum-signature multi-sig). Per `ESSENCE.md` §"Today and eventually". |
-| `cloud` | `/git/github.com/LiGoldragon/cloud` | New runtime repo for provider API management. Documentation-only at birth; real daemon work is tracked by bead `primary-kbmi` (cloud/domain-criome runtime daemons). |
-| `signal-cloud` | `/git/github.com/LiGoldragon/signal-cloud` | Ordinary `cloud` contract: provider/capability observation, desired-state validation, and plan preparation. |
-| `meta-signal-cloud` | `/git/github.com/LiGoldragon/meta-signal-cloud` | Meta policy `cloud` contract: credential handles, provider account policy, plan approval, and plan application. |
+| `cloud` | `/git/github.com/LiGoldragon/cloud` | Provider API runtime daemon. Production path still uses the hand-written Cloudflare-IO daemon; schema-engine path is build-verified through daemon-local Nexus/SEMA schemas, `SchemaStore`, and a two-socket `SchemaDaemon` witness awaiting provider-effect cutover. |
+| `signal-cloud` | `/git/github.com/LiGoldragon/signal-cloud` | Ordinary `cloud` wire contract: provider/capability observation, desired-state validation, and prepared-plan observation. |
+| `meta-signal-cloud` | `/git/github.com/LiGoldragon/meta-signal-cloud` | Meta policy `cloud` wire contract: credential handles, provider account policy, plan preparation, plan approval, and plan application. |
 | `domain-criome` | `/git/github.com/LiGoldragon/domain-criome` | New runtime repo for Criome-domain registry, intelligent resolution, and provider-neutral projection. Documentation-only at birth; real daemon work is tracked by bead `primary-kbmi`. |
 | `signal-domain-criome` | `/git/github.com/LiGoldragon/signal-domain-criome` | Ordinary `domain-criome` contract: domain observation, intelligent resolution, and provider-neutral projection. |
 | `meta-signal-domain-criome` | `/git/github.com/LiGoldragon/meta-signal-domain-criome` | Meta policy `domain-criome` contract: domain registration, delegation, retirement, and projection policy. |
