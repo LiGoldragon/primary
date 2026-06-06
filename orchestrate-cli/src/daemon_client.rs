@@ -78,15 +78,14 @@ impl OrchestrateDaemonClient {
     {
         let mut encoder = Encoder::new();
         request.encode(&mut encoder)?;
-        let client =
-            ClientShape::<signal_orchestrate::Frame, meta_signal_orchestrate::Frame>::new(
-                CommandLineSockets::new(
-                    Some(self.ordinary_socket_path.clone()),
-                    Some(self.meta_socket_path.clone()),
-                    "PERSONA_ORCHESTRATE_SOCKET",
-                    "PERSONA_ORCHESTRATE_OWNER_SOCKET",
-                ),
-            );
+        let client = ClientShape::<signal_orchestrate::Frame, meta_signal_orchestrate::Frame>::new(
+            CommandLineSockets::new(
+                Some(self.ordinary_socket_path.clone()),
+                Some(self.meta_socket_path.clone()),
+                "PERSONA_ORCHESTRATE_SOCKET",
+                "PERSONA_ORCHESTRATE_OWNER_SOCKET",
+            ),
+        );
         let argument = SingleArgument::from_program_and_values(
             "orchestrate".to_string(),
             vec![encoder.into_string()],

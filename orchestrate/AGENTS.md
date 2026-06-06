@@ -1,17 +1,19 @@
 # Orchestration Protocol
 
 The orchestration protocol coordinates autonomous agents sharing the same
-workspace. The current shell-helper implementation combines role-owned lock
-files with the transitional workspace BEADS task database so agents see both
-file ownership and open work before they edit.
+workspace. The live implementation is `tools/orchestrate`: a Rust
+compatibility helper that keeps the old `claim` / `release` / `status` argv
+shape, starts `orchestrate-daemon` when needed, submits typed
+`signal-orchestrate` requests over Unix sockets, and renders daemon-projected
+lock files plus open BEADS work.
 
-The destination is the **command-line mind**: the Rust `mind` CLI as a thin
-client to the long-lived `persona-mind` daemon, using the
-`signal-persona-mind` contract. It replaces lock-file ownership and BEADS work
-tracking with typed role state, activity, and a native work/memory graph stored
-in `mind.redb`.
+The daemon-owned store is `orchestrate/orchestrate.redb`. Lock files are
+visibility projections, not the source of truth. BEADS is shared coordination
+state while it exists, not a lockable scope.
 
-BEADS is shared coordination state while it exists, not a lockable scope.
+The later destination is native typed work/memory state in Persona, but agents
+should treat the current production surface as daemon-backed `tools/orchestrate`,
+not as a shell helper that owns files directly.
 
 ## Roles
 
@@ -59,8 +61,9 @@ its own lock file.
 - BEADS database: `.beads/` (legacy transitional work-item store).
 - Helper: `tools/orchestrate`.
 
-Each agent writes only its own lock file. The lock files are coordination
-records, not operating-system locks.
+Agents do not edit lock files as the normal path. They use `tools/orchestrate`;
+the daemon mutates typed claim state and projects each lane's lock file. The
+lock files are coordination records, not operating-system locks.
 
 `.beads/` is never claimed. Any agent may create, update, comment on, or close
 BEADS tasks at any time. A BEADS task is a shared work item, not a file-ownership
@@ -108,47 +111,25 @@ intent goes through the deployed `spirit` CLI per `skills/intent-log.md`
 and `skills/spirit-cli.md`. Do not append to `intent/*.nota` during
 normal work; those files are legacy history.
 
-### Command-line mind target
+### Daemon-backed helper
 
-The current implementation is the lock-file helper described below. The target
-implementation is the Rust `mind` CLI backed by a long-lived `persona-mind`
-daemon and the `signal-persona-mind` contract. `tools/orchestrate` remains the
-compatibility helper name during migration.
-
-Target surface:
+The current production helper is daemon-backed:
 
 ```sh
-mind "(<one NOTA request record>)"
+tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
+tools/orchestrate release <role>
+tools/orchestrate status
+tools/orchestrate verify-jj
 ```
 
-Target invariants:
+The compatibility helper translates claim/release/status into typed
+`signal-orchestrate` requests and prints the familiar lock-state view. The
+daemon is the only writer of durable claim state. On first startup, the daemon
+imports existing `orchestrate/*.lock` files if `orchestrate.redb` has no claims;
+after that, lock files are downstream projections.
 
-- The protocol truth is the typed `signal-persona-mind` request/reply
-  vocabulary.
-- The `mind` binary accepts exactly one NOTA request record and prints exactly
-  one NOTA reply record.
-- The `mind` binary is a thin client. The long-lived `persona-mind` daemon owns
-  `MindRoot` and `mind.redb`.
-- If `tools/orchestrate` survives during cutover, it is only an external
-  workspace wrapper that translates the current ergonomic commands into the
-  canonical one-record CLI. It is not a `persona-mind` component.
-- Durable state lives in `mind.redb`, owned by `persona-mind` through its
-  mind-specific Sema layer/table declarations.
-- Lock files are current helper state only. They are not imported, read, or
-  projected by `persona-mind`; they retire at the workspace cutover boundary.
-- Claim, release, and handoff requests create activity records automatically.
-- The mind graph supplies native typed work items, notes, dependencies,
-  decisions, aliases, and ready-work queries through the same
-  `signal-persona-mind` contract.
-- BEADS is retired by the `persona-mind` wave. Existing BEADS entries may be
-  imported once as native mind events and aliases, but there is no long-term
-  Persona↔bd bridge and no dual-write path.
-
-Until that Rust path is implemented and tested, the shell helper remains the
-canonical writer for lock files. The `persona-mind` implementation does not
-need lock-file projection logic. Once agents use `mind` directly, lock files
-disappear as an ownership mechanism rather than becoming a parallel state
-model.
+Open BEADS listing remains a compatibility display. BEADS is not part of the
+daemon store yet and remains shared state.
 
 ### Lock-file format
 
@@ -175,13 +156,14 @@ task plus the specific paths the task requires).
 
 The filename names the lane; nothing else needs to live in the file. To
 inspect, `cat orchestrate/<lane>.lock` or `tools/orchestrate status`. The
-helper is the canonical writer; agents may also edit lock files by hand as
-long as the format is preserved.
+daemon is the canonical writer after startup; agents use
+`tools/orchestrate` rather than editing lock files by hand. Manual lock-file
+edits are legacy recovery only, before the daemon imports an empty store.
 
 Lock files are **runtime state, gitignored.** They live on the local
 filesystem only — coordination between agents on the same machine, not
-versioned history. A clean checkout starts with no lock files; the helper
-creates them on first claim. Don't commit them, don't expect them to
+versioned history. A clean checkout starts with no lock files; the daemon
+projects them on first accepted claim. Don't commit them, don't expect them to
 travel between machines.
 
 ## Claim Flow

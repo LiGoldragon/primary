@@ -25,8 +25,8 @@ use orchestrate_cli::daemon_client::OrchestrateDaemonClient;
 use orchestrate_cli::lane::Lane;
 use orchestrate_cli::lockfile::{LockEntry, LockFile};
 use orchestrate_cli::registry::LaneRegistry;
-use orchestrate_cli::request;
 use orchestrate_cli::render;
+use orchestrate_cli::request;
 use orchestrate_cli::scope::{NormalizedScope, RawScope};
 use orchestrate_cli::verify_jj;
 use orchestrate_cli::workspace::Workspace;
@@ -119,8 +119,8 @@ fn handle_claim(
         }
     }
 
-    let request = request::claim_request(lane.clone(), &normalized_scopes, &reason)
-        .map_err(stringify)?;
+    let request =
+        request::claim_request(lane.clone(), &normalized_scopes, &reason).map_err(stringify)?;
     let client = OrchestrateDaemonClient::from_workspace(workspace);
     let reply: OrchestrateReply = client.submit_working(&request).map_err(stringify)?;
     let outcome = match reply {
