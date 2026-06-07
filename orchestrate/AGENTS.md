@@ -88,6 +88,13 @@ workspace is a root cause of the branch-dancing on primary: an agent that
 locks everything then forks for its push instead of just committing to
 `main`. Lock narrowly; work on `main`.
 
+**Component migrations lock one component at a time** (Spirit record
+`cb0j`, one-component lock discipline for component migrations). A fleet-wide
+migration does not justify claiming the whole fleet. Claim the next component
+or directly coupled contract pair, migrate it, commit and push it, release the
+lock, then claim the next component. This keeps unrelated component owners and
+lanes moving while the migration advances one bounded surface at a time.
+
 **Reports never need a lock** — agents keep forgetting this, so it bears
 repeating: a report in your own lane is created, edited, superseded, or
 deleted with no claim at all. A lane writes **only** in its own
