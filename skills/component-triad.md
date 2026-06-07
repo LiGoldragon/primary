@@ -388,16 +388,16 @@ both living in the same `<component>.redb` opened through
   signal/rkyv startup message/file, not a Persona-only inherited file
   descriptor and not NOTA. It supplies the minimal launch facts needed
   to find/bind startup surfaces and can carry the initial Configure
-  meta-signal. If the daemon opens its sema store and finds no policy
-  state / configured marker, it enters an `Unconfigured` semi-started
-  state: bind only the configured startup/meta surfaces, report
-  not-ready through supervision, reject ordinary work, and wait for a
-  binary meta-signal configuration/mutation message from the owner or
-  deploy tool.
+  meta-signal (record `ur16`). If the daemon opens its sema store and
+  finds no policy state / configured marker, it enters an
+  `Unconfigured` semi-started state: bind only the configured
+  startup/meta surfaces, report not-ready through supervision, reject
+  ordinary work, and wait for a binary meta-signal
+  configuration/mutation message from the owner or deploy tool.
 - Restart: when the configured marker and policy state already exist,
   the daemon self-resumes from persisted SEMA state instead of waiting
   for Configure again. This survives a manager outage and keeps the
-  durable store as the daemon's own source of truth.
+  durable store as the daemon's own source of truth (record `ur16`).
 - Authored `bootstrap-policy.nota` may exist in the component repo as
   human-reviewable source, but a deploy/bootstrap client reads that
   text and sends the typed binary meta-signal messages. The daemon
@@ -466,9 +466,10 @@ flag. The accepted encoding differs by edge.
   ./startup.rkyv`). The daemon rejects inline NOTA and `.nota` file
   paths before component-specific decode. Daemons do not parse NOTA,
   including startup/configuration and peer traffic (psyche 2026-06-07,
-  record `pjvv`). Authored NOTA source files belong to CLIs, deploy
-  helpers, bootstrap clients, build tools, and tests that encode typed
-  values into binary signal/rkyv data before a daemon receives them.
+  records `pjvv` and `ur16`). Authored NOTA source files belong to
+  CLIs, deploy helpers, bootstrap clients, build tools, and tests that
+  encode typed values into binary signal/rkyv data before a daemon
+  receives them.
 
 Inline NOTA in a shell is wrapped in double quotes around the whole
 NOTA object. NOTA strings use `[text]` or `[|text|]`, not `"` string

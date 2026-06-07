@@ -44,11 +44,11 @@ process accepts NOTA." CLI/text-client edges accept NOTA. Daemon edges accept
 only a pre-generated signal/rkyv startup message/file and reject inline NOTA or
 `.nota` paths.
 
-The virgin-daemon refinement also landed in the same direction: do not depend
-on Persona passing an inherited file descriptor for bootstrap. A deploy/helper
-can pre-generate the binary signal/rkyv startup message. If the daemon is
-virgin, it enters an unconfigured state and receives Configure as binary signal.
-On restart, it self-resumes from persisted SEMA state.
+The virgin-daemon refinement also landed in the same direction as record
+`ur16`: do not depend on Persona passing an inherited file descriptor for
+bootstrap. A deploy/helper can pre-generate the binary signal/rkyv Configure
+message. If the daemon is virgin, it applies that Configure as first
+configuration. On restart, it self-resumes from persisted SEMA state.
 
 ### 3. Harness status is stale after operator commit `1ed51c20`
 

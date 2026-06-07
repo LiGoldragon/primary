@@ -324,7 +324,7 @@ per file; no untyped scratch data accumulating.
 
 Daemons receive binary signal/rkyv at their process and socket edges
 (per §"NOTA is the universal embedding-safe payload", the one
-argument rule, and intent records 1495 + pjvv). A daemon's startup
+argument rule, and intent records 1495 + pjvv + ur16). A daemon's startup
 argument is a pre-generated signal/rkyv startup message/file; a virgin
 daemon can receive initial Configure as binary signal, and a restarted
 daemon self-resumes from persisted SEMA state. The convention applies
