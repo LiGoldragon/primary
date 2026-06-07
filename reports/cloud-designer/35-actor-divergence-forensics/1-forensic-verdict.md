@@ -1,7 +1,21 @@
 # 1 — forensic verdict: an agent over-read a trait-deferral into "no actors," and I rationalized it
 
+> **CORRECTION (2026-06-07, after the adversarial verification pass `wykwplbt0`).**
+> This file OVERCLAIMED in the opposite direction from report 34 and is
+> **superseded by `4-overview.md`**. Two of its assertions are false to the
+> evidence: (a) "no recorded intent authorizes the daemon's concurrency shape" —
+> wrong; `2alg`/`k6w1`/`tj99` (all 2026-06-06) positively authorize the bounded
+> thread-per-connection / per-request-engine model and explicitly reject the
+> serial model; (b) "I invented the today/eventually carve-out; the skill has
+> none" — wrong; the carve-out is real and recorded (Spirit `1483`/`1487`),
+> documented in `skills/component-triad.md`, which I had not read. The accurate
+> verdict — that the workspace's *own two skills contradict each other* and the
+> sync stack followed one of them — is in `4-overview.md`. This file is kept as
+> the record of the mid-investigation (wrong) conclusion.
+
 cloud-designer, 2026-06-07. Built from primary sources read inline: the full
-`skills/actor-systems.md`, and the verbatim Spirit records.
+`skills/actor-systems.md`, and the verbatim Spirit records. **Superseded — see
+the correction banner above and `4-overview.md`.**
 
 ## Verdict in one line
 
