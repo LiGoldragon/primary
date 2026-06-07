@@ -16,7 +16,32 @@ description: |
 
 # 83 — repo audit
 
-## Method
+## SUPERSEDED — read `reports/designer/551-workspace-dependency-ecosystem-state.md`
+
+This report's mechanical zero-consumers→delete heuristic conflated **genuinely
+dead** with **intended-but-not-yet-adopted**, and the psyche corrected it
+(Spirit `k2o1`, 2026-06-07): *zero consumers does not mean dead — some contracts
+are meant to be used and the action is to START using them, not delete them.*
+Designer report **551** is the authoritative ecosystem audit; defer to it.
+
+Specific errors in this report's DELETE list, per 551 + psyche:
+- **`signal-forge`** — NOT dead; paused-not-dead criome-executor vision cluster
+  (`criome → signal-forge → forge → prism → arca`). Deferred, do not delete.
+- **`signal-lojix`, `meta-signal-lojix`** — NOT dead; **live-pending**, land with
+  the lojix daemon cutover.
+- **`signal-spirit`, `core-signal-spirit`** — the persona-prefix-retirement
+  rename track; the psyche confirms `signal-spirit` is the **intended** contract
+  name for spirit (drop the `persona-` prefix from `signal-persona-spirit`) —
+  a target to adopt, not a tombstone.
+
+No deletions from this report's list were executed (the only repos deleted were
+the earlier throwaway batch — design passes / mockup / repro / Gas-City — which
+551 also classifies as garbage). The genuinely-safe retirements (`spirit-next`
+stale checkout, `orchestrator` old-name, `sema-upgrade` + `owner-signal-sema-upgrade`
+self-declared-retired, `schema-core` spent witness, the frozen aski compiler
+cluster) are catalogued correctly in 551 §"Dead, abandoned, and orphan repos".
+
+## Method (retained for the dependency-graph technique only)
 
 Reverse-dependency graph from **every `Cargo.toml` + `flake.nix` at any depth**
 (catches nested workspace crates like `lojix/triad-port/Cargo.toml`): 478
