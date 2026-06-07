@@ -1,7 +1,7 @@
 # Prometheus USB Ethernet router hotplug investigation
 
 Date: 2026-06-06
-Role: pi-operator
+Role: cloud-operator
 
 ## Question
 

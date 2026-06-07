@@ -1,7 +1,7 @@
 # Spirit over-capture removal tombstone
 
 Date: 2026-06-07
-Role: pi-operator
+Role: cloud-operator
 
 ## Removed record
 
