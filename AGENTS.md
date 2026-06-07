@@ -324,35 +324,18 @@ or PR-style review on jj commits). No `skills/auditor.md` and no
   The intent layer has higher authority than every other workspace
   surface; supersession of psyche intent is always explicit
   (`skills/intent-maintenance.md`).
-- **Capture intent through the right intent substrate FIRST when a
-  psyche prompt arrives.** Before editing any report, before writing
-  code, before responding in chat — read the psyche's message,
-  identify every intent statement (Decision / Principle / Correction /
-  Clarification / Constraint), classify whether it is public or
-  private, and capture public intent through the deployed Spirit CLI
-  (`skills/spirit-cli.md`). Public intent goes into Spirit at privacy
-  `Zero`. Private personal substance must not be captured at privacy
-  `Zero`; capture it as an elevated-privacy Spirit record only with
-  explicit authority, otherwise as a `Private intent` note in the
-  relevant private report repository per `skills/privacy.md`. **Working
-  orders are NOT intent** — a
-  task directive ("audit X", "dispatch a subagent", "integrate
-  these branches") that dies when the task completes goes in the
-  task list or a bead, not Spirit. Capture only the durable intent
-  WITHIN a prompt, not the do-the-task part; a no-capture turn is
-  normal. The test: would the record still guide after the task is
-  done? Full discipline: `skills/intent-log.md` §"Working orders
-  are not intent". Do not append to `intent/*.nota` during
-  normal work. If Spirit is unavailable, report that as a blocker
-  instead of silently reviving the legacy file substrate. Everything
-  else the prompt asked for derives from intent and is done *after*
-  the capture. Reports, code, and chat are all downstream of intent.
-  This is the absolute first task of any session-turn that contains
-  psyche input. **Phrase rule: when the psyche says "refresh intent",
-  that means query/read recent Spirit records to refresh the agent's
-  own context. It is NOT an instruction to record a new Spirit entry,
-  edit repo `INTENT.md`, or edit `ARCHITECTURE.md` unless the psyche
-  explicitly asks for those file edits.**
+- **Run the Spirit gate before acting on a psyche prompt.** Read the
+  psyche's message, then choose exactly one outcome before reports,
+  code, or chat: **no capture** (question, tangent, task-only order,
+  or current-state reaction), **Observe/refresh** (context is needed;
+  the phrase "refresh intent" means query/read recent Spirit records),
+  **ask** (durable meaning, kind, or privacy is unclear), or **Record**
+  (an explicit durable Decision / Principle / Correction /
+  Clarification / Constraint). Working orders are NOT intent: if the
+  statement dies when the current task is erased, it goes in task state,
+  not Spirit. Public records use the deployed Spirit CLI at privacy
+  `Zero`; private substance follows `skills/privacy.md`. Do not append
+  to `intent/*.nota`. Full discipline: `skills/intent-log.md`.
 - **EXCEPTION + REFINEMENT — forwarded prompts: don't blindly duplicate;
   do gap-check the originally-addressed agent's capture.** When the
   psyche opens a message with *"here's the prompt I just gave

@@ -34,91 +34,52 @@ is the question.
 Sweep and supersession discipline lives in
 `skills/intent-maintenance.md`.
 
-## Conservative by default — never overextend
+## Spirit gate — classify before any write
 
-Intent logging is **conservative by default**. Never overextend the
-psyche's words. When wording is ambiguous, understate. Missing some
-intent is recoverable — future agents see the gap and ask. Over-
-extending closes the gap with false certainty and causes action on
-intent that never existed.
+Spirit writes are conservative. Before any `spirit "(Record …)"`,
+answer the gate:
 
-Inferring intent the psyche did not clearly state is **forbidden** —
-ESSENCE.md §"Inferring intent is forbidden" carries the absolute. The
-intent layer is load-bearing truth; downstream agents act on it.
-Attributing words the psyche did not say corrupts the system.
+1. Is this an exact psyche statement, not agent inference?
+2. Does it still guide after the current task is erased?
+3. Is it a Decision, Principle, Correction, Clarification, or Constraint?
+4. Is the privacy axis clear?
 
-The asymmetry: understatement leaves a gap that future agents see and
-ask about — *"the discipline is working when the agent surfaces the
-gap as a question."* Over-extension closes the gap and the question
-never gets asked. Prefer the recoverable failure mode.
+Gate outcomes:
 
-When intent is unclear, **ask**. Short psyche prompts — *"yes,"
-"okay,"* — typically mean "go ahead with what was proposed," not
-"I agree with everything in your context." The psyche reads bits and
-pieces; real psyche attention is the scarcest resource and cannot
-be given to everything. The right pattern for an ambiguous short
-prompt is to log only the minimally-implied piece (often nothing)
-and ask the psyche back: *"when you said yes, did you mean such and
-such?"* A confirmed answer becomes clear intent.
+- **No capture** — pure question, tangent, task-only order, current-state
+  reaction, or brainstorming without a settled want.
+- **Observe/refresh** — context is needed. The phrase **"refresh intent"**
+  means query/read recent Spirit records, not write a new record or edit
+  repo `INTENT.md` / `ARCHITECTURE.md` files.
+- **Ask** — durable meaning, kind, or privacy is unclear.
+- **Record** — explicit durable psyche intent passes the gate.
 
-Prompt size is a clear indicator. **Long prompts express intent;
-short prompts give green lights for action.** A short *"yes"* after
-a long agent-written context is almost never blanket agreement with
-the surrounding propositions — it's affirmation of whatever specific
-piece caught the psyche's attention. Log only that piece; ask if
-even that is ambiguous.
-
-The intent log is **gold-ore refinement**, not the archive of
-everything ever typed in the prompt box. *"Intent mining is an art.
-It's the most valuable art that an agent can produce."* A future
-short-term-log substrate may eventually capture all prompts and agent
-inferences for historical review; until that exists, the intent
-layer is reserved for material with significant intent content.
+No-capture is normal. Understatement is recoverable; over-extension
+corrupts the load-bearing intent layer.
 
 ## Privacy gate before recording
 
-Before any Spirit `Record`, classify the privacy axis. Public workspace
-intent is recorded at privacy `Zero` and is returned by ordinary
-queries. Private or personal-affairs substance must never be recorded
-at privacy `Zero`. If the psyche explicitly wants that substance in
-Spirit, record it with an elevated privacy `Magnitude`; otherwise keep
-it as a `Private intent` note in the relevant private report repository
-per `skills/privacy.md`.
+Public workspace intent uses privacy `Zero`. Private or personal-affairs
+substance must never be recorded at privacy `Zero`; use elevated Spirit
+privacy only when explicitly authorized, otherwise write the relevant
+private-report note per `skills/privacy.md`.
 
-## Phrase rule — "refresh intent"
+## Recordable kinds
 
-When the psyche says **"refresh intent"**, the instruction is to
-query/read recent Spirit records and refresh the agent's own context.
-It is not an instruction to create a new Spirit record, edit a repo
-`INTENT.md`, or edit an `ARCHITECTURE.md` unless the psyche explicitly
-asks for those file edits.
+Only explicit durable psyche statements in these five shapes are
+recordable:
 
-A refresh pass can surface records that matter to the current task, but
-reading those records is context acquisition. Do not convert the phrase
-itself into a capture/manifestation workflow.
+- `Decision` — "we're going with X, not Y".
+- `Principle` — "X over Y as a general rule".
+- `Correction` — "you were wrong about X; the right thing is Y".
+- `Clarification` — "when I said X, I meant Y".
+- `Constraint` — "never do Z".
 
-## When to record
-
-Record every public psyche statement that classifies as intent — the five
-recordable kinds:
-
-| Kind | Author shape |
-|---|---|
-| `Decision` | "we're going with X, not Y" |
-| `Principle` | "X over Y as a general rule" |
-| `Correction` | "you were wrong about X; the right thing is Y" |
-| `Clarification` | "when I said X, I meant Y" |
-| `Constraint` | "never do Z" |
-
-**Record everything public that classifies as intent — no filtering
-at capture time except the privacy gate above.** *"Just write down the intent as it comes."*
-Repetition is itself signal: when the psyche restates an intent
-across sessions, the cluster of records carries the intensity.
-The workspace does not dedup or filter at the log layer.
-Refinement of intent — supersession, certainty lowering,
-negation, dedup — is downstream (the spirit guardian arrives
-with the multi-agent auditing arc per `skills/intent-maintenance.md`
-§"Forward — richer supersession lifecycle").
+A task instruction may contain a durable statement. Record only the
+durable statement; the task itself goes to beads, locks, reports, or
+chat. Repetition is signal, but duplicates and supersession are
+maintenance work (`skills/intent-maintenance.md`), not an excuse to
+write uncertain entries.
 
 ## Capture is not done until it manifests into the affected repo's INTENT.md
 
@@ -156,106 +117,24 @@ genuine omission. Mistaken duplicates are removed without weight change;
 they are never reintroduced as a single higher-weight record (that path is
 reserved for *genuine* psyche repetition — `skills/intent-maintenance.md`).
 
-Even short responses can carry intent. *"Let me think about that"*
-is a Clarification at `Minimum` certainty — record it. *"I'm not
-sure"* during brainstorming carries intent at `Minimum` — record
-what was said.
+## Non-recordable shapes
 
-A short *"yes"* or *"okay"* is harder and almost never authorizes
-the full agent context that preceded it. Apply the conservative-
-by-default rule: log only the minimally-implied piece (often just
-the specific action the psyche is greenlighting), never the
-surrounding agent reasoning. If even the minimal implication is
-ambiguous, ask the psyche back at end-of-session before logging
-anything beyond the bare affirmation. The short-affirmation
-discipline is detailed in the "Conservative by default" section
-above.
+Do not record pure questions, tangents, task-only instructions,
+current-state updates, or reactions that do not state a durable rule.
+Short affirmations usually greenlight the immediate action only; ask if
+unclear.
 
-What is **not** intent (and so not recorded):
-
-- **Pure questions** — *"How does X work?"* carries no intent;
-  answer in chat, no record needed.
-- **Conversational tangents** with no decision, principle,
-  correction, clarification, or constraint.
-- **Work instructions** — *"implement X," "fix the macro," "go
-  write the report"* — task assignments that complete when the
-  work completes. Future sessions don't need to know the
-  directive existed; the code or result is the witness. Work
-  instructions live in beads, locks, chat, reports — not the
-  intent log. The test: ask *"will an agent in a different
-  session need to know this fact?"* If no, it is a work
-  instruction. If yes (a rule, decision, principle, name, or
-  correction that persists past the task), it is intent.
-
-A work instruction may *contain* extractable intent. *"Rename
-signal-core to signal-frame"* is a work instruction, but it
-contains the Decision *"signal-core is now called signal-frame."*
-Log the Decision; treat the action as the work item separately
-(beads, lock, report). Conversely, *"implement ToSemaOutcome now
-and prove it with spirit"* contains no extractable intent — the
-rule (the trait shape) was already settled elsewhere, and the
-directive itself completes when the work completes.
-
-The classification step is the only filter. The bar: *does the
-statement carry intent, or is it a question or work instruction?*
-If it carries intent in any of the five kinds — and only what the
-psyche actually stated, not what could be inferred from it —
-record it.
-
-## The pre-capture gate — the after-the-task test
-
-The classification rule above is known and still gets violated:
-agents over-capture because they log the prompt's VERB instead of
-testing the SENTENCE. This gate is the keystroke check. Before
-every `spirit "(Record …)"`, apply the test to the exact sentence
-you are about to log:
-
-> *Erase the current task. Is this sentence still meaningful and
-> still guiding future work?*
-
-If it dies with the task, it is a working order — do not log it; it
-goes in the session task list or a bead. The shapes that keep
-slipping through (all working orders, none intent):
-
-| Logged as Decision/Constraint | Why it fails the test |
-|---|---|
-| "Create a report on X and test it" | dead once the report exists |
-| "Dispatch a subagent to finish X" | dead once X is finished |
-| "Audit Y and write up the findings" | dead once the audit lands |
-| "Operator: integrate these branches" | dead once integrated |
-| "Psyche asks this lane to review Z" | dead once reviewed |
-
-The good-call pattern is to extract the durable shape hiding inside a
-working order. If the psyche asks for research on expanding Spirit's
-interface, don't log "research Spirit". Log the persistent desired
-surface instead: "Spirit command surfaces should offer simple-to-
-complex operation variants: concise summary defaults for normal use,
-and explicit full-metadata/custom forms for advanced use." The report
-or task carries the research; Spirit carries the lasting principle.
-
-Contrast — these pass (still guide after any task): "schema is the
-source of truth" (Principle), "the Plane is a data-carrying enum"
-(Decision), "working orders aren't intent" (Correction). The
-pattern: **durable intent describes what the system IS or how to
-work; a working order describes what to do next.** Capture the
-first; the second is task state. A task prompt that carries no
-durable want logs nothing — a no-capture turn is correct, not a
-miss.
+A work instruction can contain durable intent. Example: "rename
+signal-core to signal-frame" contains a naming decision; "write the
+report" does not. Record only the durable part.
 
 ## When a working order slips in anyway
 
-Deployed Spirit now supports explicit removal (records 1103/1189),
-so a mis-logged record can be **removed** on psyche authority — not
-only flagged. Log a short `Correction` naming the record number and
-that it was an over-capture, pointing to where the durable intent
-(if any) actually lives; then remove the mis-log once the psyche
-authorizes, **capturing its full text and provenance first** per
-`skills/intent-maintenance.md` §"Removing a record — tombstone
-first". When removability is uncertain, flag rather than remove
-(record 1103: over-removal is worse than under-removal). Do not
-spree-flag or spree-remove old mis-logs — act as noticed and rely on
-the pre-capture gate above to stop new ones; a cleanup spree would
-itself churn the log being kept lean.
+A mis-logged record can be removed on psyche authority. Before removal,
+preserve its full text and provenance per `skills/intent-maintenance.md`
+§"Removing a record — tombstone first". When removability is uncertain,
+flag rather than remove; over-removal is worse than under-removal. Do
+not spree-flag or spree-remove old mis-logs.
 
 ## Record shape
 
@@ -445,16 +324,12 @@ evidence so the agent's interpretation is minimal:
 | *"I'm certain"*, *"this is settled"*, *"no more questions"*, *"definitively"*, *"never"*, *"always"*, or strong but not absolute correction | `High` / `VeryHigh` unless the prompt or log history truly warrants `Maximum` |
 | strong but not absolute emphasis | `High` |
 | (default — direct statement, decision, preference) | `Medium` |
-| weak leaning with real signal | `Low` |
-| *"I'm not sure"*, *"maybe"*, *"leaning toward"*, *"I think"*, *"perhaps"*, *"could be"* | `Minimum` |
+| explicit low-certainty but durable rule or preference | `Low` / `Minimum` |
 
 `VeryLow` and `VeryHigh` are available when the psyche's wording
 clearly asks for a finer notch than `Low` or `High`; do not invent
-precision when the phrasing does not carry it.
-
-The psyche can also tag magnitude explicitly mid-sentence ("I'm
-certain about X but not sure about Y") — record X as `Maximum` and
-Y as `Minimum`.
+precision when the phrasing does not carry it. Certainty calibrates a
+record only after the Spirit gate already says Record.
 
 ## Topic organization — broad topics, slow split
 
@@ -499,60 +374,15 @@ one narrow string.
 Carve the new topic through the maintenance tooling. Don't split
 prophylactically; split when the surface earns it.
 
-## Recording is the first task of every psyche-prompt turn
+## If the gate says Record
 
-When a psyche prompt arrives, **capturing intent through the right
-intent substrate is the absolute first thing the agent does** — before
-editing a report, before writing code, before responding in chat.
-Everything else the prompt asked for is downstream of intent. Public
-intent goes through Spirit with privacy `Zero`; private personal
-substance follows `skills/privacy.md` and must either be captured as an
-elevated-privacy Spirit record by explicit authority or written as a
-private report note.
+1. Query prior entries on the topic for contradiction and certainty.
+2. Pick the kind, certainty, and privacy.
+3. Write one dense description through `spirit`; the daemon stamps time.
 
-The session-turn shape:
-
-1. Read the psyche's message in full.
-2. Identify every intent statement — Decision, Principle,
-   Correction, Clarification, Constraint. A single prompt often
-   contains several across multiple topics.
-3. For each public entry: record it through `spirit` at privacy `Zero`
-   (or run the supersession protocol if it contradicts a prior — see
-   `skills/intent-maintenance.md`). For private personal substance,
-   follow `skills/privacy.md`: use an elevated privacy value only when
-   explicitly authorized; otherwise write a `Private intent` note in
-   the matching private report repo.
-4. If Spirit is unavailable, stop and surface the blocker. Do not
-   revive file logging silently.
-5. *Now* do the work the psyche asked for (report, code, etc.).
-
-Reports, code, and chat all derive from intent. If you find
-yourself editing a report before the intent is captured, stop and
-back up. Capture first; act second.
-
-## Recording protocol — three steps per entry
-
-Per entry within the capture pass:
-
-1. **Query prior entries on the topic.** Use Spirit's query surface.
-   Use the results for two things: contradiction detection and
-   certainty calibration. Repeated same-direction records can justify
-   `High` / `VeryHigh`; contradiction switches to the supersession
-   protocol (`skills/intent-maintenance.md`). If the statement is new
-   and the prompt lacks strong certainty language, default to
-   `Medium`.
-2. **Pick the right kind.** Decision / Principle / Correction /
-   Clarification / Constraint. If multiple kinds fit, take the
-   strongest applicable (Constraint > Correction > Decision >
-   Principle > Clarification).
-3. **Write the entry through Spirit.** One dense description that
-   clarifies the intent and reuses the psyche's wording where it is
-   load-bearing; magnitude per the vocabulary. The daemon stamps
-   date and time.
-
-The agent who recorded an entry stays accountable for re-reading it
-within the session — if a later psyche statement reframes the
-earlier one, the recorded entry might need supersession.
+If Spirit is unavailable when a record is required, surface the blocker;
+do not revive `intent/*.nota` logging silently. If the gate says no
+capture, Observe, or ask, do not write a record.
 
 ## Citing intent in prose — bracket-quote the summary
 
