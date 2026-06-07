@@ -121,9 +121,9 @@ limits**. An agent testing something radical can wipe the entire working
 tree and rebuild from scratch on a branch — delete everything, start over,
 whatever the experiment needs. The clean slate a "major break" seems to
 want is fully achievable on a branch, so **major breaks are branches, not
-new repos**. The earlier `major-break-via-new-repo` skill (which told
-agents to spin up `-next` / `-v2` / `design-` repos) is **retired** — it
-produced a sprawl of throwaway repos (`design-deep-spirit-2026-05-26`,
+new repos**. The earlier practice of spinning up `-next` / `-v2` /
+`design-` repos for major breaks is **retired** — it produced a sprawl of
+throwaway repos (`design-deep-spirit-2026-05-26`,
 `design-nota-from-schema`, `signal-frame-mockup-stable-caller-id-1`,
 `kameo-supervised-shutdown-repro`, `signal-frame-worktrees`, …) and `-next`
 repos that were never renamed back, leaving permanent confusion about
