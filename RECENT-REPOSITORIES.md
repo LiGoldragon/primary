@@ -37,8 +37,6 @@ Pruned on 2026-05-06:
 | `criome` | `/git/github.com/LiGoldragon/criome` |
 | `criomos-archive` | `/git/github.com/LiGoldragon/criomos-archive` |
 | `forge` | `/git/github.com/LiGoldragon/forge` |
-| `gascity` | `/git/github.com/LiGoldragon/gascity` |
-| `gascity-nix` | `/git/github.com/LiGoldragon/gascity-nix` |
 | `goldragon` | `/git/github.com/LiGoldragon/goldragon` |
 | `hexis` | `/git/github.com/LiGoldragon/hexis` |
 | `horizon-rs` | `/git/github.com/LiGoldragon/horizon-rs` |
