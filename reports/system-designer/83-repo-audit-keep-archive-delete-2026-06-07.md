@@ -16,7 +16,18 @@ description: |
 
 # 83 — repo audit
 
-## SUPERSEDED — read `reports/designer/551-workspace-dependency-ecosystem-state.md`
+## SUPERSEDED — read `reports/designer/551` + Spirit `n0ss`
+
+> **Persona-contract correction (Spirit `n0ss`, 2026-06-07):** this report (and
+> 551's "persona straddles three contracts") got the Persona contract shape
+> wrong. Every component has EXACTLY two contracts: `signal-<component>`
+> (ordinary) + `meta-signal-<component>` (meta). `signal-persona` is Persona's
+> canonical ordinary contract (NOT a retired shim). `owner-signal-persona` is
+> the deprecated OwnerSignal form (→ `meta-signal-persona`); `signal-engine-management`
+> folds into `signal-persona`. Ignore any "engine-management split" / "retired
+> shim" framing below.
+
+
 
 This report's mechanical zero-consumers→delete heuristic conflated **genuinely
 dead** with **intended-but-not-yet-adopted**, and the psyche corrected it
