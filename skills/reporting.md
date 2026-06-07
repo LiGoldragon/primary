@@ -185,6 +185,20 @@ exceptions named under §"When to write a report vs answer in
 chat" above. The pattern applies whenever the response has
 substance worth a report.
 
+## Dependency context — surface it by default
+
+Per Spirit `kype` (psyche 2026-06-07): **thorough reports surface dependency
+relationships by default** — who depends on what, what each repo/component uses
+and is used by. With many repositories, the psyche needs a running sense of what
+is used by what; dependency context is standard report content, not an
+afterthought. When a report touches a crate or component, cite its key forward
+deps (which core crates it sits on — new-spine vs legacy), its reverse-dep count
+(who consumes it), and its last-commit date inline, using the `← N consumers,
+last commit MM-DD` shorthand. Reverse-dep count is the cheapest live-vs-dead
+signal; last-commit disambiguates *stale* from *legacy-but-shipping*. The
+mechanism + measurement definition live in `skills/engine-report.md`
+§"Component ledger" + §"Measurement definitions".
+
 ## Always name paths
 
 When you reference a report or any other file the user

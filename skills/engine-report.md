@@ -26,6 +26,13 @@ An engine report carries:
    not its history.
 2. **Component ledger.** Repos, role, process/binary status, storage, and
    whether each part is hooked, stubbed, contract-only, conceptual, or stale.
+   Carry a **dependency snapshot** per repo: its key forward deps (which core
+   crates it sits on — new-spine `signal-frame` / `sema-engine` / `nota-next` /
+   `schema-rust-next` / `triad-runtime` vs legacy `signal-core` / `nota-codec`),
+   its reverse-dep count (who consumes it), and its last-commit date — the
+   `← N consumers, last commit MM-DD` shorthand. Reverse-dep count is the
+   cheapest live-vs-dead signal; last-commit disambiguates *stale* from
+   *legacy-but-shipping*. Per Spirit `kype` — surface dependencies by default.
 3. **Size ledger.** Production Rust, generated Rust, test Rust, authored
    schema, generated fixtures, public type count, and test
    count.
@@ -71,6 +78,12 @@ counts. Quote central intent by its bracket-quoted summary per
 - **Public type count**: a rough inventory of `pub struct`, `pub enum`, and
   `pub trait` declarations. It is a size signal, not a proof.
 - **Test count**: `#[test]`, `#[tokio::test]`, and `#[test_case]` markers.
+- **Dependency snapshot**: per repo, forward deps (LiGoldragon repos it
+  imports), reverse-dep count (LiGoldragon repos importing it), and last-commit
+  date. Build the graph mechanically from each `Cargo.toml`'s git/path deps plus
+  `git -C <repo> log -1 --format=%cs`; cite inline as
+  `← N consumers, last commit MM-DD`. Keep the extraction scripted so the graph
+  is a cheap re-run, not a manual walk.
 
 Use `tools/engine-situation` for the first size ledger:
 
