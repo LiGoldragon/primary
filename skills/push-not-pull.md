@@ -1,164 +1,61 @@
 # Skill — push, not pull
 
-*The principle is in `ESSENCE.md`. This skill is how to act
-on it: how to recognise polling, how to design a
-subscription, and how to escalate when the producer can't
-push.*
+*How to act on the rule that polling is forbidden: recognise polling, design a subscription, and escalate when the producer can't push.*
 
-## What this skill is for
+The principle lives in `ESSENCE.md` §"Polling is forbidden": **producers push, consumers subscribe; no poll loops.** This skill assumes that rule and describes how to apply it. If you reach for a polling loop, stop and apply the steps below.
 
-When you have a producer of state and a consumer of changes,
-this skill applies. The principle — **polling is forbidden;
-producers push; consumers subscribe** — lives in `ESSENCE.md`
-§"Polling is forbidden". Read it before reading further;
-this skill assumes the rule and only describes how to act.
+## Designing a producer-consumer interaction
 
-If you find yourself reaching for a polling loop, stop.
-Apply the steps below.
+1. **Find the producer** — the component that owns the state the consumer cares about.
+2. **Find or build its subscription primitive** — a callback registration, event stream, long-lived RPC, Unix-socket subscriber, `inotify` file watch, or `timerfd` deadline. The shape varies; the contract is fixed: the producer pushes, the consumer registers once.
+3. **Write the consumer as a subscriber.** No `sleep(N)` in its main loop, no interval timers, no "check every K seconds."
+4. **If the producer can't push, escalate** (below). Never write a poll loop "for now" — a poll once written is rarely removed, and its cost is paid forever.
 
-## How to apply when designing
-
-When designing or reading a producer-consumer interaction:
-
-1. **Find the producer.** What component owns the state the
-   consumer cares about?
-2. **Find or build the producer's subscription primitive.**
-   A callback registration, an event stream, a long-lived
-   RPC, a Unix-socket subscriber pattern, an `inotify` watch
-   on a file, a `timerfd` deadline. The shape varies; the
-   contract is the same — the producer pushes; the consumer
-   registers once.
-3. **Write the consumer as a subscriber.** No `sleep(N)` in
-   the consumer's main loop; no `interval` timers; no
-   "check every K seconds" comments.
-4. **If the producer can't push**, escalate (see below). Do
-   not write a poll loop "for now."
-
-In actor systems, each actor's mailbox is already a push
-channel; nothing in the actor model requires polling. In
-databases with change feeds, subscribe to the feed. In UIs
-over a backing store, the store emits change events.
-
-An actor handler that blocks has also violated push discipline:
-while it waits, the mailbox cannot accept the next pushed fact.
-Split the wait into its own actor or worker-pool actor. The
-domain actor sends a typed request and returns to its mailbox; the
-IO/command/clock actor replies when the producer has an event.
+Most substrates already give you a push channel: an actor's mailbox, a database change feed, a backing store's change events. An actor handler that *blocks* also violates push discipline — while it waits, its mailbox can't accept the next pushed fact. Split the wait out: the domain actor sends a typed request and returns to its mailbox; an IO/clock/worker actor replies when the event arrives.
 
 ## Subscription contract
 
-Every push subscription emits the producer's current state
-when the consumer connects, then emits deltas after that.
-The consumer must not perform a separate "what is it now?"
-query or poll to seed itself.
+Every subscription emits the producer's **current state on connect**, then deltas after that. The consumer must not run a separate "what is it now?" query to seed itself. Without the initial event, a consumer that subscribes after a state already exists waits forever for a change that never comes. "Subscribe, receive current state, then receive changes" is the standard shape for focus state, input buffers, message tails, and any stateful stream.
 
-This initial event is part of the producer contract. Without
-it, a consumer can subscribe after a state already exists and
-then wait forever for a change that never comes. "Subscribe,
-receive current state, then receive changes" is the standard
-shape for focus state, input-buffer state, message tails, and
-any other stateful stream.
+## When the producer can't push — escalate
 
-## When the producer can't push — the escalation rule
+If the subscription primitive doesn't exist yet, the path is one of:
 
-If the producer's subscription primitive doesn't exist yet,
-the right path is one of:
+1. **Build the primitive in the producer** — usually right when the producer is in scope.
+2. **Replace the producer** with one that can push, if it can't be modified.
+3. **Defer the dependent feature** until push ships — stated explicitly; don't pretend it's shipping.
+4. **Escalate** — when none of the above resolve it, the question goes up, ultimately to the human, who decides whether a carve-out is justified, the producer rebuilt, or the feature deferred.
 
-1. **Build the primitive in the producer.** Usually the
-   right answer if the producer is in scope.
-2. **Replace the producer.** If the producer can't be
-   modified, replace it with one that can push.
-3. **Defer the dependent feature.** Real-time behavior
-   waits until push ships. State this explicitly; don't
-   pretend the feature is shipping.
-4. **Escalate.** If none of (1)–(3) resolve the case at
-   hand, the question goes up — to the next level of design
-   responsibility, and ultimately to the human.
+Escalation is the correct outcome when no push answer is found — it is the discipline working, not a failure. Falling back to a poll is never the answer.
 
-**Escalation is the correct outcome** when no push answer
-is found. It is not a failure mode; it is the discipline
-working. The human (or the next level of authority) decides
-whether a new carve-out is justified, whether the producer
-should be rebuilt, or whether the feature should wait.
+## The three carve-outs
 
-The wrong outcome — falling back to a poll — is never the
-answer. A poll once written is rarely removed; the cost is
-paid forever.
+`ESSENCE.md` names three patterns that look polling-shaped but aren't, and they are exhaustive:
 
-## The named carve-outs
+- **Reachability probes** — "is service X alive?"
+- **Backpressure-aware pacing** — consumer drains its own buffer; the producer still pushes.
+- **Deadline-driven OS timers** — `timerfd` and equivalents; the kernel pushes the wake.
 
-`ESSENCE.md` names three carve-outs that look polling-shaped
-but aren't:
+When a design seems to need polling and none of these apply, it needs an escalation, not a fourth de-facto carve-out.
 
-- **Reachability probes** ("is service X alive?").
-- **Backpressure-aware pacing** (consumer drains its own
-  buffer; producer still pushes).
-- **Deadline-driven OS timers** (`timerfd` and equivalents;
-  the kernel pushes the wake).
+## Pull-shaped traps
 
-These three are exhaustive. When a design seems to need
-polling and *none* of the three apply, the design needs an
-escalation, not a fourth de-facto carve-out. Reach for the
-escalation rule above; don't invent a local exception.
+Patterns that smell fine but are polling — each replaced by the push event you actually care about:
 
-## Common pull-shaped traps
-
-Patterns that smell ok but are actually polling:
-
-- **A loop that re-reads a file every N ms** to detect
-  changes. Polling. Replace with `inotify` (Linux) /
-  `kqueue` (BSD/macOS) / a producer daemon emitting events
-  on a Unix socket.
-- **`sleep_ms(50); observe_again` for stable-state
-  detection.** Polling. Replace with a producer event for
-  the state transition you actually care about.
-- **A retry timer for "unknown" state.** Polling. Replace
-  with the event that resolves the unknown; if no such
-  event exists, escalate.
-- **A consumer "ticker" that drives reconciliation.**
-  Polling. Replace with subscription + reactive
-  reconciliation triggered by events.
-- **An actor handler that sleeps or blocks until something
-  changes.** Polling in actor clothing. Replace with a
-  subscription or a dedicated plane actor that receives a pushed
-  completion event.
-- **"Check every poll-interval, debounce flickers."** The
-  debounce is hiding the polling. Replace with the
-  push-event source.
-- **Asking an LLM agent to "check inbox every few turns."**
-  Same anti-pattern at a higher level. Inbox should be
-  pushed into the harness's terminal stream by a router, not
-  pulled by the model.
-
-When you catch one of these, the right move is either fix
-it (build or wire the push primitive) or escalate.
+- **Re-reading a file every N ms** → `inotify`/`kqueue`, or a daemon emitting events on a socket.
+- **`sleep_ms(50); observe_again` for stable-state detection** → a producer event for the transition.
+- **A retry timer for "unknown" state** → the event that resolves the unknown; if none exists, escalate.
+- **A consumer "ticker" driving reconciliation** → subscription + event-triggered reconciliation.
+- **An actor handler that sleeps until something changes** → a subscription or dedicated actor receiving a pushed completion event.
+- **"Check every interval, debounce flickers"** → the debounce is hiding the poll; use the push source.
+- **Asking an LLM agent to "check inbox every few turns"** → a router pushes the inbox into the harness terminal stream; the model doesn't pull.
 
 ## Recognising the symptom
 
-Polling shows up as **wake-when-nothing-changed**. A
-process that:
-
-- shows steady syscall traffic on `strace -c` while idle,
-- holds a near-constant context-switch rate visible in
-  `/proc/<pid>/status`,
-- emits log lines on a clock independent of input,
-
-is polling. Push-correct systems go quiet when they have
-nothing to do.
+Polling shows up as **wake-when-nothing-changed**. A process that shows steady idle syscall traffic on `strace -c`, holds a near-constant context-switch rate in `/proc/<pid>/status`, or emits log lines on a clock independent of input is polling. Push-correct systems go quiet when they have nothing to do.
 
 ## See also
 
-- `~/primary/ESSENCE.md` §"Polling is forbidden" — the
-  canonical rule.
-- this workspace's `skills/abstractions.md` — every
-  reusable verb belongs to a noun; same discipline applied
-  to behavior dispatch.
-- this workspace's `skills/beauty.md` — when polling feels
-  necessary, the right structure usually hasn't been found
-  yet.
-- this workspace's `skills/micro-components.md` —
-  components communicate via subscription primitives, not
-  by polling each other.
-- this workspace's `skills/actor-systems.md` — actor
-  handlers must not block their mailboxes; blocking work gets
-  its own supervised actor plane.
+- `ESSENCE.md` §"Polling is forbidden" — the canonical rule.
+- `skills/actor-systems.md` — actor handlers must not block their mailboxes.
+- `skills/micro-components.md` — components communicate via subscription, not by polling each other.

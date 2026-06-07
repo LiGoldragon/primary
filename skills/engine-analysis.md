@@ -1,49 +1,31 @@
-# Skill - engine analysis
+# Skill — engine analysis
 
-*How to inspect a multi-component engine from code, contracts, runtime
-topology, state, and trust boundaries, then write a reusable compendium.*
+*Inspect a multi-component engine from its code, contracts, runtime topology, state, and trust boundaries, then write a reusable compendium.*
 
-## What this skill is for
+## What this is for
 
-Use this skill when asked to explain how an engine currently works, what talks
-to what, which paths are wired in code, which paths are only architectural, and
-what state each component owns.
+Use when asked to explain how an engine currently works: what talks to what, which paths are wired in code, which are only architectural, and what state each component owns.
 
-The output is an analysis report, not a rewrite plan by default. Code beats
-architecture: every claim must say whether it is **hooked**, **stubbed**,
-**contract-only**, **conceptual**, or **stale**.
+The output is an analysis, not a rewrite plan. Code beats architecture: every claim states whether it is **hooked**, **stubbed**, **contract-only**, **conceptual**, or **stale**.
 
-Use the triad-engine readability test as a primary lens: the schema should
-name the interface; generated Rust should name the objects and traits; the
-handwritten code should mostly be real algorithm, typed forwarding, and typed
-return construction. Plumbing that repeats across components is a candidate for
-schema emission or shared runtime.
+Apply the triad-engine readability test as a primary lens. The schema names the interface; generated Rust names the objects and traits; handwritten code is mostly real algorithm, typed forwarding, and typed return construction. Plumbing that repeats across components is a candidate for schema emission or shared runtime.
 
 ## Reading order
 
-1. Read workspace intent and coordination: `ESSENCE.md`,
-   `repos/lore/AGENTS.md`, `orchestrate/AGENTS.md`, and
-   `protocols/active-repositories.md`.
-2. Read the apex engine repo `ARCHITECTURE.md`, then each component repo's
-   `AGENTS.md`, `skills.md`, `ARCHITECTURE.md`, `TESTS.md`, and code map.
-3. Read every contract crate on the engine fabric before judging channels.
-4. Read runtime code, daemon/client entrypoints, Nix apps/checks, scripts, and
-   tests that witness the runtime path.
-5. If the task asks for outside research, borrow vocabulary from established
-   architecture methods without importing their process wholesale:
-   C4 zoom levels for system/container/component views, arc42 building-block,
-   runtime, deployment, and crosscutting-concept sections, SEI views for
-   module/component-and-connector/allocation separation, DFD trust boundaries
-   for security, and trace/span language for worked request paths.
+1. Workspace intent and coordination: `ESSENCE.md`, `repos/lore/AGENTS.md`, `orchestrate/AGENTS.md`, `protocols/active-repositories.md`.
+2. The apex engine repo's `ARCHITECTURE.md`, then each component repo's `AGENTS.md`, `skills.md`, `ARCHITECTURE.md`, `TESTS.md`, and code map.
+3. Every contract crate on the engine fabric, before judging channels.
+4. Runtime code, daemon/client entrypoints, Nix apps/checks, scripts, and the tests that witness the runtime path.
+
+When outside research is asked for, borrow vocabulary without importing process: C4 zoom levels (system/container/component), arc42 (building-block, runtime, deployment, crosscutting), SEI views (module / component-and-connector / allocation), DFD trust boundaries for security, and trace/span language for worked request paths.
 
 ## Analysis passes
 
-### 1. Engine Boundary Map
+### 1. Engine boundary map
 
-List the engine, components, processes, binaries, sockets, state roots, and
-deployment/sandbox entrypoints. Mark which processes actually launch today.
+List the engine, components, processes, binaries, sockets, state roots, and deployment/sandbox entrypoints. Mark which processes actually launch today.
 
-### 2. Channel Ledger
+### 2. Channel ledger
 
 For each channel, record:
 
@@ -53,91 +35,53 @@ For each channel, record:
 | Consumer | Who reads or handles? |
 | Contract | Which `signal-*` crate or byte protocol defines the payload? |
 | Transport | Unix socket, raw PTY stream, CLI stdout, file, database, etc. |
-| Payloads | Closed request/reply/event variants that cross the boundary. |
+| Payloads | Closed request/reply/event variants crossing the boundary. |
 | Authority | Which side mints sender, origin, time, slots, IDs, revisions? |
 | State effect | Which component state can change after receipt? |
 | Status | Hooked, stubbed, contract-only, conceptual, or stale. |
 
 Call out contract-version skew and duplicated wire types.
 
-### 3. Component State Machine
+### 3. Component state machine
 
-For each component, name:
-
-- entrypoints and public surface;
-- long-lived actors or blocking workers;
-- state fields and durable tables;
-- messages/events handled;
-- transition rules;
-- logs/traces/events written;
-- what the component refuses to own.
+For each component, name: entrypoints and public surface; long-lived actors or blocking workers; state fields and durable tables; messages/events handled; transition rules; logs/traces/events written; and what the component refuses to own.
 
 Actors should carry state. If a type is only a forwarding shell, say so.
 
-### 4. Flow Traces
+### 4. Flow traces
 
-Work through concrete examples end to end. Each example should include:
+Work concrete examples end to end. Each includes: inbound payload; transport and contract; actor/mailbox or direct-call path; durable writes and in-memory mutations; reply/event emitted; downstream possible effects; and the current breakpoint where the path stops.
 
-1. inbound payload;
-2. transport and contract;
-3. actor/mailbox path or direct call path;
-4. durable writes and in-memory mutations;
-5. reply/event emitted;
-6. downstream possible effects;
-7. current breakpoints where the path stops.
+Use trace/span language: one request path, named steps, propagation across process boundaries.
 
-Use trace/span language: one request path, named steps, and propagation across
-process boundaries.
+### 5. Trust, permissions, and auth
 
-### 5. Trust, Permissions, And Auth
+Map trust boundaries separately from message payloads: Unix socket owner/mode, runtime directory, system user, filesystem ACLs; provenance tags carried as audit context; cryptographic verification services, keys, signatures, revocation, replay; inter-engine or inter-persona channels; and which checks are implemented versus planned.
 
-Map the trust boundaries separately from message payloads:
-
-- Unix socket owner/mode, runtime directory, system user, and filesystem ACLs;
-- provenance tags carried as audit context;
-- cryptographic verification services, keys, signatures, revocation, replay;
-- inter-engine or inter-persona channels;
-- which checks are implemented versus planned.
-
-Do not treat provenance tags as runtime auth gates unless code does.
+Do not treat provenance tags as runtime auth gates unless the code does.
 
 ### 6. Observability
 
-Inventory logs, structured events, traces, transcript storage, worker lifecycle
-events, daemon stderr, database event tables, and CLI output. Say what is
-durable, what is memory-only, and what is merely a test witness.
+Inventory logs, structured events, traces, transcript storage, worker lifecycle events, daemon stderr, database event tables, and CLI output. Say what is durable, what is memory-only, and what is merely a test witness.
 
-### 7. Witness Inventory
+### 7. Witness inventory
 
-List tests by constraint, not by filename only. A good witness proves the
-intended component path was used, not just that visible behavior succeeded.
+List tests by constraint, not by filename. A good witness proves the intended component path was used, not just that visible behavior succeeded.
 
-### 8. Drift And Next Questions
+### 8. Drift and next questions
 
 Separate findings into:
 
-- **wired facts**: code does this now;
-- **stubbed facts**: valid request returns typed unimplemented or placeholder;
-- **contract-only facts**: shared types exist, no daemon path yet;
-- **conceptual facts**: architecture says it, code does not;
-- **stale facts**: docs, skills, reports, or code names contradict current truth.
+- **wired**: code does this now;
+- **stubbed**: a valid request returns typed unimplemented or placeholder;
+- **contract-only**: shared types exist, no daemon path yet;
+- **conceptual**: architecture says it, code does not;
+- **stale**: docs, skills, reports, or code names contradict current truth.
 
-Questions for the human must be self-contained: restate the concrete code fact,
-why it matters, and the options.
+Questions for the human are self-contained: restate the concrete code fact, why it matters, and the options.
 
-## Report Shape
+## Report shape
 
-An engine compendium report should include:
+An engine compendium includes: a one-screen current-state summary; a diagram of hooked versus planned component paths; the channel ledger table; one page per component; worked flow examples; a trust/auth and state-storage summary; the witness inventory; and gaps with decision questions.
 
-1. a one-screen current-state summary;
-2. a diagram of hooked versus planned component paths;
-3. a channel ledger table;
-4. one page per component;
-5. worked flow examples;
-6. trust/auth and state-storage summary;
-7. witness/test inventory;
-8. gaps and decision questions.
-
-Prefer tables and small Mermaid diagrams. Use local file links for code and
-plain URLs for external method references. Keep history secondary; current code
-and current architecture are primary.
+Prefer tables and small Mermaid diagrams. Use local file links for code, plain URLs for external method references. Current code and current architecture are primary; history is secondary.

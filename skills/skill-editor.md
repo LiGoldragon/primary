@@ -1,25 +1,42 @@
 # Skill — skill editor
 
-*How skill files are named, located, and cross-referenced.*
+*How skill files are written, named, located, and scoped.*
 
 ## What a skill file is
 
-A skill file is "what an agent needs to know to be effective in
-this scope." Two scales:
+A skill file is tight, self-contained teaching: what an agent needs
+to be effective in one scope. Agents arrive already full of training;
+a skill exists to convey the workspace-specific discipline they
+*can't* already know. Bloat works against this — every padded
+paragraph burns context the agent needs to do the work and buries the
+rule it came for.
+
+Two scales:
 
 - **Repo skill** — what an agent needs to be effective in *this
-  repo*. Project-specific intent, the repo's role, the
-  invariants that don't fit in `ARCHITECTURE.md` because they're
-  about *how to work* rather than *what the system is*.
+  repo*: project-specific intent, the repo's role, the invariants
+  about *how to work* that don't fit in `ARCHITECTURE.md`.
 - **Workspace skill** — a cross-cutting capability that applies
-  across many repos in the workspace (e.g. `autonomous-agent`,
-  `skill-editor`).
+  across many repos (e.g. `autonomous-agent`, `skill-editor`).
 
-Skill files complement, but do not replace, `AGENTS.md` and
-`ARCHITECTURE.md`. AGENTS.md is the canonical workspace contract
-(what every agent must do); ARCHITECTURE.md is the repo's shape
-(what the system IS); skills.md is what an agent needs to know
-to be *good at* a particular scope.
+Skills complement `AGENTS.md` (the canonical workspace contract —
+what every agent must do) and `ARCHITECTURE.md` (what a system IS).
+A skill is what an agent needs to be *good at* a scope.
+
+## Brevity is load-bearing
+
+Keep a skill as short as fully teaching its discipline allows, and no
+shorter. Length itself is not a virtue, but bloat is a real cost: it
+spends the agent's context and obscures the rule. Cut throat-clearing,
+redundant restatements, second and third examples (keep the single
+best one), and padding. Preserve every rule and its WHY — compress the
+prose around it, never the normative content.
+
+**One capability per skill.** When a file straddles two distinct
+capabilities, split it. The test: *would an agent reaching for one
+section be helped or hindered by also having the other in view?* If
+helped (one cross-cuts the other), it's one capability. If hindered
+(they skim past unrelated rules to find what they came for), it's two.
 
 ## Naming and location
 
@@ -28,222 +45,128 @@ to be *good at* a particular scope.
 | Workspace skill | `<workspace>/skills/<name>.md` | `~/primary/skills/autonomous-agent.md` |
 | Repo skill | `<repo-root>/skills.md` | `criome/skills.md` |
 
-One file per repo. Workspace skills are lowercase-with-hyphens.
-
-## Cross-references
-
-When one skill refers to another, **use the repo name plus the
-filename**. Never use a full HTTPS URL.
-
-Right:
-
-- "see criome's `skills.md`"
-- "see this workspace's `skills/abstractions.md`"
-- "see this workspace's `skills/autonomous-agent.md`"
-- "see lore's `rust/kameo.md`" (when the target is a tool
-  reference, not a skill)
-
-Wrong:
-
-- `https://github.com/<org>/criome/blob/main/skills.md`
-- `https://github.com/<org>/primary/blob/main/skills/abstractions.md`
-
-**Why:** deep file URLs silently break when files move, get
-renamed, or are deleted. A repo-name reference stays valid
-because the reader knows the convention — the skill file is at
-the repo root, named `skills.md`.
-
-For repo-level pointers (when you mean "this repo exists,"
-without naming a specific file), use the nix-flake form:
-`github:<org>/<repo>`.
+One `skills.md` per repo. Workspace skill names are
+lowercase-with-hyphens.
 
 ## Format
 
-Skill files are markdown. No required schema. **One capability
-per skill** — when a file straddles two distinct capabilities,
-split it. Length is not the criterion; the cohesion of what's
-inside is. A 1000-line skill that covers a single coherent
-discipline (e.g. Rust craft) is fine; a 200-line skill that
-mixes notation design with deploy hygiene is not.
-
-The capability test: *would an agent reaching for one of the
-sections be helped or hindered by also having the other in
-view?* If helped (one cross-cuts the other; the rules cite each
-other), it's one capability. If hindered (the agent has to skim
-past unrelated rules to find what they came for), it's two.
-
-The structure that has worked across this workspace:
+Markdown, present tense throughout. Structure comes from `##`/`###`
+headings only — never `---` horizontal rules (allowed solely inside a
+fenced code block illustrating markdown). Keep the opening heading and
+one-line purpose; they mark the file as a skill and match its name:
 
 ```markdown
 # Skill — <name>
 
 *<one-line purpose>*
 
----
-
-## What this skill is for
-
-<two or three paragraphs setting the scope>
-
----
-
 ## <load-bearing sections>
 
 <the actual rules / patterns / how-to>
 
----
-
 ## See also
 
-<repo-name + filename references to neighboring skills>
+<at most 2-3 genuinely-useful sibling-skill pointers, by filename>
 ```
 
-The `# Skill — <name>` heading is recognisable, separates
-skills from regular docs, and matches the file naming.
+## Cross-references — minimize indirection
+
+Prefer inlining the rule over redirecting the reader to another file.
+A short "See also" of at most 2-3 genuinely-useful sibling skills is
+fine; a sprawling cross-reference web is not.
+
+When you do reference another skill, **use the repo name plus the
+filename**, never a full HTTPS URL: "see criome's `skills.md`", "see
+this workspace's `skills/abstractions.md`". Deep file URLs silently
+break when files move or get renamed; a repo-name reference stays
+valid because the reader knows the convention (the skill is at the
+repo root, named `skills.md`). For a repo-level pointer with no
+specific file, use the nix-flake form: `github:<org>/<repo>`.
+
+## Skills cite no reports and no intent records
+
+A skill is permanent discipline; it must stand on its own.
+
+- **No report links.** Reports under `reports/<role>/` are ephemeral
+  working surfaces that retire as their substance migrates. A skill
+  that says "see report 161" rots the moment 161 is deleted. If a
+  report carries load-bearing substance, inline it (copy the rule,
+  table, or example into the skill body); otherwise drop the pointer.
+  If the rule isn't ready to be inlined as settled discipline, it
+  stays a report and the skill doesn't pretend it's settled.
+- **No Spirit / intent record citations.** Drop every record
+  identifier and number. State the rule directly, in present tense —
+  provenance lives in the intent log, not in the skill.
+
+## No correction or changelog banners
+
+Describe what IS, not what changed or what a rule supersedes. When a
+section describes an outdated state, just write the correct state. The
+path that led there lives in version-control history.
 
 ## What goes in a repo skill
 
-A repo's `skills.md` typically holds:
+A repo's `skills.md` holds only what is specific to this repo:
 
-- **The repo's intent** — what it's for and what's
-  non-negotiable about it. This is where project-specific
-  versions of "this is meant to be eventually impossible to
-  improve" live.
-- **The thing this repo is the canonical owner of** — naming
-  the things only this repo decides.
-- **Invariants about how to work in this repo** — what an
-  agent must not do, what conventions are load-bearing.
-- **Pointers** to the repo's `ARCHITECTURE.md`, `AGENTS.md`,
-  and any neighboring skills the agent should also read.
+- **The repo's intent** — what it's for and what's non-negotiable.
+- **The thing this repo is the canonical owner of** — the things
+  only this repo decides.
+- **Invariants about how to work here** — what an agent must not do,
+  which conventions are load-bearing.
+- **Pointers** to the repo's `ARCHITECTURE.md` and `AGENTS.md`.
 
-A repo skill does **not** duplicate the workspace contract or
-language-agnostic discipline (those live in `lore/`). It
-captures only what is specific to this repo.
+It does **not** duplicate the workspace contract or language-agnostic
+discipline (those live in `lore/`).
 
-## What goes in a workspace skill (and what doesn't)
+## What goes in a workspace skill
 
-A workspace skill (`~/primary/skills/<name>.md`) captures
-**patterns that apply across multiple repos**: cross-cutting
-disciplines, agent-behavior rules, language-design
-principles, contract-repo conventions. The test is *audience*:
-if a fresh agent in a totally unrelated future repo would
-benefit from the rule, the rule belongs in primary.
+A workspace skill captures patterns that apply across multiple repos.
+The test is *audience*: if a fresh agent in an unrelated future repo
+would benefit, the rule belongs in primary.
 
-**Component-specific patterns don't belong in primary.**
-"How `nota-codec`'s encoder emits eligible PascalCase strings
-as bare identifiers" is a nota-codec-specific implementation
-rule — it goes in `nota-codec/skills.md`, not in a primary
-skill. "Sema's resilience plane uses typed proposal/approval
-records because LLMs can't be trusted to mutate state
-directly" is a design choice for sema-shaped systems — it
-goes in `sema/skills.md` (or stays in the design report)
-once that repo's skills emerge, not in a primary skill.
-
-The trap: when you discover a pattern, the temptation is to
-write it as a primary skill ("future agents will benefit").
-Resist this. Ask: *is this pattern about how we work across
-the workspace, or about how a specific component is built?*
-Component-specific goes to the component. The workspace skills
-stay general.
+**Component-specific patterns do not.** "How `nota-codec`'s encoder
+emits eligible PascalCase strings as bare identifiers" is a
+nota-codec rule — it goes in `nota-codec/skills.md`. The trap: on
+discovering a pattern, the temptation is to write it as a primary
+skill "for future agents." Resist. Ask: *is this about how we work
+across the workspace, or how a specific component is built?*
+Component-specific goes to the component; workspace skills stay
+general.
 
 ## When to create a new repo skill
 
-The trigger lives in `autonomous-agent.md`: after substantive
-work in a repo lacking a `skills.md`, the agent creates one
-before finishing the task. The skill captures what the agent
-just learned about the repo.
-
-The roll-out across the workspace is **incremental, not batch.**
-A skill written while the agent has fresh context — having just
-followed the repo's invariants, found its load-bearing files,
-respected its boundaries — is a real skill. A skill written by
-template-stamping across many repos in one go is a smell of the
-form the rule is meant to prevent.
-
-If you find yourself tempted to create skills for many repos
-quickly, you don't have enough context for any of them. Pick
-one repo, do real work in it, then write the skill.
+After substantive work in a repo lacking a `skills.md`, create one
+before finishing the task, capturing what you just learned. Roll-out
+is **incremental, not batch**: a skill written with fresh context —
+having just followed the repo's invariants and found its load-bearing
+files — is real; one template-stamped across many repos at once is the
+smell this rule prevents. If tempted to create skills for many repos
+quickly, you don't have enough context for any of them. Pick one, do
+real work, then write the skill.
 
 ## Editing rules
 
 - Edit a skill in place; don't fork or version it.
-- Keep it in present tense. Describe what IS, not what was.
-- When a skill's content turns out to be wrong, rewrite the
-  skill. The path that led there lives in version-control
-  history.
-- Cross-reference, don't duplicate. If two skills want to say
-  the same thing, one of them should reference the other.
-- After a meaningful edit, commit and push immediately
-  (per the workspace's autonomous-agent skill).
-
-## Skills never reference reports
-
-**Skills do not cite reports.** Reports under `reports/<role>/` are
-ephemeral — working surfaces for decision paths, syntheses, audits,
-and design rationale that retire as their substance migrates
-elsewhere (per `~/primary/skills/reporting.md` §"Kinds of reports —
-and where their substance ultimately lives"). A skill is permanent
-discipline; it must stand on its own without time-stamped citations
-into a working surface.
-
-When a skill needs content that currently lives in a report:
-
-- **Inline the load-bearing rule, table, or example.** Copy the
-  substance into the skill body. The skill becomes self-contained
-  and survives the report's retirement.
-- **Reference another permanent doc** — a sibling skill, an
-  `ARCHITECTURE.md`, an `ESSENCE.md` section, or code (with a
-  file path, not a deep URL). Permanent docs cite each other;
-  permanent docs do not cite ephemerals.
-- **Drop the reference** if nothing in the report is load-bearing
-  for the skill. A "see also: report 123" line that doesn't change
-  how the agent acts is noise that decays into rot.
-
-If the rule the report carries is not yet ready to be inlined as
-discipline, the report stays a report — the skill should not pretend
-the rule is settled by linking to a working draft.
-
-**Why:** report numbers shift; reports retire (per `reporting.md`
-§"Retires when" headers); their contents change as designs evolve.
-A skill that says "see report 161" rots the moment 161 is deleted
-or superseded. The discipline that must survive design churn lives
-in the permanent doc surface — skills, architectures, `ESSENCE.md`.
-
-This rule has no exception. **Postmortems**, **decision records**,
-**syntheses** — all are reports; their lessons live in skills or
-architecture or they don't live at all. The corresponding section in
-`reporting.md` lists permanent homes for each report shape.
+- When content turns out wrong, rewrite it; history holds the path.
+- Cross-reference, don't duplicate — but inline over redirect (above).
+- After a meaningful edit, commit and push immediately.
 
 ## Examples never show free functions (only `main`)
 
-**The only free function any example shows is `main`.**
-Every other `fn` in an example body is a method on a type
-(`impl T { fn ... }`) or an associated function (also inside
-an `impl`).
+The only free function any example shows is `main`. Every other `fn`
+is a method on a type (`impl T { fn ... }`) or an associated function
+inside an `impl`. This is stricter than `skills/abstractions.md`
+(which permits small private helpers) because **examples teach by
+imitation**: an example showing `fn parse_query(...)` — even labelled
+"Wrong:" — primes the next agent to write a free function. The
+Wrong/Right comparison teaches the wrong shape twice.
 
-This is stricter than `skills/abstractions.md`'s rule (which
-permits free functions for small private helpers and pure
-relational operations). The reason: **examples teach by
-imitation**. An example that shows `fn parse_query(...)` —
-even labelled "Wrong:" — primes the next agent to write a
-free function. The Wrong/Right comparison teaches the wrong
-shape twice.
+When discussing an anti-pattern that IS a free function, name it in
+**prose** and show the right shape as code:
 
 ```rust
-// Wrong (rule violation in the example itself):
-//
-//   fn parse_query(text: &str) -> Result<QueryOp, Error> { … }
-//
-// vs.
-//
-//   impl QueryParser<'_> {
-//       pub fn into_query(self) -> Result<QueryOp, Error> { … }
-//   }
-
-// Right (the example never shows the bad shape):
-//
 // Anti-pattern (in prose): a free `parse_query(text: &str) -> ...`
-// would be a verb-without-a-noun (per `skills/abstractions.md`).
+// is a verb-without-a-noun (see `skills/abstractions.md`).
 // The right shape is a method:
 //
 //   impl QueryParser<'_> {
@@ -251,47 +174,26 @@ shape twice.
 //   }
 ```
 
-When a skill needs to discuss an anti-pattern that IS the
-free function, name the anti-pattern in **prose**, with the
-right-shape code in the example block. Don't write the
-free-function shape as code.
+**Test functions.** Rust's `#[test]` requires a free function — a
+cargo constraint, not a choice. Show the test *name* in prose or a
+list (`router_cannot_deliver_without_store_commit`), and show the
+*body* inside an `impl Fixture { fn ... }` block when it teaches
+structure, with prose noting the `#[test]` wrapper calls
+`Fixture::router_cannot_deliver_without_store_commit`.
 
-### Test functions
+**`main`** is the one free function an example may show — Rust
+requires it as the binary entry point.
 
-Rust's `#[test]` attribute requires the function be free —
-that's a `cargo` constraint, not an example choice.
-Examples for tests:
-- Show the test **name** as a list item or in prose, not as
-  a `fn ...()` block: *Test name patterns:*
-  `router_cannot_deliver_without_store_commit`,
-  `message_cli_cannot_write_private_message_log`.
-- Show the test **body** inside an `impl Fixture { fn ... }`
-  block when the body teaches structure, with prose noting
-  *"the `#[test]` wrapper calls
-  `Fixture::router_cannot_deliver_without_store_commit`."*
-
-### `main` is the named exception
-
-`fn main() { … }` is the one free function any example may
-show — it's the binary entry point and Rust requires it.
-
-### Auditing existing skills
-
-When editing a skill, sweep its examples for the violation
-before commit. The grep:
+**Auditing.** When editing a skill, sweep its examples before commit:
 
 ```sh
 grep -nE '^\s*(pub )?(async )?fn ' <file> | grep -vE 'fn main\b'
 ```
 
-Every match in an example block needs to be either inside
-`impl` or removed.
+Every match in an example block belongs inside `impl` or is removed.
 
 ## See also
 
-- `autonomous-agent.md` — how to act on routine obstacles
-  without asking; cross-reference rules.
-- this workspace's `skills/naming.md` — naming conventions used
-  inside skill files.
-- lore's `AGENTS.md` — workspace contract; skills are
-  downstream of the contract.
+- `autonomous-agent.md` — acting on routine obstacles without asking.
+- `naming.md` — naming conventions used inside skill files.
+- `abstractions.md` — verb-belongs-to-noun, behind the example rule.

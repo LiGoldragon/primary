@@ -1,36 +1,25 @@
 # Skill — Rust methods and types
 
 *Methods on types, not free functions. Domain values are typed.
-Boundaries take and return one object. Don't hide typification
-in strings.*
+Boundaries take and return one object. Don't hide typification in
+strings.*
 
-## What this skill is for
-
-When writing Rust types and methods in this workspace, this skill
-is the discipline. It is the Rust-specific enforcement of the
-cross-language rules in `skills/abstractions.md`, `skills/naming.md`,
-and `skills/beauty.md`.
-
-For the index pointing at the wider Rust discipline (errors,
-storage and wire, parsers, crate layout), see
-`skills/rust-discipline.md`.
+This is the Rust enforcement of the cross-language rules in
+`skills/abstractions.md`, `skills/naming.md`, and `skills/beauty.md`.
 
 ## Methods on types, not free functions
 
-Every Rust function in production is a method or associated
-function on an `impl` block of a **non-zero-sized data-bearing
-type**, or a trait impl. The only exemptions are `fn main()` and
-items inside `#[cfg(test)]` modules. **Module-level `fn`,
-`const fn`, and `async fn` are all forbidden** — the rule is about
-*function placement*, and "it's a `const fn`" or "it's an
-`async fn`" is not an escape hatch. Test code may use free helper
-functions when that keeps the test readable; production code does
-not.
+Every Rust function in production is a method or associated function
+on an `impl` block of a **non-zero-sized data-bearing type**, or a
+trait impl. The only exemptions are `fn main()` and items inside
+`#[cfg(test)]` modules. **Module-level `fn`, `const fn`, and
+`async fn` are all forbidden** — the rule is about *function
+placement*; "it's a `const fn`" and "it's an `async fn`" are not
+escape hatches. Test code may use free helpers when that keeps a
+test readable; production code may not.
 
 Trait methods are preferred over inherent methods; methods on real
-data-bearing types are the minimum. Methods on zero-sized
-placeholder structs used as a namespace are forbidden — that's a
-free function in disguise; see §"No ZST method holders" below.
+data-bearing types are the minimum.
 
 ```rust
 // Wrong
@@ -42,64 +31,48 @@ impl Cert {
 }
 ```
 
-Private helpers are not an exception. A private `fn` at module
-scope is still usually the sign that the object has not been found.
-Put the behavior on the data type being read or written, on a
-data-bearing helper object, or on a trait implemented for the real
-object. If a calculation only exists to support one method body,
-make it a small private method on the same object, not a free
-function beside it.
+Private helpers are not an exception. A private `fn` at module scope
+is the sign the owning object hasn't been found. Put the behavior on
+the data type being read or written, on a data-bearing helper
+object, or on a trait implemented for the real object. If a
+calculation only exists to support one method body, make it a small
+private method on the same object — the local-helper carve-out from
+`abstractions.md` does **not** apply in Rust; even a small private
+helper goes inside an `impl` block.
 
-For the cross-language rule — the forcing-function reasoning,
-the Karlton bridge, the wrong-noun trap, and the principled
-exceptions (local helper, relational operation, standard-library
-convention) — see `skills/abstractions.md`. This section is the
-Rust enforcement; for Rust the **local-helper carve-out from
-`abstractions.md` does not apply** — even a small private helper
-goes inside an `impl` block (per psyche 2026-05-27, intent
-record 882, Maximum).
+For projection / conversion, reach for `impl From<X> for Y` instead
+of a `fn project_x_to_y(...)`.
 
 ## Schema-generated objects are the method surface
 
 In the schema-derived stack, the authored schema names the real
-objects. The generator emits Rust types for those objects, and
-hand-written implementation code attaches behavior to those generated
-types with inherent methods or trait impls.
-
-**This is Pattern C in the workspace's recurring pattern index**
-(per `~/primary/INTENT.md` §"Recurring architectural patterns"
-+ record 988, Maximum, 2026-05-27). Anchoring records: 712 + 882
-(methods on non-ZST data-bearing types only); 942 (logic-on-
-objects over free helpers); 945, 947, 953, 954 (schema-created
-types are the Rust nouns for actor behaviour). The records
-together name a discipline that repeats across every repo in the
-schema-driven stack: schema is the noun-source, Rust is the
-verb-attachment, and the verb-attachment goes on the schema-
-emitted type — not beside it.
-
-The workflow is:
+objects. The generator emits Rust types for those objects;
+hand-written code attaches behavior to those generated types with
+inherent methods or trait impls. Schema is the noun-source, Rust is
+the verb-attachment, and the verb-attachment goes **on** the
+schema-emitted type — not beside it. Workflow:
 
 1. Change the schema.
 2. Regenerate the Rust types and derives.
 3. Write or adjust methods on the regenerated nouns.
 
-Do not hand-write a parallel mirror of a generated data type to get a
+Do not hand-write a parallel mirror of a generated type to get a
 method surface. Do not add reusable free functions around generated
 types because "the generated code has no method yet." The missing
 method belongs on the generated type, or on a data-bearing runtime
 type that owns the state being read or written.
 
-This rule is especially important for schema-emitted signal surfaces:
-`Input`, `Output`, operation payloads, route/header types, codecs, and
-store records are the nouns. A request being treated is a method on
-the request or on the engine/store object that owns the state. If the
-method cannot be placed cleanly, the schema or the runtime noun is not
+This matters most for schema-emitted signal surfaces: `Input`,
+`Output`, operation payloads, route/header types, codecs, and store
+records are the nouns. A request being treated is a method on the
+request, or on the engine/store object that owns the state. If the
+method can't be placed cleanly, the schema or the runtime noun isn't
 specific enough yet.
 
 Upgrade and mail behavior follow the same rule. A changed generated
-type implements the generated upgrade trait for the previous type; an
-unchanged generated type carries no upgrade method. A sent signal root
-creates a generated `MessageSent` object, and push hooks are methods
+type implements the generated upgrade trait for the previous type;
+an unchanged type carries no upgrade method. A sent signal root
+creates a generated `MessageSent` event, and push hooks are methods
 on that event. Nexus owns in-flight mail as `NexusMail<Payload>` and
 emits `MessageProcessed<Reply>` after SEMA or execution produces a
 reply. Do not create free `upgrade_*`, `send_*`, or `notify_*`
@@ -108,34 +81,31 @@ helpers beside generated types.
 ### Async mail flow is object flow
 
 Async behavior does not justify free procedural glue. The signal
-protocol's asynchronous lifecycle is represented by generated data
-types and by state-bearing actor objects:
+protocol's asynchronous lifecycle is carried by generated data types
+and state-bearing actor objects:
 
-- `Input` / `Output` are the Signal root message types.
-- `MessageSent` is the lifecycle event when Signal hands mail to
-  Nexus.
-- `NexusMail<Payload>` is mail currently owned by Nexus.
-- `NexusInput` / `NexusOutput` are the Nexus execution language.
-- `SemaInput` / `SemaOutput` are the SEMA state language.
-- `MessageProcessed<Reply>` is the lifecycle event after Nexus gets a
+- `Input` / `Output` — the Signal root message types.
+- `MessageSent` — lifecycle event when Signal hands mail to Nexus.
+- `NexusMail<Payload>` — mail currently owned by Nexus.
+- `NexusInput` / `NexusOutput` — the Nexus execution language.
+- `SemaInput` / `SemaOutput` — the SEMA state language.
+- `MessageProcessed<Reply>` — lifecycle event after Nexus gets a
   SEMA or execution reply.
 
 Methods attach to those objects, or to data-bearing runtime owners
 such as `Engine`, `Mailbox`, `MailLedger`, `Nexus`, or `Store`.
 Avoid module-level helpers named like `route_mail`, `process_mail`,
-`dispatch_signal`, or `apply_sema`. If such a helper feels useful,
-the missing noun is usually visible in its arguments: make that noun
-the method receiver, or create the state-bearing actor that owns the
-phase.
+`dispatch_signal`, or `apply_sema`. The missing noun is usually
+visible in such a helper's arguments: make that noun the receiver,
+or create the state-bearing actor that owns the phase.
 
 ## No ZST method holders
 
 A `pub struct Foo;` whose `impl Foo` is just a parking lot for
-functions that do real work on data they don't carry is a free
+functions doing real work on data they don't carry is a free
 function in namespace clothing — the methods-on-types rule evaded
-one level deeper. Per `skills/abstractions.md` §"The wrong-noun
-trap" and §"The forcing function": find the noun whose data the
-verb reads or writes; invent it if it doesn't exist yet.
+one level deeper. Find the noun whose data the verb reads or writes;
+invent it if it doesn't exist yet.
 
 ```rust
 // Wrong — ZST as a folder for free functions
@@ -158,15 +128,15 @@ impl Cert {
 If parsing genuinely needs its own state (a buffered lexer,
 accumulated diagnostics, a configurable mode), the noun is
 `CertParser` *with fields*. Either the work belongs on the data
-type, or it belongs on a stateful parser type. The ZST middle
-ground is the gap.
+type, or on a stateful parser type. The ZST middle ground is the
+gap.
 
 This applies to internal macro and parser code as much as public
 APIs. A `RootMacro;` unit struct implementing a trait is acceptable
 only if the type itself is doing type-level work. If it has runtime
-behavior — a name, a delimiter it accepts, a position it lowers, or
+behavior — a name, a delimiter it accepts, a position it lowers,
 state it records — put that data in fields and make the methods read
-those fields. Do not use a unit struct merely because a trait object
+those fields. Don't use a unit struct merely because a trait object
 needs a concrete implementor.
 
 ### Legitimate ZST uses — narrow, named
@@ -176,31 +146,30 @@ rather than pretending to carry runtime state:
 
 - **`PhantomData<T>`** and other generic-parameter trackers.
 - **Marker types required by external frameworks** — sealed-trait
-  gates or an `Iterator` impl on a unit struct that genuinely has no
-  carried state. The ZST has *only* trait-impl methods that delegate
-  to a data-bearing partner type; never inherent methods doing real
-  work. For actors, the workspace runtime is Kameo, whose `Self IS
-  the actor` shape removes the need for framework marker types
-  entirely — the actor type carries data fields and is the noun.
+  gates, or an `Iterator` impl on a unit struct that genuinely has
+  no carried state. The ZST has *only* trait-impl methods that
+  delegate to a data-bearing partner; never inherent methods doing
+  real work. (For actors the runtime is Kameo, whose `Self IS the
+  actor` shape removes the need for marker types — the actor type
+  carries data fields and is the noun.)
 - **Type-level enum variants** in trait-encoded state machines,
-  where the unit struct *is* the state and the type system
-  enforces transitions.
+  where the unit struct *is* the state and the type system enforces
+  transitions.
 
-The test: does the ZST's job vanish if you erase its name from
-the type system? If yes (it was just a namespace), the verbs need
-a real noun. If no (the type-system position is what does the work
-— phantom parameter, marker, state), the ZST is fine.
+The test: does the ZST's job vanish if you erase its name from the
+type system? If yes, it was a namespace and the verbs need a real
+noun. If no (phantom parameter, marker, state position), the ZST is
+fine.
 
 ## Typestate retires when borrow rules enforce its invariant
 
-A typestate pattern is valuable when the invariant it carries
-*cannot* be expressed by Rust's existing borrow rules. When the
-invariant *can* be expressed by `&mut self` exclusive borrow, the
-typestate is redundant — its safety property already lives in the
-borrow checker.
+A typestate is valuable when the invariant it carries *cannot* be
+expressed by Rust's existing borrow rules. When the invariant *can*
+be expressed by `&mut self` exclusive borrow, the typestate is
+redundant — its safety property already lives in the borrow checker.
 
-The canonical example: a runtime that holds a resource across a
-mutation phase. Pre-trait design uses a typestate carrier:
+Canonical example: a runtime holding a resource across a mutation
+phase, modeled with a typestate carrier.
 
 ```rust
 // Wrong — typestate that duplicates a borrow rule
@@ -216,11 +185,10 @@ impl Mail<BeingProcessed> {
 }
 ```
 
-The intent: *"the engine holds the mail ⇒ it is being processed"*
-as a compile-time fact. The mechanism: `Mail<Processed>` cannot
-exist without consuming a `Mail<BeingProcessed>` through `run`.
-
-But once `Engine::apply` is a trait method:
+The intent is *"the engine holds the mail ⇒ it is being processed"*
+as a compile-time fact: `Mail<Processed>` cannot exist without
+consuming a `Mail<BeingProcessed>` through `run`. But once
+`Engine::apply` is a trait method:
 
 ```rust
 // Right — the trait surface carries the invariant
@@ -229,38 +197,35 @@ trait EngineApi {
 }
 ```
 
-The `&mut self` exclusive borrow on `apply` already enforces
-*"only one apply at a time on this engine"*. The Mail<Phase>
-wrapper adds no safety property the borrow checker doesn't
-already enforce. The lifecycle events (sent + processed) can fire
-inside the composer or as hook calls; the type-level "is being
-processed" is now decorative.
+The `&mut self` exclusive borrow already enforces *"only one apply
+at a time on this engine"*. The `Mail<Phase>` wrapper adds no safety
+property the borrow checker doesn't already enforce; lifecycle
+events fire inside the composer or as hook calls, and the type-level
+"is being processed" is now decorative.
 
-The retirement test:
+Retirement test:
 - **Does removing the typestate lose any property `&mut self`
-  doesn't enforce?** If no, the typestate is redundant.
-- **Does the trait method's signature already constrain
-  ordering?** If yes, the typestate is documenting what the
-  signature already pins.
-- **Are the typestate's data carriers (the per-phase struct
-  fields) intermediate state that no longer needs to be named?**
-  If yes, inline them into the trait method's local variables.
+  doesn't enforce?** If no, it's redundant.
+- **Does the trait method's signature already constrain ordering?**
+  If yes, the typestate documents what the signature already pins.
+- **Are the typestate's per-phase fields intermediate state that no
+  longer needs naming?** If yes, inline them into the trait method's
+  locals.
 
 Typestate stays valuable when the invariant crosses borrow
 boundaries the language can't see:
-- **Async lifecycle phases across `.await` points** — the borrow
-  checker doesn't track resource ownership across suspension; the
-  typestate does.
-- **Durability transitions across syscalls** — after `fsync`, the
+- **Async lifecycle phases across `.await`** — the borrow checker
+  doesn't track resource ownership across suspension; the typestate
+  does.
+- **Durability transitions across syscalls** — after `fsync` the
   data is durable; before, it isn't. No borrow rule captures this.
 - **Cross-thread state machines** — when ownership transfers via
-  channel, the typestate documents what phase the receiver is in.
+  channel, the typestate documents the receiver's phase.
 
-The principle generalizes: when introducing a typestate, identify
-the invariant it carries; check if Rust's existing rules
-(`&mut self`, `&self`, move semantics, lifetime bounds) already
-enforce it. If yes, drop the typestate; the trait surface is the
-honest representation.
+When introducing a typestate, identify the invariant it carries and
+check whether `&mut self`, `&self`, move semantics, or lifetime
+bounds already enforce it. If yes, drop the typestate; the trait
+surface is the honest representation.
 
 ## Domain values are types, not primitives
 
@@ -278,8 +243,8 @@ pub fn details(&self, md5: &Md5) -> Result<Item, Error> { … }
 ```
 
 **The wrapped field is private.** A `pub` field exposes the
-primitive and defeats every reason to wrap it: callers can
-construct unchecked values and read the raw bytes back out.
+primitive and defeats every reason to wrap it: callers construct
+unchecked values and read the raw bytes back out.
 
 ```rust
 // Wrong — pub field, the type is just a label
@@ -298,16 +263,16 @@ impl AsRef<str> for NodeName {
 ```
 
 Construction with validation goes through `TryFrom<&str>` (or
-`from_str`) returning the crate's `Error`.
+`FromStr`) returning the crate's `Error`.
 
 ## One type per concept — no `-Details` / `-Info` companions
 
-If you find yourself defining `Item` *and* `ItemDetails`, stop.
-The `-Details` or `-Info` suffix paired with a base type is one
-concept fragmented across two types because the base was designed
-too thin. Fix the base type. The same applies to `-Extra`,
-`-Meta`, `-Full`, `-Extended`, `-Raw`/`-Parsed` pairs, and any
-other suffix that means "the real version of the thing next door."
+If you find yourself defining `Item` *and* `ItemDetails`, stop. The
+`-Details` / `-Info` suffix paired with a base type is one concept
+fragmented across two types because the base was designed too thin.
+Fix the base type. The same applies to `-Extra`, `-Meta`, `-Full`,
+`-Extended`, `-Raw`/`-Parsed` pairs, and any suffix meaning "the
+real version of the thing next door."
 
 ```rust
 // Wrong — two types for one concept
@@ -325,15 +290,15 @@ struct Item {
 ```
 
 If different *call sites* genuinely need different *projections*,
-model that with a method that returns a smaller view
-(`item.summary()`), not with a parallel type.
+model that with a method returning a smaller view (`item.summary()`),
+not a parallel type.
 
 ## Don't hide typification in strings
 
-When a value has a typed identity, **the type system carries
-the discrimination**. Don't reach for `starts_with(...)`,
-`contains(...)`, or `match s.as_str()` to recover information
-the type system already encodes.
+When a value has a typed identity, **the type system carries the
+discrimination**. Don't reach for `starts_with(...)`,
+`contains(...)`, or `match s.as_str()` to recover information the
+type already encodes.
 
 ### Wrong: verifying type by string prefix in tests
 
@@ -343,11 +308,9 @@ assert!(messages[0].id.as_str().starts_with("m-"));
 assert_eq!(messages[0].id.as_str().len(), 9);
 ```
 
-If the test wants to check that a particular kind of ID was
-returned, the types should already separate them.
-`Vec<Message>::id: MessageId` already proves the kind. If the
-same field can carry several kinds, that's the missing
-sum-type — not a string-prefix discriminator.
+`Vec<Message>::id: MessageId` already proves the kind. If the same
+field can carry several kinds, that's a missing sum-type — not a
+string-prefix discriminator.
 
 ### Wrong: dispatching on string prefix at runtime
 
@@ -380,9 +343,9 @@ fn route(id: &Id) -> Handler {
 
 ### The system mints identity, not the agent
 
-Even when a string ID's discriminator is type-correct in
-code, an agent-minted prefix-encoded ID is the wrong shape
-because the agent shouldn't be minting identity at all.
+Even when a string ID's discriminator is type-correct, an
+agent-minted prefix-encoded ID is the wrong shape because the agent
+shouldn't be minting identity at all.
 
 ```rust
 // Wrong — agent invents an ID
@@ -390,22 +353,17 @@ let id = format!("m-{}-{:03}", today_iso8601(), counter.next());
 store.send(Message { id, sender, recipient, body }).await?;
 ```
 
-The agent does clock work, maintains counter state, packs
-typed values into stringly-typed form, and produces an
-opaque key parallel to the slot the store assigns anyway.
+The agent does clock work, maintains counter state, packs typed
+values into stringly-typed form, and produces an opaque key parallel
+to the slot the store assigns anyway.
 
 ```rust
 // Right — the store assigns Slot<T>
 let slot = store.assert(Message { recipient, body }).await?;   // returns Slot<Message>
 ```
 
-The wire form on the read path shows the surrounding record
-kind at the head ident (`(Message ...)`) and the slot as a
-bare integer; humans see *what kind of thing* and *which one*
-without any agent-minted prefix.
-
-The same shape applies when the agent supplies its own
-sender or its own timestamps:
+The same shape applies when the agent supplies its own sender or
+timestamps:
 
 ```rust
 // Wrong — sender on the record body (already on the auth proof)
@@ -423,46 +381,36 @@ store.assert(Message { recipient, body }).await?;
 store.assert(HarnessObservation { subject, state }).await?;
 ```
 
-The unifying test: ***could the system supply this value
-without asking the agent?*** If yes, the agent must not
-supply it. Identity, commit time, sender principal — all
-infrastructure context. The wire carries only what only
-the sender knows.
+The unifying test: ***could the system supply this value without
+asking the agent?*** If yes, the agent must not supply it. Identity,
+commit time, sender principal — all infrastructure context. The wire
+carries only what only the sender knows.
 
-*Content* timestamps (a `Deadline`'s expiration, a
-scheduled message's send-at) are different — those are
-values the agent genuinely supplies, and they appear as a
-typed `Timestamp` (a bare integer in NotaTransparent shape
-— nanos since epoch — not a string).
+*Content* timestamps (a `Deadline`'s expiration, a scheduled
+message's send-at) are different — the agent genuinely supplies
+those, and they appear as a typed `Timestamp` (a bare integer,
+nanos since epoch, not a string).
 
-For the apex statement of this rule, see ESSENCE
-§"Infrastructure mints identity, time, and sender."
-
-### Companion to "Domain values are types"
-
-The newtype rule says a domain value gets its own type. This
-rule extends the principle: once you have the typed identity,
-**use it**. Don't drop back to string operations to recover
-what the type already proved.
+Once you have the typed identity, **use it** — don't drop back to
+string operations to recover what the type already proved.
 
 ## One object in, one object out
 
 Method signatures take at most one explicit object argument and
-return exactly one object. When inputs or outputs need more,
-define a struct.
+return exactly one object. When inputs or outputs need more, define
+a struct.
 
-**Anonymous tuples are not used at type boundaries** — not as
-return types, not as parameter types, not as struct fields, not in
-type aliases. The exception is **tuple newtypes**: `struct
-Md5([u8; 16])`, `struct NodeName(String)`. They use tuple syntax
-to wrap a single thing, but the wrapper itself is a named type.
-Local destructuring like `let (a, b) = pair;` against a
-tuple-newtype's inner is fine; the rule is about type-level
-appearances of unnamed tuples.
+**Anonymous tuples are not used at type boundaries** — not as return
+types, parameter types, struct fields, or type aliases. The
+exception is **tuple newtypes**: `struct Md5([u8; 16])`, `struct
+NodeName(String)` — tuple syntax wrapping a single thing, but the
+wrapper is a named type. Local destructuring (`let (a, b) = pair;`)
+against a tuple-newtype's inner is fine; the rule is about
+type-level appearances of unnamed tuples.
 
-The verb is the method name; the noun is the type. Don't smuggle
-the verb into the type name (`DownloadRequest` + `download_url(req)`)
-— make it a method on the input (`Request::download`).
+The verb is the method name; the noun is the type. Don't smuggle the
+verb into the type name (`DownloadRequest` + `download_url(req)`) —
+make it a method on the input (`Request::download`).
 
 ```rust
 // Wrong — multi-primitive args at the boundary
@@ -477,13 +425,6 @@ struct Request { md5: Md5, path_index: Option<u32>, domain_index: Option<u32> }
 
 impl Request {
     pub fn download(&self) -> Result<Download, Error> { … }
-}
-
-// Right — input is a SearchPage; parse is a method on it
-struct SearchPage { html: String, page: u32 }
-
-impl SearchPage {
-    pub fn parse(&self) -> Result<SearchResponse, Error> { … }
 }
 
 // Right — one explicit object alongside self (relational operation)
@@ -511,16 +452,16 @@ functions.
 | `From<T>`      | infallible conversion from another type.                       |
 | `TryFrom<T>`   | fallible conversion. Pair with `Error` enum.                   |
 
-Prefer `TryFrom` when the conversion has one canonical source
-type; prefer `from_<src>(…) -> Result<Self, Error>` when there are
-several plausible sources or extra args.
+Prefer `TryFrom` when the conversion has one canonical source type;
+prefer `from_<src>(…) -> Result<Self, Error>` when there are several
+plausible sources or extra args.
 
 ## Use existing trait domains
 
 If `core::str::FromStr` already names what you do, implement
-`FromStr`, not an inherent `parse` method. Same for `Display`,
-`From`, `TryFrom`, `AsRef`, `Default`, `Iterator`. Don't reach for
-an inherent method just because it's quicker.
+`FromStr`, not an inherent `parse`. Same for `Display`, `From`,
+`TryFrom`, `AsRef`, `Default`, `Iterator`. Inherent methods that
+bypass an obvious trait domain are a smell.
 
 ```rust
 use core::str::FromStr;
@@ -531,8 +472,6 @@ impl FromStr for Message {
 }
 ```
 
-Inherent methods that bypass an obvious trait domain are a smell.
-
 ## Direction-encoded names
 
 Prefer `from_*`, `to_*`, `into_*`, `as_*`. Avoid `read`, `write`,
@@ -540,15 +479,11 @@ Prefer `from_*`, `to_*`, `into_*`, `as_*`. Avoid `read`, `write`,
 `as_str` over `get_string`. `to_hex` over `format_hex`.
 `from_bytes` over `parse_bytes`.
 
-`get` / `put` are fine for storage interfaces (`ChunkStore::get`);
+`get` / `put` are fine for storage interfaces (`ChunkStore::get`) —
 they name the storage operation, not a conversion.
 
 ## See also
 
-- `skills/rust-discipline.md` — Rust discipline index.
 - `skills/abstractions.md` — cross-language methods-on-types rule.
-- `skills/naming.md` — cross-language naming, full English words,
-  framework-category-suffix anti-pattern.
-- `skills/rust/errors.md` — typed Error enum per crate.
-- `skills/rust/storage-and-wire.md` — redb + rkyv discipline.
-- `skills/beauty.md` — beauty as criterion.
+- `skills/rust/errors.md` — typed `Error` enum per crate.
+- `skills/naming.md` — full English words, no category suffixes.

@@ -1,78 +1,64 @@
 # Skill — speech-to-text interpreter
 
-*Decoding STT-transcribed prompts that contain workspace-specific
-words.*
+*Decoding STT-transcribed prompts that contain workspace-specific words.*
 
 ## What this skill is for
 
-Li often dictates prompts through a speech-to-text tool. The
-tool sometimes transcribes workspace-specific words
-(repository names, library names, programming-language tokens)
-incorrectly, because they're not in its dictionary or because
-they collide with common English. When you read a prompt that
-contains a phonetic-near-miss for a known workspace word,
-**guess the intended word**, act on the guess, and only ask if
-the guess turns out to be wrong.
+The psyche often dictates prompts through a speech-to-text tool that
+mis-transcribes workspace-specific words (repo names, library names,
+language tokens) — they aren't in its dictionary or they collide with
+common English. When a prompt contains a phonetic near-miss for a
+known workspace word, **guess the intended word**, act on the guess,
+and ask only if the guess turns out wrong.
 
-The tool itself lives in the **CriomOS-home** repo (one of this
-workspace's repos). Read CriomOS-home's `skills.md` /
-`ARCHITECTURE.md` for the specific tool, model, and any
-configuration. Don't name the vendor or model in this skill —
-that drifts; the repo is canonical.
+The tool itself lives in the **CriomOS-home** repo; its `skills.md` /
+`ARCHITECTURE.md` are canonical for the specific tool, model, and
+config. Don't name the vendor or model here — that drifts.
 
 ## How to read STT output
 
-1. **Read for intent first.** STT errors are almost always at the
-   word level, not the structural level. The grammar usually
-   survives even when individual nouns get mangled.
-2. **When a word looks suspicious**, check it against the table
-   below before treating it as English.
-3. **When the user pronounces a name** that *sounds* like a
-   word in the table but the transcript shows the word itself
-   (e.g. "ASCII" appearing where you'd expect a project name),
-   default to the project. The STT often "corrects" a real
-   project name into a familiar English word.
-4. **Don't ask the user to spell things out** — when they
-   dictate a spelling, the STT will sometimes auto-correct it
-   anyway. Instead, look up the canonical spelling on the
-   filesystem (workspace `repos/` symlink index, or
-   `RECENT-REPOSITORIES.md`).
+1. **Read for intent first.** STT errors are at the word level, not
+   the structural level — grammar survives even when nouns get
+   mangled.
+2. **When a word looks suspicious**, check the table below before
+   treating it as English.
+3. **When a real English word appears where a project name fits**
+   (e.g. "ASCII" where you'd expect a project name), default to the
+   project — STT often "corrects" a real name into a familiar word.
+4. **Don't ask the user to spell things out** — STT auto-corrects
+   spelled-out letters anyway. Instead look up the canonical spelling
+   on the filesystem.
 
 ## Canonical spellings live on the filesystem
 
-When the user mentions a repository, the canonical spelling
-**is the directory name** under
-`/git/github.com/<org>/<repo>/`. The workspace's
-`repos/` index (`<workspace>/repos/`) is symlinks to those
-canonical paths. Read the directory name; don't reconstruct
-spelling from the spoken form.
+The canonical spelling of a repo **is the directory name** under
+`/git/github.com/<org>/<repo>/`; the `repos/` index is symlinks to
+those paths. Read the directory name; never reconstruct spelling from
+the spoken form. This applies any time you're unsure how a project
+name is spelled.
 
-This rule applies recursively: any time you're unsure how a
-project name is spelled, look at the directory.
-
-## Table of common words and what they may have been
+## Table: transcribed form → canonical
 
 The **transcribed form** is what STT might emit; the **canonical
-form** is the workspace's name for that thing. When you see the
-transcribed form in a prompt and it doesn't make sense as
-English, try the canonical form.
+form** is the workspace's name. When a transcribed form doesn't make
+sense as English, try the canonical.
 
 ### Repositories (sema-ecosystem)
 
 | Heard / transcribed as | Canonical |
 |---|---|
-| "Creom" / "Cree-ome" / "Krio" / "Criom" / "Cry-om" | **Criome** — the universal validator/coordinator daemon at the center of the sema-ecosystem; long-term replaces Git, code editor, SSH, web server, etc. Canonical written name is `Criome` (capital C, trailing `e`); filesystem path is lowercase `criome` per GitHub convention. |
+| "Creom" / "Cree-ome" / "Krio" / "Criom" / "Cry-om" | **Criome** — universal validator/coordinator daemon at the center of the sema-ecosystem; long-term replaces Git, code editor, SSH, web server, etc. Written name `Criome` (capital C, trailing `e`); filesystem path lowercase `criome`. |
 | "Sema" / "Seema" | the canonical-store repo |
 | "Nota" / "Nodda" | the text-format repo |
 | "Nexus" | the request-language repo |
-| "Signal" | the binary-IR repo (overlaps with the English word — context decides) |
+| "Signal" | the binary-IR repo (overlaps the English word — context decides) |
 | "Arca" / "Ar-ka" | the content-addressed-store repo |
-| "Forge" | the executor repo (overlaps with the English word — context decides) |
-| "Prism" | the projector repo (overlaps with the English word — context decides) |
+| "Forge" | the executor repo (overlaps the English word — context decides) |
+| "Prism" | the projector repo (overlaps the English word — context decides) |
 | "Hexis" / "Hex-is" | the host-config-reconciler repo |
-| "Lore" | the docs repo (overlaps with the English word — context decides) |
+| "Lore" | the docs repo (overlaps the English word — context decides) |
 | "Workspace" | the workspace meta-repo |
-| "ASCII" / "asci" / "askii" | the retired language-design repo (`aski`); the user pronounces the project name like the encoding |
+| "ASCII" / "asci" / "askii" | the retired language-design repo (`aski`); pronounced like the encoding |
 
 ### Repositories (system / tooling layer)
 
@@ -93,17 +79,17 @@ English, try the canonical form.
 
 | Heard / transcribed as | Canonical |
 |---|---|
-| "Rust" / "rust" / "rest" | the Rust language |
+| "Rust" / "rest" | the Rust language |
 | "Nix" / "Nicks" / "Nyx" | the Nix language / build system |
 | "Cargo" | Rust's build tool / dependency manager |
-| "Rkyv" / "ar-keev" / "Archive" (in a Rust context) | rkyv (binary serialization crate) |
-| "Ractor" / "Reactor" (in a Rust+actor context) | ractor (the actor framework) |
-| "Tokio" / "Toki-yo" | tokio (the async runtime) |
+| "Rkyv" / "ar-keev" / "Archive" (Rust context) | rkyv (binary serialization crate) |
+| "Ractor" / "Reactor" (Rust+actor context) | ractor (the actor framework) |
+| "Tokio" / "Toki-yo" | tokio (async runtime) |
 | "Serde" / "Sir-day" | serde (serialization) |
 | "Thiserror" / "This error" | thiserror (error-derive crate) |
 | "Anyhow" / "Eyre" | anyhow / eyre (forbidden in this workspace's Rust crates) |
 | "Crane" / "Crain" | crane (Nix Rust packaging) |
-| "Fenix" / "Phoenix" (in a Nix-toolchain context) | fenix (Rust toolchain in Nix) |
+| "Fenix" / "Phoenix" (Nix-toolchain context) | fenix (Rust toolchain in Nix) |
 | "Blueprint" | numtide/blueprint (Nix flake layout helper) |
 | "Flake" / "Flakes" | Nix flakes |
 | "Nixpkgs" / "Nix packages" / "Nix peekages" | nixpkgs |
@@ -113,7 +99,7 @@ English, try the canonical form.
 
 | Heard / transcribed as | Canonical |
 |---|---|
-| "Jujutsu" / "Jujitsu" / "JJ" / "Jay-jay" | jj (the version-control system) |
+| "Jujutsu" / "Jujitsu" / "JJ" / "Jay-jay" | jj (version control) |
 | "Dolt" / "Dolt SQL" | Dolt (git-for-data) |
 | "Beads" / "BD" / "Bee-dee" | bd / beads (issue tracker) |
 | "Anna's archive" / "Annas" | annas (Anna's Archive CLI) |
@@ -127,51 +113,39 @@ English, try the canonical form.
 | "Ouranos" / "Uranus" | the user's primary node name |
 | "Prom" / "Prometheus" | the binary cache server |
 | "Polecat" / "Mayor" / "Refinery" / "Witness" | gas-city role names from the gastown pack |
-| "Operator" / "Designer" | this workspace's lock-coordinated agent roles (Codex / Claude) |
-| "ESSENCE" / "Intention" | the workspace's intent doc; see `~/primary/ESSENCE.md` |
-| "Lock" / "Lockfile" | when adjacent to "operator" or "designer," means the coordination protocol; otherwise normal English |
+| "Operator" / "Designer" | lock-coordinated agent roles (Codex / Claude) |
+| "ESSENCE" / "Intention" | the workspace intent doc, `~/primary/ESSENCE.md` |
+| "Lock" / "Lockfile" | next to "operator"/"designer" means the coordination protocol; otherwise normal English |
 
-## Caveats on specific entries
+## Caveat — ASCII / aski lineage
 
-- **ASCII / aski lineage.** `aski/CLAUDE.md` formally disclaims
-  aski as an ancestor of nota/nexus ("shared surface features
-  are coincidence, not lineage" — Li, 2026-04-25). Li's lived
-  sense is that aski's design instincts (delimiter-first, no
-  keywords, position defines meaning, names are meaningful, no
-  opaque strings) inspired the current work. Honor the lived
-  sense in conversation; flag the formal disclaimer only when
-  load-bearing.
+`aski` formally disclaims being an ancestor of nota/nexus (shared
+surface features are coincidence, not lineage). The psyche's lived
+sense is that aski's design instincts — delimiter-first, no keywords,
+position defines meaning, names are meaningful, no opaque strings —
+inspired the current work. Honor the lived sense in conversation;
+flag the formal disclaimer only when load-bearing.
 
 ## When the table doesn't help
 
-If a transcribed word still doesn't fit any candidate after
-checking the table:
+1. List repos: `ls ~/primary/repos/` or
+   `~/primary/RECENT-REPOSITORIES.md`. Most workspace-specific words
+   are repo names; the listing is exhaustive.
+2. List CLI tools: `compgen -c | sort -u`. Some tools have
+   phonetic-misheard names (`bd`, `jj`, `gh`).
+3. If a candidate emerges, act on it and note the match in your reply
+   so the user can correct a wrong guess.
+4. Only if no candidate emerges, ask — framing the question by
+   listing the closest matches you considered.
 
-1. List the workspace's repos: `ls ~/primary/repos/` or
-   `<workspace>/RECENT-REPOSITORIES.md`. Many workspace-specific
-   words are repo names; the directory listing is exhaustive.
-2. List CLI tools on PATH: `compgen -c | sort -u`. Some
-   workspace tools have phonetic-misheard names (`bd`, `jj`,
-   `gh`).
-3. If a candidate emerges, act on it and note the match in your
-   reply so the user can correct if you guessed wrong.
-4. Only if no candidate emerges, ask. Frame the question by
-   listing the closest matches you considered, so the user
-   doesn't have to think from scratch.
+## Keeping this skill current
 
-## How to keep this skill current
-
-This table is workspace-state — it grows as new repos and
-libraries land. When you encounter a new STT mishearing in
-practice that isn't in the table, add the row before continuing.
-Per the workspace's autonomous-agent skill, that is a routine
-edit; commit and push.
+The table is workspace-state; it grows as new repos and libraries
+land. When you hit a new STT mishearing not in the table, add the row
+before continuing, then commit and push.
 
 ## See also
 
 - `autonomous-agent.md` — when to act on a guess vs ask.
-- `skill-editor.md` — how to edit this and other skills.
-- CriomOS-home's `skills.md` — the specific STT tool's setup
-  (model, configuration, where it runs).
-- the workspace's `RECENT-REPOSITORIES.md` — the authoritative
-  list of repo names with canonical spelling.
+- CriomOS-home's `skills.md` — the STT tool's setup (model, config,
+  where it runs).

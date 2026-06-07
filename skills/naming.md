@@ -1,48 +1,36 @@
 # Skill — naming (full English words; no redundant ancestry)
 
-*Identifiers are read far more than they are written. Spell every
-identifier as a full English word; let the right name happen. And
-the partner rule: names don't carry their full ancestry — the
-surrounding namespace already supplies that context.*
+*Spell every identifier as a full English word; names don't carry
+their full ancestry — the surrounding namespace already supplies that.*
 
-## What this skill is for
+## Two rules, applied together
 
-Apply this skill every time you name an identifier — a type, a
-function, a field, a variable, a module, a parameter. **Two
-rules apply together, pulling in opposite directions:**
+Apply this every time you name a type, function, field, variable,
+module, or parameter. Two rules pull in opposite directions and only
+work as a pair:
 
-1. **Spell every identifier as a full English word.** The
-   default is the spelled-out English form; abbreviations require
-   one of six narrow exceptions (§"Permitted exceptions" below).
-   Skim the offender table when you catch yourself reaching for
-   `ctx`, `tok`, `op`, `de`, or any two-to-three-letter shape.
-2. **Names don't carry their full ancestry.** A type, variant,
-   or field belongs to its surrounding namespace; repeating the
-   namespace is redundant ceremony (§"Anti-pattern: prefixing
-   names with their namespace or domain" below). Inside `Profile`,
-   the field is `size`, not `profileSize`. Inside
-   `signal-persona-spirit`, the type is `Entry`, not `IntentEntry`.
+1. **Spell every identifier as a full English word.** The default is
+   the spelled-out English form. Abbreviations require one of the six
+   narrow exceptions below.
+2. **Names don't carry their full ancestry.** A type, variant, or
+   field belongs to its surrounding namespace; repeating the namespace
+   is redundant ceremony. Inside `Profile` the field is `size`, not
+   `profileSize`. Inside `signal-persona-spirit` the type is `Entry`,
+   not `IntentEntry`.
 
-The two only work as a pair. "Full word" without the ancestry
-rule produces `IntentRecordIdentifier` (every ancestor named).
-The ancestry rule without "full word" produces `Id` or `Ctx`
-(short, but abbreviated). Apply both; the right name carries the
-words the namespace doesn't, in full English.
+"Full word" alone produces `IntentRecordIdentifier` (every ancestor
+named). The ancestry rule alone produces `Id` or `Ctx` (short but
+abbreviated). Apply both: the name carries the words the namespace
+doesn't, in full English.
 
-This skill pairs with the **verb-belongs-to-noun** discipline
-(workspace `skills/abstractions.md`) — that rule forces a naming
-step to happen at all; this one decides what the name should look
-like once you're forced to choose.
+Identifiers are read far more than they are written. A cryptic
+abbreviation saves the writer a few keystrokes once and costs the
+reader a mental lookup at every occurrence.
 
-## The default
+## The offender table
 
-**Spell every identifier as full English words.**
-
-Identifiers are read far more than they are written. Cryptic
-abbreviations optimize for the writer (a few keystrokes saved) at
-the reader's expense (one mental lookup per occurrence).
-
-Examples (bad → good):
+Bad → good. When you reach for any two-to-three-letter shape, check
+here first.
 
 | bad | good |
 |---|---|
@@ -56,8 +44,8 @@ Examples (bad → good):
 | `cfg` | `config` (or `configuration`) |
 | `addr` | `address` |
 | `buf` | `buffer` |
-| `tmp` | `temporary` (or — better — name what it holds) |
-| `arr` | `array` (or — better — what it contains) |
+| `tmp` | `temporary` (or name what it holds) |
+| `arr` | `array` (or what it contains) |
 | `obj` | (name what it actually is) |
 | `params` | `parameters` |
 | `args` | `arguments` |
@@ -69,155 +57,97 @@ Examples (bad → good):
 | `gen` | `generate` or `generator` |
 | `ser` / `deser` | `serialize` / `deserialize` |
 
-## Permitted exceptions — tight, named, no others
+## Permitted exceptions — six, named, no others
 
-1. **Loop counters in tight scopes (<10 lines).** `for i in 0..n`
-   is fine. Beyond ~10 lines or nested, use descriptive names.
-2. **Mathematical contexts** where the math itself uses the symbol.
-   `x`, `y`, `z`, `theta`, `phi`, `lambda`, `n` for sample size,
-   `p` for probability — only when the surrounding code or comment
+1. **Loop counters in tight scopes (<10 lines).** `for i in 0..n` is
+   fine. Beyond ~10 lines or nested, use descriptive names.
+2. **Mathematical contexts** where the math itself uses the symbol:
+   `x`, `y`, `z`, `theta`, `phi`, `lambda`, `n` for sample size, `p`
+   for probability — only when the surrounding code or comment
    establishes the math context.
 3. **Generic type parameters.** `T`, `U`, `V`, `K`, `E`. Use a
-   descriptive name when the parameter has non-trivial semantic
-   content.
-4. **Acronyms that have fully passed into general English.**
-   `cpu`, `url`, `http`, `json` are the canonical examples —
-   the acronym has functionally become the English word; the
-   spelled form ("hypertext transfer protocol", "javascript
-   object notation") is awkward or no longer remembered.
-   *"no one even knows what JSON actually extends to."* Use
-   these freely.
-
-   The test for adding others: *has the acronym functionally
-   become the English word?* `uuid`, `tcp`, `udp`, `dns` often
-   qualify in the right context — apply the test case-by-case.
-   Internal short forms of system concepts (`db`, `os`, `ui`,
-   `io`, `ram`) are convenience shortenings, not English words
-   — spell them (`database`, `operating_system`, `interface`
-   if user-interface is meant) unless the spelled form is
-   itself awkward.
-
-   Do **not** use `id` — spell `identifier`; the psyche has
-   been explicit: *"identifier is actually better."* Most
-   code-side "acronyms" are convenience shortenings (`ctx`,
-   `cfg`, `addr`, `tok`, `buf`, `proc`) and belong in the
-   offender table above, not in this exception.
+   descriptive name when the parameter carries non-trivial semantics.
+4. **Acronyms that have fully passed into general English.** `cpu`,
+   `url`, `http`, `json` — the acronym has functionally become the
+   English word; the spelled form is awkward or no longer remembered.
+   The test for adding others: *has the acronym functionally become
+   the English word?* `uuid`, `tcp`, `udp`, `dns` often qualify in the
+   right context. Internal short forms of system concepts (`db`, `os`,
+   `ui`, `io`, `ram`) are convenience shortenings, not English words —
+   spell them (`database`, `operating_system`, `interface`) unless the
+   spelled form is itself awkward. Do **not** use `id`; spell
+   `identifier`. Most code-side "acronyms" (`ctx`, `cfg`, `addr`,
+   `tok`, `buf`, `proc`) are convenience shortenings and belong in the
+   offender table, not here.
 5. **Names inherited from `std` or well-known libraries.** `Vec`,
-   `HashMap`, `Arc`, `Rc`, `Box`, `Cell`, `RefCell`, `Mutex`,
-   `mpsc`, `regex`. Do not rename these; do *not* extend the
-   abbreviation pattern to your own types.
-6. **Domain-standard short names already documented in an
-   `ARCHITECTURE.md`.** `slot`, `node`, `edge`, `frame` are full
-   words and need no exception. If a true short form is
-   load-bearing in the schema, name it in `ARCHITECTURE.md` so the
-   exception is explicit; otherwise spell it out.
+   `HashMap`, `Arc`, `Rc`, `Box`, `Cell`, `RefCell`, `Mutex`, `mpsc`,
+   `regex`. Do not rename these; do not extend the abbreviation
+   pattern to your own types.
+6. **Domain-standard short names documented in an `ARCHITECTURE.md`.**
+   `slot`, `node`, `edge`, `frame` are full words and need no
+   exception. If a true short form is load-bearing in the schema, name
+   it in `ARCHITECTURE.md` so the exception is explicit; otherwise
+   spell it out.
 
-## Rule of thumb
+## Name length is proportional to scope
 
-**Name length proportional to scope.** A 3-line loop counter can
-be `i`. A module-level type that appears across the codebase must
-spell itself out. A function parameter that lives for 50 lines
-must read as English.
+A 3-line loop counter can be `i`. A function parameter that lives for
+50 lines must read as English. A module-level type that appears across
+the codebase must spell itself out.
 
-## What this rule is NOT
+This is not "verbose names everywhere":
+`calculate_the_total_amount_of_items` is worse than `total_items`. The
+goal is *clear*, not *long*.
 
-- Not "verbose names everywhere" —
-  `calculate_the_total_amount_of_items` is worse than
-  `total_items`. The goal is *clear*, not *long*.
-- Not "no acronyms ever" — see exception 4.
-- Not "rewrite std" — see exception 5.
+## When generating code, don't propagate the local dialect
 
-## Different scopes get different names
+Spell identifiers as full English words by default. When surrounding
+code uses cryptic identifiers, do not copy them into new code. Either
+rename (if rename is in scope) or use the full form for new
+identifiers and flag the inconsistency as a follow-up. Pattern-matching
+the local dialect is exactly the failure mode this rule breaks.
 
-When a workspace concept names both **what is built today** and the
-**larger eventual form** it is one step toward, those are different
-things and get different names. Same-name conflation lets the
-encompassing vision silently overwrite today's snapshot — readers
-can't tell which scope a doc is in.
-
-Today's piece earns a concrete narrower name. The eventual name
-stays reserved for the realized form. Live examples in this
-workspace:
-
-- `sema-db` (today's typed database library) vs `Sema` (the
-  eventual universal medium for meaning).
-- The current `criome` daemon (today's sema-ecosystem records
-  validator) vs `Criome` (the eventual universal computing paradigm
-  in Sema).
-
-**This is a scope discipline, not a quality one.** Today's narrower
-piece is held to ESSENCE's full priorities — built rightly for its
-scope, not as a draft of the eventual. "Today's piece" is not a
-license to cut corners or write slop.
-
-See `~/primary/ESSENCE.md` §"Today and eventually — different
-things, different names" for the upstream framing.
-
-## How to apply when generating code
-
-When generating new code: **spell identifiers as full English
-words by default.** When the surrounding code uses cryptic
-identifiers, do not propagate them into new code. Either rename
-(if rename is in scope) or use the full form for new identifiers
-and flag the inconsistency as a follow-up. Pattern-matching the
-local dialect is exactly the failure mode this rule exists to
-break.
-
-## The "feels too verbose" anti-pattern
+## The "feels too verbose" feeling is the bug, not the criterion
 
 When a spelled-out name (`AssertOperation`, `Deserializer`,
-`PatternField`, `RelationKind`) "feels needlessly verbose" — that
-feeling is **not** a signal to shorten the name. It is a signal
-that the writer has been taught wrong by a culture inherited from
-constraints that no longer apply.
+`PatternField`, `RelationKind`) "feels needlessly verbose," that
+feeling is inherited prejudice from constraints that no longer apply —
+not a signal to shorten. The full word reads as English; the
+abbreviation reads as ceremony to be decoded. The cost of mis-naming
+is paid every time the name is read; the keystroke saving is paid once.
 
-The full word reads as English. The abbreviation reads as ceremony
-to be decoded. The cost of mis-naming is paid every time the name
-is read; the benefit of saving three keystrokes is paid once.
-There is no contest.
+When you catch the feeling: re-read the name as English. Does
+`AssertOperation` read as English? Yes. Does `AssertOp`? No — it
+requires expansion. The full English form wins unless the name falls in
+one of the six exception classes. There is no exception class for
+"feels verbose."
 
-When you catch yourself thinking "this name feels too long" or
-"this is unnecessarily ceremonial":
+## The name carries the context the namespace doesn't
 
-1. **Question the feeling.** It is almost certainly inherited
-   prejudice, not informed judgment.
-2. **Re-read the name as English.** Does `AssertOperation` read as
-   English? (Yes.) Does `AssertOp` read as English? (No — it
-   requires expansion.)
-3. **Apply the rule.** The full English form wins unless the name
-   falls in one of the six named exception classes above.
+When naming a field, method, or local that *could* be a short word
+(`size`, `name`, `body`), ask: **does the surrounding namespace already
+give the noun?**
 
-There is no exception class for "feels verbose." That feeling is
-the bug, not the criterion.
-
-## Field naming — `profileSize` vs `size` vs `profile::size`
-
-When naming a field, method, or local that *could* be just a
-short word (`size`, `id`, `name`, `body`), the question is:
-**does the surrounding namespace already give the noun?**
-
-- If the access path is `profile::size` (module path) or
-  `profile.size` (struct field of a `Profile`-typed thing),
-  then `size` reads as English at the call site —
-  `profile.size` *is* the description.
-- If the field stands alone, naked, with no enclosing
-  namespace (a top-level binding, an unqualified function
-  parameter, a record field that often appears outside its
-  parent type's context), then `size` is too thin —
-  `profileSize` carries the missing context.
+- If the access path is `profile::size` (module path) or `profile.size`
+  (field of a `Profile`-typed thing), `size` reads as English at the
+  call site — `profile.size` *is* the description.
+- If the field stands alone — a top-level binding, an unqualified
+  parameter, a record field that appears outside its parent type's
+  context — then `size` is too thin and `profileSize` carries the
+  missing context.
 
 ```rust
-// Right — namespace already qualifies; field name stays short
+// Right — namespace qualifies; field name stays short
 struct Profile {
     pub size: u64,        // accessed as profile.size
 }
 
-// Right — naked parameter with no enclosing namespace; name carries the context
+// Right — naked parameter; name carries the context
 impl MetricsRecorder {
     pub fn record(&self, profileSize: u64, requestCount: u32) { … }
 }
 
-// Wrong — descriptor's namespace already names "profile"; field name redundant
+// Wrong — Profile's namespace already names "profile"
 struct Profile {
     pub profileSize: u64,  // profile.profileSize reads as repetition
 }
@@ -225,118 +155,81 @@ struct Profile {
 // Wrong — naked parameters claim a context that isn't there
 impl MetricsRecorder {
     pub fn record(&self, size: u64, count: u32) { … }
-    //                   ^^^^         ^^^^^ which size? which count?
+    //                   which size? which count?
 }
 ```
 
-The rule: **the name carries the context the namespace
-doesn't.** Tests:
-
-- *Will the reader see this name with or without its
-  enclosing namespace?*
-- *Does the namespace already name the thing the field
-  describes?*
-
-If both answers are "with namespace + namespace names it,"
-the field name can be short. If either answer is "without
-namespace" or "namespace doesn't name it," the field name
-needs the descriptive prefix.
-
-The discipline is logical-plane separation: naked names
-*claim* a context they don't have. Naked names that survive
-in code are silent failures of clarity that the type system
-can't catch.
-
-This refines the "full English words" rule: it isn't *more
-words* that wins — it's *the words the namespace doesn't
-already supply*. `messageId` when there's no `Message`
+Naked names *claim* a context they don't have; the type system can't
+catch that silent failure of clarity. This refines "full English
+words": it isn't *more words* that wins, it's *the words the namespace
+doesn't already supply*. `messageId` when there's no `Message`
 namespace; `id` when there is.
-
-(Per Li 2026-05-09: "I prefer more indirection and logical
-planes, more naming accuracy — `profileSize` is better than
-`size`, unless it is `profile::size`.")
 
 ## Anti-pattern: prefixing names with their namespace or domain
 
-**A name belongs to its surrounding context, not to the
-cross-crate global namespace.** The crate, module, contract,
-channel, enclosing enum, and owning component are all namespaces.
-Repeating any of them in the type, variant, field, or payload name
-is redundant ceremony.
+A name belongs to its surrounding context, not to the cross-crate
+global namespace. The crate, module, contract, channel, enclosing
+enum, and owning component are all namespaces; repeating any of them in
+the name is redundant ceremony.
 
 ```rust
 // Wrong — crate name redundant at every use site
 pub struct ChromaRequest { … }
-pub struct ChromaResponse { … }
-pub struct ChromaConfig { … }
 pub struct ChromaError { … }
 
 // Right — call sites read chroma::Request, chroma::Error
 pub struct Request { … }
-pub struct Response { … }
-pub struct Config { … }
 pub struct Error { … }
 ```
 
-For contract crates, the same rule applies to the contract's domain:
+For contract crates the same rule applies to the contract's domain:
 
 ```rust
 // Wrong — the contract crate already says repository-ledger
 pub struct RepositoryPushObservation { … }
-pub struct RepositoryChangedFileQuery { … }
 pub enum RepositoryLedgerRequest {
     RepositoryPushObservation(RepositoryPushObservation),
 }
 
-// Right — use-site context reads signal_repository_ledger::PushObservation
+// Right — use-site reads signal_repository_ledger::PushObservation
 pub struct PushObservation { … }
-pub struct ChangedFileQuery { … }
 pub enum Request {
     PushObservation(PushObservation),
 }
 ```
 
-The discriminator: **does the leading word *describe* the type, or
-does it name a namespace already visible at the use site?**
-Descriptive words stay; namespace prefixes go.
+The discriminator: **does the leading word *describe* the type, or name
+a namespace already visible at the use site?** Descriptive words stay;
+namespace prefixes go.
 
 | Prefix is wrong | Prefix is fine |
 |---|---|
-| `ChromaRequest` (Chroma is the crate) | `VisualState` (Visual describes what kind of state) |
+| `ChromaRequest` (Chroma is the crate) | `VisualState` (Visual describes the kind) |
 | `StylixOptions` (Stylix is the crate) | `ColorScheme` (descriptive) |
 | `NotaCodecError` | `LexerError` |
 | `PersonaMessageRouter` | `MessageRouter` |
-| `RepositoryChangedFileQuery` inside `signal-repository-ledger` | `ChangedFileQuery` |
-| `HarnessHarnessEvent` inside `signal-persona-harness` | `LifecycleEvent` |
+| `RepositoryChangedFileQuery` in `signal-repository-ledger` | `ChangedFileQuery` |
+| `HarnessHarnessEvent` in `signal-persona-harness` | `LifecycleEvent` |
 
-**The standard library is the canonical reference.** `Vec`,
-`HashMap`, `Arc`, `Cell`, `Mutex` — never `StdVec`,
-`StdHashMap`, `StdArc`. The pattern propagates: well-shaped
-crates name their types as if `use crate_name::*` were the
-norm, even when it isn't.
+The standard library is the canonical reference: `Vec`, `HashMap`,
+`Arc`, `Cell`, `Mutex` — never `StdVec`, `StdArc`. Well-shaped crates
+name their types as if `use crate_name::*` were the norm, even when it
+isn't.
 
-**Why LLM agents are particularly prone to this:** the
-prefix "feels safe" (avoids collisions, matches the file
-name, looks self-documenting) and tokens are free. Same
-procrastination pressure as in `skills/abstractions.md` —
-the agent skips the harder thinking ("what does this type
-actually represent?") in favour of the shallower
-disambiguator ("which crate is it from?"). Both produce
-the same drift: structural meaning hidden by ceremony.
-
-The Rust enforcement (with std references) lives in
-`skills/rust-discipline.md` §"No crate-name prefix on
-types"; this section is the cross-language form.
+LLM agents are prone to this because the prefix "feels safe" (avoids
+collisions, matches the file name, looks self-documenting) and tokens
+are free. The agent skips the harder thinking ("what does this type
+actually represent?") for the shallower disambiguator ("which crate is
+it from?").
 
 ## Anti-pattern: repeated category words across sibling names
 
-When several adjacent types or variants share the same prefix
-or suffix — `*Query`, `*Command`, `*Event`, `*Listing`,
-`*Selection`, `*Mode`, `*Result` — stop and ask which layer
-the repeated word belongs to. It may be a missing parent enum,
-relation, record, module, contract operation, or lower execution
-effect that has been exposed at the wrong layer. Repeated
-category words are **schema smells**, not naming choices.
+When several adjacent types or variants share a prefix or suffix —
+`*Query`, `*Command`, `*Event`, `*Listing`, `*Selection`, `*Mode`,
+`*Result` — stop and ask which layer the repeated word belongs to. It
+may be a missing parent enum, relation, record, module, contract
+operation, or lower execution effect exposed at the wrong layer.
+Repeated category words are **schema smells**, not naming choices.
 
 ```rust
 // Wrong — Query repeated as a suffix across five siblings
@@ -346,7 +239,7 @@ Match ChangedFileQuery(ChangedFileQuery),
 Match CommitMessageQuery(CommitMessageQuery),
 Match CatalogQuery(CatalogQuery),
 
-// Possible correction — Query is the parent enum; siblings name read targets
+// Possible correction — Query is the parent enum; siblings name targets
 Match Query(Query),
 
 pub enum Query {
@@ -358,156 +251,120 @@ pub enum Query {
 }
 ```
 
-That correction is not automatic. If `Query` is the public act
-this contract receives, it may belong one layer higher as a
-contract operation, while the lower database/read operation stays
-inside the daemon:
+That correction is not automatic. If `Query` is the public act this
+contract receives, it may belong one layer higher as a contract
+operation while the lower database/read operation stays inside the
+daemon — the daemon may lower it internally to a Sema Match effect. The
+threshold is behavioral, not numeric: when you find yourself adding a
+third sibling with the same suffix, stop and ask. The schema is asking
+for a new structural layer; don't decide in advance whether that layer
+is a parent payload, a contract operation, or a lower execution effect.
 
-```rust
-// Also possible — Query is the contract operation.
-operation Query(Query)
-
-// The daemon may lower it internally to a Sema Match effect.
-```
-
-The threshold is behavioral, not numeric: when you find
-yourself adding a third sibling with the same suffix, stop
-and ask. The schema is asking for a new structural layer; do
-not decide in advance whether that layer is a parent payload,
-a contract operation, or a lower execution effect.
-
-**Why this rule pairs with the no-redundant-ancestry rule.**
-The ancestry rule says "don't restate what the namespace
-already supplies." The repeated-category rule says "if a word
-recurs across siblings, the schema is missing a namespace
-that would supply it." Together: names carry only what the
-schema's structure doesn't carry; when names repeat a word,
-that word should become structure.
-
-This is one of two failure modes that produce flat schemas
-where the schema should grow into a tree (the other being the
-redundant-prefix pattern above). Both diagnose agents who
-don't see the schema as a growing tree.
+This pairs with the no-redundant-ancestry rule. Ancestry says "don't
+restate what the namespace already supplies." Repeated-category says "if
+a word recurs across siblings, the schema is missing a namespace that
+would supply it." Together: names carry only what the schema's structure
+doesn't; when names repeat a word, that word should become structure.
+Both are failure modes that flatten a schema that should grow into a
+tree.
 
 ## Anti-pattern: framework-category suffixes on type names
 
-**A type's name should describe what it IS or what role it plays
-— never the framework category it falls into.** A `Counter` that
-implements the `Actor` trait IS an actor; calling it `CounterActor`
-adds the category to the name without adding meaning.
+A type's name should describe what it IS or what role it plays — never
+the framework category it falls into. A `Counter` that implements the
+`Actor` trait IS an actor; calling it `CounterActor` adds the category
+without adding meaning.
 
 ```rust
 // Wrong — framework-category suffix
 pub struct CounterActor { count: i64 }
 pub struct IncMessage { amount: i64 }
 pub struct ClaimNormalizerActor { … }
-pub struct SubmitMessage { … }
 
 // Right — name says what the type IS / does
 pub struct Counter { count: i64 }
 pub struct Inc { amount: i64 }
 pub struct ClaimNormalizer { … }
-pub struct Submit { … }
 ```
 
-The discriminator: **does the suffix describe the type's role, or
-does it tag the framework category the type happens to fall into?**
-Role-shaped suffixes stay; category-shaped suffixes go.
+The discriminator: **does the suffix describe the type's role, or tag
+the framework category it falls into?** Role-shaped suffixes stay;
+category-shaped suffixes go.
 
-| Suffix is wrong (framework category) | Suffix is fine (descriptive role or relationship) |
+| Suffix is wrong (framework category) | Suffix is fine (descriptive role) |
 |---|---|
-| `*Actor` | `*Supervisor` (this type supervises children) |
-| `*Message`, `*Msg` | `*Resolver` (this type resolves something) |
-| `*Handler` | `*Decoder`, `*Encoder` (this type decodes/encodes) |
-| `*Listener`, `*Subscriber` (as a generic trait-participation tag — `EventSubscriber` to mean "thing that implements `Subscribe`") | `*Tracker`, `*Cache`, `*Ledger` (this type holds that state); also `Subscriber` as the *role* of the long-lived actor on the receiving side of a publish/subscribe channel — that's role-naming, not category-tagging |
-| `*Object`, `*Type`, `*Class` | `*Builder`, `*Factory` (when actually building things) |
+| `*Actor` | `*Supervisor` (it supervises children) |
+| `*Message`, `*Msg` | `*Resolver` (it resolves something) |
+| `*Handler` | `*Decoder`, `*Encoder` (it decodes/encodes) |
+| `*Listener`, `*Subscriber` (as a generic trait-participation tag) | `*Tracker`, `*Cache`, `*Ledger` (it holds that state); `Subscriber` as the *role* of the long-lived actor on the receiving side of a publish/subscribe channel |
+| `*Object`, `*Type`, `*Class` | `*Builder`, `*Factory` (when actually building) |
 | | `*Handle`, `*Client`, `*Ref` — relationship-naming (the value IS a held authority on the target; same shape as `JoinHandle`, `FileHandle`) |
 
-**Note on `Handle`**: `Handle` is *not* a framework-category tag in the
-same shape as `Actor` / `Message` / `Handler`. It names a relationship —
-the value IS the caller's held authority to a live service or resource.
-Same pattern as `tokio::task::JoinHandle` (a handle to join a task) or
-`std::fs::File` / `std::process::Child` as held-resource types.
-`*Handle` earns its place when the wrapper carries domain content
-(lifecycle ownership, capability narrowing, error vocabulary mapping,
-topology insulation, or send-policy enforcement). For the actor-specific
-application of *when* a Handle is appropriate, see this workspace's
-`skills/kameo.md` §"Public consumer surface — ActorRef<A> or domain
-wrapper".
+`Handle` is not a framework-category tag. It names a relationship — the
+value IS the caller's held authority to a live service or resource, same
+pattern as `tokio::task::JoinHandle`, `std::fs::File`,
+`std::process::Child`. `*Handle` earns its place when the wrapper
+carries domain content: lifecycle ownership, capability narrowing, error
+vocabulary mapping, topology insulation, or send-policy enforcement. A
+bare `Handle` that just holds an `ActorRef<A>` and delegates
+method-by-method without adding domain content is runtime-laundering —
+drop the wrapper and expose `ActorRef<A>` directly.
 
-A bare `Handle` wrapper that just holds an `ActorRef<A>` and delegates
-method-by-method without adding domain content is still the
-runtime-laundering anti-pattern operator/103 retired — drop the wrapper
-and expose `ActorRef<A>` directly.
+A category tag forces the reader to mentally strip it at every use site
+("`CounterActor` — it's a Counter that's an Actor — it's always an Actor
+here, so just Counter"). That strip is paid every time. LLM agents reach
+for category tags for the same reason as crate-name prefixes: the
+shallower disambiguator over the harder work of finding the role-shaped
+name.
 
-The rule's deeper purpose: type names are read at every use site,
-and a category tag forces the reader to mentally strip it ("oh,
-`CounterActor` — that's a Counter that's an Actor — well it's
-always going to be an Actor in this codebase, so just Counter").
-That mental strip is paid every time. Drop the tag; let the type
-name carry meaning.
+## Different scopes get different names
 
-**Why LLM agents are particularly prone to this:** category tags
-"feel safe" (they document the framework participation visibly,
-match common tutorial conventions, look self-explanatory). Same
-procrastination pressure as crate-name prefixes — the agent reaches
-for the shallower disambiguator instead of doing the harder work
-of finding the right role-shaped name.
+When a concept names both **what is built today** and the **larger
+eventual form** it is one step toward, those are different things and
+get different names. Same-name conflation lets the encompassing vision
+silently overwrite today's snapshot — readers can't tell which scope a
+doc is in.
 
-For the actor-specific application of this rule (with worked
-examples and the historical context — ractor's behavior-marker
-+ State split made the suffix briefly defensible; Kameo's
-`Self`-IS-the-actor shape removed even that), see this workspace's
-`skills/kameo.md` §"Naming actor types".
+Today's piece earns a concrete narrower name; the eventual name stays
+reserved for the realized form. Live examples:
+
+- `sema-db` (today's typed database library) vs `Sema` (the eventual
+  universal medium for meaning).
+- The current `criome` daemon (today's sema-ecosystem records
+  validator) vs `Criome` (the eventual universal computing paradigm in
+  Sema).
+
+This is a scope discipline, not a quality one. Today's narrower piece is
+held to ESSENCE's full priorities — built rightly for its scope, not as
+a draft of the eventual. "Today's piece" is not a license to cut
+corners.
 
 ## Schema and emitted Rust mirror each other
 
-Per spirit record 952 (High, 2026-05-27): the naming system between
-schema-emitted code and Rust source **mirrors each other**. *"You
-can use the naming system that way to like a mirror."* The
-colon-path namespace in a schema (e.g. `spirit:signal:Frame`)
-maps directly to the Rust module-and-type path
-(`spirit::signal::Frame`) — colon-to-double-colon, kebab-case
-crate names becoming snake_case module names, PascalCase type names
-unchanged.
+The naming system mirrors between schema-emitted code and Rust source.
+A colon-path namespace in a schema (`spirit:signal:Frame`) maps directly
+to the Rust module-and-type path (`spirit::signal::Frame`):
+colon-to-double-colon, kebab-case crate names becoming snake_case module
+names, PascalCase type names unchanged.
 
 Two consequences:
 
-- **Grep across both surfaces uses the same identifier.** Looking
-  for `Frame` in the schema file and `Frame` in the emitted Rust
-  finds the two views of one identity.
-- **The schema is a sufficient entry point and so is the emitted
-  Rust.** An agent reading either can locate the other
-  mechanically — no separate mapping table.
+- **Grep across both surfaces uses the same identifier.** Searching
+  `Frame` in the schema file and in the emitted Rust finds the two views
+  of one identity.
+- **Either surface is a sufficient entry point.** An agent reading
+  either can locate the other mechanically — no separate mapping table.
 
-The property pairs with the side-by-side file placement (per record
-909): emitted Rust lives at `src/schema/<module>.rs` inside the
-consumer crate, alongside hand-written Rust. The two surfaces sit
-together; the mirror-naming makes them navigable in either
+This pairs with side-by-side file placement: emitted Rust lives at
+`src/schema/<module>.rs` inside the consumer crate, alongside
+hand-written Rust. The mirror-naming makes the two navigable in either
 direction.
-
-## Companion rule
-
-Pairs with this workspace's `skills/beauty.md`: a name that
-doesn't read as English is one of the diagnostic readings of
-structural ugliness. The aesthetic discomfort is the signal that
-the right structure (the right name, the right type) hasn't been
-found.
 
 ## See also
 
-- this workspace's `skills/beauty.md` — beauty as the criterion;
-  bad names are a diagnostic reading.
-- this workspace's `skills/abstractions.md` — verb-belongs-to-noun;
-  this rule restores the naming step LLM agents tend to skip.
-- this workspace's `skills/stt-interpreter.md` — the
-  table-of-mappings shape, applied to speech-to-text mishearings
-  rather than code abbreviations.
-- this workspace's `skills/rust-discipline.md` — Rust-specific
-  application (the cryptic-dialect example, the offender table
-  again with Rust-flavor entries).
-- this workspace's `skills/component-triad.md` §"Component binary
-  naming" — applies the no-redundant-ancestry rule to component
-  binaries: the CLI takes the short role-name (because the shell
-  context supplies the rest), the daemon takes `<component>-daemon`
-  (because process listings need the disambiguator).
+- `skills/abstractions.md` — verb-belongs-to-noun; forces the naming
+  step that this rule then decides.
+- `skills/beauty.md` — a name that doesn't read as English is a
+  diagnostic reading of structural ugliness.
+- `skills/rust-discipline.md` — Rust-specific application, including the
+  no-crate-name-prefix enforcement and `Handle`/`ActorRef` shape.

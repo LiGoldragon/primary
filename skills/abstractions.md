@@ -1,35 +1,23 @@
 # Skill — verb belongs to noun (where behavior lives)
 
-*Every reusable verb belongs to a noun. If you can't name the noun,
-the model isn't formed yet — keep looking until you can.*
-
-## What this skill is for
-
-When you sit down to write a verb (a function, a method, a
-dispatcher), apply this skill *before* you write. Ask: what type
-owns this verb? If a type already exists, attach the verb as a
-method. If no obvious noun exists, the model is incomplete — the
-missing type is what the verb is asking you to declare.
-
-This applies to any language with method dispatch (Rust, Python,
-Go, Java, C++, Smalltalk) and is enforced by convention in
-languages without it (C's `_operations` vtables, Haskell's
-typeclass-constrained free functions). The discipline is universal
-even when the syntax varies.
+Every reusable verb belongs to a noun. If you can't name the noun,
+the model isn't formed yet — keep looking until you can.
 
 ## The rule
 
-Behavior that is reusable lives on a type. Free functions are for
-things that genuinely belong nowhere else: a binary's `main`, a
-small private helper inside one module, a pure mathematical
-operation between values of equal status.
+Before you write a verb (a function, a method, a dispatcher), ask:
+what type owns this verb? If a type exists, attach the verb as a
+method. If no obvious noun exists, the model is incomplete — the
+missing type is what the verb is asking you to declare.
 
-**Anti-pattern (named in prose, never shown as code per
-`skills/skill-editor.md` §"Examples never show free
-functions"):** a free `parse_query(text: &str) -> Result<QueryOp,
-Error>` is a verb floating without a type. The `text`
-parameter is the input the verb wants; the verb is the
-affordance the *type around the parser state* should own.
+Reusable behavior lives on a type. Free functions are for things
+that genuinely belong nowhere else: a binary's `main`, a small
+private helper inside one module, a pure relational operation
+between values of equal status.
+
+A free `parse_query(text: &str) -> Result<QueryOp, Error>` is a verb
+floating without a type. The `text` parameter is the input the verb
+wants; the verb is the affordance the *parser-state type* should own.
 
 ```rust
 // Right — verb on the type that owns it
@@ -41,356 +29,219 @@ impl<'input> QueryParser<'input> {
 }
 ```
 
-The rule is not aesthetic. It is a forcing function.
-
-**Free functions are incorrectly specified verbs.** They encode an
-action without naming the noun that owns it. When you reach for
-one, slow down and find the noun — the type that has the affordance
-this verb describes. If no obvious noun exists, the *model* is
-incomplete; the missing type is what the verb is asking you to
-declare.
-
-## Affordances vs operations
-
-Methods encode **affordances** — what kinds of things a value of
-this type *can do*. Free functions encode **operations** that
-happen to take some arguments. The distinction is structural.
-
-In the real world, fruits can be eaten and clouds cannot. Code
-that models the world correctly says `fruit.eat()`, not
-`eat(fruit)`. The method form binds the verb to the type that
-owns it. The free-function form lets the verb float — and
-`eat(cloud)` becomes thinkable, type-checked only if you happen
-to have given `Cloud` an explicit "missing eat" marker.
-
-The vocabulary comes from outside CS. James Gibson's 1979
-*Ecological Approach to Visual Perception* defined an *affordance*
-as "what [the environment] offers the animal, what it provides or
-furnishes, either for good or ill." Donald Norman's 1988 *Design
-of Everyday Things* applied it to artifacts: a door's handle
-affords pulling; a flat panel affords pushing. The affordance is
-a property of the relationship between the object and the agent.
-
-A method-bearing type *advertises* its affordances at every call
-site. A passive record next to a free-function library does not.
-The type system knows which is which only when the operations are
-attached to the things that own them.
+This applies to any language with method dispatch (Rust, Python,
+Go, Java, C++, Smalltalk) and is enforced by convention in
+languages without it (C's `_operations` vtables, Haskell's
+typeclass-constrained free functions). The discipline is universal
+even when the syntax varies.
 
 ## The forcing function
 
-The deeper purpose of the rule is not what it makes you write;
-it's what it makes you do *before* you write.
+The rule's purpose is not what it makes you write; it's what it
+makes you do *before* you write. It forces the question — *what
+type owns this verb?* — and sometimes the answer is "no type exists
+yet," which forces you to invent one. That forced invention is the
+load-bearing cognitive event.
 
-If you sit down to write a verb, the rule forces the question:
-*what type owns this verb?* Sometimes the answer is obvious — a
-method on an existing type. Sometimes the answer is "no type
-exists yet for this," and the rule forces you to invent one.
-That forced invention is the load-bearing cognitive event.
-
-Without the rule, the verb gets written as a free function and
-the noun never appears. The model develops gaps: verbs without
-owning nouns, missing structural types, behavior smeared across
-the call graph. Programs that "look fine" end up missing whole
-structural types they ought to have.
+Without the rule, the verb gets written as a free function and the
+noun never appears. The model develops gaps: verbs without owning
+nouns, missing structural types, behavior smeared across the call
+graph. Programs that "look fine" end up missing whole structural
+types they ought to have.
 
 The pattern is named in the refactoring catalogue. Martin Fowler:
-**Feature Envy** is "a method that seems more interested in a
-class other than the one it is in" — a verb in the wrong place.
-**Data Class** is the same drift seen from the other side — a
-type with no behavior because the verbs that should have lived
-on it ended up elsewhere. **Anemic Domain Model** is the
-codebase-scale form. The cure for all three is the same:
-*Move Function* / *Extract Class* — find the type, attach the
-verb.
+**Feature Envy** is a method more interested in another class than
+its own — a verb in the wrong place. **Data Class** is the same
+drift from the other side — a type with no behavior because the
+verbs that should live on it ended up elsewhere. **Anemic Domain
+Model** is the codebase-scale form. The cure for all three: *Move
+Function* / *Extract Class* — find the type, attach the verb. Do
+this once, up front, instead of accumulating the debt.
 
-The rule is: do this once, up front, instead of accumulating the
-debt and refactoring later.
+## Affordances vs operations
+
+Methods encode **affordances** — what a value of this type *can do*.
+Free functions encode **operations** that happen to take arguments.
+The distinction is structural.
+
+Fruits can be eaten and clouds cannot. Code that models the world
+correctly says `fruit.eat()`, not `eat(fruit)`. The method form
+binds the verb to the type that owns it; the free-function form lets
+the verb float, and `eat(cloud)` becomes thinkable. The vocabulary
+is Gibson's: an *affordance* is what the environment offers an agent
+— a property of the relationship between object and agent (a door
+handle affords pulling). A method-bearing type *advertises* its
+affordances at every call site; a passive record next to a
+free-function library does not.
 
 ## Why this matters more for LLM agents
 
-Humans procrastinate creating types because typing out
-`struct QueryParser { … }` *feels heavier* than `fn
-parse_query(…)`. There is tactile friction in declaring a noun,
-naming its fields, deciding its constructor. That friction is a
-feature: it makes humans ask "is this type pulling its weight?"
-before paying the cost.
+Humans procrastinate creating types because typing `struct
+QueryParser { … }` *feels heavier* than `fn parse_query(…)`. That
+tactile friction is a feature: it makes humans ask "is this type
+pulling its weight?" before paying the cost.
 
-LLMs have no such friction. Generating `struct QueryParser` and
-generating `fn parse_query` cost the same number of tokens, take
-the same wall-clock time, and produce no felt sense of "this is
-heavy." The result is predictable: LLMs default to whichever
-shape is *shorter* — almost always the free function.
+LLMs have no such friction. Generating `struct QueryParser` and `fn
+parse_query` cost the same tokens and produce no felt sense of
+weight, so LLMs default to whichever shape is *shorter* — almost
+always the free function. The rule reintroduces, by fiat, the
+friction the substrate has erased. It changes what the agent can
+think by changing what it is *required* to write.
 
-The rule reintroduces, by fiat in a style guide, the friction
-the substrate has erased. It changes what the agent can think,
-by changing what it is *required* to write.
+The underlying failure is **verbs without owning nouns**: naming
+conventions go bad because there is no type to anchor a name to;
+unused code accumulates because nothing carries a clean
+responsibility.
 
-The empirical work on LLM-generated code documents the symptoms
-without naming the cause. Tambon et al. 2024 found LLM output is
-"shorter yet more complicated" than canonical solutions, with
-"misunderstanding and logic errors" as the largest bug category.
-Spinellis et al. 2025 found 33.7% of LLM-generated JavaScript
-contains "unused code segments" and 83.4% of Python shows
-"invalid naming conventions." The underlying failure is **verbs
-without owning nouns**: naming conventions go bad because there
-is no type to anchor a name to; unused code accumulates because
-nothing carries a clean responsibility.
+## The naming bridge
 
-## The Karlton bridge
-
-Phil Karlton: "There are only two hard things in Computer
-Science: cache invalidation and naming things."
-
-When an LLM agent skips creating a type, **it skips the naming
-step entirely.** The hard thing is not avoided; it is hidden.
-The methods-on-types rule restores the hard step into the
-workflow, where it belongs.
-
-This is the cleanest one-line statement of the rule's purpose:
-*the rule exists to make sure naming happens.*
+Phil Karlton: "There are only two hard things in Computer Science:
+cache invalidation and naming things." When an agent skips creating
+a type, it skips the naming step entirely — the hard thing is not
+avoided, it is hidden. The rule exists to make sure naming happens.
 
 ## Principled exceptions
 
-The rule has carve-outs, named directly. Use them honestly; they
-are not a back door for skipping the noun-creation step.
+Carve-outs, named directly. Use them honestly; they are not a back
+door for skipping noun-creation.
 
-### The local-helper carve-out
+**Local helper.** A small private helper inside one module is fine
+when genuinely local — a three-line `fn hex(h: &Hash) -> String`
+next to a single `Display` impl is a private fragment of one impl,
+not a missing noun. The rule kicks in when the verb is *reusable*:
+more than one caller might want it, it would be discoverable from
+multiple sites, or its life as a free function would let it spread.
 
-A small private helper inside one module is fine if it is
-genuinely local — a three-line `fn hex(h: &Hash) -> String` next
-to a single `Display` impl is not a missing noun, it is a
-private fragment of one impl. The rule kicks in when the verb is
-*reusable* — when more than one caller might want it, when it
-would be discoverable from multiple sites, when its life as a
-free function would let it spread.
+**Relational operation.** Some operations are genuinely relational
+between two values of equal status with no state on either side —
+`add(a, b)` over two numbers. In method-bearing languages this is
+expressed via operator overloading: `a + b` desugars to `Add::add(a,
+b)`, which IS a method on a type. The rule is preserved.
 
-### The relational-operation carve-out
+**Standard library.** Names inherited from well-known libraries keep
+their shape. `serde_json::from_str` / `to_string` are free functions
+because ecosystem convention demands them; hiding that behind methods
+would surprise every user. The carve-out is narrow — only the
+crate-root `from_str` / `to_string` shape; everything inside the
+crate's own implementation still attaches behavior to its owning
+types. Don't invent gratuitous deviations from convention, but don't
+let "convention" excuse missing types.
 
-Some operations are genuinely **relational** between two values
-of equal status, with no state on either side. `add(a, b)` over
-two numbers is the canonical case. William Cook's 2009 essay
-*On Understanding Data Abstraction, Revisited* gives the formal
-frame: ADTs (operations outside the data) and objects (operations
-inside the data) are dual / complementary, neither wrong. Pure
-mathematical operations fit the ADT axis.
+**No methods in the language.** The rule still applies. C follows it
+via vtables (`struct file_operations`, `struct inode_operations` in
+the Linux kernel) — behavior attached to the type, dispatch manual.
+Haskell follows it via typeclass-constrained free functions (`Eq a
+=> a -> a -> Bool` is conceptually a method on `a`). Python via
+`class … def …`.
 
-In practice, in object-oriented or method-bearing languages, this
-exception is usually expressed via operator overloading — `a + b`
-desugars to `Add::add(a, b)`, which IS a method on a type, just
-with operator-syntax sugar. The rule is preserved.
+**Actor frameworks.** Some frameworks force a behavior-marker ZST
+satisfying a trait shape plus a separate `State` type carrying the
+data; verbs then drift onto `State`, leaving the named noun empty.
+Kameo (the workspace runtime) avoids this: `Self` IS the actor and
+carries fields directly. The actor type is the noun — fields,
+construction, methods, and `Message<T>` impls all on the same noun,
+no separate marker, no separate `State`. See `skills/kameo.md`.
 
-### The standard-library carve-out
+## Find the noun — what it looks like
 
-Names inherited from well-known libraries get to keep their
-shape. `serde_json::from_str` and `serde_json::to_string` are
-free functions because the ecosystem convention demands them. A
-serde-format crate that hides this convention behind methods
-would surprise every user who has ever reached for `serde_json`.
-The carve-out is **narrow**: the crate-root `from_str` /
-`to_string` shape is preserved; everything inside the crate's
-own implementation should still attach behavior to its owning
-types.
+When "what type owns this verb?" is hard, that hardness signals the
+model isn't fully formed. Three resolutions:
 
-The general principle: don't invent gratuitous deviations from
-established conventions, but don't let "convention" be a sloppy
-excuse for missing types.
-
-### When the language doesn't have methods
-
-The rule still applies. C codebases follow it via vtables —
-`struct file_operations`, `struct inode_operations`, `struct
-backlight_ops` in the Linux kernel. Behavior is attached to the
-type; only the dispatch is manual. Haskell follows it via
-typeclass-constrained free functions — `Eq a => a -> a -> Bool`
-is conceptually a method on `a` even though the syntax is
-top-level. Python follows it via `class … def …`. The discipline
-is universal even when the syntax varies.
-
-### Actor frameworks
-
-Some actor frameworks force a behavior-marker type whose only job is
-satisfying the framework's trait shape — a ZST with the trait impl
-plus a separate `State` type that carries the actual data. Verbs
-then drift onto `State`, leaving the named noun (the behavior marker)
-empty. The workspace's runtime, **Kameo**, doesn't have this problem:
-`Self` IS the actor, and the actor type carries fields directly.
-
-The verb-belongs-to-noun rule applies sharply here. In Persona,
-`ClaimNormalizer` should be the actor type — fields, construction,
-methods, and `Message<T>` impls all on the same noun. There is no
-separate marker, no separate `State`, and no automatic `*Handle`
-boilerplate between the actor and its callers. A public domain
-facade is still allowed when it earns its place under
-`skills/kameo.md` §"Public consumer surface — ActorRef<A> or domain
-wrapper". The data-bearing actor IS the noun the verbs attach to.
-
-For the workspace's actor discipline, see `skills/actor-systems.md`
-(architectural rule) and `skills/kameo.md` (Rust shape).
-
-## What "find the noun" actually looks like
-
-When the rule's question — "what type owns this verb?" — is
-hard, that hardness is a signal. The signal is that the model
-of the problem isn't fully formed yet. Three kinds of resolution:
-
-1. **The noun already exists.** You missed it. Attach the verb
-   as a method.
+1. **The noun already exists.** You missed it. Attach the method.
 2. **The noun is implicit but unnamed.** A `parse_query` free
-   function already has a `QueryParser` inside it: parser
-   state, input cursor, error context. Name it. Make the
-   implicit explicit.
+   function already has a `QueryParser` inside it: parser state,
+   cursor, error context. Name it — make the implicit explicit.
 3. **The verb is genuinely relational.** Two values of equal
-   status, no state, no privileged owner. Use the relational-
-   operation carve-out.
+   status, no privileged owner. Use the relational carve-out.
 
-If none of these apply, you don't have a clean program model
-yet. Slow down. Don't paper over the gap with a free function.
+If none apply, you don't have a clean model yet. Slow down; don't
+paper over the gap with a free function.
 
 ## The wrong-noun trap
 
-The rule says every reusable verb belongs to *a* noun. The
-discipline is sharper: it belongs to **the right** noun — the
-one whose primary concern matches the verb's concern. Picking a
-nearby noun "because it's already there and might as well own
-this too" is a failure mode the rule's surface form doesn't catch
-on its own. Adjacency of *types* is not the same thing as
-adjacency of *concerns*.
+The verb belongs not just to *a* noun but to **the right** noun —
+the one whose primary concern matches the verb's concern. Picking a
+nearby noun "because it's already there and might as well own this
+too" is a failure the rule's surface form misses. Adjacency of
+*types* is not adjacency of *concerns*.
 
-Concrete shape — two proc-macro crates sitting close together:
+Example — two proc-macro crates sitting close: `text-codec-derive`
+(concern: text encode/decode) and `schema-derive` (concern: schema
+introspection over record types). Both touch the same record types.
+The temptation is to put schema introspection into
+`text-codec-derive` "because it already sees the types." That puts
+the verb on the wrong noun: schema introspection is the *schema's*
+concern, and the codec is downstream of the schema. The right noun
+is `schema-derive`.
 
-```
-   text-codec-derive          schema-derive
-   ─────────────────────      ──────────────────────
-   concern: text              concern: schema
-     encode / decode            introspection over
-                                record types
-   verbs:                     verbs:
-     emit codec impls           emit per-kind schema
-                                descriptors
-```
-
-Both crates touch the same underlying record types — the text
-codec consumes records as its input. The temptation is to put
-schema introspection into text-codec-derive "because it already
-sees the types." That puts the verb (introspecting record types)
-on the wrong noun (the text codec). The right noun is
-schema-derive, because schema introspection is the *schema's*
-concern; the codec is downstream of the schema, not the other
-way around.
-
-The diagnostic, when finding the noun: if the answer sounds like
-*"well, this nearby type **could** hold it,"* slow down. The
-right noun is the one whose primary concern matches the verb's
-concern. The merely-convenient noun produces all the same
-maintainability problems as putting the verb on no type at all,
-plus the extra cost that it now actively *hides* the missing
-proper noun.
-
-The rule, sharpened: when two crates / two types / two modules
-have similar surface (touch the same data; have similar names)
-but different *concerns*, the verb goes with the concern, not
-with the surface.
-
-This pairs with this workspace's `skills/micro-components.md` —
-the same discipline at the crate boundary. One capability per
-crate; "the new crate's surface is similar to the existing one"
-is not by itself a reason to fold them.
+Diagnostic: if the answer sounds like *"this nearby type **could**
+hold it,"* slow down. The merely-convenient noun has all the
+maintainability problems of putting the verb on no type at all, plus
+it actively hides the missing proper noun. When two crates / types /
+modules have similar surface but different concerns, the verb goes
+with the concern, not the surface. Same discipline at the crate
+boundary lives in `skills/micro-components.md`.
 
 ## Schema-emitted nouns
 
-When the workspace's schema-derived stack is in play, the **nouns
-come from the schema**. Authoring a `.schema` file declares the types
-(structs, enums, newtypes); `schema-rust-next` emits the Rust
-declarations + codec impls + dispatch tables. The agent's Rust code
-attaches **methods** to those emitted nouns. Per psyche record 858 +
-the workspace records 712 / 729 / 853 lineage.
-
-The labor split is sharp:
+When the schema-derived stack is in play, the nouns come from the
+schema. Authoring a `.schema` file declares the types; `schema-rust-next`
+emits the Rust declarations + codec impls + dispatch tables. The
+agent's Rust code attaches **methods** to those emitted nouns.
 
 | Layer | Provides |
 |---|---|
-| `.schema` file (authored) | The data objects + traits (implied by signal/nexus/SEMA interaction) |
+| `.schema` file (authored) | Data objects + traits (implied by signal/nexus/SEMA interaction) |
 | Emitted Rust (machine-written) | Type declarations + codec impls + headers + dispatch tables |
 | Agent-written Rust (methods) | Behavior on the schema-emitted objects |
 
-The forcing function from §"The rule" applies sharply here: when
-reaching for a verb in the schema-derived stack, the noun is almost
-always **already named** by the schema. If you find yourself writing a
-free function whose arguments include schema-emitted types, the verb
-belongs as a method on whichever emitted type is the primary subject.
+The forcing function applies sharply: the noun is almost always
+already named by the schema. If you write a free function whose
+arguments include schema-emitted types, the verb belongs as a method
+on whichever emitted type is the primary subject.
 
 ```rust
 // Right — verb on the schema-emitted noun
 impl Engine {
     pub fn handle(&self, input: Input) -> Output { match input { ... } }
 }
-
 // Wrong — free function with schema-emitted types as arguments
-fn dispatch(engine: &Engine, input: Input) -> Output { ... }
+// fn dispatch(engine: &Engine, input: Input) -> Output { ... }
 ```
 
-The corollary discipline (per psyche record 855 — the change-loop):
-**don't hand-edit generated data type mirrors.** When you need to
-change a data type, edit the `.schema` and regenerate; the methods
-you've written against the previous emission will either compile
-against the new shape (good) or surface their assumptions as compile
-errors (also good — the type system caught the change).
-
-The runtime triad lens (per `skills/component-triad.md` §"Runtime
-triad — Signal / Nexus / SEMA"): schema emits the nouns each layer
-operates on. Signal's Operation, Nexus's Action / Response,
-SEMA's stored archive types — all emitted. Methods on each layer's
-Rust types attach to whichever schema-emitted noun is the primary
-subject.
+Corollary: don't hand-edit generated data-type mirrors. To change a
+data type, edit the `.schema` and regenerate; methods written against
+the previous emission either compile against the new shape (good) or
+surface their assumptions as compile errors (also good). The runtime
+triad (Signal's Operation, Nexus's Action / Response, SEMA's stored
+archive types) is all emitted; methods attach to whichever emitted
+noun is the primary subject. See `skills/component-triad.md`.
 
 ## Companion disciplines
 
-This rule pairs with three others that push the same direction:
+Three rules push the same direction — **the type system is the
+model**:
 
-- **Wrapped field is private.** A newtype wraps a primitive to
-  give it identity; if the wrapped field is `pub` (`Slot(pub
-  u64)`), callers can construct unchecked values and read raw
-  bytes back out, defeating every reason to wrap. Same
-  discipline: the type owns its representation. (Rust enforcement
-  in this workspace's `skills/rust/methods.md` §"Domain values
-  are types".)
-
-- **Perfect specificity.** Every typed boundary in the system
-  names exactly what flows through it — no wrapper enums that
-  mix concerns, no string-tagged dispatch, no generic-record
-  fallback. Same discipline: the type system carries the
-  meaning, not stringly-typed metadata.
-
-- **Engine logic = enum-vs-enum cross-product.** When two enums
-  meet under `match`, the cross-product of their variants is the
-  typed relationship — make it explicit, either as a nested match
-  or as a named trait (`Reaches<Right>`, `Contact<Other>`,
-  `Dispatch<Token>`). Same discipline at the *engine* layer:
-  the contact point between two structured inputs IS a noun,
-  and naming it surfaces logic that would otherwise scatter into
-  `if` chains, sentinel booleans, or string predicates. Full
-  rule: this workspace's `skills/enum-contact-points.md`.
-
-All four rules say the same thing in different domains: **the
-type system is the model**. Use it.
-
-## The one-line summary
-
-**Every reusable verb belongs to a noun. If you can't name the
-noun, you haven't found the right model yet — keep looking until
-you can.**
+- **Wrapped field is private.** A newtype wraps a primitive to give
+  it identity; if the field is `pub` (`Slot(pub u64)`), callers
+  construct unchecked values and read raw bytes back out, defeating
+  the wrap. The type owns its representation.
+- **Perfect specificity.** Every typed boundary names exactly what
+  flows through it — no wrapper enums mixing concerns, no
+  string-tagged dispatch, no generic-record fallback. The type
+  carries the meaning, not stringly-typed metadata.
+- **Engine logic = enum-vs-enum cross-product.** When two enums meet
+  under `match`, the cross-product of their variants is the typed
+  relationship — make it explicit, as a nested match or a named
+  trait (`Reaches<Right>`, `Contact<Other>`). The contact point
+  between two structured inputs IS a noun; naming it surfaces logic
+  that would otherwise scatter into `if` chains and sentinel
+  booleans. See `skills/enum-contact-points.md`.
 
 ## See also
 
-- this workspace's `skills/beauty.md` — beauty as the criterion;
-  a free function in the wrong place is one of the diagnostic
-  readings.
-- this workspace's `skills/naming.md` — full English words; the
-  forced naming step this rule restores.
-- this workspace's `skills/micro-components.md` — same discipline
-  at the crate boundary.
-- this workspace's `skills/rust-discipline.md` — Rust-specific
-  enforcement (no ZST method holders, domain newtypes, one-object
-  in/out).
-- lore's `rust/style.md` — toolchain reference (Cargo.toml shape,
-  cross-crate deps, pin strategy).
+- `skills/naming.md` — full English words; the forced naming step.
+- `skills/rust-discipline.md` — Rust enforcement (no ZST method
+  holders, domain newtypes, one-object in/out).
+- `skills/micro-components.md` — same discipline at the crate
+  boundary.

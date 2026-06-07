@@ -1,18 +1,13 @@
 # Skill — jj
 
-*Version control in this workspace is `jj`. Commit and push
-through `jj` after every meaningful change. Raw `git` is
-forbidden as a daily-commit tool; it survives only as an
-explicit escape hatch for two named remote-config cases
-below.*
+Version control here is `jj`. Commit and push through `jj` after every
+meaningful change; raw `git` survives only as the two named escape hatches below.
 
 ## Primary is always main — no branches, ever
 
-Per psyche 2026-06-04 (record 2585, VeryHigh): on **primary** —
-the workspace coordination repository at `/home/li/primary`
-(reports, skills, `AGENTS.md`, `INTENT.md`, `ESSENCE.md`,
-`protocols/`, `orchestrate/`) — **everyone ALWAYS works on `main`
-directly.** Edit, commit, push straight to `main`:
+On **primary** (the coordination repo at `/home/li/primary`: reports, skills,
+`AGENTS.md`, `INTENT.md`, `ESSENCE.md`, `protocols/`, `orchestrate/`) everyone
+ALWAYS works on `main` directly. The entire flow is three lines:
 
 ```sh
 jj commit -m '<short verb + scope>'
@@ -20,66 +15,35 @@ jj bookmark set main -r @-
 jj git push --bookmark main
 ```
 
-That is the entire flow on primary. There are **no feature
-branches, no `next` branch, no `wip` branches, no `push-*`
-bookmarks, and no rebase-onto-main choreography** on primary.
-Do NOT do any of:
+No feature branches, no `next`, no `wip`, no `push-*` bookmarks, no
+rebase-onto-main choreography, no `~/wt` worktree for primary. Do NOT stage a
+primary edit on a side change or bookmark before main.
 
-- `jj bookmark create wip-… ; jj rebase -r … -d main@origin ; jj bookmark set main …`
-- `jj bookmark create push-<topic>` for a report or a routine edit
-- `jj new`-ing a side branch to "stage" a primary edit before main
-- any worktree-under-`~/wt` for primary itself
+The ONLY divergence handling on primary is the fetch-and-rebase escape hatch
+(see §"Push rejected"): on a rejected push, `git fetch origin` + `git rebase
+origin/main` + push, or `jj new main@origin` to start fresh on the latest main.
+No bookmark choreography ever recovers a rejected push on primary.
 
-Primary is the coordination surface every lane shares; the only
-correct shape is the three-line flow above. The intent is
-unambiguous: [on primary everyone always works on main directly —
-edit, commit, push straight to main with the simple flow; no
-feature, next, wip, or push branches and no rebase-onto-main
-dances] (record 2585).
+The branch / worktree / `next` models in `skills/main-next.md` and
+`skills/feature-development.md` apply ONLY to the code repos under
+`/git/github.com/LiGoldragon/` — there operators own `main` and designers work
+on `next` or feature branches in `~/wt`. Primary is the exception.
 
-**The ONLY divergence handling on primary** is the named
-fetch-and-rebase escape hatch (see §"Push rejected — remote has
-commits you don't have"): when `jj git push` is rejected because
-`main` advanced, run `git fetch origin` + `git rebase
-origin/main` + push again — or `jj new main@origin` to start a
-fresh change on the latest `main`. No bookmark choreography is
-ever part of recovering a rejected push on primary.
+### Keep primary clean
 
-The branch / worktree / `next` models elsewhere in this skill
-and in `skills/main-next.md`, `skills/feature-development.md`,
-and `AGENTS.md` apply ONLY to the **code repositories under
-`/git/github.com/LiGoldragon/`** — there operators own `main` and
-designers work on `next` or feature branches in `~/wt`. **Primary
-is the exception: everyone-on-main, always.** Do not carry the
-code-repo branch model onto primary.
+- **Commit eagerly and impersonally.** Commit the entire working copy (no path
+  arguments) — never just your own paths. Committing is janitorial, not the
+  report-creator's job. See dirty state in primary? Commit it, naming the
+  contents plainly without apology (`commit pending reports + skill edits`).
+- **Lock selectively.** When you must claim, claim only the specific files or
+  subfolders you will edit — never the whole workspace; over-locking bred the
+  fork-for-push dance. Reports need no lock at all: report lanes are per-role
+  and claim-exempt. A lane writes only in its own `reports/<role>/`.
 
-### Keep primary clean — commit the whole working copy, lock selectively
+## At-a-glance — inline-form cheat sheet
 
-Two rules keep primary simple and prevent the shared-working-copy race that
-loses uncommitted reports (psyche 2026-06-04):
-
-- **Commit eagerly and impersonally** (records 2589, 2620). Commit the
-  **entire working copy** — `jj commit` with NO path arguments — never just
-  your own paths. Committing is janitorial; it does not belong to a report's
-  creator. If you start work and see uncommitted state in primary, just
-  commit it, briefly noting the contents in the message without apologetics
-  (`commit pending reports + skill edits`). This is the general
-  whole-working-copy rule (see §"Commit the whole working copy — never
-  path-scoped"), restated here because primary is where the shared-copy race
-  bites hardest. On primary: see dirty, commit it.
-- **Lock selectively** (record 2586). When you must claim, claim only the
-  specific files or subfolders you will edit — never the whole workspace.
-  Over-locking the whole space is what bred the fork-for-push dance.
-  **Reports need no lock at all** — report lanes are per-role and
-  claim-exempt (record 1566); agents keep forgetting this. A lane writes
-  only in its own `reports/<role>/`, never another lane's, except a one-time
-  explicit psyche instruction and never again after unless re-instructed
-  (record 2587).
-
-## At-a-glance — the inline-form cheat sheet
-
-Out-of-the-box jj for most agents. Every description-taking command
-takes `-m '<msg>'` inline; never let jj fall back to an editor.
+Every description-taking command takes `-m '<msg>'` inline; never let jj fall
+back to an editor.
 
 | Command | Canonical form |
 |---|---|
@@ -92,250 +56,141 @@ takes `-m '<msg>'` inline; never let jj fall back to an editor.
 | Push | `jj git push --bookmark main` |
 | Create + push new branch | `jj bookmark create <name> --to @ && jj git push --bookmark <name> --allow-new` |
 
-**Forbidden** (these BLOCK the session on `Waiting for Emacs...`):
-- `jj describe` (no `-m`)
-- `jj commit` (no `-m`)
-- `jj new` (no `-m`, except when `-A`/`-B` revsets imply the description)
-- `jj split` (no `-m`)
-
-**Structural fix landed in source** at CriomOS-home branch
-`designer-jj-editor-false-2026-05-26` (per intent record 808):
-`ui.editor = "false"` so editor fallback aborts instead of blocking.
-Once activated, missing `-m` errors loudly. Until activated, the
-procedural rule above is the backstop.
-
-For the rest — whole-working-copy commits, splits, divergence
-resolution, escape-hatch git cases — read on.
+These BLOCK the session on `Waiting for Emacs...`, so they are forbidden:
+`jj describe` / `jj commit` / `jj split` without `-m`, and `jj new` without `-m`
+(except when `-A`/`-B` revsets imply the description).
 
 ## What this skill is for
 
-Whenever you have made meaningful changes — even a one-line
-edit that shipped — apply this skill before moving on. The
-discipline is short:
+Whenever you make meaningful changes — even a shipped one-line edit — apply this
+before moving on:
 
 1. Group the changes into logical commits.
 2. Commit each group with a short verb-plus-scope message.
 3. Push immediately, per commit, not in batch.
 
-This applies to every tracked repo in the workspace. Don't
-ask for permission to commit or push routine work; **the
-user has granted blanket authorization for the standard
-flow**. Save the asking for the listed exceptions at the
-end.
+This applies to every tracked repo. Don't ask permission for routine
+commit/push; the user has granted blanket authorization for the standard flow.
+Save asking for the listed exceptions at the end.
 
-The tool is **`jj` (Jujutsu)**. Every Li repo is a
-Git-backed colocated jj repository — the working-history
-interface is `jj`; Git remains the remote/storage layer. If
-a repo lacks `.jj/`, run `jj git init --colocate` (see
-"Standard fixes" below).
-
-For the underlying CLI reference (`jj` commands, options,
-the `@` model, undo, bookmarks), see lore's
-`jj/basic-usage.md`. This skill is *how we use jj here*;
-lore is *how jj works*.
+Every Li repo is a Git-backed colocated jj repository: the working-history
+interface is `jj`; Git is the remote/storage layer. If a repo lacks `.jj/`, run
+`jj git init --colocate`. For the underlying CLI (`jj` commands, the `@` model,
+undo, bookmarks) see lore's `jj/basic-usage.md` — that is *how jj works*; this
+is *how we use it here*.
 
 ## Raw `git` is forbidden for daily commits
 
-The default tool for **every commit** is `jj`. **Don't
-reach for `git add` / `git commit` / `git push` / `git
-checkout` for normal work.** When a commit feels hard, the
-answer is to learn the jj idiom for it (see "Commit the whole
-working copy" below), not to drop down to `git`.
+The default tool for every commit is `jj`. Don't reach for `git add` / `git
+commit` / `git push` / `git checkout` for normal work. When a commit feels hard,
+learn the jj idiom, don't drop to `git`.
 
-`git` survives in this workspace as an explicit escape
-hatch for **two named cases**:
+`git` survives only as two named escape hatches, both detailed under "Standard
+fixes":
 
-1. **Per-repo HTTPS → SSH remote fix** (one-time config
-   repair when push fails on a fresh clone).
-2. **Manual divergence resolution** when two peers pushed
-   in parallel and `jj git push` rejects.
+1. **Per-repo HTTPS → SSH remote fix** (one-time config repair on push failure).
+2. **Manual divergence resolution** when two peers pushed in parallel and
+   `jj git push` rejects.
 
-Both are detailed under "Standard fixes" below. Anything
-else — daily commits, splits, branch motion,
-amending, undo — uses `jj`.
-
-If you find yourself reaching for raw `git` outside the two
-named cases, stop. Either find the jj equivalent or
-escalate (per `skills/autonomous-agent.md`) — don't paper
-over the unfamiliarity by dropping to git.
+Reaching for raw `git` outside these two cases: stop, find the jj equivalent, or
+escalate (`skills/autonomous-agent.md`).
 
 ## The standard flow
 
 In a clean working tree after an edit batch:
 
 ```sh
-jj st                                                  # see what changed
-jj diff                                                # confirm content
-jj commit -m '<short verb + scope>'                    # finalise @, advance to fresh empty
-jj bookmark set main -r @-                             # point main at the just-committed change
-jj git push --bookmark main                            # publish
+jj st                                # see what changed (for the message)
+jj commit -m '<short verb + scope>'  # finalise @, advance to fresh empty
+jj bookmark set main -r @-           # point main at the just-committed change
+jj git push --bookmark main          # publish
 ```
 
-Or as the canonical one-liner:
-
-```sh
-jj commit -m '<msg>' && jj bookmark set main -r @- && jj git push --bookmark main
-```
-
-`-r @-` because `jj commit` advances `@` to a new empty
-change; the commit you want to push is its parent.
-
-If the message contains apostrophes, use double quotes
-(`-m "<msg>"`). Apostrophes inside `'…'` terminate the
-shell string.
+`-r @-` because `jj commit` advances `@` to a new empty child; the commit you
+want to push is its parent. If the message contains apostrophes, use double
+quotes (`-m "<msg>"`) — apostrophes inside `'…'` terminate the shell string.
 
 ## `jj describe @` is forbidden for finalising new work
 
-The canonical commit form is **`jj commit -m '<msg>'`** —
-nothing else. **Never use `jj describe @ -m '<msg>'`** to
-finalise new working-copy work, even though it is
+The canonical commit form is `jj commit -m '<msg>'` — nothing else. Never use
+`jj describe @ -m '<msg>'` to finalise new working-copy work, even though it is
 functionally similar.
 
-Why forbidden:
+`jj commit` explicitly advances `@` to a new empty child, so the next edit
+can't accidentally pile onto the just-described commit. `jj describe @` just
+sets a description without advancing — a follow-up edit lands in the same
+commit, growing it silently. The friction of `-r @-` is the discipline: the
+thought "am I targeting the right commit?" is the moment to read `jj st`.
 
-- `jj commit` is *named* a commit. It explicitly *advances
-  `@` to a new empty child*. The next edit will go in a new
-  commit; you can't accidentally pile more changes onto
-  the just-described one.
-- `jj describe @` is *named* "describe." It just sets a
-  description on the current `@` without advancing. A
-  follow-up edit lands in the same commit, growing it
-  silently. Bookmark advancement (`-r @`) is also
-  incidental — the bookmark moves to the same commit you
-  just described, and jj's "became immutable, new commit
-  created on top" warning papers over the non-canonical
-  flow.
-- The friction of `-r @-` (commit's bookmark form) is the
-  discipline. The thought "wait, am I targeting the right
-  commit?" is what surfaces "what's actually in this
-  commit?" — which is the moment to remember to read
-  `jj st`.
-
-Allowed `describe` uses (narrow):
-
-| Form | Use |
-|---|---|
-| `jj describe @- -m '<msg>'` | Edit description of an already-committed parent (typo fix, message update before push) |
-| `jj describe <rev> -m '<msg>'` | Edit description of any earlier revision (rare) |
-
-**Forbidden:**
-
-| Form | Why |
-|---|---|
-| `jj describe @ -m '<msg>'` | This is the path that bundles peer files into your commit. Use `jj commit -m '<msg>'` instead. |
-| `jj describe -m '<msg>'` (defaults to `@`) | Same — implicit `@` is forbidden. |
-
-If you find yourself typing `jj describe`, stop and ask:
-*am I editing an already-committed description, or am I
-finalising new work?* If finalising new work — use
-`jj commit`.
+`describe` is allowed only for editing an already-committed revision's message:
+`jj describe @- -m '<msg>'` (typo fix / message update before push), or
+`jj describe <rev> -m '<msg>'` for an earlier revision. The forms
+`jj describe @ -m '<msg>'` and bare `jj describe -m '<msg>'` (implicit `@`) are
+forbidden — that is the path that bundles peer files into your commit. If you
+find yourself typing `jj describe`, ask: editing an already-committed
+description, or finalising new work? If finalising new work, use `jj commit`.
 
 ## Never let jj open an editor
 
-Every jj command that takes a description has an inline
-flag. **Always use it.** An agent that lets jj fall back to
-`$EDITOR` blocks the session on a no-op editor invocation,
-or worse, leaves a half-described commit when the editor
-exits without saving.
+Every description-taking jj command has an inline flag; always use it. An agent
+that lets jj fall back to `$EDITOR` blocks the session on a no-op editor, or
+leaves a half-described commit when the editor exits without saving.
 
 | Command | Inline form |
 |---|---|
 | `jj commit` | `jj commit -m '<msg>'` |
-| `jj describe @-` | `jj describe @- -m '<msg>'` (only for editing already-committed descriptions; see §"`jj describe @` is forbidden") |
+| `jj describe @-` | `jj describe @- -m '<msg>'` (only for already-committed descriptions) |
 | `jj split <paths>` | `jj split -m '<msg>' <paths>` |
 | `jj split -i` | `jj split -i -m '<msg>'` |
 | `jj squash --into <rev>` | `jj squash --into <rev> --use-destination-message` |
 | `jj new` | `jj new -m '<msg>'` |
-| `jj duplicate <rev>` | not editor-bound; safe |
-| `jj rebase` | safe unless conflicts surface |
 
-The deeper rule: **if a jj command would prompt for text
-without a flag, find the flag.** The flags exist on every
-description-taking command. The `-m '<msg>'` form is the
-canonical workspace shape.
+`jj duplicate` and `jj rebase` are not editor-bound (rebase only if conflicts
+surface). The deeper rule: if a jj command would prompt for text without a flag,
+find the flag — every description-taking command has one.
 
-Two compound idioms worth knowing:
-
-- **`jj split -m '<msg>' <paths>`** — first commit gets the
-  description; the working copy (second commit) inherits
-  empty. After the split, the working copy can be
-  re-described later if needed.
-- **`jj squash --into <rev> --use-destination-message`** —
-  keeps the destination's existing description without
-  prompt. Use when amending into an already-described
-  commit.
-
-If you find yourself reaching for `EDITOR=true`,
-`GIT_EDITOR=true`, or any other no-op-editor environment
-shim, **stop**. The right answer is the inline `-m` flag on
-the command being run. Editor shims are anti-patterns —
-they hide the fact that the wrong invocation form was
-used.
+Do NOT reach for `EDITOR=true`, `GIT_EDITOR=true`, or any no-op-editor shim.
+Those hide the fact that the wrong invocation form was used; the right answer is
+the inline `-m` flag.
 
 ## Descriptionless commits are forbidden
 
-`(no description set)` on a commit you authored is a
-**workspace contract violation**, on equal footing with the
-ban on raw `git` for daily commits. The 2026-05-12 117-orphan
-incident traced directly to this: an agent ran
-`jj commit` without `-m`, the editor returned empty, the
-commit succeeded with an empty description, no bookmark was
-set, and the work became reachable only by op-log spelunking.
+`(no description set)` on a commit you authored is a workspace contract
+violation, on equal footing with the ban on raw `git` for daily commits. The
+failure mode: `jj commit` without `-m`, editor returns empty, the commit
+succeeds with an empty description, no bookmark is set, and the work becomes
+reachable only by op-log spelunking (this caused a 117-orphan incident).
 
-The structural fix lives in workspace `jj` config —
-`ui.editor = "false"` so editor fallback aborts the operation.
-**System-specialist:** land this config at the workspace
-level so editor fallback fails loudly rather than writing
-empty descriptions silently. Until that lands, this section
-is the procedural backstop.
-
-**Before every push**, run:
+Before every push, run:
 
 ```sh
 jj log -r 'main..@- & description(exact:"")'
 ```
 
-If anything appears, fix it before pushing:
-
-```sh
-jj describe <rev> -m '<msg>'
-```
-
-**If `jj st` or any `jj log` output ever shows
-`(no description set)` on a commit you authored**, stop and
-describe it immediately — even before the next file edit.
-The instant you continue past it, the next agent's view of
-your work depends on you having set a description; their
-`jj log` filters will hide it otherwise.
+If anything appears, fix it before pushing: `jj describe <rev> -m '<msg>'`. If
+`jj st` or any `jj log` ever shows `(no description set)` on a commit you
+authored, describe it immediately — even before the next file edit. The instant
+you continue past it, the next agent's `jj log` filters hide your work.
 
 ## Commit the whole working copy — never path-scoped
 
-Per psyche 2026-06-04 (records 2589, 2620): agents commit the
-**ENTIRE working copy** — `jj commit -m '<msg>'` with **no path
-arguments** — never path-scoped (`jj commit <paths>`,
-`jj split <paths>` to "isolate my scope", `git add <paths>`).
+Commit the ENTIRE working copy — `jj commit -m '<msg>'` with no path arguments
+— never path-scoped (`jj commit <paths>`, `jj split <paths>` to "isolate my
+scope", `git add <paths>`).
 
-The reason is the shared working copy. **All agents share one jj
-working copy.** A path-scoped commit captures only the named paths
-and leaves every other agent's in-flight change *undrained* in the
-working copy. With the copy still dirty, two agents can each commit
-their own paths off the same base — producing **sibling commits**,
-an off-main **fork** that strands work and can orphan uncommitted
-files. That fork is exactly what the old path-selective
-"don't-commit-other-lanes'-files" rule *caused*.
+The reason is the shared working copy: all agents share one. A path-scoped
+commit captures only the named paths and leaves every other agent's in-flight
+change undrained. With the copy still dirty, two agents can each commit their
+own paths off the same base — producing sibling commits, an off-main fork that
+strands work and can orphan uncommitted files.
 
-Committing **everything** drains the shared working copy and
-**serializes agents through jj's working-copy lock**: whoever
-commits sweeps in all in-flight work, history stays linear, and
-nothing is orphaned. The resulting commit is often **multi-lane /
-"impersonal"** — one message covering several lanes' changes. That
-is **accepted**, not a defect; a brief impersonal message
-(`commit pending reports + skill edits`) is correct.
-
-This **supersedes** the prior path-selective discipline (the
-working-copy check, `jj split`-to-isolate, "commit only files in
-your scope") workspace-wide. Don't read `jj st` to decide *which*
-paths to commit; read it only to write an accurate message:
+Committing everything drains the shared copy and serializes agents through jj's
+working-copy lock: whoever commits sweeps in all in-flight work, history stays
+linear, nothing is orphaned. The resulting commit is often multi-lane /
+"impersonal" — one message covering several lanes' changes. That is accepted;
+a brief impersonal message (`commit pending reports + skill edits`) is correct.
+Read `jj st` only to write an accurate message, not to decide which paths to
+commit.
 
 ```sh
 jj st                                 # what's in the working copy (for the message)
@@ -344,341 +199,218 @@ jj bookmark set main -r @-
 jj git push --bookmark main
 ```
 
-`jj split` remains a legitimate tool for grouping **your own**
-multi-concern work into logical commits when no peers have in-flight
-work — but never to leave a peer's change undrained in the shared
-copy. When in doubt, commit everything.
+`jj split` is still legitimate for grouping your own multi-concern work into
+logical commits when no peers have in-flight work — but never to leave a peer's
+change undrained. When in doubt, commit everything.
 
 ## Logical commits
 
-When the working tree contains more than one concern, **split
-before committing**. A single commit captures one logical
-change; unrelated edits go in their own commits.
+When the working tree contains more than one concern (and holds nothing but your
+own work), split before committing. The grouping criterion, in priority order:
 
-The grouping criterion (in priority order):
+1. **By concern.** A documentation update is one commit; a code change another.
+2. **By feature.** A multi-step feature lands as several commits, each a
+   coherent step that compiles, passes tests, and reads cleanly in the diff.
 
-1. **By concern.** A documentation update is one commit; a
-   code change is another.
-2. **By feature.** A multi-step feature lands as several
-   commits, each one a coherent step that compiles, passes
-   tests, and reads cleanly in the diff.
-
-This grouping applies to **your own** multi-concern work when the
-working copy holds nothing but yours. It does **not** authorise
-leaving a peer's in-flight change undrained — see §"Commit the whole
-working copy". If a peer's work is in the copy, sweep it in with one
-impersonal commit rather than splitting it out.
-
-Don't fold unrelated edits into one "miscellaneous" commit.
-"While I was here" cleanups go in their own commit with a
-clear message.
+This does NOT authorise leaving a peer's in-flight change undrained — see
+§"Commit the whole working copy". If a peer's work is in the copy, sweep it in
+with one impersonal commit rather than splitting it out. Don't fold unrelated
+edits into one "miscellaneous" commit; "while I was here" cleanups get their own
+commit with a clear message.
 
 ## Commit message style
 
-Single line. Short. A short verb plus scope, plus an
-optional short clause naming the change. The repo is
-implicit (the commit is in the repo). Detail lives in the
-diff and the report.
-
-Examples:
-
-- `Slot<T> migration`
-- `report add 119`
-- `reader for typed slots`
-- `AGENTS commit-style shortened`
-
-If a single change touches multiple repos, each repo gets
-its own short commit.
+Single line, short: a verb plus scope, plus an optional short clause naming the
+change. The repo is implicit. Detail lives in the diff and the report. Examples:
+`Slot<T> migration`, `report add 119`, `reader for typed slots`,
+`AGENTS commit-style shortened`. If a single change touches multiple repos, each
+repo gets its own short commit.
 
 ## Always push
 
-After every logical commit, **push immediately**. Blanket
-authorization — proceed without asking.
+After every logical commit, push immediately — blanket authorization, proceed
+without asking. Unpushed work is invisible to other machines and to flake-input
+consumers; forgotten pushes cause divergence and surprising forks. Don't batch
+pushes "to be clean"; one push per commit.
 
-Unpushed work is invisible to other machines and to anyone
-consuming the repo as a flake input. Forgotten pushes cause
-divergence and surprising forks. Don't batch pushes "to be
-clean"; the standard cadence is one push per commit.
+The exception: when one logical change spans several interdependent commits (a
+refactor with three sequential steps), push the whole sequence at the end. Each
+commit message still names its step, not the sequence.
 
 ## Standard fixes for routine obstacles
 
-These problems have known answers in this workspace. When
-you hit them, fix them and keep moving.
+These have known answers; fix them and keep moving.
 
 ### A repo lacks `.jj/` (jj not initialised)
 
-Symptom: `jj st` from inside a repo prints
-`Error: There is no jj repo in "<path>"` even though `.git/`
-exists.
-
-Cause: the repo is git-only; jj isn't colocated. Li
-repositories and forks are Git-backed colocated jj repos.
-Git remains the remote/storage layer; `jj` is the
-working-history interface.
-
-Fix:
+`jj st` prints `Error: There is no jj repo in "<path>"` though `.git/` exists —
+the repo is git-only. Fix from inside the working tree, then proceed normally:
 
 ```sh
 jj git init --colocate
 ```
 
-Then proceed with the normal `jj` flow. Run from inside the
-repo's working tree.
+### Push fails because the remote is HTTPS — named git escape hatch
 
-### Push fails because the remote is HTTPS — *named git escape hatch*
-
-Symptom: `jj git push` returns
-`fatal: could not read Username for 'https://github.com'`.
-
-Cause: this workspace authenticates over SSH; HTTPS without
-a credential helper is a misconfiguration.
-
-Fix (per-repo, one-time config repair):
+`jj git push` returns `fatal: could not read Username for
+'https://github.com'`. This workspace authenticates over SSH. One-time per-repo
+config repair (one of the two named raw-`git` escape hatches):
 
 ```sh
 git -C <repo> remote set-url origin git@github.com:<owner>/<repo>.git
 jj git push --bookmark main
 ```
 
-This is one of the **two named escape-hatch cases for raw
-`git`** in this workspace. The fix touches only the remote
-URL config — once. After it lands, the normal `jj` flow
-resumes.
+After it lands, the normal `jj` flow resumes.
 
-### Push rejected — remote has commits you don't have — *named git escape hatch*
+### Push rejected — remote has commits you don't have — named git escape hatch
 
-Symptom: `jj git push` returns
-`Updates were rejected because the remote contains work
-that you do not have locally.`
-
-Cause: another agent or another machine pushed in parallel.
-
-Fix: fetch and rebase your work onto the latest `main`, then
-push. This is the **second named escape-hatch case for raw
-`git`** — and on primary it is the *only* divergence handling
-there is (per record 2585; no bookmark choreography):
+`jj git push` returns `Updates were rejected because the remote contains work
+that you do not have locally.` — another agent or machine pushed in parallel.
+This is the second named raw-`git` escape hatch, and on primary it is the only
+divergence handling there is (no bookmark choreography):
 
 ```sh
 git fetch origin
-git rebase origin/main                     # replay your commits on the latest main
-jj git push --bookmark main                # publish
+git rebase origin/main        # replay your commits on the latest main
+jj git push --bookmark main   # publish
 ```
 
-Equivalently, start a fresh change on the latest `main` and
-re-land: `jj new main@origin`.
-
-If conflicts surface during the rebase (modify/delete or
-content), resolve in favour of your scope's changes (per the
-orchestration lock); ask only if the resolution genuinely changes
-the meaning of the peer's work. After resolution: `git rebase
---continue`, then `jj git push --bookmark main`.
-
-Do NOT respond to a rejected push by creating a `wip-…` or
-`push-…` bookmark and rebasing it onto `main@origin` — that
-choreography is exactly the branch-dance record 2585 forbids on
-primary. Fetch, rebase, push. After this case completes, the
-normal `jj` flow resumes.
+Equivalently, `jj new main@origin` to start fresh and re-land. If conflicts
+surface (modify/delete or content), resolve in favour of your scope's changes
+(per the orchestration lock); ask only if resolution genuinely changes the
+meaning of the peer's work. Then `git rebase --continue` + `jj git push
+--bookmark main`. Do NOT respond to a rejected push by creating a `wip-…` or
+`push-…` bookmark and rebasing onto `main@origin` — that is the forbidden
+branch-dance. Fetch, rebase, push.
 
 ### Working tree has uncommitted state when you expected clean
 
-Symptom: `jj st` shows new or modified files that aren't
-yours.
-
-Cause: prior work landed but wasn't committed. Either yours
-from an earlier session, or a peer agent's that hasn't been
-pushed yet.
-
-Fix:
-
-1. `jj st` to see what's there (for the commit message).
-2. **Commit the whole working copy** — `jj commit -m '<msg>'`
-   with no paths — sweeping in any peer-owned changes too. Per
-   records 2589/2620 (see §"Commit the whole working copy"),
-   leaving a peer's change undrained is what forks the history;
-   committing everything is the fix, not the problem.
-3. Set main and push as normal. The commit is impersonal /
-   multi-lane, and that's accepted; do not `jj split` to leave
-   peer files behind.
+`jj st` shows files that aren't yours — prior work landed but wasn't committed
+(yours from an earlier session, or a peer's not yet pushed). Fix: `jj st` for
+the message, then commit the whole working copy (no paths), sweeping in any
+peer-owned changes; set main and push. Leaving a peer's change undrained is what
+forks history; committing everything is the fix. Don't `jj split` to leave peer
+files behind.
 
 ### `jj restore` is hazardous mid-commit
 
-`jj restore -f <rev>` reverts the working copy to match
-`<rev>` without changing `@`'s position. It silently discards
-any uncommitted changes in the working copy — including peers'
-in-flight work in the shared copy. Use sparingly; **never** to
-"clean up before a commit" — the right answer is to commit the
-whole working copy (§"Commit the whole working copy").
-
-If you find yourself reaching for `jj restore` during normal
-work, stop and check `jj st`; you almost always want to commit
-the whole working copy, or `jj abandon @` with deliberate
-intent. The 2026-05-12 117-orphan incident
-included a `restore into commit …` op that was a load-bearing
-step toward the failure.
+`jj restore -f <rev>` reverts the working copy to match `<rev>` without moving
+`@`, silently discarding any uncommitted changes — including peers' in-flight
+work in the shared copy. Use sparingly; never to "clean up before a commit" (the
+right answer is committing the whole working copy). If you reach for it during
+normal work, stop and check `jj st`: you almost always want to commit the whole
+working copy, or `jj abandon @` with deliberate intent. A `restore into commit`
+op was a load-bearing step in the 117-orphan failure.
 
 ## Per-logical-commit pushes — not batch
 
-Don't accumulate three commits and push at the end. Each
-commit gets its own push. The cost is one extra
-`jj git push` per commit; the benefit is that consumers see
-your work as it lands, parallel agents fetch the latest tip
-on every iteration, and recovery from a bad commit is
-`jj undo` rather than rolling back multiple changes.
-
-The exception: when one logical change spans several
-commits that depend on each other (a refactor with three
-sequential steps), push the whole sequence at the end of
-the sequence. But each individual commit message still
-names the step, not the sequence.
+Don't accumulate three commits and push at the end. Each commit gets its own
+push. The cost is one extra `jj git push`; the benefit is consumers see work as
+it lands, parallel agents fetch the latest tip each iteration, and recovery from
+a bad commit is `jj undo` rather than rolling back multiple changes. (Sole
+exception: the interdependent-sequence case above.)
 
 ## End-of-session check
 
-Before ending a session — closing the conversation,
-releasing a claim, handing off, or running `jj new main` /
-`jj edit main` (which has the same effect as ending the
-session in terms of moving `@` off the current chain) —
-confirm every commit you authored is reachable from a
-bookmark or from `main`. The check:
+Before ending a session — closing the conversation, releasing a claim, handing
+off, or running `jj new main` / `jj edit main` (which moves `@` off the current
+chain) — confirm every commit you authored is reachable from a bookmark or from
+`main`:
 
 ```sh
 jj log -r 'main..@ ~ bookmarks()'
 ```
 
-If the output is empty (or shows only the empty `@` working
-copy), the session ends clean. If anything else appears,
-those are **unbookmarked descendants of main** — pushable
-work that no one but you can find. They are exactly the
-shape of the 117-orphan failure.
+Empty output (or only the empty `@`) means the session ends clean. Anything else
+is unbookmarked descendants of main — pushable work no one but you can find,
+exactly the 117-orphan failure shape.
 
-**On primary, there is exactly one option: land on main.** Per
-record 2585, primary never carries `push-<topic>` or any other
-side bookmark — `jj bookmark set main -r <rev> && jj git push
---bookmark main`. The review-bookmark option below exists only
-for the code repositories under `/git/github.com/LiGoldragon/`.
+On **primary** there is exactly one option: land on main —
+`jj bookmark set main -r <rev> && jj git push --bookmark main`. Primary never
+carries `push-<topic>` or any side bookmark, including for reports.
 
-In a code repo, each row needs one of:
+In a **code repo**, each row needs one of:
 
 - **Land on main** — `jj bookmark set main -r <rev> && jj git push --bookmark main`.
 - **Bookmark for review** — `jj bookmark create push-<topic> -r <rev> && jj git push --bookmark push-<topic>`.
-- **Explicit abandon** — `jj abandon <rev>`, only if you
-  genuinely want the work gone. Discarded work is the most
-  expensive kind to recover; the bias is *always* toward
-  bookmark-then-decide later.
+- **Explicit abandon** — `jj abandon <rev>`, only if you genuinely want the work
+  gone. Discarded work is the most expensive to recover; bias always toward
+  bookmark-then-decide-later.
 
-Prefer landing on main when the work is yours and complete.
-Reserve `push-<topic>` bookmarks for code-repo work that needs
-review before landing — not as a default "stash so I can move
-on." A long-lived chain of `push-*` bookmarks is itself a smell;
-it usually means someone forgot to advance `main`.
+Prefer landing on main when work is yours and complete. Reserve `push-<topic>`
+for code-repo work needing review before landing — not a default "stash so I can
+move on." A long-lived chain of `push-*` bookmarks is a smell; it usually means
+someone forgot to advance `main`.
 
 ## `jj git push -c @` is forbidden for routine commits
 
-The form `jj git push --change @` (or `-c @`) creates an
-auto-named `push-<change-id>` bookmark on the remote and pushes
-the commit to it. It does **not** advance `main`. The bookmark
-accumulates on the remote until someone manually deletes it.
-
-**Use the standard flow instead** (per §"The standard flow").
-The commit lands on `main`; no auto-named bookmark is created;
+`jj git push --change @` (or `-c @`) creates an auto-named `push-<change-id>`
+bookmark on the remote and pushes to it. It does not advance `main`, and the
+bookmark accumulates on the remote until manually deleted. Use the standard flow
+instead — the commit lands on `main`, no auto-named bookmark is created,
 consumers see the work immediately.
 
-Allowed `--change` uses, narrow:
+`--change` is allowed only, narrowly:
 
-- **Orphan recovery** — when an agent's prior work was
-  abandoned and needs to be brought back onto a fresh `@`.
-  The recovery shape is `jj op log -n 50` to find the orphan,
-  `jj show <id>` to confirm, `jj new -m '...' <id>` to bring
-  it back, then `jj git push --change <id>` or bookmark-and-push.
-- **Explicit "needs review before main"** — when the work
-  genuinely needs review before landing. Use a descriptive
-  bookmark name (`jj bookmark create push-<topic>`), not the
-  auto-naming form. Descriptive names are findable on the
-  remote and easy to delete after merge.
+- **Orphan recovery** — bringing back abandoned prior work onto a fresh `@`:
+  `jj op log -n 50` to find the orphan, `jj show <id>` to confirm,
+  `jj new -m '...' <id>` to bring it back, then push.
+- **Explicit "needs review before main"** — use a descriptive bookmark name
+  (`jj bookmark create push-<topic>`), not the auto-naming form; descriptive
+  names are findable and easy to delete after merge.
 
-If you find yourself reaching for `-c @` in routine work, stop.
-The standard flow is the discipline; the difference is one
-extra command, not three.
+Auto-named bookmarks accumulate silently with no clean-up step — the workspace
+grew to 63 stray `push-*` bookmarks before one designer pruning pass. The psyche
+does not want per-change or per-report push-named bookmarks: land work on main
+through the standard flow, or use a clearly-named review branch only when review
+is genuinely needed and delete it after merge.
 
-The pattern compounds. Auto-named bookmarks accumulate on the
-remote silently — there's no clean-up step. The workspace grew from
-26 stray `push-*` bookmarks (2026-05-13) to **63** by 2026-06-04, all
-pruned in one designer pass — and the psyche's verdict was explicit:
-[stop creating stray push-* bookmarks; the psyche does not want
-per-change or per-report push-named bookmarks; they accumulate as
-clutter and the practice must stop; land work on main through the
-standard flow, or use a clearly-named review branch only when review
-is genuinely needed and delete it after merge] (record 2543).
-
-**Do not create a `push-*` bookmark for routine or per-report work.**
-The single legitimate use is genuine pre-main review **in a code
-repository under `/git/github.com/LiGoldragon/`**, and that
-bookmark is deleted the moment it merges. When in doubt, land on
-`main` — that is the discipline.
-
-**On primary there is no legitimate `push-*` use at all.** Per
-record 2585, primary work always lands directly on `main` through
-the three-line standard flow; a `push-*` bookmark on primary is
-always wrong, including for reports. Reports land on `main` like
-every other primary edit.
+Do not create a `push-*` bookmark for routine or per-report work. Its single
+legitimate use is genuine pre-main review in a code repo under
+`/git/github.com/LiGoldragon/`, deleted the moment it merges. On primary there
+is no legitimate `push-*` use at all — reports land on `main` like every other
+primary edit.
 
 ## Bookmark cleanup after merge
 
-When a `push-<topic>` bookmark's commit becomes an ancestor of
-`main` (because the work merged), **delete the bookmark**.
-Locally and on the remote:
+When a `push-<topic>` bookmark's commit becomes an ancestor of `main` (the work
+merged), delete the bookmark locally and on the remote:
 
 ```sh
 jj bookmark delete push-<topic>
 jj git push --deleted
 ```
 
-(`--deleted` is its own mode; it can't be combined with
-`--bookmark`. Run it on its own after the local delete; it pushes
-every locally-deleted bookmark to the remote in one call.)
+(`--deleted` is its own mode — it can't combine with `--bookmark`; run it alone
+after the local delete and it pushes every locally-deleted bookmark in one
+call.) Long-lived `push-*` bookmarks mislead reviewers ("still in flight?"),
+bloat `jj bookmark list`, and grow forever if no one prunes.
 
-Long-lived `push-*` bookmarks are noise. They mislead
-reviewers ("is this still in flight?"), they multiply the
-surface area of `jj bookmark list`, and they grow forever if
-no one prunes. The standard flow above (push directly to `main`)
-avoids creating them in the first place; this rule cleans up the
-ones that exist legitimately for review.
-
-**End-of-session addition**: include `jj bookmark list` in the
-session-end check. Any bookmark starting with `push-` whose
-commit is already an ancestor of `main` should be deleted before
+Include `jj bookmark list` in the session-end check. Any bookmark starting with
+`push-` whose commit is already an ancestor of `main` should be deleted before
 the session ends:
 
 ```sh
-# list candidate bookmarks
-jj bookmark list | awk '/^push-/ {print $1}'
-# for each name, check ancestor status:
-jj log -r '<commit>::main' --no-graph     # nonempty = ancestor = delete
+jj bookmark list | awk '/^push-/ {print $1}'   # candidate bookmarks
+jj log -r '<commit>::main' --no-graph          # nonempty = ancestor = delete
 ```
 
 ## When to ask anyway
 
-Routine obstacles are autonomy. The following are *not*
-routine; ask first:
+Routine obstacles are autonomy. These are not routine; ask first:
 
-- **`git reset --hard` or anything that discards
-  uncommitted work** that isn't clearly yours.
-- **Force-push** to any branch — especially main.
-- **Amending pushed commits** or rewriting public history.
-- **Deleting branches** not in your scope.
-- **Changing remote URLs** for reasons other than HTTPS→SSH
-  on push failure.
-- **Reaching for raw `git`** outside the two named
-  escape-hatch cases above.
+- `git reset --hard` or anything discarding uncommitted work that isn't clearly
+  yours.
+- Force-push to any branch, especially main.
+- Amending pushed commits or rewriting public history.
+- Deleting branches not in your scope.
+- Changing remote URLs for reasons other than HTTPS→SSH on push failure.
+- Reaching for raw `git` outside the two named escape-hatch cases above.
 
 ## See also
 
-- this workspace's `skills/autonomous-agent.md` — when to
-  act on routine obstacles without asking; this skill is
-  the VCS leaf it points at.
-- this workspace's `skills/skill-editor.md` — every
-  meaningful edit to a skill ends with the standard flow
-  above.
-- lore's `jj/basic-usage.md` — `jj` CLI reference (the `@`
-  model, commit/describe distinction, undo, bookmarks).
-- lore's `AGENTS.md` — the workspace contract; the VCS
-  section there points at this skill.
+- `skills/autonomous-agent.md` — when to act on routine obstacles without
+  asking; this skill is the VCS leaf it points at.
+- lore's `jj/basic-usage.md` — `jj` CLI reference (the `@` model,
+  commit/describe distinction, undo, bookmarks).

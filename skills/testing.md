@@ -1,209 +1,79 @@
-# Skill - Nix-backed testing
+# Skill — Nix-backed testing
 
-*Every test lives in Nix. Constraints become named witnesses, and
-the witness is exposed through the component flake.*
+Every test lives in Nix; constraints become named witnesses exposed through the component flake.
 
 ## What this skill is for
 
-Use this skill when adding, reviewing, or debugging tests in any
-workspace component. It covers the test surface: where tests live,
-how they are run, and how stateful or multi-step behavior becomes
-inspectable instead of disappearing inside one end-to-end loop.
+Adding, reviewing, or debugging tests in any workspace component: where tests live, how they run, and how stateful or multi-step behavior becomes inspectable instead of vanishing inside one end-to-end loop. For the witness catalogue see `architectural-truth-tests.md`; this skill answers the runner question — how the witness is made reproducible through Nix.
 
-For the witness catalogue, use `skills/architectural-truth-tests.md`.
-This skill answers the runner question: how the witness is made
-reproducible through Nix.
-
-## Core rule
-
-**All tests live in Nix.**
-
-That means:
+## All tests live in Nix
 
 - `nix flake check` is the canonical pure test gate for a repo.
-- Pure tests run as `checks.<system>.<name>` or through
-  `checks.<system>.default`.
-- Stateful tests are still exposed by the flake. If they cannot run
-  inside the pure Nix builder, expose a named script or binary through
-  `apps.<system>.<name>` or a package output and run it with
-  `nix run .#<name>`.
-- A recurring manual command is not a test contract until it is a
-  versioned script and a named flake output.
-- Bare `cargo test`, ad hoc shell commands, and local one-off scripts
-  are inner-loop conveniences only. They are not evidence for review.
+- Pure tests run as `checks.<system>.<name>` or via `checks.<system>.default`.
+- Stateful tests are still exposed by the flake. If they cannot run inside the pure Nix builder, expose a named script or binary through `apps.<system>.<name>` or a package output and run it with `nix run .#<name>`.
+- A recurring manual command is not a test contract until it is a versioned script and a named flake output.
+- Bare `cargo test`, ad hoc shell commands, and local one-off scripts are inner-loop conveniences only — never evidence for review.
 
-The point is not to force every stateful experiment into a pure
-builder. The point is that the test command, its environment, and its
-artifacts are owned by the repo and entered through Nix.
+The point is not to force every stateful experiment into a pure builder; it is that the test command, its environment, and its artifacts are owned by the repo and entered through Nix.
 
 ## No positive grep deployment checks
 
-Do not use broad positive `grep` checks as deployment or architecture
-proof. A check like `grep -R "SemaWriteInput" src/schema/lib.rs` only
-proves that text exists in a file; it does not prove the runtime uses
-the generated type, the daemon crosses the binary boundary, or the
-schema chain is live.
+A broad positive `grep` (e.g. `grep -R "SemaWriteInput" src/schema/lib.rs`) only proves text exists in a file — not that the runtime uses the generated type, the daemon crosses the binary boundary, or the schema chain is live. Don't use grep as deployment or architecture proof.
 
-Allowed use of grep in Nix checks is narrow and negative: prove a
-retired or forbidden surface is absent, such as `! grep -R
-"NexusMail" src tests`. For positive proof, write a real witness:
-compile generated types, execute the trait path, round-trip NOTA or
-rkyv, reject bad socket bytes, run the process-boundary test, or
-consume a produced artifact in a later derivation.
+Grep in Nix checks is allowed only as a narrow negative — proving a retired or forbidden surface is absent, e.g. `! grep -R "NexusMail" src tests`. For positive proof write a real witness: compile generated types, execute the trait path, round-trip NOTA or rkyv, reject bad socket bytes, run the process-boundary test, or consume a produced artifact in a later derivation.
 
-## Multi-repo local override tests
-
-When a feature spans several sibling repositories, create a central
-test runner in the consumer repo that can rebuild the whole local
-stack together. The runner uses Nix input overrides to point at the
-latest local checkouts:
-
-```sh
-nix flake check \
-  --override-input nota-next-source path:/git/github.com/LiGoldragon/nota-next \
-  --override-input schema-next-source path:/git/github.com/LiGoldragon/schema-next \
-  --override-input schema-rust-next-source path:/git/github.com/LiGoldragon/schema-rust-next
-```
-
-The committed flake still uses portable `github:` inputs. The local
-override runner is for integration pressure while developing several
-repos at once: edit the codec or schema emitter, run the consumer's
-central test, and prove the generated Rust still compiles, serializes,
-and crosses the process boundary.
-
-For schema-derived repos, the central runner should prove the whole
-chain:
-
-```text
-schema files -> assembled schema -> generated Rust -> hand-written
-methods on generated objects -> rkyv signal frame -> CLI/daemon test
-```
-
-If the test only checks the schema engine in isolation, it is not the
-central integration test. If it only checks the consumer with pinned
-remote dependencies, it is not the local override test.
-
-Schema-derived runtime tests must also use the generated plane traits in the
-consumer. A Spirit-style pilot does not prove the stack by calling a primitive
-store helper or recording strings in an observer. It proves the stack by
-constructing generated `Input`, `NexusInput`, and `SemaInput` values, invoking
-generated traits such as `NexusEngine` and `SemaEngine`, observing generated
-mail/rejection values, and asserting generated `NexusOutput`, `SemaOutput`, and
-Signal `Output` replies. If a needed boundary type is still hand-written, move
-it into schema first or mark that as the next component-development gap.
-
-## Constraint to witness to Nix
+## Constraint → witness → Nix
 
 For every load-bearing behavior or architecture constraint:
 
 1. Name the constraint in plain English.
 2. Name the observable witness that proves the intended path happened.
-3. Choose the Nix shape: pure check, stateful runner, or chained
-   derivations.
+3. Choose the Nix shape: pure check, stateful runner, or chained derivations.
 4. Expose the shape as a flake output.
 5. Name the test after the constraint.
 
-Good test names read like constraints:
+Good test names read like constraints: `router_cannot_deliver_without_commit`, `message_cannot_persist_without_sema`, `query_cannot_touch_writer_state`, `handler_cannot_block_mailbox`. If the same visible result can pass through a shortcut, the witness is too weak.
 
-- `router_cannot_deliver_without_commit`
-- `message_cannot_persist_without_sema`
-- `query_cannot_touch_writer_state`
-- `handler_cannot_block_mailbox`
-
-If the same visible result can pass through a shortcut, the witness is
-not strong enough.
-
-The witness must exercise the production code path it claims to protect.
-Fixture code is allowed only as the outside stimulus or observer: a fake child
-process, a temporary database directory, a socket peer, a test harness, or an
-artifact reader. The load-bearing action still crosses the real boundary:
-the real daemon, actor, socket protocol, Sema writer, parser, contract type,
-or CLI binary.
-
-If a test builds a miniature copy of the logic inside the test and then proves
-that copy works, it is not a witness. It is a self-contained story. Delete it
-or reroute it through the component's production API.
+The witness must exercise the production code path it claims to protect. Fixture code is allowed only as outside stimulus or observer — a fake child process, temporary database directory, socket peer, test harness, or artifact reader. The load-bearing action still crosses the real boundary: the real daemon, actor, socket protocol, Sema writer, parser, contract type, or CLI binary. A test that builds a miniature copy of the logic and proves the copy works is not a witness; it is a self-contained story. Delete it or reroute it through the component's production API.
 
 ## Pure tests
 
-Pure tests are the default. They run in the Nix build sandbox and are
-reachable from `nix flake check`.
-
-Use pure checks for:
+Pure tests are the default. They run in the Nix build sandbox and are reachable from `nix flake check`. Use them for:
 
 - Rust unit, integration, doc, and compile-fail tests.
-- Source scans and dependency graph assertions.
+- Source scans and dependency-graph assertions.
 - Cargo metadata boundary checks.
 - rkyv, NOTA, Signal, and other golden byte or text fixtures.
-- Actor topology manifests and actor trace pattern checks that do not
-  need a live terminal or host daemon.
+- Actor topology manifests and actor-trace pattern checks that don't need a live terminal or host daemon.
 
-Rust tests still follow `skills/rust-discipline.md`: tests live under
-`tests/` at the crate root, not in large inline `#[cfg(test)]` blocks.
-The Nix check owns the runner.
+Rust tests follow `rust-discipline.md`: tests live under `tests/` at the crate root, not in large inline `#[cfg(test)]` blocks. The Nix check owns the runner.
 
 ## Stateful tests
 
-Stateful tests touch a database, terminal, socket, daemon, external
-tool, or host-visible harness. They still live in Nix.
-
-Use this shape:
+Stateful tests touch a database, terminal, socket, daemon, external tool, or host-visible harness. They still live in Nix:
 
 - Put the command in a versioned script or binary owned by the repo.
 - Expose it through the flake, normally as `nix run .#test-<name>`.
-- Use explicit environment variables and arguments; do not depend on a
-  user's home directory, ambient daemon, or untracked local setup.
-- Use a fresh state directory unless the point of the test is to read a
-  supplied fixture.
-- Emit inspectable artifacts: transcript, redb file, actor trace,
-  topology manifest, frame bytes, rendered output, or log bundle.
-- Prefer a pure check that validates the artifact shape when the live
-  run itself cannot happen in the builder.
+- Use explicit environment variables and arguments; don't depend on a user's home directory, ambient daemon, or untracked local setup.
+- Use a fresh state directory unless the point of the test is to read a supplied fixture.
+- Emit inspectable artifacts: transcript, redb file, actor trace, topology manifest, frame bytes, rendered output, or log bundle.
+- Prefer a pure check that validates the artifact shape when the live run cannot happen in the builder.
 
-For stateful daemon components, prefer driving the production daemon
-through its thin CLI control surface. The CLI is part of the
-component's test/control API even when no human-facing command is
-promised. The test proves the real daemon path; the CLI must not
-open the durable database directly or recreate the daemon's state
-machine in-process.
+For stateful daemon components, drive the production daemon through its thin CLI control surface. The CLI is part of the component's test/control API even when no human-facing command is promised. The test proves the real daemon path; the CLI must not open the durable database directly or recreate the daemon's state machine in-process. Read-only inspection CLIs may open the component Sema database to render artifacts, but keep them named as inspection surfaces and pair them with daemon-driven writers so the test still proves where state came from.
 
-Read-only inspection CLIs may open the component Sema database to
-render artifacts for tests. Keep them named as inspection surfaces,
-and pair them with daemon-driven writers so the test still proves
-where state came from.
-
-A stateful test runner that only prints "passed" is weak. It should
-leave evidence that another step, tool, or human can inspect.
+A stateful runner that only prints "passed" is weak. It should leave evidence another step, tool, or human can inspect.
 
 ## Chained tests
 
-Use chained tests when a monolithic end-to-end test could hide a stub,
-mock, in-memory shortcut, or unused phase.
-
-The shape is:
+Use chained tests when a monolithic end-to-end test could hide a stub, mock, in-memory shortcut, or unused phase:
 
 1. A first Nix derivation or runner produces an artifact.
-2. A second Nix derivation consumes only that artifact and validates it
-   with the authoritative reader for that layer.
-3. Further derivations repeat the pattern for each real phase.
+2. A second Nix derivation consumes only that artifact and validates it with the authoritative reader for that layer.
+3. Further derivations repeat for each real phase.
 
-Examples:
+For example: a writer step emits `state.redb`; the reader step opens `state.redb` with the real Sema/redb reader and asserts typed rows. Or a parser step emits `frame.bin`, a handler step consumes it and emits `reply.bin`, a renderer step consumes that and emits `output.txt`. Or a daemon step emits a shutdown state directory and a restart step copies it into a fresh sandbox to prove the next process can read it.
 
-- writer step emits `state.redb`; reader step opens `state.redb` with
-  the real Sema/redb reader and asserts typed rows.
-- parser step emits `frame.bin`; handler step consumes `frame.bin` and
-  emits `reply.bin`; renderer step consumes `reply.bin` and emits
-  `output.txt`.
-- daemon step emits a shutdown state directory; restart step copies
-  that state into a fresh sandbox and proves the next process can read
-  it.
-
-The artifact is the boundary. A later step must not share process
-memory, mocks, or private helper APIs with the earlier step. If the
-writer did not actually write, the reader has nothing to read.
-
-Use lore's `repos/lore/nix/integration-tests.md` for the concrete
-chained-derivation pattern.
+The artifact is the boundary. A later step must not share process memory, mocks, or private helper APIs with the earlier step. If the writer did not actually write, the reader has nothing to read. The concrete chained-derivation pattern lives in `repos/lore/nix/integration-tests.md`.
 
 ## Artifact discipline
 
@@ -212,151 +82,88 @@ Artifacts are part of the test design, not leftovers.
 - Name artifacts after the constraint or phase they witness.
 - Keep them small enough to inspect.
 - Prefer stable binary or text formats already owned by the component.
-- Do not record raw store hashes in docs; let Nix produce them.
-- When a check consumes a previous check's output, reference the flake
-  output path instead of copying through an ambient temporary location.
-- When copying a store artifact into a writable state directory, set
-  writable permissions explicitly.
+- Don't record raw store hashes in docs; let Nix produce them.
+- When a check consumes a previous check's output, reference the flake output path instead of copying through an ambient temporary location.
+- When copying a store artifact into a writable state directory, set writable permissions explicitly.
 
-The test should make the correct path visible and the shortcut path
-boring to reject.
+Make the correct path visible and the shortcut path boring to reject.
 
 ## Test-only binaries — the `-test` suffix
 
-A repo may legitimately ship binaries that are **not on the production
-path** — standalone test harnesses for a library primitive,
-deterministic-input fixtures driven by witness scripts, validator
-helpers that drive captured-state checks. These binaries name
-themselves with the **`-test` suffix** so the production surface is
-unambiguous at a glance from `Cargo.toml`.
+A repo may legitimately ship binaries that are not on the production path — standalone test harnesses for a library primitive, deterministic-input fixtures driven by witness scripts, validator helpers. They name themselves with the `-test` suffix so the production surface is unambiguous at a glance from `Cargo.toml`.
 
-The rule:
+- A `[[bin]]` without the `-test` suffix is a production-path binary. It may be invoked by deployment units, supervised process trees, service catalogs, persona engine manager spawn configs, and operator workflows.
+- A binary with the `-test` suffix is for tests, witnesses, or isolated experimentation only. It may not be referenced by any production component's `[dependencies]`, deployment unit, supervised process tree, or service catalog. Witness scripts under `<repo>/scripts/` and Nix `check` derivations may invoke it freely.
 
-- A binary in `[[bin]]` *without* the `-test` suffix is a
-  production-path binary. It may be invoked by deployment units,
-  supervised process trees, service catalogs, persona engine manager
-  spawn configs, and operator workflows.
-- A binary *with* the `-test` suffix is for tests, witnesses, or
-  isolated experimentation only. It may not be referenced by any
-  production component's `[dependencies]`, deployment unit, supervised
-  process tree, or service catalog. Witness scripts under
-  `<repo>/scripts/` and Nix `check` derivations may invoke it freely.
+A name without `-test` is read by every other agent (and by `nix flake show`, deployment derivations, and supervision configs) as "this is production." The convention is forward-looking: existing unsuffixed binaries migrate as their repos are next touched. Example: `terminal-cell-daemon-test` is a standalone PTY-primitive daemon for exercising the `terminal-cell` library without standing up `persona-terminal-daemon`.
 
-Examples (some renames pending — convention is forward-looking; existing
-binaries without the suffix migrate as their repos are next touched):
+Enforce it filesystem-side with a per-repo witness `<repo>-test-only-binaries-have-test-suffix` — source-scan `[[bin]]` entries against the production-surface allowlist; any production-named binary not on the allowlist (and not named with `-test`) fails the check.
 
-- `terminal-cell-daemon-test` — standalone PTY-primitive daemon for
-  exercising the `terminal-cell` library without standing up
-  `persona-terminal-daemon`. Per
-  `~/primary/reports/designer/211-persona-terminal-consolidation-one-daemon-2026-05-17.md`
-  §7 and §11 Q2.
-- `agent-terminal-fixture-test` — deterministic agent-like terminal
-  process used by `terminal-cell`'s stateful witnesses.
-- `output-flood-fixture-test` — deterministic high-volume output
-  process used to prove attached input still reaches the child under
-  output load.
+The convention applies to `[[bin]]` entries that produce a runnable. It does not apply to Cargo test files under `tests/` (already test-only by convention), Nix `check` derivations (already named by the constraint they witness), or per-test child processes spawned via `tokio::process::Command::new(env!("CARGO_BIN_EXE_*"))` against a `-test` binary.
 
-A name without `-test` is read by every other agent (and by `nix flake
-show`, deployment derivations, and supervision configs) as "this is
-production." Renaming reduces the cost of confusion to one search.
+When production-vs-test status is ambiguous (e.g. a validator an operator might invoke during a build), prefer the `-test` suffix plus a Nix `check` derivation that wraps it for the operator path. The Nix wrapper carries the production status; the underlying binary stays clearly test-only.
 
-The discipline is filesystem-enforced through a witness test per repo:
-`<repo>-test-only-binaries-have-test-suffix` — source-scan `[[bin]]`
-entries against the production-surface allowlist; any production-named
-binary that isn't on the allowlist (or isn't named with `-test`) fails
-the check.
+## Multi-repo local override tests
 
-The convention applies to **binaries** (`[[bin]]` entries that produce
-a runnable). It does not apply to:
+When a feature spans several sibling repositories, create a central test runner in the consumer repo that rebuilds the whole local stack together. The runner uses Nix input overrides pointing at the latest local checkouts:
 
-- Cargo test files under `tests/` — those are already test-only by
-  Cargo convention.
-- Nix `check` derivations — already named by the constraint they
-  witness.
-- Per-test child processes spawned within a test via
-  `tokio::process::Command::new(env!("CARGO_BIN_EXE_*"))` against a
-  `-test`-suffixed binary.
+```sh
+nix flake check \
+  --override-input nota-next-source path:/git/github.com/LiGoldragon/nota-next \
+  --override-input schema-next-source path:/git/github.com/LiGoldragon/schema-next \
+  --override-input schema-rust-next-source path:/git/github.com/LiGoldragon/schema-rust-next
+```
 
-When a binary's production-vs-test status is ambiguous (e.g., a
-validator helper that an operator might invoke during a build), prefer
-the test-only suffix plus a Nix `check` derivation that wraps it for
-the operator path. The Nix wrapper carries the production status; the
-underlying binary stays clearly test-only.
+The committed flake still uses portable `github:` inputs. The override runner is for integration pressure while developing several repos at once: edit the codec or schema emitter, run the consumer's central test, and prove the generated Rust still compiles, serializes, and crosses the process boundary.
+
+For schema-derived repos the central runner proves the whole chain:
+
+```text
+schema files -> assembled schema -> generated Rust -> hand-written
+methods on generated objects -> rkyv signal frame -> CLI/daemon test
+```
+
+A test that only checks the schema engine in isolation is not the central integration test; one that only checks the consumer with pinned remote dependencies is not the local override test.
+
+Schema-derived runtime tests must use the generated plane traits in the consumer. A pilot does not prove the stack by calling a primitive store helper or recording strings in an observer; it proves the stack by constructing generated `Input`, `NexusInput`, and `SemaInput` values, invoking generated traits such as `NexusEngine` and `SemaEngine`, observing generated mail/rejection values, and asserting generated `NexusOutput`, `SemaOutput`, and Signal `Output` replies. If a needed boundary type is still hand-written, move it into schema first or mark that as the next component-development gap.
 
 ## Schema-typed observer state and per-plane chain typing
 
-Per intent records 995 and 997 (Maximum), tests in the
-schema-derived stack MUST use schema-emitted data types end-to-end —
-both in observer state and in the execution chain the test exercises.
+Tests in the schema-derived stack use schema-emitted data types end-to-end — both in observer state and in the execution chain the test exercises.
 
-### Observer state stays typed (record 995, 996)
+### Observer state stays typed
 
-When a test attaches an observer (a `MessageSentHook`,
-`MessageProcessedHook`, or similar hook trait implementation), the
-observer's accumulated state IS the schema-emitted enum. Concretely:
+When a test attaches an observer (a `MessageSentHook`, `MessageProcessedHook`, or similar hook-trait impl), the observer's accumulated state IS the schema-emitted enum. It holds `Vec<MailLedgerEvent>` (or the equivalent typed enum for the surface under test), NOT `Vec<String>` with tokens like `flow:sent:1`. The token-string anti-pattern (`format!("{label}:sent:{id}")`) bypasses the type system the design relies on — the test exercises the engine but the assertion runs on text.
 
-- An observer holds `Vec<MailLedgerEvent>` (or the equivalent typed
-  enum for the surface under test), NOT `Vec<String>` with tokens
-  like `flow:sent:1`.
-- Assertions compare typed `Vec` to typed `Vec`, OR encode the
-  captured events through the schema-emitted `to_nota()` and compare
-  against an inline NOTA fixture for readable multi-event sequences.
-- The token-string anti-pattern (`format!("{label}:sent:{id}")`)
-  bypasses the type system the design relies on; the test exercises
-  the engine but the assertion runs on text.
+Two acceptable shapes. Direct typed assertion — observer holds typed events, assertion compares typed values:
 
-Two acceptable shapes:
+```rust
+let expected: Vec<MailLedgerEvent> = vec![
+    MailLedgerEvent::Sent(SentMail {
+        mail_identifier: MailIdentifier(1),
+        short_header: ShortHeader(0),
+    }),
+    // ...
+];
+assert_eq!(observer.lock().expect("observer").events(), &expected);
+```
 
-1. **Direct typed assertion** — observer holds typed events,
-   assertion compares typed values:
-   ```rust
-   let expected: Vec<MailLedgerEvent> = vec![
-       MailLedgerEvent::Sent(SentMail {
-           mail_identifier: MailIdentifier(1),
-           short_header: ShortHeader(0),
-       }),
-       // ...
-   ];
-   assert_eq!(observer.lock().expect("observer").events(), &expected);
-   ```
+Or NOTA round-trip — typed events lowered through their schema-emitted `to_nota()`, compared against an inline NOTA fixture (readable for multi-event sequences):
 
-2. **NOTA round-trip** — typed events lowered through their
-   schema-emitted `to_nota()`, compared against an inline NOTA
-   string fixture:
-   ```rust
-   let expected_nota = "(Sent (1 0))\n(Processed (1 (1 39)))";
-   assert_eq!(events_to_nota(&recorded), expected_nota);
-   ```
+```rust
+let expected_nota = "(Sent (1 0))\n(Processed (1 (1 39)))";
+assert_eq!(events_to_nota(&recorded), expected_nota);
+```
 
-### Per-plane chain typing (record 997, extends record 995)
+### Per-plane chain typing
 
-Tests do not just hold typed observer state — they exercise the
-ACTUAL EXECUTION CHAIN through the engine trait surfaces, using
-the right schema-emitted type at each plane crossing.
+Tests exercise the actual execution chain through the engine trait surfaces, using the right schema-emitted type at each plane crossing. For the Signal / Nexus / SEMA triad:
 
-For the schema-derived Signal / Nexus / SEMA triad:
+- Signal-engine operations take `Input` and produce `Output`. `SignalActor::accept(Input)` returns `SignalAccepted`; the witness is a Signal-plane type.
+- Nexus-engine operations take `NexusMail<Payload>` and produce `NexusOutput`. The Nexus engine also performs the Signal→Nexus and Nexus→SEMA translations through schema-emitted methods like `NexusInput::into_nexus_output` and `NexusOutput::into_sema_input`.
+- SEMA-engine operations take `SemaInput` and produce `SemaOutput`. `Store::apply` is the SEMA engine trait surface.
 
-- **Signal-engine operations** take `Input` (Signal-plane) and
-  produce `Output` (Signal-plane). `SignalActor::accept(Input)`
-  returns `SignalAccepted`; the witness is a Signal-plane type.
-- **Nexus-engine operations** take `NexusMail<Payload>` (Nexus-
-  plane input) and produce `NexusOutput` (Nexus-plane output).
-  The Nexus engine ALSO performs the Signal→Nexus and Nexus→SEMA
-  translations through schema-emitted methods like
-  `NexusInput::into_nexus_output` and `NexusOutput::into_sema_input`.
-- **SEMA-engine operations** take `SemaInput` (SEMA-plane input)
-  and produce `SemaOutput` (SEMA-plane output). `Store::apply` is
-  the SEMA engine trait surface.
-
-Each step in the chain uses the right schema-object type for its
-plane; tests INVOKE the engines through their trait surfaces with
-the typed values, then assert on typed output values.
-
-Where a test crosses a plane boundary, the test makes the
-crossing VISIBLE — e.g. by inspecting the `NexusOutput` produced
-from a `NexusMail<Entry>` and threading its `SemaInput` into the
-next engine. The chain typing is visible in the test code, not
-hidden behind a single `engine.handle()` call.
+Each step uses the right schema-object type for its plane; tests invoke the engines through their trait surfaces with typed values, then assert on typed output values. Where a test crosses a plane boundary, make the crossing visible — inspect the `NexusOutput` produced from a `NexusMail<Entry>` and thread its `SemaInput` into the next engine. The chain typing is visible in test code, not hidden behind a single `engine.handle()` call:
 
 ```rust
 // Step 1: typed NexusMail<Entry> at the Nexus engine trait surface.
@@ -371,78 +178,39 @@ let sema_input: SemaInput = nexus_reply.into_sema_input();
 let sema_output: SemaOutput = sema_engine.apply(sema_input);
 ```
 
-For tests that exercise only ONE plane (e.g. a focused SEMA-
-engine test), that's fine — but use that plane's schema-emitted
-types throughout. A SEMA-only test takes `SemaInput` and asserts
-on `SemaOutput`; it does not construct `Input` (Signal) values.
-
-If a test bypasses the engine trait surface (e.g. directly
-testing private helpers, or constructing intermediate values
-without going through the trait dispatch), that's a discoverable
-shortcut — note it for follow-up; it's not necessarily blocking.
-
-Tests realise Pattern A, Pattern B, and Pattern C simultaneously
-by being WRITTEN IN the schema-type vocabulary the runtime uses.
+A test that exercises only one plane (e.g. a focused SEMA-engine test) uses that plane's schema-emitted types throughout — `SemaInput` in, `SemaOutput` asserted; it does not construct `Input` (Signal) values. A test that bypasses the engine trait surface (testing private helpers, or constructing intermediate values without going through trait dispatch) is a discoverable shortcut — note it for follow-up; not necessarily blocking.
 
 ## Anti-patterns
 
 - A README command that is not a flake output.
 - A recurring debug script that is not versioned.
 - `cargo test` as the only claimed verification.
-- A test that invents a parallel implementation inside the test and proves only
-  that the invented logic works.
-- A test fixture that replaces the production boundary it claims to witness
-  instead of driving that boundary from the outside.
-- One huge integration loop that round-trips through the same code and
-  exposes no intermediate artifacts.
+- A test that invents a parallel implementation inside the test and proves only that the invented logic works.
+- A test fixture that replaces the production boundary it claims to witness instead of driving that boundary from the outside.
+- One huge integration loop that round-trips through the same code and exposes no intermediate artifacts.
 - Writer and reader using the same mock, cache, or in-memory object.
-- A stateful test that depends on an existing home directory, daemon,
-  socket path, database, or credential unless that dependency is the
-  explicit subject of the test.
-- A Nix check that only builds the binary but never executes the
-  witness.
-- Sleeps or polling used to pretend a push-based event happened. Push
-  behavior needs a pushed witness.
+- A stateful test that depends on an existing home directory, daemon, socket path, database, or credential unless that dependency is the explicit subject of the test.
+- A Nix check that only builds the binary but never executes the witness.
+- Sleeps or polling used to pretend a push-based event happened. Push behavior needs a pushed witness.
 - An ignored test without a tracked reason.
-- Stringly-typed observer state (`Vec<String>` with tokens like
-  `flow:sent:1`) when the schema emits a typed enum. The observer
-  exercised the engine but the assertion runs on text — the type
-  system the design relies on is bypassed (records 995, 996).
-- Tests that collapse multiple plane crossings into one
-  `engine.handle()` call when the invariant under test IS the per-
-  plane chain typing. Make each plane crossing visible (record 997).
-- Tests that construct intermediate per-plane values WITHOUT going
-  through the engine trait surface (`InputNexus::record`,
-  `Store::apply`, etc.). The trait surface is the production path
-  the test must prove (records 997, 998).
+- Stringly-typed observer state (`Vec<String>` with tokens like `flow:sent:1`) when the schema emits a typed enum — the assertion runs on text and bypasses the type system.
+- Collapsing multiple plane crossings into one `engine.handle()` call when the invariant under test IS the per-plane chain typing.
+- Constructing intermediate per-plane values without going through the engine trait surface (`InputNexus::record`, `Store::apply`, etc.). The trait surface is the production path the test must prove.
 
 ## Review checklist
 
-Ask these before accepting a test:
-
 - Can a clean checkout run the canonical suite with `nix flake check`?
-- If the test is stateful, is the stateful command exposed through
-  `nix run .#<name>` or another named flake output?
+- If stateful, is the command exposed through `nix run .#<name>` or another named flake output?
 - Does each load-bearing constraint have a named witness?
 - Does the witness prove the intended component or phase was used?
-- Does the witness call, drive, or observe the production code path, rather
-  than only test-local logic?
+- Does the witness call, drive, or observe the production code path, not just test-local logic?
 - Are intermediate artifacts inspectable?
 - Would a shortcut, stub, or bypass fail?
 - Is the test name the constraint it protects?
-- For schema-derived stack tests: does the observer state hold
-  schema-emitted typed values (`Vec<MailLedgerEvent>`) rather than
-  string tokens? Does the test exercise each plane's engine trait
-  surface with the right plane's schema-emitted types? Are the
-  Signal→Nexus and Nexus→SEMA crossings visible in the test code?
+- For schema-derived stack tests: does observer state hold schema-emitted typed values (`Vec<MailLedgerEvent>`) rather than string tokens? Does the test exercise each plane's engine trait surface with the right plane's schema-emitted types? Are the Signal→Nexus and Nexus→SEMA crossings visible in the test code?
 
 ## See also
 
-- `skills/nix-discipline.md` - Nix command and flake discipline.
-- `skills/architectural-truth-tests.md` - witness catalogue and
-  architecture-test patterns.
-- `skills/rust-discipline.md` - Rust test layout and crate rules.
-- `skills/actor-systems.md` - actor traces and topology tests.
-- `skills/push-not-pull.md` - pushed observation tests.
-- `repos/lore/nix/integration-tests.md` - chained Nix derivations.
-- `repos/lore/rust/testing.md` - Rust testing reference.
+- `architectural-truth-tests.md` — witness catalogue and architecture-test patterns.
+- `rust-discipline.md` — Rust test layout and crate rules.
+- `nix-discipline.md` — Nix command and flake discipline.

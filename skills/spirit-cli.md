@@ -5,60 +5,57 @@ tool_versions:
 
 # Skill — spirit CLI
 
-*The deployed `spirit` binary is the normal substrate for psyche
-intent capture and observation. Agents call the unsuffixed CLI
-directly. This skill covers the live production `Spirit 0.5.2`
-command shape and how to verify the deployed wrapper when source
-and profile drift.*
+How to call the deployed `spirit` binary to capture and observe psyche intent.
 
-## What this skill is for
+## What it is
 
-`persona-spirit` is the persona component that captures psyche
-statements as typed records and serves observation/subscription
-queries. Its bundled thin CLI is named **`spirit`** and lives in the
-user's nix profile as `~/.nix-profile/bin/spirit`. The daemon is
-`persona-spirit-daemon`, run as a user service; it listens on a
-unix-socket pair under `~/.local/state/persona-spirit/<version>/`.
+`persona-spirit` captures psyche statements as typed records and serves
+observation/subscription queries. Its bundled thin CLI is `spirit`, in
+the user's nix profile at `~/.nix-profile/bin/spirit`. The daemon is
+`persona-spirit-daemon`, a user service listening on a unix-socket pair
+under `~/.local/state/persona-spirit/<version>/`.
 
-The Spirit CLI is the sole substrate for intent capture
-(`skills/intent-log.md`). If the daemon is unavailable,
-surface that as a blocker — there is no legacy-file fallback; the
-`intent/*.nota` substrate is retired.
+`spirit` is the sole substrate for intent capture. There is no
+file fallback; the old `intent/*.nota` substrate is retired. If the
+daemon is unavailable, surface that as a blocker.
 
-## Copy these query forms first
+## How to invoke
 
-`Observe` always carries one `Observation` enum variant. For intent
-records, that variant is usually `Records`:
+The binary takes exactly one argument (the one-argument rule —
+`skills/component-triad.md`). Two accepted shapes:
 
-```sh
-spirit "(Observe (Records ((Any []) None Any Recent SummaryOnly)))"
-spirit "(Observe (Records ((Partial [schema nota structural-macro]) None Any Recent SummaryOnly)))"
-spirit "(Observe (Records ((Full [schema nota]) None Any Recent SummaryOnly)))"
-spirit "(Observe (RecordIdentifiers ((Exact [abcd]) SummaryOnly)))"
-```
+- **Inline NOTA** — argument starts with `(`. The default. Wrap the
+  whole expression in shell double quotes. Valid NOTA never contains
+  `"` (strings come from bracket forms `[text]` / `[|text|]`), so the
+  shell double quote is a clean boundary and apostrophes inside the
+  description survive. Single-quoting is wrong — it loses apostrophes.
+  ```sh
+  spirit "(Record ([workspace] Decision [summary] Maximum))"
+  ```
+- **Path to a NOTA file** — argument does not start with `(`; the CLI
+  reads the file as the NOTA argument. For records with embedded shell
+  metacharacters or too large to keep the bash line readable.
+  ```sh
+  spirit ./record.nota
+  ```
 
-The shape is:
+The CLI replies on stdout with the daemon's typed `Reply` as NOTA text
+— `(RecordAccepted ...)`, `(RecordsObserved [...])`, etc. Exit code is
+nonzero on transport, parse, or daemon errors.
 
-```text
-(Observe (Records ((<TopicSelection>) <Kind?> <CertaintySelection> <RecordedTimeSelection> <ObservationMode>)))
-```
+Sockets come from `PERSONA_SPIRIT_SOCKET` and
+`PERSONA_SPIRIT_OWNER_SOCKET`, set by the home-profile wrapper — no
+flag, no config path, no socket argument. The wrapper is a shell stub
+that sets the env vars then execs the real binary; inspect with
+`readlink -f $(command -v spirit)`.
 
-Two recurring wrong shapes:
+## Deployment slots
 
-- `Search` is not a production request head.
-- `(Observe ((Any [...]) ...))` is missing the `Records` observation
-  variant; the daemon expects a PascalCase observation name after
-  `Observe`, not a bare query record.
-
-## Deployment slots — `spirit`, `spirit-vX.Y.Z`, `spirit-next`
-
-Spirit is **deployed side-by-side**. The user profile installs a
-versioned wrapper per tagged release plus a `spirit-next` slot for
-the in-flight authoring branch, and the unsuffixed `spirit` symlink
-points at whichever versioned wrapper is the current production
-target. Each daemon has its own segregated state directory
-(`~/.local/state/persona-spirit/<version>/`), its own sockets, and
-its own redb database — they never share files. A typical profile:
+Spirit deploys side-by-side. The profile installs a versioned wrapper
+per tagged release plus a `spirit-next` slot for the in-flight branch;
+the unsuffixed `spirit` symlink points at the current production
+wrapper. Each daemon has its own state directory, sockets, and redb
+database — they never share files.
 
 ```text
 spirit            -> spirit-vX.Y.Z       (production — the MAIN slot)
@@ -68,180 +65,102 @@ spirit-vX.Y.Z+1   -> installed           (newer side-by-side, under test)
 spirit-next       -> (slot)              (in-flight authoring branch)
 ```
 
-This is the next/main/previous vocabulary (workspace discipline)
-applied at the deployment-naming layer: **what is being authored IS
-next**; **the current published baseline IS main**; **previous is
-the prior release retained for handover**. Tag-suffixed wrappers
-(`spirit-v0.2.0`, `spirit-v0.3.0`, etc.) are explicit diagnostic and
-testing surfaces. The unsuffixed `spirit` is the production binding
-and the normal command for agents. Intent capture uses `spirit`, not
-a version-suffixed wrapper. Cutover is an alias change, not a
-destructive replace.
+This is the next/main/previous vocabulary at the deployment layer:
+what is being authored is `next`, the published baseline is `main`,
+`previous` is the prior release retained for handover. Intent capture
+uses the unsuffixed `spirit`, never a version-suffixed wrapper. Use a
+tag-suffixed wrapper only when deliberately testing that version's
+segregated daemon/database. Cutover is an alias change, not a
+destructive replace. `readlink -f $(command -v spirit)` resolves what
+`spirit` currently points at.
 
-Use a tag-suffixed wrapper only when deliberately testing or
-inspecting that version's segregated daemon/database. When in doubt
-about what `spirit` currently points at, `readlink -f $(command -v
-spirit)` resolves the chain.
-
-## How to invoke
-
-The spirit binary takes **exactly one argument** per the
-one argument rule (`skills/component-triad.md` §"The one argument
-rule"). Two accepted shapes:
-
-- **Inline NOTA argument** — the argument is a NOTA expression starting
-  with `(`. This is the default. **Wrap the whole NOTA expression in
-  shell double quotes.** NOTA strings come from bracket forms
-  exclusively (`[text]` or `[|text|]`); there is no `"` inside any
-  valid NOTA expression. The shell double quote is therefore the
-  clean outer argument boundary, and apostrophes inside the
-  description survive untouched. Single-quoting the argument is wrong
-  — it loses apostrophes.
-  ```sh
-  spirit "(Record ([workspace] Decision [summary] Maximum))"
-  ```
-- **Path to a NOTA file** — the argument does not start with `(`; the
-  CLI reads the file's contents as the NOTA argument. Reserved for
-  cases inline genuinely cannot handle: NOTA with embedded shell
-  metacharacters too painful to escape, or a record large enough that
-  the bash line becomes unreadable.
-  ```sh
-  spirit ./record.nota
-  ```
-
-The CLI replies on stdout with the daemon's typed `Reply` value as
-NOTA text — `(RecordAccepted ...)`, `(RecordsObserved [...])`,
-`(RequestUnimplemented (...))`, etc. Exit code is nonzero on
-transport, parse, or daemon errors.
-
-Sockets are discovered through `PERSONA_SPIRIT_SOCKET` and
-`PERSONA_SPIRIT_OWNER_SOCKET` (set by the home-profile wrapper); no
-flag, no config path, no positional socket argument. The wrapper is
-itself a tiny shell stub that sets the env vars then execs the real
-binary — visible via `readlink -f $(command -v spirit)` and
-`nix derivation show`.
-
-## The deployed wire shape — read it from the pinned source
+## Read the wire shape from the pinned source
 
 The wire-side `Operation`, `Reply`, and supporting types live in the
-`signal-persona-spirit` crate. The crate evolves quickly; agents must
-not infer the wire shape from this skill's examples. Always read the
-**deployed** version's source — the version the running daemon was
-built against — not the current `main`.
-
-To find the deployed pinning:
+`signal-persona-spirit` crate, which evolves quickly. Do not infer the
+wire shape from this skill's examples — read the **deployed** version's
+source (the one the running daemon was built against), not `main`.
+`main` drifts from production until the next CriomOS rebuild.
 
 ```sh
-# Find the persona-spirit commit pinned by CriomOS-home (the build
-# input that produced the deployed user-profile spirit).
+# persona-spirit commit pinned by CriomOS-home (built the deployed CLI):
 grep -B 1 -A 12 '"persona-spirit"' \
     /git/github.com/LiGoldragon/CriomOS-home/flake.lock | head -30
 
-# The persona-spirit commit then pins signal-persona-spirit by Cargo
-# dependency; the rev is in its Cargo.lock at that commit.
+# that commit pins signal-persona-spirit in its Cargo.lock:
 cd /git/github.com/LiGoldragon/persona-spirit
 git show <persona-spirit-rev>:Cargo.lock \
     | grep -B 1 -A 4 '"signal-persona-spirit"'
 
-# Read the deployed signal-persona-spirit lib.rs:
+# read the deployed contract:
 cd /git/github.com/LiGoldragon/signal-persona-spirit
 git show <signal-persona-spirit-rev>:src/lib.rs
 ```
 
-The operator is actively reshaping the persona-spirit triad; main
-will drift from production until the next CriomOS rebuild. *"we're
-going to have to keep track of the interface"* — per psyche
-2026-05-21.
+## Encoding rules
 
-## Operations on the ordinary channel (worked examples)
+Records are **untagged** (`NotaRecord`): enum variants carry a head,
+record bodies do not. `Option` is `Some`-wrapping — bare `None` or
+`(Some <value>)`. `Topic`, `Description`, and `StatementText` are
+`NotaTransparent String` newtypes — bare tokens when possible, bracket
+strings when they contain whitespace or punctuation. Bracket
+identifiers (`[abcd]`) so codes starting with a digit stay valid.
 
-Examples below match the live production `Spirit 0.5.2` wire shape.
-The installed unsuffixed `spirit` wrapper can lag until CriomOS-home
-points at the new `persona-spirit` commit and the profile is
-activated. When in doubt, read the deployed source per the previous
-section and verify the wrapper with a small `Observe` call.
+## Recording intent
 
-Records are **untagged** per `NotaRecord` (the `ee90eef` codec
-change). Enum variants carry a head; record bodies do not. `Option`
-is `Some`-wrapping — `None` bare or `(Some <value>)`. `Topic`,
-`Description`, and `StatementText` are `NotaTransparent String`
-newtypes — encoded as bare tokens when possible, or bracket strings
-when they contain whitespace or punctuation.
-
-**Record an intent entry — description-only, multi-topic shape.**
 A v0.5.2 record carries a vector of topics, one agent-clarified
 `Description`, a `Kind`, a certainty `Magnitude`, and a privacy
-`Magnitude`. No verbatim field, no context payload, and no
-client-supplied timestamp. **The daemon stamps date/time itself.**
-The five-field form is explicit. The four-field form remains a public
-shorthand and defaults privacy to `Zero`.
-The agent clarifies the psyche's wording into the description before
-recording — that is the agent's job, and it is what keeps the intent
-log dense and searchable rather than verbose and lossy:
+`Magnitude`. No verbatim field, no context payload, no client
+timestamp — **the daemon stamps date/time itself**. The four-field
+form is public shorthand defaulting privacy to `Zero`; the five-field
+form sets privacy explicitly. The agent clarifies the psyche's wording
+into the description before recording — that keeps the log dense and
+searchable rather than verbose and lossy.
 
 ```sh
 spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude>))"
 spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> <Privacy>))"
-# Kind ∈ { Decision Principle Correction Clarification Constraint }
+# Kind      ∈ { Decision Principle Correction Clarification Constraint }
 # Magnitude ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
 ```
 
 Privacy uses the same `Magnitude` ladder on a privacy axis. `Zero`
-means open/public and is the normal workspace-default. Higher values
-narrow the intended audience. Do not put private personal substance in
-a `Zero` privacy record.
+means open/public (the workspace default); higher values narrow the
+audience. Never put private personal substance in a `Zero` record.
 
-The reply is **terse — no echo**: `(RecordAccepted abcd)` or
-`(RecordAccepted [1234])`, depending on whether the NOTA encoder can
-print the identifier as a bare string. The acknowledgement deliberately
-does not echo the submitted intent content; the wire reply is
-token-cheap. Production v0.5.2 mints random lowercase base36
-identifiers and displays the shortest collision-free code in the
-4-to-7-character range. The v0.5.2 deployment migrated copied v0.5.0
-long identifiers to short visible identifiers and wrote a sidecar
-mapping table next to the database. Older long identifier codes remain
-decodable for compatibility, but agents should cite and pass the short
-code returned by the daemon. In agent-authored commands, bracket the
-identifier (`[abcd]`) so codes that start with digits remain valid.
+The reply is terse and does not echo content: `(RecordAccepted abcd)`
+or `(RecordAccepted [1234])` depending on whether the encoder can print
+the identifier bare. v0.5.2 mints random lowercase base36 identifiers
+and shows the shortest collision-free code (4-7 chars). Cite and pass
+the short code the daemon returns.
 
-**Simple capture convention.** For normal public workspace work, the
-simple record shape above is the default interface: broad topic vector,
-kind, clarified description, and certainty. Do not force agents to
-author advanced query records unless they need advanced behavior. The
-future shorthand surface should remain a typed NOTA operation that
-lowers to the full record, not shell flags or a second CLI syntax.
-Examples: a public shorthand lowers to the record above with
-`privacy = Zero`; a private-record shorthand lowers to the same full
-record with an elevated privacy magnitude. NOTA positional records do
-not omit fields: a shorthand such as a future `RecordPublic`,
-`RecordPrivate`, or `Search` is a distinct operation payload that fills
-defaults before lowering to the verbose API. Until those heads are
-implemented in the deployed signal contract, do not invent them in live
-CLI calls.
+**Topics are user-creatable strings in a vector** — any new word a
+`Record` uses is registered; no pre-declared enum. Pick broad reusable
+words and let the vector carry multiple concepts: prefer
+`[intent logging]` over `[intent-log]` when both `intent` and
+`logging` are real topics. Keep a compound topic only when the compound
+is the established name of one thing.
 
-**Remove an intent entry** — delete one stored record by identifier
-code through the daemon:
+**Shorthand stays typed.** Any future shorthand (`RecordPublic`,
+`RecordPrivate`, `Search`) is a distinct typed NOTA operation that
+fills defaults and lowers to the full record — never shell flags or a
+second CLI syntax. NOTA positional records do not omit fields. Until
+such heads exist in the deployed contract, do not invent them in live
+calls.
+
+## Removing and changing records
 
 ```sh
-spirit "(Remove [abcd])"
+spirit "(Remove [abcd])"                    # -> (RecordRemoved [abcd])
+spirit "(ChangeCertainty ([abcd] Zero))"    # -> (CertaintyChanged ([abcd] Zero))
 ```
 
-The reply is `(RecordRemoved [abcd])`. Use this for records that
-should not remain in the active store at all; use `Correction` or
-supersession when lineage should remain visible.
-
-**Change certainty** — mutate one stored record's certainty without
-changing its description, topics, kind, identifier, or daemon-stamped
-time:
-
-```sh
-spirit "(ChangeCertainty ([abcd] Zero))"
-```
-
-The reply is `(CertaintyChanged ([abcd] Zero))`. `Zero` is Spirit's
-recoverable removal-candidate nomination: the record remains queryable
-and can be restored by changing certainty back to a non-zero
-`Magnitude`. Use hard `Remove` only after review.
+`Remove` deletes a record entirely — use it when nothing should remain
+in the active store. Setting certainty to `Zero` is the **recoverable**
+removal-candidate nomination: the record stays queryable and is
+restored by changing certainty back to a non-zero `Magnitude`. Use
+`Correction` or supersession when lineage should stay visible. Use hard
+`Remove` only after review.
 
 **Collect removal candidates** — archive exact-`Zero` records, then
 remove them from the hot store:
@@ -252,187 +171,149 @@ spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) 
 spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) (Print StandardOutput)))"
 ```
 
-The reply is `(RemovalCandidatesCollected ([...] [...] [...]))`: compact
+The reply `(RemovalCandidatesCollected ([...] [...] [...]))` carries
 archived `RecordSummary` values, removed identifiers, and skipped
-candidates. `CollectRemovalCandidates` is constrained to exact `Zero`
-certainty and exact `Zero` privacy; broad queries are rejected.
-`ArchiveDatabase Default` writes the daemon-derived archive database;
-`ArchiveDatabase (Path [...])` writes a caller-selected archive
-database; `Print StandardOutput` and `Print StandardError` write no
-archive database and return typed capture material for the CLI to
-render. Archive output failure returns skipped candidates such as
-`[([abcd] ArchiveFailed)]` and leaves the records queryable.
+candidates. The query is constrained to exact `Zero` certainty and
+exact `Zero` privacy; broad queries are rejected. `ArchiveDatabase
+Default` writes the daemon-derived archive; `(Path [...])` a
+caller-selected one; `Print StandardOutput`/`StandardError` writes no
+archive and returns typed material for the CLI to render. Archive
+failure returns skipped candidates (e.g. `[([abcd] ArchiveFailed)]`)
+and leaves those records queryable.
 
-**Topics are user-creatable strings carried in a vector** at the wire
-layer — any new topic word a `Record` uses is registered. No
-pre-declared enum of topics. Pick broad reusable words and let the
-vector carry multiple concepts. Prefer `[intent logging]` over
-`[intent-log]` when both `intent` and `logging` are real topics. Keep a
-compound topic only when the compound is the established name of one
-thing.
+## Observing records
 
-**Observe records** — query the store. The public `Records` query
-filters by topic selection, optional kind, certainty, recorded time,
-and output mode. It has no privacy field and means exact `Zero`
-privacy by type. Use `PrivateRecords` or `PrivateRecordIdentifiers`
-for elevated reads. Topic selection is `(Any [])` for no topic filter,
-`(Partial [a b])` for records matching one or more requested topics,
-and `(Full [a b])` for records matching every requested topic.
-Certainty selection is `Any`, `(Exact Zero)`, `(AtMost Low)`, or
-`(AtLeast High)`. Recorded-time selection is `Any`,
-`(Between ((YYYY-MM-DD HH:MM:SS) (YYYY-MM-DD HH:MM:SS)))`,
-`(Since (YYYY-MM-DD HH:MM:SS))`, `(Until (YYYY-MM-DD HH:MM:SS))`,
-`Shallow`, `Recent`, `Deep`, or `VeryDeep`. Qualitative recency
-depths are applied after topic/kind/certainty matching and
-return newest matching records at the requested depth, so quiet topics
-naturally reach farther back than active topics.
-`Minimum` remains weak but real intent; do not use it as the
-removal-candidate marker. The old three-field, four-field, five-field,
-and six-field record-query payloads still decode as compatibility input
-inside `Records`, but agents should emit the public five-field query or
-the explicit private query variants.
-`RecordIdentifiers` selects one record by exact identifier code:
-`(Exact [abcd])`. Identifier ranges are not live in the random-identifier
-era; use `Records` with `Recent`, `Shallow`, `Deep`, `VeryDeep`,
-`Since`, `Until`, or `Between` for history and recency windows. Use
-`SummaryOnly` for
-compact summaries and `WithProvenance` when you need daemon-stamped
-date/time:
+`Observe` always carries one `Observation` variant — usually `Records`.
+The query shape is:
+
+```text
+(Observe (Records ((<TopicSelection>) <Kind?> <CertaintySelection> <RecordedTimeSelection> <ObservationMode>)))
+```
+
+- **TopicSelection**: `(Any [])` no filter, `(Partial [a b])` matches
+  any requested topic, `(Full [a b])` matches every requested topic.
+- **Kind?**: `None` or `(Some Decision)`.
+- **CertaintySelection**: `Any`, `(Exact Zero)`, `(AtMost Low)`,
+  `(AtLeast High)`. `Minimum` is weak but real intent — do not use it
+  as the removal-candidate marker.
+- **RecordedTimeSelection**: `Any`, `Shallow`, `Recent`, `Deep`,
+  `VeryDeep`, `(Since (YYYY-MM-DD HH:MM:SS))`, `(Until (...))`,
+  `(Between ((...) (...)))`. Qualitative depths apply after
+  topic/kind/certainty matching and return the newest matches at that
+  depth, so quiet topics reach farther back than active ones.
+- **ObservationMode**: `SummaryOnly` for compact summaries,
+  `WithProvenance` when you need daemon-stamped date/time.
+
+The `Records` query has no privacy field and means exact `Zero`
+privacy by type. Use `PrivateRecords` / `PrivateRecordIdentifiers` for
+elevated reads. `RecordIdentifiers` selects by exact code `(Exact
+[abcd])`; identifier ranges are not live in the random-identifier era —
+use `Records` with recency windows for history.
 
 ```sh
 spirit "(Observe Topics)"
-spirit "(Observe (Records ((Any []) None Any Any SummaryOnly)))"
+spirit "(Observe (Records ((Any []) None Any Recent SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit search]) None Any Any SummaryOnly)))"
 spirit "(Observe (Records ((Full [spirit search]) None Any Any WithProvenance)))"
 spirit "(Observe (Records ((Any []) (Some Decision) Any Any SummaryOnly)))"
-spirit "(Observe (Records ((Any []) None (Exact Zero) Any WithProvenance)))"
 spirit "(Observe (Records ((Any []) None (AtMost Low) Any SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any Shallow SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any Recent SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any Deep SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any VeryDeep SummaryOnly)))"
 spirit "(Observe (Records ((Partial [spirit]) None Any (Since (2026-05-30 00:00:00)) SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any (Between ((2026-05-29 00:00:00) (2026-05-30 23:59:59))) WithProvenance)))"
 spirit "(Observe (RecordIdentifiers ((Exact [abcd]) SummaryOnly)))"
 spirit "(Observe (PrivateRecords ((AtMost Low) ((Any []) None Any Any SummaryOnly))))"
 spirit "(Observe (PrivateRecordIdentifiers ((AtMost Low) ((Exact [abcd]) SummaryOnly))))"
 ```
 
-**Submit a free-form statement** — `State` lowers to an `Assert`
-sema-classified observation:
+Two recurring wrong shapes:
+
+- `Search` is not a production request head.
+- `(Observe ((Any [...]) ...))` omits the `Records` variant; the daemon
+  expects a PascalCase observation name after `Observe`, not a bare
+  query record.
+
+## Other operations
 
 ```sh
-spirit "(State [free-form psyche statement text])"
+spirit "(State [free-form psyche statement text])"   # lowers to an Assert sema observation
 ```
 
-**Subscribe / unsubscribe** — `Watch` opens a long-lived stream;
-`Unwatch` closes it. The CLI's single-call shape isn't well suited
-to long subscriptions; for agent code prefer the typed client
-library inside `persona_spirit::ordinary::SignalClient`. Tap/Untap
-fanout is currently a no-op placeholder pending persona-introspect.
+`Watch` opens a long-lived stream; `Unwatch` closes it. The CLI's
+single-call shape suits subscriptions poorly — for agent code prefer
+the typed `persona_spirit::ordinary::SignalClient`. Tap/Untap fanout is
+a no-op placeholder pending persona-introspect.
 
-## The daemon's binary startup configuration
+## Daemon startup is binary-only
 
-The CLI accepts NOTA because it is the human/agent text edge. The
-daemon does not. Target/new Spirit daemon startup is exactly one
-pre-generated signal-encoded/rkyv startup message/file; inline NOTA and
-`.nota` paths are rejected before daemon-specific decoding.
-CriomOS-home or another deploy helper may author configuration from
-typed NOTA source, but it encodes the binary startup signal before
-launching the daemon. A virgin daemon can receive initial Configure as
-binary signal; after configuration, restarts self-resume from persisted
-SEMA state.
+The CLI accepts NOTA because it is the human/agent text edge; the
+daemon does not. Daemon startup is exactly one pre-generated
+signal-encoded/rkyv message — inline NOTA and `.nota` paths are
+rejected before daemon decoding. A deploy helper (CriomOS-home) may
+author configuration from typed NOTA source, but it encodes the binary
+startup signal before launching. A virgin daemon can receive an initial
+`Configure` as binary signal; after configuration, restarts self-resume
+from persisted SEMA state. New configuration fields land as typed
+fields in the startup schema or as authenticated meta-signal messages —
+never flags, never daemon NOTA parsing.
 
-Older deployed `persona-spirit-daemon` service definitions may still
-show a positional NOTA tuple. Treat that as legacy production drift to
-migrate, not the rule to copy. If auditing the old production service,
-the `ExecStart` line is the witness:
+Old service definitions may show a positional NOTA tuple — that is
+legacy drift to migrate, not the rule to copy. The witness:
 
 ```sh
 systemctl --user cat persona-spirit-daemon-vX.Y.Z.service
 ```
 
-Future configuration fields land as typed fields in the daemon startup
-schema or as authenticated meta-signal configuration messages, not by
-adding flags and not by making the daemon parse NOTA text.
-
-## On the substrate replacement
-
-The legacy `intent/*.nota` file substrate is retired; its history
-lives in git and its durable content is preserved in the deployed
-Spirit store and the guidance layer. Spirit is the sole write
-substrate.
-
-- **Capture goes through `spirit`** — the only path for new
-  psyche intent.
-- **Topic vocabulary is shared** — pass the same broad topic strings
-  (`workspace`, `spirit`, `signal`, `component-shape`,
-  `persona`, …) the deployed store already uses. The redb db carries
-  the canonical record set.
-- **No manual dual-writing** — do not log the same intent by hand to
-  multiple Spirit databases. Version cutover and dual-write behavior
-  must be implemented in code.
-- **No migration logic inside spirit** — *"importing existing nota
-  files STAYS THE FUCK OUT OF SPIRIT"*. A separate migration or
-  upgrade tool may translate legacy records; Spirit itself remains
-  the intent daemon and CLI.
-
 ## Substrate migration discipline
 
-Generalises beyond intent capture. Applies to any closed-world enum
-or typed-record migration where a permissive substrate (file with
-free PascalCase tokens, untyped store) is replaced by a strict one
+Applies to any migration where a permissive substrate (file with free
+PascalCase tokens, untyped store) is replaced by a strict one
 (rkyv-archived enum, typed redb engine). Four rules:
 
 1. **Enumerate every closed-world enum on both sides before
-   relogging.** Compare variant sets. Where they differ, design an
+   relogging.** Compare variant sets; where they differ, design an
    explicit mapping. Don't assume parallel evolution kept the
    vocabularies aligned.
-2. **The strict substrate is ground truth.** When the deployed
-   daemon rejects a token the file accepted, the target shape wins
-   — the permissive substrate was permissive by accident, not by
-   design. Migration normalises; it does not bridge backward.
+2. **The strict substrate is ground truth.** When the daemon rejects a
+   token the file accepted, the target shape wins — the permissive
+   substrate was permissive by accident. Migration normalises; it does
+   not bridge backward.
 3. **Surface mismatches before bulk relog.** A dumb migration tool
-   needs the mapping table baked in; even a no-import daemon
-   (Spirit's case — record 70 widened `Certainty` to the universal
-   `signal-sema::Magnitude` rather than narrow the writer) does not
+   needs the mapping table baked in; even a no-import daemon does not
    absolve the migration step of vocabulary auditing.
-4. **The file substrate's older vocabulary may not round-trip into
-   the newer typed substrate without explicit mapping.** Permissive
-   parsers accept tokens the strict decoder later rejects; the
-   gap surfaces only at the strict-substrate boundary. The sema
-   database (record 74) is where the strict shape lives.
+4. **Older vocabulary may not round-trip without explicit mapping.**
+   Permissive parsers accept tokens the strict decoder later rejects;
+   the gap surfaces only at the strict-substrate boundary.
 
-**Canonical pattern — two-submodule migration module.** Inside a
-sema-upgrade migration module (one per component-version step):
+**Canonical pattern — two-submodule migration module** (one per
+component-version step):
 
 - `mod historical` — private rkyv reproduction of the deployed old
   types. Every leaf and branch the source bytes need is redefined
-  locally; no dependency on the old crate version. Lets the
-  migration crate read source bytes deterministically without
-  pinning the old contract crate.
+  locally, with no dependency on the old crate version, so the
+  migration crate reads source bytes deterministically.
 - `mod current_shape` — same-name types binding the current crate's
-  unchanged leaves, overriding only the fields that changed. Borrow
-  current leaves from the live contract crate.
-- **`From`-chain composes the conversion.** `StoredRecord ->
-  StampedEntry -> Entry`, plus enum-to-enum maps for the leaves
-  that changed (e.g. `historical::Certainty -> Magnitude`). One
-  direction of typed flow; no per-field handwiring at the call
-  site. Future sema-upgrade migration modules follow this shape.
+  unchanged leaves, overriding only the fields that changed.
+- **A `From`-chain composes the conversion** — `StoredRecord ->
+  StampedEntry -> Entry`, plus enum-to-enum maps for the changed leaves
+  (e.g. `historical::Certainty -> Magnitude`). One direction of typed
+  flow; no per-field handwiring at the call site.
+
+## No manual dual-writing or in-CLI migration
+
+Do not log the same intent by hand to multiple Spirit databases —
+version cutover and dual-write are implemented in code. Importing
+legacy nota files stays out of Spirit; a separate migration tool may
+translate legacy records, but Spirit itself remains the intent daemon
+and CLI. Pass the same broad topic strings (`workspace`, `spirit`,
+`signal`, `component-shape`, `persona`, …) the deployed store already
+uses; the redb database carries the canonical record set.
 
 ## See also
 
 - `skills/intent-log.md` — what gets logged, the five-kind taxonomy,
-  the gold-mining discipline. Substrate-agnostic.
+  the gold-mining discipline.
 - `skills/intent-maintenance.md` — sweep / supersession discipline.
-- `skills/intent-clarification.md` — when to ask the psyche.
-- `skills/component-triad.md` §"The one argument rule" — why the
-  spirit CLI takes exactly one NOTA argument while daemon startup is
-  binary-only.
-- `skills/nota-design.md` — positional-record encoding rules
-  (untagged NotaRecord, `Some`-wrapping `Option`, PascalCase rules).
-- `/git/github.com/LiGoldragon/persona-spirit` — the component
-  source. `tests/daemon.rs` is the best worked example for the wire
-  shape.
-- `/git/github.com/LiGoldragon/signal-persona-spirit` — the wire
-  contract crate. `src/lib.rs` declares the channel.
+- `skills/nota-design.md` — positional-record encoding rules.
+- `/git/github.com/LiGoldragon/persona-spirit` — component source;
+  `tests/daemon.rs` is the best worked example for the wire shape.
+- `/git/github.com/LiGoldragon/signal-persona-spirit` — wire contract;
+  `src/lib.rs` declares the channel.
