@@ -34,7 +34,7 @@ Pruned on 2026-05-06:
 | `arca` | `/git/github.com/LiGoldragon/arca` |
 | `chroma` | `/git/github.com/LiGoldragon/chroma` |
 | `chronos` | `/git/github.com/LiGoldragon/chronos` |
-| `criome` | `/git/github.com/ligoldragon/criome` |
+| `criome` | `/git/github.com/LiGoldragon/criome` |
 | `criomos-archive` | `/git/github.com/LiGoldragon/criomos-archive` |
 | `forge` | `/git/github.com/LiGoldragon/forge` |
 | `gascity` | `/git/github.com/LiGoldragon/gascity` |
@@ -44,7 +44,7 @@ Pruned on 2026-05-06:
 | `horizon-rs` | `/git/github.com/LiGoldragon/horizon-rs` |
 | `lojix-archive` | `/git/github.com/LiGoldragon/lojix-archive` |
 | `lojix-cli` | `/git/github.com/LiGoldragon/lojix-cli` |
-| `lore` | `/git/github.com/ligoldragon/lore` |
+| `lore` | `/git/github.com/LiGoldragon/lore` |
 | `mentci-egui` | `/git/github.com/LiGoldragon/mentci-egui` |
 | `mentci-lib` | `/git/github.com/LiGoldragon/mentci-lib` |
 | `mentci-tools` | `/git/github.com/LiGoldragon/mentci-tools` |

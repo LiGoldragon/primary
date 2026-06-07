@@ -498,11 +498,11 @@ The CLI is the translation/debugging surface between the two regimes:
   a NOTA field on the CLI request; the daemon receives only the
   binary frame the CLI translated it into.
 
-The canonical worked example today is `spirit-next`: the daemon ↔
+The canonical worked example today is `spirit`: the daemon ↔
 CLI wire is rkyv-encoded signal-frame frames, and the optional
 `testing-trace` round-trip across the trace socket is the same shape
 — `TraceEvent` is an rkyv-encoded record, not a NOTA string. See
-`spirit-next/ARCHITECTURE.md` §"Runtime triad" for the wire layout.
+`spirit/ARCHITECTURE.md` §"Runtime triad" for the wire layout.
 
 The rule scales: any future inter-component channel (sidecar
 sockets, peer subscriptions, lifecycle bus) is binary. NOTA at any
@@ -547,7 +547,7 @@ how a component's build switches between production and testing
 modes — by reading a NOTA-shaped build config, not by collecting ad
 hoc Cargo feature flags.
 
-Today's `spirit-next/flake.nix` realises the switch between lean and
+Today's `spirit/flake.nix` realises the switch between lean and
 trace-enabled packages through Cargo features (`--features
 testing-trace` for the `packages.trace*` variants, no features for
 the lean `packages.cli` / `packages.daemon`). That shape is the
@@ -1220,7 +1220,7 @@ primary; compact numeric encodings and wider extended headers are
 downstream representations of that typed identity.
 
 The shape that landed (`schema-rust-next` commit `fa3f615` +
-`spirit-next` commit `2179f49`): the emitter projects, from each
+`spirit` commit `2179f49`): the emitter projects, from each
 plane root enum's variants, a `<Plane>ObjectName` enum plus a
 wrapping `TraceInterfaceObject` enum. The same emission produces
 the `TraceActorObject` enum from per-plane actor variants. The
@@ -1314,9 +1314,9 @@ origin-route threading through the full Signal-Nexus-SEMA pipeline
 (Spirit 1336): Nexus is the place the origin route lives long enough
 for partial multi-op replies to associate back.
 
-The canonical worked example today is `spirit-next`: NexusEngine and
+The canonical worked example today is `spirit`: NexusEngine and
 SemaEngine are schema-emitted; SignalEngine implementation lives in
-the runtime substrate. Per `spirit-next/ARCHITECTURE.md` §"Runtime
+the runtime substrate. Per `spirit/ARCHITECTURE.md` §"Runtime
 triad" the full pipeline shape and per-engine borrow rules are
 documented in code-adjacent prose. The pattern's broader workspace
 adoption is part of the porting waves named in the designer-operator

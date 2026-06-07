@@ -498,18 +498,19 @@ proof guard. **Round-trip in test ≠ artifact discipline.**
 form." A proof guard in `build.rs` that calls
 `to_nota → from_nota → to_rkyv → from_rkyv → emit` is a
 **guard against private coupling** between lowerer and
-emitter; it is NOT the same as a durable `.asschema` file
-being the emitter's first-class input.
+emitter; it is NOT the same as the durable schema-in-Rust artifact (the
+rkyv-serializable canonical round-trip image) being the emitter's
+first-class input.
 
 The precise verb forms:
 
 - "The type **can** serialize / **round-trips** through
   NOTA + rkyv" — capability claim. True if the codec impls
   exist and a round-trip test passes.
-- "The build **reads** a durable `<artifact>.asschema` file
-  as the emitter input" — artifact claim. True only if the
-  file is checked in OR generated and re-read from disk by
-  a public API, not via a private build-script trick.
+- "The build **reads** the durable schema-in-Rust artifact (the
+  rkyv canonical round-trip image) as the emitter input" —
+  artifact claim. True only if the artifact is produced and
+  re-read by a public API, not via a private build-script trick.
 - "Stage X is **done**" — totality claim. Only true when
   both the capability AND the artifact (and the public
   consumer entry points) are in.

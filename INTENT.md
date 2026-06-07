@@ -490,7 +490,7 @@ Three consequences:
 Current implementation status (operator 291 + 292): triad-runtime
 owns reusable trace log/frame/socket/listener mechanics;
 schema-rust-next emits typed trace object names + engine trait
-default hooks + lifecycle hooks; spirit-next supplies the
+default hooks + lifecycle hooks; spirit supplies the
 component-specific adapter (one `TraceEventFrame` impl + one
 `Display for TraceEvent` impl). The open work is generating the
 CLI/client trace adapter so the per-component adapter shrinks to
@@ -694,7 +694,7 @@ at exactly one owner (the SEMA plane of the owning daemon).
 Per intent record 952 (High, 2026-05-27): the naming system between
 schema-emitted code and Rust source **mirrors each other**. *"You
 can use the naming system that way to like a mirror."* The
-colon-path namespace in schema (e.g. `spirit-next:signal:Frame`)
+colon-path namespace in schema (e.g. `spirit:signal:Frame`)
 maps to Rust module-and-type names by direct correspondence
 (`spirit_next::signal::Frame`) — agents can grep across both
 artifacts via the shared identifier, and a path in one form
@@ -731,7 +731,7 @@ objects. The consequence binds every component: same mail
 substrate, same lifecycle hooks, same database-marker
 propagation. Full discipline: §"Signal protocol — universal mail
 mechanism" above; per-repo realisations in `signal-frame`,
-`spirit-next`, `spirit`, `signal-spirit`, `meta-signal-spirit`.
+`spirit`, `signal-spirit`, `meta-signal-spirit`.
 Skill: `skills/component-triad.md` §"Runtime triad" plus
 `skills/push-not-pull.md`.
 
@@ -765,8 +765,8 @@ typed Input to Nexus one-way; Nexus reaches SEMA exclusively
 through the trait surface; SEMA returns to Nexus which decides
 the reply. Full discipline: `skills/component-triad.md` §"Runtime
 triad engine traits — Signal triage / Nexus computation / SEMA
-durable". Worked example today: `spirit-next` at main `d29dc6c`
-(Spirit 1332 landed).
+durable". Worked example: the `spirit` pilot — the schema-derived
+Signal/Nexus/SEMA daemon now at production parity on a branch.
 
 ### Pattern C — Methods on schema-generated data types
 
@@ -817,8 +817,8 @@ Repo-scope detail: `repos/schema/INTENT.md`,
 
 **Anchoring records:** 902, 909, 952.
 
-A schema position named `spirit-next:signal:Frame` maps
-mechanically to the Rust type `spirit_next::signal::Frame`. The
+A schema position named `spirit:signal:Frame` maps
+mechanically to the Rust type `spirit::signal::Frame`. The
 identifier IS the same in both views; only the case-rules and
 separator differ (`:` → `::`; kebab → snake; PascalCase
 unchanged). Agents grep across either surface and reach the

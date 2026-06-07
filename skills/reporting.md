@@ -642,7 +642,7 @@ What this means in practice for a Psyche-variant report:
 - **Cite file paths with line ranges, then include the code block
   itself.** Don't write *"~5 lines of CLI trace wiring per
   component"*; write the actual lines from
-  `spirit-next/src/bin/spirit-next.rs:34-40` shown verbatim.
+  `spirit/src/bin/spirit.rs:34-40` shown verbatim.
 - **Name the objects the code uses.** If the code calls
   `TraceClient::from_environment(...)`, the report shows the
   declaration of `TraceClient<Event>` (or at least the relevant

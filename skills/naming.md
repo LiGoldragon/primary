@@ -465,9 +465,9 @@ examples and the historical context — ractor's behavior-marker
 Per spirit record 952 (High, 2026-05-27): the naming system between
 schema-emitted code and Rust source **mirrors each other**. *"You
 can use the naming system that way to like a mirror."* The
-colon-path namespace in a schema (e.g. `spirit-next:signal:Frame`)
+colon-path namespace in a schema (e.g. `spirit:signal:Frame`)
 maps directly to the Rust module-and-type path
-(`spirit_next::signal::Frame`) — colon-to-double-colon, kebab-case
+(`spirit::signal::Frame`) — colon-to-double-colon, kebab-case
 crate names becoming snake_case module names, PascalCase type names
 unchanged.
 

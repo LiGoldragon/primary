@@ -33,7 +33,7 @@ records, that variant is usually `Records`:
 
 ```sh
 spirit "(Observe (Records ((Any []) None Any Recent SummaryOnly)))"
-spirit "(Observe (Records ((Partial [schema asschema nota structural-macro]) None Any Recent SummaryOnly)))"
+spirit "(Observe (Records ((Partial [schema nota structural-macro]) None Any Recent SummaryOnly)))"
 spirit "(Observe (Records ((Full [schema nota]) None Any Recent SummaryOnly)))"
 spirit "(Observe (RecordIdentifiers ((Exact [abcd]) SummaryOnly)))"
 ```
