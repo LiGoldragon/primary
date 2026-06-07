@@ -3,8 +3,16 @@
 designer, 2026-06-07. Verified read-only classification of all 150 repos under
 `/git/github.com/LiGoldragon` (workflow `wiynk57oi`, 6 readers, each grounded in
 the repo's README / INTENT / Cargo / last-commit against `active-repositories.md`).
-Result: **96 keep, 26 archive candidates, 28 the psyche's call.** Nothing is
-archived — these are candidates pending approval.
+Result: **96 keep, 26 archive candidates, 28 the psyche's call.**
+
+**Status 2026-06-08:** archived on GitHub (reversible via `gh repo unarchive`) —
+the 26 clear candidates (the `spirit-next` entry was only a local symlink, dropped)
+plus `workspace` and `mentci-tools`, for **27 repos archived**. Verified live and
+KEPT: `orchestrator` (Gas City cascade dispatcher, a production flake input),
+`signal-executor` (shared request-execution library four daemons use),
+`mentci-lib` and `mentci-egui` (the real upcoming-GUI repos). Follow-up:
+`CriomOS-emacs` still references `aski-core` and `vscode-aski` (dead aski editor
+inputs) — they still resolve read-only, but are cleanup candidates.
 
 ## Archive candidates (26) — clear
 
