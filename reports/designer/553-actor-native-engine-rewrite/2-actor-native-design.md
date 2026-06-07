@@ -80,14 +80,17 @@ in-handler recursion, **never** `self.ask()` — that deadlocks); `Mutex<Nexus>`
    `SchemaRuntime::with_store` + cap 64 most directly and keeps per-request cursor
    isolation natural. (A fixed pool is the alternative — more resource-stable, less
    faithful to today's model.)
-3. **lojix nix build → Template 3 (`tokio::process`).** `nix`/`ssh` have clean
-   async process APIs; `tokio::process::Command(...).kill_on_drop(true)`, **no**
-   short timeout (a legitimate build runs minutes — timeout absent or set in
-   hours). FLAG: `kill_on_drop` means a cancelled/dropped driver kills an
-   in-progress build — that is the deliberate "cancel the request → cancel the
-   build" semantic; confirm it's wanted (today's `.output()` thread runs to
-   completion regardless of the connection). Also: stream/bound the build log
-   rather than buffering all of it as `.output()` does.
+3. **lojix nix build → Template 3 (`tokio::process`), cancellation per-operation
+   and schema-visible.** `nix`/`ssh` have clean async process APIs; no short
+   timeout (a legitimate build runs minutes). The cancellation policy is NOT a
+   blanket `kill_on_drop` — it is declared per operation in schema: a *speculative*
+   query/build couples to the request (`kill_on_drop(true)`); a *durable deploy*
+   survives client disconnect (a job actor owns the process and persists job state,
+   reporting status later). Tokio child processes outlive a dropped handle by
+   default, so the durable case is the natural one; the speculative case opts into
+   kill-on-drop. Stream/bound the build log rather than buffering it all as
+   `.output()` does. (Q1 below — the durable-deploy default is the psyche's to
+   confirm.)
 4. **Frame transport → `tokio::net::UnixStream` (async codec).** Cleaner than
    wrapping every blocking `read_exact`/`write_all` in `spawn_blocking`, and the
    listener needs async accept anyway. SO_PEERCRED (`ConnectionContext::from_stream`,
@@ -102,6 +105,21 @@ in-handler recursion, **never** `self.ask()` — that deadlocks); `Mutex<Nexus>`
    `spawn_in_thread`.** Forced by a kameo 0.20 hazard (below): the redb-backed
    single-writer is exactly the supervised-state-bearing actor that
    `spawn_in_thread` races on shutdown.
+7. **Meta tier → a generated typed tier, not a raw stream hook.** Today the meta
+   listener calls `ComponentDaemon::handle_meta_stream(engine, stream)` — a raw
+   stream each component reimplements transport for. The emitter instead generates
+   the meta tier with the same decode→handle→encode shape as the working tier:
+   components receive *decoded* meta input and return typed meta output; raw-stream
+   hooks become a rare, explicitly-named escape hatch, not the default.
+8. **Effect taxonomy — three shapes, not one.** Short blocking work (a redb point
+   txn) → `spawn_blocking`; long external commands (nix/cloud API) → a
+   `tokio::process`/async effect actor (`spawn_blocking` started tasks can't be
+   aborted, so they are wrong here); indefinite watchers (repository-ledger's spool
+   loop) → an actor with an async interval/watch source. SEMA reads are sync redb
+   work: a read snapshot is minted from the store actor and served on a blocking
+   boundary (dedicated read actor/pool), with long scans bounded separately from
+   point lookups. The generic subscription actor and the read-snapshot pattern live
+   in `triad-runtime`/`sema-engine`, emitted once — not duplicated per component.
 
 ## Hazards baked into the design (from the grounding's risk lists)
 
@@ -146,13 +164,21 @@ regenerate, and `message`/`spirit`/`cloud`-emitted become actors. Sequence:
    per-request-driver/`SemaActor`/`SubscriptionActor` tree; `lib.rs` keeps the
    engine `_inner` methods sync and emits the actor wrappers. Rewrite the golden
    tests (`tests/daemon_emission.rs`, `runner_generated.rs`) to the actor shape.
-4. **Regenerate** the emitted daemons; convert each component's hand-written
-   `impl ComponentDaemon` to the new lifecycle (`build_runtime` → `on_start`).
+4. **Regenerate pilots in risk order: `message` → `spirit` → `cloud`.** `message`
+   first proves actor transport with the smallest state surface (no store); `spirit`
+   second proves durable SEMA; `cloud` third proves multi-listener + meta. Start a
+   pilot, force the tests green, then move on — NOT all components at once. (lojix
+   first is tempting but mixes runtime migration with nix-effect semantics; defer.)
+   Each pilot converts its hand-written `impl ComponentDaemon` to the new lifecycle
+   (`build_runtime` → `on_start`).
 5. **Hand-migrate holdouts.** lojix (the nix blocking-plane is component-specific;
    it converges onto the emitted listener/SEMA tree but keeps its effect actor),
    cloud, repository-ledger (spool poll → timer-driven `IngestSpool` message,
    ending the spool-vs-request lock contention).
-6. **Ship actor-density tests** (next section).
+6. **Ship actor-density + behavioral tests** (next section). The concrete operator
+   test suite (source-shape assertions, concurrency witnesses, effect/cancellation
+   tests) and the M1-M9 migration invariants are enumerated in the system-operator
+   audit `reports/system-operator/200-…` — adopted in full; not duplicated here.
 7. **Update per-repo `INTENT.md`/`ARCHITECTURE.md` on the same branch** — lojix's
    stale "Each daemon actor is a Kameo actor" becomes true again;
    `schema-rust-next/ARCHITECTURE.md:264-271` and `triad-runtime` docs drop the
