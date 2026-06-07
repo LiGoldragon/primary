@@ -326,7 +326,11 @@ or PR-style review on jj commits). No `skills/auditor.md` and no
   else the prompt asked for derives from intent and is done *after*
   the capture. Reports, code, and chat are all downstream of intent.
   This is the absolute first task of any session-turn that contains
-  psyche input.
+  psyche input. **Phrase rule: when the psyche says "refresh intent",
+  that means query/read recent Spirit records to refresh the agent's
+  own context. It is NOT an instruction to record a new Spirit entry,
+  edit repo `INTENT.md`, or edit `ARCHITECTURE.md` unless the psyche
+  explicitly asks for those file edits.**
 - **EXCEPTION + REFINEMENT — forwarded prompts: don't blindly duplicate;
   do gap-check the originally-addressed agent's capture.** When the
   psyche opens a message with *"here's the prompt I just gave

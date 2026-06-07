@@ -85,6 +85,18 @@ Spirit, record it with an elevated privacy `Magnitude`; otherwise keep
 it as a `Private intent` note in the relevant private report repository
 per `skills/privacy.md`.
 
+## Phrase rule — "refresh intent"
+
+When the psyche says **"refresh intent"**, the instruction is to
+query/read recent Spirit records and refresh the agent's own context.
+It is not an instruction to create a new Spirit record, edit a repo
+`INTENT.md`, or edit an `ARCHITECTURE.md` unless the psyche explicitly
+asks for those file edits.
+
+A refresh pass can surface records that matter to the current task, but
+reading those records is context acquisition. Do not convert the phrase
+itself into a capture/manifestation workflow.
+
 ## When to record
 
 Record every public psyche statement that classifies as intent — the five
