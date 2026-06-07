@@ -953,7 +953,7 @@ set is the workspace-canonical engine mechanism. The Nexus trait surface:
 
 ```rust
 pub trait NexusEngine {
-    fn execute(&mut self, input: NexusWork) -> NexusAction;
+    fn decide(&mut self, input: NexusWork) -> NexusAction;
     // plus the trace and lifecycle hooks above
 }
 
@@ -966,34 +966,29 @@ pub enum NexusAction {
 }
 ```
 
-The runner loop — `triad-runtime`'s `Runner::drive`, reached from the
-schema-emitted `NexusEngine::execute` default method — reads NexusActions
-and dispatches:
+The actor-native Nexus driver reads NexusActions and dispatches:
 
 - `ReplyToSignal` → hand to Signal's reply path → wire egress.
 - `CommandSemaWrite` / `CommandSemaRead` → call SEMA's `apply` / `observe`
   → result becomes the next `NexusWork`.
 - `CommandEffect` → call the component-declared effect handler → result
   becomes the next `NexusWork`.
-- `Continue` → loop back into `Nexus.execute` immediately, in-process, on
-  the same call stack.
+- `Continue` → loop back into Nexus decision immediately inside the current
+  driver, never through a self-`ask`.
 
 Component code reaches a one-line `main` (the emitted
-`Daemon::run_to_exit_code()` entry) because the runner is a shared
-`triad-runtime` library reached from a schema-emitted `execute` default,
-and the daemon skeleton around it is an emitted, source-visible
-`src/schema/daemon.rs` module written by `schema-rust-next`. That module
-carries the uniform daemon skeleton (`DaemonCommand`, the
-decode→execute→encode spine, listener selection, and the streaming
-publish/subscribe wiring emitted from `Schema::streams()`). The component
-hand-writes only a small `impl ComponentDaemon` (chiefly `build_runtime`)
-plus a schema `NexusDaemonShape` declaration. spirit's daemon bin is a true
-one-liner — `fn main() -> ExitCode { SpiritDaemon::run_to_exit_code() }`
-(`spirit/src/bin/spirit-daemon.rs`). Schema source carries the triad engine
-mechanism as the baseline so schema authors get the runner shape, trace
-plumbing, and continuation substrate through generation; per-component
-variation uses explicit escape hatches for real domain differences rather
-than hand-implemented daemon preference.
+`Daemon::run_to_exit_code()` entry) because the runtime root, listener
+actors, request driver, Signal/Nexus/SEMA actor shells, trace plumbing, and
+streaming publish/subscribe wiring are emitted as source-visible
+`src/schema/daemon.rs` and support modules written by `schema-rust-next`.
+The component hand-writes only its data-bearing engine/store/effect nouns and
+their generated trait impls, plus the typed configuration load boundary the
+emitter cannot infer.
+
+The old synchronous substrate — `triad-runtime::Runner::drive` reached from a
+schema-emitted `NexusEngine::execute` default method — is pre-actor legacy. It
+may exist only as migration history while the actor-native emitter lands; it
+is not the target shape and must not be copied into new runtime work.
 
 **Effects are per-component declared in schema.** `Stash` is the first
 universal candidate (slim Nexus output via handle). Each component declares

@@ -62,10 +62,12 @@ correction.
    `observe(&self)` parallel reads); Nexus work runs per-request or pooled (NOT
    funnelled through one mailbox, which would re-serialize what those records made
    concurrent); the listener acceptance is a supervised runtime-root actor.
-3. **Blocking work → blocking-plane actors.** lojix's multi-minute nix build moves
-   to a `spawn_blocking` + `DelegatedReply` blocking-plane actor, permit-bounded —
-   the same `BoundedWorkers` semantics, hosted inside the actor tree. The mailbox
-   never blocks.
+3. **Blocking work → concern-specific effect actors.** lojix's multi-minute nix
+   build moves to a `tokio::process` effect actor with schema-visible
+   cancellation and durability policy. Short sync bridges may use
+   `spawn_blocking`, but long external commands own child-process lifecycle,
+   output streaming, reaping, and cancellation explicitly. The mailbox never
+   blocks.
 
 ## Lane handoff
 
