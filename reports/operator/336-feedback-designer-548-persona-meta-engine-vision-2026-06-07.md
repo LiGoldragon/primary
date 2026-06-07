@@ -30,23 +30,25 @@ The correct phrase is "a component schema set" or "per-plane `.schema` files."
 Spirit may still be a bootstrap exemplar, but the copyable shape is
 plane-schema files, not one lib.schema that contains every plane.
 
-### 2. The daemon argument / NOTA-decoder claim needs a crux resolved
+### 2. The daemon argument / NOTA-decoder claim is now resolved
 
 The report says every binary takes exactly one argument in NOTA/string/file/rkyv
 form, then says the generated daemon path reads only a `SignalFile` rkyv
 configuration and never links the NOTA decoder.
 
-Those are not the same contract. The workspace hard rule currently says every
-binary accepts one argument that may be inline NOTA, a NOTA file, or a signal
-rkyv file. If generated daemons intentionally accept only a rkyv config file,
-that is a design change that needs to be explicit and reflected in the skill.
-If not, `schema-rust-next`'s emitted `DaemonCommand` is short of the
-single-argument rule.
+Those were not the same contract, and the psyche resolved the crux after this
+report was first written. Record `pjvv` states the universal rule:
+daemons cannot understand or decode NOTA text, including startup and
+configuration. The correct rule is "one argument per process," not "every
+process accepts NOTA." CLI/text-client edges accept NOTA. Daemon edges accept
+only a pre-generated signal/rkyv startup message/file and reject inline NOTA or
+`.nota` paths.
 
-My lean: keep the universal "one argument" rule, but make the production daemon
-configuration path prefer binary rkyv for deployment. Do not phrase "never
-links NOTA decoder" as universal unless the psyche explicitly narrows daemon
-startup forms.
+The virgin-daemon refinement also landed in the same direction: do not depend
+on Persona passing an inherited file descriptor for bootstrap. A deploy/helper
+can pre-generate the binary signal/rkyv startup message. If the daemon is
+virgin, it enters an unconfigured state and receives Configure as binary signal.
+On restart, it self-resumes from persisted SEMA state.
 
 ### 3. Harness status is stale after operator commit `1ed51c20`
 
@@ -106,12 +108,7 @@ Nexus visibility so agents do not read "dumb" as permission to hide logic. The
 component is dumb in the sense that it is typed mechanism; its features are
 still declared, inspectable, and owned by the right engine plane.
 
-## One Important Question
+## Resolved Question
 
-Do generated production daemons have to accept all three single-argument forms
-(inline NOTA, NOTA file, signal/rkyv file), or only signal/rkyv config files?
-
-This is the only point where designer 548 appears to conflict with the current
-workspace hard rule. I would not let that ambiguity harden in a meta-engine
-vision document.
-
+Generated production daemons accept only signal/rkyv startup files. Inline
+NOTA and `.nota` paths are CLI/deploy-tool inputs, not daemon inputs.

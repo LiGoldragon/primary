@@ -9,18 +9,19 @@ can index and agents can audit before making conflicting edits.*
 ## What this skill is for
 
 A code comment can be free-form prose, or it can be a typed signal
-record encoded in the only argument language this workspace speaks.
+record encoded in the workspace's typed text language.
 The discipline says: when the comment names *why an edit was made*,
 write it as a positional NOTA record opened with `(Why "…" …)`.
 
 The frame: a signal record can be encoded as bytes (rkyv), as a
 NOTA string, or as text inside a comment. The third form is **the
 same signal**, just sitting where the surrounding context is source
-code rather than a wire frame or a `.nota` file. The CLI / daemon
-contract uses NOTA-on-the-wire because the binary takes exactly one
-NOTA argument (per `skills/component-triad.md` §"The single argument
-rule"). The comment uses NOTA-in-text because the file *is* text;
-NOTA is the encoding that fits.
+code rather than a wire frame or a `.nota` file. CLI and comment
+surfaces use NOTA because they are text edges. Daemon startup,
+configuration, and peer traffic stay binary signal/rkyv (per
+`skills/component-triad.md` §"The one argument rule"). The comment
+uses NOTA-in-text because the file *is* text; NOTA is the encoding
+that fits.
 
 Two payoffs:
 
@@ -274,9 +275,9 @@ highlight; the highlight is the polish.
 - `skills/reporting.md` — reports name the bigger arc; whys name
   the per-edit rationale. Comments and reports complement each
   other; whys do not replace reports.
-- `skills/component-triad.md` §"The single argument rule" — why
-  NOTA is the workspace argument language; the comment form is
-  the same encoding sitting in source text.
+- `skills/component-triad.md` §"The one argument rule" — where NOTA is
+  the workspace text-edge argument language, while daemon startup and
+  peer traffic remain binary.
 - `AGENTS.md` §"Possible additional role — auditor" — the auditor
   reads accumulated whys; one of the integration hooks above.
 </content>

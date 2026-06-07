@@ -601,15 +601,16 @@ surfaces that touch a human or a log:
 | Boundary | Format |
 |---|---|
 | Component ↔ component (Rust ↔ Rust) | contract-crate types via rkyv frames |
-| CLI ↔ daemon | NOTA on argv/stdin (human types it), often through a convenience CLI that constructs the Nexus wrapper; daemon parses to typed contract record |
-| Daemon ↔ harness terminal | Pre-harness component projects typed record to NOTA before write |
+| CLI text edge | NOTA on argv/stdin (human types it), often through a convenience CLI that constructs the Nexus wrapper before encoding the daemon's binary frame |
+| Daemon startup / daemon ↔ daemon | pre-generated signal/rkyv startup messages and contract-crate types via rkyv frames; daemon never parses NOTA text |
+| Harness terminal adapter edge | Adapter projects a typed record to user-facing text before write |
 | Audit logs / debug dumps | NOTA projection of typed records |
 
-The CLI, the router, and the pre-harness component are the parts
-of the system that *render* NOTA text on a surface. They use the
-contract crate's NOTA derives to produce the text; they do not
-re-derive text projection of their own. Everywhere else, components
-hold typed records (in memory) or rkyv archives (on disk and on
+The CLI, the router, and text/terminal adapters are the parts of the
+system that *render* NOTA text on a surface. They use the contract
+crate's NOTA derives to produce the text; they do not re-derive text
+projection of their own. Everywhere else, components hold typed records
+(in memory) or rkyv archives (on disk and on
 the wire).
 
 If a contract repo's architecture says it owns the *human-facing
