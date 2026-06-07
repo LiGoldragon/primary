@@ -15,8 +15,8 @@ decisions go in reports, commits, and documentation — never here.
 
 Documentation records *decisions*; the intent log records *who
 decided*. When `skills/component-triad.md` says "the daemon takes one
-NOTA argument," the reader can't tell whether that came from the
-psyche or from an agent that wrote it down. The asymmetry matters:
+binary startup argument," the reader can't tell whether that came from
+the psyche or from an agent that wrote it down. The asymmetry matters:
 
 - An agent proposing to contradict something needs to know whether
   the prior statement was an author intent (load-bearing) or an

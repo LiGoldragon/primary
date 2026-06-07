@@ -63,7 +63,7 @@ Every stateful capability is a triad of three repositories:
   schema/signal.schema            daemon-local signal runtime (SignalRuntime → emits SignalEngine)
   schema/nexus.schema             nexus runtime (NexusRuntime → emits NexusEngine)
   schema/sema.schema              sema runtime (SemaRuntime → emits SemaEngine)
-  bootstrap-policy.nota           first-start policy declaration
+  bootstrap-policy.nota           authored policy seed; deploy/bootstrap client encodes it
 signal-<component>/               ordinary wire vocabulary (WireContract → zero engines)
   schema/lib.schema               schema-derived ordinary signal
   src/schema/*.rs                 generated signal types
@@ -222,9 +222,9 @@ Use these words consistently:
 - **Policy signal** / **meta-signal contract** —
   `meta-signal-<component>`, the meta policy authority and
   configuration contract. Daemon configuration verbs live here:
-  after first-start bootstrap, runtime configuration changes are
-  meta-signal operations, not CLI flags, ad hoc files, or ordinary
-  signal requests.
+  after first-start configuration, runtime configuration changes are
+  meta-signal operations, not CLI flags, ad hoc files, NOTA parsed by
+  the daemon, or ordinary signal requests.
 - **Signal types** — the schema-generated data types declared in
   either signal contract: operation roots, payload records, replies,
   rejection reasons, filters, mail events, stream tokens, and related
@@ -234,8 +234,8 @@ Use these words consistently:
   replies and events correspond, and whether the names reveal the
   right logic separation.
 - **Policy state** — daemon-owned durable rules/configuration,
-  bootstrapped once from `bootstrap-policy.nota` and then changed
-  only through meta-signal authority.
+  installed by authenticated meta-signal configuration and then
+  changed only through meta-signal authority.
 - **Working state** — daemon-owned durable operational records
   produced by ordinary operation, with meta-signal mutations only
   where owner authority is required.
@@ -272,9 +272,9 @@ CLI fails closed or remains unshipped rather than opening the store.
 ### 2. The daemon's external surface is exclusively `signal-frame` frames
 
 No `serde_json` socket, no NOTA on the wire between components, no
-parallel control protocol. NOTA exists at three named projection edges
-— CLI argv/stdin, daemon ↔ harness terminal, audit/debug dumps —
-never inter-component.
+parallel control protocol. NOTA exists at named text projection edges
+— CLI argv/stdout, authored repo/deploy files consumed by tools,
+audit/debug dumps — never inside the daemon and never inter-component.
 
 A daemon may be a Signal client of any number of peer daemons (this is
 how daemons compose); the "exactly one peer" constraint applies to
@@ -381,17 +381,30 @@ both living in the same `<component>.redb` opened through
 `sema-engine`:
 
 **Policy state** — the rules the daemon enforces.
-- Source of truth: the daemon's sema tables, after bootstrap.
+- Source of truth: the daemon's sema tables, after configuration.
 - How it changes: only meta-signal `Mutate` verbs.
-- First-start population: from `bootstrap-policy.nota` in the
-  component's repo. The daemon reads this file exactly once — on first
-  start, when the policy tables are empty — writes the declared
-  records as if they had been Mutated, then records bootstrap-complete
-  in a one-shot table. Never reads the file again.
-- After first start: changes to `bootstrap-policy.nota` are ignored.
-  Policy changes only via owner `Mutate`. Factory reset is deliberate
-  — blow away the redb (the daemon re-bootstraps), or issue an explicit
-  reset verb.
+- First-start population: by authenticated binary meta-signal
+  configuration. The portable bootstrap mechanism is a pre-generated
+  signal/rkyv startup message/file, not a Persona-only inherited file
+  descriptor and not NOTA. It supplies the minimal launch facts needed
+  to find/bind startup surfaces and can carry the initial Configure
+  meta-signal. If the daemon opens its sema store and finds no policy
+  state / configured marker, it enters an `Unconfigured` semi-started
+  state: bind only the configured startup/meta surfaces, report
+  not-ready through supervision, reject ordinary work, and wait for a
+  binary meta-signal configuration/mutation message from the owner or
+  deploy tool.
+- Restart: when the configured marker and policy state already exist,
+  the daemon self-resumes from persisted SEMA state instead of waiting
+  for Configure again. This survives a manager outage and keeps the
+  durable store as the daemon's own source of truth.
+- Authored `bootstrap-policy.nota` may exist in the component repo as
+  human-reviewable source, but a deploy/bootstrap client reads that
+  text and sends the typed binary meta-signal messages. The daemon
+  never opens or parses the NOTA file.
+- After first configuration: policy changes only via owner `Mutate`.
+  Factory reset is deliberate — blow away the sema database or issue
+  an explicit reset verb, then configure again through meta-signal.
 - Examples (orchestrate): `lane_registry`, `scheduling_policy`,
   `supervision_policies`.
 
@@ -411,10 +424,13 @@ table-set declaration — not by storage backend. One sema-engine DB
 per component; two categories of table within.
 
 This invariant settles a recurring design question: *"how does the
-daemon get its config on first start?"* The answer is bootstrap-once
-from a declared NOTA file in the repo; thereafter, meta-signal Mutate is
-the only path. The bootstrap file is a one-shot seed, not source-of-
-truth.
+daemon get its config on first start?"* The answer is not daemon-side
+NOTA parsing. The daemon gets enough binary launch data — normally a
+pre-generated signal/rkyv startup message — to know its socket/store
+paths; if durable policy is absent, it waits in an unconfigured state
+for authenticated binary meta-signal configuration.
+The authored NOTA file is source for a bootstrap client, not daemon
+input and not source-of-truth.
 
 ### Witness tests
 
@@ -428,29 +444,31 @@ truth.
 | `<component>-meta-socket-rejects-ordinary-frame` | 4 |
 | `<component>-ordinary-socket-rejects-meta-frame` | 4 |
 | `<component>-meta-socket-mode-matches-spawn-envelope` | 4 |
-| `<component>-policy-tables-empty-on-first-start-trigger-bootstrap` | 5 |
-| `<component>-bootstrap-runs-exactly-once` | 5 |
-| `<component>-policy-changes-after-bootstrap-only-via-meta-signal` | 5 |
-| `<component>-working-tables-never-read-bootstrap-file` | 5 |
+| `<component>-virgin-daemon-reports-unconfigured-until-meta-configured` | 5 |
+| `<component>-bootstrap-nota-is-encoded-by-bootstrap-client-not-read-by-daemon` | 5 |
+| `<component>-policy-changes-after-configuration-only-via-meta-signal` | 5 |
+| `<component>-daemon-never-reads-bootstrap-nota-file` | 5 |
 | `<component>-binary-rejects-flag-style-arguments` | argument rule below |
+| `<component>-daemon-rejects-inline-nota-startup` | argument rule below |
+| `<component>-daemon-rejects-nota-file-startup` | argument rule below |
 
-## The single argument rule
+## The one argument rule
 
-Every component binary — CLI and daemon both — takes exactly one
-argument on argv, and never a flag. The accepted FORM differs by
-binary, because **a daemon cannot understand NOTA** — a universal
-high-certainty constraint (psyche 2026-06-07, Spirit `e6ri`): the
-long-lived daemon process never links the NOTA text decoder.
+Every component process takes exactly one argument on argv, and never a
+flag. The accepted encoding differs by edge.
 
 - **CLI / human-agent edge** — one of: an **inline NOTA argument**
   (`persona-orchestrate "(RoleClaim ...)"`), a path to a **NOTA file**
   (`persona-orchestrate ./request.nota`), or a path to a
-  signal-encoded file.
-- **Daemon** — a path to a **signal-encoded (rkyv) file** ONLY
-  (`persona-orchestrate-daemon ./config.signal`). The daemon decodes
-  binary, never NOTA. A deploy helper or the CLI may author the config
-  in NOTA and encode it to rkyv, but the daemon receives only the
-  binary `Configuration`.
+  signal-encoded file when the contract allows binary batch input.
+- **Daemon edge** — a path to a **pre-generated signal-encoded/rkyv
+  startup message/file** only (`persona-orchestrate-daemon
+  ./startup.rkyv`). The daemon rejects inline NOTA and `.nota` file
+  paths before component-specific decode. Daemons do not parse NOTA,
+  including startup/configuration and peer traffic (psyche 2026-06-07,
+  record `pjvv`). Authored NOTA source files belong to CLIs, deploy
+  helpers, bootstrap clients, build tools, and tests that encode typed
+  values into binary signal/rkyv data before a daemon receives them.
 
 Inline NOTA in a shell is wrapped in double quotes around the whole
 NOTA object. NOTA strings use `[text]` or `[|text|]`, not `"` string
@@ -460,26 +478,25 @@ single quotes as the normal form.
 
 **No flags.** No `--verbose`, no `--format=json`, no `--config=path`,
 no positional second arguments. If the binary needs additional
-configuration, that configuration is a field of the NOTA payload —
-the contract's NOTA schema is the only source of truth for what
-arguments mean.
+configuration, that configuration is a typed field in the relevant
+contract/configuration schema. For CLI/text-client surfaces the value may
+be authored as NOTA. For daemon startup, the value is already binary when
+the process sees it.
 
 For the CLI: the argument is a NOTA request record matching one of
 the request variants in the component's ordinary or meta-signal contract.
 
-For the daemon: the argument is a **signal-encoded (rkyv)
-`Configuration`** — NOT NOTA (per the daemon-cannot-understand-NOTA
-constraint above) — naming the daemon's identity, socket paths, redb
-path, and bootstrap policy. The `Configuration`'s schema lives in
-`signal-<component>` (or a small `<component>-config` crate shared
-between daemon and a deploy helper); the deploy helper authors it as
-NOTA and encodes it to rkyv for the daemon to decode.
+For the daemon: the argument is a binary startup signal/envelope naming
+the daemon's identity, socket paths, sema database path, and other
+launch-time facts needed before it can listen for meta-signal configuration.
+When the daemon is virgin, the same startup signal can carry the initial
+Configure meta-signal. The schema lives in the component's daemon-local
+schema set or in a small shared configuration contract when deploy tooling
+must author the same record.
 
-If a new argument shape is needed, the contract's NOTA schema gets a
-new field or variant — not a new CLI flag. This is the rule that
-keeps NOTA the single language for invoking the workspace: the
-moment one binary starts accepting flags, the workspace fragments
-into ad-hoc CLIs.
+If a new argument shape is needed, the schema gets a new field or variant
+— not a new CLI flag. This keeps one typed invocation shape per edge: NOTA
+at human/tool text edges, binary signal/rkyv at daemon edges.
 
 ## No NOTA between components — binary protocol is the wire
 
@@ -488,12 +505,12 @@ between live components.** Daemons and components exchange binary
 protocol data on the wire; NOTA is the boundary form, not the
 inter-component form.
 
-The single-argument rule above (§"The single argument rule") governs
-the **process boundary** — what a binary accepts on argv and prints
-on stdout. NOTA is the human-facing surface there because humans and
-agents type NOTA. Between two running daemons, neither end is human:
-both sides decode binary frames directly, and NOTA never enters the
-wire path.
+The one argument rule above (§"The one argument rule") governs the
+**process boundary** — what a binary accepts on argv and prints on
+stdout. NOTA is the human-facing process surface for CLI/text clients
+because humans and agents type NOTA. Daemon process startup is binary,
+and between two running daemons neither end is human: both sides decode
+binary frames directly, and NOTA never enters the wire path.
 
 The CLI is the translation/debugging surface between the two regimes:
 
@@ -551,11 +568,11 @@ component-local client glue that should be a shared runtime helper.
 ## Build configuration is itself a NOTA struct
 
 Per Spirit 1348 (Decision Maximum, 2026-06-01): **build configuration
-is itself a NOTA struct with fields.** The single-NOTA-argument rule
-above governs runtime daemon and CLI argv; the SAME shape governs
-how a component's build switches between production and testing
-modes — by reading a NOTA-shaped build config, not by collecting ad
-hoc Cargo feature flags.
+is itself a NOTA struct with fields.** The one-argument/no-flag
+discipline governs runtime invocation; the same typed-shape discipline
+governs how a component's build switches between production and testing
+modes — by reading a NOTA-shaped build config, not by collecting ad hoc
+Cargo feature flags.
 
 Today's `spirit/flake.nix` realises the switch between lean and
 trace-enabled packages through Cargo features (`--features
@@ -574,15 +591,15 @@ argument-shape discipline applies. Adding a build option means
 adding a field to the build-config record, not appending another
 Cargo `--features` flag.
 
-The discipline matches the runtime shape: one NOTA-shaped surface
-governs invocation; one NOTA-shaped surface governs build. The
-single argument rule generalises across every shape boundary the
-component crosses.
+The discipline matches the runtime shape: one typed surface governs each
+invocation edge, and one NOTA-shaped surface governs build authoring. The
+one argument rule generalises across every shape boundary the component
+crosses without making daemons parse NOTA.
 
 ## Help operations — discovery through NOTA, not through flags
 
-Because the single-argument rule forbids `--help`, every component
-carries discovery through the NOTA channel like any other operation.
+Because the one argument rule forbids `--help`, every component carries
+CLI discovery through the NOTA channel like any other operation.
 Per Spirit record 263, **every component supports the two Help
 operations** in its ordinary contract:
 
@@ -594,7 +611,7 @@ operations** in its ordinary contract:
   their types, a worked example invocation, and the reply shape.
 
 Help operations follow the same discipline as every other
-operation: positional NOTA records, single-argument, daemon-side
+operation: positional NOTA records at the CLI edge, one argument, daemon-side
 implementation, typed reply. No flags, no special parsing.
 
 The cleanest implementation direction is **auto-injection** via
@@ -761,7 +778,7 @@ protocol.
   the shape doesn't fit, name which carve-out justifies the
   divergence — or escalate to the user before deviating.
 - **Auditing an existing component.** Check it against the five
-  invariants and the single-argument rule. Surface deviations in a
+  invariants and the one argument rule. Surface deviations in a
   report.
 - **Reading a component's `ARCHITECTURE.md`.** The ARCH cites this
   skill and only states component-specific carve-outs — never restates

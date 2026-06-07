@@ -178,7 +178,7 @@ Data is typed end-to-end. Strings exist only at user-facing edges — the user-a
 
 The two edges concretely:
 
-- **The daemon edge.** Daemons receive binary signal-frame frames; they do not decode NOTA text. The client (CLI, tool, library consumer) parses NOTA into binary and renders typed replies back to text only at the display surface. The daemon itself never sees a string except a user-authored payload field.
+- **The daemon edge.** Daemons receive binary signal-frame frames; they do not decode NOTA text. Daemon startup and configuration follow the same boundary: deploy/bootstrap tools encode typed data into pre-generated binary signal/rkyv startup messages before the daemon receives it. The client (CLI, tool, library consumer) parses NOTA into binary and renders typed replies back to text only at the display surface. The daemon itself never sees a string except a user-authored payload field.
 - **The trace edge.** Trace data is its own schema-defined interface with closed generated enum vocabularies — typed objects and typed events. The daemon emits binary trace frames; the client renders strings only when printing to a user-facing surface. Tracing is not an ad hoc string log; it is its own typed interface, and tracing of the tracing interface itself is not enabled.
 
 The discipline cascades: when help/documentation are needed, they too are schema data — a mirror description namespace over the global symbol namespace, with strings rendered only at the user-facing edge. When authored workspace data files are written, they prefer typed NOTA whose root type is fixed by file-path convention.

@@ -87,8 +87,8 @@ spirit)` resolves the chain.
 ## How to invoke
 
 The spirit binary takes **exactly one argument** per the
-single-argument rule (`skills/component-triad.md` §"The single
-argument rule"). Two accepted shapes:
+one argument rule (`skills/component-triad.md` §"The one argument
+rule"). Two accepted shapes:
 
 - **Inline NOTA argument** — the argument is a NOTA expression starting
   with `(`. This is the default. **Wrap the whole NOTA expression in
@@ -104,9 +104,8 @@ argument rule"). Two accepted shapes:
 - **Path to a NOTA file** — the argument does not start with `(`; the
   CLI reads the file's contents as the NOTA argument. Reserved for
   cases inline genuinely cannot handle: NOTA with embedded shell
-  metacharacters too painful to escape, signal-encoded (rkyv) binary
-  files, or a record large enough that the bash line becomes
-  unreadable.
+  metacharacters too painful to escape, or a record large enough that
+  the bash line becomes unreadable.
   ```sh
   spirit ./record.nota
   ```
@@ -333,37 +332,30 @@ to long subscriptions; for agent code prefer the typed client
 library inside `persona_spirit::ordinary::SignalClient`. Tap/Untap
 fanout is currently a no-op placeholder pending persona-introspect.
 
-## The daemon's single-argument configuration
+## The daemon's binary startup configuration
 
-The daemon binary `persona-spirit-daemon` honors the same
-single-NOTA-argument rule. Its argument is a positional 9-field
-record:
+The CLI accepts NOTA because it is the human/agent text edge. The
+daemon does not. Target/new Spirit daemon startup is exactly one
+pre-generated signal-encoded/rkyv startup message/file; inline NOTA and
+`.nota` paths are rejected before daemon-specific decoding.
+CriomOS-home or another deploy helper may author configuration from
+typed NOTA source, but it encodes the binary startup signal before
+launching the daemon. A virgin daemon can receive initial Configure as
+binary signal; after configuration, restarts self-resume from persisted
+SEMA state.
 
-```
-("/path/to/spirit.sock"
- "/path/to/owner.sock"
- "/path/to/upgrade.sock"
- "/path/to/persona-spirit.redb"
- <magnitude-limit:int>
- None None None None)
-```
-
-Three Unix sockets (ordinary, owner, upgrade), one redb database
-path, one magnitude limit, four `None`-slot extension points
-reserved for future configuration fields. No flags. The CriomOS-home
-module is what authors this tuple per release; the daemon's
-`ExecStart` line is the canonical witness:
+Older deployed `persona-spirit-daemon` service definitions may still
+show a positional NOTA tuple. Treat that as legacy production drift to
+migrate, not the rule to copy. If auditing the old production service,
+the `ExecStart` line is the witness:
 
 ```sh
 systemctl --user cat persona-spirit-daemon-vX.Y.Z.service
 ```
 
-Future configuration fields land by filling one of the `None` slots
-in the contract crate, not by adding a flag. When the schema-driven
-substrate matures, a `spirit-daemon-config.schema` will emit this
-configuration record from a schema declaration rather than
-hand-authored positional parsing — but the contract shape (one
-positional record argument) is stable.
+Future configuration fields land as typed fields in the daemon startup
+schema or as authenticated meta-signal configuration messages, not by
+adding flags and not by making the daemon parse NOTA text.
 
 ## On the substrate replacement
 
@@ -435,8 +427,9 @@ sema-upgrade migration module (one per component-version step):
   the gold-mining discipline. Substrate-agnostic.
 - `skills/intent-maintenance.md` — sweep / supersession discipline.
 - `skills/intent-clarification.md` — when to ask the psyche.
-- `skills/component-triad.md` §"The single argument rule" — why the
-  spirit binary takes exactly one NOTA argument.
+- `skills/component-triad.md` §"The one argument rule" — why the
+  spirit CLI takes exactly one NOTA argument while daemon startup is
+  binary-only.
 - `skills/nota-design.md` — positional-record encoding rules
   (untagged NotaRecord, `Some`-wrapping `Option`, PascalCase rules).
 - `intent/spirit.nota` — psyche intent on the deployed spirit work

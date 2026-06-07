@@ -314,19 +314,23 @@ usually a struct (single-record file) or a vector of records
 the file picks one alternative from a closed choice.
 
 The convention turns each authored file into a typed object: the
-schema registry knows that `<repo>/spirit-daemon-config.nota` is a
-`SpiritDaemonConfiguration` struct, that `skills/skills.nota` is a
+schema registry knows that `<repo>/bootstrap-policy.nota` is that
+component's policy seed type, that `skills/skills.nota` is a
 `Vec<SkillEntry>`, that `intent/<topic>.nota` is a
 `Vec<IntentRecord>` (legacy). A typed loader reads the path,
 resolves the convention, decodes the file as the expected type,
 and fails loudly when the file doesn't match. No ad hoc parsing
 per file; no untyped scratch data accumulating.
 
-Daemons still receive binary on the wire (per §"NOTA is the
-universal embedding-safe payload" + the single-argument rule +
-intent record 1495). The convention applies to authored text files
-that tools, CLIs, and codegen inputs load — not to inter-component
-traffic.
+Daemons receive binary signal/rkyv at their process and socket edges
+(per §"NOTA is the universal embedding-safe payload", the one
+argument rule, and intent records 1495 + pjvv). A daemon's startup
+argument is a pre-generated signal/rkyv startup message/file; a virgin
+daemon can receive initial Configure as binary signal, and a restarted
+daemon self-resumes from persisted SEMA state. The convention applies
+to authored text files that tools, CLIs, deploy/bootstrap clients, and
+codegen inputs load. Those tools encode typed values before they reach
+a daemon; daemons do not parse NOTA configuration text.
 
 Sub-design: `reports/designer/487-Design-trace-help-config-context-meta-2026-06-03/3-nota-config-convention-design.md`.
 

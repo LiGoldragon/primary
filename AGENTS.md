@@ -217,22 +217,20 @@ or PR-style review on jj commits). No `skills/auditor.md` and no
   **Signal tree** means the whole schema shape: operation roots,
   payloads, replies, filters, events, nesting, and logic separation.
   Full rule: `skills/component-triad.md`.
-- **NOTA is the only argument language; daemons receive it only as
-  binary.** Every component binary takes exactly one argument — no
-  flags (`--verbose`, `--format`, `--config=path`), ever. At the CLI
-  / human-agent edge the argument is a NOTA string, a path to a NOTA
-  file, or a path to a signal-encoded (rkyv) file. **A daemon CANNOT
-  understand NOTA** — a universal high-certainty constraint (psyche
-  2026-06-07, Spirit `e6ri`): the long-lived daemon never links or
-  parses the NOTA text decoder, so its one argument is a
-  signal-encoded (rkyv) `Configuration` only; a deploy helper or the
-  CLI authors config as NOTA and encodes it to rkyv for the daemon.
-  If a binary needs new configuration, the contract's NOTA schema
-  gets a new field. (A virgin-daemon model — boot semi-started and
-  receive a `Configure` meta-signal instead of a config argument — is
-  under evaluation, Spirit `0yk3` / designer report 550, not yet
-  ratified.) Full rule: `skills/component-triad.md` §"The single
-  argument rule".
+- **Component processes take exactly one argument; daemons accept
+  only binary startup.** No flags (`--verbose`, `--format`,
+  `--config=path`) — ever. CLI/text-client binaries accept one NOTA
+  string, one NOTA file, or one signal-encoded (rkyv) file where the
+  contract allows it. Daemon binaries accept exactly one pre-generated
+  signal-encoded/rkyv startup message/file and reject inline NOTA and
+  `.nota` paths. Daemons do not parse NOTA, including
+  startup/configuration; deploy/bootstrap tools encode typed NOTA
+  source into binary signal data before it reaches the daemon. A
+  virgin daemon may start unconfigured and wait for an authenticated
+  binary meta-signal configuration message, but that does not reopen
+  NOTA parsing inside the daemon. On restart, a daemon self-resumes
+  from persisted SEMA state. Full rule: `skills/component-triad.md`
+  §"The one argument rule".
 - **NOTA strings come EXCLUSIVELY from bracket forms; never emit
   quotation marks.** Brackets ARE the string form — `[text]` for
   inline, `[|text|]` for bracket-safe / multi-line, bare camelCase
