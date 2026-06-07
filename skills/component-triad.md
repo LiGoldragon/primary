@@ -437,12 +437,20 @@ truth.
 ## The single argument rule
 
 Every component binary — CLI and daemon both — takes exactly one
-argument on argv. That argument is one of:
+argument on argv, and never a flag. The accepted FORM differs by
+binary, because **a daemon cannot understand NOTA** — a universal
+high-certainty constraint (psyche 2026-06-07, Spirit `e6ri`): the
+long-lived daemon process never links the NOTA text decoder.
 
-- An **inline NOTA argument**: `persona-orchestrate "(RoleClaim ...)"`
-- A path to a **NOTA file**: `persona-orchestrate ./request.nota`
-- A path to a **signal-encoded file** (rkyv binary):
-  `persona-orchestrate-daemon ./config.signal`
+- **CLI / human-agent edge** — one of: an **inline NOTA argument**
+  (`persona-orchestrate "(RoleClaim ...)"`), a path to a **NOTA file**
+  (`persona-orchestrate ./request.nota`), or a path to a
+  signal-encoded file.
+- **Daemon** — a path to a **signal-encoded (rkyv) file** ONLY
+  (`persona-orchestrate-daemon ./config.signal`). The daemon decodes
+  binary, never NOTA. A deploy helper or the CLI may author the config
+  in NOTA and encode it to rkyv, but the daemon receives only the
+  binary `Configuration`.
 
 Inline NOTA in a shell is wrapped in double quotes around the whole
 NOTA object. NOTA strings use `[text]` or `[|text|]`, not `"` string
@@ -459,11 +467,13 @@ arguments mean.
 For the CLI: the argument is a NOTA request record matching one of
 the request variants in the component's ordinary or meta-signal contract.
 
-For the daemon: the argument is a NOTA config record naming the
-daemon's identity, socket paths, redb path, and the path to its
-`bootstrap-policy.nota`. The config record's schema lives in
-`signal-<component>` (or a small `<component>-config` crate if it
-needs to be shared between daemon and a deploy helper).
+For the daemon: the argument is a **signal-encoded (rkyv)
+`Configuration`** — NOT NOTA (per the daemon-cannot-understand-NOTA
+constraint above) — naming the daemon's identity, socket paths, redb
+path, and bootstrap policy. The `Configuration`'s schema lives in
+`signal-<component>` (or a small `<component>-config` crate shared
+between daemon and a deploy helper); the deploy helper authors it as
+NOTA and encodes it to rkyv for the daemon to decode.
 
 If a new argument shape is needed, the contract's NOTA schema gets a
 new field or variant — not a new CLI flag. This is the rule that

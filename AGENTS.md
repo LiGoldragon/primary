@@ -181,6 +181,21 @@ or PR-style review on jj commits). No `skills/auditor.md` and no
 
 ## Hard overrides
 
+- **No backward compatibility pre-production; never surface it as a
+  design virtue.** The new/restructuring stack has no production to
+  protect, so design BOTTOM-UP for the single best shape and expect
+  every existing component to change — breaking all consumers at once
+  is normal here. Do NOT constrain a design to be opt-in,
+  byte-stable-on-regeneration, or "non-disturbing" to other
+  components, and do NOT present non-disruption as a selling point;
+  it is not a tradeoff to weigh or mention. Compatibility is a real
+  constraint ONLY at explicitly-declared boundaries (the production
+  Stack A, externally-consumed pinned wire contracts). Upstream rule:
+  `ESSENCE.md` §"Backward compatibility is not a constraint" + §"What
+  I am not optimising for". Per psyche 2026-06-07 (Spirit `ax2k`,
+  Maximum; reinforcing `9g07`/`cam8`/`lkp7`/`fc7l`). Agents keep
+  reflexively re-introducing compatibility — this fence exists because
+  the essence rule alone was being skimmed past.
 - **`repos/` and `private-repos/` must remain untracked.**
   `repos/` is a local symlink index into `/git/...`, and
   `private-repos/` is a local/private surface. Their entries churn by
@@ -202,12 +217,21 @@ or PR-style review on jj commits). No `skills/auditor.md` and no
   **Signal tree** means the whole schema shape: operation roots,
   payloads, replies, filters, events, nesting, and logic separation.
   Full rule: `skills/component-triad.md`.
-- **NOTA is the only argument language.** Every component binary
-  (CLI and daemon) takes exactly one argument: a NOTA string, a path
-  to a NOTA file, or a path to a signal-encoded (rkyv) file. No flags
-  (`--verbose`, `--format`, `--config=path`) — ever. If a binary
-  needs new configuration, the contract's NOTA schema gets a new
-  field. Full rule: `skills/component-triad.md` §"The single
+- **NOTA is the only argument language; daemons receive it only as
+  binary.** Every component binary takes exactly one argument — no
+  flags (`--verbose`, `--format`, `--config=path`), ever. At the CLI
+  / human-agent edge the argument is a NOTA string, a path to a NOTA
+  file, or a path to a signal-encoded (rkyv) file. **A daemon CANNOT
+  understand NOTA** — a universal high-certainty constraint (psyche
+  2026-06-07, Spirit `e6ri`): the long-lived daemon never links or
+  parses the NOTA text decoder, so its one argument is a
+  signal-encoded (rkyv) `Configuration` only; a deploy helper or the
+  CLI authors config as NOTA and encodes it to rkyv for the daemon.
+  If a binary needs new configuration, the contract's NOTA schema
+  gets a new field. (A virgin-daemon model — boot semi-started and
+  receive a `Configure` meta-signal instead of a config argument — is
+  under evaluation, Spirit `0yk3` / designer report 550, not yet
+  ratified.) Full rule: `skills/component-triad.md` §"The single
   argument rule".
 - **NOTA strings come EXCLUSIVELY from bracket forms; never emit
   quotation marks.** Brackets ARE the string form — `[text]` for
