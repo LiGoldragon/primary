@@ -108,8 +108,8 @@ multi-lane / impersonal commit is accepted. Full flow: `skills/jj.md`
 
 Intent capture is no longer a file append surface. Recording psyche
 intent goes through the deployed `spirit` CLI per `skills/intent-log.md`
-and `skills/spirit-cli.md`. Do not append to `intent/*.nota` during
-normal work; those files are legacy history.
+and `skills/spirit-cli.md`. There is no legacy-file fallback; the
+`intent/*.nota` substrate is retired (its history lives in git).
 
 ### Daemon-backed helper
 
@@ -319,7 +319,7 @@ bd close <id> --reason "<what changed>"
 
 ## Beads are not role-labeled
 
-As of 2026-05-19 (psyche-stated in `intent/workspace.nota`), beads do
+As of 2026-05-19 (per psyche 2026-05-19), beads do
 not carry `role:*` labels. Any agent can pick up any bead based on
 topic affinity rather than a prescribed lane. The earlier
 discipline-pool-via-role-label rule is retired.

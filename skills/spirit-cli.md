@@ -20,11 +20,10 @@ user's nix profile as `~/.nix-profile/bin/spirit`. The daemon is
 `persona-spirit-daemon`, run as a user service; it listens on a
 unix-socket pair under `~/.local/state/persona-spirit/<version>/`.
 
-The Spirit CLI is the normal substrate for intent capture
-(`skills/intent-log.md`). Do not append new psyche intent to
-`intent/*.nota` during normal work. If the daemon is unavailable,
-surface that as a blocker; do not silently revive the legacy file
-substrate.
+The Spirit CLI is the sole substrate for intent capture
+(`skills/intent-log.md`). If the daemon is unavailable,
+surface that as a blocker — there is no legacy-file fallback; the
+`intent/*.nota` substrate is retired.
 
 ## Copy these query forms first
 
@@ -151,8 +150,8 @@ git show <signal-persona-spirit-rev>:src/lib.rs
 
 The operator is actively reshaping the persona-spirit triad; main
 will drift from production until the next CriomOS rebuild. *"we're
-going to have to keep track of the interface"* —
-`intent/spirit.nota` 2026-05-21.
+going to have to keep track of the interface"* — per psyche
+2026-05-21.
 
 ## Operations on the ordinary channel (worked examples)
 
@@ -359,20 +358,20 @@ adding flags and not by making the daemon parse NOTA text.
 
 ## On the substrate replacement
 
-The legacy `intent/*.nota` files still exist as historical input
-for agents that have not yet absorbed Spirit, but they are not the
-normal write substrate.
+The legacy `intent/*.nota` file substrate is retired; its history
+lives in git and its durable content is preserved in the deployed
+Spirit store and the guidance layer. Spirit is the sole write
+substrate.
 
-- **Capture goes through `spirit`** — the only normal path for new
+- **Capture goes through `spirit`** — the only path for new
   psyche intent.
-- **Topic vocabulary is shared** — pass the same topic strings
+- **Topic vocabulary is shared** — pass the same broad topic strings
   (`workspace`, `spirit`, `signal`, `component-shape`,
-  `persona`, …) the legacy `intent/` files use. The redb db carries
-  the canonical record set; the `.nota` files are the prior
-  snapshot.
+  `persona`, …) the deployed store already uses. The redb db carries
+  the canonical record set.
 - **No manual dual-writing** — do not log the same intent by hand to
-  multiple Spirit databases or to legacy files. Version cutover and
-  dual-write behavior must be implemented in code.
+  multiple Spirit databases. Version cutover and dual-write behavior
+  must be implemented in code.
 - **No migration logic inside spirit** — *"importing existing nota
   files STAYS THE FUCK OUT OF SPIRIT"*. A separate migration or
   upgrade tool may translate legacy records; Spirit itself remains
@@ -432,8 +431,6 @@ sema-upgrade migration module (one per component-version step):
   binary-only.
 - `skills/nota-design.md` — positional-record encoding rules
   (untagged NotaRecord, `Some`-wrapping `Option`, PascalCase rules).
-- `intent/spirit.nota` — psyche intent on the deployed spirit work
-  and substrate goal.
 - `/git/github.com/LiGoldragon/persona-spirit` — the component
   source. `tests/daemon.rs` is the best worked example for the wire
   shape.

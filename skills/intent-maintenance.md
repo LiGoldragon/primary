@@ -32,16 +32,16 @@ prior recorded entry:
 3. **On confirmed override:** use Spirit maintenance tooling when
    it exists; until then, add the new Spirit entry and mark the
    prior entry as superseded in the current maintenance report or
-   bead. Do not edit legacy `intent/*.nota` files to fake current
-   Spirit truth. Name the supersession in the commit or report
+   bead. Spirit is the sole substrate; the `intent/*.nota` substrate
+   is retired. Name the supersession in the commit or report
    message (`intent: <topic> — psyche overrides prior <summary
    slug>; new <new summary slug>`).
 
-**History holds the lineage.** Spirit is the current truth. Legacy
-files are history. Once Spirit supersession tooling exists, it owns
-the active/superseded distinction; until then, supersession is
-explicitly documented and never silently rewritten into legacy
-files.
+**History holds the lineage.** Spirit is the current truth; the
+retired `intent/*.nota` substrate's history lives in git. Once Spirit
+supersession tooling exists, it owns the active/superseded
+distinction; until then, supersession is explicitly documented in the
+maintenance report or bead and never silently rewritten.
 
 Supersession is **always explicit, and only the psyche can
 supersede psyche intent.** A new psyche statement is the only
@@ -216,8 +216,8 @@ operative discipline.
 When persona-mind's typed memory variants land, supersession
 becomes a typed relation (`Supersedes` linking two
 `Authorial<Kind>` memories); Spirit records retire in favor of
-memory-graph queries. Until then, Spirit is the carrier, with
-legacy files only as historical material.
+memory-graph queries. Until then, Spirit is the sole carrier; the
+`intent/*.nota` substrate is retired and its history lives in git.
 
 ## See also
 
@@ -227,4 +227,3 @@ legacy files only as historical material.
   intent log is one of the things context-maintenance may sweep.
 - `skills/nota-design.md` — positional-NOTA discipline these
   records follow.
-- `intent/` — legacy history only.

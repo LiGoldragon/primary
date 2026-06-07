@@ -44,7 +44,7 @@ of the workspace's intent.
 
 ### Beads are not role-labeled
 
-As of 2026-05-19 (per `intent/workspace.nota`), **beads do not carry
+As of 2026-05-19 (per psyche 2026-05-19), **beads do not carry
 role:* labels.** The psyche has loosened role boundaries so that any
 agent can pick up any bead based on topic affinity rather than a
 prescribed lane. When filing a bead, don't add a `role:*` label;

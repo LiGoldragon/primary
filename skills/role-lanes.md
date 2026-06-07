@@ -6,8 +6,7 @@ plus its main role's skill, and nothing else lane-specific.*
 
 ## The mirror model — lanes are windows, not agents
 
-(Per `intent/persona.nota` 2026-05-22, intent ID 147 in
-spirit-v0.1.1.) A **role** (designer, operator, system-operator,
+(Per psyche 2026-05-22.) A **role** (designer, operator, system-operator,
 poet, assistant, counselor) names a discipline. Each role has **one agent**: one
 persistent cryptographic identity, one shared persona-mind state,
 one ongoing body of signed work. **Lanes are windows into that
@@ -140,11 +139,11 @@ Shared across all lanes of the same role (the agent's surface):
   (record 920); all lanes carry structural authority for their
   role.
 - **Cryptographic identity** — one keypair per role; all windows
-  sign as the role's agent (per `intent/persona.nota` ID 148).
+  sign as the role's agent (per psyche intent).
 - **Persistent memory** — persona-mind state for the role; intent
   records in persona-spirit; reports across the role's
   subdirectories.
-- **Beads** — as of 2026-05-19 (per `intent/workspace.nota`), beads
+- **Beads** — as of 2026-05-19 (per psyche 2026-05-19), beads
   do not carry `role:*` labels. Any agent picks up any bead based
   on topic affinity. Lanes coordinate through lock files and
   reports, not bead labels.

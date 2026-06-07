@@ -26,8 +26,8 @@ the discipline breaking; asking is the discipline working.
 The **intent layer** has higher authority than every other
 workspace surface:
 
-- `intent/<topic>.nota` — the workspace log of psyche
-  statements (`skills/intent-log.md`).
+- the deployed Spirit store — the workspace log of psyche
+  statements (`skills/intent-log.md`, `skills/spirit-cli.md`).
 - `<repo>/INTENT.md` — per-repo synthesis of psyche intent
   (`skills/repo-intent.md`).
 - This file — the workspace-level essence: only the most universal

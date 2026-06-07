@@ -1068,8 +1068,8 @@ identify candidates but the refresh itself is designer-level.
 
 ### The discipline — four steps
 
-**Step 1 — Read intent first; weight recent over old.** Open
-`intent/*.nota` (or use spirit CLI to query) before reading the
+**Step 1 — Read intent first; weight recent over old.** Query the
+deployed Spirit store before reading the
 older report. Recent intent has more weight than old; a Maximum-
 certainty intent record from this week overrides a Medium-
 certainty record from last month on the same topic. This is the

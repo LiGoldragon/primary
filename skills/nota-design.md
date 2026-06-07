@@ -268,9 +268,7 @@ has three branches (bare identifier, `[|...|]` block, `[...]`
 inline) and no fourth quote branch exists. A legacy → canonical
 round-trip sheds the quotation marks. Legacy acceptance is slated
 for removal once all emitter sites (CriomOS-home Nix modules,
-`lojix-cli`, downstream consumers) migrate; legacy `intent/*.nota`
-files migrate via a separate programmatic extractor that preserves
-psyche timestamps.
+`lojix-cli`, downstream consumers) migrate.
 
 **Shell invocation uses outer double quotes.** When NOTA is passed as
 an inline CLI argument, wrap the whole NOTA object in shell double

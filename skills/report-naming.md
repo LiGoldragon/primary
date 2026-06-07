@@ -143,5 +143,3 @@ push
   (chat-vs-report, inline-summary rule, visuals, hygiene, soft
   caps).
 - `skills/jj.md` — the version-control flow these commits use.
-- `intent/reports.nota` — psyche statements driving this
-  discipline.

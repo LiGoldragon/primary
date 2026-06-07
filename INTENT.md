@@ -1,7 +1,7 @@
 # INTENT — primary workspace
 
 *The psyche's intent for this workspace, synthesised from Spirit
-intent records and legacy `intent/*.nota` history. Verbatim psyche
+intent records. Verbatim psyche
 quotes appear in italics; surrounding prose is agent-composed from
 intent-log summaries. Companion to `ESSENCE.md` (the most universal
 psyche intent — gold of the gold) and `AGENTS.md` (every-session
@@ -57,8 +57,8 @@ The **intent log** lives in Spirit. It carries psyche statements as
 typed intent entries. The current deployed shape stores one dense
 agent-clarified description, kind, magnitude, and daemon-stamped
 date/time; it deliberately does not store large verbatim/context
-payloads. Agents do not manually append to `intent/*.nota` during
-normal work. Discipline: `skills/intent-log.md` and
+payloads. Spirit is the sole intent substrate; the legacy
+`intent/*.nota` files are retired. Discipline: `skills/intent-log.md` and
 `skills/spirit-cli.md`.
 
 **Per-repo `INTENT.md`** synthesises the project's psyche intent
@@ -90,8 +90,8 @@ before implementing. Everything else derives from intent.* The
 agent reads the prompt, identifies every intent statement
 (Decision / Principle / Correction / Clarification / Constraint),
 records each through the deployed `spirit` CLI, *then* proceeds
-with the work the prompt asked for. The legacy `intent/*.nota`
-append path is not the normal workflow.
+with the work the prompt asked for. There is no legacy file
+append path; Spirit is the only substrate.
 
 ## Reports are for agents; chat is for the psyche
 
@@ -315,9 +315,8 @@ the file picks one alternative from a closed choice.
 
 The convention turns each authored file into a typed object: the
 schema registry knows that `<repo>/bootstrap-policy.nota` is that
-component's policy seed type, that `skills/skills.nota` is a
-`Vec<SkillEntry>`, that `intent/<topic>.nota` is a
-`Vec<IntentRecord>` (legacy). A typed loader reads the path,
+component's policy seed type and that `skills/skills.nota` is a
+`Vec<SkillEntry>`. A typed loader reads the path,
 resolves the convention, decodes the file as the expected type,
 and fails loudly when the file doesn't match. No ad hoc parsing
 per file; no untyped scratch data accumulating.

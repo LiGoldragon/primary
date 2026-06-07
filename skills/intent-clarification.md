@@ -7,7 +7,7 @@ invented intent compounds.*
 
 ## What this skill is for
 
-The intent layer (the workspace `intent/` log, per-repo
+The intent layer (the deployed Spirit store, per-repo
 `INTENT.md`, and `ESSENCE.md`) is the source of authoritative
 direction. When the agent is about to make a decision and one of
 these is true, this skill applies:

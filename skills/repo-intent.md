@@ -99,8 +99,7 @@ Synthesised from psyche statements; not embellished.*
 ---
 
 *Source statements live in Spirit intent records under the topics*
-*that pertain to this project. Legacy source statements may still*
-*exist under `~/primary/intent/`.*
+*that pertain to this project.*
 ```
 
 The sections are illustrative; reshape per the psyche statements'
@@ -109,7 +108,7 @@ actual shape.
 ## How to derive from psyche statements
 
 1. **Read Spirit intent records** for entries that mention this
-   project. Use `~/primary/intent/` only as legacy history.
+   project.
 2. **For each entry**, ask: is this a goal, constraint, principle,
    or anti-pattern? Place it in the appropriate section.
 3. **Restate clearly.** The intent log carries verbatim + context;

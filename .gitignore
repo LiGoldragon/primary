@@ -39,3 +39,4 @@ __pycache__/
 
 # orchestrate-cli build outputs
 /orchestrate-cli/target/
+/test

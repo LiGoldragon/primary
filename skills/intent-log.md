@@ -201,10 +201,9 @@ so apostrophes can appear naturally inside the NOTA payload.
 
 ### Spirit-unavailable blocker
 
-Do not silently fall back to `intent/*.nota` appends. If Spirit is
-unavailable, surface that as a blocker in chat and in the relevant
-bead or report. A legacy file write is emergency maintenance only
-when the psyche explicitly authorizes it.
+If Spirit is unavailable, surface that as a blocker in chat and in
+the relevant bead or report — there is no legacy-file fallback; the
+`intent/*.nota` substrate is retired. Spirit is the sole substrate.
 
 ### Supersession needs coordination regardless
 
@@ -381,8 +380,9 @@ prophylactically; split when the surface earns it.
 3. Write one dense description through `spirit`; the daemon stamps time.
 
 If Spirit is unavailable when a record is required, surface the blocker;
-do not revive `intent/*.nota` logging silently. If the gate says no
-capture, Observe, or ask, do not write a record.
+there is no legacy-file fallback — the `intent/*.nota` substrate is
+retired. If the gate says no capture, Observe, or ask, do not write a
+record.
 
 ## Citing intent in prose — bracket-quote the summary
 
@@ -489,6 +489,4 @@ substance migrates.
 - `skills/stt-interpreter.md` — STT-misspelling lookup tables; consult
   before writing descriptions that include workspace-specific terms.
 - `skills/skills.nota` — the canonical positional-NOTA example.
-- `intent/` — legacy file substrate; do not append during normal
-  work.
 - Forward: `persona-mind` typed memory variants — eventual home.

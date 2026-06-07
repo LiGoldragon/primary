@@ -277,8 +277,7 @@ operation verbs**: they describe what the caller is doing in
 that component's domain, not what the receiver may later do to
 its state.
 
-> **Current direction, per `intent/component-shape.nota`
-> 2026-05-20T02:00Z:** the
+> **Current direction, per psyche 2026-05-20:** the
 > universal roots (`Assert`, `Mutate`, `Retract`, `Match`,
 > `Subscribe`, `Validate`) are the **Sema classification
 > vocabulary** for observation — they are *payloadless* state-

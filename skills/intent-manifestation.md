@@ -10,9 +10,9 @@ the bridge.*
 
 The workspace records psyche intent in Spirit as typed intent
 records (per `skills/intent-log.md` and `skills/spirit-cli.md`).
-That is the capture surface: one entry per psyche statement. The
-legacy `intent/*.nota` files are historical input, not the normal
-write path. Capture is necessary but not sufficient. For intent to
+That is the sole capture surface: one entry per psyche statement;
+the legacy file substrate is retired. Capture is necessary but not
+sufficient. For intent to
 actually shape what agents do, it has to land in a **guidance
 file** — a file agents read to inform behavior.
 
@@ -31,7 +31,7 @@ Guidance files (per `INTENT.md` §"Guidance files"):
 
 | Guidance file | What lands there |
 |---|---|
-| `ESSENCE.md` (workspace) | Highest-certainty universal psyche statements — the gold of the gold. Bar is high (per `intent/workspace.nota`). Statements that stand as founding rules. |
+| `ESSENCE.md` (workspace) | Highest-certainty universal psyche statements — the gold of the gold. Bar is high (per psyche intent). Statements that stand as founding rules. |
 | `AGENTS.md` | Per-keystroke hard overrides. Short, every-session-read. The "buck the bad agent habits" stuff. |
 | `INTENT.md` | Workspace intent in prose, synthesised from Spirit records and legacy history; verbatim psyche quotes in italics. Read once on starting; consult by topic. |
 | `skills/<name>.md` | Topic-specific or workflow-specific discipline. Read when the topic comes up. |
@@ -70,8 +70,8 @@ psyche statement about NOTA grammar lands in both
 For a topic:
 
 1. **Query the topic's Spirit records.** Read every record in
-   chronological order. Consult `intent/*.nota` only when sweeping
-   legacy history.
+   chronological order. The deployed Spirit store is the sweep
+   substrate.
 2. **For each record**, scan the guidance files you'd expect to
    carry its substance. Does the destination already say what the
    intent says? If yes, nothing to do — the intent is already
@@ -182,7 +182,7 @@ Sometimes the right destination doesn't exist yet:
 - **New skill** — create per `skills/skill-editor.md` if the
   intent is a new discipline area not yet covered.
 - **New per-repo ESSENCE** — propose to the psyche before creating
-  (per `intent/workspace.nota` "promotion path" — the psyche
+  (per psyche intent "promotion path" — the psyche
   promotes to essence; the agent doesn't decide independently).
 
 If the destination is unclear or the intent doesn't fit any
@@ -207,4 +207,3 @@ spirit-surfaced).
 - `skills/skill-editor.md` — how to create or edit a skill.
 - `skills/architecture-editor.md` — how to edit a repo's ARCH.
 - `INTENT.md` §"Guidance files" — the umbrella naming.
-- `intent/workspace.nota` — psyche statements driving this skill.

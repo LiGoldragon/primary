@@ -7,8 +7,7 @@ The compact contract. Every agent reads this on every session.
 1. **`ESSENCE.md`** — workspace essence (most universal psyche
    intent). Upstream of every rule below.
 2. **`INTENT.md`** — workspace intent in prose form, synthesised
-   from Spirit records, with `intent/*.nota` as legacy history.
-   Read once on starting; consult when a
+   from Spirit records. Read once on starting; consult when a
    topic comes up.
 3. **`repos/lore/AGENTS.md`** — cross-workspace agent contract.
 4. **`skills/skills.nota`** — typed skill index. Query it whenever
@@ -39,8 +38,7 @@ The compact contract. Every agent reads this on every session.
 |---|---|
 | `ESSENCE.md` | Workspace essence — most universal psyche intent. |
 | `AGENTS.md` | This file. Compact every-keystroke contract. |
-| `INTENT.md` | Workspace intent prose, synthesised from Spirit records and legacy `intent/` history. |
-| `intent/` | Legacy psyche-statement file substrate. Do not append here during normal work. |
+| `INTENT.md` | Workspace intent prose, synthesised from Spirit records. |
 | `<repo>/INTENT.md` | Per-repo synthesis of psyche intent. The **first and most important file per repo** — canonical agent-context surface; read before code. Every repo needs one. |
 | `orchestrate/AGENTS.md` | Role-coordination protocol. |
 | `protocols/active-repositories.md` | Live repo map for architecture sweeps. |
@@ -334,8 +332,8 @@ or PR-style review on jj commits). No `skills/auditor.md` and no
   Clarification / Constraint). Working orders are NOT intent: if the
   statement dies when the current task is erased, it goes in task state,
   not Spirit. Public records use the deployed Spirit CLI at privacy
-  `Zero`; private substance follows `skills/privacy.md`. Do not append
-  to `intent/*.nota`. Full discipline: `skills/intent-log.md`.
+  `Zero`; private substance follows `skills/privacy.md`. Full
+  discipline: `skills/intent-log.md`.
 - **EXCEPTION + REFINEMENT — forwarded prompts: don't blindly duplicate;
   do gap-check the originally-addressed agent's capture.** When the
   psyche opens a message with *"here's the prompt I just gave
