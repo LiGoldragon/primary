@@ -75,11 +75,16 @@ development **branch** — the per-repo branch where breaking changes are
 developed before an operator integrates them to `main` (Spirit 2556 —
 [designers work on a standard next branch by default; operators own main
 and integrate from next]). The two senses are consonant: the `next`
-branch is where the `next` version gets built. Do not confuse the `next`
-*branch* with the `-next` *repo suffix* (`nota-next`, `schema-next`) used
-for a parallel successor repo during a major break. Branch-workflow
-discipline lives in `skills/double-implementation-strategy.md` §"Designer
-track"; repo-suffix discipline in `skills/major-break-via-new-repo.md`.
+branch is where the `next` version gets built. The `-next` *repo suffix*
+(`nota-next`, `schema-next`, `schema-rust-next`) is **legacy** — it came
+from the retired `major-break-via-new-repo` skill that spun up successor
+repos for major breaks. That practice is retired (Spirit `op4b` / `53bj`,
+2026-06-07): major breaks are **branches**, and a new repository is only
+for a genuinely new project (`skills/repository-management.md` §"When to
+create a new repository"). The surviving `-next` repos are canonical-by-
+default-use crates that were never renamed back; treat the suffix as a
+name, not a license to make more. Branch-workflow discipline lives in
+`skills/feature-development.md` and `skills/double-implementation-strategy.md`.
 
 ### Component name — `Persona`
 

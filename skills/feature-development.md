@@ -32,6 +32,22 @@ parallel path. The ghq checkout stays on `main`; the worktree is where
 the feature work happens. Multiple agents and multiple feature branches
 can coexist without ever competing for the same checkout.
 
+## A branch has no limits — this is the major-break mechanism
+
+Per psyche 2026-06-07 (Spirit `op4b` / `53bj`): a feature branch has **no
+limits**. If you want to test something radical — a different architecture,
+a from-scratch rewrite, a contrarian shape — do it on a branch. You can
+**wipe the entire working tree and rebuild from nothing** on a branch;
+delete every file, start over, throw it all away if it fails. Nothing is
+lost, because `main` is untouched until the branch is integrated.
+
+This is why a "major architectural break" does **not** justify a new
+repository. The clean slate a fresh repo seemed to offer is exactly what a
+branch already gives you. **Create a new repository only for a genuinely
+new project** (`skills/repository-management.md` §"When to create a new
+repository"); everything else — breaks, rewrites, experiments, mockups,
+repros — is a branch.
+
 ## The path convention
 
 | Path | Purpose |

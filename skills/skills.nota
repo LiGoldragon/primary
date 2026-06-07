@@ -111,10 +111,8 @@
     [All tests in Nix. Pure tests as checks; -test suffix for test-only binaries.])
   (Workflow feature-development skills/feature-development.md Mechanism
     [Feature branches in worktrees, for CODE repos under /git only — NOT primary. Multi-repo arc coordination. On primary everyone works on main directly (record 2585).])
-  (Workflow major-break-via-new-repo skills/major-break-via-new-repo.md Topic
-    [When an architectural break is large enough that the existing repo's invariants no longer fit: create a new repo with a -next / -v2 / longer suffix and develop in parallel. After stabilizing, rename to the canonical short name (replacing the original). Per psyche 2026-05-26 (record 811).])
   (Workflow double-implementation-strategy skills/double-implementation-strategy.md Topic
-    [Two parallel implementation tracks for major architectural breaks: operator on main branch of new repos amalgamating best-of-prototypes; designer on worktree branches OR design-prefixed throwaway repos iterating forward-looking design. Comparison drives convergence. Anti-drift mechanism. Per psyche 2026-05-26 records 815-818.])
+    [Two parallel implementation tracks for a major break, BOTH on branches: operator amalgamates best-of-prototypes toward main; designer iterates the forward-looking design on next / a feature branch. Comparison drives convergence. Anti-drift mechanism. New repos are NOT used — major breaks are branches, a new repo is only for a genuinely new project (Spirit op4b / 53bj, 2026-06-07).])
   (Workflow beads skills/beads.md Mechanism
     [Short-tracked-item discipline. Transitional pre-Persona-mind.])
   (Workflow repository-management skills/repository-management.md Mechanism

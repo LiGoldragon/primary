@@ -109,6 +109,41 @@ ghq list | grep <repo>
 `ghq` indexes the filesystem on each `list`; no separate
 "add to index" step.
 
+## When to create a new repository — only for a genuinely new project
+
+**A new repository is justified ONLY when you are creating a genuinely
+different project — another project entirely.** It is NOT justified for a
+new version, shape, rewrite, or major architectural break of an *existing*
+project, and never for an experiment, mockup, repro, or design pass.
+
+Per psyche 2026-06-07 (Spirit `op4b` / `53bj`): a feature branch has **no
+limits**. An agent testing something radical can wipe the entire working
+tree and rebuild from scratch on a branch — delete everything, start over,
+whatever the experiment needs. The clean slate a "major break" seems to
+want is fully achievable on a branch, so **major breaks are branches, not
+new repos**. The earlier `major-break-via-new-repo` skill (which told
+agents to spin up `-next` / `-v2` / `design-` repos) is **retired** — it
+produced a sprawl of throwaway repos (`design-deep-spirit-2026-05-26`,
+`design-nota-from-schema`, `signal-frame-mockup-stable-caller-id-1`,
+`kameo-supervised-shutdown-repro`, `signal-frame-worktrees`, …) and `-next`
+repos that were never renamed back, leaving permanent confusion about
+which repo is canonical (`spirit-next` is now just a symlink to `spirit`).
+
+The test before `gh repo create`:
+
+| Situation | Where it goes |
+|---|---|
+| A new, distinct project (different product/concern) | **New repository** |
+| Major architectural break / rewrite of an existing project | **Branch** (wipe the tree, rebuild — `skills/feature-development.md`) |
+| Experiment / spike / "test something crazy" | **Branch** |
+| Mockup, repro, fixture, sandbox | **Branch** |
+| A new version or alternate shape of an existing thing | **Branch** |
+
+When unsure whether it's "a genuinely new project," ask the psyche
+(`skills/intent-clarification.md`). Creating a repository touches the
+workspace's repo-name surface every agent reads on every session; the bar
+is high and the default is always a branch.
+
 ## Create a repository
 
 From the repo root:
