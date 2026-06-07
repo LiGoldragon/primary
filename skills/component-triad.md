@@ -983,6 +983,25 @@ free functions.
 
 ## Runtime triad engine traits — Signal triage / Nexus computation / SEMA durable
 
+**CORRECTION (Spirit `zk6y`, 2026-06-07): the engines are kameo
+actors, not a synchronous method spine.** This section described the
+*currently-landed* substrate as synchronous `execute(&mut self) ->
+NexusAction` driven by a runner loop over mutex-wrapped state. Per
+`zk6y` that synchronous emission is **drift to correct, not a
+sanctioned end state** — "actors everywhere" is the architecture and
+the generated triad daemons are not exempt. The deferral records
+`1483`/`1487` defer *advanced runtime machinery* (backpressure,
+scheduling, the runtime-control trait surface) and never said "sync"
+or "no kameo"; that interpretation entered here, not in any psyche
+statement. The engine `_inner` methods stay **sync-pure component
+logic** (testable, no async); the schema-emitted **actor shell** owns
+them and drives the `NexusWork`/`NexusAction` loop asynchronously,
+`ask`-ing a single-writer SEMA actor and blocking-plane effect actors.
+The mechanism below (the `NexusWork`/`NexusAction` pair, effects-as-
+data, the five actions, `Continue`) carries over unchanged — it is
+exactly the seam that lets sync logic run under an async actor shell.
+Full design: `reports/designer/553-actor-native-engine-rewrite/`.
+
 Per spirit records 1326 (operator-addressed Constraint High) and 1327
 (designer-captured Principle Maximum, 2026-06-01): **every component
 runtime in the workspace triad architecture defines its Signal /
@@ -1195,9 +1214,14 @@ clean-edge.
 
 **Deferred deeper-runtime work** per Spirit 1483: backpressure,
 runtime control layer, inner Nexus engine, actor scheduling and
-prioritization stay future-direction. The substrate above is what
-lands now; deeper work arrives if/when overload evidence appears
-in real production load.
+prioritization stay future-direction. Note (Spirit `zk6y`): the
+deferral is of that *advanced machinery* only — **kameo adoption is
+not deferred**. The engines are kameo actors now (bounded mailboxes,
+`on_start`/`on_stop`, simple `OneForOne` supervision); the deferred
+items are the backpressure/scheduling/runtime-control trait surface
+layered on top. The earlier "until overload evidence appears in real
+production load" trigger does not fit a pre-production world and is
+not the gate for adopting actors.
 
 ### Instrumentation belongs to the engine-trait contract
 
