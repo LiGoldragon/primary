@@ -15,7 +15,7 @@ work as a pair:
 2. **Names don't carry their full ancestry.** A type, variant, or
    field belongs to its surrounding namespace; repeating the namespace
    is redundant ceremony. Inside `Profile` the field is `size`, not
-   `profileSize`. Inside `signal-persona-spirit` the type is `Entry`,
+   `profileSize`. Inside `signal-spirit` the type is `Entry`,
    not `IntentEntry`.
 
 "Full word" alone produces `IntentRecordIdentifier` (every ancestor

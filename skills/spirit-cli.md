@@ -76,10 +76,11 @@ destructive replace. `readlink -f $(command -v spirit)` resolves what
 
 ## Read the wire shape from the pinned source
 
-The wire-side `Operation`, `Reply`, and supporting types live in the
-`signal-persona-spirit` crate, which evolves quickly. Do not infer the
-wire shape from this skill's examples — read the **deployed** version's
-source (the one the running daemon was built against), not `main`.
+The active ordinary Spirit contract on main is `signal-spirit`. Older
+deployed profiles may still pin the retired `signal-persona-spirit` crate
+until the production daemon rebuilds. Do not infer the wire shape from this
+skill's examples — read the **deployed** contract source named by the
+running daemon's `Cargo.lock`, not whichever repo is freshest on `main`.
 `main` drifts from production until the next CriomOS rebuild.
 
 ```sh
@@ -87,14 +88,17 @@ source (the one the running daemon was built against), not `main`.
 grep -B 1 -A 12 '"persona-spirit"' \
     /git/github.com/LiGoldragon/CriomOS-home/flake.lock | head -30
 
-# that commit pins signal-persona-spirit in its Cargo.lock:
+# that commit pins the ordinary Spirit contract in its Cargo.lock:
 cd /git/github.com/LiGoldragon/persona-spirit
 git show <persona-spirit-rev>:Cargo.lock \
-    | grep -B 1 -A 4 '"signal-persona-spirit"'
+    | rg -B 1 -A 4 '"signal-spirit"|"signal-persona-spirit"'
 
-# read the deployed contract:
-cd /git/github.com/LiGoldragon/signal-persona-spirit
-git show <signal-persona-spirit-rev>:src/lib.rs
+# read the deployed contract from the repo Cargo.lock names:
+cd /git/github.com/LiGoldragon/signal-spirit
+git show <signal-spirit-rev>:src/lib.rs
+# Older deployed profiles may still require:
+# cd /git/github.com/LiGoldragon/signal-persona-spirit
+# git show <signal-persona-spirit-rev>:src/lib.rs
 ```
 
 ## Encoding rules
@@ -315,5 +319,5 @@ uses; the redb database carries the canonical record set.
 - `skills/nota-design.md` — positional-record encoding rules.
 - `/git/github.com/LiGoldragon/persona-spirit` — component source;
   `tests/daemon.rs` is the best worked example for the wire shape.
-- `/git/github.com/LiGoldragon/signal-persona-spirit` — wire contract;
-  `src/lib.rs` declares the channel.
+- `/git/github.com/LiGoldragon/signal-spirit` — active ordinary Spirit
+  wire contract; `src/lib.rs` declares the channel.
