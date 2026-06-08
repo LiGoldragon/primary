@@ -157,6 +157,36 @@ last gate to a fresh-buildable fleet, not just cache-buildable.
    I/O still runs synchronously inside the async handler (`spawn_blocking` is the
    destination). A follow-up hardening, not part of the actor move.
 
+## Closed — fleet on the actor shell and fresh-buildable
+
+Every component daemon is on the schema-emitted kameo-actor shell and every
+active repo builds from a clean checkout (no deleted-crate references): the
+emitter (all tiers), `orchestrate`/`message`/`spirit` on the `EngineActor`,
+`mind`/`persona`/`introspect`/`system`/`terminal-cell`/`repository-ledger`/`harness`/`router`/`terminal`
+on the emitted shell, and **production `persona-spirit`** repointed (dep-only,
+behaviour unchanged, full gate green). The origin keystone — `signal-persona::origin`
+as the canonical origin vocab — and the downstream chains it unblocked
+(`terminal-cell`/`terminal` onto the new `signal-terminal`; `signal-orchestrate`
+regen + `nota-text` gating; `persona`'s per-contract config types) all landed
+green. The lone remaining `nota-codec` refs are in two already-archived repos,
+which is correct.
+
+### Deferred follow-ups (small, flagged not buried)
+- **`spirit` peer-sweep** — the whole-working-copy commit drained an uncommitted
+  peer `ChangeRecord`/`RecordChange` feature onto spirit main under the actor
+  description; green but mislabeled, worth a peer heads-up.
+- **Bytes-as-`Vec<Integer>`** — the contract byte fields emit `Vec<u64>` (schema-next
+  has no `Bytes` primitive); `terminal-cell` does explicit u8↔u64 boundary
+  conversions. A `Bytes` primitive in schema-next would retire those.
+- **`--no-default-features` test targets** for `signal-orchestrate`/`meta-signal-orchestrate`
+  call `NotaSource::parse` unconditionally; the canonical green gate is default
+  features. A per-test `cfg(feature = "nota-text")` is the fix.
+- **`nix flake check` e2e scripts** still launch flag-based daemons — need a
+  NOTA→rkyv config-encoding bootstrap before the binary-only daemons.
+- **`signal-message` duplicate** `ConnectionClass`/`MessageOrigin` vs
+  `signal-persona::origin` — a de-dup follow-up; consumers use one or the other
+  consistently today.
+
 ## The lesson on this report
 
 The repeated failure this arc corrected was treating a pre-production prototype as
