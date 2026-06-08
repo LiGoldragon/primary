@@ -54,7 +54,7 @@ stack.
 | `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Retired compatibility shim for the former combined Persona signal surface; new code depends on `meta-signal-persona` or `signal-engine-management` directly. |
 | `signal-persona-origin` | `/git/github.com/LiGoldragon/signal-persona-origin` | Persona origin-context vocabulary: engine/route/channel ids, component names, connection classes, message origins, and ingress context. Not an authentication library. |
 | `signal-agent` | `/git/github.com/LiGoldragon/signal-agent` | Ordinary agent front-door signal contract for pre-configured API agent calls. |
-| `owner-signal-agent` | `/git/github.com/LiGoldragon/owner-signal-agent` | Owner-only agent policy signal contract for backend/provider configuration and lifecycle control. |
+| `meta-signal-agent` | `/git/github.com/LiGoldragon/meta-signal-agent` | Agent meta policy signal contract for backend/provider configuration and lifecycle control. |
 | `signal-message` | `/git/github.com/LiGoldragon/signal-message` | Message CLI to router channel contract. |
 | `signal-router` | `/git/github.com/LiGoldragon/signal-router` | Router-owned observation contract for accepted messages, route decisions, channel state, delivery status, and adjudication status. Used by `introspect` without turning `signal-introspect` into a shared schema bucket. |
 | `meta-signal-router` | `/git/github.com/LiGoldragon/meta-signal-router` | Meta-signal router policy contract. |
