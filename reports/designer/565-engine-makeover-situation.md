@@ -107,14 +107,43 @@ daemons (done; orchestrate+message+spirit), and (b) the broader **daemon-shell
 migration** moving every hand-written-loop daemon onto the emitted shell — which
 then hands it the `EngineActor` for free. (b) is the larger remaining axis.
 
-## In flight
+## Wave outcome (daemon-shell migration, `wc3a3e1q6`)
 
-Workflow `wc3a3e1q6`: `spirit` adapt, then full daemon-shell ports of `mind`,
-`persona`, `harness`, `introspect`, `system`, `terminal-cell`, `repository-ledger`.
-These are orchestrate-sized per component (several need their nexus/sema schema
-authored, or the `component_decoded()` escape hatch where the working contract
-isn't schema-derived yet). A mixed first pass is expected; each lands to main only
-when green, else reports exact remaining errors.
+**Landed green (7 of 8):** `spirit` (`f9030182`, on the `EngineActor`, `Mutex<Nexus>`
+gone, `SignalActor`→`SignalAdmission`, flake de-vendored), `mind` (`51ae5508`),
+`persona` (`390e6759`) + `signal-persona` (`3d8f7ea`) + `meta-signal-persona`,
+`introspect` (`db707ba`), `system` (`ea7297c9`) + `signal-system`, `terminal-cell`
+(`5229038f`), `repository-ledger` (`4f860608`). The non-spirit ports used the
+`component_decoded()` tier (their working contracts are still `signal_channel!`,
+not schema-derived) — they adopt the emitted listener/argv/lifecycle spine and
+keep their existing internal kameo actors as the engine. So **every component
+daemon except `persona-spirit` (production) is now on the schema-emitted shell.**
+
+**`harness` correctly blocked** — and surfaced the real remaining gate: the
+archival's deleted `signal-persona-origin` / `signal-engine-management` remotes are
+still in ~10 repos' `Cargo.toml`, building only from stale git cache (fresh build
+fails). The `persona` agent already did the `n0ss` fold — `signal-persona` absorbed
+**both** vocabularies (origin provenance under `signal_persona::origin`, the
+lifecycle surface at the crate top level). So the rehome target exists.
+
+**Now in flight (`wmbq8znlv`):** rehome the 5 dangling contract crates
+(`signal-agent`/`signal-harness`/`signal-introspect`/`signal-mind`/`meta-signal-terminal`)
+then the 7 daemon repos (incl. finishing `harness`'s port, and a conservative
+dep-only repoint of production `persona-spirit`) onto `signal-persona`. This is the
+last gate to a fresh-buildable fleet, not just cache-buildable.
+
+## Two coordination items
+
+1. **`spirit` swept a peer's working copy.** Per the whole-working-copy-commit
+   override, spirit's actor commit drained an uncommitted peer feature
+   (`ChangeRecord`/`RecordChange` schema/store/tests + ARCHITECTURE/INTENT edits)
+   onto spirit main under the actor-change description. Combined set is green; the
+   peer's work is mislabeled but not lost.
+2. **Deferred follow-ups** (green-gate-passing, flagged not silently dropped):
+   per-component `nix flake check` e2e scripts still launch the old flag-based
+   daemons (need a NOTA→rkyv config-encoding bootstrap before the daemon); the
+   contract-crate `nota-text` feature-gating sweep `repository-ledger` skirted by
+   pinning `signal-frame`.
 
 ## Open decisions
 
