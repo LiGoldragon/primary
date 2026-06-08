@@ -96,9 +96,8 @@ git show <persona-spirit-rev>:Cargo.lock \
 # read the deployed contract from the repo Cargo.lock names:
 cd /git/github.com/LiGoldragon/signal-spirit
 git show <signal-spirit-rev>:src/lib.rs
-# Older deployed profiles may still require:
-# cd /git/github.com/LiGoldragon/signal-persona-spirit
-# git show <signal-persona-spirit-rev>:src/lib.rs
+# If the lock names retired signal-persona-spirit, inspect that archived
+# repository intentionally; it is not kept as an active /git checkout.
 ```
 
 ## Encoding rules
