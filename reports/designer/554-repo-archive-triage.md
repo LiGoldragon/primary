@@ -5,14 +5,21 @@ designer, 2026-06-07. Verified read-only classification of all 150 repos under
 the repo's README / INTENT / Cargo / last-commit against `active-repositories.md`).
 Result: **96 keep, 26 archive candidates, 28 the psyche's call.**
 
-**Status 2026-06-08:** archived on GitHub (reversible via `gh repo unarchive`) —
-the 26 clear candidates (the `spirit-next` entry was only a local symlink, dropped)
-plus `workspace` and `mentci-tools`, for **27 repos archived**. Verified live and
-KEPT: `orchestrator` (Gas City cascade dispatcher, a production flake input),
-`signal-executor` (shared request-execution library four daemons use),
-`mentci-lib` and `mentci-egui` (the real upcoming-GUI repos). Follow-up:
-`CriomOS-emacs` still references `aski-core` and `vscode-aski` (dead aski editor
-inputs) — they still resolve read-only, but are cleanup candidates.
+**Status 2026-06-08: 30 repos archived** on GitHub (reversible via
+`gh repo unarchive`). First pass (27): the 26 clear candidates (`spirit-next` was a
+local symlink, dropped) plus `workspace` and `mentci-tools`. Second pass (3) —
+**Gas City abandoned**: `Criopolis` (the city core), `orchestrator` (the cascade
+dispatcher), `test-city` (its sandbox). `gascity-nix` is a stale flake URL in
+`CriomOS-home`, not a live repo.
+
+KEPT: `mentci-lib` + `mentci-egui` (the real upcoming GUI). `signal-executor` is
+**deprecated** — nexus is the execution engine now, not executor — but NOT archived:
+it is still the live execution layer for `orchestrate`, `repository-ledger`,
+`persona-spirit`, and `upgrade`, and archives once they migrate to nexus.
+
+Follow-ups (operator): clean the stale `gascity` / `orchestrator` flake wiring from
+production `CriomOS-home`; drop the `aski-core` / `vscode-aski` editor inputs from
+`CriomOS-emacs`; migrate the four `signal-executor` consumers to nexus.
 
 ## Archive candidates (26) — clear
 
