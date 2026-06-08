@@ -50,8 +50,8 @@ stack.
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. It is being redirected away from universal request verbs; public contracts own contract-local operation roots. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
 | `meta-signal-persona` | `/git/github.com/LiGoldragon/meta-signal-persona` | Persona engine-manager meta policy contract: launch, retire, start, stop, and status query. |
-| `signal-engine-management` | `/git/github.com/LiGoldragon/signal-engine-management` | Ordinary Persona manager-to-supervised-component lifecycle contract: announce, readiness, health, stop, and spawn envelope. |
-| `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Retired compatibility shim for the former combined Persona signal surface; new code depends on `meta-signal-persona` or `signal-engine-management` directly. |
+| `signal-engine-management` | `/git/github.com/LiGoldragon/signal-engine-management` | Compatibility re-export for the ordinary Persona lifecycle contract now owned by `signal-persona`. Existing consumers may migrate from this role-named crate to `signal-persona`. |
+| `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Ordinary Persona working-signal contract for manager-to-supervised-component lifecycle traffic: announce, readiness, health, graceful stop, and typed `SpawnEnvelope`. |
 | `signal-persona-origin` | `/git/github.com/LiGoldragon/signal-persona-origin` | Persona origin-context vocabulary: engine/route/channel ids, component names, connection classes, message origins, and ingress context. Not an authentication library. |
 | `signal-agent` | `/git/github.com/LiGoldragon/signal-agent` | Ordinary agent front-door signal contract for pre-configured API agent calls. |
 | `meta-signal-agent` | `/git/github.com/LiGoldragon/meta-signal-agent` | Agent meta policy signal contract for backend/provider configuration and lifecycle control. |
