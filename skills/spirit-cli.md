@@ -321,3 +321,5 @@ uses; the redb database carries the canonical record set.
   `tests/daemon.rs` is the best worked example for the wire shape.
 - `/git/github.com/LiGoldragon/signal-spirit` — active ordinary Spirit
   wire contract; `src/lib.rs` declares the channel.
+- `/git/github.com/LiGoldragon/meta-signal-spirit` — active Spirit meta
+  policy contract for privileged lifecycle/configuration traffic.
