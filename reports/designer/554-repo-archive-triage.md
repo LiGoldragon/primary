@@ -27,6 +27,10 @@ the four `signal-executor` consumers (`orchestrate`, `repository-ledger`,
 `persona-spirit`, `upgrade`) onto the nexus execution engine. That is real
 per-daemon engineering (each uses `signal_executor::{Executor, ObserverSet}`),
 gated on the nexus execution engine (designer 553) being built — not a cleanup.
+The full per-component removal-and-replacement list (manifest + source + test
+witnesses + architectural assertions, per Spirit `ng1x`/`v3um`), the
+"is signal-executor the only culprit" answer, and the `signal-sema`
+keep-but-rename finding are in `555`.
 
 ## Archive candidates (26) — clear
 
