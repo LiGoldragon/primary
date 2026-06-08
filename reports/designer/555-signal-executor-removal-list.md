@@ -127,15 +127,21 @@ generated nexus engine to migrate onto.
 ## The gating dependency
 
 orchestrate and upgrade already carry the generated nexus *types*;
-repository-ledger and persona-spirit do not carry even those. But none of the
-four can complete until the **nexus execution engine of design 553** (the
-actor-native `NexusWork → NexusAction` runner that actually drives requests)
-is real — the generated `NexusWork`/`NexusAction` enums are the data shape,
-not the driver. So the honest sequencing is: land the 553 nexus runner, then
-migrate smallest-first per `r310` — orchestrate or upgrade first (types
-already present, driver swap only), repository-ledger next, persona-spirit
-last (generate nexus + invert the enforcing invariant + rewrite the
-architecture doc).
+repository-ledger and persona-spirit do not carry even those.
+
+**Correction (per `558.14`/`558.1`):** the framing here originally said the four
+were gated on the 553 nexus runner being *built*. That is wrong — the nexus
+runner **exists and is proven**: `triad-runtime` `Runner::drive` is a working
+async driver and **`spirit` runs every request through it with zero
+signal-executor, end to end.** The four are therefore gated on *adopting* the
+runner (per-component cutover) plus the contract-crate emitter, **not** on
+building the engine. What is genuinely unbuilt is the 553 *actor-native shell*
+(`RuntimeRoot`/`SemaActor`) — a separate axis. So the honest sequencing is:
+harden `spirit` as the executor-free template, then migrate smallest-first per
+`r310` — orchestrate or upgrade first (types already present, driver swap only),
+repository-ledger next, persona-spirit last (generate nexus + invert the
+enforcing invariant + rewrite the architecture doc). See `558` for the full
+fleet plan.
 
 ## signal-sema: not a culprit — keep the vocabulary, fix the misleading name
 
