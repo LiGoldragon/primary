@@ -63,7 +63,7 @@ stack.
 | `signal-terminal` | `/git/github.com/LiGoldragon/signal-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
 | `meta-signal-terminal` | `/git/github.com/LiGoldragon/meta-signal-terminal` | Terminal meta policy contract for `CreateSession` and `RetireSession`; ordinary terminal traffic stays in `signal-terminal`. |
 | `signal-mind` | `/git/github.com/LiGoldragon/signal-mind` | Mind/orchestration contract vocabulary. |
-| `owner-signal-mind` | `/git/github.com/LiGoldragon/owner-signal-mind` | Owner-only mind policy contract. |
+| `meta-signal-mind` | `/git/github.com/LiGoldragon/meta-signal-mind` | Mind meta policy contract. |
 | `orchestrate` | `/git/github.com/LiGoldragon/orchestrate` | Orchestration component runtime. |
 | `signal-orchestrate` | `/git/github.com/LiGoldragon/signal-orchestrate` | Ordinary orchestration contract vocabulary. |
 | `meta-signal-orchestrate` | `/git/github.com/LiGoldragon/meta-signal-orchestrate` | Meta-signal orchestration policy contract. |
