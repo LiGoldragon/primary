@@ -17,9 +17,16 @@ KEPT: `mentci-lib` + `mentci-egui` (the real upcoming GUI). `signal-executor` is
 it is still the live execution layer for `orchestrate`, `repository-ledger`,
 `persona-spirit`, and `upgrade`, and archives once they migrate to nexus.
 
-Follow-ups (operator): clean the stale `gascity` / `orchestrator` flake wiring from
-production `CriomOS-home`; drop the `aski-core` / `vscode-aski` editor inputs from
-`CriomOS-emacs`; migrate the four `signal-executor` consumers to nexus.
+Follow-ups: **Done** — `gascity` + `orchestrator` removed from `CriomOS-home`
+(`b8ee02e0`: flake inputs + the medium-profile CLI installs, keeping the bd
+work-tracking runtime) and aski editor support removed from `CriomOS-emacs`
+(`dc21ff96`: flake inputs + the `mkEmacs` args/usages + the `aski-ts-mode`
+use-package). Both parse-checked and flake-lock-pruned in-session; a full deploy
+build was not run, so the operator's next deploy confirms. **Pending** — migrate
+the four `signal-executor` consumers (`orchestrate`, `repository-ledger`,
+`persona-spirit`, `upgrade`) onto the nexus execution engine. That is real
+per-daemon engineering (each uses `signal_executor::{Executor, ObserverSet}`),
+gated on the nexus execution engine (designer 553) being built — not a cleanup.
 
 ## Archive candidates (26) — clear
 
