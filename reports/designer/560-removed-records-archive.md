@@ -1439,3 +1439,10 @@ designer, 2026-06-08. Full NOTA text of every record removed from the live Spiri
   ```
   (zr26 [persona] Decision [Persona engine lands BEFORE Spirit cutover; persona engine orchestrates component upgrades from day one (bead primary-2y5 becomes blocking for primary-x3ci)] High Zero)
   ```
+
+## Dropout sweep (hand-adjudicated)
+
+- `48v1` [scratchpad/working-instruction]
+  ```
+  ([48v1] [persona] Decision [Integrate DeepSeek calls as an easily reusable library, likely via Pi harness] High Zero)
+  ```
