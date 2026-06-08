@@ -61,7 +61,7 @@ stack.
 | `signal-system` | `/git/github.com/LiGoldragon/signal-system` | System observation to router channel contract. |
 | `signal-harness` | `/git/github.com/LiGoldragon/signal-harness` | Router to harness delivery/observation channel contract. |
 | `signal-terminal` | `/git/github.com/LiGoldragon/signal-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
-| `owner-signal-terminal` | `/git/github.com/LiGoldragon/owner-signal-terminal` | Owner-only terminal session lifecycle mutation contract for `CreateSession` and `RetireSession`; ordinary terminal traffic stays in `signal-terminal`. |
+| `meta-signal-terminal` | `/git/github.com/LiGoldragon/meta-signal-terminal` | Terminal meta policy contract for `CreateSession` and `RetireSession`; ordinary terminal traffic stays in `signal-terminal`. |
 | `signal-mind` | `/git/github.com/LiGoldragon/signal-mind` | Mind/orchestration contract vocabulary. |
 | `owner-signal-mind` | `/git/github.com/LiGoldragon/owner-signal-mind` | Owner-only mind policy contract. |
 | `orchestrate` | `/git/github.com/LiGoldragon/orchestrate` | Orchestration component runtime. |
