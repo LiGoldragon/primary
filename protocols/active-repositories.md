@@ -46,12 +46,12 @@ stack.
 | `owner-signal-version-handover` | `/git/github.com/LiGoldragon/owner-signal-version-handover` | Owner-only administrative signal contract for version handover authority: force selector flip, rollback, and quarantine. |
 | `upgrade` | `/git/github.com/LiGoldragon/upgrade` | Upgrade triad runtime scaffold. Target home for schema/version migration orchestration, handover driver code, and the thin `upgrade` CLI plus `upgrade-daemon`. |
 | `signal-upgrade` | `/git/github.com/LiGoldragon/signal-upgrade` | Ordinary upgrade contract scaffold. Target merger home for sema-upgrade inspection/planning/migration and version-handover working traffic. |
-| `meta-signal-upgrade` | `/git/github.com/LiGoldragon/meta-signal-upgrade` | Owner-only upgrade meta-signal contract scaffold. Target merger home for upgrade administration, selector control, rollback, and quarantine. |
+| `meta-signal-upgrade` | `/git/github.com/LiGoldragon/meta-signal-upgrade` | Upgrade meta policy signal contract scaffold. Target merger home for upgrade administration, selector control, rollback, and quarantine. |
 | `signal-core` | `/git/github.com/LiGoldragon/signal-core` | Signal wire kernel: typed frames, envelopes, channel macro. It is being redirected away from universal request verbs; public contracts own contract-local operation roots. |
 | `signal` | `/git/github.com/LiGoldragon/signal` | Sema-ecosystem record vocabulary atop `signal-core`. |
-| `owner-signal-persona` | `/git/github.com/LiGoldragon/owner-signal-persona` | Owner-only Persona engine-manager contract: launch, retire, start, stop, and status query. |
+| `meta-signal-persona` | `/git/github.com/LiGoldragon/meta-signal-persona` | Persona engine-manager meta policy contract: launch, retire, start, stop, and status query. |
 | `signal-engine-management` | `/git/github.com/LiGoldragon/signal-engine-management` | Ordinary Persona manager-to-supervised-component lifecycle contract: announce, readiness, health, stop, and spawn envelope. |
-| `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Retired compatibility shim for the former combined Persona signal surface; new code depends on `owner-signal-persona` or `signal-engine-management` directly. |
+| `signal-persona` | `/git/github.com/LiGoldragon/signal-persona` | Retired compatibility shim for the former combined Persona signal surface; new code depends on `meta-signal-persona` or `signal-engine-management` directly. |
 | `signal-persona-origin` | `/git/github.com/LiGoldragon/signal-persona-origin` | Persona origin-context vocabulary: engine/route/channel ids, component names, connection classes, message origins, and ingress context. Not an authentication library. |
 | `signal-agent` | `/git/github.com/LiGoldragon/signal-agent` | Ordinary agent front-door signal contract for pre-configured API agent calls. |
 | `owner-signal-agent` | `/git/github.com/LiGoldragon/owner-signal-agent` | Owner-only agent policy signal contract for backend/provider configuration and lifecycle control. |
