@@ -6,20 +6,27 @@ places reality corrected `571`'s assumptions, the binding cross-repo constraint
 that reshapes the rest, and the decisions now in front of the psyche. Companion
 to `571` (the plan) and `570` (the review).
 
-## What landed (all on feature branches; neither repo's `main` touched)
+## What landed — now on `main` (psyche: "main is where this work belongs")
 
-| Step | Record | Where | Commit | State |
-|---|---|---|---|---|
-| dead-code | — | schema-next `schema-grammar-spec` | `f301636a` | dead `syntax.rs` removed |
-| 1 | `52ro` | schema-next `schema-grammar-spec` | `376b847a` | `(X)` self-tag form, both paths, test |
-| 2 | newtype priv-field | schema-rust-next `schema-grammar-emitter` | `44e472bf` | schema newtypes get a private field |
-| 3a | `yp29` | schema-next `schema-grammar-spec` | `3e76cf9c` | `Bytes` reserved scalar (grammar half) |
-| 5 | `qz6j` | schema-next `schema-grammar-spec` | `cf4cfb9f` | aliases dropped entirely; bare form is always a distinct newtype |
+schema-next `main` = **`cf4cfb9f`** (grammar complete) and schema-rust-next `main`
+= **`44e472bf`** (Step 2), both pushed. The earlier feature-branch isolation was
+dropped — the "can't build the emitter until grammar reaches main" framing was an
+artifact of that isolation, not a real blocker; main is the home.
 
-Each step is its own commit; each was verified green (`cargo build` + `cargo
-test` + `cargo clippy`). schema-next: 107 tests pass. schema-rust-next: 66 pass.
-The **schema-next grammar side is complete** (`52ro` + `yp29` grammar + `qz6j`).
-What remains is emitter-side and integration-coupled (below).
+| Step | Record | Commit (on `main`) | State |
+|---|---|---|---|
+| dead-code | — | `f301636a` | dead `syntax.rs` removed |
+| 1 | `52ro` | `376b847a` | `(X)` self-tag form, both paths, test |
+| 3a | `yp29` | `3e76cf9c` | `Bytes` reserved scalar (grammar half) |
+| 5 | `qz6j` | `cf4cfb9f` | aliases dropped entirely; bare form is always a distinct newtype |
+| 2 | newtype priv-field | `44e472bf` (schema-rust-next) | schema newtypes get a private field |
+
+Each step is its own commit; each verified green (`build` + `test` + `clippy`).
+schema-next: 107 tests pass. schema-rust-next at Step 2: 66 pass. The
+**schema-next grammar side is complete and on main.** One remaining pass — the
+**schema-rust-next emitter integration** against the new schema-next — is below;
+it has a real semantic subtlety (`From`-impl emission) so it gets a careful pass
+rather than a rushed one.
 
 ## `qz6j` resolved harder than scoped — the psyche dropped aliases entirely
 
@@ -122,40 +129,62 @@ binary fields (`BlsPublicKey`/`BlsSignature`/`ObjectDigest`/`PublicKeyFingerprin
 
 - **RESOLVED — `qz6j` alias fate:** drop aliases entirely (psyche). Done on the
   branch (`cf4cfb9f`).
-- **OPEN — runtime identity newtypes** (`MessageIdentifier`/`OriginRoute`): the
-  psyche asked for pros/cons (provided in chat). Pending their pick: privatize to
-  match the discipline (emit accessors + fix every runtime construction/`.0` site)
-  vs leave as `pub` Copy conveniences (a conscious exception for runtime-minted
-  integer identities). Not actioned until they decide.
+- **DECIDED — runtime identity newtypes** (`MessageIdentifier`/`OriginRoute`):
+  the psyche said **privatize**. So the emitter pass also emits `new`/`payload`
+  accessors for the `RuntimeCopyNewtypeTokens` types (lib.rs:2534) with a private
+  field, and rewrites every generated/test construction (`OriginRoute(900)` →
+  `::new(900)`) and `.0` read (`→ payload()`). Not yet actioned (part of the
+  emitter pass below).
 
-## Integration follow-ups (operator) — landing the grammar branch on main
+## The emitter integration pass (next, careful — NOT yet on main)
 
-The schema-next grammar branch and the schema-rust-next emitter branch must
-integrate together, because the emitter builds against schema-next `main`. The
-order:
+schema-next grammar is already on main. The schema-rust-next emitter pass builds
+on Step 2 (`44e472bf`, on main). I started it this session (bumped the schema-next
+lock to `cf4cfb9f`, enumerated the breakage) then **reverted the lock bump** and
+left it for a dedicated pass, because of the `From`-impl subtlety below. Verified
+breakage when the lock is bumped: **8 compile errors** — 3 `Alias` references
+(import, `lower_to_rust`@788, `map_key_type_names`@3329) + 5 `TypeReference::Bytes`
+non-exhaustive matches (`migration.rs`:467, lib.rs:1118/1174/3372/5442). No
+nota-next breakage (the lock bump also moves nota-next `ae5c25cd`→`d8862b61`; clean).
 
-1. **Land schema-next `schema-grammar-spec` (`cf4cfb9f`) on schema-next main.**
-   This is the fleet-forcing sweep the handover gates (`qz6j`). On landing, every
-   schema-rust-next-building contract (≈23 crates) regenerates, and bare `Name
-   Type` declarations across the fleet become distinct newtypes.
-2. **schema-rust-next emitter, against the new main** (extend the
-   `schema-grammar-emitter` branch, `44e472bf`):
-   - **Remove `RustAliasTokens` + the `TypeDeclaration::Alias` match arm** — the
-     variant no longer exists, so the emitter won't compile until this is dropped.
-   - **`yp29` Bytes emission:** emit `Bytes` as a newtype-scalar with a
-     hand-written lowercase-hex `NotaEncode`/`NotaDecode` (NOT `type Bytes =
-     Vec<u8>`). Template: `signal-version-handover/src/lib.rs:149` `RawPayload`.
-     Surface form `[deadbeef]` (bracket-string hex). Special-case Bytes in
-     `default_aliases`/`to_tokens`/`rust_type`/`collect_map_keys`.
-   - **`lm84` hash-id:** marker-on-a-bytes-newtype, fixed-width parameterization
-     of the Bytes hex codec (psyche to confirm marker-vs-primitive; recommend
-     marker). Pilot in criome `ObjectDigest`/`PublicKeyFingerprint`.
-3. **Consumer migrations** (fleet, post-regen): the ~5 declared-type re-tag
-   consumers (`State`/`Statement`-style) need explicit conversions; criome's
-   `{ value String }` binary fields → `Bytes`; the 4 `(Vec Integer)`-as-bytes
-   sites → `Bytes`; criome `(Authorization… Authorization…)` → `(Authorization…)`;
-   `signal-agent` `(RequestUnimplemented RequestUnimplemented)` → `(…)` (manual,
-   hand-written contract).
+The pass, in order:
+
+1. **`cargo update -p schema-next`** (bumps to `cf4cfb9f`).
+2. **Remove the qz6j `Alias` machinery** (dead once the variant is gone):
+   `AliasDeclaration` import; `RustTypeDeclaration::Alias` variant (lib.rs:779);
+   `lower_to_rust` arm (788); `RustAlias` struct+impl+`LowerToRust` (804-827);
+   `RustAliasTokens` (3053-3083) + its dispatch arm (3033); `map_key` arm (3329) +
+   `collect_alias_map_keys` (3349); the two `RustTypeDeclaration::Alias` arms at
+   3781 and 3934. **KEEP** `RustScalarAlias` (the `pub type Integer = u64` prelude)
+   and `PlaneNamespaceAlias` (`pub use` re-exports) — different mechanisms.
+   - **THE SUBTLETY — `From`-impl emission.** `emit_enum_payload_from_impls`
+     (3758) calls `alias_names` (3774, the qz6j-alias collector) → passes it to
+     `unique_non_alias_plain_payload_variants` to *skip* `From<Payload>` for
+     variants whose payload was a transparent alias (avoided `From<u64>` conflicts).
+     With aliases gone (now distinct newtypes), that skip is obsolete and the param
+     is always empty — former-alias payloads *should* now get `From` impls
+     (distinct types, unambiguous). Verify no two variants share a newtype payload
+     (that would make `From<X>` ambiguous) before deleting the filter; this is the
+     fleet-wide-correctness-sensitive part, hence the careful pass.
+3. **`yp29` Bytes emission** — the 5 match arms emit `Bytes`; plus a prelude
+   `pub struct Bytes(Vec<u8>)` + accessors + hand-written lowercase-hex
+   `NotaEncode`/`NotaDecode` (bracket form `[deadbeef]`; template
+   `signal-version-handover/src/lib.rs:149` `RawPayload`, but bracket not `#`).
+   Inject after the scalar-alias loop (render@274). NOT a transparent
+   `type Bytes = Vec<u8>`.
+4. **Privatize runtime identity newtypes** (psyche-approved) — `new`/`payload` on
+   `RuntimeCopyNewtypeTokens`, fix all construction/`.0` sites + fixtures.
+5. **`lm84` hash-id** — marker-on-bytes-newtype (confirm marker-vs-primitive);
+   pilot criome `ObjectDigest`/`PublicKeyFingerprint`.
+6. Regenerate fixtures (`SCHEMA_RUST_NEXT_UPDATE_FIXTURES=1` etc.), `cargo test`,
+   `clippy`, land on schema-rust-next main.
+
+**Fleet consumer migrations** (after the emitter lands, as each consumer bumps its
+lock): the ~5 declared-type re-tag consumers (`State`/`Statement`-style) need
+explicit conversions; criome's `{ value String }` binary fields → `Bytes`; the 4
+`(Vec Integer)`-as-bytes sites → `Bytes`; criome `(Authorization… Authorization…)`
+→ `(Authorization…)`; `signal-agent` `(RequestUnimplemented RequestUnimplemented)`
+→ `(…)` (manual, hand-written contract).
 
 ## Pointers
 
