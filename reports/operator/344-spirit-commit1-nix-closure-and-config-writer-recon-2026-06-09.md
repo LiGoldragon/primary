@@ -165,5 +165,20 @@ is the natural designer-coordinated surface.
 
 ## Status
 
-Read-only recon complete; no `spirit` source touched. Next action gated on the
-sequencing decision in chat.
+- **Decision:** psyche chose **B** — reconcile the contract first; build the
+  helper + daemon against the contract-owned `Configuration`, no transitional
+  shape. (The "ship now against the drifted type, migrate later" option was the
+  ESSENCE-forbidden transitional shape — `What I am not optimising for` /
+  `Backward compatibility is not a constraint`.)
+- **Offline closure — DONE and proven.** `spirit/flake.nix` now vendors
+  `signal-spirit` + `version-projection` (seven-step path-patch, all
+  `--replace-fail` strings byte-exact, `flake.lock` pinned). A network-free
+  sandbox build of `.#default` compiled `spirit` + `spirit-daemon` on the remote
+  builder; the pushed commit `6eb31976` rebuilds from `github:LiGoldragon/spirit`
+  to the identical store path. Corrects report 343: the leak was
+  `version-projection`, not `signal-frame`. No version bump (pure
+  build-reproducibility, no runtime logic change).
+- **Next:** contract reshape (B's core) — define `Configuration` in
+  `signal-spirit` (absorbing `archive_target`), reshape the crate-local meta
+  `Configure` to wrap it, rewire the daemon via a local `DaemonConfiguration`
+  wrapper, then add `spirit-write-configuration` against the contract type.
