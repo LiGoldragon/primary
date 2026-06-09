@@ -63,7 +63,7 @@ Not every manual `NotaEncode` implementation is automatically wrong. The legitim
 
 Fixed in `spirit` by replacing the fake completion encoder with the real `ProductionMigrationOutput` enum and decode-backed test.
 
-Fixed adjacent NOTA replay risk in `nota-next`: pipe-square string text now supports longer fences such as `[||...||]`, so bracket-bearing strings containing `|]` encode losslessly instead of being mutated.
+Fixed adjacent NOTA replay risk in `nota-next`: pipe-square string text now uses a normal backslash escape for the literal close marker (`\|]`) and literal backslash (`\\`). A brief intermediate longer-fence design (`[||...||]`) was rejected by the psyche because it was unbounded and visually ugly. The final rule keeps one readable pipe-text delimiter shape while preserving bracket-bearing strings losslessly.
 
 ## Verification
 
