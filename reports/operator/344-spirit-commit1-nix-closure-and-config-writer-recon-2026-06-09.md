@@ -222,3 +222,35 @@ wrapper" framing is superseded. The daemon already **emits** its wire types from
 Sequenceable: sub-step (1)+(2) (Configuration emitted + daemon impls
 `BindingSurface`, `config.rs` deleted) is independently verifiable before the
 `Configure`-unification (3).
+
+### Sub-step (1)+(2) — DONE (spirit `2c33016e`)
+
+`Configuration` now emits from `schema/signal.schema` into
+`crate::schema::signal`; the daemon impls `BindingSurface` directly on the
+emitted local type (no newtype). `config.rs` repurposed from a hand-written
+mirror into methods-on-the-noun. Consumers route through
+`spirit::schema::signal::Configuration` (the
+`crate_root_does_not_reexport_generated_plane_nouns` witness / record `k4d9`
+forbids flattening generated plane nouns into the crate root — caught my first
+attempt). Proven by offline `nix build .#default` + `test`
+(daemon_command/meta_configure/public_surface) + `binary-boundary-test`.
+
+Side fixes: gated the auto-discovered `production_database_sandbox` test behind
+`production-migration` (was an uncompilable `signal_spirit` reference masking the
+whole `test` check); synced `Cargo.lock` to consistent triad-runtime/schema-rust-next
+revs (the rename left version-bumped-but-rev-stale). Unmasking the `test` check
+revealed 3 **pre-existing** `generated_signal_plane` bracket-string snapshot
+failures — unrelated to this change (regen added only `Configuration`), tracked
+as bead `primary-5top` under bracket-string epic `primary-36iq`.
+
+**Contract location caveat:** `Configuration` lives in `spirit/schema/signal.schema`
+— the daemon's *current* ordinary signal contract. The canonical end-state (record
+`26e7`, ex-`lc2r`) is the wire contract schema in the `signal-spirit` repo; that
+repo-triad split is a separate, designer-owned step (`l6zw`: emitter contract-vs-daemon
+support is under audit). `Configuration` relocates with the whole contract when the
+split lands — it is not a special pilot hack. (The all-in-one pilot was never a
+psyche-"sanctioned" exception; that was an agent hallucination, corrected.)
+
+Remaining B: sub-step (3) — fold in `archive_target` and make the startup argument
+a meta `Configure` message wrapping `Configuration` (`ur16`/`t803`); then the
+`spirit-write-configuration` helper.
