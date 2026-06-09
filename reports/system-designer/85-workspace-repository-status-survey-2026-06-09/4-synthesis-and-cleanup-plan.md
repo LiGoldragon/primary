@@ -254,6 +254,15 @@ skeleton tests pass but has never functioned as a daemon; there was no working
 state to protect, so the earlier instinct to hold the conversion on a branch to
 "keep main working" was a hedge, dropped. Per `durable-shape-over-transitional`.)
 
+**Engine-level ergonomics fix landed (`schema-rust-next`):** the conversion
+surfaced that emitted string newtypes generated `new(String)`, forcing
+`&str`→`String` churn at every call site. Changed the emitter to emit
+`new(impl Into<String>)` for string-backed newtypes (non-string payloads keep
+the exact type — integer literals don't infer through `impl Into`). One-place
+engine change; every emitted contract gets the better ergonomics on
+regeneration. `signal-criome` regenerated to confirm; all emission tests + criome
+green. This is the "change the core engine, all components change" pattern.
+
 ### Fleet scope (NOTA-free migration — large, not yet done)
 
 Making *every* daemon NOTA-free is a per-triad migration across the fleet. Still
