@@ -302,3 +302,118 @@ source) before the full lifecycle/labeling machinery. The ~1700 live records
 would migrate via a one-time auditor pass (embed → cluster → propose
 merges/atomic-splits), psyche-reviewed batch-by-batch exactly as the 560 audit
 was.
+
+## Addendum (2026-06-09 dialogue): the guardian design
+
+The conversation moved the design from "cheap-first filtering" to a sharper
+shape the psyche drove: **a small model guards the gate, the thinking agent
+decides, the psyche is the last word.** This is the design we are now reviewing.
+It is recorded here as it stands — several decisions are still open (flagged at
+the end); this is not yet ratified intent.
+
+### The shape: two layers + a guardian at the gate
+
+- **Raw layer** — every psyche statement, captured close to verbatim, immutable
+  ground truth, never destructively merged, never lost before horizon
+  collection. This is the psyche's "keep everything, the safe one" instinct.
+- **Curated layer** — a clean, atomic, deduplicated, contradiction-resolved set
+  *derived from* the raw layer; what agents read by default. Because it is
+  derived it is **regenerable** — a bad pass is undone by rebuilding from raw,
+  never baked in.
+- **The guardian** — a small local model (a Gemma on the cluster AI node) that
+  sits at the moment of capture. It does not curate autonomously and it does not
+  decide; it **scouts**: given a proposed record, it finds the related and
+  contradicting existing records and renders a *verdict* the calling agent acts
+  on.
+
+### The capture flow (a negotiation, not fire-and-forget)
+
+1. A thinking agent proposes a record through the CLI/client (one typed signal
+   message), as today.
+2. The guardian scouts the **small relevant neighborhood** — the topic index
+   already returns few in a healthy store; embeddings are the cross-topic safety
+   net that catches a *reworded* duplicate filed under different topic words. The
+   guardian reads that handful, not the whole store.
+3. The guardian renders a **typed verdict** and returns it to the client. The
+   verdict carries the relevant records' **summaries, not just identifiers**, so
+   the agent decides without a second round-trip.
+4. The thinking agent (the powerful harness model) makes the actual call:
+   accept-as-new, reword its own proposal, modify an existing record (reword, or
+   change a parameter), reinforce an existing record, mark a contradicted record
+   deprecated because the new statement wins, or **escalate**.
+5. The psyche is the final escalation — but not the only one; the escalation
+   target depends on where in the engine the action sits (a future arc).
+
+The division of labor is the point: **the guardian is allowed to be wrong**,
+because it only flags — authority lives with the agent and ultimately the psyche.
+A false-positive contradiction costs only a look. This is exactly the recorded
+`ek8w`/`tf2o` auditor model (auto-propose, human/agent confirm) **relocated from
+a periodic after-the-fact sweep to a synchronous check at the front door** —
+preventive instead of curative, attacking the root cause the 560 audit named
+(the store gets dirty because nothing checks *at capture time*).
+
+### The verdict contract (typed signal reply)
+
+The `Record` reply stops being a bare `(RecordAccepted abcd)` and becomes a
+typed verdict sum. Sketch (names to settle):
+
+- `Accepted(identifier)` — original, no conflict; logged.
+- `Reinforced(identifier)` — matched an existing record; its weight/certainty
+  was raised rather than a new row added.
+- `PossibleDuplicate([summaries])` — likely already stated; agent decides.
+- `HasPrecedent([summaries])` — related prior intent the agent should weigh.
+- `Contradiction([summaries])` — conflicts with existing records; agent must
+  resolve (deprecate the loser, reword, or escalate).
+- `NeedsReview([summaries])` — ambiguous; escalate.
+
+The two knobs a verdict can propose moving: **certainty** (in production today)
+and **weight** (recorded intent only, flagged unsettled — `u2s9`/`hp3r`). Today
+there is one knob; weight would be the second; the design does not assume more.
+
+### Healthy-store principle (drives retrieval *and* diagnostics)
+
+A well-tended store returns **few** records for a relevant topic. So the size of
+a topic's result set is itself a **health metric**: a bloated topic (dozens of
+records) is the guardian/auditor's signal that *this topic needs tending* —
+duplicates to reinforce, stale records to deprecate. The cure and the warning
+light are the same mechanism. The ~1700 current count is the disease being
+cured, never a constant to engineer around. (Honest edge: a genuinely rich topic
+can hold many *distinct* non-redundant intents — handled by finer topics,
+consolidation into canonical statements with provenance, and ranking, not by
+dumping the whole history.)
+
+### Privacy (why local Gemma is load-bearing, not incidental)
+
+Because the model is a local node *inside the cluster*, intent — including
+private records — is read and tended without ever leaving the trust boundary. A
+model-mediated Spirit is therefore viable for the **whole** store, not a
+public-only half-measure. This is what makes the design usable given the
+closed-by-default privacy discipline. Corollary constraint: embeddings and any
+curated-layer text derived from a private record inherit that record's privacy.
+
+### Model tiering
+
+- **Small** Gemma for the constant per-capture scouting (sort intent from noise,
+  split a compound, judge same-vs-opposite over the handful of candidates).
+- **Larger** Gemma for the occasional *tending* pass (read a cluster, write the
+  one canonical statement; or produce a plain-language briefing on demand).
+
+### Open decisions this review must pressure-test
+
+1. **Where does the guardian run?** The daemon is dumb (binary-only startup, no
+   NOTA parsing, a kameo engine-actor) and must not embed model logic — yet the
+   psyche wants the `Record` *reply* to be the rich verdict. Candidates: (a) the
+   guardian is a separate triad-shaped component the client consults before the
+   daemon stores; (b) guardian logic lives in the capture/curator client that
+   talks to both the model node and the daemon; (c) the daemon's engine-actor
+   delegates to a model sidecar. Each trades against the dumb-daemon rule and the
+   typed-signal contract differently. **Unresolved.**
+2. **Hard block vs. warn.** When the guardian finds a contradiction: does the
+   store refuse the write until the agent resolves it (hard block), or store it
+   and flag the tension (warning)? The psyche's "refusal" language leans block;
+   the "needs review" language leans warn. Likely conditional on the guardian's
+   confidence.
+3. The two binding intent supersessions (reinforce-in-place vs. recorded
+   separate-records; engine-machinery vs. recorded dumb-storage) still stand.
+4. Weight: is it a second knob at all, and qualitative-rung-vs-count (`g8ln`).
+5. What counts as a recall event for decay; enforce-vs-lint atomicity.
