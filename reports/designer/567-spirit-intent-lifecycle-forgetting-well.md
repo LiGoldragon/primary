@@ -1,419 +1,244 @@
-# 567 — Spirit intent lifecycle: forgetting well (design dialogue)
+# 567 — Spirit's guardian: the design and a grounded review
 
-designer, 2026-06-09. The psyche opened a design conversation about the
-**accumulation problem** in Spirit: the store only ever appends, so it grows
-without bound, repetition piles up instead of reinforcing, intent goes stale
-with no way to stop surfacing it, and a record that touches many things rots in
-pieces. The psyche asked for prior-art research and my thinking + questions —
-*not* implementation (operator is bringing the new schema-derived spirit to
-feature parity with production; this is the design layer ahead of that).
+designer, 2026-06-09. Spirit is the typed intent store: it captures the psyche's
+durable intent as records and serves them back to agents. It has a real disease —
+it only ever grows, repetition piles up instead of reinforcing, stale intent
+keeps surfacing, and a record that says two things rots in pieces. This report
+states the design we have arrived at for fixing that (the **guardian**), and
+reviews it properly: what is solid, what is genuinely open, and — because a prior
+adversarial pass produced confident nonsense — what is *not* actually a problem.
 
-This report is grounded by a 10-agent research workflow (`w9wyyoetz`): three
-agents grounded the live store (data model, retrieval, the empirical 560-audit
-pollution evidence, the binding NOTA/intent constraints) and six surveyed prior
-art (truth-maintenance & belief revision, LLM-agent memory, temporal/bitemporal
-KR, cheap dedup & confidence, atomic-proposition representation, proven low-tech
-KM practice). Full prior-art detail and a synthesis draft are preserved in the
-session workflow output; the load-bearing references are folded in below so this
-report stands alone in the workspace.
+This is design-stage. Operator is bringing the new schema-derived spirit to
+parity with the production daemon; nothing here lands until the open decisions
+below are settled. Grounding for the prior-art claims came from research workflow
+`w9wyyoetz`; the architecture facts here were re-verified directly against the
+code (cited inline).
 
-## The reframe the psyche made mid-conversation (recorded `8g9n`)
+## The four problems
 
-I claimed Spirit has a "never hard-delete practice." The psyche corrected it:
-*"On a long enough timeline, this is physically impossible. Hard deletion is an
-inevitable design decision."* This is right and it reshapes the whole lifecycle.
-An archive that only grows just relocates the unbounded-growth problem one tier
-down. Deletion is not a failure mode to design *out*; it is a stage to design
-*for* — recoverable up to a horizon, then physically collected. The goal was
-never "don't forget"; it is **forget well**, and reinforcement is precisely what
-buys a record out of collection.
+1. **Unbounded growth.** The store only appends; retrieval gets noisier and an
+   agent can no longer load "all relevant intent" (today a broad query is
+   depth-capped to ~365 of ~1700 records — the concrete bug under the complaint).
+2. **Repetition should reinforce, not pile up.** Restating something — even
+   reworded — should strengthen the existing record, not add a redundant row.
+3. **Deprecation.** Intent goes stale or gets superseded; the store must stop
+   surfacing it without losing history — and, on a long enough timeline, must
+   physically collect it (Principle `8g9n`: hard deletion is inevitable; design
+   it as a deliberate, recoverable-to-a-horizon stage, not a forbidden act).
+4. **Compound records go half-stale.** A record touching many things has parts
+   that stay valid while others rot. The unit should be one atomic proposition.
 
-Captured as Principle `8g9n` (High). Notably, **the store already agreed with
-the psyche** before the correction landed: `btio` (a Decision) retired the
-append-only constraint of the old record 1091; `q4l0` names a closed lifecycle
-ladder ending in *compact* and *purge*; `o24x` makes removal a soft-then-hard
-two-phase process. My "never delete" framing was the thing out of step, not the
-store.
+## What the psyche has already decided
 
-## The headline finding: this is not a blank slate
+The decisive grounding result: **this is not a blank slate.** The store already
+holds substantial intent toward all four problems. The design must honor it or
+have the psyche explicitly supersede it.
 
-The single most important result of the research is that **the psyche has
-already recorded substantial intent toward all four problems.** The design job is
-to honor that corpus or explicitly supersede it — not to invent from zero. The
-live store (~1700 records on the v0.5.2 production daemon) maps to the four
-problems like this:
-
-| Problem | Already-recorded intent (record id — gloss) |
+| Problem | Already-recorded intent (id — gloss) |
 |---|---|
-| 1 — unbounded growth / retrieval | `q4l0` (the nominate/tombstone/archive/collect/compact/purge ladder); `sqrk` (adaptive-depth retrieval — quiet topics reach deeper); `699n` (weighted recency/keyword scoring, "maybe via Nexus"); `yhn9`/`xni2` (a dedicated typed archive store) |
-| 2 — repetition reinforces | `vbx6` (Principle: **certainty ≠ weight** — certainty is confidence in the statement, weight is accumulated importance); `9bxr` (weight = recurrence/importance, distinct axis); `g8ln` (weight is a qualitative Magnitude rung, **"not an integer count"**); `6z6t` (Correction: reinforcement may raise *weight* but **must not auto-raise certainty**); `u2s9`/`hp3r` (weight-field design flagged **Low certainty, unsettled**) |
-| 3 — deprecation / staleness | `a3l4` (a **relations field** — hashes pointing to other records — "the only code change needed"); `y0vr` (no composite *type*; supersession is the relations field + may yield 2-3 records); `qkrg`/`kfxd` (provenance + archival recoverability before any source is removed); `ek8w`/`tf2o` (**automated auditor auto-proposes, psyche confirms each retirement**; the judgment is agent-behavior trained by a skill, "the only supporting code is the relations field") |
-| 4 — compound goes half-stale | `uara` (topics are **broad atomic single words**, not compound phrases); `jn99` (when a low-certainty idea is tangled inside a higher-certainty record, **split** so the parts are separate); `20jk`/`f0wm` (record fields vary by kind) |
+| 1 growth | `q4l0` (lifecycle ladder: nominate/tombstone/archive/collect/compact/**purge**); `sqrk` (adaptive-depth retrieval); `yhn9`/`xni2` (a typed archive store) |
+| 2 reinforce | `vbx6` (**certainty ≠ weight**); `9bxr` (weight = recurrence/importance); `g8ln` (weight is a qualitative rung, **"not an integer count"**); `6z6t` (reinforcement raises *weight*, **must not auto-raise certainty**); `u2s9`/`hp3r` (weight flagged **unsettled, not in production**) |
+| 3 deprecation | `a3l4` (a **relations field** — the only code change needed); `y0vr` (no composite *type*; a refresh may yield 2-3 records); `qkrg`/`kfxd` (provenance + recoverability before any removal); `ek8w`/`tf2o` (**auditor proposes, psyche confirms each retirement**; judgment is agent behavior, "the only supporting code is the relations field") |
+| 4 atomicity | `uara` (topics are atomic single words); `jn99` (split a tangled record so parts separate); `20jk`/`f0wm` (fields vary by kind) |
 
-Plus the capture-discipline records that govern all four and that the **560
-audit** found being violated: `om3x`/`atjw` (never default to Maximum; the
-certainty signal dies if most records are Maximum), `xtk9` (ephemeral
-information is not intent), `7ccc` (Medium is the normal default).
+Empirical proof of the disease: the **560 audit** classified 1706 records — 79%
+durable, 11% scratchpad, 10% borderline. The dominant pollution is
+working-instructions wearing a Decision costume (105 of 184 scratchpad), with a
+mechanically-detectable tell: **target-artifact + action-verb** (`port
+orchestrate`, `migrate X to Y`). The audit's own conclusion: pollution
+concentrates on active migration fronts, so "the cure is disciplinary" — catch it
+*at the door*.
 
-**The 560-audit pollution taxonomy is the empirical proof of the disease.** Of
-1706 classified records, 79% durable / 11% scratchpad / 10% borderline. The
-dominant pollution is *working-instructions in a Decision costume* (105 of the
-184 scratchpad) — the structural tell is **target-artifact + action-verb**
-(`port orchestrate`, `migrate X to Y`). The audit's causal finding is decisive:
-pollution **concentrates on active migration fronts** — clean in stable domains,
-dirty in churning ones — so "the cure is disciplinary, not architectural." Any
-machine help is a *second* line behind a better capture gate.
+## The design under review: the guardian
 
-## The current mechanics (what we build on / must add)
+The shape the psyche drove: **a small local model guards the gate, the thinking
+agent decides, the psyche is the last word.**
 
-The record is five fields: `{topics: Vec<Topic>, kind: Kind, description,
-certainty: Magnitude, privacy: Magnitude}` (`signal-spirit/src/lib.rs:678`).
-`Kind` is the closed five-variant enum. `Magnitude` is an 8-rung ladder
-(`Zero` semantically lowest). Storage is redb-4 + rkyv-0.8 over `sema`/
-`sema-engine`, with an **append-only `__sema_engine_commit_log`** beside the live
-table and a **physically separate archive `.sema` file**. The engine already
-supports mutate (`ChangeCertainty`/`ChangeRecord`) and retract (`Remove`,
-`CollectRemovalCandidates`) — *the "monotonic" property is a usage convention,
-not a storage guarantee.*
+- **The store stays simple and is the ground truth.** Every psyche statement is
+  captured as an atomic typed record. Nothing is destructively merged; history is
+  recoverable to a horizon, then collected (`8g9n`, `q4l0`).
+- **The guardian scouts at capture.** When an agent proposes a record, a small
+  model (a Gemma on the cluster AI node) finds the related and contradicting
+  existing records in the proposal's neighborhood and renders a **typed verdict**.
+  It does not curate autonomously and it does not decide — it *flags*.
+- **The agent decides; the psyche escalates.** The thinking harness model reads
+  the verdict and acts: accept as new, reword, reinforce/relate to an existing
+  record, mark a contradicted record for deprecation, or escalate. The psyche is
+  the final authority on anything that retires existing intent.
 
-Retrieval is the felt pain: a **full table scan + linear filter**, no index on
-any content field, bounded only by a fixed recency truncation (5/15/30/100).
-There is **no relevance ranking, no embedding, no dedup, no clustering anywhere**
-in any repo. An unbounded `(Any [])` query returns ~365 of ~1700 records because
-the daemon depth-caps broad queries — **an agent literally cannot Observe "all
-relevant intent" in one call today.** That is the concrete bug under the
-abstract complaint.
+**The authority split is the whole point: the guardian is allowed to be wrong**,
+because it only advises. A false flag costs one look. This is precisely the
+recorded `ek8w`/`tf2o` auditor model — only moved from a periodic after-the-fact
+sweep to a check *at the front door*, which is where the 560 audit says the cure
+belongs.
 
-Build-on hooks that already exist: mutable+filterable `certainty`; the
-`certainty = Zero` → archive removal-candidate path; the commit-log history
-spine; the separate archive store; per-topic counts. **Must-add (greenfield):**
-weight/support-count, supersession edges, valid-to, active/retired as a derived
-status, any embedding/ANN/dedup, and any atomicity enforcement.
+### How it sits in the architecture (verified against the code)
 
-## My design position
+The objection that "a dumb daemon can't return a rich verdict" is a non-issue.
+The daemon already *computes* its replies through Nexus: `nexus.rs` composes
+`RecordAccepted` from the SEMA write outcome, and `apply_effect`/`run_effect`
+already run effects like **`ClassifyState`** (which classifies a raw `Statement`
+into an `Entry` today) and `Stash`, re-entering the decision as
+`NexusWork::EffectCompleted`. A guardian scout is the **same shape as the
+classifier that already exists** — a new `NexusEffectCommand::Scout` returning a
+`Scouted` result. So:
 
-### The master move: status is a *derived label*, not a stored flag
+- The model call is a **delegated async effect**, not an inline blocking await.
+  The seam (`run_effect`) is already async; the inference runs in a dedicated
+  IO/peer actor so the engine actor never stalls on it — the same discipline
+  `Stash` already follows.
+- The **vector index is component-owned SEMA state** (a `RecordIdentifier →
+  embedding` table); only the *model inference* is external. Storing vectors is
+  cheap and classical; at ~1700 records a brute-force cosine scan is sub-millisecond,
+  so an ANN index (HNSW) is premature until the active set is far larger.
+- The verdict is just a richer Nexus-composed reply on the ordinary channel;
+  psyche-gated retirement belongs on the meta channel (`meta-signal-spirit`
+  already carries privileged lifecycle).
 
-Forty-five years of truth-maintenance (JTMS/ATMS) and every memory/temporal
-system converge on one idea: **a record's belief-status is cheaply recomputed
-over the log; it is never a flag you hand-edit.** Spirit has the append-mostly
-log already. What it lacks is (a) the labeling pass that turns ~1700 records into
-a small *currently-active* set, and (b) the capture-time pipeline that sends a
-restatement to *reinforcement* instead of a new row. Both are overwhelmingly
-cheap — set ops, ANN cosine, interval arithmetic, a graph fixpoint, closed-form
-decay. The LLM fires in exactly **two** gated, write-time spots.
+### Atomicity (part of the design, not a separate debate)
 
-Reconciled with the psyche's finitude correction: the log is the source of truth
-*within a recoverability horizon*; past the horizon, `q4l0`'s **compact** folds
-and **purge** physically collects. "Immutable log" and "deletion is inevitable"
-meet at: never lose history *accidentally*; collect it *deliberately* at a
-horizon.
+Records should be **one minimal self-contained proposition** — the psyche's "one
+statement, grammar not character-count" instinct, which is correct: length and
+proposition-count anti-correlate ("use rkyv; never emit quotes" is short but two
+propositions; a long sentence with modifiers is one). The unit is *truth-value
+indivisibility*. The guardian's classifier splits a compound at capture (the
+`ClassifyState` effect already exists to extend), emitting atoms linked by the
+`relations` field so the split is lossless. Atomicity is what makes per-record
+reinforcement and per-record deprecation *correct* — a record carrying one
+truth-value can only be wholly valid or wholly stale. Caveat: atomicity alone
+does not bound growth; it must ship with dedup + the lifecycle ladder.
 
-### The record: atomic proposition + three typed fields (no flags)
+## The review
 
-Keep the five fields; constrain `description` to **one minimal self-contained
-proposition**; add three typed fields (generalizing `a3l4`):
+My own judgment, grounded. Three buckets, stated plainly.
 
-- **`support`** — the reinforcement axis (problem 2). A vector of restatement
-  tags `{date, time, match-strength}` (OR-Set style: every restatement is a
-  provenance tag on the *existing* record), from which a qualitative weight rung
-  and a recency-decayed stability are *derived*. This honors `vbx6`/`g8ln`'s
-  two-axis qualitative model — but the underlying tag vector *is* a count, which
-  collides with `g8ln`'s "not an integer count" (open question Q1).
-- **`validity`** — a bitemporal interval (`valid_from`, `valid_to: Option`).
-  Deprecation **closes `valid_to`; nothing is deleted.** Open-interval = the cheap
-  "currently valid" predicate. Proven, standard (SQL:2011, Zep/Graphiti, Datomic).
-- **`relations`** — typed lineage edges (`Supersedes`, `SupersededBy`,
-  `DerivedFrom`, `Because`, `Constrains`), the typed form of `a3l4`. These are
-  both the supersession graph (problem 3) and the connective structure recovered
-  after a compound is split (problem 4).
+### Solid — keep
 
-`status` (Active / Reinforced / Superseded / Retired / Conflicted) is **derived,
-never stored.** Embeddings live as component-owned typed Sema state (a
-`RecordIdentifier → vector` table + an HNSW index), not a sidecar file.
+- **The authority model** (guardian flags / agent decides / psyche last). Honors
+  `tf2o`/`ek8w`. This is what makes a model touching sacred intent acceptable.
+- **Verbatim ground truth.** The production record stores no verbatim field today
+  (`spirit-cli.md`: the agent clarifies wording before recording); keeping the
+  raw psyche statement is a real improvement and the cleanest honoring of
+  `kfxd`/`qkrg`.
+- **Embeddings as a read-path upgrade** are the actual fix for the retrieval bug
+  (full-scan + depth-cap). Brute-force cosine at this scale; no LLM in the read
+  path.
+- **Reinforce-or-insert genuinely bounds growth** by catching duplicates at
+  capture — necessary, though not sufficient (see open issue 2).
+- **A discriminative classifier**, not a generative model, for the
+  same-vs-opposite call — calibrated and thresholdable, and better on exactly the
+  paraphrase-vs-negation case that is the reason to have it. Generative model only
+  for synthesis/briefing.
 
-### The capture pipeline — cheap funnel, LLM at the margin only
+### Genuinely open — decide before build
 
-Per psyche statement (cost scales with *write* volume, never store size):
+1. **Privacy clamp (real, verified).** `PublicRecordQuery` structurally rejects
+   elevated privacy (`signal-spirit/src/lib.rs:1098`), so reads are gated at the
+   operation level. A `Record` op carries no privacy scope; returning a neighbor's
+   summary in the verdict would bypass that gate — a public record's nearest
+   neighbor can be private. **Resolution:** clamp the verdict to the caller's read
+   scope (full summary only for neighbors at-or-below caller authority; identifier
+   + tier + redacted reason otherwise); per-tier indexes; summaries
+   verbatim-from-storage, never model-paraphrased. This is mandatory, not optional.
+2. **Reinforcement vs. recorded intent (psyche's call).** "Reinforce in place"
+   collides with the recorded `INTENT.md` stance (*"separate records… dedup is a
+   query-time concern, not a storage shape"*), with `6z6t` (don't auto-raise
+   certainty), and with `g8ln` (weight is not a count) — and weight itself is
+   `u2s9`/`hp3r`-unsettled. The clean reconciliation that honors all of it:
+   reinforcement records **a new atomic row + a typed `relations` edge** to the
+   matched record (`a3l4`/`y0vr`), with weight *derived* from the cluster at query
+   time. Otherwise the psyche explicitly supersedes the separate-records stance.
+   Either way, **growth still needs the recorded lifecycle ladder** (`q4l0`
+   decay/collect/purge) — reinforcement curbs duplicate inflow; the ladder bounds
+   the rest.
+3. **Sync verdict vs. async event — RESOLVED by the psyche (Decision `mrkv`):
+   capture blocks.** The guardian is a true gate, not an advisor — a record is not
+   captured until the guardian vets and admits it, so clutter is resolved or
+   refused at the door (Principle `icpa`: Spirit must be maximally clutter-free).
+   Two consequences to honor: **blocking is not losing** — a refused proposal must
+   be resolved-and-resubmitted by the agent, never dropped (nothing is lost if the
+   loop is honored); and **the failure mode is refuse, not admit** — if the
+   guardian cannot vet (model unavailable), capture waits or is refused, never
+   admitted unvetted. This makes guardian availability a genuine operational
+   requirement, met by HA/queueing, not by weakening the gate.
+4. **Determinism of any synthesized layer.** A generative model is not
+   reproducible. If a curated/synthesized layer exists, pin the model + version
+   and record every psyche confirmation as a raw record, so the derived view stays
+   a pure function of raw — at which point a separate "curated layer" collapses
+   into a derived `status` label over one log (simpler, and the right shape). Keep
+   synthesis to medoid-selection (a real member), generative fusion only as a
+   psyche-confirmed exception.
+5. **Verdict shape.** A flat enum forces one disposition, but a proposal can
+   duplicate X, contradict Y, and have precedent in Z at once. Use a relational
+   bag: `{disposition, Vec<(RecordIdentifier, Relation, confidence)>}` — the wire
+   mirror of the `relations` field.
+6. **Eval.** Without a labeled set the guardian is unfalsifiable, which voids
+   "allowed to be wrong" (you can't tell when it is). Carve a psyche-labeled
+   pair-set from the 560 corpus; tune for high recall on contradiction/duplicate
+   (a false negative re-admits pollution; a false positive costs one look).
 
-1. **Gate (classical).** The existing Spirit gate + the 560 mechanical
-   pre-check: *target-artifact + action-verb ⇒ presumptive working-instruction →
-   route to a report, not Spirit.* Highest-yield, cheapest filter; attacks
-   pollution at the source.
-2. **Embed** (one encoder forward pass, ~ms) over content + topics + kind.
-3. **ANN near-dup** (HNSW, blocked by topic adjacency): ~1700 → ~5 candidates.
-   This bound is what keeps the LLM cheap.
-4. **Reinforce-or-insert**, three cosine bands: **high → auto-reinforce**
-   (append a support tag, no new row, no LLM); **low → auto-insert** (new
-   record, no LLM); **mid → the one gated judgment** — paraphrase vs negation,
-   which cosine *cannot* tell apart. A small local NLI model (entail/contradict/
-   neutral) gates first; genuine ambiguity escalates to a bounded LLM call or to
-   the psyche.
-5. **Compound detection (classical).** Dependency parse: a `conj`/`cc` edge
-   joining two verb-headed clauses (the "each split must contain a verb" rule)
-   flags a compound. **Detection needs no LLM**; the LLM split+decontextualize
-   runs only on a confirmed positive, emitting atoms linked by `DerivedFrom` +
-   `Because` so the split is lossless.
-6. **Contradiction.** On a single-valued slot, a new record auto-closes the
-   prior's `valid_to` by **interval arithmetic alone** (no LLM); semantic
-   contradiction uses the step-4 gate on the already-narrowed candidate set.
+### Not a real problem — explicitly debunked
 
-Every step *proposes*; anything that changes what counts as active intent is
-psyche-confirmable through the auditor slot. The cheap layer narrows and ranks —
-**it never authors intent.**
+A prior adversarial pass leaned on these to argue "the guardian can't be at the
+gate." They do not hold:
 
-### Retrieval — the actual fix for "can't load all relevant intent"
+- **"A blocking network await is forbidden."** Incoherent — an `await` is not a
+  block, and the delegated async effect (`run_effect`, as `Stash`/`ClassifyState`
+  already use) is the standard pattern. The model call slots straight in.
+- **"It couples capture to the most-disrupted node."** Not a design-shape
+  verdict. Node reliability is an operations matter on a different axis from design
+  correctness, and "most-disrupted node" is a *current status snapshot* — the exact
+  pollution the 560 audit names. With capture blocking (Decision `mrkv`), guardian
+  availability *is* a genuine operational requirement — met by making the model
+  HA/queued and by blocking-not-admitting when it is down, not by weakening the
+  gate.
+- **"A capture-time gate does nothing for growth."** False — reinforce-or-insert
+  is a primary growth control (issue 2). It is necessary, not sufficient; pair it
+  with the lifecycle ladder.
+- **"Scout-then-store is a blocking concurrency race."** Marginal at human-paced
+  write volume, and a non-issue when capture is advisory + resolution is
+  idempotent (content-addressed supersede on `(id, expected-hash)`).
 
-Replace newest-N with the **Generative-Agents scoring** over the *active set
-only*: `score = relevance (ANN cosine) + entrenchment (the support stability /
-the manufactured AGM entrenchment) + recency (one exponential decay)`. No LLM in
-the read path. Optional later upgrade: **Personalized PageRank** over the
-relations graph (HippoRAG) for bounded multi-hop "pull in related intent." This
-delivers a *relevant active ranked* set instead of a depth-capped recency slice.
+## The decisions still genuinely open
 
-### Lifecycle / consolidation
+We are **redesigning** Spirit, so the old design-mechanism intent — separate-records,
+dedup-at-query-time, dumb-storage-only, the tentative/unsettled weight semantics —
+is *replaced by* this redesign, not a constraint on it. The redesign is the
+supersession; those records get rewritten/retired when it lands, with no
+permission ceremony. What still binds are the durable **values** that outlive any
+storage shape: privacy closed-by-default, calibrated certainty (don't over-rate),
+intent-is-primordial, and now clutter-free (`icpa`). Against that, the calls
+genuinely still open:
 
-Status is the grounded extension of the supersession graph ∩ open-validity ∩
-`retrievability ≥ floor` — all cheap, all recomputable. **Retired** is the
-principled successor to today's overloaded `certainty = Zero` marker; any
-restatement revives it. Periodic **consolidation** is the natural body of the
-already-planned auditor role (`ek8w`/`tf2o`): cheap clustering (label
-propagation / HDBSCAN) → **canonicalize to a real member (medoid), not a
-synthesized average** (honest provenance) → bounded LLM synthesis *only* when
-members genuinely disagree, always psyche-confirmed. Sources archived +
-hash-referenced before retraction (`qkrg`/`kfxd`).
+- **Reinforcement** — decided in direction by `mrkv`/`icpa`: a pure restatement
+  gets *no new row* (the gate reinforces the existing record); a
+  distinct-but-related statement gets its own atomic row + a relation edge. Open
+  sub-question: is weight a stored qualitative rung or derived from the cluster?
+- **Who deprecates** — the agent proposes; the close on an existing record stays
+  psyche-gated and recoverable (a durable value — don't silently lose intent).
+- **Atomicity** — enforce (reject a compound at capture) or lint (accept + flag
+  for split)? Lean: lint and gate the split.
+- **Recall event for decay** — only an explicit restatement, or does an agent
+  acting on a record count? Decides whether the store self-reinforces from use.
 
-## The atomicity verdict
+## Recommendation
 
-**The psyche's instinct is right, strongly supported, and the highest-leverage
-decision here — with one refinement.** Every mechanism votes for it for a
-*technical* reason, not aesthetics:
+The guardian is the right idea — point-of-entry prevention is exactly where the
+560 audit says the cure lives. De-risk it in a sequence that makes each step earn
+the next:
 
-- TMS **cannot represent** half-stale: support/retraction are per-node; a node
-  bundling two propositions has a meaningless IN/OUT label. Atomic nodes are a
-  *precondition* for the derived-label move to be correct.
-- Validity intervals are per-fact; a compound can't carry one `valid_to`.
-- Reinforcement needs atomic grain: a restatement might match one half of a
-  compound and contradict the other — you cannot cleanly bump weight.
-- Empirically (FActScore), even a single *sentence* mixes supported and
-  unsupported facts in **40%** of cases — the sentence is too coarse.
+1. **Now, free:** the classical capture lint (`target-artifact + action-verb →
+   route to a report, not Spirit`) — the single biggest pollution class, no model.
+   Plus the verbatim raw layer.
+2. **The retrieval fix:** embeddings + brute-force cosine on the read path.
+3. **The guardian gate** as a Nexus effect returning the typed verdict —
+   **blocking: capture does not complete until vetted** (Decision `mrkv`), with
+   the privacy clamp built in from the start and a resolve-and-resubmit loop so a
+   refusal never loses intent.
+4. **Growth:** the recorded lifecycle ladder (`q4l0` decay/collect/purge) — the
+   half of problem 1 the guardian does not cover.
+5. **Tending:** periodic consolidation as the auditor (`ek8w`/`tf2o`), generative
+   model only here, psyche-confirmed.
 
-**Why character-count is the wrong proxy (precisely):** length and
-proposition-count *anti-correlate in the cases that matter.* "Use rkyv; never
-emit quotes" is short but is **two** independently-stale-able propositions.
-"Alice, the lead architect who joined in 2019, redesigned storage" is long but is
-**one** assertion with modifiers. The right unit is **truth-value
-indivisibility** — does it split into two independently-falsifiable statements?
-A character budget is blind to the `and`. It also contradicts the psyche's own
-"a long single statement is fine."
-
-**The refinement — molecular, not maximally atomic** (Gunjal & Durrett 2024):
-the unit is the **minimal *self-contained* proposition**, not the smallest
-fragment. Over-atomizing yields ambiguous, misattributable junk ("She medalled in
-1986" — which she?) and *reintroduces* staleness through over-specification.
-Dense-X's three criteria: distinct meaning, minimal, **self-contained
-(coreference resolved).** This is exactly "a long single statement is fine; two
-statements must be two records" plus a self-containment guard.
-
-**What's lost and how it's recovered:** atomizing severs because/therefore
-structure; the `relations` field carries it back as typed edges. Splitting
-becomes **lossless.** This is why `relations` is load-bearing — atomic nodes
-*plus a justification graph* recover everything the compound encoded without its
-fragility. The psyche already half-recorded this: `uara` (atomic topics), `jn99`
-(split tangled certainty), `y0vr` (a refresh may yield 2-3 records, not one).
-
-**The crucial caveat:** atomicity *alone does not bound growth.* A-MEM is
-atomic, richly linked, and *still* a monotonic pile — because it has no decay, no
-dedup, no invalidation (structurally Spirit's current failure mode with nicer
-metadata). **Atomicity must ship with the dedup + decay + invalidation
-machinery, or it solves nothing for problem 1.**
-
-## The cheap-vs-LLM ledger (the psyche's hard constraint)
-
-- **Read path: zero LLM.** ANN cosine + three float comparisons + a graph
-  reachability — all classical.
-- **Write path: two gated LLM spots only** — (i) split a *confirmed* compound,
-  (ii) adjudicate a *mid-band* same-vs-contradict pair the cheap layer already
-  narrowed to ~5 candidates. Both distillable to small local models (a
-  Propositionizer; a local NLI head). LLM cost scales with *write* volume, never
-  store size or query volume.
-- **Everything else classical:** embeddings (encoder, not generative), HNSW,
-  set/interval/graph ops, spaced-repetition decay math, Beta-Bernoulli counters.
-- **The one real risk to flag loudly:** cosine cannot distinguish *paraphrase*
-  from *negation* — both are high-similarity. Auto-reinforce on raw cosine could
-  *silently merge a Correction into the thing it corrects.* The mid-band gate
-  exists precisely to stop that, and it deserves its own stress test.
-
-## Open questions for the psyche
-
-The first two are **binding contradictions with already-recorded intent** and
-need explicit supersession (only the psyche supersedes psyche intent).
-
-1. **Reinforce-in-place contradicts your recorded model.** `persona-spirit/
-   INTENT.md` records your stance: *"separate records then. repeated similar
-   intents will mean stronger signal,"* and *"dedup and clustering is a
-   query-time concern, not a storage shape."* This conversation wants repetition
-   to bump weight on the *existing* record at *capture* time. **Do you supersede
-   the separate-records model?** And two sub-reconciliations with your own prior
-   intent: (a) `6z6t` (a Correction) says reinforcement raises *weight* but
-   **must not auto-raise certainty** — so when you said "more weight or
-   certainty," did you mean *weight* (consistent with `6z6t`), or do you now want
-   certainty to rise too? (b) `g8ln` says weight is a qualitative Magnitude rung,
-   **"not an integer count"** — but a reinforcement mechanism naturally counts
-   restatements. Qualitative rung *derived from* a real count, or genuinely no
-   count?
-
-2. **Dumb-storage vs engine machinery — the load-bearing architectural fork.**
-   `tf2o` records: the refresh/agglomeration judgment is *"primarily agent
-   behavior trained through a skill, not engine logic — the only supporting code
-   is the relations field,"* and `INTENT.md` calls Spirit *"dumb storage, not a
-   thinking thing."* My design puts real cheap machinery *in the engine*
-   (embeddings table, HNSW, the labeling pass, validity intervals). **Is that a
-   welcome expansion, or do you want the cheap detection to live in the
-   auditor-agent/skill layer and keep the engine dumb?** My read: the *detection*
-   can live engine-side cheaply while the *decision* stays gated in the auditor —
-   but this needs your ratification because it stretches a recorded principle.
-
-3. **Does un-restated intent ever retire on its own?** A usage-decay model
-   (spaced-repetition retrievability floor) can auto-flag dormancy. Your `btio`
-   stance is *"over-removal is worse than under-removal."* So: does decay ever
-   *retire* on its own, or only ever *flag candidates* for the human-gated
-   auditor? (My lean: flag-only; never auto-retire from non-use.)
-
-4. **Atomicity — enforced or linted?** Hard-block a compound at `Record`, or
-   accept-and-flag-for-split? Parsers err on hard coordination, so my lean is
-   **lint at capture, gate the split** — but you decide whether a flagged
-   compound *blocks* capture or only *warns*.
-
-5. **What is a "recall event" for decay?** Genuinely novel: spaced-repetition
-   math is proven for flashcards, but Spirit must *define the review event.* Only
-   an explicit psyche restatement (conservative), or does an agent
-   *loading-and-acting-on* a record without contradiction count as a successful
-   recall that boosts its stability? This decides whether the store
-   self-reinforces from use or only from you.
-
-## What this is not (sequencing)
-
-This is design dialogue, not a build order. Nothing here lands until the two
-binding contradictions are resolved and the new schema-derived spirit reaches
-parity. The natural first increment once settled is the **capture gate +
-embeddings table + ANN reinforce-or-insert** (kills problems 1 and 2 at the
-source) before the full lifecycle/labeling machinery. The ~1700 live records
-would migrate via a one-time auditor pass (embed → cluster → propose
-merges/atomic-splits), psyche-reviewed batch-by-batch exactly as the 560 audit
-was.
-
-## Addendum (2026-06-09 dialogue): the guardian design
-
-The conversation moved the design from "cheap-first filtering" to a sharper
-shape the psyche drove: **a small model guards the gate, the thinking agent
-decides, the psyche is the last word.** This is the design we are now reviewing.
-It is recorded here as it stands — several decisions are still open (flagged at
-the end); this is not yet ratified intent.
-
-### The shape: two layers + a guardian at the gate
-
-- **Raw layer** — every psyche statement, captured close to verbatim, immutable
-  ground truth, never destructively merged, never lost before horizon
-  collection. This is the psyche's "keep everything, the safe one" instinct.
-- **Curated layer** — a clean, atomic, deduplicated, contradiction-resolved set
-  *derived from* the raw layer; what agents read by default. Because it is
-  derived it is **regenerable** — a bad pass is undone by rebuilding from raw,
-  never baked in.
-- **The guardian** — a small local model (a Gemma on the cluster AI node) that
-  sits at the moment of capture. It does not curate autonomously and it does not
-  decide; it **scouts**: given a proposed record, it finds the related and
-  contradicting existing records and renders a *verdict* the calling agent acts
-  on.
-
-### The capture flow (a negotiation, not fire-and-forget)
-
-1. A thinking agent proposes a record through the CLI/client (one typed signal
-   message), as today.
-2. The guardian scouts the **small relevant neighborhood** — the topic index
-   already returns few in a healthy store; embeddings are the cross-topic safety
-   net that catches a *reworded* duplicate filed under different topic words. The
-   guardian reads that handful, not the whole store.
-3. The guardian renders a **typed verdict** and returns it to the client. The
-   verdict carries the relevant records' **summaries, not just identifiers**, so
-   the agent decides without a second round-trip.
-4. The thinking agent (the powerful harness model) makes the actual call:
-   accept-as-new, reword its own proposal, modify an existing record (reword, or
-   change a parameter), reinforce an existing record, mark a contradicted record
-   deprecated because the new statement wins, or **escalate**.
-5. The psyche is the final escalation — but not the only one; the escalation
-   target depends on where in the engine the action sits (a future arc).
-
-The division of labor is the point: **the guardian is allowed to be wrong**,
-because it only flags — authority lives with the agent and ultimately the psyche.
-A false-positive contradiction costs only a look. This is exactly the recorded
-`ek8w`/`tf2o` auditor model (auto-propose, human/agent confirm) **relocated from
-a periodic after-the-fact sweep to a synchronous check at the front door** —
-preventive instead of curative, attacking the root cause the 560 audit named
-(the store gets dirty because nothing checks *at capture time*).
-
-### The verdict contract (typed signal reply)
-
-The `Record` reply stops being a bare `(RecordAccepted abcd)` and becomes a
-typed verdict sum. Sketch (names to settle):
-
-- `Accepted(identifier)` — original, no conflict; logged.
-- `Reinforced(identifier)` — matched an existing record; its weight/certainty
-  was raised rather than a new row added.
-- `PossibleDuplicate([summaries])` — likely already stated; agent decides.
-- `HasPrecedent([summaries])` — related prior intent the agent should weigh.
-- `Contradiction([summaries])` — conflicts with existing records; agent must
-  resolve (deprecate the loser, reword, or escalate).
-- `NeedsReview([summaries])` — ambiguous; escalate.
-
-The two knobs a verdict can propose moving: **certainty** (in production today)
-and **weight** (recorded intent only, flagged unsettled — `u2s9`/`hp3r`). Today
-there is one knob; weight would be the second; the design does not assume more.
-
-### Healthy-store principle (drives retrieval *and* diagnostics)
-
-A well-tended store returns **few** records for a relevant topic. So the size of
-a topic's result set is itself a **health metric**: a bloated topic (dozens of
-records) is the guardian/auditor's signal that *this topic needs tending* —
-duplicates to reinforce, stale records to deprecate. The cure and the warning
-light are the same mechanism. The ~1700 current count is the disease being
-cured, never a constant to engineer around. (Honest edge: a genuinely rich topic
-can hold many *distinct* non-redundant intents — handled by finer topics,
-consolidation into canonical statements with provenance, and ranking, not by
-dumping the whole history.)
-
-### Privacy (why local Gemma is load-bearing, not incidental)
-
-Because the model is a local node *inside the cluster*, intent — including
-private records — is read and tended without ever leaving the trust boundary. A
-model-mediated Spirit is therefore viable for the **whole** store, not a
-public-only half-measure. This is what makes the design usable given the
-closed-by-default privacy discipline. Corollary constraint: embeddings and any
-curated-layer text derived from a private record inherit that record's privacy.
-
-### Model tiering
-
-- **Small** Gemma for the constant per-capture scouting (sort intent from noise,
-  split a compound, judge same-vs-opposite over the handful of candidates).
-- **Larger** Gemma for the occasional *tending* pass (read a cluster, write the
-  one canonical statement; or produce a plain-language briefing on demand).
-
-### Open decisions this review must pressure-test
-
-1. **Where does the guardian run?** The daemon is dumb (binary-only startup, no
-   NOTA parsing, a kameo engine-actor) and must not embed model logic — yet the
-   psyche wants the `Record` *reply* to be the rich verdict. Candidates: (a) the
-   guardian is a separate triad-shaped component the client consults before the
-   daemon stores; (b) guardian logic lives in the capture/curator client that
-   talks to both the model node and the daemon; (c) the daemon's engine-actor
-   delegates to a model sidecar. Each trades against the dumb-daemon rule and the
-   typed-signal contract differently. **Unresolved.**
-2. **Hard block vs. warn.** When the guardian finds a contradiction: does the
-   store refuse the write until the agent resolves it (hard block), or store it
-   and flag the tension (warning)? The psyche's "refusal" language leans block;
-   the "needs review" language leans warn. Likely conditional on the guardian's
-   confidence.
-3. The two binding intent supersessions (reinforce-in-place vs. recorded
-   separate-records; engine-machinery vs. recorded dumb-storage) still stand.
-4. Weight: is it a second knob at all, and qualitative-rung-vs-count (`g8ln`).
-5. What counts as a recall event for decay; enforce-vs-lint atomicity.
+The guardian (problems 2, 4, and the inflow side of 1) and the lifecycle ladder
+(the rest of 1, and 3) are two halves — neither alone fixes all four.
