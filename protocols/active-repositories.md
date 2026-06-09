@@ -68,6 +68,7 @@ stack.
 | `signal-orchestrate` | `/git/github.com/LiGoldragon/signal-orchestrate` | Ordinary orchestration contract vocabulary. |
 | `meta-signal-orchestrate` | `/git/github.com/LiGoldragon/meta-signal-orchestrate` | Meta-signal orchestration policy contract. |
 | `signal-criome` | `/git/github.com/LiGoldragon/signal-criome` | Criome trust and attestation contract vocabulary: BLS signature envelopes, identity records, delegation grants, component releases, and out-of-band attestations. Pure contract crate; no daemon, no storage, no Persona policy ownership. |
+| `meta-signal-criome` | `/git/github.com/LiGoldragon/meta-signal-criome` | Criome meta policy contract: `Configure` over `CriomeDaemonConfiguration` (socket + `criome.sema` store). Config type is canonical here; criome daemon to adopt it. |
 | `repository-ledger` | `/git/github.com/LiGoldragon/repository-ledger` | Triad runtime component for recording pushed repository changes from the local Gitolite server into a sema-engine database. |
 | `signal-repository-ledger` | `/git/github.com/LiGoldragon/signal-repository-ledger` | Ordinary repository-ledger contract: receive-hook event assertions and repository/event read queries. |
 | `meta-signal-repository-ledger` | `/git/github.com/LiGoldragon/meta-signal-repository-ledger` | Meta-signal repository-ledger contract: repository registration, spool policy, and future mirror policy mutation. |

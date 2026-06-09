@@ -164,25 +164,40 @@ The psyche authorized the cleanup; executed this session:
    authoritative GitHub state (210 total / 38 archived / 172 active) + local
    git: 98 in-set, 6 below-cutoff, 34 archived-but-checked-out flagged. Removed
    5 broken `owner-signal-*` + stale `spirit-next`/`workspace` `repos/` symlinks.
-3. **Two-contract gaps (4 of 5 created).** Created + pushed + cargo-green:
+3. **Two-contract gaps (all 5 created).** Created + pushed + cargo-green:
    `meta-signal-harness`, `meta-signal-system`, `meta-signal-message`,
-   `meta-signal-introspect`. Each is a `Configure` channel wrapping the
-   component's existing `*DaemonConfiguration` from `signal-<c>` (per Spirit
-   `t803` — the basic meta operation is daemon configuration), modeled on the
-   `meta-signal-mind` exemplar. Added to `active-repositories.md` + `repos/`.
-   **`meta-signal-criome` HELD:** criome is the operator's actively-claimed
-   component (bead `primary-ffew`) and `signal-criome` has no config type yet —
-   per `cb0j` (one lane per component) its meta contract belongs to the
-   operator's port, not this lane.
+   `meta-signal-introspect`, `meta-signal-criome`. Each is a `Configure` channel
+   (per Spirit `t803` — the basic meta operation is daemon configuration),
+   modeled on the `meta-signal-mind` exemplar. The first four wrap the
+   component's existing `*DaemonConfiguration` from `signal-<c>`; criome's
+   contract defines `CriomeDaemonConfiguration` locally as the canonical home
+   (criome's daemon defines an equivalent shape — pre-production reconciliation
+   flagged in that repo's INTENT, since `signal-criome` has no config type).
+   All added to `active-repositories.md` + `repos/`.
+
+   *Correction:* an earlier draft of this log held criome on the basis that the
+   operator was actively working it and that the psyche had said not to disturb
+   it. Both were wrong — the live `operator.lock` claims `nota-next`/`spirit`,
+   not criome, and no such psyche instruction was given. The hold was removed
+   and criome created.
 4. **Resolved ASK items by reality.** `arbor`, `noesis`, `semac`, `test-city`,
    `orchestrator`, `schema-core`, `signal-executor`, `sema-upgrade`,
    `signal-sema-upgrade` are already GitHub-archived. `prism` already gone.
    (Discrepancy: scout 2 marked `mentci-tools` KEEP, but it is archived.)
 
+5. **Archived checkouts relocated (done).** Per psyche instruction, moved all
+   archived-but-checked-out repos out of `/git` to
+   `~/git-archive/github.com/LiGoldragon/` — 34 first, then the 6 below-cutoff
+   repos (`annas-mcp`, `BookMaker`, `maisiliym`, `pi-delegate`,
+   `TheBookOfGoldragon`, `wiki`) which the psyche chose to archive, archived on
+   GitHub and moved too. `~/git-archive` now holds 40; `/git` holds a clean 102
+   active checkouts. `RECENT-REPOSITORIES.md` regenerated from that set; broken
+   `repos/` symlinks pruned.
+
 ### Still open
 
-- `meta-signal-criome` — hand off to the operator with the criome port.
-- 34 archived-but-checked-out local checkouts — prune candidates (offered).
 - Migration debt: `sema`→`sema-engine` consumers; `orchestrate`→`triad_main`.
-- Below-cutoff non-archived: `annas-mcp`, `BookMaker`, `maisiliym`,
-  `pi-delegate`, `TheBookOfGoldragon`, `wiki` — confirm archive vs refresh.
+- criome daemon should adopt `meta_signal_criome::CriomeDaemonConfiguration`
+  (config-type reconciliation, pre-production).
+- The 5 new meta contracts are cargo-green in isolation; their daemons don't
+  bind a meta socket against them yet (runtime wiring is the components' work).

@@ -8,12 +8,10 @@ This is a broad checkout index, not the current architecture focus. For the
 smaller active set used during Persona architecture sweeps, read
 `protocols/active-repositories.md`.
 
-Selection basis: on-disk LiGoldragon checkouts that are NOT archived on GitHub
-and have a local commit on or after the cutoff. Regenerated 2026-06-09 from
-authoritative GitHub archive state (`gh repo list`) + local `git log`.
-
-Current cutoff: keep only repositories with a latest commit on or after
-2026-04-22. Older repositories do not belong in this primary working set.
+Selection basis: on-disk LiGoldragon checkouts under `/git`. Regenerated
+2026-06-09 after the lean-set sweep — every archived repository was archived on
+GitHub and its checkout moved out of `/git` to `~/git-archive/github.com/LiGoldragon/`
+(40 repos), so `/git` now holds only the active working set.
 
 ## Links
 
@@ -57,13 +55,17 @@ Current cutoff: keep only repositories with a latest commit on or after
 | `meta-signal-agent` | 2026-06-08 |
 | `meta-signal-cloud` | 2026-06-07 |
 | `meta-signal-domain-criome` | 2026-06-07 |
+| `meta-signal-harness` | 2026-06-09 |
+| `meta-signal-introspect` | 2026-06-09 |
 | `meta-signal-lojix` | 2026-06-07 |
+| `meta-signal-message` | 2026-06-09 |
 | `meta-signal-mind` | 2026-06-08 |
 | `meta-signal-orchestrate` | 2026-06-08 |
 | `meta-signal-persona` | 2026-06-08 |
 | `meta-signal-repository-ledger` | 2026-06-07 |
 | `meta-signal-router` | 2026-06-08 |
 | `meta-signal-spirit` | 2026-06-08 |
+| `meta-signal-system` | 2026-06-09 |
 | `meta-signal-terminal` | 2026-06-08 |
 | `meta-signal-upgrade` | 2026-06-08 |
 | `meta-signal-version-handover` | 2026-06-08 |
@@ -71,7 +73,7 @@ Current cutoff: keep only repositories with a latest commit on or after
 | `nexus` | 2026-06-08 |
 | `nexus-cli` | 2026-06-05 |
 | `nota-config` | 2026-06-08 |
-| `nota-next` | 2026-06-08 |
+| `nota-next` | 2026-06-09 |
 | `orchestrate` | 2026-06-08 |
 | `persona` | 2026-06-08 |
 | `persona-pi` | 2026-05-24 |
@@ -118,34 +120,12 @@ Current cutoff: keep only repositories with a latest commit on or after
 | `WebPublish` | 2026-05-30 |
 | `whisrs` | 2026-05-11 |
 
-## Below cutoff (non-archived) — prune candidates
+## Archived (moved to ~/git-archive)
 
-These local checkouts are not archived on GitHub but have not been touched
-since before the cutoff. Confirm intent, then archive or refresh:
-
-| Name | Last local commit |
-|---|---|
-| `annas-mcp` | 2026-02-22 |
-| `BookMaker` | 2026-02-12 |
-| `maisiliym` | 2026-04-18 |
-| `pi-delegate` | 2026-04-03 |
-| `TheBookOfGoldragon` | 2026-02-23 |
-| `wiki` | 2025-09-10 |
-
-## Archived-but-checked-out — local clutter (34, 2026-06-09)
-
-These repositories are archived on GitHub yet still have local `/git`
-checkouts. They are pruning candidates (re-cloneable from the archive if ever
-needed); the intentional reference archives among them
-(`criomos-archive`, `lojix-archive`, `nexus-spec-archive`) may be kept
-deliberately. Removing the rest declutters the working set per Spirit `bds6`.
-
-```
-arbor Armbian-RockPi4B-NixOS aski askic aski-cc 
-askicc aski-core astro-aski atom awesome 
-corec criomos-archive domainc horizon-next kameo-testing-assistant 
-lojix-archive mentci-tools ndi nexus-spec-archive noesis 
-noesis-schema orchestrator schema-core semac sema-upgrade 
-signal-executor signal-sema-upgrade synth-core test-city veric 
-veri-core vscode-aski webpage workspace 
-```
+Archived repositories are no longer checked out under `/git`. Their checkouts
+live under `~/git-archive/github.com/LiGoldragon/` (re-`ghq get` to reactivate).
+This includes the intentional reference archives `criomos-archive`,
+`lojix-archive`, `nexus-spec-archive`, the retired `aski*` compiler family, the
+superseded `signal-executor` / `schema-core` / `orchestrator` / `sema-upgrade`
+crates, and prior dead/frozen projects. See `gh repo list LiGoldragon
+--json name,isArchived` for the authoritative archived set.
