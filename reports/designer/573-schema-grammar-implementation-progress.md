@@ -136,16 +136,54 @@ binary fields (`BlsPublicKey`/`BlsSignature`/`ObjectDigest`/`PublicKeyFingerprin
   `::new(900)`) and `.0` read (`→ payload()`). Not yet actioned (part of the
   emitter pass below).
 
-## The emitter integration pass (next, careful — NOT yet on main)
+## The emitter integration pass — DONE, on schema-rust-next main `a2591391`
 
-schema-next grammar is already on main. The schema-rust-next emitter pass builds
-on Step 2 (`44e472bf`, on main). I started it this session (bumped the schema-next
-lock to `cf4cfb9f`, enumerated the breakage) then **reverted the lock bump** and
-left it for a dedicated pass, because of the `From`-impl subtlety below. Verified
-breakage when the lock is bumped: **8 compile errors** — 3 `Alias` references
-(import, `lower_to_rust`@788, `map_key_type_names`@3329) + 5 `TypeReference::Bytes`
-non-exhaustive matches (`migration.rs`:467, lib.rs:1118/1174/3372/5442). No
-nota-next breakage (the lock bump also moves nota-next `ae5c25cd`→`d8862b61`; clean).
+Completed this session: schema-rust-next now builds against the no-alias
+schema-next (`cf4cfb9f`), **66 tests pass, clippy clean**. The work was much
+deeper than "remove aliases" — `qz6j` "drop ALL aliases" ripples widely:
+
+- **Alias machinery removed** (RustAlias/RustAliasTokens/the lowering + map-key +
+  nota-bridge arms).
+- **`From`-impl emission simplified** — former-alias variant payloads are now
+  distinct newtypes, so the alias-exclusion in
+  `unique_non_alias_plain_payload_variants` is obsolete (`From<X>` is always
+  unambiguous). Removed the `alias_names` threading.
+- **Alias resolution removed** (`declaration_alias_target`,
+  `type_name_matches_plain_or_alias`, the alias tail of
+  `local_runtime_role_type_exists`): a newtype is its own canonical type.
+- **`Bytes` recognized** in all 5 `TypeReference` match sites.
+- **Triad runner schema convention migrated.** This was the big finding: the
+  `(X X)` self-tag + `X Synonym` bare-ref pattern (e.g. `(Continue Continue)` +
+  `Continue NexusWork`) relied on aliases being *transparent* — the runner detected
+  "Continue carries NexusWork" through the alias. Post-qz6j those are distinct
+  newtypes, breaking the runner shape detection AND the role-trait/adapter
+  emission. Fix = the **direct form** (`(Continue NexusWork)`, `(CommandSemaWrite
+  SemaWriteInput)`, …); `plane-triad` and `driver nexus` already used it. Migrated
+  `runner-triad.schema`.
+- **All test construction/access migrated** to the newtype API (`Topics::new`,
+  `.payload()`, `RecordSet::new`, …) + fixtures regenerated.
+- **nota-next pinned back to `ae5c25cd`** — the lock bump also moved nota-next to
+  `d8862b61`, which changes string encoding (`[[x]]`→`[x]`, simple atoms bare).
+  That's a *separate* migration; pinning keeps this change cleanly qz6j+Bytes.
+  One-field tuple newtypes encode **transparently** (`to_nota(&self.0)`), so the
+  wire is preserved — `qz6j` is type-distinct, wire-transparent.
+
+### Remaining follow-ups (additive; deferred this session)
+
+1. **Bytes newtype-prelude + hex codec** — `Bytes` is recognized but not yet
+   *emittable* (no `pub struct Bytes(Vec<u8>)` prelude). Emit it (with a
+   lowercase-hex `NotaEncode`/`NotaDecode`, bracket form `[deadbeef]`; template
+   `signal-version-handover` `RawPayload`) when the first consumer adopts Bytes
+   (criome binary fields). Inject after the scalar-alias loop (render~274).
+2. **Privatize the runtime identity newtypes** (psyche-approved) —
+   `RuntimeCopyNewtypeTokens` (lib.rs:2534) still emits `(pub Integer)` with no
+   accessors; emit `new`/`payload` + private field and fix every
+   construction/`.0` site (its own cascade, like the schema-newtype one).
+3. **`lm84` hash-id** — marker-on-bytes-newtype (confirm marker-vs-primitive).
+4. **Fleet consumer migration** — on lock-bump, every former-alias access across
+   the ~23 consumer crates needs the newtype API, and any triad runner schema
+   using the `(X X)`+synonym pattern needs the direct form. This is the bulk of
+   the fleet work and is the qz6j fleet-forcing sweep.
 
 The pass, in order:
 
