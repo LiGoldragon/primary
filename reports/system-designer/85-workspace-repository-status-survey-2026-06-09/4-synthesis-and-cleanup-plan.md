@@ -169,11 +169,15 @@ The psyche authorized the cleanup; executed this session:
    `meta-signal-introspect`, `meta-signal-criome`. Each is a `Configure` channel
    (per Spirit `t803` — the basic meta operation is daemon configuration),
    modeled on the `meta-signal-mind` exemplar. The first four wrap the
-   component's existing `*DaemonConfiguration` from `signal-<c>`; criome's
-   contract defines `CriomeDaemonConfiguration` locally as the canonical home
-   (criome's daemon defines an equivalent shape — pre-production reconciliation
-   flagged in that repo's INTENT, since `signal-criome` has no config type).
-   All added to `active-repositories.md` + `repos/`.
+   component's existing `*DaemonConfiguration` from `signal-<c>`. For criome,
+   `CriomeDaemonConfiguration` was **added to `signal-criome`** (Spirit `q3q7` —
+   config types belong in the ordinary contract, not hand-written in the
+   daemon); the criome daemon adopted it (dropped its local duplicate, `cargo
+   test` green / 17 passed) and `meta-signal-criome` imports it — so binary
+   startup decode and the meta `Configure` share one record. All added to
+   `active-repositories.md` + `repos/`. (signal-frame was pinned back in criome's
+   lock to its working commit; criome's migration to the newer signal-frame is a
+   separate item the operator owns.)
 
    *Correction:* an earlier draft of this log held criome on the basis that the
    operator was actively working it and that the psyche had said not to disturb
@@ -196,8 +200,10 @@ The psyche authorized the cleanup; executed this session:
 
 ### Still open
 
-- Migration debt: `sema`→`sema-engine` consumers; `orchestrate`→`triad_main`.
-- criome daemon should adopt `meta_signal_criome::CriomeDaemonConfiguration`
-  (config-type reconciliation, pre-production).
+- Migration debt: `sema`→`sema-engine` is effectively done (only `persona-spirit`
+  (production Stack A) and `sema-engine` itself depend on `sema`, both expected);
+  `orchestrate`→`triad_main` is partway (on `sema-engine`, has an emitted daemon,
+  but still carries a hand-written `src/daemon.rs` to retire); criome's migration
+  to the newer `signal-frame` (its `text.rs` uses the old API) is the operator's.
 - The 5 new meta contracts are cargo-green in isolation; their daemons don't
   bind a meta socket against them yet (runtime wiring is the components' work).
