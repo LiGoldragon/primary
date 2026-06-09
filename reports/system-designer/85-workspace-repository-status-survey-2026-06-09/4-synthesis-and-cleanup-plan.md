@@ -150,3 +150,39 @@ keepers. Don't write INTENT for repos headed to archive.
 
 Archiving/deleting a GitHub repo is irreversible and outward-facing — nothing in
 §2–4 executes without explicit per-batch psyche authority.
+
+## Execution log (2026-06-09, psyche-authorized)
+
+The psyche authorized the cleanup; executed this session:
+
+1. **Archive batch (done).** Archived on GitHub: aski family (13),
+   nexus-spec-archive, ndi, atom, awesome, workspace, webpage, horizon-next,
+   Armbian-RockPi4B-NixOS. Most were *already* archived; only atom, awesome,
+   webpage, Armbian were newly archived. Dependency-safe (zero fleet consumers,
+   verified). horizon-next confirmed not referenced by the lojix/horizon stack.
+2. **Index refresh (done).** `RECENT-REPOSITORIES.md` regenerated from
+   authoritative GitHub state (210 total / 38 archived / 172 active) + local
+   git: 98 in-set, 6 below-cutoff, 34 archived-but-checked-out flagged. Removed
+   5 broken `owner-signal-*` + stale `spirit-next`/`workspace` `repos/` symlinks.
+3. **Two-contract gaps (4 of 5 created).** Created + pushed + cargo-green:
+   `meta-signal-harness`, `meta-signal-system`, `meta-signal-message`,
+   `meta-signal-introspect`. Each is a `Configure` channel wrapping the
+   component's existing `*DaemonConfiguration` from `signal-<c>` (per Spirit
+   `t803` — the basic meta operation is daemon configuration), modeled on the
+   `meta-signal-mind` exemplar. Added to `active-repositories.md` + `repos/`.
+   **`meta-signal-criome` HELD:** criome is the operator's actively-claimed
+   component (bead `primary-ffew`) and `signal-criome` has no config type yet —
+   per `cb0j` (one lane per component) its meta contract belongs to the
+   operator's port, not this lane.
+4. **Resolved ASK items by reality.** `arbor`, `noesis`, `semac`, `test-city`,
+   `orchestrator`, `schema-core`, `signal-executor`, `sema-upgrade`,
+   `signal-sema-upgrade` are already GitHub-archived. `prism` already gone.
+   (Discrepancy: scout 2 marked `mentci-tools` KEEP, but it is archived.)
+
+### Still open
+
+- `meta-signal-criome` — hand off to the operator with the criome port.
+- 34 archived-but-checked-out local checkouts — prune candidates (offered).
+- Migration debt: `sema`→`sema-engine` consumers; `orchestrate`→`triad_main`.
+- Below-cutoff non-archived: `annas-mcp`, `BookMaker`, `maisiliym`,
+  `pi-delegate`, `TheBookOfGoldragon`, `wiki` — confirm archive vs refresh.

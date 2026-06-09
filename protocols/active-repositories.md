@@ -26,6 +26,7 @@ stack.
 | `message` | `/git/github.com/LiGoldragon/message` | Engine message ingress: the `message` CLI **and** the `message-daemon` supervised first-stack daemon. Daemon binds `message.sock` (mode 0660, engine-owner group) and forwards typed Signal frames to `router` with SO_PEERCRED-minted origin tags. |
 | `introspect` | `/git/github.com/LiGoldragon/introspect` | Supervised prototype inspection-plane component. Talks to live component daemons over Signal, fans in typed observation records, and projects NOTA only at the human/agent edge. It is not in the delivery path and does not directly open any peer component's redb. |
 | `signal-introspect` | `/git/github.com/LiGoldragon/signal-introspect` | Central introspection envelope contract: introspection query/reply selectors, correlation, projection wrappers, and prototype witness records. It asks and wraps; component-specific observations stay in the owning component contracts. |
+| `meta-signal-introspect` | `/git/github.com/LiGoldragon/meta-signal-introspect` | Introspect meta policy contract: `Configure` over the typed `IntrospectDaemonConfiguration` (peer-daemon set + `introspect.sema` location). |
 | `system` | `/git/github.com/LiGoldragon/system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-owned in the current wave. |
 | `harness` | `/git/github.com/LiGoldragon/harness` | Harness process/session control boundary. |
 | `terminal` | `/git/github.com/LiGoldragon/terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. Terminal-brand mux helpers are retired. |
@@ -52,10 +53,13 @@ stack.
 | `signal-agent` | `/git/github.com/LiGoldragon/signal-agent` | Ordinary agent front-door signal contract for pre-configured API agent calls. |
 | `meta-signal-agent` | `/git/github.com/LiGoldragon/meta-signal-agent` | Agent meta policy signal contract for backend/provider configuration and lifecycle control. |
 | `signal-message` | `/git/github.com/LiGoldragon/signal-message` | Message CLI to router channel contract. |
+| `meta-signal-message` | `/git/github.com/LiGoldragon/meta-signal-message` | Message meta policy contract: `Configure` over the typed `MessageDaemonConfiguration` (ingress socket mode + engine-owner origin policy). |
 | `signal-router` | `/git/github.com/LiGoldragon/signal-router` | Router-owned observation contract for accepted messages, route decisions, channel state, delivery status, and adjudication status. Used by `introspect` without turning `signal-introspect` into a shared schema bucket. |
 | `meta-signal-router` | `/git/github.com/LiGoldragon/meta-signal-router` | Meta-signal router policy contract. |
 | `signal-system` | `/git/github.com/LiGoldragon/signal-system` | System observation to router channel contract. |
+| `meta-signal-system` | `/git/github.com/LiGoldragon/meta-signal-system` | System meta policy contract: `Configure` over the typed `SystemDaemonConfiguration` (backend + privileged-action authority surface). |
 | `signal-harness` | `/git/github.com/LiGoldragon/signal-harness` | Router to harness delivery/observation channel contract. |
+| `meta-signal-harness` | `/git/github.com/LiGoldragon/meta-signal-harness` | Harness meta policy contract: `Configure` over the typed `HarnessDaemonConfiguration`. |
 | `signal-terminal` | `/git/github.com/LiGoldragon/signal-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
 | `meta-signal-terminal` | `/git/github.com/LiGoldragon/meta-signal-terminal` | Terminal meta policy contract for `CreateSession` and `RetireSession`; ordinary terminal traffic stays in `signal-terminal`. |
 | `signal-mind` | `/git/github.com/LiGoldragon/signal-mind` | Mind/orchestration contract vocabulary. |
