@@ -198,6 +198,42 @@ The psyche authorized the cleanup; executed this session:
    active checkouts. `RECENT-REPOSITORIES.md` regenerated from that set; broken
    `repos/` symlinks pruned.
 
+### NOTA-free daemon migration (criome triad — worked exemplar)
+
+Psyche principles captured this session: **signal must be NOTA-free** (`5fdr`),
+**daemons must compile no NOTA — only the CLI carries it** (`t4gd`), and **config
+types live in the contract** (`q3q7`). A daemon's NOTA-freeness is a property of
+its *whole dependency closure*: any crate in the tree that pulls `nota-next`
+unconditionally defeats it.
+
+The criome triad is now the worked exemplar, end-to-end verified:
+- `signal-criome` — every NOTA derive `#[cfg_attr(feature = "nota-text", …)]`,
+  `nota_next` import + manual impls `#[cfg(nota-text)]`, `nota-next` optional,
+  `default = []`. NOTA-free by default; `--features nota-text` for the CLI edge.
+- `criome` — `default = []`, optional `nota-next`, `text` module + CLI
+  command/request types + error `Nota` variant gated, CLI bin
+  `required-features = ["nota-text"]`, daemon bin none. **`cargo tree` confirms
+  `nota-next` is ABSENT from `criome-daemon`'s tree.** Daemon tests green
+  NOTA-free (15); full suite green with `nota-text` (17).
+- `meta-signal-criome` — same gating, `default = []`, NOTA-free by default.
+
+Two non-obvious findings: the actual last leak was a **stale lock** — criome
+pinned old `signal-sema`/`sema-engine` whose `default` pulled `nota-next`;
+current main of both was already migrated (`signal-sema` 33f6284, `sema-engine`
+ebee6e4). And `signal-frame`/`signal-sema`/`sema-engine`/`signal-spirit` are
+already migrated; most other contracts are not.
+
+### Fleet scope (NOTA-free migration — large, not yet done)
+
+Making *every* daemon NOTA-free is a per-triad migration across the fleet. Still
+carrying the deprecated unconditional-NOTA pattern: `signal-harness`,
+`signal-system`, `signal-message`, `signal-introspect`, `signal-cloud`, the
+`meta-signal-*` family (incl. the `meta-signal-mind` exemplar and the four
+meta contracts created this session — harness/system/message/introspect, which
+match the unmigrated pattern), and each component daemon's feature/bin structure.
+Each triad migrates like criome's. This touches every component's `main`
+(operator-owned) — a scoped sweep, not done unilaterally here.
+
 ### Still open
 
 - Migration debt: `sema`→`sema-engine` is effectively done (only `persona-spirit`
