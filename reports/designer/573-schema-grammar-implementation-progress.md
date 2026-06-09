@@ -184,14 +184,19 @@ deeper than "remove aliases" — `qz6j` "drop ALL aliases" ripples widely:
    marker-on-newtype form): `Digest Bytes` → `struct Digest(Bytes)`, transparently
    hex-encoded. Round-trip verified.
 
+### Fixed-size `(Bytes N)` — DONE (cross-repo)
+
+- schema-next `main` `c8ebb399`: `(Bytes N)` → `TypeReference::FixedBytes(N)` — the
+  grammar's first numeric type-argument, parsed in all three reference paths.
+- schema-rust-next `main` `eca40280`: emits `(Bytes N)` → `FixedBytes<N>` plus a
+  generic `pub struct FixedBytes<const WIDTH: usize>([u8; WIDTH])` prelude
+  (conditional) with a feature-gated lowercase-hex codec + a WIDTH×2 length check.
+  One generic type serves every width (the orphan rule blocks a codec on a bare
+  `[u8; N]`). rkyv const-generics work. A named hash-id `Fingerprint (Bytes 4)` →
+  `Fingerprint(FixedBytes<4>)` round-trips; verified by the collections test.
+
 ### Remaining
 
-- **Fixed-size `(Bytes N)`** (RecordIdentifier-style `[u8; N]` widths for BLS
-  48/96, digests 32) — the only un-done piece of `yp29`/`lm84`. A cross-repo
-  grammar addition (schema-next gains a `(Bytes N)` reserved head with the
-  grammar's first numeric type-arg, then schema-rust-next emits `[u8; N]` + the
-  hex codec). The handover deferred it ("unless a pilot needs it"); confirm with
-  the psyche before adding it.
 - **Fleet consumer migration** — the bulk. On lock-bump, every former-alias access
   across the ~23 consumer crates needs the newtype API, and any triad runner
   schema using the `(X X)`+synonym pattern needs the direct form. This is the
