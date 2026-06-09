@@ -14,9 +14,24 @@ to `571` (the plan) and `570` (the review).
 | 1 | `52ro` | schema-next `schema-grammar-spec` | `376b847a` | `(X)` self-tag form, both paths, test |
 | 2 | newtype priv-field | schema-rust-next `schema-grammar-emitter` | `44e472bf` | schema newtypes get a private field |
 | 3a | `yp29` | schema-next `schema-grammar-spec` | `3e76cf9c` | `Bytes` reserved scalar (grammar half) |
+| 5 | `qz6j` | schema-next `schema-grammar-spec` | `cf4cfb9f` | aliases dropped entirely; bare form is always a distinct newtype |
 
 Each step is its own commit; each was verified green (`cargo build` + `cargo
-test` + `cargo clippy`). schema-next: 106 tests pass. schema-rust-next: 66 pass.
+test` + `cargo clippy`). schema-next: 107 tests pass. schema-rust-next: 66 pass.
+The **schema-next grammar side is complete** (`52ro` + `yp29` grammar + `qz6j`).
+What remains is emitter-side and integration-coupled (below).
+
+## `qz6j` resolved harder than scoped — the psyche dropped aliases entirely
+
+The handover proposed scoping `qz6j` to scalar-refs only (declared-type re-tags
+stay transparent aliases). The psyche overrode: **"we don't use alias — they're
+useless and offer no correctness."** So `TypeDeclaration::Alias` + `AliasDeclaration`
+are **removed**, and *every* bare `Name Type` (scalar, declared-type, collection)
+lowers to a distinct `NewtypeDeclaration`. `Recipient String` → newtype (the win);
+`State Statement` → distinct `State(Statement)`, no longer interchangeable with
+`Statement` (the intended correctness, at the cost of the ~5 live re-tag sites,
+which break at integration — fine pre-production). Reinforces Spirit record
+`qz6j`.
 
 ## `52ro` — what was actually needed (557's fear was overstated)
 
@@ -103,22 +118,44 @@ gain Bytes arms. Then migrate the 4 `(Vec Integer)`-as-bytes sites
 (`meta-signal-upgrade`, `signal-terminal` ×3) and criome's `{ value String }`
 binary fields (`BlsPublicKey`/`BlsSignature`/`ObjectDigest`/`PublicKeyFingerprint`).
 
-## Decisions in front of the psyche
+## Decisions — resolved + still open
 
-1. **`qz6j` alias fate.** Scalar bare-refs → newtype (the wins). For the ~5
-   declared-type bare-refs (`State Statement` re-tags): keep them as **implicit
-   `Alias`** (recommended — simplest, nothing else changes), OR require an explicit
-   `(Alias X)` reserved head so aliasing is opt-in and the bare form is
-   *always* a newtype. This changes the lowering shape, so it gates authoring.
-2. **Runtime identity newtypes** (`MessageIdentifier`/`OriginRoute`): privatize to
-   match the discipline (needs accessor emission + fixing every runtime
-   construction/`.0` site), or leave them as `pub` Copy conveniences (a conscious
-   exception for runtime-minted integer identities).
-3. **Integration sequencing.** The grammar branch (schema-next) must land on main
-   before the emitter halves (Bytes/hash-id) can be built — operator integration,
-   and `qz6j`'s main-landing IS the fleet sweep the handover gates. Confirm the
-   go-ahead to author `qz6j` lowering on the branch now (verifiable in isolation),
-   held for that gated integration.
+- **RESOLVED — `qz6j` alias fate:** drop aliases entirely (psyche). Done on the
+  branch (`cf4cfb9f`).
+- **OPEN — runtime identity newtypes** (`MessageIdentifier`/`OriginRoute`): the
+  psyche asked for pros/cons (provided in chat). Pending their pick: privatize to
+  match the discipline (emit accessors + fix every runtime construction/`.0` site)
+  vs leave as `pub` Copy conveniences (a conscious exception for runtime-minted
+  integer identities). Not actioned until they decide.
+
+## Integration follow-ups (operator) — landing the grammar branch on main
+
+The schema-next grammar branch and the schema-rust-next emitter branch must
+integrate together, because the emitter builds against schema-next `main`. The
+order:
+
+1. **Land schema-next `schema-grammar-spec` (`cf4cfb9f`) on schema-next main.**
+   This is the fleet-forcing sweep the handover gates (`qz6j`). On landing, every
+   schema-rust-next-building contract (≈23 crates) regenerates, and bare `Name
+   Type` declarations across the fleet become distinct newtypes.
+2. **schema-rust-next emitter, against the new main** (extend the
+   `schema-grammar-emitter` branch, `44e472bf`):
+   - **Remove `RustAliasTokens` + the `TypeDeclaration::Alias` match arm** — the
+     variant no longer exists, so the emitter won't compile until this is dropped.
+   - **`yp29` Bytes emission:** emit `Bytes` as a newtype-scalar with a
+     hand-written lowercase-hex `NotaEncode`/`NotaDecode` (NOT `type Bytes =
+     Vec<u8>`). Template: `signal-version-handover/src/lib.rs:149` `RawPayload`.
+     Surface form `[deadbeef]` (bracket-string hex). Special-case Bytes in
+     `default_aliases`/`to_tokens`/`rust_type`/`collect_map_keys`.
+   - **`lm84` hash-id:** marker-on-a-bytes-newtype, fixed-width parameterization
+     of the Bytes hex codec (psyche to confirm marker-vs-primitive; recommend
+     marker). Pilot in criome `ObjectDigest`/`PublicKeyFingerprint`.
+3. **Consumer migrations** (fleet, post-regen): the ~5 declared-type re-tag
+   consumers (`State`/`Statement`-style) need explicit conversions; criome's
+   `{ value String }` binary fields → `Bytes`; the 4 `(Vec Integer)`-as-bytes
+   sites → `Bytes`; criome `(Authorization… Authorization…)` → `(Authorization…)`;
+   `signal-agent` `(RequestUnimplemented RequestUnimplemented)` → `(…)` (manual,
+   hand-written contract).
 
 ## Pointers
 
