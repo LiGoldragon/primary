@@ -223,6 +223,29 @@ current main of both was already migrated (`signal-sema` 33f6284, `sema-engine`
 ebee6e4). And `signal-frame`/`signal-sema`/`sema-engine`/`signal-spirit` are
 already migrated; most other contracts are not.
 
+### Schema-emission conversion (the real durable fix) — criome is the last straggler
+
+The durable way to make daemons NOTA-free is not hand-gating each contract — it's
+schema emission: `schema-rust-next` already emits NOTA `feature_gated_nota` by
+default, and the `signal_channel!` macro already emits gated codecs, so any
+emitted contract is NOTA-free-by-default for free. The fix is to minimize
+hand-written daemon code and let the engine own gating.
+
+Verified state: **every component daemon is already emitted except criome**
+(15/16 have `build.rs` + `src/schema/`). criome is the lone concept-stage
+straggler. Among contracts, `signal-message/cloud/router/terminal` are emitted;
+`signal-criome/system/introspect/spirit/mind/harness` are still hand-written.
+
+Converting `signal-criome` to emission was started and **validated**: authored
+`schema/lib.schema` (full vocabulary + 17-op channel + 2 streams), wired
+`build.rs`, and confirmed generation emits a correct 94KB `src/schema/lib.rs`.
+**Held on branch `criome-schema-emission`** (not landed on main): the emitted
+API normalizes the contract — `Input`/`Output` roots, single-field operation
+structs (`IdentityLookup`, `AuthorizationObservation`) unwrapped,
+`RequiredSignatureThreshold` u16→u64 — so criome's transport/command/actors/
+tests + `meta-signal-criome` need migrating to the emitted shape. That's the
+focused follow-up; signal-criome main stays on its working NOTA-free version.
+
 ### Fleet scope (NOTA-free migration — large, not yet done)
 
 Making *every* daemon NOTA-free is a per-triad migration across the fleet. Still
