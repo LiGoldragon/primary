@@ -236,15 +236,23 @@ Verified state: **every component daemon is already emitted except criome**
 straggler. Among contracts, `signal-message/cloud/router/terminal` are emitted;
 `signal-criome/system/introspect/spirit/mind/harness` are still hand-written.
 
-Converting `signal-criome` to emission was started and **validated**: authored
-`schema/lib.schema` (full vocabulary + 17-op channel + 2 streams), wired
-`build.rs`, and confirmed generation emits a correct 94KB `src/schema/lib.rs`.
-**Held on branch `criome-schema-emission`** (not landed on main): the emitted
-API normalizes the contract — `Input`/`Output` roots, single-field operation
-structs (`IdentityLookup`, `AuthorizationObservation`) unwrapped,
-`RequiredSignatureThreshold` u16→u64 — so criome's transport/command/actors/
-tests + `meta-signal-criome` need migrating to the emitted shape. That's the
-focused follow-up; signal-criome main stays on its working NOTA-free version.
+**criome's triad is now fully converted to schema emission and landed
+(2026-06-09).** `signal-criome` is schema-emitted from `schema/lib.schema` (full
+vocabulary + 17-op channel + 2 streams; `build.rs` + `ContractCrateBuild`),
+NOTA-free by default. The emitted API normalizes the contract — `Input`/`Output`
+roots, single-field operation structs (`IdentityLookup`,
+`AuthorizationObservation`) unwrapped to newtypes, `RequiredSignatureThreshold`
+u16→u64 — so criome's actors and skeleton tests + `meta-signal-criome` were
+migrated to the emitted shape. Verified: criome daemon binary is NOTA-free
+(`nota-next` absent from the normal/linked tree), tests green both modes
+(default 15, nota-text 17). criome thus joins the other 15 components on the
+emitted stack; its hand-written contract is gone, and the engine
+(`schema-rust-next`) now owns its NOTA gating.
+
+(Correction recorded in flight: "criome has never worked" — it compiles and its
+skeleton tests pass but has never functioned as a daemon; there was no working
+state to protect, so the earlier instinct to hold the conversion on a branch to
+"keep main working" was a hedge, dropped. Per `durable-shape-over-transitional`.)
 
 ### Fleet scope (NOTA-free migration — large, not yet done)
 
