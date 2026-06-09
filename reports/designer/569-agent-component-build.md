@@ -1,5 +1,10 @@
 # 569 — agent component build (LLM-API-call triad)
 
+> **Superseded in part by `572`.** After this build, the component was changed to
+> NOTA-direct output (`OutputMode::Nota`, validate-and-retry; the JSON `JsonObject`
+> mode was removed) and all three repos were landed on **main** with git deps. For
+> the current state see `572-gated-spirit-and-agent-component-handover.md`.
+
 Designer build of the `agent` component: an LLM-API-call substrate that makes
 OpenAI-compatible provider HTTP calls in an API style — the call substrate the
 gated Spirit guardian will use to judge intent. Authorized by the psyche; scope
