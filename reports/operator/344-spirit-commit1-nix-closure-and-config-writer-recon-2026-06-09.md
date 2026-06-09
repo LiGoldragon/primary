@@ -178,7 +178,47 @@ is the natural designer-coordinated surface.
   to the identical store path. Corrects report 343: the leak was
   `version-projection`, not `signal-frame`. No version bump (pure
   build-reproducibility, no runtime logic change).
-- **Next:** contract reshape (B's core) — define `Configuration` in
-  `signal-spirit` (absorbing `archive_target`), reshape the crate-local meta
-  `Configure` to wrap it, rewire the daemon via a local `DaemonConfiguration`
-  wrapper, then add `spirit-write-configuration` against the contract type.
+- **`BindingSurface` rename — DONE.** `triad-runtime`'s `DaemonConfiguration`
+  trait (the socket-and-storage binding surface the emitted daemon spine reads;
+  old name carried `Daemon`-ancestry inside the daemon-runtime crate and shadowed
+  the data type `Configuration`) renamed to `BindingSurface`. Landed in the
+  definer (`triad-runtime` 0.6.1, `6ea83162`), the emitter (`schema-rust-next`
+  0.5.2, `261c7795`), and `spirit` (`98be1e21`, offline build proven). Fleet
+  remainder (~17 components) tracked by bead `primary-iumz`, migrating per `cb0j`.
+- **Build-time-emit docs — DONE** (`spirit` `a9d41bfc`): recorded that the daemon
+  emits its wire types from `schema/*.schema` locally and does not depend on the
+  `signal-spirit` crate for live wire types (migration-only).
+
+## B core — confirmed plan (revised by the build-time-merge insight)
+
+The earlier "move the type into the `signal-spirit` crate + daemon newtype
+wrapper" framing is superseded. The daemon already **emits** its wire types from
+`schema/*.schema` into `src/schema/*.rs` at build time, so the clean shape is:
+
+1. **Define `Configuration` in `schema/signal.schema`** (the ordinary contract,
+   per `q3q7`) as a shared data type — not a working-operation root —
+   `Configuration { socket_path ConfigurationPath, meta_socket_path (Optional
+   ConfigurationPath), database_path ConfigurationPath, trace_socket_path
+   (Optional ConfigurationPath), archive_target ArchiveDatabaseTarget }`, with
+   `ConfigurationPath String` and `ArchiveDatabaseTarget` folded in (`cx7y`).
+2. It **emits into `crate::schema::signal`** locally; the daemon impls
+   `BindingSurface` directly on the emitted local type — **no newtype** (orphan
+   rule satisfied because the emitted type is local). Delete hand-written
+   `src/config.rs`.
+3. **Unified `Configure` (psyche-confirmed reading of `ur16`/`t803`):** the
+   daemon's single startup argument becomes a meta `Configure` message wrapping
+   `Configuration` (not a bare `Configuration`), and the live meta socket accepts
+   the same `Configure` — one vocabulary for bootstrap + runtime reconfig. At
+   runtime, applying it re-points the archive target (`3pfh` redirect-forward)
+   while already-bound sockets/db are inert. Reshape `schema/meta-signal.schema`
+   `Configure` from `ConfigureRequest(ArchiveDatabaseTarget)` to wrap the
+   imported `spirit:signal:Configuration`; rewire the daemon startup decode + the
+   meta listener.
+4. **`spirit-write-configuration`** helper (nota-text edge) encodes that
+   `Configure` message → `configuration.rkyv`. Acceptance test extends
+   `tests/process_boundary.rs`.
+5. Regenerate artifacts, prove offline `nix build .#default`, land witness tests.
+
+Sequenceable: sub-step (1)+(2) (Configuration emitted + daemon impls
+`BindingSurface`, `config.rs` deleted) is independently verifiable before the
+`Configure`-unification (3).
