@@ -168,22 +168,34 @@ deeper than "remove aliases" — `qz6j` "drop ALL aliases" ripples widely:
   One-field tuple newtypes encode **transparently** (`to_nota(&self.0)`), so the
   wire is preserved — `qz6j` is type-distinct, wire-transparent.
 
-### Remaining follow-ups (additive; deferred this session)
+### Follow-ups — DONE this session (schema-rust-next main)
 
-1. **Bytes newtype-prelude + hex codec** — `Bytes` is recognized but not yet
-   *emittable* (no `pub struct Bytes(Vec<u8>)` prelude). Emit it (with a
-   lowercase-hex `NotaEncode`/`NotaDecode`, bracket form `[deadbeef]`; template
-   `signal-version-handover` `RawPayload`) when the first consumer adopts Bytes
-   (criome binary fields). Inject after the scalar-alias loop (render~274).
-2. **Privatize the runtime identity newtypes** (psyche-approved) —
-   `RuntimeCopyNewtypeTokens` (lib.rs:2534) still emits `(pub Integer)` with no
-   accessors; emit `new`/`payload` + private field and fix every
-   construction/`.0` site (its own cascade, like the schema-newtype one).
-3. **`lm84` hash-id** — marker-on-bytes-newtype (confirm marker-vs-primitive).
-4. **Fleet consumer migration** — on lock-bump, every former-alias access across
-   the ~23 consumer crates needs the newtype API, and any triad runner schema
-   using the `(X X)`+synonym pattern needs the direct form. This is the bulk of
-   the fleet work and is the qz6j fleet-forcing sweep.
+1. **Privatize the runtime identity newtypes** — `7db6df1e`. `MessageIdentifier`/
+   `OriginRoute` now emit a private field + `new`/`payload` accessors; every
+   construction/`.0` site migrated. Every emitted newtype (schema + runtime) now
+   has a private field.
+2. **Bytes newtype-prelude + hex codec** — `f6f1f653`. When a schema references
+   `Bytes` (`CollectionScan::references_bytes`, precomputed → no bloat otherwise),
+   the renderer emits `struct Bytes(Vec<u8>)` + accessors + a feature-gated
+   lowercase-hex codec that delegates the hex String to `String`'s
+   `NotaEncode`/`NotaDecode` (a literal `[hex]` parses as a list — delegation
+   avoids that). Verified by a `digest Bytes` round-trip.
+3. **`lm84` hash-id** — `9f509205`. A hash-id is a **newtype over Bytes** (the
+   marker-on-newtype form): `Digest Bytes` → `struct Digest(Bytes)`, transparently
+   hex-encoded. Round-trip verified.
+
+### Remaining
+
+- **Fixed-size `(Bytes N)`** (RecordIdentifier-style `[u8; N]` widths for BLS
+  48/96, digests 32) — the only un-done piece of `yp29`/`lm84`. A cross-repo
+  grammar addition (schema-next gains a `(Bytes N)` reserved head with the
+  grammar's first numeric type-arg, then schema-rust-next emits `[u8; N]` + the
+  hex codec). The handover deferred it ("unless a pilot needs it"); confirm with
+  the psyche before adding it.
+- **Fleet consumer migration** — the bulk. On lock-bump, every former-alias access
+  across the ~23 consumer crates needs the newtype API, and any triad runner
+  schema using the `(X X)`+synonym pattern needs the direct form. This is the
+  qz6j fleet-forcing sweep, scoped one component at a time.
 
 The pass, in order:
 
