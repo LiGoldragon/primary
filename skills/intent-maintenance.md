@@ -19,7 +19,7 @@ When a new psyche statement contradicts a prior recorded entry:
    prior verbatim and its certainty:
 
    > *"You said earlier (Spirit topic `<topic>`):*
-   > *— `<prior verbatim quote>` — certainty `<prior certainty>`, recorded `<prior timestamp>`*
+   > *— `<prior verbatim quote>` — certainty `<prior certainty>`, record `<prior identifier>`*
    >
    > *Now you're saying `<new summary>`. Override the prior, or am I misreading?"*
 
@@ -44,36 +44,37 @@ Negation is supersession where the psyche says a prior record is
 *invalid*, not merely refined. Spirit has no typed `Negates`/`Supersedes`
 relation yet, so:
 
-1. Observe the prior record by identifier.
+1. Look the prior record up by its identifier (`spirit "(Lookup [abcd])"`).
 2. Ask the psyche to confirm the old record is negated.
 3. Record a new `Correction` or `Decision` naming the old identifier and
-   stating the replacement truth, e.g. `Spirit record N is negated; the
-   correct intent is ...`. Do not delete the old record — lineage stays
-   visible.
+   stating the replacement truth, e.g. `Spirit record [abcd] is negated;
+   the correct intent is ...`. Do not delete the old record — lineage
+   stays visible.
 
 ## Removing a record — tombstone first
 
-Spirit supports psyche-authorized removal: `spirit "(Remove N)"`. Use it
-only for records that should **not remain at all** — mis-logged working
-orders, or fully-stale records whose substance is rehomed. When lineage
-should stay visible, supersede with a `Correction` and keep the record.
+Spirit supports psyche-authorized removal: `spirit "(Remove [abcd])"`
+(the argument is the record's base36 identifier code, not a number).
+Use it only for records that should **not remain at all** — mis-logged
+working orders, or fully-stale records whose substance is rehomed. When
+lineage should stay visible, supersede with a `Correction` and keep the
+record.
 
-Removal is **destructive and irreversible.** The record leaves the store,
-and redb's copy-on-write page reuse overwrites its bytes within hours.
-There is no undelete.
+Removal is **destructive and irreversible.** The record's key is
+retracted from the sema-engine store and there is no undelete.
 
-So **capture before you remove.** Before any `(Remove N)`, record the full
-text and daemon-stamped provenance into the removing agent's report:
+So **capture before you remove.** Before any `(Remove [abcd])`, look the
+record up by its identifier and record the full text into the removing
+agent's report:
 
 ```sh
-spirit "(Observe (RecordIdentifiers ((Exact N) WithProvenance)))"
+spirit "(Lookup [abcd])"
 ```
 
-Paste the result into a tombstone appendix; the report then IS the
-provenance of what was removed. An undocumented removal once proved
-unrecoverable because the freed bytes were overwritten within hours,
-while a tombstoned-first removal preserved full text — capture first,
-then remove.
+Paste the resulting `RecordFound` entry into a tombstone appendix; the
+report then IS the record of what was removed. An undocumented removal
+once proved unrecoverable, while a tombstoned-first removal preserved
+full text — capture first, then remove.
 
 Stay conservative: when removability is uncertain, flag rather than
 remove — over-removal is worse than under-removal. Lowering a record's

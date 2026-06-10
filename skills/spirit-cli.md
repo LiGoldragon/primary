@@ -25,7 +25,7 @@ The binary takes exactly one argument (the one-argument rule —
   shell double quote is a clean boundary and apostrophes inside the
   description survive. Single-quoting is wrong — it loses apostrophes.
   ```sh
-  spirit "(Record ([workspace] Decision [summary] Maximum))"
+  spirit "(Record ([workspace] Decision [summary] Maximum Zero))"
   ```
 - **Path to a NOTA file** — argument does not start with `(`; the CLI
   reads the file as the NOTA argument. For records with embedded shell
@@ -70,25 +70,25 @@ identifiers (`[abcd]`) so codes starting with a digit stay valid.
 
 ## Recording intent
 
-A v0.4.0 record carries a vector of topics, one agent-clarified
-`Description`, a `Kind`, a certainty `Magnitude`, and a privacy
-`Magnitude`. No verbatim field, no context payload, no client
-timestamp — **the daemon stamps date/time itself**. The four-field
-form is public shorthand defaulting privacy to `Zero`; the five-field
-form sets privacy explicitly. The agent clarifies the psyche's wording
+The deployed `Entry` has exactly five positional fields: a vector of
+topics, a `Kind`, one agent-clarified `Description`, a certainty
+`Magnitude`, and a privacy `Magnitude` — in that order. No verbatim
+field, no context payload, and **no time field at all** (the daemon does
+not stamp date/time; there is no recorded intent for a timestamp). NOTA
+positional records never omit fields, so every `Record` spells all five;
+there is no shorter public form. The agent clarifies the psyche's wording
 into the description before recording — that keeps the log dense and
 searchable rather than verbose and lossy.
 
 ```sh
-spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude>))"
-spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> <Privacy>))"
+spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude> <Privacy>))"
 # Kind      ∈ { Decision Principle Correction Clarification Constraint }
 # Magnitude ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
+# Privacy   uses the same Magnitude ladder; Zero is open/public.
 ```
 
-Privacy uses the same `Magnitude` ladder on a privacy axis. `Zero`
-means open/public (the workspace default); higher values narrow the
-audience. Never put private personal substance in a `Zero` record.
+Higher privacy values narrow the audience; `Zero` is the workspace
+default. Never put private personal substance in a `Zero` record.
 
 The reply is terse and does not echo content:
 `(RecordAccepted ([abcd] (...)))` or the same shape with a different
@@ -113,8 +113,8 @@ calls.
 ## Removing and changing records
 
 ```sh
-spirit "(Remove [abcd])"                    # -> (RecordRemoved [abcd])
-spirit "(ChangeCertainty ([abcd] Zero))"    # -> (CertaintyChanged ([abcd] Zero))
+spirit "(Remove [abcd])"                    # -> (RecordRemoved ([abcd] <marker>))
+spirit "(ChangeCertainty ([abcd] Zero))"    # -> (CertaintyChanged ([abcd] Zero <marker>))
 ```
 
 `Remove` deletes a record entirely — use it when nothing should remain
@@ -128,24 +128,27 @@ restored by changing certainty back to a non-zero `Magnitude`. Use
 owner-configured archive database, then remove them from the hot store:
 
 ```sh
-spirit "(CollectRemovalCandidates (((Full [stale]) (Some Decision) (Exact Zero))))"
+spirit "(CollectRemovalCandidates ((Full [stale]) (Some Decision) (Exact Zero)))"
 ```
 
-The reply `(RemovalCandidatesCollected ([...] [...] [...]))` carries
-archived `RecordSummary` values, removed identifiers, and skipped
-candidates. Archive location is not a working-signal argument; the
-owner configures it through the meta socket.
+The payload is a one-field collection struct wrapping a `Query`, so the
+three `Query` fields sit one paren inside the operation. The reply
+`(RemovalCandidatesCollected (...))` carries archived
+`RemovalArchiveRecord` values, removed identifiers, skipped candidates,
+and the post-removal database marker. Archive location is not a
+working-signal argument; the owner configures it through the meta socket.
 
 ## Observing records
 
 `Observe` carries a generated three-field `Query` directly:
 
 ```text
-(Observe ((<TopicMatch>) <Kind?> <PrivacySelection>))
+(Observe (<TopicMatch> <Kind?> <PrivacySelection>))
 ```
 
-- **TopicMatch**: `(Any [])` no filter, `(Partial [a b])` matches
+- **TopicMatch**: bare `Any` (no filter), `(Partial [a b])` matches
   any requested topic, `(Full [a b])` matches every requested topic.
+  `Any` is a bare variant — `(Any [])` is rejected.
 - **Kind?**: `None` or `(Some Decision)`.
 - **PrivacySelection**: `Any`, `(Exact Zero)`, `(AtMost Low)`,
   `(AtLeast High)`.
@@ -161,8 +164,8 @@ spirit "(Observe ((Full [spirit]) None (Exact Zero)))"
 spirit "(PublicRecords ((Full [spirit]) None))"
 spirit "(PrivateRecords ((Partial [spirit]) None))"
 spirit "(Lookup [abcd])"
-spirit "(LookupStash 1)"
-spirit "(Count ((Any []) None (Exact Zero)))"
+spirit "(LookupStash 12)"
+spirit "(Count (Any None (Exact Zero)))"
 ```
 
 Two recurring wrong shapes:
@@ -174,8 +177,14 @@ Two recurring wrong shapes:
 ## Other operations
 
 ```sh
-spirit "(State [free-form psyche statement text])"   # lowers to an Assert sema observation
+spirit "(State [free-form psyche statement text])"   # classified, then persisted as a Record
 ```
+
+`State` carries raw psyche text; the daemon classifies it (fallback
+`unclassified` / `Clarification` / `Minimum` / `Zero`) and persists the
+resulting `Entry` through the same `Record` write path. The canonical
+shape is `(State [text])`; the CLI also accepts the deployed shorthand
+`(State ([text]))`.
 
 `Version` is a bare NOTA atom, not a Unix flag:
 
@@ -203,7 +212,7 @@ never flags, never daemon NOTA parsing.
 
 Applies to any migration where a permissive substrate (file with free
 PascalCase tokens, untyped store) is replaced by a strict one
-(rkyv-archived enum, typed redb engine). Four rules:
+(rkyv-archived enum, typed sema-engine store). Four rules:
 
 1. **Enumerate every closed-world enum on both sides before
    relogging.** Compare variant sets; where they differ, design an
@@ -242,14 +251,13 @@ legacy nota files stays out of Spirit; a separate migration tool may
 translate legacy records, but Spirit itself remains the intent daemon
 and CLI. Pass the same broad topic strings (`workspace`, `spirit`,
 `signal`, `component-shape`, `persona`, …) the deployed store already
-uses; the redb database carries the canonical record set.
+uses; the sema-engine `.sema` database carries the canonical record set.
 
 ## See also
 
 - `skills/intent-log.md` — what gets logged, the five-kind taxonomy,
   the gold-mining discipline.
 - `skills/intent-maintenance.md` — sweep / supersession discipline.
-- `skills/nota-design.md` — positional-record encoding rules.
 - `skills/nota-design.md` — positional-record encoding rules.
 - `/git/github.com/LiGoldragon/spirit` — active component source;
   `tests/process_boundary.rs` and `tests/nix_integration.rs` show the
