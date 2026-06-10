@@ -111,5 +111,63 @@ candidate and ordinary queries should stop returning it," that is a
 genuine design gap, not current behavior. It would need either a certainty
 dimension on `Query` (e.g. a `CertaintySelection` mirroring
 `PrivacySelection`, with a default floor that excludes `Zero`), or an
-explicit certainty-driven sweep. This is a psyche-intent decision — see
-the open question in chat.
+explicit certainty-driven sweep. This is a psyche-intent decision — see §3.
+
+## 3. Intent recorded, and the capability already existed once
+
+Psyche decision recorded as Spirit record `oj3i` (the
+zero-certainty-is-the-removal-candidate decision): Zero certainty means a
+record has no value, so it is the removal-candidate state; the default
+Observe query excludes Zero-certainty records; `Query` gains a certainty
+selection with a floor defaulting to `Minimum` (excludes Zero); seeing
+Zero records requires an explicit certainty selection.
+
+### The surprise: this regressed during the schema-emission rewrite
+
+There are **two** divergent Spirit contract definitions, and the one the
+daemon runs is the impoverished one:
+
+| | Old hand-written `signal-spirit` crate | In-tree emitted `spirit/schema/signal.schema` (**what the daemon runs**) |
+|---|---|---|
+| Query type | `RecordQuery { topic_selection, kind, certainty_selection, recorded_time_selection, privacy_selection, mode }` | `Query { topic_match, kind, privacy_selection }` |
+| Certainty | **`CertaintySelection` exists**; `removal_candidates() = Exact(Zero)` | absent |
+| Recorded-time | `RecordedTimeSelection` (Between/Since/Until/Recent/…) | absent |
+| Observation mode | `ObservationMode` | absent |
+
+The daemon's runtime (`engine.rs`, `store.rs`, `nexus.rs`) imports
+`crate::schema::signal` (the emitted in-tree schema). The external
+`signal-spirit` crate is now used **only** for `SpiritDaemonConfiguration`
+(config) and as the legacy-record source in `production_migration.rs`.
+
+So the psyche's intent is not a new feature — the certainty selection (and
+a richer query) existed in the previous contract and was **dropped** when
+the query was simplified for schema emission. `signal-spirit` even
+spelled removal-candidacy as exactly `Exact(Zero)`. (`active-repositories.md`
+still calls `signal-spirit` the "active ordinary wire contract"; that line
+is stale — the live wire contract moved in-tree to the emitted schema.)
+
+### Implementation plan (in-tree emitted schema — the live surface)
+
+1. `schema/signal.schema`: add `CertaintySelection [Any (ExactCertainty
+   ExactCertainty) (AtMostCertainty AtMostCertainty) (AtLeastCertainty
+   AtLeastCertainty)]` + the three `*Certainty Certainty` wrappers
+   (parallel to the existing privacy `Exact/AtMost/AtLeast Privacy`), and
+   add `certainty_selection CertaintySelection` to `Query`.
+2. Engine/store: `Query::matches` gains
+   `&& self.certainty_selection.matches(&entry.magnitude)`;
+   `CertaintySelection::matches` + `default_observation_certainty() =
+   AtLeast(Minimum)` (excludes Zero) + `removal_candidates() = Exact(Zero)`.
+3. Default observe-query construction (CLI default, `RecordSelection →
+   Query`) sets the floor to `AtLeast(Minimum)`; explicit selection
+   reaches Zero records.
+4. Regenerate (`SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1`), update the existing
+   3-field `Query` literals in tests, add coverage: Zero excluded by
+   default, visible with explicit `Exact(Zero)`/`Any`.
+5. Operator integrates to `main` + redeploys daemon **and** CLI together
+   (matched pair; no stored-data migration — `Entry.magnitude` already
+   exists).
+
+Open scope forks (psyche's call): (a) certainty only, or also restore the
+dropped `RecordedTimeSelection` / `ObservationMode`; (b) leave the legacy
+`signal-spirit` crate as-is (migration/config only) or schedule its
+reconciliation/retirement.
