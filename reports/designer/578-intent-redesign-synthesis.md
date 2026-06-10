@@ -85,6 +85,32 @@ already the bloat we are fixing. It lands here, in a report.
   is not *admitted* until vetted. *block* (alternative): the daemon calls the
   agent live and stalls for the verdict.
 
+## 4a. The agent and the NOTA harness
+
+- **[decided] The agent is a structured-judgment engine.** Hand it context + a
+  question + the verdict schema; it returns a typed verdict. The guardian, the
+  auditor, and the topic-enlargement gate are all the same shape — so the agent
+  is the workspace's general judgment primitive, not a Spirit helper.
+- **[decided] A NOTA harness wraps the LLM call.** The model is a text oracle;
+  the harness is a *client* (allowed to cross NOTA) that renders a NOTA prompt —
+  the context records as NOTA, plus a prelude showing the expected NOTA response
+  shape — calls the model, takes its NOTA answer, and decodes it to signal. The
+  daemon only ever sees signal; the harness absorbs all the NOTA on the client
+  side of the line. This is why the no-NOTA-in-daemon rule never bites: the
+  daemon does not parse NOTA because the harness does.
+- **[decided] Prelude and parser come from one schema.** What the prelude tells
+  the model to emit is exactly what the parser decodes — they cannot drift,
+  because both fall out of the one verdict type. A malformed or off-format
+  response just fails the parse and retries.
+- **[open] Where the harness/agent runs** — embedded in a client-grade consumer
+  in-process, or a separate process that pure daemons (Spirit) call in signal.
+  Turns on whether "daemons never parse NOTA" governs the contract boundary or
+  the whole process. The harness is a client either way; only its placement is
+  open.
+- **[open] Governance** — keys, token budget, rate limits, model routing. The
+  natural home is a shared daemon once there is more than one consumer; a single
+  consumer can configure locally.
+
 ## 5. Retrieval and completeness
 
 - **[decided] Completeness is the retrieval's job, not the guardian's nose.** The
@@ -175,6 +201,8 @@ already the bloat we are fixing. It lands here, in a report.
 ## 11. Still open
 
 - The daemon→agent handoff: park (lean) vs block (§4).
+- Agent/harness placement (embedded vs separate process) and the governance home
+  — keys, budget, model routing (§4a).
 - `Clarification`: keep as a kind or demote to an event (§8).
 - Suppressed-arrow recoverability: archive outside the live intent vs destroy.
   Largely de-risked since supersede is always explicit and named, but archive-vs-
