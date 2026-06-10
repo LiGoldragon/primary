@@ -56,9 +56,50 @@ When an enum variant carries data, the payload's shape follows what the data IS:
 
 Wrong shape: inventing a `<Variant>Report` struct wrapper around a single enum. The semantic root is the variant; the choice axis is the payload enum; no wrapper. The notation must truthfully represent the data shape — empty wrappers are a smell.
 
-### Header-declared inline enum sugar
+### Schema enum sugar
 
-The payload enum can be declared at the header position:
+Prefer the shortest schema spelling that still names the reusable type at the
+right level. Root input/output headers should usually name operation objects,
+with payload aliases or inline operation bodies declared one level below.
+
+When the variant name and payload type are the same, write the self-tagged
+signature:
+
+```schema
+CommandSemaWrite [(Record) (Remove) (ChangeCertainty)]
+```
+
+Use the explicit `(Variant PayloadType)` spelling only when the two names
+intentionally differ, such as `(Rejected SignalRejection)`.
+
+Root headers may list exported payload aliases directly:
+
+```schema
+[Record Observe]
+[RecordAccepted RecordsObserved]
+{
+  Record Entry
+  Observe Query
+  RecordAccepted SemaReceipt
+  RecordsObserved RecordSet
+}
+```
+
+The payload can also be declared inline at the root position when the
+operation-owned shape is shallow:
+
+```schema
+[(Record { Topic String Description String })]
+[]
+{}
+```
+
+Direct fields in a root inline payload export their PascalCase field
+declarations. Later inline payloads and the trailing namespace may reuse those
+types with `Topic *` or `Description *`. Duplicate declarations are an error;
+do not declare `Topic` again in the namespace after introducing it inline.
+
+Nested payload enums can be declared at the variant position:
 
 ```schema
 Output [
@@ -69,7 +110,10 @@ Output [
 ]
 ```
 
-The header stays a homogeneous vector of variant-signature objects: `RecordAccepted` and `(Busy [...])` and `Rejected` are each signatures. The inline bracket body declares the payload enum locally instead of forcing a separate namespace declaration. The lowered form is equivalent to:
+The header stays a homogeneous vector of variant-signature objects:
+`RecordAccepted` and `(Busy [...])` and `Rejected` are each signatures. The
+inline bracket body declares the payload enum locally instead of forcing a
+separate namespace declaration. The lowered form is equivalent to:
 
 ```schema
 Output [RecordAccepted RecordsObserved (Busy BusyReason) Rejected]

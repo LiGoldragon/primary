@@ -24,18 +24,37 @@ two different `RustEmissionTarget`s. Conflating them hides where
 
 | "Signal schema" | Where it lives | Emission target | Emits |
 |---|---|---|---|
-| **Public signal contract** | `signal-<component>/schema/…` (separate repo) | `WireContract` | Wire vocabulary + codecs ONLY — zero engines. What peers link against. |
-| **Daemon-local signal runtime** | `<component>/schema/signal.schema` (inside the daemon crate, beside `nexus.schema` + `sema.schema`) | `SignalRuntime` | The same wire shape PLUS the `SignalEngine` trait (admission / triage / reply) the daemon implements. |
+| **Public signal contract** | `signal-<component>/schema/…` (separate repo) | `WireContract` | Wire vocabulary + codecs ONLY — zero engines. The **single source of the wire types** for *every* linker — peers AND the component's own daemon. |
+| **Daemon-local signal runtime** | `<component>/schema/signal.schema` (inside the daemon crate, beside `nexus.schema` + `sema.schema`) | `SignalRuntime` | The `SignalEngine` trait (admission / triage / reply) **over the contract's types** — the daemon imports the wire types from `signal-<component>` and emits only the engine/runtime, never a second copy of the wire shape. |
 
-A daemon's `SignalEngine` is generated from its OWN `signal.schema`
-(`SignalRuntime`), never from the public contract (`WireContract`,
-engine-free). The full target set lives in `schema-rust-next/src/lib.rs`
+**Single source of the wire types (intent `tb9h`).** The
+`signal-<component>` contract repo *defines the signal for any component*
+— it is the one place the wire types are declared, and the daemon links it
+like any peer. A daemon's `SignalEngine` is generated from its OWN
+`signal.schema` (`SignalRuntime`), never from the public contract
+(`WireContract`, engine-free) — but that emission carries the **engine
+only**; the wire types it operates over are imported from the contract
+crate, never re-declared in-tree. Emitting a second copy of the wire shape
+inside the daemon (so `crate::schema::signal` owns
+`Input`/`Output`/`Query`/`Entry`/…) is the violation `tb9h` names: it
+forks the contract and lets the two copies diverge — which is exactly what
+happened to spirit vs `signal-spirit`.
+
+The full target set lives in `schema-rust-next/src/lib.rs`
 `RustEmissionTarget` (`runtime_planes()`): `WireContract`→none,
 `ComponentRuntime`→all (legacy all-in-one), `SignalRuntime`→signal-only,
 `NexusRuntime`→nexus-only, `SemaRuntime`→sema-only. The three daemon-plane
 targets realize the three-plane split: a daemon emits
 `signal.schema`→`SignalRuntime`, `nexus.schema`→`NexusRuntime`,
 `sema.schema`→`SemaRuntime`, dropping the all-in-one `ComponentRuntime`.
+
+**Mechanism gap.** Honoring single-source requires `SignalRuntime` to
+emit an engine *over imported contract types* rather than a self-contained
+wire-shape-plus-engine. No schema-emitted daemon does this yet: spirit
+re-emits its types in-tree; criome imports its types from `signal_criome`
+but its daemon is still hand-written. Closing the gap is a
+`schema-rust-next` emission-target change — a schema-stack item, not just
+per-component cleanup.
 
 Readability test: schema names the interface, generated Rust names the
 objects and traits, and handwritten code mostly matches typed input,
