@@ -85,31 +85,37 @@ already the bloat we are fixing. It lands here, in a report.
   is not *admitted* until vetted. *block* (alternative): the daemon calls the
   agent live and stalls for the verdict.
 
-## 4a. The agent and the NOTA harness
+## 4a. The agent — a harness library, not a daemon
 
-- **[decided] The agent is a structured-judgment engine.** Hand it context + a
-  question + the verdict schema; it returns a typed verdict. The guardian, the
-  auditor, and the topic-enlargement gate are all the same shape — so the agent
-  is the workspace's general judgment primitive, not a Spirit helper.
-- **[decided] A NOTA harness wraps the LLM call.** The model is a text oracle;
-  the harness is a *client* (allowed to cross NOTA) that renders a NOTA prompt —
-  the context records as NOTA, plus a prelude showing the expected NOTA response
-  shape — calls the model, takes its NOTA answer, and decodes it to signal. The
-  daemon only ever sees signal; the harness absorbs all the NOTA on the client
-  side of the line. This is why the no-NOTA-in-daemon rule never bites: the
-  daemon does not parse NOTA because the harness does.
+- **[decided] The agent is a library, not a daemon.** The constraints forced it:
+  daemons never parse NOTA and can't sit in the text path, so the daemon part of
+  an "agent" has nothing left to do. What remains is a reusable **harness
+  library** — the judgment machinery: render the prompt, call the model, parse
+  the answer, retry. The guardian, the auditor, and the topic-enlargement gate
+  are all the same shape, so the harness is the workspace's general judgment
+  primitive — a shared, client-grade library, not a triad component.
+- **[decided] The harness is the only NOTA-speaker, and it's a client.** A
+  consumer builds a harness *process* from the library plus its own signal types,
+  so the harness is the only thing that knows signal-spirit. It renders a NOTA
+  prompt — context records as NOTA, plus a prelude showing the expected NOTA
+  response shape — **calls the model directly**, takes the NOTA answer, parses it
+  into the typed verdict, and hands that back to Spirit. Spirit only ever
+  exchanges *signal* with the harness; every daemon stays pure signal.
+- **[decided] The harness is a separate process.** It can't be embedded in
+  Spirit — Spirit's process would then be speaking NOTA. So Spirit (a daemon)
+  talks to the harness (a client process) in signal; the harness owns the whole
+  text/NOTA world.
 - **[decided] Prelude and parser come from one schema.** What the prelude tells
-  the model to emit is exactly what the parser decodes — they cannot drift,
-  because both fall out of the one verdict type. A malformed or off-format
-  response just fails the parse and retries.
-- **[open] Where the harness/agent runs** — embedded in a client-grade consumer
-  in-process, or a separate process that pure daemons (Spirit) call in signal.
-  Turns on whether "daemons never parse NOTA" governs the contract boundary or
-  the whole process. The harness is a client either way; only its placement is
-  open.
-- **[open] Governance** — keys, token budget, rate limits, model routing. The
-  natural home is a shared daemon once there is more than one consumer; a single
-  consumer can configure locally.
+  the model to emit is exactly what the parser decodes — they can't drift,
+  because both fall out of the one verdict type. A malformed response just fails
+  the parse and retries.
+- **[open] Governance.** Keys, token budget, rate limits, model routing. If
+  centralized, it's a **signal-only** daemon that vends grants and keys but never
+  touches a prompt — the harness still makes the actual call. Only worth it once
+  there is more than one consumer; a single consumer configures locally.
+- **[deferred] Signal-forwarding** (opaque sized envelopes routed without being
+  decoded) is a real, useful pattern — for a future broker/router daemon, not
+  for the agent, which needs none of it.
 
 ## 5. Retrieval and completeness
 
@@ -200,9 +206,9 @@ already the bloat we are fixing. It lands here, in a report.
 
 ## 11. Still open
 
-- The daemon→agent handoff: park (lean) vs block (§4).
-- Agent/harness placement (embedded vs separate process) and the governance home
-  — keys, budget, model routing (§4a).
+- The Spirit↔harness handoff: park (lean) vs block (§4).
+- Governance home: a signal-only governance daemon vs local-to-the-harness —
+  when shared budget across consumers becomes worth it (§4a).
 - `Clarification`: keep as a kind or demote to an event (§8).
 - Suppressed-arrow recoverability: archive outside the live intent vs destroy.
   Largely de-risked since supersede is always explicit and named, but archive-vs-
