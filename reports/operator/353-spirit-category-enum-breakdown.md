@@ -8,7 +8,7 @@ categories:
 ```nota
 Category [Being Knowing Meaning Making Relating Governing Caring Sustaining Dwelling Moving Valuing Expressing]
 Categories (Vec Category)
-Entry { Categories * Kind * Description * Certainty * Importance * Weight * Privacy * }
+Entry { Categories * Kind * Description * Certainty * Importance * Privacy * }
 ```
 
 The category field is plural because an intent record can sit in more than one

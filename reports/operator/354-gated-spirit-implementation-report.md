@@ -26,10 +26,13 @@ the guardian for a typed verdict, and either records the entry or returns
 | `signal-agent` | `d29fd78e` | Refreshed generated artifacts for current schema/NOTA syntax. |
 | `meta-signal-agent` | `00b2302b` | Refreshed generated artifacts for current schema/NOTA syntax. |
 | `spirit` | `c621f090` | Added the `signal-agent` guardian path and `Version` signal. |
+| `spirit` | `8fe88d66` | Removed the separate `Weight` axis, bumped the store to schema v6, and made `RecordAccepted` / `Proposed` return only the created record UID. |
 | `agent` | `758df952` | Added `agent-write-configuration` and Nix package surface. |
 | `CriOMOS-home` | `dfba8741` | Added deployed agent service and wired Spirit guardian deployment. |
 | `CriOMOS-home` | `d5227b7f` | Fixed guardian config archive encoding to field-only payload form. |
+| `CriOMOS-home` | `8e909a40` | Pinned the UID-only Spirit build. |
 | `CriOMOS` | `78cd8113` | Pinned the fixed Home build into the FullOS deployment. |
+| `CriOMOS` | `df05927f` | Pinned the UID-only Spirit deployment and activated it locally. |
 
 ## Contract Work
 
@@ -221,7 +224,7 @@ Production deployment:
 - `spirit-daemon.service` is active.
 - old `persona-spirit*` user units are not found / inactive.
 - `spirit Version` returns `0.8.0`.
-- production record count query returns `1416`.
+- production record count query returns `1418`.
 
 Live provider checks:
 
@@ -237,8 +240,8 @@ Live provider checks:
 Current observed production state after deploy:
 
 ```nota
-(VersionReported (0.8.0 (1418 17542361840359134574)))
-(RecordsCounted (1416 (1418 17542361840359134574)))
+(VersionReported (0.8.0 (1420 3566863645473464308)))
+(RecordsCounted (1418 (1420 3566863645473464308)))
 ```
 
 Both user services are active:
@@ -263,7 +266,18 @@ ug3t
 I immediately removed it and verified lookup returns `record not found`.
 
 The production database marker advanced because the accidental record and its
-removal were real writes. The live record count returned to `1416`.
+removal were real writes.
+
+During the UID-only correction deployment, I made one deliberate temporary live
+record to verify the public reply shape:
+
+```nota
+(RecordAccepted q2pp)
+```
+
+I immediately removed it and verified lookup returns `record not found`. The
+live record count returned to `1418`; the marker advanced because the temporary
+record and removal were real writes.
 
 The corrected temp test used the deployed Spirit binary directly, bypassed the
 wrapper, and wrote only to the temporary database.
@@ -279,6 +293,8 @@ Production-ready now:
 - Spirit `Propose` guarded by agent-backed typed verdicts
 - fail-closed guardian error handling
 - deterministic duplicate guard still present
+- no separate `Weight` axis; reaffirmation now raises `Importance`
+- `RecordAccepted` and `Proposed` public replies return only the created UID
 - old persona-spirit services removed from the active profile
 - `Version` signal for version reporting
 
@@ -307,13 +323,13 @@ semantic search or multi-step investigation loop.
 For a guarded write, use `Propose`, for example:
 
 ```nota
-spirit "(Propose ([Meaning] Constraint [schema creates the interface] High Minimum 1 Zero))"
+spirit "(Propose ([Meaning] Constraint [schema creates the interface] High Minimum Zero))"
 ```
 
 For an immediate raw write, use `Record`:
 
 ```nota
-spirit "(Record ([Meaning] Constraint [schema creates the interface] High Minimum 1 Zero))"
+spirit "(Record ([Meaning] Constraint [schema creates the interface] High Minimum Zero))"
 ```
 
 For version:
@@ -325,7 +341,7 @@ spirit Version
 For count:
 
 ```nota
-spirit "(Count (Any Any Any None Any Any Any Any))"
+spirit "(Count (Any Any Any None Any Any Any))"
 ```
 
 The last number in `VersionReported` or `RecordsCounted` is the state digest
