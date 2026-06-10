@@ -137,9 +137,13 @@ designer — doubting, finding flaws, catching broken rules. No
   authenticated binary meta-signal config message. On restart a daemon
   self-resumes from persisted SEMA state.
 
-- **NOTA strings come exclusively from bracket forms; never emit
-  quotation marks.** `[text]` inline, `[|text|]` bracket-safe /
-  multi-line, bare camelCase or kebab-case at `String` positions.
+- **NOTA strings are bare atoms unless they need delimiters; never emit
+  quotation marks.** Use bare camelCase or kebab-case at `String`
+  positions whenever the string contains no spaces or forbidden symbol
+  characters: topics are `[spirit nota strings]`, not
+  `[[spirit] [nota] [strings]]`. Use `[text]` inline or `[|text|]`
+  bracket-safe / multi-line only when a string contains spaces,
+  delimiter-sensitive text, or characters forbidden in a bare NOTA atom.
   Quotation marks don't form strings in NOTA; the encoder structurally
   cannot emit `"` (legacy quoted input is migration-only). So inline NOTA
   shell calls wrap the whole object in shell double quotes — `spirit
