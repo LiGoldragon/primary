@@ -113,7 +113,7 @@ dimension on `Query` (e.g. a `CertaintySelection` mirroring
 `PrivacySelection`, with a default floor that excludes `Zero`), or an
 explicit certainty-driven sweep. This is a psyche-intent decision — see §3.
 
-## 3. Intent recorded, and the capability already existed once
+## 3. Intent recorded — a new runtime capability (foreshadowed in the contract)
 
 Psyche decision recorded as Spirit record `oj3i` (the
 zero-certainty-is-the-removal-candidate decision): Zero certainty means a
@@ -122,27 +122,41 @@ Observe query excludes Zero-certainty records; `Query` gains a certainty
 selection with a floor defaulting to `Minimum` (excludes Zero); seeing
 Zero records requires an explicit certainty selection.
 
-### The surprise: this regressed during the schema-emission rewrite
+### Correction: no data loss, and the daemon never had this filter
 
-There are **two** divergent Spirit contract definitions, and the one the
-daemon runs is the impoverished one:
+An earlier draft of this report (and my first chat message) said the
+certainty filter "regressed / was dropped during the schema-emission
+rewrite." **That was wrong, and I corrected it after checking git
+history.** The accurate picture, verified by pickaxe:
 
-| | Old hand-written `signal-spirit` crate | In-tree emitted `spirit/schema/signal.schema` (**what the daemon runs**) |
+- `git log -S 'CertaintySelection' -- src/` → **0 commits**.
+  `git log -S 'certainty_selection' -- src/` → **0 commits**. The Spirit
+  **daemon's** source has *never*, in this repo's history, filtered an
+  Observe query by certainty. It was not dropped during emission — it was
+  never there in the running daemon.
+- `CertaintySelection` exists only in the **`signal-spirit` contract
+  crate** — a richer query *design* that the daemon never wired up. That
+  crate is now used by the daemon only for `SpiritDaemonConfiguration`
+  and as the legacy-record source in `production_migration.rs`. So this
+  is a contract-ahead-of-implementation gap, not a lost feature.
+
+| | `signal-spirit` crate (design only, never the live filter) | In-tree emitted `spirit/schema/signal.schema` (**what the daemon runs**) |
 |---|---|---|
-| Query type | `RecordQuery { topic_selection, kind, certainty_selection, recorded_time_selection, privacy_selection, mode }` | `Query { topic_match, kind, privacy_selection }` |
-| Certainty | **`CertaintySelection` exists**; `removal_candidates() = Exact(Zero)` | absent |
-| Recorded-time | `RecordedTimeSelection` (Between/Since/Until/Recent/…) | absent |
-| Observation mode | `ObservationMode` | absent |
+| Query | `RecordQuery { …, certainty_selection, recorded_time_selection, …, mode }` | `Query { topic_match, kind, privacy_selection }` |
+| Certainty filter | spelled (`removal_candidates() = Exact(Zero)`) but unused by the daemon | absent |
 
-The daemon's runtime (`engine.rs`, `store.rs`, `nexus.rs`) imports
-`crate::schema::signal` (the emitted in-tree schema). The external
-`signal-spirit` crate is now used **only** for `SpiritDaemonConfiguration`
-(config) and as the legacy-record source in `production_migration.rs`.
+**No certainty data was lost.** Certainty lives in `Entry.magnitude`,
+which is persisted in `StoredRecord { record_identifier, entry: Entry }`,
+written at `Record` time, mutated by `ChangeCertainty`
+(`store.rs:432`), and **explicitly preserved** by the production migration
+(`production_migration.rs`: `magnitude: Self::magnitude_from(self.entry.certainty)`,
+`Zero → Zero` etc.). Every record still carries its certainty; what's
+absent is only the *query-time filter* over it.
 
-So the psyche's intent is not a new feature — the certainty selection (and
-a richer query) existed in the previous contract and was **dropped** when
-the query was simplified for schema emission. `signal-spirit` even
-spelled removal-candidacy as exactly `Exact(Zero)`. (`active-repositories.md`
+So "feature parity" between the pre- and post-emission **daemon** holds on
+this axis: neither filtered Observe by certainty. The psyche's intent is
+therefore a **genuinely new** runtime capability (foreshadowed by the
+contract crate's unused design), not a restoration. (`active-repositories.md`
 still calls `signal-spirit` the "active ordinary wire contract"; that line
 is stale — the live wire contract moved in-tree to the emitted schema.)
 
@@ -165,9 +179,12 @@ is stale — the live wire contract moved in-tree to the emitted schema.)
    default, visible with explicit `Exact(Zero)`/`Any`.
 5. Operator integrates to `main` + redeploys daemon **and** CLI together
    (matched pair; no stored-data migration — `Entry.magnitude` already
-   exists).
+   exists and is preserved).
 
-Open scope forks (psyche's call): (a) certainty only, or also restore the
-dropped `RecordedTimeSelection` / `ObservationMode`; (b) leave the legacy
-`signal-spirit` crate as-is (migration/config only) or schedule its
-reconciliation/retirement.
+**Execution: psyche chose spec-only.** This report is the spec; operator
+picks it up on `main`. Designer does not author code now.
+
+Open scope forks (psyche's call): (a) certainty only, or also add the
+contract-only `RecordedTimeSelection` / `ObservationMode` to the live
+query while we're in here; (b) leave the legacy `signal-spirit` crate
+as-is (migration/config only) or schedule its reconciliation/retirement.
