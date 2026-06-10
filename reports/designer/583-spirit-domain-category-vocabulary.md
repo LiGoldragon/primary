@@ -142,8 +142,9 @@ gerunds could never produce.
 Pre-production, so no compatibility constraint — this is a clean value-set swap plus
 a small structural addition:
 
-- `Category` value-set: the 12 gerunds → the 196 grounded atoms (the Rust type stays;
-  the enum/registry contents change — see §6 open question on enum-vs-registry).
+- `Category` value-set: the 12 gerunds → the 196 grounded atoms, **as a schema enum**
+  (the Rust type stays; the enum *contents* change — psyche confirmed recompile +
+  zero-downtime redeploy makes this trivial, so no runtime registry; see §6.7).
 - Add the `Domain` tier (`Domain`/`Domains`) and a **category→domain table** so the
   domain is *derived*, never separately stored on a record (a leaf can be re-parented
   without rewriting records).
@@ -179,9 +180,18 @@ a small structural addition:
 6. **Religion neutrality** — confirm specific traditions (christianity/buddhism/islam)
    are *never* categories; they live as an optional tradition facet or third-tier nest
    under `religious-practice`, so the vocabulary privileges none (correcting DDC's bias).
-7. **Enum vs registry.** At hundreds-and-growing, `Category` likely shouldn't stay a
-   frozen compile-time schema enum — it wants to be a registry-backed value seeded via
-   config and grown through the gate, so adding a category isn't a schema regeneration.
+7. **Enum vs registry — RESOLVED by psyche: stay a schema enum.** Recompiling to
+   change an enum set is a *trivial* operation in these components, and zero-downtime
+   upgrade is a design goal — so "adding a category means a schema regeneration" is a
+   non-cost, not a problem to design around. The vocabulary lives in the schema (the
+   source of truth), the editorial-board curation gate (§3) simply *is* a reviewed,
+   versioned schema change, and a virgin daemon already knows all categories because
+   they're compiled into its binary (consistent with binary-startup discipline — no
+   runtime registry, no config-seeded growable value). The one asymmetry to keep:
+   *adding* a category is free; *renaming/removing* one needs a `SPIRIT_SCHEMA_VERSION`
+   bump + a `production_migration` mapping for records carrying the old atom — which is
+   exactly where the UF synonym-redirect table earns its keep (it absorbs a rename as a
+   redirect without a data migration).
 8. **Interim gate ownership** — confirm "designer proposes, psyche blesses" is
    acceptable until the auditor lane lands, rather than blocking the vocabulary on it.
 
