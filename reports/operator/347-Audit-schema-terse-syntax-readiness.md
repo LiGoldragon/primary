@@ -3,39 +3,79 @@
 Target: schema syntax improvements from reports `570`/`571`/`573` and current
 `schema-next` / `schema-rust-next`.
 
+## Correction After Psyche Feedback
+
+The first version of this report got the preferred authoring style wrong. The
+psyche corrected it in Spirit record `e2si`: schema root input/output definitions
+should support inline payload definitions directly in the root vector, e.g. the
+shape the psyche wrote as `[Record { Topic * Description * }]`, rather than
+forcing operation roots to be separated from their payload bodies through
+namespace retags.
+
+So the preferred visual shape is:
+
+```nota
+[(Record { Topic * Description * })
+ (Observe { TopicMatch * })
+ Version]
+[(RecordAccepted { RecordIdentifier * DatabaseMarker * })
+ (RecordsObserved { RecordSet * DatabaseMarker * })
+ (VersionReported { VersionText * DatabaseMarker * })]
+{
+  Topic String
+  Description String
+  TopicMatch [(Any) (Full (Vec Topic))]
+  RecordIdentifier (Bytes 12)
+  DatabaseMarker { CommitSequence * StateDigest * }
+  RecordSet (Vec Entry)
+  VersionText String
+  Entry { Topic * Description * }
+}
+```
+
+Concrete parser note: in current implemented schema-next, each root vector member
+is one NOTA object, so the tested concrete syntax is parenthesized
+`(Record { ... })` inside the root vector. The psyche's example
+`[Record { ... }]` names the desired compact visual shape, but if taken
+literally as current NOTA it would be two vector elements (`Record` and the brace
+object). If the exact unparenthesized spelling is required, schema-next needs
+another syntax change. If the parenthesized entry is acceptable, the inline root
+payload feature is already implemented.
+
 ## Understanding
 
 The schema syntax improvements are not just shorter spelling. They change the
-authoring model toward a cleaner two-level shape:
+authoring model toward a cleaner root-local payload shape:
 
-1. The root input/output vectors name the public operation surface.
-2. The namespace defines the payload/value nouns those operations carry.
+1. The root input/output vectors name the public operation surface and may define
+   the root payload body inline.
+2. The namespace holds reusable domain nouns used by those inline root payloads.
 
 That means a schema should usually read like:
 
 ```nota
-[Record Observe Version]
-[RecordAccepted RecordsObserved VersionReported Rejected]
+[(Record { Topic * Description * })
+ (Observe { TopicMatch * })
+ Version]
+[(RecordAccepted { RecordIdentifier * DatabaseMarker * })
+ (RecordsObserved { RecordSet * DatabaseMarker * })
+ (VersionReported { VersionText * DatabaseMarker * })]
 {
-  Record Entry
-  Observe Query
-  RecordAccepted Receipt
-  RecordsObserved Observation
-  VersionReported VersionReport
+  Topic String
+  Description String
+  TopicMatch [(Any) (Full (Vec Topic))]
+  RecordIdentifier (Bytes 12)
+  DatabaseMarker { CommitSequence * StateDigest * }
+  RecordSet (Vec Entry)
   Entry { Topic * description Description }
-  Query { TopicMatch * }
-  Receipt { RecordIdentifier * databaseMarker DatabaseMarker }
-  VersionReport { VersionText * databaseMarker DatabaseMarker }
+  VersionText String
 }
 ```
 
-Here `Version` is a unit root because it has no same-named namespace payload
-declaration. `Record` is a data-carrying root because the namespace declares
-`Record Entry`; after `qz6j`, that declaration is a real `Record(Entry)`
-newtype, with transparent NOTA projection but distinct Rust type identity. The
-root vector should not carry every payload definition inline unless the payload
-is genuinely local to that root. Root vectors are the first level; namespace
-declarations are the second level.
+Here `Version` is a unit root. `Record`, `Observe`, `RecordAccepted`,
+`RecordsObserved`, and `VersionReported` define their root payload bodies at the
+root declaration site. Reusable nouns (`Topic`, `DatabaseMarker`, `RecordSet`,
+`Entry`) stay in the namespace. This is the style to port toward.
 
 ## What Actually Landed
 
@@ -46,8 +86,9 @@ Four syntax changes are implemented in the engine:
   `self_tagged_variant_form_equals_explicit_repetition`.
 - **Inline variant declarations.** `(Lookup { RecordIdentifier * })` in a root
   vector both declares the `Lookup` payload type and makes the root variant carry
-  it. This is useful for small local roots, but should not become the default
-  for large component schemas because it flattens the two-level readability.
+  it. After the psyche correction, this is not merely a small-root convenience;
+  it is the preferred style for operation input/output payload bodies when the
+  body belongs to the operation root.
 - **`yp29` bytes.** `Bytes` is a reserved scalar leaf, and `(Bytes 32)` is a
   fixed-width byte reference. The Rust emitter generates `Bytes(Vec<u8>)` and
   `FixedBytes<N>([u8; N])` with lowercase-hex NOTA projection, not `[1 2 3]`
@@ -78,13 +119,13 @@ When porting consumer `.schema` files, I should apply these rules:
 1. Collapse old self-tags:
    `(Record Record)` becomes `(Record)` when the operation name and payload type
    are intentionally the same.
-2. Prefer root names plus namespace declarations:
-   `[Record Observe]` with `Record Entry` and `Observe Query` in the namespace is
-   the clean two-level shape.
+2. Prefer inline root payload declarations:
+   `[(Record { Topic * Description * })]` is the implemented current spelling of
+   the psyche's desired `[Record { Topic * Description * }]` shape.
 3. Do not preserve old retag aliases:
    if old schema says `(Continue Continue)` plus `Continue NexusWork`, and the
-   runtime wants `NexusWork` directly, write `(Continue NexusWork)`. Only keep
-   `Continue NexusWork` if a real `Continue` wrapper is semantically wanted.
+   root operation has no fields of its own, write `(Continue NexusWork)`. If the
+   root operation does have its own fields, write the inline root body instead.
 4. Convert binary `String` or `(Vec Integer)` fields to `Bytes` or `(Bytes N)`.
    Use fixed width when the domain has a real width: digest, signature,
    fingerprint, nonce, key material.
@@ -97,9 +138,18 @@ When porting consumer `.schema` files, I should apply these rules:
 
 ## Has It Been Done Properly?
 
-Mostly yes in code. The implemented grammar is coherent and the tests cover the
-important semantic cases: self-tag equivalence, newtype lowering, `Bytes`,
-`(Bytes N)`, and generated bytes/hash round trips.
+Mostly yes in code, with one syntax caveat. The implemented grammar is coherent
+and the tests cover the important semantic cases: self-tag equivalence, inline
+root declarations, newtype lowering, `Bytes`, `(Bytes N)`, and generated
+bytes/hash round trips.
+
+The caveat is exact spelling. Current tests prove `[(Lookup { RecordIdentifier *
+})]` style, because the parenthesized block is one root-vector object. The
+psyche wrote `[Record { Topic * Description * }]`. If that exact unparenthesized
+root-vector member spelling is required, then the syntax work is not fully done;
+schema-next needs a root-vector parser extension that groups a PascalCase atom
+followed by a brace body into one variant declaration. If parenthesized inline
+root entries are acceptable, the capability exists.
 
 The remaining weakness is documentation drift. Current `schema-next/INTENT.md`
 and `schema-rust-next/INTENT.md` still contain alias-era statements such as
@@ -115,16 +165,18 @@ tests, reports, and jj state.
 
 ## Readiness
 
-I am ready to port schema files to the new style, with one caveat: for each
-component I should first identify whether a bare namespace declaration is a real
-domain wrapper or an old transparent retag. The qz6j migration makes that
-choice semantic, not cosmetic. The correct port is not mechanically replacing
-every `(X X)` with `(X)`; it is:
+I am ready to port schema files to the new style, with one caveat: I need the
+exact spelling settled. If the accepted concrete syntax is the current
+parenthesized inline form, I can start. If the desired concrete syntax is truly
+`[Record { ... }]` without per-entry parentheses, I should first implement that
+grammar extension in schema-next.
+
+The correct port is not mechanically replacing every `(X X)` with `(X)`; it is:
 
 - keep `(X)` when the wrapper `X` is real,
-- use `(X Payload)` when `X` should carry an existing payload directly,
-- use root bare `X` plus namespace `X Payload` when `X` is an actual operation
-  payload noun and the two-level schema read is clearer.
+- use `(X Payload)` when `X` should carry an existing reusable payload directly,
+- use `(X { ... })` for operation-owned payload bodies,
+- keep reusable domain nouns in the namespace.
 
 ## Sources
 
