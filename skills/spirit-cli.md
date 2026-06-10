@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.5.0`, installed in the
+schema-derived `spirit` component at version `0.6.0`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -21,11 +21,12 @@ The binary takes exactly one argument (the one-argument rule —
 
 - **Inline NOTA** — argument starts with `(`. The default. Wrap the
   whole expression in shell double quotes. Valid NOTA never contains
-  `"` (strings come from bracket forms `[text]` / `[|text|]`), so the
+  `"` (strings are bare when canonical, or bracket forms `[text]` /
+  `[|text|]` when delimiters are needed), so the
   shell double quote is a clean boundary and apostrophes inside the
   description survive. Single-quoting is wrong — it loses apostrophes.
   ```sh
-  spirit "(Record ([workspace] Decision [summary] Maximum Zero))"
+  spirit "(Record ([workspace] Decision summary Maximum Zero))"
   ```
 - **Path to a NOTA file** — argument does not start with `(`; the CLI
   reads the file as the NOTA argument. For records with embedded shell
@@ -65,8 +66,9 @@ Records are **untagged** (`NotaRecord`): enum variants carry a head,
 record bodies do not. `Option` is `Some`-wrapping — bare `None` or
 `(Some <value>)`. `Topic`, `Description`, and `StatementText` are
 `NotaTransparent String` newtypes — bare tokens when possible, bracket
-strings when they contain whitespace or punctuation. Bracket
-identifiers (`[abcd]`) so codes starting with a digit stay valid.
+strings when they need delimiters. Redundant brackets around a
+bare-eligible string are rejected; write `abcd`, not `[abcd]`, and
+`schema`, not `[schema]`.
 
 ## Recording intent
 
@@ -91,7 +93,7 @@ Higher privacy values narrow the audience; `Zero` is the workspace
 default. Never put private personal substance in a `Zero` record.
 
 The reply is terse and does not echo content:
-`(RecordAccepted ([abcd] (...)))` or the same shape with a different
+`(RecordAccepted (abcd (...)))` or the same shape with a different
 short code. Spirit mints random lowercase base36 identifiers and shows
 the shortest collision-free code with a four-character minimum. Cite and
 pass the short code the daemon returns.
@@ -113,8 +115,8 @@ calls.
 ## Removing and changing records
 
 ```sh
-spirit "(Remove [abcd])"                    # -> (RecordRemoved ([abcd] <marker>))
-spirit "(ChangeCertainty ([abcd] Zero))"    # -> (CertaintyChanged ([abcd] Zero <marker>))
+spirit "(Remove abcd)"                    # -> (RecordRemoved (abcd <marker>))
+spirit "(ChangeCertainty (abcd Zero))"    # -> (CertaintyChanged (abcd Zero <marker>))
 ```
 
 `Remove` deletes a record entirely — use it when nothing should remain
@@ -174,7 +176,7 @@ spirit "(Observe ((Full [spirit]) None (Exact Zero)))"
 spirit "(Observe ((Full [spirit]) None (Exact Zero) (ExactCertainty Zero)))"
 spirit "(PublicRecords ((Full [spirit]) None))"
 spirit "(PrivateRecords ((Partial [spirit]) None))"
-spirit "(Lookup [abcd])"
+spirit "(Lookup abcd)"
 spirit "(LookupStash 12)"
 spirit "(Count (Any None (Exact Zero)))"
 ```
