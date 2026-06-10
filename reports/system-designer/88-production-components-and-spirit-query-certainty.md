@@ -75,10 +75,21 @@ self.topic_match.matches(&entry.topics)
     && self.privacy_selection.matches(&entry.privacy)
 ```
 
-Topic, kind, privacy. That's all. `Observe` / `Count` / `PublicRecords` /
-`PrivateRecords` / `Lookup` all run through this. **Certainty is never
-consulted.** A `Zero`-certainty record comes back from an ordinary query
-exactly like a `Maximum` one.
+Topic, kind, privacy. That's all. The **filtered** paths —
+`Observe` / `Count` / `PublicRecords` / `PrivateRecords` /
+`SubscribeIntent` — all run through this. **Certainty is never consulted.**
+A `Zero`-certainty record comes back from an ordinary query exactly like a
+`Maximum` one.
+
+`Lookup` is **not** a filtered path (operator correction): it reads
+directly by exact identifier (`store.rs`: `SemaReadInput::Lookup → entry_by_identifier`),
+bypassing `Query::matches` entirely. That is correct and must stay — a
+`Zero`-certainty (removal-candidate) record stays reachable by exact id for
+review/restore even once the default floor hides it from browsing.
+
+(Operator verified against live production spirit `0.4.0`: a 3-field
+`Count` works; a 4-field certainty query is rejected. Certainty filtering
+is confirmed not live.)
 
 (An `Entry` carries two independent `Magnitude` fields: `privacy`
 — which queries *do* filter on — and `magnitude`, which is the
@@ -199,13 +210,25 @@ schema. The work is two-staged:
    `&& self.certainty_selection.matches(&entry.magnitude)`; add
    `default_observation_certainty() = AtLeast(Minimum)` (excludes Zero)
    and `removal_candidates() = Exact(Zero)`.
-5. Default observe-query construction (CLI default, `RecordSelection →
-   Query`) sets the floor to `AtLeast(Minimum)`; explicit selection
-   reaches Zero records. Add coverage: Zero excluded by default, visible
-   with explicit `Exact(Zero)`/`Any`.
+5. Apply the default floor to **every filtered path, not just `Observe`**
+   (operator): `Observe`, `Count`, `PublicRecords`, `PrivateRecords`, and
+   `SubscribeIntent` all default to `AtLeast(Minimum)`. `Lookup` is
+   exempt — exact-id reads bypass the floor so a Zero record stays
+   reviewable/restorable. Default construction (CLI default,
+   `RecordSelection → Query`) sets `AtLeast(Minimum)`; removal-candidate
+   review uses explicit `Exact(Zero)`. Add coverage across all five
+   filtered paths: Zero excluded by default, visible with `Exact(Zero)`,
+   and still `Lookup`-able by id.
 6. Operator integrates to `main` + redeploys daemon **and** CLI together
    (matched pair; no stored-data migration — `Entry.magnitude` already
    exists and is preserved).
+7. **Fix `spirit/INTENT.md` first (operator).** Line 3 still claims the
+   repo is "intentionally separate from production `spirit`/`persona-spirit`
+   … without disturbing the deployed substrate." That contradicts reality
+   — this repo *is* the live `0.4.0` substrate. Correct it on `main`
+   (operator owns spirit main) before the repo docs are trusted as
+   architectural evidence. (Line 107's `Observe`/`Lookup`/`Count`
+   grouping is likewise imprecise — `Lookup` is by-id, not a query plan.)
 
 **Execution: psyche chose spec-only.** This report is the spec; operator
 picks it up on `main`. Designer does not author code now. Note Stage 1 is

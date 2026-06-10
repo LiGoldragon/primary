@@ -48,6 +48,13 @@ Pure tests are the default. They run in the Nix build sandbox and are reachable 
 
 Rust tests follow `rust-discipline.md`: tests live under `tests/` at the crate root, not in large inline `#[cfg(test)]` blocks. The Nix check owns the runner.
 
+Schema source used by Rust tests lives in real `.schema` fixture files, not
+inline Rust string literals. The test should read the fixture by path or
+`include_str!`, then decode it through the same schema-source artifact path the
+component uses. Inline strings are acceptable only for non-schema primitives
+or deliberately invalid one-token parser probes where creating a fixture would
+hide the point of the test.
+
 ## Stateful tests
 
 Stateful tests touch a database, terminal, socket, daemon, external tool, or host-visible harness. They still live in Nix:
