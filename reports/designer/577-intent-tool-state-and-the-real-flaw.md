@@ -14,8 +14,9 @@ sweep). The guardian-gate design that follows from it lands in `578`.
 Gathered live from `spirit-daemon.service` (v0.4.0) and source at
 `/git/github.com/LiGoldragon/spirit`.
 
-- **Store:** `~/.local/state/spirit/spirit.sema`, a single redb-style
-  `sema-engine` file, ~1.25 MB, table `records`, schema version 1.
+- **Store:** `~/.local/state/spirit/spirit.sema`, a single `sema-engine` file
+  (not redb — redb appears nowhere in source), ~1.25 MB, table `records`,
+  schema version 1.
 - **`Entry` is exactly five fields** (`src/schema/signal.rs`): `topics`, `kind`,
   `description`, `magnitude`, `privacy`. **No timestamp, no weight, no
   relations** — grep for any of them returns nothing. This directly
@@ -33,7 +34,7 @@ Gathered live from `spirit-daemon.service` (v0.4.0) and source at
   `RecordsStashed (handle count marker)`; `LookupStash handle` returns the
   whole payload.
 - **Mutation ops exist** (the store is *not* append-only): `Remove` (hard,
-  irreversible — redb reuses freed pages within hours), `ChangeCertainty` (set
+  irreversible), `ChangeCertainty` (set
   magnitude; a removal-candidate marker), `ChangeRecord` (replace the entry
   under the same identifier), `CollectRemovalCandidates` (archive candidates to
   a meta-configured target, then retract). **No typed `Supersedes`/`Negates`
@@ -149,10 +150,16 @@ The manual pass is the auditor's job, run by hand the first time.
 
 ## 7. Documentation divergences found
 
-- `skills/spirit-cli.md:78` claims the daemon stamps date/time; the deployed
-  schema has no time field. Doc describes something unbuilt.
-- The doc's query-syntax examples (`(Any [])`, `(Count ((Any []) …))`) are
+- `skills/spirit-cli.md:78` claimed the daemon stamps date/time; the deployed
+  schema has no time field and the spirit `INTENT.md` records no timestamp
+  intent — the claim was simply false, not aspirational.
+- The doc's query-syntax examples (`(Any [])`, `(Count ((Any []) …))`) were
   wrong; the deployed shape is `(Count (Any None (Exact Zero)))`. An agent
-  copying the doc gets a parse error.
+  copying the doc got a parse error.
 
-Both flagged to a doc-fix agent (2026-06-10).
+Both corrected by the doc-fix agent (2026-06-10), along with a further cluster
+it found while sweeping: a fabricated `(Observe (RecordIdentifiers …))` op and
+a `(Remove N)` numeric-argument form in `intent-maintenance.md` (the real
+argument is a base36 record code, `(Remove [abcd])`), the same redb→sema-engine
+correction, and a removed "daemon-stamped provenance" claim. Every corrected
+read-only example was verified live against the v0.4.0 daemon.
