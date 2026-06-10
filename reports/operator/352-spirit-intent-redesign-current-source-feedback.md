@@ -1,4 +1,4 @@
-# Spirit Intent Redesign Feedback Against Current Source
+# Spirit Intent Redesign Feedback After 578 Revision
 
 Reviewed target: `reports/designer/578-intent-redesign-synthesis.md`
 
@@ -11,184 +11,183 @@ Companions checked:
 - `/git/github.com/LiGoldragon/spirit/tests/collect_removal_candidates.rs`
 - `/git/github.com/LiGoldragon/spirit/tests/process_boundary.rs`
 
-This supersedes the status-sensitive parts of
-`reports/operator/351-Audit-spirit-intent-redesign-synthesis-feedback.md`.
-That earlier feedback was right for the source it checked, but current Spirit
-has already absorbed the certainty-query and removal-candidate collection
-pieces.
+This refresh replaces the previous content of this report. The edited `578`
+resolved several earlier objections: handoff is block-for-now, retired arrows
+archive, `Weight` is dedicated, `topic` is renamed to `category`, and
+`Clarification` is an operation rather than a kind.
 
 ## Current Read
 
-The designer synthesis is still directionally right: Spirit should expose a
-coherent live intent surface, with correction, supersession, retirement, and
-guardian disagreement represented as motion around that surface rather than
-as bloat inside every record.
+The revised synthesis is much closer to implementable. Its live-state model is
+now coherent: stored records are current forward arrows; correction,
+clarification, retirement, and supersession are operations/events around that
+state; retired arrows leave the live query surface but remain recoverable in an
+archive.
 
-The implementation frontier has shifted. The first blocker is no longer "query
-cannot filter certainty." Current Spirit has `CertaintySelection` on `Query`,
-`Query::matches` applies it to `Entry.magnitude`, ordinary observations default
-to at least `Minimum`, and removal-candidate collection uses exact `Zero`.
-Tests cover the critical behavior: a zero-certainty record is hidden from
-ordinary observation, explicit zero-certainty queries can find it, and
-collection ignores nonzero records.
+The most important implementation correction is already present in current
+Spirit source: `Query` now has `CertaintySelection`, ordinary observation hides
+zero-certainty records, and `CollectRemovalCandidates` uses exact zero certainty
+for safe collection. The old "query cannot filter magnitude" blocker is stale
+for current source, though it remains accurate for deployed v0.4.0 as described
+in `577` and `579`.
 
-So the feedback now is not "build certainty filtering." It is: do not stop
-there and call the synthesis production-ready. The remaining design pressure is
-around identifiers, separate weight, history, and the guardian protocol.
+What still needs attention is the contract layer between the revised design and
+production code. The design now names the right semantic pieces; implementation
+still needs record snapshots, category migration, durable operation history,
+blocking harness transport, and precise write-operation schemas.
 
 ## Clear Attention Items
 
-### 1. Add identifier-bearing observations before building the auditor
+### 1. Observation must return identifiers
 
-`Lookup` returns a `FoundRecord` with `RecordIdentifier`, but `Observe` still
-returns `ObservedRecords` containing only `Entry` values. That is workable for a
-human reading intent, but not for a real auditor or guardian.
+The revised design says full-text search returns whole records with identifiers,
+categories, and text. Current Spirit still exposes identifier-bearing reads only
+through `Lookup`; `Observe` returns `ObservedRecords` containing `Entry` values
+without `RecordIdentifier`.
 
-The future auditor needs to say "retire these source records." The guardian
-needs to say "this proposal conflicts with these records." Both need ordinary
-query results that carry identifiers.
+That is now the highest-priority schema gap. Guardian refusals, supersede
+operations, auditor retirements, and category migration all need query results
+that name the records they refer to.
 
-Recommendation: add a snapshot type such as
-`RecordSnapshot { RecordIdentifier Entry }` and return a vector of snapshots
-from the read surface used by agents. Pre-production compatibility should not
-keep the identifier-less observation shape if the operational domain needs
-identifiers.
+Recommendation: introduce a snapshot type such as
+`RecordSnapshot { RecordIdentifier Entry }`, and make the agent-facing query
+surface return snapshots. Do this before guardian or auditor work.
 
-### 2. Separate certainty from weight
+### 2. Clarify needs durable before-and-after history
 
-Current source uses `Entry.magnitude` as certainty. That solves the
-removal-candidate problem, but it does not solve reaffirmation.
+The edit correctly moves `Clarification` from kind to operation. The risky part
+is "refine wording in place." If the old wording is overwritten without a
+durable operation journal, a bad clarification is hard to audit or reverse.
 
-Certainty answers "how current or trusted is this record?" Weight answers "how
-much has this direction been reaffirmed, how central is it, or how often should
-it win ranking?" A stale record can have high historical weight and zero current
-certainty. A fresh record can be high certainty but low weight until it is
-reaffirmed.
+The same is true for derived keyword behavior: a meaning-preserving wording
+change can still change the keyword index and therefore retrieval/ranking.
 
-The synthesis hints at this in its `Weight` discussion, and the psyche later
-made the distinction explicit. Treating one ladder as both certainty and
-weight will recreate bloat: repetitions either become new records or distort
-certainty.
+Recommendation: a `clarify` operation should journal old entry, new entry,
+guardian verdict, and database marker outside the live query surface. It should
+emit a clarification event, and tests should prove the record identifier is
+stable while the previous wording remains recoverable.
 
-Recommendation: add a dedicated `Weight` field or a reaffirmation-count field
-before designing ranking, duplicate-folding, or guardian "already known"
-behavior.
+### 3. Blocking handoff needs an exact transport contract
 
-### 3. Keep live state lineage-free, but journal operations durably
+The revised report chooses synchronous block for now because there is no callback
+mechanism. That is a valid user contract, but it makes transport a production
+design point rather than a detail.
 
-The synthesis says correction events "evaporate." That is right only if it
-means they do not pollute live intent queries. It is wrong if it means the
-system cannot later explain what happened.
+The daemon cannot parse NOTA or embed the harness. The harness is described as a
+separate client process. For a blocking gate, Spirit therefore needs a typed
+signal request/reply path to that process, with timeout, failure, retry, and
+refusal semantics.
 
-Production Spirit needs a durable operation journal or archive outside the live
-intent surface for:
+Recommendation: define the blocking harness exchange explicitly:
 
-- which record was superseded;
-- which records an auditor proposed to retire;
-- which psyche confirmation authorized a retirement;
-- why a guardian refused a proposal;
-- how to reverse a bad supersede or bad collection.
+- how Spirit discovers or is configured with the harness endpoint;
+- what typed signal carries the proposal bundle;
+- what typed signal returns the verdict;
+- what happens on timeout, malformed verdict, model failure, or harness absence;
+- whether the write is rejected or parked on infrastructure failure.
 
-The existing separate archive database for removal candidates is already the
-right kind of split: live intent stays clean, operational history remains
-recoverable.
+Until that exists, "daemon gathers records and hands them to the harness" is
+still a diagram, not an implementable contract.
 
-### 4. Define the guardian as a typed signal workflow
+### 4. Binary verdict still needs typed refusal reasons
 
-The synthesis correctly keeps daemon judgment out of the daemon. The daemon
-should store, route, subscribe, and enforce typed results; the harness/agent
-does the judgment.
+The revised design keeps the guardian's authority binary: yes or no. That is
+right. But implementation still needs the no to be typed, not only prose.
 
-The missing production detail is the contract. "Guardian says yes/no with a
-reason" is not enough. The system needs typed states and typed refusal reasons:
-duplicate, contradiction, compound record, non-intent task state, unclear
-privacy, unclear topic, insufficient retrieval, and supersede-required.
+The proposing agent needs machine-actionable reasons: duplicate, contradiction,
+compound statement, non-intent/task-state, unclear privacy, unclear category,
+clarify-tramples, clarify-loses-meaning, supersede-target-missing, and
+retrieval-insufficient. Those reasons do not grant guardian discretion; they
+make the refusal testable and revisable.
 
-Recommendation: model pending capture as a signal workflow:
+Recommendation: model `CaptureVerdict` or `GuardianVerdict` as an enum with
+referenced `RecordSnapshot`s plus a short explanation string for human review.
 
-- `ProposeRecord` creates a pending proposal, not a live record.
-- guardian clients subscribe to pending proposals;
-- guardian clients return `CaptureVerdict`;
-- the daemon admits, rejects, or asks for explicit supersede based on the typed
-  verdict;
-- subscribers see the later admit/reject event.
+### 5. Category rename needs a migration artifact
 
-That keeps the daemon dumb while making the gate real and testable.
+The revised design settles `topic` to `category`, closed and broad. Current
+source still has `Topic`, `Topics`, and exact string matching. This cannot be a
+cosmetic rename only.
 
-### 5. Park-vs-block changes the user-visible contract
+Implementation needs:
 
-The synthesis leans toward parking proposals while a guardian works. That is
-probably the better production shape, but it must be explicit. A parked
-proposal is not recorded intent.
+- canonical category declarations;
+- aliases/mappings from existing topic strings;
+- a bootstrap clustering report or data file for psyche approval;
+- rejection or enlargement flow for unknown categories;
+- migration tests proving old narrow topics become broad category plus keyword.
 
-If the CLI returns "pending," callers need a lifecycle: pending, admitted,
-rejected, supersede-required. If the CLI blocks, the daemon now depends on live
-model latency and failure. This is not an implementation detail; it is a user
-contract and a reliability decision.
+Recommendation: build the category catalog before rewriting record kinds or
+guardian prompts. Category is the retrieval spine; if it stays free-text during
+guardian work, the guardian inherits the current recall problem.
 
-Recommendation: choose park, but make the pending lifecycle first-class in the
-schema and subscription events.
+### 6. Weight definition is settled, but its mechanics are not
 
-### 6. Closed topics need a catalog and migration, not only policy
+The revised design correctly separates dedicated `Weight` from `magnitude`.
+It defines weight as reaffirmation count and says repetition raises weight
+instead of adding records.
 
-The synthesis is right that topics must become broad and curated. The source
-still treats topics as strings in `Topics`, so enforcement needs a new artifact:
-a topic catalog, aliases from old strings, and a migration/reclassification
-tool.
+The missing operational details are:
 
-This also determines how keywords work. A former topic such as a narrower
-schema-language phrase should become broad topic `schema` plus a keyword or
-phrase index. That mapping should be inspectable, not just left to agent prose
-discipline.
+- how duplicate detection chooses "raise weight" instead of "new record";
+- whether weight is monotonic;
+- whether weight decays or can be lowered by audit;
+- whether guardian can propose weight changes;
+- how ranking combines category, keyword, full text, certainty, and weight.
 
-Recommendation: implement closed topics as a typed catalog with an enlargement
-gate. Reject unknown topics or route them into the enlargement flow.
+Recommendation: make weight a typed field with explicit update operations and
+ranking tests. Do not let it become an informal counter updated through
+`ChangeRecord`.
 
-### 7. Keyword emphasis is authoring sugar, not the whole index
+### 7. Keyword extraction should be deterministic and tested
 
-Asterisk-marked keywords inside bracket strings are useful and NOTA-safe, but
-they should lower into a deterministic keyword index. Otherwise ordinary prose
-editing changes retrieval behavior invisibly.
+The revised report decides keyword extraction is derived on the fly from
+asterisk emphasis in descriptions. That avoids stored-field drift, but it still
+needs a small deterministic spec.
 
-Recommendation: define exact extraction and normalization rules: case folding,
-phrase units, duplicate handling, literal asterisk handling, and whether keyword
-matches rank or filter. Keep full-text search as the recall floor.
+Recommendation: define and test case folding, phrase spans, repeated spans,
+literal asterisks, unmatched asterisks, and interaction with bracket-string
+text. Full-text search should remain the recall floor, as the report says.
 
-### 8. Kind reduction needs a migration pass
+### 8. Kind migration is now clearer but still large
 
-Removing `Correction` from live intent state is conceptually right if
-correction becomes an event. `Clarification` is less settled because some
-existing clarification records are probably forward arrows under a weak label,
-while others are conversation residue.
+The target kind set is now Decision, Principle, Constraint. Correction becomes
+an event. Clarification becomes an operation.
 
-Recommendation: do not shrink `Kind` only by editing the enum. First migrate
-existing records:
+Implementation still needs a migration pass over existing records:
 
-- fold clear corrections into current forward records and journal the
-  supersession;
-- rewrite forward clarifications as `Decision`, `Principle`, or `Constraint`;
-- keep `Clarification` only if it gets a precise forward-only definition.
+- corrections become supersede/archive history or are folded into current
+  forward records;
+- clarifications become clarify events plus current rewritten records, or are
+  reclassified as forward arrows;
+- existing queries and docs stop treating Correction and Clarification as live
+  kinds.
+
+Recommendation: write migration fixtures from real `.schema` or exported record
+files, not inline Rust strings, and prove both old-store import and new-store
+query behavior.
 
 ## Updated Build Order
 
-1. Keep the current certainty-filtering and collection behavior; it is the right
-   base and already has witnesses.
-2. Add identifier-bearing observation snapshots.
-3. Add `Weight` or reaffirmation count separate from certainty.
-4. Add a durable operation journal/archive outside live intent queries.
-5. Define pending capture and guardian verdict signal types.
-6. Add the topic catalog and old-topic migration map.
-7. Add deterministic keyword extraction/indexing.
-8. Migrate `Correction` and inspect `Clarification`.
-9. Then wire guardian harness clients onto the pending-proposal stream.
+1. Add identifier-bearing observation snapshots.
+2. Add category catalog plus old-topic migration map.
+3. Add dedicated `Weight` and explicit weight update/ranking behavior.
+4. Add durable operation journal/archive entries for clarify, supersede, retire,
+   guardian refusal, and auditor proposals.
+5. Define the synchronous harness signal exchange and failure modes.
+6. Define typed guardian verdicts/refusal reasons.
+7. Add deterministic keyword extraction and full-text search.
+8. Migrate `Kind` to Decision/Principle/Constraint with real fixture coverage.
+9. Wire guardian checks into propose, clarify, and supersede.
+10. Only after that, automate the auditor.
 
 ## Net Feedback
 
-`578` should stay as the philosophical architecture: state is rest, stream is
-motion, guardian prevents new bloat, auditor distills old bloat.
+The edited `578` is now a strong design basis. The biggest prior conceptual
+gaps are closed.
 
-The part that clearly needs attention is the contract layer. Current Spirit has
-already implemented the immediate certainty-selection gap, so the next danger is
-building a guardian around an observation surface that cannot name records, a
-single magnitude field doing two jobs, and a "pending" lifecycle that callers
-cannot reason about.
+The remaining risk is implementation order. If Spirit builds the guardian before
+identifier-bearing reads, category migration, durable operation history, and a
+real blocking harness transport, it will recreate the same bloat in a more
+complex shape. The next production slice should be the contract substrate, not
+the LLM judgment loop.
