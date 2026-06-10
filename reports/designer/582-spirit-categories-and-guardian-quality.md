@@ -1,5 +1,19 @@
 # Spirit — a category catalog to bless, and how good the agent-guardian is
 
+> **Superseding note (psyche correction, 2026-06-10):** *"Spirit is for the whole
+> world, not just me."* This inverts **Part A's premise.** I derived the 15-category
+> catalog from *this workspace's* corpus — but Spirit is a universal intent tool, so
+> categories must be universal (apply to any human's intent), not workspace-grounded
+> domains like `schema`/`nota`/`signal-wire`. Those 15 are the right *keyword/topic
+> map* for this workspace, but the **wrong category set** — workspace-specifics belong
+> in the keyword layer, not the top level. The gerunds' *direction* (universality) was
+> right; the open question is whether the specific 12 are the best universal taxonomy.
+> **Part B (the guardian grade) is unaffected** and stands — and is in fact reinforced:
+> universal coarse categories make the keyword/full-text retrieval layer carry nearly
+> all per-user discrimination, so wiring it into the guardian (the Part B high-sev
+> finding) matters *more*, not less. See the running discussion; a revised Part A
+> follows once the direction settles.
+
 Two psyche questions, answered together because they turn out to be the same
 question from two ends: **(A)** a concrete category catalog to replace the 12
 abstract gerunds, and **(B)** a quality grade on the agent-guardian. They connect:
