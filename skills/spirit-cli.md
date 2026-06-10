@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.6.0`, installed in the
+schema-derived `spirit` component at version `0.7.0`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -26,7 +26,7 @@ The binary takes exactly one argument (the one-argument rule —
   shell double quote is a clean boundary and apostrophes inside the
   description survive. Single-quoting is wrong — it loses apostrophes.
   ```sh
-  spirit "(Record ([workspace] Decision summary Maximum Zero))"
+  spirit "(Record ([workspace] Decision summary Maximum Minimum Zero))"
   ```
 - **Path to a NOTA file** — argument does not start with `(`; the CLI
   reads the file as the NOTA argument. For records with embedded shell
@@ -72,21 +72,22 @@ bare-eligible string are rejected; write `abcd`, not `[abcd]`, and
 
 ## Recording intent
 
-The deployed `Entry` has exactly five positional fields: a vector of
+The deployed `Entry` has exactly six positional fields: a vector of
 topics, a `Kind`, one agent-clarified `Description`, a certainty
-`Magnitude`, and a privacy `Magnitude` — in that order. No verbatim
+`Magnitude`, a weight `Magnitude`, and a privacy `Magnitude` — in that order. No verbatim
 field, no context payload, and **no time field at all** (the daemon does
 not stamp date/time; there is no recorded intent for a timestamp). NOTA
-positional records never omit fields, so every `Record` spells all five.
+positional records never omit fields, so every `Record` spells all six.
 The agent clarifies the psyche's wording into the description before
 recording — that keeps the log dense and searchable rather than verbose
 and lossy.
 
 ```sh
-spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude> <Privacy>))"
-# Kind      ∈ { Decision Principle Correction Clarification Constraint }
-# Magnitude ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
-# Privacy   uses the same Magnitude ladder; Zero is open/public.
+spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> <Weight> <Privacy>))"
+# Kind       ∈ { Decision Principle Correction Clarification Constraint }
+# Certainty  ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
+# Weight     uses the same Magnitude ladder; Minimum is the ordinary default.
+# Privacy    uses the same Magnitude ladder; Zero is open/public.
 ```
 
 Higher privacy values narrow the audience; `Zero` is the workspace
@@ -146,12 +147,12 @@ socket.
 
 ## Observing records
 
-`Observe` carries a generated four-field `Query` directly. The CLI also
+`Observe` carries a generated five-field `Query` directly. The CLI also
 accepts the common three-field shorthand and inserts the ordinary
-certainty floor `(AtLeastCertainty Minimum)`:
+certainty floor `(AtLeastCertainty Minimum)` plus weight `Any`:
 
 ```text
-(Observe (<TopicMatch> <Kind?> <PrivacySelection> <CertaintySelection>))
+(Observe (<TopicMatch> <Kind?> <PrivacySelection> <CertaintySelection> <WeightSelection>))
 ```
 
 - **TopicMatch**: bare `Any` (no filter), `(Partial [a b])` matches
@@ -162,10 +163,14 @@ certainty floor `(AtLeastCertainty Minimum)`:
   `(AtLeast High)`.
 - **CertaintySelection**: `Any`, `(ExactCertainty Zero)`,
   `(AtMostCertainty Low)`, `(AtLeastCertainty Minimum)`.
+- **WeightSelection**: `Any`, `(ExactWeight Medium)`,
+  `(AtMostWeight Low)`, `(AtLeastWeight High)`.
 
 `Observe` currently stashes non-empty result sets and returns a
 `RecordsStashed` handle. Use `LookupStash` with that handle to retrieve
-the full `RecordsObserved` payload. Use `PublicRecords` and
+the full `RecordsObserved` payload. Each observed row is
+`ObservedRecord { RecordIdentifier * Entry * }`, so observed records carry
+their short IDs. Use `PublicRecords` and
 `PrivateRecords` for the ergonomic privacy-scoped shortcuts. `Lookup`
 retrieves by identifier and bypasses observation filters, so it can still
 read a zero-certainty record when you already know its identifier.
@@ -189,16 +194,11 @@ Two recurring wrong shapes:
 
 ## Certainty and weight
 
-Production Spirit currently stores certainty only. The field is named
-`magnitude` in generated Rust because it uses the shared `Magnitude`
-ladder, but in Spirit it means certainty: confidence/currentness, with
-`Zero` reserved for removal-candidate nomination. Do not use this field
-as weight.
-
-Weight is a separate design axis for "how much attention has accumulated
-around this topic or composite record." It is not yet a production field.
-When it lands, agglomerated/composite intent can carry higher weight
-without pretending the statement itself is more certain.
+Production Spirit stores both certainty and weight. Certainty means
+confidence/currentness, with `Zero` reserved for removal-candidate nomination.
+Weight means how much attention has accumulated around this topic or composite
+record. Higher weight does not mean higher certainty; it affects retrieval
+order and can be filtered with `WeightSelection`.
 
 ## Other operations
 
