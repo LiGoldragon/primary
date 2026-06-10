@@ -6,9 +6,16 @@ thing. Supersedes `583` §1-2 on naming. Method: a 4-agent run
 (`wf_01d0cd52-685`) — two independent single-noun renames merged with programmatic
 collision-checking, plus the facet design.
 
+**Two later psyche corrections folded in:** (a) **NOTA naming idiom** — unspaced
+multi-word atoms are **camelCase** (mirroring PascalCase for type variants):
+`firstAid`, `jobSearch`, `recordKeeping`, and referents like `theSouthField` — *not*
+kebab-case. (b) **No `copyright`/intellectual-property domain** — intellectual
+property is not a legitimate form of property, so the `law` area carries no IP domain
+(294 → 293).
+
 ## 1. The terms, settled
 
-- **`domain`** = the unit a record tags. **294** of them, each a single grounded
+- **`domain`** = the unit a record tags. **293** of them, each a single grounded
   noun: `architecture`, `schema`, `agriculture`, `parenting`, `prayer`, `notation`.
   This is the "hundreds of domains" you wanted; `category`/`topic` are retired as
   terms.
@@ -24,16 +31,17 @@ So a record carries one-or-more `domain` atoms (what it's about) and zero-or-mor
 `referent` atoms (which named thing it governs). New `Entry`:
 `{ Domains · Kind · Description · Certainty · Importance · Privacy · Referents }`.
 
-## 2. The single-noun vocabulary — 24 areas, 294 domains
+## 2. The single-noun vocabulary — 24 areas, 293 domains
 
-Every name a single English noun; the `x-and-y` compounds are gone; all 294 atoms
-verified globally unique (zero collisions, checked by program).
+Every name a single English noun; the `x-and-y` compounds are gone; all atoms
+verified globally unique (zero collisions, checked by program). Multi-word atoms are
+camelCase per the NOTA idiom (`firstAid`, `jobSearch`, `recordKeeping`).
 
-- **health** — body · mind · nutrition · exercise · sleep · medicine · disease · medication · therapy · reproduction · sexuality · aging · disability · addiction · dentistry · senses · pain · prevention · firstaid · rehabilitation
+- **health** — body · mind · nutrition · exercise · sleep · medicine · disease · medication · therapy · reproduction · sexuality · aging · disability · addiction · dentistry · senses · pain · prevention · firstAid · rehabilitation
 - **food** — cooking · diet · recipe · baking · preservation · fermentation · beverage · entertaining · foraging · fasting · dining
 - **home** — housing · maintenance · renovation · furnishing · cleaning · tidying · relocation · realty · property · utilities · locksmithing · appliances
 - **finance** — budgeting · saving · spending · debt · credit · investing · retirement · tax · insurance · income · banking · charity · planning · accounting
-- **work** — career · jobsearch · workplace · vocation · leadership · entrepreneurship · employment · compensation · scheduling · unemployment · freelancing · teamwork · productivity · project
+- **work** — career · jobSearch · workplace · vocation · leadership · entrepreneurship · employment · compensation · scheduling · unemployment · freelancing · teamwork · productivity · project
 - **craft** — programming · architecture · schema · infrastructure · versioning · testing · electronics · construction · carpentry · metalworking · sewing · manufacturing · repair · engineering · tooling · handicraft · invention
 - **knowledge** — mathematics · logic · physics · chemistry · biology · astronomy · geology · computing · physiology · statistics · research · history · linguistics · philosophy · economics · cognition · taxonomy
 - **education** — studying · teaching · schooling · skill · reading · memorization · pedagogy · mentoring · autodidacticism · credential
@@ -43,7 +51,7 @@ verified globally unique (zero collisions, checked by program).
 - **self** — growth · introspection · discipline · emotion · virtue · motivation · confidence · identity · purpose · decision · temperament · wellbeing · composure
 - **spirituality** — worship · prayer · meditation · ritual · faith · theology · contemplation · pilgrimage · scripture · ethics · mortality · transcendence · asceticism · wisdom
 - **governance** — politics · government · administration · citizenship · elections · activism · policy · diplomacy · movements · organizing · services · naturalization · war
-- **law** — rights · contract · title · crime · litigation · compliance · copyright · custody · liability · procedure · justice · policing · arbitration
+- **law** — rights · contract · title · crime · litigation · compliance · custody · liability · procedure · justice · policing · arbitration
 - **community** — neighborliness · volunteering · solidarity · membership · gatherings · reputation · service · hospitality · institutions
 - **nature** — agriculture · gardening · horticulture · husbandry · pets · forestry · fishing · hunting · conservation · weather · wilderness · sustainability · resources · stewardship
 - **travel** — itinerary · destination · transportation · driving · navigation · commuting · logistics · migration · tourism · transit · cycling
@@ -51,14 +59,15 @@ verified globally unique (zero collisions, checked by program).
 - **leisure** — recreation · sport · games · hobby · entertainment · collecting · outdoors · play · relaxation · celebration · fandom
 - **appearance** — clothing · grooming · style · cosmetics · etiquette · comportment
 - **safety** — protection · preparedness · risk · cybersecurity · privacy · disaster · military · deterrence
-- **information** — curation · recordkeeping · documentation · news · broadcasting · archives · database · retrieval · classification
+- **information** — curation · recordKeeping · documentation · news · broadcasting · archives · database · retrieval · classification
 - **technology** — energy · power · automation · robotics · intelligence · networking · materials · machinery · instrumentation · aerospace
 
 **Notable renames** (for anyone holding the `583` names): `land-and-living-world` →
 **`nature`** (the one non-obvious area rename); `software-engineering` → `programming`,
 `software-architecture` → `architecture`, `data-modeling` → `schema`, `version-control`
 → `versioning` (where the live software corpus files); `medical-care` → `medicine`,
-`mental-health` → `mind`, `physical-health` → `body`. **Four merges** trimmed 298→294:
+`mental-health` → `mind`, `physical-health` → `body`. **Four merges** trimmed 298→294,
+then **`copyright` dropped** (psyche: intellectual property isn't legitimate) → **293**:
 visual-art + drawing → `painting`; parenting + child-rearing → `parenting`;
 personal-safety + defense → `protection` (national sense kept as `military`); the two
 `retirement` leaves → one global `retirement` under `finance`.
@@ -66,12 +75,13 @@ personal-safety + defense → `protection` (national sense kept as `military`); 
 **Flagged judgment calls** (yours to wave through or adjust):
 - `autodidacticism` — a real but long single noun for self-directed learning. Keep, or
   prefer a shorter compound?
-- `copyright` narrows `intellectual-property` (no single noun spans patent+trademark+
-  copyright); patent/trademark nest under it as a third level. Confirm.
+- **`copyright`/intellectual-property removed entirely** — per your call that IP isn't
+  legitimate. `law` now has no IP domain (no copyright/patent/trademark).
 - `citizenship` vs `naturalization` kept as two atoms (civic engagement vs legal
-  status). Fold to one if you want it leaner (→293).
-- `firstaid`, `jobsearch`, `recordkeeping`, `cybersecurity`, `realty` — the only
-  forced "compounds," each because no single English word exists.
+  status). Fold to one if you want it leaner (→292).
+- `firstAid`, `jobSearch`, `recordKeeping`, `cybersecurity`, `realty` — the only
+  multi-word atoms; first three are camelCase per the NOTA idiom, last two are
+  lexicalized single words.
 
 ## 3. The `referent` facet — linking intent to a concrete named thing
 
@@ -82,9 +92,14 @@ answers *about-what* (universal, shared by everyone); `referent` answers *which-
 | Intent | domain | referent |
 |---|---|---|
 | "spirit's architecture should be schema-first" | `architecture` | `spirit` |
-| "rotate the south field to legumes" | `agriculture` | `the-south-field` |
+| "rotate the south field to legumes" | `agriculture` | `theSouthField` |
 | "first drafts get no editing" (a life principle) | `creativity` | *(none)* |
-| "the signal-* crates stay binary-by-default" | `schema` | `signal-spirit`, `signal-agent`, … |
+| "the signal-* crates stay binary-by-default" | `schema` | `signalSpirit`, `signalAgent`, … |
+
+(Referent atoms follow the camelCase NOTA idiom — `theSouthField`, `signalSpirit`.
+One open question: a referent that maps to an existing repo — does it use the repo's
+kebab name `signal-spirit`, or the camelCase atom `signalSpirit`? My lean: camelCase
+atom, with the kebab repo-name as a UF synonym that redirects to it.)
 
 Both, either, or neither — most life-principles are domain-only, which is why the
 field is **optional**.
