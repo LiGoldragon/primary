@@ -1,19 +1,14 @@
----
-tool_versions:
-  - [Spirit, "0.5.2"]
----
-
 # Skill — spirit CLI
 
 How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 ## What it is
 
-`persona-spirit` captures psyche statements as typed records and serves
-observation/subscription queries. Its bundled thin CLI is `spirit`, in
-the user's nix profile at `~/.nix-profile/bin/spirit`. The daemon is
-`persona-spirit-daemon`, a user service listening on a unix-socket pair
-under `~/.local/state/persona-spirit/<version>/`.
+`spirit` captures psyche statements as typed records and serves
+observation/subscription queries. The active production binary is the
+schema-derived `spirit` component at version `0.4.0`, installed in the
+user profile as `~/.nix-profile/bin/spirit`. The user service is
+`spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
 `spirit` is the sole substrate for intent capture. There is no
 file fallback; the old `intent/*.nota` substrate is retired. If the
@@ -43,61 +38,25 @@ The CLI replies on stdout with the daemon's typed `Reply` as NOTA text
 — `(RecordAccepted ...)`, `(RecordsObserved [...])`, etc. Exit code is
 nonzero on transport, parse, or daemon errors.
 
-Sockets come from `PERSONA_SPIRIT_SOCKET` and
-`PERSONA_SPIRIT_OWNER_SOCKET`, set by the home-profile wrapper — no
-flag, no config path, no socket argument. The wrapper is a shell stub
-that sets the env vars then execs the real binary; inspect with
-`readlink -f $(command -v spirit)`.
-
-## Deployment slots
-
-Spirit deploys side-by-side. The profile installs a versioned wrapper
-per tagged release plus a `spirit-next` slot for the in-flight branch;
-the unsuffixed `spirit` symlink points at the current production
-wrapper. Each daemon has its own state directory, sockets, and redb
-database — they never share files.
-
-```text
-spirit            -> spirit-vX.Y.Z       (production — the MAIN slot)
-spirit-vX.Y.Z     -> installed           (current production daemon)
-spirit-vX.Y.Z-1   -> installed           (older side-by-side, retained)
-spirit-vX.Y.Z+1   -> installed           (newer side-by-side, under test)
-spirit-next       -> (slot)              (in-flight authoring branch)
-```
-
-This is the next/main/previous vocabulary at the deployment layer:
-what is being authored is `next`, the published baseline is `main`,
-`previous` is the prior release retained for handover. Intent capture
-uses the unsuffixed `spirit`, never a version-suffixed wrapper. Use a
-tag-suffixed wrapper only when deliberately testing that version's
-segregated daemon/database. Cutover is an alias change, not a
-destructive replace. `readlink -f $(command -v spirit)` resolves what
-`spirit` currently points at.
+The wrapper sets `SPIRIT_SOCKET`; the daemon configuration carries the
+ordinary and meta socket paths. There are no CLI flags for sockets or
+configuration. Inspect the active wrapper with
+`readlink -f $(command -v spirit)` and the user service with
+`systemctl --user status spirit-daemon.service`.
 
 ## Read the wire shape from the pinned source
 
-The active ordinary Spirit contract on main is `signal-spirit`. Older
-deployed profiles may still pin the retired `signal-persona-spirit` crate
-until the production daemon rebuilds. Do not infer the wire shape from this
-skill's examples — read the **deployed** contract source named by the
-running daemon's `Cargo.lock`, not whichever repo is freshest on `main`.
-`main` drifts from production until the next CriomOS rebuild.
+The active implementation is `/git/github.com/LiGoldragon/spirit`, with
+generated Signal/Nexus/SEMA types under `src/schema/`. `signal-spirit`
+still provides the binary daemon startup configuration type and remains
+an active dependency. Do not infer the wire shape from old
+`persona-spirit` documents — read the deployed `spirit` source pinned by
+`CriomOS-home/flake.lock`.
 
 ```sh
-# persona-spirit commit pinned by CriomOS-home (built the deployed CLI):
-grep -B 1 -A 12 '"persona-spirit"' \
-    /git/github.com/LiGoldragon/CriomOS-home/flake.lock | head -30
-
-# that commit pins the ordinary Spirit contract in its Cargo.lock:
-cd /git/github.com/LiGoldragon/persona-spirit
-git show <persona-spirit-rev>:Cargo.lock \
-    | rg -B 1 -A 4 '"signal-spirit"|"signal-persona-spirit"'
-
-# read the deployed contract from the repo Cargo.lock names:
-cd /git/github.com/LiGoldragon/signal-spirit
-git show <signal-spirit-rev>:src/lib.rs
-# If the lock names retired signal-persona-spirit, inspect that archived
-# repository intentionally; it is not kept as an active /git checkout.
+rg -n '"spirit"' /git/github.com/LiGoldragon/CriomOS-home/flake.lock
+cd /git/github.com/LiGoldragon/spirit
+rg -n "pub struct Observe|pub enum Input|pub struct VersionReport" src/schema
 ```
 
 ## Encoding rules
@@ -111,7 +70,7 @@ identifiers (`[abcd]`) so codes starting with a digit stay valid.
 
 ## Recording intent
 
-A v0.5.2 record carries a vector of topics, one agent-clarified
+A v0.4.0 record carries a vector of topics, one agent-clarified
 `Description`, a `Kind`, a certainty `Magnitude`, and a privacy
 `Magnitude`. No verbatim field, no context payload, no client
 timestamp — **the daemon stamps date/time itself**. The four-field
@@ -131,11 +90,11 @@ Privacy uses the same `Magnitude` ladder on a privacy axis. `Zero`
 means open/public (the workspace default); higher values narrow the
 audience. Never put private personal substance in a `Zero` record.
 
-The reply is terse and does not echo content: `(RecordAccepted abcd)`
-or `(RecordAccepted [1234])` depending on whether the encoder can print
-the identifier bare. v0.5.2 mints random lowercase base36 identifiers
-and shows the shortest collision-free code (4-7 chars). Cite and pass
-the short code the daemon returns.
+The reply is terse and does not echo content:
+`(RecordAccepted ([abcd] (...)))` or the same shape with a different
+short code. Spirit mints random lowercase base36 identifiers and shows
+the shortest collision-free code with a four-character minimum. Cite and
+pass the short code the daemon returns.
 
 **Topics are user-creatable strings in a vector** — any new word a
 `Record` uses is registered; no pre-declared enum. Pick broad reusable
@@ -165,74 +124,52 @@ restored by changing certainty back to a non-zero `Magnitude`. Use
 `Correction` or supersession when lineage should stay visible. Use hard
 `Remove` only after review.
 
-**Collect removal candidates** — archive exact-`Zero` records, then
-remove them from the hot store:
+**Collect removal candidates** — archive matching records to the
+owner-configured archive database, then remove them from the hot store:
 
 ```sh
-spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) (ArchiveDatabase Default)))"
-spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) (ArchiveDatabase (Path [/tmp/spirit-removal-candidates.sema]))))"
-spirit "(CollectRemovalCandidates (((Any []) None (Exact Zero) Any (Exact Zero) SummaryOnly) (Print StandardOutput)))"
+spirit "(CollectRemovalCandidates (((Full [stale]) (Some Decision) (Exact Zero))))"
 ```
 
 The reply `(RemovalCandidatesCollected ([...] [...] [...]))` carries
 archived `RecordSummary` values, removed identifiers, and skipped
-candidates. The query is constrained to exact `Zero` certainty and
-exact `Zero` privacy; broad queries are rejected. `ArchiveDatabase
-Default` writes the daemon-derived archive; `(Path [...])` a
-caller-selected one; `Print StandardOutput`/`StandardError` writes no
-archive and returns typed material for the CLI to render. Archive
-failure returns skipped candidates (e.g. `[([abcd] ArchiveFailed)]`)
-and leaves those records queryable.
+candidates. Archive location is not a working-signal argument; the
+owner configures it through the meta socket.
 
 ## Observing records
 
-`Observe` always carries one `Observation` variant — usually `Records`.
-The query shape is:
+`Observe` carries a generated three-field `Query` directly:
 
 ```text
-(Observe (Records ((<TopicSelection>) <Kind?> <CertaintySelection> <RecordedTimeSelection> <ObservationMode>)))
+(Observe ((<TopicMatch>) <Kind?> <PrivacySelection>))
 ```
 
-- **TopicSelection**: `(Any [])` no filter, `(Partial [a b])` matches
+- **TopicMatch**: `(Any [])` no filter, `(Partial [a b])` matches
   any requested topic, `(Full [a b])` matches every requested topic.
 - **Kind?**: `None` or `(Some Decision)`.
-- **CertaintySelection**: `Any`, `(Exact Zero)`, `(AtMost Low)`,
-  `(AtLeast High)`. `Minimum` is weak but real intent — do not use it
-  as the removal-candidate marker.
-- **RecordedTimeSelection**: `Any`, `Shallow`, `Recent`, `Deep`,
-  `VeryDeep`, `(Since (YYYY-MM-DD HH:MM:SS))`, `(Until (...))`,
-  `(Between ((...) (...)))`. Qualitative depths apply after
-  topic/kind/certainty matching and return the newest matches at that
-  depth, so quiet topics reach farther back than active ones.
-- **ObservationMode**: `SummaryOnly` for compact summaries,
-  `WithProvenance` when you need daemon-stamped date/time.
+- **PrivacySelection**: `Any`, `(Exact Zero)`, `(AtMost Low)`,
+  `(AtLeast High)`.
 
-The `Records` query has no privacy field and means exact `Zero`
-privacy by type. Use `PrivateRecords` / `PrivateRecordIdentifiers` for
-elevated reads. `RecordIdentifiers` selects by exact code `(Exact
-[abcd])`; identifier ranges are not live in the random-identifier era —
-use `Records` with recency windows for history.
+`Observe` currently stashes non-empty result sets and returns a
+`RecordsStashed` handle. Use `LookupStash` with that handle to retrieve
+the full `RecordsObserved` payload. Use `PublicRecords` and
+`PrivateRecords` for the ergonomic privacy-scoped shortcuts.
 
 ```sh
-spirit "(Observe Topics)"
-spirit "(Observe (Records ((Any []) None Any Recent SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit search]) None Any Any SummaryOnly)))"
-spirit "(Observe (Records ((Full [spirit search]) None Any Any WithProvenance)))"
-spirit "(Observe (Records ((Any []) (Some Decision) Any Any SummaryOnly)))"
-spirit "(Observe (Records ((Any []) None (AtMost Low) Any SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any Deep SummaryOnly)))"
-spirit "(Observe (Records ((Partial [spirit]) None Any (Since (2026-05-30 00:00:00)) SummaryOnly)))"
-spirit "(Observe (RecordIdentifiers ((Exact [abcd]) SummaryOnly)))"
-spirit "(Observe (PrivateRecords ((AtMost Low) ((Any []) None Any Any SummaryOnly))))"
-spirit "(Observe (PrivateRecordIdentifiers ((AtMost Low) ((Exact [abcd]) SummaryOnly))))"
+spirit Version
+spirit "(Observe ((Full [spirit]) None (Exact Zero)))"
+spirit "(PublicRecords ((Full [spirit]) None))"
+spirit "(PrivateRecords ((Partial [spirit]) None))"
+spirit "(Lookup [abcd])"
+spirit "(LookupStash 1)"
+spirit "(Count ((Any []) None (Exact Zero)))"
 ```
 
 Two recurring wrong shapes:
 
 - `Search` is not a production request head.
-- `(Observe ((Any [...]) ...))` omits the `Records` variant; the daemon
-  expects a PascalCase observation name after `Observe`, not a bare
-  query record.
+- `(Observe (Records ...))` is the retired production shape; live
+  schema-derived `Observe` takes `Query` directly.
 
 ## Other operations
 
@@ -240,10 +177,14 @@ Two recurring wrong shapes:
 spirit "(State [free-form psyche statement text])"   # lowers to an Assert sema observation
 ```
 
-`Watch` opens a long-lived stream; `Unwatch` closes it. The CLI's
-single-call shape suits subscriptions poorly — for agent code prefer
-the typed `persona_spirit::ordinary::SignalClient`. Tap/Untap fanout is
-a no-op placeholder pending persona-introspect.
+`Version` is a bare NOTA atom, not a Unix flag:
+
+```sh
+spirit Version
+```
+
+`SubscribeIntent` opens a long-lived intent event stream. `Tap` and
+`Untap` expose the observer surface over operation/effect observations.
 
 ## Daemon startup is binary-only
 
@@ -257,13 +198,6 @@ startup signal before launching. A virgin daemon can receive an initial
 from persisted SEMA state. New configuration fields land as typed
 fields in the startup schema or as authenticated meta-signal messages —
 never flags, never daemon NOTA parsing.
-
-Old service definitions may show a positional NOTA tuple — that is
-legacy drift to migrate, not the rule to copy. The witness:
-
-```sh
-systemctl --user cat persona-spirit-daemon-vX.Y.Z.service
-```
 
 ## Substrate migration discipline
 
@@ -316,9 +250,9 @@ uses; the redb database carries the canonical record set.
   the gold-mining discipline.
 - `skills/intent-maintenance.md` — sweep / supersession discipline.
 - `skills/nota-design.md` — positional-record encoding rules.
-- `/git/github.com/LiGoldragon/persona-spirit` — component source;
-  `tests/daemon.rs` is the best worked example for the wire shape.
-- `/git/github.com/LiGoldragon/signal-spirit` — active ordinary Spirit
-  wire contract; `src/lib.rs` declares the channel.
-- `/git/github.com/LiGoldragon/meta-signal-spirit` — active Spirit meta
-  policy contract for privileged lifecycle/configuration traffic.
+- `skills/nota-design.md` — positional-record encoding rules.
+- `/git/github.com/LiGoldragon/spirit` — active component source;
+  `tests/process_boundary.rs` and `tests/nix_integration.rs` show the
+  live wire shape.
+- `/git/github.com/LiGoldragon/signal-spirit` — daemon startup
+  configuration contract consumed by the active component.
