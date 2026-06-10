@@ -107,41 +107,69 @@ already the bloat we are fixing. It lands here, in a report.
   the verdict (block). On harness absence, model failure, malformed verdict, or
   timeout, the propose **fails closed** — rejected/errored, never admitted
   unjudged (admitting unjudged would break the consistency invariant). The exact
-  typed request/reply transport between Spirit and the harness process is an open
-  implementation contract (operator `352` §3). Park becomes possible once agent
-  messaging exists; **[deferred]** revisit then.
+  transport is the lease-and-direct-channel flow in §4a; its failure modes
+  (timeout / malformed verdict / harness absence) are the implementation contract
+  to pin down (operator `352` §3). Park becomes possible once agent messaging
+  exists; **[deferred]** revisit then.
 
-## 4a. The agent — a harness library, not a daemon
+## 4a. The agent daemon and the harness
 
-- **[decided] The agent is a library, not a daemon.** The constraints forced it:
-  daemons never parse NOTA and can't sit in the text path, so the daemon part of
-  an "agent" has nothing left to do. What remains is a reusable **harness
-  library** — the judgment machinery: render the prompt, call the model, parse
-  the answer, retry. The guardian, the auditor, and the category-enlargement gate
-  are all the same shape, so the harness is the workspace's general judgment
-  primitive — a shared, client-grade library, not a triad component.
-- **[decided] The harness is the only NOTA-speaker, and it's a client.** A
-  consumer builds a harness *process* from the library plus its own signal types,
-  so the harness is the only thing that knows signal-spirit. It renders a NOTA
-  prompt — context records as NOTA, plus a prelude showing the expected NOTA
-  response shape — **calls the model directly**, takes the NOTA answer, parses it
-  into the typed verdict, and hands that back to Spirit. Spirit only ever
-  exchanges *signal* with the harness; every daemon stays pure signal.
-- **[decided] The harness is a separate process.** It can't be embedded in
-  Spirit — Spirit's process would then be speaking NOTA. So Spirit (a daemon)
-  talks to the harness (a client process) in signal; the harness owns the whole
-  text/NOTA world.
-- **[decided] Prelude and parser come from one schema.** What the prelude tells
-  the model to emit is exactly what the parser decodes — they can't drift,
-  because both fall out of the one verdict type. A malformed response just fails
-  the parse and retries.
-- **[decided — local for now] Governance.** Keys, token budget, rate limits,
-  model routing live local to the single harness. When a second consumer appears,
-  **[deferred]** lift them into a **signal-only** governance daemon that vends
-  grants and keys but never touches a prompt — the harness still makes the call.
+LLM calls will live in many components, so the model machinery is centralized in
+an **agent daemon** — but it brokers harnesses without ever touching a payload,
+which is what keeps consumer signal out of it.
+
+- **[decided] Two pieces.** The **agent daemon** owns the model machinery —
+  connections, keys, token budget, rate limits, and a warm pool of harness
+  processes. The **harness** is a per-component client process, compiled with that
+  component's signal contract, and is the only thing that crosses signal ↔ NOTA.
+  The agent daemon is a proper triad: `agent` + `signal-agent` +
+  `meta-signal-agent`, configured (harness registry, keys, budget) by the
+  meta-signal, virgin-start-and-wait like the others.
+- **[decided] The harness is a separate process.** It can't be embedded in the
+  component — the component (a daemon) would then be speaking NOTA. So the
+  component talks to it in signal; the harness owns the whole text/NOTA world.
+- **[decided] The daemon vends; it never ferries.** This is the move that keeps
+  consumer signal out of the agent daemon: it hands the requesting component a
+  *ready harness*, and the payload then flows component ↔ harness **directly**. The
+  agent daemon is on the control path (lease + meter), never the data path.
+- **[decided] The call, end to end** (Spirit's guardian as the example):
+  1. Spirit → agent daemon: lease a guardian harness (`signal-agent`; no records).
+  2. Agent daemon returns a **warm** Spirit-guardian harness from its pool — model
+     connection open, full prelude loaded (NOTA basics + its own verdict schema,
+     known at compile time), waiting only for the records — with its endpoint.
+  3. Spirit → harness, **directly**, in signal-spirit: the records + question.
+  4. Harness calls the model, parses the NOTA verdict, → Spirit **directly**: the
+     typed verdict.
+  5. Harness → agent daemon: done, tokens used; the lease ends.
+- **[decided] Harnesses are opaque to the daemon, managed by identity.** The agent
+  daemon launches, pools, meters, and restarts a harness binary without reading a
+  byte of its contract. The registry — which binary is "Spirit's guardian harness"
+  — is meta-signal config; adding a component means registering its harness binary.
+- **[decided] Pools are per (component, role).** A harness compiled with one
+  contract serves only that one, so the daemon keeps separate warm pools
+  (Spirit-guardian, Spirit-auditor, …). A component with several judgment jobs
+  registers several harnesses, each with its own verdict schema; the lease request
+  just names the (component, role) id — still opaque to the daemon.
+- **[decided — lease-per-call] Leasing.** A harness is leased for one call and
+  returned to the pool — clean for budget accounting and fairness. Stickiness (a
+  component holding a warm harness across many calls) is a later optimization if
+  the lease handshake shows up as latency.
+- **[decided] Dependency graph.** agent daemon → `signal-agent` only (never a
+  consumer contract); harness → its component's signal + `signal-agent` (to report
+  usage); component → its own signal + `signal-agent`. The harness remains the
+  sole signal ↔ NOTA crosser.
+- **[decided] Failure splits by path.** The component sees model/harness failures
+  *directly* on its channel and fails closed (rejects, never admits unjudged); the
+  agent daemon handles process health — evict and restart a dead harness, refill
+  the pool. Because it is control-path, an agent-daemon blip leaves in-flight
+  harnesses working; only new leases wait — which is also why global rate-limiting
+  belongs there.
+- **[decided] Prelude and parser come from one schema.** What the prelude tells the
+  model to emit is exactly what the parser decodes — they can't drift, both fall
+  out of the one verdict type. A malformed response fails the parse and retries.
 - **[deferred] Signal-forwarding** (opaque sized envelopes routed without being
-  decoded) is a real, useful pattern — for a future broker/router daemon, not for
-  the agent, which needs none of it.
+  decoded) stays unneeded — the daemon vends, it doesn't ferry. Keep it for a
+  future broker/router.
 
 ## 5. Retrieval and completeness
 
@@ -274,7 +302,8 @@ already the bloat we are fixing. It lands here, in a report.
 All six open calls from the session are settled:
 
 - Handoff → **block** for now (no callback mechanism; §4).
-- Governance → **local** for now (§4a).
+- The agent → a **broker daemon + per-component harness**, vend-not-ferry, with
+  governance/pool centralized in the daemon and leasing **per-call** (§4a).
 - `Clarification` → a **clarify operation**, not a kind (§4, §8).
 - Suppressed-arrow recoverability → **archive** (§4).
 - Weight → **dedicated field** (§10).
@@ -284,7 +313,8 @@ All six open calls from the session are settled:
 Residual future-revisits (deferred, not present choices):
 
 - Park handoff once agent messaging exists (§4).
-- A signal-only governance daemon once there is a second consumer (§4a).
+- Harness leasing stickiness (keep-warm reuse) if the per-call handshake shows up
+  as latency (§4a).
 - Semantic/embedding keyword search if literal matching proves too weak (§7).
 - Confirm asterisks are inert in NOTA (§7).
 - Whether kinds are needed at all (§8).
