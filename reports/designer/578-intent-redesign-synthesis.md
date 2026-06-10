@@ -3,9 +3,13 @@
 Synthesis of a live design conversation (2026-06-10) on what Spirit should
 become. Companion to `577` (empirical state of deployed Spirit v0.4.0) and
 `579` (the first manual agglomeration pass). Nothing here is built yet; this is
-the converged design. Decisions are marked **[decided]** (settled in
-conversation) or **[open]** (a call the psyche still owes, or my lean awaiting
-confirmation).
+the converged design. As of the end of the 2026-06-10 session **every open call
+is resolved** — markers are **[decided]** or **[deferred]** (a future revisit,
+not a present choice); §11 lists the residuals.
+
+Naming: the design renames the deployed `topics` concept to **category**. Where
+this report describes deployed v0.4.0 it still says `topics` (the literal field);
+the forward design says `category`.
 
 Per the discipline we worked out below, none of this was logged to Spirit as
 intent — it is design-in-progress, and the ~20 existing self-design records are
@@ -46,44 +50,55 @@ already the bloat we are fixing. It lands here, in a report.
 - **[decided] The store holds pure forward arrows, always mutually consistent.**
   This is the rest. No lineage, no contradiction, no correction records.
 - **[decided] Change is a transient event on a subscription stream.** A
-  replacement *happens* as an action and *announces itself* as a correction
-  event to subscribers, then evaporates. The "this replaced that" lives exactly
-  as long as the notification.
+  replacement or clarification *happens* as an action and *announces itself* as
+  an event to subscribers, then evaporates. The "this replaced that" lives
+  exactly as long as the notification.
 - **[decided] State = rest, stream = motion.** This is how intent becomes "the
   psyche at rest": query at any instant and you get a coherent, contradiction-free
   body, by construction — because the guardian won't admit anything that breaks
   consistency.
-- **[decided] Spirit gets subscriptions** so agents stay current; correction is
-  one event type on that stream.
+- **[decided] Spirit gets subscriptions** so agents stay current; correction and
+  clarification are event types on that stream.
 
 ## 4. The guardian — the write gate
 
 - **[decided] The daemon is the gate; an agent is the brain.** On a capture the
-  daemon gathers the relevant existing records, hands the bundle to an agent,
-  and acts on the verdict. The daemon routes and executes; it never parses NOTA
-  (the CLI already typed the record) and never judges.
+  daemon gathers the relevant existing records, hands the bundle to the harness
+  (§4a), and acts on the verdict. The daemon routes and executes; it never parses
+  NOTA (the CLI already typed the record) and never judges.
 - **[decided] The guardian's verdict is binary: yes or no.** *Yes* = no conflict,
   admit. *No* = conflict or any smell — with a reason and references to the
-  records concerned. It makes **no resolution calls** and has zero discretion;
-  it never decides to suppress anything. (This is what makes it safe: it can
-  never wrongly overwrite intent.)
-- **[decided] On a no, the proposing agent acts** — revise to remove the
-  conflict, drop it, or come back with an explicit, named supersede.
-- **[decided] Two write paths.** *propose* — subject to the yes/no gate, succeeds
-  only if consistent with everything already there. *supersede* — the explicit
-  follow-up that names the record(s) it replaces; that act suppresses the old
-  arrow and fires the correction event.
+  records concerned. It makes **no resolution calls** and has zero discretion; it
+  never decides to suppress anything. (This is what makes it safe: it can never
+  wrongly overwrite intent.)
+- **[decided] On a no, the proposing agent acts** — revise to remove the conflict,
+  drop it, or come back with an explicit, named supersede.
+- **[decided] Three write operations.**
+  - *propose* — a new arrow; passes only if consistent with everything already
+    there.
+  - *clarify* — refine an existing record's wording in place. The guardian judges
+    whether it genuinely **clarifies** (same meaning, sharper words) versus
+    **tramples** it into something unrelated, or **loses** important aspects —
+    either of the latter two is a no. A trample means the agent actually wanted a
+    supersede, not a clarify. Because a true clarify is meaning-preserving it
+    can't introduce a new conflict, so it needs no global re-check.
+  - *supersede* — explicitly name the record(s) being replaced; the old arrow is
+    retired and a correction event fires.
 - **[decided] Supersede is still consistency-checked.** Superseding X with R
   checks R against everything *except* the named target X. Consistent with the
   rest → admit; still conflicts with an un-named Y → no, name Y too. Supersede
   cannot be a side door for injecting inconsistency; the always-consistent
   invariant holds through it.
-- **[open — lean: park] The daemon→agent handoff.** *park*: the daemon shelves
-  the proposal as pending, replies "got it, pending," a guardian agent works the
-  shelf and tells the daemon admit/drop; the daemon stays a pure store plus an
-  inbox, no outbound LLM call. "Blocking gate" is still satisfied — the record
-  is not *admitted* until vetted. *block* (alternative): the daemon calls the
-  agent live and stalls for the verdict.
+- **[decided] Retired arrows are archived, not destroyed.** A supersede (or an
+  auditor retirement) moves the old arrow to a cold archive *outside* the live
+  intent — invisible to queries (zero noise), but recoverable if a call was
+  wrong. The deployed daemon already does this (`CollectRemovalCandidates`
+  archives, then retracts).
+- **[decided — block for now] The Spirit↔agent handoff is synchronous.** There is
+  currently no way to call the proposing agent back, so it waits in the call for
+  the verdict (block). Park (Spirit accepts as pending and delivers the verdict
+  later via an event/message) becomes possible once agent messaging exists;
+  **[deferred]** revisit then.
 
 ## 4a. The agent — a harness library, not a daemon
 
@@ -91,7 +106,7 @@ already the bloat we are fixing. It lands here, in a report.
   daemons never parse NOTA and can't sit in the text path, so the daemon part of
   an "agent" has nothing left to do. What remains is a reusable **harness
   library** — the judgment machinery: render the prompt, call the model, parse
-  the answer, retry. The guardian, the auditor, and the topic-enlargement gate
+  the answer, retry. The guardian, the auditor, and the category-enlargement gate
   are all the same shape, so the harness is the workspace's general judgment
   primitive — a shared, client-grade library, not a triad component.
 - **[decided] The harness is the only NOTA-speaker, and it's a client.** A
@@ -109,19 +124,19 @@ already the bloat we are fixing. It lands here, in a report.
   the model to emit is exactly what the parser decodes — they can't drift,
   because both fall out of the one verdict type. A malformed response just fails
   the parse and retries.
-- **[open] Governance.** Keys, token budget, rate limits, model routing. If
-  centralized, it's a **signal-only** daemon that vends grants and keys but never
-  touches a prompt — the harness still makes the actual call. Only worth it once
-  there is more than one consumer; a single consumer configures locally.
+- **[decided — local for now] Governance.** Keys, token budget, rate limits,
+  model routing live local to the single harness. When a second consumer appears,
+  **[deferred]** lift them into a **signal-only** governance daemon that vends
+  grants and keys but never touches a prompt — the harness still makes the call.
 - **[deferred] Signal-forwarding** (opaque sized envelopes routed without being
-  decoded) is a real, useful pattern — for a future broker/router daemon, not
-  for the agent, which needs none of it.
+  decoded) is a real, useful pattern — for a future broker/router daemon, not for
+  the agent, which needs none of it.
 
 ## 5. Retrieval and completeness
 
 - **[decided] Completeness is the retrieval's job, not the guardian's nose.** The
-  bundle = topic-matches + content-matches on the proposed record's own text, so
-  a misattributed record still lands in the bundle (found by what it says, not
+  bundle = category-matches + content-matches on the proposed record's own text,
+  so a misattributed record still lands in the bundle (found by what it says, not
   its tag).
 - **[decided] The guardian also has query access** — the bundle is a seed, not a
   cage. It chases concrete leads: the proposal names something specific; a bundle
@@ -129,54 +144,70 @@ already the bloat we are fixing. It lands here, in a report.
   cover.
 - **[decided] Completeness is not guaranteed, and need not be.** Guardian =
   high-recall best-effort at the door; auditor = at-rest backstop catching the
-  residue (the paraphrase-dup with no shared topic or word). Two gates, two
+  residue (the paraphrase-dup with no shared category or word). Two gates, two
   moments.
 
-## 6. Topics — closed and broad
+## 6. Categories — closed and broad
 
-- **[decided] Topics become a closed, curated, broad set.** `schema` yes;
-  `schema-language`, `record-deletion` too specific. Small and stable. This turns
-  topics from leaky free-text (1315 distinct strings today) into a trustworthy
-  index, so "everything on this topic" is reliably complete.
-- **[decided] New topics go through an enlargement process** — the same gate as
-  the guardian, one level up: a proposed new topic is vetted against the existing
-  ones (genuinely new, or `schema` wearing a hat?).
-- **[decided] Broad topics are a coarse domain filter, not a precision filter**
-  (`schema` returns ~384) — which is *why* a finer discriminator (keywords) is
-  needed underneath.
-- **Cost:** closing the set means curating the 1315 strings down to a canonical
-  broad set first — the same agglomeration move, pointed at topics.
+- **[decided] Categories become a closed, curated, broad set** (renamed from
+  `topic`). `schema` yes; `schema-language`, `record-deletion` too specific.
+  Small and stable. This turns the index from leaky free-text (1315 distinct
+  topic strings today) into a trustworthy one, so "everything in this category"
+  is reliably complete.
+- **[decided] New categories go through an enlargement gate** — the same gate as
+  the guardian, one level up: a proposed new category is vetted against the
+  existing ones (genuinely new, or `schema` wearing a hat?).
+- **[decided] Broad categories are a coarse domain filter, not a precision
+  filter** (`schema` returns ~384) — which is *why* a finer discriminator
+  (keywords, §7) is needed underneath.
+- **[decided] Curation: an agent proposes, the psyche decides.** Closing the set
+  means first collapsing today's 1315 free-text topic strings into ~20 broad
+  categories — the same agglomeration move, pointed at the index. An agent
+  proposes the clustering from the data; the psyche edits and blesses the final
+  set (it encodes the psyche's sense of the domains). One-time bootstrap;
+  afterwards the enlargement gate handles new categories.
 
 ## 7. Keywords and text search — the discriminator
 
-- **[decided] Three tiers of selectivity** over the same record: **topic** (broad
-  domain, closed) → **keyword** (author-marked salient terms) → **full text**
-  (safety net).
+- **[decided] Three tiers of selectivity** over the same record: **category**
+  (broad domain, closed) → **keyword** (author-marked salient terms) → **full
+  text** (safety net).
 - **[decided] Keywords via markdown-style asterisk emphasis** — `*schema
-  language*`. The specificity pulled out of topics relocates here. The LLM marks
-  salient terms nearly for free as it writes, and the marks double as
+  language*`. The specificity pulled out of categories relocates here. The LLM
+  marks salient terms nearly for free as it writes, and the marks double as
   skimmability.
-- **[decided] Full-text search returns whole records** (identifier + topics +
+- **[decided] Full-text search returns whole records** (identifier + categories +
   text) so provenance stays intact — not a grep that loses source and formatting.
 - **[decided] Keywords are a precision layer, not a completeness layer** — they
   depend on the author marking correctly, so full text + the auditor remain the
   recall floor. Keywords must never be load-bearing for recall.
-- **[lean] Implementation:** derive keywords on the fly from the description (no
-  stored field, no drift); case-fold; a multi-word `*span*` is one phrase-unit.
-  Keyword/substring first; semantic/embedding only if literal proves too weak.
-- **[open — expected clean] Verify asterisks are inert in NOTA** (only brackets
-  are special) so emphasis can live literally inside the `[description]` string.
+- **[decided] Implementation:** derive keywords on the fly from the description
+  (no stored field, no drift); case-fold; a multi-word `*span*` is one
+  phrase-unit. Keyword/substring first; **[deferred]** semantic/embedding only if
+  literal proves too weak.
+- **[deferred — expected clean] Verify asterisks are inert in NOTA** (only
+  brackets are special) so emphasis can live literally inside the `[description]`
+  string.
 - **[decided] Loop-closure:** a keyword appearing everywhere is the signal to
-  enlarge the topic set — keywords feed the enlargement process.
+  enlarge the category set — keywords feed the enlargement gate.
 
-## 8. The kinds
+## 8. Kinds, operations, events
 
-- **[decided] Kinds shrink toward forward-only.** `Correction` leaves the store
-  entirely — it is an event type, not a record kind. What remains are arrows:
-  Decision, Principle, Constraint.
-- **[open] `Clarification`** is probably in the same boat as Correction
-  (discussion-shaped — "to clarify the earlier point about X"); its content is
-  just an arrow. Decide whether it stays a kind or exits.
+- **[decided] Kinds are forward arrows only:** Decision, Principle, Constraint.
+  The two that used to be kinds move to where they belong — neither is a kind.
+- **[decided] `Correction` is an *event*** — fired when a supersede retires an
+  arrow; a notification on the stream, never a stored record.
+- **[decided] `Clarification` is an *operation*** — the in-place refinement of a
+  record's wording (the `clarify` op, §4). The guardian polices it: genuinely
+  clarifies (admit) vs tramples into something unrelated, or loses important
+  aspects (reject). So clarifying can't silently change or erode an arrow. It,
+  too, fires an event so subscribers update their cached wording.
+- The overall shape: **kinds** = what a record is (three forward arrows);
+  **operations** = how the store changes (propose, clarify, supersede, retire);
+  **events** = what subscribers hear (added, clarified, superseded/retired).
+- **[deferred] Lurking question:** whether *kinds* are needed at all, or whether
+  Decision/Principle/Constraint are themselves one forward-arrow type. Bigger cut,
+  separate day.
 
 ## 9. The auditor — the rest-time distiller
 
@@ -192,27 +223,36 @@ already the bloat we are fixing. It lands here, in a report.
 - **[decided] Distill → gate → automate.** (1) manual agglomeration pass first
   (done — `579`: 21 canonicals at Maximum, 43 sources marked removal-candidate,
   reversible); (2) build the guardian; (3) build the auditor.
-- **[decided] The keystone is a magnitude-aware query.** `579` proved that
-  marking removal-candidates does *nothing* to query output — the daemon's query
-  ignores magnitude entirely. Make the query exclude tombstones and prefer high
-  weight, and three things unlock at once: weight becomes real, collection
-  becomes possible (you can finally select the Zero records to retire), and the
-  guardian has something precise to query against. It is upstream of the guardian,
-  the auditor, and the de-bloat.
-- **[lean] Weight is the core anti-bloat mechanism** — repetition raises a weight
-  instead of adding a record. No `weight` field exists today; magnitude is the
-  proxy; lean toward adding a dedicated reaffirmation-count since the schema is
-  being reworked anyway.
+- **[decided] The keystone is a magnitude-aware query.** `579` proved that marking
+  removal-candidates does *nothing* to query output — the daemon's query ignores
+  magnitude entirely. Make the query exclude tombstones and prefer high weight,
+  and three things unlock at once: weight becomes real, collection becomes
+  possible (you can finally select the Zero records to retire), and the guardian
+  has something precise to query against. It is upstream of the guardian, the
+  auditor, and the de-bloat — the smallest first build.
+- **[decided] Add a dedicated weight field.** Weight is the core anti-bloat
+  mechanism — repetition raises a weight instead of adding a record. It is a
+  *reaffirmation count*, kept separate from `magnitude` (strength/importance):
+  a rare arrow can be vital, an oft-repeated one minor, so they must not share a
+  field. The schema is being reworked and we are pre-production, so the field is
+  free to add now.
 
-## 11. Still open
+## 11. Resolved, and the residual
 
-- The Spirit↔harness handoff: park (lean) vs block (§4).
-- Governance home: a signal-only governance daemon vs local-to-the-harness —
-  when shared budget across consumers becomes worth it (§4a).
-- `Clarification`: keep as a kind or demote to an event (§8).
-- Suppressed-arrow recoverability: archive outside the live intent vs destroy.
-  Largely de-risked since supersede is always explicit and named, but archive-vs-
-  destroy is unsettled (the deployed `CollectRemovalCandidates` already archives).
-- Weight: dedicated field vs reuse `magnitude` (§10).
-- Who curates the initial closed topic set (§6).
-- Keyword search: keyword/substring first, semantic upgrade later if needed (§7).
+All six open calls from the session are settled:
+
+- Handoff → **block** for now (no callback mechanism; §4).
+- Governance → **local** for now (§4a).
+- `Clarification` → a **clarify operation**, not a kind (§4, §8).
+- Suppressed-arrow recoverability → **archive** (§4).
+- Weight → **dedicated field** (§10).
+- The index → renamed **category**; initial set **curated by an agent, blessed by
+  the psyche** (§6).
+
+Residual future-revisits (deferred, not present choices):
+
+- Park handoff once agent messaging exists (§4).
+- A signal-only governance daemon once there is a second consumer (§4a).
+- Semantic/embedding keyword search if literal matching proves too weak (§7).
+- Confirm asterisks are inert in NOTA (§7).
+- Whether kinds are needed at all (§8).
