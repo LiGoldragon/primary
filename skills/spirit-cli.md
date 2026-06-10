@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.4.0`, installed in the
+schema-derived `spirit` component at version `0.5.0`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -75,10 +75,10 @@ topics, a `Kind`, one agent-clarified `Description`, a certainty
 `Magnitude`, and a privacy `Magnitude` — in that order. No verbatim
 field, no context payload, and **no time field at all** (the daemon does
 not stamp date/time; there is no recorded intent for a timestamp). NOTA
-positional records never omit fields, so every `Record` spells all five;
-there is no shorter public form. The agent clarifies the psyche's wording
-into the description before recording — that keeps the log dense and
-searchable rather than verbose and lossy.
+positional records never omit fields, so every `Record` spells all five.
+The agent clarifies the psyche's wording into the description before
+recording — that keeps the log dense and searchable rather than verbose
+and lossy.
 
 ```sh
 spirit "(Record ([<topic> ...] <Kind> [description] <Magnitude> <Privacy>))"
@@ -119,10 +119,11 @@ spirit "(ChangeCertainty ([abcd] Zero))"    # -> (CertaintyChanged ([abcd] Zero 
 
 `Remove` deletes a record entirely — use it when nothing should remain
 in the active store. Setting certainty to `Zero` is the **recoverable**
-removal-candidate nomination: the record stays queryable and is
-restored by changing certainty back to a non-zero `Magnitude`. Use
-`Correction` or supersession when lineage should stay visible. Use hard
-`Remove` only after review.
+removal-candidate nomination: the record stays queryable by explicit
+zero-certainty lookup and is restored by changing certainty back to a
+non-zero `Magnitude`. Ordinary observation hides zero-certainty records.
+Use `Correction` or supersession when lineage should stay visible. Use
+hard `Remove` only after review.
 
 **Collect removal candidates** — archive matching records to the
 owner-configured archive database, then remove them from the hot store:
@@ -131,19 +132,24 @@ owner-configured archive database, then remove them from the hot store:
 spirit "(CollectRemovalCandidates ((Full [stale]) (Some Decision) (Exact Zero)))"
 ```
 
-The payload is a one-field collection struct wrapping a `Query`, so the
-three `Query` fields sit one paren inside the operation. The reply
-`(RemovalCandidatesCollected (...))` carries archived
-`RemovalArchiveRecord` values, removed identifiers, skipped candidates,
-and the post-removal database marker. Archive location is not a
-working-signal argument; the owner configures it through the meta socket.
+The CLI accepts this direct three-field query shorthand and lowers it to
+an exact-zero-certainty collection query. Collection never means
+"whatever ordinary observation would see"; it only archives and removes
+records whose certainty is `Zero`. The generated wrapped form is also
+accepted. The reply `(RemovalCandidatesCollected (...))` carries
+archived `RemovalArchiveRecord` values, removed identifiers, skipped
+candidates, and the post-removal database marker. Archive location is
+not a working-signal argument; the owner configures it through the meta
+socket.
 
 ## Observing records
 
-`Observe` carries a generated three-field `Query` directly:
+`Observe` carries a generated four-field `Query` directly. The CLI also
+accepts the common three-field shorthand and inserts the ordinary
+certainty floor `(AtLeastCertainty Minimum)`:
 
 ```text
-(Observe (<TopicMatch> <Kind?> <PrivacySelection>))
+(Observe (<TopicMatch> <Kind?> <PrivacySelection> <CertaintySelection>))
 ```
 
 - **TopicMatch**: bare `Any` (no filter), `(Partial [a b])` matches
@@ -152,15 +158,20 @@ working-signal argument; the owner configures it through the meta socket.
 - **Kind?**: `None` or `(Some Decision)`.
 - **PrivacySelection**: `Any`, `(Exact Zero)`, `(AtMost Low)`,
   `(AtLeast High)`.
+- **CertaintySelection**: `Any`, `(ExactCertainty Zero)`,
+  `(AtMostCertainty Low)`, `(AtLeastCertainty Minimum)`.
 
 `Observe` currently stashes non-empty result sets and returns a
 `RecordsStashed` handle. Use `LookupStash` with that handle to retrieve
 the full `RecordsObserved` payload. Use `PublicRecords` and
-`PrivateRecords` for the ergonomic privacy-scoped shortcuts.
+`PrivateRecords` for the ergonomic privacy-scoped shortcuts. `Lookup`
+retrieves by identifier and bypasses observation filters, so it can still
+read a zero-certainty record when you already know its identifier.
 
 ```sh
 spirit Version
 spirit "(Observe ((Full [spirit]) None (Exact Zero)))"
+spirit "(Observe ((Full [spirit]) None (Exact Zero) (ExactCertainty Zero)))"
 spirit "(PublicRecords ((Full [spirit]) None))"
 spirit "(PrivateRecords ((Partial [spirit]) None))"
 spirit "(Lookup [abcd])"
@@ -173,6 +184,19 @@ Two recurring wrong shapes:
 - `Search` is not a production request head.
 - `(Observe (Records ...))` is the retired production shape; live
   schema-derived `Observe` takes `Query` directly.
+
+## Certainty and weight
+
+Production Spirit currently stores certainty only. The field is named
+`magnitude` in generated Rust because it uses the shared `Magnitude`
+ladder, but in Spirit it means certainty: confidence/currentness, with
+`Zero` reserved for removal-candidate nomination. Do not use this field
+as weight.
+
+Weight is a separate design axis for "how much attention has accumulated
+around this topic or composite record." It is not yet a production field.
+When it lands, agglomerated/composite intent can carry higher weight
+without pretending the statement itself is more certain.
 
 ## Other operations
 
