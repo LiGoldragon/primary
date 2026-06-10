@@ -59,6 +59,11 @@ already the bloat we are fixing. It lands here, in a report.
   consistency.
 - **[decided] Spirit gets subscriptions** so agents stay current; correction and
   clarification are event types on that stream.
+- **[decided] Events are ephemeral; history is durable** (operator `352` §5).
+  Subscription events are throwaway delivery notifications. Operation history,
+  retired arrows, and prior clarified wording are durable archive/journal data,
+  kept *outside* the live intent query surface — so the live store stays pure
+  while nothing is irrecoverably lost.
 
 ## 4. The guardian — the write gate
 
@@ -150,10 +155,15 @@ which is what keeps consumer signal out of it.
   (Spirit-guardian, Spirit-auditor, …). A component with several judgment jobs
   registers several harnesses, each with its own verdict schema; the lease request
   just names the (component, role) id — still opaque to the daemon.
-- **[decided — lease-per-call] Leasing.** A harness is leased for one call and
-  returned to the pool — clean for budget accounting and fairness. Stickiness (a
-  component holding a warm harness across many calls) is a later optimization if
-  the lease handshake shows up as latency.
+- **[decided — lease-per-call] Leasing and the lease contract.** A harness is
+  leased for one call and returned to the pool — clean for budget accounting and
+  fairness (stickiness is a later optimization, §11). A `HarnessLease` carries:
+  lease id, harness endpoint, an unguessable **capability token**, a budget/model
+  grant, an expiry, and the (component, role) identity (operator `352` §2–3). The
+  warm harness holds no credentials at rest — the **grant is injected per lease**,
+  so revocation and budget stay clean — and it rejects any payload whose token
+  doesn't match its active lease, which authenticates the direct channel both
+  ways.
 - **[decided] Dependency graph.** agent daemon → `signal-agent` only (never a
   consumer contract); harness → its component's signal + `signal-agent` (to report
   usage); component → its own signal + `signal-agent`. The harness remains the
@@ -164,6 +174,10 @@ which is what keeps consumer signal out of it.
   the pool. Because it is control-path, an agent-daemon blip leaves in-flight
   harnesses working; only new leases wait — which is also why global rate-limiting
   belongs there.
+- **[decided] Lease accounting is durable** (operator `352` §4). The daemon
+  journals each lease's lifecycle — issued, started, completed, ended/expired. If
+  a harness dies or never reports usage, the lease is marked expired/unknown and
+  budget is charged conservatively, never silently lost.
 - **[decided] Prelude and parser come from one schema.** What the prelude tells the
   model to emit is exactly what the parser decodes — they can't drift, both fall
   out of the one verdict type. A malformed response fails the parse and retries.
@@ -281,21 +295,26 @@ which is what keeps consumer signal out of it.
   records they refer to. Introduce `RecordSnapshot { RecordIdentifier, Entry }`
   and make agent-facing queries return snapshots — before any guardian/auditor
   work.
-- **[decided] Add a dedicated weight field, with explicit mechanics.** Weight is a
-  *reaffirmation count*, separate from `magnitude` (strength/importance) — a rare
-  arrow can be vital, an oft-repeated one minor. Mechanics (answering operator
-  `352` §6):
+- **[decided] Three axes, named exactly** (operator `352` §1 — the strongest
+  schema warning). The deployed `Entry.magnitude` is overloaded; the breaking
+  schema pass splits it:
+  - **Certainty** — currentness/confidence; the axis queries already filter on
+    (Certainty Zero = retired/removal-candidate). This is `magnitude`, renamed.
+  - **Weight** — reaffirmation count / repetition-derived ranking force; a new,
+    dedicated field, kept separate from Certainty (a rarely-stated arrow can be
+    vital, an oft-repeated one minor).
+  - **Importance** — intrinsic priority; **not added** unless the psyche
+    explicitly wants it as a real domain field.
+- **[decided] Weight mechanics** (operator `352` §6):
   - **Weight rises on duplicate-refusal, not guardian discretion.** A propose that
     duplicates an existing arrow X is refused (typed reason: duplicate, naming X)
-    *and* bumps X's weight by one. Repetition raises the canonical arrow's weight
-    as a mechanical consequence of duplicate detection — the guardian stays pure
-    yes/no; it never "decides" to reweight.
-  - **Monotonic under capture; adjustable by the auditor.** Capture only raises
-    weight (reaffirmation); the auditor may set/sum it during agglomeration. No
-    automatic decay.
+    *and* bumps X's weight by one — repetition raises the canonical arrow's weight
+    as a mechanical consequence of duplicate detection; the guardian stays pure
+    yes/no and never "decides" to reweight.
+  - **Monotonic under capture; adjustable by the auditor;** no automatic decay.
   - **Never via generic `ChangeRecord`** — a typed weight-update operation only.
-  - **Ranking:** category filters to the domain, then weight + certainty order the
-    results, keyword/full-text refine. The exact formula is a tuning detail.
+  - **Ranking:** within a category, Certainty + Weight order the results;
+    keyword/full-text refine. The exact formula is a tuning detail.
 
 ## 11. Resolved, and the residual
 
@@ -306,7 +325,8 @@ All six open calls from the session are settled:
   governance/pool centralized in the daemon and leasing **per-call** (§4a).
 - `Clarification` → a **clarify operation**, not a kind (§4, §8).
 - Suppressed-arrow recoverability → **archive** (§4).
-- Weight → **dedicated field** (§10).
+- Schema axes → **Certainty** (renamed `magnitude`) + dedicated **Weight**; no
+  Importance axis unless explicitly wanted (§10).
 - The index → renamed **category**; initial set **curated by an agent, blessed by
   the psyche** (§6).
 
