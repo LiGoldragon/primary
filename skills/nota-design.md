@@ -150,15 +150,31 @@ Everything else is a primitive (strings, numbers, bools, bytes), a sequence `[�
 
 The corollary: when you write a record, ask *can this position hold more than one shape?* If yes, it's an enum — tag the variant (case 1) or write a unit (case 3). If no, it's a struct — write fields directly with no tag (case 2). Structs are untagged, enum variants own PascalCase tags, map keys are key text by delimiter position.
 
-### Strings come EXCLUSIVELY from bracket forms
+### Strings are bare until they need delimiters
 
-Brackets ARE the string form in NOTA. Quotation marks do NOT form string types — they're ordinary content inside a bracket string, and authored NOTA avoids them entirely. Two canonical forms plus a bare shorthand:
+Bare atoms are the canonical string form whenever the content can be scanned
+without delimiters. A bare string atom may use broad punctuation (`@`, `*`,
+`&`, `^`, `%`, `<`, `>`, `:`, `/`, and a single `;`) and stops only at
+whitespace, structural delimiters, `;;` comment start, or pipe-close sequences
+such as `|]`. Quotation marks are not bare string content.
 
-- `[content]` — **inline bracket string**: single-line content. Cannot contain literal `[` or `]` (would ambiguate with sequence syntax).
-- `[|content|]` — **block string**: multi-line content AND safe for bare `[` / `]`. The `[|` / `|]` delimiter pair lets content include `[`, `]`, or newlines without escaping.
-- **Bare camelCase or kebab-case token** at a `String` schema position equals `[token]` — `nota-codec` is the same value as `[nota-codec]`. A single lowercase letter `a` parses as the bare form; write `[a]` to make the string shape explicit. A bare PascalCase token at an ordinary `String` position is rejected as enum-looking; delimit it as `[User]` when the capitalized text is string content.
+- `content` — **bare string atom**: canonical for delimiter-free content.
+  `schema@next`, `required*`, `a&b`, `x>y`, `host:port`, and `a;b` are all
+  bare strings in a typed `String` position.
+- `[content with spaces]` — **inline bracket string**: single-line content that
+  needs delimiters because it contains whitespace. Cannot contain literal `[` or
+  `]` because those are structural delimiters.
+- `[|content with [brackets]|]` — **pipe text**: multi-line and
+  delimiter-sensitive content. Use this for bracket-bearing text, newlines,
+  `;;`, and pipe-close markers.
 
-The parser distinguishes inline-bracket-string from sequence via the `[|` pair-delimiter, so shape-dispatching macros see `is_block_string` as a predicate distinct from `is_sequence` even though both involve `[`.
+Typed `String` decoding rejects redundant delimiters. `[schema]` and
+`[|schema|]` are errors in a `String` position; write `schema`. Brackets are for
+strings that need delimiters, not an optional spelling of every string.
+
+The parser still sees ordinary square brackets as structural vectors; the
+expected type decides whether a square-bracket block is a `Vec<T>` or a
+space-joined `String` body.
 
 The encoder structurally cannot emit a quotation mark: `write_string` has three branches (bare identifier, `[|...|]` block, `[...]` inline) and no quote branch. Legacy `"..."` quoted strings are accepted as **migration input only** (a `read_legacy_quote_string` path); a legacy → canonical round-trip sheds the quotation marks. Legacy acceptance is removed once all emitter sites migrate.
 
@@ -241,7 +257,7 @@ NOTA has vectors, structs, enums, and key/value maps. Tuples are poorly specifie
 
 ### Sigils
 
-Two are reserved at the syntax layer: `;;` for line comments, `#` for byte literals. Other sigils (`~ @ ! ? *`) are nexus extensions and reserved (syntax error in pure NOTA). `=` is reserved.
+Two are reserved at the syntax layer: `;;` for line comments, `#` for byte literals. A single `;` is ordinary bare atom text. Sigils such as `@`, `!`, `?`, `*`, `&`, `^`, `%`, `<`, `>`, and `:` are legal inside broad bare string atoms unless a higher schema layer gives a narrower type its own rules. `=` is reserved.
 
 ## Before you sketch any NOTA record
 
@@ -262,9 +278,9 @@ If the same structural decision recurs across many NOTA files (a shared enum voc
 
 ## When to hand-write the codec instead of deriving
 
-`#[derive(NotaDecode, NotaEncode)]` is the right default for record types. But the derive treats every `String` field as a bracket string — the conservative "any string" choice — which produces noisy NOTA for tokens that qualify as bare symbols.
+`#[derive(NotaDecode, NotaEncode)]` is the right default for record types. The shared string codec now emits broad bare atoms whenever possible and rejects redundant brackets on decode, so ordinary `String` fields no longer need a hand-written codec just to avoid `[Entry]` noise.
 
-The canonical case: a newtype around `String` whose content is always a NOTA-identifier-shaped name (no spaces, no special chars). The derive emits `(Public [Entry] (Struct ([Entry] ...)))`; the cleaner canonical NOTA is `(Public Entry (Struct (Entry ...)))`. Bracket strings should be reserved for content that needs them.
+Hand-write the codec only when the field's domain is narrower than ordinary `String`: for example, a schema type name, a lowercase topic atom, or an identity that forbids punctuation even though broad NOTA strings allow it. In those cases the newtype validates its own vocabulary and still delegates ordinary formatting to `NotaString`.
 
 The fix: hand-write `NotaDecode` + `NotaEncode` on the newtype to inspect content and choose the emission form, using `nota_next::AtomClassification`:
 
@@ -290,7 +306,7 @@ impl NotaDecode for Name {
 }
 ```
 
-The decode side accepts both forms (bare symbol + bracket string) — the parser doesn't care; the encode side chooses. This keeps emitted NOTA round-trippable and human-readable. Anywhere the derive would emit a less-readable form than the canonical shape (per `AtomClassification`, per the bracket-string-only-when-needed rule), the hand-written impl is the right move — on schema-in-Rust source nouns and on emission-target newtypes alike.
+The decode side should not accept redundant brackets for a broad bare string; canonicality is part of the typed codec. Anywhere a narrower domain wants stricter syntax than broad `String`, the hand-written impl belongs on that newtype — on schema-in-Rust source nouns and on emission-target newtypes alike.
 
 ## See also
 

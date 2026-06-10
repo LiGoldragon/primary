@@ -138,12 +138,16 @@ designer — doubting, finding flaws, catching broken rules. No
   self-resumes from persisted SEMA state.
 
 - **NOTA strings are bare atoms unless they need delimiters; never emit
-  quotation marks.** Use bare camelCase or kebab-case at `String`
-  positions whenever the string contains no spaces or forbidden symbol
-  characters: topics are `[spirit nota strings]`, not
-  `[[spirit] [nota] [strings]]`. Use `[text]` inline or `[|text|]`
-  bracket-safe / multi-line only when a string contains spaces,
-  delimiter-sensitive text, or characters forbidden in a bare NOTA atom.
+  quotation marks.** Use bare atoms at `String` positions whenever the
+  string contains no whitespace, structural delimiter, `;;` comment
+  marker, or pipe-close sequence; broad punctuation such as `@`, `*`,
+  `&`, `^`, `%`, `<`, `>`, `:`, `/`, and a single `;` may stay bare.
+  Topics are `[spirit nota strings]`, not
+  `[[spirit] [nota] [strings]]`. Use `[text with spaces]` inline or
+  `[|text with [brackets]|]` bracket-safe / multi-line only when a
+  string needs delimiters. Typed `String` decoding rejects redundant
+  brackets around bare-eligible strings: `[schema]` is wrong; write
+  `schema`. `;;` starts a line comment; a single `;` is atom text.
   Quotation marks don't form strings in NOTA; the encoder structurally
   cannot emit `"` (legacy quoted input is migration-only). So inline NOTA
   shell calls wrap the whole object in shell double quotes — `spirit
