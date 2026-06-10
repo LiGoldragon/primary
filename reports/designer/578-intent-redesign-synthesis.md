@@ -66,11 +66,15 @@ already the bloat we are fixing. It lands here, in a report.
   daemon gathers the relevant existing records, hands the bundle to the harness
   (§4a), and acts on the verdict. The daemon routes and executes; it never parses
   NOTA (the CLI already typed the record) and never judges.
-- **[decided] The guardian's verdict is binary: yes or no.** *Yes* = no conflict,
-  admit. *No* = conflict or any smell — with a reason and references to the
-  records concerned. It makes **no resolution calls** and has zero discretion; it
-  never decides to suppress anything. (This is what makes it safe: it can never
-  wrongly overwrite intent.)
+- **[decided] The guardian's verdict is binary: yes or no — with typed reasons.**
+  *Yes* = no conflict, admit. *No* = conflict or any smell. The verdict carries a
+  **typed reason** (enum), referenced `RecordSnapshot`s, and a short
+  human-readable explanation — so a refusal is machine-actionable and testable,
+  not free prose (operator `352` §4). Reasons: duplicate, contradiction, compound,
+  non-intent, unclear-privacy, unclear-category, clarify-tramples,
+  clarify-loses-meaning, supersede-target-missing, retrieval-insufficient. Typed
+  reasons grant **no** discretion — authority stays binary; they just make the no
+  usable. It makes no resolution calls and never decides to suppress anything.
 - **[decided] On a no, the proposing agent acts** — revise to remove the conflict,
   drop it, or come back with an explicit, named supersede.
 - **[decided] Three write operations.**
@@ -81,7 +85,11 @@ already the bloat we are fixing. It lands here, in a report.
     **tramples** it into something unrelated, or **loses** important aspects —
     either of the latter two is a no. A trample means the agent actually wanted a
     supersede, not a clarify. Because a true clarify is meaning-preserving it
-    can't introduce a new conflict, so it needs no global re-check.
+    can't introduce a new conflict, so it needs no global re-check. The record
+    identifier stays stable; the prior wording is journaled to the archive
+    (recoverable, out of the live surface) and a clarification event fires. The
+    derived keywords re-index — expected, since the sharper wording carries the
+    better terms (operator `352` §2).
   - *supersede* — explicitly name the record(s) being replaced; the old arrow is
     retired and a correction event fires.
 - **[decided] Supersede is still consistency-checked.** Superseding X with R
@@ -96,9 +104,12 @@ already the bloat we are fixing. It lands here, in a report.
   archives, then retracts).
 - **[decided — block for now] The Spirit↔agent handoff is synchronous.** There is
   currently no way to call the proposing agent back, so it waits in the call for
-  the verdict (block). Park (Spirit accepts as pending and delivers the verdict
-  later via an event/message) becomes possible once agent messaging exists;
-  **[deferred]** revisit then.
+  the verdict (block). On harness absence, model failure, malformed verdict, or
+  timeout, the propose **fails closed** — rejected/errored, never admitted
+  unjudged (admitting unjudged would break the consistency invariant). The exact
+  typed request/reply transport between Spirit and the harness process is an open
+  implementation contract (operator `352` §3). Park becomes possible once agent
+  messaging exists; **[deferred]** revisit then.
 
 ## 4a. The agent — a harness library, not a daemon
 
@@ -205,6 +216,11 @@ already the bloat we are fixing. It lands here, in a report.
 - The overall shape: **kinds** = what a record is (three forward arrows);
   **operations** = how the store changes (propose, clarify, supersede, retire);
   **events** = what subscribers hear (added, clarified, superseded/retired).
+- **[decided] Migrating the existing kinds:** the deployed store's ~191
+  Corrections and ~200 Clarifications get their *forward content extracted* and
+  reclassified as Decision/Principle/Constraint; the discussion scaffolding
+  ("not that, this" / "to clarify X") is dropped — the agglomeration rewrite rule
+  (§9) run as a one-time migration over exported records (operator `352` §8).
 - **[deferred] Lurking question:** whether *kinds* are needed at all, or whether
   Decision/Principle/Constraint are themselves one forward-arrow type. Bigger cut,
   separate day.
@@ -223,19 +239,35 @@ already the bloat we are fixing. It lands here, in a report.
 - **[decided] Distill → gate → automate.** (1) manual agglomeration pass first
   (done — `579`: 21 canonicals at Maximum, 43 sources marked removal-candidate,
   reversible); (2) build the guardian; (3) build the auditor.
-- **[decided] The keystone is a magnitude-aware query.** `579` proved that marking
-  removal-candidates does *nothing* to query output — the daemon's query ignores
-  magnitude entirely. Make the query exclude tombstones and prefer high weight,
-  and three things unlock at once: weight becomes real, collection becomes
-  possible (you can finally select the Zero records to retire), and the guardian
-  has something precise to query against. It is upstream of the guardian, the
-  auditor, and the de-bloat — the smallest first build.
-- **[decided] Add a dedicated weight field.** Weight is the core anti-bloat
-  mechanism — repetition raises a weight instead of adding a record. It is a
-  *reaffirmation count*, kept separate from `magnitude` (strength/importance):
-  a rare arrow can be vital, an oft-repeated one minor, so they must not share a
-  field. The schema is being reworked and we are pre-production, so the field is
-  free to add now.
+- **[decided — already in source] Magnitude/certainty-aware query.** This was the
+  keystone against deployed v0.4.0 (`577`/`579`: marking removal-candidates did
+  nothing because the query ignored magnitude). Per operator `352`, **current
+  Spirit source already has it** — `Query` carries `CertaintySelection`, ordinary
+  observation hides zero-certainty records, and `CollectRemovalCandidates`
+  collects on exact-zero. So the de-bloat path exists in source; it just isn't in
+  the deployed binary yet.
+- **[decided — real first build] Identifier-bearing observation.** Per operator
+  `352` §1, the actual first gap: `Observe` returns `Entry` values *without*
+  `RecordIdentifier` (only `Lookup` names a record). Guardian refusals, supersede,
+  auditor retirement, and category migration all need query results that name the
+  records they refer to. Introduce `RecordSnapshot { RecordIdentifier, Entry }`
+  and make agent-facing queries return snapshots — before any guardian/auditor
+  work.
+- **[decided] Add a dedicated weight field, with explicit mechanics.** Weight is a
+  *reaffirmation count*, separate from `magnitude` (strength/importance) — a rare
+  arrow can be vital, an oft-repeated one minor. Mechanics (answering operator
+  `352` §6):
+  - **Weight rises on duplicate-refusal, not guardian discretion.** A propose that
+    duplicates an existing arrow X is refused (typed reason: duplicate, naming X)
+    *and* bumps X's weight by one. Repetition raises the canonical arrow's weight
+    as a mechanical consequence of duplicate detection — the guardian stays pure
+    yes/no; it never "decides" to reweight.
+  - **Monotonic under capture; adjustable by the auditor.** Capture only raises
+    weight (reaffirmation); the auditor may set/sum it during agglomeration. No
+    automatic decay.
+  - **Never via generic `ChangeRecord`** — a typed weight-update operation only.
+  - **Ranking:** category filters to the domain, then weight + certainty order the
+    results, keyword/full-text refine. The exact formula is a tuning detail.
 
 ## 11. Resolved, and the residual
 
