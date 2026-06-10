@@ -227,8 +227,10 @@ What dropping weight actually costs / changes:
 dropped and accept importance-doubles-as-reaffirmation, or (b) restore weight if you
 want a derived signal distinct from declared priority. Given the data shows both
 derived axes inert, (a) is the simpler honest choice — but confirm it's intent, not
-a side effect of the naming confusion. And verify HEAD `8fe88d6` builds across all
-features (the mid-flight state didn't — §7).
+a side effect of the naming confusion. (I confirmed HEAD `8fe88d6` builds clean
+across the default all-targets and the `production-migration` feature — the
+*committed* state is sound; only the transient mid-edit the auditor caught was
+broken.)
 
 ## 6. Migration — shape was migrated, substance was not
 
@@ -301,7 +303,9 @@ few were judged *understated*).
 4. Finish the kind-fold (fold Correction/Clarification out of `Kind`; migrate the
    397 legacy records through the agglomeration machinery, not a 1:1 passthrough).
 5. Run a real de-bloat/agglomeration pass on production (the keystone is built).
-6. Verify HEAD `8fe88d6` builds across all features before any redeploy.
+6. (Done — I confirmed HEAD `8fe88d6` builds clean across default all-targets and
+   the `production-migration` feature.) Redeploy will flip production from three-axis
+   to two-axis; sequence it deliberately.
 
 **Spirit-gate capture candidate** (not yet recorded — awaiting psyche wording): a
 durable Principle that *Spirit categories must be grounded in the corpus's real
