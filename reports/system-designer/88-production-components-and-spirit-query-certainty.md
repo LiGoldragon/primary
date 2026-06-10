@@ -157,32 +157,60 @@ So "feature parity" between the pre- and post-emission **daemon** holds on
 this axis: neither filtered Observe by certainty. The psyche's intent is
 therefore a **genuinely new** runtime capability (foreshadowed by the
 contract crate's unused design), not a restoration. (`active-repositories.md`
-still calls `signal-spirit` the "active ordinary wire contract"; that line
-is stale — the live wire contract moved in-tree to the emitted schema.)
+calls `signal-spirit` the "active ordinary wire contract" — per `tb9h`
+that is the *correct* target; the daemon violates it by emitting its own
+in-tree type copy instead of linking the contract. The doc is right; the
+daemon is wrong.)
 
-### Implementation plan (in-tree emitted schema — the live surface)
+### Implementation plan — the structural fix comes first (record `tb9h`)
 
-1. `schema/signal.schema`: add `CertaintySelection [Any (ExactCertainty
-   ExactCertainty) (AtMostCertainty AtMostCertainty) (AtLeastCertainty
-   AtLeastCertainty)]` + the three `*Certainty Certainty` wrappers
-   (parallel to the existing privacy `Exact/AtMost/AtLeast Privacy`), and
-   add `certainty_selection CertaintySelection` to `Query`.
-2. Engine/store: `Query::matches` gains
-   `&& self.certainty_selection.matches(&entry.magnitude)`;
-   `CertaintySelection::matches` + `default_observation_certainty() =
-   AtLeast(Minimum)` (excludes Zero) + `removal_candidates() = Exact(Zero)`.
-3. Default observe-query construction (CLI default, `RecordSelection →
+Psyche constraint `tb9h`: **all wire/signal types come from the
+`signal-spirit` contract repo** — it is the single source the daemon and
+peers link against, per the component-triad. spirit currently violates
+this: it emits `Input/Output/Query/Entry/Magnitude` in
+`crate::schema::signal`, and hand-written `signal-spirit` (2044 lines, no
+`build.rs`) has diverged. `criome` already does it right — it imports
+`CriomeRequest/CriomeReply/CriomeFrame` from `signal_criome`.
+
+So the certainty selection does **not** go into the daemon's in-tree
+schema. The work is two-staged:
+
+**Stage 1 — converge spirit onto the triad (the real fix `tb9h` names):**
+
+1. Schema-emit the signal contract **in `signal-spirit`** (give it the
+   `build.rs` + `schema/` emission flow; it's currently hand-written), so
+   the wire types `Input/Output/Query/Entry/Magnitude` are emitted there.
+2. Make `spirit` depend on `signal-spirit` for those wire types and
+   **delete the in-tree type emission** — the daemon's local
+   `schema/signal.schema` keeps only the runtime planes
+   (`SignalEngine`/Nexus/Sema/daemon spine) that *consume* the contract,
+   matching the criome pattern and component-triad doctrine.
+
+**Stage 2 — add the certainty floor (in the contract, per `oj3i`):**
+
+3. In `signal-spirit`'s emitted contract: add `CertaintySelection [Any
+   (ExactCertainty ExactCertainty) (AtMostCertainty AtMostCertainty)
+   (AtLeastCertainty AtLeastCertainty)]` + the three `*Certainty Certainty`
+   wrappers (parallel to privacy's `Exact/AtMost/AtLeast Privacy`), and
+   add `certainty_selection CertaintySelection` to `Query`. (The legacy
+   hand-written `signal-spirit` already spelled `CertaintySelection`/
+   `removal_candidates() = Exact(Zero)` — reuse that shape.)
+4. Daemon filter: `Query::matches` gains
+   `&& self.certainty_selection.matches(&entry.magnitude)`; add
+   `default_observation_certainty() = AtLeast(Minimum)` (excludes Zero)
+   and `removal_candidates() = Exact(Zero)`.
+5. Default observe-query construction (CLI default, `RecordSelection →
    Query`) sets the floor to `AtLeast(Minimum)`; explicit selection
-   reaches Zero records.
-4. Regenerate (`SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1`), update the existing
-   3-field `Query` literals in tests, add coverage: Zero excluded by
-   default, visible with explicit `Exact(Zero)`/`Any`.
-5. Operator integrates to `main` + redeploys daemon **and** CLI together
+   reaches Zero records. Add coverage: Zero excluded by default, visible
+   with explicit `Exact(Zero)`/`Any`.
+6. Operator integrates to `main` + redeploys daemon **and** CLI together
    (matched pair; no stored-data migration — `Entry.magnitude` already
    exists and is preserved).
 
 **Execution: psyche chose spec-only.** This report is the spec; operator
-picks it up on `main`. Designer does not author code now.
+picks it up on `main`. Designer does not author code now. Note Stage 1 is
+the larger task — it's a triad-convergence / schema-emission migration of
+the production component, not a one-field add.
 
 Open scope forks (psyche's call): (a) certainty only, or also add the
 contract-only `RecordedTimeSelection` / `ObservationMode` to the live
