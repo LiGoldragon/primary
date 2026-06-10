@@ -1,24 +1,28 @@
 # Operator Audit 349 - Schema Decoding Step-by-Step Trace
 
-Target: how current schema-next decodes terse inline input/output syntax.
+Target: how current schema-next decodes terse inline input/output syntax, plus
+the next source-scope rule implied by the edited example.
 
 This expands report `348` with the concrete "NOTA turns this into this, schema
 interprets it as this" trace.
+
+Status note: the example below now expresses the desired next model: root inline
+payload fields can declare reusable schema types, and later source positions can
+refer to those types. Current `schema-next` partially supports the lowering, but
+keeps those field-created declarations private and does not yet treat them as
+first-class source-scope names during initial resolver construction.
 
 ## Example Source
 
 Use this small schema:
 
 ```nota
-[(Record { Topic * Description * })
+[(Record { Topic String Description String })
  (Select [(ByTopic { Topic * }) (ByKind { Kind * })])
  Version]
-[(Recorded { RecordIdentifier * DatabaseMarker * })]
+[(Recorded { RecordIdentifier (Bytes 12) DatabaseMarker * })]
 {
-  Topic String
-  Description String
   Kind [Decision Constraint]
-  RecordIdentifier (Bytes 12)
   CommitSequence Integer
   StateDigest (Bytes 8)
   DatabaseMarker { CommitSequence * StateDigest * }
@@ -50,7 +54,7 @@ Inside `root[0]`, NOTA sees three vector members:
 ```text
 input[0] = Parenthesis([
   Atom("Record"),
-  Brace([Atom("Topic"), Atom("*"), Atom("Description"), Atom("*")])
+  Brace([Atom("Topic"), Atom("String"), Atom("Description"), Atom("String")])
 ])
 
 input[1] = Parenthesis([
@@ -65,8 +69,8 @@ input[2] = Atom("Version")
 ```
 
 At this stage, `(Record { ... })` is just a parenthesized block with two
-children. `{ Topic * Description * }` is just a brace block with four children.
-No `Input`, `Record`, field, enum, or payload meaning exists yet.
+children. `{ Topic String Description String }` is just a brace block with four
+children. No `Input`, `Record`, field, enum, or payload meaning exists yet.
 
 ## Step 2 - SchemaSource Splits The Document
 
@@ -144,7 +148,7 @@ type's decode logic.
 For `Record`, the payload block is:
 
 ```nota
-{ Topic * Description * }
+{ Topic String Description String }
 ```
 
 `SourceVariantPayload::from_structural_block` tries:
@@ -159,33 +163,42 @@ A brace block is not a valid type reference, so step 1 fails. Then
 SourceVariantPayload::Declaration(
   SourceDeclarationValue::Struct(
     SourceStructBody(fields = [
-      SourceField(name = Topic,       value = Derived),
-      SourceField(name = Description, value = Derived),
+      SourceField(name = Topic,       value = Reference(String)),
+      SourceField(name = Description, value = Reference(String)),
     ])
   )
 )
 ```
 
-The `*` values are `SourceFieldValue::Derived`. A derived field means:
+The interesting part is that `Topic String` is both a field and an inline type
+declaration because the field name is PascalCase. Current code already has this
+rule in `SourceField::to_lowered_field`:
 
 ```text
-field name = lower_snake_case(type name)
-field type = the PascalCase type itself
+PascalCase field name + reference value
+  -> private TypeDeclaration::Newtype(Topic(String))
+  -> field topic: Topic
 ```
 
-So:
+So the intended read is:
 
 ```nota
-Topic *
-Description *
+Topic String
+Description String
 ```
 
 later becomes:
 
 ```text
+type Topic = newtype String
+type Description = newtype String
 topic: Topic
 description: Description
 ```
+
+The proposed production change is visibility and scope: those declarations
+should be source-scope/exported declarations, not only private declarations
+attached to the `Record` declaration group.
 
 For `Select`, the payload block is:
 
@@ -216,10 +229,7 @@ So inline enum payloads use the same path as inline struct payloads. The nested
 The namespace brace is parsed as key/value pairs:
 
 ```nota
-Topic String
-Description String
 Kind [Decision Constraint]
-RecordIdentifier (Bytes 12)
 CommitSequence Integer
 StateDigest (Bytes 8)
 DatabaseMarker { CommitSequence * StateDigest * }
@@ -230,18 +240,16 @@ Each pair becomes `SourceNamespaceEntry { name, value }`.
 Examples:
 
 ```text
-Topic String
-  -> SourceDeclarationValue::Reference(SourceReference::Plain("String"))
-
 Kind [Decision Constraint]
   -> SourceDeclarationValue::Enum(SourceEnumBody(Unit(Decision), Unit(Constraint)))
-
-RecordIdentifier (Bytes 12)
-  -> SourceDeclarationValue::Reference(SourceReference::FixedBytes(12))
 
 DatabaseMarker { CommitSequence * StateDigest * }
   -> SourceDeclarationValue::Struct(SourceStructBody(...))
 ```
+
+In the edited model, `Topic`, `Description`, and `RecordIdentifier` are absent
+from this trailing namespace because they are declared inline at their first
+semantic use. They still need to enter the final namespace/export surface.
 
 ## Step 7 - SourceTypeResolver Sees Names Before Lowering
 
@@ -250,14 +258,32 @@ Before producing semantic `Schema`, `SchemaSource::to_schema` builds a
 
 It contains:
 
-- namespace type names: `Topic`, `Description`, `Kind`, `RecordIdentifier`,
-  `CommitSequence`, `StateDigest`, `DatabaseMarker`
+- namespace type names: `Kind`, `CommitSequence`, `StateDigest`,
+  `DatabaseMarker`
 - inline input declaration names: `Record`, `Select`
 - inline output declaration names: `Recorded`
 
 This matters because a bare unit-looking variant may resolve to a payload if a
 same-named declaration exists. It also lets inline declarations refer to names
 known elsewhere in the source.
+
+Current gap: this resolver does not collect field-created inline declaration
+names such as `Topic`, `Description`, or `RecordIdentifier`. The lowering path
+can still create those declarations, and ordinary field references can still
+point at them, but same-name root variant resolution and deliberate library
+export semantics do not yet treat them as source-scope declarations.
+
+The intended resolver should collect all declarations first:
+
+```text
+explicit namespace names
++ root inline payload names
++ root inline field-declaration names
++ output inline field-declaration names
++ selected nested names that are meant to be exported
+```
+
+Then every reference lowers against that fixed source table.
 
 Concrete distinction:
 
@@ -271,20 +297,11 @@ Concrete distinction:
 `SourceLoweredNamespace::from_source` lowers the explicit namespace entries:
 
 ```text
-Topic String
-  -> Declaration::public(TypeDeclaration::Newtype(Topic(String)))
-
-Description String
-  -> Declaration::public(TypeDeclaration::Newtype(Description(String)))
-
 Kind [Decision Constraint]
   -> Declaration::public(TypeDeclaration::Enum(Kind {
        Decision: None,
        Constraint: None,
      }))
-
-RecordIdentifier (Bytes 12)
-  -> Declaration::public(TypeDeclaration::Newtype(RecordIdentifier(FixedBytes(12))))
 
 DatabaseMarker { CommitSequence * StateDigest * }
   -> Declaration::public(TypeDeclaration::Struct(DatabaseMarker {
@@ -309,13 +326,27 @@ For `Record`:
 ```text
 SourceVariantSignature::Data(
   name = Record,
-  payload = Declaration(Struct({ Topic * Description * }))
+  payload = Declaration(Struct({ Topic String Description String }))
 )
 ```
 
-public inline declaration lowering produces:
+Current lowering produces:
 
 ```text
+Declaration::private(TypeDeclaration::Newtype(Topic(String)))
+Declaration::private(TypeDeclaration::Newtype(Description(String)))
+Declaration::public(TypeDeclaration::Struct(Record {
+  topic: Topic,
+  description: Description,
+}))
+```
+
+Desired lowering changes the two field-created declarations to exported
+source-scope declarations:
+
+```text
+Declaration::public(TypeDeclaration::Newtype(Topic(String)))
+Declaration::public(TypeDeclaration::Newtype(Description(String)))
 Declaration::public(TypeDeclaration::Struct(Record {
   topic: Topic,
   description: Description,
@@ -339,9 +370,15 @@ TypeDeclaration::Newtype(ByTopic(Topic))  // private
 TypeDeclaration::Newtype(ByKind(Kind))    // private
 ```
 
+`ByTopic { Topic * }` should resolve `Topic` to the same source-scope
+declaration created by `Record { Topic String ... }`. This should not be an
+order-dependent "previous inline wins" rule; it should be a whole-source symbol
+table with one unique declaration named `Topic`.
+
 For `Recorded`:
 
 ```text
+Declaration::public(TypeDeclaration::Newtype(RecordIdentifier(FixedBytes(12))))
 Declaration::public(TypeDeclaration::Struct(Recorded {
   record_identifier: RecordIdentifier,
   database_marker: DatabaseMarker,
@@ -460,7 +497,7 @@ The psyche's shallow rule should be understood as:
 Good shallow root:
 
 ```nota
-[(Record { Topic * Description * })
+[(Record { Topic String Description String })
  (Select { TopicMatch * PrivacySelection * })]
 {
   TopicMatch [Any (Full { topics (Vec Topic) })]
@@ -495,6 +532,8 @@ What exists:
 - inline enum payloads
 - hoisting of root inline declarations to public namespace declarations
 - hoisting of nested enum inline declarations to private declarations
+- PascalCase fields with explicit references, such as `Topic String`, lowering
+  into a named newtype plus a field reference
 - semantic schema as typed data
 
 What is not enforced:
@@ -503,7 +542,13 @@ What is not enforced:
 - no lint that says "this root vector is too deep"
 - no automatic style preference that ports tests away from older `(Root Payload)`
   examples
+- no source-scope collection/export policy for field-created inline
+  declarations such as `Topic String`
+- no duplicate-name rule for the case where inline and trailing namespace both
+  declare `Topic`
 
-Next useful implementation step before fleet porting: port schema-next and
-schema-rust-next tests/fixtures to the shallow inline root style, then decide
-whether to add validation/linting for maximum inline depth.
+Next useful implementation step before fleet porting: make source lowering build
+a whole-source declaration table, promote root payload field declarations that
+are intended as reusable nouns to the exported namespace, reject duplicate
+declarations by name, then port schema-next and schema-rust-next tests/fixtures
+to this shallow inline root style.
