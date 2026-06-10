@@ -39,7 +39,7 @@ its build/runtime support only:
 | Production (Spirit) | Repo | Notes |
 |---|---|---|
 | `spirit-daemon` + `spirit` CLI | `spirit` | Daemon built `--no-default-features` (NOTA-free); CLI is the only NOTA edge. `default = []`. |
-| ordinary contract | `signal-spirit` | Renamed from `signal-persona-spirit`. rkyv-only by default; `nota-text` is an opt-in edge feature. |
+| ordinary contract (intended) | `signal-spirit` | The *intended* ordinary contract / active dependency — but **currently violated**: the daemon links it only for config + legacy migration, not for live wire `Input/Output/Query/Entry/Magnitude` (those are emitted in-tree). Renamed from `signal-persona-spirit`; rkyv-only by default, `nota-text` an opt-in edge feature. See §3 + `tb9h`. |
 | meta contract | `meta-signal-spirit` / in-tree `schema/meta-signal.schema` | Privileged lifecycle/config (`Configure`). |
 
 Production Spirit daemon's runtime dependency closure (from `Cargo.toml`):
@@ -60,11 +60,16 @@ scaffold, or mid-migration) — `mind`, `router`, `message`, `introspect`,
 
 ### A normal query filters on three dimensions, and certainty is not one
 
-`signal-spirit` defines the query as:
+The live daemon's **in-tree emitted schema**
+(`spirit/schema/signal.schema`) — *not* `signal-spirit` — defines the
+query the daemon actually filters with:
 
 ```
 Query { TopicMatch * kind (Optional Kind) privacy_selection PrivacySelection }
 ```
+
+(`signal-spirit` by contrast defines the richer `RecordQuery`
+certainty/time/mode — see §3; that is exactly the divergence at issue.)
 
 and `Query::matches` (`spirit/src/engine.rs`, `src/store.rs:687`) is
 exactly:
