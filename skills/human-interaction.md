@@ -26,7 +26,7 @@ Everything else the prompt asked for derives from intent and is done *after* the
 | **Clarification** | The psyche is clarifying meaning, scope, or intent that was unclear. |
 | **Constraint** | A bound or limit on what the agent should or should not do. |
 
-Certainty uses the full `Magnitude` ladder (`Zero`, `Minimum`, `VeryLow`, `Low`, `Medium`, `High`, `VeryHigh`, `Maximum`) and defaults to `Medium` for normal explicit statements. Raise it only when the psyche's wording or repeated same-direction commitment carries that confidence. Weight is separate: repeated discussion makes a topic important, but does not by itself make the current statement more certain. Do not encode topic weight by inflating certainty. See `skills/intent-log.md` §"Certainty versus weight" for hard cases.
+Certainty uses the full `Magnitude` ladder (`Zero`, `Minimum`, `VeryLow`, `Low`, `Medium`, `High`, `VeryHigh`, `Maximum`) and defaults to `Medium` for normal explicit statements. Raise it only when the psyche's wording or repeated same-direction commitment carries that confidence. Importance is separate: repeated discussion makes a topic important, but does not by itself make the current statement more certain. Do not encode topic importance by inflating certainty. See `skills/intent-log.md` §"Certainty versus importance" for hard cases.
 
 ## Forwarded prompts — gap-check, don't blind-duplicate
 
@@ -106,5 +106,5 @@ Designer and operator each carry their own implementation path; both implementat
 ## See also
 
 - `skills/privacy.md` — access gate for private material; private report and intent routing.
-- `skills/intent-log.md` — what gets logged; the five-kind taxonomy; certainty versus weight.
+- `skills/intent-log.md` — what gets logged; the five-kind taxonomy; certainty versus importance.
 - `skills/intent-clarification.md` — when and how to ask the psyche.

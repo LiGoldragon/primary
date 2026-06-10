@@ -113,8 +113,8 @@ the same record is the recurring duplicate failure. A prompt addressed
 to you is yours to capture; in the multi-addressee case, designate one
 capturer and let the others query recent records, confirm the capture
 covers the intent, and gap-fill only a genuine omission. Mistaken
-duplicates are removed without weight change and never reintroduced as a
-single higher-weight record — that path is reserved for genuine psyche
+duplicates are removed without importance change and never reintroduced as a
+single higher-importance record — that path is reserved for genuine psyche
 repetition (`skills/intent-maintenance.md`).
 
 ## When a working order slips in anyway
@@ -177,30 +177,28 @@ is the sole substrate. Supersession (rewriting or removing prior
 records, per `skills/intent-maintenance.md`) needs coordinated tooling
 regardless of substrate; a capture protocol does not cover replacement.
 
-## Certainty versus weight
+## Certainty versus importance
 
 Certainty is part of an intent record's meaning. Do not inflate it to
 make a record feel important — if every record is `Maximum`, the field
 carries no information.
 
-Certainty and weight are separate axes:
+Certainty and importance are separate axes:
 
 - **Certainty** — confidence in the specific statement: how sure the
   psyche sounded about this decision/principle/correction/
   clarification/constraint.
-- **Weight** — how much pressure a topic carries: it keeps coming up,
+- **Importance** — how much pressure a topic carries: it keeps coming up,
   blocks other work, attracts repeated attention. Topic importance, not
   truth confidence.
 
-Do not encode weight by raising certainty. A topic can be high-weight
+Do not encode importance by raising certainty. A topic can be high-importance
 and low-certainty when the psyche is probing or figuring out what they
-want. A statement can be low-weight and high-certainty when it appears
+want. A statement can be low-importance and high-certainty when it appears
 once but is worded as a firm rule. At capture, choose certainty from the
-wording; preserve weight by using broad reusable topics and recording
-repeated probes as repeated records at honest certainty. A `Weight`
-field is a future record-shape design; until it lands, weight is
-inferred from topic recurrence and work churn, never smuggled into the
-certainty value.
+wording; set importance honestly from accumulated attention and repetition.
+The deployed `Importance` field is explicit; never smuggle importance into
+the certainty value.
 
 If the psyche explicitly marks a statement as low-certainty, first query
 Spirit for the topic. If an older higher-certainty record bundles a
@@ -244,11 +242,11 @@ rule, or just a firm decision? A firm decision is `High`. Under-rating
 is recoverable; over-rating corrupts the signal. Justify any move above
 `Medium` with evidence in the prompt or prior records.
 
-Repetition usually raises weight, not certainty. Before choosing `High`
+Repetition usually raises importance, not certainty. Before choosing `High`
 or above, query prior records on the topic. If the same settled
 statement keeps returning with stronger commitment, that recurrence is
 evidence for higher certainty. If the topic merely keeps returning
-because it is unresolved or contested, it is high weight but not high
+because it is unresolved or contested, it is high importance but not high
 certainty — keep it at the certainty the wording carries. A first clear
 mention without strong certainty language stays at `Medium`.
 

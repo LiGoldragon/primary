@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.7.0`, installed in the
+schema-derived `spirit` component at version `0.8.0`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -74,19 +74,20 @@ bare-eligible string are rejected; write `abcd`, not `[abcd]`, and
 
 The deployed `Entry` has exactly six positional fields: a vector of
 topics, a `Kind`, one agent-clarified `Description`, a certainty
-`Magnitude`, a weight `Magnitude`, and a privacy `Magnitude` — in that order. No verbatim
-field, no context payload, and **no time field at all** (the daemon does
-not stamp date/time; there is no recorded intent for a timestamp). NOTA
-positional records never omit fields, so every `Record` spells all six.
+`Magnitude`, an importance `Magnitude`, and a privacy `Magnitude` — in
+that order. No verbatim field, no context payload, and **no time field
+at all** (the daemon does not stamp date/time; there is no recorded
+intent for a timestamp). NOTA positional records never omit fields, so
+every `Record` spells all six.
 The agent clarifies the psyche's wording into the description before
 recording — that keeps the log dense and searchable rather than verbose
 and lossy.
 
 ```sh
-spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> <Weight> <Privacy>))"
+spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> <Importance> <Privacy>))"
 # Kind       ∈ { Decision Principle Correction Clarification Constraint }
 # Certainty  ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
-# Weight     uses the same Magnitude ladder; Minimum is the ordinary default.
+# Importance uses the same Magnitude ladder; Minimum is the ordinary default.
 # Privacy    uses the same Magnitude ladder; Zero is open/public.
 ```
 
@@ -149,10 +150,10 @@ socket.
 
 `Observe` carries a generated five-field `Query` directly. The CLI also
 accepts the common three-field shorthand and inserts the ordinary
-certainty floor `(AtLeastCertainty Minimum)` plus weight `Any`:
+certainty floor `(AtLeastCertainty Minimum)` plus importance `Any`:
 
 ```text
-(Observe (<TopicMatch> <Kind?> <PrivacySelection> <CertaintySelection> <WeightSelection>))
+(Observe (<TopicMatch> <Kind?> <PrivacySelection> <CertaintySelection> <ImportanceSelection>))
 ```
 
 - **TopicMatch**: bare `Any` (no filter), `(Partial [a b])` matches
@@ -163,8 +164,8 @@ certainty floor `(AtLeastCertainty Minimum)` plus weight `Any`:
   `(AtLeast High)`.
 - **CertaintySelection**: `Any`, `(ExactCertainty Zero)`,
   `(AtMostCertainty Low)`, `(AtLeastCertainty Minimum)`.
-- **WeightSelection**: `Any`, `(ExactWeight Medium)`,
-  `(AtMostWeight Low)`, `(AtLeastWeight High)`.
+- **ImportanceSelection**: `Any`, `(ExactImportance Medium)`,
+  `(AtMostImportance Low)`, `(AtLeastImportance High)`.
 
 `Observe` currently stashes non-empty result sets and returns a
 `RecordsStashed` handle. Use `LookupStash` with that handle to retrieve
@@ -192,13 +193,13 @@ Two recurring wrong shapes:
 - `(Observe (Records ...))` is the retired production shape; live
   schema-derived `Observe` takes `Query` directly.
 
-## Certainty and weight
+## Certainty and importance
 
-Production Spirit stores both certainty and weight. Certainty means
+Production Spirit stores both certainty and importance. Certainty means
 confidence/currentness, with `Zero` reserved for removal-candidate nomination.
-Weight means how much attention has accumulated around this topic or composite
-record. Higher weight does not mean higher certainty; it affects retrieval
-order and can be filtered with `WeightSelection`.
+Importance means how much attention has accumulated around this topic or
+composite record. Higher importance does not mean higher certainty; it affects
+retrieval order and can be filtered with `ImportanceSelection`.
 
 ## Other operations
 
