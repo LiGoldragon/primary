@@ -66,7 +66,7 @@ synthesis as the highest-numbered file.
 
 ## Roles
 
-Seven main roles, each with its own discipline. Lanes (`<role>`,
+Eight main roles, each with its own discipline. Lanes (`<role>`,
 `second-<role>`, `third-<role>`, `<qualifier>-<role>`) share their main
 role's discipline, skill file, and beads label — only the lock file,
 report subdirectory, and claim string differ. Additional capacity is
@@ -75,6 +75,7 @@ report subdirectory, and claim string differ. Additional capacity is
 - `operator` — implementation (default: Codex)
 - `designer` — architecture, skills, reports (default: Claude)
 - `system-operator` — OS / platform / deploy
+- `system-maintainer` — Crayon OS and Logic maintenance, debugging, and deployment across hosts
 - `poet` — writing as craft
 - `videographer` — video as craft: capture, editing, captioning, encoding, publishing-prep
 - `assistant` — personal-affairs support for the psyche (Pi)
@@ -221,8 +222,8 @@ designer — doubting, finding flaws, catching broken rules. No
 - **Don't dispatch subagents unless the psyche asks — except the designer
   protocol.** Subagents (`Agent` calls, `SendMessage`) run outside the
   surface where the psyche can redirect and can violate the dispatcher's
-  lane. Default for operator, system-operator, poet, assistant,
-  counselor and their lanes: do the work yourself; the psyche authorizes
+  lane. Default for operator, system-operator, system-maintainer, poet,
+  assistant, counselor and their lanes: do the work yourself; the psyche authorizes
   dispatch per task. The prime designer is the exception — it runs
   parallel subagent workflows by default until reduced. Dispatched
   subagents inherit the dispatcher's lane.

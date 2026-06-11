@@ -17,7 +17,7 @@ not as a shell helper that owns files directly.
 
 ## Roles
 
-The workspace organises work under **seven main roles**, each carrying its
+The workspace organises work under **eight main roles**, each carrying its
 own discipline. Additional **lanes** — `second-<role>`, `third-<role>`,
 and qualified lanes like `<qualifier>-<role>` — share their main role's
 discipline, skill file, and beads label; only the lock file, report
@@ -42,6 +42,7 @@ set of lanes is enumerated below.
 | `nota-designer` | designer | (any) | `orchestrate/nota-designer.lock` | `reports/nota-designer/` | Specialized designer lane scoped to NOTA language design |
 | `cloud-designer` | designer | (any) | `orchestrate/cloud-designer.lock` | `reports/cloud-designer/` | Specialized designer lane scoped to cloud component design |
 | `system-operator` | system-operator | (any) | `orchestrate/system-operator.lock` | `reports/system-operator/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
+| `system-maintainer` | system-maintainer | Pi | `orchestrate/system-maintainer.lock` | `reports/system-maintainer/` | Crayon OS and Logic maintenance, debugging, updating, and deploys across hosts |
 | `poet` | poet | (any) | `orchestrate/poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
 | `videographer` | videographer | Claude | `orchestrate/videographer.lock` | `reports/videographer/` | Video production: capture / screen-recording, editing, captioning, encoding, publishing-prep |
 | `assistant` | assistant | Pi | `orchestrate/assistant.lock` | `reports/assistant/` | Personal-affairs support for the psyche |
@@ -185,8 +186,8 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 `<role>` is one of `operator`, `second-operator`, `pi-operator`,
 `cluster-operator`, `cloud-operator`, `designer`, `second-designer`,
 `third-designer`, `system-designer`, `nota-designer`, `cloud-designer`,
-`system-operator`, `poet`, `videographer`, `assistant`, or `counselor`.
-Each `<scope>` is either an absolute path or a bracketed task lock
+`system-operator`, `system-maintainer`, `poet`, `videographer`, `assistant`,
+or `counselor`. Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
 Mix freely:
@@ -385,6 +386,7 @@ Convention: each role owns a subdirectory.
 - `reports/second-designer/` — second designer's reports.
 - `reports/third-designer/` — third designer's reports.
 - `reports/system-operator/` — system operator's reports.
+- `reports/system-maintainer/` — system maintainer's reports.
 - `reports/system-designer/` — system designer's reports (specialized designer lane).
 - `reports/nota-designer/` — nota designer's reports (specialized designer lane).
 - `reports/cloud-designer/` — cloud designer's reports (specialized designer lane).

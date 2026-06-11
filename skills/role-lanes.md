@@ -4,8 +4,8 @@
 
 ## The mirror model — lanes are windows, not agents
 
-A **role** (designer, operator, system-operator, poet,
-videographer, assistant, counselor) names a discipline. Each role
+A **role** (designer, operator, system-operator, system-maintainer,
+poet, videographer, assistant, counselor) names a discipline. Each role
 has **one agent**: one cryptographic identity, one shared
 persona-mind state, one ongoing body of signed work. **Lanes are
 windows into that agent.** Running `designer` and `second-designer`
@@ -127,7 +127,7 @@ Your reading list is two skills: this file (the lane mechanism) and
 `second-designer` / `cloud-designer` / `nota-designer` /
 `system-designer` is `designer`; for `pi-operator` /
 `cluster-operator` / `cloud-operator` / `second-operator` it's
-`operator`; `system-operator`, `poet`, `videographer`,
+`operator`; `system-operator`, `system-maintainer`, `poet`, `videographer`,
 `assistant`, and `counselor` each have their own discipline file.
 
 Then claim under your lane's identifier:

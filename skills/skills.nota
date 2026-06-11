@@ -15,6 +15,8 @@
     [Architecture as craft. What designer specifies; what operator implements against.])
   (Role system-operator skills/system-operator.md Apex
     [OS / platform / deploy craft.])
+  (Role system-maintainer skills/system-maintainer.md Apex
+    [Crayon OS and Logic maintenance, debugging, updates, and deploys across hosts.])
   (Role poet skills/poet.md Apex
     [Prose as craft.])
   (Role assistant skills/assistant.md Apex
