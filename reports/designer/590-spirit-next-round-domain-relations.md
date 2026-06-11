@@ -11,7 +11,7 @@ subsumption drafts and folds in operator's live-guardian progress (363).
 
 | # | Item | Kind |
 |---|---|---|
-| 1 | **Re-nest** `Software` from a top-level area to a cluster **under `Technology`** | schema restructure |
+| 1 | **Restructure `Technology` into `Hardware` + `Software` clusters** — re-nest `Software` under it | schema restructure |
 | 2 | **Domain scopes** — prefix matching at any depth | foundation |
 | 3 | **Equivalence** — the one symmetric relation + query-expansion (no subsumption) | relation mechanism |
 | 4 | **Taxonomy schema** — enum + relations in a new first-class schema kind (`schema/domain.schema`), reusable | new schema surface (`mn3k`) |
@@ -41,16 +41,15 @@ without them).
 
 ### 2.1 The nested tree
 
-`Technology` is the broad tech area; `Software` is a **cluster inside it**, keeping its 12
-sub-clusters. Sparse hardware leaves stay shallow beside it — mixed depth is exactly
-density-proportional (`4wt3`): the sparse branches stay 2-tier, the dense software branch goes
-4-tier.
+`Technology` divides into **two parallel clusters — `Hardware` and `Software`** — the true
+split of technology (`p36l`). Every child of `Technology` is a cluster (no bare leaves);
+`Software` is *deeper* than `Hardware` only because it holds far more — density-proportional
+depth (`4wt3`), not a structural exception.
 
 ```
 Technology [
-  Energy Power Robotics Materials Machinery Instrumentation Aerospace   ;; 2-tier hardware leaves
-  Automation Networking                                                  ;; hardware senses (see §5)
-  (Software [                                                            ;; the dense 4-tier cluster
+  (Hardware [Energy Power Robotics Materials Machinery Instrumentation Aerospace Automation Networking])
+  (Software [
     (Languages [...]) (Theory [...]) (Systems [...]) (Distributed [...])
     (Data [...]) (Intelligence [...]) (Security [...]) (Quality [...])
     (Operations [...]) (Observability [...]) (Surfaces [...]) (Engineering [...])
@@ -61,13 +60,14 @@ Technology [
 Resulting domain values, at their natural depths:
 
 ```
-(Technology Energy)                                       ;; 2-tier, sparse hardware
-(Technology (Software Quality))                           ;; a scope (cluster) — §3
+(Technology (Hardware Energy))                            ;; 3-tier, sparse hardware
+(Technology (Software Quality))                           ;; a cluster scope — §3
 (Technology (Software (Quality PropertyBasedTesting)))    ;; 4-tier leaf, dense software
 ```
 
-The flat `Technology(Intelligence)` leaf is **removed** — AI is now
-`Technology(Software(Intelligence(...)))` (§5).
+The flat `Technology(Intelligence)` leaf is **removed** — AI is `Technology(Software(Intelligence(...)))`;
+physical-AI hardware sits under `Hardware(Robotics)` (§5). `Hardware` is itself a queryable
+scope — `(Technology Hardware)` returns all hardware, mirroring `(Technology Software)`.
 
 ### 2.2 Why nested (the reasoning, settled)
 
@@ -161,16 +161,15 @@ as **symmetric equivalences**:
 
 | Overlap | Resolution |
 |---|---|
-| `Technology(Intelligence)` vs software AI | **Absorbed** — delete the flat leaf; AI is `Technology(Software(Intelligence(...)))` |
-| networking (hardware vs software) | **Equivalence** `(Technology Networking) ≡ (Technology (Software (Distributed Networking)))` |
-| `Automation` (industrial vs software) | **Keep both, no link** — different subjects (`(Technology Automation)` hardware; `Technology(Software(Operations))` software) |
+| `Technology(Intelligence)` vs software AI | **Absorbed** — delete the flat leaf; AI is `Technology(Software(Intelligence(...)))`; physical-AI is `Hardware(Robotics)` |
+| networking (hardware vs software) | **Equivalence** `(Technology (Hardware Networking)) ≡ (Technology (Software (Distributed Networking)))` |
+| `Automation` (industrial vs software) | **Keep both, no link** — `(Technology (Hardware Automation))` hardware; `Technology(Software(Operations))` software |
 | `Information(Database)` vs software DB | **Equivalence** `(Information Database) ≡ (Technology (Software (Data DatabaseSystems)))` |
 | `Knowledge(Computing)` vs `Software(Theory)` | **Keep separate** (psyche) — Computing-as-science is broader than software-theory; no link |
 
-**Open sub-decision — Technology's internal structure (§8.1).** Lean: keep the hardware leaves
-flat (2-tier) beside the `Software` cluster — mixed depth is density-proportional, minimal
-churn. Decide whether `Networking`/`Automation` keep a hardware leaf (as above) or fully
-absorb.
+**Resolved (psyche, `p36l`):** the hardware leaves group under a `Hardware` cluster mirroring
+`Software`, so `Technology = Hardware + Software`. `Networking` and `Automation` keep a
+`Hardware` leaf — `Networking` equivalence-linked to its software twin, `Automation` unlinked.
 
 ## 6. Guardian residue (updated for 363)
 
@@ -201,10 +200,10 @@ remains:
 
 ## 8. Decisions for the psyche
 
-1. **Technology's internal structure (§5)** — hardware leaves flat beside the `Software`
-   cluster (lean: yes), and the `Networking`/`Automation` calls.
+1. ~~Technology's internal structure~~ — **resolved** (`p36l`): `Technology = Hardware +
+   Software`, two parallel clusters; `Networking` equivalence-linked, `Automation` unlinked.
 2. **Confirm the re-nest (§2)** — `Software` becomes `Technology(Software(...))`, 4-tier. (Per
-   `2msx`; restated here as the schema action.)
+   `2msx`; restated here as the schema action.) — Nothing else open; ready for operator.
 
 ## 9. Out of scope this round (deferred)
 
