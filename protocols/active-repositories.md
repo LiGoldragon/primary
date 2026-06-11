@@ -138,29 +138,46 @@ over to any node.
 
 Until cutover lands, agents must distinguish two parallel deploy stacks.
 
-**Stack A — production today** (running on every node). `main` branches
-in the canonical `/git/github.com/LiGoldragon/...` checkouts of:
+**Stack A — production today** (running on every node). Built from `main`
+in the canonical `/git/github.com/LiGoldragon/...` checkouts of
 `horizon-rs`, `lojix-cli`, `CriomOS`, `CriomOS-home`, `CriomOS-lib`,
-`goldragon`. Old monolithic `lojix-cli` projects `horizon-rs/main` over
-`goldragon/datom.nota` and writes the `horizon` / `system` /
-`deployment` flake inputs into CriomOS at deploy time. No daemon, no
-`lojix` repo, no `criomos-horizon-config`. CriomOS and CriomOS-home
-flake locks pin `lojix-cli` at `4c66b8a6fa55`. **Production fixes go
-here.**
+`goldragon`. The monolithic `lojix-cli` projects `horizon-rs` over
+`goldragon/datom.nota` and writes the `horizon` / `system` / `deployment`
+flake inputs into CriomOS at deploy time. No deploy daemon. **Already on
+nota-next:** CriomOS's lock pins `lojix-cli` at `fc2ff0287f53` (commit
+*"migrate lojix-cli to nota-next"*, reached transitively via
+`criomos-home`), whose `Cargo.lock` pins `horizon-rs` at `48df4bd` (the
+nota-next codec migration). The earlier `4c66b8a6fa55` pin is superseded.
+`lojix-cli/Cargo.toml` declares `horizon-lib = { git = ".../horizon-rs" }`
+with **no rev** — it floats to horizon-rs `main`, so a pin bump pulls
+main's latest (a rev-pin would harden this). **Production fixes go here.**
 
-**Stack B — lean rewrite, smoke-built, not yet deployed**.
-`horizon-leaner-shape` branches in worktrees under
-`~/wt/github.com/LiGoldragon/<repo>/horizon-leaner-shape/`, spanning the
-same six repos plus two new ones: `lojix` (daemon + thin CLI client) and
-`criomos-horizon-config` (pan-horizon constants). Lean horizon
-proposal/view, pan-horizon config split into its own repo, new lojix
-daemon-and-thin-client shape. **Rewrite edits go here.**
+**Stack B — the lean rewrite was two streams, not one fork.** Contrary to
+an earlier framing, the rewrite did *not* fork six repos. The
+horizon-schema + nota-next-codec stream rolled forward on `main`
+(`horizon-rs`, `lojix-cli`, `goldragon`) and **already shipped to
+production** via the pins above — that is why `horizon-rs` has no fork.
+What remains genuinely unshipped, on parallel branches, is the **lojix
+daemon reshape**: `horizon-leaner-shape` (and superseded
+`horizon-re-engineering`) worktrees exist for exactly two repos — `lojix`
+(daemon + thin CLI) and `signal-lojix` (its wire) — plus two
+net-new-on-`main` repos not yet consumed in production: `meta-signal-lojix`
+and `criomos-horizon-config` (the pan-horizon constants split, which
+`horizon-rs` main does **not** yet read — constants remain inline in
+`goldragon/datom.nota`). `horizon-rs`, `CriomOS`, `CriomOS-home`,
+`CriomOS-lib`, and `goldragon` have **no `horizon-leaner-shape` branch at
+all**. **Daemon-reshape edits go in the `lojix` / `signal-lojix`
+worktrees.** (Forensics: `reports/system-designer/90`.)
 
-**Do not fold one stack into the other piecemeal.** Schemas have
-diverged. Cutover happens as a coordinated multi-repo merge after the
-rewrite reaches feature parity, per §"Cutover discipline" above. Until
-then: production edits → `main` in the canonical checkout; rewrite edits
-→ `horizon-leaner-shape` in the worktree.
+**Do not fold the daemon stack into production piecemeal.** `horizon-rs` is
+now shared and converged on `main` — both the production CLI and the future
+daemon link the same projection. What still diverges is the deploy
+*mechanism*: the monolithic CLI versus the daemon + Signal wire
+(`signal-lojix` / `meta-signal-lojix`). The daemon cutover is a coordinated
+change once it reaches parity (durable storage + target-safe activate), per
+§"Cutover discipline" above. Until then: production edits → `main`;
+daemon-reshape edits → `horizon-leaner-shape` in the `lojix` / `signal-lojix`
+worktrees.
 
 Note: GitHub redirects `LiGoldragon/lojix` → `LiGoldragon/forge` are
 stale (forge was previously named lojix and got renamed). The new
@@ -200,6 +217,12 @@ nix's build infrastructure).
 - Text: NOTA is the only text syntax. Nexus is typed semantic content
   written in NOTA syntax, not a second parser or alternate text
   format.
+- Naming: the `-next` replacement repos have superseded their originals —
+  `nota-next` is the canonical NOTA implementation, `schema-next` +
+  `schema-rust-next` the canonical schema engine; the original `nota` /
+  `schema` repos are deprecated. The `-next` suffix is vestigial and slated
+  to drop (rename to base names `nota` / `schema` / `schema-rust`); not yet
+  executed. (Spirit `4ups`.)
 - Persona center: `mind` is the central state component for
   orchestration/work graph evolution. Lock files and BEADS are
   transitional compatibility surfaces.

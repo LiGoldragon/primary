@@ -3,6 +3,14 @@
 *system-designer · 2026-06-11 · light survey of the deploy stack: what the
 repos are, which does what, how they fit together.*
 
+> **Correction (same session, follow-up to a psyche challenge):** the clean
+> two-stack A/B framing below is substantially wrong, and the tell was
+> exactly what the psyche caught — *the arc is named after horizon, yet
+> horizon-rs has no fork.* See **§Correction: the rewrite never forked
+> horizon** before trusting the A/B table. Short version: the horizon half
+> of the rewrite already shipped on `main` and is **in production**; only
+> the *lojix daemon* still lives on a parallel fork.
+
 ## TL;DR
 
 These repos are **the CriomOS deploy stack** — the machinery that turns a
@@ -29,6 +37,64 @@ and B.
 The one thing not to do: fold one stack into the other piecemeal. The
 schemas have diverged; cutover is a coordinated multi-repo merge after the
 rewrite reaches parity.
+
+## Correction: the rewrite never forked horizon — it shipped on main
+
+The psyche's instinct was right: *"the whole thing started as a horizon-rs
+rewrite, so something went really wrong if horizon doesn't have a fork."*
+Horizon-rs has no fork. There is no `horizon-leaner-shape` branch for it —
+local or origin. But the diagnosis is not "the rewrite was lost." It is
+that **the arc decomposed into two independently-shipping streams, and only
+one of them is the parallel stack.** The forensic trail:
+
+| Arc repo | `horizon-leaner-shape` fork? | Where its rewrite went | In production now? |
+|---|---|---|---|
+| **horizon-rs** | **No** (main only, local+origin) | `main` — NodeServices, service-variant projection, nota-next codec migration | **Yes** — prod builds horizon-rs `48df4bd` (the nota-next codec) |
+| **lojix-cli** | **No** (main only) | `main` — `fc2ff02` *"migrate lojix-cli to nota-next"* | **Yes** — CriomOS lock pins `fc2ff02` |
+| **goldragon** | **No** (main only) | `main` — pan-horizon constants still inline in `datom.nota` | **Yes** |
+| **CriomOS / -home** | **No** (`next` = operator integ., no leaner-shape) | `main`/`next` | **Yes** |
+| **CriomOS-lib** | **No** (main only) | `main` | **Yes** |
+| **lojix** (daemon) | **Yes** — `~/wt/.../lojix/horizon-leaner-shape` (+ `horizon-re-engineering`) | the fork | **No** — smoke-built |
+| **signal-lojix** | **Yes** — worktree | the fork | **No** |
+| **meta-signal-lojix** | net-new on `main` | `main` (new repo) | **No** — only the daemon consumes it |
+| **criomos-horizon-config** | net-new on `main` | `main` (new repo) | **No** — horizon-rs main doesn't reference it; constants still inline in goldragon |
+
+**The pin chain that proves production already drank the rewrite:**
+`CriomOS` flake.lock → `lojix-cli@fc2ff02` (*"migrate lojix-cli to
+nota-next"*) → its `Cargo.lock` → `horizon-rs@48df4bd` (*"migrate proposal
+codec to nota-next"*). And `lojix-cli/Cargo.toml` declares
+`horizon-lib = { git = ".../horizon-rs" }` with **no rev/branch** — it
+floats to horizon-rs `main`.
+
+So the two streams are:
+
+1. **Horizon schema + codec modernization** — the part literally about
+   *horizon*. Rolled forward on **`main`** in horizon-rs, lojix-cli, and
+   goldragon, and **shipped into production** through the pin chain. No fork,
+   because a library doesn't need one — you protect consumers with version
+   pins, not branches. **This is correct evolution, and it's done and live.**
+2. **The lojix daemon reshape** — monolith CLI → daemon + thin client +
+   typed Signal wire. The *only* thing on a parallel fork, in exactly two
+   repos (`lojix`, `signal-lojix`), smoke-built, not deployed. This stream
+   has nothing to do with horizon schema.
+
+**Consequences for the docs.** `protocols/active-repositories.md` claims
+Stack B *"spans the same six repos plus two new ones, all on the
+`horizon-leaner-shape` branch in worktrees"* and that Stack A is the
+pre-rewrite monolith with *"no daemon, no `lojix` repo, no
+`criomos-horizon-config`"* pinning lojix-cli at `4c66b8a6fa55`. Reality:
+(a) only two repos forked; the six "shared" repos have no leaner-shape
+branch at all; (b) production is **already on nota-next** (`fc2ff02`), not
+the pre-rewrite shape; (c) the pin advanced to `fc2ff02`. The branch name
+**`horizon-leaner-shape` is a misnomer** — the horizon is already lean and
+in prod; the fork is really *lojix-daemon-shape*. The genuinely-unshipped
+horizon piece is the **`criomos-horizon-config` constants split**, which
+never wired into horizon-rs main (constants still inline in
+`goldragon/datom.nota`).
+
+**The open question I won't infer (§For your attention #1 below).** Whether
+this is *map-stale-territory-fine* or *territory-breached* depends on psyche
+intent I don't have.
 
 ## The cast — which repo does what
 
@@ -127,6 +193,25 @@ the costly nixpkgs instantiation (`CriomOS-pkgs`'s whole reason to exist).
   binary.
 
 ## For your attention
+
+0. **Was production *meant* to be on nota-next already? (intent, please.)**
+   Two readings of "no horizon fork," and the code can't tell me which:
+   - **(A) Map stale, territory fine.** Horizon-rs is a library; rolling it
+     forward on `main` and deliberately bumping the production lojix-cli pin
+     to the nota-next migration (`fc2ff02`) was the plan. Only the *daemon*
+     needs a parallel stack. → the two-stack doctrine doc is just
+     over-described and stale; I correct it, no alarm.
+   - **(B) Territory breached.** Production was supposed to stay frozen on
+     the pre-rewrite horizon until a coordinated multi-repo cutover, and the
+     floating `horizon-lib = { git }` dependency + a pin bump leaked the
+     nota-next rewrite into production *ahead* of that cutover. → a real
+     process breach, and the unpinned git dep is a latent hazard regardless.
+
+   I lean **(A)** — the production commits are deliberately named migration
+   commits (`fc2ff02` *"migrate lojix-cli to nota-next"*), not an accidental
+   float — but I won't infer it. Which is it? Either way, the unpinned
+   `horizon-lib` git dependency is worth a rev-pin so production can't drift
+   to horizon-rs main on the next `cargo update`.
 
 1. **The cutover gate is durable storage + safe activate in the daemon.**
    The `lojix-daemon` runs on an in-memory store behind a shared lock; the
