@@ -53,32 +53,41 @@ Operator flagged this; the audit confirms and diagnoses it precisely, and it is 
   unsound — the noisy bundle made the model reason over and cite the wrong record. In other
   cases that noise can flip the verdict, not just the citation.
 
-**Fix:**
-1. **Cap on the entry path** — `records.truncate(GUARDIAN_RECORD_LIMIT)` in
-   `guardian_records_for_entry` after the score-sort (records are already ranked). Fixes the
-   enormous output immediately.
-2. **Drop the same-Kind floor** — `+1 if kind == kind` admits a fifth of the store on no real
-   relevance. Remove it, or require `score ≥ 10` (i.e. at least a domain/referent/keyword/text
-   overlap) for inclusion. Same-Kind alone is not relevance.
-3. **(Deferred) corpus re-tag** — the `(Information Documentation)` catch-all dominates any
-   bundle; the deferred LLM re-tag shrinks it. Until then, 1+2 contain the damage.
+**Fix (addressed by operator `365`; one reframe).** The real fix is **relevance-scoping**:
+drop the same-`Kind` floor (`+1 if kind == kind` admitted a fifth of the store on no real
+relevance) so only genuinely-related records — same/equivalent domain, shared keyword/text —
+enter. Operator did this in `365`. Plus the **corpus cleanup** (594) to shrink the
+`(Information Documentation)` catch-all that makes any retrieval there huge.
 
-This is report 585's "cap/rank the retrieval bundle" — the cap exists but was never wired onto
-the live path.
+The **fixed-count cap (`GUARDIAN_RECORD_LIMIT = 64`) is a backstop, not the mechanism** — and
+a smell. A record *count* can silently drop a genuine duplicate that ranks 65th → a wrong
+accept, the exact failure the guardian exists to prevent. It rarely bites (a true duplicate
+scores high and lands in the top 64), but that is luck, not design. Recommendation: keep the
+residual backstop bound by a **relevance threshold** (drop below score X), not top-N count; and
+once relevance-scoping + cleanup land, the bundle is naturally small and the cap should never
+bind. (This corrects report 585's "cap/rank the bundle": rank/scope by relevance, do not cap by
+count.)
 
 ## Finding 2 — `DomainScope` is untyped strings; should be recursive enums
 
 The deployed `DomainScope = DomainPath = (Vec String)` (`domain.schema:47-48`) — a flat list
-of **free strings** (`[Technology Software]`). Untyped: a misspelled segment parses fine. Per
-psyche correction (`34hu`):
+of **free strings** (`[Technology Software]`). Untyped: a misspelled segment parses fine.
+**Resolved design** (psyche + operator thread; records `k4zc`, `oqwb`, `izib`):
 
-- **`Domain` and `DomainScope` are one typed recursive enum.** Each node is a real enum variant
-  that optionally carries a deeper variant; a full domain recurses to a leaf, and a **scope is
-  the same recursive enum terminating early** at an internal node (a typed prefix).
-- This yields type-checked segments (a typo'd variant fails to parse), arbitrary depth in one
-  type, and the nested paren form a scope already shares with a domain value —
-  `(Technology (Software Quality))`.
-- Replaces the `(Vec String)` representation. A domain *is* a scope that reaches a leaf.
+- **`Domain` is a typed recursive enum tree with mandatory subdomains all the way to a leaf** —
+  a domain value is always complete: `Technology(Software(Security(AdmissionControl)))`.
+- **`DomainScope` is NOT `Domain` with optional payloads.** That deadend renders ugly
+  `(Technology None)` / `Some` (`oqwb`: a NOTA variant with an optional payload encodes as a
+  record, not a bare atom). Instead `DomainScope` is a **separate generated prefix language over
+  the same tree** — declared `DomainScope (ScopeOf Domain)`. Stopping early is the prefix
+  *semantics*, not optional subdomain data.
+- **Clean, fully-typed NOTA surface, no `Some`/`None`:** `Technology`, `(Technology Hardware)`,
+  `(Technology (Software Security))`, `(Technology (Software (Security AdmissionControl)))`.
+  Every segment a typed variant — a typo fails to parse.
+- **Implementation order (operator, in progress per `365`):** schema-next gains a
+  `ScopeOf`/prefix construct + recursive-enum support; schema-rust-next does recursive-reference
+  boxing (`gh29`) and emits the prefix type with a clean NOTA codec; Spirit then replaces
+  `DomainPath`, regenerates, and migrates.
 
 Consistent with typed-domain-values (`skills/abstractions.md`, `rust-discipline`): no free
 strings where a typed sum belongs.
