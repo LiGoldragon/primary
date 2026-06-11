@@ -26,9 +26,11 @@ request-builder — and the thin client refuses inline NOTA, so it isn't
 hand-drivable), and (4) **activation + durable state**. The good news the
 grounding surfaced: **CriomOS is already orchestrator-agnostic** (it consumes the
 four override inputs, not a lojix input), **only CriomOS-home pins lojix-cli and
-only for the binary** (no eval-time coupling), and **zeus is a clean secret-free
-first target that evaluates today**. So a first, narrow cutover is reachable
-without solving every gate at once.
+only for the binary** (no eval-time coupling), and **zeus is the simplest node to
+validate the runtime on first** (it evaluates today — no router/LLM/swap). So the
+runtime can be proven on a real node early, but the recorded charter is
+**port-first** (`fe2j`): complete the port onto the designed components, reaching
+parity, before cutting any node over (see §Spirit grounding).
 
 ## Constraints that must hold before go-live (regardless of node)
 
@@ -94,7 +96,7 @@ add is **cancel-kill on the privileged activate ssh**, not on cold builds.
 
 Stages 0–2 are activation-independent and can proceed in parallel; stage 3 is the
 first real cutover; stages 4–6 widen it. Stage 5 (durable state) is sequencing-
-flexible — see open decision 2.
+flexible — see open decision 1.
 
 ### Stage 0 — Hygiene (unblocks a cold/CI build and the privileged surface)
 - Pin engine deps to explicit revs; resolve the `nota-codec.git` 404 (fork/rehost
@@ -109,15 +111,17 @@ flexible — see open decision 2.
 - Fix the OsOnly firmware field: `DeploymentInput::from_shape` OsOnly arm must emit
   `include_all_firmware: false` (the one wrong line, `schema_runtime.rs:1627`).
   Confirmed eval-level flip: `{daemon_OsOnly:true, lojixCli_OsOnly:false}`.
-- (Defer-able if first cutover is secret-free) Add a `Secrets` MaterializationShape
+- **(Required — production uses secrets.)** Add a `Secrets` MaterializationShape
   mirroring lojix-cli's `artifact.rs` (existence-gated on
   `<proposal>/secrets/router-wifi-sae-passwords.sops`, the 3 fixed filenames) and
-  inject `--override-input secrets`.
+  inject `--override-input secrets`. Baseline work, not a deferral — prometheus is a
+  production node that cannot evaluate without it, so lojix-cli cannot retire until
+  it lands.
 - (CriomOS-side, optional, widens the first wave) Fix the `swapDevices.sizeMebibytes`
   → `.size` mismatch in `disks/preinstalled.nix:40` that blocks tiger/ouranos eval
   (a Stack-A bug, independent of lojix).
 - **Exit:** `CriomOS/checks/metal-firmware-policy` passes for daemon-emitted inputs;
-  prometheus evaluates (if Secrets landed); the Stack-B build of a node produces a
+  prometheus evaluates once Secrets lands; the Stack-B build of a node produces a
   closure identical to the Stack-A build.
 
 ### Stage 2 — The missing operational surface
@@ -131,13 +135,13 @@ flexible — see open decision 2.
 - **Exit:** an operator can drive a System Eval/Build of a real node through the
   daemon, end to end.
 
-### Stage 3 — First cutover (secret-free, build-only, parallel)
+### Stage 3 — First cutover (simplest node, build parity, parallel)
 - Stand up the Stack-B daemon **alongside** Stack A (both live).
 - Swap CriomOS-home's home-profile package set toward the new client + request-
   builder (keeping lojix-cli installed during the parallel run).
-- **First target: `zeus`** (Edge; no router, no LLM, empty swap) — confirmed to
-  evaluate clean to a full drvPath with no secrets. Mode: System Eval/Build or Home
-  Build (no activation needed).
+- **First target: `zeus`** (Edge; no router, no LLM, empty swap) — chosen because it
+  is the *simplest* node (evaluates clean today), **not** to dodge secrets (Secrets
+  ships in Stage 1 regardless). Mode: System Eval/Build or Home Build.
 - **Parity gate:** the Stack-B-built closure for zeus must be store-path-identical
   to the Stack-A-built closure.
 - **Exit:** zeus builds via Stack B == Stack A, through the real daemon + client +
@@ -158,8 +162,9 @@ flexible — see open decision 2.
   `nix-store --gc` path is dead code today); write real gcroot symlinks.
 - **Exit:** the daemon survives restart with its live-set/GC-roots/event-log intact.
 - **Sequencing:** this blocks the *charter*, not minimal lojix-cli parity (lojix-cli
-  is stateless). Per open decision 2, it may land before Stage 3 (durability-first)
-  or after a small in-memory first cutover.
+  is stateless). Per open decision 1, it may land before Stage 3 (durability-first)
+  or after a small in-memory validation milestone. Per `munq`/`tj99`, build it in the
+  shared/generated layer (sema-engine + the schema-rust-next emitter), not a lojix fork.
 
 ### Stage 6 — Widen and retire
 - Add the swap fix → tiger/ouranos; add Secrets → prometheus (router WPA3 + LLM).
@@ -170,31 +175,76 @@ flexible — see open decision 2.
 ## Recommended first cutover
 
 **`zeus`, System Eval/Build (or Home Build), Stack B running in parallel with Stack
-A** — after Stage 0 (hygiene) + the Stage 1 firmware fix + Stage 2 (packaging +
-request-builder). It needs **no** secrets, **no** activation, and **no** swap fix,
-yet exercises the entire Stack-B path — daemon, two sockets, request-builder,
-substituter resolution, input materialization, eval/build — against a real node,
-with a hard parity check (closure must equal Stack A's). It is the smallest move
-that proves the runtime in production without touching the deepest blockers
-(activate, durable state, secrets).
+A** — after Stage 0 (hygiene) + the Stage 1 build-parity fixes + Stage 2 (packaging +
+request-builder). zeus is chosen as the *simplest* node (no router/LLM/swap), and it
+exercises the entire Stack-B path — daemon, two sockets, request-builder, substituter
+resolution, input materialization, eval/build — against a real node, with a hard
+parity check (closure must equal Stack A's). Per the charter (`fe2j` port-first,
+`v5d4` sandbox-test gate), treat this as the **pre-cutover validation** that the
+ported daemon reaches build parity; the *real* cutover follows once activation and
+(per decision 1) durable state are in. Secrets is **not** skipped — it ships in
+Stage 1; zeus simply doesn't reference it.
+
+## Spirit grounding (live Observe, 2026-06-11)
+
+A live Spirit Observe (`spirit Version` → v0.8.1; daemon up) grounds this plan's
+intent — and corrects one mis-citation. The load-bearing records:
+
+- **`tvbn`** (Decision, VeryHigh) — the rewrite charter: *reach parity then switch
+  over per node; port high-confidence production CriomOS changes into the next stack
+  immediately where the correct change is clear, then test those builds.*
+- **`fe2j`** (Decision, High) — **port-first**: *complete the lojix triad-engine /
+  schema-component port BEFORE cutting CriomOS over; Stack A is never retired onto a
+  non-triad deployer.*
+- **`v5d4`** (Constraint, High) — *passing sandbox testing is a precondition for the
+  lean-stack cutover.* (A sandbox-test gate — **not** the in-memory-vs-durable record
+  I earlier mis-cited.)
+- **`up9q`** (Decision, High) — *a durable deploy is owned by a job actor that
+  persists job state and survives client disconnect; cancellation is per-operation in
+  schema; **no blanket kill-on-drop** on effect processes.* → deploy-job-state
+  persistence is intended, and the activate-ssh control must be **per-operation
+  cancellation, not a blanket kill** (refines watch-for #8).
+- **`783n`** (Correction) — *lojix must permit local builds; prometheus must build its
+  own model-heavy closures locally* (it owns the AI model/closure cache).
+- **`2tfa`/`brgo`** (Decisions) — the Watch subscriptions are *from day one, not
+  deferred*, via **schema-derived** streaming (teach schema-next / schema-rust-next to
+  emit the event frame), *not a lojix hand-wired carve-out*.
+- **`munq`/`tj99`** (Constraint/Decision) — *use the designed components fully; when
+  one is too incomplete, develop it further rather than bypass*, and host daemon
+  properties (concurrency, and by extension durable state / streaming) in the
+  **generated** emitter, not hand-written per-component forks.
+
+Net: the plan already aligns with the charter (port-first, parity-then-per-node,
+designed-components-fully). Two consequences fold in — the durable-state and
+subscription work belongs in the **generated/shared layer** (sema-engine,
+triad-runtime, schema-rust-next), not hand-rolled in lojix; and **sandbox-test-passing
+(`v5d4`)** joins the must-meet constraints.
 
 ## Open decisions — the psyche's to settle
 
-1. **Parity-bar scope for the first cutover.** Is a secret-free, build-only cutover
-   (zeus) an acceptable first step, or must full activate+secrets parity land
-   before *any* node moves? (Report 26 open Q1; never enumerated.)
-2. **In-memory vs durable-first.** May the first cutover run on in-memory state
-   against a small node set (Stage 5 after Stage 3), or must persistence land first?
-   (Report 26 open Q2 / record `v5d4`; explicitly undecided.) Governs the whole
-   stage order.
-3. **Where substituter resolution lives.** Either (a) the daemon gains horizon read
-   for substituters (it already projects horizon for the overrides) and the wire
-   reverts to node names, or (b) the request-builder hand-resolves before encoding.
-   The wire currently bakes in (b).
-4. **A fresh live Spirit Observe** to confirm no newer record green-lights cutover
-   or redefines the bar — this plan's intent is grounded in INTENT.md + report-cited
-   records, not a live dump (the deployed spirit-daemon schema was reported out of
-   sync, so a live read couldn't be made).
+**Settled (psyche, 2026-06-11):** *secrets* is in the parity bar (production uses it)
+→ mandatory Stage-1 work, not an optional deferral; the earlier "secret-free cutover
+acceptable?" framing was wrong. And *running a Spirit Observe* is **standard routine
+practice**, not a decision to offer (principle `0xqp`) — done this turn. The two
+genuinely-open calls:
+
+1. **In-memory now vs durable-first.** The live-set / GC-roots / event-log are
+   in-memory (lost on restart); durable redb/sema-engine backing + self-resume is
+   unbuilt. Must persistence land **before** any node migrates, or may a build
+   *validation* run on in-memory state first? Intent leans durable — `up9q` wants
+   persisted deploy-job state, and `fe2j`/`munq` say complete the port on the designed
+   components before cutover — so an in-memory run is at most a *pre-cutover
+   validation* milestone, never the cutover. The residual call: is that in-memory zeus
+   validation worth doing before the sema-engine backing lands? No record settles the
+   sequencing.
+2. **Where substituter resolution lives.** lojix-cli resolved node-name → Yggdrasil
+   cache URL + public key from the horizon (in-process); the Stack-B wire carries them
+   **pre-resolved** (`{url, public_key}`), so the resolution has no owner. Either
+   (a) the daemon gains horizon-read for substituters and the wire reverts to bare node
+   names — leaning (a), since the daemon already projects horizon for the overrides and
+   already owns flake-auth resolution (`2qhw`), and `munq`/`tj99` favor the designed
+   daemon over a side tool — or (b) the request-builder hand-resolves before encoding
+   (what the wire bakes in today). No record settles it.
 
 ## Two corrections this grounding makes to report 38
 
