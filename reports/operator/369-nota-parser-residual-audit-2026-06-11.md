@@ -9,6 +9,7 @@ Operator report for the cleanup request: remove hand-rolled parsing and NOTA imp
 - `signal-agent`, `meta-signal-agent`, `agent`, and `spirit` were regenerated or adapted to the new derived surface.
 - `agent` and `spirit` configuration writer binaries now parse their request envelopes through derived `NotaDecode` types instead of manual block walking.
 - `spirit` no longer has the generated or handwritten DomainScope codec/path slop. Scope matching is structural over typed recursive enums.
+- `spirit` no longer enables `signal-spirit/nota-text` through its own `nota-text` feature, so the deployed Spirit text/guardian builds do not compile the old hand-written `signal-spirit` NOTA projection.
 - `CriomOS-home` pins the cleaned Spirit stack.
 
 ## Verification
@@ -36,8 +37,10 @@ Residual scan over the cleaned Spirit/agent path found no forbidden manual NOTA 
 - `spirit` `c7ea3500`: `spirit: remove hand-written nota codec traces`
 - `spirit` `5b3cc06e`: `spirit: align nix schema source pins`
 - `spirit` `5ba3b577`: `spirit: import nota encode for guardian prompt`
+- `spirit` `e58a5a06`: `spirit: avoid signal-spirit nota text feature`
 - `CriomOS-home` `54546d78`: `home: pin derived nota configuration writers`
 - `CriomOS-home` `7691be95`: `home: pin spirit nota codec cleanup`
+- `CriomOS-home` `51fff041`: `home: pin spirit without signal-spirit nota text`
 
 ## Remaining global traces
 
