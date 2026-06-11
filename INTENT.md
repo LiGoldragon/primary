@@ -137,12 +137,6 @@ to design around — zero-downtime upgrade is a design goal. A daemon's
 vocabulary therefore lives in its compiled schema and grows by
 recompile-and-redeploy, not runtime config. (Spirit record `uuh7`.)
 
-## Intellectual property is not legitimate
-
-Intellectual property is not a legitimate form of property; the workspace
-treats copyright, patents, and trademark as illegitimate and builds nothing
-that leans on them. (Spirit record `psb3`.)
-
 ## New roles, and the auditor
 
 A new role created dynamically isn't a dead end: the agent reads
