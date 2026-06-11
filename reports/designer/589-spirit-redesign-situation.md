@@ -63,6 +63,37 @@ constraint, even though the schema/code did ship. Operator landed the implementa
 skipped the per-repo INTENT.md reflection. This is a live gap (the rule is "update a
 repo's INTENT.md on the same branch as the work"); see open item #5.
 
+## Migration reality — the table is the easy part
+
+The Craft→Software remap **already exists** in `production_migration.rs` (origin/main,
+deterministic, tested as `upgrades_version_seven_domains_into_software_branch`):
+
+| Old Craft leaf | New |
+|---|---|
+| Programming | `(Software (Languages ProgrammingLanguages))` |
+| Architecture | `(Software (Engineering SoftwareArchitecture))` |
+| Schema | `(Software (Data SchemaEvolution))` |
+| Infrastructure | `(Software (Operations InfrastructureAsCode))` |
+| Versioning | `(Software (Engineering VersionControl))` |
+| Testing | `(Software (Quality Testing))` |
+| Tooling | `(Software (Operations BuildSystem))` |
+
+But its **blast radius is 2 records** — only `(Craft Architecture)` has live records (2);
+the other six evicted leaves have zero. So the mandatory mechanical migration is a no-op.
+
+The real finding: **the live store barely uses the domain vocabulary.** Of 1398 records,
+**1102 are under `(Information Documentation)` and 302 under `(Governance Policy)`** —
+essentially the whole store sits in two catch-all leaves. A direct sample of the
+`(Information Documentation)` bucket is overwhelmingly *software-engineering* intent (NOTA
+encoding, Rust discipline, schema lowering, daemon protocol, SEMA, secrets) — dumped there
+because the old vocabulary had no precise software home. So deploying the Software branch
+refines the *schema* but the *data* stays generic. Making the corpus actually reflect the
+294-domain + Software vocabulary is a **per-record semantic re-tag** — the guardian's job,
+not a variant→variant table — and it's optional, post-deploy, and corpus-wide (~1400).
+**Deferred per psyche (2026-06-11): it needs an LLM pass; not now.**
+This is the empirical case for the Software branch: software is by far the dominant slice
+of real intent (`0zi7` confirmed by the data), it just never had a home.
+
 ## Open items
 
 1. **Deploy + migration is the gate to "live."** System-operator deploy of `origin/main`
