@@ -60,10 +60,12 @@ These gate the privileged surface independent of which node ships first:
    authority.
 5. **Cutover discipline.** Both stacks run in parallel; switch one consumer / one
    node at a time; lojix-cli retires only when **every** consumer is covered.
-6. **Substituter resolution lives in exactly one stack at a time.** lojix-cli
-   resolved node-name → Yggdrasil URL+key horizon-side; the Stack-B wire carries
-   substituters **pre-resolved**, with no owner for the resolution. Decide the
-   owner (§ open decisions) before the first migration, and don't half-wire it.
+6. **Substituter resolution in the daemon** (decided `lc28`, provisional). The
+   daemon gains horizon-read for substituters; the wire reverts to bare node names
+   (drop the pre-resolved `{url, public_key}` from signal/meta-signal-lojix). The
+   resolving code is marked *must be replaced by better design* — a for-now shape.
+7. **Sandbox testing passes** (`v5d4`) — a recorded precondition for the lean-stack
+   cutover to main deployment.
 
 ## Watch-fors — production behaviors that silently diverge if missed
 
@@ -95,8 +97,9 @@ add is **cancel-kill on the privileged activate ssh**, not on cold builds.
 ## The staged plan
 
 Stages 0–2 are activation-independent and can proceed in parallel; stage 3 is the
-first real cutover; stages 4–6 widen it. Stage 5 (durable state) is sequencing-
-flexible — see open decision 1.
+first real cutover; stages 4–6 widen it. **Per decision `oh9l` (durable-first), the
+durable-state work (Stage 5) is sequenced ahead of the first cutover** — pre-cutover
+baseline, built on sema-engine (`munq`/`tj99`).
 
 ### Stage 0 — Hygiene (unblocks a cold/CI build and the privileged surface)
 - Pin engine deps to explicit revs; resolve the `nota-codec.git` 404 (fork/rehost
@@ -129,9 +132,13 @@ flexible — see open decision 1.
   **none exists**.
 - Write a NixOS module / systemd unit running `lojix-daemon` (rkyv config), cluster-
   operator-owned, one instance per deploy host.
-- Write the **request-builder/encoder** (the new `lojix-run`): resolves substituters
-  (node-name → Yggdrasil URL+key) and writes a `DeployRequest` signal frame to disk
-  for the thin client to send (the client refuses inline NOTA).
+- Write the **request-builder/encoder** (the new `lojix-run`): writes a
+  `DeployRequest` signal frame to disk for the thin client to send (the client refuses
+  inline NOTA). Per `lc28` it does **not** resolve substituters — it names nodes.
+- **Substituter resolution moves into the daemon** (`lc28`, provisional): the daemon
+  gains horizon-read, the wire reverts to bare node names, and the resolving code is
+  tagged *must be replaced by better design*. Needs a `signal-lojix`/`meta-signal-lojix`
+  contract change (drop the pre-resolved `{url, public_key}`).
 - **Exit:** an operator can drive a System Eval/Build of a real node through the
   daemon, end to end.
 
@@ -156,15 +163,16 @@ flexible — see open decision 1.
 - **Exit:** a real activating deploy on zeus (Test → Boot → Switch) works against a
   real bootloader, and BootOnce rollback is verified (reboot-2 returns to OLD).
 
-### Stage 5 — Durable state (the daemon's net-new charter)
-- Land the redb/sema-engine backing + startup self-resume; make `Retire` actually
+### Stage 5 — Durable state — DECIDED: build before Stage 3 (`oh9l`)
+- Land the **sema-engine** backing + startup self-resume; make `Retire` actually
   reclaim (it currently only pops an in-memory Vec); wire keep-roots-gated GC (the
   `nix-store --gc` path is dead code today); write real gcroot symlinks.
 - **Exit:** the daemon survives restart with its live-set/GC-roots/event-log intact.
-- **Sequencing:** this blocks the *charter*, not minimal lojix-cli parity (lojix-cli
-  is stateless). Per open decision 1, it may land before Stage 3 (durability-first)
-  or after a small in-memory validation milestone. Per `munq`/`tj99`, build it in the
-  shared/generated layer (sema-engine + the schema-rust-next emitter), not a lojix fork.
+- **Sequencing:** decided **durable-first** (`oh9l`) — lands before the first cutover
+  (Stage 3) as pre-cutover baseline, not an after-the-fact follow-on; the psyche judges
+  it small. Per `munq`/`tj99`, build it in the shared/generated layer (sema-engine + the
+  schema-rust-next emitter), not a lojix fork. (Listed last only to keep the
+  stage-numbering stable; it is sequenced early.)
 
 ### Stage 6 — Widen and retire
 - Add the swap fix → tiger/ouranos; add Secrets → prometheus (router WPA3 + LLM).
@@ -220,31 +228,26 @@ subscription work belongs in the **generated/shared layer** (sema-engine,
 triad-runtime, schema-rust-next), not hand-rolled in lojix; and **sandbox-test-passing
 (`v5d4`)** joins the must-meet constraints.
 
-## Open decisions — the psyche's to settle
+## Decisions — all resolved (psyche, 2026-06-11)
 
-**Settled (psyche, 2026-06-11):** *secrets* is in the parity bar (production uses it)
-→ mandatory Stage-1 work, not an optional deferral; the earlier "secret-free cutover
-acceptable?" framing was wrong. And *running a Spirit Observe* is **standard routine
-practice**, not a decision to offer (principle `0xqp`) — done this turn. The two
-genuinely-open calls:
+- **Secrets is in the parity bar** (production uses it) → mandatory Stage-1 work, not
+  an optional deferral. (The earlier "secret-free cutover acceptable?" framing was
+  wrong.)
+- **A Spirit Observe is standard routine practice**, not a decision to offer —
+  principle `0xqp`.
+- **Durable-first** (`oh9l`). Build the durable database now, before the real cutover:
+  live-generation-set / GC-roots / event-log persisted on **sema-engine** with
+  self-resume — not a first cutover on in-memory state. The psyche judges it small
+  ("not a big deal"). Stage 5's work is sequenced ahead of Stage 3; the in-memory
+  validation idea is dropped.
+- **Substituter resolution in the daemon, provisionally** (`lc28`). Option (a): the
+  daemon gains horizon-read and the wire reverts to bare node names (drop the
+  pre-resolved `{url, public_key}`). A *for-now* choice — the implementing code is
+  tagged **"must be replaced by better design."**
 
-1. **In-memory now vs durable-first.** The live-set / GC-roots / event-log are
-   in-memory (lost on restart); durable redb/sema-engine backing + self-resume is
-   unbuilt. Must persistence land **before** any node migrates, or may a build
-   *validation* run on in-memory state first? Intent leans durable — `up9q` wants
-   persisted deploy-job state, and `fe2j`/`munq` say complete the port on the designed
-   components before cutover — so an in-memory run is at most a *pre-cutover
-   validation* milestone, never the cutover. The residual call: is that in-memory zeus
-   validation worth doing before the sema-engine backing lands? No record settles the
-   sequencing.
-2. **Where substituter resolution lives.** lojix-cli resolved node-name → Yggdrasil
-   cache URL + public key from the horizon (in-process); the Stack-B wire carries them
-   **pre-resolved** (`{url, public_key}`), so the resolution has no owner. Either
-   (a) the daemon gains horizon-read for substituters and the wire reverts to bare node
-   names — leaning (a), since the daemon already projects horizon for the overrides and
-   already owns flake-auth resolution (`2qhw`), and `munq`/`tj99` favor the designed
-   daemon over a side tool — or (b) the request-builder hand-resolves before encoding
-   (what the wire bakes in today). No record settles it.
+No open decisions remain. The next move is execution — Stage 0 hygiene, the durable
+sema-engine backing (`oh9l`), and the operational surface (packaging + request-builder)
+— per whichever the psyche points at first.
 
 ## Two corrections this grounding makes to report 38
 
