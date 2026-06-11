@@ -39,6 +39,20 @@ So the honest core is narrower and sharper than the synthesis: **an event-source
 
 **Checkpoint + compaction** keeps the log bounded: periodically write a content-addressed full-state object and archive the log prefix behind it (TerminusDB's delta-rollup / Dolt's journal→oldgen, the one structural lesson worth keeping). Replay cost is then O(log since last checkpoint), not O(all history).
 
+## Should the log be its own file?
+
+Today it isn't: `__sema_engine_commit_log` is a redb table inside the same `*.sema` file, written in the same redb transaction as the data. That co-location buys **free atomicity** — single-writer ACID over the whole file means the log entry and the materialized view commit together and can never diverge. While the log is a throwaway audit note (status quo), same-file is correct and simplest.
+
+**Under the flip, the log should be its own append-structured artifact, separate from the redb view.** Three reasons:
+
+1. **Opposite lifecycles** — the log is precious and append-only; the view is disposable and random-access. You want to rebuild the view from the log without touching the truth. Co-located, "rebuild the cache" means "rewrite the authoritative file."
+2. **The log is the backup unit** — the whole goal is "ship the log suffix." A separate log file *is* the shippable artifact (append its new bytes); buried in the redb file, backup degrades to shipping the whole file (the blob problem) or extracting+re-encoding entries.
+3. **Right structure** — an append-only hash chain wants append-optimized storage (a segmented frame log, à la Dolt's journal); a view wants a B-tree. A u64-keyed redb table is a B-tree pretending to be a log.
+
+**The cost is losing free cross-file atomicity** (redb can't transact across two files), paid with the standard **write-ahead-log** pattern: the fsync'd append to the log is the commit point; the redb view is a *follower* holding a watermark ("applied up to entry N") and catching up; on restart it replays log entries past its watermark. The view can lag and self-heal but never gets ahead of the log — the same discipline Postgres, SQLite-WAL, and event-sourced systems use.
+
+**Staging hedge:** the split can be deferred — keep both in one redb file first (consistency free) and break the log into its own append store when backup or write throughput forces it. Because *backup is the driving requirement here*, separating sooner is justified rather than later. Sub-choice when splitting: a second redb file (low effort, reuse rkyv/redb machinery, gains independent shippability + disposable view) versus a bespoke append-frame log (higher effort, byte-shippable, no B-tree churn — the right end state).
+
 ## What this costs — the open risks to pressure-test before committing
 
 This is a real architectural inversion, not a free win. Before it's adopted it needs the `sema`/`sema-engine` owners to weigh:
