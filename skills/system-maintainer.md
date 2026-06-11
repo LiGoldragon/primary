@@ -50,6 +50,12 @@ Never blur the stacks. If a host is broken, repair production unless the psyche 
 6. **Verify runtime state.** A green build is not a deployed host. Check activation, relevant systemd/user units, Nix signatures when crossing hosts, and task-specific smoke tests.
 7. **Report only load-bearing substance.** Routine successful landings use the commit message. Write a system-maintainer report for failures, handovers, operational audits, or test readiness.
 
+## Root-mediated Home activation
+
+When a target user's SSH login is unavailable but root SSH works, maintain the user's Home profile through root while executing profile and activation commands as the target user. Build on the target host when signed cross-host copy is blocked; stage the generated Horizon and system override flakes under `/tmp`, run the `CriomOS-home` build there with `--override-input horizon` and `--override-input system`, then run `nix-env` and the activation package through `sudo -u <user>` with `HOME`, `USER`, `LOGNAME`, `XDG_RUNTIME_DIR`, and `DBUS_SESSION_BUS_ADDRESS` set to the user's live session.
+
+If activation fails because a mutable `nix profile install` package conflicts with a Home-managed package, remove only the named conflicting mutable profile package and rerun activation. That preserves the declarative Home profile as the owner of the package while leaving unrelated user-installed profile entries alone.
+
 ## Host safety
 
 Do not casually disrupt the live desktop or management path. Niri is reloaded through IPC after activation, not signalled. Router/network changes preserve the current recovery path. Home Manager must not reconcile live graphical-session container slices. Paid cloud inference or transcription calls require explicit current-task approval unless the user already authorized the specific call.
