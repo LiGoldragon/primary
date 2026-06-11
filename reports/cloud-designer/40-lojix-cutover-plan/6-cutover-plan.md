@@ -5,6 +5,11 @@ cloud-designer, 2026-06-11. Synthesis of the five grounded runs in this director
 baseline). The highest-numbered file IS the synthesis. Every claim below is
 grounded in a real build/eval this session unless marked otherwise.
 
+> **Update (2026-06-11):** the redundant `triad-port/` subdir was flattened to the
+> repo root across all three triad repos (Spirit `gdgv`; lojix `13192bce`,
+> signal-lojix `b31cd980`, meta-signal-lojix `317b7fab`). Read every
+> `triad-port/src/…` / `triad-port/…` path below as the repo-root path (`src/…`).
+
 ## Where it stands, in one paragraph
 
 The new lojix daemon's **build/eval spine is real and works end-to-end today** —
