@@ -13,6 +13,28 @@ Debug-stringifies the typed enum variants into `Vec<String>` and string-matches.
 recursive enum is real; the logic on top of it is not. That half-undoes the typed-enum win
 (`izib`, `k4zc`) and must be fixed in the generator + engine.
 
+## Resolution — the operation layer is now typed (live 0.9.3)
+
+**Resolved.** spirit `603a962` (live **0.9.3**), generated against schema-rust-next `d3bc2289`,
+removes `path_segments`/`from_path`/`try_from_path` from generated scope enums and replaces them
+with **typed structural operations**: `impl From<Domain> for DomainScope` (+ child `From`s) and
+`contains_scope`/`contains_domain` implemented with typed `matches!` patterns. Verified
+independently on `origin/main`: `path_segments`/`from_path`/`from_paths`/`two_segment_path`/`segment`/
+Debug-`{:?}` are **all gone (0 matches)**; `contains_scope` is structural enum matching —
+`matches!((self, scope), (Self::All, _) | (Self::Body, Self::Body) | ...)`. Query matching and
+guardian equivalence now use the typed ops (`DomainScope::from(domain).expand()`). The
+typed-recursive-enum model is fully realized — type *and* operations.
+
+**One surface note for the psyche.** The scope terminal is an explicit `All` unit variant on each
+`*Scope` enum (`TechnologyScope = All | Hardware(..) | Software(..)`), so "all of software" is
+`(Technology (Software All))` and the bare `(Technology Software)` shorthand is rejected
+(`Software` is payload-carrying, so it needs its terminal). This is arguably the *correct*
+realization of `izib` (mandatory subdomains; no Option machinery): `All` is a real
+domain-meaningful variant, not `Some`/`None`. Whether `All` reads clean enough vs. the bare form is
+a psyche call. Designer lean: **accept `All`** — the bare form would require a payload-carrying
+variant written without its payload, a non-standard codec special-case best avoided; `All`
+dissolves the special case (every scope terminates at a real variant, leaf or `All`).
+
 ## What was fixed (the codec) — confirmed resolved
 
 The earlier deployed `b373582` (0.9.1) had, *inside the schema-generated* `src/schema/domain.rs`,
