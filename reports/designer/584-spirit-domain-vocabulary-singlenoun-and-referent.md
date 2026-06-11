@@ -123,10 +123,23 @@ spellings of spirit" can't accumulate: `spirit-repo`/`the-spirit-project` redire
 triad is expressible as a referent that nests its three legs.
 
 **Schema shape:** `Referents(Vec<Referent>)`, **optional**, on `Entry` — Vec because
-one intent can govern several named things at once; a curated reference-typed atom (a
-schema enum, like `Domain` — recompile-to-add is trivial here). Add a
-`ReferentSelection` to `Query` so **"show every intent governing `spirit`"** becomes a
-first-class read — that's the payoff you're after. `referent` locates the subject;
+one intent can govern several named things at once. **`Referent` is a runtime-registry
+reference, NOT a schema enum** (this is the key way it differs from `Domain`). A
+referent is registered by a runtime `RegisterReferent` write into a stored registry,
+synonym-gated; it is never a compile-time enum value. Why the two facets diverge:
+**`Domain` is shared vocabulary** (universal, slowly-curated, public → a schema enum,
+where "recompile-to-add" is trivial because additions are rare and blessed);
+**`Referent` is per-person data** (a private, frequently-growing inventory of named
+things → store state, not the schema). Three reasons a referent enum is wrong: (1)
+**privacy** — referents are private particulars (`aNamedChild`, `myTherapist`, a named
+relationship), and the schema is a *shared, public, compiled contract*; you cannot bake
+one person's private inventory into it; (2) **it's data, not type** — you don't put
+rows/instances in the type system; (3) **frequency** — new repos/fields/projects are
+registered constantly and casually, so a recompile+redeploy per referent is absurd
+ceremony (the "recompile is trivial" principle was about *rare, deliberate vocabulary*
+changes, not frequent personal registrations). Add a `ReferentSelection` to `Query` so
+**"show every intent governing `spirit`"** becomes a first-class read — that's the
+payoff you're after. `referent` locates the subject;
 the `Certainty`/`Importance`/`Privacy` axes still grade the statement (a private-
 relationship referent can carry a *default* privacy hint, but the per-record `Privacy`
 stays authoritative).
