@@ -16,14 +16,19 @@ and expansion semantics below are binding; type representation is operator's cal
 |---|---|---|---|
 | 1 | **Domain scopes** — prefix matching (Area / Area·Cluster / Leaf) | foundation | new |
 | 2 | **Domain relations** — equivalence (symmetric) + subsumption (directional) + query-expansion | new mechanism | new |
-| 3 | **Overlap rulings** — the specific equate/subsume/delete calls for Technology↔Software etc. | vocabulary decision | new, needs psyche confirm |
-| 4 | **Domain glosses** — per-scope one-line semantics feeding the guardian prompt | guardian enforcement | new, recommended |
+| 2a | **Taxonomy schema** — relations + enum live in a new first-class schema kind (`schema/domain.schema`), reusable across components | new schema surface | new (`mn3k`) |
+| 3 | **Overlap rulings** — equate/delete calls for Technology↔Software etc. | vocabulary decision | **ratified** (`o1bx`); one open (§7) |
+| 4 | ~~Domain glosses~~ | — | **dropped** (`2rb7`: names self-explanatory) |
 | 5 | **Guardian residue** — few-shot block + retrieval completeness (equivalence-expanded) | 585 leftovers | partial |
 
-Software stays a **top-level area** (decided: write-frequency wins — the most-tagged
-domain must be the shortest to write; `0zi7` confirmed by the data, where ~79% of the
-live store is software intent). Out of scope this round (deferred): the corpus-wide LLM
-re-tag, the `kasm` re-file, and the 588 `INTENT.md` prose (designer-parallel). See §8.
+`Software` stays a **top-level area** (write-frequency: the most-tagged domain must be the
+shortest to write; `0zi7` confirmed by the data — ~79% of the live store is software
+intent). But placement is now understood as **decoupled from semantics by the relations**
+(`o1bx`): `Subsumption Technology Software` carries "software is a kind of technology"
+wherever `Software` sits, so the top-level choice is a write-ergonomics call, not an
+ontological one. No rename, no nesting, no glosses (§4, §5.1). Out of scope this round
+(deferred): the corpus-wide LLM re-tag, the `kasm` re-file, and the 588 `INTENT.md` prose
+(designer-parallel). See §8.
 
 ## 1. What already landed (do not re-spec)
 
@@ -92,9 +97,74 @@ Falsifiable wire examples to round-trip:
 ## 3. Domain relations — equivalence + subsumption
 
 Relations are **universal compiled vocabulary**, like the `Domain` enum itself — not a
-runtime registry (that is referents). Per `uuh7` (recompile is cheap), they are authored as
-NOTA data, emitted into a compiled relation table at build, and read by the query-expander
-and the guardian. No new wire verb; relations live *inside* the query path.
+runtime registry (that is referents). Per `uuh7` (recompile is cheap). No new wire verb;
+relations live *inside* the query path. **Where they live is a first-class design decision
+(`mn3k`)** — see §3.0.
+
+### 3.0 Where relations live — a taxonomy schema (a new schema kind)
+
+Per psyche (`mn3k`): relations are **first-class, highly visible, schema-declared
+vocabulary**, not an ad-hoc data file buried in the query code — and the mechanism is meant
+to be **reusable across components** (persona-mind will have its own classification
+vocabulary). So:
+
+- **Promote the vocabulary to its own schema surface.** Extract `Domain` out of
+  `signal.schema` into a dedicated **taxonomy schema** — `schema/domain.schema` (a new
+  schema *kind*, orthogonal to the signal/nexus/sema *planes*). It holds the variant tree
+  **and** its relations as the single visible source of truth for the vocabulary. The planes
+  import `Domain` from it — `signal.schema` already has the `Import { SourcePath LocalPath }`
+  / `SignalReuse` mechanism, so this is the existing import path, not a new one.
+- **The new schema-language construct is a relation declaration** over an enum's *values* —
+  the "domain equality interface" the psyche asked for. The schema language today declares
+  *types*; this adds a typed construct that declares *relations between a type's variants*.
+  In the nota-next macro-node frame it is a new typed structural node recognized at a known
+  schema position. Sketch of the taxonomy schema's two sections:
+
+```
+;; schema/domain.schema  — the vocabulary, visible and whole
+
+Domain [
+  (Health [Body Mind ...])
+  (Software [(Languages [...]) ... (Engineering [...])])
+  (Technology [Energy Power Automation Robotics Networking Materials Machinery Instrumentation Aerospace])
+  ...
+]
+
+Relations [
+  (Equivalence [(Technology Networking) (Software (Distributed Networking))])
+  (Equivalence [(Information Database)   (Software (Data DatabaseSystems))])
+  (Subsumption Technology Software)
+]
+```
+
+- **Reusability:** any component with a classification enum declares its own taxonomy
+  schema with the same `Relations` construct; the relation/expansion machinery lives once in
+  the schema generator plus a small shared runtime (the same way `triad-runtime` shares plane
+  machinery), so persona-mind reuses it wholesale.
+
+**The Rust shape (generated from the taxonomy schema) — how it is actually done:**
+
+```rust
+// generated from the Domain section (as today)
+pub enum Domain { Health(Health), Software(Software), Technology(Technology), /* ... */ }
+
+// generated scope type (§2)
+pub enum DomainScope { Area(AreaTag), Cluster(AreaTag, ClusterTag), Leaf(Domain) }
+
+// generated from the Relations section: a compiled relation table, exposed through
+// methods on a data-bearing vocabulary type — NOT free functions or free consts
+// (rust-discipline: schema-emitted code obeys methods-on-types; the generator emits
+//  into impl blocks).
+impl DomainScope {
+    /// equivalence (symmetric) + subsumption (downward) closure over the compiled table
+    pub fn expand(&self) -> ScopeSet { /* generated table + closure */ }
+}
+```
+
+The query path calls `scope.expand()` before matching; `guardian_records_for` calls the
+same. The relation *table* is generated data; the *expansion* is a method on the vocabulary
+type. That is the whole Rust footprint — generated enum + generated table + one expansion
+method — and it is identical for any component that declares a taxonomy schema.
 
 ### 3.1 The two relations
 
@@ -178,31 +248,32 @@ Proposed rulings for the known overlaps:
 | `Knowledge(Computing)` vs `Software(Theory)` | **Subsumption** `Knowledge(Computing) ⊃ Software(Theory)`? *or* keep separate | Science-as-knowledge vs theory-applied-in-building. Lean: keep both, optional subsumption so a `Knowledge(Computing)` sweep reaches applied theory. **Needs your call.** |
 | `Software ⊂ Technology` (whole area) | **Subsumption** | Your "software is a kind of technology" — as retrieval, not nesting. A `Technology` sweep spans software; software stays top-level. |
 
-The reading "`Technology` = physical/hardware tech" is then *enforced*, not hoped: by the
-one deletion (no rival AI bin exists) and by the glosses (§5) the guardian reads — never by
-convention alone. (Earlier framing in report 589 §open-item-2 used deletion; relations make
-linking the gentler default and this table supersedes it.)
+**Psyche ratified the equate/delete rulings** (`o1bx`); `Knowledge(Computing) ↔
+Software(Theory)` is the one still open (§7).
+
+**No rename, no nesting, no gloss — the relation system makes placement and naming
+free.** We considered renaming `Technology`→`HardwareTechnology` (to make the boundary
+self-evident) and nesting `Software` under `Technology`. Both are unnecessary, and they
+fight each other (a `HardwareTechnology` that contains a software subdomain is a
+contradiction). The relation system dissolves the dilemma: `Subsumption Technology Software`
+expresses "software is a kind of technology" *as retrieval*, regardless of where `Software`
+physically sits or what `Technology` is named. So `Technology` keeps its broad name
+(precisely because subsumption makes it the umbrella that spans software), `Software` stays
+top-level (write-frequency), and nothing is glossed. **The relations decouple where a domain
+sits from how it relates** — that decoupling is the whole point of the system (`o1bx`).
 
 ## 5. Domain glosses + guardian residue
 
-### 5.1 Domain glosses (recommended — lever 2)
+### 5.1 Domain glosses — DROPPED (psyche `2rb7`)
 
-The `Domain` enum is bare variant names; the guardian has no machine-readable "what does
-`Technology` mean" to judge domain-fit against. Add a compiled **gloss table** — one line
-per area (and per cluster where useful) — that the guardian prompt-builder injects for the
-candidate's domain(s) and their relation-neighbors:
-
-```
-[
-  (Gloss Technology [physical and hardware technology: energy, power, machinery, robotics, materials, instrumentation, aerospace. NOT software, which is its own area])
-  (Gloss Software   [building software: languages, systems, data, security, quality, operations, surfaces, engineering])
-  (Gloss (Information Database) [records/library framing of data; the build-it framing is Software(Data)])
-]
-```
-
-Bare names cannot be enforced; described domains can. Same compiled-vocabulary pattern as
-the relations (NOTA source → const table). This is what lets the guardian hold the
-Technology-vs-Software line on the residue relations do not cover (e.g. `Automation`).
+Earlier drafts proposed a per-domain gloss table to give the guardian a machine-readable
+meaning for each domain. **Cut.** Per `2rb7`, **domain names must be self-explanatory** —
+the vocabulary carries meaning in the variant name itself, with no separate annotation
+layer; if a name is unclear, *rename it* rather than gloss it. Two things make glosses
+unnecessary: (a) the names are descriptive enough on their own, and (b) the relation system
+(§3) makes residual ambiguity *retrieval-harmless*, so the boundary glosses were meant to
+police no longer needs policing — a mis-filed record is still reachable through the
+equivalence/subsumption links. The relation system absorbs the job glosses were invented for.
 
 ### 5.2 Guardian residue from 585 (the leftovers)
 
@@ -234,12 +305,15 @@ crate's `tests/`):
 
 ## 7. Decisions for the psyche
 
-1. **Overlap rulings (§4 table)** — confirm or adjust, especially `Knowledge(Computing)` ↔
-   `Software(Theory)` (subsume vs keep-separate) and `Automation` (keep-both-unlinked).
-2. **Glosses in scope this round (§5.1)?** My lean: yes — they are what makes "Technology =
-   hardware" enforceable rather than folklore, and they are cheap.
+1. ~~Overlap rulings~~ — **ratified** (`o1bx`). One residual: `Knowledge(Computing)` ↔
+   `Software(Theory)` — subsume or keep separate? My lean: keep separate, optional one-way
+   subsumption later.
+2. ~~Glosses~~ — **resolved: dropped** (`2rb7`, names self-explanatory).
 3. **Subsumption symmetry per link** — confirm `Software ⊂ Technology` is one-way (a
    `Technology` sweep pulls software, not the reverse). My lean: yes, one-way.
+4. **Taxonomy schema as a new schema kind (§3.0)** — confirm the vocabulary moves into its
+   own `schema/domain.schema` with the `Relations` construct, planes importing `Domain`. My
+   lean: yes — it is what makes the relations first-class and reusable per `mn3k`.
 
 ## 8. Out of scope this round (deferred)
 
