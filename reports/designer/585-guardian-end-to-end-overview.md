@@ -35,22 +35,22 @@ design premise was "the daemon *is* the guardian"; a gate on one of four doors i
 that. `Supersede` writing its replacement blind is the sharpest hole — it's a
 side-door for exactly the inconsistency the guardian exists to prevent.
 
-**My second mechanism opinion: layer it — the LLM is the last resort, not the first.**
-A guardian decision has cheap deterministic parts and one expensive non-deterministic
-part. Run the cheap ones first, in code, and only call the model for what genuinely
-needs judgment:
-
-1. Structural validity (non-empty description, domain exists, privacy present) — code.
-2. Exact / near-exact duplicate — code (already exists, but runs *after* the LLM today;
-   it should run *before*, saving the round-trip).
-3. Operation legitimacy (does a claimed `Clarify` actually preserve meaning, or is it a
-   trample?) — this is the one place the model earns its keep on classification.
-4. Semantic consistency against the neighborhood — the model's real job: *does this
-   contradict a live arrow it should be consistent with?*
-
-The model should see only step 3-4, against a tight bundle. Everything mechanical that
-can reject before the call, should. This cuts cost, latency, and — crucially —
-non-determinism, because most rejections become deterministic.
+**Mechanism decision (psyche): the model checks everything.** I had proposed layering
+— cheap deterministic pre-checks, the LLM only as a last resort. The psyche chose the
+cleaner shape instead: a *single locus of judgment*, the model. So all *judgment* is
+the model's — consistency, duplicate, trample, non-intent, compound — and only pure
+structural admission (is this parseable, non-empty NOTA?) stays upstream as input
+validation, which isn't "checking" in the judgment sense. Concretely, this folds the
+existing deterministic duplicate check *into* the verdict: the model returns
+`Reject Duplicate`, and the daemon bumps importance as a mechanical consequence of that
+verdict (the model judges; the daemon acts). The trade is conscious — determinism and
+reliability now rest *entirely* on the model — so three things become non-negotiable
+rather than nice-to-have: (1) **complete retrieval**, because the model can only catch
+a duplicate or contradiction it is actually *shown* (so category-only retrieval is now
+a *correctness* bug, not a performance one); (2) **temperature 0**; and (3) **the
+decision-log → training flywheel** (§3), which is how a single-judge model becomes
+consistent over time. Layering would have bought determinism from carve-outs; here it
+must come from temp-0 + retrieval + training.
 
 ## 2. The prompts
 
@@ -101,6 +101,17 @@ history is a growing supervised dataset of the psyche's actual judgment. So the 
 is to **build the decision-log now** — persist, for every gated operation: the
 candidate entry, the exact bundle the guardian saw, the verdict + reason, and any
 later override. It's observability *and* the training set, for free.
+
+**Where it lives: in Spirit, not the agent.** The agent is a *generic* model-caller —
+it sees only opaque prompt + completion text, never the structured decision and never
+the *later override* (which happens back in Spirit when you correct a verdict), and it
+must stay thin and spirit-signal-free (vend-not-ferry). The decision-log is
+intrinsically Spirit's: it is the history of decisions over Spirit's *own* intent
+records, it sits naturally alongside Spirit's existing operation archive (commit
+`3d59bd6`), it is the **privacy boundary** (decisions touch private intent, which must
+not leak into a generic caller), and it is the **training set for Spirit's own
+guardian** — co-located with the intent layer it learns from. The agent at most keeps a
+generic usage/latency log for *budget* accounting — telemetry, not the decision-log.
 
 Then escalate only as signal accumulates:
 
@@ -171,9 +182,10 @@ for itself. Until then, carry the gap explicitly (no lease auth, no budget accou
 
 - The guardian's quality is bottlenecked by **prompt + retrieval + gate-coverage**, not
   the model. Spend there first; the model is fine.
-- **Layer it** — deterministic checks in code, the LLM only for genuine semantic
-  consistency and operation-classification, against a tight bundle. Make the expensive
-  non-deterministic step the last resort.
+- **The model checks everything** (psyche decision) — one locus of judgment, with only
+  structural admission upstream. So determinism rests entirely on temperature 0 +
+  complete retrieval + the training flywheel; category-only retrieval becomes a
+  *correctness* bug, since the model can't catch what it isn't shown.
 - The **gate must cover every live-arrow-changing write** (propose/clarify/supersede),
   and supersede must recheck.
 - **Build the decision-log now.** It's the observability you'll want *and* the training
