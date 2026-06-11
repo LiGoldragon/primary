@@ -7,6 +7,20 @@ report is the contract; operator's report responds. Recap of the reasoning in 59
 build-state in 589. This version supersedes the report's earlier top-level-`Software` /
 subsumption drafts and folds in operator's live-guardian progress (363).
 
+**Status — landed and verified (2026-06-11).** Implemented in schema-next `7c5f6880`
+(relation declarations), schema-rust-next `815124b2` (declaration codegen), spirit `9ed144d0`
+(domain taxonomy relations). Schema confirmed faithful against this spec: `Technology =
+Hardware + Software`, the two equivalences (`Networking`, `DatabaseSystems`), `Software`
+nested, flat `Technology(Intelligence)` removed, Computing↔Theory unlinked. All §7 falsifiable
+specs pass (scope breadth, equivalence expansion, no-chaining, guardian completeness,
+relation/schema round-trips); cargo green across feature sets; live DeepSeek guardian suite
+green. One representation refinement (operator's call, accepted): scopes use **flat
+path-lists** — `(Technology Hardware Networking)` — rather than this report's nested-paren
+form, cleaner for arbitrary depth. **Sole remaining gap: `nix build .#default` is blocked on
+an external DNS failure on the remote builder fetching `nota-next` — infra, not code. The Nix
+hermetic witness must go green (retry / system-operator) before deploy; cargo-green ≠
+Nix-green.**
+
 ## 0. TL;DR
 
 | # | Item | Kind |
