@@ -1,10 +1,9 @@
 # Spirit redesign — session recap (insights and decisions)
 
-A simple synthesis of what this session established. This is the authoritative current
-model; it **supersedes** the top-level-`Software` and subsumption framing in report 590
-(§0/§3/§4). Report 590's *mechanism* detail — scopes, the taxonomy schema, the Rust shape,
-guardian residue, falsifiable tests — still holds, read under the model below. Report 589 is
-the build-state snapshot.
+A simple synthesis of what this session established. Report **590 is now the aligned
+implementation spec** for this model (`Software` nested under `Technology`, equivalence-only,
+taxonomy schema); report **589** is the build-state snapshot. This recap is the reasoning
+behind both.
 
 ## Decisions, in one table
 
