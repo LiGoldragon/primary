@@ -107,10 +107,17 @@ it sees only opaque prompt + completion text, never the structured decision and 
 the *later override* (which happens back in Spirit when you correct a verdict), and it
 must stay thin and spirit-signal-free (vend-not-ferry). The decision-log is
 intrinsically Spirit's: it is the history of decisions over Spirit's *own* intent
-records, it sits naturally alongside Spirit's existing operation archive (commit
-`3d59bd6`), it is the **privacy boundary** (decisions touch private intent, which must
+records, it is the **privacy boundary** (decisions touch private intent, which must
 not leak into a generic caller), and it is the **training set for Spirit's own
-guardian** — co-located with the intent layer it learns from. The agent at most keeps a
+guardian** — co-located with the intent layer it learns from. **But "Spirit" here
+means owned-by-the-spirit-daemon, NOT commingled with the intent store.** It lives in a
+**separate, append-only database** — never the live intent SEMA store (which must stay
+lean and consistent-at-rest); its own store in the same pattern as Spirit's existing
+predecessor archive (commit `3d59bd6`), so the high write-volume of one-entry-per-gated-
+op never touches the hot intent path. (To stay lighter still, an entry can hold the
+bundle by record-id + database-marker rather than full copies, reconstructing the
+historical view from the archive when training needs it — fidelity vs size is the one
+knob.) The agent at most keeps a
 generic usage/latency log for *budget* accounting — telemetry, not the decision-log.
 
 Then escalate only as signal accumulates:
