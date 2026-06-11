@@ -102,14 +102,16 @@ together shows the topic's whole arc.
    insight. Spirit captures are the highest-priority recency
    signal: a Maximum-magnitude reframe supersedes the entire prior
    framing on that topic, including reports canonical the day before.
-6. **Spirit capture sweep.** Alongside the report sweep, audit
-   recent Spirit captures (`spirit "(Observe (Records ((Any [])
-   None Any Recent SummaryOnly)))"` or a topic-narrowed query) for
-   duplicate-substance records. Multi-agent sessions accumulate
-   near-duplicate captures when each agent records on a forwarded
-   prompt without first checking what the originally-addressed
-   agent captured. Earlier capture wins; remove duplicates per
-   `intent-maintenance.md`.
+6. **Spirit capture sweep.** Alongside the report sweep, audit Spirit
+   captures with the production query shape. Start broad with
+   `spirit "(PublicRecords (Any None))"`, then retrieve the stash with
+   `LookupStash`. Narrow with the full eight-field query when needed,
+   e.g. `spirit "(Observe ((Full [(Information Documentation)]) Any
+   (ContainsText [context maintenance]) Any None (Exact Zero)
+   (AtLeastCertainty Minimum) Any))"`. Multi-agent sessions accumulate
+   near-duplicate captures when each agent records on a forwarded prompt
+   without first checking what the originally-addressed agent captured.
+   Earlier capture wins; remove duplicates per `intent-maintenance.md`.
 
 Reports without a topic peer get the same treatment on a
 single-lane timeline.

@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.8.0`, installed in the
+schema-derived `spirit` component at version `0.8.1`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -26,7 +26,7 @@ The binary takes exactly one argument (the one-argument rule —
   shell double quote is a clean boundary and apostrophes inside the
   description survive. Single-quoting is wrong — it loses apostrophes.
   ```sh
-  spirit "(Record ([workspace] Decision summary Maximum Minimum Zero))"
+  spirit "(Record ([(Information Documentation)] Decision summary Medium Minimum Zero []))"
   ```
 - **Path to a NOTA file** — argument does not start with `(`; the CLI
   reads the file as the NOTA argument. For records with embedded shell
@@ -57,68 +57,68 @@ an active dependency. Do not infer the wire shape from old
 ```sh
 rg -n '"spirit"' /git/github.com/LiGoldragon/CriomOS-home/flake.lock
 cd /git/github.com/LiGoldragon/spirit
-rg -n "pub struct Observe|pub enum Input|pub struct VersionReport" src/schema
+rg -n "Entry \\{|Query \\{|RecordSelection \\{|pub enum Input|pub struct VersionReport" schema src/schema
 ```
 
 ## Encoding rules
 
 Records are **untagged** (`NotaRecord`): enum variants carry a head,
 record bodies do not. `Option` is `Some`-wrapping — bare `None` or
-`(Some <value>)`. `Topic`, `Description`, and `StatementText` are
-`NotaTransparent String` newtypes — bare tokens when possible, bracket
-strings when they need delimiters. Redundant brackets around a
+`(Some <value>)`. `Description`, `Referent`, `Keyword`, `SearchText`,
+and `StatementText` are transparent strings — bare tokens when possible,
+bracket strings when they need delimiters. Redundant brackets around a
 bare-eligible string are rejected; write `abcd`, not `[abcd]`, and
 `schema`, not `[schema]`.
 
 ## Recording intent
 
-The deployed `Entry` has exactly six positional fields: a vector of
-topics, a `Kind`, one agent-clarified `Description`, a certainty
-`Magnitude`, an importance `Magnitude`, and a privacy `Magnitude` — in
-that order. No verbatim field, no context payload, and **no time field
-at all** (the daemon does not stamp date/time; there is no recorded
-intent for a timestamp). NOTA positional records never omit fields, so
-every `Record` spells all six.
+The deployed `Entry` has exactly seven positional fields: a vector of
+closed-taxonomy `Domains`, a `Kind`, one agent-clarified `Description`,
+a certainty `Magnitude`, an importance `Magnitude`, a privacy
+`Magnitude`, and a vector of `Referents` — in that order. No verbatim
+field, no context payload, and **no time field at all**. NOTA
+positional records never omit fields, so every `Record` spells all
+seven.
+
 The agent clarifies the psyche's wording into the description before
 recording — that keeps the log dense and searchable rather than verbose
 and lossy.
 
 ```sh
-spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> <Importance> <Privacy>))"
+spirit "(Record ([<Domain> ...] <Kind> [description] <Certainty> <Importance> <Privacy> [<referent> ...]))"
 # Kind       ∈ { Decision Principle Correction Clarification Constraint }
 # Certainty  ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
 # Importance uses the same Magnitude ladder; Minimum is the ordinary default.
 # Privacy    uses the same Magnitude ladder; Zero is open/public.
 ```
 
+Domains are closed taxonomy variants such as
+`(Information Documentation)`, `(Craft Programming)`,
+`(Craft Architecture)`, `(Craft Schema)`, `(Technology Intelligence)`,
+or `(Safety Privacy)`. Read `spirit`'s deployed
+`schema/signal.schema` for the full list when a domain is unclear.
+Narrow free words belong in the description where keyword/text search
+can find them, or in `Referents` when the thing is a registered
+referent. Most intent records use an empty referent vector `[]`.
+
 Higher privacy values narrow the audience; `Zero` is the workspace
 default. Never put private personal substance in a `Zero` record.
 
-The reply is terse and does not echo content:
-`(RecordAccepted (abcd (...)))` or the same shape with a different
-short code. Spirit mints random lowercase base36 identifiers and shows
-the shortest collision-free code with a four-character minimum. Cite and
-pass the short code the daemon returns.
+The reply is terse and does not echo content: `(RecordAccepted abcd)`.
+Spirit mints random lowercase base36 identifiers and shows the shortest
+collision-free code with a four-character minimum. Cite and pass the
+short code the daemon returns.
 
-**Topics are user-creatable strings in a vector** — any new word a
-`Record` uses is registered; no pre-declared enum. Pick broad reusable
-words and let the vector carry multiple concepts: prefer
-`[intent logging]` over `[intent-log]` when both `intent` and
-`logging` are real topics. Keep a compound topic only when the compound
-is the established name of one thing.
-
-**Shorthand stays typed.** Any future shorthand (`RecordPublic`,
-`RecordPrivate`, `Search`) is a distinct typed NOTA operation that
-fills defaults and lowers to the full record — never shell flags or a
-second CLI syntax. NOTA positional records do not omit fields. Until
-such heads exist in the deployed contract, do not invent them in live
-calls.
+**Shorthand stays typed.** Any future shorthand is a distinct typed NOTA
+operation that fills defaults and lowers to the full record. Production
+calls use the heads present in the deployed contract.
 
 ## Removing and changing records
 
 ```sh
 spirit "(Remove abcd)"                    # -> (RecordRemoved (abcd <marker>))
 spirit "(ChangeCertainty (abcd Zero))"    # -> (CertaintyChanged (abcd Zero <marker>))
+spirit "(BumpImportance abcd)"            # -> (ImportanceBumped (abcd <importance> <marker>))
 ```
 
 `Remove` deletes a record entirely — use it when nothing should remain
@@ -133,32 +133,34 @@ hard `Remove` only after review.
 owner-configured archive database, then remove them from the hot store:
 
 ```sh
-spirit "(CollectRemovalCandidates ((Full [stale]) (Some Decision) (Exact Zero)))"
+spirit "(CollectRemovalCandidates ((Full [(Information Documentation)]) Any Any Any (Some Correction) (Exact Zero) (ExactCertainty Zero) Any))"
 ```
 
-The CLI accepts this direct three-field query shorthand and lowers it to
-an exact-zero-certainty collection query. Collection never means
-"whatever ordinary observation would see"; it only archives and removes
-records whose certainty is `Zero`. The generated wrapped form is also
-accepted. The reply `(RemovalCandidatesCollected (...))` carries
-archived `RemovalArchiveRecord` values, removed identifiers, skipped
-candidates, and the post-removal database marker. Archive location is
-not a working-signal argument; the owner configures it through the meta
-socket.
+Collection takes the same eight-field `Query` used by `Observe` and
+`Count`, wrapped in `CollectRemovalCandidates`. For the removal-candidate
+path, select records with `(ExactCertainty Zero)`. The reply
+`(RemovalCandidatesCollected (...))` carries archived
+`RemovalArchiveRecord` values, removed identifiers, skipped candidates,
+and the post-removal database marker. Archive location is not a
+working-signal argument; the owner configures it through the meta socket.
 
 ## Observing records
 
-`Observe` carries a generated five-field `Query` directly. The CLI also
-accepts the common three-field shorthand and inserts the ordinary
-certainty floor `(AtLeastCertainty Minimum)` plus importance `Any`:
+`Observe`, `Count`, and `SubscribeIntent` carry the generated eight-field
+`Query` directly:
 
 ```text
-(Observe (<TopicMatch> <Kind?> <PrivacySelection> <CertaintySelection> <ImportanceSelection>))
+(Observe (<DomainMatch> <KeywordMatch> <TextMatch> <ReferentSelection> <Kind?> <PrivacySelection> <CertaintySelection> <ImportanceSelection>))
 ```
 
-- **TopicMatch**: bare `Any` (no filter), `(Partial [a b])` matches
-  any requested topic, `(Full [a b])` matches every requested topic.
-  `Any` is a bare variant — `(Any [])` is rejected.
+- **DomainMatch**: bare `Any` (no filter), `(Partial [<Domain> ...])`
+  matches any requested domain, `(Full [<Domain> ...])` matches every
+  requested domain.
+- **KeywordMatch**: `Any`, `(AnyKeyword [word ...])`, or
+  `(AllKeywords [word ...])`. Keywords are extracted from descriptions.
+- **TextMatch**: `Any` or `(ContainsText [text to search])`.
+- **ReferentSelection**: `Any`, `(AnyReferent [name ...])`, or
+  `(AllReferents [name ...])`.
 - **Kind?**: `None` or `(Some Decision)`.
 - **PrivacySelection**: `Any`, `(Exact Zero)`, `(AtMost Low)`,
   `(AtLeast High)`.
@@ -171,27 +173,33 @@ certainty floor `(AtLeastCertainty Minimum)` plus importance `Any`:
 `RecordsStashed` handle. Use `LookupStash` with that handle to retrieve
 the full `RecordsObserved` payload. Each observed row is
 `ObservedRecord { RecordIdentifier * Entry * }`, so observed records carry
-their short IDs. Use `PublicRecords` and
-`PrivateRecords` for the ergonomic privacy-scoped shortcuts. `Lookup`
-retrieves by identifier and bypasses observation filters, so it can still
-read a zero-certainty record when you already know its identifier.
+their short IDs. `Lookup` retrieves by identifier and bypasses
+observation filters, so it can still read a zero-certainty record when
+you already know its identifier.
+
+Use `PublicRecords` and `PrivateRecords` for the ergonomic
+privacy-scoped shortcuts. They take a two-field `RecordSelection`:
+
+```text
+(PublicRecords (<DomainMatch> <Kind?>))
+(PrivateRecords (<DomainMatch> <Kind?>))
+```
 
 ```sh
 spirit Version
-spirit "(Observe ((Full [spirit]) None (Exact Zero)))"
-spirit "(Observe ((Full [spirit]) None (Exact Zero) (ExactCertainty Zero)))"
-spirit "(PublicRecords ((Full [spirit]) None))"
-spirit "(PrivateRecords ((Partial [spirit]) None))"
+spirit "(Observe ((Full [(Information Documentation)]) Any Any Any (Some Constraint) (Exact Zero) (AtLeastCertainty Minimum) Any))"
+spirit "(Observe (Any (AnyKeyword [spirit schema]) Any Any None (Exact Zero) (AtLeastCertainty Minimum) Any))"
+spirit "(Observe (Any Any (ContainsText [schema-derived Spirit]) Any None (Exact Zero) (AtLeastCertainty Minimum) Any))"
+spirit "(PublicRecords ((Full [(Information Documentation)]) None))"
+spirit "(PrivateRecords ((Partial [(Safety Privacy)]) None))"
 spirit "(Lookup abcd)"
 spirit "(LookupStash 12)"
-spirit "(Count (Any None (Exact Zero)))"
+spirit "(Count (Any Any Any Any None (Exact Zero) (AtLeastCertainty Minimum) Any))"
 ```
 
-Two recurring wrong shapes:
-
-- `Search` is not a production request head.
-- `(Observe (Records ...))` is the retired production shape; live
-  schema-derived `Observe` takes `Query` directly.
+Use the production heads shown above: `Observe` / `Count` with the
+eight-field `Query`, and `PublicRecords` / `PrivateRecords` with the
+two-field `RecordSelection`.
 
 ## Certainty and importance
 
@@ -213,7 +221,7 @@ resulting `Entry` through the same `Record` write path. The canonical
 shape is `(State [text])`; the CLI also accepts the deployed shorthand
 `(State ([text]))`.
 
-`Version` is a bare NOTA atom, not a Unix flag:
+`Version` is a bare NOTA atom:
 
 ```sh
 spirit Version

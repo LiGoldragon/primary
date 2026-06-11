@@ -62,10 +62,18 @@ segregation in `private-repos/` for defense-in-depth.
 
 ### Query forms
 
-Ordinary `Observe(Records ...)` and `Observe(RecordIdentifiers ...)`
-return `Zero` privacy only. Elevated reads use `PrivateRecords` or
-`PrivateRecordIdentifiers` with a `PrivacySelection` (`Any`, `Exact`,
-`AtMost`, `AtLeast`); subscriptions follow the same public/private split.
+Use `PublicRecords` for ordinary open/public reads. It takes a
+two-field `RecordSelection`: `(<DomainMatch> <Kind?>)`, and projects to
+privacy `Zero`.
+
+Use `PrivateRecords` only when the task is authorized to read elevated
+privacy. It uses the same two-field `RecordSelection`; the daemon applies
+the private read path. Full `Observe`/`Count` calls take the eight-field
+`Query`, whose sixth field is `PrivacySelection` (`Any`, `Exact`,
+`AtMost`, `AtLeast`). Be explicit about elevated privacy in full queries.
+
+Production Spirit read surfaces are `PublicRecords`, `PrivateRecords`,
+`Observe`, `Count`, `Lookup`, and `LookupStash`.
 
 There is no live `ChangePrivacy` operation, so choose privacy carefully
 at record time. To fix a misclassified record, capture a corrected

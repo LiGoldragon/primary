@@ -44,7 +44,7 @@ Negation is supersession where the psyche says a prior record is
 *invalid*, not merely refined. Spirit has no typed `Negates`/`Supersedes`
 relation yet, so:
 
-1. Look the prior record up by its identifier (`spirit "(Lookup [abcd])"`).
+1. Look the prior record up by its identifier (`spirit "(Lookup abcd)"`).
 2. Ask the psyche to confirm the old record is negated.
 3. Record a new `Correction` or `Decision` naming the old identifier and
    stating the replacement truth, e.g. `Spirit record [abcd] is negated;
@@ -53,7 +53,7 @@ relation yet, so:
 
 ## Removing a record — tombstone first
 
-Spirit supports psyche-authorized removal: `spirit "(Remove [abcd])"`
+Spirit supports psyche-authorized removal: `spirit "(Remove abcd)"`
 (the argument is the record's base36 identifier code, not a number).
 Use it only for records that should **not remain at all** — mis-logged
 working orders, or fully-stale records whose substance is rehomed. When
@@ -63,12 +63,12 @@ record.
 Removal is **destructive and irreversible.** The record's key is
 retracted from the sema-engine store and there is no undelete.
 
-So **capture before you remove.** Before any `(Remove [abcd])`, look the
+So **capture before you remove.** Before any `(Remove abcd)`, look the
 record up by its identifier and record the full text into the removing
 agent's report:
 
 ```sh
-spirit "(Lookup [abcd])"
+spirit "(Lookup abcd)"
 ```
 
 Paste the resulting `RecordFound` entry into a tombstone appendix; the

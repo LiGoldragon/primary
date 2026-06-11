@@ -142,12 +142,11 @@ designer — doubting, finding flaws, catching broken rules. No
   string contains no whitespace, structural delimiter, `;;` comment
   marker, or pipe-close sequence; broad punctuation such as `@`, `*`,
   `&`, `^`, `%`, `<`, `>`, `:`, `/`, and a single `;` may stay bare.
-  Topics are `[spirit nota strings]`, not
-  `[[spirit] [nota] [strings]]`. Use `[text with spaces]` inline or
+  Spirit domain vectors contain domain variants, e.g.
+  `[(Information Documentation)]`. Use `[text with spaces]` inline or
   `[|text with [brackets]|]` bracket-safe / multi-line only when a
-  string needs delimiters. Typed `String` decoding rejects redundant
-  brackets around bare-eligible strings: `[schema]` is wrong; write
-  `schema`. `;;` starts a line comment; a single `;` is atom text.
+  string needs delimiters. Bare-eligible strings stay bare: `schema`.
+  `;;` starts a line comment; a single `;` is atom text.
   Quotation marks don't form strings in NOTA; the encoder structurally
   cannot emit `"` (legacy quoted input is migration-only). So inline NOTA
   shell calls wrap the whole object in shell double quotes — `spirit

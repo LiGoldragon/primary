@@ -127,9 +127,9 @@
   (Meta context-maintenance skills/context-maintenance.md Mechanism
     [Sweep reports and conversation. Migrate substance to permanent homes.])
   (Meta intent-log skills/intent-log.md Topic
-    [Record explicit psyche intent through Spirit. Five-kind positional NOTA plus certainty and privacy Magnitudes. Only psyche statements get recorded; public entries use privacy Zero.])
+    [Record explicit psyche intent through Spirit. Five-kind positional NOTA with closed Domains, certainty, importance, privacy, and referents. Only psyche statements get recorded; public entries use privacy Zero.])
   (Meta spirit-cli skills/spirit-cli.md Topic
-    [How to invoke the deployed Spirit CLI. Live v0.8.0 broad bare string canonicality, six-field records, separate certainty and importance, query shorthand, certainty/importance-filtered observation, observed record identifiers, zero-certainty removal candidates, record privacy, inline NOTA vs file-path argument, and deployed-source verification.])
+    [How to invoke the deployed Spirit CLI. Live v0.8.1 bare-string canonicality, seven-field domain records, separate certainty and importance, eight-field query shape, PublicRecords/PrivateRecords shortcuts, observed record identifiers, zero-certainty removal candidates, record privacy, inline NOTA vs file-path argument, and deployed-source verification.])
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
     [Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.])
   (Meta intent-clarification skills/intent-clarification.md Topic

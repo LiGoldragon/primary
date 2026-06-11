@@ -49,8 +49,9 @@ Five surfaces, in roughly increasing depth:
   shape of work.
 - `git log --since=<baseline> --stat` — per-commit file changes; which
   files moved and how much.
-- `spirit "(Observe (Records ((Any []) None Any (Since (<baseline>)) SummaryOnly)))"`
-  — Spirit captures in the period.
+- `spirit "(PublicRecords (Any None))"` plus `LookupStash` — broad
+  Spirit capture survey; narrow with an eight-field `Observe` query when
+  the report needs a specific domain or phrase.
 - `ls reports/<role>/ | grep '<date-range>'` — reports written across
   lanes.
 - `skills/` diff against baseline — discipline evolution.

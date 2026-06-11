@@ -32,6 +32,12 @@ redundant restatements, second and third examples (keep the single
 best one), and padding. Preserve every rule and its WHY — compress the
 prose around it, never the normative content.
 
+Prefer canonical positive forms over enumerating failed alternatives.
+Teach the shape agents should imitate; mention retired or rejected forms
+only when omitting them would create an immediate safety risk. When a
+correction is necessary, keep it in prose and return quickly to the
+current form.
+
 **One capability per skill.** When a file straddles two distinct
 capabilities, split it. The test: *would an agent reaching for one
 section be helped or hindered by also having the other in view?* If

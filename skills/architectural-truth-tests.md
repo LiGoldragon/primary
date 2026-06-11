@@ -315,9 +315,11 @@ reads back through the client.
 fn client_accepts_high_magnitude_and_observes_it_back() {
     let fixture = StoreFixture::new("high-magnitude");
     fixture.reply_text(
-        "(Record (workspace Decision [high magnitude witness] High))",
+        "(Record ([(Information Documentation)] Decision [high magnitude witness] High Minimum Zero []))",
     ).expect("high-magnitude entry persisted");
-    let reply = fixture.reply_text("(Observe (Records (None None DescriptionOnly)))")
+    let reply = fixture.reply_text(
+        "(Observe ((Full [(Information Documentation)]) Any Any Any (Some Decision) (Exact Zero) (AtLeastCertainty High) Any))",
+    )
         .expect("records observed");
     assert!(reply.contains("High"));
 }

@@ -1,7 +1,7 @@
 # Skill — intent log
 
-*Record what the psyche explicitly said, with kind, certainty, and a
-daemon-stamped time, so future agents can query what the author wanted
+*Record what the psyche explicitly said, with kind, certainty, importance,
+privacy, and a Spirit identifier, so future agents can query what the author wanted
 versus what some agent decided.*
 
 ## What this skill is for
@@ -133,25 +133,27 @@ fields per `skills/nota-design.md`):
 
 ```nota
 (Record
-  ([<topic> ...]     ;; vector of topic identifiers: workspace, spirit, signal, …
+  ([<domain> ...]    ;; vector of closed taxonomy Domain values
    <Kind>            ;; Decision | Principle | Correction | Clarification | Constraint
    [<description>]   ;; clarified intent, reusing psyche wording when useful
    <Certainty>       ;; Zero | Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
-   <Privacy>))       ;; Zero public/open; higher values narrow audience
+   <Importance>      ;; same ladder; repeated attention, not confidence
+   <Privacy>         ;; Zero public/open; higher values narrow audience
+   [<referent> ...])) ;; registered referents; usually []
 ```
 
-- `Entry` is untagged — no record-head ident. `Kind` and `Certainty`
-  are bare PascalCase enum variants. Topics are a vector of lowercase
-  identifiers; use a bracket string only if a topic contains spaces or
-  PascalCase content.
-- `Entry` accepts a four-field public shorthand that defaults privacy to
-  `Zero`, but use the explicit five-field form when privacy
-  classification matters.
+- `Entry` is untagged — no record-head ident. `Kind`, `Certainty`,
+  `Importance`, and `Privacy` are bare PascalCase enum variants.
+- Domains are closed taxonomy values such as
+  `(Information Documentation)`, `(Craft Programming)`,
+  `(Craft Architecture)`, `(Craft Schema)`, `(Safety Privacy)`, and
+  `(Technology Intelligence)`.
+- `Entry` has no omission/default syntax. Spell all seven fields.
 - Spirit stores no separate context or verbatim fields. Record the
   clarified intent as one dense description, reusing the psyche's own
   words when load-bearing.
-- The daemon stamps date and time on receipt; clients do not supply
-  timestamps.
+- Spirit records carry database markers and opaque identifiers; clients
+  do not supply timestamps.
 
 The wire shape may drift; `skills/spirit-cli.md` covers reading the
 currently deployed shape directly from the pinned source.
@@ -161,7 +163,7 @@ currently deployed shape directly from the pinned source.
 The deployed `spirit` CLI is the substrate:
 
 ```sh
-spirit "(Record ([<topic> ...] <Kind> [description] <Certainty> Zero))"
+spirit "(Record ([(Information Documentation)] <Kind> [description] <Certainty> <Importance> Zero []))"
 ```
 
 Inline NOTA wraps the whole object in shell double quotes; authored
@@ -255,81 +257,52 @@ a finer notch than `Low` or `High`; do not invent precision the phrasing
 does not carry. Certainty calibrates a record only after the gate
 already says Record.
 
-## Topic organization — broad topics, slow split
+## Domain, keyword, and referent organization
 
-One Spirit topic per broad semantic area — `component-shape`, `reports`,
-`workspace`, `orchestrate`, `nota`, `markdown`, `jj`, and so on. Topics
-are semantic routing labels, not filenames. Entries accumulate under a
-broad topic as the psyche says more about the area.
+Production Spirit uses three retrieval layers:
 
-Topics start broad and stay broad. Resist naming a topic after a
-specific rule (`no-markdown-hr-breakers` is too narrow — once named
-that, almost nothing else fits). Name topics after the area the psyche
-reasons about: `markdown`, not `markdown-hr-breakers`. The broad name is
-where future rules on the same area land.
+- **Domains** — closed taxonomy buckets for broad routing. Choose one or
+  more coarse domains that genuinely fit the intent. Use
+  `(Information Documentation)` for documentation/skill/report guidance,
+  `(Craft Programming)` for coding discipline, `(Craft Architecture)` for
+  system design, `(Craft Schema)` for schema work, `(Safety Privacy)` for
+  privacy boundaries, and `(Technology Intelligence)` for AI/LLM tooling.
+- **Description keywords/text** — free words live in the clarified
+  description. Query them with `KeywordMatch` or `ContainsText`; keep
+  narrow ad hoc tags there.
+- **Referents** — named entities that should remain stable across
+  descriptions. Only use the referent vector for registered referents;
+  otherwise leave it empty as `[]`.
 
-Topic convention: kebab-case, broad, no `intent-`, `no-`, or `how-to-`
-prefixes — the prefix is redundant in the intent substrate, and the
-negative-naming smell (`ESSENCE.md` §"Naming") applies here too.
-
-Split compounds into the topic vector when the concepts stand alone.
-Prefer `[intent logging]` over `[intent-log]` when the substance is
-about both; prefer `[spirit privacy]` over `[spirit-privacy]` when
-privacy is a reusable topic outside Spirit. Keep a hyphenated topic only
-when the compound names one established thing (`signal-frame`, a
-component name, a domain term that stops meaning the same thing when
-split). The vector is how Spirit represents several topics; don't hide
-that structure in one narrow string.
-
-Actually split only when both hold: (1) the topic is large enough that
-query results become noisy, and (2) the accumulated entries cluster into
-two genuinely distinct topics, not just "lots of entries on the same
-area." Carve the new topic through the maintenance tooling. Don't split
-prophylactically; split when the surface earns it.
+The old topic discipline still applies conceptually: choose broad
+routing concepts, avoid filename-like or negative labels, and split only
+when query results prove noisy. The wire field is the closed `Domains`
+vocabulary.
 
 ## If the gate says Record
 
-1. Query prior entries on the topic for contradiction and certainty.
-2. Pick the kind, certainty, and privacy.
-3. Write one dense description through `spirit`; the daemon stamps time.
+1. Query prior entries by domain plus keyword/text for contradiction and certainty.
+2. Pick the kind, certainty, importance, and privacy.
+3. Write one dense description through `spirit`; the daemon returns the
+   short identifier and database marker.
 
 If the gate says no capture, Observe, or ask, do not write a record.
 
 ## Citing intent in prose — bracket-quote the summary
 
 Reference intent records in prose markdown by quoting the description
-summary literally as bracketed text — the bracketed form IS the
-citation — not by record number alone. The number is an opaque address;
-the substance is what's load-bearing, and repeating it reinforces the
-intent. Especially in psyche-facing reports, and wherever an intent is
-central to a document, quote it literally in a prominent place.
+summary literally as bracketed text. The identifier is an opaque address;
+the bracketed substance is the load-bearing citation. Especially in
+psyche-facing reports, and wherever an intent is central to a document,
+quote it literally in a prominent place.
 
-The form is LITERAL bracketed text in square brackets — not italicized,
-not double-quoted approximation. Markdown handles `[bracketed text]`
-cleanly; the only edge case is link syntax, which requires zero-space
-`[text](url)`.
-
-Wrong (number-only):
-
-> Per Spirit 1487, lifecycle hooks land on the engine traits.
-
-Wrong (italicized double-quote approximation):
-
-> Per Spirit 1487 (Decision High): *"Generated engine traits carry
-> minimal lifecycle hooks: on_start and on_stop with typed failure
-> results."*
-
-Right (literal bracketed text IS the citation):
-
-> Per Spirit 1487 (Decision High): [Generated engine traits carry
+> Per Spirit abcd (Decision High): [Generated engine traits carry
 > minimal lifecycle hooks: on_start and on_stop with typed failure
 > results.]
 
-The brackets are the citation marker; no italics, no double quotes. The
-identifier remains an address for a reader who wants to look up the
-record; the bracketed substance is what the cite carries into the
-document. Spirit identifiers are random opaque lowercase base36
-shortest-unique-prefix codes, minimum four characters.
+The brackets are the citation marker. Spirit identifiers are random
+opaque lowercase base36 shortest-unique-prefix codes, minimum four
+characters.
 
 Markdown rendering: `[text] (Spirit N)` with a space before the
 parenthetical renders as bracketed text plus parenthetical; only

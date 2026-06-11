@@ -187,7 +187,7 @@ Because NOTA never contains a `"`, a complete NOTA expression embeds escape-free
 When NOTA is passed as an inline CLI argument, wrap the whole object in shell double quotes:
 
 ```sh
-spirit "(Record (nota Correction [description text] Maximum))"
+spirit "(Record ([(Information Documentation)] Correction [description text] Medium Minimum Zero []))"
 ```
 
 This is why authored strings use `[text]` and `[|text|]`, not `"` delimiters: the shell keeps `"` as the outer argument boundary. Single quotes are not the normal inline form — they make natural apostrophes painful and undercut the bracket-string design.
