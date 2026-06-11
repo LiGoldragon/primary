@@ -3,7 +3,9 @@
 Variant: Research.
 Role: system-operator.
 Prompt source: psyche request on 2026-06-11 plus forwarded system-designer prompt.
-Spirit gap-fill: Spirit record `avxy` captures the reusable-substrate constraint.
+Spirit source: system-designer captured the reusable-substrate constraint as
+Spirit record `j487`. My earlier gap-fill `avxy` was removed after `j487`
+landed because `j487` is the fuller canonical capture.
 
 ## Purpose
 
@@ -291,4 +293,3 @@ The first code experiment should prove three things with minimal component
 code: payload-bearing commit history can rebuild component state, a remote can
 accept entries idempotently under expected-head checks, and a component such as
 `spirit` can opt into the mechanism through shared engine/library surfaces.
-

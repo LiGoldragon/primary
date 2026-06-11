@@ -1,0 +1,100 @@
+# Prior art: content-defined-chunking backup, append-only log libs, filesystem snapshot/send
+
+## Scope and the question this maps
+
+The brief asks: for a reusable library that lets any component version-control and *ship its durable Sema log to a server*, what is the cheapest correct backup/durability *floor*, and where does content-defined chunking (CDC) help or hurt for an **append-only, typed, rkyv-encoded log**? This surveys three families:
+
+1. **CDC dedup backup-to-server** — restic, borg, bup, casync/desync.
+2. **Rust append-only log libraries** — okaywal, raft-log, commitlog, sled-as-log.
+3. **Filesystem/object-store durability primitives** — Btrfs send/receive, ZFS send/receive, S3 Object Lock WORM.
+
+Each is examined on the seven axes the brief names: core model; durability/replication mechanism; schema-evolution story; reusable-library-vs-monolith packaging and its genericity mechanism; what worked; what failed/pain; applicability. The cluster context is fixed: **ouranos** (ThinkPad T14 Gen5) is the GitoliteServer + TailnetController and the backup *ingest* target; **prometheus** (GMKtec EVO-X2) is a Btrfs *storage* target with the criome-backup SSID; tiger is edge testing. Do not swap those roles.
+
+The single most important framing result up front: **every mature append-only-log library in Rust achieves genericity by treating entries as OPAQUE BYTES and delegating semantics to a consumer-supplied trait** (okaywal's `LogManager`). That is the exact degeneration our `skills/abstractions.md` "perfect specificity / no stringly-typed generic-record store" rule forbids. The prior art tells us the *easy* genericity answer and tells us why we cannot take it.
+
+## CDC dedup backup-to-server
+
+### restic — core model
+
+restic is a content-addressed backup repository. An Archiver reads files, splits each into variable-length blobs cut by a 64-byte sliding window using **Rabin fingerprints**, and stores only unique blobs keyed by **SHA-256**. Files under 512 KiB are not split; blobs target ~1 MiB and range 512 KiB–8 MiB. The Rabin polynomial is randomized per-repository at init and saved in the repo config, to defeat watermark/fingerprint attacks ([restic CDC blog](https://restic.net/blog/2015-09-12/restic-foundation1-cdc/), [restic DeepWiki](https://deepwiki.com/restic/restic)).
+
+Durability/replication: the repository is a set of immutable pack files plus index; any backend (local, SFTP, S3) holds them. A second backup of a changed file re-chunks and uploads only the changed blobs — incrementality falls out of content addressing, not a diff protocol. Schema evolution: not applicable (restic backs up opaque file bytes; it has no notion of a typed record schema). Packaging: restic is a **monolithic CLI/daemon**, not a reusable chunking library; the reusable piece extracted from it is `restic/chunker` (the Rabin CDC) and the broader Go ecosystem.
+
+### borg — core model and the load-bearing caveat
+
+borg is structurally the same shape (CDC + strong-hash dedup), with a **buzhash** rolling hash for boundaries. Defaults: min 512 KiB (`CHUNK_MIN_EXP=19`), max 8 MiB (`CHUNK_MAX_EXP=23`), target ~2 MiB (`HASH_MASK_BITS=21`), 4095-byte window. Crucially, **buzhash only chooses cut points; the dedup identity is a separate cryptographic id_hash over chunk contents** — the rolling hash is never trusted as the dedup key. The buzhash table is XORed with a per-repo random seed to prevent chunk-size fingerprinting ([borg data-structures](https://borgbackup.readthedocs.io/en/stable/internals/data-structures.html), [borg buzhash discussion](https://github.com/borgbackup/borg/discussions/6639)).
+
+The **load-bearing cautionary result for us** is borg's append-only mode. Append-only is meant to stop a hacked client from destroying history, but: *"When a trusted client runs `prune` at a time when a hack was not detected yet, the prune action will apply any malicious transactions permanently"* ([borg notes](https://borgbackup.readthedocs.io/en/stable/usage/notes.html), [borg issue #1772](https://github.com/borgbackup/borg/issues/1772)). The append-only floor protects only until a trusted compaction runs — at which point malicious deletions become permanent. This maps directly onto our checkpoint/compaction protocol: **the moment that breaks "ship the log suffix" safety is compaction, not append**, which is exactly why the brief makes the checkpoint protocol first-class (pruned-head behaviour, retained-suffix policy).
+
+### bup — git packfile as the substrate
+
+bup splits with a Rubin-style rolling checksum (`bupsplit`) and writes chunks directly into **git packfile format** keyed by SHA-1, deduplicating insertions/deletions/shifts across and within files, including VM images ([bup README](https://github.com/bup/bup/blob/master/README.md), [bup repo](https://github.com/bup/bup)). It writes packfiles directly without git's GC/repack stage, so it stays fast at scale. bup is the closest existing thing to the brief's *explicitly REJECTED* "git-as-substrate" option: it is the proof that git packfiles *can* be a transport floor, and simultaneously the proof of the **double-content-addressing** waste the brief warns against — bup re-implements content addressing (SHA-1 chunks) on top of git's content addressing (SHA-1 objects). For a log that is *already* hash-linked in its own envelope, layering git underneath addresses the same bytes twice.
+
+### casync / desync — the closest architectural cousin
+
+casync (Lennart Poettering) is "content-addressable data synchronization": it serializes a directory tree (`.catar`) or a blob, CDC-chunks it, and emits a small **index file** (`.caidx` for archives, `.caibx` for blobs) that is just an ordered list of `(chunk-hash, length)` plus a separate chunk store (`castr`). To sync, the receiver fetches the index, then pulls only chunks it lacks ([casync blog](https://0pointer.net/blog/casync-a-tool-for-distributing-file-system-images.html), [casync repo](https://github.com/systemd/casync)). **desync** is the Go re-implementation maintaining wire/format compatibility, notable for parallel chunking by splitting the stream into N parts chunked independently ([desync repo](https://github.com/folbricht/desync)). There is no first-party Rust implementation; the Rust CDC primitive is `fastcdc` (below).
+
+casync is the cleanest mental model for "ship the log suffix": **index = ordered chunk manifest, store = dedup chunk bag, sync = diff of indices**. Our log already *has* an ordered manifest (the `CommitSequence`-keyed `CommitLogEntry` chain), so the casync index layer is partly redundant with our own structure — but the "fetch the index, pull only missing chunks" handshake is a directly reusable backup protocol shape if we ever chunk the log file.
+
+### Where CDC helps and where it does NOT, for our append-only typed log
+
+CDC's entire value proposition is **resync after in-place mutation**: insert or delete bytes in the middle of a large file and CDC re-establishes the same boundaries downstream, so only the changed region re-uploads. FastCDC (the modern Rust answer, `fastcdc` crate, gear-hash with normalized chunking, ~10x faster than Rabin and ~3x faster than plain Gear/AE while matching Rabin's dedup ratio — [FastCDC USENIX ATC16](https://www.usenix.org/conference/atc16/technical-sessions/presentation/xia), [fastcdc-rs](https://github.com/nlfiedler/fastcdc-rs)) deterministically returns identical boundaries for identical input.
+
+But our log is **append-only**: bytes are only ever added at the tail, never inserted or rewritten mid-file (compaction aside). For pure append, the cheapest correct incremental is a **byte-offset suffix copy** — "send everything past the peer's last head" — which is `O(new bytes)` with **zero chunking, zero hashing, zero index**. CDC buys nothing here because there is no mid-file shift to recover from; it adds CPU (rolling hash over the whole region), an index/manifest, and per-chunk overhead. **CDC becomes worth its cost only at compaction/checkpoint**, when the log file's prefix is rewritten (pruned head, retained suffix) and the server already holds a now-stale prefix: then content-defined boundaries let the server keep the unchanged chunks and ingest only the genuinely new ones. So the honest answer to the brief's question: *content-defined chunking helps our system at exactly one moment — post-compaction reconciliation — and is pure overhead the rest of the time.* The cheapest correct floor is suffix-append shipping; CDC is a compaction-era optimization, not the floor.
+
+One more caution from the CDC literature: CDC gives **near-zero dedup on already-compressed or high-entropy data** and **per-chunk metadata overhead dominates for small files** (hence restic's 512 KiB no-split floor and borg's 512 KiB min). rkyv archives are dense binary but not compressed; small per-record payloads chunked individually would be all overhead. This reinforces chunking the *log file as a stream*, never per-record.
+
+## Rust append-only log libraries
+
+### okaywal — the genericity mechanism we must study and then reject
+
+okaywal (khonsulabs, the BonsaiDb/Nebari author) is a multi-threaded WAL with atomic durable writes, random read access to written entries, automatic checkpointing to bound size, and an interactive recovery process ([okaywal docs](https://khonsulabs.github.io/okaywal/main/okaywal/index.html), [okaywal blog](https://bonsaidb.io/blog/introducing-okaywal/)). Its API is the canonical generic-log shape: `WriteAheadLog::recover(dir, log_manager)` plus a consumer-implemented **`LogManager` trait** with a recovery callback and a `checkpoint_to` callback.
+
+The decisive fact, verified from source: **okaywal treats every entry as an opaque byte chunk and never parses the payload** — it streams raw bytes to the consumer's `LogManager`, which alone decides interpretation and storage. Checkpointing: when a segment crosses `checkpoint_after_bytes`, the file goes to a background thread, `LogManager::checkpoint_to` lets the consumer flush, the file is renamed with a `-cp` suffix, the checkpointer waits for outstanding readers, then the segment is recycled or deleted ([okaywal repo](https://github.com/khonsulabs/okaywal)).
+
+This is the central lesson for j487. okaywal proves a reusable log library is *trivially* genericizable if entries are `&[u8]`. **Our discipline forbids that floor**: `skills/abstractions.md` (perfect specificity, no stringly-typed generic-record store) and the brief's own "type carries meaning, not stringly-typed metadata" rule mean we cannot ship `Log<Vec<u8>>` and call it done. The design tension the brief names — "generic over record families WITHOUT degenerating into a stringly-typed generic-record store" — is *precisely the line between okaywal's `LogManager(&[u8])` and a typed replay envelope*. okaywal's checkpoint-rename-recycle dance is, however, directly reusable mechanism for our checkpoint protocol.
+
+### raft-log — typed generics done with named type parameters
+
+raft-log is a high-performance local-disk log for the Raft protocol with a **type-safe API generic over log entries, vote info, and user data**, with async writes and callbacks ([raft-log crate](https://crates.io/crates/raft-log), [raft_log docs](https://docs.rs/raft-log)). It is the counter-example to okaywal: genericity via *named associated types / type parameters the consumer fills with real types*, not opaque bytes. This is the shape closer to our discipline — the library is generic over `Entry`, `Vote`, `UserData` as **bounded type parameters**, so the consumer's real types flow through and the library never sees stringly-typed metadata. The cost is that the library cannot, by itself, decode a heterogeneous mix of schema versions in one log — which is exactly what our `SchemaTransition` + per-entry schema-hash selector is designed to solve. raft-log's lesson: **a typed generic log is achievable in Rust without ZST namespaces or free functions, by making the entry type a bounded parameter** — but a single-type parameter does not cover schema *evolution within one log*.
+
+### commitlog — segmented-log mechanics
+
+zowens/commitlog is a sequential disk-backed append-only commit log intended as a substrate for Paxos/Raft/Chain-Replication ([commitlog repo](https://github.com/zowens/commitlog), [commitlog docs](https://docs.rs/commitlog/latest/commitlog/)). Architecture: a **Segment = Index + Store**, where the Index is a logical map from offset to byte position. This is the standard Kafka-style segmented log and is the reference mechanism for *how to physically lay out a growing append-only log with fast offset lookup and cheap truncation/compaction by whole segments* (see also [arindas, "Building Segmented Logs in Rust"](https://arindas.github.io/blog/segmented-log-rust/)). It is again offset-addressed (like our `CommitSequence`), not content-addressed, confirming the brief's "digests sit BESIDE the monotonic markers" direction: every production log library keeps an ordered offset/sequence cursor as the primary index and treats content hashes as an orthogonal concern.
+
+### sled-as-log
+
+sled is an embedded ordered key-value store; using it "as a log" means appending sequence-keyed entries. The search surfaced no first-party "sled as log" pattern, and it is the wrong substrate for us anyway: we already have redb (a single-file mmap COW B+tree with single-writer ACID and fsync-on-commit) inside each component, and the brief's "log is a redb table in the SAME txn as data" gives free atomicity that a separate sled instance would forfeit. Noted and dismissed.
+
+## Filesystem and object-store durability primitives
+
+### Btrfs send/receive — relevant because prometheus is a Btrfs target
+
+`btrfs send` emits an instruction stream describing the delta between two **read-only** snapshots; `btrfs receive` replays it on another filesystem. Full mode ships the whole snapshot; incremental mode (`-p parent`) ships only the delta and **requires the parent snapshot to exist on both ends** ([btrfs-send man page](https://man7.org/linux/man-pages/man8/btrfs-send.8.html), [btrfs send docs](https://btrfs.readthedocs.io/en/latest/btrfs-send.html)). Hard constraint and a data-loss footgun: **all snapshots in a send must be read-only, and flipping a snapshot read-write→read-only breaks the immutability assumption and "will eventually lead to data loss"** ([Forza's btrfs/send](https://wiki.tnonline.net/w/Btrfs/Send)). Also: do not run dedup on the sending side during a send.
+
+Applicability: prometheus's Btrfs gives us a **free, correct, block-level transport floor at the volume layer** — if the component's `.sema` file lives on a Btrfs subvolume, periodic read-only snapshot + incremental `send` to prometheus is a zero-application-code backup. But it is **opaque-blob** durability (the explicit anti-goal of Spirit 29pb: "native VC, not opaque blob") and it has no awareness of log boundaries, so a send mid-redb-commit could ship a torn page unless snapshotting is quiesced relative to the writer. It is a *defense-in-depth floor under* the log-shipping mechanism, not a substitute for it.
+
+### ZFS send/receive
+
+Same shape, more mature: `zfs send -i older newer` ships a serialized incremental stream; the destination must already hold a snapshot matching the stream's source; received snapshots are live and directly accessible ([OpenZFS zfs-send](https://openzfs.github.io/openzfs-docs/man/8/zfs-send.8.html), [Klara: Intro to ZFS Replication](https://klarasystems.com/articles/introduction-to-zfs-replication/)). It is *not* a byte-for-byte copy — it's a snapshot-delta serialization. Same applicability and same opaque-blob caveat as Btrfs; ouranos/prometheus run Btrfs (per goldragon/datom.nota), so ZFS is reference only.
+
+### S3 Object Lock WORM — the immutability primitive for the server side
+
+S3 Object Lock enforces write-once-read-many at the **object-version** level (requires bucket versioning). Two modes: **Governance** (deletable only by principals holding `s3:BypassGovernanceRetention`) and **Compliance** (*no one*, including root, can delete or shorten retention until expiry). Plus **Legal Hold** (no expiry, removed explicitly) ([S3 Object Lock feature](https://aws.amazon.com/s3/features/object-lock/), [AWS userguide: object-lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html)). Cohasset assessed it for SEC 17a-4 / CFTC / FINRA.
+
+Applicability is conceptual, not literal (our server is ouranos/Gitolite, not S3): Object Lock is the canonical answer to the borg-append-only-mode flaw above. **A WORM/immutable retention window on the server's copy of shipped log segments is what makes "ship the log suffix" ransomware/compromise-safe** — a compromised client cannot retroactively rewrite history the server has already sealed. If we ever mirror to an object store, Compliance-mode retention on sealed segments is the durability ceiling; on ouranos the analogue is making the ingest target append-/server-side-prune-only so the *client* can never command deletion of already-ingested segments.
+
+## Synthesis: the cheapest correct floor, and the genericity verdict
+
+**Cheapest correct durability floor for an append-only typed log:** ship the byte suffix past the peer's last acknowledged head to ouranos, with the local view never lagging (read-after-write local; only the remote mirror lags, per the brief's durability levels). No CDC, no chunk index, no content hashing required for *transport* — the log's own per-entry digest + prev-digest chain already provides integrity verification on arrival. CDC (FastCDC in Rust) earns its keep only at **compaction**, when the prefix is rewritten and the server must reconcile a stale prefix against a new one. Object-Lock-style WORM retention on sealed server segments is what closes the borg-prune compromise hole. Btrfs send/receive to prometheus is a legitimate *opaque-blob defense-in-depth floor underneath*, not the native-VC mechanism Spirit 29pb wants.
+
+**Genericity verdict for j487:** the prior art bifurcates cleanly. okaywal (`LogManager` over opaque `&[u8]`) is the *forbidden* easy path — generic by erasing type. raft-log (bounded type parameters for `Entry`/`Vote`/`UserData`) is the *permitted* path — generic by parameterizing over real types — but a single entry-type parameter does not span schema evolution within one log, which is the unique thing our `SchemaTransition` + per-entry schema-hash decoder selector must add on top. The reusable library should be generic the raft-log way (bounded typed parameters, the typed replay envelope as the entry type, schema-hash as an in-band decoder selector), *never* the okaywal way (opaque bytes + a stringly-typed consumer callback).
+
+## Experiment-matrix note (same-file vs separate-file log)
+
+The brief wants both tested. The prior art splits on this exactly:
+
+- **Same-file** (today's sema-engine: log table in the same redb file, written in the same txn as data) buys **free atomicity** — log and materialized view structurally cannot diverge, the property the brief calls out at `log.rs`. The cost: backup must extract the log table out of a single mmap COW file (no natural suffix to `tail`); a Btrfs/ZFS snapshot of the whole file is the clean extraction, and redb has "no online-snapshot path in use," so the file must be quiesced or snapshotted at the FS layer.
+- **Separate-file** log (commitlog/okaywal segmented-log shape) gives a **natural append-only byte stream to suffix-ship** and clean whole-segment compaction/retention (commitlog's Segment=Index+Store), matching the cheapest-floor transport directly. The cost: log and view live in two files, so atomicity across them needs a protocol (write log first, then apply to view; recover view by replay) — you *give up* the same-txn free atomicity to *gain* a shippable stream.
+
+That is the real tradeoff to measure: **same-file trades shippability for free atomicity; separate-file trades free atomicity for a natural suffix-shippable, segment-compactable stream.** This report frames it; it does not choose.
