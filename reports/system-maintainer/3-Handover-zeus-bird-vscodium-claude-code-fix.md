@@ -20,17 +20,16 @@ Zeus still had an older marketplace-installed versioned extension directory alon
 
 ## Immediate fix on Zeus
 
-Removed the stale mutable `anthropic.claude-code-*-linux-x64` extension directory from Bird's VSCodium extension directory, leaving the Home Manager symlinked extension in place.
+The first cleanup removed the stale mutable `anthropic.claude-code-*-linux-x64` extension directory and left the Home Manager symlinked extension in place. That fixed the bad binary path, but it also removed the exact versioned path VSCodium's mutable `extensions.json` still referenced, so the Claude sidebar disappeared.
 
-Verification completed through root-mediated commands as Bird:
+The corrected immediate fix restores that versioned path as a symlink to the Home Manager-managed extension:
 
-- The active `anthropic.claude-code` extension path is the Home Manager symlink.
-- Its native binary resolves to the Nix-built `claude-code` binary.
-- `claude --version` through that extension path returns `2.1.170 (Claude Code)`.
-- `codium --list-extensions --show-versions` lists `anthropic.claude-code@2.1.170`.
+- `anthropic.claude-code` remains the Home Manager symlink.
+- `anthropic.claude-code-2.1.170-linux-x64` is a compatibility symlink to `anthropic.claude-code`.
+- The native binary reached through the compatibility path resolves to the Nix-built `claude-code` binary.
 
-Existing VSCodium windows may need a window reload or restart so the extension host stops referring to the deleted mutable directory.
+Existing VSCodium windows may need a window reload or restart so the extension host rescans the restored path.
 
 ## Durable fix
 
-CriomOS-home commit `26e825d8` adds a Home Manager activation hook in `modules/home/vscodium/vscodium/default.nix` that removes stale mutable `anthropic.claude-code-*-linux-x64` extension directories after link generation. Future activations keep VSCodium on the managed extension path.
+CriomOS-home commit `26e825d8` was the too-aggressive cleanup. Commit `59b12b56` corrects it: the Home Manager activation hook now replaces stale mutable Claude Code versioned directories with a compatibility symlink to the managed extension, while pruning other stale Claude Code versioned directories. Future activations keep VSCodium on the managed binary without breaking VSCodium's versioned extension-location cache.
