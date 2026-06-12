@@ -125,7 +125,36 @@ Two findings drove fixes, both landed:
   the malformed text and the parse error.
 
 **Production model: `deepseek-v4-pro`, thinking enabled, reasoning effort high.**
-The eval is the repeatable basis for future ablation of the few-shot.
+Honest read: once the importance confound was fixed and empty-testimony made
+deterministic (below), Flash and Pro both score 12/13 on this small suite, so the
+gap narrowed; Pro keeps the edge on the hardest reasoning case (`overclaim-maximum`)
+and on raw semantic robustness, matches the psyche's explicit lean for a
+well-trained judge, and the 3x cost is immaterial at guardian traffic volume. A
+larger eval + the decision-journal flywheel would sharpen the choice further.
+
+### The eval drove a third fix: empty testimony is now deterministic
+
+Run 2 exposed that **even Pro intermittently admits a quote-less record** (it
+rejected the empty-testimony case in run 1, admitted it in run 2, at temperature
+0) — the model overlooks an empty `[]` testimony vector. That is the single most
+important safety gate (no quote-less records), so it is now a **deterministic
+code-level pre-check**: `AgentGuardian::guard` rejects `MissingTestimony` before
+the model call when `GuardianOperation::testimony_is_empty()`. This matches the
+guardian's own charter — "code validates structure, the model judges semantics"
+— and makes the gate 100% reliable. The model still judges the *semantic*
+bare-affirmation-without-antecedent case.
+
+### Prompt design independently validated
+
+A 12-agent research-and-authoring workflow (NOTA/structured-output literature,
+DeepSeek reasoning docs, per-operation example generation) converged on exactly
+the prompt this session hand-built: frozen-prefix/volatile-tail ordering,
+grammar-by-example with the closed reason set shown concretely, over-specifying
+the double-nest with labeled WRONG forms, a separate referent verdict namespace,
+respond-with-only-the-value, certainty-as-burden on modal strength, orthogonal
+axes, the destructive-op psyche-authorization gate, paired look-alike-reason
+discriminators, and parse-and-retry-as-outer-frame failing closed. Its broader
+example bank is on file for the next few-shot expansion/ablation.
 
 ## Deploy
 

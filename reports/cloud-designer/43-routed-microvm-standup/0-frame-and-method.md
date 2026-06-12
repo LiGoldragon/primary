@@ -13,6 +13,22 @@ over the systemd-nspawn shortcut. Scoped to the lojix cutover validation, so
 it coexists with `btc0` (operator e2e may still use nspawn) rather than
 superseding it.
 
+## Correction (2026-06-12) — the host is NOT reconfigured
+
+The psyche clarified (Spirit `7let`): the e2e is harmless because lojix
+deploys a full OS **into a throwaway KVM-hosted VM** — a broken deploy kills
+only the VM, never the host. It does **not** require reconfiguring the host to
+declaratively run a microVM. So this report's recon framing — the `vm-testing`
+NixOS host-module (microvm.nix + tap + projected `networking.hosts`), which is
+what raised the `5hir5bnz` host-risk and the zeus-vs-Prometheus debate — is
+**superseded**. The real plan: run a transient qemu/KVM VM on **Prometheus**
+(verified live: bare-metal, AMD-V `svm`, `/dev/kvm`, 32 cores, 124 GiB free;
+qemu run via `nix`, no host config change) and have lojix deploy a full OS
+into it. Prometheus's production config and networking stay untouched, so the
+host-risk class is gone. The host-reconfiguring standup steps below no longer
+apply; the rest (lojix-cli BootOnce mechanics, horizon/Yggdrasil reachability,
+the deploy-into-target shape) remains useful.
+
 ## Why ground first
 
 Standing this up means deploying a CriomOS config to a **live host** and
