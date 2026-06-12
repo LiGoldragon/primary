@@ -158,10 +158,29 @@ example bank is on file for the next few-shot expansion/ablation.
 
 ## Deploy
 
-spirit bumped, built, `cargo test` + `clippy -D warnings` + `nix build` green,
-pushed `main`; CriomOS-home pins bumped (agent `5a2cd5ab`, spirit new) and the
-guardian model set per the eval; `lojix-run` activation; live version + corpus
-verified. (Status recorded at deploy time.)
+All three contract repos and the home config landed on `main`, validated, and
+activated:
+
+| Repo | main | What |
+|---|---|---|
+| signal-agent | `33c2ecac` (0.3.0) | ReasoningEffort / ThinkingMode on PromptOptions |
+| agent | `5a2cd5ab` (0.2.0) | reasoning_effort + thinking in the chat-completions body |
+| spirit | `a2ba6ee6` (0.11.0) | typed justification, burden judge, multi-supersede, journal v2 |
+| CriomOS-home | `fa765d0e` | pins bumped; guardian → deepseek-v4-pro, 180s timeout |
+
+Validation before activation: `cargo build` + the non-live suite (process_boundary
+12/12, generated_signal_plane 23/23, runtime_triad, observer_tap, meta_configure,
+collect_removal_candidates, operator_271, instrumentation) all green; `cargo
+clippy --all-targets --features agent-guardian` clean; `nix build .#default` green
+(all six bins at 0.11.0); the flash-vs-pro live eval. Deploy by
+`lojix-run '(HomeOnly goldragon ouranos li [...] [github:LiGoldragon/CriomOS-home/main] Activate ...)'`.
+
+A deploy-safety fix was needed: the stored `GuardianOperation` embeds the new
+typed `Justification`, so the live `spirit.guardian.sema` (old rkyv layout) would
+have broken the new daemon. The journal filename now carries its schema version
+(`spirit.guardian.v2.sema`), so the daemon opens a fresh transitional journal
+rather than reading incompatible bytes. The main intent store is untouched (the
+stored `Entry` is unchanged), so the daemon self-resumes the live corpus.
 
 ## Schema-macro extraction (the `xprx` direction) — scoped, not yet done
 

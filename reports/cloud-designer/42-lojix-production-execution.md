@@ -54,14 +54,48 @@ real-nix/live-daemon tests in each. No `.schema` grammar edits were needed
 (the only candidate touch-ups — collapsing `(OrdinaryInput OrdinaryInput)`
 self-pairs to `(OrdinaryInput)` — are cosmetic and were left alone).
 
+## S0 · Doc honesty — partial (2026-06-12)
+
+`lojix/INTENT.md` re-manifested: the superseded "thin CLI is the daemon's
+first client" framing is replaced with the two-CLI charter (`ssk2`) and a
+production-cutover-charter section (`tvbn`/`up9q`/`oh9l`/`se72`). Pushed at
+lojix `146594b2`. Remaining: refresh the stale `signal-lojix` /
+`meta-signal-lojix` contract docs (still describe the pre-split single
+contract with a non-existent `signal_channel!` macro and live streams).
+
+## S2 · Two CLIs — split landed (2026-06-12)
+
+The unified `Client` (which trial-decoded both contracts, carrying the
+audit-R7 short-header ambiguity) is split into two tier clients in
+`src/client.rs` — `OrdinaryClient` (peer `signal-lojix`) and `MetaClient`
+(owner `meta-signal-lojix`) over a shared `SocketExchange` — driving two
+binaries: `lojix` (ordinary socket) and the new `meta-lojix` (owner/meta
+socket), mirroring `spirit` / `meta-spirit`. The R7 ambiguity is gone
+**structurally**: each CLI parses only its own contract, so there is no
+cross-tier decode. The daemon needed no change (it already binds both
+sockets). Green on both feature gates (default 5, `nota-text` 6 client
+tests; full suite green, 7 ignored real-nix). Pushed at lojix `1375bd95`.
+
+## Test target — resolved (2026-06-12)
+
+Per psyche clarification (Spirit `7let`): the e2e is **deploy a full OS into
+a throwaway KVM VM on Prometheus** — harmless because a broken deploy kills
+only the VM, host untouched; NOT the host-reconfiguring `vm-testing` module
+(report 43 corrected). Prometheus verified live: bare-metal, AMD-V,
+`/dev/kvm`, 32 cores, 124 GiB free. qemu run transiently via `nix`. No
+`5hir5bnz` exposure.
+
 ## Next
 
-- **S0 · Doc honesty.** Refresh the stale `signal-lojix` /
-  `meta-signal-lojix` `INTENT.md` / `ARCHITECTURE.md` (they still describe
-  the pre-split single contract with a non-existent `signal_channel!` macro
-  and live streams), and manifest `ssk2` (two CLIs) into `lojix/INTENT.md`.
-- **S2 · Two CLIs + bootstrap.** Narrow `src/bin/lojix.rs` to the ordinary
-  socket; add `src/bin/meta-lojix.rs` (meta socket, mirroring
-  `meta-spirit.rs`); add `lojix-write-configuration` (mirroring
-  `spirit-write-configuration`); add the meta `Configure` op + virgin-daemon
-  apply + SEMA self-resume. Spirit is the verbatim precedent.
+- **S2 finish.** `lojix-write-configuration` bootstrap tool (mirroring
+  `spirit-write-configuration`); the meta `Configure` op + virgin-daemon
+  apply. The owner→meta socket rename (`3chp` names it the meta socket; the
+  daemon config still says `owner_socket_path`) is a tracked atomic rename.
+- **S0 cleanup.** Refresh the stale contract docs.
+- **S3 · Durable state.** Replace in-memory `StoreState` with sema-engine /
+  redb durable backing + self-resume (Spirit `oh9l`).
+- **S4 · Activation + SSH-survival.** Real closure copy + activate; port the
+  `systemd-run --collect` transient-unit BootOnce under the job-actor model
+  (Spirit `up9q`).
+- **S5 · Live e2e.** lojix deploys a full OS into the Prometheus KVM VM,
+  surviving SSH disconnect.
