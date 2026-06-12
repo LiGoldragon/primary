@@ -25,6 +25,8 @@ description: |
 
 [The `IntakePolicy` is a universal reusable admission interface with per-component implementations; it is not only a rebase hook.]
 
+[For the current SEMA version-control implementation, keep the work in `sema-engine` now rather than creating a new `sema-vcs` repository; a later extraction remains possible after the engine nouns settle.]
+
 ## Sources Absorbed
 
 This refresh absorbs the live substance from these system-operator reports:
@@ -63,6 +65,11 @@ idempotent remote append, policy identity, and crash/read-after-write witnesses.
 
 The core design is now clear enough that the next operator slice should stop
 debating "log versus store" and start hardening the nouns.
+
+Update after psyche clarification: do not create `sema-vcs` as the immediate
+home. The current implementation home is `sema-engine`. A future extraction is
+allowed only after the engine-owned nouns and witnesses settle enough that the
+boundary is mechanical rather than speculative.
 
 ## What Report 95 Fixed
 
@@ -197,6 +204,11 @@ The split matters. The engine should not become a network daemon. The server
 should not become a component guardian unless it is explicitly running as a
 semantic peer. The kernel should not learn branch semantics.
 
+Current home-layer decision: these engine-side nouns land in `sema-engine` now.
+That includes the branch/frontier and policy-replay nouns for the next
+implementation slices, even if a future `sema-vcs` extraction becomes sensible
+once the surface is proven. The immediate repository-creation path is closed.
+
 ## Implementation Order
 
 The next operator path should be staged so each layer earns the next one.
@@ -233,6 +245,7 @@ Stage 4: branch frontier and commit DAG.
 - Promote the hash chain to a DAG with two-parent merge entries.
 - Keep single-main operation as the default path for components that only need
   backup/version history.
+- Land the initial implementation in `sema-engine`, not a new `sema-vcs` crate.
 
 Stage 5: universal policy replay.
 
@@ -285,6 +298,9 @@ are same-key. Semantic conflicts can be cross-record and belong in
 Do not make remote "server committed" ambiguous. A caller must know whether a
 write is local committed, queued for mirror, or acknowledged after server fsync.
 
+Do not create `sema-vcs` now. The new-repo seam is a possible later extraction,
+not the current implementation move.
+
 ## Current Open Decisions
 
 The default `ConflictPolicy` is still open. Last-writer-by-sequence is simple
@@ -296,10 +312,11 @@ The remote retention rule is open. "Never GC on ouranos" is the strongest
 backup story, but private or high-churn stores may need classed retention and
 cryptographic erasure semantics. The design needs an explicit policy matrix.
 
-The branch/policy layer's crate boundary is open. It can land inside
-`sema-engine` if the engine owns all version-control nouns, or in a neighboring
-crate if policy, proofs, and remote sync grow too large. The first implementation
-should avoid a premature split until the engine nouns settle.
+The branch/policy layer's current home is decided for the next implementation
+slice: start in `sema-engine`. A later neighboring crate remains possible if
+policy, proofs, and remote sync grow large enough to justify extraction, but
+that is a refactoring seam after the nouns settle, not a repository to create
+up front.
 
 Cross-schema merge is open. A post-migration checkpoint makes restore possible,
 but branch merge across schema boundaries needs either dual decoders and
