@@ -197,6 +197,34 @@ stored `Entry` is unchanged), so the daemon self-resumes the live corpus.
 - `spirit.guardian.v2.sema` created fresh and recording; the old 21 MB journal is
   untouched. The version fix works.
 
+## Adversarial review caught a real data-loss bug (fixed in 0.11.1)
+
+A 6-agent adversarial review of the diff earned its keep: it found a **critical
+data-loss bug** on the supersede path. `Store::supersede` archived and removed the
+entire retired set *before* proposing the replacements, with no transaction — so a
+propose failure mid-operation (identifier-mint exhaustion, rkyv encode, IO) would
+permanently destroy the retired intent records while replacing nothing. Verified
+in source against sema-engine (each assert/retract is its own committed write).
+
+Fixed in **0.11.1**: snapshot the targets, **propose every replacement first**,
+then archive + remove — so a failure leaves the retired records intact and the
+caller can safely retry. (A single `WriteTransaction` spanning the whole supersede
+is the eventual end state; propose-first is the mandatory fix that converts data
+loss into a safe retryable failure.) Folded into the same patch: the
+`IntentSuperseded` event no longer drops the whole retirement notification on one
+missing lookup; `GuardianVerdict::Accept` renders a **bare** atom, so the few-shot
+now teaches bare `Accept` matching the wire form (pinned by a new verdict-grammar
+regression test); and Gate 4 (warrant) is tightened so a hedged-but-on-point quote
+is judged for over-claim at Gate 7 rather than pre-empted as `InsufficientWarrant`
+(the exact drift seen in the live smoke test).
+
+The review's other HIGH flag — an empty-replacements Supersede as a silent
+mass-delete — was a **non-issue**: `Supersession::validate()` (wired at admission,
+engine.rs) already rejects empty replacements before any store mutation; the
+reviewer read store/guardian but not the validator. The remaining LOW findings
+(orphaned old journal file, referent-side testimony asymmetry, DeepSeek-external
+API assertions) are documented non-issues or deliberate design choices.
+
 ## Schema-macro extraction (the `xprx` direction) — scoped, not yet done
 
 The repeated shape worth pushing into the emitter: the **verdict-type triad**
