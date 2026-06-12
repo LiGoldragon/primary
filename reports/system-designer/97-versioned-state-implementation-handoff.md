@@ -26,17 +26,26 @@ future). Everything is *"centered around schema types"* (§4).
 
 These are decided — implement them, do not re-litigate:
 
-- **Log-as-faithful-backup, NOT a kernel inversion.** redb stays the
-  authoritative read store; the versioned log is a *complete, replayable
-  backup* written in the **same redb transaction** as every mutation.
-  Restore = replay the log into a fresh store. We are **not** making the log
-  authoritative / redb a view yet (deferred; report 95/8 §7, operator 214).
-  *Correctness condition:* every state change must flow through the logged
-  write path — no out-of-band redb writes. The migration path (currently a
-  full rewrite + `fs::rename`) must also produce log/checkpoint entries or
-  the backup diverges. **Close that hole.**
+- **Invert the kernel: the log is authoritative, redb is a rebuildable view**
+  (Spirit `iir4` — the psyche chose this over the simpler log-as-backup). The
+  versioned operation log is the source of truth; the redb store is a
+  *materialized view folded from the log*. Restore and daemon resume **rebuild
+  the view from the log**. This is bigger than the mainline's current
+  parallel-log seed (§2), and it is exactly the change operator 214 deferred
+  to the `sema`/`sema-engine` owners — the psyche has now decided it.
+  *Correctness conditions, now load-bearing because the log IS the truth:*
+  (a) **every** state change appends to the log — no out-of-band redb writes;
+  the migration path (currently a full rewrite + `fs::rename`) must become a
+  logged operation or that history is lost. (b) **read-after-write must not
+  lag** (audit 208): a local commit returns only after the local view has
+  applied the entry in the same transaction; on restart the view self-heals by
+  replaying the log past its applied watermark.
 - **Home layer: `sema-engine`.** Extend the mainline (§2); settle the nouns
   here; no new crate yet (operator 214).
+- **First target component: Spirit** (the psyche's choice — the irreplaceable
+  intent records are exactly what a laptop failure must not lose). Spirit is
+  not yet opted into the versioned log, so wiring it is part of the work;
+  `mind` (already opted in) is a useful second to prove the path.
 - **Server: a new minimal append-ingest daemon on `ouranos`** (the
   Gitolite/tailnet host). It stores shipped log suffixes per component store,
   append-only, idempotent; validates sequence continuity + expected-head
@@ -219,10 +228,14 @@ schema hash (report 95/8 §15 — two guards).
    log). Fine for intent/ledger volumes; a high-write store should opt out of
    versioning (the `VersioningPolicy` opt-in is the mitigation). Decide which
    stores opt in.
-4. **Restore fidelity without the inversion.** Because redb stays
-   authoritative, the log must *faithfully* reconstruct it — which holds only
-   if every mutation is logged (doubt 2) and replay is deterministic. Test
-   restore against the real query surface, not just a digest.
+4. **The inversion is a real kernel-contract change.** With the log
+   authoritative and redb a view (Spirit `iir4`), restore fidelity becomes
+   *structural* — the view is *defined* as the fold of the log, so there is no
+   "parallel store can silently diverge" risk. The cost moves elsewhere: this
+   changes `sema`'s contract (the thing 214 deferred to the kernel owners), and
+   it makes read-after-write (§1) and deterministic replay load-bearing. Test
+   restore by rebuilding the view and reading the *real query surface*, not
+   just by matching a digest.
 5. **The server has no authentication (criome deferred).** ouranos trusts the
    tailnet; a rogue device could overwrite/forge a backup. Acceptable for a
    single-psyche trusted tailnet *for now*, but it is a real gap — see §8 Q3.
@@ -249,9 +262,10 @@ schema hash (report 95/8 §15 — two guards).
 
 ## 11. Open questions for the psyche (must be answered before/early in implementation)
 
-Surfaced separately to the psyche; recorded here so the implementing agent
-knows they gate the work: (a) log-as-backup vs kernel-inversion for this cut;
-(b) first target component (mind / Spirit / both); (c) server trust without
-criome (tailnet-trusted vs a minimal shared secret); (d) what "schema-centric"
-must concretely deliver. Defaults assumed above: log-as-backup, server is
-tailnet-trusted, schema-defined-types-plus-generation. Confirm or redirect.
+**Answered by the psyche** (these were the gating decisions):
+(a) **invert the kernel** — the log is authoritative, redb a rebuildable view
+(Spirit `iir4`); (b) first target = **Spirit**; (c) server is
+**tailnet-trusted**, no per-suffix auth (criome adds real authentication
+later); (d) schema-centric = **the VC machinery is schema-generated** —
+per-family identity + the closed-sum decoder emitted from the `.schema` (§4).
+All four are reflected above; the implementing agent builds to them.
