@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.9.5`, installed in the
+schema-derived `spirit` component at version `0.11.0`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -26,7 +26,7 @@ The binary takes exactly one argument (the one-argument rule —
   shell double quote is a clean boundary and apostrophes inside the
   description survive. Single-quoting is wrong — it loses apostrophes.
   ```sh
-  spirit "(Record (([(Information Documentation)] Decision summary Medium Minimum Zero []) ([psyche statement] None)))"
+  spirit "(Record (([(Information Documentation)] Decision summary Medium Minimum Zero []) ([([verbatim psyche words] None)] [reasoning supporting the capture])))"
   ```
 - **Path to a NOTA file** — argument does not start with `(`; the CLI
   reads the file as the NOTA argument. For records with embedded shell
@@ -78,22 +78,42 @@ positional fields: a vector of
 closed-taxonomy `Domains`, a `Kind`, one agent-clarified `Description`,
 a certainty `Magnitude`, an importance `Magnitude`, a privacy
 `Magnitude`, and a vector of `Referents` — in that order. No verbatim
-field and **no time field at all**. `Justification` has statement text
-and optional context. NOTA positional records never omit fields, so every
-`Record` spells the seven `Entry` fields and the two `Justification`
-fields.
+field on `Entry` and **no time field at all**.
+
+`Justification` is the court model (0.11.0):
+`Justification { Testimony * Reasoning * }` where `Testimony` is a
+vector of `VerbatimQuote { QuoteText * antecedent (Optional Antecedent) }`
+and `Reasoning` is the agent's argued case. `QuoteText` must be the
+psyche's **verbatim words** — a paraphrase draws a `MissingTestimony`
+guardian rejection. The `antecedent` carries the question or context the
+quote answers, as `(Some [text])`; it is load-bearing for short
+confirmations ("Sure.") that mean nothing without the question. NOTA
+positional records never omit fields, so every `Record` spells the seven
+`Entry` fields and the two `Justification` fields.
 
 The agent clarifies the psyche's wording into the description before
 recording — that keeps the log dense and searchable rather than verbose
-and lossy.
+and lossy; the testimony preserves the raw words.
 
 ```sh
-spirit "(Record (([<Domain> ...] <Kind> [description] <Certainty> <Importance> <Privacy> [<referent> ...]) ([psyche statement] None)))"
+spirit "(Record (([<Domain> ...] <Kind> [description] <Certainty> <Importance> <Privacy> [<referent> ...]) ([([verbatim quote] (Some [antecedent question or context])) ...] [reasoning])))"
 # Kind       ∈ { Decision Principle Correction Clarification Constraint }
 # Certainty  ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
 # Importance uses the same Magnitude ladder; Minimum is the ordinary default.
 # Privacy    uses the same Magnitude ladder; Zero is open/public.
 ```
+
+**Guardian discipline at 0.11.0.** The agent guardian judges every
+working-socket write and rejects with typed reasons; two new ones bite
+routinely: `ImportanceUnsupported` — new records start at `Minimum`
+importance and earn elevation through genuine repetition
+(`BumpImportance`), not at capture time; and `MissingTestimony` — the
+testimony vector must carry the psyche's verbatim words with enough
+antecedent context to stand alone. Rejection replies append the
+supporting record set and can be very large; pipe through `head` when
+exploring. 0.11.0 also carries `Propose`, `Clarify`, `Supersede`, and
+`Retire` operations — read the deployed `schema/signal.schema` for their
+shapes before first use.
 
 Domains are closed taxonomy variants such as
 `(Information Documentation)`, `(Safety Privacy)`,
@@ -136,7 +156,7 @@ hard `Remove` only after review.
 owner-configured archive database, then remove them from the hot store:
 
 ```sh
-spirit "(CollectRemovalCandidates (((Full [(Information Documentation)]) Any Any Any (Some Correction) (Exact Zero) (ExactCertainty Zero) Any) ([remove zero-certainty documentation corrections] None)))"
+spirit "(CollectRemovalCandidates (((Full [(Information Documentation)]) Any Any Any (Some Correction) (Exact Zero) (ExactCertainty Zero) Any) ([([psyche authorization quote] None)] [remove zero-certainty documentation corrections])))"
 ```
 
 Collection takes the same eight-field `Query` used by `Observe` and

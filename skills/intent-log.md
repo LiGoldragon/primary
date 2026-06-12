@@ -145,11 +145,12 @@ an `Entry` plus a `Justification`:
     <Kind>              ;; Decision | Principle | Correction | Clarification | Constraint
     [<description>]     ;; clarified intent, reusing psyche wording when useful
     <Certainty>         ;; Zero | Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
-    <Importance>        ;; same ladder; repeated attention, not confidence
+    <Importance>        ;; same ladder; new records start at Minimum and earn bumps
     <Privacy>           ;; Zero public/open; higher values narrow audience
     [<referent> ...])   ;; registered referents; usually []
-   ([<statement text>]  ;; concise psyche statement supporting the capture
-    None)))             ;; optional context as (Some [context]) when needed
+   ([([<verbatim quote>]            ;; the psyche's exact words
+      (Some [<antecedent>])) ...]   ;; the question/context the quote answers; None if self-standing
+    [<reasoning>])))                ;; the agent's argued case for the capture
 ```
 
 - `Entry` is untagged — no record-head ident. `Kind`, `Certainty`,
@@ -158,11 +159,14 @@ an `Entry` plus a `Justification`:
   `(Information Documentation)`, `(Safety Privacy)`, and
   `(Technology (Software (Engineering SoftwareArchitecture)))`.
 - `Entry` has no omission/default syntax. Spell all seven fields.
-- `Justification` is also untagged: statement text, then optional context.
-  Use `None` for ordinary captures; use `(Some [context])` only when the
-  support would otherwise be unclear.
-- Record the clarified intent as one dense description, reusing the
-  psyche's own words when load-bearing.
+- `Justification` (0.11.0 court model) is testimony plus reasoning: a
+  vector of `VerbatimQuote` values — each the psyche's **verbatim words**
+  with an optional antecedent — then the agent's reasoning. The guardian
+  rejects paraphrased testimony (`MissingTestimony`) and unearned
+  importance (`ImportanceUnsupported`); capture at `Minimum` importance
+  and bump on genuine repetition.
+- Record the clarified intent as one dense description; the verbatim
+  words live in the testimony, not the description.
 - Spirit records carry database markers and opaque identifiers; clients
   do not supply timestamps.
 
@@ -174,7 +178,7 @@ currently deployed shape directly from the pinned source.
 The deployed `spirit` CLI is the substrate:
 
 ```sh
-spirit "(Record (([(Information Documentation)] <Kind> [description] <Certainty> <Importance> Zero []) ([psyche statement] None)))"
+spirit "(Record (([(Information Documentation)] <Kind> [description] <Certainty> Minimum Zero []) ([([verbatim psyche words] (Some [antecedent]))] [reasoning])))"
 ```
 
 Inline NOTA wraps the whole object in shell double quotes; authored
