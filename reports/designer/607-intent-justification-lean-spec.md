@@ -93,6 +93,17 @@ The certainty ladder is **ordinal, modal-strength-anchored, never numeric**: hed
 (`maybe`, `I think`, `could`) clear only the low rungs; firm commitments (`we are going with X`)
 clear High; unhedged founding language (`never`, `non-negotiable`) clears the top, rarely.
 
+## Per-operation prompts — over-trained (`88mw`)
+
+The guardian's instructions are **per-operation**: each gated op (`Record`/`Propose`, `Supersede`,
+`Clarify`, `Retire`, `ChangeRecord`, `ChangeCertainty`, `RegisterReferent`) gets detailed guidance
+plus worked **accept/reject examples** — the few-shot that "trains" the guardian without weights.
+**Over-train first** (rich, concrete, discriminating example pairs — e.g. the same words claimed at
+Low certainty = accept vs. at High = reject `Overstated`), then scale back once it works, because
+the current guardian calls are undertrained. The example library is being authored (report 608);
+operator embeds it in `guardian_prompt.rs` alongside the shared checklist and the exact NOTA verdict
+grammar.
+
 ## Write-root authority rule (operator 375 #6)
 
 **Rule:** every working-socket operation that changes the live intent corpus is **guardian-gated**,
@@ -139,10 +150,13 @@ with this one" *is* the existing `Supersede` verb (`Supersession { retired_ident
 Entry, Justification }`), judged as one verdict; the lean guardian judges its soundness (checklist
 item 7). What was over-framed as "motions as precedent" was only an elaborate motion-type taxonomy
 (distinguish vs. overrule, burden-scaling) that — like the cut citation signals — is probably
-unnecessary; a plain `Supersede` with a well-argued `Reasoning` does the job. The one genuine gap is
-replacing a set with *multiple* new records at once (a split): `Supersession` carries a single
-`replacement` today, so today that is a `Supersede` (X,Y → A) plus a `Record` (B). If the split case
-proves common, that is a small schema tweak (multi-replacement `Supersede`), not a new mechanism.
+unnecessary; a plain `Supersede` with a well-argued `Reasoning` does the job. **One required schema change — correctness, not convenience (`gad7`):** `Supersession` must carry
+**multiple** replacements (`replacements (Vec Entry)`), not one. If the retired set's content splits
+across several new records, replacing it with a single record *loses meaning* and the guardian
+*should* refuse it — so the split cannot be done as `Supersede(X,Y → A)` then `Record(B)` (the first
+op correctly dies for an insufficient replacement). The atomic multi-replacement supersede — judged
+as one verdict on whether the new set *together* preserves the retired set's kernel — is part of the
+lean core.
 
 ## Tests (live-DeepSeek + shape, `tests/guardian_live_scenarios.rs`)
 
