@@ -123,15 +123,15 @@
     [How to edit skill files without growing them noisy. Skills never reference reports.])
 
   (Meta human-interaction skills/human-interaction.md Apex
-    [How agents interact with the psyche — capture intent, handle forwarded prompts, dispatch subagents, run real-world tests, and report back. Must-read for every harness on every session.])
+    [How psyche-facing agents interact with the psyche — load intent-log and spirit-cli fresh, capture intent, handle forwarded prompts, dispatch subagents, run real-world tests, and report back. Must-read for every psyche-facing harness on every session.])
   (Meta autonomous-agent skills/autonomous-agent.md Mechanism
     [When to act vs ask within work. Bead-flow + claim + work + close + release loop. Pairs with human-interaction.md (the psyche-boundary skill) — autonomous-agent is the work-loop discipline.])
   (Meta context-maintenance skills/context-maintenance.md Mechanism
     [Sweep reports and conversation. Migrate substance to permanent homes.])
   (Meta intent-log skills/intent-log.md Topic
-    [Record explicit psyche intent through Spirit. Five-kind positional NOTA with closed Domains, certainty, importance, privacy, and referents. Only psyche statements get recorded; public entries use privacy Zero.])
+    [Record explicit psyche intent through Spirit. Psyche-facing agents keep this fresh before Spirit use; tentative wording is no-capture or ask. Five-kind positional NOTA with closed Domains, certainty, importance, privacy, referents, and justification.])
   (Meta spirit-cli skills/spirit-cli.md Topic
-    [How to invoke the deployed Spirit CLI. Live v0.8.1 bare-string canonicality, seven-field domain records, separate certainty and importance, eight-field query shape, PublicRecords/PrivateRecords shortcuts, observed record identifiers, zero-certainty removal candidates, record privacy, inline NOTA vs file-path argument, and deployed-source verification.])
+    [How to invoke the deployed Spirit CLI. Live v0.9.5 RecordRequest shape, bare-string canonicality, recursive Domain records, separate certainty and importance, eight-field query shape, justifications, privacy, inline NOTA vs file-path argument, and deployed-source verification.])
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
     [Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.])
   (Meta intent-clarification skills/intent-clarification.md Topic

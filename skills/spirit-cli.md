@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.8.1`, installed in the
+schema-derived `spirit` component at version `0.9.5`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -26,7 +26,7 @@ The binary takes exactly one argument (the one-argument rule —
   shell double quote is a clean boundary and apostrophes inside the
   description survive. Single-quoting is wrong — it loses apostrophes.
   ```sh
-  spirit "(Record ([(Information Documentation)] Decision summary Medium Minimum Zero []))"
+  spirit "(Record (([(Information Documentation)] Decision summary Medium Minimum Zero []) ([psyche statement] None)))"
   ```
 - **Path to a NOTA file** — argument does not start with `(`; the CLI
   reads the file as the NOTA argument. For records with embedded shell
@@ -57,7 +57,7 @@ an active dependency. Do not infer the wire shape from old
 ```sh
 rg -n '"spirit"' /git/github.com/LiGoldragon/CriomOS-home/flake.lock
 cd /git/github.com/LiGoldragon/spirit
-rg -n "Entry \\{|Query \\{|RecordSelection \\{|pub enum Input|pub struct VersionReport" schema src/schema
+rg -n "Entry \\{|RecordRequest \\{|Justification \\{|Query \\{|RecordSelection \\{|pub enum Input|pub struct VersionReport" schema src/schema
 ```
 
 ## Encoding rules
@@ -72,20 +72,23 @@ bare-eligible string are rejected; write `abcd`, not `[abcd]`, and
 
 ## Recording intent
 
-The deployed `Entry` has exactly seven positional fields: a vector of
+The deployed `Record` operation carries a two-field `RecordRequest`:
+`Entry`, then `Justification`. The deployed `Entry` has exactly seven
+positional fields: a vector of
 closed-taxonomy `Domains`, a `Kind`, one agent-clarified `Description`,
 a certainty `Magnitude`, an importance `Magnitude`, a privacy
 `Magnitude`, and a vector of `Referents` — in that order. No verbatim
-field, no context payload, and **no time field at all**. NOTA
-positional records never omit fields, so every `Record` spells all
-seven.
+field and **no time field at all**. `Justification` has statement text
+and optional context. NOTA positional records never omit fields, so every
+`Record` spells the seven `Entry` fields and the two `Justification`
+fields.
 
 The agent clarifies the psyche's wording into the description before
 recording — that keeps the log dense and searchable rather than verbose
 and lossy.
 
 ```sh
-spirit "(Record ([<Domain> ...] <Kind> [description] <Certainty> <Importance> <Privacy> [<referent> ...]))"
+spirit "(Record (([<Domain> ...] <Kind> [description] <Certainty> <Importance> <Privacy> [<referent> ...]) ([psyche statement] None)))"
 # Kind       ∈ { Decision Principle Correction Clarification Constraint }
 # Certainty  ∈ { Zero Minimum VeryLow Low Medium High VeryHigh Maximum }
 # Importance uses the same Magnitude ladder; Minimum is the ordinary default.
@@ -93,9 +96,9 @@ spirit "(Record ([<Domain> ...] <Kind> [description] <Certainty> <Importance> <P
 ```
 
 Domains are closed taxonomy variants such as
-`(Information Documentation)`, `(Craft Programming)`,
-`(Craft Architecture)`, `(Craft Schema)`, `(Technology Intelligence)`,
-or `(Safety Privacy)`. Read `spirit`'s deployed
+`(Information Documentation)`, `(Safety Privacy)`,
+`(Technology (Software (Engineering SoftwareArchitecture)))`, or
+`(Technology (Software (Quality Testing)))`. Read `spirit`'s deployed
 `schema/signal.schema` for the full list when a domain is unclear.
 Narrow free words belong in the description where keyword/text search
 can find them, or in `Referents` when the thing is a registered
@@ -133,12 +136,12 @@ hard `Remove` only after review.
 owner-configured archive database, then remove them from the hot store:
 
 ```sh
-spirit "(CollectRemovalCandidates ((Full [(Information Documentation)]) Any Any Any (Some Correction) (Exact Zero) (ExactCertainty Zero) Any))"
+spirit "(CollectRemovalCandidates (((Full [(Information Documentation)]) Any Any Any (Some Correction) (Exact Zero) (ExactCertainty Zero) Any) ([remove zero-certainty documentation corrections] None)))"
 ```
 
 Collection takes the same eight-field `Query` used by `Observe` and
-`Count`, wrapped in `CollectRemovalCandidates`. For the removal-candidate
-path, select records with `(ExactCertainty Zero)`. The reply
+`Count`, plus a `Justification`, wrapped in `CollectRemovalCandidates`.
+For the removal-candidate path, select records with `(ExactCertainty Zero)`. The reply
 `(RemovalCandidatesCollected (...))` carries archived
 `RemovalArchiveRecord` values, removed identifiers, skipped candidates,
 and the post-removal database marker. Archive location is not a

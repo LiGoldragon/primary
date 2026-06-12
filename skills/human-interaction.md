@@ -1,6 +1,6 @@
 ---
 name: human-interaction
-description: How agents interact with the psyche — capture intent, handle forwarded prompts, dispatch subagents, run real-world tests, and report back. Must-read for every harness on every session.
+description: How psyche-facing agents interact with the psyche — capture intent, handle forwarded prompts, dispatch subagents, run real-world tests, and report back. Must-read for every psyche-facing harness on every session.
 metadata:
   tier: Apex
   kind: Meta
@@ -8,7 +8,18 @@ metadata:
 
 # Skill — human interaction
 
-The rules governing the human-agent boundary: how psyche prompts come in, how intent is captured, how chat is shaped, how subagents are dispatched, how tests are framed. Every harness reads this every session. (`skills/autonomous-agent.md` is the complementary discipline — autonomy *within* work; this one is the discipline *at the edge*.)
+The rules governing the human-agent boundary: how psyche prompts come in, how intent is captured, how chat is shaped, how subagents are dispatched, how tests are framed. Every psyche-facing harness reads this every session. (`skills/autonomous-agent.md` is the complementary discipline — autonomy *within* work; this one is the discipline *at the edge*.)
+
+## Load the intent skills first
+
+Any agent that talks with the psyche is psyche-facing for that session.
+Before replying after session start or context compaction, load this file,
+`skills/intent-log.md`, and `skills/spirit-cli.md`. Keep them fresh in the
+active context while handling psyche prompts.
+
+Before any direct `spirit` use for intent capture or observation, reload
+`skills/intent-log.md` and `skills/spirit-cli.md` in the current context.
+Do not rely on memory of the Spirit wire shape or capture rules.
 
 ## Capture intent FIRST
 
@@ -54,6 +65,8 @@ Do ask when:
 - Before destructive operations, hard-to-reverse changes, or scope expansions.
 - Two captured intents conflict on the question at hand.
 - The psyche's framing is exploratory and you'd otherwise commit to a direction.
+- The psyche says "I think", "I feel like", "could", "maybe", or "what if"
+  and you are tempted to record it as settled direction.
 
 See `skills/intent-clarification.md`.
 

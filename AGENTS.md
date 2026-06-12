@@ -200,6 +200,15 @@ designer — doubting, finding flaws, catching broken rules. No
   absent, or contradicted, ask — don't infer. The intent layer outranks
   every other surface; superseding psyche intent is always explicit.
 
+- **Psyche-facing agents keep intent guidance fresh.** If your lane is
+  interacting with the psyche in chat, load `skills/human-interaction.md`,
+  `skills/intent-log.md`, and `skills/spirit-cli.md` at session start
+  or immediately after compaction before answering the psyche. Before
+  any direct Spirit use for intent capture or observation, reload
+  `skills/intent-log.md` and `skills/spirit-cli.md` in the current
+  context. If you cannot keep those rules in context, ask or pause
+  rather than guessing at intent capture.
+
 - **Run the Spirit gate on every psyche prompt.** Choose exactly one
   outcome before reports, code, or chat: *no capture* (question, tangent,
   task-only order, current-state reaction), *Observe/refresh* (read

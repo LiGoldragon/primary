@@ -32,6 +32,7 @@ question.
 ## Spirit gate — classify before any write
 
 Spirit writes are conservative. Before any `spirit "(Record …)"`,
+load this file and `skills/spirit-cli.md` in the current context, then
 answer the gate:
 
 1. Is this an exact psyche statement, not agent inference?
@@ -85,6 +86,12 @@ current-state updates, or reactions that state no durable rule. Short
 affirmations usually greenlight the immediate action only; ask if
 unclear.
 
+Exploratory wording stays out of the log unless the psyche explicitly
+settles it. "I think", "I feel like", "could", "maybe", "what if", and
+similar phrasing normally mean brainstorming or design exploration. If the
+statement seems important but not settled, ask whether to record it; do
+not launder it into a firm Principle or Decision.
+
 ## Capture is not done until it manifests into the affected repo's INTENT.md
 
 Recording the Spirit record is the first half. When an intent record
@@ -128,30 +135,34 @@ spree-remove old mis-logs.
 ## Record shape
 
 The deployed Spirit CLI accepts a NOTA `Operation`. For intent capture
-the operation is `Record` carrying an untagged `Entry` (positional
-fields per `skills/nota-design.md`):
+the operation is `Record` carrying an untagged `RecordRequest`
+(positional fields per `skills/nota-design.md`). `RecordRequest` carries
+an `Entry` plus a `Justification`:
 
 ```nota
 (Record
-  ([<domain> ...]    ;; vector of closed taxonomy Domain values
-   <Kind>            ;; Decision | Principle | Correction | Clarification | Constraint
-   [<description>]   ;; clarified intent, reusing psyche wording when useful
-   <Certainty>       ;; Zero | Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
-   <Importance>      ;; same ladder; repeated attention, not confidence
-   <Privacy>         ;; Zero public/open; higher values narrow audience
-   [<referent> ...])) ;; registered referents; usually []
+  (([<domain> ...]      ;; vector of closed taxonomy Domain values
+    <Kind>              ;; Decision | Principle | Correction | Clarification | Constraint
+    [<description>]     ;; clarified intent, reusing psyche wording when useful
+    <Certainty>         ;; Zero | Minimum | VeryLow | Low | Medium | High | VeryHigh | Maximum
+    <Importance>        ;; same ladder; repeated attention, not confidence
+    <Privacy>           ;; Zero public/open; higher values narrow audience
+    [<referent> ...])   ;; registered referents; usually []
+   ([<statement text>]  ;; concise psyche statement supporting the capture
+    None)))             ;; optional context as (Some [context]) when needed
 ```
 
 - `Entry` is untagged — no record-head ident. `Kind`, `Certainty`,
   `Importance`, and `Privacy` are bare PascalCase enum variants.
 - Domains are closed taxonomy values such as
-  `(Information Documentation)`, `(Craft Programming)`,
-  `(Craft Architecture)`, `(Craft Schema)`, `(Safety Privacy)`, and
-  `(Technology Intelligence)`.
+  `(Information Documentation)`, `(Safety Privacy)`, and
+  `(Technology (Software (Engineering SoftwareArchitecture)))`.
 - `Entry` has no omission/default syntax. Spell all seven fields.
-- Spirit stores no separate context or verbatim fields. Record the
-  clarified intent as one dense description, reusing the psyche's own
-  words when load-bearing.
+- `Justification` is also untagged: statement text, then optional context.
+  Use `None` for ordinary captures; use `(Some [context])` only when the
+  support would otherwise be unclear.
+- Record the clarified intent as one dense description, reusing the
+  psyche's own words when load-bearing.
 - Spirit records carry database markers and opaque identifiers; clients
   do not supply timestamps.
 
@@ -163,7 +174,7 @@ currently deployed shape directly from the pinned source.
 The deployed `spirit` CLI is the substrate:
 
 ```sh
-spirit "(Record ([(Information Documentation)] <Kind> [description] <Certainty> <Importance> Zero []))"
+spirit "(Record (([(Information Documentation)] <Kind> [description] <Certainty> <Importance> Zero []) ([psyche statement] None)))"
 ```
 
 Inline NOTA wraps the whole object in shell double quotes; authored
@@ -264,9 +275,12 @@ Production Spirit uses three retrieval layers:
 - **Domains** — closed taxonomy buckets for broad routing. Choose one or
   more coarse domains that genuinely fit the intent. Use
   `(Information Documentation)` for documentation/skill/report guidance,
-  `(Craft Programming)` for coding discipline, `(Craft Architecture)` for
-  system design, `(Craft Schema)` for schema work, `(Safety Privacy)` for
-  privacy boundaries, and `(Technology Intelligence)` for AI/LLM tooling.
+  `(Technology (Software (Quality Testing)))` for testing discipline,
+  `(Technology (Software (Engineering SoftwareArchitecture)))` for system
+  design, `(Technology (Software (Data SchemaEvolution)))` for schema
+  evolution, `(Safety Privacy)` for privacy boundaries, and
+  `(Technology (Software (Intelligence AgentSystems)))` for agent/LLM
+  tooling.
 - **Description keywords/text** — free words live in the clarified
   description. Query them with `KeywordMatch` or `ContainsText`; keep
   narrow ad hoc tags there.
