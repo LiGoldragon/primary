@@ -17,8 +17,15 @@ below is verified as of writing; trust the branch heads over memory.*
 | sema-engine | `versioned-family-identity` | `53426b14` | approved |
 | sema-engine | `versioned-fold` | `3593ffe6` | approved (tamper commit); fix-round adds 2 witnesses |
 | mind | `memory-graph-family` | `313b7c87` | approved (rebased onto `b9cd8c23`) |
-| spirit | `versioned-store-pilot` | `a50cc732` | needs-fixes → fix-round in flight; flake.lock refreshed/pushed by orchestrator; **nix build blocked, fix known (below)** |
-| mirror, signal-mirror, meta-signal-mirror | `main` (greenfield) | `46193e3b` / `d06dd7bd` / `fa96dc37` | needs-fixes → fix-round in flight (two proven wedge bugs) |
+| spirit | `versioned-store-pilot` | `99efbee8` | **closed**: fix-round approved + nix build proven (`packages.store-migration` produces `spirit-migrate-store`) |
+| mirror, signal-mirror, meta-signal-mirror | `main` (greenfield) | `4724ac01` / `4fa767d7` / `674f24d2` | **closed**: both wedges fixed, self-heal proven by the reviewer's own reproduction driver |
+| sema-engine | `versioned-fold` (final) | `dbe29427` | **closed**: all integrity raise sites behaviorally witnessed |
+
+*(Table above this row reflects mid-arc state; this block is the final word.
+The nix fix below was applied and superseded by a better one: the flake's
+lock-patching step now dedups same-name+version entries per vendored branch
+— see the `99efbee8` commit — so the recipe below is history, kept for
+context.)*
 
 ## In-flight fix-round (run `wf_8b2831ee-e40`), may be cut by the limit
 
