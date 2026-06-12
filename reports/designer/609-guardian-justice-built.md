@@ -182,6 +182,21 @@ have broken the new daemon. The journal filename now carries its schema version
 rather than reading incompatible bytes. The main intent store is untouched (the
 stored `Entry` is unchanged), so the daemon self-resumes the live corpus.
 
+### Live verification (post-activation)
+
+- `spirit Version` → **`0.11.0`**; `spirit-daemon` + `agent-daemon` both active.
+- Empty-testimony capture → **`(GuardianRejected (MissingTestimony …))`** — the
+  deterministic structural gate fires live (no DeepSeek call, no corpus residue).
+- A deliberately over-claimed capture (Maximum certainty on a deeply-hedged quote)
+  through the live **Pro** guardian → **`(GuardianRejected (InsufficientWarrant …))`**
+  — a correct reject: a quote that does not license the claim at all fails the
+  warrant gate (Gate 4) before the magnitude gate; a quote that licenses the claim
+  but at a lower rung trips `Overstated` (Gate 7). The verdict (reject) is robust;
+  the exact reason atom on hedged-over-claims is the kind of precision the
+  decision-journal flywheel and few-shot expansion will sharpen.
+- `spirit.guardian.v2.sema` created fresh and recording; the old 21 MB journal is
+  untouched. The version fix works.
+
 ## Schema-macro extraction (the `xprx` direction) — scoped, not yet done
 
 The repeated shape worth pushing into the emitter: the **verdict-type triad**
