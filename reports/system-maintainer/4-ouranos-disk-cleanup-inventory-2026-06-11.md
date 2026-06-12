@@ -126,3 +126,36 @@ Recommendation: Nix cleanup requires deleting old profile generations and stale 
 3. Delete obvious reclonable external repos if approved: `NixOS/nixpkgs` and `tqwewe/kameo` together about 12.4 GiB.
 4. Remove stale repo/worktree `result` symlinks and old profile generations, then run Nix GC.
 5. Optionally clear browser/tool caches, especially `~/.cache/nix`, `~/.cache/google-chrome`, and Puppeteer cache.
+
+## Cleanup resolution — later same session
+
+Additional cleanup completed after tracing duplicate Nix store entries:
+
+- Deleted all remaining `/git/**/target` directories, including non-LiGoldragon repos such as `tqwewe/kameo` and `y0sif/whisrs`.
+- Deleted all `~/git-archive/**/target` directories.
+- Deleted Codex session files older than 7 days.
+- Removed stale user-owned `result` symlink roots under `/git`, `/home/li/wt`, `/home/li/primary`, and `/tmp`.
+- Removed root-owned stale profile generations while preserving current profile links:
+  - system: kept `system-114-link`
+  - bird: kept `profile-53-link` and `home-manager-6-link`
+  - maikro: kept `profile-28-link` and `home-manager-4-link`
+  - li: already only had current `profile-1809-link` and `home-manager-768-link`
+- Removed root-owned stale `/tmp/criomos-deploy` result root.
+- Ran Nix garbage collection.
+
+Final observed state:
+
+- `/`: 916 GiB total, 239 GiB used, 630 GiB free, 28% used.
+- `/nix`: 86.32 GiB.
+- Non-proc roots are now only current profile/current OS roots:
+  - current and booted system roots
+  - one current system generation
+  - current Li/Bird/Maikro profile and home-manager roots
+
+Root cause:
+
+- FullOS/Home deployments update current profile links but do not prune old profile generations.
+- Bird and Maikro had many stale imperative `user-environment` profile generations, not just Home Manager generations.
+- Those old profile generations retained historical `pi-*` and Rust toolchain store paths.
+- Some remaining older store paths after cleanup are held only by live processes and `/run/booted-system`; they will disappear after reboot or session/process restart plus GC.
+
