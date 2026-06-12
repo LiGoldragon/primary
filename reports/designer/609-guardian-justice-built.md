@@ -165,8 +165,13 @@ activated:
 |---|---|---|
 | signal-agent | `33c2ecac` (0.3.0) | ReasoningEffort / ThinkingMode on PromptOptions |
 | agent | `5a2cd5ab` (0.2.0) | reasoning_effort + thinking in the chat-completions body |
-| spirit | `a2ba6ee6` (0.11.0) | typed justification, burden judge, multi-supersede, journal v2 |
-| CriomOS-home | `fa765d0e` | pins bumped; guardian → deepseek-v4-pro, 180s timeout |
+| spirit | `fef5f001` (0.11.2) | typed justification, burden judge, multi-supersede, journal v2, supersede data-loss fix, prompt-files |
+| CriomOS-home | `05861522` | pins bumped; guardian → deepseek-v4-pro, 180s timeout |
+
+The spirit deploy chain: `0.11.0` (the build) → `0.11.1` (the review-found
+supersede data-loss fix, below) → `0.11.2` (prompt prose moved into standalone
+`src/guardian-prompts/*.md` files included via `include_str!`, behaviour-identical;
+ARCHITECTURE.md documents the layout). Each was built, validated, and activated.
 
 Validation before activation: `cargo build` + the non-live suite (process_boundary
 12/12, generated_signal_plane 23/23, runtime_triad, observer_tap, meta_configure,
