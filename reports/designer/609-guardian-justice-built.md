@@ -165,13 +165,19 @@ activated:
 |---|---|---|
 | signal-agent | `33c2ecac` (0.3.0) | ReasoningEffort / ThinkingMode on PromptOptions |
 | agent | `5a2cd5ab` (0.2.0) | reasoning_effort + thinking in the chat-completions body |
-| spirit | `fef5f001` (0.11.2) | typed justification, burden judge, multi-supersede, journal v2, supersede data-loss fix, prompt-files |
-| CriomOS-home | `05861522` | pins bumped; guardian → deepseek-v4-pro, 180s timeout |
+| spirit | `0a6f93af` (0.11.3) | typed justification, burden judge, multi-supersede, journal v2, supersede data-loss fix, prompt-files |
+| CriomOS-home | `3bd21db2` | pins bumped; guardian → deepseek-v4-pro, 180s timeout |
 
 The spirit deploy chain: `0.11.0` (the build) → `0.11.1` (the review-found
 supersede data-loss fix, below) → `0.11.2` (prompt prose moved into standalone
-`src/guardian-prompts/*.md` files included via `include_str!`, behaviour-identical;
-ARCHITECTURE.md documents the layout). Each was built, validated, and activated.
+`src/guardian-prompts/*.md` files via `include_str!`, behaviour-identical;
+ARCHITECTURE.md documents the layout) → `0.11.3` (the prompt files revealed a
+flake gap: `cleanSource`'s filter admitted cargo sources / `.schema` / `scripts/`
+but dropped `.md`, so the files never reached the nix build — a stale local cache
+hid it, the clean remote activation build surfaced it. Added a `guardian-prompts/`
+filter). **Live and verified at `0.11.3`**: `lojix_run=success`, both daemons
+active, the guardian rejecting empty testimony and over-claims and accepting
+well-formed records on DeepSeek Pro. Each step was built, validated, and activated.
 
 Validation before activation: `cargo build` + the non-live suite (process_boundary
 12/12, generated_signal_plane 23/23, runtime_triad, observer_tap, meta_configure,
