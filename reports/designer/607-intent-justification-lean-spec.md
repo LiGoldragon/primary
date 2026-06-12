@@ -83,6 +83,11 @@ judge beats a noise-laden generalist even on a nominally weaker model. So:
    unjustified).
 6. **Consistency** — any live record `Contradict`s or `Duplicate`s this (the daemon bumps the
    canonical's importance as a mechanical consequence of a `Duplicate` verdict).
+7. **Operation soundness** (for `Supersede` / `Retire` / `Clarify` / `ChangeRecord`) — does the
+   Reasoning justify retiring or amending the named records; are they genuinely covered
+   (`SupersedeTargetMissing`); does the change lose no meaning (`ClarifyTramples` /
+   `ClarifyLosesMeaning`); and for psyche records, is there a verbatim psyche quote authorizing
+   destruction? "Replace X and Y with this" is the existing `Supersede` verb — **no new mechanism.**
 
 The certainty ladder is **ordinal, modal-strength-anchored, never numeric**: hedged words
 (`maybe`, `I think`, `could`) clear only the low rungs; firm commitments (`we are going with X`)
@@ -122,15 +127,22 @@ how the guardian gets "trained" without weights.
 ## Deferred to Phase 2 (the cathedral — design in 604/605)
 
 Build only where the lean core demonstrably falls short: typed per-field `Warrant` sub-sections
-(domain/kind/certainty/privacy/operation) for structural per-field rejection; a separate
-`StakesBasis` slot to structurally enforce certainty ⊥ importance; **cross-record motions-as-
-precedent** (citing existing records and pleading distinguish/supersede as argued motions — *this is
-the "motions as precedent" idea: a submission can argue "records X, Y already cover this, replace
-them," judged as one verdict*); and **verbatim authentication** — the guardian verifying quotes
-against the real conversation. Authentication is the deepest gap (report 606) but needs a full-stack
-capture/UI rewrite that is out of reach now; Spirit must work first. Until then `TestimonyFabricated`
-is heuristic-only — pair its live test with a shape test, don't treat it as authentication
-(operator 375 #9).
+(domain/kind/certainty/privacy) for structural per-field rejection; a separate `StakesBasis` slot to
+structurally enforce certainty ⊥ importance; and **verbatim authentication** — the guardian
+verifying quotes against the real conversation. Authentication is the deepest gap (report 606) but
+needs a full-stack capture/UI rewrite that is out of reach now; Spirit must work first. Until then
+`TestimonyFabricated` is heuristic-only — pair its live test with a shape test, don't treat it as
+authentication (operator 375 #9).
+
+**Cross-record operations are NOT deferred — and need no new mechanism.** "Replace records X and Y
+with this one" *is* the existing `Supersede` verb (`Supersession { retired_identifiers, replacement
+Entry, Justification }`), judged as one verdict; the lean guardian judges its soundness (checklist
+item 7). What was over-framed as "motions as precedent" was only an elaborate motion-type taxonomy
+(distinguish vs. overrule, burden-scaling) that — like the cut citation signals — is probably
+unnecessary; a plain `Supersede` with a well-argued `Reasoning` does the job. The one genuine gap is
+replacing a set with *multiple* new records at once (a split): `Supersession` carries a single
+`replacement` today, so today that is a `Supersede` (X,Y → A) plus a `Record` (B). If the split case
+proves common, that is a small schema tweak (multi-replacement `Supersede`), not a new mechanism.
 
 ## Tests (live-DeepSeek + shape, `tests/guardian_live_scenarios.rs`)
 
