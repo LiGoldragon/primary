@@ -6,6 +6,8 @@ what is *clever*. It is the synthesis of the frontier research (chapters
 and the psyche's escalation (Spirit `i4ak` / `x0ja` / `jys2`). Diagrams
 carry the load; prose explains and flags the clever moves.
 
+**Implementing now? Read `reports/system-designer/97-versioned-state-implementation-handoff.md` first.** This grand design is the long-term target. The *first cut* the psyche scoped is much smaller — server-backed data-loss protection only (payload log → checkpoint/restore → remote mirror), **schema-centric, with criome/BLS, privacy/encryption, and branching/merge all deferred.** Report 97 is the self-contained build spec; this file is where its deferred parts are designed.
+
 ## 0. The thesis in one breath
 
 **Version the log, not the store.** A per-component, payload-bearing,
