@@ -48,3 +48,20 @@ In `diet/Fruitarianism.md` (~line 9), bare-attributed to *Caraka Saṃhitā*. Th
 - **Apply the four fixes?** All are exact and ready. The three classical re-attributions (1–3) are pure citation corrections. The Jobs/anecdote rework (4) touches editorial voice, so I held it for your word. Say which to apply.
 - **Publish-prep the source-extract?** It is groundwork, not a published article (no frontmatter, listed under "Primary-source extractions" in `_index.md`). If any of this should become a standalone article or fold into `Yogis Don't Eat Fruit`, that is a separate writing pass.
 - **The Fontana bone study cuts both ways** and I cited it that way — low bone mass, but the authors hedge on whether it is pathological. If the diet articles lean on "raw diets weaken bones," they should inherit that caveat rather than overstate it.
+
+## Update — fixes applied, and a fifth finding (systemic)
+
+The psyche directed: apply the fixes, and rewrite *Yogis Don't Eat Fruit* centred on Vedic sources rather than modern studies. Done.
+
+- **`diet/Yogis_Dont_Eat_Fruit.md` rewritten.** The modern-anecdote block (Jobs, Kutcher, the infant, the psychiatric ward) is gone; the clinical record now lives only in the source-extract. The clearing-then-depleting arc is recast entirely in classical terms — *vāta* vitiation, *ojakṣaya*, *rasa-atiyoga*, *āma*. Every quote block is a verified source: Taittirīya 2.1/2.2.1/2.2.4, Caraka Sū 27.349–350 + 5.12 + 26.43 + the *kāla-viruddha* doctrine, BhG 17.8 and 6.16–17, Ṛgveda 4.58.1, HYP 1.58, and Gheraṇḍa Saṃhitā 5.16. Finding #4 (the Jobs causal claim and the two unverifiable anecdotes) is resolved by removal.
+- **Findings #1–3 applied.** `Fruit_as_Medicine.md` §V: the *mitāhāra* verse re-attributed to *Gheraṇḍa Saṃhitā* 5.16. `Fruitarianism.md`: *kṣutpipāsā* re-attributed to *Yoga Sūtra* 3.31 (with the verse's actual text), and *āhāraḥ prāṇānāṁ mūlam* replaced by the genuine, locatable Caraka Sū 27.349–350.
+
+**Finding #5 — the "HYP 1.57" attribution is systemically wrong, across eight further files.** Rewriting the article surfaced that its lead citation — "hitaṃ mitaṃ ca bhoktavyaṃ annaṃ yogārthinā sadā," attributed to *Haṭha Yoga Pradīpikā* 1.57 — is unsound. The project's own research file (`research_yoga_ayurveda_lineage/06_structural_parallels.md`) records HYP 1.57 as a **different** verse: *brahmacārī mitāhārī tyāgī yogaparāyaṇaḥ… abdād ūrdhvaṃ bhavet siddhaḥ* — "the celibate, moderate eater, renunciate devoted to yoga becomes perfected after a year" (numbered 1.59 in the Pancham Singh edition — the same HYP edition-divergence report #85 documented). The "hitaṃ mitaṃ ca bhoktavyaṃ" line cannot be located in HYP at any number, nor pinned to Yoga Yājñavalkya or another text; it is absent from the project's own Muktibodhananda HYP extract. I dropped it from the rewrite and from `Fruit_as_Medicine.md` (rebuilding both on the verified HYP food-lists + 1.58/1.63 and the Caraka/Taittirīya *anna* doctrine), and fixed the two dangling prose references that removal left in `Fruit_as_Medicine.md`.
+
+The same "hitaṃ mitaṃ = HYP 1.57" citation still stands in eight files I did **not** touch — it is a project-wide decision, not mine to make unilaterally:
+
+- `diet/Ambrosian_Diet.md`, `diet/Yogic_Food.md`, `diet/In_Praise_of_Agni.md`, `water/Keep_the_Plasma.md` (quote blocks)
+- `source-extracts/Apathya.md`, `source-extracts/Cooking_and_Agni.md` (quote blocks)
+- `source-extracts/Raw_and_Cooked_Cross_Tradition.md`, `source-extracts/Raw_Vegan_Salad_and_Juice.md` (prose references)
+
+Recommended resolution, for the psyche to choose: either (a) locate the line's true source — most likely Yoga Yājñavalkya, which has a *mitāhāra* section — and re-attribute it everywhere, or (b) treat it as a paraphrase and replace it with the genuine HYP food citations (1.58, 1.63) as I did in the two files above. Until then, eight files carry a citation the project's own research contradicts.
