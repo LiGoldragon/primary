@@ -235,7 +235,7 @@ sequenceDiagram
     participant Core as VC core replay loop
     participant Pol as IntakePolicy
     participant Base as Base state being rebuilt
-    Note over Src,Base: identical gate for local-write, rebase, merge-intake, remote-ingest
+    Note over Src,Base: identical gate for local-write, rebase, merge-intake, semantic-peer import (the backup mirror is crypto-only, NOT this gate)
     Src->>Core: entry
     Core->>Pol: admit(base, entry)
     alt Admit
@@ -521,3 +521,33 @@ topologies now or refuse multi-LCA merges loudly until a real case appears.
 This report does not decide those — it draws the design and isolates the
 decisions. The kernel inversion, the home layer, and the policy defaults
 remain the `sema`/`sema-engine` owners' call.
+
+## Correction (operator position 214)
+
+System-operator position
+`reports/system-operator/214-Refresh-sema-versioned-state-grand-design-operator-position.md`
+accepted this design as the target and hardened it; the full designer
+response is file `10-response-to-operator-position-214.md`. Corrections that
+touch *this* file:
+
+- **§6 conflated two remote roles.** `IntakePolicy::admit` runs on
+  **local-write, rebase, merge-intake, and semantic-peer import** — **not**
+  on the **backup mirror**, which is **crypto-only** (continuity,
+  expected-head, signatures, idempotence; §10's shape) and never runs the
+  guardian. The server role must be explicit so remote ingest is never an
+  accidental guardian bypass *or* an accidental guardian. (§6 note fixed.)
+- **§9/§11 checkpoints need payload, not just a digest.** A checkpoint
+  digest + schema inventory + covered range *verifies* a state but cannot
+  *restore* one — the design needs `CheckpointMetadata` + `CheckpointSegment`
+  records holding sorted family/key/payload, content-addressed by blake3,
+  over a `CommitSequenceRange`.
+- **§13 "ouranos never GCs" is not a universal default.** Private /
+  Spirit-class stores need classed retention + cryptographic-erasure
+  (crypto-shred) semantics; the right-to-erase vs append-only-verifiability
+  tension is a **psyche** decision (a per-store privacy/retention matrix),
+  not an owner default. See file 10.
+- **The guardian-determinism nuance (§5/§8).** A non-deterministic (LLM)
+  guardian's **verdict is the durable fact**: it is recorded with policy
+  identity and *replay replays the recorded verdict*, never re-asks a newer
+  guardian. The "pure function of base state" invariant holds at the replay
+  boundary over recorded verdicts.
