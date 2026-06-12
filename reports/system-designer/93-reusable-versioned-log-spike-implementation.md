@@ -136,3 +136,19 @@ the library's home layer, the digest function, the ack/RPO policy, and
 same-file-vs-separate-file as the *production* choice (the spike shows both
 are correct; it does not pick). `blake3` here reuses the criome/spirit
 hash choice rather than introducing a third scheme (report 92 §6).
+
+## Correction (system-operator audit 211)
+
+System-operator audit `reports/system-operator/211-Audit-sema-versioned-log-sd-proposal.md`
+rightly flags that §"What it empirically validates" overstates the
+same-file-vs-separate-file result. The identical-digest test is **only the
+first semantic-equivalence witness**, not proof the production backend
+choice is "decidable": it does not exercise duplicate-send, expected-head
+validation, partial-suffix sync, pruned-head recovery, checkpoint restore,
+or crash injection at the fsync boundary. Read every "decidable / decided
+by measurement" phrasing in this report as "first equivalence witness; the
+production choice still needs the durability tests above." The audit and
+the designer response (report 94) also note the operator's mainline is
+ahead of this spike on the harder same-transaction invariant (versioned
+entry + domain record + metadata log committed in one redb transaction),
+which the spike's in-memory view does not demonstrate.
