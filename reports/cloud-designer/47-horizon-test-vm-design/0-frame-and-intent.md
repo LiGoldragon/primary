@@ -60,6 +60,34 @@ then bring the real microVM up and have lojix deploy into it. Code repos
 (horizon-rs/CriomOS/CriomOS-test-cluster) use designer feature branches in
 `~/wt`; operator integrates main.
 
+## Unit A status — DONE + GREEN (2026-06-13)
+
+The horizon foundation is implemented, reviewed, and its gate passes, on
+designer feature branches (operator integrates main):
+- **horizon-rs** `horizon-test-vm` (`59862dd0`, **pushed to origin**; main
+  unmoved at `9fae4a36`): `NodeSpecies::TestVm`, `Machine` `disk_gb`/`location`
+  (+ serde-transparent `Location` newtype), the lean `test_vm` facet
+  (`test_vm` + `virtual_machine` only — not edge/center/router), and a genuine
+  golden projection test. ~121 tests green; no projection regression (all
+  fixtures byte-identical).
+- **CriomOS-test-cluster** `horizon-test-vm` (`a02bca90`, committed; main
+  unmoved at `4621bdd3`): the real-disk `mercury` TestVm node (Ext4 on
+  `/dev/vda`, host `atlas`, 4c/8G/40G, own IP/domain), regenerated fixtures,
+  and its flake `horizon` input repinned to the horizon-rs branch.
+- **Gate green:** `nix build .#checks.x86_64-linux.projections-match-fieldlab`
+  passes — mercury projects (`testVm`+`virtualMachine`, lean profile,
+  `superNode=atlas`, `diskGb=40`, real Ext4 disk) and all 5 nodes match.
+
+**Finding:** the CriomOS-test-cluster fixtures were *already stale* vs
+horizon-rs main (missing `backup_wireless`/`compressedSwap`) — reconciled in
+this branch; a maintainer should note the test cluster wasn't tracking the
+model.
+
+**Remaining:** Unit B (CriomOS — gate the lean guest on `behavesAs.testVm`;
+emit the `microvm.nix` guest + additive tap + guest-IP networking + non-autostart
+unit on the host), then Unit C (host-side trigger + the live e2e: bring the
+real microVM up on its host and have lojix deploy a full OS into it).
+
 ## What to design (this meta-report)
 
 Ground the actual horizon model + CriomOS derivation, then design:
