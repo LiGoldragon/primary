@@ -88,6 +88,56 @@ emit the `microvm.nix` guest + additive tap + guest-IP networking + non-autostar
 unit on the host), then Unit C (host-side trigger + the live e2e: bring the
 real microVM up on its host and have lojix deploy a full OS into it).
 
+## Unit B status — DONE, pass-with-notes (2026-06-13)
+
+CriomOS derives the two emissions from the projected facts, eval-green on
+feature branches:
+- **CriomOS** `horizon-test-vm` (`9543da26`, **pushed**; main unmoved `8762286b`):
+  `test-vm-guest.nix` (lean gate on `behavesAs.testVm` — trims docs/home-manager,
+  keeps sshd keys-only + `adminSshPubKeys` + real `/dev/vda` ext4 root → still a
+  deploy target) and `test-vm-host.nix` (per ex_node with
+  `superNode==thisNode && behavesAs.testVm`: a real `microvm.nix` KVM guest sized
+  from cores/ram/disk, an **additive** tap, the guest-IP `networking.hosts` fix,
+  a non-autostart unit), wired in `criomos.nix`.
+- **CriomOS-test-cluster** `horizon-test-vm` (`9f747007`; main unmoved `4621bdd3`):
+  repins `criomos` to the branch, threads the microvm input into the fixture
+  build, exposes `mercury-toplevel` + `atlas-toplevel`.
+- **Eval-green:** projection gate passes; `mercury-toplevel` forms a lean
+  derivation (sshd + operator key, no desktop/home); atlas's microVM/tap/
+  hosts/non-autostart attributes all evaluate (verified field-level).
+
+**Notes / follow-ons (fold into Unit C or track):**
+- *(MEDIUM, latent — shapes the Unit C host choice)* the generic tap `.network`
+  (`70-test-vm-vmt0`) sorts after the plain-center profile's broad
+  `10-main-eth` (`Type=ether`, no name match), so on a center-**non-router** host
+  it'd be claimed by DHCP and break *guest* reachability. Inert on atlas (router).
+  Fix when used on such a host: rename the tap `.network` to a higher-priority
+  prefix (`05-`) or constrain the center ether match.
+- atlas's **full** toplevel won't realise here: largeAi → needs a Qwen GGUF
+  model derivation absent in this env (pre-existing, unrelated to the microVM
+  code). So atlas is not a clean live-deploy host in our environment.
+- *(LOW)* tap MAC `02:00:00:00:00:01` shared with the legacy VmTesting feature
+  (collides only if one host runs both). *(INFO)* test-cluster `flake.lock`
+  horizon-stub divergence (not load-bearing — fixtures are committed JSON).
+
+## Unit C — the live step (decision pending psyche)
+
+Unit C is the live e2e: bring the real microVM up on a host and have lojix
+deploy a full OS into it (disconnect-surviving) — the host-affecting step I said
+I'd confirm before running. The host question is real: mercury is declared on
+**atlas**, but atlas (largeAi router) won't fully build here (GGUF) and is a
+real cluster node we shouldn't disrupt; the one KVM machine on hand is
+**Prometheus** (bare-metal, must stay untouched per `5hir5bnz`).
+
+Recommended approach: **host-untouched on Prometheus (S5-style).** Take the
+CriomOS-emitted `mercury` microVM runner from the build, bring its tap up
+additively, boot mercury (real writable disk) — Prometheus's OS untouched — then
+have lojix (on Prometheus) deploy a full OS into `mercury` and prove it survives
+an ssh disconnect. This proves the end goal (lojix → real horizon-modeled
+writable-disk node, disconnect-safe) using the actual CriomOS-emitted runner,
+with zero host reconfiguration. The full host-unit/networkd path is validated by
+eval (Unit B); exercising it on a real cluster host is a later step.
+
 ## What to design (this meta-report)
 
 Ground the actual horizon model + CriomOS derivation, then design:
