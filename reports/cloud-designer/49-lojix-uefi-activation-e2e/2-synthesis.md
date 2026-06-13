@@ -35,17 +35,26 @@ the core lojix mechanics end-to-end and scoped exactly what stayed circumstantia
 
 ## What was circumstantial / blocked (honest)
 
-- **The actual gen-2 kernel boot at reboot-1 was not durably witnessed by the
-  verifier** — qemu truncates its `-serial file:` on restart, so the surviving
-  serial only shows the current base boot (it does list the 7.0.1 entry in the
-  menu). The gen-2 boot is corroborated circumstantially (journal gap, consumed
-  OneShot efivar, installed+selectable entry). → A targeted re-arm + *guest*
-  reboot with a durable append-only serial capture closes this (in flight).
-- **mercury's full userspace does not stabilize on a generic q35 VM** — the
-  systemd watchdog reboots it at ~180 s because mercury is built for the microvm
-  machine type. This is a CriomOS lean-profile-on-q35 RUNTIME gap, **not** a
-  lojix/BootOnce defect — so "the gen-2 kernel boots from the one-shot" is shown,
-  but "mercury runs as a working node" is not. → fold into Unit B.
+- **The actual gen-2 kernel boot is now directly witnessed and durably saved**
+  (gap closed). The verifier could only corroborate it circumstantially because
+  qemu had truncated its serial on a restart. A follow-up re-armed the one-shot
+  (`bootctl set-oneshot nixos-generation-2.conf`) and *guest*-rebooted (qemu left
+  running, so its serial appended), capturing to a pristine
+  `serial-gen2-witness.log`: systemd-boot launching from the ESP, the gen-2 entry
+  flipping to the *selected* highlight (`[47m` — the `LoaderEntryOneShot` efivar
+  auto-selecting `Generation 2 … Linux 7.0.1`, gen-1 dropping to unselected, the
+  inverse of the pre-arm baseline), and a real kernel early-init line
+  (`[0.083] RDSEED32 …`) booting from that selection. The BootOnce one-shot
+  genuinely boots the deployed OS's kernel — no longer circumstantial.
+- **mercury's full userspace does not come up on a generic q35 VM** — after the
+  gen-2 kernel boots, CriomOS userspace goes silent and the guest hangs (the
+  boot-witness run showed it stalling right after early init, *before* the
+  hardware watchdog even arms — so it hangs rather than cleanly
+  watchdog-rebooting; report 49 step 7 separately witnessed the watchdog-reboot
+  path). mercury is built for the microvm machine type; this is a CriomOS
+  lean-profile-on-q35 RUNTIME gap, **not** a lojix/BootOnce defect — "the gen-2
+  kernel boots from the one-shot" is shown, but "mercury runs as a working node"
+  is not. → fold into Unit B.
 - Minor: the earliest eval effects share the same wall-clock second as the
   ~55 ms client life (only the later copy/activate are unambiguously post-death —
   but those are the meaningful ones); the drive report conflated 49a/49b closure
@@ -56,13 +65,14 @@ the core lojix mechanics end-to-end and scoped exactly what stayed circumstantia
 
 lojix's deploy + disconnect-survival + BootOnce activation pipeline is proven
 live end-to-end against a real writable-disk **UEFI** node; the production `.drv`
-bug is fixed and verified; Prometheus stayed untouched. The remaining items are a
-test-harness durable-capture of the boot moment (closing now) and a CriomOS
-lean-profile gap (Unit B) — neither a lojix defect.
+bug is fixed and verified; Prometheus stayed untouched; and the gen-2 BootOnce
+boot is now durably witnessed. The one remaining item is a CriomOS lean-profile
+gap (Unit B — mercury's userspace not coming up on q35), not a lojix defect.
 
 ## Follow-ups
 
-- (in flight) durable serial witness of the gen-2 BootOnce boot.
+- (done) durable serial witness of the gen-2 BootOnce boot —
+  `serial-gen2-witness.log` on Prometheus.
 - Unit B: harden the lean CriomOS profile to stabilize on a generic UEFI VM (the
   q35 watchdog) + the networkd-ordering note from report 47.
 - Minor daemon hardening: the empty-stdout `.drv` fallback in build-output
