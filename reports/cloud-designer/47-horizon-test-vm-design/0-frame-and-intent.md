@@ -34,6 +34,32 @@ writable-disk qcow2 (`make-disk-image`) is a genuine bootable, ssh-reachable,
 RW-store node — the e2e only stalled on a stale fixture hash, which a
 horizon-modeled test node sidesteps.
 
+## Psyche decisions on the proposal (2026-06-13)
+
+- **Substrate: real KVM microVM** (own kernel + a real virtual disk) — NOT an
+  nspawn container. The grounding leaned nspawn for simplicity; the psyche
+  chose the faithful VM (consistent with `se72`/`7let`/the KVM+virtual-disk
+  direction). So CriomOS emits a `microvm.nix` guest (with the non-autostart +
+  tap + guest-IP wiring the proposal named), not `criomos-nspawn`.
+- **Lifecycle: v1 host-triggered now.** A host-side runner does
+  create+start → lojix `Deploy` → stop; **lojix is unchanged** (it just
+  deploys to the node's `<node>.<cluster>.criome` address). The lojix-driven
+  `StartNode`/`StopNode` meta op (v2) is a deferred follow-on.
+- (These refine the report's captured intent; Spirit capture of both still
+  pending the daemon/wire-shape fix.)
+
+## Implementation order (psyche-approved)
+
+A (horizon foundation): horizon-rs model — `NodeSpecies::TestVm`, `Machine`
+`disk_gb` + `location` (+ `Location` newtype), `node.rs` `test_vm` facet — +
+golden projection test + declare a test-VM node (real disk, not tmpfs) in
+`CriomOS-test-cluster/clusters/fieldlab.nota`. B (CriomOS): gate the lean guest
+on `behavesAs.testVm`; emit the microVM guest + tap + guest-IP `networking.hosts`
++ non-autostart unit on the host. C (trigger + live e2e): the host-side runner,
+then bring the real microVM up and have lojix deploy into it. Code repos
+(horizon-rs/CriomOS/CriomOS-test-cluster) use designer feature branches in
+`~/wt`; operator integrates main.
+
 ## What to design (this meta-report)
 
 Ground the actual horizon model + CriomOS derivation, then design:
