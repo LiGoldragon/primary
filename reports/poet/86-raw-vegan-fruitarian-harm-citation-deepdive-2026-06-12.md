@@ -83,3 +83,16 @@ The psyche directed a real hunt for the "hitaṃ mitaṃ ca bhoktavyaṃ annaṃ
 The psyche chose the minimal fix and authorized the sweep. Done across all seven files: the unlocatable "hitaṃ mitaṃ / HYP 1.57" diet line is now attributed "— *proverbial yogic formulation on measured diet*" (the Sanskrit and the content preserved, only the false locus dropped); the "mitāhāra-vinā" verse is corrected to *Gheraṇḍa Saṃhitā* 5.16 wherever it had been mislabeled HYP 1.15 (`Ambrosian_Diet`, `In_Praise_of_Agni`, `Raw_Vegan_Salad_and_Juice`, `Fruit_as_Medicine`). The *genuine* HYP 1.57 (the *brahmacārī* one-year-perfection verse) in `06_structural_parallels.md` and the *genuine* HYP 1.15 (the six-destroyers verse) in the HYP quotes extract were left intact. A repo grep now shows no remaining false "HYP 1.57"/"HYP 1.15" diet citations.
 
 Three of the edited files are **published Substack posts**; all three were re-published in place with `substack post update <id> --file-path <md>` (which re-reads frontmatter, manifest cover, and link map): The Ambrosian Diet (193562915), In Praise of Agni (197113361), Keep the Plasma (195628661). The edited source-extracts and the unpublished articles (*Yogis Don't Eat Fruit*, *Fruitarianism*, *Yogic Food*) needed no re-publish.
+
+## Update 4 (2026-06-13) — hunt for warnings on the raw-vegan staples
+
+Per the psyche's direction to hunt warnings against too much fruit / raw vegetables / nuts / raw-vegan eating, I surveyed the corpus and found fruits and vegetables already well-covered (`Fruit_as_Medicine.md`, `Apathya.md`, `Raw_Vegan_Salad_and_Juice.md`, the caraka-samhita fruit-vegetable-warnings digest). The open gap was the raw plate's other load-bearing foods — **nuts, seeds, sprouts** — none of which the corpus had surfaced. Filled it with verified Caraka warnings in a new source-extract, `source-extracts/Raw_Vegan_Staples_Warnings.md`:
+
+- **Nuts** (Sū. 27 nut group: *vātāma, abhiṣuka, akṣota, mukūlaka, nikocaka, urumāṇa, priyāla*) — *guru*, hot, unctuous, *bṛṃhaṇa* but **kapha-pitta-aggravating**; classically soaked/roasted, not eaten raw by the handful.
+- **Seeds** (Sū. 27.73; 27.4) — *tila* aggravates kapha-pitta; the paste (tahini/seed-butter) "causes malaise" (*glāni*).
+- **Sprouts and legumes** (Sū. 27.265–267) — germinated grains are *guru* (germination does not lighten them); raw legumes are "strength-reducing… fit with fat, for the strong" — two conditions the raw sprout-bowl fails.
+- **The raw principle** — *na hy apakvād rasādayaḥ* (AH Śā. 3.54): uncooked food yields *āma*, not *rasa*.
+
+The synthesis reads the plate food by food: no raw-vegan staple is a classically sanctioned raw daily food; each is a medicine, a seasonal accessory, or a heavy substance requiring *saṃskāra* and fat. The sanctioned staple the corpus names — *anna* with *ghṛta* — is the one the raw plate excludes.
+
+Not yet mined: the scanned Yoga Upaniṣads (Ayyangar; the Śāṇḍilya / Yogatattva *apathya* lists) — the library PDF has no text layer and would need an OCR pass, which would also be a final shot at the unlocated *hitaṃ mitaṃ* source.
