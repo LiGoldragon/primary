@@ -259,6 +259,56 @@ concept — the only real gap was `pascal_head + body`, which step 1 closes.
     BEFORE the step-7 fan-out. Co-locating it inside spirit is the fixture only,
     never the real home.
 
+## Design proven end-to-end — operator handoff
+
+The designer arc is complete: the schema-generics + shared-reaction-frame design
+is proven in working, tested code across **five feature branches in four repos**,
+all green (tests + clippy + fmt). What remains is production integration —
+operator's lane.
+
+| Repo | Branch | HEAD | Proves |
+|---|---|---|---|
+| nota-next | `next/pascal-head-body-shape` | `db0f10a2` | the `PascalHeadBody` keystone derive |
+| schema-next | `next/schema-generics` | `5feccb60` | `TypeReference::Application`, parameterized declaration heads, root-position application, alias collapse, the reaction-frame + spirit-pilot fixtures |
+| schema-rust-next | `next/reaction-frame-emission` | `19fffd9` | the emitter produces the generic frame + spirit's application (both compile + round-trip) |
+| triad-runtime | `next/generic-reaction-frame` | `9877928` | the frame compiles with native derives; `From<Action> for NextStep` kills the shim; `enum Never {}` disproven |
+
+Detail: report 622 (emission slice + the Part-2b cascade analysis).
+
+### Operator beads filed (designer-feeds-operator)
+
+- **the design-branch integration** (`primary-9gkn`) — land the four branches on
+  their repo mains in dependency order, dropping the prototype `[patch]` seams.
+  Blocks the two below.
+- **the shim deletion + 14-component migration** (`primary-8dcn`) — the coupled
+  Part-2b + step-7 fan-out: delete `into_next_step`, move the `NextStep`
+  projection to triad-runtime (orphan rule), migrate all 14 components +
+  the 3 still-concrete schemas, drop the `Nexus*` prefix, bind reduced-leg
+  components' unused legs to the `Absent` marker.
+- **imported-head arity enforcement** (`primary-l35n`) — the `Local→Imported`
+  head-resolution rewrite so imported-frame applications are arity-checked.
+
+### The one design tradeoff for the psyche to ratify (or overturn)
+
+`Absent`-marker omission is **soft** (the unused-leg variant is constructible but
+never constructed), because hard type-level omission via `enum Never {}` is
+impossible under the wire derives. The `Absent` mechanism is proven *by
+composition* (the frame compiles for any derivable arg, #408; applications
+express arbitrary args, steps 2–5), so no separate proof slice is needed; it gets
+exercised on the first reduced-leg component in `primary-8dcn`. If hard
+type-safety is worth paying repetition for, that is the fork to flag — otherwise
+soft omission keeps the single maximal frame.
+
+### #409 manifestation folds into integration
+
+Per-repo `INTENT.md` for a code repo lands on that repo's branch with its code,
+so the frame-application + `Nexus*`-drop intent for each component manifests **as
+part of its migration** (beads above), not as a separate primary-side sweep:
+triad-runtime/INTENT.md gains the frame-home intent on integration; each
+component's INTENT.md gains the frame-application intent on migration. The
+workspace-level principle is already captured in Spirit `zjmc` and reports
+618–622; AGENTS.md's component-triad + no-repeat rules already cover it.
+
 ### Integration note for operator (cross-repo ordering)
 
 The dependency order is nota-next (`next/pascal-head-body-shape`) → schema-next
