@@ -101,3 +101,41 @@ shipper. This is recorded on `primary-85hv`.
    single-writer slice. Natural next build; unblocks slice A's integration.
 2. **The 3-repo shipper arc** — closes the live `29pb` durability gap; depends on
    the ingress auth (`x3l7`) before it can be enabled.
+
+## Update — `lmf3` landed; the engine stack is now deployable
+
+`lmf3` (rebuild-from-log on layout skew) is built, green, and adversarially
+approved: sema-engine branch **`rebuild-from-log` @ `e5e38e8e`, v0.6.0**, stacked
+on slice A (`single-writer-internal-lock` @ `22b9de17` is a direct ancestor), so
+the tip is **single-writer + O(1) head-digest + rebuild-on-skew as one deployable
+chain.**
+
+The open path now classifies into a typed `LayoutOpenPlan { Current | StampFresh
+| RebuildDerivedSlots }`. On an *older* stamped layout *with* a present versioned
+log, the engine refolds the layout-introduced derived slots (`CHAIN_HEAD` +
+counts) from the log via `CanonicalView::fold` from genesis — verified by
+recomputation, never trusting the stored head — then re-stamps the current layout,
+in one write transaction, *after* the read-only validation passes (so a rejecting
+open still never mutates). It needs no family/table registration (raw-log refold,
+runs before `register_table`). An older layout with **no** log keeps the typed
+`StorageLayoutMismatch` (the previous-engine `StoreMigration` still owns pre-v9);
+a newer layout still errors (no downgrade).
+
+Witnessed in `tests/layout_rebuild.rs`: the headline test writes 7 entries,
+*simulates* an old store (deletes `CHAIN_HEAD` + counts, re-stamps layout 4),
+reopens, and proves the open succeeds, re-stamps 5, the rebuilt head equals a
+fresh fold's head equals the pre-skew head, the data surface is identical, and the
+next assert chains off the rebuilt head; plus a no-log-still-hard-fails witness and
+an idempotent-reopen no-op witness. tamper 11/11 and slice A's concurrency +
+cached-head tests stay green; clippy clean; no public API change.
+
+**The deploy-gate coupling is resolved.** Deploying `e5e38e8e` over the existing
+layout-4 stores (live spirit v9, router, criome, mind) self-heals on open,
+zero-downtime — so the layout-4→5 bump is now safe to ship. Operator integration
+is filed as **`primary-qu28`** (P1): integrate the `rebuild-from-log` tip to
+sema-engine main, verify on a staging copy of the live store first, repin
+consumers (spirit's repoint proven on `mirror-shipper` @ `8667d5f1` — pin it to
+the `rebuild-from-log` tip). The remaining durability work is the 3-repo shipper
+arc (`primary-85hv`), with config on the meta plane (`meta-signal-spirit`
+`Configure`, beside `ArchiveDatabaseTarget`) and deploy-gated on ingress auth
+(`primary-x3l7`).
