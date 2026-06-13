@@ -125,18 +125,41 @@ the real cutover — either a sema-engine multi-table commit (the right layer,
 Spirit `fosp`) or an interim reopen-reconciliation that rebuilds missing
 gc-roots from the live set on open.
 
+## S4a · Real activation — landed (2026-06-13)
+
+Split S4 into S4a (command construction, unit-testable) and S4b (the
+disconnect-survival job-actor). S4a is done: the daemon now constructs correct
+target-side **copy + activate** commands and the reject-guard is open for every
+activating action (System Boot/Switch/Test/BootOnce + Home Profile/Activate).
+The `$CLOSURE` bug is fixed — the built closure path was already on the cursor;
+`ActivateGenerationCommand` now carries it mandatorily (no empty fallback).
+Faithful port of `lojix-cli`: `SshTarget` `root@<node>.<cluster>.criome`
+(derived from the cursor's cluster+node via `CriomeDomainName::for_node` — no
+new field), `--substitute-on-destination` copy with the three from/to/skip
+cases, per-action System activation with EFI reconcile, and the
+`systemd-run --collect --wait --service-type=oneshot` PID-1 transient-unit
+BootOnce + the byte-exact OLD/NEW EFI staging script (the daemon→target
+disconnect-survival surface). 20 new unit/argv/snapshot tests; build + both
+gates + clippy green. Adversarially reviewed **pass** — the BootOnce/EFI
+scripts verified byte-for-byte against `lojix-cli` and pinned by a snapshot
+test; on-node behavior proves at S5 (a throwaway VM, so any error is caught
+harmlessly). Pushed at lojix `cbe3c06b`. (Two extra schema fields were needed
+for a faithful port: `CopyClosureCommand.source`, `ActivateGenerationCommand.profile`.)
+
 ## Next
 
-- **S4 · Activation + SSH-survival** (the last big stage). The daemon
-  currently *rejects* every activating deploy (`activate_system` references an
-  unset `$CLOSURE`). Carry the real closure path into `CopyClosure`
-  (`nix copy --to ssh-ng`) and `ActivateGeneration`; port `lojix-cli`'s
-  `systemd-run --collect` PID-1 transient-unit BootOnce under a job-actor that
-  owns the process + persists job state, so a deploy survives SSH disconnect
-  (Spirit `up9q`); open the reject-guard for now-safe actions.
+- **S4b · Disconnect-survival job-actor** (the last code stage). Rework
+  `serve_owner` to record + spawn a daemon-owned **kameo** deploy job actor and
+  reply the `AcceptedDeploy` handle immediately (kill-on-drop OFF), so a dropped
+  CLI does not abort the deploy (client→daemon survival, Spirit `up9q`). Persist
+  a `DeployJob` sema family for daemon-restart resume; cap concurrent jobs with
+  `DeploymentInFlight`; observation via reconnect-by-Query against the durable
+  event-log (live push stays a follow-on, `2tfa`/`brgo`).
 - **S5 · Live e2e.** lojix deploys a full OS into a throwaway qemu/KVM VM on
   Prometheus (run via `nix`, host untouched), surviving SSH disconnect
   (Spirit `se72`/`7let`).
-- **Follow-ons (non-blocking):** the cross-table-atomicity gap above; the meta
-  `Configure` op + virgin-daemon-wait; the owner→meta socket rename (`3chp`);
-  the stale `signal-lojix`/`meta-signal-lojix` contract docs (S0 cleanup).
+- **Follow-ons (non-blocking):** the cross-table-atomicity torn-write gap; the
+  meta `Configure` op + virgin-daemon-wait; the owner→meta socket rename
+  (`3chp`); the stale contract docs (S0 cleanup). Also: the **Spirit intent
+  daemon is down** (`spirit-daemon` start-limit-hit, `spirit-upgrade-store`
+  exits 1) — system-maintainer scope, blocks new intent capture.
