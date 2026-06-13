@@ -53,7 +53,12 @@ A component is "migrated" only when all three axes are clean (designer 557):
 - **A — daemon shell** -> the emitted triad runtime + kameo EngineActor (designer 575,
   612). Terminal, router, message, orchestrate, spirit, terminal-cell are
   done/in-flight. The terminal slice audit is designer 556 (verdict: works and
-  honestly built).
+  honestly built). `terminal-cell` was ported off its hand-rolled `UnixListener`
+  accept loop onto the schema-rust-next emitted daemon shell — DONE, landed to
+  terminal-cell main (designer 566); the one residual is the transitional
+  `Arc<Mutex<TerminalSignalControlState>>` in the excluded `src/bin/`, a known
+  documented drift relocated by the port, with the Kameo `TerminalSignalControl`
+  actor owned in `terminal` (ARCH §1.5) as the follow-up.
 - **B — execution** -> nexus, remove `signal-executor` (designer 555). nexus is the
   execution engine now (`gb87`); `signal-executor` is the single old-execution-engine
   dependency and the removal gate. The four consumers (orchestrate, upgrade,

@@ -171,7 +171,7 @@ parse-and-retry**; typed `Justification` round-trip via the derived codec.
 Design + rationale: 604, 605; doubts: 606. Records: `bwqe`, `2t89`, `4jgt`, `so3b`, `ans1`, `woku`,
 `ll41`, `7xnx`, `u62s`, `i59i`, `z3ka`. Discipline: `skills/rust-discipline.md` + `rust/`
 (typed-domain-values, **no hand-rolled parsers**, schema-emitted nouns, typed `Error`),
-`skills/abstractions.md`, record `884`; the domain-fiasco precedent (593/595).
+`skills/abstractions.md`, record `884`; the domain-fiasco precedent (Refresh 611 §5).
 External: Toulmin (1958); Walton/Reed/Macagno, *Argumentation Schemes* (2008); van Eemeren &
 Grootendorst pragma-dialectics (2004); Dung (1995) AAF; Federal Rules of Evidence 901/1002/801-802;
 Palmer *Mood and Modality* (2001), Aikhenvald *Evidentiality* (2004); Rissland/Ashley HYPO,

@@ -20,7 +20,8 @@ or remands the whole case for re-pleading — it never silently edits a magnitud
 ## Hard constraints — what we WANT
 
 1. **Strongly typed, end to end.** This is the headline constraint, per the psyche and the domain
-   fiasco (reports 593/595): no `String` where a typed sum belongs. The `Justification` becomes a
+   fiasco (the DomainScope stringly-typed-scope correction, now in Refresh 611 §5): no `String`
+   where a typed sum belongs. The `Justification` becomes a
    typed structured record with named sub-fields. Magnitudes stay the typed `Magnitude` enum; Kind,
    Domain (recursive enum), and the cross-record operation stay typed. The verdict's rejection set
    is the typed `GuardianRejectionReason` enum. (Genuinely-textual fields — the verbatim quote, the
@@ -171,7 +172,7 @@ Extend `tests/guardian_live_scenarios.rs`:
 - Discipline (the typed constraint): `skills/rust-discipline.md` + `rust/` (typed-domain-values,
   typed per-crate `Error`, **no hand-rolled parsers**, schema-emitted nouns), `skills/abstractions.md`,
   record `884`. The cautionary precedent: the stringly-typed `DomainScope` → recursive-enum
-  correction (reports **593**, **595**).
+  correction (Refresh **611** §5).
 - Code touched: `schema/signal.schema` (`Justification`, `GuardianRejectionReason`, the gated ops),
   `src/guardian.rs` / `src/guardian_prompt.rs` (the prompt + verdict), `src/store.rs` (the guardian
   journal — store `(testimony, context, verdict, reason)` tuples as precedent), `spirit/ARCHITECTURE.md`.

@@ -211,6 +211,32 @@ generation supplies the per-component binding).
   compact/purge) and the **subscription stream** for live correction events remain
   designed-not-fully-built (designer 567 §3, 578 §3).
 
+## 7a. The model substrate — the `agent` component
+
+The guardian runs its judgment through the **`agent` component** — the LLM-API-call
+component (provider HTTP calls), built and landed on main (designer 572, record
+`iucr`). It is NOT a harness front door; harness backends are deferred. Standing
+decisions that shaped it: gate Spirit with a **strong** open-weight model, not a
+small one — intent is too important to under-resource (`750r`); the guardian is a
+**gate, not an advisor** — clutter is resolved or refused at the door (`mrkv`);
+Spirit's overriding goal is to be maximally clutter-free, a curated store not a
+capture-everything log (`icpa`); hard deletion of intent is inevitable on a long
+timeline and should be a deliberate recoverable-to-a-horizon collection stage, not a
+forbidden act (`8g9n`); routing intent through a third-party hosted inference API is
+**not** the publication-leak the privacy rule guards (`qoku`). The model-pick research
+(open-weight reasoning leaders, mid-2026) is designer 568 — kept separate as live
+research.
+
+## 7b. The deploy chain (landed; current incident is separate)
+
+The Spirit redesign deploy was a version upgrade of the existing
+`spirit-daemon.service` user-service plus a mandatory store migration (designer 592
+named the system-operator handoff; the deploy executed — see §6, live 0.9.x, then
+0.11.x for the court guardian). The deploy work is DONE. The **current incident** —
+the live daemon down on a 0.12.0 versioned-store deploy skew (data moved forward,
+deployed code stayed back at the V7->V8 step) — is the active, separate report
+designer 610; nothing here is its fix.
+
 ## 8. Where this connects
 
 The guardian described here is the substrate for the **court-of-law justification
