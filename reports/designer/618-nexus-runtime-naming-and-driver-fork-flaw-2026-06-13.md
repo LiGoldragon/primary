@@ -58,10 +58,64 @@ Recorded intent already condemns this. Per the intent census: [the three
 planes are one primitive projected three ways (Signal / Nexus / SEMA),
 differing only by ownership and runtime semantics, **never by authored
 shape**]. Re-authoring the frame per component *is* differing by authored
-shape. And the runtime layer already proves the frame is genericizable:
-`triad-runtime::runner::drive` is `drive<Engines>`, generic over the engine
-associated types — the *runtime* abstracts over the per-component payloads
-while the *schema* copy-pastes them. That asymmetry is the tell.
+shape. And the runtime layer already proves the frame is genericizable —
+the asymmetry between the runtime and the schema is the whole tell.
+
+#### Rust evidence — the generic already exists; the schema can't reach it
+
+`triad-runtime/src/runner.rs:26` defines the canonical action frame **once,
+fully generic**:
+
+```rust
+pub enum NextStep<Reply, SemaWrite, SemaRead, Effect, Work> {
+    Reply(Reply), SemaWrite(SemaWrite), SemaRead(SemaRead), RunEffect(Effect), Continue(Work),
+}
+pub trait RunnerEngines {
+    type Reply; type SemaWrite: SemaWriteInput; type SemaRead: SemaReadInput;
+    type Effect: NexusEffectCommand; type Work: NexusWork;
+    fn decide_next_step(&mut self, work: Self::Work) -> RunnerNextStep<Self>;
+}
+```
+
+That `NextStep<…>` IS the `Action<…>` frame — five type parameters, one
+declaration. Rust expresses it trivially. But the schema cannot reference it,
+so `schema-rust-next` emits, per component, a **concrete twin**: `pub enum
+NexusAction { CommandSemaWrite(..) CommandSemaRead(..) ReplyToSignal(..)
+CommandEffect(..) Continue(..) }` — byte-identical between
+`spirit/src/schema/nexus.rs:198` and `router/src/schema/nexus.rs:95`. Then,
+because the twin and the real `NextStep` are different Rust types, the emitter
+also writes a **bridge** (`schema-rust-next/src/lib.rs:2055-2074`):
+
+```rust
+pub type NexusRunnerNextStep =
+    triad_runtime::NextStep<Output, CommandSemaWrite, CommandSemaRead, CommandEffect, NexusWork>;
+fn into_next_step(self) -> NexusRunnerNextStep {
+    match self {
+        Self::CommandSemaWrite(input) => triad_runtime::NextStep::SemaWrite(input),
+        Self::CommandEffect(effect)   => triad_runtime::NextStep::RunEffect(effect),
+        Self::ReplyToSignal(output)   => triad_runtime::NextStep::Reply(output),
+        Self::Continue(work)          => triad_runtime::NextStep::Continue(work),
+        // ...
+    }
+}
+```
+
+The emitter **writes down the correct answer** — the `type NexusRunnerNextStep
+= NextStep<Output, …>` alias, the generic instantiated with this component's
+types — *and then also* emits the redundant standalone `NexusAction` enum
+*and* a variant-by-variant shim to translate between them. The same five-way
+choice now exists three times: the generic `NextStep` (once, shared), the
+concrete `NexusAction` (14×, emitted), and spirit's hand-written
+`execute_to_reply` match (a third re-statement). The variant names even drift
+across the boundary (`CommandEffect`↔`RunEffect`, `ReplyToSignal`↔`Reply`),
+which is the only reason a translation is needed.
+
+The fix, in Rust terms, is one line the emitter *already knows how to write*:
+emit `pub type Action = triad_runtime::NextStep<Output, SemaWriteCommand,
+ReadInput, EffectCommand, Work>;` and delete the standalone enum and the
+`into_next_step` shim. The single thing stopping that is the schema source's
+inability to say "instantiate this parameterized type with my bound types" —
+so the emitter manufactures a concrete enum plus glue instead of an alias.
 
 **This is a schema-stack capability gap, not per-component cleanup.** For the
 frame to live once and be imported-and-bound, schema must express a
