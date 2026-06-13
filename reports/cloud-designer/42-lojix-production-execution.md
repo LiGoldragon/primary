@@ -146,20 +146,61 @@ test; on-node behavior proves at S5 (a throwaway VM, so any error is caught
 harmlessly). Pushed at lojix `cbe3c06b`. (Two extra schema fields were needed
 for a faithful port: `CopyClosureCommand.source`, `ActivateGenerationCommand.profile`.)
 
+## S4b · Disconnect-survival job-actor — landed (2026-06-13)
+
+A meta `Deploy` now records the submission synchronously, replies the
+`AcceptedDeploy` handle immediately, and runs the full effect pipeline on a
+**daemon-owned `DeployJobs` kameo actor** whose `ActorRef` lives on
+`LojixRuntime` — the pipeline is a detached runtime task, so dropping the
+client connection cannot cancel it (client→daemon survival, Spirit `up9q`).
+Only `Deploy` decouples; Pin/Unpin/Retire stay synchronous. A deploy-job cap
+(8) refuses overflow with the typed `DeploymentInFlight`. A fifth durable
+`DeployJob` sema family is written per phase + read-on-start with a typed
+per-phase resumption decision (persist + read-back + reconcile-decision; live
+restart continuation is S5-proven). Reviewed **pass-with-notes**: the reviewer's
+ownership trace confirmed the decoupling is real by construction; I then
+strengthened the headline survival test to a **mechanical witness** (the submit
+runs on a separate task that is joined and dropped while the pipeline is parked,
+then the deploy provably reaches terminal — proving it outlives its submitting
+task). build + both gates (48/49) + clippy green. Pushed at lojix `bbb8030c`.
+
+## Daemon code feature-complete against the parity bar (2026-06-13)
+
+| Parity requirement | Status |
+|---|---|
+| Deploy a full OS (System + Home, copy + activate) | S4a — daemon constructs real `nix copy` + per-action activate + EFI reconcile |
+| Survive SSH disconnect | S4a (daemon→target: `systemd-run --collect` PID-1 transient unit) + S4b (client→daemon: detached job actor) |
+| Every operation described in schema types | both contracts type the full surface; the daemon is schema-derived |
+| Durable-first state | S3 — `sema-engine` store + self-resume |
+
+The remaining work is the **live proof** (S5) and the tracked follow-ons — the
+*code* paths exist, are unit/argv/snapshot-tested, and are reviewed.
+
 ## Next
 
-- **S4b · Disconnect-survival job-actor** (the last code stage). Rework
-  `serve_owner` to record + spawn a daemon-owned **kameo** deploy job actor and
-  reply the `AcceptedDeploy` handle immediately (kill-on-drop OFF), so a dropped
-  CLI does not abort the deploy (client→daemon survival, Spirit `up9q`). Persist
-  a `DeployJob` sema family for daemon-restart resume; cap concurrent jobs with
-  `DeploymentInFlight`; observation via reconnect-by-Query against the durable
-  event-log (live push stays a follow-on, `2tfa`/`brgo`).
-- **S5 · Live e2e.** lojix deploys a full OS into a throwaway qemu/KVM VM on
-  Prometheus (run via `nix`, host untouched), surviving SSH disconnect
-  (Spirit `se72`/`7let`).
-- **Follow-ons (non-blocking):** the cross-table-atomicity torn-write gap; the
-  meta `Configure` op + virgin-daemon-wait; the owner→meta socket rename
-  (`3chp`); the stale contract docs (S0 cleanup). Also: the **Spirit intent
-  daemon is down** (`spirit-daemon` start-limit-hit, `spirit-upgrade-store`
-  exits 1) — system-maintainer scope, blocks new intent capture.
+- **S5 · Live e2e** (the cutover validation; a live-host step — coordinate with
+  the psyche first). Stand up a throwaway qemu/KVM VM on Prometheus (run via
+  `nix`, host config untouched — verified bare-metal, AMD-V, `/dev/kvm`, 32c /
+  124 GiB), then drive lojix end-to-end: deploy a full OS into the VM, prove the
+  copy + BootOnce activation land, and prove the deploy survives an SSH
+  disconnect. Spirit `se72`/`7let`. On-node behaviors deferred from S3/S4 prove
+  here (EFI staging boots NEW then rolls back to OLD; the transient unit
+  survives a real ssh drop; the live resumption continuation).
+
+### Tracked follow-ons (non-blocking for S5's happy path, close before cutover)
+
+- **Cross-table torn-write** (S3): an activation's live-set + gc-root are two
+  sequential asserts; needs a sema-engine multi-table commit or an interim
+  reopen-reconciliation.
+- **Untracked deploy-job spawn** (S4b): the detached pipeline task's panic
+  before `DeployCompleted` would leak a cap slot — promote to a supervised
+  child actor (or a completion guard).
+- **Terminal `DeployJob` rows** (S4b): Failed/rejected rows are cleaned only at
+  next-restart reconcile — durable hygiene, retract on terminal.
+- **Wire variant** (S4b): the immediate reply reuses `Deployed(AcceptedDeploy)`;
+  a distinct Accepted-vs-Completed variant would be cleaner.
+- **Meta `Configure` op + virgin-daemon-wait**; the **owner→meta socket rename**
+  (`3chp`); the stale `signal-lojix`/`meta-signal-lojix` contract docs (S0).
+- **Environment:** the **Spirit intent daemon is down** (`spirit-daemon`
+  start-limit-hit, `spirit-upgrade-store` exits 1) — system-maintainer scope,
+  blocks new intent capture.
