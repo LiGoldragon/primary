@@ -126,8 +126,24 @@ Domains are closed taxonomy variants such as
 `(Technology (Software (Quality Testing)))`. Read `spirit`'s deployed
 `schema/signal.schema` for the full list when a domain is unclear.
 Narrow free words belong in the description where keyword/text search
-can find them, or in `Referents` when the thing is a registered
-referent. Most intent records use an empty referent vector `[]`.
+can find them. **Named particulars go in `Referents` — populate them.**
+Every named thing a record is about — `spirit`, `sema-engine`, `nota`,
+`rkyv`, `mirror`, `DeepSeek`, a host, a bead — belongs in the referent
+vector. Referents are the record's stable retrieval-and-dedup key: the
+guardian pulls existing records that share a referent with the
+candidate, so an untagged record hides from that path and forces the
+judge to scan far wider. A referent need not be pre-registered — first
+use auto-registers it (the implied-referent path), and the
+referent-guardian judges the new name, rejecting a verb or vague
+concept as `NonReferent` / `TooVague`. Tag the real particulars; leave
+the vector empty `[]` only when the record names none. A named instance
+is a referent, never a domain — `(... DeepSeek)` is wrong, `DeepSeek`
+is a referent (domains are universal subjects). Concrete example, with
+the named particulars in the trailing referent vector:
+
+```sh
+spirit "(Record (([(Technology (Software (Engineering SoftwareArchitecture)))] Constraint [the sema-engine is the exclusive interface to the database] High Minimum Zero [sema-engine spirit]) ([([the engine is the only thing that opens the database] None)] [exclusive-DB rule; tags the named particulars it constrains])))"
+```
 
 Higher privacy values narrow the audience; `Zero` is the workspace
 default. Never put private personal substance in a `Zero` record.

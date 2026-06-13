@@ -53,6 +53,22 @@ Outcomes:
 No-capture is normal. Understatement is recoverable; over-extension
 corrupts the load-bearing intent layer.
 
+## Read the domain before you touch it
+
+Before you record, propose, clarify, or supersede intent in a domain,
+query that domain and read what it already says — Observe the domain
+(and the broader domains it sits under) plus anything sharing your
+record's referents, and actually read the results. An agent that writes
+intent into a domain without first reading that domain's existing intent
+is guessing, and the guardian refusal that follows is churn that should
+never have happened. The guardian is the fallback, not your first read.
+
+Once you have read the neighborhood, most would-be-new intents resolve
+to one of: nothing to add (it is already said — a duplicate), a merge or
+clarify into the record that already holds the arrow, or a genuine new
+record. Only the last is a fresh `Record`. This is upstream of the gate:
+educate yourself in the domain, then classify.
+
 ## Privacy gate before recording
 
 Public workspace intent uses privacy `Zero`. Private or
@@ -288,9 +304,15 @@ Production Spirit uses three retrieval layers:
 - **Description keywords/text** — free words live in the clarified
   description. Query them with `KeywordMatch` or `ContainsText`; keep
   narrow ad hoc tags there.
-- **Referents** — named entities that should remain stable across
-  descriptions. Only use the referent vector for registered referents;
-  otherwise leave it empty as `[]`.
+- **Referents** — the named particulars a record is about (`spirit`,
+  `sema-engine`, `nota`, `rkyv`, `mirror`, `DeepSeek`, a host, a bead).
+  **Populate them** — they are the primary retrieval-and-dedup key: the
+  guardian pulls existing records sharing a referent with the candidate,
+  so an untagged record hides from that path. A referent need not be
+  pre-registered; first use auto-registers it (judged by the
+  referent-guardian, which rejects a verb or vague concept). Leave the
+  vector empty `[]` only when the record names no particular. A named
+  instance is a referent, never a domain.
 
 The old topic discipline still applies conceptually: choose broad
 routing concepts, avoid filename-like or negative labels, and split only
