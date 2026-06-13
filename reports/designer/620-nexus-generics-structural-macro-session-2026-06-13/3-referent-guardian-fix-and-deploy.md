@@ -2,6 +2,44 @@
 
 In-flight when the session paused. This is the precise state to resume from.
 
+## CORRECTION (restart 2026-06-13): the deploy path below is WRONG for ouranos
+
+A deploy subagent verified the actual topology. `ouranos` does NOT deploy
+spirit via standalone home-manager — `nix eval .#homeConfigurations` is empty
+(CriomOS-home's `horizon` input defaults to the stub `path:./stubs/no-horizon`
+with `horizon.users = {}`, so `homeConfigurations = mapAttrs ... horizon.users`
+is empty). The live spirit user service is wired through the **NixOS system**
+`CriomOS` (`/run/current-system` = `nixos-system-ouranos-26.05`), which consumes
+CriomOS-home as flake input `criomos-home` and supplies the real `horizon`
+(`CriomOS/modules/nixos/userHomes.nix`: `home-manager.users = mapAttrs ...`).
+`CriomOS/flake.lock` pins `criomos-home` at `852ad939` (CriomOS-home main HEAD),
+which resolves spirit at the OLD `a4cc858`.
+
+The **real deploy path** (replaces "Resume steps" 1-2 below):
+1. Commit + push the spirit-0.12.1 pin bump on **CriomOS-home main** (jj:
+   commit → `jj bookmark set main -r @-` → `jj git push --bookmark main`).
+   `nix flake lock --update-input spirit` moves spirit `a4cc858` → `f4635c3`
+   and 5 spirit-only private sub-inputs (`agent-source`,
+   `meta-signal-agent-source`, `schema-rust-next-source`, `signal-agent-source`,
+   `signal-spirit-source`); no unrelated top-level input moves. NOTE
+   `signal-spirit-source` changed → the daemon startup-config contract MAY have
+   changed, so a bare systemd override reusing the old 269-byte config.rkyv is
+   genuinely unsafe; regenerate the config (home-module path does this, or run
+   `spirit-write-configuration` with the module's exact ConfigurationWriteRequest).
+2. Bump `criomos-home` in **`CriomOS/flake.lock`** (`nix flake lock
+   --update-input criomos-home`); verify spirit resolves to `f4635c3` there.
+3. Rebuild + switch the **ouranos NixOS system** (`nixos-rebuild switch --flake
+   /git/github.com/LiGoldragon/CriomOS#<target>` or the project deploy tool).
+   This restarts the spirit user service with config regen + `spirit-migrate-store`.
+4. Verify 5a/b/c (Version 0.12.1, read works, healthy). Rollback is a NixOS
+   generation rollback (`nixos-rebuild switch --rollback`), not a home-manager
+   activate — plus the `~/.local/state/spirit.bak-predeploy/` store restore.
+
+This is `cluster-operator`/`system-operator` production-deploy territory (a full
+system rebuild on the host the session runs on). The referent.md fix IS already
+committed + pushed to spirit `origin/main` at `f4635c3` (that part is done).
+Deploy-path choice is pending a psyche decision at restart.
+
 ## The flaw
 
 Recording the universal-frame Principle with referent `[triad-runtime]` drew:
