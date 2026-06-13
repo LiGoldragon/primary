@@ -163,19 +163,41 @@ concept — the only real gap was `pascal_head + body`, which step 1 closes.
   form, so the one keystone covers both. `ResolvedImport` now carries
   `parameter_count`; the import-arity branch is wired but unexercised until the
   `Local→Imported` head rewrite (a later step).
-- **Step 4 — RUNNING.** Root-position application — a typed root sum
-  `{ RootEnum(EnumDeclaration) | RootApplication(Application) }`, same branch.
-  **O4 RESOLVED (was held back):** an application root's content-address is the
-  hash of its head-import closure + argument closures, reusing the EXACT
-  field-position `Application` closure walk step 2 built — no new hashing
-  primitive; an application root is closure-walked identically to a
-  field-position application, so content-addressing stays deterministic. The
-  step-4 subagent carries a verification gate: confirm against the real
-  `identity.rs` closure code that an application root slots in cleanly (stable
-  hash across re-lowering; hash changes when an argument type changes), and
-  STOP-and-report if the closure-hash bakes in a root=enum assumption rather
-  than inventing a new scheme. This moves O4 out of the report's uncertainty
-  section into a decided, falsifiable implementation.
+- **Step 4 — DONE.** schema-next `next/schema-generics` @ `cf745f8d`.
+  Root-position application — typed root sum `Root::{Enum(EnumDeclaration) |
+  Application(Box<RootApplication>)}`. 152/152 tests, clippy + fmt clean.
+  **O4 RESOLVED + VERIFIED:** the closure content-addresses by walking
+  references (blake3 over rkyv bytes of `FamilyClosure`), NOT by extracting
+  variant names — so an application root reuses the field-position `Application`
+  walk with no new hashing primitive. Verification gate caught the real
+  subtlety: two application roots whose args differ only in scalar leaves (which
+  reach no declarations) would hash identically; closed by carrying the applied
+  reference into `FamilyClosure` (`root_application: Option<TypeReference>`).
+  Test proves the closure hash is stable across re-lowering AND
+  argument-sensitive. O4 is now decided code, not an open uncertainty.
+- **Step 5 — RUNNING.** Author the shared `reaction.schema` (maximal frame,
+  declared once) + a spirit full-frame pilot, as schema-next fixtures, proving
+  they lower + are equivalent to spirit's concrete nexus. Design specified by
+  designer (not delegated as a question):
+  - **The frame** (`Nexus*` prefix dropped, O9): `(Work Event WriteDone ReadDone
+    EffectDone) [(SignalArrived Event) (SemaWriteCompleted WriteDone)
+    (SemaReadCompleted ReadDone) (EffectCompleted EffectDone)]` and `(Action
+    Reply Write Read Effect Continuation) [(ReplyToSignal Reply) (CommandSemaWrite
+    Write) (CommandSemaRead Read) (CommandEffect Effect) (Continue Continuation)]`.
+  - **O3 DECIDED (mechanism), not yet exercised:** an absent leg binds its
+    payload parameter to an UNINHABITABLE type (empty enum / Never) so that
+    variant cannot be constructed — frame shape identical for all components,
+    only bindings differ. Spirit is a full-frame component (4 Work + 5 Action
+    legs), so the pilot does NOT exercise omittable legs; the mechanism is
+    proven by step 6 (rkyv/NOTA derive over an uninhabitable param) and
+    exercised in step 7 (harness=1, agent=2, …). Terminal's `MetaArrived` stays
+    a LOCAL leg outside the shared frame (O5).
+  - **O7 STILL OPEN (deliberately):** reaction.schema lives as a schema-next
+    fixture for the pilot (consumable by step 6 by path); its permanent neutral
+    importable home — so all 14 components depend on it without depending on
+    each other — is a system-operator repo-management decision that must resolve
+    BEFORE the step-7 fan-out. Co-locating it inside spirit is the fixture only,
+    never the real home.
 
 ### Integration note for operator (cross-repo ordering)
 
