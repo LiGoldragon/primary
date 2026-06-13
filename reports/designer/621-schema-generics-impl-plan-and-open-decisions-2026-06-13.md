@@ -194,16 +194,49 @@ concept — the only real gap was `pascal_head + body`, which step 1 closes.
   lowers without `GenericArityMismatch`; the pilot matches arity by
   construction). This slice must land before the step-7 fan-out so imported-frame
   applications are arity-checked.
-- **Step 6a — RUNNING (the #408 risk gate).** Compile-prototype the generic
-  frame in triad-runtime (`next/generic-reaction-frame`), hand-written, with the
-  real wire-derive stack — proving (A) rkyv + NOTA `#[derive]` compose over a
-  multi-parameter generic enum `Work<Event,Write,Read,Effect>`, and (B) the same
-  over an UNINHABITABLE leg parameter (`Work<…, Never, …>` — the O3 mechanism),
-  plus an `Action → NextStep` projection without the associated-type shim. This
-  is split OUT of the emission wiring deliberately: if the shape doesn't compile,
-  the maximal-frame design falls back to fixed arities and the emitter work is
-  moot — so the cheapest decisive proof goes first. The subagent reports a hard
-  PASS/FAIL verdict.
+- **Step 6a — DONE (the #408 verdict: PARTIAL).** triad-runtime
+  `next/generic-reaction-frame` @ `9877928`. **The maximal multi-parameter
+  generic frame PASSES**: `Work<Event,Write,Read,Effect>` /
+  `Action<Reply,Write,Read,Effect,Continuation>` compile with the real wire
+  derive stack (`rkyv::Archive/Serialize/Deserialize, Clone, Debug, PartialEq,
+  Eq` + nota-next `NotaDecode/NotaEncode` behind a `nota-text` feature) — **no
+  bound attributes needed** (rkyv 0.8 + nota-next each auto-synthesize
+  per-parameter bounds); rkyv + NOTA round-trip; and `impl From<Action<…>> for
+  NextStep<…>` is a direct total projection, justifying DELETING the
+  associated-type `into_next_step` shim. **The O3 uninhabitable-leg mechanism
+  FAILS**: `enum Never {}` does not compile under the derive stack (rkyv's
+  derive emits `#[repr(u8)]` → E0084 zero-variant enum; `match self {}` → E0004;
+  hand-impl blocked by `#![forbid(unsafe_code)]` + unsafe `Portable`/`CheckBytes`).
+  Pinned as a `compile_fail` doctest. 10 tests green.
+  - **O3 REVISED (designer decision, evidence-backed):** hard uninhabitable
+    omission is impossible in safe Rust under these derives, and fixed
+    per-leg-subset frames don't fit — the legs are NOT nested (agent binds
+    Effect but not SemaRead; mind binds SemaRead but not Effect), so there is no
+    prefix-arity ladder. So unused legs bind to a small derivable **`Absent`
+    marker** payload, defined once in the frame: ONE maximal frame for all
+    components (zjmc preserved — declared once, applied per component), with
+    `SemaReadCompleted(Absent)` reading as a TYPED statement that the component
+    completes no sema reads. This is SOFT omission (constructible but
+    never-constructed) replacing the impossible hard omission — the type permits
+    a state the runtime never reaches. Tradeoff: a hair less type-strict than
+    the uninhabitable ideal; the only option that keeps a single frame. Spirit
+    (full frame) doesn't use `Absent`; it lands with the first reduced-leg
+    component in step 7.
+  - **Frame Rust home — option (I) decided (single source of truth):** the
+    frame DATA types (`Work`/`Action`) are SCHEMA-EMITTED from `reaction.schema`;
+    the frame BEHAVIOUR (`drive`, the `From<Action> for NextStep` projection)
+    stays hand-written in triad-runtime (like `NextStep`). The 6a prototype's
+    hand-written frame is the REFERENCE shape the emitter must reproduce; a
+    schema↔Rust agreement test guards drift.
+- **Step 6b — RUNNING.** Wire the schema-rust-next emission: emit the generic
+  frame once from `reaction.schema`; emit spirit's per-component application
+  (payload enums + `pub type Work = reaction::Work<payloads>`) from the pilot
+  fixture; delete the `into_next_step` shim; re-point the name-keyed detection
+  helpers from `NexusWork`/`NexusAction` to `Work`/`Action`. Proof: the
+  generated spirit crate `cargo build`s + rkyv/NOTA round-trips + the runner
+  drives spirit's `Action`. Cascade stop condition: if re-pointing the detection
+  helpers balloons beyond the listed sites, keep part 1 (frame emission) proven
+  and report the cascade rather than forcing it (risk #7).
 ### Frame design decisions (O3 / O5 / O7 / O9) — settled by designer
 
   - **The frame** (`Nexus*` prefix dropped, O9): `(Work Event WriteDone ReadDone
