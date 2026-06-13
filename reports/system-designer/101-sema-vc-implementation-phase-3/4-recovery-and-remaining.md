@@ -4,6 +4,13 @@
 lane or another) resumes from this file rather than forensics. Everything
 below is verified as of writing; trust the branch heads over memory.*
 
+> **Superseded in part by report 102 (`reports/system-designer/102-sema-vc-audit`).**
+> The audit found the migration is NOT a bare manual handoff: migrate-before-start
+> is encoded as an `ExecStartPre` hook in the deployed spirit unit
+> (`CriomOS-home modules/home/profiles/min/spirit.nix:191`), idempotent on restart.
+> The stack is integrated and deployed (spirit up at 0.12.0 on a migrated v9 store;
+> mirror up but idle). The current live gaps + bead list live in report 102, not here.
+
 ## The branch stack (all pushed, all adversarially reviewed)
 
 | Repo | Branch | Head | State |
