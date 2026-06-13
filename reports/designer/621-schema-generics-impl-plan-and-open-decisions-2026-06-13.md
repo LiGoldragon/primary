@@ -133,3 +133,34 @@ The constraints are unchanged: no type aliases as a binding mechanism (Spirit
 referent-guardian deploy lands); no ZST carrier; direct-parameter generics so
 derives work natively. The structural-macro machinery DOES implement the
 concept — the only real gap was `pascal_head + body`, which step 1 closes.
+
+## Execution progress (live)
+
+- **Step 1 — DONE.** nota-next branch `next/pascal-head-body-shape` @ `db0f10a2`.
+  `PascalHeadBody` derive shape; no runtime change needed (the keystone
+  hypothesis held exactly); 4/4 round-trip cases + full suite + clippy green.
+- **Step 2 — DONE.** schema-next branch `next/schema-generics` @ `55413767`
+  (parented on `f460e7b6`). `TypeReference::Application` over the typed
+  `{Local|Imported}` head; broad form routed through the nota-next derive;
+  `Vec`→`Vector` alias collapse; dispatch order built-in→declared→broad
+  (test-pinned, NOT compiler-checked — the conflict-validation exemption means
+  ordering is an explicit rule). 143/143 tests, clippy clean. Closes D5-1.
+  Codec-table outcome (the risk-#4 question, RESOLVED): the `Block` path unified
+  through the structural-macro seam; the `ExpandedObject` (declarative.rs) and
+  `RawNotaDatatype` (source.rs) paths kept SEPARATE with alias-collapse +
+  `Application` fallback (different input types — they cannot share the
+  Block-only derive); the rkyv `NotaDecode` stays the canonical machine
+  boundary. `Map` stays grouped `(Map (K V))` (code is ground truth, not the
+  plan's flat `(Map K V)`). A stray `(Vec X)` now lowers to
+  `Application{head: Local(Vec)}` (fails later at resolution, not at parse).
+- **Step 3 — RUNNING.** Parameterized declaration heads `(Name Param …)` +
+  type-parameter binders + lowering-time arity validation (O8), same branch.
+
+### Integration note for operator (cross-repo ordering)
+
+The dependency order is nota-next (`next/pascal-head-body-shape`) → schema-next
+(`next/schema-generics`). The schema-next branch carries a designer-prototype
+Cargo `[patch."https://github.com/LiGoldragon/nota-next.git"]` → the step-1
+worktree so the slice is provable now; operator integrates step 1 to nota-next
+main, then DROPS the patch so the `branch = "main"` git dep carries the derive.
+The three designer branches cannot merge independently.
