@@ -38,7 +38,25 @@ The **real deploy path** (replaces "Resume steps" 1-2 below):
 This is `cluster-operator`/`system-operator` production-deploy territory (a full
 system rebuild on the host the session runs on). The referent.md fix IS already
 committed + pushed to spirit `origin/main` at `f4635c3` (that part is done).
-Deploy-path choice is pending a psyche decision at restart.
+
+**STATUS: #406 COMPLETE.** Psyche chose the full NixOS rebuild; a deploy
+subagent ran it via the **`lojix-cli`** orchestrator (the real deploy path —
+`lojix-cli '(FullOs goldragon ouranos [./datom.nota] [github:LiGoldragon/CriomOS/main] Switch None None)'`,
+which projects the `goldragon` cluster proposal as a horizon override and
+activates over key-based SSH as root to `ouranos.goldragon.criome`; the NixOS
+config is named `target`, not `ouranos`, and cannot build without the projected
+horizon). Commits: CriomOS-home `6ac4b7c`, CriomOS `7b64cc6`; daemon verified at
+0.12.1, reads working, `NRestarts=0`, no rollback. The principle was then
+re-recorded with `[triad-runtime]` via **Supersede** — NOT Record-then-Remove.
+The guardian flow forced this: a fresh `Record` was rejected `Duplicate` (n6fz
+still existed), and a bare `Remove` was rejected `InsufficientWarrant` (removal
+WITHOUT replacement is not authorized by a fix-and-resubmit quote). Supersede —
+atomic retire+replace, `Supersession { RetiredIdentifiers* Replacements* Justification* }`
+with `Replacements (Vec Entry)` — warranted by the psyche's "submit it again",
+was the correct operation. Result `(Superseded ([n6fz] [zjmc]))`; `zjmc` carries
+`[triad-runtime]` (confirmed by Lookup), proving the referent-guardian fix
+admits concrete component crate names live. The session's `n6fz` reference is
+now **`zjmc`** everywhere downstream.
 
 ## The flaw
 
