@@ -153,8 +153,29 @@ concept — the only real gap was `pascal_head + body`, which step 1 closes.
   boundary. `Map` stays grouped `(Map (K V))` (code is ground truth, not the
   plan's flat `(Map K V)`). A stray `(Vec X)` now lowers to
   `Application{head: Local(Vec)}` (fails later at resolution, not at parse).
-- **Step 3 — RUNNING.** Parameterized declaration heads `(Name Param …)` +
-  type-parameter binders + lowering-time arity validation (O8), same branch.
+- **Step 3 — DONE.** schema-next `next/schema-generics` @ `3a6d6ec4`.
+  Parameterized declaration heads `(Name Param …)` + per-declaration nested
+  binders + lowering-time arity validation (`Schema::arities_verified()` →
+  `SchemaError::GenericArityMismatch`, O8). 149/149 tests, clippy + fmt clean.
+  Elegant confirmation: `DeclarationHead::from_parameterized` delegates to the
+  EXACT step-1 derive node (`ApplicationNode::from_structural_block`) — the
+  parameterized declaration head is structurally identical to the application
+  form, so the one keystone covers both. `ResolvedImport` now carries
+  `parameter_count`; the import-arity branch is wired but unexercised until the
+  `Local→Imported` head rewrite (a later step).
+- **Step 4 — RUNNING.** Root-position application — a typed root sum
+  `{ RootEnum(EnumDeclaration) | RootApplication(Application) }`, same branch.
+  **O4 RESOLVED (was held back):** an application root's content-address is the
+  hash of its head-import closure + argument closures, reusing the EXACT
+  field-position `Application` closure walk step 2 built — no new hashing
+  primitive; an application root is closure-walked identically to a
+  field-position application, so content-addressing stays deterministic. The
+  step-4 subagent carries a verification gate: confirm against the real
+  `identity.rs` closure code that an application root slots in cleanly (stable
+  hash across re-lowering; hash changes when an argument type changes), and
+  STOP-and-report if the closure-hash bakes in a root=enum assumption rather
+  than inventing a new scheme. This moves O4 out of the report's uncertainty
+  section into a decided, falsifiable implementation.
 
 ### Integration note for operator (cross-repo ordering)
 
