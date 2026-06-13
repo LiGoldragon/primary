@@ -137,6 +137,9 @@
 		},
 		{
 			"path": "../../../git/github.com/LiGoldragon/schema-next"
+		},
+		{
+			"path": "../../../git/github.com/LiGoldragon/spirit"
 		}
 	],
 	"settings": {}
