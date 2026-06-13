@@ -96,3 +96,15 @@ Per the psyche's direction to hunt warnings against too much fruit / raw vegetab
 The synthesis reads the plate food by food: no raw-vegan staple is a classically sanctioned raw daily food; each is a medicine, a seasonal accessory, or a heavy substance requiring *saṃskāra* and fat. The sanctioned staple the corpus names — *anna* with *ghṛta* — is the one the raw plate excludes.
 
 Not yet mined: the scanned Yoga Upaniṣads (Ayyangar; the Śāṇḍilya / Yogatattva *apathya* lists) — the library PDF has no text layer and would need an OCR pass, which would also be a final shot at the unlocated *hitaṃ mitaṃ* source.
+
+## Update 5 (2026-06-13) — diet-cluster rewrite with the new sources
+
+Per the psyche's "use the new sources to rewrite all affected articles" (whole-cluster scope chosen), six diet articles now carry the verified material:
+
+- **Fruitarianism** — full rewrite: fruit-as-*auṣadha* + *rasa-atiyoga*, the clearing-then-depletion arc, modern clinical corroboration (Giessen weight/amenorrhea/B-12) translated to *ārtava-kṣaya* / *dhātu-kṣaya* / *āma*. The over-broad "most fruits are poisonous" section was replaced with the defensible medicine-not-staple argument; negative-contrast tics removed.
+- **Yogis Don't Eat Fruit** — raw section extended with the nuts/seeds/sprouts classical warnings, kept Vedic-only per the standing constraint.
+- **In Praise of Agni** — "What Cooking Actually Does" extended: raw nuts and sprouts are *guru* and require *saṃskāra*; the raw plate hands the unfinished work to the belly's fire.
+- **Yogic Food** and **Ambrosian Diet** — Yoga Yājñavalkya 1.66–67 (mitāhāra by mouthfuls) added as the quantity-rule beside HYP 1.58 (quality) and GhS 5.16 (precondition); Yogic Food also lost two "This is not X, it is Y" tics.
+- **Vegan** — new section "Vegetal, but Cooked": the word-reclamation holds, but the vegetal gives life only cooked (*na hy apakvād rasādayaḥ*); the raw staples are *guru* / *āma*-producing; the Giessen harm tracked the *rawness* of the diet. Kept on-thesis — raw is the error, not plant-eating per se.
+
+Treatment split honored: Yogis classical-only; Fruitarianism and Vegan carry the modern clinical (Vegan already had a modern-studies section). The two published articles were re-published to Substack: The Ambrosian Diet (193562915), In Praise of Agni (197113361).
