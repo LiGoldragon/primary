@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.11.0`, installed in the
+schema-derived `spirit` component at version `0.12.0`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -35,7 +35,7 @@ The binary takes exactly one argument (the one-argument rule —
   spirit ./record.nota
   ```
 
-The CLI replies on stdout with the daemon's typed `Reply` as NOTA text
+The CLI replies on stdout with the daemon's typed `Output` as NOTA text
 — `(RecordAccepted ...)`, `(RecordsObserved [...])`, etc. Exit code is
 nonzero on transport, parse, or daemon errors.
 
@@ -80,7 +80,7 @@ a certainty `Magnitude`, an importance `Magnitude`, a privacy
 `Magnitude`, and a vector of `Referents` — in that order. No verbatim
 field on `Entry` and **no time field at all**.
 
-`Justification` is the court model (0.11.0):
+`Justification` is the court model (0.12.0):
 `Justification { Testimony * Reasoning * }` where `Testimony` is a
 vector of `VerbatimQuote { QuoteText * antecedent (Optional Antecedent) }`
 and `Reasoning` is the agent's argued case. `QuoteText` must be the
@@ -103,17 +103,22 @@ spirit "(Record (([<Domain> ...] <Kind> [description] <Certainty> <Importance> <
 # Privacy    uses the same Magnitude ladder; Zero is open/public.
 ```
 
-**Guardian discipline at 0.11.0.** The agent guardian judges every
-working-socket write and rejects with typed reasons; two new ones bite
-routinely: `ImportanceUnsupported` — new records start at `Minimum`
-importance and earn elevation through genuine repetition
-(`BumpImportance`), not at capture time; and `MissingTestimony` — the
-testimony vector must carry the psyche's verbatim words with enough
-antecedent context to stand alone. Rejection replies append the
-supporting record set and can be very large; pipe through `head` when
-exploring. 0.11.0 also carries `Propose`, `Clarify`, `Supersede`, and
-`Retire` operations — read the deployed `schema/signal.schema` for their
-shapes before first use.
+**Guardian discipline at 0.12.0.** The agent guardian judges every
+working-socket write and rejects with one typed reason from the deployed
+`GuardianRejectionReason` enum. The prompt is stored in
+`/git/github.com/LiGoldragon/spirit/src/guardian-prompts/` and enforces
+an ordered checklist: testimony/authenticity, warrant, durable-intent
+shape, domain/privacy, certainty/importance burden, then duplicate or
+contradiction checks. Common rejections: `MissingTestimony` when no
+verbatim psyche quote is supplied, `Overstated` when the claimed
+certainty outruns the quote's modal strength, `ImportanceUnsupported`
+when an elevated importance rung lacks recurrence or blast-radius
+evidence, and `NonIntent` when a submission is task state rather than a
+durable arrow. Rejection replies include the supporting record set and
+can be very large; pipe through `head` when exploring. 0.12.0 also
+carries `Propose`, `Clarify`, `Supersede`, and `Retire` operations —
+read the deployed `schema/signal.schema` for their shapes before first
+use.
 
 Domains are closed taxonomy variants such as
 `(Information Documentation)`, `(Safety Privacy)`,
@@ -139,9 +144,9 @@ calls use the heads present in the deployed contract.
 ## Removing and changing records
 
 ```sh
-spirit "(Remove abcd)"                    # -> (RecordRemoved (abcd <marker>))
-spirit "(ChangeCertainty (abcd Zero))"    # -> (CertaintyChanged (abcd Zero <marker>))
-spirit "(BumpImportance abcd)"            # -> (ImportanceBumped (abcd <importance> <marker>))
+spirit "(Remove (abcd ([([psyche authorization quote] None)] [reasoning])))"  # -> (RecordRemoved (abcd))
+spirit "(ChangeCertainty (abcd Zero))"    # -> (CertaintyChanged (abcd Zero))
+spirit "(BumpImportance abcd)"            # -> (ImportanceBumped (abcd <importance>))
 ```
 
 `Remove` deletes a record entirely — use it when nothing should remain
@@ -159,13 +164,15 @@ owner-configured archive database, then remove them from the hot store:
 spirit "(CollectRemovalCandidates (((Full [(Information Documentation)]) Any Any Any (Some Correction) (Exact Zero) (ExactCertainty Zero) Any) ([([psyche authorization quote] None)] [remove zero-certainty documentation corrections])))"
 ```
 
-Collection takes the same eight-field `Query` used by `Observe` and
-`Count`, plus a `Justification`, wrapped in `CollectRemovalCandidates`.
-For the removal-candidate path, select records with `(ExactCertainty Zero)`. The reply
+Collection's schema field is `RecordQuery`, a generated newtype around
+the same eight-field `Query` used by `Observe` and `Count`; the CLI
+accepts the direct query shorthand shown above. The second field is the
+required `Justification`. For the removal-candidate path, select records
+with `(ExactCertainty Zero)`. The reply
 `(RemovalCandidatesCollected (...))` carries archived
 `RemovalArchiveRecord` values, removed identifiers, skipped candidates,
-and the post-removal database marker. Archive location is not a
-working-signal argument; the owner configures it through the meta socket.
+and no database marker. Archive location is not a working-signal
+argument; the owner configures it through the meta socket.
 
 ## Observing records
 
@@ -223,6 +230,13 @@ spirit "(Count (Any Any Any Any None (Exact Zero) (AtLeastCertainty Minimum) Any
 Use the production heads shown above: `Observe` / `Count` with the
 eight-field `Query`, and `PublicRecords` / `PrivateRecords` with the
 two-field `RecordSelection`.
+
+Database markers are not part of ordinary replies. Use the explicit
+`Marker` operation only when you need the durable database marker:
+
+```sh
+spirit Marker      # -> (MarkerReported (<commit-sequence> <state-digest>))
+```
 
 ## Certainty and importance
 

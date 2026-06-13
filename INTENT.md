@@ -63,6 +63,14 @@ Every statement in an essence or intent surface is anchored in an actual
 Spirit record; a claim with no record behind it does not belong, or the
 intent is recorded first.
 
+## Push, not poll
+
+Polling design is forbidden. Producers push events; consumers subscribe.
+When a mechanism appears to offer only polling, escalate deeper into the
+stack and build or use a real event surface rather than tuning sleep
+intervals or adding fallback polling. Spirit `c5nq` records the explicit
+constraint.
+
 ## Reports are for agents; chat is for the psyche
 
 Substantive output — analysis, proposal, audit, synthesis — goes in a
