@@ -85,17 +85,58 @@ only the VM, host untouched; NOT the host-reconfiguring `vm-testing` module
 `/dev/kvm`, 32 cores, 124 GiB free. qemu run transiently via `nix`. No
 `5hir5bnz` exposure.
 
+## S2 finish · bootstrap tool — landed (2026-06-12)
+
+`lojix-write-configuration` (mirrors `spirit-write-configuration`): a typed
+NOTA config request → the daemon's rkyv startup file, round-trip tested.
+Pushed at lojix `e51d71de`. (The meta `Configure` runtime-reconfig op +
+virgin-daemon-wait remain a follow-on — not blocking; the daemon configures
+from its binary startup file today.)
+
+## S3 · Durable state — landed (2026-06-13)
+
+Replaced the in-memory `Mutex<StoreState>` with a durable `sema-engine`-backed
+`Store` persisting to `<state-dir>/lojix.sema`, copying the shipped spirit
+`Store`-on-`Engine` precedent verbatim. `StoreState`, the Mutex/lock API, the
+four RAM counters, and the ten in-RAM mutators are deleted. One keyed
+`TableReference` per family (live-set, gc-roots, event-log, container) — one
+row per element; `EngineRecord` impls live in `lib.rs`, the generated
+`schema/sema.rs` stays byte-for-byte. **`Engine::open` IS the self-resume.**
+The reset-to-zero id bug is fixed: `next_generation/deployment_identifier`
+derive from max-persisted+1; `next_event_log_position` from the row count;
+the subscription token stays an ephemeral atomic (subscriptions don't
+persist). Built via an implement→adversarial-review workflow; the reviewer
+independently re-ran both gates (default 24 / nota-text 25 passed, 7 ignored)
+and confirmed resume is *proven* (genuine drop+reopen test), keying is
+collision-free (`assert` errors on duplicate, never clobbers), ids are
+restart-safe, and cloud-operator's TCP-peer owner-auth is intact. Two notes
+addressed before push: the "idempotent on retry" wording corrected to
+*fail-safe / no-clobber* (a duplicate-key `assert` errors, it is not an
+idempotent no-op), and `rust-version` bumped to 1.89 (redb 4.1 MSRV). Pushed
+at lojix `196ab501`. INTENT.md + ARCHITECTURE.md refreshed to the durable
+shape on the same commit.
+
+**Tracked durability gap (follow-on):** `record_activation` writes the
+live-set then gc-root rows as two sequential keyed asserts — `CommitRequest`
+is single-table, so a crash between them leaves a torn write (a live row
+without its gc-root) with no reopen reconciliation. Honestly documented;
+acceptable pre-production baseline (Spirit `oh9l`), but must be closed before
+the real cutover — either a sema-engine multi-table commit (the right layer,
+Spirit `fosp`) or an interim reopen-reconciliation that rebuilds missing
+gc-roots from the live set on open.
+
 ## Next
 
-- **S2 finish.** `lojix-write-configuration` bootstrap tool (mirroring
-  `spirit-write-configuration`); the meta `Configure` op + virgin-daemon
-  apply. The owner→meta socket rename (`3chp` names it the meta socket; the
-  daemon config still says `owner_socket_path`) is a tracked atomic rename.
-- **S0 cleanup.** Refresh the stale contract docs.
-- **S3 · Durable state.** Replace in-memory `StoreState` with sema-engine /
-  redb durable backing + self-resume (Spirit `oh9l`).
-- **S4 · Activation + SSH-survival.** Real closure copy + activate; port the
-  `systemd-run --collect` transient-unit BootOnce under the job-actor model
-  (Spirit `up9q`).
-- **S5 · Live e2e.** lojix deploys a full OS into the Prometheus KVM VM,
-  surviving SSH disconnect.
+- **S4 · Activation + SSH-survival** (the last big stage). The daemon
+  currently *rejects* every activating deploy (`activate_system` references an
+  unset `$CLOSURE`). Carry the real closure path into `CopyClosure`
+  (`nix copy --to ssh-ng`) and `ActivateGeneration`; port `lojix-cli`'s
+  `systemd-run --collect` PID-1 transient-unit BootOnce under a job-actor that
+  owns the process + persists job state, so a deploy survives SSH disconnect
+  (Spirit `up9q`); open the reject-guard for now-safe actions.
+- **S5 · Live e2e.** lojix deploys a full OS into a throwaway qemu/KVM VM on
+  Prometheus (run via `nix`, host untouched), surviving SSH disconnect
+  (Spirit `se72`/`7let`).
+- **Follow-ons (non-blocking):** the cross-table-atomicity gap above; the meta
+  `Configure` op + virgin-daemon-wait; the owner→meta socket rename (`3chp`);
+  the stale `signal-lojix`/`meta-signal-lojix` contract docs (S0 cleanup).
