@@ -88,6 +88,41 @@ layer over it). So "the missing part" is:
   shape"; how much of `MacroShape` is just the existing schema-declaration
   grammar viewed through the macro lens, versus genuinely new vocabulary?
 
+## Generics and traits are the same pattern, composed
+
+The psyche's next move: a type *with generics (and trait) definitions* is also
+"a certain type matched with a certain structure" — sketched as
+
+```
+(WhateverWeNameThis <X> <PossiblyY> <PossiblyZ> [ OrAVecOfThings ] { first Value })
+```
+
+This generalizes `MacroShape` from the flat shapes above to a **compositional**
+grammar: a head, then a composition of typed parts —
+
+- **generic-parameter slots** `<X>`, some required, some optional (`<Y?>`),
+- a **sequence** part `[ … ]`,
+- a **record** part `{ field Type }`,
+- atoms, and so on.
+
+The parameterized declarations + applications already shipped (steps 2–4) are the
+**first instance** of exactly this: `(Plane Input Output)` is `(Name <X> <Y>)` — a
+head with generic params; `(Work A B C D)` applies them. What the psyche adds:
+*optional* generic params, and *composing* generics with `[…]` / `{…}` / atom
+parts in one declaration — and that a **trait** definition (a head + typed method
+signatures) is one of these too. So one compositional, self-describing vocabulary
+covers structural macro nodes, generic types, and traits alike — they are all
+"a head + a typed, possibly-optional, composed structure."
+
+### Open: is `<>` a real delimiter?
+
+The sketch uses `<X>` for a generic-parameter slot. Today generics ride inside
+`(Name Param)` with no angle brackets. A new `<>` pair earns its place only if
+marking "this is a type parameter, and possibly optional" as visually distinct
+from a regular field is worth a fourth delimiter — otherwise the params stay bare
+in the head and optionality is expressed structurally. A genuine fork for the
+psyche (*"delimiters earn their place"*); flagged, not decided.
+
 ## Why it's worth it (the psyche's load-bearing reason)
 
 NOTA + schema is the one substrate that is simultaneously the most legible format
