@@ -175,10 +175,37 @@ concept — the only real gap was `pascal_head + body`, which step 1 closes.
   reference into `FamilyClosure` (`root_application: Option<TypeReference>`).
   Test proves the closure hash is stable across re-lowering AND
   argument-sensitive. O4 is now decided code, not an open uncertainty.
-- **Step 5 — RUNNING.** Author the shared `reaction.schema` (maximal frame,
-  declared once) + a spirit full-frame pilot, as schema-next fixtures, proving
-  they lower + are equivalent to spirit's concrete nexus. Design specified by
-  designer (not delegated as a question):
+- **Step 5 — DONE.** schema-next `next/schema-generics` @ `5feccb60`. Shared
+  `reaction.schema` (at `tests/fixtures/reaction/schema/reaction.schema`,
+  importable as `reaction:reaction:Work`) + spirit full-frame pilot. 159/159
+  tests, clippy + fmt clean. The frame text is exactly as specified; the pilot
+  imports `Work`/`Action` and applies them at the root positions
+  (`(Work SignalInput SemaWriteOutput SemaReadOutput EffectOutcome)` /
+  `(Action SignalOutput SemaWriteSet SemaReadInput EffectCommand (Work …))`,
+  the Continuation leg bound to spirit's own nested `Work` application). `Nexus*`
+  dropped. **Equivalence proved leg-for-leg, payload-for-payload** via a
+  `FrameExpansion` noun substituting the application's args for the frame
+  binders and asserting `==` the concrete hand-written variants. Spirit binds
+  all 9 legs (full frame), so O3's omittable-leg path is NOT exercised here.
+  **GAP (tracked follow-up — the `head-resolution rewrite` slice):** imported-head
+  arity is NOT enforced at lowering yet — the `Local→Imported` head rewrite
+  doesn't exist, so `ResolvedImport::parameter_count` is carried but unconsumed
+  for an imported root application (a 3-arg apply against 4-param imported `Work`
+  lowers without `GenericArityMismatch`; the pilot matches arity by
+  construction). This slice must land before the step-7 fan-out so imported-frame
+  applications are arity-checked.
+- **Step 6a — RUNNING (the #408 risk gate).** Compile-prototype the generic
+  frame in triad-runtime (`next/generic-reaction-frame`), hand-written, with the
+  real wire-derive stack — proving (A) rkyv + NOTA `#[derive]` compose over a
+  multi-parameter generic enum `Work<Event,Write,Read,Effect>`, and (B) the same
+  over an UNINHABITABLE leg parameter (`Work<…, Never, …>` — the O3 mechanism),
+  plus an `Action → NextStep` projection without the associated-type shim. This
+  is split OUT of the emission wiring deliberately: if the shape doesn't compile,
+  the maximal-frame design falls back to fixed arities and the emitter work is
+  moot — so the cheapest decisive proof goes first. The subagent reports a hard
+  PASS/FAIL verdict.
+### Frame design decisions (O3 / O5 / O7 / O9) — settled by designer
+
   - **The frame** (`Nexus*` prefix dropped, O9): `(Work Event WriteDone ReadDone
     EffectDone) [(SignalArrived Event) (SemaWriteCompleted WriteDone)
     (SemaReadCompleted ReadDone) (EffectCompleted EffectDone)]` and `(Action
