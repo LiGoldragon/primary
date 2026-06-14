@@ -20,10 +20,14 @@ schema-NOTA-rkyv substrate.]
 ## Why it's the differentiator (and not just "we have macros")
 
 Lisp has macros; Rust has macros. The novelty here is not *having* macros — it is
-that **the macro set itself is data, not compiler-frozen.** In Lisp the reader
-and special forms are frozen in the implementation; you extend syntax but not the
-expander. Here even the *shape vocabulary* — how a node decodes — is data (report
-103). So the openness goes one level deeper than macro systems usually reach.
+**where the macro set is kept.** Every language already *is* a set of structural
+macros; conventional ones just **save that data poorly** — smeared across the
+compiler/interpreter implementation, not expressed as clean, inspectable, typed
+data. The data was always there; it was badly stored. This approach saves it well:
+the macro set, down to the *shape vocabulary* — how a node decodes (report 103's
+next brick) — is first-class typed data. So the openness goes one level deeper
+than macro systems usually reach, because the thing normally smeared into the
+compiler floor is now data you can read, write, and extend.
 
 Two things keep that from collapsing into "an untyped pile of macros":
 
@@ -62,22 +66,26 @@ And the committed first step:
   than hand-writing them — as the proving first step of absorbing Rust's type
   surface into schema].
 
-## The live frontier — a macro *is* a reaction
+## Correction — a macro is NOT a reaction (category error, retracted)
 
-The psyche's current move unifies two threads. A macro is a reaction: its
-**pattern** is the `Work` that arrives (an input to expand), its **template** is
-the `Action` produced (emit this output). Match-then-produce *is*
-arrive-then-decide. So the macro substrate and the reaction frame (the `Work` /
-`Action` of #407) are the **same generic structure** — a macro is a *constrained*
-reaction whose DB-read / DB-write / effect legs are unused, marked `Absent` (the
-#408 marker, here earning its purpose). And since "every output kind corresponds
-to a macro," kinds are an open, data-defined set, not a closed enum — the
-"what does this produce?" check survives as *which macro matched*.
+An earlier version of this report floated "a macro *is* a reaction," mapping a
+macro's pattern/template onto the runtime engine's `Work`/`Action` loop. The
+psyche caught it as a category error, and it is: the **reaction frame is a runtime
+engine abstraction** (I/O arrivals, effects, async orchestration across the live
+daemons), while a **macro is compile/load-time** — a pure structural transform
+from matched input to produced output, with no I/O, effects, or async. The
+"arrive → produce" resemblance is too generic to be load-bearing — it is just "a
+function," and stretching the reaction frame over it only hollows out everything
+that makes the reaction frame *that* abstraction. The two share the **thesis**
+(both are expressible as data); they are **not the same structure**. Language
+design (this document) and the runtime engine are different layers; do not fuse
+them.
 
-**Governing open question (psyche's call):** is the reaction frame THE universal
-structure, with macros, components, and config all applications of it? If yes,
-`SchemaMacro` should not be a bespoke struct — it should be the reaction frame
-applied. This is downstream of the current operator slice and does not block it.
+What genuinely survives from that thread — and it lives entirely in the
+language-design layer, no engine concept needed — is **kinds-as-macros**: every
+output kind corresponds to a macro, so kinds are an open, data-defined set rather
+than a closed enum, and the "what does this produce?" check survives as *which
+macro matched*. That is what dissolves the template fork.
 
 ## The concrete ladder — bricks of the thesis
 
@@ -88,7 +96,7 @@ Each brick moves one construct from compiler-frozen to schema-data:
 | Macro *definitions* | already data (`builtin-macros.macro-library`, `DeclarativeSchemaMacro`) | done (verified, report 624) |
 | Macro-table *nouns* (`MacroPattern` family) | schema-emitted from `core.schema` | operator slice, bead `primary-bojw` (spec 625) — in progress |
 | Macro-node *shapes* (`#[shape]` vocabulary) | `StructuralNodeSpec` data + derive-as-freshness-witness | report 103 — next slice |
-| The macro *struct* itself | the reaction frame applied (`Work`/`Action`) | live frontier, gated on the question above |
+| The macro *struct* itself | just another schema-defined typed struct (kinds = macros) | language-design layer; no engine concept needed |
 
 103 and 625 are different layers — 103 makes the decode *shapes* data, 625 makes
 the macro-table *types* schema-emitted — and they compose; neither blocks the
@@ -100,10 +108,11 @@ that is a deeper redesign than this slice).
 
 - **Settled** (recorded): everything is data; the language-as-data-macros thesis;
   self-host the macro-table types as the first step.
-- **Being designed** (open): whether the reaction frame is the universal struct
-  (macro-as-reaction); the macro-node-shapes-as-data slice (103); how far to push
+- **Being designed** (open): how the macro/template model is shaped now that
+  kinds are macros; the macro-node-shapes-as-data slice (103); how far to push
   the uniform-substrate generalization (records, wire, macros, *and* daemon config
-  are already one schema-NOTA-rkyv substrate — 103 §generalization).
+  are already one schema-NOTA-rkyv substrate — 103 §generalization). All in the
+  language-design / data layer; the runtime engine is a separate concern.
 - **The irreducible seed**, named: the NOTA parser + one frozen derive. Kept
   small on purpose; if it accretes, the trust root erodes into the thing it
   replaces.

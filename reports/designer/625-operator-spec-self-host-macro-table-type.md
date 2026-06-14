@@ -17,12 +17,11 @@ the code actually does, not on the retracted `623` series.
 > and import only the pattern-family subset (don't hand-write a string filter
 > over generated Rust — that recreates the drift this POC removes). (4) The
 > `MacroPatternObjects` wrapper is an adaptation point — designer read below.
-> Also note: the psyche has since opened a deeper unification (a macro *is* a
-> reaction; `Work`/`Action` as the universal structure). That reshapes
-> `SchemaMacro`/the template **later** and is explicitly downstream — **this
-> slice is unaffected and stands**, because the *pattern family* is stable
-> either way and the codegen-path proof is foundational regardless of how the
-> macro struct is ultimately expressed.
+> Also note: an earlier framing tied the macro to the runtime reaction frame
+> (`Work`/`Action`). That was a category error — engine layer vs language layer —
+> and is **retracted** (see report 626's correction). It does not touch this
+> slice either way: the *pattern family* is stable and the codegen-path proof
+> stands on its own.
 
 ## The goal, and the fixpoint
 
