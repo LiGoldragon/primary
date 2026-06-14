@@ -36,16 +36,21 @@ Only the Signal wire types belong in the contract crate, and they are already th
 daemon-local.** Unlike nexus/sema, the meta-signal contract is one of a
 component's *two wire contracts* [`7sx6`], so it belongs in `meta-signal-spirit`,
 imported by the daemon — exactly as `signal` lives in `signal-spirit`. Current
-state is **drift**: spirit defines `schema/meta-signal.schema` locally (verbs
-`Configure`/`Import`), emits it as a `wire_contract_module`, and has *zero*
-dependency on `meta-signal-spirit`; meanwhile `meta-signal-spirit` is a stale,
+state was **drift**: spirit defined `schema/meta-signal.schema` locally (verbs
+`Configure`/`Import`), emitted it as a `wire_contract_module`, and had *zero*
+dependency on `meta-signal-spirit`; meanwhile `meta-signal-spirit` was a stale,
 hand-written, non-schema-derived orphan with a disjoint vocabulary
 (`Start`/`Drain`/`Reload`/`Register`/`Retire`). So this report's Claim-1 grouping
-of `meta-signal` with the internal planes was wrong. **Operator owns the fix**
-(rebuild `meta-signal-spirit` schema-derived with the live vocabulary; spirit
-imports it); the rule is already settled intent (`7sx6`/`u7tj`/`tb9h`) and now
-explicit in `skills/component-triad.md`; the lifecycle-verb vocabulary is an open
-designer reconciliation.
+of `meta-signal` with the internal planes was wrong.
+
+**RESOLVED by operator (2026-06-14; cross-lane review target #7 / report 630).**
+Operator rebuilt `meta-signal-spirit` as a schema-derived `Configure`/`Import`
+contract (`d5b5dde`) and spirit imported it (`4ec746b`: deleted the local schema +
+generated module, `pub use meta_signal_spirit::schema::meta_signal::*`) — contract
+byte-identical to the rebuild, verdict CONSISTENT. The rule is settled intent
+(`7sx6`/`u7tj`/`tb9h`) and now explicit in `skills/component-triad.md`. The
+orphan's lifecycle verbs were *not* pulled in (the live `Configure`/`Import` is the
+contract); whether they belong elsewhere is the remaining open reconciliation.
 
 ## Claim 2 — "keep a generated-Rust reference copy in the contract; co-host at build time for the orphan rule"
 
