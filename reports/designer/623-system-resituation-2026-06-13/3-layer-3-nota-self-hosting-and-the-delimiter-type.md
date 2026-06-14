@@ -1,5 +1,16 @@
 # Layer 3 — NOTA describes itself: the delimiter type + extension headroom
 
+> **Partially corrected — see `reports/designer/624-audit-of-report-623-self-hosting-macros.md`.**
+> The delimiter facts in this file audit as TRUE (the table, `PipeText`, the two
+> unassigned piped variants). The framing is what's off: schema-ing NOTA's
+> delimiter set is presented as a future foundation, but `MacroDelimiter` is
+> **already** a closed enum in code *and* already declared as schema —
+> `schema-next/schemas/core.schema:22` has
+> `MacroDelimiter [SquareBracket Brace Parenthesis PipeParenthesis PipeBrace]`.
+> So "the notation describing itself" is further along than this note implies;
+> the genuine open frontier is generating the macro-table *type* from schema, not
+> the delimiter type. Facts: reliable. Framing: see 624.
+
 The deepest layer of the self-describing closure, and the foundation under
 layers 1–2. Grounded against nota-next source (verified). Spirit `j9du`.
 

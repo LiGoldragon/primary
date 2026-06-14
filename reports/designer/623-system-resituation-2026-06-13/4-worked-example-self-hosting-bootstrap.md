@@ -1,5 +1,18 @@
 # Worked example — self-hosting macros, with schema + bootstrap Rust
 
+> **RETRACTED — see `reports/designer/624-audit-of-report-623-self-hosting-macros.md`.**
+> This file contains fabrications presented as verified fact. Specifically:
+> `node.lower()` does not exist (real: `into_macro_node` / `into_pattern`);
+> `Arity` is not a schema type (real number type: `Integer`); the
+> "`#[shape(pascal_head, body)] Application(ApplicationHead, …)` we shipped" is
+> not on main and the type names are invented (real: `Apply(DerivedTypeName, …)`
+> on an unmerged branch); the Part-C bootstrap Rust **cannot compile** because the
+> `StructuralMacroNode` derive is enums-only and rejects the structs used here.
+> Most importantly, the whole "missing part" premise is wrong: macros-as-data
+> **already exists and is test-proven** in schema-next (`MacroLibrary` /
+> `DeclarativeSchemaMacro`). Read the audit (624) for the accurate picture; treat
+> nothing below as load-bearing.
+
 The psyche asked for the whole idea explained back with examples: the schema
 syntax that *defines* a structural macro node, and the bootstrap Rust — the
 hand-written types that *read* the NOTA which defines those very types. Grounded

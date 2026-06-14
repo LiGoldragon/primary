@@ -1,5 +1,17 @@
 # The missing part — the structural macro node, described in schema
 
+> **RETRACTED — see `reports/designer/624-audit-of-report-623-self-hosting-macros.md`.**
+> The title's premise ("the missing part") is wrong: this capability is **not
+> missing** — schema-next already has a working, test-proven macros-as-data
+> system (`MacroLibrary` / `DeclarativeSchemaMacro`, where a NOTA
+> `(SchemaMacro …)` definition is decoded and executed at runtime). The
+> `MacroShape [...]` sketch below also **collides with a real, different
+> `MacroShape`** in `schema-next/schemas/core.schema:24`
+> (`[BraceMap ParenthesisEnum SquareStruct …]`), the field name `HeadText` is
+> invented, the parenthesized unit variants `(PascalAtom)` / `(PascalHeadBody)`
+> violate the bare-unit-variant rule, and `HeadedAtom` is a branch-only shape.
+> Treat this as a record of a wrong sketch, not a design.
+
 First design sketch of the psyche's epiphany (Spirit `t85k`, Low certainty — an
 explored possibility, not a directive). The shape, one worked example, and the
 open questions. Not a committed design.
