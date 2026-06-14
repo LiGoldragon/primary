@@ -48,8 +48,10 @@ Validation:
 - Two consecutive `whisrs toggle-copy` starts followed by `whisrs cancel` showed Whisrs source outputs on source `851623`, which was the live `dji_mic_hot_sink.monitor` source, not on the public `bluez_input.04:A8:5A:0B:EB:B0` source.
 - Both validation captures were canceled, so no transcription request was sent.
 
-## Remaining caveat
+## Session-slice addendum
 
-The live PipeWire graph on Ouranos still contained the older ad-hoc loopback node names because `systemctl --user restart pipewire.service pipewire-pulse.service` failed with `Unit session.slice not found`. The services stayed active and the final Whisrs fix was validated without a broad audio-stack restart.
+The live PipeWire graph on Ouranos still contained the older ad-hoc loopback node names during the first validation because `systemctl --user restart pipewire.service pipewire-pulse.service` failed with `Unit session.slice not found`. The services stayed active and the final Whisrs fix was validated without a broad audio-stack restart.
 
-The durable Home config contains the declarative loopback and policy. A later safe audio-session restart, logout/login, or system-side fix for the user-manager `session.slice` restart problem should replace the old ad-hoc node names with the declared `dji_mic_hot_capture` and `dji_mic_hot_playback` nodes.
+A later non-disruptive check found the root cause: stale broken Home Manager symlinks at `~/.config/systemd/user/session.slice` and `~/.config/systemd/user/background.slice` shadowed the valid system unit files under `/etc/systemd/user`. Removing those broken symlinks and running `systemctl --user daemon-reload` made `session.slice` and `background.slice` load as static system units again. A dry-run PipeWire restart then produced no error.
+
+The durable Home config contains the declarative loopback and policy. A later safe audio-session restart or login should replace the old ad-hoc node names with the declared `dji_mic_hot_capture` and `dji_mic_hot_playback` nodes.
