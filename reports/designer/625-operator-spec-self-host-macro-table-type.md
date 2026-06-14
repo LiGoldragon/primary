@@ -1,10 +1,28 @@
-# Operator spec — close the self-host bootstrap: generate the macro-table type from `core.schema`
+# Operator spec — schema-emit the macro-table noun family from `core.schema` (self-host POC, stage 1)
 
 Designer → operator handoff. The psyche chose this as the first POC to *prove
 the concept before going further*, and to keep an implementing agent grounded in
 a real example rather than sketches. This spec is code-grounded against current
 source (audited — see `624`); every file:line below was verified. Build on what
 the code actually does, not on the retracted `623` series.
+
+> **Revision — operator feedback accepted (`reports/operator/376-…`).** Four
+> corrections folded in: (1) **claim language narrowed** — this slice proves
+> schema-emitted macro-table *nouns* replace hand-written ones for the *pattern
+> family*; it does **not** close the structural-node shape vocabulary (that is
+> 103's separate layer) nor resolve the template model. (2) **Proof is Nix
+> witnesses, not `cargo` transcripts** — see the revised Stage-1 step 3.
+> (3) **Emission path**: `schema-rust-next` has no "emit only the family"
+> target today, so generate the **full** declaration module from `core.schema`
+> and import only the pattern-family subset (don't hand-write a string filter
+> over generated Rust — that recreates the drift this POC removes). (4) The
+> `MacroPatternObjects` wrapper is an adaptation point — designer read below.
+> Also note: the psyche has since opened a deeper unification (a macro *is* a
+> reaction; `Work`/`Action` as the universal structure). That reshapes
+> `SchemaMacro`/the template **later** and is explicitly downstream — **this
+> slice is unaffected and stands**, because the *pattern family* is stable
+> either way and the codegen-path proof is foundational regardless of how the
+> macro struct is ultimately expressed.
 
 ## The goal, and the fixpoint
 
@@ -86,28 +104,55 @@ bit" thread). Operator: stop at the family above; leave `SchemaMacro`,
 
 ## Stage 1 — the POC slice (operator, now)
 
-1. **Generate** the pattern family + leaves above from `schemas/core.schema`
-   using `schema-rust-next`'s `RustEmitter`
-   (`emit_module_from_schema_source` with `always_enabled_nota()`), into a new
-   module in schema-next (e.g. `src/declarative/generated.rs`). The cleanest
-   harness is likely a focused `schema-rust-next` integration test or a small
-   build step in schema-next that emits + writes the module; pick whichever
-   keeps the generated artifact checked in and re-derivable.
+1. **Generate** a **full** declaration module from `schemas/core.schema` using
+   `schema-rust-next`'s `RustEmitter` (`emit_module_from_schema_source` with
+   `always_enabled_nota()`, `ModuleEmission::declaration_module`), checked in
+   under schema-next's generated surface, then **import only the pattern-family
+   subset** into `declarative.rs`. There is no "emit only the family" target
+   today; do **not** hand-write a string filter over generated Rust (that
+   recreates the codegen drift this POC removes). The generated `MacroTemplate`
+   mirror will exist in the module but stays **non-authoritative** until the
+   designer resolves the template fork. (Adding a real subset/closure-emission
+   feature to `schema-rust-next` is the alternative, but keep the emitter path
+   ordinary for this first proof unless compile/review clarity demands it.)
+   **`MacroPatternObjects` wrapper (designer read):** `core.schema` spells
+   `MacroPatternObjects { values (Vec MacroPatternObject) }` and embeds it in
+   `MacroPatternDelimited`, but the runtime uses `children: Vec<MacroPatternObject>`
+   directly and `PatternChildren` operates on a slice. That wrapper is **not a
+   real domain noun** — it is `*`-shorthand ceremony around a `Vec`. Prefer
+   correcting `core.schema` to embed `(Vec MacroPatternObject)` with an explicit
+   field name (and the parallel `MacroTemplateObjects` likewise) so the
+   generated noun matches the runtime's direct `Vec`. If that ripples awkwardly
+   through the `*` shorthand, keeping the wrapper with a thin method surface is
+   acceptable for the POC and we revisit — but don't preserve the old direct
+   field merely for compatibility.
 2. **Swap**: delete the hand-written definitions of exactly those types from
    `declarative.rs`, `use` them from the generated module, and **adapt the impls**
    (`MacroPattern`, `MacroPatternObject`, `MacroPatternDelimited`, and the
    `StructuralMacroNode for MacroPattern`) to the generated shapes — chiefly the
    `String → MacroCaptureName / MacroAtom` leaf change and any boxing the
    generator chooses for the recursive `Delimited` arm.
-3. **Prove** (definition of done):
-   - `cargo test` in schema-next is green — specifically
+3. **Prove** (definition of done — **Nix witnesses**, not a `cargo` transcript;
+   local `cargo test`/`clippy` is fine for the inner loop, but review evidence
+   in this workspace is `nix flake check` / named flake outputs):
+   - **`nix flake check` in schema-next passes**, including
      `tests/macro_exploration.rs` (the `builtin()` round-trip + live lowering)
-     and `tests/design_examples.rs` (user-defined macro) still pass, decoding
-     the **generated** pattern types.
-   - `cargo clippy` clean; `#![forbid(unsafe_code)]` intact.
-   - The generated module is checked in and reproducibly re-emittable from
-     `core.schema` (a test that re-emits and asserts equality is ideal — it
-     guards the fixpoint).
+     and `tests/design_examples.rs` (user-defined macro), now decoding the
+     **generated** pattern nouns. `#![forbid(unsafe_code)]` intact.
+   - **Freshness witness**: a check proving the generated module is exactly
+     re-emitted from `schemas/core.schema` (guards the fixpoint; compare the
+     canonical source/semantic form, not architecture-sensitive rkyv bytes).
+   - **Negative/source witness**: the old hand-written pattern-family
+     declarations no longer exist in `src/declarative.rs`, while the behavior
+     impls remain attached to the generated nouns.
+   - **If `schema-rust-next` changed** (e.g. an emitter gap for the recursive
+     `enum`/`struct`/`Vec` cycle — the hand-written code uses
+     `#[rkyv(omit_bounds)]` on recursive payloads; fixing that in the emitter is
+     in scope): a local-override run proving schema-next consumes the **local**
+     emitter, not only the pinned remote revision.
+   Add these as flake witnesses in the style of schema-next's existing
+   architecture checks (no production free functions, no unit-struct method
+   holders, the macro-library collapse) — not a manual command transcript.
 4. **Report** to `reports/operator/<N>-…` with: the generated module, the diff of
    what was deleted/re-homed, the test evidence, and any place `core.schema` had
    to be corrected to match reality (e.g. recursion/boxing, the `*` field
