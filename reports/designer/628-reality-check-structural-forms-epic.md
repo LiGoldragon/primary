@@ -15,10 +15,11 @@ already been performed, and it is both settled intent and built:
 
 - `signal-spirit` owns the wire contract: `schema/{signal,domain}.schema` (source)
   + generated `src/schema/{signal.rs,domain.rs}` (Input/Output/Entry/RecordRequest…).
-- `spirit` owns only daemon-local planes: `schema/{nexus,sema,meta-signal}.schema`,
+- `spirit` owns the genuinely daemon-local planes `schema/{nexus,sema}.schema`,
   which **import** the contract (`SignalInput signal-spirit:signal:Input`) rather
   than redefine it, and `spirit/src/lib.rs` re-exports via `pub use
-  signal_spirit::schema::signal::*`.
+  signal_spirit::schema::signal::*`. **(See the meta-signal correction below —
+  `meta-signal` does *not* belong in this daemon-local list.)**
 - Dependency edge is one-way: `signal-spirit` has **zero** dependency on `spirit`;
   consumers (`upgrade`, `meta-signal-spirit`) bind only to `signal-spirit`. So a
   contract consumer already does not recompile when `spirit`'s engine logic changes.
@@ -30,6 +31,21 @@ already been performed, and it is both settled intent and built:
 Correction to the framing: **Nexus and SEMA are not contract** and must *not* move
 into `signal-spirit` — they are correctly daemon-internal planes [`yjik`,`26e7`].
 Only the Signal wire types belong in the contract crate, and they are already there.
+
+**Correction (psyche caught this; verified) — `meta-signal` is NOT correctly
+daemon-local.** Unlike nexus/sema, the meta-signal contract is one of a
+component's *two wire contracts* [`7sx6`], so it belongs in `meta-signal-spirit`,
+imported by the daemon — exactly as `signal` lives in `signal-spirit`. Current
+state is **drift**: spirit defines `schema/meta-signal.schema` locally (verbs
+`Configure`/`Import`), emits it as a `wire_contract_module`, and has *zero*
+dependency on `meta-signal-spirit`; meanwhile `meta-signal-spirit` is a stale,
+hand-written, non-schema-derived orphan with a disjoint vocabulary
+(`Start`/`Drain`/`Reload`/`Register`/`Retire`). So this report's Claim-1 grouping
+of `meta-signal` with the internal planes was wrong. **Operator owns the fix**
+(rebuild `meta-signal-spirit` schema-derived with the live vocabulary; spirit
+imports it); the rule is already settled intent (`7sx6`/`u7tj`/`tb9h`) and now
+explicit in `skills/component-triad.md`; the lifecycle-verb vocabulary is an open
+designer reconciliation.
 
 ## Claim 2 — "keep a generated-Rust reference copy in the contract; co-host at build time for the orphan rule"
 

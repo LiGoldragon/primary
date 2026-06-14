@@ -40,6 +40,24 @@ inside the daemon (so `crate::schema::signal` owns
 forks the contract and lets the two copies diverge — which is exactly what
 happened to spirit vs `signal-spirit`.
 
+**The same single-source rule governs the meta contract.** The daemon imports
+its meta-signal vocabulary from `meta-signal-<component>`, exactly as it imports
+its signal vocabulary from `signal-<component>` — it never declares a local
+`meta-signal.schema` wire contract in-tree. Defining the meta contract inside the
+daemon repo is the same fork-the-contract drift `tb9h` forbids for signal
+(grounded in `7sx6`: a component has exactly two contracts, and `u7tj`:
+wire-contract schemas live in their contract crate). **spirit currently violates
+this**: it defines `schema/meta-signal.schema` locally (verbs
+`Configure`/`Import`), emits it via `wire_contract_module("meta-signal")`, and has
+*no* dependency on `meta-signal-spirit` — while `meta-signal-spirit` is a stale,
+hand-written, non-schema-derived orphan carrying a disjoint vocabulary
+(`Start`/`Drain`/`Reload`/`Register`/`Retire`). Correcting it: rebuild
+`meta-signal-spirit` as a schema-derived contract carrying the **live** vocabulary
+spirit serves, then have spirit import it (drop the local schema + generated
+module, add the dep, `pub use meta_signal_spirit::…`). The disjoint lifecycle
+verbs in the orphan are a separate vocabulary-reconciliation decision (likely
+supervision-layer or stale), not assumed into the rebuild.
+
 The full target set lives in `schema-rust-next/src/lib.rs`
 `RustEmissionTarget` (`runtime_planes()`): `WireContract`→none,
 `ComponentRuntime`→all (legacy all-in-one), `SignalRuntime`→signal-only,
