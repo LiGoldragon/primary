@@ -49,8 +49,10 @@ contract (`d5b5dde`) and spirit imported it (`4ec746b`: deleted the local schema
 generated module, `pub use meta_signal_spirit::schema::meta_signal::*`) — contract
 byte-identical to the rebuild, verdict CONSISTENT. The rule is settled intent
 (`7sx6`/`u7tj`/`tb9h`) and now explicit in `skills/component-triad.md`. The
-orphan's lifecycle verbs were *not* pulled in (the live `Configure`/`Import` is the
-contract); whether they belong elsewhere is the remaining open reconciliation.
+orphan's lifecycle verbs were *not* pulled in (correctly — stale, never wired; per
+operator report 378). The only remaining vocabulary item is mirror-shipper's
+`MirrorTarget`, kept branch-local until the mirror feature lands (then it joins the
+meta contract's `Configure`), per report 630's 378 addendum.
 
 ## Claim 2 — "keep a generated-Rust reference copy in the contract; co-host at build time for the orphan rule"
 

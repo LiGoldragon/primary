@@ -109,3 +109,25 @@ psyche:** confirm flat vs nested Map shape.
 (#6, whole-stack then point spirit), nota-next both leaf shapes (#8), spirit
 `store-decomposition` (#5); start `primary-bojw` (#4). Already did the meta-signal
 fix (#7). Blocked on the designer `TypeReference` reconciliation before #2 lands.
+
+## Operator report 378 — meta-signal vocabulary resolved + one integration note
+
+`reports/operator/378-meta-signal-split-designer-comparison.md` confirms the split
+matches the 628 correction and **resolves the vocabulary reconciliation I left
+open**: the contract carries the live `Configure` + `Import` only; the stale
+`Start`/`Drain`/`Reload`/`Register`/`Retire` placeholder is gone (correctly — it
+was never wired); and the mirror-shipper `MirrorTarget` fields stay **branch-local**,
+out of the stable contract, until the mirror design lands as a committed
+meta-policy feature. Right call. Operator also found-and-fixed two stale docs
+(spirit `ARCHITECTURE.md`, `meta-signal-spirit/skills.md`).
+
+**This sharpens target #5 (spirit `store-decomposition`).** The designer spirit
+branches predate the split and still edit *daemon-local* `schema/meta-signal.schema`
+— `vc-followups` (⊂ store-decomposition) folds `MirrorTarget` into
+`ConfigureRequest`/`ConfigureReceipt` there. So integrating store-decomposition is
+**not** a clean rebase onto the split: its `MirrorTarget` meta additions must be
+either deferred (operator's call — keep branch-local) or *deliberately* committed
+into `meta-signal-spirit`'s `Configure` as a mirror-feature step — never left
+daemon-local. That is the contract-relocation prerequisite #5 named, now concrete;
+the eventual home for `MirrorTarget` is the meta contract's `Configure` (owner
+configures mirroring), once the mirror feature is committed.
