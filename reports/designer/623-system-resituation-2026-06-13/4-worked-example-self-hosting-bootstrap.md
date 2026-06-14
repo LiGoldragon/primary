@@ -38,17 +38,20 @@ Struct declarations use `{ field Type }`, enum declarations use
 number; `TypeReference` is the existing type-reference node.)
 
 ```
-;; the closed delimiter set (verified against MacroDelimiter)
-Delimiter [ (Parenthesis) (SquareBracket) (Brace) (PipeParenthesis) (PipeBrace) ]
+;; the closed delimiter set (verified against MacroDelimiter) — all unit variants, so bare
+Delimiter [Parenthesis SquareBracket Brace PipeParenthesis PipeBrace]
 
-;; the shape vocabulary — one variant per #[shape(...)] form
+;; the shape vocabulary — one variant per #[shape(...)] form.
+;; Unit variants (no payload) are BARE; payload-carrying variants are parenthesized
+;; (verified: signal.schema uses `Magnitude [Zero Minimum …]` for units and
+;;  `DomainMatch [Any (Partial) (Full)]` for the payload-carrying ones).
 MacroShape [
-  (PascalAtom)
+  PascalAtom
   (Keyword Text)
   (Headed Text Arity)
   (HeadedBody Text)
   (PascalHead Arity)
-  (PascalHeadBody)
+  PascalHeadBody
 ]
 
 ;; a macro node = a name + a list of variants, each a shape + the field types it captures
