@@ -19,6 +19,8 @@
     [Crayon OS and Logic maintenance, debugging, updates, and deploys across hosts.])
   (Role poet skills/poet.md Apex
     [Prose as craft.])
+  (Role editor skills/editor.md Apex
+    [Source-grounded research, quotation, and synthesis as craft.])
   (Role assistant skills/assistant.md Apex
     [Personal-affairs support for the psyche.])
   (Role counselor skills/counselor.md Apex
