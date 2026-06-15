@@ -90,5 +90,48 @@ tests).
   papered over. Spirit [xxgp]/[aipc] satisfied. → **Your ask is delivered: a
   cluster-data-generated, readable suite for complex OS + home-profile testing,
   proven green.**
-- **C6 — in flight.** The one thin lojix-deploy smoke test (production path,
-  microvm-scoped generation-activation) — as a hermetic 2-node runNixOSTest.
+- **C6 — DONE, review PASS** (CriomOS-test-cluster `horizon-test-vm` `f9910de7`,
+  pushed; mains untouched; lojix consumed as a pinned input). `lib/mkDeployTest.nix`
+  — a hermetic 2-node `runNixOSTest` (`lojix-deploy-smoke`): a deployer running
+  the **real fixed lojix daemon** (lojix main, the `<drv>^*` fix) via
+  `lojix-write-configuration → rkyv → lojix-daemon` (both sockets 660/600) +
+  `meta-lojix`, deploying mercury's **projection-generated** CriomOS system into
+  the target. The daemon's unmodified pipeline (`eval → nix build <drv>^* → nix
+  copy ssh-ng → nix-env --set → switch-to-configuration boot`) runs offline; the
+  target's `/nix/var/nix/profiles/system` flips to the deployed
+  `nixos-system-mercury` closure (146s — not instant, so not faked; the target
+  boots a *different* system and never pre-stages the closure), corroborated by
+  the durable deploy-job record via the ordinary CLI. Real nixos-system, not a
+  `.drv` — the fix held. **RUNS GREEN, deterministic.** Scoped to
+  generation-activation (the bootloader write is a no-op on the direct-boot test
+  guest — the deferred-BootOnce boundary), per decision (b).
+
+## Complete — what shipped + operator handoff
+
+The directive is delivered end to end. A general, cluster-data-generated
+VM-testing interface + a readable suite, all proven by real `runNixOSTest` runs:
+
+- **horizon-rs** `horizon-test-vm` (`fe7182f1`): `NodeService::VmHost` — the host
+  role carrying cluster-authored data (typed `TapSubnet`/`KvmAvailability`/
+  `MaximumGuests`) + the Pod-host invariant.
+- **CriomOS** `horizon-test-vm` (`724fae1a`): `test-vm-host.nix` reads the
+  projection (no hardcoding); `test-substrate.nix` bakes every live-run
+  constraint; the lean-guest gaps fixed in the substrate; the `05-` networkd
+  hardening.
+- **CriomOS-test-cluster** `horizon-test-vm` (`f9910de7`): `mkVmTest` (the
+  generator — author writes only `(cluster, hostNode, vmNode, testScript)`),
+  `mkDeployTest` (the lojix smoke), and the suite — `edge-desktop-boots-greeter`,
+  `base-home-activates`, `lojix-deploy-smoke`, all green; atlas declares
+  `VmHost`; the projection check green.
+- **lojix** main: the `<drv>^*` fix (pinned input).
+
+**Operator handoff:** integrate the three `horizon-test-vm` branches to their
+mains (they also carry Units A/B). Cross-repo flake pins resolve once all land
+(horizon → CriomOS → test-cluster → lojix).
+
+**Follow-ons (none blocking):** the Spirit store migration (`spirit-migrate-store`)
+so the recorded principle + the report-47 decision land in Spirit; the router
+node + second-tier suite (pure cluster-data additions via `mkVmTest`); the
+TCG/`kvm=Absent` path (verified by logic, no booted test); full BootOnce-reboot
+fidelity (the deferred lean-profile-on-q35 hardening); the minor C1
+`None`-super_node→`UnresolvableArch` tightening.
