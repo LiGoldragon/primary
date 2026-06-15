@@ -107,3 +107,48 @@ out of this scope.
 - Wire-contract repos (signal-spirit, meta-signal-spirit) are normally operator
   integration territory; doing the cascade on feature branches is the reversible,
   designer-scoped way, with operator landing to main afterward.
+
+## Landed — the cascade is done and pushed
+
+The full cascade was implemented, verified green per layer, and pushed to the
+shared `structural-forms-integration` line of every repo:
+
+| repo | `structural-forms-integration` | verification |
+|---|---|---|
+| schema-next | `0543341e` → `1abdcd22` | 173/173 tests, clippy clean, `identity.rs` hash-stable |
+| schema-rust-next | `e6d13940` → `ab9d16b7` | 86/86 tests; generated fixtures byte-identical |
+| signal-spirit | `cf9da984` → `e7a10e79` | tests green (default + `nota-text`); `src/schema/*.rs` byte-identical |
+| meta-signal-spirit | `2c34eef1` → `c67ecd52` | tests green (default + `nota-text`); artifacts byte-identical |
+| spirit | `dd98342f` → `9b3bb959` | builds green (lib + bins, default + `nota-text`); artifacts byte-identical |
+
+**The decisive proof:** every regenerated artifact across all five repos is
+**byte-identical** to the pre-migration output. The positional syntax lowers to
+the same rkyv model, the same generated Rust, and the same SchemaHash constants —
+so the migration is provably semantically lossless on the real production stack,
+and every consumer's runtime behavior is unchanged. The retired-syntax reader was
+the gate: spirit re-parses signal-spirit + meta-signal-spirit schema text at
+build, so the cascade was mandatory, and each layer was rebuilt against the
+*pushed* (not local-path) upstreams before its own push to prove standalone
+coherence.
+
+Designer prototype seams (local-path `[patch]`) were used only for offline
+iteration and removed before each push; the committed branches carry only the
+`.schema` migrations plus the dependency-pin advances.
+
+### One pre-existing caveat (not caused by this work) — bead `primary-opzy`
+
+Spirit's `cargo test` (not its build) cannot fully run: its `agent`
+*dev*-dependency (branch=main) build-depends on `schema-rust-next` branch=main
+`00763d67`, which calls the long-removed `schema_next::Root::lower_to_rust` and
+doesn't handle `TypeReference::Application`. That stale pin fails against *current*
+schema-next (both `main` and integration) regardless of this migration — a
+pre-existing breakage in the agent ecosystem. Filed as `primary-opzy`: bump the
+agent ecosystem's schema toolchain pins + regenerate. Spirit's build, and every
+spirit-owned schema-derived type, is unaffected (artifacts byte-identical).
+
+### Still operator's
+
+The shared `structural-forms-integration` branches are now positional-coherent and
+pushed. Landing them to `main` + the `nix flake check` gate remain operator's
+(`primary-cxyf`); the family/stream universal-positional migration is `primary-hhp0`
+(syntax pinned in report `649`); the agent-ecosystem pin-bump is `primary-opzy`.
