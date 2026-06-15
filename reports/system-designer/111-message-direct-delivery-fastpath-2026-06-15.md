@@ -177,3 +177,37 @@ asserted, not measured). If Y proceeds, the cleanest containment (650): message'
 direct-path record is **existence + a best-effort delivery ack**, the **complete**
 delivery ledger stays mirrored in `router` (one audit home), and "public" is
 contractually constrained to origin-agnostic, low-authority agents.
+
+## Resolution — decisions captured (2026-06-15)
+
+The psyche took **both** decisions, with the X/Y decoupling the cross-check forced.
+The guardian's response was itself instructive — it accepted only the one
+genuinely-new arrow and refused two over-captures, both correctly:
+
+- **X (message owns existence durably) — already recorded; confirmed, no new record.**
+  A fresh record was refused as a **Duplicate** of `alom`, a prior-session Decision:
+  [the psyche chose Option A from report 76: message realizes `l3k4` by gaining its
+  own durable existence-event surface … message owns the EXISTENCE fact … message
+  becomes feature-bearing … message and router remain SEPARATE]. So X was decided
+  before this session; `alom` governs. The realization — durable SEMA existence-log,
+  ending router's writing of the existence record (`router.rs:1163`), superseding
+  report-75's stateless carve-out — is tracked in bead **`ydfh`**.
+- **Y (direct-delivery fast path) — recorded as Decision `i99x`.** It explicitly
+  supersedes `l3k4` clause 2 + `17ss` (router as authoritative delivery source)
+  **for the direct path only**; the routed (gated/remote) path keeps router
+  authoritative. Bead **`xslx`**. Lineage note: `i99x` also supersedes the
+  contrastive delivery-on-harness-ack clause as it appears in `alom`, for the direct
+  path.
+- **Y-containment — design guardrail, not intent.** The containment Constraint was
+  refused as **`MissingTestimony`** — correctly: the rules (best-effort direct ack;
+  complete ledger mirrored in router; "public" = origin-agnostic low-authority) are
+  the 650 recommendation the psyche endorsed by selecting the option, not a verbatim
+  psyche statement. They live here and in bead `xslx` as the design guardrail.
+
+The guardian caught a duplicate of prior intent and declined to launder a design
+recommendation into psyche intent, recording only the new supersession — the intent
+layer working exactly as designed. Open gates on Y before build (bead `xslx`):
+measure the local-public traffic, resolve ledger-completeness (#6) and the
+recovery-guarantee asymmetry, pin the registry TOCTOU. The message/router
+`INTENT.md` + `ARCHITECTURE.md` manifestation of `alom`/`i99x` lands on the port
+branch (designer/operator lane), not this coordination repo.
