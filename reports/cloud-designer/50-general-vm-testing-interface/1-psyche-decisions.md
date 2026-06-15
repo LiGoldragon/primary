@@ -56,4 +56,24 @@ tests).
   `VmHost` in fieldlab.nota; projections-match-fieldlab green. Notes: the `05-`
   networkd-priority fix (latent plain-center DHCP-claim; inert on atlas-router)
   → folded into C4; test-cluster branch local (expected — C4 builds on it).
-- **C4 — in flight** (mkVmTest generator + the 05- hardening).
+- **C4 — DONE, review pass-with-notes** (CriomOS `horizon-test-vm` `084b00da`,
+  pushed — the `05-` tap-prefix hardening; CriomOS-test-cluster `b454a1c9`,
+  local — the generator). `lib/mkVmTest.nix`: `{ cluster, hostNode, vmNode,
+  testScript, substrate ? "microvm" }` → a `runNixOSTest` check. The trivial
+  `test-vm-guest-boots-sshd` **RAN GREEN** (independently re-verified: VM booted,
+  driver connected, sshd up, asserted, 9.21s, exit 0) — the stack's first
+  runnable cluster-data-generated test. Verified 100% data-driven by eval: guest
+  = real CriomOS system from `mercury.json` projection, sized from machine facts
+  (4/8192/40960), network from atlas `VmHost.guest_subnet` — no hand-stub; model
+  invariants fail loudly on missing VmHost/non-TestVm.
+  **Key substrate finding:** `runNixOSTest` uses qemu-vm.nix (PCI bus + *direct
+  kernel boot, no bootloader*), so the report-49 q35 *bootloader* hang does not
+  apply — the lean guest boots clean. `-M microvm` provably can't compose with
+  the test driver's PCI backdoor, so it is correctly NOT forced in the hermetic
+  path (it belongs to the C6 live path; the `vmTypeModule` split in C3 is right).
+  Notes: `vmHost.kvm` (→ TCG when Absent) and `maximum_guests` are declared but
+  not yet consumed by the generator → wire in C5.
+- **C5 — in flight.** The readable suite for complex OS + home-profile testing.
+  Model refinement: relax `mkVmTest`'s vmNode from "must be lean TestVm" to "any
+  Pod-substrate node on a VmHost host" — the profile under test comes from the
+  node's projected role (the lean TestVm becomes just the deploy-target case).
