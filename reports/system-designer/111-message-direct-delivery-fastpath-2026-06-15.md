@@ -11,6 +11,54 @@ report 109) and rides on the just-decided meta-signal policy plane (Spirit Decis
 `n775`). The
 proposal is under discussion; nothing is recorded as intent yet.*
 
+## Correction — intent cross-check (designer/650)
+
+A prime-designer cross-check read `l3k4` and `17ss` **directly from the store** (this
+report had trusted my paraphrase) and corrected the load-bearing claim. `l3k4` is a
+**two-clause** Decision: (1) [message creates a log event for the existence of the
+message]; (2) [DELIVERY is established only when the router gets the harness-side
+acknowledgement; the router is the authoritative source for delivery facts]. `17ss`
+reinforces clause 2: [delivery durable on harness-side ack].
+
+So the fast path does **not** "realize `l3k4`" as this report first claimed. The
+proposal splits in two against the recorded intent, and the two halves carry
+**different intent bars**:
+
+- **X — message owns the existence fact durably.** Realizes `l3k4` **clause 1**. A
+  clean extension of recorded intent; dissolves 76.1's fragility. Existence is
+  *path-independent* (message is the ingress for everything), so X stands alone and
+  needs no fast path to justify it.
+- **Y — the direct-delivery fast path** (message owns delivery on the direct path,
+  no router, no harness ack). **Contradicts `l3k4` clause 2 and `17ss`.** It is a
+  deliberate **supersession** of recorded intent — and per "intent is primordial;
+  superseding is always explicit," it requires the psyche to *explicitly override*
+  `l3k4`'s delivery-authority clause, a materially higher bar than the body below
+  frames.
+
+**My load-bearing sentence ran the implication backward.** I wrote "direct delivery
+means message must own durable state, so Q1 → build it." X already forces durable
+state; Y is not needed to justify building message. So **Y must stand on its own
+cost/benefit, not borrow X's.** Decouple them: bank X now; weigh Y separately.
+
+**Costs of Y this report underweighted** (per 650): (1) Y moves durable state +
+the registry *into* the `0660` door that 76.1's whole isolation argument protects —
+a trade of isolation for latency, not a clean win; (2) Y **fragments the delivery
+ledger** — no single component holds the complete one (open #6 is the sharpest
+issue, and both resolutions cost); (3) Y **decentralizes origin-policy enforcement**
+— every public agent, not just router, must enforce `MessageOrigin` policy on
+direct-delivered stamps (safe only if "public" agents are genuinely origin-agnostic
+and low-authority). Plus two correctness questions: **TOCTOU** on the async registry
+(a public→private revocation racing an in-flight message), and **recovery-guarantee
+asymmetry** (router's durable ledger gives crash-redelivery; a crashing message
+mid-direct-delivery is best-effort unless it grows its own redelivery state behind
+0660 — two paths with two durability guarantees).
+
+`n775` (meta-signal plane) is confirmed real and load-bearing — that part stands.
+The strengths and model below hold **for X**; read every "realizes `l3k4`" /
+"delivery splits by path" line through the corrected X/Y split above. (Hygiene:
+`l3k4`/`17ss` carry empty referent vectors — tag them `message`/`router` once a
+record-mutation path exists.)
+
 ## The proposed model
 
 A **two-path** delivery split, by *authority and locality*:
@@ -53,9 +101,11 @@ fact ownership becomes:
 | **Delivery** (target acknowledged) | `message` (it delivers + gets the ack) | `router` (harness/target ack) |
 
 `message` **always** owns existence (it is the ingress for everything) — which is
-exactly `l3k4`, finally realized — and delivery-ownership splits by path. That is a
-sharper, more honest model than today's (where `router` writes even the existence
-record).
+exactly `l3k4`'s **clause 1** (= Decision X). But "delivery-ownership splits by
+path" is **not** a realization of `l3k4` — it *contradicts* clause 2 ([the router is
+the authoritative source for delivery facts]) and `17ss`. That half (= Decision Y)
+is a supersession, per the correction above. X is the sharper model; Y is a separate
+decision the psyche must explicitly make.
 
 **4. It rides on the meta-signal policy plane just decided (Q2).** The "publicly
 reachable" mark and the uid→endpoint registry are **owner policy** — declared by the
@@ -108,14 +158,22 @@ These are the load-bearing details before this becomes buildable intent:
   no longer the 2-plane carve-out report 75 §3.1 recommended. The 75/76 "stateless
   carve-out" framing is superseded by this dialogue.
 
-## Verdict
+## Verdict (revised after the 650 cross-check)
 
-I'd lean **for** it. It is a coherent, security-sound split that turns `message`'s
-under-built gap into a clear role, realizes `l3k4`, and composes cleanly with the
-meta-signal plane. The risk is purely *scope* — `message` grows from a membrane into
-a real component with a registry, a delivery path, and a ledger — but the trust
-property (the untrusted door only fast-paths the no-authority case) holds, which is
-the part that actually matters. The six open questions above are what turn it from a
-good instinct into buildable intent; once the psyche settles them (especially #1, #2,
-#4) it should be captured as the governing message/router architecture decision and
-the 75/76 carve-out framing formally superseded.
+**Capture X now; gate Y.** Decision X — message owns the existence fact durably —
+realizes `l3k4` clause 1, dissolves 76.1's fragility, and stands on its own
+(existence is path-independent). It is the certain win; bank it, and the 75/76
+"stateless carve-out" framing is superseded for that reason alone (message becomes a
+real, durable component).
+
+Decision Y — the direct-delivery fast path — is **not** an extension of intent; it is
+a deliberate **supersession** of `l3k4` clause 2 + `17ss`, and it carries the three
+underweighted costs and two correctness questions above (state behind the 0660 door,
+a fragmented delivery ledger, distributed origin-policy enforcement; TOCTOU and
+recovery-asymmetry). My instinct that the design *coheres* is unchanged — but Y is
+worth doing only if the psyche **explicitly supersedes** that intent **and** the
+local-public traffic is high-volume enough to justify the hop (the latency case is
+asserted, not measured). If Y proceeds, the cleanest containment (650): message's
+direct-path record is **existence + a best-effort delivery ack**, the **complete**
+delivery ledger stays mirrored in `router` (one audit home), and "public" is
+contractually constrained to origin-agnostic, low-authority agents.
