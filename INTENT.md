@@ -150,6 +150,17 @@ reason about at the meta level. Extensibility stays typed and safe down to a
 small frozen seed — the NOTA parser and one derive. (Spirit `7c71`; per-repo
 mechanics live in the nota / schema `INTENT.md` files and `skills/structural-forms.md`.)
 
+## The compiler is build-time; binaries carry only rkyv contracts
+
+Because the language is data, the schema/NOTA compiler (`nota-next` →
+`schema-next` → `schema-rust-next`) is a *build-time-only* dependency: it emits
+each component's typed Rust and never links into the runtime binary. A shipped
+daemon therefore stays small and knows only its strict rkyv wire and storage
+contracts — none of the parser, lowering, or emitter — and the NOTA text codec
+is an optional edge feature, absent from the daemon binary. The schema compiler
+structurally never ships, verifiable from the `[build-dependencies]` section
+alone. (Spirit `9rjq`.)
+
 ## Role is type — the dimensional principle
 
 A struct field's role is its type, so no struct ever has two fields of the
