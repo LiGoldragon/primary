@@ -73,7 +73,22 @@ tests).
   path (it belongs to the C6 live path; the `vmTypeModule` split in C3 is right).
   Notes: `vmHost.kvm` (→ TCG when Absent) and `maximum_guests` are declared but
   not yet consumed by the generator → wire in C5.
-- **C5 — in flight.** The readable suite for complex OS + home-profile testing.
-  Model refinement: relax `mkVmTest`'s vmNode from "must be lean TestVm" to "any
-  Pod-substrate node on a VmHost host" — the profile under test comes from the
-  node's projected role (the lean TestVm becomes just the deploy-target case).
+- **C5 — DONE, review PASS** (CriomOS-test-cluster `horizon-test-vm` `ce4463fd`;
+  CriomOS `horizon-test-vm` `724fae1a`; both pushed, mains untouched). **The
+  headline deliverable.** `mkVmTest` relaxed to any Pod-on-VmHost node (profile
+  from projection; lean TestVm a special case); `kvm` (Absent→TCG) + capacity
+  wired. Two cluster-data-generated anchors declared in fieldlab.nota and **RUN
+  GREEN** (independently re-verified on fresh builds):
+  - `edge-desktop-boots-greeter` — an Edge Pod → the real desktop stack
+    (regreet/greetd, niri, gnome-keyring, polkit), boots under KVM, 12.95s.
+  - `base-home-activates` — a lean node + `includeHome` → the real home-manager
+    generation, asserting the projected user email lands in the generated git
+    config, 11.67s.
+  Each is ONE concept with a PATTERN comment; the author writes only
+  `(cluster, hostNode, vmNode, testScript)`. Two lean-guest substrate gaps (docs
+  conflict, home re-wipe) fixed in `test-substrate.nix`/`test-vm-guest.nix`, not
+  papered over. Spirit [xxgp]/[aipc] satisfied. → **Your ask is delivered: a
+  cluster-data-generated, readable suite for complex OS + home-profile testing,
+  proven green.**
+- **C6 — in flight.** The one thin lojix-deploy smoke test (production path,
+  microvm-scoped generation-activation) — as a hermetic 2-node runNixOSTest.
