@@ -101,13 +101,47 @@ fact**.
   forgeable peer uid into a typed `MessageOrigin` (`External(Owner)` /
   `External(NonOwnerUser)` / `InternalComponentInstance`) using the configured
   owner identity — never from the payload. Its socket is `0660` (the external
-  door). It is **stateless by design** — minimal authority, bounded blast radius.
+  door). It holds **no durable ledger** by design (only its deploy-time auth
+  policy — see the addendum below) — minimal authority, bounded blast radius.
 - **`router`** sits behind `message` at socket `0600` (owner-only). It holds the
   durable `redb` ledger and the channel-grant authority, and it owns the
   **DELIVERY** fact — established only when the harness-side acknowledgement
   arrives. It **trusts** the origin `message` stamped (`router.rs:1095`); it has
   zero peer-credential code, so it structurally *cannot* re-derive the caller's
   identity. message mints, router trusts.
+
+### Addendum (psyche correction): message is not a pure stateless function
+
+The psyche pushed back on "stateless": *message needs to KNOW something to do its
+SO_PEERCRED authentication — that is state to begin with.* Correct, and "stateless"
+was imprecise. The sharper frame separates three kinds of state a triad component
+can hold:
+
+1. **Per-connection session state** — transient, discarded after the request.
+   message classifies each connection from the kernel-supplied `SO_PEERCRED` and
+   forgets it. (Genuinely stateless here.)
+2. **Policy / configuration knowledge** — what message must *know* to attribute
+   origin: the `owner_identity` (which uid is the owner) and the
+   `component_ingresses` map. This is the state the psyche is naming. It is held in
+   memory, **static across messages**, set at deploy via the binary startup config
+   (the daemon one-arg rule) — or, arguably, it *should* arrive as authenticated
+   **owner policy over a meta-signal plane** (today message has no meta tier; report
+   75 §3.5). Either way it is config/policy, not an accumulating ledger.
+3. **Durable working state (a SEMA ledger)** — an accumulating durable record. The
+   **existence-log** (`l3k4`) is exactly this, and it is the only one message does
+   **not** have today.
+
+So message already holds kind-2 state (it is a *knowing, authoritative* component,
+not a pure function) — but the A/B decision is specifically about kind-3 (the
+durable existence-log). The psyche's instinct cuts two ways and both are useful:
+
+- It **strengthens Option A**: a component already configured and authoritative is
+  a natural home for its *own* durable fact — giving it the existence-log is less of
+  a stretch than bolting a ledger onto a true stateless function.
+- It surfaces a **separate, orthogonal** question worth its own decision: should the
+  `owner_identity` arrive as a proper **meta-signal owner policy** (the owner sets
+  the trust boundary) rather than baked-in argv config? That is kind-2, independent
+  of the existence-log, and in the same spirit of "message must know things."
 
 ### The two durable facts (the heart of it)
 
