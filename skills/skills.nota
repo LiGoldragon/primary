@@ -26,6 +26,8 @@
 
   (Architecture component-triad skills/component-triad.md Apex
     [Daemon + thin CLI + signal-* contract. Signal/Nexus/SEMA runtime triad and async mail flow.])
+  (Architecture structural-forms skills/structural-forms.md Apex
+    [A language is a set of structural macros kept as data; grammar is a type, match by shape. The StructuralMacroNode derive shape vocabulary; positional schema struct syntax with the key.TypeReference differentiator; the dimensional principle (role is type, no two same-type fields, repetition is a keyed collection, newtype-per-role); streams and families are closed typed records, not structs.])
   (Architecture contract-repo skills/contract-repo.md Topic
     [Wire-contract crate discipline. Six-verb spine; signal_channel! macro; layered-effect pattern.])
   (Architecture micro-components skills/micro-components.md Topic

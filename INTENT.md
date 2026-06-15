@@ -138,6 +138,28 @@ end of the wire. Components ship in raw form first (standalone CLI +
 daemon + durable state) and are used individually before
 component-to-component wiring lands.
 
+## A language is data — structural macros all the way down
+
+The languages built here treat their own constructs — struct, enum,
+generics, a schema declaration — as a set of typed structural macros kept as
+inspectable data, not frozen inside a compiler. Conventional languages hold
+that macro set too; they just save it poorly, smeared across the
+implementation. Keeping it as data makes the language open (a new construct is
+new data, not a compiler change) and far easier for an LLM to read, write, and
+reason about at the meta level. Extensibility stays typed and safe down to a
+small frozen seed — the NOTA parser and one derive. (Spirit `7c71`; per-repo
+mechanics live in the nota / schema `INTENT.md` files and `skills/structural-forms.md`.)
+
+## Role is type — the dimensional principle
+
+A struct field's role is its type, so no struct ever has two fields of the
+same type. Distinct roles are distinct types (Height and Width are both metres
+but cannot be interchanged or multiplied as alike); genuine repetition is a
+keyed collection, never repeated fields. Field-name therefore equals type-name
+by default, and an explicit field name signals a missing newtype or a
+collection. This is the newtype-per-domain-value rule (AGENTS.md) pushed to its
+endpoint: a newtype per role. (Spirit `ov30`.)
+
 ## Recompiling is cheap; zero-downtime is the goal
 
 Changing a component's schema or enum set is a trivial recompile, not a cost

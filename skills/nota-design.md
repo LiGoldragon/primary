@@ -89,15 +89,26 @@ The payload can also be declared inline at the root position when the
 operation-owned shape is shallow:
 
 ```schema
-[(Record { Topic String Description String })]
+[(Record { Topic { String } Description { String } })]
 []
 {}
 ```
 
 Direct fields in a root inline payload export their PascalCase field
-declarations. Later inline payloads and the trailing namespace may reuse those
-types with `Topic *` or `Description *`. Duplicate declarations are an error;
-do not declare `Topic` again in the namespace after introducing it inline.
+declarations — `Topic { String }` declares `Topic` (a newtype over `String`)
+and uses it as a field. Later inline payloads and the trailing namespace may
+reuse those types by **bare reference** — a positional `Topic` or `Description`.
+Duplicate declarations are an error; do not declare `Topic` again in the
+namespace after introducing it inline.
+
+A schema **struct body** is a *positional list of types*: each object is one
+field whose name is derived from its type (a bare `Topic` is the field `topic`).
+A field whose name must differ from its type uses the dot differentiator
+`count.Integer`. The earlier `*` shorthand and the `field Type` name-value form
+are **retired and rejected** (`SchemaError::RetiredStructFieldSyntax`) — see
+`skills/structural-forms.md` for the full struct/field grammar. (This applies to
+schema struct bodies only; the namespace map and NOTA wire records below are
+unaffected.)
 
 Nested payload enums can be declared at the variant position:
 

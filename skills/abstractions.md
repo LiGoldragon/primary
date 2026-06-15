@@ -219,7 +219,7 @@ noun is the primary subject. See `skills/component-triad.md`.
 
 ## Companion disciplines
 
-Three rules push the same direction — **the type system is the
+Four rules push the same direction — **the type system is the
 model**:
 
 - **Wrapped field is private.** A newtype wraps a primitive to give
@@ -237,6 +237,12 @@ model**:
   between two structured inputs IS a noun; naming it surfaces logic
   that would otherwise scatter into `if` chains and sentinel
   booleans. See `skills/enum-contact-points.md`.
+- **Newtype per role.** A field's role *is* its type, so no struct ever
+  has two fields of the same type — distinct roles are distinct types
+  (dimensional correctness: `Height` and `Width` are both metres but not
+  interchangeable), and repetition is a keyed collection, never repeated
+  fields. This is "newtype per domain value" pushed to its endpoint: a
+  newtype per role. See `skills/structural-forms.md` (Spirit `ov30`).
 
 ## See also
 
