@@ -165,9 +165,12 @@ pub fn resolve(&self, block: &::nota_next::Block) -> Result<Resolution, ResolveE
 
 The built-in arms are in the grammar's **declared order**, the reserved-head guard is
 **derived from the built-in set** (closing the `classify`-drift failure mode — single
-source), and the declared-macro→application tail is last. **Reorder the NOTA grammar
-and the emitted arms reorder with it** — that is the whole point: the precedence is now
-data, readable once, generated, not hidden in match-arm order.
+source), and each fallback stage (the registry rung, the application catch-all) is
+emitted **only if the grammar declares it**. Reorder the built-in arms and they reorder
+in the output; omit the registry rung and it vanishes from the resolver. The
+kind-precedence itself (built-ins → registry → catch-all) is **enforced** by validation,
+not freely permuted — see the hardening section, which corrects an overclaim in my
+first version of this paragraph.
 
 **How it was built (verified against the discipline):**
 - `nota-next` stayed on `main` — its enum shape vocabulary sufficed; no need for the
@@ -202,3 +205,48 @@ left as-is.
 psyche/operator (a new public repo is an outward call). Next per the roadmap: re-wire
 schema-next to consume the generated resolver, proven equivalent by the identity-hash
 suite.
+
+## Operator review `384` — the overclaim, and the hardening
+
+Operator (report `384`, primary `b62b3029`) confirmed the direction and the green
+checks but caught a real overclaim in my headline: the first prototype proved
+*NOTA-decoded grammar generates Rust*, but **not** full "precedence as data." Two
+defects, both correct:
+
+1. **The generator only honored the `Builtin` order.** It emitted the built-in arms
+   from the data but **hard-coded** the `DeclaredMacro`→`Application` tail afterward,
+   discarding the markers' declared positions.
+2. **Validation was too lax** — it allowed a grammar with no `Application` at all, and
+   allowed `DeclaredMacro` before the built-ins. So **valid grammar data could generate
+   resolver behavior the grammar did not declare** (a hard-coded catch-all the data
+   omitted).
+
+I took operator's two options as a **synthesis** (both, not either):
+- **Validation now enforces the coherent shape `Builtin* DeclaredMacro? Application`**:
+  built-ins form the specific-first prefix (`BuiltinAfterMarker` rejects a built-in
+  after a marker), the registry rung is at most one (`DuplicateDeclaredMacro`), and the
+  application catch-all is **required, unique, and last** (`MissingApplication` +
+  the existing `DuplicateApplication`/`ApplicationNotLast`).
+- **The generator emits each fallback stage only when the grammar declares it** — the
+  registry rung (and its `is_declared_macro` hook) appear iff a `DeclaredMacro` form is
+  present; the reserved guard is empty when there are no built-ins. So the emitted
+  resolver can no longer carry a stage absent from the data.
+
+**Corrected, honest claim:** the **built-in dispatch table** (heads, arities, order)
+and the **presence of each fallback stage** are data that drive the generated resolver,
+under a validation-enforced coherent precedence — *not* arbitrary-order-as-data. Fully
+free precedence (option b: honor any form order) is available later if a real need for
+non-specificity ordering appears, but for the reference grammar the specificity order
+is the correct invariant to enforce, and enforcing it is itself the feature that closes
+operator's gap.
+
+**Re-verified after the fix:** 18 tests pass (validate 8, grammar 4, generate 6),
+`clippy --all-targets -- -D warnings` clean, and the canonical golden is **byte-identical**
+(the tightening preserves the proven emission). New negatives test
+`MissingApplication`, `BuiltinAfterMarker`, `DuplicateDeclaredMacro`; a new generate
+test proves a grammar with no registry rung emits none.
+
+**Also addressed from `384`:** added the missing repo contract files — `AGENTS.md`
+(repo contract + discipline + DAG position), `CLAUDE.md` (`@AGENTS.md`), and
+`skills.md` (the read-order skill index). The repo now carries INTENT/ARCHITECTURE +
+AGENTS/CLAUDE/skills. (No remote, matching the handoff.)
