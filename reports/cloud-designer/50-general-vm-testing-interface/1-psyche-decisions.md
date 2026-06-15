@@ -29,3 +29,17 @@ Honors the recorded principle (`intent-capture.md`) and the workspace testing
 discipline — Spirit [xxgp] (one concept per test, named invariant, PATTERN
 comment), [dqg3] (unblock the blocker IN the test), [l50b] (intents → constraint
 tests).
+
+## Progress
+
+- **C1 — DONE, review pass** (horizon-rs `horizon-test-vm`, commit `fe7182f1`,
+  pushed; main untouched `9fae4a36`). `NodeService::VmHost { guest_subnet:
+  TapSubnet, kvm: KvmAvailability, maximum_guests: Option<MaximumGuests> }`
+  (fully typed — `TapSubnet` over `ipnet`, `kvm` a domain enum not a bool),
+  projected via `Node::vm_host_capability()`; the Pod-super_node-must-exist
+  invariant (`Error::MissingSuperNode`, checked independently of arch); a
+  host-viewpoint golden + invariant + codec tests; INTENT.md manifested. ~135
+  tests green, clippy `-D warnings` clean. Minor follow-on: a Pod with
+  `super_node: None` yields `UnresolvableArch` not `MissingSuperNode` (still
+  fails projection; untested None-branch) — tighten in a later horizon touch.
+- **C2 + C3 — in flight.**
