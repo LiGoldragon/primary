@@ -42,4 +42,18 @@ tests).
   tests green, clippy `-D warnings` clean. Minor follow-on: a Pod with
   `super_node: None` yields `UnresolvableArch` not `MissingSuperNode` (still
   fails projection; untested None-branch) — tighten in a later horizon touch.
-- **C2 + C3 — in flight.**
+- **C2 + C3 — DONE, review pass-with-notes** (CriomOS `horizon-test-vm`
+  `28ad489c`, pushed; CriomOS-test-cluster `horizon-test-vm` local; mains
+  untouched). C2: `test-vm-host.nix` reads the host's projected `VmHost`
+  capability (`guestSubnet`/`kvm`/`maximumGuests`) — the hardcoded
+  `169.254.100+i.1` subnet and `inputs ? microvm` probe are GONE; the per-guest
+  tap is sliced deterministically from `guest_subnet`, additive/host-untouched
+  confirmed end-to-end (`5hir5bnz`). C3: `test-substrate.nix` =
+  `{ substrate ? "microvm", deployKey ? null }: { guestModule; vmTypeModule; }`
+  baking every live-run constraint (microvm machine type, writable store,
+  require-sigs=false, the NSS/nscd/root-shell prebakes that fix the live-run
+  "invalid user root", deploy key, horizon-derived address). atlas declares
+  `VmHost` in fieldlab.nota; projections-match-fieldlab green. Notes: the `05-`
+  networkd-priority fix (latent plain-center DHCP-claim; inert on atlas-router)
+  → folded into C4; test-cluster branch local (expected — C4 builds on it).
+- **C4 — in flight** (mkVmTest generator + the 05- hardening).
