@@ -37,3 +37,37 @@ Report 53 §1 (the auto-pickup suite) is DONE — `dune` (an Edge Pod with no te
 before) auto-gains a full Edge check, review PASS (CriomOS-test-cluster
 horizon-test-vm `46febf36`). The auto-pickup checks are the hermetic engine the
 lojix `Test` op dispatches to.
+
+## Progress (2026-06-16)
+
+- **Unit 1 — DONE, review PASS** (horizon-rs `horizon-test-vm` `214e6816`):
+  additive `super_nodes` + `host_set()`; the host-set existence + single-arch
+  invariants; the SCOPED `image_exchange_pub_keys` projection (a non-co-host key
+  provably absent, strictly tighter than the cluster-wide pool). 135/135 tests;
+  single-host byte-identical.
+- **Unit 2a — DONE + integrated to the triad mains**: the `Test` meta op +
+  `(Check)` shorthand + `TestDefaults` (rkyv-only) config + `TestRunTable` /
+  `(ByTestRun)` query + a no-faked-pass stub; schema regen clean.
+- **Unit 2b — DONE + integrated** (lojix main `538fdebf`, meta-signal-lojix
+  `1dbecc08`, signal-lojix `cc8bbf32`): the REAL hermetic dispatch — `(Check
+  mercury)` nix-builds the `vm-<node>` check via a decoupled `TestJobs` actor
+  (survives client disconnect) → a durable `Passed`/`Failed` with the real
+  out-path, **proven end-to-end through the real daemon + sockets** (3 ways).
+  Host/node selection validated + tested (OnHost-reject, NodeUnknown, All-sweep).
+  LIVE honestly rejected (`LiveNotYetEnabled`) — no fake pass. The silent-daemon
+  observability gap is closed (durable, queryable `TestRunRecord`).
+
+**The hermetic half of the vision is complete + working**: declare a node → get a
+test (auto-pickup); run it through the daemon → a durable verdict (the `Test`
+op); the multi-host model + scoped image-exchange projection (Unit 1).
+
+**Remaining (gated / dependent):**
+- **Unit 3** — CriomOS emits the scoped image-exchange keys
+  (`extra-trusted-public-keys` from the node's host-set).
+- **The live path** — wire the real live deploy+assert (turn `LiveNotYetEnabled`
+  into the report-51 host-untouched cycle), then the gated Prometheus goldragon
+  `VmHost` edit + the first live run (psyche go).
+- **Operator integration** of the three `horizon-test-vm` branches to their mains
+  — unblocks the multi-host `Test` validation (the cross-unit dep: lojix pins
+  horizon **main**, Unit 1 is on the branch), the auto-pickup suite, and Units
+  A/B + C1.
