@@ -54,10 +54,23 @@ can be vetoed.
 | Substitution | n/a | `FrameExpansion` already written + proven leg-for-leg (`tests/reaction.rs:118-145, 355-510`) |
 | `Never`/fewer-leg risk | bites the generic edges | spirit is full-frame (all 4+5 legs) → no absent legs, no stand-in needed |
 
-Generic-alias is the elegant end-state but is blocked on the generic-impl emission `654`
-flagged as real new codegen. Expansion is strictly less code, reuses proven substitution, and
-reproduces spirit's surface. Generic-alias is deferred until a genuinely-generic / fewer-leg
-consumer needs it *and* someone builds generic impl-header emission.
+Generic-alias is **not** a more elegant end-state — that framing was wrong (psyche
+challenge). Its *only* real advantage is that a component root which **is** the generic type
+plugs straight into generic runtime code (`triad-runtime`'s generic runner over `Action<…>`)
+without a per-component bridge. Everything else attributed to it is illusory here: it is
+**wire/runtime-identical** (Rust monomorphizes `Work<…>` into the same layout as the expanded
+enum — same bytes, same rkyv/NOTA), it satisfies `zjmc`'s declare-once **no better** (the
+frame is declared once in *schema* either way; the alias only changes the build-time-only,
+machine-managed generated output, where line count is not a virtue per `9rjq`), and it
+**costs** the generic-impl-header emission that does not exist. Expansion gives each component
+a clean *owned concrete* interface with normal constructors/`From`, for zero new machinery.
+
+So **expansion is the real end-state, not a compromise**: the genericity is a *schema-authoring*
+convenience (don't re-author the shape per component), it does not need to persist as a
+generic type in every component's output. Generic-alias is deferred unless the
+generic-runtime plug-in ever justifies building generic-impl emission — and even then the
+bridge it saves is a single leg-for-leg `From<Output> for Action<…>`, small and itself
+generatable, so probably not.
 
 ## Simplest schema representation
 
@@ -136,3 +149,51 @@ get simpler). Out of this slice: the `OriginRoute`-triplicate / `Engine*Failure`
 
 **Next:** implement-and-test dispatched against this plan, in `schema-next` + `schema-rust-next`
 worktrees, reporting the four-layer verdict.
+
+## Result — implemented and verified green
+
+**The prototype works end-to-end.** Built on designer worktrees (not pushed; shared `/git`
+checkouts confirmed clean): schema-next `reaction-expand` (change `rtxlqtkptunw`) and
+schema-rust-next `reaction-expand` (change `ulnvylmyypuw`), cross-patched.
+
+What was implemented (matching the plan):
+- schema-next `src/schema.rs` (+146) — `RootApplication::expand_with(...)` (the promoted
+  `FrameExpansion`, now a method on the data-bearing noun), `Schema::declared_frame_body`,
+  `Schema::expand_application_root` (+ `reaim_sibling_application` re-aiming the nested
+  Continuation at the sibling root by name).
+- schema-next `src/resolution.rs` (+49) — `ResolvedImport` carries `parameters` + `variants`,
+  populated from the already-loaded module schema.
+- schema-rust-next `src/lib.rs` (+20) — the applied-roots branch calls
+  `expand_application_root`: `Some` → a concrete `RustEnum` into `root_enums` (existing
+  emission); `None` → legacy alias fallback (kept for rollback). Suppression guards unmodified
+  and confirmed not to fire on the empty-param expanded enums.
+
+Verification (re-run independently, not just trusted from the agent):
+- **Emitted Rust** (regenerated `tests/fixtures/spirit_nexus_generated.rs:556-571`):
+  `pub enum Input { SignalArrived(SignalInput), … }`, `pub enum Output { …, Continue(Input) }`
+  — leg-for-leg per spec, with auto-emitted constructors + `From` (incl. `From<Input> for
+  Output`), the newtype wrapper flattened as intended.
+- **`cargo test --test spirit_frame_application` → 5 passed, 0 failed**: structural expansion
+  assertion, rkyv round-trip via the emitted constructor, the recursive `Continue(Input)`
+  rkyv round-trip, NOTA round-trip, fixture write.
+- Full suites green (agent-run): schema-next 18 binaries 0 failures; schema-rust-next 88
+  passed. No regression.
+
+Two caveats for whoever lands it:
+1. **rkyv layout / content-hash shift (load-bearing):** adding `Vec<EnumVariant>` to
+   `ResolvedImport` introduced an Archive type-cycle requiring `#[rkyv(omit_bounds)]` + the
+   bound attributes (the same treatment `TypeReference`/`ApplicationHead` already carry), and
+   shifted every schema content hash that includes enum variants (visible as the two
+   regenerated `families_generated.rs` blake3 digests). Expected under the no-byte-stability
+   override, but the import-resolution wire/storage shape changed.
+2. The legacy `RustAppliedRoot` alias path is retained as a `None`-fallback; delete it once
+   expansion is accepted as the only route.
+
+**This closes the psyche's loop on the use case:** ideal output (expanded concrete
+`Input`/`Output`) → codegen target (expansion at applied-root lowering) → simplest schema
+(universal frame once + bind) → syntax (`(| |)` decl head, optional for the prototype) →
+implementation → tested green. Operator owns landing it on code-repo main (the worktrees are
+the merge-ready material, minus the prototype `[patch]`). Out of this slice and still open:
+the `(| |)` parser arm to honor `hh3z` at the surface; the declare-once consolidation of the
+triplicated `OriginRoute`/`Engine*Failure` that deletes the `plane.rs` bridges; and the
+broader generics/traits emission (`654`).
