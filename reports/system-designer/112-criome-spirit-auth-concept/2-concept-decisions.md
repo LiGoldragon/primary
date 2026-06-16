@@ -168,6 +168,35 @@ repo's `INTENT.md` — a deliberate rollout, not a one-session edit.
 - A multi-operation commit bundles several operations under one `EntryDigest`, so a
   chain-head witness is per-commit, not per-record (another reason C → per-operation).
 
+## Resolution — decisions taken (2026-06-16)
+
+The psyche ratified the critique-corrected concept in full and took the deferred
+substrate decision:
+
+- **A — principal = the submitter/caller.** The pilot binds WHO wrote each operation,
+  not merely the log. (The witness-only default the first synthesis recommended is
+  rejected as failing the goal.)
+- **B — timing = after-the-fact, non-blocking.** No before-commit gate in the pilot;
+  it is deferred until criome's async authorization path and `meta-signal-criome`
+  exist.
+- **C — signed = per-operation digest.** The exact bytes of each accepted operation;
+  matches [signature on the content-addressed log entry].
+- **E — Yes, Spirit is the single intent source.** `ARCHITECTURE.md` keeps
+  architectural state; per-repo `INTENT.md` migrates off into Spirit gradually.
+
+Captured intent: **`2st7`** (Decision High) — the settled pilot mechanism (A+B+C),
+extending the operator's `w2g3`; **`15df`** restored to High (the substrate decision,
+E) and **`cdd3`** zeroed (explicitly superseded). Failure posture D stands as the
+recommendation (denial always rejects; unavailable → visible `unwitnessed`
+provenance, never silent).
+
+Tracked work: **`primary-kr40`** (criome real blst Sign/Verify + signed
+RegisterIdentity + master key lifecycle — the hard blocker), **`primary-5zur`** (the
+spirit-side pilot build, gated on kr40), **`primary-ebev`** (the intent-substrate
+rollout — contract docs + gradual `INTENT.md` migration). The message/criome
+`INTENT.md`/`ARCHITECTURE.md` manifestation and the criome-repo crypto work land on
+their own branches in the criome/operator lanes, not this coordination repo.
+
 ## Agent-level (not psyche decisions)
 
 - **`ContentPurpose`**: the gate path can reuse the existing `PrivilegeElevation`;
