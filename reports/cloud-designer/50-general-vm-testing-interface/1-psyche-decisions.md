@@ -135,3 +135,27 @@ node + second-tier suite (pure cluster-data additions via `mkVmTest`); the
 TCG/`kvm=Absent` path (verified by logic, no booted test); full BootOnce-reboot
 fidelity (the deferred lean-profile-on-q35 hardening); the minor C1
 `None`-super_node→`UnresolvableArch` tightening.
+
+## Operator review 387 — cleanup DONE, re-review PASS (2026-06-16)
+
+The operator (CO) reviewed C1–C6 (`reports/operator/387`), verdict strong /
+merge-after-a-short-cleanup. All four findings addressed on the
+`horizon-test-vm` branches and independently re-reviewed PASS (the reviewer drove
+each assert to prove it fires):
+- **F1** (horizon-rs `8fb25be9`): `TapSubnet`→`Ipv4Net` (IPv6 rejected into
+  `InvalidTapSubnet`) + `usable_host_count`/`can_host` + a Nix `assertModel`
+  subnet-capacity check (a `/30` with >2 guests aborts eval).
+- **F2** (CriomOS-test-cluster `89f93ba3`): `mkDeployTest` reads + asserts
+  `hostNode` (declares VmHost, `vmNode` a Pod with `superNode==hostNode`).
+- **F3** (same commit): the durable lojix `Query` is asserted (node + slot +
+  closure). The slot is **`Current`** — correct: `activation_commit()` hardcodes
+  `GenerationSlot::Current` in the durable record; the `BootPending` value only
+  feeds a discarded transient payload (so C6's "Current" was right; an earlier
+  relay of "BootPending" was the implement agent mis-describing its own change).
+  `lojix-deploy-smoke` re-ran GREEN.
+- **F4** (CriomOS `42bc62b3`): `test-substrate.nix` prose corrected
+  (`vmTypeModule` not composed on the hermetic path).
+Branches re-locked (horizon `8fb25be9`, criomos `42bc62b3`) and merge-ready in
+operator order. Out-of-scope flag to CO: the `source-constraints` check is
+pre-existing RED (`llm.nix:158` has a `goldragon` host-fact token in a comment —
+untouched by this cleanup).
