@@ -108,6 +108,19 @@ inputs with clear names (`nota-next-source`); the build patches Cargo
 git deps to those input sources inside the Nix builder. Never commit
 `git+file://` or absolute local paths to `flake.nix` or `Cargo.toml`.
 
+When the flake has many sibling `*-source` inputs, use the workspace helper
+instead of hand-writing the override list:
+
+```sh
+tools/nix-local-stack build --target path:/git/github.com/LiGoldragon/spirit#default
+tools/nix-local-stack check --target path:/git/github.com/LiGoldragon/spirit
+```
+
+The helper reads the target flake, maps each `*-source` input to the matching
+`/git/github.com/LiGoldragon/<repo>` checkout, and adds the local overrides
+ephemerally. It is for local integration testing only; deployable builds still
+come from pushed remote refs.
+
 ## Build, run, and deploy from the remote — never a local checkout
 
 When you `nix build`, `nix run`, or **deploy** a workspace repo, name

@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage:
+  tools/nix-local-stack [build|check] [options] [-- extra-nix-args...]
+
+Runs a Nix command against a local multi-repo stack by reading the target
+flake's *-source inputs and overriding each one to the matching
+/git/github.com/LiGoldragon/<repo> checkout when present.
+
+Options:
+  --target <flake-ref>      Target flake ref. Default: path:$PWD#default for build,
+                           path:$PWD for check.
+  --flake-dir <path>       Directory whose flake.nix declares the source inputs.
+                           Defaults to the path part of --target, or $PWD.
+  --print-command          Print the expanded command instead of running it.
+  --no-default-flags       Do not add the command's default test flags.
+  --no-local-builders      Do not force --builders ''.
+  -h, --help               Show this help.
+
+Default flags:
+  build: --builders '' --log-format bar-with-logs --print-out-paths --no-link
+  check: --builders '' -L
+
+Examples:
+  tools/nix-local-stack build --target path:/git/github.com/LiGoldragon/spirit#default
+  tools/nix-local-stack check --target path:/git/github.com/LiGoldragon/spirit
+  tools/nix-local-stack build --print-command
+EOF
+}
+
+command=build
+target=
+flake_dir=
+print_command=0
+default_flags=1
+local_builders=1
+extra_args=()
+
+if [[ $# -gt 0 ]]; then
+  case "$1" in
+    build|check)
+      command="$1"
+      shift
+      ;;
+  esac
+fi
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --target)
+      target="${2:?--target requires a flake ref}"
+      shift 2
+      ;;
+    --flake-dir)
+      flake_dir="${2:?--flake-dir requires a path}"
+      shift 2
+      ;;
+    --print-command)
+      print_command=1
+      shift
+      ;;
+    --no-default-flags)
+      default_flags=0
+      shift
+      ;;
+    --no-local-builders)
+      local_builders=0
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      extra_args+=("$@")
+      break
+      ;;
+    *)
+      extra_args+=("$1")
+      shift
+      ;;
+  esac
+done
+
+if [[ -z "$target" ]]; then
+  case "$command" in
+    build) target="path:$PWD#default" ;;
+    check) target="path:$PWD" ;;
+  esac
+fi
+
+if [[ -z "$flake_dir" ]]; then
+  flake_dir="$target"
+  flake_dir="${flake_dir#path:}"
+  flake_dir="${flake_dir%%#*}"
+  if [[ "$flake_dir" == "$target" ]]; then
+    flake_dir="$PWD"
+  fi
+fi
+
+flake_file="$flake_dir/flake.nix"
+if [[ ! -f "$flake_file" ]]; then
+  echo "nix-local-stack: no flake.nix at $flake_file" >&2
+  exit 2
+fi
+
+args=(nix "$command")
+if [[ "$default_flags" -eq 1 ]]; then
+  if [[ "$local_builders" -eq 1 ]]; then
+    args+=(--builders "")
+  fi
+  case "$command" in
+    build)
+      args+=(--log-format bar-with-logs --print-out-paths --no-link)
+      ;;
+    check)
+      args+=(-L)
+      ;;
+  esac
+fi
+
+mapfile -t source_inputs < <(
+  sed -n 's/^[[:space:]]*\([A-Za-z0-9_-]*-source\)[[:space:]]*=.*/\1/p' "$flake_file" \
+    | sort -u
+)
+
+for input in "${source_inputs[@]}"; do
+  repo="${input%-source}"
+  checkout="/git/github.com/LiGoldragon/$repo"
+  if [[ -e "$checkout" ]]; then
+    args+=(--override-input "$input" "path:$checkout")
+  fi
+done
+
+args+=("${extra_args[@]}" "$target")
+
+if [[ "$print_command" -eq 1 ]]; then
+  printf '%q ' "${args[@]}"
+  printf '\n'
+else
+  exec "${args[@]}"
+fi
