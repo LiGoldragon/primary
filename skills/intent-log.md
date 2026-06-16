@@ -48,6 +48,12 @@ Outcomes:
   query/read recent Spirit records, not write a record or edit
   `INTENT.md` / `ARCHITECTURE.md`.
 - **Ask** — durable meaning, kind, or privacy is unclear.
+- **Edit existing** — the psyche is clarifying, correcting, refining,
+  or narrowing an existing record. Read the target record and use the
+  deployed edit operation (`Clarify`, `Supersede`, `Retire`,
+  `ChangeRecord`, `ChangeCertainty`, or `Remove`), then update the
+  manifested docs. Do not mint a second `Record` whose job is to explain
+  the first.
 - **Record** — explicit durable psyche intent passes the gate.
 
 No-capture is normal. Understatement is recoverable; over-extension
@@ -64,10 +70,10 @@ is guessing, and the guardian refusal that follows is churn that should
 never have happened. The guardian is the fallback, not your first read.
 
 Once you have read the neighborhood, most would-be-new intents resolve
-to one of: nothing to add (it is already said — a duplicate), a merge or
-clarify into the record that already holds the arrow, or a genuine new
-record. Only the last is a fresh `Record`. This is upstream of the gate:
-educate yourself in the domain, then classify.
+to one of: nothing to add (it is already said — a duplicate), an edit of
+the record that already holds the arrow, or a genuine new record. Only
+the last is a fresh `Record`. This is upstream of the gate: educate
+yourself in the domain, then classify.
 
 ## Privacy gate before recording
 
@@ -84,14 +90,17 @@ recordable:
 - `Decision` — "we're going with X, not Y".
 - `Principle` — "X over Y as a general rule".
 - `Correction` — "you were wrong about X; the right thing is Y".
-- `Clarification` — "when I said X, I meant Y".
+- `Clarification` — "when I said X, I meant Y"; find the existing
+  record or context and clarify that target. A clarification is an edit
+  path, not permission to add another active record that future readers
+  must reconcile with the original.
 - `Constraint` — "never do Z".
 
 A task instruction may contain a durable statement: "rename
 signal-core to signal-frame" carries a naming decision; "write the
 report" does not. Record only the durable part; the task itself goes to
-beads, locks, reports, or chat. Repetition is signal, but duplicates
-and supersession are maintenance work
+beads, locks, reports, or chat. Repetition is signal, but duplicates,
+clarification, and supersession are maintenance work
 (`skills/intent-maintenance.md`), not an excuse to write uncertain
 entries.
 

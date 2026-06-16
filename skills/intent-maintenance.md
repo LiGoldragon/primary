@@ -5,6 +5,64 @@ apply, remove safely. Keeps the intent substrate from rotting as the
 workspace and the psyche's positions evolve. Companion to
 `skills/intent-log.md` (recording).*
 
+## Clarification is an edit, not another record
+
+A psyche clarification means the existing record or manifested guidance
+was ambiguous, incomplete, or misworded. The default action is therefore
+to edit the target, not to append a fresh `Record`.
+
+Required sequence:
+
+1. Find the target. Query by referent, domain, keywords, or identifier,
+   then `Lookup` the record whose meaning is being clarified.
+2. If the target's core meaning survives and only its wording/scope
+   changes, use `Clarify` with the target identifier and corrected
+   description.
+3. If the target should be replaced by one or more entries, use
+   `Supersede`: retire the old identifier(s) and provide replacement
+   `Entry` values in the same operation.
+4. If the target should stop being active without replacement, use
+   `Retire` or the removal flow below, depending on whether lineage
+   should remain visible.
+5. Update the manifested surface (`ESSENCE.md`, `AGENTS.md`,
+   `INTENT.md`, repo `INTENT.md`, skills, or architecture docs) in the
+   same work cycle.
+
+Do **not** use `Record` for "clarification — ..." when an earlier record
+already holds the arrow. That creates two active records and forces every
+future reader to reconcile them manually. The only time a clarification
+becomes a fresh `Record` is when, after reading the neighborhood, no
+existing record is its target and the psyche is adding a genuinely new
+meaning.
+
+## ResolveClarification — fold a bad clarification back into its targets
+
+Sometimes the mistake already happened: an agent added a standalone
+`Clarification` record instead of editing the record(s) being clarified.
+The cleanup operation is named **`ResolveClarification`**.
+
+Until Spirit has a first-class `ResolveClarification` input, an agent does
+it manually as one reviewable maintenance pass:
+
+1. Lookup the mistaken clarification record and preserve its full text in
+   the maintenance report or commit notes.
+2. Find every target record it clarified. There may be more than one;
+   search by referent, domain, keywords, testimony, and the clarification's
+   own reasoning.
+3. Edit those targets with `Clarify` or `Supersede`, preserving every
+   surviving arrow and moving the clarification's useful substance into
+   the targets.
+4. Remove or retire the standalone clarification record after the target
+   edits land.
+5. Update manifested docs in the same pass.
+
+The future typed Spirit operation should do those state changes atomically:
+`ResolveClarification { ClarificationRecordIdentifier, TargetEdits,
+Justification }`, producing a receipt that names the edited target records
+and the removed or retired clarification record. Its invariant: no active
+"clarification about a record" remains after resolution; the truth lives on
+the records being clarified.
+
 ## Supersession is always explicit — only the psyche supersedes
 
 A new psyche statement is the only thing that can override a prior psyche
@@ -27,29 +85,26 @@ When a new psyche statement contradicts a prior recorded entry:
 
    | Psyche says | Action |
    |---|---|
-   | "Yes, override" | Record the new entry; mark the prior superseded (step 3) |
-   | "No — the prior still applies, this refines it" | Add the new entry as `Clarification`; prior stays |
+   | "Yes, override" | Use `Supersede`: retire the prior identifier and provide the replacement entry in the same operation |
+   | "No — the prior still applies, this refines it" | Use `Clarify` on the prior identifier; prior stays as the target, not as a sibling to a new active record |
    | "Both apply in different contexts" | Add the new entry; prior stays |
 
-3. **On confirmed override:** record the new Spirit entry and name the
-   supersession in the commit message
-   (`intent: <topic> — psyche overrides prior <slug>; new <slug>`). Spirit
-   is the sole substrate. Until typed supersession tooling exists, the
-   active/superseded distinction is carried by the newer explicit psyche
-   correction; never silently rewrite a prior record.
+3. **On confirmed override:** use Spirit's typed supersession surface and
+   name the supersession in the commit message
+   (`intent: <topic> — psyche supersedes prior <slug>`). Spirit is the
+   sole substrate. Do not simulate supersession by appending a
+   free-standing `Correction` record beside the old active record.
 
 ## Negation shape
 
 Negation is supersession where the psyche says a prior record is
-*invalid*, not merely refined. Spirit has no typed `Negates`/`Supersedes`
-relation yet, so:
+*invalid*, not merely refined.
 
 1. Look the prior record up by its identifier (`spirit "(Lookup abcd)"`).
 2. Ask the psyche to confirm the old record is negated.
-3. Record a new `Correction` or `Decision` naming the old identifier and
-   stating the replacement truth, e.g. `Spirit record [abcd] is negated;
-   the correct intent is ...`. Do not delete the old record — lineage
-   stays visible.
+3. Use `Supersede` when a replacement truth exists, or `Retire` when the
+   old record should simply stop being active. Do not delete the old
+   record when lineage should stay visible.
 
 ## Removing a record — tombstone first
 
@@ -57,8 +112,8 @@ Spirit supports psyche-authorized removal: `spirit "(Remove abcd)"`
 (the argument is the record's base36 identifier code, not a number).
 Use it only for records that should **not remain at all** — mis-logged
 working orders, or fully-stale records whose substance is rehomed. When
-lineage should stay visible, supersede with a `Correction` and keep the
-record.
+lineage should stay visible, use `Clarify`, `Supersede`, or `Retire`
+instead.
 
 Removal is **destructive and irreversible.** The record's key is
 retracted from the sema-engine store and there is no undelete.
@@ -93,19 +148,21 @@ Failure modes:
 - **The workspace evolved past the entry.** A constraint set in a context
   that no longer exists. Ask the psyche for explicit retirement; don't
   assume.
-- **The summary doesn't match the verbatim.** Agent rephrasing drift. Fix
-  the summary to match the quote.
+- **The summary doesn't match the verbatim.** Agent rephrasing drift.
+  Use `Clarify` or `ChangeRecord` to fix the active record to match the
+  quote.
 - **The certainty doesn't match the phrasing.** Re-read against
   `skills/intent-log.md` §"Certainty vocabulary"; correct if mismatched.
 - **One record bundles claims of different certainty.** A record can carry
   a settled rule and a tentative design under one high-certainty summary.
-  Split it: preserve the settled part at its earned certainty, record the
-  tentative part at its lower certainty. Matters most when the psyche
-  explicitly flags a clarification as low-certainty.
+  Split it with `Supersede`: retire the bundled record and replace it
+  with separate entries at their earned certainties. Matters most when
+  the psyche explicitly flags a clarification as low-certainty.
 
 Corrections that fix the agent's transcription (not override psyche
-intent) land directly — they're discipline cleanup, not author overrides.
-Log them: `intent: corrected Spirit summary in <topic> to match verbatim`.
+intent) land directly through the edit operations — they're discipline
+cleanup, not author overrides. Commit them as
+`intent: clarified Spirit summary in <topic> to match verbatim`.
 
 ## Sweep — when and how
 
@@ -130,7 +187,7 @@ How:
    match the phrasing? Does one summary bundle sub-claims of differing
    certainty?
 3. Entries that no longer apply: ask the psyche.
-4. Transcription drift: correct directly.
+4. Transcription drift: correct the target record directly.
 5. A genuinely noisy topic with two distinct sub-topics: carve a new
    Spirit topic per `skills/intent-log.md` §"When to actually split". The
    split is housekeeping, not author intent; history holds the lineage.

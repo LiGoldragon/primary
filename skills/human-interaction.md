@@ -34,7 +34,7 @@ Everything else the prompt asked for derives from intent and is done *after* the
 | **Decision** | The psyche has chosen a direction or commitment that applies forward. |
 | **Principle** | A universal rule that applies across many contexts, not just one task. |
 | **Correction** | The psyche is correcting a prior misunderstanding — supersedes earlier behavior. |
-| **Clarification** | The psyche is clarifying meaning, scope, or intent that was unclear. |
+| **Clarification** | The psyche is clarifying meaning, scope, or intent that was unclear; target the existing record or guidance and edit it, rather than adding a sibling record. |
 | **Constraint** | A bound or limit on what the agent should or should not do. |
 
 Certainty uses the full `Magnitude` ladder (`Zero`, `Minimum`, `VeryLow`, `Low`, `Medium`, `High`, `VeryHigh`, `Maximum`) and defaults to `Medium` for normal explicit statements. Raise it only when the psyche's wording or repeated same-direction commitment carries that confidence. Importance is separate: repeated discussion makes a topic important, but does not by itself make the current statement more certain. Do not encode topic importance by inflating certainty. See `skills/intent-log.md` §"Certainty versus importance" for hard cases.

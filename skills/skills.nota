@@ -133,11 +133,11 @@
   (Meta context-maintenance skills/context-maintenance.md Mechanism
     [Sweep reports and conversation. Migrate substance to permanent homes.])
   (Meta intent-log skills/intent-log.md Topic
-    [Record explicit psyche intent through Spirit. Psyche-facing agents keep this fresh before Spirit use; tentative wording is no-capture or ask. Five-kind positional NOTA with closed Domains, certainty, importance, privacy, referents, and justification.])
+    [Record explicit psyche intent through Spirit. Psyche-facing agents keep this fresh before Spirit use; tentative wording is no-capture or ask. Clarifications and corrections target existing records through edit operations rather than additive duplicate Records. Five-kind positional NOTA with closed Domains, certainty, importance, privacy, referents, and justification.])
   (Meta spirit-cli skills/spirit-cli.md Topic
     [How to invoke the deployed Spirit CLI. Live v0.9.5 RecordRequest shape, bare-string canonicality, recursive Domain records, separate certainty and importance, eight-field query shape, justifications, privacy, inline NOTA vs file-path argument, and deployed-source verification.])
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
-    [Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.])
+    [Sweep the Spirit intent log. Clarification is an edit of an existing target, not another active Record; ResolveClarification folds a mistaken standalone clarification into its clarified targets, then removes or retires the standalone clarification. Supersession protocol; verification against current state; legacy intent files are history.])
   (Meta intent-clarification skills/intent-clarification.md Topic
     [Ask the psyche when intent on a question is unclear, absent, or contradicted. Don't infer intent; ask. Structured options + lean.])
   (Meta repo-intent skills/repo-intent.md Keystroke

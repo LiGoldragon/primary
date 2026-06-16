@@ -116,9 +116,10 @@ when an elevated importance rung lacks recurrence or blast-radius
 evidence, and `NonIntent` when a submission is task state rather than a
 durable arrow. Rejection replies include the supporting record set and
 can be very large; pipe through `head` when exploring. 0.12.0 also
-carries `Propose`, `Clarify`, `Supersede`, and `Retire` operations —
-read the deployed `schema/signal.schema` for their shapes before first
-use.
+carries `Propose`, `Clarify`, `Supersede`, and `Retire` operations. Use
+them for maintenance. In particular, a psyche clarification of an
+existing intent is a `Clarify` or `Supersede`, not a new `Record` whose
+description starts with "clarification".
 
 Domains are closed taxonomy variants such as
 `(Information Documentation)`, `(Safety Privacy)`,
@@ -165,13 +166,47 @@ spirit "(ChangeCertainty (abcd Zero))"    # -> (CertaintyChanged (abcd Zero))
 spirit "(BumpImportance abcd)"            # -> (ImportanceBumped (abcd <importance>))
 ```
 
+## Clarifying, superseding, and resolving records
+
+Use these when the psyche is editing the meaning of existing intent.
+They keep the active store from accumulating "record about another
+record" duplicates.
+
+`Clarify` edits one existing record's description while preserving its
+identity and core meaning:
+
+```sh
+spirit "(Clarify (abcd [corrected description] ([([verbatim psyche clarification] (Some [what was being clarified]))] [reasoning for why this is an edit of abcd])))"
+```
+
+`Supersede` retires one or more old identifiers and replaces them with
+new `Entry` values in the same operation:
+
+```sh
+spirit "(Supersede ([abcd] [([<Domain> ...] <Kind> [replacement description] <Certainty> <Importance> <Privacy> [<referent> ...])] ([([verbatim psyche override] (Some [prior record being replaced]))] [reasoning for replacement])))"
+```
+
+`Retire` deactivates one record without a replacement:
+
+```sh
+spirit "(Retire (abcd ([([verbatim psyche retirement] None)] [reasoning for retirement])))"
+```
+
+`ResolveClarification` is the name for the missing first-class operation
+that should atomically fold a mistaken standalone clarification record
+into the records it clarified, then remove or retire that standalone
+clarification. Until that operation exists, do it as one manual
+maintenance pass: lookup the bad clarification, find all clarified
+targets, apply `Clarify`/`Supersede` to those targets, then remove or
+retire the bad clarification after preserving its text in the pass notes.
+
 `Remove` deletes a record entirely — use it when nothing should remain
 in the active store. Setting certainty to `Zero` is the **recoverable**
 removal-candidate nomination: the record stays queryable by explicit
 zero-certainty lookup and is restored by changing certainty back to a
 non-zero `Magnitude`. Ordinary observation hides zero-certainty records.
-Use `Correction` or supersession when lineage should stay visible. Use
-hard `Remove` only after review.
+Use `Clarify`, `Supersede`, or `Retire` when lineage should stay
+visible. Use hard `Remove` only after review.
 
 **Collect removal candidates** — archive matching records to the
 owner-configured archive database, then remove them from the hot store:

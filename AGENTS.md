@@ -214,10 +214,15 @@ designer — doubting, finding flaws, catching broken rules. No
   outcome before reports, code, or chat: *no capture* (question, tangent,
   task-only order, current-state reaction), *Observe/refresh* (read
   recent Spirit records — what "refresh intent" means), *ask* (durable
-  meaning, kind, or privacy unclear), or *Record* (an explicit durable
-  Decision / Principle / Correction / Clarification / Constraint). A
-  working order is not intent: if the statement dies when the task is
-  erased, it's task state, not Spirit.
+  meaning, kind, or privacy unclear), *edit existing* (the psyche is
+  clarifying, correcting, refining, or retiring an existing record — use
+  `Clarify` / `Supersede` / `Retire` / `ChangeRecord` / removal tooling
+  instead of adding another `Record`), or *Record* (a genuinely new
+  durable Decision / Principle / Correction / Clarification /
+  Constraint). A clarification means an edit of the target record(s), not
+  a sibling record explaining the old one. A working order is not intent:
+  if the statement dies when the task is erased, it's task state, not
+  Spirit.
 
 - **Forwarded prompts — don't blindly duplicate; do gap-check.** When the
   psyche opens with "here's the prompt I gave <agent>" or similar, that

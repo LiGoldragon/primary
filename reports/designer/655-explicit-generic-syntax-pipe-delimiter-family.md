@@ -146,21 +146,27 @@ traits/impls (`{| |}`). Open for the psyche to assign.
   key/value side-channel.
 
 **Open:**
-- The exact inner shape `Name (| [params] <body> |)` — confirm.
-- What `{| |}` is for (traits/impls is the lead candidate).
+- What `{| |}` is for — **still unassigned**. The psyche confirmed the generic shape but
+  did not pick the pipe-brace slot; traits/impls remains the lead candidate (`654`).
 
-**Candidate intent to record on the psyche's go (Record works; edit-path is blocked):**
-1. **Decision** — A type's kind is announced by its value delimiter; generics use the
-   reserved pipe-parenthesis `(| … |)` (Spirit `j9du`'s extension point), mirroring the
-   `[| … |]` string form. Realizes `j9du` and `3742`.
-2. **Principle** — Binders scope their body by structure: a parameterized declaration nests
-   its body inside the binding form so the parameters are in scope without any semantic
-   side-channel. Retires the current key/value binder-threading.
-3. **Decision** (when chosen) — `{| … |}` (pipe-brace) is assigned to [the next construct].
+**Intent captured** (the psyche confirmed the design):
+1. **Decision — recorded `hh3z`**: [A type's kind is announced by the delimiter that wraps
+   its value (brace → struct, square-bracket → enum); generics use the reserved
+   pipe-parenthesis `(| … |)`, pipes inside, mirroring the pipe-text string delimiter; a
+   generic declaration is `Name (| [params] body |)`.] Realizes `j9du`'s reserved extension
+   point and `3742`.
+2. **Binders-scope-by-structure — no standalone record.** The guardian rejected a separate
+   principle as `Compound` with `3742`/`hh3z`, correctly: `hh3z` already encodes it — the
+   body is *nested inside* the `(| … |)` form, so the binders scope it structurally, and the
+   closure-walk key/value side-channel is retired as a consequence. Rationale lives in
+   §"Concrete shape." (Right call: a refinement rides or edits an existing record, it does
+   not bolt on a near-duplicate.)
+3. **`{| … |}`** — held open, see above.
 
 **Spirit edit-path blocker:** refining `3742`'s wording (it still reads "plus name
-resolution") needs `Clarify`, which the deployed daemon rejected with
-`sema: file written with v9, this build expects v10`. `Record`/`Lookup`/`Observe` work;
-only the in-place edit path hit the store-version skew. Flagged for system-maintainer /
-operator; new `Record`s can still land, so the candidate intents above are recordable, but
-`3742` cannot be reworded until the daemon store is fixed.
+resolution") needs the `Clarify` operation — which *edits the record's description in
+place* (`store/mod.rs:931`), the correct way to clarify (never a new `Clarification` record
+beside it). The deployed daemon rejected it with `sema: file written with v9, this build
+expects v10`; `Record`/`Lookup`/`Observe` work, only the in-place edit path hit the
+store-version skew. Flagged for system-maintainer / operator; `3742` cannot be reworded
+until the daemon store is fixed.
