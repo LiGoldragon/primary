@@ -221,3 +221,52 @@ exploratory, so they are **proposed, not recorded**:
   the emitter inferring it from variant names and move only the rendering to data?
 - **Confirm the `for`-less positional impl grammar** as settled by the positional-record
   hard-override.
+
+## Addendum — the differentiation gap: type kind must be explicit (Spirit `3742`)
+
+The psyche corrected the framing above on one point that matters more than the rest of the
+report: **the way a parameterized type is *identified* today is positional guessing, and
+that is not acceptable.** Verified in the source, not the survey:
+
+- A namespace is a map of `key value` pairs (`source.rs:499-518`). The key is read by
+  `DeclarationHead::from_block` (`schema.rs:1382-1416`): if it is a parenthesized
+  `(Name …)` block, the tail names are lifted as type-parameter binders.
+- A type at a *reference* position decodes the **identical** `(Name …)` block as
+  `TypeReference::Application { head, arguments }` (`schema.rs:1431-1463`).
+- So `(Foo A B)` is **byte-for-byte the same form** whether it is a generic *declaration
+  head* (introducing binders `A`, `B`) or a generic *application* (applying `Foo` to
+  `A`, `B`). The only thing that tells them apart is **which slot** it sits in; at a use
+  site `(Work …)` only resolves because the closure walk looks the name up
+  (`identity.rs:411-416`). That is position + name-resolution — inference, not a marker.
+
+Per Spirit `3742` (Principle, High): [A type's kind must be explicitly marked in the
+syntax, never inferred from position or guessed. A parameterized type must be declared as
+such by an explicit signal — a delimiter, a wrapping structural variant, or a reserved
+keyword head as the built-ins Vector/Map/Optional already are — so every use site resolves
+what the type is without guessing.] This extends `549v` (dispatch precedence as explicit
+data, not implicit match-arm order) and `4itr` (no black-magic inference) from dispatch to
+type identification. The codegen still works; the **syntax for identifying a generic is
+what's wrong**, and it is upstream of every "traits/impls as data" slice — there is no
+point declaring impls over a type whose kind you have to guess.
+
+### Three explicit mechanisms (mapping the psyche's own three)
+
+The psyche named the acceptable shapes: *"either there's a delimiter that tells you,
+there's a structure that tells you, or it's explicitly just says it, like vec or map."*
+
+| # | Mechanism | Declaration | Application | Trade |
+|---|---|---|---|---|
+| **1** | per-binder structural marker (a *variant*) | `(Work (Parameter E) (Parameter W) (Parameter R) (Parameter Eff)) [(SignalArrived E) …]` | `(Work SignalInput SemaWriteOutput …)` (bare args) | self-identifying by **structure** regardless of slot; **bounds attach for free** `(Parameter E NotaDecode NotaEncode)`; pure typed data, no parser change. Cost: verbose; `Parameter` reserved |
+| **2** | reserved delimiter / *sugar* (j9du pipe-form) | `\|(Work E W R Eff)\| [(SignalArrived E) …]` | `\|(Work SignalInput …)\|` | terse; the **canonical j9du use** (pipe-parenthesis is reserved "for schema to define its own constructs"); self-identifying anywhere. Cost: seed-parser support; more cryptic |
+| **3** | reserved keyword head ("just says it") | `(Generic Work [E W R Eff] [(SignalArrived E) …])` | `(Work SignalInput …)` (Work now a known generic, like vec/map) | most self-documenting; pure data. Cost: verbose; another reserved head; use site still resolves by name |
+
+**Lean: Mechanism 1 (per-binder `(Parameter …)`).** It kills the positional overloading
+directly — the declaration head becomes structurally distinct from an application, so no
+slot-based guessing — and it is the *same form* the bounds work (capability C / the panel's
+`(Param Name [bounds])`) already needs, so "a binder and its constraints" stay one
+construct. It is also the most `2zed`/`4itr`-aligned: a parameter is a value of a struct,
+decoded by the existing derive, no new delimiter. Mechanism 2 is the terse alternative and
+the textbook j9du use if the psyche prefers sugar; Mechanism 3 reads closest to "like vec
+or map" but carries bounds less naturally. Open for the psyche to settle; manifestation
+into schema-next / nota-next `INTENT.md` follows once the mechanism is chosen (on the work
+branch, stated with the mechanism, to avoid a two-step churn).
