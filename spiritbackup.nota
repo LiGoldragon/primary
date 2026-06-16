@@ -1,0 +1,35 @@
+;; spiritbackup.nota — offline intent-capture queue
+;;
+;; Backup scheme for when spirit-daemon is unavailable. When an agent must
+;; capture intent but spirit is down, it logs the WHOLE request here — the exact
+;; spirit Operation it would have sent, plus the lane, the outage context, and a
+;; status. This is NOT acceptance: when spirit comes back up, each Pending entry
+;; is replayed through `spirit` and the guardian judges it exactly as if it had
+;; arrived live. Replay then marks the entry Sent (recording the returned id) or
+;; Rejected (recording the guardian reason). Nothing here is intent until spirit
+;; has accepted it.
+;;
+;; REPLAY (when spirit is back): for each (PendingCapture ... Pending ... <Operation>),
+;; run  spirit "<Operation>"  ; on (RecordAccepted <id>) change Status to
+;; (Sent <id>); on rejection change Status to (Rejected <reason>) and leave the
+;; entry for review. Remove Sent entries once confirmed in the store.
+;;
+;; Outage that created this queue: spirit-daemon down on ouranos since
+;; 2026-06-16 13:06 — spirit-migrate-store rejects live store schema 10
+;; (bead primary-4bw6; same v9/v10 root as primary-9cop). Store data intact.
+
+(SpiritBackup [
+
+  (PendingCapture system-designer Pending
+    [|CriomOS comms architecture decision (report 116); queued because spirit was down at capture time (primary-4bw6).|]
+    (Record (([(Technology (Software (Engineering Architecture)))] Decision [|CriomOS communication architecture. Each agent runs in its own microVM sandbox (all spaces become smart). ONE router per system is the communication fabric, carrying cross-sandbox traffic locally AND cross-network traffic router-to-router. criome stays auth-only (signs and verifies, never transports); the router transports; the mirror version-controls and moves objects; the tailnet provides confidentiality and criome BLS attestations provide per-frame authenticity. Intra-host sandbox-to-router transport is tap/L3 for now, vsock deferred because it loses SO_PEERCRED. This realizes i99x (router owns the remote delivery path) and narrows l3k4 so the harness-side-ack delivery fact applies to the local-harness path only, delivery becoming per-path. The per-agent-microVM model refines a4i6 (physical VM boundary; logical per-component-per-domain agent spaces nest inside one VM).|] High Minimum Zero [router criome mirror spirit]) ([([|the networking belongs in router|] (Some [|psyche placing cross-node networking in the router component during a CriomOS comms architecture discussion|])) ([|the router component can be per-system|] None) ([|its how things talk across sandboxes and network|] None) ([|a sandbox is a microvm, one per agent, probably, since all spaces become smart in criomos|] None) ([|tap/L3, proven today (Recommended)|] (Some [|Psyche AskUserQuestion selection. Q: intra-host transport between a per-agent microVM sandbox and the per-system router?|]))] [|Settles report 116 after a psyche design discussion. The message/router separation (alom) is kept: message stays the per-agent SO_PEERCRED ingress, router the per-system fabric. The only explicit supersession is narrowing l3k4 harness-ack to local. Inter-host reuses mirror proven tailnet-TCP precedent over the live ouranos-prometheus tailnet.|]))))
+
+  (PendingCapture system-designer Pending
+    [|Cross-system trust-root decision (report 116, decision A) — the #1 security prerequisite; queued because spirit was down (primary-4bw6).|]
+    (Record (([(Technology (Software (Security Authentication)))] Decision [|Cross-system trust root for criome: a cluster-root identity signs member keys, and that signature is criome registry admission gate (RegisterIdentity requires a valid root signature); cross-system peers trust keys chained to the cluster root. This closes criome current no-admission-control gap (the registry accepts any key today) and gives a non-circular first-cross-system-trust bootstrap.|] High Minimum Zero [criome]) ([([|Cluster-root signs member keys (Recommended)|] (Some [|Psyche AskUserQuestion selection. Q: Trust root, what admits a key into criome registry and how is the first cross-system trust edge established?|]))] [|The load-bearing security prerequisite for the cross-node mesh (report 116, SO audit 225). Subsumes the open kr40 RegisterIdentity-signing gap. Ranked above BLS and networking.|]))))
+
+  (PendingCapture system-designer Pending
+    [|Mirror topology decision (report 116, decision D), a Correction of 0yx5; queued because spirit was down (primary-4bw6).|]
+    (Record (([(Technology (Software (Engineering Architecture)))] Correction [|Mirror topology is per-system: one mirror per node (symmetric with the per-system router), with authenticated object ingest (a criome attestation on the object, not only on the router notification). The per-system router carries the object-accepted notification; the mirror keeps its proven tailnet-TCP fetch transport. Supersedes the single central-mirror-daemon model.|] High Minimum Zero [mirror]) ([([|Per-system mirror + authenticated ingest (Recommended)|] (Some [|Psyche AskUserQuestion selection. Q: Mirror topology for the cross-node object flow? Supersedes the central-daemon model recorded in 0yx5.|]))] [|Corrects 0yx5 (one central mirror daemon) for the cross-node e2e where origin and peer each have a mirror. Also closes the unauthenticated-mirror-ingest gap (rj9y/x3l7): the byte path that mutates the store must be authenticated, not only the router notification.|]))))
+
+])
