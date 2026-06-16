@@ -148,4 +148,6 @@
     [Psyche info-injection mid-task is not a stop signal. Keep working unless explicitly told to stop or redirected. Absorb the context, capture any durable intent, and continue; do not drop the work and go passive.])
   (Workflow main-next skills/main-next.md Keystroke
     [Each CODE repo under /git keeps main (operator-owned, integrated line) plus a long-lived next development branch (the designer line). Designer works on next; operator integrates next into main. When main is locked or busy, designer uses next and never blocks. NOT for primary — on primary everyone works on main directly (record 2585). Record 2561.])
+  (Workflow main-feature-integration skills/main-feature-integration.md Mechanism
+    [Updating code-repo main with new features: start from main, use an operator bookmark until green, test branch families together, rebase if main moved, then land producers before consumers and rerun checks.])
 ]
