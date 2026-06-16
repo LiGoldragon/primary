@@ -202,15 +202,15 @@ assignment (and `nota-next/INTENT.md` lines 24-27 still carry the stale "pipe = 
 struct-like declarations" text). `j9du` ("no assigned meaning") is itself already in tension
 with `td1d` — the store was internally inconsistent before this session.
 
-### The decision this forces (psyche)
+### Decision (made): overwrite the deprecated design
 
-Reassign the now-freed pipe delimiters to generics (`(| |)`, `hh3z`) and traits/impls
-(`{| |}`), **superseding** the legacy pipe-struct/enum intent (`td1d` and the cluster) —
-which `own9` already started. This is the recommended path: `own9` (High) outranks the
-older low/medium-certainty cluster and already moved struct/enum to the positional form,
-leaving the pipe forms genuinely free. The alternative is to keep pipe = struct/enum and
-find a *different* marker for generics/traits — but that re-opens a question `own9` looks
-to have closed.
+The psyche confirmed: *"we are overwriting that old deprecated design."* The freed pipe
+delimiters are reassigned to generics (`(| |)`, `hh3z`) and traits/impls (`{| |}`),
+**superseding** the legacy pipe-struct/enum intent (`td1d` and the cluster
+`010y`/`1rci`/`7m84`/`f743`/`nbvg`) — which `own9` (High) already started by moving
+struct/enum to the positional `{}`/`[]` forms. `j9du`'s "no assigned meaning" likewise
+yields to the new assignment. So the only live work is mechanical cleanup of the stale
+records, not a design question.
 
 ### Blocker chain (all gated on the daemon store fix)
 
@@ -221,6 +221,14 @@ So the cleanup cannot land until system-maintainer fixes the spirit daemon store
 Meanwhile `hh3z` ((| |)=generics) is recorded but formally contested by the un-retired
 `td1d`; it should be reconciled in the same supersession pass.
 
-**Manifestation into `nota-next` / `schema-next` `INTENT.md` is HELD** until the psyche
-confirms the supersession and the Spirit conflict is cleared — manifesting now would both
-overwrite the stale-but-un-retired prior text and publish a contested assignment.
+**Manifestation:** the `INTENT.md` text manifestation proceeds (the psyche authorized the
+overwrite) — removing `nota-next`'s stale "pipe = enum-like / struct-like declarations"
+text and stating the new direction (generics `(| |)`, traits/impls `{| |}`, struct/enum via
+positional `{}`/`[]`). The **Spirit-record cleanup** (superseding the `td1d` cluster,
+recording `{| |}`=traits, rewording `3742`, reconciling `j9du`) is **pending the daemon
+store fix**: `Supersede`/`Retire`/`Clarify` all use the rejected v9/v10 edit path, and
+`{| |}`=traits cannot be recorded until its contradictors are retired. The `INTENT.md`
+manifestation notes this so the file and the (temporarily un-reconciled) Spirit store don't
+read as a silent contradiction. Sequence to finish once the daemon is fixed:
+system-maintainer fixes the store → supersede the `td1d` cluster + reconcile `hh3z`/`j9du` →
+record `{| |}`=traits → reword `3742`.
