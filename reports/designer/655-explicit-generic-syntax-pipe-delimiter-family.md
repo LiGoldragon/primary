@@ -170,3 +170,57 @@ beside it). The deployed daemon rejected it with `sema: file written with v9, th
 expects v10`; `Record`/`Lookup`/`Observe` work, only the in-place edit path hit the
 store-version skew. Flagged for system-maintainer / operator; `3742` cannot be reworded
 until the daemon store is fixed.
+
+## STOP at the manifestation gate — the pipe delimiters had a prior assignment
+
+Manifesting into the repos' `INTENT.md` was halted: a broader Spirit query (`ContainsText
+pipe`) surfaced a cluster of **prior records that already assign the pipe delimiters — to
+struct/enum *declarations*, not generics/traits.** This is the contradiction the guardian
+caught when it rejected `{| |}`=traits. The initial review leaned on `j9du`
+("reserved, no assigned meaning") and did not search the full pipe-delimiter history; this
+is that gap, caught at the right gate (before overwriting).
+
+| Record | Kind / certainty | What it says about the pipe delimiters |
+|---|---|---|
+| `td1d` | Decision / Low | **pipe-brace declares a struct** (first item names the type, rest fields); **pipe-paren declares an enum** (first item names the type, rest variants) |
+| `010y` | Clarification / Low | pipe forms may become built-in declaration delimiters — brace-pipe struct, pipe-paren enum |
+| `1rci` | Clarification / Medium | pipe-brace is a one-off named struct wrapper (first object names the struct type, rest is the field body) |
+| `7m84` | Decision / Medium | authored schema declarations should use pipe-family forms for struct and enum |
+| `f743` | Decision / Medium | schema declarations live in pipe-family forms for struct, enum, newtype |
+| `nbvg` | Clarification / Low | pipe-declaration struct/enum forms allow nested shapes |
+| `own9` | **Correction / High** | the **legacy pipe declaration forms are transitional and being replaced by the positional form** (`{…}` struct bodies, `[…]` enum/variant lists) — per psyche 2026-06-06 |
+| `j9du` | Principle / Low | pipe-paren / pipe-brace "carry no assigned meaning, reserved as extension points" |
+| `3qjw` | Decision / Medium | pipe-text `[\| … \|]` = multiline string (no conflict — consistent with our use) |
+| `hh3z` | Decision (this session) | pipe-paren `(\| … \|)` = **generics** — contradicts `td1d`'s pipe-paren=enum |
+
+**The reconciling fact is `own9` (High):** it already *vacated* the pipe-struct/enum
+declaration forms in favor of the positional `{…}`/`[…]` forms the schema uses today. So
+the pipe delimiters are, by `own9`, freed — which is exactly why reassigning them to
+generics/traits is *coherent*. But the older `td1d`/`010y`/`1rci`/`7m84`/`f743`/`nbvg`
+records were never formally retired, so they still sit in Spirit contradicting the new
+assignment (and `nota-next/INTENT.md` lines 24-27 still carry the stale "pipe = enum-like /
+struct-like declarations" text). `j9du` ("no assigned meaning") is itself already in tension
+with `td1d` — the store was internally inconsistent before this session.
+
+### The decision this forces (psyche)
+
+Reassign the now-freed pipe delimiters to generics (`(| |)`, `hh3z`) and traits/impls
+(`{| |}`), **superseding** the legacy pipe-struct/enum intent (`td1d` and the cluster) —
+which `own9` already started. This is the recommended path: `own9` (High) outranks the
+older low/medium-certainty cluster and already moved struct/enum to the positional form,
+leaving the pipe forms genuinely free. The alternative is to keep pipe = struct/enum and
+find a *different* marker for generics/traits — but that re-opens a question `own9` looks
+to have closed.
+
+### Blocker chain (all gated on the daemon store fix)
+
+Resolving this needs `Supersede`/`Retire`/`Clarify` on the stale records, re-recording
+`{| |}`=traits once the contradictors are gone, and rewording `3742` — **all of which use
+the Spirit edit/supersede path the daemon currently rejects** (`v9` vs `v10` store skew).
+So the cleanup cannot land until system-maintainer fixes the spirit daemon store.
+Meanwhile `hh3z` ((| |)=generics) is recorded but formally contested by the un-retired
+`td1d`; it should be reconciled in the same supersession pass.
+
+**Manifestation into `nota-next` / `schema-next` `INTENT.md` is HELD** until the psyche
+confirms the supersession and the Spirit conflict is cleared — manifesting now would both
+overwrite the stale-but-un-retired prior text and publish a contested assignment.
