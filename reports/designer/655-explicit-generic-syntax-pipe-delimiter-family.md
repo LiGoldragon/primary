@@ -232,3 +232,28 @@ manifestation notes this so the file and the (temporarily un-reconciled) Spirit 
 read as a silent contradiction. Sequence to finish once the daemon is fixed:
 system-maintainer fixes the store → supersede the `td1d` cluster + reconcile `hh3z`/`j9du` →
 record `{| |}`=traits → reword `3742`.
+
+## Spirit cleanup — DONE (daemon fixed)
+
+The daemon store skew is fixed (verified live). The pipe-delimiter intent is now fully
+reconciled in Spirit, losslessly:
+
+| Record | Disposition | Outcome |
+|---|---|---|
+| `3742` (explicit-kind) | **Clarified** | "plus name resolution" clause dropped; defect is the declaration form only |
+| `td1d` (pipe-brace=struct, pipe-paren=enum) | **Retired** | pure deprecated; no survivor |
+| `010y` (pipe decl candidates) | **Retired** | exploratory; braces-are-maps survivor preserved in clarified `1rci` |
+| `nbvg` (pipe decl nesting/field-naming) | **Retired** | field-naming survives in `ov30`/`adnn`; nesting folds into positional design |
+| `1rci` (braces=maps + pipe-brace=struct-wrapper) | **Clarified** | dropped pipe-brace-wrapper clause; **kept** braces-are-the-native-map |
+| `f743` (schema-owns-decls + pipe-family forms) | **Clarified** | dropped pipe-family clause; **kept** schema-owns-declarations + positional |
+| `7m84` (assembled-NOTA + pipe-family forms) | **Superseded → `n1px`** | `Clarify` was `ClarifyTramples` (meaning change); `Supersede` retired+replaced with the positional-forms decision, survivors kept |
+| `j9du` (pipe points "no assigned meaning, reserved") | **Left as-is** | not wrong — it reserved the points "for schema to define"; `hh3z`/`bpyu` *are* that definition. Realized, not contradicted |
+
+**New active assignment in Spirit:** pipe-text `[\| \|]` = strings (`3qjw`); pipe-parenthesis
+`(\| \|)` = **generics** (`hh3z`); pipe-brace `{\| \|}` = **traits/impls** (`bpyu`, recorded
+this pass). `3742` (kind explicit on the form) underpins all three.
+
+Guardian lessons from the pass (worth keeping): a `Clarify` that *drops* a claim without
+naming its replacement draws `ClarifyLosesMeaning`; a `Clarify` that *reverses* a record's
+core decision draws `ClarifyTramples` — that case needs `Supersede` (retire + replacement),
+not `Clarify`. `Clarify` is for wording refinement where the meaning survives.
