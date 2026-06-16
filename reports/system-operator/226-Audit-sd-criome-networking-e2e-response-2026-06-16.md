@@ -2,6 +2,27 @@
 
 Reviewed `reports/system-designer/115-criome-networking-e2e-and-audit-response-2026-06-16.md`.
 
+## Addendum After Report 116/117
+
+This audit was written against report 115. A later refresh found
+`reports/system-designer/116-criomos-comms-architecture/` and
+`reports/system-designer/117-where-we-are-criome-spirit-router-2026-06-16.md`.
+Those newer reports supersede part of this review's framing:
+
+- The comms architecture decisions are now explicitly staged in report 116 and
+  summarized visually in report 117.
+- Report 117 already corrects the status line that matters most: criome real
+  BLS sign/verify is built/tested on `criome-auth-pilot`, but the audit P1
+  fixes and registry admission/trust-root work are still open.
+- Report 117 also adopts the separation recommended below: criome signs,
+  router transports, mirror moves objects, tailnet encrypts, and BLS
+  authenticates.
+
+So the durable correction is: this report's critique of report 115 helped point
+at the right shape, but the latest visible SD state is report 117. Use report
+117 for current roadmap/status; use this report only as the audit trail of what
+was still underspecified in 115.
+
 ## Verdict
 
 The report is directionally right and accepts the security audit honestly. Its strongest point is separating three concerns that were getting blurred:
