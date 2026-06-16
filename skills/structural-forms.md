@@ -75,14 +75,60 @@ type or a collection]. This is the [newtype per domain value] rule
 type-level enforcement is aspirational; the principle guides design now. (Report
 `639`.)
 
-## Streams and families are NOT structs
+## Streams and families are positional special forms, not structs
 
-A `(Stream { token T opened S … })` or `(Family { record E table t key K })` is
-**not** a positional struct — it is a *closed typed record* with a fixed, closed
-set of keyword-selected slots holding **heterogeneous** values (a family's
-`record` is a type, `table` is a name literal, `key` is a `FamilyKey` enum). The
-keyword form is correct here, not a migration gap; the positional struct rule
-does not apply and these must not be "positionalized". (Report `645`.)
+Streams and families are **not structs**: they are closed typed records
+with fixed heterogeneous slots. The positional struct rule (`FieldName`
+derived from type, dot differentiator for named fields) does not apply.
+
+They still use structural positional syntax of their own. The reader
+resolves the slots by declared position, not by type identity. Repeated
+types are therefore legal when the slots differ by role:
+
+```nota
+RecordsFamily (Family StoredRecord records Domain)
+IntentEventStream (Stream SubscriptionToken SubscriptionStarted IntentEvent SubscriptionToken)
+```
+
+For `Family`, slot 1 is the record type, slot 2 is the lowercase table
+literal, and slot 3 is the key kind. For `Stream`, the open and close
+tokens are distinct slots even when both have the same concrete type.
+Splitting them into `OpenToken` / `CloseToken` newtypes is an optional
+later strictness improvement, not a gate for the positional form.
+(Reports `645`, `647`, `649`.)
+
+## Pipe delimiters: generics and traits/impls
+
+The pipe delimiter family is assigned as schema-level structural syntax:
+
+```nota
+[| text |]             ;; bracket-safe / multiline string
+Name (| [T] body |)    ;; generic declaration; params scope the nested body
+{| Trait Target |}     ;; trait/impl structural form, simplest marker shape
+```
+
+Generic **use** stays ordinary application: `(Head Arg ...)`. A use site
+does not take `{| |}` just to say it is generic; the declaration makes
+`Head` a known generic, the same way built-in `(Vector T)` is understood.
+This keeps `{| |}` assigned to traits/impls.
+
+An impl is one pipe-brace object, never a map key/value split. Anything
+scoped by binders must live inside the same structural object. The
+matcher may structurally sugar the optional ends:
+
+```nota
+{| Trait Target |}                    ;; marker impl, non-generic
+{| [T] Trait (Target T) |}             ;; marker impl, generic
+{| Trait Target [ (deref ...) ] |}     ;; method-bearing impl, non-generic
+{| [T] Trait (Target T) [ (f ...) ] |} ;; method-bearing impl, generic
+```
+
+The leading parameter list is optional and recognized by square-bracket
+shape before the trait. The trailing body list is optional and recognized
+after the target. A marker trait may have no body. A method-bearing impl
+must carry its function bodies as data; there is no ad hoc `method`
+keyword. Function/signature forms are their own construct and should be
+designed explicitly when that layer is implemented.
 
 ## The self-host boundary
 
@@ -98,7 +144,8 @@ seam is shape↔meaning boundary, not debt. (Reports `631`, `635`.)
 ## See also
 
 - Concept + naming: `reports/designer/627`. Dimensional principle:
-  `639`. Positional syntax: `640`/`643`. Streams/families: `645`.
+  `639`. Positional syntax: `640`/`643`. Streams/families: `645`/`649`.
+  Generic and pipe-delimiter assignment: `655`/`658`.
 - Intents: `7c71` `2zed` `my86` `wqdi` (thesis); `ov30` (dimensional principle);
   `adnn` (positional syntax).
 - `skills/abstractions.md` (newtype-per-role endpoint), `skills/nota-design.md`

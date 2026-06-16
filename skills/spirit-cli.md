@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.12.0`, installed in the
+schema-derived `spirit` component at version `0.13.0`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -49,15 +49,17 @@ configuration. Inspect the active wrapper with
 
 The active implementation is `/git/github.com/LiGoldragon/spirit`, with
 generated Signal/Nexus/SEMA types under `src/schema/`. `signal-spirit`
-still provides the binary daemon startup configuration type and remains
-an active dependency. Do not infer the wire shape from old
-`persona-spirit` documents — read the deployed `spirit` source pinned by
-`CriomOS-home/flake.lock`.
+provides the working signal contract, including `RecordRequest`, `Query`,
+maintenance inputs, `Version`, and `Marker`. Do not infer the wire shape
+from old `persona-spirit` documents — read the deployed `spirit` and
+`signal-spirit` sources pinned by `CriomOS-home/flake.lock`.
 
 ```sh
 rg -n '"spirit"' /git/github.com/LiGoldragon/CriomOS-home/flake.lock
 cd /git/github.com/LiGoldragon/spirit
-rg -n "Entry \\{|RecordRequest \\{|Justification \\{|Query \\{|RecordSelection \\{|pub enum Input|pub struct VersionReport" schema src/schema
+rg -n "Entry \\{|RecordRequest \\{|Justification \\{|Query \\{|RecordSelection \\{|pub enum Input|pub struct VersionReport|CollectRemovalCandidates|Marker" schema src/schema
+cd /git/github.com/LiGoldragon/signal-spirit
+rg -n "RecordRequest \\{|Query \\{|RecordSelection \\{|RemovalCandidateCollection \\{|pub enum Input|pub enum Output|VersionReport|DatabaseMarker" schema src/schema
 ```
 
 ## Encoding rules
@@ -80,7 +82,7 @@ a certainty `Magnitude`, an importance `Magnitude`, a privacy
 `Magnitude`, and a vector of `Referents` — in that order. No verbatim
 field on `Entry` and **no time field at all**.
 
-`Justification` is the court model (0.12.0):
+`Justification` is the court model:
 `Justification { Testimony * Reasoning * }` where `Testimony` is a
 vector of `VerbatimQuote { QuoteText * antecedent (Optional Antecedent) }`
 and `Reasoning` is the agent's argued case. `QuoteText` must be the
@@ -103,8 +105,8 @@ spirit "(Record (([<Domain> ...] <Kind> [description] <Certainty> <Importance> <
 # Privacy    uses the same Magnitude ladder; Zero is open/public.
 ```
 
-**Guardian discipline at 0.12.0.** The agent guardian judges every
-working-socket write and rejects with one typed reason from the deployed
+**Guardian discipline.** The agent guardian judges every working-socket
+write and rejects with one typed reason from the deployed
 `GuardianRejectionReason` enum. The prompt is stored in
 `/git/github.com/LiGoldragon/spirit/src/guardian-prompts/` and enforces
 an ordered checklist: testimony/authenticity, warrant, durable-intent
@@ -115,17 +117,20 @@ certainty outruns the quote's modal strength, `ImportanceUnsupported`
 when an elevated importance rung lacks recurrence or blast-radius
 evidence, and `NonIntent` when a submission is task state rather than a
 durable arrow. Rejection replies include the supporting record set and
-can be very large; pipe through `head` when exploring. 0.12.0 also
-carries `Propose`, `Clarify`, `Supersede`, and `Retire` operations. Use
-them for maintenance. In particular, a psyche clarification of an
-existing intent is a `Clarify` or `Supersede`, not a new `Record` whose
-description starts with "clarification".
+can be very large; pipe through `head` when exploring. The deployed
+contract carries `Propose`, `Clarify`, `Supersede`, `Retire`, `Remove`,
+`ChangeCertainty`, `BumpImportance`, `ChangeRecord`, and
+`CollectRemovalCandidates` maintenance operations. Use them for
+maintenance. In particular, a psyche clarification of an existing intent
+is a `Clarify` or `Supersede`, not a new `Record` whose description
+starts with "clarification".
 
 Domains are closed taxonomy variants such as
 `(Information Documentation)`, `(Safety Privacy)`,
-`(Technology (Software (Engineering SoftwareArchitecture)))`, or
-`(Technology (Software (Quality Testing)))`. Read `spirit`'s deployed
-`schema/signal.schema` for the full list when a domain is unclear.
+`(Technology (Software (Engineering Architecture)))`, or
+`(Technology (Software (Quality Testing)))`. Read `signal-spirit`'s
+deployed `schema/domain.schema` for the full list when a domain is
+unclear.
 Narrow free words belong in the description where keyword/text search
 can find them. **Named particulars go in `Referents` — populate them.**
 Every named thing a record is about — `spirit`, `sema-engine`, `nota`,
@@ -143,7 +148,7 @@ is a referent (domains are universal subjects). Concrete example, with
 the named particulars in the trailing referent vector:
 
 ```sh
-spirit "(Record (([(Technology (Software (Engineering SoftwareArchitecture)))] Constraint [the sema-engine is the exclusive interface to the database] High Minimum Zero [sema-engine spirit]) ([([the engine is the only thing that opens the database] None)] [exclusive-DB rule; tags the named particulars it constrains])))"
+spirit "(Record (([(Technology (Software (Engineering Architecture)))] Constraint [the sema-engine is the exclusive interface to the database] High Minimum Zero [sema-engine spirit]) ([([the engine is the only thing that opens the database] None)] [exclusive-DB rule; tags the named particulars it constrains])))"
 ```
 
 Higher privacy values narrow the audience; `Zero` is the workspace
@@ -164,6 +169,7 @@ calls use the heads present in the deployed contract.
 spirit "(Remove (abcd ([([psyche authorization quote] None)] [reasoning])))"  # -> (RecordRemoved (abcd))
 spirit "(ChangeCertainty (abcd Zero))"    # -> (CertaintyChanged (abcd Zero))
 spirit "(BumpImportance abcd)"            # -> (ImportanceBumped (abcd <importance>))
+spirit "(ChangeRecord (abcd (<replacement Entry> <Justification>)))"
 ```
 
 ## Clarifying, superseding, and resolving records
@@ -193,12 +199,16 @@ spirit "(Retire (abcd ([([verbatim psyche retirement] None)] [reasoning for reti
 ```
 
 `ResolveClarification` is the name for the missing first-class operation
-that should atomically fold a mistaken standalone clarification record
-into the records it clarified, then remove or retire that standalone
-clarification. Until that operation exists, do it as one manual
-maintenance pass: lookup the bad clarification, find all clarified
-targets, apply `Clarify`/`Supersede` to those targets, then remove or
-retire the bad clarification after preserving its text in the pass notes.
+that should atomically fold a mistaken standalone `Kind::Clarification`
+record into the records it clarified, then remove or retire that
+standalone clarification. It is **not** in the deployed contract yet:
+`signal-spirit` has no `ResolveClarification` input or receipt. Until
+that operation exists, do it as one manual maintenance pass: look up the
+bad clarification, find all clarified targets, apply `Clarify`,
+`Supersede`, or `ChangeRecord` to those targets, then `Remove` or
+`Retire` the bad clarification after preserving its text in the pass
+notes. Do not leave a standalone clarification record active beside the
+records it edits.
 
 `Remove` deletes a record entirely — use it when nothing should remain
 in the active store. Setting certainty to `Zero` is the **recoverable**

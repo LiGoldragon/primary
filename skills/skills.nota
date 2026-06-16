@@ -29,7 +29,7 @@
   (Architecture component-triad skills/component-triad.md Apex
     [Daemon + thin CLI + signal-* contract. Signal/Nexus/SEMA runtime triad and async mail flow.])
   (Architecture structural-forms skills/structural-forms.md Apex
-    [A language is a set of structural macros kept as data; grammar is a type, match by shape. The StructuralMacroNode derive shape vocabulary; positional schema struct syntax with the key.TypeReference differentiator; the dimensional principle (role is type, no two same-type fields, repetition is a keyed collection, newtype-per-role); streams and families are closed typed records, not structs.])
+    [A language is a set of structural macros kept as data; grammar is a type, match by shape. The StructuralMacroNode derive shape vocabulary; positional schema struct syntax with the key.TypeReference differentiator; pipe-parenthesis generics and pipe-brace traits/impls; the dimensional principle (role is type, no two same-type fields, repetition is a keyed collection, newtype-per-role); streams and families are positional special forms, not structs.])
   (Architecture contract-repo skills/contract-repo.md Topic
     [Wire-contract crate discipline. Six-verb spine; signal_channel! macro; layered-effect pattern.])
   (Architecture micro-components skills/micro-components.md Topic
@@ -135,7 +135,7 @@
   (Meta intent-log skills/intent-log.md Topic
     [Record explicit psyche intent through Spirit. Psyche-facing agents keep this fresh before Spirit use; tentative wording is no-capture or ask. Clarifications and corrections target existing records through edit operations rather than additive duplicate Records. Five-kind positional NOTA with closed Domains, certainty, importance, privacy, referents, and justification.])
   (Meta spirit-cli skills/spirit-cli.md Topic
-    [How to invoke the deployed Spirit CLI. Live v0.9.5 RecordRequest shape, bare-string canonicality, recursive Domain records, separate certainty and importance, eight-field query shape, justifications, privacy, inline NOTA vs file-path argument, and deployed-source verification.])
+    [How to invoke the deployed Spirit 0.13.0 CLI. RecordRequest shape, maintenance operations, missing ResolveClarification protocol, bare-string canonicality, recursive Domain records, separate certainty and importance, eight-field query shape, justifications, privacy, inline NOTA vs file-path argument, and deployed-source verification.])
   (Meta intent-maintenance skills/intent-maintenance.md Mechanism
     [Sweep the Spirit intent log. Clarification is an edit of an existing target, not another active Record; ResolveClarification folds a mistaken standalone clarification into its clarified targets, then removes or retires the standalone clarification. Supersession protocol; verification against current state; legacy intent files are history.])
   (Meta intent-clarification skills/intent-clarification.md Topic

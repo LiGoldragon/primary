@@ -53,7 +53,9 @@ Outcomes:
   deployed edit operation (`Clarify`, `Supersede`, `Retire`,
   `ChangeRecord`, `ChangeCertainty`, or `Remove`), then update the
   manifested docs. Do not mint a second `Record` whose job is to explain
-  the first.
+  the first. If such a standalone `Kind::Clarification` already exists,
+  resolve it as maintenance: fold its meaning into the target record or
+  records, then remove or retire the standalone clarification.
 - **Record** — explicit durable psyche intent passes the gate.
 
 No-capture is normal. Understatement is recoverable; over-extension
@@ -93,7 +95,9 @@ recordable:
 - `Clarification` — "when I said X, I meant Y"; find the existing
   record or context and clarify that target. A clarification is an edit
   path, not permission to add another active record that future readers
-  must reconcile with the original.
+  must reconcile with the original. A fresh `Record` with
+  `Kind::Clarification` is a last resort only when there is genuinely no
+  identifiable target; ordinary clarification means edit.
 - `Constraint` — "never do Z".
 
 A task instruction may contain a durable statement: "rename
