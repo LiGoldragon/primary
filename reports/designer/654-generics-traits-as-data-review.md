@@ -235,9 +235,14 @@ that is not acceptable.** Verified in the source, not the survey:
   `TypeReference::Application { head, arguments }` (`schema.rs:1431-1463`).
 - So `(Foo A B)` is **byte-for-byte the same form** whether it is a generic *declaration
   head* (introducing binders `A`, `B`) or a generic *application* (applying `Foo` to
-  `A`, `B`). The only thing that tells them apart is **which slot** it sits in; at a use
-  site `(Work …)` only resolves because the closure walk looks the name up
-  (`identity.rs:411-416`). That is position + name-resolution — inference, not a marker.
+  `A`, `B`). The only thing that tells them apart is **which slot** it sits in — the form
+  `(Foo A B)` never says "I introduce binders." That slot-by-convention recognition **at
+  the declaration** is the implicit part.
+- The defect is the *declaration*, not the use site. Resolving a use `(Work …)` against an
+  explicit declaration (`identity.rs:411-416`) is deterministic lookup — exactly how
+  `Vector`/`Map` are known — **not** guessing. The marker is needed only where a generic is
+  *introduced*; once a declaration states its kind, applications stay bare `(Work A B)` and
+  resolve by name, which is principled. This narrows the fix to the declaration form alone.
 
 Per Spirit `3742` (Principle, High): [A type's kind must be explicitly marked in the
 syntax, never inferred from position or guessed. A parameterized type must be declared as
