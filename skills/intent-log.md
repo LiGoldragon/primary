@@ -186,7 +186,7 @@ an `Entry` plus a `Justification`:
   `Importance`, and `Privacy` are bare PascalCase enum variants.
 - Domains are closed taxonomy values such as
   `(Information Documentation)`, `(Safety Privacy)`, and
-  `(Technology (Software (Engineering SoftwareArchitecture)))`.
+  `(Technology (Software (Engineering Architecture)))`.
 - `Entry` has no omission/default syntax. Spell all seven fields.
 - `Justification` (0.11.0 court model) is testimony plus reasoning: a
   vector of `VerbatimQuote` values — each the psyche's **verbatim words**
@@ -309,7 +309,7 @@ Production Spirit uses three retrieval layers:
   more coarse domains that genuinely fit the intent. Use
   `(Information Documentation)` for documentation/skill/report guidance,
   `(Technology (Software (Quality Testing)))` for testing discipline,
-  `(Technology (Software (Engineering SoftwareArchitecture)))` for system
+  `(Technology (Software (Engineering Architecture)))` for system
   design, `(Technology (Software (Data SchemaEvolution)))` for schema
   evolution, `(Safety Privacy)` for privacy boundaries, and
   `(Technology (Software (Intelligence AgentSystems)))` for agent/LLM

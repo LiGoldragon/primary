@@ -169,7 +169,7 @@ calls use the heads present in the deployed contract.
 spirit "(Remove (abcd ([([psyche authorization quote] None)] [reasoning])))"  # -> (RecordRemoved (abcd))
 spirit "(ChangeCertainty (abcd Zero))"    # -> (CertaintyChanged (abcd Zero))
 spirit "(BumpImportance abcd)"            # -> (ImportanceBumped (abcd <importance>))
-spirit "(ChangeRecord (abcd (<replacement Entry> <Justification>)))"
+spirit "(ChangeRecord (abcd ([<Domain> ...] <Kind> [replacement description] <Certainty> <Importance> <Privacy> [<referent> ...]) ([([verbatim psyche edit] (Some [target record being edited]))] [reasoning])))"
 ```
 
 ## Clarifying, superseding, and resolving records
@@ -298,6 +298,28 @@ Database markers are not part of ordinary replies. Use the explicit
 ```sh
 spirit Marker      # -> (MarkerReported (<commit-sequence> <state-digest>))
 ```
+
+## Rendering public intent snapshots
+
+Spirit main contains a companion binary, `spirit-render`, that renders a
+public intent snapshot for one or more referents. It is a source-backed
+client, not guaranteed to be installed in every user profile yet; if
+`command -v spirit-render` fails, run it from the Spirit checkout with
+the repo's normal Cargo/Nix surface.
+
+The request is a single NOTA record:
+
+```sh
+spirit-render "(Render ([spirit schema] None))"
+spirit-render "(Render ([spirit] (Some [/tmp/spirit-intent])))"
+```
+
+It queries `Privacy Zero`, `Certainty >= Minimum`, any domain/kind, and
+`AnyReferent` over the named referents; it writes `spirit.nota` in the
+current directory or requested output directory and prints the output
+path. The generated file carries the Spirit marker, generator version,
+timestamp, privacy/certainty filters, and the observed records. Treat it
+as a generated snapshot, not a replacement for the live Spirit store.
 
 ## Certainty and importance
 
