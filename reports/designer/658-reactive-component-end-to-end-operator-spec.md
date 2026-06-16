@@ -165,10 +165,13 @@ existing concrete-enum emitters (constructors / `From` / accessors / wire derive
 expanded enum has empty parameters so the parameterized-decl suppression guards don't fire.
 The remaining surface work:
 
-1. **`(| … |)` declare parser arm** — extend `DeclarationHead::from_block` (schema.rs:1381)
-   with a `PipeParenthesis` case: `child[0]` = the `[params]` vector, `child[1]` = the body,
-   whose own delimiter (`[…]`/`{…}`) selects enum/struct. Lowers to the same parameterized
-   `Declaration` the bare-paren form produces, so everything downstream is unchanged.
+1. **`(| … |)` declare arm** — handle a declaration *value* that is a `(| [params] body |)`
+   pipe-paren block (the value-lowering path in `source.rs` namespace-entry handling — *not*
+   the head; the name is the namespace key). `child[0]` = the `[params]` vector → the
+   declaration's parameters; `child[1]` = the body, whose delimiter (`[…]`/`{…}`) selects
+   enum/struct. Params and body live together inside the `(| |)` so the binders scope the body
+   structurally (`655`). Lowers to the same parameterized `Declaration` the bare-paren
+   `(Name P…)` head form produces, so everything downstream (expansion) is unchanged.
 2. **Generic *use* form** — per the §1 fork: either keep `(Head Arg…)` (no work) or add the
    `{| … |}` use delimiter + lower it to a `TypeReference::Application`.
 3. **Expansion at applied-root lowering** — land the prototype (`656`): promote `FrameExpansion`
