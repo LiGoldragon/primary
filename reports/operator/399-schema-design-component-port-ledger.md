@@ -79,6 +79,8 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `signal-repository-ledger` | `7254e4ae` | Hand-written ordinary contract lock refreshed to current `nota-next`; no schema artifact yet. Pushed to GitHub after discovering local `origin` was Gitolite while downstream Cargo resolves GitHub. | `cargo fmt -- --check`, `cargo test`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
 | `meta-signal-repository-ledger` | `114c0e88` | Hand-written meta contract lock refreshed to current `nota-next` and `signal-repository-ledger` `7254e4ae`. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
 | `repository-ledger` | `04c07eb2` | Runtime lock refreshed to the new ordinary/meta repository-ledger contracts and current schema-rust stack; regeneration produced no checked-in daemon schema diff. | `REPOSITORY_LEDGER_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
+| `signal-version-handover` | `006761df` | Hand-written private handover contract refreshed to current `nota-next` and `signal-frame`; added explicit `nota-text` feature passthrough and Nix checks so the round-trip suite is exercised instead of silently skipped. | `cargo fmt -- --check`, `cargo test`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including `test-nota-text` and `clippy-nota-text`. |
+| `meta-signal-version-handover` | `e37e1fa8` | Meta handover contract lock refreshed to current `nota-next` / `version-projection`; canonical NOTA examples and tests updated from legacy bracket strings to bare atoms. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` with default and `test-round-trip` checks. |
 
 ## Test Hygiene Found
 
@@ -102,9 +104,20 @@ zero tests:
   `origin` set to Gitolite while downstream Cargo dependencies resolve GitHub.
   I pushed `7254e4ae` to the `github` remote as well before updating the meta
   and runtime locks.
+- `signal-version-handover`: current `signal-frame` requires the destination
+  crate to expose the `nota-text` feature and the dependency feature
+  `signal-frame/nota-text`. Without explicit feature passthrough, all-feature
+  contract tests fail; with `required-features` alone, Nix would skip the test.
+  The repo now has explicit `test-nota-text` and `clippy-nota-text` checks.
+- `meta-signal-version-handover`: canonical NOTA witnesses still expected
+  bracketed strings for bare-eligible version labels and socket paths. Current
+  NOTA correctly emits bare atoms, so the witnesses were updated.
 
 ## Next Queue
 
 Continue from the active-repository map, one component family at a time:
 
-1. `signal-version-handover` / `meta-signal-version-handover`.
+1. `version-projection`.
+2. Foundational active libraries still not covered by this ledger:
+   `signal-frame`, `signal-sema`, `sema`, `sema-engine`, `triad-runtime`, and
+   `signal`.
