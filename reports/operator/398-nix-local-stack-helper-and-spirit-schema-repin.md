@@ -2,19 +2,19 @@
 
 ## Result
 
-The repeated long-form Nix override command is now captured as
-`tools/nix-local-stack`. It reads a target flake's `*-source` inputs and adds
-ephemeral `--override-input <name> path:/git/github.com/LiGoldragon/<repo>`
-arguments for matching local checkouts.
+The repeated long-form Nix override command is captured as
+`tools/nix-local-stack`. The helper now reads a target flake's `*-source`
+inputs and adds ephemeral remote
+`--override-input <name> github:LiGoldragon/<repo>?ref=<ref>` arguments.
 
 The common Spirit command becomes:
 
 ```sh
-tools/nix-local-stack build --target path:/git/github.com/LiGoldragon/spirit#default
+tools/nix-local-stack build --target github:LiGoldragon/spirit#default
 ```
 
-The helper is documented in `skills/nix-discipline.md` under multi-repo local
-stack checks.
+The helper is documented in `skills/nix-discipline.md` under multi-repo remote
+stack checks. Local `path:` and `git+file:` flake refs are forbidden.
 
 ## Mainline integration landed
 
@@ -75,15 +75,15 @@ Rust and Nix gates run during the landing:
 The helper itself was exercised against Spirit:
 
 ```sh
-tools/nix-local-stack build --target path:/git/github.com/LiGoldragon/spirit#default
+tools/nix-local-stack build --target github:LiGoldragon/spirit#default
 ```
 
-That produced `/nix/store/pa1hznf4hv1px7l08dya2ds8w4nz1az6-spirit`. The
-ignored daemon/CLI process-boundary suite passed against that package:
+That produced a `spirit` package output. The ignored daemon/CLI
+process-boundary suite passed against that package:
 
 ```sh
-SPIRIT_NIX_BUILD_RESULT=/nix/store/pa1hznf4hv1px7l08dya2ds8w4nz1az6-spirit \
-  cargo test --features nota-text --test nix_integration -- --ignored
+SPIRIT_NIX_BUILD_RESULT="$spirit_result" cargo test --features nota-text \
+  --test nix_integration -- --ignored
 ```
 
 Result: 9 passed.
@@ -93,11 +93,11 @@ passed:
 
 ```sh
 nix build --builders '' --log-format bar-with-logs --print-out-paths --no-link \
-  path:/git/github.com/LiGoldragon/spirit#default
+  github:LiGoldragon/spirit#default
 ```
 
-That produced `/nix/store/a3hznhwds2yqn9i9nr0dby7vs8m6ci6p-spirit`; the same
-ignored daemon/CLI process-boundary suite passed against it. Result: 9 passed.
+That produced a `spirit` package output; the same ignored daemon/CLI
+process-boundary suite passed against it. Result: 9 passed.
 
 ## Boundaries
 
