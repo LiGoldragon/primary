@@ -6,7 +6,7 @@ The immediate user symptom is that dictation stays bound to the DJI hot virtual 
 
 Spirit capture: `1vj5` records the durable constraint that the CriomOS-home dictation microphone path should prefer reducing or deleting brittle DJI/PipeWire policy over adding more keepalive code.
 
-No code changed in this pass.
+No code changed in this pass. The new intent was manifested into `/git/github.com/LiGoldragon/CriomOS-home/INTENT.md` under Dictation.
 
 ## Current live state
 
@@ -78,6 +78,10 @@ The key criterion: a disconnected DJI mic must not make ordinary speech-to-text 
 ## Immediate operational note
 
 Changing the system default source alone is probably insufficient while the service wrapper exports `PIPEWIRE_NODE`. A durable fix needs a Home profile change and `whisrs.service` restart through activation. Do not restart PipeWire or WirePlumber as the primary fix; the problem is the declared binding, not a stuck daemon alone.
+
+## Coordination note
+
+`tools/orchestrate claim` could not run because the local helper tried to fetch an unavailable pinned `nota-codec` revision. I checked visible lock projections before editing; no lane projected a claim on `/git/github.com/LiGoldragon/CriomOS-home/INTENT.md`. The report itself is exempt from claims.
 
 ## Open question for the psyche
 
