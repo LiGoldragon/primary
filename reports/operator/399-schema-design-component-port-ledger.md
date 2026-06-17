@@ -81,6 +81,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `repository-ledger` | `04c07eb2` | Runtime lock refreshed to the new ordinary/meta repository-ledger contracts and current schema-rust stack; regeneration produced no checked-in daemon schema diff. | `REPOSITORY_LEDGER_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
 | `signal-version-handover` | `006761df` | Hand-written private handover contract refreshed to current `nota-next` and `signal-frame`; added explicit `nota-text` feature passthrough and Nix checks so the round-trip suite is exercised instead of silently skipped. | `cargo fmt -- --check`, `cargo test`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including `test-nota-text` and `clippy-nota-text`. |
 | `meta-signal-version-handover` | `e37e1fa8` | Meta handover contract lock refreshed to current `nota-next` / `version-projection`; canonical NOTA examples and tests updated from legacy bracket strings to bare atoms. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` with default and `test-round-trip` checks. |
+| `version-projection` | `1a1eeab4` | Optional/dev NOTA text dependency refreshed to current `nota-next`; flake gained explicit `nota-text` test and clippy checks so the optional projection witnesses run in Nix. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including `test-nota-text` and `clippy-nota-text`. |
 
 ## Test Hygiene Found
 
@@ -112,12 +113,15 @@ zero tests:
 - `meta-signal-version-handover`: canonical NOTA witnesses still expected
   bracketed strings for bare-eligible version labels and socket paths. Current
   NOTA correctly emits bare atoms, so the witnesses were updated.
+- `version-projection`: the default Nix test intentionally excludes
+  `nota-next`, but the repo also owns optional text projection witnesses. The
+  full flake gate now runs both default binary-only tests and explicit
+  `nota-text` tests.
 
 ## Next Queue
 
 Continue from the active-repository map, one component family at a time:
 
-1. `version-projection`.
-2. Foundational active libraries still not covered by this ledger:
+1. Foundational active libraries still not covered by this ledger:
    `signal-frame`, `signal-sema`, `sema`, `sema-engine`, `triad-runtime`, and
    `signal`.
