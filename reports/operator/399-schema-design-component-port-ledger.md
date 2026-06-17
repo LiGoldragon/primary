@@ -86,6 +86,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `signal-sema` | `bdd7fe36` | Universal Sema vocabulary optional/dev NOTA dependency refreshed to current `nota-next`; pattern witnesses updated to bare-atom canonical strings; flake gained explicit `nota-text` test and clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering binary-only and `nota-text` suites. |
 | `sema` | none | No schema/NOTA/signal dependency surface and no lockfile movement needed; verified current main as the storage-kernel baseline. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including named kernel, no-legacy, doc, fmt, and clippy checks. |
 | `sema-engine` | `73eea24b` | Engine lock refreshed to `signal-frame` `e2eae5c2` and `signal-sema` `bdd7fe36`; fixed private intra-doc links that the Nix rustdoc gate caught under `-D warnings`. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `RUSTDOCFLAGS='-D warnings' cargo doc --no-deps`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including build, doc, dependency-boundary, engine, operation-log, subscription, fmt, and clippy checks. |
+| `triad-runtime` | `f46f66ee` | Runtime lock refreshed to `signal-frame` `e2eae5c2` and current `nota-next`; flake gained fmt and explicit `nota-text` test checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default runtime tests, `nota-text` reaction tests, fmt, and all-feature clippy. |
 
 ## Test Hygiene Found
 
@@ -140,7 +141,7 @@ zero tests:
 Continue from the active-repository map, one component family at a time:
 
 1. Foundational active libraries still not covered by this ledger:
-   `triad-runtime` and `signal`.
+   `signal`.
 2. Dependent lockfile sweep to move already-ported contracts from
    `signal-frame` `166bda84` to `e2eae5c2` after the support-library pass
    finishes.
