@@ -75,6 +75,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `signal-orchestrate` | `f223edf2` | Regenerated with latest schema stack; standard newtype impls emitted and schema contract tests updated to the current `Root::as_enum()` API. | `SIGNAL_ORCHESTRATE_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, cargo fmt/test/clippy, full Nix flake check. |
 | `meta-signal-orchestrate` | `6ee006ee` | Regenerated with latest schema stack and refreshed `signal-orchestrate`; schema contract tests updated to the current `Root::as_enum()` API. | `META_SIGNAL_ORCHESTRATE_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, cargo fmt/test/clippy, full Nix flake check. |
 | `mind` | `ae1e573f` | Lockfile refreshed to the new mind/orchestrate contract stack; regeneration produced no checked-in schema diff; stale Nix guard selector fixed to the live lockfile guard. | `MIND_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`, rerun after selector fix. |
+| `orchestrate` | `cf1c5255` | Lockfile refreshed to the new orchestrate contract stack; regeneration produced no checked-in schema diff; schema contract tests updated to the current `Root::as_enum()` API. | `ORCHESTRATE_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
 
 ## Test Hygiene Found
 
@@ -99,7 +100,6 @@ zero tests:
 
 Continue from the active-repository map, one component family at a time:
 
-1. `orchestrate`.
-2. `signal-repository-ledger` / `meta-signal-repository-ledger` /
+1. `signal-repository-ledger` / `meta-signal-repository-ledger` /
    `repository-ledger`.
-3. `signal-version-handover` / `meta-signal-version-handover`.
+2. `signal-version-handover` / `meta-signal-version-handover`.
