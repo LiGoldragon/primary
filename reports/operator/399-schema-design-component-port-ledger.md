@@ -62,8 +62,14 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `signal-terminal` | `e7150dd1` | Regenerated schema artifact; scalar newtypes gained standard impls. | Cargo build/test/clippy, full Nix flake check; 25 contract tests. |
 | `harness` | `469ededc` | Lockfile only after regeneration check; consumed refreshed harness and terminal contracts. | Cargo build/test/clippy, full Nix flake check; message-router-harness e2e, Pi RPC, subscription, daemon and smoke tests. |
 | `meta-signal-terminal` | `a2f0f9e8` | Lockfile only; consumed refreshed `signal-terminal`. | Cargo build/test/clippy, full Nix flake check; 6 terminal meta round-trip/head tests. |
-| `terminal-cell` | `daeb3500` | Lockfile only; regeneration produced no artifact diff. | Cargo build/test/clippy, full Nix flake check; 31 PTY/session/daemon tests. |
+| `terminal-cell` | `f6d6dd5e` | Lockfile refresh, then Nix package source filtering fixed to retain `schema/` for downstream consumers. | Cargo build/test/clippy, `nix flake check --builders '' -L`, `nix build .#default --builders '' -L --no-link --print-out-paths`. |
 | `terminal` | `8e45dfef` | Lockfile, regenerated `SocketPath::new` to accept `impl Into<String>`, fixed one stale Nix test selector. | Cargo build/test/clippy, full Nix flake check, plus targeted fixed selector check. |
+| `signal-persona` | `5953c8fc` | Persona working contract refreshed onto the latest schema stack. | Cargo build/test/clippy and Nix gate. |
+| `meta-signal-persona` | `a5fa2b0a` | Persona meta contract refreshed onto the latest schema stack. | Cargo build/test/clippy and Nix gate. |
+| `meta-signal-upgrade` | `9a9de8a1` | Upgrade meta contract refreshed. | Cargo build/test/clippy and Nix gate. |
+| `signal-upgrade` | `9cc8ac14` | Upgrade working contract refreshed. | Cargo build/test/clippy and Nix gate. |
+| `upgrade` | `2eda2c4c` | Upgrade runtime refreshed against the current schema and signal stack. | Cargo build/test/clippy and Nix gate. |
+| `persona` | `961133dc` | Topology flake moved from retired `persona-*` repos to active component repos, terminal-cell source packaging was fixed for Nix schema inputs, and prototype launchers were adjusted to fixture-backed binary-startup smoke while router/message stay real e2e daemons. | `cargo fmt`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, targeted terminal-cell/prototype/message-router Nix builds, full `nix flake check --builders '' -L`. |
 
 ## Test Hygiene Found
 
@@ -84,12 +90,8 @@ zero tests:
 
 Continue from the active-repository map, one component family at a time:
 
-1. `signal-persona` / `meta-signal-persona`, then dependent manager/runtime
-   repos.
-2. `signal-mind` / `meta-signal-mind` / `mind`.
-3. `signal-orchestrate` / `meta-signal-orchestrate` / `orchestrate`.
-4. `signal-repository-ledger` / `meta-signal-repository-ledger` /
+1. `signal-mind` / `meta-signal-mind` / `mind`.
+2. `signal-orchestrate` / `meta-signal-orchestrate` / `orchestrate`.
+3. `signal-repository-ledger` / `meta-signal-repository-ledger` /
    `repository-ledger`.
-5. `signal-version-handover` / `meta-signal-version-handover`,
-   `signal-upgrade` / `meta-signal-upgrade` / `upgrade`.
-
+4. `signal-version-handover` / `meta-signal-version-handover`.
