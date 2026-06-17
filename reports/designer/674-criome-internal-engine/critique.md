@@ -11,7 +11,7 @@ mandated to formalize**: the in-tree, already-compiled-and-tested policy POC
 
 - `criome/src/language.rs` (the `Contract` / `Rule` / `Threshold` / `TimedRule` /
   `TimeSwitch` / `AgreementRule` / `Evidence` / `Decision` tree + evaluator), and
-- `criome/schema/crayome.language.schema` (its concept-schema mirror),
+- `criome/schema/criome.language.schema` (its concept-schema mirror),
 
 which file `1-ground-criome-vocabulary.md` (gap-list item 1) names as exactly the
 artifact file 5 must lift into "the contract + SEMA + verbs." Findings are stated

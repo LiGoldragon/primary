@@ -5,7 +5,7 @@
 The psyche asked to develop **criome's internal language** — captured (after
 the Spirit gate superseded `niuj`) as Spirit `vhs2` (Decision, Medium):
 
-> [Crayome's internal language is a limited typed policy language over
+> [criome's internal language is a limited typed policy language over
 > public-key identity atoms - NOT a general-purpose virtual machine - drawing
 > its limited-operation discipline from the constrained VMs of Ethereum, Tezos,
 > and Solana. Public keys are the atomic unit of identity; above them it

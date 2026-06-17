@@ -10,9 +10,9 @@ design choice.
 ## The six governing Spirit records (descriptions quoted literally)
 
 **`vhs2`** (Decision, Medium) — domains Engineering Architecture / Security
-Authentication / Distributed ProtocolDesign; referents `criome Crayome Nexus`:
+Authentication / Distributed ProtocolDesign; referents `criome criome Nexus`:
 
-> [Crayome's internal language is a limited typed policy language over public-key
+> [criome's internal language is a limited typed policy language over public-key
 > identity atoms - NOT a general-purpose virtual machine - drawing its
 > limited-operation discipline from the constrained VMs of Ethereum, Tezos, and
 > Solana. Public keys are the atomic unit of identity; above them it composes

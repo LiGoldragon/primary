@@ -5,7 +5,7 @@ internal-engine design (`5`/`6`/`7`) extends it rather than reinventing it.
 All paths are real; all type names are copied from source. The headline:
 criome already has the identity model, the wire verbs, the SEMA families, and
 — crucially — a **started** policy-language POC (`src/language.rs` +
-`schema/crayome.language.schema`) plus a **started** cluster-root admission
+`schema/criome.language.schema`) plus a **started** cluster-root admission
 gate (`src/admission.rs`). The new vocabulary must converge on those two, not
 start clean.*
 
@@ -213,7 +213,7 @@ NOTA instances are **positional**, head then fields in declared order
 ```
 
 **The already-started policy language** uses a slightly different *concept-
-schema* dialect (`criome/schema/crayome.language.schema`): leading `[] []`
+schema* dialect (`criome/schema/criome.language.schema`): leading `[] []`
 empty root vectors then the type block, with rule variants written as
 `(Variant Payload)` inside a `Rule [...]` enum. The Rust mirror is
 `criome/src/language.rs` and is the design-pressure POC the new work converges
@@ -279,14 +279,14 @@ tests in `criome/tests/language.rs` exercise each. It imports from
 5. **Meta verb for policy mutation.** `meta-signal-criome` has only `Configure`;
    defining/amending a contract is a meta-class operation with no verb yet.
 6. **Naming/dialect reconciliation.** The POC uses `IdentityHandle`/`KeyAtom`/
-   `Moment` wrappers and the spelling **Crayome** in the schema header while the
+   `Moment` wrappers and the spelling **criome** in the schema header while the
    wire uses bare `Identity`/`TimestampNanos` and the repos are **criome**;
    converge on one spelling and decide whether the handle wrappers survive.
 
 ## Source paths cited
 
 - `signal-criome/schema/lib.schema`, `signal-criome/examples/canonical.nota`
-- `criome/schema/crayome.language.schema`, `criome/schema/criome.concept.schema`
+- `criome/schema/criome.language.schema`, `criome/schema/criome.concept.schema`
 - `criome/src/language.rs`, `criome/src/admission.rs`, `criome/src/master_key.rs`,
   `criome/src/tables.rs`, `criome/src/actors/registry.rs`, `criome/src/actors/store.rs`
 - `criome/tests/language.rs`

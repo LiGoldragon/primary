@@ -6,7 +6,7 @@ How to call the deployed `spirit` binary to capture and observe psyche intent.
 
 `spirit` captures psyche statements as typed records and serves
 observation/subscription queries. The active production binary is the
-schema-derived `spirit` component at version `0.13.0`, installed in the
+schema-derived `spirit` component at version `0.14.0`, installed in the
 user profile as `~/.nix-profile/bin/spirit`. The user service is
 `spirit-daemon.service`, listening under `~/.local/state/spirit/`.
 
@@ -257,7 +257,12 @@ single atoms like `.criome` or `payload-blind`.
 
 Use full `Observe` when you need exact domain / keyword / referent /
 kind / privacy / certainty / importance predicates or exhaustive stashed
-results.
+results. `Observe` replies with `RecordsStashed` for non-empty result sets:
+the reply carries `(StashHandle RecordCount ObservedRecords)`, so agents can
+read the records immediately while still retaining a recovery handle. A
+follow-up `LookupStash` against the handle returns the same records as
+`RecordsObserved`; it is for recovery, repeated inspection, or passing a
+stable snapshot handle between agents, not the normal first-read path.
 
 `Observe`, `Count`, and `SubscribeIntent` carry the generated eight-field
 `Query` directly:

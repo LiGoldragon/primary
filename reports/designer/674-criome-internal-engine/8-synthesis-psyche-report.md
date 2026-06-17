@@ -16,7 +16,7 @@ finding in this report.*
 The psyche captured criome's internal language as Spirit `vhs2` (Decision,
 Medium). Quoted literally:
 
-> [Crayome's internal language is a limited typed policy language over public-key
+> [criome's internal language is a limited typed policy language over public-key
 > identity atoms - NOT a general-purpose virtual machine - drawing its
 > limited-operation discipline from the constrained VMs of Ethereum, Tezos, and
 > Solana. Public keys are the atomic unit of identity; above them it composes
@@ -382,7 +382,7 @@ min-pk BLS (`MasterKey`, `VerifyBls` on `BlsPublicKey`), `SignatureEnvelope`,
 authorization machinery (`AuthorizeSignalCall` → `AuthorizationGrant` carrying an
 `AuthorizationPolicySatisfaction` over a two-class `AuthorizationPolicyClass
 [SimpleSelfSigned ComplexQuorum]`). It also has a **started in-tree policy POC**
-(`criome/src/language.rs` + `crayome.language.schema`) — the `Rule`/`Contract`
+(`criome/src/language.rs` + `criome.language.schema`) — the `Rule`/`Contract`
 evaluator this work converges on and supersedes.
 
 This vocabulary is the generalization of the deployed two-class policy: the
@@ -457,7 +457,7 @@ reconciliation.
 
 4. **Schema home — one module or two?** (file `6` open question 1.) The policy
    types are proposed as a second module `signal-criome:contract`. Alternative:
-   fold them into `signal-criome:lib` and retire `crayome.language.schema`. And:
+   fold them into `signal-criome:lib` and retire `criome.language.schema`. And:
    do the compose/amend verbs belong on the ordinary working contract or the meta
    plane? (Evaluation is ordinary trust traffic; mutation is meta-class.) **Which
    module layout?**

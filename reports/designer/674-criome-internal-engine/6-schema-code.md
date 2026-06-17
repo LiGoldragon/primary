@@ -19,7 +19,7 @@ name or a field, this schema is the schema-author's faithful reconstruction of
 the same design those inputs imply; reconcile on the same branch if `5` diverges.
 
 The schema extends the deployed `signal-criome` contract. The closest existing
-artifact — `criome/schema/crayome.language.schema` + `criome/src/language.rs`
+artifact — `criome/schema/criome.language.schema` + `criome/src/language.rs`
 (the started POC, file `1` §f) — is the design pressure this converges on and
 supersedes: it lifts that `Rule`/`Contract` evaluator into a wire vocabulary with
 verb roots, content-addressing, replay/branch binding, weighted/time-varying
@@ -517,7 +517,7 @@ not committed.
 
 1. **Module vs. file.** Proposed as `signal-criome:contract` (a second module).
    Alternative: fold the policy types straight into `signal-criome:lib` and
-   retire `crayome.language.schema`. The composition/evaluation verbs could also
+   retire `criome.language.schema`. The composition/evaluation verbs could also
    be argued onto the **meta** plane (policy mutation is meta-class, file `1` §c)
    — but evaluation is ordinary trust traffic, so the ordinary contract is the
    better home. Confirm in `5`.

@@ -84,13 +84,10 @@ then operator rebases. The two lanes have *converged on the same artifact* (the
 in-tree `language.rs`), which is good — the next move is agreeing the rebase shape
 before piling more leaf features on the v0 tree.
 
-## One naming question for the psyche
+## Naming: resolved
 
-Operator de-Crayome'd: renamed `crayome.language.schema` → `criome.language.schema`,
-calls it "the Criome internal language," and **removed the `Crayome` referent from
-`ay3y` and `gc0n`** as stale (Crayome lookups now return nothing). But the psyche
-has said "Crayome" deliberately and repeatedly for *the language*. So: is **Crayome**
-a distinct intended name for the language (worth keeping / even canonical), or a
-transcription artifact of "criome" that operator is right to retire? Designer reports
-still carry "Crayome" text; I'm holding the cleanup until this is settled rather than
-erase a possibly-deliberate name.
+Operator de-hallucinated the name — renamed the schema to `criome.language.schema`
+and removed the `Crayome` referent from `ay3y`/`gc0n`/`vhs2`. The psyche confirmed:
+**"crayome is stt hallucination"** — a speech-to-text artifact of *criome*, not a
+distinct name. Operator's de-Crayome was correct; the canonical name is **criome**,
+and the 674 reports have been scrubbed of the artifact.
