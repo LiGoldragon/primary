@@ -70,6 +70,11 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `signal-upgrade` | `9cc8ac14` | Upgrade working contract refreshed. | Cargo build/test/clippy and Nix gate. |
 | `upgrade` | `2eda2c4c` | Upgrade runtime refreshed against the current schema and signal stack. | Cargo build/test/clippy and Nix gate. |
 | `persona` | `961133dc` | Topology flake moved from retired `persona-*` repos to active component repos, terminal-cell source packaging was fixed for Nix schema inputs, and prototype launchers were adjusted to fixture-backed binary-startup smoke while router/message stay real e2e daemons. | `cargo fmt`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, targeted terminal-cell/prototype/message-router Nix builds, full `nix flake check --builders '' -L`. |
+| `signal-mind` | `129fd8ac` | Lockfile refreshed to latest NOTA stack and `signal-persona`; canonical NOTA tests updated for bare atom strings; stale flake selectors fixed. | `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
+| `meta-signal-mind` | `7cb639f2` | Regenerated with latest schema stack; `PolicyRevision` gained generated scalar newtype impls. | `META_SIGNAL_MIND_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, cargo fmt/test/clippy, full Nix flake check. |
+| `signal-orchestrate` | `f223edf2` | Regenerated with latest schema stack; standard newtype impls emitted and schema contract tests updated to the current `Root::as_enum()` API. | `SIGNAL_ORCHESTRATE_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, cargo fmt/test/clippy, full Nix flake check. |
+| `meta-signal-orchestrate` | `6ee006ee` | Regenerated with latest schema stack and refreshed `signal-orchestrate`; schema contract tests updated to the current `Root::as_enum()` API. | `META_SIGNAL_ORCHESTRATE_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, cargo fmt/test/clippy, full Nix flake check. |
+| `mind` | `ae1e573f` | Lockfile refreshed to the new mind/orchestrate contract stack; regeneration produced no checked-in schema diff; stale Nix guard selector fixed to the live lockfile guard. | `MIND_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`, rerun after selector fix. |
 
 ## Test Hygiene Found
 
@@ -85,13 +90,16 @@ zero tests:
 - `terminal`: `terminal-registration-writes-session-health` used an obsolete
   exact selector. I fixed it in `8e45dfef` and verified the Nix check now runs
   one test.
+- `mind`: `mind-lockfile-cannot-resolve-two-sema-kernels` used an obsolete
+  selector and initially ran zero tests. I fixed it in `ae1e573f`; the Nix
+  check now runs
+  `mind_lockfile_cannot_resolve_duplicate_storage_or_retired_signal_core`.
 
 ## Next Queue
 
 Continue from the active-repository map, one component family at a time:
 
-1. `signal-mind` / `meta-signal-mind` / `mind`.
-2. `signal-orchestrate` / `meta-signal-orchestrate` / `orchestrate`.
-3. `signal-repository-ledger` / `meta-signal-repository-ledger` /
+1. `orchestrate`.
+2. `signal-repository-ledger` / `meta-signal-repository-ledger` /
    `repository-ledger`.
-4. `signal-version-handover` / `meta-signal-version-handover`.
+3. `signal-version-handover` / `meta-signal-version-handover`.
