@@ -76,6 +76,9 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `meta-signal-orchestrate` | `6ee006ee` | Regenerated with latest schema stack and refreshed `signal-orchestrate`; schema contract tests updated to the current `Root::as_enum()` API. | `META_SIGNAL_ORCHESTRATE_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, cargo fmt/test/clippy, full Nix flake check. |
 | `mind` | `ae1e573f` | Lockfile refreshed to the new mind/orchestrate contract stack; regeneration produced no checked-in schema diff; stale Nix guard selector fixed to the live lockfile guard. | `MIND_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`, rerun after selector fix. |
 | `orchestrate` | `cf1c5255` | Lockfile refreshed to the new orchestrate contract stack; regeneration produced no checked-in schema diff; schema contract tests updated to the current `Root::as_enum()` API. | `ORCHESTRATE_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
+| `signal-repository-ledger` | `7254e4ae` | Hand-written ordinary contract lock refreshed to current `nota-next`; no schema artifact yet. Pushed to GitHub after discovering local `origin` was Gitolite while downstream Cargo resolves GitHub. | `cargo fmt -- --check`, `cargo test`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
+| `meta-signal-repository-ledger` | `114c0e88` | Hand-written meta contract lock refreshed to current `nota-next` and `signal-repository-ledger` `7254e4ae`. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
+| `repository-ledger` | `04c07eb2` | Runtime lock refreshed to the new ordinary/meta repository-ledger contracts and current schema-rust stack; regeneration produced no checked-in daemon schema diff. | `REPOSITORY_LEDGER_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`. |
 
 ## Test Hygiene Found
 
@@ -95,11 +98,13 @@ zero tests:
   selector and initially ran zero tests. I fixed it in `ae1e573f`; the Nix
   check now runs
   `mind_lockfile_cannot_resolve_duplicate_storage_or_retired_signal_core`.
+- Repository-ledger dependency visibility: `signal-repository-ledger` has local
+  `origin` set to Gitolite while downstream Cargo dependencies resolve GitHub.
+  I pushed `7254e4ae` to the `github` remote as well before updating the meta
+  and runtime locks.
 
 ## Next Queue
 
 Continue from the active-repository map, one component family at a time:
 
-1. `signal-repository-ledger` / `meta-signal-repository-ledger` /
-   `repository-ledger`.
-2. `signal-version-handover` / `meta-signal-version-handover`.
+1. `signal-version-handover` / `meta-signal-version-handover`.
