@@ -29,12 +29,22 @@ Implemented on code-repo main and safe to call shipped:
 - component repos refreshed to compile/test against current mainline
   `schema-next` / `schema-rust-next` / `nota-next` where the sweep touched them.
 
-Not implemented on main and not valid to call shipped:
+Implemented/proven in the Designer `reaction-expand` worktrees, but **not
+integrated on code-repo main**:
 
-- trait declarations as usable schema syntax.
-- `{| |}` trait/impl parsing/lowering/emission in schema-next/schema-rust-next.
-- component schemas rewritten to trait/impl declarations.
-- method bodies as schema data beyond prototype/demonstration branches.
+- generic frame declaration/use/expansion through `(| |)`.
+- pipe-brace role/marker relationship syntax such as
+  `EntryHandleIsAuditable {| Auditable EntryHandle |}`.
+- opt-in mechanical `Deref` body data such as
+  `(reference (field self payload))`.
+- the fixture proof in
+  `/home/li/wt/github.com/LiGoldragon/schema-rust-next/reaction-expand/tests/pipe_delimiter_demo.rs`.
+
+Not integrated on main and not valid to call shipped:
+
+- the `reaction-expand` trait/role relationship slice.
+- component schemas rewritten to use the proven frame/role syntax.
+- component-wide codegen replacement of hand-written role/trait surfaces.
 - component-wide codegen replacement of hand-written trait/impl surfaces.
 
 ## Dirty state at pause
@@ -60,10 +70,10 @@ Stop broad component porting.
 
 The correct next technical slice is:
 
-1. Define the smallest implemented trait/impl schema slice in `schema-next` and
-   `schema-rust-next`.
-2. Prove it in one repo with a real schema and generated Rust, not a report-only
-   prototype.
+1. Harvest the already-proven `reaction-expand` slice onto current
+   `schema-next` / `schema-rust-next` main.
+2. Keep the slice narrow: frame expansion, scalar standard impls, role/marker
+   relationships, and opt-in mechanical `Deref`.
 3. Run cargo + Nix gates.
 4. Only then begin porting components to that new syntax.
 
