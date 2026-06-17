@@ -7,7 +7,7 @@ Role: system-designer
 
 The implementation follows Spirit record `nr7h`: guardian admission should accept captures whose operative guidance states the affirmative shape to follow, and should return primarily exclusion/prohibition/definition-by-negation captures for positive rewording.
 
-This was prompted by the failed shape of the earlier spelling correction record `cx2m`, which mixed the canonical `criome` / `criomos` spelling rule with a negative list of rejected spellings. I did not mutate `cx2m`: a `ChangeRecord` attempt was refused by the guardian for insufficient warrant to edit that existing record directly.
+This was prompted by the failed shape of the earlier spelling correction record `cx2m`, which mixed the canonical `criome` / `criomos` spelling rule with a negative list of rejected spellings. After the psyche explicitly authorized correcting the record in place, `cx2m` was changed to the affirmative form: canonical prose uses `criome` for the authentication component and `criomos` for the operating system name, while exact on-disk path spelling is preserved when citing repository paths or code identifiers.
 
 ## Branches Pushed
 
@@ -63,4 +63,4 @@ The Spirit test run passed the guardian prompt unit tests and runtime prompt-bun
 
 This is a three-repo branch chain. Operator integration should merge or rebase `signal-spirit` first, then `meta-signal-spirit`, then `spirit`, or retarget Spirit back to `main` once the contract branches land.
 
-The implementation intentionally leaves the old `cx2m` record untouched. Retiring or changing it should be done only if the psyche explicitly authorizes that specific existing-record mutation.
+The old negative-framed `cx2m` text has been corrected in place through Spirit `ChangeRecord`; no separate replacement record was minted.
