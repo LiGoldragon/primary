@@ -110,18 +110,27 @@ The convention applies to `[[bin]]` entries that produce a runnable. It does not
 
 When production-vs-test status is ambiguous (e.g. a validator an operator might invoke during a build), prefer the `-test` suffix plus a Nix `check` derivation that wraps it for the operator path. The Nix wrapper carries the production status; the underlying binary stays clearly test-only.
 
-## Multi-repo local override tests
+## Multi-repo remote override tests
 
-When a feature spans several sibling repositories, create a central test runner in the consumer repo that rebuilds the whole local stack together. The runner uses Nix input overrides pointing at the latest local checkouts:
+When a feature spans several sibling repositories, create a central test
+runner in the consumer repo that rebuilds the whole stack together. Commit
+and push each participating repo first; the runner uses Nix input overrides
+pointing at remote refs, never local filesystem paths:
 
 ```sh
 nix flake check \
-  --override-input nota-next-source path:/git/github.com/LiGoldragon/nota-next \
-  --override-input schema-next-source path:/git/github.com/LiGoldragon/schema-next \
-  --override-input schema-rust-next-source path:/git/github.com/LiGoldragon/schema-rust-next
+  --override-input nota-next-source github:LiGoldragon/nota-next?ref=operator/my-feature \
+  --override-input schema-next-source github:LiGoldragon/schema-next?ref=operator/my-feature \
+  --override-input schema-rust-next-source github:LiGoldragon/schema-rust-next?ref=operator/my-feature
 ```
 
-The committed flake still uses portable `github:` inputs. The override runner is for integration pressure while developing several repos at once: edit the codec or schema emitter, run the consumer's central test, and prove the generated Rust still compiles, serializes, and crosses the process boundary.
+The committed flake still uses portable `github:` inputs. The override
+runner is for integration pressure while developing several repos at once:
+edit the codec or schema emitter, push the branch refs, run the consumer's
+central test, and prove the generated Rust still compiles, serializes, and
+crosses the process boundary. `--override-input ... path:...` and
+`git+file://` are forbidden because they make the result depend on local
+checkout state and can copy huge ignored build directories.
 
 For schema-derived repos the central runner proves the whole chain:
 
@@ -130,7 +139,9 @@ schema files -> assembled schema -> generated Rust -> hand-written
 methods on generated objects -> rkyv signal frame -> CLI/daemon test
 ```
 
-A test that only checks the schema engine in isolation is not the central integration test; one that only checks the consumer with pinned remote dependencies is not the local override test.
+A test that only checks the schema engine in isolation is not the central
+integration test; one that only checks the consumer with default locked
+dependencies is not the remote override test.
 
 Schema-derived runtime tests must use the generated plane traits in the consumer. A pilot does not prove the stack by calling a primitive store helper or recording strings in an observer; it proves the stack by constructing generated `Input`, `NexusInput`, and `SemaInput` values, invoking generated traits such as `NexusEngine` and `SemaEngine`, observing generated mail/rejection values, and asserting generated `NexusOutput`, `SemaOutput`, and Signal `Output` replies. If a needed boundary type is still hand-written, move it into schema first or mark that as the next component-development gap.
 

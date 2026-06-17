@@ -61,9 +61,9 @@ inputs.nota-codec.url = "github:LiGoldragon/nota-codec";
 |---|---|---|
 | `github:<owner>/<repo>` | **Default** for sibling-repo deps | Portable, reproducible, history-stable. |
 | `github:<owner>/<repo>?ref=<branch>` | Track a non-default branch | Re-pinned by `nix flake update`. |
-| `path:./subdir` | Sub-flake inside the same repo | Within-repo only; doesn't depend on a machine's layout. |
 | `git+ssh://`, `git+https://` | Repos not on github | Same shape as `github:`, explicit transport. |
-| `git+file:///...` | **Forbidden** in committed flakes | Use `--override-input path:...` for local iteration. |
+| `path:...` | **Forbidden for flake inputs and overrides** | Local filesystem inputs are not a workspace test/deploy surface. |
+| `git+file:///...` | **Forbidden** | Same local-filesystem problem as `path:`. |
 
 `flake = false` is for sources without their own `flake.nix` (you
 only need the source tree for `import` or a build script). If the
@@ -71,71 +71,75 @@ input *does* have a `flake.nix`, omit it — you want its outputs.
 
 ### Don't commit `git+file://`
 
-`git+file:///git/...` points at a local checkout on the committing
+`git+file://` points at a local checkout on the committing
 machine. The committed flake then references a path that exists on no
 other machine and behaves differently depending on uncommitted
 changes. It stops being reproducible (resolves to a different working
 tree per host, nothing on the rest) and loses history meaning — it
 doesn't pin the dep's commit in `flake.lock` the way `github:` does.
 
-### Iterating against a local clone — `--override-input`
+### Testing against a pushed ref — `--override-input`
 
-To point a `github:` input at a local clone for fast iteration
-without changing the committed `flake.nix`:
+To point a `github:` input at a feature branch without changing the
+committed `flake.nix`, commit and push the dependency repo first, then
+override to the remote ref:
 
 ```sh
-nix flake lock --override-input nota-codec path:/git/github.com/LiGoldragon/nota-codec
+nix flake lock --override-input nota-codec github:LiGoldragon/nota-codec?ref=operator/my-feature
 ```
 
 This rewrites only the `flake.lock` entry; verify in the `locked`
-block under the input. When done, commit and push the dependency
-repo, then `nix flake update nota-codec` to re-pin to the new commit.
+block under the input. When done, `nix flake update nota-codec` to
+re-pin to the intended remote commit. `--override-input ... path:...`
+and `git+file://` are forbidden: they make Nix copy local checkout
+state, including huge ignored build directories when filtering is
+wrong, and they are not reproducible by another agent.
 
-### Multi-repo local stack checks — ephemeral overrides
+### Multi-repo remote stack checks — ephemeral overrides
 
-For central integration tests that rebuild several local sibling
-repos together, prefer an ephemeral check over rewriting the lock:
+For central integration tests that rebuild several sibling repos
+together, prefer an ephemeral check over rewriting the lock. The refs
+must be remote:
 
 ```sh
 nix flake check \
-  --override-input nota-next-source path:/git/github.com/LiGoldragon/nota-next \
-  --override-input schema-next-source path:/git/github.com/LiGoldragon/schema-next
+  --override-input nota-next-source github:LiGoldragon/nota-next?ref=operator/my-feature \
+  --override-input schema-next-source github:LiGoldragon/schema-next?ref=operator/my-feature
 ```
 
-This keeps `flake.nix` portable while consuming latest local working
-copies. Committed flakes that support this expose sibling source
+This keeps `flake.nix` portable while consuming the pushed feature
+refs. Committed flakes that support this expose sibling source
 inputs with clear names (`nota-next-source`); the build patches Cargo
-git deps to those input sources inside the Nix builder. Never commit
-`git+file://` or absolute local paths to `flake.nix` or `Cargo.toml`.
+git deps to those input sources inside the Nix builder. Never use
+`path:` or `git+file://` for these overrides.
 
 When the flake has many sibling `*-source` inputs, use the workspace helper
 instead of hand-writing the override list:
 
 ```sh
-tools/nix-local-stack build --target path:/git/github.com/LiGoldragon/spirit#default
-tools/nix-local-stack check --target path:/git/github.com/LiGoldragon/spirit
+tools/nix-local-stack build --target github:LiGoldragon/spirit#default
+tools/nix-local-stack check --target github:LiGoldragon/spirit
+tools/nix-local-stack build --target github:LiGoldragon/spirit#default --ref operator/my-feature
 ```
 
 The helper reads the target flake, maps each `*-source` input to the matching
-`/git/github.com/LiGoldragon/<repo>` checkout, and adds the local overrides
-ephemerally. It is for local integration testing only; deployable builds still
-come from pushed remote refs.
+`github:LiGoldragon/<repo>?ref=<ref>` remote, and adds those overrides
+ephemerally. It rejects local `path:` and `git+file:` refs.
 
 ## Build, run, and deploy from the remote — never a local checkout
 
 When you `nix build`, `nix run`, or **deploy** a workspace repo, name
 the remote `github:<owner>/<repo>` (optionally `?ref=<branch>` or a
-pinned rev) — never a local `path:/git/...` or `git+file://`.
+pinned rev) — never a local `path:` or `git+file://`.
 
 ```sh
 # Right — commit + push, then build/run/deploy the pushed ref
 jj git push --bookmark my-feature --allow-new
-nix build github:<owner>/<repo>/my-feature
+nix build github:<owner>/<repo>?ref=my-feature
 nix run   github:<owner>/<repo> -- <args>
-
-# Wrong — builds your LOCAL, UNCOMMITTED working tree
-nix build path:/git/github.com/<owner>/<repo>
 ```
+
+Do not run `nix build` against a local path flake ref.
 
 A `path:` build consumes your uncommitted working tree. What you
 ship then depends on local state that exists on no other machine and
@@ -144,9 +148,8 @@ This matters most for deploys: a cluster deploy must build from a
 pushed ref so the closure is reproducible and the deploy is re-runnable
 by another operator. If you reach for `path:` only because the change
 is uncommitted, that is the signal to commit and push — not to bypass
-the remote. The one sanctioned local-path use is fast inner-loop
-`--override-input` iteration against a committed `github:` flake, and
-even there you commit and push before building anything for sharing.
+the remote. There is no sanctioned local-path override for workspace
+integration builds.
 
 ## Compiled artefacts at build time, never JIT
 
@@ -196,8 +199,8 @@ a wrong entry: `nix flake update` (all inputs), `nix flake update
 (pin to a URL/rev). Commit the lock after, naming what changed
 (`update nota-codec to <short-sha>`).
 
-To reuse a rev another flake already pins, use `--inputs-from
-path:/path/to/sibling-flake` — resolves matching inputs from the
+To reuse a rev another flake already pins, use `--inputs-from` with the
+sibling's pushed remote ref — resolves matching inputs from that
 sibling's locked entries, no hash typed by hand.
 
 For the workspace fenix lockstep (every Rust crate's fenix lock

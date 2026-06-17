@@ -6,15 +6,18 @@ usage() {
 Usage:
   tools/nix-local-stack [build|check] [options] [-- extra-nix-args...]
 
-Runs a Nix command against a local multi-repo stack by reading the target
-flake's *-source inputs and overriding each one to the matching
-/git/github.com/LiGoldragon/<repo> checkout when present.
+Runs a Nix command against a pushed multi-repo stack by reading a local
+flake.nix for its *-source inputs and overriding each one to the matching
+remote github:LiGoldragon/<repo> ref.
 
 Options:
-  --target <flake-ref>      Target flake ref. Default: path:$PWD#default for build,
-                           path:$PWD for check.
+  --target <flake-ref>      Remote target flake ref. Default: github:LiGoldragon/<cwd>#default
+                           for build, github:LiGoldragon/<cwd> for check.
   --flake-dir <path>       Directory whose flake.nix declares the source inputs.
-                           Defaults to the path part of --target, or $PWD.
+                           Defaults to $PWD. This is only read locally; it is never
+                           passed to Nix as a path flake ref.
+  --ref <ref>              Remote branch/tag/rev used for sibling *-source overrides.
+                           Default: main.
   --print-command          Print the expanded command instead of running it.
   --no-default-flags       Do not add the command's default test flags.
   --no-local-builders      Do not force --builders ''.
@@ -25,8 +28,9 @@ Default flags:
   check: --builders '' -L
 
 Examples:
-  tools/nix-local-stack build --target path:/git/github.com/LiGoldragon/spirit#default
-  tools/nix-local-stack check --target path:/git/github.com/LiGoldragon/spirit
+  tools/nix-local-stack build --target github:LiGoldragon/spirit#default
+  tools/nix-local-stack check --target github:LiGoldragon/spirit
+  tools/nix-local-stack build --target github:LiGoldragon/spirit#default --ref operator/frame-expansion
   tools/nix-local-stack build --print-command
 EOF
 }
@@ -34,10 +38,33 @@ EOF
 command=build
 target=
 flake_dir=
+remote_ref=main
 print_command=0
 default_flags=1
 local_builders=1
 extra_args=()
+
+github_owner=LiGoldragon
+
+reject_local_flake_ref() {
+  local value="$1"
+  case "$value" in
+    path:*|git+file:*|.|..|./*|../*|/*)
+      echo "nix-local-stack: local flake refs are forbidden in Nix commands: $value" >&2
+      echo "nix-local-stack: commit and push, then use github:<owner>/<repo>?ref=<ref>" >&2
+      exit 2
+      ;;
+  esac
+}
+
+remote_target_for_current_directory() {
+  local repo
+  repo="$(basename "$PWD")"
+  case "$command" in
+    build) printf 'github:%s/%s#default' "$github_owner" "$repo" ;;
+    check) printf 'github:%s/%s' "$github_owner" "$repo" ;;
+  esac
+}
 
 if [[ $# -gt 0 ]]; then
   case "$1" in
@@ -58,9 +85,17 @@ while [[ $# -gt 0 ]]; do
       flake_dir="${2:?--flake-dir requires a path}"
       shift 2
       ;;
+    --ref)
+      remote_ref="${2:?--ref requires a remote branch, tag, or rev}"
+      shift 2
+      ;;
     --print-command)
       print_command=1
       shift
+      ;;
+    --raw-checkouts)
+      echo "nix-local-stack: local checkout overrides are forbidden; use remote refs" >&2
+      exit 2
       ;;
     --no-default-flags)
       default_flags=0
@@ -87,19 +122,16 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$target" ]]; then
-  case "$command" in
-    build) target="path:$PWD#default" ;;
-    check) target="path:$PWD" ;;
-  esac
+  target="$(remote_target_for_current_directory)"
 fi
 
+reject_local_flake_ref "$target"
+for arg in "${extra_args[@]}"; do
+  reject_local_flake_ref "$arg"
+done
+
 if [[ -z "$flake_dir" ]]; then
-  flake_dir="$target"
-  flake_dir="${flake_dir#path:}"
-  flake_dir="${flake_dir%%#*}"
-  if [[ "$flake_dir" == "$target" ]]; then
-    flake_dir="$PWD"
-  fi
+  flake_dir="$PWD"
 fi
 
 flake_file="$flake_dir/flake.nix"
@@ -130,10 +162,10 @@ mapfile -t source_inputs < <(
 
 for input in "${source_inputs[@]}"; do
   repo="${input%-source}"
-  checkout="/git/github.com/LiGoldragon/$repo"
-  if [[ -e "$checkout" ]]; then
-    args+=(--override-input "$input" "path:$checkout")
+  if [[ "$repo" == *-previous || "$repo" == *-layout[0-9]* ]]; then
+    continue
   fi
+  args+=(--override-input "$input" "github:$github_owner/$repo?ref=$remote_ref")
 done
 
 args+=("${extra_args[@]}" "$target")
@@ -142,5 +174,5 @@ if [[ "$print_command" -eq 1 ]]; then
   printf '%q ' "${args[@]}"
   printf '\n'
 else
-  exec "${args[@]}"
+  "${args[@]}"
 fi
