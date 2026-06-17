@@ -87,6 +87,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `sema` | none | No schema/NOTA/signal dependency surface and no lockfile movement needed; verified current main as the storage-kernel baseline. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including named kernel, no-legacy, doc, fmt, and clippy checks. |
 | `sema-engine` | `73eea24b` | Engine lock refreshed to `signal-frame` `e2eae5c2` and `signal-sema` `bdd7fe36`; fixed private intra-doc links that the Nix rustdoc gate caught under `-D warnings`. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `RUSTDOCFLAGS='-D warnings' cargo doc --no-deps`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including build, doc, dependency-boundary, engine, operation-log, subscription, fmt, and clippy checks. |
 | `triad-runtime` | `f46f66ee` | Runtime lock refreshed to `signal-frame` `e2eae5c2` and current `nota-next`; flake gained fmt and explicit `nota-text` test checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default runtime tests, `nota-text` reaction tests, fmt, and all-feature clippy. |
+| `signal` | `7cdb0fe8` | Legacy sema/criome contract lock refreshed to current `nota-next` and `signal-sema`; enabled `signal-sema/nota-text` because `signal` derives NOTA text forms over `PatternField<T>` unconditionally; bare-atom canonical text witnesses updated; flake gained fmt and clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering package, tests, fmt, clippy, and dev shell. |
 
 ## Test Hygiene Found
 
@@ -132,6 +133,10 @@ zero tests:
 - `sema-engine`: the full Nix gate caught private intra-doc links that local
   tests and clippy did not. The links now render as code text instead of
   public rustdoc links to private items.
+- `signal`: refreshing `signal-sema` exposed the text feature boundary.
+  `PatternField<T>` NOTA impls live behind `signal-sema/nota-text`; the legacy
+  `signal` contract owns text projection unconditionally, so it must explicitly
+  enable that dependency feature.
 - Downstream sweep needed after foundational support libraries settle:
   component lockfiles refreshed earlier currently point at `signal-frame`
   `166bda84`, while the current frame-kernel main is `e2eae5c2`.
@@ -140,8 +145,7 @@ zero tests:
 
 Continue from the active-repository map, one component family at a time:
 
-1. Foundational active libraries still not covered by this ledger:
-   `signal`.
-2. Dependent lockfile sweep to move already-ported contracts from
-   `signal-frame` `166bda84` to `e2eae5c2` after the support-library pass
-   finishes.
+1. Dependent lockfile sweep to move already-ported contracts and runtimes onto
+   the refreshed support-library commits: `signal-frame` `e2eae5c2`,
+   `signal-sema` `bdd7fe36`, `sema-engine` `73eea24b`, `triad-runtime`
+   `f46f66ee`, and `version-projection` `1a1eeab4`.
