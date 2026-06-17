@@ -57,9 +57,9 @@ from old `persona-spirit` documents — read the deployed `spirit` and
 ```sh
 rg -n '"spirit"' /git/github.com/LiGoldragon/CriomOS-home/flake.lock
 cd /git/github.com/LiGoldragon/spirit
-rg -n "Entry \\{|RecordRequest \\{|Justification \\{|Query \\{|RecordSelection \\{|pub enum Input|pub struct VersionReport|CollectRemovalCandidates|Marker" schema src/schema
+rg -n "Entry \\{|RecordRequest \\{|Justification \\{|Query \\{|RecordSelection \\{|PublicTextSearch|pub enum Input|pub struct VersionReport|CollectRemovalCandidates|Marker" schema src/schema
 cd /git/github.com/LiGoldragon/signal-spirit
-rg -n "RecordRequest \\{|Query \\{|RecordSelection \\{|RemovalCandidateCollection \\{|pub enum Input|pub enum Output|VersionReport|DatabaseMarker" schema src/schema
+rg -n "RecordRequest \\{|Query \\{|RecordSelection \\{|PublicTextSearch|RemovalCandidateCollection \\{|pub enum Input|pub enum Output|VersionReport|DatabaseMarker" schema src/schema
 ```
 
 ## Encoding rules
@@ -236,6 +236,28 @@ and no database marker. Archive location is not a working-signal
 argument; the owner configures it through the meta socket.
 
 ## Observing records
+
+For ordinary public intent lookup, prefer the low-level shorthand
+`PublicTextSearch` before spelling a full `Observe` query:
+
+```sh
+spirit "(PublicTextSearch [routing protocol])"
+spirit "(PublicTextSearch payload-blind)"
+spirit "(PublicTextSearch .criome)"
+```
+
+`PublicTextSearch` takes exactly one `SearchText`. It searches active
+public records by description text and referent text, tolerates
+unregistered words as search terms, ranks likely matches, caps the
+result set, and returns `RecordsObserved` directly. It avoids the common
+agent failure modes: no eight-field positional query, no
+`AnyReferent` hard error for an unregistered referent, no follow-up
+`LookupStash`, and no bracketed-bare-string canonicalization trap for
+single atoms like `.criome` or `payload-blind`.
+
+Use full `Observe` when you need exact domain / keyword / referent /
+kind / privacy / certainty / importance predicates or exhaustive stashed
+results.
 
 `Observe`, `Count`, and `SubscribeIntent` carry the generated eight-field
 `Query` directly:
