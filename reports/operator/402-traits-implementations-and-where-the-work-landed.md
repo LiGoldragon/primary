@@ -10,14 +10,19 @@ them caused the confusion.
    generates Rust traits such as the Nexus / SEMA / daemon hook surfaces, and
    component Rust implements their behavior by hand.
 
-2. **Schema-authored trait declarations.**
+2. **Schema-authored generic frame declarations.**
+   These are the `(| |)` forms the psyche is pointing at. They declare reusable
+   interface frames such as `Work` / `Action`, and they are implemented on
+   `schema-next` main with passing reaction/generics tests.
+
+3. **Schema-authored Rust trait declarations.**
    This would mean writing a Rust trait interface itself in schema: method
    signatures, bounds, default bodies, associated types, and so on. This is not
    needed for the current component port and is not implemented as a usable
    schema language on main. Reports name its `fn` / signature sub-construct as
    open.
 
-3. **Role / marker trait relationships.**
+4. **Role / marker trait relationships.**
    This means "generated type `X` implements role trait `Y`" so handwritten
    Rust can use typed bounds. The `reaction-expand` prototype expresses this
    with pipe-brace, e.g. `EntryHandleIsAuditable {| Auditable EntryHandle |}`.
@@ -36,13 +41,11 @@ Current `schema-next` architecture and `skills/structural-forms.md` say:
 - `Name (| [params] body |)` is **generic declaration**.
 - `{| ... |}` is the reserved **trait / impl construct**.
 
-So if the psyche means "traits are pipe-parenthesis," that does not match the
-current written docs. Pipe-parenthesis is the generic-frame syntax used for
-`Work` / `Action`.
-
-What may have caused the memory mismatch: the generic frames are the main thing
-needed to generate the component interface. They are not Rust traits, but they
-are the schema-language construct that removes the repeated interface code.
+So the psyche was right about the delimiter for the main capability being
+discussed: the `(| |)` form is the reusable interface/frame declaration path
+we need for component codegen. It is not "implementations." The `{| |}` path is
+the later implementation/relationship surface and is not required for the
+immediate port.
 
 ## Where the last two days' work is
 
@@ -50,24 +53,24 @@ The executable work is in two places:
 
 - **Mainline structural codegen stack** in code-repo main:
   current `schema-next` / `schema-rust-next` generate schema types, engine
-  traits, wire/runtime support, scalar newtype conveniences where landed, and
-  component modules when regenerated.
+  traits, wire/runtime support, scalar newtype conveniences where landed,
+  generic frame declarations, and applied roots when regenerated.
 - **Prototype / feature worktrees**:
   `/home/li/wt/github.com/LiGoldragon/schema-next/reaction-expand` and
   `/home/li/wt/github.com/LiGoldragon/schema-rust-next/reaction-expand` contain
-  the pipe-delimiter proof: generic frame expansion, role/marker relationship
-  examples, and opt-in mechanical `Deref`.
+  the extra pipe-brace proof: role/marker relationship examples and opt-in
+  mechanical `Deref`.
 
-The important distinction: the `reaction-expand` proof is real, but not on
-code-repo main. The current component porting work touched mainline structural
-schema generation, not schema-authored arbitrary trait declarations.
+The important distinction: the generic-frame work is on code-repo main. The
+extra pipe-brace implementation/relationship proof is real but not on main, and
+is not required for the current component port.
 
 ## What is actually needed now
 
 The immediate component port should target this:
 
-- `(| |)` generic frame declarations and applications for repeated
-  `Input` / `Output` interface shapes;
+- `(| |)` generic frame declarations and applications for repeated `Input` /
+  `Output` interface shapes;
 - generated concrete owned enums and payload types;
 - generated Rust engine trait surfaces and hand-written behavior impls;
 - generated standard newtype conveniences where shape-proven;
@@ -87,7 +90,6 @@ whether the schema has the trait/interface generation needed for the engine
 port. The accurate answer is:
 
 - generated Rust trait surfaces: **yes, on main**;
-- generic frame syntax that removes repeated interface code: **proven in
-  `reaction-expand`, not fully harvested to main**;
+- generic frame syntax that removes repeated interface code: **yes, on main**;
 - arbitrary schema-authored trait declarations: **no, not needed now**;
 - implementations/method bodies as schema data: **no, not needed now**.

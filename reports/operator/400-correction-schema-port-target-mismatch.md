@@ -7,16 +7,16 @@ The operator sweep mixed up two targets:
 1. **Implemented mainline schema stack** — current `nota-next`, `schema-next`,
    `schema-rust-next`, schema-cc generated resolver, positional syntax, generated
    standard scalar newtype impls, and current NOTA canonicalization.
-2. **New trait / impl schema language design** — the `{| |}` trait/impl
-   construct, generic frame expansion as the component-codegen path, and any
-   method/body-as-data frontier.
+2. **The component-codegen schema design** — the `(| |)` generic frame path
+   for declaring reusable interface frames, plus any later `{| |}` role /
+   implementation relationship frontier.
 
 The sweep ported repositories to target 1. The psyche was asking for target 2.
 
 That means the statement "port to the latest schema design" was answered with
 "port to the latest implemented mainline schema stack." That was not precise
-enough and became false once the conversation's intended target was the
-trait/impl design.
+   enough and became false once the conversation's intended target was the
+   component-codegen design.
 
 ## Actual implementation state
 
@@ -26,13 +26,16 @@ Implemented on code-repo main and safe to call shipped:
   reference resolver.
 - current positional schema syntax and current NOTA canonical string rules.
 - schema-rust standard generated scalar newtype impls where already supported.
+- `(| |)` generic frame declaration/application support in `schema-next`, with
+  reaction-frame lowering and expansion tests green.
+- `schema-rust-next` emission for generic frame declarations and application
+  roots, with targeted reaction-frame tests green.
 - component repos refreshed to compile/test against current mainline
   `schema-next` / `schema-rust-next` / `nota-next` where the sweep touched them.
 
 Implemented/proven in the Designer `reaction-expand` worktrees, but **not
 integrated on code-repo main**:
 
-- generic frame declaration/use/expansion through `(| |)`.
 - pipe-brace role/marker relationship syntax such as
   `EntryHandleIsAuditable {| Auditable EntryHandle |}`.
 - opt-in mechanical `Deref` body data such as
@@ -70,10 +73,10 @@ Stop broad component porting.
 
 The correct next technical slice is:
 
-1. Harvest the already-proven `reaction-expand` slice onto current
-   `schema-next` / `schema-rust-next` main.
-2. Keep the slice narrow: frame expansion, scalar standard impls, role/marker
-   relationships, and opt-in mechanical `Deref`.
+1. Use the already-main `(| |)` frame path as the port target.
+2. Keep the next slice narrow: component schemas should adopt frame expansion
+   and generated structural surfaces; do not chase arbitrary implementation
+   bodies.
 3. Run cargo + Nix gates.
 4. Only then begin porting components to that new syntax.
 
@@ -89,4 +92,4 @@ main. Future updates must name which surface is being updated:
 
 - implemented mainline stack;
 - prototype/design branch;
-- or newly landed trait/impl schema support.
+- or newly landed schema support for a specific construct.

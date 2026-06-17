@@ -2,26 +2,32 @@
 
 ## Short answer
 
-The work is real, but it is stranded on worktrees/feature changes rather than
-main.
+The `(| |)` generic-frame work is real and is on code-repo main. The stranded
+work is the later `{| |}` role / implementation relationship prototype, which
+is not the current port target.
 
 - `schema-next` worktree:
   `/home/li/wt/github.com/LiGoldragon/schema-next/reaction-expand`
 - `schema-rust-next` worktree:
   `/home/li/wt/github.com/LiGoldragon/schema-rust-next/reaction-expand`
 
-The current code-repo mains do not contain that slice. They contain the latest
-implemented mainline compiler stack, but not the `reaction-expand` role/trait
+The current code-repo mains contain the generic frame path and standard
+structural emission. They do not contain the `reaction-expand` pipe-brace
 relationship syntax as a shipped surface.
 
 ## What was built
 
-The relevant slice is not "full Rust trait declarations" and not a general
-method language. The useful built work is:
+The relevant mainline slice is not "full Rust trait declarations" and not a
+general method language. The useful built work is:
 
 - generic frame declarations with `(| |)`;
 - component bindings that expand those frames into concrete owned `Input` /
   `Output` enums;
+- generated Rust engine traits and runtime support from the schema target;
+- scalar newtype standard impls where enabled.
+
+The later prototype work, not on main, also includes:
+
 - pipe-brace role/marker relationships such as
   `EntryHandleIsAuditable {| Auditable EntryHandle |}`;
 - opt-in mechanical `Deref` where the body is a tiny shape-proven expression
@@ -57,21 +63,33 @@ and then compiles and exercises the generated code.
 
 ## What is on main
 
-`/git/github.com/LiGoldragon/schema-next` main is at `abae95f9`
-(`schema-next: refresh nota dependency`). It has pipe-brace as a recognized
-delimiter and architecture text about the future trait/impl construct, but not
-the `reaction-expand` implementation.
+`/git/github.com/LiGoldragon/schema-next` main has:
 
-`/git/github.com/LiGoldragon/schema-rust-next` main is at `e2e20b66`
-(`schema-rust-next: refresh schema dependency`). It has current runtime
-role-trait codegen and standard schema emission, but not the pipe-brace
-relationship slice from `reaction-expand`.
+- `Root::Application` and `RootApplication`;
+- `Schema::declared_frame_body`;
+- `Schema::expand_application_root`;
+- reaction-frame and generics tests.
+
+`/git/github.com/LiGoldragon/schema-rust-next` main has:
+
+- generic reaction-frame emission tests;
+- application-root lowering that expands a frame root into a concrete root enum
+  when the frame resolves;
+- scalar standard-newtype impl tests.
+
+Targeted verification on June 17, 2026:
+
+- `schema-next`: `cargo test --test reaction --test generics` passed
+  23 tests.
+- `schema-rust-next`:
+  `cargo test --test reaction_frame_emission --test standard_newtype_impls`
+  passed 7 tests.
 
 ## What I got wrong
 
-I used "not done" to mean "not on main." That was the wrong word. The work was
-done as executable prototype/worktree material and documented as proven. The
-missing step is mainline integration and component porting.
+I used "not done" to mean "the pipe-brace relationship prototype is not on
+main." That was the wrong object. The `(| |)` generic-frame work is on main.
+The missing step is component porting onto that mainline path.
 
 I also let the internal noun `ImplDeclaration` confuse the conversation. In the
 prototype, that is the Rust struct name for the lowered pipe-brace relationship
@@ -80,15 +98,13 @@ mandate to design a broad implementation language.
 
 ## Actual next step
 
-Stop the broad component sweep. Harvest `reaction-expand` onto current
+Stop chasing the pipe-brace implementation path for this port. Use current
 `schema-next` and `schema-rust-next` main, preserving the narrow scope from
 reports 397 and 666:
 
 1. frame expansion;
 2. scalar standard impls default-on where already proven;
-3. role/marker relationship emission;
-4. opt-in mechanical `Deref`;
-5. typed errors for unsupported emitter cases;
-6. then one component port and full cargo/Nix proof.
+3. generated structural interface surfaces;
+4. then one component port and full cargo/Nix proof.
 
 Only after that is green should the rest of the components be ported.
