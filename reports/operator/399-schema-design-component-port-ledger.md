@@ -125,6 +125,10 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `meta-signal-harness` | none | Meta harness policy contract resolved and built against fresh `signal-harness`, `signal-persona`, and `signal-frame`, but the repo has no tracked `Cargo.lock` and no `flake.nix`, so no commit was produced. | `cargo build --all-features`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`; Nix unavailable because the repo has no flake. |
 | `harness` | `80b69fac` | Runtime lock refreshed to fresh ordinary/meta harness contracts plus current message/router/terminal/persona/runtime support stack; `HARNESS_UPDATE_SCHEMA_ARTIFACTS=1 cargo build --all-features` produced byte-identical daemon schema Rust. | `HARNESS_UPDATE_SCHEMA_ARTIFACTS=1 cargo build --all-features`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering release build, full release tests, working/meta CLI socket paths, daemon socket/mode/status/meta-policy witnesses, terminal and Pi delivery, subscription truth, and the real message-router-harness E2E. |
 | `chronos` | `572ba76a` | Time-and-sky daemon lock refreshed from old `nota-next` `ae5c25cd` to current `nota-next` `7426a6a7`; this repo is not schema-generated yet, so the port is lockfile-only. | `cargo build --all-features`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering release build, release tests, all calendar/event/location/request/response/zodiac witnesses, and doctests. |
+| `signal-terminal` | `a3c3f8bd` | Ordinary terminal contract lock refreshed onto current `schema-rust-next` `6e04d70f` and `signal-frame` `e2eae5c2`; `SIGNAL_TERMINAL_UPDATE_SCHEMA_ARTIFACTS=1 cargo build --all-features` produced byte-identical checked-in Rust. | `cargo build --all-features`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering build, test, round-trip, introspection, docs, fmt, and clippy. |
+| `meta-signal-terminal` | `614b7f59` | Terminal meta contract lock refreshed onto current schema/frame/persona stack and fresh `signal-terminal` `a3c3f8bd`; regeneration produced no checked-in schema diff. | `META_SIGNAL_TERMINAL_UPDATE_SCHEMA_ARTIFACTS=1 cargo build --all-features`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering build, test, round-trip, docs, fmt, and clippy. |
+| `terminal-cell` | `e2e7312b` | Low-level terminal cell lock refreshed onto current `schema-rust-next`, `signal-frame`, `signal-terminal`, and `triad-runtime`; schema artifacts stayed byte-identical. The stale Nix `control-socket-mode` selector was replaced with a sandbox-safe typed/source contract witness while the live PTY daemon mode test remains in the normal cargo suite. | `TERMINAL_CELL_UPDATE_SCHEMA_ARTIFACTS=1 cargo build --all-features`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`, `nix build .#default --builders '' -L --no-link --print-out-paths`. |
+| `terminal` | `a9f9f2b8` | Persona-facing terminal daemon lock refreshed onto fresh ordinary/meta terminal contracts, fresh `terminal-cell`, and current runtime support stack; `TERMINAL_UPDATE_SCHEMA_ARTIFACTS=1 cargo build --all-features` produced byte-identical daemon-local generated Rust. | `TERMINAL_UPDATE_SCHEMA_ARTIFACTS=1 cargo build --all-features`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L`, `nix build .#default --builders '' -L --no-link --print-out-paths` covering release build, full release tests, working/meta CLI socket paths, supervision, registry, subscription, component-SEMA routing, and socket-mode witnesses. |
 
 ## Test Hygiene Found
 
@@ -134,9 +138,12 @@ zero tests:
 - `harness`: three exact-selector checks still filtered to zero tests during
   the full flake run. Broader harness cargo and Nix suites passed, including the
   real daemon and e2e tests. This remains to fix.
-- `terminal-cell`: `control-socket-mode` uses an obsolete exact test name and
-  ran zero tests in Nix; local cargo did run
-  `control_socket_mode_is_enforced_by_daemon`. This remains to fix.
+- `terminal-cell`: `control-socket-mode` used an obsolete exact test name and
+  ran zero tests in Nix. Fixed in `e2e7312b`: Nix now runs
+  `tests/daemon_contract_truth.rs`, a sandbox-safe contract witness for the
+  typed working socket mode and generated meta socket mode. The live PTY daemon
+  mode test remains in local/all-target cargo because Nix has no PTY startup
+  surface.
 - `terminal`: `terminal-registration-writes-session-health` used an obsolete
   exact selector. I fixed it in `8e45dfef` and verified the Nix check now runs
   one test.
