@@ -203,11 +203,18 @@ install.
   disko disk-config matching the Hetzner device (`/dev/sda` for cx22;
   verify the cax11/ARM device once) and a hardware-config consumable by
   `nixos-anywhere --generate-hardware-config`. One architecture per host.
-- **horizon-rs (model, Phase 2).** No provider/bootstrap notion today
-  (`INTENT.md` open question). If provisioning is cluster-authored, add a
-  provider/bootstrap dimension to the Machine/Node model (provider,
-  server_type/architecture, bootstrap-flake ref) — this resolves the
-  chicken-and-egg.
+- **horizon-rs (model, Phase 2).** 9 `NodeSpecies` / 6 `NodeService`
+  variants today, none cloud. `Machine` already carries a free-form
+  `location` (can hold `hetzner-fsn1`) and `arch`, but no `public_ipv4`,
+  `provider`, `provider_server_id`, `region`, or `provisioning_state`. The
+  clean resolution is a **spec/identity split**: the cluster authors the
+  *spec* (provider, server_type, region) in the proposal; the provider
+  authors the *identity* (server id, public IPv4) — which is neither
+  cluster-authored nor derivable — so it lands in a provisioning **ledger**
+  that lojix joins at projection (in `fill_viewpoint`, `node.rs:516-594`,
+  exactly where `admin_ssh_pub_keys` is already filled from trust=Max
+  users). Tag the node with a new `NodeSpecies::CloudCompute` (or a
+  `CloudNode` service).
 - **goldragon/datom.nota.** Declare node-N with its `adminSshPubKey` (the
   durable CriomOS key, == the key registered at Hetzner) and, if horizon
   gains the dimension, provider/server_type/architecture/bootstrap-flake.
@@ -230,14 +237,20 @@ Each changes what gets built; my recommended disposition follows each.
    one provider concern; keep lojix purely the steady-state cluster
    deployer. (Phase 2; does not block Phase 1.)
 2. **Chicken-and-egg / horizon provider dimension.** A node must be named
-   in the cluster proposal to be projected, but it doesn't exist until
-   provisioned. Two resolutions: (a) horizon-rs gains a provider/bootstrap
-   dimension so provisioning is cluster-authored from `datom.nota`; or (b)
-   provisioning stays outside horizon and registers the node into the
-   proposal *after* the VM exists (two-phase: provision → amend proposal →
-   project → deploy). **Recommend (b) first** (less model churn, matches
-   "create on demand"), with (a) as the durable end-state once the pattern
-   proves out.
+   in the cluster proposal to be projected (the name is a proposal key; the
+   `MissingSuperNode` invariant enforces "all referenced nodes exist before
+   projection"), but it doesn't exist until provisioned — and its public IP
+   is neither cluster-authored nor derivable. The framing that resolves it
+   is the **spec/identity split** above: the cluster authors the spec
+   (provider, server_type, region) in `datom.nota`; the provider-authored
+   identity (server id, IP) is merged in from a provisioning ledger. Two
+   ways to realize it: (a) horizon-rs gains the full provider dimension and
+   a ledger join at projection; or (b) provisioning stays outside horizon
+   and registers the node's identity into the proposal *after* the VM
+   exists (provision → amend proposal → project → deploy). **Recommend (b)
+   first** (less model churn, matches "create on demand"), with (a) — the
+   ledger-join in `fill_viewpoint` — as the durable end-state once the
+   pattern proves out.
 3. **Default architecture.** ARM (CAX11, ~€3.79/mo, aarch64) or x86 (CX22,
    ~€4.59/mo, x86_64) as the default CriomOS cloud node? Fixes the flake
    system attribute, disko device, and image architecture per host.
