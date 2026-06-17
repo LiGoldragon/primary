@@ -82,6 +82,8 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `signal-version-handover` | `006761df` | Hand-written private handover contract refreshed to current `nota-next` and `signal-frame`; added explicit `nota-text` feature passthrough and Nix checks so the round-trip suite is exercised instead of silently skipped. | `cargo fmt -- --check`, `cargo test`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including `test-nota-text` and `clippy-nota-text`. |
 | `meta-signal-version-handover` | `e37e1fa8` | Meta handover contract lock refreshed to current `nota-next` / `version-projection`; canonical NOTA examples and tests updated from legacy bracket strings to bare atoms. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` with default and `test-round-trip` checks. |
 | `version-projection` | `1a1eeab4` | Optional/dev NOTA text dependency refreshed to current `nota-next`; flake gained explicit `nota-text` test and clippy checks so the optional projection witnesses run in Nix. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including `test-nota-text` and `clippy-nota-text`. |
+| `signal-frame` | `e2eae5c2` | Shared frame kernel optional/dev NOTA dependency refreshed to current `nota-next`; canonical text witnesses updated to bare atoms; test helper updated for current clippy; flake gained fmt, clippy, `nota-text` test, and `nota-text` clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default binary tests, `nota-text` tests, both clippy paths, fmt, and the old schema-composer removal guard. |
+| `signal-sema` | `bdd7fe36` | Universal Sema vocabulary optional/dev NOTA dependency refreshed to current `nota-next`; pattern witnesses updated to bare-atom canonical strings; flake gained explicit `nota-text` test and clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering binary-only and `nota-text` suites. |
 
 ## Test Hygiene Found
 
@@ -117,11 +119,23 @@ zero tests:
   `nota-next`, but the repo also owns optional text projection witnesses. The
   full flake gate now runs both default binary-only tests and explicit
   `nota-text` tests.
+- `signal-frame`: the refreshed NOTA stack changed canonical text witnesses
+  from bracket strings to bare atoms. The default Nix test intentionally
+  checks the binary-only path; explicit `nota-text` test and clippy checks now
+  exercise the CLI/text macro surface too.
+- `signal-sema`: current NOTA rejects non-canonical bracket strings for
+  bare-eligible pattern payloads. The pattern tests now witness bare atom
+  canonical forms and keep bracket strings only for delimiter-bearing text.
+- Downstream sweep needed after foundational support libraries settle:
+  component lockfiles refreshed earlier currently point at `signal-frame`
+  `166bda84`, while the current frame-kernel main is `e2eae5c2`.
 
 ## Next Queue
 
 Continue from the active-repository map, one component family at a time:
 
 1. Foundational active libraries still not covered by this ledger:
-   `signal-frame`, `signal-sema`, `sema`, `sema-engine`, `triad-runtime`, and
-   `signal`.
+   `sema`, `sema-engine`, `triad-runtime`, and `signal`.
+2. Dependent lockfile sweep to move already-ported contracts from
+   `signal-frame` `166bda84` to `e2eae5c2` after the support-library pass
+   finishes.
