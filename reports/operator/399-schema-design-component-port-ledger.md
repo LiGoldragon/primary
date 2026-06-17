@@ -85,6 +85,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `signal-frame` | `e2eae5c2` | Shared frame kernel optional/dev NOTA dependency refreshed to current `nota-next`; canonical text witnesses updated to bare atoms; test helper updated for current clippy; flake gained fmt, clippy, `nota-text` test, and `nota-text` clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default binary tests, `nota-text` tests, both clippy paths, fmt, and the old schema-composer removal guard. |
 | `signal-sema` | `bdd7fe36` | Universal Sema vocabulary optional/dev NOTA dependency refreshed to current `nota-next`; pattern witnesses updated to bare-atom canonical strings; flake gained explicit `nota-text` test and clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering binary-only and `nota-text` suites. |
 | `sema` | none | No schema/NOTA/signal dependency surface and no lockfile movement needed; verified current main as the storage-kernel baseline. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including named kernel, no-legacy, doc, fmt, and clippy checks. |
+| `sema-engine` | `73eea24b` | Engine lock refreshed to `signal-frame` `e2eae5c2` and `signal-sema` `bdd7fe36`; fixed private intra-doc links that the Nix rustdoc gate caught under `-D warnings`. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `RUSTDOCFLAGS='-D warnings' cargo doc --no-deps`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including build, doc, dependency-boundary, engine, operation-log, subscription, fmt, and clippy checks. |
 
 ## Test Hygiene Found
 
@@ -127,6 +128,9 @@ zero tests:
 - `signal-sema`: current NOTA rejects non-canonical bracket strings for
   bare-eligible pattern payloads. The pattern tests now witness bare atom
   canonical forms and keep bracket strings only for delimiter-bearing text.
+- `sema-engine`: the full Nix gate caught private intra-doc links that local
+  tests and clippy did not. The links now render as code text instead of
+  public rustdoc links to private items.
 - Downstream sweep needed after foundational support libraries settle:
   component lockfiles refreshed earlier currently point at `signal-frame`
   `166bda84`, while the current frame-kernel main is `e2eae5c2`.
@@ -136,7 +140,7 @@ zero tests:
 Continue from the active-repository map, one component family at a time:
 
 1. Foundational active libraries still not covered by this ledger:
-   `sema-engine`, `triad-runtime`, and `signal`.
+   `triad-runtime` and `signal`.
 2. Dependent lockfile sweep to move already-ported contracts from
    `signal-frame` `166bda84` to `e2eae5c2` after the support-library pass
    finishes.
