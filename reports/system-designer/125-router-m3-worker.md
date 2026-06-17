@@ -64,6 +64,7 @@ Ran in `/git/github.com/LiGoldragon/router`:
 cargo fmt --check
 cargo test forward_admission --lib
 cargo test --test end_to_end_remote_forward
+cargo clippy -- -D warnings
 ```
 
 All passed.
