@@ -47,6 +47,11 @@ runs is just Nix.
 
 ## Flake inputs — choosing the form
 
+This is the canonical home for detailed rules about Nix source refs,
+flake input forms, `--override-input`, and remote-vs-local testing
+discipline. Other skills may mention the rule, but they point back here
+rather than restating the full policy.
+
 Default to `github:<owner>/<repo>` for any sibling repo you consume.
 It is portable (any machine resolves it identically), reproducible
 (the lock pins to a commit, not a working-tree state), and survives

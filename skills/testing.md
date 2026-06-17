@@ -112,6 +112,9 @@ When production-vs-test status is ambiguous (e.g. a validator an operator might 
 
 ## Multi-repo remote override tests
 
+The detailed flake-ref and override-input policy lives in
+`skills/nix-discipline.md`; this section only states the testing shape.
+
 When a feature spans several sibling repositories, create a central test
 runner in the consumer repo that rebuilds the whole stack together. Commit
 and push each participating repo first; the runner uses Nix input overrides
