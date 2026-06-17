@@ -48,3 +48,12 @@ Two cases are still not solved by a mechanical sweep:
    thing as deploying a pushed remote repo. If the rule is absolute, this needs
    a design change to the test harness or deploy protocol, not a grep rewrite.
 
+Final focused scan results after the fixes:
+
+- no remaining `path:/git`, `git+file://`, local `--override-input ... path:`,
+  or `inputs.<name>.url = "path:..."` hits in flakes/scripts under
+  `/git/github.com/LiGoldragon`;
+- remaining relative stub inputs: `CriomOS/flake.nix`, `CriomOS-pkgs/flake.nix`,
+  `CriomOS-home/flake.nix`, and `lojix/tests/engine_routing.rs`;
+- remaining absolute local test inputs:
+  `lojix-cli/tests/eval.rs` and `lojix-cli/tests/builder_validation.rs`.
