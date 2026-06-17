@@ -41,8 +41,10 @@ For this workspace, the best route is:
    question-answering is useful.
 3. Escalate to Gemini Pro only for hard temporal reasoning or high-value
    reviews.
-4. Evaluate Qwen/InternVL open-weight models later as an optional local
-   or hosted second opinion, not as the first production dependency.
+4. Treat Qwen as the main open-weight/open-model challenger. Qwen3.5
+   Flash/Plus and cheap Qwen2.5-VL hosting are more competitive than the
+   first pass implied, especially if we use a hosted API before taking on
+   local GPU serving.
 
 ## What "watching video" means technically
 
@@ -163,11 +165,29 @@ Cost depends on how it is served:
   lower global figures in another.
 - OpenRouter currently lists Qwen2.5-VL-72B-Instruct at $0.80/M input
   and $1/M output, with 131K context.
+- CloudPrice's provider comparison for Qwen2.5-VL-72B shows that hosted
+  price can be much lower than Alibaba's direct list price: it lists
+  Nebius at $0.13/M input and $0.40/M output, Fireworks around
+  $0.90/M input and output, Novita at $0.80/M input and output, and
+  OpenRouter at $0.80/M input and $1/M output.
+- OpenRouter lists Qwen3.5 Flash at $0.065/M input and $0.26/M output
+  with 1M context and text/image/video input. That is extremely
+  competitive for a hosted multimodal model if quality is sufficient.
+- OpenRouter lists Qwen3.5 Plus at $0.30/M input and $1.80/M output,
+  also with 1M context and text/image/video input. This is less cheap
+  than Flash but still competitive against premium closed models.
 
 The price spread is large because "open-weight" can mean official API,
 third-party serverless inference, dedicated endpoint, or local GPU. The
 model family is attractive, but the exact provider path must be tested
 with our actual video payload format.
+
+This corrects the practical recommendation: Qwen should not be treated
+only as a later curiosity. It is the most plausible low-cost competitor
+to Gemini for the native-video slot. Gemini still has the cleanest
+official video-token documentation, but Qwen3.5 Flash/Plus deserve an
+early hosted bakeoff because their listed prices are in the same cost
+class or cheaper, depending on how video is metered by the provider.
 
 ### InternVL and other open models
 
@@ -241,9 +261,10 @@ For the Codex videographer lane:
    editorial review.
 5. GPT-5.4 mini or GPT-5.5 for Codex-integrated frame review, script
    generation, and tool orchestration, not bulk native video ingestion.
-6. Qwen2.5-VL / Qwen-VL / InternVL as an experimental open-weight lane
-   after the local project harness can produce standardized video
-   segments and evaluation prompts.
+6. Qwen3.5 Flash/Plus and Qwen2.5-VL through a hosted provider as an
+   early bakeoff against Gemini, before local open-weight serving.
+7. InternVL and fully local open-weight serving after the hosted bakeoff
+   proves that the open-model quality is worth operational complexity.
 
 ## How this changes the harness design
 
@@ -270,11 +291,12 @@ This keeps cost down and makes the model's evidence inspectable.
 
 ## Practical recommendation
 
-For now, do not chase local open-weight video as the first system. The
-first system should use our newly deployed local tools to prepare strong
-evidence packets, then call a cheap native-video model only when a
-question needs actual video. Gemini Flash-Lite/Flash are the current
-best cost/performance candidates for that role.
+For now, do not chase local open-weight video serving as the first
+system. The first system should use our newly deployed local tools to
+prepare strong evidence packets, then call a cheap native-video model
+only when a question needs actual video. Gemini Flash-Lite/Flash and
+Qwen3.5 Flash/Plus are the current cost/performance candidates for that
+role.
 
 Open-weight video is worth a second phase. The first useful experiment
 would be not "install a huge video model", but a bakeoff on five short
@@ -283,8 +305,9 @@ clips:
 1. Local-only evidence packet.
 2. Gemini Flash-Lite low resolution.
 3. Gemini Flash default resolution.
-4. Qwen2.5-VL through a hosted provider.
-5. One open model locally only if the deploy path is clean.
+4. Qwen3.5 Flash or Qwen3.5 Plus through a hosted provider.
+5. Qwen2.5-VL-72B through the cheapest credible hosted provider.
+6. One open model locally only if the deploy path is clean.
 
 Score them against concrete editing tasks: scene summary, event
 localization, speaker/action alignment, caption confidence, visual
@@ -322,8 +345,15 @@ defects, and final editorial usefulness.
 - Alibaba Cloud Model Studio, "Supported Models and Capabilities
   Overview," accessed 2026-06-17:
   https://www.alibabacloud.com/help/en/model-studio/models
+- OpenRouter, "Qwen3.5 Flash," accessed 2026-06-17:
+  https://openrouter.ai/qwen/qwen3.5-flash-20260224/pricing
+- OpenRouter, "Qwen3.5 Plus 2026-04-20," accessed 2026-06-17:
+  https://openrouter.ai/qwen/qwen3.5-plus-20260420
 - OpenRouter, "Qwen2.5-VL 72B Instruct," accessed 2026-06-17:
   https://openrouter.ai/qwen/qwen2.5-vl-72b-instruct
+- CloudPrice, "Qwen2.5 VL 72B Instruct pricing and specs," accessed
+  2026-06-17:
+  https://cloudprice.net/models/alibaba-qwen2-5-vl-72b-instruct
 - arXiv, "InternVL3.5: Advancing Open-Source Multimodal Models in
   Versatility, Reasoning, and Efficiency," accessed 2026-06-17:
   https://arxiv.org/html/2508.18265v1
