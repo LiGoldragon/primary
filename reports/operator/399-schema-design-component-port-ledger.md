@@ -84,6 +84,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `version-projection` | `1a1eeab4` | Optional/dev NOTA text dependency refreshed to current `nota-next`; flake gained explicit `nota-text` test and clippy checks so the optional projection witnesses run in Nix. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including `test-nota-text` and `clippy-nota-text`. |
 | `signal-frame` | `e2eae5c2` | Shared frame kernel optional/dev NOTA dependency refreshed to current `nota-next`; canonical text witnesses updated to bare atoms; test helper updated for current clippy; flake gained fmt, clippy, `nota-text` test, and `nota-text` clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default binary tests, `nota-text` tests, both clippy paths, fmt, and the old schema-composer removal guard. |
 | `signal-sema` | `bdd7fe36` | Universal Sema vocabulary optional/dev NOTA dependency refreshed to current `nota-next`; pattern witnesses updated to bare-atom canonical strings; flake gained explicit `nota-text` test and clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering binary-only and `nota-text` suites. |
+| `sema` | none | No schema/NOTA/signal dependency surface and no lockfile movement needed; verified current main as the storage-kernel baseline. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including named kernel, no-legacy, doc, fmt, and clippy checks. |
 
 ## Test Hygiene Found
 
@@ -135,7 +136,7 @@ zero tests:
 Continue from the active-repository map, one component family at a time:
 
 1. Foundational active libraries still not covered by this ledger:
-   `sema`, `sema-engine`, `triad-runtime`, and `signal`.
+   `sema-engine`, `triad-runtime`, and `signal`.
 2. Dependent lockfile sweep to move already-ported contracts from
    `signal-frame` `166bda84` to `e2eae5c2` after the support-library pass
    finishes.
