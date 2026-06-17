@@ -88,6 +88,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `sema-engine` | `73eea24b` | Engine lock refreshed to `signal-frame` `e2eae5c2` and `signal-sema` `bdd7fe36`; fixed private intra-doc links that the Nix rustdoc gate caught under `-D warnings`. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `RUSTDOCFLAGS='-D warnings' cargo doc --no-deps`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including build, doc, dependency-boundary, engine, operation-log, subscription, fmt, and clippy checks. |
 | `triad-runtime` | `f46f66ee` | Runtime lock refreshed to `signal-frame` `e2eae5c2` and current `nota-next`; flake gained fmt and explicit `nota-text` test checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default runtime tests, `nota-text` reaction tests, fmt, and all-feature clippy. |
 | `signal` | `7cdb0fe8` | Legacy sema/criome contract lock refreshed to current `nota-next` and `signal-sema`; enabled `signal-sema/nota-text` because `signal` derives NOTA text forms over `PatternField<T>` unconditionally; bare-atom canonical text witnesses updated; flake gained fmt and clippy checks. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering package, tests, fmt, clippy, and dev shell. |
+| `schema-rust-next` | `6e04d70f` | Rust emitter dev/test stack refreshed to current `nota-next`, `signal-frame`, `signal-sema`, `triad-runtime`, and `sema-engine`; removed the stale `sema-engine` feature-branch pin now that main carries the versioned-family surface. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering 35 flake checks including generated-source guards, rustdoc, fmt, clippy, and release tests. |
 
 ## Test Hygiene Found
 
@@ -137,6 +138,9 @@ zero tests:
   `PatternField<T>` NOTA impls live behind `signal-sema/nota-text`; the legacy
   `signal` contract owns text projection unconditionally, so it must explicitly
   enable that dependency feature.
+- `schema-rust-next`: a stale dev-dependency branch
+  (`sema-engine` `versioned-family-identity`) had survived after the work
+  reached main. The emitter now tests against `sema-engine` main.
 - Downstream sweep needed after foundational support libraries settle:
   component lockfiles refreshed earlier currently point at `signal-frame`
   `166bda84`, while the current frame-kernel main is `e2eae5c2`.
