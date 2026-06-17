@@ -20,8 +20,8 @@ need one more design decision.
 
 ## Implemented slice
 
-Branch surface: `/git/github.com/LiGoldragon/signal-mirror`, current working
-copy.
+Branch surface: `signal-mirror` branch `mirror-object-notice`, commit
+`24ee1949` (`signal-mirror: add object notice contract`).
 
 The ordinary mirror contract now has:
 
