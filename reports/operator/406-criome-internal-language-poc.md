@@ -1,14 +1,15 @@
-# Crayome Internal Language POC
+# Criome Internal Language POC
 
-Operator report for the Crayome internal language proof of concept, landed on
+Operator report for the Criome internal language proof of concept, landed on
 `criome` main as two commits:
 
-- `865f8b3c` — `criome: add Crayome language policy POC`
+- `865f8b3c` — the initial language policy POC commit; its subject used the
+  wrong spelling.
 - `132f6202` — `criome: include schema sketches in Nix source`
 
 ## Frame
 
-The psyche prompt asked for a Crayome internal language: a limited, typed
+The psyche prompt asked for a Criome internal language: a limited, typed
 operation set for identity, public keys, complex authority, quorum / timelock
 mechanics, and divergence reconciliation. I implemented the operator POC in
 today's `criome` repo, but scoped it as **eventual-Criome concept code**, not as
@@ -21,7 +22,7 @@ pressure: real Rust and tests, plus a schema sketch, without pretending the
 daemon now exposes this language over the public socket.
 
 Spirit capture: `niuj` records the durable low-certainty design direction:
-Crayome starts as a limited typed policy language over public-key identity
+Criome starts as a limited typed policy language over public-key identity
 atoms, complex identity contracts, quorum / timelock rules, and explicit
 divergence-reconciliation objects.
 
@@ -49,7 +50,7 @@ VM.
   [Tezos timelocks](https://docs.tezos.com/smart-contracts/timelocks),
   [OpenZeppelin TimelockController](https://docs.openzeppelin.com/contracts/4.x/api/governance#TimelockController).
 
-Operator synthesis: Crayome should not start as "EVM but ours." The better
+Operator synthesis: Criome should not start as "EVM but ours." The better
 kernel is a typed policy evaluator over evidence. Public keys are atoms;
 identity contracts compose atoms into authority; operations ask whether a
 specific evidence set satisfies the policy.
@@ -89,7 +90,7 @@ That single relation covers the first important policy family:
 ## Schema Sketch
 
 The schema sketch lives at
-`/git/github.com/LiGoldragon/criome/schema/crayome.language.schema`.
+`/git/github.com/LiGoldragon/criome/schema/criome.language.schema`.
 It is intentionally marked concept schema until the generator consumes this
 surface directly.
 
@@ -192,7 +193,7 @@ nix build --refresh --no-link --print-out-paths github:LiGoldragon/criome/main#c
 ```
 
 The first remote Nix attempt correctly found a packaging miss:
-`craneLib.cleanCargoSource` filtered out `schema/crayome.language.schema`, so
+`craneLib.cleanCargoSource` filtered out `schema/criome.language.schema`, so
 the test could not `include_str!` it in the builder. Commit `132f6202` changes
 the crate source filter to include `.schema` files; the refreshed remote Nix
 test, clippy, and build checks passed against that commit.
@@ -230,8 +231,8 @@ perform cross-network reconciliation. Those are next slices after the object
 set stabilizes.
 
 The immediate next implementable slice is to move the concept schema into a
-generated contract surface once the owner decides whether Crayome policy belongs
-in `signal-criome`, `meta-signal-criome`, or a new `signal-crayome` contract.
+generated contract surface once the owner decides whether Criome policy belongs
+in `signal-criome`, `meta-signal-criome`, or a new `signal-criome-policy` contract.
 My lean: keep it out of `signal-criome` until one daemon path actually consumes
 `Contract + Evidence -> Decision`; then hoist the wire vocabulary to the
 contract crate that owns that boundary.
