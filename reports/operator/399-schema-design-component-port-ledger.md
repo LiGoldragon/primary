@@ -92,6 +92,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `signal-spirit` | `2688a58a` | Ordinary Spirit contract lock refreshed to current `schema-rust-next`, `signal-frame`, and `version-projection`; schema regeneration produced byte-identical checked-in Rust. | `SIGNAL_SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default binary graph, dependency-boundary tests, rustdoc, fmt, clippy, and release tests. |
 | `meta-signal-spirit` | `c013a82f` | Spirit meta contract lock refreshed to current `schema-rust-next`, `signal-frame`, `signal-spirit`, and `version-projection`; schema regeneration produced byte-identical checked-in Rust; Nix text-projection checks now enable `nota-text` instead of running a cfg-disabled round-trip test. | `META_SIGNAL_SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including default binary tests, `test-nota-text`, `clippy-nota-text`, rustdoc, fmt, and clippy. |
 | `spirit` | `2ff55242` | Daemon lock refreshed to current ordinary/meta Spirit contracts and support stack (`schema-rust-next`, `signal-frame`, `signal-sema`, current `sema-engine@0.6.2`, `triad-runtime`, `version-projection`, and `agent`); `SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build` produced byte-identical daemon-local generated Rust; historical sema-engine migration readers remain pinned. | `SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering feature-matrix builds/tests (`nota-text`, `testing-trace`, no-default-features), docs, clippy, closed-claims, binary-startup, trace-socket, instrumentation, and release suites. |
+| `signal-version-handover` | `615eaae8` | Private handover working contract lock refreshed to current `signal-frame` and `version-projection`; `version-projection/nota-text` is now enabled in the default dependency because the library unconditionally derives/implements NOTA over projection scalar types. | `cargo fmt -- --check`, `cargo test`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default build/test/doc/clippy and explicit `nota-text` test/clippy checks. |
 
 ## Test Hygiene Found
 
@@ -152,6 +153,11 @@ zero tests:
   The current `sema-engine@0.6.2` moved to main `73eea24b`; the older
   `sema-engine` migration readers remain pinned so production store migration
   paths stay available.
+- `signal-version-handover`: the default Nix build caught that the library
+  unconditionally uses NOTA impls for `version-projection` scalar types while
+  the dependency feature was only enabled by the crate's optional
+  `nota-text` test feature. The dependency now enables
+  `version-projection/nota-text` directly.
 - Downstream sweep needed after foundational support libraries settle:
   component lockfiles refreshed earlier currently point at `signal-frame`
   `166bda84`, while the current frame-kernel main is `e2eae5c2`.
