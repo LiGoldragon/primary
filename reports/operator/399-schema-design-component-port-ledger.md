@@ -91,6 +91,7 @@ These repos had already been refreshed and pushed in the current operator pass:
 | `schema-rust-next` | `6e04d70f` | Rust emitter dev/test stack refreshed to current `nota-next`, `signal-frame`, `signal-sema`, `triad-runtime`, and `sema-engine`; removed the stale `sema-engine` feature-branch pin now that main carries the versioned-family surface. | `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering 35 flake checks including generated-source guards, rustdoc, fmt, clippy, and release tests. |
 | `signal-spirit` | `2688a58a` | Ordinary Spirit contract lock refreshed to current `schema-rust-next`, `signal-frame`, and `version-projection`; schema regeneration produced byte-identical checked-in Rust. | `SIGNAL_SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering default binary graph, dependency-boundary tests, rustdoc, fmt, clippy, and release tests. |
 | `meta-signal-spirit` | `c013a82f` | Spirit meta contract lock refreshed to current `schema-rust-next`, `signal-frame`, `signal-spirit`, and `version-projection`; schema regeneration produced byte-identical checked-in Rust; Nix text-projection checks now enable `nota-text` instead of running a cfg-disabled round-trip test. | `META_SIGNAL_SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` including default binary tests, `test-nota-text`, `clippy-nota-text`, rustdoc, fmt, and clippy. |
+| `spirit` | `2ff55242` | Daemon lock refreshed to current ordinary/meta Spirit contracts and support stack (`schema-rust-next`, `signal-frame`, `signal-sema`, current `sema-engine@0.6.2`, `triad-runtime`, `version-projection`, and `agent`); `SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build` produced byte-identical daemon-local generated Rust; historical sema-engine migration readers remain pinned. | `SPIRIT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, `cargo fmt -- --check`, `cargo test --all-targets --all-features`, `cargo clippy --all-targets --all-features -- -D warnings`, full `nix flake check --builders '' -L` covering feature-matrix builds/tests (`nota-text`, `testing-trace`, no-default-features), docs, clippy, closed-claims, binary-startup, trace-socket, instrumentation, and release suites. |
 
 ## Test Hygiene Found
 
@@ -147,6 +148,10 @@ zero tests:
   `#[cfg(feature = "nota-text")]` test without enabling `nota-text`, so it
   could pass with zero round-trip tests. It is now an explicit
   `test-nota-text` check, with matching `clippy-nota-text`.
+- `spirit`: the lockfile intentionally contains three sema-engine generations.
+  The current `sema-engine@0.6.2` moved to main `73eea24b`; the older
+  `sema-engine` migration readers remain pinned so production store migration
+  paths stay available.
 - Downstream sweep needed after foundational support libraries settle:
   component lockfiles refreshed earlier currently point at `signal-frame`
   `166bda84`, while the current frame-kernel main is `e2eae5c2`.
