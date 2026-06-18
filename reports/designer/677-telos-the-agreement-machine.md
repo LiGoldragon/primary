@@ -1,4 +1,4 @@
-# 677 — Telos, the agreement machine
+# 677 — criome, the agreement machine within Telos
 
 *The vision, seen again. The psyche asked to see the system as a whole, with one
 new framing folded into the centre: **Telos is a universal agreement machine, and
