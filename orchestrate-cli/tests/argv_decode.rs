@@ -1,8 +1,11 @@
 use std::path::Path;
 
+use nota_next::NotaEncode;
 use orchestrate_cli::scope::RawScope;
 use orchestrate_cli::{Lane, NormalizedScope};
-use signal_orchestrate::{Observation, OrchestrateRequest, RoleName, ScopeReference};
+use signal_orchestrate::{
+    Observation, OrchestrateRequest, RoleName, ScopeReference, schema::lib::Input as SchemaInput,
+};
 
 fn scope(raw: &str) -> NormalizedScope {
     NormalizedScope::from_raw(&RawScope::new(raw), Path::new("/home/li")).unwrap()
@@ -55,12 +58,10 @@ fn claim_with_task_scope_projects_to_task_reference() {
 }
 
 #[test]
-fn release_decodes_to_role_release_with_role_name() {
+fn release_decodes_to_schema_release_with_bare_role_name() {
     let request = orchestrate_cli::request::release_request(lane("operator")).expect("release");
-    match request {
-        OrchestrateRequest::Release(record) => assert_eq!(record.role, role("operator")),
-        other => panic!("expected Release, got {other:?}"),
-    }
+    assert!(matches!(request, SchemaInput::Release(_)));
+    assert_eq!(request.to_nota(), "(Release operator)");
 }
 
 #[test]

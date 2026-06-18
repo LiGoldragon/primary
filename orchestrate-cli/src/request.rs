@@ -6,7 +6,11 @@
 //! are a compatibility projection of accepted daemon claims.
 
 use signal_orchestrate::{
-    Observation, OrchestrateRequest, RoleClaim, RoleRelease, ScopeReason, ScopeReference,
+    Observation, OrchestrateRequest, RoleClaim, ScopeReason, ScopeReference,
+    schema::lib::{
+        Input as SchemaInput, RoleIdentifier as SchemaRoleIdentifier,
+        RoleName as SchemaRoleName, RoleRelease as SchemaRoleRelease,
+    },
 };
 
 use crate::error::{Error, Result};
@@ -30,9 +34,10 @@ pub fn claim_request(
     }))
 }
 
-pub fn release_request(lane: Lane) -> Result<OrchestrateRequest> {
-    let role = lane.role_name()?;
-    Ok(OrchestrateRequest::Release(RoleRelease { role }))
+pub fn release_request(lane: Lane) -> Result<SchemaInput> {
+    lane.role_name()?;
+    let role = SchemaRoleName::new(SchemaRoleIdentifier::new(lane.as_token().to_string()));
+    Ok(SchemaInput::Release(SchemaRoleRelease::new(role)))
 }
 
 pub fn observation_request() -> OrchestrateRequest {

@@ -1,12 +1,12 @@
 //! Claim / release / status flows.
 //!
 //! Each flow projects argv into a typed
-//! [`signal_orchestrate::OrchestrateRequest`] and reduces the projection into
+//! the current signal-orchestrate request roots and reduces the projection into
 //! the lock-file side effect plus a typed outcome the caller can render.
 //! The legacy shell helper's plain-text rendering is built on top of
 //! [`StatusReport`] and the per-flow outcomes in [`crate::render`].
 
-use signal_orchestrate::OrchestrateRequest;
+use signal_orchestrate::{OrchestrateRequest, schema::lib::Input as SchemaInput};
 
 use crate::error::{Error, Result};
 use crate::lane::Lane;
@@ -43,7 +43,7 @@ pub enum ClaimOutcome {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ReleaseOutcome {
-    pub request: OrchestrateRequest,
+    pub request: SchemaInput,
     pub lane: Lane,
 }
 
