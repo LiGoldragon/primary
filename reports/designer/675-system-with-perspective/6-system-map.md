@@ -447,7 +447,7 @@ flowchart TB
     G1["m3: real attestation on path + router replay/freshness (land together)"]
     G2["m4: cross-node live forward ouranos ↔ prometheus"]
     G3["criome.nix / message-router.nix modules (not built)"]
-    G4["cluster-root admission-signing CLI<br/>(does not exist — the single blocker to gated e2e)"]
+    G4["cluster-root admission-SIGNING CEREMONY<br/>(the gate verifies BLS admissions + is tested;<br/>nothing MINTS the envelope outside tests — the blocker)"]
   end
   proven -.-> stub -.-> gated
   style proven fill:#1f5f3a,color:#fff
@@ -463,9 +463,14 @@ admission gate itself is real `blst` BLS12-381 (33 green tests) — real BLS jus
 is not wired onto the path yet. GATED to the live track: real attestation on the
 path plus router replay/freshness (m3, must land together); cross-node live
 forward ouranos ↔ prometheus (m4); the `criome.nix` and `message-router.nix`
-modules; and the cluster-root admission-signing CLI — which *does not exist* and
-is the single blocker between a wired gate and an operable gated e2e (`4`
-§proven-vs-gated).
+modules; and the cluster-root admission-**signing ceremony**. Precisely: the
+*gate* already exists and is tested — `admission.rs::ClusterRoot::admits` verifies
+a real BLS12-381 admission envelope over the `RegistrationStatement`, and
+`daemon_skeleton::cluster_root_gates_registration` proves reject-unadmitted +
+accept-valid. What is missing is any tool that *mints* an admission envelope:
+nothing signs a `RegistrationStatement` outside tests. So the unblock is not
+"invent cluster-root admission" — it is "make the cluster-root signing ceremony
+usable from the CLI/tooling path" (`4` §proven-vs-gated).
 
 The physical bed: four `goldragon.criome` Yggdrasil nodes (zeus, prometheus also
 nix-cache, ouranos, tiger) all inside `200::/7`; ouranos ↔ prometheus is the m4
@@ -638,7 +643,13 @@ on `next`/feature branches in `~/wt` worktrees, and operators own code-repo `mai
 plus the rebase/repin/regeneration work — the 674 arc is the model in action, a
 designer design arc landed by the operator lanes (`4` §branch-discipline, `5`
 §0). The single nearest unblock for an *operable* live e2e is the one piece that
-does not yet exist: the cluster-root admission-signing CLI (`4` §gated).
+does not yet exist: the cluster-root admission-**signing ceremony** that *mints* an
+admission envelope (a cluster-root-signed `RegistrationStatement`) for a new
+identity. The admission *gate* that verifies such envelopes already exists and is
+tested (`admission.rs::ClusterRoot::admits`, `cluster_root_gates_registration`);
+only the minting side is absent — nothing signs outside tests. So the unblock is
+"make the signing ceremony usable from the CLI/tooling path," not "invent
+admission" (`4` §gated).
 
 ### One grounding fix worth flagging
 

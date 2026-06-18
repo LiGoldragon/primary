@@ -90,9 +90,14 @@ lines 29-31).
 - Mirror-target persistence across daemon restart (store-axes slice, needed for
   self-resume); the real router-carried notify + mirror auto-fetch (673 lines
   32-34).
-- The cluster-root **provisioning ceremony** — the Option-A one-shot
-  admission-signing CLI does not exist yet; it is the single blocker between
-  "wired gate" and "operable gated e2e" (669/3 lines 30-34, 271-296).
+- The cluster-root **admission-signing ceremony**. Precise: the *gate* already
+  verifies BLS admission envelopes and is tested (`admission.rs::ClusterRoot::admits`
+  + `daemon_skeleton::cluster_root_gates_registration`: reject-unadmitted,
+  accept-valid). What is missing is the tool that *mints* an admission envelope —
+  nothing signs a `RegistrationStatement` outside tests. The Option-A one-shot
+  signing CLI is that missing piece: the unblock is "make the signing ceremony usable
+  from the CLI/tooling path," not "invent admission," and it is the single blocker
+  between a verified gate and an operable gated e2e (669/3 lines 30-34, 271-296).
 
 **The one offline gap to clean-checkout green (673 lines 36-47):** not a design
 hole. `signal-router@router-network-transport` lags on an old schema-next
