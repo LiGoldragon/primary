@@ -95,6 +95,9 @@ pub enum Error {
     #[error(transparent)]
     CommandLine(#[from] signal_frame::CommandLineError),
 
+    #[error("daemon startup configuration rkyv encode failed")]
+    StartupConfigurationEncode,
+
     #[error("daemon build failed with status {status}")]
     DaemonBuildFailed { status: String },
 
