@@ -18,7 +18,7 @@ The frame and method for the session is in `0-frame-and-method.md`.
 | Piece | State | One line | Key tension |
 |---|---|---|---|
 | Quorum primitive | landed | k-of-n of keys or sub-quorums signing one content-addressed proposition over an attested moment; evaluator on main | Built in isolation but divorced from system-scope visibility until the Fork-A pulse decision lands |
-| Content-addressed contracts (`z9d6`) | landed | Immutable blake3-identified contracts whose composition arms reference sub-contracts by digest | Quorum-member distinctness not enforced in the persisted version: a duplicate key can satisfy 2-of-2 |
+| Content-addressed contracts (`z9d6`) | landed | Immutable blake3-identified contracts whose composition arms reference sub-contracts by digest | Distinctness now enforced (operator 418): duplicate quorum members rejected, duplicate operation signatures don't count twice — operator/407 blocker closed |
 | Policy-language vocabulary | landed | Schema-first typed policy language over public-key atoms: quorums, time-locks, divergence-reconciliation | Router registry-owner fork unsettled (sole matcher vs double filter) |
 | Attested clock | landed | Every operation carries its own AttestedMoment; evaluator reads no ambient `SystemTime::now()` | The subscription-delivery owner fork blocks pulse integration, not the clock itself |
 | Pulse and fan-out (`m0p2` / `l2ha`) | partial | Pushes references (not payloads) to affected components after authorization | Who owns the fan-out matcher — criome-computed impact vs router-only delivery; registry currently counts, delivers nothing |
@@ -74,10 +74,10 @@ reference point, losing reuse and making quorum panels non-durable. With it, a
 time-authority quorum or release-panel policy defined once is referenced by many
 parents, and its admission to the store is an immutable fact.
 
-Key tension: **quorum-member distinctness is not enforced** in the persisted
-version (`3c05122`). A duplicate key can satisfy a 2-of-2 quorum once. This was
-flagged as a blocker in operator/407 but has not been corrected. It is a hygiene
-gap in distinctness checking, not a shape problem.
+Key tension: **resolved.** Operator 418 confirms current criome **rejects
+duplicate quorum members** and duplicate operation signatures do not count twice,
+so the operator/407 distinctness blocker is **closed**. The 682-era framing of
+this as an uncorrected blocker was stale; no open distinctness gap remains.
 
 ### 3. Policy-language vocabulary — landed
 
