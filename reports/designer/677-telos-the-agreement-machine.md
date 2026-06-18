@@ -13,7 +13,7 @@ what is designed, what is still an open fork.*
 Ground: reports `675/6-system-map.md` (the multi-zoom structure),
 `674.15` (criome's policy language + binding constraints), `676/5-comparison.md`
 (criome is the predicate/validator family, not a blockchain). Spirit records
-`pviw` (Telos = the meta-project), `obuf` and `m0p2` (the agreement-machine
+`pviw` (Telos = the meta-project), `p3td` and `m0p2` (the agreement-machine
 framing + the object-update pulse), `vhs2` (limited typed policy language),
 `ay3y` (attested crystallized-past clock), `gc0n` (adjudicator ladder),
 `z9d6` (content-addressed composable objects), `wckt` (criome auth-only).
@@ -62,7 +62,7 @@ whole endeavour the primitive serves.
 
 A quorum is the smallest complete unit of agreement: **a threshold of admitted
 keys, each contributing a real BLS signature over the same content-addressed
-proposition.** `obuf` states it as the load-bearing decision — [everything is a
+proposition.** `p3td` states it as the load-bearing decision — [everything is a
 quorum]. Everything criome treats as *true* is true because a quorum said so over
 a hash, and everything it treats as *false-or-forged* is so because the
 signatures do not reach the threshold over that exact hash.
@@ -105,7 +105,7 @@ hash, stamped with when — and the whole system is its iteration.
 
 ## 2. The quorum scoped by membership — self-quorum and multi-party quorum
 
-The deepest move in `obuf` is that **one quorum primitive serves two purposes,
+The deepest move in `p3td` is that **one quorum primitive serves two purposes,
 distinguished only by who its members are.** There are not two mechanisms (a
 reliability mechanism and a trust mechanism); there is one mechanism scoped two
 ways. [One quorum primitive serves both, scoped by membership - a principal's own
@@ -143,7 +143,7 @@ flowchart TB
   style SAME fill:#5a3a1f,color:#fff
 ```
 
-The self-quorum is the part that is easy to miss and load-bearing. `obuf`: [Each
+The self-quorum is the part that is easy to miss and load-bearing. `p3td`: [Each
 principal runs more than one node and asks its own quorum to make its
 attestations reliable and its timestamps credible: forging an attestation would
 require compromising a threshold of the principal's own nodes rather than a
@@ -161,7 +161,7 @@ trust-crossing state].
 
 The same `Threshold(k-of-n)` over the same `PolicyMember` set, the same BLS
 verify, the same evaluator — the membership set is the only thing that changes.
-This is the unification `obuf` makes: reliability and trust are not two features,
+This is the unification `p3td` makes: reliability and trust are not two features,
 they are one quorum primitive aimed at two membership scopes.
 
 ## 3. The pulse and propagation — references, not payloads
@@ -387,7 +387,7 @@ right next thing for the psyche to steer.
 `reports/designer/675-system-with-perspective/6-system-map.md`,
 `reports/designer/674-criome-internal-engine/15-implementation-architecture-and-constraints.md`,
 `reports/designer/676-contract-machinery-comparison/5-comparison.md`; Spirit
-records `pviw`, `obuf`, `m0p2`, `vhs2`, `ay3y`, `gc0n`, `z9d6`, `wckt`; landed
+records `pviw`, `p3td`, `m0p2`, `vhs2`, `ay3y`, `gc0n`, `z9d6`, `wckt`; landed
 commits verified on `origin/main` — `criome 3c05122` and `signal-criome 9d8ea38`,
 with the SEMA contract family read verbatim from `criome` `src/actors/store.rs` /
 `src/tables.rs` / `src/actors/root.rs`.
