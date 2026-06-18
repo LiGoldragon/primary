@@ -1,12 +1,12 @@
-# 419 — Menchie approval surface and Prometheus Spirit
+# 419 — Mentci approval surface and Prometheus Spirit
 
 ## Trigger
 
-The psyche described the next local-approval shape for criome: mirrored Spirit state across machines, edits authorized through criome, and a psyche-facing Menchie interface that can receive escalated questions, show an LLM's suggested answer with context, and return the human approval decision.
+The psyche described the next local-approval shape for criome: mirrored Spirit state across machines, edits authorized through criome, and a psyche-facing Mentci interface that can receive escalated questions, show an LLM's suggested answer with context, and return the human approval decision.
 
 The durable part was captured as Spirit `7x5z`:
 
-> Menchie becomes the psyche-facing criome approval component: a daemon plus a Menchie TUI and NOTA CLI surface that presents escalated criome approval questions to the psyche, carries LLM-suggested answers with explanation and context, and returns an approval decision into criome. Menchie owns the interactive approval surface while status bar, popup, and email clients are future notification clients. This is the concrete local-user approval path for criome escalations to the psyche.
+> Mentci becomes the psyche-facing criome approval component: a daemon plus a Mentci TUI and NOTA CLI surface that presents escalated criome approval questions to the psyche, carries LLM-suggested answers with explanation and context, and returns an approval decision into criome. Mentci owns the interactive approval surface while status bar, popup, and email clients are future notification clients. This is the concrete local-user approval path for criome escalations to the psyche.
 
 The home-vs-system criome split, encrypted multi-key daemon store, Prometheus live node, and Spirit/mirror authorization flow are kept as design questions here because the prompt used exploratory language around them and they cross into system-operator deployment.
 
@@ -78,13 +78,13 @@ Verification:
 
 ## Architecture Consequence
 
-Menchie should be treated as the psyche approval surface, not as criome itself.
+Mentci should be treated as the psyche approval surface, not as criome itself.
 
 The clean split is:
 
 - `criome` decides whether an object/action needs psyche approval and emits an escalation question.
 - `mentci-lib` owns the interactive approval model: question, suggested answer, explanation, context, decision, queue, and state transition.
-- A Menchie daemon owns the user's interactive approval session and key material.
+- A Mentci daemon owns the user's interactive approval session and key material.
 - `mentci-tui`, `mentci-egui`, status-bar popups, and email bridges are clients over the same model.
 - The NOTA CLI mode is the text projection of the same approval verbs, not a separate state machine.
 
@@ -97,14 +97,14 @@ The prompt's mirror/Spirit path looks like this:
 ```mermaid
 flowchart LR
     psyche[Psyche on any machine]
-    menchie[Menchie approval surface]
+    mentci[Mentci approval surface]
     criome[User criome]
     spirit[Spirit store]
     mirror[Mirror/object transport]
     remote[Remote Spirit on Prometheus]
 
-    psyche --> menchie
-    menchie --> criome
+    psyche --> mentci
+    mentci --> criome
     criome --> spirit
     spirit --> mirror
     mirror --> remote
@@ -116,7 +116,7 @@ The important interpretation: the edit is not just "write a file on another mach
 That suggests the next real system slice is not "run a second Spirit somehow." It is:
 
 - define the authorized Spirit-head reference object or reuse the existing authorized-object pulse if it already fits;
-- make Spirit publish the new authorized head after a Menchie/criome approval;
+- make Spirit publish the new authorized head after a Mentci/criome approval;
 - make a second Spirit instance follow that head and fetch missing objects through the transport layer;
 - run the second instance in a real user session on Prometheus.
 
@@ -136,6 +136,6 @@ The Prometheus deployment itself is system-operator or cluster-operator work bec
 
    If yes, the handoff should ask for a real user-session service on `prometheus.goldragon.creom` or the correct current name, with persistent state and a narrow end-to-end smoke test from local Spirit to remote Spirit.
 
-4. Do we keep the repository spelling `mentci-*` while the product/interface is called Menchie?
+4. Do we keep the repository spelling `mentci-*` while the product/interface is called Mentci?
 
-   The existing repos are `mentci-lib` and `mentci-egui`. I used "Menchie" in prose and kept repo names unchanged.
+   The existing repos are `mentci-lib` and `mentci-egui`. I used "Mentci" in prose and kept repo names unchanged.

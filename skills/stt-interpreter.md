@@ -71,7 +71,7 @@ sense as English, try the canonical.
 | "Horizon RS" / "Horizon Rust" | the horizon Rust crate repo |
 | "Goldragon" / "Gold dragon" | the cluster-proposal repo |
 | "Gascity" / "Gas city" / "Gas-city" | the orchestration repo (LiGoldragon fork) |
-| "Mentci" / "Men-chee" / "Menchi" | the older-generation repo family |
+| "Menchie" / "Men-chee" / "Menchi" / "Menci" / "Menschie" / "Menchy" / "Mentchy" | **Mentci** — the psyche-facing approval component and repo family. Product/interface name `Mentci`; filesystem paths lowercase `mentci-*` such as `mentci-lib` and `mentci-egui`. |
 | "The Book of Sol" / "Sol" / "Sole" | the writing-project repo |
 | "Persona" | the operator's current scaffolding repo |
 
