@@ -35,6 +35,31 @@ may pin its own build toolchain through its flake when
 reproducibility requires it; that build pin is not the profile
 toolchain authority.
 
+## Target directory hygiene
+
+Do not delete whole `target/` directories as the normal cleanup path:
+that throws away the newest useful local build artifacts. Prefer
+`cargo-sweep` with a per-repo size cap, which removes older Cargo
+artifacts while preserving the most recent builds:
+
+```sh
+nix run github:NixOS/nixpkgs/nixpkgs-unstable#cargo-sweep -- sweep --recursive --maxsize 4GB /git/github.com/LiGoldragon
+```
+
+Use `--dry-run` first when deciding a new cap or scope. For a single
+large active repo, run from that repo and choose a larger cap when
+needed, for example:
+
+```sh
+nix run github:NixOS/nixpkgs/nixpkgs-unstable#cargo-sweep -- sweep --dry-run --maxsize 8GB .
+```
+
+The durable Nix-side prevention is still the shared `rust-build`
+source cleaner: Rust flakes should use `rust-build.cleanSource` rather
+than raw `craneLib.filterCargoSources` / `cleanCargoSource`, so Nix
+source construction prunes `target`, `.git`, `.jj`, `.direnv`, and
+`node_modules` before Crane or repo-specific filters run.
+
 ## Naming — full English words
 
 Every name reads as an English word; `self` stays as the implicit
