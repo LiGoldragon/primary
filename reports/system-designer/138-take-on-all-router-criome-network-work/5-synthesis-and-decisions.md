@@ -54,14 +54,15 @@ designer-lane correction, or a Spirit note? (Report 137 §7.3 already retracted.
 
 ## Phase 2 status
 
-- **Launching now (uncontested):** the **two-kernel `runNixOSTest`** exercising
-  Track A's transport across two real VMs over real VM networking — report 136's
-  ladder rung L1, in the router daemon's offline-verifier mode (real-criome-BLS
-  attestation is milestone 3, which Track A correctly made the daemon *refuse* to
-  run un-built). This hardens the transport beyond in-process loopback and
-  de-risks real-networking issues (binding, addressing, timeouts) before the
-  criome-client work. Honest caveat: if the sandbox lacks KVM the agent builds the
-  test driver and hands execution to a KVM host (operator/cloud-operator).
+- **Track F — DONE, L1 GREEN under real KVM (138/6).** The two-kernel
+  `runNixOSTest` built **and ran** (exit 0, reproduced twice): two separate
+  kernels, a real guest-to-guest hop (192.168.1.1→.2), a real minted-slot durable
+  receipt, and the loop guard refusing a `Forwarded` frame cross-kernel —
+  assertions mutation-proven to bite. Reviewer: **MERGE**. Branch
+  `transport-two-kernel-e2e-138` (`72db634d`), pushed. Offline-verifier mode
+  (real-criome-BLS is milestone 3, Decision 1). A polish pass (138/6b) is closing
+  three P3s: upgrade the assertion from *receipt* to *delivery-to-harness*, pin
+  the node IPs, quiet a benign early-eof log.
 - **Held pending Decision 2:** the router `Attend`/`Withdraw` subscribe/fan-out
   surface (Track E) — it commits to one side of the `m0p2`/`l2ha` contradiction.
 - **Held pending Decision 1:** the milestone-3 criome forward-attestation client
