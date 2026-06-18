@@ -29,8 +29,10 @@ criome's landed code (file `4`) exhibits all three:
   nothing (`wckt`). This is the decisive tell from file `3`: none of the family
   *runs code to change the world*; the protocol applies the mutation only on a
   yes.
-- **No gas, halting structural.** `grep gas|loop|while` over `language.rs` finds
-  zero loops and zero metering — only bounded folds over finite `Vec`s. Like
+- **No gas, halting structural.** There is no unbounded execution loop and no
+  metered VM loop in `language.rs` — evaluation is bounded iteration over a finite
+  acyclic DAG (`for`-folds over fixed-size vectors, never a fuel-bounded interpreter
+  loop). Like
   Bitcoin Script ("no loops … predictable execution times"), the closed acyclic
   vocabulary halts *structurally*; there is nothing to meter. The EVM/Michelson/
   BPF family *must* meter precisely because their VMs are Turing-expressive.
@@ -129,9 +131,12 @@ cluster-root (`ermr`, `admission.rs:86-101`, real BLS min-pk over a domain-tagge
 statement) — not all-writing-to-one-ledger. **Shares with:** Sui's owned-object
 fast path is the nearest cousin (local conflict-free validation skipping global
 consensus), but even Sui falls back to a global sequencer for shared objects;
-criome has no global sequencer at all. *Honest gap (file `4` §5):* the
-`criome-contract` SEMA family is the one genuine in-triad gap — the store is an
-in-memory `Vec` stand-in today; "persisted DAG" is the designed target.
+criome has no global sequencer at all. *Landed since this was drafted:* the durable
+`criome-contract` SEMA family is now real on criome main (`3c051223`; `tables.rs`
+`CONTRACTS_FAMILY = "criome-contract"`, `StoredContract` keyed by `ContractDigest`;
+remote-Nix-green), so the persisted contract DAG is no longer a gap. The in-memory
+`ContractStore` now remains only as the pure evaluator's snapshot, rebuilt from the
+SEMA records on load.
 
 ```mermaid
 graph TD
