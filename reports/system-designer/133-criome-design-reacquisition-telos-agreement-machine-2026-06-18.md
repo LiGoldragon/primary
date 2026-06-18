@@ -18,12 +18,17 @@ report 132.*
 
 ## 1 — The reframe I'd lost
 
-**Telos is a universal agreement machine, and the quorum is its universal
-primitive.** Per `pviw` (Decision, High): [Telos is the name of the meta-project
-… whose far horizon is eventual Criome and eventual Sema, the universal
-computing paradigm, realized now as Persona]. Per `obuf`: [Telos is a universal
-agreement machine for authorizations, and the quorum is its universal primitive
-— everything is a quorum].
+**criome is a universal agreement machine for authorizations — the
+agreement-and-authorization organ of Telos, _not_ Telos itself — and the quorum
+is criome's universal primitive.** Per `pviw` (Decision, High): [Telos is the
+name of the meta-project … whose far horizon is eventual Criome and eventual
+Sema, the universal computing paradigm, realized now as Persona]. Per `p3td`:
+[criome is a universal agreement machine for authorizations - the
+agreement-and-authorization organ of Telos, the meta-project, not Telos itself.
+The quorum is criome's universal primitive: everything is a quorum]. Per `m0p2`:
+[Criome's system direction is a universal agreement machine for authorization].
+(Report 677 attributes the agreement-machine framing to a record `obuf` that
+does not exist in the store; the real anchors are `p3td` and `m0p2`.)
 
 The insight is a *collapse*: what looked like four machines — an authorizer, a
 clock, a divergence resolver, a state propagator — is one mechanism wearing
