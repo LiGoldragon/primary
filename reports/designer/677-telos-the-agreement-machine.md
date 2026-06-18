@@ -369,8 +369,13 @@ the real-BLS evaluator, and the attested-moment stamp.
 
 **Designed but not built.** The adjudicator ladder above `EscalateToPsyche`
 (`gc0n`): named adjudicator rungs, the non-judgment-leaning default LLM, the
-two-gate quorum, the terminal honest fork. The propagation fan-out itself — the
-mechanism that delivers the `m0p2` pulse. The live cluster bring-up and the
+two-gate quorum, the terminal honest fork. The *transport-level* propagation fan-out — live streaming of the `m0p2` pulse over
+held sockets. (Correction: the *reference-only* pulse itself is now **landed** on main
+— `signal-criome` carries `ObserveAuthorizedObjects` / `AuthorizedObjectUpdate` /
+`AuthorizedObjectUpdateStream` / retraction, and `criome` publishes an
+authorized-object update after evaluation at `root.rs:210` with subscription storage at
+`subscription.rs:23`; socket clients are still mostly one-request/one-reply, so live
+fan-out *delivery* is the remaining slice.) The live cluster bring-up and the
 cluster-root admission-**signing ceremony**: the admission *gate* exists and is
 tested (`admission.rs::ClusterRoot::admits`), but nothing *mints* an admission
 envelope outside tests — the single nearest unblock for an operable live e2e is
