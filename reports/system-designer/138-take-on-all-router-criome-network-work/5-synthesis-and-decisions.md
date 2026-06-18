@@ -59,10 +59,11 @@ designer-lane correction, or a Spirit note? (Report 137 §7.3 already retracted.
   kernels, a real guest-to-guest hop (192.168.1.1→.2), a real minted-slot durable
   receipt, and the loop guard refusing a `Forwarded` frame cross-kernel —
   assertions mutation-proven to bite. Reviewer: **MERGE**. Branch
-  `transport-two-kernel-e2e-138` (`72db634d`), pushed. Offline-verifier mode
-  (real-criome-BLS is milestone 3, Decision 1). A polish pass (138/6b) is closing
-  three P3s: upgrade the assertion from *receipt* to *delivery-to-harness*, pin
-  the node IPs, quiet a benign early-eof log.
+  `transport-two-kernel-e2e-138` (polish `453bc281`), pushed. Offline-verifier
+  mode (real-criome-BLS is milestone 3, Decision 1). The polish pass closed all
+  three P3s: L1 **now proves delivery-to-the-actor** over the VM network (a
+  cross-VM harness witness, mutation-proven), the node IPs are pinned, and the
+  benign early-eof log is quieted — re-run GREEN under KVM.
 - **Held pending Decision 2:** the router `Attend`/`Withdraw` subscribe/fan-out
   surface (Track E) — it commits to one side of the `m0p2`/`l2ha` contradiction.
 - **Held pending Decision 1:** the milestone-3 criome forward-attestation client

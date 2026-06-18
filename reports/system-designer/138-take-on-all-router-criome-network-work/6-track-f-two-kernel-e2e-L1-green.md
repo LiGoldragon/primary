@@ -2,13 +2,14 @@
 
 *Build → adversarial verify (with mutation testing). Verdict: **sound, MERGE**.
 The two-kernel test **actually executed under KVM** (exit 0, reproduced twice),
-not merely built. This is report 136's ladder rung **L1**. A polish pass (138/6b)
-is in flight to close the three P3s below.*
+not merely built. This is report 136's ladder rung **L1**. The polish pass closed
+all three P3s — **L1 now proves delivery-to-the-actor, not just receipt** (see the
+"P3s — CLOSED" section).*
 
 ## Result
 
-Branch **`transport-two-kernel-e2e-138`** (off `transport-p1-fixes-138`), commit
-`72db634d`, **pushed**. Home: the **router repo's flake** (co-located with the
+Branch **`transport-two-kernel-e2e-138`** (off `transport-p1-fixes-138`), polish
+commit `453bc281` (initial L1 at `72db634d`), **pushed**. Home: the **router repo's flake** (co-located with the
 transport + P1 fixes), as a `runNixOSTest` check
 `router-two-kernel-cross-host-transport`.
 
@@ -53,19 +54,34 @@ Track A's fixes.
   daemon OS processes over loopback) exercises the same encoders/probe/asserts as
   a CI-cheap check.
 
-## The three P3s (being closed in 138/6b)
+## The three P3s — CLOSED (polish commit `453bc281`, re-run GREEN under KVM)
 
-1. **L1 proves *receipt*, not *delivery to the actor*.** prometheus-responder is
-   registered with a `None` endpoint, so the test asserts ingress-accept +
-   minted-slot + loop-guard, but not that the message reached an actor harness
-   (that's proven at L0 with a `HarnessWitness` socket). The GREEN banner's
-   "delivered" slightly overstates. **Fix in flight:** add a `HarnessWitness` on
-   prometheus and assert real delivery cross-VM.
-2. **Node IPs depend on alphabetical attr ordering** (`nodeOuranos` sorts before
-   `nodePrometheus`). Currently correct but fragile. **Fix in flight:** pin
-   `eth1` addresses explicitly.
-3. **Benign early-eof log noise** on every clean single-exchange close. **Fix in
-   flight:** treat a clean close after a completed exchange as normal.
+1. **Receipt → delivery.** A new one-NOTA-arg `router-harness-witness` binary (the
+   cross-VM twin of L0's in-process `HarnessWitness`) binds the
+   `EndpointKind::HarnessSocket` the daemon's `HarnessDelivery` connects to,
+   decodes the inbound `MessageDelivery`, and emits `(WitnessedDelivery <harness>
+   <sender> <body>)`. prometheus-responder is now homed on a real HarnessSocket;
+   the test asserts on the **decoded delivery fields** read from the witness, not
+   the accept slot. **Mutation-proven:** gating `deliver_to_harness_socket` to
+   skip the connect makes the witness assertion time out and FAIL while the minted
+   slot still passes — so the assertion fires precisely on broken delivery. The
+   KVM log shows both `(WitnessedDelivery prometheus-responder message [relay
+   across two kernels])` lines written on the far guest.
+2. **Node IPs pinned.** `networking.interfaces.eth1.ipv4.addresses` set explicitly
+   per node via `lib.mkForce` (verified one address each via `nix eval`), with a
+   runtime `ip -4 addr` assert — a node rename now surfaces a wrong/unreachable
+   address rather than silently retargeting the probe.
+3. **Early-eof quieted.** A new `read_forward_frame` returns
+   `IngressFrameRead::CleanClose` (no reply, no error log) on a clean close at the
+   frame boundary; a truncated prefix or short body still surfaces a real
+   `FrameError::Io`, so genuine mid-frame errors are not suppressed.
+
+Three new P3s remain, all clarity-only and accepted (not worth a further KVM
+pass): the report's nix store-path string isn't a stable identifier; `Accepted`
+is deliberately decoupled from delivery success (a future author must not assert
+delivery via the slot — the witness path is the correct one); and the nixosTest's
+delivery check is line-presence rather than exact-count (the two-process witness
+test asserts exact count/fields, covering this).
 
 ## Honest scope ceiling
 
