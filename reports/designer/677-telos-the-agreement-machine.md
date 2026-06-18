@@ -1,8 +1,9 @@
 # 677 — criome, the agreement machine within Telos
 
 *The vision, seen again. The psyche asked to see the system as a whole, with one
-new framing folded into the centre: **Telos is a universal agreement machine, and
-the quorum is its universal primitive.** Everything the prior arc described —
+new framing folded into the centre: **criome is a universal agreement machine, and
+the quorum is its universal primitive** — criome being the agreement-and-authorization
+organ of Telos, the meta-project. Everything the prior arc described —
 authorization, time, divergence resolution, propagated state — is one mechanism
 wearing different clothes: a quorum agreeing on a content-addressed claim. This
 document re-tells the system around that single primitive, carries the
@@ -21,11 +22,11 @@ framing + the object-update pulse), `vhs2` (limited typed policy language),
 
 Per `pviw`, [Telos is the name of the meta-project ... the overarching work and
 design as a whole ... whose far horizon is eventual Criome and eventual Sema, the
-universal computing paradigm, realized now as Persona]. Per `obuf`, [Telos is a
-universal agreement machine for authorizations, and the quorum is its universal
-primitive - everything is a quorum]. Put together: **Telos is a universal
-agreement machine; the quorum is its universal primitive.** The rest of this
-document is the unfolding of that sentence.
+universal computing paradigm, realized now as Persona]. Per `m0p2`, [Criome's system direction is a universal agreement machine for
+authorization]. Put together: **criome is the universal agreement machine — the
+quorum is its universal primitive — and it is the agreement-and-authorization organ
+of Telos, the meta-project.** The rest of this document is the unfolding of that
+sentence.
 
 ```mermaid
 flowchart TB
@@ -36,9 +37,11 @@ flowchart TB
   S["STATE<br/>what is now true?<br/>= a quorum admits an object; refs propagate"]
   Q --> A & T & D & S
   A -.same mechanism.-> T -.same mechanism.-> D -.same mechanism.-> S
-  Telos["TELOS = the universal agreement machine<br/>(meta-project; horizon = eventual Criome / Sema; now = Persona)"]
-  Telos --> Q
+  Telos["TELOS = the meta-project<br/>horizon = eventual Criome / Sema; now = Persona"]
+  Criome["criome = the universal agreement machine<br/>the agreement-and-authorization organ of Telos"]
+  Telos --> Criome --> Q
   style Telos fill:#1b2a38,color:#fff
+  style Criome fill:#4a3320,color:#fff
   style Q fill:#5a3a1f,color:#fff
   style A fill:#1f5f3a,color:#fff
   style T fill:#2a4a5a,color:#fff
@@ -60,7 +63,7 @@ whole endeavour the primitive serves.
 A quorum is the smallest complete unit of agreement: **a threshold of admitted
 keys, each contributing a real BLS signature over the same content-addressed
 proposition.** `obuf` states it as the load-bearing decision — [everything is a
-quorum]. Everything Telos treats as *true* is true because a quorum said so over
+quorum]. Everything criome treats as *true* is true because a quorum said so over
 a hash, and everything it treats as *false-or-forged* is so because the
 signatures do not reach the threshold over that exact hash.
 
@@ -163,7 +166,7 @@ they are one quorum primitive aimed at two membership scopes.
 
 ## 3. The pulse and propagation — references, not payloads
 
-Telos is the local source of authorization truth and the submit-point; once a
+criome is the local source of authorization truth and the submit-point; once a
 quorum agrees, the *fact* must reach the components that care. `m0p2` fixes the
 shape: **the object-update pulse pushes references, never payloads.** [When a
 content-addressed object or authorized state transition is admitted, criome
