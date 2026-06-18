@@ -11,6 +11,18 @@ function. This is the design. Method: a four-approach design panel → ranked
 synthesis → an adversarial critic that caught real errors → my own verification
 of every crux fact against the live schemas. Companion: report 133.*
 
+> **Status (updated 2026-06-18, see report 135):** PARTLY SUPERSEDED but still
+> the authoritative router-lane design. The core thesis (criome already stamps
+> the `(component, kind)` coordinate; no new wire field) is CONFIRMED and BUILT
+> (operator 414/415, PoC 680). Fork "home" is RESOLVED → the new shared library
+> `signal-standard` (Spirit `eeeo`, designed in 681). Forks closed/coarse held;
+> the principal-line fork was decided *against* my lean (Lojix/Agent/Persona stay
+> in one closed enum, zoned, not moved off-axis). **Correction applied below:**
+> the verb pair is `Attend`/`Withdraw`, not `Attend`/`Retract` — `Retract` is one
+> of the six Sema words `7l7l` forbids on the wire (my original draft cited 7l7l
+> yet violated it). The router half remains entirely unbuilt — it is this lane's
+> work; see report 135 for the registry-owner tension that gates it.
+
 ## 1 — What already exists (don't reinvent)
 
 - **criome already stamps the differentiator coordinate.** `signal-criome`
@@ -55,8 +67,9 @@ The elegance comes from *not inventing a new stamp*. criome already emits
    stamps.** criome gains nothing — it keeps emitting `AuthorizedObjectReference`.
    This is the cleanest read of `l2ha` ("criome stamps … the router matches and
    fans out") and keeps `wckt` exact (criome auth-only, moves nothing).
-3. **The router gains the new surface** — a Sema-free `Attend`/`Retract` verb
-   pair (NOT `Subscribe`, per `7l7l`) and a SEMA-durable attendance table keyed
+3. **The router gains the new surface** — a Sema-free `Attend`/`Withdraw` verb
+   pair (NOT `Subscribe` *or* `Retract` — both are among the six Sema words
+   `7l7l` forbids on the wire) and a SEMA-durable attendance table keyed
    by the coordinate. On an admitted object it matches attenders and pushes a
    *reference* (`m0p2`: digest, never payload); the component fetches the rkyv
    object by digest through the object-distribution layer.

@@ -61,6 +61,11 @@ Detail { Field { String } }                ;; PascalCase + block = inline decl
 The retired `field Type` name-value form and `*` shorthand are **rejected loudly**
 in both lowering paths (`SchemaError::RetiredStructFieldSyntax`): a bare
 struct-field atom must name a type (PascalCase or scoped), else use `field.Type`.
+A second strictness, also landed, rejects a *redundant* explicit field role
+(`SchemaError::RedundantExplicitFieldRole`): `topic.Topic`, whose explicit name
+equals the type-derived name, must be the bare `Topic` (closing intent `i3p0`).
+Both rejects are on **schema-next main** as of 2026-06-18 (`af3705c`, `95f1ee7`) —
+the positional dot-differentiator body is now the *only* accepted struct form.
 
 ## The dimensional principle (Spirit `ov30`)
 
@@ -151,4 +156,5 @@ seam is shape↔meaning boundary, not debt. (Reports `631`, `635`.)
 - `skills/abstractions.md` (newtype-per-role endpoint), `skills/nota-design.md`
   (NOTA records; defers struct-body grammar here), `skills/component-triad.md`.
 - Code: nota-next `derive/src/lib.rs`, schema-next `src/declarative.rs` +
-  `src/schema.rs` (epic branch `next/structural-forms`).
+  `src/source.rs` — **landed on schema-next main** (`af3705c` `RetiredStructFieldSyntax`,
+  `95f1ee7` `RedundantExplicitFieldRole`), no longer the `next/structural-forms` epic branch.
