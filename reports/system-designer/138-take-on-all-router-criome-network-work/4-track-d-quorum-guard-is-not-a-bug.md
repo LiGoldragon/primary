@@ -47,12 +47,27 @@ with veto").
 
 ## Disposition
 
-- **The quorum guard needs no change.** Report 137 §7 item 3 is retracted
-  (corrected in 137).
-- **Report 685's Woe-3 should be corrected/closed** — it misreads the declared
-  `required_signatures` field as a collected-signature majority tally. This is a
-  `reports/designer/` file (not my lane to edit); flagged to the psyche/designer
-  so a later operator does not turn it into the regression above.
+- **The general threshold evaluator (`:414`) needs no change.** Report 137 §7
+  item 3 is retracted (corrected in 137).
 - When the future cross-machine head loop genuinely wants fork-safe majority, the
-  head-loop author expresses it by **setting `required = floor(n/2)+1`** over the
-  `n` head-authorities — no change to the (correct) threshold evaluator.
+  head-loop *object contract* expresses it by **setting `required = floor(n/2)+1`**
+  over the `n` head-authorities — no change to the (correct) general `:414`
+  evaluator.
+
+## Reconciliation with designer handoff 688 (2026-06-18) — there ARE two sites
+
+The designer's handoff (688) said the `k > n/2` guard (their Woe-3) IS needed and
+operator-endorsed. On re-reading the code, **both positions are right because they
+name different sites** — see report 139:
+
+- **`language.rs:414` `Threshold::validate_shape`** (general m-of-n) — stays
+  caller-declared. My finding above holds; do NOT add a majority guard here.
+- **`language.rs:578` `AttestedMoment::rejection_reason`** (the time-attestation /
+  head-quorum path) — *this* is where the majority guard belongs. A decentralized
+  quorum clock (`ay3y`) and quorum-backed objects (`m0p2`) must not be
+  single-node-attestable, so this path should require `required >
+  authorities.len()/2`. My 138/4 was wrong only in lumping `:578` in with `:414`
+  as "no change needed." The `n=1` single-machine self-quorum (`9s52`) still passes
+  (`1 > 0`). The scoped fix is being built on branch
+  `attested-moment-majority-guard-139` (Track H) — the danger it guards against is
+  someone applying the majority clause to `:414` instead.
