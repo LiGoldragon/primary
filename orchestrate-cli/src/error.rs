@@ -90,7 +90,7 @@ pub enum Error {
     Contract(#[from] contract::Error),
 
     #[error(transparent)]
-    Nota(#[from] nota_codec::Error),
+    Nota(#[from] nota_next::NotaDecodeError),
 
     #[error(transparent)]
     CommandLine(#[from] signal_frame::CommandLineError),

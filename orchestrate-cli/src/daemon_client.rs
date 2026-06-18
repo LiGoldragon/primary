@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use std::time::{Duration, Instant};
 
-use nota_codec::{Decoder, Encoder, NotaDecode, NotaEncode};
+use nota_next::{NotaDecode, NotaEncode, NotaSource};
 use signal_frame::{ClientShape, CommandLineSockets, SingleArgument};
 
 use crate::error::{Error, Result};
@@ -76,8 +76,7 @@ impl OrchestrateDaemonClient {
     where
         Request: NotaEncode,
     {
-        let mut encoder = Encoder::new();
-        request.encode(&mut encoder)?;
+        let text = request.to_nota();
         let client = ClientShape::<signal_orchestrate::Frame, meta_signal_orchestrate::Frame>::new(
             CommandLineSockets::new(
                 Some(self.ordinary_socket_path.clone()),
@@ -86,10 +85,7 @@ impl OrchestrateDaemonClient {
                 "PERSONA_ORCHESTRATE_OWNER_SOCKET",
             ),
         );
-        let argument = SingleArgument::from_program_and_values(
-            "orchestrate".to_string(),
-            vec![encoder.into_string()],
-        )
+        let argument = SingleArgument::from_program_and_values("orchestrate".to_string(), vec![text])
         .map_err(signal_frame::CommandLineError::from)?;
         Ok(client.reply_text(argument)?)
     }
@@ -232,7 +228,6 @@ impl ReplyText {
     where
         Reply: NotaDecode,
     {
-        let mut decoder = Decoder::new(self.text.trim());
-        Ok(Reply::decode(&mut decoder)?)
+        Ok(NotaSource::new(self.text.trim()).parse::<Reply>()?)
     }
 }

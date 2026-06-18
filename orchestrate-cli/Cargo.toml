@@ -1,8 +1,8 @@
 [package]
 name         = "orchestrate-cli"
-version      = "0.2.0"
+version      = "0.2.1"
 edition      = "2024"
-rust-version = "1.85"
+rust-version = "1.89"
 license      = "MIT OR Apache-2.0"
 publish      = false
 description  = "Workspace coordination helper — compatibility surface over the orchestrate daemon."
@@ -19,7 +19,8 @@ path = "src/bin/orchestrate.rs"
 signal-orchestrate      = { git = "https://github.com/LiGoldragon/signal-orchestrate.git", branch = "main" }
 meta-signal-orchestrate = { git = "https://github.com/LiGoldragon/meta-signal-orchestrate.git", branch = "main" }
 signal-frame            = { git = "https://github.com/LiGoldragon/signal-frame.git", branch = "main" }
-nota-codec              = { git = "https://github.com/LiGoldragon/nota-codec.git", branch = "main" }
+nota-next               = { git = "https://github.com/LiGoldragon/nota-next.git", branch = "main" }
+rkyv                    = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
 thiserror               = "2"
 
 [dev-dependencies]
