@@ -80,7 +80,7 @@ The elegance comes from *not inventing a new stamp*. criome already emits
 (AttendanceOpened (AttendanceToken at-7f3a))
 ;; router pushes a REFERENCE when a matching (component, kind) object is admitted
 (ObjectAvailable ((Spirit Contract) (AuthorizedObjectReference Spirit z9d6abc Contract)))
-(RetractAttendance (AttendanceToken at-7f3a))
+(WithdrawAttendance (AttendanceToken at-7f3a))
 ```
 
 **Heartbeat:** not ambient. A component wanting periodic wakeups submits
