@@ -28,6 +28,61 @@ The Spirit capture for this correction is `lpk9`: struct bodies are
 positional lists of field types; explicit field names use the dot
 differentiator; the schema reader rejects the old pair form.
 
+## Visual Summary
+
+### Syntax Shift
+
+```mermaid
+flowchart LR
+    old["Old struct body<br/>Record { Topic String }<br/>Entry { topic Topic }<br/>Entry { Topic * }"]
+    ambiguity["Ambiguous parser<br/>pairs adjacent objects<br/>or derives fields from *"]
+    retired["Rejected<br/>RetiredStructFieldSyntax"]
+
+    new["New struct body<br/>Record { Topic Description }<br/>Entry { topic.Topic }<br/>Entry { Text }"]
+    strict["Strict parser<br/>one object = one field"]
+    lowered["Lowered schema<br/>stable field names<br/>typed references"]
+
+    old --> ambiguity --> retired
+    new --> strict --> lowered
+```
+
+### What One Field Means Now
+
+```mermaid
+flowchart TD
+    field["Struct body object"]
+
+    field --> bare["TypeName"]
+    bare --> derived["field name derives from type<br/>RecordIdentifier -> record_identifier"]
+    derived --> plain["reference = TypeName"]
+
+    field --> dotted["field_name.TypeName"]
+    dotted --> explicit["field name is explicit<br/>reference is TypeName"]
+
+    field --> structural["(Optional Type)<br/>(Vector Type)<br/>(Map Key Value)"]
+    structural --> structuralDerived["field name derives from reference shape<br/>optional_type, type_vector, value_by_key"]
+
+    field --> retiredStar["Type *"]
+    retiredStar --> reject["reject"]
+
+    field --> retiredPair["field Type"]
+    retiredPair --> reject
+
+    field --> retiredScalar["String / Integer / Boolean / Path / Bytes"]
+    retiredScalar --> reject
+```
+
+### Concrete Translation Examples
+
+| Intent | Retired | Strict |
+|---|---|---|
+| Use existing field types | `Entry { Topic * Kind * }` | `Entry { Topic Kind }` |
+| Explicit field role | `Entry { topic Topic }` | `Entry { topic.Topic }` |
+| Scalar wrapper type | `Topic { string String }` | `Topic String` |
+| Struct-local scalar role | `Entry { text String }` | `Entry { text.String }` |
+| Named scalar role | `Entry { value String }` | `Value String` then `Entry { Value }` |
+| Collection field | `Query { topics (Vector Topic) }` | `Query { (Vector Topic) }` or `Topics (Vector Topic)` then `Query { Topics }` |
+
 ## Implementation
 
 Branch:
@@ -49,6 +104,28 @@ Changed parser surfaces:
   `Record { Topic String }` ambiguity. Use `Text String` + `{ Text }`,
   or `text.String` when the scalar role must be local to that struct.
 
+### Parser Closure
+
+```mermaid
+flowchart TB
+    source["Schema source text"]
+
+    source --> sourceCodec["Source codec path<br/>src/source.rs"]
+    source --> macroEngine["Macro expansion path<br/>src/declarative.rs"]
+
+    sourceCodec --> oldSource["removed: SourceStructSyntax::FieldPairs"]
+    macroEngine --> oldMacro["removed: adjacent object pairing"]
+
+    oldSource --> strictSource["SourceStructBody::from_block<br/>maps every object through<br/>SourceField::from_positional_block"]
+    oldMacro --> strictMacro["MacroExpansionFields::lower<br/>maps every object through<br/>MacroExpansionField::lower"]
+
+    strictSource --> common["same accepted shapes<br/>TypeName<br/>field.TypeName<br/>structural reference object"]
+    strictMacro --> common
+
+    common --> error["retired forms return<br/>RetiredStructFieldSyntax"]
+    common --> schema["valid forms lower to Schema"]
+```
+
 ## Fixture Migration
 
 The schema-next tests and fixtures were migrated away from:
@@ -61,6 +138,27 @@ The schema-next tests and fixtures were migrated away from:
 The last item is a real semantic change: private helper types are no
 longer invented from inside a struct field. If a type is needed, declare
 it in the namespace.
+
+### Migration Shape
+
+```mermaid
+flowchart LR
+    fixtures["schema-next fixtures<br/>and test literals"]
+    star["Type *"]
+    lower["field Type"]
+    scalar["Type String inside struct"]
+    inline["inline private declaration"]
+
+    fixtures --> star --> starNew["Type"]
+    fixtures --> lower --> lowerNew["field.Type"]
+    fixtures --> scalar --> scalarNew["named type declaration<br/>or field.String"]
+    fixtures --> inline --> inlineNew["explicit namespace declaration"]
+
+    starNew --> tests["green tests"]
+    lowerNew --> tests
+    scalarNew --> tests
+    inlineNew --> tests
+```
 
 ## Verification
 
@@ -84,6 +182,20 @@ fixtures that are not the strict source language. The live component
 repos with likely work include `spirit`, `mind`, `lojix`, `terminal`,
 `mirror`, `criome`, `cloud`, `orchestrate`, and the signal/meta-signal
 contract repos.
+
+### Broader Porting Surface
+
+```mermaid
+flowchart TD
+    strict["schema-next strict parser"]
+    consumers["consumer schema repos"]
+    fail["old syntax fails parse/lower"]
+    port["port schema files"]
+    regenerate["regenerate emitted Rust"]
+    componentTests["run component Nix checks"]
+
+    strict --> consumers --> fail --> port --> regenerate --> componentTests
+```
 
 High-count areas:
 

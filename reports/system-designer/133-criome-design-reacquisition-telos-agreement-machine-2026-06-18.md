@@ -1,4 +1,13 @@
-# 133 — Criome design reacquisition: Telos the agreement machine, and how my arc plugs in
+# 133 — Criome design reacquisition: criome the agreement machine within Telos, and how my arc plugs in
+
+> **Correction (psyche, 2026-06-18):** an earlier draft of §1 echoed report
+> 677's conflation — "Telos is a universal agreement machine, and the quorum is
+> its universal primitive." That is wrong. **criome** is the agreement machine
+> (the agreement-and-authorization *organ* of Telos, not Telos itself); the
+> quorum is **criome's** primitive. Telos is the whole meta-project. The Spirit
+> records (`p3td`, `m0p2`, `pviw`) already hold the correct framing; the error
+> was in the report. §1 below is corrected; report 677 (designer lane) still
+> carries the conflation in its title/§0/diagram and needs the same fix.
 
 *The psyche redirected mid-exchange: they've been doing criome design with the
 designer + operator lanes and want me caught up before we proceed. This is that
