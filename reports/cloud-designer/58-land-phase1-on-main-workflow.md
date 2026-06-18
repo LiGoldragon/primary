@@ -61,3 +61,30 @@ verified yet:
 
 This keeps main's tested-bar honest: everything landable-and-verifiable lands
 now; the rest is staged with a concrete unblock, not guessed onto main.
+
+## 4 · Landed (2026-06-18) — verified
+
+All three mains landed green and independently re-verified from canonical
+checkouts:
+
+- **signal-cloud** `main` = `1466d949` — read-only compute-host wire vocabulary.
+- **meta-signal-cloud** `main` = `f541bc65` — Phase 1 + the `PrepareHostDestruction`
+  Destroy-on-wire op (additive; `DesiredHostState`/`HostPlan` unchanged).
+- **cloud** `main` = `337c53d0` — Phase 1 integration + Destroy-on-wire handler +
+  the full-lifecycle hermetic e2e + `INTENT.md`. `[patch]` removed; both sibling
+  deps at `branch=main` resolving one `signal-cloud` (the `links` collision is
+  gone). Independent rebuild: green; **9/9 hetzner tests pass**, including
+  `full_host_lifecycle_runs_through_the_store_handlers`
+  (register → create → observe-present → destroy → observe-gone).
+
+### Heads-up — `schema-rust-next` drift (latent, not a landing defect)
+
+The latest `schema-rust-next` (`bb4dfe29`) / `schema-next` (`b3be7d0f`) retired a
+struct-field syntax that `signal-cloud@1466d949` and `signal-domain-criome`
+sources still use, so a *broad* `cargo update` makes their build scripts panic
+(`RetiredStructFieldSyntax`). The landed `Cargo.lock`s pin the working tooling
+(`schema-rust-next 733b76d3`), so **committed builds are green** — but future
+dependency bumps must stay surgical (`cargo update -p <crate>`, keep
+`schema-rust-next`/`schema-next` pinned) until `signal-cloud` /
+`signal-domain-criome` migrate off the retired syntax. That migration is a
+separate maintenance item, not part of this work.
