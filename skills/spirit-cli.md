@@ -198,17 +198,34 @@ spirit "(Supersede ([abcd] [([<Domain> ...] <Kind> [replacement description] <Ce
 spirit "(Retire (abcd ([([verbatim psyche retirement] None)] [reasoning for retirement])))"
 ```
 
-`ResolveClarification` is the name for the missing first-class operation
-that should atomically fold a mistaken standalone `Kind::Clarification`
-record into the records it clarified, then remove or retire that
-standalone clarification. It is **not** in the deployed contract yet:
-`signal-spirit` has no `ResolveClarification` input or receipt. Until
-that operation exists, do it as one manual maintenance pass: look up the
-bad clarification, find all clarified targets, apply `Clarify`,
-`Supersede`, or `ChangeRecord` to those targets, then `Remove` or
-`Retire` the bad clarification after preserving its text in the pass
-notes. Do not leave a standalone clarification record active beside the
-records it edits.
+`ResolveClarification` atomically folds a mistaken standalone
+`Kind::Clarification` record into the records it clarified, then removes
+that standalone clarification — in one operation. It **is** deployed:
+`signal-spirit` carries
+`ResolveClarification(ClarificationResolution)` →
+`ClarificationResolved(ClarificationResolutionReceipt)`, where
+`ClarificationResolution { ClarificationRecordIdentifier
+TargetClarifications Justification }`, each
+`TargetClarification { RecordIdentifier Description }` pairs a target
+record id with the corrected description to fold into it, and the receipt
+reports the resolved clarification id plus the edited target
+`RecordIdentifiers`. A live process-boundary test proves the targets are
+edited in place and the standalone clarification is removed (a later
+`Lookup` of it errors).
+
+```sh
+spirit "(ResolveClarification (abcd [(wxyz [corrected target description])] ([([psyche clarification authorization] (Some [what abcd was folding]))] [fold abcd into wxyz as an in-place edit])))"
+# -> (ClarificationResolved (abcd [wxyz]))
+```
+
+Use it instead of the old manual pass (look up the bad clarification,
+`Clarify`/`Supersede`/`ChangeRecord` each target by hand, then `Remove`
+the standalone). Do not leave a standalone clarification record active
+beside the records it edits. The full guardian rejection vocabulary now
+also includes `NegativeGuideline` — a record whose operative guidance is
+*primarily* an exclusion / prohibition / forbidden-wording list is
+remanded for affirmative rewording (`skills/intent-log.md` §"Affirmative
+framing").
 
 `Remove` deletes a record entirely — use it when nothing should remain
 in the active store. Setting certainty to `Zero` is the **recoverable**

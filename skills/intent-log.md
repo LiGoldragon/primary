@@ -121,6 +121,33 @@ similar phrasing normally mean brainstorming or design exploration. If the
 statement seems important but not settled, ask whether to record it; do
 not launder it into a firm Principle or Decision.
 
+## Affirmative framing — the NegativeGuideline remand
+
+The deployed guardian enforces affirmative framing (checklist Gate 6). An
+intent record must state the **positive shape to follow** — what the
+practice is, what the component does, what spelling / name / contract is
+canonical, what boundary holds. If the operative guidance is *primarily*
+an exclusion, prohibition, forbidden-wording list, or
+definition-by-negation, the guardian rejects it `NegativeGuideline` and
+remands for affirmative rewording. A record may mention a rejected old
+wording or a forbidden example **only when the positive rule stays the
+center**.
+
+This applies even to a `Constraint` ("never do Z"): write the boundary as
+the affirmative rule it protects, not as a bare prohibition. The canonical
+example pair (guardian few-shot K/L):
+
+- **Reject** — description centers the forbidden spellings: *"Canonical
+  names are criome and criomos; creome and creomos are misspellings."* →
+  `(Reject (NegativeGuideline [reword as the affirmative canonical naming rule]))`.
+- **Accept** — the positive names are the center, with an affirmative
+  boundary clause: *"Canonical prose uses criome for the authentication
+  component and criomos for the operating system name; exact on-disk path
+  spelling is preserved when citing repository paths."*
+
+When you reach for "don't" / "never" / "stop" / a forbidden-list, first
+ask what positive rule the prohibition serves and lead with that.
+
 ## Capture is not done until it manifests into the affected repo's INTENT.md
 
 Recording the Spirit record is the first half. When an intent record
