@@ -8,8 +8,12 @@ the whole component shape, states honestly what this build produced and
 validated versus what is stubbed or declared-local, shows how it reuses
 the operator's landed `mentci-lib` model (report 420) and the
 `/tmp/mentci-poc` prototype, names the coordination needs and lane split,
-gives ordered build slices marked gated/ungated, and carries the open
-psyche questions.
+gives ordered build slices marked gated/ungated, and records the now-
+RESOLVED psyche questions (section 6: Q1 per-Unix-user via `9s52`; Q2
+CLOSED verdict + edit-creates-a-new-typed-proposal via the psyche
+correction + operator 421; Q3 plain monotonic counter) plus the
+daemon-minted-ids and filtered-subscriptions fixes from operator 421. All
+four schemas lower on current schema-next main and the Rust PoC is green.
 
 The established model is fixed (Spirit `7sx6`): `signal-<c>` and
 `meta-signal-<c>` are the TWO external contracts of a component;
@@ -27,9 +31,9 @@ engines inside the daemon. For mentci:
 
 | Repo | Role | Kind | Status |
 |---|---|---|---|
-| `signal-mentci` | working wire contract | contract (schema-only) | built + validated at `abae95f`; needs field-syntax migration to lower on current main |
+| `signal-mentci` | working wire contract | contract (schema-only) | MIGRATED to current main's field grammar + Q2 closed-verdict reshape; lowers cleanly on current schema-next main (43 declarations, 1 stream) |
 | `meta-signal-mentci` | meta policy signal contract | contract (schema-only) | authored + validated this build (current main) |
-| `mentci` | daemon repo (Signal + Nexus + SEMA engines, bundled thin CLI) | daemon + CLI | engine schemas authored + validated this build; daemon Rust not yet emitted |
+| `mentci` | daemon repo (Signal + Nexus + SEMA engines, bundled thin CLI) | daemon + CLI | engine schemas authored + validated (Nexus 61 declarations, SEMA 47 declarations / 5 families); Rust PoC at `/tmp/mentci-poc` updated to the resolved design and green |
 
 Inside the daemon repo, three engines compose. Signal is the wire edge
 (it speaks `signal-mentci` to clients and agentic flows). Nexus is the
@@ -134,41 +138,89 @@ signal-criome-style cross-import is blocked.
 `/tmp/mentci-poc/mentci/schema/nexus.schema` — the operations engine,
 structured as the standard Work/Action reaction frame (empty imports,
 `Work` input root, `Action` output root, namespace). The internal
-operations vocabulary is `NexusEffectCommand`: `AdmitQuestion`,
-`RetireQuestion`, `ApplyInterfaceUpdate`, `RegisterSubscriber`,
-`DropSubscriber`, `FrameEscalation` (criome escalation ->
-`ApprovalQuestion`), `RouteVerdict` (psyche verdict -> home criome over
-the eaf7 socket), `PublishInterfaceState` (fan-out). `NexusEffectResult`
-is the matching result roster. Lowers Ok: 0 imports, 52 namespace
-declarations, 0 families, 0 streams.
+operations vocabulary is `NexusEffectCommand`: `AdmitQuestion` (admits a
+`QuestionProposal`, MINTING its id — 421 §2), `RetireQuestion`,
+`AdmitAnswerProposal` (admits an edited-answer `AnswerProposal` as a new
+object on the normal authorization path — Q2 resolution),
+`ApplyInterfaceUpdate`, `RegisterSubscriber` (MINTS the subscription
+token — 421 §3), `DropSubscriber`, `FrameEscalation` (criome escalation ->
+`QuestionProposal`, so the daemon mints the question id on admit),
+`RouteVerdict` (psyche verdict -> home criome over the eaf7 socket),
+`PublishInterfaceState` (fan-out of the PROJECTED state per subscriber
+interest — 421 §4). `NexusEffectResult` is the matching result roster
+(`QuestionAdmitted` carries the minted id, `AnswerProposalAdmitted`
+carries the minted proposal id + digest). Lowers Ok: 0 imports, 61
+namespace declarations, 0 families, 0 streams.
 
 `/tmp/mentci-poc/mentci/schema/sema.schema` — the state engine,
 structured as the four-roster shape (imports, `[WriteInput ReadInput]`
 input root, `[WriteOutput ReadOutput]` output root, namespace). The
-persisted state is FOUR families, all `key Identified`:
-`PendingQuestionsFamily`, `DecisionsFamily`, `SubscriptionsFamily`,
-`RevisionFamily` (the single InterfaceState revision head). The revision
-is a plain monotonic `RevisionCounter` per the Q3 recommendation;
-`AttestedMoment` + `AttestedRevision` are declared-but-unused to mark
-exactly where the cross-machine attested-clock upgrade would land. Lowers
-Ok: 0 imports, 42 namespace declarations, 4 families, 0 streams. The
-validation harness is at `/tmp/mentci-poc/schema-validate` (path-dep on
-schema-next, builds + runs, prints "ALL SCHEMAS LOWERED OK"); schema-next
-was consumed, never modified.
+persisted state is now FIVE families, all `key Identified`:
+`PendingQuestionsFamily`, `DecisionsFamily`, `AnswerProposalsFamily` (the
+edited-answer proposals admitted on the normal authorization path — Q2
+resolution), `SubscriptionsFamily` (now carrying a daemon-minted token +
+`InterfaceInterest` per 421 §3/§4), and `RevisionFamily` (the single
+InterfaceState revision head). The revision is a plain monotonic
+`RevisionCounter` per the Q3 recommendation; `AttestedMoment` +
+`AttestedRevision` are declared-but-unused to mark exactly where the
+cross-machine attested-clock upgrade would land. Lowers Ok: 0 imports, 47
+namespace declarations, 5 families, 0 streams. The validation harness is
+at `/tmp/mentci-poc/schema-validate` — extended this turn to lower ALL
+FOUR schemas (the two contracts + Nexus + SEMA), probe their key types,
+and assert `PendingAnswer` is absent; path-dep on schema-next, builds +
+runs, prints "ALL SCHEMAS LOWERED OK"; schema-next was consumed, never
+modified.
 
 Schema-mechanics notes captured: Family `key` accepts only the literal
 keywords `Domain` or `Identified` (not arbitrary newtypes) — the four
 SEMA families use `key Identified` (each record carries its own identity
 field), distinct from spirit's `key Domain`.
 
-### What is stubbed or declared-local (not yet real)
+### signal-mentci MIGRATED + Q2-reshaped (VALIDATED, current main)
 
-- `signal-mentci` does NOT lower on current main. Report 686 validated it
-  at `abae95f`; the struct-field syntax has since changed, and the
-  contract now errors `RetiredStructFieldSyntax {found: "label"}`. It was
-  deliberately left unmodified (out of scope) and is reported as drift —
-  it needs the same mechanical field-syntax migration the Nexus/SEMA
-  schemas already use.
+`/tmp/mentci-poc/signal-mentci/schema/lib.schema`. Two changes landed
+together this turn and the contract now lowers cleanly on current
+schema-next main (43 namespace declarations, 1 stream, 0 imports), checked
+by the extended `/tmp/mentci-poc/schema-validate` harness which lowers ALL
+FOUR schemas and prints `ALL SCHEMAS LOWERED OK`.
+
+1. Field-syntax migration. The retired two-atom `field Type` struct-field
+   form was migrated to current main's explicit-field-role grammar
+   (confirmed against `schema-next/src/source.rs`): `field.Type` dot form
+   where the name differs from `snake(Type)`; bare PascalCase `Type` where
+   the name equals `snake(Type)` (a redundant explicit role is a
+   `RedundantExplicitFieldRole` error); `(FieldRole (Vector X))` /
+   `(FieldRole (Optional X))` Type-cased role for composite/optional named
+   fields. This is the same grammar the Nexus/SEMA schemas already used; it
+   resolved the prior `RetiredStructFieldSyntax {found: "label"}`.
+
+2. Q2 closed-verdict reshape (psyche correction + operator 421). The
+   verdict is CLOSED — `ApprovalDecision = [ApproveSuggestedAnswer Reject
+   Defer]`. The held-out free-text `PendingAnswer` / `Answer` carrier is
+   DELETED from signal-mentci, the Nexus schema, the SEMA schema, and the
+   Rust PoC (it was only ever a PoC stub for the fake signer). Editing the
+   suggested answer is now the `ProposeEditedAnswer` request carrying a
+   typed `AnswerProposal` that re-enters the NORMAL authorization path:
+   the daemon admits it as a new object, mints a `ProposalIdentifier`, and
+   computes the `ProposalDigest` that the SAME closed verdict later
+   approves — never a loose answer string. See section 6, Q2.
+
+Two further fix-before-main corrections from operator 421 landed in the
+same pass across all relevant schemas and the Rust PoC:
+
+- Daemon-minted identifiers (421 §2/§3). `PresentQuestion` carries a
+  `QuestionProposal` with NO id; the daemon mints the `QuestionIdentifier`
+  and returns it in `QuestionPresented`. `ObserveInterfaceState` returns a
+  daemon-minted `SubscriptionToken` (not a subscriber name). External
+  agents never choose local SEMA row identity.
+- Filtered subscriptions (421 §4). `InterfaceStateObservation` carries an
+  `InterfaceInterest` (`FullInterfaceState` / `StatusOnly` /
+  `Notifications` / `PendingQuestions`); subscribers receive a
+  `ProjectedInterfaceState` (the revision plus exactly the selected slice,
+  via `InterfaceProjection`) — a status bar / popup / email client never
+  receives full question context unless it asked for `FullProjection`.
+
+### What is stubbed or declared-local (not yet real)
 - All cross-imports are declared local, not imported. The
   signal-mentci payload mirrors, the criome escalation origin, and the
   eaf7 `StandardSocket` are declared locally in every engine schema
@@ -210,15 +262,33 @@ typed connection point, a framed transport), `mentci-daemon` (one
 canonical state behind a `Daemon` owner over a Unix socket, fanning to
 subscribers, one startup arg and no flags), and `mentci-cli` (the thin
 first client holding no state, rendering exactly what the daemon sends).
-The demo runs push -> observe -> answer -> update over a real socket. It
-honestly flags its stubs: the fake verdict signer (TODO q1le / Q2), the
-filesystem-path argument standing in for the binary rkyv startup message,
-and the flat tab-delimited framing standing in for rkyv `signal::Frame` +
-NOTA. The typed `Request` / `Reply` / `PushUpdate` enums are the
-load-bearing contract that the real `signal-mentci` formalizes. The
-prototype's `Mutex<Daemon>` is an offline stand-in; production mentci is a
-kameo actor (one owner, typed message protocol, no shared lock) — the
-state-ownership shape is identical, only the delivery mechanism differs.
+The PoC was updated this turn to the resolved design and is green
+(`cargo test --offline`: 3 daemon e2e tests + 12 codec round-trips pass;
+only the two pre-existing `connection_point` dead-code warnings remain):
+
+- The `ApprovalState` now MINTS question and proposal identifiers and
+  subscription tokens (clients supply none); `receive` takes a
+  `QuestionProposal` and returns a `QuestionAdmission` carrying the minted
+  question. The new e2e test
+  `edited_answer_is_a_new_typed_proposal_then_closed_verdict_approves_it`
+  exercises the full edit -> `ProposeEditedAnswer` -> admit (mint id +
+  digest) -> closed-verdict-approves flow.
+- The free-text `ApprovalDecision::Answer` variant is DELETED; the verdict
+  is the closed three-variant set. The fake signer no longer carries a
+  `q2_gated` flag — the preimage is always a closed enumeration value.
+- The CLI `present` no longer takes an id (daemon mints); `answer` drops
+  the free-text arm; a new `propose <question-id> <body>` subcommand drives
+  the edited-answer path.
+
+It honestly flags its remaining stubs: the fake verdict signer (TODO q1le
+only — Q2 is now resolved), the filesystem-path argument standing in for
+the binary rkyv startup message, and the flat tab-delimited framing
+standing in for rkyv `signal::Frame` + NOTA. The typed `Request` /
+`Reply` / `PushUpdate` enums are the load-bearing contract that the real
+`signal-mentci` formalizes. The prototype's `Mutex<Daemon>` is an offline
+stand-in; production mentci is a kameo actor (one owner, typed message
+protocol, no shared lock) — the state-ownership shape is identical, only
+the delivery mechanism differs.
 
 ## 4. Coordination needs and lane split
 
@@ -261,15 +331,15 @@ swap is mechanical and the contracts are stable across it.
 
 ## 5. Ordered build slices
 
-Slices are marked UNGATED (no open psyche question blocks them) or GATED
-by Q1 (self-quorum head membership), Q2 (verdict preimage binding), or
-q1le (criome key custody). The daemon CORE is ungated; only the verdict
-egress and head loop are gated.
+With Q1/Q2/Q3 all RESOLVED (section 6), the only remaining gate is q1le
+(criome key custody) on real verdict signing. Every other slice is
+UNGATED.
 
-1. UNGATED — Migrate `signal-mentci`'s lib.schema struct fields to
-   current main's field syntax (`field.Type` + `(FieldRole
-   (Optional/Vector X))`) so the whole prototype lowers on one
-   schema-next main. It currently fails `RetiredStructFieldSyntax`.
+1. DONE — Migrate `signal-mentci`'s lib.schema struct fields to current
+   main's field syntax (`field.Type` + `(FieldRole (Optional/Vector X))`)
+   AND apply the Q2 closed-verdict reshape. The contract now lowers on one
+   schema-next main alongside the other three (validated this turn; section
+   2). The prior `RetiredStructFieldSyntax` is resolved.
 2. UNGATED — Create the three real repos (`signal-mentci`,
    `meta-signal-mentci`, `mentci`) with crate scaffolding. Coordination
    point with operator / system-operator.
@@ -280,7 +350,9 @@ egress and head loop are gated.
 4. UNGATED — Build the daemon over `mentci-lib`'s state machine (report
    420): host the schema-emitted SEMA, wire the Nexus operations, serve
    `signal-mentci` over the eaf7 socket as a kameo actor. One startup
-   arg, binary rkyv config via meta-signal-mentci, no flags.
+   arg, binary rkyv config via meta-signal-mentci, no flags. The daemon
+   mints question/proposal ids and subscription tokens (421 §2/§3) and
+   fans the PROJECTED state per subscriber interest (421 §4).
 5. UNGATED — Re-implement the prototype's thin CLI and a thin subscriber
    surface against the real wire (the prototype's flat framing replaced
    by rkyv `signal::Frame` + NOTA codec).
@@ -288,46 +360,68 @@ egress and head loop are gated.
    migrates, collapse the local `ComponentKind` / `StandardSocket` /
    `CriomeEscalationRequest` declarations into real cross-imports.
    Depends on the two operator prerequisites in section 4.
-7. GATED (Q2) — Wire the verdict egress: `RouteVerdict` carries the
-   signed preimage to the home criome. If Q2 admits a psyche-authored
-   answer, promote `PendingAnswer` (a NOTA answer value the psyche builds —
-   not free text; everything here is NOTA) into `ApprovalDecision` as
-   `(Answer PendingAnswer)` in both engine schemas and the working
-   contract; otherwise delete `PendingAnswer`.
+7. UNGATED (Q2 RESOLVED) — Wire the verdict egress: `RouteVerdict` carries
+   the signed CLOSED verdict to the home criome. The verdict set is
+   `[ApproveSuggestedAnswer Reject Defer]`; there is no authored-answer
+   verdict variant. Editing the suggested answer is the separate
+   `ProposeEditedAnswer` request carrying a typed `AnswerProposal` that the
+   daemon admits as a new object (minting id + digest) on the normal
+   authorization path; the SAME closed verdict then approves that object's
+   digest. `PendingAnswer` is DELETED everywhere. (The egress's real
+   SIGNING is still gated by q1le, slice 8.)
 8. GATED (q1le) — Real verdict signing: criome decrypts the persona
    signing sub-key at login from the encrypted multi-key store and signs;
    the daemon never holds the raw key. Replaces the prototype's fake
    signer.
-9. GATED (Q1) — The head loop / self-quorum head membership. Out of
-   scope for the single-machine UI daemon core; only relevant if mentci
-   participates in a cross-machine head. The plain `RevisionCounter`
-   stays unless Q3 flips to attested.
+9. UNGATED (Q1 RESOLVED) — No cross-machine head loop. Q1 is settled by
+   Spirit `9s52`: criome is per-Unix-user, not a shared multi-user daemon.
+   The single-machine UI daemon keeps the plain monotonic `RevisionCounter`
+   (Q3 resolved); the AttestedMoment upgrade is only relevant if mentci
+   ever participates in a cross-machine head, which `9s52` rules out for
+   the per-user case.
 
-## 6. Open questions for the psyche
+## 6. Open questions for the psyche — all RESOLVED
 
-- Q1 — self-quorum head membership. Open. Gates only the head loop
-  (slice 9), not this meta contract, not the daemon-facing surface, not
-  the SEMA core.
-- Q2 — verdict preimage binding. Open. Gates only the verdict egress
-  (slice 7). Everything here is NOTA — there is no "free text" anywhere;
-  a verdict is a typed value. The phase-1 CLOSED verdict set is
-  `[ApproveSuggestedAnswer Reject Defer]` — the psyche signs over the
-  already-admitted suggested-answer preimage. The open question: should the
-  verdict also let the psyche AUTHOR their own answer — a NOTA value (the
-  held-out `PendingAnswer`) that criome must re-admit as a NEW
-  content-addressed preimage and verify — or stay vote-only over the
-  existing preimage? Author-a-new-NOTA-object vs vote-on-the-existing-one;
-  both are NOTA. If the authored answer is admitted, promote `PendingAnswer`
-  into `ApprovalDecision`; otherwise delete it.
-- Q3 (new, surfaced this build) — does the InterfaceState revision
-  counter carry an AttestedMoment, or stay a plain monotonic counter?
-  DESIGNER RECOMMENDATION: a PLAIN MONOTONIC `RevisionCounter` for a
-  single-machine UI daemon with local thin clients. Subscribers detect
-  staleness by comparing counters; no shared clock is needed. The
-  AttestedMoment alternative (the ay3y attested-clock treatment) only
-  matters when cross-machine thin clients subscribe to one daemon's state
-  and must agree on ordering without trusting wall-clock. The SEMA
-  declares `AttestedMoment` / `AttestedRevision` unused to mark exactly
-  where that upgrade lands. The same recommendation applies to the
-  meta contract's `ConfigurationGeneration`. Confirm so the revision and
-  config-generation counters can stay plain Integer rather than attested.
+All three questions that gated parts of this component are now resolved.
+The component core, both contracts, and the verdict-egress shape are
+fully settled; only the cryptographic verdict SIGNING remains gated by
+q1le (criome key custody), which is a key-management dependency, not an
+open design question.
+
+- Q1 — self-quorum head membership. RESOLVED by Spirit `9s52`: criome is
+  PER-UNIX-USER. There is no shared multi-user system criome with
+  in-process user lanes (a privileged system criome exists only for
+  host-scoped system services under a service user — not a shared daemon).
+  So mentci is a per-Unix-user single-machine UI daemon; there is no
+  cross-machine head loop to join. This removes the only thing Q1 gated.
+  Operator 421 concurs.
+
+- Q2 — verdict shape / authored answers. RESOLVED by the psyche
+  correction (the criome authorization model is settled) with operator
+  421 concurring. Criome only authorizes objects submitted FOR
+  authorization; it never mints objects from a verdict side-channel; a
+  contract's answers are within a CLOSED SET. Therefore the mentci verdict
+  is CLOSED: `ApprovalDecision = [ApproveSuggestedAnswer Reject Defer]`,
+  exactly three variants. The held-out free-text `PendingAnswer` / `Answer`
+  variant is DELETED from signal-mentci, the Nexus schema, the SEMA schema,
+  and the Rust PoC — it was only ever a PoC stub for the fake signer and
+  does not belong in the contract. Editing the suggested answer is NOT a
+  verdict variant; it is the separate `ProposeEditedAnswer` request
+  carrying a typed `AnswerProposal` (schema-represented, projected as NOTA
+  for the human) that re-enters the NORMAL authorization path: the daemon
+  admits it as a new object, mints a `ProposalIdentifier`, and computes the
+  `ProposalDigest` that the SAME closed verdict later approves — never a
+  loose answer string. This is "author your own answer" done correctly
+  (operator 421). The Rust PoC proves the flow end to end (the
+  `edited_answer_is_a_new_typed_proposal_then_closed_verdict_approves_it`
+  e2e test).
+
+- Q3 — InterfaceState revision counter. RESOLVED to a PLAIN MONOTONIC
+  counter (the designer recommendation, confirmed; operator 421 concurs).
+  A single-machine per-user UI daemon needs no AttestedMoment on its
+  render-revision counter: subscribers detect staleness by comparing
+  counters; no shared clock is needed. The same applies to the meta
+  contract's `ConfigurationGeneration`. The SEMA keeps `AttestedMoment` /
+  `AttestedRevision` declared-but-unused to mark exactly where the
+  cross-machine attested-clock upgrade would land if it ever became
+  cross-machine — which `9s52` rules out for the per-user case.
