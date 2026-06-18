@@ -6,7 +6,9 @@ use std::process::{Command, Stdio};
 use std::time::{Duration, Instant};
 
 use nota_next::{NotaDecode, NotaEncode, NotaSource};
+use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 use signal_frame::{ClientShape, CommandLineSockets, SingleArgument};
+use signal_orchestrate::WirePath;
 
 use crate::error::{Error, Result};
 use crate::workspace::Workspace;
@@ -25,9 +27,20 @@ pub struct OrchestrateDaemonClient {
     git_index_root: PathBuf,
 }
 
+#[derive(Archive, RkyvSerialize, RkyvDeserialize, Debug, Clone, PartialEq, Eq)]
+struct StartupConfiguration {
+    store_path: WirePath,
+    ordinary_socket_path: WirePath,
+    meta_socket_path: WirePath,
+    upgrade_socket_path: WirePath,
+    workspace_root: WirePath,
+    git_index_root: WirePath,
+}
+
 struct DaemonProcess {
     executable: PathBuf,
-    configuration_text: String,
+    configuration: StartupConfiguration,
+    configuration_path: PathBuf,
     log_path: PathBuf,
 }
 
@@ -59,7 +72,7 @@ impl OrchestrateDaemonClient {
         }
 
         ComponentBuild::new(self.component_root.clone()).build_if_needed()?;
-        DaemonProcess::new(self).spawn()?;
+        DaemonProcess::new(self)?.spawn()?;
         self.wait_for_readiness()
     }
 
@@ -107,16 +120,10 @@ impl OrchestrateDaemonClient {
         UnixStream::connect(&self.ordinary_socket_path).is_ok()
     }
 
-    fn configuration_text(&self) -> String {
-        format!(
-            "([{}] [{}] [{}] [{}] [{}] [{}])",
-            self.store_path.display(),
-            self.ordinary_socket_path.display(),
-            self.meta_socket_path.display(),
-            self.upgrade_socket_path.display(),
-            self.workspace_root.display(),
-            self.git_index_root.display()
-        )
+    fn startup_configuration_path(&self) -> PathBuf {
+        self.workspace_root
+            .join("orchestrate")
+            .join("orchestrate-daemon.signal")
     }
 
     fn daemon_executable(&self) -> PathBuf {
@@ -164,6 +171,8 @@ impl ComponentBuild {
                 "build",
                 "--release",
                 "--locked",
+                "--features",
+                "nota-text",
                 "--bin",
                 "orchestrate",
                 "--bin",
@@ -182,13 +191,43 @@ impl ComponentBuild {
     }
 }
 
+impl StartupConfiguration {
+    fn from_client(client: &OrchestrateDaemonClient) -> Result<Self> {
+        Ok(Self {
+            store_path: WirePath::from_absolute_path(client.store_path.display().to_string())?,
+            ordinary_socket_path: WirePath::from_absolute_path(
+                client.ordinary_socket_path.display().to_string(),
+            )?,
+            meta_socket_path: WirePath::from_absolute_path(
+                client.meta_socket_path.display().to_string(),
+            )?,
+            upgrade_socket_path: WirePath::from_absolute_path(
+                client.upgrade_socket_path.display().to_string(),
+            )?,
+            workspace_root: WirePath::from_absolute_path(
+                client.workspace_root.display().to_string(),
+            )?,
+            git_index_root: WirePath::from_absolute_path(
+                client.git_index_root.display().to_string(),
+            )?,
+        })
+    }
+
+    fn to_signal_bytes(&self) -> Result<Vec<u8>> {
+        rkyv::to_bytes::<rkyv::rancor::Error>(self)
+            .map(|bytes| bytes.to_vec())
+            .map_err(|_| Error::StartupConfigurationEncode)
+    }
+}
+
 impl DaemonProcess {
-    fn new(client: &OrchestrateDaemonClient) -> Self {
-        Self {
+    fn new(client: &OrchestrateDaemonClient) -> Result<Self> {
+        Ok(Self {
             executable: client.daemon_executable(),
-            configuration_text: client.configuration_text(),
+            configuration: StartupConfiguration::from_client(client)?,
+            configuration_path: client.startup_configuration_path(),
             log_path: client.daemon_log_path(),
-        }
+        })
     }
 
     fn spawn(&self) -> Result<()> {
@@ -202,6 +241,10 @@ impl DaemonProcess {
         if let Some(parent) = self.log_path.parent() {
             std::fs::create_dir_all(parent)?;
         }
+        if let Some(parent) = self.configuration_path.parent() {
+            std::fs::create_dir_all(parent)?;
+        }
+        std::fs::write(&self.configuration_path, self.configuration.to_signal_bytes()?)?;
         let log = OpenOptions::new()
             .create(true)
             .append(true)
@@ -209,7 +252,7 @@ impl DaemonProcess {
         let error_log = log.try_clone()?;
         let mut command = Command::new(&self.executable);
         command
-            .arg(&self.configuration_text)
+            .arg(&self.configuration_path)
             .stdin(Stdio::null())
             .stdout(Stdio::from(log))
             .stderr(Stdio::from(error_log));
