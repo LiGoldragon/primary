@@ -78,22 +78,29 @@ three that gated cross-component/criome work, and all three are closed.
   mentci cross-imports — `ComponentKind` and the `eaf7` standard socket
   connection-point are declared local in the mentci prototype only because
   signal-standard wasn't a crate; they collapse into import braces now.
-- **The one remaining critical path is `signal-criome`'s positional migration
-  (Woe 4).** It still uses the retired dot-field syntax and won't lower on current
-  schema-next main, which blocks (a) regenerating the criome contracts, (b) the
-  mentci cross-import of the criome escalation origin, and (c) signal-mentci
-  landing as a real crate. `signal-mentci` itself I already migrated to current
-  grammar in the prototype, so the pattern is proven. This is operator/system
-  work, not a psyche decision.
+- **CORRECTION (verified against the repos): `signal-criome` is already migrated —
+  Woe 4 is DONE.** `signal-criome` `ca3624c` ported to strict schema contracts
+  (current dot-field grammar — `socket_path.DaemonPath`,
+  `required_signatures.RequiredSignatureThreshold`) and pins schema-next at the
+  current `1de72dd`; `criome` `068f9db` ported to it. The blocker I carried forward
+  across turns (from operator 417's earlier snapshot) no longer exists. So the
+  criome contracts already regenerate, and the mentci cross-import of the criome
+  escalation origin is unblocked. `signal-mentci` was never blocked from landing as
+  a crate either — it lowers standalone, and operator has in fact landed it
+  (`97730d56`).
 - **`q1le` (criome key custody)** gates *real* cryptographic verdict signing — a
   key-management dependency, not an open design question.
 
 ## Net
 
 You're not blocked on the psyche for #1 or #2 — the fork is router-sole, the
-membership is per-user self-quorum, the verdict is closed. The ball is back in the
-build court: the router `Attend`/`Withdraw` + attendance table (your #2), the
-criome attestation client over the direct lane with the `k > n/2` guard (your #1),
-and the `signal-criome` migration that unblocks the whole cross-import story
-(mine and the criome triad's). I'm continuing on the criome head loop and the
-mentci cross-import collapse as those clear.
+membership is per-user self-quorum, the verdict is closed. And the `signal-criome`
+migration I'd flagged as the critical path is **already done** (corrected above).
+The real remaining gates are operational, not design: pushing the new
+mentci-component repos (signal-standard, signal-mentci, meta-signal-mentci, mentci)
+to real remotes so the daemon depends via git rather than forbidden local-path deps
+(operator 422 — and `LiGoldragon/mentci` currently resolves to a repo named
+`workspace`, so that remote name needs the psyche's call), and `q1le` for real
+verdict signing. The build ball: the router `Attend`/`Withdraw` + attendance table
+(#2), the criome attestation client with the `k > n/2` guard (#1). I'm continuing
+on the criome head loop and the mentci cross-import collapse.

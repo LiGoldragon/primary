@@ -7,6 +7,20 @@ choice — the architecture authors deliberately left it open, so committing one
 option is a real architectural Decision that belongs to the psyche, not an
 agent.***
 
+> **Refined by `lt44` (2026-06-18, confirmed via Spirit) — the psyche chose TWO
+> lanes, not one.** Per `lt44` (Decision): the router is the general payload-blind
+> fabric AND criome *also* gets a **direct criome-to-criome peer lane** for
+> time-sensitive agreement (quorum signing, crystallized-time windows) where
+> routing through the ordinary fabric would add the wrong latency/ownership; that
+> direct lane carries only agreement/authorization messages, so criome stays
+> auth/agreement-only. So this report's "ride the router for *everything*" is
+> superseded: general/non-time-sensitive criome traffic rides the router (this
+> recommendation, validated); time-sensitive quorum agreement uses the direct
+> lane. `lt44` also folds in two honest corrections: the attested-moment window is
+> a-priori proposed and signed, not measured at the k-th signature (`ay3y`), and
+> **BLS aggregate verify is a v1 requirement** or the direct lane's latency win
+> collapses.
+
 ## Recommendation: ride the existing router transport (score 9 of 10)
 
 A cross-criome quorum solicitation travels as a `signal-criome`
