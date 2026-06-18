@@ -52,20 +52,26 @@ dot-prefix differentiator `key.TypeReference`; the name-value form and the `*`
 shorthand are retired].
 
 ```
-Entry { Topics Kind Description }          ;; bare types — names derived
-ImportDeclaration { Name source.TypeReference }   ;; dot differentiator
-Namespace { declaration (Vector Declaration) }    ;; lowercase names a composite
-Detail { Field { String } }                ;; PascalCase + block = inline decl
+Entry { Topics Kind Description }              ;; bare type — role derived from type
+ImportDeclaration { Name source.TypeReference } ;; dot — explicit role on a plain reference
+Query { (Topics (Vector Topic)) (Limit (Optional Integer)) } ;; paren — explicit role on a composite
+Detail { Field { String } }                    ;; PascalCase + block = inline decl
 ```
 
-The retired `field Type` name-value form and `*` shorthand are **rejected loudly**
-in both lowering paths (`SchemaError::RetiredStructFieldSyntax`): a bare
-struct-field atom must name a type (PascalCase or scoped), else use `field.Type`.
-A second strictness, also landed, rejects a *redundant* explicit field role
-(`SchemaError::RedundantExplicitFieldRole`): `topic.Topic`, whose explicit name
-equals the type-derived name, must be the bare `Topic` (closing intent `i3p0`).
-Both rejects are on **schema-next main** as of 2026-06-18 (`af3705c`, `95f1ee7`) —
-the positional dot-differentiator body is now the *only* accepted struct form.
+A struct-field spec is one of three role forms plus the inline-declaration form: a
+**bare PascalCase type** derives its role from the type (`Topics`); a **dot-prefixed**
+`role.TypeReference` gives an explicit role to a *plain* reference
+(`source.TypeReference`); a **parenthesized** `(role compositeType)` gives an explicit
+role to a *composite* reference (`(Topics (Vector Topic))`) — a composite cannot take
+the bare or dot form, so it is wrapped. The retired `field Type` name-value form and
+`*` shorthand are **rejected loudly** (`SchemaError::RetiredStructFieldSyntax`): a bare
+struct-field atom must name a type (PascalCase or scoped). A *redundant* explicit role
+whose name equals the type-derived name is also rejected
+(`SchemaError::RedundantExplicitFieldRole`): `topic.Topic` must be the bare `Topic`
+(closing intent `i3p0`). All three behaviors are on **schema-next main** as of
+2026-06-18: `af3705c` (retired-pair reject), `95f1ee7` (redundant-role reject), and
+`1de72dde` (explicit structural field roles — the parenthesized composite form). The
+positional/explicit-role body is now the *only* accepted struct form.
 
 ## The dimensional principle (Spirit `ov30`)
 
@@ -157,4 +163,5 @@ seam is shape↔meaning boundary, not debt. (Reports `631`, `635`.)
   (NOTA records; defers struct-body grammar here), `skills/component-triad.md`.
 - Code: nota-next `derive/src/lib.rs`, schema-next `src/declarative.rs` +
   `src/source.rs` — **landed on schema-next main** (`af3705c` `RetiredStructFieldSyntax`,
-  `95f1ee7` `RedundantExplicitFieldRole`), no longer the `next/structural-forms` epic branch.
+  `95f1ee7` `RedundantExplicitFieldRole`, `1de72dde` explicit structural field roles),
+  no longer the `next/structural-forms` epic branch.
