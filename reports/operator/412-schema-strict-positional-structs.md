@@ -18,7 +18,7 @@ Accepted:
 ```nota
 Record { Topic Description }
 Entry { Topic Kind }
-Entry { topic.Topic }
+Entry { marker.DatabaseMarker }
 Text String
 Entry { Text }
 Entry { text.String }
@@ -27,6 +27,14 @@ Entry { text.String }
 The Spirit capture for this correction is `lpk9`: struct bodies are
 positional lists of field types; explicit field names use the dot
 differentiator; the schema reader rejects the old pair form.
+
+Follow-up Spirit capture `i3p0`: dotted explicit field names are only for
+roles that differ from the type-derived field name:
+
+```nota
+Entry { topic.Topic }  ;; invalid
+Entry { Topic }        ;; correct
+```
 
 ## Visual Summary
 
@@ -38,7 +46,7 @@ flowchart LR
     ambiguity["Ambiguous parser<br/>pairs adjacent objects<br/>or derives fields from *"]
     retired["Rejected<br/>RetiredStructFieldSyntax"]
 
-    new["New struct body<br/>Record { Topic Description }<br/>Entry { topic.Topic }<br/>Entry { Text }"]
+    new["New struct body<br/>Record { Topic Description }<br/>Entry { marker.DatabaseMarker }<br/>Entry { Text }"]
     strict["Strict parser<br/>one object = one field"]
     lowered["Lowered schema<br/>stable field names<br/>typed references"]
 
@@ -58,6 +66,8 @@ flowchart TD
 
     field --> dotted["field_name.TypeName"]
     dotted --> explicit["field name is explicit<br/>reference is TypeName"]
+    dotted --> redundant["topic.Topic"]
+    redundant --> rejectRedundant["reject: just use Topic"]
 
     field --> structural["(Optional Type)<br/>(Vector Type)<br/>(Map Key Value)"]
     structural --> structuralDerived["field name derives from reference shape<br/>optional_type, type_vector, value_by_key"]
@@ -77,7 +87,8 @@ flowchart TD
 | Intent | Retired | Strict |
 |---|---|---|
 | Use existing field types | `Entry { Topic * Kind * }` | `Entry { Topic Kind }` |
-| Explicit field role | `Entry { topic Topic }` | `Entry { topic.Topic }` |
+| Explicit field role | `Entry { marker DatabaseMarker }` | `Entry { marker.DatabaseMarker }` |
+| Redundant explicit role | `Entry { topic Topic }` | `Entry { Topic }`; `Entry { topic.Topic }` is rejected |
 | Scalar wrapper type | `Topic { string String }` | `Topic String` |
 | Struct-local scalar role | `Entry { text String }` | `Entry { text.String }` |
 | Named scalar role | `Entry { value String }` | `Value String` then `Entry { Value }` |

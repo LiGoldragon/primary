@@ -18,7 +18,7 @@ risks are design edges it intentionally exposed:
 The strict grammar currently supports:
 
 ```nota
-Entry { topic.Topic }
+Entry { marker.DatabaseMarker }
 Entry { Topic }
 Entry { (Vector Topic) }
 Topics (Vector Topic)
@@ -34,6 +34,20 @@ Entry { by_topic.(Map Topic RecordIdentifier) }
 
 So a component author must either accept a derived field name from the
 reference shape, or declare a named wrapper type first.
+
+Spirit record `i3p0` closes one edge: it does not support redundant
+explicit roles:
+
+```nota
+Entry { topic.Topic }
+```
+
+That is now an error because the role `topic` is exactly the derived
+field name for `Topic`; the author should write:
+
+```nota
+Entry { Topic }
+```
 
 Best question:
 
