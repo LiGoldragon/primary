@@ -167,7 +167,16 @@ implement the match-and-deliver step in the router daemon; (4) specify
 socket-level reference delivery plus the pull path; (5) retire the
 count-only publish and replace it with an actual delivery mechanism.
 
-**Lane.** designer (psyche-decision).
+**Lane.** designer (psyche-decision) — **RESOLVED: router-sole (psyche-decided):
+"use the router for all non-direct message passing."** criome stays
+authentication-only and keeps **no operational delivery registry** — any
+criome-local subscription surface is observation/audit only; the router is the
+**sole operational matcher** for all non-direct passing, with the direct
+criome-to-criome agreement lane the only non-router path. Captured: `m0p2`
+clarified to the router-sole pulse; `l2ha` and `lt44` were already consistent. The
+router `Attend`/`Withdraw` surface + the durable attendance table (keyed by
+signal-standard `Differentiator`) and the retirement of criome's count-only
+`publish_authorized_object_update` are now **unblocked** (operator lane).
 
 ### Woe 2 — clock crystallization a-priori: window fixed before any authority signs
 
@@ -867,12 +876,12 @@ churn:
 Distilled from the high and medium woes — these need a psyche call before
 the dependent work can land cleanly:
 
-1. **Who owns the fan-out matcher** (Woe 1, hub): router-is-sole-matcher
-   (l2ha-faithful, criome stays authentication-only) versus
-   criome-keeps-internal-registry-AND-router-gets-one (double filter,
-   auth-audit vs operational delivery). This decision gates the entire
-   pulse/router/transport/heartbeat lane and dictates whether m0p2 gets
-   superseded.
+1. **Who owns the fan-out matcher** (Woe 1, hub): **DECIDED — router-sole**
+   (psyche: "use the router for all non-direct message passing"). The router is
+   the sole operational matcher; criome keeps no operational delivery registry
+   (observation/audit only); the direct criome lane is the only non-router path.
+   `m0p2` was clarified to match; `l2ha`/`lt44` already consistent. The router
+   `Attend`/`Withdraw` + attendance-table work is unblocked (operator).
 
 2. **Attested clock: a-priori window vs measured closure** (Woe 2): keep
    the fixed a-priori window as authoritative (operator 418's lean, gains
