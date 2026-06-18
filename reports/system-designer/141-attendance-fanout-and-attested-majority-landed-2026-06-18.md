@@ -49,13 +49,16 @@ All five design checks **pass**, reviewer-verified (incl. a matcher mutation):
 - **NOTA/Rust discipline:** positional records, `Withdraw` (not the SEMA word
   `Retract`), no quotes; methods on data-bearing types, schema-derived decode.
 
-The one merge-blocker (P2, being fixed): on the non-compat `signal-router` branch
-the new attendance tests in `tests/round_trip.rs` weren't feature-gated, so
-`cargo clippy --all-targets` fails under **default** features (the "clippy clean"
-claim was produced only with `--features nota-text`). The fix (gate them behind
-`#[cfg(feature = "nota-text")]`, matching the compat branch) + an optional
-strengthening of the `withdraw` test is in flight (agent `ad6e5b1a`). After it,
-the reviewer's own words: "ready to integrate."
+The one merge-blocker (P2) is **CLOSED**: the new attendance helpers, tests, and
+the now-unused import block on the non-compat `signal-router` branch are gated
+behind `#[cfg(feature = "nota-text")]` (commit `9a26ba58`), verified
+`cargo clippy --all-targets -- -D warnings` exit 0 under **default** features and
+all 9 attendance round-trip tests still pass under `--features nota-text`. The P3
+strengthening also landed (commit `0f444f86`): `withdraw_stops_further_pushes` now
+keeps a second non-matching attender open across the Withdraw, so a zero post-
+Withdraw fan-out proves the Withdraw deleted the row rather than an empty table.
+**Track G is now fully merge-ready** (clippy-clean under default features) — the
+reviewer's bar for "ready to integrate" is met.
 
 The match-and-push step is complete, durable, and tested via a `FanOutAdmittedObject`
 runtime entry point; the **criome-event-stream client** that drives it per admitted
@@ -94,5 +97,5 @@ dep from `attendance-fanout-139-compat` to `main` and `signal-standard` to `main
 | `transport-two-kernel-e2e-138` | router | L1 nixosTest + `message-router.nix` | sound (KVM-green) |
 | `signal-standard-bootstrap` | signal-standard | shared vocabulary crate | sound (now has local `main`) |
 | `attended-moment-majority-guard-139` | criome | `:578` majority guard | **sound, merge** |
-| `attendance-fanout-139` (+`-compat`) | signal-standard/router/signal-router | Attend/Withdraw fan-out | sound; gating fix in flight |
+| `attendance-fanout-139` (+`-compat`) | signal-standard/router/signal-router | Attend/Withdraw fan-out | **sound, merge-ready** (gating fix `9a26ba58` + `0f444f86`) |
 | `cluster-root-admission-ceremony` | criome | offline admission minting | sound (earlier) |
