@@ -18,6 +18,10 @@ Created or confirmed these public GitHub remotes, all with `main` as default:
 
 All five local main bookmarks match origin after this pass.
 
+I also added `signal-standard`, `mentci`, `signal-mentci`, and
+`meta-signal-mentci` to `protocols/active-repositories.md`, so future active
+repo sweeps include the newly landed component surface.
+
 ## Landed Code
 
 `signal-mentci` main:

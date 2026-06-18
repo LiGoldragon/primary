@@ -55,6 +55,7 @@ stack.
 | `meta-signal-message` | `/git/github.com/LiGoldragon/meta-signal-message` | Message meta policy contract: `Configure` over the typed `MessageDaemonConfiguration` (ingress socket mode + engine-owner origin policy). |
 | `signal-router` | `/git/github.com/LiGoldragon/signal-router` | Router-owned observation contract for accepted messages, route decisions, channel state, delivery status, and adjudication status. Used by `introspect` without turning `signal-introspect` into a shared schema bucket. |
 | `meta-signal-router` | `/git/github.com/LiGoldragon/meta-signal-router` | Meta-signal router policy contract. |
+| `signal-standard` | `/git/github.com/LiGoldragon/signal-standard` | Shared cross-component standard vocabulary: socket locations, component kind, authorized-object kind, differentiators, and interest lattices. Pure contract/support crate used to prevent every component from re-declaring the same routing and identity vocabulary. |
 | `signal-system` | `/git/github.com/LiGoldragon/signal-system` | System observation to router channel contract. |
 | `meta-signal-system` | `/git/github.com/LiGoldragon/meta-signal-system` | System meta policy contract: `Configure` over the typed `SystemDaemonConfiguration` (backend + privileged-action authority surface). |
 | `signal-harness` | `/git/github.com/LiGoldragon/signal-harness` | Router to harness delivery/observation channel contract. |
@@ -68,6 +69,9 @@ stack.
 | `meta-signal-orchestrate` | `/git/github.com/LiGoldragon/meta-signal-orchestrate` | Meta-signal orchestration policy contract. |
 | `signal-criome` | `/git/github.com/LiGoldragon/signal-criome` | Criome trust and attestation contract vocabulary: BLS signature envelopes, identity records, delegation grants, component releases, and out-of-band attestations. Pure contract crate; no daemon, no storage, no Persona policy ownership. |
 | `meta-signal-criome` | `/git/github.com/LiGoldragon/meta-signal-criome` | Criome meta policy contract: `Configure` over `CriomeDaemonConfiguration` (socket + `criome.sema` store). Config type is canonical here; criome daemon to adopt it. |
+| `mentci` | `/git/github.com/LiGoldragon/mentci` | Programmable human approval daemon for the local per-Unix-user criome. `mentci-daemon` owns canonical UI state and a Unix-socket signal endpoint; `mentci` is the thin request client. Current SEMA is in-memory; durable storage and criome key-custody verdict egress remain integration work. |
+| `signal-mentci` | `/git/github.com/LiGoldragon/signal-mentci` | Mentci working signal contract: present questions, push UI updates, observe projected interface state, answer closed verdicts, propose edited answer objects, and retract observations. |
+| `meta-signal-mentci` | `/git/github.com/LiGoldragon/meta-signal-mentci` | Mentci meta policy contract: binary `Configure` startup/reconfiguration over typed daemon socket, local criome socket, persona identity, and notification clients. |
 | `repository-ledger` | `/git/github.com/LiGoldragon/repository-ledger` | Triad runtime component for recording pushed repository changes from the local Gitolite server into a sema-engine database. |
 | `signal-repository-ledger` | `/git/github.com/LiGoldragon/signal-repository-ledger` | Ordinary repository-ledger contract: receive-hook event assertions and repository/event read queries. |
 | `meta-signal-repository-ledger` | `/git/github.com/LiGoldragon/meta-signal-repository-ledger` | Meta-signal repository-ledger contract: repository registration, spool policy, and future mirror policy mutation. |
