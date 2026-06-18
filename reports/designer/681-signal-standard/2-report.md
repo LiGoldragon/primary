@@ -178,12 +178,13 @@ to an identically-named reconciled variant, existing match arms stay valid;
 the rebuild surfaces the new required arms wherever code matches
 exhaustively.
 
-### One open item for the psyche / operator
+### Resolved: ComponentPrincipal collapses into ComponentKind
 
 signal-persona's `ComponentPrincipal` is currently the same set as
-`ComponentKind`. **Should it collapse into the imported `ComponentKind`, or
-remain a persona-local alias?** Flagged, not decided — it is a consumer-
-semantics call the operator should make on landing.
+`ComponentKind`. **Psyche decision: collapse it into the imported
+`ComponentKind` — no persona-local alias.** Both persona fields that referenced
+`ComponentPrincipal` reference the imported `ComponentKind` directly; the
+`ComponentPrincipal` name is retired.
 
 ### Validation caveat (honest)
 

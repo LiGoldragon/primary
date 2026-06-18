@@ -172,9 +172,10 @@ operator work. The plan:
    Regenerate; criome's `Evidence`, `AuthorizedObjectObservation`,
    `ContractTimeCheck`, etc. now reference the imported types unchanged.
 3. **signal-persona** — delete local `ComponentKind` (line 32). `ComponentPrincipal`
-   (line 33) is the same set: either import `ComponentKind` for both fields
-   or keep `ComponentPrincipal` as a persona-local alias of the imported
-   type. Add `{ ComponentKind signal-standard:lib:ComponentKind }`.
+   (line 33) is the same set and **collapses into the imported `ComponentKind`**
+   (psyche-decided — no persona-local alias); both fields reference the imported
+   type and the `ComponentPrincipal` name is retired. Add
+   `{ ComponentKind signal-standard:lib:ComponentKind }`.
    Regenerate; `ComponentStatus`, `Presence`, `SpawnEnvelope` reference it.
 4. **Any other ComponentKind users** — grep the `signal-*` repos; current
    evidence shows only these two declare a local `ComponentKind`.
