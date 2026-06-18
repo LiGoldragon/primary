@@ -139,5 +139,11 @@ For one criome daemon to authorize against another across the network, in order:
 2. **Track B (criome↔criome) is a design fork still open:** the cross-host
    wire-crypto layer is undecided (TLS vs signed-envelope vs SSH-tunnel). That is
    a designer call I can drive to a recommendation.
-3. The wrong **`> n/2` quorum guard** is a correctness bug in the cross-machine
-   path — worth flagging to operator/designer regardless of the above.
+3. ~~The wrong **`> n/2` quorum guard** is a correctness bug in the cross-machine
+   path~~ — **RETRACTED (2026-06-18, see 138/4).** Investigation found this is
+   *not* a bug: `language.rs:414`/`:578` are correct admission-time well-formedness
+   guards on a caller-declared **m-of-n** threshold (`0 < m ≤ n`), not a majority
+   check; satisfaction is `satisfied >= required` (correct). A `> n/2` rewrite
+   would *regress* legitimate `required=1` and `required=n` contracts. The error
+   was in report 685's Woe-3, which misread the declared threshold field as a
+   collected-signature tally.
