@@ -7,7 +7,6 @@ use std::time::{Duration, Instant};
 
 use nota_next::{NotaDecode, NotaEncode, NotaSource};
 use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
-use signal_frame::{ClientShape, CommandLineSockets, SingleArgument};
 use signal_orchestrate::WirePath;
 
 use crate::error::{Error, Result};
@@ -89,18 +88,17 @@ impl OrchestrateDaemonClient {
     where
         Request: NotaEncode,
     {
-        let text = request.to_nota();
-        let client = ClientShape::<signal_orchestrate::Frame, meta_signal_orchestrate::Frame>::new(
-            CommandLineSockets::new(
-                Some(self.ordinary_socket_path.clone()),
-                Some(self.meta_socket_path.clone()),
-                "PERSONA_ORCHESTRATE_SOCKET",
-                "PERSONA_ORCHESTRATE_OWNER_SOCKET",
-            ),
-        );
-        let argument = SingleArgument::from_program_and_values("orchestrate".to_string(), vec![text])
-        .map_err(signal_frame::CommandLineError::from)?;
-        Ok(client.reply_text(argument)?)
+        let output = Command::new(self.client_executable())
+            .env("PERSONA_ORCHESTRATE_SOCKET", &self.ordinary_socket_path)
+            .arg(request.to_nota())
+            .output()?;
+        if !output.status.success() {
+            return Err(Error::ClientFailed {
+                status: output.status.to_string(),
+                stderr: String::from_utf8_lossy(&output.stderr).trim().to_string(),
+            });
+        }
+        String::from_utf8(output.stdout).map_err(Error::ClientOutputUtf8)
     }
 
     fn wait_for_readiness(&self) -> Result<()> {
@@ -131,6 +129,13 @@ impl OrchestrateDaemonClient {
             .join("target")
             .join("release")
             .join("orchestrate-daemon")
+    }
+
+    fn client_executable(&self) -> PathBuf {
+        self.component_root
+            .join("target")
+            .join("release")
+            .join("orchestrate")
     }
 
     fn daemon_log_path(&self) -> PathBuf {

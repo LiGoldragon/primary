@@ -6,6 +6,7 @@
 
 use std::io;
 use std::path::PathBuf;
+use std::string::FromUtf8Error;
 
 use signal_orchestrate as contract;
 
@@ -94,6 +95,12 @@ pub enum Error {
 
     #[error(transparent)]
     CommandLine(#[from] signal_frame::CommandLineError),
+
+    #[error("orchestrate client failed with status {status}: {stderr}")]
+    ClientFailed { status: String, stderr: String },
+
+    #[error("orchestrate client output was not UTF-8: {0}")]
+    ClientOutputUtf8(FromUtf8Error),
 
     #[error("daemon startup configuration rkyv encode failed")]
     StartupConfigurationEncode,
