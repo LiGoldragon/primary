@@ -25,7 +25,7 @@ Read the workspace baseline first, then this skill. Before substantive maintenan
 
 - `skills/system-operator.md` — the parent operational discipline and deployment caveats.
 - `skills/nix-usage.md` and `skills/nix-discipline.md` — Nix command shape, flake discipline, and store-path hygiene.
-- `skills/secrets.md` — secret handling: never expose key bytes; use gopass and sops-nix surfaces only through approved wrappers.
+- `skills/secrets.md` — secret handling: agents may inspect tokens when needed, while keeping plaintext out of durable surfaces and using gopass and sops-nix stores.
 - `skills/versioning.md` — logic/package/deploy changes need the right version surface.
 - Relevant repo files, always starting with the repo's `INTENT.md`, then `AGENTS.md`, `ARCHITECTURE.md`, and `skills.md`.
 
@@ -60,7 +60,7 @@ If activation fails because a mutable `nix profile install` package conflicts wi
 
 Do not casually disrupt the live desktop or management path. Niri is reloaded through IPC after activation, not signalled. Router/network changes preserve the current recovery path. Home Manager must not reconcile live graphical-session container slices. Paid cloud inference or transcription calls require explicit current-task approval unless the user already authorized the specific call.
 
-Secrets never enter chat, reports, Nix store text, shell history snippets, or logs. Verify secrets by existence, length, exit code, service state, or signature outcome — not by printing them.
+Secrets may be inspected when a maintenance task requires plaintext, but they stay out of chat, reports, Nix store text, shell history snippets, and logs. Prefer existence, length, exit code, service state, or signature outcome when plaintext is not needed.
 
 ## See also
 

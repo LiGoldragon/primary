@@ -56,7 +56,7 @@
   (Craft naming skills/naming.md Keystroke
     [Full English words. The offender table.])
   (Craft secrets skills/secrets.md Keystroke
-    [An agent never sees a secret value. gopass wraps env-vars in the user session; sops-nix carries secrets to cluster hosts; bridge stores ciphertext-to-ciphertext; verify by length and exit code, never by reading.])
+    [Agents may inspect tokens and other secret values when an authorized task requires plaintext access. Keep visible secrets transient and out of chat, reports, logs, commits, shell traces, the Nix store, fixtures, and checked-in files; prefer gopass, sops-nix, and blind pipe-to-sink handling when enough.])
   (Craft privacy skills/privacy.md Keystroke
     [Private personal-affairs work stays out of public workspace surfaces and privacy Zero Spirit. Elevated Spirit privacy exists, but private repositories remain the conservative default unless the psyche explicitly wants Spirit capture.])
   (Craft workspace-vocabulary skills/workspace-vocabulary.md Topic

@@ -1,32 +1,39 @@
 # Skill — secrets
 
-*Handling secret material so it is never seen, never logged, and never
-lands anywhere but an encrypted store. Two layers: gopass in the user
-session, sops-nix on cluster hosts.*
+*Handling secret material so tokens may be used directly when needed
+without landing in durable public surfaces. Two layers: gopass in the
+user session, sops-nix on cluster hosts.*
 
-## The absolute: an agent never sees a secret value
+## Agents may inspect tokens when the task requires it
 
-A secret value never reaches the agent's eyes or any durable surface.
-Everything else here serves this rule. A secret must never appear in:
+Authentication tokens and other secret values may reach the agent's eyes
+when plaintext inspection is needed for an authorized workspace task.
+Visible plaintext is transient working material. A secret must not appear
+in any durable or broadly visible surface:
 
-- stdout/stderr of any command you run;
 - a log line, report, chat message, or commit message;
-- a command's `argv` (visible to any `ps` on the box);
 - a shell trace (`set -x` while a secret variable is live);
 - the nix store, a test fixture, or a checked-in plaintext file.
 
-How to work and still satisfy the rule:
+Keep exposure narrow:
 
-- **Pipe source to sink.** Move a secret by connecting the producer's
-  stdout to the consumer's stdin. The value lives only in the pipe
-  buffer and the two processes' memory, never on a terminal.
-- **Verify blind.** Confirm success by exit code, by byte length
-  (`... | wc -c`), by an entry name (`gopass ls | grep -F <name>`
-  lists names, never values), or by ciphertext markers
-  (`grep ENC\[ <file>.sops`). Never decrypt-to-check.
-- **Public keys are public.** Age recipients, nix cache public keys,
-  and ssh public keys are not secrets — they may appear in `argv` and
-  output freely. Only the secret bytes are forbidden.
+- **Prefer pipe source to sink.** Move a secret by connecting the
+  producer's stdout to the consumer's stdin when blind handling is
+  enough. The value lives only in the pipe buffer and the two processes'
+  memory.
+- **Inspect only when useful.** If seeing the token is the simplest safe
+  way to debug, verify, copy, or configure it, do so deliberately and
+  keep it out of durable surfaces.
+- **Keep `argv` clean when possible.** A command's `argv` is visible to
+  any `ps` on the box. Prefer stdin, an environment variable scoped to
+  the one command, or a protected runtime file.
+- **Verify blind when enough.** Confirm success by exit code, byte
+  length (`... | wc -c`), entry name (`gopass ls | grep -F <name>`), or
+  ciphertext markers (`grep ENC\[ <file>.sops`) when the value itself
+  does not need inspection.
+- **Public keys are public.** Age recipients, nix cache public keys, and
+  ssh public keys may appear in `argv` and output freely. Only the
+  secret bytes need the transient-material discipline.
 
 ## Two layers: gopass for the session, sops-nix for the cluster
 
@@ -72,10 +79,10 @@ service in a cluster zone
 (`goldragon.criome/local-llm-api-token`) so the path survives the
 service moving between hosts.
 
-## Minting a secret without seeing it
+## Minting a secret
 
-Generate with a CSPRNG and pipe straight into the store; never echo the
-generated value:
+Generate with a CSPRNG and pipe straight into the store unless the task
+requires reading the generated value:
 
 ```sh
 token=$(head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n')   # 256-bit hex
@@ -120,7 +127,8 @@ re-read.
 
 ## The blind bridge: gopass to sops-nix
 
-Move a secret from gopass into a sops file without ever exposing it:
+Move a secret from gopass into a sops file without displaying it when
+blind handling is enough:
 
 ```sh
 gopass show -o <gopass-path> \
@@ -132,9 +140,11 @@ gopass show -o <gopass-path> \
 The plaintext flows gopass → pipe → sops; it never touches a terminal
 or `argv`. The recipient is a public key, safe on the command line.
 `gopass show` triggers decryption (the pinentry prompt is the human
-unlocking their own store) — the agent still never sees the value.
-Verify blind: `grep ENC\[ <file>.sops` for encryption and
-`grep -oE 'age1[a-z0-9]+' <file>.sops` for the recipient set.
+unlocking their own store). The agent may keep this bridge blind or may
+inspect the value if the task requires it; the durable output remains
+ciphertext. Verify blind when enough: `grep ENC\[ <file>.sops` for
+encryption and `grep -oE 'age1[a-z0-9]+' <file>.sops` for the recipient
+set.
 
 ## See also
 
