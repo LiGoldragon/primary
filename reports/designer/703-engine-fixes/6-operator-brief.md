@@ -58,6 +58,24 @@ daemon-level, so every load-bearing falsifiable test runs at the
 process/socket/closure boundary. A green `cargo test` that never opens a socket
 does **not** discharge a daemon-level item.
 
+### Near-term production scope — 1-of-1 local auth (Spirit `xhwa`, Decision High)
+
+Per Spirit `xhwa`: [near-term production deploy target for spirit criome-gating
+is the simplest 1-of-1 local authorization] — spirit asks its **co-resident
+local** criome daemon to authorize the content-addressed head, and a **single
+local signature (1-of-1, no quorum, no multi-machine cluster)** suffices to gate
+propagation. This is the `m0p2` bootstrap case promoted to the first production
+milestone: the `d6he` chain ships to production **without** waiting on the
+cluster (`jk1w`), with quorum / 2-of-3 as the *subsequent* step, not a
+prerequisite. Criome's `k > n/2` rule already admits `n=1, k=1`, so 1-of-1 needs
+no criome quorum-code change — only a 1-member root contract at deploy time.
+
+**Lane split for Item 1:** the **designer** ships the 1-of-1 gate as a feature
+branch off spirit `main` (`aa7e9b0`); **operator** integrates it to main and
+later extends the gate from 1-of-1 to quorum/2-of-3 when the cluster lands. The
+spec below stands; only the authorization arity (1-of-1 first) and the branch
+owner change.
+
 ## 2. The target loop
 
 ```mermaid
@@ -211,12 +229,16 @@ restore (`branch e2e:223`) and an in-process fabricated reference
   reuse on the restore leg.
 
 **Designer lean.** Socket gate to the **local** criome daemon, single-host
-first. The in-process `CriomeRoot::start` ActorRef is demoted to the **test
+first, **1-of-1 authorization** (Spirit `xhwa`): single local criome, single
+signature, no quorum gather, no cluster. Criome's `k > n/2` already admits
+`n=1, k=1`; the 1-member root is a criome **deploy-config** concern, not spirit
+code. The in-process `CriomeRoot::start` ActorRef is demoted to the **test
 seam only**; the real path and the falsifiable test go through the socket and
 the daemon process boundary. The router over-socket fanout (Item 2) is a
 downstream dependency, **not in scope** for closing the spirit spine — spirit's
 gate can target the in-process ActorRef seam until the router socket surface
-lands.
+lands. **Designer ships this branch** (the 1-of-1 gate off `aa7e9b0`); operator
+integrates to main and later extends the gate from 1-of-1 to quorum/2-of-3.
 
 **Falsifiable test (DAEMON-LEVEL).** Rewrite
 `spirit/tests/end_to_end_offline_full_chain.rs` to drive **real processes**:
