@@ -24,6 +24,9 @@ result-*
 .env
 .envrc.local
 
+# local harness continuation state
+.pi/
+
 # editor and language scratch
 *.swp
 *.swo
