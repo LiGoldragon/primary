@@ -42,12 +42,12 @@ handed to the lanes that own it. Method throughout: background multi-agent
 | `attested-moment-majority-guard-139` | criome | scoped `:578` fork-safe majority guard (`required > authorities.len()/2`) | **sound, no defects**; 6 boundary tests; mutation fails only at `n=2/r=1` |
 | `attendance-fanout-139` (+`-compat`) | signal-standard / signal-router / router | router-sole `Attend`/`Withdraw` subscribe + reference-fanout, keyed by the interest lattice | sound, merge-ready; matcher mutation-verified; gating P2 closed |
 
-In flight (workflow `wyxr0kx2k`):
+Landed this phase (workflow `wyxr0kx2k`, both **sound**):
 
-| Branch | Repo | What |
-|---|---|---|
-| `signal-criome-positional-migration-142` | signal-criome | Woe-4: migrate off retired field-label syntax so it lowers on current schema-next main |
-| `criome-nixos-module-142` | criome | `criome.nix` deploy module (sibling to `message-router.nix`) |
+| Branch | Repo | What | Verification |
+|---|---|---|---|
+| `signal-criome-positional-migration-142` | signal-criome | **Woe-4**: migrated off retired field-label syntax (156 dot-fields → 0) | `nix flake check` green vs *current* schema-next main; all 77 structs position-by-position identical; `canonical.nota` **byte-unchanged** (wire preserved); freshness gate verified ×2; consumer untouched |
+| `criome-nixos-module-142` | criome | `criome.nix` deploy module + `criome-encode-configuration` encoder + daemon/text flake split | `criome-node` nixosTest **ran GREEN under KVM**: one-arg/no-flags, 0600 key custody, restart self-resume byte-identical (1 P3 cosmetic) |
 
 ## 3 — The realness ladder (report 136)
 
