@@ -79,11 +79,12 @@ objects**. The payload shape depends on the payload *type*:
   account, handle}` and `HostDestruction {provider, host_name}` are inline
   structs, so the payload is the flat record: `(DigitalOcean criome-test
   HANDLE)`.
-- **Newtype/alias payload → one extra nesting.** `HostPlanPreparation` is
-  an alias newtype over `DesiredHostState`, so it holds *one* object (the
-  inner record): `((DigitalOcean host type image key))` — double parens.
-  This is the single non-obvious shape; the parser error
-  ("HostPlanPreparation to hold 1 root object, found 5") is the tell.
+- **Single-field-struct payload → one extra nesting.** `HostPlanPreparation`
+  is a single-field struct wrapping `DesiredHostState`, so it holds *one*
+  object (the inner record): `((DigitalOcean host type image key))` — double
+  parens. This is the single non-obvious shape; the parser error
+  (verbatim: `expected HostPlanPreparation to hold 1 root objects, found 5`)
+  is the tell.
 - **Scalar payload → bare atom.** A `PlanIdentifier`/`ProviderAccount` is a
   bare atom; `Optional` is `None` or `(Some x)`.
 - **The hand-written contract tree can rename variants vs the schema.**
