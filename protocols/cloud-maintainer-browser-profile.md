@@ -27,7 +27,7 @@ The launcher starts Google Chrome with:
 --no-first-run
 ```
 
-If the CDP endpoint is already listening, the launcher opens the requested URL in the existing profile and exits successfully.
+If the CDP endpoint is already listening, the launcher asks the existing profile to open the requested URL without `--new-window` and exits successfully. Agents do not spawn a fresh Chrome window for each navigation.
 
 ## Verification
 
