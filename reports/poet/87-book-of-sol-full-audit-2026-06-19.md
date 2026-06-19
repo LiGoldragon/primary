@@ -1316,3 +1316,36 @@ Acting on the psyche's triage of this audit: fix the high-severity findings on l
 ### Still open
 
 The remaining ~301 findings (the corpus-wide tic sweep, quote-format normalization across the unpublished articles, glossing gaps, the `Penultimate_Sāttvic_Food` *guru* mistranslation, the stub fragments in the public index, the `skills.md` horizontal rules + stray `publish:true`, the `AGENTS.md` self-staleness on the witnesses-pattern claim and the `.gitignore` path) are catalogued above and await a dedicated pass when the psyche calls for one.
+
+## Remediation log — Round 2: full corpus sweep (2026-06-19)
+
+Acting on "fix it all, your leans." A 20-bundle remediation workflow (partitioned by file so no two agents touched the same file), each bundle remediated then checked by an independent adversarial reviewer, plus a hand pass on the repo-meta files. Committed to TheBookOfSol `9214e11e` and pushed; eight of the nine changed live articles re-published.
+
+### Tally
+
+- **353 agent edits** across ~50 article and source-extract files: the negative-contrast tic sweep (the book's dominant defect), quote-block normalization to the canonical Sanskrit→blank→English→attribution-last shape, first-use glosses, em-dash thinning in prose, the `guru` → "weighty/heavy" symbology fix in `Penultimate_Sāttvic_Food.md` and the `The_Pressure_of_Being.md` inversion, doctrine alignments, filler and meta-prose removal, and verified citation corrections.
+- **Hand pass (repo-meta):** removed the six section-divider `---` rules from `skills.md` (the two inside its ```yaml example are legitimate and kept); fixed the `.gitignore` stale library path (`~/git/bibliography/` → `~/primary/repos/library/`); updated `AGENTS.md` line 80 (the witnesses + Āyurveda + True_Ayurveda files now use the correct attribution-last pattern, so the named-file "do not imitate" list was retired into a generic rule); added the three orphan articles (`Chloride_In_Produce_Evidence_Table`, `Computing_vs_Measuring_The_Curve`, `Horizon_Dip_vs_Altitude`) to `_index.md`.
+
+### Citation rigor (the YS lesson applied)
+
+Agents were given a verified cheat-sheet of canonical loci and forbidden from guessing a chapter.verse: anything they could not confirm against the caraka-samhita repo, the project's own research notes, or the web was re-marked "— proverbial formulation, after *Source*" rather than assigned a number. The adversarial review caught and fixed two regressions: a remediation agent had downgraded `amṛtaṁ vai prāṇāḥ` to a proverbial marker, but the repo's own research pins it to *Bṛhadāraṇyaka Upaniṣad* 2.1.20 (restored); and a witnesses-file over-edit was reverted. No unfixed medium/high residual remained.
+
+### Verification
+
+Full mechanical re-sweep after the 353 edits: zero curly quotes, zero stray `---` rules, zero new "sodium chloride", link integrity clean except the one known pending banner (`The_Allure_of_Vata.md` → an ungenerated `allure-of-vata-banner.png`, recorded as a banner task per the skills.md convention rather than fabricated).
+
+### Re-published (8 of 9 changed live articles)
+
+The Chloride Indictment, The Ambrosian Diet, Dehydrated Fruit/Coconut/Honey, In Praise of Agni, Physical Mortality and Essential Immortality, Keep the Plasma, Plasma Recycling Manual, The Distilled Water Paradox.
+
+**Holdout — Apathya (195226616):** the Substack CLI refuses to update it because the article body links to unpublished posts (*True Āyurveda*, *Chloridism*, *Witnesses Against Salt — Āyurveda*, and its source-extract). The repo source is fixed, committed, and pushed; only its Substack mirror lags. Resolving needs an author decision: publish those linked articles, or convert the four links to plain prose for the published version. I did neither unilaterally (publishing new posts is outward-facing; de-linking degrades the repo's cross-references).
+
+### Open — author-decision items the agents flagged but did not touch (no merges, deletes, or de-listings done unilaterally)
+
+- **Redundant article pairs** (kept separate; merge is the author's call): `Minerals` / `Inorganic_Minerals`; `Chloride_Extrapolation` / `Chloride_the_Narcotic`; `Ethical_Ghee` / `Universality_of_Ghee`; `Obsolete_Social_Medias` / `Twitter_is_Obsolete`; `The_Duty_You_Cannot_Refuse` / `My_Mothers_My_Sisters`.
+- **Stubs / private fragments in the public index:** `personal/Notes.md` (rough insight list), `personal/Olivier_Francoeur.md` (bare astrological glyphs), `ayurveda/Triphala.md` (21-line stub). Left in place; de-listing the author's own content was not mine to decide.
+- **Filename ↔ H1 mismatches:** `Chloride_Extrapolation.md` (H1 "Chloride: the quiet narcotic"), `Poisonous_Music.md` (H1 "Sound Without Consent"), `Sidereal.md` (H1 "Zodiac and Nakṣatras…", and "sidereal" never appears).
+- **Citation-locus conflicts the corpus disagrees with itself on** (need the author's edition ruling, not a guess): the salt-group/lead verse cited as *Aṣṭāṅga Hṛdaya* Sū. 6.147 in one file vs elsewhere; the salt-excess catalogue AH Sū. 10.12–13 vs 10.13–14ab; the `svastha` definition's attribution.
+- **Structural gaps:** `The_Two_Pillars_of_Nourishment.md` and `True_Ayurveda.md` (both AGENTS.md-named anchors) carry zero primary-source quote blocks.
+- **Placement:** `chloride/Chloride_In_Produce_Evidence_Table.md` is `kind: research` living in an article directory; `chloride/NaCl_Not_Vegan.md` is a diet/vegan twin under `chloride/`.
+- **Abandoned research chapters** 04/05/08 (index links already pruned); `The_Allure_of_Vata` pending banner; `Refinement.md` publish-state mismatch in `.substack-posts.json`.
