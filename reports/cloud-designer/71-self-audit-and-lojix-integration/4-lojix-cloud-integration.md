@@ -4,6 +4,21 @@ cloud-designer, 2026-06-19. Read-only design lane of session 71. Every
 claim cites `file:line` or a Spirit record; production behaviour is
 distinguished from what a report asserts.
 
+> **Correction (session 72).** The deploy leg below is shown as
+> `nix copy --to ssh-ng://` + `switch-to-configuration`. lojix moved to
+> **build-on-target** (system-designer report 150, 2026-06-19): the node's
+> closure is realized in the *target's own* Nix store over
+> `nix build --eval-store auto --store ssh-ng://root@<node>.<cluster>.criome
+> <drv>^*` (eval stays local, realization + any model NAR happen on the
+> node; the copy step is a **no-op**), then a `BootOnce` activation runs
+> there. The load-bearing claims of this report hold (the two daemons never
+> call each other; the join is the domain + ssh identity; create→observe→DNS
+> precedes deploy). The implementation-ready, build-on-target-corrected
+> handoff — including the **mandatory `SetPolicy` DNS leg** this report
+> omits, the deterministic plan id `criome-Cloudflare-plan`, and the
+> register-time Cloudflare credential getenv — is
+> `reports/cloud-designer/72-lojix-cloud-implementation-research/6-synthesis.md`.
+
 ## The shape, in one paragraph
 
 cloud and lojix are **two operator-driven daemons that never call each
@@ -239,7 +254,7 @@ sequenceDiagram
 
     Note over Lojix,Node: lojix's existing pipeline — domain is the only coupling
     Op->>Lojix: meta-lojix Deploy<br/>(cluster, node, FullOs, BootOnce)
-    Lojix->>Node: nix copy --to ssh-ng://root@<node>.<cluster>.criome  (sops files inside closure)
+    Lojix->>Node: nix build --eval-store auto --store ssh-ng://root@<node>.<cluster>.criome <drv>^*  (build-on-target; closure realizes in node store, copy is a no-op, sops inside it)
     Lojix->>Node: ssh root@<domain> switch-to-configuration boot<br/>(node decrypts sops at activation — cjrl)
     Lojix-->>Op: AcceptedDeploy(generation-id)
     Op->>Lojix: lojix Query (ByEventLog) → Activated

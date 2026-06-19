@@ -9,6 +9,13 @@ source at cloud `HEAD 3b38cdd`, meta-signal-cloud `54d62be`, signal-cloud
 INTENT.md before listing. Read-only lane — fixes are described for the
 main agent to apply, not applied here.
 
+> **Correction (session 72).** The lojix deploy leg in the sequence diagram
+> below shows `nix copy --to ssh-ng://`; lojix is now **build-on-target**
+> (`nix build --eval-store auto --store ssh-ng://… <drv>^*`, realize in the
+> node's store, copy is a no-op — report 150). The implementation-ready,
+> corrected handoff supersedes this one:
+> `reports/cloud-designer/72-lojix-cloud-implementation-research/6-synthesis.md`.
+
 ## Self-audit verdict
 
 The session's work holds up. Across the four threads the audit lanes tried
@@ -159,7 +166,7 @@ sequenceDiagram
 
     Note over Lojix,Node: lojix's existing pipeline — the domain is the ONLY coupling
     Op->>Lojix: Deploy (cluster, node, FullOs, BootOnce)
-    Lojix->>Node: nix copy --to ssh-ng://root@<node>.<cluster>.criome  (sops files inside closure)
+    Lojix->>Node: nix build --eval-store auto --store ssh-ng://root@<node>.<cluster>.criome <drv>^*  (build-on-target; copy is a no-op, sops inside the realized closure)
     Lojix->>Node: ssh root@<domain> switch-to-configuration boot  (node decrypts sops at activation — cjrl)
     Lojix-->>Op: AcceptedDeploy(generation-id)
 ```
