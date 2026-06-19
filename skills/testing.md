@@ -66,6 +66,12 @@ Stateful tests touch a database, terminal, socket, daemon, external tool, or hos
 - Emit inspectable artifacts: transcript, redb file, actor trace, topology manifest, frame bytes, rendered output, or log bundle.
 - Prefer a pure check that validates the artifact shape when the live run cannot happen in the builder.
 
+### QEMU-backed VM checks
+
+QEMU-backed NixOS VM checks run only on hosts explicitly designated or authorized for VM testing. Before invoking `runNixOSTest`, `microvm`, or any flake check known to boot a VM, verify the host/builder is a VM-testing host or ask for the correct host. Ordinary hosts run compile, eval, projection, source-scan, and other non-VM checks only.
+
+Repos that expose VM checks name them clearly (`vm-*`, `*-deploy-smoke`, or a documented VM-check family) and put the VM-testing host requirement next to the check definitions. If a VM check cannot prove it is on an authorized VM-testing host, it reports that boundary instead of starting QEMU.
+
 For stateful daemon components, drive the production daemon through its thin CLI control surface. The CLI is part of the component's test/control API even when no human-facing command is promised. The test proves the real daemon path; the CLI must not open the durable database directly or recreate the daemon's state machine in-process. Read-only inspection CLIs may open the component Sema database to render artifacts, but keep them named as inspection surfaces and pair them with daemon-driven writers so the test still proves where state came from.
 
 A stateful runner that only prints "passed" is weak. It should leave evidence another step, tool, or human can inspect.
