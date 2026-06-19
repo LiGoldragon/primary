@@ -99,11 +99,17 @@ named migration fixture before code is treated as deployable. A copy of the
 live store is the right witness for this class of issue; a synthetic v9/v10
 fixture alone was not enough.
 
-## Remaining Coordination
+## Deployment Follow-Through
 
-The live service is currently healthy, but `CriomOS-home` was actively claimed
-and dirty under the system-maintainer lane while this fix landed, so I did not
-edit or repin that deployment repo. The durable deployment follow-through is:
-pin `CriomOS-home` to Spirit `f1bc797c` or newer, deploy the user profile, and
-confirm the profile's `spirit`, `spirit-daemon`, and `spirit-migrate-store`
-all come from that revision or a descendant.
+After the source fix and this report landed, `CriomOS-home` was repinned to the
+fixed Spirit revision in commit `2ef1ce4c` (`home: repin spirit migration
+fix`). The lock now points at Spirit `f1bc797c`.
+
+The deployment repo was verified with:
+
+- `nix build --builders '' --no-link --print-out-paths --log-format bar-with-logs .#checks.x86_64-linux.spirit-deployment`
+- `nix build --builders '' --no-link --print-out-paths --log-format bar-with-logs 'github:LiGoldragon/spirit/f1bc797cf28c10de6c212df90ec0440b99a8c90a#default'`
+
+The live service was also checked after the fix: `spirit-daemon.service` is
+active, `spirit Version` reports `0.14.0`, and `(PublicTextSearch spirit)`
+returns direct records.
