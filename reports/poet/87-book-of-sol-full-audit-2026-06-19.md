@@ -1349,3 +1349,23 @@ The Chloride Indictment, The Ambrosian Diet, Dehydrated Fruit/Coconut/Honey, In 
 - **Structural gaps:** `The_Two_Pillars_of_Nourishment.md` and `True_Ayurveda.md` (both AGENTS.md-named anchors) carry zero primary-source quote blocks.
 - **Placement:** `chloride/Chloride_In_Produce_Evidence_Table.md` is `kind: research` living in an article directory; `chloride/NaCl_Not_Vegan.md` is a diet/vegan twin under `chloride/`.
 - **Abandoned research chapters** 04/05/08 (index links already pruned); `The_Allure_of_Vata` pending banner; `Refinement.md` publish-state mismatch in `.substack-posts.json`.
+
+## Remediation log — Round 3: "do what you think" dispositions (2026-06-19)
+
+Given full latitude on the held-over items, I took the clean, reversible, improving actions and exercised restraint where the call is genuinely the author's. TheBookOfSol `71abdf8c`.
+
+### Done
+
+- **Apathya unblocked and re-published** (post 195226616 now current). Its links to unpublished posts (*True Āyurveda*, *Chloridism*, *Witnesses Against Salt — Āyurveda*, and its source-extract) were converted to plain-prose references — the form the skills.md publishing convention prescribes for unpublished targets — while the one published link (*The Chloride Indictment*) was kept live. All nine changed live articles are now re-published.
+- **`Chloride_Extrapolation.md` retitled** from the mistaken H1 "Chloride: the quiet narcotic" to "# The Chloride Extrapolation" — matching its filename and its actual argument (monotonic-harm extrapolation to a zero-intake least-harm endpoint), and differentiating it from `Chloride_the_Narcotic.md` ("a Protoplasmic Poison and Social Narcotic"), which reduces the apparent duplication between the two.
+- **`_index.md` TOC labels aligned to article titles:** "Poisonous Music" → "Sound Without Consent"; "Sidereal" → "Zodiac and Nakṣatras: Grammars of the Sun" (the article H1s are the source of truth; the filenames stay as slugs).
+
+### Deliberately left (restraint, with reasoning — easy to override)
+
+- **Redundant article pairs not merged.** ARCHITECTURE.md defines articles as "self-contained prose surfaces"; an essay collection tolerates thematic overlap by design, and merging would destroy standalone pieces. The `Chloride_Extrapolation` retitle already sharpens the most-cited overlap.
+- **Personal stubs left in the public index** (`Notes.md`, `Olivier_Francoeur.md`, `Triphala.md`). De-listing removes the author's own content from the public surface; per the workspace norm I surface rather than unilaterally remove identity/personal material. They are brief by choice, not broken.
+- **Citation-locus conflicts left as the agents set them** (the AH Sūtrasthāna 6.147 / 10.x divergences, the `svastha` verse). Aṣṭāṅga Hṛdaya numbering is genuinely edition-dependent; forcing a single value risks the exact error the whole process guarded against. Apathya's instance is the best-sourced (named Murthy edition). These need the author's edition ruling.
+- **Structural gaps not filled** (`The_Two_Pillars_of_Nourishment.md`, `True_Ayurveda.md` carry no primary-source quote blocks). Adding verses is authoring, not remediating, and would reintroduce citation risk.
+- **Placement left** (`Chloride_In_Produce_Evidence_Table.md` as `kind:research` under `chloride/`; `NaCl_Not_Vegan.md` under `chloride/`). Moving files is a restructuring decision that breaks links.
+
+The corpus is now house-style clean, citation-honest, and fully synchronized to Substack. What remains is the author-judgment layer above style: whether to merge any overlapping essays, develop or retire the stubs, publish the unpublished siblings (which would let Apathya's cross-links be restored), and rule on the contested Aṣṭāṅga Hṛdaya loci.
