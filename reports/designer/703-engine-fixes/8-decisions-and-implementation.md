@@ -9,8 +9,24 @@ status, and (c) the read-only deliverables the session produced.
 
 Per the lane override: the three code branches below are **designer
 feature branches in `~/wt`**. The orchestrator pushes them after review;
-the operator integrates them onto code-repo `main` and rebases. None of
-this lands on `main` here.
+the operator integrates them onto code-repo `main` and rebases.
+
+**Update (later in the session, by explicit psyche direction "implement it
+… on main"):** the `schema-next` branch was **completed and landed on
+schema-next `main`** (`da5643cf → 4b7e830a`, *"schema-next: one lowering
+engine + macro-registry pre-expansion pass"*). The held PartialGreen (3
+red `design_examples` macro tests) was a *correct-but-incomplete* collapse:
+it surfaced that the retired macro/document path carried the macro-registry
+**dispatch** layer (Spirit `c2dc`/`5mxn`), which the source path lacks. The
+fix re-homed dispatch as a `c2dc` **front-end pre-expansion pass**
+(`src/expansion.rs`) that runs the ordered MacroRegistry over the parsed
+document before `SchemaSource::from_document` — the registry expands, the
+single source path consumes. Full suite green (0 failures, independently
+verified, no fake-green; the 3 macro tests + both-paths parity all pass),
+squashed to one green commit. The spirit `criome-gate-1of1` branch is
+pushed (verifier-GREEN); the `schema-rust-next` branch remains held (one
+collateral red — see §3). See report `9-schema-next-single-engine-context.md`
+for the deeper walk-through.
 
 ## 1. Firmed decisions (no longer open)
 
