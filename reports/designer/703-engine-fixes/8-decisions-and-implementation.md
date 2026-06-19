@@ -23,10 +23,31 @@ fix re-homed dispatch as a `c2dc` **front-end pre-expansion pass**
 document before `SchemaSource::from_document` — the registry expands, the
 single source path consumes. Full suite green (0 failures, independently
 verified, no fake-green; the 3 macro tests + both-paths parity all pass),
-squashed to one green commit. The spirit `criome-gate-1of1` branch is
-pushed (verifier-GREEN); the `schema-rust-next` branch remains held (one
-collateral red — see §3). See report `9-schema-next-single-engine-context.md`
-for the deeper walk-through.
+squashed to one green commit. See report
+`9-schema-next-single-engine-context.md` for the deeper walk-through.
+
+## Final landings (end of session — all verified green before push)
+
+Every code/contract change below was independently build/test-verified
+(0 failures, no fake-green) before landing on `main`.
+
+| Repo | `main` landed | What |
+|---|---|---|
+| `spirit` | `90875f26` | **1-of-1 fail-closed criome gate** in the production daemon path (`xhwa`). Landed by **operator** from this report's Item 1 brief + the designer `criome-gate-1of1` branch (operator added the nix/schema-chain refinements); the designer branch is retired as superseded. |
+| `schema-next` | `4b7e830a` | single lowering engine + the `c2dc` macro-registry pre-expansion pass (report `9`). |
+| `schema-rust-next` | `90d853c3` | `{| |}` catalog consumer (drives emission) + typed malformed-name errors; pinned to schema-next `4b7e830a`; the inline-private test rewritten to the supported `PrivateHelper` mechanism. |
+| `nota-next` | `c43d04a1` | ARCHITECTURE lists all seven derive shapes (702 `nota-2`: add `HeadedAtom`, `PascalHeadBody`). |
+| `upgrade` | `68939c46` | INTENT/ARCHITECTURE refreshed off the stale "skeletal U1" framing — present state is a real runtime library, daemon binary the remaining placeholder (audit `5`). |
+
+**Handed to operator** (their `main`, their active propagation hot zone —
+not raced by designer): the `ComponentKind` divergence (`signal-criome`
+imports `signal-standard`'s 14-variant roster, retiring its local 7-variant
+copy; `meta-signal-mentci` retires its matching local copy) and the
+`router`/`spirit` ARCHITECTURE doc refresh (the authorized-object fanout
+matcher; the restore-verify guard + criome gate — all now on `main`).
+
+Worktrees: the session's feature workspaces were forgotten after landing; no
+stale designer worktrees remain for these repos.
 
 ## 1. Firmed decisions (no longer open)
 
