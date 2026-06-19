@@ -13,6 +13,52 @@ prior art, seam/verification) that **independently converged**:
 > independent verification. **Inline-everything (my 693 lean #3) is wrong**
 > and is dropped.
 
+## Revision — the impl fuses onto the type (psyche; supersedes the marker-placement above)
+
+The psyche cut the remaining complexity: *"then just create a new type of
+object and combine them. separate objects introduce a lot of complexity."*
+A free-standing `{| Display RecordIdentifier |}` **repeats the target** and
+forces the reader, codec, and resolver to *associate* the marker with its
+type — pure complexity. So the marker is **not a separate object beside the
+type**; the **type declaration carries a trailing pipe-brace impl block,
+target implicit** — the real `derive`/`impl` model, and exactly record
+`3742` (a type's kind/participations are marked **at its declaration**).
+This **supersedes `bpyu` → `ba6d`** (the impl is no longer a free-standing
+object).
+
+```nota
+RecordIdentifier String {| Display Ord |}                              ;; markers fused onto the newtype
+StatementText String   {| Display  (word_count {} Integer) |}          ;; marker + inherent method sig
+NodeQuery { differentiator.Differentiator }
+           {| QueryMatcher [ (matches { candidate.Node } Boolean) ] |} ;; trait + its method sigs
+Work (| Input Output |) {| PlaneMember |}                              ;; plane participation on the decl
+```
+
+Inside the fused block each entry is: a **bare trait atom** (marker), a
+**trait atom + `[method-sigs]`** (body-bearing trait impl), or a **bare
+`(name { params } Return)`** (inherent method). Consequences for 695's
+decision below:
+
+- The **"markers inline as separate objects"** line is replaced by **fused
+  onto the declaration** — no separate objects, no target repetition, no
+  association step.
+- **`extern { }` dissolves for locally-declared types** — their impls live
+  on their declaration. It would only ever hold impls about a type *not*
+  present in the schema; the cleaner rule (pending psyche confirm) is to
+  **require such a target to be imported first**, so the impl fuses onto
+  the imported name and there are **zero free-standing impl objects**.
+- The **verification goal survives intact**: the impl blocks remain a
+  **typed, enumerable set** the out-of-band crate-checker walks across all
+  type declarations (`schema.types().flat_map(|t| t.impls())`) — one
+  logical manifest, even though it's syntactically fused, not a separate
+  block.
+- **Cross-schema reuse** now rides the existing **type import**: impls
+  travel with their type, so importing the type brings its referenced
+  impls — no sidecar needed for the common case.
+
+Everything below stands as the *grounding* (mechanism, prior art, seam),
+read through this revision: group→fuse-onto-declaration, sidecar→type-import.
+
 ## Why my 693 lean was wrong
 
 I leaned "inline, one construct, no new block." The mechanism study killed
