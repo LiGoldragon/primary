@@ -1294,3 +1294,25 @@ RECOMMENDED TARGET STRUCTURE
 - Unicode math-bold heading: `political/Cost_of_Manipulative_AI.md`.
 - `.gitignore` comment points at stale `~/git/bibliography/` (canonical `~/primary/repos/library/`).
 - research numbering gaps: 04, 05, 08 absent.
+
+## Remediation log (2026-06-19)
+
+Acting on the psyche's triage of this audit: fix the high-severity findings on live Substack pages, and prune the dead research links. Done and shipped — TheBookOfSol commit `32e57ab2` (the citation/tic/format fixes), re-published to Substack the same day.
+
+### Live-page high-severity fixes (re-published)
+
+- **`chloride/The_Chloride_Indictment.md`** (post 194783381) — full negative-contrast pass: removed every `X is not Y. It is Z.` instance (the Section I–IX prose hammers, the six-bullet Verdict, and the closing line `Chloride is not salt. Chloride is chloride.` → `Chloride is chloride.`), converting each to a positive declarative and reserving the trailing-concession form for the three cases where the denied term carries information. Fixed the one out-of-bounds standalone `sodium` (L101, "daily sodium" → "daily chloride"); the Section II sodium/chloride contrast is sanctioned and was left.
+- **`diet/Ambrosian_Diet.md`** (post 193562915) — `annaṁ brahmeti vyajānāt` was attributed to *Taittirīya Upaniṣad* 2.2.4 (Ānanda Vallī); it is **3.2 (Bhṛgu Vallī)**. Corrected the citation, reframed the surrounding prose (it is not the conclusion of the 2.x anna-puruṣa chain but Bhṛgu's first realization), and brought the block to canonical format (un-quoted bold IAST, blank line, quoted English).
+- **`water/The_Distilled_Water_Paradox.md`** (post 195637783) — all five Sanskrit quote blocks were presented as verbatim *Caraka Saṃhitā* / *Bṛhadāraṇyaka* verse but are unlocatable / composed. Reformatted each to canonical shape and re-marked the attribution as `— proverbial formulation, after the *Caraka Saṃhitā* / *Bṛhadāraṇyaka Upaniṣad*`, which the house rule permits for paraphrase. Tidied the irregular `jīvenā` → `jīvena`.
+
+### Off-page consistency fix (committed, not published)
+
+- **`diet/Fruitarianism.md`** — the throat-well aphorism (`kaṇṭhakūpe kṣutpipāsānivṛttiḥ`) was cited as *Yoga Sūtra* 3.31, contradicting Ambrosian's 3.30. Verified the canonical number is **3.30** (Centre for Yoga Studies, Trevor Leggett, wisdomlib) — so the live Ambrosian page was already correct and the verifier's "change Ambrosian to 3.31" advice was wrong. Aligned Fruitarianism to 3.30. *(Lesson: a verifier agent flip-flopped on this number; the orchestrator web-checked before touching a live page.)*
+
+### Organization fix
+
+- **`research_yoga_ayurveda_lineage/00_index.md`** — pruned the three dead links (`04_shared_rsis_and_lineages`, `05_shared_anthropology`, `08_modern_scholarship`) to files that were never written. The index now lists only the five chapters that exist (01, 02, 03, 06, 07).
+
+### Still open
+
+The remaining ~301 findings (the corpus-wide tic sweep, quote-format normalization across the unpublished articles, glossing gaps, the `Penultimate_Sāttvic_Food` *guru* mistranslation, the stub fragments in the public index, the `skills.md` horizontal rules + stray `publish:true`, the `AGENTS.md` self-staleness on the witnesses-pattern claim and the `.gitignore` path) are catalogued above and await a dedicated pass when the psyche calls for one.
