@@ -127,9 +127,10 @@ source**. In `meta-signal-cloud/src/lib.rs`:
 - `HostPlan` already carries `image_name: ImageName` too.
 
 The daemon already copies `DesiredHostState.image_name` into
-`HostPlan.image_name` and the providers already set their payload's
-`image` from it (DO `DropletPayload.image`, Hetzner `ServerPayload.image`,
-in `signal-cloud`). Both DigitalOcean and Hetzner accept a **private image
+`HostPlan.image_name`, and each adapter already sets its `ServerSpec.image`
+from `plan.image_name` (DigitalOcean and Hetzner alike, at the
+`cloud/src/lib.rs` adapter boundary); the observed wire struct is
+`CloudHost.image`. Both DigitalOcean and Hetzner accept a **private image
 referenced by numeric id** in exactly that string position. The live-test
 runbook (report 64) already passes a real value there —
 `ubuntu-24-04-x64` — in:

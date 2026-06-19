@@ -22,6 +22,18 @@ The single hard blocker is a paid DigitalOcean token (section 5). Two
 in-repo gaps make Tier 2 a couple-of-line patch away from one-command;
 Tier 1 has no such gap.
 
+**Update — 2026-06-19: Tier 1 ran GREEN against live DigitalOcean.** The
+token landed at gopass `digitalocean.com/api-token`. The verified test in
+section 2.1 built clean (`--features digitalocean`, cold 1m17s) and passed in
+29.6s: SSH key registered (write scope confirmed), droplet `578840636`
+created (`Initializing` → `Running` with public IPv4 `157.230.0.136`),
+destroyed (`Ok(())`), and a post-run sweep confirmed zero leftover droplets.
+The whole Phase-1 adapter chain — `ensure_ssh_key` / `create_server` /
+poll-to-`Running` / `delete_server` — is proven live. The 403 seen on
+`GET /v2/account` was only a missing, **unused** `account` scope on an
+otherwise full-access scoped token (the adapter only touches
+`/v2/account/keys` and `/v2/droplets`, both 200). Cost: a fraction of a cent.
+
 ## 1 · Readiness
 
 ### Build status — GREEN
@@ -139,11 +151,14 @@ typed values used in the hermetic tests and the `Api` trait
 / `DEFAULT_IMAGE` live at :28-32.
 
 ```rust
+//! Live DigitalOcean lifecycle smoke test (adapter / Tier 1).
 #![cfg(feature = "digitalocean")]
 
+use std::thread::sleep;
+use std::time::Duration;
+
 use cloud::digitalocean::{
-    Api, HttpApi, ServerSpec, Token,
-    DEFAULT_SIZE, DEFAULT_REGION, DEFAULT_IMAGE,
+    Api, HttpApi, ServerSpec, Token, DEFAULT_IMAGE, DEFAULT_REGION, DEFAULT_SIZE,
 };
 use signal_cloud::HostStatus;
 
@@ -151,51 +166,80 @@ use signal_cloud::HostStatus;
 #[ignore = "live: spends real DigitalOcean money; needs DIGITALOCEAN_ACCESS_TOKEN + DO_TEST_PUBLIC_KEY"]
 fn digitalocean_full_lifecycle_runs_against_the_real_api() {
     let token = Token::new(
-        std::env::var("DIGITALOCEAN_ACCESS_TOKEN")
-            .expect("DIGITALOCEAN_ACCESS_TOKEN must be set"),
+        std::env::var("DIGITALOCEAN_ACCESS_TOKEN").expect("DIGITALOCEAN_ACCESS_TOKEN must be set"),
     );
-    // ensure_ssh_key needs the PUBLIC KEY TEXT (ssh-ed25519 AAAA...), not a path.
+    // ensure_ssh_key wants the PUBLIC KEY TEXT (ssh-ed25519 AAAA...), not a path.
     let public_key = std::env::var("DO_TEST_PUBLIC_KEY")
         .expect("DO_TEST_PUBLIC_KEY must hold the public key text");
 
     let api = HttpApi::new();
 
-    // Register the SSH key by name; create_server references it by NAME only.
-    let _fingerprint = api
+    // First write — free; registers (or finds) the throwaway key. Proves write scope
+    // before any droplet (and thus any cost) exists.
+    let fingerprint = api
         .ensure_ssh_key(&token, "criome-test", &public_key)
-        .expect("ensure_ssh_key");
+        .expect("ensure_ssh_key against the live account");
+    println!("ssh key ready: criome-test ({fingerprint})");
 
     let spec = ServerSpec {
-        name: "criome-live-test".to_string(),
-        server_type: DEFAULT_SIZE.to_string(),
-        image: DEFAULT_IMAGE.to_string(),
-        ssh_keys: vec!["criome-test".to_string()],
-        location: Some(DEFAULT_REGION.to_string()),
+        name: "criome-live-test".to_owned(),
+        server_type: DEFAULT_SIZE.to_owned(),
+        image: DEFAULT_IMAGE.to_owned(),
+        ssh_keys: vec!["criome-test".to_owned()],
+        location: Some(DEFAULT_REGION.to_owned()),
     };
 
     let created = api.create_server(&token, &spec).expect("create_server");
-    let identifier = created.identifier;
+    // identifier/ipv4 are String newtypes (HostIdentifier/IpAddress) exposing only
+    // Clone/Debug/Eq — so clone the id and inspect ipv4 via Debug, never `.is_empty()`.
+    let identifier = created.identifier.clone();
+    println!(
+        "droplet created: id={identifier:?} status={:?}",
+        created.status
+    );
 
-    // Poll until Running with a non-empty IPv4 (~36 tries x 5s = 3 min cap).
-    let mut running = None;
-    for _ in 0..36 {
-        let host = api.get_server(&token, &identifier).expect("get_server");
-        if host.status == HostStatus::Running {
-            assert!(
-                !host.ipv4.is_empty(),
-                "Running droplet must expose an IPv4"
-            );
-            running = Some(host);
-            break;
+    // Poll up to ~3 minutes for Running, never panicking mid-poll so teardown runs.
+    let mut latest = Some(created);
+    let mut reached_running = false;
+    for attempt in 0..36 {
+        match api.get_server(&token, &identifier) {
+            Ok(host) => {
+                let running = host.status == HostStatus::Running;
+                latest = Some(host);
+                if running {
+                    reached_running = true;
+                    break;
+                }
+            }
+            Err(error) => eprintln!("poll {attempt}: get_server error: {error}"),
         }
-        std::thread::sleep(std::time::Duration::from_secs(5));
+        sleep(Duration::from_secs(5));
     }
-    let running = running.expect("droplet reached Running within 3 minutes");
-    println!("LIVE droplet up: id={identifier} ipv4={}", running.ipv4);
 
-    // Always destroy — this is the meter-stopping call.
-    api.delete_server(&token, &identifier).expect("delete_server");
-    println!("LIVE droplet destroyed: id={identifier}");
+    if let Some(host) = &latest {
+        println!(
+            "final observed: status={:?} ipv4={:?}",
+            host.status, host.ipv4
+        );
+    }
+
+    // ALWAYS destroy before asserting — this is the meter-stopping call.
+    let destroy = api.delete_server(&token, &identifier);
+    println!("destroy issued: {destroy:?}");
+
+    let host = latest.expect("at least one observation");
+    assert!(
+        reached_running,
+        "droplet never reached Running within 3 minutes; last status={:?}",
+        host.status
+    );
+    let ipv4 = format!("{:?}", host.ipv4);
+    assert!(
+        ipv4.contains('.'),
+        "a Running droplet should expose an IPv4; got {ipv4}"
+    );
+    destroy.expect("delete_server");
+    println!("LIVE lifecycle OK: created -> Running (ipv4 {ipv4}) -> destroyed");
 }
 ```
 
@@ -247,21 +291,26 @@ fn main() {
     let ordinary = args.next().expect("ordinary socket path");
     let meta = args.next().expect("meta socket path");
 
-    let configuration = cloud::DaemonConfiguration::new(
-        ordinary.into(),
-        cloud::SocketMode::default(),
-        meta.into(),
-        cloud::SocketMode::default(),
-    );
-    cloud::CloudDaemonConfigurationFile::write_configuration(&out, &configuration)
+    // DaemonConfiguration is a plain struct with public fields (no `new`);
+    // ordinary_socket_mode / meta_socket_mode are u32, not a SocketMode type.
+    let configuration = cloud::DaemonConfiguration {
+        ordinary_socket_path: ordinary.into(),
+        ordinary_socket_mode: 0o660,
+        meta_socket_path: meta.into(),
+        meta_socket_mode: 0o660,
+    };
+    cloud::CloudDaemonConfigurationFile::new(&out)
+        .write_configuration(&configuration)
         .expect("write rkyv configuration");
 }
 ```
 
 Confirm the real constructor/field shape of `DaemonConfiguration`
 (src/lib.rs:149-155) and the `write_configuration` signature
-(src/daemon_command.rs:83-90) — the call above is the documented shape
-but was not compiled. If you prefer not to add a file, generate the rkyv
+(src/daemon_command.rs:83-90) — the form above is corrected per this
+report's verify pass (plain struct literal, `u32` modes, builder
+`CloudDaemonConfigurationFile::new(&out).write_configuration`) but has not
+itself been compiled; confirm against source before relying on it. If you prefer not to add a file, generate the rkyv
 by running the existing
 `daemon_process_starts_from_binary_configuration` test and reusing the
 `cloud-daemon.rkyv` it writes (tests/runtime.rs:263-265).
