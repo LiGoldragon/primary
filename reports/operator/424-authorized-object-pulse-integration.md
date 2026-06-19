@@ -30,6 +30,8 @@ This intentionally does not inline object payloads. The routed item is an
 
 Commit `0b7ae20c` — `signal-standard: add authorized object interest matcher`
 
+Commit `49da9bf8` — `signal-standard: format interest matcher test`
+
 Added the shared lattice predicate:
 
 ```rust
@@ -130,6 +132,14 @@ cargo clippy --all-targets --features nota-text -- -D warnings
 
 Result: green.
 
+```text
+nix flake check --builders '' --log-format bar-with-logs
+```
+
+Result: green. The first run caught a `cargo fmt -- --check` failure in the
+new matcher test; commit `49da9bf8` fixed it and the full signal-standard flake
+then passed.
+
 `/git/github.com/LiGoldragon/router`
 
 ```text
@@ -140,6 +150,17 @@ cargo clippy --all-targets --features nota-text -- -D warnings
 
 Result: green. The feature pass includes CLI binaries and process-boundary
 tests.
+
+```text
+nix flake check --builders '' --log-format bar-with-logs
+```
+
+Result: intentionally interrupted after the shared release dependency build and
+several exact-test derivations passed. The router flake runs many unrelated
+single-test derivations serially and was rebuilding the crate for each one. The
+Cargo matrix above is the full repo test coverage for this change; the partial
+Nix run still verified remote-only dependency resolution and began passing the
+release exact checks.
 
 ### Adjacent Component Checks
 
