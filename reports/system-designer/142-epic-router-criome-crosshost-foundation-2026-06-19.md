@@ -57,9 +57,11 @@ Landed this phase (workflow `wyxr0kx2k`, both **sound**):
   unbuilt; it now boots two qemu guests, forwards `192.168.1.1→.2`, and a harness
   witness on the far guest decodes the delivered message — mutation-proven (gating
   the harness connection fails the delivery assertion).
-- **L2** routed over Yggdrasil peers — ahead (Phase 2 + deploy bead `primary-ymww`).
+- **L2** routed over a real Yggdrasil mesh — **done, GREEN under KVM** (143;
+  branch `transport-yggdrasil-l2-142`). Reviewer-confirmed mesh-routed (`ygg0`,
+  deterministic `201::` address), not an eth1 fallback.
 - **L3** real ouranos ⇄ prometheus over the mesh — ahead (needs real-host access;
-  system-operator).
+  cluster-operator / system-operator; deploy bead `primary-ymww`).
 
 ## 4 — Design decisions & reconciliations
 
@@ -118,13 +120,16 @@ Corrections I made to my own paper trail: **retracted 137 §7.3** (the quorum
   GitHub remote (outward-facing — confirm first; operator-assigned) and the L3
   real-host deploy (needs real `ouranos`/`prometheus` access).
 
-## 7 — What's still mine, ahead (Phase 2, after the migration lands)
+## 7 — What's still mine, ahead
 
-- The **milestone-3 criome forward-attestation client** — lifts the
-  `CriomeVerifierUnavailable` refusal Track A installed, enabling true-BLS
-  attestation on the transport (the `#1` path); depends on the `signal-criome`
-  migration landing.
-- The **L2 Yggdrasil-routed two-node nixosTest** — the next ladder rung above L1.
+- **L2 Yggdrasil rung — DONE** (143, GREEN under KVM).
+- The **milestone-3 criome forward-attestation client** — design-spec'd (143), and
+  spec-before-build paid off: the critic caught three P1s (preimage mismatch,
+  replay-ownership gap, contract footprint) that an auto-build would have shipped
+  into the trust core. Gated on one psyche decision — **A** (router calls criome
+  `Sign` per forward; no key in router, zero contract addition) vs **B** (router
+  holds a forward-identity BLS key; faster send, new trust surface + `KeyPurpose`
+  addition). My lean: A. After that, one spec-revision → coordinated build.
 
 ## 8 — Method
 
