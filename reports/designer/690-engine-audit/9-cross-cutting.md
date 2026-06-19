@@ -145,10 +145,13 @@ flowchart LR
   deployed binary.
 - **Two governing-record ids did not resolve** — `vez8` (the prompt's
   cited Asschema-removal record; the removal is confirmed in code but
-  the id is wrong — actual governing records are `549v`/`vpbx`/`v0n6`)
-  and `aipc` (lojix Test-op "proven end-to-end"). When the cited id is
-  wrong, the intent→code link the audit certifies is unverified even
-  when the code is right.
+  the id is wrong). **Resolved post-audit:** the actual Asschema-removal
+  record is **`6cfr`** (Decision VeryHigh — "the separate Assembled
+  Schema (Asschema) IR is removed; the resolution it performed … lives as
+  methods on schema-in-rust types … the emitter does only Rust
+  projection"); related governing records are `549v`/`vpbx`/`v0n6`.
+  `active-repositories.md` was corrected (`vez8` → `6cfr`). The other
+  miss, `aipc` (lojix Test-op "proven end-to-end"), remains unverified.
 
 ## The genuinely-open safety items (no branch, real)
 

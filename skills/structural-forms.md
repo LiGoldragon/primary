@@ -23,8 +23,9 @@ Everything above the seed is data or derived. (Concept: report `627`.)
 ## The shape vocabulary (the nota-next derive)
 
 `#[derive(StructuralMacroNode)]` turns a `#[shape(...)]`-tagged type into a
-matcher + decoder + encoder. It covers **enums** (each variant a shape) and
-**structs** (a positional typed body). The seven shapes:
+matcher + decoder + encoder. At the nota-next HEAD it covers **enums only** —
+each variant is a shape; the derive rejects structs and unions
+(`StructuralMacroNode supports enums only`). The seven shapes:
 
 | `#[shape(...)]` | matches | fields |
 |---|---|---|
@@ -37,11 +38,14 @@ matcher + decoder + encoder. It covers **enums** (each variant a shape) and
 | `pascal_head, body` | `(Foo a b …)` captured head, any count | 2 (head + body) |
 
 `head` takes exactly one of `arity`/`body`/`atom`; `pascal_head` exactly one of
-`arity`/`body`. Enum variants may carry **named** fields (`Apply { head,
-arguments }`) or positional tuple fields, mapped to shape captures by declaration
-order. A **struct** derives one positional body — `structural_variants()` is
-empty, the candidate's blocks decode straight into the fields in order — the
-derived replacement for hand-written body readers like schema-next `SchemaMacro`.
+`arity`/`body`. Enum variants carry **positional (unnamed/tuple) fields**, mapped
+to shape captures by declaration order; the HEAD derive rejects named-field
+variants (`variants carry unnamed fields, not named fields`). Schema
+**declaration bodies** — plain structs, and the `Family`/`Stream` frames below —
+are resolved by schema-next's own source codec during lowering, not by this
+derive. (Named-field structural variants and a struct-level derive are *tracked
+but not landed* at the nota-next HEAD — tasks #411/#416 reference them; reconcile
+the tracker against the code before relying on either.)
 
 ## Positional struct syntax (Spirit `adnn`)
 
@@ -89,24 +93,25 @@ type-level enforcement is aspirational; the principle guides design now. (Report
 ## Streams and families are positional special forms, not structs
 
 Streams and families are **not structs**: they are closed typed records
-with fixed heterogeneous slots. The positional struct rule (`FieldName`
-derived from type, dot differentiator for named fields) does not apply.
-
-They still use structural positional syntax of their own. The reader
-resolves the slots by declared position, not by type identity. Repeated
-types are therefore legal when the slots differ by role:
+with fixed heterogeneous slots, declared as a frame application over a
+**labeled-brace body** — `{ fieldname value … }` — because the slots are
+heterogeneous-by-role and the role names carry meaning position alone
+does not:
 
 ```nota
-RecordsFamily (Family StoredRecord records Domain)
-IntentEventStream (Stream SubscriptionToken SubscriptionStarted IntentEvent SubscriptionToken)
+EntryFamily (Family { record Entry table entries key Domain })
+ObservationFamily (Family { record Observation table observations key Identified })
+IntentEventStream (Stream { token SubscriptionToken opened SubscriptionStarted event IntentEvent close SubscriptionToken })
 ```
 
-For `Family`, slot 1 is the record type, slot 2 is the lowercase table
-literal, and slot 3 is the key kind. For `Stream`, the open and close
-tokens are distinct slots even when both have the same concrete type.
-Splitting them into `OpenToken` / `CloseToken` newtypes is an optional
-later strictness improvement, not a gate for the positional form.
-(Reports `645`, `647`, `649`.)
+For `Family` the fields are `record` (the record type), `table` (the
+lowercase table literal), and `key` (the key kind — only `Domain` or
+`Identified`). For `Stream` the `token`/`opened`/`event`/`close` fields
+are distinct roles even when two share a concrete type
+(`SubscriptionToken` here), so the brace body names them rather than
+relying on position. (Reports `645`, `647`, `649`. The family-body reader
+is still hand-parsed above the seed — a tracked `v0n6` cleanup, not a
+syntax question.)
 
 ## Pipe delimiters: generics and traits/impls
 
