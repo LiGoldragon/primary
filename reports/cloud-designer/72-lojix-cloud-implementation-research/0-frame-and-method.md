@@ -52,10 +52,21 @@ restarts tripped `StartLimitBurst=5`, so the socket
 (`~/.local/state/spirit/spirit.sock`) never appears and every `spirit`
 call gets `transport IO error: No such file or directory`. This is a
 **deployed-service fault (system-maintainer's lane)** that touches intent-
-data integrity — NOT fixed in this session; surfaced to the psyche with a
-recommended recovery (roll the active home-manager generation forward to
-the v10-capable spirit, or restore from a pre-v10 backup in
-`~/.local/state/spirit/`). Intent capture and Observe are down for every
+data integrity — NOT fixed in this session; surfaced to the psyche.
+
+**The recovery is lossless — roll forward, do not restore.** The current
+`spirit` checkout HEAD (`90875f2`) already handles store schema v10:
+`production_migration.rs:100` defines `SPIRIT_STORE_V10_SCHEMA_VERSION`,
+`:2204-2224` carry the `migrate_version_ten_*` paths, and the v10 migration
+tests pass. A **`spirit-next`** build already exists in the nix store. So
+the on-disk v10 store was advanced by a newer spirit than the generation
+systemd loaded after reboot, and the active generation's migrator (knows
+only v7/v8/v9) is simply *behind* the store. The fix is to switch/rebuild
+the active spirit to the v10-capable build (bump the CriomOS-home spirit
+pin / home-manager switch to the `spirit-next`-using generation, then
+`systemctl --user reset-failed spirit-daemon.service` and start) — **no
+record loss, no backup restore**. Executing the home-manager deploy is
+system-maintainer's lane. Intent capture and Observe are down for every
 psyche-facing agent until it is fixed.
 
 ## Two hanging bugs already verified by hand (workflow seeds)
