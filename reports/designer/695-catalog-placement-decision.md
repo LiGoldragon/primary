@@ -42,11 +42,25 @@ decision below:
 - The **"markers inline as separate objects"** line is replaced by **fused
   onto the declaration** — no separate objects, no target repetition, no
   association step.
-- **`extern { }` dissolves for locally-declared types** — their impls live
-  on their declaration. It would only ever hold impls about a type *not*
-  present in the schema; the cleaner rule (pending psyche confirm) is to
-  **require such a target to be imported first**, so the impl fuses onto
-  the imported name and there are **zero free-standing impl objects**.
+- **`extern { }` dissolves entirely** — resolved by the psyche's
+  **body-optional form** (design-adopted; phrased "we could also allow", so
+  not yet Spirit-firmed). Impls for a type whose declaration is *elsewhere*
+  (locally separate, or imported) use **`TypeName {| impls |}`** — the type
+  name leads, the impl block follows, **no inline body**:
+
+  ```nota
+  StatementText {| Display  (word_count {} Integer) |}   ;; impls for a type declared elsewhere
+  ```
+
+  The target still *leads*, so this is "impls for StatementText," resolved
+  by ordinary symbol lookup — **not** a free-standing object that repeats
+  the target inside the pipe-brace. So the one combined shape is
+  `TypeName <body>? {| impls |}?` (need at least one of body / impl-block):
+  body+block = declare-and-impl, body-only = plain declaration, block-only =
+  impls for an elsewhere-declared type. **Zero free-standing impl objects,
+  no forced re-import.** This is `ba6d`'s fuse principle with the body made
+  optional, and it is exactly Rust's "a type's impls may live apart from its
+  definition."
 - The **verification goal survives intact**: the impl blocks remain a
   **typed, enumerable set** the out-of-band crate-checker walks across all
   type declarations (`schema.types().flat_map(|t| t.impls())`) — one
