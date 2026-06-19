@@ -35,6 +35,7 @@ set of lanes is enumerated below.
 | `pi-operator` | operator | Pi | `orchestrate/pi-operator.lock` | `reports/pi-operator/` | Pi-harness implementation window under operator discipline |
 | `cluster-operator` | operator | Codex | `orchestrate/cluster-operator.lock` | `reports/cluster-operator/` | Live cluster maintenance, production deploy/update authority, and cluster-scoped implementation under operator discipline |
 | `cloud-operator` | operator | (any) | `orchestrate/cloud-operator.lock` | `reports/cloud-operator/` | Cloud-deploy operator window — cloudflare and similar provider surfaces |
+| `cloud-maintainer` | system-maintainer | (any) | `orchestrate/cloud-maintainer.lock` | `reports/cloud-maintainer/` | Cloud-host and provider-session maintenance under system-maintainer discipline |
 | `designer` | designer | Claude | `orchestrate/designer.lock` | `reports/designer/` | ESSENCE, AGENTS, lore, skills, design reports |
 | `second-designer` | designer | (any) | `orchestrate/second-designer.lock` | `reports/second-designer/` | Second parallel designer window |
 | `third-designer` | designer | (any) | `orchestrate/third-designer.lock` | `reports/third-designer/` | Third parallel designer window |
@@ -185,10 +186,10 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 ```
 
 `<role>` is one of `operator`, `second-operator`, `pi-operator`,
-`cluster-operator`, `cloud-operator`, `designer`, `second-designer`,
-`third-designer`, `system-designer`, `nota-designer`, `cloud-designer`,
-`system-operator`, `system-maintainer`, `poet`, `editor`, `videographer`,
-`assistant`, or `counselor`. Each `<scope>` is either an absolute path or a bracketed task lock
+`cluster-operator`, `cloud-operator`, `cloud-maintainer`, `designer`,
+`second-designer`, `third-designer`, `system-designer`, `nota-designer`,
+`cloud-designer`, `system-operator`, `system-maintainer`, `poet`, `editor`,
+`videographer`, `assistant`, or `counselor`. Each `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
 
 Mix freely:
@@ -383,6 +384,7 @@ Convention: each role owns a subdirectory.
 - `reports/pi-operator/` — Pi operator's reports.
 - `reports/cluster-operator/` — cluster operator's reports.
 - `reports/cloud-operator/` — cloud operator's reports.
+- `reports/cloud-maintainer/` — cloud maintainer's reports.
 - `reports/designer/` — designer's reports.
 - `reports/second-designer/` — second designer's reports.
 - `reports/third-designer/` — third designer's reports.

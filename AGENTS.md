@@ -87,7 +87,8 @@ substitute a nearby lane (a `pi-operator` window uses
 `orchestrate/pi-operator.lock` and `reports/pi-operator/`). Specialized
 lanes inherit the closest main role: `cluster-operator` (live cluster
 maintenance, production deploy authority), `pi-operator` (Pi-harness
-operator), `cloud-operator` (cloud deploy); `cloud-designer`,
+operator), `cloud-operator` (cloud deploy), `cloud-maintainer`
+(cloud-host and provider-session maintenance); `cloud-designer`,
 `nota-designer`, `system-designer` are scoped designer lanes.
 
 Assistant and counselor personal-affairs substance is private by default
