@@ -23,4 +23,6 @@ The local cloud code is healthy for non-live checks, but the newly added gopass 
 1. The stored path differs from the path encoded in `cloud/flake.nix`, `cloud/README.md`, and `cloud/docs/first-cloudflare-slice.md`.
 2. The value at `cloudflare.com/api-token` is rejected by Cloudflare as a bearer API token before authorization reaches a zone-permission decision.
 
-The likely next action is to either add the actual Cloudflare API token at `cloudflare/api-token` to match the repo, or have the `cloud-maintainer` lock owner intentionally change the repo wrapper/docs to `cloudflare.com/api-token` after confirming that path is the desired credential convention. The secret itself still needs to be a Cloudflare API Token bearer value, not another Cloudflare identifier or global-key credential.
+The psyche then explicitly chose to change the repo convention to `cloudflare.com/api-token`. Spirit record `nsi2` was changed in place to make `cloudflare.com/api-token` the canonical cloud Cloudflare token path.
+
+Code/doc patching is blocked by coordination: `cloud-maintainer` currently holds a broad `/git/github.com/LiGoldragon/cloud` lock, and the claim tool rejected the attempted narrow claim for `flake.nix`, `README.md`, `docs/first-cloudflare-slice.md`, and `INTENT.md`. The needed code/doc change is to replace `cloudflare/api-token` with `cloudflare.com/api-token` in those files once the lock owner applies it or the psyche explicitly authorizes a lock override.
