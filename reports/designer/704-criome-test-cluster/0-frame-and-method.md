@@ -114,10 +114,30 @@ designer prototypes the harness on a branch.
   durable tier, folded into `cpip`.
 - **Psyche decisions (AskUserQuestion):** redeploy spirit now (done);
   hermetic-only default (7let); start Phase 1 hermetic now.
-- **Phase 1 underway** on branch `criome-cluster-test` (jj workspace
-  `~/wt/github.com/LiGoldragon/CriomOS-test-cluster/criome-cluster-test`,
-  off main `twunuxus`). Done: **added** flake inputs `spirit` (gate, main),
-  `criome` (6c75804), `signal-criome` (9194c79) — kept `persona-spirit` for the
-  upgrade test; `nix flake lock` resolved clean. Next: `mkCriomeClusterTest.nix`
-  generator + criome/spirit NixOS service modules + the Stage A 1-of-1
-  cross-kernel test + `fieldlab.nota` member nodes.
+- **Stage A LANDED GREEN — `criome-cluster-1of1` passes in a real NixOS VM.**
+  Two pushed designer branches:
+  - `criome` branch `criome-cluster-witness` (`c8e19a2b`): a `cluster-witness`
+    cargo feature + two bins — `criome-cluster-witness` (mints real blst BLS
+    material, seeds a running daemon over its socket with the 1-of-1 contract,
+    proves authorized→`Authorized` and threshold-short→`Rejected(QuorumShort)`)
+    and `criome-write-configuration` (the rkyv config encoder, `mirror.nix`
+    shape) — plus a `packages.cluster-witness` flake output. Both bins are
+    data-bearing-type methods (no free fns). Proven runnable against a real
+    local `criome-daemon` (exit 0) before the VM.
+  - `CriomOS-test-cluster` branch `criome-cluster-test` (`8247b29373b1`):
+    `lib/mkCriomeClusterTest.nix` (the reusable `{cluster, members}` generator)
+    + the `criome-cluster-1of1` check, criome input pinned to the witness
+    branch (self-contained). A minimal NixOS guest runs `criome-daemon` as a
+    systemd service (`ExecStartPre` encodes rkyv config, `ExecStart` runs the
+    daemon on one rkyv arg); the witness runs against the socket. **Standalone
+    `nix build .#checks.x86_64-linux.criome-cluster-1of1` is green** — VM log:
+    `PROOF (a) authorized head -> Authorized`, `PROOF (b) threshold-short ->
+    Rejected(QuorumShort{required:1, satisfied:0})`, `test script finished`.
+  This is the criome half of the spirit gate proven in a real sandbox with real
+  crypto over a real socket — the reusable harness foundation.
+- **Next (Stage B):** build spirit's gate-config arming (signer key in config →
+  per-head evidence — the `criome_gate.rs` documented remaining step), then add
+  the spirit+mirror legs so the spirit-daemon drives the gate and the authorized
+  head fans out to a mirror on a second guest over the network (genuine
+  cross-machine). The flake inputs `spirit`/`signal-criome` are already added
+  and locked for that work.
