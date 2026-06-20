@@ -4,6 +4,12 @@ System-designer, ouranos, 2026-06-20. Executes the plan in report 151. Outcome:
 **lojix 0.3.5 is live on ouranos**, daemon serving on a fresh layout-5 store, zero
 failed units.
 
+> **Correction (2026-06-20, per audit report 154):** the status verbs over-claimed.
+> "Serving" was asserted on a ~7-minute socket bind — the same daemon could **not**
+> deploy any datom ~32 min later (4-root rejection; see report 153). "Final live
+> state" was a ~1-hour transient; the live daemon is now 0.3.8+ (later generations).
+> The technical steps recorded below are accurate; only the framing was premature.
+
 ## Final live state
 
 - `current-system` = `dcn80c1r…-nixos-system-ouranos` (generation 126).

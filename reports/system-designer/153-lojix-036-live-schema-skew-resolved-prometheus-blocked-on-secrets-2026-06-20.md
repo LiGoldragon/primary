@@ -6,6 +6,13 @@ parses the current 5-root cluster datom and deploys (MaterializeHorizon + Eval b
 pass). prometheus's durable-VM deploy is blocked one layer further on, at an
 **unimplemented daemon feature: per-deploy secrets provisioning**.
 
+> **Correction (2026-06-20, per audit report 154):** "Eval both pass" / "daemon
+> functional and lojix-cli deprecatable" over-claimed. Eval was *reached*, not passed
+> (the body below correctly states Eval fails on the secrets assertion). No node was
+> deployed end-to-end by 0.3.6 (Build/Copy/Activate never exercised) — that came only
+> after the secrets (0.3.7) and eval-store (0.3.9) fixes. The defensible narrower claim
+> is that the **MaterializeHorizon-stage parse skew** (4-vs-5-root) was resolved.
+
 ## What got fixed: the daemon↔datom schema skew
 
 The prometheus build first failed at `MaterializeHorizon`: *"expected ClusterProposal
