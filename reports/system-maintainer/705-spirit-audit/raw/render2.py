@@ -39,10 +39,16 @@ def kebabize(s):
     t = re.sub(r'[^a-z0-9-]','',t)
     return t
 
-# ---- NOTA encoders (shared with render.py logic) ----
+# ---- NOTA encoders ----
+# Plain [text] tolerates whitespace and most punctuation but NOT ()[]; any of
+# those forces the bracket-safe [|text|] form. Single bare-eligible tokens must
+# stay bare (the daemon rejects redundant brackets).
+def is_bare(t):
+    return bool(t) and not re.search(r'[\s()\[\]]', t) and ';;' not in t and '|]' not in t
 def enc_str(t):
     t = t if t is not None else ""
-    if '[' in t or ']' in t: return '[|' + t.replace('|]','\\|]') + '|]'
+    if is_bare(t): return t
+    if any(c in t for c in '()[]'): return '[|' + t.replace('|]', '\\|]') + '|]'
     return '[' + t + ']'
 def enc_ref(r): return r if KEBAB.match(r) else enc_str(r)
 def enc_refs(rs): return '[' + ' '.join(enc_ref(r) for r in rs) + ']'
