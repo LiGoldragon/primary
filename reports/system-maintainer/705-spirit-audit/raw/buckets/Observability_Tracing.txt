@@ -1,0 +1,45 @@
+ID beaj | Constraint | certainty=VeryHigh importance=VeryHigh | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: There is no daemon-side printline. There shouldn't be. The daemon observes through its own tracing and logging mechanism — the typed schema-defined trace interface and any future logging surface. Stderr printline statements as fallback for in-band trace errors violate the typed-data-strings-only-at-display rule (Spirit 1490 Maximum) and are forbidden. This elevates and restates Spirit 1505 with Maximum certainty.
+
+ID m5jl | Decision | certainty=High importance=High | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Tracing is its own schema-defined interface with closed generated enum vocabularies for trace names and events, not an ad hoc string log.
+
+ID nq28 | Decision | certainty=High importance=Medium | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Trace names are macro-emitted from the schema-defined enum variant structure rather than free-floating strings; the macro generated the variant so it already owns the activated object's identifier.
+
+ID 8p0r | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Trace events display as NOTA at the client edge. Trace event types derive a NOTA codec from their schema definitions, so rendering reduces to calling the standard NOTA encoder rather than ad hoc Display formatting. This realises Spirit 1490 typed-data-strings-only-at-display concretely — the rendered string IS NOTA text, the workspace's typed-data text projection, not an arbitrary stringification.
+
+ID q13r | Correction | certainty=High importance=Minimum | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Tracing should be built into the schema-generated engine traits themselves, with default derived or default trait implementations, rather than carried as separate local SignalTrace, NexusTrace, and SemaTrace side traits. The trace hooks belong to the interface/actor contract so implementors get a default no-op or generated behavior and trace builds can override or install a sink without parallel traits.
+
+ID xqkv | Decision | certainty=Medium importance=VeryHigh | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: The schema-derived runtime should support an optional testing/instrumentation build surface where generated objects and engine interface usage can emit structured trace events to a logging socket. The trace exists to prove actual use of Signal, Nexus, and SEMA interfaces during tests, not merely that their symbols exist in source files.
+
+ID 4frx | Decision | certainty=Medium importance=High | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: A trace-client library lives in the repo and owns the display plus SEMA-log features. The CLI becomes a thin wrapper that enables and calls the library features rather than reimplementing trace listener and decoder logic per component. Refines Spirit 1489 with concrete shape — trace genericization lands as a workspace library, not just a generated-per-component generic surface. Library location open — candidates include triad-runtime, a dedicated trace-client crate, or a workspace-level signal-trace crate.
+
+ID so0p | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: The introspection component is named introspect (dropping the persona prefix from persona-introspect) and uses schema-next-based triad engine interfaces.
+
+ID vkg5 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: introspect serves as a configurable trace destination for all components, deciding what and how to log, and provides a queriable source of tracing-derived intelligence.
+
+ID bwid | Decision | certainty=Medium importance=Low | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Two trace forms are supported: COMPACT carries only the root variant name, and EXTENDED appends the nested variant chain when a variant payload is itself an enum (stopping at the root when the payload is a struct), with the enum-vs-struct distinction known to the macro at compile time.
+
+ID jaz4 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Trace events may also be logged into a SEMA database purpose-built for trace storage, as an alternative client-side trace sink alongside NOTA display. The daemon continues to emit typed binary trace frames regardless; client-side options are display-to-stream or persist-to-sema. This reinforces the introspect-style direction and refines older intent that placed trace logging exclusively on the CLI display surface.
+
+ID pj6w | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: The generic CLI trace-siting path should live as a triad-runtime helper rather than as one-off schema-rust-next emitter glue.
+
+ID t1da | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Trace instrumentation should record only the name of the object being activated; the macro-generated interface already has that object name, so trace should not carry rich payload snapshots for each boundary.
+
+ID tdfp | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Trace enablement must be documented explicitly per case, because different crates and interfaces may enable or suppress tracing independently.
+
+ID ue7r | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Observability.Tracing | referents=(none)
+DESC: Do not enable tracing on the tracing interface itself for now; trace enablement should be controlled per crate or component so the trace system does not recursively trace its own trace events.
+

@@ -1,0 +1,90 @@
+ID ahop | Decision | certainty=High importance=High | domains=Work.Teamwork | referents=(none)
+DESC: Counselor and assistant pair like designer and operator: counselor advises on structure (the psyche's personal, business, family, friends logistics); assistant executes. The pair handles the psyche's private affairs by default.
+
+ID nytm | Decision | certainty=High importance=High | domains=Work.Teamwork | referents=(none)
+DESC: The <role>-assistant lane suffix is retired workspace-wide; parallel agents in the same role are named second-<role>, third-<role>, fourth-<role>.
+
+ID pguv | Decision | certainty=High importance=High | domains=Work.Teamwork | referents=(none)
+DESC: Valid lane shapes are <role>, second-<role>, third-<role>, and qualified-prefix-<role> (e.g. system-<role>, cluster-<role>, pi-<role>).
+
+ID xlfo | Decision | certainty=High importance=High | domains=Work.Teamwork | referents=(none)
+DESC: When an agent in role R dispatches a subagent, the subagent inherits the dispatcher's lane, lock, and report-numbering slot — it does not create its own lane.
+
+ID lo72 | Decision | certainty=High importance=Medium | domains=Work.Teamwork | referents=(none)
+DESC: The -specialist lane suffix is retired; system-specialist becomes system-operator, and similar specialist lanes rename to their base role.
+
+ID ltfr | Decision | certainty=High importance=Medium | domains=Work.Teamwork | referents=(none)
+DESC: The dispatcher assigns the subagent a report number inside the dispatcher's own role report subdirectory; subagent dispatches write into the dispatcher's role subdir, never into a separate assistant-named subdir.
+
+ID uxsa | Principle | certainty=High importance=Medium | domains=Work.Teamwork | referents=(none)
+DESC: Two subagents cannot work on the same thing because they share the dispatcher's single lock.
+
+ID lc7e | Decision | certainty=High importance=Low | domains=Work.Teamwork | referents=(none)
+DESC: Existing designer-assistant reports should be renamed into the designer lane so operator and other roles can see them.
+
+ID 9o9g | Constraint | certainty=High importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Report lanes are per-role: an agent writes only in its own reports role directory and never in another lane report directory — except when the psyche explicitly instructs it for a specific task, and even then it never touches that other lane reports again unless explicitly re-instructed. Cross-lane report writing is occasionally practical but is not normalized.
+
+ID jq8w | Principle | certainty=High importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Designer lanes are different windows into the same persona; share context through workspace files plus per-session work summaries
+
+ID kxzh | Decision | certainty=High importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Designing protocol vs operational protocol vs poet protocol — the per-role psyche-to-agent flow. When psyche talks to a designer, the conversation is in the designing protocol. When psyche talks to an operator, it is the operational protocol. When psyche talks to a poet, it is the poet protocol. In each case the protocol is designing the agent's operating skill — designer protocol designs the designer skill; operator protocol designs the operating skill; poet protocol designs the poet skill. Psyche conforms to the interface — the agent role label in the window (bottom-right of UI) is the topic of that window. The role label IS what determines which protocol the psyche is speaking through.
+
+ID q402 | Correction | certainty=High importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Reports are per-role outputs and exempt from claim flow; do not claim the primary workspace just to edit a role-owned report. Claim only when editing shared coordination surfaces or repo/workspace files outside the reports exemption.
+
+ID ty8z | Principle | certainty=High importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: before dispatching a new test or implementation subagent the designer first researches what other agents have done since the last designer pass and what is currently in flight; without this, the new subagent duplicates work, uses stale assumptions about substrate, or steps on parallel-lane work
+
+ID xrxy | Decision | certainty=High importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Designer protocol update — the prime designer operates at full capacity with parallel subagent workflows by default. Always do everything in parallel; the psyche-named role is prime designer. Effective from now; persists until explicitly disabled or reduced. This carves out a designer-specific exception in the workspace-wide no-subagents-unless-told rule (workspace.nota record 5): the no-subagents default still applies to operator, system-specialist, poet, and their assistant lanes; the designer protocol exception only covers the prime designer chair (not designer-assistant or second-designer-assistant lanes by default unless psyche extends).
+
+ID 8dib | Decision | certainty=Medium importance=Medium | domains=Work.Teamwork | referents=(none)
+DESC: The primary workspace has a new system-maintainer role: the system maintainer owns mostly updating, debugging, and deploying Crayon OS on various hosts, is expert in Crayon OS and Logic, knows the current production and development stacks, overlaps system-operator but is less development-focused and more maintenance/deployment-focused.
+
+ID vxwm | Correction | certainty=Medium importance=Medium | domains=Work.Teamwork | referents=(none)
+DESC: Role lanes must use each agent exact role-name identifier.
+
+ID 0ezc | Principle | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: designer implementation may stay higher-level than operators; designer carries less implementation depth per pass than operator does
+
+ID 1ek2 | Decision | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Register assistant as a workspace role/lane for this agent: the assistant role helps the psyche with personal affairs and must have orchestration support plus its own reports/assistant/ report lane.
+
+ID 4gul | Decision | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Composite designer role — the designer agent runs Claude AND Codex in parallel against the same prompt, then selects (or merges) the best output. The Codex parallel runs in Pi (Persona Pi); the Claude side runs in its own harness. This is the first concrete composite-role shape. Other roles may compose differently, but the designer composite is psyche-specified.
+
+ID 56i0 | Clarification | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Cluster operator is an operator-specialized role, and ordinal prefixes copy the whole following role
+
+ID 6i29 | Decision | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: operators read peer operator reports first
+
+ID 9gb7 | Decision | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: operator and second operator are one identity
+
+ID ataz | Principle | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Role spaces divide write authority and research context
+
+ID cb0j | Constraint | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: During multi-component migrations, agents should claim and lock one component at a time rather than locking the full component fleet, so other lanes can keep working.
+
+ID pm1b | Principle | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Lane retirement requires context maintenance on leftover memories (reports + beads) before identifier retirement; context-maintenance discipline encompasses retired-lane sweeps
+
+ID wywp | Principle | certainty=Medium importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: For large schema implementation and synthesis tasks, the operator should use subagents in parallel when explicitly authorized, with the main agent staying responsible for integration, constraints, tests, and the final report.
+
+ID j60y | Principle | certainty=Low importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: parallel subagents receive report lanes before launch
+
+ID l3ca | Decision | certainty=Low importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: Each agent role gets its own workspace — a sub-workspace that is its own Git repository (called role-space, even though psyche acknowledges the name is awkward). Write access is gated via Git push, which is gated on the agent's SSH key (set when the agent starts). Each role has its own research lane within this space. This is the substrate that backs per-role isolation: designer-space, operator-space, poet-space, etc., each a separate repository whose push permissions are bound to whichever agent is currently in that role. (Designing-mode speculation — much of this is not yet implemented; intent recorded so the design direction is captured.)
+
+ID mz3p | Principle | certainty=Low importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: active report lanes should stay well below twelve
+
+ID ruv2 | Principle | certainty=VeryLow importance=Minimum | domains=Work.Teamwork | referents=(none)
+DESC: operators watch new designer reports
+

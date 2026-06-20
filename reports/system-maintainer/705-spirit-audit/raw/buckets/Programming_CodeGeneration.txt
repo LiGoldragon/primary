@@ -1,0 +1,123 @@
+ID ycmd | Principle | certainty=High importance=VeryHigh | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Hand-written Rust is ONLY the engine logic - how to process the objects, the decision-making bodies of actor methods. Everything structural emits from schema: NOTA-encoded form, rkyv binary form, all data type definitions, all enum variants, all field accessors. The engine code does not reinvent the data-structure wheel; it consumes schema-emitted types and writes only logic.
+
+ID rmv8 | Decision | certainty=High importance=High | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The schema layer has three schema types corresponding to three runtime planes: Signal (wire/communication), Nexus (execution IO/UI, formerly Executor), and SEMA (durable state/database).
+
+ID dv9a | Principle | certainty=High importance=Medium | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Each plane has its own engine and traits but all three share the pattern of running code over an input message and returning an output message with populated data.
+
+ID fhe8 | Decision | certainty=High importance=Medium | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The root type of a schema is the message surface (what is sent); each schema declares its own input and output enums and uses colon-path namespace imports for shared types.
+
+ID 4np2 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Schema-to-Rust lowering should use Rust's REAL macro infrastructure — quote! / proc-macro2 TokenStream / quote::ToTokens — NOT a hand-rolled string code generator. Each schema type and subobject implements ToTokens (or a Lower trait returning a TokenStream); lowering the schema is quote!-interpolation over the typed schema tree (quote! { pub struct #name { #(#fields),* } }), feeding the typed schema data into the macro as a structure/graph/tree that fills the template. proc-macro2's TokenStream IS the typed code AST, so the hand-rolled string emitter — the 52-method RustWriter god-struct and the string-concat type building the audit (report 529) flagged — is replaced entirely by standard machinery, the same way nota-next-derive already builds its derives with quote!. The current emitter re-implements by hand, badly, what quote! does natively. This unifies with records de8i/v5n7 (every schema noun owns its lowering): every schema noun implements ToTokens and the whole lowering is quote! over the tree. Whether the tokens are written to a checked-in visible .rs (build.rs + quote! + prettyplease, preserving source-visible emission) or expanded inline as a proc macro is a separate visibility choice; either way the generation is token-based, not string-based. Per psyche 2026-06-05.
+
+ID c8b3 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Every component has TWO schema-derived vocabularies: (1) an INTERNAL EFFECT language for actions inside the engine - how the daemon's internal actors operate on each other and on storage; and (2) an EXTERNAL WIRE language for messaging outside the engine - signal contracts, the typed wire protocol. Both are schema-derived from the same .schema file but emit to different surfaces. Wire vocabulary speaks to OTHER components via signal sockets (signal-frame envelope, ShortHeader, dispatch); effect vocabulary speaks to internal actors within the same daemon (the engine's actor mediator surface). Two languages, one schema file.
+
+ID cyik | Constraint | certainty=High importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: NOTA encode and decode derives should be optional generated surfaces, not automatically applied to daemon-only components. Daemons should stay binary-only and should not carry NOTA decoding code when they only need rkyv signal frames.
+
+ID de8i | Principle | certainty=High importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The lowering of schema-in-rust into Rust should be implemented as methods/a trait ON the schema objects themselves — each Rust-model noun (RustStruct, RustEnum, RustField, RustEnumVariant, and a TypeExpression type) renders itself, composing recursively and returning typed RustCode — NOT delegated to an external emitter/writer god-struct. The current lower_to_rust trait is a FACADE: its impls hand self to a RustEmitter/RustWriter that holds all the emit verbs (52-method RustWriter), so the verbs live on the god-struct while the model types are passive data. This is the methods-on-nouns discipline (records 712/882, verb-belongs-to-noun) applied to the emission step — symmetric with the deserialize arrow, which is already methods-on-the-types via the structural macro node codec. The cross-object logic (plane split, plane-type, projections) becomes its own type (a PlaneType) that the per-noun render methods consult, not a reason for a god-struct. Per psyche 2026-06-05.
+
+ID l8ox | Principle | certainty=High importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Internal representation uses FULLY QUALIFIED NAMES: crate::module::type form. The AssembledSchema prefixes the module name in front of every type. Good for debugging (you know exactly what crate + what schema). When the macro outputs modules per schema, the qualification becomes natural. Single thing per name per context invariant - if an import clashes with a local name in the same context that should error not silently shadow.
+
+ID olj1 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Lowered schema output uses fully-qualified universal identifiers — namespace path prefixed to each name so collisions are impossible across components. The fully-qualified form is self-documenting; the sugar (transient) form gives expressive authoring power. Both forms equivalent; lowered is for verification + machine consumption + correctness checking by reading; sugar is for human authoring. The lowering process makes the schema a giant self-documented artifact.
+
+ID ppuk | Decision | certainty=High importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The end state of schema macro expansion is AssembledSchema: a pure NOTA-representable assembled schema file type containing fully resolved enum and struct definitions with typed endings and no remaining macros.
+
+ID zs9c | Principle | certainty=High importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The assembled schema tree is the complete input to Rust generation, including code to read and write NOTA text and portable rkyv binary data for SEMA and signal formats; Rust emission may later be invoked from a single macro that reads repository schema files.
+
+ID lk22 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: namespace separator is SINGLE colon not double - so the path mirroring Rust crate-then-module-then-type is crate-name:module-name:TypeName not double-colon; crate name is the top namespace level since Cargo crate names are already non-conflicting and we read the crate name from there not redefining it; every Rust crate gets a schema folder at top level containing lib.schema as the entry point; module system mirrors Rust - signal.schema becomes the signal module loaded through lib.schema like Rust modules through lib.rs; Rust emission target is another folder in the crate source called src/schema/ producing src/schema/lib.rs etc - the schema-derived Rust code lives next to hand-written Rust and gets re-emitted automatically; development hot-reload via a watch hook on the schema files so when a schema file is edited the Rust regenerates and optionally re-triggers a build to test; the brace-namespace-as-dynamic-enum from record 894 extends to a ROOT TABLE of all non-conflicting names across the crate that can be used as Rust identifiers directly through the colon-path module system; imports between crates eventually use the same colon-path mechanism so each crate-with-schema-at-standard-place gets picked up by its crate name
+
+ID y1qw | Correction | certainty=Medium importance=Medium | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Single-field schema declarations without an explicit field name should lower and emit as newtypes, not named one-field structs. A PascalCase self-named field or single referenced type is a semantic type object; only multi-field structs derive lowercase field names. Generated Rust and NOTA should preserve this by using transparent newtypes so trace events like ObjectName do not become double-delimited one-field records.
+
+ID 4qvx | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The schema-derived VersionProjection macro can decide its own emission module structure inline or separate without psyche choice gating it. The macro is already in the code deriving from the schema difference; module organization is an implementation detail the macro encapsulates. Original assumption was macro would derive module selection from the schema diff shape itself.
+
+ID 58bv | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Schema-next should have one lowering engine; keep the most correct lowering path rather than preserving dual lowering paths or choosing the smallest patch.
+
+ID 5zgi | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Schema-rust-next emitter should consolidate same-shape sibling variants by semantic family — when multiple variants in a closed-sum enum carry identical payload shapes, the emitter groups them under a single family-named variant whose body discriminates the original variant by carrying its name as data. Audit Suggestion 2 from designer 452 grounds this in pilot tests showing repeated-shape variants are the common case for rkyv-wrapped closed sums
+
+ID 6th4 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Every root enum emitted by schema-rust-next gets a Help action variant generated automatically by the macro — Help uses the schema interface description as the source to generate help messages. Help responses are themselves generated enums root-interface shape; the pattern is recursive — help-message enums also carry their own Help variant. Self-description becomes part of every component's typed interface contract not a separate documentation surface. Schema source is the source of truth; macro projects help vocabulary from it.
+
+ID 77i8 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The eventual Rust emission goal: a single macro call placed in lib.rs or main.rs of a Rust crate reads the .schema files in that repository and generates ALL the schema-derived Rust code - data types plus NOTA read/write plus rkyv read/write. The macro call becomes the SOLE schema-derivation entry point; everything else flows from there. Per psyche 2026-05-26: eventually, might work well by just calling, eventually just putting a single macro into like the main lib file or the main binary file of some Rust code.
+
+ID 9ryu | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The signal-to-sema engine for the Spirit full-schema branch must have query and effect-to-response language schemas for each turn, with those schemas participating in the same schema-to-assembled-tree-to-Rust generation path.
+
+ID a7a7 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Handwritten Spirit runtime and test code should avoid nested generated alias wrapper construction such as Output rejected wrapping Rejected wrapping SignalRejection. Once alias lowering and generated constructors land upstream, handwritten code should use generated APIs such as Output rejected and Input record, or direct enum variants carrying the underlying payload for aliases.
+
+ID amyr | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The signal_channel macro generates from the NOTA schema all three outputs — the wire/signal surface, the sema operations (classification), and the sema lowering operations (how each operation is expressed inside the engine, what kind of decision the engine makes)
+
+ID czw0 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Generated Signal, Nexus, and SEMA engine traits should carry minimal lifecycle hooks: on_start and on_stop with typed start and stop failure results. Full actor mailbox, backpressure, and runtime-control traits stay deferred; lifecycle hooks are the minimum addressable surface persona supervision can use.
+
+ID dtwe | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Schema-generated Rust should emit into a dedicated schema module tree inside the crate source, with generated lib-style module files mirroring the schema module layout before the normal Rust build consumes them.
+
+ID fhaj | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: In schema-rust-next, bare namespace bindings such as Rejected SignalRejection should lower to schema_next::TypeDeclaration::Alias once upstream exposes it, emitting pub type Rejected = SignalRejection; rather than tuple newtypes. Genuine single-field struct-body declarations remain newtypes with new, payload, into_payload, and From<Payload>; enum associated constructors should not wrap aliases as newtypes; keyword-safe constructors such as continue lowering to r#continue stay preserved.
+
+ID gb3d | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Assembled schema needs to distinguish exported public data types from local module data types. The design can model this either as visibility on declarations or as public and local declaration variants, but the compiled Rust must preserve the boundary.
+
+ID hckx | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Schema-stack presentations and tests must show each component interface, the schema that creates it, and the path from schema to generated interface to component communication.
+
+ID hyng | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Schema source carries the triad engine mechanism as the baseline so schema authors get the runner shape, trace plumbing, and continuation substrate through generation; per-component variation should use explicit escape hatches for real domain differences rather than hand-implemented daemon preference.
+
+ID j33v | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The lowered schema object should be called AssembledSchema, not SchemaMid.
+
+ID jgwb | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Repeated nested variant-wrapper construction in code, such as Output::Rejected wrapping Rejected wrapping SignalRejection, indicates bad design or a missing logic/emission layer; generated APIs should not force callers to hand-write that repetition.
+
+ID js59 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Design reports for schema-driven component work should show what the schema produces: REST code, typed interfaces, derived traits, implementations, and the derivation boundaries where flaws or improvements can be spotted.
+
+ID lk8v | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Macro output organizes by MODULE per schema. Generated Rust code is one Rust module per .schema file - mirrors the schema file structure on disk. This makes name clashes manageable (each module has its own namespace) and makes the generated Rust easier to reason about (REST code generated by module rather than one flat namespace). Module = context for name resolution; single thing per name per context invariant holds within each module.
+
+ID pokt | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: gap-fill on the directive operator received - the naming system between schema-emitted code and Rust source MIRRORS each other; the psyche said you can use the naming system that way to like a mirror; the colon-path namespace in schema (e.g. spirit-next:signal:Frame) maps to Rust module-and-type names by direct correspondence so agents can grep across both via the shared identifier; operators 946 captures side-by-side file placement but not the mirror-naming property between the two emitted artifacts; this gap-fill names the structural property that makes the schema and the emitted Rust code navigable from either side
+
+ID rpr5 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The bundled triad runner adapter is generated glue only. Component authors implement the three plane engines plus the effect handler and budget-exhausted reply; the generator bundles those surfaces for the shared runner instead of making authors hand-write a fourth engine surface.
+
+ID sarw | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Generated and schema-emitted Rust avoids transparent type aliases as a binding or naming mechanism; the design prefers real data-bearing types and trait or associated-type bindings over a pub type alias.
+
+ID t3l4 | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Schema-derived Rust emission must not rewire into the old signal macro implementation.
+
+ID tj99 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Evolve the schema-rust-next daemon emitter (with triad-runtime) to host lojix load-bearing daemon properties so concurrent daemons adopt the GENERATED daemon rather than keeping hand-written forks: BoundedWorkers concurrent serving with a fresh per-request engine over a shared store, a two-wire-contract single-Nexus-root working tier where the owner meta tier is a first-class typed engine path rather than a raw escape hatch, and the per-request frame-size and read-timeout hardening bounds in the generated transport. lojix hand-written daemon is the reference implementation feeding back into the emitter.
+
+ID y3tc | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Generated modules may mirror schema-file contexts to avoid name clashes
+
+ID yvez | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The schema Rust emission should split Signal Nexus and SEMA into separate emitted namespaces now, so plane payloads can use simple names like Input and Output inside their plane namespace instead of carrying redundant plane prefixes.
+
+ID b95h | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: Schema files create the library data types they serve and may live side-by-side with Rust source when that is the simplest readable layout; the exact repository layout can stay pragmatic while the interfaces remain schema-derived.
+
+ID epn9 | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Programming.CodeGeneration | referents=(none)
+DESC: The desired direction is to understand and pursue moving more runtime behavior logic into the schema/macro-generated interface itself: macros define the interface and can also generate default trait wrappers, hooks, and eventually behavior targets so hand-written runtime code only fills the domain-specific decisions and algorithms.
+

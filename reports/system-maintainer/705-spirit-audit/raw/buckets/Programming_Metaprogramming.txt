@@ -1,0 +1,42 @@
+ID n9ta | Decision | certainty=High importance=High | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: The assembled schema must become a live serializable artifact — NotaDecode, NotaEncode, and rkyv on Asschema and all its substructure — not merely an in-memory typed Rust value; the in-memory-only form is bootstrap, not production.
+
+ID 5pfy | Decision | certainty=High importance=Medium | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: The Rust emitter must consume the serialized assembled form (checked-in or build-time-emitted .asschema NOTA files), not the in-memory Rust value directly.
+
+ID o2xk | Constraint | certainty=High importance=Medium | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: A CLI-with-NOTA structurally forces the daemon protocol to be binary: the CLI translates NOTA into the binary protocol calls the daemon receives.
+
+ID g2xr | Principle | certainty=High importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: NOTA itself is schema-derived. NOTAs own grammar and types are described by a schema (the foundational schema). Everything NOTA-related is schema-derived from that point downward; the schema generates the Rust code that interprets NOTA. The schema engine drives the behavior from declaration through to executable interpretation. All-the-way-back: nothing NOTA-shaped escapes the schema-derivation discipline.
+
+ID p6a3 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: The schema-derived emission proc-macro is named emit_schema!, not signal_schema! or signal_channel!. Rationale: the schema engine emits more than signal contracts. It also emits storage descriptors, VersionProjection, ShortHeader projection, observable runtime, dispatch traits, kind enums, plus the wire-contract types. The macro name reflects the broader scope. The composer library remains schema-rust (operator/184). Old text-body signal_channel! { ... } gets fenced as legacy_signal_channel! during the migration window then deleted with signal-frame/macros/. Supersedes operator/184's signal_schema! naming choice while keeping the rest of /184 plus designer/340 as the canonical re-architecture.
+
+ID g9no | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: The schema authoring language is itself a macro that expands to assembled-schema data, and once bootstrapped the schema-of-schemas generates its own assembled and short-syntax forms, closing the self-hosting loop.
+
+ID 6jdv | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: Schema files contribute a namespace prefix, initially their file name, so locally-defined names can be resolved and imported through schema namespaces without collapsing into one global flat name space.
+
+ID 78cn | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: Schema namespace supports recursive type references — entries in the namespace can reference other namespace entries, allowing recursive data type definitions. Logic can be defined in the namespace through these recursive references. This is how the meta-schema bootstraps itself within its own format.
+
+ID akh5 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: Schema modules should mirror Rust-style module decomposition: a schema file can carry fully qualified colon-separated names or split names across module files, with imports and re-exports resolving through typed import variants such as import all, import from path, import from repository root, adjacent directory, or git.
+
+ID e7pe | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: Schema declaration crystallizes the architecture that was already instinctively emerging in earlier ASCII work, before the component+database practical approach. The practical detour through components-with-databases revealed the substrate need; now schema is the stable formalization of what was being reached for intuitively. Schema serves AS self-describing code documentation AND self-describing wire format simultaneously - one .schema file generates both the code AND the wire shape, AND documents itself. The 'redefines or more like crystallizes' framing: schema is not a NEW architecture, it is the load-bearing precipitation of what the workspace was already structurally moving toward.
+
+ID qe84 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: Schema macros compose from reusable micro-macros
+
+ID qr9g | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: engine logic at the high level is tree-vs-tree matching; canonically enum-against-enum, or enum-against-a-mix-of-enums-and-method-calls; when two enums meet under match, the cross-product of their variants is a common-language relationship node point that should be made explicit (often via a trait) rather than scattered across ad-hoc match arms
+
+ID ernc | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: Schema imports can be namespace imports with optional selection
+
+ID z9kv | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Metaprogramming | referents=(none)
+DESC: Proposed: the schema TYPE - which of the three planes a schema declares - is a Kind enum, schema::Kind, with Sema Nexus and Signal DATA variants, each variant carrying that planes schema body. So a schema documents root is a Kind value such as Sema wrapping that planes 4-position content. This resolves record 964s open question of how the schema type is declared in favour of the variant-at-root form over file extensions, and gives the three typed engines their dispatch point: match the Kind variant and lower with plane-specific rules. Parallels the runtime envelope decision of records 1037 and 1042 - Kind Sema at the schema-document level mirrors the Sema envelope at the message level. Proposed by the psyche as a question pending confirmation; Kind-versus-Plane naming still open.
+

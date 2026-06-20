@@ -1,0 +1,150 @@
+ID 4itr | Constraint | certainty=Maximum importance=VeryHigh | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The foundational principle of the whole schema design, stated with maximum force and repeatedly missed by agents: EVERYTHING is a serializable data object, the MACRO most of all. A macro is NOT parsing code that turns text into opaque behavior - it is a DATA OBJECT with a name, a position, a pattern, and a template, where the pattern and template are themselves data trees, not text with placeholder sigils. Macros are ASSEMBLED FIRST into assembled-schema data, then that assembled data is read to obtain the usable macro - so macros can be PRE-ASSEMBLED, serialized, and loaded as data. Reading any schema means loading the pre-assembled macro data and interpreting the schema-data against it to produce more assembled data. The ONLY code is one tiny generic interpreter over data; there is no per-macro bespoke parsing. The test of understanding: if you cannot serialize and deserialize a thing, you have not built it as data - every single thing round-trips through NOTA text and rkyv bytes, macros included. The current engine VIOLATES this: its macro expansion builds a string from the template and re-parses it, which is exactly the parse-then-black-magic slop the psyche rejects.
+
+ID kchq | Principle | certainty=High importance=VeryHigh | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: NOTA extension programming is structural matching over nodes. The parser first preserves raw delimiter structure, object counts, sigils, and nested block shapes; then ordered macro-node definitions match that structure using constraints, most-specific first, and absence of a match is a formatting or specification error.
+
+ID xai7 | Principle | certainty=High importance=High | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The structural macro node — a NOTA enum decoded by SHAPE, not by a data tag. The enum TYPE is the whole specification: decode is TYPE-DIRECTED — the codec performs a structural match on each variant in DECLARATION ORDER, first structural match wins, then decodes that matched variant data, RECURSIVELY (a variant may hold further structural macro nodes); encode emits a NOTA block matching the chosen variant shape (BIDIRECTIONAL). It is NOT a runtime registry, capture-map, or string variant-name dispatch — the type drives the decode, realized as a derive (#[derive(StructuralMacroNode)]) on the enum with per-variant shape attributes. This is the part of NOTA original design that was never implemented. Consolidates prior records ejvc + i0e6 (the mechanism, then the type-directed clarification), genuinely restated by the psyche. Per psyche 2026-06-04 and 2026-06-05.
+
+ID 5xss | Decision | certainty=High importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The structural-match pattern language is a typed enum of primitives — arity, atom-case, atom-sigil, delimiter-type, atom literal — bounded so the macro data stays serializable.
+
+ID c2dc | Decision | certainty=High importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The NOTA decoder is extended by a registry of registered macros dispatched as an ordered list (first match wins) with conflict detection at registry-construction time; the captured blocks are interpreted by a consumer (Schema being one consumer).
+
+ID dqmc | Decision | certainty=High importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: At a struct field or enum variant position, an @-sigil with a type name and NO preceding name derives the binding name from the type. STRUCT FIELDS: @Topics is sugar for topics@Topics — field name = camelCase of the PascalCase type name (Topics → topics, RecordIdentifier → recordIdentifier). ENUM DATA VARIANTS: @SomethingHoldingSomething is sugar for SomethingHoldingSomething@SomethingHoldingSomething — variant name = held type name (PascalCase unchanged). Bare PascalCase at an enum position remains a UNIT variant. Explicit name@Type / Name@Type still works where the name should differ from the type. Composite shorthand follows the same rule: @(Vec Topic) derives the field name from the composite (record 1119). Examples: Entry@{ @Topics @Kind @Description } ≡ Entry@{ topics@Topics kind@Kind description@Description }; SomeEnum@[ @SomethingHoldingSomething SomethingElse SomeString@String ] = data variant w/ derived name, unit variant, data variant w/ explicit name. The assembled model is unchanged — Vec<(Name, TypeReference)> for struct fields, named Variant for enum variants — the derivation happens at lowering. Refines record 1216's declaration form list. Per psyche 2026-05-30.
+
+ID t2xg | Decision | certainty=High importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Macros are a NOTA-layer concept (not only schema-layer): each macro is a typed data record with a name, a structural-match pattern, capture specs, and an applicable position.
+
+ID av1q | Correction | certainty=High importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Define assembled schema before sugar. .asschema is macro-free final data: Vec, Optional, Enum, Struct, Newtype, Plain, Carries, and related forms must be final assembled-schema variants, not macro invocations. Macro sugar belongs only in authored schema before lowering. Simplify and specify the final assembled schema first, then add sugar against it.
+
+ID h6fh | Constraint | certainty=High importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: the Macro declaration form is the locked NOTA syntax for declaring user-defined macros inside a namespace: positional record of the form (Macro Input+ Output) - Macro tag plus one or more input shapes plus exactly one output shape. This sits inside the namespace alongside ordinary types per record 843; the macro lives as a registry entry resolvable by qualified name. Per Q2 of designer-assistant 372 the explicit Macro tag wins over the contextual shape-driven matching alternative for introspectability.
+
+ID v0n6 | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Programming.Macros;Technology.Software.Programming.Compilation | referents=(none)
+DESC: Everything reading NOTA-shaped structure above the raw structural parser must go through typed structural macro nodes; surviving hand-parsing sites such as the schema-next macro library are design violations to fix, not acceptable code. If structural macro nodes cannot express a needed shape, that signals the NOTA design was not implemented properly and must be surfaced to the psyche rather than worked around. Extends 6grf.
+
+ID wx5c | Decision | certainty=High importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Built-in core macros live in the basic schema library and are ALWAYS imported when a schema imports the schema module - no opt-in. They define how to assemble data structures (enum / struct / newtype / etc). User-defined macros are lazy-loaded by name from explicit imports. The split: core macros are non-negotiable substrate; user macros are extensions that compose with the core.
+
+ID 506w | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema source enum body vectors honor vector homogeneity per Spirit 1267. Each element is a single variant declaration object: a data variant is (VariantName PayloadType) where VariantName qualifies as a PascalCase symbol naming the variant and PayloadType resolves into the namespace below; a unit variant is a bare PascalCase symbol. The recognized shorthand is owned by a structural macro defined in NOTA data form (macros-as-data per Spirit 1263) — pattern matches either a symbol at the enum-body vector position lowering to a unit EnumVariant, or a parenthesized record (Name Type) at that position lowering to a data EnumVariant with Some(payload). The current authored-schema-source form using the at-suffix sigil VariantName@ PayloadType inside a vector is dishonest because it places two interleaved objects per logical entry inside a bracket delimiter — that breaks vector-as-homogeneous and is retired. Input and output enum bodies in the schema source form the schema signature header: variant name plus payload type per data variant resolving into the namespace below. The assembled-schema form is unchanged — variants are already encoded as (VariantName payload-option) records in a homogeneous vector; this Decision corrects the source-form shorthand to be structurally honest.
+
+ID 5ydx | Principle | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: schema macro application is iterative to a fixed point; each pass identifies macro positions in the namespace and applies their lowerers; macros can introduce new macros into the namespace which trigger further passes; iteration continues until no macro positions remain and the namespace is pure typed enums, structs, and newtypes
+
+ID 6ttq | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The signal/sema macro auto-derives documentation via a Help variant on every enum.
+
+ID ai4j | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The macro generates a Tier-1 64-bit small-header per enum (LogVariant + frame_micro projection).
+
+ID l489 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The macro emits NOTA encoding/decoding capability from the same schema source.
+
+ID p31j | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The macro emits a VersionProjection between the current and next schema versions as the next-version-as-dependency upgrade path.
+
+ID xprx | Principle | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: When you see repetition, extract it into a library or the schema macro; prefer pushing logic back into the schema macro. The more the schema generates the better, as long as it stays good — schema is clear, readable, and shows the logic as object shapes, which is cognitively sensible.
+
+ID 5p9s | Principle | certainty=Medium importance=Low | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: A NOTA formatter can be derived from the macro definitions, since each macro's pattern tells the formatter where line breaks, indentation, and spacing belong.
+
+ID 17l9 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Extension of Spirit 1467 inline enum-payload pattern. The inline enum-body list can declare variant NAMES without distinguishing unit vs data-carrying in the header. When a variant name in the inline list is defined elsewhere as a newtype/struct/named type the variant is data-carrying with that type as its payload; when not defined elsewhere it is a unit variant. The header doesn't need to know which — the codec resolves against the type table. Lets the inline enum-body form fit data-carrying variants while staying compact. Example — Output [RecordAccepted Rejected Busy MaintenanceMode] works even if RecordAccepted and Rejected are defined elsewhere as data-carrying newtypes (wrapping SemaReceipt and SignalRejection respectively) and Busy/MaintenanceMode are unit. Sugar feature; cleaner schemas; less paren noise at variant-list positions.
+
+ID 3uae | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: macros ARE sugar syntax in the schema layer - the brace-enum form is implemented as a macro that expands to the canonical paren-list form; macros run on their objects at the positions they are specified to fire; the macro engine supports MULTIPLE MATCH CRITERIA: delimiter (paren/brace/square/pipe-text), internal shape (what the contents look like), number of root objects, qualification-as-symbol (PascalCase candidate, kebab-case, etc), and combinations of these; multiple matches dispatch on the most specific match; there are now TWO equivalent ways to define a payload-carrying enum in the schema namespace: the wordier paren form ((Variant Payload) ...) and the brace sugar form {Variant Payload ...} - both expand to the same Asschema; the macro shape itself is two-position: first object is the PATTERN it receives (what it matches), second object is the TEMPLATE for how it decomposes/expands; macros are the universal extension mechanism, not adhoc engine code
+
+ID 52ro | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The EnumVariants structural macro in schema-next should support compact self-tagged variants where the variant tag equals its payload type name: a one-element parenthesised form expands to the two-element tag-and-type form; a parenthesised name with an inline brace body declares the variant and registers that named struct in the namespace; and a parenthesised name with an inline bracket body declares the variant and registers that named enum in the namespace, all removing the name repetition
+
+ID 549v | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros;Technology.Software.Programming.Compilation | referents=schema-next,nota-next,TypeReference
+DESC: The dispatch precedence among competing reference forms — currently hand-written match-arm order, built-in heads then declared macros then the generic application catch-all, pinned only by tests — must be reified as an explicit typed value expressible in NOTA, so every reader and the resolver itself consult one canonical declared precedence rather than implicit ordering. Applies v0n6 to resolution order: the dispatch grammar is itself typed structural data, not hidden control flow.
+
+ID 5mxn | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: bottom-up tour of the schema-derived stack does NOT reference Nexus; Nexus is a separate NOTA-using vocabulary track (nexus + nexus-cli repos) parallel to the schema-derived stack (nota-next + schema-next + schema-rust-next + signal-frame.schema + spirit.schema); reserved sigils tilde-at-bang-question-star-equals are reserved at the NOTA syntax layer but the schema stack does not consume them; schema macros are plain NOTA records dispatched by position+shape in schema-next MacroRegistry, not sigils
+
+ID 6cm6 | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema language macros must expand into a fully one-to-one assembled tree that describes all generated types, API endpoint variant names, and the input structs carried by those variants before Rust code is emitted.
+
+ID bsnt | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema has a creator space for typed schema macros.
+
+ID cq2e | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema macros re-emit schema structure toward AssembledSchema. Conceptually they re-emit NOTA, although implementations may keep the intermediate representation binary in memory.
+
+ID d6if | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Micro-macros are small simple composable macro units that can be named in specific positions within larger macros. Examples: enum-short-syntax-applier, struct-short-syntax-applier, structure-match dispatcher. Larger macros compose them by calling them at attachment points - a macro library pattern where macros are reusable building blocks rather than monolithic transformations.
+
+ID jiy2 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: SchemaMacro in authored macro library source is an enum variant or tagged variant of the macro library source datatype, not an untyped sentinel string. The implementation and reports should model it as a variant that carries the macro definition payload and is collected by the macro library container before projection to serialized macro library data.
+
+ID jjhi | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema macro expansion needs indexed reading order with lazy resolution
+
+ID kkq3 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema variants can be ordinary vectors or macros. Macros invoke their own schema-reading logic - each macro definition carries its own parsing engine. This is the schema language's extension mechanism. Macros use NOTA format but can customize interpretation by shape: a curly-bracket with a single identifier, a curly-bracket with an even number of objects where all key positions resolve to the same type as a name/identifier, etc. Macros interpret structural shape, not just positional token sequence.
+
+ID m91k | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Signal/sema macro deepens: signal_channel! basic declaration EMBEDS the 64-bit Tier 1 micro header by default; STANDARDIZES the two-enum-namespace shape (ordinary + owner contracts sharing byte 0 namespace via golden-ratio split); DERIVES the small object from the macro directly (no hand-impl needed for Tier 1); EVERY enum (not just top-level Operation) gets a Help variant that documents the enums namespace; command documentation hooks directly into the Help operation
+
+ID nryo | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema should have sugar for a data-carrying enum variant whose payload type has the same name as the variant tag, so authors do not repeat the same name. This pushes the design toward introducing sigils because pure delimiter structure is overloaded across enum bodies macro invocations declarations and same-name payload shorthand, unless a clear structure-only solution appears.
+
+ID ox2x | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Macro-schema builtin variants are data-carrying at node definition points
+
+ID pul9 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Macro dispatch is two-phase: first a STRUCTURE-MATCH macro asks what shape the NotaValue is (does it look like enum short-syntax? struct short-syntax? newtype?); second the matching per-shape TRANSFORMATION macro applies its lowering. The two phases compose because the same syntactic placement can carry different shapes - e.g. parens-with-identifier-then-vector can be enum-short-syntax OR struct-short-syntax depending on the value shape.
+
+ID rfg9 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: In a strict brace key-value context, the key-value pair can be treated as one semantic macro-node object while still preserving the underlying NOTA brace pair structure. For schema declarations, a qualified key plus brace value matches the struct macro, qualified key plus bracket value matches the enum macro, and qualified key plus atom or reference value matches the newtype macro.
+
+ID rxzr | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema macro passes may pass generic NOTA subobjects to later macro passes
+
+ID sanf | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The bootstrap core schema is implemented in ordinary code first and exposed as the interface for writing schema macros. That core names the macro inputs by type, so macros can inspect Nota block structure and emit assembled schema data.
+
+ID sd7x | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The schema lowering engine that produces AssembledSchema is built from re-usable components: macro-schema-variants are data-carrying variants in a builtin engine, each carrying a struct that defines its input type. At nodeDefinition points in a schema, the builtin engine dispatches to the matching macro-variant by shape, and that macro-variant consumes the declared input struct to produce its lowered output. This means the lowering engine itself is extensible by adding new variants + their input structs, not by hard-coding shape rules in the compiler.
+
+ID t0e1 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema macro expansion is bootstrapped by built-in macros before user-declared macro space expands
+
+ID u0ik | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema variants can be ordinary vectors OR macros that bring their own schema-reading logic. Macros use NOTA format but customize interpretation by structural SHAPE - curly-bracket with single identifier, curly-bracket with even count of items where all key positions resolve to consistent type, etc. Each macro definition carries its own parsing engine. The macro system is the schema languages extension mechanism; new shapes become available as new macros enter the precompiled core or per-schema imports.
+
+ID uti9 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: The schema-schema is implemented as core Rust code - the macro interface. It exposes what other macros build on. The macro interface defines the different inputs and what they are called (a macros input type IS its name in the macro). People build their own macros against this core interface.
+
+ID w9gq | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Every schema file is loaded with a default schema attached implicitly - the schema-schema. The schema-schema defines the structural shape expected for schema files (root struct + sections). It is the lowest-level macro primitive everything else builds on.
+
+ID xayx | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema builtin lowering components are macro-variant lowerers at node-definition points.
+
+ID y1n5 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema macro handlers receive NotaBody body streams and should not receive wrapper delimiters. Macro matching strips the outer delimiter before handing the inner body to the next semantic step.
+
+ID ydpa | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Macro loading uses a FIRST INDEXING PASS that collects all macro names declared in the schema and its imports BEFORE any macro is invoked. Subsequent passes resolve macro references by name from the index. This enables forward references and out-of-order definitions because macros can reference macros declared later or in imported modules. Lazy loading: a macro is loaded only when referenced by name during dispatch.
+
+ID z2nx | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Gap-fill from forwarded designer prompt: NOTA itself should have a schema; over time the behavior of NOTA and the Rust code generated around it should be schema-derived rather than hand-maintained as a separate parser island.
+
+ID 1fgo | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Proposed macro-resolution architecture: the built-in type forms - Enum, Struct, Vec, Option, KeyValue - are variants of a closed MACRO SPACE. Schema positions that expect a macro resolve a node against this space by DUAL DISPATCH: first look at the head keyword, and if it is a reserved built-in keyword such as Vec Option KeyValue dispatch directly by keyword and SKIP structural mapping; otherwise the node is a user type declaration and it does STRUCTURAL mapping by shape - a parenthesis holding an inner parenthesis is an enum, a bracket is a struct or newtype. Either path ends by mapping onto the macro variant. Builds on the existing schema-next MacroRegistry which today matches only by structure and position; this adds a keyword fast-path. Relates to record 1034 collections and 1044 the schema Kind enum. Proposed by the psyche pending confirmation.
+
+ID e8iu | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Schema macro bodies need an explicit binding and reference mechanism for assigned symbols; a sigil such as dollar sign is a candidate, but the important constraint is that macro references must be visible in the schema language.
+
+ID uxiz | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Macros | referents=(none)
+DESC: Single-object sigil sugar is an open macro-node design frontier: a leading sigil can eventually make one NOTA object stand for a larger pair or field expression when the sigil makes the intended macro case obvious. This is exploratory and must be represented as macro-node configuration/data rather than parser magic.
+

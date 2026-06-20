@@ -1,0 +1,93 @@
+ID eny6 | Principle | certainty=VeryHigh importance=High | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Every statement written into an intent or essence surface — ESSENCE.md, workspace INTENT.md, a per-repo INTENT.md — must be anchored in an actual Spirit intent record, verified against the store, not invented or inferred. These files are syntheses of recorded intent; a claim with no Spirit record behind it does not belong, or the intent is recorded first.
+
+ID nqsb | Principle | certainty=VeryHigh importance=High | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Every repository must have an INTENT.md, and it is the FIRST file to create for a repo — the most important file, answering: what is this repository for? A repo's INTENT.md holds the most important AND ONLY the most important design intent and design constraints that concern that project; it is curated and distilled to the essential, not an accumulation of everything. Isolating the most important design constraints into each repo's INTENT.md is a priority, and Psyche reports explaining a repo should be based on its reviewed/curated INTENT.md. Per psyche 2026-06-04.
+
+ID 1ykl | Principle | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: ESSENCE.md holds only the universal workspace essence — how agents behave across every role and repo. It carries nothing role-specific, repo-specific, or technically-specific: no two-roles framing, no Rust-module, daemon-edge, trace-edge, or strings-at-the-edge detail. Workspace INTENT.md is general workspace rules. Repo-specific essence and intent live in the per-repo INTENT.md, not the workspace files; provenance references are stripped.
+
+ID k4i3 | Principle | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Skills are tight self-contained teaching, not logs. Write each skill directly to its correct current state — never leave a correction or changelog banner narrating what changed. A skill cites nothing external: no report links, no Spirit record identifiers or numbers, no back-and-forth cross-reference indirection. Brevity is load-bearing — agents arrive already full of training, so bloated skills consume the very context they need to work and confuse more than they teach. Cut hard: state the rule and the why, drop redundancy, keep at most one example. The same restraint applies to reports — fewer and tighter.
+
+ID ii8v | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Psyche reports must show actual code, not summarize as line counts or vague references. When a Psyche report names code (the five lines of CLI wiring, the ten lines of TraceCliSession, etc.), it must include the actual lines with surrounding context — the objects they use, where they fit, what they depend on. The psyche's reading of a Psyche report is the chance to see the most important parts of the code and understand the project; line-count summaries miss the whole point. Vague descriptions like five lines or ten lines without showing the lines are insufficient.
+
+ID u8od | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Schema is the growing focus of the workspace; the psyche wants to deeply understand schema from every angle — backward and forward, inside and outside. Both operator and designer keep producing reports that concretely show schema in action: what goes into the schema, what comes out, and what code the schema creates, in the this-code-creates-this-code form, with the implementation — repeatedly, as an ongoing discipline.
+
+ID yu14 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Context maintenance is a research-driven refresh discipline, not just deletion of stale reports. When the psyche asks for context maintenance, the agent (designer authority required) does this in order: (1) Reads intent first to weight currency — recent intent has more weight than old. (2) For each potentially-stale report, asks: how does this report relate to the engine, the architecture, the intent as it is now? (3) If still relevant but drifted, does a new wave of research to update or clarify against current state. (4) Writes a 'review' report bringing the substance forward, superseding the prior. The output of context maintenance is new current-state reports, not the prior reports kept as historical artifacts. The goal is a small load-bearing set, NOT an accumulating archive.
+
+ID 0fmg | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: The Spirit CLI must be documented thoroughly enough that agents do not have to scramble on first contact. Documentation covers: invocation (inline NOTA argument vs file-path argument), every operation (Record, State, Observe, Watch, Unwatch), the deployed wire shape and how to find it when source drifts from production, error replies, environment variables, and observability. The skills/spirit-cli.md file is the canonical home; intent-log.md points there.
+
+ID 15n7 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Psyche-facing audits and presentations should show the primordial typed text forms at the layers where text is the representation, including NOTA and schema source, so the line of thought is visible through concrete code rather than only abstract prose.
+
+ID 1kfk | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Chat replies must include the report PATH (not just commit hash or report number) as the locator whenever a report is referenced. Per psyche 2026-05-30 after a chat reply that gave the commit hash and report number but omitted the path. The path is what lets the user open the report directly without translating mentally. Format: reports/designer/NNN-slug.md or similar. Applies to: chat replies that reference a report just created, chat replies that reference an existing report, audit replies that compare reports, follow-up replies. Generalizes the locator-substance rule in skills/reporting.md (chat-vs-report discipline). The path IS the locator's substantive part.
+
+ID 703j | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: The psyche is dissatisfied that schema-stack work so far has read as marketing and claims rather than a demonstrably-working pipeline they can see. Demonstrations must SHOW real artifacts and actually run end to end, not assert that the system works. Reinforces record 1006 prove-not-pretend as a PRESENTATION discipline: show the system working step by step with real inputs and outputs - the schema you wrote, the assembled schema it lowered to, the Rust it emitted, the test that ran - rather than telling the psyche it works.
+
+ID 81f1 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Psyche reports should let the psyche follow the line of thought all the way back to the basics: when a report refreshes or audits prior work, it should re-ground the current issues from first principles instead of assuming the reader already has the whole context loaded.
+
+ID 8koe | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Help is a NOUN (the documentation entity itself), not a verb; (Help) bare is the top-level/channel-level help noun; walking the path to Help retrieves THE documentation entity for that node
+
+ID lwh4 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Branch-lane workflow documentation belongs in designer and operator skills
+
+ID mjm9 | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: When psyche passes designer-facing corrections to operator, update the operator companion presentation too.
+
+ID n1x8 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Psyche-report is a new distinct report kind from ordinary designer/operator reports. Characteristics — self-contained (explains everything in deep context rather than quoting other artifacts assuming reader can look them up); designed for both psyche and other agents to read; more detailed with extensive visuals (mermaid diagrams); broken into stages showing things through the process; focused on a single topic or aspect; explores the biggest decision to make firm in that area. Path convention — reports/psyche/ or psyche-report-N-topic.md or similar (file-naming convention TBD). When the psyche asks for a psyche report on a topic that is the signal to produce this format.
+
+ID p0q4 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Reports should begin with an Intent Anchors section that lists the central bracket-quoted intent summaries one after another with one blank line between anchors, before the analysis begins.
+
+ID p6jx | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Operator and designer reports should increasingly foreground schema as an explanatory lens, repeatedly showing authored schema input, generated output, and the runtime implementation or trade each schema shape creates.
+
+ID pn0n | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Every architecture file should carry a Possible future design section holding deferred or possible features not being built now, so future direction is recorded in place rather than lost. Deferred features land there with enough framing to be picked up later. Restore — re-asserting archived records back into the hot store, the inverse of collect — is the first such entry, slated as a possible future feature not current work.
+
+ID q9iz | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Report versioning discipline — if a report has NOT been committed yet, edit in place freely. If a report HAS been committed and the edit is major (substantive reframing, recommendation reversal, large rewrite), rename to a versioned filename like 493-v2-..., 493-v3-..., and so on. Minor corrections to committed reports can edit in place; major corrections get a versioned successor so commit history preserves the prior version intact. The skill (skills/reporting.md or skills/report-naming.md) should document the v-versioning rule explicitly.
+
+ID t2lh | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Spirit-facing skills must document the current production Spirit version and record shape so agents do not keep calling stale versioned wrappers such as spirit-v0.2.0 directly after the production cutover.
+
+ID twb4 | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Architecture presentations should use short focused graphs with readable text, split large system explanations into several report parts, and pair each important visual with real code from the implementation.
+
+ID v6xs | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Schema implementation reports must separate real implemented behavior from design-only behavior.
+
+ID waz6 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Default behavior — when something changes in context that would correct a fresh-in-context report (a report the agent just wrote or is actively engaged with), the agent EDITS the report directly rather than narrating I should edit this report. Action over narration. Applies whenever the correction is clearly indicated by something in the conversation and the report is fresh enough that the agent still holds its context.
+
+ID wxip | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Help and documentation should be schema data in a mirror description namespace over the global symbol namespace, with generated defaults when no explicit description entry exists for a fully qualified symbol.
+
+ID xi3g | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Open-work and psyche reports must explain opaque unresolved items in plain terms, including what the item means and why it matters; listing a label without explanation is not enough.
+
+ID ypde | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Schema macro examples must be large working examples used by current tests, not tiny sketches. Structural macro positions are places where schema expects macro expansion; those examples must show where structural macros appear, how named @ macros appear, and how the schema reader uses those forms now.
+
+ID yy76 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Create a standard engine situation report discipline that summarizes components, production code size, schema size, generated Rust size, interfaces, signatures, and graphs so agents and the psyche can quickly understand a system.
+
+ID 17jp | Correction | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Active report refinements should use the v2 filename form instead of silently editing the original report.
+
+ID 4lt4 | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Skills may carry tool-version front matter
+
+ID bn07 | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Documentation | referents=(none)
+DESC: Code comments use NOTA-formatted signal records (nota in the comments). Since the comment lives in code (which is text), the signal is in text form. Markdown-readable; NOTA-syntax-highlightable. Enables Mind to read code-as-signal directly. Comments carry the why of each edit so the system can audit decisions and propose alternative designs based on accumulated whys
+

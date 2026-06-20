@@ -1,0 +1,78 @@
+ID ax2k | Correction | certainty=Maximum importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Pre-production do not surface backward compatibility or not-disturbing-existing-consumers as a design consideration or virtue AT ALL. It is not a tradeoff to weigh or present. Design bottom-up for the single best shape and expect every existing component to change. Reinforces ESSENCE backward-compatibility-is-not-a-constraint and systems-being-born. Agents keep reflexively re-introducing compatibility and framing designs around non-disruption like opt-in or byte-stable-regeneration; stop. Presenting without-disturbing-consumers as a selling point is the specific failure.
+
+ID zjho | Principle | certainty=High importance=Maximum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Spirit is a universal intent tool for every human, not bespoke to one psyche or workspace
+
+ID jys2 | Principle | certainty=High importance=High | domains=Technology.Software.Engineering.Design;Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Design at the post-agent capability frontier. Agents now make previously-impractical engineering routine, including zero-downtime complex database migrations and large software-stack rewrites in short time, so designs should target the best end-shape rather than a historically-practical compromise and should reach for the strongest known ideas.
+
+ID 3nla | Correction | certainty=High importance=Medium | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: The mediator pattern survives only as ordinary actor-method-call topology — actor A and actor B each call a method on mediator actor M whose body decides the outcome — with no special Rust trait formalization. *design pattern*
+
+ID ix9y | Clarification | certainty=High importance=Medium | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: What survives from the original interaction records: the two-languages distinction (internal effect vs external wire), effect-table match-driven dispatch as schema closing message-to-method mapping, and actor fan-out execution as what methods return. *design pattern*
+
+ID lekz | Correction | certainty=High importance=Medium | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: The InteractTrait abstraction and the interaction-actor concept are retracted as overengineered: a method call on an actor IS the interaction; schema-rust composer must not emit Interact<Input> or InteractionActor<Input> traits. *design pattern*
+
+ID 61ei | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Beauty must prevail as a top-priority filter in workspace design and code. Aesthetic quality — terseness symmetry schema-driven self-describing interfaces-first composable-boundaries — is a gate alongside correctness not a nice-to-have. Audits apply the beauty filter as primary lens. Workspace beauty extends beyond code to capture discipline (avoid duplicate intent records) report retention (avoid proliferation without retirement) and substrate cleanliness (no hand-written code where schema can drive).
+
+ID 7d4x | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Recently-designed components must ACTUALLY DRIVE the system, not be papered over. Do not jam old designs and new designs together in the code where the new design is never actually used. The designed engines and traits - the three engines, the trait-defined ordering, the typestate mail, the origin route - must be the real execution drivers exercised end to end, not dead scaffolding beside an older code path that does the real work. Verify in implementation that every designed component is on the live path. Strengthens schema-at-heart record 1000 and prove-not-pretend record 1006 toward implementation discipline.
+
+ID a2t4 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Horizon and its cluster-data are minimal on two axes that reinforce one intent. First at the semantic boundary: Horizon expresses only WHAT the psyche as cluster user wants the cluster to do — simple typed facts — never HOW and never decision-making; Nix consumes those facts and composes them into the more complex decisions so all composition and decision-complexity stays downstream in Nix and out of Horizon. Second at the type-count level: Horizon data types do not repeat across inputs and outputs — where the input type can also serve as the output type reuse it rather than defining parallel in and out types. Fewer reused types keep the model small. This is the upstream design principle for the Horizon rewrite: minimal at the boundary AND minimal in the type count.
+
+ID izsf | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Psyche design decisions apply to the WHOLE design unless explicitly scoped, not just to the local prompt example. Applying a correction narrowly only where the example showed it is hallucinating designs (psyche language). Bracket convention reversal records 628 + 630 and header-root-enum correction record 635 are both instances of this same global rule. When absorbing any psyche design correction, agents must ask 'where else does this rule apply structurally?' before stopping at the surface where the example was given. Gap-fill on record 635 which captured the local schema-header effect but not the meta-rule about how psyche corrections propagate.
+
+ID lrfa | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Value lean, efficient design and do not fear breaking things. Breakage belongs in development, not production; breaking freely in development is what development is for. Lean means no duplication and no boilerplate, not the fewest lines.
+
+ID w85v | Correction | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Names like auth that abbreviate something the thing isnt are forbidden - signal-persona-auth case (crate is not an authentication library)
+
+ID izib | Decision | certainty=Medium importance=VeryHigh | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Domain subdomains are mandatory all the way to a leaf, so a domain value is always complete. DomainScope is not Domain with optional payloads; it is a separate generated prefix language over the same recursive domain tree, a ScopeOf construct, where stopping early is the prefix semantics rather than optional subdomain data. Every scope segment is a typed enum variant and the notation stays clean with no Some or None exposed; the generator owns the internal representation
+
+ID 06l6 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Most workspace logic is MATCHES between two domains. Create domain A enum + domain B enum; the logic is the match-matrix outcome per cell. Where the match has no defined behavior the cell returns a typed error or help message (Unavailable etc) - the error surface IS part of the trait surface. This generalizes the enum-contact-points pattern from operator/182 NodeDefinitionShape times NotaValueKind to all engine logic. *design pattern*
+
+ID 4ivz | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Use plain English for schema root terminology: the authored schema root should be described as a struct with fields named input and output, not as abstract surfaces unless that term is specifically needed. Avoid invented vocabulary when ordinary field/struct language says the thing directly.
+
+ID 4tas | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Do not leave cloud/domain runtime plane schemas as concept placeholders; the desired direction is actual implementation artifacts. If generator support is missing, name that blocker explicitly rather than presenting concept schemas as the destination.
+
+ID 5sta | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Plane identity should be represented by matchable data-carrying variants when runtime needs to branch by plane; the purpose of the proposed Sema Nexus Signal enum was to match on the plane while carrying the message, not to duplicate a separate kind tag beside an envelope.
+
+ID 5xli | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Designer may close gaps via pattern-based-decision when past intent establishes a workspace pattern that obviously applies; mark explicitly as pattern-based
+
+ID bp8k | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: For the cloud component, ignore the earlier prototype as the implementation authority and write the system fresh from the current desired shape.
+
+ID cam8 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Design analysis targets the ideal: for each thing, work out the best, most correct, future-oriented, reusable pattern it should be in an ideal world, and contrast it explicitly with what exists now so the gap is visible. The ideal pattern, not the current shape, is the design target.
+
+ID irmw | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Roles in persona-orchestrate's lane registry are vectors of identifier tokens — NOTA shape like [PersonaSignal Designer], [Note Designer], [System Designer] — not single discipline strings. The vector's LAST token is the base discipline (Designer, Operator, etc.) which determines the base authority chain and base skill loading; PRECEDING tokens are specialization tokens that compose with the base. The filesystem stuffed-string form (used for lane names, lock files, report subdirectories) is the hyphen-joined lowercase rendering of the vector — [PersonaSignal Designer] becomes persona-signal-designer, [Note Designer] becomes note-designer, etc. Role tokens are open identifiers per intent ID 97; new specializations land without contract bumps. The ordinal prefix (second-, third-) only appears when disambiguating multiple lanes with the same role+authority combo — a lane that's the first of its specialization doesn't need it. Generalises the horizon clusterNode role pattern (vector of NodeService variants) to agent roles.
+
+ID u47i | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Engine operations should expose tree-to-tree and enum-to-enum matching surfaces.
+
+ID ujb2 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: The current target assumes at most seven root data-carrying variants for a component surface; if a component needs substantially more, that is pressure to split the component or surface.
+
+ID wc4n | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: Short identifiers should be derived as methods on full identifiers with collision checks
+
+ID xv4a | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: When design questions are numerous, propose intent-pattern leans and mark uncertainty
+
+ID yuku | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Design | referents=(none)
+DESC: When reconciling the asschema roundtrip design, prefer simple canonical NOTA syntax and separated typed-object responsibilities: Asschema owns assembled schema data, AsschemaArtifact owns NOTA and rkyv artifact projection, a SEMA store owns durable rkyv persistence, and Rust emission consumes the typed Asschema object rather than parsing side syntax.
+

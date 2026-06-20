@@ -1,0 +1,396 @@
+ID 7sx6 | Correction | certainty=Maximum importance=VeryHigh | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Every component has exactly two contracts and no more: signal-<component> (ordinary working signal) and meta-signal-<component> (meta policy signal) — there is no third contract, no owner-signal split, no engine-management split.
+
+ID 3d5z | Constraint | certainty=VeryHigh importance=VeryHigh | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The triad engine separation is strict and absolute: the SEMA engine owns ALL database and durable-state code, the Nexus engine owns ALL decision-making, and the Signal engine owns ALL communication. A component daemon must contain NO database boilerplate, NO decision-making, and NO communication code outside its respective engine — every such concern lives in its engine and nowhere else.
+
+ID 8bwo | Decision | certainty=VeryHigh importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Every component exposes its two contracts, the working signal and the meta policy signal, as two thin CLI clients: the working client named after the component and the meta client prefixed meta-. This is one extracted pattern applied across all components with minimal per-component hand-coding, not re-implemented per component. Spirit spirit and meta-spirit are the first instance.
+
+ID a71r | Principle | certainty=VeryHigh importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Every component engine in the workspace triad architecture defines and uses its Signal, Nexus, and SEMA interfaces in schema, and conducts core logic through schema-emitted traits whose methods take and return root types of the concerned interfaces — adapting Spirit 1326 (spirit-engine-specific) to the workspace-wide component-triad pattern. The trait surface is uniform across components; each component's runtime is a composition of schema-emitted trait implementations.
+
+ID hnpo | Decision | certainty=VeryHigh importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: MetaSignal is the canonical name for the policy and authority contract; OwnerSignal is deprecated. Every component policy contract is named meta-signal then component uniformly, including ones whose repos are absent or still owner-signal-prefixed today — meta-signal-persona, meta-signal-criome, and meta-signal-agent are born meta-signal, never owner-signal. This confirms and generalizes record r9qy from its specific repo rename list to the universal naming principle, and answers system-designer report 77 decision 1: from-scratch policy contracts are born meta-signal.
+
+ID 0fs6 | Correction | certainty=VeryHigh importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: owner-signal-persona is the deprecated OwnerSignal form and should become meta-signal-persona, and signal-engine-management is an off-pattern name that should fold into the signal-persona / meta-signal-persona pair.
+
+ID 7c71 | Principle | certainty=VeryHigh importance=Medium | domains=Technology.Software.Engineering.Architecture;Technology.Software.Intelligence.AgentSystems | referents=schema-next,nota-next
+DESC: A programming language is, in essence, a set of structural macros — constructors that take a typed, counted set of objects, with Rust's struct, enum, fn, impl, and generics included and every language likewise. Conventional languages freeze that macro set inside the compiler, making it closed. This approach instead treats the macro set as data, so the language becomes infinitely extensible — new constructs are added as data rather than compiler changes — and far easier for an LLM to read, write, and reason about, because the language's own constructs are uniform typed data in the schema-NOTA-rkyv substrate.
+
+ID rtrf | Correction | certainty=VeryHigh importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: For persona specifically: signal-persona exists and is canonical and correct (NOT a retired compatibility shim, despite its README's false label); meta-signal-persona is currently missing and should be created.
+
+ID nfje | Correction | certainty=VeryHigh importance=Low | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Bare signal-persona references in docs are correct and must NOT be migrated away.
+
+ID 26e7 | Correction | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The schema-derived component triad is NOT one daemon schema file with Signal Nexus and SEMA sections. A component is at least three separate plane schema files. The Signal wire contract lives in the contract repos and stays wire-only. The Nexus and SEMA plane schemas are separate schema files INSIDE the component daemon crate — for example cloud/schema/nexus.schema and cloud/schema/sema.schema — each declaring its own imports exports input output and namespace and each importing the wire-contract Signal IO. Plane schemas are NOT separate crates and NOT separate repos; per-plane crate split is not the triad shape. The daemon runtime composition imports and connects the separate plane schemas rather than embedding Nexus and SEMA sections inside the contract or inside a single all-in-one daemon schema.
+
+ID sjcy | Principle | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: CLIs are thin Signal clients
+
+ID yjik | Clarification | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Signal repositories carry only the signal schema for their wire vocabulary; non-signal schema for runtime planes, storage, provider effects, REST surfaces, or broader component behavior belongs in the runtime component or the appropriate schema/runtime repository, not in the signal repository.
+
+ID z6qu | Principle | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The Nexus interface — verbs and objects declared in the nexus schema — is the engine's INTERNAL FEATURE INTERFACE, and its MAIN reason for existing is VISIBILITY of the engine's internal features. Every engine feature — any computation, any filtering or condition on results, any conditional write (conditional writing), any internal logic-feature — MUST be defined as a Nexus interface verb + object in the schema, so that every such operation has a typed internal interface AND the complete feature surface of the engine is visible in the nexus schema declaration. Internal features must not live as inline hand-written logic hidden from the schema; they are declared Nexus verbs/objects. The nexus schema is therefore the readable catalog of everything the engine can do internally. Per psyche 2026-06-05.
+
+ID i59i | Principle | certainty=High importance=Maximum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Intent logging is the most important part of the system and dwarfs everything else; almost nobody has gotten it right. Recorded intent is precious, closely guarded data whose editing is tightly controlled, because everything in the system revolves around intent. The intent layer is the center the rest of the design serves.
+
+ID zgi8 | Decision | certainty=High importance=VeryHigh | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The Spirit guardian is the single locus of judgment and the model checks everything semantic — consistency, duplication, trample, non-intent — with only structural admission staying upstream as input validation
+
+ID a5tg | Principle | certainty=High importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Center the design around schema types: the schemas are the surface the psyche reads and reasons about most easily, so component data types should be schema-defined and reasoned about through their schemas.
+
+ID jh0r | Principle | certainty=High importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: No stringly-typed types anywhere — the psyche calls them bullshit types. Prefer value enums that break a field into its closed set of possibilities; enums are clear and self-descriptive and still carry the data each variant owns. Reach for an enum over a bare string or bool whenever a field has enumerable cases.
+
+ID n5p2 | Principle | certainty=High importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The schema creates the data types and those generated types must be used in the logic flow, not ignored or bypassed. Logic threads the schema-emitted types end to end rather than re-deriving or re-encoding their content by hand.
+
+ID tgch | Principle | certainty=High importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The Spirit triad engine should be interface-first: schema-defined root interfaces generate the Signal, Nexus, and SEMA message types and actor traits; handwritten runtime code should stay terse, matching decisions, invoking algorithms, routing replies, and never bypassing the schema-defined trait boundaries. Signal owns communication triage and final replies, Nexus owns central decision-making across the outer Signal side and inner SEMA side, and SEMA owns durable state management. The intended flow is Signal input to Nexus input, Nexus to SEMA input when state work is needed, SEMA output back to Nexus, Nexus output back to Signal, and Signal output back to the client.
+
+ID u7tj | Decision | certainty=High importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Wire-contract schemas live in the signal-<component> crate because the wire shape is the cross-component compilation boundary Rust must see as one canonical source.
+
+ID xx2l | Decision | certainty=High importance=High | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Schema files live with their contract's source-of-truth, and a repo may hold multiple .schema files (one per contract) named <crate>/<contract-name>.schema, superseding the prior one-schema-per-repo assumption.
+
+ID zn2l | Clarification | certainty=High importance=High | domains=Technology.Software.Engineering.Architecture;Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: The endpoint of the meta-work is the final software engine: an engine that self-improves to the point where nothing better could ever be made. The eventually-impossible-to-improve software of the workspace essence is reached through the engine improving itself, not only through human-directed refinement.
+
+ID 6i2q | Decision | certainty=High importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Storage-contract schemas live with the daemon because daemon and database operate as one unit in the same compilation unit.
+
+ID f8tb | Decision | certainty=High importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: A dedicated program-agnostic session-control component owns the terminal session surface: durable name-to-socket session registry, signal control-plane relay, per-session prompt-pattern registry, and session observation Sema; named terminal-control with contracts signal-terminal-control and meta-signal-terminal-control.
+
+ID go9u | Principle | certainty=High importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: LLM prompt and template prose lives in separate plain-text files, not embedded in Rust code; the code includes them at build time via include_str so the binary stays self-contained while the prose is edited as data. Document the file layout in the architecture file.
+
+ID i13x | Decision | certainty=High importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: A component's runtime LOGIC structure is a triad of Signal (reactive external surface), an internal-decision layer, and SEMA (single-writer state layer interfacing storage); this runtime triad lives inside the <component> daemon repo.
+
+ID ssk2 | Decision | certainty=High importance=Medium | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign | referents=(none)
+DESC: The lojix component ships TWO CLIs, not one thin CLI. A meta-socket CLI speaks the meta-signal-lojix policy and owner contract for Deploy Pin Unpin Retire and daemon configuration; a regular-socket CLI speaks the ordinary signal-lojix peer contract for Query WatchDeployments WatchCacheRetention and Unwatch. This splits the single thin client of the component-triad model into one client per socket, completing on the client side the already-established two-socket two-contract two-listener daemon shape of vudl vnnx 3chp q33b. The meta CLI is the owner SO_PEERCRED-authenticated surface; the regular CLI is the peer surface. Each CLI is the first client of its socket. *IPC*
+
+ID tu5u | Decision | certainty=High importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Internal-message-channel (actor) schemas live with the daemon because internal actors live inside the daemon's process.
+
+ID ue2j | Clarification | certainty=High importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The runtime LOGIC triad (Signal + internal-decision + SEMA) is distinct from the repo PACKAGING triad (component + signal-* + meta-signal-*).
+
+ID my86 | Principle | certainty=High importance=Low | domains=Technology.Software.Engineering.Architecture | referents=nota-next,schema-next,aski
+DESC: A file's entire structure is itself a typed tree of nodes — structural forms — each of which recognises a block by its shape and recursively decodes its children. There is no parser to hand-write: the grammar is the type, the type is the reader, and the recursive shape match stands in for parsing. This is the structural realization behind the aski goal — elegant syntax is not produced by parsing logic but falls out of declaring the typed nodes as data.
+
+ID nh0t | Decision | certainty=High importance=Low | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: terminal-control is NOT folded into harness (AI-only, would orphan non-harness cells) nor into orchestrate (which owns coordination identity not delivery identity); orchestrate owns cell instance lifecycle policy as an order plane.
+
+ID tt8a | Decision | certainty=High importance=Low | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: terminal-cell stays the abduco primitive and absorbs the input-gate writer and prompt-matcher currently duplicated with terminal.
+
+ID zjmc | Principle | certainty=High importance=VeryLow | domains=Technology.Software.Engineering.Architecture | referents=triad-runtime
+DESC: The Signal, Nexus, and SEMA reaction-frame types Work, Action, and the canonical five-variant action set are workspace-universal and must be declared once and applied or bound per component, never hand-re-authored in each component schema; re-authoring universal types per component is a design failure.
+
+ID 150a | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=cloud
+DESC: The cloud component next active capability is on-demand compute-node provisioning: connecting to cloud-hoster provider APIs to spin up server nodes on demand. Provider growth targets the easiest-to-spin-up providers first. This is the next capability beyond the shipped Cloudflare read-only DNS path.
+
+ID 1hyg | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: The LojixOS split is a rename-and-configuration split: the generic OS substrate becomes LojixOS, while CriomOS becomes a simple per-deploy configuration crate containing a thin NOTA data tree that lojix precompiles into the binary configuration it consumes.
+
+ID 2zed | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=schema-next,nota-next
+DESC: Everything in the system is data conforming to a schema-defined type — including a macro itself, which is just a value of a specialized struct, where pattern and template are ordinary typed-data fields rather than special kinds. This is the unifying lens for the schema substrate. There is no privileged escape-hatch representation. Macro definitions, their patterns, and their templates are all typed data in the same schema-NOTA-rkyv tri-form as records and daemon configuration.
+
+ID 57f9 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign | referents=router,mirror,spirit,criome,signal-frame
+DESC: Router owns a standardized routing protocol: a router-typed envelope carries routing and object metadata for a serialized contract-owned rkyv payload, while Router remains payload-blind beyond the envelope, routing, authentication, and delivery policy.
+
+ID ctkv | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Persona-spirit is the production Spirit component and currently the only component in production; it lives in its own repository persona-spirit. The repository named just spirit, formerly spirit-next, is the next-generation schema-derived Spirit. Keep this distinction clear in naming and docs — persona-spirit is production, spirit is next.
+
+ID d6he | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=spirit,criome,router,mirror
+DESC: The first end-to-end production milestone is the spirit -> vcs -> criome -> router -> mirror chain. When Spirit accepts a new log object, Spirit asks the local criome daemon to authenticate the exact content-addressed object/event for propagation. Criome trusts that local request because the system-side boundary will structurally ensure it came from Spirit, then verifies the request has the expected type/shape for a Spirit-authenticated object, signs or authorizes it under a cluster-root-admitted identity, and propagates the authenticated event through Router. Router is the transport fabric for the propagation; remote criome/mirror participants receive the authenticated event and the remote mirror fetches/restores the announced object state. This keeps criome auth-only, Router transport-only, and mirror as the object version-control substrate. Threshold/majority timing for when criome announces acceptance remains future criome contract logic, not a Router requirement for the first PoC slice.
+
+ID da5i | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Every component daemon binds and serves a meta socket - its meta-signal-<component> surface - at runtime, even when its only operation is Configure. The meta socket is the universal per-component policy and configuration channel, required for every component rather than only those with rich meta operations; it manifests the two-contracts structure (7sx6) and the Configure bootstrap-and-runtime model (ur16) as a live bound socket on each daemon.
+
+ID edgt | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Concrete rename mappings for the persona-prefix retirement (per record 765 direction): persona-spirit becomes spirit (the component itself); signal-persona-spirit becomes signal-spirit (the ordinary signal layer for spirit); owner-signal-persona-spirit becomes core-signal-spirit (the privileged signal layer becomes core terminology). Pattern applies across persona triads: drop the persona prefix from anything that does not need it; owner terminology moves to core terminology because core is where the important control and library layer lives.
+
+ID ew3f | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Schema work gets its own repository named schema
+
+ID g31j | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Persona (the engine-management entity, intent 215) is composed of two binaries from the persona repo: 'persona' (the thin CLI) and 'persona-daemon' (the long-lived daemon). The two halves together comprise Persona. Mirrors the standard component triad CLI+daemon pattern (skills/component-triad.md). Concrete surface: repo 'persona'; CLI binary 'persona'; daemon binary 'persona-daemon'; conceptual name 'Persona'. Older phrasings in reports — 'persona engine', 'engine-manager daemon', 'persona engine manager daemon' — should converge to 'Persona' going forward; the daemon-only references (operator/158's 'persona daemon', /282's 'persona (engine-manager daemon)') are closer to canonical and absorb into the new form.
+
+ID gb87 | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Nexus is the execution engine, not executor. The executor concept and the signal-executor library role are superseded by the nexus execution plane; component request-execution belongs to nexus going forward.
+
+ID gdbf | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Agent component abstracts harness backends *abstraction*
+
+ID hcp8 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=cloud,DigitalOcean,Hetzner
+DESC: DigitalOcean is the lead compute provider for cloud, superseding the earlier Hetzner-lead position: DigitalOcean is the primary provisioning target, not only the sub-hour-billing live-testing target. Hetzner remains a built and supported provider but is no longer the lead. DigitalOcean bills by the second or minute, so create-and-destroy cycles cost actual elapsed usage and the billing-hour reuse pool of record 6ks1 is unnecessary for it. Hetzner hourly billing-hour reuse still applies where Hetzner is used.
+
+ID hv5f | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: When the existing shape does not fit, follow where the logic wants to go rather than being bound by what is already there — let the water find where it wants to go downhill. Desire paths name this: the trail walked into the grass because that is how the body naturally moves, regardless of where the paved walkway was put. Architecture grows the same way, and where multiple agents independently arrive at the same shape, that convergence is the signal it is the right shape.
+
+ID ilxh | Correction | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Runtime nouns named Actor must be actual Kameo actors. Tokio listener or task shells may use actor-owned gates, but they must not be named as actors unless they implement the actor boundary they claim.
+
+ID jlyn | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: signal-persona-auth renames to signal-persona-origin (psyche pick from /297 candidates)
+
+ID nhwv | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The raw/pretty horizon split applies ONLY to the new lojix and horizon-next stack, not the production Stack A monolith. Production Stack A horizon stays as-is until retired at cutover; the raw/pretty separation 9p8v and its forward-integration seam avvh are built only in the schema-derived successor. This confirms the after-cutover timing of 9p8v: the split is new-stack-only and does not touch the production stack.
+
+ID ov30 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=schema,nota
+DESC: A struct field's role is its type, so no struct has two fields of the same type. Distinct roles are distinct types, giving dimensional correctness: Height and Width are both metres yet cannot be interchanged or multiplied as like. Repetition is a keyed collection, never repeated fields, since a Vector is a Map over an ordinal index. Field-name equals type-name is the default, and an explicit field name signals a missing type or a collection. Full type-level enforcement is aspirational. The principle guides schema and nota design now.
+
+ID ps0r | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Component binary naming convention: each component has a CLI half and a daemon half, named <component> and <component>-daemon respectively. The component name (e.g. persona, spirit, harness, orchestrator) names the ROLE — not a binary. Binaries are always <name> (CLI) and <name>-daemon (daemon). Persona disambiguation suffix only when wrapping (persona-codex, persona-pi, persona-claude); otherwise it is just persona
+
+ID pviw | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture;Information.Documentation | referents=criome
+DESC: Telos is the name of the meta-project - the overarching work and design as a whole. It is the umbrella term for the entire endeavor whose far horizon is eventual Criome and eventual Sema, the universal computing paradigm, realized now as Persona, the meta-AI of language models over typed dumb mechanism. The psyche will use Telos to refer to the overarching work and design from now on. The name is borrowed from the Greek telos, meaning ultimate end or purpose - it reflects that the whole is defined by the horizon it aims at.
+
+ID qerc | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Canonical three-part vocabulary: SCHEMA is the specification part. SIGNAL is the movement (transport). SEMA is the body (data at rest, state). Schema specifies both signal and sema; signal carries movement across channels; sema holds the body at rest. This closes the loop between specification, transport, and state.
+
+ID t5wx | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Programming.Compilation | referents=schema-next,schema-rust-next,spirit,signal-spirit,triad-runtime
+DESC: The next phase is integration and migration, not more language design. The schema-codegen capability set is closed and covers the engine's structural needs (re-grounding confirmed: types, generic frame expansion, payload structs/newtypes/enums, standard inherent and trait impls, role and marker trait impls, shape-computed role-trait constants, method-bearing trait surface, actor wiring, plane carriers, and opt-in mechanical Deref). Finish the main implementation — flip the scalar-newtype standard impls to default-on and integrate the proven pieces onto code-repo main — and PORT all components: regenerate spirit, signal-spirit, meta-signal-spirit, and the triad through the emitter and swap the generated modules into the engines, replacing the hand-wired boilerplate with generated Rust. Only the abstract engine bodies (decide, validate) stay hand-written. Broad method-body composition is a future tool, not part of this phase.
+
+ID tq18 | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: In the running-orchestrated-system goal (mazv), Orchestrate refers to the orchestrate COMPONENT - the orchestration component runtime, repo /git/github.com/LiGoldragon/orchestrate - not the act of orchestrating. The orchestrate component runs the set of component daemons: persona (the manager of the whole thing), the introspector, the schema daemon, and the others. persona is the engine manager; orchestrate is the runtime that runs them together.
+
+ID tw81 | Correction | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The Spirit short identifier that the tool returns and that is cited is the shortest-unique base36-lowercase prefix with no collision, minimum FOUR characters (about four to seven), not three; the tool returns the shortest min-four no-collision code. Refines the prior minimum-three scheme (records 5u5x, 4a0v, d3mw). Gap-filling intent from a prompt the psyche addressed to operator, who owns implement-and-deploy.
+
+ID u1ae | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Psyche ratifies designer 482 (psyche report 1) substrate as workspace-canonical engine mechanism. The firm parts — NexusWork/NexusAction asymmetric pair + 5-variant action set (ReplyToSignal CommandSemaWrite CommandSemaRead CommandEffect Continue); macro-generated runner loop (triad_main! emitted from schema-rust-next); effects per-component declared in schema with Stash as first universal candidate; Continue as in-process immediate recursion; cross-component invocation via Signal contracts not Nexus-internal access; inner runtime engine deferred as future-direction per Spirit 1483; actor traits deferred as future-direction. The ratification is flexible — move forward with parts that hold best; as intent develops further parts may refine but the substance stands.
+
+ID vnnx | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The schema-derived cloud port uses TWO schemas — signal-cloud.schema (working, peer-callable, read-only Observe and Validate) and meta-signal-cloud.schema (policy, owner-only, the eight account and plan mutations) — each emitting its own Signal Nexus SEMA engines and sharing record types, with the cloud runtime crate importing both and running two listeners. This follows the existing two-contract triad shape (two authority surfaces, two sockets, two listener actors) and supersedes the single cloud schema target in cloud ARCHITECTURE.md. Psyche-chosen 2026-06-04.
+
+ID w312 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Anything with a deterministic correct answer derivable from its input — routing, dispatch, lookup, classification, projection, address resolution — is mechanism, not agent work, and must live in code or schema-derived machinery, never in agent judgment. Agents are the cognitive layer reserved for decisions code cannot make. The trajectory: more agents doing more substantive cognition, less mechanical work per agent as the system matures. This is the load-bearing why behind the schema-derivation/macro-emission thrust and the small-model auditor.
+
+ID xbc2 | Constraint | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Intelligence.AgentSystems | referents=schema-next,nota-next,triad-runtime,spirit,signal-spirit
+DESC: Schema files are strict typed component interface contracts: their input and output roots plus imports and namespace define the messaging/API surface the engine implementation must use, forcing agents and generated code to communicate through schema-emitted objects rather than ad hoc messages.
+
+ID xq4z | Correction | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Nexus input and Nexus output must not be modeled as symmetric lists of the same operation categories. Nexus input is what Nexus receives as facts/replies/events to decide from; Nexus output is what Nexus commands or emits next. If both sides list Signal and SEMA operations in the same-looking way, the interface loses meaning and reads as nonsense.
+
+ID zk6y | Correction | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Schema-emitted Signal, Nexus, and SEMA engines are kameo actors, not synchronous method spines driven by a runner loop over mutex-wrapped state. Actors everywhere is the architecture; the generated triad daemons are not exempt. Deferring advanced runtime machinery — backpressure, scheduling, the runtime-control trait surface — never meant deferring actors or emitting synchronous daemons. A minimal kameo actor carrying on_start and on_stop adopts kameo now while that deeper machinery stays deferred. The current synchronous daemon emission with mutex-wrapped engine state is drift to correct, not a sanctioned end state.
+
+ID 4ups | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The -next replacement repos have won and their originals are deprecated: nota-next is the canonical NOTA implementation and schema-next with schema-rust-next the canonical schema-derived stack, superseding the old nota and schema repos which the psyche no longer cares for. The -next suffix is now vestigial ancestry and should be dropped, renaming the replacements to their base names.
+
+ID af37 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Router talks to the agent component (not to harness directly); harness is given to a durable agent and can be abstracted behind the agent component.
+
+ID e9gr | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Gap-fill from forwarded operator prompt: owner-signal surfaces should become core-signal surfaces; core owns the privileged control and library layer, while signal-* remains the ordinary messaging layer for safer callers and extensions.
+
+ID f6i5 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: PRETTY horizon computes the pre-derived helper variables Nix consumes (behaves-as/gating booleans, resolved magnitudes, lid-switch policy, trust-gated extra-groups) in typed Rust, NOT in Nix composition; Nix only uses the already-derived variables.
+
+ID rudp | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Nexus covers any layer where code runs in response to typed input and returns typed output: internal IO, external calls (e.g. cloud component invoking Cloudflare CLI for DNS), and all user interfaces — unifying IO, external execution, and UI under one schema-driven execution plane.
+
+ID rxcp | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Horizon splits into RAW horizon — the core typed cluster-data model (NodeService enum, typed facts, arch resolution, name/key-line newtypes, cross-node fan-in, typed validation, secret-binding resolution) — and a separate PRETTY horizon layer.
+
+ID ydq3 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Agent is a new component abstraction; persona-claude/codex/gemini/pi/open-code are backends for agent.
+
+ID 42c5 | Decision | certainty=Medium importance=Low | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Mencie, the persona multi-modal UI, is implemented as nexus schemas — each UI panel (mencie-audio, mencie-introspect, etc.) has its own nexus schema describing its data flow and return types.
+
+ID p3td | Decision | certainty=Medium importance=VeryLow | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign | referents=criome
+DESC: criome is a universal agreement machine for authorizations - the agreement-and-authorization organ of Telos, the meta-project, not Telos itself. The quorum is criome's universal primitive: everything is a quorum. Each principal runs more than one node and asks its own quorum to make its attestations reliable and its timestamps credible - forging an attestation would require compromising a threshold of the principal's own nodes rather than a single node, so a self-quorum across one's own nodes is a reliability mechanism, not only multi-party trust across different principals. One quorum primitive serves both, scoped by membership: a principal's own nodes for reliability and credible time, multiple principals for cross-party trust.
+
+ID 0678 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=signal-spirit,spirit,signal,schema-rust-next,schema-next
+DESC: Stable public signal schemas belong in contract repositories separate from daemon logic crates, so consumers compile against stable interface crates and are not rebuilt merely because a daemon's internal logic changes. Generated Rust for the contract may be checked in as a reference, while build-time consumers must avoid duplicating foreign trait implementations or creating unnecessary wrapper newtypes.
+
+ID 1ozj | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Persona Pi is a real persona-component triad — the Pi harness adapted for the persona system. Lives as its own component-tree (daemon + signal-persona-pi working contract + owner-signal-persona-pi policy contract + thin pi CLI client). Runs inside a terminal-cell (the persona-terminal-shaped surface that handles Unix-side I/O), but is NOT confined to it: Persona Pi can also talk directly to the harness API. The terminal-cell is the Unix-interaction conduit; the harness-API path is the more accessible logic surface, used because Pi is extensively customizable and exposes far more than terminal I/O.
+
+ID 1vj5 | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=CriomOS-home,DJI-mic,Whisrs
+DESC: For the CriomOS-home dictation microphone path, prefer reducing or deleting brittle DJI/PipeWire policy over adding more keepalive code; do not let the microphone fix grow into a large pile of special-case code.
+
+ID 2u57 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=CriomOS,cloud,Horizon
+DESC: The CriomOS image for cloud nodes such as DigitalOcean is a new CriomOS image type, built declaratively from the CriomOS configuration and kept minimal and content-sized, with the per-node configuration declared in the cluster data — the horizon cluster proposal — rather than produced by snapshotting a converted running droplet.
+
+ID 4q28 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Future component work should use the latest bottom architecture around Signal, Sema, and Signal executor rather than older ad hoc component shapes.
+
+ID 5f68 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Create a public spirit-next repository as the running schema-derived Spirit pilot rather than only keeping the prototype inside schema-rust-next.
+
+ID 5osd | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=mirror
+DESC: Mirror topology is per-system: one mirror per node, symmetric with the per-system router. The per-system router carries an authenticated object/head notice to the remote mirror; the notice names the store and announced head, and may include a source mirror endpoint for fetch. The receiving mirror owns the fetch/restore action after receiving the authenticated notice, while Router remains the transport/policy fabric and criome remains authentication-only. The first mirror-focused slice should type this notification contract before hardening the automatic fetch runtime.
+
+ID 6ks1 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=cloud
+DESC: Cloud compute nodes use a billing-hour-aware reuse pool: an idle recently-created node still within its already-paid billing window is reused for a matching request instead of delete-and-recreate, and idle nodes are reaped before they cross into a new paid billing period. The keep-warm duration (how long a node is kept warm and reusable by default after it spins down) is a per-provider setting derived from the provider billing granularity; for Hetzner (hourly billing) it is 59 minutes, anchored to the billing-hour boundary so the full paid hour stays reusable and the reaper fires before a second hour starts. The larger benefit is latency from skipping create, boot and install, not only the reclaimed paid-hour cost.
+
+ID 7x5z | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Surfaces.CommandLineInterfaces | referents=criome
+DESC: mentci is a first-class component triad and a state-bearing programmable user-interface daemon. The daemon owns canonical interface state: when the UI changes, it is because daemon state changed. TUI, CLI, editor, status-bar, popup, email, and agentic-flow clients subscribe to that daemon state and send updates or responses back to it. Mentci interacts heavily with the local criome instance for question and approval flows and for key decrypt or use; criome owns the key store. The component shape is the mentci daemon repository plus the signal-mentci working signal contract repository and the meta-signal-mentci meta policy contract repository. The mentci daemon repository contains the daemon and thin CLI plus daemon-local signal, nexus, and sema runtime schemas; signal-mentci and meta-signal-mentci carry the wire vocabulary, while Nexus and SEMA are internal daemon plane schemas. mentci-lib remains the shared application and state-machine library reused by the daemon and clients, and mentci-egui is one thin client of the daemon-owned state.
+
+ID 9rjq | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=rkyv,schema-rust-next,nota-next
+DESC: Shipped runtime component binaries stay small and carry only their strict rkyv wire and storage contracts. The schema and NOTA compiler — nota-next, schema-next, schema-rust-next — is a build-time-only dependency that emits the typed Rust and never links into the runtime binary; the NOTA text codec is an optional edge feature absent from the daemon binary.
+
+ID 9ve7 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Universal Interact trait: every object implements interact(other_object) that defines how two objects interact. The interaction uses the engines state implicitly (queried as needed including authorization checks); becomes async when waiting on outbound queries like Criome authorization; the actor system handles the wait so other code runs concurrently. The trait formalizes the workspace pattern that all logic is interactions between domains. *abstraction*
+
+ID ad53 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=cloud,CriomOS,Horizon
+DESC: Cloud-node OS images live in CriomOS as a minimal CloudNode-species profile, declaratively built with an image builder rather than by snapshotting a converted running droplet, and content-sized so a node boots fast on the smallest sensible droplet — a multi-tens-of-GB image is unacceptable. The cloud daemon references the image by id through the existing HostPlan image_name field and never holds the image definition. CriomOS owns the image definition and provider-format build, and cloud owns snapshot-id selection and provisioning.
+
+ID adnn | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=schema,nota
+DESC: Schema struct declarations are positional lists of types, mirroring how the data reads in NOTA, not name-value pairs. The field name is derived from the type by default, the bare type, retiring the star shorthand. A field needing an explicit name uses a dot-prefix differentiator, name-first, as in key.TypeReference. The name-value struct form is retired.
+
+ID avvh | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The raw/pretty horizon split is also a forward-integration seam, not only an anti-tangling measure. Keeping raw horizon as a clean minimal typed cluster-data model — separate from the pretty pre-derivation layer — keeps the door open for raw horizon to be promoted into a real component in a larger component system later, while pretty horizon stays the typed derive layer Nix consumes. This extends 9p8v with the psyche stated rationale and connects to the open x8iv fork on whether horizon becomes a full component-triad and to tvbn that horizon is a projection hack for now: the split is designed so the later promotion is a clean step rather than a rewrite.
+
+ID ay3y | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign | referents=criome
+DESC: criome's identity-policy-language clock is a decentralized quorum-attested coarse time, not a single trusted clock and not precise wall-time, and it is crystallized PAST. A time attestation begins as a proposition of a forward-extending time window, content-addressed by that proposition as its identity; a quorum then signs it, each attesting that the present falls within the window, and it closes at the last signature or at window expiry. Once closed it crystallizes from a proof-of-present into a proof that the moment has passed - a non-forgeable monotonic lower bound on now, since real time is always farther than the attested window. Only the past is provable this way; the instantaneous present and the future cannot be crystallized. The window extends forward precisely so every quorum member can sign before it closes, so the tolerance gap is bounded below by quorum signing latency and widens under partition or divergence, tighter when the network is healthy - a time authority is just another criome quorum object over a time-window claim. Because every triad input and output carries its own crystallized time stamp, time-locks and time-varying thresholds compare against the operation's own proof-of-when rather than a caller-supplied or ambient system clock: release-after-T needs a stamp proving now is past T, and active-until-T needs the operation's stamp to show a window that closed before T. More broadly, every quorum-signed object carries an attested moment - a quorum signature is never timeless but is always over content together with a crystallized moment - so every admission envelope, oracle verdict, agreement fact, and operation is time-bound for freshness and replay reasoning. The AttestedMoment itself is the self-grounding base case: it carries no inner moment, because its own window and quorum signatures are the time proof, which stops the regress.
+
+ID eeeo | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign | referents=criome,router
+DESC: signal-standard is a new shared schema holding only genuine cross-component standards - the vocabulary every component conforms to, not a grab-bag of conveniences. Its first and central content is the cross-component classification: the ComponentKind roster and the differentiator. It is the second non-component shared signal- library alongside signal-frame, imported by all component contracts with each component's local ComponentKind copy retired. Not signal-system, which is the system component's own contract and would be overloaded, and not signal-frame, whose charter is domain-free frame mechanics. The roster is closed-but-partitioned - a system or core zone plus reserved room to grow, modeled on the signal namespace partition - so adding a component is a local edit, not a workspace-wide rebuild. In the migration, signal-persona's ComponentPrincipal collapses into the imported ComponentKind with no persona-local alias.
+
+ID en7k | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Splitting SEMA out of the daemon is only a distant future consideration if the database itself must become larger and more available; it is not the current per-plane-crate design and should not be emphasized in a way that confuses agents.
+
+ID gv32 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: schema TypeReference application uses the flat head argument form Map K V instead of nested Map K V pairing
+
+ID hqg7 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Harness production shape should be one component daemon owning multiple harness instances internally; one OS daemon per harness is too heavy for the intended design. Per-harness boundaries live as records/actors/adapters inside the harness daemon, not as separate component processes.
+
+ID hvfe | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Manifest the recurring architecture patterns across active worktrees, primary skills, and workspace intent: async mail flow, mail-system actor objects, object-oriented Rust methods on schema-generated types, and related repeated implementation disciplines should be durable instructions rather than only report-local notes.
+
+ID ir6k | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Workspace direction shifts toward production now — components actually interacting (schema + persona + spirit + introspect + possibly more) rather than single-component pilots. Production-orientation goals — get components talking; schema-daemon drives upgrades; persona is the supervisor engine that keeps all components running; extract maximum code from per-component into schema-macro emission + a shared runtime library that holds generic SEMA/Nexus/Signal runtime infrastructure; identify and answer the important decisions that gate production. The AI/agents need to see what happens when this runs together — design alone is insufficient; production-scale interaction is the next validation layer.
+
+ID iucr | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The agent component is built as an LLM-API-call component that makes provider HTTP API calls in an API style, not as an agent-harness front door; harness backends are deferred
+
+ID iwbt | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Operations.ConfigurationManagement | referents=Horizon,cluster-data,domain-criome
+DESC: Cluster configuration and Horizon should carry the public-domain mapping for ordinary DNS fallback: criome.net is assigned per cluster, with goldragon owning goldragon.criome.net; the exact NOTA shape is open, but the data belongs in cluster config rather than being hardcoded downstream.
+
+ID jawv | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: the Criome domain component is named domain-criome
+
+ID jo1x | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: When a reusable engine-role name is instantiated by component-specific variants, the reusable name should be represented as a trait or interface rather than treated as one component's concrete enum name. Concrete component schemas still define their own variant vocabulary, but shared/runtime code should speak through the reusable role interface. *abstraction*
+
+ID l2ha | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign | referents=criome,router
+DESC: Fork A is resolved: object-update fan-out is owned by subscribing components and the router, not by criome computing per-object impact. Components subscribe to the events related to their function; criome stamps and authorizes the object, and the router matches subscriptions and fans the references out to the interested subscribers.
+
+ID lt44 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=router,criome,mirror,spirit
+DESC: CriomOS communication architecture has two transport lanes. Each agent runs in its own microVM sandbox. Router remains the ordinary communication fabric for cross-sandbox and cross-network component/object traffic: router-to-router carries routed remote delivery, router pushes references, and router or the object-distribution layer moves or fetches payload bytes while remaining payload-blind beyond routing, authentication, and delivery policy. Criome also has a direct criome-to-criome peer lane for time-sensitive agreement operations with other criome daemons, especially quorum signing and crystallized-time windows where routing through the ordinary component fabric would add the wrong latency or ownership. That direct lane carries criome agreement and authorization messages, not arbitrary component payload transport, so criome remains auth/agreement-only while router remains the general transport fabric. Mirror version-controls and moves objects. The tailnet provides confidentiality and criome BLS attestations provide per-frame authenticity. Intra-host sandbox-to-router transport is tap/L3 for now, with vsock deferred because it loses SO_PEERCRED. This realizes router ownership of ordinary remote delivery while making criome's own time-sensitive peer agreement protocol a direct criome lane.
+
+ID m0p2 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign;Technology.Software.Security.Authentication | referents=criome,router
+DESC: Criome's system direction is a universal agreement machine for authorization. The pulse is an object-update pulse: when a content-addressed object or authorized state transition is admitted, criome emits an authorized-object reference and the router, as the sole operational matcher for all non-direct message passing, matches component subscriptions and fans the reference out to the affected components. Criome emits references, not object payloads; components fetch or request the referenced rkyv object through the routing/object-distribution layer. Normal accepted objects are quorum-backed, not single-node signed: a lone node signature has little value except narrow bootstrap or diagnostic cases, so the practical design default is quorum authorization for meaningful objects and trust-crossing state. Time-driven pulses are not an ambient global heartbeat. A heartbeat is programmed by accepting a contract with an after-time condition: that acceptance schedules a later check of the contract against related events; when the crystallized time condition matures, criome checks whether the relevant events happened, and if they did not, it triggers a new acceptance for the time-based condition's resulting state, to be quorum-signed. Criome keeps no operational delivery registry; any criome-local subscription surface is observation and audit only, with the direct criome-to-criome agreement lane the sole non-router message path.
+
+ID maeq | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Signal-frame itself should also be represented as schema; the frame kernel is not exempt from the schema-as-architecture rule.
+
+ID n775 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=message
+DESC: The message component gains a meta-signal owner-policy plane and therefore a meta tier, a meta-signal-message contract. The owner identity message needs for SO_PEERCRED origin attribution arrives as authenticated owner policy over the meta-signal plane rather than only baked into the binary startup config, letting the owner set and rotate the trust boundary without redeploy. This resolves message as a component that does have an owner relationship under the e2px framework where meta-signal is optional only for components with no owner, consistent with the component-triad model where owner policy lives on the meta-signal plane.
+
+ID nccl | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: spirit-next is intended to be Spirit; agents created a separate spirit-next repo because the psyche kept referring to the next Spirit, but the active schema-derived implementation should carry the spirit name.
+
+ID nfvm | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign | referents=mirror,criome,spirit
+DESC: The mirror is the psyche cross-machine self: it mirrors into the Spirit instances on the owner other machines, so logging into any machine and editing there propagates the change through criome - a cluster-propagated change mechanism where every edit is a criome-authorized state transition. criome is the authority on the latest approved authorized head; Spirit fetches or receives that authorized head from criome rather than deciding it locally, and keeps its own accepted database. The mirror aspect may fold into the Spirit daemon itself, which learns to get a criome authorization to fetch a new head; branches in the database engine are a later extension. Extends the d6he chain with cross-machine editing and criome-holds-the-head.
+
+ID njqm | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The engine-mechanism design pattern in designer report 482 is ratified as the direction to move forward with, while implementation should keep using the parts that hold best as intent continues to develop.
+
+ID nnrg | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: cloud and domain components follow the current triad signal sema executor architecture
+
+ID o6v3 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Gap-fill from forwarded designer prompt: triad engine wiring should be defined programmatically by the schema-generated engine substrate, with daemon main reduced to a very small macro or generated call that instantiates the component; domain logic belongs in non-default algorithm implementations extending the generated Signal, Nexus, and SEMA engine traits, not in daemon main or ad-hoc orchestration code. Nexus is the natural home for heavier topic-discovery algorithms and decision-making, while SEMA owns durable indexes/state and Signal owns communication.
+
+ID olap | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=spirit,meta-signal-spirit,signal-spirit
+DESC: for Spirit specifically, the meta-policy signal schema should live with the meta-signal-spirit contract repository, parallel to signal-spirit for the ordinary working signal
+
+ID ot4p | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: When two layers have different lifespans — a durable reduction/projection layer over a substrate slated for eventual replacement — spend the cleanliness budget on the layer that outlives the others and let unavoidable operational ugliness (constants, derived names, glue) live in the throwaway substrate. Design as if the bootstrap layer gets replaced: choices that hinge on its permanence are wrong. The motivating case is a beautiful Horizon over beautiful Nix code, Nix being bootstrap infrastructure the future Forge replaces.
+
+ID p675 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The recording system data flow goes from the psyche's laptop microphone, across the network, to the large-ai-node where the always-on capture buffer and real-time multi-modal inference live. The laptop is the audio origin; the large-ai-node is the processing host. The architecture in /1 (recording-system design) implicitly assumed the audio source and processor were the same machine; refine to make the laptop-to-large-ai-node hop explicit.
+
+ID q3q7 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: A component daemon configuration type belongs in the ordinary signal-component contract, not hand-written in the daemon crate. The daemon imports the contract type for binary startup decoding and the meta-signal-component Configure operation wraps that same type, so startup and runtime reconfiguration share one definition. Duplicating the configuration struct inside the daemon is drift to reconcile.
+
+ID qr5o | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=spirit,signal-spirit
+DESC: The closed Domain taxonomy is the broad-routing layer only; fine-grained specificity belongs to the open referent layer of named particulars and to free-text description keywords for narrow concepts, not to deepening the closed enum. A taxonomy layer or leaf earns its place only when it disambiguates and carries real routing load; over-specified leaves that function as referents or keywords are cut. Applied now: the Technology Software subtree is coarsened to curated broad-field leaves under terminal-able sub-domains.
+
+ID r0a2 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The 'interact trait' formulation from records 660 + 665 + 666 was the wrong shape for the right intuition. The actual intent: SCHEMAS WARRANT FROM NEED-TO-INTERACT WITH PARTS OF THE SYSTEM. Every time the psyche designs a major component or part of the system worth describing, that warrants creating a schema declaration so the psyche can inspect and interact with that part easily. The schema IS the substrate for interaction with the system. Combined with the fundamental identity: a CONTRACT IS A CHANNEL. The repository contract is a channel; the wire contract is a channel; the storage contract is a channel; each internal-actor-message-vocabulary is a channel. Schemas describe channels. Each channel-contract gets its own schema. This means the schema-per-component framing in /338 + /341 + /343 was wrong: one component can have MULTIPLE channels and therefore multiple schemas (one per channel-contract). One channel = one contract = one schema.
+
+ID t00s | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Security.Authorization | referents=criome,mentci,spirit
+DESC: criome's authorization verdict can be supplied by a connected approver, not only by gathered BLS quorum signatures. criome exposes a meta-socket hookup so an external authorizer client casts the approve-or-deny verdict on each pending authorization request, and mentci is that client: it connects over criome's meta socket and responds to each pending request with an approval - the vote-on-existing-object adjudication where mentci approves or rejects the already-submitted object. criome also supports a configured auto-approve acceptance policy that approves requests as they arrive, for bootstrap and testing. Both are verdict sources inside criome's verify-and-record model; gathered-signature quorum stays the production multi-party path.
+
+ID th8a | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Future Spirit expansion should use spirit-next as design inspiration while tying together the richer data already present in production Spirit.
+
+ID tkou | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: domain-criome runtime excludes provider APIs and direct CLI store access
+
+ID tve6 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=CriomOS-home,DJI-mic,Whisrs
+DESC: For CriomOS-home dictation and desktop audio, keep reliable laptop-microphone fallback and avoid a hard DJI hot-loop dependency; prefer the connected DJI Bluetooth microphone through system audio default-source policy rather than a Whisrs-specific wrapper. A DJI keep-alive may exist only as a sidecar consumer of the real DJI microphone source, keeping that mic awake without becoming the source selected by the system or Whisrs.
+
+ID u1nr | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Full constraints should run on spirit-next with CLI-side and daemon-side Signal surfaces plus Nexus and SEMA engines. Each plane should be defined in schema, assembled into Asschema, and emitted as Rust datatypes and basic trait implementations for those objects. Hand-written Rust then becomes the decision-making actor system over schema-emitted nouns.
+
+ID uz4p | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The schema-crystallized architectural principles (the records captured in this turn: schema crystallizes architecture; extensible header pattern; deep tree of enum-struct with type index; two languages internal/external; interact trait and interaction actor mediation; effect table mapping; actor fan-out execution) are LOAD-BEARING for all subsequent architecture and intent work. They must be embedded EVERYWHERE: workspace ESSENCE.md, AGENTS.md hard overrides, skill files, every per-repo INTENT.md, every ARCHITECTURE.md. Existing material that contradicts these principles must be rewritten or significantly changed - not optional, not aspirational; this IS the operating architecture going forward. Applies the meta-principle from record 636 (psyche design decisions apply globally) at the architectural scale.
+
+ID vhs2 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Security.Authentication;Technology.Software.Distributed.ProtocolDesign | referents=criome,Nexus
+DESC: Criome's internal language is a limited typed policy language over public-key identity atoms - NOT a general-purpose virtual machine - drawing its limited-operation discipline from the constrained VMs of Ethereum, Tezos, and Solana. Public keys are the atomic unit of identity; above them it composes complex identity contracts from signature and time-lock mechanics: signature quorums of k-of-n form and thresholds that increase or decrease over elapsed time. It carries explicit divergence-reconciliation objects for when two networks split and how the reconciliation is determined, where conflict resolution may be mediated by an LLM-oracle call to a provider which itself resolves through one of those identity contracts - for example a paid expert panel adjudicating the fairest resolution model. This is criome's Nexus object and verb vocabulary, the objects and operations the identity world treats, to be researched, defined in schema, and prototyped.
+
+ID wb2k | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: DeepSeek-as-library subsumed into persona-pi triad; no separate deepseek wrapping component
+
+ID wfdt | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=schema-next,nota-next
+DESC: The schema substrate should self-host its own definition types, generating schema-next macro-table types from core.schema rather than hand-writing them in declarative.rs, as the deliberately chosen proving first step of progressively absorbing Rust type surface into schema. Macros-as-data already works, and the next move is the types that decode it becoming schema-derived too.
+
+ID y88n | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: The contract-daemon and engine-stack split should have Spirit as a proper exemplar; Spirit must not be left as an all-in-one pilot that agents describe as an explicitly non-copyable shape.
+
+ID zste | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Every engine should have an object that owns the logic it runs, with daemon startup and transport boilerplate pushed behind libraries or macros.
+
+ID 9qm8 | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=criome
+DESC: criome may run as more than one deployment instance rather than one global daemon: a system criome for services and higher-privilege system concerns, and a user or home criome running in the owner home user space that any local client can connect to. Each remains an ordinary component with its two contracts; the split is about deployment instances and privilege tiers, not extra contracts. For now the single owner - the psyche - holds the system root privilege through the home criome. The Mentci approval daemon also running its own criome is an instance of the same per-principal-criome pattern. Exploratory and for-development - the psyche is not sure yet.
+
+ID eaf7 | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign | referents=criome
+DESC: Standard socket locations and ports become a signal-standard schema type. Components discover one another by a standard typed connection point - a Unix socket path for local IPC, with a port for network cases - tracked in the shared signal-standard schema rather than hardcoded per component. mentci connecting to the standard criome socket is the motivating case. Extends signal-standard eeeo beyond the ComponentKind roster and differentiator to standard connection-point types.
+
+ID gc0n | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Architecture;Technology.Software.Distributed.ProtocolDesign;Technology.Software.Intelligence.AgentSystems | referents=criome
+DESC: criome contracts can be programmed to escalate a decision to a named adjudicator - a mechanical quorum, an LLM-assisted panel, a smarter agent, or the psyche, the human owner - whose signed content-addressed verdict criome only verifies. That verdict is a closed typed outcome over an already-submitted content-addressed object, not a carrier for newly-authored answer content. Criome only authorizes objects that come in for authorization. Program answers live inside the program's declared closed answer set. The Mentci/criome adjudication path is vote-on-existing-object: approve the suggested object, reject it, or defer/non-judge/escalate. If Mentci lets the psyche author a NOTA value - for example an LLM prompt, a replacement answer proposal, or another typed object - that is a separate editor and object-creation flow; the authored value must be admitted as its own content-addressed object before criome can authorize it. Two properties make the ladder humble and adaptive. First, non-judgment is a first-class adjudicator output: an adjudicator may decline to rule and escalate instead of forcing a verdict. Second, the default LLM adjudicator is trained to lean toward rendering non-judgment - abstaining and escalating to a smarter agent or agents and to a psyche or psyches - rather than deciding a case it is not confident in or that is too contentious. So the cheap default judge resolves the clear cases and bows out of the hard ones, spending scarce smart-agent and human attention only where it is genuinely needed; the psyche is the highest-authority and lowest-availability adjudicator. This is the architectural expression of intent-is-primordial: when a contract or a judge cannot or should not decide, it defers upward, ultimately to the human. Reaching the psyche adjudicator depends on a psyche-facing UI: until that UI exists the EscalateToPsyche outcome is intentionally an inert dead-letter and not a defect, because the terminal human rung is gated on the interface that lets a psyche receive and answer escalations.
+
+ID iq57 | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Nexus may be modeled as a recursive computation destination: when more work needs to happen, the next object is a Nexus object rather than a final reply. Nexus can carry objects originating from Signal, SEMA, or other effect/computation schemas, because schemas can contain and import objects from other schema parts. The design should explore Nexus as the universal computation continuation while preserving clear directional meanings for requests, commands, replies, and final Signal output.
+
+ID j9du | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=nota-next
+DESC: NOTA's own grammar can be schema-described, making the notation self-hosting. Its delimiter set is a closed enum: the three base pairs parenthesis, square-bracket, brace, plus three piped variants pipe-parenthesis, pipe-text, and pipe-brace. The pipe-text delimiter is already defined and used by NOTA for bracket-safe and multiline strings. The pipe-parenthesis and pipe-brace delimiters exist in the grammar but carry no assigned meaning, and are reserved as extension points for extended NOTA languages such as schema to define their own constructs. Schema-ing NOTA closes the self-describing loop: schema describes the contracts, the structural macro nodes, and NOTA itself.
+
+ID neib | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: For the new schema stack, creating new repositories with clean names is an acceptable option if branch names and old repository ancestry become too confusing. This is an option to evaluate, not an immediate rename directive.
+
+ID t85k | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=nota-next,schema-next
+DESC: The structural macro node grammar is itself schema-expressible, so it can be made self-describing. A structural macro node is a constructor that takes a typed and counted set of objects, so its shape vocabulary can be specified in schema and each concrete macro definition written as NOTA data conforming to that spec, instead of hand-coded as a Rust shape derive. Then the layer that decodes NOTA would itself be defined in NOTA. This points to building that schema specification for the structural macro node.
+
+ID sqnx | Clarification | certainty=VeryLow importance=Minimum | domains=Technology.Software.Engineering.Architecture | referents=(none)
+DESC: Signal Core can still exist as a concept; the prior rename moved content out of Signal Core, not the namespace itself
+

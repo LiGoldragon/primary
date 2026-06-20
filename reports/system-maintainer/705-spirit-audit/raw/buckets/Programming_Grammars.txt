@@ -1,0 +1,81 @@
+ID 94sj | Correction | certainty=High importance=High | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: DomainScope must use ordinary NOTA/schema-emitted recursive enum semantics; generated code must not hand-parse path shortcuts or hide stop markers.
+
+ID oqwb | Correction | certainty=High importance=High | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: A NOTA enum variant with an optional empty payload renders as a data-carrying record such as (Technology None), not as a bare Technology atom.
+
+ID own9 | Correction | certainty=High importance=High | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: The ENTIRE at-binder surface (all @-binding: Name@{...} Name@[...] Name@(...) name@(...) name@Type) is ABANDONED. nota-next must REMOVE all @-binding parser support — parse_atom_or_at_binding and its declaration and member paths. The schema authored surface is the positional bracket/brace form ({...} struct bodies, [...] enum and variant lists) which schema-next already uses and which already rejects @ at source.rs:1260. This supersedes record n2z3 wholesale (n2z3 named the at-binder as the settled declaration surface). Still valid from n2z3: the root schema value is an implicit filename-named struct, and the legacy pipe declaration forms are transitional and being replaced — by the positional form, not by the at-binder. Per psyche 2026-06-06.
+
+ID q0ag | Correction | certainty=High importance=High | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: DomainScope operations must stay typed all the way through matching, expansion, and equivalence; converting recursive enum values into Debug strings or Vec String paths is not an acceptable implementation.
+
+ID fo38 | Correction | certainty=High importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Macro application and enum declaration both use the grouped form with a head and one parenthesized payload: (Foo (A B)). For an enum declaration Foo is the type being declared and A and B are its variants. For a macro invocation Foo is the macro/operator applied to the grouped arguments A and B. The prior operator claim that macro application would be (Foo A B), or that an enum was variants Foo A B without a distinct declared type head, was wrong.
+
+ID qw1j | Correction | certainty=High importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: [] is and has always been the vector delimiter in NOTA. Schema and assembled-schema layers may read a vector at a typed position as a product/field list, but agents must not redefine [] itself as struct syntax or say it is not a vector.
+
+ID 20id | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Single-type field syntax may be `(Type)` for existing defined types
+
+ID 3qda | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Single-name enum variant record carries the same named type
+
+ID 5r0b | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Import header entries must not mix arities; each variant has one fixed positional schema.
+
+ID 6oun | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: The three NOTA delimiters correspond to the three schema sections. Parentheses are for enum/variant header forms (the schema's user-facing operations/variants). Square brackets are for struct field vectors / body / the user space where the schema defines new types (which may be macro types). Curly braces are for the name-value namespace - the user-created namespace of type names mapping to their definitions. The delimiter-to-section correspondence is structural: parens hold enum choices, brackets hold positional struct fields, curly holds the namespace map.
+
+ID bhs5 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: The `[| \|]` block string form is useful as a safe wrapper for multiline NOTA-like content that does not contain the block delimiter itself.
+
+ID e2si | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Schema root input and output definitions should support inline payload definitions directly in the root vector, for example [Record { Topic * Description * }], rather than forcing operation roots to be separated from payload bodies through namespace retags when the inline form is the beautiful compact shape.
+
+ID esn1 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Header variant references should resolve through namespace lookup or inline declarations. A bare PascalCase variant name in the schema header (Input/Output root enum bodies) looks up the matching type in the namespace per Spirit 1468 type-table variant resolution. An inline declaration at variant position auto-registers the type into the namespace. This eliminates the verbose (Variant Payload) form when the variant name matches a namespace type or carries its own inline definition. The schema reader does multi-pass identifier resolution to support this; the engine recognises whether each identifier defines a type, references a type, or both.
+
+ID k1p7 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Asschema root input and output positions are known fields, not data-carrying variants named Input and Output. The canonical asschema text should not serialize those fields as labeled Input and Output parenthesis records, because that suggests a variant choice where only positional input/output enum bodies are intended.
+
+ID lqvx | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Schema uses parentheses for enum and variant forms, and square brackets for struct field vectors.
+
+ID mcuk | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: .schema has no outer wrapper.
+
+ID oe6s | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Psyche states they have denied the syntax sketched as (Input ((Parse Expression) (Render Expression) (Evaluate Expression))) and (Output ((Parsed Expression) ...)) before. Do not present that double-wrapped Input/Output variant syntax as the accepted latest schema grammar.
+
+ID ogod | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Schema header root endpoints use parentheses because they are enum choices; the delimiter rule applies globally.
+
+ID xfhu | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Top-level schema is not a flat vector of same-kind declarations
+
+ID zcuv | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Schema source shape drops outer wrapper and uses header-first sections
+
+ID 2vdg | Principle | certainty=Low importance=Low | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Making struct and enum final built-in syntax with no macros dissolves the enum-versus-macro ambiguity structurally, so the prefix-sigil macro marker is no longer needed and macros shrink to genuine user sugar.
+
+ID bam3 | Decision | certainty=Low importance=Low | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Plain delimiters carry references and values: plain bracket with one element is a vector, plain brace with key-then-value type is a map, a bare symbol is a reference, plain paren is the value-and-tag layer; Optional is a tagged reference form and newtype is the degenerate one-field struct.
+
+ID 51cq | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Schema sigils type symbols: key-side sigils can be read as symbol variants whose payload is the paired value shape, so the schema layer can match on the key variant and value delimiter while still preserving NOTA key-value structure.
+
+ID 7rrs | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Plain square brackets remain the desired candidate for inline string literals; `[|...\|]` is not acceptable as the ordinary inline string form because it is too much delimiter for common strings.
+
+ID cmx1 | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Schema namespace values need a distinct declaration language
+
+ID dxmu | Correction | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: A reactive-schema surface written as ((Parse Expression) (Render Expression) (Evaluate Expression)) is not a clear enum surface under the current macro grammar: the first symbols Parse Render Evaluate sit as heads of parenthesized nodes and therefore read as macro/operator heads unless a distinct enum-variant context or explicit enum form is established. Do not use this as the canonical reactive input/output example without resolving the enum-variant versus macro-head distinction.
+
+ID jqvu | Correction | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Grammars | referents=(none)
+DESC: Generic enum field syntax should use parentheses, not vector brackets.
+

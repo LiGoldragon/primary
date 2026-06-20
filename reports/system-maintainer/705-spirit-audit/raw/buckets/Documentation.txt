@@ -1,0 +1,84 @@
+ID hgvg | Principle | certainty=High importance=VeryHigh | domains=Information.Documentation | referents=(none)
+DESC: Reference intent records in prose markdown by quoting the description summary literally as bracketed text — the bracketed form IS the citation — not by the record number alone. Repetition reinforces intent: the number is an opaque address, the substance is what's load-bearing. Especially in psyche-facing reports, and wherever an intent is central to a document, quote it literally in a prominent place. Applies to all agents.
+
+ID c5nq | Constraint | certainty=High importance=High | domains=Information.Documentation | referents=(none)
+DESC: Polling design is forbidden. Producers push events and consumers subscribe; when a mechanism only offers polling, escalate into the stack and build or use a real event surface instead of tuning polling intervals.
+
+ID g9oc | Constraint | certainty=High importance=High | domains=Information.Documentation | referents=(none)
+DESC: Chat replies must always print the FULL RELATIVE PATH of any report(s) produced in the session, not just the short slash-number locator. Example: instead of just /369 use reports/designer/369-comparison-designer-368-vs-operator-205-running-concepts-2026-05-26.md - makes the report findable from a chat-only quote, removes the lookup step for the psyche, and matches the path discipline already used inline (skills/intent-clarification.md etc). Per psyche 2026-05-26.
+
+ID 6kfz | Decision | certainty=High importance=Medium | domains=Information.Documentation | referents=(none)
+DESC: A Spirit short identifier is the shortest-unique base36-lowercase prefix of the record's random hash, minimum three characters, scoped per kind, and extended only on a same-kind collision.
+
+ID amb5 | Decision | certainty=High importance=Medium | domains=Information.Documentation | referents=(none)
+DESC: Report filenames place topic labels between the report number and the title (N-topic-title.md or N-topic1-topic2-title.md); a report may carry one or more hyphen-separated topic labels.
+
+ID xyqt | Decision | certainty=High importance=Medium | domains=Information.Documentation | referents=(none)
+DESC: A Spirit record is cited as the bracket-quoted description plus a (Spirit Kind short) parenthetical.
+
+ID kjwg | Constraint | certainty=High importance=Low | domains=Information.Documentation | referents=(none)
+DESC: The full random record hash stays binary on the wire; only the short prefix appears in text.
+
+ID 1rqy | Correction | certainty=High importance=Minimum | domains=Information.Documentation;Technology.Software.Engineering.Architecture | referents=criome
+DESC: The criome psyche-facing approval component is named mentci - the existing mentci-egui and mentci-lib repositories. The spelling Menchie that appears in earlier capture, including the registered referent Menchie and Spirit record 7x5z, was a speech-to-text error and is not the name. Canonical: mentci lowercase, Mentci as a capitalized proper noun. The Menchie referent and record 7x5z should migrate to mentci when referent-rename tooling allows.
+
+ID 8af8 | Decision | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: Reports gain a 'kind' and 'topic' dimension, mirroring persona-spirit's intent record structure (kind + topic + summary). Report kinds candidate set: Design / Review / Audit / Research / Proposal / Handover / Brief. The kind labels what the report IS structurally; the topic labels what the report is ABOUT. Together with the number, kind and topic make the report tree easier to query and harder to confuse. Eventually reports move into persona-mind which will surface kind-and-topic as first-class query keys; until then, the dimension is encoded in filename and an explicit header inside each report. The reporting skill (skills/reporting.md) gets edited to absorb this discipline.
+
+ID baav | Decision | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: Reports use standard YAML front matter for metadata, not the semicolon-bracket pseudo-NOTA shape (; role [topics] [description] date role) that recent reports have been emitting. Rationale — YAML front matter plugs into standard markdown UI tooling (previewers, GitHub rendering, Obsidian, editor frontmatter parsers); valid markdown so renderers display reports cleanly; is the conventional metadata-on-markdown standard. The psyche has mentioned this preference before. skills/reporting.md should specify YAML front matter as the canonical report header form.
+
+ID bweg | Decision | certainty=High importance=Minimum | domains=Information.Documentation;Safety.Privacy | referents=BookOfGoldragon
+DESC: BookOfGoldragon is a public writing surface for documenting Li Goldragon's personal experiences, including the plasma practice note explicitly authorized as public
+
+ID cx2m | Correction | certainty=High importance=Minimum | domains=Information.Documentation;Technology.Software.Engineering.Architecture | referents=criome,criomos
+DESC: Canonical prose uses criome for the authentication component and criomos for the operating system name; exact on-disk path spelling is preserved when citing repository paths or code identifiers.
+
+ID e7ra | Decision | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: the human-interaction skill is must-read by every harness (Claude Code, Codex, any future agent harness); it gets surfaced through AGENTS.md required-reading and harness-specific entry points where applicable
+
+ID hysd | Decision | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: primary has a first-class editor role and editor lane for editorial research and report work
+
+ID jwmf | Decision | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: Report filename convention is reports/<role>/<N>-<Variant>-<topic>-<date>.md where <Variant> is a capitalized word naming the report kind. Every report has a variant. Variants are in the filename not in a separate directory; reports stay in their lane subdirectory (reports/designer/ reports/operator/ etc). Proposed variant set covers main scenarios — Psyche Design Audit Research Synthesis Closeout Handover. Small set; can grow if a clear new scenario surfaces. Refines Spirit 1471 by extending the convention to all report kinds.
+
+ID k24p | Principle | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: Standard agent behavior: every chat response is the paraphrasing of an accompanying per-response report; chat carries 3-7 most important items spread more-evenly-than-not across three categories — (a) questions/clarifications of intent, (b) observations/suggestions/explanations of how new mechanisms work, (c) examples of recent work or evolving ideas in the thread
+
+ID obo5 | Principle | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: When the psyche signals they have lost the thread or no longer understand the design, stop advancing the work and re-ground them top-down: explain the system being touched from first principles in plain language, then iteratively the systems within it, checking understanding at each layer. Keeping the psyche able to understand and respond is a precondition for proceeding, not an afterthought; losing them in implementation detail is a failure to actively avoid.
+
+ID qv4q | Decision | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: Schema file root identity comes from filename context — Spirit schema file is implicitly named spirit because the filename is spirit.schema. The file body is the contents of a Schema struct; the root name does NOT appear inside the file. The file is read like a path knowing we are reading a struct of type Schema — self-embedded logic. Each schema is a root enum named after its component.
+
+ID ri4n | Principle | certainty=High importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: Psyche reports talk to a human being in a narrative voice — not citation-heavy. Numeric Spirit record IDs should be used to mark RANGES when highlighting a relevant span of intent, not as constant inline citations on every claim. Phrasings like fresh intent shows, today's design decisions surface, the recent corpus reveals carry the substance with less cognitive load than per-Spirit-N citations on every sentence. Spirit captures retain their indexing value but the psyche-report shape is human-narrative-first; the inline citation pattern interrupts reading flow that the psyche needs for ratification, alteration, or suggestion. When a single record is genuinely load-bearing for a claim, naming the number is fine; when a region of intent is being summarised, a range or a phrase is better.
+
+ID wcv0 | Decision | certainty=Medium importance=Medium | domains=Information.Documentation | referents=(none)
+DESC: Existing reports are agglomerated by topic into one primary report per major topic carrying the load-bearing substance; older topic reports retire when their substance fully migrates, or stay when they carry unique load-bearing detail.
+
+ID 2dhc | Decision | certainty=Medium importance=Low | domains=Information.Documentation | referents=(none)
+DESC: This report-filename topic convention is documented as a new section in skills/reporting.md.
+
+ID eohi | Principle | certainty=Medium importance=Low | domains=Information.Documentation | referents=(none)
+DESC: The topic-in-filename convention enables filename-based topic-grep across reports without opening them.
+
+ID lw51 | Principle | certainty=Medium importance=Low | domains=Information.Documentation | referents=(none)
+DESC: Topic labels are drawn from a controlled topic vocabulary maintained per workspace through use.
+
+ID 1zmh | Correction | certainty=Medium importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: Intent logging uses Spirit
+
+ID 6uz3 | Correction | certainty=Medium importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: The semicolon-bracket pseudo-NOTA report header format that many recent reports use at the top is a drift or hallucination — it does not match skills/reporting.md §Report header which documents an italicised one-liner after the title. Reports drifted to a NOTA-styled header that mimics Spirit intent record shape; this was never a ratified workspace decision. Audit other skills for similar weird kinks or hallucinated guidance that does not trace to a clear psyche intent or pre-existing skill rule.
+
+ID dfqp | Correction | certainty=Medium importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: When the psyche asks where a substantive explanation lives, the operator must either provide the exact report locator or state plainly that the explanation was incorrectly given in chat and backfill it into a report. Do not hedge with guessing language when the agent just authored the content.
+
+ID f7ju | Principle | certainty=Medium importance=Minimum | domains=Information.Documentation | referents=(none)
+DESC: Agents clarify psyche wording into the Spirit description
+
+ID nr7h | Constraint | certainty=Medium importance=Minimum | domains=Information.Documentation;Technology.Software.Distributed.ProtocolDesign | referents=spirit,guardian
+DESC: Spirit guardian admits intent captures whose operative guidance states the affirmative shape to follow. Captures framed primarily as exclusion prohibition or definition by negation are returned to the submitting agent for positive rewording before admission.
+

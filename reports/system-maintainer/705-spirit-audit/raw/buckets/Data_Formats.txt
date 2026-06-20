@@ -1,0 +1,111 @@
+ID 7y8w | Principle | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA's bracket-only string discipline makes a complete NOTA expression embedding-safe inside any host language whose string syntax uses double quotes - JSON, Rust string literals (including raw r-strings), Nix attribute values, YAML scalars, TOML strings, shell double-quote arguments, HTTP request bodies, database string columns, environment variable values, XML attributes - all without escaping NOTA's contents. The cycle: brackets are the NOTA string form, so NOTA never contains a double-quote; therefore any host language using double-quotes can carry a NOTA payload escape-free. Same principle that makes shell double-quotes the clean outer wrapper, scaled up: NOTA is the universal embedding-safe payload for structured data in string-carrying contexts. JSON-in-JSON requires escape cascades; NOTA-in-anything-with-doublequote-strings is escape-free. This is a load-bearing design property of NOTA, not an incidental side effect.
+
+ID vr32 | Correction | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA structs are positional only — no field names in the wire form. The position of an object in a struct determines what it is, via the schema applied at read time. Designer 326 v2 violated this by tagging Schema/Channel/Namespace as head tags; tags are unnecessary because position already encodes meaning. The reader knows from context this is a schema file.
+
+ID bsrv | Constraint | certainty=High importance=High | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA spells unspaced multi-word string atoms in camelCase like theSouthField, mirroring PascalCase for type variants, never kebab-case
+
+ID ghw7 | Decision | certainty=High importance=High | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: The NOTA brace { } is a STRICT key-value map. Every entry inside braces is exactly TWO objects: a key plus a value, period. The schema language must honor this contract — no single-object entries inside braces. Implications across the stack. Schema namespace body becomes { TypeName TypeDefinition TypeName TypeDefinition ... } where each pair is a new-type declaration: the key is the type name (PascalCase symbol), the value is a positional record like (Newtype Type) / (Struct {...}) / (Enum [...]). Struct body becomes { fieldName TypeRef fieldName TypeRef ... } strictly — explicit field name (camelCase) paired with explicit TypeReference. For the derived-name shorthand (where the field name and the type name would just be the camelCase-of-PascalCase relationship), use a VALUE-SIDE MARKER like (Derive) — a unit-variant marker in the TypeReference enum — instead of single-token entries. So {Topics (Derive) Kind (Derive) Description (Derive)} is the strict form of what was previously {@Topics @Kind @Description}. Bigger architectural generalization: at any brace position the set of valid KEYS is a typed enum (call it KeyEnum). Each key variant determines what type the value carries; sigils on keys distinguish variants (e.g., NewTypeDecl vs Import vs MacroExtension at a namespace position). The schema reader matches the key form (case plus sigil) to the KeyEnum variant, then reads the value as the appropriate type for that variant. This makes the brace a structurally honest key-value map where the KEY is TYPED and the VALUE is DISPATCHED on the key variant — equivalent to a vector of typed enum variants but expressed in brace pair rhythm. The current schema syntax (the @-sigil shorthand inside braces like Entry@{ @Topics @Kind @Description } from records 1232 plus 1235) is DISHONEST about the brace contract because it uses single-token entries inside braces. The syntax needs to be revised — either explicit pairs everywhere or the value-side derive-marker form. Per psyche 2026-05-30.
+
+ID 0dsr | Constraint | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA string delimiters are only required for strings that contain spaces or forbidden symbol characters; safe bare atoms such as topic names should stay bare, not bracket-delimited.
+
+ID mq6u | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Parenthesized variants carry data.
+
+ID mrcx | Principle | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA is made to be embedded inline everywhere host strings appear (Rust source, JSON, Nix attribute values, env vars, shell arguments). The embedded NOTAs meaning is derived from where it is, based on the schema applicable at that embedding site. The bracket-only string discipline that makes NOTA embedding-safe in double-quote host strings is the carrier mechanism; schema is the interpretation mechanism at each site.
+
+ID p8sq | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: A .schema file is read in a known Schema context, so the root Schema struct is implied by the file extension; the authored file should expose the fields of that known struct positionally rather than wrapping itself in an explicit Schema record.
+
+ID qmbf | Decision | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: General NOTA pattern — when a data-carrying variant's payload would be a single-use enum, inline it directly as a bracket list at the variant position rather than declaring a named enum type and wrapping. Form (Busy [DatabaseOverloaded ResourceDisconnected OtherReason]) instead of (Busy BusyReason) + separate BusyReason [DatabaseOverloaded ResourceDisconnected OtherReason] declaration. When to inline — enum referenced only in this position; payload small (2-6 variants); no independent semantic identity; variant name already carries most of the meaning. When to name the enum separately — reuse across multiple positions; enum has independent semantic identity worth a name; large enum (10+ variants); enum is part of a stable contract other components depend on. Workspace pattern generalizes operator 1466 Busy-specific correction; aligned with Spirit 1411 beauty + Spirit 1387 terseness + skills/nota-design.md Rule 1 no-wrappers-when-not-needed.
+
+ID sqx6 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Gap-fill from forwarded designer exchange confirmed by psyche: NOTA owns raw structure and serialization shapes, plus the value literal None with present values as (Some x). Schema owns the entire type-name vocabulary: scalars such as String, Integer, Boolean, and future scalar names, and composites such as Vec, Optional, Map, and future composite names. Moving only composites to Schema while leaving scalar type names in NOTA is inconsistent; all type-name keywords belong to Schema.
+
+ID t3hd | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Schema files use the .schema file extension; file extension supplies the type. NO outer parentheses wrapping the schema struct — fields appear directly in the file without any wrapping record. Designer 326-v3 section 2.1 outer (...) wrapper is wrong because file context already says this is a schema.
+
+ID tymh | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Plain PascalCase tokens are unit variants.
+
+ID voa8 | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Square brackets in NOTA express a raw vector container delimiter for parser-friendly structure. They are not the schema syntax for declaring a Vec type. Schema and NOTA must support an explicit parenthesized typed object, Vec of X, to declare or reference a vector type.
+
+ID yp29 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: schema-next needs a Bytes primitive, and ideally fixed-size byte arrays, because binary domain values such as BLS public keys, signatures, digests, fingerprints, and nonces must be typed as bytes rather than String; the current grammar has only String, Integer, Boolean, and Path primitives
+
+ID 0b9q | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA pipe text should use a normal escape character for literal close-marker text instead of widening pipe fences indefinitely. The string codec should keep one readable pipe-text delimiter shape and escape payload content that would otherwise close it.
+
+ID 0srq | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Schema file is a STRUCT at root - implied by the .schema extension; no explicit root declaration needed. First field of the schema struct is the imports/exports namespace (curly-bracket map). Subsequent positional field(s) are input/output struct(s) in square brackets. When both input and output are present they may live as a single combined struct field (since-both-are-present framing); single-sided schemas have only the present side. Optionality applies to which sub-fields appear inside the struct, not to having separate sections.
+
+ID 1rci | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA braces are the native structural key-value map delimiter. Schema reads a brace object as key-value structure, not as a schema macro form. Key-value-ness belongs to the low-level NOTA structure; macros may consume these structures at schema positions.
+
+ID 3em3 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Square brackets are the vector delimiter structurally, but when the expected schema type is String or a string newtype, that bracket form represents a string value. So [] is not always semantically a vector at typed schema positions; typed reading can interpret bracket content as string data.
+
+ID 3qjw | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: The four-character bracket-pipe delimiter is for pretty indented multiline string blocks, where common indentation is stripped during parsing; it is not the ordinary inline string delimiter.
+
+ID 44gj | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: A core schema file is read as a struct whose type name is derived from its filename, mirroring Rust modules. The file does not restate that root struct name; the reader knows it from the path. The root struct contains a key-value map of datatype names to raw NOTA datatype objects, so a large core schema example should first demonstrate raw NOTA reading into raw datatype structures before higher schema lowering or Rust emission.
+
+ID 8ryy | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Assembled root syntax must not represent Input and Output as a struct containing another single-field struct. If the root shape is known, the assembled form should carry the root bodies directly in their known positions or use a real common enum object; it should not add meaningless one-field wrapper records just to make vector syntax type-check.
+
+ID 9uje | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Header root is a vector of ordered enum variants
+
+ID bpg9 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: A .asschema file is read against the known Asschema root struct, so the canonical text form should not need an outer parenthesized record wrapper. The reader can consume the root fields positionally from the document root objects, using delimiters to find each field boundary.
+
+ID cqm9 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Authored workspace data files should prefer typed NOTA data: predictable file names and directories define the expected root type, usually a struct or sometimes a top-level enum selection or vector of records.
+
+ID ct2i | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: .asschema files must be real NOTA serialized assembled-schema data. Human-readable debug witnesses are not .asschema and must be named as witnesses instead. Calling a non-NOTA witness .asschema is a wrong artifact boundary.
+
+ID d1bi | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA positional structs do not omit fields: a field is present in the record shape and carries a value, including explicit None when the schema has an optional value. For Spirit privacy ergonomics, the desired shape is targeted public/private shorthand operations that lower to the full verbose record shape, not omitted positional fields.
+
+ID ejum | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Schema headers are ordered enum-root declarations, not namespace vectors.
+
+ID kwfo | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Reading a NOTA schema file means grabbing the logic from both ends — the meta-schema (what defines a schema) and the concrete schema use both flow through the same self-describing format. The reader needs the meta-schema definition to interpret positional contents of concrete schema files; both ends meet in the format.
+
+ID lm84 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: schema-next should provide a hash-identifier type whose domain value is bytes (a hash, digest, fingerprint, or content identifier) but whose NOTA projection is a canonical string encoding, so it stores and travels as bytes yet reads and writes as a short text code; this generalizes the existing RecordIdentifier pattern of 12 bytes rendered as a base36 short code
+
+ID sfwv | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Gap-fill from forwarded operator prompt: the resolved assembled schema artifact is the Asschema or AS-schema file type: pure NOTA for fully resolved enum and struct definitions with no remaining macros.
+
+ID ta58 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Denied schema syntax patterns must not resurface as current examples; agents should use the latest accepted schema syntax when sketching schemas and treat older parenthesized variant-list examples as stale unless explicitly marked legacy.
+
+ID x020 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: A single string that qualifies as a symbol name must be encoded in NOTA as a bare symbol, not quoted with brackets. Bracket strings are not the representation for schema names that are symbol-safe.
+
+ID 0zci | Correction | certainty=Low importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: The syntax used in reports/operator/226-asschema-first-final-data-2026-05-28.md and syntax of the same shape is obsolete. Future reports and examples must not treat that syntax as current schema or ASSchema design.
+
+ID 2qac | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: Ordered-vector-of-boxes NOTA schema notation deserves its own library
+
+ID 2v57 | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: The square-bracket string idea is not meant as schema-dependent delimiter reuse: the psyche is reasoning that a string is conceptually a vector of characters, analogous to capitalized True and False exposing bool as an enum-like concept.
+
+ID vqbt | Correction | certainty=Low importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: The RecordsObserved reply shape should be reviewed because a plural records reply currently prints as a single-field record wrapping a vector, producing nested delimiters before the vector. Prefer a signal tree shape where plural record replies expose the vector directly if the schema system supports it.
+
+ID wy3j | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Data.Formats | referents=(none)
+DESC: NOTA shape can project through front matter formats
+

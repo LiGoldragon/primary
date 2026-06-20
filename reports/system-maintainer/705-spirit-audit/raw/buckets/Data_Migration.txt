@@ -1,0 +1,51 @@
+ID opbj | Decision | certainty=High importance=High | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Re-importing vetted records into a fresh Spirit database needs a privileged meta-signal Import operation that writes a record directly, preserving its identifier, timestamp, and fields, and bypasses the guardian. Guardian-bypassing writes live only on the meta-signal contract. The working signal stays gated.
+
+ID 0dmo | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Actor-native migrations should change the generator and runtime source of truth instead of stopping at compatibility bridges; no backward compatibility, best design only.
+
+ID i1b5 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: ARCA performs database migration whenever an ARCA-touched format changes. Every component that stores derived types in ARCA migrates its own database when the relevant format changes; the cascade is mandatory. No format-change escapes downstream migration.
+
+ID jn3m | Constraint | certainty=High importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Spirit profile defaults must not cut over to a new versioned database until existing intent records are migrated or otherwise reachable from the default command; a side-by-side new daemon with an empty database is acceptable only as an explicit test surface, not as the unsuffixed production surface.
+
+ID t0tu | Decision | certainty=High importance=Minimum | domains=Technology.Software.Data.Migration;Technology.Software.Engineering.VersionControl | referents=(none)
+DESC: Spirit's next schema bump is the pilot for migration as a logged fold: replay the previous store's versioned operation log through the version From-chain into a store at the next schema, recording a typed migration entry. The copy-everything migration binaries retire; migration becomes a fold the version-control system records rather than an unlogged database rewrite.
+
+ID xfc5 | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Spirit hash-identity migration should not keep numeric record lookup behavior alive; it should create a migration table mapping hash identities to former ordinal numeric identifiers, while the live lookup surface moves to hash identity.
+
+ID 2ypu | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Sema-upgrade-daemon starts FIRST on engine boot — before any persona daemon. Its first task is to check whether a database upgrade is needed (compare each daemon's stored schema-version-hash against the version-hash that daemon's current code declares). Symmetric to spirit being LAST per intent record 17 (the apex of the cognitive authority chain). Resolves /275 Point 3 and /276 critical point 10c. Sema-upgrade-daemon is engine-pre-zero infrastructure owned by the engine manager.
+
+ID 3pfh | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Spirit archive semantics (meta-signal Configure ArchiveTarget) are redirect-forward-only: setting an archive target re-points future archive writes and reads to the new target; records already in the prior archive database stay in place and are NOT migrated forward. Confirms report 541 open call — archive is a redirect, not a migrate-forward operation.
+
+ID 64ug | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Sema upgrade should become a component for updating Sema databases
+
+ID c6j4 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Schema diffs can infer standard migrations, but ambiguous transforms need explicit annotations or traits.
+
+ID lilh | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Dual-version upgrade replies must distinguish old-database and new-database write failures.
+
+ID ozbz | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Spirit identifier migration data should be stored as NOTA data; SEMA is for schema/engine structure, not for the migration data file itself.
+
+ID q4l0 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: The data-lifecycle ladder is a closed named set worth building — nominate, tombstone, archive, collect, compact, purge — rather than ad-hoc operations. The system designer should make a concept of it. It lands on the new schema-derived spirit, not the hand-written production daemon, since it is a large feature.
+
+ID qvyc | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Any daemon can run two databases concurrently — the transitory-database pattern is part of the SEMA interface. During a live upgrade transition, the old database and the migrated new database both run; the SEMA interface owns this concurrency.
+
+ID tmji | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Sema-upgrade is a new persona-system component — the universal stateful schema upgrade mechanism. Sema-upgrade communicates on the system to update sema databases (the workspace's typed-record stores in persona components, today backed by redb). Its first concrete migration test case is the legacy intent file log → spirit migration: treat the legacy intent/*.nota substrate as a 0.01 version of the spirit database, develop sema-upgrade to translate it into spirit's current schema. Eventually the schema-spec-language (reports/designer/263) drives sema-upgrade's transformations from declarative schema diffs; the 0.01-to-current pilot is the proving ground. This component is the universal schema-upgrade discipline made flesh — every persona daemon that needs to upgrade goes through sema-upgrade.
+
+ID zf4v | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Upgrade mechanism: (1) schema changes between versions; (2) schema-diff identifies what moved/changed/dropped/renamed; (3) hand-written Rust bridge code per version-boundary handles the moved or transformed data types; (4) version number marks the boundary - sets which schema applies; (5) the new daemon is recompiled with the previous schema also available for reference; (6) auto-migration on database load - daemon reads DB version marker; if DB is on previous (main, in next/main/previous vocab per rec 672) version, the migration method runs once, transforms all data to the new shape, updates the version marker, persists the new database. Assembled schemas can potentially be stored to enable efficient diffing.
+
+ID t0x6 | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Data.Migration | referents=(none)
+DESC: Operations main cannot process at all are acceptable; dev does the op and main records only the divergence. Partial-support handling is an open follow-up
+

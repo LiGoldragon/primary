@@ -1,0 +1,450 @@
+ID 2st7 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Security.Authentication;Technology.Software.Security.Authorization | referents=spirit,criome
+DESC: Spirit criome-auth pilot mechanism is settled. criome authenticates the SUBMITTER, the SO_PEERCRED caller resolved to a registered criome Identity, not merely the log. The mechanism is an after-the-fact, non-blocking, out-of-band attestation binding the caller to the exact per-operation content-addressed digest. criome verifies the bytes and principal while the spirit guardian keeps the full content verdict. This settles the envelope design left open by w2g3.
+
+ID 9v7h | Decision | certainty=High importance=Minimum | domains=Technology.Software.Security.Authentication | referents=(none)
+DESC: Owner-socket peer-credential authentication via triad-runtime ConnectionContext SO_PEERCRED REJECTS the connection on a uid mismatch and fails closed for the privileged owner meta tier Deploy Pin Unpin Retire. Defense in depth complementing rather than replacing the socket file-mode guard.
+
+ID 3fm6 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Security.Authentication | referents=(none)
+DESC: Long-lived agents have cryptographic identity tied to their Criome master public key; without Criome (transitional) an agent gets an ephemeral keypair filling the same role.
+
+ID i9qv | Principle | certainty=Medium importance=Medium | domains=Technology.Software.Security.Authentication | referents=(none)
+DESC: Possessing cryptographic identity is what lets an agent express opinions through signatures — existing in the Criome is having the power to sign.
+
+ID jtmt | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Security.Authentication | referents=(none)
+DESC: The public key IS the agent identifier — there is no separate UID storage; a single storage primitive (the key) carries every identifier length.
+
+ID ermr | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Security.Authentication | referents=criome
+DESC: Cross-system trust root for criome: a cluster-root identity signs member keys, and that signature is criome registry admission gate (RegisterIdentity requires a valid root signature); cross-system peers trust keys chained to the cluster root. This closes criome current no-admission-control gap (the registry accepts any key today) and gives a non-circular first-cross-system-trust bootstrap.
+
+ID h03z | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Security.Authentication;Technology.Software.Security.Authorization;Technology.Software.Operations.Deployment | referents=lojix,criome
+DESC: lojix integrates with criome-based authentication now, as part of the production cutover. Building on the established architecture that long-lived agents hold cryptographic identity through criome per 3fm6 and that criome-backed authorization is the component auth pattern per w2g3 and 2st7, the lojix deploy daemon's own operational credentials and unattended machine identity are custodied and authenticated through criome rather than borrowing the operator's personal logged-in session such as the GPG SSH agent. Because criome is launching through the cross-host attestation work, the lojix-to-criome auth integration is taken up now rather than deferred.
+
+ID psc6 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Security.Authentication | referents=criome
+DESC: For the criome auth pilot, criome generates its master BLS keypair on first run and persists the secret to a 0600 key file; the secret never leaves criome. Transitional bootstrap until meta-signal-criome carries an authenticated key config.
+
+ID s8lq | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Security.Authentication | referents=(none)
+DESC: Browser automation for real user accounts should support attaching to a visible browser tab/session so the human can watch, intervene, and keep login/2FA secrets out of agent prompts and logs.
+
+ID w2g3 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Security.Authentication;Technology.Software.Security.Authorization | referents=spirit,criome
+DESC: Spirit should be an early pilot consumer of Criome-backed operation authorization: Spirit operations that require authentication ask Criome to authorize an exact content-addressed request or log-message digest, with the concrete envelope design still open.
+
+ID fahc | Decision | certainty=Low importance=Low | domains=Technology.Software.Security.Authentication | referents=(none)
+DESC: Graduated agent ID forms (shortest ~3 chars, short ~5, long ~7, full = the public key) are methods derived from the public key, not separately stored identifiers.
+
+ID ms36 | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Security.Authentication | referents=(none)
+DESC: CLI macros auto-inject the callers pid (and optional parent process metadata) into requests via persona-origin types; explored direction for best-effort agent-level identification
+
+ID q1cw | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Security.Authentication | referents=(none)
+DESC: Criome identity is a SignalCore primitive type. Identity verification of 'does this thing exist' routes through criome. Identity types in SignalCore form the canonical existence-verification surface.
+
+ID cjrl | Principle | certainty=VeryHigh importance=VeryHigh | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: Secrets always land in the most secure place available. In the user session that is gopass, which is git-backed and encrypted. For cluster deployment that is SOPS-nix, encrypted at rest in the repository and decrypted only on the target host at activation. Move a secret between stores by piping ciphertext to ciphertext, never through a visible intermediate.
+
+ID go41 | Decision | certainty=High importance=Medium | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: The local LLM API token's stable gopass path is goldragon.criome/local-llm-api-token, zone-scoped not host-scoped, so the path survives the largeAI role moving between hosts.
+
+ID nz0t | Decision | certainty=High importance=Medium | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: prometheus enforces API auth via a gopass-fed token; both prometheus's api-key file and client wrappers read from the same gopass entry, and a mint tool generates the token and writes it to that gopass path.
+
+ID ravc | Principle | certainty=High importance=Medium | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: Secret paths are scoped to the resource they serve: local-service tokens are scoped to the zone where the service lives, distinct from provider-scoped paths (e.g. cloudflare/api-token) which are global to the provider.
+
+ID zocz | Constraint | certainty=High importance=Minimum | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: Agents may inspect authentication tokens and other secret values when the task requires plaintext access authorized by the psyche or by an existing workspace task. Visible plaintext is transient working material: keep it out of chat, reports, logs, commits, argv, shell traces, the Nix store, test fixtures, and checked-in files; prefer blind pipe-to-sink handling when it is enough; when inspection is needed, minimize exposure and move the value directly to the requested consumer or encrypted store.
+
+ID yfw5 | Constraint | certainty=Medium importance=High | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: The local LLM API token is installed into local agent configuration through the standard managed Home-profile path as a command-backed gopass reference - for Pi an auth.json entry whose value runs gopass at call time - never a literal key written into Nix source or models.json. Applies the never-expose-plaintext rule of records 1011 1012 to the local-agent auth path; the prometheus llama-server now enforces the token so the prior dummy sk-no-key-required no longer authenticates.
+
+ID bdse | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: The Playwright Chrome browser-extension token lives in gopass at chrome-browser/playwright-mcp-extension-token, and browser automation wrappers should read that entry at runtime without printing the token.
+
+ID nsi2 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Security.SecretsManagement | referents=cloud,Cloudflare,gopass
+DESC: The cloud flake wraps flarectl with a gopass-backed shim that fetches the Cloudflare API token from the password manager at path cloudflare.com/api-token and exports it as CF_API_TOKEN before exec. Realises the FEMOS env-var-populated-by-password-manager auth pattern end-to-end inside the nix closure, with the domain-style Cloudflare credential path as the canonical provider token handle.
+
+ID osoo | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: The backup WiFi password should be a human-readable random generated secret stored through sops-nix rather than plaintext source or logs.
+
+ID q1le | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Security.SecretsManagement;Technology.Software.Engineering.Architecture | referents=criome
+DESC: The criome daemon holds an encrypted key store and can hold more than one key - sub-keys under the store. It always has a self-start key, the only key that must be readable by the daemon itself and therefore by the owning user: the user home private key representing his home, encrypted at rest with the home-user or system encryption. The other keys are sub-encrypted within the store. If the owner suspects a leak he can rotate; a more secure hardware-based key mechanism is a later refinement. This extends psc6 from a single generated master BLS key to a managed multi-key store.
+
+ID y94z | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Security.SecretsManagement | referents=(none)
+DESC: The workspace skills must state the secret-handling discipline explicitly: gopass wrapping of environment variables, sops-nix cluster secret storage, and the never-show-a-secret rule, so every agent applies it the same way.
+
+ID iprx | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Security.SecretsManagement | referents=cloud,meta-signal-cloud,CredentialHandle
+DESC: Cloud credential custody is moving toward system-level credentials: the current model, a wire-supplied CredentialHandle the cloud daemon resolves to a process environment variable behind the 0o600 owner socket, is accepted as the transitional shape, and the eventual direction is system-custodied machine credentials following the criome-custodied machine-identity pattern of h03z rather than a wire-selected environment variable name.
+
+ID nu76 | Constraint | certainty=VeryHigh importance=High | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: A major first-digit version bump toward 1.0 and beyond requires explicit psyche authorization; agents may propose a major bump but the psyche gives the go.
+
+ID rg2i | Decision | certainty=VeryHigh importance=Medium | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Version magnitude follows the digits: a small change bumps the patch digit (0.3.0 to 0.3.1) and a functionality change such as privacy work bumps the minor digit (0.3 to 0.4).
+
+ID tvbn | Decision | certainty=High importance=VeryHigh | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: The Horizon and lojix rewrite charter. Horizon is a hack for now and that is acceptable — it stays the simple projection surface NOT a full triad component. lojix is the more traditional component that receives the full triad-engine and schema-based-component port and carries the runtime triad. The goal is to finish the lean rewrite to the point of cutover and retire the dual deploy stacks — the standing burden of maintaining Stack A production and Stack B next in parallel should end; the rewrite is prioritized to reach parity then switch over per node. Along the way port high-confidence production CriomOS changes into the next lojix and Horizon stack immediately where the correct change is clear then test those builds.
+
+ID 88eq | Decision | certainty=High importance=High | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Component upgrade protocol via Nix-flake versions — universal to every persona component that needs to upgrade. Each component's Nix flake captures the running-production version (the last known-working main of that component, pinned in the flake) as one input, the local in-development version (whatever the developer machine is running) as another, and additional named variants like unstable and testing as further inputs. All upgrade sequences are expressed in the Nix-flake-version structure. Tests run through Nix (which means commit-first — uncommitted local state is invisible to the Nix evaluator). The flake-input-as-deployed-version pattern is the workspace's upgrade substrate.
+
+ID 11m7 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Claude Code, Codex, and Pi must be updated together through CriomOS-home and the full CriomOS lock so active profiles and full-system deployments stay in sync after crashes or reboots.
+
+ID 2io6 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Sandbox-only retrofit packages never touch production
+
+ID a7pe | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Component code or logic changes should bump the component version, at least at patch level, so deployed binaries and reports do not keep stale version numbers after behavioral changes.
+
+ID luv3 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: After handover main is private-upgrade writable only
+
+ID muf2 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Component releases should tag the whole dependency surface used by that release
+
+ID p8gv | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Workspace eventually owns the whole content-addressed vertical stack — its own content-addressed store replaces Nix's store-signing infrastructure. Our own store moves our binaries and updates the system through content-addressing without depending on Nix's signing apparatus. Composes with: Criome (authentication, replaces Nix store signing); forge (build system, replaces Nix builders); sema-upgrade (database migration, no Nix analog since Nix is stateless). The endgame is workspace-owned-vertical: every layer from build to authentication to distribution is in the persona system's component vocabulary. *artifacts*
+
+ID s5dz | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Multi-version daemon coexistence via version-suffixed names. Multiple persona daemons of different versions can run side-by-side on the same machine. Sockets are named by version number (exact form TBD: spirit-v0.1.1.sock or spirit.sock.v0.1.1 or similar). CLI binaries are named by version (e.g., spirit-v0.1.1 in the user profile). A shell shim or alias mechanism resolves plain unsuffixed names (spirit) to the current default version, so that bare-name invocations pick whichever version the environment declares as current. The exact shim mechanism (symlink + update-alternatives; shell function; wrapper script) is system-specialist territory. Psyche flagged this as see-if-it-makes-sense — Medium certainty until the deeper design lands. Either implement directly OR file a bead/report for system operator to add to the environment.
+
+ID wdri | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Operations.ReleaseEngineering | referents=(none)
+DESC: Cloud component production push prioritized; first MVP can skip new schema-engine approach to ship faster
+
+ID fosp | Correction | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: Sema-engine is the exclusive interface to the database. No component daemon may make direct redb calls — all durable database work goes through sema-engine, which owns the redb interaction. A daemon that opens redb and runs its own transactions directly is wrong, even as a pilot, and counts as a fake of the intended architecture. The schema-derived spirit pilot bypassed sema-engine with raw redb to keep its proof self-contained; that was a misunderstanding of sema-engine intended role as the database boundary. Components are dumb about storage and speak only sema-engine operations.
+
+ID 6ry9 | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: SEMA means database work: the real SEMA plane is the component that writes durable state to the database file, currently redb, and a future rename to a .sema extension may make that role explicit. *storage*
+
+ID e440 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: SEMA engine implements durable state as a single-writer actor: queries, writes, mutations, additions. Database upgrade operations flow through SEMA per Spirit 1308. Reads run in parallel — redb supports concurrent MVCC reads; the single-writer invariant applies to writes only.
+
+ID oh9l | Decision | certainty=High importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: For the lojix cutover, build the durable database backing now as baseline work before the real cutover: the daemon live-generation-set, GC-roots, and event-log state persisted on sema-engine with self-resume on restart, rather than running a first cutover on in-memory state. The psyche judges the durable DB small and straightforward, not a big deal. Resolves the in-memory-versus-durable-first question in favour of durable-first.
+
+ID 0fdy | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: Component databases use a .sema file extension instead of .redb, hiding redb behind our own .sema file type so the file name states it is specifically a sema-redb database. Reinforces the direction that the storage file name declares its architectural role rather than exposing the raw redb engine. *storage*
+
+ID 5kj9 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: Schemas inside the schema component are stored in a much more efficient binary representation than NOTA text format. NOTA is the SOURCE/authoring format — human-readable, edited by hand or by tooling. The schema component holds the COMPILED runtime representation — packed structures keyed by short-header for O(1) lookup, with the version-diff and namespace-slot tables pre-computed. The NOTA→compiled-schema compilation is the build-time step (per spirit 391); the schema component is the runtime side that serves the compiled product. *storage*
+
+ID 819r | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: Internal SEMA and database work is also a schema language of messages, commands, and responses; a component may keep storage inside the daemon first and split it into its own daemon later using the same message language.
+
+ID n46e | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: Mirror payload (signal-version-handover) is raw bytes stored in a SEPARATE container outside the typed database — must not pollute the typed database with un-incorporated bytes. The type signature is unspecified raw payload. Typed-enum decision deferred until second component handover surfaces the need (per /158 Q2 designer lean refined) *storage*
+
+ID ox7e | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: When schema-derived components expose a reusable storage need, do not merely port them to a mismatched current sema-engine API; improve the shared engine surface so generated SEMA code expresses its real storage identity and query needs directly.
+
+ID qbx7 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: Spirit timestamp is daemon-stamped
+
+ID twlp | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: When a record moves into the archive its privacy variable moves with it and is preserved in the move. The archive holds each record at its original privacy level, and archive reads honor the same explicit privacy discipline as the live store.
+
+ID ue6x | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Persistence | referents=(none)
+DESC: Component data lifecycle should prefer explicit archival lowering before hard deletion: stale or low-certainty data is marked and moved out of the hot working database to keep runtime state manageable, while recoverability is best-effort rather than guaranteed unless a stronger retention class says otherwise.
+
+ID k2o1 | Correction | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Zero consumers does NOT mean a repo is dead. Some repos — notably the triad signal-component and meta-signal-component contract repos — are MEANT to be used; if a component is not yet depending on its standalone contract, the correct action is to START using it (adopt and wire it), NOT delete it. signal-spirit, signal-forge, signal-lojix and the like are intended working-signal contracts for their components, currently unadopted because components still emit their contracts in-repo — that is a migration gap, not a tombstone. A repository audit must distinguish intended-but-not-yet-adopted from genuinely-dead by understanding the intended component and triad architecture FIRST, before recommending any deletion. The system-designer 83 audit erred by listing intended-active contracts as deletions. Per psyche 2026-06-07.
+
+ID 16l0 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: When the cloud component is built with the cloudflare feature, flarectl is a runtime dependency of the cloud package. The cloud binaries are wrapped via makeWrapper/wrapProgram so flarectl is guaranteed on the daemon's PATH at runtime. No reliance on whatever happens to be installed in the user profile.
+
+ID 51u8 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Pi extension sources belong in flake inputs, with source hashes in flake.lock
+
+ID 5d5o | Correction | certainty=High importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: The orchestrate component itself must be kept on the current triad, signal, sema, and runtime crate set; compatibility helper lockfile work is not a substitute for updating the component dependency surface.
+
+ID 9huv | Principle | certainty=High importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Agents using Spirit must track the deployed version's interface, not the current persona-spirit source. The deployed pinning is reachable through the CriomOS Home flake input. Use Nix metadata commands (flake metadata, derivation show, the path-info chain) to find the pinned commit, then read the wire contract at that revision. Operator changes to persona-spirit and its signal contracts will drift main from production until the next CriomOS rebuild.
+
+ID 2vz4 | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Persona-pi setup is packaged in Nix and hides Nix paths from Pi internal view. *packaging*
+
+ID 7s6c | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Persona-Pi should package standard Pi extensions through Nix *packaging*
+
+ID kipw | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Video-editing agents should have most normal video-editing tools from the videographer readiness report available through the regular medium profile, with exceptions allowed for unusually large dependencies. *packaging*
+
+ID kype | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Agents should surface DEPENDENCY relationships far more often — who depends on what, what each repo/component uses and is used by — especially in engine audits and thorough reports. With many repositories, the psyche needs a running sense of what is used by what; dependency context is a standard thing to mention in any thorough report, not an afterthought. Per psyche 2026-06-07.
+
+ID o32k | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Build a Nix utility for fetching Hugging Face models by URL/query that mirrors the nix-prefetch-url pattern: prefetch via the huggingface CLI, hash the result, write a fetcher derivation parameterised by the huggingface URL or query. Becomes a workspace utility tool for getting any HF model into the nix store. Likely precedent exists in workspace reports — a prior script someone documented for this exact pattern. *packaging*
+
+ID rars | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: CriomOS-home should package browser-use in the Nix home profile with a wrapper that uses the local Gemma 4 model served by the available large-AI node when present. *packaging*
+
+ID x3m9 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.DependencyManagement | referents=(none)
+DESC: Development Nix inputs may point at feature branch names for mutable role lanes
+
+ID 15df | Correction | certainty=High importance=Minimum | domains=Information.RecordKeeping | referents=spirit
+DESC: Intent single source of truth becomes Spirit: capture and query intent in one place, not in per-repo files. Each repo ARCHITECTURE.md is the file kept current for architectural state. Per-repo INTENT.md files migrate off into Spirit gradually, opportunistically whenever a repo is touched. Read intent now means read Spirit.
+
+ID 5trg | Correction | certainty=High importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Spirit record identifiers must not be reused after removal; reuse makes references unstable because a later record can occupy the same identifier.
+
+ID d0fi | Decision | certainty=High importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Sub-agent sessions land in a meta-report directory: reports/<role>/<N>-<name>/ with the orchestrating agent's final report and each sub-agent's report numbered inside; the directory IS the meta-report and is garbage-collectable as one session unit
+
+ID gni3 | Principle | certainty=High importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Agent-authored content is NOT the same as psyche-authorized design surface. When the workspace contains agent material that no psyche intent record authorized, framing its retraction as invalidating substantial design surface incorrectly attributes authority to agent output. Distinguish: psyche-authorized direction (cite the intent record) vs agent-drifted content. Retracting agent-drift is restoring reality, not invalidating decided design.
+
+ID 3v3r | Decision | certainty=Medium importance=Medium | domains=Information.RecordKeeping | referents=(none)
+DESC: Spirit gains an explicit CollectRemovalCandidates operation as a Signal root. It collects all records currently at Zero certainty (the removal-candidate marker per the existing supersession protocol) and emits their summary form to a configurable output target. Separates the discovery / extraction concern from the destruction concern in Remove — gives agents a discrete step to archive or inspect candidates before any irreversible action.
+
+ID 3jkx | Correction | certainty=Medium importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Spirit record 2590 is negated: Spirit record identity should use a random/opaque hash, not a content-address fingerprint. Because records can mutate, content-addressing adds computation and little value while implying stable-content semantics that no longer hold.
+
+ID 3w61 | Clarification | certainty=Medium importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Spirit random identifier codes should use four characters as the minimum displayed/queryable code length, aligning with Beads practice.
+
+ID 5g5h | Decision | certainty=Medium importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Spirit needs a real record mutation path so an existing intent record's content can be edited in place instead of requiring remove-and-recreate.
+
+ID 8g9n | Principle | certainty=Medium importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Hard deletion of intent records is inevitable on a long enough timeline because storage is finite, so the design must treat hard deletion as a deliberate decision to plan for rather than a state to forbid
+
+ID itn7 | Clarification | certainty=Medium importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Production Spirit zero-certainty review is not the same as deletion; the system should expose an explicit garbage-collection path for removing reviewed records whose certainty is Zero.
+
+ID jrx5 | Correction | certainty=Medium importance=Minimum | domains=Information.RecordKeeping | referents=spirit
+DESC: Spirit record 3v3r is refined and superseded on the operation shape: CollectRemovalCandidates is a single COMBINED guarded operation, not an emit-only extraction that leaves destruction to a separate Remove. It archives the Zero-certainty candidates and then retracts them in one call, with archive-first safety — if archiving fails nothing is retracted and the affected candidates return archive-failed. The discovery-versus-destruction separation 3v3r sought is preserved inside the one operation, archive preceding retract, rather than by splitting into two operation roots. This matches the deployed behavior and record o70j which archives before removal.
+
+ID otel | Constraint | certainty=Medium importance=Minimum | domains=Information.RecordKeeping | referents=(none)
+DESC: Intent capture should become denser and less verbose: durable records should preserve the clarified intent without carrying large verbatim blocks that bloat output and become lossy to work with.
+
+ID uh8l | Decision | certainty=High importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: Build a real-time intent-recording system that runs always-on on Prometheus, uses a real-time multi-modal model (the psyche referenced Gemma's latest), and captures psyche-spoken intent automatically. Triggered by the loss of a ten-minute spoken design session the psyche assumed was being recorded. Prometheus has done prior research showing this is achievable on currently-available models for negligible compute cost. *natural language processing*
+
+ID p7kn | Decision | certainty=Medium importance=High | domains=Technology.Software.Intelligence | referents=(none)
+DESC: Install both big gemma 4 multimodal models on prometheus: the 31-billion dense one for maximum quality and the 26-billion mixture-of-experts one for fast inference since only about four billion params activate per token. Both at bf16 with the f16 vision projector. Refines the biggest-that-fits correction: install both rather than a single model. *model inference*
+
+ID 8iqe | Principle | certainty=Medium importance=Medium | domains=Technology.Software.Intelligence | referents=(none)
+DESC: Speech-to-text support for video work should be tiered: use the best practical transcription path on the large AI node, while keeping a smaller local speech-to-text option for less capable machines. *natural language processing*
+
+ID yw46 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Intelligence | referents=(none)
+DESC: Deploy multiple Gemma 4 quantization variants as separate selectable models in the llama-server router, each named by its quant in the modelId such as gemma-4-26b-a4b-bf16 and a 4-bit variant. The user picks quality versus speed per use rather than committing to one quant. Extends record 1033 bf16 by adding lower-bit options alongside it, not replacing it; the router serves each by name from its own GGUF set, sharing one mmproj per base model. *model inference*
+
+ID 2091 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: The recording system detects intent boundaries via spoken keyword markers in the psyche's speech: variations of 'Beginning of intent' and 'End of intent' (including 'Beginning intent', 'End intent', etc.). The recorder is always running so the model carries full surrounding context; the markers tell it which spans to extract as discrete intent entries. *natural language processing*
+
+ID 8pgh | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: Local Pi and agent sessions should be able to use the prometheus-hosted local LLM models, including the new Gemma 4 multimodal models, as a selectable local provider. This is the consumption side of the Gemma deploy of records 1015 1022 1032 1033: the models are served on prometheus and local agents should call them. *model inference*
+
+ID mziy | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: The local AI toolkit should prefer a curated best/latest model per capability rather than carrying multiple near-duplicate models for the same role; Prometheus may prefetch large candidate models because it has enough memory/storage and models need not run simultaneously. *model inference*
+
+ID sqrk | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: Spirit observation should support intelligent topic retrieval that emphasizes recent intent by default while adapting historical depth to topic frequency: high-churn topics stay near the edge and quiet topics reach farther back for a comparable useful result set. *information retrieval*
+
+ID xnnb | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: The recording system must use voice recognition to filter out non-psyche voices — specifically, the psyche's wife who shares the residence. The recorder ignores audio that isn't recognised as the psyche by default; voice identity is the cutoff between recorded-and-processed and ignored audio. *natural language processing*
+
+ID 0s5u | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: Guardian training starts as a decision-log flywheel: every gated decision records candidate, retrieval bundle, verdict, and later override labels before any fine-tune. *model training*
+
+ID 1tpb | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: If the psyche passes the recording microphone to the wife while it is active, the recording system should recognise the voice change and route her speech to her own persona instance, spawned dynamically. The wife's instance is separate from the psyche's; intent captured belongs to her as a distinct psyche with her own intent layer. *natural language processing*
+
+ID 699n | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence | referents=(none)
+DESC: Spirit search may grow beyond simple filters toward weighted keyword or recency scoring, potentially using the Nexus language for richer query logic; this is exploratory direction rather than a settled immediate production requirement. *information retrieval*
+
+ID ur16 | Decision | certainty=VeryHigh importance=Maximum | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: Daemon configuration bootstrap model (ratifies the virgin-daemon idea 0yk3, psyche 2026-06-07). A daemon's single startup argument is a pre-generated signal-encoded (rkyv) Configure message — NOT NOTA (per e6ri; a deploy helper or CLI authors it as NOTA and encodes it to rkyv). Bootstrap depends on NO manager — not persona, no FD-handoff dependency; the daemon is self-sufficient at boot from its argument. The daemon opens the store named in the Configure: if the store is virgin/empty it applies the Configure as first configuration; if the store is already populated it SELF-RESUMES from the persisted store rather than re-waiting. The same Configure message type is accepted live over the meta socket for runtime reconfiguration, so bootstrap-config and runtime-config are one vocabulary.
+
+ID j4r1 | Constraint | certainty=VeryHigh importance=High | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: agents do not install software statefully in this workspace: no pip installs, persistent virtualenvs, or downloaded toolchains in the home directory. Use ephemeral nix shell or nix run only, matching the workspace ephemeral and declarative Nix ethos
+
+ID jtos | Decision | certainty=High importance=Minimum | domains=Technology.Software.Operations.ConfigurationManagement;Technology.Software.Programming.Compilation | referents=fenix,rust-build,signal-mind
+DESC: The cluster Rust toolchain is the newest nightly, not stable. It is pinned durably through fenix's flake lock — bump fenix to advance Rust cluster-wide — rather than a rolling stable channel guarded by a per-crate frozen sha256 hash that goes stale on every release. Per-crate flakes route the toolchain through shared rust-build, whose fromToolchainFile now yields fenix complete nightly (all components, no hash); a crate gets nightly by merely repinning rust-build.
+
+ID zeuy | Constraint | certainty=High importance=Minimum | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: Multiple agents must not share one jj working copy and concurrently advance the shared main bookmark — it causes commits to fork off-main and uncommitted files to be clobbered or lost between write and commit. The workspace needs per-agent jj workspaces (separate working copies via jj workspace add) and a single-writer-to-main discipline so only an integrator advances main, including for reports. The current shared-working-copy plus everyone-pushes-main setup is the root cause and must be eliminated.
+
+ID 7kyx | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: Create the cloud component as the cloud API management triad, with Cloudflare DNS, Cloudflare settings, and redirect rules as the first target.
+
+ID 1924 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: If VSCodium is enabled in a CriomOS-home profile, it should be the default editor for file-opening links and editor MIME handling for now, including Markdown and source files such as Rust.
+
+ID 242o | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: Ouranos swap and zram configuration should be expressed through cluster data and Horizon projection rather than a host-local CriomOS override.
+
+ID cx7y | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: Spirit archive storage should have a sensible daemon-derived default path and be configurable through daemon configuration.
+
+ID q87a | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Operations.ConfigurationManagement | referents=Horizon,CriomOS-home
+DESC: Horizon user preference data carries a typed preferred editor setting for each user, and Home/profile configuration consumes that preference instead of hardcoding editor selection downstream. Concrete per-user editor choices live in code or cluster data, not in intent-record descriptions.
+
+ID lc28 | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: For the lojix cutover, substituter resolution from node name to Yggdrasil cache URL and public key moves into the daemon: the daemon gains horizon-read for substituters and the wire reverts to carrying bare node names instead of pre-resolved url and public-key pairs. This is a for-now choice and the implementing code must be explicitly marked as must be replaced by better design, not treated as the final shape. Resolves the substituter-resolution-location question in favour of option a, provisionally.
+
+ID n5kp | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Operations.ConfigurationManagement | referents=(none)
+DESC: Cloudflare redirect configuration is desired after the DNS path if the available Cloudflare surface supports it cleanly.
+
+ID 6grf | Decision | certainty=VeryHigh importance=VeryHigh | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: Schema is a specialized NOTA dialect built on structural macro nodes — a schema file is full NOTA, not a separate language lowered into NOTA.
+
+ID 6cfr | Decision | certainty=VeryHigh importance=High | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: The separate Assembled Schema (Asschema) IR is removed; the resolution it performed (inline-declaration hoisting, visibility, ordering, symbol paths) lives as methods on schema-in-rust types used during the lower step, and the emitter does only Rust projection, not schema semantics.
+
+ID 813q | Decision | certainty=VeryHigh importance=High | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: The canonical pipeline: authored schema (NOTA) deserializes via the structural-macro-node codec directly into schema-in-rust (typed, rkyv-serializable, canonical round-trip), which then lowers into Rust interface code.
+
+ID 2i75 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: Schema imports are selective by name — import specific named types from another schema namespace rather than the whole namespace. Keeps concerns separated per engine/component. Uses the same names as the source namespace; no rename mechanism needed because per-component scope prevents conflicts.
+
+ID vpbx | Decision | certainty=High importance=Minimum | domains=Technology.Software.Programming.Compilation;Technology.Software.Programming.Macros | referents=schema-cc,schema-next,nota-next
+DESC: schema-cc is a new component, the schema compiler-compiler: the definition of the schema language and its compiler — reference grammar and dispatch precedence, built-in heads, shape vocabulary, emission rules — is kept as typed data that GENERATES the schema compiler, schema-next and schema-rust-next, rather than being hand-written, and bottoms out in the nota-next seed. Push as much of the compiler definition into data as possible. Extends 549v and v0n6 from the reference-resolution surface to the whole compiler.
+
+ID 1sa2 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: Schema/module-system correction: braces are structurally key-value maps; namespace is conceptually dynamic-enum-like; fully qualified schema names should use a single-colon namespace separator; crates carry schema/lib.schema entrypoints and schema modules; generated Rust emits into a schema module tree.
+
+ID 31nz | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: Schema supports inline declaration AND file-path references; paths get resolved into the full spec before macro processing
+
+ID 69jq | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: Import/name clashes fail within a schema context
+
+ID whr2 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: Schema language has a lowering executor — a recursive parser walks the NOTA schema tree and dispatches at each node based on bracket/paren shape, lowering the transient sugar form into a fully-specced canonical form. The dispatch rules: bare identifier = reference to namespace entry (resolved by lookup); square bracket vector = enum declaration with variants; single-paren single-identifier = newtype tuple wrapping the named type; multi-element parens = struct with positional fields; (fieldname [variants]) = inline enum field with explicit name. The executor assembles the full schema by resolving paths and references.
+
+ID yrsm | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Compilation | referents=(none)
+DESC: Schema node values lower by context
+
+ID d3r2 | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Programming.Compilation;Technology.Software.Programming.Macros | referents=schema-next,nota-next,schema-rust-next,triad-runtime
+DESC: Component code-generation direction, designed and prototyped (reports 656/660/661/664/665, operator 395/397), not yet integrated — captured at LOW certainty. The schema generates a component's Rust by EXPANDING bound universal frames into concrete owned interfaces, not by persisting generic aliases. The engine-codegen goal is NARROW: generate the repeated component-interface boilerplate — the Input/Output and work/action enums, payload structs/newtypes/enums, the standard inherent and trait impls (constructors, payload accessors, From legs, and scalar-newtype templates for Display, AsRef, and selected comparisons), the role and MARKER trait impls that say a generated type participates in a plane, an OPT-IN mechanical Deref whose body the newtype shape proves, and later a VariantMatch for enum-rewrap boilerplate. Traits and impls are the pipe-brace construct; their primary job is to express Rust RELATIONSHIPS as data — this generated type implements this role or trait — so hand-written engine code accepts generated nouns through typed bounds; an impl is a single shape-discriminated object with an optional leading parameter list and an optional trailing body. Method bodies are data ONLY for the small mechanical family whose body the schema shape uniquely proves (the newtype Deref projection); genuine business logic — the decision plane, store, guardian, query matchers, actor runtime, anything with IO, branching, or state — stays hand-written on the generated nouns. Representing arbitrary implementations as data is eventually possible but is NOT necessary now: the broad method-composition and shape-derived CAPABILITY-RESOLUTION work is proven and kept as a future tool used only for narrow mechanical bodies; the project does not need a broad callable method language, a std-method leaf allowlist, or arbitrary method-bearing impls to reach the engine-interface generation goal. Its durable principle — a schema-authored body is valid only when every call resolves from the receiver's schema shape — is retained. Generic impl-header emission with a parameter-bound vocabulary, the fn or signature sub-construct for trait declarations, ownership-aware payload-versus-into_payload projection, and a total VariantMatch are the open pieces. The generics-and-expansion leg is proven; the standard-impl and resolver legs are prototyped on parallel branches. The settled constraints and the open how are manifested in the schema-next and nota-next architecture files.
+
+ID el7z | Correction | certainty=High importance=VeryHigh | domains=Work.Productivity | referents=(none)
+DESC: Do not block waiting for a subagent to return. The prime designer's parallel-subagent workflow (intent record 57) means the agent runs OTHER work — own thinking, additional tool calls, context reading, chat preparation — WHILE the subagent is in flight, not as a synchronous wait. When a subagent is dispatched, the dispatching agent continues productive work and only checks the subagent's result at a natural integration point. The harness pauses the conversation until tool calls return, but the agent should always have multiple tools in flight rather than dispatching one and waiting.
+
+ID q9n2 | Correction | certainty=High importance=High | domains=Work.Productivity | referents=(none)
+DESC: when the psyche asks whether something is possible or asks to research tools, deliver the research and assessment and then stop; do not escalate unprompted into building, installing, or standing up a working pipeline. Implementation requires explicit instruction
+
+ID 0sef | Correction | certainty=High importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: When the psyche injects a short piece of information mid-task — a report, a clarification, a bit of context, often delivered by hitting escape so the agent reads it sooner — that is NOT an instruction to stop. The agent must keep working on its task. Only an explicit instruction to stop is an interruption. Agents must not drop their work or go passive because the psyche added information; the default is to absorb the info and continue executing. Dropping the work to check in is wrong behavior and wastes the chance to get work done.
+
+ID 0xqp | Principle | certainty=High importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: Running a Spirit Observe is standard routine practice, not an exceptional or optional step. Agents should observe recent Spirit records as a matter of course to let recorded intent guide the work — proactively at the start of and during substantive work — not only when the Spirit gate flags intent as unclear. Do not present running an Observe to the psyche as an open decision; just do it as a guide.
+
+ID 06jd | Decision | certainty=Medium importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: When an agent passes surfaces many open psyche questions, the move is to LEAN on pattern-recognition of psyche intent and propose an MVP that matches the letter of intent as much as possible, then surface only the truly-uncertain remainder. Surfacing 27 questions when 24 of them have inferable answers from the captured intent corpus is the wrong shape. Propose the MVP; ask only what genuinely cannot be answered from intent.
+
+ID 09do | Correction | certainty=Medium importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: Beads are coordination aids, not a substitute for implementation; when the psyche asks an agent to implement work, the agent should work the bead or code path immediately unless blocked.
+
+ID 3gpv | Correction | certainty=Medium importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: When agent tooling can still operate, treat transient connection warnings as non-blocking and resume the active assigned job instead of detouring into connection debugging.
+
+ID 42az | Correction | certainty=Medium importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: Agents should size effort to the request: a simple review or a what-do-you-think wants a lightweight read-and-judge pass or a single agent, not a multi-agent adversarial workflow; reserve expensive fan-out for explicit thoroughness requests or work too large for one context
+
+ID hg6k | Correction | certainty=Medium importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: In an active troubleshooting task where the user asked for a working connection, the agent should not stop at diagnosis when the next step is a narrow safe fix; it should apply the fix and then report the result.
+
+ID wvrt | Decision | certainty=Medium importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: After active implementation/prototype subagent work, run context maintenance and a fresh-intent audit over recent reports and code before deciding what to address immediately. The main operator should synthesize the returned work, choose sensible immediate fixes, and implement them rather than letting stale context drive the next slice.
+
+ID arb2 | Decision | certainty=Low importance=Minimum | domains=Work.Productivity | referents=(none)
+DESC: Long-term direction for intent recording: spirit-CLI-driven, intent-recording-of-role for all roles, in real-time, with Prometheus running the continuous capture. The chat-mediated capture pattern (psyche prompt → agent extracts intent → spirit-CLI record) gives way over time to direct real-time recording across every role's interaction surface.
+
+ID t803 | Clarification | certainty=High importance=High | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: The basic baseline meta operations of every meta-signal-component contract are daemon configuration: the meta plane carries a Configure operation that applies the component typed daemon configuration. This is the foundational content of the meta contract; component-specific privileged runtime actions build on top. Consistent with binary-only startup, where the daemon startup record is itself a binary meta-signal configuration message and later configuration arrives as authenticated meta-signal Configure messages, never flags.
+
+ID 6sxn | Decision | certainty=High importance=Minimum | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: Cloud component surface splits Mutate verbs onto meta-signal-cloud (privileged) and Query verbs onto signal-cloud (public). Cloudflare is treated as a state the cloud daemon reflects; refresh-by-querying is public; mutations require owner authority. Generalises to other providers and to any component whose state surface is a reflected external resource.
+
+ID pb1g | Decision | certainty=High importance=Minimum | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: Every component needs a meta slot because component configuration must not be available through the ordinary working signal surface. If no separate meta signal repository exists, the component repository itself creates and carries the meta signal surface.
+
+ID q33b | Principle | certainty=High importance=Minimum | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: Owner / permission / unpermission distinction can live as a data-type variant inside the signal itself rather than requiring separate sockets at the wire level. The signal can carry a Permission variant (Owner / Permission / Unpermission); a general socket could then route based on the variant prefix. Current implementation keeps the two-socket filesystem-managed approach (ordinary socket + owner socket, access controlled by filesystem) - that is good and stays. The macro implements as-if-two-sockets and the message is therefore authenticated by the socket it arrived on. Permission-in-signal-variant is not implemented now; defer until needed. Development mode runs as local user trusting itself; filesystem-managed access is sufficient.
+
+ID vudl | Decision | certainty=High importance=Minimum | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: lojix uses the two-contract authority split. Deploy Pin Unpin and Retire are owner-only policy and live in meta-signal-lojix; Query the WatchDeployments and WatchCacheRetention subscriptions and Unwatch are peer-callable and live in the ordinary signal-lojix. A deploy mutates the live cluster and can break the router so it is the strongest case for the owner socket. The policy contract is born meta-signal-lojix never owner-signal-lojix. Until cutover carry meta-signal-lojix as a local path-dependency package named meta-signal-lojix inside the lojix tree mirroring the cloud stopgap; create the standalone meta-signal-lojix repository at cutover.
+
+ID 2foy | Constraint | certainty=Medium importance=Medium | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: A content daemon's store stays unwritable by anything except the daemon itself — even root writing it would be system misbehavior. *access control*
+
+ID 569t | Constraint | certainty=Medium importance=Medium | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: A content daemon must have no ambient access to system private-key material and, handed a path to a private key, must be unable to read it. *access control*
+
+ID a4i6 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: Each agent has its own Criome identity. When an agent starts, it creates its identity — that identity record lives in persona-mind. The agent's Criome public-key is the authoritative authentication anchor. For complex interactions with Criome (especially agent-initiated) the path runs through the agent's own Criome daemon, because the agent has its own identity on Criome. Authorization can be checked against Criome rather than SSH for many workspace operations. Every component / daemon can escalate to Criome for an authorization check (e.g., orchestrator launching a new role requests authorization through Criome). The substrate for this is per-component-per-domain agent spaces: every persona component has its own agent space relevant to its domain.
+
+ID ugrn | Principle | certainty=Medium importance=Medium | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: A content/data daemon should be fairly privileged — ingesting and serving content is not especially dangerous — but never absolutely privileged; its privilege boundary is can-ingest-and-serve-content, not can-read-anything-on-the-system. *access control*
+
+ID 9s52 | Constraint | certainty=Low importance=Minimum | domains=Technology.Software.Security.Authorization;Technology.Software.Engineering.Architecture | referents=criome
+DESC: criome is per-Unix-user: each user runs their own home criome daemon with their own key custody, and the operating-system Unix-user boundary is the trust boundary. There is no single shared system criome that multiple users connect to with in-process separated lanes - that would collapse every user behind one daemon and one compromise point, a security risk. The privileged system criome tier from 9qm8 is for host-scoped system services under a service user, not a multi-user shared daemon; a user home criome peers with it for host-level facts rather than users sharing one criome. This is the same single-Unix-user custody boundary that rules out an embeddable criome engine library.
+
+ID qmsh | Constraint | certainty=Low importance=Minimum | domains=Technology.Software.Security.Authorization | referents=(none)
+DESC: Firmware gating should reuse existing policy surfaces rather than add broad Horizon schema. *access control*
+
+ID kfqa | Decision | certainty=High importance=Medium | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: the schema reader uses a multi-pass NOTA-first model: universal NOTA parser produces a generic NotaValue tree, then context-sensitive macro passes interpret values per their NodeDefinitionPoint position, then assembly produces canonical AssembledSchema; one syntax (NOTA), one parser, multiple semantic passes layered on top
+
+ID f8m3 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: Two bracket-string forms in NOTA: [content] inline-bracket-string for single-line strings; [|content\|] block-string for multi-line strings AND for strings that need to safely contain single [ or ] characters without escaping. The [|...\|] form delimits with [| / \|] so the content can include [, ], or newlines freely. Both forms are distinct NOTA shapes; the shape-logic layer (per /187) distinguishes them via is_block_string and the underlying parser.
+
+ID nj2n | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: NOTA parsing breaks down by object using positional ranges. Each block tracks its source span (line/column for both start and end on the original text). Each block carries methods/predicates to query its structure: is_square_bracket_block / is_parenthesis_block / is_brace_block; holds_single_root_object / holds_two_root_objects / holds_N_root_objects; recursive predicates like second_root_object_is_a_square_bracket_object / second_root_object_qualifies_as_a_symbol. Recursion: each root object inside a block is itself a typed/positioned block. The recursive parsing chain IS the chain of block-level queries.
+
+ID nszl | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: Schema parsing operates in multiple passes per source block. Pass 1 finds all identifier uses and their source locations. Pass 2 registers inline declarations into the namespace and resolves identifier references through namespace lookup. This supports the shorthand syntax where a header variant can be bare PascalCase looked up in namespace inline declaration auto-registered or explicit Variant Payload form. The multi-pass approach lets the engine know whether each identifier defines a type references a type or both — guesswork is eliminated by the source representation rather than rediscovered from lowered fields.
+
+ID 07ic | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: NotaBodyDecode is the semantic decode entry point. Document and block decode surfaces strip their wrapper context and delegate to the body decoder rather than carrying independent semantic parsing logic.
+
+ID e0gd | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: Block reassembly after parsing: blocks concatenate one-after-another. The parser output is composable - blocks join sequentially. Reassembly does not require nesting reconstruction; parsed blocks are first-class units that can be re-emitted in order.
+
+ID fhyb | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: Schema parsing should first identify the NOTA object delimiters and their schema-language roles: parentheses for enum or variant objects, square brackets for vector-like object sequences and string-derived token vectors where legal, and curly brackets for name-value namespace maps.
+
+ID hnog | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: After NOTA structural parsing matches a file body or a delimited object, the next semantic parsing step should receive the matched body's inner object stream rather than the outer delimiter wrapper. Known-root files and matched delimited objects share the same body abstraction: the expected type decides whether the body is read as a struct, vector, enum variant, or other value.
+
+ID n7ac | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: Schema source needs its own typed node model before assembled schema: a streamlined data tree of typed structural-macro nodes, namespaces, paths, fields, variants, and references. The source model should represent schema syntax directly and deterministically, including inline PascalCase local type declarations and self-named field shorthand, before lowering into assembled schema and Rust emission.
+
+ID s4xx | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: Bare identifiers resolve to namespace objects
+
+ID xsp1 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Programming.Parsing | referents=(none)
+DESC: Schema should be able to act as its own codec for its shorthand authored form, so shorthand schema syntax round-trips as typed schema data rather than being only a one-way parser convenience.
+
+ID t4gd | Principle | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: A daemon binary must compile with no NOTA code at all. NOTA encode/decode is a thin-CLI text-edge concern only; the daemon speaks binary/rkyv exclusively and must not pull nota-next into its compiled artifact. Component crates gate NOTA behind a nota-text feature that only the CLI binary enables, so the daemon build is NOTA-free. Pairs with signal being NOTA-free.
+
+ID rc8v | Decision | certainty=High importance=High | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: Drop the persona- prefix from component crate names across the workspace. spirit/router/message/mind/orchestrate/harness/terminal/introspect/system/engine-management — all rename from persona-X to X (and signal-persona-X to signal-X, owner-signal-persona-X to owner-signal-X). EXCEPTIONS that keep persona- prefix: agent-harness components (persona-codex, persona-claude, persona-pi, persona-gemini, persona-open-code) because they are agent-process harnesses not architectural-pattern components. Persona itself stays persona — that is its NAME, not a prefix on something else.
+
+ID e2px | Clarification | certainty=High importance=Medium | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: Why a component contract is split into separate signal-component and meta-signal-component repositories rather than living in the daemon repo. First, rebuild-churn isolation: peers that only need to talk to a component depend on the small contract repo, so they recompile only when the wire contract changes, not when the component internal logic, runtime, or documentation changes; keeping the contract in the daemon repo would rebuild every dependent on any internal edit. Second, security-sensitivity visibility: owner-only operations live in a distinct meta-signal repo, making security-sensitive edits obvious and letting clients that do not need owner authority avoid depending on it. Third, meta-signal is optional: some components have no owner relationship and only need the ordinary signal contract to talk to peers. The split is about compilation and dependency isolation and authority clarity, not about where state or logic lives.
+
+ID f8ds | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: Component triad pipeline split — Signal interface declaration lives in the signal-<component> contract repository because clients depend on the Signal contract; the daemon imports all Signal types from the contract crate. Nexus and SEMA interface declarations live in the daemon repository because they are daemon-internal runtime concerns. Exception/extension — when a daemon grows a separate scale-out database the SEMA interface may also extract to a contract repository for the database client. The contract repository IS the canonical source for client-facing Signal types; daemon-internal Nexus/SEMA stay local until separation is needed for scale. Workspace template for every component triad going forward.
+
+ID 62r4 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: The schema-derived stack uses separate repositories for nota-next, schema-next, and schema-rust-next rather than one combined integration repository.
+
+ID 7tqc | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: Daemons should mostly contain component logic and algorithms that engines run; repetitive startup, runner, and transport boilerplate belongs behind libraries or macros.
+
+ID bxx7 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: Cross-schema imports support a future shared schema library mechanism — locally-defined namespace types from another schema can be referenced and imported. Library extraction is deferred but the design should leave room for it. For MVP, Spirit defining all its types within its own schema is sufficient.
+
+ID k4d9 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: Generated internal Nexus-plane nouns should not be casually promoted to the daemon crate root or public contract surface; they belong in the plane schema/module, and future crate boundaries should keep internal Nexus vocabulary separate from wire-facing signal APIs.
+
+ID wr8s | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: Crate name for the VersionProjection home is version-projection, peer to signal-sema
+
+ID td4h | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.Modularity | referents=(none)
+DESC: The schema type library (the macro substrate) MAY live in a separate repo from the schema component daemon if separation works better organizationally. Two possible shapes: (i) co-located — schema component triad holds daemon + the schema-types library in the same repo; (ii) separated — a dedicated schema-types library repo distinct from the schema component triad, both consuming the same compiled NOTA schema artifacts. Lean unsettled; depends on whether the library carries a meaningfully different release cadence from the daemon, and whether other consumers of the library would prefer to depend on a small library crate rather than pulling in the triad scaffolding. The compiled schema artifact (binary form per spirit 398) is the same in both shapes; only the crate-layout differs.
+

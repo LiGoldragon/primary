@@ -1,0 +1,60 @@
+ID l6zw | Correction | certainty=High importance=High | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: A component contract (signal-<component> and meta-signal-<component>) carries ONLY the wire messaging vocabulary: the Signal Input and Output roots, their record types, and the wire codec. Nexus and SEMA are daemon-internal runtime planes and must NOT appear in any contract schema. The client sends and receives only Signal messages; the client never sends a Nexus object or a SEMA object, ever. The schema-derived contract therefore emits wire types and codec only, not engine traits; SignalEngine, NexusEngine, and SemaEngine all live in the daemon (<component>), which imports the contract Input and Output. The first cloud-port prototype wrongly copied the spirit single-repo all-in-one schema shape into the signal-cloud and meta-signal-cloud contracts, embedding Nexus and SEMA in the contract — a design error being corrected; whether schema-rust-next needs redesign to support the contract-versus-daemon split is under audit.
+
+ID x1rz | Correction | certainty=High importance=High | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Spirit creation replies should return only the created record UID, not a SemaReceipt containing both UID and database marker.
+
+ID f8k7 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: The agent component models LLM providers as a generic OpenAI-compatible API with endpoint, model, and key as configuration, so adding a provider is configuration rather than a contract change
+
+ID r0le | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: When an interface is defined, the enums and structs that create the root data structures collectively create a global namespace for symbols. Each typed symbol — type, variant, field, operation, route — has a fully qualified identity expressed as a path through that namespace. The SymbolPath name from designer 487.2 generalises beyond help — this is the workspace's canonical machine-readable universal symbol form, not a per-design ad hoc convention. The fully-qualified path is how machines reason about identity inside the typed schema; NOTA renders the same path as a human-readable text form at user-facing edges.
+
+ID udgu | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: In persona-orchestrate's lane registry, the discipline (role) field is an open identifier — string-shaped — not a typed enum closed over today's four roles. Roles are user-extensible: the workspace should be able to add new disciplines quickly without contract bumps. Settles Q2 from reports/second-designer/2-persona-orchestrate-lane-management-2026-05-21.md; reaffirms and refines the prior dynamic-roles intent (intent/persona.nota 2026-05-19T15:04:19Z) with explicit application to the typed orchestrate contract. Implication: role creation should be a quick, single owner-channel operation; the operations that add a new role should be designed for rapid invocation by the psyche.
+
+ID w190 | Decision | certainty=High importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Lane management moves from the transitional bash tool tools/orchestrate to persona-orchestrate (the typed component) as the destination shape. Reaffirms the prior direction in intent/persona.nota that persona-orchestrate replaces tools/orchestrate; adds explicit scope that the lane registry (orchestrate/roles.list today) and the claim/lock surface are part of the work that moves. The next slice for persona-orchestrate's contract should make lane registration and lock acquisition first-class operations on its working signal.
+
+ID w6y1 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Every PascalCase name appearing in the schema header (Input root enum body, Output root enum body, NexusWork, NexusAction, SemaWriteInput, SemaReadInput) becomes an exported top-level type. Library consumers of the schema can import these names. The header IS the component's public type-level interface — each header variant is a public thing with a name and a definition (in the namespace or inline). This makes the header read as a contract: these are the verbs and replies this component supports, each backed by a real exported type.
+
+ID tkur | Correction | certainty=Medium importance=Medium | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: DeepSeek provider integration belongs in the agent component; deployment surfaces supply provider/model configuration and the secret handle to agent.
+
+ID 2f04 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Formalizes Spirit 1395 — an interface is an enum at the root with MORE THAN ONE variant. If a designer cannot name more than one operation the root represents the design is incomplete and not an interface. Single-variant enums prove themselves newtypes in practice. Input and Output are the two primary interface roots; payloads are themselves either structs (leaf data) or enums (nested interfaces). The interface chain depth measures design realism.
+
+ID 94ee | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Do not keep old design convenience APIs after the working interface exists. The stack should keep one active working API moving forward and remove legacy or convenience surfaces instead of maintaining parallel ways to express the same runtime path.
+
+ID cbtg | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: The schema daemon resolves and caches schemas in memory. Agents and code emitters query the daemon to resolve namespace references; the daemon owns the namespace surface and the cache. All cross-schema resolution flows through it. The schema daemon is the runtime arm of the precompiled-schemas library.
+
+ID cgd8 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Daemon configuration should be changed through the meta-signal socket; configuration verbs live in the meta-signal contract.
+
+ID hefy | Constraint | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Spirit write acknowledgements should be token-cheap and should not echo submitted intent content
+
+ID str0 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Each engine trait's method count matches the count of distinct wire events that plane handles — SignalEngine has two methods (triage on input arrival, reply on output emission) because Signal handles two wire events; NexusEngine has one (execute) because it is a synchronous compute step; SemaEngine has two (apply for writes, observe for parallel reads) per Spirit 1332. Resolves the divergence between designer 454 uniform-execute and spirit-next b53f4fc2 triage+reply implementation — the implementation is honest engineering, the spec gets revised to method-count-matches-wire-events
+
+ID xiqa | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: When a match between two domains has no defined behavior in a cell the response is a TYPED error or help message - Unavailable / Unauthorized / NotImplemented / whatever is appropriate to the interaction. This typed-response IS part of the trait surface; not an exception or unhandled-default. The error response itself is in the domain enum so the caller can match on it.
+
+ID yr2w | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Persona Pi extension namespace is NOT a mirror of Pi's native namespace. We build an extension that plugs into the Pi infrastructure, but we DO adapt the surface to the workspace's signal-data-tree design philosophy: methods belong to nouns, typed records over flat functions, recursive enum-shaped namespaces, no free helpers. Where Pi exposes a flat function name like "query_negative_database_from_behind", we break it into an object (NegativeDatabase) with methods (from_front, from_behind, from_below, from_above) — the prefix becomes the noun, the suffixes become methods on it. We see how Pi says things and adapt our own philosophy to that translation. The adaptation layer is the persona-pi extension; the underlying Pi machinery stays Pi-shaped.
+
+ID zm8n | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Provider integrations may be build-time opt-ins, and capability observation must distinguish built-but-unconfigured providers from providers not built into the daemon.
+
+ID jvpe | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Cloud provider support should be build-selectable; unsupported provider requests return a typed unsupported-capability reply, with future self-upgrade possible when support is cheaply available.
+
+ID q7u5 | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: Pi extension APIs should be adapted into Persona signal-tree vocabulary
+
+ID ublb | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Engineering.ApplicationProgrammingInterfaces | referents=(none)
+DESC: gap-fill on the directive operator received - the schema-emitted data types are positioned as REST-shaped at the wire layer; the psyche said the data type REST is emitted by this schema system and the single-owner system mirrors the REST concept; this frames the wire protocol architecturally as REST where schema defines the resource/message types and the single-owner state-of-record property mirrors RESTs stateless-server-with-canonical-state semantics; operators record 945 captures schema-creates-actor-enums and 947 captures schema-objects-as-method-surface but the explicit REST architectural framing is implicit; this gap-fill makes the framing explicit so future agents see REST as the wire architecture pattern not just data-type-emission
+

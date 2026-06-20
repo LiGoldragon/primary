@@ -1,0 +1,123 @@
+ID a9sq | Decision | certainty=VeryHigh importance=High | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: The rkyv binary form is the SINGLE encoded representation that lives in BOTH the database (sema body at rest) AND on the wire (signal movement between clients). One byte layout, two homes. NOTA is the text-readable projection emitted at CLI read time or for human inspection. Same AssembledSchema reads bytes in both contexts; same encoded form survives storage and transport.
+
+ID hc0t | Constraint | certainty=VeryHigh importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: The assembled schema - the .asschema - is canonical NOTA ONLY: the round-trip form produced by AsschemaNotaWriter and parsed by AsschemaNotaReader. The hand-rolled human-readable line format - the one printing the word fixture then a name, identity, imports, macro_trace, and types written as newtype-name then the equals sign then the type, with indented lists - is FORBIDDEN and must never be produced again, whether named .asschema or .witness.txt. Even as a so-called readable witness it is rejected: delete it, do not rename it. Everything is data; the only assembled-schema representation is NOTA and rkyv. This applies record 1109 specifically to the assembled schema. The psyche stated this with maximum force after the format resurfaced repeatedly.
+
+ID bkcd | Decision | certainty=High importance=VeryHigh | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: rkyv is the universal wire base for the schema-derived stack; NOTA codec (NotaDecode/NotaEncode + derive) is OPT-IN per consumer. Every client needs the binary rkyv representation to talk to the daemon at all. Only DOUBLE clients (text + binary, e.g. the CLI) need the NOTA derive; binary-only clients (the daemon, future binary-only consumers) must NOT have NotaDecode/NotaEncode impls compiled in — for (a) leanness (daemon decoder cost / dependency closure) and (b) contract clarity (the daemon's wire shouldn't even ACCEPT NOTA text; the absence of NotaDecode at the compile boundary enforces this structurally). Same data types across consumers — what differs is the derive set, not the wire shape. Schema-rust-next's emitter must produce both forms from one .asschema. Wire byte-compatibility comes from the shared rkyv layout being identical regardless of whether NOTA derives are present. Mechanism research in report 430 (cargo feature on the contract crate + structural split of binary crates so feature unification does not merge daemon and CLI). Per psyche 2026-05-30.
+
+ID ypb5 | Decision | certainty=High importance=Medium | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Spirit record privacy is an Optional field: a public record's privacy is None and an elevated-privacy record's is (Some Magnitude); optionality is the explicit None token, never an omitted positional field, since every NOTA positional record carries every field.
+
+ID j3bq | Decision | certainty=High importance=Low | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Privacy is available to any record kind, not tied to specific kinds.
+
+ID 0wt5 | Constraint | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: The CLI boundary is NOTA, while component-to-component messaging must be binary rkyv; tests should prove both boundaries rather than only exercising in-memory Rust types.
+
+ID 3naf | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: The prior t6s1 wording was too broad: the durable principle is that NOTA encoders should not over-bracket bare-safe string atoms. Bare-safe strings may encode as bare atoms inside typed positions such as vectors, while bracket forms remain for strings needing whitespace or delimiter safety. *encoding*
+
+ID 4vde | Principle | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: SEMA is the compact data format defined by schema.
+
+ID 5fdr | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Signal must be NOTA-free. The signal layer (signal-frame and the signal-component / meta-signal-component contract crates) carries binary/rkyv only and contains no NOTA encoding or projection on its request/reply types. NOTA is a separate text-edge concern that lives outside signal, not a nota-text feature inside the signal crates. This supersedes the nota-text-on-signal projection pattern.
+
+ID bexd | Principle | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Component feedback, status, and error reporting is expressed as typed self-descriptive NOTA enums and structs whose names carry the meaning, not as long string description messages. A result type should be so well named it needs no accompanying message string — our own feedback language built from enums and structs decoded through NOTA. This specializes strings-only-at-the-edges to the messaging surface and should be manifested into the architecture.
+
+ID h053 | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Assembled schema is typed data that should be storable as rkyv bytes in a SEMA database and re-exportable as .asschema NOTA text through the same Nota-derived/NotaEncode types, so the database copy, binary archive, and text artifact are projections of one typed Asschema object.
+
+ID hu8i | Principle | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Schema and schema-emitted Rust should sit on top of the same NOTA typed interfaces that direct Rust code uses. Reusing NOTA decode encode traits is better engineering than emitting a parallel mini-codec for each generated schema.
+
+ID ji0f | Decision | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Schema source representation should become its own typed value with a dedicated in/out codec. The codec reads strict NOTA/schema source into source-node data and writes it back canonically, separate from raw NOTA parsing and separate from assembled Asschema serialization. This gives schema syntax a real data representation before lowering.
+
+ID k27m | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Manual string formatting that pretends to be a NOTA type is forbidden. NOTA output must come from the typed codec surface: values derive or implement the codec honestly, and a printed type label must be a real decodable type shape rather than a hand-authored display string.
+
+ID l1ip | Clarification | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: When a schema file is loaded, the shape of its ROOT STRUCT is known a priori - before the file is opened - because the root KIND (base schema or reactive schema) is a known built-in type signaled from outside the content. So the file does NOT name the root, does NOT name the root structs fields, and does NOT state their types - all of it is already known; the file supplies ONLY the positional VALUES at the roots known slots. This is tighter than an ordinary struct: an ordinary struct field writes its type and derives its name, but the root struct writes neither type nor name, only the value. Thus a base schema file is just its namespace value, and a reactive schema file is the bare input enum, the bare output enum, and the namespace - no Input or Output labels. The root field names input output namespace live once in the known root type, never repeated per file - the root already has names. Consequence: the current four-position document that writes labeled Input and Output positions does not match this; honoring it drops those labels, even in root.schema. Single requirement: the root kind must be known from OUTSIDE the bytes - extension or load context - like a Nix derivation whose shape you know before filling it.
+
+ID n5ch | Principle | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: NOTA mirrors the binary self-describing root object plus relative-pointer box layout. For complex schemas, the root object stays compact (sized fields inline); unsized or growing fields (String, Vec, Option-of-unsized, nested records with their own growth) become BOXES that appear AFTER the root in declaration order. No box-index naming is required because the order of boxes matches the order of declaration in the schema. A coordinate notation supports access into the box-vector: (vector-N element-M) reads as the M-th element of the N-th box vector. The text form thus becomes a direct projection of the rkyv-style binary form where a fixed-size root carries relative offsets to heap-allocated unsized data following it. Second-designer was already wondering about this; psyche ratifies the direction.
+
+ID rmb8 | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Across the schema and NOTA stack, do not split one semantic object into separate source and serialized artifact datatypes unless there is a real semantic projection. Source text and checked-in artifact data should share the same typed noun when they represent the same object.
+
+ID t6s1 | Correction | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Typed NOTA projection should not introduce redundant wrapper delimiters when the enclosing head already determines the positional payload shape; operation roots should render their payload fields directly where the schema shape is unambiguous.
+
+ID wv2a | Principle | certainty=High importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Canonical name for the 64-bit per-message prefix is short header (or 64-bit short header). Replaces prior names: Tier 1 micro, small message, small object. Every message carries this short header; everything else is body. The structure is 8 enums total — one root enum plus seven sub-enums — together occupying the 64 bits. The header carries discriminator information only; variant payload data lives in the Tier 3 body, NOT in the header. Version is NOT in the header — the engine enforces version at the database level (a database is at one schema version; migration changes the database, not per-message tags). Time-indexed version is a possibility but not load-bearing since the plan is to upgrade all messages together. *encoding*
+
+ID ppp4 | Principle | certainty=Medium importance=Medium | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Opaque content-addressed identifiers (blake3/sha hashes and similar) tokenize at roughly one token per character in LLM context because they are not natural-language words, so wherever they land in agent context, logs, references and reports they are a significant recurring cost. Identifier design must treat the shortest reliable identifier as a first-class target — short readable locators over full long hashes — balanced against collision risk: the full digest stays canonical identity, the exposed locator is a stable shortened form never renamed once exposed. *encoding*
+
+ID 0dys | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Spirit operations should support a simpler-to-more-complex variant ladder — short forms with summary defaults for normal/common operations, complex forms with full metadata for custom/precise operations. The ladder lets the psyche or agent choose the right explicitness level per moment. Short forms serve daily use without the cognitive cost of full NOTA; complex forms preserve precise control for cases that need it. Both shapes coexist in the wire vocabulary as distinct operation roots; the complex root is canonical, the short root expands to a default form of the complex root.
+
+ID 44dp | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Short header is represented in the schema as a vector of variants — square brackets [Variant Variant ...]. Up to 7 data-carrying variants per the 1-root-plus-7-sub-enums short-header structure (per intent 388-389). Variants are unit (bare PascalCase) or data-carrying (parenthesized name plus data). The header vector is positional and ordered.
+
+ID 4t23 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: data-carrying variants take the first seven enum slots (0-6); unit variants come after; this slot-assignment policy makes adding a new unit variant a no-op upgrade on the wire format
+
+ID 7rgy | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Root header variants are limited; nested header variants are broad.
+
+ID 8u1o | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: common workspace identifiers (record, forward, send, and similar) are already stored as enum-encoded composite names; the namespace is composable across components and enables multilingual labels because the wire form is the discriminator, not the string *encoding*
+
+ID edqu | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Contract schemas should be explicit content-addressable layout schemas for rkyv migration
+
+ID fry8 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Schema variant namespaces can reserve explicit numeric ranges for higher-level spaces such as query and response, so the encoded representation reflects the logical split before deeper payload parsing. *encoding*
+
+ID hhaf | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Known-root NOTA serialization must not be implemented as ad hoc field string joins on each schema object. A file read as a known root type is already the root body; the NOTA layer should expose an object/body parsing and encoding abstraction that reads and writes the ordered fields of the known type.
+
+ID lf7y | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Assembled schema can have reserved scalar pass-through type references for built-in scalar types such as String, U64, Boolean and similar Rust primitive/domain-floor types, so the assembled form can write the scalar directly instead of wrapping it as Plain(String). Those reserved names are not available for user-defined data types.
+
+ID mvmu | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Short-header packing optimization. The 8 sub-enums default to one byte each (256 variants per slot) but can be smaller or larger. Small sub-enums fit in fewer bits — Bool fits in 1 bit (Bool is an enum of two variants). A sub-enum with 16 variants fits in 4 bits, freeing 4 bits at that byte position for other use. Multi-byte sub-enums are allowed when one sub-enum needs more than 256 variants — combine two or more byte positions for that enum. Freed bits can encode deeper variant nesting (the name of more inner variants), giving the header more discriminator depth without growing past 64 bits. Integers are NOT valid sub-enum kinds — they are typed values not discrete variants; only enums (including Bool) fit. *encoding*
+
+ID o3kn | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: enum space can be pre-allocated by inner-type semantics so each enum occupies the minimum bits its variant set requires; Boolean fits in one bit, Option in two (None vs Some-with-inner-tag), and micro-enums let SEMA fit smaller than rkyv with raw enums by pre-breaking the encoding space by type *encoding*
+
+ID pdbn | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: The root schema-generated signal object should carry the signal-frame protocol behavior needed for rkyv serialization and process-to-process dispatch, with caller/process-origin support integrated when that library is ready.
+
+ID pmg5 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: TraceEvent should be a transparent newtype or direct ObjectName trace root when its only payload is the activated object name; a one-field struct creates noisy double-delimited NOTA instead of the intended single object shape.
+
+ID qat2 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: The macro library source and serialized macro-library artifact should use one datatype for source entries. A SchemaMacro record should fit into one serializable enum variant type rather than a separate source enum and data enum split.
+
+ID u71r | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Refined 64-bit signal type structure: byte 0 is the ROOT VERB (the most universal quality, beingness of the object — e.g. Help, Query, Message); bytes 1-7 are 7 data-carrying sub-variants forming the verb namespace. 8 enums total: 1 root + 7 sub. The verb-space is itself a single enum. Macro standardizes the verb-at-root pattern. Verb chosen as load-bearing root because verbs unify across namespaces *encoding*
+
+ID wiq2 | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: The basic schema-emitted type definitions should derive NOTA traits and rkyv traits from the same data objects. Additional communication traits belong on the generated schema root objects when those objects cross component boundaries.
+
+ID x2su | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: input and output are PARTITIONS of a single enum tag space - not two separate independent enums but two halves of one tag namespace at the wire level; the conceptual split for a 1-byte enum carrying ~240 slots is approximately two-thirds: first ~120 slots reserved for INPUT variants, slots ~121 to ~240 reserved for OUTPUT variants; this means at the wire byte level a single tag byte identifies BOTH the variant and whether the message is an input or output by which range it falls in; the schema author declares Input and Output separately at the schema level but the rkyv-compiled binary form merges them into one tag space; this is also the conceptual basis for the structural header at the message layer - first byte tells you immediately whether to dispatch on input handlers or output handlers; the specific 240-slot 120-120 split is illustrative not locked - larger enums get larger spaces *encoding*
+
+ID x4tx | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Three-tier signal type sizing: (1) 64-bit micro-message — the default auto-loggable variant every Signal Operation/Reply/Effect/SemaObservation implements via macro, packing root variant tag plus packed sub-discriminators into a u64; (2) 64-byte summary message — hand-implemented when a type has natural summary fields (public key + metadata, short string, etc.) — basis for a second subscription tier; (3) full unrestricted message — current rkyv-encoded records. Variant always at the root. Macro autogens tier 1 trait. Research needed on what fits in 64 bits and 64 bytes plus storage/logging efficiency
+
+ID yjvy | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Signal root-level macro composition emits 64-bit super-tiny message headers. The 64 bits encode root type plus variant kind (data-carrying or unit) plus type info sufficient to discriminate any object in the namespace; object recognition is constant-time on the header. Every signal contract macro emits headers matching exactly this namespace shape.
+
+ID yzwg | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: Universal data variants pre-allocated across all signal namespaces (U8, U16, possibly more primitive types). Every namespace inherits these as primitive sub-variants. Use cases: Criome 16-bit short ID for its public key (so all logs carry the short ID for human readability); generic counters; small fixed-size values shared across components
+
+ID zg84 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Data.Serialization | referents=(none)
+DESC: The assembled schema visibility wrapper should be written as a normal NOTA data-carrying variant shape: (Public Name Value) and (Private Name Value), with Public or Private as the variant head followed by the name and value fields.
+

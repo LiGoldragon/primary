@@ -1,0 +1,60 @@
+ID 8fe9 | Principle | certainty=High importance=Medium | domains=Technology.Software.Distributed | referents=(none)
+DESC: The Cloud daemon distinguishes Mutate-sent (request issued to the provider, not yet acknowledged — a pending state) from Mutated (provider-acknowledged, confirmed); the state the daemon holds is last-known-acknowledgment, not necessarily what the provider would report if queried right now. *replication*
+
+ID p6j5 | Decision | certainty=High importance=Medium | domains=Technology.Software.Distributed | referents=(none)
+DESC: Cloud's Plan operation is renamed to Mutate, and its acknowledged-state reply is renamed Mutated. *replication*
+
+ID 2alg | Decision | certainty=High importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: The lojix deploy daemon MUST serve multiple connections concurrently and must not block while a deploy nix build is in progress. The host driving lojix dispatches many deploy commands at once, for example updating several hosts in parallel, so the daemon accepts and processes several connections at the same time. This resolves the audit 29 open question decisively against the single-writer serial model: lojix uses a concurrent worker model. Consequence: the engine in-flight deploy state is PER-REQUEST — each connection handles its own deploy pipeline cursor — not a single shared slot; the durable Store is the shared concurrency point locked only briefly per sema operation; long-running nix effects run without holding any global lock. Concurrency is bounded by a connection permit cap to avoid unbounded resource use. *fault tolerance*
+
+ID i6ih | Principle | certainty=High importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: Component state across the Criome stack is last-known-acknowledgment, not live-query. Components with a relationship of state constantly agree via natural acknowledgment, forming a quorum-of-agreement. This is the root pattern at Criome — components share state by always agreeing whenever it changes. External non-Criome systems (current cloud providers) break this; until they speak the protocol, the local state is the last acknowledgment we received from them. Future federation will enable cross-stack last-known-state status with non-Criome providers. *replication*
+
+ID 07pn | Decision | certainty=Medium importance=VeryHigh | domains=Technology.Software.Distributed | referents=(none)
+DESC: Every message carries an ORIGIN ROUTE as automatic metadata that is NOT declared in the schema - it is implicit on every message - acting as a return address that travels the whole way through signal then nexus then sema and back, so a reply is associated with the originating query when it returns. The origin route is internal to each component, a short statistically-unique identifier with effectively no clashes; it need not be a long hash, it is just a return address echoed back. Refines the message-identity intent records 930 960 by making the correlation identity an implicit round-trip return-address metadata field rather than a schema-declared field. *remote procedure call*
+
+ID 3got | Decision | certainty=Medium importance=High | domains=Technology.Software.Distributed | referents=(none)
+DESC: Communicate is its own TRAIT - the wire interface used between any two components like CLI and daemon; the Communicate trait implementations use binary rkyv format with the signal-frame mechanism; signal-frame provides connection setup, asynchronous unique IDs for request-reply correlation, and connection handshake for initialization; every component also needs a universal MAIL HANDLING system - a mail state manager that queues messages between sender and daemon receiver; mail accepted into the queue is as-good-as-fed-in because the queue commits intent to process; the reply confirms processing has occurred; the reply carries a DATABASE MARKER - hash plus counter - so the client can verify which transaction the response corresponds to and guarantee local state consistency; this gives clients a strong local-state guarantee tied to the daemons authoritative database state; the asynchronous unique ID system plus database marker reply together support full async messaging with provable state evolution *remote procedure call*
+
+ID yngr | Principle | certainty=Medium importance=High | domains=Technology.Software.Distributed | referents=(none)
+DESC: Schema-defined execution consults current state and trusted owner/core authority messages before mutating storage; the single-owner model remains the race-avoidance discipline. *consensus*
+
+ID vdiu | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Distributed | referents=(none)
+DESC: Nexus output is slim — input is a query/decision type output is a result/what-happened acknowledgement. Don't put everything in every response; clients can issue follow-up queries for specific state about what happened. Extends Spirit 1351 signal slim-acknowledgement pattern up to the Nexus interface level. Implementation lives in the engine; the wire contract stays compact and identifier-shaped most of the time. *remote procedure call*
+
+ID b9ao | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: The persona system is federated at its core. Each persona triad - mind + orchestrator + spirit plus future components - is one federated unit. Eventually orchestrators across personas and across namespaces become aware of each other s subtasks they have sent as communication. They interface via skilled-agent subtasks; each persona offers itself as a thing-with-context whose opinion can be queried. The persona abstraction creates the another-AI-meta-system-over-there substrate that makes federation natural rather than special-cased. *distributed systems*
+
+ID bb83 | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: Cross-daemon cutover can be atomic by protocol *fault tolerance*
+
+ID crlc | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: A domain-criome daemon can resolve domains it does not own by caching last-known records (content-addressed, timestamped, agreed across Criome nodes). Each daemon may host more than one domain. The Criome daemon decides which nodes own which domain. NotAuthoritative(Delegation) redirect is the fallback for genuinely-off-network domains where caching has nothing. *replication*
+
+ID ezat | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: In the spirit-next 408 prototype the signal-nexus-sema order is type-enforced by two mechanisms together: (1) the push method threads the next engine(s) as generic parameters, so SignalEngine::push_to_nexus names both NexusEngine and SemaEngine and NexusEngine::receive_pushed_signal names SemaEngine; (2) an AcceptedMail token whose ONLY constructor lives inside the SignalActor validation gate is the sole argument the nexus method accepts. Together these make SEMA unreachable except through Nexus and Nexus unreachable except through Signal, with no procedural bypass. The reverse path is the return value threading back, not a second set of pushes. The old procedural handle orchestration, SignalAccepted/FromMail/process_with, and the vestigial emitted NexusEngine::execute passthrough were deleted so the three trait-ordered engines are the SOLE live path (record 1030). *remote procedure call*
+
+ID i1jw | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: When next catastrophically fails, main recovers what it can from the original message via partial application; preserves caller intent across version-divergence failures *fault tolerance*
+
+ID l0w8 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: Computation units include LLM calls organized as a default-provider + ordered-fallback-provider chain. Each LLM call carries: a default provider, a vector (ordered) of fallback providers tried in sequence if the default fails, and per-provider configuration tweaks evaluated by the daemon. The daemon's library is the reducer + checker — including the authorization checking that can be escalated to Criome. This gives LLM calls failure-tolerance and provider portability while keeping configuration evaluation at the daemon (typed) boundary rather than scattered. *fault tolerance*
+
+ID n1fk | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: Partial-support semantics: next daemon does the whole operation, main records divergence (same as cant-do-at-all) *fault tolerance*
+
+ID n2te | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: Public-traffic routing Design C (client-side discovery) is rejected. The client connects to ONE STABLE SOCKET and just talks; Persona handles which unit listens. Designer recommendation in /154 §2.5 (Design B for production + Design C for dev fallback) is superseded — dev fallback uses something other than client-side discovery (likely the same FD-handoff pattern but with Persona instead of systemd) *load balancing*
+
+ID ns7t | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: Adopt /155 Part 2 Design D (Persona-orchestrated FD handoff via SCM_RIGHTS) for first prototype of lossless cutover routing. Persona binds stable public socket per component; accepts client connections; sends accepted FDs via SCM_RIGHTS to active version daemon; component daemons receive FDs on a per-component control connection to Persona. Same socket model in dev and prod (no asymmetry). Persona off the byte path after handoff *load balancing*
+
+ID ty24 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: domain-criome is the authority for .criome domains; each .criome domain (e.g. goldragon.criome) is its own authority server, content-addressable. To check the current authority for a domain, ask the domain's own daemon. Last-snapshot per domain serves as cached state. This gives the workspace its own content-addressed DNS. *networking*
+
+ID u7fj | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: Signal engine role is message triage only — admission, dispatch, identity-stamping, validation, wire-frame handling. Signal does not own heavy algorithmic logic or decision-making; it routes input to Nexus and routes Nexus replies back to wire output. *remote procedure call*
+
+ID ggvg | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Distributed | referents=(none)
+DESC: The CriomOS VM-testing node feature should be reachable via a Criome domain such as vm-testing.<cluster>.criome (name illustrative), so the test VM's display, console, or harness is addressable by name across the cluster. Integrates with the domain-criome registry and resolution plus cluster networking. Extends record 2630. *distributed systems*
+

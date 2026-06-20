@@ -1,0 +1,84 @@
+ID 48y4 | Principle | certainty=High importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: When work is already authorized, execute it the right way and all the way autonomously without gating on per-step confirmation or repeated questions, and dispatch subagents to carry it; reserve asking for genuinely unresolvable forks, not already-decided or default-resolvable steps.
+
+ID 7mvx | Principle | certainty=High importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Relevance, duplication, and contradiction between intent records are semantic judgments that only a model can make, so the guardian evidence bundle sent to the judge is never filtered or capped by a deterministic relevance score; instead the relevance call is made by a model once at write time and stored as a referent for cheap scoped reuse, and the input is bounded by referent or domain scoping and by corpus agglomeration, never by heuristic truncation of the model evidence
+
+ID 8pux | Principle | certainty=High importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Not all calls labeled 'agent' in the persona engine are agents. Some are runtime functions — stateless LLM calls invoked on demand with full context, no persistent identity. Long-lived agents (designer, operator, system-specialist, poet, etc.) are agents with cryptographic identity that exist over time. The distinction is by persistence and identity, not by capability. A function call may be just as capable as an agent for a single task; what makes the agent an agent is the durable identity that lets it accumulate signed work, opinions, and reputation.
+
+ID rpog | Principle | certainty=High importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Persistent memory for tool-using agents is the queryable tool-call trace, not the model context window. Expose query_history back to the agent — structured filter, summary-on-demand, or vector retrieval modes. This is an MCP-first architectural property: structured tool protocols give perfect recall by construction; UI-driving agents do not. Applies to any tool-using agent: video editing, browser-use, deploy automation.
+
+ID 7yth | Decision | certainty=Medium importance=High | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Agent is its own triad component: agent CLI + agent-daemon + signal-agent + owner-signal-agent.
+
+ID flqt | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Pi defaults to GPT-5.5 at xhigh thinking, with GPT-5.4-mini available as a selectable alternative.
+
+ID m2ri | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Rename persona-llm-client to `agent`, dropping the persona- prefix.
+
+ID oog6 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Agent is a supervised component used by other components that want pre-configured API agent calls, not a thin wrapper.
+
+ID r4ed | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: The Pi harness target shape is a Codex replacement.
+
+ID y9c6 | Decision | certainty=Medium importance=Medium | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Agent hooks to mind for skills and accumulated context (a model call plus an agent equals a thinking process).
+
+ID pumu | Decision | certainty=Medium importance=Low | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: The Pi harness ships with packaged Pi extensions.
+
+ID 1q5w | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: The recording system's intent-capture stage (currently sketched in /145 §6) is a per-call runtime LLM function, not an agent. It receives speech-to-text output, extracts intent for logging, may rephrase to clean STT typos / structure thoughts better, and may route sections of the prompt to different long-lived agents based on topic. The function has no persistent identity; it's invoked per audio span. Long-lived agents (the ones with cryptographic identity per intent 120) consume the routed prompt sections; the intent-capture itself stays stateless. This refines /145's design — the extractor was described neutrally as 'the model'; the function-vs-agent distinction makes the call's shape explicit and unlocks the per-call context provisioning pattern.
+
+ID 3v04 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Record 151 (DeepSeek subsumes-into-persona-pi) is superseded; the real intent is a workspace-native Persona LLM client library, not subsumption into the Pi harness wrap
+
+ID 5tar | Principle | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=spirit
+DESC: An agent educates itself in a domain before submitting intent into it: query and read the domain's existing intent (the domain and the broader domains above it, plus records sharing the candidate's referents) before recording, proposing, clarifying, or superseding, so most submissions resolve to a duplicate, a merge, or a clarify rather than a guardian refusal. The guardian is the fallback, not the agent's first read.
+
+ID 7hmc | Clarification | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: A browser agent should be usable in supervised scout mode: it scans visible account pages, reports the UI state and possible next steps step by step, and waits for human decisions before taking consequential actions.
+
+ID 8l2a | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=spirit
+DESC: Spirit must handle concurrent capture of the same psyche prompt across multiple agent windows: take a lock so two agents do not both record the same intent; Spirit capture calls become asynchronous and non-blocking so a blocked agent is not stalled and later receives a response naming which records were accepted or refused during the lock and why; the agent can then recognize the duplicate came from the same prompt and either accept it or make its case for a better wording. This requires agents to record their own originating prompt so Spirit can deduplicate captures by prompt. Operator implements a lock for now.
+
+ID bxe9 | Correction | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: GPT-5.5 cloud-orchestrator integration is not a special wiring concern. Any agent — including Codex in a harness — drives the browser-use CLI from outside the cloud daemon. No new RemoteBrowse operation needed on signal-cloud, no orchestrator triad. browser-use just needs to be packaged and on PATH; the harness running Codex calls it like any shell command. Earlier P1 framing was overthinking.
+
+ID l98v | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: The agent component takes NOTA directly from the model: the model emits the typed NOTA response rather than emitting JSON the daemon translates; reliability comes from prompt examples plus validate-and-retry, with grammar-constrained decoding when the model is self-hosted
+
+ID opmd | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Persona Pi default configuration — GPT's latest model with Maximum Thinking enabled, pre-configured. This is the out-of-the-box state of Persona Pi when it starts; downstream roles using Pi can override but the default is the strong-thinking GPT.
+
+ID u275 | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Browser control should use the workspace local large-AI-node running on CriomOS, NOT an external API. The browser-control CLI we previously picked makes outbound model API calls; redirect those calls to the local AI node hosted on the workspace cluster so the browser-driving model runs inside our infrastructure.
+
+ID zbfq | Decision | certainty=Medium importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: the skill currently called autonomous-agent gets renamed and refocused as human-interaction; it covers the rules for how agents interact with the psyche specifically, since that interaction is what these rules are actually about
+
+ID c54e | Decision | certainty=Low importance=Low | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Pi harness spawn should be tested against Ghostty / terminal-cell spawning.
+
+ID 5g4d | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: For supervised browser-agent work, the preferred browser surface is the human's main Chrome profile rather than a temporary guest automation profile, so logged-in state and familiar browser context are available when safe.
+
+ID 6zci | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Persona Pi is the Codex advisor harness for Persona
+
+ID 750r | Decision | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Spirit's intent gate should use a strong open-weight model rather than a small one such as Gemma, because intent is too important to under-resource; the specific provider is still being chosen
+
+ID 7o4q | Clarification | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Browser automation design should consider two paths: an optional Playwright MCP server for direct agent browser tooling, and a browser-use-style delegated smaller/faster LLM path where the primary agent provides intent and a subordinate browser agent scouts and clicks.
+
+ID v8yz | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Operator should become a more targeted trained Persona role
+
+ID wvgh | Principle | certainty=Low importance=Minimum | domains=Technology.Software.Intelligence.AgentSystems | referents=(none)
+DESC: Browser control architecture: GPT-5.5 in the cloud is the orchestrator that gives high-level tight instructions; the local CLI passes those instructions to Gemma 4 Flash running on the local AI node; Gemma 4 reads the browser visually via the already-configured Chrome DevTools Protocol port and acts. Three-tier model split — cloud-orchestrator + local-actor + browser substrate.
+
