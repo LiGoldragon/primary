@@ -19,7 +19,7 @@ master keys] (Spirit `p43g`).
 | Prometheus VM-host test node | in progress (parallel lane) | system-designer |
 | DigitalOcean live deploy | confirmed on a real droplet | cloud-designer `76`/`77` |
 | witness bins on criome main | **landed by operator (de-branch step 1)** | criome `68b92c66` |
-| **E1 peer transport** | **increments 1-3 landed + verified; inc-3 adversarially reviewed + hardening** | contracts `signal-criome-peers` `f4b64fc5`; primitive `criome-peer-transport` `0fb1e0b1` |
+| **E1 peer transport** | **increments 1-3 landed + verified; inc-3 reviewed + hardened + re-verified** | contracts `signal-criome-peers` `f4b64fc5`; primitive `criome-peer-transport` `081f6f7c` |
 
 ## What already exists in criome (verified at `6a5e797`)
 
@@ -152,9 +152,13 @@ verify: sender ∈ configured peers  AND  bls_verify(sig, frame_bytes, sender_pu
    Adversarial review: **wire-framing clean** (bounds-checked before alloc on both
    blobs, typed errors, validating rkyv), **crypto sound** (preimage byte-identity,
    genuine DST separation, admitted-peer check, verify-before-decode, secure blst
-   config), **concurrency** correct for a primitive. A hardening pass (cross-DST
-   negative test, client timeouts, frame write-cap, dedicated peer-envelope error
-   variants, tighter pre-auth envelope cap) is landing on the branch.
+   config), **concurrency** correct for a primitive. **Hardened** (`081f6f7c`):
+   cross-DST negative regression test, client connect/read/write timeouts (5s),
+   frame write-cap, dedicated `PeerEnvelope{Encode,Decode}` error variants, and a
+   tighter 8 KiB pre-auth envelope cap. **Independently re-run green** by the
+   designer — 62 tests, 0 failed, including `attestation_and_peer_frame_signatures_
+   never_cross_verify` (the DST-separation guard) and the real-TCP round-trip +
+   tamper/unknown-peer/closed-port negative cases.
 4. **Daemon integration + solicitation + tally (criome)** — wire the primitive
    in: a third TCP peer listener in the serve loop **with a read timeout**
    (the review's one high finding: the current single-thread busy-poll would let a
