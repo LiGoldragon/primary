@@ -17,6 +17,9 @@ not the primary workspace compatibility helper.
   traits.
 - Spirit `7l7l`: SEMA classification vocabulary stays off the public Signal
   contract wire.
+- Spirit `p29p`: for orchestrate release safety, the release invariant must be
+  specified independently of bookmark names; a bookmark prefix is insufficient
+  evidence of lane state.
 
 The compatibility goal is therefore feature parity through domain Signal
 operations, Nexus decisions, and SEMA read/write interfaces. It is not preserving
@@ -50,20 +53,21 @@ live lane registry is not populated for the fixed role set.
 | Feature | Helper owner today | Daemon/schema state | Required schema destination |
 |---|---|---|---|
 | Claim path or task scope | Helper normalizes argv and rejects `.beads` path scopes | Ordinary `Claim` executes through the daemon and projects lock files | Keep `Claim` in ordinary Signal; move forbidden-scope policy into Nexus validation and return a typed claim rejection |
-| Release | Helper runs `verify-jj` before sending `Release` | Daemon removes the role's claims directly | Make release safety mandatory in Nexus before SEMA write; add typed release rejection for repository blockers |
+| Release | Helper runs a prefix-based `push-*` bookmark heuristic before sending `Release` | Daemon removes the role's claims directly | Do not copy the heuristic; either define a semantic release invariant in Nexus or retire this as helper-only scaffolding |
 | Status | Helper renders text and appends BEADS output | `Observe Roles` already returns structured role and claim state | Treat `RoleSnapshot` as the daemon status surface; text rendering is client-side |
 | Lanes | Helper reports fixed lane lock files | Meta `Register`, `SetAuthority`, and `Retire Lane` exist; live `Observe Lanes` is empty | Seed or project fixed roles into lane registry, or explicitly declare `RoleSnapshot` the fixed-lane surface |
-| `verify-jj` | Helper scans active repositories and local `push-*` bookmarks | No daemon operation | Add ordinary repository-bookmark verification request/reply, with Nexus running the `jj` effect and SEMA reading repository/claim context |
+| `verify-jj` | Helper scans active repositories and local `push-*` bookmarks by naming convention | No daemon operation | Do not encode bookmark prefixes into the daemon contract; replace only with a real release-state operation if the invariant is clear |
 | BEADS open work list | Helper shells out to `bd --readonly list` | Not orchestrate-owned | Do not add BEADS to orchestrate daemon; move ready-work status to the future work graph or `mind` surface |
-| Daemon startup | Helper lazily builds and starts daemon from argv command | Daemon supports binary startup and typed sockets | Replace helper startup with a managed user service or typed bootstrap path; this is process integration, not ordinary Signal |
+| Daemon startup | Helper lazily builds and starts daemon from command-line arguments | Daemon supports binary startup and typed sockets | Replace helper startup with a managed user service or typed bootstrap path; this is process integration, not ordinary Signal |
 | Watch/unwatch | Helper has no daemon stream usage | `Watch` and `Unwatch` allocate and close tokens | Implement current-state plus delta `ObservationStream` delivery for claim, role, lane, and activity changes |
 
 ## Schema shape
 
 The ordinary Signal contract should stay domain-level and peer-callable. It can
-name `Claim`, `Release`, `Handoff`, `Observe`, `Submit`, `Query`, `Watch`,
-`Unwatch`, and a repository verification operation. It must not expose SEMA
-verbs such as validate, assert, mutate, retract, or match.
+name `Claim`, `Release`, `Handoff`, `Observe`, `Submit`, `Query`, `Watch`, and
+`Unwatch`. A release-state operation belongs there only after the actual release
+invariant is specified in domain terms. It must not expose SEMA verbs such as
+validate, assert, mutate, retract, or match.
 
 The meta Signal contract should stay topology and policy focused: create or
 retire roles, register or retire lanes, set lane authority, refresh repository
@@ -71,8 +75,9 @@ indexes, and configure daemon policy where that policy is mutable.
 
 The Nexus schema needs more first-class work than the current generic
 `SignalArrived -> CommandSemaWrite -> ReplyToSignal` loop expresses. The next
-useful named decisions are forbidden-scope rejection, release safety checking,
-repository bookmark verification, lane seeding policy, and projection decisions.
+useful named decisions are forbidden-scope rejection, release safety semantics,
+lane seeding policy, and projection decisions. Prefix checks over bookmark names
+are not a release-safety semantic.
 
 The SEMA schema should grow beyond broad `ApplyOrdinary(OrdinaryInput)` and
 `ApplyMeta(MetaInput)` wrappers. Durable state operations should be named
@@ -85,11 +90,11 @@ verification results if those results become durable.
 
 1. Move `.beads` forbidden path handling from `orchestrate-cli` into daemon
    claim validation, with a typed ordinary Signal rejection.
-2. Add release safety to daemon release handling: Nexus reads claim and
-   repository context, runs a repository bookmark verifier effect, and commands
-   SEMA release only when clean.
-3. Add a standalone repository bookmark verification ordinary operation so the
-   `verify-jj` behavior is reachable without the compatibility helper.
+2. Decide the actual release invariant. If release safety means "no unlanded
+   lane work," the daemon needs a semantic source for lane-owned work; it should
+   not infer that from a `push-*` bookmark prefix.
+3. Retire `verify-jj` with the compatibility helper unless a real
+   release-state operation can be specified in domain terms.
 4. Decide lane status semantics, then either seed fixed lanes into
    `lane_registry` or document that fixed-role status is `Observe Roles`.
 5. Implement real observation streams that emit current state and deltas.
@@ -105,16 +110,19 @@ verification results if those results become durable.
 - Should agent-facing status continue to include the BEADS open-work list until
   a work graph exists? If yes, that aggregation should sit outside orchestrate,
   because BEADS is not orchestrate state.
-- Should release safety be overridable? The safer default is mandatory checked
-  release, with any emergency override made explicit through meta policy.
+- What, if anything, should release safety mean inside orchestrate? The current
+  helper answers with bookmark-prefix bookkeeping, which is not a sound daemon
+  invariant.
 - Should every fixed role become a lane registry row? That would make
   `Observe Lanes` useful immediately and align dynamic and fixed-lane status.
 
 ## Bottom line
 
 The daemon can already replace the helper for core claim and role observation.
-It cannot yet replace the helper as the default agent-facing tool because the
-release guard, repository verification, `.beads` claim policy, lane population,
-and real watch streams are not all represented as Signal/Nexus/SEMA schema
-interfaces. Those are the parity gaps to close; argv compatibility and BEADS
-shell aggregation should not be carried into the daemon as design goals.
+It cannot yet replace the helper as the default agent-facing tool because
+`.beads` claim policy, lane population, and real watch streams are not all
+represented as Signal/Nexus/SEMA schema interfaces. The current `verify-jj`
+release guard is a brittle helper heuristic; it should be replaced only by a
+real semantic release invariant, not carried forward as bookmark-prefix
+machinery. Argument compatibility and BEADS shell aggregation should not be
+carried into the daemon as design goals.
