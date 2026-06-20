@@ -144,41 +144,54 @@ designer prototypes the harness on a branch.
   `AuthorizationPolicyClass [SimpleSelfSigned ComplexQuorum]` but criome's
   runtime does not yet branch on it — wiring `SimpleSelfSigned`/auto-approve
   into the decision path is the next build, then the mentci meta-socket
-  authorizer (criome has no meta socket yet).
+  authorizer. (Correction below: criome main already has a bound+served meta
+  socket and the approval protocol; see the reconciliation section.)
 
-## "Fix it all" build — auto-approve + criome meta socket + mentci authorizer
+## "Fix it all" build — accurate scope after a full origin reconciliation
 
-Psyche: *"fix it all. no meta socket is a bug."* The missing criome meta socket
-is a bug against the existing two-contracts principle (Spirit `7sx6`/`6sxn`,
-every component carries `meta-signal-<component>`) — no new record, a bug-fix
-order. Build plan, in dependency order, on designer branches (operator owns
-criome/signal-criome main integration):
+Psyche: *"fix it all. no meta socket is a bug."* **Correction: the criome meta
+socket is NOT missing — criome `main` already binds AND serves it.** My earlier
+"criome has no meta socket" came from a STALE local checkout (`6c75804`); origin
+reconciliation revealed three stale-checkout errors this session (the witness,
+signal-criome's meta path, and this). I misinformed the psyche, who reasonably
+called the (false) absence a bug. Verified origin state:
 
-- **[DONE, green+pushed] signal-criome contract foundation** — branch
-  `criome-meta-authz` (`622ca716`). Added `AuthorizationMode [Quorum
-  AutoApprove]`, `meta_socket_path`, and `authorization_mode` to the shared
-  `CriomeDaemonConfiguration` (so the meta `Configure` carries them for free).
-  Schema regenerates via `SIGNAL_CRIOME_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`;
-  hand-written `new(socket, store, meta_socket, mode)` + accessors updated;
-  freshness check (CI-equivalent) green. Schema gotcha fixed: a field whose
-  role *is* its type is the bare type (`AuthorizationMode`), not `field.Type`
-  (`RedundantExplicitFieldRole`).
-- **[NEXT] criome runtime — auto-approve** (criome branch, consumes
-  `criome-meta-authz`): `from_configuration` reads the new fields; `root.rs:202`
-  `EvaluateAuthorization` short-circuits to `Authorized` when mode is
-  `AutoApprove`; `criome-write-configuration` encoder takes the meta-socket +
-  mode. Extend the cluster test to prove an evidence-less request → `Authorized`.
-- **[NEXT] criome meta socket (the bug fix)**: bind + serve the second socket
-  per meta-signal-criome (`Configure(CriomeDaemonConfiguration)` →
-  `Configured`), cloning the working-socket serve loop with a meta frame codec.
-- **[NEXT] mentci authorizer**: add subscribe/pending-push/approve ops to
-  meta-signal-criome; criome holds `EvaluateAuthorization` pending and pushes to
-  a connected authorizer; mentci is the client that responds with the approval
-  (the vote-on-existing-object adjudication, Spirit `t00s`). Add `ExternalApprover`
-  to `AuthorizationMode`.
+- **criome `main` (`1eaa783`) — meta socket fully built**: `daemon.rs::bind`
+  binds both working + meta sockets; `serve_forever` serves both (non-blocking
+  dual-accept loop); `handle_meta_connection` dispatches `SubmitMetaRequest` to
+  `CriomeRoot::submit_meta`; `CriomeMetaConnection` + `CriomeMetaFrameCodec` +
+  `CriomeMetaClient` (transport.rs:207) all exist. `meta_socket_path` from config
+  or defaults to `<socket>.meta`.
+- **meta-signal-criome `main` (`f14c032`) — approval protocol complete**: inputs
+  `Configure(CriomeDaemonConfiguration)` + `SubmitAuthorizationApproval(
+  AuthorizationApproval{evaluation, decision})`; outputs `Configured` +
+  `AuthorizationApprovalRecorded`; decisions `[Approve Reject Defer]`. criome's
+  `record_authorization_approval` publishes the authorized object on `Approve`.
+- **signal-criome `main` (`caa02a9`)** already carries
+  `(MetaSocketPath (Optional DaemonPath))` (`f31d75a`). My stale branch
+  `criome-meta-authz` re-added it divergently — **deleted** (origin + local).
+- **mentci `main` (`577d64b`)** declares itself "the human approval organ for the
+  local per-Unix-user criome" with a daemon + `home_criome_socket_path`, but its
+  live criome-meta client is a placeholder (`/tmp/criome-test.socket`).
 
-Reconciliation note: my local jj `main` was stale once already (criome) — fetch
-before branching to avoid re-implementing landed work.
+**Genuinely-remaining work (the real "fix it all"):**
+1. **auto-approve** — `AuthorizationMode [Quorum AutoApprove]` is missing from
+   signal-criome (add fresh off `caa02a9`); criome `EvaluateAuthorization`
+   short-circuits to `Authorized` when AutoApprove; thread via
+   from_configuration/encoder. Simplest verdict source; lets spirit→criome→mirror
+   run without quorum or a live approver.
+2. **Configure** — currently `RequestUnimplemented(NotBuiltYet)`; implement so the
+   meta socket sets the mode at runtime.
+3. **mentci live approval** — wire mentci's real `CriomeMetaClient` to submit
+   `SubmitAuthorizationApproval`, plus the missing criome→mentci pending-
+   authorization surfacing (so mentci knows what to approve) and
+   `EvaluateAuthorization` returning Pending when an external approver is armed.
+4. **prove the meta socket green** — extend the cluster test with a meta-socket
+   round-trip (`SubmitAuthorizationApproval`/`Configure`), turning the false
+   "no meta socket" into a passing test.
+
+**Hard lesson: `git fetch` + check `origin/main` before branching every repo** —
+three duplications this session all traced to a stale local jj `main`.
 - **Next (Stage B):** build spirit's gate-config arming (signer key in config →
   per-head evidence — the `criome_gate.rs` documented remaining step), then add
   the spirit+mirror legs so the spirit-daemon drives the gate and the authorized
