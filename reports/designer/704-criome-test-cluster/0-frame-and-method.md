@@ -221,8 +221,43 @@ genuine remaining gap (criome main still had `Configure = NotBuiltYet`, no
 Compiles green against operator's main contracts unchanged (operator and I wrote
 the identical signal-criome API independently). The
 `criome-cluster-auto-approve` nixosTest (test-cluster branch, consuming this
-criome branch) is building to prove it in a VM. An adversarial audit of this work
-is running concurrently (psyche-requested); findings + remediation to follow.
+criome branch) is green in a VM.
+
+### Custody resolved (Spirit `p43g`) — audit B1 reframed
+
+The psyche disambiguated the criome-ARCHITECTURE-vs-mentci/9s52 contradiction:
+**criome owns key custody and is the authorization decider; the requester submits
+a content-addressed object without a request-signing key** (`p43g`, folding
+`9s52`/`t00s`/`2st7`; corrects criome `ARCHITECTURE.md:403-406`'s
+identities-hold-their-own-keys wording). This **reframes audit finding B1**:
+there is no requester signature to "bypass," so **auto-approve is one of three
+legitimate verdict modes** — `Quorum` / `AutoApprove` / `ClientApproval`
+(park-for-mentci), per operator's edited `t00s` — not a no-crypto bypass. The
+residual valid concern survives: do not let `AutoApprove` be the production
+default in a shared/cluster context. **Consequence:** the `criome-cluster-1of1`
+"quorum" witness uses a developer-signer-signs-evidence model (the now-corrected
+requester-signs reading) — flag for reconciliation with criome-owns-keys
+(operator's criome model). The remaining audit findings (B5 Configure
+partial-apply, B7 root-only test, B8 fixed, B9 free fns, B10 process, minors)
+still stand.
+
+### Coordination — operator's mentci/criome approval build
+
+Operator edited `t00s` to fold in the 3 modes + park-by-`ParkedAuthorizationId`
+(answer-by-id, not by re-supplied evaluation), pushed criome `56547cc8` / mentci
+`ecf3a654`, scan in `reports/operator/442-*`. Cheap path: criome already has
+park-and-answer-by-id (the BLS signing slot machinery `AuthorizeSignalCall →
+AuthorizationPending{request_slot} → ObserveAuthorization`); fold contract
+escalations into it rather than build a parallel model. **Lane split (audit
+B10): operator owns Track A (criome park substrate) and starts now; designer
+owns the contract-shape pass (signal-criome park types + meta-signal-criome
+answer-by-id) in parallel (non-blocking) + the nixosTest for the park/approval
+flow.** Designer stays out of the criome runtime. Endorsed operator's smaller
+calls: Defer re-parks (keeps the submission alive); the resident observer lives
+in mentci-daemon (not a separate bridge); first demo is in-memory +
+snapshot-poll + plaintext key, with durable SEMA / push fan-out / encrypted
+custody a deliberate second pass. criome `ARCHITECTURE.md:403-406` correction is
+operator's (their repo).
 - **Next (Stage B):** build spirit's gate-config arming (signer key in config →
   per-head evidence — the `criome_gate.rs` documented remaining step), then add
   the spirit+mirror legs so the spirit-daemon drives the gate and the authorized
