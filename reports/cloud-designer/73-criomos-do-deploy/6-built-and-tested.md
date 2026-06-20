@@ -17,7 +17,10 @@ captured against real DigitalOcean.
   CI-safe check, and the image-mint recipe. All on the branch.
 - **Ran it live and green** (mode 2, current token): provision → Running → ssh
   reachable → destroyed, **droplet `578965503`, ipv4 `143.244.145.64`, clean
-  teardown, 36.7s**, account verified empty afterward.
+  teardown, 36.7s**, account verified empty afterward. *(Caveat, audit 75/#39:
+  the 36.7s ssh path was not frictionless — the first connection was refused and
+  the retry loop absorbed it; that is disclosed below in the matrix but belongs
+  in this headline too.)*
 - **The literal "pre-made CriomOS image" (mode 1) is blocked on one thing only
   the psyche can do:** the live DigitalOcean token lacks the **`image:create`**
   scope, so minting/snapshotting an image `403`s. Re-mint the token with

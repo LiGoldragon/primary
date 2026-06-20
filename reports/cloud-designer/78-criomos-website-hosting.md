@@ -199,12 +199,21 @@ though the runtime stays static.
    stand up the standing droplet) to carry the host, or design the service
    first and provision when it's ready to deploy?
 
-## Part 4 — recommended build order (once you confirm)
+## Part 4 — recommended build order
 
 1. Land features A + B (operator main-merges) — doris declared, node model
-   clean.
+   clean. **Status: B (TypeIs deletion) merged to horizon-rs main
+   (`bd1cc2c1`); A (doris declaration) blocked on system-designer's
+   goldragon lock.**
 2. Add `NodeService::WebHost { sites }` + `SiteRenderer` to horizon-rs
-   (designer branch) with NOTA round-trip + projection tests.
+   (designer branch) with NOTA round-trip + projection tests. **Status:
+   DONE — branch `cloud-designer-web-host` off the post-merge main. Typed
+   `HostedSite { domain, source, renderer }`, `ServedDomain`/`SiteSource`
+   newtypes, `SiteRenderer` closed enum (`MarkdownStatic` default);
+   accessors `NodeService::hosted_sites` + `Node::web_host_sites` mirroring
+   `VmHost`; round-trip + projection tests; fmt/test/clippy `-D warnings`
+   green. Embodies the recommended defaults; the open decisions below gate
+   the NixOS module, not this type.**
 3. Add the CriomOS NixOS module that reads the `WebHost` payload: a
    build-time render derivation (Zola) per `HostedSite` → an immutable
    site artifact, served by hardened nginx + ACME TLS.

@@ -14,6 +14,14 @@ reproducible.** The disk image is sized to the closure (`diskSize = "auto"`),
 not to a fixed droplet geometry; growpart expands `/` to the real droplet disk
 at first boot.
 
+**Caveat (audit 75/#38).** The "~55× smaller" figure compares the compressed
+content-sized image (1.1 GB) against the 60 GB *droplet disk geometry* of the
+old snapshot — content size vs. provisioned-disk size, not like-for-like, so
+read it as "we ship the closure, not the disk" rather than a 55× content
+reduction. And the 1.1 GB build *overshot* this report's own earlier prediction
+of a ~0.5–1 GB uploadable image (74/1) with no note at the time; the closure is
+simply larger than predicted.
+
 ## What landed (three repos, three designer branches, all pushed)
 
 | Repo | Branch | Change |
