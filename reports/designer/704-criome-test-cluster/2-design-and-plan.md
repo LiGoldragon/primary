@@ -45,7 +45,7 @@ encodes the wrong component today.
 | Missing piece | Scope (corrected) |
 |---|---|
 | **`mkCriomeClusterTest` generator** | The headline: N interconnected spirit+criome nodes from one decl. New. |
-| **criome/spirit/signal-criome flake inputs** | The test-cluster pins old `persona-spirit`, not the gate-bearing `spirit`, and has no `criome`. Input migration, not just addition. |
+| **criome/spirit/signal-criome flake inputs** | The test-cluster pins old `persona-spirit` (kept — the spirit-upgrade test needs it) but lacks the gate-bearing `spirit` and `criome`. **Add** these three inputs; do not migrate persona-spirit away. |
 | **Per-component NixOS service modules** | criome/spirit/router/mirror each: NOTA→rkyv `ExecStartPre`, `ExecStart <daemon> <config.rkyv>`. The hardest reuse work — §5. |
 | **E1 cross-criome transport LANE** | **Narrowed:** the wire vocab (`RouteSignatureRequest`/`SubmitSignature`) and local actor routing already exist; only the daemon-to-daemon *network* lane is missing (`transport.rs` is Unix-only). |
 | **E4 cross-socket router push** | `publish()` returns the delivery set in-process; nothing pushes the ref to a remote spirit. |
@@ -135,11 +135,13 @@ transport lane carries: a TCP `host:port` connector for `RouteSignatureRequest`,
 derived from each member's projected address. So: hermetic/durable are
 runnable now (cross-kernel); `live` waits on E1.
 
-**Input migration (critic-caught, load-bearing):** the test-cluster flake pins
-`persona-spirit` (the OLD name) and has no `criome`. Stage A requires migrating
-that input to the current `spirit` repo (the one holding `criome_gate.rs`) and
-adding `criome` + `signal-criome`. This is a flake-input change, not a no-op
-addition — the gate does not exist in the pinned `persona-spirit`.
+**Input addition (refined during execution):** the test-cluster flake pins
+`persona-spirit` only — and that pin is **kept**, because the existing
+spirit-upgrade test exercises the v0.1.0→current redb upgrade against it. The
+gate under test lives in the *distinct* `spirit` repo. So Stage A **adds** three
+inputs — `spirit` (the gate), `criome`, `signal-criome` — rather than migrating
+`persona-spirit` away. This is the less-disruptive change and avoids regressing
+the upgrade test (the regression §6 flagged).
 
 **DO bring-up = nixos-anywhere (biased by prior art, not an open choice).**
 `cloud/src/hetzner.rs:10` already names nixos-anywhere as the Phase-2 direction;
@@ -257,8 +259,9 @@ system-maintainer own host + deploy.
    `Decision`. **Owner: system-maintainer.**
 
 **Phase 1 — designer prototypes hermetic NOW (branch; no live host, no E1).**
-1. Migrate the test-cluster flake input `persona-spirit → spirit`; add `criome`
-   + `signal-criome`. **Owner: designer (branch).**
+1. **Add** the test-cluster flake inputs `spirit` + `criome` + `signal-criome`
+   (keep `persona-spirit` — the upgrade test needs it). **Owner: designer
+   (branch).** ✅ done on branch `criome-cluster-test`.
 2. `mkCriomeClusterTest.nix` — the generator, `nodes.<member>` fold,
    `test-substrate` reuse, `{members,components,contract,substrate,propagation}`.
    **Owner: designer (branch).**

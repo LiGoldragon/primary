@@ -88,3 +88,36 @@ finalized by the designer into the psyche-facing report and lane briefs. Host
 provisioning (prometheus VM host, DO droplets) and the spirit redeploy are
 system-operator/system-maintainer; code lands via operator on code-repo main;
 designer prototypes the harness on a branch.
+
+## Execution status (live)
+
+- **Spirit outage RESOLVED.** Root cause was narrower than first stated: not a
+  bad rebuild but a **stale-systemd-symlink drift** — home-manager generation
+  801 (current, Jun 19 23:21) already pins the good spirit (daemon
+  `w09z999am`, startup-state `gxa9f8i9` which recognizes the v10 store), but the
+  live `~/.config/systemd/user/spirit-daemon.service` had drifted to a broken
+  standalone unit (`mj2w349b` startup-state) from a partial/rolled-back 03:14
+  activation. Fix: **re-activated generation 801** (`$gen/activate`), which
+  rewrote the systemd units to the good spirit; `daemon` started clean,
+  `(Current (1322 0))`, `spirit Version → (VersionReported 0.14.0)`,
+  `Marker → (1416 …)`. No rebuild, no lock change, live store never at risk
+  (backed up to `~/.local/state/spirit/spirit.sema.pre-redeploy-backup`
+  regardless). The psyche authorized me (designer) to do this directly.
+- **Intent captured — Spirit `cpip`** (Decision, Medium certainty, domains
+  testing+deployment, referents `[criome spirit prometheus cloud]`). First
+  submission was `Overstated` (claimed High; the prompt's HOW carries
+  exploratory wording — "could easily host", "look into it", "take your time"),
+  downgraded to the honest Medium. `7let`/`77ic` were **not** edited — they
+  already reconcile each other (77ic permits the KVM-host capability touch while
+  keeping everything else untouched); the psyche's "hermetic-only default"
+  choice affirms 7let as the test-cluster default and leaves 77ic as the opt-in
+  durable tier, folded into `cpip`.
+- **Psyche decisions (AskUserQuestion):** redeploy spirit now (done);
+  hermetic-only default (7let); start Phase 1 hermetic now.
+- **Phase 1 underway** on branch `criome-cluster-test` (jj workspace
+  `~/wt/github.com/LiGoldragon/CriomOS-test-cluster/criome-cluster-test`,
+  off main `twunuxus`). Done: **added** flake inputs `spirit` (gate, main),
+  `criome` (6c75804), `signal-criome` (9194c79) — kept `persona-spirit` for the
+  upgrade test; `nix flake lock` resolved clean. Next: `mkCriomeClusterTest.nix`
+  generator + criome/spirit NixOS service modules + the Stage A 1-of-1
+  cross-kernel test + `fieldlab.nota` member nodes.
