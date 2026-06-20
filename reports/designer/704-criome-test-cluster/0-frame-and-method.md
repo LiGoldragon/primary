@@ -115,26 +115,36 @@ designer prototypes the harness on a branch.
 - **Psyche decisions (AskUserQuestion):** redeploy spirit now (done);
   hermetic-only default (7let); start Phase 1 hermetic now.
 - **Stage A LANDED GREEN — `criome-cluster-1of1` passes in a real NixOS VM.**
-  Two pushed designer branches:
-  - `criome` branch `criome-cluster-witness` (`c8e19a2b`): a `cluster-witness`
-    cargo feature + two bins — `criome-cluster-witness` (mints real blst BLS
-    material, seeds a running daemon over its socket with the 1-of-1 contract,
-    proves authorized→`Authorized` and threshold-short→`Rejected(QuorumShort)`)
-    and `criome-write-configuration` (the rkyv config encoder, `mirror.nix`
-    shape) — plus a `packages.cluster-witness` flake output. Both bins are
-    data-bearing-type methods (no free fns). Proven runnable against a real
-    local `criome-daemon` (exit 0) before the VM.
-  - `CriomOS-test-cluster` branch `criome-cluster-test` (`8247b29373b1`):
-    `lib/mkCriomeClusterTest.nix` (the reusable `{cluster, members}` generator)
-    + the `criome-cluster-1of1` check, criome input pinned to the witness
-    branch (self-contained). A minimal NixOS guest runs `criome-daemon` as a
-    systemd service (`ExecStartPre` encodes rkyv config, `ExecStart` runs the
-    daemon on one rkyv arg); the witness runs against the socket. **Standalone
+  Cross-lane convergence (clean): **operator already landed the witness on
+  criome `main`** (`1eaa783`, Jun 19) — the `cluster-witness` package with
+  `criome-cluster-witness-test` + `criome-write-configuration`. My local jj
+  `main` was stale (6c75804), so I unknowingly re-implemented it on a branch;
+  on discovery I **deleted my duplicate `criome-cluster-witness` branch** and
+  repointed at criome `main`. The division: **operator owns the witness on
+  criome main; designer owns the nixosTest harness.**
+  - Designer contribution — `CriomOS-test-cluster` branch `criome-cluster-test`
+    (`3cfb16fa`): `lib/mkCriomeClusterTest.nix` (the reusable `{cluster,
+    members}` generator) + the `criome-cluster-1of1` check, consuming criome
+    `main`'s `cluster-witness` package. A minimal NixOS guest runs
+    `criome-daemon` as a systemd service (`ExecStartPre` encodes the rkyv
+    config — `mirror.nix` shape, `ExecStart` runs the daemon on one rkyv arg);
+    the witness runs against the socket. **Standalone
     `nix build .#checks.x86_64-linux.criome-cluster-1of1` is green** — VM log:
     `PROOF (a) authorized head -> Authorized`, `PROOF (b) threshold-short ->
-    Rejected(QuorumShort{required:1, satisfied:0})`, `test script finished`.
+    Rejected(QuorumShort{required:1, satisfied:0})`, `test script finished in
+    7.55s`.
   This is the criome half of the spirit gate proven in a real sandbox with real
   crypto over a real socket — the reusable harness foundation.
+- **Authorization model direction captured — Spirit `t00s`** (psyche, this
+  session): criome's verdict can come from a connected meta-socket approver
+  (mentci responds with an approval — the vote-on-existing-object adjudication)
+  or a configured auto-approve acceptance policy, within criome's
+  verify-and-record model; gathered-signature quorum stays the production path.
+  Note: signal-criome's schema already carries
+  `AuthorizationPolicyClass [SimpleSelfSigned ComplexQuorum]` but criome's
+  runtime does not yet branch on it — wiring `SimpleSelfSigned`/auto-approve
+  into the decision path is the next build, then the mentci meta-socket
+  authorizer (criome has no meta socket yet).
 - **Next (Stage B):** build spirit's gate-config arming (signer key in config →
   per-head evidence — the `criome_gate.rs` documented remaining step), then add
   the spirit+mirror legs so the spirit-daemon drives the gate and the authorized
