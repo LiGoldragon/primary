@@ -12,7 +12,7 @@ Model routing should be tiered:
 2. **Default reliable model:** keep **OpenAI `gpt-4.1`** only because it has already passed our live browser-use smoke test here; reassess against current Claude/Gemini models when keys are available.
 3. **Best value if switching providers:** **Claude Sonnet** class is consistently a better standalone browser-agent value than Opus/Fable, while much more reliable than the cheapest Flash-class models.
 4. **Best pure browser-agent product if cloud is acceptable:** Browser Use Cloud / `ChatBrowserUse` style models, because the benchmark claims fewer steps and lower total task cost even when the model call itself is not the cheapest.
-5. **Do not use local small Gemma for production browser control yet:** in our local tests it timed out or returned empty browser content; retry only after a benchmark harness is in place.
+5. **Do not assume local small Gemma works for production browser control yet:** it was not actually benchmarked before this report. The first attempted smoke test was interrupted after revealing a Chrome profile mismatch, not a Gemma capability result.
 
 ## What people use
 
@@ -45,7 +45,7 @@ Browser agents are not normal chat. Total cost is driven by: page-observation to
 | **Gemini Flash-Lite** | 2.5 Flash-Lite $0.10/M input, $0.40/M output; 3.1 Flash-Lite $0.25/M input, $1.50/M output | Marketed by Google as cost-efficient/high-volume; no strong browser benchmark here | Cheapest plausible model; likely too weak for complex navigation, useful for page summarization/extraction. |
 | **OpenAI GPT-4.1** | Current official pricing was not directly recovered; third-party listings put nano at $0.10/$0.40 and older 4o-mini at $0.15/$0.60 | In our environment, `gpt-4.1` passed browser-use smoke test; Browser Use current benchmark says newer GPT-5 family trails Claude/Gemini on browser tasks | Keep as known-good for now; do not assume OpenAI is best without a fresh benchmark. |
 | **DeepSeek V4 Flash** | $0.14/M cache-miss input, $0.0028/M cache-hit input, $0.28/M output | Supports tool calls and 1M context; little browser-agent evidence | Extremely cheap; worth testing only if action-schema reliability is good. |
-| **Local small models, e.g. Gemma** | Hardware cost only | Our local Gemma browser tests were unreliable | Not recommended until a local benchmark proves success. |
+| **Local small models, e.g. Gemma** | Hardware cost only | Not yet measured; first smoke attempt exposed a profile mismatch before completion | Not recommended until a local benchmark proves success. |
 
 ## Cost-efficiency ranking
 
@@ -80,7 +80,7 @@ Measure:
 - whether it opened extra tabs/windows,
 - whether it reused the existing automation profile.
 
-For our immediate setup, test in this order: `gpt-4.1` known-good baseline, `gemini-3-flash-preview`, `gemini-2.5-flash`, `claude-haiku`, `claude-sonnet`, `ChatBrowserUse`, then `deepseek-v4-flash`.
+For our immediate setup, test in this order: local `gemma-4-26b-a4b` against the correct persistent profile, `gpt-4.1` known-good baseline, `gemini-3-flash-preview`, `gemini-2.5-flash`, `claude-haiku`, `claude-sonnet`, `ChatBrowserUse`, then `deepseek-v4-flash`.
 
 ## Source notes
 
