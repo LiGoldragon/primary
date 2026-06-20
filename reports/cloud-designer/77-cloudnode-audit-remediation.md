@@ -55,15 +55,17 @@ horizon-rs `750f8cf`.
 The accretion vector is closed: adding a node species no longer adds a bool to
 a one-hot — facets derive from the typed source enums.
 
-## What "real member" still needs — a decision for the psyche
+## What "real member" needs — resolved: defer provisioning
 
-doris is now a real, low-trust member in the cluster data, but its host key in
-the datom is still a **placeholder**. A genuine member needs its real host key,
-which only exists once an actual droplet boots and generates
-`/etc/ssh/ssh_host_ed25519_key`. That means provisioning a **standing**
-(continuously-billed) DigitalOcean droplet — distinct from the always-destroy
-test cycles run so far. That is a cost commitment, so it waits on explicit
-psyche go-ahead.
+doris is a real, low-trust member in the cluster data, but its host key is a
+**placeholder** — a genuine host key only exists once an actual droplet boots
+and generates `/etc/ssh/ssh_host_ed25519_key`, which would mean a **standing**
+(continuously-billed) droplet. Per psyche [we dont provision doris yet, until we
+have a role for it] (Spirit `zeqq`, Decision Medium): a cloud node is
+provisioned only once it has a concrete role. So doris stays declared and
+**unprovisioned**, its placeholder host key now clearly marked (datom header +
+an inline marker at the key line, `2bfca41`), until it is given a role — then a
+droplet is provisioned and its real host key wired in.
 
 ## Remaining audit fix-now items (mechanical, queued)
 
