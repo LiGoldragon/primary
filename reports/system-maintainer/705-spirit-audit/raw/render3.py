@@ -16,6 +16,10 @@ from collections import Counter
 recs = {r['id']: r for r in json.load(open('records.json'))}
 prop = json.load(open('proposals2.json'))
 manifest = {m['bucket']: m for m in json.load(open('buckets/manifest.json'))}
+# current active store (freshness): only touch ids still active; prefer current
+# entry content for unchanged-desc survivors so concurrent edits aren't reverted.
+import os.path as _p
+CUR = {r['id']: r for r in json.load(open('records-current.json'))} if _p.exists('records-current.json') else recs
 
 KEBAB = re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*$')
 def is_bare(t):
@@ -44,26 +48,33 @@ nominate = []  # ids
 claimed = set()
 nonkebab = []
 
+skipped_gone = 0
 for b in prop['buckets']:
     for s in b['survivors']:
         ids = [i for i in s['source_ids'] if i in recs and i not in claimed]
         if not ids: continue
+        # target = first source id still ACTIVE in the current store (skip
+        # already-merged/removed ones); if none active, the arrow already
+        # landed elsewhere — skip.
+        active_ids = [i for i in ids if i in CUR]
+        if not active_ids:
+            skipped_gone += 1; claimed.update(ids); continue
         claimed.update(ids)
         refs = []
         for r in s['referents']:
             if not KEBAB.match(r): nonkebab.append(r)
             refs.append(r)
         refs = list(dict.fromkeys(refs))
-        target = ids[0]
-        if len(ids) >= 2 or s['desc_changed']:
+        target = active_ids[0]
+        if len(active_ids) >= 2 or s['desc_changed']:
             entry = enc_entry(s['domains'], s['kind'], s['desc'], cc(s['certainty']), s['importance'], refs)
         else:
-            o = recs[target]
+            o = CUR[target]   # current content (don't revert concurrent edits)
             entry = enc_entry(o['domains'], o['kind'], o['desc'], o['certainty'], o['importance'], refs)
         imports.append((target, entry))
-        nominate.extend(ids[1:])   # merged-away sources
+        nominate.extend([i for i in active_ids[1:]])   # merged-away sources still active
     for r in b['removed']:
-        if r['id'] in recs and r['id'] not in claimed:
+        if r['id'] in CUR and r['id'] not in claimed:
             claimed.add(r['id']); nominate.append(r['id'])
 
 # write batched import files
@@ -78,7 +89,7 @@ for n, batch in enumerate(batches):
 with open('nominate.txt', 'w') as f:
     f.write('\n'.join(nominate))
 
-print(f"imports: {len(imports)} survivors in {len(batches)} batches of {BATCH}")
+print(f"skipped (already merged/removed): {skipped_gone}"); print(f"imports: {len(imports)} survivors in {len(batches)} batches of {BATCH}")
 print(f"nominate: {len(nominate)} ids (merged-away sources + removals)")
 print(f"projected active after: {len(imports)} (was 1323)")
 print(f"non-kebab referents: {len(nonkebab)} {sorted(set(nonkebab))[:20]}")

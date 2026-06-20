@@ -18,7 +18,7 @@ master keys] (Spirit `p43g`).
 | de-branch (input→main, merge to test-cluster main) | blocked: test-cluster claim + needs witness bins on criome main | cloud-operator lock |
 | Prometheus VM-host test node | in progress (parallel lane) | system-designer |
 | DigitalOcean live deploy | confirmed on a real droplet | cloud-designer `76`/`77` |
-| **E1 peer transport** | **increment 1 landed + verified (peers contract)** | branch `signal-criome-peers` `6315694` |
+| **E1 peer transport** | **increments 1-2 landed + verified (peers contract + envelope header)** | branch `signal-criome-peers` `f4b64fc5` |
 
 ## What already exists in criome (verified at `6a5e797`)
 
@@ -111,9 +111,16 @@ confidentiality — the tailnet (WireGuard) provides the confidentiality layer
 beneath. The envelope signature uses a **domain-separation tag distinct from
 `ATTESTATION_DST`** so a peer frame can never be replayed as an attestation.
 
+The envelope is a **thin authenticated header**, not a byte container. The peer
+wire is two length-prefixed blobs: the header, then the inner `CriomeFrame`. The
+signature covers the inner frame bytes; the receiver verifies before decoding
+them (so no nested byte field, and `nota-next` stays out of the contract's link
+surface):
+
 ```
-PeerEnvelope = { sender master public key, BLS signature over inner bytes, inner CriomeFrame bytes }
-verify: sender ∈ configured peers  AND  bls_verify(sig, inner, sender_pubkey, PEER_DST)  THEN decode
+peer frame = [ length-prefixed PeerEnvelope ][ length-prefixed CriomeFrame bytes ]
+PeerEnvelope = { sender master public key, BLS signature over the following frame bytes }
+verify: sender ∈ configured peers  AND  bls_verify(sig, frame_bytes, sender_pubkey, PEER_DST)  THEN decode the frame
 ```
 
 ## Increment plan (each compiles green on its own)
@@ -123,8 +130,15 @@ verify: sender ∈ configured peers  AND  bls_verify(sig, inner, sender_pubkey, 
    — branch `signal-criome-peers` `6315694` off `ff9ac192`; codegen regenerated,
    `expect_fresh()` + `--features nota-text` + 17 tests green; companion
    `with_peers()` / `peers()` accessors + `PeerNode::new` added in `src/lib.rs`.
-2. **Wire envelope (signal-criome)** — `PeerEnvelope` + a peer codec wrapping the
-   existing stream-generic `CriomeFrameCodec`; verify-before-parse.
+2. **Wire envelope header (signal-criome)** — `PeerEnvelope`. **DONE + verified**
+   — branch `signal-criome-peers` `f4b64fc5`; `expect_fresh()` + `--features
+   nota-text` + tests green. Designed as a **thin authenticated header**
+   `{ sender_public_key.BlsPublicKey  signature.BlsSignature }`, NOT a
+   frame-carrying wrapper. (First pass embedded the frame as a `Bytes` scalar,
+   which lowers to `nota_next::ByteSequence` and silently flipped `nota-next` to
+   a non-optional dep of the whole contract crate — caught in review and reworked
+   to the header so the inner frame is carried by the peer codec as the next
+   length-prefixed blob, keeping `nota-next` optional.)
 3. **TCP peer lane (criome)** — `CriomePeerClient` (connect, sign-then-send) + a
    third peer listener served in the existing daemon poll loop; new `Error`
    variants (`PeerSignatureRejected`, `UnknownPeer`, `PeerConnect`).
