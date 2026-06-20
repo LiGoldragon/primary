@@ -88,6 +88,7 @@ for n, batch in enumerate(batches):
         f.write(f'(Import [{body}])')
 with open('nominate.txt', 'w') as f:
     f.write('\n'.join(nominate))
+json.dump(imports, open('imports.json', 'w'))  # [(id, entry_nota), ...] for per-record testing
 
 print(f"skipped (already merged/removed): {skipped_gone}"); print(f"imports: {len(imports)} survivors in {len(batches)} batches of {BATCH}")
 print(f"nominate: {len(nominate)} ids (merged-away sources + removals)")

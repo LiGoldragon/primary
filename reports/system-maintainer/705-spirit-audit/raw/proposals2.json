@@ -2876,7 +2876,7 @@
 "kind": "Decision",
 "domains": [
 "Technology.Software.Distributed",
-"Technology.Software.Networking"
+"Technology.Software.Distributed.ProtocolDesign"
 ],
 "certainty": "Medium",
 "importance": "Minimum",

@@ -739,6 +739,61 @@
 "referents": []
 },
 {
+"id": "zt1",
+"domains": [
+"Information.Curation"
+],
+"kind": "Correction",
+"desc": "Agents apply the conservative capture gate",
+"certainty": "VeryHigh",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"spirit"
+]
+},
+{
+"id": "zt2",
+"domains": [
+"Information.Documentation"
+],
+"kind": "Correction",
+"desc": "Agents apply the conservative capture gate",
+"certainty": "VeryHigh",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"spirit",
+"capture-gate"
+]
+},
+{
+"id": "zt3",
+"domains": [
+"Information.Curation"
+],
+"kind": "Correction",
+"desc": "Agents apply the conservative capture gate",
+"certainty": "VeryHigh",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": []
+},
+{
+"id": "zt4",
+"domains": [
+"Information.Documentation"
+],
+"kind": "Correction",
+"desc": "Agents apply the conservative capture gate",
+"certainty": "VeryHigh",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"capture-gate"
+]
+},
+{
 "id": "i4ak",
 "domains": [
 "Technology.Software.Engineering.VersionControl",
@@ -13882,6 +13937,22 @@
 "referents": []
 },
 {
+"id": "xen8",
+"domains": [
+"Technology.Software.Engineering.Architecture"
+],
+"kind": "Decision",
+"desc": "mentci-egui socket displays identify the connected component and authority channel, such as Criome and MetaCriome, rather than generic Ordinary and Meta labels, because Mentci will connect to multiple component sockets.",
+"certainty": "Medium",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"mentci-egui",
+"mentci",
+"criome"
+]
+},
+{
 "id": "xfhu",
 "domains": [
 "Technology.Software.Programming.Grammars"
@@ -14278,6 +14349,20 @@
 ]
 },
 {
+"id": "zNEW9",
+"domains": [
+"Information.Documentation"
+],
+"kind": "Decision",
+"desc": "insert-only proof",
+"certainty": "Medium",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"spirit"
+]
+},
+{
 "id": "zbfq",
 "domains": [
 "Technology.Software.Intelligence.AgentSystems"
@@ -14436,6 +14521,60 @@
 "importance": "Minimum",
 "privacy": "Zero",
 "referents": []
+},
+{
+"id": "ztA",
+"domains": [
+"Information.Documentation"
+],
+"kind": "Decision",
+"desc": "trivial a",
+"certainty": "Medium",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"spirit"
+]
+},
+{
+"id": "ztB",
+"domains": [
+"Information.Documentation"
+],
+"kind": "Decision",
+"desc": "trivial b",
+"certainty": "Medium",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"zztestref"
+]
+},
+{
+"id": "ztC",
+"domains": [
+"Information.Documentation"
+],
+"kind": "Decision",
+"desc": "trivial c",
+"certainty": "Medium",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": []
+},
+{
+"id": "ztX",
+"domains": [
+"Information.Documentation"
+],
+"kind": "Correction",
+"desc": "Agents must not respond to Spirit overcapture by avoiding Spirit entirely; the correct discipline is to apply the conservative capture gate and use Spirit only for explicit durable decisions, principles, corrections, clarifications, and constraints.",
+"certainty": "Medium",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"spirit"
+]
 },
 {
 "id": "zyab",
