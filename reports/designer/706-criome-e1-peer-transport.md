@@ -18,7 +18,7 @@ master keys] (Spirit `p43g`).
 | de-branch (input→main, merge to test-cluster main) | blocked: test-cluster claim + needs witness bins on criome main | cloud-operator lock |
 | Prometheus VM-host test node | in progress (parallel lane) | system-designer |
 | DigitalOcean live deploy | confirmed on a real droplet | cloud-designer `76`/`77` |
-| **E1 peer transport** | **starting — increment 1 building** | this report |
+| **E1 peer transport** | **increment 1 landed + verified (peers contract)** | branch `signal-criome-peers` `6315694` |
 
 ## What already exists in criome (verified at `6a5e797`)
 
@@ -119,7 +119,10 @@ verify: sender ∈ configured peers  AND  bls_verify(sig, inner, sender_pubkey, 
 ## Increment plan (each compiles green on its own)
 
 1. **Peer addressing contract (signal-criome)** — `PeerAddress`, `PeerNode`,
-   `(Peers (Vec PeerNode))` on `CriomeDaemonConfiguration`. *(in flight)*
+   `(Peers (Vec PeerNode))` on `CriomeDaemonConfiguration`. **DONE + verified**
+   — branch `signal-criome-peers` `6315694` off `ff9ac192`; codegen regenerated,
+   `expect_fresh()` + `--features nota-text` + 17 tests green; companion
+   `with_peers()` / `peers()` accessors + `PeerNode::new` added in `src/lib.rs`.
 2. **Wire envelope (signal-criome)** — `PeerEnvelope` + a peer codec wrapping the
    existing stream-generic `CriomeFrameCodec`; verify-before-parse.
 3. **TCP peer lane (criome)** — `CriomePeerClient` (connect, sign-then-send) + a
@@ -171,7 +174,16 @@ CriomeDaemonConfiguration {
 ```
 
 Regenerated via `SIGNAL_CRIOME_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`, gated by
-the `expect_fresh()` check on a plain `cargo build`.
+the `expect_fresh()` check on a plain `cargo build`. **Landed + verified** on
+branch `signal-criome-peers` (`6315694`): the generated
+`PeerNode { master_public_key: BlsPublicKey, address: PeerAddress, identity:
+Identity }` and the `peers` config field are emitted; `expect_fresh()`,
+`--features nota-text`, and 17 round-trip tests all green. The companion
+non-generated `src/lib.rs` gained `CriomeDaemonConfiguration::with_peers()` /
+`peers()` and `PeerNode::new()` (the schema generates the wrapper, the
+hand-written builder/accessors live beside `cluster_root()` — a `new()` that
+omitted the field is an `E0063`, the one friction caught and fixed). Ready for
+operator to rebase onto signal-criome main.
 
 ## Lane + blocking notes
 
