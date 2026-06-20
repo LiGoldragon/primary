@@ -18,7 +18,8 @@ master keys] (Spirit `p43g`).
 | de-branch (input→main, merge to test-cluster main) | blocked: test-cluster claim + needs witness bins on criome main | cloud-operator lock |
 | Prometheus VM-host test node | in progress (parallel lane) | system-designer |
 | DigitalOcean live deploy | confirmed on a real droplet | cloud-designer `76`/`77` |
-| **E1 peer transport** | **increments 1-2 landed + verified (peers contract + envelope header)** | branch `signal-criome-peers` `f4b64fc5` |
+| witness bins on criome main | **landed by operator (de-branch step 1)** | criome `68b92c66` |
+| **E1 peer transport** | **increments 1-3 landed + verified; inc-3 adversarially reviewed + hardening** | contracts `signal-criome-peers` `f4b64fc5`; primitive `criome-peer-transport` `0fb1e0b1` |
 
 ## What already exists in criome (verified at `6a5e797`)
 
@@ -139,13 +140,35 @@ verify: sender ∈ configured peers  AND  bls_verify(sig, frame_bytes, sender_pu
    a non-optional dep of the whole contract crate — caught in review and reworked
    to the header so the inner frame is carried by the peer codec as the next
    length-prefixed blob, keeping `nota-next` optional.)
-3. **TCP peer lane (criome)** — `CriomePeerClient` (connect, sign-then-send) + a
-   third peer listener served in the existing daemon poll loop; new `Error`
-   variants (`PeerSignatureRejected`, `UnknownPeer`, `PeerConnect`).
-4. **Outbound solicitation + tally (criome)** — `AuthorizationCoordinator` signs
-   locally, solicits configured peers off the actor thread, verifies submissions
-   against configured pubkeys, and read-modify-writes the persisted state record
-   to `Granted` at k (survives a restart).
+3. **Peer transport primitive (criome)** — **DONE + verified + reviewed** —
+   branch `criome-peer-transport` `0fb1e0b1` off criome `68b92c66`. `CriomePeerCodec`
+   (write/read enveloped: sign the exact length-prefixed `CriomeFrame` bytes under
+   a distinct `PEER_FRAME_DST`, write `[envelope][frame]`, verify-before-decode),
+   `CriomePeerClient` (sync TCP), a shared `LengthPrefixed` framing helper, and
+   `Error::{PeerConnect, UnknownPeer, PeerSignatureRejected}`. Proven by a
+   real-TCP loopback test (valid round-trip + tampered→`PeerSignatureRejected` +
+   unadmitted→`UnknownPeer`), 15/15 green. Consumes the contract via a local-path
+   `[patch]` scaffold (operator removes when landing `signal-criome-peers`).
+   Adversarial review: **wire-framing clean** (bounds-checked before alloc on both
+   blobs, typed errors, validating rkyv), **crypto sound** (preimage byte-identity,
+   genuine DST separation, admitted-peer check, verify-before-decode, secure blst
+   config), **concurrency** correct for a primitive. A hardening pass (cross-DST
+   negative test, client timeouts, frame write-cap, dedicated peer-envelope error
+   variants, tighter pre-auth envelope cap) is landing on the branch.
+4. **Daemon integration + solicitation + tally (criome)** — wire the primitive
+   in: a third TCP peer listener in the serve loop **with a read timeout**
+   (the review's one high finding: the current single-thread busy-poll would let a
+   stalled remote peer freeze the daemon — TCP peers are remote/adversarial unlike
+   the 0600 Unix sockets), read admitted peers + listen address from config
+   (`Peers`), and `AuthorizationCoordinator` signs locally + solicits peers and
+   aggregates k. Per the review, **outbound solicitation must be fire-and-collect
+   off the actor/serve thread** (a worker pool / `spawn_blocking` with per-peer
+   deadlines, concurrent dispatch, first-k-wins) — never a blocking
+   `CriomePeerClient` call inside a Kameo handler. The tally is a
+   read-modify-write of the persisted state record so it survives a restart, and
+   **must bind a per-solicitation nonce/epoch into the signed frame** so a replayed
+   peer signature is not counted as a fresh independent attestation (the transport
+   is authenticity-only; freshness lives here).
 5. **2-of-2 witness + two-node nixosTest** — the first real cross-kernel quorum
    proof (needs the test-cluster repo; currently lock-blocked).
 6. **N-node + DigitalOcean** — extend members; run the same assertion on real
