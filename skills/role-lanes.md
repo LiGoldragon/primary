@@ -127,9 +127,10 @@ Your reading list is two skills: this file (the lane mechanism) and
 `second-designer` / `cloud-designer` / `nota-designer` /
 `system-designer` is `designer`; for `pi-operator` /
 `cluster-operator` / `cloud-operator` / `second-operator` it's
-`operator`; for `cloud-maintainer` it's `system-maintainer`; `system-operator`,
-`system-maintainer`, `poet`, `videographer`, `assistant`, and `counselor` each
-have their own discipline file.
+`operator`; for `cloud-maintainer` and `maintainer` it's
+`system-maintainer`; `system-operator`, `system-maintainer`, `poet`,
+`videographer`, `assistant`, and `counselor` each have their own discipline
+file.
 
 Then claim under your lane's identifier:
 

@@ -88,8 +88,9 @@ substitute a nearby lane (a `pi-operator` window uses
 lanes inherit the closest main role: `cluster-operator` (live cluster
 maintenance, production deploy authority), `pi-operator` (Pi-harness
 operator), `cloud-operator` (cloud deploy), `cloud-maintainer`
-(cloud-host and provider-session maintenance); `cloud-designer`,
-`nota-designer`, `system-designer` are scoped designer lanes.
+(cloud-host and provider-session maintenance), `maintainer` (active
+troubleshooting and host maintenance); `cloud-designer`, `nota-designer`,
+`system-designer` are scoped designer lanes.
 
 Assistant and counselor personal-affairs substance is private by default
 — `private-repos/assistant-reports/` or `private-repos/counselor-reports/`.
