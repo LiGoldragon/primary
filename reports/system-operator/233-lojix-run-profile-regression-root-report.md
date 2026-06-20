@@ -48,8 +48,10 @@ embeds `lojix-0.3.10/bin/meta-lojix`.
 - A follow-up active-profile `Build` probe using the same bypass ref also
   returned `Deployed` from run directory
   `~/.local/state/lojix-runs/20260620175258-deploy-ouranos`.
-- `systemctl --failed` and `systemctl --user --failed` both report zero failed
-  units after activation.
+- `systemctl --failed` reports zero failed system units after activation.
+- A later user-session check found a separate failed Ghostty transient scope
+  from an OOM/timeout event. That scope was reset after confirming it was not a
+  lojix or Spirit service failure.
 - `spirit Version` reports `0.15.0`.
 - `lojix-daemon.service` is active and running `lojix-0.3.10`.
 
@@ -77,14 +79,20 @@ residue remains because stale socket pathnames can confuse later audits.
 Recommended cleanup: after confirming no one still needs the sandbox artefacts,
 archive or remove `/tmp/spirit-sb2`.
 
-### Ghostty transient scope
+### Ghostty transient scopes
 
 `app-ghostty-surface-transient-7999.scope` previously showed
-`Result=oom-kill`, with a memory peak of 19.2G and swap peak of 20.8G. After the
-latest activation, the failed-unit lists are clear.
+`Result=oom-kill`, with a memory peak of 19.2G and swap peak of 20.8G.
+
+After the background agent completed, a second transient scope,
+`app-ghostty-surface-transient-654356.scope`, showed `Result=timeout` after the
+kernel OOM killer acted inside the unit. It reported a 22.7G memory peak and
+33.7G swap peak. This killed a shell and Claude wrapper process inside that
+Ghostty surface. I reset that failed transient unit after confirming it was not
+a `lojix-daemon`, `spirit-daemon`, or Home profile failure.
 
 Risk: low as a current system-health issue. It is evidence of memory pressure
-earlier today, not an active failed unit now.
+earlier today, not an active `lojix` or Spirit issue.
 
 Recommended cleanup: none required unless it recurs. If it recurs, inspect the
 workload launched inside that transient Ghostty scope rather than treating it as
