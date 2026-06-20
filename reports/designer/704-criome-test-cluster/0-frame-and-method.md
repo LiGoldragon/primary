@@ -191,7 +191,38 @@ called the (false) absence a bug. Verified origin state:
    "no meta socket" into a passing test.
 
 **Hard lesson: `git fetch` + check `origin/main` before branching every repo** —
-three duplications this session all traced to a stale local jj `main`.
+SEVEN duplications this session all traced to a stale local jj `main` (the
+witness, signal-criome meta path, criome base, signal-criome AuthorizationMode,
+…). Operator out-paced designer on criome all day (`1eaa783` witness,
+`6ce7decd` meta approval socket, `aa5498a` signal-criome authorization mode,
+`2a2f7d9` meta-signal-criome refresh) while designer kept re-deriving landed
+work. **Honest takeaway: the higher-leverage designer surface is the nixosTest
+harness (cleanly mine, operator isn't building it), not racing operator inside
+`root.rs`. Always fetch origin first.**
+
+### Auto-approve runtime — built + locally proven (branch `criome-auto-approve`)
+
+After reconciling onto operator's landed contracts (signal-criome `aa5498a`
+AuthorizationMode, meta-signal-criome `2a2f7d9`), the criome RUNTIME — the
+genuine remaining gap (criome main still had `Configure = NotBuiltYet`, no
+`AutoApprove`) — is built and **locally proven against a real daemon** (commit
+`e80e2065`, branch `criome-auto-approve`):
+
+- `EvaluateAuthorization` short-circuits to `Authorized` in `AutoApprove`
+  (keeps the structural object/operation-digest integrity check; skips quorum).
+- meta `Configure` IMPLEMENTED (was `NotBuiltYet`): applies `authorization_mode`
+  to the running root, replies `Configured(generation)`.
+- `authorization_mode` threaded `from_configuration` → `Arguments` → `CriomeRoot`.
+- `criome-auto-approve-witness-test`: over the meta socket
+  `Configure(AutoApprove)` → `Configured`; over the working socket an
+  evidence-less evaluation → `Authorized`. Local run (real daemon, both sockets):
+  `PROOF (1) ... -> Configured`, `PROOF (2) ... -> Authorized`, exit 0.
+
+Compiles green against operator's main contracts unchanged (operator and I wrote
+the identical signal-criome API independently). The
+`criome-cluster-auto-approve` nixosTest (test-cluster branch, consuming this
+criome branch) is building to prove it in a VM. An adversarial audit of this work
+is running concurrently (psyche-requested); findings + remediation to follow.
 - **Next (Stage B):** build spirit's gate-config arming (signer key in config →
   per-head evidence — the `criome_gate.rs` documented remaining step), then add
   the spirit+mirror legs so the spirit-daemon drives the gate and the authorized
