@@ -144,3 +144,57 @@ be report-captured or pushed before any GC.
    pushed preservation bookmarks for the two `schema-rust-next` trees and record
    the missing `schema-next/reaction-expand` dependency. Do not delete or recycle
    either tree until that preservation exists.
+
+## Preservation and integration pass
+
+The preservation step is done. Two remote bookmarks now protect the unpushed
+`schema-rust-next` work:
+
+- `operator/preserve-schema-rust-next-reaction-expand` at `8b147fac`
+  (`schema-capability-resolution: thread shape resolver + standard struct
+  impls`), preserving ancestor `a1582dfd`.
+- `operator/preserve-schema-rust-next-structural-forms-integration` at
+  `a0138ce1` (`schema-rust-next: migrate fixtures to positional struct-body
+  syntax`).
+
+The real integration probe says not to merge either branch directly.
+
+`reaction-expand` is half of a cross-repo pair. Its `Cargo.toml` contains an
+explicit prototype-only `[patch]` to `../../schema-next/reaction-expand`, which
+does not exist as a local worktree. The matching contract work exists instead as
+the `schema-next` bookmark `next/schema-capability-resolution` at `3709fc15`.
+Directly merging that bookmark into current `schema-next` main conflicts in
+`src/engine.rs`, `src/lib.rs`, `src/schema.rs`, `src/source.rs`, and
+`tests/reaction.rs`. The conflict is architectural, not just textual: current
+main has the newer one-lowering-engine / macro-registry line, while the
+capability branch predates it and adds separate expression/capability
+machinery.
+
+Directly merging `reaction-expand` into current `schema-rust-next` main also
+conflicts in `Cargo.toml`, `Cargo.lock`, `src/lib.rs`, multiple generated
+fixtures, and `tests/spirit_frame_application.rs`. Current main has the later
+impl-catalog verification surface (`ImplFact`, `ImplReference`,
+`ReferencedImpl`, `RustSurface`, method signatures); the preserved branch wants
+to add the older `ImplDeclaration`/`ImplBody`/`MethodDeclaration` lowering path
+plus `CapabilityResolver`. Landing it as-is would regress the current impl
+catalog shape and import a broken local path patch.
+
+`structural-forms-integration` is preserved but also not a direct merge. Its
+direct merge into current `schema-rust-next` main conflicts in `Cargo.lock`,
+`tests/family_emission.rs`, `tests/generation_driver.rs`, and a broad set of
+schema fixtures. Its unique work is mostly positional-struct fixture migration
+against older dependency pins; current main has since moved through newer
+schema lowering and impl-catalog work. This branch should be mined only if a
+specific fixture expectation is still missing.
+
+So the integration result is:
+
+1. keep both preservation bookmarks;
+2. do not retire either source tree until a designer/operator explicitly mines
+   it;
+3. if the capability-resolution concept is revived, port it as a fresh
+   `schema-next` mainline design first, over the current one-lowering-engine
+   and impl-catalog model, then adapt `schema-rust-next` to that new public
+   contract;
+4. after that, port only the still-relevant `composition_demo` and
+   `pipe_delimiter_demo` witnesses from the preserved `reaction-expand` branch.
