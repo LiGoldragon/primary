@@ -125,3 +125,30 @@ High is warranted (`ChangeCertainty` / repetition evidence).
    tailnet provides confidentiality, vs encryption-in-transit in slice 1; and
    does E1 depend on E2 (cluster-root admission) or is static peer config the
    deliberate first cut?
+
+## Update (post-investigation): operator landed the Track A fixes in `6a5e797`
+
+Verified after the investigation: the Track A defects above were **real at
+`245f0441`** (the snapshot the investigators read) — at that commit `root.rs`
+had no ClientApproval reject-gate, emitted neither `request_unimplemented` nor
+`configuration_rejected`, and `store.rs` sorted slots lexicographically. Operator
+then pushed criome `6a5e797` ("harden client approval authorization
+boundaries", the only commit since `245f0441`: `root.rs +18`, `store.rs +21`,
+`tests/daemon_skeleton.rs +174`) which fixes all of them — the reject-gate in
+ClientApproval mode, unknown-slot → `RequestUnimplemented`, malformed-Configure →
+`ConfigurationRejected`, numeric slot sort, and removal of the dead
+`active_status` free function.
+
+A transient error in the chat relay (now corrected): a `git show origin/main`
+read after operator's push returned the *fixed* code, and I briefly mislabeled
+the findings "false positives." They were not — the investigator was right; the
+defects were real and are now fixed on main. This is the same stale-vs-fresh ref
+hazard that recurred all session, here in the read-newer-than-expected direction.
+
+Net: the "designer prototypes the Track A fixes on a branch" path (question 2's
+answer) is **moot** — operator owned and landed the runtime fixes (their lane).
+Designer focus stays on the ClientApproval park VM-proof. The remaining real,
+small items are the park-failure typed-error mapping (`park_authorization` still
+maps any store error to `MalformedRequest`) and the `Defer` semantics
+(park-and-wait, with a now-unreachable `Defer → Parked` arm in the status match)
+— both minor, both operator-runtime, flagged not fixed.
