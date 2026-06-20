@@ -145,6 +145,40 @@ designer prototypes the harness on a branch.
   runtime does not yet branch on it — wiring `SimpleSelfSigned`/auto-approve
   into the decision path is the next build, then the mentci meta-socket
   authorizer (criome has no meta socket yet).
+
+## "Fix it all" build — auto-approve + criome meta socket + mentci authorizer
+
+Psyche: *"fix it all. no meta socket is a bug."* The missing criome meta socket
+is a bug against the existing two-contracts principle (Spirit `7sx6`/`6sxn`,
+every component carries `meta-signal-<component>`) — no new record, a bug-fix
+order. Build plan, in dependency order, on designer branches (operator owns
+criome/signal-criome main integration):
+
+- **[DONE, green+pushed] signal-criome contract foundation** — branch
+  `criome-meta-authz` (`622ca716`). Added `AuthorizationMode [Quorum
+  AutoApprove]`, `meta_socket_path`, and `authorization_mode` to the shared
+  `CriomeDaemonConfiguration` (so the meta `Configure` carries them for free).
+  Schema regenerates via `SIGNAL_CRIOME_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`;
+  hand-written `new(socket, store, meta_socket, mode)` + accessors updated;
+  freshness check (CI-equivalent) green. Schema gotcha fixed: a field whose
+  role *is* its type is the bare type (`AuthorizationMode`), not `field.Type`
+  (`RedundantExplicitFieldRole`).
+- **[NEXT] criome runtime — auto-approve** (criome branch, consumes
+  `criome-meta-authz`): `from_configuration` reads the new fields; `root.rs:202`
+  `EvaluateAuthorization` short-circuits to `Authorized` when mode is
+  `AutoApprove`; `criome-write-configuration` encoder takes the meta-socket +
+  mode. Extend the cluster test to prove an evidence-less request → `Authorized`.
+- **[NEXT] criome meta socket (the bug fix)**: bind + serve the second socket
+  per meta-signal-criome (`Configure(CriomeDaemonConfiguration)` →
+  `Configured`), cloning the working-socket serve loop with a meta frame codec.
+- **[NEXT] mentci authorizer**: add subscribe/pending-push/approve ops to
+  meta-signal-criome; criome holds `EvaluateAuthorization` pending and pushes to
+  a connected authorizer; mentci is the client that responds with the approval
+  (the vote-on-existing-object adjudication, Spirit `t00s`). Add `ExternalApprover`
+  to `AuthorizationMode`.
+
+Reconciliation note: my local jj `main` was stale once already (criome) — fetch
+before branching to avoid re-implementing landed work.
 - **Next (Stage B):** build spirit's gate-config arming (signer key in config →
   per-head evidence — the `criome_gate.rs` documented remaining step), then add
   the spirit+mirror legs so the spirit-daemon drives the gate and the authorized
