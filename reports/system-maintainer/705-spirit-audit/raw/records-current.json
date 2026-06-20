@@ -3925,6 +3925,20 @@
 "referents": []
 },
 {
+"id": "eh5a",
+"domains": [
+"Technology.Software.Engineering.VersionControl"
+],
+"kind": "Decision",
+"desc": "Agents register every worktree they create in the orchestrate tool, which keeps a database of the active worktrees, and follow a standard worktree lifecycle protocol: each prior worktree is either merged to main, archived (recorded in a manifest that drives later garbage collection of the branch and tree), or recycled (rebased on main and reused for new work). This tools the kb4k worktree-tracking-and-archive principle and the oust feature-branch-worktree convention with concrete orchestrate-tool registration plus an archive manifest.",
+"certainty": "High",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"orchestrate"
+]
+},
+{
 "id": "er9w",
 "domains": [
 "Technology.Software.Programming.DomainSpecificLanguages"
@@ -5639,6 +5653,21 @@
 "importance": "Minimum",
 "privacy": "Zero",
 "referents": []
+},
+{
+"id": "upza",
+"domains": [
+"Technology.Software.Security.Authorization",
+"Technology.Software.Operations.Deployment"
+],
+"kind": "Correction",
+"desc": "Privileged and root-level operations on cluster hosts are performed by SSH-ing into the host root account authenticated with the operator SSH key, for example ssh root@localhost or ssh root@ouranos.goldragon.criome and the same ssh-root form for any other host. This is the standing privileged-access mechanism across the workspace, and sudo is not the access path.",
+"certainty": "High",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"ssh"
+]
 },
 {
 "id": "utaa",
@@ -13039,6 +13068,18 @@
 "referents": []
 },
 {
+"id": "t5qr",
+"domains": [
+"Technology.Software.Engineering.Architecture"
+],
+"kind": "Principle",
+"desc": "When debugging or rewriting a part of the system, actively evaluate the design of the parts being touched and surface any flaw or improvement opportunity to the psyche as you find it. Improving code is paired with judging its design, not just making it work; raise what you see rather than silently working around it.",
+"certainty": "Medium",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": []
+},
+{
 "id": "tbg6",
 "domains": [
 "Information.Curation"
@@ -14839,6 +14880,22 @@
 "importance": "Minimum",
 "privacy": "Zero",
 "referents": []
+},
+{
+"id": "878r",
+"domains": [
+"Technology.Software.Operations",
+"Technology.Software.Engineering.Architecture"
+],
+"kind": "Decision",
+"desc": "CriomOS provides a website-hosting node service so the psyche can host websites: a user configures a source to be rendered and served from a node, the service supports multiple renderer variants, and the standard default for now is a markdown-based static site in the Jekyll mould. The psyche requires the implementation be the most reliable and secure way to do it. This is the first concrete role doris, the low-trust DigitalOcean cloud node, can fill.",
+"certainty": "Low",
+"importance": "Minimum",
+"privacy": "Zero",
+"referents": [
+"CriomOS",
+"doris"
+]
 },
 {
 "id": "9qm8",
