@@ -152,3 +152,29 @@ small items are the park-failure typed-error mapping (`park_authorization` still
 maps any store error to `MalformedRequest`) and the `Defer` semantics
 (park-and-wait, with a now-unreachable `Defer → Parked` arm in the status match)
 — both minor, both operator-runtime, flagged not fixed.
+
+## Proof-first: the ClientApproval park flow is proven (witness branch)
+
+The latent-risk loop (park substrate landed-but-unproven) is closed at the
+functional level. Designer branch `criome-client-approval-witness` (`2bb8645e`,
+one additive commit off main `6a5e797`) adds two feature-gated
+(`cluster-witness`) test bins:
+
+- `criome-client-approval-witness-test` (new) — drives the full ClientApproval
+  flow against a real daemon over its working + meta sockets:
+  `Configure(ClientApproval)` → working `EvaluateAuthorization` parks →
+  meta `ObserveParkedAuthorizations` lists the slot → meta
+  `SubmitAuthorizationApproval(Approve)` → working `ObserveAuthorization` reads
+  status `Granted`; a second submission with `Reject` reads status `Denied`.
+- `criome-auto-approve-witness-test` (ported forward from the
+  `criome-auto-approve` branch, which main otherwise lacks — needed so the
+  test-cluster can repoint its criome input to main and retire that branch).
+
+Proven by a local real-daemon smoke (real `criome-daemon`, real BLS, real Unix
+sockets), run by the building agent and **independently re-run and confirmed
+green** (`SMOKE-PASS`, base `6a5e797a`): both witnesses exit 0; the
+client-approval witness emits all five PROOF lines for both the Approve→Granted
+and Reject→Denied paths. This is a process-level proof, not yet the systemd /
+NixOS-VM level — that and the de-branching are blocked on cloud-operator's lock
+on `CriomOS-test-cluster`. The branch is ready for operator to rebase onto main
+and for the nixosTest wiring once the lock releases.
