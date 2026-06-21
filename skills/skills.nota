@@ -13,6 +13,8 @@
     [Implementation as craft. The discipline an agent brings when the work is landing code.])
   (Role designer skills/designer.md Apex
     [Architecture as craft. What designer specifies; what operator implements against.])
+  (Role schema-designer skills/schema-designer.md Apex
+    [Specialized designer lane: the schema stack and contract shapes. nota/schema-next/schema-rust-next grammar, signal-* wire contracts, rkyv round-trip, schema-help introspection. Pairs with schema-operator.])
   (Role system-operator skills/system-operator.md Apex
     [OS / platform / deploy craft.])
   (Role system-maintainer skills/system-maintainer.md Apex

@@ -91,7 +91,8 @@ operator), `cloud-operator` (cloud deploy), `cloud-maintainer`
 (cloud-host and provider-session maintenance), `schema-operator`
 (schema and schema-rust implementation), `maintainer` (active
 troubleshooting and host maintenance); `cloud-designer`, `nota-designer`,
-`system-designer` are scoped designer lanes.
+`system-designer`, `schema-designer` (schema-stack and contract-shape
+design, paired with `schema-operator`) are scoped designer lanes.
 
 Assistant and counselor personal-affairs substance is private by default
 — `private-repos/assistant-reports/` or `private-repos/counselor-reports/`.

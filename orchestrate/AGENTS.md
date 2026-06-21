@@ -44,6 +44,7 @@ set of lanes is enumerated below.
 | `system-designer` | designer | (any) | `orchestrate/system-designer.lock` | `reports/system-designer/` | Specialized designer lane scoped to system topics (CriomOS, horizon, lojix, goldragon, deployment) |
 | `nota-designer` | designer | (any) | `orchestrate/nota-designer.lock` | `reports/nota-designer/` | Specialized designer lane scoped to NOTA language design |
 | `cloud-designer` | designer | (any) | `orchestrate/cloud-designer.lock` | `reports/cloud-designer/` | Specialized designer lane scoped to cloud component design |
+| `schema-designer` | designer | Claude | `orchestrate/schema-designer.lock` | `reports/schema-designer/` | Specialized designer lane scoped to the schema stack and contract shapes (nota/schema-next/schema-rust-next, signal-* contracts, schema-help introspection), paired with `schema-operator` |
 | `system-operator` | system-operator | (any) | `orchestrate/system-operator.lock` | `reports/system-operator/` | CriomOS, CriomOS-home, lojix-cli, horizon-rs, goldragon |
 | `system-maintainer` | system-maintainer | Pi | `orchestrate/system-maintainer.lock` | `reports/system-maintainer/` | Crayon OS and Logic maintenance, debugging, updating, and deploys across hosts |
 | `poet` | poet | (any) | `orchestrate/poet.lock` | `reports/poet/` | TheBookOfSol, substack-cli, prose-craft surfaces |
@@ -191,7 +192,7 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 `cluster-operator`, `cloud-operator`, `schema-operator`,
 `cloud-maintainer`, `maintainer`, `designer`, `second-designer`,
 `third-designer`, `system-designer`, `nota-designer`, `cloud-designer`,
-`system-operator`, `system-maintainer`, `poet`, `editor`,
+`schema-designer`, `system-operator`, `system-maintainer`, `poet`, `editor`,
 `videographer`, `assistant`, or `counselor`. Each
 `<scope>` is either an absolute path or a bracketed task lock
 (`'[primary-f99]'` — quote it; `[` is a shell glob character).
@@ -399,6 +400,7 @@ Convention: each role owns a subdirectory.
 - `reports/system-designer/` — system designer's reports (specialized designer lane).
 - `reports/nota-designer/` — nota designer's reports (specialized designer lane).
 - `reports/cloud-designer/` — cloud designer's reports (specialized designer lane).
+- `reports/schema-designer/` — schema designer's reports (specialized designer lane).
 - `reports/poet/` — poet's reports.
 - `reports/editor/` — editor's source-grounded research and synthesis reports.
 - `reports/videographer/` — videographer's reports.
