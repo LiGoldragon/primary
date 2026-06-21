@@ -365,7 +365,7 @@
 "Technology.Software.Programming"
 ],
 "kind": "Clarification",
-"desc": "NOTA strings come EXCLUSIVELY from bracket forms - the canonical [text] form for ordinary strings and the [|text\\|] form for strings containing brackets (escape-free zone). Quotation marks do NOT form string types in NOTA. Safe NOTA is free of unescaped quotation marks; quotation marks are strongly disfavored as a string syntax. The earlier record 690 framed this as authoring preference; this clarification strengthens it to a structural rule about the NOTA format itself: brackets ARE the string form. Implementations that accept double-quoted strings as input (legacy lojix-cli, possibly historical NOTA reader code) are non-canonical legacy and slated for removal. Test imperative: latest NOTA must behave per this rule; emitter and parser audited; legacy quotation-string handling, if any, marked for retirement. *lexical analysis*",
+"desc": "NOTA strings come EXCLUSIVELY from bracket forms - the canonical [text] form for ordinary strings and the [|text|] form for strings containing brackets (escape-free zone). Quotation marks do NOT form string types in NOTA. Safe NOTA is free of unescaped quotation marks; quotation marks are strongly disfavored as a string syntax. The earlier record 690 framed this as authoring preference; this clarification strengthens it to a structural rule about the NOTA format itself: brackets ARE the string form. Implementations that accept double-quoted strings as input (legacy lojix-cli, possibly historical NOTA reader code) are non-canonical legacy and slated for removal. Test imperative: latest NOTA must behave per this rule; emitter and parser audited; legacy quotation-string handling, if any, marked for retirement. *lexical analysis*",
 "certainty": "VeryHigh",
 "importance": "High",
 "privacy": "Zero",
@@ -4006,7 +4006,7 @@
 "Technology.Software.Programming.Parsing"
 ],
 "kind": "Decision",
-"desc": "Two bracket-string forms in NOTA: [content] inline-bracket-string for single-line strings; [|content\\|] block-string for multi-line strings AND for strings that need to safely contain single [ or ] characters without escaping. The [|...\\|] form delimits with [| / \\|] so the content can include [, ], or newlines freely. Both forms are distinct NOTA shapes; the shape-logic layer (per /187) distinguishes them via is_block_string and the underlying parser.",
+"desc": "Two bracket-string forms in NOTA: [content] inline-bracket-string for single-line strings; [|content|] block-string for multi-line strings AND for strings that need to safely contain single [ or ] characters without escaping. The [|...|] form delimits with [| / |] so the content can include [, ], or newlines freely. Both forms are distinct NOTA shapes; the shape-logic layer (per /187) distinguishes them via is_block_string and the underlying parser.",
 "certainty": "High",
 "importance": "Minimum",
 "privacy": "Zero",
@@ -9566,7 +9566,7 @@
 "Technology.Software.Programming.Grammars"
 ],
 "kind": "Principle",
-"desc": "The `[| \\|]` block string form is useful as a safe wrapper for multiline NOTA-like content that does not contain the block delimiter itself.",
+"desc": "The `[| |]` block string form is useful as a safe wrapper for multiline NOTA-like content that does not contain the block delimiter itself.",
 "certainty": "Medium",
 "importance": "Minimum",
 "privacy": "Zero",
@@ -14875,7 +14875,7 @@
 "Technology.Software.Programming.Grammars"
 ],
 "kind": "Decision",
-"desc": "Plain square brackets remain the desired candidate for inline string literals; `[|...\\|]` is not acceptable as the ordinary inline string form because it is too much delimiter for common strings.",
+"desc": "Plain square brackets remain the desired candidate for inline string literals; `[|...|]` is not acceptable as the ordinary inline string form because it is too much delimiter for common strings.",
 "certainty": "Low",
 "importance": "Minimum",
 "privacy": "Zero",

@@ -27,7 +27,9 @@ def is_bare(t):
 def enc_str(t):
     t = t if t is not None else ""
     if is_bare(t): return t
-    if any(c in t for c in '()[]'): return '[|' + t.replace('|]', '\\|]') + '|]'
+    # block form must match nota-next escape_pipe_text: \\ -> \\\\, then |] -> \|]
+    if any(c in t for c in '()[]'):
+        return '[|' + t.replace('\\', '\\\\').replace('|]', '\\|]') + '|]'
     return '[' + t + ']'
 def enc_ref(r): return r if KEBAB.match(r) else enc_str(r)
 def enc_refs(rs): return '[' + ' '.join(enc_ref(r) for r in rs) + ']'

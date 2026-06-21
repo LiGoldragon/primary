@@ -38,14 +38,17 @@ class P:
         self.ws()
         assert self.s[self.i] == '[', self.s[self.i:self.i+10]
         if self.s[self.i+1] == '|':
-            self.i += 2; start = self.i
+            # block form: terminate at first UNescaped |]; UNESCAPE content per
+            # nota-next parser (\X -> X) so the recovered text is the true value.
+            self.i += 2; out = []
             while self.i < self.n:
                 c = self.s[self.i]
                 if c == '\\':
+                    if self.i+1 < self.n: out.append(self.s[self.i+1])
                     self.i += 2; continue
                 if c == '|' and self.s[self.i+1:self.i+2] == ']':
-                    val = self.s[start:self.i]; self.i += 2; return val
-                self.i += 1
+                    self.i += 2; return ''.join(out)
+                out.append(c); self.i += 1
             raise ValueError("unterminated [|")
         # plain [text]: no brackets inside by NOTA rule
         self.i += 1; j = self.s.find(']', self.i)
