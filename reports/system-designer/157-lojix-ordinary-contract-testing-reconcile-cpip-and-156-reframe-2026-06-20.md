@@ -2,6 +2,8 @@
 
 *System-designer study · 2026-06-20 · report 157 (supersedes the separate-crucible design of report 156)*
 
+**SUPERSEDED by report 158** — `158-lojix-unified-deploy-test-poc-contracts-and-verification-2026-06-21.md` is canonical. Report 158 carries the corrected `NodeProfile`/`ProductionNode` safety split (operator audit 234's greatest finding), the `VerifyContained` rename, the wave-0 codegen gate, and the full reshaped contract NOTA. This report's single-`Test` shape and its `vudl`/`cgd8`-conflict framing are stale; retained only as history. Per operator audit 234 §7.
+
 The psyche's reframe: testing and deployment are the SAME function in ONE
 component (lojix). Both build an OS/cluster closure and bring it up on a
 target; they differ ONLY in containment. So lojix does both, split across

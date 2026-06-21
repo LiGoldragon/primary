@@ -19,7 +19,7 @@ Yesterday's designer-lane work, by the git log, is two bodies:
    designer prototypes on branches, **now integrated on main by operator**
    (`operator: integrate mentci and orchestrate wave2 handoffs`, report
    447). Eight repos:
-   - mentci cluster (intent `7x5z` / `t00s` / `p43g` / `gc0n`): `mentci-lib`
+   - mentci cluster (intent `7x5z` / `t00s` / `p43g` / `pviw`/`gc0n`): `mentci-lib`
      (the re-founded keystone), `signal-mentci`, `meta-signal-mentci`,
      `mentci` (daemon), `mentci-egui`.
    - worktree-registry cluster (intent `eh5a`): `signal-orchestrate`,
@@ -64,7 +64,7 @@ A single dynamic workflow (`audit-yesterday-designer-work`), 5 phases:
   snippet + harm + fix.
 - **Cross** — four cross-cutting analyses (barrier on all maps): cross-repo
   repetition/duplication, architecture coherence (with mermaid), report-vs-
-  reality gaps, and intent fidelity (`7x5z`/`t00s`/`p43g`/`gc0n`/`eh5a`).
+  reality gaps, and intent fidelity (`7x5z`/`t00s`/`p43g`/`pviw`/`gc0n`/`eh5a`).
 - **Verify** — every high/medium finding handed to an adversarial skeptic
   who reads the real code and defaults to *refuted* unless it truly stands
   (kills false positives like the wave-1 `structural-forms-integration`
