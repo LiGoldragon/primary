@@ -103,6 +103,21 @@ Release         r
 
 One grammar for authoring and querying, learned once.
 
+## Verb shape — response to operator audit 235
+
+Audit 235 asks whether to split status from body-execution into `CheckContained` vs `VerifyContained`, or pick a different verb shape before it hardens. Recommendation:
+
+- **Status is `Query`, not a verb of its own.** "What phase/outcome is run r in?" is a read — the ordinary `Query (ByTestRun (TestRunLookup …))` already answers it. A `CheckContained` whose job is status is exactly the audit's finding #3 (it inspects the store directly); route it through the sema-engine read path as `Observe`/`Query`, not a bespoke store-peek.
+- **The body-executing verb is `VerifyContained`**, carrying the typed `VerificationBody` (`Gate` / `Steps`); it runs the body against a run and returns a verdict. This is report 158's thin-assert op, named off the Sema-class word `Assert`.
+- **So the triple is `DeployContained` / `VerifyContained` / `Release`, status via `Query`** — `CheckContained` dissolves (status role → `Query`, execution role → `VerifyContained`-with-body). The authoring layer above lowers `Gate`/`Steps` to `VerifyContained`; `(Query (ByTestRun …))` reads status. One grammar, no conflated verb.
+
+The audit's other findings (accepted; all in the operator's daemon domain):
+
+- **`DeployContainedRequest.source` should be made authoritative, not removed** — a `NodeProfile` build resolves its closure from that proposal source, so lowering ignoring it is the bug; if the daemon defaults source from config, `source` is the per-request override (still authoritative when present).
+- **`CheckContained`/`Release` peeking the store directly violates the signal/nexus/sema bar** — agreed; the read path is `Observe` through sema-engine, the release a typed effect, not a direct redb read.
+- **The `live-deploy-test-chain` branch rehomes as `VmHostGuest`, not `TestMode::Live`** — agreed, and already report 158's wave-2; `TestMode` is deleted and containment is the `ContainedTarget` variant.
+- **Wave-0 is still open.** The POC compiles by pinning `schema-next`, which dodges the live toolchain — so the codegen gate (ordinary `DeployContained` + meta `Deploy` routed to one pipeline with no shared target supertype) is *not yet proven*. That remains the real blocker before the verbs harden; proving it on the current toolchain outranks adding surface.
+
 ## Coordination and next step
 
 The operator owns the per-node contract and daemon (`system-operator-contained-test-poc`); this comfortable cluster layer is the designer "demonstrate the shape" contribution that lowers to it. Next concrete step: land `RunContainedCluster` + the verification vocabulary on a designer worktree atop the operator's branch (or hand it to the operator to fold into the contract), and review the operator's daemon lowering as it lands. **Router feasibility:** if the router source still fails to compile against the new schema generator, the criome+spirit subset runs and `RouterFanOut` is the honest stub until that lands — the example does not fake a passing router.
