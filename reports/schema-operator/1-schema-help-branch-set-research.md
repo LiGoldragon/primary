@@ -43,10 +43,12 @@ The generated Rust already exposes the important surfaces for a pilot:
 The feature should be generated, not hand-maintained in Spirit.
 
 1. Add generated help/spec nouns in `schema-rust-next`, gated by the existing `nota-text` feature unless a separate gate is chosen.
-2. Emit a `Help` input variant into root input enums and a generated help response variant into output roots, or require the schema to declare the roots and only generate the internal payload/spec support. This is a design choice, not a technical blocker.
-3. Represent the help response as typed data that can be serialized by `rkyv`; the CLI/text surface should render the structural form from that data.
-4. Use Spirit as the pilot: regenerate `signal-spirit`, handle `Input::Help` in Spirit without touching SEMA, and add generated-contract, process-boundary, and Nix integration tests.
-5. Keep `meta-signal-spirit` in the branch set so it can be regenerated or repinned if the generator changes public surfaces used by meta signals.
+2. Emit a `Help` input variant into root input enums and a generated help response variant into output roots.
+3. Generate help recursively from schema structure until scalar leaves are reached. Scalar leaves terminate as structural terminal forms such as `(X String)` or `(Y Int)`.
+4. Represent container forms explicitly: `(Z (Vec SomeThing))` keeps the container constructor and element type at the use site, while `SomeThing` remains recursively discoverable through `(Help SomeThing)`.
+5. Represent the help response as typed data that can be serialized by `rkyv`; the CLI/text surface should render the structural form from that data.
+6. Use Spirit as the pilot: regenerate `signal-spirit`, handle `Input::Help` in Spirit without touching SEMA, and add generated-contract, process-boundary, and Nix integration tests.
+7. Keep `meta-signal-spirit` in the branch set so it can be regenerated or repinned if the generator changes public surfaces used by meta signals.
 
 The lowest-friction first proof is:
 
@@ -72,13 +74,13 @@ The current Spirit test suite already has a production-copy pattern in `tests/pr
 
 ## Clarifications Needed
 
-1. Should `Help` be added automatically to every root enum by `schema-rust-next`, or should schemas explicitly opt in with a declared `Help` root while the generator only emits the help/spec data type?
-2. Should the feature gate reuse `nota-text`, or should this be a new gate such as `schema-help` layered on top of `nota-text`?
-3. What is the exact query datatype: an optional typed `SymbolPath`, a custom `HelpQuery`, or a generated enum/path specific to each root?
-4. What should the output root be named in Spirit: `Helped`, `HelpReported`, `HelpShown`, `SchemaHelpReported`, or another noun?
-5. Should `(Help Version)` describe only the input form (`Version`) or the command/reply pairing (`Version -> VersionReported VersionReport`)?
-6. For the top-level production-copy test, do you authorize copying the live `~/.local/state/spirit/spirit.sema` into the sandbox input, or should I use the existing production-like seeded database pattern only?
-7. Should `nota-next` be in the epic branch set, or is the intended implementation limited to schema-next, schema-rust-next, the Spirit signal repos, and Spirit?
+1. Should the feature gate reuse `nota-text`, or should this be a new gate such as `schema-help` layered on top of `nota-text`?
+2. What is the exact query datatype: an optional typed `SymbolPath`, a custom `HelpQuery`, or a generated enum/path specific to each root?
+3. What should the output root be named in Spirit: `Helped`, `HelpReported`, `HelpShown`, `SchemaHelpReported`, or another noun?
+4. Should `(Help Version)` describe only the input form (`Version`) or the command/reply pairing (`Version -> VersionReported VersionReport`)?
+5. For the top-level production-copy test, do you authorize copying the live `~/.local/state/spirit/spirit.sema` into the sandbox input, or should I use the existing production-like seeded database pattern only?
+6. Should `nota-next` be in the epic branch set, or is the intended implementation limited to schema-next, schema-rust-next, the Spirit signal repos, and Spirit?
+7. For container payloads such as `(Z (Vec SomeThing))`, should top-level help preserve `SomeThing` as a reference with recursive help available on demand, or should it inline-expand `SomeThing` in the first response until scalar leaves?
 
 ## Current Recommendation
 
