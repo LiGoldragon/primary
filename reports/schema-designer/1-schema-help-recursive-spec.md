@@ -1,218 +1,230 @@
-# Schema Help — the recursive structural spec
+# Schema Help — the one-level navigable signature index
 
 *schema-designer · report 1 · pairs with schema-operator's
-`reports/schema-operator/1-schema-help-branch-set-research.md`*
+`reports/schema-operator/1-schema-help-branch-set-research.md` · settled
+intent: Spirit `6th4`*
 
-The load-bearing claim: **Help is a recursive unfolding of the contract's
-type graph, rendered as positional NOTA, that terminates at scalar
-leaves OR at any type already shown on the walk.** The "one level"
-form from the first framing (`(Record { Entry Justification })`) and the
-"recurse until scalars" form are the *same* mechanism at two depths —
-the special case dissolves into the normal case. The reason termination
-must be by *visited-set*, not just "until scalars", is that the live
-spirit schema is genuinely **cyclic**.
+The load-bearing claim, after the design exchange: **`(Help X)` renders
+exactly one structural level of `X`, naming every child type rather than
+inlining its definition. The reader recurses by *navigating* —
+issuing `(Help child)` — not by the renderer transitively dumping.**
+Scalar leaves surface at the newtype boundary, where help terminates as
+`(Description String)`. This makes Help trivially total (no depth knob,
+no cycle guard) and keeps every screen readable.
 
-## 1. Where this sits (unchanged, confirmed)
+This supersedes an earlier draft of this report that proposed transitive
+recurse-to-scalars with a visited-set guard. The psyche ruled out the
+transitive dump; the one-level-navigable model below is simpler and
+strictly better, and the cycle problem the guard was protecting against
+**cannot arise** when each render is a single level.
 
-- The compile-time gate already exists: `signal-spirit`'s **`nota-text`**
-  feature. `default = []` ⇒ the daemon builds rkyv-only; the NOTA codec
-  is `#[cfg_attr(feature = "nota-text", derive(NotaDecode, NotaEncode))]`.
-  The help-spec rides this gate (or a finer one — open decision §7).
-- The `.schema` source already *is* the help structure: `Record
-  RecordRequest`, `RecordRequest { Entry Justification }`, `RecordAccepted
-  RecordIdentifier`. The help datatype is a **projection of
-  `schema-next`'s parsed `Schema` AST**, emitted by `schema-rust-next`
-  under the gate.
-- `Help` is resolved **client-side in the CLI**, never sent to the
-  socket — daemons stay binary-only. Generic across contracts
-  (`signal-mentci` has the identical gate + build dep).
+## 1. The model
 
-## 2. The type-kind render grammar
+- **`(Help)`** (no argument) is a *signature index*: every top-level root
+  (Input + Output), each rendered one level — its immediate argument
+  shape with child types as names.
+- **`(Help X)`** expands `X` by exactly one level. A child type appears as
+  a **name at its use site**; its *definition* is one `(Help child)` away.
+- The recursion in Spirit `6th4` ("recursively expands … until scalar
+  leaves") is realised as this **navigation**: each step is one level,
+  and a newtype field bottoms out one step down as `(Newtype Scalar)`.
 
-Every declared type renders by its kind. This table is the whole spec:
+So top-level help is *structurally complete* (every shape and every
+child name is present somewhere) without becoming "a repeated transitive
+dump of every nested type under every command."
 
-| Schema kind | Source example | Help render |
+## 2. Render rule, by type-kind
+
+| Kind | Schema | `(Help X)` renders |
 |---|---|---|
-| **Scalar leaf** (terminal) | `RecordIdentifier String` | `(RecordIdentifier String)` |
-| **Newtype** over T | `Domains (Vec Domain)` | `(Domains (Vec Domain))` → unfolds into T |
-| **Struct** (positional fields) | `RecordRequest { Entry Justification }` | `(RecordRequest { Entry Justification })` |
-| **Enum** (variant list) | `DomainMatch [Any (Partial) (Full)]` | `(DomainMatch [Any Partial Full])` |
-| **Container** application | `Testimony (Vec VerbatimQuote)` | `(Vec VerbatimQuote)` → element is a normal node |
-| **Optional** | `(Optional Antecedent)` | `(Optional Antecedent)` |
+| **Scalar newtype** | `Description String` | `(Description String)` — the leaf |
+| **Collection newtype** | `Domains (Vec Domain)` | `(Domains (Vec Domain))` — element is a *name* |
+| **Struct** | `RecordRequest { Entry Justification }` | `(RecordRequest { Entry Justification })` — field **type-names** |
+| **Enum** | `Kind [Decision Principle …]` | `(Kind [Decision Principle Correction Clarification Constraint])` |
+| **Container** | `(Vec VerbatimQuote)` / `(Optional Antecedent)` | `(Vec VerbatimQuote)` / `(Optional Antecedent)` — element a name |
+| **Root** | `Record RecordRequest` | `(Record { Entry Justification })` — payload's immediate shape |
 
-The scalar terminal set is the schema built-ins: **`String`, `Integer`,
-`Boolean`, `Path`, `Bytes`**. Everything else is a named node that
-unfolds.
+Three things the table encodes:
 
-A **root** renders as `(RootName <body-of-its-payload>)`: the payload's
-*immediate shape* is inlined. That is the entire reason the two original
-examples look different —
+- **Fields are newtypes, not `name : scalar` pairs.** Per the dimensional
+  principle (Spirit `ov30`, newtype-per-role), a field's role *is* its
+  type. A struct's help is its positional list of field **type-names** —
+  `(Entry { Domains Kind Description Certainty Importance Privacy Referents })`,
+  never `{ A String B Int }` (which is labeled, and not NOTA). The scalar
+  appears only when you Help the newtype: `(Help Description)` →
+  `(Description String)`.
+- **A `Vec SomeThing` keeps `SomeThing` as a named reference** — shown at
+  the use site, never inline-expanded. `(Help SomeThing)` expands it. This
+  is the confirmed answer to the open question.
+- **The root asymmetry is just payload-kind.** `Record`'s payload
+  `RecordRequest` is a struct ⇒ `(Record { Entry Justification })`;
+  `RecordAccepted`'s payload `RecordIdentifier` is a newtype ⇒
+  `(RecordAccepted RecordIdentifier)`. Same rule, different child kind.
 
-- `Record`'s payload `RecordRequest` is a **struct** ⇒ inline its body
-  ⇒ `(Record { Entry Justification })`.
-- `RecordAccepted`'s payload `RecordIdentifier` is a **newtype/scalar**
-  ⇒ show the reference name ⇒ `(RecordAccepted RecordIdentifier)`.
+## 3. Worked navigation (real spirit types)
 
-Same rule, different payload kind. No asymmetry in the mechanism.
-
-## 3. The container element — answering "how do we deal with SomeThing"
-
-A `(Vec SomeThing)`, `(Optional SomeThing)`, `(Map K V)` is **not a
-terminal** — it is a structural *application*, and its element is just
-another reference rendered by the same walk. So `Referents (Vec
-Referent)` with `Referent String`:
-
-- shallow: `(Referents (Vec Referent))`
-- deep: `(Referents (Vec (Referent String)))` — the element unfolds to
-  its scalar and terminates.
-
-And `Domains (Vec Domain)` where `Domain` is the big domain enum: the
-walk recurses into `Domain` **exactly once**, expands its variant tree,
-and on any repeat or cycle prints the bare name. "SomeThing" needs no
-special handling: it is a node; expand it once, memoized; bottom out at a
-scalar or an already-seen name.
-
-## 4. Why termination must be a visited-set (the cyclic landmine)
-
-"Recurse until scalars" alone **does not terminate on the real spirit
-schema.** Concrete cycle, straight from `schema/signal.schema`:
+Every line below is one `(Help …)` call; each shows one level. Types are
+verbatim from `signal-spirit/schema/signal.schema`.
 
 ```
-IntentEventStream  (Stream { token SubscriptionToken opened SubscriptionStarted
-                             event IntentEvent close SubscriptionToken })
-IntentEvent        [ (IntentRecorded IntentRecorded belongs IntentEventStream)
-                     (IntentClarified ...) ... ]
+(Help)                       ;; the signature index (excerpt)
+  (Record { Entry Justification })
+  (Observe Query)
+  (RegisterReferent ReferentRegistration)
+  (RecordAccepted RecordIdentifier)
+  (Version)
+
+(Help Record)                ;; root → payload's immediate shape
+  (Record { Entry Justification })
+
+(Help Entry)                 ;; struct → field type-names (all newtypes)
+  (Entry { Domains Kind Description Certainty Importance Privacy Referents })
+
+(Help Domains)               ;; collection newtype → element stays a name
+  (Domains (Vec Domain))
+
+(Help Description)           ;; scalar newtype → terminates at the leaf
+  (Description String)
+
+(Help Justification)
+  (Justification { Testimony Reasoning })
+
+(Help Testimony)             ;; Vec of a composite → element is a reference
+  (Testimony (Vec VerbatimQuote))
+
+(Help VerbatimQuote)         ;; struct; its second field is itself a newtype
+  (VerbatimQuote { QuoteText OptionalAntecedent })
+
+(Help OptionalAntecedent)
+  (OptionalAntecedent (Optional Antecedent))
+
+(Help QuoteText)
+  (QuoteText String)
 ```
 
-`IntentEventStream.event` is `IntentEvent`; every `IntentEvent` variant
-`belongs IntentEventStream`. That is a literal `A → B → A` cycle — a
-scalar-only stop condition loops forever. Independently, dozens of types
-**repeat** (`Justification`, `Entry`, `Magnitude`, `RecordIdentifier`
-appear under many parents), so even the acyclic parts would render
-redundantly.
+`Domain` is reached only as a name inside `(Vec Domain)`; `(Help Domain)`
+then shows its enum one level — the big domain tree is *navigated*, never
+dumped under `Record`.
 
-**The rule:** recurse until **(a)** a scalar terminal, **or (b)** a type
-already expanded on this walk — then print the bare type name, which the
-reader can `(Help ThatType)` to expand on its own. That bare-name stop is
-exactly "structurally, not redundantly" generalised to arbitrary depth.
+## 4. Why this is trivially total
 
-```mermaid
-graph LR
-  IES["IntentEventStream"] -->|event| IE["IntentEvent"]
-  IE -->|belongs| IES
-  IES -->|token| ST["SubscriptionToken → Integer (scalar leaf)"]
-  IE -->|IntentRecorded| IR["IntentRecorded { Entry RecordIdentifier }"]
-  IR -->|Entry| EN["Entry … → Domains → Vec Domain → Domain (recursive)"]
-```
+Because a single `(Help X)` only ever shows X's immediate children **as
+names**, there is no transitive expansion within one render — so no
+unbounded growth and no cycle is possible, for *any* schema, with **no
+depth parameter and no visited-set**. The user's successive `(Help)`
+calls are the recursion, and the user bounds them.
 
-The second time the walk reaches `IntentEventStream`, it stops at the
-name. The type *graph* is finite; only a naive *unfolding* is infinite.
+For the record, spirit's type graph is a finite **DAG** anyway: the
+`opens` / `belongs` tokens on `SubscribeIntent` and `IntentEvent` are
+**stream-membership annotations**, not structural payload edges
+(`IntentEventStream`'s `event` slot points at `IntentEvent`, whose variant
+payloads are `IntentRecorded { Entry RecordIdentifier }` etc. — no edge
+back to the stream). So even a transitive renderer would terminate here;
+the one-level model simply removes the question.
 
-## 5. The depth knob reconciles both framings
+## 5. The datatype and how it is produced
 
-`render(typeRef, visited, depth)`:
-
-- scalar built-in → the scalar name (`String`, `Integer`)
-- `typeRef ∈ visited` **or** `depth == 0` → the bare `typeRef` name (opaque, independently Help-able)
-- else mark visited, look up the declaration, and by kind: struct → `(Name { field-renders })`, enum → `(Name [variant-renders])`, newtype → `(Name <render(inner)>)`, container application → `(Vec <render(element)>)`.
-
-- **depth 1** = the immediate-shape view from the first framing:
-  `(Record { Entry Justification })`, `(RecordAccepted RecordIdentifier)`.
-- **uncapped** (default) = recurse to scalars, memoised:
-  `(Record { (Entry { Topics Kind Summary Context Certainty Quote })
-  (Justification { (Testimony (Vec (VerbatimQuote { (QuoteText String)
-  (OptionalAntecedent (Optional Antecedent)) }))) (Reasoning String) }) })`,
-  and `(RecordAccepted (RecordIdentifier String))`.
-
-One structure, one walk, a single integer chooses the view.
-
-## 6. The datatype — a name-keyed table, not a nested value
-
-The rkyv form should **not** be a deeply nested recursive value (a cyclic
-schema cannot be a finite nested literal). It is a **flat table keyed by
-type name**, mirroring how `schema-next`'s registry already keys
-declarations. Each entry is a closed enum over the kinds:
+A name-keyed table is still the right rkyv shape — and the one-level
+renderer makes it even simpler (a single lookup + one level of child
+names, no recursive walk):
 
 ```rust
-// gated: present only under the text feature; daemon builds omit it entirely.
+// gated: present only under the text feature; daemon (rkyv-only) builds omit it.
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct HelpModel {
-    roots: Roots,          // the Input + Output variant names, in declared order
-    nodes: HelpNodes,      // every declared type name -> HelpBody
+    roots: Roots,        // Input + Output variant names, declared order
+    nodes: HelpNodes,    // type name -> HelpBody
 }
 
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub enum HelpBody {
-    Scalar(ScalarKind),                 // String | Integer | Boolean | Path | Bytes
-    Newtype(TypeName),                  // RecordIdentifier -> String ; Domains -> (Vec Domain)
-    Struct(FieldTypes),                 // ordered Vec<TypeName>
-    Enumeration(VariantArms),           // ordered Vec<VariantArm>
-    Container(ContainerKind, ElementTypes), // Vec | Optional | Map + element refs
+    Scalar(ScalarKind),                      // (Description String)
+    Newtype(TypeName),                       // RecordIdentifier -> String
+    Struct(FieldTypes),                      // ordered Vec<TypeName> (newtype names)
+    Enumeration(VariantNames),               // ordered Vec<TypeName>
+    Container(ContainerKind, ElementTypes),  // (Vec Domain) / (Optional Antecedent)
 }
 ```
 
-- **Finite** even for the cyclic schema (the graph is finite).
-- **rkyv-clean**: a flat map, no recursive `Box` gymnastics; round-trips
-  in the daemon build (no nota-text) so the same artifact is shared.
-- Every named type is **independently** `(Help X)`-able by direct key
-  lookup.
-- Rendering is a **method on `HelpModel`** (no free functions):
-  `fn render(&self, query: HelpQuery, depth: Depth) -> HelpText`, walking
-  `nodes` from the query root with a visited-set. `HelpQuery` is
-  `None ⇒ all roots` / `Some(TypeName)`.
+**Recommended production path — runtime projection, not codegen.** The
+design panel (3 approaches, judged) lands on building `HelpModel` *at CLI
+runtime* by parsing the contract's already-embedded `*_SCHEMA_SOURCE`
+(`SIGNAL_SCHEMA_SOURCE` is already `include_str!`'d; `schema-next` is
+already a non-build dep of `spirit`) via
+`schema_next::SchemaSource::from_schema_text`. Rationale: Help then
+*literally is* the schema, parsed live — no generated literal to keep in
+lockstep, drift impossible by construction, and the per-contract delta is
+a ~6-line gated accessor, not a new crate / emission-target / proc-macro.
+The reparse of ~250 lines happens only on the human-facing Help path
+(microseconds, never the daemon or a hot path). It generalises to
+`signal-mentci` with one identical accessor. The `HelpModel` types still
+derive rkyv unconditionally, so a computed model is embeddable/
+transmittable as bytes if a contract ever wants the pre-baked variant.
 
-Generation: a new `ModuleEmission::help_module(...)` in `schema-rust-next`
-walks the parsed `Schema` (the same AST it lowers to Rust), emits the
-`HelpModel` builder gated behind `nota-text`. Daemon builds never see it.
+Two **code-grounded traps** the panel surfaced (carry into
+implementation):
+
+- **Use `from_schema_text`, not the resolver path.** An empty
+  `ImportResolver` fails with `UnresolvedImportCrate`
+  (`schema-next` `resolution.rs:233`). `from_schema_text` sidesteps it and
+  leaves imported names (`Domain`) as **bare leaf atoms** — which is
+  exactly the one-level output we want.
+- **Project from the `Source*` AST.** `from_schema_text` yields the
+  *source* family (`SourceRootEnum`, `SourceNamespace`, `SourceReference`,
+  `SourceVariantPayload`), not the lowered `TypeReference` /
+  `TypeDeclaration`. Write `impl From<&SourceReference>` for the leaf
+  shape; classify scalar leaves (`String`/`Integer`/`Boolean`/`Path`/
+  `Bytes`) by reserved-keyword as `schema-next`'s own `from_name` does, so
+  they render as the scalar atom and stay distinct from declared types.
+  Also verify the canonical container-head spelling against the **pinned**
+  `schema-next` (the panel saw `Vector`/`Optional`/`ScopeOf`/`Map`/`Bytes`
+  canonical at HEAD with `Vec`/`Option` possibly not parsing — yet
+  `signal.schema` as pinned writes `(Vec Domain)`/`(Optional Antecedent)`;
+  the render must echo whatever the pinned source actually uses).
+
+- `HelpModel::render(query, …)` is a **method** (no free functions);
+  `query` is `None ⇒ index` / `Some(TypeName)`. CLI intercept: a tiny
+  `#[derive(NotaDecode)]` recognizer matches the `Help` atom / `(Help X)`
+  **before** the socket connect — Help never becomes a daemon request.
 
 ```mermaid
 flowchart TD
   S[".schema source"] --> G["schema-rust-next generator"]
-  G -->|"wire_contract_module (always)"| W["src/schema/signal.rs · rkyv types"]
+  G -->|"wire_contract_module · always"| W["src/schema/signal.rs · rkyv types"]
   G -->|"help_module · cfg nota-text"| H["HelpModel table · rkyv"]
   W --> D["spirit-daemon · rkyv only · no HelpModel"]
   W --> C["spirit CLI · nota-text"]
   H --> C
-  C -->|"bare Help / (Help X)"| R["render walk · client-side · never hits socket"]
+  C -->|"Help / (Help X) · one level"| R["render · client-side · never hits socket"]
   C -->|"State/Record/Observe/…"| K["socket exchange → daemon"]
 ```
 
-## 7. Open decisions for the psyche
+## 6. Settled vs open
 
-Folding in schema-operator's seven questions; these are the ones the
-*structural model* turns on (my lane), with my lean first:
+**Settled** (Spirit `6th4` + this exchange): recurse-as-navigation to
+scalar leaves; struct fields are newtype names; `(Vec SomeThing)` keeps
+`SomeThing` as a named reference; top-level `(Help)` is a one-level
+signature index; Help is client-side, never a daemon request.
 
-1. **Default depth** — uncapped recurse-to-scalars (memoised) as default,
-   with `(Help X)` honoring an optional depth; or depth-1 default with an
-   explicit "deep" form? *Lean: uncapped-memoised default.*
-2. **Newtype at a leaf** — unfold one step to the scalar
-   `(RecordIdentifier String)`, or stop at the name `RecordIdentifier`?
-   *Lean: unfold — it is one cheap step and shows the actual wire scalar.*
-3. **Help coverage** — Input roots only, or Input + Output + all
-   declarations reachable? *Lean: all roots (Input+Output) listed by
-   bare `Help`; any declared type reachable by `(Help X)`.*
-4. **Query payload type** (schema-operator Q3) — the recursion model
-   wants a plain **`TypeName`/`SymbolPath`** (a single name to look up),
-   not a bespoke per-root path type. *Lean: optional `SymbolPath`.*
-5. **Root vs channel** (schema-operator Q5) — should `(Help Version)`
-   show only the request shape, or the **command→reply** relation
-   `Version -> VersionReported VersionReport`? The schema pairs them; I
-   think a root's help should be able to show its paired reply, because
-   the signal *channel* is the meaningful unit. *Lean: show the channel
-   relation for request roots.*
-6. **Auto-add vs declared** (schema-operator Q1) / **gate** (Q2) /
-   **output noun** (Q4) / **test-db copy** (Q6) / **nota-next in the epic**
-   (Q7) — these are generation-mechanism + naming + ops decisions;
-   schema-operator owns the implementation call, I'll align the model to
-   whatever you pin.
+**Open** (my lane's recommendations in *italics*, schema-operator owns the
+generation-mechanism + ops calls):
 
-## 8. POC status
+- Query payload (schema-op Q3): a single name. *Lean: optional `SymbolPath`.*
+- `(Help Version)` — request shape only, or the command→reply channel
+  relation `Version → VersionReported VersionReport`? *Lean: offer the
+  channel relation for request roots; the signal channel is the
+  meaningful unit, and the one-level model renders it as one more line.*
+- `(Help)` index coverage — Input only, or Input + Output. *Lean: both.*
+- Auto-add vs declared `Help` root (Q1), gate reuse (Q2), output noun (Q4),
+  live-`spirit.sema` copy in tests (Q6), `nota-next` in the epic (Q7) —
+  schema-operator's implementation calls; I align to whatever you pin.
 
-The background research built a compiling one-level baseline POC
-(datatype + nota-text-gated render + rkyv round-trip). It now needs
-extending to the **recursive, visited-set** walk above and a test that
-exercises the `IntentEventStream` cycle (proving termination). I'll land
-that as the demonstrable POC — real `cargo test` output for both the
-daemon (rkyv-only) and CLI (nota-text) builds — on the `schema-help-design`
-worktree branch, and report the captured output here.
+## 7. POC status
+
+The compiling baseline (datatype + nota-text-gated render + rkyv
+round-trip) needs only trimming to the one-level renderer (it is *less*
+code than the guarded recursive walk). I'll land it on the
+`schema-help-design` worktree branch with real `cargo test` output for
+both the daemon (rkyv-only) and CLI (nota-text) builds, and paste the
+captured `(Help …)` trace here.
