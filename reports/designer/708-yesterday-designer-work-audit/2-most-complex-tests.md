@@ -1,6 +1,4 @@
-I have the complete verbatim test code for the orchestrate repo. The input provided the test code for the other eight repos in full. Now I'll assemble the report section.
-
-# Most complex tested scenario per component
+# 708-2 — Most complex tested scenario per component
 
 ### mentci-lib (/git/github.com/LiGoldragon/mentci-lib)
 

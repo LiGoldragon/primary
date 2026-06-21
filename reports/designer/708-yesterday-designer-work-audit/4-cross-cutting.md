@@ -79,9 +79,7 @@ One narrow related observation (not in mentci-lib's scope): the criome **decisio
 
 Relevant files: `/git/github.com/LiGoldragon/signal-standard/schema/lib.schema`, `/git/github.com/LiGoldragon/meta-signal-mentci/schema/lib.schema` (lines 80-145), `/git/github.com/LiGoldragon/signal-criome/schema/lib.schema` (lines 220-231), `/git/github.com/LiGoldragon/signal-mentci/src/lib.rs` (lines 8-57), `/git/github.com/LiGoldragon/signal-criome/src/lib.rs` (lines 8-56), `/git/github.com/LiGoldragon/orchestrate/src/worktree.rs`, `/git/github.com/LiGoldragon/orchestrate/src/repository.rs`, `/git/github.com/LiGoldragon/orchestrate/src/tables.rs` (lines 247-300), `/git/github.com/LiGoldragon/mentci/src/client.rs` (lines 146-150), `/git/github.com/LiGoldragon/mentci-egui/src/app.rs` (reuse confirmation, no action needed).
 
-I have everything I need. Two more confirmations are clear from this: the egui still does one-shot observe (the daemon_client even says "mentci-daemon does not expose a live meta socket yet" — meta mode is still a placeholder, confirming the daemon meta-socket bind enabler is NOT done), and the criome park pickup is one-shot on observe (`a62c59e`), not the continuous subscription synthesis 4 described.
-
-I have a complete, verified picture. Here is the audit.
+Two more confirmations: the egui still does one-shot observe (`daemon_client` even says "mentci-daemon does not expose a live meta socket yet" — meta mode is still a placeholder, confirming the daemon meta-socket bind enabler is NOT done), and the criome park pickup is one-shot on observe (`a62c59e`), not the continuous subscription synthesis 4 described.
 
 ## Report-vs-reality
 

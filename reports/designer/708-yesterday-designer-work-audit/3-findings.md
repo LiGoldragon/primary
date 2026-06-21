@@ -1,4 +1,4 @@
-# Findings (adversarially verified)
+# 708-3 — Findings (adversarially verified)
 
 55 raw findings → **37 confirmed** after adversarial verification (each
 non-low finding handed to a skeptic who read the real code and defaulted to
