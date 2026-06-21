@@ -38,6 +38,7 @@ third-designer                    parallel-of:designer
 nota-designer
 system-designer
 cloud-designer
+schema-designer
 system-operator
 system-maintainer
 poet
