@@ -88,7 +88,8 @@ substitute a nearby lane (a `pi-operator` window uses
 lanes inherit the closest main role: `cluster-operator` (live cluster
 maintenance, production deploy authority), `pi-operator` (Pi-harness
 operator), `cloud-operator` (cloud deploy), `cloud-maintainer`
-(cloud-host and provider-session maintenance), `maintainer` (active
+(cloud-host and provider-session maintenance), `schema-operator`
+(schema and schema-rust implementation), `maintainer` (active
 troubleshooting and host maintenance); `cloud-designer`, `nota-designer`,
 `system-designer` are scoped designer lanes.
 

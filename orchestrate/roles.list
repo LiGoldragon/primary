@@ -29,6 +29,7 @@ pi-operator                       parallel-of:operator
 second-operator                   parallel-of:operator
 cluster-operator
 cloud-operator
+schema-operator
 cloud-maintainer
 maintainer                       parallel-of:system-maintainer
 designer
