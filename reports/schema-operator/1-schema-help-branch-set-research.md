@@ -44,11 +44,12 @@ The feature should be generated, not hand-maintained in Spirit.
 
 1. Add generated help/spec nouns in `schema-rust-next`, gated by the existing `nota-text` feature unless a separate gate is chosen.
 2. Emit a `Help` input variant into root input enums and a generated help response variant into output roots.
-3. Generate help recursively from schema structure until scalar leaves are reached. Scalar leaves terminate as structural terminal forms such as `(X String)` or `(Y Int)`.
-4. Represent container forms explicitly: `(Z (Vec SomeThing))` keeps the container constructor and element type at the use site, while `SomeThing` remains recursively discoverable through `(Help SomeThing)`.
-5. Represent the help response as typed data that can be serialized by `rkyv`; the CLI/text surface should render the structural form from that data.
-6. Use Spirit as the pilot: regenerate `signal-spirit`, handle `Input::Help` in Spirit without touching SEMA, and add generated-contract, process-boundary, and Nix integration tests.
-7. Keep `meta-signal-spirit` in the branch set so it can be regenerated or repinned if the generator changes public surfaces used by meta signals.
+3. Generate help recursively from schema structure through schema-emitted nouns and newtyped domain values. Parent shapes preserve those nouns rather than erasing ordinary fields to primitive scalars.
+4. Scalar backing primitives appear only at scalar-backed leaf boundaries, such as help for a newtype showing `(Description String)` or `(Count Int)`.
+5. Represent container forms explicitly: `(Z (Vec SomeThing))` keeps the container constructor and element type at the use site, while `SomeThing` remains recursively discoverable through `(Help SomeThing)`.
+6. Represent the help response as typed data that can be serialized by `rkyv`; the CLI/text surface should render the structural form from that data.
+7. Use Spirit as the pilot: regenerate `signal-spirit`, handle `Input::Help` in Spirit without touching SEMA, and add generated-contract, process-boundary, and Nix integration tests.
+8. Keep `meta-signal-spirit` in the branch set so it can be regenerated or repinned if the generator changes public surfaces used by meta signals.
 
 The lowest-friction first proof is:
 
