@@ -26,7 +26,19 @@ Validation on the merged tree:
 - `cargo test --locked` — passed.
 - `cargo clippy --locked --all-targets -- -D warnings` — passed.
 
-`jj git push --bookmark main` reports `main@origin` already matches local `main` after the push.
+Then integrated the newer `cloud-designer-web-host` branch into `main`.
+
+This branch was a direct descendant of the previous operator merge. It added two commits:
+
+- `7e7d70ad` — `node: correct cloud_node_metal fixture doc-comment (audit #37)`
+- `4a0e29fe` — `proposal: add NodeService::WebHost — typed website-hosting capability`
+
+Validation on the web-host branch before push:
+
+- `cargo test --locked` — passed.
+- `cargo clippy --locked --all-targets -- -D warnings` — passed.
+
+`horizon-rs` `main` and `main@origin` now point at `4a0e29fe`.
 
 ## goldragon
 
