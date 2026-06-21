@@ -17,6 +17,16 @@ I created and pushed `schema-help` branches under `~/wt` for the pilot stack:
 
 All five worktrees are clean and have remote `schema-help` bookmarks. The schema-operator lane currently holds the five feature-worktree paths, not the canonical `/git` checkouts.
 
+Current branch tips:
+
+| Repository | `schema-help` tip |
+|---|---|
+| schema-next | `ece5c380` — exposes source shapes for help projection |
+| schema-rust-next | `a107ecee` — documents generated Help/newtype intent |
+| signal-spirit | `69284bf4` — adds `nota-text` Help model projection |
+| meta-signal-spirit | `e10b65c3` — refreshes lock/repin to signal-spirit Help branch |
+| spirit | `c25cccd3` — intercepts schema Help in the text CLI |
+
 ## Existing Contract Surface
 
 Spirit's working signal currently has no help root. Its top-level roots are in `signal-spirit/schema/signal.schema`:
@@ -38,18 +48,41 @@ The generated Rust already exposes the important surfaces for a pilot:
 | signal-spirit | `Version`, `VersionReported`, `Record`, `RecordAccepted`, and generated route/header support provide a small known-good model for adding a text-client command. |
 | spirit | `Input::Version` is handled in `src/nexus.rs`, accepted by the daemon boundary in `src/daemon.rs`, parsed from CLI NOTA, and verified through generated NOTA round-trip/process tests. |
 
-## Likely Implementation
+## Implemented POC
+
+This pass uses the schema-designer runtime-projection recommendation rather than generating a pre-baked table in `schema-rust-next`.
+
+Implemented shape:
+
+1. `schema-next` exposes read-only source-AST accessors needed by downstream projection: root variant payload source, source declaration text, source field value text, and source reference text.
+2. `signal-spirit` adds a `nota-text`-gated `help` module. It parses `SIGNAL_SCHEMA_SOURCE` with `schema_next::SchemaSource::from_schema_text`, builds a rkyv-serializable `HelpModel`, recognizes `Help` / `(Help)` / `(Help Name)`, and renders one structural level.
+3. `meta-signal-spirit` is repinned to the same `signal-spirit/schema-help` branch so Spirit resolves one `signal-spirit` package.
+4. `spirit` repins the branch set and intercepts Help in `src/bin/spirit.rs` before parsing generated `Input` or connecting to the daemon socket.
+5. Help is therefore a CLI/text-client surface for this POC. It never becomes a daemon request and does not touch SEMA.
+
+Real rendered examples from the tests:
+
+| Request | Render |
+|---|---|
+| `(Help Record)` | `(Record { Entry Justification })` |
+| `(Help Entry)` | `(Entry { Domains Kind Description Certainty Importance Privacy Referents })` |
+| `(Help Domains)` | `(Domains (Vec Domain))` |
+| `(Help Description)` | `(Description String)` |
+| `(Help VerbatimQuote)` | `(VerbatimQuote { QuoteText OptionalAntecedent })` |
+
+The container spelling intentionally echoes the pinned source text: Spirit currently writes `(Vec Domain)`, and the renderer preserves that use-site source form rather than normalizing it to another spelling.
+
+## Implementation Direction
 
 The feature should be generated, not hand-maintained in Spirit.
 
-1. Add generated help/spec nouns in `schema-rust-next`, gated by the existing `nota-text` feature unless a separate gate is chosen.
-2. Emit a `Help` input variant into root input enums and a generated help response variant into output roots.
-3. Generate help recursively from schema structure through schema-emitted nouns and newtyped domain values. Parent shapes preserve those nouns rather than erasing ordinary fields to primitive scalars.
-4. Scalar backing primitives appear only at scalar-backed leaf boundaries, such as help for a newtype showing `(Description String)` or `(Count Int)`.
-5. Represent container forms explicitly: `(Z (Vec SomeThing))` keeps the container constructor and element type at the use site, while `SomeThing` remains recursively discoverable through `(Help SomeThing)`.
-6. Represent the help response as typed data that can be serialized by `rkyv`; the CLI/text surface should render the structural form from that data.
-7. Use Spirit as the pilot: regenerate `signal-spirit`, handle `Input::Help` in Spirit without touching SEMA, and add generated-contract, process-boundary, and Nix integration tests.
-8. Keep `meta-signal-spirit` in the branch set so it can be regenerated or repinned if the generator changes public surfaces used by meta signals.
+1. Keep the first production path on `nota-text`; binary-only daemon builds omit the Help module and still carry no `nota-next` dependency.
+2. Treat Help recursion as navigation: each `(Help X)` renders one structural level and names child types. The renderer does not transitive-dump nested definitions.
+3. Preserve schema-emitted nouns and newtyped domain values. Parent shapes do not erase ordinary fields to primitive scalars.
+4. Scalar backing primitives appear only at scalar-backed leaf boundaries, such as `(Description String)` or `(CommitSequence Integer)`.
+5. Represent container forms explicitly at the use site, for example `(Domains (Vec Domain))`; the element type remains a named reference.
+6. Keep `HelpModel` rkyv-serializable even when the model is built at CLI runtime from embedded schema source.
+7. Generalize the runtime-projection accessor from `signal-spirit` into generator-emitted contract support once the Spirit pilot is accepted.
 
 The lowest-friction first proof is:
 
@@ -67,24 +100,34 @@ The lowest-friction first proof is:
 | schema-rust-next unit tests | Generator emits help/spec data only behind the configured feature gate; binary-only emission has no NOTA/help text dependency. |
 | signal-spirit generated tests | `Help` roots, payload constructors, route enums, short headers, rkyv frame encode/decode, `FromStr`, and `Display` round-trip. |
 | spirit generated_signal_plane | `(Help)`, `(Help Record)`, and `(Help RecordAccepted)` parse into generated `Input` and display generated `Output`. |
-| spirit process_boundary | The CLI talks to a real daemon and returns generated help output parseable by `Output::FromStr`. |
-| spirit production-copy handover | Extend the existing copied-SEMA handover style so Help works against a production database copy and proves the original database is untouched. |
-| spirit nix_integration | Build from the pushed `schema-help` remotes in a Nix sandbox and run CLI/daemon help checks against an isolated state directory. |
+| spirit process_boundary | The CLI renders Help without a daemon socket, proving Help is client-side and never crosses transport. |
+| spirit production-copy handover | Still open: extend the existing copied-SEMA handover style only if we want a top-level proof that Help coexists with production-copy state. |
+| spirit nix_integration | Still open: build from the pushed `schema-help` remotes in a Nix sandbox and run CLI Help checks against an isolated state directory. |
 
 The current Spirit test suite already has a production-copy pattern in `tests/process_boundary.rs` and ignored Nix integration tests in `tests/nix_integration.rs`; the new tests should extend those rather than inventing a parallel harness.
 
-## Clarifications Needed
+Tests run in this pass:
 
-1. Should the feature gate reuse `nota-text`, or should this be a new gate such as `schema-help` layered on top of `nota-text`?
-2. What is the exact query datatype: an optional typed `SymbolPath`, a custom `HelpQuery`, or a generated enum/path specific to each root?
-3. What should the output root be named in Spirit: `Helped`, `HelpReported`, `HelpShown`, `SchemaHelpReported`, or another noun?
-4. Should `(Help Version)` describe only the input form (`Version`) or the command/reply pairing (`Version -> VersionReported VersionReport`)?
-5. For the top-level production-copy test, do you authorize copying the live `~/.local/state/spirit/spirit.sema` into the sandbox input, or should I use the existing production-like seeded database pattern only?
-6. Should `nota-next` be in the epic branch set, or is the intended implementation limited to schema-next, schema-rust-next, the Spirit signal repos, and Spirit?
-7. For container payloads such as `(Z (Vec SomeThing))`, should top-level help preserve `SomeThing` as a reference with recursive help available on demand, or should it inline-expand `SomeThing` in the first response until scalar leaves?
+| Repository | Command |
+|---|---|
+| schema-next | `cargo test schema_source_exposes_one_level_help_projection_inputs -- --nocapture` |
+| signal-spirit | `cargo test --features nota-text generated_help -- --nocapture` |
+| signal-spirit | `cargo test --no-default-features default_dependency_tree_does_not_pull_text_or_legacy_signal_crates -- --nocapture` |
+| meta-signal-spirit | `cargo test --features nota-text` |
+| spirit | `cargo test --features nota-text --test process_boundary cli_renders_help_without_daemon_transport -- --nocapture` |
+| spirit | `cargo test --features nota-text --no-run` |
+| spirit | `cargo test --no-default-features --test dependency_surface binary_only_surface_has_no_nota_next_runtime_dependency -- --nocapture` |
+
+## Clarifications Still Needed
+
+1. For the top-level production-copy test, do you authorize copying the live `~/.local/state/spirit/spirit.sema` into the sandbox input, or should I use the existing production-like seeded database pattern only?
+2. Should the next pass lift the hand-written `signal-spirit::help` module into generated contract support from `schema-rust-next`, or is the runtime-projection POC acceptable as the first branch artifact?
+3. Should `(Help Version)` describe only the input form (`Version`) or the command/reply relation (`Version -> VersionReported VersionReport`)?
+4. Should Help query names stay as a single local type/root name for the pilot, or move immediately to `SymbolPath`?
+5. Should `nota-next` join the epic branch set now, or stay out until a parser/codec change is actually needed?
 
 ## Current Recommendation
 
-Use `nota-text` as the first gate; make Help a generated root feature; carry the response as typed rkyv-serializable data; render structural NOTA-like help only at CLI/text edges; and pilot the shape in Spirit before broadening to mentci.
+Use `nota-text` as the first gate; keep Help client-side for the pilot; carry the response as typed rkyv-serializable data; render structural NOTA-like help only at CLI/text edges; and lift the contract-local `signal-spirit` module into generated contract support after the Spirit pilot is reviewed.
 
 The one point I would not decide without psyche confirmation is whether production-copy testing may read the live Spirit database file. The existing copied-SEMA harness can prove the behavior without touching the live file, but the request sounds like it may want a real live-database copy as the top-level proof.
