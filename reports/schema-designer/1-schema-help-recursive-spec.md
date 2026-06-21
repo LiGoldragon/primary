@@ -220,11 +220,54 @@ generation-mechanism + ops calls):
   live-`spirit.sema` copy in tests (Q6), `nota-next` in the epic (Q7) —
   schema-operator's implementation calls; I align to whatever you pin.
 
-## 7. POC status
+## 7. POC — built, compiled, green
 
-The compiling baseline (datatype + nota-text-gated render + rkyv
-round-trip) needs only trimming to the one-level renderer (it is *less*
-code than the guarded recursive walk). I'll land it on the
-`schema-help-design` worktree branch with real `cargo test` output for
-both the daemon (rkyv-only) and CLI (nota-text) builds, and paste the
-captured `(Help …)` trace here.
+A self-contained POC lives at `reports/schema-designer/poc/` (source
+only). It models the confirmed design exactly: a typed help data-tree
+defined in Rust, **`(Help X)` resolves to an actualized `HelpTree` value**
+(rkyv-serializable, not a string), which the CLI then renders; everything
+is client-side and the renderer compiles out of the daemon build.
+
+Both feature builds are green:
+
+- `cargo test` (default = **daemon, rkyv-only**): 4 pass — including
+  `actualized_help_tree_round_trips_through_rkyv` (the resolved typed tree
+  serializes even on a build with no NOTA rendering) and
+  `resolve_yields_a_typed_tree_not_a_string`. The `nota-text`-gated golden
+  tests compile out (0 run), proving the daemon build carries no renderer.
+- `cargo test --features nota-text` (**CLI build**): **15 golden render
+  gates pass** + the 4 round-trips.
+
+The demo (`cargo run --example demo --features nota-text`) reproduces the
+navigation trace verbatim:
+
+```
+$ spirit Help
+  (State Statement)
+  (Record { Entry Justification })
+  (Observe Query)
+  (Version)
+  (Marker)
+  (RecordAccepted RecordIdentifier)
+  (Proposed RecordIdentifier)
+
+$ spirit "(Help Record)"             ->  (Record { Entry Justification })
+$ spirit "(Help Entry)"              ->  (Entry { Domains Kind Description Certainty Importance Privacy Referents })
+$ spirit "(Help Domains)"            ->  (Domains (Vec Domain))
+$ spirit "(Help Description)"        ->  (Description String)
+$ spirit "(Help Justification)"      ->  (Justification { Testimony Reasoning })
+$ spirit "(Help Testimony)"          ->  (Testimony (Vec VerbatimQuote))
+$ spirit "(Help VerbatimQuote)"      ->  (VerbatimQuote { QuoteText OptionalAntecedent })
+$ spirit "(Help OptionalAntecedent)" ->  (OptionalAntecedent (Optional Antecedent))
+$ spirit "(Help QuoteText)"          ->  (QuoteText String)
+$ spirit "(Help RecordAccepted)"     ->  (RecordAccepted RecordIdentifier)
+$ spirit "(Help Kind)"               ->  (Kind [Decision Principle Correction Clarification Constraint])
+$ spirit "(Help DomainMatch)"        ->  (DomainMatch [Any (Partial DomainScopes) (Full DomainScopes)])
+```
+
+The POC stands in for the schema-rust-next projection with a hand-written
+`generated.rs` describing a spirit subset; the real layer replaces that
+one module with the `from_schema_text` parse (§5). The next step toward
+the real pilot is replacing `generated.rs` with the live projection — on
+the `schema-help-design` worktree, coordinated with schema-operator's
+implementation track (report 2).

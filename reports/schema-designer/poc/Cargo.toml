@@ -1,0 +1,25 @@
+[package]
+name = "schema-help-poc"
+version = "0.1.0"
+edition = "2021"
+
+# Mirrors the signal-spirit / signal-mentci feature shape:
+#   default (daemon build)  -> rkyv-only, no NOTA rendering
+#   nota-text (CLI build)   -> NOTA codec + the live help renderer
+[features]
+default = []
+nota-text = []
+
+[dependencies]
+rkyv = { version = "0.8", default-features = false, features = [
+    "std",
+    "bytecheck",
+    "little_endian",
+    "pointer_width_32",
+    "unaligned",
+] }
+thiserror = "2"
+
+[[example]]
+name = "demo"
+required-features = ["nota-text"]
