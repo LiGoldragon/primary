@@ -244,3 +244,53 @@ it lands, simply produces richer `event_name` values into the same
 `ComponentTraceEvent` contract — the ingestion and query path proven here does
 not change. Mentci then consumes `ComponentTrace` exactly as the introspect test
 does, over the signal socket.
+
+## Implementation outcome — landed on `trace-introspect-slice` branches
+
+The slice is implemented and the load-bearing proof passes. Three prototype
+branches (all named `trace-introspect-slice`) for operator integration:
+
+- **signal-introspect `99daca8e`** — green: `cargo build` + `cargo test`
+  (17 round-trip tests incl. 5 new component-trace) + `cargo clippy` clean. The
+  `ComponentTraceEvent` contract, `TraceLayer`/`TraceEventName`/`TraceSequence`,
+  the `TraceEventFrame` impl, the `ComponentTrace` query operation + reply,
+  `IntrospectionTarget::Signal`, and `trace_socket_path` on the daemon config.
+- **spirit `bd94cb3f`** — green: `cargo build/test/clippy --features
+  testing-trace` and the default + `nota-text` builds clean. Two judgment calls
+  worth keeping: signal-introspect is a **testing-trace-gated optional** dep
+  (signal-introspect pulls nota-next, so an unconditional dep would break
+  spirit's production-daemon NOTA-free invariant — `tests/dependency_surface`);
+  and the real `EngineIdentifier` + monotonic `TraceSequence` are stamped at the
+  push-sink boundary (a bare `From<TraceEvent>` cannot know per-engine state),
+  with engine identity derived from the daemon's socket path.
+- **introspect `fb632a0a`** — the load-bearing integration test passes
+  (`cargo test --test component_trace` → emit three Signal events → ingest →
+  `ComponentTrace` query returns them filtered by component + event name); store,
+  actor-discipline, and surface tests + clippy clean. `ComponentTraceListener`
+  mirrors the router-observation actor and drains via `ask` (the store reply is
+  fallible).
+
+### Operator integration sequence (foundation first)
+
+The only non-green is `introspect/tests/daemon.rs`, and it is a pure branch
+artifact: `meta-signal-introspect@main` pins signal-introspect to `branch=main`
+while this slice pins `trace-introspect-slice`, so Cargo holds two versions of
+`IntrospectDaemonConfiguration` and that test sees a nominal type mismatch. It
+clears with no introspect code change once the foundation merges. Sequence:
+
+1. Merge **signal-introspect** `trace-introspect-slice` → main.
+2. Refresh **meta-signal-introspect**@main against it (it then carries
+   `ComponentTrace` + `trace_socket_path`).
+3. Merge **spirit** and **introspect** branches; repin each back to
+   signal-introspect `branch=main`. Do **not** `cargo update -p
+   signal-introspect` on introspect in isolation — it floats the whole
+   `branch=main` stack to HEAD and trips signal-router's
+   `StaleGeneratedArtifact`; pin only the one source line, as the branch does.
+
+### Next slice
+
+Mentci consumes the `ComponentTrace` query (mentci-lib query method + a
+CLI/egui view), filtered by component / event name — the path the introspect
+integration test already exercises. Route-level richer `event_name` values
+remain `[WAIT]` on the schema-codegen foundation and flow into the same
+contract when they land.
