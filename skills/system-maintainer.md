@@ -49,6 +49,7 @@ Never blur the stacks. If a host is broken, repair production unless the psyche 
 5. **Keep store paths out of prose.** Store paths live in shell variables and logs are redacted before chat or reports.
 6. **Verify runtime state.** A green build is not a deployed host. Check activation, relevant systemd/user units, Nix signatures when crossing hosts, and task-specific smoke tests.
 7. **Report only load-bearing substance.** Routine successful landings use the commit message. Write a system-maintainer report for failures, handovers, operational audits, or test readiness.
+8. **Run bulk/long jobs detached and memory-capped.** Any loop over many records, hosts, or files — and any job that outlives a single quick command — runs as a `systemd-run --user` transient unit so it survives terminal/harness death, **under a hard memory ceiling** so a runaway can never OOM the workstation: `systemd-run --user --collect --property=MemoryMax=2G --property=MemorySwapMax=0 --unit=<job> bash <script>`. Monitor with short non-blocking reads (`tail` the job's log); never babysit with `until … sleep` / `for … sleep` wait-loops or `timeout` (these correlate with terminal crashes). Rationale and the parser-OOM precedent: `reports/system-maintainer/706-nota-parser-oom-and-agent-memory-constraint.md`.
 
 ## Root-mediated Home activation
 
