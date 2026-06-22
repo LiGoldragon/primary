@@ -102,12 +102,24 @@ name the kind.
 
 ## Open design choices
 
-1. **Instance-realized vs static-position schema.** At an enum position
-   holding `Decision`, does the schema show the *realized* arm
-   (`Decision`'s type) or the whole enum `[Decision Principle …]`?
-   *Lean: realized* — the schema of *this* instance follows the data it
-   took, so it stays positionally aligned and finite. A separate
-   "describe the full type" is the help/type-schema view.
+1. **Instance-realized vs full-type at each position — settled: realized.**
+   At an enum position holding `Decision`, the instance-schema shows the
+   *realized* arm (`Decision` and its payload's type), **not** the whole
+   enum `[Decision Principle Correction Clarification Constraint]`. Three
+   reasons make realized the right view for an *instance*:
+   - **Alignment.** The whole point is "the same positions." A value has
+     **one** arm at an enum position; the full type has N. Full-type
+     therefore breaks the 1:1 correspondence with the value (1 token
+     becomes N), while realized stays a position-for-position mirror.
+   - **Finiteness.** A realized value is a finite tree, so realized
+     all-the-way-down terminates. Full-type re-introduces recursion (the
+     full `Domain` tree at *every* domain position, a `Node{parent:Node}`
+     forever) — the exact problem help solves with one-level navigation.
+   - **Non-redundancy.** Full-type is a different question — "what may go
+     here" — and is **already** the help / type-schema view (`(Help T)`).
+     So the instance view never needs it; to see the alternatives at a
+     position you `(Help <FieldType>)`. Two complementary tools, no
+     overlap: **instance-schema = what this *is*; help = what may *be*.**
 2. **The delimiter vocabulary** for the schema view: `{ }` struct, `[ ]`
    enum, bare/`(Name String)` scalar-newtype, `(Vec X)` / `(Optional X)`
    / `(Map K V)` containers, `(Stream { … })` / `(Family { … })` frames.

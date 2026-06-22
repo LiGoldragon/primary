@@ -23,9 +23,9 @@ The deploy gate now proves the client-side Help boundary directly:
 |---|---:|---|
 | `schema-next` | `5db57b68` | source declaration schema codec for re-headed Help forms |
 | `schema-rust-next` | `cb38435e` | client-side Help intent documentation |
-| `signal-spirit` | `db96b5a5` | deployed-schema Help coverage, domain schema merge, schema-codec round-trip |
+| `signal-spirit` | `b529aebf` | deployed-schema Help coverage, domain schema merge, schema-codec round-trip, canonical `DomainMatch` golden |
 | `meta-signal-spirit` | `13c53dfa` | typed Help signal lock refresh |
-| `spirit` | `965a9d64` | deploy-gate tests, refreshed Nix branch refs, schema-codec CLI print path |
+| `spirit` | `9fa4971c` | deploy-gate tests, refreshed Nix branch refs, schema-codec CLI print path, repinned canonical `DomainMatch` golden |
 
 ## Gaps Fixed
 
@@ -41,6 +41,7 @@ The deploy gate now proves the client-side Help boundary directly:
 | Help text was NOTA-shaped but not a schema codec. | `schema-next` now exposes `SourceDeclaration` / `SourceDeclarations` over the source schema grammar. `(Record { Entry Justification })` decodes as a re-headed schema declaration and encodes back through `to_schema_text()`. |
 | The previous signal-spirit cut added a raw `nota_next` Help codec. | That code is removed. `HelpResponse::from_schema_text()` and `HelpResponse::to_schema_text()` route through `schema-next`; `Display` only delegates to schema encoding. |
 | The CLI still printed through implicit `Display`. | `spirit` now calls `response.to_schema_text()?` explicitly, so schema encoding failures stay fallible at the client boundary. |
+| Schema-designer report 7 flagged an unpinned `DomainMatch` canonicalization delta. | `signal-spirit` now pins `(DomainMatch [Any Partial Full])`, proving the schema codec removes redundant parens around payload-less variants and round-trips that canonical form. |
 
 The Stream/Family typed-frame follow-up remains non-blocking. `IntentEventStream` is included in the decoded full-schema render gate and renders successfully; it still uses the existing text fallback internally.
 
@@ -65,9 +66,11 @@ The new codec test pins the exact compact syntax for `Entry` and `IntentEventStr
 | `schema-next` lint | `cargo clippy --all-targets -- -D warnings` | passed |
 | `signal-spirit` default daemon-side contract | `cargo test` | 13 tests passed; Help text codec remains feature-gated |
 | `signal-spirit` full text-client contract | `cargo test --features nota-text -- --nocapture` | 23 tests passed, including `generated_help_response_round_trips_through_schema_codec` |
+| `signal-spirit` focused report-7 follow-up | `cargo test --features nota-text generated_help_response_round_trips_through_schema_codec -- --nocapture` | passed with canonical `(DomainMatch [Any Partial Full])` golden |
 | `signal-spirit` text-client lint | `cargo clippy --features nota-text --all-targets -- -D warnings` | passed |
 | Spirit offline Help boundary | `cargo test --features nota-text --test process_boundary cli_renders_help_without_daemon_transport -- --nocapture` | passed |
-| Spirit text-client and regular integration suite | `cargo test --features nota-text` | all non-ignored tests passed after repinning `signal-spirit` to `db96b5a5` |
+| Spirit direct CLI report-7 check | `cargo run --features nota-text --bin spirit -- "(Help DomainMatch)"` | printed `(DomainMatch [Any Partial Full])` |
+| Spirit text-client and regular integration suite | `cargo test --features nota-text` | all non-ignored tests passed after repinning `signal-spirit` to `db96b5a5`; focused report-7 repin to `b529aebf` preserved the offline Help boundary |
 | Spirit text-client lint | `cargo clippy --features nota-text --all-targets -- -D warnings` | passed |
 | Live production DB Help side-effect proof | `cargo test --features nota-text --test process_boundary help_leaves_live_production_database_copy_byte_identical_in_sandbox -- --ignored --nocapture` | passed against `~/.local/state/spirit/spirit.sema` |
 | Refreshed Nix integration | `SPIRIT_STACK_REF=main SPIRIT_TARGET_REF=schema-help SIGNAL_SPIRIT_REF=schema-help META_SIGNAL_SPIRIT_REF=schema-help SCHEMA_NEXT_REF=schema-help SCHEMA_RUST_NEXT_REF=schema-help scripts/run-nix-integration-tests --nocapture` | 10/10 ignored Nix integration tests passed |
