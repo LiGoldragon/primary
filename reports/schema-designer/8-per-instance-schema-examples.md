@@ -77,15 +77,16 @@ collections shown by name, `Description` is a scalar shown by name.
 ```
 value :  (Record (([(Technology (Software (Programming CodeGeneration)))] Decision [a description] Medium Medium Zero [spirit])
                   ([([a quote] None)] [reasoning])))
-schema:  (Input { { Domains Kind Description Certainty Importance Privacy Referents } { Testimony Reasoning } })
+schema:  (Input ({ Domains Kind Description Certainty Importance Privacy Referents } { Testimony Reasoning }))
 ```
 `Record` is a **variant of `Input`** (signal-spirit's top-level request
-enum), so the head is **`Input`**, not `Record` — the variant is in the
-value. Record's payload `RecordRequest` is a struct →
-`{ Entry Justification }`, each itself a struct → recursed to field type
-names. (My earlier `(Record …)` head was wrong — it put the variant where
-the enum name belongs, contradicting `Decision → Kind`.) See §Open for the
-newtype question on `Certainty`/`Importance`/`Privacy`.
+enum), so the head is **`Input`**, not `Record` — the variant stays in the
+value. The enum's payload keeps the value's paren group `( … )`; the
+transparent `RecordRequest` wrapper contributes **no token** (it is
+provenance metadata), and its two struct fields `Entry`/`Justification`
+render as braces. **Strictly one schema element per value element** — no
+`Record`, no `RecordRequest` token. (Exact delimiters come from
+schema-next's encoder, not a hand-written printer.)
 
 **6 — the collection open choice (Testimony = `(Vec VerbatimQuote)`).**
 ```
@@ -163,20 +164,21 @@ left open:
   `Vector(Vec<InstanceSchema>)` — one node per actual element — and the
   element type is known even for an empty vector (`[]` at `Domains` still
   yields `Domains`, `(Vec Domain)` one level down).
-- **Root is strictly one-to-one — no wrapper tokens.** The schema has
-  exactly **one element per instance element**, same positions.
-  `(Record <payload>)` → `(Input <payload-schema>)`: the variant head
-  `Record` maps to the enum name `Input` (the variant stays in the value),
-  and the transparent `RecordRequest` wrapper has **no token** — its
-  struct becomes the `{ }`. So the root is example 5's
-  `(Input { { … } { … } })`, **not** `(Input (Record RecordRequest { … }))`,
-  which repeats the variant and invents a `RecordRequest` token — breaking
-  one-to-one. The `expected` references may live inside the data model, but
-  the rendered schema emits one token per value token only; transparent
-  wrappers (untagged struct payloads, transparent newtypes) collapse into
-  the delimiter, never a name token.
+- **Root is strictly one-to-one — no wrapper tokens.** One schema element
+  per instance element. `(Record <payload>)` → `(Input <payload-schema>)`:
+  the variant `Record` maps to the enum name `Input` (variant stays in the
+  value); the transparent `RecordRequest` wrapper is provenance metadata
+  with **no token**. Endorsed form (operator report 3, psyche-approved):
+  `(Input ({ Domains Kind Description Certainty Importance Privacy Referents } { Testimony Reasoning }))`
+  — **not** `(Input (Record RecordRequest { … }))`. The `expected` /
+  `provenance` references live in the data model; the rendered schema —
+  emitted through schema-next's encoder, never a hand-written printer —
+  carries one token per value token.
 
-**Remaining step:** a data+decoder-driven prototype that returns
-`(value, schema-trace)` from one decode pass and round-trips the trace
-through schema-next — operator's report 3 §"Test shape" is the bar. Both
-tracks agree on the shape; ready to build whenever you want it.
+**Remaining step:** a **data+decoder-driven** implementation that returns
+`(value, schema-trace)` from one decode pass — **no hand-written decoder,
+parser, walk, or schema printer**. The generated/derived decoder collects
+the `expected` references it already uses while validating the value, and
+the trace renders through schema-next's encoder. operator's report 3
+§"Test shape" is the bar. (In progress — dispatched on an `instance-schema`
+designer branch.)
