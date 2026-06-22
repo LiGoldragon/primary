@@ -2,6 +2,8 @@
 
 System-operator re-presentation of the current lojix deploy/test work, after designer reports 158 and 160, operator audits 235 and 236, and the pushed schema-rust-next wave-0 proof `e5f33eed` (`Prove lojix contained target split on current schema toolchain`).
 
+**Companion status.** Designer report `reports/system-designer/161-state-of-lojix-unified-deploy-test-visual-reassessment-2026-06-21.md` is the canonical wide-angle visual synthesis after lane convergence. This report is retained as the system-operator proof/debt snapshot: it records the operator view of the wave-0 proof, downstream implementation risks, and the then-open placement question for `RunContainedCluster`.
+
 ## Executive map
 
 The work is no longer "build a separate testing component." The settled frame is:
