@@ -151,12 +151,35 @@ design itself; nota-next / schema-next / schema-rust-next have zero divergence
 
 ## What landed vs what is staged
 
-- **Landed on any `main`: nothing** (correctly — operator owns main and is
-  mid-integration; racing was explicitly forbidden).
-- **Staged / merge-ready:** all four `schema-ir` branches pushed to remote,
-  verified green, with this exact merge recipe. Three are main-based;
-  signal-spirit needs the AuthorizationMode reconciliation above.
-- **Remaining steps (operator's, or paired):** land nota-next → schema-next →
-  schema-rust-next → signal-spirit per the recipe; repin each consumer as its
-  producer lands; remove signal-spirit's `[patch]` block; regenerate
-  `signal.rs`; green before each push.
+### Update — operator landed the three producers while this handoff was written
+
+A re-fetch at hand-off time shows schema-operator already landed the producers,
+as **repinned per-concern cuts** (not my raw `schema-ir` tips as ancestors —
+operator owns main and split the merge cleanly, which is correct):
+
+| repo | landed `main` | content |
+|---|---|---|
+| nota-next | `4642807` (== schema-ir tip) | instance-schema decoder base |
+| schema-next | `9219e32` "land schema IR source codec on main pins" (+ `aca86ff`, `a8fa3a6`) | unified IR source codec, repinned to main |
+| schema-rust-next | `e4ac3ba` "land instance schema emitter on main pins" (+ `37e2904`) | NotaDecodeTraced emitter, repinned to main |
+| **signal-spirit** | **NOT landed — still `1de570e`** | the consumer, last in order, carries the AuthorizationMode reconciliation |
+
+The producer IR content matches this unified-IR design (same SourceReference
+codec + instance-schema emitter); operator's commit structure differs from my
+branch's, which is operator's prerogative. **No semantic divergence.**
+
+### Remaining: signal-spirit (operator's, the one with the reconciliation)
+
+- repin nota-next/schema-next/schema-rust-next `schema-ir` → `main`
+- remove the cross-repo `[patch]` block (lines 46-61)
+- fold in AuthorizationMode (take main's `daemon_configuration.rs`; **regenerate**
+  `src/schema/signal.rs`; keep both sides in `signal.schema` / `lib.rs` / docs)
+- green the full `--features nota-text` suite + daemon-default boundary, then land
+
+### schema-designer contribution
+
+- **Landed on any `main` by schema-designer: nothing** (correct — operator owns
+  code-repo main; racing was forbidden).
+- **Delivered:** the four tested `schema-ir` reference branches (pushed, verified
+  green) + this exact merge recipe + the AuthorizationMode reconciliation
+  operator needs for the final signal-spirit land.
