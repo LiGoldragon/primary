@@ -163,10 +163,18 @@ left open:
   `Vector(Vec<InstanceSchema>)` — one node per actual element — and the
   element type is known even for an empty vector (`[]` at `Domains` still
   yields `Domains`, `(Vec Domain)` one level down).
-- **Root is a trace; display may elide.** The typed trace preserves the
-  whole path `Input → Record → RecordRequest → { … }`; the *display* may
-  elide wrapper levels already evident from the value, giving example 5's
-  compact `(Input { … })`. The data model keeps them; the renderer chooses.
+- **Root is strictly one-to-one — no wrapper tokens.** The schema has
+  exactly **one element per instance element**, same positions.
+  `(Record <payload>)` → `(Input <payload-schema>)`: the variant head
+  `Record` maps to the enum name `Input` (the variant stays in the value),
+  and the transparent `RecordRequest` wrapper has **no token** — its
+  struct becomes the `{ }`. So the root is example 5's
+  `(Input { { … } { … } })`, **not** `(Input (Record RecordRequest { … }))`,
+  which repeats the variant and invents a `RecordRequest` token — breaking
+  one-to-one. The `expected` references may live inside the data model, but
+  the rendered schema emits one token per value token only; transparent
+  wrappers (untagged struct payloads, transparent newtypes) collapse into
+  the delimiter, never a name token.
 
 **Remaining step:** a data+decoder-driven prototype that returns
 `(value, schema-trace)` from one decode pass and round-trips the trace
