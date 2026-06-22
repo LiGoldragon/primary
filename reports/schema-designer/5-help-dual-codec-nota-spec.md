@@ -26,7 +26,7 @@ encoded and decoded as schema, end to end.
 | Codec | State |
 |---|---|
 | rkyv | **Done.** `HelpModel`/`HelpResponse`/`HelpEntry`/`HelpBody`/`HelpTypeExpression` derive `Archive/Serialize/Deserialize`; operator's test round-trips both the model and the rendered response in binary. |
-| schema (text) | **Half.** The text comes from a hand-written `impl Display` (`render_with_name` → `format!`) — a one-way projection. Nothing parses the help text back, and the canonical-form guarantees come from getting `format!` right by hand rather than from the schema codec. |
+| schema (text) | **A discipline violation to remove.** The text is built by a hand-written `impl Display` (`render_with_name` → `format!`) — a **hand-rolled encoder**, forbidden by the same rule as hand-rolled parsers: serialization goes through the typed codec, never by hand. It must be replaced by the schema codec, not improved. (A `Display` is legitimate only if it delegates to the codec.) |
 
 ## (a) Verification — does deriving the NOTA codec reproduce the syntax?
 
@@ -58,9 +58,11 @@ discriminant**, no tag:
 | `Reference` / newtype | `(Head Ref)` | bare atom / application |
 | `Unit` | `(Head)` | empty |
 
-The hand-written `Display` already produces exactly this (it switches on
-the `HelpBody` variant and picks the delimiter). So the encode logic is
-right; it just isn't wired to the codec, and there is no inverse.
+The hand-written `Display` happens to produce this shape (it switches on
+the `HelpBody` variant and picks the delimiter) — useful only as a
+*specification* of what the schema encoder must emit. Doing it by hand-
+rolled `format!` is itself forbidden; producing the declaration form is
+the schema encoder's job, and there is no inverse at all.
 
 And the right codec is **schema-next**, not a hand-rolled `nota_next`
 one: the `{ }` / `[ ]` / `(Vec X)` body grammar is the schema declaration
@@ -74,8 +76,9 @@ the schema decoder. **Decode the help as schema.**
    is a (re-headed) schema declaration; render it with schema-next's
    declaration encoding (`to_schema_text`, already used for the
    Stream/Family fallback — extend it to every body), so the help text
-   **is** the canonical schema declaration form, by construction rather
-   than by a hand-tuned `format!`. `Display` delegates to it.
+   **is** the canonical schema declaration form. **Delete the hand-`format!`
+   `Display`** — it is a forbidden hand-rolled encoder; the only allowed
+   `Display` delegates to the schema codec.
 2. **Decode through `schema-next`'s declaration decoder** — the same
    grammar `from_schema_text` uses to build the model. The `{ }` / `[ ]`
    / `(Vec X)` body is schema, so schema-next parses it straight back into
