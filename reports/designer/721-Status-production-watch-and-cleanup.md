@@ -75,3 +75,27 @@ pending the call.
   `criome-mentci-bootstrap` doc branches (signal-mentci / mentci-lib / mentci-egui
   — fold the still-valid daemon-routing / criome-access-mode INTENT into each main
   `INTENT.md`, then retire), and the trace-client tail above.
+
+## Correction (psyche): the criome-auth watch is tracing, not the parked-poll
+
+The psyche corrected the framing above: criome authorization requests **are
+tracing** — observable trace events on the unified `trace → introspect → mentci`
+surface (the path proven in the 23-events demo), not a separate
+`ObserveParkedAuthorizations` seam. Covered intent (`m5jl`/`xqkv`: tracing is
+schema-defined trace events; `80bl`: mentci observes introspect tracing; `7x5z`:
+mentci is the criome gate; `2st7`: non-blocking now) — the guardian confirmed
+`Duplicate`, so no new record. The corrected shape:
+
+- **Watch (now)** rides the **tracing** surface: spirit emits a criome-authorization
+  trace event (one more event type in its trace vocabulary, `testing-trace`-gated
+  per `xqkv`/`q13r`) → introspect ingests → mentci observes, reusing the introspect
+  query path already built. So the watch is a **tracing-instrumentation increment**
+  (add the criome-auth trace event to spirit's trace vocabulary), not the
+  parked-auth poll loop described earlier in this report.
+- **Gate (future)** is what the current ungated emit is *scaffold* for: mentci
+  approving the observed request so its approval becomes the criome verdict — the
+  parked-question/verdict path (`7x5z`, already demoed). The watch evolves into the
+  gate over the same surface.
+
+So the operator handoff above (arm the spirit gate from config) belongs to the
+**gate** half; the **watch** half is the tracing increment.
