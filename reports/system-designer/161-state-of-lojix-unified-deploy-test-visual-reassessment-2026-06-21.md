@@ -125,7 +125,7 @@ graph TD
   I --> Rel[release all]
 ```
 
-NOTA discipline corrected this turn: `(MaximumGuests 3)` is a *variant* of an option enum in a `(Vec ClusterOption)`, never a labeled field; struct bodies are positional and untagged; `Gate` is a sibling shorthand variant the daemon lowers. (Earlier sketch conflated labels with variants — fixed; Spirit `vfgk` sets ease-of-use as first-class.)
+NOTA discipline corrected this turn: `(MaximumGuests 3)` is a *variant* of an option enum in a `(Vector ClusterOption)`, never a labeled field; struct bodies are positional and untagged; `Gate` is a sibling shorthand variant the daemon lowers. (Earlier sketch conflated labels with variants — fixed; Spirit `vfgk` sets ease-of-use as first-class.)
 
 ## 8. The wave plan
 

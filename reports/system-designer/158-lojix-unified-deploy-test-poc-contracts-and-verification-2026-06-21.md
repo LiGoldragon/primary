@@ -117,6 +117,8 @@ The handle is durable in `lojix.sema` (survives daemon restart like today's `Tes
 
 ## The POC: reshaped ORDINARY and META contracts
 
+**Superseded-sketch note.** The contract NOTA below is the first POC sketch and is doubly out of date. (1) **Syntax:** it uses the retired struct-field forms (`Type *` markers and `field Type` name-value pairs), now rejected as `SchemaError::RetiredStructFieldSyntax`; the current grammar is the positional single-object form — bare `Type`, `role.Type`, `(role (Composite …))` — per `skills/structural-forms.md` (Spirit `adnn`). (2) **Design:** the `DeployClosure` / `AssertRequest` / `ContainedHandle` shapes here predate the operator-audit-234 corrections folded in above — superseded by `DeployContained` over a `NodeProfile`, `VerifyContained` (not `Assert`), and the `NodeProfile`/`ProductionNode` split. The canonical, syntax-correct shapes are in reports 160, 163, and 164. This block is retained only as history.
+
 These are the reshaped contract NOTA sketches **verbatim** — this is the POC artifact. Positional records, type-head first, bare atoms, no quotation marks.
 
 ### ORDINARY = safe contained testing (signal-lojix)
