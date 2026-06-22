@@ -25,7 +25,10 @@ The per-instance schema mirrors the **value's** structure, replacing
 content with type names:
 
 - **struct** → `{ field-schema … }` — recurse (the brace marks a struct).
-- **enum** → the enum **type name** (a leaf; the variant is in the value).
+- **enum** → `(EnumTypeName payload-schema)` — the **enum type name** as
+  head (**not** the variant, which is in the value), plus the realized
+  variant's payload schema if it has one; a payload-less variant collapses
+  to just `EnumTypeName` (e.g. `Decision` → `Kind`).
 - **scalar / newtype** → the type **name** (a leaf).
 - **collection / optional** → *open choice, see §Open* — leaf name, or
   recurse element-wise to stay "all the way down."
@@ -49,15 +52,17 @@ schema:  Description
 help  :  (Help Description) -> (Description String)
 ```
 
-**3 — a deeply-nested enum (the telling one).**
+**3 — an enum with a payload (the corrected core: name, not variant).**
 ```
-value :  (Technology (Software (Programming CodeGeneration)))
-schema:  Domain
-help  :  (Help Domain) -> (Domain [Health Food … Technology])   then (Help Technology) -> …
+value :  (Partial [(Technology (Software (Programming CodeGeneration)))])
+schema:  (DomainMatch DomainScopes)
+help  :  (Help DomainMatch) -> (DomainMatch [Any Partial Full])
 ```
-The entire variant path is the **value**; the schema simply says `Domain`.
-The schema does not re-walk the enum's arms — that is the value's content
-and Help's full type.
+`Partial` is a **variant** of the enum **`DomainMatch`**, so the schema's
+head is `DomainMatch` (the enum *type*), **not** `Partial` (the variant —
+that is in the value), and it still shows the payload's type
+`DomainScopes`. The variant lives in the value; the schema names the enum
+and its payload type.
 
 **4 — a struct (Entry).**
 ```
