@@ -2,7 +2,7 @@
 
 ## Summary
 
-The source-side milestone is implemented and tested: `spirit` observing mode now asks criome for a real authorization verdict, waits long enough to see the answer, emits a structured trace event for that authorization-return point, and still does not block fan-out in observing mode. Gating mode remains fail-closed.
+The source-side milestone is implemented and tested: `spirit` observing mode now asks criome for a real authorization answer, waits long enough to see the answer, emits a structured trace event for that authorization-return point, and still does not block fan-out in observing mode. Gating mode remains fail-closed. The socket-only bootstrap path now observes criome's signed `AuthorizationGrant`; unsigned request material is not an approval artifact.
 
 The live `spirit-daemon.service` is not yet using this path. It is still the already-running Nix package from June 21, built without the new commits and without production configuration that arms the criome gate.
 
@@ -12,6 +12,9 @@ The live `spirit-daemon.service` is not yet using this path. It is still the alr
 - `signal-introspect` `ba6fba733df2` — manifests the new trace target in `INTENT.md`.
 - `spirit` `c5ba07f95d5d` — changes observing mode from fire-and-forget to real criome round-trip; adds `GateDecision::Observed(ObservedAuthorization)` and emits `AuthorizationObserved` trace events.
 - `spirit` `122c93694d44` — manifests the observing-mode intent update in `INTENT.md`.
+- `signal-criome` `0125e66e` — exposes `AuthorizationGrant` signatures/expiry so consumers and tests can assert the signed approval artifact.
+- `criome` `825cc8ac` — AutoApprove over `AuthorizeSignalCall` now mints, stores, and returns a criome-master signed `AuthorizationGrant`.
+- `spirit` `d2d5d97e` — owner-configured socket-only gates now submit `AuthorizeSignalCall`, require `AuthorizationGranted`, and trace the signed-return point in observing mode.
 - `mentci-egui` `4c16bd33` from the earlier slice — compact header and resizable approval panel.
 
 ## Current Flow
@@ -24,8 +27,8 @@ sequenceDiagram
     participant Mentci as mentci
 
     Spirit->>Spirit: local record lands
-    Spirit->>Criome: EvaluateAuthorization(head)
-    Criome-->>Spirit: AuthorizationEvaluated(Authorized)
+    Spirit->>Criome: AuthorizeSignalCall(head digest)
+    Criome-->>Spirit: AuthorizationGranted(signed grant)
     Spirit->>Introspect: ComponentTraceEvent(Spirit, Authorization, AuthorizationObserved)
     Spirit->>Spirit: observing mode still ships
     Mentci->>Introspect: query trace pane
@@ -34,6 +37,7 @@ sequenceDiagram
 ## Verified
 
 - `signal-introspect`: `cargo test --all-targets --quiet`
+- `criome`: `cargo test --test daemon_skeleton`
 - `spirit`: `cargo test --features mirror-shipper --test criome_gate_1of1 --quiet`
 - `spirit`: `cargo test --features testing-trace --test instrumentation_logging --quiet`
 - `spirit`: `cargo test --features nota-text,testing-trace --test process_boundary cli_receives_testing_trace_events_from_daemon_trace_socket --quiet`
@@ -77,4 +81,4 @@ Implemented follow-up:
 
 - `meta-signal-spirit` `f31d4cc758ac` extends `ConfigureRequest` / `ConfigureReceipt` with `SelectedCriomeGateTarget`.
 - `spirit` wires that target into `Engine::configure`: `Socket(path)` arms the local criome gate, `Default`/`None` clears it.
-- The bootstrap target carries only the criome socket; spirit generates unsigned per-head evidence. This is correct for the first production demo with criome `AutoApprove` or `ClientApproval`, and leaves quorum signer/key material for the later contract shape.
+- The bootstrap target carries only the criome socket. Spirit submits a simple per-head `AuthorizeSignalCall`; criome `AutoApprove` returns the signed `AuthorizationGrant`, and spirit traces that return while still proceeding in observing mode. This is the first production/demo shape. `ClientApproval` for the same signal-call grant-completion path remains the next mentci-facing signing increment; quorum signer/key material remains the later contract shape.
