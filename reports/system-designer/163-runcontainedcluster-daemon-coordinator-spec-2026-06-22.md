@@ -20,11 +20,11 @@ A `RunContainedCluster` mints a `ClusterRunRecord` that aggregates the per-membe
 ```
 ClusterRunIdentifier Integer
 ClusterRunRecord {
-  ClusterRunIdentifier *
-  ClusterName *
-  members (Vec ContainedRunIdentifier)   ;; the per-member contained runs this cluster owns
-  phase ClusterRunPhase
-  outcome ClusterOutcome
+  ClusterRunIdentifier
+  ClusterName
+  (members (Vector ContainedRunIdentifier))   ;; the per-member contained runs this cluster owns
+  ClusterRunPhase
+  ClusterOutcome
 }
 ClusterRunPhase    [Submitted BringingUpAll AllLive Verifying Releasing Completed Failed]
 ClusterOutcome     [Pending Passed (Failed ClusterFailureStage)]
@@ -39,7 +39,7 @@ ClusterFailureStage [BringUpAll Verify Release]
 
 ```
 Selection [(ByContainedRun ContainedRunLookup) (ByClusterRun ClusterRunLookup) (ByNode ...) (ByGeneration ...) (ByEventLog ...)]
-ClusterRunLookup { ClusterName * run (Optional ClusterRunIdentifier) }
+ClusterRunLookup { ClusterName (run (Optional ClusterRunIdentifier)) }
 ```
 
 `None` run returns every cluster run for the cluster, newest first; `(Some n)` narrows to one. A `ByClusterRun` reply carries the `ClusterRunRecord` plus, by following `members`, the per-member `ContainedRunRecord`s.

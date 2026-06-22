@@ -9,8 +9,8 @@ This delivers the thing the psyche asked to see: **how you write a criome/spirit
 **NOTA, done right (the important one).** `TestDescriptor`, `Steps`, `KeyMember`, `MaximumGuests` are **variants**, not labels. My earlier sketch sprinkled `(NetworkIsolation TapLayer3) (MaximumGuests 3) (Lease 900)` as if they were optional named fields — that is the `(key value)` shape NOTA forbids. The corrected discipline, taken from the deployed `signal-lojix` schema:
 
 - **A shorthand is a terser sibling *variant* the daemon lowers** — the established idiom is `TestRequest [(Run TestRun) (Check QuickCheck)]`, where `Check` is the terse variant `TestDefaults::lower` expands. NOTA forbids tail-omission, so a shorter form is always its own variant, never an under-filled struct.
-- **Option-setting is a `(Vec OptionEnum)` of option-variants** — `(MaximumGuests 3)` is a *variant* of an option enum collected in a vector: order-free, omittable (empty vector = all defaults), fully typed. Not a labeled field.
-- **Struct bodies are positional and untagged** (`DatabaseMarker { CommitSequence * StateDigest * }` → value `(<seq> <digest>)`, no head); **enum variant values carry a head** (`(OnHost atlas)`); optionals are `None` / `(Some x)`; an enum-variant payload that is a struct nests in its own parens (`(Record (<entry> <justification>))`).
+- **Option-setting is a `(Vector OptionEnum)` of option-variants** — `(MaximumGuests 3)` is a *variant* of an option enum collected in a vector: order-free, omittable (empty vector = all defaults), fully typed. Not a labeled field.
+- **Struct bodies are positional lists of types, untagged** (`DatabaseMarker { CommitSequence StateDigest }` → value `(<seq> <digest>)`, no head; field role derived from the type — bare type, `role.Type` for an explicit name, `(role (Composite …))` for a `Vector`/`Optional`; the `*` marker and `field Type` name-value form are retired); **enum variant values carry a head** (`(OnHost atlas)`); optionals are `None` / `(Some x)`; an enum-variant payload that is a struct nests in its own parens (`(Record (<entry> <justification>))`).
 
 **Don't block on questions.** A directive to implement and show *is* the answer — act on the recommendation, deliver, make choices reversible. Captured as Spirit `ki6i`. This report is the delivery, not a question.
 
@@ -20,11 +20,11 @@ The operator's `system-operator-contained-test-poc` branch already carries the c
 
 ```
 roots  [DeployContained CheckContained Release Query WatchDeployments WatchCacheRetention Unwatch CheckHostKeyMaterial]
-NodeProfile     { ClusterName * NodeName * kind (Optional DeploymentKind) }   ;; the SAFE build profile — audit 234's split, implemented
+NodeProfile     { ClusterName NodeName (kind (Optional DeploymentKind)) }   ;; the SAFE build profile — audit 234's split, implemented
 ContainedTarget [HermeticVm (VmHostGuest VmHostGuestTarget) (EphemeralDroplet EphemeralDropletTarget)]
-DeployContainedRequest { NodeProfile * ContainedTarget * source ProposalSource flake FlakeReference }
-ContainedCheck   { TestRunIdentifier * }      ;; CheckContained — operator chose this over VerifyContained
-ContainedRelease { TestRunIdentifier * }
+DeployContainedRequest { NodeProfile ContainedTarget ProposalSource FlakeReference }
+ContainedCheck   { TestRunIdentifier }      ;; CheckContained — operator chose this over VerifyContained
+ContainedRelease { TestRunIdentifier }
 ```
 
 Two facts that shape the authoring layer: (1) `DeployContained` is **per node** — one `NodeProfile`, one `ContainedTarget`; a cluster is N deploys + N checks + N releases. (2) `ContainedCheck` today takes only a run id — the daemon runs a fixed integrity check; a *typed verification body on the wire* is the later wave (report 158's wave-3). So the verification vocabulary below is the authoring target the daemon grows into; the lowering runs the standard gate until then.
@@ -63,14 +63,14 @@ A small addition that reuses the operator's `NodeProfile` / `ContainedTarget` / 
 
 ```
 RunContainedCluster ClusterRun
-ClusterRun { ClusterName * members (Vec MemberProfile) ContainedTarget * VerificationBody * options (Vec ClusterOption) }
+ClusterRun { ClusterName (members (Vector MemberProfile)) ContainedTarget VerificationBody (options (Vector ClusterOption)) }
 
 MemberProfile   [(Member NodeName) (Kinded NodeName DeploymentKind)]          ;; terse, or kinded
-VerificationBody [Gate (Steps (Vec TestStep))]                                ;; Gate = the 3-case shorthand
+VerificationBody [Gate (Steps (Vector TestStep))]                                ;; Gate = the 3-case shorthand
 TestStep        [(GateCase ComponentKind GateOutcome ThresholdSpec) (Probe ProbeSpec) (DeployIntegrity ComponentKind)]
 ComponentKind   [Criome Spirit Router]
 GateOutcome     [AuthorizedShips ThresholdShortDenied UnconfiguredHeld]
-ThresholdSpec   [NoGate (Threshold Integer (Vec KeyMember))]
+ThresholdSpec   [NoGate (Threshold Integer (Vector KeyMember))]
 KeyMember       [(Signer NodeName)]
 ProbeSpec       [(OutboxDrained ComponentKind Durability) (RouterFanOut ComponentKind RouterCheck)]
 Durability      [QueuedForMirror ServerCommitted]

@@ -55,16 +55,16 @@ The authoring layer (`signal-lojix`), correct positional NOTA schema:
 
 ```
 RunContainedCluster ClusterRun
-ClusterRun { ClusterName * members (Vec MemberProfile) ContainedTarget * VerificationBody * options (Vec ClusterOption) }
+ClusterRun { ClusterName (members (Vector MemberProfile)) ContainedTarget VerificationBody (options (Vector ClusterOption)) }
 
 MemberProfile    [(Member NodeName) (Kinded NodeName DeploymentKind)]
 DeploymentKind   [FullOs OsOnly HomeOnly]
 ContainedTarget  [Hermetic (HermeticVm HermeticVmProfile) (VmHostGuest VmHostGuestProfile) (EphemeralDroplet EphemeralDropletProfile)]
-VerificationBody [Gate (Steps (Vec TestStep))]
+VerificationBody [Gate (Steps (Vector TestStep))]
 TestStep         [(GateCase ComponentKind GateOutcome ThresholdSpec) (Probe ProbeSpec) (DeployIntegrity ComponentKind)]
 ComponentKind    [Criome Spirit Router]
 GateOutcome      [AuthorizedShips ThresholdShortDenied UnconfiguredHeld]
-ThresholdSpec    [NoGate (Threshold Integer (Vec KeyMember))]
+ThresholdSpec    [NoGate (Threshold Integer (Vector KeyMember))]
 KeyMember        [(Signer NodeName)]
 ProbeSpec        [(OutboxDrained ComponentKind Durability) (RouterFanOut ComponentKind RouterCheck)]
 Durability       [QueuedForMirror ServerCommitted]
@@ -77,12 +77,12 @@ The per-member contract it lowers to (the converged lower roots):
 ```
 ;; request roots:  [DeployContained VerifyContained Release Query ...]
 DeployContained  DeployContainedRequest
-DeployContainedRequest { NodeProfile * ContainedTarget * source ProposalSource flake FlakeReference }
-NodeProfile { ClusterName * NodeName * kind (Optional DeploymentKind) }   ;; a profile to BUILD — never a ProductionNode
+DeployContainedRequest { NodeProfile ContainedTarget ProposalSource FlakeReference }
+NodeProfile { ClusterName NodeName (kind (Optional DeploymentKind)) }   ;; a profile to BUILD — never a ProductionNode
 VerifyContained  VerifyRequest
-VerifyRequest { ContainedRunIdentifier * VerificationBody * }
+VerifyRequest { ContainedRunIdentifier VerificationBody }
 Release          ContainedRelease
-ContainedRelease { ContainedRunIdentifier * }
+ContainedRelease { ContainedRunIdentifier }
 ```
 
 The daemon-side coordinator (illustrative Rust — methods on the data-bearing coordinator, no free functions; the six phases from report 163):
@@ -133,11 +133,11 @@ Results are **reads through `Query`** (status is never a side-verb), at two gran
 The reply records (correct NOTA shapes):
 
 ```
-ClusterRunRecord { ClusterRunIdentifier * ClusterName * members (Vec ContainedRunIdentifier) phase ClusterRunPhase outcome ClusterOutcome }
+ClusterRunRecord { ClusterRunIdentifier ClusterName (members (Vector ContainedRunIdentifier)) ClusterRunPhase ClusterOutcome }
 ClusterRunPhase  [Submitted BringingUpAll AllLive Verifying Releasing Completed Failed]
 ClusterOutcome   [Pending Passed (Failed ClusterFailureStage)]
 
-ContainedRunRecord { ContainedRunIdentifier * ClusterName * NodeName * host NodeName target ContainedTarget phase TestRunPhase outcome TestOutcome closure_path (Optional ClosurePath) }
+ContainedRunRecord { ContainedRunIdentifier ClusterName NodeName host.NodeName ContainedTarget TestRunPhase TestOutcome (closure_path (Optional ClosurePath)) }
 TestOutcome [Pending Passed (Failed FailureStage)]
 FailureStage [BringUp Deploy Assert TearDown HermeticCheck]
 ```
