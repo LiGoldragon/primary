@@ -90,12 +90,34 @@ target-codegen, and realized overlay — none of which belong in the core.
    all three share one reference type.
 4. Mirror in both Help copies; update Help goldens `Vec`→`Vector`.
 
-## Status
+## Status — landed on the `schema-ir` branch
 
-The **vision is being built on the `schema-ir` designer branch** (Help
-collapsed onto the resolved IR, the duplicate deleted, `Vec`→`Vector`
-fixed, a test proving Help and instance-schema render the same type
-identically). When it lands this report gets the before/after and the
-branch tips. Recommendation (with operator): **collapse Help onto the
-schema IR before broadening beyond Spirit**, so mentci and every future
-contract inherit the unified object.
+The vision is **real in code** (implementation write-up: report 11). On the
+`schema-ir` designer branch (a clean merge of `help-codec` +
+`instance-schema`; `main` untouched):
+
+- **Help collapsed onto the resolved IR.** Deleted `HelpBody`,
+  `HelpTypeExpression(Kind)`, `HelpFieldTypes`, `HelpVariantTypes`,
+  `HelpTypeExpressions` — `HelpRoot`/`HelpNode`/`HelpEntry` now hold
+  `Option<SourceDeclarationValue>` (the resolved IR verbatim); encode/decode
+  go through schema-next's codec, no hand printer (`SourceReference::plain_name`
+  added for one-level name resolution).
+- **`Vec`→`Vector` fixed at the source** (canonical): `signal.schema`
+  (15 sites) + `domain.schema` (2) migrated to `(Vector T)`; the dropped
+  `Vec` alias is not resurrected.
+- **Convergence proven** (`tests/help_instance_schema_convergence.rs`):
+  `(Help Domains)` → `(Domains (Vector Domain))`, and Help's
+  `SourceReference` **equals** instance-schema's for the same type, both
+  rendered through the one encoder. Full `nota-text` suite green;
+  daemon-default build clean (boundary holds).
+- Branch tips: nota-next `4642807e`, schema-next `1bfeb9c7`,
+  schema-rust-next `b744e1d9`, signal-spirit `39b1506e`.
+- **Finding:** the collapse revealed the old Help AST was **lossy** — it
+  flattened declared field/variant types to bare names. The resolved IR is
+  faithful, so three goldens (`VerbatimQuote`, `DomainMatch`, `Domain`) now
+  show the actual declared types. Convergence working as intended, not a
+  regression.
+
+Recommendation (with operator): **collapse Help onto the schema IR before
+broadening beyond Spirit**, so mentci and every future contract inherit
+the unified object.
