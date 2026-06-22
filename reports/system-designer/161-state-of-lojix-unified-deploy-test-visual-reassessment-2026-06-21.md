@@ -31,7 +31,8 @@ graph LR
 | 160 | Comfortable cluster authoring + NOTA correction + verb grammar | Canonical authoring |
 | op-235 | Verb-shape question (`Check` vs `Verify`) | Answered in 160 |
 | op-236 | **Wave-0 proven on live toolchain** + 160 accepted | Landed |
-| 161 | This visual re-assessment | — |
+| op-237 | Operator companion visual synthesis (proof/debt snapshot) | Companion to 161 |
+| 161 | This visual re-assessment | Canonical wide-angle map |
 
 ## 3. The reframe — one component, two faces
 
@@ -189,7 +190,9 @@ The operator's 236 questions, answered (act-don't-block):
 | 2 | `Release` gated on a successful verify, or always idempotent cleanup? | **Always legal + idempotent** — teardown must work for failed/unverified runs; the lease-expiry reaper also releases |
 | 3 | `source` required, or optional with authoritative override? | **Optional with authoritative override** (agree) — convenience default, but per-call provenance must work |
 | 4 | Rename `TestRun*` storage → `ContainedRun*` now? | **Yes, now** — pre-production; the noun is "contained run," and names should reflect the noun before `VmHostGuest` lands |
-| 5 | `RunContainedCluster` as a public `signal-lojix` root, or a thin client helper? | **Public `signal-lojix` root, daemon-orchestrated** — a networked cluster needs members co-live before the gate runs, which is daemon orchestration; this also gives CLI/public reach and keeps the "logic in lojix" the psyche asked for |
+| 5 | `RunContainedCluster` as a public `signal-lojix` root, or a thin client helper? | **Public root, daemon-owned lifecycle coordinator** — *converged with the operator* (who revised from helper-first to daemon-owned): a multi-node cluster needs co-live setup, release-all, failure cleanup, restart reconciliation, and queryable cluster history — all of which belong in the daemon, not a client macro, once the lower `DeployContained`/`VerifyContained`/`Release`/`Query` roots are corrected |
+
+**All five are now converged**, not open: the operator's report-237 leans match these recommendations on Q1–Q4, and his latest daemon-owned-coordinator insight matches Q5 — so they are settled design that hardens into the contract as the operator's downstream convergence lands, not questions still in dispute. Operator report 237 is the companion proof/debt snapshot to this map.
 
 Cross-cutting open items: `EphemeralDroplet` stays `SubstrateUnavailable` until its confused-deputy guardrails (quota credential, caps, SEMA lease, restart reconciliation, quota-split negative test); production-deploy verdict tier is owner-`SO_PEERCRED` only for now (criome capability built, off by default); router joins the cluster test as an honest `RouterFanOut` stub until its source compiles against the new schema stack; the typed `VerificationBody` on the wire is wave-3.
 
