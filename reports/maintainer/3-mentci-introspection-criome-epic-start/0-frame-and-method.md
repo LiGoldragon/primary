@@ -5,7 +5,7 @@
 The 2026-06-21 psyche prompt starts a new Mentci-centered implementation arc. Speech-to-text spellings in the prompt are normalised here:
 
 - **Menchie / Menchi / Mencie** → **Mentci**.
-- **Creole** in this context appears to mean **Criome**, the local authorization/agreement component.
+- The authorization/agreement component is **Criome**. Any earlier alternate transcription was a speech-to-text or agent spelling error.
 
 ## Durable substance to carry forward
 
