@@ -141,6 +141,16 @@ Output [RecordAccepted RecordsObserved Busy Rejected]
 
 If `RecordAccepted` is a declared type, the variant carries it; if the name is not a declared type, it is a unit variant. The explicit `(Variant PayloadType)` form remains available when the variant name differs from the payload type name (e.g. `(Rejected SignalRejection)`). Same-name resolution defaults to data-carrying when a type exists.
 
+## Rule 5 — A comfortable shorthand is a terser sibling variant; options are a vector of option-variants
+
+NOTA forbids tail-omission — every schema position is present in the text — so you **cannot** make an interface "comfortable" by leaving fields off or sprinkling labeled optional settings. The two NOTA-idiomatic ways to make an authoring surface terse:
+
+- **Shorthand = a terser sibling variant the consumer lowers.** When the common case wants fewer fields, add a *second variant* for it, never an under-filled struct. The deployed precedent is `TestRequest [(Run TestRun) (Check QuickCheck)]` — `Check` is the terse variant and the daemon's `lower` expands it to the full `Run`. So `Hermetic` (bare) and `(HermeticVm HermeticVmProfile)` are two `ContainedTarget` variants: the bare one carries defaults, the full one exposes the knobs. A shorthand is *variant selection*, never field omission.
+
+- **Optional settings = a `(Vec OptionEnum)` of option-variants.** When a thing has many independently-optional knobs, model them as an enum of option-variants collected in a vector, not as labeled struct fields. `(MaximumGuests 3)` and `(NetworkIsolation TapLayer3)` are *variants* of an option enum; an empty `[]` means all-defaults; order is free; each present option is one typed variant. This is homogeneous at the schema level — every element is the same option enum — even though it looks varied.
+
+The recurring mistake (caught repeatedly, including by the psyche on the lojix test-authoring surface): treating `(MaximumGuests 3)` / `(Lease 900)` as omittable *named fields* of a struct — the `(key value)` shape NOTA forbids. They are option-enum variants in a vector, or distinct sibling variants. If you want "easy to use," design the variant ladder and the option enum; do not invent labeled optionals. Ease-of-use in NOTA is achieved by the *type design*, not by bending the syntax.
+
 ## The canonical example
 
 `skills.nota` is the workspace's canonical example of NOTA designed well. Open it before designing a new file. Notice: no `(Skill ...)` wrapper (implied by the file); the type IS the category (`(Role ...)`, `(Architecture ...)`, etc.); tier values are PascalCase variants (`Apex`, `Keystroke`, `Topic`, `Mechanism`); comments only explain the schema.
