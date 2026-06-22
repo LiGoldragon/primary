@@ -76,7 +76,7 @@ The new codec test pins the exact compact syntax for `Entry` and `IntentEventStr
 | Refreshed Nix integration | `SPIRIT_STACK_REF=main SPIRIT_TARGET_REF=schema-help SIGNAL_SPIRIT_REF=schema-help META_SIGNAL_SPIRIT_REF=schema-help SCHEMA_NEXT_REF=schema-help SCHEMA_RUST_NEXT_REF=schema-help scripts/run-nix-integration-tests --nocapture` | 10/10 ignored Nix integration tests passed |
 | Refreshed full flake check | `SPIRIT_STACK_REF=main SPIRIT_TARGET_REF=schema-help SIGNAL_SPIRIT_REF=schema-help META_SIGNAL_SPIRIT_REF=schema-help SCHEMA_NEXT_REF=schema-help SCHEMA_RUST_NEXT_REF=schema-help scripts/check-local-schema-stack` | all 23 x86_64-linux checks passed |
 
-The Nix integration run explicitly unpacked pushed refs `spirit` `965a9d644ec8`, `schema-next` `5db57b689227`, and `signal-spirit` `db96b5a5c93b`, then used the Nix-built package at `/nix/store/6x5n79i7yl1jikr3hby658nahg4v13mq-spirit`.
+The refreshed Nix integration run explicitly unpacked pushed refs `spirit` `9fa4971c467b`, `schema-next` `5db57b689227`, and `signal-spirit` `b529aebf28fd`, then used the Nix-built package at `/nix/store/bshljwl9vmg0sjbgfplvhwx99xqfma6w-spirit`.
 
 The flake check reported `all checks passed!` and noted only the normal omitted incompatible systems: `aarch64-darwin`, `aarch64-linux`, and `x86_64-darwin`.
 
