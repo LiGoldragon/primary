@@ -73,14 +73,19 @@ The struct recurses to its field **type names**; `Kind`/`Certainty`/
 `Importance`/`Privacy` are enums shown by name, `Domains`/`Referents` are
 collections shown by name, `Description` is a scalar shown by name.
 
-**5 — a full Record (nested structs, all the way down).**
+**5 — a full Record (the head is the enum, not the variant).**
 ```
 value :  (Record (([(Technology (Software (Programming CodeGeneration)))] Decision [a description] Medium Medium Zero [spirit])
                   ([([a quote] None)] [reasoning])))
-schema:  (Record { { Domains Kind Description Certainty Importance Privacy Referents } { Testimony Reasoning } })
+schema:  (Input { { Domains Kind Description Certainty Importance Privacy Referents } { Testimony Reasoning } })
 ```
-`Record` head; `RecordRequest` struct → `{ Entry Justification }`; each of
-those is itself a struct → recursed; the leaves are type names.
+`Record` is a **variant of `Input`** (signal-spirit's top-level request
+enum), so the head is **`Input`**, not `Record` — the variant is in the
+value. Record's payload `RecordRequest` is a struct →
+`{ Entry Justification }`, each itself a struct → recursed to field type
+names. (My earlier `(Record …)` head was wrong — it put the variant where
+the enum name belongs, contradicting `Decision → Kind`.) See §Open for the
+newtype question on `Certainty`/`Importance`/`Privacy`.
 
 **6 — the collection open choice (Testimony = `(Vec VerbatimQuote)`).**
 ```
@@ -102,7 +107,10 @@ instance_schema(value_block, type_decl):
   match type_decl:                       # type_decl is a SourceDeclaration (data)
     Struct(fields) -> "{ " + join(instance_schema(child_block, field_decl)
                                   for child_block, field_decl in zip(value_block.children, fields)) + " }"
-    Enum(name, _)  -> name               # collapse: variant is in value_block, alternatives in Help
+    Enum(name, variants) ->              # head is the enum NAME, not the variant
+      let (variant, payload) = read_variant(value_block)          # the value says which arm
+      variants[variant].payload ? "(" name " " instance_schema(payload, variants[variant].payload) ")"
+                                : name   # payload-less variant -> just the enum name
     Scalar(name)   -> name
     Newtype(name)  -> name
     Collection(elem_decl) -> ...         # §Open: name | recurse per value_block element
@@ -128,21 +136,39 @@ enum-collapse rule. The structural-forms thesis once more: the grammar is
 data, the walk is generic, the schema falls out of folding the value
 against it.
 
-## Open choices for the psyche
+## Resolved — converged with operator (report 3)
 
-1. **Collections / optionals** (example 6): name-leaf (`Testimony`),
-   element-aligned recursion (`[ { … } { … } ]`), or the container type
-   form (`(Vec VerbatimQuote)`)? *Lean: element-aligned recursion* — it
-   keeps "same positions, all the way down" (you see one schema slot per
-   actual element), and it still collapses enums inside each element. The
-   name-leaf form is simplest but loses the per-element alignment that
-   makes the instance view useful.
-2. **Scalar leaf**: the newtype name (`Description`) or the backing scalar
-   (`String`)? *Lean: the newtype name* — it is "the field's type," and
-   the scalar is one `(Help Description)` away. (Help is where `String`
-   surfaces.)
-3. **Does this want a prototype?** The mechanism is a generic
-   `project(value, schema)` fold; I can build a small data+decoder-driven
-   prototype that emits these schemas from real values once the two
-   choices above are pinned, so the examples become captured output
-   rather than proposals.
+operator's `reports/schema-operator/3-instance-schema-examples-and-decoder-driven-shape.md`
+independently reached the same model — the **third** convergence after
+help and the schema codec — and pins the data model plus the choices I had
+left open:
+
+- **Data model: a typed decoder trace, not a string renderer.**
+  `DecodedWithSchema<T> { value, schema }`, where
+  `InstanceSchema { expected: SourceReference, body }` and `body` ∈
+  `Scalar | Newtype(InstanceSchema) | Struct(Vec<_>) | EnumPayload(Option<_>) |
+  Vector(Vec<_>) | Optional(Option<_>) | Map(Vec<(_,_)>)`. The load-bearing
+  field is `expected` — the type the decoder expected at each position.
+  This is the concrete typed form of the `project(value, schema)` fold
+  above; **adopt it**. The decode pass returns the value *and* the trace
+  together; the renderer encodes through schema-next, never formatting
+  text directly.
+- **Newtypes are preserved (resolves my open #2 — no divergence).** A
+  newtype is a `Newtype(InstanceSchema)` node: `Certainty` at the field
+  position, `Magnitude` one level inside. Both facts kept — the role
+  (`Certainty` vs `Importance` vs `Privacy`) *and* the underlying enum
+  (`Magnitude`). The renderer picks the depth; example 5's
+  `Certainty/Importance/Privacy` leaves are the field-level projection.
+- **Collections are element-aligned (resolves my open #1).**
+  `Vector(Vec<InstanceSchema>)` — one node per actual element — and the
+  element type is known even for an empty vector (`[]` at `Domains` still
+  yields `Domains`, `(Vec Domain)` one level down).
+- **Root is a trace; display may elide.** The typed trace preserves the
+  whole path `Input → Record → RecordRequest → { … }`; the *display* may
+  elide wrapper levels already evident from the value, giving example 5's
+  compact `(Input { … })`. The data model keeps them; the renderer chooses.
+
+**Remaining step:** a data+decoder-driven prototype that returns
+`(value, schema-trace)` from one decode pass and round-trips the trace
+through schema-next — operator's report 3 §"Test shape" is the bar. Both
+tracks agree on the shape; ready to build whenever you want it.
