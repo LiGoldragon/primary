@@ -1,8 +1,10 @@
-# Help as a dual-codec value — the NOTA spec for operator
+# Help as a dual-codec value — the schema-codec spec for operator
 
 *schema-designer · report 5 · closes the help-shape thread: make the help
-data a truly-typed value with **two** codecs — rkyv (binary) and NOTA
-(text) — that both **encode and decode**, like every other signal type.*
+data a truly-typed value with **two** codecs — rkyv (binary) and schema
+(text, via `schema-next`) — that both **encode and decode**, like every
+other signal type. (Filename keeps the `-nota-` slug; the codec is
+schema-next's, with NOTA as the block substrate beneath it.)*
 
 ## What we want (affirmative)
 
@@ -10,18 +12,21 @@ The help is **one truly-typed value carrying two serializations**, not a
 string the client prints:
 
 - **rkyv** — binary, present everywhere, encode↔decode.
-- **NOTA** — text, on the nota-text clients, encode↔decode.
+- **schema** — text, on the text clients, encode↔decode through the
+  **schema declaration codec** (`schema-next`). NOTA is the block
+  substrate beneath schema-next; the help round-trips at the **schema**
+  layer, not the raw-NOTA layer.
 
-Both directions, round-trippable, the same dual-codec shape every signal
-type already has. The help isn't special-cased; it's a normal contract
-value that happens to describe the contract.
+Both directions, round-trippable. And the text codec is the **same
+schema-decode that generated the model** — the help is schema, so it is
+encoded and decoded as schema, end to end.
 
 ## Where it stands
 
 | Codec | State |
 |---|---|
 | rkyv | **Done.** `HelpModel`/`HelpResponse`/`HelpEntry`/`HelpBody`/`HelpTypeExpression` derive `Archive/Serialize/Deserialize`; operator's test round-trips both the model and the rendered response in binary. |
-| NOTA | **Half.** The text comes from a hand-written `impl Display` (`render_with_name` → `format!`) — a one-way projection. No `NotaEncode`/`NotaDecode`, so nothing parses the help text back, and the canonical-NOTA guarantees come from getting `format!` right by hand rather than from the codec. |
+| schema (text) | **Half.** The text comes from a hand-written `impl Display` (`render_with_name` → `format!`) — a one-way projection. Nothing parses the help text back, and the canonical-form guarantees come from getting `format!` right by hand rather than from the schema codec. |
 
 ## (a) Verification — does deriving the NOTA codec reproduce the syntax?
 
@@ -57,42 +62,49 @@ The hand-written `Display` already produces exactly this (it switches on
 the `HelpBody` variant and picks the delimiter). So the encode logic is
 right; it just isn't wired to the codec, and there is no inverse.
 
-## (b) The spec — make it a true dual-codec type
+And the right codec is **schema-next**, not a hand-rolled `nota_next`
+one: the `{ }` / `[ ]` / `(Vec X)` body grammar is the schema declaration
+grammar `schema-next` already decodes (`from_schema_text`).
+Re-implementing it as a bespoke `nota_next` `NotaDecode` would duplicate
+the schema decoder. **Decode the help as schema.**
 
-1. **`NotaEncode` for the help node = the current `render` logic,
-   promoted to the canonical encoder.** Move `render_with_name` /
-   `HelpTypeExpression::render` into `impl NotaEncode for HelpEntry` (and
-   the sub-types), so `to_nota()` *is* the help text. Keep a `Display`
-   that delegates to `to_nota()`. No behavior change to the output.
-2. **Add the inverse `NotaDecode`** — recover the `HelpBody` kind from the
-   **delimiter** of the body block, using the `nota_next` `Block` /
-   `Delimiter` API the request recognizer already uses
-   (`as_delimited(Delimiter::Brace | Bracket | Parenthesis)`,
-   `demote_to_string`): brace → `Struct`, bracket → `Enumeration`,
-   atom/application → `Reference`, empty → `Unit`. The leaf
-   `HelpTypeExpression` parses the container heads (`Vec`/`Optional`/`Map`)
-   back to its kinds. Now `(Record { Entry Justification })` **parses back**
-   into the typed `HelpEntry`.
-3. **Keep the rkyv derives** unchanged. The value now has both codecs.
-4. **Stream/Family (report 4 follow-up)** gets the same treatment: the
-   typed `Frame` variant encodes its named slots as a brace body and
-   decodes back — so the one remaining `Text(String)` escape hatch closes
-   and *every* node is a true typed value.
+## (b) The spec — make it a true dual-codec type (rkyv + schema)
 
-Net: `(Help X)` output becomes a genuine NOTA value — `to_nota()` emits
-`(Record { Entry Justification })`, `from_nota` parses it back — and the
-help travels as rkyv binary anywhere and as NOTA text on the nota clients,
-encode and decode both ways. That is the "truly-typed representation,
-encodable/decodable in rkyv or nota" we want, made concrete.
+1. **Encode through `schema-next`'s declaration encoder.** The help node
+   is a (re-headed) schema declaration; render it with schema-next's
+   declaration encoding (`to_schema_text`, already used for the
+   Stream/Family fallback — extend it to every body), so the help text
+   **is** the canonical schema declaration form, by construction rather
+   than by a hand-tuned `format!`. `Display` delegates to it.
+2. **Decode through `schema-next`'s declaration decoder** — the same
+   grammar `from_schema_text` uses to build the model. The `{ }` / `[ ]`
+   / `(Vec X)` body is schema, so schema-next parses it straight back into
+   the typed help node — no hand-rolled delimiter dispatch, no parallel
+   codec. This likely needs a small public entry point in `schema-next`
+   for decoding a single (re-headed) declaration; that is the one new
+   surface to add.
+3. **Keep the rkyv derives** unchanged — the binary codec.
+4. **Stream/Family (report 4 follow-up)** round-trips through the same
+   schema codec — a stream is already a schema form (`Stream { … }`), so
+   schema-decode handles it and the last `Text(String)` escape hatch
+   closes; *every* node becomes a true typed value.
 
-## Note — relation to schema-next's declaration codec
+Net: the help is a genuine **dual-codec value — rkyv (binary) + schema
+(text)** — encode and decode both ways, with NOTA as the shared block
+substrate beneath the schema layer. `(Help X)` output parses back into the
+typed help node via the *same schema decoder that generated it*. That is
+the "truly-typed representation, encoded/decoded in rkyv or schema" we
+want, made concrete.
 
-The help node is, structurally, a **re-headed schema declaration** (`Record`
-re-headed over `RecordRequest`'s `{ Entry Justification }` body). So its
-NOTA form is the same grammar `schema-next` already encodes
-(`to_schema_text`) and decodes (`from_schema_text`). Two ways to realize
-the codec: (1) a self-contained `NotaEncode`/`NotaDecode` on the help types
-(above — fewest moving parts, no new cross-crate coupling), or (2) reuse
-`schema-next`'s declaration codec directly. Recommend (1) for the pilot;
-(2) is the deeper unification if the help node is later expressed as an
-actual declaration value. Operator's call.
+## Why schema, not a raw-NOTA codec
+
+The help node is, structurally, a **re-headed schema declaration**
+(`Record` re-headed over `RecordRequest`'s `{ Entry Justification }`
+body). Its text form is the grammar `schema-next` already encodes
+(`to_schema_text`) and decodes (`from_schema_text`) — so the codec is
+**schema-next's, not a bespoke `nota_next` `NotaEncode`/`NotaDecode`**.
+This keeps the whole feature **schema end to end**: the model is generated
+by schema-decoding the contract, and the help output is itself schema,
+decoded by the same schema decoder. NOTA stays the block substrate
+beneath; nothing re-implements the declaration grammar. (Per psyche:
+decode in schema, not nota.)
