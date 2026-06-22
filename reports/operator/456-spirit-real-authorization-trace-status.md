@@ -69,6 +69,12 @@ The next implementation should be the deploy/config cut:
 4. Start or wire `introspect` so it listens on that trace socket.
 5. Point Mentci’s trace pane at the live introspect data for `IntrospectionTarget::Spirit`, `TraceLayer::Authorization`.
 
-## Open Question
+## Resolution: Meta Configure
 
-The only clarity I still need before the deploy/config cut: should criome gate arming be a startup-only binary config field on `SpiritDaemonConfiguration`, or an owner-only meta-signal `Configure` operation that can arm/re-arm the gate while the daemon is running? My recommendation is startup config first, because the current daemon argument model already treats `AuthorizationMode` as startup policy and it keeps the first production proof small.
+The psyche corrected the open question: criome gate arming is owner policy and belongs on the meta signal, not startup-only binary configuration. This matches existing intent (`cgd8`, `ur16`, `7sx6`): configuration verbs live in the meta-signal contract and bootstrap/runtime config share a `Configure` vocabulary.
+
+Implemented follow-up:
+
+- `meta-signal-spirit` `f31d4cc758ac` extends `ConfigureRequest` / `ConfigureReceipt` with `SelectedCriomeGateTarget`.
+- `spirit` wires that target into `Engine::configure`: `Socket(path)` arms the local criome gate, `Default`/`None` clears it.
+- The bootstrap target carries only the criome socket; spirit generates unsigned per-head evidence. This is correct for the first production demo with criome `AutoApprove` or `ClientApproval`, and leaves quorum signer/key material for the later contract shape.
