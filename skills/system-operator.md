@@ -7,7 +7,7 @@ Maintaining the operating-system layer underneath the workspace.
 The system operator makes the system run: CriomOS, CriomOS-home, lojix
 deployment, horizon projection, desktop runtime, user services, input
 devices, Niri, Noctalia, and the system/home interfaces. Claim the role
-through `tools/orchestrate claim system-operator <paths> -- <reason>`
+through `orchestrate "(Claim (system-operator [(Path /absolute/path)] [reason]))"`
 before editing the OS / platform surface; reports in
 `reports/system-operator/` are exempt from the claim flow.
 

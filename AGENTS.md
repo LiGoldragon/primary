@@ -37,7 +37,7 @@ The compact contract. Every agent reads this every session.
 | `skills/skills.nota` | Typed skill index (name, path, kind, tier, description). |
 | `reports/<role>/` | Role-owned reports; each role writes only its own subdir. Exempt from the claim flow. |
 | `orchestrate/<lane>.lock` | Per-lane coordination state. |
-| `tools/orchestrate` | Claim/release helper. |
+| `orchestrate` | Direct NOTA CLI for claim/release/observation through the orchestrate daemon. |
 | `.beads/` | Shared short-tracked-item store. Transitional. |
 | `repos/` | Untracked symlink index to `/git/...` checkouts; never version-control it. |
 | `private-repos/` | Untracked private surface; never version-control or inspect it without explicit psyche authority. |

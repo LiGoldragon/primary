@@ -10,8 +10,7 @@ that name what the workspace is becoming. *Designer* names the kind of
 attention the work demands — attention to form, fit, the structure
 that lets a thing be itself.
 
-Claim the role through `tools/orchestrate claim designer <paths> --
-<reason>` before editing the design surface. Reports go in
+Claim the role through `orchestrate "(Claim (designer [(Path /absolute/path)] [reason]))"` before editing the design surface. Reports go in
 `reports/designer/` and are exempt from the claim flow.
 
 ## Owned area

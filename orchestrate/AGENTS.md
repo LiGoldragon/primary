@@ -1,19 +1,18 @@
 # Orchestration Protocol
 
 The orchestration protocol coordinates autonomous agents sharing the same
-workspace. The live implementation is `tools/orchestrate`: a Rust
-compatibility helper that keeps the old `claim` / `release` / `status` argv
-shape, starts `orchestrate-daemon` when needed, submits typed
-`signal-orchestrate` requests over Unix sockets, and renders daemon-projected
-lock files plus open BEADS work.
+workspace. The live implementation is the `orchestrate` component CLI: it takes
+one NOTA request, submits typed `signal-orchestrate` frames to
+`orchestrate-daemon` over Unix sockets, and prints one NOTA reply. Lock files
+are daemon projections for local visibility only.
 
 The daemon-owned store is `orchestrate/orchestrate.redb`. Lock files are
 visibility projections, not the source of truth. BEADS is shared coordination
 state while it exists, not a lockable scope.
 
-The later destination is native typed work/memory state in Persona, but agents
-should treat the current production surface as daemon-backed `tools/orchestrate`,
-not as a shell helper that owns files directly.
+Agents should treat the current production surface as the daemon-backed
+`orchestrate` CLI and its NOTA records, not as an argv compatibility helper or
+as a shell helper that owns files directly.
 
 ## Roles
 
@@ -65,11 +64,11 @@ its own lock file.
 - Lock files: one per lane at `orchestrate/<lane>.lock` (e.g.
   `orchestrate/operator.lock`, `orchestrate/system-operator.lock`).
 - BEADS database: `.beads/` (legacy transitional work-item store).
-- Helper: `tools/orchestrate`.
+- CLI: `orchestrate` with one NOTA request argument.
 
-Agents do not edit lock files as the normal path. They use `tools/orchestrate`;
-the daemon mutates typed claim state and projects each lane's lock file. The
-lock files are coordination records, not operating-system locks.
+Agents do not edit lock files as the normal path. They use `orchestrate`; the
+daemon mutates typed claim state and projects each lane's lock file. The lock
+files are coordination records, not operating-system locks.
 
 `.beads/` is never claimed. Any agent may create, update, comment on, or close
 BEADS tasks at any time. A BEADS task is a shared work item, not a file-ownership
@@ -124,25 +123,28 @@ intent goes through the deployed `spirit` CLI per `skills/intent-log.md`
 and `skills/spirit-cli.md`. There is no legacy-file fallback; the
 `intent/*.nota` substrate is retired (its history lives in git).
 
-### Daemon-backed helper
+### Daemon CLI
 
-The current production helper is daemon-backed:
+The current production surface is the `orchestrate` component CLI speaking
+NOTA directly to `orchestrate-daemon`:
 
 ```sh
-tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
-tools/orchestrate release <role>
-tools/orchestrate status
-tools/orchestrate verify-jj
+orchestrate "(Claim (system-maintainer [(Path /home/li/primary/AGENTS.md)] [refresh coordination docs]))"
+orchestrate "(Release system-maintainer)"
+orchestrate "(Observe Roles)"
+orchestrate "(Observe Worktrees)"
+orchestrate "(Query (20 []))"
 ```
 
-The compatibility helper translates claim/release/status into typed
-`signal-orchestrate` requests and prints the familiar lock-state view. The
-daemon is the only writer of durable claim state. On first startup, the daemon
-imports existing `orchestrate/*.lock` files if `orchestrate.redb` has no claims;
-after that, lock files are downstream projections.
+The CLI takes exactly one NOTA argument and prints exactly one NOTA reply.
+`orchestrate-daemon` is the only writer of durable claim state. On first
+startup, the daemon imports existing `orchestrate/*.lock` files if
+`orchestrate.redb` has no claims; after that, lock files are downstream
+projections.
 
-Open BEADS listing remains a compatibility display. BEADS is not part of the
-daemon store yet and remains shared state.
+The old argv-compatible `tools/orchestrate claim|release|status` helper is
+retired. Do not extend or rely on it; use the component CLI and its typed NOTA
+records.
 
 ### Lock-file format
 
@@ -159,7 +161,7 @@ A **scope** is one of two kinds:
   item the bracketed token identifies). Overlap rule: exact match.
 
 ```
-/home/li/primary/skills/autonomous-agent.md # sync claim-helper docs
+/home/li/primary/skills/autonomous-agent.md # sync coordination docs
 [primary-f99] # chroma nota-codec migration
 ```
 
@@ -168,10 +170,11 @@ conflict, and a single role can hold both at once (e.g. claim the
 task plus the specific paths the task requires).
 
 The filename names the lane; nothing else needs to live in the file. To
-inspect, `cat orchestrate/<lane>.lock` or `tools/orchestrate status`. The
-daemon is the canonical writer after startup; agents use
-`tools/orchestrate` rather than editing lock files by hand. Manual lock-file
-edits are legacy recovery only, before the daemon imports an empty store.
+inspect, run `orchestrate "(Observe Roles)"` or read the projected
+`orchestrate/<lane>.lock` file for a local human-readable view. The daemon is
+the canonical writer after startup; agents use the `orchestrate` CLI rather
+than editing lock files by hand. Manual lock-file edits are legacy recovery
+only, before the daemon imports an empty store.
 
 Lock files are **runtime state, gitignored.** They live on the local
 filesystem only — coordination between agents on the same machine, not
@@ -185,7 +188,7 @@ Before editing files, running commands that create/modify/delete files, or
 taking on a tracked unit of work, an agent claims its intended scope.
 
 ```sh
-tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
+orchestrate "(Claim (<role> [(Path /absolute/path) (Task primary-f99)] [reason text]))"
 ```
 
 `<role>` is one of `operator`, `second-operator`, `pi-operator`,
@@ -193,26 +196,23 @@ tools/orchestrate claim <role> <scope> [more-scopes] -- <reason>
 `cloud-maintainer`, `maintainer`, `designer`, `second-designer`,
 `third-designer`, `system-designer`, `nota-designer`, `cloud-designer`,
 `schema-designer`, `system-operator`, `system-maintainer`, `poet`, `editor`,
-`videographer`, `assistant`, or `counselor`. Each
-`<scope>` is either an absolute path or a bracketed task lock
-(`'[primary-f99]'` — quote it; `[` is a shell glob character).
+`videographer`, `assistant`, or `counselor`. Each scope is either
+`(Path /absolute/path)` or `(Task primary-f99)`.
 
 Mix freely:
 
 ```sh
-tools/orchestrate claim system-operator '[primary-f99]' \
-  /git/github.com/LiGoldragon/chroma -- chroma nota-codec migration
+orchestrate "(Claim (system-operator [(Task primary-f99) (Path /git/github.com/LiGoldragon/chroma)] [chroma nota-codec migration]))"
 ```
 
-The helper performs the required work in one call:
+The daemon performs the required work in one call:
 
-1. Writes the intended scopes into the role's own lock file: one scope
-   per line, each annotated with the supplied reason as a `# comment`.
-2. Reads every role's lock file.
-3. Lists open BEADS tasks.
-4. Checks every other active lock for overlap (path nesting for path
-   locks; exact match for task locks).
-5. Clears the role's claim and exits non-zero if any overlap exists.
+1. Accepts the typed claim request through `signal-orchestrate`.
+2. Checks every other active claim for overlap (path nesting for path locks;
+   exact match for task locks).
+3. Commits accepted claim state to `orchestrate.redb`.
+4. Regenerates `orchestrate/<lane>.lock` projections from daemon state.
+5. Returns `(ClaimAcceptance ...)` or `(ClaimRejection ...)` as NOTA.
 
 Use absolute paths where possible. For linked repositories under `repos/`,
 claim the real repository path under `/git/...`, not only the symlink path. A
@@ -225,9 +225,9 @@ coordination ("who is working on this *right now*"). Use one when you
 take on a tracked task that other agents might otherwise also pick up:
 
 ```sh
-tools/orchestrate claim system-operator '[primary-f99]' -- chroma migration
+orchestrate "(Claim (system-operator [(Task primary-f99)] [chroma migration]))"
 # … do the work …
-tools/orchestrate release system-operator
+orchestrate "(Release system-operator)"
 bd close primary-f99 -r "<closing note>"
 ```
 
@@ -236,17 +236,16 @@ A bead going from open → closed in BEADS doesn't tell other agents
 closing the bead, release the lock.
 
 For non-BEADS work items (a GitHub PR, a draft design report you
-haven't filed yet), the bracketed token can name them:
-`'[pr:42]'`, `'[draft:role-redesign]'`. The helper doesn't validate
-the token — it's an exact-match identifier; conflicts are exact
-collisions.
+haven't filed yet), the task token can name them: `(Task pr:42)`,
+`(Task draft:role-redesign)`. The daemon treats task tokens as exact-match
+identifiers; conflicts are exact collisions.
 
 ## Release Flow
 
 When the active work ends or narrows, update the lock immediately.
 
 ```sh
-tools/orchestrate release <role>
+orchestrate "(Release <role>)"
 ```
 
 This clears the role's active scopes and lists the current open BEADS tasks.
@@ -263,18 +262,26 @@ goal surface.
 ## Status
 
 ```sh
-tools/orchestrate status
+orchestrate "(Observe Roles)"
+orchestrate "(Observe Lanes)"
+orchestrate "(Observe Worktrees)"
 ```
 
-Lists every role's lock file plus open BEADS tasks in the current
-shell-helper era. In the typed target, `RoleObservation` reports role
-state and `QueryKind::Ready` reports ready work from the native mind graph.
+`Observe Roles` returns the active role/claim snapshot as NOTA. Open BEADS tasks
+remain in BEADS; the orchestrate component does not own the BEADS database.
 
 ## JJ Bookmark Verification
 
 ```sh
-tools/orchestrate verify-jj
+orchestrate "(Observe Worktrees)"
 ```
+
+The old `verify-jj` compatibility command belonged to the retired helper. The
+daemon-native replacement surface is the typed worktree registry observed with
+`Observe Worktrees`; repository hygiene that is not yet daemon-modeled should
+be handled by the relevant repo's normal `jj` commands and reports, not by
+keeping the compatibility helper alive.
+
 
 Scans the repositories named by `protocols/active-repositories.md`; it does
 not crawl the filesystem. For each tracked repository, it counts local
@@ -288,7 +295,7 @@ would block `release` for a lane claiming that repository.
 When an agent cannot proceed because a scope is owned, context is missing, or
 a dependency is not ready, it records blocked work durably.
 
-Current shell-helper era:
+Legacy shell-helper era:
 
 ```sh
 bd create "Short task title" -t task -p 2 \

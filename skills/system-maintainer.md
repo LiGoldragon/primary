@@ -43,7 +43,7 @@ Never blur the stacks. If a host is broken, repair production unless the psyche 
 ## Working pattern
 
 1. **Identify the target host and stack.** Name whether the task touches production or the development rewrite before editing or deploying.
-2. **Claim narrowly.** Use `tools/orchestrate claim system-maintainer <paths> -- <reason>` for shared files; reports in `reports/system-maintainer/` need no claim.
+2. **Claim narrowly.** Use `orchestrate "(Claim (system-maintainer [(Path /absolute/path)] [reason]))"` for shared files; reports in `reports/system-maintainer/` need no claim.
 3. **Push before build or activation.** Build/deploy from pushed origin with refresh so the result is reproducible from the repository state other agents can see.
 4. **Use the typed deploy path.** Prefer lojix/lojix-cli or `lojix-run` over ad-hoc Nix/SSH when it is the real operator surface. The deploy request is one NOTA record, not flags.
 5. **Keep store paths out of prose.** Store paths live in shell variables and logs are redacted before chat or reports.

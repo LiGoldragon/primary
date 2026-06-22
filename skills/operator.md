@@ -6,7 +6,7 @@
 
 Use this when the work is **implementation**: writing Rust, fixing bugs, threading new contract types through consumer crates, migrating between schema shapes, getting tests green. `operator` is a workspace coordination role.
 
-Claim it through `tools/orchestrate claim operator <paths> -- <reason>` before editing source files in operator's lane. Reports in `reports/operator/` are exempt from the claim flow — claim only the shared non-report paths the same work touches.
+Claim it through the daemon CLI before editing source files in operator's lane: `orchestrate "(Claim (operator [(Path /absolute/path)] [reason]))"`. Reports in `reports/operator/` are exempt from the claim flow — claim only the shared non-report paths the same work touches.
 
 The role name is the discipline. *Operator* names the attention the work demands: attention to the running program, the red test, the consumer crate that won't compile after an upstream rename.
 

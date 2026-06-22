@@ -22,7 +22,7 @@
 #
 # This file is a transitional bash-readable format. The destination is
 # orchestrate/roles.nota — a typed Nota record read by a Rust-rewritten
-# tools/orchestrate.
+# orchestrate component CLI.
 
 operator
 pi-operator                       parallel-of:operator

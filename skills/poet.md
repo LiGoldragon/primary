@@ -6,7 +6,7 @@
 
 The work is **writing**: drafting essays, refining prose, applying citation conventions, shaping the language layer of a document where literary quality is the load-bearing concern.
 
-`poet` is a workspace coordination role. Claim it with `tools/orchestrate claim poet <paths> -- <reason>` before editing the writing surface. Reports go in `reports/poet/` and are exempt from the claim flow.
+`poet` is a workspace coordination role. Claim it with `orchestrate "(Claim (poet [(Path /absolute/path)] [reason]))"` before editing the writing surface. Reports go in `reports/poet/` and are exempt from the claim flow.
 
 The role name *is* the discipline — it names the kind of attention the work demands: rhythm, figure, the texture of the sentence.
 

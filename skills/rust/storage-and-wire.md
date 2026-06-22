@@ -115,7 +115,7 @@ The asymmetry: humans use NOTA, machines use rkyv. The codec at the boundary is 
 
 The rule covers *state the component mutates and re-reads* and *bytes between Rust components*. Some text-on-disk forms stay text by design:
 
-- **Lock-file projections.** `<role>.lock` files are gitignored human-readable runtime coordination state, read with `cat` or `tools/orchestrate status`. The redb store is the in-process truth; the lock file is the outward projection regenerated from the record.
+- **Lock-file projections.** `<role>.lock` files are gitignored human-readable runtime coordination state, read with `cat` when needed or replaced by `orchestrate "(Observe Roles)"`. The redb store is the in-process truth; the lock file is the outward projection regenerated from the record.
 - **Configuration files.** `Cargo.toml`, `flake.nix`, per-repo configs — inputs, not state.
 - **Reports and prose docs.** Markdown is markdown.
 - **Interchange artifacts.** A NOTA-line file shared for one-shot ingestion is interchange, not running state.

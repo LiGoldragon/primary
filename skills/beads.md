@@ -69,24 +69,22 @@ sits open until pruned.
 ## Taking on a bead — the task-lock bridge
 
 When you start work on a bead, claim it through the orchestration
-protocol so other agents see the work is in flight. Task locks use
-bracketed tokens:
+protocol so other agents see the work is in flight. Task locks use typed task tokens:
 
 ```sh
-tools/orchestrate claim system-operator '[primary-f99]' -- chroma migration
+orchestrate "(Claim (system-operator [(Task primary-f99)] [chroma migration]))"
 # … do the work …
-tools/orchestrate release system-operator
+orchestrate "(Release system-operator)"
 bd close primary-f99 -r "<closing note>"
 ```
 
-Quote the bracketed token in shell — `[` is a glob character. The helper
-enforces exact-match overlap across roles: a second role claiming
-`[primary-f99]` is rejected.
+The daemon enforces exact-match overlap across roles: a second role claiming
+`(Task primary-f99)` is rejected.
 
 This bridges two layers BEADS alone doesn't span: BEADS lifecycle
 (filed/open/closed — durable, visible via `bd list`) and orchestration
 locks (claim/release — in-flight coordination on this machine, visible
-via `tools/orchestrate status`). A bead in *open* state doesn't tell
+via `orchestrate "(Observe Roles)"`). A bead in *open* state doesn't tell
 other agents someone is working on it right now; the task lock does.
 Without it, two agents race the same bead — each does the work, one push
 lands, the other discovers stale commits.

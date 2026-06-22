@@ -100,7 +100,7 @@ worktree if jj operations are needed (`skills/jj.md`).
 
 A worktree is a normal jj working copy — standard `skills/jj.md`
 commit/push discipline applies, claims work per-path
-(`tools/orchestrate claim`), and reports go in workspace-level
+(`orchestrate "(Claim ...)"`), and reports go in workspace-level
 `reports/<role>/`, not in the worktree.
 
 Push the feature branch (`--allow-new` on the first push of a new
@@ -158,12 +158,11 @@ mutable checkout (`skills/push-not-pull.md`).
 
 ## Interaction with the orchestration protocol
 
-A worktree's path is its own scope for `tools/orchestrate claim`. Claim
+A worktree's path is its own scope for `orchestrate "(Claim ...)"`. Claim
 it when you start work there:
 
 ```sh
-tools/orchestrate claim <lane> '[primary-XXX]' \
-    ~/wt/github.com/<owner>/<repo>/<branch-name> -- '<reason>'
+orchestrate "(Claim (<lane> [(Task primary-XXX) (Path /home/li/wt/github.com/<owner>/<repo>/<branch-name>)] [reason]))"
 ```
 
 This is distinct from the canonical checkout's path — two scopes, no

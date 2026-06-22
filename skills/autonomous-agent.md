@@ -33,13 +33,13 @@ labels. Any agent picks up any bead by topic fit, not by lane.
 
 1. Check active beads. Take the highest-priority open one fitting
    your topic.
-2. Claim the scopes (the lock-file claim coordinates concurrent
-   editing; bead pickup itself needs no claim):
-   `tools/orchestrate claim <your-lane> '[<bead-id>]' <paths> -- <reason>`.
+2. Claim the scopes (the daemon claim coordinates concurrent editing; bead
+   pickup itself needs no claim):
+   `orchestrate "(Claim (<your-lane> [(Task <bead-id>) (Path /absolute/path)] [reason]))"`.
 3. `bd update <bead-id> --status in_progress`.
 4. Work it through.
 5. `bd close <bead-id> -r "<note pointing at where the work landed>"`.
-6. `tools/orchestrate release <your-lane>`, or re-claim with the next
+6. `orchestrate "(Release <your-lane>)"`, or re-claim with the next
    bead's scopes.
 7. Loop.
 
@@ -103,15 +103,14 @@ state outside what was asked. Everything else, you do.
 Before editing, creating, formatting, or deleting files, claim the
 scopes through `orchestrate/AGENTS.md`:
 
-```
-tools/orchestrate claim <lane> <path> [more-paths] -- <reason>
-tools/orchestrate release <lane>
+```sh
+orchestrate "(Claim (<lane> [(Path /absolute/path)] [reason]))"
+orchestrate "(Release <lane>)"
 ```
 
-The helper writes the lane's lock file, reads every lane's lock,
-lists open beads, and rejects overlapping active scopes. Release as
-soon as the work is done. If the work can't proceed, file a short
-bead with the blocker and the next required action.
+The daemon commits accepted claim state, projects lane lock files, and rejects
+overlapping active scopes. Release as soon as the work is done. If the work
+can't proceed, file a short bead with the blocker and the next required action.
 
 Beads are never claimed — any agent may write a bead at any time; do
 not claim `.beads/`. If `bd` reports a backend database-lock error,

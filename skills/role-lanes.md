@@ -75,7 +75,7 @@ Per-lane (the coordination surface for this window):
 |---|---|
 | Lock filename | `designer.lock`, `cluster-operator.lock` |
 | Report-write subdirectory | `reports/designer/` — the window writes here; the agent READS from all of its windows' subdirectories |
-| Claim string | `tools/orchestrate claim designer …` |
+| Claim request | `orchestrate "(Claim (designer [(Path /absolute/path)] [reason]))"` |
 
 Per-window (each open UI session has its own): **live LLM context**
 (session-local; when a window compacts or clears, the agent's
@@ -100,9 +100,9 @@ Shared across all lanes of one role (the agent's surface):
 
 Two windows of one role must not race each other:
 
-1. **Lock files per lane.** A window's claim records in its
-   `<lane>.lock`; other windows see it and stay out of that scope
-   (the `tools/orchestrate` mechanism).
+1. **Daemon claims per lane.** A window's claim records are committed by
+   `orchestrate-daemon` and projected into its `<lane>.lock`; other windows
+   observe the daemon state and stay out of that scope.
 2. **Shared persistent memory.** Intent records, reports, beads,
    and ARCH edits are visible to every window via the filesystem;
    the agent's knowledge converges through the shared substrate.
@@ -135,7 +135,7 @@ file.
 Then claim under your lane's identifier:
 
 ```sh
-tools/orchestrate claim <lane> <scope> [more-scopes] -- <reason>
+orchestrate "(Claim (<lane> [(Path /absolute/path)] [reason]))"
 ```
 
 …and write reports under `reports/<lane>/`. The lane's identifier
@@ -153,9 +153,10 @@ skill; for *what lanes exist*, `AGENTS.md`'s role table.
 A new lane (a `third-designer`, a `second-cluster-operator`)
 requires:
 
-1. Add it to `orchestrate/roles.list` (the registry
-   `tools/orchestrate` reads) — `parallel-of:<main-role>` for
-   ordinal lanes, bare for qualified specialist lanes.
+1. Add it through the orchestrate meta-policy surface. While `roles.list`
+   remains as a seed/documentation file, keep it aligned with daemon state —
+   `parallel-of:<main-role>` for ordinal lanes, bare for qualified specialist
+   lanes.
 2. Create its report subdirectory `reports/<lane>/`. A brand-new
    *main* role also gets `skills/<role>.md` and a `Role` entry in
    `skills/skills.nota`.
@@ -170,7 +171,7 @@ applies to every lane under it.
 ## See also
 
 - `AGENTS.md` — the role table and the list of current lanes.
-- `orchestrate/AGENTS.md` — claim flow, lock-file format, status
-  command, blocked-work flow.
+- `orchestrate/AGENTS.md` — claim flow, lock-file projection, observation
+  commands, blocked-work flow.
 - `skills/designer.md`, `skills/operator.md` (and the other main
   role skills) — the discipline every lane under each inherits.

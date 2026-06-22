@@ -458,3 +458,44 @@ dir is gone. Production `spirit-daemon.service` is untouched throughout.
 4. A `ComponentTrace` query (engine=spirit-sock, component=Signal) over
    `$RUN/introspect.sock` returns the sequence-ordered events
    (`runtime.rs:165-178`, store filter `store.rs:177-187`).
+
+## Live run achieved — real spirit trace rendered in the mentci GUI
+
+The runbook ran end to end (with one egui addition), on a fresh `/tmp/strace-live`
+stack; the production `spirit-daemon.service` was untouched.
+
+- **Build:** introspect-daemon built with `SIGNAL_ROUTER_UPDATE_SCHEMA_ARTIFACTS=1`
+  to clear the floating-`branch=main` staleness (`signal-router` artifacts stale
+  vs `schema-rust-next`). spirit-daemon built `--features testing-trace`; the
+  `spirit` CLI built without `testing-trace` (its `print_events`/`Display` path is
+  feature-gated and needs no trace types).
+- **Real activity:** a rejected `Record` (empty referents under 0.16 enforcement),
+  an `Observe`, and an **authorized** `Record` — `(RecordAccepted gz3l)` with a
+  real `SemaWriteApplied`.
+- **Captured + queried:** 23 `ComponentTraceEvent`s ingested into introspect's
+  sema store, read back by engine (`/tmp/strace-live/spirit.sock`) + component
+  (`Signal`).
+- **Rendered in mentci:** the egui `introspect trace` panel showed
+  `ComponentTrace Signal (23 events)` as NOTA, the full path through
+  `SemaWriteApplied 19`. The full chain `spirit → introspect → mentci` proven on
+  real data in the GUI.
+
+Engine-filter fix: the panel hardcoded the query engine to `prototype`; a real
+producer stamps events with its socket path, so it now reads
+`MENTCI_INTROSPECT_ENGINE` (mentci-egui `trace-introspect-slice` `b501ebb8`).
+
+### The one reconciliation left (an architecture decision)
+
+Two introspect-display paths now exist and production should pick one:
+
+- **operator's main** — the mentci *daemon* bridges to introspect and projects
+  `PrototypeWitness` as a pane; clients subscribe to mentci (the `7x5z`
+  daemon-owns-canonical-state shape).
+- **this slice** — mentci-lib / egui query introspect's `ComponentTrace`
+  *directly* (the universal-client-direct shape, fork #2).
+
+Recommended: route `ComponentTrace` *through* the daemon bridge (extend operator's
+pane to query introspect's `ComponentTrace`, not only `PrototypeWitness`), so
+mentci stays the single canonical observer and the wire boundary holds; keep
+mentci-lib's `IntrospectClient` as the reusable library seed. That merges both
+parallel efforts into one production path.

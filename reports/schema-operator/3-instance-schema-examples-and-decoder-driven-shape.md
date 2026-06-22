@@ -19,11 +19,28 @@ So:
 | `Decision` | `Kind` | `(Kind [Decision Principle Correction Clarification Constraint])` |
 | `High` inside `Certainty` | `Magnitude` | `(Magnitude [Zero Minimum VeryLow Low Medium High VeryHigh Maximum])` |
 | `Partial` inside `DomainMatch` | `DomainMatch` | `(DomainMatch [Any Partial Full])` |
+| `(Record payload)` at the signal root | `Input`, with payload schema `RecordRequest` | `(Help)` shows `(Record { Entry Justification })` as the root possibility |
 
 This is the point designer report 6 missed when it described the
 instance view as "realized arm." The instance view is not the whole type
 and not the arm-as-schema; it is the **expected type name at the data
 position**. The arm remains visible only in the value.
+
+Root signal values have the same rule. `Record` is not the root enum
+name; it is the chosen variant of `Input`. The schema trace can show
+`Input` for the root enum position and still descend into the chosen
+payload's type. For Spirit's record command, the path is:
+
+| value node | expected type | payload type |
+|---|---|---|
+| `(Record ...)` | `Input` | `Record` |
+| record wrapper payload | `Record` | `RecordRequest` |
+| request payload | `RecordRequest` | `{ Entry Justification }` |
+
+The user-facing Help root intentionally re-heads the payload shape as
+`(Record { Entry Justification })`, because Help lists the top-level
+commands. The per-instance schema trace is stricter about the enum
+position: root enum is `Input`; chosen variant is visible in the value.
 
 ## Example 1: Entry
 
@@ -138,6 +155,37 @@ The schema does not show `[Any Partial Full]` here. That is the Help view:
 (DomainMatch [Any Partial Full])
 ```
 
+## Example 4: Root input command
+
+Value:
+
+```nota
+(Record (([(Technology (Software (Programming CodeGeneration)))] Decision [a description] Medium Medium Zero [spirit])
+         ([([a quote] None)] [reasoning])))
+```
+
+Per-instance schema as a root decoder trace:
+
+```schema
+(Input (Record RecordRequest { { Domains Kind Description Certainty Importance Privacy Referents } { Testimony Reasoning } }))
+```
+
+Read that as:
+
+| value position | schema position |
+|---|---|
+| root enum position containing variant `Record` | `Input` |
+| variant payload wrapper | `Record` |
+| wrapper payload type | `RecordRequest` |
+| first struct field payload | `{ Domains Kind Description Certainty Importance Privacy Referents }` |
+| second struct field payload | `{ Testimony Reasoning }` |
+
+If the display wants a compact aligned version, it can elide wrapper
+levels that are already evident from the value, but the typed trace
+should preserve them. The data model should not pretend the root schema
+is `Record`; `Record` is the variant/wrapper on the path from `Input` to
+`RecordRequest`.
+
 ## Data model
 
 Do not model this as a string renderer. Model it as a typed decoder
@@ -184,7 +232,9 @@ The generator already emits the ordinary decoder from schema. Extend that
 emission so decoding can optionally collect the expected type references
 it is already using:
 
-1. Root decoder starts with the root reference, for example `Record`.
+1. Root decoder starts with the root enum reference, for example `Input`.
+   The chosen root variant is read from the value and used to select the
+   payload decoder, but the schema node for that position remains `Input`.
 2. Struct decoder walks fields in declared order. For each field it pushes
    the declared field reference: `Entry`, `Justification`, `Domains`,
    `Kind`, and so on.
@@ -228,6 +278,7 @@ only rendered strings:
 | empty `Domains` | decoded vector length is zero | parent node is `Domains`; payload/container node is `(Vec Domain)` |
 | `Domain::Technology(...)` | decoded variant path is present in value | schema trace is `Domain -> Technology -> Software -> ...` as expected types |
 | `DomainMatch::Partial` | decoded variant is `Partial` | schema node expected type is `DomainMatch`, not `[Any Partial Full]` |
+| `Input::Record(...)` | decoded root variant is `Record` | root schema node expected type is `Input`; payload path includes `Record` then `RecordRequest` |
 
 This gives a clean pilot bar before touching a generated implementation:
 the decoder must return the value and the schema trace together, and the
