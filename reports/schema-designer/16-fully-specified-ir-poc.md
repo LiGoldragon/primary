@@ -454,6 +454,45 @@ becomes a live property under test, and Q2/Q4 turn from open questions into conc
 blockers the moment a projection demands streams/families/imports — forcing the
 enumeration *before* the breaking identity flip, not after.
 
+## Update — resolutions (2026-06-23)
+
+Settled with the psyche (operator owns the Spirit capture of the first two):
+
+- **Name: `SpecifiedSchema` stays.** The concept's public name is settled.
+- **Redundant explicit field roles stay rejected** (`domain_match.DomainMatch`) —
+  an explicit role equal to the derived default carries no information; this is
+  `a5tg`/`ov30` (the dot-prefix signals a *missing* type or a collection, not a
+  restatement of the type name).
+- **Q6 — rehashing authorized.** [I dont mind rehashing — its part of version
+  upgrades.] So the identity basis may flip to `SpecifiedSchema`; the schema
+  content/family hash is inside the no-backcompat zone (already implied by `29pb`
+  / `c9fv`, which is why a fresh record was a guardian Duplicate). This unblocks
+  the breaking step the first slice had deferred.
+- **`-next` rename → operator** (`ctkv`): operator owns the `main`s and will run it.
+
+My designer read on the still-open points (operator sequences; the psyche said
+"whatever you think" on the last two):
+
+- **Q3 — should `SpecifiedPayload.shape` follow transparent newtype chains all the
+  way to the scalar/struct?** Yes *as a derived projection*, no *as canonical IR*.
+  Collapsing `Certainty → Magnitude → …` to the terminal shape **erases the role**
+  — and `Certainty`/`Importance`/`Privacy` all wrap `Magnitude` yet are different
+  roles (operator's own report 3 insisted these boundaries are preserved). So keep
+  the role-preserving one-level `immediate_body` as canonical and identity-bearing;
+  let `shape` be the fully-followed *cache*, derivable and **excluded from the
+  content hash**. This is the concrete instance of Q2 (minimal IR vs baked
+  pre-computation) — resolve it the minimal way.
+- **Migration order — Help first, agreed.** Help is a *pure IR read* (no value, no
+  decode trace), so it is unblocked; instance-schema depends on the unsettled depth
+  rule (Q5), so it should come second once Q5 lands; `schema-rust` (impls, derives,
+  alias preamble) is the heavy one, last. Help → (settle Q5) → instance-schema →
+  schema-rust.
+- **Rename timing — after the first consumer (Help) migration, my lean.** The
+  rename is mechanical and orthogonal; doing one real slice first validates
+  IR-primary before the churn, and the large rename diff would otherwise collide
+  with the active `specified.rs` migration. Operator's call, since they own the
+  mains and are driving.
+
 ## Pointers
 
 - POC: `~/wt/specified-schema-ir-poc` — `cargo test` (9/9), `cargo run --example demo`.
