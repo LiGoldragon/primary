@@ -197,3 +197,85 @@ lowering onto it, and only then delete `SourceReference`/`TypeReference`. If Rus
 lowering or instance-schema cannot read `Reference` cleanly, the one-object claim
 is not yet true — and the provenance criterion is how we tell a missing-fact
 failure from a genuine over-collapse.
+
+## Refinement — the IR *is* the data shape, primary (psyche, 2026-06-23)
+
+The psyche corrected the layering operator and I had assumed. We were treating
+the **semantic / Rust type-graph** model as the canonical IR, with the
+data-shape view (`(Input ({ Entry Justification }))`) as a *reconstruction* over
+it ("follow the reference and inline"). The psyche: [we need to have our own
+representation first. this is the IR im talking about] — the canonical IR **is**
+the data shape (our own representation), built first; the Rust type-graph, with
+its wrapper names, is a **projection from it**, not its source.
+
+**This is already captured intent — the implementation drifted from it.** Gap-check
+found no new record needed: `bkzd` (Decision, High) already says [Define the
+ASSEMBLED schema first: the canonical FINAL data model Rust is generated from …
+strictly and faithfully represents data as stored … never homogeneous containers
+for heterogeneous fields or empty wrapper records], and `6cfr` (Decision,
+VeryHigh) says [inline-declaration hoisting … lives as methods on schema-in-rust
+types used during the lower step, and the emitter does only Rust projection]. The
+psyche's point is `bkzd`/`6cfr` re-emphasised against the `RecordRequest` case;
+the work is to honour them, not record them. (`bkzd` still carries the removed
+"ASSEMBLED schema (Asschema)" wording `6cfr` retired — a stale-wording
+maintenance item, the same Asschema drift report 14 §I flags; reconcile, do not
+duplicate.)
+
+**The code proves the current inversion.** `RecordRequest` is authored as a named
+type (`signal-spirit/schema/signal.schema:55` `Record RecordRequest`, `:143`
+`RecordRequest { Entry Justification }`), but the *value* is
+`(Record (<entry> <justification>))` — the name appears nowhere in the data. The
+per-instance schema must therefore mirror the value: `Record → Input`,
+`(<e> <j>) → { Entry Justification }`; the wrapper name is invisible because it
+is a **type identity**, not a data element. Yet `from_inline_struct`
+(`schema.rs:2525-2543`) hoists an inline body into a `Declaration::private` and
+returns `Self::Plain(name)` — so the IR stores a name-only reference and the
+shape lives in a separate declaration. That is type-graph-primary: the data shape
+has to be *rebuilt* by chasing the reference.
+
+**The corrected IR shape: carry the structural shape at the position; the type
+identity is an attribute, not a replacement.** Instead of `Plain(RecordRequest)`
+plus a separate `RecordRequest { Entry Justification }` declaration, a positional
+payload node holds its fields first-class, with the name carried alongside:
+
+```
+StructPayload { name: Option<Name>, fields: [Entry, Justification] }
+```
+
+The data-shape view reads `fields` directly (no reconstruction); Rust lowering
+reads `name` to emit `struct RecordRequest` (synthesising a name if `None`);
+family/version hashing reads both. One node, **shape primary, name carried**.
+
+This forces a distinction the current code conflates: a reference to a **shared
+named type** (`Domain`, `Entry`, `Magnitude` — navigated by name, never inlined,
+reused across positions) is genuinely a `Reference`/`Plain(name)`; but the
+**structural payload of a single position** (`RecordRequest`'s body) is a
+declaration body that should live inline in the IR. The pipeline hoists the
+latter into the former, which is what loses the data shape. Operator's
+`Reference` enum (report 13) is the right spine for *field types pointing at
+shared types*; it must **not** swallow single-use variant/positional payloads —
+those are shape-primary bodies.
+
+**What this does to the provenance position above (it simplifies it).** Of the
+two facts I said to preserve, one shrinks:
+
+- *Written-vs-resolved naming* (fact 1) **stays** — shared-type imports still
+  need both sides; unchanged.
+- *Inline-vs-named declaration origin* (fact 2) **largely dissolves.** With a
+  shape-primary IR, whether `{ Entry Justification }` was authored inline or in
+  the namespace is **text-round-trip-only** provenance — it changes no
+  data-shape, Help, Rust, or instance projection, only whether canonical
+  `.schema` text re-emits it in the same place. Per the workspace anti-goal
+  (byte-stable-on-regeneration is explicitly *not* a virtue here), we **drop it
+  and canonicalise**. The thing fact 2 was protecting — showing the body, not the
+  wrapper name, in the aligned view — is now *structural* (the IR holds the
+  shape), not a flag. The IR gets simpler: hold the shape; names are attributes;
+  origin-as-flag goes away.
+
+So the two views fall out cleanly from one shape-primary IR: the
+**per-instance / value-aligned** schema always inlines to the data shape (mirror
+the value; type names invisible), and **Help / type-schema** shows shared-type
+names navigably one level at a time (report 8's recursion rule — recurse struct
+bodies, stop at enum/scalar/newtype names). The remaining smaller open choice is
+whether Help reproduces *authored* inline-vs-namespace placement or canonicalises
+it; given no byte-stability, canonicalise — which is what lets origin truly drop.
