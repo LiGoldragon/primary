@@ -220,5 +220,118 @@ the criome `Workflow`-rule extension and the orchestrate workflow-execution
 contract — on a feature branch (`~/wt/.../signal-criome` and
 `~/wt/.../signal-orchestrate`), as the demonstrable shape, with round-trip tests.
 The orchestrate engine (the large piece) follows once the contracts are agreed.
-This is the "build the general substrate first" path; I'll proceed to the contract
-branches unless you want to refine the shapes above first.
+This is the "build the general substrate first" path.
+
+## 8 — Update after psyche input: two planes of trust, composition, operator items
+
+The psyche added the trust model and answered the open items. Operator captured
+the trust model as Spirit `ic4o`; this section folds it into the design.
+
+### 8.1 — The signing model, corrected (`ic4o`)
+
+> Per Spirit `ic4o` (Decision High): [criome guard workflow trust has two planes:
+> a local execution chamber treats co-resident trusted components (criome
+> orchestrate agent introspect mentci) as one collaborating local system for
+> first-substrate workflow receipts; the independent authority layer is the criome
+> quorum layer, where peer nodes run their own LLM workflows and produce their own
+> signatures over the content-addressed object or verdict, with the system
+> observing expected peer co-signatures and surfacing missing ones.]
+
+So §2/§5's "orchestrate signs, criome verifies" is the **multi-node** behavior,
+not the local one. Corrected:
+
+- **Local plane (now):** orchestrate returns a content-addressed workflow
+  **receipt**; criome adopts it *by trust* (co-resident component) with **no
+  inter-component signature verification** — the psyche: *"Right now we're just
+  trusting all the components. We're running in a trusted state… the Creom is
+  essentially the same program."* criome signs the resulting authorized object
+  with its own BLS key, as today. The operation reaches criome as a
+  content-addressed **reference + digest, never full content** (psyche: *"content
+  addressed"*).
+- **Multi-node plane (build toward now):** a second criome (on Prometheus)
+  independently runs its own workflow and signs the same content-addressed object
+  → **double-signatures**; a watcher surfaces objects missing an expected
+  co-signature. This is `pviw`'s cross-party quorum and `7let`'s "1-of-1 local
+  toward multi-machine quorum," promoted to an always-on resilience mechanism.
+
+So the local artifact is a *receipt*, not a cross-verified verdict:
+
+```nota
+WorkflowReceipt {            ;; local plane — trusted, content-addressed, not cross-verified
+  workflow.WorkflowDigest
+  operation.OperationDigest
+  outcome.EvaluationDecision
+  provenance.WorkflowProvenanceDigest  ;; -> orchestrate run log
+}
+
+;; multi-node plane — the co-signature + the watcher's model
+ObjectCoSignature {
+  object.AuthorizedObjectReference
+  signer.Identity                      ;; the peer criome
+  signature.StampedSignatureEnvelope
+}
+CoSignatureExpectation {
+  object.AuthorizedObjectReference
+  ExpectedSigners.(Vector Identity)
+  ObservedSigners.(Vector Identity)    ;; watcher surfaces Expected minus Observed
+}
+```
+
+### 8.2 — Composition is generic from day one
+
+Per operator's recommendation and the psyche's "programmable combinations
+including psyche AND LLM," composition is a generic tree, not a fixed
+`AllOf(LLM, Psyche)`. criome's existing `Rule` `All`/`Any` plus a single
+verdict-composition enum cover it:
+
+```nota
+Composition [
+  (AllOf (Vector Composition))
+  (AnyOf (Vector Composition))
+  (Threshold CompositionThreshold)
+  (Escalate EscalationTarget)
+  (WorkflowStep StepName)
+  (Signature Identity)
+]
+;; "psyche AND LLM" = (AllOf [(WorkflowStep guardian) (Escalate Psyche)])
+```
+
+### 8.3 — Multi-node double-signature flow
+
+```mermaid
+flowchart LR
+  obj["content-addressed object / verdict"]
+  subgraph nodeA["node A (local)"]
+    wA["criome-A: run workflow (orchestrate)"] --> sA["criome-A signs"]
+  end
+  subgraph nodeB["node B (Prometheus)"]
+    wB["criome-B: run its OWN workflow"] --> sB["criome-B signs"]
+  end
+  obj --> wA
+  obj --> wB
+  sA --> dbl["object carries double signature"]
+  sB --> dbl
+  dbl --> watch["watcher: ExpectedSigners minus ObservedSigners"]
+  watch -->|"missing co-signature"| alert["surfaced via introspect / mentci"]
+```
+
+### 8.4 — Operator's five open items — designer position
+
+| # | Item | Resolution |
+|---|---|---|
+| 1 | Full content vs digest at criome | **Content-addressed reference + digest only** (psyche: "content addressed"); criome never holds full content. Full content/provenance lives in orchestrate/introspect. |
+| 2 | What signs the verdict first | **Local plane: no inter-component signing** (trusted chamber); criome signs the authorized object with its own key. **Multi-node: independent criomes double-sign**; per-step agent/model BLS provenance is a later refinement. (`ic4o`) |
+| 3 | Blocking semantics | **Non-blocking first.** Build the substrate with real grants/verdicts, trace the return, then flip spirit to blocking Gating in a later explicit step (psyche: "sounds correct"). |
+| 4 | Composition shape | **Generic `Composition` enum now** (AllOf/AnyOf/Threshold/Escalate) — agree with operator; §8.2. |
+| 5 | Production tag scope | **Tag the whole deployed surface** CriomOS-home uses for spirit (spirit, signal-spirit, meta-signal-spirit, criome, signal-criome, mentci, introspect, triad-runtime pins) — agree with operator. Operator's lane to apply + capture; designer defers. |
+
+### 8.5 — Build order (revised)
+
+The multi-node double-sign + watcher is now part of "build the general substrate"
+(psyche: *"start running a second criome on Prometheus… double signatures… watch
+for when that doesn't happen"*). So: **(a)** criome `Workflow`-rule + receipt +
+composition and **(b)** orchestrate workflow-execution are the local-plane
+contracts (designer feature branches first); **(c)** the second criome +
+double-sign + watcher is the multi-node plane — system-operator/cluster-operator
+deploys a second criome on Prometheus, coordinated with the contract work. I
+proceed to (a)+(b) on feature branches; (c) coordinates with the system lane.
