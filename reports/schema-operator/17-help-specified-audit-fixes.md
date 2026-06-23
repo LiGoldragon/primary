@@ -10,13 +10,14 @@ repos:
 
 | Repo | Commit | Result |
 |---|---:|---|
-| `schema-next` | `dd11b7204561` | `SpecifiedPayload.shape` removed from canonical payload data; shape is derived through `SpecifiedSchema`. |
+| `schema-next` | `d4ea7992d3e8` | `SpecifiedPayload.shape` removed from canonical payload data; `SpecifiedSchema::content_hash()` added with a golden regression proving the derived shape cache is outside identity. |
 | `signal-spirit` | `5a22350c60d1` | Help API collapsed around `HelpEntry` + owned `HelpBody`; public source-noun leak removed. |
+| `signal-spirit` | `6d8687523e66` | Lockfile advanced to the schema-next hash-guard commit. |
 
 The important state: Help now reads `SpecifiedSchema`, projects through
 schema-next's declaration codec, and exposes a smaller signal-spirit-owned Help
-surface. The remaining identity-hash caveat is narrowed to a future regression
-test that can only be exact once a `SpecifiedSchema` identity hash exists.
+surface. The identity-hash caveat is now executable: `SpecifiedSchema` has its
+own content hash and the fixture hash is pinned.
 
 ## Before
 
@@ -150,10 +151,26 @@ Regression coverage added in `schema-next`:
 | `specified_payload_shape_is_derived_not_stored_on_payload` | rkyv recovery preserves immediate role data, and terminal shape recomputes from the recovered schema. |
 | `specified_schema_projects_self_tagged_variants_through_schema_codec` | self-tagged payload compaction still round-trips through the schema declaration codec. |
 
-There is not yet a true content-hash invariance test because
-`SpecifiedSchema::content_hash` does not exist yet. The hard rule for that
-future slice is clear: when identity rebases onto `SpecifiedSchema`, the hash
-input must be the canonical payload data, not derived terminal shape.
+`SpecifiedSchema::content_hash()` now hashes the fully specified schema's
+canonical rkyv bytes under the whole-schema hash domain. The regression pins
+the fixture's hash after exercising a derived terminal shape:
+
+```rust
+assert_eq!(
+    payload.shape(&specified),
+    SpecifiedPayloadShape::Scalar(TypeReference::String)
+);
+
+assert_eq!(
+    specified.content_hash().expect("specified schema hashes").to_hex(),
+    "b1b8b5aad9a636ebf66c9f24999531560f4a291df93c2d38a24ae204fb57d9ab"
+);
+```
+
+If a future change puts a stored derived shape cache back into
+`SpecifiedPayload`, the canonical rkyv bytes change and this test fails. That
+is the missing hard guard the earlier report said had to wait; it does not have
+to wait anymore.
 
 ## M2: owned Help body
 
@@ -302,16 +319,11 @@ Observed green counts from the final signal-spirit pass:
 
 ## Remaining questions
 
-1. When `SpecifiedSchema` identity hashing is implemented, should the hash
-   method live directly on `SpecifiedSchema`, or should identity be a separate
-   projection type such as `SpecifiedSchemaIdentityInput`? I lean separate
-   projection: it makes "derived caches excluded from identity" structurally
-   hard to violate.
-2. Should `HelpBody` expose more typed accessors than `to_schema_text()`? For
+1. Should `HelpBody` expose more typed accessors than `to_schema_text()`? For
    now I kept the public surface narrow. If programmatic Help consumers need
    structure, the next step should be a signal-spirit-owned enum rather than
    exposing schema-next source nouns.
-3. Should we move stream/family Help bodies onto an explicitly specified body
+2. Should we move stream/family Help bodies onto an explicitly specified body
    type next? The current implementation still uses the schema codec path
    correctly, but streams/families remain the last place where the body is
    effectively projected through source-declaration form rather than a richer
