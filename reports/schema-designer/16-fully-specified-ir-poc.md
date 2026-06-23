@@ -19,6 +19,21 @@ psyche's "implement-test-present" is a working order, not durable intent. (One
 pending maintenance item, flagged earlier, awaiting the psyche's nod: `bkzd`
 still carries the retired "ASSEMBLED schema (Asschema)" wording.)
 
+## Convergence — operator landed the same spine in live code
+
+The double-implementation converged in the strongest possible way: while I built
+this POC, operator landed a real `SpecifiedSchema` in the live engine
+(`schema-next/src/specified.rs`, commit `818292c`, today). It carries the POC's
+exact spine — `SpecifiedRoot`, `SpecifiedDeclaration { visibility, name,
+parameters, body, impls }`, `SpecifiedField`, `SpecifiedVariant` — typed,
+rkyv/nota-derived, not hypothetical. The data-model half of the target *exists*.
+The live one is richer (ten axes: `imports`, `resolved_imports`, `input`,
+`output`, `declarations`, `streams`, `families`, `relations`, `impl_blocks`,
+`identity`) where the POC has two. So this POC's job is what a designer prototype
+is for: validate the *thesis* cleanly on a slice, and surface — adversarially —
+exactly where the two designs disagree and what the live one still owes the
+"fully specified" claim. The validation below did that against the live code.
+
 ## The thesis in one picture
 
 Three layers, one direction. The authored file *implies*; the IR *states*; the
@@ -272,45 +287,172 @@ field form.
 
 ## What holds / where it bends
 
-*(Adversarial validation across consumers — Rust emission, identity/hashing,
-instance-schema delimiters, Help/language-server, recursive/shared types,
-desugaring completeness, live-migration distance, IR/SourceMap line — is running;
-this section folds in its synthesis on completion.)*
+Eight adversarial validators read the POC *and* the live `schema-next`, each
+trying to break the design on one concern. Five concerns broke, two held, one
+held-with-caveats — and the breakages are the most useful output of this whole
+exercise.
+
+**What holds (the thesis spine is sound):**
+
+- **The hashed surface is the resolved name-graph; source facts are structurally
+  outside it.** Not a toggle — the live `Schema`/`Declaration` carry *no*
+  span/line/column fields at all (`schema.rs:434,1069`); positions live only in
+  the separate `SchemaSource`. `tests/identity.rs::formatting_differences_do_not_change_any_hash`
+  passes by construction. The cut is real.
+- **Field-role authoring is purely a source fact — the finished half of the
+  thesis.** Live `FieldDeclaration` is `{ name, reference }` (`schema.rs:1740`);
+  whether the role was authored or derived is *unrepresentable* in the semantic
+  schema and lives only in `AuthoredForm`. The POC's identity test exercises
+  exactly this case, which is why it holds.
+- **"Stop at `Named`" is a live invariant — fully-specified never means infinite
+  inlining.** A validator lowered the real recursive `Domain` tree: it flattened
+  into seven separate named enum declarations, every variant `Plain(Name)` to a
+  sibling, cycles terminated by the live `ClosureWalk` visited-set
+  (`identity.rs:301`). The recursive/shared-type concern held outright.
+
+**Where it bends (ranked; these are real and mostly about what the POC and the
+"fully specified" claim still owe):**
+
+1. **The inline-vs-named identity contradiction — the most consequential.** "Inline
+   is pure sugar that desugars to the *same* IR" is **false today in both systems**:
+   `from_inline_struct` stamps the hoisted body `Declaration::private` while a named
+   top-level type is `public`, and `visibility` is in the rkyv bytes
+   (`schema.rs:1070`) — so inline-payload vs named-reference of an *identical body*
+   produce different family hashes. My own POC test asserts `Private` for the inline
+   case. The POC fixes the conflation in *type design* (Visibility is its own axis)
+   but its `desugar` still stamps `Private`, so the behaviour survives. This is
+   Q1 — and it subsumes the wrapper-visibility leak report 15 named. (Framing
+   correction the validators force: there is no engine-*minted* nameless wrapper —
+   inline syntax is name-first `(Name { … })`, so the name is always authored and
+   the hoist only relocates the declaration. The "synthesised wrapper name"
+   question has no live case *unless* a nameless-inline form is later allowed.)
+2. **The reference vocabulary and declaration shape are a strict subset of what
+   emission needs.** The POC's 5-variant `SpecifiedReference` drops three live forms
+   the emitter *transforms*: `ScopeOf` (name transform `#name → #nameScope`,
+   `lib.rs:1912`), `Application{head,arguments}` (generics, `#head<#args>`), and
+   `FixedBytes(width)`. And the POC drops generic *parameters* entirely, which the
+   live `SpecifiedDeclaration.parameters` (`specified.rs:232`) renders into the type
+   header. Gated by Q3.
+3. **Scalar lowering — fixed.** The POC originally inlined concrete std types
+   (`Integer→i64`, a signedness error vs the live `u64`; `Path→PathBuf` vs the live
+   `String` alias). Corrected: scalars stay *named tokens* over a generated alias
+   preamble, matching the live engine (codec impls attach to the named token).
+4. **The POC's instance-schema struct branch is value-*independent*.** It maps
+   `position_name()` over the *IR* fields and never reads the value, so three
+   different values all render `(Input ({ Entry Justification }))` — it does not
+   actually prove value-alignment *for structs* (it proves it for the variant
+   selection only). The live `aligned()` walks the decode *trace* and is
+   value-shaped throughout — and is itself internally asymmetric (depth-1 standalone
+   vs depth-2 through a root variant), contradicting its own doc. This is Q5, and
+   the projection must bind to the decode trace, not the IR alone.
+5. **The fully-specified value is materially larger and more relational than two
+   axes.** Live has ten axes; the POC has two. Streams, families, stream relations
+   (`opens`/`belongs` on variants — a payload shape `Unit|Carried` cannot hold),
+   impl/trait catalogs, and imports have no home in the POC. And the newtype-vs-struct
+   collapse is genuinely *lossy*: a one-field struct always becomes a `Newtype`
+   (`schema.rs:2532`), erasing authored struct-ness. This is Q2 — "everything is a
+   projection of one value" must enumerate the full node-kind list.
+6. **The import alias breaks the IR/SourceMap line as the POC draws it.** For
+   imports the local alias is *semantic* in the live IR — references are stored
+   *under the alias* and the alias is *in* the `FamilyClosure` (`identity.rs:121`),
+   so two schemas importing the same `crate:module:Type` under different aliases get
+   *different* family hashes. My designer position (alias → SourceMap, resolve to
+   canonical) is the thesis-consistent fix but contradicts live behaviour. Q4.
+7. **Every location-bearing language-server feature is unfounded — there are no
+   spans anywhere.** The POC hardcodes `{0,0}`; the live engine has *zero*
+   spans/offsets in all of `src/`. Diagnostics-with-squiggles, go-to-definition, and
+   find-references each need a byte range neither captures, plus a referent back-edge
+   the IR lacks. The schema-daemon-as-language-server is a *later* slice; threading
+   spans through `Document → SchemaSource → Schema` reaches into nota-next's parser,
+   and the SourceMap should key on `SymbolPath`, not mint-ordered `NodeIdentifier`
+   (which shifts on any edit above a node).
+
+## Honesty ledger — what the POC does and does not prove
+
+It **proves**: source→IR desugaring of three sugar classes; the IR/SourceMap split
+(via `help()` taking no SourceMap and the identity test); identity over the IR
+alone; the wrapper name living only in the Rust projection; "stop at Named." It is
+**silent or wrong on**: the other ~80% of real Rust emission (impls, derive
+clusters, the alias preamble, route enums); streams/families/relations/imports/
+generics; value-driven struct alignment; spans and everything downstream of them.
+It validated the *thesis*, not the *engine* — which is exactly the prototype's job
+under the double-implementation discipline.
 
 ## Open questions
 
-These are the design choices the POC surfaces and does **not** settle:
+The validation sharpened these into seven design decisions, each with its
+trade-off. They are the real content of the next conversation.
 
-1. **Instance-schema delimiter + depth.** The POC renders `(Input ({ Entry
-   Justification }))` (carried-payload parens + struct braces, one level). Your
-   earlier deeper example was `(Input ({ Domains Kind … } { Testimony Reasoning
-   }))` (expanded through `Entry`/`Justification`). Is the rule one-level, or
-   all-the-way-down through structs (stopping at enums/scalars/newtypes per report
-   8)? And does the carried payload always keep its value-group parens?
-2. **Is a synthesised wrapper name identity-bearing?** If an inline payload is
-   hoisted to a synthesised name, do two schemas that differ only inline-vs-named
-   get the same family hash? My lean: the synthesised name is *not* identity-bearing
-   (exclude it, like formatting) — but this ripples into `c9fv` schema-address
-   migration and should be decided deliberately.
-3. **Where exactly does the IR/SourceMap line fall for imports?** The designer
-   position is that a written alias is a source fact → SourceMap, the resolved
-   owner is semantic → IR. Is there ever a case where the IR *needs* the local
-   alias to disambiguate two imports in one scope?
-4. **The new name for the concept.** "Assembled schema" is the right idea but the
-   term is burned (`6cfr` retired the Asschema artifact). `SpecifiedSchema` is the
-   POC's working name; `Schema` (the canonical one), `SettledSchema`, or
-   `ExplicitSchema` are candidates. Worth choosing deliberately.
-5. **The `-next` rename** (`ctkv`): ready to dispatch on your go —
-   `nota-next → nota`, `schema-next → schema`, `schema-rust-next → schema-rust`.
-   The audit mapped the blast radius (92 `@generated` headers + `build.rs`/
-   `migration.rs` literals beyond the repo renames and Cargo repins). Note: this
-   touches operator-owned `main`s, so it is an operator-lane execution I can
-   scope but should coordinate, not run unilaterally.
+- **Q1 — Is inline-vs-named identity-equivalent?** If yes, the hoisted inline
+  declaration must not be `Private` (or visibility must leave the family-closure
+  bytes). If no, the "inline is pure sugar → same IR" claim is retracted. The
+  current design straddles both. *Trade-off: identity-equivalence buys "same
+  meaning, same hash" at the cost of making inline genuinely non-encapsulating.*
+- **Q2 — What is the full top-level node-kind list of the IR value?** Are streams,
+  families, relations, and impl_blocks part of the fully-specified *value* (as live
+  `specified.rs` makes them, included in identity) or projections? *Trade-off: a
+  richer value is the honest target but undercuts the "IR is minimal" rhetoric.*
+- **Q3 — Does the IR carry generics, or monomorphize them away?** Live carries them
+  (`parameters`, `Application`, `ScopeOf`). "Fully specified" arguably implies
+  monomorphization. *Trade-off: carrying keeps one declaration per family;
+  monomorphizing makes the IR truly closed but multiplies declarations.*
+- **Q4 — Import reference: resolved canonical target (alias → SourceMap) or alias as
+  head?** The thesis demands resolved-canonical; the live code stores *and hashes*
+  the alias, so the same import under two aliases gets two family hashes.
+  *Trade-off: resolved-canonical makes identity alias-independent but changes
+  generated `use` aliases; alias-as-head leaks the import environment into identity.*
+- **Q5 — Canonical depth rule for instance-schema `aligned`?** Strict depth-1 ("one
+  token per value position" — then the live two-level-at-root expansion is wrong),
+  or "expand the root payload's struct one extra level" (then say why the root is
+  special). Live ships the second while its doc claims the first. Also: are
+  `aligned` and `expanded` both endorsed, or is one canonical?
+- **Q6 — Is the IR the identity basis, and is rebasing acceptable?** Flipping
+  identity from `Schema` to canonicalized `SpecifiedSchema` changes *every* existing
+  Spirit content/family hash. The no-backcompat rule says yes — but Spirit identity
+  may be the "explicitly-declared boundary" that is exempt. **This is the gating
+  decision**: until answered, `SpecifiedSchema` stays the downstream leaf it is
+  today. (Sub-decision: should the whole-schema hash canonicalize namespace *order*
+  the way the family closure already does? Today it does not.)
+- **Q7 — Does the version string belong in the whole-schema hash?** It makes that
+  hash a *release* address, not a content address (a re-tag re-addresses an
+  unchanged schema). Should version-control consume *family* hashes for content-dedup
+  and the whole-schema hash only for release pinning?
+
+Two more that are mine, not the validators':
+
+- **The concept's name.** "Assembled schema" is the right idea, burned term
+  (`6cfr`). Working name `SpecifiedSchema`; `Schema` (the canonical one),
+  `SettledSchema`, `ExplicitSchema` are candidates.
+- **The `-next` rename** (`ctkv`): ready on your go — `nota-next → nota`,
+  `schema-next → schema`, `schema-rust-next → schema-rust`. It touches
+  operator-owned `main`s, so it is an operator-lane execution I can scope but
+  should coordinate, not run unilaterally — your call whether I hand it to operator
+  or scope-and-dispatch a subagent operator then lands.
 
 ## First implementation slice
 
-*(Folded in from the validation synthesis — the smallest move that shifts the live
-`schema-next` toward fully-specified-IR-primary.)*
+The smallest move that shifts `schema-next` from "`SpecifiedSchema` exists as a
+downstream leaf" to "`SpecifiedSchema` is IR-primary" — additive, non-breaking,
+and it forces the open questions to become concrete blockers in the right order:
+
+1. **Repoint ONE projection at `SpecifiedSchema`** — the instance-schema projection
+   (smallest surface). This immediately exposes whether the value-aligned walk can
+   be value-driven off the IR (Breakage 4).
+2. **Add a `SourceMap` sibling** produced alongside `to_schema`, initially recording
+   only the two facts the POC proves (`InlinePayload` vs `NamespaceDeclaration`,
+   `DerivedFieldRole` vs `ExplicitFieldRole`). Spans stay placeholders — this slice
+   does not attempt the parser threading (deferred, Breakage 7).
+3. **Do NOT flip the identity basis yet.** That is the one genuinely breaking step
+   (Q6) and needs explicit psyche sign-off. Leave identity on `Schema`.
+
+Deliberately *not* in this slice: un-baking the eager hoist. It is baked at two
+lockstep sites (`schema.rs:2525` and `source.rs:170`, the engine comment requires
+they stay in lockstep), so un-baking changes the canonical lowering — highest blast
+radius. The additive slice defers it. What it unblocks: once one real projection
+reads the IR, "everything is a projection of one value" stops being POC rhetoric and
+becomes a live property under test, and Q2/Q4 turn from open questions into concrete
+blockers the moment a projection demands streams/families/imports — forcing the
+enumeration *before* the breaking identity flip, not after.
 
 ## Pointers
 
