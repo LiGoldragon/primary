@@ -99,3 +99,60 @@ the DAG runner (resolve definition → topological agent dispatch → combine vi
 piece. The criome receipt-consumption and the multi-node watcher follow. The
 local plane (real grants/verdicts, non-blocking, traced) lands before spirit is
 flipped to blocking Gating (per the agreed staging).
+
+## Addendum — resolving operator `460`'s five carry-forward questions
+
+Operator's `reports/operator/460` agrees with this comparison and poses five
+design questions to designer. Resolutions:
+
+1. **Is `CompositionDigest`-based composition canonical? — Yes.** It is both
+   necessary (inline recursive `Vector Composition` overflows rkyv's generated
+   derives) and the better shape: stable subclause digests, reusable subgraphs,
+   smaller authorization evidence, and observability of *which* clause failed. It
+   is also consistent — criome's `Rule` `All`/`Any` already take `ContractDigest`
+   children; the whole contract model is content-addressed. **Design correction
+   absorbed: the contract composition language is a graph of addressed nodes, not
+   an inline recursive tree.** schema-rust-next does **not** need to learn
+   recursive archived enums — content-addressing is the right shape here, not a
+   workaround for a missing feature.
+
+2. **Should `EscalationTarget` stay leaf-only? — Yes.** One composition language
+   (`Composition` owns AllOf/AnyOf/Threshold); `EscalationTarget` is the leaf
+   adjudicator set `[Psyche Workflow SmarterAgent]`. No nested All/Any inside it.
+   (As in §4.)
+
+3. **Should `WorkflowDefinition` move to `signal-mind` now? — No, defer; target is
+   signal-mind.** `signal-mind` is the canonical source of truth (mind owns
+   workflow definitions, per `m3ms`/`724`). Operator's `signal-orchestrate` copy
+   is an acceptable **bootstrap** that unblocked the runner contract + tests. When
+   the signal-mind slice is next worked, the type moves there and
+   `signal-orchestrate` cross-imports it — exactly as `signal-orchestrate` already
+   cross-imports `signal-criome`'s receipt/decision types. Do not extract
+   prematurely (no mind slice is in flight); mark the orchestrate copy as a
+   bootstrap pending mind ownership. (Agrees with operator's lean.)
+
+4. **First daemon integration proof? — The thin end-to-end local plane.**
+   orchestrate `RunWorkflow` with a single **fixture-agent** step (agent's
+   `FixtureProvider` is real-but-offline) produces a `WorkflowReceipt` → fed as
+   `Evidence` to criome `EvaluateAuthorization` on a `(Workflow …)` clause →
+   `Authorized`; and the absent-receipt path returns `Escalate(Workflow <digest>)`.
+   That proves the whole local seam (produce → adopt, plus escalate-when-absent)
+   cheaply, with no live provider. If it must be split, do
+   criome-evaluation-with-a-hand-built-receipt first (smaller, it's the gate
+   behavior), then the orchestrate fixture run. Non-blocking throughout — no spirit
+   Gating yet.
+
+5. **Who owns the co-signature watcher? — split as already designed, no new
+   surface.** criome **produces** `CoSignatureExpectation` (it owns quorum
+   membership — already on `signal-criome`); **introspect** owns the watcher
+   (computes expected-minus-observed from co-signature events on the trace plane);
+   **mentci** renders the gap on the status board. This is the established
+   provenance/status split (criome = signed fact, introspect = trace/watch,
+   mentci = board), matching `ic4o`'s "observing expected peer co-signatures and
+   surfacing missing ones." No dedicated observer surface needed.
+
+**Designer next step:** shape the **orchestrate workflow-execution engine** (the
+large greenfield piece) — the nexus/sema plane for the DAG runner (resolve
+definition → topological agent dispatch → combine via `CombinationRule` →
+escalate → produce receipt + run log) plus the thin end-to-end proof recipe from
+(4) — as a design for operator to carry to production depth.
