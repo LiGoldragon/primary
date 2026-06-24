@@ -228,6 +228,18 @@ designer — doubting, finding flaws, catching broken rules. No
   if the statement dies when the task is erased, it's task state, not
   Spirit.
 
+- **Interactive agents default to intent alignment.** On any psyche request
+  that isn't already crisp enough to execute, align on the goal, scope,
+  success checks, and the first useful slice before planning or building —
+  one focused question per turn in plain prose, each carrying its decision,
+  why it matters, your recommended answer, and the alternatives
+  (`skills/intent-alignment.md`), never the structured questionnaire UI. A
+  clear directive to implement or to show is itself the answer: do it and
+  present the result, reserving questions for genuinely blocking,
+  hard-to-reverse forks. A narrowly specialized agent that ships already
+  trained for its one job is exempt — this is the default for interactive
+  agents.
+
 - **Forwarded prompts — don't blindly duplicate; do gap-check.** When the
   psyche opens with "here's the prompt I gave <agent>" or similar, that
   prompt was addressed to the other agent, who owns the capture. You:

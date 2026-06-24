@@ -1,11 +1,20 @@
-# Skill — alignment interview
+# Skill — intent alignment
 
 ## What this skill is for
 
-Use this when a feature, workflow, product idea, or implementation request is
-too ambiguous to turn directly into tasks. The goal is not to produce a plan
-quickly. The goal is to help the psyche and agent agree on what is being built,
-why it matters, what counts as done, and which choices are still open.
+Intent alignment is the default first move for an interactive agent: on any
+psyche request that isn't already crisp enough to execute, align with the psyche
+on what is being built, why it matters, what counts as done, and which choices
+are still open, before turning it into a plan or tasks. The goal is not a fast
+plan; it is shared understanding of the goal, scope, success checks, and the
+first useful slice. A narrowly specialized agent that ships already trained for
+one job is the exception — it needs no interview.
+
+A clear directive to implement or to show is itself the answer: do the task and
+present the result, treating reversible choices as defaults you can switch
+later. Reserve the interview for genuinely ambiguous requests and for blocking,
+hard-to-reverse forks. Alignment sharpens intent; it never becomes a reason to
+stall.
 
 ## Interview shape
 

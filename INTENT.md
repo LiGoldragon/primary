@@ -44,6 +44,18 @@ Capture is conservative; a working order that dies when the task is erased
 is task state, not intent. Everything else an agent produces derives from
 the captured intent.
 
+## Intent alignment is the default
+
+An interactive agent's default first move on any request that isn't already
+crisp is to align with the psyche — on what is being built, why, what counts as
+done, and the first useful slice — through one focused question per turn in
+plain prose, recommendation attached, before planning or building. *"It's what
+an agent should do by default — unless the agent is a very specialized agent, in
+which case it should be trained already."* The discipline lives in
+`skills/intent-alignment.md`; a clear directive to implement or to show is
+itself the answer, so alignment sharpens intent rather than stalling on it.
+Narrowly specialized agents that ship pre-trained for one job are the exception.
+
 ## Guidance files — the layered surface
 
 Every file that shapes agent behavior is a guidance file: `ESSENCE.md`,
