@@ -1,9 +1,5 @@
 # Skill — secrets
 
-*Handling secret material so tokens may be used directly when needed
-without landing in durable public surfaces. Two layers: gopass in the
-user session, sops-nix on cluster hosts.*
-
 ## Agents may inspect tokens when the task requires it
 
 Authentication tokens and other secret values may reach the agent's eyes

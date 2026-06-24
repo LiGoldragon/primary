@@ -1,7 +1,5 @@
 # Skill — push, not pull
 
-*How to act on the rule that polling is forbidden: recognise polling, design a subscription, and escalate when the producer can't push.*
-
 The principle lives in `ESSENCE.md` §"Polling is forbidden": **producers push, consumers subscribe; no poll loops.** This skill assumes that rule and describes how to apply it. If you reach for a polling loop, stop and apply the steps below.
 
 ## Designing a producer-consumer interaction

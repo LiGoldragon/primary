@@ -1,7 +1,5 @@
 # Skill — skill editor
 
-*How skill files are written, named, located, and scoped.*
-
 ## What a skill file is
 
 A skill file is tight, self-contained teaching: what an agent needs
@@ -58,13 +56,13 @@ lowercase-with-hyphens.
 
 Markdown, present tense throughout. Structure comes from `##`/`###`
 headings only — never `---` horizontal rules (allowed solely inside a
-fenced code block illustrating markdown). Keep the opening heading and
-one-line purpose; they mark the file as a skill and match its name:
+fenced code block illustrating markdown). The opening heading marks the
+file as a skill and matches its name; the skill's one-line description
+lives in `skills.nota`, not in the file, so a skill body carries no
+purpose tagline:
 
 ```markdown
 # Skill — <name>
-
-*<one-line purpose>*
 
 ## <load-bearing sections>
 
@@ -74,6 +72,19 @@ one-line purpose; they mark the file as a skill and match its name:
 
 <at most 2-3 genuinely-useful sibling-skill pointers, by filename>
 ```
+
+## The index entry is the description
+
+Every skill has one entry in `skills/skills.nota`, the typed index. That
+entry — `(Kind name path Tier [Description])` — is the single source of
+the skill's identity and description; the skill file repeats none of it
+(no YAML frontmatter, no purpose tagline). Keep the data in one place.
+
+Write the `[Description]` as **purpose plus trigger, in at most two
+sentences, framed positively**: what decision or task the skill guides,
+and when to reach for it — the line a browsing agent reads to decide
+whether to open the file, not a summary of the contents and not a bare
+label.
 
 ## Cross-references — minimize indirection
 

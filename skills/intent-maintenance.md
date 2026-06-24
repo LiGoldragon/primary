@@ -1,10 +1,5 @@
 # Skill — intent maintenance
 
-*Sweep the Spirit intent log: detect supersession, verify entries still
-apply, remove safely. Keeps the intent substrate from rotting as the
-workspace and the psyche's positions evolve. Companion to
-`skills/intent-log.md` (recording).*
-
 ## Clarification is an edit, not another record
 
 A psyche clarification means the existing record or manifested guidance

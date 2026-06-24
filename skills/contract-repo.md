@@ -1,10 +1,5 @@
 # Skill — contract repos
 
-*The wire contract between Rust components lives in one dedicated crate of
-typed records, not duplicated across consumers. Every component on the same
-fabric depends on the same contract crate; rkyv archives one produces are
-readable by every other.*
-
 ## When to reach for it
 
 When two or more Rust components **signal** each other over a wire — Unix

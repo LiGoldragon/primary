@@ -1,9 +1,5 @@
 # Skill — keep working
 
-*Injected information mid-task is not a stop signal. Keep working.
-Only an explicit instruction to stop — or a redirect — is an
-interruption.*
-
 ## The rule
 
 The psyche often adds a short piece of information while an agent is

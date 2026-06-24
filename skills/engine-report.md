@@ -1,8 +1,5 @@
 # Skill — engine report
 
-*A repeatable situation report for a code engine: size, schema, generated
-surfaces, interfaces, runtime paths, witnesses, and tooling state.*
-
 ## What this skill is for
 
 Use it when the psyche asks for an "engine situation", codebase situation,

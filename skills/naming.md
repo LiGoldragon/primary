@@ -1,8 +1,5 @@
 # Skill — naming (full English words; no redundant ancestry)
 
-*Spell every identifier as a full English word; names don't carry
-their full ancestry — the surrounding namespace already supplies that.*
-
 ## Two rules, applied together
 
 Apply this every time you name a type, function, field, variable,

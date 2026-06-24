@@ -1,7 +1,5 @@
 # Skill — versioning
 
-*Keep component versions truthful when code behavior changes.*
-
 Apply whenever you change code, generated code, wire contracts,
 storage schemas, package metadata, deployment wrappers, or any logic
 that affects a running component. A binary still reporting `0.3.0`

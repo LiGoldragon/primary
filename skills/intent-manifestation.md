@@ -1,8 +1,5 @@
 # Skill — intent manifestation
 
-*Walk the intent log, find recorded intent not yet expressed in the
-right guidance file, and manifest it there.*
-
 Spirit captures raw psyche statements; guidance files are how those
 statements actually shape agent behavior. Manifestation is the
 bridge: capture is necessary but not sufficient — intent only shapes

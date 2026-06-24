@@ -1,8 +1,5 @@
 # Skill — beads
 
-*When to track work as a BEADS task, when to make it a discipline
-instead, when to close.*
-
 BEADS is the workspace's short-tracked-item store, exposed through the
 `bd` CLI. It is **transitional**: the destination is Persona's typed
 messaging fabric. Don't deepen the BEADS investment and don't bridge to

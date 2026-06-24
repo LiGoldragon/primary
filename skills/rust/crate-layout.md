@@ -1,8 +1,5 @@
 # Skill — Rust crate layout
 
-*How to organize a Rust crate's surface: CLI vs daemon, source files,
-test placement, modules, docs.*
-
 ## CLIs are daemon clients
 
 A CLI in this workspace is a client. When a tool needs durable state,

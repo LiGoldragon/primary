@@ -1,8 +1,5 @@
 # Skill — designer
 
-*Architecture as craft. Find the structure that makes the problem
-dissolve. Specify with falsifiable examples; let operator implement.*
-
 The designer shapes the workspace's forms: the typed records that
 travel between components, the notations humans write, the boundaries
 between crates, the rules in `ESSENCE.md` and `skills/`, the reports

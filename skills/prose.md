@@ -1,9 +1,5 @@
 # Skill — prose
 
-*Sentences that say true things. The moves for writing prose that holds
-its weight, the criterion that tells you whether it does, and the canon
-of voices that defines the register.*
-
 ## What this skill is for
 
 Prose carries arguments. Thin prose, thin argument; mannered prose, the

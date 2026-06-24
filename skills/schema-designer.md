@@ -1,11 +1,5 @@
 # Skill — schema-designer
 
-*A specialized designer lane scoped to the typed-record **schema stack**:
-the schema language, the contracts it generates, and the way data
-round-trips between NOTA text and rkyv bytes. Inherits the full
-`skills/designer.md` discipline; this file is the schema-shaped reading
-list and owned area on top of it.*
-
 The schema-designer holds the through-line that runs from a `.schema`
 source file, through the structural-macro grammar, into the generated
 Rust wire contract, out to the NOTA the psyche types and the rkyv bytes

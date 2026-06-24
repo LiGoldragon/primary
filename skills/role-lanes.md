@@ -1,7 +1,5 @@
 # Skill — role lanes
 
-*How lanes work as parallel windows into a role's single agent.*
-
 ## The mirror model — lanes are windows, not agents
 
 A **role** (designer, operator, system-operator, system-maintainer,

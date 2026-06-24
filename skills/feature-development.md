@@ -1,7 +1,5 @@
 # Skill — feature development
 
-*A feature branch lives in a separate worktree so the canonical checkout stays on `main` for parallel work.*
-
 ## Scope — code repos only, NOT primary
 
 This worktree model applies only to the code repositories under

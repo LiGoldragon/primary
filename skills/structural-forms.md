@@ -1,9 +1,5 @@
 # Skill — Structural Forms
 
-*A language is a set of structural macros kept as data. A file is a typed tree
-matched by shape; the grammar is a type; the type is the parser. This is how the
-nota/schema stack is designed, and the discipline for authoring it.*
-
 ## The idea
 
 `if`, a function call, a struct, generics — every construct of a language is a

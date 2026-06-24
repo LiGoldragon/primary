@@ -1,7 +1,5 @@
 # Skill — beauty as the criterion
 
-*Beauty is the test of correctness; ugliness is the diagnostic reading.*
-
 ## The rule
 
 If it isn't beautiful, it isn't done. Beauty is a gate alongside

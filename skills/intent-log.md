@@ -1,9 +1,5 @@
 # Skill — intent log
 
-*Record what the psyche explicitly said, with kind, certainty, importance,
-privacy, and a Spirit identifier, so future agents can query what the author wanted
-versus what some agent decided.*
-
 ## What this skill is for
 
 Only psyche statements are recorded. The psyche is the human author —

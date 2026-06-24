@@ -1,10 +1,5 @@
 # Skill — subscription lifecycle
 
-*The shape every push-stream subscription takes on a Signal channel:
-typed open, typed event stream, typed close, final acknowledgement.
-The producer pushes; the consumer subscribes; the close is a real
-typed request, not a socket hang-up.*
-
 Use this skill when designing or implementing a typed push-subscription
 on a Signal channel — a long-lived flow where a consumer registers once
 and the producer pushes typed events until the consumer closes. It is

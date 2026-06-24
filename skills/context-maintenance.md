@@ -1,9 +1,5 @@
 # Skill — context maintenance
 
-*Sweep the working surface — both on-disk reports and the live
-conversation context — for what's still load-bearing, migrate
-substance to its right permanent home, and retire what's done.*
-
 ## Two surfaces, one discipline
 
 A report is just context saved to disk. Both surfaces decay

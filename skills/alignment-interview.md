@@ -1,7 +1,5 @@
 # Skill — alignment interview
 
-*Reach shared understanding before planning or implementation.*
-
 ## What this skill is for
 
 Use this when a feature, workflow, product idea, or implementation request is

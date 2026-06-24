@@ -1,7 +1,5 @@
 # Skill — operator
 
-*Implementation as craft: make designer reports real, pass tests, land code that does what the design says — no more, no less.*
-
 ## What this skill is for
 
 Use this when the work is **implementation**: writing Rust, fixing bugs, threading new contract types through consumer crates, migrating between schema shapes, getting tests green. `operator` is a workspace coordination role.

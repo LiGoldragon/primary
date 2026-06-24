@@ -1,7 +1,5 @@
 # Skill — architecture editor
 
-*How `ARCHITECTURE.md` files are named, scoped, and maintained.*
-
 ## What an `ARCHITECTURE.md` is
 
 It describes **what the system IS** at a specific scope — the canonical

@@ -1,7 +1,5 @@
 # Skill — NOTA design
 
-*How to design NOTA records well: positional, typed, terse, grep-able. Every meaningful distinction lives in the data; no token is spent on what the context already gives.*
-
 Read this before designing a new NOTA file or schema. Designed badly, NOTA becomes JSON with extra steps — verbose, with data hiding in comments or restated as identical wrappers around every record. Designed well, the same data takes a third of the tokens and the structure itself carries category information that would otherwise be a side channel.
 
 ## Rule 1 — If there's no variant, it's a struct (no tag)

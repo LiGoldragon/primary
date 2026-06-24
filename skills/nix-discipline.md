@@ -1,8 +1,5 @@
 # Skill — nix discipline
 
-*Flake-input forms, pinning, store-path hygiene, and when to reach
-for `nix run` vs out-of-Nix installs.*
-
 This is the *discipline* — which input form to pick, which command
 shape, which test runner, and why. The CLI reference lives in lore
 (`nix/basic-usage.md`, `nix/flakes.md`, `rust/nix-packaging.md`).

@@ -1,7 +1,5 @@
 # Skill — engine analysis
 
-*Inspect a multi-component engine from its code, contracts, runtime topology, state, and trust boundaries, then write a reusable compendium.*
-
 ## What this is for
 
 Use when asked to explain how an engine currently works: what talks to what, which paths are wired in code, which are only architectural, and what state each component owns.

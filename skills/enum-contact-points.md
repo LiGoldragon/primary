@@ -1,7 +1,5 @@
 # Skill — enum contact points
 
-*Two enums meeting under `match` form a typed relationship — name it.*
-
 ## When this applies
 
 Use when writing the load-bearing logic of an engine, handler,

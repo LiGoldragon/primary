@@ -1,10 +1,5 @@
 # Skill — reporting
 
-*Where work-substance goes (reports vs chat), how reports are
-named, structured, and retired. Reports are working surfaces —
-tight, not verbose; durable substance belongs in skills and
-architecture, not sprawling report prose.*
-
 ## Reports vs chat
 
 The two media have different audiences:

@@ -1,9 +1,5 @@
 # Skill — Rust methods and types
 
-*Methods on types, not free functions. Domain values are typed.
-Boundaries take and return one object. Don't hide typification in
-strings.*
-
 This is the Rust enforcement of the cross-language rules in
 `skills/abstractions.md`, `skills/naming.md`, and `skills/beauty.md`.
 

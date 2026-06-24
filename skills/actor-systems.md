@@ -1,9 +1,5 @@
 # Skill — actor systems
 
-*Actors are a thinking discipline: every logical plane gets a named
-owner, a typed mailbox, supervision, and tests that prove the path
-was used.*
-
 ## What this skill is for
 
 Use this skill whenever a component is a daemon, service, runtime,

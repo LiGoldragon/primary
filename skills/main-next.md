@@ -1,7 +1,5 @@
 # Skill — main and next branches
 
-*Every code repository under `/git/github.com/LiGoldragon/` keeps two long-lived lines: `main` (the integrated line the operator owns) and `next` (the development line the designer works on).*
-
 ## Scope — code repos only, NOT primary
 
 This model applies only to the code repositories under `/git/github.com/LiGoldragon/` (`horizon-rs`, `lojix`, `CriomOS`, the component triads, and so on). It does NOT apply to **primary**, the workspace coordination repository at `/home/li/primary`. On primary everyone works on `main` directly — edit, commit, push straight to `main`, with no `next` and no per-feature branches. See `skills/jj.md` §"Primary is always main — no branches, ever".

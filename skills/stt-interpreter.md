@@ -1,7 +1,5 @@
 # Skill — speech-to-text interpreter
 
-*Decoding STT-transcribed prompts that contain workspace-specific words.*
-
 ## What this skill is for
 
 The psyche often dictates prompts through a speech-to-text tool that

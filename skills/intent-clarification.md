@@ -1,8 +1,5 @@
 # Skill — intent clarification
 
-*When intent on a question is unclear, absent, or contradicted, ask
-the psyche. Don't infer; don't compose new intent from old.*
-
 The intent layer — the deployed Spirit store, per-repo `INTENT.md`,
 and `ESSENCE.md` — is the source of authoritative direction. The
 cost of one question is bounded; building on invented intent

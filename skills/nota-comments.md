@@ -1,9 +1,5 @@
 # Skill — NOTA-as-comments
 
-*When a code comment names why an edit was made, write it as a positional
-NOTA `(Why …)` record so the rationale becomes a queryable typed signal,
-not a free-text blob.*
-
 ## The frame
 
 A signal record can be encoded as bytes (rkyv), as a NOTA string, or as

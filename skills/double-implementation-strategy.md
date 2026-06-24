@@ -1,12 +1,5 @@
 # Skill — double-implementation strategy
 
-*Two parallel implementation tracks for a major architectural break, both on
-BRANCHES of the existing repo: operator amalgamates the best of prior prototypes
-toward `main`; designer iterates a forward-looking design on a `next` / feature
-branch. The tracks are COMPARED to drive convergence. Comparison is the
-integration mechanism; the failure mode it mitigates is single-track inference
-drift — one agent working alone drifting via unchecked inference.*
-
 ## Both tracks are branches — never new repos
 
 A major architectural break is done on branches, not by spinning up a new

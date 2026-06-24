@@ -1,7 +1,5 @@
 # Skill — repository management
 
-*Creating and maintaining GitHub repositories from this workspace.*
-
 Use this when a local repo needs a GitHub remote, repository metadata changes,
 basic GitHub issue/PR operations through `gh`, or finding / fetching / updating
 local clones via `ghq`.

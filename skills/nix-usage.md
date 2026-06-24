@@ -1,7 +1,5 @@
 # Skill — Nix usage
 
-*Daily Nix command shapes, builder checks, and store-path hygiene.*
-
 Use this skill when running Nix commands: inspecting daemon configuration,
 forcing a build through the remote builder, capturing outputs, or deciding which
 command surface counts as evidence.

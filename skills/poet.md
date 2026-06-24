@@ -1,7 +1,5 @@
 # Skill — poet
 
-*Writing as craft: making sentences that say true things beautifully, where prose is the load-bearing surface.*
-
 ## When this applies
 
 The work is **writing**: drafting essays, refining prose, applying citation conventions, shaping the language layer of a document where literary quality is the load-bearing concern.

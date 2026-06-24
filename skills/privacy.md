@@ -1,7 +1,5 @@
 # Skill — privacy
 
-*Private personal-affairs work stays out of public workspace surfaces.*
-
 Apply this whenever a prompt, report, note, task, or intent item touches
 personal affairs, private life, sensitive plans, health, relationships,
 finances, identity material, or anything the psyche frames as private.

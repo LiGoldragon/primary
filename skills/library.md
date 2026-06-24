@@ -1,7 +1,5 @@
 # Skill — research library
 
-*The workspace's curated bibliography: when to consult it, how to read from it, how to fetch new material.*
-
 ## What it is and when to use it
 
 When a task wants depth — primary-source philosophy, formal

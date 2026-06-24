@@ -1,9 +1,5 @@
 # Skill — architectural truth tests
 
-*Tests that prove the architecture is followed, not just that behavior
-succeeds — catching "looks aligned but secretly reimplemented the
-component next door."*
-
 ## What this skill is for
 
 Apply it when an architecture constraint says *"component A uses

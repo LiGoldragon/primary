@@ -1,8 +1,5 @@
 # Skill — workspace update report
 
-*The recurring report variant (`Update`) that surveys what changed in
-the workspace since the previous workspace update report.*
-
 ## What it is for
 
 The workspace generates a lot of motion — Spirit captures, commits,
