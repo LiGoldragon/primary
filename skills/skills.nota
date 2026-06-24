@@ -105,6 +105,8 @@
 
   (Workflow role-lanes skills/role-lanes.md Mechanism
     [Lane mechanism for main, ordinal, and qualified role lanes.])
+  (Workflow alignment-interview skills/alignment-interview.md Mechanism
+    [Ask focused, recommended questions until the psyche and agent share the goal, scope, checks, and first useful slice. Use plain language and expand domain terms before planning or implementation.])
   (Workflow architecture-editor skills/architecture-editor.md Mechanism
     [How to edit ARCHITECTURE.md. ARCH never references reports.])
   (Workflow nota-schema-docs skills/nota-schema-docs.md Mechanism
