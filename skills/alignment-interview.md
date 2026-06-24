@@ -12,7 +12,10 @@ why it matters, what counts as done, and which choices are still open.
 ## Interview shape
 
 Start with the user's brief and the smallest useful repo or product context.
-Ask one focused question at a time. Each question carries:
+Ask exactly one focused question per turn, in plain chat prose — never a batch
+of questions, and never the structured questionnaire UI. The back-and-forth
+rhythm is the method itself: one question, the psyche's answer, then the next
+question shaped by that answer. Each question carries:
 
 - the decision being made
 - why it matters
