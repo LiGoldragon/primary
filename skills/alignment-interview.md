@@ -47,6 +47,14 @@ Give a recommendation with each question so the psyche can approve, correct, or
 replace it. A good recommendation is concrete enough to accept as written. When
 the agent is guessing, mark it as a guess and explain the evidence.
 
+Ask when a load-bearing variable is missing. Do not silently choose defaults for
+variables that change authority, priority, scope, safety, privacy, certainty,
+importance, rollout, or who owns the decision. Give the recommended value and
+the consequence of choosing it, then let the psyche accept or correct it. This
+applies especially when converting alignment answers into Spirit metadata: if
+importance, certainty, privacy, or kind would change how future agents treat the
+record, ask instead of laundering the agent's guess through the guardian.
+
 If the psyche answers with a correction, carry the correction forward. If the
 answer states durable workspace intent rather than task detail, run the Spirit
 gate before continuing.

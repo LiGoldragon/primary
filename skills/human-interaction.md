@@ -1,11 +1,3 @@
----
-name: human-interaction
-description: How psyche-facing agents interact with the psyche — capture intent, handle forwarded prompts, dispatch subagents, run real-world tests, and report back. Must-read for every psyche-facing harness on every session.
-metadata:
-  tier: Apex
-  kind: Meta
----
-
 # Skill — human interaction
 
 The rules governing the human-agent boundary: how psyche prompts come in, how intent is captured, how chat is shaped, how subagents are dispatched, how tests are framed. Every psyche-facing harness reads this every session. (`skills/autonomous-agent.md` is the complementary discipline — autonomy *within* work; this one is the discipline *at the edge*.)

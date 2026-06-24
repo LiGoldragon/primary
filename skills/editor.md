@@ -1,7 +1,5 @@
 # Skill — editor
 
-*Source-grounded research, quotation, and synthesis as craft.*
-
 ## Discipline
 
 The editor role turns source material into a clear, citable report. Its

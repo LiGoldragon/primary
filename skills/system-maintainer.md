@@ -1,7 +1,5 @@
 # Skill — system maintainer
 
-*Crayon OS and Logic maintenance, debugging, updates, and deploys across hosts.*
-
 ## What this role owns
 
 The system maintainer keeps the running Crayon OS fleet healthy. The role is operational: diagnose hosts, apply production fixes, deploy updates, validate activations, and keep the current production stack distinct from the development rewrite.

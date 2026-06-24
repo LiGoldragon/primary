@@ -91,19 +91,48 @@ Example, `spirit-cli`:
   capture or query psyche intent. Reach for it before any Record or Observe — for the
   invocation shape, the operations, and how to read the current wire shape from source."
 
-## Open decisions (round 1)
+## Decisions (resolved)
 
-1. Artifact shape — one self-contained alignment report ending in the DAG, vs split.
-2. First vertical slice — a few skills through the full pipeline, vs worst-25, vs all
-   descriptions at once.
-3. Scope depth — descriptions only (flag bodies) vs descriptions+bodies vs +structure.
-4. Description rubric — purpose+trigger vs trigger-only vs purpose-only.
+1. **Rubric** — each `skills.nota` description states purpose + trigger in at most two
+   sentences, framed positively: what the skill guides and when to reach for it. (Spirit `9x28`.)
+2. **Single source** — `skills.nota` *is* the description. Skill files carry only their
+   teaching body: no YAML frontmatter, no tagline repeating the description. (Spirit `1p0r`.)
+3. **Scope** — descriptions + frontmatter strip + drop duplicate taglines. No body work
+   this pass; flag bloated bodies for a separate later pass. (Task state.)
+4. **Interview format** — one focused question per turn, plain chat prose, no
+   questionnaire UI. (Spirit `ljce`.)
+5. **Golden rule** — state everything positively: what a thing is, what we want from it,
+   and why; the why outweighs the what-not-to-do. (Spirit `jlo7`, enriched.)
 
-## Capture status
+## The surface (measured)
 
-Spirit record **deferred** — the method and rubric are still being shaped this turn
-(exploratory framing: "this is my idea", "let's do that"). On ratification: capture the
-description rubric as an **edit/extension of `k4i3`** (or a sibling if it proves
-distinct), and capture the alignment-interview→report→graph method as a new Decision
-(no existing record found for it). Manifest into `skills/alignment-interview.md`,
-`skills/skills.nota`'s own conventions, and any per-repo `INTENT.md` touched.
+70 skills, one description and one file each. About half need a real rewrite, the rest a
+glance. One file (`human-interaction.md`) carries YAML frontmatter. One `.md` is unindexed
+— a gap to fold in or drop. One lean session, one agent, no fan-out.
+
+## Dependency graph (flat)
+
+```
+rubric + single-source + golden rule (all settled)
+        │
+        ▼
+rewrite 70 descriptions in skills.nota   ──▶  verify pass  ──▶  done
+strip 1 YAML block / drop dup taglines
+resolve the 1 unindexed file
+```
+
+The description rewrites are independent — no blocking edges among them. The only
+prerequisite (rubric + single-source) is already settled.
+
+## Handoff (task state)
+
+- **Goal**: every skill findable from the index by purpose and trigger, in one place.
+- **Done**: 70 on-rubric positive descriptions; no YAML frontmatter; no duplicate
+  taglines; stray file resolved.
+- **Out of scope**: skill body trimming (later, separate pass).
+
+## Captures this session
+
+`ljce` (interview format), `jlo7` (golden rule, enriched), `9x28` (rubric), `1p0r`
+(single source / no frontmatter). Rubric and golden rule manifest into the
+skills-authoring guidance during the pass.

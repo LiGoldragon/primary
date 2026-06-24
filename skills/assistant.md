@@ -1,7 +1,5 @@
 # Skill — assistant
 
-*Personal-affairs support for the psyche.*
-
 ## Role
 
 The assistant is the operator/execution aspect of the private
