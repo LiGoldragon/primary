@@ -1,321 +1,117 @@
 # Skill — context maintenance
 
-## Two surfaces, one discipline
+## What this skill is for
 
-A report is just context saved to disk. Both surfaces decay
-together and need the same maintenance, usually in the same pass:
+Context maintenance is the operator lane's checkpoint between one slice of work
+and the next. Use it when the lane has accumulated reports, live conversation
+state, subagent results the psyche explicitly authorized, or implementation
+notes that could be lost on compaction. The goal is not a larger handover; it is
+the smallest durable state that lets the next operator resume without stale
+context.
 
-- **Reports on disk** under `reports/<role>/`. Working artifacts
-  whose substance matures upward to permanent docs (skills,
-  architecture, code, `ESSENCE.md`) or retires when done.
-- **Context in the live conversation**. The session's working
-  memory; the unsaved part is lost on compaction or clear unless
-  it has migrated to disk.
+Run the pass for the exact current lane: `operator` uses `reports/operator/`,
+`second-operator` uses `reports/second-operator/`, and qualified operator lanes
+use their own report directory. Everyday context maintenance is single-lane. If
+the sweep needs to rank reports across roles or retire a lane, switch to
+`context-maintenance-deep.md`.
 
-The rule for both: keep load-bearing substance, move it to its
-right permanent home, retire what's done. Maintaining only one is
-half a pass.
+A clear directive to implement or fix something is itself enough to start work;
+do not run a ceremony first. Run this skill after substantial implementation,
+before choosing the next slice, before compaction, or when the psyche asks for a
+handover / context maintenance pass.
 
-## The goal — fewer reports, same information
+## Sweep shape
 
-A maintenance pass **reduces the number of reports without losing
-information**. The primary move is **agglomeration**: take the
-several reports on one topic, merge their un-contradicted,
-un-superseded substance into ONE better report on that topic, then
-delete the merged sources — the new report is the landing witness.
-Agglomerate by **topic, not by lane**: one topic's reports across
-all lanes collapse into one report on it.
+Start with the current lane's live context and report directory. Review only the
+material needed to answer four questions:
 
-### The Refresh variant
+- what landed and is now baseline
+- what remains open and who owns the next move
+- what durable rule, architecture fact, or repo intent should migrate upward
+- what stale working artifact can retire because its substance already landed
 
-A report that rewrites or agglomerates prior reports carries the
-`Refresh` variant tag: `<N>-Refresh-<topic>-<date>.md`. One Refresh
-MAY merge several sources. After it lands, the source reports are
-deleted (git history preserves them).
+Do not scan every workspace report by default. For operator work, the relevant
+neighbors are usually the newest designer report that specified the work, the
+repo docs changed by the implementation, the tests that now witness the behavior,
+and the lane's own recent reports.
 
-Test for agglomerate-and-Refresh vs migrate-then-drop: substance
-still working-artifact-shaped (a topic's design state, open
-questions, the arc of decisions) agglomerates into a Refresh
-report; substance that is mature or leaned-on doesn't belong in a
-report at all — it migrates to the permanent layer.
+If a hard-to-reverse maintenance choice is ambiguous, ask one focused question in
+plain chat before editing: name the item, the recommended action, and the
+consequence. Otherwise choose the reversible action that preserves information.
 
-## When to invoke
+## Classify each item
 
-- **Compaction trigger.** The context window is near its limit, or
-  the user is about to clear/compact. Sweep before the loss event.
-- **Report soft-cap trigger.** A role's `reports/` subdir crosses
-  the 12-report soft cap (see `reporting.md`). Sweep older reports
-  to migrate substance and land back under cap.
-- **End-of-session checkpoint.** After substantial work, before
-  stepping away, so the next agent can resume.
-- **Explicit user direction.** "Do a context maintenance",
-  "do a handover", or similar.
-- **Lane retirement.** Before a retiring lane's identifier can be
-  freed, its leftover memories must be triaged via this skill —
-  reports under `reports/<retiring-lane>/` and beads tagged with
-  the lane label. Identifier retirement is gated on that triage.
-  See `context-maintenance-deep.md` for the methodology.
+For each report, conversation theme, note, or subagent result, choose exactly one
+action:
 
-Triggers often coincide; treat them as one pass.
+- **Migrate** when the substance has matured into a permanent home: repo
+  `INTENT.md`, `ARCHITECTURE.md`, `skills.md`, workspace skill, test, code, or
+  bead. Edit that home directly, then retire or shorten the working artifact.
+- **Forward** when the substance is still working context for the next operator
+  pass. Put it in the smallest successor report or existing open report, with
+  concrete next actions and file paths.
+- **Keep** when the artifact is still load-bearing on its own and has no better
+  home yet. This should be rare; state why it remains live.
+- **Drop** when the artifact is stale, already absorbed, or purely historical.
+  Drop only after naming where the load-bearing substance landed.
 
-## Method
+Use the same rule for live conversation state. A chat insight that would matter
+after compaction must land in a report, task, code comment, test, or permanent
+doc. A comment that merely says "I ran this command" can disappear.
 
-### 1 · Inventory
+## Operator-specific checks
 
-List the reports for each relevant role (`ls
-~/primary/reports/<role>/`). For context, review the conversation's
-themes — what was worked on, decided, left open, surfaced. Don't
-dump everything; categorize.
+Before selecting the next implementation slice, audit for stale intent and stale
+design inputs:
 
-### 2 · Topic-recency ranking (cross-lane)
+- Re-read any designer report, bead, or repo doc that named the just-finished
+  work. If implementation changed the design pressure, write an operator
+  implementation-consequences report instead of silently carrying the change
+  forward in code.
+- Check whether a durable implementation rule surfaced. General rules migrate
+  to a skill; repo-specific rules migrate to that repo's `skills.md`; shipped
+  structure migrates to `ARCHITECTURE.md`; psyche intent goes through the Spirit
+  gate before any doc edit claims it as intent.
+- Verify the witness remains named. A feature without a test, Nix check, manual
+  verification note, or explicit blocker is not a complete handoff.
+- Commit and push meaningful edits per `jj.md`. Reports in the lane need no
+  claim; shared docs and code do.
 
-Rank **by topic, across all lanes** — a topic like "schema-derived
-nota stack" threads through operator implementation reports,
-designer design reports, audits, deploy notes. Pulling them
-together shows the topic's whole arc.
+This audit is the gate between "what was just done" and "what comes next". It
+prevents the next slice from being chosen from whatever happens to be freshest
+in the model's context.
 
-1. **Gather all reports on the topic across all lanes.**
-2. **Recency-rank within the topic.** Newest at top; date is in
-   the filename suffix or metadata header, commit history is the
-   tiebreaker.
-3. **Name the supersession spine.** Identify the current canonical
-   surface, any permanent landings, any old-era/new-era boundary.
-   The spine is the evidence that lets old reports retire without
-   losing substance.
-4. **Flag what's stale.** A report is stale when a newer report on
-   the same topic supersedes it AND the older substance is already
-   absorbed in the newer report or a permanent doc — *or* when a
-   newer Spirit capture reframes its topic (recent intent need not
-   land in a successor report to make older framing obsolete).
-   Not-yet-stale older reports — substance still load-bearing,
-   design alternatives a newer report inherits, decision rationale
-   permanent docs don't carry — keep, forward, or migrate.
-5. **Recent intent prevails.** When older content conflicts with
-   newer intent (newer Spirit capture, newer report, recently
-   landed code), the newer is canonical. The older stays only if it
-   carries substance the newer doesn't — design alternatives the
-   newer chose between, omitted rationale, skipped intermediate
-   insight. Spirit captures are the highest-priority recency
-   signal: a Maximum-magnitude reframe supersedes the entire prior
-   framing on that topic, including reports canonical the day before.
-6. **Spirit capture sweep.** Alongside the report sweep, audit Spirit
-   captures with the production query shape. Start broad with
-   `spirit "(PublicRecords (Any None))"`, then retrieve the stash with
-   `LookupStash`. Narrow with the full eight-field query when needed,
-   e.g. `spirit "(Observe ((Full [(Information Documentation)]) Any
-   (ContainsText [context maintenance]) Any None (Exact Zero)
-   (AtLeastCertainty Minimum) Any))"`. Multi-agent sessions accumulate
-   near-duplicate captures when each agent records on a forwarded prompt
-   without first checking what the originally-addressed agent captured.
-   Earlier capture wins; remove duplicates per `intent-maintenance.md`.
+## Handoff shape
 
-Reports without a topic peer get the same treatment on a
-single-lane timeline.
+Only write a handoff report when there is no better home. Put it at
+`reports/<lane>/<N>-handover-<topic>.md` and keep it tight:
 
-**Staleness has a landing gate.** A report is droppable only after
-its load-bearing substance has landed in a successor report or a
-permanent doc. If the topic has moved on but the landing is not
-verified, the action is **Forward** or **Migrate**, not Drop.
-During major era shifts: first identify the new canonical landing,
-then retire the older pile with that landing as evidence. Older
-reports from a prior era can retire as a group — but only
-report-by-report after each stale flag names the surface that
-absorbs it. Bulk retirement without a landing witness is context loss.
+- current baseline: commits, tests, and files that now define reality
+- open work: concrete next actions, with owners or blockers
+- migrated substance: where durable rules or design facts landed
+- retired context: reports or notes dropped, with the landing evidence
 
-### 2a · Per item, decide
+The handoff retires when its open work is absorbed by code, beads, reports, or
+permanent docs. Do not keep handoffs as archives; git history carries the path.
 
-Pick one of four actions per report or context theme:
+## Stopping point
 
-| Action | When |
-|---|---|
-| **Forward** | Substance still load-bearing as a working artifact. Roll it into a successor report or extend an existing one; retire the predecessor. For cross-lane forward-then-drop, the receiving lane confirms absorption and the source lane owns deletion. |
-| **Migrate** | Substance mature enough to be permanent. Inline it into a skill, `ARCHITECTURE.md`, `ESSENCE.md`, or code. Retire the source. |
-| **Keep** | Substance load-bearing on its own with no permanent home yet. Rare — foundational decisions still searching for final shape. Pending psyche-review items stay Keep/Escalate until resolved, abandoned, or parked as uncertainty in a permanent doc. |
-| **Drop** | Substance stale, addressed, superseded, or already captured elsewhere, with both superseder and landing named. Delete the report. If the proof pair is missing, Forward or Migrate instead. |
+Stop when another operator can answer, without reading the whole conversation:
 
-Heuristics:
+- what changed
+- what proof exists
+- what remains open
+- where durable substance now lives
+- which reports or notes are intentionally still live
 
-- **Audit reports retire with their audited target** unless the
-  audit holds independent design rationale or a reusable pattern
-  that must migrate.
-- **Deploy-event logs, refresh reports, and orientation handoffs
-  retire as blocks** once live state is the baseline and durable
-  state lives in permanent docs, runbooks, code, or current reports.
-- **Pending psyche-review flags are not stale merely for being
-  old.** Keep and surface them until the psyche resolves them or an
-  agent parks them in a permanent uncertainty section.
-
-Context-item destinations:
-
-| Context type | Destination |
-|---|---|
-| Decisions made in conversation | The permanent doc the decision lives in (ARCH, skill, `ESSENCE.md`). |
-| Half-formed insights, possible patterns | A short `note:` in the right report or skill, or a sentence in a handover. Don't lose them; don't over-format them. |
-| Process / workflow reflections | A skill if generalizable, a session-summary if local. |
-| In-flight work pending pickup | The successor task / `bd` item / report naming what's next. |
-| Already-on-disk content | Drop — already saved. |
-
-### 3 · Distribute
-
-Land substance in its right home, **not** a catchall handover dump.
-Preferred order:
-
-1. **Existing reports on the same topic** — extend them in place.
-   When a report contains stale illustrative code, diagrams, or
-   recommendations a newer implementation invalidated, **rewrite
-   that section in place** or mark it retired inside the report. A
-   later synthesis report is not enough; stale examples keep
-   teaching the old pattern when search lands on the older file.
-2. **Permanent docs** — inline as the rule, constraint, or
-   invariant they actually are. Permanent docs are where rules
-   live, and they never cite the report that produced them (see
-   `skill-editor.md`, `architecture-editor.md`).
-3. **A new rollover/handover report** — last resort only.
-   Substance that fits no existing home and is too unsettled to be
-   permanent. A working artifact for the next session, not an archive.
-
-### 3a · Migrate competing-alternatives substance, then retire
-
-A report carrying **competing design alternatives** — multiple
-options sketched, one chosen, others rejected — is load-bearing as
-design rationale until its substance migrates. Closed reports are
-not kept merely for rationale or history. Both the chosen design
-and the competing-alternatives reasoning migrate to durable
-surfaces; then the report retires.
-
-Migration targets:
-
-- **Chosen design** → architecture file (`ARCHITECTURE.md`) or skill.
-- **Competing alternatives + the selecting reasoning** → an
-  architecture decision record (when durably worth knowing), or
-  Spirit intent records (Decision / Clarification with reasoning
-  inline), or both.
-- **Empirical evidence (benchmarks, prototypes, witnesses)** → the
-  git history carries the prototype code; cite commit IDs from the
-  architecture file rather than keeping a report just to point at them.
-
-Once migrations land, **retire the report** (`rm`). Don't leave it
-as an archive with duplicate rationale. Keeping live patterns close
-to the code or contracts they govern beats a status-banner archive
-that preserves contradictions and noises up search.
-
-Signal that a report needs this explicit migration: it enumerates
-two or more designs (Design A/B/C, Option 1/2) and chose one.
-Standard single-shape design reports migrate cleanly — the chosen
-shape lands in an architecture file or skill and the report retires.
-
-### 3b · Manifest leaned-on design into architecture — prefer constraints
-
-When agglomerating, mature or leaned-on substance belongs in the
-permanent layer, not a report. Two rules sharpen where it lands:
-
-- **Architecture carries leaned-on design even without explicit
-  intent.** When the project's forward direction implies a design
-  has been accepted or leaned on for now, manifest it into the
-  repo's `ARCHITECTURE.md`. The architecture IS the design layer; a
-  leaned-on direction belongs there without waiting for an intent
-  record. (The intent layer still requires an actual psyche
-  statement — never infer intent — but the architecture layer does
-  not.)
-- **Prefer constraints.** Constraints are among the most important
-  architecture content: a stated constraint lets us write a test
-  that verifies it. When manifesting design into architecture,
-  express it as a **constraint** wherever possible, and pair it
-  with a constraint-witness test that proves the intended path.
-  Design as prose teaches; design as a constraint teaches AND
-  becomes a test.
-
-### 4 · Small thoughts are OK
-
-A one-sentence side note landed in the right place beats losing the
-thought. Tags like `note:`, `possibly useful:`, or `undecided:`
-make a thought discoverable without committing the workspace to act
-on it. A line like `note: agents asked about X three times this
-week — might warrant a skill if it recurs` is better than no
-record. Discovery later is the value, not formality now. Don't
-over-engineer: a note-line is a note-line, not a numbered section.
-
-## The rollover / handover report (when one is needed)
-
-If genuinely needed, it lives at
-`reports/<role>/<N>-handover-<date>.md` (or `<N>-rollover-…`):
-
-- **What landed** — committed and pushed; one line each.
-- **What's open** — discussed but not yet resolved.
-- **Side notes** — small thoughts worth keeping, each marked
-  `note:` / `possibly useful:` / `undecided:`.
-- **Next-session targets** — concrete pickup points.
-
-It retires once its substance migrates to a permanent home or the
-next-session work absorbs it; it follows standard forwarding hygiene.
-
-## Using agents for the sweep
-
-A pass over many older reports suits parallel agent dispatch — the
-orchestrator needn't read every report into its own context.
-
-- Inventory and topic-cluster first; don't deep-read hundreds of
-  reports before you know which topic arcs matter.
-- Deep-read stale candidates and their proposed successors;
-  skim obvious non-candidates.
-- Give each agent a bounded slice (a topic cluster, a lane within a
-  topic, a small batch) plus the drop/forward/migrate/keep rule.
-- Each agent reads the report, checks surrounding permanent docs
-  (does this already live in ARCH or a skill? has it been
-  superseded?), then proposes the action.
-- Prefer topic-cluster agents over lane-only agents for large
-  cross-lane sweeps; the stale judgment is topic-recency across
-  lanes.
-- Review proposals; execute migrations; retire reports.
-
-The orchestrator applies decisions, doesn't re-read every report.
-Agents recommend; the dispatcher decides and applies only the
-actions it owns. For context-only substance (live conversation, not
-disk), the orchestrator sweeps itself — agents can't see the
-conversation's working memory.
-
-Cross-lane sweeps, lane retirement, and the meta-report-directory
-pattern live in `context-maintenance-deep.md`. Reach for it when
-the sweep spans multiple lanes, multiple topic arcs, or a lane is
-being retired.
-
-## Anti-patterns
-
-- **Dumping all context into a "handover" report.** The handover is
-  a fallback, not a default. Most substance has a better home; a
-  dumping-ground handover decays as fast as the context it replaced.
-- **Keeping reports indefinitely "because they might be useful."**
-  Git log preserves history; the filesystem holds only what's
-  actively load-bearing. Even foundational decisions and incident
-  lessons get absorbed into permanent docs.
-- **Preserving content the intent has reframed.** A Spirit capture
-  or permanent-doc change that reframes a topic supersedes the
-  older report's framing even with no successor report. Migrate the
-  still-live substance and let the reframed parts drop; waiting for
-  a successor before retiring is a smell — recent intent IS the
-  supersession evidence.
-- **Leaving stale examples alive in older reports.** If a report
-  still shows old code as "current", "implemented", or "canonical",
-  the pass is incomplete even if a newer report corrects it. Search
-  and agent recall find the stale example. Rewrite it to the
-  current shape or replace it with a supersession note naming the
-  current implementation.
-- **Retiring a report whose substance hasn't migrated.** Confirm
-  the load-bearing parts are captured elsewhere first, then drop.
-- **Treating context and reports as different disciplines.** Both
-  are working surfaces; both follow the same forward/migrate/keep/
-  drop rule. A pass over only one is half a pass.
-- **Keeping successor-superseded ledgers or deploy-event logs.**
-  Once a newer sweep reissues the live handoffs, or a live system
-  state becomes the baseline, the older chain is stale unless it
-  still carries unresolved substance.
-- **Over-formatting small thoughts.** The shape matches the
-  substance; don't promote a half-formed observation to a section.
+Then continue with the next implementation slice, or surface the single blocking
+question if the pass found one. Context maintenance is successful when there is
+less live clutter and no lost information.
 
 ## See also
 
-- `context-maintenance-deep.md` — cross-lane meta-report directory,
-  successor sweeps, lane retirement.
-- `intent-maintenance.md` — Spirit capture sweep, dedup, supersession.
-- `reporting.md` — report typology, permanent homes, and the
-  disk-side hygiene rules this skill operationalizes.
+- `context-maintenance-deep.md` — cross-lane sweeps, meta-report directories,
+  and lane retirement.
+- `reporting.md` — report paths, handoff reports, and claim-exempt lane reports.
+- `intent-alignment.md` — how to ask one focused psyche question when scope or
+  success checks are unclear.
