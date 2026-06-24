@@ -117,6 +117,85 @@ ranks Beauty #4 (lowest of four), while `61ei` and ESSENCE's own "Beauty is
 the criterion" section make beauty a top gate. An alignment session resolves
 both at once.
 
+## Alignment session log
+
+**Gap 1 — the priority ladder + beauty's rank — CAPTURED.** The psyche
+confirmed the reconciliation: [capture the ladder, but frame beauty not as a
+competing fourth priority that loses to the others, but as the completion-gate
+that emerges when clarity, correctness, and introspection are right] /
+[beauty is how you know you're finished]. First attempt as a fresh `Record`
+drew a guardian `InsufficientWarrant` — the new arrow redefines beauty's role,
+which the active `61ei` already held, so the guardian remanded to a maintenance
+op. Resolved by **Supersede `61ei` → `4lkn`** (Principle, High/Minimum/Zero,
+domain `(Technology (Software (Engineering Design)))`, referents `[design
+beauty]`):
+
+> `4lkn`: [The design-value priority ladder: Clarity, then Correctness, then
+> Introspection, with the earlier value winning when these positive values
+> trade off against each other. Beauty is the completion-gate of this ladder…
+> how you know the work is finished, rather than a competing fourth priority…]
+
+`4lkn` carries forward all of `61ei`'s content (beauty as primary audit lens,
+the aesthetic qualities, the beyond-code reach into capture/report/substrate
+discipline) and adds the three-value ordering plus the completion-gate
+reconciliation — one coherent design-value principle rather than a ladder
+record beside a beauty record. Certainty `High` (not `Maximum`): the ladder is
+revisable — we just revised it — which is the signature of `High`, not a
+founding axiom; offered to the psyche to elevate.
+
+Lesson for the remaining gaps: when a gap's framing touches an arrow an
+existing record already holds, expect the guardian to remand a fresh `Record`
+to Supersede/Clarify. Check the neighborhood (shared referents/domain) before
+choosing `Record` vs a maintenance op.
+
+**Gap 2 — the telos — CAPTURED as `sj2c`.** The psyche restated the telos as
+[best possible design], choosing the strong terminal reading over the soft
+best-known one. Neighborhood read first surfaced that `zn2l` (a *Clarification*,
+High/High) already references [the eventually-impossible-to-improve software of
+the workspace essence … reached through the engine improving itself] — but no
+*base* record held the telos; `zn2l` clarifies a telos that lived only in the
+file. So the base was genuinely missing.
+
+First attempt drew a guardian `TestimonyFabricated`: I had wrapped the bare
+three-word answer in a long synthesized antecedent and a paragraph-length
+description, which reads as agent prose laundered as testimony. Fixed by
+binding the record tight to the phrase —
+
+> `sj2c` (Principle, High/Minimum/Zero, referents `[telos design]`): [The build
+> target is the best possible design: the design than which none better is
+> possible, the terminal best the work aims at … the destination the design
+> values serve.]
+
+— with the testimony the bare [best possible design] and a short question as
+antecedent. `sj2c` is the base telos; `zn2l` sits on top of it (mechanism),
+`4lkn` is the value-priority it serves, `jys2`/`cam8` the frontier/ideal stance.
+
+Lesson: terse psyche testimony must stay terse in the record. Inflating a
+bare phrase with synthesized framing trips `TestimonyFabricated` — the
+description is bound to the plain sense of the words, the elaboration goes in
+reasoning, the antecedent stays a short question.
+
+**Gap 3 — no-estimates — CAPTURED as `j8g6`.** The psyche confirmed with [yes I
+agree] to the proposal. Captured as a Principle, affirmative-framed:
+
+> `j8g6` (Principle, High/Minimum/Zero, referent `effort-sizing`): [Work is
+> described and scoped by what it requires; the requirements define the work,
+> in place of estimating how long it will take. Planning states what the work
+> needs, not a duration.]
+
+Two guardian round-trips on referents, both instructive: `[]` drew a hard
+`Rejected EmptyReferents` (every record needs at least one referent), and
+`[estimation workspace]` drew `ReferentGuardianRejected NonReferent`
+("estimation is a concept, not a nameable particular") — whose reply usefully
+dumps the full registered-referent set. The fix was the already-registered
+`effort-sizing`, an exact-topic particular. Lesson: pick referents from the
+registered set; abstract concepts (`estimation`) are rejected, named
+particulars/practices (`effort-sizing`) are not.
+
+ESSENCE.md itself is left untouched mid-audit; per `8rpu` the whole file is
+retired once all its durable intent is in Spirit (plan step 5), not edited
+piecemeal.
+
 ## Plan and sequence
 
 1. ESSENCE.md alignment sessions on the four gaps (in progress — item 1 first).
