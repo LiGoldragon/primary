@@ -25,9 +25,9 @@ When a file is contested, the load-bearing question is: *is this a structural de
 
 Read these before substantive operator work. Prose-craft and research-library skills stay with the roles that own them.
 
-**Workspace baseline:** `ESSENCE.md`, `lore/AGENTS.md`, `orchestrate/AGENTS.md`, `skills/role-lanes.md`, `skills/autonomous-agent.md`, `skills/beauty.md`, `skills/naming.md`, `skills/jj.md`, `skills/reporting.md`, `skills/beads.md`, `skills/spirit-cli.md`, `skills/skill-editor.md`, `skills/versioning.md`, `skills/repository-management.md`, `skills/feature-development.md`, `skills/stt-interpreter.md`.
+**Workspace baseline:** `ESSENCE.md`, `lore/AGENTS.md`, `orchestrate/AGENTS.md`, `skills/session-lanes.md`, `skills/autonomous-agent.md`, `skills/beauty.md`, `skills/naming.md`, `skills/jj.md`, `skills/reporting.md`, `skills/beads.md`, `skills/spirit-cli.md`, `skills/skill-editor.md`, `skills/versioning.md`, `skills/repository-management.md`, `skills/feature-development.md`, `skills/stt-interpreter.md`.
 
-**Role contracts:** `skills/operator.md` (this skill), `skills/designer.md` (what designer specifies; what operator implements against). Additional operator lanes share this skill; the lane mechanism is in `skills/role-lanes.md`.
+**Role contracts:** `skills/operator.md` (this skill), `skills/designer.md` (what designer specifies; what operator implements against). Every operator-discipline session lane loads this skill; the lane mechanism is in `skills/session-lanes.md`.
 
 **Programming discipline:** `skills/abstractions.md`, `skills/actor-systems.md`, `skills/architectural-truth-tests.md`, `skills/architecture-editor.md`, `skills/contract-repo.md`, `skills/kameo.md`, `skills/language-design.md`, `skills/micro-components.md`, `skills/nix-usage.md`, `skills/nix-discipline.md`, `skills/push-not-pull.md`, `skills/rust-discipline.md` (index) and its sub-files `skills/rust/methods.md`, `skills/rust/errors.md`, `skills/rust/storage-and-wire.md`, `skills/rust/parsers.md`, `skills/rust/crate-layout.md`, and `skills/testing.md`.
 
@@ -175,9 +175,9 @@ Designer rolls a new design + a test on one component while a parallel agent upd
 
 Open psyche questions the design names (phase ordering, divergence/recovery semantics) are NOT operator's to resolve — if implementation forces the question, flag it in a report rather than committing one direction. The design report cites intent captures that constrain the implementation; treat those as load-bearing, since the intent layer has higher authority than implementation freedom.
 
-## Working with additional operator lanes
+## Working with parallel operator-discipline lanes
 
-`second-operator`, `pi-operator`, `cluster-operator`, `cloud-operator`, and other qualified operator lanes are additional capacity under the operator-discipline pool. They share this skill's discipline, required reading, owned area, and beads label; only the lock file, report subdirectory, and claim string differ. The mechanism is in `skills/role-lanes.md`.
+Several session lanes can carry the operator discipline at once, each named for its own work-session intent. They share this skill's discipline, required reading, owned area, and beads label; the session-intent name gives each its directory and claim string. The mechanism is in `skills/session-lanes.md`.
 
 Use additional lanes when implementation splits into disjoint claimed paths: one crate migration, one test backfill, one audit pass, one dependency bump, one report response. Each lane claims its own scopes, commits and pushes its own logical changes, and writes its own reports. Operator remains responsible for the thread it owns — additional lanes are parallel capacity, not hidden edits under the operator lock.
 
@@ -217,4 +217,4 @@ When the implementation feels off, slow down and find the structure that makes i
 
 - `skills/designer.md`, `skills/system-operator.md`, `skills/poet.md` — sister main-role skills.
 - `skills/rust-discipline.md` — the canonical Rust enforcement; operator's primary toolkit.
-- `skills/role-lanes.md` — how additional lanes stack under a main role.
+- `skills/session-lanes.md` — how session lanes carry a discipline and drain at close.

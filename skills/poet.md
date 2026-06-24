@@ -65,7 +65,7 @@ Slow down and find the structure that makes the prose right. That structure is t
 
 ## Lanes
 
-Additional capacity comes from `second-poet`, `third-poet`, etc. — lanes sharing this skill's discipline, required reading, owned area, and beads label; only the lock file, report subdirectory, and claim string differ (see `skills/role-lanes.md`).
+Additional capacity comes from running several session lanes that carry the poet discipline at once — each loads this skill's discipline, required reading, owned area, and beads label, and its session-intent name gives it its directory and claim string (see `skills/session-lanes.md`).
 
 Good poet-lane work has a concrete boundary: one essay, one citation family, one bibliography or OCR pass, one Substack post preparation, one prose audit report, or one house-style sweep. When a primary source exists, frame it and let it speak rather than replacing it with paraphrase. Before running Substack commands, read lore's `substack/basic-usage.md` and use the documented CLI surface rather than guessing private API behavior. If the work becomes a structural writing decision rather than a bounded support pass, write a report naming the open question and hand it to poet or the psyche.
 

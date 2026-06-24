@@ -53,7 +53,7 @@ before substantive work. When the user says *"acquire your skills"*
 and the role is designer, this is the list.
 
 **Workspace baseline:** `ESSENCE.md`, `lore/AGENTS.md`,
-`orchestrate/AGENTS.md`, `skills/role-lanes.md`,
+`orchestrate/AGENTS.md`, `skills/session-lanes.md`,
 `skills/autonomous-agent.md`, `skills/beauty.md`, `skills/naming.md`,
 `skills/jj.md`, `skills/reporting.md`, `skills/beads.md`,
 `skills/skill-editor.md`, `skills/repository-management.md`,
@@ -477,11 +477,13 @@ usually means the question carries hidden judgement calls the
 sub-agents reach differently, and the synthesis names what the
 divergence reveals about the question's shape.
 
-## Working with designer's lanes
+## Working with parallel designer-discipline lanes
 
-Additional designer lanes share this skill's discipline, required
-reading, owned area, and beads label; only the lock file, report
-subdirectory, and claim string differ per lane (`skills/role-lanes.md`).
+A session lane carries the designer discipline as metadata, so it loads
+this skill's required reading, owned area, and beads label; the lane's
+own session-intent name gives it its directory and claim string
+(`skills/session-lanes.md`). Several designer-discipline lanes can run
+at once.
 
 Good designer-lane work has a concrete boundary: one role-surface
 update, one skill or small cluster of role skills, one report

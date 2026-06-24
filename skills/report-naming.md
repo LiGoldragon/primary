@@ -1,23 +1,27 @@
 # Skill — report naming
 
-Naming, iteration, and supersession discipline for reports. Companion to `skills/reporting.md` (chat-vs-report, inline summaries, visuals, caps).
+Naming, iteration, and supersession discipline for reports. Companion to `skills/reporting.md` (chat-vs-report, inline summaries, visuals, the pickup-point principle, session drain).
+
+## Reports are fresh-context pickup points
+
+A report is written so an agent starting from a clean context can pick the work up, reason about it, and — where the work is implementable — implement it. The reader has none of the writer's session memory; the report supplies it. Implementable work is linked into a bead dependency graph (`bd dep <blocker> --blocks <blocked>`), so a fresh agent finds both the reasoning (the report) and the ordered work (the beads) without the original session. A continuation or review report states explicitly what it supersedes and deletes its predecessor in the same commit.
 
 ## Filename
 
-`reports/<role>/<N>-<Variant>-<primary-topic>[-<secondary-topic>]-<title-slug>.md`
+`reports/<lane>/<N>-<Variant>-<primary-topic>[-<secondary-topic>]-<title-slug>.md`
 
-- `<role>` is the writer's exact lane subdirectory (`designer`, `operator`, `system-operator`, `poet`, assistant lanes, second/third lanes, specialised lanes).
-- `<N>` is **per-role**, the next integer after the highest-numbered report in this role's subdir — `reports/operator/97-…` and `reports/designer/97-…` coexist because the role subdir disambiguates. No leading zeros. No date prefix: commit history records when a report landed.
+- `<lane>` is the session-intent name — the directory for this work session, named for what the session is about (`newLanesDesign`, `schemaWorkAudit`), not for a fixed role. The lane's discipline (designer, operator, …) is metadata that loads skills and authority, not the directory name.
+- `<N>` is **per-lane**, the next integer after the highest-numbered report in this lane's directory — `reports/newLanesDesign/4-…` and `reports/schemaWorkAudit/4-…` coexist because the lane directory disambiguates. No leading zeros. No date prefix: commit history records when a report landed.
 - `<Variant>` is the capitalized report kind — `Psyche`, `Design`, `Audit`, `Research`, `Synthesis`, `Closeout`, `Handover`, `Update`, `Refresh`. Every report has one. It appears in BOTH the filename (for grep discoverability) and the YAML `variant:` field (for typed metadata). `Update` is the recurring workspace update report (`skills/workspace-update-report.md`); `Refresh` is the context-maintenance output that agglomerates prior reports on a topic into one better form, deleting the merged sources as it lands (`skills/context-maintenance.md`).
 - `<primary-topic>` is the durable topic cluster, placed first so `rg --files reports | rg '/[0-9]+-schema-'` finds a topic's current report surface without knowing exact titles. Keep topic atoms short and stable: `nota`, `schema`, `macros`, `emission`, `spirit`, `wire`, `upgrade`, `runtime`, `reporting`, `orchestrate`.
 - `<title-slug>` is the specific subject in kebab-case.
 
-Example: `reports/operator/218-Design-schema-macros-index-and-loading.md`
+Example: `reports/schemaWorkAudit/3-Audit-schema-macros-index-and-loading.md`
 
 Find the next number, then add 1. Numbers are gap-tolerant and never reused after deletion.
 
 ```sh
-ls ~/primary/reports/<role>/ | grep -E '^[0-9]+-' \
+ls ~/primary/reports/<lane>/ | grep -E '^[0-9]+-' \
   | sort -t- -k1,1n | tail -1
 ```
 
@@ -36,6 +40,10 @@ When a topic accumulates many reports, do not bulk-rename old files to tidy the 
 ## Commit before delete
 
 **Never delete an uncommitted report** — that is total loss. Deleting a *committed* report only removes it from the work tree; git history retains the substance and it stays recoverable. So for any rename, supersession, or agglomeration: the new report must be committed in the same commit as the predecessor's deletion. Both the addition and removal land in one whole-working-copy `jj commit` (no path arguments — see `skills/jj.md`), keeping the replacement and its source visible together in one change.
+
+## Session drain and directory retirement
+
+The lane directory is the garbage-collection unit. When a session drains at close — every idea routed to exactly one of intent (captured via the Spirit CLI), work (a bead linked into a dependency graph), or abandon (already-landed, stale, or wrong; git preserves it) — the whole `reports/<lane>/` directory is deleted in one move, not file by file. Git history and the session transcript are the archive. Record the retirement with a single append-only entry in `protocols/retired-lanes.md` (lane name, discipline, the git revision range holding its reports, transcript pointer, drain date, one-line statement of what it decided) so the drained session stays discoverable for regression and model-behavior forensics without re-growing the working report tree.
 
 ## See also
 

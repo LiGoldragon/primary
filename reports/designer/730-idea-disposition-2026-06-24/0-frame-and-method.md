@@ -60,9 +60,17 @@ agglomerations are noted for them, not executed against their files.
 - `1-idea-ledger.md` — the deduped, clustered idea ledger with a
   recommended fate per distinct idea. The centerpiece we walk together.
 
-## Status
+## Status — pivoted
 
-Extraction and cluster-dedupe complete; ledger assembled for the
-walk-through. Decisions and execution (Spirit captures, beads, report
-retirements) follow the psyche's per-idea calls and are recorded as they
-land.
+Extraction and cluster-dedupe completed; ledger assembled
+(`1-idea-ledger.md`). The psyche then corrected the approach: intent must
+be **first-degree** (from the psyche, via intent-alignment), not distilled
+by agents from agent-written reports — `skills/intent-log.md` records only
+psyche statements, never agent files. So the ledger is demoted to a
+**thread-map / work checklist**, not a source of intent.
+
+New plan in `2-HANDOVER-recapture-intent-first-degree.md`: run a
+first-degree intent-alignment interview from basic principles, capture
+confirmed intent in Spirit + `INTENT.md`, confirm genuine work as beads,
+then **clear all `reports/designer/` to zero** (git preserves history),
+keeping the report surface lean and small at all times.

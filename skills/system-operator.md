@@ -193,11 +193,13 @@ None` deploys produce verifiable closures.
 
 ## Lanes
 
-`second-system-operator` and other lanes share this skill's discipline,
-required reading, owned area, and beads label; only the lock file,
-report subdirectory, and claim string differ per lane (mechanism in
-`skills/role-lanes.md`). `system-designer` is a separate designer-pool
-lane scoped to system topics — see `skills/designer.md`.
+A session lane carrying the system-operator discipline loads this
+skill's required reading, owned area, and beads label; the lane's
+session-intent name gives it its directory and claim string (mechanism
+in `skills/session-lanes.md`). Several system-operator-discipline lanes
+can run at once. A lane scoped to system topics may instead carry the
+designer discipline when the work is system architecture — see
+`skills/designer.md`.
 
 Good system-lane work has a concrete boundary: one CriomOS or
 CriomOS-home module slice, a focused audit of recent commits, a
@@ -222,5 +224,5 @@ implementation pass.
 ## See also
 
 - CriomOS's `skills.md`, CriomOS-home's `skills.md`
-- `skills/stt-interpreter.md`, `skills/role-lanes.md`
+- `skills/stt-interpreter.md`, `skills/session-lanes.md`
 - `skills/operator.md`, `skills/designer.md` — sister role skills

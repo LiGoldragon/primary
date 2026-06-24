@@ -12,12 +12,14 @@ The two media have different audiences:
   bottleneck on decisions, so chat is optimised for their attention.
 
 If output explains, proposes, analyses, or summarises, write a
-report in your lane's `reports/<role>/` subdirectory. Small things —
+report in your lane's `reports/<lane>/` session directory, where
+`<lane>` is this work session's intent name (`newLanesDesign`,
+`schemaWorkAudit`), not a fixed role. Small things —
 acknowledgements, tool-result summaries, "done; pushed" — don't need
 reports.
 
-Reports are role-owned and **exempt from the orchestration claim
-flow**: the lane's report subdirectory is its implied write lock.
+Reports are lane-owned and **exempt from the orchestration claim
+flow**: the lane's session directory is its implied write lock.
 Creating, editing, correcting, superseding, or deleting a report in
 your own lane needs no claim. If the same work also changes shared
 files (skills, `AGENTS.md`, repo `INTENT.md`, schemas, code), claim
@@ -26,6 +28,28 @@ those non-report paths.
 Private personal-affairs substance is the exception: assistant /
 counselor private reports go in `private-repos/<role>-reports/`;
 public reports carry only privacy-safe mechanism or status.
+
+## Reports are fresh-context pickup points
+
+A report is written so an agent starting from a **clean context** can
+pick the work up, reason about it, and — where the work is
+implementable — implement it. The reader holds none of the writer's
+session memory; the report supplies everything they need: the intent
+it rests on, the current state, the shape proposed, and the next
+moves. The test is whether a fresh agent could act on it alone.
+
+**Implementable work links into a bead dependency graph.** When a
+report names work that can be built, the work lands as beads wired
+into a dependency graph — `bd dep <blocker> --blocks <blocked>` — so a
+fresh agent finds both the reasoning (the report) and the ordered,
+unblocked next slices (the beads) without the original session. The
+report carries the *why* and the shape; the bead graph carries the
+*do-this-then-that*.
+
+This is why a report reads as current state and is self-contained
+(see §"Human-facing references are self-contained" and §"Tense and
+framing"): a pickup point can't depend on context the picker-up
+doesn't have.
 
 **Routine code landings: the commit description IS the report.** Do
 not write a report whose only purpose is to repeat a `jj` commit
@@ -40,7 +64,7 @@ A report does not relieve chat of being the user's working surface.
 When a report lands, chat carries:
 
 1. **The report's path, explicitly named** as the full relative
-   workspace path (`reports/<role>/<filename>.md`).
+   workspace path (`reports/<lane>/<filename>.md`).
 2. **A 1–3 sentence headline** — what was found, decided, changed.
 3. **Anything the user must read, decide, or act on, restated with
    full inline context** — open questions, blockers, surprising
@@ -99,11 +123,11 @@ what's next; the *how* and *why* belong in the report.
 ## Always name paths
 
 When chat references a report or any file the user might navigate to,
-**name its full relative path** (`reports/<role>/<filename>.md`) for
+**name its full relative path** (`reports/<lane>/<filename>.md`) for
 every report produced in the session.
 
-> "Two reports landed: `reports/designer/11-persona-audit.md` and
-> `reports/designer/12-no-polling-delivery-design.md`."
+> "Two reports landed: `reports/newLanesDesign/11-persona-audit.md`
+> and `reports/newLanesDesign/12-no-polling-delivery-design.md`."
 
 …not "two reports landed". Chat is a **navigation surface, not a
 teaser**.
@@ -114,7 +138,7 @@ paths. The path is the substantive locator; hashes and numbers are
 supplementary:
 
 > "Report
-> `reports/designer/433-whole-stack-comprehensive-every-part-with-code.md`
+> `reports/schemaWorkAudit/12-whole-stack-comprehensive-every-part-with-code.md`
 > (commit `33c84b46`) — …"
 
 The same applies to any file chat references: if chat says "I edited
@@ -163,7 +187,7 @@ to follow the link to answer, the question is not yet asked.
 Wrong:
 
 > *"Should I collapse the four forwarding-trampoline actors? See
-> `reports/designer/<N>-actor-discipline-sweep.md` §5.2 for context."*
+> `reports/<lane>/<N>-actor-discipline-sweep.md` §5.2 for context."*
 
 Right:
 
@@ -195,66 +219,66 @@ questions" section, `AskUserQuestion` prompts, or a hand-off.
 
 ## Where reports live
 
-Each lane owns a subdirectory under `~/primary/reports/` named for
-its exact lane (`reports/operator/`, `reports/designer/`,
-`reports/system-operator/`, etc. — see `orchestrate/AGENTS.md`). Each
-lane writes only into its own subdirectory; reading any public role
-report is free.
+Each lane owns a **session directory** under `~/primary/reports/`
+named for the session's intent (`reports/newLanesDesign/`,
+`reports/schemaWorkAudit/` — see `orchestrate/AGENTS.md`). The
+discipline (designer, operator, …) is metadata the lane carries for
+skill and authority loading, not the directory name. Each lane writes
+only into its own session directory; reading any public lane report is
+free.
 
-To **build on** another role's report, rewrite the relevant content
-into a new report in your own subdirectory — don't edit another role's
-reports.
+To **build on** another lane's report, rewrite the relevant content
+into a new report in your own session directory — don't edit another
+lane's reports.
 
 Per-repo reports follow the same `<N>-<topic>.md` shape under
 `<repo-root>/reports/`.
 
-### Meta-report directories — sub-agent sessions
+### The session directory — fleet of sub-agents
 
-When an agent dispatches sub-agents for a coordinated multi-slice
-piece of work, the whole session lands as **one meta-report
-directory** instead of flat sibling reports:
+A session lane's directory holds the whole session, including the
+fleet of sub-agents the main agent dispatches once its early
+high-fidelity window is spent. The frame, slices, and synthesis live
+side by side:
 
 ```
-reports/<role>/<N>-<session-name>/
-  0-frame-and-method.md       (orchestrator: session frame)
+reports/<lane>/
+  0-frame-and-method.md       (main agent: session frame)
   1-<slice-name>.md           (sub-agent 1)
   2-<slice-name>.md           (sub-agent 2)
   ...
-  N-overview.md               (orchestrator: synthesis)
+  N-overview.md               (main agent: synthesis)
 ```
 
-The orchestrator takes the next number `N` in its subdir's sequence,
-creates the directory with a kebab-case session-name slug, and each
-sub-agent writes a numbered sub-report inside. The directory **IS**
-the meta-report — no `meta-` prefix, because being a directory is the
-signal. The orchestrator's frame goes in `0-frame-and-method.md`; the
-synthesis in the highest-numbered file (`N-overview.md`). Sub-agents
-own their numbered slices; the orchestrator owns the frame and
-overview plus optionally a slice or two.
+The session directory **IS** the meta-report — being a directory is
+the signal, no `meta-` prefix. The main agent's frame goes in
+`0-frame-and-method.md`; the synthesis in the highest-numbered file
+(`N-overview.md`). Sub-agents own their numbered slices; the main
+agent owns the frame and overview plus optionally a slice or two.
 
-**Pre-launch lane allocation.** Parallel sub-agents receive their
-report lanes — directory path and sub-report number — **before**
-launch, stated in the dispatch prompt and recorded in
+**Pre-launch number allocation.** Parallel sub-agents receive their
+sub-report number — directory path and integer — **before** launch,
+stated in the dispatch prompt and recorded in
 `0-frame-and-method.md`. Sub-agents do not pick their own number; if
 they did, two parallel slices could collide on the same filename.
 
-**Garbage collection.** The directory is collectable as **one session
-unit**: when its substance migrates to permanent homes (ARCHITECTURE,
-skills, ESSENCE, per-repo INTENT), the whole directory retires
-together via a context-maintenance sweep, not piece by piece.
+**Garbage collection.** The session directory is the GC unit. When the
+lane drains at close, the whole directory retires together — see
+§"Session drain — the lane's reports route to intent, work, or
+abandon" — not piece by piece.
 
 ### Filename convention
 
 `<N>-<primary-topic>[-<secondary-topic>]…-<title-slug>.md` where:
 
-- `N` is one above the **highest-numbered report in this role's
-  subdirectory** — per-role, not workspace-wide. No leading zeros, no
-  date prefix.
+- `N` is one above the **highest-numbered report in this lane's
+  session directory** — per-lane, not workspace-wide. No leading
+  zeros, no date prefix.
 - `<primary-topic>` is a durable topic word from the workspace
   vocabulary (`nota`, `schema`, `macros`, `runtime`, `wire`,
   `emission`, `discipline`, `workspace`, `intent`, …). Put it first so
   filename grep finds the topic cluster:
-  `ls reports/designer/ | grep -E "^[0-9]+-schema-"`. A report may
+  `ls reports/<lane>/ | grep -E "^[0-9]+-schema-"`. A report may
   carry one or more topics; secondary facets follow the primary.
 - `<title-slug>` is the specific subject in kebab-case. A `-YYYY-MM-DD`
   suffix is permitted only when same-day collision on one topic is
@@ -278,25 +302,27 @@ during a deliberate agglomeration pass.
 
 ### Numbering
 
-Numbering is **per-role** — each role manages its own sequence.
-`reports/operator/97-…md` and `reports/designer/97-…md` coexist; the
-role subdir disambiguates. Roles work in parallel on independent
-cadences, so a workspace-wide sequence would force every agent to scan
-every other subdir and would collide on parallel landings.
+Numbering is **per-lane** — each session directory manages its own
+sequence. `reports/newLanesDesign/4-…md` and
+`reports/schemaWorkAudit/4-…md` coexist; the lane directory
+disambiguates. Lanes work in parallel on independent cadences, so a
+workspace-wide sequence would force every agent to scan every other
+directory and would collide on parallel landings.
 
-To find the next number, scan only the current role's subdir:
+To find the next number, scan only the current lane's session
+directory:
 
 ```sh
-ls ~/primary/reports/<role>/ | grep -E '^[0-9]+-' \
+ls ~/primary/reports/<lane>/ | grep -E '^[0-9]+-' \
   | sort -t- -k1,1n | tail -1
 ```
 
 Then `N = that + 1`. The number is a stable identifier within the
-role — once assigned, it doesn't change. **Numbers are not reused
+lane — once assigned, it doesn't change. **Numbers are not reused
 after deletion:** a removed report's number stays retired; the next
 report takes next-highest-plus-one. Gaps are a visible signal that
 something retired; the commit history holds the deleted content.
-Cross-references between roles always include the subdir.
+Cross-references between lanes always include the lane directory.
 
 No dates in the filename: they collide on multi-report days and are
 noise once a unique number exists. No leading zeros: numeric-aware
@@ -467,8 +493,8 @@ parseable by an agent walking the report tree without opening files.
 
 ```markdown
 ---
-title: 17 — Real-time intent recording system
-role: designer
+title: 5 — Real-time intent recording system
+role: newLanesDesign
 variant: Design
 date: 2026-05-22
 topics: [intent, recording-system]
@@ -478,7 +504,7 @@ description: |
   Clarifications / Constraints as they happen.
 ---
 
-# 17 — Real-time intent recording system
+# 5 — Real-time intent recording system
 
 (report body...)
 ```
@@ -486,7 +512,8 @@ description: |
 Fields, in canonical order:
 
 - **`title`** — matches the `# <N> — …` heading on the next line.
-- **`role`** — the writing lane's exact subdirectory name.
+- **`role`** — the writing lane's exact session-directory name (the
+  session-intent name, e.g. `newLanesDesign`), not the discipline.
 - **`variant`** — the report kind, capitalised (`Psyche`, `Design`,
   `Audit`, `Research`, `Synthesis`, `Closeout`, `Handover`).
 - **`date`** — first-written date `YYYY-MM-DD`; reaffirmed on
@@ -496,9 +523,9 @@ Fields, in canonical order:
 - **`description`** — multi-line block scalar (`|`); self-contained, so
   a future agent reading just the front matter knows the subject.
 
-Optional, for reports inside a meta-report directory:
-**`parent_meta_report`** (path to the directory) and **`slot`**
-(numeric position; 0 for frame, highest for overview).
+Optional, for slices inside a session directory's fleet:
+**`parent_meta_report`** (path to the session directory) and
+**`slot`** (numeric position; 0 for frame, highest for overview).
 
 **Forbidden: the semicolon-bracket pseudo-NOTA header.** A shape like
 
@@ -536,8 +563,8 @@ This applies when all three hold:
 When any fails (the report is old and out of context, the correction
 is speculative, or the change means a full rewrite), flag it for
 follow-up rather than edit blind. Fresh-in-context edits stay inside
-the role-owned report lane — claim only if the correction also changes
-shared non-report files.
+the lane-owned session directory — claim only if the correction also
+changes shared non-report files.
 
 ### Versioning committed reports
 
@@ -550,12 +577,12 @@ shared non-report files.
 
 The `-v2-` segment goes immediately after the report number, before
 the variant or topic:
-`493-Design-schema-...-2026-06-03.md` →
-`493-v2-Design-schema-...-2026-06-04.md`. For meta-report sub-files it
+`5-Design-schema-...-2026-06-03.md` →
+`5-v2-Design-schema-...-2026-06-04.md`. For session-directory slices it
 goes after the slot number: `2-help-namespace-design.md` →
 `2-v2-help-namespace-design.md`. The commit message names the
-supersession (`designer 493 → 493-v2: <reason>`); readers grepping
-`493-` find both. Git history preserves the prior version intact.
+supersession (`<lane> 5 → 5-v2: <reason>`); readers grepping
+`5-` find both. Git history preserves the prior version intact.
 
 **Major signals:** the recommendation changes direction; a section is
 removed wholesale or added at the structural level; the headline
@@ -565,25 +592,21 @@ tightened, a typo fixed. When uncertain, in-place edit with a clear
 commit message; the v-rename is for edits substantial enough that a
 reader of the prior version benefits from seeing both.
 
-## Hygiene — soft cap, supersession, periodic review
+## Within-session supersession
 
-A role's `reports/` subdirectory is a working surface, not an archive.
-The git log preserves everything; the filesystem holds only what's
-currently load-bearing.
-
-**Soft cap: 12 reports per role subdirectory.** When a subdir reaches
-12, the next agent working there reviews the older reports before
-adding a 13th. The cap is a review trigger, not a hard block — the aim
-is a surface small enough that a fresh reader can scan the listing and
-see what's active.
+A lane's session directory is a working surface, not an archive. While
+the session is live, the filesystem holds only what's currently
+load-bearing; the git log preserves everything else.
 
 **Supersession deletes the older report.** When a new report
-*replaces* an older one (a fresh audit of the same target, a redesign,
-a pass that supersedes a transitional sketch), **delete the older one
-in the same commit that lands the new one** — substance in the new
-report, lineage in git history. First update cross-references in
-surviving reports to point at the new one (or remove the citation);
-dead pointers are a smell, and the cleanup is part of the supersession.
+*replaces* an older one in the same session (a fresh audit of the same
+target, a redesign, a pass that supersedes a transitional sketch),
+**delete the older one in the same commit that lands the new one** —
+substance in the new report, lineage in git history. A continuation or
+review report states explicitly what it supersedes. First update
+cross-references in surviving reports to point at the new one (or
+remove the citation); dead pointers are a smell, and the cleanup is
+part of the supersession.
 
 **Deleted reports live in the commit tree.** The working tree carries
 only current-state reports; a deleted report is one `jj show` away, so
@@ -591,8 +614,8 @@ delete-in-the-same-commit is safe:
 
 ```sh
 # Find the change that last touched the report, then read it:
-jj log -p reports/designer/<N>-<topic>.md
-jj show <change-id>:reports/designer/<N>-<topic>.md
+jj log -p reports/<lane>/<N>-<topic>.md
+jj show <change-id>:reports/<lane>/<N>-<topic>.md
 
 # Find a deleting commit by what it replaced:
 jj log -r 'description(glob:"*<keyword>*")'
@@ -601,22 +624,39 @@ jj log -r 'description(glob:"*<keyword>*")'
 Reach for `jj show` before assuming substance is lost. The report
 tree's small size is a feature, not a forgetting mechanism.
 
-**Periodic review when the subdir gets full.** When the count crosses
-12, work through the older reports; for each, decide one:
+## Session drain — the lane's reports route to intent, work, or abandon
 
-| Action | When |
+Favor a fresh session over endless compaction. A session is run,
+drained at close, and retired — not kept as an accumulating archive.
+When a lane drains, **every idea in its reports routes to exactly one
+of three fates:**
+
+| Fate | Where it goes |
 |---|---|
-| **Keep** | Still load-bearing — current state, active design, a decision someone is still acting on. |
-| **Forward** | Partially relevant — absorb the live parts into a current report, delete the old one. |
-| **Migrate upstream** | Durable substance belongs in `skills/<name>.md`, `<repo>/skills.md`, `<repo>/ARCHITECTURE.md`, `ESSENCE.md`, code, or a tracked item. Move it, delete the report. |
-| **Remove** | Stale, work done, design shipped, decision reversed — nothing load-bearing remains. Delete. |
+| **Intent** | A durable Decision / Principle / Correction / Clarification / Constraint — captured via the Spirit CLI. |
+| **Work** | An implementable next step — a bead linked into the dependency graph with `bd dep <blocker> --blocks <blocked>`. |
+| **Abandon** | Already-landed, stale, or wrong — nothing to carry; git preserves the report. |
 
-The reviewing agent's question is always: *what does this report still
-teach a future reader that they can't get from current code, skills,
-architecture, or fresher reports?* If nothing — delete. The agent
-decides from its own context; if the work doesn't touch the report's
-topic, do a brief read of the relevant code/skills/recent reports to
-find where the substance lives now, then decide.
+The draining agent's question for each idea is: *does a future reader
+need this as durable meaning (intent), as ordered work (a bead), or
+not at all (abandon)?* Durable substance that is neither a Spirit
+record nor a bead — a settled discipline, an architecture commitment —
+migrates to its permanent home first (see §"When report substance
+becomes durable"): a skill, a `<repo>/ARCHITECTURE.md`, a
+`<repo>/INTENT.md`. Permanent docs never cite reports, so a report
+left un-migrated is unreachable from the permanent surface.
+
+**The session directory is the garbage-collection unit.** Once every
+idea has drained, **delete the whole `reports/<lane>/` directory** —
+git history and the session transcript are the archive. Record the
+retirement with one append-only entry in `protocols/retired-lanes.md`:
+the lane name, its discipline, the git revision range holding its
+reports, a transcript pointer, the drain date, and a one-line
+statement of what the lane decided. The orchestrate daemon's live lane
+registry (`LanesObserved`) indexes *active* lanes;
+`protocols/retired-lanes.md` indexes *retired* ones, keeping drained
+sessions discoverable for regression and model-behavior forensics
+without re-growing the working report tree.
 
 **What gets absorbed, not kept indefinitely.** Permanent docs (skills,
 architecture, ESSENCE) never cite reports, so a "kept-indefinitely"
@@ -637,15 +677,16 @@ But the moment the rule is settled, inlining is the move.
 
 ## Context maintenance — research-driven refresh
 
-Hygiene above is the *simple* maintenance: stale reports go,
-load-bearing ones stay. Context maintenance is the *deeper*
-discipline, triggered when the psyche names it ("do a context
-maintenance pass," "refresh," "review the older reports") OR when a
-report is still semantically relevant but has drifted against current
-intent. The output is a **`review`-kind report** that brings older
-substance into current state and supersedes the predecessor (deletes
-it in the same commit). It is designer-authority work — assistant
-lanes can identify candidates, but the refresh is designer-level.
+Session drain above is the *simple* maintenance: each idea routes to
+intent, work, or abandon, and the directory retires. Context
+maintenance is the *deeper* discipline, triggered when the psyche
+names it ("do a context maintenance pass," "refresh," "review the
+older reports") OR when a still-relevant report has drifted against
+current intent. The output is a **`review`-kind report** that brings
+older substance into current state and supersedes the predecessor
+(deletes it in the same commit). It is designer-discipline work —
+assistant lanes can identify candidates, but the refresh is
+designer-level.
 
 ### The four steps
 
@@ -658,16 +699,16 @@ lanes can identify candidates, but the refresh is designer-level.
    intent now.** Three answers: **fully aligned** (substance holds, no
    refresh — mark kept), **drifted but recoverable** (some sections
    superseded, some hold, some need new research → step 3), or
-   **superseded** (no longer load-bearing → delete per Hygiene, no
+   **superseded** (no longer load-bearing → abandon it: delete, no
    review).
 3. **Do new research where the older form drifted.** Re-research the
    gaps. The review isn't a re-edit of the older text — it's a fresh
    pass against current state, carrying older substance forward where
    it holds and filling gaps with new findings.
 4. **Write the review report.** A `review`-kind report under the lane's
-   subdir; names what it supersedes, states current-state findings,
-   and ends with what carries forward / what changed. **Delete the
-   predecessor in the same commit.**
+   session directory; names what it supersedes, states current-state
+   findings, and ends with what carries forward / what changed.
+   **Delete the predecessor in the same commit.**
 
 The output READS AS CURRENT — not as a refresh of an older report.
 The lineage lives in the supersession note and git log; the prose
@@ -732,8 +773,8 @@ a name.
 When a report references files in sibling repos, link via
 `../<repo>/...` (workspace symlinks) — the relative path resolves in
 editors and survives repo renames. Report-to-report references use the
-same shape (`reports/designer/<filename>.md` from within `reports/`;
-`~/primary/reports/designer/<filename>.md` from outside). Avoid full
+same shape (`reports/<lane>/<filename>.md` from within `reports/`;
+`~/primary/reports/<lane>/<filename>.md` from outside). Avoid full
 HTTPS URLs — deep file URLs rot when files move.
 
 **Every external reference carries a short inline summary of the cited
@@ -743,14 +784,14 @@ report into a navigation puzzle.
 
 Wrong:
 
-> *"Operator/33 §4 and operator/34 §7 both keep 'explicit approval for
-> every proposal' as the default."*
+> *"proposalReview/3 §4 and proposalReview/4 §7 both keep 'explicit
+> approval for every proposal' as the default."*
 
 Right (path verifies; prose carries the substance):
 
 > *"The default — explicit approval for every proposal — is kept in
-> operator/33 §4 (open user-level decisions) and operator/34 §7 (rules
-> to enforce while refactoring)."*
+> proposalReview/3 §4 (open user-level decisions) and proposalReview/4
+> §7 (rules to enforce while refactoring)."*
 
 The reader follows the point from the sentence; the path is for
 verification. This applies to all external references, not just
@@ -802,5 +843,5 @@ decision record).
 - `skills/skill-editor.md` — how skills are written and
   cross-referenced (and why skills never reference reports).
 - `skills/context-maintenance.md` — the deeper sweep discipline.
-- `orchestrate/AGENTS.md` §"Reports" — subdir ownership and
+- `orchestrate/AGENTS.md` §"Reports" — session-directory ownership and
   claim-flow exemption.

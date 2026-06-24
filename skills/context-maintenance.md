@@ -1,13 +1,25 @@
 # Skill — context maintenance
 
+## Context maintenance is the session-drain discipline
+
+A lane is a throwaway work-session named for its intent; its
+reports live in a session directory `reports/<lane>/`. Context
+maintenance is what a lane does as it **drains at close**: every
+idea the session produced routes to exactly one of three fates, and
+once drained the lane retires — its report directory is deleted and
+one line is appended to the retired-lane registry. The everyday
+sweeps below (agglomeration, topic-recency ranking) are the same
+discipline applied mid-life, before a compaction or a soft-cap, but
+the close-of-session drain is the spine.
+
 ## Two surfaces, one discipline
 
 A report is just context saved to disk. Both surfaces decay
 together and need the same maintenance, usually in the same pass:
 
-- **Reports on disk** under `reports/<role>/`. Working artifacts
-  whose substance matures upward to permanent docs (skills,
-  architecture, code, `ESSENCE.md`) or retires when done.
+- **Reports on disk** under `reports/<lane>/` — the session
+  directory. Working artifacts whose substance matures upward to
+  permanent docs (skills, architecture, code) or retires when done.
 - **Context in the live conversation**. The session's working
   memory; the unsaved part is lost on compaction or clear unless
   it has migrated to disk.
@@ -16,11 +28,28 @@ The rule for both: keep load-bearing substance, move it to its
 right permanent home, retire what's done. Maintaining only one is
 half a pass.
 
+## The three-fate disposition
+
+When a session drains, every idea it produced — every report, every
+open thread, every half-formed thought in the live context — routes
+to exactly one of three fates:
+
+| Fate | Where it goes |
+|---|---|
+| **Intent** | A durable meaning the psyche stated — captured through the Spirit CLI as a Decision / Principle / Correction / Clarification / Constraint. Run the Spirit gate; an edit to an existing record beats a sibling. |
+| **Work** | Something still implementable — a bead, linked into the dependency graph (`bd dep <blocker> --blocks <blocked>`) so a fresh-context agent can pick it up in order. |
+| **Abandon** | Already landed, stale, or wrong — let it go. Git history and the session transcript preserve it; nothing needs to stay in the working tree to remember it. |
+
+A report that survives the drain does so only because its substance
+hasn't yet reached its fate — it is still a working artifact for a
+live topic. The drain is complete when nothing is left that isn't
+either captured (intent), tracked (work), or released (abandon).
+
 ## The goal — fewer reports, same information
 
-A maintenance pass **reduces the number of reports without losing
-information**. The primary move is **agglomeration**: take the
-several reports on one topic, merge their un-contradicted,
+A mid-life maintenance pass **reduces the number of reports without
+losing information**. The primary move is **agglomeration**: take
+the several reports on one topic, merge their un-contradicted,
 un-superseded substance into ONE better report on that topic, then
 delete the merged sources — the new report is the landing witness.
 Agglomerate by **topic, not by lane**: one topic's reports across
@@ -41,20 +70,26 @@ report at all — it migrates to the permanent layer.
 
 ## When to invoke
 
-- **Compaction trigger.** The context window is near its limit, or
-  the user is about to clear/compact. Sweep before the loss event.
-- **Report soft-cap trigger.** A role's `reports/` subdir crosses
-  the 12-report soft cap (see `reporting.md`). Sweep older reports
-  to migrate substance and land back under cap.
-- **End-of-session checkpoint.** After substantial work, before
-  stepping away, so the next agent can resume.
+- **Session-drain trigger (the spine).** A session lane is closing.
+  Run the three-fate disposition over everything the session
+  produced, then retire the lane (delete its report directory,
+  append one line to the retired-lane registry). Favor a fresh
+  session over endless compaction — so most sessions end in a drain
+  rather than carrying on degraded.
+- **Compaction trigger.** A continuing session's context window is
+  near its limit, or the user is about to clear/compact. Sweep
+  before the loss event so the live working memory reaches disk.
+- **Report soft-cap trigger.** A lane's `reports/` session
+  directory crosses the 12-report soft cap (see `reporting.md`).
+  Sweep older reports to migrate substance and land back under cap.
 - **Explicit user direction.** "Do a context maintenance",
-  "do a handover", or similar.
-- **Lane retirement.** Before a retiring lane's identifier can be
-  freed, its leftover memories must be triaged via this skill —
-  reports under `reports/<retiring-lane>/` and beads tagged with
-  the lane label. Identifier retirement is gated on that triage.
-  See `context-maintenance-deep.md` for the methodology.
+  "do a handover", "drain the lane", or similar.
+- **Lane retirement.** A retiring lane's leftover memories must
+  first be triaged via this skill — reports under
+  `reports/<retiring-lane>/` and beads tagged with the lane label.
+  Retirement is gated on that triage completing; only then is the
+  report directory deleted and the registry line appended. See
+  `context-maintenance-deep.md` for the methodology.
 
 Triggers often coincide; treat them as one pass.
 
@@ -62,8 +97,8 @@ Triggers often coincide; treat them as one pass.
 
 ### 1 · Inventory
 
-List the reports for each relevant role (`ls
-~/primary/reports/<role>/`). For context, review the conversation's
+List the reports for each relevant lane (`ls
+~/primary/reports/<lane>/`). For context, review the conversation's
 themes — what was worked on, decided, left open, surfaced. Don't
 dump everything; categorize.
 
@@ -123,6 +158,13 @@ report-by-report after each stale flag names the surface that
 absorbs it. Bulk retirement without a landing witness is context loss.
 
 ### 2a · Per item, decide
+
+The three-fate disposition is the *outcome* of a drain; these four
+actions are the *moves* that reach it. Forward and Migrate land
+substance so it can be safely released (abandon); the part of a
+report that is implementable work becomes a bead (work); a durable
+psyche meaning surfaced along the way becomes a Spirit record
+(intent). Drop is the release once a fate is secured.
 
 Pick one of four actions per report or context theme:
 
@@ -243,7 +285,7 @@ over-engineer: a note-line is a note-line, not a numbered section.
 ## The rollover / handover report (when one is needed)
 
 If genuinely needed, it lives at
-`reports/<role>/<N>-handover-<date>.md` (or `<N>-rollover-…`):
+`reports/<lane>/<N>-handover-<date>.md` (or `<N>-rollover-…`):
 
 - **What landed** — committed and pushed; one line each.
 - **What's open** — discussed but not yet resolved.

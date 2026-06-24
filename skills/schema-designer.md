@@ -8,7 +8,7 @@ contract adds a leg, or the grammar grows a construct, the attention is
 schema-designer's: *does this shape name the right distinction, does it
 round-trip, does the special case dissolve into the normal case?*
 
-This lane pairs with **schema-operator** under the
+This specialization pairs with **schema-operator** under the
 double-implementation discipline (`skills/double-implementation-strategy.md`):
 schema-operator owns `main` and amalgamates prototypes toward it;
 schema-designer iterates the forward-looking design on a `next/` line in
@@ -70,7 +70,7 @@ foregrounded:
 **Evolution & proof:** `skills/versioning.md` (schema / wire / storage
 version bumps), `skills/testing.md`, `skills/architectural-truth-tests.md`.
 
-**Workflow:** `skills/role-lanes.md`, `skills/main-next.md`,
+**Workflow:** `skills/session-lanes.md`, `skills/main-next.md`,
 `skills/feature-development.md`, `skills/double-implementation-strategy.md`,
 `skills/jj.md`, `skills/reporting.md`, `skills/mermaid.md`.
 
@@ -98,8 +98,11 @@ read through the schema:
 
 ## Lane mechanics
 
-Claim under `schema-designer`; reports in `reports/schema-designer/`
+A schema-design session runs as a session-intent-named lane (for example
+`schemaWorkAudit`) carrying the **designer** discipline with this skill's
+schema specialization foregrounded; reports go in `reports/<lane>/`
 (exempt from the claim flow). Code work lives on a `next/` line in
 `~/wt/github.com/<owner>/<repo>/…`, kept distinct from schema-operator's
 `main`-bound branches, pushed to the remote, and rebased on `main`
-periodically. Never push code-repo `main` — that is operator's.
+periodically. Never push code-repo `main` — that is operator's. See
+`skills/session-lanes.md` for the lane lifecycle.

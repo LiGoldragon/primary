@@ -13,10 +13,14 @@ The compact contract. Every agent reads this every session.
    whenever a topic comes up; don't scan `skills/`. This is the one
    discovery path — rules below state themselves and trust you to find
    the matching skill here for depth.
-5. **`orchestrate/AGENTS.md`** — how roles share this workspace.
-6. **Your role's `skills/<role>.md`** — the role's required-reading list.
-   Lanes share their main role's file.
-7. **Inside a repo under `repos/`: that repo's `INTENT.md` FIRST**, then
+5. **`orchestrate/AGENTS.md`** — how disciplines and session lanes share
+   this workspace.
+6. **`skills/session-lanes.md`** — what a lane is, how you learn yours,
+   and the session lifecycle (run fresh, drain, retire).
+7. **Your discipline's `skills/<discipline>.md`** — the discipline's
+   required-reading list. Every session lane loads the file for the
+   discipline it carries as metadata.
+8. **Inside a repo under `repos/`: that repo's `INTENT.md` FIRST**, then
    its `AGENTS.md`, `skills.md`, and `ARCHITECTURE.md`. A repo's
    `INTENT.md` is the first and most important file per repo — what the
    psyche wants the project to be; read it before code. Every repo needs
@@ -31,11 +35,12 @@ The compact contract. Every agent reads this every session.
 | `AGENTS.md` | This file. The compact every-session contract. |
 | `INTENT.md` | Workspace intent in prose, synthesised from Spirit records. |
 | `<repo>/INTENT.md` | Per-repo synthesis of psyche intent — read before code; every repo needs one. |
-| `orchestrate/AGENTS.md` | Role-coordination protocol. |
+| `orchestrate/AGENTS.md` | Discipline-and-lane coordination protocol. |
 | `protocols/active-repositories.md` | Live repo map for architecture sweeps. |
+| `protocols/retired-lanes.md` | Append-only thin index of drained lanes — name, discipline, git revision range holding the reports, transcript pointer, drain date, one-line decision. The retired-lane counterpart to the daemon's live `LanesObserved` registry. |
 | `skills/<name>.md` | Cross-cutting agent capabilities. |
 | `skills/skills.nota` | Typed skill index (name, path, kind, tier, description). |
-| `reports/<role>/` | Role-owned reports; each role writes only its own subdir. Exempt from the claim flow. |
+| `reports/<lane>/` | Session directory — reports for one session lane, named for that session's intent. The garbage-collection unit; deleted when the lane drains. Exempt from the claim flow. |
 | `orchestrate/<lane>.lock` | Per-lane coordination state. |
 | `orchestrate` | Direct NOTA CLI for claim/release/observation through the orchestrate daemon. |
 | `.beads/` | Shared short-tracked-item store. Transitional. |
@@ -46,8 +51,10 @@ The compact contract. Every agent reads this every session.
 ## Reports go in files; chat is for the user
 
 Substantive output — anything that explains, proposes, analyses, audits,
-synthesises, or visualises — goes in `reports/<role>/<N>-<topic>.md`, not
-chat. The trigger is shape, not length: a mermaid diagram, a markdown
+synthesises, or visualises — goes in your session lane's directory as
+`reports/<lane>/<N>-<topic>.md`, not chat. `<lane>` is the session-intent
+name; numbering is per-lane. The trigger is shape, not length: a mermaid
+diagram, a markdown
 table beyond a trivial reference, `##`/`###` headings, a how-it-works
 walk-through, a multi-paragraph concept explanation, a list over five
 substantive items, or a code block over ~10 lines all belong in a report.
@@ -59,18 +66,34 @@ surface, bring 3-7 items spread across (a) questions / clarifications of
 intent, (b) observations and how-new-mechanisms-work, (c) examples of
 recent work. Visuals stay in reports.
 
-When an agent dispatches sub-agents, the session lands as one meta-report
-directory `reports/<role>/<N>-<session-name>/`: the orchestrator's frame
-in `0-frame-and-method.md`, each sub-agent report numbered inside, the
+The session lane's directory `reports/<lane>/` is itself the meta-report
+when an agent dispatches sub-agents: the orchestrator's frame in
+`0-frame-and-method.md`, each sub-agent report numbered inside, the
 synthesis as the highest-numbered file.
 
-## Roles
+A report is a fresh-context pickup point. Write it so an agent starting
+from a clean context can pick the work up, reason about it, and — where
+the work is implementable — implement it; implementable work is linked
+into a bead dependency graph (`bd dep <blocker> --blocks <blocked>`). A
+continuation or review report states explicitly what it supersedes and
+deletes its predecessor in the same commit.
 
-Nine main roles, each with its own discipline. Lanes (`<role>`,
-`second-<role>`, `third-<role>`, `<qualifier>-<role>`) share their main
-role's discipline, skill file, and beads label — only the lock file,
-report subdirectory, and claim string differ. Additional capacity is
-`second-<role>` / `third-<role>`; specialized scope is a prefix.
+A session lane runs fresh, drains at close, and retires. Favor a fresh
+session over endless compaction. At close every idea routes to exactly
+one of three fates — *intent* (captured via the Spirit CLI), *work* (a
+bead linked into the dependency graph), or *abandon* (already landed,
+stale, or wrong; git preserves it). When the lane drains, delete its
+`reports/<lane>/` directory — git history and the session transcript are
+the archive — and append one entry to `protocols/retired-lanes.md`
+recording the lane name, discipline, the git revision range holding its
+reports, a transcript pointer, the drain date, and a one-line statement
+of what it decided.
+
+## Disciplines and lanes
+
+Nine disciplines. A **discipline** is the persistent identity: it loads a
+role's skills, authority class, and persona-mind memory (and signing key).
+Disciplines do not churn.
 
 - `operator` — implementation (default: Codex)
 - `designer` — architecture, skills, reports (default: Claude)
@@ -80,28 +103,38 @@ report subdirectory, and claim string differ. Additional capacity is
 - `editor` — source-grounded research, quotation, and synthesis as craft
 - `videographer` — video as craft: capture, editing, captioning, encoding, publishing-prep
 - `assistant` — personal-affairs support for the psyche (Pi)
-- `counselor` — personal-affairs advisory, working with the assistant lane
+- `counselor` — personal-affairs advisory, working with the assistant discipline
 
-An agent's lane is the exact role-name the harness gave it; don't
-substitute a nearby lane (a `pi-operator` window uses
-`orchestrate/pi-operator.lock` and `reports/pi-operator/`). Specialized
-lanes inherit the closest main role: `cluster-operator` (live cluster
-maintenance, production deploy authority), `pi-operator` (Pi-harness
-operator), `cloud-operator` (cloud deploy), `cloud-maintainer`
-(cloud-host and provider-session maintenance), `schema-operator`
-(schema and schema-rust implementation), `maintainer` (active
-troubleshooting and host maintenance); `cloud-designer`, `nota-designer`,
-`system-designer`, `schema-designer` (schema-stack and contract-shape
-design, paired with `schema-operator`) are scoped designer lanes.
+A **lane** is a single work session, named for that session's intent
+(`newLanesDesign`, `schemaWorkAudit`) — not a fixed role name. A lane
+carries its discipline as metadata: in the orchestrate registry a lane's
+role is a NOTA vector whose last token is the base discipline, e.g.
+`[NewLanesDesign Designer]`. The discipline metadata is what loads the
+skills, authority, and persona-mind memory; the lane itself is disposable.
+There is no fixed-lane zoo — `second-<role>`, `third-<role>`, and
+`<qualifier>-<role>` are retired as the lane model. Additional capacity is
+just another session lane on the same discipline. Specialized scope is
+also discipline metadata, not a separate lane name: a cluster-scoped
+operator session, a schema-scoped operator or designer session, a Pi-harness
+operator session — the extra scope tokens precede the base discipline in
+the registry role vector, and they tune authority and reading, not lane
+identity.
+
+You learn your lane from the session identity the harness gives you — the
+intent name that owns `orchestrate/<lane>.lock` and `reports/<lane>/`.
+Register it through the orchestrate daemon (`Register
+[LaneRegistrationRequest (Role LaneAuthority)]`) so it appears in the live
+`LanesObserved` registry; retire it through the daemon's retire path when
+it drains. See `skills/session-lanes.md`.
 
 Assistant and counselor personal-affairs substance is private by default
 — `private-repos/assistant-reports/` or `private-repos/counselor-reports/`.
 
-An **auditor** role is coming: shape decided (an automated auditor
+An **auditor** discipline is coming: shape decided (an automated auditor
 auto-proposes intent refreshes; the psyche confirms each source-record
-retirement), lane mechanics still open. It closes the loop back to
+retirement), session mechanics still open. It closes the loop back to
 designer — doubting, finding flaws, catching broken rules. No
-`skills/auditor.md` or `reports/auditor/` yet.
+`skills/auditor.md` yet.
 
 ## Hard overrides
 
@@ -271,8 +304,8 @@ designer — doubting, finding flaws, catching broken rules. No
   store. Session-scoped harness tools (task lists, scratchpads) are fine
   for organizing a session, but anything worth preserving lands in
   workspace files before the session ends: Spirit records,
-  `ARCHITECTURE.md` / `INTENT.md`, `skills/`, or `reports/<role>/`.
-  Private substance defaults to `private-repos/<role>-reports/`.
+  `ARCHITECTURE.md` / `INTENT.md`, `skills/`, or `reports/<lane>/`.
+  Private substance defaults to `private-repos/<discipline>-reports/`.
 
 - **No `/nix/store` filesystem search.** Use `nix eval`, `nix flake
   show`, `nix path-info`, or expose the value through a derivation.

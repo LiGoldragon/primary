@@ -103,8 +103,8 @@
   (Programming stt-interpreter skills/stt-interpreter.md Mechanism
     [How to decode speech-to-text prompts that mis-transcribe workspace-specific words — guess the intended word and act, asking only if wrong. Reach for it when a prompt contains a phonetic near-miss for a known workspace term.])
 
-  (Workflow role-lanes skills/role-lanes.md Mechanism
-    [How lanes work as parallel windows into a role's single agent — main, ordinal, and qualified lanes. Read when working out which lock, report subdir, and claim string your lane uses.])
+  (Workflow session-lanes skills/session-lanes.md Mechanism
+    [How a lane is a fresh work-session identity named for its intent, carrying a discipline as metadata that loads its skills and authority. Read when opening, registering, naming, or draining a session lane.])
   (Workflow architecture-editor skills/architecture-editor.md Mechanism
     [How to name, scope, and maintain ARCHITECTURE.md files, which never reference reports. Reach for it when editing an ARCHITECTURE.md.])
   (Workflow nota-schema-docs skills/nota-schema-docs.md Mechanism
