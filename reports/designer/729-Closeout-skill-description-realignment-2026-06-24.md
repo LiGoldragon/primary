@@ -51,23 +51,15 @@ interaction`. The corresponding `skills.nota` entry already carried the correct
 `Meta` Kind and `Apex` Tier; its description was rewritten to the rubric. No
 frontmatter was added to any file.
 
-## Duplicate taglines removed
+## Opening taglines removed (all of them)
 
-Four files whose line-3 italic tagline was a character-for-character restatement
-of their `skills.nota` description had that line deleted:
-
-- `skills/assistant.md` — `*Personal-affairs support for the psyche.*`
-- `skills/counselor.md` — `*Personal-affairs advisory for the psyche, working with the assistant lane.*`
-- `skills/editor.md` — `*Source-grounded research, quotation, and synthesis as craft.*`
-- `skills/system-maintainer.md` — `*Crayon OS and Logic maintenance, debugging, updates, and deploys across hosts.*`
-
-Other files carry a line-3 italic tagline (e.g. `enum-contact-points`,
-`beauty`, `push-not-pull`, `nota-design`, `operator`, `poet`, `privacy`,
-`versioning`, `role-lanes`, `alignment-interview`, and others). These were
-**kept**: each is a distinct memorable framing rather than a verbatim restatement
-of the index description, so they are substantive opening prose, not duplicates.
-Restricting deletion to exact verbatim matches keeps this within the
-"delete only a line that duplicates the description" constraint.
+This pass first removed only the four taglines that were verbatim restatements
+of their description. The psyche then decided **no opening tagline at all** — the
+description lives solely in `skills.nota`, so a skill file carries no purpose line
+whatsoever. A follow-up sweep removed the rest: **47 files total** now have their
+opening `*…*` tagline deleted, leaving the `# Skill — <name>` heading followed
+directly by the first section or body. The remaining files never had a standalone
+tagline. `skills.nota` and `skill-editor.md` were handled separately (below).
 
 ## Unindexed-file resolution
 
@@ -94,3 +86,24 @@ description was left at the original wording for lack of clarity.
 - 71 positional records; all reference existing files; no file unindexed.
 - Kind / name / path / Tier preserved on every pre-existing entry; only the
   `[Description]` field changed.
+- Parens (76/76) and brackets (72/72) balanced; spot-checked rewritten files
+  (`designer`, `alignment-interview`, `intent-log`) — bodies intact, only the
+  opening tagline gone.
+
+## Manifestation, captures, and commit state
+
+The rules this pass enforces now live where skill-authors will see them.
+`skill-editor.md` lost its own tagline, dropped the `*<one-line purpose>*` line
+from its file template, and gained a "The index entry is the description" section
+stating the single-source rule and the purpose+trigger rubric.
+
+Intent captured or edited this session: the description rubric (purpose + trigger,
+two sentences, positive); the single-source / no-frontmatter / no-tagline rule
+(superseding the earlier no-duplicate-tagline form); the workspace-wide
+positive-framing golden rule (enriched); and the one-question alignment-interview
+format.
+
+All changes are committed and pushed to `main` — drained across two shared
+working-copy commits by peer lanes (generic message "commit pending skill
+edits"), not by a dedicated push. `skills.nota`, `skill-editor.md`, the 47 tagline
+files, the frontmatter strip, and reports 728/729 are all on origin/main.
