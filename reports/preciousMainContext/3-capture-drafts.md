@@ -248,3 +248,90 @@ a drafting omission.
 | f | new | Record | Clarification | High | want a record at all, or skill+AGENTS.md edit only |
 
 Nothing was written to Spirit. These are drafts only.
+
+## What landed (firing pass, 2026-06-24)
+
+The main agent fired all six against the live store after re-`Lookup`ing each
+target. Three landed, one landed narrowed, two hard-stopped on substantive
+guardian remands. The guardian's deployed contract version is `0.16.0`.
+
+### Landed
+
+- **(a) 2o3g -> 30cu (Supersede, accepted).** Variant a1 per the resolved
+  decision: orientation dispatch is the standing default with the concrete
+  trigger (early context + more-than-a-few-short-files, or multi-level
+  exploration), effort scaling (simple->one helper medium; complex->high/xhigh),
+  and change-making dispatch still psyche-gated. `Constraint / High / Medium /
+  Zero`, referents `[subagents agents-md async-dispatch]`. Testimony:
+  Q-helpers-trigger + Q-helpers-precious. The draft's referents `orientation`
+  and `precious-context` were dropped — the referent-guardian rejected
+  `orientation` as `NonReferent` (abstract concept), so only concrete
+  already-registered referents were used.
+- **(b) 69fa -> 69fa (Clarify, accepted on second shape).** The first Clarify
+  was rejected `Compound` — it bundled the dispatch-for-complexity arrow (now
+  in 30cu) with 69fa's early-window arrow. Narrowed to 69fa's single arrow: the
+  main thread is the most precious context, and the lead protects the early
+  window by taking orientation + basic task-training + file-section pointers
+  from a subagent's distilled response. Kind/certainty/importance/privacy/
+  referents preserved (`Principle / Medium / Minimum / Zero`). Testimony:
+  Q-helpers-precious.
+- **(c) xrxy -> hu84 (Supersede, accepted narrowed).** The broad version
+  (asserting the designer/operator distinction is dropped workspace-wide) was
+  rejected `InsufficientWarrant` — it conflicts with a cluster of active
+  records (ahop, kxzh, zjop, irmw, jq8w, ty8z) that still use the distinction.
+  Re-fired scoped to xrxy's own subject: subagent-by-default + cross-audit (one
+  model audits the other, Codex audits Claude or the reverse) is the
+  universal protocol replacing the prime-designer-chair scoping. `Decision /
+  High / Minimum / Zero`, referents `[subagents claude codex]`. Testimony:
+  Q-crossaudit. The wider "drop the role distinction / any agent works on
+  whatever the psyche points it at" half was deliberately NOT folded in — see
+  STOP items.
+- **(f) ljce -> d7ew (Supersede, accepted; verb corrected).** Draft assumption
+  was WRONG: it claimed no Spirit record held the one-question cadence, but
+  `ljce` (`Correction / High`) held exactly *"exactly one focused question per
+  turn."* First fired as `Clarify ljce`, rejected `ClarifyTramples` (relaxing
+  one->few inverts the arrow). Re-fired as `Supersede ljce` per the guardian's
+  named verb. d7ew: a few focused questions per turn (a small batch), asking a
+  few at least is the standard, no-questionnaire-UI preserved. Testimony:
+  Q-cadence.
+
+### STOPPED (substantive guardian remands — need psyche arbitration)
+
+- **(d) vocabulary Record — NOT landed.** Rejected `InsufficientWarrant`. The
+  guardian: the psyche authorizes Mind/memory/weave replacing beads, but a
+  standalone naming Record leaves the store incoherent because ~10 active
+  records still say "beads" (ypg9, el7z, krez, j028, mi6m, pm1b, 3w61, wgii,
+  3w61, and others). The guardian's named repair shape is to Supersede /
+  ChangeRecord those records to the new vocabulary in the same intent change —
+  a multi-record rename pass, larger than the single Record this pass scoped.
+  Vocabulary substance is approved; the *coherent execution* is a deferred
+  maintenance sweep across the beads-using cluster.
+- **(e) minimize-AGENTS.md Record — NOT landed.** Rejected twice: first
+  `Overstated` (the guardian calibrated "We should minimize" as `Medium`, not
+  `High`; honored), then `InsufficientWarrant` (the guardian holds it
+  contradicts ky10's decision to place intent-alignment in the agent contract
+  files, and wants the conflict resolved via Supersede/ChangeRecord of ky10
+  rather than a sibling write). Two substantive rejections -> hard stop rather
+  than reshaping further away from the psyche's words. Needs the psyche to
+  decide whether to reframe the principle to coexist with ky10, or to land it
+  as a ChangeRecord touching ky10.
+
+### potn — left UNEDITED
+
+The resolved decision said to edit potn if it already holds "any agent works on
+whatever the psyche points it at," else fold into the xrxy supersede. potn holds
+the *lane-identity* arrow (intent-named lanes; role becomes metadata), not the
+*drop-the-distinction / cross-audit* arrow. The cross-audit mechanism landed in
+hu84. The broader "drop the role distinction" assertion was the exact clause the
+guardian rejected against a whole active cluster (same `InsufficientWarrant`
+territory), so potn was left untouched — editing it to assert the distinction is
+dropped would hit the same cluster conflict and needs psyche-level coordination.
+
+### Net
+
+Landed: 30cu, 69fa (clarified), hu84, d7ew. Stopped: vocabulary (d),
+minimize-AGENTS.md (e). potn unedited. The two stops and the narrowed (c) all
+converge on one open question for the psyche: how broadly to retire the
+designer/operator distinction and the beads vocabulary as coordinated
+multi-record maintenance passes, since the guardian refuses to let single
+records contradict the live clusters that still encode the old shapes.
