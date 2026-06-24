@@ -81,11 +81,14 @@ Existing related follow-ups remain relevant:
 - Make `SpecifiedSchema` the package/build canonical artifact in `schema-next` and `schema-rust-next`, `primary-ing7`.
 - Repair the `schema-rust-next` generated legacy-helper Nix witness, `primary-yeom`.
 
-## Blocked Manifestation
+## Intent Surface
 
-The clarified Spirit intent should also be reflected into affected repo `INTENT.md` files, especially `schema-next` and `schema-rust-next`. I attempted to claim those exact files, but `schema-operator` already holds both for closely related SpecifiedSchema migration work. I did not edit through that active lock.
+Do not manifest this interview by editing repo `INTENT.md` files. Spirit is the
+current intent source; static intent files are deprecated. Future agents should
+query Spirit for the schema endpoint and keep implementation-facing surfaces
+current through reports, beads, architecture notes, and code changes.
 
-When the lock clears, the repo intent updates should at minimum say:
+For this slice, the implementation-facing summary is:
 
 - `schema-next` owns the schema environment manifest model, typed source/source-map layer, canonical `.schema` projection from `SpecifiedSchema`, and the eventual schema daemon/library/macro substrate.
 - `schema-rust-next` consumes `SpecifiedSchema` from the environment/build spine and participates in the vertical slice by regenerating Rust from the same semantic snapshot that re-encodes canonical schema text.
