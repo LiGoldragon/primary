@@ -128,4 +128,52 @@ Final disposition: **Retire 4** (`n9ta`, `av1q`, `sfwv`, `yuku`), **Clarify 8**
 
 ## Execution log
 
-Receipts appended after each operation runs.
+**Done — 12 of the 13 authorized records (descriptions now SpecifiedSchema-aligned):**
+
+| Op | Records | Receipt |
+|---|---|---|
+| `Retire` | `n9ta`, `av1q`, `sfwv`, `yuku` | `(Retired …)` — pure-Asschema, no surviving arrow; lineage stays visible |
+| `Clarify` | `py4h`, `h053`, `bkcd`, `b2jg`, `oxgh`, `t5wx`, `xbu8` | `(Clarified …)` — surviving rule kept, dead Asschema framing stripped |
+| `ChangeRecord` | `mcuk` | `(RecordChanged mcuk)` — description already current; dropped the stale `asschema` referent |
+
+NOTA lesson recorded: descriptions containing structural delimiters (parens) need the
+bracket-safe `[|…|]` string form, not plain `[…]`; minimal Clarifies (swap only the dead
+phrase, keep the rest verbatim) avoid the `ClarifyTramples` guardian rejection that a broad
+rewrite drew.
+
+**Deferred — `hc0t` (guardian-protected, needs an explicit psyche decision):**
+Three rejections under the generic "Full cleanup" warrant — `ClarifyTramples` (a broad
+rewrite re-asserting "schema artifacts are canonical NOTA-and-rkyv only" trampled the
+sibling VeryHigh `a9sq`), then `Overstated` (a `Supersede` mints a fresh VeryHigh constraint
+the cleanup testimony does not assert), then `InsufficientWarrant` (even a narrow Clarify).
+This is the guardian working correctly: hc0t's first sentence is dead (.asschema artifact)
+but its second is a live VeryHigh codec-floor kernel — *all NOTA output comes from the typed
+codec; a printed type label is a real decodable shape; never hand-rolled*. I did **not**
+retire it (that would lose the live kernel). Recommendation: the psyche either restates the
+codec-floor constraint in their own words (then `Supersede` hc0t cleanly) or confirms it is
+adequately held by `aipc`/`kfqa` + report 18's codec-floor rule (then `Retire`). Until then
+hc0t stays as-is.
+
+**Surfaced — the cluster is larger than the 13 (newly found via an `AssembledSchema` search,
+not in report 19's list):**
+
+| Record | Cert/Imp | Disposition (same pattern: `AssembledSchema` → `SpecifiedSchema`) |
+|---|---|---|
+| `a9sq` | VeryHigh/High | Dual: rkyv-single-encoded-form + NOTA-text-projection survive; "one AssembledSchema reads bytes" stale. VeryHigh → likely guardian friction like hc0t. |
+| `ppuk` | High/Medium | "Schema macro expansion ends in AssembledSchema … complete input to Rust generation" — re-home on SpecifiedSchema (consistent with 6cfr/6grf). |
+| `506w` | High/Medium | Dual: brace-enum→paren-list sugar + enum-body homogeneity survive; "lower to the same AssembledSchema" stale. |
+| `gb3d` | Medium/Medium | Visibility-boundary rule survives (overlaps `oxgh`); "AssembledSchema" stale. |
+| `sd7x` | Medium/Medium | Lowerer-engine design (node-definition-point dispatch) survives; "producing AssembledSchema" stale. |
+| `khbv` | High/Minimum | Self-describing meta-schema thesis survives; "AssembledSchema types" stale. |
+
+**Residual referent tags.** The 7 clarified records still carry the `asschema` /
+`assembled-schema` *referent* (Clarify edits only the description; only ChangeRecord touches
+referents). Left in place deliberately as lineage markers that aid cluster-rediscovery; the
+descriptions — what agents act on — are current. A follow-up sweep can normalize referents
+together with the 6 stragglers and the hc0t decision, in one consistent pass, rather than
+re-submitting seven full entries now at typo/guardian risk.
+
+**Net:** 12/13 authorized records cleaned; hc0t deferred to psyche; 6 stragglers + referent
+normalization queued for a confirmed follow-up. The intent log's *active descriptions* no
+longer frame Asschema as a live artifact except the two records that correctly record its
+removal (`6cfr`, `ng1x`) and the deferred `hc0t`.
