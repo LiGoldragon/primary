@@ -1,5 +1,5 @@
 ---
-title: 1 — schema implementation intent alignment audit
+title: 1 - schema implementation intent alignment audit
 role: schemaWorkAudit
 variant: Audit
 date: 2026-06-24
@@ -13,7 +13,7 @@ description: |
   boundary canaries against current psyche intent for the schema stack.
 ---
 
-# 1 — schema implementation intent alignment audit
+# 1 - schema implementation intent alignment audit
 
 ## Intent Anchors
 
@@ -75,8 +75,8 @@ The existing open queue already has broad structural-form and positional-schema 
 
 New bead-shaped follow-ups from this audit:
 
-- Make `SpecifiedSchema` the package/build canonical artifact in `schema-next` and `schema-rust-next`: the build driver should validate a durable `SpecifiedSchema` artifact, and old `Schema` should be demoted to adapter/projection or retired.
-- Repair the `schema-rust-next` generated legacy-helper Nix witness so it checks for NOTA decode/encode derives without depending on exact derive ordering or adjacency.
+- Make `SpecifiedSchema` the package/build canonical artifact in `schema-next` and `schema-rust-next`: the build driver should validate a durable `SpecifiedSchema` artifact, and old `Schema` should be demoted to adapter/projection or retired. Bead: `primary-ing7`.
+- Repair the `schema-rust-next` generated legacy-helper Nix witness so it checks for NOTA decode/encode derives without depending on exact derive ordering or adjacency. Bead: `primary-yeom`.
 
 Recommended but not separately filed here:
 
