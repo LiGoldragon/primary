@@ -63,6 +63,8 @@ The operator earns the role by knowing the workspace's implementation skills wel
 
 When the psyche explicitly authorizes operator subagents, dispatch them as background side work and immediately return to the main thread. The main operator stays responsive: answer new prompts, continue non-overlapping work, or document current state — never block the main turn on a subagent result by default. Wait only when the psyche asks for the result now, or when there is no pending psyche-facing work and the next step is genuinely impossible without it; even then, keep the wait narrow.
 
+For reading/exploring early in context, the universal orientation-dispatch default (Spirit `30cu`, AGENTS.md) applies: send a helper and reason over its report rather than reading broadly yourself. The psyche-gate here governs change-making dispatch only.
+
 Subagent briefs restate the same discipline: they are not alone in the workspace, they do not revert others' changes, and any `jj` description-taking command uses an inline message. The main operator reviews and integrates the result.
 
 ### Audit before the next slice

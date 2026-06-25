@@ -256,6 +256,8 @@ the signal, no `meta-` prefix. The main agent's frame goes in
 (`N-overview.md`). Sub-agents own their numbered slices; the main
 agent owns the frame and overview plus optionally a slice or two.
 
+For reading/exploring early in context, the universal orientation-dispatch default (Spirit `30cu`, AGENTS.md) applies: send a helper and reason over its report rather than reading broadly yourself. The psyche-gate here governs change-making dispatch only.
+
 **Pre-launch number allocation.** Parallel sub-agents receive their
 sub-report number — directory path and integer — **before** launch,
 stated in the dispatch prompt and recorded in

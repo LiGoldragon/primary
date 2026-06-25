@@ -130,6 +130,8 @@
 
   (Meta human-interaction skills/human-interaction.md Apex
     [How psyche-facing agents handle the human boundary: load intent-log and spirit-cli fresh, capture intent first, shape chat, dispatch subagents, frame real-world tests, and report back. Read every session when your lane talks with the psyche.])
+  (Meta when-to-use-helpers skills/when-to-use-helpers.md Apex
+    [The context-preserving dispatch discipline: run only the minimal dispatch envelope when sending a helper to gather context, do NOT re-read what the helper was sent to collect, and read its written files back for tool-scaffolding residue. Reach for it whenever the psyche asks you to spend a helper to explore, save context, or prepare a fan-out.])
   (Meta intent-alignment skills/intent-alignment.md Apex
     [The default discipline for an interactive agent: align with the psyche on goal, scope, success checks, and the task dependency graph through one focused question per turn in plain prose before planning or building. Reach for it on any request not already crisp enough to execute, while a clear directive to implement means build the graph and do the work.])
   (Meta autonomous-agent skills/autonomous-agent.md Mechanism

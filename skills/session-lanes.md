@@ -107,11 +107,12 @@ phases:
    psyche's mark is the first ~100,000 tokens — is for the main agent's
    deepest thinking and intent alignment. Spend it on understanding the
    goal and settling the design, not on mechanical work.
-2. **Fleet.** Once that window is spent, the main agent launches a fleet
-   of fresh-context sub-agents primed with the settled conclusions,
-   rather than reasoning on in a degrading or compacted context. Each
-   sub-agent works one focused slice and writes its numbered report into
-   the lane directory.
+2. **Fleet.** Dispatch fresh-context helpers to explore as soon as a task
+   needs more than a few already-known files or any multi-level chase —
+   don't wait for the window to be spent. The lead reasons over the
+   helpers' distilled responses rather than reading broadly itself; the
+   smart zone is for thinking and intent alignment, not for exploration
+   the helper owns.
 3. **Drain.** At session close every idea routes to exactly one of three
    fates:
    - **intent** — captured durably through the Spirit CLI;

@@ -41,6 +41,11 @@ slice. Once the graph is clear enough, execute from prerequisites toward the
 goal, dispatching subagents only when the psyche asked for delegation and the
 nodes are genuinely independent.
 
+For reading/exploring early in context, the universal orientation-dispatch
+default (Spirit `30cu`, AGENTS.md) applies: send a helper and reason over its
+report rather than reading broadly yourself. The psyche-gate here governs
+change-making dispatch only.
+
 ## Interview shape
 
 Start with the user's brief and the smallest useful repo or product context.

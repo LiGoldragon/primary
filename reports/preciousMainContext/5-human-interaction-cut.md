@@ -82,4 +82,3 @@ or parallel lanes, so no second rewrite is needed after the move.
 - **Misplaced-but-homeless content gets a move-banner, never a deletion.**
   Deletion waits for the destination edit so the move is atomic and
   reversible in one commit.
-</content>
