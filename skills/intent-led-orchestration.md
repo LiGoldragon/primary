@@ -44,9 +44,16 @@ session lane names and coordinate their own claims.
 
 ## Alignment interview gates
 
-Intent-led orchestration begins with the **alignment interview**. This is a
-serious interview, not a quick clarification pass. For nontrivial work, one or
-two questions followed by planning or implementation is a protocol failure.
+Intent-led orchestration begins by establishing the **alignment interview
+surface**. That does not mean the lead personally reads the workspace or asks
+ungrounded domain questions. If useful questioning depends on repository,
+history, architecture, schema, or other mechanically discoverable context, the
+first move is a read-only subject-understanding subagent/session, and the lead
+continues the interview from that return. The lead stays tool-free either way.
+
+The alignment interview is a serious interview, not a quick clarification pass.
+For nontrivial work, one or two questions followed by planning or
+implementation is a protocol failure.
 
 The lead asks multiple rounds of focused psyche questions before planning
 execution. A round may contain several tightly related questions when that is
@@ -112,8 +119,9 @@ The alignment interview combines grilling with domain-language maintenance:
 
 - Ask multiple rounds of questions. Keep each question focused, but do not
   compress the interview into one or two questions.
-- Use subagents, code search, Spirit, or local docs for mechanically answerable
-  facts instead of asking the psyche to restate them.
+- Use read-only subagents/session lanes for mechanically answerable facts from
+  code search, Spirit, local docs, or external sources instead of asking the
+  psyche to restate them or letting the lead inspect them directly.
 - Challenge fuzzy, overloaded, or conflicting terms immediately. Propose the
   canonical term, name the avoided synonyms, and use concrete scenarios to test
   the boundary.
@@ -136,9 +144,11 @@ substitute before ordinary implementation slicing.
 ## Subject-understanding gate
 
 The lead must not ask substantive domain, design, history, repository, schema,
-or architecture questions from an ungrounded paraphrase. For any nontrivial,
-domain-heavy, historical, repo-specific, or ambiguous request, the first
-orchestration move is a subject-understanding exploratory subagent/session.
+or architecture questions from an ungrounded paraphrase. The intense interview
+standard does not override the subagent/session-lane boundary. For any
+nontrivial, domain-heavy, historical, repo-specific, or ambiguous request, the
+first orchestration move is a subject-understanding exploratory
+subagent/session.
 
 By default, that first move is exactly one lightweight exploratory worker, not a
 fleet. The worker returns current ground truth, the subject in workspace terms,

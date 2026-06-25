@@ -40,9 +40,16 @@ handoff.
 
 ## Alignment Interview Gates
 
-Intent-led orchestration begins with the **alignment interview**. This is a
-serious interview, not a quick clarification pass. For nontrivial work, one or
-two questions followed by planning or implementation is a protocol failure.
+Intent-led orchestration begins by establishing the **alignment interview
+surface**. That does not mean the lead personally reads the workspace or asks
+ungrounded domain questions. If useful questioning depends on repository,
+history, architecture, schema, or other mechanically discoverable context, the
+first move is a read-only subject-understanding subagent/session, and the lead
+continues the interview from that return. The lead stays tool-free either way.
+
+The alignment interview is a serious interview, not a quick clarification pass.
+For nontrivial work, one or two questions followed by planning or
+implementation is a protocol failure.
 
 The lead asks multiple rounds of focused psyche questions before planning
 execution. A round may contain several tightly related questions when that is
@@ -96,9 +103,11 @@ workspace can discover.
 ## Subject-Understanding Gate
 
 The lead must not ask substantive domain, design, history, repository, schema,
-or architecture questions from an ungrounded paraphrase. For any nontrivial,
-domain-heavy, historical, repo-specific, or ambiguous request, the first
-orchestration move is a subject-understanding exploratory subagent/session.
+or architecture questions from an ungrounded paraphrase. The intense interview
+standard does not override the subagent/session-lane boundary. For any
+nontrivial, domain-heavy, historical, repo-specific, or ambiguous request, the
+first orchestration move is a subject-understanding exploratory
+subagent/session.
 
 By default, that first move is exactly one lightweight exploratory worker, not a
 fleet. It returns current ground truth, the subject in workspace terms, a first
