@@ -132,6 +132,10 @@ protocols, repo docs, or `.beads/` while it lasts. Don't use
 harness-dependent memory that is invisible to other harnesses and to the
 human.
 
+Agent memory defaults route through a reliable shared memory system that every
+agent harness can read and write. Claude-specific memory is an explicit gated
+path, not a default workspace memory substrate. (Spirit `wl2a`)
+
 ## The Nix store is not a search surface
 
 Don't run `rg` / `grep` / `find` / globs against `/nix/store` — it grows

@@ -120,8 +120,9 @@ It does not own:
   inside each repo).
 - The canonical cross-workspace agent contract (lives in
   `repos/lore/AGENTS.md`).
-- Persistent agent memory beyond workspace files (no harness-dependent
-  state per `AGENTS.md` §"No harness-dependent memory").
+- Persistent agent memory beyond workspace files. Harness-private state is not
+  a default memory substrate; Claude auto-memory is allowed only through an
+  explicit opt-in launch path.
 
 ## 5 · Constraints
 
@@ -140,8 +141,9 @@ It does not own:
   `skills/architecture-editor.md`.
 - BEADS tasks are never ownership locks. Any agent may create, update,
   comment on, or close BEADS tasks at any time.
-- Memory belongs in workspace files every agent can read; no
-  harness-private state stores.
+- Memory belongs in workspace files every agent can read; harness-private state
+  stores, including Claude auto-memory, are gated opt-in paths rather than
+  defaults.
 
 ## 6 · Invariants
 
