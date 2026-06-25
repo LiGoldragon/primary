@@ -1,54 +1,57 @@
 # Skill — context handover
 
-## Handover preserves decision power
+## Purpose
 
-When the psyche asks for a clean-session handover, write the prompt a fresh
-agent should receive. The handover is an executable state packet: the current
-objective, constraints, protocols, decisions that matter, exact next action,
-useful worker brief, and live blockers.
+Use when the psyche asks for a handover, clean-session prompt, restart context,
+or "bring this back next turn."
 
-The fresh agent keeps its own judgment. A handover does not decide the next
-agent's work for it, except when the psyche has already given an explicit
-instruction; in that case quote the instruction as psyche instruction rather
-than turning it into agent inference.
+A context handover gives a fresh agent the least context needed to understand
+the matter accurately. It is not a transcript summary, status report, work log,
+or replay of agent reasoning.
 
-## Write for execution
+## Include
 
-Center the next agent's ability to act, not a chronology of how the session got
-there. Avoid chat or session history except where it explains a live constraint,
-decision, source of authority, or blocker. Do not include process confessions,
-narrative blow-by-blow, or "what happened already" sections.
+Include only information that furthers the fresh agent's understanding of the
+intent being discussed:
 
-Name the current operating state:
+- psyche intent: what the psyche wants, rejects, values, or has explicitly
+  decided;
+- useful matter-context: meanings of terms, relevant research results,
+  constraints, source locators, and open decisions that still affect the work;
+- current facts only when they are necessary for the intent or next decision.
 
-- workspace, repo, lane, and relevant discipline;
-- original objective and current objective;
-- active constraints, permissions, privacy boundaries, and canonical protocols;
-- current local state: commits, files, reports, beads, Spirit records, claims,
-  and working-copy status when relevant;
-- decisions that matter for the next move, including who made them when that
-  affects authority;
-- exact next action and the dependency it satisfies;
-- source locators for the next agent or worker to read;
-- unresolved questions, forks, and uncertainty.
+State resolved corrections as the final truth. Do not preserve the correction
+history. Write "psyche wants Y", not "the agent thought X but psyche meant Y".
 
-If a subagent or session lane is the right continuation, include a concrete
-worker brief: task, authority, working directory, allowed sources, boundaries,
-verification, return shape, and whether commit/push is expected. Make the brief
-usable without rereading the prior chat.
+## Exclude
 
-## Make retrieval easy
+Exclude anything that does not improve the next agent's understanding:
 
-The next agent should be able to enter with fresh context, read the named
-sources, and make its own decision. Prefer compact locators and state over
-process narrative. For orchestration continuations, name the active protocol and
-its consequences. If Spirit is the durable source for intent or referents, say
-that workers should query Spirit first. Do not promote transitional reports into
-durable memory or document non-production workflows as usable paths.
+- agent guesses, confessions, apologies, and reasoning trails;
+- report/file/tool results unless they are useful matter-context;
+- implementation chronology, commit lists, and working-copy state unless the
+  psyche asked for operational continuation and the detail affects the next
+  move;
+- restatements of skills or protocols the next agent will read itself;
+- resolved mistakes, dead acronyms, and trivia that no longer affect a decision;
+- generic next-step advice not explicitly requested by the psyche.
 
-## See also
+## Shape
 
-- `intent-led-orchestration.md` — fresh-context alignment interview gates and
-  orchestration.
-- `context-maintenance.md` — routing reports and live context to intent, work,
-  or abandon.
+Prefer a compact prompt with two sections:
+
+```text
+Intent:
+- ...
+
+Useful context:
+- ...
+```
+
+Add `Open decisions:` only when the psyche has left live choices for the next
+agent to resolve. Do not add a plan unless the psyche asked for one.
+
+## Standard
+
+Every line must answer: "Would a fresh agent misunderstand the matter without
+this?" If not, delete it.
