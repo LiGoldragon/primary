@@ -49,9 +49,10 @@ items, so the status below distinguishes "tracked and open" where verified from
 
 ### 1. Repair the helper-dispatch instruction surface
 
-Status: tracked and open. Verified beads: `primary-ptvb.1` (human-interaction
-cut), `primary-ptvb.5` (write helper skill), `primary-ptvb.6` (shrink
-AGENTS.md).
+Status: partially landed, still not complete. Recheck on 2026-06-25 shows
+`primary-ptvb.1` (human-interaction cut) and `primary-ptvb.5` (helper skill)
+closed. `primary-ptvb.6` (shrink AGENTS.md to a thin spine) remains open and is
+still blocked by the remaining skill-body cuts plus the ky10 reconcile bead.
 
 Why it matters: the live Spirit records say all disciplines should delegate
 non-trivial orientation/research to fresh-context helpers and avoid duplicating
@@ -59,23 +60,21 @@ the helper's broad read. The text a new agent reads still says the opposite for
 non-designer lanes. This is a workspace-wide agent-behavior defect, not a local
 doc nit.
 
-Immediate implementation shape:
+Remaining implementation shape:
 
-- remove the stale `</content>` marker from
-  `reports/preciousMainContext/5-human-interaction-cut.md`;
-- decide whether W1 is actually complete, then close or correct
-  `primary-ptvb.1`;
-- implement `primary-ptvb.5` as the helpers/context-preserving dispatch skill;
+- complete the remaining W2-W4 skill-body cuts;
+- reconcile ky10 through `primary-ptvb.11`;
 - then unblock `primary-ptvb.6`, rewriting AGENTS.md to the thin spine and
   replacing the old designer-only dispatch default.
 
 Intent-alignment question: Should the next primary-guidance slice prioritize the
 helper-dispatch repair over new component work?
 
-Recommended answer: yes. This fixes the instruction surface that every later
-agent consumes. Alternative: finish only W1 cleanup first and leave W5/W6 for a
-fresh designer lane, which reduces current scope but keeps the contradiction
-alive.
+Recommended answer: yes, but phrase it as "finish the remaining helper-dispatch
+surface repair," not "start helper-dispatch repair." The helper skill exists;
+the still-live risk is AGENTS.md and the discipline-skill blockers that keep a
+new agent from reading the settled rule cleanly. Alternative: leave W6 blocked
+until the broader preciousMainContext pruning lane completes W2-W4.
 
 ### 2. Start the Spirit `All` domain cutover and the Spirit manual split in parallel
 
@@ -264,7 +263,8 @@ intent question.
 The ordering below minimizes instruction-surface risk first, then unlocks the
 highest-leverage component work:
 
-1. Helper-dispatch repair: W1 cleanup, `primary-ptvb.5`, then `primary-ptvb.6`.
+1. Finish helper-dispatch surface repair: complete W2-W4 and ky10 reconcile,
+   then land `primary-ptvb.6`.
 2. Spirit `All` recut root `primary-w0xf` and manual generator `primary-e4o9`
    in parallel.
 3. Schema triad vertical slice `primary-lwc6`.
