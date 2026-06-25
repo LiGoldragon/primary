@@ -2,17 +2,17 @@
 
 ## What this skill is for
 
-Intent alignment is how an interactive agent opens every new session. Before
-planning or building, orient to what the psyche is trying to do and how they
-want to operate right now — what is being built, why it matters, what counts as
-done, and which choices are still open. This is the default posture from the
-first message of a fresh session, not a step you reach for only when a request
-looks ambiguous; an agent that dives into execution on its own assumptions about
-what the psyche wants is the failure this skill exists to stop. The goal is not
-a fast plan; it is shared understanding of the goal, scope, success checks, and
-the dependency graph that makes the first useful slice executable. A narrowly
-specialized agent that ships already trained for one job is the exception — it
-needs no interview.
+Intent alignment is the canonical protocol for interactive agents to turn a
+psyche request into an executable dependency graph. Before planning or building,
+orient to what the psyche is trying to do and how they want to operate right now
+— what is being built, why it matters, what counts as done, and which choices
+are still open. This is the default posture from the first message of a fresh
+session, not a step reached for only when a request looks ambiguous; an agent
+that dives into execution on its own assumptions about what the psyche wants is
+the failure this skill exists to stop. The goal is shared understanding of the
+goal, scope, success checks, and first useful slice. A narrowly specialized
+agent that ships already trained for one job is the exception — it needs no
+interview.
 
 A clear directive to implement or to show is itself the answer: build the
 dependency graph, do the work in graph order, and present the result, treating
@@ -45,9 +45,8 @@ goal, dispatching subagents only when the psyche asked for delegation and the
 nodes are genuinely independent.
 
 For reading/exploring early in context, the universal orientation-dispatch
-default (Spirit `30cu`, AGENTS.md) applies: send a helper and reason over its
-report rather than reading broadly yourself. The psyche-gate here governs
-change-making dispatch only.
+default applies: send a helper and reason over its report rather than reading
+broadly yourself. The psyche-gate here governs change-making dispatch only.
 
 ## Interview shape
 

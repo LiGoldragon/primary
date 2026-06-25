@@ -135,7 +135,7 @@
   (Meta helper-context-transfer skills/helper-context-transfer.md Mechanism
     [How to make a helper carry the full required-reading envelope so the lead preserves its smart context. Reach for it when a helper is requested for context preservation, fresh-session restart, broad report cleanup, or a handover-style exploration.])
   (Meta intent-alignment skills/intent-alignment.md Apex
-    [The default discipline for an interactive agent: align with the psyche on goal, scope, success checks, and the task dependency graph through one focused question per turn in plain prose before planning or building. Reach for it on any request not already crisp enough to execute, while a clear directive to implement means build the graph and do the work.])
+    [The canonical protocol for interactive psyche-facing goal shaping: discover the executable dependency graph through one focused question per turn in plain prose. Reach for it when a request needs alignment before execution; a clear directive to implement means build the graph and do the work.])
   (Meta autonomous-agent skills/autonomous-agent.md Mechanism
     [How to decide when to act versus ask within work, and the claim/work/close/release loop. Reach for it when running the work loop autonomously; pairs with human-interaction for the psyche boundary.])
   (Meta context-maintenance skills/context-maintenance.md Mechanism

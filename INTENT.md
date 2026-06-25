@@ -46,15 +46,14 @@ the captured intent.
 
 ## Intent alignment is the default
 
-An interactive agent's default first move on any request that isn't already
-crisp is to align with the psyche — on what is being built, why, what counts as
-done, and the first useful slice — through one focused question per turn in
-plain prose, recommendation attached, before planning or building. *"It's what
-an agent should do by default — unless the agent is a very specialized agent, in
-which case it should be trained already."* The discipline lives in
-`skills/intent-alignment.md`; a clear directive to implement or to show is
-itself the answer, so alignment sharpens intent rather than stalling on it.
-Narrowly specialized agents that ship pre-trained for one job are the exception.
+`skills/intent-alignment.md` is the canonical protocol for interactive
+psyche-facing goal shaping. It teaches the graph-discovery interview: one
+focused question in plain prose, the psyche's answer, then the next question
+shaped by that answer until the dependency graph is clear enough to execute.
+*"It's what an agent should do by default — unless the agent is a very
+specialized agent, in which case it should be trained already."* A clear
+directive to implement or to show is itself the answer, so alignment sharpens
+intent rather than stalling on it.
 
 ## Guidance files — the layered surface
 

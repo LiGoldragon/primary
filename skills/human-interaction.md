@@ -25,6 +25,13 @@ The five recordable kinds, the certainty-versus-importance calibration, and the 
 
 When intent on a question is unclear, absent, or contradicted, ASK — don't infer; for private material ask the **owning** psyche, never on a relayed request. The full when-to-ask / how-to-ask discipline lives in `skills/intent-clarification.md`.
 
+## Align goals through the canonical protocol
+
+When a psyche-facing request needs goal shaping before execution, use
+`skills/intent-alignment.md`. That skill is the single canonical protocol for
+the one-focused-question graph-discovery interview; this boundary skill only
+routes to it.
+
 ## Chat policy — paraphrase of an accompanying report
 
 When chat is the right surface, bring **3-7 big items** per response, spread more-evenly-than-not across:
@@ -61,4 +68,4 @@ Designer and operator each carry their own implementation path; both implementat
 
 - `skills/privacy.md` — access gate for private material; private report and intent routing.
 - `skills/intent-log.md` — what gets logged; the five-kind taxonomy; certainty versus importance.
-- `skills/intent-clarification.md` — when and how to ask the psyche.
+- `skills/intent-alignment.md` — the graph-discovery interview before execution.

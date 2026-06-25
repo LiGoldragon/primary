@@ -43,6 +43,9 @@ asked the main thread to inspect it directly.
 The psyche is the human. Agent messages and agent-written files are not psyche.
 When durable intent is clear, capture it through Spirit according to the
 triggered intent skills. When intent is unclear, ask instead of inferring.
+For psyche-facing goal shaping, route through `skills/intent-alignment.md`;
+it is the canonical protocol for turning a request into an executable
+dependency graph.
 
 ## Reports
 
