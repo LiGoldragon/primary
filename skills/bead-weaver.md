@@ -99,26 +99,6 @@ ids:
 
 Never return a list of bare bead ids as the useful answer.
 
-## Mentci Prompt-to-Weave Slice
-
-For the Mentci prompt-to-bead-weave slice, the first weave is harness-agnostic
-and proves only the thin path:
-
-- A prompt enters Mentci.
-- A cheap contained API preflight model emits fixed-schema NOTA that loads the
-  right skills and creates a minimal scaffold plus `skills/skills.nota`.
-- Mentci opens a persistent named, addressable harness session through the
-  terminal-cell driver.
-- The terminal-cell driver owns process liveness, send/read, idle timeout,
-  close signal, and stalled-output detection.
-- `orchestrate` lanes own naming, addressing, lane metadata, and session
-  lookup.
-- The first proof runs on a sandboxed jj task, never on primary.
-
-The first Mentci weave should not file cache/reuse mechanics, savings metrics,
-or broad harness parity as first-class jobs. Those become beads only after the
-thin slice exposes the real failure modes.
-
 ## See also
 
 - `skills/beads.md`
