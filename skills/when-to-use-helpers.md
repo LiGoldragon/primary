@@ -11,9 +11,10 @@ the dispatch buys nothing. This file is the home for that discipline;
 > When the psyche asks you to use a helper to gather context, save context,
 > decide alignment, or prepare a fan-out, run only the **minimal dispatch
 > envelope** — the Spirit gate, any lane/report setup, and the helper's brief
-> — then stop. Do not read the repos, skills, reports, or weave the helper
-> was sent to collect. Wait for its report, or do only genuinely unrelated
-> work. The helper owns the broad read; duplicating it defeats the dispatch.
+> — then stop. Put every required-reading file the task needs into the helper
+> brief instead of loading those files in the lead context. Wait for the
+> helper's report, or do only genuinely unrelated work. The helper owns the
+> broad read; duplicating it defeats the dispatch.
 
 The whole point of the helper is to keep the broad exploration out of your
 smart zone. If you read what you sent it to read, you have spent the context
@@ -23,13 +24,12 @@ the harness to notify you, then synthesize from the distilled response —
 taking orientation, including specific file-section pointers, from the
 helper rather than re-deriving them.
 
-The failure mode this rule fixes is a real one. An operator session was
-asked to spend a context helper to judge fan-out readiness; instead it
-loaded broad workspace, operator, reporting, beads, Rust, actor, contract,
-schema, testing, Nix, and repo-map context in the main thread before and
-after launching the helper, and the psyche had to interrupt because the
-budget the helper was meant to preserve was already gone. The worked example
-is `reports/schema-help-daemon-pilot-operator/1-skill-change-handoff.md`.
+When the task comes with a required-reading list, the lead does the minimum
+needed to preserve intent and launch the helper: classify the psyche prompt,
+identify the required-reading envelope from the prompt and already-visible
+rules, and pass that envelope to the helper. The helper reads the files and
+returns the distilled result. See `helper-context-transfer.md` for the
+full-reading-envelope dispatch pattern.
 
 ## Companion lesson — read written files back for residue
 
@@ -42,9 +42,6 @@ it.
 
 The readback is part of the dispatch, not an optional extra: a helper that
 writes a file owns the broad read, but you own the trust boundary on what it
-hands back. The named anti-pattern worked example —
-`reports/schema-help-daemon-pilot-operator/1-skill-change-handoff.md`
-(report-7 recommendation #6) — pairs the residue-readback check with the
-minimal-envelope rule above: both are facets of one discipline, the lead
-does not re-do the helper's broad read, and the lead does verify the
+hands back. Pair the residue-readback check with the minimal-envelope rule:
+the lead does not re-do the helper's broad read, and the lead does verify the
 helper's written output before relying on it.
