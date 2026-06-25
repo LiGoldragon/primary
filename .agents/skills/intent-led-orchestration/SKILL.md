@@ -5,8 +5,9 @@ description: Fresh-context startup protocol for psyche alignment, dependency-gra
 
 # Intent-Led Orchestration
 
-Use this skill only at fresh-context startup. It cannot be activated mid-session.
-If asked for mid-session, offer a fresh-session restart or handoff prompt.
+Use this skill only at fresh-context startup. It cannot be activated
+mid-session. If asked for mid-session, offer a fresh-session restart or handoff
+prompt.
 
 After this skill is read, the lead uses no tools at all: no shell, file reads,
 status checks, web, MCP, image generation, or brief generator. The lead's only
@@ -33,152 +34,50 @@ or architecture questions from an ungrounded paraphrase. For any nontrivial,
 domain-heavy, historical, repo-specific, or ambiguous request, the first
 orchestration move is a subject-understanding exploratory subagent/session.
 
-By default, that first move is exactly one exploratory worker, not a fleet. The
-worker is scoped to lightweight orientation: current ground truth, the subject
-in workspace terms, a first dependency-graph sketch, and the best next psyche
-question with a recommendation and one or two meaningful alternatives. It does
-not exhaustively analyze every subsystem before the psyche has a chance to steer.
-Time and latency are less important than avoiding unnecessary token/context
-spend and coordination churn; do not get broadly situated before checking with
-the psyche.
+By default, that first move is exactly one lightweight exploratory worker, not a
+fleet. It returns current ground truth, the subject in workspace terms, a first
+dependency-graph sketch, and the best next psyche question with a recommendation
+and one or two meaningful alternatives. Prefer staged exploration: one worker,
+one focused psyche question, then targeted parallel workers only after the graph
+or decision fork warrants them.
 
-More than one initial worker is allowed only when the psyche explicitly asks for
-parallel exploration, or when the lead can justify truly independent, bounded
-questions with evidence. Start with fewer agents and increase only when the
-dependency graph proves the need. Even then, keep the initial fan-out small and
-state why the workers are independent. Prefer staged exploration: one
-subject-understanding worker, one focused psyche question, then targeted
-parallel workers only after the dependency graph or decision fork warrants them.
-
-Narrow exception: if the psyche gives a simple command or obvious directive
-with no subject-context ambiguity, the lead may dispatch an implementation
-worker directly. The lead still may not conduct a domain design interview before
-exploration.
+More than one initial worker requires explicit psyche-requested parallel
+exploration or proven truly independent, bounded questions. A simple command or
+obvious directive with no subject-context ambiguity may dispatch directly to an
+implementation worker.
 
 ## Cost-Preservation After Mistakes
 
 If a fan-out, scope, or cost mistake is noticed, stop expanding immediately, but
 do not reflexively kill all work. Use worker/session controls and returns to
-assess what has already been spent and what is in flight: which workers are near
-a useful return, which partial transcripts or results can be preserved, and
-what salvage should be summarized before narrowing.
+assess what has already been spent and what is in flight. Harvest salvageable
+work first, then choose the least-wasteful narrowing move and explain it
+briefly.
 
-Treat the psyche's observed token or cost reports as ground truth for alignment
-unless there is concrete contrary evidence; do not argue with or minimize them.
-Do not discard expensive work just to appear responsive. Harvest salvageable
-work first, then choose the least-wasteful narrowing move and explain it briefly.
+Treat the psyche's observed token or cost reports as ground truth unless there
+is concrete contrary evidence.
 
-## Worker Work
+## Dispatch Instruction
 
-Workers do all workspace interaction: reads, status checks, commands, edits,
-reports, commits, pushes, verification, and triggered-skill loading. They
-preserve concurrent work, do not inspect `private-repos/` without explicit
-authorization, do not search `/nix/store`, and use `jj` rather than raw `git`.
-
-Workers choose their own concise lane name. Before editing, creating,
-formatting, or deleting files, they use `orchestrate` with that lane name to
-claim the exact paths, files, tasks, or worktree roots they will touch. If a
-triggered skill requires a worktree, workers create/use it as that skill
-describes and claim the worktree path before editing.
-
-Commit and push are the worker default unless the psyche or lead explicitly
-grants read-only, report-only, edit-only, or no-commit authority. On primary,
-workers land on `main`: `jj commit -m '<message>'`, `jj bookmark set main -r @-`,
-then `jj git push --bookmark main`. In code-repo worktrees, workers use the
-named branch/bookmark/worktree selected by triggered skills or the brief, inspect
-the worktree registry when relevant, claim the worktree path with the
-branch/bookmark named in the `orchestrate` claim reason, commit there, and push
-that bookmark.
-
-## Ready-to-send Worker Brief
+Every worker brief stays compact. State the task, authority, working directory,
+dependency position, allowed sources, and return shape, then include this
+instruction:
 
 ```text
-You are the subagent/session lane for an intent-led-orchestration run. The lead
-thread is tool-free and cannot inspect workspace files, command output, reports,
-or links. Your final return is the lead's only workspace-derived input.
-
-Task:
-<paste the exact psyche request or the bounded dependency-graph slice>
-
-Authority:
-<commit-and-push by default | read-only | report-only | edit-only | no-commit>
-
-Working directory:
-<absolute path>
-
-Lane:
-Choose your own concise session lane name. The lead has not assigned one. Use
-that lane name consistently in reports, `orchestrate` claims, and your final
-return.
-
-Dependency position:
-<what this work depends on, what it blocks, and whether it may run in parallel>
-
-Subject-understanding mode:
-<Use "required first move" for nontrivial, domain-heavy, historical,
-repo-specific, or ambiguous requests. Use "not needed: simple directive" only
-when there is no subject-context ambiguity.>
-
-Initial fan-out:
-<Default: exactly one lightweight subject-understanding worker. Use more than
-one only for explicit psyche-requested parallel exploration or proven truly
-independent, bounded questions; start with fewer agents and increase only when
-the dependency graph proves the need; state why.>
-
-Required startup:
-1. Read AGENTS.md in the working directory.
-2. Read skills/skills.nota.
-3. Select and read every skill triggered by this task, discipline, tool, repo,
-   file format, and risk.
-4. Read only the task-relevant sources named below or discovered through the
-   triggered skills.
-
-Coordination:
-- Before editing, creating, formatting, or deleting files, run `orchestrate` to
-  claim the exact paths, files, tasks, or worktree roots you will touch, using
-  your chosen lane name.
-- If a triggered skill says this work belongs in a worktree, create/use that
-  worktree according to the skill and claim the worktree path before editing.
-- Record the target branch/bookmark/worktree in your `orchestrate` claim context
-  before mutation. On primary the default target is `main`; in a worktree, use
-  the named branch/bookmark required by the triggered skill or this brief.
-- Release or update your claim when the work is complete or your scope changes.
-
-Commit/push default:
-- Unless this brief explicitly says read-only, report-only, edit-only, or
-  no-commit, commit completed work and push it.
-- On primary, use `jj commit -m '<message>'`, `jj bookmark set main -r @-`, and
-  `jj git push --bookmark main`.
-- In a code-repo worktree, commit in that worktree, set the named bookmark, and
-  push that bookmark.
-
-Allowed sources and commands:
-<paths, reports, searches, or commands the worker may use; say "discover
- narrowly from the triggered skills" when source discovery is part of the task>
-
-If subject-understanding mode is required, the worker must identify current
-ground truth, explain the subject in workspace terms, sketch the first
-dependency graph, and return the best next psyche question with a recommendation
-and alternatives. Keep this orientation lightweight unless the brief explicitly
-authorizes deeper analysis.
-
-Forbidden:
-- Do not inspect private-repos/ unless this brief explicitly grants that scope.
-- Do not search /nix/store.
-- Do not use raw git; use jj for version-control observations or mutations.
-- Do not revert existing work unless the psyche explicitly requested it.
-- Do not exceed the authority above.
-
-Return exactly these sections:
-1. Files read.
-2. Skills selected and why.
-3. Commands run and outcomes.
-4. Files changed or created.
-5. Dependency graph.
-6. Subject explanation, implementation summary, or findings.
-7. Verification performed.
-8. Commit/bookmark/push outcome.
-9. Blockers or psyche questions.
-10. Dirty-state changes observed.
-11. Next concrete action.
+Read `AGENTS.md`, `skills/skills.nota`, and
+`skills/subagent-session-workflow.md`; select any additional triggered skills;
+then follow the subagent session workflow for lane choice, orchestration claims,
+worktree handling, verification, return schema, and the default commit/push
+policy.
 ```
+
+If this is the first subject-understanding move, tell the worker to keep
+orientation lightweight and return current ground truth, the subject in
+workspace terms, the first dependency-graph sketch, and the best next psyche
+question with a recommendation and alternatives.
+
+## Final Synthesis
+
+The lead's final answer is a synthesis of worker final returns and psyche chat.
+It must not claim to have inspected files, reports, command output, or links
+itself.
