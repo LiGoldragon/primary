@@ -58,6 +58,39 @@ already concrete enough to execute. A clear directive to implement is itself
 alignment for reversible details: dispatch the graph's first executable slice
 and keep moving.
 
+## PRD alignment and shared language
+
+For Matt Pocock-style `grill-with-docs`, `PRD` means Product Requirements
+Document. In primary, emulate the behavior rather than the artifact shape:
+before implementation, reach a worker-ready alignment state that names the
+problem, solution, user-facing outcomes, implementation decisions, proof or test
+seams, out-of-scope boundaries, dependency graph, and resolved vocabulary. Do
+not call this `PDR`.
+
+The alignment pass combines grilling with domain-language maintenance:
+
+- Ask one focused question at a time, with a recommended answer and meaningful
+  alternatives.
+- Use subagents, code search, Spirit, or local docs for mechanically answerable
+  facts instead of asking the psyche to restate them.
+- Challenge fuzzy, overloaded, or conflicting terms immediately. Propose the
+  canonical term, name the avoided synonyms, and use concrete scenarios to test
+  the boundary.
+- Carry agreed terms into the implementation brief and dependency graph so
+  workers use the same names.
+
+Storage follows the local durable-memory stack. Spirit is the durable home for
+psyche intent, referents, clarifications, and supersessions. Workspace-wide
+settled vocabulary belongs in `skills/workspace-vocabulary.md`; repo-specific
+domain language belongs in that repo's established guidance surface
+(`skills.md`, `ARCHITECTURE.md`, `INTENT.md`, or an existing `CONTEXT.md`
+convention). Create a new context/glossary artifact only when the repo's
+conventions call for it or the term set has no existing durable home.
+
+Chat and harness output are enough for the transient alignment trace. Write a
+report only when a fresh-context pickup surface is actually needed; do not make
+a report a required PRD substitute before ordinary implementation slicing.
+
 ## Subject-understanding gate
 
 The lead must not ask substantive domain, design, history, repository, schema,
@@ -67,9 +100,10 @@ orchestration move is a subject-understanding exploratory subagent/session.
 
 By default, that first move is exactly one lightweight exploratory worker, not a
 fleet. The worker returns current ground truth, the subject in workspace terms,
-a first dependency-graph sketch, and the best next psyche question with a
-recommendation and one or two meaningful alternatives. Do not exhaustively
-analyze every subsystem before the psyche can steer.
+a first dependency-graph sketch, resolved or contested vocabulary, and the best
+next psyche question with a recommendation and one or two meaningful
+alternatives. Do not exhaustively analyze every subsystem before the psyche can
+steer.
 
 More than one initial worker is allowed only when the psyche explicitly asks for
 parallel exploration, or when the lead can justify truly independent, bounded
@@ -131,8 +165,10 @@ policy.
 
 If the worker is the first subject-understanding move, state that it should keep
 orientation lightweight and return current ground truth, the subject in
-workspace terms, the first dependency-graph sketch, and the best next psyche
-question with a recommendation and alternatives.
+workspace terms, resolved or contested vocabulary, the first dependency-graph
+sketch, and the best next psyche question with a recommendation and
+alternatives. Ask the worker to distinguish source-grounded facts from
+inferences when that distinction affects the next decision.
 
 If the worker needs domain or referent understanding, explicitly tell it to
 query Spirit first, including public text search when the referent is unknown.

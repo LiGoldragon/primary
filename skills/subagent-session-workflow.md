@@ -76,6 +76,8 @@ lightweight. Return:
 
 - current ground truth;
 - the subject in workspace terms;
+- resolved vocabulary and contested terms, including avoided synonyms;
+- source-grounded facts separated from inferences where the distinction matters;
 - a first dependency-graph sketch;
 - the best next psyche question, with a recommendation and one or two
   meaningful alternatives.
@@ -92,7 +94,7 @@ Return exactly these sections:
 3. Commands run and outcomes.
 4. Files changed or created.
 5. Dependency graph.
-6. Implementation summary, subject explanation, or findings.
+6. Implementation summary, subject explanation, vocabulary decisions, or findings.
 7. Verification performed.
 8. Commit/push outcome.
 9. Blockers or psyche questions.

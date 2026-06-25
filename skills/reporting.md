@@ -1,6 +1,6 @@
 # Skill — reporting
 
-## Reports vs chat
+## Chat, Harness Output, And Reports
 
 The two media have different audiences:
 
@@ -10,13 +10,16 @@ The two media have different audiences:
   report on disk survives.
 - **Chat is for the user** — read now, acted on now. The user is the
   bottleneck on decisions, so chat is optimised for their attention.
+- **Harness output is the session trace** — tool output, worker returns, and
+  assistant answers are already emitted once. Do not manually duplicate that
+  stream into a report just to create an archive; future tooling can scrape the
+  harness output directly.
 
-If output explains, proposes, analyses, or summarises, write a
-report in your lane's `reports/<lane>/` session directory, where
-`<lane>` is this work session's intent name (`newLanesDesign`,
-`schemaWorkAudit`), not a fixed role. Small things —
-acknowledgements, tool-result summaries, "done; pushed" — don't need
-reports.
+Default to chat or the worker return shape. Write a report only when the report
+is itself the working surface: a fresh-context handoff, cross-agent design
+pickup point, long-lived analysis artifact, requested report, or subagent
+exploration that must survive beyond the current harness stream. Small things
+— acknowledgements, tool-result summaries, "done; pushed" — don't need reports.
 
 Reports are lane-owned and **exempt from the orchestration claim
 flow**: the lane's session directory is its implied write lock.
@@ -31,25 +34,22 @@ public reports carry only privacy-safe mechanism or status.
 
 ## Reports are fresh-context pickup points
 
-A report is written so an agent starting from a **clean context** can
-pick the work up, reason about it, and — where the work is
-implementable — implement it. The reader holds none of the writer's
-session memory; the report supplies everything they need: the intent
-it rests on, the current state, the shape proposed, and the next
-moves. The test is whether a fresh agent could act on it alone.
+When a report is warranted, write it so an agent starting from a **clean
+context** can pick the work up, reason about it, and — where the work is
+implementable — implement it. The reader holds none of the writer's session
+memory; the report supplies everything they need: the intent it rests on, the
+current state, the shape proposed, and the next moves. The test is whether a
+fresh agent could act on it alone.
 
-**Implementable work links into a bead dependency graph.** When a
-report names work that can be built, the work lands as beads wired
-into a dependency graph — `bd dep <blocker> --blocks <blocked>` — so a
-fresh agent finds both the reasoning (the report) and the ordered,
-unblocked next slices (the beads) without the original session. The
-report carries the *why* and the shape; the bead graph carries the
-*do-this-then-that*.
+**Implementable work links into a dependency graph.** When the source surface
+names work that can be built — a report, chat answer, worker return, durable
+guidance file, or Spirit-backed decision — the work lands as beads wired into a
+dependency graph: `bd dep <blocker> --blocks <blocked>`. The source surface
+carries the *why* and shape; the bead graph carries the *do-this-then-that*.
 
-This is why a report reads as current state and is self-contained
-(see §"Human-facing references are self-contained" and §"Tense and
-framing"): a pickup point can't depend on context the picker-up
-doesn't have.
+This is why any pickup point reads as current state and is self-contained (see
+§"Human-facing references are self-contained" and §"Tense and framing"): it
+can't depend on context the picker-up doesn't have.
 
 **Routine code landings: the commit description IS the report.** Do
 not write a report whose only purpose is to repeat a `jj` commit
@@ -80,13 +80,12 @@ narration ("first I did X then Y"), or tool-call diagnostics. Chat is
 short — usually under one screen — but every sentence carries
 substance the user needs to act on.
 
-### Every substantive response paraphrases a report
+### Substantive responses stand on their own
 
-The default pattern: **every chat response is the paraphrase of an
-accompanying per-response report**. The report is the session log;
-chat is the paraphrase — not a teaser pointing at it. (When no
-per-response report exists — the small-report exceptions above — the
-pattern doesn't apply.)
+The default pattern: **answer in chat or the required worker return shape**.
+When a report exists, chat paraphrases it — not as a teaser, but as the user's
+complete working surface. When no report exists, chat carries the substantive
+answer directly.
 
 The chat reply carries **3-7 most important items**, spread
 **more-evenly-than-not** across three categories:

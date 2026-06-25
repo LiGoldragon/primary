@@ -3,24 +3,29 @@
 ## Starting Gate
 
 Use this skill after the intent is already aligned enough to decompose into
-work. If the prompt is still deciding what should exist, write the design report
-or ask the psyche; do not file speculative beads to force shape.
+work. If the prompt is still deciding what should exist, continue the alignment
+pass or ask the psyche; do not file speculative beads to force shape.
 
 Before filing a weave, load the local skills that govern the surface you are
 about to touch:
 
 - `skills/beads.md` for BEADS lifecycle and close notes.
-- `skills/reporting.md` when the weave depends on a design report.
+- `skills/reporting.md` when the weave depends on a design report or other
+  fresh-context pickup surface.
 - `skills/intent-log.md` and `skills/spirit-cli.md` when new durable psyche
   intent appears while weaving.
 - `skills/architecture-editor.md` when the weave depends on an architecture
   claim that is not yet in the owning `ARCHITECTURE.md`.
 - `skills/nota-design.md` when a bead asks for a new NOTA record or schema.
 
-If the aligned prompt names a source report, architecture file, or Spirit
-record, read that source. If it names only chat context, first write the missing
-report or update the durable guidance file; a bead graph should not depend on
-vanishing harness memory.
+If the aligned prompt names a source report, architecture file, Spirit record,
+worker return, or harness answer, read or use that source. If it names only
+chat context, put enough source summary directly in the bead descriptions and
+update the durable guidance file when the alignment settled durable terms or
+rules. Write a report only when a separate fresh-context pickup point is needed;
+a bead graph should not depend on vanishing harness memory, but it also should
+not require a manual report when the return shape already carries the needed
+context.
 
 ## Shape the Graph
 
@@ -48,8 +53,8 @@ Every bead in the weave carries enough context for a clean session to start
 without reading chat:
 
 ```text
-Source: <report path, architecture path, Spirit record summary, or prompt
-summary>
+Source: <report path, architecture path, Spirit record summary, worker-return
+summary, harness-answer summary, or prompt summary>
 
 Goal: <one concrete outcome>
 

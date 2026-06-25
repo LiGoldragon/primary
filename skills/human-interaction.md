@@ -33,7 +33,7 @@ protocol for focused-question dependency-graph discovery, Spirit-centered
 intent maintenance, and lead orchestration; this boundary skill only routes to
 it.
 
-## Chat policy — paraphrase of an accompanying report
+## Chat policy
 
 When chat is the right surface, bring **3-7 big items** per response, spread more-evenly-than-not across:
 
@@ -41,9 +41,9 @@ When chat is the right surface, bring **3-7 big items** per response, spread mor
 - (b) Observations / suggestions / explanations of how new mechanisms work
 - (c) Examples of recent work or evolving ideas
 
-Below 3 the response is under-substantive; above 7 the psyche can't hold it while running parallel agents. Current report protocols still apply where required: the report is a transitional session surface, and chat is the psyche-facing paraphrase.
+Below 3 the response is under-substantive; above 7 the psyche can't hold it while running parallel agents. Current report protocols still apply when a report is the warranted working surface; otherwise chat or the worker return is the substantive answer.
 
-Visuals go in reports (the report/chat split itself is the AGENTS.md "Reports go in files" override and `skills/reporting.md`). Chat is prose plus locators plus user-attention items. Each user-attention item must be restated with enough substance that the psyche can engage WITHOUT opening the report; a bare locator ("see report N", "section 5.2") is the opposite-direction violation.
+Visuals that do not fit chat go in reports or other named artifacts. Chat is prose plus locators plus user-attention items. Each user-attention item must be restated with enough substance that the psyche can engage WITHOUT opening the artifact; a bare locator ("see report N", "section 5.2") is the opposite-direction violation.
 
 ## Real-world testing conditions
 

@@ -47,12 +47,20 @@ For psyche-facing goal shaping and orchestration, route through
 `skills/intent-led-orchestration.md`; it is the canonical active protocol for
 turning a request into an executable dependency graph.
 
-## Reports
+## Output
 
-Substantive output goes in the active session lane's `reports/<lane>/`
-directory, not chat. Chat carries the locator plus the user-attention items:
-open questions, blockers, and recommendations restated with enough substance
-to answer without opening the report.
+Chat and harness output are the primary transient artifacts. Do not write a
+manual report merely because an answer is substantive; ordinary findings,
+implementation summaries, validation output, and return schemas can live in
+chat or the harness stream and be archived programmatically later.
+
+Write a report only when the report itself is the requested or necessary
+working surface: a fresh-context handoff, cross-agent design pickup point,
+subagent exploration that must survive the current harness output, or a
+durable analysis artifact that cannot fit in the answer. When a report exists,
+chat carries its path plus the user-attention items: open questions, blockers,
+and recommendations restated with enough substance to answer without opening
+the report.
 
 Reports are exempt from the claim flow when written in the active lane's own
 directory. Shared files are claimed narrowly before editing.

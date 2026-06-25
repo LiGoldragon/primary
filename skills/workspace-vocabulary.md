@@ -10,6 +10,42 @@ Use it when writing or editing any surface that names a listed concept, and when
 
 ## Load-bearing terms
 
+### Pocock planning term — `PRD`
+
+Predecessors: `PDR` when referring to Matt Pocock's workflow.
+
+Scope: references to Matt Pocock's `to-prd`, `implement`, and
+`grill-with-docs` flow. `PRD` expands to Product Requirements Document. In
+primary, the local behavior is a pre-implementation alignment pass, not a
+mandatory manually written report: resolve the problem, solution, user-facing
+outcomes, implementation decisions, proof or test seams, out-of-scope
+boundaries, dependency graph, and agreed vocabulary before implementation
+workers start.
+
+When writing psyche-facing primary guidance, prefer plain descriptions such as
+"alignment pass", "worker-ready brief", or "dependency graph" unless the text
+is explicitly comparing to Matt's PRD. Use `PRD` for the source concept; do not
+introduce `PDR`.
+
+### Shared domain language
+
+Predecessors: `ubiquitous-language file`, `UBIQUITOUS_LANGUAGE.md`, ad-hoc
+synonyms for the same concept.
+
+Scope: agreed terms that reduce miscommunication across psyche, agents, docs,
+and code. During grilling or alignment, challenge fuzzy or overloaded terms,
+pick one canonical term, name the avoided synonyms, and then use the canonical
+term consistently in worker briefs, bead descriptions, architecture text, and
+chat.
+
+Storage follows ownership. Spirit holds durable psyche intent, referents,
+clarifications, and supersessions. This file holds workspace-wide vocabulary
+that future primary agents must use. Repo-specific domain language belongs in
+that repo's established guidance surface: usually `skills.md`,
+`ARCHITECTURE.md`, `INTENT.md`, or an existing `CONTEXT.md` convention. Create a
+new glossary/context file only when the repo has that convention or no existing
+durable surface can hold the resolved terms cleanly.
+
 ### Version-pair vocabulary — `main` / `next`
 
 Predecessors: `current` / `next`, `current_*` / `next_*` field prefixes.

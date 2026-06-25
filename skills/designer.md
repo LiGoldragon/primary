@@ -18,17 +18,17 @@ Claim the role through `orchestrate "(Claim (designer [(Path /absolute/path)] [r
   capabilities: new skill files, substantive edits, cross-references.
   (Per-repo `skills.md` is operator's.)
 - **`ESSENCE.md`** — workspace intent, the upstream document.
-  Substantive edits land after a designer report justifies them;
+  Substantive edits land after a designer alignment source justifies them;
   quick fixes that match intent land directly with a clear message.
 - **`AGENTS.md`** + **`orchestrate/AGENTS.md`** — agent contract and
   role-coordination protocol. Substantive shape changes go via
-  designer report first.
+  designer alignment source first.
 - **Per-repo `ARCHITECTURE.md`** — designer drafts the shape;
   operator owns the implementation that fulfills it. Substantive
   edits in operator's repos go through designer review.
 - **Notation design** — `nota` grammar and `nexus` discipline. New
-  record surfaces land as designer reports with worked NOTA examples
-  and contract-crate implications.
+  record surfaces land with a designer alignment source, worked NOTA
+  examples, and contract-crate implications.
 - **Critique** — auditing operator's implementation against design
   intent: what landed cleanly, what regressed, what gap remains.
 
@@ -135,7 +135,7 @@ right is the one the current draft is missing.
 ### Open with the question, not the answer
 
 Most designs fail because the designer wrote the answer before framing
-the question. Open every report with **what problem are we solving?**
+the question. Open every design surface with **what problem are we solving?**
 in one paragraph. If the answer is unclear, the design isn't ready.
 
 ### Find the noun before naming the verb
@@ -167,8 +167,8 @@ code-backed design sketches run on designer-owned feature branches in
 worktrees under `~/wt`. The branch is the design artifact's executable
 surface: operator can check it out, run the tests, inspect the delta,
 and decide how to integrate it. Make the design falsifiable — small
-working code, focused tests, a report naming the branch and commit, a
-bead telling operator what can be harvested. A designer worktree
+working code, focused tests, a worker-ready note or report naming the branch
+and commit, and a bead telling operator what can be harvested. A designer worktree
 branch is not mainline authority.
 
 Operator owns main: when a designer feature branch is accepted,
@@ -192,7 +192,7 @@ first. Consequences:
 - One feature branch under proof at a time per design thread. New
   capabilities open new branches; old ones close when their capability
   lands on main.
-- Reports pin the capability being proved, not a fan-out roadmap.
+- The source surface pins the capability being proved, not a fan-out roadmap.
   Capabilities not yet under proof appear in uncertainty sections
   (`skills/architecture-editor.md`), not the cemented spec.
 - Integration is the proof's completion signal. A capability that ran
@@ -201,7 +201,7 @@ first. Consequences:
 
 ### Reports as visuals
 
-Every substantive report carries at least one mermaid diagram or table
+When a substantive report is warranted, it carries at least one mermaid diagram or table
 that conveys the shape at a glance; prose alone is dense. The TL;DR at
 the top is the falsifiable summary — a reader who stops there should
 still know what was decided and what changed.
@@ -214,15 +214,15 @@ verifiable trail. *"Per designer/46 §5 (the codec dispatches on the
 head ident at PatternField positions), the `PatternField<T>` rename
 brings these names into reserved status."*
 
-### Land the design report before the implementation
+### Land the alignment source before the implementation
 
-Design report first, then operator's implementation report responding
-to it, then back-and-forth as the implementation surfaces shape
-questions. The designer's report is the contract; the operator's is
-the record of fulfilling it. When the implementation diverges, either
-the divergence reveals the design was wrong (designer files a
-follow-up) or the implementation comes back into line — both normal,
-both via reports rather than chat.
+Before implementation, land a worker-ready alignment source: a report when a
+fresh-context pickup point is warranted, otherwise a durable guidance edit,
+worker brief, bead description, or harness answer with enough context to act.
+The source is the contract; the operator's implementation return, commit, tests,
+or follow-up artifact is the record of fulfilling it. When implementation
+diverges, either the divergence reveals the design was wrong and the alignment
+source changes, or the implementation comes back into line.
 
 ## Designer authority — acting without explicit psyche approval
 
@@ -371,12 +371,13 @@ falsifiable-spec test:
 - If the test fails, either the implementation has a bug or the spec
   is wrong; the failure surfaces which.
 
-When operator's implementation reveals a design gap, operator files an
-*implementation-consequences* report; designer responds with a
-follow-up. The thread is verifiable — reports cite each other, tests
-pin the wire forms. The designer does not rewrite operator's modules:
-if the design needs to change, that's a new design report; if the
-implementation is wrong, that's an audit plus an operator fix.
+When operator's implementation reveals a design gap, operator records the
+implementation consequence in the return, commit, bead, or report surface that
+fits the scope; designer responds with a follow-up alignment source. The thread
+is verifiable — sources cite each other, tests pin the wire forms. The designer
+does not rewrite operator's modules: if the design needs to change, update the
+alignment source; if the implementation is wrong, that's an audit plus an
+operator fix.
 
 ### The designer-operator loop — continuous roll-forward
 
@@ -389,7 +390,7 @@ The cycle repeats per new direction.
 **Designer leg.**
 1. Pick the component pilot (per the chain in
    `protocols/active-repositories.md`).
-2. Land the design report plus falsifiable test on a worktree feature
+2. Land the alignment source plus falsifiable test on a worktree feature
    branch under `~/wt/github.com/LiGoldragon/<repo>/`.
 3. Push the branch. File a bead for operator pickup.
 4. While the test stack matures, dispatch a parallel subagent to

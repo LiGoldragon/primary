@@ -4,7 +4,7 @@ Naming, iteration, and supersession discipline for reports. Companion to `skills
 
 ## Reports are fresh-context pickup points
 
-A report is written so an agent starting from a clean context can pick the work up, reason about it, and — where the work is implementable — implement it. The reader has none of the writer's session memory; the report supplies it. Implementable work is linked into a bead dependency graph (`bd dep <blocker> --blocks <blocked>`), so a fresh agent finds both the reasoning (the report) and the ordered work (the beads) without the original session. A continuation or review report states explicitly what it supersedes and deletes its predecessor in the same commit.
+When a report is warranted, write it so an agent starting from a clean context can pick the work up, reason about it, and — where the work is implementable — implement it. The reader has none of the writer's session memory; the report supplies it. Implementable work is linked into a bead dependency graph (`bd dep <blocker> --blocks <blocked>`), so a fresh agent finds both the reasoning (the report) and the ordered work (the beads) without the original session. A continuation or review report states explicitly what it supersedes and deletes its predecessor in the same commit.
 
 ## Filename
 
