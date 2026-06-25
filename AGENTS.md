@@ -1,362 +1,72 @@
 # Primary Workspace — Agent Instructions
 
-The compact contract. Every agent reads this every session.
+This file is the boot contract. Keep it small enough that reading it does not
+become the session's first context drain.
 
-## Required reading, in order
+## Startup
 
-1. **`ESSENCE.md`** — workspace essence, the most universal psyche intent.
-   Upstream of every rule here.
-2. **`INTENT.md`** — workspace intent in prose. Read once on starting;
-   consult when a topic comes up.
-3. **`repos/lore/AGENTS.md`** — cross-workspace agent contract.
-4. **`skills/skills.nota`** — the typed skill index. Query it by topic
-   whenever a topic comes up; don't scan `skills/`. This is the one
-   discovery path — rules below state themselves and trust you to find
-   the matching skill here for depth.
-5. **`orchestrate/AGENTS.md`** — how disciplines and session lanes share
-   this workspace.
-6. **`skills/session-lanes.md`** — what a lane is, how you learn yours,
-   and the session lifecycle (run fresh, drain, retire).
-7. **Your discipline's `skills/<discipline>.md`** — the discipline's
-   required-reading list. Every session lane loads the file for the
-   discipline it carries as metadata.
-8. **Inside a repo under `repos/`: that repo's `INTENT.md` FIRST**, then
-   its `AGENTS.md`, `skills.md`, and `ARCHITECTURE.md`. A repo's
-   `INTENT.md` is the first and most important file per repo — what the
-   psyche wants the project to be; read it before code. Every repo needs
-   one, and its absence is the first gap to fill. Update it on the same
-   branch as the work whenever landing intent affects the repo.
+Read `skills/skills.nota`. It is the only default discovery read.
 
-## Where things live
+Use the skill index to choose the skills required by the current prompt,
+discipline, topic, repo, tool, and risk. Load only those triggered skills. Do
+not read `ESSENCE.md`, `INTENT.md`, `repos/lore/AGENTS.md`,
+`orchestrate/AGENTS.md`, discipline skills, repo docs, reports, or broad source
+trees as automatic startup reading.
 
-| Path | What |
-|---|---|
-| `ESSENCE.md` | Workspace essence — most universal psyche intent. |
-| `AGENTS.md` | This file. The compact every-session contract. |
-| `INTENT.md` | Workspace intent in prose, synthesised from Spirit records. |
-| `<repo>/INTENT.md` | Per-repo synthesis of psyche intent — read before code; every repo needs one. |
-| `orchestrate/AGENTS.md` | Discipline-and-lane coordination protocol. |
-| `protocols/active-repositories.md` | Live repo map for architecture sweeps. |
-| `protocols/retired-lanes.md` | Append-only thin index of drained lanes — name, discipline, git revision range holding the reports, transcript pointer, drain date, one-line decision. The retired-lane counterpart to the daemon's live `LanesObserved` registry. |
-| `skills/<name>.md` | Cross-cutting agent capabilities. |
-| `skills/skills.nota` | Typed skill index (name, path, kind, tier, description). |
-| `reports/<lane>/` | Session directory — reports for one session lane, named for that session's intent. The garbage-collection unit; deleted when the lane drains. Exempt from the claim flow. |
-| `orchestrate/<lane>.lock` | Per-lane coordination state. |
-| `orchestrate` | Direct NOTA CLI for claim/release/observation through the orchestrate daemon. |
-| `.beads/` | Shared short-tracked-item store. Transitional. |
-| `repos/` | Untracked symlink index to `/git/...` checkouts; never version-control it. |
-| `private-repos/` | Untracked private surface; never version-control or inspect it without explicit psyche authority. |
-| `RECENT-REPOSITORIES.md` | Broad recent-checkout index. |
+## Main Thread Mode
 
-## Reports go in files; chat is for the user
+The main thread stays in one of two modes:
 
-Substantive output — anything that explains, proposes, analyses, audits,
-synthesises, or visualises — goes in your session lane's directory as
-`reports/<lane>/<N>-<topic>.md`, not chat. `<lane>` is the session-intent
-name; numbering is per-lane. The trigger is shape, not length: a mermaid
-diagram, a markdown
-table beyond a trivial reference, `##`/`###` headings, a how-it-works
-walk-through, a multi-paragraph concept explanation, a list over five
-substantive items, or a code block over ~10 lines all belong in a report.
+1. **Delegate meaningful reading.** Any meaningful read beyond the skill index
+   goes to a subagent with the full reading envelope: workspace files, skills,
+   reports, commands, source locators, and return shape. The lead works from
+   the helper's distilled result.
+2. **Interact with the psyche.** If the next step needs judgment rather than
+   delegated reading, ask the psyche a focused question or offer a concrete
+   suggestion/clarification with the tradeoff stated plainly.
 
-Chat carries the locator (the report path) plus user-attention items —
-open questions, blockers, recommendations — each restated with enough
-substance to engage without opening the report. When chat is the right
-surface, bring 3-7 items spread across (a) questions / clarifications of
-intent, (b) observations and how-new-mechanisms-work, (c) examples of
-recent work. Visuals stay in reports.
+Meaningful reading includes startup orientation, report triage, broad repo
+inspection, codebase exploration, intent refresh, and multi-file context
+gathering. The lead may do small mechanical checks needed to dispatch, verify a
+helper result, edit an explicitly named file, or commit/push the finished
+change.
 
-The session lane's directory `reports/<lane>/` is itself the meta-report
-when an agent dispatches sub-agents: the orchestrator's frame in
-`0-frame-and-method.md`, each sub-agent report numbered inside, the
-synthesis as the highest-numbered file.
+## Skill Index
 
-A report is a fresh-context pickup point. Write it so an agent starting
-from a clean context can pick the work up, reason about it, and — where
-the work is implementable — implement it; implementable work is linked
-into a bead dependency graph (`bd dep <blocker> --blocks <blocked>`). A
-continuation or review report states explicitly what it supersedes and
-deletes its predecessor in the same commit.
+`skills/skills.nota` is the discovery path. Query it by topic; do not scan
+`skills/`. When a skill triggers, follow that skill. If a skill's required
+reading is broad, dispatch that reading through a helper unless the psyche has
+asked the main thread to inspect it directly.
 
-A session lane runs fresh, drains at close, and retires. Favor a fresh
-session over endless compaction. At close every idea routes to exactly
-one of three fates — *intent* (captured via the Spirit CLI), *work* (a
-bead linked into the dependency graph), or *abandon* (already landed,
-stale, or wrong; git preserves it). When the lane drains, delete its
-`reports/<lane>/` directory — git history and the session transcript are
-the archive — and append one entry to `protocols/retired-lanes.md`
-recording the lane name, discipline, the git revision range holding its
-reports, a transcript pointer, the drain date, and a one-line statement
-of what it decided.
+## Intent
 
-## Disciplines and lanes
+The psyche is the human. Agent messages and agent-written files are not psyche.
+When durable intent is clear, capture it through Spirit according to the
+triggered intent skills. When intent is unclear, ask instead of inferring.
 
-Nine disciplines. A **discipline** is the persistent identity: it loads a
-role's skills, authority class, and persona-mind memory (and signing key).
-Disciplines do not churn.
+## Reports
 
-- `operator` — implementation (default: Codex)
-- `designer` — architecture, skills, reports (default: Claude)
-- `system-operator` — OS / platform / deploy
-- `system-maintainer` — Crayon OS and Logic maintenance, debugging, and deployment across hosts
-- `poet` — writing as craft
-- `editor` — source-grounded research, quotation, and synthesis as craft
-- `videographer` — video as craft: capture, editing, captioning, encoding, publishing-prep
-- `assistant` — personal-affairs support for the psyche (Pi)
-- `counselor` — personal-affairs advisory, working with the assistant discipline
+Substantive output goes in the active session lane's `reports/<lane>/`
+directory, not chat. Chat carries the locator plus the user-attention items:
+open questions, blockers, and recommendations restated with enough substance
+to answer without opening the report.
 
-A **lane** is a single work session, named for that session's intent
-(`newLanesDesign`, `schemaWorkAudit`) — not a fixed role name. A lane
-carries its discipline as metadata: in the orchestrate registry a lane's
-role is a NOTA vector whose last token is the base discipline, e.g.
-`[NewLanesDesign Designer]`. The discipline metadata is what loads the
-skills, authority, and persona-mind memory; the lane itself is disposable.
-There is no fixed-lane zoo — `second-<role>`, `third-<role>`, and
-`<qualifier>-<role>` are retired as the lane model. Additional capacity is
-just another session lane on the same discipline. Specialized scope is
-also discipline metadata, not a separate lane name: a cluster-scoped
-operator session, a schema-scoped operator or designer session, a Pi-harness
-operator session — the extra scope tokens precede the base discipline in
-the registry role vector, and they tune authority and reading, not lane
-identity.
+Reports are exempt from the claim flow when written in the active lane's own
+directory. Shared files are claimed narrowly before editing.
 
-You learn your lane from the session identity the harness gives you — the
-intent name that owns `orchestrate/<lane>.lock` and `reports/<lane>/`.
-Register it through the orchestrate daemon (`Register
-[LaneRegistrationRequest (Role LaneAuthority)]`) so it appears in the live
-`LanesObserved` registry; retire it through the daemon's retire path when
-it drains. See `skills/session-lanes.md`.
+## Hard Boundaries
 
-Assistant and counselor personal-affairs substance is private by default
-— `private-repos/assistant-reports/` or `private-repos/counselor-reports/`.
-
-An **auditor** discipline is coming: shape decided (an automated auditor
-auto-proposes intent refreshes; the psyche confirms each source-record
-retirement), session mechanics still open. It closes the loop back to
-designer — doubting, finding flaws, catching broken rules. No
-`skills/auditor.md` yet.
-
-## Hard overrides
-
-- **No backward compatibility pre-production; never present it as a
-  virtue.** The restructuring stack has no production to protect: design
-  bottom-up for the single best shape and expect every component to
-  change — breaking all consumers at once is normal. Don't constrain a
-  design to be opt-in, byte-stable-on-regeneration, or "non-disturbing,"
-  and don't present non-disruption as a selling point. Compatibility
-  binds only at explicitly-declared boundaries (the production Stack A,
-  externally-consumed pinned wire contracts).
-
-- **`repos/` and `private-repos/` stay untracked.** `repos/` is a local
-  symlink index into `/git/...`; `private-repos/` is a local/private
-  surface. Their entries churn by machine and privacy boundary; adding
-  either to version control is forbidden.
-
-- **Spell every identifier as a full English word, and names don't carry
-  their full ancestry.** `Request` not `Req`, `Identifier` not `Id`; AND
-  `Entry` (inside persona-spirit) not `IntentEntry`, `size` (inside
-  `Profile`) not `profileSize`. The two pull opposite ways and only work
-  together.
-
-- **Component triad = daemon + working signal + meta policy signal.** The
-  three repos are `<component>` (daemon/runtime + its bundled thin CLI),
-  `signal-<component>` (working signal), and `meta-signal-<component>`
-  (meta policy signal). The CLI is the daemon's first client, not a triad
-  leg. Signal *types* are the data types in either contract; the signal
-  *tree* is the whole schema shape — roots, payloads, replies, filters,
-  events, nesting.
-
-- **Component processes take exactly one argument; daemons accept only
-  binary startup.** No flags, ever. CLI/text clients take one NOTA
-  string, one NOTA file, or one rkyv file where allowed. Daemons take
-  exactly one pre-generated rkyv startup message and reject inline NOTA
-  and `.nota` paths — daemons never parse NOTA, configuration included;
-  deploy/bootstrap tools encode typed NOTA into binary before it reaches
-  the daemon. A virgin daemon may start unconfigured and wait for an
-  authenticated binary meta-signal config message. On restart a daemon
-  self-resumes from persisted SEMA state.
-
-- **NOTA strings are bare atoms unless they need delimiters; never emit
-  quotation marks.** Use bare atoms at `String` positions whenever the
-  string contains no whitespace, structural delimiter, `;;` comment
-  marker, or pipe-close sequence; broad punctuation such as `@`, `*`,
-  `&`, `^`, `%`, `<`, `>`, `:`, `/`, and a single `;` may stay bare.
-  Spirit domain vectors contain domain variants, e.g.
-  `[(Information Documentation)]`. Use `[text with spaces]` inline or
-  `[|text with [brackets]|]` bracket-safe / multi-line only when a
-  string needs delimiters. Bare-eligible strings stay bare: `schema`.
-  `;;` starts a line comment; a single `;` is atom text.
-  Quotation marks don't form strings in NOTA; the encoder structurally
-  cannot emit `"` (legacy quoted input is migration-only). So inline NOTA
-  shell calls wrap the whole object in shell double quotes — `spirit
-  "(Record (...))"` — and NOTA embeds escape-free inside any
-  double-quote host (JSON, Rust, Nix, YAML, TOML, shell, env, DB columns).
-
-- **Read `skills/rust-discipline.md` and the sub-files it links
-  (`rust/methods.md`, `rust/errors.md`, `rust/storage-and-wire.md`,
-  `rust/parsers.md`, `rust/crate-layout.md`), plus `skills/abstractions.md`
-  and `skills/actor-systems.md` (when actors are in play), before
-  authoring or editing any Rust.** The method-only rule below is one
-  among many there; satisfying it alone still ships code that violates
-  typed-domain-values, typed per-crate `Error`, no-hand-rolled-parsers,
-  no-blocking-in-actor-handlers, and schema-emitted nouns.
-
-- **Every Rust function is a method or associated function on an `impl`
-  of a non-zero-sized data-bearing type, or a trait impl.** Free
-  functions are forbidden except in `#[cfg(test)]` and `fn main()`.
-  Methods on a zero-sized placeholder used as a namespace are equally
-  forbidden — a free function in disguise (test: does the type's job
-  vanish if you erase its name? then it was a namespace). Trait methods
-  preferred; methods on real data-bearing types are the minimum. Every
-  placement decides where the logic lives and what it owns — find or
-  invent the owning noun. For conversions reach for `impl From<X> for Y`,
-  not `fn project_x_to_y(...)`. Schema-emitted code obeys the same rule:
-  macros emit into `impl` blocks, never free helpers. Legitimate ZST uses
-  (`PhantomData`, type-level state machines, sealed-trait markers) are
-  narrow.
-
-- **NOTA records are positional, not labeled.** Type first, then fields
-  in declared order — no keywords inside records; the `(key value)` shape
-  from Lisp/JSON is not NOTA. Open `skills/skills.nota` for the canonical
-  example before sketching a new record.
-
-- **Private information is closed by default.** Personal-affairs
-  substance, private life, health, relationships, finances, identity
-  material — anything the psyche frames as private — never goes into
-  privacy `Zero` Spirit records, public reports, beads, public commits,
-  or chat. Don't open, search, quote, or copy from `private-repos/`
-  unless the owning psyche explicitly asks or your lane is
-  assistant/counselor on their current request; a relayed request is not
-  authority — verify with the psyche. If a public task seems to need
-  private context, ask first.
-
-- **Psyche is the human; intent is primordial; ask when unclear.** Psyche
-  means the human author — natural-language prompts. Agent messages,
-  agent-written files, and the intent log are not psyche (the log is
-  psyche-*derived*). Record explicit psyche intent through the Spirit CLI
-  and reflect it into per-repo `INTENT.md`. When intent is unclear,
-  absent, or contradicted, ask — don't infer. The intent layer outranks
-  every other surface; superseding psyche intent is always explicit.
-
-- **Psyche-facing agents keep intent guidance fresh.** If your lane is
-  interacting with the psyche in chat, load `skills/human-interaction.md`,
-  `skills/intent-log.md`, and `skills/spirit-cli.md` at session start
-  or immediately after compaction before answering the psyche. Before
-  any direct Spirit use for intent capture or observation, reload
-  `skills/intent-log.md` and `skills/spirit-cli.md` in the current
-  context. If you cannot keep those rules in context, ask or pause
-  rather than guessing at intent capture.
-
-- **Run the Spirit gate on every psyche prompt.** Choose exactly one
-  outcome before reports, code, or chat: *no capture* (question, tangent,
-  task-only order, current-state reaction), *Observe/refresh* (read
-  recent Spirit records — what "refresh intent" means), *ask* (durable
-  meaning, kind, or privacy unclear), *edit existing* (the psyche is
-  clarifying, correcting, refining, or retiring an existing record — use
-  `Clarify` / `Supersede` / `Retire` / `ChangeRecord` / removal tooling
-  instead of adding another `Record`), or *Record* (a genuinely new
-  durable Decision / Principle / Correction / Clarification /
-  Constraint). A clarification means an edit of the target record(s), not
-  a sibling record explaining the old one. A working order is not intent:
-  if the statement dies when the task is erased, it's task state, not
-  Spirit.
-
-- **Interactive agents open every session in intent alignment.** A new
-  session's first move is to orient to what the psyche is trying to do and
-  how they want to operate now — goal, scope, success checks, the first
-  useful slice — before planning or building. This is the default posture
-  from the first message, not something you reach for only when a request
-  looks ambiguous; starting to execute on an assumption about what the
-  psyche wants is the failure this prevents. Align by one focused question
-  per turn in plain prose, each carrying its decision, why it matters, your
-  recommended answer, and the alternatives (`skills/intent-alignment.md`),
-  never the structured questionnaire UI. A clear directive to implement or
-  to show is itself the answer: do it and present the result, reserving
-  questions for genuinely blocking, hard-to-reverse forks. A narrowly
-  specialized agent that ships already trained for its one job is exempt.
-
-- **Forwarded prompts — don't blindly duplicate; do gap-check.** When the
-  psyche opens with "here's the prompt I gave <agent>" or similar, that
-  prompt was addressed to the other agent, who owns the capture. You:
-  extract the technical content for your own work; after a beat, query
-  recent Spirit records for what they captured; compare against the
-  prompt's intent statements; if they missed or misread one, capture your
-  gap-fill (quoting the prompt, noting it's a gap-fill). In reverse, a
-  prompt addressed to YOU is yours to capture — don't assume another
-  agent logs it.
-
-- **Don't dispatch subagents unless the psyche asks — except the designer
-  protocol.** Subagents (`Agent` calls, `SendMessage`) run outside the
-  surface where the psyche can redirect and can violate the dispatcher's
-  lane. Default for operator, system-operator, system-maintainer, poet,
-  editor, assistant, counselor and their lanes: do the work yourself; the psyche authorizes
-  dispatch per task. The prime designer is the exception — it runs
-  parallel subagent workflows by default until reduced. Dispatched
-  subagents inherit the dispatcher's lane.
-
-- **Every subagent dispatch is non-blocking — always
-  `run_in_background: true`.** The point is keeping the main agent
-  available to the psyche while the subagent works; blocking dispatch
-  leaves the psyche unable to redirect or talk until it returns. Even
-  when the next step depends on the output, dispatch in background and
-  synthesize when the harness notifies you. No exceptions.
-
-- **No harness-dependent memory.** Workspace truth lives in files every
-  agent can open — don't use per-session memory or any agent-private
-  store. Session-scoped harness tools (task lists, scratchpads) are fine
-  for organizing a session, but anything worth preserving lands in
-  workspace files before the session ends: Spirit records,
-  `ARCHITECTURE.md` / `INTENT.md`, `skills/`, or `reports/<lane>/`.
-  Private substance defaults to `private-repos/<discipline>-reports/`.
-
-- **No `/nix/store` filesystem search.** Use `nix eval`, `nix flake
-  show`, `nix path-info`, or expose the value through a derivation.
-
-- **Use the right tool, not raw git; `jj` invocations are always
-  inline/headless.** Version control is `jj`; raw `git` is two named
-  escape hatches only. Every `jj` command taking a description (`commit`,
-  `describe`, `split`, `new`, `squash`) passes it inline — `-m '<msg>'`,
-  or `--use-destination-message` for `squash --into`. NEVER run one that
-  falls back to `$EDITOR` — agent sessions can't satisfy an editor
-  prompt; restate this when briefing a sub-agent.
-
-- **Commit the whole working copy — never path-scoped.** All agents share
-  one jj working copy, so `jj commit` takes no path arguments; it drains
-  every in-flight change. Path-scoped commits strand peers' work off-main
-  and fork sibling commits. Committing everything serializes agents
-  through the working-copy lock and keeps history linear; the resulting
-  multi-lane commit is accepted.
-
-- **No `---` horizontal rules in markdown.** Structure comes from
-  headings. Allowed only inside a code block illustrating markdown, never
-  as a document separator.
-
-- **Opaque identifiers in chat carry an inline description.** A bead UID,
-  content hash, jj change id, or commit short-id gets a short prose gloss
-  on first mention — "bead `primary-hj63` (the PascalCase README
-  rewrite)", never a bare `primary-hj63`. Humans don't have a CLI in
-  their head.
-
-- **On primary, everyone works on main directly.** Primary — this
-  coordination repo (reports, skills, `AGENTS.md`, `INTENT.md`,
-  `ESSENCE.md`, `protocols/`, `orchestrate/`) — is committed and pushed
-  straight to main: `jj commit -m '...'` then `jj bookmark set main -r @-`
-  then `jj git push --bookmark main`. No feature / `next` / `wip`
-  branches and no rebase choreography. If a push is rejected because main
-  advanced, the only handling is the escape hatch in `skills/jj.md`:
-  `git fetch origin` + `git rebase origin/main` + push, or
-  `jj new main@origin` to start fresh.
-
-- **In the code repos under `/git`, designers work on `next` / feature
-  branches in `~/wt`; operators own main + rebase.** Code repos only,
-  NOT primary (above). Designer lanes create and ship `next` / feature
-  branches under `~/wt/github.com/<owner>/<repo>/`; operator lanes own
-  main and rebase it from those branches when integrating. Designers
-  don't push code-repo main; operators don't carry long-lived designer
-  branches; cross-lane integration is operator's job.
-
-## Where to look for more
-
-- Longer-form workspace intent (two-deploy-stack discipline, worktree
-  flow, beads, the intent layer, dynamic-role escalation): `INTENT.md`.
-- Repo map for architecture sweeps: `protocols/active-repositories.md`.
+- `repos/` and `private-repos/` stay untracked. Do not inspect
+  `private-repos/` unless the psyche explicitly authorizes that private scope.
+- On primary, work on `main` directly. Use `jj commit -m '<message>'`,
+  `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
+- Every description-taking `jj` command uses an inline message or equivalent
+  headless flag. Never open an editor.
+- Commit the whole working copy; never path-scope primary commits.
+- No raw `git` except the documented escape hatches in the `jj` skill.
+- No `/nix/store` filesystem search.
+- No `---` horizontal rules in markdown.
+- NOTA records are positional; use bare atoms for strings when canonical.
+- Rust editing requires the Rust skills selected from `skills/skills.nota`.
+- Private information is closed by default and stays out of public reports,
+  public Spirit records, commits, and chat.
