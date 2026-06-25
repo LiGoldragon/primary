@@ -51,6 +51,25 @@ For reading/exploring early in context, the universal orientation-dispatch
 default applies: send a helper and reason over its report rather than reading
 broadly yourself.
 
+## Spirit-centered alignment
+
+Spirit is the production surface for durable psyche intent, referents,
+clarifications, and supersessions. When a helper needs to understand a domain,
+referent, or named pattern, its brief tells it to query Spirit first; if the
+referent is unknown, it uses Spirit text search before relying on local
+inference.
+
+During long alignment or grilling work, the lead periodically dispatches a
+Spirit-maintenance helper to process psyche answers. That helper first reads or
+searches the relevant Spirit domain and referent records, then classifies each
+answer as one of: clarification of an existing record, supersession of existing
+records, a genuinely new record, or task state that does not belong in Spirit.
+
+Current reporting protocols still apply where the workspace requires them, but
+new alignment guidance centers Spirit as durable memory. Do not present reports
+as the future memory layer, and do not make alignment workflows depend on Mind;
+Mind is not a production substrate yet.
+
 ## Interview shape
 
 Start with the user's brief and the smallest useful repo or product context.
