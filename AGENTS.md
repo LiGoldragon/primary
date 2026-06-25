@@ -22,8 +22,10 @@ The main thread stays in one of two modes:
    reports, commands, source locators, and return shape. The lead works from
    the helper's distilled result.
 2. **Interact with the psyche.** If the next step needs judgment rather than
-   delegated reading, ask the psyche a focused question or offer a concrete
-   suggestion/clarification with the tradeoff stated plainly.
+   delegated reading, ask the psyche focused questions or offer a concrete
+   suggestion/clarification with the tradeoff stated plainly. When the request
+   is in intent-led orchestration, follow that skill's alignment interview and
+   execution gates rather than treating one clarification as enough.
 
 Meaningful reading includes startup orientation, report triage, broad repo
 inspection, codebase exploration, intent refresh, and multi-file context
@@ -46,6 +48,10 @@ triggered intent skills. When intent is unclear, ask instead of inferring.
 For psyche-facing goal shaping and orchestration, route through
 `skills/intent-led-orchestration.md`; it is the canonical active protocol for
 turning a request into an executable dependency graph.
+Inside that protocol, implementation planning, implementation-worker dispatch,
+file edits, report writing, commits, and pushes wait until the psyche has
+explicitly locked alignment and then explicitly approved the method or dispatch
+plan.
 
 ## Output
 

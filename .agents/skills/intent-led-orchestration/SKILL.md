@@ -17,9 +17,10 @@ lead-readable context.
 
 Once active, all task work goes through subagents or session lanes. The lead
 does not do direct workspace reads, searches, status checks, web lookups, edits,
-verification, commits, or pushes. The lead may ask the psyche focused questions,
-formulate the dependency graph, dispatch workers, wait for returns, and
-synthesize from those returns.
+verification, commits, or pushes. The lead may run the alignment interview,
+formulate a decision graph, dispatch read-only subject-understanding or
+Spirit-maintenance workers, wait for returns, and synthesize from those returns.
+Implementation workers are not authorized until the gates below are passed.
 
 If the lead performs any workspace read or tool call after entering the
 protocol, stop, disclose the violation, and offer a fresh-session restart or
@@ -27,31 +28,70 @@ handoff.
 
 ## Lead Work
 
-- Align the psyche's request into an executable dependency graph.
-- Ask the psyche one focused question when judgment or intent is needed.
-- Decide routing, parallelism, and sequencing.
-- Dispatch subagents/session lanes with explicit authority.
+- Align the psyche's request through an intense question session before saying
+  how the work could be done.
+- Turn the locked intent and approved method into an executable dependency
+  graph.
+- Decide routing, parallelism, and sequencing only after the relevant gate
+  authorizes that decision.
+- Dispatch subagents/session lanes with explicit post-gate authority.
 - Synthesize final returns for the psyche without opening linked artifacts.
 - Do not choose or assign worker lane names.
 
+## Alignment Interview Gates
+
+Intent-led orchestration begins with the **alignment interview**. This is a
+serious interview, not a quick clarification pass. For nontrivial work, one or
+two questions followed by planning or implementation is a protocol failure.
+
+The lead asks multiple rounds of focused psyche questions before planning
+execution. A round may contain several tightly related questions when that is
+the clearest way to pressure-test the request. The interview covers, as
+applicable:
+
+- desired outcome and user-facing behavior;
+- non-goals and out-of-scope boundaries;
+- authority, privacy, safety, rollback, and decision ownership;
+- success criteria, proof, tests, and acceptance language;
+- constraints, deadlines, cost sensitivity, and blast radius;
+- shared terms, avoided synonyms, and contested vocabulary;
+- risks, failure modes, reversibility, and what must not be assumed;
+- how the implementation method should be chosen.
+
+Do not silently choose defaults for variables that change authority, priority,
+scope, safety, privacy, certainty, importance, rollout, method, or decision
+ownership. Questions name the decision, why it matters, and concrete options
+with tradeoffs. Recommendations are allowed only as candidate answers for the
+psyche to accept, reject, or revise.
+
+There are two explicit exit gates:
+
+1. **Alignment locked.** Before implementation planning, sequencing,
+   implementation-worker dispatch, file edits, report writing, commits, or
+   pushes, the psyche explicitly signals that the intent is aligned and locked
+   or uses equivalent clear language. Until then, the lead may question and may
+   dispatch read-only subject-understanding or Spirit-maintenance workers only.
+2. **Method approved.** After alignment is locked, the lead proposes the
+   implementation method or dispatch plan and waits for the psyche to
+   explicitly approve it. Until then, no implementation worker, edit, report,
+   commit, or push is authorized.
+
+The psyche may explicitly ask for immediate implementation outside
+intent-led orchestration. That is a different mode. Inside this protocol, a
+clear directive to implement is not enough to bypass the alignment interview or
+the method gate.
+
 ## Dependency Graph And Questions
 
-The lead builds a graph of goal, inputs, decisions, work, verification,
-parallel slices, blocked nodes, and edges before planning sequence.
+The lead builds a decision graph of goal, inputs, open questions, decisions,
+proof needs, blocked nodes, and edges. Before the alignment gate, the graph is a
+questioning map, not an implementation plan. A linear checklist is only a
+projection of the graph after the gates authorize planning.
 
-When the next edge depends on judgment or intent, ask the psyche one focused
-question in plain prose. Do not silently choose defaults for variables that
-change authority, priority, scope, safety, privacy, certainty, importance,
-rollout, or decision ownership. Each question names the decision, why it
-matters, the recommended answer, and one or two meaningful alternatives when
-they change the outcome.
-
-Usually ask enough focused psyche questions to make a substantial, well-scoped
-job before dispatching a worker. Exceptions: the subject-understanding gate
-requires an exploratory worker as the next dependency, or the directive is
-already concrete enough to execute. A clear directive to implement is enough
-alignment for reversible details: dispatch the first executable graph slice and
-keep moving.
+When the next edge depends on judgment or intent, continue the alignment
+interview. If the next edge depends on mechanically answerable facts, dispatch a
+bounded read-only worker rather than asking the psyche to restate what the
+workspace can discover.
 
 ## Subject-Understanding Gate
 
@@ -62,15 +102,23 @@ orchestration move is a subject-understanding exploratory subagent/session.
 
 By default, that first move is exactly one lightweight exploratory worker, not a
 fleet. It returns current ground truth, the subject in workspace terms, a first
-dependency-graph sketch, and the best next psyche question with a recommendation
-and one or two meaningful alternatives. Prefer staged exploration: one worker,
-one focused psyche question, then targeted parallel workers only after the graph
-or decision fork warrants them.
+dependency-graph sketch, and the best next interview questions with a
+recommendation and meaningful alternatives. Prefer staged exploration: one
+worker, continued alignment interview, then targeted parallel workers only
+after the graph or decision fork warrants them and the relevant gate allows the
+dispatch.
 
 More than one initial worker requires explicit psyche-requested parallel
 exploration or proven truly independent, bounded questions. A simple command or
-obvious directive with no subject-context ambiguity may dispatch directly to an
-implementation worker.
+obvious directive with no subject-context ambiguity may run outside
+intent-led orchestration. Do not remain in this protocol while bypassing its
+gates.
+
+The subject-understanding worker is read-only unless the psyche has already
+passed the gates for execution. It may return facts, vocabulary, risks, and the
+next interview questions. It does not write reports, edit files, commit, push,
+or prepare implementation briefs unless the method gate has explicitly granted
+that work.
 
 ## Spirit-Centered Orchestration
 
@@ -121,7 +169,12 @@ policy.
 If this is the first subject-understanding move, tell the worker to keep
 orientation lightweight and return current ground truth, the subject in
 workspace terms, the first dependency-graph sketch, and the best next psyche
-question with a recommendation and alternatives.
+questions with a recommendation and alternatives.
+
+Before the alignment and method gates, worker briefs must say `read-only` and
+must forbid implementation, file edits, report writing, commits, and pushes.
+Implementation-worker briefs are allowed only after the method gate; their
+authority must name the approved method or dispatch plan.
 
 If the worker needs domain or referent understanding, explicitly tell it to
 query Spirit first, including public text search when the referent is unknown.

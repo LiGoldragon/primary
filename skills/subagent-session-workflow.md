@@ -53,9 +53,18 @@ Name the target branch/bookmark/worktree in the claim reason before mutation.
 
 ## Default authority
 
-Commit and push are the worker default. The only exceptions are explicit
+Commit and push are the worker default only after the brief grants mutation or
+execution authority. The only exceptions after that grant are explicit
 read-only, report-only, edit-only, or no-commit authority in the brief or a
 blocking safety condition named by a triggered skill.
+
+For intent-led orchestration, the brief's gate position is authority. A
+pre-alignment or pre-method subject-understanding worker is read-only even
+though workers normally commit completed changes. It may inspect allowed
+sources and return facts, risks, vocabulary, and next interview questions. It
+does not implement, edit files, write reports, dispatch implementation workers,
+commit, or push unless the brief says the psyche has locked alignment and
+approved the method or dispatch plan.
 
 On primary, land completed work on `main`:
 

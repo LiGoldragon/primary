@@ -48,7 +48,7 @@ durable memory or document non-production workflows as usable paths.
 
 ## See also
 
-- `intent-led-orchestration.md` — fresh-context focused-question alignment and
+- `intent-led-orchestration.md` — fresh-context alignment interview gates and
   orchestration.
 - `context-maintenance.md` — routing reports and live context to intent, work,
   or abandon.

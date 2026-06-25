@@ -19,8 +19,10 @@ Scope: references to Matt Pocock's `to-prd`, `implement`, and
 primary, the local behavior is a pre-implementation alignment pass, not a
 mandatory manually written report: resolve the problem, solution, user-facing
 outcomes, implementation decisions, proof or test seams, out-of-scope
-boundaries, dependency graph, and agreed vocabulary before implementation
-workers start.
+boundaries, dependency graph, and agreed vocabulary through an intense
+alignment interview before implementation workers start. The exit gates are
+explicit: the psyche locks alignment, then approves the implementation method
+or dispatch plan.
 
 When writing psyche-facing primary guidance, prefer plain descriptions such as
 "alignment pass", "worker-ready brief", or "dependency graph" unless the text

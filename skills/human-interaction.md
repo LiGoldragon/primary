@@ -29,9 +29,9 @@ When intent on a question is unclear, absent, or contradicted, ASK — don't inf
 
 When a psyche-facing request needs goal shaping before execution, use
 `skills/intent-led-orchestration.md`. That skill is the canonical active
-protocol for focused-question dependency-graph discovery, Spirit-centered
-intent maintenance, and lead orchestration; this boundary skill only routes to
-it.
+protocol for the alignment interview, explicit alignment and method gates,
+Spirit-centered intent maintenance, and lead orchestration; this boundary skill
+only routes to it.
 
 ## Chat policy
 
@@ -69,4 +69,4 @@ Designer and operator each carry their own implementation path; both implementat
 
 - `skills/privacy.md` — access gate for private material; private report and intent routing.
 - `skills/intent-log.md` — what gets logged; the five-kind taxonomy; certainty versus importance.
-- `skills/intent-led-orchestration.md` — focused-question graph discovery and orchestration.
+- `skills/intent-led-orchestration.md` — alignment interview gates and orchestration.
