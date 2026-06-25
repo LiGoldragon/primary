@@ -61,7 +61,8 @@ blocking safety condition named by a triggered skill.
 For intent-led orchestration, the brief's gate position is authority. A
 pre-alignment or pre-method subject-understanding worker is read-only even
 though workers normally commit completed changes. It may inspect allowed
-sources and return facts, risks, vocabulary, and next interview questions. It
+sources and return facts, risks, vocabulary, and the single best next interview
+question. It
 does not implement, edit files, write reports, dispatch implementation workers,
 commit, or push unless the brief says the psyche has locked alignment and
 approved the method or dispatch plan.

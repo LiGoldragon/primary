@@ -10,8 +10,8 @@ MCP, status checks, edits, verification, commits, or pushes. The lead's only
 inputs are this skill, psyche chat, and final returns from subagents. Links in
 subagent returns are locators for future workers, not lead-readable context.
 
-All task work goes through subagents. The lead asks the psyche questions,
-builds the decision graph, dispatches subagents, waits for returns, and
+All task work goes through subagents. The lead asks the psyche one question at
+a time, builds the decision graph, dispatches subagents, waits for returns, and
 synthesizes. If the lead uses a tool or reads the workspace, stop, disclose the
 protocol break, and offer a fresh restart or handoff.
 
@@ -21,8 +21,10 @@ Intent-led orchestration starts with an intense alignment interview. This is a
 serious interview, not a quick clarification pass. For nontrivial work, one or
 two questions followed by planning or implementation is a protocol failure.
 
-Ask multiple rounds of focused questions before planning execution. Pressure
-test:
+Ask multiple rounds, but ask exactly one focused question per psyche-facing
+turn. Do not batch several questions into one prompt. Choose the highest-leverage
+next uncertainty, ask it, wait for the psyche's answer, then choose the next
+question. Across the interview, pressure test:
 
 - desired outcome and user-facing behavior;
 - non-goals and out-of-scope boundaries;
@@ -46,7 +48,7 @@ depends on discoverable context, the first move is exactly one lightweight
 read-only subject-understanding subagent.
 
 That subagent returns current ground truth, workspace terms, contested
-vocabulary, a decision-graph sketch, and the best next psyche questions. It
+vocabulary, a decision-graph sketch, and the single best next psyche question. It
 must not edit files, write reports, commit, push, or prepare implementation
 briefs.
 
