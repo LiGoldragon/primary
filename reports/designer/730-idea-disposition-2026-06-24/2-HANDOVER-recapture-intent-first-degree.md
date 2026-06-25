@@ -119,15 +119,26 @@ existing record rather than new `Record`s.
    quantity at any time"*. (Candidate to fold into
    `skills/context-maintenance.md` + the `reporting.md` soft-cap.)
 
-## The clearing plan (after the interview)
+## The clearing plan
 
 1. Capture confirmed first-degree intent in Spirit; reflect into the
-   affected `INTENT.md` files.
-2. Turn genuinely-wanted work into beads (first-degree confirmed; the
-   ledger's 70 work candidates are a checklist to confirm against, not to
-   accept wholesale).
+   affected `INTENT.md` files. **(Still open — interview deferred; two
+   psyche-stated principles above await proper capture.)**
+2. ~~Turn genuinely-wanted work into beads.~~ **DONE 2026-06-25.** The 70
+   work candidates were deduped against all 166 live beads, adversarially
+   re-checked (3 dropped as dups, 4 narrowed to deltas), and woven into
+   **9 epics + 67 work beads**, all tagged `designer-weave`. View:
+   `bd list --labels designer-weave` / `bd epic status` / `bd dep tree
+   <epic>`. Epic ids: schema `primary-o7j2`, criome `primary-om4g`,
+   mentci `primary-iy51`, intent-spirit `primary-c4dz`, guardian
+   `primary-nlx5`, orchestrate `primary-fzwd`, signal-router
+   `primary-2wj8`, trace-e2e `primary-4ddb`, mirror `primary-9ppu`
+   (+ standalone `primary-o2lr` visuals-as-data, `primary-pl60` actor
+   runtime, `primary-8jzu` cloud cost-cap). The whole weave is reversible
+   as one unit by its label.
 3. `rm` all `reports/designer/` entries (git preserves history),
-   including this 730 meta-dir once its job is done.
+   including this 730 meta-dir once its job is done. **(Ready — work is
+   now preserved in the weave; gated on the psyche's go.)**
 4. Keep only what the psyche explicitly wants retained — by default,
    nothing; durable substance lives in `INTENT.md` / Spirit / skills.
 

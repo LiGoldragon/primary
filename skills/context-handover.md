@@ -1,30 +1,36 @@
 # Skill — context handover
 
-## Handover is a prompt, not more work
+## Handover preserves decision power
 
 When the psyche asks for a clean-session handover, write the prompt a fresh
-agent should receive. Do not continue the task inside the current degraded
-context, and do not launch the subagent unless explicitly asked to launch it
-now.
+agent should receive. The handover is an information map: what accumulated,
+where the evidence lives, which topics matter, and what is still uncertain.
 
-The prompt states:
+The fresh agent keeps its own judgment. A handover does not decide the next
+agent's work for it, except when the psyche has already given an explicit
+instruction; in that case quote the instruction as psyche instruction rather
+than turning it into agent inference.
 
-- the workspace and repo;
-- the concrete goal;
-- required reading that matters for this task;
-- current state, including commits, files, open decisions, and agreed defaults;
-- exactly what the next main agent should do;
-- any subagent role, scope, and waiting behavior the psyche requested.
+## What to carry
 
-## Keep it executable
+Name the accumulated context that would otherwise be lost:
 
-Write the handover as direct instructions the next agent can paste into a new
-session. Include enough context to act without scrolling chat, but keep history
-only when it changes the next action.
+- workspace, repo, lane, and relevant discipline;
+- the user's goal and any exact psyche instructions;
+- current state: commits, files, reports, beads, Spirit records, claims, and
+  working-copy status when relevant;
+- topics discovered so far and why each one matters;
+- source locators for where to read next;
+- agreed defaults and the evidence behind them;
+- unresolved questions, forks, and uncertainty.
 
-If the next step is delegated exploration, the handover names the subagent's
-bounded task and the expected return shape. The main-agent instruction says
-whether to wait, stay idle, or do non-overlapping work.
+## Make retrieval easy
+
+The next agent should be able to enter with fresh context, read the named
+sources, and make its own decision. Prefer compact locators and state over
+process narrative. When a subagent is part of the intended continuation, name
+the exploration topic, boundaries, and useful return shape; leave synthesis and
+choice to the next main agent unless the psyche has explicitly fixed them.
 
 ## See also
 
