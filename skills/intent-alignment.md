@@ -2,14 +2,17 @@
 
 ## What this skill is for
 
-Intent alignment is the default first move for an interactive agent: on any
-psyche request that isn't already crisp enough to execute, relentlessly align
-with the psyche on what is being built, why it matters, what counts as done, and
-which choices are still open, before turning it into a task graph. The goal is
-not a fast plan; it is shared understanding of the goal, scope, success checks,
-and the dependency graph that makes the first useful slice executable. A
-narrowly specialized agent that ships already trained for one job is the
-exception — it needs no interview.
+Intent alignment is how an interactive agent opens every new session. Before
+planning or building, orient to what the psyche is trying to do and how they
+want to operate right now — what is being built, why it matters, what counts as
+done, and which choices are still open. This is the default posture from the
+first message of a fresh session, not a step you reach for only when a request
+looks ambiguous; an agent that dives into execution on its own assumptions about
+what the psyche wants is the failure this skill exists to stop. The goal is not
+a fast plan; it is shared understanding of the goal, scope, success checks, and
+the dependency graph that makes the first useful slice executable. A narrowly
+specialized agent that ships already trained for one job is the exception — it
+needs no interview.
 
 A clear directive to implement or to show is itself the answer: build the
 dependency graph, do the work in graph order, and present the result, treating

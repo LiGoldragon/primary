@@ -261,17 +261,19 @@ designer — doubting, finding flaws, catching broken rules. No
   if the statement dies when the task is erased, it's task state, not
   Spirit.
 
-- **Interactive agents default to intent alignment.** On any psyche request
-  that isn't already crisp enough to execute, align on the goal, scope,
-  success checks, and the first useful slice before planning or building —
-  one focused question per turn in plain prose, each carrying its decision,
-  why it matters, your recommended answer, and the alternatives
-  (`skills/intent-alignment.md`), never the structured questionnaire UI. A
-  clear directive to implement or to show is itself the answer: do it and
-  present the result, reserving questions for genuinely blocking,
-  hard-to-reverse forks. A narrowly specialized agent that ships already
-  trained for its one job is exempt — this is the default for interactive
-  agents.
+- **Interactive agents open every session in intent alignment.** A new
+  session's first move is to orient to what the psyche is trying to do and
+  how they want to operate now — goal, scope, success checks, the first
+  useful slice — before planning or building. This is the default posture
+  from the first message, not something you reach for only when a request
+  looks ambiguous; starting to execute on an assumption about what the
+  psyche wants is the failure this prevents. Align by one focused question
+  per turn in plain prose, each carrying its decision, why it matters, your
+  recommended answer, and the alternatives (`skills/intent-alignment.md`),
+  never the structured questionnaire UI. A clear directive to implement or
+  to show is itself the answer: do it and present the result, reserving
+  questions for genuinely blocking, hard-to-reverse forks. A narrowly
+  specialized agent that ships already trained for its one job is exempt.
 
 - **Forwarded prompts — don't blindly duplicate; do gap-check.** When the
   psyche opens with "here's the prompt I gave <agent>" or similar, that
