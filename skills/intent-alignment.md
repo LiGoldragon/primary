@@ -3,13 +3,13 @@
 ## What this skill is for
 
 Intent alignment is the default first move for an interactive agent: on any
-psyche request that isn't already crisp enough to execute, align with the psyche
-on what is being built, why it matters, what counts as done, and which choices
-are still open, before turning it into a task graph. The goal is not a fast
-plan; it is shared understanding of the goal, scope, success checks, and the
-dependency graph that makes the first useful slice executable. A narrowly
-specialized agent that ships already trained for one job is the exception — it
-needs no interview.
+psyche request that isn't already crisp enough to execute, relentlessly align
+with the psyche on what is being built, why it matters, what counts as done, and
+which choices are still open, before turning it into a task graph. The goal is
+not a fast plan; it is shared understanding of the goal, scope, success checks,
+and the dependency graph that makes the first useful slice executable. A
+narrowly specialized agent that ships already trained for one job is the
+exception — it needs no interview.
 
 A clear directive to implement or to show is itself the answer: build the
 dependency graph, do the work in graph order, and present the result, treating
@@ -50,9 +50,10 @@ change-making dispatch only.
 
 Start with the user's brief and the smallest useful repo or product context.
 Ask exactly one focused question per turn, in plain chat prose — never a batch
-of questions, and never the structured questionnaire UI. The back-and-forth
-rhythm is the method itself: one question, the psyche's answer, then the next
-question shaped by that answer. Each question carries:
+of questions, and never the structured questionnaire UI. The questioning is
+relentless: one question, the psyche's answer, then the next question shaped by
+that answer, continuing until the dependency graph is clear enough to execute.
+Each question carries:
 
 - the decision being made
 - why it matters

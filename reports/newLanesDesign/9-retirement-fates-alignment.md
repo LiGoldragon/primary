@@ -1,116 +1,151 @@
-# 9 — Lane-retirement fates: alignment
+# 9 — Lane retirement: decoupling report deletion from role retirement
 
-Reopening the lane model on one point the psyche flagged: **a drained
-lane should not be automatically deleted.** Deletion stays available, but
-as one option among several, not the mandatory single outcome.
+Reopening the lane model on a point the psyche flagged. The just-landed
+model fused three events into one atomic "close":
 
-This is an alignment thread (not yet a settled design). It does not
-supersede report 8 (closeout); it adds the retirement-fate dimension that
-8 left as a binary (keep-active vs. delete).
+> report drains → delete the report directory → retire the lane
+
+The psyche splits this into **two independent lifecycles**. The report
+side and the lane/role side retire on different triggers and must not be
+chained together. This thread does not supersede report 8 (closeout); it
+corrects the retirement model 8 assumed.
+
+## The correction (psyche, this session)
+
+> "the lane's role might not be over. for example we are still designing
+> the new lanes design, so decomissioning *the role* wasnt correct. but
+> removing the last report(s) is a different story. so yes, something like
+> analyze for durable content to make sure it lives somewhere
+> (implementation, task or intent) then deleting it is good"
+
+Two settled signals:
+
+1. **Report retirement = distill-then-delete.** Before a report is
+   removed, analyze it for durable content and ensure that content lives
+   in a permanent home; *then* delete. Endorsed ("is good").
+2. **Lane/role retirement is decoupled and work-gated.** A lane's role is
+   not over just because its reports are. Retiring the role is wrong
+   while the role's work continues. (Correction of the fused model.)
 
 ## What we are refining
 
 | Surface | What it currently says |
 |---|---|
-| Spirit **6utp** (Decision, High) | *[When a session lane drains its report directory is deleted because git history and the session transcript hold the substance; a single append-only registry at protocols/retired-lanes.md records each retired lane... The thin index keeps drained sessions discoverable... without regrowing the working report tree.]* |
-| `skills/session-lanes.md` §"Lane retirement" | Three mechanical steps: delete the report dir, append a `retired-lanes.md` row, `meta-orchestrate "(Retire (Lane …))"`. |
-| `protocols/retired-lanes.md` | Bills itself as *"the discoverable middle path between 'delete everything' and 'keep every report forever'."* |
+| Spirit **6utp** (Decision, High) | *[When a session lane drains its report directory is deleted because git history and the session transcript hold the substance; a single append-only registry at protocols/retired-lanes.md records each retired lane... The thin index keeps drained sessions discoverable... without regrowing the working report tree.]* — **bundles** report-deletion AND the lane-retirement registry. |
+| `skills/session-lanes.md` §"Lane retirement" | Three mechanical steps fired together: delete the report dir, append a `retired-lanes.md` row, `meta-orchestrate "(Retire (Lane …))"`. |
+| `skills/session-lanes.md` §"Discipline persists" | *"A lane is a single work session"* — the line the multi-context question revises. |
+| `protocols/retired-lanes.md` | *"the discoverable middle path between 'delete everything' and 'keep every report forever'."* |
 | `AGENTS.md` (drain paragraph + lane table) | "When the lane drains, delete its `reports/<lane>/` directory — git history and the session transcript are the archive." |
 
-So today the model already has exactly **one** archival path (delete +
-thin index). The psyche wants that widened into a **menu**.
+## Lifecycle A — report retirement (distill-then-delete)
 
-## Reading check (the highest-risk fork)
+A report is **transient working substance**, not an archive. Its
+retirement is its own event, on its own cadence, and can happen
+repeatedly through a lane's life — not only at lane close.
 
-"Don't automatically delete lanes" has two possible meanings, and they
-build differently:
+The procedure before any report is deleted:
 
-- **(A) Don't auto-destroy the report substance.** The lane identity
-  still retires (it is throwaway, disciplines are the persistent
-  identity), but the *report directory* gets a menu of fates instead of
-  forced deletion. — **my read.**
-- **(B) Don't auto-retire the lane identity itself.** Some lanes persist
-  across sessions as standing identities.
+1. **Analyze the report for durable content** — the reusable substance:
+   a synthesis, a decision, a mechanism walk-through, an implementable
+   plan.
+2. **Ensure that content lives in a permanent home**, one of three:
+   - **implementation** — code, a `skills/` file, `ARCHITECTURE.md`, a
+     per-repo `INTENT.md`, a durable doc;
+   - **task** — a bead linked into the dependency graph
+     (`bd dep <blocker> --blocks <blocked>`);
+   - **intent** — a Spirit record.
+3. **Delete the report.**
 
-I am proceeding on **(A)**: it preserves the just-landed
-discipline-is-permanent / lane-is-throwaway split, and the last agent's
-concrete suggestion that triggered the pushback was specifically *delete
-`reports/newLanesDesign/`*. If the psyche means (B), the rest of this
-report is the wrong tree.
+The durable-content analysis **is** the safeguard. Deletion is never the
+unanalyzed automatic step — that automatic deletion is exactly what the
+psyche pushed back on. No separate "preserve-as-reference" fate is
+needed: a report worth keeping has its substance *promoted* into a
+durable home (a skill / `ARCHITECTURE.md` / `INTENT.md`), and the raw
+scaffolding then goes. Preservation lives in the canonical surface, not
+in a frozen report.
 
-## Proposed menu of retirement fates (the report directory)
+## Lifecycle B — lane/role retirement (work-gated)
 
-1. **Delete** (today's behavior) — raw reports removed; git history, the
-   session transcript, and the thin `retired-lanes.md` row are the
-   archive. Right when the reports were *scaffolding* and every bit of
-   substance already landed elsewhere (intent → Spirit, work → beads,
-   docs updated).
-2. **Distill-then-delete (promote)** — before deleting, the lane's
-   reusable substance is synthesized into a durable canonical home (a
-   `skills/` file, `ARCHITECTURE.md`, a per-repo `INTENT.md`,
-   `ESSENCE`/`INTENT`, or a Spirit record), then the raw reports are
-   deleted. The *essence* survives in the right surface; only the
-   scaffolding goes. This is the fate that fixes the actual loss: today
-   the atomic ideas route to intent/work/abandon, but the report-level
-   synthesis (the walk-through, the diagram, the argued reasoning) dies
-   with the directory.
-3. **Preserve as standing reference** — a curated report (or the whole
-   dir) is kept as durable reference future agents will read in full,
-   moved or marked so it is not mistaken for an active lane. Some design
-   syntheses are reference material, not scaffolding.
+The lane carries a **role** — the intent-named body of work. Retiring the
+lane (the daemon `Retire` plus the `retired-lanes.md` row) is triggered
+by **the role's work being genuinely complete**, and by nothing else. Not
+by a report draining; not, by itself, by a single context ending.
 
-Plus the not-a-fate case: **keep open** — the lane simply is not drained
-yet (this is where `newLanesDesign` sits right now).
+While the role's work continues, the lane lives on — including across the
+fresh-context restarts taken for context hygiene. The last agent's error
+was firing lane retirement off the report-drain trigger, moving to
+decommission the `newLanesDesign` role while its design (this very work)
+was still open.
 
-## The decision procedure — who picks
+## Open forks
 
-- **(a) Agent autonomous by rubric** — fast, but it is exactly the
-  "automatic" the psyche just pushed back on.
-- **(b) Psyche confirms every retirement** — safest, mirrors the coming
-  auditor discipline (*"the psyche confirms each source-record
-  retirement"*), but adds a gate to every drain.
-- **(c) Hybrid (recommended)** — the agent always *proposes* a fate with
-  one-line reasoning at drain (never silent); the psyche can override;
-  **deletion specifically** is the one fate that may warrant explicit
-  psyche confirmation, since it is the only irreversible-in-spirit choice.
+**Fork 1 — lane definition.** Does **"lane = the intent-named body of
+work that persists across fresh contexts until its role's work is
+complete"** replace the current canonical line *"a lane is a single work
+session"*?
 
-## Surfaces that change once settled
+- **Recommend: yes.** The psyche's own example is a lane already spanning
+  contexts — `newLanesDesign` is still being designed *across a
+  `/clear`*. And "favor a fresh session over endless compaction" already
+  assumes the work outlives any single context. So a lane is the work;
+  "drain" and "retire" become work-completion events, not context-end
+  events.
+- **Alternative:** keep "lane = one session" and only gate retirement on
+  completion *within* a session — but that re-creates the fusion the
+  psyche is rejecting every time a session restarts.
 
-- **6utp** — edit (`Clarify` if the core identity holds, `Supersede` if
-  the shape changes enough) from "is deleted" to "routes to one of
-  {delete, distill, preserve}, agent proposes, psyche may gate deletion."
-- `skills/session-lanes.md` §"Lane retirement" — replace the 3-step
-  delete with the fate-menu + procedure.
-- `protocols/retired-lanes.md` — a preserved/distilled lane still earns a
-  row, but the row gains a **fate** column and a pointer to *where the
-  substance went* (the skill/doc it was promoted into).
+**Fork 2 — retirement authority.** Who pulls the trigger on *lane*
+retirement (daemon `Retire` + `retired-lanes.md` row)?
+
+- **Recommend: psyche-gated.** The agent presents a completeness case
+  (where every report's durable content landed; the role's work is done)
+  and the psyche confirms before retirement. Report-level
+  distill-then-delete stays routine agent work — no per-report
+  confirmation — because the durability analysis is its safeguard and git
+  holds the bytes. Clean split: reports agent-routine, role retirement
+  psyche-gated. This is the rule form of what just prevented the
+  premature decommission.
+- **Alternative:** agent judges completion autonomously — the automatic
+  behavior the psyche objected to.
+
+**Fork 3 — reference syntheses.** A report worth keeping is **promoted
+into a durable home** (a `skills/` file, `ARCHITECTURE.md`, `INTENT.md`),
+not kept as a standing raw report.
+
+- **Recommend: yes — no separate "permanent reference report" category.**
+  Preservation lives in the canonical surface.
+- **Alternative:** allow a lane to keep a curated report on disk past
+  distillation.
+
+**Broader agenda (separate thread unless folded in):** `roles.list` →
+dynamic-lane cutover (`primary-kooj`), intent-files deprecation
+reconciliation (`primary-sfr3`), missing `videographer.md`
+(`primary-dixg`).
+
+## Surfaces that change once the fork is settled
+
+- **6utp** — split the bundle. The record currently fuses report-deletion
+  with the lane-retirement registry. Likely `Supersede` into (i) a
+  report-retirement record (distill-then-delete; durable content to
+  implementation/task/intent) and (ii) a lane-retirement record
+  (work-gated, decoupled from report deletion; the thin `retired-lanes.md`
+  index unchanged in purpose).
+- `skills/session-lanes.md` — rewrite §"Lane retirement" into the two
+  lifecycles; revise the "single work session" line per the fork.
+- `protocols/retired-lanes.md` — clarify it indexes *role retirements*,
+  not report deletions; a row is written at work-completion, not whenever
+  reports are distilled away.
 - `AGENTS.md` — the drain paragraph and the `reports/<lane>/` table row
-  both name deletion as the outcome; both move to the menu.
-- `ESSENCE.md` / `INTENT.md` — only if the archival philosophy is
-  essence-level (likely a light touch, not a new section).
-
-## Live test case
-
-`newLanesDesign` itself is the dogfood: it is plausibly a
-**preserve-as-reference** or **distill** lane (a meta-design future
-agents will want to read), which is precisely why the last agent's
-instinct to *delete* it read as wrong. Settling the menu lets us route
-this lane correctly instead of by the one default that exists today.
-
-## Open alignment questions (in order)
-
-1. Reading **(A)** vs **(B)** above — confirmed as (A)?
-2. **What is the default fate** when the agent has no strong reason
-   otherwise? (recommend: distill-then-delete is default; bare delete is
-   the opt-in for pure scaffolding; preserve is the explicit choice.)
-3. **Who decides + does delete need psyche confirmation?** (recommend:
-   hybrid (c).)
+  both name deletion as the close event; both move to the two-lifecycle
+  framing.
+- `ESSENCE.md` / `INTENT.md` — light touch only if the distill-then-delete
+  philosophy reads as essence-level.
 
 ## Spirit-gate decision for this turn
 
-**No capture yet.** The psyche opened a design conversation ("I want to do
-an intent-alignment"), and the constructive shape (menu, default, gate) is
-not settled — capturing a half-formed policy would corrupt 6utp. Once the
-menu and default settle, do **one** clean edit to 6utp (and manifest into
-the surfaces above). The directional signal lives in this report until
-then.
+Lifecycle A (distill-then-delete) is **settled** and capture-ready.
+Lifecycle B's wording depends on the open forks (lane definition,
+retirement authority). To avoid editing the load-bearing 6utp record
+twice — and to avoid splitting its bundle the wrong way — capture and
+implementation wait on the fork answers. The settled direction lives in
+this report until then.
