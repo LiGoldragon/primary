@@ -58,7 +58,11 @@ agglomerations are noted for them, not executed against their files.
 
 - `0-frame-and-method.md` — this file.
 - `1-idea-ledger.md` — the deduped, clustered idea ledger with a
-  recommended fate per distinct idea. The centerpiece we walk together.
+  recommended fate per distinct idea (thread-map / work checklist, NOT an
+  intent source).
+- `3-HANDOVER-fresh-session.md` — the clean-session handover: the prompt a
+  fresh agent reads to take on the open work (capture two principles,
+  clear the pile, optional interview). Highest-numbered = the synthesis.
 
 ## Status — pivoted
 
@@ -69,8 +73,10 @@ by agents from agent-written reports — `skills/intent-log.md` records only
 psyche statements, never agent files. So the ledger is demoted to a
 **thread-map / work checklist**, not a source of intent.
 
-New plan in `2-HANDOVER-recapture-intent-first-degree.md`: run a
-first-degree intent-alignment interview from basic principles, capture
-confirmed intent in Spirit + `INTENT.md`, confirm genuine work as beads,
-then **clear all `reports/designer/` to zero** (git preserves history),
-keeping the report surface lean and small at all times.
+The work fate was then executed: the 70 genuine work items were deduped
+against all 166 live beads, adversarially re-checked, and woven into 9
+epics + 67 beads tagged `designer-weave`. The current clean-session
+handover — what remains (capture two psyche principles first-degree,
+clear the report pile to zero, optional first-degree intent interview)
+— is `3-HANDOVER-fresh-session.md`. A fresh agent reads that to take the
+open work on cleanly.
