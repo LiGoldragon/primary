@@ -41,12 +41,15 @@ When the psyche gives a goal, sketch the graph before planning:
 
 Ask only for graph edges or node meanings that change the first executable
 slice. Once the graph is clear enough, execute from prerequisites toward the
-goal, dispatching subagents only when the psyche asked for delegation and the
-nodes are genuinely independent.
+goal through a subagent-first workflow: dispatch fresh-context helpers for
+meaningful exploration and independent graph slices, then synthesize their
+returns into the lead's next question, edit, verification, or report. The lead
+keeps its context for psyche alignment, graph judgment, integration, and small
+mechanical checks.
 
 For reading/exploring early in context, the universal orientation-dispatch
 default applies: send a helper and reason over its report rather than reading
-broadly yourself. The psyche-gate here governs change-making dispatch only.
+broadly yourself.
 
 ## Interview shape
 
