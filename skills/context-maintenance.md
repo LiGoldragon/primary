@@ -177,8 +177,9 @@ Pick one of four actions per report or context theme:
 
 When the action is uncertain because the agent cannot tell the
 psyche's intent — especially Keep vs Drop, or whether a stale-looking
-item should be abandoned — drive an intent-alignment session before
-deciding. Use `intent-alignment.md`; do not restate that skill here.
+item should be abandoned — ask the psyche a focused question before
+deciding. For fresh-context goal shaping or orchestration, use
+`intent-led-orchestration.md`; do not restate that skill here.
 
 Heuristics:
 
@@ -364,5 +365,5 @@ being retired.
 - `context-maintenance-deep.md` — cross-lane meta-report directory,
   successor sweeps, lane retirement.
 - `intent-maintenance.md` — Spirit capture sweep, dedup, supersession.
-- `intent-alignment.md` — the question rhythm for uncertain
+- `intent-led-orchestration.md` — the question rhythm for uncertain
   abandon/keep/migrate/forward decisions.

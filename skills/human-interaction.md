@@ -28,9 +28,10 @@ When intent on a question is unclear, absent, or contradicted, ASK — don't inf
 ## Align goals through the canonical protocol
 
 When a psyche-facing request needs goal shaping before execution, use
-`skills/intent-alignment.md`. That skill is the single canonical protocol for
-the one-focused-question graph-discovery interview; this boundary skill only
-routes to it.
+`skills/intent-led-orchestration.md`. That skill is the canonical active
+protocol for focused-question dependency-graph discovery, Spirit-centered
+intent maintenance, and lead orchestration; this boundary skill only routes to
+it.
 
 ## Chat policy — paraphrase of an accompanying report
 
@@ -40,7 +41,7 @@ When chat is the right surface, bring **3-7 big items** per response, spread mor
 - (b) Observations / suggestions / explanations of how new mechanisms work
 - (c) Examples of recent work or evolving ideas
 
-Below 3 the response is under-substantive; above 7 the psyche can't hold it while running parallel agents. The chat reply is a paraphrase of an accompanying per-response report — the report is the session log, chat is the paraphrase.
+Below 3 the response is under-substantive; above 7 the psyche can't hold it while running parallel agents. Current report protocols still apply where required: the report is a transitional session surface, and chat is the psyche-facing paraphrase.
 
 Visuals go in reports (the report/chat split itself is the AGENTS.md "Reports go in files" override and `skills/reporting.md`). Chat is prose plus locators plus user-attention items. Each user-attention item must be restated with enough substance that the psyche can engage WITHOUT opening the report; a bare locator ("see report N", "section 5.2") is the opposite-direction violation.
 
@@ -68,4 +69,4 @@ Designer and operator each carry their own implementation path; both implementat
 
 - `skills/privacy.md` — access gate for private material; private report and intent routing.
 - `skills/intent-log.md` — what gets logged; the five-kind taxonomy; certainty versus importance.
-- `skills/intent-alignment.md` — the graph-discovery interview before execution.
+- `skills/intent-led-orchestration.md` — focused-question graph discovery and orchestration.

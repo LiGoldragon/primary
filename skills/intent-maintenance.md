@@ -34,29 +34,23 @@ meaning.
 
 Sometimes the mistake already happened: an agent added a standalone
 `Clarification` record instead of editing the record(s) being clarified.
-The cleanup operation is named **`ResolveClarification`**.
+The cleanup operation is **`ResolveClarification`**.
 
-Until Spirit has a first-class `ResolveClarification` input, an agent does
-it manually as one reviewable maintenance pass:
+A Spirit-maintenance worker starts by searching or inspecting the relevant
+Spirit domain and referent records. It decides whether the psyche answer is a
+clarification, supersession, new record, or non-Spirit material before it writes
+anything. When resolving a mistaken standalone clarification:
 
-1. Lookup the mistaken clarification record and preserve its full text in
-   the maintenance report or commit notes.
-2. Find every target record it clarified. There may be more than one;
-   search by referent, domain, keywords, testimony, and the clarification's
-   own reasoning.
-3. Edit those targets with `Clarify` or `Supersede`, preserving every
-   surviving arrow and moving the clarification's useful substance into
-   the targets.
-4. Remove or retire the standalone clarification record after the target
-   edits land.
-5. Update manifested docs in the same pass.
+1. Lookup the mistaken clarification record and preserve its full text in the
+   maintenance report or commit notes.
+2. Find every target record it clarified. There may be more than one; search by
+   referent, domain, keywords, testimony, and the clarification's own reasoning.
+3. Use `ResolveClarification` to fold the useful substance into the target
+   records and remove the standalone clarification in one operation.
+4. Update manifested docs in the same pass.
 
-The future typed Spirit operation should do those state changes atomically:
-`ResolveClarification { ClarificationRecordIdentifier, TargetEdits,
-Justification }`, producing a receipt that names the edited target records
-and the removed or retired clarification record. Its invariant: no active
-"clarification about a record" remains after resolution; the truth lives on
-the records being clarified.
+The invariant: no active "clarification about a record" remains after
+resolution; the truth lives on the records being clarified.
 
 ## Supersession is always explicit — only the psyche supersedes
 

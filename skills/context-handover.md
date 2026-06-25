@@ -34,6 +34,7 @@ choice to the next main agent unless the psyche has explicitly fixed them.
 
 ## See also
 
-- `intent-alignment.md` — one-question-at-a-time alignment.
+- `intent-led-orchestration.md` — fresh-context focused-question alignment and
+  orchestration.
 - `context-maintenance.md` — routing reports and live context to intent, work,
   or abandon.
