@@ -51,3 +51,4 @@ a time: active in `LanesObserved`, then retired here.
 
 | Lane | Discipline | Git revision range | Transcript pointer | Drain date | Decided |
 |---|---|---|---|---|---|
+| intent-alignment-protocol-operator | operator | e3b99fee..ddb4c793 | chat transcript, 2026-06-25 intent-alignment protocol session | 2026-06-25 | Made `skills/intent-alignment.md` the canonical graph-discovery protocol and corrected execution to the subagent-first workflow. |
