@@ -2,8 +2,8 @@
 
 ## Worker startup envelope
 
-A subagent/session worker owns workspace interaction for an
-intent-led-orchestration run. Start by reading, in order:
+A subagent worker owns workspace interaction for an intent-led-orchestration
+run. Start by reading, in order:
 
 1. `AGENTS.md` in the working directory.
 2. `skills/skills.nota`.
