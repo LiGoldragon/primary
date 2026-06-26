@@ -1,8 +1,3 @@
----
-name: intent-led-orchestration
-description: Fresh-context startup protocol for psyche alignment, grilling, and tool-free lead orchestration through subagents.
----
-
 # Skill — intent-led-orchestration
 
 ## Fresh-context gate
