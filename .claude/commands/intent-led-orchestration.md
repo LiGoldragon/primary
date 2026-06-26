@@ -1,6 +1,6 @@
 ---
 name: intent-led-orchestration
-description: Displays the compact fresh-context intent-led orchestration protocol.
+description: 'Displays the compact fresh-context intent-led orchestration protocol.'
 disable-model-invocation: true
 context: fork
 ---
