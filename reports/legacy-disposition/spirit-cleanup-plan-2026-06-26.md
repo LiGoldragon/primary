@@ -81,3 +81,13 @@ BLOCKED — home is an UNTRACKED repo (can't commit from primary main), no in-tr
 TO-ARCH config facts: go41 nz0t upza osoo 16l0 nsi2 bdse p6k5 qxye (9). [bnxx → workspace-vocabulary.md, in-tree, OK]
 
 Phasing: Phase 1 = all in-tree (57 manual + bnxx + 7 stale = 65 records) + 739 GC. Phase 2 = the 9 blocked config facts (psyche call: hold / edit-untracked-repos / transitional in-tree doc).
+
+## CORRECTION (psyche — approved-with-corrections)
+- Destination is the MANUAL, not skills (do NOT bloat skills). The manual is the new
+  semi-standard: something simple — a single manual.md or a book-style directory.
+- Spirit-mechanism records → a real manual in the spirit repo (repos/spirit/manual.md).
+- Config facts → the relevant component's architecture file OR a manual in its repo
+  (CriomOS-home, persona, spirit, cloud — create where missing). No "hold in Spirit".
+- Descriptive/concept records → simple per-domain manuals, not skills.
+- Execution APPROVED. Order: author manual/arch content first, verify coverage, THEN
+  retire/supersede the records; GC the Zero-cert pile (archived first).
