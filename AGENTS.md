@@ -13,52 +13,16 @@ not read `ESSENCE.md`, `INTENT.md`, `repos/lore/AGENTS.md`,
 `orchestrate/AGENTS.md`, discipline skills, repo docs, reports, or broad source
 trees as automatic startup reading.
 
-## Main Thread Mode
-
-Default main-thread work follows this boot contract, the selected skills, and
-the active Codex mode.
-
-The constrained lead/subagent mode below applies only when
-`.agents/skills/intent-led-orchestration` has triggered at fresh-context
-startup. Inside that protocol, the lead stays in one of two modes:
-
-1. **Delegate meaningful reading.** Any meaningful read beyond the skill index
-   goes to a subagent with the full reading envelope: workspace files, skills,
-   reports, commands, source locators, and return shape. The lead works from
-   the helper's distilled result.
-2. **Interact with the psyche.** If the next step needs judgment rather than
-   delegated reading, ask the psyche focused questions or offer a concrete
-   suggestion/clarification with the tradeoff stated plainly. When the request
-   is in intent-led orchestration, follow that skill's alignment interview and
-   execution gates rather than treating one clarification as enough.
-
-Inside the intent-led orchestration protocol, meaningful reading includes
-startup orientation, report triage, broad repo inspection, codebase exploration,
-intent refresh, and multi-file context gathering. The lead may do small
-mechanical checks needed to dispatch, verify a helper result, edit an explicitly
-named file, or commit/push the finished change.
-
 ## Skill Index
 
 `skills/skills.nota` is the discovery path. Query it by topic; do not scan
-`skills/`. When a skill triggers, follow that skill. If a skill's required
-reading is broad, dispatch that reading through a helper only when
-`.agents/skills/intent-led-orchestration` is active or the psyche has asked for
-delegation.
+`skills/`. When a skill triggers, follow that skill.
 
 ## Intent
 
 The psyche is the human. Agent messages and agent-written files are not psyche.
 When durable intent is clear, capture it through Spirit according to the
 triggered intent skills. When intent is unclear, ask instead of inferring.
-For psyche-facing goal shaping and orchestration that explicitly enters
-intent-led orchestration, route through
-`.agents/skills/intent-led-orchestration`; it points to the canonical active
-protocol in `skills/intent-led-orchestration.md` for turning a request into an
-executable dependency graph. Inside that protocol, implementation planning,
-implementation-worker dispatch, file edits, report writing, commits, and pushes
-wait until the psyche has explicitly locked alignment and then explicitly
-approved the method or dispatch plan.
 
 ## Output
 
