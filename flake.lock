@@ -172,20 +172,37 @@
         "type": "github"
       }
     },
+    "schema-source": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782313101,
+        "narHash": "sha256-17uebtXm+R1LaK83TXNaTfimEs9YXOCPNUNXTJ2d2hY=",
+        "owner": "LiGoldragon",
+        "repo": "schema-next",
+        "rev": "dea9b555d76a37f099db2477ead1c758a7517f37",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "schema-next",
+        "type": "github"
+      }
+    },
     "skills": {
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "nota-source": "nota-source",
         "rust-build": "rust-build",
-        "schema-rust-source": "schema-rust-source"
+        "schema-rust-source": "schema-rust-source",
+        "schema-source": "schema-source"
       },
       "locked": {
-        "lastModified": 1782477957,
-        "narHash": "sha256-96aEJMT0Fr9vdA9ymDu265RDM8/GzdC24aLTqrKj61c=",
+        "lastModified": 1782478711,
+        "narHash": "sha256-ZvhE/itbkLwYukRs/doFSDakJVMCenSEZV365BcpL0c=",
         "owner": "LiGoldragon",
         "repo": "skills",
-        "rev": "2412538863ff56677b815f619b83ded387d31e11",
+        "rev": "fd2afb02d4501310e8ba5d32487dc29746a3e9b8",
         "type": "github"
       },
       "original": {
