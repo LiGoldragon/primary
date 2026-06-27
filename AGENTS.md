@@ -50,7 +50,7 @@ directory. Shared files are claimed narrowly before editing.
   `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
 - Every description-taking `jj` command uses an inline message or equivalent
   headless flag. Never open an editor.
-- Commit the whole working copy; never path-scope primary commits.
+- Commit the whole working copy.
 - No raw `git` except the documented escape hatches in the `jj` skill.
 - No `/nix/store` filesystem search.
 - No `---` horizontal rules in markdown.
