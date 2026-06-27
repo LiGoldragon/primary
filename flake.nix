@@ -27,10 +27,9 @@
         let
           pkgs = import nixpkgs { inherit system; };
           skillApps = skills.apps.${system};
-          generatorAppNames = builtins.filter (nixpkgs.lib.hasPrefix "generate-") (builtins.attrNames skillApps);
 
-          runSkillApp =
-            appName:
+          wrappedSkillApp =
+            appName: description:
             let
               script = pkgs.writeShellApplication {
                 name = appName;
@@ -48,35 +47,15 @@
             {
               type = "app";
               program = "${script}/bin/${appName}";
-              meta.description = "Run ${appName} through the locked skills flake";
+              meta.description = description;
             };
 
-          generateSkills =
-            let
-              script = pkgs.writeShellApplication {
-                name = "generate-skills";
-                text = ''
-                  if [ "$#" -gt 1 ]; then
-                    echo "usage: generate-skills [workspace-root]" >&2
-                    exit 2
-                  fi
-
-                  workspace_root="''${1:-$PWD}"
-                  ${nixpkgs.lib.concatMapStringsSep "\n" (appName: ''
-                    "${skillApps.${appName}.program}" "$workspace_root"
-                  '') generatorAppNames}
-                '';
-              };
-            in
-            {
-              type = "app";
-              program = "${script}/bin/generate-skills";
-              meta.description = "Regenerate every configured skill output into the workspace root";
-            };
+          generateSkills = wrappedSkillApp "generate-skills" "Regenerate configured skill outputs into the workspace root";
+          checkSkills = wrappedSkillApp "check-skills" "Check generated skill outputs in the workspace root without writing";
         in
-        (nixpkgs.lib.genAttrs generatorAppNames runSkillApp)
-        // {
+        {
           generate-skills = generateSkills;
+          check-skills = checkSkills;
           default = generateSkills;
         }
       );
@@ -86,12 +65,9 @@
         let
           pkgs = import nixpkgs { inherit system; };
           skillApps = skills.apps.${system};
-          checkAppNames = builtins.filter (nixpkgs.lib.hasPrefix "check-") (builtins.attrNames skillApps);
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
-            ${nixpkgs.lib.concatMapStringsSep "\n" (appName: ''
-              "${skillApps.${appName}.program}" ${self}
-            '') checkAppNames}
+            "${skillApps."check-skills".program}" ${self}
             touch "$out"
           '';
         in

@@ -1,10 +1,3 @@
----
-name: intent-led-orchestration
-description: 'Displays the compact fresh-context intent-led orchestration protocol.'
-disable-model-invocation: true
-context: fork
----
-
 # Intent-Led Orchestration
 
 Fresh-context startup protocol only. Do not activate mid-session. After reading
