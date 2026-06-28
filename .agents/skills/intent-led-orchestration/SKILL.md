@@ -1,6 +1,6 @@
 ---
 name: intent-led-orchestration
-description: 'Intent-only fresh-session orchestration: ask the psyche one question at a time, dispatch workers, and synthesize only from psyche chat and worker outputs.'
+description: 'Canonical active protocol for fresh-context alignment gates, Intent Translator handoff, evidence-backed worker flow, and intent-only lead orchestration through agent outputs. Reach for it at fresh-context startup when a request needs alignment or orchestration.'
 ---
 
 # Skill — intent-led-orchestration
