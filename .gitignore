@@ -24,8 +24,10 @@ result-*
 .env
 .envrc.local
 
-# local harness continuation state
-.pi/
+# local Pi continuation state; generated subagent roles are tracked
+.pi/*
+!.pi/agents/
+!.pi/agents/**
 
 # editor and language scratch
 *.swp
