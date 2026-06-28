@@ -11,16 +11,14 @@ shipping software; everything that ships lives in a repo under
 
 ## 0 · TL;DR
 
-`primary` is the workspace at `~/primary/`. Work is organised by
-**discipline** and **session lane**. Nine disciplines — `operator`,
-`designer`, `system-operator`, `system-maintainer`, `poet`, `editor`,
-`videographer`, `assistant`, `counselor` — each carry a permanent
-identity (skill set, authority class, persona-mind memory, signing key)
-through `skills/<discipline>.md`. A **lane** is one work session named
-for its intent (`newLanesDesign`, `schemaWorkAudit`); it carries its
-discipline as metadata, owns its own lock file and report directory, and
-drains and retires at session close. The lane mechanism is canonical in
-`skills/session-lanes.md`. Active code lives in
+`primary` is the workspace at `~/primary/`. Work is organised by generated
+**role packets** and **session lane**. Role packets carry the doctrine bundle,
+authority shape, and output contract required for normal role work. A **lane**
+is one work session named for its intent (`newLanesDesign`,
+`schemaWorkAudit`); it carries role/discipline metadata, owns its own lock file
+and report directory, and drains and retires at session close. The lane
+mechanism is canonical in the generated `session-lanes` skill packet. Active
+code lives in
 `/git/github.com/LiGoldragon/` checkouts that primary surfaces via the
 `repos/` symlink index. Workspace intent lives in `ESSENCE.md` /
 `INTENT.md` (synthesised from the Spirit store); cross-workspace agent
@@ -29,8 +27,8 @@ discipline lives in `repos/lore/AGENTS.md`.
 The workspace is the apex of the agent-discipline graph: intent
 (`ESSENCE.md` / `INTENT.md`, anchored to Spirit) → `lore/AGENTS.md`
 (cross-workspace contract) → `orchestrate/AGENTS.md` (this workspace's
-coordination) → `skills/<discipline>.md` (per-discipline required
-reading) → per-repo `AGENTS.md` + `ARCHITECTURE.md` + `skills.md`.
+coordination) → generated role packet (curated doctrine bundle) → per-repo
+`AGENTS.md` + `ARCHITECTURE.md` + `skills.md`.
 
 ## 1 · What lives here
 
@@ -44,8 +42,11 @@ reading) → per-repo `AGENTS.md` + `ARCHITECTURE.md` + `skills.md`.
 ├── protocols/
 │   ├── active-repositories.md   current active repo map
 │   └── retired-lanes.md         append-only retired-lane index
-├── skills/<name>.md       cross-cutting agent capabilities
-├── skills/skills.nota     the typed skill index
+├── .agents/skills/        generated workspace skill packets
+├── .codex/agents/         generated Codex role packets
+├── .pi/agents/            generated Pi role packets
+├── .claude/agents/        generated Claude role packets
+├── skills/                generated inventory files
 ├── reports/<lane>/        session-lane report directories (drain at close)
 ├── repos/                 symlink index to /git checkouts
 ├── orchestrate/           coordination protocol, daemon CLI, per-lane lock projections
@@ -57,18 +58,18 @@ reading) → per-repo `AGENTS.md` + `ARCHITECTURE.md` + `skills.md`.
 (see `AGENTS.md` §"BEADS is transitional"); destination is Persona's
 native typed work graph.
 
-## 2 · Disciplines and lanes
+## 2 · Roles and lanes
 
-Nine disciplines. Each discipline's substantive work goes through its
-`skills/<discipline>.md`; that file's "Required reading" section names
-every workspace skill the discipline must read.
+Generated role packets carry each role's substantive working doctrine. They
+include curated critical modules and dependency-expanded modules, so routine
+role work starts from the packet.
 
 A **discipline** is a permanent identity — skills, authority class,
 persona-mind memory, signing key. It names *what kind of agent this is*.
 A **lane** is one work session named for its intent; it carries a
-discipline as metadata (the last token of its orchestrate registry role
-vector, e.g. `[NewLanesDesign Designer]`), owns `orchestrate/<lane>.lock`
-and `reports/<lane>/`, and is created, drained, and retired per session.
+role/discipline as metadata (the last token of its orchestrate registry role
+vector, e.g. `[NewLanesDesign Designer]`), owns `orchestrate/<lane>.lock` and
+`reports/<lane>/`, and is created, drained, and retired per session.
 The fixed role-named lanes of the prior model (`second-designer`,
 `cluster-operator`, ordinal and qualifier shapes) are retired *as the
 lane model*; specialized scope is now expressed as the session's intent
@@ -76,7 +77,7 @@ plus specialization tokens ahead of the discipline. Lanes register and
 retire dynamically through the orchestrate daemon (`Register` /
 `Observe Lanes` → `LanesObserved` / `Retire`). The full lane lifecycle —
 register, smart-zone, fleet, drain, retire — is canonical in
-`skills/session-lanes.md`.
+the generated `session-lanes` skill packet.
 
 `orchestrate/<lane>.lock` files coordinate claims on shared resources
 (repos, files); the orchestrate daemon is their canonical writer and the
@@ -107,7 +108,8 @@ This workspace owns:
 - Discipline and lane discipline (`AGENTS.md`, `CLAUDE.md`).
 - The coordination protocol (`orchestrate/AGENTS.md`) and the
   active-repo map (`protocols/active-repositories.md`).
-- Cross-cutting workspace skills (`skills/<name>.md`).
+- Generated workspace skill packets (`.agents/skills/<name>/SKILL.md` and
+  harness-specific peers).
 - Session-lane report directories (`reports/<lane>/`) and the
   retired-lane index (`protocols/retired-lanes.md`).
 - The `repos/` symlink index.
@@ -131,14 +133,14 @@ It does not own:
   paths instead.
 - Every identifier is a full English word (`Request` not `Req`,
   `Reply` not `Rep`, `Configuration` not `Cfg`). See `ESSENCE.md`
-  §"Naming" and `skills/naming.md`.
+  §"Naming" and the generated `naming` skill packet.
 - Reports are agent-consumable durable records written as fresh-context
   pickup points; chat is the user's working surface. A chat reply for
   the user is never a bare pointer to a report; user-attention items go
-  inline. See `skills/reporting.md`.
-- Permanent docs (`ARCHITECTURE.md`, `skills/<name>.md`, `AGENTS.md`)
-  inline load-bearing claims; they don't cite reports. See
-  `skills/architecture-editor.md`.
+  inline. See the generated `reporting` skill packet.
+- Permanent docs (`ARCHITECTURE.md`, `skills.md`, `AGENTS.md`) inline
+  load-bearing claims; they don't cite reports. See the generated
+  `architecture-editor` skill packet.
 - BEADS tasks are never ownership locks. Any agent may create, update,
   comment on, or close BEADS tasks at any time.
 - Memory belongs in workspace files every agent can read; harness-private state
@@ -161,8 +163,8 @@ It does not own:
 - `ESSENCE.md` — workspace essence.
 - `AGENTS.md` — workspace-specific agent instructions.
 - `orchestrate/AGENTS.md` — discipline-and-lane coordination.
-- `skills/session-lanes.md` — the lane mechanism and lifecycle.
+- `session-lanes` skill packet — the lane mechanism and lifecycle.
 - `protocols/active-repositories.md` — current active repo set.
 - `repos/lore/ARCHITECTURE.md` — the canonical agent-discipline repo
   this workspace points at.
-- `skills/architecture-editor.md` — the rules this file follows.
+- `architecture-editor` skill packet — the rules this file follows.

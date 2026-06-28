@@ -5,18 +5,21 @@ become the session's first context drain.
 
 ## Startup
 
-Read `skills/skills.nota`. It is the only default discovery read.
+Generated worker role packets carry the required doctrine for normal role work.
+Read this file and the role packet, prompt, or dispatch envelope supplied for
+the task.
 
-Use the skill index to choose the skills required by the current prompt,
-discipline, topic, repo, tool, and risk. Load only those triggered skills. Do
-not read `ESSENCE.md`, `INTENT.md`, `repos/lore/AGENTS.md`,
-`orchestrate/AGENTS.md`, discipline skills, repo docs, reports, or broad source
-trees as automatic startup reading.
+Load additional doctrine only when the prompt, generated role packet, dispatch
+envelope, or local repo context explicitly requires it. Do not perform runtime
+skill-index discovery. Do not read `ESSENCE.md`, `INTENT.md`,
+`repos/lore/AGENTS.md`, `orchestrate/AGENTS.md`, repo docs, reports, or broad
+source trees as automatic startup reading.
 
-## Skill Index
+## Doctrine Loading
 
-`skills/skills.nota` is the discovery path. Query it by topic; do not scan
-`skills/`. When a skill triggers, follow that skill.
+Follow doctrine named by the task's role packet, prompt, or explicit context.
+When no such surface names more doctrine, continue with the packet already
+loaded.
 
 ## Intent
 
@@ -55,6 +58,7 @@ directory. Shared files are claimed narrowly before editing.
 - No `/nix/store` filesystem search.
 - No `---` horizontal rules in markdown.
 - NOTA records are positional; use bare atoms for strings when canonical.
-- Rust editing requires the Rust skills selected from `skills/skills.nota`.
+- Rust editing requires the Rust doctrine named by the generated role packet,
+  prompt, or explicit context.
 - Private information is closed by default and stays out of public reports,
   public Spirit records, commits, and chat.

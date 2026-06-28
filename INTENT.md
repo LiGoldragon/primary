@@ -195,11 +195,11 @@ recompile-and-redeploy, not runtime config. (Spirit record `uuh7`.)
 
 ## New roles, and the auditor
 
-A new role created dynamically isn't a dead end: the agent reads
-`AGENTS.md`, `ESSENCE.md`, and this file, queries `skills/skills.nota` for
-the closest existing role-skill, asks the psyche for scope, and drafts
-`skills/<role>.md` as it does real work. A **concept designer** is the
-entry point for new concepts — comparing them against existing ones and
-deciding when one earns its own lane. An **auditor** role is coming (shape
-decided, lane mechanics open): an automated doubter that finds flaws, bad
-patterns, and broken rules, closing the loop back to designer.
+A new role created dynamically isn't a dead end: the agent reads the generated
+role packet and explicit task context it was given, asks the psyche for scope
+when the role boundary is unclear, and records any accepted role doctrine
+through the generated skill/role source path as it does real work. A **concept
+designer** is the entry point for new concepts — comparing them against existing
+ones and deciding when one earns its own lane. An **auditor** role is coming
+(shape decided, lane mechanics open): an automated doubter that finds flaws,
+bad patterns, and broken rules, closing the loop back to designer.
