@@ -94,4 +94,4 @@ Primary:
 
 ## Follow-Up Requirements
 
-- Commit and push this closeout artifact under primary `main` so the repo-operator handoff surface is durable.
+- No remaining follow-up requirements for this closeout.
