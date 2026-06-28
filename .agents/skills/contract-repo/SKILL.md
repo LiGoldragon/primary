@@ -1,6 +1,6 @@
 ---
 name: contract-repo
-description: 'How to shape a wire-contract crate: six-verb spine, signal_channel! macro, layered-effect pattern. Read when creating or editing a signal-* contract crate.'
+description: 'How to shape a shared wire-contract crate: operation and reply types, codec boundaries, round-trip tests, compatibility discipline, and daemon-runtime exclusion. Read when creating or editing a typed contract surface.'
 ---
 
 # Skill — contract repos
