@@ -1,54 +1,37 @@
 ---
 name: skill-editor
-description: 'Rules for pruning and editing skill files so they stay short, self-contained, settled, and operational.'
+description: 'How to edit skill and role source in LiGoldragon/skills, keep instruction concise, and reconcile generated runtime surfaces.'
 ---
 
 # Skill — skill editor
 
-## Compression
+## Rules
 
-- Keep only operational discipline that changes how an agent acts.
-- Prefer 40-80 lines; stay below 120 unless every extra line prevents real misuse.
-- Delete explanations of what skills are, how agents use them, and how markdown works.
-- Each heading, paragraph, and bullet must carry a rule or necessary exception.
-- Keep at most one compact example, only when prose alone leaves a likely mistake.
-- Remove wrong/right galleries, generic manuals, motivational prose, and obvious filler.
+- Edit source surfaces before generated runtime copies.
+- Put reusable instruction in the owning source file. Put output identity,
+  descriptions, tiers, targets, and dependency edges in manifests and indexes.
+- Use `LiGoldragon/skills` as the canonical repository identity when a repository
+  must be named. Do not write local filesystem paths or URLs into doctrine.
+- Do not repeat the manifest/frontmatter description in the body; when metadata
+  names the scope, the body starts with rules.
+- Keep instruction terse, present-tense, and current. Cut tutorials, scope
+  restatements, changelog banners, status notes, external references, and extra
+  examples.
+- Keep one capability per skill; split distinct capabilities instead of mixing
+  them.
+- Prefer canonical positive forms. Mention rejected forms only when omission
+  creates an immediate safety risk.
+- Do not create or expand repo-specific skills. Durable repo guidance belongs in
+  AGENTS.md, ARCHITECTURE.md, or README.md.
+- After source edits, run generator/checks when available and reconcile generated
+  runtime surfaces. If generation cannot run, name the unreconciled surfaces.
 
-## Scope
+## Verification
 
-- One skill teaches one capability.
-- Split unrelated disciplines instead of making one file a handbook.
-- Keep workspace skills cross-repo and operational, not component design notes.
-- Repo-specific skills are deprecated; do not create or expand them.
-- Put durable repo guidance in AGENTS.md, ARCHITECTURE.md, or README.md, ordered from more agentic to less agentic.
-- Do not duplicate universal workspace contracts or language manuals.
-
-## Self-containment
-
-- State the rule directly.
-- Do not send readers elsewhere for authority, context, evidence, history, or status.
-- Do not cite logs, chats, audits, or proposals.
-- Do not mention local filesystem locations.
-- Do not include cross-reference sections.
-- Keep source and generator mechanics as editing instructions, not banners or changelog text.
-
-## Form
-
-- Use present-tense imperative prose.
-- Describe what is true or required, not what changed.
-- Prefer the positive canonical shape; name failures only to prevent immediate misuse.
-- Keep a rule's reason only when the reason changes decisions.
-- Put browsing trigger and identity in file metadata; keep the body rule-only.
-- Avoid decorative structure, templates, and tutorial scaffolding.
-
-## Source and active copies
-
-- A skill may be generated from a source repo; when source exists, edit source first, then refresh active copies.
-- If direct runtime edits are required, keep all active copies byte-identical and mirror the change back to source.
-- Touch only this skill's metadata when updating generated copies by hand.
-
-## Finish sweep
-
-- Search for external references, local paths, broad tutorials, filler, history language, duplicate rules, and unrelated material.
-- Delete questionable material instead of preserving it by default.
-- Return any excluded material that may deserve explicit re-introduction as a question.
+- Source files have no harness frontmatter.
+- Changed headings are unique.
+- Manifest and index references resolve.
+- Generated outputs match source and have no generated-file notices.
+- `skill-editor` remains under 120 lines and contains no local paths, URLs,
+  cross-reference sections, artifact citations, status notes, or body wording that
+  restates its description.
