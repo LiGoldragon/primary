@@ -140,6 +140,9 @@
 		},
 		{
 			"path": "../../../git/github.com/LiGoldragon/spirit"
+		},
+		{
+			"path": "../../../git/github.com/LiGoldragon/skills"
 		}
 	],
 	"settings": {}
