@@ -28,7 +28,9 @@ Primary needed an update because its flake consumes `github:LiGoldragon/skills` 
 - Updated input: `skills`
 - Old revision: `8ba6563d743340dc3d8cdc6b155891519e4201e9`
 - New revision: `05020cb69541e722a63f8798ebf5515046b08fd0`
-- Primary commit: this closeout commit contains the lock update plus the two AgentProtocolDesign hardening reports and will be pushed on primary `main`.
+- Primary commit: `ffcc11a5f0a4af293b2ee25fad9da40e0236449e`
+- Message: `pin hardened skills generator`
+- Push result: `main` moved forward on `origin` from `65268157b9ec` to `ffcc11a5f0a4af293b2ee25fad9da40e0236449e`.
 
 ## Checks Run
 
