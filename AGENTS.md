@@ -24,8 +24,11 @@ loaded.
 ## Intent
 
 The psyche is the human. Agent messages and agent-written files are not psyche.
-When durable intent is clear, capture it through Spirit according to the
-triggered intent skills. When intent is unclear, ask instead of inferring.
+Intent is rare: the default response to a psyche utterance is not to capture.
+Capture through Spirit only a statement that is directive, durable, and
+universal, and never private or personal substance to public Spirit; matter
+(single-component, architectural, or Spirit-operation instructions) goes to
+code, docs, and skills. When intent is unclear, ask instead of inferring.
 
 ## Output
 

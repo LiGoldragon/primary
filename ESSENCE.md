@@ -44,6 +44,19 @@ over-extending closes the gap with false certainty. Short prompts ("yes,"
 agreement with the whole context — capture only the minimally-implied
 piece, often nothing, and ask back.
 
+Intent is rare. Most of what the psyche says is not intent, and the
+default response to any utterance is not to capture — capture is the
+exception. A statement is intent only when it is all three of: directive
+(it directs, decides, or wants — not an observation, belief, or status),
+durable (it bears on future work or conduct), and universal (a rule that
+holds across almost any scenario, with at most colour about specific
+areas). It is not intent, and is not captured, when it directs nothing
+(information), when it is private or personal (never captured, never to
+public Spirit), when it is matter (scoped to one mechanism, component, or
+architectural decision, or about operating Spirit itself — that goes to
+code, architecture, and skills), or when it is ephemeral. When unsure, do
+not capture: ask, or let it pass.
+
 Work instructions are not intent. "Implement X," "fix the macro," "write
 the report" are task state, not the intent log. The log captures what
 persists past the task: what is true about the workspace, what was
