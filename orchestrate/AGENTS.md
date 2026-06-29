@@ -49,14 +49,13 @@ not enumerated in this file. The lane mechanism is canonical in
 ### Registering and observing lanes
 
 The daemon already supports dynamic lanes (`src/lane.rs`,
-`src/execution.rs`). A session registers its lane, the workspace observes
-active lanes, and a drained lane is retired — all through the `orchestrate`
-CLI's typed NOTA records.
+`src/execution.rs`). A session registers and retires its lane through the
+`meta-orchestrate` CLI; the ordinary `orchestrate` CLI observes active lanes.
 
 ```sh
 # Register a session lane. Role is a NOTA vector of identifier tokens whose
 # last token is the discipline; LaneAuthority is Structural or Support.
-orchestrate "(Register ([NewLanesDesign Designer] Structural))"
+meta-orchestrate "(Register ([NewLanesDesign Designer] Structural))"
 # -> (LaneRegistered (newLanesDesign [NewLanesDesign Designer] Structural))
 
 # Observe the live lane registry.
@@ -64,7 +63,7 @@ orchestrate "(Observe Lanes)"
 # -> (LanesObserved [ ...(LaneRegistration LaneIdentifier Role LaneAuthority)... ])
 
 # Retire a drained lane by its lane identifier.
-orchestrate "(Retire (Lane newLanesDesign))"
+meta-orchestrate "(Retire (Lane newLanesDesign))"
 # -> (LaneRetired newLanesDesign)
 ```
 
@@ -153,8 +152,8 @@ and `skills/spirit-cli.md`. There is no legacy-file fallback; the
 
 ### Daemon CLI
 
-The current production surface is the `orchestrate` component CLI speaking
-NOTA directly to `orchestrate-daemon`:
+The current production surface for ordinary claim/release/observe work is the
+`orchestrate` component CLI speaking NOTA directly to `orchestrate-daemon`:
 
 ```sh
 orchestrate "(Claim (newLanesDesign [(Path /home/li/primary/AGENTS.md)] [refresh coordination docs]))"
@@ -164,7 +163,9 @@ orchestrate "(Observe Worktrees)"
 orchestrate "(Query (20 []))"
 ```
 
-The CLI takes exactly one NOTA argument and prints exactly one NOTA reply.
+The ordinary and meta CLIs each take exactly one NOTA argument and print exactly
+one NOTA reply. Meta-policy requests such as `Register`, `Retire`,
+`RegisterWorktree`, and `RefreshWorktreeIndex` use `meta-orchestrate`.
 `orchestrate-daemon` is the only writer of durable claim state. On first
 startup, the daemon imports existing `orchestrate/*.lock` files if
 `orchestrate.redb` has no claims; after that, lock files are downstream
@@ -299,6 +300,12 @@ orchestrate "(Observe Worktrees)"
 session lanes, each a `(LaneRegistration LaneIdentifier Role LaneAuthority)`.
 `Observe Roles` returns the active claim snapshot as NOTA. Open BEADS tasks
 remain in BEADS; the orchestrate component does not own the BEADS database.
+Register feature worktrees through the meta CLI when they need daemon-visible
+inventory:
+
+```sh
+meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
+```
 
 ## JJ Bookmark Verification
 
@@ -448,7 +455,7 @@ the archive — and record the retirement in the single append-only registry
 `protocols/retired-lanes.md`: one entry per retired lane carrying the lane
 name, discipline, the git revision range holding its reports, a transcript
 pointer, the drain date, and a one-line statement of what it decided. Retire
-the lane in the daemon with `orchestrate "(Retire (Lane <lane>))"`.
+the lane in the daemon with `meta-orchestrate "(Retire (Lane <lane>))"`.
 
 `LanesObserved` (from `orchestrate "(Observe Lanes)"`) is the live index of
 **active** lanes; `protocols/retired-lanes.md` is the thin index of drained

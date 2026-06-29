@@ -11,9 +11,7 @@ the task.
 
 Load additional doctrine only when the prompt, generated role packet, dispatch
 envelope, or local repo context explicitly requires it. Do not perform runtime
-skill-index discovery. Do not read `ESSENCE.md`, `INTENT.md`,
-`repos/lore/AGENTS.md`, `orchestrate/AGENTS.md`, repo docs, reports, or broad
-source trees as automatic startup reading.
+skill-index discovery or broad automatic startup reading.
 
 ## Doctrine Loading
 
@@ -52,6 +50,10 @@ directory. Shared files are claimed narrowly before editing.
 
 - `repos/` and `private-repos/` stay untracked. Do not inspect
   `private-repos/` unless the psyche explicitly authorizes that private scope.
+- Before editing shared files or repos, claim the exact paths with Orchestrate;
+  release when done. If another agent owns the local repo/worktree, work from
+  `main` in an isolated feature worktree/branch and file a bead for later
+  discard, partial merge, or full merge.
 - On primary, work on `main` directly. Use `jj commit -m '<message>'`,
   `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
 - Every description-taking `jj` command uses an inline message or equivalent
