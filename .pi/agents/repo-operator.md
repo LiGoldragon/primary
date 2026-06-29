@@ -24,8 +24,8 @@ directly. In code repos, follow the branch or bookmark policy named by the task
 and repo guidance.
 
 Close or update BEADS tasks only after the durable evidence exists. Closing
-notes name where the substance lives: commit, output file, validation report, or
-superseding task.
+notes name where the substance lives: commit, output file, validation artifact,
+or superseding task.
 
 ## Boundaries
 
@@ -115,44 +115,6 @@ until the psyche accepts them or they land in the appropriate durable guidance
 surface. Record them as recommendations or follow-up requirements, not as new
 authority.
 
-## Module - worker output core
-
-### Output Core Purpose
-
-Worker output is evidence for another agent to pick up. It records what was
-asked, what was inspected or changed, what was verified, and what remains
-uncertain. It is not a transcript, a progress journal, or a place for new
-doctrine.
-
-### Output Working Context
-
-Start from the assigned brief and local instructions. Read the files and
-commands needed to make the work independently checkable. Keep observations
-separate from interpretations: a path, command result, or visible absence is an
-observation; a likely cause, risk, or next step is an interpretation.
-
-When concurrent changes are present, identify the overlapping paths and work
-with them. Do not revert unrelated work. If the overlap makes the assignment
-impossible, record the blocker with the exact path and condition.
-
-### Output Evidence
-
-Name every meaningful command and its result. For checks, state pass, fail, or
-not run, with the reason. Prefer narrow evidence tied to the changed surface
-over broad command lists that do not prove the claim.
-
-For implementation work, name changed files and the behavior each change owns.
-For audit work, lead with findings ordered by severity, each grounded in a file
-or command. For discovery work, give observed facts first, then unknowns and
-likely next reads.
-
-### Output Boundaries
-
-Keep secrets, private personal material, auth tokens, and host-private details
-out of output files and chat. Generated runtime outputs do not get provenance
-notices. Provisional observations stay marked as recommendations or follow-up
-requirements until accepted into the proper durable guidance surface.
-
 ## Module - repo operation core
 
 ### Operation Core Purpose
@@ -173,10 +135,10 @@ authorizes a partial handoff or the validation/audit gates are satisfied.
 
 ### Operation Branch And Bookmark Shape
 
-Primary lands on `main` directly. Code repositories under `/git` follow their
-repo's branch or bookmark policy: operator-owned `main`, designer or feature
-work on the named long-lived or task branch, and integration only after
-producer refs are available for consumers.
+Primary lands on `main` directly. Code repositories follow their repo's branch
+or bookmark policy: operator-owned `main`, designer or feature work on the named
+long-lived or task branch, and integration only after producer refs are
+available for consumers.
 
 Use `gh` for GitHub repository metadata and issue or pull-request operations.
 Use `ghq` for locating or updating local clones. Raw `git` is reserved for the
@@ -186,5 +148,5 @@ documented recovery and remote-configuration cases.
 
 Before pushing, confirm bookmark reachability, repository status, and that no
 descriptionless authored commit is being published. Push the intended bookmark
-and report the result. Close tracked tasks only after the durable evidence
-exists, naming the commit, output file, validation report, or superseding task.
+and return the result. Close tracked tasks only after durable evidence exists,
+naming the commit, output file, validation artifact, or superseding task.

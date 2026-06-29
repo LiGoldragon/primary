@@ -15,8 +15,7 @@ keeps repo guidance aligned with recorded intent.
 
 Read the current intent-log and Spirit CLI guidance before touching intent
 records. Classify each item as a new record, clarification, supersession,
-manifestation gap, cleanup, or non-intent task material. Use the Spirit CLI
-shape currently implemented in the workspace.
+manifestation gap, cleanup, or non-intent task material. Use the deployed Spirit CLI shape named by the Spirit guidance.
 
 When manifesting intent, update the right durable surface: workspace essence,
 workspace intent, repo intent, architecture, skills, or repo-local guidance.
@@ -26,7 +25,7 @@ output.
 
 ## Boundaries
 
-Do not infer new intent from agent reports, implementation choices, or failed
+Do not infer new intent from agent outputs, implementation choices, or failed
 tests. Do not store private personal material on public surfaces. Do not collapse
 conflicting records without an explicit supersession path.
 
@@ -38,7 +37,7 @@ remains as standalone intent when it should be attached to its target.
 
 ## Output
 
-Write the intent-maintenance report under `agent-outputs/<SessionName>/` using
+Write the intent-maintenance output under `agent-outputs/<SessionName>/` using
 the shared agent output protocol.
 
 ## Module - agent output protocol
@@ -111,44 +110,6 @@ until the psyche accepts them or they land in the appropriate durable guidance
 surface. Record them as recommendations or follow-up requirements, not as new
 authority.
 
-## Module - worker output core
-
-### Output Core Purpose
-
-Worker output is evidence for another agent to pick up. It records what was
-asked, what was inspected or changed, what was verified, and what remains
-uncertain. It is not a transcript, a progress journal, or a place for new
-doctrine.
-
-### Output Working Context
-
-Start from the assigned brief and local instructions. Read the files and
-commands needed to make the work independently checkable. Keep observations
-separate from interpretations: a path, command result, or visible absence is an
-observation; a likely cause, risk, or next step is an interpretation.
-
-When concurrent changes are present, identify the overlapping paths and work
-with them. Do not revert unrelated work. If the overlap makes the assignment
-impossible, record the blocker with the exact path and condition.
-
-### Output Evidence
-
-Name every meaningful command and its result. For checks, state pass, fail, or
-not run, with the reason. Prefer narrow evidence tied to the changed surface
-over broad command lists that do not prove the claim.
-
-For implementation work, name changed files and the behavior each change owns.
-For audit work, lead with findings ordered by severity, each grounded in a file
-or command. For discovery work, give observed facts first, then unknowns and
-likely next reads.
-
-### Output Boundaries
-
-Keep secrets, private personal material, auth tokens, and host-private details
-out of output files and chat. Generated runtime outputs do not get provenance
-notices. Provisional observations stay marked as recommendations or follow-up
-requirements until accepted into the proper durable guidance surface.
-
 ## Module - intent core
 
 ### Intent Core Purpose
@@ -194,33 +155,3 @@ Fold mistaken standalone clarifications into their targets, retire or remove
 duplicates through the deployed maintenance path, and keep supersession explicit.
 Do not collapse conflicting records by taste; preserve the conflict or ask for a
 psyche decision.
-
-## Module - safety core
-
-### Safety Core Public Boundary
-
-Public workspace surfaces stay free of private personal material, secrets,
-private host credentials, unpublished third-party code, and auth tokens. When a
-task touches private scope, the brief must authorize that scope and the output
-must keep private facts out of public files and chat.
-
-### Safety Core Secrets
-
-Secret values stay transient. Do not place them in reports, generated outputs,
-logs, commits, traces, Nix store paths, or shell history. Prefer secret-manager
-or deployment-secret flows already used by the target repo, and pipe plaintext
-only to the command that needs it.
-
-### Safety Core Intent Privacy
-
-Spirit privacy defaults to public workspace privacy only for public durable
-intent. Private or personal-affairs substance requires the authorized privacy
-level; otherwise record a non-secret blocker or ask for the correct private
-surface.
-
-### Safety Core Leak Check
-
-Before returning, scan changed durable surfaces and output text for accidental
-secret material, personal details, host-private facts, and copied credentials.
-If a value looks secret but is needed only for local execution, leave it out and
-name the secret source or access path instead.
