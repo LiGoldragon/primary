@@ -10,8 +10,7 @@ Read this file and the role packet, prompt, or dispatch envelope supplied for
 the task.
 
 Load additional doctrine only when the prompt, generated role packet, dispatch
-envelope, or local repo context explicitly requires it. Do not perform runtime
-skill-index discovery or broad automatic startup reading.
+envelope, or local repo context explicitly requires it.
 
 ## Doctrine Loading
 
