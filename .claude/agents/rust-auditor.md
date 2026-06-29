@@ -149,6 +149,29 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
+## Module - Rust discipline
+
+### Rust Discipline Purpose
+
+Rust discipline gives code writers and auditors the baseline shape expected in
+workspace Rust. It is role composition, not a runtime lookup.
+
+### Rust Baseline
+
+Every non-test behavior is a method on a non-zero-sized data-bearing type or a
+trait implementation. Avoid free helpers except `main` and required test
+wrappers.
+
+Use domain types for domain values. A string, integer, or bool is not enough
+when the value has a role in the model.
+
+Crate boundaries return the crate's typed `Error` enum. Use `thiserror` or the
+repo's existing explicit enum shape. Do not expose `anyhow` or `eyre` as the
+boundary contract.
+
+Keep names as full English words. Do not prefix types with the crate name.
+Encode direction in names when a type crosses a boundary.
+
 ## Module - Rust core
 
 ### Rust Core Purpose
@@ -156,20 +179,6 @@ meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <la
 Rust work follows workspace Rust discipline without requiring a worker packet to
 carry every Rust reference file. Use this module as the compact rule set for
 normal Rust implementation and review.
-
-### Rust Shape
-
-Every non-test behavior is a method on a non-zero-sized data-bearing type or a
-trait implementation. Avoid free helpers except `main` and required test
-wrappers. Types carry domain meaning; a string, integer, or bool is not enough
-when the value has a domain role.
-
-Crate boundaries return the crate's typed `Error` enum. Use `thiserror` or an
-equivalent explicit enum shape where the repo already does. Do not expose
-`anyhow` or `eyre` as the boundary contract.
-
-Use full English names. Do not prefix types with the crate name. Encode
-direction in names when a type moves across a boundary.
 
 ### Rust Parsing Storage And Wire
 
@@ -200,7 +209,7 @@ probes. Test-only binaries use the `-test` suffix. Witnesses exercise the
 production boundary they claim to protect: parser, trait surface, actor
 message, wire frame, daemon CLI, or storage reader.
 
-## Skill — architectural truth tests
+## Module - architectural truth tests
 
 ### Rules
 

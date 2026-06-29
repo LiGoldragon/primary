@@ -165,7 +165,7 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
-## Skill — bead-weaver
+## Module - bead weaver
 
 ### Rules
 
