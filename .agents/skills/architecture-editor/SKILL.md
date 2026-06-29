@@ -1,13 +1,13 @@
 ---
 name: architecture-editor
-description: 'How to name, scope, and maintain ARCHITECTURE.md files, which never reference reports. Reach for it when editing an ARCHITECTURE.md.'
+description: 'How to name, scope, and maintain ARCHITECTURE.md files. Reach for it when editing an ARCHITECTURE.md.'
 ---
 
 # Skill — architecture editor
 
 ## Architecture files state system shape
 
-`ARCHITECTURE.md` records durable structure: components, boundaries, data ownership, wire vocabulary, constraints, invariants, and operational shape. It is not a report index, changelog, roadmap, transcript, or decision log.
+`ARCHITECTURE.md` records durable structure: components, boundaries, data ownership, wire vocabulary, constraints, invariants, and operational shape. It is not an artifact index, changelog, transcript, or decision log.
 
 Edit the nearest architecture file that owns the component or subsystem. If no owner exists and the architecture is durable, create one next to the code or repo it governs.
 
@@ -19,7 +19,7 @@ Edit the nearest architecture file that owns the component or subsystem. If no o
 - Work items go in the tracker.
 - Historical evidence stays in artifacts only while it is an active pickup surface.
 
-Do not reference reports from architecture. Move the architectural fact into the file and drop the report dependency.
+Do not reference transient artifacts from architecture. Move the architectural fact into the file and drop the external dependency.
 
 ## Preferred shape
 
@@ -43,7 +43,7 @@ A good architecture statement can become a test, review check, or design gate. P
 
 If uncertainty must be preserved, mark it as undecided and keep it separate from accepted architecture. Name the decision needed and the evidence that would settle it. Remove uncertainty sections once a decision lands.
 
-Avoid temporal roadmap language. Do not promise planned features in architecture unless the accepted architecture already depends on that extension point.
+State only accepted structure. Include extension points only when the accepted architecture depends on them.
 
 ## Edit when structure changes
 

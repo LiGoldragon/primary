@@ -1,6 +1,6 @@
 ---
 name: beads
-description: 'The short-tracked-item discipline, transitional until Persona-mind. Reach for it when claiming, working, or closing a bead.'
+description: 'The short-tracked-item discipline. Reach for it when claiming, working, or closing a bead.'
 ---
 
 # Skill — beads
@@ -47,5 +47,5 @@ Close a bead only after the acceptance criteria pass or the bead is explicitly i
 - beads that restate a prompt without acceptance criteria;
 - umbrella beads that hide independent work;
 - closing because code was written but not validated;
-- using comments as a report archive;
+- using comments as an archive;
 - creating repo-specific process doctrine in the bead body.

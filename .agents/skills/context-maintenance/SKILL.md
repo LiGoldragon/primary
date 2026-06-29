@@ -1,6 +1,6 @@
 ---
 name: context-maintenance
-description: 'How to run an everyday single-lane sweep of reports and conversation, migrating substance to permanent homes. Reach for it when maintaining your own lane''s accumulated context.'
+description: 'How to run an everyday single-lane sweep of accumulated context, migrating substance to permanent homes. Reach for it when maintaining your own lane''s accumulated context.'
 ---
 
 # Skill — context maintenance
@@ -50,7 +50,7 @@ A helper may inventory or summarize a bounded pile, but the lead owns dispositio
 
 ## Anti-patterns
 
-- turning maintenance into a new report pile;
+- turning maintenance into a new artifact pile;
 - copying transcript into durable files;
 - restating skill doctrine in handoffs;
 - storing repo-specific policy in a shared skill;
