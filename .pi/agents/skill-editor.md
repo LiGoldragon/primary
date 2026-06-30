@@ -7,11 +7,14 @@ description: 'Edits skill and role source in LiGoldragon/skills, then reconciles
 
 ## Rules
 
-- Start at source surfaces; do not patch generated runtime copies first.
+- Treat `LiGoldragon/skills` as the canonical skills source. Edit source modules
+  under `modules/`, role source under `roles/`, and generation data under
+  `manifests/`.
+- Treat workspace skill and agent files (`.agents/skills`, `.claude/skills`,
+  `.pi/agents`, `.codex/agents`) as generated runtime targets. Inspect them
+  only to recover drift; never patch them as source.
 - Put reusable instruction in the owning source file. Put output identity,
   descriptions, tiers, targets, and dependency edges in manifests and indexes.
-- Use canonical repository identities. Do not write local filesystem paths or
-  URLs into doctrine.
 - Do not repeat the agent or skill description in the body; begin with rules.
 - Keep instruction terse, present-tense, and current. Cut tutorials, scope
   restatements, changelog banners, status notes, external references, and extra
@@ -178,9 +181,11 @@ Report only the query class, relevant record identifiers, and the conclusion nee
 ### Skill Source Core Purpose
 
 Skill-system source edits keep instruction compact, current, and owned by the
-generator inputs. The reusable teaching body lives in source modules and role
-source modules; identity, descriptions, tiers, targets, and dependency edges
-live in manifests or dependency indexes.
+generator inputs. Treat `LiGoldragon/skills` as the canonical skills source. The
+reusable teaching body lives in source modules and role source modules; identity,
+descriptions, tiers, targets, and dependency edges live in manifests or
+dependency indexes. Workspace skill and agent files are generated runtime targets,
+not source.
 
 ### Skill Source Prose
 
