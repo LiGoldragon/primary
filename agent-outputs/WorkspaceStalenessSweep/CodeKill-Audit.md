@@ -108,3 +108,90 @@ Next action:
 
 - When the `system-designer` claim on `/git/github.com/LiGoldragon/lojix` is released, claim `/git/github.com/LiGoldragon/lojix/README.md`, apply the isolated README wording from `/git/github.com/LiGoldragon/lojix-primary-5rzf-7/README.md`, rerun `rg -n "horizon-re-engineering|horizon-leaner-shape"` against both READMEs, then close `primary-pg6f`.
 - Close `primary-5rzf.7` only after canonical `/git/github.com/LiGoldragon/lojix/README.md` is clean and the `.7` evidence reflects that C3 landed in the canonical repo.
+
+## Continuation: primary-pg6f Resolved
+
+Task: final implementation continuation for epic `primary-5rzf`, code-kill bead
+`primary-5rzf.7`, and blocker bead `primary-pg6f`.
+
+Scope followed:
+
+- Edited only `/git/github.com/LiGoldragon/lojix/README.md` and this evidence
+  report.
+- Did not inspect `/home/li/primary/private-repos`.
+- Did not sweep Spirit intent records.
+- Did not discard `/git/github.com/LiGoldragon/lojix-primary-5rzf-7`.
+- Did not commit or push; the canonical `lojix` README change remains
+  uncommitted for closeout.
+
+Observed facts:
+
+- `orchestrate "(Observe Roles)"` still reports a broad `system-designer` claim
+  on `/git/github.com/LiGoldragon/lojix`.
+- The task authority says there is no current `system-designer` and to treat
+  that prior canonical `lojix` claim as stale/deprecated for this weave.
+- A narrow claim attempt for
+  `/git/github.com/LiGoldragon/lojix/README.md` was rejected only because of
+  that stale `system-designer` claim.
+- `jj status --no-pager` in canonical `/git/github.com/LiGoldragon/lojix`
+  reported no working-copy changes before editing.
+- Before editing, the isolated worktree README contained
+  `horizon-leaner-shape` and the canonical README contained
+  `horizon-re-engineering`.
+- The canonical README now matches the isolated cleanup wording: new work lands
+  on the `horizon-leaner-shape` feature arc.
+- `jj status --no-pager` in canonical `lojix` after editing reports only
+  `M README.md`.
+
+Changed file:
+
+- `/git/github.com/LiGoldragon/lojix/README.md`: replaced the stale development
+  status sentence pointing at `horizon-re-engineering` with the isolated
+  `horizon-leaner-shape` wording.
+
+Checks run:
+
+- `rg -n "horizon-re-engineering" README.md || true` in canonical `lojix`:
+  passed; no hits.
+- `rg -n "horizon-leaner-shape" README.md` in canonical `lojix`: passed;
+  hit `README.md:17`.
+- `jj diff --stat --no-pager` in canonical `lojix`: showed only
+  `README.md | 4 ++--`.
+- `command -v markdownlint-cli2 || command -v markdownlint || command -v mdformat || true`:
+  no markdown checker was installed.
+- `cargo test --all-targets` in canonical `lojix`: passed; 84 non-ignored tests
+  passed across library/integration targets and 10 existing external/slow tests
+  remained ignored.
+
+Tracker actions:
+
+- `bd close primary-pg6f --reason ...`: closed `primary-pg6f` after canonical
+  README disposition landed and checks passed.
+- `bd --readonly show primary-pg6f primary-5rzf.7 --long --json`: confirmed
+  `primary-pg6f` closed and `primary-5rzf.7` still in progress before `.7`
+  close.
+- `bd close primary-5rzf.7 --reason ...`: closed `primary-5rzf.7`, citing the
+  prior C1/C2/C4 evidence and the completed C3 canonical README disposition.
+- `bd --readonly show primary-pg6f primary-5rzf.7 primary-5rzf.9 --long --json`:
+  confirmed `primary-pg6f` and `primary-5rzf.7` are closed; `primary-5rzf.9`
+  remains open.
+- `bd --readonly ready --parent primary-5rzf --plain`: reports one ready item,
+  `primary-5rzf.9`.
+
+Interpretation:
+
+- The previous C3 blocker is resolved in the canonical `lojix` surface.
+- The isolated `lojix-primary-5rzf-7` worktree is not discarded, per task
+  boundary, but its narrow README payload has been applied to canonical `lojix`.
+- `primary-5rzf.7` acceptance is complete. The prior `persona-message`
+  full-flake hash mismatch remains unrelated to `.7` and was already recorded
+  as a non-blocker in this audit.
+- `primary-5rzf.9` is now ready for closeout verification and landing.
+
+Remaining state:
+
+- `/git/github.com/LiGoldragon/lojix/README.md` is modified and uncommitted.
+- `/home/li/primary/agent-outputs/WorkspaceStalenessSweep/CodeKill-Audit.md`
+  is modified and uncommitted.
+- No blocker remains for `primary-5rzf.7`; closeout still owns final grep,
+  build/check consolidation, commit, and push.

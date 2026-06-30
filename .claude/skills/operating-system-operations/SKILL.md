@@ -1,6 +1,6 @@
 ---
 name: operating-system-operations
-description: 'Operating-system and environment operations for CriomOS and criomos-home: query, deploy, activate, and verify through current Lojix interfaces while avoiding deprecated lojix-cli.'
+description: 'Operating-system and environment operations for CriomOS and criomos-home: query, deploy, activate, and verify through current Lojix interfaces.'
 ---
 
 # Skill — operating system operations
@@ -13,7 +13,7 @@ Operate from pushed, reproducible inputs. Treat CriomOS as the system source ide
 
 Name the target cluster, node, system or home kind, action or mode, builder choice, rollback expectation, and post-activation evidence before changing a host.
 
-Do not use deprecated `lojix-cli`; use the current `lojix` read interface and privileged `meta-lojix` deploy interface.
+Use the current `lojix` read interface and privileged `meta-lojix` deploy interface.
 
 ## Lojix interface
 
