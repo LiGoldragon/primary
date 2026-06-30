@@ -110,7 +110,7 @@ One surface is written without claiming a lock:
   so no coordination is needed. Do not claim `/home/li/primary`,
   `reports/`, or a session report path just to create, edit, correct,
   supersede, or delete a report in your own lane. If the same task also
-  edits shared files — skills, `AGENTS.md`, repo `INTENT.md`, code,
+  edits shared files — skills, `AGENTS.md`, repo `ARCHITECTURE.md`, code,
   schemas — claim those shared paths for the non-report edits.
 
 **Lock selectively — never the whole space** (psyche record 2586). When a

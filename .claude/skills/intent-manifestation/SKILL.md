@@ -1,6 +1,6 @@
 ---
 name: intent-manifestation
-description: 'How to manifest accepted Spirit intent into the narrow guidance surface agents read: workspace, repo intent, architecture, AGENTS, README, skills, or tracker.'
+description: 'How to manifest accepted Spirit intent into the narrow guidance surface agents read: workspace, repo ARCHITECTURE or code, AGENTS, README, skills, or tracker.'
 ---
 
 # Skill — intent manifestation
@@ -11,14 +11,14 @@ Manifestation moves accepted psyche intent from Spirit into the guidance surface
 
 Manifest only what the psyche stated. Do not expand a record into agent rationale, implementation preference, or broad doctrine the statement does not support.
 
-Matter that never belonged in Spirit still goes directly to its owning surface: code, `AGENTS.md`, `ARCHITECTURE.md`, `README.md`, repo `INTENT.md`, tracker item, or skill source.
+Matter that never belonged in Spirit still goes directly to its owning surface: code, `AGENTS.md`, `ARCHITECTURE.md`, `README.md`, tracker item, or skill source.
 
 ## Destination
 
 Choose the narrowest durable home:
 
 - workspace-wide values and conduct: workspace intent or guidance;
-- repository goals and constraints: repo `INTENT.md`;
+- repository goals, direction, and constraints: repo `ARCHITECTURE.md` (or a code stub with an explanatory comment);
 - architecture shape and invariants: `ARCHITECTURE.md`;
 - operational repo rules: `AGENTS.md` or repo docs;
 - reusable agent discipline: skill source;
