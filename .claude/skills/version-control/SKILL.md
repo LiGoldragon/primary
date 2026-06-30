@@ -1,11 +1,11 @@
 ---
-name: jj
+name: version-control
 description: 'The Jujutsu version-control discipline for concurrent agents, including the push-rejected escape hatch. Reach for it when running version-control commands.'
 ---
 
-# Skill — Jujutsu discipline
+# Skill — version control
 
-## Use jj, not raw git
+## Use Jujutsu, not raw git
 
 Use `jj` for version control. Raw `git` is only an escape hatch named in this skill. Every description-taking command uses an inline message or equivalent headless flag; never let a command open an editor.
 

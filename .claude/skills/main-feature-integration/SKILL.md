@@ -1,6 +1,6 @@
 ---
 name: main-feature-integration
-description: 'How to update a code-repo main with new features: operator bookmark until green, test branch families together, rebase if main moved, then land producers before consumers. Reach for it when integrating features into main.'
+description: 'How to update a code-repo main with new features: integration bookmark until green, test branch families together, rebase if main moved, then land producers before consumers. Reach for it when integrating features into main.'
 ---
 
 # Skill — main feature integration
@@ -11,9 +11,9 @@ green. This applies to code repos under `/git`, not primary.
 ## Flow
 
 1. Start from the current `main` head: `jj new main`.
-2. Work on a named operator bookmark while the feature is not green.
+2. Work on a named integration bookmark while the feature is not green.
 3. Keep each affected repo on a main-based branch; do not stack new work on stale
-   designer integration branches unless the task is explicitly to integrate that
+   peer integration branches unless the task is explicitly to integrate that
    branch.
 4. Test the branch family together. Temporary local path overrides are allowed
    during testing, but remove them from the merge-ready state unless the branch

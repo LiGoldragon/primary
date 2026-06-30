@@ -1,9 +1,9 @@
 ---
-name: beauty
-description: 'Beauty as the gate on correctness: special cases should dissolve into the normal case. Applies whenever you judge whether a design or change is done.'
+name: design-quality
+description: 'Design quality as the gate on correctness: special cases should dissolve into the normal case. Applies whenever you judge whether a design or change is done.'
 ---
 
-# Skill — beauty as the criterion
+# Skill — design quality
 
 ## The rule
 

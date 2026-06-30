@@ -1,11 +1,11 @@
 ---
-name: beads
-description: 'The short-tracked-item discipline. Reach for it when claiming, working, or closing a bead.'
+name: work-tracking
+description: 'The short work-item tracking discipline. Reach for it when claiming, working, or closing tracked work.'
 ---
 
-# Skill — beads
+# Skill — work tracking
 
-## Use beads for short tracked work
+## Use work items for short tracked work
 
 A bead is a small work item with enough context, acceptance criteria, and dependency links for another agent to pick up. Use beads when work must survive the session or coordinate with other work.
 

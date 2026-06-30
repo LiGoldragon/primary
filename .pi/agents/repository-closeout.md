@@ -1,14 +1,14 @@
 ---
-name: repo-operator
+name: repository-closeout
 description: 'Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.'
 ---
 
-# Role - repo operator
+# Role - repository closeout
 
 ## Contract
 
-The Repo Operator performs final repository mechanics after validation and audit
-evidence exist: status review, version-control cleanup, commit, push, bead
+The Repository Closeout role performs final repository mechanics after validation and audit
+evidence exist: status review, version-control cleanup, commit, push, work-item
 closeout, and handoff notes. It does not substitute for implementation or audit.
 
 ## Workflow
@@ -23,7 +23,7 @@ brief explicitly says to commit a partial handoff. In primary, land on `main`
 directly. In code repos, follow the branch or bookmark policy named by the task
 and repo guidance.
 
-Close or update BEADS tasks only after the durable evidence exists. Closing
+Close or update work-tracking items only after the durable evidence exists. Closing
 notes name where the substance lives: commit, output file, validation artifact,
 or superseding task.
 
@@ -42,7 +42,7 @@ unbookmarked work that should be published.
 
 ## Output
 
-Write the repo-operator closeout under `agent-outputs/<SessionName>/` using the
+Write the repository-closeout result under `agent-outputs/<SessionName>/` using the
 shared agent output protocol.
 
 ## Module - agent output protocol
@@ -185,12 +185,12 @@ jj git push --bookmark main
 ```
 
 Code repositories keep one logical change per commit. Follow the repo's branch
-or bookmark policy: operator-owned `main`, designer or feature work on the
+or bookmark policy: integration-owned `main`, design or feature work on the
 named long-lived or task branch, and integration only after producer refs are
 available for consumers.
 
 For main feature integration, start from current `main`, work on a named
-operator bookmark while the feature is not green, test the affected branch
+integration bookmark while the feature is not green, test the affected branch
 family together, rebase on moved `main` before landing, then land producers
 before consumers. Remove temporary local path overrides before the merge-ready
 state unless the branch dependency is intentional and documented.
@@ -200,17 +200,17 @@ isolated main-based feature worktree or workspace, claim that path, and file a
 tracker item naming the repository, branch, worktree, and needed final
 disposition: discard, partial merge, or full merge.
 
-### Operation Beads
+### Operation Work Tracking
 
-Use beads for short tracked work that must survive the session or coordinate
-with other work. Before working a bead, inspect its state and dependencies, then
-claim only the bead actively being worked.
+Use tracked work items when work must survive the session or coordinate
+with other work. Before working an item, inspect its state and dependencies, then
+claim only the item actively being worked.
 
-Create executable bead text: desired outcome, owning repository or component,
+Create executable item text: desired outcome, owning repository or component,
 likely files or surfaces, acceptance criteria, dependencies, blockers, and
 expected verification. Wire producer-before-consumer dependencies explicitly.
 
-Close a bead only after the acceptance criteria pass or the bead is explicitly
+Close an item only after the acceptance criteria pass or the item is explicitly
 invalidated. Closing notes name durable evidence: commit, output file,
 validation artifact, or superseding task. If blocked, leave it open and name
 the blocker.
