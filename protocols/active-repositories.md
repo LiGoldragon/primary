@@ -27,10 +27,9 @@ stack.
 | `introspect` | `/git/github.com/LiGoldragon/introspect` | Supervised prototype inspection-plane component. Talks to live component daemons over Signal, fans in typed observation records, and projects NOTA only at the human/agent edge. It is not in the delivery path and does not directly open any peer component's redb. |
 | `signal-introspect` | `/git/github.com/LiGoldragon/signal-introspect` | Central introspection envelope contract: introspection query/reply selectors, correlation, projection wrappers, and prototype witness records. It asks and wraps; component-specific observations stay in the owning component contracts. |
 | `meta-signal-introspect` | `/git/github.com/LiGoldragon/meta-signal-introspect` | Introspect meta policy contract: `Configure` over the typed `IntrospectDaemonConfiguration` (peer-daemon set + `introspect.sema` location). |
-| `system` | `/git/github.com/LiGoldragon/system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-owned in the current wave. |
+| `system` | `/git/github.com/LiGoldragon/system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-cell-owned for the V1 harness wave. |
 | `harness` | `/git/github.com/LiGoldragon/harness` | Harness process/session control boundary. |
-| `terminal` | `/git/github.com/LiGoldragon/terminal` | Persona-facing terminal owner: named terminal sessions, Signal adapter, viewer-adapter policy, and component Sema metadata around `terminal-cell`. Terminal-brand mux helpers are retired. |
-| `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Low-level daemon-owned PTY/transcript cell primitive consumed by `terminal`. |
+| `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Active terminal primitive for V1 harness work and Claude/Codex tests: daemon-owned PTY/transcript cell, raw attach path, control/data sockets, and lifecycle CLI. Use it directly; it is not currently subordinate to `terminal`. |
 | `sema` | `/git/github.com/LiGoldragon/sema` | **Today's** typed storage kernel (redb + rkyv + schema guard). Not a daemon, not shared storage, and not the full database engine. Distinct from the **eventual** `Sema` — the universal medium for meaning (self-hosting computational substrate, fully-typed human-language representation, universal interlingua). Per `ESSENCE.md` §"Today and eventually". |
 | `signal-sema` | `/git/github.com/LiGoldragon/signal-sema` | Sema operation vocabulary: `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, and `Validate`. Public component contracts lower into this layer; they do not expose these words as universal request roots. |
 | `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema` and `signal-sema`: registered record families, Sema operation execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not NOTA, and not Persona-specific. First real consumer is `mind`; Criome follows. |
@@ -79,6 +78,15 @@ stack.
 | `nexus-cli` | `/git/github.com/LiGoldragon/nexus-cli` | CLI surface for Nexus-shaped NOTA records. |
 | `nota-next` | `/git/github.com/LiGoldragon/nota-next` | Replacement NOTA implementation for the schema-derived stack. Owns raw structural block parsing, source spans, `qualifies_as_*` methods, and the **structural macro node** codec — `#[derive(StructuralMacroNode)]`, decoded by SHAPE (type-directed, structural match in declaration order, first match wins, recursive) with bidirectional encode back to a matching NOTA block (records `xai7`, `z544`). The derive now covers enums AND structs (positional typed body), supports named-field enum variants, and carries the full seven-shape vocabulary including the `HeadedAtom` and `PascalHeadBody` leaf shapes (structural-forms epic, branch `next/structural-forms`; see `skills/structural-forms.md`). Schema semantics still live in `schema-next`. Operator-owned `main`. |
 | `nota-config` | `/git/github.com/LiGoldragon/nota-config` | Strict one-argument typed configuration input over NOTA, `.nota`, or `.rkyv`. |
+
+## Inactive / Archived Components
+
+These repos are not active architecture focus. Keep their checkouts as
+reference surfaces unless the psyche reactivates them.
+
+| Repository | Path | Current status |
+|---|---|---|
+| `terminal` | `/git/github.com/LiGoldragon/terminal` | Archived/inactive until further notice. Do not route V1 harness Claude/Codex tests through it; use `terminal-cell` directly as the active terminal primitive. |
 
 ## Adjacent Active Work
 
