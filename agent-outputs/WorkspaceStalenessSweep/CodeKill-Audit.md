@@ -81,3 +81,30 @@ Leave `primary-5rzf.7` open. Do not create a new follow-up bead: `primary-pg6f` 
 - `primary.code-workspace` and several agent-output files live in a dirty `/home/li/primary` worktree alongside many unrelated changes by other workers. This audit did not revert or normalize unrelated state.
 - This audit did not enter `/home/li/primary/private-repos` and did not sweep Spirit intent records, per dispatch boundaries.
 - This audit did not close or update tracker state because `.7` is not closeable under the observed C3 canonical-surface gap.
+
+## Continuation: primary-pg6f Disposition Attempt
+
+Task: implementation follow-up for existing disposition bead `primary-pg6f`, which blocks `primary-5rzf.7`.
+
+Outcome: blocked by canonical repository ownership. No source files were edited, no tracker items were closed, and no commits or pushes were performed.
+
+Observed facts:
+
+- `orchestrate "(Observe Roles)"` shows `/git/github.com/LiGoldragon/lojix` is currently claimed by `system-designer` for `implement live lojix deploy-into-VM test chain (Track A, host-untouched)`.
+- `/git/github.com/LiGoldragon/lojix/README.md:17` still contains `horizon-re-engineering`.
+- `/git/github.com/LiGoldragon/lojix-primary-5rzf-7/README.md:17` contains the intended `horizon-leaner-shape` wording.
+- `jj status --no-pager` in `/git/github.com/LiGoldragon/lojix` reports no working-copy changes.
+- `jj status --no-pager` in `/git/github.com/LiGoldragon/lojix-primary-5rzf-7` reports the isolated `README.md` change remains uncommitted in workspace `primary-5rzf-7-code-kill`.
+- `bd --readonly show primary-5rzf.7 --long` shows `primary-5rzf.7` remains `IN_PROGRESS`.
+- `bd show primary-pg6f` shows the disposition bead remains open for either partial merge of the README cleanup or discard if another integration path is chosen.
+
+Interpretation:
+
+- The obvious partial merge path is still the right technical correction for C3, but it is not safe to apply in the canonical checkout while another lane owns the whole `/git/github.com/LiGoldragon/lojix` repository.
+- `primary-pg6f` is not complete because the canonical README still contains the stale branch direction and the isolated worktree has not been disposed.
+- `primary-5rzf.7` is not closeable because verifier item C3 remains unresolved in the canonical in-scope surface.
+
+Next action:
+
+- When the `system-designer` claim on `/git/github.com/LiGoldragon/lojix` is released, claim `/git/github.com/LiGoldragon/lojix/README.md`, apply the isolated README wording from `/git/github.com/LiGoldragon/lojix-primary-5rzf-7/README.md`, rerun `rg -n "horizon-re-engineering|horizon-leaner-shape"` against both READMEs, then close `primary-pg6f`.
+- Close `primary-5rzf.7` only after canonical `/git/github.com/LiGoldragon/lojix/README.md` is clean and the `.7` evidence reflects that C3 landed in the canonical repo.

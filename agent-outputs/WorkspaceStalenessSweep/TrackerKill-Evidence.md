@@ -241,3 +241,133 @@ cannot close primary-2chb: blocked by open issues [primary-2y5] (use --force to 
 - No Spirit intent sweep.
 - No docs/code edits.
 - No commit or push.
+
+## Continuation 2026-06-30 Approved Blocker-Analysis Execution
+
+Worker scope: execute the approved recommendation from `BlockerAnalysis.md`: force-close only T6 `primary-2chb` as invalidated/superseded, not completed; leave `primary-2y5` open; close `primary-5rzf.5` only after all six tracker-kill entries read back as closed.
+
+Inputs re-read:
+
+- `/home/li/primary/agent-outputs/WorkspaceStalenessSweep/BlockerAnalysis.md`.
+- This evidence file.
+- `/home/li/primary/agent-outputs/WorkspaceStalenessSweep/Verifier-Ledger.md`.
+- `/home/li/primary/repos/skills/roles/weave-operator/full.md`.
+
+Preflight command:
+
+```sh
+bd --readonly show primary-xj51 primary-hj4.1.4 primary-uq04.2 primary-uq04.3 primary-uq04.4 primary-2chb primary-2y5 primary-5rzf.5 --long --json | jq '[.[] | {id,title,status,assignee,owner,close_reason,dependencies:(.dependencies // [] | map({id,status,dependency_type,close_reason}))}]'
+```
+
+Preflight statuses:
+
+- T1 `primary-xj51`: `closed`.
+- T2 `primary-hj4.1.4`: `closed`.
+- T3 `primary-uq04.2`: `closed`.
+- T4 `primary-uq04.3`: `closed`.
+- T5 `primary-uq04.4`: `closed`.
+- T6 `primary-2chb`: `open`; dependency `primary-2y5` remained `in_progress`, while `primary-c620` and `primary-wvdl` were `closed`.
+- `primary-2y5`: `in_progress`.
+- `primary-5rzf.5`: `in_progress`, assignee `li`.
+
+### T6 `primary-2chb` Force Close
+
+- Ledger reference: `Verifier-Ledger.md`, `CONFIRMED FOR TRACKER KILL (.5)`, T6.
+- Blocker-analysis reference: `BlockerAnalysis.md`, recommendation for `.5`.
+- Action taken: force-closed stale persona-orchestrate deploy bead as invalidated/superseded, not completed.
+- Before status in this continuation: `open`.
+- Command run:
+
+```sh
+bd close primary-2chb --force --reason "Tracker kill T6 per /home/li/primary/agent-outputs/WorkspaceStalenessSweep/Verifier-Ledger.md and approved BlockerAnalysis.md: invalidated/superseded, not completed. second-designer 162 consolidation and the schema-emission porting plan superseded the retired /151 persona-orchestrate readiness/deploy framing; primary-2y5 remains live Persona daemon work, and this force close overrides only the obsolete dependency edge from the dead deployment bead." --json
+```
+
+- After status from command output: `closed`.
+- Close reason set: explicitly says `invalidated/superseded, not completed`, cites T6 and approved blocker analysis, and says `primary-2y5` remains live Persona daemon work.
+
+Read-back command:
+
+```sh
+bd --readonly show primary-2chb primary-2y5 --long --json | jq '[.[] | {id,status,assignee,close_reason,dependencies:(.dependencies // [] | map({id,status,dependency_type,close_reason}))}]'
+```
+
+Read-back statuses:
+
+- `primary-2chb`: `closed`.
+- `primary-2y5`: `in_progress`; close reason remained `null`.
+- `primary-2chb` still shows dependency `primary-2y5` as `in_progress`, documenting that the force-close overrode only the obsolete dependency edge from the invalidated dependent bead.
+
+An initial concurrent all-six read-back attempt returned the embedded tracker lock:
+
+```text
+failed to open database: embeddeddolt: another process holds the exclusive lock on /home/li/primary/.beads/embeddeddolt; the embedded backend supports only one writer at a time
+```
+
+The read-back was rerun serialized and succeeded.
+
+Serialized acceptance command:
+
+```sh
+bd --readonly show primary-xj51 primary-hj4.1.4 primary-uq04.2 primary-uq04.3 primary-uq04.4 primary-2chb primary-5rzf.5 --long --json | jq '[.[] | {id,status,close_reason}]'
+```
+
+Serialized acceptance statuses:
+
+- T1 `primary-xj51`: `closed`.
+- T2 `primary-hj4.1.4`: `closed`.
+- T3 `primary-uq04.2`: `closed`.
+- T4 `primary-uq04.3`: `closed`.
+- T5 `primary-uq04.4`: `closed`.
+- T6 `primary-2chb`: `closed`.
+- `primary-5rzf.5`: `in_progress` before close.
+
+### `primary-5rzf.5` Close
+
+- Acceptance basis: all six entries in `Verifier-Ledger.md` section `CONFIRMED FOR TRACKER KILL (.5)` read back as `closed`.
+- Action taken: closed tracker-kill bead `primary-5rzf.5`.
+- Command run:
+
+```sh
+bd close primary-5rzf.5 --reason "Tracker kill .5 complete: all six CONFIRMED FOR TRACKER KILL entries in /home/li/primary/agent-outputs/WorkspaceStalenessSweep/Verifier-Ledger.md are closed. T6 primary-2chb was force-closed as invalidated/superseded, not completed, and primary-2y5 remains open for live Persona daemon work." --json
+```
+
+- After status from command output: `closed`.
+- Close reason set: all six tracker-kill entries closed; T6 force-close was invalidated/superseded, not completed; `primary-2y5` remains open.
+
+Final three-bead read-back command:
+
+```sh
+bd --readonly show primary-2chb primary-2y5 primary-5rzf.5 --long --json | jq '[.[] | {id,status,assignee,close_reason,dependencies:(.dependencies // [] | map({id,status,dependency_type,close_reason}))}]'
+```
+
+Final three-bead statuses:
+
+- `primary-2chb`: `closed`; close reason is the approved invalidated/superseded, not completed reason.
+- `primary-2y5`: `in_progress`; close reason remains `null`.
+- `primary-5rzf.5`: `closed`.
+
+Final all-six tracker-kill read-back command:
+
+```sh
+bd --readonly show primary-xj51 primary-hj4.1.4 primary-uq04.2 primary-uq04.3 primary-uq04.4 primary-2chb --long --json | jq '[.[] | {id,status,close_reason}]'
+```
+
+Final all-six tracker-kill statuses:
+
+- T1 `primary-xj51`: `closed`.
+- T2 `primary-hj4.1.4`: `closed`.
+- T3 `primary-uq04.2`: `closed`.
+- T4 `primary-uq04.3`: `closed`.
+- T5 `primary-uq04.4`: `closed`.
+- T6 `primary-2chb`: `closed`.
+
+## Approved Execution Closeout Status
+
+- `primary-2chb`: `closed` as explicitly invalidated/superseded, not completed.
+- `primary-2y5`: left open; final status `in_progress`.
+- `primary-5rzf.5`: `closed`.
+- All six `.5` tracker-kill entries are now `closed`.
+- No `/home/li/primary/private-repos` inspection.
+- No Spirit intent sweep.
+- No docs/code edits.
+- No commit or push.

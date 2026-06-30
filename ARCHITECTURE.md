@@ -111,6 +111,210 @@ This is a scope discipline, not a quality one — "today's piece" is never a
 license to cut corners. `protocols/active-repositories.md` carries the live
 per-repo today-vs-eventual distinctions and cites this anchor.
 
+## 0.6 · Shared component architecture patterns
+
+These are the cross-cutting patterns every component repo follows. They are
+workspace canon because the *pattern* repeats across repos; each repo's
+`ARCHITECTURE.md` owns its component-specific detail. Stated here so a fresh
+agent reads the shape once and recognises it everywhere.
+
+### The runtime logic triad: Signal / Nexus / SEMA
+
+Each component engine defines its **Signal**, **Nexus**, and **SEMA**
+interfaces in schema and runs its core logic through schema-emitted traits over
+root types, with strict ownership:
+
+- **SEMA** owns durable state and storage (the body at rest).
+- **Nexus** owns decision-making and request execution — it is the execution
+  engine.
+- **Signal** owns communication (movement across channels).
+
+The request flow is `Signal in → Nexus → SEMA (on state work) → Nexus → Signal
+→ client`. The engine-role names are *traits*, not one component's enum. This
+runtime **logic** triad is a different thing from the repository **packaging**
+triad below; do not conflate them. The shared daemon concurrency primitive (the
+bounded thread-per-connection worker model that serves many connections without
+blocking on a long operation) lives once in the reusable `triad-runtime`
+component and is consumed by every triad daemon, never reimplemented per
+component. When describing the runtime, only real Kameo actor nouns get actor
+wording; Tokio listener loops are async/task-backed shells with actor-backed
+admission when they use `RequestGate`.
+
+### The packaging triad: two contracts per component
+
+Every component has exactly **two** wire contracts — no third, no owner/working
+split:
+
+- `signal-<component>` — the ordinary working/peer-callable signal.
+- `meta-signal-<component>` — the meta policy/authority signal (configuration,
+  owner-only operations). `MetaSignal` is canonical; `OwnerSignal` is
+  deprecated, and from-scratch policy contracts are born meta-signal.
+
+Each contract exposes one thin CLI client (`<component>` and `meta-<component>`).
+Every daemon binds and serves its **meta socket** at runtime even when its only
+operation is `Configure`; the policy/control socket is called the *meta socket*,
+not the owner socket. Configuration is changed only through the meta-signal
+surface, so configuration is unreachable from the ordinary working signal. A
+component with an owner gains the meta tier so owner identity arrives as
+authenticated policy without redeploy; meta-signal is optional only for
+genuinely ownerless components, and if no separate meta-signal repo exists the
+component repo itself carries the meta-signal surface. Splitting the contract
+into separate `signal-<c>` and `meta-signal-<c>` repos buys rebuild-churn
+isolation, security visibility, and optionality — it is compilation/dependency
+isolation and authority clarity, not where state or logic lives.
+
+A component with **two authority surfaces** uses the two-contract triad
+directly: two schemas, each emitting its own Signal/Nexus/SEMA engines and
+sharing record types; the runtime imports both and runs two listeners on two
+sockets (an owner-authenticated meta socket and a peer-callable ordinary
+socket).
+
+### Component binary naming
+
+Each component has a CLI half `<component>` and a daemon half
+`<component>-daemon`; the role name is not itself a binary. The `orchestrate`
+COMPONENT (the repo) is the runtime that runs the set of component daemons — not
+the act of orchestrating.
+
+### Engines are match-matrices over enums
+
+Most workspace logic is a **match between two domains**: domain A enum × domain
+B enum, where the logic is the outcome per cell of that matrix. Cells with no
+defined behavior return a typed error or help (`Unavailable`, etc.); the error
+surface IS part of the trait surface. Engine operations expose these
+tree-to-tree and enum-to-enum matching surfaces. Every actor carries its own
+channel-contract schema declaring base `ACTION` (what it can do) and `RESPONSE`
+(what it can say) enums plus a universal `Unknown` response; execution is
+fan-out — one interaction-actor decision emits multiple parallel outputs, closed
+per interact-trait variant. When an interaction needs engine state, including
+outbound queries like Criome authorization, it becomes **async**: the actor
+system handles the wait while other work continues, and state access is
+implicit (the interacting object queries state through the engine without the
+caller threading it).
+
+### Wire and identity discipline
+
+- **No NOTA between components.** Daemons exchange binary protocol data; the CLI
+  is the translation/debugging surface (it can wrap a normal call in a debugging
+  request that says where logs are displayed or stored). `SEMA` is the compact
+  data format defined by schema.
+- **Origin route as implicit return address.** Every message carries an origin
+  route as automatic, *un-schema-declared* metadata — a short statistically
+  unique identifier that travels Signal → Nexus → SEMA and back, so a reply is
+  associated with its originating query on return. It is internal to each
+  component and need not be a long hash.
+- **Schema is the source of truth.** Schema is the macro-language source of
+  truth for component data, wire, storage, and upgrade behavior, and the textual
+  representation of the psyche's idea language — not merely a codegen input but
+  the text form where the idea language is expressed and authored. The
+  schema-derived stack uses separate repos for `nota-next`, `schema-next`, and
+  `schema-rust-next` rather than one combined repo.
+- **Fully-qualified symbol path is universal identity.** The
+  fully-qualified-symbol-path is the workspace's universal machine-readable
+  symbol identity, surfaced through a text form. Schema-emitted Rust types and
+  NOTA renderings are two projections of one symbol-path identity space; designs
+  use this canonical mechanism rather than inventing per-design alternatives.
+- **Shortest reliable identifier is first-class.** Opaque content-addressed
+  hashes (blake3/sha) cost roughly one token per character in agent context,
+  logs, and reports. The full digest stays canonical identity; the exposed
+  locator is a stable shortened form, never renamed once exposed.
+- **Help is a noun.** `Help` is the documentation entity itself, not a verb:
+  bare `(Help)` is top-level help, and walking the symbol path to `Help`
+  retrieves that node's documentation. Help is schema data in a mirror
+  description namespace over the global symbol namespace, with generated defaults
+  when no explicit entry exists.
+- **LLM prompt prose lives in plain-text files**, included at build time via
+  `include_str`, so the binary stays self-contained while the prose is edited as
+  data.
+
+### Privilege and authentication boundaries
+
+- A content/data daemon's privilege boundary is *can-ingest-and-serve-content*,
+  not *can-read-anything-on-the-system*. Its store stays unwritable by anything
+  except the daemon itself (even root writing it is misbehavior); it has no
+  ambient access to private-key material and, handed a path to a private key,
+  must be unable to read it.
+- Owner-socket peer-credential authentication via `triad-runtime`
+  `ConnectionContext` `SO_PEERCRED` rejects on a uid mismatch and **fails
+  closed** for the privileged owner meta tier, as defense in depth complementing
+  the socket file-mode guard.
+
+### Components must prove themselves on the live path
+
+Newly designed components must actually drive the live system end to end — the
+three engines, trait-defined ordering, typestate mail, and origin route are the
+real execution drivers, not dead scaffolding beside an older code path. Verify
+in implementation that every designed component is on the live path. Rolling the
+workspace forward to latest intent completes only when the superseded path is
+removed: wrapping an old path is not migration, compatibility surfaces are
+dropped once superseded, and dead/duplicate/stub repos are archived.
+
+## 0.7 · Terminology and naming canon
+
+Workspace-wide term and spelling canon. Per-repo today-vs-eventual term
+distinctions live in `protocols/active-repositories.md` (§"Today and eventually"
+above); full-English-word naming is canonical in the generated `naming` skill
+packet. This section records only the cross-cutting decisions an agent must
+honor everywhere.
+
+### Component and term spellings
+
+- **criome** spells the authentication component; **criomos** spells the
+  operating system. On-disk path and code-identifier spellings are preserved
+  when cited verbatim.
+- **mentci** is the psyche-facing approval component (repos `mentci-egui`,
+  `mentci-lib`); the earlier "Menchie" spelling was a speech-to-text error and
+  is migrated to mentci.
+- **Persona** is the canonical short name for the engine-manager entity
+  (engine-management is its role): repo `persona` (lowercase), binary
+  `persona-daemon`. "Persona engine" is acceptable for the AI-work part but
+  Persona is preferred; converge older phrasings ("engine-manager daemon") to
+  Persona. Disambiguation suffixes apply only when wrapping a backend
+  (`persona-codex`, `persona-pi`, `persona-claude`). The whole workspace stack
+  is the **Criome stack**.
+- **sema**: speech-to-text may hear *sema* as *sim*; normalize to **sema** before
+  storing verbatim.
+
+### The three-part vocabulary
+
+- **SCHEMA** is the specification part — it specifies both signal and sema, and
+  is the textual representation of the psyche's idea language.
+- **SIGNAL** is the movement (transport) — it carries movement across channels.
+- **SEMA** is the body — data at rest, state — and is the compact data format
+  defined by schema.
+
+This closes the loop between specification, transport, and state.
+
+### "signal" the noun is ambiguous
+
+When the psyche says "signal" (the bare noun), it may mean the rkyv-encoded
+binary signal traveling on a socket or the NOTA-encoded text signal that agents
+read and write; disambiguate when context does not pin the form. The term "nota
+signal" for the text form is *proposed but not yet hardened* into workspace
+vocabulary.
+
+### Version vocabulary
+
+- **NEXT** is the in-progress version being authored — authors always write from
+  next's view.
+- **MAIN** (current/main) is the current published canonical baseline, imported
+  as the comparison point — the deployed production version.
+- **PREVIOUS / LAST** is the prior iteration of any contract, schema, message
+  format, or data shape.
+
+If `main == next` nothing changed and no upgrade path compiles; if `main != next`
+the machinery generates the From-chain from main to next. The shorthand
+**version-pair** vocabulary is current/main (deployed) versus
+proposal/dev/next (new version being introduced).
+
+### Lane vocabulary
+
+- **concept-designer** is an ephemeral occasional invocation, not a persistent
+  named lane.
+- **system-operator** is an operator lane for implementation when the psyche
+  explicitly directs it to work production code — not only a deploy-or-report
+  lane.
+
 ## 1 · What lives here
 
 ```text
@@ -164,6 +368,24 @@ directories are exempt from the file-claim flow. When a lane drains, its
 report directory is deleted (git history and the session transcript are
 the archive) and one row is appended to `protocols/retired-lanes.md`.
 
+### Role pairing and per-role isolation (direction)
+
+Roles pair an advisor and an executor. Designer advises on structure;
+operator executes. Counselor and assistant mirror that pair for the psyche's
+private affairs (personal, business, family, friends logistics): counselor
+advises on structure, assistant executes, and the pair handles private affairs
+by default.
+
+The intended isolation substrate is **role-space**: each agent role gets its own
+sub-workspace that is its own Git repository (designer-space, operator-space,
+poet-space, etc.), each with its own research lane. Write access is gated through
+Git push, gated in turn on the agent's SSH key set when the agent starts, so
+push permissions bind to whichever agent currently holds that role. This is a
+recorded design direction — much of it is not yet implemented.
+
+Bird/Aether maintains her own forked workspace and soul repositories, separate
+from this workspace.
+
 ## 3 · Repos surface
 
 `repos/` is a symlink directory. Each entry points at the canonical
@@ -205,6 +427,10 @@ It does not own:
 
 ## 5 · Constraints
 
+- The `repos/` directory must remain untracked; it is a local symlink index,
+  and tracking it would turn repository coordination into needless churn.
+- The workspace carries a gitignored top-level `private-repos/` directory for
+  private repositories, kept separate from the normal `repos/` symlink index.
 - The Nix store is never a workspace search surface; agents never run
   generic filesystem search against `/nix/store`. Use Nix evaluation
   paths instead.
@@ -239,6 +465,10 @@ It does not own:
 
 - §"Workspace vision and intent" (this file) — the durable home for
   workspace vision and the intent-layer framing.
+- §"Shared component architecture patterns" (this file) — the cross-cutting
+  patterns every component repo follows.
+- §"Terminology and naming canon" (this file) — workspace-wide term and
+  spelling canon.
 - `AGENTS.md` — workspace-specific agent instructions.
 - `orchestrate/AGENTS.md` — discipline-and-lane coordination.
 - `session-lanes` skill packet — the lane mechanism and lifecycle.
