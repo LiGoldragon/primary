@@ -144,17 +144,15 @@ include curated critical modules and dependency-expanded modules, so routine
 role work starts from the packet.
 
 A **discipline** is a permanent identity — skills, authority class,
-persona-mind memory, signing key. It names *what kind of agent this is*.
+mind memory, signing key. It names *what kind of agent this is*.
 A **lane** is one work session named for its intent; it carries a
 role/discipline as metadata (the last token of its orchestrate registry role
 vector, e.g. `[NewLanesDesign Designer]`), owns `orchestrate/<lane>.lock` and
 `reports/<lane>/`, and is created, drained, and retired per session.
-The fixed role-named lanes of the prior model (`second-designer`,
-`cluster-operator`, ordinal and qualifier shapes) are retired *as the
-lane model*; specialized scope is now expressed as the session's intent
-plus specialization tokens ahead of the discipline. Lanes register and
-retire dynamically through the orchestrate daemon (`Register` /
-`Observe Lanes` → `LanesObserved` / `Retire`). The full lane lifecycle —
+Specialized scope is expressed as the session's intent plus specialization
+tokens ahead of the discipline. Lanes register and retire dynamically through
+the orchestrate daemon (`Register` / `Observe Lanes` → `LanesObserved` /
+`Retire`). The full lane lifecycle —
 register, smart-zone, fleet, drain, retire — is canonical in
 the generated `session-lanes` skill packet.
 

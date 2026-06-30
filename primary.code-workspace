@@ -13,8 +13,8 @@
 			"path": "/git/github.com/LiGoldragon/persona"
 		},
 		{
-			"name": "persona-mind",
-			"path": "/git/github.com/LiGoldragon/persona-mind"
+			"name": "mind",
+			"path": "/git/github.com/LiGoldragon/mind"
 		},
 		{
 			"name": "persona-router",
@@ -69,8 +69,8 @@
 			"path": "/git/github.com/LiGoldragon/signal-persona-harness"
 		},
 		{
-			"name": "signal-persona-mind",
-			"path": "/git/github.com/LiGoldragon/signal-persona-mind"
+			"name": "signal-mind",
+			"path": "/git/github.com/LiGoldragon/signal-mind"
 		},
 		{
 			"name": "nexus",

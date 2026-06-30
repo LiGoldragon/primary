@@ -17,7 +17,7 @@ as a shell helper that owns files directly.
 ## Disciplines and lanes
 
 A **discipline** is persistent metadata: it loads the lane's skills, its
-authority class, and its persistent persona identity (persona-mind memory,
+authority class, and its persistent persona identity (mind memory,
 signing key). A discipline is not a directory and not a session. There are
 **nine disciplines**:
 
@@ -32,19 +32,15 @@ signing key). A discipline is not a directory and not a session. There are
 - `counselor` — personal-affairs advisory, paired with assistant
 
 A **lane** is a unique work-*session* identity named for that session's
-intent (e.g. `newLanesDesign`, `schemaWorkAudit`) — not a fixed role name.
+intent (e.g. `newLanesDesign`, `schemaWorkAudit`).
 A lane carries its discipline as metadata; in the orchestrate registry the
 lane's role is a NOTA vector whose **last token is the base discipline**,
 preceding tokens are specializations: `[NewLanesDesign Designer]`,
 `[SchemaWorkAudit Operator]`. The lane is ephemeral and disposable; the
 discipline (and the persona behind it) persists.
 
-The old fixed role-lanes (`operator`, `second-operator`,
-`cluster-operator`, `schema-designer`, …) and ordinal / qualifier lane
-shapes are **retired as the lane model**; the disciplines they named
-survive as discipline metadata. Lanes are now **registered per session**,
-not enumerated in this file. The lane mechanism is canonical in
-`skills/session-lanes.md`.
+Lanes are **registered per session**, not enumerated in this file. The lane
+mechanism is canonical in `skills/session-lanes.md`.
 
 ### Registering and observing lanes
 
@@ -145,10 +141,8 @@ Committing is janitorial and does not belong to a report's creator; the
 multi-lane / impersonal commit is accepted. Full flow: `skills/jj.md`
 §"Commit the whole working copy — never path-scoped".
 
-Intent capture is no longer a file append surface. Recording psyche
-intent goes through the deployed `spirit` CLI per `skills/intent-log.md`
-and `skills/spirit-cli.md`. There is no legacy-file fallback; the
-`intent/*.nota` substrate is retired (its history lives in git).
+Recording psyche intent goes through the deployed `spirit` CLI per
+`skills/intent-log.md` and `skills/spirit-cli.md`.
 
 ### Daemon CLI
 
@@ -171,9 +165,8 @@ startup, the daemon imports existing `orchestrate/*.lock` files if
 `orchestrate.redb` has no claims; after that, lock files are downstream
 projections.
 
-The old argv-compatible `tools/orchestrate claim|release|status` helper is
-retired. Do not extend or rely on it; use the component CLI and its typed NOTA
-records.
+Use the component CLI and its typed NOTA records for claim, release, observe,
+and query work.
 
 ### Lock-file format
 
@@ -313,11 +306,9 @@ meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <la
 orchestrate "(Observe Worktrees)"
 ```
 
-The old `verify-jj` compatibility command belonged to the retired helper. The
-daemon-native replacement surface is the typed worktree registry observed with
-`Observe Worktrees`; repository hygiene that is not yet daemon-modeled should
-be handled by the relevant repo's normal `jj` commands and reports, not by
-keeping the compatibility helper alive.
+The daemon-native verification surface is the typed worktree registry observed
+with `Observe Worktrees`; repository hygiene that is not yet daemon-modeled is
+handled by the relevant repo's normal `jj` commands and reports.
 
 
 Scans the repositories named by `protocols/active-repositories.md`; it does
@@ -344,7 +335,7 @@ the bead points at the file or path.
 
 Typed target:
 
-- Create or update a `signal-persona-mind` item.
+- Create or update a `signal-mind` item.
 - Add a `Blocks`, `DiscoveredFrom`, `References`, or `RelatesTo` edge as
   appropriate.
 - Add notes as append-only mind graph events.
@@ -364,8 +355,8 @@ BEADS command as the next natural action, or switch the workspace to a backend
 that supports concurrent access. Do not create an orchestration lock for
 `.beads/`.
 
-This section describes the legacy helper behavior only. New design work should
-target `signal-persona-mind`; do not add new BEADS integrations.
+This section describes direct BEADS commands only. New design work should
+target `signal-mind`; do not add new BEADS integrations.
 
 Useful direct commands:
 
@@ -376,16 +367,14 @@ bd show <id>
 bd close <id> --reason "<what changed>"
 ```
 
-## Beads are not role-labeled
+## Beads use topic labels
 
-As of 2026-05-19 (per psyche 2026-05-19), beads do
-not carry `role:*` labels. Any agent can pick up any bead based on
-topic affinity rather than a prescribed lane. The earlier
-discipline-pool-via-role-label rule is retired.
+As of 2026-05-19 (per psyche 2026-05-19), any agent can pick up any bead based
+on topic affinity rather than a prescribed lane.
 
-When filing a bead: don't add a `role:*` label. Use **topic labels**
-(`nota`, `persona`, `criome`, `horizon`, etc.) so agents working in
-that topic find the bead via `bd ready` or `bd list --label <topic>`.
+When filing a bead: use **topic labels** (`nota`, `persona`, `criome`,
+`horizon`, etc.) so agents working in that topic find the bead via `bd ready`
+or `bd list --label <topic>`.
 
 When picking up a bead: scan `bd ready` and pick by topic fit and
 priority. Lane assignment is per-task judgment, not pre-labelled.
@@ -402,7 +391,7 @@ whichever lane picked it up.
 
 The mind-graph destination (per "Command-line mind target" above)
 preserves this: typed work items in `mind.redb` route by the lane's
-**discipline** identity (its persistent persona-mind), not by the
+**discipline** identity (its persistent mind), not by the
 ephemeral session-lane name. Several concurrent session lanes in the
 same discipline all write into that one persona's mind.
 
@@ -441,8 +430,9 @@ rewrite the relevant content in a new report inside your own session
 directory rather than editing the original. A continuation or review report
 states explicitly what it supersedes and deletes its predecessor in the same
 commit. Private assistant/counselor report substance goes in
-`private-repos/assistant-reports/` or `private-repos/counselor-reports/` and
-requires the access gate in `skills/privacy.md` before even reading.
+`private-repos/assistant-reports/` or `private-repos/counselor-reports/`; that
+substance stays out of public reports, public Spirit records, public commits,
+and chat per the leak gate in `skills/privacy.md`.
 
 ### Drain and retire
 

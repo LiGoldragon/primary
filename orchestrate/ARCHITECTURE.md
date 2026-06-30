@@ -4,7 +4,7 @@
 
 ## 0 · Current shape
 
-`orchestrate` answers *who has claimed which scope right now* and *who is doing which tracked work*. The production implementation is the `orchestrate` component in `/git/github.com/LiGoldragon/orchestrate`:
+`orchestrate` answers *who has claimed which scope right now* and *who is doing which tracked work*. The production implementation is the `orchestrate` component:
 
 - `orchestrate-daemon` owns durable coordination state in `orchestrate/orchestrate.redb`.
 - `orchestrate` is the ordinary thin CLI. It takes exactly one NOTA request and prints exactly one NOTA reply.
@@ -13,7 +13,7 @@
 - `meta-signal-orchestrate` is the meta-policy contract.
 - `orchestrate/<lane>.lock` files are downstream visibility projections only.
 
-The old `tools/orchestrate` argv-compatible helper and the local `orchestrate-cli/` compatibility crate are retired. New coordination work uses direct NOTA through the component CLI.
+New coordination work uses direct NOTA through the component CLI.
 
 ```mermaid
 flowchart TB
@@ -98,19 +98,12 @@ The CLI is a text edge: it accepts NOTA for humans and sends the typed binary fr
 └── <lane>.lock                 projected runtime state
 ```
 
-## 5 · Retired compatibility surface
+## 5 · Current invocation surface
 
-`tools/orchestrate` and `orchestrate-cli/` were transitional. They preserved the old `claim <role> <scope> -- <reason>` shell grammar while the daemon came online. That compatibility layer is now deprecated and should be removed from active use instead of fixed or extended.
-
-When a caller wants the old command shape, translate it to the contract shape at the call site:
+Callers use the contract shape directly:
 
 ```text
-old: tools/orchestrate claim system-maintainer /path -- reason
-new: orchestrate "(Claim (system-maintainer [(Path /path)] [reason]))"
-
-old: tools/orchestrate release system-maintainer
-new: orchestrate "(Release system-maintainer)"
-
-old: tools/orchestrate status
-new: orchestrate "(Observe Roles)"
+orchestrate "(Claim (system-maintainer [(Path /path)] [reason]))"
+orchestrate "(Release system-maintainer)"
+orchestrate "(Observe Roles)"
 ```

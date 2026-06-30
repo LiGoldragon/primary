@@ -47,8 +47,9 @@ directory. Shared files are claimed narrowly before editing.
 
 ## Hard Boundaries
 
-- `repos/` and `private-repos/` stay untracked. Do not inspect
-  `private-repos/` unless the psyche explicitly authorizes that private scope.
+- `repos/` and `private-repos/` stay untracked. Agents may inspect and edit
+  `private-repos/` freely, like any other untracked repo, with no separate
+  authorization required; the leak gate below still applies to its content.
 - Before editing shared files or repos, claim the exact paths with Orchestrate;
   release when done. If another agent owns the local repo/worktree, work from
   `main` in an isolated feature worktree/branch and file a bead for later
