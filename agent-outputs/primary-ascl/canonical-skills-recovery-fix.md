@@ -60,7 +60,7 @@ Note: primary already had unrelated added agent-output files before this work be
 ## Commit and push status
 
 - `LiGoldragon/skills`: committed and pushed `61f5b4eeda8f474f682a3a05743d1a7453fb65a7` to `main`.
-- `primary`: generated-target commit `a6643323adec139f1ab726ba661a13759aff8aab` created. This report is being committed as a follow-up evidence artifact before pushing primary `main`.
+- `primary`: generated-target commit `a6643323adec139f1ab726ba661a13759aff8aab` created and pushed on `main`; this report is committed as a follow-up evidence artifact on the same pushed branch.
 
 ## Blockers and residual risks
 
@@ -91,7 +91,8 @@ Note: primary already had unrelated added agent-output files before this work be
     "/home/li/primary/.codex/agents/skill-editor.toml",
     "/home/li/primary/.pi/agents/skill-editor.md",
     "/home/li/primary/flake.lock",
-    "/home/li/primary/agent-outputs/primary-ascl/generated-diff-recovery-artifact.md"
+    "/home/li/primary/agent-outputs/primary-ascl/generated-diff-recovery-artifact.md",
+    "/home/li/primary/agent-outputs/primary-ascl/canonical-skills-recovery-fix.md"
   ],
   "testsAddedOrUpdated": [
     "/home/li/primary/repos/skills/tests/generation.rs",
