@@ -54,6 +54,7 @@ directory. Shared files are claimed narrowly before editing.
   release when done. If another agent owns the local repo/worktree, work from
   `main` in an isolated feature worktree/branch and file a bead for later
   discard, partial merge, or full merge.
+- Skills and agent files under .agents/, .claude/, .codex/, and .pi/ are generated from LiGoldragon/skills.
 - On primary, work on `main` directly. Use `jj commit -m '<message>'`,
   `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
 - Every description-taking `jj` command uses an inline message or equivalent
