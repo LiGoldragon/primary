@@ -1,31 +1,34 @@
 ;; Authoritative inventory of LiGoldragon repos.
 ;; Supersedes the repos/ symlink index, RECENT-REPOSITORIES.md, and the
 ;; inventory role of protocols/active-repositories.md. A coverage or doctrine
-;; run reads this file, filters status = Active, and iterates
+;; run reads this file, filters lifecycle = Active, and iterates
 ;; /git/github.com/LiGoldragon/<name> directly; it does not depend on the
 ;; repos/ symlinks for membership. Editing tools resolve <name> to that path.
 ;;
 ;; Mirrors the repos/skills/manifests/*.nota convention: positional NOTA records,
 ;; one (Repo ...) per repo, bare atoms for canonical strings, named enum variants.
 ;;
-;; (Repo <name> <remote> (Family <family>) <status> <doctrine-home> [<flag> ...])
+;; (Repo <name> <remote> (Family <family>) <kind> <lifecycle> <doctrine-home> [<flag> ...])
 ;;   <name>   bare atom; canonical repo name = /git/.../LiGoldragon/<name>
 ;;   <remote> bare atom; github:LiGoldragon/<name>
 ;;   (Family <family>) grouping. signal-* repos are Signal; meta-signal-* repos
 ;;     are MetaSignal; every other repo groups by subsystem or cluster:
 ;;     Nota Schema Sema Persona Cloud DomainCriome Criome Mentci Mirror Lojix
-;;     RepositoryLedger CriomOS Content Tooling Fork.
-;;   <status> named-variant enum:
+;;     RepositoryLedger CriomOS Content Tooling.
+;;   <kind> named-variant enum; what the repo *is*, orthogonal to lifecycle:
+;;     Code                       source code.
+;;     Content                    non-code asset (book, notes, site, config).
+;;     Data                       machine-consumed data set.
+;;   <lifecycle> named-variant enum; whether the repo is *kept*, orthogonal to kind:
 ;;     Active                     kept; wired or foundational.
-;;     Content                    non-code asset repo (book, notes, config, data); kept.
 ;;     (Deprecated <disposition>) psyche-confirmed retirement; carries disposition.
 ;;   <doctrine-home> where durable direction lives (repo-intent):
 ;;     Architecture               has ARCHITECTURE.md.
 ;;     (OtherDoc <path>)          direction still homed in AGENTS.md/README.md/CLAUDE.md.
 ;;     (CodeStub <path>)          direction in a code comment.
 ;;     None                       no canonical direction surface yet (a gap to close).
-;;   flags are facts, distinct from status:
-;;     IsFork IsPrivate BuildTimeConsumed DataRepo
+;;   flags are orthogonal facts, distinct from kind and lifecycle:
+;;     IsFork IsPrivate BuildTimeConsumed
 ;;
 ;; Retirement note: persona-pi, WebPublish, and AnaSeahawk-website are Deprecated
 ;; with disposition "remote archived + local deleted"; the psyche authorized this
@@ -33,152 +36,155 @@
 
 [
   ;; Nota
-  (Repo nota-next github:LiGoldragon/nota-next (Family Nota) Active Architecture [])
-  (Repo nota-config github:LiGoldragon/nota-config (Family Nota) Active Architecture [])
-  (Repo tree-sitter-nota github:LiGoldragon/tree-sitter-nota (Family Nota) Active (OtherDoc README.md) [BuildTimeConsumed])
+  (Repo nota-next github:LiGoldragon/nota-next (Family Nota) Code Active Architecture [])
+  (Repo nota-config github:LiGoldragon/nota-config (Family Nota) Code Active Architecture [])
+  (Repo tree-sitter-nota github:LiGoldragon/tree-sitter-nota (Family Nota) Code Active (OtherDoc README.md) [BuildTimeConsumed])
 
   ;; Schema
-  (Repo schema-next github:LiGoldragon/schema-next (Family Schema) Active Architecture [])
-  (Repo schema-rust-next github:LiGoldragon/schema-rust-next (Family Schema) Active Architecture [])
-  (Repo tree-sitter-schema github:LiGoldragon/tree-sitter-schema (Family Schema) Active (OtherDoc README.md) [BuildTimeConsumed])
+  (Repo schema-next github:LiGoldragon/schema-next (Family Schema) Code Active Architecture [])
+  (Repo schema-rust-next github:LiGoldragon/schema-rust-next (Family Schema) Code Active Architecture [])
+  (Repo tree-sitter-schema github:LiGoldragon/tree-sitter-schema (Family Schema) Code Active (OtherDoc README.md) [BuildTimeConsumed])
 
   ;; Sema
-  (Repo sema github:LiGoldragon/sema (Family Sema) Active Architecture [])
-  (Repo sema-engine github:LiGoldragon/sema-engine (Family Sema) Active Architecture [])
+  (Repo sema github:LiGoldragon/sema (Family Sema) Code Active Architecture [])
+  (Repo sema-engine github:LiGoldragon/sema-engine (Family Sema) Code Active Architecture [])
 
   ;; Signal — ordinary wire contracts and the foundational signal layer
-  (Repo signal github:LiGoldragon/signal (Family Signal) Active Architecture [])
-  (Repo signal-frame github:LiGoldragon/signal-frame (Family Signal) Active Architecture [])
-  (Repo signal-standard github:LiGoldragon/signal-standard (Family Signal) Active Architecture [])
-  (Repo signal-derive github:LiGoldragon/signal-derive (Family Signal) Active Architecture [])
-  (Repo signal-sema github:LiGoldragon/signal-sema (Family Signal) Active Architecture [])
-  (Repo signal-agent github:LiGoldragon/signal-agent (Family Signal) Active Architecture [])
-  (Repo signal-cloud github:LiGoldragon/signal-cloud (Family Signal) Active Architecture [])
-  (Repo signal-criome github:LiGoldragon/signal-criome (Family Signal) Active Architecture [])
-  (Repo signal-domain-criome github:LiGoldragon/signal-domain-criome (Family Signal) Active Architecture [])
-  (Repo signal-forge github:LiGoldragon/signal-forge (Family Signal) Active Architecture [])
-  (Repo signal-harness github:LiGoldragon/signal-harness (Family Signal) Active Architecture [])
-  (Repo signal-introspect github:LiGoldragon/signal-introspect (Family Signal) Active Architecture [])
-  (Repo signal-lojix github:LiGoldragon/signal-lojix (Family Signal) Active Architecture [])
-  (Repo signal-mentci github:LiGoldragon/signal-mentci (Family Signal) Active Architecture [])
-  (Repo signal-mentci-client github:LiGoldragon/signal-mentci-client (Family Signal) Active Architecture [IsPrivate])
-  (Repo signal-message github:LiGoldragon/signal-message (Family Signal) Active Architecture [])
-  (Repo signal-mind github:LiGoldragon/signal-mind (Family Signal) Active Architecture [])
-  (Repo signal-mirror github:LiGoldragon/signal-mirror (Family Signal) Active Architecture [])
-  (Repo signal-orchestrate github:LiGoldragon/signal-orchestrate (Family Signal) Active Architecture [])
-  (Repo signal-persona github:LiGoldragon/signal-persona (Family Signal) Active Architecture [])
-  (Repo signal-repository-ledger github:LiGoldragon/signal-repository-ledger (Family Signal) Active Architecture [])
-  (Repo signal-router github:LiGoldragon/signal-router (Family Signal) Active Architecture [])
-  (Repo signal-spirit github:LiGoldragon/signal-spirit (Family Signal) Active Architecture [])
-  (Repo signal-system github:LiGoldragon/signal-system (Family Signal) Active Architecture [])
-  (Repo signal-terminal github:LiGoldragon/signal-terminal (Family Signal) Active Architecture [])
-  (Repo signal-upgrade github:LiGoldragon/signal-upgrade (Family Signal) Active Architecture [])
-  (Repo signal-version-handover github:LiGoldragon/signal-version-handover (Family Signal) Active Architecture [])
+  (Repo signal github:LiGoldragon/signal (Family Signal) Code Active Architecture [])
+  (Repo signal-frame github:LiGoldragon/signal-frame (Family Signal) Code Active Architecture [])
+  (Repo signal-standard github:LiGoldragon/signal-standard (Family Signal) Code Active Architecture [])
+  (Repo signal-derive github:LiGoldragon/signal-derive (Family Signal) Code Active Architecture [])
+  (Repo signal-sema github:LiGoldragon/signal-sema (Family Signal) Code Active Architecture [])
+  (Repo signal-agent github:LiGoldragon/signal-agent (Family Signal) Code Active Architecture [])
+  (Repo signal-cloud github:LiGoldragon/signal-cloud (Family Signal) Code Active Architecture [])
+  (Repo signal-criome github:LiGoldragon/signal-criome (Family Signal) Code Active Architecture [])
+  (Repo signal-domain-criome github:LiGoldragon/signal-domain-criome (Family Signal) Code Active Architecture [])
+  (Repo signal-forge github:LiGoldragon/signal-forge (Family Signal) Code Active Architecture [])
+  (Repo signal-harness github:LiGoldragon/signal-harness (Family Signal) Code Active Architecture [])
+  (Repo signal-introspect github:LiGoldragon/signal-introspect (Family Signal) Code Active Architecture [])
+  (Repo signal-lojix github:LiGoldragon/signal-lojix (Family Signal) Code Active Architecture [])
+  (Repo signal-listener github:LiGoldragon/signal-listener (Family Signal) Code Active Architecture [])
+  (Repo signal-mentci github:LiGoldragon/signal-mentci (Family Signal) Code Active Architecture [])
+  (Repo signal-mentci-client github:LiGoldragon/signal-mentci-client (Family Signal) Code Active Architecture [IsPrivate])
+  (Repo signal-message github:LiGoldragon/signal-message (Family Signal) Code Active Architecture [])
+  (Repo signal-mind github:LiGoldragon/signal-mind (Family Signal) Code Active Architecture [])
+  (Repo signal-mirror github:LiGoldragon/signal-mirror (Family Signal) Code Active Architecture [])
+  (Repo signal-orchestrate github:LiGoldragon/signal-orchestrate (Family Signal) Code Active Architecture [])
+  (Repo signal-persona github:LiGoldragon/signal-persona (Family Signal) Code Active Architecture [])
+  (Repo signal-repository-ledger github:LiGoldragon/signal-repository-ledger (Family Signal) Code Active Architecture [])
+  (Repo signal-router github:LiGoldragon/signal-router (Family Signal) Code Active Architecture [])
+  (Repo signal-spirit github:LiGoldragon/signal-spirit (Family Signal) Code Active Architecture [])
+  (Repo signal-system github:LiGoldragon/signal-system (Family Signal) Code Active Architecture [])
+  (Repo signal-terminal github:LiGoldragon/signal-terminal (Family Signal) Code Active Architecture [])
+  (Repo signal-upgrade github:LiGoldragon/signal-upgrade (Family Signal) Code Active Architecture [])
+  (Repo signal-version-handover github:LiGoldragon/signal-version-handover (Family Signal) Code Active Architecture [])
 
   ;; MetaSignal — meta policy/authority contracts
-  (Repo meta-signal-agent github:LiGoldragon/meta-signal-agent (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-cloud github:LiGoldragon/meta-signal-cloud (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-criome github:LiGoldragon/meta-signal-criome (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-domain-criome github:LiGoldragon/meta-signal-domain-criome (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-harness github:LiGoldragon/meta-signal-harness (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-introspect github:LiGoldragon/meta-signal-introspect (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-lojix github:LiGoldragon/meta-signal-lojix (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-mentci github:LiGoldragon/meta-signal-mentci (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-mentci-client github:LiGoldragon/meta-signal-mentci-client (Family MetaSignal) Active Architecture [IsPrivate])
-  (Repo meta-signal-message github:LiGoldragon/meta-signal-message (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-mind github:LiGoldragon/meta-signal-mind (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-mirror github:LiGoldragon/meta-signal-mirror (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-orchestrate github:LiGoldragon/meta-signal-orchestrate (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-persona github:LiGoldragon/meta-signal-persona (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-repository-ledger github:LiGoldragon/meta-signal-repository-ledger (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-router github:LiGoldragon/meta-signal-router (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-spirit github:LiGoldragon/meta-signal-spirit (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-system github:LiGoldragon/meta-signal-system (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-terminal github:LiGoldragon/meta-signal-terminal (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-upgrade github:LiGoldragon/meta-signal-upgrade (Family MetaSignal) Active Architecture [])
-  (Repo meta-signal-version-handover github:LiGoldragon/meta-signal-version-handover (Family MetaSignal) Active Architecture [])
+  (Repo meta-signal-agent github:LiGoldragon/meta-signal-agent (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-cloud github:LiGoldragon/meta-signal-cloud (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-criome github:LiGoldragon/meta-signal-criome (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-domain-criome github:LiGoldragon/meta-signal-domain-criome (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-harness github:LiGoldragon/meta-signal-harness (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-introspect github:LiGoldragon/meta-signal-introspect (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-lojix github:LiGoldragon/meta-signal-lojix (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-listener github:LiGoldragon/meta-signal-listener (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-mentci github:LiGoldragon/meta-signal-mentci (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-mentci-client github:LiGoldragon/meta-signal-mentci-client (Family MetaSignal) Code Active Architecture [IsPrivate])
+  (Repo meta-signal-message github:LiGoldragon/meta-signal-message (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-mind github:LiGoldragon/meta-signal-mind (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-mirror github:LiGoldragon/meta-signal-mirror (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-orchestrate github:LiGoldragon/meta-signal-orchestrate (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-persona github:LiGoldragon/meta-signal-persona (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-repository-ledger github:LiGoldragon/meta-signal-repository-ledger (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-router github:LiGoldragon/meta-signal-router (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-spirit github:LiGoldragon/meta-signal-spirit (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-system github:LiGoldragon/meta-signal-system (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-terminal github:LiGoldragon/meta-signal-terminal (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-upgrade github:LiGoldragon/meta-signal-upgrade (Family MetaSignal) Code Active Architecture [])
+  (Repo meta-signal-version-handover github:LiGoldragon/meta-signal-version-handover (Family MetaSignal) Code Active Architecture [])
 
   ;; Persona — core stack daemon components
-  (Repo persona github:LiGoldragon/persona (Family Persona) Active Architecture [])
-  (Repo mind github:LiGoldragon/mind (Family Persona) Active Architecture [])
-  (Repo agent github:LiGoldragon/agent (Family Persona) Active Architecture [])
-  (Repo harness github:LiGoldragon/harness (Family Persona) Active Architecture [])
-  (Repo introspect github:LiGoldragon/introspect (Family Persona) Active Architecture [])
-  (Repo system github:LiGoldragon/system (Family Persona) Active Architecture [])
-  (Repo terminal github:LiGoldragon/terminal (Family Persona) Active Architecture [])
-  (Repo terminal-cell github:LiGoldragon/terminal-cell (Family Persona) Active Architecture [])
-  (Repo orchestrate github:LiGoldragon/orchestrate (Family Persona) Active Architecture [])
-  (Repo router github:LiGoldragon/router (Family Persona) Active Architecture [])
-  (Repo message github:LiGoldragon/message (Family Persona) Active Architecture [])
-  (Repo upgrade github:LiGoldragon/upgrade (Family Persona) Active Architecture [])
-  (Repo spirit github:LiGoldragon/spirit (Family Persona) Active Architecture [])
-  (Repo persona-pi github:LiGoldragon/persona-pi (Family Persona) (Deprecated [|remote archived + local deleted|]) Architecture [])
+  (Repo persona github:LiGoldragon/persona (Family Persona) Code Active Architecture [])
+  (Repo mind github:LiGoldragon/mind (Family Persona) Code Active Architecture [])
+  (Repo agent github:LiGoldragon/agent (Family Persona) Code Active Architecture [])
+  (Repo harness github:LiGoldragon/harness (Family Persona) Code Active Architecture [])
+  (Repo introspect github:LiGoldragon/introspect (Family Persona) Code Active Architecture [])
+  (Repo system github:LiGoldragon/system (Family Persona) Code Active Architecture [])
+  (Repo terminal github:LiGoldragon/terminal (Family Persona) Code Active Architecture [])
+  (Repo terminal-cell github:LiGoldragon/terminal-cell (Family Persona) Code Active Architecture [])
+  (Repo orchestrate github:LiGoldragon/orchestrate (Family Persona) Code Active Architecture [])
+  (Repo router github:LiGoldragon/router (Family Persona) Code Active Architecture [])
+  (Repo message github:LiGoldragon/message (Family Persona) Code Active Architecture [])
+  (Repo listener github:LiGoldragon/listener (Family Persona) Code Active Architecture [])
+  (Repo upgrade github:LiGoldragon/upgrade (Family Persona) Code Active Architecture [])
+  (Repo spirit github:LiGoldragon/spirit (Family Persona) Code Active Architecture [])
+  (Repo persona-spirit github:LiGoldragon/persona-spirit (Family Persona) Code Active Architecture [])
+  (Repo persona-pi github:LiGoldragon/persona-pi (Family Persona) Code (Deprecated [|remote archived + local deleted|]) Architecture [])
 
   ;; Cloud
-  (Repo cloud github:LiGoldragon/cloud (Family Cloud) Active Architecture [])
+  (Repo cloud github:LiGoldragon/cloud (Family Cloud) Code Active Architecture [])
 
   ;; DomainCriome
-  (Repo domain-criome github:LiGoldragon/domain-criome (Family DomainCriome) Active Architecture [])
+  (Repo domain-criome github:LiGoldragon/domain-criome (Family DomainCriome) Code Active Architecture [])
 
   ;; Criome — BLS authentication/attestation daemon
-  (Repo criome github:LiGoldragon/criome (Family Criome) Active Architecture [])
+  (Repo criome github:LiGoldragon/criome (Family Criome) Code Active Architecture [])
 
   ;; Mentci — programmable approval surface
-  (Repo mentci github:LiGoldragon/mentci (Family Mentci) Active Architecture [])
-  (Repo mentci-lib github:LiGoldragon/mentci-lib (Family Mentci) Active Architecture [])
-  (Repo mentci-egui github:LiGoldragon/mentci-egui (Family Mentci) Active Architecture [])
+  (Repo mentci github:LiGoldragon/mentci (Family Mentci) Code Active Architecture [])
+  (Repo mentci-lib github:LiGoldragon/mentci-lib (Family Mentci) Code Active Architecture [])
+  (Repo mentci-egui github:LiGoldragon/mentci-egui (Family Mentci) Code Active Architecture [])
 
   ;; Mirror
-  (Repo mirror github:LiGoldragon/mirror (Family Mirror) Active Architecture [])
+  (Repo mirror github:LiGoldragon/mirror (Family Mirror) Code Active Architecture [])
 
   ;; Lojix — deploy daemon and horizon projection
-  (Repo lojix github:LiGoldragon/lojix (Family Lojix) Active Architecture [])
-  (Repo horizon-rs github:LiGoldragon/horizon-rs (Family Lojix) Active Architecture [])
+  (Repo lojix github:LiGoldragon/lojix (Family Lojix) Code Active Architecture [])
+  (Repo horizon-rs github:LiGoldragon/horizon-rs (Family Lojix) Code Active Architecture [])
 
   ;; RepositoryLedger
-  (Repo repository-ledger github:LiGoldragon/repository-ledger (Family RepositoryLedger) Active Architecture [])
+  (Repo repository-ledger github:LiGoldragon/repository-ledger (Family RepositoryLedger) Code Active Architecture [])
 
   ;; CriomOS — operating-system layer and its config
-  (Repo CriomOS github:LiGoldragon/CriomOS (Family CriomOS) Active Architecture [])
-  (Repo CriomOS-home github:LiGoldragon/CriomOS-home (Family CriomOS) Active Architecture [])
-  (Repo CriomOS-lib github:LiGoldragon/CriomOS-lib (Family CriomOS) Active Architecture [])
-  (Repo CriomOS-pkgs github:LiGoldragon/CriomOS-pkgs (Family CriomOS) Active (OtherDoc AGENTS.md) [])
-  (Repo CriomOS-emacs github:LiGoldragon/CriomOS-emacs (Family CriomOS) Active Architecture [])
-  (Repo CriomOS-test-cluster github:LiGoldragon/CriomOS-test-cluster (Family CriomOS) Active None [])
-  (Repo criomos-horizon-config github:LiGoldragon/criomos-horizon-config (Family CriomOS) Content Architecture [DataRepo])
+  (Repo CriomOS github:LiGoldragon/CriomOS (Family CriomOS) Code Active Architecture [])
+  (Repo CriomOS-home github:LiGoldragon/CriomOS-home (Family CriomOS) Code Active Architecture [])
+  (Repo CriomOS-lib github:LiGoldragon/CriomOS-lib (Family CriomOS) Code Active Architecture [])
+  (Repo CriomOS-pkgs github:LiGoldragon/CriomOS-pkgs (Family CriomOS) Code Active (OtherDoc AGENTS.md) [])
+  (Repo CriomOS-emacs github:LiGoldragon/CriomOS-emacs (Family CriomOS) Code Active Architecture [])
+  (Repo CriomOS-test-cluster github:LiGoldragon/CriomOS-test-cluster (Family CriomOS) Code Active None [])
+  (Repo criomos-horizon-config github:LiGoldragon/criomos-horizon-config (Family CriomOS) Data Active Architecture [])
 
   ;; Tooling — shared build/runtime libraries, CLIs, desktop tools, generator source
-  (Repo rust-build github:LiGoldragon/rust-build (Family Tooling) Active Architecture [])
-  (Repo triad-runtime github:LiGoldragon/triad-runtime (Family Tooling) Active Architecture [])
-  (Repo version-projection github:LiGoldragon/version-projection (Family Tooling) Active Architecture [])
-  (Repo nexus github:LiGoldragon/nexus (Family Tooling) Active Architecture [])
-  (Repo nexus-cli github:LiGoldragon/nexus-cli (Family Tooling) Active Architecture [])
-  (Repo clavifaber github:LiGoldragon/clavifaber (Family Tooling) Active Architecture [])
-  (Repo substack-cli github:LiGoldragon/substack-cli (Family Tooling) Active Architecture [])
-  (Repo brightness-ctl github:LiGoldragon/brightness-ctl (Family Tooling) Active (OtherDoc README.md) [])
-  (Repo hexis github:LiGoldragon/hexis (Family Tooling) Active Architecture [])
-  (Repo chroma github:LiGoldragon/chroma (Family Tooling) Active Architecture [])
-  (Repo chronos github:LiGoldragon/chronos (Family Tooling) Active Architecture [])
-  (Repo whisrs github:LiGoldragon/whisrs (Family Tooling) Active (OtherDoc README.md) [IsFork])
-  (Repo kameo-testing github:LiGoldragon/kameo-testing (Family Tooling) Active Architecture [])
-  (Repo forge github:LiGoldragon/forge (Family Tooling) Active Architecture [])
-  (Repo arca github:LiGoldragon/arca (Family Tooling) Active Architecture [])
-  (Repo skills github:LiGoldragon/skills (Family Tooling) Active Architecture [])
-  (Repo WebPublish github:LiGoldragon/WebPublish (Family Tooling) (Deprecated [|remote archived + local deleted|]) None [])
+  (Repo rust-build github:LiGoldragon/rust-build (Family Tooling) Code Active Architecture [])
+  (Repo triad-runtime github:LiGoldragon/triad-runtime (Family Tooling) Code Active Architecture [])
+  (Repo version-projection github:LiGoldragon/version-projection (Family Tooling) Code Active Architecture [])
+  (Repo nexus github:LiGoldragon/nexus (Family Tooling) Code Active Architecture [])
+  (Repo nexus-cli github:LiGoldragon/nexus-cli (Family Tooling) Code Active Architecture [])
+  (Repo claude-answers github:LiGoldragon/claude-answers (Family Tooling) Code Active Architecture [])
+  (Repo clavifaber github:LiGoldragon/clavifaber (Family Tooling) Code Active Architecture [])
+  (Repo substack-cli github:LiGoldragon/substack-cli (Family Tooling) Code Active Architecture [])
+  (Repo brightness-ctl github:LiGoldragon/brightness-ctl (Family Tooling) Code Active (OtherDoc README.md) [])
+  (Repo hexis github:LiGoldragon/hexis (Family Tooling) Code Active Architecture [])
+  (Repo chroma github:LiGoldragon/chroma (Family Tooling) Code Active Architecture [])
+  (Repo chronos github:LiGoldragon/chronos (Family Tooling) Code Active Architecture [])
+  (Repo whisrs github:LiGoldragon/whisrs (Family Tooling) Code Active (OtherDoc README.md) [IsFork])
+  (Repo kameo-testing github:LiGoldragon/kameo-testing (Family Tooling) Code Active Architecture [])
+  (Repo kameo github:LiGoldragon/kameo (Family Tooling) Code Active (OtherDoc README.md) [IsFork])
+  (Repo forge github:LiGoldragon/forge (Family Tooling) Code Active Architecture [])
+  (Repo arca github:LiGoldragon/arca (Family Tooling) Code Active Architecture [])
+  (Repo skills github:LiGoldragon/skills (Family Tooling) Code Active Architecture [])
+  (Repo WebPublish github:LiGoldragon/WebPublish (Family Tooling) Code (Deprecated [|remote archived + local deleted|]) None [])
 
-  ;; Fork — vendored dependency fork with no other cluster home
-  (Repo kameo github:LiGoldragon/kameo (Family Fork) Active (OtherDoc README.md) [IsFork])
-
-  ;; Content — books, notes, sites, config, and data repos (edge-silence expected)
-  (Repo ArtificialIntelligence github:LiGoldragon/ArtificialIntelligence (Family Content) Content None [])
-  (Repo BookOfGoldragon github:LiGoldragon/BookOfGoldragon (Family Content) Content Architecture [])
-  (Repo BookOfLuna github:LiGoldragon/BookOfLuna (Family Content) Content None [])
-  (Repo TheBookOfSol github:LiGoldragon/TheBookOfSol (Family Content) Content Architecture [])
-  (Repo caraka-samhita github:LiGoldragon/caraka-samhita (Family Content) Content (OtherDoc README.md) [])
-  (Repo goldragon github:LiGoldragon/goldragon (Family Content) Content Architecture [DataRepo])
-  (Repo library github:LiGoldragon/library (Family Content) Content (OtherDoc CLAUDE.md) [])
-  (Repo lore github:LiGoldragon/lore (Family Content) Content Architecture [])
-  (Repo qmkBinaries github:LiGoldragon/qmkBinaries (Family Content) Content None [])
-  (Repo kibord github:LiGoldragon/kibord (Family Content) Content None [])
-  (Repo AnaSeahawk-website github:LiGoldragon/AnaSeahawk-website (Family Content) (Deprecated [|remote archived + local deleted|]) None [IsFork])
+  ;; Content — books, notes, sites, and data assets (edge-silence expected)
+  (Repo ArtificialIntelligence github:LiGoldragon/ArtificialIntelligence (Family Content) Content Active None [])
+  (Repo BookOfGoldragon github:LiGoldragon/BookOfGoldragon (Family Content) Content Active Architecture [])
+  (Repo BookOfLuna github:LiGoldragon/BookOfLuna (Family Content) Content Active None [])
+  (Repo TheBookOfSol github:LiGoldragon/TheBookOfSol (Family Content) Content Active Architecture [])
+  (Repo caraka-samhita github:LiGoldragon/caraka-samhita (Family Content) Content Active (OtherDoc README.md) [])
+  (Repo goldragon github:LiGoldragon/goldragon (Family Content) Data Active Architecture [])
+  (Repo library github:LiGoldragon/library (Family Content) Content Active (OtherDoc CLAUDE.md) [])
+  (Repo lore github:LiGoldragon/lore (Family Content) Content Active Architecture [])
+  (Repo qmkBinaries github:LiGoldragon/qmkBinaries (Family Content) Content Active None [])
+  (Repo kibord github:LiGoldragon/kibord (Family Content) Content Active None [])
+  (Repo AnaSeahawk-website github:LiGoldragon/AnaSeahawk-website (Family Content) Content (Deprecated [|remote archived + local deleted|]) None [IsFork])
 ]

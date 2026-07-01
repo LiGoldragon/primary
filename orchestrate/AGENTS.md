@@ -311,12 +311,14 @@ with `Observe Worktrees`; repository hygiene that is not yet daemon-modeled is
 handled by the relevant repo's normal `jj` commands and reports.
 
 
-Scans the repositories named by `protocols/active-repositories.md`; it does
-not crawl the filesystem. For each tracked repository, it counts local
-`push-*` bookmarks, flags bookmarks already merged to `main` as delete
-candidates, flags unmerged bookmarks older than seven days as
-rebase-or-abandon candidates, and names local-only unmerged bookmarks that
-would block `release` for a lane claiming that repository.
+Reads `protocols/repos-manifest.nota`, selects the records whose `lifecycle`
+is `Active`, and iterates those repositories directly; it does not crawl the
+filesystem, and it does not scope to the curated `active-repositories.md`
+attention map (a subset that would reintroduce partial coverage). For each
+such repository, it counts local `push-*` bookmarks, flags bookmarks already
+merged to `main` as delete candidates, flags unmerged bookmarks older than
+seven days as rebase-or-abandon candidates, and names local-only unmerged
+bookmarks that would block `release` for a lane claiming that repository.
 
 ## Blocked Work
 
