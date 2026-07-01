@@ -1,15 +1,19 @@
 # Active Repositories
 
-This file is the current attention map. It is deliberately smaller
-than `RECENT-REPOSITORIES.md`.
+The authoritative inventory of LiGoldragon repos — what exists and each repo's
+status, family, doctrine-home, and fact-flags — is `protocols/repos-manifest.nota`.
+That manifest is the source of truth for repo membership and active/deprecate
+status; this file is not an inventory and may lag it.
 
-`RECENT-REPOSITORIES.md` is a checkout index. This file answers a
-different question: which repositories are active enough that agents
-should read their current `ARCHITECTURE.md`, `AGENTS.md`, and
-`skills.md` before reshaping the Persona stack.
+This file is the current attention map and per-repo role narrative: which
+repositories are active enough that agents should read their current
+`ARCHITECTURE.md`, `AGENTS.md`, and `skills.md` before reshaping the Persona
+stack, and the today-vs-eventual scope distinctions the workspace `ARCHITECTURE.md`
+cites. Where a row here disagrees with the manifest on membership or status, the
+manifest wins.
 
-Update this file when the work focus changes. Do not use it as a
-historical archive.
+Update this file when the work focus changes. Do not use it as a historical
+archive.
 
 ## Current Core Stack
 

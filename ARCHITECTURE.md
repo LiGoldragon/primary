@@ -323,7 +323,8 @@ proposal/dev/next (new version being introduced).
 ├── CLAUDE.md              Claude-flavored shim → AGENTS.md
 ├── ARCHITECTURE.md        this file
 ├── protocols/
-│   ├── active-repositories.md   current active repo map
+│   ├── repos-manifest.nota      authoritative repos inventory (NOTA)
+│   ├── active-repositories.md   active-repo attention map + role narrative
 │   └── retired-lanes.md         append-only retired-lane index
 ├── .agents/skills/        generated workspace skill packets
 ├── .codex/agents/         generated Codex role packets
@@ -333,7 +334,7 @@ proposal/dev/next (new version being introduced).
 ├── reports/<lane>/        session-lane report directories (drain at close)
 ├── repos/                 symlink index to /git checkouts
 ├── orchestrate/           coordination protocol, daemon CLI, per-lane lock projections
-├── RECENT-REPOSITORIES.md broad recent checkout index + cutoff
+├── RECENT-REPOSITORIES.md superseded stub → protocols/repos-manifest.nota
 └── primary.code-workspace VS Code workspace marker
 ```
 
@@ -388,11 +389,21 @@ from this workspace.
 
 ## 3 · Repos surface
 
-`repos/` is a symlink directory. Each entry points at the canonical
-checkout under `/git/github.com/LiGoldragon/<repo>/`.
-`protocols/active-repositories.md` lists the currently active set;
-`RECENT-REPOSITORIES.md` is the broader recent checkout index with its
-own cutoff rule.
+`protocols/repos-manifest.nota` is the authoritative inventory of LiGoldragon
+repos: a NOTA manifest recording, per repo, its name, remote, family, status
+(`Active` / `Content` / `Deprecated`), doctrine-home, and fact-flags (`IsFork` /
+`IsPrivate` / `BuildTimeConsumed` / `DataRepo`). It is the single source of truth
+for what repos exist and their status, and it supersedes the inventory role of
+both `RECENT-REPOSITORIES.md` (now a superseded stub) and
+`protocols/active-repositories.md` (retained as the active-repo attention map and
+per-repo role narrative). A coverage or doctrine run reads the manifest, filters
+`status = Active`, and iterates `/git/github.com/LiGoldragon/<name>` directly —
+membership no longer depends on which `repos/` symlinks happen to exist.
+
+`repos/` is a symlink directory. Each entry points at the canonical checkout under
+`/git/github.com/LiGoldragon/<repo>/`. It remains a convenience path surface (for
+example `repos/lore/AGENTS.md`, `repos/skills/`) and is no longer the coverage
+iteration surface.
 
 Components ship from those repos. primary itself ships no code; it is
 the coordination surface that holds the rules under which the code is
@@ -405,8 +416,9 @@ This workspace owns:
 - Workspace vision and the durable intent framing (this file,
   §"Workspace vision and intent"), anchored to the Spirit store.
 - Discipline and lane discipline (`AGENTS.md`, `CLAUDE.md`).
-- The coordination protocol (`orchestrate/AGENTS.md`) and the
-  active-repo map (`protocols/active-repositories.md`).
+- The coordination protocol (`orchestrate/AGENTS.md`), the authoritative repos
+  inventory (`protocols/repos-manifest.nota`), and the active-repo attention map
+  (`protocols/active-repositories.md`).
 - Generated workspace skill packets (`.agents/skills/<name>/SKILL.md` and
   harness-specific peers).
 - Session-lane report directories (`reports/<lane>/`) and the
