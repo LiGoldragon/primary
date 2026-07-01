@@ -209,6 +209,12 @@ caller threading it).
   the text form where the idea language is expressed and authored. The
   schema-derived stack uses separate repos for `nota-next`, `schema-next`, and
   `schema-rust-next` rather than one combined repo.
+- **Canonical NOTA machinery only.** Components do not implement custom NOTA
+  parsers, encoders, decoders, or hand-decoded command shapes when canonical
+  NOTA schema, generated codec, or contract machinery can express the shape.
+  NOTA itself is the allowed text data format for authored and projection
+  surfaces; the bad pattern is leaking application-specific parsing or malformed
+  command structure through NOTA instead of fixing the schema or contract.
 - **Fully-qualified symbol path is universal identity.** The
   fully-qualified-symbol-path is the workspace's universal machine-readable
   symbol identity, surfaced through a text form. Schema-emitted Rust types and
