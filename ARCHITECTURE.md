@@ -1,9 +1,9 @@
 # primary — architecture
 
 *The coordination workspace. It owns discipline, protocols, skills,
-reports, and the symlink index to active code repos. It holds no
+reports, and the authoritative inventory of active code repos. It holds no
 shipping software; everything that ships lives in a repo under
-`repos/`.*
+`/git/github.com/LiGoldragon/`.*
 
 > Workspace, not component. The shapes below describe how agents
 > share a working surface — claim flow, lane ownership, document
@@ -19,11 +19,11 @@ is one work session named for its intent (`newLanesDesign`,
 and report directory, and drains and retires at session close. The lane
 mechanism is canonical in the generated `session-lanes` skill packet. Active
 code lives in
-`/git/github.com/LiGoldragon/` checkouts that primary surfaces via the
-`repos/` symlink index. Workspace vision and the durable intent framing
+`/git/github.com/LiGoldragon/` checkouts, inventoried by
+`protocols/repos-manifest.nota`. Workspace vision and the durable intent framing
 live in this file (§"Workspace vision and intent"); the raw psyche-statement
 log lives in the deployed Spirit store. Cross-workspace agent discipline
-lives in `repos/lore/AGENTS.md`.
+lives in `/git/github.com/LiGoldragon/lore/AGENTS.md`.
 
 The workspace is the apex of the agent-discipline graph: the Spirit store
 (raw psyche statements) and this file's durable vision/intent framing,
@@ -332,7 +332,7 @@ proposal/dev/next (new version being introduced).
 ├── .claude/agents/        generated Claude role packets
 ├── skills/                generated inventory files
 ├── reports/<lane>/        session-lane report directories (drain at close)
-├── repos/                 symlink index to /git checkouts
+├── repos/                 residual local checkouts (index retired; see §3)
 ├── orchestrate/           coordination protocol, daemon CLI, per-lane lock projections
 ├── RECENT-REPOSITORIES.md superseded stub → protocols/repos-manifest.nota
 └── primary.code-workspace VS Code workspace marker
@@ -400,10 +400,12 @@ per-repo role narrative). A coverage or doctrine run reads the manifest, filters
 `status = Active`, and iterates `/git/github.com/LiGoldragon/<name>` directly —
 membership no longer depends on which `repos/` symlinks happen to exist.
 
-`repos/` is a symlink directory. Each entry points at the canonical checkout under
-`/git/github.com/LiGoldragon/<repo>/`. It remains a convenience path surface (for
-example `repos/lore/AGENTS.md`, `repos/skills/`) and is no longer the coverage
-iteration surface.
+The `repos/` symlink index has been retired. Agents reference canonical
+checkouts at `/git/github.com/LiGoldragon/<repo>/` directly (for example
+`/git/github.com/LiGoldragon/lore/AGENTS.md`); membership and status come from
+the manifest. `repos/` now holds only residual local working checkouts and a few
+convenience symlinks pending migration to their canonical `/git` homes; it is
+neither the repo inventory nor the coverage or reference surface.
 
 Components ship from those repos. primary itself ships no code; it is
 the coordination surface that holds the rules under which the code is
@@ -423,7 +425,6 @@ This workspace owns:
   harness-specific peers).
 - Session-lane report directories (`reports/<lane>/`) and the
   retired-lane index (`protocols/retired-lanes.md`).
-- The `repos/` symlink index.
 - Per-lane coordination state (`orchestrate/<lane>.lock`, daemon-owned).
 
 It does not own:
@@ -432,17 +433,18 @@ It does not own:
 - Per-repo discipline (`AGENTS.md`, `ARCHITECTURE.md`, `skills.md`
   inside each repo).
 - The canonical cross-workspace agent contract (lives in
-  `repos/lore/AGENTS.md`).
+  `/git/github.com/LiGoldragon/lore/AGENTS.md`).
 - Persistent agent memory beyond workspace files. Harness-private state is not
   a default memory substrate; Claude auto-memory is allowed only through an
   explicit opt-in launch path.
 
 ## 5 · Constraints
 
-- The `repos/` directory must remain untracked; it is a local symlink index,
-  and tracking it would turn repository coordination into needless churn.
+- The `repos/` directory must remain untracked; it holds local repository
+  checkouts and convenience symlinks, and tracking it would turn repository
+  coordination into needless churn.
 - The workspace carries a gitignored top-level `private-repos/` directory for
-  private repositories, kept separate from the normal `repos/` symlink index.
+  private repositories, kept separate from the `repos/` local checkout directory.
 - The Nix store is never a workspace search surface; agents never run
   generic filesystem search against `/nix/store`. Use Nix evaluation
   paths instead.
@@ -485,6 +487,6 @@ It does not own:
 - `orchestrate/AGENTS.md` — discipline-and-lane coordination.
 - `session-lanes` skill packet — the lane mechanism and lifecycle.
 - `protocols/active-repositories.md` — current active repo set.
-- `repos/lore/AGENTS.md` — the canonical agent-discipline repo
-  this workspace points at.
+- `/git/github.com/LiGoldragon/lore/AGENTS.md` — the canonical agent-discipline
+  repo this workspace points at.
 - `architecture-editor` skill packet — the rules this file follows.

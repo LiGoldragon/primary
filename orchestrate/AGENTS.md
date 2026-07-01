@@ -236,9 +236,9 @@ The daemon performs the required work in one call:
 4. Regenerates `orchestrate/<lane>.lock` projections from daemon state.
 5. Returns `(ClaimAcceptance ...)` or `(ClaimRejection ...)` as NOTA.
 
-Use absolute paths where possible. For linked repositories under `repos/`,
-claim the real repository path under `/git/...`, not only the symlink path. A
-whole repository may be claimed by listing its repository root path.
+Use absolute paths where possible. Claim a repository at its canonical path
+under `/git/github.com/LiGoldragon/<name>`. A whole repository may be claimed by
+listing its repository root path.
 
 ### When to use a task lock
 
