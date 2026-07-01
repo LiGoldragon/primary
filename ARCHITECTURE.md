@@ -270,7 +270,7 @@ honor everywhere.
   `persona-daemon`. "Persona engine" is acceptable for the AI-work part but
   Persona is preferred; converge older phrasings ("engine-manager daemon") to
   Persona. Disambiguation suffixes apply only when wrapping a backend
-  (`persona-codex`, `persona-pi`, `persona-claude`). The whole workspace stack
+  (`persona-codex`, `persona-gemini`, `persona-claude`). The whole workspace stack
   is the **Criome stack**.
 - **sema**: speech-to-text may hear *sema* as *sim*; normalize to **sema** before
   storing verbatim.
