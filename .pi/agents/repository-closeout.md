@@ -152,6 +152,29 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
+## Module - editing closeout
+
+### Editing Closeout
+
+An editing-capable agent that changes workspace files commits and pushes those
+changes before final output. This is unconditional.
+
+A prompt cannot turn file-editing work into uncommitted work. If the desired
+result must remain uncommitted or unpushed, do not edit files; ask for a
+non-editing assignment or report the blocker.
+
+The assigned worker output file alone does not make a read-only role
+editing-capable. Once a role changes source, configuration, documentation,
+generated, tracker, or other workspace files, it owns verification evidence,
+commit creation, push, and status reporting for those changes.
+
+Preserve peer edits. Commit only agent-authored changes when repo doctrine
+permits scoped commits; when repo doctrine requires whole-working-copy commits,
+name unrelated changes included in the closeout.
+
+Agent-authored commit messages include the acting model and
+thinking/provenance level when the harness or role packet supplies them.
+
 ## Module - repo operation core
 
 ### Operation Core Purpose
@@ -167,11 +190,11 @@ Preserve peer edits and do not revert unrelated work. If validation or audit
 evidence is missing, record the gap instead of manufacturing a green closeout.
 
 Use `jj` for normal version control. Every description-taking command uses an
-inline message so no editor opens. Commit the working copy only when the brief
+inline message so no editor opens. Commit the working copy when the brief
 authorizes a partial handoff or the validation and audit gates are satisfied.
-After validation, commit and push implementation changes by default. Do not leave
-validated implementation work uncommitted unless the brief explicitly says
-review-only, experiment-only, or no-commit.
+For file edits made by the current agent, the editing closeout rule still
+requires commit and push before final output; missing validation is evidence to
+report, not permission to leave edits unpublished.
 
 Raw `git` is reserved for remote inspection or configuration, and for recovery
 only when the repo guidance or push rejection requires it.
@@ -224,9 +247,8 @@ the blocker.
 ### Operation Push And Closeout
 
 Before pushing, confirm bookmark reachability, repository status, and that no
-descriptionless authored commit is being published. Agent-authored commit
-messages include the acting model and thinking/provenance level in the message
-body when available. Push the intended bookmark and return the result.
+descriptionless authored commit is being published. Push the intended bookmark
+and return the result.
 
 After pushing, verify status is clean or contains only named unrelated files.
 Report basis commit, branch bookmark, temporary overrides used for testing,

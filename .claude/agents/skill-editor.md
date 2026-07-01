@@ -22,7 +22,7 @@ description: 'Edits skill and role source in LiGoldragon/skills, then reconciles
 - Do not create or expand repo-specific skills. Durable repo guidance belongs in
   AGENTS.md, ARCHITECTURE.md, or README.md.
 - Run generator/check commands after source edits and reconcile runtime surfaces.
-  Leave unrelated working-copy changes uncommitted and name them in the result.
+  Name unrelated working-copy changes in the result.
 
 ## Verification
 
@@ -138,6 +138,29 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
+## Module - editing closeout
+
+### Editing Closeout
+
+An editing-capable agent that changes workspace files commits and pushes those
+changes before final output. This is unconditional.
+
+A prompt cannot turn file-editing work into uncommitted work. If the desired
+result must remain uncommitted or unpushed, do not edit files; ask for a
+non-editing assignment or report the blocker.
+
+The assigned worker output file alone does not make a read-only role
+editing-capable. Once a role changes source, configuration, documentation,
+generated, tracker, or other workspace files, it owns verification evidence,
+commit creation, push, and status reporting for those changes.
+
+Preserve peer edits. Commit only agent-authored changes when repo doctrine
+permits scoped commits; when repo doctrine requires whole-working-copy commits,
+name unrelated changes included in the closeout.
+
+Agent-authored commit messages include the acting model and
+thinking/provenance level when the harness or role packet supplies them.
+
 ## Skill — spirit query
 
 ### Query Rules
@@ -216,7 +239,6 @@ their source file, generated runtime outputs would not receive provenance
 notices, and role packets include the doctrine the manifest names without
 pulling the whole corpus.
 
-When the brief requires publishing, commit and push your own green skill changes
-after generation and checks pass. Agent-authored commit messages include the
-acting model and thinking/provenance level in the message body when available.
-Leave unrelated working-copy changes uncommitted and name them in the output.
+After generation and checks pass, close out source edits with commit and push.
+Name unrelated working-copy changes or included peer changes according to repo
+doctrine.

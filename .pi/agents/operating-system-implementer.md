@@ -134,6 +134,29 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
+## Module - editing closeout
+
+### Editing Closeout
+
+An editing-capable agent that changes workspace files commits and pushes those
+changes before final output. This is unconditional.
+
+A prompt cannot turn file-editing work into uncommitted work. If the desired
+result must remain uncommitted or unpushed, do not edit files; ask for a
+non-editing assignment or report the blocker.
+
+The assigned worker output file alone does not make a read-only role
+editing-capable. Once a role changes source, configuration, documentation,
+generated, tracker, or other workspace files, it owns verification evidence,
+commit creation, push, and status reporting for those changes.
+
+Preserve peer edits. Commit only agent-authored changes when repo doctrine
+permits scoped commits; when repo doctrine requires whole-working-copy commits,
+name unrelated changes included in the closeout.
+
+Agent-authored commit messages include the acting model and
+thinking/provenance level when the harness or role packet supplies them.
+
 ## Skill — spirit query
 
 ### Query Rules
@@ -212,16 +235,7 @@ durable test evidence is owned by Nix when the repo exposes it: flake checks,
 named check derivations, or named stateful runners. Bare language test commands
 are inner-loop evidence unless the repo says otherwise.
 
-### Implementation Closeout
-
-After validation, commit and push implementation changes by default. Do not
-leave validated implementation work uncommitted unless the brief explicitly says
-review-only, experiment-only, or no-commit.
-
-Agent-authored commit messages include the acting model and
-thinking/provenance level in the message body when that information is available
-from the harness or role packet. Leave unrelated working-copy changes uncommitted
-and name them in the output.
+### Implementation Dependency Portability
 
 If the change creates or consumes a producer dependency, make that dependency
 portable before closeout. If portable closeout is not possible, report it as a
@@ -282,9 +296,9 @@ Use this doctrine for operating-system and environment work that touches CriomOS
 
 Operate from pushed, reproducible inputs. Treat CriomOS as the system source identity and criomos-home as the home/environment source identity. Use pinned flake revisions for effect-bearing deploys when branch resolution or cache freshness is uncertain.
 
-Name the target cluster, node, system or home kind, action or mode, builder choice, rollback expectation, and post-activation evidence before changing a host.
+Before changing a host, name the target cluster, node, artifact kind (`CompleteHost`, `BaseHost`, or `UserEnvironment`), requested deploy action, builder choice, rollback expectation, and post-activation evidence.
 
-Use the current `lojix` read interface and privileged `meta-lojix` deploy interface.
+Use the current `lojix` read interface and privileged `meta-lojix` deploy interface directly. Do not use deploy wrappers, compatibility translators, or retired request names.
 
 ### Lojix interface
 
@@ -294,28 +308,42 @@ Read current generations:
 lojix "(Query (ByNode (<cluster> <node> None)))"
 ```
 
-Submit a system deploy from a CriomOS flake revision:
+Submit a complete host deploy from a CriomOS flake revision:
 
 ```sh
-meta-lojix "(Deploy (System (<cluster> <node> FullOs <proposal-source> <criomos-flake-ref> <action> <builder> [] None)))"
+meta-lojix "(Deploy (Host (<cluster> <node> CompleteHost <proposal-source> <criomos-flake-ref> <host-action> <builder> [] None)))"
 ```
 
-Submit a home/environment deploy from a criomos-home input through the selected CriomOS flake revision:
+Submit a base host deploy from a CriomOS flake revision when the host closure intentionally omits embedded user environment materialization and broad all-firmware materialization:
 
 ```sh
-meta-lojix "(Deploy (Home (<cluster> <node> <user> <proposal-source> <criomos-flake-ref> <mode> <builder> [])))"
+meta-lojix "(Deploy (Host (<cluster> <node> BaseHost <proposal-source> <criomos-flake-ref> <host-action> <builder> [] None)))"
 ```
 
-Use `FullOs` for normal live CriomOS desktop deploys. `OsOnly` omits home and broad firmware materialization; use it only when that omission is intended and safe. System actions are `Eval`, `Build`, `Boot`, `Switch`, `Test`, and `BootOnce`. Home modes are `Build`, `Profile`, and `Activate`. A builder is `None` or `(Some <builder-node>)`.
+Submit a user-environment deploy from a criomos-home input through the selected CriomOS flake revision:
 
-`meta-lojix` returns when the daemon accepts a request. A `(Deployed ...)` reply does not prove build, copy, activation, or profile success.
+```sh
+meta-lojix "(Deploy (UserEnvironment (<cluster> <node> <user> <proposal-source> <criomos-flake-ref> <user-environment-action> <builder> [])))"
+```
+
+A builder is `None` or `(Some <builder-node>)`. Extra substituters are explicit typed records in the request; there is no host-label shorthand.
+
+`meta-lojix` returns when the daemon accepts a request. A `DeployAccepted DeployHandle` reply is admission evidence only; it does not prove build, copy, activation, or profile success.
 
 ### Activation checks
 
-After submit, query the node until the expected kind and closure become current or a rejection/failure is visible:
+After submit, query the node until the expected artifact and closure become current or a rejection/failure is visible:
 
 ```sh
 lojix "(Query (ByNode (<cluster> <node> None)))"
 ```
 
-For `Boot`, verify the boot profile separately from the live system. For `Switch`, verify activation and task-specific systemd or user units. For home activation, verify the target user's profile and live session state; reboot persistence still depends on a system generation that pins the same home input.
+For boot-profile host actions, verify the boot profile separately from the live system. For live host activation, verify activation and task-specific systemd or user units. For user-environment activation, verify the target user's profile and live session state; reboot persistence still depends on a system generation that pins the same home input.
+
+Niri configuration reload is an explicit operator procedure after a successful user-environment activation when the task requires live compositor config refresh:
+
+```sh
+niri msg action load-config-file
+```
+
+Do not hide Niri reload inside deploy tooling.

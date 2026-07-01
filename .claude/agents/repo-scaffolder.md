@@ -149,6 +149,29 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
+## Module - editing closeout
+
+### Editing Closeout
+
+An editing-capable agent that changes workspace files commits and pushes those
+changes before final output. This is unconditional.
+
+A prompt cannot turn file-editing work into uncommitted work. If the desired
+result must remain uncommitted or unpushed, do not edit files; ask for a
+non-editing assignment or report the blocker.
+
+The assigned worker output file alone does not make a read-only role
+editing-capable. Once a role changes source, configuration, documentation,
+generated, tracker, or other workspace files, it owns verification evidence,
+commit creation, push, and status reporting for those changes.
+
+Preserve peer edits. Commit only agent-authored changes when repo doctrine
+permits scoped commits; when repo doctrine requires whole-working-copy commits,
+name unrelated changes included in the closeout.
+
+Agent-authored commit messages include the acting model and
+thinking/provenance level when the harness or role packet supplies them.
+
 ## Skill — spirit query
 
 ### Query Rules
@@ -272,16 +295,7 @@ durable test evidence is owned by Nix when the repo exposes it: flake checks,
 named check derivations, or named stateful runners. Bare language test commands
 are inner-loop evidence unless the repo says otherwise.
 
-### Implementation Closeout
-
-After validation, commit and push implementation changes by default. Do not
-leave validated implementation work uncommitted unless the brief explicitly says
-review-only, experiment-only, or no-commit.
-
-Agent-authored commit messages include the acting model and
-thinking/provenance level in the message body when that information is available
-from the harness or role packet. Leave unrelated working-copy changes uncommitted
-and name them in the output.
+### Implementation Dependency Portability
 
 If the change creates or consumes a producer dependency, make that dependency
 portable before closeout. If portable closeout is not possible, report it as a
