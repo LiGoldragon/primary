@@ -1,93 +1,169 @@
 # Rust Auditor Review
 
-Task: independent audit of Carver's completed Mind usability implementation across `signal-mind` and `mind`.
+Task: independent audit of Carson's Mind-family accepted-knowledge identity
+correction.
 
 Scope:
 
-- `signal-mind` commit `12c9e94edd1d42566bbda9806c8820ee75045c3d`
-- `mind` commit `54142da6fe84de754f90f7b4d63f4be5d0831f37`
-- Intended behavior: Mind stores accepted non-intent knowledge; Spirit remains for psyche intent; AI judges semantic acceptance; deterministic Rust owns typed structure, routing, verdict parsing/application, storage, and query; `Accept` carries no substitute accepted record; accepted submissions materialize the submitted `KnowledgeCandidate`; old substitute accepted-draft payloads and malformed verdicts store nothing.
+- `signal-mind` commit `095925c84fe349962d821e900efecaa7ca3ea077`
+  plus follow-up `b8c5da96d8ead413287eb407cd7fda55919f5fd5`.
+- `mind` commit `4b3b28c2f828198625e658bca496a3aeb7c31c51`.
+- `primary` evidence commit `3e517695c1f88e0bc0460019bef8bed6c60e843f`,
+  report `agent-outputs/MindUsability/GeneralCodeImplementer-Evidence.md`.
+- Intended correction: remove caller-supplied accepted-knowledge identity from
+  submit/write paths; remove user-facing `Keyed`, `Unkeyed`, `Candidate`, and
+  `GetByIdentity`; mint a short Mind identity only after acceptance; return the
+  identity in `Accepted`; allow `Get(identity)` to retrieve the record; store
+  nothing for rejected or malformed verdicts; keep the change in the Mind family
+  and avoid custom NOTA parsing/projection as the solution.
 
 Intent grounding:
 
-- Spirit `PublicTextSearch [Mind knowledge Spirit intent accepted knowledge]` observed records `qjrf`, `gni3`, and `izsf`.
-- Relevant conclusion: information/belief is not Spirit intent, and agent-authored material is not psyche-authorized intent. That supports the reviewed boundary: accepted knowledge belongs in Mind, while Spirit remains the psyche-intent layer.
-
-Files consulted:
-
-- `/git/github.com/LiGoldragon/signal-mind/ARCHITECTURE.md`
-- `/git/github.com/LiGoldragon/signal-mind/Cargo.toml`
-- `/git/github.com/LiGoldragon/signal-mind/schema/signal-mind.concept.schema`
-- `/git/github.com/LiGoldragon/signal-mind/src/knowledge.rs`
-- `/git/github.com/LiGoldragon/signal-mind/src/lib.rs`
-- `/git/github.com/LiGoldragon/signal-mind/tests/round_trip.rs`
-- `/git/github.com/LiGoldragon/signal-mind/tests/schema_drift.rs`
-- `/git/github.com/LiGoldragon/mind/ARCHITECTURE.md`
-- `/git/github.com/LiGoldragon/mind/Cargo.toml`
-- `/git/github.com/LiGoldragon/mind/src/knowledge.rs`
-- `/git/github.com/LiGoldragon/mind/src/tables.rs`
-- `/git/github.com/LiGoldragon/mind/src/actors/dispatch.rs`
-- `/git/github.com/LiGoldragon/mind/src/actors/domain.rs`
-- `/git/github.com/LiGoldragon/mind/src/actors/view.rs`
-- `/git/github.com/LiGoldragon/mind/src/actors/store/graph.rs`
-- `/git/github.com/LiGoldragon/mind/src/actors/store/kernel.rs`
-- `/git/github.com/LiGoldragon/mind/tests/actor_topology.rs`
-- `/git/github.com/LiGoldragon/nota-next/src/codec.rs`
+- Spirit query: `PublicTextSearch [Mind accepted knowledge identity]`.
+- Result: `(Error [no matching record])`, treated as negative evidence rather
+  than a tool failure. This audit uses the supplied correction brief as the
+  authority.
 
 ## Findings
 
 No defects found in the audited implementation.
 
-The specific prior bug is addressed at the contract and application boundaries:
+The public `signal-mind` contract removes caller-supplied identity from the
+write path. `signal-mind/src/knowledge.rs:56` defines
+`KnowledgeSubmission` as only `subject` and `statement`, and
+`signal-mind/src/lib.rs:1275` wires public `Submit(KnowledgeSubmission)`.
+`KnowledgeIdentity` remains a typed value in `signal-mind/src/knowledge.rs:18`,
+but the only public request root using it is `Get(KnowledgeIdentity)` at
+`signal-mind/src/lib.rs:1276`.
 
-- `signal-mind/src/knowledge.rs:468` defines `KnowledgeJudgeVerdict` as `Accept` or `Reject(KnowledgeRejection)`, so `Accept` no longer carries replacement records.
-- `signal-mind/schema/signal-mind.concept.schema:190` mirrors the same schema-first verdict shape: `KnowledgeJudgeVerdict [Accept (Reject KnowledgeRejection)]`.
-- `mind/src/knowledge.rs:403` applies `KnowledgeJudgeVerdict::Accept` by calling `apply_acceptance()` over `self.candidate`; there is no path that reads an accepted draft payload from the judge.
-- `mind/src/knowledge.rs:490` materializes the submitted `KnowledgeCandidate` into `AcceptedKnowledge`, and `mind/src/knowledge.rs:522` persists only those materialized records through `MindTables::assert_accepted_knowledge`.
-- `mind/src/knowledge.rs:165` parses the AI completion as `KnowledgeJudgeVerdict`; malformed or old accepted-draft payloads become a `Reject(MeaningUnclear)` via `unavailable_verdict()` at `mind/src/knowledge.rs:174`.
-- `nota-next/src/codec.rs:170` requires exactly one NOTA root before decode, so an AI reply with extra root records/prose around a verdict does not silently decode as a valid verdict.
+The old user-facing surfaces are gone from the live public schema and source.
+`signal-mind/schema/signal-mind.concept.schema:37` declares
+`(Submit KnowledgeSubmission)` and `:38` declares `(Get KnowledgeIdentity)`.
+The accepted-knowledge schema records at `:157-166` contain
+`KnowledgeIdentity`, `KnowledgeSubmission`, `AcceptedKnowledge`,
+`KnowledgeJudgePacket`, `KnowledgeJudgeVerdict`, `KnowledgeAccepted`,
+`KnowledgeFound`, `KnowledgeNotFound`, and `KnowledgeRejectionReason`; they do
+not retain `Keyed`, `Unkeyed`, `KnowledgeCandidate`,
+`KnowledgeIdentitySlot`, or `GetByIdentity`. A source/schema search found no
+`Candidate` token in the live `signal-mind` source/schema or `mind` source.
+The remaining `SubmitKnowledge` and `QueryKnowledge` names are internal actor
+message types in `mind`, not the public contract.
 
-The tested regression coverage is adequate for the requested audit:
+Mind mints identity only after acceptance. The runtime submit branch accepts
+only `MindRequest::Submit(submission)` at `mind/src/knowledge.rs:300-307`.
+It builds a judge packet from the submitted subject and statement at
+`mind/src/knowledge.rs:345-350`. Only `KnowledgeJudgeVerdict::Accept` reaches
+`apply_acceptance()` at `mind/src/knowledge.rs:352-354`. Acceptance then reads
+existing records, generates a short base36 identity, builds
+`AcceptedKnowledge`, persists it, and returns `MindReply::Accepted` with that
+identity at `mind/src/knowledge.rs:387-406` and `:358-367`.
 
-- Submitted accepted knowledge is materialized from the submitted candidate: `mind/tests/actor_topology.rs:971` accepts a fake-agent strict `Accept` and verifies the returned record is the submitted statement body and identity, not a prompt example.
-- The fixture storage path also queries persisted accepted knowledge after accepted submissions: `mind/tests/actor_topology.rs:645` exercises accepted domains, entities, statements, sources, relations, query by identifier, query by identity, domain queries, relation queries, semantic rejection, structural preflight rejection, and current/superseded views.
-- Old substitute accepted-draft payloads reject and store nothing: `mind/tests/actor_topology.rs:1009` sends the old `(Accept ((...)))` shape, verifies `KnowledgeRejected(MeaningUnclear)`, and verifies zero stored `Statement` and zero stored `Domain` records.
-- Malformed verdicts reject and store nothing: `mind/tests/actor_topology.rs:1055` sends `not a verdict`, verifies `KnowledgeRejected(MeaningUnclear)` with a malformed-verdict summary, and verifies zero stored `Domain` records.
-- Prompt discipline is covered by `mind/tests/actor_topology.rs:996`, including a negative assertion that the generated AI prompt does not contain `domain:component`.
-- Contract drift coverage exists in `signal-mind/tests/round_trip.rs:1466`, `signal-mind/tests/round_trip.rs:1502`, `signal-mind/tests/round_trip.rs:1660`, and `signal-mind/tests/schema_drift.rs:96`.
+`Get` retrieves by minted identity. The query branch handles only
+`MindRequest::Get(identity)` at `mind/src/knowledge.rs:312-318`, and
+`KnowledgeQueryEngine::reply` returns `Found(record)` or `NotFound(identity)` at
+`mind/src/knowledge.rs:526-532`. Storage keys are the accepted record identity:
+`StoredAcceptedKnowledge` implements `EngineRecord` with
+`RecordKey::new(self.identifier().as_str())` at `mind/src/tables.rs:434-437`,
+and accepted records are inserted/read through the accepted-knowledge table at
+`mind/src/tables.rs:916-934`.
 
-Architecture and discipline observations:
+Rejected and malformed verdicts store nothing. Semantic rejection returns
+`MindReply::Rejected(reason)` directly at `mind/src/knowledge.rs:352-355`, before
+any acceptance application. Agent output is parsed with the canonical
+`NotaSource::parse::<KnowledgeJudgeVerdict>()` path at
+`mind/src/knowledge.rs:160-163`; malformed output maps to
+`Reject(MeaningUnclear)` at `mind/src/knowledge.rs:166-190`. The tests cover
+semantic rejection leaving no relevant neighbor before the next admission at
+`mind/tests/actor_topology.rs:515-558`, old substitute accept payload rejection
+at `:593-629`, and malformed verdict rejection at `:632-665`.
 
-- The accepted-knowledge public contract uses typed records and typed identities rather than colon pseudo-identifiers in schema and round-trip witnesses.
-- The Mind implementation keeps semantic judgment behind `KnowledgeJudge`, while deterministic code owns relation endpoint preflight, domain/range validation, verdict parsing, materialization, persistence, and query.
-- The store boundary persists only `AcceptedKnowledge` through the registered `accepted_knowledge` Sema family in `mind/src/tables.rs:514` and `mind/src/tables.rs:921`.
-- `mind/Cargo.toml:50` pins `signal-mind` to the audited contract commit `12c9e94edd1d42566bbda9806c8820ee75045c3d`.
-- I did not find architecture drift that should block acceptance.
+The CLI does not reintroduce a second accepted-knowledge command language.
+`mind/src/command.rs:159-167` first tries the existing work-graph
+`MindTextRequest`, then falls through to canonical
+`NotaSource::parse::<MindRequest>()` for full contract requests. Replies follow
+the same pattern: `mind/src/command.rs:113-118` prints
+`CommandReply::to_nota()`, whose fallback prints the full contract `MindReply`
+with canonical `to_nota()` when no work-graph text projection exists.
+
+No custom accepted-knowledge NOTA parser/projection was added as the solution.
+The accepted-knowledge contract types derive `NotaEncode`/`NotaDecode` in
+`signal-mind/src/knowledge.rs:30-120`, judge completions parse through
+`NotaSource`, and the CLI fallback parses and prints the contract types.
+
+Architecture and test adequacy are sufficient for this correction. Contract
+round-trip tests cover `Submit`, `Get`, `Accepted`, `Found`, `NotFound`,
+`Rejected`, and verdict parsing at
+`signal-mind/tests/round_trip.rs:1394-1424`. The negative old-surface test at
+`signal-mind/tests/round_trip.rs:1427-1446` proves old keyed/unkeyed/get-by-
+identity and old substitute-accept text no longer parse. The actor topology
+test at `mind/tests/actor_topology.rs:470-513` proves submit mints a short
+base36 identity, returns it, and `Get` finds the stored record.
 
 ## Residual Risks
 
-- A live AI smoke test is still recommended before declaring the configured agent path operational in production. The fake-agent tests prove the frame, prompt, parser, malformed-output rejection, and store behavior, but they do not prove the real configured model reliably emits strict single-root `KnowledgeJudgeVerdict` NOTA.
-- The strict fake-agent accept test verifies the returned accepted record, while the broader fixture test verifies persisted query behavior. A future hardening test could query the exact accepted statement by identity after the fake-agent `Accept` to fuse those witnesses in one test, but the current implementation path persists before returning `KnowledgeAccepted`, so this is not a defect.
-- Existing actor trace labels for knowledge write/query still reuse thought-oriented trace nodes in adjacent code (`THOUGHT_COMMIT`, `THOUGHT_QUERY`). This does not affect the reviewed behavior, but a future architecture-test pass could add knowledge-specific path witnesses if accepted-knowledge tracing becomes a public invariant.
+- The identity mint has no deterministic collision-injection unit test for the
+  fallback path after random attempts. The main behavior is covered by actor
+  tests and the code checks existing records before minting, so this is a
+  hardening follow-up rather than a defect.
+- `mind` still has a broad existing custom text projection for older work-graph
+  shorthand in `mind/src/text.rs`. Accepted-knowledge requests bypass it and use
+  contract parsing, so it does not violate this correction, but future CLI
+  simplification should keep accepted knowledge on the contract path.
+- I did not rerun the full `cargo test` or Nix flake check that Carson reported;
+  focused checks matched the audit claims.
 
 ## Checked Evidence
 
+Files and surfaces consulted:
+
+- `/home/li/primary/AGENTS.md`
+- `/home/li/primary/ARCHITECTURE.md`
+- `/home/li/primary/agent-outputs/MindUsability/GeneralCodeImplementer-Evidence.md`
+- `/git/github.com/LiGoldragon/signal-mind/AGENTS.md`
+- `/git/github.com/LiGoldragon/signal-mind/ARCHITECTURE.md`
+- `/git/github.com/LiGoldragon/signal-mind/schema/signal-mind.concept.schema`
+- `/git/github.com/LiGoldragon/signal-mind/src/knowledge.rs`
+- `/git/github.com/LiGoldragon/signal-mind/src/lib.rs`
+- `/git/github.com/LiGoldragon/signal-mind/tests/round_trip.rs`
+- `/git/github.com/LiGoldragon/signal-mind/tests/schema_drift.rs`
+- `/git/github.com/LiGoldragon/mind/AGENTS.md`
+- `/git/github.com/LiGoldragon/mind/ARCHITECTURE.md`
+- `/git/github.com/LiGoldragon/mind/src/command.rs`
+- `/git/github.com/LiGoldragon/mind/src/knowledge.rs`
+- `/git/github.com/LiGoldragon/mind/src/tables.rs`
+- `/git/github.com/LiGoldragon/mind/src/actors/dispatch.rs`
+- `/git/github.com/LiGoldragon/mind/src/actors/domain.rs`
+- `/git/github.com/LiGoldragon/mind/src/actors/store/graph.rs`
+- `/git/github.com/LiGoldragon/mind/src/actors/store/kernel.rs`
+- `/git/github.com/LiGoldragon/mind/src/actors/store/mod.rs`
+- `/git/github.com/LiGoldragon/mind/tests/actor_topology.rs`
+
 Repository state:
 
-- `jj status` in `/git/github.com/LiGoldragon/signal-mind`: clean working copy; parent commit `12c9e94e` on `main`.
-- `jj status` in `/git/github.com/LiGoldragon/mind`: clean working copy; parent commit `54142da6` on `main`.
+- `jj status` in `/git/github.com/LiGoldragon/signal-mind`: clean working copy;
+  parent commit `b8c5da96d8ead413287eb407cd7fda55919f5fd5` on `main`.
+- `jj status` in `/git/github.com/LiGoldragon/mind`: clean working copy; parent
+  commit `4b3b28c2f828198625e658bca496a3aeb7c31c51` on `main`.
+- `jj log` in `/home/li/primary` shows evidence commit
+  `3e517695c1f88e0bc0460019bef8bed6c60e843f`.
 
-Commands run:
+Focused commands run:
 
-- `/git/github.com/LiGoldragon/signal-mind`: `cargo test knowledge_ --tests`
-  - Result: passed. Covered 8 accepted-knowledge round-trip tests plus `concept_schema_declares_accepted_knowledge_roots`.
-- `/git/github.com/LiGoldragon/signal-mind`: `cargo test concept_schema_declares_accepted_knowledge_roots --test schema_drift`
-  - Result: passed.
-- `/git/github.com/LiGoldragon/signal-mind`: `cargo test knowledge_verdicts_and_replies_round_trip --test round_trip`
-  - Result: passed.
-- `/git/github.com/LiGoldragon/mind`: `cargo test agent_knowledge_judge_ --test actor_topology`
-  - Result: passed. Covered strict accept, old substitute accept payload rejection, and malformed verdict rejection.
-- `/git/github.com/LiGoldragon/mind`: `cargo test accepted_knowledge_fixture_slice_admits_queries_and_preserves_rejection_boundaries --test actor_topology`
-  - Result: passed.
-
-One redundant attempted command, `cargo test concept_schema_declares_accepted_knowledge_roots knowledge_verdicts_and_replies_round_trip knowledge_submit_and_query_requests_round_trip --tests`, failed because Cargo accepts only one positional test filter. The covered tests were run through the valid commands above.
+- `/git/github.com/LiGoldragon/signal-mind`:
+  `cargo test --test round_trip knowledge -- --nocapture`
+  - Result: passed, 4 tests.
+- `/git/github.com/LiGoldragon/signal-mind`:
+  `cargo test --test schema_drift accepted_knowledge -- --nocapture`
+  - Result: passed, 1 test.
+- `/git/github.com/LiGoldragon/signal-mind`:
+  `cargo test --test round_trip old_keyed -- --nocapture`
+  - Result: passed, 1 test.
+- `/git/github.com/LiGoldragon/mind`:
+  `cargo test --test actor_topology accepted_knowledge -- --nocapture`
+  - Result: passed, 1 test.
+- `/git/github.com/LiGoldragon/mind`:
+  `cargo test --test actor_topology knowledge_judge -- --nocapture`
+  - Result: passed, 3 tests.
+- `/git/github.com/LiGoldragon/mind`:
+  `cargo test --test actor_topology semantic_rejection -- --nocapture`
+  - Result: passed, 1 test.
