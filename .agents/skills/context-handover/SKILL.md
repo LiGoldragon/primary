@@ -1,6 +1,6 @@
 ---
 name: context-handover
-description: 'Focus-scoped handover discipline: ask for next-session focus when absent, preserve certainty boundaries, and carry only lean settled intent, confirmed facts, completed changes, live uncertainties, open questions, and useful agent-output pointers.'
+description: 'Focus-scoped handover discipline: preserve the session''s original intended direction unless redirected or complete, and carry only lean settled intent, confirmed facts, completed changes, live uncertainties, open questions, and useful agent-output pointers.'
 ---
 
 # Skill — context handover
@@ -10,9 +10,18 @@ description: 'Focus-scoped handover discipline: ask for next-session focus when 
 When the psyche requests a handover with an explicit next-session focus, write
 only for that focus. Strip unrelated matter.
 
-When the psyche requests a handover without a focus, ask for the intended
-next-session focus before writing. Offer a few concise options from the current
-context only when helpful.
+When the psyche requests a handover without an explicit focus, infer the focus
+from the active session. Anchor on the session's original intended direction:
+how it began, the first accepted objective, or the first clear psyche-stated
+goal. Side issues may become evidence, blockers, constraints, open questions, or
+follow-up lanes, but they do not replace the original direction unless the
+psyche explicitly redirects or the original direction has been thoroughly
+addressed.
+
+Ask for focus only when the original direction, later redirects, and unresolved
+work create genuinely competing handover targets. Do not default to the subject
+of the most recent prompt unless the psyche explicitly narrowed the handover to
+that subject.
 
 A handover is a focus-scoped freshness aid, not a plan, transcript, correction
 log, or display of agent reasoning.
