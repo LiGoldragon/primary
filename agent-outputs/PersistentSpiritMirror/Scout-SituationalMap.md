@@ -15,6 +15,19 @@ from interpretation; unknowns and blockers are named. Prior-scout givens
 persistence, Spirit "gate-config arming", prometheus-only Rust builds) were taken
 as established and deepened.
 
+## Correction (2026-07-03): goldragon is PUBLIC — supersedes every "private / authorization-gated" note below
+
+The `goldragon` cluster-facts repo (`github:LiGoldragon/goldragon`) is **public
+and safe to edit** (confirmed 2026-07-03; its README/ARCHITECTURE state so).
+`datom.nota` carries only references to SOPS-encrypted secrets. Every mention
+below of "private `goldragon`", "authorization-gated", or "not authorized to
+open it" is **void** — the facts were read and the two guests (`mirror-alpha`
+5::7/128, `mirror-beta` 5::8/128) authored + pushed (goldragon main
+`824ffe6498c3`). One map claim was also revised by later ground truth: the guest
+network model in Area 1/kink-1 is confirmed — the CriomOS `/128` host-route fix
+(landed CriomOS main `4f7953ebbbff`) is necessary but NOT sufficient; guests
+still boot network-dark. See `OperatingSystemImplementer-DeployEvidence.md`.
+
 ## Sources consulted (paths + commands)
 
 - Repo inventory: `protocols/repos-manifest.nota`, `protocols/active-repositories.md`,

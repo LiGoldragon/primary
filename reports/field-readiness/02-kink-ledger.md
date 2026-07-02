@@ -16,15 +16,17 @@ prometheus boots real KVM VM clusters and passed a two-VM engine test GREEN in
 ~100s (report 10), every core component builds warm in 6-110s through the
 remote builder (report 11), the minimal runnable whole comes up and exchanges
 real origin-stamped mail (report 12), and every constant-use tool answers in
-milliseconds (report 13). But four kinks sit directly in the sustained
+milliseconds (report 13). But three kinks sit directly in the sustained
 session's path: the whole-engine gate (persona-dev-stack + the nix-built
 8-component topology checks) is dead at instantiation on a stale fenix pin;
 mixed-vintage binaries and cross-repo contract lock drift fail silently at the
 wire with a misleading symptom — it was the first thing the run-recon hit;
-the entire build/cache/VM/deploy field hangs on prometheus alone; and no
-continuous-testing entry point exists, so regressions accumulate silently.
-Rank 1-2 should be fixed before the session starts; rank 3-4 early in it; the
-rest are pre-emptable with the cheap-fix list below.
+and no continuous-testing entry point exists, so regressions accumulate
+silently. (Single-host concentration on prometheus — sole builder, cache, VM
+host, and deploy target — is an accepted condition by design, not a kink; see
+rank 3.) The gate and the wire skew should be fixed before the session starts,
+the continuous-testing gap early in it; the rest are pre-emptable with the
+cheap-fix list below.
 
 ## RANKED KINK TABLE
 
@@ -35,7 +37,7 @@ fix-list). Rank annotation is blast × likelihood on the sustained session.
 |---|------|-------------|--------------------|-------|--------------|----------|
 | 1 | Rust toolchain pin rot: persona's stale fenix rust-stable FOD kills the whole-engine gate now; 18/28 repos carry their own aging pin (harness next) | 11-K1 + 11-K2 | total (primary loop target dead at instantiation) × certain (witnessed twice; latent per-repo) | BEAD | primary-j5j2 (bump, P1); primary-95fm (convergence, P2) | 11: dry-run hash mismatch on channel-rust-stable.toml.drv for persona-dev-stack + nix-built-topology check; persona/flake.nix:85, fenix lock 2026-05-05; pin grep across 28 flakes |
 | 2 | Build-vintage wire skew: mixed-vintage binaries + cross-repo contract lock drift (signal-router 277bd153 vs 289c7de4, signal-harness 959b62bd vs 0727beb7) fail silently at the frame with a misleading typed symptom | 12-K1 + 12-K2 + 11-K9 (audit 20 obstacle 1) | whole fabric, misleading diagnosis × high (hit on the recon's first bring-up attempt; contracts append wire fields, e.g. d212ea8) | BEAD + CHEAP | primary-mddx (fingerprint, P2); primary-w46v (lock-sync sweep, P2); cheap: preflight rebuild script + rev-pin diff check script | 12: rkyv decode failure surfacing as "router socket unreachable", fail→rebuild→pass on identical sources; lock diffs measured |
-| 3 | prometheus is a quadruple SPOF: only remote builder, only project binary cache, only kvm/nixos-test host, and the lojix deploy-experiment target; local fallback is max-jobs=1/cores=2 | 11-K3 + 13-K5 (+10 context) | every build loop on every machine × moderate (deploy experiments to prometheus are exactly the session's business) | BEAD + CHEAP | primary-oeng (second builder/substituter, P1); cheap habit: dry-run heavy builds first | 11/13: /etc/nix/machines single line; cache = same host; nix.conf; audit 24 deploy state |
+| 3 | Single-host concentration on prometheus (sole remote builder, sole project binary cache, sole kvm/nixos-test host, and the lojix deploy-experiment target) is intended BY DESIGN, not a defect: no other host is suitable and single-host concentration is an accepted condition. Local fallback is max-jobs=1/cores=2 | 11-K3 + 13-K5 (+10 context) | a bad deploy experiment or degradation on prometheus slows every build loop × moderate — an operating condition to work around, not fix | ACCEPT + CHEAP | accepted condition (HANDOVER settled direction); cheap habit: dry-run heavy builds first | 11/13: /etc/nix/machines single line; cache = same host; nix.conf; audit 24 deploy state |
 | 4 | No continuous-testing entry point: no CI, no timers; testing is entirely pull-based and the harness e2e skips by default | 13-K8 (+ audit 23 §4) | regressions accumulate silently — the session's whole purpose × certain (structural) | BEAD | primary-vp6d (P1); related keystone: primary-iy51.12 | 13: workflows glob (only kameo/whisrs), systemctl list-timers, cluster flake grep |
 | 5 | Channel adjudication is bootstrap-only: mind answers NotInPrototypeScope, router parks unknowns in an unwired pull-only outbox; grants exist only via the bootstrap rkyv | 12-K3 + 12-stubs 1-2 (+ audit 22) | every topology must be pre-declared; no runtime channel changes × certain beyond the pre-granted pair | BEAD + CHEAP interim | primary-5k4o (P2); cheap: exhaustive bootstrap grants for the planned actor set | 12: mind/src/actors/dispatch.rs:143-145; router_write_bootstrap.rs:102-108 doc comment; bring-up worked only because grants were pre-declared |
 | 6 | Persona readiness never leaves Starting under fixture launch: all 8 components Running, readiness stuck | 12-K4 | Ready-gated sessions wait forever; supervision green unusable as health gate × high for fixture scaffolding | BEAD (diagnosis) | primary-6yur (P2) | 12: witnessed EngineStatusReport (0 Starting ...) after ~10s; cause not established |

@@ -18,7 +18,7 @@ shape drift, and primary-main push contention between concurrent agents.
 |---|---|---|---|---|
 | jj (Jujutsu) | YES (WITNESSED) | instant | clean working copy; push to origin succeeded 3 min before this probe (op log) | push-rejected when another agent advances `main` first; stale-workspace errors if entering the 3 leftover workspaces; bookmark litter slows reading |
 | nix eval/build | YES (WITNESSED) | warm eval 0.065s (router, 41 checks); forced remote build round-trip 1.1s | daemon healthy (`nix store info` Trusted:1); disk 51% used, 433G free | local capacity is deliberately tiny (max-jobs=1, cores=2): any build that can't reach prometheus becomes a long serial stall |
-| remote builder (prometheus) | YES (WITNESSED) | tiny drv built remotely + copied back in 1.1s; real check < ~1 min | single builder in `/etc/nix/machines` (6 slots, big-parallel,kvm) | single point of failure; user-level ssh probe is denied by design (daemon holds the key), so mid-session diagnosis is indirect |
+| remote builder (prometheus) | YES (WITNESSED) | tiny drv built remotely + copied back in 1.1s; real check < ~1 min | single builder in `/etc/nix/machines` (6 slots, big-parallel,kvm) | single-host by design (accepted, not a defect); user-level ssh probe is denied by design (daemon holds the key), so mid-session diagnosis is indirect |
 | binary cache | YES (WITNESSED) | `nix-cache-info` answers on `http://nix.prometheus.goldragon.criome` (priority 30) + cache.nixos.org | dry-run of router's heaviest integration check: ~1 drv to build, rest substituted | cache is the same host as the builder — one host outage takes both |
 | spirit CLI (read path) | YES (WITNESSED) | 3–5 ms per query | `PublicTextSearch spirit` → record qjrf; `Lookup qjrf` → RecordFound; `PublicRecords` → 26 records; daemon up 2d at `~/.local/state/spirit/spirit.sock` | strict canonical NOTA rejects skill-example shapes (see kinks K2/K3); deployed build may lag today's v11 checkout |
 | spirit (write path) | NOT EXERCISED (recon) | n/a | guardian `agent-daemon` running (WITNESSED, pid via pgrep); Record → nexus → feature-gated `AgentGuardian` (source-read) | guardian resolves an LLM provider endpoint + API key per call (`agent/src/provider.rs`) — provider outage or key expiry blocks intent capture |
@@ -74,13 +74,13 @@ shape drift, and primary-main push contention between concurrent agents.
 - Cheap vs bead: CHEAP (discipline already documented); optional small bead for bookmark/workspace cleanup.
 - Evidence: WITNESSED op log entries (`push bookmark main … 3 minutes ago`), bookmark and workspace listings.
 
-### K5 — single remote builder = single point of long-stall failure
+### K5 — single remote builder is an accepted single-host condition
 - What: `/etc/nix/machines` has exactly one builder (`ssh-ng://nix-ssh@prometheus.goldragon.criome`, 6 slots) and the primary substituter is the same host. Local fallback is max-jobs=1 / cores=2. Direct user ssh to the builder is denied (daemon-held key), so a session cannot easily diagnose builder-side pressure (disk, load).
 - Where: `/etc/nix/machines`, `nix config show`.
 - Blast radius: if prometheus is down or degraded, any uncached build serializes onto a 1-job local slot — a rebuild becomes a multi-hour stall; cache misses double the pain because the priority-30 cache is the same host.
 - Likelihood: LOW-MEDIUM (it was fast and healthy at probe time: 1.1s forced-remote round-trip, real check < ~1 min).
-- Fix: none cheap in-session; know the symptom (build "hangs" copying/waiting) and prefer dry-run first (`nix build --dry-run` shows the miss surface). A second builder or documented degraded-mode guidance is bead-level.
-- Cheap vs bead: BEAD (infra), plus the CHEAP habit of dry-running heavy builds first.
+- Fix: none — single-host concentration is intended BY DESIGN and accepted. Operating care only: know the symptom (build "hangs" copying/waiting) and prefer dry-run first (`nix build --dry-run` shows the miss surface).
+- Cheap vs bead: ACCEPTED CONDITION (no bead), plus the CHEAP habit of dry-running heavy builds first.
 - Evidence: WITNESSED machines file, cache-info fetch, forced remote build, check build log (`building … on 'ssh-ng://nix-ssh@prometheus…'`). Builder-side disk/load NOT CHECKED (no access path).
 
 ### K6 — Spirit write path depends on a live LLM provider + API key

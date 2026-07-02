@@ -111,9 +111,7 @@ Synchronizer:
   GitHub as a hard VM-inner-loop dependency vs sanctioning `nix copy`; complete
   vs retire the declared persistent-VM guest.
 - Suspected follow-ups: the `prometheus` ssh `HostName` was patched locally in
-  `~/.ssh/config` and likely belongs in criomos-home declaratively; bead
-  `primary-oeng` (single-builder concern) should be retired, since sole-builder
-  is an accepted condition.
+  `~/.ssh/config` and likely belongs in criomos-home declaratively.
 - Documented synchronizer limitation: a normal `[dependencies]` +
   `[dev-dependencies]` dual-pin of the same package is currently refused loud;
   relevant once such a producer joins a configured set.
@@ -122,7 +120,8 @@ Synchronizer:
 
 - `reports/field-readiness/00-README.md`, `02-kink-ledger.md`, `10`–`13`-*.md
 - `/git/github.com/LiGoldragon/synchronizer/ARCHITECTURE.md` and the repo
-- Beads: label `field-readiness` (incl. `w46v`; `j5j2` closed; `oeng`, `mddx`,
-  `95fm`, `vp6d`, others open)
+- Beads: label `field-readiness` (incl. `w46v`; `j5j2` closed; `oeng` retired —
+  single-host concentration is accepted, not a defect; `mddx`, `95fm`, `vp6d`,
+  others open)
 - Commits: `4a5923dda079` (ledger), `bbb7f070` (persona fenix fix), `a8c95728`
   (synchronizer, local)

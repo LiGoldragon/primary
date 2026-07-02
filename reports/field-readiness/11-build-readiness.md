@@ -216,9 +216,10 @@ prometheus — report 24).
   down to max-jobs=1/cores=2 (trusted-user override possible but slow).
 - Likelihood: moderate — deploy experiments to prometheus are precisely what
   the sustained session will do.
-- Fix: add a second builder line (zeus and tiger keys are already in
-  trusted-public-keys) to /etc/nix/machines; optionally a second substituter.
-- Class: NEEDS-A-BEAD (host/OS config, deploy-adjacent).
+- Fix: none — single-host concentration on prometheus is intended BY DESIGN
+  and accepted (no other host is suitable). Operating care only: dry-run heavy
+  builds first to see the miss surface and spot degradation early.
+- Class: ACCEPTED CONDITION (not a defect; no bead).
 - Evidence: /etc/nix/machines single line; nix.conf; report 24 deploy state.
 
 K4. mind vendors 8 `ssh://` git deps with plain crane — cache-miss vendoring

@@ -9,8 +9,9 @@ non-trivial kink, and recorded the open psyche decisions. Parent audit:
 
 One-line verdict: READY-WITH-KINKS — VM host, builds, minimal runnable whole,
 and tooling all witnessed working, but the whole-engine gate is dead on a
-stale fenix pin, wire-vintage skew fails silently, prometheus is a quadruple
-SPOF, and no continuous-testing entry point exists.
+stale fenix pin, wire-vintage skew fails silently, and no continuous-testing
+entry point exists. (Single-host concentration on prometheus is accepted by
+design, not a kink.)
 
 Read order:
 
@@ -26,4 +27,5 @@ Read order:
    known jam points; no continuous-testing entry point.
 
 Tracker: 17 beads opened under label `field-readiness` (P1: primary-j5j2,
-primary-oeng, primary-vp6d), plus an evidence note on existing primary-dw95.
+primary-vp6d; primary-oeng retired — single-host concentration is accepted,
+not a defect), plus an evidence note on existing primary-dw95.

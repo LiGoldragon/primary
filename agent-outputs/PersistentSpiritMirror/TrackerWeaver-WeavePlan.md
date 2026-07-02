@@ -12,6 +12,19 @@ dispatched. Graph only.
 
 Grounded in `agent-outputs/PersistentSpiritMirror/Scout-SituationalMap.md`.
 
+## Correction (2026-07-03): goldragon is PUBLIC — no authorization gate
+
+The `goldragon` cluster-facts repo (`github:LiGoldragon/goldragon`) is
+**public and safe to edit**; its README/ARCHITECTURE now state this. `datom.nota`
+holds only references to SOPS-encrypted secrets, so authoring the guests is NOT
+authorization-gated. Every "private goldragon facts" / "authorization-gated"
+mention below is **void**. The two guests were authored + pushed on 2026-07-03
+(goldragon main `824ffe6498c3`: `mirror-alpha` 5::7/128, `mirror-beta` 5::8/128).
+The real remaining blocker is NOT authorization but **guest-side networking**:
+the CriomOS `/128` host-route fix (landed on CriomOS main `4f7953ebbbff`) is
+necessary but NOT sufficient — guests still boot network-dark (see the deploy
+evidence file `OperatingSystemImplementer-DeployEvidence.md`).
+
 ## B1 resolution (the dominant design fork) — CODE-CONFIRMED
 
 **Verdict: the sender leg is CONFIG/DEPLOY, not net-new standing code.**
@@ -79,7 +92,7 @@ All new beads carry label `persistent-spirit-mirror`.
 | ID | Title | Gate | Blocked by |
 |---|---|---|---|
 | `primary-1e6b` | [EPIC] Persistent two-VM Spirit A→B mirror over the criome-authenticated path | — | — |
-| `primary-1e6b.1` | Author node A + node B: two persistent `TestVm` guests on prometheus (private goldragon facts) | **authorization-gated** (private facts) | `primary-dw95` |
+| `primary-1e6b.1` | Author node A + node B: two persistent `TestVm` guests on prometheus (public goldragon datom) | AUTHORED+PUSHED 2026-07-03 (no auth gate) | `primary-dw95` |
 | `primary-1e6b.2` | Reproject goldragon horizon + BootOnce-redeploy prometheus with the two guests | **deploy-gated / real-world** | `.1` |
 | `primary-1e6b.3` | Criome A→B trust seed: node B pre-registers node A BLS identity→key at deploy (Stage-A) | deploy-gated (mechanism buildable ahead) | `.2` |
 | `primary-1e6b.4` | Mirror receiver seed: pre-register the mirror store-row for `spirit` on node B at deploy | deploy-gated (mechanism buildable ahead) | `.2` |
@@ -136,10 +149,11 @@ waits on the deploy.
   `ReferentGuardianRejected` — the current proof uses guardian-bypass meta
   `Import`.) This decision can be made immediately and unblocks the verification
   definition.
-- **`primary-1e6b.1` authorization** — authoring the two guests touches the
-  **private `goldragon`** cluster facts. This is authorization-gated; no worker
-  should open/author those facts until the psyche grants it. Also inherits
-  `primary-dw95`'s cluster-wide clavifaber/nota-derive deploy blocker.
+- **`primary-1e6b.1`** — DONE 2026-07-03. `goldragon` is public (no
+  authorization gate); the two guests are authored + pushed. The cluster-wide
+  clavifaber/nota-derive deploy blocker is also cleared (CriomOS main points at
+  the fixed clavifaber). What remains is not authorization but guest-side
+  networking for mutual reachability (`primary-dw95` kink-1).
 
 ## Real-world / deploy-gated stretch (after authorization)
 
@@ -154,8 +168,9 @@ restart, plus a fresh post-restart record propagating.
 ## Boundaries honored
 
 - No `/nix/store` filesystem search. NOTA positional. jj on primary; no raw git.
-- Private `goldragon` facts are referenced but not opened/quoted; `.1` is
-  labelled `authorization-gated` and marked blocked behind `primary-dw95`.
+- `goldragon` is public (confirmed 2026-07-03); the `authorization-gated`
+  label was removed from `.1`, which is now authored+pushed. It remains
+  dependency-linked to `primary-dw95` for the guest-network (reachability) fix.
 - No implementation dispatched. Read-only source confirmation only for B1.
 
 ## Commands run (tracker mutations)
