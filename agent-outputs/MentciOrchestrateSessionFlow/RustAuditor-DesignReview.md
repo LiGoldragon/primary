@@ -310,3 +310,64 @@ observation alike), and make `OpenClaudeSession`, `ClaudeSessionObservation`,
 `WatchHarnessTranscript`, and the `SessionRouted`/`PromptRouted` replies all consistent
 with that one choice. Every downstream wire — orchestrate's store-update loop,
 Mentci's display, resume/reuse, and "many concurrent sessions" — hangs off it.
+
+## Verification pass — revised spec (round 2)
+
+Re-read the revised `Design-SessionFlowSpec.md` to confirm the round-1 findings
+are genuinely closed and no new inconsistency was introduced. Focused verify
+pass, not a fresh audit.
+
+Confirmed resolved:
+
+- **M1 — addressing model.** Revised to one-session-per-harness-instance:
+  `HarnessName` is the sole live-session key on `OpenClaudeSession` (§2c, handle
+  dropped), `ClaudeSessionObservation` (§2d), `WatchHarnessTranscript`, and both
+  replies (§2a/§2b); `(lane, session-handle)` is durable store identity only (§3);
+  new `hosting-harness?: HarnessName` binds them (§3), set while Hot / cleared on
+  Idle. Correlation is unique (§4c step 1 correlates the exit observation before
+  clearing `hosting-harness`; per-open subscription sequencing isolates a
+  reallocated instance's stream). §4a corrects the earlier substrate conflation.
+  The model is threaded consistently; no surface remains keyed the old
+  (harness, session-handle) way. **One new gap introduced by the fix — see below.**
+- **M2.** `SessionRouted <harness-name> <disposition>` (§2b); `launch-directive`
+  explicitly kept off the wire as daemon lowering; symmetric with `PromptRouted`.
+- **M3.** Statusline `context_window` is the sole passive non-injecting source;
+  "no `/context` (or any command) injection fallback" stated in §2d/§4b/§7/§9;
+  absence handling defined (last-known-figure else unknown → not-past-threshold).
+- **S1.** Per-lane route guard across the async model call (§2b, §6 step 4).
+- **S2.** Reactivation edges explicit in §4c (→Hot on open/resume; un-archive-vs-GC
+  ordering; resume-fail →Recycled from Idle or Archived).
+- **S3.** Status enum is `Hot | Idle | Archived | Recycled`; handover-due derived at
+  routing time, no stored variant, no dangling reference.
+- No regression to the three ownership regions, push flow, `Worktree`-mirrored
+  store, or §0.5 (M3 reconciliation reinforces §0.5).
+
+New must-fix introduced by the M1 fix:
+
+- **V1 — instance-allocation reservation race (breaks the invariant M1 rests on).**
+  §2b lowering, §4a, and §6 step 5 all order allocation as *select non-Hot instance
+  → async `OpenClaudeSession` → then write `hosting-harness`*. S1's guard is
+  explicitly **per-lane**. Two concurrent routes for **distinct lanes** contending
+  for the last free instance both observe "X is non-Hot," both select X, and both
+  open on X before either records `hosting-harness=X` — binding two sessions to one
+  instance and violating the one-Hot-record-per-instance invariant that M1's
+  observation-to-record correlation depends on. Enshrining §4a's allocation prose
+  as-is would carry this M1-shaped defect back in through the allocation path.
+  Fix is narrow and already present in the spec for the sibling case: §4c step 3
+  reserves the instance "in the same store transaction" for Archived-resume-vs-GC;
+  **generalize that transactional/conditional reservation to all fresh and
+  Idle-resume allocation** — reserve the chosen instance atomically (single-writer
+  conditional on no other Hot record holding that `HarnessName`) *before* the async
+  `OpenClaudeSession`, so a second concurrent distinct-lane route sees X taken.
+
+### Round-2 verdict
+
+**NO-GO — one narrow must-fix (V1) first.** M1, M2, M3, S1, S2, S3 are all
+genuinely resolved and internally coherent, and nothing sound regressed. The M1
+rewrite introduced a single new concurrency gap: instance allocation across
+concurrent distinct-lane routes is unserialized (select-then-open-then-record),
+which can double-book an instance and break the one-session-per-instance invariant
+M1's correlation rests on. The fix is small — generalize the transactional
+instance reservation the spec already specifies for the Archived-resume/GC case
+(§4c step 3) to all allocation, reserving before the async open. With V1 closed,
+the design is safe to enshrine.
