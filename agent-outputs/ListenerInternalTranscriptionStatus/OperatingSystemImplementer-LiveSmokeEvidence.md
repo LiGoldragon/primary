@@ -137,6 +137,8 @@ Observed facts:
 - `whisrs.service` was active.
 - The active Noctalia plugin configuration still contained `whisrs-level`.
 - `niri validate` reported the current config is valid.
+- The active Niri config still contained Whisrs bindings for `Mod+V`,
+  `Mod+Shift+V`, `Mod+Alt+V`, and `Mod+Ctrl+V`.
 
 Interpretation:
 
@@ -178,6 +180,9 @@ depends on successful `primary-acmr.6` evidence or a resolved blocker.
 - `whisrs status` and `systemctl --user status whisrs.service --no-pager`
   confirmed Whisrs remained active and idle.
 - `niri validate` reported the config was valid.
+- Focused active Niri config search confirmed Whisrs bindings for `Mod+V`,
+  `Mod+Shift+V`, `Mod+Alt+V`, and `Mod+Ctrl+V`, plus the existing old Listener
+  `Mod+Alt+L` binding.
 
 ## Follow-Up Requirement
 
