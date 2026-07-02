@@ -1,0 +1,10 @@
+{
+  "blocker": "agent-daemon did not create socket /tmp/mind-live-judge-rust-full-20260702T233537Z-isolated-categories/ambiguous_positive_control/agent.sock",
+  "eval_id": "rust-full-20260702T233537Z-isolated-categories",
+  "judge_attempts_before_blocker": 0,
+  "model": "deepseek-v4-flash",
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "secret_safety": "No secret values were printed or written by the runner.",
+  "submit_calls_before_blocker": 0
+}

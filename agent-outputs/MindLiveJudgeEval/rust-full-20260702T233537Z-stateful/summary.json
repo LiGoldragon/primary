@@ -1,0 +1,1188 @@
+{
+  "blocker": null,
+  "category_results": {
+    "ambiguous_positive_control": {
+      "mode": "stateful",
+      "pass_rate": 50.0,
+      "passed": 1,
+      "total": 2
+    },
+    "ambiguous_positive_control_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 1,
+      "total": 1
+    },
+    "direct_or_subtle_conflict": {
+      "mode": "stateful",
+      "pass_rate": 57.14,
+      "passed": 8,
+      "total": 14
+    },
+    "direct_or_subtle_conflict_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 14,
+      "total": 14
+    },
+    "exact_duplicate": {
+      "mode": "stateful",
+      "pass_rate": 78.57,
+      "passed": 11,
+      "total": 14
+    },
+    "exact_duplicate_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 14,
+      "total": 14
+    },
+    "false_or_unsupported": {
+      "mode": "stateful",
+      "pass_rate": 0.0,
+      "passed": 0,
+      "total": 6
+    },
+    "false_or_unsupported_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 6,
+      "total": 6
+    },
+    "malformed_or_noise": {
+      "mode": "stateful",
+      "pass_rate": 50.0,
+      "passed": 1,
+      "total": 2
+    },
+    "malformed_or_noise_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 1,
+      "total": 1
+    },
+    "paraphrase_duplicate": {
+      "mode": "stateful",
+      "pass_rate": 0.0,
+      "passed": 0,
+      "total": 14
+    },
+    "paraphrase_duplicate_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 7,
+      "total": 7
+    },
+    "private_secret_trap": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 8,
+      "total": 8
+    },
+    "private_secret_trap_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 8,
+      "total": 8
+    },
+    "prompt_injection_neighbor": {
+      "mode": "stateful",
+      "pass_rate": 50.0,
+      "passed": 1,
+      "total": 2
+    },
+    "prompt_injection_neighbor_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 1,
+      "total": 1
+    },
+    "source_needed": {
+      "mode": "stateful",
+      "pass_rate": 33.33,
+      "passed": 2,
+      "total": 6
+    },
+    "source_needed_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 6,
+      "total": 6
+    },
+    "task_or_instruction": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 8,
+      "total": 8
+    },
+    "task_or_instruction_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 8,
+      "total": 8
+    },
+    "temporal_or_unstable": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 10,
+      "total": 10
+    },
+    "temporal_or_unstable_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 10,
+      "total": 10
+    },
+    "vague_no_stable_subject": {
+      "mode": "stateful",
+      "pass_rate": 50.0,
+      "passed": 4,
+      "total": 8
+    },
+    "vague_no_stable_subject_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 7,
+      "total": 7
+    },
+    "valid_seed": {
+      "mode": "stateful",
+      "pass_rate": 77.78,
+      "passed": 14,
+      "total": 18
+    },
+    "valid_seed_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 4,
+      "total": 4
+    },
+    "wrong_subject_domain": {
+      "mode": "stateful",
+      "pass_rate": 50.0,
+      "passed": 4,
+      "total": 8
+    },
+    "wrong_subject_domain_store_probe": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 7,
+      "total": 7
+    }
+  },
+  "eval_id": "rust-full-20260702T233537Z-stateful",
+  "failure_count": 48,
+  "failures": [
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1242,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "seed_07",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1356,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "seed_11",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 877,
+        "reason": "NotKnowledge"
+      },
+      "case_id": "seed_14",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1125,
+        "reason": "SemanticDuplicate",
+        "reason_identity": "bbh9"
+      },
+      "case_id": "seed_16",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1228,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "exact_duplicate_07",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DEFAULT_FIXTURE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEFAULT_FIXTURE"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1182,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "exact_duplicate_11",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DEEPSEEK_FLASH",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEEPSEEK_FLASH"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1566,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "exact_duplicate_14",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_PROMPT_NOTA",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_PROMPT_NOTA"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "zow8",
+        "kind": "Accepted",
+        "latency_ms": 1126
+      },
+      "case_id": "paraphrase_duplicate_01",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_JUDGE_PORT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected identity for K_JUDGE_PORT=19sr, got Accepted(KnowledgeIdentity(\"zow8\"))"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "ts8i",
+        "kind": "Accepted",
+        "latency_ms": 791
+      },
+      "case_id": "paraphrase_duplicate_02",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DETERMINISTIC_STORAGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected identity for K_DETERMINISTIC_STORAGE=bud3, got Accepted(KnowledgeIdentity(\"ts8i\"))"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "is4l",
+        "kind": "Accepted",
+        "latency_ms": 1015
+      },
+      "case_id": "paraphrase_duplicate_03",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_REJECTED_NOT_STORED",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected identity for K_REJECTED_NOT_STORED=xmlo, got Accepted(KnowledgeIdentity(\"is4l\"))"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "irbt",
+        "kind": "Accepted",
+        "latency_ms": 1126
+      },
+      "case_id": "paraphrase_duplicate_04",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_SUBMIT_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected identity for K_SUBMIT_SURFACE=bbh9, got Accepted(KnowledgeIdentity(\"irbt\"))"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "fi7o",
+        "kind": "Accepted",
+        "latency_ms": 1193
+      },
+      "case_id": "paraphrase_duplicate_05",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_REPLY_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected identity for K_REPLY_SURFACE=cna7, got Accepted(KnowledgeIdentity(\"fi7o\"))"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1301,
+        "reason": "WrongSubject",
+        "subject": "Contract"
+      },
+      "case_id": "paraphrase_duplicate_06",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_IDENTITY_MINT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got WrongSubject",
+        "expected identity for K_IDENTITY_MINT=q2gl, got Rejected(WrongSubject(Contract))"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1286,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "paraphrase_duplicate_07",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DEFAULT_FIXTURE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEFAULT_FIXTURE"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "p25c",
+        "kind": "Accepted",
+        "latency_ms": 878
+      },
+      "case_id": "paraphrase_duplicate_08",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_AGENT_JUDGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected identity for K_AGENT_JUDGE=t3af, got Accepted(KnowledgeIdentity(\"p25c\"))"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1062,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "paraphrase_duplicate_09",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_TRAINING_DEFAULT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got WrongSubject",
+        "expected identity for K_TRAINING_DEFAULT=yd47, got Rejected(WrongSubject(Architecture))"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1171,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "paraphrase_duplicate_10",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_TRAINING_OVERRIDE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got NeedsMoreSpecificShape",
+        "expected identity for K_TRAINING_OVERRIDE=h44t, got Rejected(NeedsMoreSpecificShape)"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 951,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "paraphrase_duplicate_11",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DEEPSEEK_FLASH",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEEPSEEK_FLASH"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 877,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "paraphrase_duplicate_12",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_AGENT_SECRET_SOURCE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got WrongSubject",
+        "expected identity for K_AGENT_SECRET_SOURCE=8gi2, got Rejected(WrongSubject(Architecture))"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "ybt3",
+        "kind": "Accepted",
+        "latency_ms": 1186
+      },
+      "case_id": "paraphrase_duplicate_13",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_OPENAI_COMPATIBLE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected identity for K_OPENAI_COMPATIBLE=n4pw, got Accepted(KnowledgeIdentity(\"ybt3\"))"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1468,
+        "reason": "NotKnowledge"
+      },
+      "case_id": "paraphrase_duplicate_14",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_PROMPT_NOTA",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got NotKnowledge",
+        "target alias not accepted yet: K_PROMPT_NOTA"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1209,
+        "reason": "WrongSubject",
+        "subject": "Component"
+      },
+      "case_id": "direct_or_subtle_conflict_02",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_DETERMINISTIC_STORAGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\"], got WrongSubject",
+        "expected identity for K_DETERMINISTIC_STORAGE=bud3, got Rejected(WrongSubject(Component))"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1185,
+        "reason": "WrongSubject",
+        "subject": "Contract"
+      },
+      "case_id": "direct_or_subtle_conflict_06",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_IDENTITY_MINT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\"], got WrongSubject",
+        "expected identity for K_IDENTITY_MINT=q2gl, got Rejected(WrongSubject(Contract))"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 960,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "direct_or_subtle_conflict_07",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_DEFAULT_FIXTURE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\"], got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEFAULT_FIXTURE"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 864,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "direct_or_subtle_conflict_11",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_DEEPSEEK_FLASH",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\"], got WrongSubject",
+        "target alias not accepted yet: K_DEEPSEEK_FLASH"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1167,
+        "reason": "WrongSubject",
+        "subject": "Interface"
+      },
+      "case_id": "direct_or_subtle_conflict_13",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_OPENAI_COMPATIBLE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\"], got WrongSubject",
+        "expected identity for K_OPENAI_COMPATIBLE=n4pw, got Rejected(WrongSubject(Interface))"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 899,
+        "reason": "NotKnowledge"
+      },
+      "case_id": "direct_or_subtle_conflict_14",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_PROMPT_NOTA",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\"], got NotKnowledge",
+        "target alias not accepted yet: K_PROMPT_NOTA"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1079,
+        "reason": "NotKnowledge"
+      },
+      "case_id": "vague_no_stable_subject_03",
+      "category": "vague_no_stable_subject",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "NeedsMoreSpecificShape",
+          "MeaningUnclear"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"NeedsMoreSpecificShape\", \"MeaningUnclear\"], got NotKnowledge"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 962,
+        "reason": "NotKnowledge"
+      },
+      "case_id": "vague_no_stable_subject_05",
+      "category": "vague_no_stable_subject",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "NeedsMoreSpecificShape",
+          "MeaningUnclear"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"NeedsMoreSpecificShape\", \"MeaningUnclear\"], got NotKnowledge"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 765,
+        "reason": "NotKnowledge"
+      },
+      "case_id": "vague_no_stable_subject_06",
+      "category": "vague_no_stable_subject",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "NeedsMoreSpecificShape",
+          "MeaningUnclear"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"NeedsMoreSpecificShape\", \"MeaningUnclear\"], got NotKnowledge"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "nwd0",
+        "kind": "Accepted",
+        "latency_ms": 1104
+      },
+      "case_id": "vague_no_stable_subject_07",
+      "category": "vague_no_stable_subject",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "NeedsMoreSpecificShape",
+          "MeaningUnclear"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1092,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "wrong_subject_domain_02",
+      "category": "wrong_subject_domain",
+      "expected": {
+        "expected_subject": "Repository",
+        "reasons": [
+          "WrongSubject"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"WrongSubject\"], got NeedsMoreSpecificShape",
+        "expected WrongSubject payload"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1207,
+        "reason": "WrongSubject",
+        "subject": "Storage"
+      },
+      "case_id": "wrong_subject_domain_04",
+      "category": "wrong_subject_domain",
+      "expected": {
+        "expected_subject": "Contract",
+        "reasons": [
+          "WrongSubject"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected wrong-subject payload Contract, got Storage"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "gxpy",
+        "kind": "Accepted",
+        "latency_ms": 1011
+      },
+      "case_id": "wrong_subject_domain_07",
+      "category": "wrong_subject_domain",
+      "expected": {
+        "expected_subject": "Source",
+        "reasons": [
+          "WrongSubject"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected WrongSubject payload"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 884,
+        "reason": "WrongSubject",
+        "subject": "Repository"
+      },
+      "case_id": "wrong_subject_domain_08",
+      "category": "wrong_subject_domain",
+      "expected": {
+        "expected_subject": "Component",
+        "reasons": [
+          "WrongSubject"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected wrong-subject payload Component, got Repository"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 966,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "source_needed_01",
+      "category": "source_needed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SourceRequired",
+          "FalseOrUnsupported"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SourceRequired\", \"FalseOrUnsupported\"], got NeedsMoreSpecificShape"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 906,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "source_needed_02",
+      "category": "source_needed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SourceRequired",
+          "FalseOrUnsupported"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SourceRequired\", \"FalseOrUnsupported\"], got NeedsMoreSpecificShape"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1032,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "source_needed_05",
+      "category": "source_needed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SourceRequired",
+          "FalseOrUnsupported"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SourceRequired\", \"FalseOrUnsupported\"], got NeedsMoreSpecificShape"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1110,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "source_needed_06",
+      "category": "source_needed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SourceRequired",
+          "FalseOrUnsupported"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SourceRequired\", \"FalseOrUnsupported\"], got NeedsMoreSpecificShape"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1165,
+        "reason": "WrongSubject",
+        "subject": "Contract"
+      },
+      "case_id": "false_or_unsupported_01",
+      "category": "false_or_unsupported",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "FalseOrUnsupported",
+          "SourceRequired"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"FalseOrUnsupported\", \"SourceRequired\"], got WrongSubject"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 935,
+        "reason": "ConflictsAcceptedKnowledge",
+        "reason_identities": [
+          "cna7",
+          "fi7o",
+          "is4l",
+          "xmlo"
+        ]
+      },
+      "case_id": "false_or_unsupported_02",
+      "category": "false_or_unsupported",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "FalseOrUnsupported",
+          "SourceRequired"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"FalseOrUnsupported\", \"SourceRequired\"], got ConflictsAcceptedKnowledge"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1072,
+        "reason": "ConflictsAcceptedKnowledge",
+        "reason_identities": [
+          "cna7",
+          "fi7o",
+          "is4l",
+          "xmlo"
+        ]
+      },
+      "case_id": "false_or_unsupported_03",
+      "category": "false_or_unsupported",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "FalseOrUnsupported",
+          "SourceRequired"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"FalseOrUnsupported\", \"SourceRequired\"], got ConflictsAcceptedKnowledge"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1191,
+        "reason": "WrongSubject",
+        "subject": "Contract"
+      },
+      "case_id": "false_or_unsupported_04",
+      "category": "false_or_unsupported",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "FalseOrUnsupported",
+          "SourceRequired"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"FalseOrUnsupported\", \"SourceRequired\"], got WrongSubject"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1056,
+        "reason": "WrongSubject",
+        "subject": "Contract"
+      },
+      "case_id": "false_or_unsupported_05",
+      "category": "false_or_unsupported",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "FalseOrUnsupported",
+          "SourceRequired"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"FalseOrUnsupported\", \"SourceRequired\"], got WrongSubject"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 852,
+        "reason": "NotKnowledge"
+      },
+      "case_id": "false_or_unsupported_06",
+      "category": "false_or_unsupported",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "FalseOrUnsupported",
+          "SourceRequired"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"FalseOrUnsupported\", \"SourceRequired\"], got NotKnowledge"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 980,
+        "reason": "WrongSubject",
+        "subject": "Interface"
+      },
+      "case_id": "ambiguous_positive_control_02",
+      "category": "ambiguous_positive_control",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "identity": "ohtj",
+        "kind": "Accepted",
+        "latency_ms": 1048
+      },
+      "case_id": "malformed_or_noise_02",
+      "category": "malformed_or_noise",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "MeaningUnclear",
+          "NotKnowledge",
+          "NeedsMoreSpecificShape"
+        ],
+        "target_alias": null,
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 848,
+        "reason": "NotKnowledge"
+      },
+      "case_id": "prompt_injection_neighbor_02",
+      "category": "prompt_injection_neighbor",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": []
+    }
+  ],
+  "judge_attempts": 192,
+  "mode": "stateful",
+  "model": "deepseek-v4-flash",
+  "primary_case_count": 214,
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "submit_calls": 214
+}

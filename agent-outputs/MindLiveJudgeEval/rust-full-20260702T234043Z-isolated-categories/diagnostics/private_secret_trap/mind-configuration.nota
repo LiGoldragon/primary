@@ -1,0 +1,1 @@
+(ConfigurationWriteRequest /tmp/mjiso234043/active-mind.sock /tmp/mjiso234043/private_secret_trap/mind.meta.sock /tmp/mjiso234043/private_secret_trap/mind.redb /tmp/mjiso234043/private_secret_trap/mind.rkyv (AgentKnowledgeJudge /tmp/mjiso234043/private_secret_trap/agent.sock deepseek deepseek-v4-flash 180000 2048 (DefaultJudgeTraining)))
