@@ -194,7 +194,7 @@ carrying store-shaped facts (the raw `TranscriptObservation` line is too weak):
                           <accumulated-context?> <last-activity> <lifecycle>)
 ;;   session-identifier? : ClaudeResumeIdentifier   ;; recovered from JSONL (claude.rs:594,1022)
 ;;   model?              : DetectedModel             ;; recovered (claude.rs:602)
-;;   accumulated-context?: ContextTokens             ;; the staleness signal (§4b); Option — see gap below
+;;   accumulated-context?: ContextTokens             ;; the staleness signal (§4b); Option — see sourcing note below
 ;;   last-activity       : TimestampNanos            ;; display/ordering ONLY, never gates resume (§4b)
 ;;   lifecycle           : Ready | Active | Completed | (Exited <exit-status>)
 ```
@@ -206,21 +206,47 @@ record (§3). `last_activity` mirrors `Worktree.last_activity`'s
 infrastructure-minted discipline (`orchestrate/src/worktree.rs:52-54`, never
 agent-supplied) but — unlike the worktree case — is display/ordering metadata only.
 
-**Observability gap (blocks §4b — implementation must resolve).** The staleness
-model now depends on `accumulated-context`, and that signal is **not observed in
-the repo today.** The observer parses type / model / sessionId / stop_reason /
-permissionMode / timestamp / tool_use but **no `usage`/token field** (grep over
-`harness/src/claude.rs`), and the real-shaped test fixture models no usage block
-(`harness/tests/claude_artifact_observer.rs:15-18`). Real Claude JSONL assistant
-records are expected to carry `message.usage` with `input_tokens`,
-`output_tokens`, `cache_read_input_tokens`, and `cache_creation_input_tokens`;
-current context size ≈ `input_tokens + cache_read_input_tokens +
-cache_creation_input_tokens` on the latest assistant turn. That shape is standard
-for Claude transcripts but was **not confirmed against a real `~/.claude`
-transcript here** (out of scope). The field is therefore `Option` in the schema
-above: the implementer must (a) confirm the `message.usage` shape against a real
-transcript and (b) extend `ClaudeRecoveredTurn` (`harness/src/claude.rs:1050`) to
-recover it, before the §4b threshold can fire on live data.
+**Sourcing the context figure — the harness's own number, never a self-calculation
+(blocks §4b until wired).** `accumulated_context` is the context size the Claude
+Code harness **already computes for itself**; the workspace harness reads that
+authoritative figure and never re-derives it. Summing `message.usage` token fields
+out of the JSONL is explicitly rejected: Claude Code documents the transcript
+format as internal and version-unstable and warns against parsing it
+(`https://code.claude.com/docs/en/sessions.md`), so a hand-rolled total would
+silently drift. The JSONL observer (`harness/src/claude.rs`) is therefore left
+as-is on this axis — it carries no token field today (grep over
+`harness/src/claude.rs`; fixture `harness/tests/claude_artifact_observer.rs:15-18`
+models none) and none is added there.
+
+- **Primary — the statusline JSON payload.** Claude Code pipes a structured JSON
+  blob to a configured statusline command on stdin, carrying a `context_window`
+  object (`used_percentage`, `remaining_percentage`, `total_input_tokens`,
+  `context_window_size`, and a `current_usage` token breakdown) plus a top-level
+  `exceeds_200k_tokens` boolean (`https://code.claude.com/docs/en/statusline.md`).
+  That is exactly the §4b axis — the harness's own token count, and a native
+  past-200K flag that maps directly onto the `HandoverDue` threshold — delivered as
+  push. Harness supplies a statusline command that forwards the `context_window`
+  block into `ClaudeSessionObservation`, rather than reading the transcript.
+- **Fallback — inject `/context` and parse it.** If the statusline payload is
+  unavailable, harness writes the `/context` slash command into the running Claude
+  TUI and parses its output. `/context` is a confirmed command
+  (`https://code.claude.com/docs/en/commands.md`) but renders only a visual colored
+  grid with no documented structured schema, so this path parses rendered TUI text
+  and is strictly the second choice. The injection primitive already exists and
+  relocates into harness with the driver (§1, §7 step 3): `TerminalCellSurface::send`
+  feeds arbitrary bytes into the live terminal as `InputSource::Programmatic`
+  (`mentci/src/harness_liveness.rs:808-817`), so harness writes `/context` + return
+  and reads the grid back off the transcript stream it already watches.
+
+The field stays `Option` in the schema above: present once the harness figure is
+first observed, absent before the first turn and immediately after `/compact` until
+the next call (the statusline `current_usage` is `null` in those windows).
+*Implementer-verification items:* confirm the exact nested statusline field
+spellings and their stability against the installed Claude Code version (the
+payload has grown field-by-field across releases, so treat the names above as
+doc-reported, not asserted), and build the wiring by which harness captures the
+statusline command's stdout and routes the figure into the observation event
+(Claude Code invokes the statusline command; harness provides it).
 
 ## 3 · Orchestrate session-store schema
 
@@ -244,7 +270,7 @@ Typed records over flags throughout (`typed-records-over-flags`).
 ;;   resume-locator?     : (ClaudeResumeLocator <claude-resume-identifier> <transcript-path>)   ;; Option: present once observed
 ;;   working-directory   : WirePath            ;; the sandbox jj working copy
 ;;   status              : HarnessSessionStatus
-;;   accumulated-context?: ContextTokens       ;; the staleness signal (§4b); infrastructure-minted from ClaudeSessionObservation; Option until first observed (see §2d gap)
+;;   accumulated-context?: ContextTokens       ;; the staleness signal (§4b); infrastructure-minted from ClaudeSessionObservation; Option until first observed (see §2d sourcing note)
 ;;   last-activity       : TimestampNanos      ;; DISPLAY/ORDERING ONLY — does not gate resume (§4b); infrastructure-minted, never agent-supplied
 ;;   origin-prompt-digest: PromptDigest        ;; content hash of the prompt that created it, for audit/dedupe
 
@@ -330,10 +356,12 @@ only id *presence*) — so a failed `claude --resume <id>` is a typed outcome th
 falls through to `FreshLaunch`, and orchestrate flips the record `Idle → Recycled`
 on that failure.
 
-Dependency: this rule fires on live data only once the token signal is actually
-observed — see the §2d observability gap (`message.usage` is expected in the real
-JSONL but is not parsed by `harness/src/claude.rs` today, and is unmodeled in the
-test fixture). That extraction is the one implementation prerequisite for 4b.
+Dependency: this rule fires on live data only once the harness's context figure is
+actually wired in — see §2d. That figure is the authoritative number the Claude
+Code harness reports via its statusline JSON payload (`context_window` /
+`exceeds_200k_tokens`), with `/context` injection+parse as the named fallback; the
+workspace harness never self-calculates it from raw usage tokens. Wiring that
+surface into `ClaudeSessionObservation` is the one implementation prerequisite for 4b.
 
 ### 4c · Archive is stop-driven, never a wall-clock sweep
 
@@ -464,9 +492,11 @@ Build producers before consumers, contracts before movers, stores before routing
 3. **Harness → terminal-cell launch (the hard new capability).** Add the
    terminal-cell dependency to harness; move `ClaudeCodeAdapter` +
    `TerminalCellDriver`/liveness from `mentci/src/harness_{adapters,liveness}.rs`
-   into harness; wire the JSONL observer into the daemon **and extend
-   `ClaudeRecoveredTurn` to recover `message.usage` context tokens** (the §4b
-   prerequisite, §2d gap); implement `OpenClaudeSession` end-to-end against the
+   into harness; wire the JSONL observer into the daemon **and wire the
+   harness-reported context figure from the statusline JSON payload into
+   `ClaudeSessionObservation`** (`/context` injection+parse as the fallback; never
+   self-calculated from raw usage tokens — the §4b prerequisite, §2d); implement
+   `OpenClaudeSession` end-to-end against the
    sandboxed-jj first proof (`mentci/ARCHITECTURE.md:305-309`). Delete Mentci's
    duplicate `ClaudeCodeEventMapper` in favour of the contract `AdapterEvent` family.
 4. **Orchestrate routing.** Move the `preflight` engine in (renamed per §5), wire
@@ -514,14 +544,16 @@ deferred path for the turn delivery, though the resume itself is in scope.
   for rewrite. A separate worker performs the doc rewrite — this lane does **not**
   edit `ARCHITECTURE.md`; it only records that the section is superseded and the
   rewrite is pending.
-- **Context/token size not observed in-repo today (blocks §4b).** The staleness
-  model depends on `accumulated_context`, which `harness/src/claude.rs` does not
-  parse and the test fixture does not model (§2d). Real Claude JSONL assistant
-  records are expected to carry `message.usage`
-  (`input_tokens`+`cache_read_input_tokens`+`cache_creation_input_tokens` ≈ current
-  context size), but that shape was not confirmed against a real `~/.claude`
-  transcript here (out of scope). Named gap: confirm the `message.usage` shape on a
-  real transcript and extend `ClaudeRecoveredTurn` to recover it before the §4b
+- **Context size comes from the harness, not a self-calculation (blocks §4b until
+  wired).** The staleness axis reads `accumulated_context`, sourced from the Claude
+  Code statusline JSON payload's `context_window` block (`used_percentage` /
+  `total_input_tokens` / native `exceeds_200k_tokens`), with `/context`
+  injection+parse as the fallback (§2d). The workspace harness must **not** sum
+  `message.usage` tokens out of the transcript — Claude Code documents that format
+  as internal and version-unstable. Named implementer items: confirm the exact
+  statusline field spellings and their version-stability against the installed
+  Claude Code (doc-reported, not asserted here), and build the wiring that captures
+  the statusline command's stdout into `ClaudeSessionObservation`, before the §4b
   100K/200K thresholds can fire on live data.
 - **Three `HarnessKind` enums.** `mentci` `{ClaudeCode, Codex, Pi, OpenEndedHarness}`
   (`harness_sessions.rs:176`), `signal-orchestrate` `{Codex, Claude}`

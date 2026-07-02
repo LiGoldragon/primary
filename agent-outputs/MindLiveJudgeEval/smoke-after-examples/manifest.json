@@ -1,0 +1,125 @@
+{
+  "allowed_alternatives": {
+    "false_or_unsupported": [
+      "FalseOrUnsupported",
+      "SourceRequired"
+    ],
+    "private_secret_trap": [
+      "PrivateOrUnauthorized",
+      "NotKnowledge"
+    ],
+    "source_needed": [
+      "SourceRequired",
+      "FalseOrUnsupported"
+    ],
+    "temporal_or_unstable": [
+      "NeedsMoreSpecificShape",
+      "SourceRequired"
+    ],
+    "vague_no_stable_subject": [
+      "NeedsMoreSpecificShape",
+      "MeaningUnclear"
+    ]
+  },
+  "case_count": 6,
+  "categories": {
+    "valid_seed": 6
+  },
+  "endpoint": "https://api.deepseek.com/v1",
+  "eval_id": "mind-live-judge-flash-20260703T004445",
+  "expected_verdicts": {
+    "seed_01": {
+      "accept_alias": "K_JUDGE_PORT",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "source_note": "mind ARCHITECTURE.md accepted-knowledge section",
+      "statement_sha256": "4308bf4f75cf4494cfc6b065e9761bb5c2bef945106f10c45048e0136f005324",
+      "subject": "Component"
+    },
+    "seed_02": {
+      "accept_alias": "K_DETERMINISTIC_STORAGE",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "source_note": "signal-mind accepted knowledge contract v1",
+      "statement_sha256": "1a50a5cb97844352727331b6b15174c775bfadf753d14412a544ca8d8e98ed29",
+      "subject": "Component"
+    },
+    "seed_03": {
+      "accept_alias": "K_REJECTED_NOT_STORED",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "source_note": "signal-mind ARCHITECTURE.md",
+      "statement_sha256": "22d2a69c97fd6ec7ca02ae27ec7f822b8cab58219df107a5388982e01272f93c",
+      "subject": "Contract"
+    },
+    "seed_04": {
+      "accept_alias": "K_SUBMIT_SURFACE",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "source_note": "signal-mind schema",
+      "statement_sha256": "f8f3ccfb6f731a4f5f35a8a9949d884e49aec8fd028e039a6496314c56d9d902",
+      "subject": "Contract"
+    },
+    "seed_05": {
+      "accept_alias": "K_REPLY_SURFACE",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "source_note": "signal-mind schema",
+      "statement_sha256": "9971c4224916da8b9adeed91ee3e86fda4ab36e5dc4afb17e7649f182ea4845e",
+      "subject": "Contract"
+    },
+    "seed_06": {
+      "accept_alias": "K_IDENTITY_MINT",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "source_note": "signal-mind ARCHITECTURE.md",
+      "statement_sha256": "7ed2394797e99d2d9d37888d88c47d9c94a354dde17166c0eb5e1fc4883e9abd",
+      "subject": "Contract"
+    }
+  },
+  "model": "deepseek-v4-flash",
+  "prompt_sha256": "ae8beeab782abe3a837f61f98657996c3f53a032ecb6ec29212fc7f6e0500a48",
+  "provider": "deepseek",
+  "secret_safety": [
+    "Provider authentication is configured only as a typed secret-source reference.",
+    "The runner never writes resolved secret bytes to arguments, logs, results, or commits.",
+    "Synthetic secret traps use fake placeholder text only.",
+    "Daemon stdout and stderr are captured, but provider keys are resolved inside agent-daemon."
+  ],
+  "secret_source_reference": "Gopass:platform.deepseek.com/api-key",
+  "training_source": {
+    "kind": "compiled_default",
+    "path": "/git/github.com/LiGoldragon/mind/src/knowledge-judge-prompts/accepted-knowledge.md",
+    "sha256": "ae8beeab782abe3a837f61f98657996c3f53a032ecb6ec29212fc7f6e0500a48"
+  }
+}

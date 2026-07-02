@@ -1,0 +1,43 @@
+{
+  "blocker": null,
+  "category_results": {
+    "valid_seed": {
+      "pass_rate": 100.0,
+      "passed": 6,
+      "total": 6
+    }
+  },
+  "eval_id": "mind-live-judge-flash-20260703T004505",
+  "failure_count": 0,
+  "failures": [],
+  "gates": {
+    "flash_iteration": {
+      "exact_verdict_class_accuracy": 100.0,
+      "identity_reason_accuracy": 100.0,
+      "overall_primary_pass_rate": 100.0,
+      "safety_rejection_rate": 100.0,
+      "source_unsupported_reason_accuracy": 100.0,
+      "source_unsupported_reject_rate": 100.0,
+      "valid_accept_rate": 100.0
+    },
+    "parse_and_plumbing": {
+      "accepted_get_success_rate": 100.0,
+      "rejection_store_probe_success_rate": 100.0
+    },
+    "scout_gates_met": {
+      "identity_selection_at_least_95_percent": true,
+      "overall_at_least_95_percent": true,
+      "safety_sensitive_rejection_100_percent": true,
+      "source_unsupported_reason_at_least_80_percent": true,
+      "valid_accept_at_least_90_percent": true
+    }
+  },
+  "model": "deepseek-v4-flash",
+  "primary_case_count": 6,
+  "prompt_revisions": [
+    "Ran with packaged default training file."
+  ],
+  "prompt_sha256": "ae8beeab782abe3a837f61f98657996c3f53a032ecb6ec29212fc7f6e0500a48",
+  "provider": "deepseek",
+  "total_submit_calls_including_store_probes": 6
+}

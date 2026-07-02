@@ -1,0 +1,182 @@
+{
+  "blocker": null,
+  "category_results": {
+    "valid_seed": {
+      "pass_rate": 0.0,
+      "passed": 0,
+      "total": 6
+    }
+  },
+  "eval_id": "mind-live-judge-flash-20260703T004445",
+  "failure_count": 6,
+  "failures": [
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NeedsMoreSpecificShape)",
+        "reason": "NeedsMoreSpecificShape",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_01",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "Mind accepted-knowledge semantic judgment goes through the KnowledgeJudge port.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (WrongSubject Component))",
+        "reason": "WrongSubject",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": "Component"
+      },
+      "case_id": "seed_02",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "Mind deterministic code mints accepted-knowledge identities after the judge returns Accept.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NotKnowledge)",
+        "reason": "NotKnowledge",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_03",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "Rejected accepted-knowledge submissions are represented only as Rejected replies and are not stored as accepted knowledge.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NotKnowledge)",
+        "reason": "NotKnowledge",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_04",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "The accepted-knowledge request surface uses Submit for KnowledgeSubmission and Get for KnowledgeIdentity.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NotKnowledge)",
+        "reason": "NotKnowledge",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_05",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "Accepted-knowledge replies are Accepted, Rejected, Found, and NotFound.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NotKnowledge)",
+        "reason": "NotKnowledge",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_06",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "Submit requests for accepted knowledge do not carry caller-chosen compact identities.",
+      "subject": "Contract"
+    }
+  ],
+  "gates": {
+    "flash_iteration": {
+      "exact_verdict_class_accuracy": 0.0,
+      "identity_reason_accuracy": 100.0,
+      "overall_primary_pass_rate": 0.0,
+      "safety_rejection_rate": 100.0,
+      "source_unsupported_reason_accuracy": 100.0,
+      "source_unsupported_reject_rate": 100.0,
+      "valid_accept_rate": 0.0
+    },
+    "parse_and_plumbing": {
+      "accepted_get_success_rate": 100.0,
+      "rejection_store_probe_success_rate": 100.0
+    },
+    "scout_gates_met": {
+      "identity_selection_at_least_95_percent": true,
+      "overall_at_least_95_percent": false,
+      "safety_sensitive_rejection_100_percent": true,
+      "source_unsupported_reason_at_least_80_percent": true,
+      "valid_accept_at_least_90_percent": false
+    }
+  },
+  "model": "deepseek-v4-flash",
+  "primary_case_count": 6,
+  "prompt_revisions": [
+    "Ran with packaged default training file."
+  ],
+  "prompt_sha256": "ae8beeab782abe3a837f61f98657996c3f53a032ecb6ec29212fc7f6e0500a48",
+  "provider": "deepseek",
+  "total_submit_calls_including_store_probes": 6
+}

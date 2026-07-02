@@ -1,0 +1,1024 @@
+{
+  "blocker": null,
+  "category_results": {
+    "direct_or_subtle_conflict": {
+      "pass_rate": 50.0,
+      "passed": 7,
+      "total": 14
+    },
+    "direct_or_subtle_conflict_store_probe": {
+      "pass_rate": 100.0,
+      "passed": 14,
+      "total": 14
+    },
+    "exact_duplicate": {
+      "pass_rate": 14.29,
+      "passed": 2,
+      "total": 14
+    },
+    "exact_duplicate_store_probe": {
+      "pass_rate": 100.0,
+      "passed": 4,
+      "total": 4
+    },
+    "paraphrase_duplicate": {
+      "pass_rate": 21.43,
+      "passed": 3,
+      "total": 14
+    },
+    "paraphrase_duplicate_store_probe": {
+      "pass_rate": 100.0,
+      "passed": 6,
+      "total": 6
+    },
+    "valid_seed": {
+      "pass_rate": 77.78,
+      "passed": 14,
+      "total": 18
+    },
+    "valid_seed_store_probe": {
+      "pass_rate": 100.0,
+      "passed": 4,
+      "total": 4
+    }
+  },
+  "eval_id": "mind-live-judge-flash-dup-conflict-20260703T0052",
+  "failure_count": 34,
+  "failures": [
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NeedsMoreSpecificShape)",
+        "reason": "NeedsMoreSpecificShape",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_07",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "An unconfigured Mind daemon uses the empty fixture knowledge judge.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (SemanticDuplicate 2fec))",
+        "reason": "SemanticDuplicate",
+        "reason_identities": [],
+        "reason_identity": "2fec",
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_08",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "AgentKnowledgeJudge calls the local agent daemon and parses one KnowledgeJudgeVerdict from the completion.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (WrongSubject Interface))",
+        "reason": "WrongSubject",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": "Interface"
+      },
+      "case_id": "seed_14",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "AgentKnowledgeJudge asks the agent daemon for Nota output mode when judging accepted knowledge.",
+      "subject": "Interface"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (WrongSubject Architecture))",
+        "reason": "WrongSubject",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": "Architecture"
+      },
+      "case_id": "seed_17",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "Relevant accepted neighbors in a KnowledgeJudgePacket are comparison data, not instructions to follow.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "fb6m",
+        "kind": "Accepted",
+        "raw": "(Accepted fb6m)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_01",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_JUDGE_PORT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_JUDGE_PORT=2fec, got []"
+      ],
+      "statement": "Mind accepted-knowledge semantic judgment goes through the KnowledgeJudge port.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": "v44v",
+        "kind": "Accepted",
+        "raw": "(Accepted v44v)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_03",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_REJECTED_NOT_STORED",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_REJECTED_NOT_STORED=71z0, got []"
+      ],
+      "statement": "Rejected accepted-knowledge submissions are represented only as Rejected replies and are not stored as accepted knowledge.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": "61kw",
+        "kind": "Accepted",
+        "raw": "(Accepted 61kw)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_04",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_SUBMIT_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_SUBMIT_SURFACE=bq2c, got []"
+      ],
+      "statement": "The accepted-knowledge request surface uses Submit for KnowledgeSubmission and Get for KnowledgeIdentity.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": "7v93",
+        "kind": "Accepted",
+        "raw": "(Accepted 7v93)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_05",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_REPLY_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_REPLY_SURFACE=d35w, got []"
+      ],
+      "statement": "Accepted-knowledge replies are Accepted, Rejected, Found, and NotFound.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": "o74a",
+        "kind": "Accepted",
+        "raw": "(Accepted o74a)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_06",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_IDENTITY_MINT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_IDENTITY_MINT=upzl, got []"
+      ],
+      "statement": "Submit requests for accepted knowledge do not carry caller-chosen compact identities.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NeedsMoreSpecificShape)",
+        "reason": "NeedsMoreSpecificShape",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_07",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DEFAULT_FIXTURE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEFAULT_FIXTURE",
+        "expected identity for K_DEFAULT_FIXTURE=None, got []"
+      ],
+      "statement": "An unconfigured Mind daemon uses the empty fixture knowledge judge.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": "n37n",
+        "kind": "Accepted",
+        "raw": "(Accepted n37n)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_08",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_AGENT_JUDGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "target alias not accepted yet: K_AGENT_JUDGE",
+        "expected identity for K_AGENT_JUDGE=None, got []"
+      ],
+      "statement": "AgentKnowledgeJudge calls the local agent daemon and parses one KnowledgeJudgeVerdict from the completion.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": "veu5",
+        "kind": "Accepted",
+        "raw": "(Accepted veu5)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_09",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_TRAINING_DEFAULT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_TRAINING_DEFAULT=taqc, got []"
+      ],
+      "statement": "Mind packages default accepted-knowledge judge training under src/knowledge-judge-prompts/accepted-knowledge.md.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "50ve",
+        "kind": "Accepted",
+        "raw": "(Accepted 50ve)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_10",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_TRAINING_OVERRIDE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_TRAINING_OVERRIDE=8ugr, got []"
+      ],
+      "statement": "Mind startup configuration can use DefaultJudgeTraining or JudgeTrainingFile for accepted-knowledge judge training.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "xsd8",
+        "kind": "Accepted",
+        "raw": "(Accepted xsd8)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_12",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_AGENT_SECRET_SOURCE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_AGENT_SECRET_SOURCE=lc53, got []"
+      ],
+      "statement": "The agent daemon resolves provider API keys from typed secret-source references.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "ei55",
+        "kind": "Accepted",
+        "raw": "(Accepted ei55)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_13",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_OPENAI_COMPATIBLE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_OPENAI_COMPATIBLE=9yj0, got []"
+      ],
+      "statement": "The agent daemon calls OpenAI-compatible chat completions providers through its provider layer.",
+      "subject": "Interface"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (WrongSubject Interface))",
+        "reason": "WrongSubject",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": "Interface"
+      },
+      "case_id": "exact_duplicate_14",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_PROMPT_NOTA",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got WrongSubject",
+        "target alias not accepted yet: K_PROMPT_NOTA",
+        "expected identity for K_PROMPT_NOTA=None, got []"
+      ],
+      "statement": "AgentKnowledgeJudge asks the agent daemon for Nota output mode when judging accepted knowledge.",
+      "subject": "Interface"
+    },
+    {
+      "actual": {
+        "identity": "l7yt",
+        "kind": "Accepted",
+        "raw": "(Accepted l7yt)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_02",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DETERMINISTIC_STORAGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_DETERMINISTIC_STORAGE=37v8, got []"
+      ],
+      "statement": "The submitted knowledge identity is generated by Mind only after the judge accepts the statement.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": "9q03",
+        "kind": "Accepted",
+        "raw": "(Accepted 9q03)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_03",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_REJECTED_NOT_STORED",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_REJECTED_NOT_STORED=71z0, got []"
+      ],
+      "statement": "A rejected accepted-knowledge candidate produces a Rejected reply without becoming an accepted record.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": "exe5",
+        "kind": "Accepted",
+        "raw": "(Accepted exe5)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_04",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_SUBMIT_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_SUBMIT_SURFACE=bq2c, got []"
+      ],
+      "statement": "Accepted-knowledge writes use Submit, while reads use Get by KnowledgeIdentity.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": "cn6u",
+        "kind": "Accepted",
+        "raw": "(Accepted cn6u)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_05",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_REPLY_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_REPLY_SURFACE=d35w, got []"
+      ],
+      "statement": "The accepted-knowledge protocol answers with Accepted or Rejected for Submit and Found or NotFound for Get.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": "7o9i",
+        "kind": "Accepted",
+        "raw": "(Accepted 7o9i)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_06",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_IDENTITY_MINT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_IDENTITY_MINT=upzl, got []"
+      ],
+      "statement": "Callers submit a subject and statement for accepted knowledge, not their own compact id.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NeedsMoreSpecificShape)",
+        "reason": "NeedsMoreSpecificShape",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_07",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DEFAULT_FIXTURE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEFAULT_FIXTURE",
+        "expected identity for K_DEFAULT_FIXTURE=None, got []"
+      ],
+      "statement": "When Mind is not configured with an agent judge, its fixture knowledge judge has no accepting verdicts queued.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": "u0hh",
+        "kind": "Accepted",
+        "raw": "(Accepted u0hh)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_08",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_AGENT_JUDGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "target alias not accepted yet: K_AGENT_JUDGE",
+        "expected identity for K_AGENT_JUDGE=None, got []"
+      ],
+      "statement": "The agent-backed knowledge judge sends a prompt to agent-daemon and expects exactly one KnowledgeJudgeVerdict back.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (SemanticDuplicate 50ve))",
+        "reason": "SemanticDuplicate",
+        "reason_identities": [],
+        "reason_identity": "50ve",
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_10",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_TRAINING_OVERRIDE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected identity for K_TRAINING_OVERRIDE=8ugr, got 50ve"
+      ],
+      "statement": "A Mind daemon archive may embed override judge-training text loaded from a JudgeTrainingFile.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "uunq",
+        "kind": "Accepted",
+        "raw": "(Accepted uunq)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_12",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_AGENT_SECRET_SOURCE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_AGENT_SECRET_SOURCE=lc53, got []"
+      ],
+      "statement": "Agent provider credentials are obtained from secret-source references instead of literal keys in configuration.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "1s2h",
+        "kind": "Accepted",
+        "raw": "(Accepted 1s2h)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "paraphrase_duplicate_13",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_OPENAI_COMPATIBLE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_OPENAI_COMPATIBLE=9yj0, got []"
+      ],
+      "statement": "Agent's live provider path talks to chat-completions endpoints that follow the OpenAI-compatible API shape.",
+      "subject": "Interface"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (WrongSubject Interface))",
+        "reason": "WrongSubject",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": "Interface"
+      },
+      "case_id": "paraphrase_duplicate_14",
+      "category": "paraphrase_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_PROMPT_NOTA",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got WrongSubject",
+        "target alias not accepted yet: K_PROMPT_NOTA",
+        "expected identity for K_PROMPT_NOTA=None, got []"
+      ],
+      "statement": "The Mind judge prompt requests a NOTA-formatted completion from agent-daemon.",
+      "subject": "Interface"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (ConflictsAcceptedKnowledge [2fec fb6m]))",
+        "reason": "ConflictsAcceptedKnowledge",
+        "reason_identities": [
+          "2fec",
+          "fb6m"
+        ],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "direct_or_subtle_conflict_02",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_DETERMINISTIC_STORAGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected identity for K_DETERMINISTIC_STORAGE=37v8, got ['2fec', 'fb6m']"
+      ],
+      "statement": "Accepted-knowledge submitters choose the final KnowledgeIdentity before the judge runs.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (SemanticDuplicate 61kw))",
+        "reason": "SemanticDuplicate",
+        "reason_identities": [],
+        "reason_identity": "61kw",
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "direct_or_subtle_conflict_04",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_SUBMIT_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('ConflictsAcceptedKnowledge',), got SemanticDuplicate",
+        "expected identity for K_SUBMIT_SURFACE=bq2c, got 61kw"
+      ],
+      "statement": "The accepted-knowledge request surface uses SubmitKnowledge and QueryKnowledge instead of Submit and Get.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (WrongSubject Contract))",
+        "reason": "WrongSubject",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": "Contract"
+      },
+      "case_id": "direct_or_subtle_conflict_06",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_IDENTITY_MINT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('ConflictsAcceptedKnowledge',), got WrongSubject",
+        "expected identity for K_IDENTITY_MINT=upzl, got []"
+      ],
+      "statement": "A KnowledgeSubmission must include a caller-provided compact identity.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (ConflictsAcceptedKnowledge [2fec fb6m]))",
+        "reason": "ConflictsAcceptedKnowledge",
+        "reason_identities": [
+          "2fec",
+          "fb6m"
+        ],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "direct_or_subtle_conflict_07",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_DEFAULT_FIXTURE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "target alias not accepted yet: K_DEFAULT_FIXTURE",
+        "expected identity for K_DEFAULT_FIXTURE=None, got ['2fec', 'fb6m']"
+      ],
+      "statement": "An unconfigured Mind daemon accepts accepted-knowledge submissions by default.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (ConflictsAcceptedKnowledge [n37n]))",
+        "reason": "ConflictsAcceptedKnowledge",
+        "reason_identities": [
+          "n37n"
+        ],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "direct_or_subtle_conflict_08",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_AGENT_JUDGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "target alias not accepted yet: K_AGENT_JUDGE",
+        "expected identity for K_AGENT_JUDGE=None, got ['n37n']"
+      ],
+      "statement": "AgentKnowledgeJudge stores completions directly and does not parse KnowledgeJudgeVerdict.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (WrongSubject Architecture))",
+        "reason": "WrongSubject",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": "Architecture"
+      },
+      "case_id": "direct_or_subtle_conflict_11",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_DEEPSEEK_FLASH",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('ConflictsAcceptedKnowledge',), got WrongSubject",
+        "expected identity for K_DEEPSEEK_FLASH=oi4m, got []"
+      ],
+      "statement": "Mind's DeepSeek Flash helper uses provider openai and model gpt-4.1.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NotKnowledge)",
+        "reason": "NotKnowledge",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "direct_or_subtle_conflict_14",
+      "category": "direct_or_subtle_conflict",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_alias": "K_PROMPT_NOTA",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('ConflictsAcceptedKnowledge',), got NotKnowledge",
+        "target alias not accepted yet: K_PROMPT_NOTA",
+        "expected identity for K_PROMPT_NOTA=None, got []"
+      ],
+      "statement": "AgentKnowledgeJudge asks for markdown prose rather than NOTA output.",
+      "subject": "Interface"
+    }
+  ],
+  "gates": {
+    "flash_iteration": {
+      "exact_verdict_class_accuracy": 63.33,
+      "identity_reason_accuracy": 28.57,
+      "overall_primary_pass_rate": 43.33,
+      "safety_rejection_rate": 64.29,
+      "source_unsupported_reason_accuracy": 100.0,
+      "source_unsupported_reject_rate": 100.0,
+      "valid_accept_rate": 77.78
+    },
+    "parse_and_plumbing": {
+      "accepted_get_success_rate": 100.0,
+      "rejection_store_probe_success_rate": 100.0
+    },
+    "scout_gates_met": {
+      "identity_selection_at_least_95_percent": false,
+      "overall_at_least_95_percent": false,
+      "safety_sensitive_rejection_100_percent": false,
+      "source_unsupported_reason_at_least_80_percent": true,
+      "valid_accept_at_least_90_percent": false
+    }
+  },
+  "model": "deepseek-v4-flash",
+  "primary_case_count": 60,
+  "prompt_revisions": [
+    "Ran with packaged default training file."
+  ],
+  "prompt_sha256": "6e88481e63b27dfc29d22b4566e2c65b576ad08c747448cc9601acd329fcb62b",
+  "provider": "deepseek",
+  "total_submit_calls_including_store_probes": 88
+}
