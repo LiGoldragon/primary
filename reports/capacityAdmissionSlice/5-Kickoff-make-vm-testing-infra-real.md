@@ -48,9 +48,13 @@ The existing 2-node test `.#checks.x86_64-linux.lojix-deploy-smoke`
 
 ## Open blocker for the psyche
 
-The authoritative designated-VM-test-host list lives in the private goldragon
-repo (off-limits without explicit psyche authorization). The new session needs
-either that authorization or the host name, to run tests where they belong.
+The authoritative designated-VM-test-host list lives in the goldragon
+cluster-facts repo, which is **public** (`github:LiGoldragon/goldragon`) and not
+authorization-gated — read it directly. Only the SOPS-encrypted secret values it
+references are protected, not the data or the host designation, so no psyche
+authorization is needed to open it. The host name is therefore readable now.
+[Corrected: an earlier draft of this report miscalled goldragon a "private …
+off-limits" repo; that was wrong — the repo is public.]
 
 ## Locators (detail on demand)
 

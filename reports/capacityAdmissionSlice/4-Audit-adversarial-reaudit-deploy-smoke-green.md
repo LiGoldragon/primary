@@ -118,9 +118,11 @@ not an established designated VM-testing host; prometheus is the designated
 VmHost. (Correctness of a hermetic result is host-independent, so the GREEN is
 not wrong *because* of the host — but the design RULE was broken, and the psyche's
 instinct is backed by code.) Caveat I cannot close read-only: the authoritative
-host-designation list lives in the private goldragon cluster repo (off-limits),
-so I cannot 100% exclude ouranos also being designated — but no public evidence
-supports it and the role evidence (build-offloading laptop) is against it.
+host-designation list lives in the goldragon cluster repo — which is public and
+readable, not off-limits (this read-only audit simply did not open it) — so I
+cannot 100% exclude ouranos also being designated from this pass alone, but no
+public evidence supports it and the role evidence (build-offloading laptop) is
+against it.
 
 ## Verdict 3 — Did GREEN depend on anything illegitimate? YES, two real anchoring problems
 
