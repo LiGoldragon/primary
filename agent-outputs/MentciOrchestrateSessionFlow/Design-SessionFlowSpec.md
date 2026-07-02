@@ -369,17 +369,40 @@ All four points are now decided. Each is stated as settled design with a one-lin
 `decided:` note; the tradeoffs that were weighed are kept only where they still
 shape the implementation.
 
-### 4a · Concurrency — many concurrent sessions
+### 4a · Concurrency — many concurrent sessions, one per harness instance
 
-`decided:` **Many concurrent Claude sessions. No one-hot slot, no eviction/queue
-policy.** Every substrate already supports it: harness config holds
-`harnesses: Vec<HarnessInstanceConfiguration>` (`signal-harness/src/lib.rs:922`);
-the transcript stream is explicitly multi-watcher (`:567-577`); the reuse registry
-keys by lane and already stores many named sessions
-(`harness_sessions.rs:465`, `by_lane_name`). This is also what §0.5 requires —
-long, compaction-heavy runs must be able to coexist rather than contend for one hot
-slot. There is no eviction mechanism to build for V1; a soft cap on `Hot`-status
-count remains available as a *later* knob but is explicitly not a V1 gate.
+`decided:` **Many concurrent Claude sessions, realized as many harness instances,
+each hosting exactly one live session. No one-hot slot, no eviction/queue policy,
+and no session-multiplexing inside a single instance (M1).** The addressing model
+is one session per harness instance: an instance is fixed at daemon startup
+(`harnesses: Vec<HarnessInstanceConfiguration>`, `signal-harness/src/lib.rs:922`),
+carries one `harness_kind` and one terminal endpoint, and its transcript stream
+binds to a single `HarnessName` (`daemon.rs` `bound_harness`). So `HarnessName` is
+the whole live-session key, and `OpenClaudeSession`, `ClaudeSessionObservation`,
+`WatchHarnessTranscript`, and the `SessionRouted`/`PromptRouted` replies all key on
+it (§2). Multi-watcher (`:567-577`) means many observers of **one** instance's
+stream — Mentci's display and orchestrate's observation feed watching the same
+session — not many sessions on one stream. (The earlier "every substrate already
+supports many concurrent sessions" grounding conflated "many fixed startup
+instances" and "many watchers" with "many dynamically addressable sessions on one
+instance"; the last is net-new substrate and is explicitly not built here.)
+
+The durable session identity is `(lane, session-handle)` in the store (§3), which
+outlives any one hosting instance (a session goes `Idle`, then resumes on whatever
+instance is free); the live `HarnessName` is the transient hosting address, and
+orchestrate maps between them via the record's `hosting-harness` binding (§3).
+
+Concurrency is bounded by the pool of configured instances, which is exactly what
+§0.5 requires: long, compaction-heavy runs coexist by occupying distinct instances
+rather than contending for one hot slot. **Allocation:** orchestrate tracks which
+instances are currently `Hot` (each `Hot` record carries its `hosting-harness`,
+§3); to open a new or resumed session it selects a non-`Hot` instance, opens on it
+(§2c), and records that `HarnessName` as the record's `hosting-harness`. A resumed
+session need not return to the instance it last ran on — it binds to whichever free
+instance is allocated, via `ResumeSession <id>`. If every instance is `Hot`, that
+is a capacity limit of the configured pool; a soft cap on concurrent `Hot` sessions
+is a natural later knob but is not a V1 gate. There is no eviction mechanism to
+build for V1.
 
 ### 4b · Staleness is measured in context size, not wall-clock time
 
@@ -392,35 +415,40 @@ Soft, guidance thresholds (not hard kills, per §0.5):
 
 - **≈100K tokens — long but fully resumable/workable.** The routing model (§5)
   reuses the session normally.
-- **≈200K tokens — old; guide toward context handover.** Orchestrate marks the
-  record `HandoverDue` and the routing model treats reuse as an *invitation* to
-  wrap up and spawn a fresh session rather than resume into an ever-growing
-  context. This is a nudge into the workspace's existing **context-handover**
-  discipline (`context-handover` skill: a focus-scoped freshness aid carrying only
-  settled intent, confirmed facts, recent completed changes, live uncertainties,
-  open questions, and agent-output pointers) — it is never a forced action, and a
-  `HandoverDue` session stays fully resumable if the psyche or the flow chooses to
-  continue it.
+- **≈200K tokens — old; guide toward context handover.** At the routing decision
+  the routing model derives *handover-due* from the record's `accumulated-context`
+  (S3 — no stored status; §3) and treats reuse as an *invitation* to wrap up and
+  spawn a fresh session rather than resume into an ever-growing context. This is a
+  nudge into the workspace's existing **context-handover** discipline
+  (`context-handover` skill: a focus-scoped freshness aid carrying only settled
+  intent, confirmed facts, recent completed changes, live uncertainties, open
+  questions, and agent-output pointers) — it is never a forced action, and a
+  handover-due session stays fully resumable if the psyche or the flow chooses to
+  continue it. Because the predicate is recomputed each routing decision, a
+  post-`/compact` session whose context dropped back below the threshold is simply
+  no longer handover-due — nothing to unset.
 
 Because a working agent is never interrupted (§0.5), the thresholds only ever apply
 to a session that has **already stopped** — they change how the *next* prompt for
 that topic is routed, not what a live run is allowed to do. A run may pass through
-several compactions and cross 200K mid-flight; that is fine, and the `HandoverDue`
-flag is only consulted at the next routing decision.
+several compactions and cross 200K mid-flight; that is fine, and the handover-due
+predicate is evaluated only at the next routing decision.
 
 Resume mechanics, unchanged from the reuse path: resumable iff `resume_locator`
 present AND transcript file exists (`claude.rs:163,359`), with the resume attempt
 itself authoritative. **No resume-id *validity* probe exists anywhere** (Scout §6;
 only id *presence*) — so a failed `claude --resume <id>` is a typed outcome that
-falls through to `FreshLaunch`, and orchestrate flips the record `Idle → Recycled`
-on that failure.
+falls through to `FreshLaunch`, and orchestrate flips the record to `Recycled` from
+whatever resumable state it was resumed out of (`Idle` or `Archived`; §4c, S2) on
+that failure.
 
 Dependency: this rule fires on live data only once the harness's context figure is
 actually wired in — see §2d. That figure is the authoritative number the Claude
 Code harness reports via its statusline JSON payload (`context_window` /
-`exceeds_200k_tokens`), with `/context` injection+parse as the named fallback; the
-workspace harness never self-calculates it from raw usage tokens. Wiring that
-surface into `ClaudeSessionObservation` is the one implementation prerequisite for 4b.
+`exceeds_200k_tokens`), delivered passively to a statusline command with **no**
+command injection anywhere (§2d, M3); the workspace harness never self-calculates
+it from raw usage tokens. Wiring that surface into `ClaudeSessionObservation` is the
+one implementation prerequisite for 4b.
 
 ### 4c · Archive is stop-driven, never a wall-clock sweep
 
