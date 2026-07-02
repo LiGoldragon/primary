@@ -38,8 +38,22 @@ expensive parts are the two genuinely-new wires (Mentci→orchestrate prompt
 ingress, harness→terminal-cell launch) and the two genuinely-new stores
 (orchestrate session store, harness live-session table). This also means the
 mentci `ARCHITECTURE.md` "Possible Future Design" (`mentci/ARCHITECTURE.md:87-318`)
-is the design-of-record being *revised* here, not live behavior being changed
-(§9 records the divergence).
+is the design-of-record being *revised* here (psyche ACCEPTED the revision; a
+separate worker rewrites that doc — see §9).
+
+## 0.5 · Governing lifecycle principle — do not interrupt a working agent
+
+Psyche ruling, and the frame the whole session lifecycle is built on: **a session
+is done when it stops, and nothing in this design may interrupt a running one.**
+A large or complex flow may legitimately consume a great deal of context and pass
+through several compactions before it finishes — that is normal and must not
+trigger eviction, archival, or a forced handover. Every consequence of this
+principle recurs below: sessions are only ever moved out of the hot set on a
+harness-reported *stop* (§4c), staleness is a *soft nudge toward* context handover
+rather than a kill (§4b), there is no wall-clock age sweep, and the "many
+concurrent sessions" choice (§4a) is precisely what lets long runs coexist without
+contending for a single hot slot. Read this as the constraint that any later
+implementation lane must not violate.
 
 ## 1 · Component ownership split (before → after)
 
@@ -165,9 +179,10 @@ is out of scope here (see §8).
 
 ### 2d · Harness → orchestrate — keep the session store fresh (push, subscription)
 
-Orchestrate's store needs the recovered Claude session-id, model, and last-activity
-to make future reuse/age decisions. The producer of those facts is harness's
-JSONL observer (`harness/src/claude.rs`). Per push-not-pull, harness pushes and
+Orchestrate's store needs the recovered Claude session-id, model, **accumulated
+context size** (the staleness signal, §4b), and stop lifecycle to make future
+reuse/handover/archive decisions. The producer of those facts is harness's JSONL
+observer (`harness/src/claude.rs`). Per push-not-pull, harness pushes and
 orchestrate subscribes — **reusing harness's landed multi-watch transcript stream**
 (`signal-harness/src/lib.rs:661-666`; multi-watcher is safe by design,
 Scout-SituationalMap §cross-check). Add one typed observation event to that stream
@@ -175,18 +190,37 @@ carrying store-shaped facts (the raw `TranscriptObservation` line is too weak):
 
 ```nota
 ;; New stream event on HarnessTranscriptStream: store-shaped session facts.
-(ClaudeSessionObservation <harness> <session-identifier?> <model?> <last-activity> <lifecycle>)
-;;   session-identifier?: ClaudeResumeIdentifier   ;; recovered from JSONL (claude.rs:594,1022)
-;;   model?             : DetectedModel             ;; recovered (claude.rs:602)
-;;   last-activity      : TimestampNanos            ;; from JSONL timestamps (claude.rs:590,1121)
-;;   lifecycle          : Ready | Active | Completed | (Exited <exit-status>)
+(ClaudeSessionObservation <harness> <session-identifier?> <model?>
+                          <accumulated-context?> <last-activity> <lifecycle>)
+;;   session-identifier? : ClaudeResumeIdentifier   ;; recovered from JSONL (claude.rs:594,1022)
+;;   model?              : DetectedModel             ;; recovered (claude.rs:602)
+;;   accumulated-context?: ContextTokens             ;; the staleness signal (§4b); Option — see gap below
+;;   last-activity       : TimestampNanos            ;; display/ordering ONLY, never gates resume (§4b)
+;;   lifecycle           : Ready | Active | Completed | (Exited <exit-status>)
 ```
 
 Orchestrate subscribes to the harness it just opened (it knows the `HarnessName`
 from §2c), receives current-state-on-connect then deltas, and writes
-`last_activity` / `resume_locator` / `model` into the session record (§3) — the
-same infrastructure-minted discipline as `Worktree.last_activity`
-(`orchestrate/src/worktree.rs:52-54`, never agent-supplied).
+`accumulated_context` / `resume_locator` / `model` / `status` into the session
+record (§3). `last_activity` mirrors `Worktree.last_activity`'s
+infrastructure-minted discipline (`orchestrate/src/worktree.rs:52-54`, never
+agent-supplied) but — unlike the worktree case — is display/ordering metadata only.
+
+**Observability gap (blocks §4b — implementation must resolve).** The staleness
+model now depends on `accumulated-context`, and that signal is **not observed in
+the repo today.** The observer parses type / model / sessionId / stop_reason /
+permissionMode / timestamp / tool_use but **no `usage`/token field** (grep over
+`harness/src/claude.rs`), and the real-shaped test fixture models no usage block
+(`harness/tests/claude_artifact_observer.rs:15-18`). Real Claude JSONL assistant
+records are expected to carry `message.usage` with `input_tokens`,
+`output_tokens`, `cache_read_input_tokens`, and `cache_creation_input_tokens`;
+current context size ≈ `input_tokens + cache_read_input_tokens +
+cache_creation_input_tokens` on the latest assistant turn. That shape is standard
+for Claude transcripts but was **not confirmed against a real `~/.claude`
+transcript here** (out of scope). The field is therefore `Option` in the schema
+above: the implementer must (a) confirm the `message.usage` shape against a real
+transcript and (b) extend `ClaudeRecoveredTurn` (`harness/src/claude.rs:1050`) to
+recover it, before the §4b threshold can fire on live data.
 
 ## 3 · Orchestrate session-store schema
 
@@ -200,8 +234,8 @@ Typed records over flags throughout (`typed-records-over-flags`).
 ;; twin StoredHarnessSession lives in orchestrate/src/tables.rs. (lane, handle) is
 ;; the identity, mirroring Worktree's (repository, branch).
 (HarnessSession <lane> <session-handle> <topic-summary> <provider> <model>
-                <resume-locator?> <working-directory> <status> <last-activity>
-                <origin-prompt-digest>)
+                <resume-locator?> <working-directory> <status>
+                <accumulated-context?> <last-activity> <origin-prompt-digest>)
 ;;   lane                : LaneName            ;; stable lookup key, derived from session intent not provider (mentci/ARCHITECTURE.md:150)
 ;;   session-handle      : SessionHandle       ;; the token returned to later callers
 ;;   topic-summary       : PurposeText         ;; reuse Worktree.purpose type; the routing model's one-line topic
@@ -210,23 +244,32 @@ Typed records over flags throughout (`typed-records-over-flags`).
 ;;   resume-locator?     : (ClaudeResumeLocator <claude-resume-identifier> <transcript-path>)   ;; Option: present once observed
 ;;   working-directory   : WirePath            ;; the sandbox jj working copy
 ;;   status              : HarnessSessionStatus
-;;   last-activity       : TimestampNanos      ;; infrastructure-minted from ClaudeSessionObservation, never agent-supplied
+;;   accumulated-context?: ContextTokens       ;; the staleness signal (§4b); infrastructure-minted from ClaudeSessionObservation; Option until first observed (see §2d gap)
+;;   last-activity       : TimestampNanos      ;; DISPLAY/ORDERING ONLY — does not gate resume (§4b); infrastructure-minted, never agent-supplied
 ;;   origin-prompt-digest: PromptDigest        ;; content hash of the prompt that created it, for audit/dedupe
 
 ;; Lifecycle status. Enum, not a bool bundle — mirrors WorktreeStatus (lib.rs:652).
-;;   Hot      : a live terminal-cell process exists in harness right now
-;;   Idle     : no live process, but resume-locator makes it resumable
-;;   Archived : left the hot set by policy; still resumable-by-id until GC
-;;   Recycled : GC-eligible, resume no longer promised
-(HarnessSessionStatus Hot | Idle | Archived | Recycled)
+;; Transitions are STOP-driven, never wall-clock (§0.5, §4c).
+;;   Hot        : a live terminal-cell process exists in harness right now
+;;   Idle       : the agent stopped; no live process, resume-locator makes it resumable
+;;   HandoverDue : Idle AND accumulated-context past the handover threshold (§4b) — a soft flag inviting a fresh session, not an eviction
+;;   Archived   : Idle/HandoverDue and no longer needed; still resumable-by-id until GC
+;;   Recycled   : GC-eligible, resume no longer promised (e.g. a resume attempt failed, §4b)
+(HarnessSessionStatus Hot | Idle | HandoverDue | Archived | Recycled)
 ```
 
 `resume-locator` is `Option<record>` not a bool: the "yes, resumable" answer
 carries the id + transcript path a resume needs (`typed-records-over-flags` form 1).
-The reuse decision that `harness_sessions.rs:535-568` performs in-memory (match
-lane, reject on identity/metadata/launch-metadata mismatch) becomes a store query
-against this record; the `SessionAddressMetadata` comparison
-(`harness_sessions.rs:547`) collapses into matching `HarnessSession` fields.
+`accumulated-context` (context tokens) — not `last-activity` — is the staleness
+axis (§4b): a session that has been quiet for a day but holds only 30K tokens is
+fully resumable, while one that just stopped at 210K tokens is `HandoverDue`.
+`HandoverDue` is a typed record state, not a boolean flag, so the "yes, past the
+threshold" answer keeps the accumulated size and the resume-locator together for
+the routing model to act on. The reuse decision that `harness_sessions.rs:535-568`
+performs in-memory (match lane, reject on identity/metadata/launch-metadata
+mismatch) becomes a store query against this record; the `SessionAddressMetadata`
+comparison (`harness_sessions.rs:547`) collapses into matching `HarnessSession`
+fields.
 
 Storage discipline (`rust-storage-and-wire`): the record is a schema-owned type in
 the `worktrees`-sibling `harness_sessions` table; adding it is a coordinated store
@@ -235,77 +278,85 @@ bump). The `worktrees.nota` GC manifest gets a `harness-sessions.nota` sibling w
 a `gc_candidates`-shaped reader returning `Archived | Recycled`
 (`orchestrate/src/worktree_projection.rs:32-56`).
 
-## 4 · Policy decisions [PSYCHE DECISION]
+## 4 · Policy decisions (psyche-ruled)
 
-Each is marked for the human. Recommendation + the tradeoff; none silently
-defaulted.
+All four points are now decided. Each is stated as settled design with a one-line
+`decided:` note; the tradeoffs that were weighed are kept only where they still
+shape the implementation.
 
-### 4a · One hot Claude session vs. many (V1) — [PSYCHE DECISION]
+### 4a · Concurrency — many concurrent sessions
 
-**Recommendation: many.** Every substrate already supports many: harness config
-holds `harnesses: Vec<HarnessInstanceConfiguration>` (`signal-harness/src/lib.rs:922`);
+`decided:` **Many concurrent Claude sessions. No one-hot slot, no eviction/queue
+policy.** Every substrate already supports it: harness config holds
+`harnesses: Vec<HarnessInstanceConfiguration>` (`signal-harness/src/lib.rs:922`);
 the transcript stream is explicitly multi-watcher (`:567-577`); the reuse registry
 keys by lane and already stores many named sessions
-(`harness_sessions.rs:465`, `by_lane_name`). "One hot at a time" is not a current
-constraint anywhere — it would be a *new* orchestrate eviction/queue policy built
-on top.
+(`harness_sessions.rs:465`, `by_lane_name`). This is also what §0.5 requires —
+long, compaction-heavy runs must be able to coexist rather than contend for one hot
+slot. There is no eviction mechanism to build for V1; a soft cap on `Hot`-status
+count remains available as a *later* knob but is explicitly not a V1 gate.
 
-Tradeoff: **many** = simplest to honor, matches the data model, but unbounded
-concurrent `claude` processes + model-quota contention with no backpressure.
-**One-hot** = a hard resource bound and a single mental model, but forces an
-eviction-or-queue mechanism (which session gets suspended when a second prompt
-arrives) that has no scaffolding today. Recommendation stands at *many for V1*,
-with a soft cap (`Hot`-status count) as a later policy knob rather than a V1 gate.
+### 4b · Staleness is measured in context size, not wall-clock time
 
-### 4b · The "too old to resume" rule — [PSYCHE DECISION]
+`decided:` **A session's "age" for resume/handover is the context (token) size it
+has accumulated, not elapsed time.** The resume/handover decision reads
+`HarnessSession.accumulated_context` (§3), never `last_activity`. `last_activity`
+is kept purely for display and ordering.
 
-**Recommendation: resumable iff `resume_locator` present AND transcript file exists
-AND `now - last_activity < resume_horizon`; the resume attempt is authoritative,
-with graceful fall-through to a fresh launch on failure.** Defined only in signals
-that actually exist:
+Soft, guidance thresholds (not hard kills, per §0.5):
 
-- `last_activity: TimestampNanos` on the session record (§3), fed by
-  `ClaudeSessionObservation` from JSONL timestamps (`harness/src/claude.rs:590,1121`)
-  — the exact infrastructure-minted-staleness pattern `Worktree.last_activity`
-  already uses (`orchestrate/src/worktree.rs:261-278`).
-- transcript/JSONL file presence via the observer's roots (`claude.rs:163,359`).
-- `resume_locator` presence = the recovered `session_identifier` (`claude.rs:1022`).
+- **≈100K tokens — long but fully resumable/workable.** The routing model (§5)
+  reuses the session normally.
+- **≈200K tokens — old; guide toward context handover.** Orchestrate marks the
+  record `HandoverDue` and the routing model treats reuse as an *invitation* to
+  wrap up and spawn a fresh session rather than resume into an ever-growing
+  context. This is a nudge into the workspace's existing **context-handover**
+  discipline (`context-handover` skill: a focus-scoped freshness aid carrying only
+  settled intent, confirmed facts, recent completed changes, live uncertainties,
+  open questions, and agent-output pointers) — it is never a forced action, and a
+  `HandoverDue` session stays fully resumable if the psyche or the flow chooses to
+  continue it.
 
-Critical gap the rule must absorb: **no resume-id *validity* probe exists anywhere**
-(Scout §6; only id *presence*). So the rule cannot promise a stale id resumes — it
-must treat "harness attempted `claude --resume <id>` and it failed" as a typed
-outcome that falls through to `FreshLaunch`, and orchestrate flips the record
-`Idle → Recycled` on that failure.
+Because a working agent is never interrupted (§0.5), the thresholds only ever apply
+to a session that has **already stopped** — they change how the *next* prompt for
+that topic is routed, not what a live run is allowed to do. A run may pass through
+several compactions and cross 200K mid-flight; that is fine, and the `HandoverDue`
+flag is only consulted at the next routing decision.
 
-Tradeoff: a **short** `resume_horizon` (e.g. hours) yields fewer stale-resume
-surprises but more cold starts that lose warm context; a **long** horizon (e.g.
-days) maximizes reuse but leans harder on the (unproven) resume path. Because the
-resume attempt is the real source of truth and there is no validity probe, the
-recommendation leans **lenient horizon + attempt-and-fall-through**; the exact
-`resume_horizon` duration is the psyche's to set.
+Resume mechanics, unchanged from the reuse path: resumable iff `resume_locator`
+present AND transcript file exists (`claude.rs:163,359`), with the resume attempt
+itself authoritative. **No resume-id *validity* probe exists anywhere** (Scout §6;
+only id *presence*) — so a failed `claude --resume <id>` is a typed outcome that
+falls through to `FreshLaunch`, and orchestrate flips the record `Idle → Recycled`
+on that failure.
 
-### 4c · Archive policy — when/how a session leaves the hot set — [PSYCHE DECISION]
+Dependency: this rule fires on live data only once the token signal is actually
+observed — see the §2d observability gap (`message.usage` is expected in the real
+JSONL but is not parsed by `harness/src/claude.rs` today, and is unmodeled in the
+test fixture). That extraction is the one implementation prerequisite for 4b.
 
-**Recommendation: event-driven exit plus an age sweep, mirroring the Worktree
-lifecycle.** Three exits, in order of confidence:
+### 4c · Archive is stop-driven, never a wall-clock sweep
 
-1. **On harness `AdapterExited` / `ClaudeSessionObservation Exited`**: orchestrate
-   moves `Hot → Idle` (process gone, still resumable). Push-driven, authoritative.
-2. **Explicit `ArchiveHarnessSession`** meta order (a `meta-signal-orchestrate`
-   order paralleling `ArchiveWorktree`, `orchestrate/ARCHITECTURE.md:361-364`):
-   `Idle → Archived`, reproject the NOTA manifest.
-3. **Age sweep**: sessions past `resume_horizon` (§4b) move `Idle → Archived`, and
-   a GC reader returns `Archived | Recycled` for a daemon/external agent to reap —
-   the unwired `gc_candidates` shape made concrete
+`decided:` **A session leaves the hot set only on a harness-reported stop; there is
+no forced age sweep that could interrupt live work.** Reconciled with §0.5:
+
+1. **On harness `AdapterExited` / `ClaudeSessionObservation … Exited` (the agent
+   stopped):** orchestrate moves `Hot → Idle` (process gone, still resumable).
+   Push-driven, authoritative — this is the *only* automatic hot-set exit.
+2. **Context-size flag (no process change):** an `Idle` session whose
+   `accumulated_context` is past the handover threshold (§4b) is marked
+   `HandoverDue`. This is a label on an already-stopped session, not an eviction.
+3. **`Idle`/`HandoverDue` → `Archived` when done and no longer needed:** via an
+   explicit `ArchiveHarnessSession` meta order (a `meta-signal-orchestrate` order
+   paralleling `ArchiveWorktree`, `orchestrate/ARCHITECTURE.md:361-364`), which
+   reprojects the NOTA manifest. A GC reader returns `Archived | Recycled` for a
+   daemon/external agent to reap — the unwired `gc_candidates` shape made concrete
    (`orchestrate/src/worktree_projection.rs:32-56`).
 
-Tradeoff: **eager** archive (short horizon, aggressive sweep) frees processes and
-quota fast but discards warm sessions a user might return to; **lazy** archive
-keeps sessions warm but accumulates `Idle` records and stale resume ids. The
-event-driven leg (1) is safe and recommended unconditionally; the psyche sets how
-aggressive the age sweep (3) is (it shares `resume_horizon` with 4b, so 4b and 4c
-should be ruled on together). Following the worktree precedent, archive is a
-**meta-signal** order (owner authority), not an ordinary caller op.
+There is deliberately **no `resume_horizon` wall-clock sweep** (an earlier draft
+proposed one; it is removed because it could archive or pressure a session that is
+simply between turns of a long human-paced task). Following the worktree precedent,
+archive is a **meta-signal** order (owner authority), not an ordinary caller op.
 
 ## 5 · Naming the closed routing model call
 
@@ -336,9 +387,13 @@ Reasoning per `naming` and `design-quality`:
   — the session router runs once per prompt-to-session; the message router runs per
   turn. Name them on the *object* they route (session vs message), never abbreviated.
 
-This is a judgment, not a [PSYCHE DECISION]: "preflight" is acceptable and is the
-established cross-file term, so the rename is optional polish the implementer may
-defer. But the spec's recommendation is to name the act.
+`decided:` **Rename accepted — `preflight` → session routing (`SessionRouter` /
+`RouteSession` / `SessionRoutingPlan`).** The concept name becomes session routing;
+"preflight" survives, if anywhere, only as a model-profile label. The actual code
+rename (the `PreflightEngine` / `PreflightApi` / `MentciPreflightLaunch` /
+`cheap-contained-preflight` identifiers and the `schema/preflight-launch.nota.md`
+surface) lands **with the decomposition implementation** — when the engine moves
+into orchestrate — not in this design session.
 
 ## 6 · Restated end-to-end flow (new ownership)
 
@@ -376,15 +431,18 @@ defer. But the spec's recommendation is to name the act.
    - `AdapterOutput`/`AdapterReady`/`AdapterCompletion`/`AdapterExited` etc. on the
      transcript stream (reused contract types, §2c).
    - `ClaudeSessionObservation` (§2d) carrying recovered session-id / model /
-     last-activity.
+     **accumulated context tokens** (the staleness signal, §4b) / stop lifecycle.
+     The observer never interrupts the run (§0.5) — it only observes.
 8. **Two independent subscribers** consume harness's stream (multi-watch, safe by
    design):
    - **Mentci** opens `WatchHarnessTranscript` on the `harness-name` it got back in
      `PromptRouted` (§2a) and renders live output — Mentci's *display*, no mapping
      logic left in it.
    - **Orchestrate** consumes `ClaudeSessionObservation` and updates the session
-     record's `last_activity` / `resume_locator` / `status`, driving future reuse
-     and archive (§4).
+     record's `accumulated_context` / `resume_locator` / `model` / `status`. It
+     moves `Hot → Idle` only when the agent *stops* (§4c), and marks `HandoverDue`
+     when accumulated context crosses the handover threshold (§4b) — both acting on
+     an already-stopped session, never on a live one.
 9. A later prompt for the same topic re-enters at step 1; step 4 resolves `Reused`;
    step 5 sends `ResumeSession`; per-turn delivery of the new prompt into the live
    session uses the existing `MessageDelivery` op (the message-router path, §8).
@@ -406,18 +464,21 @@ Build producers before consumers, contracts before movers, stores before routing
 3. **Harness → terminal-cell launch (the hard new capability).** Add the
    terminal-cell dependency to harness; move `ClaudeCodeAdapter` +
    `TerminalCellDriver`/liveness from `mentci/src/harness_{adapters,liveness}.rs`
-   into harness; wire the JSONL observer into the daemon; implement
-   `OpenClaudeSession` end-to-end against the sandboxed-jj first proof
-   (`mentci/ARCHITECTURE.md:305-309`). Delete Mentci's duplicate
-   `ClaudeCodeEventMapper` in favour of the contract `AdapterEvent` family.
+   into harness; wire the JSONL observer into the daemon **and extend
+   `ClaudeRecoveredTurn` to recover `message.usage` context tokens** (the §4b
+   prerequisite, §2d gap); implement `OpenClaudeSession` end-to-end against the
+   sandboxed-jj first proof (`mentci/ARCHITECTURE.md:305-309`). Delete Mentci's
+   duplicate `ClaudeCodeEventMapper` in favour of the contract `AdapterEvent` family.
 4. **Orchestrate routing.** Move the `preflight` engine in (renamed per §5), wire
    `RouteSession` → routing model call → store query (§4b reuse rule) →
    `OpenClaudeSession` push → subscribe to `ClaudeSessionObservation`.
 5. **Mentci rewire.** Add `SubmitPrompt` ingress + the `signal-orchestrate`
    dependency + the forward-to-`RouteSession` path; make the client watch the
    returned harness transcript for display. Delete the four now-relocated modules.
-6. **Archive/GC sweep.** Wire the age sweep + `gc_candidates` reaper (§4c) once the
-   store and observation feedback loop are live.
+6. **Stop-driven archive + GC.** Wire the `Hot → Idle`-on-stop transition, the
+   `HandoverDue` context-threshold flag, the `ArchiveHarnessSession` meta order, and
+   the `gc_candidates` reaper (§4c) once the store and observation feedback loop are
+   live. No wall-clock sweep (§0.5).
 
 Because everything moved in steps 3–5 is currently test-only (§0), each move is a
 relocation with its tests, not a live-consumer migration.
@@ -443,17 +504,25 @@ deferred path for the turn delivery, though the resume itself is in scope.
   and hand-proof diverge. Settled intent picks terminal-cell; the implementer must
   confirm terminal-cell's `LaunchCell` reaches a working Claude TUI before trusting
   the proof precedent. Still open.
-- **Divergence from the mentci `ARCHITECTURE.md` design-of-record.** That doc's
-  "Possible Future Design" (`mentci/ARCHITECTURE.md:110-176`) routes Mentci →
-  orchestrate (address only) → a **Mentci-local** terminal-cell driver that owns
-  liveness, with **no harness daemon in the loop** and "harness adapters" living in
-  Mentci. This task's settled intent relocates launch/liveness/observe/close into
-  the **harness daemon** and expands orchestrate from address-only to
-  choose/create/reuse/archive. This spec follows the settled intent and therefore
-  supersedes that section — but `repo-intent` says only the psyche overrides repo
-  direction. The settled-intent constraint set is the authority here; the mentci
-  `ARCHITECTURE.md` "Possible Future Design" must be rewritten to match once this
-  design is accepted. Flag for the psyche.
+- **Mentci `ARCHITECTURE.md` design-of-record — RESOLVED (superseded, rewrite
+  pending).** That doc's "Possible Future Design" (`mentci/ARCHITECTURE.md:110-176`)
+  routes Mentci → orchestrate (address only) → a **Mentci-local** terminal-cell
+  driver that owns liveness, with **no harness daemon in the loop** and "harness
+  adapters" living in Mentci. The psyche ACCEPTED this spec's direction (harness
+  daemon owns launch/liveness/observe/close; orchestrate owns full
+  choose/create/reuse/archive), so that section is confirmed stale and authorized
+  for rewrite. A separate worker performs the doc rewrite — this lane does **not**
+  edit `ARCHITECTURE.md`; it only records that the section is superseded and the
+  rewrite is pending.
+- **Context/token size not observed in-repo today (blocks §4b).** The staleness
+  model depends on `accumulated_context`, which `harness/src/claude.rs` does not
+  parse and the test fixture does not model (§2d). Real Claude JSONL assistant
+  records are expected to carry `message.usage`
+  (`input_tokens`+`cache_read_input_tokens`+`cache_creation_input_tokens` ≈ current
+  context size), but that shape was not confirmed against a real `~/.claude`
+  transcript here (out of scope). Named gap: confirm the `message.usage` shape on a
+  real transcript and extend `ClaudeRecoveredTurn` to recover it before the §4b
+  100K/200K thresholds can fire on live data.
 - **Three `HarnessKind` enums.** `mentci` `{ClaudeCode, Codex, Pi, OpenEndedHarness}`
   (`harness_sessions.rs:176`), `signal-orchestrate` `{Codex, Claude}`
   (`lib.rs:723`), harness `{Codex, Claude, Pi, Fixture}` (`harness/ARCHITECTURE.md:11`).
