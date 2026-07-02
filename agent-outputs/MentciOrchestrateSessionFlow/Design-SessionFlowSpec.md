@@ -104,20 +104,26 @@ A Mentci client submits a prompt to the Mentci daemon. New ordinary variant on
 ;; New Input variant: a raw user prompt to be routed to work.
 (SubmitPrompt <prompt-text> <work-surface> <hard-constraints>)
 ;;   prompt-text     : PromptBody          ;; new newtype; not QuestionProposal.PromptText (that is a question shown TO the psyche, signal-mentci lib.rs:77)
-;;   work-surface    : WorkSurface
-;;   hard-constraints: [LaunchConstraint]   ;; first-proof sandbox requirement lives here
+;;   work-surface    : WorkSurface          ;; opaque routing hint the UI forwards verbatim (which surface the user is on); the UI does not compute it
+;;   hard-constraints: [LaunchConstraint]   ;; opaque routing hints the UI forwards verbatim (first-proof sandbox requirement); NOT launch/sandbox posture the UI decides
 
-;; New Output variant: acknowledgement carrying where to watch.
-(PromptRouted <session-address> <disposition> <harness-name>)
+;; New Output variant: acknowledgement carrying the watch address.
+(PromptRouted <harness-name> <disposition>)
+;;   harness-name: HarnessName             ;; the harness instance hosting the session; the address the client then watches (signal-harness)
 ;;   disposition : Reused | Created
-;;   harness-name: HarnessName             ;; the harness the client then watches (signal-harness)
 ```
 
 Rationale: the prompt op is genuinely distinct from `QuestionProposal.prompt`
 (an approval question presented to the human, `signal-mentci/src/schema/lib.rs:77`).
 The reply carries `harness-name` so the client knows which harness transcript to
 `WatchHarnessTranscript`, rather than Mentci re-streaming output through its own
-wire (that would re-add provider coupling to the UI).
+wire (that would re-add provider coupling to the UI). Both `work-surface` and
+`hard-constraints` are opaque routing hints Mentci forwards unread — no
+launch/sandbox posture or provider logic re-enters the UI (O4). `PromptRouted`
+is a symmetric pass-through of orchestrate's `SessionRouted` (§2b): under the
+one-session-per-harness-instance addressing model (§4a, M1), the `HarnessName`
+alone identifies the live session to watch, so no separate session key crosses
+the UI boundary.
 
 ### 2b · `signal-orchestrate` — Mentci asks orchestrate to route (new, ordinary)
 
@@ -130,19 +136,35 @@ modeled on the ordinary `RunWorkflow` → `WorkflowRunAccepted` shape.
 ;; Ordinary operation: route a prompt to an existing-or-new session.
 (RouteSession <prompt-text> <work-surface> <hard-constraints>)
 
-;; Reply: the chosen session and how it was chosen.
-(SessionRouted <session-address> <disposition> <launch-directive>)
-;;   session-address : (SessionAddress <lane> <session-handle>)
-;;   disposition     : Reused | Created
-;;   launch-directive: FreshLaunch | ResumeExisting   ;; what orchestrate then tells harness
+;; Reply: where to watch, and how the session was chosen.
+(SessionRouted <harness-name> <disposition>)
+;;   harness-name: HarnessName   ;; the harness instance now hosting the session; the address Mentci watches
+;;   disposition : Reused | Created
 ```
 
 `RouteSession` is ordinary because Mentci is an ordinary peer; ordinary peers
 cannot compile meta orders (`orchestrate/ARCHITECTURE.md:374-375`). Orchestrate
 lowers it internally: run the routing model call (§5), consult the session store
-(§3), decide reuse-vs-create, write the store, then push the launch directive to
-harness (§2c). The reply returns fast with the address + disposition; live output
-does not flow back through this reply — the client subscribes to harness.
+(§3), decide reuse-vs-create, allocate a harness instance (§4a), open the session
+on it (§2c), write the store, and reply. The reply carries only what Mentci acts
+on — the `harness-name` it then watches, and the `disposition` (M2). The internal
+fresh-vs-resume launch choice (`FreshLaunch | ResumeExisting`) is daemon lowering
+and stays off the wire (contract-repo: replies name the outcome the caller acts
+on, not how the daemon lowered the request). The durable session identity
+`(lane, session-handle)` is likewise orchestrate-internal store vocabulary (§3),
+not a reply field. `SessionRouted` and `PromptRouted` (§2a) are therefore
+symmetric `(harness-name, disposition)` pass-throughs. The reply returns fast;
+live output does not flow back through it — the client subscribes to harness.
+
+Serialization (S1): the route decision is read-store-snapshot → **slow async
+routing model call (§5)** → decide → write, so two concurrent `RouteSession` for
+the *same lane* could both observe "no live session for lane L," both decide
+`Created`, and split-brain the lane. Orchestrate therefore serializes the route
+decision per lane — a per-lane route guard held across the async model call — so
+that within one lane the decision is single-threaded and a second concurrent
+prompt observes the first's committed record. (This restores the serialization the
+in-memory `register_or_reuse`, `harness_sessions.rs:528`, gave for free before the
+decision straddled an async boundary.) Distinct lanes route concurrently.
 
 ### 2c · `signal-harness` — orchestrate opens a Claude session (new)
 
@@ -150,11 +172,14 @@ Orchestrate gains a dependency on `signal-harness` and drives harness to open th
 session. The scout confirmed harness has **no** dynamic launch/resume/model/close
 operation today — instances are fixed at daemon startup
 (`signal-harness/src/lib.rs:889-922`). New operation on the `Harness` channel
-(`signal-harness/src/lib.rs:629-637`).
+(`signal-harness/src/lib.rs:629-637`). Under the addressing model (§4a, M1) a
+harness instance hosts **exactly one** live session, so the `HarnessName` is the
+whole key at this boundary — there is no per-session handle to carry.
 
 ```nota
 ;; New operation: open (fresh or resumed) a Claude session under a named harness.
-(OpenClaudeSession <harness> <session-handle> <launch-plan>)
+;; The named instance hosts exactly one live session (§4a); HarnessName is the key.
+(OpenClaudeSession <harness> <launch-plan>)
 ;;   harness    : HarnessName
 ;;   launch-plan: (ClaudeLaunchPlan <resume> <model> <working-directory>
 ;;                                  <scaffold-path> <initial-input> <stop-conditions>)
@@ -162,6 +187,11 @@ operation today — instances are fixed at daemon startup
 ;;     model           : HarnessSessionModel        ;; semantic knob, not a raw model literal
 ;;     stop-conditions : [StopCondition]            ;; IdleTimeout | TurnCap | CompletionSignal
 ```
+
+Note (O6): `TurnCap` is inherited verbatim from the existing adapter
+(`harness_adapters.rs:147`) and is enshrined as-is, but it sits in tension with
+§0.5 — a turn cap can cut off a legitimate long, compaction-heavy flow that §0.5
+protects. Flagged for the implementer; not resolved here.
 
 Replies/events **reuse the existing provider-neutral family** rather than
 re-inventing it: `AdapterReady` / `AdapterInputAccepted` / `AdapterOutput` /
@@ -190,10 +220,13 @@ carrying store-shaped facts (the raw `TranscriptObservation` line is too weak):
 
 ```nota
 ;; New stream event on HarnessTranscriptStream: store-shaped session facts.
+;; Keyed by <harness>: one instance hosts one session (§4a), so HarnessName is
+;; the per-session key — orchestrate correlates it to the (lane, session-handle)
+;; record via the hosting-harness binding it wrote at open time (§3).
 (ClaudeSessionObservation <harness> <session-identifier?> <model?>
                           <accumulated-context?> <last-activity> <lifecycle>)
 ;;   session-identifier? : ClaudeResumeIdentifier   ;; recovered from JSONL (claude.rs:594,1022)
-;;   model?              : DetectedModel             ;; recovered (claude.rs:602)
+;;   model?              : DetectedModel             ;; recovered (claude.rs:602); see §9 model-vocab note
 ;;   accumulated-context?: ContextTokens             ;; the staleness signal (§4b); Option — see sourcing note below
 ;;   last-activity       : TimestampNanos            ;; display/ordering ONLY, never gates resume (§4b)
 ;;   lifecycle           : Ready | Active | Completed | (Exited <exit-status>)
@@ -202,9 +235,21 @@ carrying store-shaped facts (the raw `TranscriptObservation` line is too weak):
 Orchestrate subscribes to the harness it just opened (it knows the `HarnessName`
 from §2c), receives current-state-on-connect then deltas, and writes
 `accumulated_context` / `resume_locator` / `model` / `status` into the session
-record (§3). `last_activity` mirrors `Worktree.last_activity`'s
-infrastructure-minted discipline (`orchestrate/src/worktree.rs:52-54`, never
-agent-supplied) but — unlike the worktree case — is display/ordering metadata only.
+record (§3). Correlation is unambiguous under M1: each observation is keyed by
+`HarnessName`, and orchestrate recorded that `HarnessName` as the record's
+`hosting-harness` (§3) when it opened the session — so the reverse lookup
+(hosting instance → the one Hot record bound to it) resolves to exactly one
+record. `last_activity` mirrors `Worktree.last_activity`'s infrastructure-minted
+discipline (`orchestrate/src/worktree.rs:52-54`, never agent-supplied) but —
+unlike the worktree case — is display/ordering metadata only.
+
+Note (O3): riding `ClaudeSessionObservation` on the existing display
+`HarnessTranscriptStream` couples orchestrate's store-feed to the display stream's
+evolution and makes orchestrate filter the `AdapterOutput` firehose for its
+store-shaped facts. Reusing the landed multi-watch primitive is the push-not-pull
+default and is what this design takes; a dedicated observation subscription is the
+alternative to weigh if that coupling bites (it also interacts with M1's
+per-instance keying). Stated as a tradeoff, not a defect.
 
 **Sourcing the context figure — the harness's own number, never a self-calculation
 (blocks §4b until wired).** `accumulated_context` is the context size the Claude
@@ -218,29 +263,36 @@ as-is on this axis — it carries no token field today (grep over
 `harness/src/claude.rs`; fixture `harness/tests/claude_artifact_observer.rs:15-18`
 models none) and none is added there.
 
-- **Primary — the statusline JSON payload.** Claude Code pipes a structured JSON
-  blob to a configured statusline command on stdin, carrying a `context_window`
-  object (`used_percentage`, `remaining_percentage`, `total_input_tokens`,
-  `context_window_size`, and a `current_usage` token breakdown) plus a top-level
-  `exceeds_200k_tokens` boolean (`https://code.claude.com/docs/en/statusline.md`).
-  That is exactly the §4b axis — the harness's own token count, and a native
-  past-200K flag that maps directly onto the `HandoverDue` threshold — delivered as
-  push. Harness supplies a statusline command that forwards the `context_window`
-  block into `ClaudeSessionObservation`, rather than reading the transcript.
-- **Fallback — inject `/context` and parse it.** If the statusline payload is
-  unavailable, harness writes the `/context` slash command into the running Claude
-  TUI and parses its output. `/context` is a confirmed command
-  (`https://code.claude.com/docs/en/commands.md`) but renders only a visual colored
-  grid with no documented structured schema, so this path parses rendered TUI text
-  and is strictly the second choice. The injection primitive already exists and
-  relocates into harness with the driver (§1, §7 step 3): `TerminalCellSurface::send`
-  feeds arbitrary bytes into the live terminal as `InputSource::Programmatic`
-  (`mentci/src/harness_liveness.rs:808-817`), so harness writes `/context` + return
-  and reads the grid back off the transcript stream it already watches.
+**The statusline JSON payload is the sole, authoritative, non-injecting source.**
+Claude Code pipes a structured JSON blob to a configured statusline command on
+stdin, carrying a `context_window` object (`used_percentage`,
+`remaining_percentage`, `total_input_tokens`, `context_window_size`, and a
+`current_usage` token breakdown) plus a top-level `exceeds_200k_tokens` boolean
+(`https://code.claude.com/docs/en/statusline.md`). That is exactly the §4b axis —
+the harness's own token count, and a native past-200K flag that maps directly onto
+the handover threshold (§4b) — delivered as **push** to a **passive** command.
+Harness supplies a statusline command that forwards the `context_window` block
+into `ClaudeSessionObservation`; it never reads the transcript and never writes
+anything back into the session. Claude Code invokes the statusline command
+on its own cadence, so obtaining the figure requires no input into the live TUI.
 
-The field stays `Option` in the schema above: present once the harness figure is
-first observed, absent before the first turn and immediately after `/compact` until
-the next call (the statusline `current_usage` is `null` in those windows).
+There is **no `/context` (or any command) injection fallback.** Writing a slash
+command into a running Claude session would interrupt a working agent — forbidden
+by §0.5 as fixed intent — and on a *stopped* session there is no live TUI to write
+into, so such a fallback is either a violation or a no-op. Context sourcing is the
+passive statusline payload, full stop; no command is ever injected to obtain it.
+
+Absence / missing-payload handling: `accumulated_context` stays `Option` in the
+schema above. It is absent before the first turn and immediately after `/compact`
+until the next statusline emission (`current_usage` is `null` in those windows),
+and it is absent for a session that has never emitted a statusline figure.
+Orchestrate's posture on absence is **last-known-figure, else unknown**: it keeps
+the most recent observed figure for that session as `accumulated_context`, and
+where none has ever been observed the field is unset and the session is treated as
+of *unknown* accumulated size — the handover predicate (§4b) reads unknown as "not
+past threshold," i.e. fully reusable, never force-handed-over. No figure is ever
+synthesized to fill the gap.
+
 *Implementer-verification items:* confirm the exact nested statusline field
 spellings and their stability against the installed Claude Code version (the
 payload has grown field-by-field across releases, so treat the names above as
@@ -260,42 +312,49 @@ Typed records over flags throughout (`typed-records-over-flags`).
 ;; twin StoredHarnessSession lives in orchestrate/src/tables.rs. (lane, handle) is
 ;; the identity, mirroring Worktree's (repository, branch).
 (HarnessSession <lane> <session-handle> <topic-summary> <provider> <model>
-                <resume-locator?> <working-directory> <status>
+                <resume-locator?> <working-directory> <status> <hosting-harness?>
                 <accumulated-context?> <last-activity> <origin-prompt-digest>)
 ;;   lane                : LaneName            ;; stable lookup key, derived from session intent not provider (mentci/ARCHITECTURE.md:150)
-;;   session-handle      : SessionHandle       ;; the token returned to later callers
+;;   session-handle      : SessionHandle       ;; durable session identity within the lane; survives across hosting instances (Idle → resume)
 ;;   topic-summary       : PurposeText         ;; reuse Worktree.purpose type; the routing model's one-line topic
-;;   provider            : HarnessKind         ;; reuse signal-orchestrate HarnessKind {Codex, Claude} (lib.rs:723)
-;;   model               : ModelName           ;; new newtype (absent today outside the fixture workflow)
+;;   provider            : HarnessKind         ;; reuse signal-orchestrate HarnessKind {Codex, Claude} (lib.rs:723); see §9 provider-vocab note
+;;   model               : ModelName           ;; new newtype (absent today outside the fixture workflow); see §9 model-vocab note
 ;;   resume-locator?     : (ClaudeResumeLocator <claude-resume-identifier> <transcript-path>)   ;; Option: present once observed
 ;;   working-directory   : WirePath            ;; the sandbox jj working copy
 ;;   status              : HarnessSessionStatus
+;;   hosting-harness?    : HarnessName         ;; the harness instance hosting this session while Hot (§4a, M1); the key ClaudeSessionObservation correlates on (§2d); None whenever not Hot
 ;;   accumulated-context?: ContextTokens       ;; the staleness signal (§4b); infrastructure-minted from ClaudeSessionObservation; Option until first observed (see §2d sourcing note)
 ;;   last-activity       : TimestampNanos      ;; DISPLAY/ORDERING ONLY — does not gate resume (§4b); infrastructure-minted, never agent-supplied
 ;;   origin-prompt-digest: PromptDigest        ;; content hash of the prompt that created it, for audit/dedupe
 
 ;; Lifecycle status. Enum, not a bool bundle — mirrors WorktreeStatus (lib.rs:652).
-;; Transitions are STOP-driven, never wall-clock (§0.5, §4c).
-;;   Hot        : a live terminal-cell process exists in harness right now
-;;   Idle       : the agent stopped; no live process, resume-locator makes it resumable
-;;   HandoverDue : Idle AND accumulated-context past the handover threshold (§4b) — a soft flag inviting a fresh session, not an eviction
-;;   Archived   : Idle/HandoverDue and no longer needed; still resumable-by-id until GC
+;; Transitions are STOP-driven, never wall-clock (§0.5, §4c). "Handover-due" is a
+;; DERIVED predicate over accumulated-context (§4b, S3), not a stored variant here.
+;;   Hot        : a live terminal-cell process exists in harness right now; hosting-harness is set
+;;   Idle       : the agent stopped; no live process, resume-locator makes it resumable; hosting-harness cleared
+;;   Archived   : Idle and no longer needed; still resumable-by-id until GC
 ;;   Recycled   : GC-eligible, resume no longer promised (e.g. a resume attempt failed, §4b)
-(HarnessSessionStatus Hot | Idle | HandoverDue | Archived | Recycled)
+(HarnessSessionStatus Hot | Idle | Archived | Recycled)
 ```
 
 `resume-locator` is `Option<record>` not a bool: the "yes, resumable" answer
 carries the id + transcript path a resume needs (`typed-records-over-flags` form 1).
 `accumulated-context` (context tokens) — not `last-activity` — is the staleness
 axis (§4b): a session that has been quiet for a day but holds only 30K tokens is
-fully resumable, while one that just stopped at 210K tokens is `HandoverDue`.
-`HandoverDue` is a typed record state, not a boolean flag, so the "yes, past the
-threshold" answer keeps the accumulated size and the resume-locator together for
-the routing model to act on. The reuse decision that `harness_sessions.rs:535-568`
-performs in-memory (match lane, reject on identity/metadata/launch-metadata
-mismatch) becomes a store query against this record; the `SessionAddressMetadata`
-comparison (`harness_sessions.rs:547`) collapses into matching `HarnessSession`
-fields.
+fully resumable, while one that just stopped at 210K tokens is *handover-due*.
+"Handover-due" is **derived, not stored** (S3): it is fully computable as
+`accumulated-context past the threshold AND status == Idle` and carries no data the
+record does not already hold, so it is the inverse of the typed-records trigger —
+replace a flag with a record only when the yes-branch carries new data, and this
+one carries none. Storing it as a fifth status variant would create a sync
+obligation and could silently disagree with the field after a `/compact` drops
+context back below the threshold. The routing model therefore computes handover-due
+from `accumulated-context` at the routing decision (§4b), reading the accumulated
+size and the resume-locator straight off the record. The reuse decision that
+`harness_sessions.rs:535-568` performs in-memory (match lane, reject on
+identity/metadata/launch-metadata mismatch) becomes a store query against this
+record; the `SessionAddressMetadata` comparison (`harness_sessions.rs:547`)
+collapses into matching `HarnessSession` fields.
 
 Storage discipline (`rust-storage-and-wire`): the record is a schema-owned type in
 the `worktrees`-sibling `harness_sessions` table; adding it is a coordinated store

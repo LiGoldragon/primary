@@ -7,7 +7,7 @@ description: 'How to invoke the deployed Spirit CLI to capture or query intent â
 
 ## Rules
 
-Use `spirit` to capture and observe psyche intent. Spirit is the intent substrate; there is no file fallback. If the daemon is unavailable and capture is required, surface a blocker.
+Use `spirit` to capture and observe psyche intent. Spirit is the intent substrate; there is no file fallback. If the daemon is unavailable and capture is required, surface a blocker. At session start, probe guardian and LLM-provider liveness before relying on `Record`; a dead provider otherwise surfaces only as a late capture failure.
 
 The CLI takes exactly one argument: inline NOTA when the argument starts with `(`, or a NOTA file path otherwise. It replies on stdout with typed NOTA and returns nonzero on transport, parse, or daemon errors.
 
