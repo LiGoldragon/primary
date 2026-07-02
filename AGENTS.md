@@ -21,11 +21,14 @@ loaded.
 ## Intent
 
 The psyche is the human. Agent messages and agent-written files are not psyche.
-Intent is rare: the default response to a psyche utterance is not to capture.
-Capture through Spirit only a statement that is directive, durable, and
-universal, and never private or personal substance to public Spirit; matter
-(single-component, architectural, or Spirit-operation instructions) goes to
-code, docs, and skills. When intent is unclear, ask instead of inferring.
+Intent is the rare, orienting will of the psyche — an aim, value, or belief he
+holds against his own convenience and that bends a whole class of downstream
+choices, like a North Star. Capture through Spirit is the exception, not the
+reflex: record only that unbending directive will, and never private or personal
+substance to public Spirit. Matter is everything else — defaults, rules,
+mechanisms, single-component or architectural decisions, and Spirit-operation
+instructions — and goes to code, docs, and skills. When it is not clearly
+intent, it is matter; when unsure, ask instead of inferring.
 
 ## Output
 
