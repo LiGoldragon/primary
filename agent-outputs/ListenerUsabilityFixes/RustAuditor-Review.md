@@ -123,9 +123,13 @@ Not run:
 
 ## Tracker And Closeout
 
-Recommended tracker closeout:
+Tracker closeout completed:
 
-- Close `primary-zddv.5` as passed with this report path.
-- Unblock `primary-zddv.7` from the Rust side once `primary-zddv.6` also passes.
+- `primary-zddv.5` was closed as passed with this report path.
+- `primary-zddv.7` is unblocked from the Rust side and remains dependent on the separate `primary-zddv.6` OS/UI audit.
+
+Primary workspace commits pushed:
+
+- `6625f82cc5b7` `primary: add Listener Rust audit report`
 
 No source code changes were made in `signal-listener`, `listener`, or CriomOS-home by this audit.
