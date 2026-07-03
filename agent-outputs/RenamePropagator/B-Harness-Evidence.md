@@ -89,4 +89,114 @@ the configured `BranchScheme.staging`; the component set is config; the staged
 producer set is discovered (branch existence). The cascade rule, pin models, and
 verify are untouched.
 
-(implementation + validation evidence appended below after the run)
+## 4. Changed files
+
+### synchronizer (public; landed to `main`)
+
+Two commits landed on `github.com/LiGoldragon/synchronizer` `main`
+(`8eec5a46` → `4481a72c` → `57082fa6`):
+
+- `4481a72cc980` — the B capability:
+  - `src/git_repository.rs` — new `ComponentRepository::remote_staging_tip ->
+    Result<Option<CommitIdentifier>, Error>` (staging analogue of
+    `remote_main_tip`; empty ls-remote = `None`, absence-is-data) + `GitRepository`
+    impl.
+  - `src/driver.rs` — `BaseSelection { Mainline, StagedCascade }` typed run mode;
+    `SynchronizerRun` carries it (`with_base_selection`, defaults `Mainline`);
+    `load_component` selects the base tip per mode and reports the staging tip;
+    `execute` collects the pre-staged set and pre-seeds the cascade ledger.
+  - `src/main.rs` — optional run-mode arg (`synchronizer <config> [staged-cascade]`).
+  - `tests/fixtures/mod.rs` — `standard_config_with_scheme(components, scheme)`
+    parameterizes the lone baked branch-scheme literal (was line 43,
+    `BranchScheme::new("main","synchronizer")`); `FixtureRepository` gains an
+    optional staging tip (`with_staging`) and `remote_staging_tip`;
+    `SharedRepository` delegates.
+  - `tests/staged_cascade.rs` — new witness of the cross-branch cascade.
+- `57082fa6540c` — the tail dep fix: `Cargo.toml`/`Cargo.lock` repoint the real
+  `nota` dep (and transitive `nota-derive`) from `nota-next.git` → `nota.git` at
+  the same rev `bea7e284`. The 34 `nota-next`/`schema-next` name strings in
+  `src/`+`tests/` are fixture data and were deliberately left untouched.
+
+### rename-propagator
+
+No source change needed. Its run config already sets `branch-scheme = (main
+drop-next)` (both `config.sample.nota` and the live `criome-sweep-run.nota`), and
+its tests already drive `drop-next` as a config parameter (`tests/end_to_end.rs`,
+`tests/nota_wire.rs`) — no baked staging literal (the `tests/fixtures/mod.rs:43`
+literal named in the brief was the synchronizer's, now parameterized). Making a
+change here would violate the smallest-coherent-change and universality rules. The
+claim was released unedited.
+
+## 5. Checks run
+
+- `cargo build` / `cargo test` (offline) on synchronizer: **all pass** — 55 tests
+  across 17 binaries, incl. the new `tests/staged_cascade.rs` and the unchanged
+  ascent/generic/topology/resolver witnesses (no regression). `cargo fmt --check`
+  clean; `cargo clippy --all-targets` clean.
+- `cargo test` (with `nota.git`) after the tail fix: **all pass** (nota +
+  nota-derive recompiled from `nota.git`).
+
+## 6. Acceptance test — schema-rust drop-next GREEN, end to end
+
+Config (scratchpad, not committed): forge `LiGoldragon`, components `nota` /
+`schema` / `schema-rust` (AtPath to the old-named local clones), branch scheme
+`(main drop-next)`, `DirectHost prometheus`, `DefaultBuild`, author
+`rename-propagator`.
+
+Command:
+
+```
+synchronizer <config> staged-cascade
+```
+
+Run report (`exit 0`, no failures). Branch tips advanced on the tool-owned
+staging branch only (no `main` touched anywhere):
+
+| repo | drop-next before | drop-next after | verify |
+|---|---|---|---|
+| nota | (none; main `bea7e284`) | (none) — `AlreadyAligned`, not pushed | NotAttempted |
+| schema | `ef499e25` | `a393c8c822cea737d7ed8e823eae7d821ea19bf2` | **Verified (prometheus)** |
+| schema-rust | `4732e4a3` (was FAILED) | `ba6f6df79ccf46225a9a03f0f9724436f9e2330c` | **Verified (prometheus)** |
+
+The cascade repinned schema-rust's `schema` dep `CargoManifest (Reference main) ->
+(Reference drop-next)` and `CargoLock 9af2c546 -> a393c8c8`; the `nota` pin
+(non-staged producer) was left on `main`/`bea7e284`. Committed content of
+`schema-rust@ba6f6df7` verified read-only:
+
+- `Cargo.toml`: `schema = { …/schema.git, branch = "drop-next" }`;
+  `nota = { …/nota.git, branch = "main" }`.
+- `Cargo.lock`: `schema` `?branch=drop-next#a393c8c8`; `nota`
+  `?branch=main#bea7e284`.
+
+Independent re-verification on prometheus (the acceptance proof):
+
+```
+nix build github:LiGoldragon/schema-rust/ba6f6df7...
+  -> /nix/store/7cacgyfhz71j22y5fp2j0zkj94ky3adp-schema-rust-0.5.3   (GREEN)
+nix build github:LiGoldragon/schema/a393c8c8...
+  -> /nix/store/3g92a89rz8p97rhykjxkg64vxk2dqm55-schema-0.2.0        (GREEN)
+```
+
+`schema-rust`'s drop-next verify — which FAILED before because it fetched
+`schema@main` (still declaring `nota-next`) — now resolves `schema@drop-next` and
+is GREEN. `schema`'s own drop-next verify is GREEN (no regression). The exact
+structural blocker B set out to kill is gone.
+
+## 7. One transparent nuance (flag for audit-B / A)
+
+The run advanced **schema**'s drop-next (`ef499e25` → `a393c8c8`), not merely
+`schema-rust`'s. Cause: `schema@drop-next`'s own `nota` lock was stale
+(`96e64bcd` vs nota's current `main` tip `bea7e284`), so the cascade re-aligned
+it — the tool's normal behavior (a non-staged producer resolves to its mainline
+tip). This is within the "staging branch, never main" boundary, keeps the staged
+set coherent, and is exactly what a whole-graph green checkpoint (A) wants; but it
+is more than a literal read-only touch of the producer's drop-next. The old
+`ef499e25` was green in isolation; `a393c8c8` is green against the *current* nota.
+Downstream (A / audit-B) should use the new tips above, not the ground-truth
+snapshot's `ef499e25` / `4732e4a3`.
+
+## 8. Blockers
+
+None. B is complete and validated: the capability is landed to the synchronizer
+`main` (`4481a72c`), the tail dep fix is landed (`57082fa6`), and the acceptance
+(schema-rust drop-next GREEN, schema GREEN) is proven end to end on prometheus.
