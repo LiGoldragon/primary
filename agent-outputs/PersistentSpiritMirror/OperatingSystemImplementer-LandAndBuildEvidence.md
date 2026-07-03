@@ -49,8 +49,58 @@ meta-lojix "(Deploy (System (goldragon prometheus FullOs \
 ```
 Builds on prometheus (build-on-target, lojix 0.3.10). Baseline generation
 UNCHANGED throughout (`1 1 ... FullOs BootOnce Current`), confirming no
-activation. **Build result: PENDING** (polling `lojix Query (ByNode ...)` for the
-deployment-38 built-closure record). Result + closure path to be appended.
+activation.
+
+### BUILD RESULT: RED — pre-existing eval blocker, unrelated to the fix. DID NOT SWITCH.
+
+The prometheus toplevel from CriomOS main `ee49b203d565` **fails at eval**, before
+any build/activation. Verified by a watchable direct build on prometheus using
+lojix's materialized inputs (`nix build …#nixosConfigurations.target…toplevel
+--override-input {system,horizon,deployment,secrets} /tmp/promcheck/*`):
+
+```
+error: Failed to fetch git repository 'https://github.com/LiGoldragon/signal-mentci-client'
+… while evaluating derivation
+  'cargo-git-https-github.com-LiGoldragon-signal-mentci-client-2b0a4c25f4f55d35ddd671323595ec52cfd9cb27'
+… while evaluating the option `home-manager.users.bird.home.activation.installPackages.data'
+```
+
+**Root cause:** the prometheus toplevel eval pulls in `home-manager.users.bird`,
+whose home installs a `mentci-egui` package. The CriomOS-main-pinned `mentci-egui`
+has a Cargo.lock that pins `signal-mentci-client` to rev **`2b0a4c25…`**, which is
+**orphaned** — that repo's `criome-authorization-push` branch was force-pushed to
+`430e84d0…`, so `2b0a4c25` is absent from all refs and `fetchGit` cannot retrieve
+it. (The LOCAL `mentci-egui` checkout already pins the valid `430e84d0`; the stale
+rev lives in the OLDER `mentci-egui` that the criomos-home chain pins.)
+
+**Unrelated to the guest-networking fix.** My landed commit touched only
+`modules/nixos/{router/default.nix,test-vm-host.nix}` — no home/mentci surface.
+The eval clears my modules and fails later in the home/mentci tree. Deployment 38
+(the lojix `Build`) hit this same wall — the daemon is silent on the async result,
+but my direct eval reproduces it deterministically and the rev is genuinely
+unfetchable, so a lojix build/eval on the same host (same nix, same cache) fails
+identically. prometheus was NOT activated; it remains on `1 1 … Current` and
+healthy. `/tmp/promcheck` on prometheus holds only encrypted `.sops` + projected
+json (transient; safe to delete).
+
+**Secondary oddity worth a look:** per the goldragon datom, `bird` has homes only
+on `tiger`/`zeus` — NOT prometheus. Why `home-manager.users.bird` is evaluated in
+prometheus's toplevel at all is unexpected; if bird's home should not be on
+prometheus, fixing that would also sidestep the mentci fetch.
+
+### Options to unblock (coordinator decision — separate from the guest-networking work)
+1. **Fix the stale mentci pin:** bump `criomos-home` (→ `mentci-egui`) to a rev
+   whose Cargo.lock pins a valid `signal-mentci-client` rev (e.g. `430e84d0`),
+   flow criomos-home → CriomOS main, rebuild. Multi-repo home-stack fix.
+2. **Exclude bird's home from prometheus** if its inclusion is a projection/home
+   bug (bird has no prometheus home in the datom). Investigate the home-inclusion
+   path.
+3. Only after the toplevel builds green: re-run the `Build` proof, then the staged
+   `BootOnce`.
+
+The guest-networking fix itself is landed (CriomOS main `ee49b203d565`) and
+sandbox-proven; it is NOT the blocker. The BootOnce command stays staged (below)
+for once the toplevel builds.
 
 ## 4. Staged BootOnce (DO NOT RUN until psyche confirms switch timing)
 
