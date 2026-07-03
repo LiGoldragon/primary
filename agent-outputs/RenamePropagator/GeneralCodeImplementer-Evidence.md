@@ -97,6 +97,28 @@ residue. Two things the audit said landing (not this tool) handles: F3 (exclude
 data-only repos like synchronizer/sema-engine from the swept set) and F5 (prefer
 regenerating the 28 generated files with a regenerate-and-diff drift check).
 
+## Engine dry-run round (read-only) — plan produced + one more fix
+
+Ran the read-only dry-run across the real engine (89 repos: 3 producers + 86
+swept consumers). Artifacts beside this file: `DryRunPlan.nota` (~421 KB, the
+full per-repo plan), `criome-sweep.nota` (the config), `DryRunReview.md` (the
+psyche review digest). Totals: **2400 edits, 4 flagged pins (all `mind`
+rev-pins), 219 residue hits across 51 repos.** Excluded: `synchronizer`
+(fixture-data false target), `sema-engine` and `rename-propagator` (not
+dependency consumers). Lock graphs: nota (81), schema (10), schema-rust (52);
+producer order nota→schema→schema-rust.
+
+The first real-engine run surfaced a **false-rewrite class** now fixed in the
+tool (commit `d4ef1e69`): RustSource was rewriting the *hyphenated* family name
+in `.rs`, but a hyphen can't be in a Rust ident, so it is always string data —
+notably `dependency_boundary.rs` guards asserting a crate migrated *off*
+`"nota-next"`. Rewriting them would break the guards on apply. Fix: RustSource
+rewrites only the underscore path-ident; hyphenated `.rs` tokens are surfaced as
+residue (regeneration fixes `@generated` headers). Regression test added; edits
+2497→2400, residue 122→219. A `nota`-codec round-trip quirk (strict decoder
+rejects slash-bearing content tokens the encoder emitted) is noted as a
+follow-up; the summarizer re-derives the plan in memory to work around it.
+
 ## The one mechanism (design-quality: special cases dissolve)
 
 Every edit is a **bounded-token span substitution** (generalizing the
