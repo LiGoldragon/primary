@@ -118,7 +118,7 @@ token + underscore path ident (`-`→`_`). Zero family names in `src/`.
 
 | file | tokens | covers |
 |---|---|---|
-| `Cargo.toml` | repository | git URLs, dep table keys, `dep:` features, `[patch."url"]` keys, `package=` (none present) |
+| `Cargo.toml` | repository | git URLs, dep table keys, `dep:` features, `[patch."url"]` keys; branch pins rewritten, rev/tag pins flagged + left unchanged; rewrite re-parsed as a guard |
 | `Cargo.lock` | repository | `source = "git+…"` URLs |
 | `flake.nix` | repository | `github:owner/repo` shorthand, `git+https` inputs, spirit `substituteInPlace --replace-fail` FROM strings, `[patch]` keys, alias map |
 | `flake.lock` | repository | `repo`/`url` fields (rev + narHash preserved — pure metadata rewrite, no prefetch) |
