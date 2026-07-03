@@ -9,13 +9,16 @@ Supersedes the discarded direct-mirror epic `primary-1e6b` (all 9 of its beads c
 see Reconciliation).
 
 Nodes: A = `5::7` (mirror-alpha), B = `5::8` (mirror-beta). Toggle is OFF by default.
+The live two-VM proof (`.12`) is the psyche's actual done-bar.
 Secrets stay out of every bead: no keys, no session material, no tokens are recorded here.
 
 ## Progress
 
-- **Wave 1 DONE (closed-with-evidence, pushed):** `.1` router self-origination, `.2` Spirit authorized-apply live ingress, `.8` spirit.nix node module.
-- **Wave 2 (ready now):** `.3` one-direction A→B join (next on the de-risk path), `.7` toggle (parallelizable side-task).
-- Wave-1 handoff flags folded in — see "Wave-1 fold-ins" below. New bead `.13` added for the consolidated router ARCHITECTURE.md.
+- **DONE (closed-with-evidence, pushed):** `.1` router self-origination, `.2` Spirit authorized-apply live ingress, `.3` A→B live join + Spirit origination rework, `.4` Criome quorum collection, `.6` mutual identity proof + encrypted session, `.7` off-by-default toggle, `.8` spirit.nix module.
+- **IN PROGRESS:** `.5` durable outbox + push redial (on the router checkout).
+- **READY NOW:** `.11` security audit (parallel track — reads the `.4`/`.6` code, needs no deploy).
+- **Endgame remaining:** `.9` deploy/live-wiring, `.10` both-directions + Spirit async rewire, `.12` live two-VM proof (done-bar), `.13` router ARCHITECTURE consolidation.
+- Edge fix + Wave-3 fold-ins applied — see below.
 
 ## Beads (id, one-line scope, repo, role, intensity)
 
@@ -23,101 +26,79 @@ Secrets stay out of every bead: no keys, no session material, no tokens are reco
 |---|---|---|---|---|---|
 | primary-nbmq.1 | Router origination — standing daemon sends a component-object forward on its own (piece 1) | router (+signal-router) | strong Rust implementer | ordinary-implementation | DONE |
 | primary-nbmq.2 | Spirit authorized-apply ingress — land an arriving record LIVE, quorum re-judged (piece 4) | spirit (+signal-spirit) | strong Rust implementer | ordinary-implementation | DONE |
-| primary-nbmq.3 | ONE-direction A→B live join (no quorum, 1-of-1) + Spirit origination rework (hand to local router; rip out shipper.rs/mirror-shipper/mirror crate) | spirit source + router integration test | strong Rust implementer | ordinary-implementation | READY |
-| primary-nbmq.4 | Criome quorum collection — propose→gather→judge→commit driver, withhold-until-authorized (piece 3) | criome (+signal-criome) | strongest Rust implementer (security-strong) | strongest-high-thinking | blocked by .3 |
-| primary-nbmq.5 | Durable outbox + push redial — crash-durable outbound backlog, rehydrate on start (piece 2) | router | strong Rust implementer | ordinary-implementation | blocked by .4 |
-| primary-nbmq.6 | Encrypted authenticated router session + mutual per-session identity proof, forward secrecy (pieces 7+8) | router (+signal-router) | strongest Rust implementer (crypto-literate) | strongest-high-thinking | blocked by .5 |
-| primary-nbmq.7 | Off-by-default SetMirrorEnabled toggle on the router meta socket, persisted (piece 6) | router (+meta-signal-router) | strong Rust implementer | ordinary-implementation | READY |
+| primary-nbmq.3 | ONE-direction A→B live join (1-of-1) + Spirit origination rework (hand to local router; removed shipper.rs/mirror-shipper/mirror crate) | spirit source + router integration | strong Rust implementer | ordinary-implementation | DONE |
+| primary-nbmq.4 | Criome quorum collection — propose→gather→judge→commit driver, withhold-until-authorized (piece 3) | criome (+signal-criome) | strongest Rust implementer (security-strong) | strongest-high-thinking | DONE |
+| primary-nbmq.5 | Durable outbox + push redial — crash-durable outbound backlog, rehydrate on start (piece 2) | router | strong Rust implementer | ordinary-implementation | IN PROGRESS |
+| primary-nbmq.6 | Encrypted authenticated router session + mutual per-session identity proof, forward secrecy (pieces 7+8) | router (+signal-router) | strongest Rust implementer (crypto-literate) | strongest-high-thinking | DONE |
+| primary-nbmq.7 | Off-by-default SetMirrorEnabled toggle on the router meta socket, persisted (piece 6) | router (+meta-signal-router) | strong Rust implementer | ordinary-implementation | DONE |
 | primary-nbmq.8 | Author spirit.nix — the missing first-class Spirit node module (piece 6) | CriomOS | operating-system-implementer | ordinary-implementation | DONE |
-| primary-nbmq.9 | Deploy + seed the pair — modules on, MUTUAL identity seed, admit 2-of-2, guest autostart, vmt firewall; +Spirit working-socket perms fix | CriomOS (+persona-router, criome.nix) | operating-system-implementer | ordinary-implementation (deploy-gated) | blocked |
-| primary-nbmq.10 | Enable BOTH directions autonomously + convergence tests (write-while-peer-down → waits → converge) (piece 5) | integration (all repos) | strong Rust + operating-system-implementer | strongest-high-thinking | blocked |
-| primary-nbmq.11 | Security AUDIT of the quorum + identity + encryption path | audit over router+criome (read-only) | security-strong auditor (rust-auditor) | strongest-high-thinking | blocked by .4,.6 |
-| primary-nbmq.12 | FINAL PROOF on the two live VMs — both directions live, toggle on, reboot-survivable | CriomOS live VMs | operating-system-implementer | ordinary-implementation (deploy-gated) | blocked by .10,.11 |
-| primary-nbmq.13 | Consolidated router ARCHITECTURE.md update (pieces 1/2/6/7/8) — single doc writer after the router track | router (docs only) | architecture-editor / router-track Rust | ordinary-implementation | blocked by .5,.6,.7 |
+| primary-nbmq.9 | Deploy + seed + LIVE-WIRE the pair — enable encrypted session on the standing daemon, criome recipient/route bootstrap, mutual identity seed, admit 2-of-2, autostart, vmt firewall, Spirit working-socket perms (piece 6) | CriomOS (+persona-router bootstrap, router daemon config, criome.nix) | operating-system-implementer (+ router-bootstrap Rust) | ordinary-implementation (deploy-gated) | blocked by .5 |
+| primary-nbmq.10 | BOTH directions autonomously + convergence tests + Spirit async propose→completion rewire (from 1-of-1 gate to quorum boundary) (piece 5) | integration (all repos; Spirit source rewire) | strong Rust + operating-system-implementer | strongest-high-thinking | blocked by .9 |
+| primary-nbmq.11 | Security AUDIT of the quorum + identity + encryption path (+ plaintext-migration path, caller-supplied round ids) | audit over router+criome (read-only) | security-strong auditor (rust-auditor) | strongest-high-thinking | READY |
+| primary-nbmq.12 | FINAL PROOF on the two live VMs — both directions live, toggle on, reboot-survivable (DONE-BAR) | CriomOS live VMs | operating-system-implementer | ordinary-implementation (deploy-gated) | blocked by .10,.11 |
+| primary-nbmq.13 | Consolidated router ARCHITECTURE.md update (pieces 1/2/6/7/8) — single doc writer after the router track | router (docs only) | architecture-editor / router-track Rust | ordinary-implementation | blocked by .5 |
 
 ## Dependency graph
 
 ```
-[.1 done] ─┬─► .3 (one-dir join + Spirit orig rework) ─► .4 (quorum) ─┬─► .5 (outbox) ─► .6 (enc session) ─┐
-[.2 done] ─┘                                                          │                                   ├─► .13 (router ARCH.md)
-                                                                      │                          .7 ──────┘
-[.1 done] ─► .7 (toggle) ───────────────────────────────────────────┤
-[.8 done] ──────────────────────────────────────────────────────────┤
-                                                    .6 ───────────────┤
-                                                    .4 ───────────────┼─► .9 (deploy+seed) ─► .10 (both dirs) ─┐
-                                                    .4 ─┬────────────► .11 (audit) ───────────────────────────┤
-                                                    .6 ─┘                                                     ├─► .12 (final live proof)
+[.1 ✓]─┬─►[.3 ✓]─►[.4 ✓]─┬─► .5* (outbox) ─┬─► .9 (deploy+live-wire) ─► .10 (both dirs + async rewire) ─┐
+[.2 ✓]─┘         [.6 ✓]───┤                 │                                                          │
+[.6 ✓]───────────────────►.5*               ├─► .13 (router ARCH.md)                                   │
+[.1 ✓]─►[.7 ✓]───────────────────────────────┤ (also .6,.7 → .13)                                      ├─► .12 (live proof, DONE-BAR)
+[.8 ✓]───────────────────────────────────────┤                                                         │
+[.4 ✓]+[.6 ✓] ──────────────────────────────► .11 (audit, READY now, parallel) ─────────────────────────┘
 ```
+(`✓` closed, `*` in progress.)
 
 Edges (blocker → blocked):
-- .1 → .3 ; .2 → .3   (both done → .3 READY)
-- .3 → .4
-- .4 → .5 ; .5 → .6
-- .1 → .7   (done → .7 READY)
-- .8 → .9 ; .7 → .9 ; .4 → .9 ; .6 → .9
+- .1 → .3 ; .2 → .3   (done)
+- .3 → .4   (done)
+- **.4 → .5 ; .6 → .5**   (edge fixed: `.5` now depends on `.6`, reversed from the stale `.5→.6`)
+- .1 → .7   (done)
+- .8 → .9 ; .7 → .9 ; .4 → .9 ; .6 → .9 ; **.5 → .9**   (added: deploy ships the durable outbox)
 - .9 → .10
-- .4 → .11 ; .6 → .11
+- .4 → .11 ; .6 → .11   (both done → .11 READY)
 - .10 → .12 ; .11 → .12
 - .5 → .13 ; .6 → .13 ; .7 → .13
 
-No cycles (`bd dep cycles` clean). Full chain renders under `bd dep tree primary-nbmq.12`.
+No cycles (`bd dep cycles` clean).
 
-Build-order note (encoded, per the design Build sequence): prove ONE direction live
-(.3) BEFORE quorum (.4); transport hardening (.5 outbox, .6 session) is sequenced AFTER
-quorum. `.5`/`.6` are technically transport-independent of `.4` (true prereq is `.1`, now
-done); the orchestrator MAY pull the router-hardening track parallel to `.4`, at the cost
-of departing from the encoded de-risk order.
+## Home-stretch plan (endgame ready/sequencing)
 
-## READY TO START NOW (Wave 2)
+| Bead | Waits on | Unblocks | Role / intensity | Repo(s) |
+|---|---|---|---|---|
+| `.5` (outbox) — IN PROGRESS | .4 ✓, .6 ✓ | .9, .13 | strong Rust / ordinary | router |
+| `.11` (audit) — READY NOW | .4 ✓, .6 ✓ | .12 | security-strong auditor / strongest-high-thinking | read-only over router+criome |
+| `.9` (deploy + live-wire) | .4✓ .6✓ .7✓ .8✓ + **.5** | .10 | operating-system-implementer (+router-bootstrap Rust) / ordinary (deploy-gated) | CriomOS + persona-router bootstrap + router daemon config + criome.nix |
+| `.13` (router ARCH.md) | .5, .6✓, .7✓ | — | architecture-editor / ordinary | router (docs) |
+| `.10` (both dirs + async rewire) | .9 | .12 | strong Rust + operating-system-implementer / strongest-high-thinking | integration (all repos; Spirit source) |
+| `.12` (live two-VM proof, DONE-BAR) | .10, .11 | — (final) | operating-system-implementer / ordinary (deploy-gated) | CriomOS live VMs (5::7, 5::8) |
 
-| Bead | One-line | Role / intensity | Repo |
-|---|---|---|---|
-| primary-nbmq.3 | ONE-direction A→B live join (no quorum, 1-of-1) + Spirit origination rework (hand to local router; remove shipper.rs / mirror-shipper feature / mirror crate); build `ApplyAuthorizedRecord` exactly as `.2` defined | strong Rust implementer / ordinary-implementation | spirit source + router integration test |
-| primary-nbmq.7 | Off-by-default SetMirrorEnabled toggle on the router meta socket (persisted, default OFF) | strong Rust implementer / ordinary-implementation | router (+meta-signal-router) |
+Ready-timing:
+1. **Now:** launch `.11` (audit) in parallel; `.5` is in flight.
+2. **When `.5` lands:** `.9` (deploy/live-wire) and `.13` (router doc) become ready. `.13` can run parallel to `.9`/`.10` (single router-doc writer; no code collision since it waits on `.5`).
+3. **When `.9` lands:** `.10` (both directions + Spirit async rewire).
+4. **When `.10` AND `.11` land:** `.12` — the live-on-the-metal proof, the psyche's done-bar.
 
-`.3` is THE next critical de-risk bead. `.7` is off the critical path (a deployment piece
-needed later by `.9`) but is unblocked now — slot it opportunistically.
+Serialize/parallel: `.11` is read-only → parallel to the whole deploy chain. The deploy
+chain `.9 → .10 → .12` is serial. `.13` is docs-only, parallel once `.5` lands. `.5`/`.13`
+both touch the router checkout but never concurrently (`.13` waits on `.5`).
 
-### Serialize vs parallel for the ready set
+## Wave-3 fold-ins (handoff flags now in the tracker)
 
-- **`.3` now touches Spirit SOURCE** (origination rework: hand to local router, remove shipper.rs/mirror-shipper/mirror crate) **plus router integration tests.** No active Spirit collision (`.2` is done).
-- **Router collision group is now `.5/.6/.7/.13`** (all touch `router/src`, `signal-router`/`meta-signal-router`, or `router/ARCHITECTURE.md`). Of these only `.7` is ready now.
-- **`.3` and `.7` both touch the router checkout** (`.3` integration tests, `.7` router src + meta-signal-router). Prefer **separate worktrees**, or serialize them on one checkout. They are otherwise independent (different files; `.3`'s Spirit-source half is a different repo).
-- Everything downstream (`.4` criome, `.5/.6` router, `.9/.10/.12` CriomOS/live, `.11` audit) stays blocked until `.3` (and, for `.11`, `.4`+`.6`) lands.
+- **Edge fix → `.5`/`.6`:** reversed the stale `.5→.6` to `.6→.5` (`.6` ran first and exposes the session-up seam `.5` consumes); the `.6` worker had to `--force` past the old edge. Graph is now truthful.
+- **Added edge `.5 → .9`:** the deployed pair must ship the durable outbox, so deploy waits on `.5` (matches the "after `.5`" endgame framing).
+- **(1) Deploy live-wiring → note on `.9`:** standing router daemon still uses the plaintext `None` prover — enable the encrypted session via `RouterNetworkConfiguration::criome_session_listening` (`router/src/daemon.rs`) plus the mutual identity→key seed and peer/route bootstrap; the router bootstrap needs a `RegisterActor{ComponentSocket(criome_socket)}` recipient, a direct-message channel grant, and remote-route/peer entries per router; `persona-router.nix` is stale vs current `router_write_bootstrap.rs`; plus the `.8` Spirit working-socket UMask/socket-mode fix.
+- **(2) Spirit async rewire → note on `.10`:** `.10` also owns switching Spirit origination from the 1-of-1 gate (`.3`) to the async propose→completion quorum boundary (`.4`).
+- **(3) Auditor scope → note on `.11`:** (a) the router ingress DUAL-ACCEPTS the encrypted session AND legacy plaintext `ForwardMessage` during migration (tunnelled forward still carries its per-forward criome attestation) — audit the plaintext path and when to close it; (b) quorum-round ids are caller-supplied — collision is fail-SAFE (votes bind to the operation via signatures) but a liveness concern; assess binding the round id to the operation digest.
 
-## Wave-1 fold-ins (handoff flags now in the tracker)
+## Reconciliation of the prior weave (epic primary-1e6b — closed)
 
-- **(a) Frame contract → note on `.3`:** the router→Spirit join must build `ApplyAuthorizedRecord` exactly as `.2` defined — fields `record_identifier`, hex-encoded rkyv `VersionedCommitLogEntry`, hex-encoded rkyv signal-criome `Evidence`; enforce fail-closed on apply the binding `evidence.operation == OperationDigest::from_bytes(versioned_entry.entry_digest())`.
-- **(b) Spirit origination rework → folded into `.3` scope (note):** `.2` deferred handing Spirit's entry to its LOCAL router and removing `shipper.rs` / the `mirror-shipper` feature / the old `mirror` crate (ripping them earlier would have broken `.2`'s green origination path). Now in scope for `.3` since `.1` has landed. Not lost.
-- **(c) Router ARCHITECTURE.md consolidation → new bead `.13`:** `.1` deferred the router doc; the design assigns Router ARCHITECTURE a CONSOLIDATED update spanning pieces 1/2/6/7/8. `.13` is the single doc writer, blocked by `.5/.6/.7`. `.5/.6/.7` carry a note: land CODE only, defer the doc to `.13`.
-- **(d) Spirit working-socket perms → note on `.9`:** Spirit's WORKING socket is umask-derived (not group-accessible; only the meta socket is hardcoded 0600). For the co-resident router to dial it at deploy, `.9` must set a looser systemd `UMask` or add a `signal-spirit` socket-mode field. Cross-referenced in `.3`.
+All 9 beads of `primary-1e6b` are closed; `primary-1e6b` superseded by `primary-nbmq`.
 
-## Roles + intensity per bead (summary)
+- **DISCARDED (direct mirror-component path):** `1e6b.5` mirror-shipper sender leg, `1e6b.4` mirror receiver store-row seed, `1e6b.8` deferred router-attestation stub.
+- **Superseded:** `1e6b.3` one-directional seed → mutual seeding in `.9`; `1e6b.6` state-creation fork → pending-proposal semantics (`.2`/`.4`); `1e6b.7` one-direction verify → `.3` + `.12`.
+- **Carried forward:** `1e6b.1` guests `5::7`/`5::8` (reused as A/B) and `1e6b.2` their deploy → re-encoded in `.9`.
 
-- Strong Rust implementer (ordinary-implementation): .1(done), .2(done), .3, .5, .7
-- Strongest Rust implementer, security-strong (strongest-high-thinking): .4, .6
-- Operating-system-implementer (ordinary-implementation; .9/.12 deploy-gated): .8(done), .9, .12
-- Strong Rust + operating-system-implementer (strongest-high-thinking): .10
-- Security-strong auditor / rust-auditor (strongest-high-thinking): .11
-- Architecture-editor / router-track Rust (ordinary-implementation): .13
-
-## Reconciliation of the prior weave (epic primary-1e6b — now closed)
-
-All 9 beads of `primary-1e6b` are closed. `primary-1e6b` marked superseded by `primary-nbmq`.
-
-- **Retired / DISCARDED (direct mirror-component path):**
-  - `1e6b.5` — direct-mirror sender leg (mirror-shipper feature + `MirrorTarget::Address` → separate mirror daemon over TCP, router not in path). Replaced by router origination `.1` + Spirit apply `.2`.
-  - `1e6b.4` — mirror receiver store-row seed. The mirror daemon is dropped. Replaced by Spirit apply ingress `.2`.
-  - `1e6b.8` — deferred router-attestation stub. The router-mediated path is now the whole design (`.1`, `.5`, `.6`).
-- **Superseded (behavior changed):**
-  - `1e6b.3` — one-directional trust seed → MUTUAL both-directions seeding + admit 2-of-2 in `.9`.
-  - `1e6b.6` — state-creation fork → pending-proposal semantics (`.2`/`.4`).
-  - `1e6b.7` — one-direction direct-path verify → `.3` (de-risk) and `.12` (final both-directions live).
-- **Carried forward (still valid):**
-  - `1e6b.1` — guests mirror-alpha `5::7` + mirror-beta `5::8` (authored+pushed on goldragon main `824ffe6498c3`); REUSED as nodes A/B, deploy re-encoded in `.9`.
-  - `1e6b.2` — reproject + BootOnce redeploy → folded into `.9`.
-
-Pre-existing referenced beads NOT part of the prior weave were left untouched: `primary-85hv`,
-`primary-x3l7`, `primary-om4g.1`, `primary-om4g.2`, `primary-sos8` were already CLOSED;
-`primary-dw95` (VmHost on prometheus) and `primary-yluj` (spirit redeploy) remain OPEN as
-general infra still valid to the deploy tail.
+Pre-existing referenced beads left untouched: `85hv`, `x3l7`, `om4g.1`, `om4g.2`, `sos8`
+were already CLOSED; `dw95` (VmHost) and `yluj` (spirit redeploy) remain OPEN infra.
