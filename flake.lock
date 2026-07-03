@@ -198,11 +198,11 @@
         "schema-source": "schema-source"
       },
       "locked": {
-        "lastModified": 1783083009,
-        "narHash": "sha256-9yHVFWm0GsDCC+7t5Ks3gd8IbBtOELk9PQGgSeiswgc=",
+        "lastModified": 1783092481,
+        "narHash": "sha256-9jUkAbcIRDRTYOyrV/8w/rmMUEmwdtR2+Ik1FzBUjpI=",
         "owner": "LiGoldragon",
         "repo": "skills",
-        "rev": "c469d14716fd68b7029263ac61ebf652595f5b6d",
+        "rev": "03eead6099c4f9d7f2c89877003b42668fc13f9a",
         "type": "github"
       },
       "original": {

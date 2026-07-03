@@ -99,14 +99,33 @@ Host-safety note: home activation only touches li's USER services + files. The
 admission, `ssh root@node` SYSTEM deploys) were never in the blast radius and
 were not touched.
 
-## Task 2 — Mislabel fix (delegated, in progress)
+## Task 2 — Mislabel fix (LANDED + pushed, source-only)
 
-A fork owns the typed fix: add `ActivationFailed` to
-`meta::DeployRejectionReason` and map `EffectStage::Activate => ActivationFailed`
-at `lojix/src/schema_runtime.rs:2611` (leaving `CopyClosure` as
-`BuilderUnreachable`). Cross-repo (meta-signal-lojix → lojix via git branch
-main). Source-only; the running daemon stays 0.3.10 (not redeployed). See the
-fork's report / the mislabel bead for commits.
+Typed cross-repo fix, both commits on `main == main@origin`, verified:
+
+- `meta-signal-lojix` `4a8e79112d71` "add ActivationFailed deploy rejection
+  reason". `DeployRejectionReason` gains `ActivationFailed` appended LAST
+  (rkyv discriminants preserved → wire-compatible). `build.rs` GENERATES
+  `src/schema/lib.rs` from `schema/lib.schema` (source of truth); the schema
+  list + comment blocks were edited and `lib.rs` regenerated via
+  `META_SIGNAL_LOJIX_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`. Added test
+  `tests/round_trip.rs::activation_failed_reason_round_trips_through_nota_text`.
+  `cargo build` (runs write_or_check) + `cargo test --features nota-text` pass.
+- `lojix` `a35533348112` "map Activate-stage deploy failure to ActivationFailed".
+  `src/schema_runtime.rs:2611` → `Activate => ActivationFailed`; `2610`
+  (`CopyClosure => BuilderUnreachable`) unchanged. No detail field added —
+  `fail_pipeline` already `eprintln!`s `failure.detail`. No exhaustive-match
+  arms needed (verified by grep; no `match` scrutinises a `DeployRejectionReason`
+  value). `cargo build/test --locked --offline` pass; `nix build
+  .#checks.x86_64-linux.build` exit 0 (crane vendored the pushed contract rev
+  `4a8e7911`, built `lojix-0.4.0` on prometheus).
+
+Source-only; the running daemon stays 0.3.10 (NOT redeployed). A `cargo update
+-p meta-signal-lojix` was blocked by upstream `nota-next` main drift past the
+workspace pin `c43d04a1`; the meta-signal-lojix rev was instead bumped via a
+surgical `Cargo.lock` edit (equivalent to `--precise`), confirmed by
+`--locked --offline` build + the crane `nix build`. Reconciling `nota-next`'s
+pin drift is out of scope.
 
 ## Deferred (owned elsewhere)
 
