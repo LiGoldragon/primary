@@ -129,8 +129,28 @@ prometheus-26.05.20260422.0726a0e` (`BUILD_EXIT=0`).
 ### LIVE SWITCH (psyche cleared — independent ethernet, no stranding risk)
 
 Submitted BootOnce of prometheus FullOs from `1bf35f801a07`
-(`(Deployed (38 …))`). Activation + health + guest boot + on-metal A↔B: recorded
-below as they complete.
+(`(Deployed (38 …))`).
+
+### Activation state (IMPORTANT — BootOnce stages for next boot; it did NOT go live)
+
+- Running system: **gen 49** (`/nix/store/2j08dj66…`, the OLD config) — HEALTHY
+  (`is-system-running` = running; sshd, tailscaled, nix-daemon, nix-serve,
+  hostapd, yggdrasil all active; no failed units; uptime 2d13h — no reboot).
+- New **gen 50** (`/nix/store/61bajpa7…`, built 10:05 from `1bf35f801a07`) is the
+  latest system profile generation and fully defines the guests
+  (`microvm@mirror-alpha/beta`, `install-microvm-*`, tap-interfaces).
+- Bootloader: `Current = gen 49`, `OneShot = gen 50`, `Default = gen 49`
+  (`bootctl`). So gen 50 is staged for the NEXT boot ONCE, then reverts to gen 49.
+
+**Consequence:** lojix `BootOnce` = `ScheduleBootOnce` = build + set the new gen as
+the boot-once entry. It does NOT run `switch-to-configuration switch`, so the
+running system is unchanged and the guests + networking fix are NOT live. This is
+the inverse of "activate now, revert on reboot": here a REBOOT ACTIVATES gen 50
+(booting it once), and a SECOND reboot reverts to gen 49. To boot
+`mirror-alpha`/`mirror-beta` and run the on-metal A↔B proof, prometheus must
+reboot into gen 50. Reported to the coordinator for reboot confirmation (a
+production-router reboot; the psyche's independent ethernet covers the blast
+radius, but the reboot is the un-surprised step to complete the payoff).
 
 Revs now: CriomOS main **`1bf35f801a07`** (guest-networking + home-inclusion),
 goldragon main `824ffe6498c3`.
