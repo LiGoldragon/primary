@@ -246,10 +246,32 @@ inside alpha to beta `5::8` over the tap path:
   established` → `Server host key: ssh-ed25519 SHA256:HnASStrFOeQU…` (auth then
   declined, as expected — the TCP + ssh handshake to beta completed over the tap).
 
-**Final health:** prometheus `is-system-running` = running, no failed units, all
-router services active; both guests active with 8 GiB root.img. NOT promoted —
-running config is a `test` activation, bootloader default unchanged, reverts on
-reboot. Revs: CriomOS main **`3aa4780971e4`**, goldragon main **`2fe644be`**.
+**Health after activation:** prometheus `is-system-running` = running, no failed
+units, all router services active; both guests active with 8 GiB root.img. Revs:
+CriomOS main **`3aa4780971e4`**, goldragon main **`2fe644be`**.
+
+### PROMOTION — made permanent (psyche-approved), no reboot, no router restart
+
+Locked in the EXACT proven-running toplevel `j1362…` (confirmed `/run/current-
+system` == target). Used the set-default-profile path (not a rebuild):
+`nix-env -p /nix/var/nix/profiles/system --set <j1362>` (created system profile
+**generation 51** → j1362) + `<j1362>/bin/switch-to-configuration boot` (boot
+action — sets bootloader, no service activation). Router service start-times
+IDENTICAL before/after — none restarted.
+
+One catch: `switch-to-configuration boot` set loader.conf default = gen 51 but the
+EFI `LoaderEntryDefault` variable that lojix's earlier BootOnce set to gen 49 was
+overriding it (bootctl still showed Default = gen 49). Cleared it with the
+non-disruptive EFI writes `bootctl set-oneshot ""` + `bootctl set-default
+nixos-generation-51.conf`.
+
+**Confirmed:** bootloader **Default Entry = `nixos-generation-51.conf` → boots
+`j1362`** (the promoted config), system profile = j1362. So the guests +
+guest-networking + firewall fix + standard SSH + right-sizing now SURVIVE A
+REBOOT (no more revert to gen 49). Router services all active (not restarted),
+system running, no failed units. A→B re-confirmed live under the promoted config:
+ping alpha→beta 2/2, TCP `Connection established` to beta:22. This is a small
+lock-in step done non-disruptively; the running box was untouched.
 
 Revs now: CriomOS main **`1bf35f801a07`** (guest-networking + home-inclusion),
 goldragon main `824ffe6498c3`.
