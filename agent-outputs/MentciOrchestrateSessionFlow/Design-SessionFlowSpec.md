@@ -45,6 +45,15 @@ separate worker rewrites that doc — see §9).
 
 Psyche ruling, and the frame the whole session lifecycle is built on: **a session
 is done when it stops, and nothing in this design may interrupt a running one.**
+**"Interrupt" has a precise meaning here: forcibly stopping a working agent
+mid-work.** It is *not* any injected message. Guidance, query, and steering
+messages sent into a session are **not** interrupts and are permitted — including
+injecting `/context` to read the accumulated size (§2d) and delivering the ~200K
+handover nudge (§4b). Neither forcibly stops the agent; they inform or steer a run
+that remains free to keep working. What the principle forbids is a *forced stop* —
+eviction, archival, or forced handover — of a run that has not itself stopped.
+The rest of the lifecycle model is unchanged under this definition: stop-driven
+archival (§4c) and the handover nudge (§4b) were never interrupts.
 A large or complex flow may legitimately consume a great deal of context and pass
 through several compactions before it finishes — that is normal and must not
 trigger eviction, archival, or a forced handover. Every consequence of this
@@ -270,24 +279,35 @@ as-is on this axis — it carries no token field today (grep over
 `harness/src/claude.rs`; fixture `harness/tests/claude_artifact_observer.rs:15-18`
 models none) and none is added there.
 
-**The statusline JSON payload is the sole, authoritative, non-injecting source.**
-Claude Code pipes a structured JSON blob to a configured statusline command on
-stdin, carrying a `context_window` object (`used_percentage`,
-`remaining_percentage`, `total_input_tokens`, `context_window_size`, and a
-`current_usage` token breakdown) plus a top-level `exceeds_200k_tokens` boolean
-(`https://code.claude.com/docs/en/statusline.md`). That is exactly the §4b axis —
-the harness's own token count, and a native past-200K flag that maps directly onto
-the handover threshold (§4b) — delivered as **push** to a **passive** command.
-Harness supplies a statusline command that forwards the `context_window` block
-into `ClaudeSessionObservation`; it never reads the transcript and never writes
-anything back into the session. Claude Code invokes the statusline command
-on its own cadence, so obtaining the figure requires no input into the live TUI.
+**The statusline JSON payload is the PRIMARY, authoritative source — and stays
+primary always, because it is the only source that reports while the agent is
+actively working mid-turn.** Claude Code pipes a structured JSON blob to a
+configured statusline command on stdin, carrying a `context_window` object
+(`used_percentage`, `remaining_percentage`, `total_input_tokens`,
+`context_window_size`, and a `current_usage` token breakdown) plus a top-level
+`exceeds_200k_tokens` boolean (`https://code.claude.com/docs/en/statusline.md`).
+That is exactly the §4b axis — the harness's own token count, and a native past-200K
+flag that maps directly onto the handover threshold (§4b) — delivered as **push** to
+a **passive**, structured command. Harness supplies a statusline command that
+forwards the `context_window` block into `ClaudeSessionObservation`; it never reads
+the transcript and never writes anything back into the session. Claude Code invokes
+the statusline command on its own cadence, so obtaining the figure requires no input
+into the live TUI — which is exactly why it, and only it, yields a reading *while the
+agent is mid-turn*. That mid-turn coverage is why the statusline figure is primary
+and remains primary.
 
-There is **no `/context` (or any command) injection fallback.** Writing a slash
-command into a running Claude session would interrupt a working agent — forbidden
-by §0.5 as fixed intent — and on a *stopped* session there is no live TUI to write
-into, so such a fallback is either a violation or a no-op. Context sourcing is the
-passive statusline payload, full stop; no command is ever injected to obtain it.
+**`/context` injection is a legitimate fallback, usable only at rest.** Injecting
+`/context` into a session is a *query* message, not an interrupt (§0.5) — it does not
+forcibly stop the agent — so it is permitted. But a mid-turn injection does not
+produce a clean reading: `/context` renders a usable figure only against a session
+that is **at rest (idle)**, between turns, not while the agent is actively working.
+The fallback is therefore scoped to at-rest sessions: when the primary statusline
+figure is missing for an *idle* session, harness (or orchestrate on its behalf) may
+inject `/context` into that at-rest session and parse the command's rendered output
+to recover the accumulated size. To state both plainly: the statusline
+`context_window` figure is **primary always**; the `/context` injection fallback
+yields a usable reading **only at rest**; and an at-rest reading is obtained by
+**injecting `/context` and parsing its rendered output**.
 
 Absence / missing-payload handling: `accumulated_context` stays `Option` in the
 schema above. It is absent before the first turn and immediately after `/compact`
@@ -465,11 +485,12 @@ whatever resumable state it was resumed out of (`Idle` or `Archived`; §4c, S2) 
 that failure.
 
 Dependency: this rule fires on live data only once the harness's context figure is
-actually wired in — see §2d. That figure is the authoritative number the Claude
-Code harness reports via its statusline JSON payload (`context_window` /
-`exceeds_200k_tokens`), delivered passively to a statusline command with **no**
-command injection anywhere (§2d, M3); the workspace harness never self-calculates
-it from raw usage tokens. Wiring that surface into `ClaudeSessionObservation` is the
+actually wired in — see §2d. That figure's **primary** source is the authoritative
+number the Claude Code harness reports via its statusline JSON payload
+(`context_window` / `exceeds_200k_tokens`), delivered passively to a statusline
+command — the only source that reports mid-turn — with `/context` injection as an
+**at-rest-only** fallback (§2d, M3); the workspace harness never self-calculates it
+from raw usage tokens. Wiring that surface into `ClaudeSessionObservation` is the
 one implementation prerequisite for 4b.
 
 ### 4c · Archive is stop-driven, never a wall-clock sweep
@@ -649,9 +670,9 @@ Build producers before consumers, contracts before movers, stores before routing
    `TerminalCellDriver`/liveness from `mentci/src/harness_{adapters,liveness}.rs`
    into harness; wire the JSONL observer into the daemon **and wire the
    harness-reported context figure from the passive statusline JSON payload into
-   `ClaudeSessionObservation`** (statusline only, no `/context` or any command
-   injection — M3, §2d; never self-calculated from raw usage tokens — the §4b
-   prerequisite); implement `OpenClaudeSession` end-to-end against the
+   `ClaudeSessionObservation`** (statusline primary; `/context` injection is an
+   at-rest-only fallback — M3, §2d; never self-calculated from raw usage tokens —
+   the §4b prerequisite); implement `OpenClaudeSession` end-to-end against the
    sandboxed-jj first proof (`mentci/ARCHITECTURE.md:305-309`). Delete Mentci's
    duplicate `ClaudeCodeEventMapper` in favour of the contract `AdapterEvent` family.
 4. **Orchestrate routing.** Move the `preflight` engine in (renamed per §5), wire
@@ -702,17 +723,17 @@ deferred path for the turn delivery, though the resume itself is in scope.
   edit `ARCHITECTURE.md`; it only records that the section is superseded and the
   rewrite is pending.
 - **Context size comes from the harness, not a self-calculation (blocks §4b until
-  wired).** The staleness axis reads `accumulated_context`, sourced **only** from
-  the Claude Code statusline JSON payload's `context_window` block
+  wired).** The staleness axis reads `accumulated_context`, sourced **primarily**
+  from the Claude Code statusline JSON payload's `context_window` block
   (`used_percentage` / `total_input_tokens` / native `exceeds_200k_tokens`),
-  delivered passively — there is no `/context` (or any command) injection fallback
-  (§2d, M3). The workspace harness must **not** sum `message.usage` tokens out of the
-  transcript — Claude Code documents that format as internal and version-unstable.
-  Named implementer items: confirm the exact statusline field spellings and their
-  version-stability against the installed Claude Code (doc-reported, not asserted
-  here), and build the wiring that captures the statusline command's stdout into
-  `ClaudeSessionObservation`, before the §4b 100K/200K thresholds can fire on live
-  data.
+  delivered passively — the only source that reports mid-turn — with `/context`
+  injection as an at-rest-only fallback (§2d, M3). The workspace harness must **not**
+  sum `message.usage` tokens out of the transcript — Claude Code documents that
+  format as internal and version-unstable. Named implementer items: confirm the exact
+  statusline field spellings and their version-stability against the installed Claude
+  Code (doc-reported, not asserted here), and build the wiring that captures the
+  statusline command's stdout into `ClaudeSessionObservation`, before the §4b
+  100K/200K thresholds can fire on live data.
 - **Provider and model vocabulary — three `HarnessKind` enums, one model value with
   three type names, and a provider-named resume locator (O1, one decision).**
   `HarnessKind`: `mentci` `{ClaudeCode, Codex, Pi, OpenEndedHarness}`
