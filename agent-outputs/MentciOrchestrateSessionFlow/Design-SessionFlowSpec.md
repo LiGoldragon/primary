@@ -6,6 +6,91 @@ and the load-bearing source it cites; every claim carries a `repo/path:line`
 witness or is marked interpretation. Schemas use nota-schema-docs pseudo-NOTA
 (documentation, not the authoritative wire shape).
 
+## Headless reconciliation — supersedes the terminal-cell launch mechanic
+
+**Status:** psyche-locked and demo-proven (mentci commit `7a0c8e44`, see
+`HeadlessDemo-Evidence.md` in this directory). This section governs wherever it and
+the older body below disagree; the body's terminal-cell mechanics are retained only
+as the *optional attach* path.
+
+The psyche validated a headless direction that revises the launch mechanic this spec
+was written around. **Claude runs headless as the engine; Mentci is the view; the
+harness process and `terminal-cell` beneath it are dumb infrastructure.** A
+`terminal-cell` attach is an optional convenience for a human who wants a raw
+terminal, no longer the required host. This supersedes the terminal-cell `LaunchCell`
+/ `TerminalCellDriver` launch path in §2c and §6 step 6 and the "harness drives
+terminal-cell directly" spine step (§7 step 3): those become the *optional attach*
+path, while the default engine path is a headless `claude` run whose transcript the
+existing `ClaudeArtifactObserver` (`harness/src/claude.rs`) already observes
+unchanged (the JSONL/session artifact is identical for headless and attached runs).
+
+**Ephemeral harness, durable resumable session.** The harness need not stay running
+once a turn is done; it is free to tear down entirely between turns. The durable
+carrier of a session across turns is the **resumable session-id in orchestrate's
+session store** (§3 `HarnessSession.resume-locator`), not a live process. This revises
+the §4a/§4c `Hot` invariant: `Hot` = a live *turn* is running on a reserved instance;
+the moment the turn stops the harness tears down and the record returns to `Idle`,
+carrying only its resumable id. A session "between turns" is an `Idle` resumable id,
+not a parked process. Continuing a session is **resuming its stored id with the
+additional prompt** — a fresh headless run against that id from the session's stable
+working directory. For the headless path this replaces the §6 step 9 / §8
+"resume (if cold) + `MessageDelivery`" framing: there is no live TUI to deliver a turn
+into, so the next turn is itself a resume.
+
+**Self-heal on a lost session.** A guidance/steering prompt may target a session whose
+id the engine no longer knows ("no such session"). Handle it by **re-resuming**:
+attempt the resume; if the id is truly gone, mint a fresh session, run the prompt into
+it, and update the store. This generalizes §4b's resume-fail edge (`→ Recycled`) with
+an automatic fresh-mint so the user never sees the loss.
+
+**Session routing is one sub-treatment of a future prompt-treatment meta-phase.** The
+§5 rename (`preflight` → session routing) stands, but session routing is now
+understood as *one* sub-treatment inside a future **prompt treatment** meta-stage —
+alongside intent detection and a summarized feed of each prompt into a long-lived
+meta / dialogue session synced across all sessions. That meta-phase and its other
+sub-treatments are direction only; do not spec them. Only session routing is designed
+here.
+
+**Multiple Mentci windows.** The view must not be designed to foreclose several Mentci
+windows (multi-monitor) rendering the same session; multi-window rendering is not
+built now.
+
+### Implementation notes (headless invocation)
+
+Confirmed against real `claude` v2.1.198 (headless-demo evidence, same directory):
+
+```
+claude -p "<prompt>" [--session-id <uuid> | --resume <id>] --output-format stream-json --verbose
+```
+
+`-p/--print` is headless (no TUI); `--output-format stream-json` requires `--print`
+and, in practice, `--verbose`, and emits one JSON object per line ending in a
+`{"type":"result", ...}` line carrying `session_id` and the assistant text.
+`--session-id <uuid>` on a fresh turn lets orchestrate choose and pre-track the id.
+Two verified gotchas the implementer must respect:
+
+- **Resume is cwd/project-scoped.** `claude --resume <id>` only finds the session when
+  run from the same working directory it was created in; a valid id from another cwd
+  yields "No conversation found with session ID: <id>." This is why the session's
+  working directory is stored and stable, and why a resume must run there.
+- **Session-not-found exits 0.** Resuming an unknown id still exits 0 while emitting a
+  `result` line with `"subtype":"error_during_execution"`, `"is_error":true` (and the
+  not-found message on stderr). Not-found must be detected from the JSON/stderr, never
+  from the exit code — it is the trigger for the self-heal re-resume above.
+
+### Open item — context sourcing under headless (revises §2d / §4b / §9; to be settled by the live-view build)
+
+The context-size staleness mechanism (§2d, §4b) sources its figure **primarily** from
+the Claude Code statusline `context_window` JSON payload — which assumed a running
+TUI/statusline. Under the proven headless `-p` path the statusline may never be
+emitted, while stream-json instead carries a per-message `usage` token breakdown. If
+headless emits no statusline, the context figure would have to come from that
+stream-json `usage`, which reopens §2d's "never self-calculate; read the harness's own
+number" decision (a per-message usage total is closer to a self-sum than to a single
+authoritative figure). This is flagged, not resolved: the live-view build settles
+whether headless emits a usable statusline and, if not, which stream-json `usage`
+figure is authoritative. Do not rewrite the §2d mechanism on the strength of this note.
+
 ## 0 · The one fact that reshapes the migration
 
 The scout mapped the three engines (`preflight.rs`, `harness_sessions.rs`,
@@ -183,6 +268,12 @@ instance.
 
 ### 2c · `signal-harness` — orchestrate opens a Claude session (new)
 
+**Superseded launch mechanic — see the Headless reconciliation section (top).**
+`OpenClaudeSession` now means "run Claude headless" as the default engine path; the
+terminal-cell `LaunchCell` launch below is retained only as the optional attach path.
+The typed `OpenClaudeSession` / `ClaudeLaunchPlan` shape and the reused
+`AdapterEvent` reply family are unchanged.
+
 Orchestrate gains a dependency on `signal-harness` and drives harness to open the
 session. The scout confirmed harness has **no** dynamic launch/resume/model/close
 operation today — instances are fixed at daemon startup
@@ -266,6 +357,11 @@ store-shaped facts. Reusing the landed multi-watch primitive is the push-not-pul
 default and is what this design takes; a dedicated observation subscription is the
 alternative to weigh if that coupling bites (it also interacts with M1's
 per-instance keying). Stated as a tradeoff, not a defect.
+
+**Open under headless — see the Headless reconciliation section (top).** The
+statusline-primary sourcing below assumed a running TUI/statusline; headless `-p` may
+not emit it, in which case the figure would come from stream-json `usage`. That
+question is flagged there and is unresolved; the mechanism below is not rewritten.
 
 **Sourcing the context figure — the harness's own number, never a self-calculation
 (blocks §4b until wired).** `accumulated_context` is the context size the Claude
@@ -712,27 +808,30 @@ deferred path for the turn delivery, though the resume itself is in scope.
   and hand-proof diverge. Settled intent picks terminal-cell; the implementer must
   confirm terminal-cell's `LaunchCell` reaches a working Claude TUI before trusting
   the proof precedent. Still open.
-- **Mentci `ARCHITECTURE.md` design-of-record — RESOLVED (superseded, rewrite
-  pending).** That doc's "Possible Future Design" (`mentci/ARCHITECTURE.md:110-176`)
-  routes Mentci → orchestrate (address only) → a **Mentci-local** terminal-cell
-  driver that owns liveness, with **no harness daemon in the loop** and "harness
-  adapters" living in Mentci. The psyche ACCEPTED this spec's direction (harness
-  daemon owns launch/liveness/observe/close; orchestrate owns full
-  choose/create/reuse/archive), so that section is confirmed stale and authorized
-  for rewrite. A separate worker performs the doc rewrite — this lane does **not**
-  edit `ARCHITECTURE.md`; it only records that the section is superseded and the
-  rewrite is pending.
+- **Mentci `ARCHITECTURE.md` design-of-record — RESOLVED (rewritten).** The old
+  "Mentci-local terminal-cell driver, no harness daemon" framing was already replaced
+  on mentci `main` (47bf0af2) by the three-region split (Mentci / orchestrate /
+  harness) this spec assumes. That doc has now been **further reconciled to the
+  headless direction** (Claude headless engine, Mentci as view, harness + terminal-cell
+  as dumb infra, ephemeral harness + durable resumable session-id, self-heal) on
+  branch `arch-headless-reconcile` (commit `5d9be739`, pushed; disposition tracked by
+  bead `primary-ycda`, full-merge to main pending a rebase over the active live-view
+  code branch). No longer an open unknown.
 - **Context size comes from the harness, not a self-calculation (blocks §4b until
-  wired).** The staleness axis reads `accumulated_context`, sourced **primarily**
-  from the Claude Code statusline JSON payload's `context_window` block
-  (`used_percentage` / `total_input_tokens` / native `exceeds_200k_tokens`),
+  wired) — AND now open on headless.** The staleness axis reads `accumulated_context`,
+  sourced **primarily** from the Claude Code statusline JSON payload's `context_window`
+  block (`used_percentage` / `total_input_tokens` / native `exceeds_200k_tokens`),
   delivered passively — the only source that reports mid-turn — with `/context`
   injection as an at-rest-only fallback (§2d, M3). The workspace harness must **not**
   sum `message.usage` tokens out of the transcript — Claude Code documents that
-  format as internal and version-unstable. Named implementer items: confirm the exact
-  statusline field spellings and their version-stability against the installed Claude
-  Code (doc-reported, not asserted here), and build the wiring that captures the
-  statusline command's stdout into `ClaudeSessionObservation`, before the §4b
+  format as internal and version-unstable. **New open item under headless** (see the
+  Headless reconciliation section, top): headless `claude -p` may emit no statusline
+  at all, in which case the figure would have to come from stream-json `usage` —
+  reopening the never-self-calculate decision. To be settled by the live-view build.
+  Named implementer items: confirm the exact statusline field spellings and their
+  version-stability against the installed Claude Code (doc-reported, not asserted
+  here), and — once the headless statusline question is settled — build the wiring
+  that routes the chosen figure into `ClaudeSessionObservation`, before the §4b
   100K/200K thresholds can fire on live data.
 - **Provider and model vocabulary — three `HarnessKind` enums, one model value with
   three type names, and a provider-named resume locator (O1, one decision).**
@@ -753,8 +852,11 @@ deferred path for the turn delivery, though the resume itself is in scope.
   `provider` is `HarnessKind` — make it provider-neutral or a per-provider variant.
   Not yet resolved.
 - **No resume-id validity probe** anywhere (Scout §6). §4b routes around it with
-  attempt-and-fall-through, but a stale/invalid Claude session id failing resume
-  *gracefully* is unproven and must be verified during step 3.
+  attempt-and-fall-through. This is now **demo-proven** (mentci commit `7a0c8e44`):
+  resuming a poisoned/unknown id is detected from the JSON `result` line and stderr
+  (the process still exits 0), and self-heal mints a fresh session and re-runs the
+  prompt. Remaining verification is only that the same graceful fall-through holds for
+  a genuinely *expired* (not merely wrong-cwd) id in the wired implementation.
 - **Model-knob mapping is semantic, not literal.** The launch plan carries a
   `HarnessSessionModel` semantic knob (`mentci/ARCHITECTURE.md:224-228`); harness
   maps it to `--model <literal>` or `/model <name>` (`harness_adapters.rs:520-527`
