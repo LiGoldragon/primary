@@ -189,6 +189,39 @@ proved guest→guest ping+TCP end-to-end in the nested sandbox
 reboot. NOT promoted to default (per the coordinator). The guests' `root.img`
 persist regardless.
 
+### ROUND: first-class nodes (standard SSH) + right-sized resources
+
+Psyche corrections: (1) make the guests first-class goldragon nodes with standard
+SSH (they were the stripped minimal test-VM profile — no sshd); (2) right-size
+resources (40 GiB disk excessive).
+
+**(1) How standard nodes get SSH — and the fix.** A standard CriomOS node gets
+sshd keys-only from `normalize.nix` (`services.openssh` `PasswordAuthentication =
+false`) and root's authorized keys from `users.nix`
+(`root.openssh.authorizedKeys.keys = adminSshPubKeys`). The host-emitted TestVm
+guest was minimal and imported neither. This is now fixed on CriomOS main —
+commit **`17caaf88`** ("make TestVm guests loginable — sshd keys-only + admin keys
+on the boot image") lifts exactly that standard access identity into the guest
+boot image: `services.openssh.enable` + `PasswordAuthentication = false` +
+`root authorizedKeys = horizon.node.adminSshPubKeys` (the host's projected admin
+keys — an ex_node projection carries none of its own, and the operator who governs
+the VM host governs its guests; `openFirewall` opens 22 on the guest tap). It is
+generic to every TestVm guest. (This commit was authored in a parallel lane; the
+delta from my prior deployed rev `1bf35f801a07` to `17caaf88` is exactly this one
+clean commit — verified.) Deploying from `17caaf88` gives the guests standard SSH.
+
+**(2) Right-sized resources** (goldragon main **`2fe644be`**): `mirror-alpha` /
+`mirror-beta` shrunk from 4c / 8 GiB / 40 GiB to **2 cores / 4 GiB RAM / 8 GiB
+disk** (lean but comfortable for a Spirit + criome + mirror node). `vm-testing`
+left unchanged. Projection verified: both mirror nodes now `cores 2, ramGb 4,
+diskGb 8`. NOTE: the existing 40 GiB `root.img` are removed before restart so
+`autoCreate` recreates them at 8 GiB (the guests hold no data yet).
+
+**Reactivation (boot-once safety pattern):** build-only `Realize` validation from
+`17caaf88` + resized datom in progress; then BootOnce → reboot → recreate root.img
+→ start guests → SSH `mirror-alpha` → ping + TCP `mirror-beta`. Revs: CriomOS main
+`17caaf88`, goldragon main `2fe644be`. Not promoting the generation.
+
 Revs now: CriomOS main **`1bf35f801a07`** (guest-networking + home-inclusion),
 goldragon main `824ffe6498c3`.
 
