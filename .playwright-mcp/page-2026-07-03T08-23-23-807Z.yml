@@ -1,0 +1,196 @@
+- generic [ref=f1e2]:
+  - generic:
+    - generic:
+      - heading "Para ver los atajos del teclado, presiona el signo de interrogación Ver atajos de teclado" [level=2] [ref=f1e3]:
+        - generic [ref=f1e4]: Para ver los atajos del teclado, presiona el signo de interrogación
+        - link "Ver atajos de teclado" [ref=f1e5] [cursor=pointer]:
+          - /url: /i/keyboard_shortcuts
+      - generic:
+        - generic:
+          - button "Grok" [ref=f1e6] [cursor=pointer]:
+            - img [ref=f1e7]
+          - button "Chat" [ref=f1e10] [cursor=pointer]:
+            - img [ref=f1e11]
+      - generic [ref=f1e14]:
+        - button "Saltar a la cronología de inicio" [ref=f1e15] [cursor=pointer]
+        - button "Saltar a las tendencias" [ref=f1e17] [cursor=pointer]
+        - banner [ref=f1e19]:
+          - generic [ref=f1e21]:
+            - generic [ref=f1e22]:
+              - heading "X" [level=1] [ref=f1e24] [cursor=pointer]:
+                - link "X" [ref=f1e25]:
+                  - /url: /home
+                  - img [ref=f1e27]
+              - navigation "Principal" [ref=f1e31]:
+                - link "Inicio" [ref=f1e32] [cursor=pointer]:
+                  - /url: /home
+                  - generic [ref=f1e33]:
+                    - img [ref=f1e35]
+                    - generic [ref=f1e38]: Inicio
+                - link "Buscar y explorar" [ref=f1e39] [cursor=pointer]:
+                  - /url: /explore
+                  - generic [ref=f1e40]:
+                    - img [ref=f1e42]
+                    - generic [ref=f1e45]: Explorar
+                - link "Notificaciones" [ref=f1e46] [cursor=pointer]:
+                  - /url: /notifications
+                  - generic [ref=f1e47]:
+                    - img [ref=f1e49]
+                    - generic [ref=f1e52]: Notificaciones
+                - link "Seguir" [ref=f1e53] [cursor=pointer]:
+                  - /url: /i/connect_people
+                  - generic [ref=f1e54]:
+                    - img [ref=f1e56]
+                    - generic [ref=f1e59]: Seguir
+                - link "Mensajes Directos" [ref=f1e60] [cursor=pointer]:
+                  - /url: /i/chat
+                  - generic [ref=f1e61]:
+                    - img [ref=f1e63]
+                    - generic [ref=f1e66]: Chat
+                - link "Grok" [ref=f1e67] [cursor=pointer]:
+                  - /url: /i/grok
+                  - generic [ref=f1e68]:
+                    - img [ref=f1e70]
+                    - generic [ref=f1e73]: Grok
+                - link "Premium" [ref=f1e74] [cursor=pointer]:
+                  - /url: /i/premium_sign_up
+                  - generic [ref=f1e75]:
+                    - img [ref=f1e77]
+                    - generic [ref=f1e80]: Premium
+                - link "Perfil" [ref=f1e81] [cursor=pointer]:
+                  - /url: /LiGoldragon
+                  - generic [ref=f1e82]:
+                    - img [ref=f1e84]
+                    - generic [ref=f1e87]: Perfil
+                - button "Más elementos del menú" [ref=f1e88] [cursor=pointer]:
+                  - generic [ref=f1e89]:
+                    - img [ref=f1e91]
+                    - generic [ref=f1e94]: Más opciones
+              - link "Postear" [ref=f1e96] [cursor=pointer]:
+                - /url: /compose/post
+                - generic [ref=f1e102]: Postear
+            - button "Menú de la cuenta" [ref=f1e105] [cursor=pointer]:
+              - generic [ref=f1e113]:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic "Li Goldragon":
+                        - img "Li Goldragon"
+              - generic [ref=f1e117]:
+                - generic [ref=f1e121]: Li Goldragon
+                - generic [ref=f1e125]: "@LiGoldragon"
+              - img [ref=f1e127]
+        - main [ref=f1e130]:
+          - generic [ref=f1e133]:
+            - generic "Cronología de inicio" [ref=f1e135]:
+              - generic [ref=f1e136]:
+                - navigation [ref=f1e141]:
+                  - generic [ref=f1e142]:
+                    - generic:
+                      - button "Anterior" [disabled]:
+                        - generic:
+                          - img
+                    - tablist [ref=f1e144]:
+                      - tab "Para ti" [selected] [ref=f1e145] [cursor=pointer]:
+                        - generic [ref=f1e148]: Para ti
+                      - tab "Siguiendo" [ref=f1e150] [cursor=pointer]:
+                        - generic [ref=f1e153]: Siguiendo
+                    - generic:
+                      - button "Siguiente" [disabled]:
+                        - generic:
+                          - img
+                - generic:
+                  - generic:
+                    - status:
+                      - button:
+                        - generic:
+                          - img
+                          - generic: Ver posts nuevos
+              - generic [ref=f1e160]:
+                - link "Li Goldragon" [ref=f1e169] [cursor=pointer]:
+                  - /url: /LiGoldragon
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic "Li Goldragon":
+                          - img "Li Goldragon"
+                - generic [ref=f1e172]:
+                  - generic [ref=f1e190]:
+                    - generic [ref=f1e192]: ¿Qué está pasando?
+                    - textbox "Texto del post" [ref=f1e194]
+                  - generic [ref=f1e201]:
+                    - navigation [ref=f1e202]:
+                      - generic [ref=f1e203]:
+                        - generic:
+                          - button "Anterior" [disabled]:
+                            - generic:
+                              - img
+                        - tablist [ref=f1e205]:
+                          - generic [ref=f1e208]:
+                            - button "Agregar fotos o video" [ref=f1e209] [cursor=pointer]:
+                              - img [ref=f1e211]
+                            - button "Choose File" [ref=f1e215]
+                          - button "Agregar un GIF" [ref=f1e218] [cursor=pointer]:
+                            - img [ref=f1e220]
+                          - button "Generar imagen" [ref=f1e226] [cursor=pointer]:
+                            - img [ref=f1e228]
+                          - button "Agregar encuesta" [ref=f1e233] [cursor=pointer]:
+                            - img [ref=f1e235]
+                          - button "Agregar emoji" [ref=f1e241] [cursor=pointer]:
+                            - img [ref=f1e243]
+                          - button "Programar post" [ref=f1e249] [cursor=pointer]:
+                            - img [ref=f1e251]
+                          - button "Etiquetar ubicación" [ref=f1e256] [cursor=pointer]:
+                            - img [ref=f1e258]
+                          - button "Divulgación de contenido" [ref=f1e263] [cursor=pointer]:
+                            - img [ref=f1e265]
+                        - generic:
+                          - button "Siguiente" [disabled]:
+                            - generic:
+                              - img
+                    - button "Postear" [disabled] [ref=f1e270]:
+                      - generic [ref=f1e273]: Postear
+              - progressbar "Cargando la cronología" [ref=f1e277]:
+                - img [ref=f1e279]
+            - generic "Tendencias" [ref=f1e286]:
+              - generic [ref=f1e287]:
+                - search "Buscar" [ref=f1e292]:
+                  - generic [ref=f1e297]:
+                    - img [ref=f1e299]
+                    - combobox "Búsqueda" [ref=f1e304]
+                - complementary "Suscríbete a Premium" [ref=f1e308]:
+                  - generic [ref=f1e310]: Suscríbete a Premium
+                  - generic [ref=f1e311]: Despídete de los anuncios, consulta tus estadísticas, aplica boost a las respuestas y aprovecha más de 20 características.
+                  - link "Suscribirse" [ref=f1e312] [cursor=pointer]:
+                    - /url: /i/premium_sign_up
+                    - generic [ref=f1e315]: Suscribirse
+                - progressbar "Cargando la cronología" [ref=f1e318]:
+                  - img [ref=f1e320]
+                - progressbar "Cargando recomendaciones de usuarios para seguir" [ref=f1e326]:
+                  - img [ref=f1e328]
+                - navigation "Pie de página" [ref=f1e332]:
+                  - generic [ref=f1e333]:
+                    - link "Términos" [ref=f1e334] [cursor=pointer]:
+                      - /url: https://x.com/tos
+                    - generic [ref=f1e335]: ·
+                  - generic [ref=f1e336]:
+                    - link "Privacidad" [ref=f1e337] [cursor=pointer]:
+                      - /url: https://x.com/privacy
+                    - generic [ref=f1e338]: ·
+                  - generic [ref=f1e339]:
+                    - link "Cookies" [ref=f1e340] [cursor=pointer]:
+                      - /url: https://support.x.com/articles/20170514
+                    - generic [ref=f1e341]: ·
+                  - generic [ref=f1e342]:
+                    - link "Accesibilidad" [ref=f1e343] [cursor=pointer]:
+                      - /url: https://help.x.com/resources/accessibility
+                    - generic [ref=f1e344]: ·
+                  - generic [ref=f1e345]:
+                    - link "Información sobre anuncios" [ref=f1e346] [cursor=pointer]:
+                      - /url: https://business.x.com/help/troubleshooting/how-twitter-ads-work.html?ref=web-twc-ao-gbl-adsinfo&utm_source=twc&utm_medium=web&utm_campaign=ao&utm_content=adsinfo
+                    - generic [ref=f1e347]: ·
+                  - button "Más opciones" [ref=f1e348] [cursor=pointer]:
+                    - generic [ref=f1e349]:
+                      - text: Más opciones
+                      - img [ref=f1e350]
+                  - generic [ref=f1e353]: © 2026 X Corp.

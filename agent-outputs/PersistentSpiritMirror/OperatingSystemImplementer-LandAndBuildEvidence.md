@@ -102,6 +102,39 @@ The guest-networking fix itself is landed (CriomOS main `ee49b203d565`) and
 sandbox-proven; it is NOT the blocker. The BootOnce command stays staged (below)
 for once the toplevel builds.
 
+### RESOLUTION — home-inclusion fix (surgical, CriomOS-local); toplevel now builds GREEN
+
+Root cause of the bird-home inclusion (coordinator's option 2): `horizon.users`
+is the FULL cluster user set — every node's projection lists every user for
+identity/keys (ouranos ALSO lists `bird`, who has no ouranos home either). The
+projected `User` carries `hasPubKey` = "has a per-node pub-key entry for THIS
+viewpoint node" (`viewpoint_entry.is_some()`); for prometheus both `bird` and
+`li` are `hasPubKey = false`. But `userHomes.nix` built `home-manager.users` from
+EVERY `horizon.users` entry with no filter — so every node built every user's
+home, dragging `bird` → `mentci-egui` → the orphaned `signal-mentci-client` rev
+into prometheus's eval.
+
+Fix (CriomOS main **`1bf35f801a07`**): `userHomes.nix` now filters
+`horizon.users` to `hasPubKey` users before building `home-manager.users`, so a
+user's home lands only on the nodes their `pub_keys` map names. Surgical,
+CriomOS-local; does NOT touch horizon-rs or the mentci stack. It is also just
+correct: a home belongs where the user has a presence.
+
+**Build proof GREEN** from corrected main `1bf35f801a07` (watchable direct build
+on prometheus with lojix's materialized inputs): eval now clean (no mentci
+fetch — bird/li homes dropped from prometheus), only 4 trivial final derivations
+built, closure `/nix/store/61bajpa7g5xii6mr9lps18fvf9gkgphx-nixos-system-
+prometheus-26.05.20260422.0726a0e` (`BUILD_EXIT=0`).
+
+### LIVE SWITCH (psyche cleared — independent ethernet, no stranding risk)
+
+Submitted BootOnce of prometheus FullOs from `1bf35f801a07`
+(`(Deployed (38 …))`). Activation + health + guest boot + on-metal A↔B: recorded
+below as they complete.
+
+Revs now: CriomOS main **`1bf35f801a07`** (guest-networking + home-inclusion),
+goldragon main `824ffe6498c3`.
+
 ## 4. Staged BootOnce (DO NOT RUN until psyche confirms switch timing)
 
 The single careful switch, ready to run next round (identical to the Build
