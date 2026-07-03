@@ -148,9 +148,46 @@ running system is unchanged and the guests + networking fix are NOT live. This i
 the inverse of "activate now, revert on reboot": here a REBOOT ACTIVATES gen 50
 (booting it once), and a SECOND reboot reverts to gen 49. To boot
 `mirror-alpha`/`mirror-beta` and run the on-metal A↔B proof, prometheus must
-reboot into gen 50. Reported to the coordinator for reboot confirmation (a
-production-router reboot; the psyche's independent ethernet covers the blast
-radius, but the reboot is the un-surprised step to complete the payoff).
+reboot into gen 50.
+
+### ON-METAL RESULT (psyche-approved boot-once reboot done)
+
+prometheus rebooted (new boot_id) and **booted gen 50** (`/run/current-system` =
+`61bajpa7…`), NOT the old gen 49. Health: `is-system-running` = running; sshd,
+tailscaled, nix-serve, hostapd, yggdrasil active; `nix-daemon.socket` active
+(the daemon is socket-activated — `nix-daemon` inactive-until-used is normal); no
+failed units. Both guests started; each has a persistent **40 GiB** host-side
+`root.img` (auto-created), and each is a real `nixos-system-mirror-alpha/beta`.
+
+**Guest-networking fix LIVE + verified on the metal:**
+- taps `vmt0`/`vmt1` UP, each with the `fe80::1/64` gateway (the fix) + its sliced
+  IPv4 endpoint;
+- host `/128` routes `5::7 dev vmt0`, `5::8 dev vmt1`;
+- nftables (live): `iifname "vmt*" oifname "vmt*" accept` (forward) +
+  `iifname "vmt*" meta l4proto ipv6-icmp accept` (input); IPv6 forwarding = 1.
+
+**host↔guest reachability (both guests):** `ping 5::7` 2/2, `ping 5::8` 2/2, 0%
+loss; neighbor table shows `5::7 → 02:00:00:00:00:01 REACHABLE`,
+`5::8 → 02:00:00:00:00:02 REACHABLE`. So both guests booted, bound their node IPs,
+and the guest-side binding + host route + `fe80::1` gateway + NDP all work live.
+
+**Guest-ORIGINATED A→B (ping+TCP from within alpha): NOT directly shown on the
+metal — access limitation, not a networking gap.** The production guest is
+minimal (`test-vm-host.nix` emits microvm + hostname + stateVersion + the
+networking; NO sshd, no listening service, root locked; the microvm `-c` console
+is broken on CriomOS — assumes `/etc/nixos`). So there is no way to get a shell
+inside a guest to originate the packet. The guest console IS captured in the host
+`microvm@<guest>` journal (clean multi-user boot seen), so the sandbox's
+probe-via-journal method would work — but that needs a probe/sshd injected into
+the guest config, which on the metal means a real guest-enterability change
+(fuller guest built with sshd + keys) + another build/reboot. Every component of
+the A→B path is live and verified on the metal (above), and the IDENTICAL config
+proved guest→guest ping+TCP end-to-end in the nested sandbox
+(`OperatingSystemImplementer-NestedReachabilityEvidence.md`).
+
+**Persistence note:** gen 50 is boot-once — it reverts to gen 49 on the NEXT
+reboot. NOT promoted to default (per the coordinator). The guests' `root.img`
+persist regardless.
 
 Revs now: CriomOS main **`1bf35f801a07`** (guest-networking + home-inclusion),
 goldragon main `824ffe6498c3`.
