@@ -172,3 +172,112 @@ tool repointing consumer deps to producer `drop-next` (`branch=main`->
 out of my scope); (c) a defined verify that tolerates the old URL via redirect
 with network (contradicts `--locked` no-network sandbox + the rewrite). Needs a
 coordinator decision before any consumer fan-out.
+
+## ADDENDUM — Phase A whole-graph run (2026-07-03, after B landed the harness)
+
+The coordinator decision above was resolved as option (b): B extended the
+synchronizer with `staged-cascade`, which repoints a staged consumer's producer
+git-deps to the producers' `drop-next` branches during verify. Phase A then
+staged the consumers and ran the whole graph. NO migration `main` touched
+(verified). Full detail + root-cause taxonomy in `A-Checkpoint-Evidence.md`.
+
+- **80 consumers staged** onto `drop-next` (+ producers `schema a393c8c8`,
+  `schema-rust ba6f6df7`). Held out: `mind`/`cloud` (Codex claims), `spirit`
+  (uncommitted WIP), `CriomOS`/`CriomOS-home` (NO-CARGO, from verify only).
+- One `staged-cascade` over 81 components (~38 min): **40 GREEN, 33 VerifyFailed,
+  6 AlreadyAligned, 2 BumpFailed.** Producer `drop-next` after the run:
+  `schema a393c8c8`, **`schema-rust 7f746c02`** (re-bumped, GREEN), `nota` none.
+- Whole-graph green is **NOT** reached — honest partial. The mechanism is proven
+  (40 GREEN incl. `signal-frame`/`triad-runtime` + the full wire layer; every
+  cross-source `--locked` blocker resolved). The failures are pre-existing schema
+  drift surfaced by rebuilding at schema-rust's current tip (11 retired-syntax +
+  6 stale-generated-artifact + 4 cascade), a guard test naming `schema-rust-next`
+  (1), a test-compile (1), 9 no-flake false-fails (mechanism correct, verified
+  transitively), 1 transient, and the synchronizer multi-pin limit (2). None is a
+  rename-migration defect.
+
+### Per-component ledger (drop-next tip after the run · verdict · note)
+
+| repo | drop-next tip | verdict | note |
+|---|---|---|---|
+| agent | 55d96af59382 | GREEN |  |
+| chroma | 68d6678e0a5c | GREEN |  |
+| chronos | 2a091f6b65b2 | GREEN |  |
+| clavifaber | defd1afc8c2b | GREEN |  |
+| criome | dd6c70f5669a | GREEN |  |
+| horizon-rs | 33014c71ebec | GREEN |  |
+| listener | 767eb72778e7 | GREEN |  |
+| mentci-lib | ebedb36ab74d | GREEN |  |
+| message | 1c747398fa58 | GREEN |  |
+| meta-signal-agent | 5451da7fba07 | GREEN |  |
+| meta-signal-criome | 6f8568022b19 | GREEN |  |
+| meta-signal-listener | 40f9f2de2a87 | GREEN |  |
+| meta-signal-message | 5c13b776298d | GREEN |  |
+| meta-signal-router | 47c0da0a9807 | GREEN |  |
+| meta-signal-spirit | b05464fd1c5c | GREEN |  |
+| meta-signal-terminal | 31cad8912ca7 | GREEN |  |
+| meta-signal-version-handover | 72b8d3abeb45 | GREEN |  |
+| mirror | 11933f21e07c | GREEN |  |
+| nexus | fc700a6414a4 | GREEN |  |
+| nota-config | c37627dd8872 | GREEN |  |
+| schema-rust | 7f746c020bfb | GREEN | producer re-bump |
+| signal | fa82cf9d9ccd | GREEN |  |
+| signal-agent | 32f193e27e7e | GREEN |  |
+| signal-criome | 91096526fbf2 | GREEN |  |
+| signal-frame | 44d22a07e75e | GREEN | universal dep |
+| signal-harness | 59015508e5c3 | GREEN |  |
+| signal-introspect | 3309f13ccb4c | GREEN |  |
+| signal-listener | 714c32084b17 | GREEN |  |
+| signal-message | a302b59d8465 | GREEN |  |
+| signal-mind | 8187b71959e7 | GREEN |  |
+| signal-persona | 9d03892ff886 | GREEN |  |
+| signal-repository-ledger | 87495b7802b4 | GREEN |  |
+| signal-router | f15c3c5d3b16 | GREEN |  |
+| signal-sema | cf95702f489e | GREEN |  |
+| signal-standard | 6d17b1189faa | GREEN |  |
+| signal-system | 09e3b65c5040 | GREEN |  |
+| signal-version-handover | b69077f65259 | GREEN |  |
+| skills | c38e464c71bf | GREEN |  |
+| terminal-cell | a69fb26ca5bd | GREEN |  |
+| triad-runtime | f9a6a7c8ab50 | GREEN |  |
+| domain-criome | ee91bbb3f6d2 | VERIFYFAIL | schema-retired-syntax |
+| harness | b31e1217734a | VERIFYFAIL | cascade |
+| introspect | 01d01bea6d37 | VERIFYFAIL | stale-generated-artifact |
+| lojix | a31bb090c1dc | VERIFYFAIL | schema-retired-syntax |
+| mentci | dbc2e22a29bf | VERIFYFAIL | no-flake (false-fail) |
+| mentci-egui | ee84ae10142e | VERIFYFAIL | fetch-transient (retry) |
+| meta-signal-cloud | ab825b7a84c3 | VERIFYFAIL | schema-retired-syntax |
+| meta-signal-domain-criome | aaa42dc8e0bb | VERIFYFAIL | schema-retired-syntax |
+| meta-signal-introspect | fa163717d7fa | VERIFYFAIL | test-compile |
+| meta-signal-lojix | 74a7c71e99c0 | VERIFYFAIL | no-flake (false-fail) |
+| meta-signal-mentci | f81a2f94a1b6 | VERIFYFAIL | no-flake (false-fail) |
+| meta-signal-mentci-client | d7abb5b0c971 | VERIFYFAIL | no-flake (false-fail) |
+| meta-signal-mind | 972117b4304f | VERIFYFAIL | stale-generated-artifact |
+| meta-signal-mirror | c1e10ebd6f5c | VERIFYFAIL | no-flake (false-fail) |
+| meta-signal-orchestrate | 9b090e5a726b | VERIFYFAIL | stale-generated-artifact |
+| meta-signal-persona | a6cdae029641 | VERIFYFAIL | schema-retired-syntax |
+| meta-signal-repository-ledger | 12bc96b47609 | VERIFYFAIL | cascade |
+| meta-signal-upgrade | 92825f316d8c | VERIFYFAIL | schema-retired-syntax |
+| orchestrate | 0f28fda8f195 | VERIFYFAIL | stale-generated-artifact |
+| persona | f2149c0e4821 | VERIFYFAIL | schema-retired-syntax |
+| repository-ledger | 2e4ef76bec92 | VERIFYFAIL | cascade |
+| signal-cloud | c50af8997a62 | VERIFYFAIL | schema-retired-syntax |
+| signal-domain-criome | 3aca32823671 | VERIFYFAIL | schema-retired-syntax (root) |
+| signal-lojix | 4db768af4a1a | VERIFYFAIL | no-flake (false-fail) |
+| signal-mentci | 901a4c309167 | VERIFYFAIL | no-flake (false-fail) |
+| signal-mentci-client | d9d14520ea25 | VERIFYFAIL | no-flake (false-fail) |
+| signal-mirror | bed619daacd0 | VERIFYFAIL | no-flake (false-fail) |
+| signal-orchestrate | d4cb86769773 | VERIFYFAIL | stale-generated-artifact (root) |
+| signal-terminal | 729a04a9e396 | VERIFYFAIL | guard-test (schema-rust-next) |
+| signal-upgrade | e88082edd099 | VERIFYFAIL | schema-retired-syntax (root) |
+| system | f112d19afd8d | VERIFYFAIL | cascade |
+| terminal | 064f88e5e39c | VERIFYFAIL | stale-generated-artifact |
+| upgrade | e6feb8dc9103 | VERIFYFAIL | schema-retired-syntax |
+| router | (rp-tip, not repinned) | BUMPFAIL | multi-pin (signal-criome) |
+| signal-spirit | (rp-tip, not repinned) | BUMPFAIL | multi-pin (schema) |
+| claude-answers | (rp-tip) | ALIGNED | nota-only, self-consistent |
+| meta-signal-harness | (rp-tip) | ALIGNED | no-flake, aligned |
+| meta-signal-system | (rp-tip) | ALIGNED | no-flake, aligned |
+| nota | (main bea7e284) | ALIGNED | producer |
+| schema | a393c8c8 | ALIGNED | producer |
+| version-projection | (rp-tip) | ALIGNED | verified GREEN in subset |
