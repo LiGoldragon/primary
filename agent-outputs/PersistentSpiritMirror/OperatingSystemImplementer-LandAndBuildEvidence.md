@@ -217,10 +217,39 @@ left unchanged. Projection verified: both mirror nodes now `cores 2, ramGb 4,
 diskGb 8`. NOTE: the existing 40 GiB `root.img` are removed before restart so
 `autoCreate` recreates them at 8 GiB (the guests hold no data yet).
 
-**Reactivation (boot-once safety pattern):** build-only `Realize` validation from
-`17caaf88` + resized datom in progress; then BootOnce → reboot → recreate root.img
-→ start guests → SSH `mirror-alpha` → ping + TCP `mirror-beta`. Revs: CriomOS main
-`17caaf88`, goldragon main `2fe644be`. Not promoting the generation.
+**Reactivation — NO host reboot (guest-only + firewall-only live activation).**
+Build green from `17caaf88` + resized datom (closure `rjzsh3…`). Per the psyche's
+guest-only observation, avoided a host reboot: dry-activate showed the plan would
+only stop/start `microvm@mirror-alpha/beta` (router services NOT in the plan), so
+activated live via `switch-to-configuration test` (no bootloader change, reverts
+on reboot). Router services' `ActiveEnterTimestamp` identical before/after — NONE
+restarted. Stopped guests → removed the 40 GiB root.img → activated → started
+guests → root.img recreated at exactly **8 GiB** (resize confirmed).
+
+**Host-input firewall gap found + fixed (tcpdump-diagnosed).** After activation,
+host→guest ssh timed out though sshd was up. tcpdump on `vmt0` showed the guest
+SENDS the SYN-ACK but the host never accepts it — my `vmt*` input rule only
+allowed ICMPv6, so the guest's TCP return traffic hit the router's default-drop
+INPUT (ping worked precisely because ICMPv6 was allowed). Fixed on CriomOS main
+**`3aa4780971e4`**: `iifname "vmt*" ct state { established, related } accept` on
+input (return traffic for host-initiated guest connections; scoped to `vmt*`).
+Its live activation (closure `j1362…`) dry-activated to **`reload nftables.service`
+only** — no router-service restart, no guest restart; verified router timestamps
+unchanged. host→guest ssh then completed the TCP handshake.
+
+**ON-METAL GUEST-ORIGINATED A→B PROOF (the payoff).** SSH'd into `mirror-alpha`
+(ouranos → prometheus jump → alpha, authenticated with the cluster admin key —
+`hostname=mirror-alpha`, `inet6 5::7/128`, `default via fe80::1 dev eth0`). From
+inside alpha to beta `5::8` over the tap path:
+- **ping:** `3 packets transmitted, 3 received, 0% packet loss`;
+- **TCP connect to beta:22:** `Connecting to 5::8 port 22` → `Connection
+  established` → `Server host key: ssh-ed25519 SHA256:HnASStrFOeQU…` (auth then
+  declined, as expected — the TCP + ssh handshake to beta completed over the tap).
+
+**Final health:** prometheus `is-system-running` = running, no failed units, all
+router services active; both guests active with 8 GiB root.img. NOT promoted —
+running config is a `test` activation, bootloader default unchanged, reverts on
+reboot. Revs: CriomOS main **`3aa4780971e4`**, goldragon main **`2fe644be`**.
 
 Revs now: CriomOS main **`1bf35f801a07`** (guest-networking + home-inclusion),
 goldragon main `824ffe6498c3`.
