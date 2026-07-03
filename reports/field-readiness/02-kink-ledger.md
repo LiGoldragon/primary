@@ -28,6 +28,66 @@ rank 3.) The gate and the wire skew should be fixed before the session starts,
 the continuous-testing gap early in it; the rest are pre-emptable with the
 cheap-fix list below.
 
+## CLOSEOUT STATUS DELTA (2026-07-03)
+
+Authoritative current state overriding the recon-snapshot rows below where they
+disagree. The RANKED KINK TABLE and CHEAP-FIX list stay as the historical
+recon; read this delta for what is now true. Evidence:
+`agent-outputs/W46vGoLive/GeneralCodeImplementer-{Evidence,Run2-Map,Run3-NewLayer}.md`,
+`agent-outputs/SynchronizerUniversality/GeneralCodeImplementer-Evidence.md`,
+`agent-outputs/FieldReadiness/OperatingSystemImplementer-{VmFieldPrep,FieldHardening}Evidence.md`.
+
+- Rank 1 (fenix pin rot) RESOLVED: whole-engine gate no longer dies at
+  instantiation. persona main `bbb7f070`; bead `primary-j5j2` CLOSED. Fleet
+  toolchain convergence (`primary-95fm`) still open.
+- Rank 2 (wire skew) wire divergence RESOLVED at signal-frame 0.3.0:
+  signal-frame, signal-router, signal-harness, message, router all verified
+  GREEN on prometheus; router-daemon builds and passes its wire checks (the
+  `Caller.identity` concern is gone). persona flake inputs normalized
+  `git+ssh`→`github:` (persona main `ac629103`); criome config updated
+  (goldragon main `e8b658fa`). `primary-w46v` stays OPEN — its SOLE remaining
+  blocker is the `nota-next`→`nota` crate-rename migration, now tracked as
+  **`primary-ekvt` (P1)**, on which `w46v` depends. 6 `synchronizer` staging
+  branches remain unmerged; nothing landed to component mains. `primary-mddx`
+  (vintage fingerprint) still open.
+- Synchronizer: universality refactor DONE + audited PASS; PUBLIC remote
+  `github.com/LiGoldragon/synchronizer` created + pushed; first live run proved
+  it end-to-end and exposed one tool bug (transitive-lock fallback used a
+  repo/table key where the producer package name was needed), FIXED at
+  synchronizer main `8eec5a46` with a regression test. Config externalized to
+  `goldragon/synchronizer.nota` (7 components). Cheap-fix #1/#2 (preflight
+  rebuild + rev-pin diff scripts) are superseded by the tool. Flagged low-severity
+  gap: the tool can't repoint `git+ssh`/`type:git` flake inputs (`github:` only).
+- Rank 7 / decision (e) (persistent VM guest): NOT retired — genuine CONFLICT.
+  The guest surface is being actively extended (goldragon mirror-alpha/beta
+  TestVms on the same VmHost for the spirit/mirror front). Needs psyche
+  adjudication; `primary-dw95` updated, not closed.
+- Rank 13 / decision (a) (nixos-test remote scheduling): capability landed
+  declaratively + proven (CriomOS `f8eb6ff7`; kvm builders now advertise
+  nixos-test); `primary-vcqx` updated, `blocked-on-psyche` dropped; live ouranos
+  System Switch DEFERRED to a watched window.
+- Rank 22 / decision (c) (demo leftovers): demo runtime REMOVED; the 13G
+  `/tmp/…142204` set (9 registered jj workspaces with uncommitted work
+  intersecting criome-authorization) DEFERRED to its owner.
+- Rank 25 / decision (d) (GitHub-free inner loop): `nix copy` derivation
+  shipping to prometheus VERIFIED working + sanctioned (CriomOS-test-cluster
+  README `e57cc8d2`).
+- ssh `HostName` fold-in landed declaratively (CriomOS-home `3738e2f2`); Home
+  Activate DEFERRED. orchestrate daemon (had died, no supervisor) restored (pid
+  58903); systemd `--user` supervisor unit landed (CriomOS-home `faf8c230`,
+  pinned to the running rev); live cutover DEFERRED (kill 58903 first),
+  unplanned-activation race flagged. Cheap-fix #8/#12 landed in CriomOS
+  `AGENTS.md` (`4140322e`); doctrine cheap-fixes folded into skills; #6 done;
+  #7 (bookmark/workspace litter) deferred to a quiet single-agent window;
+  component-repo hygiene items not done (low priority).
+- Beads filed this session beyond the recon set: `primary-wgae` (P2, lojix Home
+  Build with no observable execution/outcome), `primary-oftl` (P3, converge
+  nixos-test-follows-kvm into horizon-rs `node.rs`), and `primary-ekvt` (P1,
+  the nota-next migration above).
+- DEFERRED-ACTIVATION punch list (needs a watched window): ouranos System Switch
+  for nixos-test; ssh Home Activate; orchestrate systemd cutover (kill 58903
+  first).
+
 ## RANKED KINK TABLE
 
 Classification: BEAD = bead-for-Fable5 (id given); CHEAP = cheap-fix-now (see
@@ -97,32 +157,47 @@ fix-list). Rank annotation is blast × likelihood on the sustained session.
 14. Habit: `nix build --dry-run` before heavy builds to see the miss surface
     and spot prometheus degradation early (13-K5 cheap half).
 
-## OPEN DECISIONS FOR THE PSYCHE (recorded, not resolved)
+## OPEN DECISIONS FOR THE PSYCHE (recorded)
 
-(a) Should the prometheus builder line on ouranos gain `nixos-test` so VM
+Statuses as of the 2026-07-03 closeout delta above.
+
+(a) [RESOLVED — nixos-test capability landed declaratively (CriomOS `f8eb6ff7`)
++ proven; `primary-vcqx` blocked-on-psyche dropped; only the ouranos System
+Switch is deferred to a watched window.] Should the prometheus builder line on
+ouranos gain `nixos-test` so VM
 checks schedule transparently via plain `nix build`, or is its absence
 deliberate doctrine keeping heavy KVM runs an explicit ssh-run act?
 Tradeoff: frictionless VM iteration vs deliberate, visible scheduling of
 heavyweight tests. (10-K2; gates primary-vcqx.)
 
-(b) Commit or discard the 8-file dirty spirit checkout on
-`criome-authorization-push`? Tradeoff: preserving in-flight authorization work
+(b) [OPEN — deferred to the criome-authorization owner; the 13G demo workspaces
+intersect this same in-flight work.] Commit or discard the 8-file dirty spirit
+checkout on `criome-authorization-push`? Tradeoff: preserving in-flight authorization work
 vs restoring build-from-committed-truth for the engine's most active
 component. (11-K7; gates part of primary-sos8.)
 
-(c) May the leftover demo daemons and /tmp sandboxes from the Jun 30-Jul 1
+(c) [PARTLY RESOLVED — demo runtime (daemons/sockets/stale secret) REMOVED; the
+13G `/tmp/…142204` set of 9 registered jj workspaces DEFERRED to its owner
+(uncommitted work intersecting criome-authorization).] May the leftover demo
+daemons and /tmp sandboxes from the Jun 30-Jul 1
 demos be killed and removed, or do they hold state worth keeping? Tradeoff:
 field hygiene for the next session vs losing demo state. (12-K9, 13-K7; gates
 fix-list 13.)
 
-(d) Accept GitHub as a hard availability dependency of the VM-test inner loop
-(push-first doctrine), or sanction a `nix copy` derivation-shipping path to
-prometheus? Tradeoff: pushed-refs doctrine purity vs inner-loop latency and
+(d) [RESOLVED — the GitHub-free `nix copy` derivation-shipping path to prometheus
+is VERIFIED working + sanctioned (CriomOS-test-cluster README `e57cc8d2`); git
+push stays the durable publish, explicit `nix copy` uses the trusted host-key
+(root) identity.] Accept GitHub as a hard availability dependency of the VM-test
+inner loop (push-first doctrine), or sanction a `nix copy` derivation-shipping
+path to prometheus? Tradeoff: pushed-refs doctrine purity vs inner-loop latency and
 availability. (10-K5.)
 
-(e) Complete the declared persistent-guest surface (guest network + sshd per
-primary-dw95), or retire it in favor of runNixOSTest-only VM operation?
-Tradeoff: a persistent, enterable test VM vs maintaining a second, heavyweight
+(e) [OPEN — genuine CONFLICT, needs psyche adjudication: the guest surface is
+being actively EXTENDED (goldragon mirror-alpha/beta TestVms on the same VmHost
+for the spirit/mirror front), directly against retirement; `primary-dw95`
+updated, not closed.] Complete the declared persistent-guest surface (guest
+network + sshd per primary-dw95), or retire it in favor of runNixOSTest-only VM
+operation? Tradeoff: a persistent, enterable test VM vs maintaining a second, heavyweight
 VM path that requires cluster-facts changes and host redeploys per guest.
 (10-K1, 10-K6; shapes primary-dw95.)
 

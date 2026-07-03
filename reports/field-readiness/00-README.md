@@ -26,6 +26,11 @@ Read order:
 5. `13-tooling-field.md` — jj/nix/spirit/orchestrate/bd/tests all READY;
    known jam points; no continuous-testing entry point.
 
-Tracker: 17 beads opened under label `field-readiness` (P1: primary-j5j2,
-primary-vp6d; primary-oeng retired — single-host concentration is accepted,
-not a defect), plus an evidence note on existing primary-dw95.
+Tracker: beads under label `field-readiness`. Current state is the
+`02-kink-ledger.md` 2026-07-03 CLOSEOUT STATUS DELTA — read it for what is now
+true. Headline since the recon: the whole-engine gate's fenix death is fixed
+(`primary-j5j2` closed) and the wire skew is resolved at signal-frame 0.3.0; the
+gate's sole remaining blocker is the `nota-next`→`nota` crate-rename migration
+(`primary-ekvt`, P1), on which `primary-w46v` now depends. `primary-oeng`
+retired (single-host concentration accepted). `primary-wgae`/`primary-oftl`/
+`primary-ekvt` filed this session.
