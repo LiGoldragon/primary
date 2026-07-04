@@ -1,145 +1,154 @@
-# Handover — Whole-Engine Testing Readiness: the `-next` Rename Migration (2026-07-03)
+# Handover — Finishing the `-next` removal in a clean window (2026-07-04)
 
-Focus-scoped freshness aid. Overall lane: bring the whole persona/criome engine
-to continual assembly testing and operation, VM-cluster testing on
-`prometheus`. Immediate active thread, and the sole remaining blocker on the
-whole-engine gate / `w46v`: the engine-wide `-next` crate-rename migration
-(bead `ekvt`). Resume there first.
+Focus-scoped freshness aid, prepared for a LATER isolated session that will
+unequivocally finish the engine-wide `-next`→canonical crate-rename removal
+(bead `ekvt`) — run only when no other agent is pushing `drop-next`. `-next` is
+the sole remaining blocker on the whole-engine gate `w46v`. Other field-readiness
+threads are carried lean at the end; they were not advanced this session.
 
-## Settled psyche direction
+## Settled psyche intent
 
-- Continually test the whole persona/criome engine and enter operation;
-  VM-cluster testing on `prometheus` (sole permanent builder).
-- Universal tools carry zero project data; mechanical cross-repo propagation
-  belongs in a tool, not hand-repeated.
-- Drop `-next` from all `*-next` crates everywhere: rename the repos too, drop
-  from dep keys and `use` paths, no alias shims (grounded in recorded intent
-  `10pz`: replace, don't keep a compat shape).
-- Cluster data is accessed only through horizon/lojix (exposed as a
-  system-generated derivation, e.g. `/etc/horizon.json`), never read directly
-  by any other tool — a psyche correction; document it in skills/docs.
-- A tool's criome-instance config lives with the graph it describes
-  (synchronizer config → `persona` once the datom coupling is removed).
-- Psyche flagged: does not want sprawling `jj` worktrees/workspaces.
+- Drop `-next` from every `*-next` crate everywhere — repos, dep keys, `use`
+  paths — with no alias/compat shim (recorded intent `10pz`: replace, don't keep
+  a legacy shape; every consumer updated).
+- Nothing lands to any migration repo `main` until an explicit psyche go.
+  Producers before consumers.
+- Universal tools carry zero project data.
+- No `jj` worktree/workspace sprawl; use disposable `drop-next` staging branches.
+- The synchronizer's staging-branch name is configurable (delivered this session).
 
-## Confirmed / completed
+## Tools — done and landed
 
-- Synchronizer: universal, independently audited PASS, PUBLIC
-  (`github.com/LiGoldragon/synchronizer`), tool bug fixed (main `8eec5a46`),
-  proven on live runs. Full law + schema at its `ARCHITECTURE.md`.
-- `w46v`: wire skew RESOLVED at signal-frame 0.3.0 (router-daemon builds +
-  passes wire checks; the `Caller.identity` concern is gone). persona inputs
-  normalized `git+ssh`→`github:` (persona main `ac629103`). Remaining blocker =
-  the `-next` migration (bead `ekvt`); `w46v` depends on `ekvt`.
-- `oeng` retired + references scrubbed.
-- Orchestrate: was down, restored (running pid at rev `8f9b4170`);
-  `systemd --user` supervisor unit landed (CriomOS-home `faf8c230`); live
-  cutover deferred (kill the running daemon first).
-- `dw95`: decision (e) resolved as COMPLETE-not-retire (it is the shared
-  VM-host substrate the mirror front builds on); guest network fix verified +
-  guests made loginable (sshd), landed CriomOS main `17caaf88`; live prometheus
-  redeploy deferred (vehicle `1e6b.2`; must re-stage a BootOnce from
-  `17caaf88`, NOT the sshd-less staged gen-50).
-- a/c/d resolved: (a) nixos-test builder capability landed (CriomOS
-  `f8eb6ff7`), ouranos Switch deferred; (c) runtime demo debris cleaned; (d)
-  `nix copy` inner loop verified + sanctioned.
-- Cheap-fixes: doctrine ones → skills; #6/#8/#12 done; component-repo ones
-  remain low-priority.
-- 13G Jul-1 demo debris cleaned (9 workspaces forgotten, dir removed).
-- Beads filed this arc: `ekvt` (P1, the `-next` migration), `wgae`, `oftl`,
-  `nlks`.
+- Synchronizer (public, `main 57082fa6`, + its own stale `nota-next` dep fixed):
+  coordinated cross-branch verify — typed `BaseSelection::StagedCascade` +
+  `BranchScheme.staging` (set to `drop-next`) pre-seeds the bump ledger from
+  producers' staging tips, so a consumer staged on `drop-next` resolves its
+  producers' `drop-next` instead of their un-rewritten `main`; producers without
+  a `drop-next` fall back to `main`. Independently audited GO. Mainline path
+  unchanged.
+- rename-propagator (public, `main 5c2e0ab4`): hardened — now emits an explicit
+  `NoStage(Diverged|Unverified)` instead of SILENTLY skipping a repo that has a
+  local `jj main*` divergence (the earlier silent skip produced false "all
+  clean" claims). Edits-only, zero project data. Guard: `tests/staging_disposition.rs`.
+- The 3 GitHub repo renames are live with redirects: `nota` (was nota-next),
+  `schema` (was schema-next), `schema-rust` (was schema-rust-next).
 
-## The in-flight `-next` migration — active thread
+## Current staging state (authoritative source = `git ls-remote`, not local refs)
 
-- Tool: `LiGoldragon/rename-propagator` (main ~`d4ef1e69`) — sibling to the
-  synchronizer, boundary-anchored token substitution, discovers the rename map
-  from each producer's `[package]` name+repository (zero project data),
-  independently audited GO. It does file EDITS only — commit/push/lock-regen/
-  verify are hand-driven, not in the tool.
-- Scope: 3 families `nota-next`→`nota`, `schema-next`→`schema`,
-  `schema-rust-next`→`schema-rust`. ~89 repos; run config 86 (3 authorized
-  exclusions). Plan artifacts under `agent-outputs/RenamePropagator/`:
-  `DryRunPlan.nota`, `DryRunReview.md`, `criome-sweep.nota`,
-  `StageAndVerify-Evidence.md`. ~2376 edits, 4 flagged pins (all in `mind`),
-  219 residue hits.
-- Done: the 3 GitHub repo renames (redirects active). Producers staged to
-  `drop-next` branches: `nota` (main already clean), `schema` drop-next
-  `ef499e25` verify GREEN, `schema-rust` drop-next `4732e4a3` verify FAILED.
-  Nothing landed to any `main`. Exclusions: `CriomOS-test-cluster` (dirty
-  unrelated WIP → bead `nlks`), and the 2 non-canonical `CriomOS-home` jj
-  worktrees.
-- Structural blocker: the tool keeps `branch=main` on rewritten deps, so
-  staged consumers reference producer MAINs, which aren't rewritten this pass —
-  a multi-level consumer's isolated verify fetches the old `-next` source and
-  fails in the no-network build sandbox. `schema-rust` failed because
-  `schema`'s main still declares `nota-next`. Every multi-level consumer would
-  fail the same way. This is the coordinated-multi-repo problem the
-  synchronizer's harness solves; rename-propagator lacks it.
-- Open decision (resume here): how to land the coordinated set.
-  - A — bottom-up progressive verify-and-land: verify each producer, land it
-    to main so the next level sees it, then consumers per graph; no tool
-    change; producers-before-consumers.
-  - B — extend rename-propagator into a full harness that cross-references
-    producers' `drop-next` branches during verify so the whole set verifies
-    before any land; cleaner/durable, but more tool-building and touches the
-    synchronizer.
-  - Orchestrator recommendation on record: A now, B as a follow-up bead.
-    Psyche has NOT chosen yet.
-- Secondary items the executor resolves under either option:
-  - `spirit`'s `NOTA_NEXT_REF` var appears in 2 scripts + `nix_integration.rs`
-    + README — rename the live var everywhere but keep any `-next` string
-    LITERAL where it's a boundary-migration guard.
-  - Generated-file count is 39 on disk vs. the review's 28 — regenerate all
-    stale-header files except the 2 in excluded `rename-propagator`.
-  - `synchronizer`'s own single stale `nota-next.git` dep (Cargo.toml:21):
-    update on synchronizer main as a normal fix (synchronizer is excluded from
-    the sweep because its tests use the names as data).
-  - Landing conditions from the audit: act on the 4 `mind` flagged pins
-    (advance to post-rename revs, verify `mind` builds); regenerate generated
-    schema files with a drift check; LEAVE `dependency_boundary.rs` guard
-    literals; exclude `synchronizer`/`sema-engine`.
+- Producers: `schema` drop-next `a393c8c8`; `schema-rust` drop-next `7f746c02`
+  (its `main` advanced to `0eb5be66` by psyche mid-session — rebase drop-next
+  onto main before landing); `nota` main `bea7e284`, no drop-next (correct, no
+  `-next` to drop).
+- Authoritative residue sweep of all 86 run-config repos: ~77 effectively clean
+  (zero live `-next`, or `-next` only in authorized literals); the ledger family
+  (`repository-ledger`, `signal-repository-ledger`, `meta-signal-repository-ledger`)
+  re-fixed on `drop-next`. Remaining live-`-next` tail:
+  - `system` and `meta-signal-spirit` — cascade-blocked: their producers
+    (`signal-system`/`meta-signal-system`, `signal-spirit`) are still pinned at
+    `branch=main`, where `main` still declares the retired `nota-next` package
+    key. Clears once every producer is repinned to `drop-next`. (bead `fyxk`)
+  - `mind` and `spirit` — peer-held all session, untouched. `mind` has heavy live
+    residue (≈8 manifest deps, ≈27 lock entries, live `use nota_next` /
+    `extern crate nota_next` in src); `spirit` ≈3 manifest + ≈5 lock deps plus the
+    live `NOTA_NEXT_REF` var to rename to its de-`next`ed name — but KEEP the
+    `production_migration.rs` boundary-guard `-next` string literal. (bead `fv4l`)
+  - A couple of stale-generated-artifact-only repos (regen item, not dep
+    residue), incl. `signal-terminal` (peer-dirty).
+- `-next` that MUST stay (do not remove): `dependency_boundary` NEGATIVE guards,
+  `#[error("nota-next: …")]` strings, nota/schema NOTA test fixtures,
+  `synchronizer`/`schema-rust-next` in-repo test data, docs, `tree-sitter-schema`
+  grammar fixtures.
 
-## Open / deferred
+## The finish — settled shape (confirmed by this session's runs)
 
-- The A/B landing decision above (resume here first).
-- Deferred live activations (watched window): ouranos System Switch for
-  nixos-test; ssh Home Activate (coordinate with the Colemak change; back up
-  `~/.ssh/config` first); orchestrate systemd cutover (kill the running daemon
-  first).
-- `dw95` live prometheus redeploy + reachability verify (vehicle `1e6b.2`;
-  re-stage BootOnce from CriomOS `17caaf88`).
-- Cluster-data rework (after the `-next` migration reaches horizon-rs): switch
-  synchronizer builder-resolution to read the system-projected
-  `/etc/horizon.json` (via `/run/current-system/...`, user-readable) through
-  horizon-rs types, delete the hand-rolled datom decoder, move synchronizer
-  config to `persona`, document the "cluster data only via horizon/lojix"
-  doctrine.
-- Workspace/bookmark sprawl cleanup in a quiet single-agent window (deferred
-  cheap-fix #7 + the 2 `CriomOS-home` worktrees): ~3 stale jj workspaces and
-  20+ stale `operator/report-*` bookmarks. (Not created this session; workers
-  used disposable staging branches.)
-- `nlks`: sweep `CriomOS-test-cluster` for `-next` once its WIP is resolved.
-- Noted follow-ups (bead or note): make rename-propagator a full landing
-  harness; migrate synchronizer onto the shared `manifest-surface` crate; a
-  NOTA codec quirk (strict decoder rejects a slash-bearing content token it
-  itself encoded); rename-propagator's line-based pin-detector → structural
-  parsing; `oftl` (horizon-rs nixos-test convergence); `wgae` (lojix Home
-  Build with no observable execution).
+The removal converges with ONE authoritative whole-graph `staged-cascade`
+(staging = `drop-next`) that repins EVERY producer to `drop-next` and does a
+FULL `cargo generate-lockfile`, run in isolation — then a residue + composed-green
+re-audit against authoritative origin — then, on explicit psyche go, land
+`drop-next`→`main` producers-before-consumers.
+
+Two confirmed reasons it must be a single isolated full-regen run:
+- The synchronizer's INCREMENTAL per-package bumps do not clear `nota-next-derive`
+  and cannot converge a consumer whose producer is pinned at `branch=main`. A full
+  `cargo generate-lockfile` does. (Proven: a fresh incremental cascade commit
+  still carried the residue.)
+- Concurrent `staged-cascade` pushes CLOBBER each other's `drop-next` fixes — a
+  landed ledger fix was overwritten by a competing re-stage and had to be remade.
+  Only one cascade may push `drop-next` at a time; hence the clean window the
+  psyche wants.
+
+## Hazards for the finisher
+
+- STALE LOCAL REFS: local `jj`/`git` `origin/drop-next` are diverged from GitHub
+  for many repos (local-only rename re-runs under identity `rename@criome.net`
+  were never pushed). Establish ground truth via `git ls-remote`, never local
+  refs — the one residue false-alarm this session came from a stale local read.
+- No migration `main` was touched this session (gate held). Keep it that way
+  until the explicit land.
+- prometheus cannot fetch UNCACHED private `LiGoldragon/*` git deps directly
+  (`ssh prometheus nix build` → "could not read Username for github.com"). Drive
+  builds from a credentialed machine with prometheus as REMOTE builder (works).
+  Durable fix = provision a GitHub token on prometheus (psyche-scope).
+- Excluded by prior decision: `CriomOS-test-cluster` (dirty WIP, bead `nlks`),
+  the 2 non-canonical `CriomOS-home` jj worktrees; `synchronizer`/`sema-engine`
+  (their tests use the old names as data).
+
+## Verify-first, before the convergence
+
+- Re-read authoritative producer + consumer `drop-next` tips via `git ls-remote`.
+- Confirm whether the synchronizer multi-pin fix (for `router`/`signal-spirit`
+  `BumpFailed`, several same-name producer entries) landed to synchronizer `main`
+  after `57082fa6`. The `r5gr` worker was stopped while looping before it
+  confirmed — check the synchronizer `main` log + `R5gr-MultiPin-Evidence.md`. If
+  absent, complete it before the cascade, or those two repos will not converge.
+
+## Beads
+
+- `ekvt` (P1, the migration; land psyche-gated) is blocked by: `5kxh`
+  (schema-language drift — retired `.schema` syntax fixed + artifacts regenerated
+  across 13 consumers; green DoD at convergence), `fyxk` (P1, complete the
+  drop-next cascade for `system` + `meta-signal-spirit`), and `fv4l` (de-`next`
+  `mind`/`spirit` + composed-green `cloud`). `w46v` depends on `ekvt`.
+- `aa2i` (whole-graph checkpoint) is OPEN — its DoD is a re-run to whole-graph
+  staged-green + a clean re-audit.
+- Closed this session: `177y`/`z2vh` (B harness + audit GO), `glph`/`a2ik`
+  (ledger repos de-`next`ed + tool hardening, composed-green), `qipw`/`djb0`/`zy24`
+  (artifact regen / `mentci-egui` / guard-test literals). `zohg` (audit-A) closed
+  NO-GO (honest not-green + one 2-repo defect it caught, now fixed).
+- Open psyche questions: are `mind`/`spirit` free? (the finish waits on them free
+  regardless); the land go; whether to provision the prometheus GitHub token.
 
 ## Pointers
 
-- Beads: `ekvt` (P1; `w46v` depends on it), `w46v`, `dw95`, `nlks`, `wgae`,
-  `oftl`, `vcqx` (open, blocked-on-psyche, dropped).
-- Field-readiness lane also carries `vp6d` (P1, continuous-testing entry
-  point, separate from `ekvt`) — see `reports/field-readiness/02-kink-ledger.md`
-  (+ its 2026-07-03 closeout delta) for the READY-WITH-KINKS verdict and kink
-  detail.
-- Evidence dirs: `agent-outputs/RenamePropagator/`,
-  `agent-outputs/W46vGoLive/`, `agent-outputs/SynchronizerUniversality/`,
-  `agent-outputs/FieldReadiness/`, `agent-outputs/PersistentSpiritMirror/`.
+- Evidence dir `agent-outputs/RenamePropagator/`: `Residue-Sweep-Evidence.md`
+  (authoritative ledger + the convergence root cause), `A-Checkpoint-Audit.md`
+  (the not-green + gate-held audit), `A-Checkpoint-Evidence.md`,
+  `StageAndVerify-Evidence.md` (81-row ledger), `Tier1-Fix-Evidence.md`,
+  `Tier2-SchemaDrift-Evidence.md` (+ `-Sweep-` + `Tier2-Regen-*`),
+  `Cloud-Stage-Evidence.md`, `B-Harness-Evidence.md`/`-Audit.md`,
+  `GroundTruth-BEnablesA.md`, `R5gr-MultiPin-Evidence.md`.
 - `github.com/LiGoldragon/synchronizer/ARCHITECTURE.md`.
-- Mains/commits: rename-propagator main ~`d4ef1e69`; synchronizer main
-  `8eec5a46` (+ public remote); persona `ac629103`; goldragon `e8b658fa`;
-  CriomOS `17caaf88`; CriomOS-home `faf8c230`. Renamed GitHub repos: `nota`
-  (was nota-next), `schema` (was schema-next), `schema-rust` (was
-  schema-rust-next) — redirects active.
+- Mains: synchronizer `57082fa6` (verify for any r5gr commit on top),
+  rename-propagator `5c2e0ab4`, persona `ac629103`.
+
+## Other open field-readiness threads (carried, not advanced this session)
+
+- `w46v`: wire skew resolved earlier; its only remaining blocker is `ekvt`.
+- `vp6d` (P1, continuous-testing entry point, separate from `ekvt`) — see
+  `reports/field-readiness/02-kink-ledger.md` (+ its 2026-07-03 closeout delta)
+  for the READY-WITH-KINKS verdict.
+- `dw95` live prometheus redeploy + reachability verify (vehicle `1e6b.2`;
+  re-stage a BootOnce from CriomOS `17caaf88`, not the sshd-less gen-50).
+- Deferred live activations: ouranos System Switch for nixos-test; ssh Home
+  Activate (coordinate with the Colemak change; back up `~/.ssh/config` first);
+  orchestrate `systemd --user` cutover (kill the running daemon first).
+- Cluster-data rework (after `-next` reaches horizon-rs): switch synchronizer
+  builder-resolution to the system-projected `/etc/horizon.json` via horizon-rs
+  types, delete the hand-rolled datom decoder, move synchronizer config to
+  `persona`, document "cluster data only via horizon/lojix."
+- Workspace/bookmark sprawl cleanup in a quiet window (`nlks` sweep of
+  `CriomOS-test-cluster`; ~3 stale jj workspaces; 20+ stale `operator/report-*`
+  bookmarks).
+- Noted follow-ups: migrate synchronizer onto a shared `manifest-surface` crate;
+  a NOTA strict-decoder quirk on a slash-bearing content token; `oftl` (horizon-rs
+  nixos-test convergence); `wgae` (lojix Home Build with no observable execution).
