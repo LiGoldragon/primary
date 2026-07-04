@@ -150,9 +150,47 @@ resolve hostname`), NOT a build failure — the repin is what these runs prove.
 Before this fix both were `BumpFailed(ManifestEdit: several same-name entries
 pin the producer)`. The multi-pin limitation is gone.
 
-### GREEN build
+### A deeper blocker the fix UNMASKED (and how it resolves)
 
-<!-- filled after coherent-closure build on prometheus builder -->
+The bead cited only the *manifest* multi-pin (what A saw). A saw only that because
+the ascent processes manifest edges before lock edges and stops on the first
+failure — the manifest `BumpFailed` masked everything downstream. With the
+manifest fixed, a whole-graph run surfaced a second failure:
+`BumpFailed(LockEdit): schema-rust` (router) / `signal-frame` (signal-spirit) —
+"several same-name entries" in the *Cargo.lock*.
+
+Investigated to root: this is NOT in the clean rename-propagator tips. Router's
+clean tip `6c1570e7` has ONE `schema-rust` lock entry and zero `-next` residue;
+signal-spirit's clean tip `bbd9b32f` has `signal-frame 0.2.1` + distinct
+`signal-frame-macros` (no same-name duplicate). The same-name lock duplicates
+(`schema-rust` ×3, a second `signal-frame 0.3.0`) were introduced by my own
+*minimal* runs: the transitive-lock fallback (`cargo update --precise`)
+re-resolved the lock against an INCOMPLETE component set (signal-frame/schema-rust
+not configured), so consumers pinned the producer via two branches → cargo
+recorded two versions. Reset both repos to their clean tips and re-ran a
+**coherent closure** (every family producer configured) — the duplicates do not
+arise, because every consumer resolves the producer to one drop-next source.
+
+### GREEN — clean coherent repin + build on the prometheus builder
+
+Verify is out-of-band (`nix build` driven from ouranos, which fetches the private
+inputs with credentials and offloads compilation to prometheus as a remote
+builder — sidestepping the prometheus fetch-credential gap that breaks the tool's
+own `ssh prometheus nix build`).
+
+**signal-spirit** — coherent closure `[signal-spirit, nota, schema, schema-rust,
+signal-frame, triad-runtime, version-projection]`, read at the clean tip.
+
+- Repin: `signal-spirit (Bumped [...] (drop-next bf2d4b11ea15ef88c62b2911762e3486b977eca8))`,
+  every producer `AlreadyAligned`, **no BumpFailed, no lock multi-entry**. The
+  `signal-frame` version split is gone (both `signal-frame`/`signal-frame-macros`
+  repin to `44d22a07`).
+- Build: `nix build github:LiGoldragon/signal-spirit/bf2d4b11...#packages.x86_64-linux.default`
+  → **exit 0, GREEN** → `/nix/store/zvs2wy17dbn3ghvzf2ir56rwkrn3v4kc-signal-spirit-0.9.0`
+  (built on prometheus via `ssh-ng://nix-ssh@prometheus`, its tests passed in-build).
+
+**router** — coherent closure (19 family producers), read at the clean tip:
+<!-- filled after router build -->
 
 
 
