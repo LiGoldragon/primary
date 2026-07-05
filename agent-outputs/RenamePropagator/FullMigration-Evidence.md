@@ -246,3 +246,46 @@ Scan failures:
 Residue result: **not zero**. The scan found 78 path-level matches across the resolved tarballs, including docs, tests, schemas, and dependency-boundary witnesses in multiple signal/meta-signal/runtime repos. Because this was a path-only scan, it does not quote private file contents.
 
 Landing decision: blocked by both nonzero remote-tarball residue and persona compilation failure. No landing to `main` was attempted.
+
+## 2026-07-05 Worker 2 persona compile drift continuation
+
+Narrowed scope: persona compile drift only. No broad residue cleanup was attempted in this continuation.
+
+Persona fixes pushed:
+
+- `persona/drop-next b68001ca531ce9c4d61e315d54deb1ddc4a4205c`: adapted persona source and helper binaries to the staged generated contract API:
+  - replaced removed `signal_persona::origin` paths with current top-level generated types;
+  - replaced removed `ComponentName::as_str()` style access through persona's local generated-contract adapter;
+  - updated meta-signal-persona wrapper handling for `Query`, `Start`, `Stop`, `EngineStatus`, `ComponentStatus`, action, catalog, launch, and retire replies;
+  - updated signal-persona spawn envelopes to use component principals and current path/mode wrappers;
+  - added `trace_socket_path` to the persona-written introspect daemon configuration;
+  - updated router, terminal, harness, system, and message helper configuration/bootstrap construction for current wrapper/newtype fields.
+- `persona/drop-next 94b0f555c16e3edbac017ebb85c5af4d1cecc0af`: updated persona tests to the same staged wrapper contracts and current report projection shape.
+
+Verification:
+
+```sh
+cargo check --locked
+```
+
+Result: passed before test updates.
+
+```sh
+cargo test --locked
+```
+
+Result: passed. Test summary included all persona integration tests, with 1 preexisting ignored daemon rejection test.
+
+```sh
+nix build --no-link github:LiGoldragon/persona/b68001ca531ce9c4d61e315d54deb1ddc4a4205c#checks.x86_64-linux.persona-daemon-launches-nix-built-message-router-topology
+```
+
+Result: failed in persona test compilation only (`tests/state.rs` still used old `ComponentStartup`/`ComponentShutdown` fields and old action rejection fields). This failure was fixed by `94b0f555c16e3edbac017ebb85c5af4d1cecc0af`.
+
+```sh
+nix build --no-link github:LiGoldragon/persona/94b0f555c16e3edbac017ebb85c5af4d1cecc0af#checks.x86_64-linux.persona-daemon-launches-nix-built-message-router-topology
+```
+
+Result: passed. The build used `ssh-ng://nix-ssh@prometheus.goldragon.criome` as the remote builder and copied back `/nix/store/fa6ydambg9h1z3y3jw6p5mzh657bz24k-persona-daemon-launches-nix-built-message-router-topology`.
+
+Current persona status: **green for the requested exact topology check** at `drop-next 94b0f555c16e3edbac017ebb85c5af4d1cecc0af`.
