@@ -532,3 +532,63 @@ Blockers or risks:
 
 - No schema-rust blocker remains for the non-overwrite landing gate.
 - The local remote URL still names `schema-rust-next`, but GitHub redirects it to `schema-rust`; push and fetch both succeeded.
+
+## 2026-07-05 Worker 9 landing resume
+
+Status: **BLOCKED**. Landing resumed from `schema-rust` and stopped at the next required non-overwrite gate.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Used Orchestrate lane `worker9`.
+- Claimed `/home/li/primary/worktrees/worker9-landing` and this evidence file.
+- Used an isolated JJ landing directory so claimed or dirty canonical checkouts, including `cloud`, were not shared.
+
+Landed before the stop condition:
+
+```text
+schema-rust/main     b73eb39d4316f9811e87bbdef73530a568942cda
+signal-sema/main     cf95702f489e37fbc5a603cd58c2372672db8ddf
+signal-frame/main    bb86bef67e478ff52690a4dcceec8f22d2b005ad
+signal-standard/main 95e48936f84dc903148a6b0d4450692589cb75fd
+signal/main          85d9e029b39dbb491dd85dd020364e4123de948c
+```
+
+Previously landed or already-current migration refs observed during this resume:
+
+```text
+nota/main         ce7c564de0a0518eaa1938d55dccc460a67cadb4
+schema/main       f351f90d3b8898205cf3057f3c253a5e451180a9
+synchronizer/main 7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a
+```
+
+Landing mechanics for each moved repo:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <repo>
+git -C <repo> merge-base --is-ancestor refs/remotes/origin/main refs/remotes/origin/drop-next
+jj bookmark set main -r drop-next@origin
+jj git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main
+```
+
+Blocking ref conflict:
+
+```text
+triad-runtime/main      edc76f13caa17f68d62ab01cd495971fafbb4582
+triad-runtime/drop-next 20c3b67b9d97523653da1c75405772ef1cf1ad5b
+merge-base              3d3207461bcbd39dd2505d0bb957b6fec30c98d9
+```
+
+`triad-runtime/drop-next` is not a descendant of current remote `triad-runtime/main`. Landing it would drop the newer `main` commit `edc76f13caa17f68d62ab01cd495971fafbb4582` (`triad-runtime: harden runtime socket paths`). Per the explicit stop condition, Worker 9 did not land `triad-runtime` or any later repo.
+
+Post-land audit:
+
+- Not run for the full graph because full landing did not complete.
+- Required final scan pattern remains: `nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next`.
+
+Disposition:
+
+- The graph is partially landed through `signal/main`.
+- Full landing now needs `triad-runtime/drop-next` integrated with `triad-runtime/main edc76f13caa17f68d62ab01cd495971fafbb4582`, then the landing can resume from `triad-runtime`.
