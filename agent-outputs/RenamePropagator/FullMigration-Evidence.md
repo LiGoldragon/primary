@@ -1260,3 +1260,78 @@ Disposition:
 - Full landing needs `criome/drop-next` integrated with current
   `criome/main 0608a42c2a13577c25a1f59f23b15347f8907fe6`, preserving the 11
   newer main commits listed above, before landing can resume from `criome`.
+
+## 2026-07-05 Worker 18 criome integration
+
+Status: **CRIOME_READY**. `criome/drop-next` was integrated with current
+`criome/main` and pushed. No `criome/main` landing was attempted.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`, `/git/github.com/LiGoldragon/criome/AGENTS.md`,
+  `ARCHITECTURE.md`, `README.md`, `skills.md`, `Cargo.toml`, `flake.nix`, and
+  `lore/AGENTS.md`.
+- Claimed `/git/github.com/LiGoldragon/criome` and this evidence file through
+  Orchestrate lane `worker18`.
+- Preserved the current `criome/main` safety, founding, and quorum commits and
+  the existing `criome/drop-next` migration cleanup by creating a merge commit.
+
+Integrated branch state:
+
+```text
+criome/main              0608a42c2a13577c25a1f59f23b15347f8907fe6
+previous criome/drop-next 28cfc58e35155ed9f93040ba9bb27201019f646d
+new criome/drop-next      95c70e014b60526e72b52e947134a2ff6f5b3d25
+```
+
+Implementation notes:
+
+- Repointed direct old-family references from `nota-next` to `nota` in the
+  crate manifest, source imports, lockfile, and architecture text.
+- Regenerated `Cargo.lock`.
+- Kept `signal-frame` on `drop-next` for the `signal-criome` frame contract and
+  added an explicit `control-signal-frame` package alias for the current
+  `meta-signal-criome`/router-facing frame contract.
+- Updated `CriomeMetaFrameCodec` and `Error` so meta-frame decoding uses the
+  correct current-main control frame type.
+- Boxed large `CriomeStreamItem` variants and fixed clippy-reported needless
+  borrow / needless question mark issues.
+- Kept router-mediated quorum conveyance fail-closed while `signal-router`
+  `drop-next` lacks the public routed-object constructor/current-main router
+  API. The route object is still framed, but `submit` now returns a typed
+  `VoiceDelivery` error instead of pretending the router path was available.
+
+Required residue scan:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' -S .
+```
+
+Result: passed in `/git/github.com/LiGoldragon/criome`; zero matches.
+
+Checks:
+
+```sh
+cargo update
+cargo check --all-targets --features nota-text,cluster-witness
+cargo fmt --check
+cargo test --test quorum_collection --test two_round_commit --test quorum_ledger_restart --test witness_clock_gate --test root_founding --test founding_conveyance --test distinct_node_identities
+cargo test --test daemon_skeleton authorization_replay_nonce_rejects_changed_digest_reuse -- --exact
+cargo test --test daemon_skeleton expired_authorization_records_expired_state_instead_of_signing -- --exact
+cargo test --test daemon_skeleton authorization_submit_stream_pushes_approval_update -- --exact
+nix build --no-link .#checks.x86_64-linux.fmt .#checks.x86_64-linux.build .#checks.x86_64-linux.test .#checks.x86_64-linux.test-nota-text .#checks.x86_64-linux.criome-authorization-expiry-and-replay-guard .#checks.x86_64-linux.criome-authorization-slots-are-store-minted .#checks.x86_64-linux.criome-signal-criome-contract-boundary
+nix build --no-link .#checks.x86_64-linux.clippy .#checks.x86_64-linux.clippy-nota-text
+```
+
+Result: all checks above passed after the final integration fixes.
+
+Disposition:
+
+- `criome/drop-next` is now a descendant of both current `criome/main` and the
+  previous migration branch tip.
+- Remote `origin/drop-next` resolved to
+  `95c70e014b60526e72b52e947134a2ff6f5b3d25` after push.
+- Remaining risk: actual router-mediated quorum delivery still depends on the
+  `signal-router` producer exposing the clean routed-object constructor/API.
+  Direct/founding/quorum safety witnesses pass, and the unavailable router path
+  now fails closed.
