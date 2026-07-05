@@ -1146,3 +1146,117 @@ Blockers or risks:
   as divergent because the old remote commit shares the same change ID in local
   history; after fetch, `drop-next@origin` resolves to the pushed
   `29a510e300a5db2430182bc170a57b037d2bbaf8` tip.
+
+## 2026-07-05 Worker 17 landing resume and post-stop audit
+
+Status: **BLOCKED**. Landing resumed from `chroma` and stopped at the next
+required non-overwrite gate. No consumer after `criome` was landed.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md` and the repository closeout,
+  version-control, edit-coordination, and work-tracking doctrine.
+- Used Orchestrate lane `Worker17`.
+- Claimed `/home/li/primary/worktrees/worker17-landing` and this evidence file.
+- Used fresh remote ref queries and fresh isolated clones under the claimed
+  landing directory; local repo checkouts under `/git/github.com/LiGoldragon`
+  were not modified.
+
+Landing-set recomputation:
+
+- Parsed 87 entries from
+  `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota`.
+- Recomputed `main` and `drop-next` refs from GitHub for every config entry.
+- `nota/main` had no `drop-next` ref and was already landed at
+  `ce7c564de0a0518eaa1938d55dccc460a67cadb4`.
+- `synchronizer/main` was observed at
+  `7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a` with no `drop-next` ref.
+- The earliest remaining unlanded repo was `chroma`.
+
+Landed in config order before the stop condition:
+
+```text
+chroma/main         29a510e300a5db2430182bc170a57b037d2bbaf8
+chronos/main        2a091f6b65b243d9e499b33d2f7244be184096a8
+claude-answers/main f9370e715a7ca6bcb9a7b36d6f3abbd78158acbe
+clavifaber/main     53ca5e8df6f9db9e509e7109c98ce740c30359a7
+cloud/main          64ef285f2da07e74d2e76f45932bd8fad0ccc3d9
+```
+
+For each landed repo, `git ls-remote` after push confirmed `main` and
+`drop-next` resolved to the same SHA listed above.
+
+Landing mechanics for each moved repo:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <claimed-worktree>/<repo>
+git -C <claimed-worktree>/<repo> merge-base --is-ancestor refs/remotes/origin/main refs/remotes/origin/drop-next
+jj -R <claimed-worktree>/<repo> bookmark set main -r drop-next@origin
+jj -R <claimed-worktree>/<repo> git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main
+```
+
+Blocking ref conflict:
+
+```text
+criome/main       0608a42c2a13577c25a1f59f23b15347f8907fe6
+criome/drop-next  28cfc58e35155ed9f93040ba9bb27201019f646d
+merge-base        3a13a3d38dcb48d86f3b7569469401b89a271c49
+```
+
+`criome/drop-next` is not a descendant of current remote `criome/main`.
+Landing it would drop these newer `main` commits:
+
+```text
+0608a42 criome: make anti-equivocation veto durable-first (best-effort -> hard guarantee)
+99a2a9c criome: fix quorum head-convergence, restart-durable anti-equivocation, and founding-signature verification (primary-79z1.16 F1/F2/F3)
+02a246f criome: cross-node founding conveyance daemon + operator CLI (0.5.0)
+c884a4a criome: two-round commit driver + non-double-signing safety (primary-79z1 .12/.13/.14)
+cee89b9 criome: root founding ceremony + parent-contract migration (primary-79z1 .2/.5/.6/.7/.8)
+ad86ee4 criome: gate quorum time-signing on each signer's own witness clock
+4bf6f9b criome: bump meta-signal-criome lock to the repointed main head
+a314450 criome: bind quorum round-id to the operation digest + drop non-member votes (primary-nbmq.10)
+8fbde55 criome: gather a real cross-node BLS quorum (propose->gather->judge->commit)
+3091f40 rehome: integrate archived intent records into ARCHITECTURE
+b996f93 criome: fold INTENT direction into ARCHITECTURE, drop per-repo INTENT.md
+```
+
+Post-stop remote tarball scan:
+
+```sh
+pattern='nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next'
+# For each config repo, resolve GitHub main, download the GitHub codeload tarball
+# for that SHA, extract outside VCS history, then run:
+rg -l -I --hidden --glob '!.git/**' -e "$pattern" <extracted-tarball>
+```
+
+Result:
+
+```text
+repo_count=87
+tip_count=87
+failure_count=2
+match_count=407
+match_repo_count=77
+```
+
+Scan failures:
+
+```text
+meta-signal-mentci-client f6d43d9163e4228e616b272a7b9bc86aad543a7e tarball failed: GitHub codeload returned 404
+signal-mentci-client      568289f1dc2ee538f786949ffc92e1d8832477b3 tarball failed: GitHub codeload returned 404
+```
+
+The scan is not final clean post-land evidence because the landing stopped at
+`criome`; current `main` still has pattern matches. The match set includes
+landed and unlanded repos, so the required final condition is not satisfied:
+final `main` is not yet clean of `drop-next` dependency branch pins and old
+`-next` family literals.
+
+Disposition:
+
+- The graph is partially landed through `cloud/main`.
+- Full landing needs `criome/drop-next` integrated with current
+  `criome/main 0608a42c2a13577c25a1f59f23b15347f8907fe6`, preserving the 11
+  newer main commits listed above, before landing can resume from `criome`.
