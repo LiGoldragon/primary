@@ -1899,3 +1899,93 @@ Disposition:
 - Full landing needs `lojix/drop-next` integrated with current
   `lojix/main 9f42435f902e7904a5177cb28084c1bcdf50375a`, preserving
   `9f42435`, before landing can resume from `lojix`.
+
+## 2026-07-05 Worker 25 lojix unblock
+
+Status: **LOJIX_READY**. `lojix/drop-next` is now a descendant of both the
+previous `drop-next` migration tip and current `main`, so the full migration
+landing can resume at `lojix`.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md` and the repo-local `lojix/AGENTS.md`.
+- The repo-local pointer to `/home/li/primary/repos/lore/AGENTS.md` was
+  missing, so Worker 25 proceeded with primary and repo-local instructions.
+- Used Orchestrate lane `Worker25`.
+- Claimed `/git/github.com/LiGoldragon/lojix` and this evidence file.
+
+Integration:
+
+```text
+previous lojix/main      9f42435f902e7904a5177cb28084c1bcdf50375a
+previous lojix/drop-next 5303391abb17506312a9f6118e250434545f0415
+new lojix/drop-next      f0c26a5431ae
+```
+
+`f0c26a5431ae` is a merge commit with parents:
+
+```text
+9f42435f902e7904a5177cb28084c1bcdf50375a lojix: make test_defaults optional so a production daemon bakes no test-op fixture
+5303391abb17506312a9f6118e250434545f0415 synchronizer: cascade dependency bumps
+```
+
+The integration preserves the optional `DaemonConfiguration.test_defaults:
+Option<TestDefaults>` production-safety behavior, including
+`WriterTestDefaultsChoice::{NoTestDefaults, TestDefaults(...)}` and the
+`NoTestDefaults` runtime rejection path. It also preserves the migration cleanup
+from `drop-next`. The only source edit required during the merge was updating
+`tests/horizon_materialization_contract.rs` to check the migrated schema vector
+syntax `overrides.(Vector FlakeInputOverride)` instead of the old
+`overrides (Vec FlakeInputOverride)` text.
+
+Push:
+
+```sh
+jj git fetch --remote origin
+jj new main drop-next -m 'lojix: integrate drop-next after test-defaults optional'
+cargo fmt --check
+cargo test --test write_configuration
+cargo test --test test_op check_without_configured_defaults_is_rejected_no_test_defaults -- --exact
+cargo test --test horizon_materialization_contract --features nota-text
+cargo test --features nota-text
+nix build .#checks.x86_64-linux.test --no-link
+jj commit -m 'lojix: integrate drop-next after test-defaults optional'
+jj bookmark set drop-next -r @-
+jj git push --bookmark drop-next
+```
+
+Remote confirmation:
+
+```text
+drop-next: f0c26a5431ae
+drop-next@origin: f0c26a5431ae
+```
+
+Residue scan:
+
+```sh
+rg -n "nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive" .
+```
+
+Result: passed with zero matches.
+
+Checks:
+
+- `cargo fmt --check`: passed.
+- `cargo test --test write_configuration`: passed; 2 tests.
+- `cargo test --test test_op check_without_configured_defaults_is_rejected_no_test_defaults -- --exact`:
+  passed; 1 test.
+- `cargo test --test horizon_materialization_contract --features nota-text`:
+  passed; 2 tests.
+- `cargo test --features nota-text`: passed; non-ignored Cargo suite.
+- `nix build .#checks.x86_64-linux.test --no-link`: passed.
+
+Blockers or risks:
+
+- No private fetch or credential blocker appeared. Cargo and Nix resolved the
+  `drop-next` dependency pins successfully.
+- Ignored tests that perform real Nix builds, daemon socket runs, or networked
+  external checks were not run; the standard non-ignored suite and flake test
+  check passed.
+- The missing `/home/li/primary/repos/lore/AGENTS.md` pointer remains a local
+  documentation/path issue, not a `lojix/drop-next` landing blocker.
