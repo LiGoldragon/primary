@@ -1335,3 +1335,117 @@ Disposition:
   `signal-router` producer exposing the clean routed-object constructor/API.
   Direct/founding/quorum safety witnesses pass, and the unavailable router path
   now fails closed.
+
+## 2026-07-05 Worker 19 landing resume and post-stop audit
+
+Status: **BLOCKED**. Landing resumed from `criome`, landed `criome/main`, and
+stopped at the next non-overwrite gate. No repo after `criome` was landed.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md` and the repository closeout,
+  version-control, and edit-coordination doctrine.
+- Used Orchestrate lane `Worker19`.
+- Claimed `/home/li/primary/worktrees/worker19-landing` and this evidence file.
+- Used fresh remote ref queries and fresh isolated clones under the claimed
+  landing directory; shared local checkouts under `/git/github.com/LiGoldragon`
+  were not modified.
+
+Landing-set recomputation:
+
+- Parsed 87 unique config entries from
+  `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota`.
+- Recomputed `main` and `drop-next` refs from GitHub for each config entry.
+- `nota/main` had no `drop-next` ref and remained at
+  `ce7c564de0a0518eaa1938d55dccc460a67cadb4`.
+- `synchronizer/main` remained at
+  `7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a` with no `drop-next` ref.
+- The earliest remaining unlanded repo was `criome`.
+
+Landed before the stop condition:
+
+```text
+criome/main 95c70e014b60526e72b52e947134a2ff6f5b3d25
+```
+
+Remote verification after push showed:
+
+```text
+criome/drop-next 95c70e014b60526e72b52e947134a2ff6f5b3d25
+criome/main      95c70e014b60526e72b52e947134a2ff6f5b3d25
+```
+
+Landing mechanics:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <claimed-worktree>/<repo>
+git -C <claimed-worktree>/<repo> merge-base --is-ancestor <main-sha> <drop-next-sha>
+jj -R <claimed-worktree>/<repo> bookmark set main -r drop-next@origin
+jj -R <claimed-worktree>/<repo> git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+```
+
+Blocking ref conflict:
+
+```text
+CriomOS/main      399f29e79f48d32313712bc44cec2f7f9455fe14
+CriomOS/drop-next a1642b8194aaa5c9645f357d12c774fd8c870c14
+```
+
+`CriomOS/drop-next` is not a descendant of current remote `CriomOS/main`.
+Landing it would drop these newer `main` commits:
+
+```text
+399f29e CriomOS: reconcile criome module for clean-genesis founding (primary-79z1.3)
+e427719 CriomOS: disable mirror.service on all hosts + pin guardian spirit; add lojix daemon-config round-trip check (primary-h945.1, primary-dq1r)
+e838bba CriomOS: deploy-wiring for the persistent Spirit-mirror pair (primary-nbmq.9)
+0be40ba spirit.nix: author the first-class Spirit node module (piece 6)
+92c45b5 CriomOS: production lojix daemon carries no baked test-op fixture
+```
+
+Post-stop remote tarball scan:
+
+```sh
+pattern='nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next'
+# For each unique config repo, including synchronizer, resolve GitHub main,
+# download the GitHub API tarball for that exact SHA, extract outside VCS
+# history, then run:
+rg -l -I --hidden --glob '!.git/**' -e "$pattern" <extracted-tarball>
+```
+
+Result:
+
+```text
+repo_count=87
+tip_count=87
+failure_count=0
+match_count=408
+match_repo_count=79
+```
+
+Largest match counts by repo:
+
+```text
+horizon-rs 19
+mind 18
+persona 17
+orchestrate 16
+repository-ledger 13
+system 13
+terminal 13
+nota-config 12
+introspect 11
+domain-criome 10
+```
+
+The scan is not final clean post-land evidence because landing stopped at
+`CriomOS`, and current `main` still has both `drop-next` branch-pin matches and
+old next-family literal matches.
+
+Disposition:
+
+- The graph is partially landed through `criome/main`.
+- Full landing needs `CriomOS/drop-next` integrated with current
+  `CriomOS/main 399f29e79f48d32313712bc44cec2f7f9455fe14`, preserving the five
+  newer main commits listed above, before landing can resume from `CriomOS`.
