@@ -2178,3 +2178,134 @@ Risks:
 - No functional source conflict was present; the integration merge is empty.
 - The broader full-family landing and post-land tarball sweep still need to be
   resumed by the landing worker after `mentci-egui/drop-next`.
+
+## 2026-07-05 Worker 28 landing resume and post-stop audit
+
+Status: **BLOCKED**. Landing resumed from `mentci-egui`, landed the safe
+prefix, and stopped at the next non-overwrite gate. No repo after
+`meta-signal-repository-ledger` was landed.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md` and the repository closeout,
+  version-control, and edit-coordination doctrine.
+- Used Orchestrate lane `Worker28`.
+- Claimed `/home/li/primary/worktrees/worker28-landing` and this evidence
+  file.
+- Used fresh GitHub remote ref queries and isolated JJ clones under the claimed
+  landing directory; shared `/git/github.com/LiGoldragon` checkouts were not
+  modified.
+
+Landing-set recomputation:
+
+- Parsed 87 unique entries from
+  `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota`.
+- Recomputed live `main` and `drop-next` refs from GitHub for all entries
+  before landing.
+- Initial remote status before Worker 28 landing:
+  - already landed: 28
+  - no `drop-next` ref: 2 (`nota`, `synchronizer`)
+  - pending: 57
+- `synchronizer/main` remained
+  `7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a`; no `drop-next` landing was
+  attempted for it.
+
+Landed before the stop condition:
+
+```text
+mentci-egui/main                    93292523b8b41880372f6236e3cbb7064a85799f
+mentci-lib/main                     921911295e645dda0ae3e8588c951e88a698a831
+message/main                        687d472d80480d4ef0e3736ec495a96a6a370fbe
+meta-signal-domain-criome/main      6538e6f998c708a6f463e6e734dc405bec22f48e
+meta-signal-harness/main            e52dbfb13560bb42f085b86accafb7e20dcc4e7c
+meta-signal-introspect/main         3e0393a1bde3c97ccd77d621ce2ddc71892fe01e
+meta-signal-listener/main           e815e19769afdccd6635eda99b4d139ead164d5b
+meta-signal-lojix/main              2657286777868238aed7567a0b02bbb991272162
+meta-signal-mentci/main             da474387512bda773ab4342f22e6e113fd59bc8a
+meta-signal-mentci-client/main      e8da017d9372bd0316ec10d95b0f245007130f87
+meta-signal-message/main            c41a8b9efe133d8bdddb2f4663573e116a74a1de
+meta-signal-mind/main               e847c129f41cb0aafb443a47c75e6dbc6fd718a0
+meta-signal-mirror/main             9a77f97f4afd9a2c50bca71f0de0fcf590ad7570
+meta-signal-orchestrate/main        9cefaafa017dddbdfa8c78bc16cd6c2a23b196c8
+meta-signal-persona/main            ce4094922035db034b23d0c1311b9a525b54200a
+meta-signal-repository-ledger/main  d6e472dfcd6b08ae83f896d035bcb102672e0f39
+```
+
+Landing mechanics:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <claimed-worktree>/<repo>
+git -C <claimed-worktree>/<repo> merge-base --is-ancestor <main-sha> <drop-next-sha>
+jj -R <claimed-worktree>/<repo> bookmark set main -r <drop-next-sha> --allow-backwards
+jj -R <claimed-worktree>/<repo> git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main
+```
+
+Blocking ref conflict:
+
+```text
+meta-signal-router/main      31f9262d1b40c28ad1465ca612df391be67fd13b
+meta-signal-router/drop-next 99808d04b3e4e3aa353d1f0b07ba6d735848c2fb
+merge-base                   4dda3b913ebad7fbba9ec90e8a48140a64f0c7b5
+```
+
+`meta-signal-router/drop-next` is not a descendant of current remote
+`meta-signal-router/main`. Landing it would drop newer `main` work, so Worker
+28 stopped before moving `meta-signal-router/main`.
+
+Post-stop remote tarball scan:
+
+```sh
+pattern='nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next'
+# For each unique config repo, including synchronizer, resolve GitHub main,
+# download the authenticated GitHub API tarball for that exact SHA, extract
+# outside VCS history, then run:
+rg -l -I --hidden --glob '!.git/**' -e "$pattern" <extracted-tarball>
+```
+
+Result:
+
+```text
+repo_count=87
+tip_count=87
+failure_count=0
+match_count=318
+match_repo_count=76
+```
+
+Largest match counts by repo:
+
+```text
+mind 18
+persona 17
+orchestrate 16
+terminal 13
+system 13
+repository-ledger 13
+nota-config 12
+spirit 9
+signal-terminal 9
+upgrade 8
+```
+
+This is not clean post-land evidence. Current `main` still has `drop-next`
+branch-pin matches and old next-family literal matches because landing stopped
+before `meta-signal-router` and the remaining downstream repos.
+
+Final live remote status after stop:
+
+```text
+total=87
+main_equals_drop_next=44
+no_drop_next_ref=2
+pending_drop_next=41
+remote_ref_errors=0
+```
+
+Disposition:
+
+- The graph is partially landed through `meta-signal-repository-ledger/main`.
+- Full landing needs `meta-signal-router/drop-next` integrated with current
+  `meta-signal-router/main 31f9262d1b40c28ad1465ca612df391be67fd13b`, preserving
+  newer main work, before landing can resume from `meta-signal-router`.
