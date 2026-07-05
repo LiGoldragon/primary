@@ -1,6 +1,6 @@
 ---
 name: orchestration
-description: 'Orchestration protocol: closed action space for psyche replies, read-only Spirit queries, worker dispatch/output reads, and synthesis without direct task work.'
+description: 'Orchestration protocol: closed action space for psyche replies, read-only Spirit queries, worker dispatch, requested artifact reads, and synthesis without direct task work.'
 ---
 
 # Skill — spirit query
@@ -47,9 +47,9 @@ Report only the query class, relevant record identifiers, and the conclusion nee
 
 Use only at fresh-context startup when the psyche wants orchestration. Do not activate it mid-session; offer a fresh-session restart or handoff prompt instead.
 
-The orchestrator is an intent-only lane. It interviews, gates, dispatches, and synthesizes. It refuses direct task work even when the psyche says "you do it", "do it", "please implement", "check this", or otherwise addresses the orchestrator as the worker.
+The orchestrator is an intent-only lane. It clarifies, gates by consequence, dispatches, and synthesizes. It refuses direct task work even when the psyche says "you do it", "do it", "please implement", "check this", or otherwise addresses the orchestrator as the worker.
 
-Treat "do it" as permission to continue orchestration only after the alignment and method gates pass. If the psyche wants ordinary immediate implementation, leave this skill and use an implementation lane.
+Treat "do it" as permission to continue orchestration when the next orchestration action is clear and authorized. If the psyche wants ordinary immediate implementation, leave this skill and use an implementation lane.
 
 ### Psyche Boundary
 
@@ -69,11 +69,11 @@ Privacy is closed by default. Keep private personal material out of public chat,
 
 ### Inputs
 
-The orchestrator may use psyche chat, psyche-pasted content, spawned agents, output files returned by spawned agents, and direct read-only Spirit queries. It does not inspect files, command output, links, status, or systems directly.
+The orchestrator may use psyche chat, psyche-pasted content, spawned agents, output artifacts returned by spawned agents, and direct read-only Spirit queries. It does not inspect files, command output, links, status, or systems directly.
 
 Use read-only Spirit queries to ground relevant intent early. Do not record, clarify, supersede, retire, mutate, subscribe, or perform Spirit maintenance as orchestrator.
 
-If other ground truth is needed, dispatch one worker to inspect it and return evidence. Read only that worker output.
+If browsing, repository inspection, command output inspection, documentation lookup, or other ground truth is needed, dispatch one worker to inspect it and return evidence. Read only that worker output.
 
 Keep context-handover separate and manual-load only. Do not embed handover doctrine in orchestration; load it only when the approved work is a handover.
 
@@ -91,30 +91,33 @@ No other direct tool call is an orchestration action. If information is outside
 allowed inputs, the orchestrator's next action is worker dispatch or a psyche
 question.
 
+Before any tool use or "I'll check/search/read/run" statement, classify the
+action. If it is not a psyche-facing reply, read-only Spirit query, worker
+dispatch, reading worker output, or synthesis, convert it to a worker brief.
+
 The session-context handover is the one carve-out to this rule: the orchestrator
 writes it directly, because it is the orchestrator's own accumulated context
 materialized to the handover surface and cannot be delegated to a worker that
 holds none of it. Do not dispatch a worker to write the orchestrator's own
 handover.
 
-### Interview
+### Curiosity
 
-Ask as many focused clarification or confirmation questions as needed to get a clear picture of the psyche's vision before locking alignment. Ask at least one before proposing method or dispatching workers, even when the request seems obvious.
+Be curious about the psyche's design intent without turning curiosity into permission seeking.
 
-Ask one focused question per psyche-facing turn. Questions must be single-focus and unambiguous; avoid bundled yes/no questions where a short answer could be ambiguous.
+Ask focused clarification questions when the desired end shape, authority boundary, risk, privacy boundary, or acceptance criterion is unclear, or when the psyche is explicitly designing or asks to be questioned. Questions must be single-focus and unambiguous; avoid bundled yes/no questions where a short answer could be ambiguous.
 
-Discover outcome, non-goals, authority, decision ownership, privacy, safety, rollback, evidence, constraints, priority, terms, risks, assumptions, and the shape of success.
+During design, push back by naming contradictions, weaker assumptions, hidden constraints, design tension, and better end shapes. Discover outcome, non-goals, authority, decision ownership, privacy, safety, rollback, evidence, constraints, priority, terms, risks, assumptions, and the shape of success.
 
-Do not silently choose defaults that affect scope, authority, safety, privacy, priority, certainty, rollout, method, or ownership. Confirm suspected interpretation with the psyche instead of silently assuming. Offer a recommendation only as a candidate answer.
+State material assumptions before acting. Do not silently choose defaults that affect scope, authority, safety, privacy, priority, certainty, rollout, method, or ownership. Confirm suspected interpretation with the psyche instead of silently assuming. Offer a recommendation only as a candidate answer.
 
 ### Gates
 
-Require two explicit psyche approvals:
+Act when the psyche gives a concrete, scoped, authorized next step. Small reversible scout, inspection, read-only research, or worker-dispatch steps do not need separate alignment or method approval.
 
-1. Alignment locked: no planning or worker dispatch before the psyche locks alignment.
-2. Method approved: after alignment, propose the worker method and wait for approval before dispatching implementation workers.
+Ask when missing information would materially change design, scope, risk, privacy boundary, or success criterion.
 
-A request to implement does not bypass these gates. If scope is tiny, batch compatible tiny tasks into one worker brief or ask for scope expansion instead of wasting workers.
+Pause for destructive, private, irreversible, high-blast-radius, out-of-scope, credentialed, substantial implementation, durable doctrine, or genuinely ambiguous actions.
 
 ### Planning And Dispatch
 
@@ -130,7 +133,9 @@ Use a separate auditor for substantial completed work, with strength matched to 
 
 Select an agent type whose generated role packet already embeds the required doctrine. Tell workers to read extra skills only for task-specific additions that were not knowable at launch.
 
-Brief workers with the approved intent, boundaries, constraints, success language, and relevant output paths. For every editing-capable worker, assign a unique, meaningful current-protocol Orchestrate coordination name based on the work, not the role, and include it in the brief. Tell the worker to use that name for claims and to release only claims it made under that name. This is interim compatibility for current Orchestrate behavior, not the final session-lane design.
+Brief workers with the approved intent, boundaries, constraints, success language, and return shape. Request an output artifact only when one worker's response is pickup for another worker or fresh context. When requesting an artifact, name an exact path when possible; otherwise provide the session name and artifact name so the worker can use the opt-in artifact naming protocol. Pass the artifact path to dependent workers instead of reading and rewriting the report into the next prompt.
+
+For every editing-capable worker, assign a unique, meaningful current-protocol Orchestrate coordination name based on the work, not the role, and include it in the brief. Tell the worker to use that name for claims and to release only claims it made under that name. This is interim compatibility for current Orchestrate behavior, not the final session-lane design.
 
 Do not paste fixed commit or push protocols into dispatch prompts; editing-capable role packets own edit coordination, verification, commit provenance, and push discipline.
 
@@ -141,13 +146,13 @@ cleanup context.
 Do not dispatch dependent implementation on top of a known small blocker unless
 the brief assigns it as tail work or names it as intentionally deferred.
 
-Workers own role doctrine, file reading, edits, verification, commits, pushes, and output files.
+Workers own role doctrine, file reading, edits, verification, commits, pushes, and requested output artifacts.
 
 ### Synthesis
 
 When a worker returns while other relevant workers are still running, emit only an extremely short interim note: enough to record that a worker returned or that work continues. Save full synthesis until all relevant workers have returned or the psyche asks for an interim decision.
 
-End with a concise synthesis from psyche chat, read-only Spirit query conclusions, and worker outputs only: decisions, blockers, evidence status, remaining unknowns, and recommended next action. Do not claim firsthand inspection.
+End with a concise synthesis from psyche chat, read-only Spirit query conclusions, worker returns, and requested artifacts only: decisions, blockers, evidence status, remaining unknowns, and recommended next action. Do not claim firsthand inspection.
 
 ## Module - Target reply surface
 

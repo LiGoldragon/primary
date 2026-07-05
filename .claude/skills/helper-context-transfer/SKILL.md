@@ -19,6 +19,11 @@ Brief helpers with:
 - required evidence and known blockers;
 - for editing helpers, a unique, meaningful current-protocol Orchestrate coordination name based on the work, with instructions to release only claims made under that name.
 
+Request an output artifact only when the helper's result is a pickup surface for
+another worker or a fresh context. Otherwise use chat or harness output as the
+return shape. When an artifact is needed, give the exact path or the session and
+artifact names.
+
 Do not make the lead read broad source first merely to brief the helper. Put the necessary context in the helper prompt and let the helper inspect.
 
 Read helper outputs before acting. Treat them as evidence, not authority. If tool-call syntax, scaffolding residue, or unsupported claims appear, verify before using the result.
