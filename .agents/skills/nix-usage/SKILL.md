@@ -9,7 +9,7 @@ description: 'Narrow Nix command discipline for daemon-visible settings, build e
 
 Ask Nix what Nix knows. Inspect source, evaluate options, or query the daemon; do not search the store for configuration.
 
-Use local checkout evaluations for diagnosis. Use a fetched or pinned installable when the evidence must prove another machine can reproduce the build.
+Use local checkout evaluations for diagnosis. Use a fetched or pinned installable when the evidence must prove another machine can reproduce the build. When a flake wrapper locks the dependency under test, use `--override-input <name> <local-path>` for quick local checks.
 
 Keep store paths in variables. Do not paste raw store paths into chat, commits, skills, or docs; hashes drift and freeze stale state into prose.
 

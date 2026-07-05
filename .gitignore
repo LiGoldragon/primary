@@ -1,5 +1,5 @@
 # Primary workspace local index
-/repos/
+/repos
 
 # Private role repositories — local checkouts/symlinks only, never tracked here
 /private-repos/
