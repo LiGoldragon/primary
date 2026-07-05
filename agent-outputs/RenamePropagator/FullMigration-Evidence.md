@@ -1069,3 +1069,80 @@ Disposition:
 - Full landing needs `chroma/drop-next` integrated with current
   `chroma/main e7761f4d4317151444384340bf52234d4bb9db1b`, preserving the Pi
   live theme commits above, before landing can resume from `chroma`.
+
+## 2026-07-05 Worker 16 chroma drop-next integration
+
+Status: **CHROMA_READY**. `chroma/drop-next` was integrated with current
+`chroma/main` and pushed. It was not landed to `main`.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`, `chroma/AGENTS.md`, and
+  `chroma/ARCHITECTURE.md`.
+- `chroma/AGENTS.md` still names `lore/AGENTS.md`, but that file is absent in
+  the checkout.
+- Claimed `/home/li/primary/worktrees/worker15-landing/chroma` and this
+  evidence file with Orchestrate lane `Worker16`.
+
+Integration:
+
+- Started from current remote refs:
+
+```text
+chroma/main      e7761f4d4317151444384340bf52234d4bb9db1b
+chroma/drop-next 68d6678e0a5cca1d4961d5b7cacbd5799724a0e7
+```
+
+- Rebasing `drop-next@origin` onto `main` initially hit Jujutsu's immutable
+  remote-commit guard. Because this task explicitly required updating
+  `chroma/drop-next`, repeated the same rebase with `--ignore-immutable`.
+- Resolved the only content conflict in `tests/theme.rs` by preserving the
+  newer Pi live-theme/session-registry test scaffolding from `main` and
+  applying the migration import rename from `nota_next` to `nota`.
+- Preserved the newer `main` commits:
+
+```text
+e7761f4d4317 chroma: fan out Pi live themes through session registry
+c067685d1d16 chroma: push Pi live theme events
+```
+
+- Pushed only `chroma/drop-next`.
+- Verified after fetch that `drop-next@origin` points at the integrated tip and
+  `main@origin` is unchanged:
+
+```text
+chroma/main      e7761f4d4317151444384340bf52234d4bb9db1b
+chroma/drop-next 29a510e300a5db2430182bc170a57b037d2bbaf8
+```
+
+- Verified `jj log -r 'drop-next..main' --no-pager` returned no commits, so
+  current `main` is included in the updated `drop-next` history.
+
+Residue scan:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive'
+```
+
+Result: zero matches at `chroma/drop-next
+29a510e300a5db2430182bc170a57b037d2bbaf8`.
+
+Focused verification:
+
+```sh
+cargo test --locked
+nix flake check
+```
+
+Result: both passed. `cargo test --locked` passed the full Rust test suite,
+including the Pi live-theme registry tests. `nix flake check` passed the
+default package, default test check, sandbox terminal package, and sandbox
+terminal check for `x86_64-linux`.
+
+Blockers or risks:
+
+- No `chroma` blocker remains for the non-overwrite landing gate.
+- The local JJ bookmark display still labels the rebased `drop-next` change ID
+  as divergent because the old remote commit shares the same change ID in local
+  history; after fetch, `drop-next@origin` resolves to the pushed
+  `29a510e300a5db2430182bc170a57b037d2bbaf8` tip.
