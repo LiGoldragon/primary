@@ -901,3 +901,72 @@ Blockers or risks:
 - No `signal-criome` blocker remains for the `meta-signal-criome` generation
   failure. `meta-signal-criome/drop-next` can now be retried against the updated
   `signal-criome/drop-next`.
+
+## 2026-07-05 Worker 14 meta-signal-criome retry
+
+Status: **META_SIGNAL_CRIOME_READY**. No `main` landing was performed.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Claimed `/home/li/primary/worktrees/worker11-landing/meta-signal-criome`
+  and this evidence file with Orchestrate lane `worker14`.
+- Read `meta-signal-criome/AGENTS.md`, `ARCHITECTURE.md`, current
+  contract/component doctrine fallbacks, and the JJ/Nix/test guidance. The
+  stale repo-local doctrine paths named by `AGENTS.md` were absent, so the
+  current generated equivalents were used.
+
+Integration:
+
+- Started from `meta-signal-criome/main bf916c1df50ec16f71e700aa5a185cdbcee15460`
+  and old `meta-signal-criome/drop-next e7420884763f1e458b103b85166daf7fcfd87f0a`.
+- First rebased the old `drop-next` stack onto current `main` to inspect the
+  conflict surface. The only final content conflicts were dependency pins; the
+  newer founding/cross-node operator schema, generated Rust, examples, tests,
+  and architecture prose from `main` were preserved.
+- Flattened the resolved branch to a single clean commit on current `main` so
+  the pushed Git history does not carry intermediate conflicted JJ commits.
+- Kept `signal-criome` on the fixed staged producer branch
+  `signal-criome/drop-next 228e1c9cb2c0ab5942e615f22a4e61f5ad3b3e7c`, which
+  provides `RootAnchorDigest` without reintroducing next-family residue.
+- Pushed only `meta-signal-criome/drop-next`.
+
+Current refs:
+
+```text
+meta-signal-criome/main      bf916c1df50ec16f71e700aa5a185cdbcee15460
+meta-signal-criome/drop-next 45ce27cb9074d416cd611811b74760dabfe8e862
+```
+
+Residue scan:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' .
+```
+
+Result: zero matches at local `drop-next 45ce27cb9074d416cd611811b74760dabfe8e862`.
+
+Focused verification:
+
+```sh
+cargo generate-lockfile
+cargo test --no-run
+cargo test
+cargo test --features nota-text --all-targets
+nix build .#checks.x86_64-linux.test .#checks.x86_64-linux.test-nota-text .#checks.x86_64-linux.fmt .#checks.x86_64-linux.contract-crate-carries-no-runtime --no-link --print-build-logs
+nix build .#checks.x86_64-linux.clippy .#checks.x86_64-linux.clippy-nota-text --no-link --print-build-logs
+```
+
+Result: all passed. The Cargo and Nix builds exercised the schema build script,
+so checked-in generated schema artifacts were verified fresh. The
+`cross_node_founding_meta_ops_round_trip` test passed in default and
+`nota-text` modes, proving the preserved founding operator surface compiles and
+round-trips against the updated `signal-criome/drop-next` producer.
+
+Blockers or risks:
+
+- No `meta-signal-criome` blocker remains for the non-overwrite landing gate.
+- The lock necessarily includes transitive `drop-next` branch sources through
+  `signal-criome/drop-next` until `signal-criome` itself is landed to `main`;
+  these are branch names, not next-family residue, and the required residue
+  pattern returned zero matches.
