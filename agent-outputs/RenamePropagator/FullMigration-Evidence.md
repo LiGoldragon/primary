@@ -436,3 +436,52 @@ Blockers or risks:
 
 - No remaining residue blockers in the all-87 remote tarball scan.
 - The first pass had four transient/access scan failures; retry through authenticated GitHub tarball fetch cleared all four with zero matches.
+
+## 2026-07-05 Worker 7 landing attempt
+
+Status: **BLOCKED**. Full landing was stopped by the required non-overwrite gate.
+
+Pre-land checks:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Used Orchestrate lane `worker7` and claimed `/home/li/primary/worktrees/worker7-landing` plus this evidence file.
+- Compared remote `drop-next` tips from `/home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-combined-tips.txt` against authoritative GitHub refs before landing.
+- Initial `meta-signal-router` ref query timed out; retry resolved `meta-signal-router/drop-next 99808d04b3e4e3aa353d1f0b07ba6d735848c2fb` and `meta-signal-router/main 31f9262d1b40c28ad1465ca612df391be67fd13b`.
+- Landing order contained 85 `drop-next` repos and matched the Worker 6 tip ledger exactly: 0 missing, 0 extra, 0 duplicate.
+
+Landed before the stop condition:
+
+```text
+schema/main f351f90d3b8898205cf3057f3c253a5e451180a9
+```
+
+Verification for the landed repo:
+
+```sh
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/schema.git schema
+jj bookmark set main -r drop-next@origin
+jj git push --bookmark main
+git ls-remote https://github.com/LiGoldragon/schema.git refs/heads/main
+```
+
+Result: `schema/main` resolved to `f351f90d3b8898205cf3057f3c253a5e451180a9`.
+
+Blocking ref conflict:
+
+```text
+schema-rust/main      0eb5be666254f5ae9d0f5fee3befddbf98be2f42
+schema-rust/drop-next 72c71ffc558fee0d29c5b0517013de46e0307597
+merge-base            6218fb64f98c909de1eaa5c35744bd48a97a6f87
+```
+
+`schema-rust/drop-next` is not a descendant of `schema-rust/main`; landing it would drop the newer `schema-rust/main` commit `0eb5be666254f5ae9d0f5fee3befddbf98be2f42` (`schema-rust-next: validate generated daemon configuration`, committed 2026-07-04T15:32:39+02:00). Per the stop condition, no later repos were landed.
+
+Post-land audit:
+
+- Not run for the full graph because full landing did not complete.
+- Required final scan pattern remains: `nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next`.
+
+Disposition:
+
+- The graph is partially landed: only `schema/main` moved.
+- Full landing needs an explicit decision for `schema-rust`: merge/replay `0eb5be666254f5ae9d0f5fee3befddbf98be2f42` onto `drop-next`, or authorize a non-fast-forward overwrite. Without that decision, continuing would violate the no-overwrite stop condition.
