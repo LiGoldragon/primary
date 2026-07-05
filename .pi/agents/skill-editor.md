@@ -31,19 +31,98 @@ description: 'Edits skill and role source in LiGoldragon/skills, then reconciles
 - Manifest and index references resolve.
 - Generated outputs match source and have no generated-file notices.
 
+## Module - agent output protocol
+
+### Output Protocol Purpose
+
+Every spawned worker leaves its substantive result in a file, not in a long
+chat reply. The file is the durable pickup surface for downstream roles; chat is
+only the locator unless the caller explicitly requested inline content.
+
+### Directory
+
+Write worker outputs under:
+
+```text
+agent-outputs/<SessionName>/
+```
+
+`<SessionName>` is CamelCase and names the active weave, investigation, or
+handoff. Use the session name supplied by the brief. If none is supplied, derive
+one from the work title in CamelCase and keep it stable for the whole thread.
+
+Create the directory if it does not exist.
+
+### Filename
+
+Use:
+
+```text
+<RoleLabel>-<ArtifactName>.md
+```
+
+`<RoleLabel>` is the role name in PascalCase without spaces, such as
+`Scout`, `SkillEditor`, or `RustAuditor`. `<ArtifactName>` is a short PascalCase
+description of the output, such as `SituationalMap`, `Evidence`, or
+`Review`.
+
+Prefer one substantive file per assigned output. If the brief names an exact
+path, use that path.
+
+### Content Shape
+
+Start with a title naming the artifact. Include enough context for a fresh agent
+to use the file without reading the chat transcript:
+
+- task and scope;
+- files or commands consulted;
+- observed facts separated from interpretations where discovery is involved;
+- changed files or proposed changes where implementation is involved;
+- checks run and exact result;
+- blockers, unknowns, and follow-up requirements.
+
+Do not include generated-file notices in runtime agent outputs. Do not include
+secrets, private personal material, or auth tokens.
+
+### Chat Return
+
+After writing the output file, reply in chat with only the output path unless the
+brief requires more. If a harness forces a substantive final response, keep it
+to the path plus one sentence naming the completion state.
+
+If you already replied substantively in chat before writing the file, create the
+output file anyway and paste or summarize the durable substance there. Then send
+a correction reply containing the path.
+
+### Provisional Learning
+
+Audit findings, corpus observations, and role-improvement ideas are provisional
+until the psyche accepts them or they land in the appropriate durable guidance
+surface. Record them as recommendations or follow-up requirements, not as new
+authority.
+
 ## Module - edit coordination core
 
 ### Edit Coordination
 
 Before editing shared files or running a command that writes them, claim the
-exact path or repository with Orchestrate. Use the session lane when one is
-registered; otherwise use the current role identifier. Do not edit projected
-lock files by hand.
+exact path or repository with Orchestrate. Use the registered session lane when
+one is supplied for this work; otherwise use the dispatcher-assigned unique,
+meaningful coordination name. This interim current-Orchestrate compatibility
+keeps same-role workers from releasing each other's claims while first-class
+session lanes are not deployed.
+
+If no unique coordination name is assigned and the task needs a claim, pause and
+ask or report the missing name. Do not use generic role names such as
+`general-code-implementer`, `skill-editor`, or `rust-auditor` as claim owners.
+Release only claims you made under your assigned name.
+
+Do not edit projected lock files by hand.
 
 ```sh
 orchestrate "(Observe Roles)"
-orchestrate "(Claim (<lane> [(Path /absolute/path)] [reason]))"
-orchestrate "(Release <lane>)"
+orchestrate "(Claim (<assigned-name> [(Path /absolute/path)] [reason]))"
+orchestrate "(Release <assigned-name>)"
 ```
 
 If the local repository or worktree is already claimed or visibly in use, do
@@ -87,6 +166,9 @@ commit creation, push, and status reporting for those changes.
 Preserve peer edits. Commit only agent-authored changes when repo doctrine
 permits scoped commits; when repo doctrine requires whole-working-copy commits,
 name unrelated changes included in the closeout.
+
+Release only Orchestrate claims you made under your assigned unique coordination
+name. Do not release generic role names or another worker's claims.
 
 Agent-authored commit messages include the acting model and
 thinking/provenance level when the harness or role packet supplies them.

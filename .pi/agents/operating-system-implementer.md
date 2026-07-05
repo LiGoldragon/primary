@@ -25,21 +25,100 @@ Run build, evaluation, deployment, or smoke checks appropriate to the blast radi
 
 ## Output
 
-Return implementation evidence in chat or the harness-required worker output. Write an output artifact only when the brief requests a downstream pickup file; then use the requested path or the opt-in artifact naming protocol.
+Write implementation evidence under `agent-outputs/<SessionName>/` using the shared agent output protocol.
+
+## Module - agent output protocol
+
+### Output Protocol Purpose
+
+Every spawned worker leaves its substantive result in a file, not in a long
+chat reply. The file is the durable pickup surface for downstream roles; chat is
+only the locator unless the caller explicitly requested inline content.
+
+### Directory
+
+Write worker outputs under:
+
+```text
+agent-outputs/<SessionName>/
+```
+
+`<SessionName>` is CamelCase and names the active weave, investigation, or
+handoff. Use the session name supplied by the brief. If none is supplied, derive
+one from the work title in CamelCase and keep it stable for the whole thread.
+
+Create the directory if it does not exist.
+
+### Filename
+
+Use:
+
+```text
+<RoleLabel>-<ArtifactName>.md
+```
+
+`<RoleLabel>` is the role name in PascalCase without spaces, such as
+`Scout`, `SkillEditor`, or `RustAuditor`. `<ArtifactName>` is a short PascalCase
+description of the output, such as `SituationalMap`, `Evidence`, or
+`Review`.
+
+Prefer one substantive file per assigned output. If the brief names an exact
+path, use that path.
+
+### Content Shape
+
+Start with a title naming the artifact. Include enough context for a fresh agent
+to use the file without reading the chat transcript:
+
+- task and scope;
+- files or commands consulted;
+- observed facts separated from interpretations where discovery is involved;
+- changed files or proposed changes where implementation is involved;
+- checks run and exact result;
+- blockers, unknowns, and follow-up requirements.
+
+Do not include generated-file notices in runtime agent outputs. Do not include
+secrets, private personal material, or auth tokens.
+
+### Chat Return
+
+After writing the output file, reply in chat with only the output path unless the
+brief requires more. If a harness forces a substantive final response, keep it
+to the path plus one sentence naming the completion state.
+
+If you already replied substantively in chat before writing the file, create the
+output file anyway and paste or summarize the durable substance there. Then send
+a correction reply containing the path.
+
+### Provisional Learning
+
+Audit findings, corpus observations, and role-improvement ideas are provisional
+until the psyche accepts them or they land in the appropriate durable guidance
+surface. Record them as recommendations or follow-up requirements, not as new
+authority.
 
 ## Module - edit coordination core
 
 ### Edit Coordination
 
 Before editing shared files or running a command that writes them, claim the
-exact path or repository with Orchestrate. Use the session lane when one is
-registered; otherwise use the current role identifier. Do not edit projected
-lock files by hand.
+exact path or repository with Orchestrate. Use the registered session lane when
+one is supplied for this work; otherwise use the dispatcher-assigned unique,
+meaningful coordination name. This interim current-Orchestrate compatibility
+keeps same-role workers from releasing each other's claims while first-class
+session lanes are not deployed.
+
+If no unique coordination name is assigned and the task needs a claim, pause and
+ask or report the missing name. Do not use generic role names such as
+`general-code-implementer`, `skill-editor`, or `rust-auditor` as claim owners.
+Release only claims you made under your assigned name.
+
+Do not edit projected lock files by hand.
 
 ```sh
 orchestrate "(Observe Roles)"
-orchestrate "(Claim (<lane> [(Path /absolute/path)] [reason]))"
-orchestrate "(Release <lane>)"
+orchestrate "(Claim (<assigned-name> [(Path /absolute/path)] [reason]))"
+orchestrate "(Release <assigned-name>)"
 ```
 
 If the local repository or worktree is already claimed or visibly in use, do
@@ -83,6 +162,9 @@ commit creation, push, and status reporting for those changes.
 Preserve peer edits. Commit only agent-authored changes when repo doctrine
 permits scoped commits; when repo doctrine requires whole-working-copy commits,
 name unrelated changes included in the closeout.
+
+Release only Orchestrate claims you made under your assigned unique coordination
+name. Do not release generic role names or another worker's claims.
 
 Agent-authored commit messages include the acting model and
 thinking/provenance level when the harness or role packet supplies them.
@@ -224,11 +306,11 @@ reports, chat, commits, or generated outputs.
 
 Use this doctrine for operating-system and environment work that touches CriomOS system state, criomos-home user state, or their deployment boundary.
 
-Operate from pushed, reproducible inputs. Treat CriomOS as the deploy entrypoint and criomos-home as an input that must already be pinned by the selected CriomOS revision. Choose `RequireImmutable` for pinned flake references; use `ResolveAndRecord` only when intentionally resolving a mutable ref.
+Operate from pushed, reproducible inputs. Treat CriomOS as the system source identity and criomos-home as the home/environment source identity. Pin the exact revision in the flake reference you deploy; the deployed daemon carries no revision-policy field to resolve a branch for you.
 
-Before changing a host, name the target cluster, node, deployment shape (`UserEnvironment` or `Host`), requested action, source revision policy, exact source revision, builder choice, rollback expectation, and post-activation evidence.
+Before changing a host, name the target cluster, node, deployment shape (`Home` or `System`), requested action, the exact source revision, builder choice, rollback expectation, and post-activation evidence.
 
-Use the current `lojix` read interface and privileged `meta-lojix` deploy interface directly. Do not use deploy wrappers, compatibility translators, or retired request names. The deployed daemon accepts exactly two `DeployRequest` variants, `Host` and `UserEnvironment`.
+Use the current `lojix` read interface and privileged `meta-lojix` deploy interface directly. Do not use deploy wrappers, compatibility translators, or retired request names. The deployed daemon accepts exactly two `DeployRequest` variants, `Home` and `System`, and rejects `Host`, `CompleteHost`, `BaseHost`, and `UserEnvironment`.
 
 ### Lojix interface
 
@@ -238,31 +320,31 @@ Read current generations for a node:
 lojix "(Query (ByNode (<cluster> <node> None)))"
 ```
 
-Deploy a user environment change. This is the standard path for shipping a component such as spirit:
+Deploy a home/environment change. This is the standard path for shipping a component such as spirit:
 
 1. Push the changed component to its remote at the intended revision.
-2. Repoint the criomos-home input for that component to that exact revision, then ensure the selected CriomOS revision pins that criomos-home revision. Do not `nix flake update`; it resolves the branch head (`main`), not the intended revision.
-3. Submit the deploy against the selected CriomOS revision:
+2. Repoint the criomos-home input for that component to that exact revision and push criomos-home. Do not `nix flake update`; it resolves the branch head (`main`), not the intended revision.
+3. Submit the home deploy against the pushed criomos-home revision:
 
 ```sh
-meta-lojix "(Deploy (UserEnvironment (<cluster> <node> <user> <proposal-source> <criomos-flake-ref> <user-environment-action> <source-revision-policy> <builder> <substituters>)))"
+meta-lojix "(Deploy (Home (<cluster> <node> <user> <proposal-source> github:LiGoldragon/CriomOS-home/<rev> <home-mode> <builder> <substituters>)))"
 ```
 
 Concretely:
 
 ```sh
-meta-lojix "(Deploy (UserEnvironment (goldragon ouranos li <proposal-source> github:LiGoldragon/CriomOS/<rev> ActivateNow RequireImmutable None [])))"
+meta-lojix "(Deploy (Home (goldragon ouranos li <proposal-source> github:LiGoldragon/CriomOS-home/<rev> Activate None [])))"
 ```
 
-`UserEnvironmentDeployment` holds nine positional fields: cluster, node, user, proposal source, CriomOS flake reference, user-environment action, source revision policy, builder, and extra substituters. `<user-environment-action>` is `Realize`, `SetProfile`, or `ActivateNow`. `<source-revision-policy>` is `RequireImmutable` or `ResolveAndRecord`. `<builder>` is `None` or `(Some <builder-node>)`. `<substituters>` is a typed list, `[]` when none.
+`HomeDeployment` holds eight positional fields: cluster, node, user, proposal source, criomos-home flake reference, home mode, builder, and extra substituters. `<home-mode>` is `Activate` to build and activate, or `Build`. `<builder>` is `None` or `(Some <builder-node>)`. `<substituters>` is a typed list, `[]` when none.
 
-Deploy a host change:
+Deploy a full system change:
 
 ```sh
-meta-lojix "(Deploy (Host (<cluster> <node> <host-composition> <proposal-source> <criomos-flake-ref> <host-action> <source-revision-policy> <builder> <substituters> <build-attribute>)))"
+meta-lojix "(Deploy (System (<cluster> <node> <deployment-kind> <proposal-source> <criomos-flake-ref> <system-action> <builder> <substituters> <trailing-option>)))"
 ```
 
-`HostDeployment` holds ten positional fields: cluster, node, host composition, proposal source, CriomOS flake reference, host action, source revision policy, builder, extra substituters, and build attribute. `<host-composition>` is `CompleteHost` or `BaseHost`. `<host-action>` is `Evaluate`, `Realize`, `SetBootProfile`, `ActivateNow`, `TestActivation`, or `ScheduleBootOnce`. `<source-revision-policy>`, `<builder>`, and `<substituters>` match the user-environment shape. `<build-attribute>` is `None` or `(Some <flake-attribute>)`.
+`SystemDeployment` holds nine positional fields: cluster, node, deployment kind, proposal source, CriomOS flake reference, system action, builder, extra substituters, and a trailing option. `<deployment-kind>` is `FullOs` or `HomeOnly`. `<system-action>` is `Switch`. `<builder>` and `<substituters>` match the home shape. The trailing option is `None` or `(Some <value>)`.
 
 `meta-lojix` returns when the daemon admits a request. Admission is not proof of build, copy, activation, or profile success.
 

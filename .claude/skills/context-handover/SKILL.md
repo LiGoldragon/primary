@@ -1,6 +1,6 @@
 ---
 name: context-handover
-description: 'Focus-scoped handover discipline: preserve the session''s original intended direction unless redirected or complete, and carry only lean settled intent, confirmed facts, completed changes, live uncertainties, open questions, and useful artifact pointers.'
+description: 'Focus-scoped handover discipline: preserve the session''s original intended direction unless redirected or complete, and carry only lean settled intent, confirmed facts, completed changes, live uncertainties, open questions, and useful agent-output pointers.'
 ---
 
 # Skill — context handover
@@ -36,7 +36,7 @@ worker output says the earlier term remains relevant.
 
 Keep it lean. Include only settled psyche intent, confirmed facts, recent
 completed changes, live uncertainties or suspicions with their uncertainty
-preserved, open questions, and artifact pointers that help rediscovery.
+preserved, open questions, and agent-output pointers that help rediscovery.
 
 Do not tell the next agent what to do beyond the requested focus. Leave room for
 questions and independent rediscovery.
