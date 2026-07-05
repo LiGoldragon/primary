@@ -715,3 +715,113 @@ Disposition:
 
 - The graph is partially landed through `meta-signal-cloud/main`.
 - Full landing now needs `meta-signal-criome/drop-next` integrated with `meta-signal-criome/main bf916c1df50ec16f71e700aa5a185cdbcee15460`, then landing can resume from `meta-signal-criome`.
+
+## 2026-07-05 Worker 12 meta-signal-criome unblock attempt
+
+Status: **BLOCKED**. `meta-signal-criome/drop-next` was not pushed or landed.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Claimed `/git/github.com/LiGoldragon/meta-signal-criome` and this evidence file with Orchestrate lane `worker12`.
+- Read `meta-signal-criome/AGENTS.md`, `ARCHITECTURE.md`, the generated contract/component/Rust/Nix doctrine fallbacks, and the JJ version-control/testing guidance.
+
+Starting refs:
+
+```text
+meta-signal-criome/main      bf916c1df50ec16f71e700aa5a185cdbcee15460
+meta-signal-criome/drop-next e7420884763f1e458b103b85166daf7fcfd87f0a
+merge-base                   acd203e7e07191ff83dfedcafbc9ecb2da9f87ea
+```
+
+Integration attempt:
+
+```sh
+jj git fetch --remote origin
+jj rebase -b drop-next -d main
+```
+
+Result: rebase replayed 9 commits and produced conflicts in 8 of them. The
+conflicts were not just mechanical lock conflicts: the old staged branch
+predates `main`'s founding-operator work and would remove or downgrade it.
+For example, diffing current `main` to the old `drop-next` shows the old
+branch would:
+
+- downgrade `meta-signal-criome` from `0.5.0` to `0.3.0`;
+- remove `AcceptRootFounding`, `InitiateRootFounding`, and
+  `ObserveRootFounding` schema operations;
+- remove imported `RootAnchorDigest`, `RootGenesis`, `FoundingSignature`, and
+  `Identity` types from the meta schema;
+- remove the founding-operator architecture prose.
+
+Because the worker brief explicitly requires preserving the newer founding
+operator ops, I tested two concrete resolutions instead of pushing the stale
+rebased stack.
+
+Resolution test A: current `main` plus direct `-next` cleanup, keeping
+`signal-criome = branch "main"` so the founding types remain available.
+
+```sh
+cargo update
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' -S .
+```
+
+Result: **failed residue gate**. The lock regenerated successfully, but
+`signal-criome/main` still pulled next-family optional metadata into
+`Cargo.lock`:
+
+```text
+Cargo.lock:380 nota-next
+Cargo.lock:399 nota-next
+Cargo.lock:592 schema-rust-next
+Cargo.lock:647 nota-next
+Cargo.lock:649 schema-rust-next
+```
+
+Resolution test B: current `main` plus direct `-next` cleanup, changing
+`signal-criome`, `signal-frame`, and `schema-rust` to their `drop-next`
+branches so the lock has no next-family strings.
+
+```sh
+cargo update
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' -S .
+cargo test --tests
+```
+
+Result:
+
+- residue scan passed: `rg` exited `1` with no matches;
+- `cargo test --tests` failed during `meta-signal-criome` build-script schema
+  generation:
+
+```text
+Schema(ImportedTypeNotFound { crate_name: "signal-criome", module: "lib", type_name: "RootAnchorDigest" })
+```
+
+Root cause:
+
+- `signal-criome/main c71ef71600ed60975351106bc1aae32102b66aba` has the
+  founding-conveyance/root-founding types required by
+  `meta-signal-criome/main`.
+- `signal-criome/drop-next b4bfeecef41a05a6a93b7909976ab5312a17fa46` has the
+  rename cleanup but does not contain those founding types.
+- Therefore `meta-signal-criome` currently has no dependency ref that both
+  satisfies the zero-residue gate and preserves/compiles the newer founding
+  operator schema.
+
+Cleanup:
+
+- No `meta-signal-criome/drop-next` push was made.
+- The local failed rebase artifacts were abandoned.
+- Local `meta-signal-criome/drop-next` is back at
+  `e7420884763f1e458b103b85166daf7fcfd87f0a`, matching `drop-next@origin`.
+- The local `meta-signal-criome` working copy is clean.
+
+Next unblock:
+
+Integrate `signal-criome/drop-next` with `signal-criome/main` first, preserving
+the founding-conveyance/root-founding schema while keeping the non-next
+producer cleanup. Once `signal-criome/drop-next` has both properties,
+`meta-signal-criome/drop-next` can be rebased onto
+`meta-signal-criome/main` and verified with the zero-residue scan and contract
+checks.
