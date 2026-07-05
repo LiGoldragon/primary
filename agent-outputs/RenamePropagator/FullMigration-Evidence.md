@@ -641,3 +641,77 @@ Blockers or risks:
 
 - No `triad-runtime` blocker remains for the non-overwrite landing gate.
 - Local Nix builds warned that the Git tree was dirty because the JJ working copy was editing the rebased `drop-next` commit directly; the pushed commit and fetched bookmark both resolve to `0031b5519572f4571bf3895f78221de9404d4810`.
+
+## 2026-07-05 Worker 11 landing resume
+
+Status: **BLOCKED**. Landing resumed from `triad-runtime` and stopped at the next required non-overwrite gate.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Used Orchestrate lane `worker11`.
+- Claimed `/home/li/primary/worktrees/worker11-landing` and this evidence file.
+- Used fresh remote clones under the claimed landing directory and authoritative GitHub refs for `main` and `drop-next`.
+
+Preflight:
+
+- Checked the remaining landing order from `triad-runtime` onward.
+- Confirmed `origin/main` was an ancestor of `origin/drop-next` for the landed prefix:
+  `triad-runtime`, `nexus`, `meta-signal-agent`, and `meta-signal-cloud`.
+- Stopped at `meta-signal-criome` because its staging branch would drop newer remote `main` commits.
+
+Landed before the stop condition:
+
+```text
+triad-runtime/main     0031b5519572f4571bf3895f78221de9404d4810
+nexus/main             290de15ee14ac14444e80022c96501e499e252dc
+meta-signal-agent/main afd16221a8fe16ddb81025d86f3b8776fbdadf4d
+meta-signal-cloud/main 282383fca310b4cd29a32c933b955cc9d7dd507e
+```
+
+Landing mechanics for each moved repo:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <repo>
+git -C <repo> merge-base --is-ancestor refs/remotes/origin/main refs/remotes/origin/drop-next
+jj bookmark set main -r drop-next@origin
+jj git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main
+```
+
+Remote verification after push:
+
+```text
+triad-runtime/main     == triad-runtime/drop-next     == 0031b5519572f4571bf3895f78221de9404d4810
+nexus/main             == nexus/drop-next             == 290de15ee14ac14444e80022c96501e499e252dc
+meta-signal-agent/main == meta-signal-agent/drop-next == afd16221a8fe16ddb81025d86f3b8776fbdadf4d
+meta-signal-cloud/main == meta-signal-cloud/drop-next == 282383fca310b4cd29a32c933b955cc9d7dd507e
+```
+
+Blocking ref conflict:
+
+```text
+meta-signal-criome/main      bf916c1df50ec16f71e700aa5a185cdbcee15460
+meta-signal-criome/drop-next e7420884763f1e458b103b85166daf7fcfd87f0a
+merge-base                   acd203e7e07191ff83dfedcafbc9ecb2da9f87ea
+```
+
+`meta-signal-criome/drop-next` is not a descendant of current remote `meta-signal-criome/main`. Landing it would drop newer `main` commits, including:
+
+```text
+bf916c1 meta-signal-criome: append cross-node founding operator ops (0.5.0)
+6e099cb meta-signal-criome: AcceptRootFounding owner-only meta-op (primary-79z1.6)
+a670d45 meta-signal-criome: repoint signal-criome dep from criome-authorization-push to main
+3c51eac meta-signal-criome: fold INTENT direction into ARCHITECTURE, drop INTENT.md
+```
+
+Post-land audit:
+
+- Not run for the full graph because full landing did not complete.
+- Required final scan pattern remains: `nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next`.
+
+Disposition:
+
+- The graph is partially landed through `meta-signal-cloud/main`.
+- Full landing now needs `meta-signal-criome/drop-next` integrated with `meta-signal-criome/main bf916c1df50ec16f71e700aa5a185cdbcee15460`, then landing can resume from `meta-signal-criome`.
