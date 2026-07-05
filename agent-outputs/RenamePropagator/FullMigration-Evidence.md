@@ -1,5 +1,10 @@
 # Full `-next` removal migration evidence
 
+Latest status: **CRIOMOS_HOME_READY** for the CriomOS-home unblock handled by
+Worker 23 on 2026-07-05. `CriomOS-home/drop-next` was integrated with current
+`CriomOS-home/main` and pushed to
+`230777740242eb0b7766aa56a7104c3cd6153c0c`. It was not landed to `main`.
+
 Status: **BLOCKED**. No `drop-next` branch was landed to `main`.
 
 Worker: Worker 2 implementation owner. Date: 2026-07-05.
@@ -1675,3 +1680,92 @@ Disposition:
   `CriomOS-home/main 91c9202216e1eeb94272bf3b2eb43c0e5565df7a`, preserving the
   five newer main commits listed above, before landing can resume from
   `CriomOS-home`.
+
+## 2026-07-05 Worker 23 CriomOS-home unblock
+
+Status: **CRIOMOS_HOME_READY**. `CriomOS-home/drop-next` was pushed only; no
+landing to `main` was attempted.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`, CriomOS-home `AGENTS.md`,
+  CriomOS `AGENTS.md`, lore `AGENTS.md`, CriomOS-home `ARCHITECTURE.md`, and
+  `docs/ROADMAP.md`.
+- `bd list --status open` in the canonical CriomOS-home checkout failed because
+  no beads database was present.
+- Observed the prior stalled worker's claimed worktree and released stale
+  `worker22` claims after the dispatch identified that worker as shut down.
+- Claimed `/git/github.com/LiGoldragon/CriomOS-home` and this evidence file
+  with Orchestrate lane `worker23`.
+
+Integration:
+
+- Confirmed remote state after fetch:
+  - `CriomOS-home/main 91c9202216e1eeb94272bf3b2eb43c0e5565df7a`
+  - `CriomOS-home/drop-next 5e415386becf2393d46e5309558a2a3ec78726d6`
+- Recreated the prior worker's merge shape in the clean canonical checkout:
+  `drop-next` plus `main`, with a single `flake.lock` conflict.
+- Resolved `flake.lock` to preserve current-main `chroma` and `orchestrate`
+  pins while carrying the staged `lojix` bump and renamed producer inputs:
+  - `chroma e7761f4d4317151444384340bf52234d4bb9db1b`
+  - `orchestrate 62a7682e578863d372fc2b655331029a550a1cdc`
+  - `lojix 5303391abb17506312a9f6118e250434545f0415`
+  - `nota-source` repository `nota`
+  - `schema-source` URL `https://github.com/LiGoldragon/schema.git`
+  - `schema-rust-source` URL `https://github.com/LiGoldragon/schema-rust.git`
+- Preserved the newer main work identified by Worker 21: Pi live-theme/session
+  registration, Pi extension resource filtering, XDG runtime-path orchestrate
+  service paths, and the transitive lojix input bump.
+
+Pushed branch:
+
+```text
+CriomOS-home/drop-next 230777740242eb0b7766aa56a7104c3cd6153c0c
+```
+
+Remote confirmation after push:
+
+```text
+drop-next@origin 23077774 CriomOS-home: merge main into drop-next (Worker23 Codex GPT-5)
+```
+
+Forbidden residue scan:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive'
+```
+
+Result: zero matches in the final CriomOS-home `drop-next` checkout.
+
+Verification:
+
+- `jq empty flake.lock`: passed.
+- Conflict-marker scan for `<<<<<<<`, `>>>>>>>`, `%%%%%%%`, and conflict
+  backslash markers in `flake.lock`: passed.
+- `nix eval github:LiGoldragon/CriomOS-home/230777740242eb0b7766aa56a7104c3cd6153c0c#checks.x86_64-linux --apply builtins.attrNames --refresh`:
+  passed.
+- `nix build --no-link --print-build-logs --refresh` from the same immutable
+  ref passed for:
+  - `checks.x86_64-linux.chroma-nota-config`
+  - `checks.x86_64-linux.pi-criomos-package-load`
+  - `checks.x86_64-linux.pi-harness-profile`
+  - `checks.x86_64-linux.spirit-deployment`
+  - `checks.x86_64-linux.rust-toolchain`
+
+Generic verifier note:
+
+- The synchronizer's default-package verifier is not valid for CriomOS-home;
+  this repo does not expose a default package as the deployment proof.
+- `nix flake show --all-systems` and `nix flake show --system x86_64-linux`
+  are also not valid proof here because the flake-show traversal evaluates
+  Darwin check/package surfaces and fails on Linux-only `whisrs`.
+- Direct `homeConfigurations` attr-name evaluation returned an empty set in the
+  standalone checkout; home activation remains deployment-shaped through
+  Lojix/CriomOS materialized inputs rather than this generic probe.
+
+Disposition:
+
+- CriomOS-home is ready for the landing worker to resume at
+  `CriomOS-home/drop-next`.
+- Rollback before landing is to reset only `CriomOS-home/drop-next` back to
+  `5e415386becf2393d46e5309558a2a3ec78726d6`.
