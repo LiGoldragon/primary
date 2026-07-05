@@ -2105,3 +2105,76 @@ Disposition:
   `mentci-egui/main 8f9de29f448e9d12df6f9daaadfc84b3eabbdea2`, preserving the
   two newer main commits listed above, before landing can resume from
   `mentci-egui`.
+
+## 2026-07-05 Worker 27 mentci-egui drop-next integration
+
+Status: **MENTCI_EGUI_READY**. `mentci-egui/drop-next` was integrated with
+current `mentci-egui/main` and pushed. `mentci-egui/main` was not moved.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md` and repo-local `mentci-egui/AGENTS.md`.
+- Used Orchestrate lane `Worker27`.
+- Claimed `/home/li/wt/github.com/LiGoldragon/mentci-egui` and this evidence
+  file.
+- Used the clean JJ workspace
+  `/home/li/wt/github.com/LiGoldragon/mentci-egui/criome-authorization-push`;
+  another mentci-egui workspace had unrelated dirty edits and was left alone.
+
+Integration:
+
+```text
+previous mentci-egui/drop-next f24e97784391d87e49ed05f5c3acd031d22639af
+current mentci-egui/main        8f9de29f448e9d12df6f9daaadfc84b3eabbdea2
+preserved main ancestor         01f524b0
+new mentci-egui/drop-next       93292523b8b41880372f6236e3cbb7064a85799f
+```
+
+The new `drop-next` tip is an empty merge commit with parents
+`f24e97784391d87e49ed05f5c3acd031d22639af` and
+`8f9de29f448e9d12df6f9daaadfc84b3eabbdea2`. Relative to the old
+`drop-next`, it carries the main-line documentation retirement changes:
+`ARCHITECTURE.md`, `README.md`, and deletion of `INTENT.md`.
+
+Commands:
+
+```sh
+jj git fetch
+jj new drop-next main -m 'mentci-egui: integrate main into drop-next'
+jj bookmark set drop-next -r @
+jj git push --bookmark drop-next
+```
+
+Residue verification:
+
+```sh
+rg -n "nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive" .
+```
+
+Result: zero matches.
+
+Focused checks:
+
+```sh
+system=$(nix eval --raw --impure --expr builtins.currentSystem)
+nix build ".#checks.${system}.default" --dry-run
+nix build ".#checks.${system}.default" --no-link --print-build-logs
+```
+
+Result: passed. The flake check ran `cargo test --release --locked`: 5
+library unit tests, 10 binary unit tests, 2 daemon client integration tests, 3
+policy editor integration tests, and doctests all passed. Private Git fetches
+did not block; Nix fetched the `drop-next` family dependencies successfully.
+
+Verification after push:
+
+- `drop-next` resolves to
+  `93292523b8b41880372f6236e3cbb7064a85799f`.
+- `drop-next` is a descendant of current `main`, the old `drop-next` tip, and
+  the preserved `01f524b0` main commit.
+
+Risks:
+
+- No functional source conflict was present; the integration merge is empty.
+- The broader full-family landing and post-land tarball sweep still need to be
+  resumed by the landing worker after `mentci-egui/drop-next`.
