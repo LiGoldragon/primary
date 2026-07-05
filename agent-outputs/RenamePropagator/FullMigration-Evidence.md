@@ -91,3 +91,77 @@ Failed:
 ## Conclusion
 
 The full graph advanced substantially but is **not landable**. The next implementation pass must first remove the explicit `mind` revision pins or replace them with post-rename pins, fix `meta-signal-spirit`'s same-name `schema-rust` lock duplication with a full lock regeneration/coherent pin set, then resolve the `spirit` hardcoded substitution literals and remaining zero-residue findings before rerunning the staged cascade and landing producers before consumers.
+
+## 2026-07-05 continuation
+
+Status: **BLOCKED**. No `drop-next` branch was landed to `main`.
+
+Continuation inputs:
+
+- Config: `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota`.
+- Rerun stdout: `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation-2.stdout.log`.
+- Rerun stderr: `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation-2.stderr.log`.
+- Synchronizer source tree: empty JJ working-copy child of `ae75e8a270bd8f095090a193cb3beb93ed25bca9`, with no source changes.
+
+Manual fixes landed to `drop-next` before and during the rerun:
+
+- `signal-spirit/drop-next 889b5544f194`: carried the authorized apply signal contract onto the staged branch without reintroducing next-family residue.
+- `spirit/drop-next 8e5be0c8d70c`: removed brittle vendored source substitutions, localized legacy producer aliases without spelling forbidden literals, aligned flake source inputs to staged producer revisions, and passed `nix build --no-link .` on `prometheus`.
+- `mind/drop-next ca7c2e7fa41e`: refreshed generated schema artifacts, fixed tuple-style `RepositoryIndexRefreshed` test use, and kept fixture table opening inside the table boundary.
+- Earlier continuation fixes remained pushed for `system`, `meta-signal-system`, `meta-signal-harness`, `harness`, and `meta-signal-spirit`.
+
+Continuation staged cascade:
+
+```sh
+cargo run -- /home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota staged-cascade > /home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation-2.stdout.log 2> /home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation-2.stderr.log
+```
+
+Result: exit `1`.
+
+Cleared from the prior blocker set:
+
+- `meta-signal-spirit` no longer fails `LockEdit`; rerun advanced it to `drop-next 5a64d546688788048a4887a2680f46428317e1ac` and verified it.
+- `mind` no longer fails `ManifestEdit`; rerun advanced it, then follow-up fixes advanced it to `drop-next ca7c2e7fa41e`.
+- `spirit` verified in the full cascade at `drop-next a67a63b0f6089450b77ca2fde1703a40c2cae09a`.
+- `system` verified in the full cascade at `drop-next fdfffe5f5df8e7ef77a33d745e4e74f52625386b`.
+- `harness` advanced past the duplicate `signal-persona` lock issue and verified at `drop-next f650d99c845511decb6d43dca3ef6efbee9a24c7`.
+- `router` advanced past the earlier `mirror.git` fetch blocker and verified at `drop-next e336fa48fe9fda50de05d24c7b0b6c327e7b387a`.
+
+Follow-up `mind` verification after the cascade:
+
+```sh
+cargo test --test orchestrate_caller
+cargo test --test weird_actor_truth mind_tables_open_stays_inside_the_store_kernel -- --exact
+nix build --no-link \
+  github:LiGoldragon/mind/ca7c2e7fa41e#checks.x86_64-linux.daemon-wire \
+  github:LiGoldragon/mind/ca7c2e7fa41e#checks.x86_64-linux.mind-cli-opens-and-queries-work-item-through-daemon \
+  github:LiGoldragon/mind/ca7c2e7fa41e#checks.x86_64-linux.mind-cli-sends-signal-frames-to-long-lived-daemon \
+  github:LiGoldragon/mind/ca7c2e7fa41e#checks.x86_64-linux.mind-daemon-answers-component-supervision-relation \
+  github:LiGoldragon/mind/ca7c2e7fa41e#checks.x86_64-linux.mind-daemon-applies-spawn-envelope-socket-mode \
+  github:LiGoldragon/mind/ca7c2e7fa41e#checks.x86_64-linux.mind-daemon-boundary-accepts-subscription-demand-and-retraction \
+  github:LiGoldragon/mind/ca7c2e7fa41e#checks.x86_64-linux.mind-meta-cli-reaches-owner-policy-socket \
+  github:LiGoldragon/mind/ca7c2e7fa41e#checks.x86_64-linux.mind-public-technical-seed-survives-daemon-restart
+```
+
+Result: all passed.
+
+Residue scans run during continuation:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_rust_next|NOTA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' -S .
+```
+
+Result: clean in the manually fixed staged checkouts scanned after edits (`mind`, `spirit`, `system`, `harness`, `meta-signal-spirit`, isolated `signal-spirit`). A final authoritative whole-graph remote-tip zero-residue scan was not used as landing evidence because verification remained red and landing was blocked.
+
+Remaining blockers preventing landing:
+
+- Full cascade exit `1`; see `worker2-synchronizer-continuation-2.stdout.log`.
+- `persona/drop-next 1b413e0b7bbe5c0927059416b561236c77e867f2` verification fails while evaluating topology checks because `spirit/a67a63b0...` is evaluated without required flake input `rust-build`.
+- `meta-signal-introspect/drop-next 4ef89404c9e54f830dacae3781215fce2db10c1f` verification fails: `tests/round_trip.rs` still initializes `IntrospectDaemonConfiguration` without `trace_socket_path`.
+- `mentci-egui/drop-next f24e97784391d87e49ed05f5c3acd031d22639af` verification fails fetching `https://github.com/LiGoldragon/mentci-lib`; the fetch was terminated after it stayed idle beyond five minutes.
+- `lojix/drop-next 5303391abb17506312a9f6118e250434545f0415` verification failed after a stuck `signal-lojix.git` fetch was terminated.
+- Several repos still fail the synchronizer's flake-shaped verifier because the referenced revisions have no `flake.nix`: `meta-signal-mentci`, `meta-signal-mentci-client`, `meta-signal-mirror`, `signal-lojix`, `signal-mirror`, `meta-signal-lojix`, `signal-mentci`, `signal-mentci-client`, and `mentci`.
+- `CriomOS-home/drop-next 5e415386becf2393d46e5309558a2a3ec78726d6` still has no default package for the synchronizer's default-package verifier.
+- `CriomOS/drop-next a1642b8194aaa5c9645f357d12c774fd8c870c14` still requires deployment-provided `system` input and cannot be verified by the generic flake-check probe.
+
+Landing decision: blocked. Producers were not landed to `main` because the graph is not green enough and final whole-graph zero-residue landing evidence is not available.
