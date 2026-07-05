@@ -592,3 +592,52 @@ Disposition:
 
 - The graph is partially landed through `signal/main`.
 - Full landing now needs `triad-runtime/drop-next` integrated with `triad-runtime/main edc76f13caa17f68d62ab01cd495971fafbb4582`, then the landing can resume from `triad-runtime`.
+
+## 2026-07-05 Worker 10 triad-runtime unblock
+
+Status: **TRIAD_RUNTIME_READY**. No `main` landing was performed.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Used Orchestrate lane `worker10`.
+- Claimed `/home/li/primary/worktrees/worker9-landing/triad-runtime` and this evidence file.
+
+Integration:
+
+- Rebased `triad-runtime/drop-next` onto current `triad-runtime/main edc76f13caa17f68d62ab01cd495971fafbb4582`.
+- Preserved the newer main hardening commit `triad-runtime: harden runtime socket paths`.
+- Preserved the staged cleanup commits that migrate `nota-next` to `nota`, move `signal-frame` to the staged branch, and replace visible `schema-rust-next` references with `schema-rust`.
+- Pushed updated `triad-runtime/drop-next`.
+
+Current refs:
+
+```text
+triad-runtime/main      edc76f13caa17f68d62ab01cd495971fafbb4582
+triad-runtime/drop-next 0031b5519572f4571bf3895f78221de9404d4810
+```
+
+Residue scan:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' -S .
+```
+
+Result: zero matches at `triad-runtime/drop-next 0031b5519572f4571bf3895f78221de9404d4810`.
+
+Focused verification:
+
+```sh
+cargo test --locked --test reaction --features nota-text
+cargo test --locked --test process --test daemon
+nix eval --json .#checks.x86_64-linux --apply builtins.attrNames
+nix build --no-link .
+nix build --no-link .#checks.x86_64-linux.test .#checks.x86_64-linux.test-nota-text .#checks.x86_64-linux.fmt .#checks.x86_64-linux.clippy
+```
+
+Result: all passed. The exposed checks were `clippy`, `fmt`, `test`, and `test-nota-text`.
+
+Blockers or risks:
+
+- No `triad-runtime` blocker remains for the non-overwrite landing gate.
+- Local Nix builds warned that the Git tree was dirty because the JJ working copy was editing the rebased `drop-next` commit directly; the pushed commit and fetched bookmark both resolve to `0031b5519572f4571bf3895f78221de9404d4810`.
