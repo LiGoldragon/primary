@@ -1,11 +1,13 @@
 # Full `-next` removal migration evidence
 
-Latest status: **META_SIGNAL_ROUTER_READY** for the meta-signal-router unblock
-handled by Worker 29 on 2026-07-05. `meta-signal-router/drop-next` was
-integrated with current `meta-signal-router/main` and pushed to
-`50634d9ec5ec286e4b9b7d269c499724b0fcaab5`. It was not landed to `main`.
+Latest status: **BLOCKED** for the Worker 30 landing continuation on
+2026-07-05. Landing resumed after the Worker 29 `meta-signal-router` unblock,
+landed the safe prefix through `nota-config/main`, then stopped at
+`orchestrate` because `orchestrate/drop-next` is not a descendant of current
+remote `orchestrate/main`.
 
-Status: **BLOCKED**. No `drop-next` branch was landed to `main`.
+Initial Worker 2 status: **BLOCKED**. No `drop-next` branch was landed to
+`main` during that first synchronizer run.
 
 Worker: Worker 2 implementation owner. Date: 2026-07-05.
 
@@ -2397,3 +2399,114 @@ Blockers or risks:
 - This did not resume or complete the wider graph landing; the next landing
   worker should resume from `meta-signal-router` using the new
   `drop-next 50634d9ec5ec286e4b9b7d269c499724b0fcaab5` tip.
+
+## 2026-07-05 Worker 30 landing resume and hygiene checkpoint
+
+Status: **BLOCKED**. Landing resumed from `meta-signal-router`, landed the safe
+prefix, and stopped at the next non-overwrite gate. No repo after
+`nota-config` was landed.
+
+Coordination and hygiene:
+
+- Read `/home/li/primary/AGENTS.md` and the repository closeout,
+  version-control, and edit-coordination doctrine.
+- Used Orchestrate lane `Worker30`.
+- Claimed `/home/li/primary/worktrees/worker30-landing` and this evidence file.
+- Used fresh GitHub remote ref queries and isolated JJ clones under the claimed
+  landing directory; shared `/git/github.com/LiGoldragon` checkouts were not
+  modified.
+- The first landing script was interrupted during a clone; the parent process
+  was terminated before continuing. Hygiene inspection showed primary and all
+  Worker30-created landing clones had clean working copies and zero diffs.
+
+Landing-set recomputation:
+
+- Parsed 87 unique entries from
+  `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota`.
+- Recomputed live `main` and `drop-next` refs from GitHub for all entries.
+- Before the resumed landing loop, 52 repos had `main == drop-next`, 2 repos
+  had no `drop-next` ref (`nota`, `synchronizer`), and 33 repos were pending.
+- `synchronizer/main` remained
+  `7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a`; no `drop-next` landing was
+  attempted for it.
+
+Landed before the stop condition:
+
+```text
+meta-signal-router/main           50634d9ec5ec286e4b9b7d269c499724b0fcaab5
+meta-signal-spirit/main           5a64d546688788048a4887a2680f46428317e1ac
+meta-signal-system/main           671c15f3e9b22d6bdef4153decd94e8cee261e28
+meta-signal-terminal/main         17dafd4a9e941b5e38e531202b7b4f5af7e74a89
+meta-signal-upgrade/main          4e0435755499b9617f198ee79aa4f80c1c576bd9
+meta-signal-version-handover/main 72b8d3abeb455ce12b94e8bcff085c5a619e2b93
+mind/main                         ca7c2e7fa41ecdc679b523fbadedc1a0dc095188
+mirror/main                       40a4091ec0ce090d71e7e1ea496df84a64cf929f
+nota-config/main                  88792a277d783198dcc325ef6d51ef9a1e6d64ac
+```
+
+Landing mechanics:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <claimed-worktree>/<repo>
+git -C <claimed-worktree>/<repo> merge-base --is-ancestor <main-sha> <drop-next-sha>
+jj -R <claimed-worktree>/<repo> bookmark set main -r <drop-next-sha> --allow-backwards
+jj -R <claimed-worktree>/<repo> git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+```
+
+Blocking ref conflict:
+
+```text
+orchestrate/main      ddc1c8b65ad4b0140a77b0da234990b282b85d23
+orchestrate/drop-next 00877919b27ac3b816af98d592cb63f72f75807e
+merge-base            b25c1894d7d8fe596b62cfa55dc5ea64c65a80b6
+```
+
+`orchestrate/drop-next` is not a descendant of current remote
+`orchestrate/main`. Landing it would drop these newer `main` commits:
+
+```text
+ddc1c8b orchestrate: validate writer configuration before directory creation
+0c8e67f orchestrate: harden runtime path selection
+62a7682 orchestrate: move daemon runtime defaults to XDG paths
+```
+
+Post-stop remote tarball scan:
+
+```sh
+pattern='nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next'
+# For each unique config repo, including synchronizer, resolve GitHub main,
+# download the authenticated GitHub API tarball for that exact SHA, extract
+# outside VCS history, then run:
+rg -l -I --hidden --glob '!.git/**' -e "$pattern" <extracted-tarball>
+```
+
+Result:
+
+```text
+repo_count=87
+tip_count=87
+failure_count=0
+match_count=279
+match_repo_count=75
+```
+
+Scan artifacts:
+
+- `/home/li/primary/agent-outputs/RenamePropagator/worker30-poststop-main-tarball-scan-summary.txt`
+- `/home/li/primary/agent-outputs/RenamePropagator/worker30-poststop-main-tarball-scan-tips.txt`
+- `/home/li/primary/agent-outputs/RenamePropagator/worker30-poststop-main-tarball-scan-failures.txt`
+- `/home/li/primary/agent-outputs/RenamePropagator/worker30-poststop-main-tarball-scan-matches.txt`
+
+This is not clean post-land evidence. Current `main` still has `drop-next`
+branch-pin matches and old next-family literal matches because landing stopped
+before `orchestrate` and the remaining downstream repos.
+
+Disposition:
+
+- The graph is partially landed through `nota-config/main`.
+- Full landing needs `orchestrate/drop-next` integrated with current
+  `orchestrate/main ddc1c8b65ad4b0140a77b0da234990b282b85d23`, preserving the
+  three newer main commits listed above, before landing can resume from
+  `orchestrate`.

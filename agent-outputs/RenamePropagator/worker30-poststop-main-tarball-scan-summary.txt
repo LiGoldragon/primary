@@ -1,0 +1,10 @@
+pattern: nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next
+config: /home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota
+repo_count=87
+tip_count=87
+failure_count=0
+match_count=279
+match_repo_count=75
+tips: /home/li/primary/agent-outputs/RenamePropagator/worker30-poststop-main-tarball-scan-tips.txt
+failures: /home/li/primary/agent-outputs/RenamePropagator/worker30-poststop-main-tarball-scan-failures.txt
+matches: /home/li/primary/agent-outputs/RenamePropagator/worker30-poststop-main-tarball-scan-matches.txt
