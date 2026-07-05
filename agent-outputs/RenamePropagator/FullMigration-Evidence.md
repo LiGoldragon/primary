@@ -247,6 +247,101 @@ Residue result: **not zero**. The scan found 78 path-level matches across the re
 
 Landing decision: blocked by both nonzero remote-tarball residue and persona compilation failure. No landing to `main` was attempted.
 
+## 2026-07-05 Worker 4 residue cleanup
+
+Status: **RESIDUE CLEAN for the scanned remote tips**. Worker 4 did not address the separate persona compile drift.
+
+Scope cleaned:
+
+- Active source/use-path and error-literal residue in `criome`, `horizon-rs`, `mentci-lib`, `nexus`, `orchestrate`, `signal`, `signal-terminal`, `triad-runtime`, and `synchronizer`.
+- Active schema/dependency-boundary residue in `mentci`, `meta-signal-lojix`, `meta-signal-mentci`, `meta-signal-mentci-client`, `signal-lojix`, `signal-mentci`, `meta-signal-upgrade`, and `signal-upgrade`.
+- Generated comments, docs, tests, fixtures, and examples across the remaining matched repos.
+- Prior tarball-failure repos were rescanned; `signal-listener` needed one ARCHITECTURE cleanup and was pushed.
+
+Pushed changed tips:
+
+```text
+clavifaber/drop-next 53ca5e8df6f9db9e509e7109c98ce740c30359a7
+cloud/drop-next 64ef285f2da07e74d2e76f45932bd8fad0ccc3d9
+criome/drop-next 28cfc58e35155ed9f93040ba9bb27201019f646d
+domain-criome/drop-next c0c4f7b267a6bff0b7c0fb3375150827203cc3ec
+horizon-rs/drop-next 1f75fa81dcc43a915392cad14595717d1d71d8c9
+introspect/drop-next 4b18d35c40946e390c531ebd216499e7d5306757
+mentci/drop-next 311be2833e57bd7d409a721d3927daf40937da8b
+mentci-lib/drop-next 921911295e645dda0ae3e8588c951e88a698a831
+message/drop-next 687d472d80480d4ef0e3736ec495a96a6a370fbe
+meta-signal-agent/drop-next afd16221a8fe16ddb81025d86f3b8776fbdadf4d
+meta-signal-criome/drop-next e7420884763f1e458b103b85166daf7fcfd87f0a
+meta-signal-listener/drop-next e815e19769afdccd6635eda99b4d139ead164d5b
+meta-signal-lojix/drop-next 2657286777868238aed7567a0b02bbb991272162
+meta-signal-mentci/drop-next da474387512bda773ab4342f22e6e113fd59bc8a
+meta-signal-mentci-client/drop-next e8da017d9372bd0316ec10d95b0f245007130f87
+meta-signal-message/drop-next c41a8b9efe133d8bdddb2f4663573e116a74a1de
+meta-signal-mind/drop-next e847c129f41cb0aafb443a47c75e6dbc6fd718a0
+meta-signal-persona/drop-next ce4094922035db034b23d0c1311b9a525b54200a
+meta-signal-upgrade/drop-next 4e0435755499b9617f198ee79aa4f80c1c576bd9
+nexus/drop-next 290de15ee14ac14444e80022c96501e499e252dc
+nota-config/drop-next 88792a277d783198dcc325ef6d51ef9a1e6d64ac
+orchestrate/drop-next 00877919b27ac3b816af98d592cb63f72f75807e
+repository-ledger/drop-next 38b226b1847a7ae65de13fbc428f1fabdf714696
+schema/drop-next f351f90d3b8898205cf3057f3c253a5e451180a9
+signal/drop-next 85d9e029b39dbb491dd85dd020364e4123de948c
+signal-agent/drop-next cedc8f69fb83b6983f96ec3a43e224d974bb5831
+signal-cloud/drop-next 559e918b829c3f0da1419f945f62ca8dc5259e81
+signal-domain-criome/drop-next e50b807f272fa11ce2d66f857e1bed44c8a125cd
+signal-frame/drop-next bb86bef67e478ff52690a4dcceec8f22d2b005ad
+signal-introspect/drop-next afe4d50adb6c9750293aa08e609b4ecf8b71ac10
+signal-listener/drop-next 703a03b22e3f463c883b19fb1988ff09580207c9
+signal-lojix/drop-next ee7abf4bb7d75bccf3aecf614025b9f0f3a0ae3d
+signal-mentci/drop-next 6d1fd4d2a5a89eaa0f3f3b7bf57473f016b737e9
+signal-terminal/drop-next 1a0775bc460d7d2ab5c0f17375082c3bb00c8eb2
+signal-upgrade/drop-next aec31f0a53ff6f35d94c3b4cd93844c7cbca65df
+skills/drop-next e69e3aaea98a547b77be6d023948487e1426c2fc
+synchronizer/main 7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a
+terminal/drop-next 43985c91912e26336a2e1cd911d1b62952c205a3
+terminal-cell/drop-next c4ac94f58ae4fa8931d55bef4239d0d95ca10b49
+triad-runtime/drop-next 20c3b67b9d97523653da1c75405772ef1cf1ad5b
+```
+
+Focused checks passed:
+
+```sh
+cargo check --features nota-text --bin criome-encode-configuration
+cargo test --manifest-path lib/Cargo.toml --test proposal
+cargo test --test ledger path_overlap_uses_component_boundaries_not_substrings -- --exact
+cargo test --test text_round_trip
+cargo test --test round_trip
+cargo test --features nota-text --test reaction
+cargo test
+cargo test --test dependency_boundary
+cargo test --test cargo_manifest --test transitive_gap --test topology
+cargo test --test publication_writing
+```
+
+Remote tarball residue scan:
+
+```text
+pattern: nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive
+full scan: 86 repos scanned, 84 refs resolved, 7 fetch/ref failures, 0 match paths
+targeted retry of the 7 failed refs/tarballs: 0 failures, 0 match paths
+combined result: 86 repo set clean for the required pattern, with no remaining scan failures
+```
+
+Scan artifacts:
+
+- `/home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-summary.txt`
+- `/home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-tips.txt`
+- `/home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-matches.txt`
+- `/home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-failures.txt`
+- `/home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-retry-tips.txt`
+- `/home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-retry-matches.txt`
+- `/home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-retry-failures.txt`
+
+Remaining risk:
+
+- `repository-ledger` has a split remote shape: the authoritative GitHub `drop-next` used by the tarball scan is clean at `38b226b1847a`, while local `origin` is gitolite and still has a separate cleanup commit. Worker 4 pushed the GitHub branch used by the migration scan.
+- Persona compile drift remains outside Worker 4 scope.
+
 ## 2026-07-05 Worker 2 persona compile drift continuation
 
 Narrowed scope: persona compile drift only. No broad residue cleanup was attempted in this continuation.

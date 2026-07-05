@@ -1,7 +1,7 @@
 repos_scanned 86
-refs_resolved 82
-scan_failures 4
-match_paths 2
+refs_resolved 84
+scan_failures 7
+match_paths 0
 pattern nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive
 tips_file /home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-tips.txt
 matches_file /home/li/primary/worktrees/worker4-residue/worker4-remote-tarball-scan-matches.txt
