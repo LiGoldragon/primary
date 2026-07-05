@@ -970,3 +970,102 @@ Blockers or risks:
   `signal-criome/drop-next` until `signal-criome` itself is landed to `main`;
   these are branch names, not next-family residue, and the required residue
   pattern returned zero matches.
+
+## 2026-07-05 Worker 15 landing resume and post-land gate
+
+Status: **BLOCKED**. Landing resumed and stopped at the next required
+non-overwrite gate.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Used Orchestrate lane `worker15`.
+- Claimed `/home/li/primary/worktrees/worker15-landing` and this evidence file.
+- Used fresh remote clones under the claimed landing directory and authoritative
+  GitHub `main`/`drop-next` refs.
+
+Landing-set recomputation:
+
+- Parsed the 87 entries from
+  `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota`.
+- Recomputed live `main` and `drop-next` refs from GitHub for all entries.
+- Kept the already-landed producer prefix, inserted `signal-criome` before
+  `meta-signal-criome`, then continued through the remaining config consumers.
+- `synchronizer/main` was observed separately at
+  `7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a` and was not a `drop-next`
+  landing target.
+
+Landed before the stop condition:
+
+```text
+signal-criome/main      228e1c9cb2c0ab5942e615f22a4e61f5ad3b3e7c
+meta-signal-criome/main 45ce27cb907483dfcb76d0cf2b5667524afcab69
+agent/main              1ff5e499c1f5433069ec781744b40db6a699d46c
+```
+
+Previously landed or already-current migration refs observed during this
+resume:
+
+```text
+nota/main               ce7c564de0a0518eaa1938d55dccc460a67cadb4
+schema/main             f351f90d3b8898205cf3057f3c253a5e451180a9
+schema-rust/main        b73eb39d4316f9811e87bbdef73530a568942cda
+signal-sema/main        cf95702f489e37fbc5a603cd58c2372672db8ddf
+signal-frame/main       bb86bef67e478ff52690a4dcceec8f22d2b005ad
+signal-standard/main    95e48936f84dc903148a6b0d4450692589cb75fd
+signal/main             85d9e029b39dbb491dd85dd020364e4123de948c
+triad-runtime/main      0031b5519572f4571bf3895f78221de9404d4810
+nexus/main              290de15ee14ac14444e80022c96501e499e252dc
+meta-signal-agent/main  afd16221a8fe16ddb81025d86f3b8776fbdadf4d
+meta-signal-cloud/main  282383fca310b4cd29a32c933b955cc9d7dd507e
+```
+
+Landing mechanics for each moved repo:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <repo>
+git -C <repo> merge-base --is-ancestor refs/remotes/origin/main refs/remotes/origin/drop-next
+jj status --no-pager
+jj bookmark set main -r drop-next@origin
+jj git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main
+```
+
+Remote verification after push:
+
+```text
+signal-criome/main      == signal-criome/drop-next      == 228e1c9cb2c0ab5942e615f22a4e61f5ad3b3e7c
+meta-signal-criome/main == meta-signal-criome/drop-next == 45ce27cb907483dfcb76d0cf2b5667524afcab69
+agent/main              == agent/drop-next              == 1ff5e499c1f5433069ec781744b40db6a699d46c
+```
+
+Blocking ref conflict:
+
+```text
+chroma/main      e7761f4d4317151444384340bf52234d4bb9db1b
+chroma/drop-next 68d6678e0a5cca1d4961d5b7cacbd5799724a0e7
+merge-base       b5313b6b915d1f8de527810c9afa9ae825d8d849
+```
+
+`chroma/drop-next` is not a descendant of current remote `chroma/main`.
+Landing it would drop newer `main` commits:
+
+```text
+e7761f4d4317 chroma: fan out Pi live themes through session registry
+c067685d1d16 chroma: push Pi live theme events
+```
+
+Post-land audit:
+
+- The required final all-87 `main` tarball scan was not run because full
+  landing did not complete.
+- Required final scan pattern remains:
+  `nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next`.
+
+Disposition:
+
+- The graph is partially landed through `agent/main`.
+- Full landing needs `chroma/drop-next` integrated with current
+  `chroma/main e7761f4d4317151444384340bf52234d4bb9db1b`, preserving the Pi
+  live theme commits above, before landing can resume from `chroma`.
