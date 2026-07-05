@@ -825,3 +825,79 @@ producer cleanup. Once `signal-criome/drop-next` has both properties,
 `meta-signal-criome/drop-next` can be rebased onto
 `meta-signal-criome/main` and verified with the zero-residue scan and contract
 checks.
+
+## 2026-07-05 Worker 13 signal-criome unblock
+
+Status: **SIGNAL_CRIOME_READY**. No `main` landing was performed.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Queried public Spirit intent for signal-criome context; no repo-specific
+  blocker intent was found.
+- Claimed `/git/github.com/LiGoldragon/signal-criome` and this evidence file
+  with Orchestrate lane `worker13`.
+
+Integration:
+
+- Started from `signal-criome/main c71ef71600ed60975351106bc1aae32102b66aba`
+  and old `signal-criome/drop-next b4bfeecef41a05a6a93b7909976ab5312a17fa46`.
+- Rebased the `drop-next` stack onto current `main`, preserving the newer
+  founding/root contract surface including `RootAnchorDigest`, `RootGenesis`,
+  `FoundingSignature`, `RootFoundingStatement`, `ObserveNodePublicKey`,
+  `NodePublicKey`, `RoundPhase`, and `QuorumConflict`.
+- Preserved the migration cleanup for the non-next producer family:
+  `nota.git`, `schema-rust.git`, and `signal-frame.git` replace the retired
+  next-family identities, and the lock was refreshed to the staged producer
+  tips already prepared for landing.
+- Pushed only `signal-criome/drop-next`.
+
+Current refs:
+
+```text
+signal-criome/main      c71ef71600ed60975351106bc1aae32102b66aba
+signal-criome/drop-next 228e1c9cb2c0ab5942e615f22a4e61f5ad3b3e7c
+```
+
+Residue scan:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' -S .
+```
+
+Result: zero matches at local `drop-next 228e1c9cb2c0ab5942e615f22a4e61f5ad3b3e7c`.
+A fresh temporary clone of GitHub `drop-next` at the same commit also returned
+zero matches for the same pattern.
+
+Focused verification:
+
+```sh
+cargo metadata --no-deps --format-version 1
+cargo test --locked --test round_trip --features nota-text
+cargo test --locked --test canonical_examples --features nota-text
+cargo test --locked
+nix eval --json .#checks.x86_64-linux --apply builtins.attrNames
+nix build --no-link \
+  .#checks.x86_64-linux.test-round-trip \
+  .#checks.x86_64-linux.test-nota-text \
+  .#checks.x86_64-linux.test \
+  .#checks.x86_64-linux.contract-crate-carries-no-runtime \
+  .#checks.x86_64-linux.rkyv-feature-discipline
+nix build --no-link \
+  .#checks.x86_64-linux.build \
+  .#checks.x86_64-linux.fmt \
+  .#checks.x86_64-linux.clippy \
+  .#checks.x86_64-linux.clippy-nota-text
+nix build --no-link .#checks.x86_64-linux.doc .#checks.x86_64-linux.test-doc
+```
+
+Result: all passed. Nix used the configured remote builder for several
+derivations. The Nix commands warned that the Git tree was dirty because the JJ
+working copy was editing the `drop-next` commit directly; the pushed GitHub
+branch resolves to `228e1c9cb2c0ab5942e615f22a4e61f5ad3b3e7c`.
+
+Blockers or risks:
+
+- No `signal-criome` blocker remains for the `meta-signal-criome` generation
+  failure. `meta-signal-criome/drop-next` can now be retried against the updated
+  `signal-criome/drop-next`.
