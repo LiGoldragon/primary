@@ -1449,3 +1449,113 @@ Disposition:
 - Full landing needs `CriomOS/drop-next` integrated with current
   `CriomOS/main 399f29e79f48d32313712bc44cec2f7f9455fe14`, preserving the five
   newer main commits listed above, before landing can resume from `CriomOS`.
+
+## 2026-07-05 Worker 20 CriomOS drop-next integration
+
+Status: **CRIOMOS_READY**. `CriomOS/drop-next` was integrated with current
+`CriomOS/main` and pushed. `CriomOS/main` was not moved.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`, CriomOS `AGENTS.md`, CriomOS
+  `ARCHITECTURE.md`, and `docs/ROADMAP.md`.
+- Used Orchestrate lane `system-maintainer`.
+- Claimed `/home/li/wt/github.com/LiGoldragon/CriomOS/criome-auth-integration`,
+  `/home/li/primary/worktrees/worker20-criomos-drop-next`, and this evidence
+  file.
+- Created an isolated JJ workspace at
+  `/home/li/primary/worktrees/worker20-criomos-drop-next` from current
+  `CriomOS/main`.
+
+Integrated refs:
+
+```text
+starting main      399f29e79f48d32313712bc44cec2f7f9455fe14
+starting drop-next a1642b8194aaa5c9645f357d12c774fd8c870c14
+final drop-next    c2ee27204c024a7e62025e61d788aa6c7c5b831d
+```
+
+Integration summary:
+
+- Created a merge descendant of both current `main` and previous `drop-next`,
+  so the updated `drop-next` can land without dropping the five newer main
+  commits from Worker 19's stop report.
+- Resolved `flake.lock` by preserving current main sibling pins for the repos
+  already stabilized there, keeping the migration cleanup that changes
+  `nota-source` from `nota-next` to `nota`, and pinning `criome` to the newly
+  landed main revision `95c70e014b60526e72b52e947134a2ff6f5b3d25`.
+- During verification, rejected the synchronizer cascade pins for `lojix`,
+  `router`, `mirror`, `CriomOS-home`, `clavifaber`, and `repository-ledger`
+  because they caused focused build/eval failures or displaced known-good main
+  work.
+
+Residue scan:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' .
+```
+
+Result: zero matches in the final CriomOS `drop-next` workspace.
+
+Deployment-provided input evidence:
+
+- Bare remote eval still requires the deployment-provided `system` input, as
+  designed: `nix eval --raw github:LiGoldragon/CriomOS/c2ee27204c024a7e62025e61d788aa6c7c5b831d#pkgsProbe --refresh`
+  reports `CriomOS: no system input was provided`.
+- Verified generated substitutes exist for:
+  `/var/lib/lojix/generated-inputs/goldragon/ouranos/full-os/{system,horizon,deployment,secrets}`.
+- Verified generated substitutes exist for:
+  `/var/lib/lojix/generated-inputs/goldragon/ouranos/os-only/{system,horizon,deployment,secrets}`.
+
+Remote verification from pushed immutable ref
+`github:LiGoldragon/CriomOS/c2ee27204c024a7e62025e61d788aa6c7c5b831d`
+with `--refresh`:
+
+```sh
+nix eval --raw <flake>#pkgsProbe \
+  --override-input system /var/lib/lojix/generated-inputs/goldragon/ouranos/full-os/system \
+  --override-input horizon /var/lib/lojix/generated-inputs/goldragon/ouranos/full-os/horizon \
+  --override-input deployment /var/lib/lojix/generated-inputs/goldragon/ouranos/full-os/deployment \
+  --override-input secrets /var/lib/lojix/generated-inputs/goldragon/ouranos/full-os/secrets
+```
+
+Result: `x86_64-linux`.
+
+```sh
+nix eval --raw <flake>#nixosConfigurations.target.config.system.build.toplevel.drvPath
+```
+
+Result: passed for both `goldragon/ouranos/full-os` and
+`goldragon/ouranos/os-only` overrides. The raw drv paths were redirected to
+temporary files and not recorded.
+
+```sh
+nix build --no-link --print-build-logs --refresh \
+  <flake>#checks.x86_64-linux.criome-daemon-config-roundtrip \
+  <flake>#checks.x86_64-linux.lojix-daemon-config-roundtrip \
+  <flake>#checks.x86_64-linux.spirit-role-policy \
+  <flake>#checks.x86_64-linux.persona-router-role-policy \
+  --override-input system /var/lib/lojix/generated-inputs/goldragon/ouranos/os-only/system \
+  --override-input horizon /var/lib/lojix/generated-inputs/goldragon/ouranos/os-only/horizon \
+  --override-input deployment /var/lib/lojix/generated-inputs/goldragon/ouranos/os-only/deployment \
+  --override-input secrets /var/lib/lojix/generated-inputs/goldragon/ouranos/os-only/secrets
+```
+
+Result: passed.
+
+Known non-blocking warnings observed:
+
+- Nix evaluation warns that `system` has been renamed/replaced by
+  `stdenv.hostPlatform.system`.
+- Full home evaluation warns that the `li` profile sets `nixpkgs` options while
+  using `home-manager.useGlobalPkgs`.
+- A check eval warns that `nixfmt-rfc-style` is now the same as `pkgs.nixfmt`.
+
+Disposition:
+
+- `CriomOS/drop-next` is ready for the landing worker to move `CriomOS/main`
+  forward.
+- Rollback path before landing is to reset only `CriomOS/drop-next` back to
+  `a1642b8194aaa5c9645f357d12c774fd8c870c14`; after landing, rollback is the
+  normal `main` bookmark rollback to
+  `399f29e79f48d32313712bc44cec2f7f9455fe14`.
