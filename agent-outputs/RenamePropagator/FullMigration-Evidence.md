@@ -1,9 +1,9 @@
 # Full `-next` removal migration evidence
 
-Latest status: **CRIOMOS_HOME_READY** for the CriomOS-home unblock handled by
-Worker 23 on 2026-07-05. `CriomOS-home/drop-next` was integrated with current
-`CriomOS-home/main` and pushed to
-`230777740242eb0b7766aa56a7104c3cd6153c0c`. It was not landed to `main`.
+Latest status: **META_SIGNAL_ROUTER_READY** for the meta-signal-router unblock
+handled by Worker 29 on 2026-07-05. `meta-signal-router/drop-next` was
+integrated with current `meta-signal-router/main` and pushed to
+`50634d9ec5ec286e4b9b7d269c499724b0fcaab5`. It was not landed to `main`.
 
 Status: **BLOCKED**. No `drop-next` branch was landed to `main`.
 
@@ -2309,3 +2309,91 @@ Disposition:
 - Full landing needs `meta-signal-router/drop-next` integrated with current
   `meta-signal-router/main 31f9262d1b40c28ad1465ca612df391be67fd13b`, preserving
   newer main work, before landing can resume from `meta-signal-router`.
+
+## 2026-07-05 Worker 29 meta-signal-router unblock
+
+Status: **META_SIGNAL_ROUTER_READY**. `meta-signal-router/drop-next` was
+integrated with current `meta-signal-router/main`, preserving the owner-only
+mirror toggle operation and the migration dependency cleanup. No landing to
+`main` was attempted.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Claimed `/home/li/primary/worktrees/worker28-landing/meta-signal-router` and
+  this evidence file with Orchestrate lane `worker29`.
+- Used the existing isolated Worker 28 checkout. The checkout had clean JJ
+  state at `main 31f9262d1b40c28ad1465ca612df391be67fd13b`.
+
+Integration:
+
+```text
+previous meta-signal-router/main      31f9262d1b40c28ad1465ca612df391be67fd13b
+previous meta-signal-router/drop-next 99808d04b3e4e3aa353d1f0b07ba6d735848c2fb
+new meta-signal-router/drop-next      50634d9ec5ec286e4b9b7d269c499724b0fcaab5
+```
+
+`jj rebase -b drop-next -d main` was rejected because the existing
+`drop-next` migration commits are immutable in this checkout. Worker 29 instead
+created a merge commit with parents `99808d04...` and `31f9262d...`, then moved
+and pushed only the `drop-next` bookmark:
+
+```sh
+jj new drop-next main -m 'meta-signal-router: integrate main into drop-next'
+jj bookmark set drop-next -r @
+jj bookmark track drop-next --remote=origin
+jj git push --bookmark drop-next
+jj git fetch
+```
+
+Post-push `jj bookmark list --all-remotes` showed:
+
+```text
+drop-next: 50634d9e meta-signal-router: integrate main into drop-next
+  @git: 50634d9e meta-signal-router: integrate main into drop-next
+  @origin: 50634d9e meta-signal-router: integrate main into drop-next
+main: 31f9262d meta-signal-router: add SetMirrorEnabled/MirrorEnabledSet owner-only mirror toggle op (primary-nbmq.7)
+  @git: 31f9262d meta-signal-router: add SetMirrorEnabled/MirrorEnabledSet owner-only mirror toggle op (primary-nbmq.7)
+  @origin: 31f9262d meta-signal-router: add SetMirrorEnabled/MirrorEnabledSet owner-only mirror toggle op (primary-nbmq.7)
+```
+
+The merged tree contains `SetMirrorEnabled`, `MirrorEnabledSet`, and
+`MirrorEnabled` in `schema/lib.schema`, `src/schema/lib.rs`, and
+`tests/round_trip.rs`, and keeps `schema-rust` pinned to the staged
+`drop-next` revision `72c71ffc558fee0d29c5b0517013de46e0307597`.
+
+Residue scan:
+
+```sh
+rg -n -I 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' .
+```
+
+Result: exit `1` with no matches, which is the expected zero-match result for
+`rg`.
+
+Focused verification:
+
+```sh
+cargo test --all-features --test round_trip
+```
+
+Result: passed, `9 passed; 0 failed`.
+
+```sh
+nix build --no-link \
+  .#checks.x86_64-linux.test-round-trip \
+  .#checks.x86_64-linux.build \
+  .#checks.x86_64-linux.clippy \
+  .#checks.x86_64-linux.fmt
+```
+
+Result: passed. Nix emitted a dirty Git tree warning because the proof was run
+from the live JJ working-copy commit before the pushed bookmark verification;
+`jj status --no-pager` afterward reported no working-copy changes.
+
+Blockers or risks:
+
+- None for `meta-signal-router/drop-next`.
+- This did not resume or complete the wider graph landing; the next landing
+  worker should resume from `meta-signal-router` using the new
+  `drop-next 50634d9ec5ec286e4b9b7d269c499724b0fcaab5` tip.
