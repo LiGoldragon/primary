@@ -165,3 +165,84 @@ Remaining blockers preventing landing:
 - `CriomOS/drop-next a1642b8194aaa5c9645f357d12c774fd8c870c14` still requires deployment-provided `system` input and cannot be verified by the generic flake-check probe.
 
 Landing decision: blocked. Producers were not landed to `main` because the graph is not green enough and final whole-graph zero-residue landing evidence is not available.
+
+## 2026-07-05 continuation after auditor GO_TO_FIX
+
+Status: **BLOCKED**. No `drop-next` branch was landed to `main`.
+
+Additional fixes pushed:
+
+- `upgrade/drop-next 7e8321abca5fcb6a110e9eba552cc9e786f285e1`: removed stale `nota-next` dependency-boundary expectation and adjacent docs/skill residue. The working-copy commit also carried preexisting generated `src/schema/lib.rs` and `Cargo.lock` changes already present in that checkout.
+- `meta-signal-introspect/drop-next 3e0393a1bde3c97ccd77d621ce2ddc71892fe01e`: added `trace_socket_path` to the round-trip fixture for the current `signal-introspect` configuration type.
+- `persona/drop-next e314c0615253`: added top-level `rust-build`, wired `persona-spirit.inputs.rust-build.follows = "rust-build"`, regenerated `flake.lock`, and removed stale visible next-family comments/headers.
+- `router/drop-next 97d701729caa07d682e7cecb144dcfbc8e556d6b`: in an isolated worker checkout tracked by bead `primary-alo7`, passed `ContentAddressing::Opaque` to the updated `mirror::Store::register_store` test call.
+- `persona/drop-next 45e7942d0f146fa866528198921f16bb513eee6b`: advanced `persona-router` to the fixed router tip.
+- `persona/drop-next 43761e8cb4a8f9a0e898849e36ab714b98839985`: advanced `mind` to the staged fixed `ca7c2e7fa41ecdc679b523fbadedc1a0dc095188` tip.
+
+Targeted verification:
+
+```sh
+cargo test --test dependency_boundary
+nix build --no-link github:LiGoldragon/upgrade/7e8321abca5fcb6a110e9eba552cc9e786f285e1
+```
+
+Result: passed.
+
+```sh
+cargo test --test round_trip
+nix build --no-link github:LiGoldragon/meta-signal-introspect/3e0393a1bde3c97ccd77d621ce2ddc71892fe01e
+```
+
+Result: passed.
+
+```sh
+cargo test --test criome_forward_lands_in_mirror criome_verified_forward_lands_an_append_in_the_co_resident_mirror -- --exact
+nix build --no-link .#checks.x86_64-linux.router-criome-forward-lands-in-mirror
+```
+
+Result: passed in the isolated router checkout before pushing `drop-next 97d701729caa`.
+
+Persona verification progression:
+
+```sh
+nix build --no-link github:LiGoldragon/persona/45e7942d0f14#checks.x86_64-linux.persona-daemon-launches-nix-built-message-router-topology
+```
+
+Result: the original `spirit`/`rust-build` evaluation blocker was cleared, and the router package built with the fixed router tip, but the check then failed because persona still pinned `mind 0bba8e060b91`; that old mind revision used named-field syntax for `RepositoryIndexRefreshed`.
+
+```sh
+nix build --no-link github:LiGoldragon/persona/43761e8cb4a8#checks.x86_64-linux.persona-daemon-launches-nix-built-message-router-topology
+```
+
+Result: mind propagation was cleared, but persona itself failed to compile against the current staged graph. Key failures include missing `ComponentName::as_str()` uses in `src/unit.rs`, `EngineManagementProtocolVersion` move-from-shared-reference in `src/supervision_readiness.rs`, and 196 total compile errors reported by rustc. This is broader persona/source API drift and remains the verification blocker.
+
+Remote-tarball residue scan required by auditor:
+
+```sh
+pattern='nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive'
+# For each repo in worker2-synchronizer-continuation.nota: resolve GitHub drop-next ref,
+# download the GitHub tarball for that exact SHA, extract outside VCS history, then run:
+rg -l -I --hidden --glob '!.git/**' -e "$pattern" <extracted-tarball>
+```
+
+Corrected result:
+
+- repos parsed: 86
+- remote `drop-next` tips resolved: 85
+- tarball/ref failures: 5
+- match paths: 78
+- tip evidence: `/home/li/primary/agent-outputs/RenamePropagator/worker2-remote-tarball-scan-tips.txt`
+- failure evidence: `/home/li/primary/agent-outputs/RenamePropagator/worker2-remote-tarball-scan-failures.txt`
+- match-path evidence: `/home/li/primary/agent-outputs/RenamePropagator/worker2-remote-tarball-scan-matches.txt`
+
+Scan failures:
+
+- `mind`: tarball timeout/failure at `ca7c2e7fa41ecdc679b523fbadedc1a0dc095188`.
+- `signal-listener`: tarball timeout/failure at `4ad1154aed3e836c5be0fb6701f5096f9e3221d1`.
+- `signal-mirror`: tarball timeout/failure at `0a8ab9afe57dc6ce55524e4da7b6b8ff1f59c9e9`.
+- `synchronizer`: no `drop-next` ref.
+- `system`: tarball timeout/failure at `fdfffe5f5df8e7ef77a33d745e4e74f52625386b`.
+
+Residue result: **not zero**. The scan found 78 path-level matches across the resolved tarballs, including docs, tests, schemas, and dependency-boundary witnesses in multiple signal/meta-signal/runtime repos. Because this was a path-only scan, it does not quote private file contents.
+
+Landing decision: blocked by both nonzero remote-tarball residue and persona compilation failure. No landing to `main` was attempted.
