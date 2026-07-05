@@ -1769,3 +1769,133 @@ Disposition:
   `CriomOS-home/drop-next`.
 - Rollback before landing is to reset only `CriomOS-home/drop-next` back to
   `5e415386becf2393d46e5309558a2a3ec78726d6`.
+
+## 2026-07-05 Worker 24 final landing attempt and post-stop audit
+
+Status: **BLOCKED**. Landing resumed after Worker 23 and stopped at the next
+non-overwrite gate, as required.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md` and the repository closeout,
+  version-control, edit-coordination, and reporting doctrine.
+- Used Orchestrate lane `Worker24`.
+- Claimed `/home/li/primary/worktrees/worker24-landing` and this evidence file.
+- Used fresh GitHub remote ref queries and isolated JJ clones under the claimed
+  landing directory; shared `/git/github.com/LiGoldragon` checkouts were not
+  modified.
+
+Landing-set recomputation:
+
+- Parsed 87 unique entries from
+  `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota`.
+- Recomputed live `main` and `drop-next` refs from GitHub for all entries.
+- Initial remote status before Worker 24 landing:
+  - already landed: 20
+  - no `drop-next` ref: 2 (`nota`, `synchronizer`)
+  - pending: 65
+- `synchronizer/main` remained
+  `7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a`; no `drop-next` landing was
+  attempted for it.
+
+Landed before the stop condition:
+
+```text
+CriomOS-home/main   230777740242eb0b7766aa56a7104c3cd6153c0c
+domain-criome/main  c0c4f7b267a6bff0b7c0fb3375150827203cc3ec
+harness/main        f650d99c845511decb6d43dca3ef6efbee9a24c7
+horizon-rs/main     1f75fa81dcc43a915392cad14595717d1d71d8c9
+introspect/main     4b18d35c40946e390c531ebd216499e7d5306757
+listener/main       3d4aab551e0bd8d154315341d3a1a03e6f9a6fbb
+```
+
+Landing mechanics:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <claimed-worktree>/<repo>
+git -C <claimed-worktree>/<repo> merge-base --is-ancestor <main-sha> <drop-next-sha>
+jj -R <claimed-worktree>/<repo> bookmark set main -r <drop-next-sha> --allow-backwards
+jj -R <claimed-worktree>/<repo> git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main
+```
+
+Blocking ref conflict:
+
+```text
+lojix/main      9f42435f902e7904a5177cb28084c1bcdf50375a
+lojix/drop-next 5303391abb17506312a9f6118e250434545f0415
+merge-base      a35533348112436dc8ea007f2fe9c5b5a94e1691
+```
+
+`lojix/drop-next` is not a descendant of current remote `lojix/main`. Landing
+it would drop this newer `main` commit:
+
+```text
+9f42435 lojix: make test_defaults optional so a production daemon bakes no test-op fixture
+```
+
+Landing decision: stopped at `lojix`, per the prompt's overwrite guard. No
+`lojix` or later consumer repo was landed by Worker 24.
+
+Post-stop remote tarball scan:
+
+```sh
+pattern='nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next'
+# For each unique config repo, including synchronizer, resolve GitHub main,
+# download the GitHub API tarball for that exact SHA, extract outside VCS
+# history, then run:
+rg -l -I --hidden --glob '!.git/**' -e "$pattern" <extracted-tarball>
+```
+
+Result:
+
+```text
+repo_count=87
+tip_count=87
+failure_count=2
+match_count=357
+match_repo_count=74
+```
+
+Tarball failures:
+
+```text
+meta-signal-mentci-client f6d43d9163e4228e616b272a7b9bc86aad543a7e TARBALL_DOWNLOAD_FAILED
+signal-mentci-client      568289f1dc2ee538f786949ffc92e1d8832477b3 TARBALL_DOWNLOAD_FAILED
+```
+
+Largest match counts by repo:
+
+```text
+mind 18
+persona 17
+orchestrate 16
+repository-ledger 13
+system 13
+terminal 13
+nota-config 12
+lojix 9
+signal-terminal 9
+spirit 9
+```
+
+This is not clean post-land evidence. Current `main` still has both
+`drop-next` branch-pin matches and old next-family literal matches because
+landing stopped before `lojix` and the remaining downstream repos.
+
+Remote confirmation after stop:
+
+```text
+CriomOS-home/main      230777740242eb0b7766aa56a7104c3cd6153c0c
+CriomOS-home/drop-next 230777740242eb0b7766aa56a7104c3cd6153c0c
+lojix/main            9f42435f902e7904a5177cb28084c1bcdf50375a
+lojix/drop-next       5303391abb17506312a9f6118e250434545f0415
+```
+
+Disposition:
+
+- The graph is partially landed through `listener/main`.
+- Full landing needs `lojix/drop-next` integrated with current
+  `lojix/main 9f42435f902e7904a5177cb28084c1bcdf50375a`, preserving
+  `9f42435`, before landing can resume from `lojix`.
