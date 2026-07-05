@@ -1989,3 +1989,119 @@ Blockers or risks:
   check passed.
 - The missing `/home/li/primary/repos/lore/AGENTS.md` pointer remains a local
   documentation/path issue, not a `lojix/drop-next` landing blocker.
+
+## 2026-07-05 Worker 26 landing resume and post-stop audit
+
+Status: **BLOCKED**. Landing resumed from `lojix`, landed the safe prefix, and
+stopped at the next non-overwrite gate. No repo after `mentci` was landed.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md` and the repository closeout,
+  version-control, and edit-coordination doctrine.
+- Used Orchestrate lane `Worker26`.
+- Claimed `/home/li/primary/worktrees/worker26-landing` and this evidence file.
+- Used fresh GitHub remote ref queries and isolated JJ clones under the claimed
+  landing directory; shared `/git/github.com/LiGoldragon` checkouts were not
+  modified.
+
+Landing-set recomputation:
+
+- Parsed 87 unique entries from
+  `/home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota`.
+- Recomputed live `main` and `drop-next` refs from GitHub for all entries.
+- Initial remote status before Worker 26 landing:
+  - already landed: 26
+  - no `drop-next` ref: 2 (`nota`, `synchronizer`)
+  - pending: 59
+- `synchronizer/main` remained
+  `7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a`; no `drop-next` landing was
+  attempted for it.
+
+Landed before the stop condition:
+
+```text
+lojix/main  f0c26a5431ae21b6b670d1c79f000e4a10a2ccf0
+mentci/main 311be2833e57bd7d409a721d3927daf40937da8b
+```
+
+Landing mechanics:
+
+```sh
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main refs/heads/drop-next
+jj git clone --colocate --fetch-tags none -b main -b drop-next https://github.com/LiGoldragon/<repo>.git <claimed-worktree>/<repo>
+git -C <claimed-worktree>/<repo> merge-base --is-ancestor <main-sha> <drop-next-sha>
+jj -R <claimed-worktree>/<repo> bookmark set main -r <drop-next-sha> --allow-backwards
+jj -R <claimed-worktree>/<repo> git push --bookmark main
+git ls-remote --heads https://github.com/LiGoldragon/<repo>.git refs/heads/main
+```
+
+Remote verification after push showed:
+
+```text
+lojix/main  f0c26a5431ae21b6b670d1c79f000e4a10a2ccf0
+mentci/main 311be2833e57bd7d409a721d3927daf40937da8b
+```
+
+Blocking ref conflict:
+
+```text
+mentci-egui/main      8f9de29f448e9d12df6f9daaadfc84b3eabbdea2
+mentci-egui/drop-next f24e97784391d87e49ed05f5c3acd031d22639af
+merge-base            4e36156a1f0ff8a27203947b5e1459cf01538836
+```
+
+`mentci-egui/drop-next` is not a descendant of current remote
+`mentci-egui/main`. Landing it would drop these newer `main` commits:
+
+```text
+8f9de29 rehome: integrate archived intent records into ARCHITECTURE
+01f524b docs: fold INTENT.md into ARCHITECTURE.md and retire per-repo intent file
+```
+
+Post-stop remote tarball scan:
+
+```sh
+pattern='nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive|drop-next'
+# For each unique config repo, including synchronizer, resolve GitHub main,
+# download the GitHub API tarball for that exact SHA, extract outside VCS
+# history, then run:
+rg -l -I --hidden --glob '!.git/**' -e "$pattern" <extracted-tarball>
+```
+
+Result:
+
+```text
+repo_count=87
+tip_count=87
+failure_count=0
+match_count=355
+match_repo_count=76
+```
+
+Largest match counts by repo:
+
+```text
+mind 18
+persona 17
+orchestrate 16
+terminal 13
+system 13
+repository-ledger 13
+nota-config 12
+spirit 9
+signal-terminal 9
+upgrade 8
+```
+
+This is not clean post-land evidence. Current `main` still has both
+`drop-next` branch-pin matches and old next-family literal matches because
+landing stopped before `mentci-egui` and the remaining downstream repos.
+
+Disposition:
+
+- The graph is partially landed through `mentci/main`.
+- Full landing needs `mentci-egui/drop-next` integrated with current
+  `mentci-egui/main 8f9de29f448e9d12df6f9daaadfc84b3eabbdea2`, preserving the
+  two newer main commits listed above, before landing can resume from
+  `mentci-egui`.
