@@ -485,3 +485,50 @@ Disposition:
 
 - The graph is partially landed: only `schema/main` moved.
 - Full landing needs an explicit decision for `schema-rust`: merge/replay `0eb5be666254f5ae9d0f5fee3befddbf98be2f42` onto `drop-next`, or authorize a non-fast-forward overwrite. Without that decision, continuing would violate the no-overwrite stop condition.
+
+## 2026-07-05 Worker 8 schema-rust unblock
+
+Status: **SCHEMA_RUST_READY**.
+
+Repository: `schema-rust`, local checkout `/git/github.com/LiGoldragon/schema-rust-next`.
+
+Coordination:
+
+- Read `/home/li/primary/AGENTS.md`.
+- Queried public Spirit intent for schema/Rust migration context; relevant public records observed: `w312`, `10pz`, `jys2`.
+- Claimed `/git/github.com/LiGoldragon/schema-rust-next` and this evidence file with Orchestrate lane `worker8`.
+
+Integration:
+
+- Started from `schema-rust/main 0eb5be666254f5ae9d0f5fee3befddbf98be2f42`.
+- Fetched `schema-rust/drop-next 72c71ffc558fee0d29c5b0517013de46e0307597`.
+- Rebased the `drop-next` stack from `4732e4a3dbe0` onto current `main`.
+- Resolved one `Cargo.lock` conflict by preserving the migration's `drop-next` `signal-frame` and `triad-runtime` entries while retaining the current `main` `signal-frame` lock entries required by `sema-engine`.
+- Confirmed `drop-next..main` is empty after the rebase, so the updated staging branch contains current `main`.
+- Pushed `drop-next` to `b73eb39d4316f9811e87bbdef73530a568942cda`. GitHub reported the old remote moved to `git@github.com:LiGoldragon/schema-rust.git`; the push through the old URL was accepted, and a follow-up fetch reported nothing changed.
+
+Residue scan:
+
+```sh
+rg -n 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' -S .
+```
+
+Result: zero matches at `schema-rust/drop-next b73eb39d4316f9811e87bbdef73530a568942cda`.
+
+Verification:
+
+```sh
+cargo metadata --no-deps --format-version 1
+cargo test --test daemon_emission -- --list
+cargo test --test daemon_emission
+nix eval --raw .#checks.x86_64-linux.test.name
+nix eval --raw .#checks.x86_64-linux.generated-no-legacy-helper-surface.name
+nix build --no-link .#checks.x86_64-linux.generated-no-legacy-helper-surface .#checks.x86_64-linux.test
+```
+
+Result: all passed. The focused daemon test ran 12 tests successfully, and the durable Nix build completed both `schema-rust-generated-no-legacy-helper-surface` and `schema-rust-test-0.5.3`.
+
+Blockers or risks:
+
+- No schema-rust blocker remains for the non-overwrite landing gate.
+- The local remote URL still names `schema-rust-next`, but GitHub redirects it to `schema-rust`; push and fetch both succeeded.
