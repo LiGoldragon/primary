@@ -1,0 +1,9 @@
+pattern: nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive
+config: /home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota
+repos parsed: 87
+initial scan: 85 refs resolved, 83 tarballs scanned, 4 failures, 0 match paths
+retry scan: 4 refs resolved, 4 tarballs scanned, 0 failures, 0 match paths
+combined result: 87 refs resolved, 87 tarballs scanned, 0 failures, 0 match paths
+combined tips: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-combined-tips.txt
+combined failures: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-combined-failures.txt
+combined matches: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-combined-matches.txt

@@ -1,0 +1,4 @@
+meta-signal-mentci-client/drop-next e8da017d9372bd0316ec10d95b0f245007130f87 tarball download failed: curl: (22) The requested URL returned error: 404 curl: (22) The requested URL returned error: 404 curl: (22) The requested URL returned error: 404 curl: (22) The requested URL returned error: 404 
+signal-mentci-client/drop-next f14c8b8eb2eefdc7c33b881f164d30351857eecb tarball download failed: curl: (22) The requested URL returned error: 404 curl: (22) The requested URL returned error: 404 curl: (22) The requested URL returned error: 404 curl: (22) The requested URL returned error: 404 
+signal-mind/drop-next ref resolution failed: Get "https://api.github.com/repos/LiGoldragon/signal-mind/git/ref/heads/drop-next": net/http: TLS handshake timeout 
+signal-orchestrate/drop-next ref resolution failed: Get "https://api.github.com/repos/LiGoldragon/signal-orchestrate/git/ref/heads/drop-next": net/http: TLS handshake timeout 

@@ -384,3 +384,55 @@ nix build --no-link github:LiGoldragon/persona/94b0f555c16e3edbac017ebb85c5af4d1
 Result: passed. The build used `ssh-ng://nix-ssh@prometheus.goldragon.criome` as the remote builder and copied back `/nix/store/fa6ydambg9h1z3y3jw6p5mzh657bz24k-persona-daemon-launches-nix-built-message-router-topology`.
 
 Current persona status: **green for the requested exact topology check** at `drop-next 94b0f555c16e3edbac017ebb85c5af4d1cecc0af`.
+
+## 2026-07-05 Worker 6 final nota cleanup and all-87 scan
+
+Status: **PRELAND_CLEAN** for the required no-`-next` residue gate.
+
+`nota/main` cleanup:
+
+- Started from remote `nota/main bea7e2840ac2cf3e384f07b5c10eeb0890cead25`.
+- Removed the forbidden next-family residue from `ARCHITECTURE.md`, `README.md`, `src/instance_schema.rs`, `tests/codec.rs`, and `tests/macro_nodes.rs`.
+- Whole-repo source scan in `/git/github.com/LiGoldragon/nota-next` with the required pattern returned zero matches after cleanup.
+- Pushed `nota/main ce7c564de0a0518eaa1938d55dccc460a67cadb4`.
+
+Focused `nota` checks:
+
+```sh
+rg -n -S 'nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive' .
+cargo test --test codec
+cargo test --test macro_nodes
+cargo test
+nix build --no-link .#checks.x86_64-linux.test
+```
+
+Result: all passed. The `rg` command returned exit `1` with no output, which is the expected zero-match result.
+
+Authoritative all-87 remote tarball scan:
+
+```text
+pattern: nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive
+config: /home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-continuation.nota
+repos parsed: 87
+initial scan: 85 refs resolved, 83 tarballs scanned, 4 failures, 0 match paths
+retry scan: 4 refs resolved, 4 tarballs scanned, 0 failures, 0 match paths
+combined result: 87 refs resolved, 87 tarballs scanned, 0 failures, 0 match paths
+```
+
+Branch policy used for the scan:
+
+- `nota/main ce7c564de0a0518eaa1938d55dccc460a67cadb4`
+- `synchronizer/main 7b24c4163d42b9b5f2867fd7ab39049c68fe5b3a`
+- all other config entries used `drop-next`
+
+Scan artifacts:
+
+- `/home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-combined-summary.txt`
+- `/home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-combined-tips.txt`
+- `/home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-combined-failures.txt`
+- `/home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-combined-matches.txt`
+
+Blockers or risks:
+
+- No remaining residue blockers in the all-87 remote tarball scan.
+- The first pass had four transient/access scan failures; retry through authenticated GitHub tarball fetch cleared all four with zero matches.

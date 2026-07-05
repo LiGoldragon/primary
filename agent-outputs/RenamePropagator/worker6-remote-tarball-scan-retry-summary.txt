@@ -1,0 +1,7 @@
+retry refs resolved: 4
+retry tarballs scanned: 4
+retry failures: 0
+retry match paths: 0
+retry tips: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-retry-tips.txt
+retry failures_file: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-retry-failures.txt
+retry matches_file: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-retry-matches.txt
