@@ -1,0 +1,122 @@
+{
+  "accepted_positive_rate": {
+    "pass_rate": 100.0,
+    "passed": 1,
+    "total": 1
+  },
+  "alias_missing_count": 0,
+  "blocked_row_count": 0,
+  "blocker": null,
+  "category_results": {
+    "ambiguous_positive_control": {
+      "mode": "isolated-categories",
+      "pass_rate": 100.0,
+      "passed": 2,
+      "total": 2
+    }
+  },
+  "completed_response_count": 2,
+  "diagnostic_message_count": 0,
+  "eval_id": "mind-domain-accepted-knowledge-20260706-ambiguous_positive_control-v2",
+  "exact_prefilter_hit_count": 0,
+  "failure_count": 0,
+  "failure_diagnosis_counts": {},
+  "failures": [],
+  "identity_bearing_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 1,
+    "total": 1
+  },
+  "identity_exists_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 1,
+    "total": 1
+  },
+  "invalid_or_retry_telemetry": {
+    "available": false,
+    "reason": "agent-daemon validate-and-retry details are not exposed to this harness"
+  },
+  "judge_contract_attempt_row_count": 2,
+  "judge_contract_call_count": 2,
+  "judge_format_failure_blocked_count": 0,
+  "judge_format_failure_count": 0,
+  "minimal_conflict_identity_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "mode": "isolated-categories",
+  "model": "deepseek-v4-flash",
+  "parsed_completed_response_count": 2,
+  "primary_case_count": 2,
+  "private_task_rejection_rate": {
+    "categories": [
+      "private_secret_trap",
+      "task_or_instruction"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "raw_row_count": 3,
+  "reason_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 1,
+    "total": 1
+  },
+  "rejection_stability_probe_row_count": 0,
+  "run_status": "passed",
+  "run_status_reasons": [],
+  "run_success": true,
+  "runner_ledger_absence_witness_rate": {
+    "limitation": "Runner-ledger absence observes only records accepted and fetched by this harness; it is not a direct storage scan.",
+    "pass_rate": 100.0,
+    "passed": 1,
+    "total": 1
+  },
+  "safety_rejection_rate": {
+    "categories": [
+      "private_secret_trap",
+      "task_or_instruction",
+      "temporal_or_unstable"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "scored_failure_count": 0,
+  "scored_row_count": 2,
+  "semantic_judge_attempt_count": 2,
+  "semantic_judge_attempt_row_count": 2,
+  "setup_failed_count": 0,
+  "setup_mode": "deterministic_eval_fixture_prepopulation",
+  "setup_passed_count": 1,
+  "setup_results": {
+    "ambiguous_positive_control": {
+      "pass_rate": 100.0,
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "setup_row_count": 1,
+  "storage_absence_direct_witness": {
+    "available": false,
+    "reason": "The harness does not have a typed storage query by domain and statement; runner-ledger absence is reported separately."
+  },
+  "submit_calls": 2,
+  "temporal_unstable_rejection_rate": {
+    "categories": [
+      "temporal_or_unstable"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "verdict_class_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 2,
+    "total": 2
+  }
+}
