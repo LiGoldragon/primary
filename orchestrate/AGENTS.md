@@ -103,7 +103,7 @@ One surface is written without claiming a lock:
 
 - **Reports.** Each session lane writes only into its own
   `reports/<lane>/` session directory; session directories don't overlap,
-  so no coordination is needed. Do not claim `/home/li/primary`,
+  so no coordination is needed. Do not claim the workspace root,
   `reports/`, or a session report path just to create, edit, correct,
   supersede, or delete a report in your own lane. If the same task also
   edits shared files — skills, `AGENTS.md`, repo `ARCHITECTURE.md`, code,
@@ -111,7 +111,7 @@ One surface is written without claiming a lock:
 
 **Lock selectively — never the whole space** (psyche record 2586). When a
 task does need a claim, claim only the specific files or subfolders you will
-edit — never `/home/li/primary` or a whole directory. Over-locking the whole
+edit — never the workspace root or a whole directory. Over-locking the whole
 workspace is a root cause of the branch-dancing on primary: an agent that
 locks everything then forks for its push instead of just committing to
 `main`. Lock narrowly; work on `main`.
@@ -150,7 +150,7 @@ The current production surface for ordinary claim/release/observe work is the
 `orchestrate` component CLI speaking NOTA directly to `orchestrate-daemon`:
 
 ```sh
-orchestrate "(Claim (newLanesDesign [(Path /home/li/primary/AGENTS.md)] [refresh coordination docs]))"
+orchestrate "(Claim (newLanesDesign [(Path /absolute/path/to/workspace/AGENTS.md)] [refresh coordination docs]))"
 orchestrate "(Release newLanesDesign)"
 orchestrate "(Observe Lanes)"
 orchestrate "(Observe Worktrees)"
@@ -183,7 +183,7 @@ A **scope** is one of two kinds:
   item the bracketed token identifies). Overlap rule: exact match.
 
 ```
-/home/li/primary/skills/autonomous-agent.md # sync coordination docs
+/absolute/path/to/workspace/skills/autonomous-agent.md # sync coordination docs
 [primary-f99] # chroma nota-codec migration
 ```
 
@@ -224,7 +224,7 @@ mechanism is unchanged.
 Mix freely:
 
 ```sh
-orchestrate "(Claim (schemaWorkAudit [(Task primary-f99) (Path /git/github.com/LiGoldragon/chroma)] [chroma nota-codec migration]))"
+orchestrate "(Claim (schemaWorkAudit [(Task primary-f99) (Path /absolute/path/to/chroma)] [chroma nota-codec migration]))"
 ```
 
 The daemon performs the required work in one call:
@@ -236,9 +236,9 @@ The daemon performs the required work in one call:
 4. Regenerates `orchestrate/<lane>.lock` projections from daemon state.
 5. Returns `(ClaimAcceptance ...)` or `(ClaimRejection ...)` as NOTA.
 
-Use absolute paths where possible. Claim a repository at its canonical path
-under `/git/github.com/LiGoldragon/<name>`. A whole repository may be claimed by
-listing its repository root path.
+Use absolute paths where possible. Claim a repository by listing that
+checkout's root path. Use `protocols/repos-manifest.nota` for repository
+identity; do not bake one machine's checkout root into guidance.
 
 ### When to use a task lock
 

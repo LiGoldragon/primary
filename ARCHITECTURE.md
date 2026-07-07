@@ -2,8 +2,8 @@
 
 *The coordination workspace. It owns discipline, protocols, skills,
 reports, and the authoritative inventory of active code repos. It holds no
-shipping software; everything that ships lives in a repo under
-`/git/github.com/LiGoldragon/`.*
+shipping software; everything that ships lives in LiGoldragon component
+repositories.*
 
 > Workspace, not component. The shapes below describe how agents
 > share a working surface — claim flow, lane ownership, document
@@ -11,19 +11,18 @@ shipping software; everything that ships lives in a repo under
 
 ## 0 · TL;DR
 
-`primary` is the workspace at `~/primary/`. Work is organised by generated
+`primary` is the coordination workspace. Work is organised by generated
 **role packets** and **session lane**. Role packets carry the doctrine bundle,
 authority shape, and output contract required for normal role work. A **lane**
 is one work session named for its intent (`newLanesDesign`,
 `schemaWorkAudit`); it carries role/discipline metadata, owns its own lock file
 and report directory, and drains and retires at session close. The lane
 mechanism is canonical in the generated `session-lanes` skill packet. Active
-code lives in
-`/git/github.com/LiGoldragon/` checkouts, inventoried by
+code lives in LiGoldragon repository checkouts inventoried by
 `protocols/repos-manifest.nota`. Workspace vision and the durable intent framing
 live in this file (§"Workspace vision and intent"); the raw psyche-statement
 log lives in the deployed Spirit store. Cross-workspace agent discipline
-lives in `/git/github.com/LiGoldragon/lore/AGENTS.md`.
+lives in the `lore` repository's `AGENTS.md`.
 
 The workspace is the apex of the agent-discipline graph: the Spirit store
 (raw psyche statements) and this file's durable vision/intent framing,
@@ -324,7 +323,7 @@ proposal/dev/next (new version being introduced).
 ## 1 · What lives here
 
 ```text
-~/primary/
+<workspace>/
 ├── AGENTS.md              workspace-specific agent instructions
 ├── CLAUDE.md              Claude-flavored shim → AGENTS.md
 ├── ARCHITECTURE.md        this file
@@ -403,14 +402,14 @@ for what repos exist and their status, and it supersedes the inventory role of
 both `RECENT-REPOSITORIES.md` (now a superseded stub) and
 `protocols/active-repositories.md` (retained as the active-repo attention map and
 per-repo role narrative). A coverage or doctrine run reads the manifest, filters
-`status = Active`, and iterates `/git/github.com/LiGoldragon/<name>` directly —
+`status = Active`, and iterates the corresponding LiGoldragon checkout directly —
 membership no longer depends on which `repos/` symlinks happen to exist.
 
 The `repos/` symlink index has been retired. Agents reference canonical
-checkouts at `/git/github.com/LiGoldragon/<repo>/` directly (for example
-`/git/github.com/LiGoldragon/lore/AGENTS.md`); membership and status come from
-the manifest. `repos/` now holds only residual local working checkouts and a few
-convenience symlinks pending migration to their canonical `/git` homes; it is
+checkouts identified by `protocols/repos-manifest.nota` directly (for example
+the `lore` repository's `AGENTS.md`); membership and status come from the
+manifest. `repos/` now holds only residual local working checkouts and a few
+convenience symlinks pending migration to their canonical checkout homes; it is
 neither the repo inventory nor the coverage or reference surface.
 
 Components ship from those repos. primary itself ships no code; it is
@@ -435,11 +434,11 @@ This workspace owns:
 
 It does not own:
 
-- Shipping software (lives in repos under `/git/...`).
+- Shipping software (lives in component repositories).
 - Per-repo discipline (`AGENTS.md`, `ARCHITECTURE.md`, `skills.md`
   inside each repo).
 - The canonical cross-workspace agent contract (lives in
-  `/git/github.com/LiGoldragon/lore/AGENTS.md`).
+  the `lore` repository's `AGENTS.md`).
 - Persistent agent memory beyond workspace files. Harness-private state is not
   a default memory substrate; Claude auto-memory is allowed only through an
   explicit opt-in launch path.
@@ -493,6 +492,6 @@ It does not own:
 - `orchestrate/AGENTS.md` — discipline-and-lane coordination.
 - `session-lanes` skill packet — the lane mechanism and lifecycle.
 - `protocols/active-repositories.md` — current active repo set.
-- `/git/github.com/LiGoldragon/lore/AGENTS.md` — the canonical agent-discipline
+- the `lore` repository's `AGENTS.md` — the canonical agent-discipline
   repo this workspace points at.
 - `architecture-editor` skill packet — the rules this file follows.

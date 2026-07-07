@@ -30,7 +30,7 @@ flowchart TB
 Common ordinary calls:
 
 ```sh
-orchestrate "(Claim (system-maintainer [(Path /home/li/primary/AGENTS.md)] [refresh coordination docs]))"
+orchestrate "(Claim (system-maintainer [(Path /absolute/path/to/workspace/AGENTS.md)] [refresh coordination docs]))"
 orchestrate "(Release system-maintainer)"
 orchestrate "(Observe Roles)"
 orchestrate "(Observe Lanes)"
@@ -75,7 +75,7 @@ The CLI is a text edge: it accepts NOTA for humans and sends the typed binary fr
 ## 4 · Current code map
 
 ```text
-/git/github.com/LiGoldragon/orchestrate/
+github:LiGoldragon/orchestrate/
 ├── src/main.rs                 orchestrate-daemon
 ├── src/bin/orchestrate.rs      ordinary one-NOTA CLI
 ├── src/bin/meta_orchestrate.rs meta one-NOTA CLI
@@ -84,13 +84,13 @@ The CLI is a text edge: it accepts NOTA for humans and sends the typed binary fr
 ├── src/tables.rs               SEMA/redb table access
 └── schema/                     schema-authored runtime planes
 
-/git/github.com/LiGoldragon/signal-orchestrate/
+github:LiGoldragon/signal-orchestrate/
 └── schema/lib.schema           ordinary request/reply contract
 
-/git/github.com/LiGoldragon/meta-signal-orchestrate/
+github:LiGoldragon/meta-signal-orchestrate/
 └── schema/lib.schema           meta-policy request/reply contract
 
-/home/li/primary/orchestrate/
+<workspace>/orchestrate/
 ├── AGENTS.md                   operator-facing protocol
 ├── ARCHITECTURE.md             this file
 ├── roles.list                  transitional seed / documentation of lanes
