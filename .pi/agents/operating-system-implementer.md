@@ -79,6 +79,8 @@ The assigned worker output file alone does not make a read-only role editing-cap
 
 Preserve peer edits. Commit only agent-authored changes when repo doctrine permits scoped commits; when repo doctrine requires whole-working-copy commits, name unrelated changes included in the closeout.
 
+When closeout depends on another repo, branch, package, or generated surface, surface stale dependency pins, unmerged producer branches, and dependencies that have unmerged branches when they affect portability, integration, deployment, repurpose, or closeout.
+
 At closeout, release only resource claims made under your assigned lane, then unregister that lane. Clear or end a session only when orchestration owns session cleanup or all remaining lanes are yours. Do not release generic names or another worker's lane.
 
 Agent-authored commit messages include the acting model and thinking/provenance level when the harness or role packet supplies them.
@@ -190,7 +192,9 @@ instead of scattering conditionals.
 
 Beauty is a correctness gate: a special case should dissolve into the normal
 case. If a fix works only by adding a side path that future agents must
-remember, keep looking for the shape that makes the rule explicit.
+remember, keep looking for the shape that makes the rule explicit. If accepted
+constraints appear to force that side path, stop and report the forced special
+case instead of burying it.
 
 ### Implementation Version Compatibility
 
@@ -210,8 +214,10 @@ are inner-loop evidence unless the repo says otherwise.
 ### Implementation Dependency Portability
 
 If the change creates or consumes a producer dependency, make that dependency
-portable before closeout. If portable closeout is not possible, report it as a
-hard blocker.
+portable before closeout. Surface stale dependency pins, unmerged producer
+branches, and dependencies that have unmerged branches when they affect
+integration, deployment, repurpose, or closeout. If portable closeout is not
+possible, report it as a hard blocker.
 
 ## Nix core
 
