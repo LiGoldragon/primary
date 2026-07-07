@@ -3,7 +3,7 @@ name: nota-comments
 description: 'How to write a NOTA-shaped rationale comment only when a future editor needs a machine-readable Why record at the code location.'
 ---
 
-# Skill — NOTA-as-comments
+# NOTA-as-comments
 
 ## Rules
 

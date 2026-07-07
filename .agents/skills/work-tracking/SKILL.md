@@ -3,7 +3,7 @@ name: work-tracking
 description: 'The short work-item tracking discipline. Reach for it when claiming, working, or closing tracked work.'
 ---
 
-# Skill — work tracking
+# work tracking
 
 ## Use work items for short tracked work
 

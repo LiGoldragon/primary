@@ -3,7 +3,7 @@ name: nota-schema-docs
 description: 'The pseudo-NOTA convention for documenting record schemas in markdown: angle-bracket placeholders, optional ?, enum |, and typed field comments.'
 ---
 
-# Skill — NOTA schema docs
+# NOTA schema docs
 
 ## Rules
 

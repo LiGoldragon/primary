@@ -3,7 +3,7 @@ name: repository-management
 description: 'Minimal ghq and gh discipline for local clone discovery, repository metadata, issue/PR operations, and deciding when a new repository is justified.'
 ---
 
-# Skill — repository management
+# repository management
 
 ## Rules
 

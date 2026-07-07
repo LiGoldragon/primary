@@ -3,7 +3,7 @@ name: repo-intent
 description: 'Where a repository''s durable direction lives — its ARCHITECTURE.md or a code stub, read on entry before code — and how to write it as agent prose 100% backed by psyche statements. Applies whenever you enter or update a repo.'
 ---
 
-# Skill — repository direction
+# repository direction
 
 ## Rules
 

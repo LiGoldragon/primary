@@ -3,7 +3,7 @@ name: code-implementation
 description: 'Standalone ordinary code implementation discipline: read local guidance, make focused source changes, preserve compatibility, and run meaningful checks.'
 ---
 
-# Skill - code implementation
+# code implementation
 
 ## Rules
 

@@ -3,7 +3,7 @@ name: nota-design
 description: 'Current NOTA design discipline from the raw grammar and codec model: positional records, named variants, bare atoms for canonical strings, and data in records.'
 ---
 
-# Skill — NOTA design
+# NOTA design
 
 ## Rules
 

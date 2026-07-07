@@ -3,7 +3,7 @@ name: pi-internals
 description: 'Pi internals through the CriomOS/Nix deployment model. Load explicitly when changing Pi packages, prompts, skills, extensions, themes, settings, or harness behavior.'
 ---
 
-# Skill — pi internals
+# pi internals
 
 ## Rules
 

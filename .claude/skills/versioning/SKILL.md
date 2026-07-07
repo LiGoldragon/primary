@@ -3,7 +3,7 @@ name: versioning
 description: 'How to keep release, wire, storage, package, and deployment version surfaces truthful when behavior changes.'
 ---
 
-# Skill — versioning
+# versioning
 
 ## Rules
 

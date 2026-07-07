@@ -3,7 +3,7 @@ name: intent-maintenance
 description: 'How to maintain Spirit intent records: clarify, supersede, retire, remove, and close manifestation gaps without collapsing conflicts by taste.'
 ---
 
-# Skill — intent maintenance
+# intent maintenance
 
 ## Rules
 

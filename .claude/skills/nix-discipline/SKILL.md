@@ -3,7 +3,7 @@ name: nix-discipline
 description: 'The Nix module and flake conventions, including check derivations. Read when authoring Nix modules or flakes.'
 ---
 
-# Skill — Nix discipline
+# Nix discipline
 
 ## Model services as NixOS modules
 

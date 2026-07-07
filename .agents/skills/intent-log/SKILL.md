@@ -3,7 +3,7 @@ name: intent-log
 description: 'How to classify and record explicit durable psyche intent through Spirit without capturing matter, duplicates, private leakage, or agent inference.'
 ---
 
-# Skill — intent log
+# intent log
 
 ## What intent is
 

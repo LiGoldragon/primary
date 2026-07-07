@@ -3,7 +3,7 @@ name: prose
 description: 'The discipline for prose as craft. Read when writing is the load-bearing surface.'
 ---
 
-# Skill — prose
+# prose
 
 ## Rules
 

@@ -3,7 +3,7 @@ name: skill-editor
 description: 'Edits skill and role source in LiGoldragon/skills, then reconciles generated runtime surfaces.'
 ---
 
-# Role - skill editor
+# skill editor
 
 ## Rules
 
@@ -20,7 +20,11 @@ description: 'Edits skill and role source in LiGoldragon/skills, then reconciles
   restatements, changelog banners, status notes, external references, and extra
   examples.
 - Do not create or expand repo-specific skills. Durable repo guidance belongs in
-  AGENTS.md, ARCHITECTURE.md, or README.md.
+  AGENTS.md, ARCHITECTURE.md, README.md, or NON_IDEAL_AGENTS.md for workaround
+  debt.
+- Use `## Source Maintenance Notes` only for source-side maintainer instructions.
+- Avoid absolute deployment paths in skill source; prefer repository-root or
+  stable file-relative paths.
 - Run generator/check commands after source edits and reconcile runtime surfaces.
   Name unrelated working-copy changes in the result.
 
@@ -31,7 +35,7 @@ description: 'Edits skill and role source in LiGoldragon/skills, then reconciles
 - Manifest and index references resolve.
 - Generated outputs match source and have no generated-file notices.
 
-## Module - edit coordination core
+## edit coordination core
 
 ### Edit Coordination
 
@@ -72,7 +76,6 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
-## Module - editing closeout
 
 ### Editing Closeout
 
@@ -88,13 +91,13 @@ At closeout, release only resource claims made under your assigned lane, then un
 
 Agent-authored commit messages include the acting model and thinking/provenance level when the harness or role packet supplies them.
 
-## Skill — spirit query
+## spirit query
 
 ### Query Rules
 
 Use `spirit` for read-only intent queries before judgment. Query relevant public intent early when orchestrating, auditing, scouting, translating, designing, editing doctrine, or deciding how a brief should map to durable guidance. Purely mechanical workers may skip this when the brief already supplies the needed intent context.
 
-Read-only operations are `Lookup`, `PublicTextSearch`, `PublicRecords`, `Count`, and `Observe`. Do not use `Record`, `Propose`, `Clarify`, `Supersede`, `Retire`, `ResolveClarification`, `ChangeRecord`, certainty or importance changes, stash mutation, subscriptions, or maintenance operations from this module.
+Read-only operations are `PublicRecords`, `Lookup`, `Count`, and `Observe`. Do not use `Record`, `Propose`, `Clarify`, `Supersede`, `Retire`, `ResolveClarification`, `ChangeRecord`, certainty or importance changes, stash mutation, subscriptions, or maintenance operations from this module.
 
 Use public reads by default. Use private reads only when the task explicitly authorizes that privacy scope, and keep private content out of public chat, reports, commits, and generated doctrine.
 
@@ -102,31 +105,27 @@ Use public reads by default. Use private reads only when the task explicitly aut
 
 The CLI takes exactly one argument: inline NOTA when the argument starts with `(`, or a NOTA file otherwise. It replies on stdout with typed NOTA and returns nonzero on transport, parse, or daemon errors.
 
+List public records in the narrowest relevant domain first:
+
+```sh
+spirit "(PublicRecords ((Full [(Technology (Software (Intelligence AgentSystems)))]) None))"
+```
+
 Lookup a known record identifier:
 
 ```sh
 spirit "(Lookup <record-id>)"
 ```
 
-Search public intent text:
-
-```sh
-spirit "(PublicTextSearch [search words])"
-```
-
-List public records in a domain:
-
-```sh
-spirit "(PublicRecords ((Full [(Technology All)]) None))"
-```
-
 Treat `(Error [record not found])` and `(Error [no matching record])` as negative evidence, not tool failure. Treat validation rejection, parse failure, daemon failure, or unexpected wire shape as a blocker for intent-grounded judgment.
+
+`PublicTextSearch` is an expert/debug interface. Do not present it as normal orchestration guidance unless a specialist source explicitly needs text search over domain-shaped listing.
 
 ### Evidence
 
 Report only the query class, relevant record identifiers, and the conclusion needed for the task. Explain a Spirit identifier on first mention when it matters. Do not paste long record lists or irrelevant hashes.
 
-## Module - skill source core
+## skill source core
 
 ### Skill Source Core Purpose
 
@@ -146,6 +145,23 @@ notices. Prefer affirmative guidance that names the shape agents should follow.
 Role source starts with the role contract and stays mostly role prose. Shared
 procedure belongs in modules so it is not copied into every role. Source modules
 have no harness frontmatter.
+
+Visible generated titles use the human title only. Keep composition labels such
+as `Skill`, `Module`, or `Role` as source structure only; do not depend on those
+labels appearing in generated runtime text.
+
+Use `## Source Maintenance Notes` only for maintainer instructions that must stay
+source-side. Everything from that heading through the end of the source fragment
+is stripped from generated runtime surfaces.
+
+Avoid absolute deployment paths in skill source. Prefer repository-root-relative
+paths, or file-relative paths when the referenced file is local,
+version-controlled, and stable.
+
+Put required non-ideal workaround guidance in `NON_IDEAL_AGENTS.md` when a repo
+needs it. Keep `AGENTS.md` for ordinary operating rules and `ARCHITECTURE.md` for
+the ideal target shape; workaround instructions should read as debt and future
+fix targets.
 
 ### Skill Source NOTA Manifests
 

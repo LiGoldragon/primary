@@ -3,7 +3,7 @@ name: general-code-implementer
 description: 'Implements ordinary code changes from accepted designs with focused verification evidence.'
 ---
 
-# Role - general code implementer
+# general code implementer
 
 ## Contract
 
@@ -44,7 +44,7 @@ Return implementation evidence in chat or the harness-required worker output.
 Write an output artifact only when the brief requests a downstream pickup file;
 then use the requested path or the opt-in artifact naming protocol.
 
-## Module - edit coordination core
+## edit coordination core
 
 ### Edit Coordination
 
@@ -85,7 +85,6 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
-## Module - editing closeout
 
 ### Editing Closeout
 
@@ -101,13 +100,13 @@ At closeout, release only resource claims made under your assigned lane, then un
 
 Agent-authored commit messages include the acting model and thinking/provenance level when the harness or role packet supplies them.
 
-## Skill — spirit query
+## spirit query
 
 ### Query Rules
 
 Use `spirit` for read-only intent queries before judgment. Query relevant public intent early when orchestrating, auditing, scouting, translating, designing, editing doctrine, or deciding how a brief should map to durable guidance. Purely mechanical workers may skip this when the brief already supplies the needed intent context.
 
-Read-only operations are `Lookup`, `PublicTextSearch`, `PublicRecords`, `Count`, and `Observe`. Do not use `Record`, `Propose`, `Clarify`, `Supersede`, `Retire`, `ResolveClarification`, `ChangeRecord`, certainty or importance changes, stash mutation, subscriptions, or maintenance operations from this module.
+Read-only operations are `PublicRecords`, `Lookup`, `Count`, and `Observe`. Do not use `Record`, `Propose`, `Clarify`, `Supersede`, `Retire`, `ResolveClarification`, `ChangeRecord`, certainty or importance changes, stash mutation, subscriptions, or maintenance operations from this module.
 
 Use public reads by default. Use private reads only when the task explicitly authorizes that privacy scope, and keep private content out of public chat, reports, commits, and generated doctrine.
 
@@ -115,31 +114,27 @@ Use public reads by default. Use private reads only when the task explicitly aut
 
 The CLI takes exactly one argument: inline NOTA when the argument starts with `(`, or a NOTA file otherwise. It replies on stdout with typed NOTA and returns nonzero on transport, parse, or daemon errors.
 
+List public records in the narrowest relevant domain first:
+
+```sh
+spirit "(PublicRecords ((Full [(Technology (Software (Intelligence AgentSystems)))]) None))"
+```
+
 Lookup a known record identifier:
 
 ```sh
 spirit "(Lookup <record-id>)"
 ```
 
-Search public intent text:
-
-```sh
-spirit "(PublicTextSearch [search words])"
-```
-
-List public records in a domain:
-
-```sh
-spirit "(PublicRecords ((Full [(Technology All)]) None))"
-```
-
 Treat `(Error [record not found])` and `(Error [no matching record])` as negative evidence, not tool failure. Treat validation rejection, parse failure, daemon failure, or unexpected wire shape as a blocker for intent-grounded judgment.
+
+`PublicTextSearch` is an expert/debug interface. Do not present it as normal orchestration guidance unless a specialist source explicitly needs text search over domain-shaped listing.
 
 ### Evidence
 
 Report only the query class, relevant record identifiers, and the conclusion needed for the task. Explain a Spirit identifier on first mention when it matters. Do not paste long record lists or irrelevant hashes.
 
-## Module - code implementation core
+## code implementation core
 
 ### Implementation Core Purpose
 
@@ -185,7 +180,7 @@ If the change creates or consumes a producer dependency, make that dependency
 portable before closeout. If portable closeout is not possible, report it as a
 hard blocker.
 
-## Module - Rust discipline
+## Rust discipline
 
 ### Rust Discipline Purpose
 
@@ -208,7 +203,7 @@ boundary contract.
 Keep names as full English words. Do not prefix types with the crate name.
 Encode direction in names when a type crosses a boundary.
 
-## Module - Rust core
+## Rust core
 
 ### Rust Core Purpose
 
@@ -245,7 +240,7 @@ probes. Test-only binaries use the `-test` suffix. Witnesses exercise the
 production boundary they claim to protect: parser, trait surface, actor
 message, wire frame, daemon CLI, or storage reader.
 
-## Module - Nix core
+## Nix core
 
 ### Nix Core Purpose
 
@@ -292,7 +287,7 @@ class of work.
 Keep secrets transient. Do not put secret values in Nix store paths, logs,
 reports, chat, commits, or generated outputs.
 
-## Skill — operating system operations
+## operating system operations
 
 ### Rules
 

@@ -3,7 +3,7 @@ name: rust-methods
 description: 'The rule that every function is a method on a data-bearing type, with async mail modeled as object flow. Read before writing Rust functions.'
 ---
 
-# Skill — Rust methods and types
+# Rust methods and types
 
 ## Methods live on data-bearing types
 

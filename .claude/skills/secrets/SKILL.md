@@ -3,7 +3,7 @@ name: secrets
 description: 'How to keep secret values transient and out of durable surfaces. Read when a task touches tokens, keys, credentials, or encrypted deployment material.'
 ---
 
-# Skill — secrets
+# secrets
 
 ## Rules
 

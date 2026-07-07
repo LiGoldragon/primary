@@ -3,7 +3,7 @@ name: naming
 description: 'The full-English-words rule plus the offender table of forbidden abbreviations. Applies on every identifier you write.'
 ---
 
-# Skill — naming
+# naming
 
 ## Use full English without redundant ancestry
 

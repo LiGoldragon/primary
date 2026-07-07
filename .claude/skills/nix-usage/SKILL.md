@@ -3,7 +3,7 @@ name: nix-usage
 description: 'Narrow Nix command discipline for daemon-visible settings, build evidence, remote-builder probes, and store-path hygiene. Read when running Nix commands.'
 ---
 
-# Skill — Nix usage
+# Nix usage
 
 ## Rules
 

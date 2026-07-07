@@ -3,7 +3,7 @@ name: reporting
 description: 'How to decide between chat, harness output, and writing a report — chat for the user, reports for agent pickup points — and the report-hygiene rules. Applies whenever you produce substantive output.'
 ---
 
-# Skill — reporting
+# reporting
 
 ## Rules
 

@@ -3,7 +3,7 @@ name: engine-report
 description: 'The compact shape for an engine situation report: current state, component and channel ledgers, worked flows, trust/state boundaries, witnesses, and gaps.'
 ---
 
-# Skill — engine report
+# engine report
 
 ## Rules
 

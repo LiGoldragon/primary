@@ -3,7 +3,7 @@ name: repository-closeout
 description: 'Repository closeout for standalone agents: status, jj/Jujutsu commit and push, BEADS/beads closure, and final evidence reporting after validation.'
 ---
 
-# Skill - repository closeout
+# repository closeout
 
 ## Rules
 

@@ -3,7 +3,7 @@ name: actor-systems
 description: 'How to design a dense actor topology: schema-root actors, async mail objects, supervised state-bearing actors. Read when actors are in play in a design.'
 ---
 
-# Skill — actor systems
+# actor systems
 
 ## Rules
 

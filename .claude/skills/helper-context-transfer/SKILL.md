@@ -3,7 +3,7 @@ name: helper-context-transfer
 description: 'How to brief a bounded helper with source locators, authority, evidence needs, and output shape so the lead preserves context.'
 ---
 
-# Skill — helper context transfer
+# helper context transfer
 
 ## Rules
 

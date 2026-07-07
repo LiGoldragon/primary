@@ -3,7 +3,7 @@ name: skill-editor
 description: 'How to edit skill and role source in LiGoldragon/skills, keep instruction concise, and reconcile generated runtime surfaces.'
 ---
 
-# Skill — skill editor
+# skill editor
 
 ## Rules
 
@@ -34,7 +34,12 @@ description: 'How to edit skill and role source in LiGoldragon/skills, keep inst
 - Prefer canonical positive forms. Mention rejected forms only when omission
   creates an immediate safety risk.
 - Do not create or expand repo-specific skills. Durable repo guidance belongs in
-  AGENTS.md, ARCHITECTURE.md, or README.md.
+  AGENTS.md, ARCHITECTURE.md, README.md, or NON_IDEAL_AGENTS.md for required
+  workaround debt.
+- Use `## Source Maintenance Notes` for source-only maintainer instructions; do
+  not rely on that section reaching runtime outputs.
+- Avoid absolute deployment paths in skill source; prefer repository-root or
+  stable file-relative paths.
 - After source edits, run generator/checks when available and reconcile generated
   runtime surfaces active agents read. Stale generated surfaces are deployment
   gaps; a dirty consuming workspace is not a blocker to generation or a required

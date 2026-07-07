@@ -3,7 +3,7 @@ name: component-architecture
 description: 'How a component is split into daemon + thin CLI + signal-* contract, and how the Signal/Nexus/SEMA runtime carries async mail. Read when building or reasoning about a component''s shape.'
 ---
 
-# Skill — component architecture
+# component architecture
 
 ## Rules
 

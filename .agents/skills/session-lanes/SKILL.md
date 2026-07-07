@@ -3,7 +3,7 @@ name: session-lanes
 description: 'Session-lane discipline: first-class Session/Lane registration, fresh/recovery lifecycle, resource claims, cleanup, and handover boundaries.'
 ---
 
-# Skill — session lanes
+# session lanes
 
 ## Rules
 

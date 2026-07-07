@@ -3,7 +3,7 @@ name: edit-coordination
 description: 'Standalone edit coordination with Session/Lane registration, Orchestrate resource claims, isolated worktrees or JJ workspaces, and BEADS/beads disposition tracking before shared-file edits.'
 ---
 
-# Skill - edit coordination
+# edit coordination
 
 ## Rules
 

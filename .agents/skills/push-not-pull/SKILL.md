@@ -3,7 +3,7 @@ name: push-not-pull
 description: 'How to apply the no-polling rule: design a subscription where producers push events, and escalate when a producer can''t push. Read when designing any producer-consumer interaction.'
 ---
 
-# Skill — push, not pull
+# push, not pull
 
 The principle lives in `ARCHITECTURE.md` §"Push, not poll": **producers push, consumers subscribe; no poll loops.** This skill assumes that rule and describes how to apply it. If you reach for a polling loop, stop and apply the steps below.
 

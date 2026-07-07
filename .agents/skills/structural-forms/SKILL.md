@@ -3,7 +3,7 @@ name: structural-forms
 description: 'Data-first discipline for deciding when a language form earns syntax and how grammar, AST, examples, and round-trip tests move together.'
 ---
 
-# Skill — structural forms
+# structural forms
 
 ## Rules
 

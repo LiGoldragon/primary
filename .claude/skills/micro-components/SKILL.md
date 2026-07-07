@@ -3,7 +3,7 @@ name: micro-components
 description: 'One-capability component discipline: split distinct nouns into independently buildable typed components sized for fresh-agent context.'
 ---
 
-# Skill — micro-components
+# micro-components
 
 ## Rules
 

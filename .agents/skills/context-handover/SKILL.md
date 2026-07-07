@@ -3,7 +3,7 @@ name: context-handover
 description: 'Focus-scoped handover discipline: preserve the session''s original intended direction, end active lanes, and carry only lean settled intent, facts, changes, uncertainties, questions, and artifact pointers.'
 ---
 
-# Skill — context handover
+# context handover
 
 ## Rules
 

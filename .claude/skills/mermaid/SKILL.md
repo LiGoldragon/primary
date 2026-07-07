@@ -3,7 +3,7 @@ name: mermaid
 description: 'The Mermaid renderer quirks, safe-syntax workarounds, and readability rules that make a diagram survive the strictest target renderer. Reach for it when authoring a Mermaid diagram.'
 ---
 
-# Skill — Mermaid syntax
+# Mermaid syntax
 
 ## Rules
 

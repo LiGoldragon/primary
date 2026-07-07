@@ -3,7 +3,7 @@ name: kameo
 description: 'The Kameo actor-runtime discipline: lifecycle contract and the spawn-in-thread restart trap. Read when using Kameo actors.'
 ---
 
-# Skill — kameo
+# kameo
 
 ## Rules
 

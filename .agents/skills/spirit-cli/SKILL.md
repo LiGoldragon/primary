@@ -3,7 +3,7 @@ name: spirit-cli
 description: 'How to invoke the deployed Spirit CLI to capture or query intent — RecordRequest shape, operations, query shape, inline-NOTA vs file argument, and reading the current wire shape from source. Reach for it before any Record or Observe.'
 ---
 
-# Skill — spirit CLI
+# spirit CLI
 
 ## Rules
 

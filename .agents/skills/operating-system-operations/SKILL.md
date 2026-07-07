@@ -3,7 +3,7 @@ name: operating-system-operations
 description: 'Operating-system and environment operations for CriomOS and criomos-home: query, deploy, activate, and verify through current Lojix interfaces.'
 ---
 
-# Skill — operating system operations
+# operating system operations
 
 ## Rules
 

@@ -3,7 +3,7 @@ name: main-feature-integration
 description: 'How to update a code-repo main with new features: integration bookmark until green, test branch families together, rebase if main moved, then land producers before consumers. Reach for it when integrating features into main.'
 ---
 
-# Skill — main feature integration
+# main feature integration
 
 Use this when updating a code repo's `main` with a feature that is not already
 green. This applies to code repos under `/git`, not primary.

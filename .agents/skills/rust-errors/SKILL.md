@@ -3,7 +3,7 @@ name: rust-errors
 description: 'How to define typed errors at the crate boundary with thiserror, avoiding anyhow at edges. Read when designing a crate''s Error type.'
 ---
 
-# Skill — Rust errors (typed enums via thiserror)
+# Rust errors (typed enums via thiserror)
 
 Each crate defines its own structured `Error` enum; `anyhow`/`eyre`
 never cross a component boundary.

@@ -3,7 +3,7 @@ name: enum-contact-points
 description: 'How to express engine logic as enum-vs-enum cross-product matching: name the contact point as a nested match or trait, not scattered arms, string predicates, or flag soup. Read when writing an engine''s load-bearing branching.'
 ---
 
-# Skill — enum contact points
+# enum contact points
 
 ## Make closed state combinations explicit
 

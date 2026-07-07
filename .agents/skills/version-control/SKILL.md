@@ -3,7 +3,7 @@ name: version-control
 description: 'The Jujutsu version-control discipline for concurrent agents, including the push-rejected escape hatch. Reach for it when running version-control commands.'
 ---
 
-# Skill — version control
+# version control
 
 ## Use Jujutsu, not raw git
 

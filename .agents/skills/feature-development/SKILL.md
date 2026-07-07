@@ -3,7 +3,7 @@ name: feature-development
 description: 'Feature branch/worktree discipline for code-repo feature work, experiments, rewrites, and worker branches.'
 ---
 
-# Skill — feature development
+# feature development
 
 ## Rules
 

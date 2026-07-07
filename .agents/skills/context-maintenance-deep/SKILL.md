@@ -3,7 +3,7 @@ name: context-maintenance-deep
 description: 'Cross-lane cleanup and lane-retirement discipline: route leftovers by topic, produce handoffs instead of cross-lane edits, and avoid new artifact piles.'
 ---
 
-# Skill — deep context maintenance
+# deep context maintenance
 
 ## Rules
 

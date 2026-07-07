@@ -3,7 +3,7 @@ name: intent-clarification
 description: 'How to ask the psyche when intent is unclear, absent, or contradicted, offering structured options instead of inferring. Reach for it whenever a question''s intent is uncertain.'
 ---
 
-# Skill — intent clarification
+# intent clarification
 
 The intent layer — the deployed Spirit store as the raw
 psyche-statement log, and each repo's `ARCHITECTURE.md` (or a code

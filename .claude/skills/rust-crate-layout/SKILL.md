@@ -3,7 +3,7 @@ name: rust-crate-layout
 description: 'The crate-layout conventions: tests in separate files, bin / lib / examples split. Read when laying out or restructuring a crate.'
 ---
 
-# Skill — Rust crate layout
+# Rust crate layout
 
 ## CLIs are daemon clients
 
@@ -57,8 +57,8 @@ Cross-crate `Cargo.toml` deps use `git = "..."`, never `path =
 non-portable: fresh clones don't reproduce, `Cargo.lock` doesn't pin the
 rev, and `nix flake check` can't fetch through the sandbox.
 
-See `skills/micro-components.md` for the `Cargo.toml` dependency rule and
-lore's `rust/style.md` for toolchain conventions and pin strategy.
+See `skills/micro-components.md` for the `Cargo.toml` dependency rule. Keep
+toolchain conventions and pin strategy in the repo's own guidance or flake.
 
 ## Tests live in separate files
 

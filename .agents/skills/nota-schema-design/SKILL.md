@@ -3,7 +3,7 @@ name: nota-schema-design
 description: 'How to design and write schema that specifies new NOTA types, positional forms, optionality, and codec-backed help surfaces.'
 ---
 
-# Skill — NOTA schema design
+# NOTA schema design
 
 ## Rules
 

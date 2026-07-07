@@ -3,7 +3,7 @@ name: nota-literacy
 description: 'How to understand and answer with the NOTA expression required by a prompt-supplied schema, help projection, or examples.'
 ---
 
-# Skill — NOTA literacy
+# NOTA literacy
 
 ## Rules
 

@@ -3,7 +3,7 @@ name: typed-records-over-flags
 description: 'The rule to prefer closed typed records over bool flags so the variant set lives in the type system. Applies whenever you reach for a boolean parameter or field.'
 ---
 
-# Skill — typed records over flags
+# typed records over flags
 
 When the system asks a yes/no question of a noun, ask whether the "yes"
 carries data. If it does, the question wants a typed record, not a

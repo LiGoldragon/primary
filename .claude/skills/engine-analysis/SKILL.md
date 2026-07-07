@@ -3,7 +3,7 @@ name: engine-analysis
 description: 'How to map an engine from source truth: channels, components, flows, trust boundaries, witnesses, and hooked/stubbed/conceptual status.'
 ---
 
-# Skill — engine analysis
+# engine analysis
 
 ## Rules
 

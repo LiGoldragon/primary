@@ -3,7 +3,7 @@ name: abstractions
 description: 'The verb-belongs-to-noun rule: put logic in methods on data-bearing types, never a free helper where a method would do. Applies on every Rust edit.'
 ---
 
-# Skill — verb belongs to noun
+# verb belongs to noun
 
 ## Rules
 

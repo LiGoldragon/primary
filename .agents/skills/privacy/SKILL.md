@@ -3,7 +3,7 @@ name: privacy
 description: 'How to keep private personal material closed by default and out of public surfaces unless the psyche authorizes a narrow private scope.'
 ---
 
-# Skill — privacy
+# privacy
 
 ## Rules
 

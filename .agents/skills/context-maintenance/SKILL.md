@@ -3,7 +3,7 @@ name: context-maintenance
 description: 'How to reduce accumulated artifacts into owning durable files, tracker items, accepted intent, or deletion. Read when cleaning a lane or artifact pile.'
 ---
 
-# Skill — context maintenance
+# context maintenance
 
 ## Rules
 
@@ -15,6 +15,7 @@ Use this authority order:
 - repository operating guidance goes to `AGENTS.md`;
 - architecture facts go to `ARCHITECTURE.md`;
 - project overview material goes to `README.md`;
+- required workaround guidance goes to `NON_IDEAL_AGENTS.md`;
 - active work goes to the tracker;
 - reusable agent discipline goes to skills only when it is not repo-specific;
 - everything else is superseded or deleted.

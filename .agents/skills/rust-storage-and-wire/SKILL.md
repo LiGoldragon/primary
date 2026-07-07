@@ -3,7 +3,7 @@ name: rust-storage-and-wire
 description: 'Typed Rust storage and wire discipline: state in typed stores, Rust-to-Rust wire through typed binary contracts, NOTA as human projection. Read when adding storage or wire paths.'
 ---
 
-# Skill — Rust storage and wire
+# Rust storage and wire
 
 ## Rules
 

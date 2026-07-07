@@ -3,7 +3,7 @@ name: contract-repo
 description: 'How to shape a shared wire-contract crate: operation and reply types, codec boundaries, round-trip tests, compatibility discipline, and daemon-runtime exclusion. Read when creating or editing a typed contract surface.'
 ---
 
-# Skill — contract repos
+# contract repos
 
 ## Rules
 

@@ -3,7 +3,7 @@ name: repository-closeout
 description: 'Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.'
 ---
 
-# Role - repository closeout
+# repository closeout
 
 ## Contract
 
@@ -46,7 +46,7 @@ Return the repository-closeout result in chat or the harness-required worker
 output. Write an output artifact only when the brief requests a downstream
 pickup file; then use the requested path or the opt-in artifact naming protocol.
 
-## Module - edit coordination core
+## edit coordination core
 
 ### Edit Coordination
 
@@ -87,7 +87,6 @@ When daemon worktree inventory is needed, the meta API shape is:
 meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
 
-## Module - editing closeout
 
 ### Editing Closeout
 
@@ -103,7 +102,7 @@ At closeout, release only resource claims made under your assigned lane, then un
 
 Agent-authored commit messages include the acting model and thinking/provenance level when the harness or role packet supplies them.
 
-## Module - repo operation core
+## repo operation core
 
 ### Operation Core Purpose
 

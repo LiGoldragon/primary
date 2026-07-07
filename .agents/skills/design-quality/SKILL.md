@@ -3,7 +3,7 @@ name: design-quality
 description: 'Design quality as the gate on correctness: special cases should dissolve into the normal case. Applies whenever you judge whether a design or change is done.'
 ---
 
-# Skill — design quality
+# design quality
 
 ## The rule
 
