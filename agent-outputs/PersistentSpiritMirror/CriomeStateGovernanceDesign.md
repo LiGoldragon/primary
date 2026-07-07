@@ -540,8 +540,9 @@ What a criome node retains — this list is the whole of it:
 
 - the pinned founding anchor, with its attached founding signatures;
 - the root succession chain: the rare rotation grants from the pinned
-  anchor to the current root keys (see the open question in §12 on
-  compacting even this by owner re-pinning);
+  anchor to the current root keys — compactable to nothing when the
+  owner re-pins the anchor to the current root identity after
+  witnessing a rotation (settled, §12);
 - the live account tree: the current account records reachable from
   the root — a handful of tiny rule+parent records;
 - per live slot: the current head, the current value (the one
@@ -801,35 +802,44 @@ Each slice independently shippable, producers before consumers.
   remotes from its own log and backfills added targets;
   `SelectedMirrorTarget` and its meta types die (§5.3, §7). Depends on
   G2; composes with the mirroring design's M-slices.
-- **G6 — privacy-silo governance.** `ComponentHead` gains the silo
-  dimension; per-silo advance authorization; cross-silo moves as
-  multi-slot rounds (§5.2). Depends on G2 and on the silo work in
+- **G6 — privacy-silo governance (deferred).** `ComponentHead` gains
+  the silo dimension; per-silo advance authorization; cross-silo moves
+  as multi-slot rounds (§5.2). Depends on G2 and on the silo work in
   spirit/sema-engine (the amended
   `ComponentMirroringCapabilityDesign.md` §5 / M5). The component-side
   silo mechanics live in that design; this slice is the governance
-  face.
+  face. Settled (§12): one silo, `Primary`, is the whole silo set for
+  now, so this slice defers until named silos exist — with one silo
+  there is nothing per-silo to govern.
 - **G7 — the policy slot (future, named only).** Host policy as
   governed state under a host-scoped account (§8, item 3). Not
   scheduled.
 
 ## 12 · Open questions — only the psyche can answer
 
-1. **The silo set.** Spirit's privacy vocabulary is an ordered 8-level
-   magnitude on every record. The silo set must be closed and SMALL.
-   One silo per magnitude (8 parallel logs) is faithful but heavy;
-   a coarse partition (for example three: public / guarded / closed,
-   each covering a magnitude range) is cheap but fixes a boundary the
-   magnitudes currently leave fluid. Which partition — and where do the
-   boundaries fall? (The mirroring amendment carries the same question;
-   answered once, it settles both.)
-2. **Compacting the root succession chain.** The one genuinely
-   append-only object left in §6.2 is the chain of root rotation grants
-   from the pinned anchor. It is tiny and rotations are rare — but it
-   can be compacted to nothing if, after witnessing a rotation, the
-   owner may RE-PIN the anchor to the current root identity (a new
-   manual trust act replacing the old). Is re-pinning acceptable trust
-   posture, or must the original founding anchor remain the immovable
-   root of every verification forever?
+1. **The silo set — RESOLVED by the psyche (2026-07-07).** "just make
+   it a single silo for now. that gradient will be replaced by a
+   privacy-silo name, but that isn't on your plate." One silo
+   (`Primary`, §3.1) is the whole silo set for now — not one silo per
+   magnitude, not a coarse partition of the 8-level gradient. The
+   8-magnitude gradient is NOT the future silo set: silos will later be
+   named entities, introduced on their own terms, not carved out of the
+   magnitude scale. Per-silo governance (slice G6 / M5, §11 here and
+   `ComponentMirroringCapabilityDesign.md` §10) defers until named
+   silos exist. The mirror-list log (§5.3) remains its own separate log
+   regardless of silo count. Consequence, stated plainly: public-only
+   mirroring to untrusted hosts — shipping just the public silo while
+   withholding every other — is deferred until named silos arrive; with
+   one silo, a mirror to any host necessarily carries everything in it.
+2. **Compacting the root succession chain — RESOLVED by the psyche
+   (2026-07-07).** "we can rotate. i'm not an idealist, i'm a realist."
+   Re-pinning is acceptable trust posture; the original founding anchor
+   does not need to remain the immovable root of every verification
+   forever. The owner may re-pin the trust anchor to the current root
+   identity after witnessing a root succession (a new manual trust act
+   replacing the old), and the root succession chain of §6.2 compacts
+   accordingly — the rotation grants below the new pin are no longer
+   needed by any verifier.
 
 The two open questions of the mirroring design's §11 that survive its
 amendment (remote read-liveness; mirror-repo disposal ceremony) remain

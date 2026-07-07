@@ -32,7 +32,11 @@ of this document:
   head; mirroring to an untrusted host ships only the public silo. No
   sealed entries, no payload commitments, no derived chains, no digest
   schema change. §5 is rewritten; §11 question 1 dissolves (the
-  metadata-leak dilemma no longer exists).
+  metadata-leak dilemma no longer exists). The silo set itself is now
+  also settled by the psyche (2026-07-07): a single silo, `Primary`,
+  for now — the 8-magnitude gradient is not the future silo set; named
+  silos are later, separate work, and public-only mirroring to
+  untrusted hosts waits on them (§5, §11).
 - **The mirror-target list is quorum-governed state living in
   spirit.** The psyche, verbatim: "the list of mirrors is in spirit,
   changes gated in criome. just another log, like the privacy silos."
@@ -91,11 +95,12 @@ Plain definitions, used throughout:
   queried with selections such as "at most public."
 - **Privacy silo** — one of a small, closed set of privacy classes,
   each backed by its OWN log: its own store, hash chain, head, and
-  outbox. Every record lives in exactly one silo, chosen from its
-  privacy magnitude by a fixed total mapping (which partition of the
-  magnitude scale forms the silo set is an open psyche question,
-  recorded in `CriomeStateGovernanceDesign.md` §12). Silos are primary
-  logs, not projections derived from a master log.
+  outbox. Every record lives in exactly one silo. The silo set is
+  settled for now (`CriomeStateGovernanceDesign.md` §12): a single
+  silo, `Primary` — not a partition of the 8-level magnitude scale.
+  Named privacy silos are later, separate work; the magnitude gradient
+  is not their source mapping. Silos are primary logs, not projections
+  derived from a master log.
 - **Mirror-list log** — spirit's own log holding the mirror-target
   list: a mapping silo → target hosts, amended only through the same
   quorum gate as any head advance
@@ -359,8 +364,10 @@ resolves §11 question 2.
 
 **Scaling down: the backup case.** A single host wanting off-site
 backups is a single-member cluster (the root and a one-member
-operational sub-contract) with one or more non-authoritative remotes,
-public-only or full per trust. Nothing about mirroring is
+operational sub-contract) with one or more non-authoritative remotes.
+With the single settled silo (§5), every remote today is necessarily a
+full mirror; public-only remotes wait on named silos
+(`CriomeStateGovernanceDesign.md` §12). Nothing about mirroring is
 cluster-sized; the quorum of one is the degenerate case of the same
 design.
 
@@ -376,28 +383,37 @@ are all dead; what follows replaces them.
 
 **Privacy silos: separate logs per privacy class.**
 
-- **The silo set is closed and small.** Each silo is one privacy
-  class, backed by its own sema-engine store: its own hash chain, its
-  own head, its own outbox. Spirit's single `spirit:sema` store
-  becomes one store per silo, plus the mirror-list log (§4). Every
-  record lives in exactly ONE silo, chosen from its privacy magnitude
-  by a fixed total mapping — the magnitudes partition into silos.
-  Which partition (one silo per magnitude, or a coarse split such as
-  public / guarded / closed) is an open psyche question, recorded in
-  `CriomeStateGovernanceDesign.md` §12.
+- **The silo set is closed and small — settled at one silo for now.**
+  Each silo is one privacy class, backed by its own sema-engine store:
+  its own hash chain, its own head, its own outbox. The psyche,
+  verbatim: "just make it a single silo for now. that gradient will be
+  replaced by a privacy-silo name, but that isn't on your plate."
+  Spirit's single `spirit:sema` store becomes one store — `Primary` —
+  plus the mirror-list log (§4); every record lives in that one silo.
+  The 8-level magnitude gradient is NOT the future silo set: named
+  privacy silos are later, separate work
+  (`CriomeStateGovernanceDesign.md` §12), not a partition of the
+  magnitude scale. Per-silo governance (G6 / M5, §10) defers until
+  named silos exist.
 - **Nothing is sealed, nothing is derived.** Each silo chain carries
   raw payloads and verifies stand-alone — the verified digest fact
   (§1) stays true and stops mattering, because no shipped chain ever
   needs a payload withheld. There are no placeholder entries, no
   second derived chain, no projection maintenance, and no digest
   schema change.
-- **Shipping is silo-selective by construction.** The mirror-list log
-  (§4) maps each silo to its target hosts; members receive every silo.
-  The public silo ships to an untrusted backup host COMPLETE — a
-  genuine, verifiable, restorable full backup of all public data. And
-  the untrusted host receives NOTHING about private records: not
-  existence, not timing, not family, not key, not size. The previous
-  revision's metadata-leak question dissolves (§11 question 1).
+- **Shipping is silo-selective by construction — once named silos
+  exist.** The mirror-list log (§4) maps each silo to its target
+  hosts; members receive every silo. A public silo will ship to an
+  untrusted backup host COMPLETE — a genuine, verifiable, restorable
+  full backup of all public data — while the untrusted host receives
+  NOTHING about private records: not existence, not timing, not
+  family, not key, not size. With one silo today, there is no public
+  silo to isolate: **public-only mirroring to an untrusted host is
+  deferred until named silos arrive** (`CriomeStateGovernanceDesign.md`
+  §12); a mirror to any host today necessarily carries everything in
+  the single silo. The previous revision's metadata-leak question stays
+  dissolved regardless (§11 question 1) — no sealed payload, no derived
+  chain, no digest schema change either way.
 - **Authorization cost, stated honestly** (the psyche asked for the
   costs): each silo's head advances under its own governed slot
   (`CriomeStateGovernanceDesign.md` §3.1) — N silos mean N chains, N
@@ -424,8 +440,11 @@ are all dead; what follows replaces them.
   (§12).
 
 Backup posture follows directly, unchanged in spirit from the previous
-revision: at least one all-silo mirror on a trusted host, any number
-of public-silo mirrors on untrusted ones.
+revision, once named silos land: at least one all-silo mirror on a
+trusted host, any number of public-silo mirrors on untrusted ones.
+Until then, with the single settled silo, every mirror is necessarily
+an all-silo (whole) mirror, and untrusted-host mirroring waits on named
+silos.
 
 ## 6 · Backup and restore — the same mechanism
 
@@ -581,14 +600,18 @@ around them; none blocks them except where marked.
   come from the mirror-list log (the governance design's G5).
   Loopcheck: a third, non-member node converges through evidence
   verification alone, and its local write attempt refuses.
-- **M5 — privacy silos** (§5, rewritten). The multi-store split (one
+- **M5 — privacy silos** (§5, rewritten) — **deferred until named
+  silos exist** (`CriomeStateGovernanceDesign.md` §12 settles the silo
+  set at one silo, `Primary`, for now). The multi-store split (one
   store per silo, plus the mirror-list log), the record-to-silo
   placement, per-silo heads under the governance design's G6, and
-  silo-selective shipping. No digest schema change. Loopcheck: a
-  public-silo remote converges on the public silo alone, serves public
-  observations, and never receives a single private-silo byte; a
-  cross-silo move lands atomically on both silos; an all-silo restore
-  round-trips completely.
+  silo-selective shipping wait on named silos landing; with one silo
+  there is nothing per-silo to build. No digest schema change, now or
+  then. Loopcheck (once scheduled): a public-silo remote converges on
+  the public silo alone, serves public observations, and never
+  receives a single private-silo byte; a cross-silo move lands
+  atomically on both silos; an all-silo restore round-trips
+  completely.
 - **M6 — backup restore proof** (§6). Owner-initiated restore of a
   fresh node from a mirror host through the meta contract, one bundle
   per silo, verified against the authorized heads. Closes the "the
@@ -600,9 +623,12 @@ around them; none blocks them except where marked.
    amendment (2026-07-07).** Private entries are entirely absent from
    what an untrusted host receives — not sealed, absent — and no
    derived chain was needed, because silos are primary logs (§5,
-   rewritten). The residual psyche question is the silo set itself
-   (which partition of the magnitude scale), recorded in
-   `CriomeStateGovernanceDesign.md` §12.
+   rewritten). The residual question — the silo set itself — is now
+   also RESOLVED by the psyche (2026-07-07): a single silo, `Primary`,
+   for now; the 8-level magnitude gradient is not the future silo set,
+   named silos are later, separate work, and public-only mirroring to
+   untrusted hosts is deferred until they arrive (settled in
+   `CriomeStateGovernanceDesign.md` §12).
 2. **Where replication targets live — RESOLVED by the psyche
    (2026-07-07):** "the list of mirrors is in spirit, changes gated in
    criome. just another log, like the privacy silos." See the amended
