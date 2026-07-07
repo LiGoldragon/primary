@@ -13,11 +13,11 @@ The Operating System Implementer handles CriomOS-specific system, home, host, cl
 
 Read the target repo's guidance, deployment notes, host inventory, and current state surfaces before editing or running commands. Identify whether the task touches live systems, image builds, NixOS modules, networking, secrets, or cluster admission.
 
-Prefer declarative, reproducible changes. Keep host-specific facts out of generic modules unless the repo already models them that way. For deployment work, name the affected hosts, the intended state transition, the rollback path, and the evidence that the host reached the expected state.
+Prefer declarative, reproducible changes. Keep host-specific facts out of generic modules unless the repo already models them that way. For deployment work, name the affected hosts, intended state transition, source revision, profile or activation action, rollback owner, rollback path, and evidence that the host reached the expected state.
 
 ## Boundaries
 
-Do not expose secrets, private host credentials, or personal infrastructure details in chat or public files. Do not run destructive host operations unless the brief grants that authority and the rollback path is clear. Do not turn a CriomOS-specific workaround into workspace-wide doctrine.
+Do not expose secrets, private host credentials, or personal infrastructure details in chat or public files. Do not run destructive host operations unless the brief grants that authority and the rollback path is clear. Do not replace managed symlinks, shadow profile commands, mutate installed runtime output, or make copied installed source effective. Emergency local effective mutation requires explicit psyche authorization for that exact mutation after you state the durable source path, rollback owner, preservation needs, and risk. Do not turn a CriomOS-specific workaround into workspace-wide doctrine.
 
 ## Verification
 
@@ -196,6 +196,12 @@ remember, keep looking for the shape that makes the rule explicit. If accepted
 constraints appear to force that side path, stop and report the forced special
 case instead of burying it.
 
+Patch source repositories, not installed effective state. If the target resolves
+through a Nix store path, profile, Home Manager output, generated runtime output,
+or copied installed source, treat it as evidence, find the owning source, or
+report a blocker. Closeout is blocked when behavior depends on uncommitted
+runtime edits, PATH shims, replaced managed symlinks, or copied installed source.
+
 ### Implementation Version Compatibility
 
 When behavior changes a public contract, storage schema, wire format, generated
@@ -238,6 +244,27 @@ For multi-repo testing, commit and push the participating refs, then use remote
 `--override-input` values. Do not test a deployable stack through local
 filesystem inputs.
 
+### Managed Runtime Boundaries
+
+Treat the effective system as Nix-managed by default. Change command resolution,
+Home Manager outputs, profile links, package outputs, and runtime artifacts
+through source, flake inputs, lock files, builds or checks, and deployment.
+
+Do not make mutable installed state the fix: no PATH shadowing, managed-symlink
+replacement, mutable profile edits, ad hoc dependency symlinks, patched store or
+profile outputs, or copied installed source as the effective runtime. Claims on
+source paths do not grant ownership of generated, deployed, profile, or
+Nix-managed outputs.
+
+Read-only inspection, byte-for-byte evidence backups, and isolated repro copies
+are allowed when the active role permits them. They must not become effective
+runtime, profile, or system behavior. Emergency local effective mutation requires
+explicit psyche authorization for that exact mutation after the worker states the
+durable source path, rollback owner, preservation needs, and risk.
+
+Closeout is blocked when behavior depends on uncommitted runtime edits, PATH
+shims, replaced managed symlinks, or copied installed source.
+
 ### Nix Modules And Services
 
 CriomOS services are NixOS modules or typed systemd services, directly on a host
@@ -274,7 +301,11 @@ Use this doctrine for operating-system and environment work that touches CriomOS
 
 Operate from pushed, reproducible inputs. Treat CriomOS as the deploy entrypoint and criomos-home as an input that must already be pinned by the selected CriomOS revision. Choose `RequireImmutable` for pinned flake references; use `ResolveAndRecord` only when intentionally resolving a mutable ref.
 
-Before changing a host, name the target cluster, node, deployment shape (`UserEnvironment` or `Host`), requested action, source revision policy, exact source revision, builder choice, rollback expectation, and post-activation evidence.
+Change profiles, Home Manager output, command resolution, packages, and runtime output through source revisions, pinned inputs, builds or checks, deployment, activation, and rollback. Do not close out by replacing managed symlinks, shadowing profile commands, editing mutable profiles, adding ad hoc dependency symlinks, or making copied installed source effective.
+
+Before changing a host, name the target cluster, node, deployment shape (`UserEnvironment` or `Host`), requested action, source revision policy, exact source revision, builder choice, rollback owner, rollback expectation, and post-activation evidence.
+
+Read-only inspection, byte-for-byte preservation backups, and isolated repro copies are allowed when authorized by the active role; they must not become effective runtime, profile, or system behavior. Emergency local effective mutation requires explicit psyche authorization for that exact mutation after the worker states the durable source path, rollback owner, preservation needs, and risk.
 
 Use the current `lojix` read interface and privileged `meta-lojix` deploy interface directly. Do not use deploy wrappers, compatibility translators, or retired request names. The deployed daemon accepts exactly two `DeployRequest` variants, `Host` and `UserEnvironment`.
 

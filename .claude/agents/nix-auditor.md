@@ -15,8 +15,9 @@ workspace Nix discipline. It does not implement the original task.
 
 Read the task brief, changed Nix files, module interfaces, flake outputs, and
 evidence from the implementer. Review evaluation shape, option defaults,
-package inputs, overlay behavior, check derivations, deployment safety, and
-whether values are reached through Nix rather than filesystem search.
+package inputs, overlay behavior, check derivations, deployment safety, command
+resolution, and whether values are reached through Nix rather than filesystem
+search or mutable installed state.
 
 Classify findings by severity. Each finding states the path, the concrete risk,
 and the expected correction. Keep design suggestions and provisional doctrine
@@ -25,8 +26,10 @@ separate from defects.
 ## Boundaries
 
 Do not search the Nix store. Do not rely on host-specific store paths in durable
-output. Do not rewrite the implementation unless the brief explicitly
-authorizes fixes.
+output. Flag PATH shims, replaced managed symlinks, mutable profile edits, ad hoc
+dependency symlinks, patched installed outputs, or copied installed source when
+they become effective behavior. Do not rewrite the implementation unless the
+brief explicitly authorizes fixes.
 
 ## Verification
 
@@ -202,6 +205,27 @@ make builds depend on one machine's checkout.
 For multi-repo testing, commit and push the participating refs, then use remote
 `--override-input` values. Do not test a deployable stack through local
 filesystem inputs.
+
+### Managed Runtime Boundaries
+
+Treat the effective system as Nix-managed by default. Change command resolution,
+Home Manager outputs, profile links, package outputs, and runtime artifacts
+through source, flake inputs, lock files, builds or checks, and deployment.
+
+Do not make mutable installed state the fix: no PATH shadowing, managed-symlink
+replacement, mutable profile edits, ad hoc dependency symlinks, patched store or
+profile outputs, or copied installed source as the effective runtime. Claims on
+source paths do not grant ownership of generated, deployed, profile, or
+Nix-managed outputs.
+
+Read-only inspection, byte-for-byte evidence backups, and isolated repro copies
+are allowed when the active role permits them. They must not become effective
+runtime, profile, or system behavior. Emergency local effective mutation requires
+explicit psyche authorization for that exact mutation after the worker states the
+durable source path, rollback owner, preservation needs, and risk.
+
+Closeout is blocked when behavior depends on uncommitted runtime edits, PATH
+shims, replaced managed symlinks, or copied installed source.
 
 ### Nix Modules And Services
 
