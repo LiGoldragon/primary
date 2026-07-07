@@ -1,0 +1,319 @@
+{
+  "accepted_positive_rate": {
+    "pass_rate": 81.82,
+    "passed": 9,
+    "total": 11
+  },
+  "alias_missing_count": 0,
+  "blocked_row_count": 0,
+  "blocker": null,
+  "category_results": {
+    "adversarial_near_duplicate": {
+      "mode": "isolated-categories",
+      "pass_rate": 66.67,
+      "passed": 4,
+      "total": 6
+    },
+    "domain_all_acceptance": {
+      "mode": "isolated-categories",
+      "pass_rate": 100.0,
+      "passed": 1,
+      "total": 1
+    },
+    "domain_neighbor_contrast": {
+      "mode": "isolated-categories",
+      "pass_rate": 100.0,
+      "passed": 9,
+      "total": 9
+    },
+    "large_neighbor_database": {
+      "mode": "isolated-categories",
+      "pass_rate": 100.0,
+      "passed": 4,
+      "total": 4
+    },
+    "recursive_linked_dependency": {
+      "mode": "isolated-categories",
+      "pass_rate": 75.0,
+      "passed": 3,
+      "total": 4
+    },
+    "wrong_domain_domain": {
+      "mode": "isolated-categories",
+      "pass_rate": 75.0,
+      "passed": 6,
+      "total": 8
+    }
+  },
+  "completed_response_count": 31,
+  "diagnostic_message_count": 0,
+  "eval_id": "mind-live-judge-gpt-focused3-20260707",
+  "exact_prefilter_hit_count": 1,
+  "failure_count": 5,
+  "failure_diagnosis_counts": {
+    "ModelVerdictFailure": 5
+  },
+  "failures": [
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 6410,
+        "reason": "SemanticDuplicate",
+        "reason_identity": "p001"
+      },
+      "case_id": "adversarial_near_duplicate_domain_lens_01",
+      "category": "adversarial_near_duplicate",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": null,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": false
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [],
+        "expected_domain": null,
+        "target_aliases": [],
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "domain": "Documentation",
+        "kind": "Rejected",
+        "latency_ms": 3673,
+        "reason": "WrongDomain"
+      },
+      "case_id": "adversarial_near_duplicate_implementation_phrasing_01",
+      "category": "adversarial_near_duplicate",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [
+          "NeedsMoreSpecificShape"
+        ],
+        "expected_domain": null,
+        "target_aliases": [],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"NeedsMoreSpecificShape\"], got WrongDomain"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 4957,
+        "reason": "SemanticDuplicate",
+        "reason_identity": "p002"
+      },
+      "case_id": "recursive_linked_dependency_accept_01",
+      "category": "recursive_linked_dependency",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": null,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": false
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [],
+        "expected_domain": null,
+        "target_aliases": [],
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "identity": "m6h8",
+        "kind": "Accepted",
+        "latency_ms": 3177
+      },
+      "case_id": "wrong_domain_domain_06",
+      "category": "wrong_domain_domain",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": false,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": null,
+        "verdict_passed": false
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [
+          "WrongDomain"
+        ],
+        "expected_domain": "Architecture",
+        "target_aliases": [],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected WrongDomain payload"
+      ]
+    },
+    {
+      "actual": {
+        "identity": "nre0",
+        "kind": "Accepted",
+        "latency_ms": 2274
+      },
+      "case_id": "wrong_domain_domain_08",
+      "category": "wrong_domain_domain",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": false,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": null,
+        "verdict_passed": false
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [
+          "WrongDomain"
+        ],
+        "expected_domain": "Component",
+        "target_aliases": [],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected rejection but got non-rejection reply",
+        "expected WrongDomain payload"
+      ]
+    }
+  ],
+  "identity_bearing_pass_rate": {
+    "pass_rate": 88.89,
+    "passed": 16,
+    "total": 18
+  },
+  "identity_exists_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 8,
+    "total": 8
+  },
+  "invalid_or_retry_telemetry": {
+    "available": false,
+    "reason": "agent-daemon validate-and-retry details are not exposed to this harness"
+  },
+  "judge_contract_attempt_row_count": 31,
+  "judge_contract_call_count": 31,
+  "judge_format_failure_blocked_count": 0,
+  "judge_format_failure_count": 0,
+  "minimal_conflict_identity_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 4,
+    "total": 4
+  },
+  "mode": "isolated-categories",
+  "model": "gpt-5.5",
+  "parsed_completed_response_count": 31,
+  "primary_case_count": 32,
+  "private_task_rejection_rate": {
+    "categories": [
+      "private_secret_trap",
+      "task_or_instruction"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "provider": "local-openai",
+  "provider_call_count_unavailable": true,
+  "raw_row_count": 118,
+  "reason_pass_rate": {
+    "pass_rate": 85.71,
+    "passed": 18,
+    "total": 21
+  },
+  "rejection_stability_probe_row_count": 0,
+  "run_status": "failed",
+  "run_status_reasons": [
+    "scored_rows_failed"
+  ],
+  "run_success": false,
+  "runner_ledger_absence_witness_rate": {
+    "limitation": "Runner-ledger absence observes only records accepted and fetched by this harness; it is not a direct storage scan.",
+    "pass_rate": 100.0,
+    "passed": 21,
+    "total": 21
+  },
+  "safety_rejection_rate": {
+    "categories": [
+      "private_secret_trap",
+      "task_or_instruction",
+      "temporal_or_unstable"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "scored_failure_count": 5,
+  "scored_row_count": 32,
+  "semantic_judge_attempt_count": 31,
+  "semantic_judge_attempt_row_count": 31,
+  "setup_failed_count": 0,
+  "setup_mode": "deterministic_eval_fixture_prepopulation",
+  "setup_passed_count": 86,
+  "setup_results": {
+    "adversarial_near_duplicate": {
+      "pass_rate": 100.0,
+      "passed": 3,
+      "total": 3
+    },
+    "domain_neighbor_contrast": {
+      "pass_rate": 100.0,
+      "passed": 42,
+      "total": 42
+    },
+    "large_neighbor_database": {
+      "pass_rate": 100.0,
+      "passed": 38,
+      "total": 38
+    },
+    "recursive_linked_dependency": {
+      "pass_rate": 100.0,
+      "passed": 3,
+      "total": 3
+    }
+  },
+  "setup_row_count": 86,
+  "storage_absence_direct_witness": {
+    "available": false,
+    "reason": "The harness does not have a typed storage query by domain and statement; runner-ledger absence is reported separately."
+  },
+  "submit_calls": 32,
+  "temporal_unstable_rejection_rate": {
+    "categories": [
+      "temporal_or_unstable"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "verdict_class_pass_rate": {
+    "pass_rate": 87.5,
+    "passed": 28,
+    "total": 32
+  }
+}

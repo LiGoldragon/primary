@@ -1,0 +1,54 @@
+{
+  "case_count": 32,
+  "categories": {
+    "adversarial_near_duplicate": 6,
+    "domain_all_acceptance": 1,
+    "domain_neighbor_contrast": 9,
+    "large_neighbor_database": 4,
+    "recursive_linked_dependency": 4,
+    "wrong_domain_domain": 8
+  },
+  "endpoint": "http://127.0.0.1:18080/v1",
+  "eval_id": "mind-live-judge-gpt-focused3-20260707",
+  "mode": "isolated-categories",
+  "model": "gpt-5.5",
+  "prepopulated_setup_case_count": 43,
+  "provider": "local-openai",
+  "provider_call_count_unavailable": true,
+  "reply_parser": "nota::NotaSource::<signal_mind::MindReply>",
+  "runner": "mind-live-knowledge-judge-eval",
+  "runner_language": "rust",
+  "runner_ledger_absence_witness": {
+    "available": true,
+    "limitation": "This harness observes the runner's accepted-record ledger after rejected submits. It is not a direct storage scan by domain and statement."
+  },
+  "safe_diagnostics": {
+    "judge_diagnostic_hashes": "mind-daemon writes packet_sha256, prompt_sha256, and training_sha256 when MIND_JUDGE_DIAGNOSTIC_PATH is set",
+    "judge_diagnostic_text": "with redacted text enabled, mind-daemon writes redacted packet structure, redacted prompt text, and judge training text",
+    "judge_request_response_log": true,
+    "provider_http_dumps": false,
+    "redacted_packet_text": false
+  },
+  "secret_safety": [
+    "Provider authentication is configured only as a typed secret-source reference.",
+    "The runner never writes resolved secret bytes to arguments, logs, results, or commits.",
+    "Synthetic secret traps use fake placeholder text only.",
+    "Daemon stdout and stderr are captured, but provider keys are resolved inside agent-daemon."
+  ],
+  "secret_source_reference": "NoSecret",
+  "setup_failures_separated": true,
+  "setup_mode": "deterministic_eval_fixture_prepopulation",
+  "training_source": {
+    "include_default": true,
+    "include_diagnostic": false,
+    "kind": "single",
+    "source_count": 1,
+    "sources": [
+      {
+        "kind": "compiled_default",
+        "path": "/git/github.com/LiGoldragon/mind/src/knowledge-judge-prompts/accepted-knowledge.md",
+        "sha256": "4a6fbafd5ea399835a50e33fd18152bcebc470f0aab74874498860227f53698f"
+      }
+    ]
+  }
+}
