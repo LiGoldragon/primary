@@ -1,869 +1,1033 @@
-# Cluster Authorization Slice Design — the criome cluster authorizes propagation of spirit's state
+# Cluster Authorization Slice Design — the criome cluster authorizes acceptance of spirit's state
 
-Design for the next vertical slices. Design only; nothing was edited or
-committed in any code repo. This is the pickup point for implementation
-workers.
+Design for the vertical slices. Design only; nothing was edited or committed
+in any code repo. This is the pickup point for implementation workers.
 
-Revised 2026-07-06 after psyche review. Folded corrections (all settled
-intent): enum addressing with no string identifiers for fixed sets (§1),
-batched authorization (§3.4), receiving-side acceptance check (§4.2), the
-operational cluster quorum contract as a root-issued sub-contract (§5), and
-the former open questions on window and unfounded posture (§0).
+Revised 2026-07-06 after psyche review (enum addressing §1, batched
+authorization, receiving-side acceptance §4.2, the root-issued sub-contract
+§5).
 
-Ground truth verified against source on 2026-07-06, re-verified in part in
-the revision pass:
+**Amended 2026-07-07 after a hard psyche correction.** The psyche, verbatim:
 
-- `spirit` main `5541dd3a` ("retire spirit-side quorum, restore criome_gate
-  1-of-1 authorization direction", primary-6kz1) — the working copy moved
-  DURING the first design pass; a concurrent lane is active in spirit.
-  Re-verify the spirit tree state on pickup.
-- `criome` main (0.5.0 line): two-round commit, witness clock, durable
-  anti-equivocation ledger (`(contract, head) → AuthorizedObjectReference`,
-  `root.rs:1788-1868`), real `RouterQuorumVoice::submit` over `RouterClient`
-  (`criome/src/voice.rs:240`).
-- `router` main: pubkey-keyed durable route store (`CriomeHostId`,
-  `InstallRemotePeer`, `remote_route_durable.rs`), durable outbound backlog,
-  encrypted peer session, the witnessed founding proof
-  `router/tests/founding_over_router.rs` (named output
-  `router-two-hosts-found-root-over-router-voice-test`), and the
-  criome→standard hand-mapping in `router/src/authorized_object_projection.rs`
-  (dissolves under §1).
-- `sema-engine` main: hash-chained log (`EntryDigest::from_entry_fields`
-  folds `previous_entry_digest`, `versioning.rs:257`, v2 domain tag) and a
-  durable outbox with shipped cursor (`outbox.rs`: `unshipped()` yields the
-  ordered unshipped suffix; `acknowledge` advances the cursor with typed
-  forks).
-- Sibling artifacts built on: `CriomeHostAwareness-BuildDesign.md`,
-  `CriomeHostAwareness-CurrentStateScout.md`, `Handover-CriomeOperational.md`.
+> "The whole point of the authorization is to gate the operation from being
+> accepted, and by that I mean being accepted everywhere, including locally.
+> The quorum gates the acceptance everywhere. The criome authorizes or does
+> not authorize, and in which case it does not authorize, it's not
+> authorized."
+
+The previous revision — and the slice-1 implementation that landed from it
+(spirit 0.23.1, criome 0.7.0, both on main, audited sound) — let a working
+operation commit to spirit's local log unconditionally and gated only the
+propagation of the committed head. That premise is overridden. This
+amendment reworks every section that rested on accept-locally-then-authorize
+and maps the implementation delta from the current mains (§9).
+
+**What this amendment changes**, for readers of the previous revision:
+
+- §0: the acceptance semantic is corrected — refusal means the operation is
+  refused to the caller and nothing is recorded anywhere, including locally.
+- §3.3: the criome-side catch-up rule (complete a standing recorded round,
+  then chain the new head) dies; a dead-round supersession rule replaces it.
+- §3.4: the authorization unit changes from "the whole unshipped suffix per
+  drain pass" to "one working operation's entry group per round"; batching
+  survives where it still earns its keep, named explicitly.
+- §3.5: the post-commit propagation drain as the authorization seat dies;
+  the gate moves onto the intake path (stage, authorize, materialize).
+- §3.6 (new): what shipping means when all accepted state is by definition
+  authorized.
+- §3.8 (new): the crash-window ledger.
+- §3.9: the loopcheck's refused-window outcome becomes "operation refused,
+  head did NOT advance."
+- §9 (new): the file-level implementation delta from spirit 0.23.1 /
+  criome 0.7.0.
+
+Unchanged and still settled: the addressing model (§1), batching soundness
+(§3.4's hash-chain argument), shape (b) propagation with receiving-side
+acceptance (§4), the root-issued sub-contract staging (§5), no strings for
+fixed sets, and no name containing "voice".
+
+Ground truth re-verified against source on 2026-07-07:
+
+- `spirit` main `1698cba1` (0.23.1): the drain-shaped slice-1 seam is live —
+  `handle_working_input` commits then mails the drain
+  (`daemon.rs:146-164`), the drain authorizes the unshipped-suffix head and
+  ships on Granted (`propagation.rs:67-79`), the session-parse binding
+  matrix (`criome_gate.rs:280-347`), the emitted engine actor serializes
+  every working request through one mailbox
+  (`src/schema/daemon.rs:488-508,569`).
+- `criome` main `a486154a` (0.7.0): the originator's anti-equivocation row
+  is recorded at propose time, before its own vote (`root.rs:2100,2103`);
+  a request for the current contract head re-grants immediately with no new
+  round (`re_grant_standing_head`, `root.rs:1347-1351,1525-1530`); a
+  still-`Gathering` durable round re-opens idempotently on an identical
+  re-proposal, an `Authorized` one does not re-open (`root.rs:2067-2083`);
+  the differing-successor case runs the catch-up stage
+  (`HeadAuthorizationStage::CatchingUp`, `root.rs:1375-1382,1685-1728`) —
+  there is NO window-expiry supersession today; member-side window
+  admission is a closed-interval own-clock test with no skew margin
+  (`root.rs:2169-2174`, `signer.rs:453-454`, `master_key.rs:314-322`);
+  window expiry pushes terminal `Expired` and leaves the round and row
+  standing (`root.rs:3465-3512`).
+- `sema-engine` main (0.6.3): the entry digest folds a domain tag, store
+  name, schema hash, `commit_sequence`, `snapshot`,
+  `previous_entry_digest`, and the ordered operations — no wall clock
+  (`versioning.rs:257-285,386-399`); `commit_sequence` / `snapshot` /
+  `previous_entry_digest` are read from the current head at append
+  (`engine.rs:798-799,2035`), so a pre-built entry's digest is
+  deterministic exactly when no other entry commits in between; entry +
+  outbox + counters commit as one atomic redb transaction
+  (`engine.rs:2079-2095`, `outbox.rs:171`); no prepared/staged append seam
+  exists today.
+- `spirit` write path: no single append choke point — the nexus dispatch
+  band (`nexus.rs:1222-1313`) splits reads (`command_sema_read`) from
+  sema-writes and effect commands, and the store methods each call
+  `self.database.assert/mutate/retract` directly (`store/mod.rs:742,744`,
+  retire `1102`, supersede `1262`, resolve `1243`, and the change paths).
+  One working input may write SEVERAL versioned-log entries (for example
+  `record_with_implied_referents`, `nexus.rs:618-684`).
+- `signal-spirit`: a typed authorization-refusal output already exists —
+  `Output::ApplyRefused(ApplyRefusal)` with `ApplyRefusalReason`
+  (`schema/signal.rs:792-797,2128`) — currently emitted only by the parked
+  peer-apply ingress (`nexus.rs:1310-1312`).
+- `router` / founding proof / durable outbound backlog: as verified in the
+  previous revision, unchanged.
 
 ## 0 · Settled constraints (psyche intent — not redesigned here)
 
+- **The quorum gates acceptance everywhere, including locally** (the
+  2026-07-07 correction, verbatim above). When criome authorization is
+  Enabled, a head-advancing working input is accepted ONLY after the
+  cluster grant arrives. Refused, expired, unavailable, or unreachable —
+  in every one of these cases the operation is refused to the caller and
+  nothing is recorded anywhere: the head does not advance, not even
+  locally. Fail-closed. Reads are unaffected.
+- **Disabled mode is unchanged**: spirit fully local, heads advance freely,
+  nothing propagates, the whole seam dormant. This stays the operative
+  default until the owner enables the gate.
 - Spirit knows nothing about quorums. Spirit asks its local criome host to
-  authorize each head advance and propagates only when authorized.
-- Criome runs the two-round commit across the founded cluster for every head
-  advance. Members auto-approve; nothing is checked beyond well-formedness.
-  Only the founding contract is manually approved. Approval predicates
-  (lineage checks, fork rules, thresholds) are explicitly OUT of scope.
-- Quorum can't complete = operation refused; the head does not advance
-  (cluster-visibly). Fail-closed.
+  authorize each head advance; criome owns everything behind that socket.
+- Criome runs the two-round commit across the founded cluster for every
+  head advance. Members auto-approve; nothing is checked beyond
+  well-formedness. Only the founding contract is manually approved.
+  Approval predicates (lineage checks, fork rules, thresholds) are
+  explicitly OUT of scope.
 - Everything over the network goes through the router; the router only
   routes. No criome concepts in router-facing design or names.
-- **No strings for fixed sets.** Psyche: "Strings should be avoided in
-  software design; prefer an enum type when a set doesn't vary often;
-  recompilation is not a big deal if the set doesn't constantly change"
-  (public Spirit record). Every identifier of a fixed set is a closed enum
-  in the contract layer, defined once (§1).
-- **The Criome host ID is the only network identifier.** Each host runs
-  exactly one instance of each component. A destination is the pair
-  (Criome host ID, component); a spirit message goes to that host's one
-  spirit, preset and deterministic (§1).
+- **No strings for fixed sets.** Every identifier of a fixed set is a
+  closed enum in the contract layer, defined once (§1).
+- **The Criome host ID is the only network identifier.** A destination is
+  the pair (Criome host ID, component) (§1).
 - **The root is the root; there is only one.** The operational cluster
-  quorum contract is a sub-contract of the root — issued and anchored by
-  it, with its own distinct contract identity (§5); after the early
-  prototype phase the root itself is not the contract operational rounds
-  run over. Right now the root keys and the first sub-contract keys are
-  identical: same hosts, same criome installation, no key export.
-  Air-gapping and guarded-root operations are deferred design, not part of
-  this slice map. The slices of §3–§4 prototype on the root directly, as
-  explicit staging.
+  quorum contract is a root-issued sub-contract (§5); the slices prototype
+  on the root directly, as explicit staging.
 - **Quorum window**: an owner-configurable duration with a reasonable
-  default covering the two rounds plus network round-trips — nothing
-  ceremonial. Order of tens of seconds live, seconds in tests.
+  default covering the two rounds plus network round-trips — tens of
+  seconds live, seconds in tests, nothing ceremonial. Under this
+  amendment the window is also the bound on how long a recording caller
+  can wait before a definite verdict (§3.5).
 - **Gate enabled + local criome unfounded = refuse loudly** (terminal
-  `Unavailable`, head held). Founding is rare and precedes system liveness;
-  a silent park would hide misconfiguration.
-- **Trust boundary confirmed**: the components form one engine; cryptography
-  is criome's domain at both ends of every network boundary; spirit never
-  re-verifies BLS locally (§3.2).
-- Mirror is a verb. No mirror-noun component; the separate mirror daemon
-  stays dropped (primary-nbmq).
-- A concurrent lane (primary-6kz1) is removing spirit's 1-of-1 local criome
-  authorization and adding a spirit-side option to disable criome
-  authorization entirely (disabled = fully local, the operative default for
-  now). This design targets that end state: **the 1-of-1 gate no longer
-  exists**; when criome authorization is enabled, it is CLUSTER
-  authorization from the first slice.
-- The name "voice" is being renamed away by a concurrent worker. This design
-  says "criome's router submission path" and proposes no new name containing
-  "voice".
+  `Unavailable`; under this amendment that refusal reaches the caller and
+  the operation is not recorded).
+- **Trust boundary confirmed**: cryptography is criome's domain at both
+  ends of every network boundary; spirit never verifies BLS locally
+  (§3.2).
+- Mirror is a verb. No mirror-noun component.
+- The spirit-side mode is a closed option: criome authorization Disabled
+  (default) or Enabled(socket). There is no 1-of-1 mode; that retirement
+  landed (primary-6kz1).
+- The name "voice" was renamed away; this design says "criome's router
+  submission path".
+
+### 0.1 · The corrected semantic, in plain words
+
+Terms used throughout: spirit's durable history is an append-only log;
+each appended entry has a **digest** (a fingerprint of its content that
+also folds in its predecessor's fingerprint, so one digest pins the whole
+history beneath it); the newest entry's digest is the **head**. A **head
+advance** is any working operation that would append to the log — a new
+record, a supersede, a retire, and so on. The **quorum** is the founded
+cluster of criome hosts; a **grant** is the cluster's signed yes for one
+proposed head digest, produced by the existing two-round commit.
+
+With criome authorization Enabled, the order of events for every head
+advance is: spirit builds the would-be entries and computes the head
+digest they would produce, WITHOUT committing anything; it asks its local
+criome to authorize that digest; criome runs the cluster round; only when
+the grant arrives does spirit append the entries and reply to the caller.
+**The grant is the acceptance event.** Before the grant, the operation
+exists nowhere — not in spirit's log, not on any peer. If the verdict is
+anything other than a grant — denied, window expired, no founded contract,
+criome unreachable — the caller receives a typed refusal, the prepared
+entries are discarded, and no trace of the operation remains in any
+durable state a reader can observe. There is no propagation question for
+refused operations, because there is nothing to propagate: everything
+that exists in an Enabled spirit's log is, by construction, cluster
+authorized.
 
 ## 1 · The addressing model — host ID + component enum, no strings
 
-Cross-cutting; every slice below speaks it. This section is the target
-model; §4.3 names where the changes land.
+Unchanged by this amendment. Cross-cutting; every slice below speaks it.
 
 **Destination = (CriomeHostId, ComponentKind).** The Criome host ID (the
 host criome's master public key) is the only network identifier. Each host
-runs exactly one instance of each component (criome, spirit, orchestrator,
-mind, ...), so the pair is a complete address: no actor names, no lookup
-service, no registration of actor homes. The router's durable route store
-is already keyed by `CriomeHostId`; the `homes:
-HashMap<ActorIdentifier, CriomeHostId>` indirection
-(`router/src/remote_router.rs:38-45`) and the `ActorIdentifier(String)`
-newtype (twinned in signal-router `:30` and signal-criome `:30`) dissolve.
-Local delivery is one closed table: ComponentKind → the local component
-ingress (owner-configured socket per deployed component); a component not
-deployed on the host is a typed refusal, fail-closed.
+runs exactly one instance of each component, so the pair is a complete
+address: no actor names, no lookup service, no registration of actor
+homes. The router's durable route store is already keyed by
+`CriomeHostId`; the `homes` map and the `ActorIdentifier(String)` newtype
+dissolve. Local delivery is one closed table: ComponentKind → the local
+component ingress; a component not deployed on the host is a typed
+refusal, fail-closed.
 
-**One ComponentKind, defined once.** The vocabulary belongs once in the
-shared contract layer (contract-repo: "duplicate local wire types" is a
-named mistake). Today it exists at least four times, hand-mapped:
-signal-standard (14 variants, `schema/lib.rs:31`), signal-criome (7
-variants, `schema/lib.rs:670`), signal-persona (9 variants — the one the
-router itself uses for supervision, `router/src/supervision.rs:12`), plus
-signal-orchestrate and meta-signal-mentci. The router's
-`authorized_object_projection.rs` exists solely to hand-map signal-criome's
-`ComponentKind` / `AuthorizedObjectKind` / `AuthorizedObjectReference` onto
-their signal-standard twins, variant by variant. Resolution: signal-standard
-owns the single `ComponentKind`, `AuthorizedObjectKind`,
-`AuthorizedObjectReference`, and `ObjectDigest`; every other signal-* crate
-re-exports rather than twins; the projection file and all variant-by-variant
-`From` mappings are deleted. The variant set is closed and recompiles when a
-component is born or dies (the `Mirror` variant retires with the
-mirror-noun). Settled intent, not style.
+**One ComponentKind, defined once.** signal-standard owns the single
+`ComponentKind`, `AuthorizedObjectKind`, `AuthorizedObjectReference`, and
+`ObjectDigest`; every other signal-* crate re-exports rather than twins;
+the router's `authorized_object_projection.rs` and all variant-by-variant
+`From` mappings are deleted. The variant set is closed and recompiles when
+a component is born or dies. Settled intent, not style.
 
-**Contract dispatch by component, not by string.** `RoutedContractObject`
-routes today by `ContractName(String)` + `ContractOperation(String)`
-(signal-router `schema/lib.rs:739`, literals like `"signal-criome"` in
-`criome/src/conveyance.rs:35`). This dies: one component speaks one contract
-(`signal-<component>`, per contract-repo naming), so the destination
-component enum IS the contract selector. The forwarded envelope carries
-source and destination as (host ID, component) pairs plus opaque payload
-octets; the receiving component decodes the payload against its own
-contract, whose operations are typed enum variants inside the payload —
-never a string beside it.
+**Contract dispatch by component, not by string.** `ContractName(String)`
+and `ContractOperation(String)` die; one component speaks one contract, so
+the destination component enum IS the contract selector; the forwarded
+envelope carries source and destination as (host ID, component) pairs plus
+opaque payload octets, decoded by the receiver against its own contract.
 
-**The authorization ask is the typed reference.** `SignalCallAuthorization`
-carries three string-newtype fixed-set fields — `ContractName`,
-`ContractOperationHead`, `AuthorizationScope` (signal-criome
-`schema/lib.rs:1688`; spirit fills them with literals at
-`criome_gate.rs:317-325`) — while the same schema already owns the typed
-shape: `AuthorizedObjectReference { component: ComponentKind, digest:
-ObjectDigest, kind: AuthorizedObjectKind }`. The request becomes the typed
-reference plus requester identity and optional expiry; the string trio
-dissolves. A spirit head advance is exactly
-`{ component: Spirit, kind: Head, digest }`.
+**The authorization ask is the typed reference.** The request is the typed
+`AuthorizedObjectReference { component, digest, kind }` plus requester
+identity and optional expiry; the string trio (`ContractName`,
+`ContractOperationHead`, `AuthorizationScope`) dissolves. A spirit head
+advance is exactly `{ component: Spirit, kind: Head, digest }` — already
+implemented this way in spirit 0.23.1 (`criome_gate.rs:95-103`).
 
-**Identifier value types.** `CriomeHostId` is currently a `String` newtype
-without `Hash` (the route registry keys on its string payload,
-`remote_router.rs:33-37`); it becomes the typed master-key bytes it names.
-`ObjectDigest(String)` becomes typed digest bytes. These are values, not
-fixed sets, but they leave the string shape in the same sweep.
+**Identifier value types.** `CriomeHostId` becomes the typed master-key
+bytes it names; `ObjectDigest(String)` becomes typed digest bytes.
 
-## 2 · What already exists (the slices reuse, not rebuild)
+## 2 · What already exists (the amendment reuses, moves, or retires)
 
-| Piece | Where | Status |
+| Piece | Where | Status under this amendment |
 |---|---|---|
-| Two-round commit driver (Request round then verified Commit round, majority-of-total, witness-clock gate on both, durable rounds) | `criome/src/actors/root.rs:1328-1786` | Built, audited, in-process proven |
-| Member auto-approval of quorum votes (well-formedness only: round-id binding, member-set check, own-clock window check, non-double-sign veto) | `criome/src/actors/root.rs:1393-1470` (`solicit_quorum_vote`) | Built — this IS the psyche's "members auto-approve" |
-| Anti-equivocation veto, durable-first, idempotent for an identical re-proposal | `criome/src/actors/root.rs:1809-1868` | Built |
-| Criome's router submission path (`SubmitRoutedObjects` origination, fire-and-forget, unreachable peer leaves the round Gathering) | `criome/src/voice.rs` | Built, proven by the founding proof |
-| Cross-node two-round over two real routers on loopback TCP | `router/tests/founding_over_router.rs` | Witnessed (founding) |
-| Streaming authorization observation: submit, snapshot, pushed updates until a terminal state | criome daemon `handle_streaming_connection` + client `CriomeClient::authorize_signal_call` → `CriomeAuthorizationObservationSession::next_update` (`criome/src/transport.rs:334-401`) | Built — the correct consumption shape spirit must adopt |
-| BLS-signed `AuthorizationGrant` (master-key signature over `AuthorizationGrantStatement` signing bytes, binding slot + authorized object digest + contract) | `criome/src/actors/signer.rs:173-192,351-395` | Built |
-| Hash-chained log + durable outbox: `unshipped()` = ordered suffix past the shipped cursor; outbox row written in the entry's own transaction | `sema-engine/src/versioning.rs:257`, `src/outbox.rs` | Built |
-| Spirit post-commit gate seam: commit locally, then authorize before fan-out; refusal holds the head, local commit stands | `spirit/src/engine.rs:667` (`gate_and_ship_head`), `spirit/src/daemon.rs:146-178` | Built (currently 1-of-1-shaped; being reworked by primary-6kz1) |
-| Spirit apply ingress for a pushed authorized record, re-judged by the receiver's own criome | signal-spirit `ApplyAuthorizedRecord` (variant retained; currently answered fail-closed at `spirit/src/nexus.rs:1305`), `CriomeGate::evaluate_carried` (`spirit/src/criome_gate.rs:432`) | Built then parked — §4 reactivates and batches it |
-| Router durable outbound backlog + drain on peer-session establishment | `router` §2.10, `outbound_backlog_durable.rs` | Built |
+| Two-round commit driver (Request then verified Commit, majority-of-total, witness-clock gate on both, durable rounds) | `criome/src/actors/root.rs` | Built, audited — reused unchanged |
+| Member auto-approval (well-formedness only) | `root.rs` `solicit_quorum_vote` | Built — reused; gains only the dead-round arm of the same admission check (§3.3) |
+| Anti-equivocation row, durable-first at propose time, idempotent identical re-proposal | `root.rs:2100,2665-2701` | Built — admission rule AMENDED (§3.3: dead-round supersession) |
+| Immediate re-grant of the standing committed head, no new round | `root.rs:1347-1351` | Built — becomes the ship-time grant fetch (§3.6) |
+| Catch-up stage (complete a standing recorded round, then chain) | `root.rs:1375-1382,1685-1728` | Built — DIES (§3.3): completing a refused round would materialize a refused operation |
+| Quorum-mode bridge: ingress state, window derivation, origination, terminal Granted with evidence, window-expiry push | `root.rs:1328-1786,3465-3512` | Built — reused; only the differing-successor arm changes |
+| Streaming authorization observation session (submit, snapshot, pushed updates to terminal) | criome daemon + `transport.rs:334-401` | Built — reused unchanged; now consumed on spirit's intake path |
+| Spirit session-parse binding matrix (slot, digest, grant presence, typed refusals) | `spirit/src/criome_gate.rs:280-347` | Built — reused unchanged; the module's placement comments change |
+| Spirit propagation drain (post-commit mail, authorize-then-ship, coalescing) | `spirit/src/propagation.rs`, `engine.rs:679-734`, `daemon.rs:146-164` | Built — REWORKED: no longer the acceptance gate; becomes the ship drain + residue reconciler (§3.6) |
+| Hash-chained log, atomic entry+outbox transaction, `unshipped()` ordered suffix, cursor acknowledge | `sema-engine` `versioning.rs`, `engine.rs:2079-2095`, `outbox.rs` | Built — reused; gains the durable staging seam (§3.5) |
+| Typed refusal output shape | signal-spirit `ApplyRefused` / `ApplyRefusalReason` | Built — pattern for the new intake refusal (§3.5); the peer-apply variant itself stays parked until §4 |
+| Spirit apply ingress for a pushed authorized record | signal-spirit `ApplyAuthorizedRecord`, `nexus.rs:1310-1312` (fail-closed) | Parked — §4 reactivates and batches it |
+| Router durable outbound backlog + drain on peer-session establishment | `router` | Built — reused unchanged (§4) |
 
-The slices are therefore mostly WIRING of proven halves, plus one deliberate
-contract-parsing fix (§3.2), the addressing/contract consolidation (§1,
-landing per §4.3), and the contract extensions of §4.3.
+Slice map: §3 = cluster authorization gating acceptance of a head advance
+(prototyped over the root contract); §4 = authorized propagation with
+receiving-side acceptance; §5 = the root issues the operational
+sub-contract. §9 = the delta from the already-landed drain-shaped slice 1.
 
-Slice map: §3 = cluster authorization of a batched head advance (prototyped
-over the root contract); §4 = authorized propagation with receiving-side
-acceptance; §5 = the root issues the operational cluster quorum
-sub-contract. (Earlier artifacts said "slice 1/2" for §3/§4.)
+## 3 · Slice: cluster authorization gates acceptance of a spirit head advance
 
-## 3 · Slice: cluster authorization of a spirit head advance (batched)
-
-One sentence: spirit asks its local criome host over the working socket to
-authorize its current head digest — covering the whole unshipped suffix;
-that host originates the existing two-round commit across the operational
-quorum contract's members over the router; the terminal verdict is pushed
-back to spirit over the held socket; spirit ships only on Granted, and a
-quorum that cannot complete expires the request fail-closed.
+One sentence: with the gate Enabled, spirit STAGES each head-advancing
+working operation — builds its entries and their would-be head digest
+without committing — asks its local criome over the working socket to
+authorize that digest, and only on the pushed cluster grant appends the
+entries and replies accepted; every other terminal outcome refuses the
+operation to the caller and discards the staged entries, so nothing is
+recorded anywhere, fail-closed.
 
 ### 3.1 · The ask: spirit → local criome
 
-Spirit's side stays exactly one question with no quorum vocabulary:
-"authorize this head digest." Concretely:
+Unchanged in shape from the implemented slice; changed in WHAT the digest
+denotes and WHEN it is asked.
 
 - Spirit submits `CriomeRequest::AuthorizeSignalCall` carrying the typed
-  `AuthorizedObjectReference { component: Spirit, kind: Head, digest }`
-  where the digest is spirit's CURRENT head — the head of the whole
-  unshipped suffix (§3.4). No contract-name, operation, or scope strings
-  (§1); no Evidence; no window: policy is criome's. This is a signal-criome
-  contract change carried by this slice.
-- Spirit consumes the reply as an **observation session**, not a one-shot
-  reply (§3.2).
-- The `SpiritAttestor` contract/Evidence machinery and the
-  `EvaluateAuthorization` origination path in the gate are retired with the
-  1-of-1 direction (they made spirit carry criome's policy vocabulary).
-  `evaluate_carried` STAYS — it is the receive-side seam §4 needs.
-  Coordinate with primary-6kz1 on what its rework already removed.
+  `AuthorizedObjectReference { component: Spirit, kind: Head, digest }` —
+  where the digest is now the PROSPECTIVE head: the digest the staged
+  entry group would produce if appended (§3.5). No contract-name,
+  operation, or scope strings; no window: policy is criome's.
+- One working operation may write several log entries (implied referents
+  ride along with a record). The whole group stages as a unit and the ask
+  binds the group's final digest; the hash chain fixes the interior
+  entries (§3.4). One operation, one round, regardless of entry count.
+- Spirit consumes the reply as an observation session (§3.2), on the
+  intake path, before anything commits.
 
-End-state configuration (owned by the concurrent lane, restated for
-coherence): a closed spirit-side mode — criome authorization Disabled
-(fully local, seam dormant, operative default) or Enabled(socket). Enabled
-with no reachable criome holds every head back. There is no 1-of-1 mode.
-`GateDecision::Unconfigured` disappears with it: an enabled gate always has
-a socket; a disabled gate never runs.
+### 3.2 · The session parse (unchanged rules, relocated seat)
 
-### 3.2 · The seam-drift resolution (deliberate; security-sensitive)
+The security-sensitive parse is implemented and audited in spirit 0.23.1
+(`HeadSessionBinding`, `criome_gate.rs:280-347`) and is reused verbatim;
+only its seat moves from the post-commit drain to the intake path. Every
+rule violation is a `CriomeGateError` (machinery fault) and every fault
+refuses the operation — there is no default-open branch:
 
-**Witnessed failure** (reproduced in the first pass, spirit main `5541dd3a`,
-deps repinned to main):
-`criome_gate_1of1::socket_only_gate_observes_signed_auto_approved_authorization`
-fails with `CriomeGateError::UnexpectedReply { reply:
-"AuthorizationObservationSnapshot(...)" }`.
-
-**Root cause.** The criome daemon now serves `AuthorizeSignalCall` on the
-streaming connection path (`criome/src/daemon.rs:212-234`): it submits the
-request, and instead of writing the one-shot reply it opens an authorization
-observation and writes `CriomeReply::AuthorizationObservationSnapshot`
-first, then pushes `AuthorizationUpdate` stream items until a terminal
-status. Spirit's gate (`criome_gate.rs:419-457`) still performs a one-shot
-`CriomeClient::send` and pattern-matches a bare
-`CriomeReply::AuthorizationGranted` — off-contract, so it errors. The error
-is fail-closed (the head is held), which is the correct accident; the fix
-must preserve that posture everywhere.
-
-**Resolution: adopt criome's shipped session contract.** Spirit replaces the
-one-shot send with `CriomeClient::authorize_signal_call(authorization)`
-returning a `CriomeAuthorizationObservationSession`, then drains
-`next_update()` until a terminal state. This is not merely a parsing fix; it
-is the shape cluster authorization REQUIRES: a two-round commit over the
-network is not answerable in one frame. Pending-then-pushed-terminal is the
-normal case; the auto-approve immediate grant is just the fast path where
-the terminal state is already in the snapshot. The special case dissolves.
-
-It is also the push-not-pull fix: criome (the producer of the verdict)
-pushes the update over the held socket; spirit never polls. The
-agent-guardian `wait_for_pending_authorization` loop in `criome_gate.rs`
-(100 ms sleep + re-`ObserveAuthorization`) is a polling pattern; this slice
-should migrate it to the same observation session while touching this file
-(small, contained; flag to the implementer).
-
-**Session parsing rules — the security-sensitive part, exact and closed.**
-Every rule violation is a `CriomeGateError` (a machinery fault) and every
-fault holds the head. There is no default-open branch anywhere in this
-parse:
-
-1. **Slot binding.** The session token is the request slot criome assigned
-   to THIS submission. Spirit considers only state records whose
-   `request_slot` equals the session token. It must NOT take
-   `snapshot.states().first()` unfiltered. (Note: criome's own client helper
-   `transport.rs:355` currently derives the token from `states().first()` —
-   acceptable only because the submission connection's snapshot is scoped to
-   the submitted request; spirit still re-filters by the token on every
-   state it reads, and the criome-side helper should be hardened to filter
-   rather than take first — a small criome fix in this slice.)
-2. **Digest binding.** `state.request_digest` must equal the submitted head
-   digest (the `ObjectDigest` projected from the captured `EntryDigest` —
-   one projection feeds both the request and the check, as today).
-3. **Terminal Granted requires the grant.** `status == Granted` with
-   `grant == None` is a fault, never an authorization. The grant must
-   satisfy `grant.request_slot == token` and
-   `grant.authorized_object_digest == submitted digest`. Status alone is
-   never proof.
+1. **Slot binding.** Only state records whose `request_slot` equals the
+   session token are considered; foreign records are ignored.
+2. **Digest binding.** `state.request_digest` must equal the submitted
+   prospective head digest.
+3. **Terminal Granted requires the grant**, and the grant must bind the
+   slot and the submitted digest. Status alone is never proof.
 4. **Terminal non-Granted refuses.** `Denied` / `Expired` / `Unavailable`
-   map to a typed refusal decision (head held, outbox waits, next drain
-   retries). These are outcomes, not errors.
-5. **Non-terminal waits.** `Pending` / `Signing` / `Parked` keep the session
-   draining pushed updates. The session runs on a `spawn_blocking` worker
-   (the `CriomeClient` stream is synchronous) with a read deadline slightly
-   beyond the authorization window — sized for the catch-up case, which
-   chains two rounds (§3.4) — so the actor mailbox is never blocked and a
-   silently dead criome process cannot hold the session forever. A deadline
-   expiry is treated as Unreachable → head held.
+   map to typed refusals — under this amendment they refuse the OPERATION
+   to the caller (§3.5), not merely a ship.
+5. **Non-terminal waits.** `Pending` / `Signing` / `Parked` keep the
+   session draining pushed updates on a `spawn_blocking` worker with a
+   read deadline slightly beyond the authorization window; deadline
+   expiry is treated as Unreachable → operation refused.
 
-**BLS verification of the grant signature by spirit: deliberately NO** —
-confirmed by psyche review; the trust boundary stands as designed. The grant
-carries `authorization_grant_signatures` (`StampedSignatureEnvelope`,
-BLS12-381 MinPk, signed by the local criome's master key over the
-`AuthorizationGrantStatement` signing bytes). Spirit does not verify them,
-for three reasons stated so the decision is auditable:
+BLS verification of the grant signature by spirit: deliberately NO, as
+settled — the socket is the trust boundary, spirit stays quorum-ignorant,
+and the full cryptographic re-judgment happens at the receiving node's
+criome (§4.2). The negative tests locking this posture exist and carry
+over; their asserted consequence changes from "head held, ship withheld"
+to "operation refused, nothing appended" (§3.9).
 
-1. **The channel is the trust boundary.** The socket is owner-configured and
-   filesystem-permissioned to the co-resident criome. Verifying a signature
-   received over channel X against a public key learned over the same
-   channel X adds no security — same trust root, circular.
-2. **Spirit must stay quorum-ignorant.** Real verification of a
-   cluster-backed grant means threshold counting against the quorum
-   contract's member registry — importing criome's entire verification
-   vocabulary into spirit,
-   against settled intent.
-3. **Verification lives where the trust boundary actually is.** Where the
-   authorization crosses a real boundary — node to node, §4 — the RECEIVING
-   node's criome performs the full cryptographic judgment and the
-   local-acceptance check (§4.2). Every network boundary gets exactly one
-   full re-judgment, by a criome, never by spirit.
+### 3.3 · Criome-side: the Quorum-mode bridge, amended
 
-Spirit's checks are therefore binding checks (slot, digest, status,
-grant-presence) plus chain checks on its own store (§4.2 — sema-engine
-digest integrity is spirit's own data structure, not signature
-cryptography). The BLS material is carried opaquely as evidence for §4 and
-for audit.
-
-**Negative tests locking the posture** (unit level, stub criome socket):
-Granted-without-grant → held; mismatched `request_digest` → held; mismatched
-`grant.authorized_object_digest` → held; foreign `request_slot` records
-ignored; session deadline expiry → held; daemon writing a bare
-`AuthorizationGranted` (old shape) → held as off-contract. Plus the repaired
-positive: snapshot-with-terminal-Granted authorizes (fixes the failing
-test).
-
-### 3.3 · Criome-side: the Quorum-mode bridge to the two-round commit
-
-The gap: today `AuthorizeSignalCall` in `Quorum` mode
-(`criome/src/actors/root.rs:333-344`) is handed to the
-`AuthorizationCoordinator`, which creates a Signing state and waits for
-manually routed signatures. Nothing connects an incoming authorization
-request to the two-round cluster commit — that connection previously lived
-in spirit (retired by primary-6kz1). This slice builds it INSIDE criome,
-where it belongs.
-
-Behavior of `AuthorizeSignalCall` by `AuthorizationMode` (the existing
-closed enum — no new flags):
+The mode table is unchanged:
 
 | Mode | Operational quorum contract present | Behavior |
 |---|---|---|
-| `AutoApprove` | any | Unchanged: immediate self-signed grant (dev/bootstrap fast path; the loopcheck's degenerate case) |
-| `ClientApproval` | any | Unchanged: park for owner approval (the agent-guardian flow) |
-| `Quorum` | yes | **NEW: originate the two-round commit over the operational quorum contract** — during the prototype stage this is the founded root contract, an explicit staging decision; from §5 on it is the root-issued sub-contract |
-| `Quorum` | no | **NEW: terminal `Unavailable` pushed immediately** — fail-closed, refuse loudly (settled): founding is rare and precedes system liveness; a node whose spirit gate is enabled but whose criome is unfounded is misconfigured and must not hold silently |
+| `AutoApprove` | any | Immediate self-signed grant (dev/bootstrap; the loopcheck's degenerate case) |
+| `ClientApproval` | any | Park for owner approval (the agent-guardian flow) |
+| `Quorum` | yes | Originate the two-round commit over the operational quorum contract |
+| `Quorum` | no | Terminal `Unavailable` pushed immediately — fail-closed, refuse loudly |
 
-No component-specific recognition of "spirit": in `Quorum` mode EVERY
-`AuthorizeSignalCall` is cluster-authorized. That is what Quorum mode means
-once a cluster exists. The spirit head advance is just an authorization; the
-special case dissolves (design-quality). The existing intercept for
-spirit-context operations (`intercept_signal_authorization`) runs before the
-mode branch, unchanged.
+The bridge steps are as implemented (ingress state bound to a request
+slot; window `[now, now + Δ]` from the owner-configured quorum window;
+origination across the contract's members through criome's router
+submission path; terminal Granted stores the grant plus assembled
+Evidence and publishes to the held session; a one-shot expiry timer
+pushes terminal `Expired` at window close) — with ONE amendment:
 
-The bridge, using only existing machinery (all internal method calls on the
-root actor — a node never dials its own socket):
+**The catch-up rule dies; dead-round supersession replaces it.**
 
-1. **Ingress.** Create the authorization state (Signing) bound to a request
-   slot, exactly as the coordinator does today; the streaming connection's
-   observation session attaches to that slot.
-2. **Window.** Derive the round window `[now, now + Δ]` where Δ is the
-   owner-configured quorum window on `CriomeDaemonConfiguration` (new
-   optional typed field; settled default: reasonable, covering the two
-   rounds plus network round-trips — tens of seconds live, seconds in
-   tests, nothing ceremonial; the catch-up case below chains two rounds,
-   which the default must cover). When the request carries `expires_at`,
-   the window is capped by it (the existing signer-side `window ⊆ lease`
-   posture).
-3. **Catch-up (the batching no-wedge rule, §3.4).** If the durable
-   anti-equivocation ledger holds a SELF-co-signed row at
-   `(contract, current head)` whose successor digest differs from the
-   requested digest, first re-drive the recorded round for that successor —
-   an identical re-proposal, idempotent by construction
-   (`QuorumRoundIdentifier::for_phase(digest, phase)` re-opens the same
-   durable round with a fresh window; peers' identical rows admit it). On
-   its commit the contract head advances to the recorded successor; then
-   proceed with step 4 from the new head. If no such row stands, skip.
-4. **Originate.** Run the existing Request-round origination
-   (`propose_quorum_authorization` internals) with contract = the
-   operational quorum contract (resolved criome-side from the registry —
-   never from the caller), object = the head-advance
-   `AuthorizedObjectReference`, the derived window, phase = Request.
-   Solicitation fans out across the contract's members through criome's
-   router submission path (fire-and-forget; an unreachable peer leaves the
-   round Gathering). The commit round is driven by the originator on
-   round-1 majority, as built (`drive_commit_round`).
-5. **Terminal Granted.** On round-2 Authorized: assemble the round Evidence
-   (`assemble_evidence`), sign the grant (`SignAuthorizationGrant`), store
-   the state as Granted **carrying both the grant and the assembled quorum
-   Evidence** (the Evidence field is the §4 hand-off, §4.3), and
-   `publish_authorization_update` — the held observation session pushes it
-   to spirit. The grant binds the requested (batch-head) digest; an
-   intermediate catch-up commit is internal to criome and never reaches
-   spirit.
-6. **Terminal Expired — the fail-closed leg.** Arm a one-shot timer at
-   window close when the round opens (an event-scheduled push, not a poll).
-   If the round is not Authorized when it fires: mark the authorization
-   state Expired, publish the update (spirit's session receives it and holds
-   the head), and leave the durable round as-is (the veto row and any cast
-   votes stand — safety is never rolled back; §3.4 shows why retry still
-   works). Criome owns the refusal because criome owns the window; spirit's
-   session deadline (§3.2 rule 5) is only the backstop for a dead criome
-   process, which cannot push anything.
+Today (criome 0.7.0), when a request proposes a successor for a contract
+head that already has a standing recorded row with a DIFFERENT successor
+digest, the bridge first re-drives the recorded round to completion and
+then chains the new proposal from the advanced head
+(`HeadAuthorizationStage::CatchingUp`, `root.rs:1375-1382,1685-1728`).
+That rule existed because, under accept-locally-then-authorize, the
+recorded round's entry was already durable in spirit's log and would
+eventually ship — completing it was always correct.
 
-Member nodes need NO new behavior: `solicit_quorum_vote` already validates
-well-formedness (round-id ⇄ digest+phase binding, full-member-set moment,
-own-clock window admission, non-double-sign veto, round-1 verification
-before a Commit vote) and votes without any owner gate. That is the
-psyche's "members auto-approve; nothing beyond well-formedness," already
-built and audited. **This slice adds no approval predicate anywhere** — out
-of scope by settled intent.
+Under the everywhere-gate that premise is gone: a round that expired
+carried an operation that was REFUSED to its caller; the staged entries
+were discarded; the digest names an entry group that will never exist.
+Completing that round later would advance the cluster head to a digest
+nobody holds content for — materializing a refused operation and
+poisoning the contract. So:
 
-### 3.4 · The authorization unit: one head advance covering the whole unshipped suffix (batching is sound)
+- **Supersession rule.** A recorded row `(contract, head H) → D` whose
+  round is still `Gathering` (never `Authorized`) and whose window has
+  closed on the judging member's own clock is DEAD, and a new proposal
+  `(contract, H) → D'` with `D' ≠ D` is admitted, durably replacing the
+  row before any signature is produced (the same durable-first discipline
+  as today, `root.rs:2665-2701`). An `Authorized` round is never dead:
+  once committed, `D` is the only successor of `H`, forever.
+- **Identical re-proposal is unchanged.** `D' = D` re-opens the standing
+  `Gathering` round with a fresh window exactly as built
+  (`root.rs:2067-2083`) — this is the crash-recovery path (§3.8), not the
+  refusal path.
+- **Live rows still veto.** A conflicting proposal while the recorded
+  round's window is OPEN is refused exactly as today
+  (`CoSignAdmission::RefusedConflict`, `root.rs:199-222,2627-2646`) —
+  that is the genuine concurrent-origination fork, out of scope as
+  settled.
 
-Direct answer to the psyche's question — "is the sema-engine vcs flawed? we
-can't authorize several new records in one auth request?": **the VCS is not
-flawed, and one authorization request soundly covers several records.**
-Why, from verified source facts:
+**Why supersession is safe** (stated so the decision is auditable): a
+round can only commit when its ORIGINATOR assembles the Request-round
+majority and drives the Commit round — members vote only when solicited
+and never spontaneously commit. The originator proposes a different
+successor only after its own window expired and it pushed terminal
+`Expired` to its asker; from that moment it will never drive the dead
+round's commit. No driver, no commit, anywhere — so admitting a different
+successor cannot equivocate against a committed round. Clock skew between
+members affects only LIVENESS, not safety: a member whose clock still
+holds the dead round's window open refuses the superseding vote
+(fail-closed), the new round expires, the caller is refused, and a later
+retry succeeds once every clock has passed the old window. The
+closed-interval own-clock admission (`master_key.rs:314-322`) needs no
+new margin for correctness; an owner-configurable supersession margin is
+a permissible liveness refinement, not required for the slice.
 
-- The quorum machinery binds exactly one opaque digest per round: the round
-  id derives from digest + phase alone
-  (`QuorumRoundIdentifier::for_phase`, signal-criome `lib.rs:113`), the
-  vote signs over that object digest plus the window/member proposition
-  (`criome/src/language.rs:209-233`), `advance_head` sets the contract head
-  to the one committed digest (`root.rs:1874`), and nothing in criome ever
-  decodes what the digest stands for — one log entry or fifty is invisible
-  to it.
-- The log is hash-chained: each entry's digest folds in its predecessor's
-  digest (`EntryDigest::from_entry_fields`, `versioning.rs:257`). One head
-  digest therefore transitively fixes every entry beneath it. Authorizing
-  the batch head H_n as successor from cluster head H_0 authorizes the
-  ordered suffix E_1..E_n as a unit — the cluster co-signs one successor
-  per `(contract, head)` exactly as built; ledger, rounds, and grant are
-  unchanged.
+This amendment supersedes the previous revision's "safety is never rolled
+back; the recorded round is always eventually completed" posture — that
+posture and the everywhere-gate cannot coexist, and the psyche's
+correction decides which one stands (§8 restates this so it is seen).
 
-The earlier draft's one-entry-per-round unit was NOT a VCS constraint; it
-was a retry-idempotence choice against a wedge hazard, and the hazard
-dissolves criome-side with zero new spirit state:
+No component-specific recognition of "spirit" anywhere; in `Quorum` mode
+every `AuthorizeSignalCall` is cluster-authorized. Member nodes need NO
+new behavior beyond the supersession arm in the same admission check they
+already run. This slice still adds no approval predicate anywhere.
 
-- The hazard: spirit's suffix head D is proposed from cluster head H_0; the
-  round expires (peer down); the originator's durable self-co-signed row
-  `(contract, H_0) → D` stands, correctly. Spirit then commits more
-  entries; its head is now H_n ≠ D. Naively proposing `H_0 → H_n` would be
-  refused by the node's OWN row — a permanent self-wedge.
-- The dissolution: **the standing self-co-signed row IS the durable
-  proposal pin.** The bridge's catch-up rule (§3.3 step 3) completes the
-  recorded round first (identical re-proposal — idempotent, same round id,
-  fresh window), advancing the cluster head to D, then opens
-  `(contract, D) → H_n`. Both run under the one authorization request and
-  window; the grant binds H_n. Because spirit's local log is append-only
-  and chain-verified on rebuild, any earlier proposed head is necessarily
-  an ancestor of the current head — the sequence is chain-consistent by
-  construction.
-- If the recorded round can never complete (a peer holds a CONFLICTING row
-  — a genuine concurrent-origination fork), the request refuses exactly
-  like any refused advance: head held, fork/merge design deferred (psyche:
-  premature). Unchanged posture.
-- The drain keeps at most one authorization outstanding per contract
-  (§3.5), so at most one self-row ever stands ahead of the cluster head.
+### 3.4 · The authorization unit, reworked: one operation's entry group
 
-Consequences:
+The hash-chain soundness argument from the previous revision is unchanged
+and still load-bearing: the quorum machinery binds exactly one opaque
+digest per round; the log is hash-chained (each entry's digest folds in
+its predecessor's, `versioning.rs:257`); therefore one head digest
+transitively fixes every entry beneath it, and authorizing a digest
+authorizes the ordered group it tops, as a unit. The VCS is not flawed;
+one round soundly covers several entries.
 
-- The drain captures spirit's CURRENT head (the whole unshipped suffix per
-  pass, from the durable outbox's `unshipped()`), not the oldest entry: one
-  quorum round per burst of records instead of one per record.
-- Criome's per-contract head chain still advances one committed digest at a
-  time, in lockstep with the authorized batch heads; veto keying stays
-  aligned forever.
-- It is the natural unit for §4's batch push: one grant, one evidence, one
-  apply message per target.
-- A batch of one is the degenerate case; no special casing anywhere.
+What changes is the UNIT the steady state binds:
 
-### 3.5 · Spirit-side drain: decoupled from the working reply
+- **Steady state (gate Enabled): one working operation = one round.** The
+  staged entry group's final digest is proposed as the successor of the
+  current head. A group of one entry is the degenerate case; an operation
+  that writes several entries (record plus implied referents) is still
+  one round — the batch argument working at operation scale.
+- **The whole-unshipped-suffix batch as the ACCEPTANCE unit dies.** There
+  is no unshipped-but-unauthorized suffix in an Enabled spirit's steady
+  state: everything appended was granted first. The drain's "capture the
+  suffix head and authorize it" pass no longer gates anything.
+- **Where the batch round still earns its keep** (all three are the same
+  mechanism — propose a digest that chains over many entries — applied to
+  the residue cases):
+  1. **The Disabled→Enabled transition.** History recorded while Disabled
+     exceeds the cluster-authorized head. No ceremony is needed: the
+     FIRST granted advance after enabling proposes a digest that chains
+     over the entire disabled-era residue, and the one grant covers it
+     transitively — the cluster head jumps from its old point to the new
+     head in one round. When the owner wants the residue propagated
+     WITHOUT waiting for a new write, the reconciler (§3.6) runs one
+     batch round for the current head, explicitly.
+  2. **Crash windows** (§3.8): recovery re-asks bind the staged group's
+     digest — identical re-proposal, idempotent, the built round
+     machinery unchanged.
+  3. **Grant-then-ship-failure retries** (§3.6): the suffix waiting in
+     the outbox is already authorized; the ship-time re-ask hits the
+     immediate re-grant of the standing committed head
+     (`root.rs:1347-1351`) — no new cluster round.
+- **Intake coalescing is a deferred optimization, not part of this
+  slice.** Several queued writers COULD stage as one group under one
+  round (all-or-nothing: one refusal refuses them all). Named so nobody
+  re-derives it; not designed here.
 
-Today `handle_working_input` awaits `gate_and_ship_head` inline before
-returning the working reply (`spirit/src/daemon.rs:171`). Acceptable at
-local-socket latency; wrong when authorization is a cluster round over the
-network (seconds, or a full window on refusal) — the recording caller must
-not wait on propagation, and the daemon already ignores the decision there.
+The old wedge-hazard analysis (a refused proposal pinning the contract)
+resolves differently now: the pin is broken by dead-round supersession
+(§3.3), not by completing the recorded round — because under the
+everywhere-gate the recorded round's content no longer exists anywhere.
 
-Design (actor-systems): a single supervised **propagation drain** — a
-serialized background task or actor owned by the engine — receives a
-"head advanced" mail after each durable working commit and runs the
-authorize-then-ship sequence for the current unshipped suffix, one
-outstanding authorization at a time. The working reply path never awaits
-it. On Granted it ships the suffix up to the granted digest and
-acknowledges the outbox cursor to it. Refusal/unreachable outcomes leave
-the outbox intact; the next mail (or a retry mail the drain sends itself on
-refusal — event-driven, not a poll loop; an exponential-backoff timer armed
-per refusal is acceptable as an event, but prefer re-arming only on the
-next commit plus an owner-visible held-head observation) re-attempts with
-the then-current head; the catch-up rule (§3.3 step 3) makes that safe even
-though the head moved. For deterministic tests the drain is drivable
-directly (`Engine::drain_propagation_once()` or equivalent), with the
-daemon wiring it to commits.
+### 3.5 · The intake path: stage, authorize, materialize
 
-### 3.6 · Contact points (enum-vs-enum, single matrices)
+This section replaces the previous revision's §3.5 ("spirit-side drain:
+decoupled from the working reply"), whose premise the correction
+overrides. The recording caller now waits on the cluster round by design
+— that is the psyche's trade, stated plainly in 3.5.4 — and the design
+work is making the waiting and refusal surface clean.
 
-The load-bearing branching is written as closed cross-products, not
-scattered string predicates:
+**3.5.1 · The three phases.** With the gate Enabled, a head-advancing
+working input runs:
+
+1. **Stage** (fast, local). The nexus processing runs in BUILD mode: it
+   performs its reads against committed state, assembles the operation
+   group — the ordered would-be log entries with their payloads — and
+   computes the prospective head digest, WITHOUT touching the log. The
+   group is durably parked in a staging slot inside the same store (a new
+   sema-engine seam: a staging table beside the commit log, written in
+   its own small transaction). The staged group and the held reply are
+   bound to the connection.
+   The digest is deterministic here because the entry digest folds no
+   wall clock — only store name, schema hash, commit sequence, snapshot,
+   predecessor digest, and the operations (`versioning.rs:257-285`) —
+   and head-advancing intake is serialized (3.5.3), so nothing commits
+   between stage and materialize.
+2. **Authorize** (the round; seconds normally, bounded by the window on
+   refusal). The `ClusterAuthorizer` submits the typed ask and drains the
+   observation session (§3.2) — outside the engine actor's mailbox
+   (3.5.3), so reads flow meanwhile.
+3. **Materialize or discard** (fast, local).
+   - On the grant: one atomic transaction appends the staged entries to
+     the log (reusing the existing entry+outbox+counters unit,
+     `engine.rs:2079-2095`), writes their outbox rows, clears the staging
+     slot, and the held reply (for example `RecordAccepted`) goes to the
+     caller. Acceptance happened at the grant; this step is the local
+     materialization of an already-accepted operation.
+   - On any other terminal outcome: the staging slot is cleared and the
+     caller receives the typed refusal. Nothing was appended; no reader
+     ever observed the operation; nothing propagates.
+
+The staging slot is machinery, not acceptance: it is invisible to every
+read surface, it never survives a refusal, and its only purpose is crash
+recovery (§3.8). It does not violate "nothing is recorded anywhere" —
+what the psyche's rule governs is the operation's existence in observable
+state, and a refused operation never reaches any observable state.
+
+**3.5.2 · The typed refusal surface.** signal-spirit gains one versioned
+addition: `Output::AdvanceRefused(AdvanceRefusal)`, where
+`AdvanceRefusal` carries a closed reason enum — no strings:
+
+- `Denied` — criome reached a terminal deny.
+- `Expired` — the authorization window closed before the quorum
+  completed (a member down, a partition).
+- `Unavailable` — no operational quorum contract (the unfounded-criome
+  loud refusal).
+- `Unreachable` — the local criome could not be reached or its session
+  went dead (spirit's backstop deadline).
+
+The existing `ApplyRefusal` / `ApplyRefusalReason` shape
+(`schema/signal.rs:792-797`) is the pattern but stays the peer-apply
+ingress vocabulary; the two contact points keep their own closed types.
+Mapping is one closed match: `GateDecision::Refused(Denied|Expired|
+Unavailable)` and `GateDecision::Unreachable` → the four reasons above.
+A `CriomeGateError` machinery fault also refuses the operation (the
+caller cannot distinguish machinery from refusal and should not; the
+fault is logged loudly on the daemon side).
+
+**3.5.3 · Reads unaffected — the mailbox split.** The emitted engine
+actor serializes every working request through one mailbox
+(`src/schema/daemon.rs:488-508,569`); awaiting a cluster round inside
+`handle_working_input` would stall every read behind every write. The
+amendment splits the turn:
+
+- The per-connection task asks the engine actor to **stage** (one fast
+  mailbox turn). A read or otherwise non-advancing input completes
+  entirely in this turn, exactly as today — reads never wait on a round
+  and are never authorized.
+- The connection task itself awaits the **authorize** session (the
+  existing `spawn_blocking` drive), holding no engine borrow.
+- The connection task asks the engine actor to **materialize or
+  discard** (one fast mailbox turn) and writes the reply.
+
+Head-advancing flows serialize among THEMSELVES across all three phases
+(an async advance lock owned by the daemon spine, first-in first-out):
+one outstanding staged group, one outstanding round — which is also what
+makes the staged digest deterministic (3.5.1) and keeps at most one
+proposal ahead of the cluster head. Queued writers wait behind the
+current round; reads bypass the lock entirely and only ever wait for the
+millisecond-scale stage and materialize turns. This touches the
+schema-rust daemon emitter (the spine is generated), named in the delta
+map (§9).
+
+**3.5.4 · The write-path consequence, honestly.** Every head-advancing
+operation now waits on the quorum round before its caller hears anything.
+The observation session sits on the intake path. Normal case: the
+two-round commit across healthy peers — network round-trips plus signing,
+around a second locally, a few seconds across real links. Refusal case:
+bounded by the quorum window (tens of seconds live, owner-configured)
+plus the session backstop. A queued writer additionally waits for the
+rounds ahead of it. This is the psyche's designed trade — cluster
+acceptance IS the write — and this design does not soften it; it bounds
+it (window + backstop, always a definite typed outcome) and keeps reads
+out of it. Callers' client-side timeouts must exceed the window bound;
+the CLI and harness surfaces should present `AdvanceRefused` reasons as
+they are.
+
+One honest edge: a caller whose CONNECTION dies while the round runs has
+an indeterminate outcome (the round continues; a grant will materialize
+the operation, a refusal will discard it). This is the standard
+distributed-write ambiguity every database has at connection death; the
+definite signals are only the accepted reply and `AdvanceRefused`
+received.
+
+**3.5.5 · Which inputs are gated.** Spirit today classifies reads vs
+writes implicitly in the nexus dispatch (`nexus.rs:1222-1313`). The
+amendment makes the classification a closed, explicit surface (one match,
+enum-contact-points): effect commands and sema-writes (Record, Propose,
+Clarify, ResolveClarification, Supersede, Retire, ChangeRecord,
+ChangeCertainty, BumpImportance, RegisterReferent — everything that
+appends) are head-advancing and gated; queries, observations, lookups,
+counts, subscriptions, and Version pass ungated, as does any other input
+whose processing appends nothing. `ApplyAuthorizedRecord(s)` (§4) is NOT
+gated by intake: it carries an authorization that already happened and is
+judged by the receiving criome (acceptance-by-verification), then
+materializes directly. The owner-only meta plane (`Import`,
+`CollectRemovalCandidates`) stays owner-trust and is not policed by this
+option, as settled — noting plainly: `Import` is the privileged escape
+hatch and writes locally without a round; it is owner-only by socket and
+out of the working plane.
+
+### 3.6 · What shipping means now: distribution of accepted state
+
+Under the everywhere-gate, everything in an Enabled spirit's log is
+cluster-authorized by construction. Shipping is therefore pure
+DISTRIBUTION — moving accepted state to the other members — never a
+second acceptance judgment on the sending side. The drain machinery
+survives with its meaning changed:
+
+- **The ship drain** (the reworked `PropagationDrain`): on each
+  materialization it receives "head advanced" mail exactly as today and
+  ships the unshipped outbox suffix. It no longer gates: by the time it
+  runs, acceptance already happened at intake.
+- **The ship-time grant fetch.** The §4 push carries the authorization
+  identifier and Evidence. Spirit does not durably retain grants; at ship
+  time the drain re-asks its criome for the suffix head, which
+  short-circuits to the immediate re-grant of the standing committed head
+  with the stored round's Evidence (`root.rs:1347-1351,1525-1530`) — a
+  local socket round-trip, no cluster round. This keeps spirit stateless
+  about grants and makes grant-then-ship-failure retries trivially safe:
+  the outbox suffix waits, the next mail re-fetches, ships, and
+  acknowledges the cursor.
+- **The residue reconciler.** The one case where the drain still asks for
+  a genuinely NEW round: disabled-era residue (§3.4 case 1) — an
+  unshipped suffix whose head the cluster has never granted. Enabling the
+  gate (the owner `Configure`) fires one reconcile mail; the drain
+  proposes the current head, the batch grant covers the residue
+  transitively, and the suffix ships. This pass goes through the same
+  advance lock as intake (3.5.3), keeping one proposal outstanding.
+- For deterministic tests the drain stays drivable directly
+  (`Engine::drain_propagation_once`), now meaning "ship what is
+  accepted" plus the residue round when one is owed.
+
+### 3.7 · Contact points (enum-vs-enum, single matrices)
 
 - Criome ingress: `AuthorizationMode` × operational-contract presence →
-  behavior (§3.3 table) — one match in the root actor's
-  `AuthorizeSignalCall` arm.
+  behavior (§3.3 table) — one match, as implemented.
+- Criome successor admission: recorded-row presence × row-round state
+  (`Gathering`-live | `Gathering`-dead | `Authorized`) × digest equality →
+  admit | supersede | idempotent re-open | refuse-conflict (§3.3) — one
+  amended match at the existing `co_sign_admission` seam.
 - Spirit session parse: `AuthorizationStatus` × grant-presence →
-  `GateDecision` — one method on the session-state record
-  (`Granted×Some(valid)` → Authorized; `Granted×None|mismatch` → fault;
-  `Denied|Expired|Unavailable×_` → refusal; `Pending|Signing|Parked×_` →
-  keep draining).
-- Spirit gate mode (owned by primary-6kz1): Disabled | Enabled(socket) —
-  a closed record, not a boolean.
+  `GateDecision` — implemented, unchanged.
+- Spirit intake classification: `Input` → advancing | non-advancing —
+  one new closed match (3.5.5).
+- Spirit refusal mapping: `GateDecision` → `Output` (`AdvanceRefused`
+  reason | the held accepted reply) — one new closed match (3.5.2).
+- Spirit gate mode: Disabled | Enabled(socket) — implemented, unchanged.
 - Router local delivery: `ComponentKind` × deployed-ingress presence →
-  deliver | typed refusal (§1) — one enum-keyed table.
+  deliver | typed refusal (§1) — unchanged.
 
-### 3.7 · Slice test/proof plan (testing skill: stateful tests as named outputs)
+### 3.8 · The crash-window ledger
+
+The staging slot exists for exactly these windows. On every daemon start,
+an occupied staging slot is resolved BEFORE the intake path opens:
+
+1. **Crash after stage, before the ask left.** Recovery re-asks with the
+   staged digest — from criome's view a first ask. Grant → materialize;
+   refusal → discard. Either way resolved.
+2. **Crash mid-round.** The durable round stands criome-side
+   (`Gathering`); the recovery re-ask is an identical re-proposal and
+   re-opens it with a fresh window (`root.rs:2067-2083`). Resolves as
+   case 1.
+3. **Crash after the grant, before materialization.** The cluster
+   accepted the operation — the contract head already advanced to the
+   staged digest. The recovery re-ask short-circuits to the immediate
+   re-grant (`root.rs:1347-1351`) and recovery materializes the staged
+   group. This is the everywhere-gate semantic doing its work: once
+   granted, the operation IS accepted; local materialization is
+   subordinate bookkeeping and MUST complete. (The original caller never
+   got its reply — the indeterminate-outcome edge of 3.5.4.) This is
+   also why the stage phase must park the group DURABLY before the ask
+   leaves the process: if the staged content could be lost after a grant,
+   the cluster head would name a digest nobody can materialize —
+   unrecoverable. Durable staging closes that hole by construction.
+4. **Crash after materialization, before ship.** The outbox holds the
+   authorized suffix; the ship drain's next pass re-fetches the re-grant
+   and ships (§3.6). The existing outbox cursor discipline is unchanged.
+5. **Criome restarts mid-round.** The durable round survives; spirit's
+   session goes dead → `Unreachable` → the operation is refused, staging
+   discarded; a later identical or differing proposal resolves through
+   the idempotent re-open or dead-round supersession (§3.3). Fail-closed
+   at every fork.
+
+Out of scope, named: recovery while the cluster head moved concurrently
+(another member advanced the same contract between crash and recovery) is
+the concurrent-origination fork, deferred as settled (§4.6).
+
+### 3.9 · Slice test/proof plan (amended)
 
 **Pure/unit (flake checks):**
 
-- The session-parse matrix of §3.2 including every negative (stub criome
-  socket writing crafted snapshots/updates) — in spirit.
-- Criome bridge unit tests: Quorum+unfounded → Unavailable pushed;
-  AutoApprove unchanged (repairs the failing
-  `criome_gate_1of1::socket_only_...` test as the positive); window-expiry
-  timer marks Expired and publishes; catch-up rule completes a standing
-  recorded round before opening the requested one — in criome.
-- Idempotent re-proposal after expiry: same digest re-opens the round,
-  fresh window, completes — in criome (extends `two_round_commit.rs`).
+- The session-parse matrix negatives carry over with the amended
+  consequence: Granted-without-grant, digest mismatch, foreign slot,
+  deadline expiry, off-contract frame → **operation refused, nothing
+  appended, store unchanged** (previously: head held, ship withheld).
+- Intake classification: every `Input` variant lands in exactly one arm
+  of the closed advancing/non-advancing match; reads complete ungated
+  with the gate Enabled and criome absent.
+- Staging: stage-then-discard leaves no observable trace (record count,
+  head, outbox, queries — all unchanged); stage-then-materialize equals a
+  direct Disabled-mode write byte-for-byte (same entries, same digests);
+  recovery resolution for ledger cases 1-3 (stub criome socket).
+- Criome bridge: the supersession matrix — live-row conflict still
+  refused; dead `Gathering` row superseded by a differing successor;
+  `Authorized` round never superseded; identical re-proposal re-opens;
+  re-grant of the standing head carries the stored Evidence.
+- Criome window expiry unchanged (pushes Expired; the row stands until
+  superseded).
 
-**The loopcheck (stateful, named output, NOT a flake check — same posture
-and pattern as `router-two-hosts-found-root-over-router-voice-test`):**
-
-`spirit-cluster-authorizes-head-advance-over-router-test`, hosted in
-`spirit/tests/` (spirit already dev-deps criome; the router dev-dep follows
-the existing `offline-full-chain-e2e` precedent. Fallback host if the
-router-dep lag bites: `router/tests/` beside the founding proof — decide at
-implementation, spirit-hosted preferred). Harness = the founding proof's
-node shape (two node directories, two real routers on loopback TCP with
-seeded host routes, two real criome daemons with the router submission path
-armed), extended with a real spirit engine on node A gated against criome
-A, plus criome daemon configuration setting a short quorum window
-(seconds).
-
-Sequence and witnessed claims, exercising batch, refusal, and catch-up:
+**The loopcheck** (stateful, named output, same posture and harness as
+the founding proof): `spirit-cluster-gates-acceptance-over-router-test`,
+two nodes, two real routers on loopback TCP, two real criome daemons,
+short quorum window, a real spirit engine on node A gated against
+criome A. Sequence and witnessed claims:
 
 1. Found the 2-of-2 root over the router (reuse the founding drive:
    initiate on A, agent-performed explicit accept on both meta sockets,
    `Founded` with the same anchor on both).
-2. **Batched authorized advance:** record TWO entries on spirit A → drive
-   the drain → ONE round authorizes the batch head → assert the gate
-   decision is Authorized with the grant digest equal to the second
-   entry's digest, both entries shipped (cursor at the head), and criome B
-   holds the committed round for that one object (its ledger witnessed one
-   round, not two).
-3. **Refused advance (quorum can't complete):** stop node B's router
-   listener, record a third entry on A → drive the drain → the round stays
-   Gathering, the window expires, Expired is pushed → assert the decision
-   is a refusal, nothing shipped, spirit A's LOCAL head still advanced
-   (local commit stands), and the outbox still holds the suffix.
-4. **Catch-up retry after refusal:** record a FOURTH entry on A (the head
-   moves past the refused proposal), restore B, drive the drain → criome A
-   first completes the recorded round for the refused batch head, then
-   authorizes the new head; the grant binds the fourth entry's digest; the
-   whole suffix ships. (Proves §3.4's no-wedge property end to end.)
+2. **Disabled-era residue:** with the gate Disabled, record TWO entries
+   on spirit A — accepted immediately, nothing propagates. Enable the
+   gate (owner Configure).
+3. **Accepted advance covering residue:** record a THIRD entry → the
+   intake round proposes its prospective head; ONE round; the caller's
+   reply arrives only after the grant; assert the reply is accepted, the
+   head equals the third entry's digest, all three entries ship, and
+   criome B's ledger witnessed ONE committed round (the batch covering
+   the residue transitively).
+4. **Refused advance — the corrected outcome:** stop node B's router
+   listener; record a FOURTH entry → the round stays Gathering, the
+   window expires, Expired is pushed → assert the caller received
+   `AdvanceRefused(Expired)`, **the head did NOT advance** (still the
+   third entry's digest), the record count is unchanged, no store or
+   outbox trace of the fourth operation exists, and reads served
+   normally throughout the round (issue an Observe mid-round).
+5. **Supersession retry:** restore B; record a FIFTH entry (a different
+   operation, hence a different prospective digest from the same head) →
+   criome A supersedes the dead round's row and originates fresh →
+   granted → assert the head advances to the fifth entry's digest and it
+   ships. (Proves §3.3's dead-round supersession end to end.)
 
-Falsification: if spirit bypassed criome, step 3 would ship; if the parse
-trusted status without the grant, a crafted Granted-without-grant criome
-would ship; if the catch-up rule were missing, step 4 would self-refuse
-with `QuorumConflict`.
+Falsification: if spirit bypassed criome, step 4 would accept and
+advance; if the parse trusted status without the grant, a crafted
+Granted-without-grant criome would accept; if supersession were missing,
+step 5 would refuse forever with a conflict; if staging leaked, step 4
+would leave an observable trace.
 
 ## 4 · Slice: propagation with receiving-side acceptance (immediately after §3)
 
-### 4.1 · Shape (b), settled
+### 4.1 · Shape (b), settled — unchanged
 
-The psyche reviewed the three candidate shapes and settled on (b): **the
-authorization approval carries the target host IDs; the state-bearing
-spirit pushes.** Recorded reasons, for future readers: (a) — remote criome
-notifies its spirit, which fetches — adds a round trip, a new
-criome→spirit channel on every node, and misses offline members (its value
-is as a future repair/bootstrap pull, §4.6); (c) — spirit keeps its own
-mirror list and delivery tracking — duplicates criome's membership and the
-router's reachability/queueing inside spirit and erodes the
-quorum-ignorance boundary. (b) is pure push with zero new inter-component
-channels and zero duplicated ownership: criome owns membership (the
-propagation targets are the operational quorum contract's members —
-criome-owned, settled), the router owns reachability and the durable delta
-queue, spirit pushes exactly where the approval says.
+The authorization approval carries the target host IDs; the state-bearing
+spirit pushes. Criome owns membership (the propagation targets are the
+operational quorum contract's members), the router owns reachability and
+the durable delta queue, spirit pushes exactly where the approval says.
+The recorded reasons against shapes (a) and (c) stand as written in the
+previous revision: (a) adds a round trip, a new criome→spirit channel on
+every node, and misses offline members (its value is as a future
+repair/bootstrap pull); (c) duplicates criome's membership and the
+router's reachability inside spirit and erodes the quorum-ignorance
+boundary.
 
-### 4.2 · Design
+### 4.2 · Design (adjusted to the everywhere-gate)
 
 Flow for one authorized batch (suffix head H) on node A, cluster {A, B, ...}:
 
-1. **Targets on the approval.** When the criome bridge stores the Granted
-   state (§3.3 step 5), it also resolves the propagation targets: the
-   operational quorum contract's members minus the requesting host, each as
-   its **Criome host ID** (the member's master public key — resolved
-   criome-side from the admitted contract; identity→key binding already
-   exists). These ride the Granted push to spirit as opaque routing data
-   (wire shape §4.3).
-2. **Spirit pushes one batch per target.** The drain (§3.5) frames the
-   authorized suffix as ONE signal-spirit `ApplyAuthorizedRecords` request
-   per target — carrying the ordered versioned log entries, and the
-   **carried authorization**: its unique identifier (the operational
-   contract digest + the authorized batch-head object reference) plus the
-   assembled quorum Evidence from the approval. Destination = (target host
-   ID, `ComponentKind::Spirit`) — the target host's one spirit, preset and
-   deterministic (§1); no actor-name projection, no routing table, no
-   lookup. Submitted to the LOCAL router via `SubmitRoutedObjects`; the
-   router sees an opaque payload addressed to a (host, component) pair,
-   resolves host → route → durable backlog exactly as built.
-3. **Peer acceptance — the loop-tying check (settled intent).** Propagated
-   state carries the unique identifier of the authorization that allowed
-   it, and the receiving spirit MUST verify with its local criome that this
-   authorization is real and locally accepted before applying — so no
-   spirit can unilaterally skip authorization. Spirit B's
-   `ApplyAuthorizedRecords` ingress (reactivating and batching the parked
-   `ApplyAuthorizedRecord` seam, `nexus.rs:1305`) hands the carried
-   identifier + Evidence to ITS OWN criome (the `evaluate_carried` /
-   `EvaluateAuthorization` seam, extended to **accept-and-record**
-   semantics). Criome B answers Authorized exactly when:
-   - the identified round is already committed in its durable ledger (it
-     voted — the normal case), or
-   - the carried Evidence BLS-verifies against ITS admitted operational
-     quorum contract (signatures + threshold), in which case criome B
-     records the co-signed successor row and advances its contract head —
-     the offline-at-quorum member catches up and the authorization becomes
-     locally accepted; member head chains stay aligned cluster-wide.
-   Anything else — unknown contract, failed verification, no local criome
-   reachable — is a typed `ApplyRefusal`; nothing written. Cryptography is
-   criome's domain at both ends (settled); spirit never verifies BLS.
-4. **Peer applies, chain-checked.** Only on criome B's Authorized does
-   spirit B apply, atomically, after checking on its own store: the batch's
-   first entry chains onto B's current applied head, each entry chains onto
-   the previous, and the last entry re-hashes to the authorized digest.
-   These are sema-engine digest-integrity checks on spirit's own data
-   structure, not signature cryptography. Any break — including a gap
-   (first entry not chaining onto the applied head) — is a typed refusal;
-   gap repair is future (§4.6).
-5. **Offline targets — the delta, no polling.** If a target is unreachable,
-   the LOCAL router's durable outbound backlog holds the forward
-   (crash-durable) and drains on the peer-session-established push — the
-   built nbmq.5 behavior. Spirit tracks nothing; there is no retry loop and
-   no poll anywhere in spirit. Pushes to one destination are
-   backlog-ordered; the peer applies in log order and refuses a gap.
-6. **Both directions.** The design is symmetric by construction: B's own
-   head advances run the same §3 authorization and the same push back
-   toward A. Nothing additional to build — only the convergence proof
-   (§4.5).
+1. **Targets on the approval.** When the criome bridge stores a Granted
+   state it resolves the propagation targets: the operational quorum
+   contract's members minus the requesting host, each as its Criome host
+   ID. These ride the grant — including the ship-time re-grant (§3.6) —
+   to spirit as opaque routing data (wire shape §4.3).
+2. **Spirit pushes one batch per target.** The SHIP drain (§3.6) frames
+   the unshipped suffix as ONE signal-spirit `ApplyAuthorizedRecords`
+   request per target — ordered entries plus the carried authorization
+   (the operational contract digest + the authorized head reference) plus
+   the assembled quorum Evidence, fetched at ship time via the standing
+   re-grant. Destination = (target host ID, `ComponentKind::Spirit`),
+   submitted to the LOCAL router; the router sees an opaque payload
+   addressed to a (host, component) pair, resolves host → route →
+   durable backlog exactly as built.
+3. **Peer acceptance — the loop-tying check (settled intent).** The
+   receiving spirit hands the carried identifier + Evidence to ITS OWN
+   criome before applying — so no spirit can unilaterally skip
+   authorization. Criome B answers Authorized exactly when the identified
+   round is already committed in its durable ledger (it voted — the
+   normal case), or the carried Evidence BLS-verifies against its
+   admitted operational contract (signatures + threshold), in which case
+   criome B records the co-signed successor row and advances its contract
+   head — the offline-at-quorum member catches up. Anything else —
+   unknown contract, failed verification, no local criome reachable — is
+   a typed `ApplyRefusal`; nothing written. Cryptography is criome's
+   domain at both ends; spirit never verifies BLS.
+4. **Peer applies, chain-checked**, atomically: the batch's first entry
+   chains onto B's applied head, each entry chains onto the previous, the
+   last entry re-hashes to the authorized digest. Under the
+   everywhere-gate this apply is acceptance-by-verification: the round
+   ALREADY gated this state's acceptance cluster-wide; B's criome check
+   confirms that fact locally. It does not run a new round and does not
+   enter B's intake gate (§3.5.5). Any break, including a gap, is a typed
+   refusal; gap repair is future (§4.6).
+5. **Offline targets — the delta, no polling.** The LOCAL router's
+   durable outbound backlog holds the forward (crash-durable) and drains
+   on the peer-session-established push. Spirit tracks nothing; no retry
+   loop, no poll. Pushes to one destination are backlog-ordered; the peer
+   applies in log order and refuses a gap.
+6. **Both directions.** Symmetric by construction: B's own head advances
+   run the same §3 intake gate and the same push back toward A.
+   Sequential only; concurrent forks stay out of scope.
 
 The legacy direct mirror path (`MirrorShipper` → `mirror::ComponentShipper`
 → `MirrorTarget::Address` socket) is superseded by the router push and
-retires with this slice (a bead; the mirror-noun daemon is already dropped
-per nbmq). Checkpoint publication / fresh-node restore is out of slice
-scope (§4.6).
+retires with this slice (a bead). Checkpoint publication / fresh-node
+restore is out of slice scope (§4.6).
 
-### 4.3 · Wire/contract changes (component-architecture: contracts first)
+### 4.3 · Wire/contract changes
 
-This slice carries the §1 addressing groundwork — it adds the first new
-routed path (spirit→spirit), and criome's own quorum traffic migrates onto
-the same model in the same move:
-
-- **signal-standard**: owns the single `ComponentKind`,
-  `AuthorizedObjectKind`, `AuthorizedObjectReference`, `ObjectDigest`
-  (typed bytes). Other signal-* crates re-export; the signal-criome and
-  signal-persona twins are deleted (follow-up beads for signal-orchestrate
-  and meta-signal-mentci).
-- **signal-router**: the forwarded envelope's `SourceActor` /
-  `DestinationActor` (`ActorIdentifier(String)`) become
-  (CriomeHostId, ComponentKind) pairs; `RoutedContractObject`'s
-  `ContractName(String)` / `ContractOperation(String)` dissolve into
-  destination-component dispatch with opaque payload octets (§1);
-  `CriomeHostId` becomes typed key bytes with `Hash`. `RegisterActor` /
-  actor-home registration and the `homes` map dissolve. No criome or
-  spirit concept enters the router's vocabulary — host + component +
-  opaque payload only.
-- **router**: `authorized_object_projection.rs` deleted; local delivery
-  table ComponentKind → ingress; route resolution drops the actor-home hop.
-- **signal-criome** (versioned, clean-genesis line): the authorization
-  request carries the typed `AuthorizedObjectReference` (string trio
-  retired, §3.1). The Granted-side state carries (i) the assembled quorum
-  `Evidence` for the authorized object and (ii) the propagation targets as
-  a vector of Criome host IDs — positional NOTA records, no flags. Fork
-  for the implementer, called here: targets INSIDE the BLS-signed
-  `AuthorizationGrantStatement` bytes (binds routing advice to the
-  signature; costs a statement change) versus beside the grant on the state
-  record (routing advice unsigned; the peer acceptance check never trusts
-  it anyway — misrouting cannot forge an apply, only misdeliver to a node
-  that re-judges). Default: beside the grant — the authorization substance
-  stays signed, routing advice stays advice. One canonical asserted
-  round-trip per new type (contract-repo).
-- **signal-spirit**: `ApplyAuthorizedRecords` — the batch form of the
-  existing `ApplyAuthorizedRecord` — carrying ordered entries + the
-  authorization identifier (contract digest + authorized object reference)
-  + Evidence. Extend from the nbmq.2 shape; a batch of one replaces the
-  singular variant.
+As in the previous revision — this slice carries the §1 addressing
+groundwork: signal-standard owns the single vocabulary; signal-router's
+envelope becomes (CriomeHostId, ComponentKind) pairs with opaque payload
+octets and `CriomeHostId` becomes typed key bytes; the router's
+projection file dies and local delivery is the ComponentKind table;
+signal-criome's authorization request carries the typed reference
+(string trio retired) and its Granted state carries the assembled quorum
+Evidence plus the propagation targets (targets beside the grant, not
+inside the signed statement — routing advice stays advice, the peer
+re-judges anyway); signal-spirit gains `ApplyAuthorizedRecords` (batch
+form; a batch of one replaces the singular variant). One canonical
+asserted round-trip per new type. Addition from this amendment:
+signal-spirit also carries `Output::AdvanceRefused(AdvanceRefusal)`
+(§3.5.2), landing with the §3 work, before this slice.
 
 ### 4.4 · What spirit knows at the end (boundary audit)
 
 Spirit's total vocabulary after these slices: "my local criome socket",
-"authorize this head digest" (typed reference in, terminal verdict out),
-"push this batch to these opaque host IDs via my router", "ask my criome
-whether a carried authorization is real and locally accepted before
-applying", and its own store's chain integrity. No quorum, no threshold,
-no membership, no reachability, no window. The psyche's boundary holds.
+"authorize this prospective head digest" (typed reference in, terminal
+verdict out), "materialize on grant, refuse otherwise", "push this batch
+to these opaque host IDs via my router", "ask my criome whether a carried
+authorization is real and locally accepted before applying", and its own
+store's chain integrity. No quorum, no threshold, no membership, no
+reachability, no window. The psyche's boundary holds.
 
 ### 4.5 · Slice test/proof plan
 
-**Pure/unit (flake checks):**
+As in the previous revision, with acceptance-semantics assertions folded
+in. Pure/unit: contract round-trips for the new types; router
+local-delivery table; criome Granted-state targets and accept-and-record;
+spirit apply-ingress negatives (tampered evidence, unknown identifier,
+digest/entry mismatch, interior chain break, gap, no local criome — all
+refused, nothing applied). Loopchecks (stateful, named outputs):
 
-- Contract round-trips for the new signal-standard / signal-criome /
-  signal-spirit / signal-router types; router local-delivery table
-  (ComponentKind × presence).
-- Criome: Granted state carries evidence + members-minus-self targets
-  (founded fixture); accept-and-record: carried-evidence verification
-  records the row and advances the head (the offline-member path);
-  already-committed round answers Authorized without re-recording.
-- Spirit apply ingress negatives (stub criome): tampered evidence →
-  refused; unknown authorization identifier → refused; digest/entry
-  mismatch → refused; interior chain break → refused; gap (batch not
-  chaining onto applied head) → refused; no local criome reachable →
-  refused (fail-closed, never applied-untrusted).
+1. `spirit-propagates-accepted-head-over-router-test` — extend the §3.9
+   harness with a spirit engine on node B: record on A (intake round,
+   accepted) → A pushes ONE batch over router A → router B → B's ingress
+   asks criome B (voter path: round already in its ledger) → B applies
+   atomically → assert B's applied head equals A's head. Falsification: a
+   harness that skips the quorum, tampers one signature byte, or forges
+   the identifier must yield `apply_refused` and no head movement on B.
+2. `spirit-delivers-delta-when-peer-returns-test` — authorize and accept
+   with both up; take down B's router listener BEFORE the push; assert
+   the forward parks in A's durable backlog and B is unchanged; restore;
+   assert the backlog drains on the session event (no poll) and B
+   converges. Restart A's router mid-test to witness crash-durability
+   end-to-end.
+3. Both-directions convergence: distinct entries on A then B
+   (sequentially, not concurrently), both heads converge on both nodes.
 
-**Loopchecks (stateful, named outputs, same pattern as §3.7's):**
-
-1. `spirit-propagates-authorized-head-over-router-test` — extend the §3.7
-   harness with a spirit engine on node B: record two entries on A →
-   cluster authorizes the batch → A pushes ONE batch over router A →
-   router B → B's ingress asks criome B (voter path: round already in its
-   ledger) → B applies both entries atomically → assert B's applied head
-   equals A's head (`ObserveHead` on both). Falsification: a harness that
-   skips the quorum, tampers one signature byte, or forges the
-   authorization identifier must yield `apply_refused` and no head
-   movement on B.
-2. `spirit-delivers-delta-when-peer-returns-test` — the offline delta:
-   authorize with both up; take down node B's router listener BEFORE the
-   push; assert the forward parks in A's durable outbound backlog and B's
-   head is unchanged; restart B's listener / re-establish the peer
-   session; assert the backlog drains on the session event (no poll) and B
-   converges to A's head. Restart A's router mid-test to prove the backlog
-   is crash-durable (existing nbmq.5 property, now witnessed end-to-end to
-   a spirit apply).
-3. Both-directions convergence (nbmq.10): record distinct entries on A then
-   on B (sequentially, not concurrently — concurrent forks are out of
-   scope, §3.4) and assert both heads converge on both nodes.
-
-The offline-at-quorum member acceptance (verify-then-record) is covered at
-unit level criome-side; a 3-node loopcheck variant (A+B authorize while C
-is down; C returns, receives the push, accepts via carried evidence) is
-named as an optional extension, not required for the slice.
-
-The live two-VM run (mirror-alpha/mirror-beta, lojix-deployed) is the
-operating-system-implementer follow-up after the loopchecks are green —
-the nbmq.12 / 79z1.15 endgame, not part of these slices.
+The offline-at-quorum member acceptance (verify-then-record) is covered
+at unit level criome-side; a 3-node loopcheck variant stays an optional
+extension. The live two-VM run stays the operating-system-implementer
+follow-up after the loopchecks are green.
 
 ### 4.6 · Explicitly out of scope (named so nobody re-derives them)
 
-- Approval predicates: lineage checks, fork rules, thresholds beyond the
-  admitted contract's — psyche says premature.
-- Concurrent-origination fork resolution (§3.4).
-- Gap repair / history fetch / fresh-node bootstrap from peers — the
-  (a)-shaped pull as a REPAIR path, plus checkpoint restore. Future slice.
-- Spirit pinning its criome's public key for local grant verification
-  (§3.2 hardening seam).
-- Cluster membership change / rotation (79z1 phase-2; the reissue seam is
-  §5).
+- Approval predicates: lineage checks, fork rules, thresholds — psyche
+  says premature.
+- Concurrent-origination fork resolution (two members proposing different
+  successors from the same head inside one window), including recovery
+  under a concurrently-moved cluster head (§3.8).
+- Gap repair / history fetch / fresh-node bootstrap from peers; checkpoint
+  restore.
+- Spirit pinning its criome's public key for local grant verification.
+- Cluster membership change / rotation (the reissue seam is §5).
+- Intake coalescing of queued writers (§3.4).
 
 ## 5 · Slice: the root issues the operational cluster quorum sub-contract
 
-Settled intent: the root is the root; there is only one. The operational
-cluster quorum contract is a sub-contract of it — issued and anchored by
-the root, with its own distinct contract identity — and after the early
-prototype phase the root itself is not the contract operational rounds run
-over. There is no separation event: right now the root keys and the first
+**Subsumed in framing by `CriomeStateGovernanceDesign.md` (same
+directory, 2026-07-07).** The psyche set a unified model: a new
+contract is a state change proposed through the parent quorum — so the
+issuance below becomes a change to the root's child-set state slot, and
+the record type `Contract` is renamed `Criome` (that design's §4, §9,
+§10). The mechanics of this section survive as the implementation of
+that state change: the same root-quorum round, the same
+evidence-carrying admission, the same operational resolution and
+staging posture. Membership rotation (item 4) becomes account
+supersession with slot adoption there. Read this section together with
+that design; where the two differ in framing, that design governs.
+
+Unchanged by this amendment. The operational cluster quorum contract is a
+sub-contract of the root — issued and anchored by it, with its own
+distinct contract identity; right now the root keys and the first
 sub-contract keys are identical (same hosts, same criome installation, no
 key export), and the root simply continues, unchanged. Air-gapping and
-guarded-root operations are explicitly deferred design, not part of this
-slice map.
+guarded-root operations are deferred design.
 
-Design:
-
-1. **Issuance.** A cluster quorum sub-contract document — member set (the
-   same hosts' Criome host IDs, the same key material as the root's
-   members today), threshold, and a reference to the root anchor — is
-   authorized over the ROOT contract as an object of kind `Contract`
-   (`AuthorizedObjectKind::Contract` exists), through the ordinary
-   two-round commit: members auto-approve, nothing beyond well-formedness.
-   Manual approval remains unique to founding.
+1. **Issuance.** The sub-contract document — member set, threshold, root
+   anchor reference — is authorized over the ROOT contract as an object
+   of kind `Contract`, through the ordinary two-round commit; members
+   auto-approve. Manual approval remains unique to founding.
 2. **Admission carries the root's authorization.** Each member admits the
-   sub-contract into its `ContractStore` together with the root-round
-   Evidence. The verification chain every node can walk: pinned root anchor
-   (from founding) → root-authorized sub-contract → operational rounds
-   under the sub-contract. The §4.2 acceptance check verifies carried
-   evidence against the ADMITTED OPERATIONAL contract.
-3. **Operational resolution.** The bridge's contract resolution (§3.3 step
-   4, "resolved criome-side from the registry") resolves the admitted
-   sub-contract as the operational quorum contract once it exists; before
-   this slice lands, staging over the founded root contract is the
-   explicit prototype posture (§3.3 table). The per-contract ledger and
-   head chain are already keyed by contract; the sub-contract starts at
-   its own genesis head and the first operational round proposes spirit's
-   current head from there — no row migration, no cutover event. The root
-   continues, unchanged, as the root.
+   sub-contract with the root-round Evidence; the verification chain
+   every node can walk: pinned root anchor → root-authorized sub-contract
+   → operational rounds under it. The §4.2 acceptance check verifies
+   carried evidence against the ADMITTED OPERATIONAL contract.
+3. **Operational resolution.** The bridge resolves the admitted
+   sub-contract as the operational quorum contract once it exists;
+   before that, staging over the founded root contract is the explicit
+   prototype posture. The per-contract ledger and head chain are already
+   keyed by contract; no row migration, no cutover event.
 4. **Membership change / rotation** = the root issues a replacement
-   sub-contract the same way — the 79z1 phase-2 seam, not designed here.
+   sub-contract the same way — not designed here.
 
-Proof for the slice: a loopcheck extending §3.7's — found the root, issue
-the sub-contract through the root-quorum round, assert head advances
-authorize over the sub-contract (both criome ledgers key the new
+Proof: a loopcheck extending §3.9's — found the root, issue the
+sub-contract through the root-quorum round, assert head advances gate
+acceptance over the sub-contract (both criome ledgers key the new
 contract).
 
 ## 6 · Tracker implications (NOTES ONLY — no tracker mutation this pass)
 
-- **primary-nbmq** (persistent both-directions quorum-gated spirit mirror):
-  §3 supplies the missing "spirit's ask reaches criome's gather-and-commit"
-  bridge criome-side (nbmq.4's driver gains its production ingress); §4
-  reactivates the nbmq.2 apply ingress in batch form and is the substance
-  of nbmq.10 (both directions + convergence), advancing toward nbmq.12
-  (live two-VM proof). nbmq.5's durable outbox + push redial becomes
-  load-bearing for the offline delta — its per-destination ordering and its
-  redial trigger are verification points (§7).
-- **primary-79z1** (operational criome): §3.7's loopcheck is exactly the
-  in-process precursor of the open `.15` live proof's second half
-  ("authorize a native head-advance op through the two-round commit under
-  the clock gate"); the live run should reuse these named outputs' drive
-  sequence. §5's root-issued sub-contract replacement is the phase-2
-  membership seam.
-- **primary-6kz1** (concurrent lane): owns the 1-of-1 retirement and the
-  spirit-side disable option this design targets; §3's spirit-side work
-  must land after (or coordinated with) it — the session-parse fix touches
-  the same `criome_gate.rs`.
-- Suggested new beads at pickup (not filed): §1 contract consolidation
-  (signal-standard single vocabulary; twins deletion incl.
-  `authorized_object_projection.rs`; signal-orchestrate /
-  meta-signal-mentci follow-ups); §1 router (host, component) destination
-  + `CriomeHostId` retype; §3 criome bridge + catch-up + expiry push; §3
-  spirit typed ask + session parse + drain decoupling; §3 loopcheck; §4
-  signal-criome grant surface (evidence + targets); §4
-  `ApplyAuthorizedRecords` + acceptance check + push; §4 loopchecks; §5
-  sub-contract issuance + operational resolution;
-  MirrorShipper/MirrorTarget retirement.
+- **primary-nbmq**: §3 as amended is the acceptance gate nbmq's mirror
+  rides on; §4 reactivates the nbmq.2 apply ingress in batch form and is
+  the substance of nbmq.10, toward nbmq.12 (live two-VM proof). nbmq.5's
+  durable backlog stays load-bearing for the offline delta.
+- **primary-79z1**: §3.9's loopcheck remains the in-process precursor of
+  the `.15` live proof; §5 is the phase-2 membership seam.
+- The already-landed slice-1 lane's work is NOT discarded: the session
+  parse, the criome bridge, the window machinery, and the drain skeleton
+  all carry over (§2 table); the amendment moves the gate's seat and
+  amends one criome admission rule (§9).
+- Suggested new beads at pickup (not filed): sema-engine staging seam;
+  spirit intake classification + three-phase turn + advance lock (with
+  the schema-rust emitter change); signal-spirit `AdvanceRefused`;
+  criome dead-round supersession (CatchingUp retirement); drain rework to
+  ship/reconcile; gate seam decoupled from the `mirror-shipper` feature;
+  the §3.9 loopcheck; then the §4 and §5 items as previously listed
+  (contract consolidation, router retype, grant surface,
+  `ApplyAuthorizedRecords`, acceptance check + push, loopchecks,
+  sub-contract issuance, MirrorShipper/MirrorTarget retirement).
 
 ## 7 · Worker verification points (facts to confirm at pickup, cheap)
 
-1. Spirit tree state — primary-6kz1 was landing DURING the first pass;
-   re-read `criome_gate.rs` / `daemon.rs` / whether the disable option
-   landed. Note: the string literals the retiring ask uses differ between
-   `spirit` main (`"signal-spirit"` / `"spirit-operation"`,
-   `criome_gate.rs:317-325`) and the `spirit-trueschema` variant
-   (`"spirit-local-head"` etc.) — confirm which tree is authoritative
-   before retiring the trio.
-2. Outbox `acknowledge` forks (`MirrorHeadUnknown`, `OutboxEntryMismatch`,
-   `MirrorHeadForked`, `outbox.rs:191`) — confirm acknowledge-to-batch-head
-   composes with them (the `unshipped()` ordered-suffix and same-transaction
-   outbox row facts are verified).
-3. Router backlog: per-destination ordering guarantee, and what triggers
-   redial to a returned peer besides an inbound session.
-4. `ApplyAuthorizedRecord` payload as nbmq.2 built it — the fields to
-   extend into the batch shape (§4.3).
-5. The founded root contract is admitted into each member's `ContractStore`
-   post-founding (the bridge resolves members from it); the founding
-   proof's registry-seeding suggests yes — confirm.
-6. Criome client helper `transport.rs:355` (`states().first()`) — harden to
-   slot-filtering alongside the spirit parse (§3.2 rule 1).
-7. `originated_request_rounds` is in-memory; confirm a criome restart
+Resolved since the previous revision (baked into this amendment, cites in
+the ground-truth block): the self-row is recorded at propose time; the
+committed-head re-grant short-circuit exists; there is no dead-round
+supersession today (the catch-up stage is what must be replaced); member
+window admission has no skew margin; the entry digest folds no wall
+clock; entry+outbox are one atomic transaction; no staged-append seam
+exists; `ApplyAuthorizedRecord` answers fail-closed; a typed
+authorization-refusal output shape exists.
+
+Still to confirm at pickup:
+
+1. **Build-phase purity.** Whether any effect handler's decision logic
+   reads writes made earlier within the SAME operation group (the
+   mutate-vs-assert choice in `import_record`, `store/mod.rs:742-744`,
+   reads committed state; implied-referent groups look independent —
+   confirm across the retire/supersede/change paths). Where a dependency
+   exists, the build mode threads a pending-overlay view.
+2. **Identifier issuance determinism.** Record identifiers issued during
+   the build phase must be stable across stage→materialize (and across
+   recovery materialization). Confirm issuance is counter-derived under
+   the serialized head, not clock-derived.
+3. **The schema-rust daemon emitter.** Confirm the emitted working-input
+   turn can be regenerated into the three-phase shape (3.5.3) without
+   breaking the other emitted components.
+4. Outbox `acknowledge` forks (`MirrorHeadUnknown`, `OutboxEntryMismatch`,
+   `MirrorHeadForked`) compose with acknowledge-to-batch-head (carried
+   over).
+5. Router backlog per-destination ordering and redial triggers (carried
+   over, for §4).
+6. `ApplyAuthorizedRecord` payload fields to extend into the batch shape
+   (carried over, for §4).
+7. The founded root contract is admitted into each member's
+   `ContractStore` post-founding (carried over).
+8. Criome client helper `transport.rs:355` (`states().first()`) — harden
+   to slot-filtering (carried over).
+9. `originated_request_rounds` is in-memory — confirm a criome restart
    mid-round recovers originator-driving via the durable round on
-   re-proposal (§3.4 catch-up path).
-8. When exactly the originator's self-co-signed row is recorded
-   (propose-time vs commit-time): the catch-up rule (§3.3 step 3) is
-   conditional and safe either way — no standing row means propose directly
-   — but the loopcheck step 4 assumes propose-time recording; confirm at
-   `record_co_sign` call sites.
-9. Whether any further `ComponentKind` twins exist beyond signal-standard /
-   signal-criome / signal-persona / signal-orchestrate / meta-signal-mentci
-   before filing the consolidation bead.
+   re-proposal (carried over; §3.8 leans on it).
+10. Guardian interplay: the agent-guardian admission runs BEFORE staging
+    (a guardian rejection must not open a round). Confirm the ordering in
+    the nexus pipeline.
 
 ## 8 · Open questions for the psyche
 
-None at this revision. The former root-key question dissolved: the root
-continues unchanged, root and first sub-contract keys are identical for
-now (same hosts, same criome installation, no key export), and air-gapping
-is deferred design.
+None at this amendment. The correction is self-contained; its one
+non-obvious consequence is stated in §3.3 and restated here so it is
+seen: the previous revision's "the recorded round is always eventually
+completed; safety is never rolled back" posture cannot survive the
+everywhere-gate (completing a refused round would materialize a refused
+operation), so a window-dead, never-committed proposal row becomes
+supersedable by a different successor. The safety argument — only a
+round's originator can drive its commit, and it never will after
+abandoning it — is in §3.3. If that consequence reads wrong, it is the
+one thing to flag.
+
+## 9 · Implementation delta from spirit 0.23.1 / criome 0.7.0
+
+Landing order respects producers-before-consumers; each block is
+independently shippable and leaves main green. Versioning: spirit,
+criome, sema-engine, and signal-spirit each take a minor bump with their
+block; wire changes ride the signal-spirit line.
+
+**Block 1 — sema-engine: the durable staging seam** (new; no behavior
+change for existing callers):
+
+- New staging surface on `Engine`: stage a built operation group (park
+  the ordered would-be entries durably in a new staging table beside the
+  commit log, in its own small transaction; return the prospective head
+  digest), materialize a staged group (one atomic transaction: data rows
+  from the parked operations, entry appends, outbox rows, counters,
+  staging-slot clear — reusing the `engine.rs:2079-2095` unit), discard
+  a staged group, and surface an occupied slot at open (for §3.8
+  recovery). The digest computation reuses `versioning.rs` unchanged.
+- Materialization applies the PARKED entries verbatim (sharing the
+  apply-entries machinery with import/suffix apply) — never re-executes
+  the operation — and asserts the produced head equals the staged
+  digest.
+
+**Block 2 — criome: dead-round supersession** (root.rs):
+
+- DIES: the catch-up stage — `HeadAuthorizationStage::CatchingUp`, the
+  `standing_recorded_successor` re-drive and its settle path
+  (`root.rs:1375-1382,1572-1579,1685-1728`).
+- AMENDED: the successor-admission contact point
+  (`CoSignAdmission` / `check_successor_conflict`,
+  `root.rs:199-222,2627-2646`; solicit-side admission around `2195`)
+  gains the closed dead-round arm of §3.3/§3.7: dead `Gathering` row +
+  differing digest → durably replace and admit; live row → refuse
+  conflict (unchanged); `Authorized` → never supersede (unchanged);
+  identical digest → idempotent re-open (unchanged, `2067-2083`).
+- UNCHANGED: `re_grant_standing_head` (`1347-1351`), the expiry push
+  (`3465-3512`), window derivation, origination, evidence assembly,
+  member auto-approval.
+
+**Block 3 — signal-spirit: the refusal contract** (versioned):
+
+- New `Output::AdvanceRefused(AdvanceRefusal)` with the closed reason
+  enum `{Denied, Expired, Unavailable, Unreachable}` (§3.5.2). One
+  canonical asserted round-trip.
+
+**Block 4 — spirit: the gate moves to intake** (the main rework):
+
+- `nexus.rs` (dispatch band `1222-1313`): the explicit closed
+  advancing/non-advancing classification (3.5.5); effect and sema-write
+  handlers gain the build mode producing staged groups through Block 1's
+  seam when the gate is Enabled; Disabled keeps today's direct writes
+  byte-for-byte. `ApplyAuthorizedRecord` stays fail-closed until §4.
+- `store/mod.rs`: the direct `self.database.assert/mutate/retract` call
+  sites (`742,744`, retire, supersede, resolve, change paths) route
+  through the staged seam under Enabled.
+- `engine.rs`: `handle_async` splits into the stage and
+  materialize/discard surfaces; a start-time recovery hook resolves an
+  occupied staging slot per §3.8 before the listeners open;
+  `notify_head_advanced` becomes the SHIP trigger only; the gate seam
+  moves out from under the `mirror-shipper` feature (acceptance gating
+  must not be compiled out with shipping — its own feature or core); the
+  shipper stays feature-gated.
+- `daemon.rs` + the schema-rust daemon emitter: the three-phase
+  working-input turn and the first-in-first-out advance lock (3.5.3);
+  reads bypass.
+- `criome_gate.rs`: survives nearly intact (`ClusterAuthorizer`,
+  `HeadSessionBinding`, `GateDecision`, `GateRefusal`); the module and
+  policy doc comments rewritten to the acceptance semantic (the
+  "Working inputs are NOT refused at ingress" paragraph dies); the
+  `GateDecision` → `AdvanceRefused` closed mapping added.
+- `propagation.rs`: `PropagationDrain::drain_once` stops gating —
+  becomes ship-with-regrant plus the residue reconciler round (§3.6),
+  sharing the advance lock; doc comments rewritten.
+- Tests: the unit matrix and the
+  `spirit-cluster-gates-acceptance-over-router-test` loopcheck per §3.9;
+  the existing drain-era tests rework their asserted consequences ("head
+  held" → "operation refused, head did NOT advance").
+
+**What dies outright, across blocks:** the accept-locally-then-authorize
+premise and every comment stating it (`daemon.rs:152-160`,
+`criome_gate.rs` module doc, `propagation.rs` module doc, `engine.rs`
+field docs); criome's CatchingUp stage; the whole-unshipped-suffix batch
+as the acceptance unit; the old loopcheck's "local head still advanced"
+assertion.
+
+**What is deliberately NOT touched:** the two-round commit driver, the
+observation-session contract and its parse matrix, the window/expiry
+machinery, the outbox/cursor discipline, the addressing model (§1), the
+shape (b) propagation design (§4), and the §5 sub-contract staging.

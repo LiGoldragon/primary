@@ -23,6 +23,29 @@ not as the final word. Its factual claims were re-verified against
 source by three independent scouts; §1 records what held and what did
 not, and §9 gives the judgment on its recommendations.
 
+**Amended 2026-07-07.** Two psyche decisions this session, designed in
+full in `CriomeStateGovernanceDesign.md` (same directory), rework parts
+of this document:
+
+- **Privacy silos replace sealed payloads.** Records of different
+  privacy classes live in SEPARATE logs, each with its own chain and
+  head; mirroring to an untrusted host ships only the public silo. No
+  sealed entries, no payload commitments, no derived chains, no digest
+  schema change. §5 is rewritten; §11 question 1 dissolves (the
+  metadata-leak dilemma no longer exists).
+- **The mirror-target list is quorum-governed state living in
+  spirit.** The psyche, verbatim: "the list of mirrors is in spirit,
+  changes gated in criome. just another log, like the privacy silos."
+  The §4 recommendation to put targets in the sub-contract document is
+  superseded; §11 question 2 is resolved. Member targets still ride
+  the grant (membership is criome's knowledge); remote targets come
+  from spirit's own mirror-list log. §2 step 3, §4, and the slice map
+  are amended accordingly.
+- Vocabulary: the account record `Contract` is renamed `Criome`
+  (settled; that design's §10). This document's older "operational
+  quorum contract" phrasing reads as "the operational account" and is
+  left in place where unambiguous.
+
 ## 0 · Terms
 
 Plain definitions, used throughout:
@@ -64,9 +87,19 @@ Plain definitions, used throughout:
   cluster's state but is not a quorum member and can never authorize
   anything.
 - **Privacy magnitude** — spirit's existing per-record privacy field: a
-  typed ordered level, queried with selections such as "at most public."
-  There is no separate public/private record class; this magnitude is
-  the class vocabulary.
+  typed ordered level (an 8-step scale, `Zero` through `Maximum`),
+  queried with selections such as "at most public."
+- **Privacy silo** — one of a small, closed set of privacy classes,
+  each backed by its OWN log: its own store, hash chain, head, and
+  outbox. Every record lives in exactly one silo, chosen from its
+  privacy magnitude by a fixed total mapping (which partition of the
+  magnitude scale forms the silo set is an open psyche question,
+  recorded in `CriomeStateGovernanceDesign.md` §12). Silos are primary
+  logs, not projections derived from a master log.
+- **Mirror-list log** — spirit's own log holding the mirror-target
+  list: a mapping silo → target hosts, amended only through the same
+  quorum gate as any head advance
+  (`CriomeStateGovernanceDesign.md` §5.3).
 
 ## 1 · Ground truth (verified against source, 2026-07-05)
 
@@ -118,8 +151,9 @@ What holds:
   store, not per family (`sema-engine/src/commit_log.rs:36`); one global
   shipped cursor, no per-destination cursors (`outbox.rs:17-19`); and
   the entry digest folds the raw payload bytes directly
-  (`versioning.rs:328-338`) — so today a payload cannot be withheld
-  without breaking chain verification. §5 turns on this fact.
+  (`versioning.rs:328-338`) — so a payload cannot be withheld from a
+  shipped chain without breaking verification. §5 turns on this fact;
+  the silo amendment answers it by never needing to withhold one.
 - Spirit main already matches the settled direction: the criome gate is
   a closed mode (Disabled, the operative default, or Enabled with a
   cluster authorizer); the old ship seam is a propagation drain
@@ -154,23 +188,28 @@ semantic:
    across the operational quorum contract's members over the router.
    No grant, no record: an unauthorized change is refused everywhere,
    including locally.
-3. The grant comes back carrying the propagation targets: the quorum
-   members minus this host, plus every configured non-authoritative
-   remote, each target as (Criome host ID, privacy ceiling). The
-   component commits the entry and stores the grant evidence beside it,
-   in the same transaction, keyed by the entry digest — so a crash
-   between acceptance and shipping loses nothing.
+3. The grant comes back carrying the MEMBER targets: the quorum
+   members minus this host, each as a Criome host ID — membership is
+   criome's knowledge, and it rides the grant as opaque routing data.
+   The non-authoritative remotes are spirit's own knowledge: the
+   shipper reads the current silo → hosts mapping from its own
+   mirror-list log at ship time (§4, amended). Each fact has exactly
+   one owner; nothing is echoed from a copy. The component commits the
+   entry and stores the grant evidence beside it, in the same
+   transaction, keyed by the entry digest — so a crash between
+   acceptance and shipping loses nothing.
 4. The component's propagation drain (a background actor, pushed a mail
-   on every commit — never polling) frames the unshipped suffix as one
-   typed apply-batch per target: the ordered entries, the authorization
-   identifier (contract digest plus authorized head reference), and the
-   evidence. Entries above a target's privacy ceiling ship sealed (§5).
-   Each batch goes to the local router addressed to (target host ID,
-   same component kind) — spirit to spirit, mind to mind. The shipped
-   cursor advances when the local router has durably accepted the
-   batches; from there delivery is the router's job, ordered per
-   destination (§7), held in its durable backlog while a peer is away
-   and drained on the session-established push.
+   on every commit — never polling) frames the advanced silo's
+   unshipped suffix as one typed apply-batch per target of that silo:
+   the ordered entries, the authorization identifier (account digest
+   plus authorized head reference), and the evidence. Members receive
+   every silo; a remote receives exactly the silos the mirror-list
+   maps to it (§5). Each batch goes to the local router addressed to
+   (target host ID, same component kind) — spirit to spirit, mind to
+   mind. The shipped cursor advances when the local router has durably
+   accepted the batches; from there delivery is the router's job,
+   ordered per destination (§7), held in its durable backlog while a
+   peer is away and drained on the session-established push.
 5. The receiving component's ingress hands the carried authorization to
    ITS local criome before touching state. A member criome recognizes
    the round from its own ledger, or verifies the evidence and records
@@ -208,8 +247,8 @@ micro-components split test in the other direction: mirroring is not a
 distinct noun, it is the replication verb-set of the versioned commit
 log. sema-engine gains a `mirroring` module family:
 
-- Send: suffix framing into wire envelopes; sealing per privacy ceiling
-  (§5); durable evidence retention keyed by entry digest; the generic
+- Send: per-store (hence per-silo) suffix framing into wire envelopes;
+  durable evidence retention keyed by entry digest; the generic
   propagation driver (parameterized by the component's router
   submission and target source — the component wires, the engine
   drives).
@@ -224,7 +263,7 @@ log. sema-engine gains a `mirroring` module family:
 **signal-sema owns the wire vocabulary.** signal-sema is already the
 shared sema contract crate sema-engine consumes. It gains the typed
 wire records every mirrored component speaks: the entry envelope
-(sequence, previous digest, digest, payload — carried or sealed), the
+(sequence, previous digest, digest, payload), the
 entry suffix (expected head + ordered envelopes), the head mark, the
 restore bundle, and the closed refusal reasons. These are redesigned,
 not copied, from signal-mirror: the opaque store-name string dies —
@@ -251,13 +290,14 @@ component mirrorable:
 1. Its contract declares the apply-batch operation (and the meta
    restore operation) over the shared signal-sema records.
 2. Its runtime registers its family materializers (spirit's family
-   directory already does this) and, for §5, a privacy projection per
-   family — the one place the payload-blind engine learns a record's
-   privacy magnitude.
+   directory already does this) and, for §5, its record-to-silo
+   placement — the fixed mapping from a record's privacy magnitude to
+   the silo store it is written into. The engine stays payload-blind;
+   it never learns what a magnitude means, only which store to drive.
 3. Its daemon wires the propagation drain to its criome authorization
    session and its local router client.
 
-Everything else — validation, healing, cursor, sealing, restore — is
+Everything else — validation, healing, cursor, restore — is
 engine. Spirit keeps its head witnesses (the meta operations returning
 the head digest and the head entry body) as its observability surface;
 they remain useful for live proofs.
@@ -273,12 +313,14 @@ signatures itself).
 **Enrollment — the one manual trust act.** The owner pins the cluster's
 root anchor (the founding proof of the root contract) into the remote's
 criome, exactly as trusting a key when adding a git remote. The cluster
-then pushes the operational quorum sub-contract together with its
-root-round evidence; the remote's criome verifies that chain against
-the pinned anchor and admits the contract as a followed contract — it
-knows the member set, the threshold, and the replication targets, and
-can see itself listed. That admitted contract is precisely "awareness
-of that quorum which allows for the state change."
+then pushes the operational account together with the evidence of the
+root-quorum round that issued it; the remote's criome verifies that
+chain against the pinned anchor and admits the account as a followed
+one — it knows the member set and the threshold. That admitted account
+is precisely "awareness of that quorum which allows for the state
+change." (It does not see the mirror-target list: that is spirit
+state, replicated among members only — a remote needs no copy of the
+cluster's trust map to verify the pushes it receives.)
 
 **Verification, per incoming batch.** The remote component's ingress
 hands the carried authorization to its local criome, which verifies the
@@ -298,17 +340,22 @@ corrected semantic an ungranted change is never recorded — so the
 mirrored store on the remote is read-only by construction. No flag, no
 mode; the absence from the member set is the whole mechanism.
 
-**Where the target list lives.** Replication targets are cluster
-policy, so they belong in the operational quorum sub-contract document
-itself: beside members and threshold, a replication section listing
-(Criome host ID, privacy ceiling) per non-authoritative remote. This
-makes the target set cluster-agreed, anchored, identical on every
-member, and visible to the remote; changing it is issuing a replacement
-sub-contract — the same seam as membership rotation. The alternative
-(per-host owner configuration) is lighter to change but lets members
-disagree about where state flows, which for private data is a safety
-property, not a convenience. Recommended: in the contract. This is an
-open question only in its operational weight (§11).
+**Where the target list lives (amended 2026-07-07).** The psyche
+placed it: "the list of mirrors is in spirit, changes gated in criome.
+just another log, like the privacy silos." Spirit holds a
+**mirror-list log** — one more hash-chained log beside its silos —
+whose current value is the mapping silo → target hosts. Changing it is
+an ordinary working operation on spirit, authorized through the same
+quorum gate as any head advance, and parked for explicit approval by
+default, since this list decides where private data flows. This keeps
+the safety property that motivated this section's earlier
+in-the-contract recommendation — the target set is cluster-agreed,
+evidence-anchored, and identical on every member (the quorum gated it,
+and the log replicates to every member like any spirit state) — while
+shedding its cost: adding or dropping a backup host is a state change,
+not an account reissue. The list never ships to the remotes it names.
+Full design: `CriomeStateGovernanceDesign.md` §5.3 and §7. This
+resolves §11 question 2.
 
 **Scaling down: the backup case.** A single host wanting off-site
 backups is a single-member cluster (the root and a one-member
@@ -317,52 +364,68 @@ public-only or full per trust. Nothing about mirroring is
 cluster-sized; the quorum of one is the degenerate case of the same
 design.
 
-## 5 · Record-class gating — privacy ceilings and sealed payloads
+## 5 · Record-class gating — privacy silos (rewritten 2026-07-07)
 
-The gate reuses spirit's existing privacy vocabulary: each target
-carries a privacy ceiling (a "at most this magnitude" selection, e.g.
-at-most-public). No new record-class enum; the magnitude is the class.
+This section previously answered record-class gating with sealed
+payload commitments: a digest-schema change letting private payloads
+ship as fingerprints inside one shared chain. The psyche superseded
+that design this session with a simpler, stronger shape, proposed in
+his own words as separate logs per privacy class. The sealed-payload
+design, its digest domain-tag change, and its metadata-leak dilemma
+are all dead; what follows replaces them.
 
-The obstacle is a verified fact: entry digests fold raw payload bytes,
-so an entry whose payload is withheld cannot be verified, and the chain
-breaks for every entry after it. Filtering the log is therefore
-impossible today without abandoning verification — which is the whole
-point of mirroring.
+**Privacy silos: separate logs per privacy class.**
 
-**Resolution: seal, do not omit.** One deliberate storage-schema
-change, versioned as the next entry-digest domain tag: the per-operation
-digest folds a payload commitment (the digest of the payload bytes)
-instead of the raw bytes. Then a shipped envelope carries each payload
-either in the clear or sealed — replaced by its commitment. A sealed
-entry verifies identically everywhere: the chain, the head, the
-evidence all still check. The component's registered privacy projection
-(§3, wiring point 2) tells the engine each record's magnitude; the
-drain seals every payload above the target's ceiling. The public-only
-remote thus holds the complete verified chain skeleton with only public
-payloads materialized: a genuine backup of all public data plus
-integrity of the whole history, restorable and verifiable, on a host
-trusted with none of the private content.
+- **The silo set is closed and small.** Each silo is one privacy
+  class, backed by its own sema-engine store: its own hash chain, its
+  own head, its own outbox. Spirit's single `spirit:sema` store
+  becomes one store per silo, plus the mirror-list log (§4). Every
+  record lives in exactly ONE silo, chosen from its privacy magnitude
+  by a fixed total mapping — the magnitudes partition into silos.
+  Which partition (one silo per magnitude, or a coarse split such as
+  public / guarded / closed) is an open psyche question, recorded in
+  `CriomeStateGovernanceDesign.md` §12.
+- **Nothing is sealed, nothing is derived.** Each silo chain carries
+  raw payloads and verifies stand-alone — the verified digest fact
+  (§1) stays true and stops mattering, because no shipped chain ever
+  needs a payload withheld. There are no placeholder entries, no
+  second derived chain, no projection maintenance, and no digest
+  schema change.
+- **Shipping is silo-selective by construction.** The mirror-list log
+  (§4) maps each silo to its target hosts; members receive every silo.
+  The public silo ships to an untrusted backup host COMPLETE — a
+  genuine, verifiable, restorable full backup of all public data. And
+  the untrusted host receives NOTHING about private records: not
+  existence, not timing, not family, not key, not size. The previous
+  revision's metadata-leak question dissolves (§11 question 1).
+- **Authorization cost, stated honestly** (the psyche asked for the
+  costs): each silo's head advances under its own governed slot
+  (`CriomeStateGovernanceDesign.md` §3.1) — N silos mean N chains, N
+  heads, and N advance serializations criome-side. A working operation
+  touches exactly one silo in the common case, so the cost per
+  operation is unchanged: one round. Batching applies per silo exactly
+  as the slice design argues for one chain.
+- **Cross-silo moves are explicit authorized operations.** A privacy
+  reclassification that crosses a silo boundary removes the record
+  from the source silo and appends it to the destination silo — staged
+  together and authorized by ONE multi-slot round binding both silo
+  heads, all or nothing (`CriomeStateGovernanceDesign.md` §5.2). Rare
+  by nature; the cost is the multi-slot round machinery, named there.
+- **The read-side cost, stated honestly.** A query with a privacy
+  selection spans the silos its selection covers and merges results
+  (an "at most X" read touches every silo at or below X's class,
+  filtering by magnitude inside the boundary silo). Single-silo reads
+  — the public-facing case — touch one store.
+- **Reference direction is enforced.** A lower-privacy record must
+  never reference higher-privacy content — the reference itself would
+  leak; the higher may reference the lower. The write path refuses the
+  wrong direction. How spirit's families (records, referents,
+  migrations) place across silos is a pickup verification point
+  (§12).
 
-Consequences, stated plainly:
-
-- This is a breaking change to the digest schema. Existing chains
-  re-genesis or re-derive under the new tag; there is no compatibility
-  path, consistent with settled intent. It should land in the same
-  sweep as the other contract-genesis changes of the pending slices.
-- A restore from a public-only remote returns sealed placeholders for
-  private records; the restoring component materializes public rows and
-  records the sealed identities as unrecoverable-from-this-source. A
-  full restore needs a full-ceiling mirror. Backup posture follows
-  directly: at least one full-ceiling mirror on a trusted host, any
-  number of public-only mirrors on untrusted ones.
-- Metadata is not sealed. A public-only remote still learns that
-  private entries exist, their timing, family, key, and size. If that
-  leakage is unacceptable, the alternative is omitting private entries
-  entirely, which requires a second, derived public-only chain with its
-  own authorized head — materially more machinery (two heads per
-  acceptance, projection maintenance, double evidence). Recommended:
-  sealed placeholders now; the derived-chain design only if the psyche
-  rules the metadata leak out (§11).
+Backup posture follows directly, unchanged in spirit from the previous
+revision: at least one all-silo mirror on a trusted host, any number
+of public-silo mirrors on untrusted ones.
 
 ## 6 · Backup and restore — the same mechanism
 
@@ -370,7 +433,11 @@ A mirror is a backup because the mirrored artifact is the authoritative
 one: the hash-chained log up to an authorized head. Restore is the
 already-existing import path fed by a restore bundle (latest checkpoint
 plus the suffix past it), assembled by any mirror host — member or
-non-authoritative — through the engine's restore module. Trust on
+non-authoritative — through the engine's restore module. Under silos
+(§5) a bundle is per silo: a full restore gathers every silo from
+hosts trusted with each; a public-silo host restores the public silo
+completely and nothing else — no placeholders, simply the silos it
+holds. Trust on
 restore is the same two checks as live apply: every digest re-derives,
 and the terminal head is one the restoring host's criome confirms as
 the authorized head of the followed contract (its own ledger for a
@@ -477,7 +544,7 @@ Rejected, with reasons:
 - **Later schema/codegen for per-component mirrored stores.** Deferred
   rightly, but no new framework is needed: the per-component residue is
   exactly the existing schema-driven registrations (materializers, plus
-  the new privacy projection) — three wiring points, not a codegen
+  the record-to-silo placement) — three wiring points, not a codegen
   surface (§3).
 
 ## 10 · Slice map — composing with the pending slices
@@ -493,8 +560,8 @@ around them; none blocks them except where marked.
   depends on ordering. Witness: backlog drain asserts sequence order
   per destination; two destinations drain concurrently.
 - **M1 — shared wire vocabulary** (§3). signal-sema gains envelope /
-  suffix / head-mark / restore-bundle / refusal records (payload
-  carried-or-sealed from day one, even before M5 uses sealed);
+  suffix / head-mark / restore-bundle / refusal records (payloads
+  always carried; the sealed form died with the silo amendment);
   signal-spirit replaces the hex single-record apply with the typed
   apply-batch composing them. Lands with the propagation slice's
   contract work — same genesis sweep as the addressing consolidation.
@@ -508,34 +575,38 @@ around them; none blocks them except where marked.
 - **M3 — deletion** (§8 steps 3-5). Immediately after the propagation
   loopchecks are green on spirit-to-spirit; includes the VM-cluster
   rebuild and the repo archival.
-- **M4 — non-authoritative remotes** (§4). After the sub-contract
-  slice (the replication section rides the sub-contract document).
-  Criome follower admission and verification path; target resolution
-  becomes members-minus-self plus replication targets. Loopcheck: a
-  third, non-member node converges through evidence verification alone,
-  and its local write attempt refuses.
-- **M5 — privacy ceilings and sealed payloads** (§5). The digest
-  domain-tag change plus sealing plus spirit's privacy projection.
-  Loopcheck: a public-only remote converges with private payloads
-  sealed, serves public observations, and a restore from it yields
-  sealed placeholders; a full-ceiling restore round-trips completely.
+- **M4 — non-authoritative remotes** (§4). After account issuance
+  lands (the governance design's G4). Criome follower admission and
+  verification path; member targets ride the grant, remote targets
+  come from the mirror-list log (the governance design's G5).
+  Loopcheck: a third, non-member node converges through evidence
+  verification alone, and its local write attempt refuses.
+- **M5 — privacy silos** (§5, rewritten). The multi-store split (one
+  store per silo, plus the mirror-list log), the record-to-silo
+  placement, per-silo heads under the governance design's G6, and
+  silo-selective shipping. No digest schema change. Loopcheck: a
+  public-silo remote converges on the public silo alone, serves public
+  observations, and never receives a single private-silo byte; a
+  cross-silo move lands atomically on both silos; an all-silo restore
+  round-trips completely.
 - **M6 — backup restore proof** (§6). Owner-initiated restore of a
-  fresh node from a mirror host through the meta contract, verified
-  against the authorized head. Closes the "the same mechanism is the
-  backup mechanism" loop end to end.
+  fresh node from a mirror host through the meta contract, one bundle
+  per silo, verified against the authorized heads. Closes the "the
+  same mechanism is the backup mechanism" loop end to end.
 
 ## 11 · Open questions — only the psyche can answer
 
-1. **Metadata leakage on public-only remotes** (§5). Sealed payloads
-   hide content but reveal existence, timing, family, key, and size of
-   private records to the untrusted host. Acceptable, or must private
-   entries be entirely absent (which buys a second derived chain and
-   its double-authorization machinery)?
-2. **Where replication targets live** (§4). Recommended: in the
-   operational quorum sub-contract, so the target set is cluster-agreed
-   and anchored — at the cost that adding or dropping a backup host is
-   a sub-contract reissue. Per-host owner configuration is the lighter
-   alternative with weaker guarantees. Which weight is right?
+1. **Metadata leakage on public-only remotes — RESOLVED by the silo
+   amendment (2026-07-07).** Private entries are entirely absent from
+   what an untrusted host receives — not sealed, absent — and no
+   derived chain was needed, because silos are primary logs (§5,
+   rewritten). The residual psyche question is the silo set itself
+   (which partition of the magnitude scale), recorded in
+   `CriomeStateGovernanceDesign.md` §12.
+2. **Where replication targets live — RESOLVED by the psyche
+   (2026-07-07):** "the list of mirrors is in spirit, changes gated in
+   criome. just another log, like the privacy silos." See the amended
+   §4 and `CriomeStateGovernanceDesign.md` §5.3.
 3. **Remote liveness as a replica** (§4). May a non-authoritative
    remote's component serve reads (a live observation replica for
    public data), or should it be dormant storage only? This decides
@@ -552,9 +623,12 @@ around them; none blocks them except where marked.
 2. Evidence retention shape: confirm the grant/evidence types criome
    pushes on Granted are stable enough to persist keyed by entry digest
    (they are the §4 hand-off in the pending slice).
-3. The sealed-payload envelope must round-trip through the same rkyv
-   archive path as carried payloads — verify signal-sema's codec plan
-   against sema-engine's archived entry layout before M1 freezes types.
+3. The multi-store (per-silo) layout: confirm sema-engine's store
+   naming, checkpointing, and outbox surfaces compose per silo with no
+   cross-store assumptions (one chain per store is already the built
+   shape), and settle spirit's family placement across silos (records,
+   referents, migrations — including where referent registrations of
+   private records live) before M5 freezes the store set.
 4. Router backlog rows: confirm the recorded sequence is per-router
    global (sufficient — per-destination order falls out of filtering by
    destination) rather than per-destination, and that retry-at-head is
