@@ -68,6 +68,7 @@
   (Repo signal-mentci-client github:LiGoldragon/signal-mentci-client (Family Signal) Code Active Architecture [IsPrivate])
   (Repo signal-message github:LiGoldragon/signal-message (Family Signal) Code Active Architecture [])
   (Repo signal-mind github:LiGoldragon/signal-mind (Family Signal) Code Active Architecture [])
+  (Repo signal-mind-judge github:LiGoldragon/signal-mind-judge (Family Signal) Code Active Architecture [])
   (Repo signal-mirror github:LiGoldragon/signal-mirror (Family Signal) Code Active Architecture [])
   (Repo signal-orchestrate github:LiGoldragon/signal-orchestrate (Family Signal) Code Active Architecture [])
   (Repo signal-persona github:LiGoldragon/signal-persona (Family Signal) Code Active Architecture [])
@@ -106,6 +107,9 @@
   ;; Persona — core stack daemon components
   (Repo persona github:LiGoldragon/persona (Family Persona) Code Active Architecture [])
   (Repo mind github:LiGoldragon/mind (Family Persona) Code Active Architecture [])
+  (Repo mind-judge github:LiGoldragon/mind-judge (Family Persona) Code Active Architecture [])
+  (Repo mind-judge-config github:LiGoldragon/mind-judge-config (Family Persona) Data Active Architecture [])
+  (Repo mind-tests github:LiGoldragon/mind-tests (Family Persona) Code Active Architecture [])
   (Repo agent github:LiGoldragon/agent (Family Persona) Code Active Architecture [])
   (Repo harness github:LiGoldragon/harness (Family Persona) Code Active Architecture [])
   (Repo introspect github:LiGoldragon/introspect (Family Persona) Code Active Architecture [])
@@ -156,6 +160,7 @@
 
   ;; Tooling — shared build/runtime libraries, CLIs, desktop tools, generator source
   (Repo rust-build github:LiGoldragon/rust-build (Family Tooling) Code Active Architecture [])
+  (Repo judge github:LiGoldragon/judge (Family Tooling) Code Active Architecture [])
   (Repo triad-runtime github:LiGoldragon/triad-runtime (Family Tooling) Code Active Architecture [])
   (Repo version-projection github:LiGoldragon/version-projection (Family Tooling) Code Active Architecture [])
   (Repo nexus github:LiGoldragon/nexus (Family Tooling) Code Active Architecture [])
