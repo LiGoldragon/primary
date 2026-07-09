@@ -84,13 +84,13 @@ Lane registration is the atomic check. Do not pre-observe before registration. T
 Do not edit projected lock files by hand.
 
 ```sh
-meta-orchestrate "(Register ((<SessionName> <LaneName> ([<RoleToken>...] Structural) <detail-atom>) Fresh))"
-orchestrate "(Claim (<LaneName> [(Path /absolute/path)] <reason>))"
+meta-orchestrate "(Register ((<SessionName> <LaneName> ([<RoleToken>...] Structural) <detail-string>) Fresh))"
+orchestrate "(Claim (<LaneName> [(Path /absolute/path)] <reason-string>))"
 orchestrate "(Release <LaneName>)"
-meta-orchestrate "(Unregister (<SessionName> <LaneName> <detail-atom>))"
+meta-orchestrate "(Unregister (<SessionName> <LaneName> <detail-string>))"
 ```
 
-Use a single bare NOTA atom in each `<detail-atom>` slot; quoted strings and pipe text are rejected.
+Use exactly one NOTA string object in each detail or reason slot. Prefer a single bare atom such as `coordination-doctrine`. For multi-word text, use the bracket string form accepted by String slots, such as `[refresh coordination docs]`. Do not write multi-word bare text; it is parsed as extra positional objects and fails.
 
 Observe only when coordination state is evidence after registration or during audit. When relaying observed claims, show direct age, not only a start timestamp.
 
@@ -279,8 +279,8 @@ bd dep <blocker-bead> --blocks <blocked-bead>
 
 File blockers first so dependency commands read in work order. Read the graph back with `bd show` or `bd list` and fix unclear descriptions immediately.
 
-Run `bd` commands sequentially. If embedded Dolt reports another process holds
-the exclusive `.beads/embeddeddolt` lock, wait briefly and retry the same
-command before reporting a blocker.
+Run `bd` commands sequentially, not through parallel tool calls. If embedded
+Dolt reports the exclusive `.beads/embeddeddolt` lock, wait for the owning
+operation to finish and retry the same command; do not spawn concurrent retries.
 
 Do not claim `.beads/`. Treat an Orchestrate `.beads/` claim as invalid agent policy state; force-release or remove it instead of treating it as a lock. If you begin working a bead after filing it, claim the task if the workspace uses claims; filing alone is not a claim.
