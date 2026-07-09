@@ -43,6 +43,18 @@ Return the scaffold handoff in chat or the harness-required worker output. Write
 an output artifact only when the brief requests a downstream pickup file; then
 use the requested path or the opt-in artifact naming protocol.
 
+## agent feedback loop
+
+### Feedback Loop
+
+Report only meaningful doctrine friction that affected or plausibly affects efficiency or correctness. Do not add boilerplate when there is no friction.
+
+Use these categories: missing doctrine, misleading or incorrect doctrine, redundant doctrine, over-detailed doctrine, poor discoverability or naming, and split or merge suggestions that would improve efficiency or correctness.
+
+Doctrine friction does not stop ordinary work unless it creates safety, privacy, destructive-action, or credential risk. Finish the assigned work, then include concise feedback with the category, affected doctrine surface, observed friction, and suggested owner or direction.
+
+Keep private and secret material out of feedback. Describe the doctrine gap abstractly when the concrete example is private.
+
 ## edit coordination core
 
 ### Edit Coordination
@@ -233,6 +245,33 @@ Examples: `(PublicRecords ((Full [(Health Medicine)]) None))`; `(PublicRecords (
 
 Report the query class, relevant record identifiers, and the conclusion needed for the task. Explain a Spirit identifier on first mention when it matters. Summarize record lists instead of pasting irrelevant hashes.
 
+## repository publication
+
+### Publication Rules
+
+Use this when a code or engine repository lacks a remote, needs a public remote, or must make dependency pushes portable.
+
+Code and engine repositories are public by default. Use a private repository only for secrets, credentials, personal data, unpublished third-party code, or an explicit confidentiality constraint.
+
+Create the public GitHub repository from the local source when the repository does not already exist:
+
+```sh
+gh repo create LiGoldragon/<name> --public --source . --remote origin --push
+```
+
+When the forge repository exists but the local repository lacks `origin`, inspect the canonical remote and add it as remote configuration; raw Git is acceptable only for remote configuration.
+
+```sh
+gh repo view LiGoldragon/<name> --json nameWithOwner,visibility,sshUrl
+git remote add origin git@github.com:LiGoldragon/<name>.git
+```
+
+Use Jujutsu for ordinary history and bookmark pushes after the remote exists.
+
+A dependency is portable only when consumers point at a public owner/repo remote and the required branch or bookmark is pushed. Local path dependencies, unpublished producer branches, and missing remotes block portable closeout.
+
+Do not change an existing private repository to public without explicit authorization.
+
 ## repo scaffold core
 
 ### Scaffold Core Purpose
@@ -245,9 +284,7 @@ inside the repo without guessing.
 
 A new repository is for a genuinely distinct project. Major rewrites,
 experiments, mockups, repros, and alternate versions of an existing project use
-a branch or worktree in the existing repository. Public is the default
-visibility unless secrets, private data, unpublished third-party code, or an
-explicit confidentiality constraint require private.
+a branch or worktree in the existing repository.
 
 Use `ghq` for finding or fetching clones and `gh` for GitHub repository objects. Use `jj` for local history and pushing.
 
