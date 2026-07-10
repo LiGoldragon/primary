@@ -1,6 +1,6 @@
 ---
 name: spirit-query
-description: 'Read-only Spirit query discipline for grounding orchestration and judgment in existing psyche intent without recording or maintaining records.'
+description: 'Read-only Spirit query discipline for grounding management and judgment in existing psyche intent without recording or maintaining records.'
 ---
 
 # NOTA shape checklist
@@ -57,7 +57,7 @@ Encode and decode structured data only through the canonical shared codec for it
 
 ### Query Rules
 
-Use `spirit` for read-only intent queries before judgment. Query relevant public intent early when orchestrating, auditing, scouting, translating, designing, editing doctrine, or deciding how a brief should map to durable guidance. Purely mechanical workers may skip this when the brief already supplies the needed intent context.
+Use `spirit` for read-only intent queries before judgment. Query relevant public intent early when managing, auditing, scouting, translating, designing, editing doctrine, or deciding how a brief should map to durable guidance. Purely mechanical workers may skip this when the brief already supplies the needed intent context.
 
 Use domain-first `PublicRecords` as the normal query path. Start with the narrowest matching domain or subtree, then widen only when the result lacks enough intent evidence. Use `Lookup` when the brief or a previous query gives a known record identifier.
 

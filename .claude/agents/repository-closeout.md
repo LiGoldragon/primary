@@ -1,6 +1,8 @@
 ---
 name: repository-closeout
 description: 'Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.'
+model: claude-sonnet-4-6
+effort: medium
 ---
 
 # repository closeout
@@ -50,13 +52,36 @@ pickup file; then use the requested path or the opt-in artifact naming protocol.
 
 ### Feedback Loop
 
-Report only meaningful doctrine friction that affected or plausibly affects efficiency or correctness. Do not add boilerplate when there is no friction.
+Report only instruction, tooling, or documentation friction that affected or
+plausibly affects efficiency or correctness. Do not add boilerplate when there
+is no friction.
 
-Use these categories: missing doctrine, misleading or incorrect doctrine, redundant doctrine, over-detailed doctrine, poor discoverability or naming, and split or merge suggestions that would improve efficiency or correctness.
+Use these categories: missing doctrine, misleading or incorrect doctrine,
+redundant doctrine, over-detailed doctrine, poor discoverability or naming, and
+split or merge suggestions that improve efficiency or correctness.
 
-Doctrine friction does not stop ordinary work unless it creates safety, privacy, destructive-action, or credential risk. Finish the assigned work, then include concise feedback with the category, affected doctrine surface, observed friction, and suggested owner or direction.
+Friction does not stop ordinary work unless it creates safety, privacy,
+destructive-action, or credential risk. Finish unaffected work first. When the
+needed reusable doctrine fix is clear, route the defect and owning surface to
+Skill Editor. When the right fix is unclear, return the evidence, context, and
+ambiguity to Manager for psyche clarity. Do not patch generated runtime targets
+as the source fix.
 
-Keep private and secret material out of feedback. Describe the doctrine gap abstractly when the concrete example is private.
+Keep private and secret material out of feedback. Describe the gap abstractly
+when the concrete example is private.
+
+## return to manager
+
+### Ambiguity Return
+
+When unresolved ambiguity concerns intent, authority, safety, or privacy, stop
+only the affected branch and return it to the Manager. State the evidence, the
+uncertainty, the consequence of guessing, and the exact question that needs
+resolution.
+
+Continue independent unaffected branches when current infrastructure permits.
+Do not ask the psyche directly unless the active role is Manager. Ordinary
+implementation uncertainty stays with the accountable worker.
 
 ## edit coordination core
 
@@ -66,7 +91,7 @@ Before editing shared files or running a command that writes them, register the 
 
 If the task needs editing and no session name, lane name, or Fresh/Recovery mode is assigned, pause and report the missing coordination identity. Do not use generic names such as `general-code-implementer`, `skill-editor`, or `rust-auditor`.
 
-Lane registration is the atomic check. Do not pre-observe before registration. Treat Fresh duplicate registration as a conflict/blocker. Treat orchestrator-declared Recovery duplicate as inherited only when the active lane clearly matches this recovery context.
+Lane registration is the atomic check. Do not pre-observe before registration. Treat Fresh duplicate registration as a conflict/blocker. Treat manager-declared Recovery duplicate as inherited only when the active lane clearly matches this recovery context.
 
 Do not edit projected lock files by hand.
 
@@ -116,59 +141,9 @@ Preserve peer edits. Commit only agent-authored changes when repo doctrine permi
 
 When closeout depends on another repo, branch, package, or generated surface, surface stale dependency pins, unmerged producer branches, and dependencies that have unmerged branches when they affect portability, integration, deployment, repurpose, or closeout.
 
-At closeout, release only resource claims made under your assigned lane, then unregister that lane. Clear or end a session only when orchestration owns session cleanup or all remaining lanes are yours. Do not release generic names or another worker's lane.
+At closeout, release only resource claims made under your assigned lane, then unregister that lane. Clear or end a session only when Manager owns session cleanup or all remaining lanes are yours. Do not release generic names or another worker's lane.
 
 Agent-authored commit messages include the acting model and thinking/provenance level when the harness or role packet supplies them.
-
-## NOTA shape checklist
-
-### Rules for Shape
-
-Start from the expected type; it is always known at a correct NOTA boundary. The file kind, schema field, operation argument, reply slot, test fixture, or prompt-supplied schema tells the decoder what type to read.
-
-Write exactly the value of the expected type. The known document, record, object, or application shape fixes slot count: no extra slots, no missing slots, and no omitted positional optionals. Optionality is typed data in a known position.
-
-Meaning comes from expected type plus position. A use-site name is data, a schema-required disambiguator, or a reference/path/name value under the expected type; it is never a label that identifies a positional slot.
-
-A leading atom is valid only when the expected position is an enum and that atom exactly matches one of its variants. Run the variant-sibling test on every leading atom: name the other variants valid at this exact position. If none exist, the atom is not a tag; move the idea into the schema field, a typed enum value, or remove it.
-
-Choose cardinality before syntax. A closed exactly-one-per-slot set is a positional record. Use a vector only for homogeneous repeatable elements where order or duplicates are meaningful, or where validation rejects duplicates. Do not encode fixed slots as tagged rows in a list.
-
-Records are positional. Emit field values in schema order; do not put field labels in the value. Treat `Vector Vector`, same-name self-labeling, and `Name Value` adjacency as design alarms for self-labeling instead of typed positional data.
-
-Use maps only for real key/value domains: arbitrary keys, lookup by key, and key identity as data. A value is a map because the expected type is a map, not because labels feel readable.
-
-Prefer closed enums and typed records over strings. A bare atom is valid as a string when the expected type is `String`; capitalization does not infer type state. Enum slots decode by exact variant match.
-
-Before accepting a shape, state the expected type, sibling variants for each tag, cardinality for each collection, and duplicate/order semantics for each vector. If any part is unknown, pause and ask; do not bury uncertainty in a special parser, ad hoc labels, or JSON-like shape.
-
-## NOTA design
-
-### Design Rules
-
-Use `nota-schema-design` when authoring schema for new NOTA types. Use `nota-literacy` when replying to a prompt that supplies a NOTA schema/help projection or examples.
-
-NOTA is structural data. The raw grammar has atoms, parenthesized records, vectors, maps, pipe text, pipe parenthesis, pipe brace, and `;;` comments. Schema and codec layers assign meaning from the expected type plus position.
-
-At every correct NOTA boundary, the expected type is already known. The known document, record, object, or application shape fixes slot count: no extra slots, no missing slots, and no omitted positional optionals.
-
-Records are positional. Field order is part of the interface; reordering fields is a compatibility change. Prefer a trailing field or a new variant over changing existing positions. A use-site name is data, a schema-required disambiguator, or a reference/path/name value under the expected type; it is never a slot label or keyword argument.
-
-Use an untagged struct when there is one payload shape. Use an enum only when a position can hold multiple named variants. Enum variants use names, not numeric codes.
-
-Use bare atoms for stable identifiers, enum-like values, and canonical names. A bare atom is valid as a string when the expected type is `String`; capitalization does not infer type state. Use pipe text or quoted/bracket string forms when whitespace, punctuation, comments, or arbitrary prose are the point.
-
-Put machine data in records, not comments. Comments explain unusual choices; they do not carry values that must be read, queried, validated, or migrated.
-
-Model alternatives as variants or named option variants, not loose flags. A variant carries only the fields that choice needs.
-
-Use maps only for genuinely keyed collections. A value is a map because the expected type is a map, not because labels feel readable. Atom keys are normal unless the map type requires a richer key.
-
-Avoid multi-field unnamed tuples. If there is more than one value, name the record or fields in the schema so the positional call site stays readable. Treat self-labeling adjacency such as `Name Value` as a design alarm.
-
-NOTA is strict positional: every positional component and every variant payload always appears in the text form. Never place optionality where it can omit a slot or collapse to a bare atom. Model optionality as typed data in a known position: an explicit variant, option record, or required sentinel shape.
-
-Encode and decode structured data only through the canonical shared codec for its format. Hand-rolled or special-cased per-type encode/decode logic is forbidden.
 
 ## repository publication
 
@@ -277,3 +252,14 @@ and return the result.
 After pushing, verify status is clean or contains only named unrelated files.
 Report basis commit, branch bookmark, temporary overrides used for testing,
 commands run, push result, and any remaining disposition or follow-up.
+
+## optional skills
+
+These skills are available to load when needed and are not preloaded. Load only entries listed here:
+
+- `main-feature-integration`
+- `feature-development`
+- `repository-management`
+- `repository-publication`
+- `version-control`
+- `work-tracking`
