@@ -5,6 +5,51 @@ psyche-approved. This report is the settled specification for the
 orchestrator-messaging build. The "Settled Decisions" section is closed; do not
 reopen its choices without a new psyche-level decision.
 
+## Revision — psyche amendments (working-messenger reprioritization)
+
+These amendments are psyche-decided and SUPERSEDE the conflicting parts of the
+Settled Decisions and Flows below. Where an earlier bullet disagrees, this
+section wins.
+
+1. Judge SHELVED. Automatic topic assignment is stubbed for now; Explicit-topic
+   registration is the only live registration mode. The `AssignTopic` judge
+   path, its prompt pack, and the Automatic flow stay specified below as the
+   eventual shape, but are not built in this phase. `signal-orchestrator-judge`
+   remains a future contract, not a this-phase deliverable.
+2. NO catch-all topic. The topic tree starts EMPTY. Escalation targets a
+   coordinator ROLE that the psyche registers manually when ready; there is no
+   catch-all seat and no auto-created coordinator home. With no coordinator
+   registered, an escalation (or a message that would escalate) returns a typed
+   error naming the missing coordinator — it does not fall back to a catch-all.
+   The coordinator machinery is shelved/stubbed. This supersedes the "catch-all
+   topic exists only as the coordinator's home and escalation target" language
+   in Settled Decisions and Storage.
+3. The `message` component is being renamed to `messenger`. This joins the
+   noun-component renames and proceeds incrementally as surfaces are touched —
+   no big-bang sweep. Read `message` and `messenger` as the same component
+   throughout this report during the transition.
+4. Threads are plain sender-chosen names. There is NO topic-scoping requirement
+   on a thread and NO minting ceremony — a sender simply chooses a thread name.
+   Ownership of the thread index (router-aware vs. messenger vs. a new dedicated
+   component) is DELIBERATELY OPEN and not decided here. Subscriptions are a
+   follow-on. This supersedes the "a new thread is minted by the message daemon"
+   language in Settled Decisions.
+5. Priority reordered: a WORKING MESSENGER comes first. The orchestrate
+   registration/discovery surface (Slices A–D) integrates AFTER the TrueSchema
+   corridor unblocks. The plain message→router→harness→live-pi steer path is the
+   near-term deliverable; the decision-seat vocabulary lands once the shared
+   contract stack is consolidated on TrueSchema.
+6. The pseudo-NOTA shapes in this report are documentation shorthand only. The
+   real derive codec is HEADERLESS positional — the type-name heads shown here
+   (e.g. `(RegisterAgent ...)`, `(OrchestratorMessage ...)`) DO NOT appear on the
+   wire. Records are positional fields in declaration order; variant selection is
+   encoded structurally, not by a leading name atom. See the note at Contract
+   Shapes.
+7. Publication is standing policy per the repository-publication skill. The
+   "separately gated" publication language at the end of the Slice Plan is STALE:
+   all four new repos (and the messenger/harness repos touched here) are
+   published to their remotes as ordinary practice, not held back.
+
 ## Orientation
 
 The orchestrator is a decision seat and addressee inside the `orchestrate`
@@ -74,6 +119,13 @@ Three wire-contract surfaces carry the design:
 Pseudo-NOTA, angle-bracket placeholders, `?` marks an optional-as-typed-data
 field, `|` separates enum variants. Field types are adapted to each crate's real
 codec conventions (see Integration Seams).
+
+NOTE (headerless codec — see Revision amendment 6): the `(TypeName field …)`
+forms below are documentation shorthand. The real derive codec is HEADERLESS
+positional: the type-name heads shown here do NOT appear on the wire. On the wire
+a record is just its fields in declaration order and a variant is selected
+structurally, not by a leading name atom. Read every `(Head …)` below as "the
+positional record for `Head`", not as a literal head atom emitted on the wire.
 
 ### signal-orchestrate additions
 
@@ -276,5 +328,7 @@ carry prose, matching spirit-judge prompt discipline.
 6. Slice F — prompt packs + judge adapter wiring. (Separate lane.)
 
 New repos `signal-orchestrator-message` and `signal-orchestrator-judge` are
-created local-only; GitHub publication is a separately gated step and is not
-performed by this lane.
+created and published to their remotes as ordinary practice (see Revision
+amendment 7): publication is standing policy per the repository-publication
+skill, not a separately gated step. The earlier "separately gated" language is
+stale — all four new repos are published.
