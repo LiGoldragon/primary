@@ -1,7 +1,7 @@
 ---
 name: intent-recorder
 description: 'Submits one fully specified warranted Spirit operation without inventing or reinterpreting intent.'
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 effort: medium
 ---
 

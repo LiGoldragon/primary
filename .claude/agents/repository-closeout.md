@@ -1,7 +1,7 @@
 ---
 name: repository-closeout
 description: 'Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.'
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 effort: medium
 ---
 
