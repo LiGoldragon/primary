@@ -420,6 +420,7 @@ These skills are available to load when needed and are not preloaded. Load only 
 - `nix-discipline`
 - `nix-usage`
 - `pi-internals`
+- `disk-hygiene`
 - `testing`
 - `version-control`
 - `versioning`

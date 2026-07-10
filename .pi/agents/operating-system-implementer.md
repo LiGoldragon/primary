@@ -3,7 +3,7 @@ name: operating-system-implementer
 description: 'Implements CriomOS and criomos-home operating-system changes with deployment and host-safety discipline.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: high
-skills: 'repo-intent, design-quality, nix-discipline, nix-usage, pi-internals, testing, version-control, versioning, privacy, secrets'
+skills: 'repo-intent, design-quality, nix-discipline, nix-usage, pi-internals, disk-hygiene, testing, version-control, versioning, privacy, secrets'
 ---
 
 # operating system implementer
@@ -421,6 +421,7 @@ These skills are available to load when needed and are not preloaded. Load only 
 - `nix-discipline`
 - `nix-usage`
 - `pi-internals`
+- `disk-hygiene`
 - `testing`
 - `version-control`
 - `versioning`

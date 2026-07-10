@@ -1,0 +1,98 @@
+# Active lanes recovery net captured 20260710T213319Z
+# Total real Active: 12
+
+SESSION=AgentCoordination
+  LANE=messenger-thread-slot
+  ROLES=([GeneralCodeImplementer] Structural)
+  DETAIL=[explicit thread names through messenger stack]
+  STATUS=Active
+  CLAIM_PATHS=['/home/li/primary/repos/message', '/home/li/primary/repos/router', '/home/li/primary/repos/signal-message']
+  RAW_CLAIMS=[((Path /home/li/primary/repos/message) [thread slot through messenger stack] 1783718854981407206 312526639063) ((Path /home/li/primary/repos/router) [thread slot through messenger stack] 1783718854981407206 312526639063) ((Path /home/li/primary/repos/signal-message) [thread slot through messenger stack] 1783718854981407206 312526639063)]
+
+SESSION=AgentCoordination
+  LANE=orchestrator-storage-final-landing
+  ROLES=([GeneralCodeImplementer] Structural)
+  DETAIL=[land parked orchestrator storage work]
+  STATUS=Active
+  CLAIM_PATHS=['/home/li/primary/repos/orchestrate']
+  RAW_CLAIMS=[((Path /home/li/primary/repos/orchestrate) [land parked storage bookmark] 1783718389222625704 778285420565)]
+
+SESSION=CoreTrueSplitBuild
+  LANE=semantic-duplicate-parameter-rejection
+  ROLES=([GeneralCodeImplementer] Structural)
+  DETAIL=semantic-duplicate-parameter-rejection
+  STATUS=Active
+  CLAIM_PATHS=['/home/li/primary/repos/schema-language/src/schema.rs', '/home/li/primary/repos/schema-language/src/view.rs']
+  RAW_CLAIMS=[((Path /home/li/primary/repos/schema-language/src/schema.rs) semantic-duplicate-parameter-rejection 1783719116861498987 50646547282) ((Path /home/li/primary/repos/schema-language/src/view.rs) semantic-duplicate-parameter-rejection 1783719116861498987 50646547282)]
+
+SESSION=OsUpdate20260708Continuation
+  LANE=RemoteOnlyRebuild
+  ROLES=([operating-system-implementer] Structural)
+  DETAIL=[remote-only rebuild continuation]
+  STATUS=Active
+  CLAIM_PATHS=['/home/li/primary/agent-worktrees/criomos-home-update-2026-07-08', '/home/li/primary/agent-worktrees/criomos-update-2026-07-08', '/home/li/primary/repos/mentci', '/home/li/primary/repos/mentci-egui']
+  RAW_CLAIMS=[((Path /home/li/primary/agent-worktrees/criomos-home-update-2026-07-08) [continue OS update rebuild branches] 1783627507120055556 91660387990713) ((Path /home/li/primary/agent-worktrees/criomos-update-2026-07-08) [continue OS update rebuild branches] 1783627507120055556 91660387990713) ((Path /home/li/primary/repos/mentci) [continue OS update rebuild branches] 1783627507120055556 91660387990713) ((Path /home/li/primary/repos/mentci-egui) [continue OS update rebuild branches] 1783627507120055556 91660387990713)]
+
+SESSION=PiSubagentsReliability20260710
+  LANE=IntegrateAndActivateRunnerReliability
+  ROLES=([generalist] Structural)
+  DETAIL=[runner reliability integration]
+  STATUS=Active
+  CLAIM_PATHS=['/home/li/primary/agent-worktrees/pi-subagents-runner-reliability-home-jj', '/home/li/primary/repos/CriomOS']
+  RAW_CLAIMS=[((Path /home/li/primary/agent-worktrees/pi-subagents-runner-reliability-home-jj) [land runner reliability] 1783712185119047053 6982388999216) ((Path /home/li/primary/repos/CriomOS) [pin home deployment] 1783712185125614265 6982382432004)]
+
+SESSION=PiThemeSocketSafety
+  LANE=EmergencyStopLiveThemeCrashes
+  ROLES=([operating-system-implementer] Structural)
+  DETAIL=emergency-contain-live-theme-socket-crashes
+  STATUS=Active
+  CLAIM_PATHS=['/home/li/.pi/agent/packages/pi-criomos']
+  RAW_CLAIMS=[((Path /home/li/.pi/agent/packages/pi-criomos) inspect-live-package-and-contain-runtime-registry 1783326410909366618 392756598679651)]
+
+SESSION=PiThemeSocketSafety
+  LANE=RemoveLiveThemeStartupStatus
+  ROLES=([general-code-implementer] Structural)
+  DETAIL=remove-live-theme-startup-status
+  STATUS=Active
+  CLAIM_PATHS=['/home/li/primary/repos/CriomOS-home/packages/pi-criomos/extensions/live-theme-control.ts']
+  RAW_CLAIMS=[((Path /home/li/primary/repos/CriomOS-home/packages/pi-criomos/extensions/live-theme-control.ts) remove-startup-success-status 1783325393985526322 393773522519947)]
+
+SESSION=SpiritJudgeSplit
+  LANE=SpiritDaemonJudgeIntegrationFixes
+  ROLES=([general-code-implementer] Structural)
+  DETAIL=spirit-daemon-judge-integration-audit-fixes
+  STATUS=Active
+  CLAIM_PATHS=[]
+  RAW_CLAIMS=[]
+
+SESSION=SpiritJudgeTerraProduction20260710
+  LANE=RemediateReviewFindings
+  ROLES=([generalist] Structural)
+  DETAIL=spirit-judge-terra-remediation
+  STATUS=Active
+  CLAIM_PATHS=['/git/github.com/LiGoldragon/CriomOS-home', '/git/github.com/LiGoldragon/CriomOS-spirit-judge-deploy', '/git/github.com/LiGoldragon/judge', '/git/github.com/LiGoldragon/signal-spirit-judge', '/git/github.com/LiGoldragon/spirit-judge', '/git/github.com/LiGoldragon/spirit-judge-config', '/home/li/agent-worktrees/SpiritJudgeTerraProduction20260710/RemediateReviewFindings/spirit', '/home/li/primary/agent-worktrees/spirit-judge-pin-chain-20260710', '/home/li/primary/repos/CriomOS-home-spirit-domain-all', '/home/li/primary/repos/CriomOS-spirit-judge-deploy', '/home/li/primary/repos/judge', '/home/li/primary/repos/signal-spirit-judge', '/home/li/primary/repos/spirit', '/home/li/primary/repos/spirit-judge', '/home/li/primary/repos/spirit-judge-hardening']
+  RAW_CLAIMS=[((Path /git/github.com/LiGoldragon/CriomOS-home) spirit-judge-terra-remediation 1783707447092089161 11720415957108) ((Path /git/github.com/LiGoldragon/CriomOS-spirit-judge-deploy) spirit-judge-terra-remediation 1783707447103596890 11720404449379) ((Path /git/github.com/LiGoldragon/judge) spirit-judge-terra-remediation 1783707447064318404 11720443727865) ((Path /git/github.com/LiGoldragon/signal-spirit-judge) spirit-judge-terra-remediation 1783707447082785966 11720425260303) ((Path /git/github.com/LiGoldragon/spirit-judge) spirit-judge-terra-remediation 1783707447069729700 11720438316569) ((Path /git/github.com/LiGoldragon/spirit-judge-config) spirit-judge-terra-remediation 1783707447075611324 11720432434945) ((Path /home/li/agent-worktrees/SpiritJudgeTerraProduction20260710/RemediateReviewFindings/spirit) spirit-judge-signal-contract-repin 1783709775831896781 9391676149488) ((Path /home/li/primary/agent-worktrees/spirit-judge-pin-chain-20260710) spirit-judge-pin-chain 1783718462432200373 705075845896) ((Path /home/li/primary/repos/CriomOS-home-spirit-domain-all) spirit-judge-source-ready 1783718347385311303 820122734966) ((Path /home/li/primary/repos/CriomOS-spirit-judge-deploy) spirit-judge-source-ready 1783718347367314963 820140731306) ((Path /home/li/primary/repos/judge) spirit-judge-source-ready 1783718347297245217 820210801052) ((Path /home/li/primary/repos/signal-spirit-judge) spirit-judge-source-ready 1783718347325694576 820182351693) ((Path /home/li/primary/repos/spirit) spirit-judge-source-ready 1783718347342307273 820165738996) ((Path /home/li/primary/repos/spirit-judge) spirit-judge-source-ready 1783718347310720509 820197325760) ((Path /home/li/primary/repos/spirit-judge-hardening) spirit-judge-source-ready 1783718347404093747 820103952522)]
+
+SESSION=TrueSchemaEvolution
+  LANE=PiHarnessNoOutputFailureAudit
+  ROLES=([Audit] Structural)
+  DETAIL=PiHarnessNoOutputFailureAudit
+  STATUS=Active
+  CLAIM_PATHS=[]
+  RAW_CLAIMS=[]
+
+SESSION=TrueSchemaEvolution
+  LANE=SignalSchemaScaffold
+  ROLES=([repo-scaffolder] Structural)
+  DETAIL=[scaffold signal-schema contract repository]
+  STATUS=Active
+  CLAIM_PATHS=[]
+  RAW_CLAIMS=[]
+
+SESSION=TrueSchemaEvolution
+  LANE=TrueSchemaV11RedeployReadinessAudit
+  ROLES=([nix-auditor] Structural)
+  DETAIL=fixed-v11-production-readiness-audit
+  STATUS=Active
+  CLAIM_PATHS=['/home/li/primary/.beads', '/home/li/primary/agent-outputs/TrueSchema/V11RedeployReadinessAudit.md']
+  RAW_CLAIMS=[((Path /home/li/primary/.beads) close-audit-bead-if-go 1783349981480673145 369186027373124) ((Path /home/li/primary/agent-outputs/TrueSchema/V11RedeployReadinessAudit.md) durable-audit-note 1783349981474807408 369186033238861)]
