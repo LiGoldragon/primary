@@ -1,0 +1,28 @@
+{
+  "runId": "91dde218-fbed-4028-8c35-4ea03d051b77",
+  "agent": "reviewer",
+  "task": "Final narrow read-only verification of the last Spirit judge source blocker and successor pins. You are the only active worker; do not spawn subagents. Do not edit, run Nix, build broadly, deploy, start services, call providers, access secrets/records/backups, or mutate coordination.\n\nPreviously approved code revisions remain unchanged except the spirit-judge documentation successor. Verify immutable source only:\n- spirit-judge `6af6ed7c8ddea9719da1dd119b53997225dddd79`\n- CriomOS-home `0005123af63e410cba3114701b2b12f54f5e24e1`\n- deployment `229d9e4520620ccf46c672f92c7b29544c7fe731`\n- unchanged judge `dfba388b9fbf55468c6ae7f6b3b3520b6bebaad4`\n- unchanged signal-spirit-judge `7c25b71a34858c0d912dff8fd0b4f4ac213d7cd1`\n- unchanged Spirit `f9f5266abec8a0bcf43b8bcc93cf066aa9f97ea2`\n\nGate only:\n1. `spirit-judge/ARCHITECTURE.md` now truthfully states generic `judge` owns bounded single-attempt provider mechanics and `spirit-judge` owns any safe domain-specific retry policy, aligned with judge README and signal architecture.\n2. The spirit-judge successor differs only as intended and Home/deployment pins/locks consume it exactly without regressing the already-approved judge/signal/Spirit revisions.\n3. Reconstruct the final immutable pin chain from revision blobs.\n\nReturn `SOURCE APPROVE` or `SOURCE BLOCK` with exact witnesses. List remaining live gates separately. Do not reject for intentionally pending live deployment/account witnesses; the psyche already authorized the ambient Codex login for that later phase.\n\n## Acceptance Contract\nAcceptance level: reviewed\nCompletion is not accepted from prose alone. End with a structured acceptance report.\n\nCriteria:\n- criterion-1: Implement the requested change without widening scope\n- criterion-2: Return evidence sufficient for an independent acceptance review\n\nRequired evidence: changed-files, tests-added, commands-run, validation-output, residual-risks, no-staged-files\n\nReview gate: optional by reviewer.\n\nFinish with a fenced JSON block tagged `acceptance-report` in this shape:\nUse empty arrays when no items apply; array fields contain strings unless object entries are shown.\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"specific proof\"\n    }\n  ],\n  \"changedFiles\": [\n    \"src/file.ts\"\n  ],\n  \"testsAddedOrUpdated\": [\n    \"test/file.test.ts\"\n  ],\n  \"commandsRun\": [\n    {\n      \"command\": \"command\",\n      \"result\": \"passed\",\n      \"summary\": \"short result\"\n    }\n  ],\n  \"validationOutput\": [\n    \"validation output or concise summary\"\n  ],\n  \"residualRisks\": [\n    \"none\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"short description of the diff\",\n  \"reviewFindings\": [\n    \"blocker: file.ts:12 - issue found, or no blockers\"\n  ],\n  \"manualNotes\": \"anything else the parent should know\"\n}\n```",
+  "exitCode": 1,
+  "model": "openai-codex/gpt-5.6-sol:high",
+  "attemptedModels": [
+    "openai-codex/gpt-5.6-sol:high"
+  ],
+  "modelAttempts": [
+    {
+      "model": "openai-codex/gpt-5.6-sol:high",
+      "success": true,
+      "exitCode": 0,
+      "usage": {
+        "input": 28970,
+        "output": 6680,
+        "cacheRead": 95744,
+        "cacheWrite": 0,
+        "cost": 0.393122,
+        "turns": 10
+      }
+    }
+  ],
+  "transcriptPath": "/home/li/primary/.pi-subagents/artifacts/91dde218-fbed-4028-8c35-4ea03d051b77_reviewer_transcript.jsonl",
+  "skills": [],
+  "timestamp": 1783724345856
+}

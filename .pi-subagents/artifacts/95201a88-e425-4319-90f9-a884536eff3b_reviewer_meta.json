@@ -1,0 +1,28 @@
+{
+  "runId": "95201a88-e425-4319-90f9-a884536eff3b",
+  "agent": "reviewer",
+  "task": "Final independent SOURCE review for the Spirit judge cutover. You are the only active worker; do not spawn subagents. Read-only: no edits, deployment, service starts, authenticated model calls, secret/auth inspection, Spirit record access, coordination mutation, or backup mutation.\n\nResource safety: do not overlap any unrelated Nix operation. Prefer source inspection and existing evidence. If a Nix operation is essential, run exactly one foreground operation with `--max-jobs 1 --cores 1`; otherwise run only narrow foreground Cargo checks.\n\nCandidate revisions:\n- judge `dfba388b9fbf55468c6ae7f6b3b3520b6bebaad4`\n- signal-spirit-judge `7c25b71a34858c0d912dff8fd0b4f4ac213d7cd1`\n- spirit-judge `7c4e212747c58907b9784bdbf67646bea0c8f337`\n- spirit `f9f5266abec8a0bcf43b8bcc93cf066aa9f97ea2`\n- CriomOS-home `b8f06e62978d07eac06c889e5a3d8cafafb220da`\n- deployment `018ad7eaa74d97154b944f06f35fef36c38e6c9d`\n\nVerify all prior blockers are closed without regression:\n1. Timeout teardown handles the whole isolated process group even if leader exits and a descendant ignores SIGTERM; escalation sends SIGKILL as needed, reaps safely, and the sentinel test proves no descendant survives.\n2. Missing executable, timeout, nonzero, empty, non-UTF8, malformed output, and rejected authorization paths remain typed/redacted and tested.\n3. Codex authorization is consumed and only authorized ambient `ExternalSession(codex-login)` is accepted; Luna/Terra Medium fake runtime argv tests remain operative.\n4. `signal-spirit-judge@7c25b71` contains the corrected architecture truth and all-features fix, and is actually consumed through spirit-judge and Spirit Cargo/lock/flake/vendoring, then Home and deployment.\n5. `cargo fmt --check` passes for spirit-judge and relevant Rust repos.\n6. README/architecture/validation guidance, fake-vs-real Nix check labeling, exact pin-chain preflight, marker semantics, rollback, and privacy-safe witness docs are truthful.\n7. Production services are expected inactive and no live/deployment evidence is claimed yet.\n\nReturn `SOURCE APPROVE` or `SOURCE BLOCK` with severity-ranked findings, exact witnesses/checks, resource-concurrency evidence, and only the remaining live gates. Include final docs/skills suggestions separately. Do not block merely because live gates intentionally await source approval.\n\n## Acceptance Contract\nAcceptance level: reviewed\nCompletion is not accepted from prose alone. End with a structured acceptance report.\n\nCriteria:\n- criterion-1: Implement the requested change without widening scope\n- criterion-2: Return evidence sufficient for an independent acceptance review\n\nRequired evidence: changed-files, tests-added, commands-run, validation-output, residual-risks, no-staged-files\n\nReview gate: optional by reviewer.\n\nFinish with a fenced JSON block tagged `acceptance-report` in this shape:\nUse empty arrays when no items apply; array fields contain strings unless object entries are shown.\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"specific proof\"\n    }\n  ],\n  \"changedFiles\": [\n    \"src/file.ts\"\n  ],\n  \"testsAddedOrUpdated\": [\n    \"test/file.test.ts\"\n  ],\n  \"commandsRun\": [\n    {\n      \"command\": \"command\",\n      \"result\": \"passed\",\n      \"summary\": \"short result\"\n    }\n  ],\n  \"validationOutput\": [\n    \"validation output or concise summary\"\n  ],\n  \"residualRisks\": [\n    \"none\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"short description of the diff\",\n  \"reviewFindings\": [\n    \"blocker: file.ts:12 - issue found, or no blockers\"\n  ],\n  \"manualNotes\": \"anything else the parent should know\"\n}\n```",
+  "exitCode": 1,
+  "model": "openai-codex/gpt-5.6-sol:high",
+  "attemptedModels": [
+    "openai-codex/gpt-5.6-sol:high"
+  ],
+  "modelAttempts": [
+    {
+      "model": "openai-codex/gpt-5.6-sol:high",
+      "success": true,
+      "exitCode": 0,
+      "usage": {
+        "input": 69031,
+        "output": 8301,
+        "cacheRead": 488960,
+        "cacheWrite": 0,
+        "cost": 0.8386649999999999,
+        "turns": 13
+      }
+    }
+  ],
+  "transcriptPath": "/home/li/primary/.pi-subagents/artifacts/95201a88-e425-4319-90f9-a884536eff3b_reviewer_transcript.jsonl",
+  "skills": [],
+  "timestamp": 1783724036341
+}

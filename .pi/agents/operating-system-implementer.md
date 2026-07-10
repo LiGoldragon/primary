@@ -86,6 +86,8 @@ orchestrate "(Release <LaneName>)"
 meta-orchestrate "(Unregister (<SessionName> <LaneName> <detail-string>))"
 ```
 
+Name sessions and lanes in PascalCase alphanumeric — an uppercase first letter, then letters and digits only (`OsDeploymentDoctrine`, `SkillDriftReview`). The daemon strictly enforces this for the session name; its error text calls it `CamelCase alphanumeric`. Until bead `primary-jf0n` ships the typed rejection, the deployed daemon reports a non-conforming name as an opaque `transport frame error: failed to fill whole buffer`, not a named error.
+
 Use exactly one NOTA string object in each detail or reason slot. Prefer a single bare atom such as `coordination-doctrine`. For multi-word text, use the bracket string form accepted by String slots, such as `[refresh coordination docs]`. Do not write multi-word bare text; it is parsed as extra positional objects and fails.
 
 Observe only when coordination state is evidence after registration or during audit. When relaying observed claims, show direct age, not only a start timestamp.
@@ -320,7 +322,7 @@ meta-lojix "(Deploy (Host (<cluster> <node> <host-composition> <proposal-source>
 
 `HostDeployment` holds ten positional fields: cluster, node, host composition, proposal source, CriomOS flake reference, host action, source revision policy, builder, extra substituters, and build attribute. `<host-composition>` is `CompleteHost` or `BaseHost`. `<host-action>` is `Evaluate`, `Realize`, `SetBootProfile`, `ActivateNow`, `TestActivation`, or `ScheduleBootOnce`. `<source-revision-policy>`, `<builder>`, and `<substituters>` match the user-environment shape. `<build-attribute>` is `None` or `(Some <flake-attribute>)`.
 
-`meta-lojix` returns when the daemon admits a request. Admission is not proof of build, copy, activation, or profile success. Each deploy re-evaluates the full flake tree (`--refresh`), so multi-minute deploys are normal; do not kill a running deploy.
+`meta-lojix` returns when the daemon admits a request. Admission is not proof of build, copy, activation, or profile success. A `RequireImmutable` deploy whose flake reference carries its immutable identity (`?rev=`/`?narHash=`) omits `--refresh` and trusts Nix's per-flake evaluation cache, so re-evaluating an already-built pin returns in seconds. A mutable reference or `ResolveAndRecord` keeps `--refresh`, so its eval re-fetches the whole flake tree and takes minutes. A first build of a new closure also takes minutes. Do not kill a running deploy during a build phase or a mutable-ref eval.
 
 ### Activation checks
 
