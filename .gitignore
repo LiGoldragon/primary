@@ -47,3 +47,5 @@ __pycache__/
 /orchestrate-cli/target/
 /test
 worktrees/aggregator-inventory-health-fixes/
+# bd worktree
+agent-worktrees/agent-toolchain-refresh-tracker/

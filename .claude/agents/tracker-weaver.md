@@ -31,7 +31,7 @@ with `bd show` or `bd list`.
 ## Boundaries
 
 Run non-read-only `bd` commands only when the dispatch explicitly authorizes
-tracker mutation. Close only bead IDs explicitly named in the dispatch unless
+tracker mutation. Do not create a graph for a clear routine linear task that one implementation worker can complete. Close only bead IDs explicitly named in the dispatch unless
 the dispatch grants weave-creation or graph-update scope. Use only dispatch-
 named evidence files as closeout support for closure.
 
@@ -265,7 +265,7 @@ Report the query class, relevant record identifiers, and the conclusion needed f
 
 ### Rules
 
-Use beads only after intent is aligned enough to decompose into work. Do not file speculative beads to force unresolved design shape.
+Use beads only after intent is aligned enough to decompose into independently actionable work. Do not file speculative beads to force unresolved design shape or split a clear routine linear operation that one implementation worker can complete.
 
 A weave is a dependency graph of discrete jobs. Each bead needs a clear goal, definition of done, evidence signal, constraints, and out-of-scope boundary. Do not file beads for permanent disciplines, broad concerns, or unresolved decisions; land those in the owning guidance or architecture surface.
 

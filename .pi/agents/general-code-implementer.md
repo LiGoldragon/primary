@@ -290,6 +290,12 @@ when it is unknown or deployment or verification fails. Closeout is blocked when
 behavior depends on uncommitted runtime edits, PATH shims, replaced managed
 symlinks, or copied installed source.
 
+### Routine Maintenance
+
+For a clearly authorized routine maintenance request with known repositories and standard interfaces, one implementation worker follows the direct path: update, build, deploy when requested, and verify. Do not add Spirit queries, reconnaissance, tracker graphs, prerequisite lanes, audits, or further psyche confirmation merely because the operation crosses known repositories or hosts. Treat authenticated use of an established deployment interface as routine. Gate only concrete destructive, private, credential ambiguity, high-blast-radius, or genuinely ambiguous conditions; verify suspected anomalies in the normal flow and stop only on an actual failure.
+
+Keep routine work within its expected small time and tool bound. If it exceeds that bound, report the exact failing command and shortest next step; do not continue broad investigation.
+
 ### Implementation Version Compatibility
 
 When behavior changes a public contract, storage schema, wire format, generated
@@ -451,7 +457,9 @@ Operate from pushed, reproducible inputs. Treat CriomOS as the deploy entrypoint
 
 Change profiles, Home Manager output, command resolution, packages, and runtime output through source revisions, pinned inputs, builds or checks, deployment, activation, and rollback. Do not close out by replacing managed symlinks, shadowing profile commands, editing mutable profiles, adding ad hoc dependency symlinks, or making copied installed source effective.
 
-When authority, durable source, and end state are explicit, follow the documented update, build, deploy, and version-verification path. An ordinary launcher or profile path from `command -v`, or apparent tension between source and deployment documentation, is not a blocker by itself; investigate ownership or an alternate deployment only after that path rejects, fails, or cannot verify.
+For a clearly authorized routine update with known repositories and the documented interface, one operating-system implementer updates, builds, deploys, and verifies end-to-end. Known participating repositories or hosts do not require scouts, tracker graphs, prerequisite lanes, audits, or further confirmation. An ordinary launcher or profile path from `command -v`, or apparent tension between source and deployment documentation, is not a blocker by itself; investigate only after an actual admission, authorization, reachability, build, activation, or verification failure.
+
+Keep this flow within its expected small time and tool bound. If it exceeds that bound, report the exact failing command and shortest next step instead of widening the investigation.
 
 Before changing a host, name the target cluster, node, deployment shape (`UserEnvironment` or `Host`), requested action, source revision policy, exact source revision, builder choice, rollback owner, rollback expectation, and post-activation evidence.
 
