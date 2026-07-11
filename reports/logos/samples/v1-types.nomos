@@ -1,0 +1,38 @@
+;; Nomos v1 strawman — the brief->wordy expanders. Nomos reads the BRIEF schema and
+;; emits the WORDY, fully-specified logos structures. logos->Rust adds nothing.
+;; Consumed in the logos daemon at the schema->logos conversion site [ruling].
+;; Bodies are PURE POSITIONAL: no dotted-head labels inside a body (Correction 2).
+;; A head appears only to name a structure TYPE or select a SUM VARIANT, never to
+;; label a positionally-fixed product slot. EVERYTHING here is [proposal].
+
+;; ---- Generic macro: Vector = a generic WITH a definition [ruling: Choice 5] ----
+;; (An array would instead be a Rust primitive = a logos builtin, no macro.)
+;; Slots: ( Name Arity Lowering ).  Lowering ( Vec Element ): Rust head + placeholder.
+GenericMacro.( Vector 1 ( Vec Element ) )
+
+;; ---- The shared wire attribute+derive combo, defined once ----
+;; Slots: ( rustfmt-attr gated-derives plain-derives visibility member-structures ).
+;; The two derive groups are stored here (represented in logos), transcribed to Rust
+;; at projection; instances of the member structures spend zero slots on them.
+WireStructureFamily.(
+  RustfmtSkip
+  ( nota-text NotaDecode NotaDecodeTraced NotaEncode )
+  ( Archive Serialize Deserialize Clone Debug PartialEq Eq )
+  Public
+  ( WireTupleStruct WireNamedStruct )
+)
+
+;; ---- Structural macro for the Types section: brief decl -> wordy wire structure ----
+;; Slots: ( Name Section SingleFieldTarget MultiFieldTarget FieldNameRule ).
+;; Positionally: slot 3 handles a one-field brief decl (-> tuple newtype), slot 4 a
+;; many-field brief decl (-> named struct); arity is the Nomos-side selector, so the
+;; tuple-vs-named split is NOT a logos question [ruling: Choice 4 dissolves].
+;; FieldNameRule ( SnakeCaseOfType RepeatDisambiguator ): field names computed here,
+;; stored explicitly in logos [ruling: Choice 3].
+StructuralMacro.(
+  WireStructDefaults
+  Types
+  WireTupleStruct
+  WireNamedStruct
+  ( SnakeCaseOfType RepeatDisambiguator )
+)

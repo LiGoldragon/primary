@@ -1,0 +1,49 @@
+;; Logos v1 strawman — DAEMON-RUNTIME stress test. 1-to-1 with an emitted impl that
+;; contains expressions, not just a data shape. Oracle: schema-rust emits this
+;; verbatim at repos/schema-rust/tests/fixtures/collections_generated.rs:445-478
+;; (SignalFrameError + its match-bearing Display impl + empty Error impl).
+;;
+;; Legitimate-head vs forbidden-label distinction:
+;;  - A head that SELECTS A SUM VARIANT (MatchArm, MethodCall, VariantPattern) is a
+;;    node-kind tag and is required — this is NOT the forbidden named binding.
+;;  - A head that merely LABELS a positionally-fixed product slot is forbidden
+;;    (Correction 2). Product bodies below stay bare; only genuine sum values carry
+;;    a variant head.
+;; Format strings use pipe-square text [| ... |] because they carry { } and :.
+
+;; ---- the error enum (note: SMALLER derive set than wire data types) ----
+PlainErrorEnum.(
+  SignalFrameError
+  (
+    UnitVariant.( ArchiveEncode )
+    UnitVariant.( ArchiveDecode )
+    NamedFieldVariant.( FrameTooShort ( ( found Usize ) ) )
+    NamedFieldVariant.( UnknownHeader ( ( root_enum StaticStr ) ( header U64 ) ) )
+    NamedFieldVariant.( HeaderMismatch ( ( expected U64 ) ( found U64 ) ) )
+  )
+)
+
+;; ---- the Display impl: a method whose whole body is one match-over-self ----
+DisplayImpl.(
+  SignalFrameError
+  Method.(
+    fmt
+    ( SelfRef ( formatter MutRef.(Formatter ElidedLifetime) ) )
+    FmtResult
+    MatchSelf.(
+      MatchArm.( VariantPattern.(ArchiveEncode)
+                 MethodCall.( formatter write_str ( [|failed to encode rkyv archive|] ) ) )
+      MatchArm.( VariantPattern.(ArchiveDecode)
+                 MethodCall.( formatter write_str ( [|failed to decode rkyv archive|] ) ) )
+      MatchArm.( NamedFieldPattern.( FrameTooShort ( found ) )
+                 WriteMacro.( formatter [|signal frame too short: {found} bytes|] ( found ) ) )
+      MatchArm.( NamedFieldPattern.( UnknownHeader ( root_enum header ) )
+                 WriteMacro.( formatter [|unknown {root_enum} short header 0x{header:016X}|] ( root_enum header ) ) )
+      MatchArm.( NamedFieldPattern.( HeaderMismatch ( expected found ) )
+                 WriteMacro.( formatter [|decoded payload header mismatch: expected 0x{expected:016X}, found 0x{found:016X}|] ( expected found ) ) )
+    )
+  )
+)
+
+;; ---- the empty marker impl ----
+ErrorMarkerImpl.( SignalFrameError )

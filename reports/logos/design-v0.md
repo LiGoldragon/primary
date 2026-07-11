@@ -50,7 +50,71 @@ schema dialects  →  macro expansion  →  logos  →  Rust text  →  rustc
 **[psyche ruling]** Rust is the **runtime backend**. The intended analogy: this
 is like Shen lowering to its K Lambda kernel hosted on a small primitive set.
 Logos is the small standardized core; Rust text is the lowering target;
-rustc is the host.
+rustc is the host. (Caveat, see section 1.1: "small" describes the fixed Rust
+lowering semantics, not the logos structure-type vocabulary, which is
+deliberately WIDE.)
+
+## 1.1 Logos is 1-to-1 with Rust — the wordy vision (correction 2026-07-11)
+
+**[psyche ruling]** (2026-07-11) An earlier reading of Logos as a *thin* IR whose
+derives, `pub`, `struct`, `rustfmt::skip`, etc. materialize from macros at
+projection **"totally missed my vision, by a long shot."** This ruling
+**supersedes** any thin-logos framing elsewhere in this document and in
+`syntax-mockup-v0.md`. His words:
+
+> "I meant 1 to 1 equivalence. Basically, take the rust code, and write it with
+> adaptive schema structures. so you can have a SimpleStruct, a
+> GenericsBoundedStruct, a PublicSimpleStruct ... go crazy with the number of
+> different 'code structures' ... The brief view is schema; logos is *wordy as
+> fuck* — but as all the types needed to not need an empty slot (SimpleStruct
+> instead of a general Struct with a bunch of empty (because unused for this
+> simple struct) fields)."
+
+Load-bearing consequences:
+
+- **Everything in the Rust is represented in logos.** He asked pointedly: "where
+  is rustfmt::skip represented? Where is struct represented? and pub? and all the
+  derive blocks?" — all of it lives in logos. **Nothing materializes at
+  projection**; **logos→Rust is transcription**.
+- **The anti-empty-slot mechanism is proliferation of specialized structure
+  types**, not optional/general types. A `SimpleStruct`, `PublicSimpleStruct`,
+  `GenericsBoundedStruct`, … each carries exactly the slots it uses, all filled —
+  rather than one general `Struct` with unused empty slots.
+- **Brief→wordy is the expansion direction.** Schema is the brief view; Nomos
+  expands it into wordy, fully-specified logos; logos transcribes to Rust. The
+  expansion adds nothing at the logos→Rust step.
+
+**[psyche ruling]** (2026-07-11) **Structure bodies are pure positional.** Shown a
+sketch with dotted-head labels inside a body (`Derives.( … )`,
+`CfgAttrDerives.( … )`), he corrected: **"your PublicTupleStruct would have
+positional arguments probably, not named."** Dotted heads used as labels inside a
+body are named binding — forbidden. **Each slot's type comes from the structure's
+definition by expectation**; body values are bare (e.g. slot 2 is a paren list of
+gated derives, slot 3 a paren list of plain derives, with no head announcing
+either).
+
+**[psyche ruling]** (2026-07-11) **The "small kernel" prior-art instinct is
+INVERTED for the logos vocabulary.** The Shen/K-Lambda ~46-primitive instinct
+(section 7.2) governs the fixed Rust lowering semantics, not logos. The logos
+structure-type vocabulary is **wide, flat, and fully specified**: node types are
+cheap, empty slots are forbidden. Optimize for zero empty slots by adding types,
+not for a minimal type count.
+
+**Resolved open choices** (carried rulings / interpretation, 2026-07-11):
+
+- **Choice 3 (field names)** — settled by the prior-session composed rule,
+  psyche-confirmed then: field names = **snake_case of the type name**, a per-kind
+  pattern for generics, with an **explicit disambiguator only on repeats**. The
+  names are **computed by Nomos at expansion but stored explicitly in logos**,
+  because the Rust contains them (per the 1-to-1 ruling above). [psyche ruling]
+- **Choice 5 (Vector vs builtin)** — settled by his original vision words:
+  **array = a Rust primitive = a logos builtin; vector = a generic = has a
+  definition** (a named Nomos macro). [psyche ruling]
+- **Choice 4 (tuple vs named struct)** — **[proposal / agent interpretation
+  2026-07-11]**: since tuple and named structs are **distinct specialized logos
+  structures** (explicit, per the 1-to-1 ruling), arity is purely the *Nomos-side*
+  selection rule for which structure to emit; Choice 4 dissolves as a *logos*
+  question.
 
 ## 2. Identity architecture (mirrors the schema)
 

@@ -1,5 +1,14 @@
 # Logos + Nomos — syntax mockup v0 (strawman for markup)
 
+> **SUPERSEDED 2026-07-11 by `syntax-mockup-v1.md`.** This v0 mockup assumed a
+> *thin* TrueLogos whose derives, `pub`, `struct`, and `rustfmt::skip` materialize
+> from macros at projection. The psyche ruled that reading "totally missed my
+> vision, by a long shot": Logos is **1-to-1 with Rust** ("wordy as fuck"),
+> everything is represented in logos, logos→Rust is pure transcription, and empty
+> slots are avoided by proliferating specialized structure types (see
+> `design-v0.md` section 1.1). Read v1 for the corrected model. The parsability
+> findings below (section 4) and Open Choice 1 remain valid and carry into v1.
+
 A strawman so the psyche can SEE Logos and Nomos syntax. This is not a spec. Every
 syntax choice is tagged either **[licensed by ruling]** (with the ruling cited) or
 **[proposal — psyche to mark up]**. Please mark it up; nothing here is defended.
