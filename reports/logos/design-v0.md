@@ -18,6 +18,8 @@ one:
 - **[proposal]** — an agent suggestion awaiting the psyche's decision. Not
   accepted. Do not implement as if settled.
 - **[open]** — undecided. No ruling exists; the question is live.
+- **[resolved YYYY-MM-DD]** — a former [open] or [proposal] item the psyche has
+  since settled; the entry points to the governing [psyche ruling].
 
 Attribution rule for this document: it deliberately cites **no Spirit intent
 tags**. A fresh audit found unresolvable intent tags in existing architecture
@@ -81,14 +83,44 @@ NOTA-text derives, etc.).
 
 **[psyche ruling]** This principle applies **everywhere**: every per-kind
 section has its own structural macro rules, and those rules are themselves
-defined in the macro language.
+defined in Nomos.
 
-**[psyche ruling]** The macro language may get its own name. The name is
-pending.
+**[psyche ruling]** (2026-07-11) The macro language is named **Nomos**. The
+psyche picked it from the offered candidates (Nomos, Gramma, Techne, Poiesis):
+"Nomos is great." References to "the macro language" throughout this document
+now mean Nomos.
 
-**[proposal]** Candidate names offered to the psyche for the macro language:
-**Nomos**, **Gramma**, **Techne**, **Poiesis**. (He has not picked; see
-open questions.)
+**[psyche ruling]** (2026-07-11) Dispatch semantics, confirmed ("sounds
+correct"):
+
+- The macro table **keys on minted identity**, with names projected through the
+  NameTable — lookup never dispatches on a string, preserving the
+  no-string-dispatch invariant (section 6).
+- An application `X.()` where `X` has **no macro-table entry is an error**. It
+  is not silently treated as a structural default; the structural-default path
+  is specifically the `X.{}` form of mode (b) above, for `X` not in the table.
+
+### 3.1 Dialects as Nomos macro packages
+
+**[psyche ruling]** (2026-07-11) The dialect-as-macro-package design is
+**confirmed as the target**: a dialect (signal schema, sema schema, …) simply IS
+a Nomos macro package — a macro table plus structural section rules. His words:
+"in theory, although we'll be changing the compiler for a while until we get to
+that stable point; eventually schema will be able to self-host." Record all
+three parts:
+
+- The **principle stands**: dialect = Nomos macro package.
+- The **compiler changes during a staged path** — this is not immediate; the
+  current compiler is rebuilt over time until it reaches a stable point.
+- The **stated end state is self-hosting**: schema will eventually define its
+  own Nomos macros.
+
+**[proposal]** (agent interpretation, 2026-07-11) At the self-hosting end state,
+the **Logos→Rust projection is the hosted kernel**: schema defines its own Nomos
+macros above a fixed lowering to Rust. This is the same shape as the Shen
+parallel in section 1 — a language self-hosting its macro layer atop a small,
+fixed kernel (there K Lambda; here the Logos→Rust projection). Marked as agent
+interpretation, not the psyche's words.
 
 ## 4. Acceptance oracle
 
@@ -208,20 +240,22 @@ inline as its evidentiary content:
 
 ## 8. Open questions
 
-**[open]** Macro-language name — the psyche picks. Candidates on offer: Nomos,
-Gramma, Techne, Poiesis (section 3).
+**[resolved 2026-07-11]** Macro-language name — **Nomos** (section 3). Was:
+psyche to pick from Nomos / Gramma / Techne / Poiesis.
 
-**[open] / [proposal]** Where macro definitions live. Proposal pending psyche
-discussion: a dialect (signal schema, sema schema, …) may simply **BE a macro
-package** — a macro table plus structural section rules. Per the per-kind-blocks
-invariant, macro definitions would then earn their own block or document kind.
+**[resolved 2026-07-11]** Where macro definitions live — **confirmed**: a
+dialect IS a Nomos macro package (macro table plus structural section rules),
+see section 3.1. Was: proposal pending psyche discussion.
 
-**[open]** Whether the macro language itself obeys the full NOTA invariants.
-Presumed **yes**, but unconfirmed.
+**[open]** Whether Nomos itself obeys the full NOTA invariants. Presumed
+**yes**, but unconfirmed. (The no-string-dispatch invariant specifically is now
+confirmed via minted-identity keying — section 3 — but the full set is not.)
 
-**[open]** Dispatch precedence / fallthrough: name-in-table vs structural
-default. In particular, the semantics of `X.()` where `X` is **not** in the
-table — presumed to be an **error**, but unconfirmed.
+**[resolved 2026-07-11]** Semantics of `X.()` where `X` is **not** in the macro
+table — **confirmed an error** (section 3), and the macro table keys on minted
+identity, not on a string name. Was: presumed error, unconfirmed. The
+name-in-table vs structural-default split is the `X.()`-error / `X.{}`-structural
+distinction now recorded in section 3.
 
 **[open] / [proposal]** Logos v1 node-inventory scope. Proposal: seed the node
 inventory from the emitter's two output shapes (section 7.1) and carve out the
