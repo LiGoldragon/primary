@@ -1,0 +1,28 @@
+{
+  "runId": "ff37554a-5d4f-41e7-90a7-b76884511749",
+  "agent": "researcher",
+  "task": "Research current, practical ways to keep Rust code-agent build/test workloads off a developer laptop while preserving fast iterative feedback. Focus on: native Nix remote builders and per-derivation test granularity; clean Git/Jujutsu source and remote branch workflows; Nix binary-cache/out-link behavior; remote Cargo/Rust compilation or execution options (for example sccache distributed, remote execution/Bazel rules_rust, hosted CI, self-hosted runners, or other credible systems); and what coding-agent teams actually use when evidence exists. Distinguish compilation caching from executing tests remotely. Evaluate latency, cache reuse across small edits, setup/operational complexity, isolation, attribution/evidence, and fit for many concurrent agents. Use current primary sources where possible and return links/citations, concrete recommendations, and unresolved tradeoffs. No implementation.\n\n---\nUpdate progress at: /home/li/primary/.pi-subagents/artifacts/progress/ff37554a-5d4f-41e7-90a7-b76884511749/progress.md\n\n---\n**Output:**\nWrite your findings to exactly this path: /home/li/primary/.pi-subagents/artifacts/outputs/ff37554a-5d4f-41e7-90a7-b76884511749/research.md\nThis path is authoritative for this run.\nIgnore any other output filename or output path mentioned elsewhere, including output destinations in the base agent prompt, system prompt, or task instructions.\n\n## Acceptance Contract\nAcceptance level: attested\nCompletion is not accepted from prose alone. End with a structured acceptance report.\n\nCriteria:\n- criterion-1: Return concrete findings with file paths and severity when applicable\n\nRequired evidence: review-findings, residual-risks\n\nFinish with a fenced JSON block tagged `acceptance-report` in this shape:\nUse empty arrays when no items apply; array fields contain strings unless object entries are shown.\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"specific proof\"\n    }\n  ],\n  \"changedFiles\": [\n    \"src/file.ts\"\n  ],\n  \"testsAddedOrUpdated\": [\n    \"test/file.test.ts\"\n  ],\n  \"commandsRun\": [\n    {\n      \"command\": \"command\",\n      \"result\": \"passed\",\n      \"summary\": \"short result\"\n    }\n  ],\n  \"validationOutput\": [\n    \"validation output or concise summary\"\n  ],\n  \"residualRisks\": [\n    \"none\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"short description of the diff\",\n  \"reviewFindings\": [\n    \"blocker: file.ts:12 - issue found, or no blockers\"\n  ],\n  \"manualNotes\": \"anything else the parent should know\"\n}\n```",
+  "exitCode": 0,
+  "model": "openai-codex/gpt-5.6-sol:medium",
+  "attemptedModels": [
+    "openai-codex/gpt-5.6-sol:medium"
+  ],
+  "modelAttempts": [
+    {
+      "model": "openai-codex/gpt-5.6-sol:medium",
+      "success": true,
+      "exitCode": 0,
+      "usage": {
+        "input": 8890,
+        "output": 4477,
+        "cacheRead": 5120,
+        "cacheWrite": 0,
+        "cost": 0.18131999999999998,
+        "turns": 3
+      }
+    }
+  ],
+  "transcriptPath": "/home/li/primary/.pi-subagents/artifacts/ff37554a-5d4f-41e7-90a7-b76884511749_researcher_transcript.jsonl",
+  "skills": [],
+  "timestamp": 1783755191684
+}
