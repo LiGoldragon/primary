@@ -55,11 +55,15 @@ adopts arity as the discriminator so the special case dissolves. [proposal] — 
 as a named macro (`Vector.(T)` -> `Vec<T>`) so collections live in the macro table
 like everything else. [proposal].
 
-**OPEN CHOICE 6: nota version.** The dispatch task said "nota 0.7.0 is on main," but
-the workspace lockfile and nota's `origin/main` both resolve **nota 0.5.1**
-(`repos/signal-spirit/Cargo.lock`, commit `ce7c564`). All parse evidence below is
-against 0.5.1 — what the workspace actually builds. If a 0.7.0 exists elsewhere, the
-verdict should be re-run against it. [evidence].
+**RESOLVED (was Open Choice 6): nota version.** Two facts, both verified [evidence]:
+(a) nota's `origin/main` **IS 0.7.0**, at commit `f8de7a51` ("add NotaOutputForm",
+with `PrettyLayout` beneath it); (b) the **0.5.1** I first measured came from
+**consumer lockfile pinning** — `signal-spirit/Cargo.lock` pins the old pre-migration
+rev `ce7c564` — which is the known porting lag, not a missing push. The parse verdict
+below has been **re-run against 0.7.0 (`f8de7a51`)** and the result is unchanged from
+0.5.1 (section 4): identical trees, identical dotted-atom behavior. The only
+difference is cosmetic and non-structural — under 0.7.0 the numeric atoms `1`/`2`
+classify as `[symbol]` rather than `[string-only]`. No open choice remains here.
 
 ## 1. Worked example 1 — a plain wire-contract record (DatabaseMarker)
 
@@ -228,16 +232,20 @@ Nomos annotations:
 
 ## 4. Parsability verdict — real nota parse, honestly reported
 
-Method: `nota::Document::parse` (nota 0.5.1, the workspace's resolved version) run
-against all three sample files via a throwaway harness
-(`scratchpad/notaparse`, path-dependency on `git-archive/nota`). Reproduce with a
-one-file cargo bin calling `Document::parse(read_to_string(path))` and walking
-`root_objects()`. Distinguishing **raw-parses today** from **meaningful parse needs
-implementation** (a logos/nomos kind/expectation table):
+Method: `nota::Document::parse` run against all three sample files via a throwaway
+harness (`scratchpad/notaparse`, path-dependency on a `git-archive/nota` worktree).
+Run against **nota 0.7.0 at `origin/main` `f8de7a51`** (current main), and
+cross-checked against 0.5.1 (the rev consumer lockfiles still pin); **the two agree
+on every parse tree**. Reproduce with a one-file cargo bin calling
+`Document::parse(read_to_string(path))` and walking `root_objects()`. Distinguishing
+**raw-parses today** from **meaningful parse needs implementation** (a logos/nomos
+kind/expectation table):
 
 **All three files RAW-PARSE today with zero errors.** The raw layer discovers
 delimiter and atom structure exactly as designed; every atom classifies as a
-PascalCase symbol (or, for `nota-text`, a kebab symbol; for `1`/`2`, string-only).
+PascalCase symbol (or, for `nota-text`, a kebab symbol; the numeric `1`/`2` classify
+as `[symbol]` under 0.7.0 and `[string-only]` under 0.5.1 — the sole cross-version
+difference, and structurally irrelevant).
 
 **What raw-parses vs what needs implementation:**
 
@@ -280,4 +288,5 @@ Sample files (raw, parser-ready):
 `reports/logos/samples/types-section.nomos`.
 
 Parse harness (throwaway, not committed): `scratchpad/notaparse` — a single
-`Document::parse` + recursive `root_objects()` walk against nota 0.5.1.
+`Document::parse` + recursive `root_objects()` walk against nota 0.7.0 (`f8de7a51`),
+cross-checked against 0.5.1.
