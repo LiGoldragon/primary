@@ -1,0 +1,11 @@
+;; Logos strawman v0 — wire-contract types section, TrueLogos projection.
+;; Dotted-prefix application form (honors the landed "dotted-prefix" invariant).
+;; Acceptance oracle: repos/signal-spirit/src/schema/signal.rs
+;; Every line here is a [proposal] for psyche markup unless the report cites a ruling.
+
+Types.{
+  CommitSequence.{ Integer }
+  StateDigest.{ Integer }
+  DatabaseMarker.{ CommitSequence StateDigest }
+  Domains.{ Vector.(Domain) }
+}

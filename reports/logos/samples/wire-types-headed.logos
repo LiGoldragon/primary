@@ -1,0 +1,11 @@
+;; Logos strawman v0 — SAME types, headed-delimiter form (no dot).
+;; This is the alternative to wire-types.logos, matching the shape nota's own
+;; landed StructuralMacroNode example already parses: (Head args...) / { head body }.
+;; Presented so the psyche can compare dotted-prefix vs headed-delimiter directly.
+
+{ Types
+  { CommitSequence Integer }
+  { StateDigest Integer }
+  { DatabaseMarker CommitSequence StateDigest }
+  { Domains (Vector Domain) }
+}
