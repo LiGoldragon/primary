@@ -29,6 +29,9 @@ result-*
 !.pi/agents/
 !.pi/agents/**
 
+# transient subagent runtime artifacts — transcripts, inputs, outputs, not history
+/.pi-subagents/
+
 # editor and language scratch
 *.swp
 *.swo
