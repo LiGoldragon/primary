@@ -63,6 +63,17 @@ true mirror below is psyche-stated vision:
 - **rkyv** — the stored / in-memory form.
 - **deserialized text** — the agent-readable projection, with pretty-printing.
 
+**[psyche ruling]** (2026-07-11) The schema→logos conversion consumes
+**CoreSchema plus the schema NameTable** — not TrueSchema. Logos uses CoreSchema
+so that CoreLogos has a better correspondence: CoreLogos **re-uses the same
+identifier→name allocation** and **extends it** for CoreLogos with the logos
+NameTable. His words: "logos should use coreschema so that its corelogos has a
+better correspondance — so the conversion would be from coreschema +
+schemaNameTable — then logos can re-use the same ID to names allocation, and
+extend it for its corelogos + logosNameTable." Consequence: the identifier space
+is **continuous across schema and logos** (schema identifiers keep their meaning
+in logos; logos mints new ones by extension).
+
 **[open]** / floated as "could": Logos **possibly served by its own daemon**
 that the schema daemon calls for transforms and views. The psyche floated the
 daemon shape with "could" — record it as a possibility, not a decision.
@@ -121,6 +132,14 @@ macros above a fixed lowering to Rust. This is the same shape as the Shen
 parallel in section 1 — a language self-hosting its macro layer atop a small,
 fixed kernel (there K Lambda; here the Logos→Rust projection). Marked as agent
 interpretation, not the psyche's words.
+
+**[psyche ruling]** (2026-07-11) Where Nomos definitions are **consumed**: the
+psyche reframed the earlier "where do they live" question from authorship to
+consumption — "or rather, where are they consumed, right? since logos is
+converting the schema to logos, it would be in the logos daemon." So Nomos
+definitions are consumed **in the logos daemon, at the schema→logos conversion
+site**. His words settle consumption only; the **authored surface** (what
+document kind holds Nomos definitions at rest) remains [open] — see section 8.
 
 ## 4. Acceptance oracle
 
@@ -243,9 +262,14 @@ inline as its evidentiary content:
 **[resolved 2026-07-11]** Macro-language name — **Nomos** (section 3). Was:
 psyche to pick from Nomos / Gramma / Techne / Poiesis.
 
-**[resolved 2026-07-11]** Where macro definitions live — **confirmed**: a
-dialect IS a Nomos macro package (macro table plus structural section rules),
-see section 3.1. Was: proposal pending psyche discussion.
+**[resolved 2026-07-11]** Where Nomos definitions are **consumed** — the logos
+daemon, at the schema→logos conversion site (section 3.1). Also confirmed: a
+dialect IS a Nomos macro package (macro table plus structural section rules).
+
+**[open]** Where Nomos definitions are **authored / held at rest** — what
+document kind carries a Nomos macro package. The psyche's 2026-07-11 statement
+answered consumption, not authorship, so this remains undecided (per the
+per-kind-blocks invariant it would earn its own block or document kind).
 
 **[open]** Whether Nomos itself obeys the full NOTA invariants. Presumed
 **yes**, but unconfirmed. (The no-string-dispatch invariant specifically is now
@@ -274,3 +298,18 @@ it.
 **[open]** The `sema.schema` document-kind design and sema-engine's
 stored-record identity basis both remain **pending that session** (blocked on
 the two bootstrap questions above).
+
+### 8.2 Operational direction (2026-07-11, pending merge-state verification)
+
+**[psyche direction, pending verification]** The psyche directed the following
+component-porting work onto the syntax-redesign base. A merge-state scout is
+currently verifying the actual branch state, so this is recorded as **direction
+pending that verification, not verified fact**:
+
+- Components are to be **ported onto the syntax-redesign base**; `drop-next` is
+  stated merged into `main`.
+- A **spirit port is to be attempted** despite the families retirement. The
+  families successor is still pending the sema document-kind design (section
+  8.1).
+- Any remaining **unmerged redesign slice should be merged into `main`** so the
+  **dotted-prefix syntax becomes the universal base**.
