@@ -56,6 +56,13 @@ deliberately WIDE.)
 
 ## 1.1 Logos is 1-to-1 with Rust — the wordy vision (correction 2026-07-11)
 
+> **PARTIALLY SUPERSEDED by section 1.2 (2026-07-11 session 2).** The 1-to-1
+> "everything represented, transcription-only" core STANDS. But the anti-empty-slot
+> mechanism below — "proliferation of specialized structure types" — was REVERSED by
+> the psyche: he does not want many struct types; variance (visibility, etc.) is
+> expressed by **fields/variants on general structures**. Read 1.2 first. Every
+> "Nomos" mention in this document is also retired by 1.2.
+
 **[psyche ruling]** (2026-07-11) An earlier reading of Logos as a *thin* IR whose
 derives, `pub`, `struct`, `rustfmt::skip`, etc. materialize from macros at
 projection **"totally missed my vision, by a long shot."** This ruling
@@ -116,6 +123,111 @@ not for a minimal type count.
   selection rule for which structure to emit; Choice 4 dissolves as a *logos*
   question.
 
+## 1.2 Reset — Nomos dropped, no type proliferation, psyche-authored base (2026-07-11 session 2)
+
+The psyche rejected the v1 mockup root-and-branch and wrote logos himself; his sample
+is now the authoritative base (recorded verbatim below). Six rulings:
+
+**[psyche ruling] (1) Macro language — DROPPED, then REINSTATED (both recorded in
+order, no smoothing).** First he said: **"we drop nomos; there isnt enough room for
+another component; schema lowers into logos through logos macros."** Then, same
+session, he reversed it: **"actually, we should keep nomos, because it is its own
+language syntax. logos is a rust-equivalent, but our macros will not be rust macros."**
+Net state (the reversal wins): **Nomos exists as the transformation language, with its
+own syntax**; **Logos is the Rust-equivalent data language**; **macros are Nomos
+macros, NOT Rust macros** (and not "logos macros written in logos"). Do NOT assert
+anything about Nomos being or not being a separate component/daemon — he did not settle
+that; his "not enough room for another component" remark was about components, and the
+standing consumption ruling (Nomos definitions consumed in the logos daemon, section
+3.1) is unaffected. The section-3 Nomos naming and consumption rulings therefore STAND.
+What DID change from v1: a structure like the v1 `WireStructure`-with-baked-derives is
+a **Nomos macro** (schema-side compression that expands to the full logos form), **not a
+distinct logos type** (see ruling 2).
+
+**[psyche ruling] (2) NO type proliferation.** His words: **"we dont want to create a
+bunch of different struct types; logos is going to be mostly generated from schema. So
+we use a field or variants for everything, like visibility."** This **REVERSES** the
+"go crazy with the number of code structures" reading and v1's 19-type vocabulary.
+Structures are **general**; variance is expressed by **fields and variants** (e.g.
+visibility is a field/variant on a general structure, not a `PublicStruct` vs
+`PrivateStruct` type split).
+
+**[psyche ruling] (3) His hand-written sample is the base** (recorded verbatim as
+**[psyche-written]**, including his inline comments):
+
+```
+Public.Newtype.(
+  CommitSequence
+  [ Literal.[rustfmt.skip]
+    ConfigurationAttribute.Feature.(
+      nota-text
+      [NotaDecode NotaDecodeTraced NotaEncode])
+    Derive.[rkyv.[Archive Serialize Deserialize]
+            Clone Debug PartialEq Eq]]
+  Integer
+)
+
+Public.Struct.(
+  DatabaseMarker
+  [ Literal.[[rustfmt.skip] [second.literal.thing]]
+    ConfigurationAttribute.Feature.(
+      nota-text
+      [NotaDecode NotaDecodeTraced NotaEncode])
+    Derive.[rkyv.[Archive Serialize Deserialize]
+            Clone Debug PartialEq Eq]]
+  [Public.CommitSequence
+   Public.StateDigest
+   Private.secretDigest.StateDigest]
+)
+```
+
+Shapes therein: **name first**; **attributes as a typed vector** (`Literal` escape
+hatch / `ConfigurationAttribute` with `Feature` as one predicate-kind variant /
+`Derive` with dotted path-grouping `rkyv.[…]`); **fields as dotted chains**
+`Visibility.name?.Type` with an explicit name ONLY on a repeated field type (the
+established composed rule — `Public.StateDigest` derives `state_digest`;
+`Private.secretDigest.StateDigest` disambiguates the repeat).
+
+**[psyche ruling] (4) Visibility — two forms offered for his pick.** Outer variant
+(`Public.Newtype.(…)`) or a variant field (a `[Public Private]`-style visibility slot),
+**"if it's easier to deal with."** Both drawn on the same example in
+`syntax-mockup-v2.md` §; trade-off stated, not picked.
+
+**[psyche ruling] (5) Dotted-prefix pushed INTO nota** — supersedes mockup Open
+Choice 1. His words: **"even in nota, when we expect a data variant, I would rather use
+`Variant.(Data)` (or `.[]` for vectors)."** Nota's grammar/data model evolves to bind
+expectation-driven variant application across all our languages. (This is already the
+documented TARGET dotted carrying syntax in the `nota-schema-design` skill:
+`Head.Payload`, `Variant.Payload`.)
+
+**[psyche proposal — leaning, NOT final] (6) Delimiter reshuffle.** Record his
+reasoning, not as settled: drop `[]` as strings; `{}` moves to **structs** (aligning
+with the schema's landed struct-declaration syntax — see the constraint citation
+below); `[]` becomes **vectors**; strings become `()` with `(| |)` as the
+indentation-escaped form; maps possibly `()` or `[]` or — flagged — **no delimiter of
+their own**, a map being a vector of pair-structs by expectation. Cited reasons:
+struct-syntax alignment, and the `[this is a vector of strings]` ambiguity dissolving
+into space-separated bare atoms. He notes his own sample uses the "wrong" delimiters if
+this proceeds.
+
+**[psyche ruling] (7) No double colons — Rust paths are DOTTED in logos.** His words:
+**"I dont want the double colon; I dont want to start using exact rust syntax — logos
+has to feel like logos."** Rust paths are represented **dotted** (`rustfmt.skip`,
+`rkyv.[…]`); the **projection owns the `.`→`::` translation**. Literal foreign text
+(tool-attribute names and the like) is carried in this dotted logos form, never
+byte-exact Rust with `::`. This makes his sample's `rustfmt.skip` and `rkyv.[…]`
+canonical, not deviations; the earlier "store `rustfmt::skip` byte-exact" option is
+withdrawn.
+
+**[evidence] The schema tuple-disallow constraint** (he referenced it from memory):
+`schema-rust/ARCHITECTURE.md:186-197`. The schema has only `TypeDeclaration::Alias`,
+`Newtype`, and `Struct`. A **newtype is a single-element brace carrying just the
+wrapped type and no field name**, authored as the dotted `Topic.{ String }` (e.g.
+`DecisionReceipt.{ Integer }`); a multi-field declaration is a named-field `Struct`.
+There is **no multi-field tuple** form — the newtype-only constraint. Note the schema's
+landed authoring surface is **already dotted-brace `.{ }`**, which is exactly what
+reshuffle ruling 6 aligns logos to.
+
 ## 2. Identity architecture (mirrors the schema)
 
 **[psyche ruling]** Logos mirrors the schema identity architecture. The core /
@@ -160,10 +272,15 @@ NOTA-text derives, etc.).
 section has its own structural macro rules, and those rules are themselves
 defined in Nomos.
 
-**[psyche ruling]** (2026-07-11) The macro language is named **Nomos**. The
-psyche picked it from the offered candidates (Nomos, Gramma, Techne, Poiesis):
-"Nomos is great." References to "the macro language" throughout this document
-now mean Nomos.
+**[psyche ruling — dropped then REINSTATED 2026-07-11 session 2, see section 1.2]**
+The transformation language is named **Nomos**. History, no smoothing: session 1 named
+it Nomos; session 2 first dropped it ("we drop nomos… schema lowers into logos through
+logos macros") then reinstated it ("actually, we should keep nomos, because it is its
+own language syntax… our macros will not be rust macros"). Net: **Nomos stands, as the
+own-syntax transformation language distinct from logos** (the Rust-equivalent data
+language). The candidate-name list (Gramma / Techne / Poiesis) is historical; he chose
+Nomos. The dispatch/structural-macro ideas in section 3 / 3.1 survive as **Nomos**
+(own-syntax macros), not Rust macros.
 
 **[psyche ruling]** (2026-07-11) Dispatch semantics, confirmed ("sounds
 correct"):

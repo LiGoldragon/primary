@@ -1,5 +1,13 @@
 # Logos + Nomos — syntax mockup v1 (1-to-1 vision, strawman for markup)
 
+> **SUPERSEDED 2026-07-11 (session 2) by `syntax-mockup-v2.md`.** The psyche rejected
+> this v1 root-and-branch and wrote logos himself. The 1-to-1 "everything represented,
+> transcription-only" core survives, but v1's central mechanism — **proliferating ~19
+> specialized structure types** — was REVERSED: he wants general structures with
+> variance expressed by fields/variants (e.g. visibility as a field), no type
+> proliferation. Nomos was also dropped then reinstated as the own-syntax transformation
+> language. Read v2 and `design-v0.md` §1.2 for the authoritative base.
+
 Supersedes `syntax-mockup-v0.md`, which assumed a thin TrueLogos. The psyche ruled
 that reading "totally missed my vision, by a long shot." This v1 draws Logos as
 **1-to-1 with Rust** ("wordy as fuck"): every Rust token is positionally homed in

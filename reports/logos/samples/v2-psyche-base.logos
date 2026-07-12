@@ -1,0 +1,27 @@
+;; Logos v2 — the PSYCHE-WRITTEN base, verbatim (scheme a: current nota delimiters).
+;; Recorded exactly as he wrote it, including his inline comments. Do not edit shape.
+;; Parse-checked against nota 0.7.0 (f8de7a51).
+
+Public.Newtype.(
+  CommitSequence
+  [ Literal.[rustfmt.skip]
+    ConfigurationAttribute.Feature.(
+      nota-text
+      [NotaDecode NotaDecodeTraced NotaEncode])
+    Derive.[rkyv.[Archive Serialize Deserialize]
+            Clone Debug PartialEq Eq]]
+  Integer
+)
+
+Public.Struct.(
+  DatabaseMarker
+  [ Literal.[[rustfmt.skip] [second.literal.thing]]
+    ConfigurationAttribute.Feature.(
+      nota-text
+      [NotaDecode NotaDecodeTraced NotaEncode])
+    Derive.[rkyv.[Archive Serialize Deserialize]
+            Clone Debug PartialEq Eq]]
+  [Public.CommitSequence
+   Public.StateDigest
+   Private.secretDigest.StateDigest]
+)
