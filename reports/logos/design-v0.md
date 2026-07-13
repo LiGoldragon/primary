@@ -384,6 +384,41 @@ on their signal surfaces (signal-schema / signal-nomos / signal-logos).
 architecture report's **P4 (stateless vs stateful Nomos)** and on the still-open
 **definitions-at-rest** question (§8): a slot-listing Nomos leans stateful.
 
+**[psyche ruling] (24) Wave one LAUNCHED** (2026-07-13). Wave one **includes the delimiter
+reshuffle**, executed on **"an epic new multi-repo stack branch."** The `nexus` / `nexus-cli`
+GitHub remotes: **"delete"** (deletion being executed). The reshuffle (§1.2 ruling 6) is
+therefore no longer merely leaning for wave-one purposes — it is in the launched scope.
+
+**[psyche ruling] (25) Nomos surface, from his critique of the v0 strawman** (2026-07-13).
+Five corrections (quoted):
+- (a) **No per-declaration `Macro.` head.** "since nomos is a macro language, it would [be]
+  utterly retarded to declare Macro everytime" — the **nomos file kind's expectation** makes
+  declarations macros **structurally**.
+- (b) **No `Input.` / `Result.` label heads.** "a stupid agent trying to create a named
+  attributes design again. You agents really dont like the nota philosophy." Sections are
+  **positional** under the file kind's grammar.
+- (c) **The input section DESCRIBES THE INPUT TYPE**, and every by-name access in the body
+  must **resolve against that declared type's schema.** The v0 strawman's `declaration.name`
+  / `declaration.inner` were **dangling** — only `declaration.SchemaNewtype` was declared and
+  SchemaNewtype's field schema was never shown.
+- (d) **A small escape set uses STRUCTURAL, visually distinct syntax.** "we should use a
+  structural syntax, since this will be hard to tell from the rest of the syntax; it just
+  looks the same as everything else, which is why macros conventions use `$` or `#` type
+  prefix."
+- (e) **Recursive macro invocation in templates is required.** "We also need to be able to
+  call more macros recursively."
+
+These are addressed in `reports/logos/nomos-macro-model-v1.md` (v0 superseded).
+
+**[psyche ruling] (26) Macro identifiers are CAPITALIZED** (2026-07-13). Challenging the v1
+draft's `wireNewtype`, his words: **"why lowercase? isnt WireNewtype a thing?"** His own
+prior rulings answer it: `Map` and `Vector` are macros and are capitalized objects; a macro
+is a **declaration with a minted identity invoked in object position**, so capitalization
+semantics make it **capitalized-leading** (`WireNewtype`, `WireAttributes`). Lowercase-leading
+remains only for genuine **names**: field names, map keys, feature names like `nota-text`,
+and local input bindings (e.g. `declaration` in `declaration.SchemaNewtype` stays lowercase —
+it is a binding name).
+
 ## 2. Identity architecture (mirrors the schema)
 
 **[psyche ruling]** Logos mirrors the schema identity architecture. The core /

@@ -1,0 +1,18 @@
+;; Nomos macro model v1 — VARIANT B (dedicated bracket << >>). [proposal]
+;; Same as variant A but escapes use a nomos-only delimiter pair: <<name>> = realize,
+;; <<(Macro)>> = recursive call, <<@items>> = splice. Macro names CAPITALIZED (ruling 26).
+;; NOTE: << >> are NOT nota delimiters, so this CANNOT parse in nota 0.7.0 — it requires
+;; nomos to register a new delimiter pair (see nomos-macro-model-v1.md §6).
+
+WireNewtype.( NewtypeDeclaration
+  Public.Newtype.(
+    <<name>>
+    <<(WireAttributes)>>
+    <<reference>>
+  )
+)
+
+WireAttributes.( Unit
+  [ Literal.[rustfmt.skip]
+    ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
+    Derive.[rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq] ] )

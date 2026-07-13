@@ -1,5 +1,11 @@
 # Nomos macro model v0 — terminology, hygiene, and a syntax strawman
 
+> **SUPERSEDED 2026-07-13 by `nomos-macro-model-v1.md`.** The psyche rejected this v0
+> strawman's surface: the `Macro.` head, the `Input.`/`Result.` label heads, the dangling
+> `declaration.name`/`.inner` access, the non-structural escape, and lowercase macro names
+> are all corrected in v1 (design-v0.md rulings 25–26). Part A (terminology) and Part B
+> (hygiene-by-identity) remain valid and carry into v1.
+
 Grounds the psyche's session-3 Nomos vision (design-v0.md §1.4) in the standard macro
 vocabulary he asked to be taught, analyzes whether his identity-bearing objects make
 hygiene a non-problem, and proposes a Nomos syntax strawman with two end-to-end worked
