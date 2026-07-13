@@ -310,6 +310,56 @@ representation* it lowers to is chosen in Nomos and can be switched there. (Grou
 `delimiter-semantics.md` Part A finding that the codegen currently picks `BTreeMap`
 unconditionally — under this vision that choice moves into Nomos.)
 
+## 1.4 Nomos as a component — the macro model (2026-07-11 session 3)
+
+**Nomos position history (recorded honestly — this is the THIRD position):** session 1
+named it (a language); session 2 first **dropped** it, then reinstated it as a
+**language only**; session 3 (here) makes it a **component AND language**. The prior
+"not enough room for another component" concern is now overridden by the psyche himself.
+
+**[psyche ruling] (14) Nomos is a component.** His words: **"we would have another
+component called nomos. And conversion would happen through nomos into logos."** Pipeline:
+**text schema → TrueSchema** (addressed by hash in the schema daemon) **→ Nomos converts →
+Logos component.**
+
+**[psyche ruling] (15) Conversions happen OUTSIDE text.** His words: **"I want the
+conversions to happen outside of text."** The pipeline moves **typed/serialized objects
+end to end** — never text-to-text. (Consistent with the workspace's typed-store /
+typed-wire discipline; text is only the human projection.)
+
+**[psyche ruling] (16) Signal contracts for the components.**
+- **signal-logos** exposes logos's main types so **Nomos can construct and send serialized
+  logos** to the logos component.
+- **signal-nomos** exposes **"all of the macros, all of the main objects that schema needs
+  to properly know that something is a macro"** — so **schema can lower into macro
+  invocations** and **Nomos can lower those invocations into logos** (typed via
+  signal-logos).
+
+**[psyche ruling] (17) Ordering — spec logos first.** His words: **"First, we have to spec
+out logos so that it can represent all the different types of Rust."** No sugar variants;
+logos is **"the more exploded, thorough, complete, non-sugared language."** (Reaffirms the
+1-to-1/no-sugar core of §1.1 as the first work item.)
+
+**[psyche ruling] (18) Macro shape — input section and result section.** Every macro has
+an **input section** and a **result section**. The body accesses the input's
+subcomponents **by name**, **"which are defined in schemas"** — like struct field access
+(typed destructuring over schema field names).
+
+**[psyche ruling] (19) Views / staging — pure vs realized objects.** A passed object is
+either **"a pure object … as if it was passing the object directly"** or **"a realized
+object, meaning that now it turns into something in logos."** He cited the **Lisp `#`/quote
+prefixes** and asked us to supply proper terminology and Rust / developed-Lisp examples
+(delivered in `reports/logos/nomos-macro-model-v0.md` Part A). Mapping he endorsed: pure =
+quoted; realized = unquoted/spliced.
+
+**[psyche ruling] (20) Tree delegation.** Macros can **pass parts (branches) of an object
+down into inner macros.**
+
+**[psyche ruling] (21) Bootstrap.** Inter-component types get defined in the **current
+schema→Rust stack** first; **"eventually Logos might talk to another component or might do
+the Rust lowering itself, but eventually that new pipeline will be the Rust generating
+mechanism."**
+
 ## 2. Identity architecture (mirrors the schema)
 
 **[psyche ruling]** Logos mirrors the schema identity architecture. The core /

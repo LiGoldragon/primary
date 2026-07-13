@@ -1,0 +1,21 @@
+;; Logos expansion targets for the two Nomos worked examples [proposal/psyche-authored
+;; base]. Scheme-current delimiters. Example 1 is the v2 psyche-authored newtype; example 2
+;; is the Vector case with the inner type delegated to the vector macro (LogosGeneric).
+
+;; Example 1 — wireNewtype( CommitSequence.{ Integer } )
+Public.Newtype.(
+  CommitSequence
+  [ Literal.[rustfmt.skip]
+    ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
+    Derive.[rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq] ]
+  Integer
+)
+
+;; Example 2 — wireNewtype( Domains.{ Vector.(Domain) } ), inner delegated to vector macro
+Public.Newtype.(
+  Domains
+  [ Literal.[rustfmt.skip]
+    ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
+    Derive.[rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq] ]
+  LogosGeneric.( Vec Domain )
+)
