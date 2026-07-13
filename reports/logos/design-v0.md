@@ -360,6 +360,30 @@ schema→Rust stack** first; **"eventually Logos might talk to another component
 the Rust lowering itself, but eventually that new pipeline will be the Rust generating
 mechanism."**
 
+**[psyche ruling] (22) Component topology confirmed + pull/push conversion flows**
+(2026-07-13). His words: **"yes, schema goes to nomos, nomos goes to logos. we can have
+both pull (list loaded slots in schema, then request for conversion from logos-side) and
+push-based requests (We can have a `convertToLogos` in schema which pushes the work to
+nomos, in a chain)."** So:
+- **Nomos is a dedicated component** — this **supersedes** the §3.1 "Nomos definitions
+  consumed in the logos daemon" wording; conversion flows **schema → Nomos → Logos** as
+  three components.
+- **BOTH conversion flows are in the design**: a **pull** flow (driven from the
+  **logos side**, requesting conversion against schema's **listed loaded slots**), and a
+  **push** flow (a **`convertToLogos`** operation on schema that pushes the work through
+  Nomos in a chain).
+
+**[psyche ruling] (23) Content-addressed operations on ALL THREE components** (2026-07-13).
+Responding to the finding that signal-schema lacks a serve-`CoreSchema`+`NameTable`-by-hash
+operation, his words: **"exactly. all three should have those types of operations."** So
+**schema, Nomos, and Logos each expose slot-listing and hash-addressed fetch operations**
+on their signal surfaces (signal-schema / signal-nomos / signal-logos).
+
+**[implication — flagged, not ruled]** For Nomos to **list loaded slots** it must hold
+**loaded state** — a registry of loaded macro/dialect definitions. This bears on the
+architecture report's **P4 (stateless vs stateful Nomos)** and on the still-open
+**definitions-at-rest** question (§8): a slot-listing Nomos leans stateful.
+
 ## 2. Identity architecture (mirrors the schema)
 
 **[psyche ruling]** Logos mirrors the schema identity architecture. The core /
