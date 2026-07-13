@@ -228,6 +228,55 @@ There is **no multi-field tuple** form — the newtype-only constraint. Note the
 landed authoring surface is **already dotted-brace `.{ }`**, which is exactly what
 reshuffle ruling 6 aligns logos to.
 
+## 1.3 Reshuffle firming, maps, and delimiter observations (2026-07-11)
+
+**[psyche statement] (8) Strings-in-parens, firming ruling 6.** His words: **"hence why
+I now want strings in () — (optionally of course; only if they contain some characters
+like space) — then it would obviously be a vector."** So under the reshuffle a string is
+a **bare atom when canonical**, and **parenthesized only when its content needs it**
+(spaces or otherwise-forbidden characters). This **dovetails with the standing workspace
+rule** that bare atoms are the default string form and a delimiter is required only when
+the string carries spaces or forbidden symbols (`nota-design` skill; nota
+`ARCHITECTURE.md`, "Bare atoms are the default string form"). Consequence: under this
+rule `Literal.[rustfmt.skip]` is **unambiguously a vector containing one bare-atom
+string** — the `[…]` is a vector, not a string, because a bare-atom string needs no
+delimiter. This resolves the v2 §4 open literal-delimiter question.
+
+**[psyche intuition — pending grounding] (9) Maps as vectors.** His words: **"how are
+maps *actually* represented in rust? Aren't they fundamentally also a vector?"** — he
+leans toward maps needing **no delimiter of their own**. Recorded as intuition pending
+the grounded analysis in `reports/logos/delimiter-semantics.md` (map representation
+across the workspace stack).
+
+**[psyche observation — for discussion] (10) Delimiters may be cognitive, not
+machine-load-bearing, outside schema.** His words in substance: outside schema, where
+the expected type of every next object is already known, the delimiter **glyph** may not
+be load-bearing for the machine at all — a parser could accept any matching pair; the
+glyph's value is **cognitive** (signaling to humans/agents that `Literal` takes a vector,
+that `Feature` takes a struct, etc.). Schema may be the **only** surface where delimiters
+semantically **select** which object is read. Recorded for discussion; tested against the
+real parser in `reports/logos/delimiter-semantics.md`.
+
+**[psyche ruling] (11) Maps are `Map.( … )` — resolves statement 9.** His words:
+**"Map.() sounds reasonable then. The mental model would be: () holds a payload; maps
+are one kind of payload. And I still want to stick to the key.Value syntax for them."**
+Recorded precisely:
+
+- Maps are written **`Map.( … )`** — **no dedicated map delimiter**. Under the reshuffle
+  `()` is the **payload bracket**; a **map is one kind of payload** among others (a
+  **string** is another payload kind — the delimited string of statement 8).
+- Map entries keep the **`key.Value` dotted-pair** syntax: a lowercase-leading key name
+  dotted onto a capitalized value object. This **reaffirms the standing invariant that no
+  space-separated pair form exists anywhere** — a map entry is a dotted pair, exactly as a
+  struct field is the dotted chain `Visibility.name?.Type`.
+- Design-coherence point: **map entries and struct-field entries now share one mechanism —
+  the dotted pair.** This closes the map-delimiter open question from
+  `delimiter-semantics.md` Part C.
+
+This settles the reshuffle's delimiter roles: **`{}` structs, `[]` vectors, `()`
+payloads** (a payload is a delimited string when its content forces the bracket, or a map
+written `Map.( key.Value … )`, or any `Head.( … )` application payload).
+
 ## 2. Identity architecture (mirrors the schema)
 
 **[psyche ruling]** Logos mirrors the schema identity architecture. The core /
