@@ -257,6 +257,16 @@ that `Feature` takes a struct, etc.). Schema may be the **only** surface where d
 semantically **select** which object is read. Recorded for discussion; tested against the
 real parser in `reports/logos/delimiter-semantics.md`.
 
+**[psyche observation — REFINED, supersedes the phrasing of statement 10 above]** His
+point is **not** about current enforcement. It is that delimiters are only semantically
+**generative in schema**: in schema, the glyph after the dot **changes what comes into
+existence** (a brace after a name = a struct *definition*). In **NOTA and Logos** the same
+glyph associations exist **only to help the reader** — validation/enforcement of a glyph
+is not the same as semantic impact. He is **explicitly NOT pursuing accept-any-delimiter**
+(so `delimiter-semantics.md` Part C.3 is closed as *not pursued*). On the transformation
+language he notes: **"I don't know about NOMOS"** — Nomos's own grammar/behavior is
+**marked unknown by him**, not settled here.
+
 **[psyche ruling] (11) Maps are `Map.( … )` — resolves statement 9.** His words:
 **"Map.() sounds reasonable then. The mental model would be: () holds a payload; maps
 are one kind of payload. And I still want to stick to the key.Value syntax for them."**
@@ -276,6 +286,29 @@ Recorded precisely:
 This settles the reshuffle's delimiter roles: **`{}` structs, `[]` vectors, `()`
 payloads** (a payload is a delimited string when its content forces the bracket, or a map
 written `Map.( key.Value … )`, or any `Head.( … )` application payload).
+
+**[psyche ruling] (12) Dotted data variants at ALL layers.** His words: **"I also want to
+push data variants with the dotted syntax, at all layers; so a nota variant with data
+would be `Variant.Data` (or `Variant.( ... )` or `[]` or `{}` depending on the type of
+data it carries) instead of the current `(Variant Data)` we use now."** This **replaces
+the current headed-record variant encoding** `(Variant Data)` across **nota, schema, and
+logos**. The payload-shape spectrum, explicit:
+
+- a **bare-atom** payload attaches directly: `Variant.Data`;
+- otherwise the **bracket matches the payload's type**: `Variant.( … )` (payload / string
+  / map), `Variant.[ … ]` (vector), `Variant.{ … }` (struct).
+
+This is the same dotted-application binding as ruling 5, now stated as the **universal
+variant encoding**.
+
+**[psyche statement] (13) Map Rust-type is a Nomos lowering choice.** His words: **"in our
+new vision, we would lower schema through nomos, so we can switch out the representation
+there."** Which concrete Rust map type a schema `Map` lowers to — `BTreeMap`, `HashMap`,
+or a vector-of-pairs — is a **Nomos-level decision, not a language-fixed fact**. Recorded
+alongside the map rulings (11): the `Map.( key.Value … )` *surface* is fixed; the *Rust
+representation* it lowers to is chosen in Nomos and can be switched there. (Grounds the
+`delimiter-semantics.md` Part A finding that the codegen currently picks `BTreeMap`
+unconditionally — under this vision that choice moves into Nomos.)
 
 ## 2. Identity architecture (mirrors the schema)
 

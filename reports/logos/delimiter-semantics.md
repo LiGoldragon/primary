@@ -190,6 +190,12 @@ Part B / v2, requires resurrecting the just-removed pipe-paren machinery).
 
 ### C.3 The accept-any-delimiter idea — what it buys and costs
 
+> **CLOSED 2026-07-11: the psyche is NOT pursuing accept-any-delimiter.** He refined his
+> observation (design-v0.md, refinement of statement 10): delimiters are only semantically
+> *generative in schema* (the glyph after the dot changes what comes into existence); in
+> NOTA and Logos the glyph associations are reader-help, and enforcement is not semantic
+> impact. The analysis below is retained as the trade-off record that informed that call.
+
 The psyche's observation (statement 10): outside schema, where the next expected type is
 known, a parser *could* accept any matching pair, freeing glyphs to be purely cognitive.
 Weighed against the evidence (Part B), honestly:
