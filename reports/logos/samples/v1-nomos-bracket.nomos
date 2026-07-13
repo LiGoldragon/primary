@@ -1,18 +1,19 @@
 ;; Nomos macro model v1 — VARIANT B (dedicated bracket << >>). [proposal]
 ;; Same as variant A but escapes use a nomos-only delimiter pair: <<name>> = realize,
-;; <<(Macro)>> = recursive call, <<@items>> = splice. Macro names CAPITALIZED (ruling 26).
-;; NOTE: << >> are NOT nota delimiters, so this CANNOT parse in nota 0.7.0 — it requires
-;; nomos to register a new delimiter pair (see nomos-macro-model-v1.md §6).
+;; <<(WireAttributes)>> = recursive call, <<@items>> = splice. Macro names CAPITALIZED.
+;; Input is the inline struct shape { Name Type } (psyche 2026-07-13); accessors name, type.
+;; NOTE: << >> are NOT nota delimiters; in nota 0.7.0 <<name>> is silently mis-lexed as a
+;; bare atom (< and > are bare-safe), so the escape does not bind — see v1 report §6.
 
-WireNewtype.( NewtypeDeclaration
+WireNewtype.( { Name Type }
   Public.Newtype.(
     <<name>>
     <<(WireAttributes)>>
-    <<reference>>
+    <<type>>
   )
 )
 
-WireAttributes.( Unit
+WireAttributes.( { }
   [ Literal.[rustfmt.skip]
     ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
     Derive.[rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq] ] )

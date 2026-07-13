@@ -24,12 +24,15 @@ and its two sections — **input type** then **result template** — are **posit
 `Map` and `Vector` are macros and are capitalized objects; a macro is a declaration with a
 minted identity invoked in **object** position, so capitalization semantics make it
 **capitalized-leading** (`WireNewtype`, `WireAttributes`, `Vector`). Lowercase-leading stays
-only for genuine **names**: field names (`name`, `reference`), map keys, feature names
+only for genuine **names**: field names (`name`, `type`), map keys, feature names
 (`nota-text`), and local input bindings.
 
 ```
-MacroName.( <input-type>  <result-template> )
+MacroName.( { <meta-types> }  <result-template> )
 ```
+
+The first section is an **inline struct shape** over standard meta-types (§2), not a named
+type; the second is the result template.
 
 **The macro KINDS** [ruling — his earlier dispatch-mode ruling, §3]: the ruled design has
 exactly **two** — **named macros** (present in the macro table, dispatched by name) and
@@ -43,8 +46,8 @@ Document-level layout [proposal, scheme-reshuffled — wave one includes the res
 ;; a nomos document — two per-kind sections, positional under the nomos file kind.
 ;; Section 1: named macros (a vector of headless declarations).
 [
-  WireNewtype.( NewtypeDeclaration  <result-template> )
-  Vector.( VectorApplication  <result-template> )
+  WireNewtype.( { Name Type }  <result-template> )
+  Vector.( { Type }  <result-template> )
 ]
 ;; Section 2: structural macros (per-section defaults).
 [
@@ -57,33 +60,71 @@ the same way schema distinguishes its `{…}` type block from its `[…]` operat
 delimiter + position, never by a keyword. [proposal] the exact section delimiters follow
 whatever the nomos document schema fixes.
 
-## 2. Sound input typing — the resolution path
+## 2. Sound input typing — an inline struct shape over standard meta-types
 
-**[ruling 25c]** The input section **names the input type**; every by-name access in the
-body **resolves against that type's schema**. The input type here is the schema's own
-newtype-declaration type, exposed to Nomos over **signal-nomos** (ruling 16). Its real
-field shape [evidence, `schema-rust/src/lib.rs:1099-1111`]:
+**[ruling 25c + psyche design statement 2026-07-13]** The input section is an **inline
+struct shape** over a small vocabulary of standard meta-types — **not** a binding to a named
+schema type. His words: **"so if WireNewType only takes a name and inner type, then the
+input field would be `{ Name Type }`. Name and Type could be pretty standard things, perhaps
+nomos builtins, even a concept shared with schema somehow (it is a schema concept after
+all)."** So WireNewtype's input is literally `{ Name Type }`; the v0 `declaration.SchemaNewtype`
+binding (and its `declaration.` prefix) **dissolves**.
 
-```rust
-pub struct RustNewtype { name: Name, reference: TypeReference }   // accessors name(), reference()
+### (a) Body accessors from the derived-field-name rule — no explicit binding
+
+The input `{ Name Type }` **yields accessors automatically** via the composed derived-
+field-name rule [ruling]: `Name` → **`name`** (snake_case of the meta-type), `Type` →
+**`type`**. The body references `name` and `type` directly — there is no binding name and no
+`declaration.` prefix, because there is exactly one input and its fields are in scope by their
+derived names. The resolution is sound because the field *names* are computed from the input
+struct's own meta-types, not guessed.
+
+### (b) Repeated meta-types take the explicit-disambiguator rule
+
+Exactly like struct fields, a repeated meta-type needs an explicit name [ruling — the composed
+rule]. A `Map`-defining macro whose input is two `Type`s cannot leave both as `type`:
+
+```
+Map.( { Name  key.Type  value.Type }  <result-template> )
 ```
 
-So the schema-side declaration type carries two fields — **`name` (type `Name`)** and
-**`reference` (type `TypeReference`)**. As a schema type it is [proposal]:
+`Name` → `name`; the two `Type`s are disambiguated by explicit names `key` and `value` (the
+same repeated-type rule as `Private.secretDigest.StateDigest` in the logos field form). Body
+accesses are then `name`, `key`, `value`.
 
-```
-NewtypeDeclaration.{ Name  reference.TypeReference }
-```
+### (c) A plausible standard meta-type vocabulary [proposal]
 
-Field names by the composed rule [ruling]: `Name` → **`name`** (snake_case of the type);
-the second field is given the **explicit** name **`reference`** (the composed rule permits
-an explicit name — and the real code uses `reference`, not the naive `type_reference`,
-`lib.rs:1109`). **The resolution path:** a macro whose input type is `NewtypeDeclaration`
-has exactly the fields `name` and `reference` in scope; `name`/`reference` in the body bind
-to those fields, resolved against the `NewtypeDeclaration` schema served by signal-nomos.
-There is no dangling access — the accessible names are precisely the declared type's fields.
-(v0's `declaration.name`/`.inner` failed because `SchemaNewtype`'s field schema was never
-shown and `inner` was not one of its fields.)
+Grounded in what schema declarations actually contain (not invented) — the two macro KINDS
+need only what schema's own declaration forms carry:
+
+- **`Name`** — a declared identifier (every declaration has one).
+- **`Type`** — a type reference (newtype wrapped type, field type, generic argument). This is
+  schema's `TypeReference` vocabulary (evidence below).
+- **`Fields`** — an ordered vector of `{ Name Type }` (a struct's named fields).
+- **`Variants`** — an ordered vector of variant shapes (an enum's variants: unit, tuple, or
+  named-field).
+- **`Attributes`** — the attribute vector (as in the wire attribute list).
+
+So WireNewtype takes `{ Name Type }`; a struct macro takes `{ Name Fields }`; an enum macro
+takes `{ Name Variants }`; `Map` takes `{ Name key.Type value.Type }`. Nothing here is beyond
+what a schema `TypeDeclaration` already carries.
+
+### (d) The shared-concept question — flagged [leaning, his hedges intact]
+
+His hedges: **"perhaps nomos builtins, even a concept shared with schema somehow (it is a
+schema concept after all)."** These meta-types are **schema's own self-description
+vocabulary** — a meta-schema. So nomos's builtins may simply **BE** schema's meta-types,
+carried **once** in the shared seed vocabulary and exposed via **signal-nomos**, rather than
+redefined. [evidence] This is concrete, not hypothetical: the prior design
+`reports/schema-designer/25-schema-self-describing-design.md` already (i) makes schema
+**self-describing** through its own `TypeReference`/`Name` notation (its "five locked
+decisions"), and (ii) **unifies the duplicate `TypeReference` vocabularies into the seed
+crate `nota-next`** ("the structural type-reference vocabulary MUST live in `nota-next` (or
+lower)", that doc §Area-2). If schema's `Name`/`TypeReference` already live once in the seed
+crate, **nomos's `Name`/`Type` meta-types are the same objects** — shared, not duplicated.
+**[leaning, not ruled]** whether nomos's meta-types are exactly schema's seed vocabulary or a
+nomos-side mirror is the psyche's call; the seed-crate precedent makes "shared" the low-cost
+option.
 
 ## 3. The escape set — enumerated and argued closed
 
@@ -138,15 +179,15 @@ macro** — tree delegation (ruling 20) made concrete via recursive invocation (
 **Variant A (sigil):**
 
 ```
-WireNewtype.( NewtypeDeclaration
+WireNewtype.( { Name Type }
   Public.Newtype.(
     $name
     $(WireAttributes)
-    $reference
+    $type
   )
 )
 
-WireAttributes.( Unit
+WireAttributes.( { }
   [ Literal.[rustfmt.skip]
     ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
     Derive.[rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq] ] )
@@ -155,32 +196,33 @@ WireAttributes.( Unit
 **Variant B (dedicated bracket):**
 
 ```
-WireNewtype.( NewtypeDeclaration
+WireNewtype.( { Name Type }
   Public.Newtype.(
     <<name>>
     <<(WireAttributes)>>
-    <<reference>>
+    <<type>>
   )
 )
 
-WireAttributes.( Unit
+WireAttributes.( { }
   [ Literal.[rustfmt.skip]
     ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
     Derive.[rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq] ] )
 ```
 
-Reading either: `WireNewtype` is the macro name (head); `NewtypeDeclaration` is the input
-type (§2); the `Public.Newtype.( … )` structure is the **quoted** logos result template
-(the psyche-authored v2 target); `$name`/`<<name>>` and `$reference`/`<<reference>>`
-**realize** the input's `name` and `reference` fields; `$(WireAttributes)`/`<<(WireAttributes)>>`
+Reading either: `WireNewtype` is the macro name (head); `{ Name Type }` is the input struct
+shape (§2), yielding accessors `name` and `type`; the `Public.Newtype.( … )` structure is the
+**quoted** logos result template (the psyche-authored v2 target); `$name`/`<<name>>` and
+`$type`/`<<type>>` **realize** the input's `name` and `type` fields;
+`$(WireAttributes)`/`<<(WireAttributes)>>`
 **recursively invokes** the `WireAttributes` macro, whose result — the constant attribute
-vector — is realized as the second slot. `WireAttributes` takes `Unit` (no input) and its
+vector — is realized as the second slot. `WireAttributes` takes an empty input `{ }` and its
 template is pure logos (no escapes).
 
 **End-to-end (variant A):** schema `CommitSequence.{ Integer }` → recognized as a
-`WireNewtype` invocation over the typed `NewtypeDeclaration( name = CommitSequence,
-reference = Integer )` (object-to-object, ruling 15) → Nomos realizes `$name`→`CommitSequence`,
-`$reference`→`Integer`, and expands `$(WireAttributes)` → the logos:
+`WireNewtype` invocation over the input `{ Name Type }` filled `{ CommitSequence Integer }`
+(object-to-object, ruling 15) → Nomos realizes `$name`→`CommitSequence`, `$type`→`Integer`,
+and expands `$(WireAttributes)` → the logos:
 
 ```
 Public.Newtype.(

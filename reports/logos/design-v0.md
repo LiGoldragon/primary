@@ -419,6 +419,22 @@ remains only for genuine **names**: field names, map keys, feature names like `n
 and local input bindings (e.g. `declaration` in `declaration.SchemaNewtype` stays lowercase —
 it is a binding name).
 
+**[psyche design statement] (27) Macro input is an inline struct shape over standard
+meta-types** (2026-07-13). His words: **"so if WireNewType only takes a name and inner type,
+then the input field would be `{ Name Type }`. Name and Type could be pretty standard things,
+perhaps nomos builtins, even a concept shared with schema somehow (it is a schema concept
+after all)."** So a macro's input section is an **inline struct shape** (`{ Name Type }`) over
+a small vocabulary of standard **meta-types**, not a binding to a named schema type. Body
+accessors derive automatically from the meta-types (`Name`→`name`, `Type`→`type`), with the
+explicit-disambiguator rule on repeats (a `Map` macro's `{ Name key.Type value.Type }`). The
+v0 strawman's `declaration.SchemaNewtype` binding dissolves.
+**[leaning — his hedges intact, not ruled]**: whether these meta-types are **nomos builtins**,
+or a concept **shared with schema** ("perhaps", "somehow") carried once in the seed vocabulary
+and exposed via signal-nomos, is undecided. Grounding: schema is already self-describing and
+unifies its `TypeReference`/`Name` vocabulary into the seed crate `nota-next`
+(`reports/schema-designer/25-schema-self-describing-design.md`), making "shared" the low-cost
+option. Worked through in `reports/logos/nomos-macro-model-v1.md` §2.
+
 ## 2. Identity architecture (mirrors the schema)
 
 **[psyche ruling]** Logos mirrors the schema identity architecture. The core /

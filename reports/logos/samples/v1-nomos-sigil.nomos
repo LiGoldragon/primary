@@ -1,20 +1,21 @@
 ;; Nomos macro model v1 — VARIANT A (sigil $). [proposal]
 ;; Headless (no Macro. head; nomos file kind implies macro). Macro names CAPITALIZED
-;; (WireNewtype, WireAttributes, Vector are macros = capitalized objects, ruling 26).
-;; Input section names the input TYPE; body accesses resolve against its schema (name,
-;; reference from NewtypeDeclaration). $name = realize; $(Macro) = recursive call.
+;; (WireNewtype, WireAttributes are macros = capitalized objects, ruling 26).
+;; Input section is an INLINE STRUCT SHAPE over standard meta-types { Name Type }
+;; (psyche 2026-07-13), yielding accessors name and type by the derived-field-name rule.
+;; $name = realize; $(WireAttributes) = recursive call.
 ;; NOTE: the $ escape is a nomos-owned lexical token; it does NOT bind as an escape in
-;; generic nota 0.7.0 (see nomos-macro-model-v1.md §6).
+;; generic nota 0.7.0 ($name reads as a plain atom) — see nomos-macro-model-v1.md §6.
 
-WireNewtype.( NewtypeDeclaration
+WireNewtype.( { Name Type }
   Public.Newtype.(
     $name
     $(WireAttributes)
-    $reference
+    $type
   )
 )
 
-WireAttributes.( Unit
+WireAttributes.( { }
   [ Literal.[rustfmt.skip]
     ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
     Derive.[rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq] ] )
