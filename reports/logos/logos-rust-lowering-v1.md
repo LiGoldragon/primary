@@ -38,7 +38,12 @@ at exactly one contact point — the identifier-bearing leaves take a read-only
 `NameResolver` over the NameTable and realize a name at the last moment. Nothing
 else is synthesized except the four ruled translations (dotted→`::`, delimiter
 re-sugaring, stored-identifier realization, and prettyplease formatting). The
-existing byte-exact schema-rust goldens gate the whole thing.
+existing byte-exact schema-rust goldens gate the whole thing. And because the
+transcription is 1-to-1, the edge is a **codec, not a one-way emitter** (§6, the
+psyche's mid-flight extension): the same per-node structural description runs both
+directions, so the goldens become a two-way harness — decode each into CoreLogos,
+re-encode, require byte-exact — needing no hand-authored logos fixtures and giving
+the mechanical migration path for harvesting the existing Rust corpus.
 
 ## 1. Rust-as-data — the Logos view (deliverable 1)
 
