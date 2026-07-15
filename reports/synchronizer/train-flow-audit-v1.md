@@ -1,8 +1,12 @@
-# Release-train flow audit v1
+# Release-train flow audit v1 + delta audit 2026-07-15
 
-Session `nextgen-recrystallization`, lane `TrainFlowAudit`. Read-only audit by a
-Fable generalist (Opus 4.8). This report is the durable pickup surface for
-Codex, who works the synchronizer side and does not receive chat.
+Session `nextgen-recrystallization`. This report is the durable pickup surface
+for Codex, who works the synchronizer side and does not receive chat. It now
+carries two passes: the original **v1** audit (lane `TrainFlowAudit`, read the
+sections below) and a dated **Delta audit — 2026-07-15 ~20:15 UTC** (lane
+`TrainDeltaAudit`) appended at the end. Both are read-only audits by a Fable
+generalist (Opus 4.8). Read the delta section last; it re-verifies v1's defects
+against the code as merged to `synchronizer` main.
 
 **Mid-flight caveat:** the audited surfaces were mid-flight on 2026-07-15 while
 Codex was actively working them. Line citations below reflect the on-disk state
@@ -231,3 +235,114 @@ the actual green build path until defects 1–3 land (CLI closure emission,
 discovery-wired drift validation, and a Nix check that builds the generated
 flake). The contract and validators are solid; the train is close, but it is not
 yet a usable integration surface.
+
+## Delta audit — 2026-07-15 ~20:15 UTC
+
+Second read-only pass (lane `TrainDeltaAudit`, Fable generalist, Opus 4.8),
+prompted by a report that "the train-release machinery is ready now." Verdict is
+unchanged: **NO-GO**. Surfaces were idle (last write 16:53) so this is a settled
+read, not mid-flight.
+
+### What actually changed since v1
+
+The delta is essentially nil in substance. v1 read
+`origin/release-train-p0-p2 @ dfae1fda`; that branch has now been fast-forwarded
+onto **`synchronizer` main @ `dfae1fd` "synchronizer: emit portable release
+train artifacts"** (committed 2026-07-15 16:11 +0200) **unchanged**. The worktree
+at `worktrees/LanguageFamilyNextgen/synchronizer` is byte-identical to committed
+main (0-diff on `src/main.rs`, `src/release_train.rs`, `src/driver.rs`; no
+added/removed src files).
+
+- The three train commits are `9104058` (immutable closure), `d2be11c` (execute
+  scoped trains), `dfae1fd` (portable artifacts). `git log --stat 9104058^..dfae1fd`
+  shows the **final commit `dfae1fd` touched only `tests/release_train_run.rs`
+  (+41 lines)** — nothing else moved after v1.
+- **No `train/*` branches** exist on any synchronizer checkout.
+  `land-release-train-integration` is stale (2026-07-07, predates the train work,
+  3 behind main) — not the "ready" surface.
+- **No generated artifacts** in the tree. The one intent seed is
+  `release-trains/language-family-poc.nota` (NOTA pinned at `18e2e8d0…`, Schema
+  bases still zero placeholders). No `release-train.lock.json`, no integration
+  flake.
+
+The "ready now" report reflects a merge-to-main, not a fix of the gating defects.
+
+### Delta table (defects 1–9, current code on main @ dfae1fd)
+
+| # | Defect (sev) | Status | Current-code citation |
+| --- | --- | --- | --- |
+| 1 | CLI emits no closure/lock/flake (High) | **UNFIXED** | `main.rs:90-97` `execute_release_train` calls `ReleaseTrainRun::execute()` then `render_report(materialized.report())` and stops. `resolve_closure`/`write_integration_artifacts`/`to_integration_flake`/`to_canonical_json` are called **only from tests** (`tests/release_train.rs:147-162`, `tests/release_train_run.rs:152-156`), never from `src/` outside their defs. |
+| 2 | Discovery not wired to drift validators (High) | **UNFIXED** | `execute()` (`release_train.rs:596-640`) never calls `DependencyGraph::discover` (it appears only in `driver.rs:313` cascade + topology/version tests). The sole end-to-end closure test builds `members` from its **own** selectors and passes `BTreeMap::new()` for externals (`release_train_run.rs:146-152`) — membership passes tautologically. Fail-on-undeclared unreachable in a real run. |
+| 3 | No Nix-level proof of P2 (High) | **UNFIXED** | `flake.nix:43-54` checks are `build/test/fmt/clippy` (crane Cargo). Nothing builds or evaluates the generated integration flake. The `test` check's flake assertions are **string-match only** (`release_train_run.rs:159-160`, `release_train.rs:153`). Zero portable Nix evidence a closure builds. |
+| 4 | Expected-base laundered live (Medium) | **UNFIXED** | `release_train.rs:608-613` still sets `observed_base = component.expected_base().clone()`, so the equality validator (`:401`) is a tautology live; only the weaker `base_is_ancestor` (`:663-664`) runs. Identical to v1's `:610`. |
+| 5 | Flake orchestrates no component checks (Medium) | **UNFIXED** | `to_integration_flake` (`:465-487`) `outputs` is only `releaseTrain = builtins.fromJSON (readFile ./release-train.lock.json)` — no per-component checks, no `follows`. Input skeleton, not a test surface. |
+| 6 | Docs describe library as CLI (Medium) | **PARTIALLY FIXED** | Top-level `README.md:48-57` now attributes closure/lock.json/flake to "the typed `release_train` module" (not the command) and adds "not yet run against live component repositories." But `release-trains/README.md:4-6` still says the command "resolves it… emits an immutable closure before testing," and deployed `SKILL.md` still reads as unqualified current capability. |
+| 7 | Real narHash/locks not captured by the run (Low) | **UNFIXED** | `execute()` returns `MaterializedReleaseTrain` with no attestations/locks; `resolve_closure` requires the caller to supply them. `nar_hash_source` in boundaries is unused for closure capture. Test synthesizes them (`release_train_run.rs:124-145`). |
+| 8 | Closure identity ties to serde_json formatting (Low) | **UNFIXED (deferred by design)** | `payload_identity` uses `serde_json::to_vec` (`:508`). Sanctioned bootstrap; flag for P4 TextualJson. |
+| 9 | Bundle H1 `# feature development` (Low/cosmetic) | **UNFIXED (generator-wide, out of scope)** | Deployed `SKILL.md:6`. |
+
+### Executed evidence
+
+- Git: canonical `/git/github.com/LiGoldragon/synchronizer` — `main @ dfae1fd`; no
+  `train/*` refs; `land-release-train-integration` stale. `git log --stat
+  9104058^..dfae1fd` → final commit = tests-only +41. Worktree == main (0-diff).
+- `cargo test --test release_train --test release_train_run` against a scratch
+  `CARGO_TARGET_DIR` (worktree `target/` untouched): **6/6 pass** —
+  `undeclared_internal_component_is_a_loud_train_failure`,
+  `external_component_requires_exact_immutable_admission`,
+  `moved_expected_base_is_a_loud_selector_failure`,
+  `…closure_is_canonical_and_contains_only_immutable_nix_sources`, the
+  intent-shape test, and
+  `live_train_resolution_materializes_scoped_candidate_branches_from_pushed_truth`.
+  No stubs in the train path (`git_repository.rs:181-358` are real impls).
+- **The passing tests prove the validators fire only when hand-fed discovered
+  sets, and that the library closure chain runs on synthetic fixtures. They do
+  not prove any gating defect: no CLI reaches those functions, no run discovers
+  topology, and no Nix build touches the generated flake.**
+
+### Renewed verdict — NO-GO for slice three riding the train
+
+Since v1 the machinery advanced by a merge-to-main plus one fixture test with
+trivial membership; **all three gating defects (1, 2, 3) are unchanged in the
+code.** A slice-three lane following the deployed skill/README would still get
+candidate `train/<name>` branches + a cascade report and then have to hand-write
+Rust glue to reach `resolve_closure`/`write_integration_artifacts`, supplying
+discovered topology and attestations itself, with the fail-loud guarantee
+bypassed and no Nix proof the closure builds.
+
+Shortest gate list before GO:
+
+1. **Defect 1** — wire the CLI (or a `resolve`/`project` subcommand) to run
+   resolve → discover → validate → emit `ResolvedReleaseTrain` +
+   `release-train.lock.json` + integration flake, printing the closure identity.
+2. **Defect 2** — call `DependencyGraph::discover` at resolved commits inside the
+   run and pass the real internal/external sets into `resolve_closure`; add a
+   live-run test where a genuinely undeclared discovered edge fails.
+3. **Defect 3** — add a flake check derivation that consumes a fixture
+   `release-train.lock.json` and builds/evaluates the generated integration flake.
+4. (Should land with 1) **Defect 4** — record the actually-observed base in
+   `ResolvedSelector` so the equality validator stops being a live no-op.
+
+### Interim dogfood plan (since NO-GO)
+
+Continue the pinned-git-dep pattern as the green build path for slice three.
+Optional dogfood that generates real fixtures without gating the slice: author
+`release-trains/<slice-three>.nota` and, in a throwaway Rust harness/test, drive
+`ReleaseTrainRun::execute()` → `resolve_closure(...)` → `write_integration_artifacts(...)`
+against real pushed commits to pressure-test the validators and produce the first
+non-synthetic `release-train.lock.json`. Do **not** invoke `synchronizer
+release-train …` expecting a closure — it only pushes `train/<name>` candidate
+branches and cascades locks (no dry-run/resolve-only mode exists, so a live
+invocation writes branches). Feed the resulting fixtures back as the acceptance
+surface for defects 1–3.
+
+### Trip hazards for the next auditor
+
+1. The nested synchronizer working copies under `primary` make a bare `git`
+   command resolve up to the primary repo. Read the train tree via the canonical
+   ghq clone `/git/github.com/LiGoldragon/synchronizer` plus explicit worktree
+   paths, not bare `git` from inside the worktree.
+2. That ghq checkout sits **detached at the pre-train `ae75e8a`** while `main` is
+   at `dfae1fd`. A naive `grep src/release_train.rs` there finds none of the train
+   code because the file is not in that checked-out tree. Grep the worktree at
+   `worktrees/LanguageFamilyNextgen/synchronizer` (== main) or `git show main:…`.
