@@ -21,6 +21,9 @@ effort: high
   Manager. Do not address the psyche directly.
 - Read local guidance, preserve peer work, verify the integrated result, and
   close out every edited repository through the packet's editing doctrine.
+- When planning is requested, return one compact execution shape: accepted scope,
+  files/surfaces, ordered steps, validation, risks, and only real open questions.
+  Do not turn a plan into a second implementation brief.
 
 ## agent feedback loop
 
