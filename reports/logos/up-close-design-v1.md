@@ -26,6 +26,15 @@ This report **consolidates and supersedes specific sections** of the two accepte
 slate reports where they are now rendered at code level or reshaped by the newest
 rulings. It does **not** edit those files; it supersedes by reference.
 
+**Amendment status (latest first):** §4.6 folds the **Codex kernel hardening,
+accepted on recommendation trust** (`ConstructorCodec`, `SequenceForm` algebra,
+narrowed kernel + authoring vocabulary, table-identity payload with the hash stored
+outside it, scoped Core-type ids, transactional interning, PipeText-as-carrier, and
+the conformance laws). Forks A/B/C are all **settled** (§9): `StructuralForm` +
+`macro`-for-Nomos; `True*`→`Textual*` confirmed; the evaluator **ships in the
+runtime**. Earlier §4.1/§8.4 lines that the amendment reverses are marked
+`superseded-by-§4.6` in place rather than deleted, so the history stays spot-checkable.
+
 ```
 [ (shared-codec-library-v1.md
     supersedes §2.2-2.5  (crate type surfaces now concrete here §2-§5)
@@ -242,35 +251,45 @@ is real, not hypothetical.
 //! raw structure, the evaluator (§4.4) interprets a form both directions. A form is
 //! DATA — no arbitrary parsing code (Codex: "each entry contains NO parsing code").
 
-// ===== container / keys =====
-pub struct CoreTypeId(u32);          // stable Core type identity (nota `expected: String`, interned)
-pub struct StructuralRevision(u32);  // typed-table revision
-pub struct ProfileRevision(u32);     // raw-profile revision (§4.2)
+// ===== container / keys (AMENDED — Codex kernel hardening, accepted on trust; see §4.6) =====
+pub struct CoreUniverseId(u32);      // NEW — the Core universe a type belongs to (fixture universe for the PoC)
+pub struct ScopedCoreTypeId { pub universe: CoreUniverseId, pub local: u32 }   // was CoreTypeId(u32)
+pub struct CoreConstructorId { pub core_type: ScopedCoreTypeId, pub constructor: u32 }  // per Core CONSTRUCTOR
+pub struct StructuralRevision(u32);
+pub struct ProfileRevision(u32);
 
-/// The external sidecar (§4.3): CoreTypeId → its disjoint-variant entry.
+/// The external sidecar (§4.3): keyed by ScopedCoreTypeId, one ConstructorCodec per
+/// Core constructor. [changed from my earlier StructuralEntry/StructuralVariant:
+/// the unit is the Core CONSTRUCTOR, with an ASYMMETRIC codec — many accepted decode
+/// forms, exactly one canonical encode form (§4.6).]
 pub struct ExpectationTable {
     pub revision: StructuralRevision,
-    pub profile:  ProfileRevision,                  // which raw profile these forms assume
-    pub entries:  BTreeMap<CoreTypeId, StructuralEntry>,
-    pub identity: ContentHash<StructuralTableDomain>,   // co-versioned; EXCLUDED from Core hash
+    pub entries:  BTreeMap<ScopedCoreTypeId, Vec<ConstructorCodec>>,
+    // identity is computed over `TableIdentityPayload` and STORED OUTSIDE it (§4.6,
+    // fixes the self-reference bug); still EXCLUDED from Core value identity.
+    pub identity: ContentHash<StructuralTableDomain>,
 }
 
-/// One Core type's entry: a set of structurally disjoint variants. Lifted from
-/// nota `StructuralVariantSet`; its `validate_no_silent_conflicts` guards the set.
-/// [changed from my §4.1 sketch: disjoint alternatives are the ENTRY shape, NOT a
-/// StructuralForm variant — nested alternatives are reached by Delegate to a type
-/// whose entry has >1 variant, matching nota's variant-set dispatch.]
-pub struct StructuralEntry {
-    pub core_type: CoreTypeId,
-    pub variants:  Vec<StructuralVariant>,
+/// The table-identity pre-image. [changed-from — self-reference bug fix, §4.6.]
+pub struct TableIdentityPayload {
+    pub universe:        CoreUniverseId,
+    pub layout:          CoreLayoutIdentity,          // the Core layout these forms target
+    pub raw_profile:     RawProfileIdentity,          // profile identity (glyph set + revision)
+    pub lexicon:         Vec<u8>,                     // the committed lexicon — EXACT glyph bytes
+    pub leaf_contracts:  Vec<LeafCodecContractId>,    // leaf-codec contract identities
+    pub entries:         BTreeMap<ScopedCoreTypeId, Vec<ConstructorCodec>>,
+    // NOTE: the resulting ContentHash is stored on ExpectationTable, NOT inside here.
 }
 
-/// Lifted verbatim-in-shape from nota `StructuralVariant { name, pattern, expected }`
-/// (macros.rs:381); strings become stringless here.
-pub struct StructuralVariant {
-    pub name:     Identifier,        // nota `name: String`  → interned
-    pub form:     StructuralForm,    // nota `pattern: Pattern`
-    pub produces: CoreTypeId,        // nota `expected: String` → the Core variant it builds
+/// One Core constructor's codec: several disjoint ACCEPTED decode forms, exactly ONE
+/// canonical ENCODE form, and a positional output signature that MUST equal the
+/// constructor's Core field signature. (Replaces the symmetric StructuralVariant set;
+/// nested alternatives are still reached by Delegate.)
+pub struct ConstructorCodec {
+    pub constructor:  CoreConstructorId,
+    pub decode_forms: Vec<StructuralForm>,           // disjoint accepted inputs; validate_no_silent_conflicts
+    pub encode_form:  StructuralForm,                // the single canonical output
+    pub signature:    Vec<ScopedCoreTypeId>,         // positional; MUST equal the Core field signature
 }
 
 // ===== the form (nota Pattern) =====
@@ -278,16 +297,26 @@ pub struct StructuralForm {          // nota `Pattern { elements: Vec<PatternEle
     pub elements: Vec<StructuralElement>,
 }
 
-pub enum StructuralElement {         // nota `PatternElement`
+/// AMENDED (§4.6): the KERNEL is narrowed to exactly these seven. `Any` is dropped
+/// from the kernel; `ObjectPrefixed`/`Dotted` move to the AUTHORING vocabulary below
+/// (they normalize to plain `Application` before hashing and evaluation).
+pub enum StructuralElement {
+    Product(Vec<StructuralElement>), // NEW — heterogeneous positional tuple (sequence algebra, §4.6)
     Atom(AtomForm),                  // nota Atom(AtomShape)
-    Leaf(LeafForm),                  // NEW — the flatten-then-parse leaf (float + string, §ruling)
-    Delimited(DelimitedBlock),       // nota Delimited(DelimitedShape)
-    ObjectPrefixed(ObjectSymbolPrefixedBlock),  // his named example (specialized Application sugar)
-    Application(ApplicationForm),    // right-associative head.payload
-    Dotted(DottedForm),              // a qualified-path segment run
-    Delegate(CoreTypeId),            // NEW — transparent recursion into another type's entry
+    Leaf(LeafForm),                  // the leaf/carrier model (§4.6): scalar rejoin OR PipeText carrier
     Literal(Identifier),             // nota Literal(String) → interned keyword
-    Any,                             // nota Any(capture) — capture dropped (see below)
+    Application(ApplicationForm),    // right-associative head.payload — the normalized application form
+    Delimited(DelimitedBlock),       // a delimiter around a SequenceForm (§4.6)
+    Delegate(ScopedCoreTypeId),      // constructs a wrapper; rejects transparent cycles (§4.6)
+}
+
+/// AUTHORING vocabulary — his named structs, PRESERVED. These appear in the authoring
+/// surface and NORMALIZE to plain `Application` before the form is hashed or evaluated,
+/// so the kernel stays small while his vocabulary stays in the surface (his ruling 1).
+pub enum AuthoringElement {
+    ObjectPrefixed(ObjectSymbolPrefixedBlock),  // `CommitSequence.{ Integer }` → Application(Atom, Delimited)
+    Dotted(DottedForm),                         // `rkyv.Archive` → right-assoc Application chain
+    Kernel(StructuralElement),                  // anything already in kernel form
 }
 
 // ===== element payloads (each grounded) =====
@@ -305,39 +334,42 @@ pub enum CaseExpectation { Symbol, PascalCase, CamelCase, KebabCase }   // nota 
 pub struct SigilSpec { pub character: String, pub position: SigilPosition }  // nota `SigilSpec` (macros.rs:732)
 pub enum SigilPosition { Prefix, Suffix }   // nota `SigilPosition` (macros.rs:777) — NOT Leading/Trailing
 
-/// A leaf value: flatten the raw block at this position — an atom flattens to
-/// itself; a right-associative dotted Application rejoins via `Block::dotted_text`
-/// — then resolve under a scalar codec. This IS the expected-type textual rejoin.
-/// [NEW: no nota equivalent. This is the mechanism the newest string ruling needs.]
+/// AMENDED (§4.6) — the leaf/CARRIER model. A leaf either flattens-and-parses a
+/// scalar (the rejoin mechanism: an atom flattens to itself; a dotted Application
+/// rejoins via `Block::dotted_text`) OR names a CARRIER for content that a bare atom
+/// or `()` cannot hold. PipeText did NOT disappear — it is the carrier the branch
+/// rework's StringForm classification assigns to delimiter/whitespace-bearing strings.
 pub struct LeafForm { pub codec: LeafCodec }
 pub enum LeafCodec {
     Scalar(ScalarLeaf),        // flatten-then-parse
+    Carrier(CarrierLeaf),      // an explicit carrier for content bare/() cannot hold
     Foreign(ForeignLeafId),    // a Rust custom leaf (§6, TextualRust)
 }
-/// [changed from my §4.1 `PrimitiveLeaf { IntegerText, FloatFromDottedText,
-/// BooleanKeyword, PeriodString }`: the period-string `(| |)` requirement is
-/// REJECTED (newest ruling). Text resolves by the SAME dotted rejoin as Float — the
-/// only per-scalar difference is the final parse. PipeText is gone from the vocabulary.]
 pub enum ScalarLeaf {
     Integer,   // flatten → parse integer   (a single atom flattens to itself)
     Float,     // flatten → parse float     (App(-122, 3) → "-122.3")
-    Text,      // flatten → the string      (App(a, App(b, c)) → "a.b.c")   [newest ruling]
+    Text,      // flatten → the string      (App(a, App(b, c)) → "a.b.c")   — ordinary strings by rejoin
     Boolean,   // a keyword atom
 }
+/// [changed-from — my prior amendment said "PipeText is gone from the vocabulary."
+/// WRONG: the string requirement was rejected, but PipeText survives as a CARRIER for
+/// strings that bare/() cannot represent (StringForm classification, §4.6).]
+pub enum CarrierLeaf { PipeText }   // the (| |) carrier; extends as other carriers earn a form
 
-/// A delimited block. Lifted from nota `DelimitedShape { delimiter, object_count,
-/// capture, children }` (macros.rs:804). `capture` dropped (Nomos concern).
-/// [changed from my §4.1 sketch: cardinality is a FIELD of the block (nota
-/// `object_count`), NOT a separate `SequenceForm`; the repeated shape is `children`.
-/// My standalone `SequenceForm` is removed — `{ Field Field … }` is one Delimited
-/// with cardinality: Any and children: [ Delegate(Field) ].]
+/// A delimiter around a SequenceForm (the sequence algebra, §4.6). [changed-from — the
+/// `cardinality: Cardinality { Any, Even, Exact }` field is replaced by SequenceForm,
+/// which composes Product and Repeat(minimum, maximum, element).]
 pub struct DelimitedBlock {
-    pub delimiter:   Delimiter,             // nota `MacroDelimiter`
-    pub cardinality: Cardinality,           // nota `MacroObjectCount`
-    pub children:    Box<StructuralForm>,   // nota `children: Option<Box<Pattern>>`
+    pub delimiter: Delimiter,
+    pub sequence:  SequenceForm,
 }
-pub enum Delimiter   { Parenthesis, SquareBracket, Brace }   // nota `MacroDelimiter` (macros.rs:42)
-pub enum Cardinality { Any, Even, Exact(u64) }               // nota `MacroObjectCount` (macros.rs:928)
+pub enum Delimiter { Parenthesis, SquareBracket, Brace }   // nota `MacroDelimiter` (macros.rs:42)
+
+/// The sequence algebra (§4.6), replacing the flat cardinality enum.
+pub enum SequenceForm {
+    Product(Vec<StructuralElement>),                 // fixed heterogeneous positional slots
+    Repeat { minimum: u64, maximum: Option<u64>, element: Box<StructuralElement> },  // homogeneous
+}
 
 /// His named example: a PascalCase object symbol dot-prefixing a block —
 /// `CommitSequence.{ Integer }`. Specialized sugar over Application(Atom{PascalCase},
@@ -348,8 +380,9 @@ pub struct ObjectSymbolPrefixedBlock { pub object: AtomForm, pub block: Delimite
 /// Right-associative application head.payload.
 pub struct ApplicationForm { pub head: Box<StructuralElement>, pub payload: Box<StructuralElement> }
 
-/// A dotted segment run — the qualified-path shape (`rkyv.Archive`).
-pub struct DottedForm { pub segment: Box<StructuralElement>, pub cardinality: Cardinality }
+/// AUTHORING-only: a dotted segment run — the qualified-path shape (`rkyv.Archive`).
+/// Normalizes to a right-associative `Application` chain before hashing/evaluation.
+pub struct DottedForm { pub segment: Box<StructuralElement>, pub repeat: SequenceForm }
 ```
 
 **Two `[changed from Codex/report]` removals worth stating plainly.** (1) There is
@@ -366,6 +399,15 @@ profile) — gated behind profile revisions (§4.2) until the psyche accepts the
 
 Real data trees, indented constructor-style. A branch worker is implementing the
 string-rejoin on nota next-gen in parallel; this is the vocabulary expression only.
+
+**[shown in the PRE-amendment `StructuralEntry`/`StructuralVariant` shape.** They
+map to the amended §4.6 `ConstructorCodec` model directly: a per-type entry → one
+`ConstructorCodec` per Core constructor; each variant's `form` → an entry in
+`decode_forms` with the canonical one lifted to `encode_form`; the Field two-variant
+entry (b) → **two** `ConstructorCodec`s; `cardinality: Any/Exact(1)` →
+`Repeat{minimum:0,maximum:None}` / `Product`. The §7.3 worked example is already
+rendered in the amended form. These three are left as-is so the shapes the psyche
+was shown stay spot-checkable.]**
 
 **(a) The schema Struct-declaration entry** (Codex: "Application(ObjectName,
 Brace.Sequence(Field))" — with Sequence folded into the brace's cardinality):
@@ -556,10 +598,11 @@ pub enum StructuralValue {
 }
 pub enum ScalarValue { Integer(i64), Float(f64), Text(String), Boolean(bool) }
 
-/// The one interpreter of StructuralForm, both directions. Small and closed: it
-/// walks the form and the block/value in lockstep. Encode and decode read the
-/// SAME form, so round-trip coherence holds by construction (the pair-drift of
-/// library report §1.6 cannot recur).
+/// The one interpreter of StructuralForm, both directions. SHIPS IN THE RUNTIME
+/// (Fork C settled, §9 / §4.6): dialect tables are genuinely data-loadable at
+/// runtime and the evaluator executes them directly; generated codecs (§4.5) remain
+/// the fast path; the laws (§4.6) keep the two in agreement. Encode and decode read
+/// the SAME form, so round-trip coherence holds by construction.
 pub struct StructuralEvaluator<'table> {
     table: &'table ExpectationTable,
     raw: &'table RawLayer,
@@ -608,6 +651,64 @@ pub trait StructuralMirror: Sized {
     fn from_structural(value: &StructuralValue, names: &mut NameTable) -> Result<Self, DecodeError>;
 }
 ```
+
+### 4.6 Amendment — Codex kernel hardening (ACCEPTED ON RECOMMENDATION TRUST)
+
+The psyche accepted the Codex kernel hardening, verbatim: **"1. trusting the
+recommendation without a clear view, but the surface sounds correct."** This is a
+**trust-based acceptance**, not a spot-checked one — so every piece it changed is
+marked here and in the type comments above, so he can spot-check later. The types in
+§4.1/§4.4 already carry the amended shapes inline (`ScopedCoreTypeId`,
+`ConstructorCodec`, `SequenceForm`, the narrowed kernel, the leaf/carrier model);
+this section states the framing, the laws, and the changed-from ledger in one place.
+
+**What the hardening changed (each a `[changed-from]`):**
+
+```
+[ (ConstructorCodec  the codec unit is the Core CONSTRUCTOR, ASYMMETRIC: many disjoint
+     accepted decode_forms, exactly ONE canonical encode_form, positional `signature`
+     that MUST equal the constructor's Core field signature
+     — replaces the symmetric StructuralEntry/StructuralVariant set)
+  (sequence-algebra  Product / Repeat(minimum, maximum, element) replaces the flat
+     `cardinality: Cardinality { Any, Even, Exact }` field
+     — REVERSES my prior amendment's "standalone SequenceForm removed" ledger line, §8.4)
+  (kernel-narrowed   StructuralElement kernel = { Product, Atom, Leaf, Literal, Application,
+     Delimited(SequenceForm), Delegate }; `Any` dropped from the kernel)
+  (authoring-vocab   ObjectSymbolPrefixedBlock and Dotted are PRESERVED as AUTHORING
+     vocabulary (his named structs stay in the surface) that NORMALIZES to plain
+     Application before hashing and evaluation)
+  (table-identity    computed over TableIdentityPayload { CoreUniverseId, CoreLayoutIdentity,
+     RawProfileIdentity, committed lexicon = EXACT glyph bytes, leaf-codec contract identities,
+     entries keyed by ScopedCoreTypeId } — with the hash STORED OUTSIDE the hashed payload
+     — [changed-from: OWN THE SELF-REFERENCE BUG in my §4.1.1 NOTA rendering, where the entry's
+     own identity would have sat inside its own pre-image]; still EXCLUDED from Core value identity)
+  (scoped-ids        CoreTypeId → ScopedCoreTypeId, scoped to a CoreUniverseId; an explicit
+     FIXTURE universe for the PoC while the schema-unit question stays PARKED)
+  (transactional-interning  a failed decode alternative leaves NO NameTable allocation effects)
+  (delegation-discipline    delegation CONSTRUCTS every wrapper, REJECTS transparent cycles,
+     allows recursive references only AFTER consuming structure)
+  (pipetext-restored  PipeText did NOT disappear — [changed-from my prior amendment's "PipeText
+     is gone"]: it is the CARRIER (LeafCodec::Carrier(PipeText)) for content bare atoms or ()
+     cannot hold, per the branch rework's StringForm classification) ]
+```
+
+**The laws — the conformance contract** (interpreter and generated codec, §4.5,
+must satisfy all; they are the runtime-shipped evaluator's correctness spec):
+
+```
+[ (round-trip-core     decode ∘ encode = core)
+  (round-trip-canonical encode ∘ decode = canonical(raw))
+  (interning-atomicity  a failed decoding leaves the NameTable unchanged)
+  (identity-preserving  old-table decode → current-table encode preserves Core identity)
+  (interpreter≡codegen  interpreter and generated codec AGREE on: the Core value, the
+     NameTable delta, the canonical output, and the typed error) ]
+```
+
+**What settling Fork C adds here (§9):** the evaluator SHIPS IN THE RUNTIME — his
+verbatim "2. yes, that is great design, and a reason I was going this way." Dialect
+tables are data-loadable at runtime; generated codecs stay the fast path; the laws
+above keep them in agreement. This is why the ConstructorCodec is data, not codegen-
+only: a runtime-loaded table is executed directly by the shipped evaluator.
 
 The conformance test shape (one generic function over every derived type's
 fixtures) — this is the "conformance tests prove evaluator and generated codecs
@@ -907,31 +1008,38 @@ CoreLogos DatabaseMarker = CoreItem::Struct(Struct {
 
 ### 7.3 The structural-program entries (sidecar forms)
 
-The TextualSchema forms for the two Core types (queried by `CoreTypeId`, keyed
-externally, §4.3). Codex's example: "schema struct declaration =
-Application(ObjectName, Brace.Sequence(Field)); Field accepts Type or Name.Type."
+The TextualSchema codecs for the two constructors (queried by `ScopedCoreTypeId`,
+§4.3). Shown in AMENDED ConstructorCodec form (§4.6): authoring vocabulary on decode,
+one canonical encode form, sequence algebra in place of cardinality.
 
 ```
-;; single-variant entry; the newtype declaration is the specialized ObjectPrefixed sugar
-entry(Newtype) = [ StructuralVariant{ name: newtype-declaration, produces: Newtype, form:
-  [ ObjectPrefixed(ObjectSymbolPrefixedBlock {
-      object: AtomForm{ case: Some(PascalCase), sigil: None },          ;; the newtype name
-      block:  DelimitedBlock{ delimiter: Brace, cardinality: Exact(1),
-                children: [ Atom(AtomForm{ case: Some(PascalCase), sigil: None }) ] } }) ] } ]
+;; newtype constructor: ObjectPrefixed is authoring sugar; it normalizes to Application.
+ConstructorCodec { constructor: Newtype, signature: [ Name Type ],
+  decode_forms: [ ObjectPrefixed(ObjectSymbolPrefixedBlock {          ;; authoring surface
+      object: AtomForm{ case: Some(PascalCase), sigil: None },
+      block:  DelimitedBlock{ delimiter: Brace,
+                sequence: Product([ Atom(AtomForm{ case: Some(PascalCase), sigil: None }) ]) } }) ],
+  encode_form: Application(ApplicationForm{ .. }) }                    ;; canonical (normalized) form
 
-entry(Struct) = [ StructuralVariant{ name: struct-declaration, produces: Struct, form:
-  [ Application(ApplicationForm {
-      head:    Atom(AtomForm{ case: Some(PascalCase), sigil: None }),   ;; the struct name
-      payload: Delimited(DelimitedBlock{ delimiter: Brace, cardinality: Any,
-                 children: [ Delegate(Field) ] }) }) ] } ]             ;; each field → Field entry
+ConstructorCodec { constructor: Struct, signature: [ Name Fields ],
+  decode_forms: [ Application(ApplicationForm {
+      head:    Atom(AtomForm{ case: Some(PascalCase), sigil: None }),  ;; the struct name
+      payload: Delimited(DelimitedBlock{ delimiter: Brace,
+                 sequence: Repeat{ minimum: 0, maximum: None,          ;; zero-or-more fields
+                                   element: Delegate(Field) } }) }) ],
+  encode_form: <same Application> }
 
-entry(Field) = [                                                       ;; two disjoint variants
-  StructuralVariant{ name: type-only, produces: Field, form:
-    [ Atom(AtomForm{ case: Some(PascalCase), sigil: None }) ] },        ;; Type; name elided-derived
-  StructuralVariant{ name: named, produces: Field, form:
-    [ Application(ApplicationForm{
-        head:    Atom(AtomForm{ case: Some(CamelCase),  sigil: None }), ;; field name (lowercase)
-        payload: Atom(AtomForm{ case: Some(PascalCase), sigil: None }) }) ] } ]  ;; Type
+;; Field is a Core type with TWO constructors, each its own ConstructorCodec:
+ConstructorCodec { constructor: Field::TypeOnly, signature: [ Type ],
+  decode_forms: [ Atom(AtomForm{ case: Some(PascalCase), sigil: None }) ],   ;; name elided-derived
+  encode_form:   Atom(AtomForm{ case: Some(PascalCase), sigil: None }) }
+ConstructorCodec { constructor: Field::Named, signature: [ Name Type ],
+  decode_forms: [ Application(ApplicationForm{
+      head:    Atom(AtomForm{ case: Some(CamelCase),  sigil: None }),        ;; field name (lowercase)
+      payload: Atom(AtomForm{ case: Some(PascalCase), sigil: None }) }) ],
+  encode_form: <same Application> }
+;; validate_no_silent_conflicts proves the two Field decode_forms disjoint; on encode the
+;; Core Field variant selects its own ConstructorCodec's single encode_form.
 ```
 
 ### 7.4 Decode of the schema text
@@ -1099,38 +1207,38 @@ before Schema). One order satisfies both.
   (from my-§4.1  cardinality folded into DelimitedBlock (nota object_count); standalone SequenceForm removed)
   (from my-§4.1  the $ escape rides on AtomForm.sigil (nota AtomShape.sigil); no separate Escape variant)
   (from my-§4.1  leaf moved out of AtomForm; AtomForm = case+sigil only, always a name; capture dropped (Nomos concern))
-  (from my-§4.1  Cardinality = Any/Even/Exact(u64) (nota MacroObjectCount); SigilPosition = Prefix/Suffix (nota)) ]
+  (from my-§4.1  Cardinality = Any/Even/Exact(u64) (nota MacroObjectCount); SigilPosition = Prefix/Suffix (nota))
+  ;; SUPERSEDED by the §4.6 Codex-kernel-hardening amendment (accepted on trust):
+  (superseded-by-§4.6  "PipeText DROPPED" → RESTORED as LeafCodec::Carrier(PipeText); StringForm carrier)
+  (superseded-by-§4.6  "standalone SequenceForm removed" → REINTRODUCED as the Product/Repeat algebra)
+  (superseded-by-§4.6  "disjoint alternatives are the ENTRY shape (StructuralVariant)" → ConstructorCodec
+     per Core constructor: many decode_forms, one encode_form, positional signature) ]
 ```
 
-## 9. Open points genuinely needing the psyche's word
+## 9. Forks — all three SETTLED
 
-Few and real; settled rulings are not reopened. Each **[AGENT PROPOSAL]**.
+The three design forks this report raised are now all ruled; none remains open.
 
-**Fork A — terminology: SETTLED.** The psyche ruled (Q2, verbatim): "Yes, I agree
-on the surface" — `StructuralForm` for the parser-side data, `macro` reserved for
-Nomos. The full data-tree in §4.1/§4.1.1 is rendered under this ruling. The one
-remaining sub-choice folded here — the crate name `structural-codec` vs
-`textual-forms` — stays a light **[AGENT PROPOSAL]** for `structural-codec` (it
-names the mechanism, and `StructuralForm`/`StructuralEntry` now anchor the
-vocabulary to that word); not worth a separate fork.
+**Fork A — terminology: SETTLED.** `StructuralForm` for the parser-side data,
+`macro` reserved for Nomos. His words: "instead of saying structural macro, we say
+structural form" + Q2 "Yes, I agree on the surface." Crate name recommendation
+stands at `structural-codec`.
 
-**Fork B — confirm the `True*` → `Textual*` rename (his hedge).** His words carried
-a "maybe": "maybe true is renamed to Textual." The whole many-forms framing reads
-far better as `Textual` (it names the view-family and generalizes to Rust, where
-"true" made no sense). **[AGENT PROPOSAL]** adopt `Textual*` — but this is a
-one-word confirmation he explicitly left open, and it touches every view type name,
-so it is worth his yes/no rather than an inferred commitment.
+**Fork B — `True*` → `Textual*`: SETTLED** (no longer hedged). His words: "when you
+say true made no sense, true made no sense for any of them. It's just textual. It's
+not more true or less true. So, yeah, textual. The textual schema and the textual
+logos, actually." So `TextualSchema`/`TextualNomos`/`TextualLogos`/`TextualRust`
+are the confirmed names; there is no `True*` anywhere.
 
-**Fork C — does the trusted evaluator ship in the runtime, or only in conformance
-tests?** Codex's prize (parser behavior as inspectable data; dialects self-hosting)
-is fully realized only if the interpreter runs in production, letting a dialect add
-a `StructuralForm` the evaluator executes with **zero codegen**. The cheaper reading
-ships only generated codecs and uses the evaluator solely as the conformance oracle.
-**[AGENT PROPOSAL]** ship the evaluator in the runtime: it is the difference between
-"dialects are data" and "dialects need a codegen step," and it is the concrete form
-of his "infinitely programmable" instinct. Genuine because it is a standing
-architecture + performance commitment (an interpreter on the hot path for
-un-codegen'd types), not an implementation detail.
+**Fork C — trusted evaluator ships in the runtime: SETTLED.** His words: "yes, that
+is great design, and a reason I was going this way." Dialect tables are data-loadable
+at runtime and executed by the shipped evaluator; generated codecs remain the fast
+path; the laws (§4.6) keep them in agreement.
+
+**Not design forks I own — manager-tracked open items** (listed only so they are not
+mistaken for settled design): the Core-side concept name; the epic scope / Spirit
+pilot; the merge posture; and the schema-unit / parked "lost question." These are
+tracked by the manager, not resolved here.
 
 ## 10. The "13 schema compilation errors" claim — cheaply verified, FALSIFIED
 
