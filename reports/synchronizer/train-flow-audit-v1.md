@@ -1,12 +1,16 @@
-# Release-train flow audit v1 + delta audit 2026-07-15
+# Release-train flow audit v1 + delta audit + dogfood run 2026-07-15
 
 Session `nextgen-recrystallization`. This report is the durable pickup surface
 for Codex, who works the synchronizer side and does not receive chat. It now
-carries two passes: the original **v1** audit (lane `TrainFlowAudit`, read the
-sections below) and a dated **Delta audit — 2026-07-15 ~20:15 UTC** (lane
-`TrainDeltaAudit`) appended at the end. Both are read-only audits by a Fable
-generalist (Opus 4.8). Read the delta section last; it re-verifies v1's defects
-against the code as merged to `synchronizer` main.
+carries three passes: the original **v1** audit (lane `TrainFlowAudit`, read the
+sections below), a dated **Delta audit — 2026-07-15 ~20:15 UTC** (lane
+`TrainDeltaAudit`) re-verifying v1's defects against the code merged to
+`synchronizer` main, and a **Dogfood run — 2026-07-15 (first non-synthetic
+closure)** (lane `TrainDogfood`) recording the first real end-to-end run of the
+train library against the live six-crate stack — which found a new **defect 10**
+and refined the evidence for defects 2, 5, 6, 7. Read the sections in that order;
+the dogfood section is the freshest and most concrete. All three are read-only /
+harness-only work by a Fable generalist (Opus 4.8).
 
 **Mid-flight caveat:** the audited surfaces were mid-flight on 2026-07-15 while
 Codex was actively working them. Line citations below reflect the on-disk state
@@ -346,3 +350,124 @@ surface for defects 1–3.
    at `dfae1fd`. A naive `grep src/release_train.rs` there finds none of the train
    code because the file is not in that checked-out tree. Grep the worktree at
    `worktrees/LanguageFamilyNextgen/synchronizer` (== main) or `git show main:…`.
+
+## Dogfood run — 2026-07-15 (first non-synthetic closure)
+
+Third pass (lane `TrainDogfood`, Fable generalist, Opus 4.8): the first
+**non-synthetic** end-to-end run of the train library, driving it as a pinned
+git dependency (`github.com/LiGoldragon/synchronizer@dfae1fda`) against the real
+six-crate language-family stack on GitHub. This is a genuine caller's-seat
+record of where the documented CLI/skill strands a user versus what the library
+actually requires. It surfaced one **new High defect (10)** and hard-confirmed
+defects 2, 5, 6, 7 with concrete evidence. The harness is read-only on the
+synchronizer repo; it pushes only `train/<name>` candidate branches to the six
+member crates, never writes any `main`, never merges.
+
+Full evidence artifacts (public harness repo
+`github.com/LiGoldragon/release-train-dogfood`, main `16a248e9`):
+`repos/release-train-dogfood/README.md` (defect-mapped friction ledger),
+`repos/release-train-dogfood/run-evidence.txt` (stage-by-stage capture),
+`repos/release-train-dogfood/integration/` (the generated
+`release-train.lock.json` + `flake.nix`), and the authored intent at
+`release-trains/language-family-slice-three.nota`.
+
+### Run summary
+
+Train `language-family-slice-three`: six `Mainline` members, zero immutable
+externals. `ReleaseTrainRun::execute()` ran against the real remotes and pushed
+six `train/language-family-slice-three` candidate branches:
+
+| crate | selected (`main` tip) | candidate (train tip) |
+| --- | --- | --- |
+| content-identity | `6cc0408c…` | `3f705566f36d171d9fa98167ba2b71f6e9a9f93d` |
+| name-table | `c3237f77…` | `1c1d6ff6f5824402dcef3b1005b14465b4e90cdb` |
+| raw-discovery | `a4e8c6df…` | `b6cc1c8d80a8b4812ddf29317d3f50e04d5fc838` |
+| structural-codec | `104f9245…` | `3a1d56770502ffe7f3745187c118fc79db1a4f9a` |
+| core-schema | `33e5be27…` | `361c19fb43d87ec4945b726f64fe7bd932a0fcc6` |
+| structural-codec-derive | `348bd89f…` | `e77619494e7dd4c14d570ed002c83a6d88b4b9f0` |
+
+- **Real discovery.** `DependencyGraph::discover` found 6 internal components and
+  21 Cargo edges forming a valid DAG with ascent
+  `content-identity, raw-discovery → name-table → structural-codec → core-schema
+  → structural-codec-derive`.
+- **Real attestation.** Six narHashes from `nix flake prefetch` + six per-component
+  Cargo/flake lock blake3 identities, hand-captured by the harness.
+- **Real closure.** `resolve_closure` returned a typed `ResolvedReleaseTrain`,
+  identity `42df158c9708d7f06c980a9431a51c4952d92560d9bfa9ce27de45b9288e6cea`.
+- **Real artifacts.** `write_integration_artifacts` emitted
+  `integration/release-train.lock.json` + `integration/flake.nix` (zero `path:`),
+  committed in the harness repo (`main 16a248e9`).
+
+### Defect 10 (High, NEW) — the generated integration flake does not evaluate under Nix
+
+`ResolvedReleaseTrain::to_integration_flake` (`release_train.rs:471`) emits each
+input as `{ url = "github:…/rev"; narHash = "sha256-…"; }`. `narHash` is **not a
+valid flake input attribute** (it belongs in `flake.lock`), so Nix rejects the
+generated flake outright:
+
+```
+error: unexpected flake input attribute 'narHash', at flake.nix:4:5
+```
+
+The P2 artifact is therefore not merely untested (v1/delta defect 3) — **it is
+not evaluable at all**. The `release-train.lock.json` payload is valid
+(`builtins.fromJSON` reads it); the flake wrapper around it is invalid.
+
+*Fix validated in this run (use as the acceptance fixture):* move the narHash
+into the input URL as a query parameter —
+`url = "github:owner/repo/rev?narHash=sha256-…"`. With that single change,
+`nix flake metadata` locks and narHash-verifies all six candidate inputs (plus
+their transitive `rust-build`/`fenix`/`nixpkgs` inputs), and
+`nix eval path:…#releaseTrain.identity` returns
+`42df158c…` — the library's own closure identity. So the six candidate commits
+are genuinely portable, fetchable, and narHash-verified by Nix; the only blocker
+to a portable P2 artifact is the invalid input-attribute emission.
+
+### Refined evidence for existing defects
+
+- **Defect 2 (discovery↔closure gap) — exact API shape.** `DependencyGraph`
+  exposes no accessor for its component set (the `components` field is private;
+  only `edges()`, `dependencies_of()`, `ascent_levels()` are public), so the
+  `discovered_internal_components` set must be hand-assembled from the manifest
+  list the caller passed in. And `discover()` deliberately drops every edge that
+  points outside the configured set, so it **never produces the
+  `discovered_external_components` commit map** at all. Both membership arguments
+  to `resolve_closure` were hand-built in the harness. A fix wants `discover()`
+  (or a `DependencyGraph` method) to yield the exact `(internal set, external
+  commit map)` `resolve_closure` consumes, and `ReleaseTrainRun::execute` to wire
+  it so undeclared-edge / unadmitted-external failures are reachable from a real
+  run.
+- **Defect 7 (run captures no closure attestations/locks) — confirmed.**
+  `execute()`'s `nar_hash_source` serves only flake-lock bumps; it computes
+  nothing for the closure. All six narHashes and six lock blake3s in this closure
+  were computed by the harness (`DogfoodHarness::attest_selectors`), not by the
+  run.
+- **Defect 5 (no component-check orchestration) — confirmed even post-fix.** Even
+  the *corrected* flake's `outputs` is only `releaseTrain = builtins.fromJSON …`.
+  Nix proves the inputs are fetchable and narHash-verified; it does **not** build
+  the six components or run their checks at the candidate commits, and there is no
+  closure-identity-plus-check co-report. A green eval is not a green build of the
+  train.
+- **Defect 6 (docs overstate CLI) — confirmed against real outputs.**
+  `release-trains/README.md` lists `release-train.lock.json` and the integration
+  flake as outputs of the CLI command; running the real chain confirms the
+  command produces neither (the whole harness crate exists only because that Rust
+  does not ship — stages c–f are all caller glue the CLI should own, per
+  defect 1).
+
+### P1 observation worth Codex's attention — empty, non-cross-pinning candidates
+
+With an all-`Mainline` train where every consumer already pins every producer's
+current `main` tip, the cascade reported every component `AlreadyAligned`, so
+each candidate is a **pure empty *materialize* commit** on the component's
+selected `main` tree — each candidate narHash equals the corresponding `main`
+narHash, and the candidates **do not cross-pin each other's candidate commits**.
+No lock rewrite fires because the resolver targets each producer at its `main`
+tip, which the consumers already pin. (Verification was `NotAttempted` by design:
+the builder-host resolver pointed at an absent cluster proposal — a
+`RoleResolution` failure in the cascade report — so no ssh / `nix build` ran.
+Note also that `execute()` entangles the closure path with the full StagedCascade
+ssh-build verify in one entry point.) This means an all-`Mainline` dogfood
+exercises resolution/discovery/attestation/closure/emission end-to-end but does
+**not** produce a train whose candidates differ from their mains; a train that
+actually cross-pins needs producer branches ahead of what consumers pin.
