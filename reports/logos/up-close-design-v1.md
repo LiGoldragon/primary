@@ -225,98 +225,263 @@ So the "structural expectation entry" is not a foreign registry format — it is
 is exactly the structural-program data model Codex describes; the manager's
 assessment makes the identity explicit: *the structural-program data model IS the
 Textual structure vocabulary; DelimitedBlock, ObjectSymbolPrefixedBlock etc. are
-its constructors.* One vocabulary, two names pending the psyche's terminology
-ruling (§9 fork).
+its constructors.* **Terminology settled (his Q2, verbatim):** "Yes, I agree on
+the surface" — `StructuralForm` for the parser-side data, `macro` reserved for
+Nomos. This section renders the COMPLETE data-tree he asked to see, fully fielded
+and grounded line-by-line in the real nota `macros.rs` shapes it lifts.
+
+**The tree is not greenfield; it is the lifted, stringless, Core-keyed
+generalization of nota's existing `Pattern`/`PatternElement` (macros.rs:307,525).**
+Every type below cites the real shape it lifts and marks what is new. The nota
+originals **already derive `nota::NotaEncode`**, so the self-description in §4.1.1
+is real, not hypothetical.
 
 ```rust
-//! The structural shape of a Core type on the text side: the constructor
-//! vocabulary of the Textual view (ruling 1) / structural-program (Codex).
-//! The recognizer (§5) discovers these shapes; the evaluator (§4.4) interprets
-//! each shape in BOTH directions. Contains no arbitrary parsing code — a form is
-//! data (Codex: "each entry contains NO arbitrary parsing code").
+//! The structural-form data model. A form is a SEQUENCE of positional elements
+//! (nota Pattern { elements: Vec<PatternElement> }); the recognizer (§5) discovers
+//! raw structure, the evaluator (§4.4) interprets a form both directions. A form is
+//! DATA — no arbitrary parsing code (Codex: "each entry contains NO parsing code").
 
-pub enum StructuralForm {
-    Atom(AtomForm),
-    Delimited(DelimitedBlock),
-    Application(ApplicationForm),
-    ObjectPrefixed(ObjectSymbolPrefixedBlock),   // his named example
-    Dotted(DottedForm),
-    Sequence(SequenceForm),
-    PipeText(PipeTextForm),                       // the (| |) period-string
-    Alternatives(DisjointAlternatives),
-    Escape(EscapeForm),                           // the $ structural escape
+// ===== container / keys =====
+pub struct CoreTypeId(u32);          // stable Core type identity (nota `expected: String`, interned)
+pub struct StructuralRevision(u32);  // typed-table revision
+pub struct ProfileRevision(u32);     // raw-profile revision (§4.2)
+
+/// The external sidecar (§4.3): CoreTypeId → its disjoint-variant entry.
+pub struct ExpectationTable {
+    pub revision: StructuralRevision,
+    pub profile:  ProfileRevision,                  // which raw profile these forms assume
+    pub entries:  BTreeMap<CoreTypeId, StructuralEntry>,
+    pub identity: ContentHash<StructuralTableDomain>,   // co-versioned; EXCLUDED from Core hash
 }
 
-/// A bare atom with an expected capitalization and a leaf codec.
-pub struct AtomForm { pub capitalization: CapitalizationExpectation, pub leaf: LeafCodec }
+/// One Core type's entry: a set of structurally disjoint variants. Lifted from
+/// nota `StructuralVariantSet`; its `validate_no_silent_conflicts` guards the set.
+/// [changed from my §4.1 sketch: disjoint alternatives are the ENTRY shape, NOT a
+/// StructuralForm variant — nested alternatives are reached by Delegate to a type
+/// whose entry has >1 variant, matching nota's variant-set dispatch.]
+pub struct StructuralEntry {
+    pub core_type: CoreTypeId,
+    pub variants:  Vec<StructuralVariant>,
+}
 
-/// One delimiter around an inner form. His named example: `{ … }`.
-pub struct DelimitedBlock { pub delimiter: Delimiter, pub inner: Box<StructuralForm> }
+/// Lifted verbatim-in-shape from nota `StructuralVariant { name, pattern, expected }`
+/// (macros.rs:381); strings become stringless here.
+pub struct StructuralVariant {
+    pub name:     Identifier,        // nota `name: String`  → interned
+    pub form:     StructuralForm,    // nota `pattern: Pattern`
+    pub produces: CoreTypeId,        // nota `expected: String` → the Core variant it builds
+}
 
-/// Right-associative application head.payload (dotted application / `Head.{ … }`).
-pub struct ApplicationForm { pub head: Box<StructuralForm>, pub payload: Box<StructuralForm> }
+// ===== the form (nota Pattern) =====
+pub struct StructuralForm {          // nota `Pattern { elements: Vec<PatternElement> }`
+    pub elements: Vec<StructuralElement>,
+}
+
+pub enum StructuralElement {         // nota `PatternElement`
+    Atom(AtomForm),                  // nota Atom(AtomShape)
+    Leaf(LeafForm),                  // NEW — the flatten-then-parse leaf (float + string, §ruling)
+    Delimited(DelimitedBlock),       // nota Delimited(DelimitedShape)
+    ObjectPrefixed(ObjectSymbolPrefixedBlock),  // his named example (specialized Application sugar)
+    Application(ApplicationForm),    // right-associative head.payload
+    Dotted(DottedForm),              // a qualified-path segment run
+    Delegate(CoreTypeId),            // NEW — transparent recursion into another type's entry
+    Literal(Identifier),             // nota Literal(String) → interned keyword
+    Any,                             // nota Any(capture) — capture dropped (see below)
+}
+
+// ===== element payloads (each grounded) =====
+
+/// A single bare atom, case/sigil constrained; ALWAYS resolves to a NameTable
+/// identifier. Lifted from nota `AtomShape { case, sigil, capture }` (macros.rs:623).
+/// [changed from my §4.1 sketch: (1) no `leaf` field — a case-constrained atom is a
+/// name, scalars live in `Leaf`; (2) `capture` DROPPED — capture binds an atom to a
+/// result-template variable, which is a Nomos-MACRO concern, not structural parsing.]
+pub struct AtomForm {
+    pub case:  Option<CaseExpectation>,   // nota `Option<AtomCase>`; None = any case
+    pub sigil: Option<SigilSpec>,         // nota `Option<SigilSpec>`; the `$` escape rides HERE
+}
+pub enum CaseExpectation { Symbol, PascalCase, CamelCase, KebabCase }   // nota `AtomCase` (macros.rs:703)
+pub struct SigilSpec { pub character: String, pub position: SigilPosition }  // nota `SigilSpec` (macros.rs:732)
+pub enum SigilPosition { Prefix, Suffix }   // nota `SigilPosition` (macros.rs:777) — NOT Leading/Trailing
+
+/// A leaf value: flatten the raw block at this position — an atom flattens to
+/// itself; a right-associative dotted Application rejoins via `Block::dotted_text`
+/// — then resolve under a scalar codec. This IS the expected-type textual rejoin.
+/// [NEW: no nota equivalent. This is the mechanism the newest string ruling needs.]
+pub struct LeafForm { pub codec: LeafCodec }
+pub enum LeafCodec {
+    Scalar(ScalarLeaf),        // flatten-then-parse
+    Foreign(ForeignLeafId),    // a Rust custom leaf (§6, TextualRust)
+}
+/// [changed from my §4.1 `PrimitiveLeaf { IntegerText, FloatFromDottedText,
+/// BooleanKeyword, PeriodString }`: the period-string `(| |)` requirement is
+/// REJECTED (newest ruling). Text resolves by the SAME dotted rejoin as Float — the
+/// only per-scalar difference is the final parse. PipeText is gone from the vocabulary.]
+pub enum ScalarLeaf {
+    Integer,   // flatten → parse integer   (a single atom flattens to itself)
+    Float,     // flatten → parse float     (App(-122, 3) → "-122.3")
+    Text,      // flatten → the string      (App(a, App(b, c)) → "a.b.c")   [newest ruling]
+    Boolean,   // a keyword atom
+}
+
+/// A delimited block. Lifted from nota `DelimitedShape { delimiter, object_count,
+/// capture, children }` (macros.rs:804). `capture` dropped (Nomos concern).
+/// [changed from my §4.1 sketch: cardinality is a FIELD of the block (nota
+/// `object_count`), NOT a separate `SequenceForm`; the repeated shape is `children`.
+/// My standalone `SequenceForm` is removed — `{ Field Field … }` is one Delimited
+/// with cardinality: Any and children: [ Delegate(Field) ].]
+pub struct DelimitedBlock {
+    pub delimiter:   Delimiter,             // nota `MacroDelimiter`
+    pub cardinality: Cardinality,           // nota `MacroObjectCount`
+    pub children:    Box<StructuralForm>,   // nota `children: Option<Box<Pattern>>`
+}
+pub enum Delimiter   { Parenthesis, SquareBracket, Brace }   // nota `MacroDelimiter` (macros.rs:42)
+pub enum Cardinality { Any, Even, Exact(u64) }               // nota `MacroObjectCount` (macros.rs:928)
 
 /// His named example: a PascalCase object symbol dot-prefixing a block —
-/// `CommitSequence.{ Integer }`. A specialized, common composition of
-/// Application(Atom{Capitalized}, DelimitedBlock).
+/// `CommitSequence.{ Integer }`. Specialized sugar over Application(Atom{PascalCase},
+/// Delimited); kept distinct because it is the dominant DECLARATION shape (ruling 1:
+/// "maximize enums/variants with specialized structs").
 pub struct ObjectSymbolPrefixedBlock { pub object: AtomForm, pub block: DelimitedBlock }
 
-/// A dotted segment run — the path / qualified-name shape (`rkyv.Archive`).
-pub struct DottedForm { pub segment: Box<StructuralForm>, pub cardinality: Cardinality }
+/// Right-associative application head.payload.
+pub struct ApplicationForm { pub head: Box<StructuralElement>, pub payload: Box<StructuralElement> }
 
-/// A homogeneous sequence with a cardinality — a Vec of children in a block.
-pub struct SequenceForm { pub element: Box<StructuralForm>, pub cardinality: Cardinality }
-
-pub struct PipeTextForm;   // decode `(| … |)`, encode with the canonical-form guard
-
-/// Structurally disjoint variants — decode picks the matching one; encode's Core
-/// variant selects it. (Codex: "structurally disjoint alternatives".)
-pub struct DisjointAlternatives { pub variants: Vec<StructuralForm> }
-
-/// A structural escape carrying a payload form (the `$` sigil; Nomos profile).
-pub struct EscapeForm { pub sigil: EscapeSigil, pub payload: Box<StructuralForm> }
-
-pub enum Delimiter { Parenthesis, SquareBracket, Brace }      // () [] {} — the real nota names
-pub enum Cardinality { ExactlyOne, ZeroOrOne, ZeroOrMore, OneOrMore }
-// maps to nota's real AtomCase { Symbol, PascalCase, CamelCase, KebabCase } (macros.rs:703)
-pub enum CapitalizationExpectation { Capitalized, Uncapitalized, Either }
-pub enum EscapeSigil { Dollar }                              // extends by profile revision
-
-/// The recursive-delegation rule (Codex: "recursively delegates each child to the
-/// table entry of its Core type"). A leaf is either another Core type (look up its
-/// form), a primitive, or a foreign leaf (Rust custom codecs, §6).
-pub enum LeafCodec {
-    CoreType(CoreTypeId),
-    Primitive(PrimitiveLeaf),
-    Foreign(ForeignLeafId),
-}
-pub enum PrimitiveLeaf { IntegerText, FloatFromDottedText, BooleanKeyword, PeriodString }
+/// A dotted segment run — the qualified-path shape (`rkyv.Archive`).
+pub struct DottedForm { pub segment: Box<StructuralElement>, pub cardinality: Cardinality }
 ```
 
-`FloatFromDottedText` and `EscapeSigil::Dollar` are dependencies on **non-rejected**
-items (floats-from-dotted-text; the `$` profile) — marked, and gated in §5 behind
-profile revisions so they do not activate until the psyche accepts those items.
+**Two `[changed from Codex/report]` removals worth stating plainly.** (1) There is
+**no `Escape` variant**: the `$` structural escape is `AtomForm.sigil =
+Some(SigilSpec { character: "$", position: Prefix })`, grounded exactly in nota's
+`AtomShape.sigil` — the escape is a field of an atom, not a new form. (An escape
+carrying a whole-block payload, `$( … )`, would need a sigil on a delimited form;
+nota's `SigilSpec` is atom-only today — noted as a `$`-reading extension.) (2)
+`ScalarLeaf::Float`/`Text` and `SigilSpec`/`SigilPosition::Prefix` (the `$`) are
+dependencies on **non-rejected** readings (floats-from-dotted-text; the `$`
+profile) — gated behind profile revisions (§4.2) until the psyche accepts them.
 
-**[observed — this session's reconnaissance] This vocabulary is not greenfield; it
-generalizes machinery that already exists in nota.** `repos/nota/src/macros.rs`
-already carries a `StructuralMacroNode` trait whose `structural_variants() ->
-Vec<StructuralVariant>` **is** an expectation table, a `Pattern`/`PatternElement`
-grammar (`Any`, `Atom(AtomShape)`, `Delimited(DelimitedShape)`, `Literal`, `Rest`),
-an `AtomShape { case, sigil, capture }` with `SigilSpec { character, position }`
-(the `$`-sigil mechanism already modeled), a `DelimitedShape { delimiter,
-object_count: MacroObjectCount { Any | Even | Exact(u64) }, children }` (delimiter +
-cardinality already modeled), and a `StructuralVariantSet` whose `dispatch` +
-`validate_no_silent_conflicts` **already implement Codex's "structurally disjoint
-alternatives with no silent shadowing."** The `StructuralForm` above is the
-**lifted, Core-keyed, bidirectional, revisioned** generalization of these real
-types — the design's work is (a) move the variant set from a per-type trait method
-(frozen, un-extensible — library report §1.6) to the external sidecar registry
-(§4.3), (b) drive both directions from one form through one evaluator (§4.4), (c)
-add profile/table revisions (§4.2), and (d) add the conformance triad (§4.5). So
-`Pattern`→`StructuralForm`, `AtomShape`→`AtomForm`, `DelimitedShape`→
-`DelimitedBlock`+`SequenceForm`, `StructuralVariantSet`→`DisjointAlternatives`, and
-`StructuralMacroNode::from_structural_block/to_structural_nota`→the evaluator's
-`decode`/`encode`.
+### 4.1.1 Three concrete entry instances, and the entry as its own NOTA value
+
+Real data trees, indented constructor-style. A branch worker is implementing the
+string-rejoin on nota next-gen in parallel; this is the vocabulary expression only.
+
+**(a) The schema Struct-declaration entry** (Codex: "Application(ObjectName,
+Brace.Sequence(Field))" — with Sequence folded into the brace's cardinality):
+
+```
+StructuralEntry {
+  core_type: CoreTypeId(17),                       ;; STRUCT_DECLARATION
+  variants: [
+    StructuralVariant {
+      name: Identifier(→ "struct-declaration"),
+      produces: CoreTypeId(17),
+      form: StructuralForm { elements: [
+        Application(ApplicationForm {
+          head:    Atom(AtomForm { case: Some(PascalCase), sigil: None }),   ;; the struct name
+          payload: Delimited(DelimitedBlock {
+                     delimiter:   Brace,
+                     cardinality: Any,                          ;; zero-or-more fields
+                     children:    StructuralForm { elements: [
+                       Delegate(CoreTypeId(23)),                ;; each field → FIELD_DECLARATION
+                     ] } }),
+        }),
+      ] },
+    },
+  ],
+}
+```
+
+**(b) The Field-declaration entry — two structurally disjoint variants** (Codex:
+"Field accepts Type or Name.Type"):
+
+```
+StructuralEntry {
+  core_type: CoreTypeId(23),                       ;; FIELD_DECLARATION
+  variants: [
+    ;; (1) Type only — the field name is elided and DERIVED from the type
+    StructuralVariant {
+      name: Identifier(→ "type-only"),  produces: CoreTypeId(23),
+      form: StructuralForm { elements: [
+        Atom(AtomForm { case: Some(PascalCase), sigil: None }),          ;; the Type
+      ] },
+    },
+    ;; (2) name.Type — an explicit lowercase field name dotting the Type
+    StructuralVariant {
+      name: Identifier(→ "named"),  produces: CoreTypeId(23),
+      form: StructuralForm { elements: [
+        Application(ApplicationForm {
+          head:    Atom(AtomForm { case: Some(CamelCase),  sigil: None }),  ;; field name (lowercase)
+          payload: Atom(AtomForm { case: Some(PascalCase), sigil: None }),  ;; the Type
+        }),
+      ] },
+    },
+  ],
+}
+;; nota `validate_no_silent_conflicts` proves (1) a bare PascalCase atom and (2) a
+;; camelCase.PascalCase application are structurally distinct — no silent shadowing.
+;; On encode, the Core Field variant (has-explicit-name?) selects (1) or (2); on
+;; decode, the expected FIELD_DECLARATION type limits lookup to this variant set.
+```
+
+**(c) A string-resolving leaf through newtype depth — the SAME mechanism as float.**
+The psyche, verbatim: "since floats can be parsed correctly when expected, so can
+strings, or any string wrapping newtype (even if has more than one newtype wrapper
+that resolves ultimately into a string inner type)." The wrapper depth is a
+`Delegate` chain; the terminal `Leaf(Scalar(Text))` does the rejoin, identically to
+`Leaf(Scalar(Float))`:
+
+```
+;; VALUE forms (object level). Expected type Documentation = newtype over Summary
+;; over a string inner. Each wrapper is a transparent Delegate; the raw block passes
+;; through unchanged until the terminal scalar leaf flattens it.
+entry(CoreTypeId(31)) = StructuralEntry { core_type: 31,  variants: [ single →
+    StructuralForm { elements: [ Delegate(CoreTypeId(32)) ] } ] }          ;; Documentation → Summary
+entry(CoreTypeId(32)) = StructuralEntry { core_type: 32,  variants: [ single →
+    StructuralForm { elements: [ Delegate(CoreTypeId(33)) ] } ] }          ;; Summary → Text
+entry(CoreTypeId(33)) = StructuralEntry { core_type: 33,  variants: [ single →
+    StructuralForm { elements: [ Leaf(LeafForm { codec: Scalar(Text) }) ] } ] }   ;; Text = string inner
+
+;; the SAME shape for float — only the ScalarLeaf differs:
+entry(CoreTypeId(9))  = StructuralEntry { core_type: 9,   variants: [ single →
+    StructuralForm { elements: [ Leaf(LeafForm { codec: Scalar(Float) }) ] } ] }  ;; Float inner
+
+;; DECODE of raw `alpha.beta.gamma` (= Application(alpha, Application(beta, gamma)))
+;; under expected Documentation(31):
+;;   Delegate(31→32) → Delegate(32→33) → Leaf(Scalar(Text))
+;;   → Block::dotted_text() flattens the Application  → "alpha.beta.gamma"  → the string.
+;; DECODE of raw `-122.3` (= Application(-122, 3)) under expected Float(9):
+;;   Leaf(Scalar(Float)) → Block::dotted_text() flattens  → "-122.3"  → parse f64.
+;; One control path; the expected type (via its terminal ScalarLeaf) decides the parse.
+;; The raw layer NEVER classified — it only discovered a dotted Application.
+```
+
+**The entry as its own NOTA value** (deliverable 3 — the self-description the design
+promises: forms are serializable, content-identified data; and these very nota types
+already derive `nota::NotaEncode`). Instance (a) serialized:
+
+```
+;; StructuralEntry(a) as a NOTA value — storable/content-hashable like any Core value.
+StructuralEntry.( 17
+  [ StructuralVariant.( struct-declaration 17
+      StructuralForm.(
+        [ Application.(
+            Atom.( PascalCase None )
+            Delimited.( Brace Any
+              StructuralForm.( [ Delegate.( 23 ) ] ) ) ) ] ) ) ] )
+```
+
+Grammar details riding on **non-rejected** readings (marked, per deliverable 3):
+`Name.( … )` — a capitalized object dot-prefixing a parenthesized positional record
+— is the StructuralMacroNode dotting/dissolution reading; `[ … ]` is the vector
+delimiter for the `Vec` fields; `Option::None` renders as the bare keyword atom
+`None`; the `CoreTypeId` payloads `17`/`23` render as bare integers — themselves
+resolved by `Leaf(Scalar(Integer))`, so the table entry that describes a struct is
+read by the very leaf vocabulary it contains (the self-hosting closure Codex names);
+and the interned `struct-declaration` shows as its resolved kebab text, though in the
+stringless substrate it is an `Identifier(u32)` resolved through the NameTable at the
+boundary.
 
 ### 4.2 The versioned profile (Codex) lives with the raw layer, revisioned
 
@@ -327,12 +492,14 @@ profile is a `raw-discovery` concept (§5) because it governs raw recognition; t
 typed variation is the `StructuralForm` above.
 
 ```rust
-// in raw-discovery, referenced here:
+// in raw-discovery, referenced here (ProfileRevision / StructuralRevision are the
+// keys defined in §4.1):
 pub struct RawProfile { pub revision: ProfileRevision, pub glyphs: GlyphSet }
-pub enum GlyphSet { Standard, NomosExtended }   // Standard: . () [] {} (| |); Nomos: + $
-pub struct ProfileRevision(u32);                // a new glyph = a new revision, never runtime guessing
-
-pub struct StructuralRevision(u32);             // typed-table revision, independent of profile
+pub enum GlyphSet { Standard, NomosExtended }   // Standard: . () [] {} ; Nomos: + $
+// [changed: the period-string (| |) is no longer REQUIRED — ordinary strings resolve
+// by the Text scalar leaf (§4.1). Whether (| |) survives as an OPTIONAL explicit
+// escape for strings bearing delimiters/whitespace is a non-rejected detail; if kept
+// it is a glyph-set member, if dropped strings needing escaping ride a different form.]
 ```
 
 ### 4.3 The external sidecar registry, keyed by CoreTypeId — the RESOLVED fork
@@ -346,26 +513,19 @@ contradiction of the settled identity ruling. Therefore the form is an **externa
 sidecar**, associated by stable `CoreTypeId`, carrying its own content identity
 **excluded** from the Core value's hash.
 
+`ExpectationTable`, `CoreTypeId`, and `StructuralEntry` are the types defined in
+§4.1 (the container section). The sidecar contract, restated (Codex: "association
+is EXTERNAL, keyed by stable Core type identity ... the table has its own content
+identity, co-versioned with the language package, EXCLUDED from the Core value's
+hash — old table decodes old text, new table emits new text, both reach the same
+Core"):
+
 ```rust
-/// Stable identity of a Core type — the key the boundary's expected type presents.
-/// Independent of the Core value's content hash and of any name.
-pub struct CoreTypeId(u32);
-
-/// The external sidecar: (CoreTypeId, StructuralRevision) → StructuralForm. Codex:
-/// "association is EXTERNAL, keyed by stable Core type identity ... the table has
-/// its own content identity, co-versioned with the language package, EXCLUDED from
-/// the Core value's hash — old table decodes old text, new table emits new text,
-/// both reach the same Core." Queried BY expected type, never globally searched;
-/// the input never selects its own type.
-pub struct ExpectationTable {
-    revision: StructuralRevision,
-    forms: BTreeMap<CoreTypeId, StructuralForm>,
-    identity: ContentHash<StructuralTableDomain>,   // co-versioned, sidecar; NOT in Core hash
-}
-
 impl ExpectationTable {
-    pub fn form(&self, expected: CoreTypeId) -> Option<&StructuralForm>;
-    pub fn identity(&self) -> ContentHash<StructuralTableDomain>;
+    /// Queried BY expected type, never globally searched; the input never selects
+    /// its own type. Returns the type's disjoint-variant entry (§4.1).
+    pub fn entry(&self, expected: CoreTypeId) -> Option<&StructuralEntry>;
+    pub fn identity(&self) -> ContentHash<StructuralTableDomain>;   // co-versioned; NOT in Core hash
 }
 ```
 
@@ -383,17 +543,18 @@ type is recovered by the generated codec (§4.5), and conformance proves the two
 agree.
 
 ```rust
-/// The evaluator's generic currency: a structural mirror of a decoded value.
+/// The evaluator's generic currency: a structural mirror of a decoded value,
+/// aligned to the element model of §4.1 (no PipeText/Escaped — both removed there).
 pub enum StructuralValue {
-    Atom(Identifier),
+    Atom(Identifier),                                          // a resolved name
+    Scalar(ScalarValue),                                       // a flattened leaf (Integer/Float/Text/Boolean)
     Delimited(Delimiter, Vec<StructuralValue>),
     Application(Box<StructuralValue>, Box<StructuralValue>),
-    Sequence(Vec<StructuralValue>),
-    Alternative { chosen: usize, payload: Box<StructuralValue> },
-    PipeText(Identifier),
-    Escaped(Box<StructuralValue>),
+    Delegated(Box<StructuralValue>),                           // passed through a transparent Delegate
+    Chosen { variant: usize, payload: Box<StructuralValue> },  // which disjoint entry-variant matched
     Empty,
 }
+pub enum ScalarValue { Integer(i64), Float(f64), Text(String), Boolean(bool) }
 
 /// The one interpreter of StructuralForm, both directions. Small and closed: it
 /// walks the form and the block/value in lockstep. Encode and decode read the
@@ -507,7 +668,8 @@ also the home of the versioned **raw profile** (Codex).
 /// what nota leaves implicit; the `span` is dropped from the archived form.
 pub enum Block {
     Delimited { delimiter: Delimiter, root_objects: Vec<Block> },
-    PipeText(PipeText),                                     // the (| |) period-string, its own variant
+    PipeText(PipeText),        // (| |) retained ONLY as an optional explicit string escape;
+                               // no longer REQUIRED for ordinary strings (newest ruling) — non-rejected
     Atom(Atom),
     Application { head: Box<Block>, payload: Box<Block> },  // DESIGNED-explicit right-assoc dot binding
 }
@@ -667,11 +829,12 @@ the sidecar forms.
 
 ### 6.3 The logicalization is shared; Rust has more custom leaves — and adding a third language
 
-**[interpretation]** The shared **logicalization vocabulary** is the `StructuralForm`
-set of §4.1 (application, delimited block, sequence, dotted, disjoint alternatives,
-escapes) plus the evaluator. TextualLogos leaves are mostly `CoreType`/`Primitive`;
-TextualRust leaves are mostly `Foreign` (syn/prettyplease-backed). What a **third**
-emission language (say a C or a Zig backend) touches:
+**[interpretation]** The shared **logicalization vocabulary** is the
+`StructuralElement` set of §4.1 (atom, leaf, delimited-with-cardinality, object-
+prefixed, application, dotted, delegate, literal) plus the evaluator, with disjoint
+alternatives at the entry level. TextualLogos leaves are `Delegate`/`Atom`/
+`Leaf(Scalar)`; TextualRust leaves are mostly `Leaf(Foreign)` (syn/prettyplease-
+backed). What a **third** emission language (say a C or a Zig backend) touches:
 
 ```
 [ (add   [a TextualForm impl] [a RawLayer for it: its own parser+printer or a Recognizer profile]
@@ -749,26 +912,26 @@ externally, §4.3). Codex's example: "schema struct declaration =
 Application(ObjectName, Brace.Sequence(Field)); Field accepts Type or Name.Type."
 
 ```
-form(CoreTypeId::Newtype) =
-  ObjectPrefixed(ObjectSymbolPrefixedBlock {
-    object: AtomForm{ capitalization: Capitalized, leaf: CoreType(Name) },
-    block:  DelimitedBlock{ delimiter: Brace,
-              inner: Box Atom(AtomForm{ Capitalized, leaf: CoreType(TypeReference) }) } })
+;; single-variant entry; the newtype declaration is the specialized ObjectPrefixed sugar
+entry(Newtype) = [ StructuralVariant{ name: newtype-declaration, produces: Newtype, form:
+  [ ObjectPrefixed(ObjectSymbolPrefixedBlock {
+      object: AtomForm{ case: Some(PascalCase), sigil: None },          ;; the newtype name
+      block:  DelimitedBlock{ delimiter: Brace, cardinality: Exact(1),
+                children: [ Atom(AtomForm{ case: Some(PascalCase), sigil: None }) ] } }) ] } ]
 
-form(CoreTypeId::Struct) =
-  Application(ApplicationForm {
-    head:    Box Atom(AtomForm{ Capitalized, leaf: CoreType(Name) }),
-    payload: Box Delimited(DelimitedBlock{ delimiter: Brace,
-               inner: Box Sequence(SequenceForm{
-                 element: Box CoreType(Field), cardinality: ZeroOrMore }) }) })
+entry(Struct) = [ StructuralVariant{ name: struct-declaration, produces: Struct, form:
+  [ Application(ApplicationForm {
+      head:    Atom(AtomForm{ case: Some(PascalCase), sigil: None }),   ;; the struct name
+      payload: Delimited(DelimitedBlock{ delimiter: Brace, cardinality: Any,
+                 children: [ Delegate(Field) ] }) }) ] } ]             ;; each field → Field entry
 
-form(CoreTypeId::Field) =
-  Alternatives(DisjointAlternatives{ variants: [
-    /* Type only, name elided-derived */  Atom(AtomForm{ Capitalized, leaf: CoreType(TypeReference) }),
-    /* Vis.name.Type */                    Application(ApplicationForm{
-                                              head: Box Atom(AtomForm{ Uncapitalized, leaf: CoreType(Name) }),
-                                              payload: Box Atom(AtomForm{ Capitalized, leaf: CoreType(TypeReference) }) }),
-  ]})
+entry(Field) = [                                                       ;; two disjoint variants
+  StructuralVariant{ name: type-only, produces: Field, form:
+    [ Atom(AtomForm{ case: Some(PascalCase), sigil: None }) ] },        ;; Type; name elided-derived
+  StructuralVariant{ name: named, produces: Field, form:
+    [ Application(ApplicationForm{
+        head:    Atom(AtomForm{ case: Some(CamelCase),  sigil: None }), ;; field name (lowercase)
+        payload: Atom(AtomForm{ case: Some(PascalCase), sigil: None }) }) ] } ]  ;; Type
 ```
 
 ### 7.4 Decode of the schema text
@@ -777,11 +940,11 @@ form(CoreTypeId::Field) =
 
 1. `Recognizer(Standard).recognize` → `Application{ head: Atom("CommitSequence"),
    payload: Delimited{ Brace, [ Atom("Integer") ] } }` — raw structure only.
-2. Expected type at the boundary = `CoreTypeId::Newtype`; look up its form
-   (`ObjectSymbolPrefixedBlock`). The input never selected its own type.
-3. Evaluator walks form+block in lockstep: object head `Capitalized` atom
-   "CommitSequence" → `intern` → `Id(1)`; brace block delegates its inner to
-   `CoreType(TypeReference)`'s form → atom "Integer" → `intern` → `Id(0)`.
+2. Expected type at the boundary = `CoreTypeId(Newtype)`; look up its entry
+   (the single `ObjectPrefixed` variant). The input never selected its own type.
+3. Evaluator walks form+block in lockstep: object head `PascalCase` atom
+   "CommitSequence" → `intern` → `Id(1)`; the brace block's `children` atom
+   "Integer" (the wrapped type name) → `intern` → `Id(0)`.
 4. Yields `StructuralValue`; the generated `StructuralCodec::decode` yields the
    concrete `Newtype{ name: Id(1), wrapped: Path[Id(0)] }`; conformance asserts
    they mirror. → CoreSchema value of §7.2.
@@ -927,24 +1090,29 @@ before Schema). One order satisfies both.
      "envelopes" absorbed into content-identity)
   (from Codex  sidecar-vs-embedded OPEN → ANSWERED sidecar by derivation)
   (from Codex  table predates many-forms ruling → FOLDED into Textual family; TextualRust "profile"
-     = the syn boundary, not a glyph profile) ]
+     = the syn boundary, not a glyph profile)
+  ;; corrections exposed by drawing the FULL data-tree (§4.1/§4.1.1), grounded in nota macros.rs:
+  (from my-§4.1  period-string PipeTextForm/PrimitiveLeaf::PeriodString DROPPED → newest ruling:
+     strings resolve by ScalarLeaf::Text using the SAME dotted rejoin as Float; wrapper depth = Delegate chain)
+  (from my-§4.1  disjoint alternatives are the ENTRY shape (Vec<StructuralVariant>, nota StructuralVariantSet),
+     NOT a StructuralForm variant → nested alternatives reached by Delegate)
+  (from my-§4.1  cardinality folded into DelimitedBlock (nota object_count); standalone SequenceForm removed)
+  (from my-§4.1  the $ escape rides on AtomForm.sigil (nota AtomShape.sigil); no separate Escape variant)
+  (from my-§4.1  leaf moved out of AtomForm; AtomForm = case+sigil only, always a name; capture dropped (Nomos concern))
+  (from my-§4.1  Cardinality = Any/Even/Exact(u64) (nota MacroObjectCount); SigilPosition = Prefix/Suffix (nota)) ]
 ```
 
 ## 9. Open points genuinely needing the psyche's word
 
 Few and real; settled rulings are not reopened. Each **[AGENT PROPOSAL]**.
 
-**Fork A — terminology: `macro` vs `StructuralProgram`/`StructuralForm`.** This is
-an OPEN PSYCHE FORK, not mine to decide. Codex wants "macro" reserved for Nomos and
-the parser-side data named `StructuralProgram`/`StructuralForm`; the psyche's own
-words unified them ("structural-expectations-macro"; "a dialect is in principle a
-macro package"). **[AGENT PROPOSAL]** the *procedure*, not the term: use the neutral
-`StructuralForm` placeholder throughout the sketches until he rules, and decide
-`structural-codec` vs `textual-forms` for the crate name at the same time (the
-many-forms ruling makes both live). Rationale: the two namings imply different
-mental models (parser-programs vs macro-packages) that ripple into every type name
-and doc; picking now would bake one model into the code before he has weighed the
-unification his own words proposed.
+**Fork A — terminology: SETTLED.** The psyche ruled (Q2, verbatim): "Yes, I agree
+on the surface" — `StructuralForm` for the parser-side data, `macro` reserved for
+Nomos. The full data-tree in §4.1/§4.1.1 is rendered under this ruling. The one
+remaining sub-choice folded here — the crate name `structural-codec` vs
+`textual-forms` — stays a light **[AGENT PROPOSAL]** for `structural-codec` (it
+names the mechanism, and `StructuralForm`/`StructuralEntry` now anchor the
+vocabulary to that word); not worth a separate fork.
 
 **Fork B — confirm the `True*` → `Textual*` rename (his hedge).** His words carried
 a "maybe": "maybe true is renamed to Textual." The whole many-forms framing reads
