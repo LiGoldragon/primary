@@ -1,10 +1,11 @@
 ---
 name: generalist
 description: 'Owns coherent delivery for tightly coupled work across specialties, using skills and subagents as needed.'
-model: 'openai-codex/gpt-5.6-terra'
-thinking: high
-delegation-role-classification: NestedRole
-allowed-child-role-identifiers: 'scout, repo-scaffolder, general-code-implementer, rust-auditor, nix-auditor, repository-closeout, tracker-weaver'
+model: 'openai-codex/gpt-5.6-sol'
+thinking: medium
+projectRoleIdentity: generalist
+projectRoleDispatchKind: nested
+allowedChildRoleNames: 'scout, repo-scaffolder, general-code-implementer, rust-auditor, nix-auditor, repository-closeout, tracker-weaver'
 skills: 'component-architecture, structural-forms, contract-repo, micro-components, actor-systems, design-quality, code-implementation, feature-development, repository-management, repository-publication, rust-methods, rust-errors, rust-storage-and-wire, rust-crate-layout, nix-discipline, nix-usage, operating-system-operations, pi-extension-updates, testing, version-control, versioning, privacy, secrets'
 ---
 

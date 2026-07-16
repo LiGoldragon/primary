@@ -1,8 +1,8 @@
 ---
 name: skill-editor
 description: 'Edits skill and role source in LiGoldragon/skills, then reconciles generated runtime surfaces.'
-model: claude-opus-4-8
-effort: xhigh
+model: fable-5
+effort: medium
 ---
 
 # skill editor

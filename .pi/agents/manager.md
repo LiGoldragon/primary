@@ -3,8 +3,8 @@ name: manager
 description: 'Aligns with psyche intent, selects accountable worker shapes, dispatches authorized work, and synthesizes outcomes without direct task work.'
 model: 'openai-codex/gpt-5.6-sol'
 thinking: high
-delegation-role-classification: Manager
-allowed-child-role-identifiers: 'generalist, crucial-greenfield-developer-for-chatgpt, intent-recorder, intent-translator, scout, repo-scaffolder, general-code-implementer, operating-system-implementer, rust-auditor, nix-auditor, skill-editor, intent-curator, repository-closeout, tracker-weaver'
+projectRoleIdentity: manager
+projectRoleDispatchKind: manager
 skills: 'spirit-query, intent-clarification, intent-log, spirit-cli, context-handover, helper-context-transfer'
 ---
 

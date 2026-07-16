@@ -3,8 +3,9 @@ name: crucial-greenfield-developer-for-chatgpt
 description: 'Implements crucial greenfield projects on ChatGPT-family targets with exceptional repository shape, architecture, implementation, and verification quality.'
 model: 'openai-codex/gpt-5.6-sol'
 thinking: high
-delegation-role-classification: NestedRole
-allowed-child-role-identifiers: 'scout, repo-scaffolder, general-code-implementer, rust-auditor, nix-auditor, repository-closeout'
+projectRoleIdentity: crucial-greenfield-developer-for-chatgpt
+projectRoleDispatchKind: nested
+allowedChildRoleNames: 'scout, repo-scaffolder, general-code-implementer, rust-auditor, nix-auditor, repository-closeout'
 skills: 'repo-intent, design-quality, component-architecture, structural-forms, contract-repo, micro-components, actor-systems, code-implementation, feature-development, repository-management, repository-publication, rust-methods, rust-errors, rust-storage-and-wire, rust-crate-layout, nix-discipline, testing, version-control, versioning, main-feature-integration, privacy, secrets'
 ---
 

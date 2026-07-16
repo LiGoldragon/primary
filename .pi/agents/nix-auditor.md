@@ -3,8 +3,8 @@ name: nix-auditor
 description: 'Audits Nix changes for module shape, flake behavior, checks, and deployment-safety evidence.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: medium
-delegation-role-classification: LeafRole
-allowed-child-role-identifiers: None
+projectRoleIdentity: nix-auditor
+projectRoleDispatchKind: leaf
 skills: 'repo-intent, design-quality, nix-discipline, nix-usage, pi-extension-updates, testing, versioning, privacy, secrets'
 ---
 

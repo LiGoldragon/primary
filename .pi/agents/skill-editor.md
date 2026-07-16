@@ -3,8 +3,9 @@ name: skill-editor
 description: 'Edits skill and role source in LiGoldragon/skills, then reconciles generated runtime surfaces.'
 model: 'openai-codex/gpt-5.6-sol'
 thinking: high
-delegation-role-classification: NestedRole
-allowed-child-role-identifiers: 'scout, general-code-implementer, rust-auditor, repository-closeout'
+projectRoleIdentity: skill-editor
+projectRoleDispatchKind: nested
+allowedChildRoleNames: 'scout, general-code-implementer, rust-auditor, repository-closeout'
 skills: 'intent-manifestation, nota-schema-design, nota-design, prose, privacy'
 ---
 

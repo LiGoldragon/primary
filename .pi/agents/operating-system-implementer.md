@@ -1,10 +1,11 @@
 ---
 name: operating-system-implementer
 description: 'Implements CriomOS and criomos-home operating-system changes with deployment and host-safety discipline.'
-model: 'openai-codex/gpt-5.6-terra'
-thinking: high
-delegation-role-classification: NestedRole
-allowed-child-role-identifiers: 'scout, general-code-implementer, rust-auditor, nix-auditor, repository-closeout'
+model: 'openai-codex/gpt-5.6-sol'
+thinking: medium
+projectRoleIdentity: operating-system-implementer
+projectRoleDispatchKind: nested
+allowedChildRoleNames: 'scout, general-code-implementer, rust-auditor, nix-auditor, repository-closeout'
 skills: 'repo-intent, design-quality, nix-discipline, nix-usage, pi-internals, pi-extension-updates, disk-hygiene, testing, version-control, versioning, privacy, secrets'
 ---
 

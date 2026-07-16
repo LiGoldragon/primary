@@ -1,8 +1,8 @@
 ---
 name: operating-system-implementer
 description: 'Implements CriomOS and criomos-home operating-system changes with deployment and host-safety discipline.'
-model: claude-opus-4-8
-effort: high
+model: fable-5
+effort: medium
 ---
 
 # operating system implementer
