@@ -3,8 +3,6 @@ name: intent-recorder
 description: 'Submits one fully specified warranted Spirit operation without inventing or reinterpreting intent.'
 model: 'openai-codex/gpt-5.6-luna'
 thinking: medium
-projectRoleIdentity: intent-recorder
-projectRoleDispatchKind: leaf
 ---
 
 # intent recorder

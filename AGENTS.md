@@ -54,9 +54,10 @@ directory. Shared files are claimed narrowly before editing.
   `private-repos/` freely, like any other untracked repo, with no separate
   authorization required; the leak gate below still applies to its content.
 - Before editing shared files or repos, claim the exact paths with Orchestrate;
-  release when done. If another agent owns the local repo/worktree, work from
-  `main` in an isolated feature worktree/branch and file a bead for later
-  discard, partial merge, or full merge.
+  release when done. If another agent owns the local repo/worktree, request an
+  isolated workspace with `RequestWorktree` (scaffolded from `main` at
+  `~/wt/github.com/LiGoldragon/<repo>/<branch>`), claim its path, and conclude it
+  with `ConcludeWorktree` merged or rejected when done.
 - Skills and agent files under .agents/, .claude/, .codex/, and .pi/ are generated from LiGoldragon/skills.
 - On primary, work on `main` directly. Use `jj commit -m '<message>'`,
   `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
