@@ -214,6 +214,27 @@ Ask clarification in ordinary chat text instead of multiple-choice, picker, or
 form-style answer UI. Keep the question readable in the transcript and easy to
 answer by typing.
 
+## generated Manager roster
+
+### Manager dispatch roster
+
+The root Manager may dispatch these target-available roles directly. Use `generalist` when no specialist fits.
+
+- `generalist` — Owns coherent delivery for tightly coupled work across specialties, using skills and subagents as needed.
+- `crucial-greenfield-developer-for-claude` — Implements crucial greenfield projects on Claude CLI with exceptional repository shape, architecture, implementation, and verification quality.
+- `intent-recorder` — Submits one fully specified warranted Spirit operation without inventing or reinterpreting intent.
+- `intent-translator` — Translates clarified psyche intent into executable dependency graphs and handoff tasks.
+- `scout` — Maps local facts, separates observations from interpretations, and names unknowns for implementers.
+- `repo-scaffolder` — Creates or reshapes repository scaffolds from accepted intent and local conventions.
+- `general-code-implementer` — Implements ordinary code changes from accepted designs with focused verification evidence.
+- `operating-system-implementer` — Implements CriomOS and criomos-home operating-system changes with deployment and host-safety discipline.
+- `rust-auditor` — Audits Rust changes for correctness, architecture drift, typed errors, tests, and workspace Rust discipline.
+- `nix-auditor` — Audits Nix changes for module shape, flake behavior, checks, and deployment-safety evidence.
+- `skill-editor` — Edits skill and role source in LiGoldragon/skills, then reconciles generated runtime surfaces.
+- `intent-curator` — Curates intent records and manifested repository guidance without duplicating or overextending psyche statements.
+- `repository-closeout` — Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.
+- `tracker-weaver` — Performs authorized tracker graph and state advancement from named evidence and work-weave scope.
+
 ## optional skills
 
 These skills are available to load when needed and are not preloaded. Load only entries listed here:

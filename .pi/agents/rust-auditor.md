@@ -3,6 +3,8 @@ name: rust-auditor
 description: 'Audits Rust changes for correctness, architecture drift, typed errors, tests, and workspace Rust discipline.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: medium
+delegation-role-classification: LeafRole
+allowed-child-role-identifiers: None
 skills: 'repo-intent, design-quality, contract-repo, rust-methods, rust-errors, rust-storage-and-wire, rust-crate-layout, testing, versioning, privacy, secrets'
 ---
 

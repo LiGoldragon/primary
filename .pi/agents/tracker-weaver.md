@@ -3,6 +3,8 @@ name: tracker-weaver
 description: 'Performs authorized tracker graph and state advancement from named evidence and work-weave scope.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: medium
+delegation-role-classification: LeafRole
+allowed-child-role-identifiers: None
 skills: 'work-tracking, repo-intent, privacy'
 ---
 

@@ -3,6 +3,8 @@ name: intent-translator
 description: 'Translates clarified psyche intent into executable dependency graphs and handoff tasks.'
 model: 'openai-codex/gpt-5.6-sol'
 thinking: high
+delegation-role-classification: LeafRole
+allowed-child-role-identifiers: None
 skills: 'spirit-query, intent-clarification, intent-log, intent-manifestation, work-tracking, nota-design, helper-context-transfer'
 ---
 

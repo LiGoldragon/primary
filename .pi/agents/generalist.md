@@ -3,6 +3,8 @@ name: generalist
 description: 'Owns coherent delivery for tightly coupled work across specialties, using skills and subagents as needed.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: high
+delegation-role-classification: NestedRole
+allowed-child-role-identifiers: 'scout, repo-scaffolder, general-code-implementer, rust-auditor, nix-auditor, repository-closeout, tracker-weaver'
 skills: 'component-architecture, structural-forms, contract-repo, micro-components, actor-systems, design-quality, code-implementation, feature-development, repository-management, repository-publication, rust-methods, rust-errors, rust-storage-and-wire, rust-crate-layout, nix-discipline, nix-usage, operating-system-operations, pi-extension-updates, testing, version-control, versioning, privacy, secrets'
 ---
 
@@ -197,6 +199,20 @@ portable before closeout. Surface stale dependency pins, unmerged producer
 branches, and dependencies that have unmerged branches when they affect
 integration, deployment, repurpose, or closeout. If portable closeout is not
 possible, report it as a hard blocker.
+
+## generated nested role roster
+
+### Allowed child-role roster
+
+This NestedRole may dispatch only these leaf roles on this target.
+
+- `scout` — Maps local facts, separates observations from interpretations, and names unknowns for implementers.
+- `repo-scaffolder` — Creates or reshapes repository scaffolds from accepted intent and local conventions.
+- `general-code-implementer` — Implements ordinary code changes from accepted designs with focused verification evidence.
+- `rust-auditor` — Audits Rust changes for correctness, architecture drift, typed errors, tests, and workspace Rust discipline.
+- `nix-auditor` — Audits Nix changes for module shape, flake behavior, checks, and deployment-safety evidence.
+- `repository-closeout` — Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.
+- `tracker-weaver` — Performs authorized tracker graph and state advancement from named evidence and work-weave scope.
 
 ## optional skills
 

@@ -197,6 +197,20 @@ branches, and dependencies that have unmerged branches when they affect
 integration, deployment, repurpose, or closeout. If portable closeout is not
 possible, report it as a hard blocker.
 
+## generated nested role roster
+
+### Allowed child-role roster
+
+This NestedRole may dispatch only these leaf roles on this target.
+
+- `scout` — Maps local facts, separates observations from interpretations, and names unknowns for implementers.
+- `repo-scaffolder` — Creates or reshapes repository scaffolds from accepted intent and local conventions.
+- `general-code-implementer` — Implements ordinary code changes from accepted designs with focused verification evidence.
+- `rust-auditor` — Audits Rust changes for correctness, architecture drift, typed errors, tests, and workspace Rust discipline.
+- `nix-auditor` — Audits Nix changes for module shape, flake behavior, checks, and deployment-safety evidence.
+- `repository-closeout` — Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.
+- `tracker-weaver` — Performs authorized tracker graph and state advancement from named evidence and work-weave scope.
+
 ## optional skills
 
 These skills are available to load when needed and are not preloaded. Load only entries listed here:

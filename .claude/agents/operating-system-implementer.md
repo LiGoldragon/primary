@@ -419,6 +419,18 @@ For Spirit state mirroring across two nodes, use `mkCriomeClusterTest` as the te
 - The remote builder at `prometheus.goldragon.criome` must be reachable; the Nix daemon on the local host must have it in `builders`.
 - The Rust toolchain pinned in `channel-rust-stable.toml` must match the current fenix channel; a hash mismatch in that fixed-output derivation blocks checks that build Rust components.
 
+## generated nested role roster
+
+### Allowed child-role roster
+
+This NestedRole may dispatch only these leaf roles on this target.
+
+- `scout` — Maps local facts, separates observations from interpretations, and names unknowns for implementers.
+- `general-code-implementer` — Implements ordinary code changes from accepted designs with focused verification evidence.
+- `rust-auditor` — Audits Rust changes for correctness, architecture drift, typed errors, tests, and workspace Rust discipline.
+- `nix-auditor` — Audits Nix changes for module shape, flake behavior, checks, and deployment-safety evidence.
+- `repository-closeout` — Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.
+
 ## optional skills
 
 These skills are available to load when needed and are not preloaded. Load only entries listed here:
