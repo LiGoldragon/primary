@@ -1,7 +1,0 @@
-warning: not writing modified lock file of flake 'github:LiGoldragon/CriomOS/f8d6fe6476e969adf3680fc50883f12f9c2739d0':
-• Updated input 'horizon':
-    'path:./stubs/no-horizon'
-  → 'path:/var/lib/lojix/generated-inputs/goldragon/ouranos/user-environment/horizon?lastModified=1783467353&narHash=sha256-fDlB5cgG/XYgeOVYLrxQtc/I4pBcx8wFTNcx4UaNT%2Bw%3D' (2026-07-07)
-• Updated input 'system':
-    'path:./stubs/no-system'
-  → 'path:/var/lib/lojix/generated-inputs/goldragon/ouranos/user-environment/system?lastModified=1783467353&narHash=sha256-KW3DUTifDJ6m2JuYiTVtJz%2B9ieAgqjCb46wgrMqxJJU%3D' (2026-07-07)
