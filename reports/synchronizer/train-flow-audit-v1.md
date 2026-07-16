@@ -471,3 +471,112 @@ ssh-build verify in one entry point.) This means an all-`Mainline` dogfood
 exercises resolution/discovery/attestation/closure/emission end-to-end but does
 **not** produce a train whose candidates differ from their mains; a train that
 actually cross-pins needs producer branches ahead of what consumers pin.
+
+## Re-audit — 2026-07-16 (psyche-ordered re-audit of Codex slices)
+
+Fourth pass (session `language-family-re-audit`, lane `codex-train`, Fable
+generalist Opus 4.8), on the psyche's order to "re-audit everything related,
+including the slices done by codex." Read-only / harness-only on the
+synchronizer and dogfood surfaces; the only writes are in scratch throwaways and
+this report. Verdict is **unchanged: NO-GO for slice three riding the train.**
+
+### Baseline: nothing moved on the train code since the dogfood run
+
+- `git -C /git/github.com/LiGoldragon/synchronizer fetch origin` then
+  `git log origin/main` → **still `dfae1fd` "synchronizer: emit portable release
+  train artifacts."** No commits landed after the dogfood pass. No `train/*` refs
+  on origin (`git ls-remote origin | grep -i train` empty). The two most-recent
+  Codex primary commits (`02c69ce4` docs schema-adapters, `964dbbb8` PM
+  roster/curriculum) touch design docs and skills, not the train code.
+- `src/release_train.rs` on disk in
+  `worktrees/LanguageFamilyNextgen/synchronizer` is byte-identical to
+  `main:src/release_train.rs` (875 lines, `diff -q` clean). All citations below
+  are anchored in `main @ dfae1fd`. (Trip-hazard confirmed again: bare `git`
+  inside the nested worktrees resolves up to *primary* — both worktrees report
+  primary's HEAD `02c69ce4`. Read via `git -C /git/.../synchronizer show main:…`
+  or the on-disk files, never bare `git` from the worktree.)
+
+### Defect ledger — current status on main @ dfae1fd
+
+| # | Defect (sev) | Gate class | Status | Current-code citation |
+| --- | --- | --- | --- | --- |
+| 1 | CLI emits no closure/lock/flake (High) | **slice-three-gating** | **UNFIXED** | `src/main.rs:90-97` `execute_release_train` calls `ReleaseTrainRun::execute()` then `render_report(materialized.report())` and returns. `resolve_closure` / `write_integration_artifacts` / `to_integration_flake` / `to_canonical_json` are defined but called only from tests. |
+| 2 | Discovery not wired to drift validators (High) | **slice-three-gating** | **UNFIXED** | `execute()` (`release_train.rs:596-640`) never calls `DependencyGraph::discover`; `resolve_closure` (`:738-752`) takes `discovered_internal_components` / `discovered_external_components` as caller args, fed only by tests. Undeclared-edge / unadmitted-external failures unreachable from a real run. |
+| 3 | No Nix-level proof of P2 (High) | **slice-three-gating** | **UNFIXED** | `flake.nix:43-54` checks are crane `build/test/fmt/clippy` only; nothing builds or evaluates the generated integration flake. |
+| 4 | Expected-base laundered live (Medium) | **slice-three-gating** (psyche gate list) | **UNFIXED** | `release_train.rs:611` passes `component.expected_base().clone()` as the `observed_base` of `ResolvedSelector::new`, so the equality validator (`:401`) is a live tautology; only the weaker `base_is_ancestor` (`:663-665`) runs. |
+| 5 | Flake orchestrates no component checks (Medium) | merge-gating | **UNFIXED** | `to_integration_flake` (`:465-487`) `outputs` is only `releaseTrain = builtins.fromJSON (readFile ./release-train.lock.json)` — no per-component checks, no `follows`. |
+| 6 | Docs describe library as CLI (Medium) | hygiene | **PARTIALLY FIXED (unchanged)** | `release-trains/README.md:4-6` still says Synchronizer "resolves it… and emits an immutable closure before testing" and lists `release-train.lock.json → fixed-input integration flake` as projections. Top `README.md` was already softened in the delta; no further change. |
+| 7 | Run captures no closure attestations/locks (Low) | merge-gating | **UNFIXED** | `execute()` returns `MaterializedReleaseTrain` with no attestations; `resolve_closure` requires the caller to supply narHash + lock identities. |
+| 8 | Closure identity ties to serde_json formatting (Low) | informational (deferred) | **UNFIXED (by design)** | `payload_identity` uses `serde_json::to_vec` (`:508`). Sanctioned bootstrap; flag for P4 TextualJson. |
+| 9 | Bundle H1 `# feature development` (cosmetic) | hygiene (generator-wide) | **UNFIXED (out of scope)** | Deployed `SKILL.md:1`. |
+| 10 | Emitted integration flake is unevaluable (High) | **slice-three-gating** (psyche gate list) | **PRESENT; fix validated, NOT landed** | `release_train.rs:471` still emits `narHash = "…"` as a flake **input attribute**. See concrete Nix confirmation below. |
+
+### Defect 10 — concretely reconfirmed, and the one-line fix re-validated
+
+The library emission is unchanged, and the committed dogfood artifact carries the
+broken form: `release-train-dogfood@16a248e:integration/flake.nix:4` has
+`content_identity = { url = "github:…/rev"; narHash = "sha256-…"; };`. Copied to a
+scratch dir and evaluated read-only:
+
+```
+$ nix flake metadata <scratch copy of committed integration/flake.nix>
+error: unexpected flake input attribute 'narHash', at …/flake.nix:4:5
+```
+
+So the committed P2 artifact does not evaluate. The **query-parameter fix**
+(`url = "github:owner/repo/rev?narHash=sha256-…"`, narHash removed as an
+attribute) was re-validated in a scratch copy this pass: `nix flake metadata`
+locked all six candidate inputs plus their transitive `rust-build`/`fenix`/
+`nixpkgs`/`crane` inputs and narHash-verified each. The fix is correct and
+sufficient, but it lives **only** in throwaway validation — it is landed neither
+in `synchronizer` (`:471` unchanged) nor in the committed dogfood artifact.
+Status: **fix validated-but-unlanded.**
+
+Caveat on the "formal flake check fully green" claim: what evaluates green is a
+hand-patched (query-param) variant. The artifact committed at
+`release-train-dogfood@16a248e` is the honest broken emission and has no
+`flake.lock` beside it. A green eval of the fixed variant still only proves the
+inputs are *fetchable and narHash-verified*; per defect 5 the flake still builds
+and checks nothing (its sole output re-reads the JSON), so this is not a green
+build of the train.
+
+### The psyche gate question — NOT satisfied
+
+The psyche's gate list before any slice rides the train: **defects 1–3 + 4, with
+defect 10's validated fix landed.** Current state: **1, 2, 3, 4 all UNFIXED on
+main; defect 10 still present (fix unlanded).** Zero of the five gate conditions
+are met. The gate is not close — the delta between "dogfood run" and now is a
+pure no-op on the train code.
+
+### Slice-three intent — VERIFIED against reality
+
+`release-trains/language-family-slice-three.nota`: six `Mainline` members, empty
+externals. Every pinned commit **exactly equals the live `main` tip** today
+(`git ls-remote` 2026-07-16): content-identity `6cc0408c…`, name-table
+`c3237f77…`, raw-discovery `a4e8c6df…`, structural-codec `104f9245…`, core-schema
+`33e5be27…`, structural-codec-derive `348bd89f…`. No pin drift; externals empty
+as authored. **Scoping note (informational, not a defect):** the intent covers
+six of the nine stack crates — the three upper-pipeline crates (core-logos
+`10e24ebb…`, textual-rust `92174ceb…`, core-nomos `f11bc3bd…`) are deliberately
+out of this slice. An all-`Mainline` train where consumers already pin producers'
+`main` tips produces empty, non-cross-pinning candidates (see dogfood P1
+observation) — it exercises the pipeline but never cross-pins.
+
+### Merge readiness — stuck at step 1 of the approved order
+
+Psyche-approved order (bead `primary-z4s9` comment 2026-07-15 13:55, verbatim
+approval "yes, do that recommendation"): finish train flow → adapt
+Schema/schema-rust on the train → adapt/test Spirit in isolation → green whole
+closure → merge/release producers before consumers, Spirit joining last. **Actual
+position: step 1 ("finish train flow") is not complete** — the gate defects
+block it. Downstream steps cannot start. `primary-z4s9` is correctly **OPEN**;
+NOTA next-gen stays pinned at green `18e2e8d0`; no merge until the whole-closure
+gate. Claude-side lanes must not merge (psyche ruling).
+
+### Renewed verdict — NO-GO for slice three riding the train
+
+Unchanged and firmly evidenced. The train code has not advanced since the dogfood
+pass; all four gate defects (1, 2, 3, 4) plus the unevaluable-flake defect (10)
+remain. Continue the interim pinned-git-dep pattern as the green build path.
+Shortest gate list before GO is unchanged: land defects 1, 2, 3, 4, and the
+defect-10 query-param fix.
