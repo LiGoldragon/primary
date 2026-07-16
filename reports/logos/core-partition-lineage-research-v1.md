@@ -327,3 +327,98 @@ External prior art (URLs gathered this session):
   github.com/multiformats/cid
 - DOI / Handle — doi.org DOI-system-and-the-Handle-System; ARK — arks.org,
   Kunze "Towards Electronic Persistence Using ARK Identifiers"
+
+## Addendum — 2026-07-16: psyche correction (coordination-freedom is not a value)
+
+The psyche corrected §2 Candidate D and the recommendation. Against the line
+"requires a central allocation authority, which contradicts offline/partition-
+tolerant universe creation," he ruled, **verbatim: "then we cannot have a
+coordination-free universe; I never believed in such idealist fantasies."**
+
+Coordination-freedom is therefore **not** a design value in this stack and is
+**withdrawn as a grading criterion.** A standing **central allocation authority is
+accepted** — the natural seat is the sema-engine / a registry daemon already
+planned. Candidates A and D are re-graded below; layers 2 and 3 are confirmed
+untouched. One scope note first, to avoid overcorrecting: this changes only how
+the universe *namespace* id is **allocated**. It does **not** touch Core *value*
+content identity (BLAKE3 over stringless rkyv), which is a deterministic
+*derivation*, not an allocation, and remains the partition-proof spine.
+
+**(1) Central mint keeps "preserve by construction" and keeps the id compact
+(u32).** With the authority accepted, the universe id is authority-minted from a
+monotonic counter — exactly the Confluent Schema Registry model: "Schema ID
+allocation always happens in the primary node and Schema IDs are always
+monotonically increasing … unique." Uniqueness now comes from a single allocator
+owning the keyspace, not from statistical randomness (A1) or content derivation
+(A2). So the id can stay a **compact `u32`** — no need for the ≥128-bit width or
+the genesis-hash. "Preserve by construction" survives intact, with the mint
+**relocated from offline randomness to the authority**; the id is never
+reallocated and never reused (protobuf `reserved`-style tombstoning of retired
+universe ids). `FIXTURE_UNIVERSE(0)` is replaced by the first authority-minted id
+(0 retained as a sentinel/reserved), a *value* change within the same type.
+**Candidates A and D are no longer opposed — they unify:** A's "preserve by
+construction" is now *realized through* D's central keyspace (Datomic / Spanner /
+Vitess / Confluent-primary-node style).
+
+**(2) The format-upgrade coupling to non-rejected proposal 1 (bead 56d1.10)
+dissolves if the id stays `u32`.** The original report flagged widening
+`CoreUniverseId` u32→128-bit as the first consumer of proposal 1's format-upgrade
+machinery. Under central mint the id **stays `u32`**, so there is no width change
+and **no Core/table-layout version bump is forced by this ruling.** Stored-record
+layout stays stable. The universe-id decision therefore **no longer drags proposal
+1 in as a dependency** — proposal 1 remains independently non-rejected on its own
+merits, but the psyche can rule the universe question without also ruling 56d1.10.
+Residual: existing stores stamped with `FIXTURE_UNIVERSE(0)` need a one-time data
+**re-stamp** to an authority-minted id — a data migration within an unchanged type,
+not a format/layout upgrade.
+
+**(3) What remains of D's costs once the authority is accepted.** The three costs
+the original report charged against D were: single-authority requirement, SPOF /
+coordination point, and contradiction with offline creation. The first two are
+**now accepted design, not costs**; the third is **moot** (offline creation is not
+a value). What genuinely remains is **reachability at universe-creation time**: to
+create a new universe you must reach the authority to mint its id. The standard
+mitigation — recorded here as a design detail, not a blocker — is **block
+pre-allocation / leases**: the authority hands a worker a block or leased sub-range
+of universe ids (Vitess keyspace-range / DHCP-lease / Datomic-partition style); the
+worker mints locally from its block while disconnected and requests more on
+reconnect. The former "SPOF" concern reduces to an ordinary availability/HA concern
+for the registry daemon, handled however that daemon is made available. D's cost
+therefore collapses to "authority reachability, softened by leased id-blocks."
+
+**(4) Layers 2 and 3 confirmed untouched.** Neither ever depended on
+coordination-freedom. **Layer 2 — NameTable `Identifier(u32)` store-local,
+re-intern on merge (Candidate B):** depends only on the NameTable being excluded
+from Core identity and names resolving by `(kind, owner, spelling)` — content-
+identity properties, not coordination properties. Re-intern-on-merge is a local
+pass. Unchanged. **Layer 3 — edit-time rename-intent aliases (Candidate E +
+tombstone):** an edit-time intent capture stored in the co-versioned NameTable
+sibling; independent of how universe ids are allocated. Unchanged. (The accepted
+authority *could* additionally witness aliases, but that is optional and does not
+alter the mechanism.)
+
+**(5) Corrected recommendation, in the preserve/reallocate/defer framing (rules
+Codex slate item 3).**
+
+| Identifier | Ruling | Mechanism (corrected) | Prior art |
+|---|---|---|---|
+| `CoreUniverseId` / `ScopedCoreTypeId` | **PRESERVE — by construction via the central authority** | Accepted registry daemon (sema-engine) mints **compact monotonic `u32`** universe ids, never reallocated, retired ids tombstoned; merge = union over one authority's keyspace (collision-free because one allocator owns it); **block pre-allocation/leases** for disconnected creation. A and D unified. | Confluent primary-node ids, Datomic partitions, Spanner/Vitess ranges, protobuf `reserved` |
+| NameTable `Identifier(u32)` | **DEFER / reallocate freely** | Store-local interning cache; re-intern on merge (Candidate B). **Untouched.** | Unison names, git refs, IPNS |
+| Rename-vs-replace *intent* | **PRESERVE — narrowly** | Edit-time alias keyed by durable content identity, in the co-versioned NameTable sibling (Candidate E). **Untouched.** | Avro aliases, git replace, DOI/ARK indirection |
+
+One honest residual boundary: the "collision-free by union" guarantee holds within
+**one** authority's keyspace. If two *independently-rooted* authorities (separate
+deployments) ever merge, you are back to Confluent's context-namespacing or an
+explicit remap receipt (Candidate C) at the universe layer — the single place C
+survives. Within the psyche's single-registry-daemon design this case does not
+arise; it is flagged only so a future multi-authority topology is not mistaken for
+solved.
+
+**Corrected one-sentence recommendation:** Preserve universe/type identity by
+construction through the accepted central allocation authority (the sema-engine /
+registry daemon) minting **compact, monotonic, never-reallocated `u32`** universe
+ids — with block pre-allocation/leases for disconnected creation and tombstoning of
+retired ids — while the NameTable `u32` space stays store-local and reallocates on
+merge (defer), and rename intent is preserved only through edit-time,
+content-identity-keyed aliases; staying `u32` keeps stored-record layout stable and
+decouples this ruling from non-rejected storage proposal 1.
