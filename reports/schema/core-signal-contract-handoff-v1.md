@@ -444,7 +444,11 @@ form must feed an rkyv `SignalContractSnapshot { CoreSignalContract,
 SignalContractNameTable, resolved imports }` and project the same canonical rows** —
 replacing the stored `TrueSchema` (this is a public-API/rkyv-archive compatibility
 event for `HelpModel`, not a text-only change; v1 §"schema-language" and
-§"Risks and boundaries").
+§"Risks and boundaries"). `SignalContractSnapshot` is a runtime rkyv struct
+consumed daemon-side (`HelpModel`); it is never repository content — the
+`core-signal-contract` repository holds only type definitions, codecs, laws, and the
+vendored legacy fixture pair, exactly like its sibling `core-*` crates, while Core
+values live in memory and in daemons.
 
 ### 5.3 Other acceptance witnesses
 
