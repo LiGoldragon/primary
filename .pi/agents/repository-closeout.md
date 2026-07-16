@@ -3,6 +3,8 @@ name: repository-closeout
 description: 'Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.'
 model: 'openai-codex/gpt-5.6-luna'
 thinking: medium
+projectRoleIdentity: repository-closeout
+projectRoleDispatchKind: leaf
 skills: 'main-feature-integration, feature-development, repository-management, repository-publication, version-control, work-tracking'
 ---
 

@@ -3,6 +3,8 @@ name: general-code-implementer
 description: 'Implements ordinary code changes from accepted designs with focused verification evidence.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: high
+projectRoleIdentity: general-code-implementer
+projectRoleDispatchKind: leaf
 skills: 'repo-intent, design-quality, code-implementation, feature-development, component-architecture, contract-repo, rust-methods, rust-errors, rust-storage-and-wire, rust-crate-layout, nix-discipline, nix-usage, testing, version-control, versioning, privacy, secrets'
 ---
 

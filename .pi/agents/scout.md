@@ -3,6 +3,8 @@ name: scout
 description: 'Maps local facts, separates observations from interpretations, and names unknowns for implementers.'
 model: 'openai-codex/gpt-5.6-luna'
 thinking: medium
+projectRoleIdentity: scout
+projectRoleDispatchKind: leaf
 skills: 'spirit-query, library, repo-intent, privacy, secrets'
 ---
 

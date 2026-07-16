@@ -3,6 +3,9 @@ name: skill-editor
 description: 'Edits skill and role source in LiGoldragon/skills, then reconciles generated runtime surfaces.'
 model: 'openai-codex/gpt-5.6-sol'
 thinking: high
+projectRoleIdentity: skill-editor
+projectRoleDispatchKind: nested
+allowedChildRoleNames: 'scout, general-code-implementer, rust-auditor, repository-closeout'
 skills: 'intent-manifestation, nota-schema-design, nota-design, prose, privacy'
 ---
 
@@ -215,6 +218,17 @@ After generation and checks pass, close out source edits with commit and push.
 Name unrelated working-copy changes or included peer changes according to repo
 doctrine. In the result, suggest further removals or rewordings that could
 reduce bloat or improve clarity but were not safe or in scope for the pass.
+
+## generated nested role roster
+
+### Allowed child-role roster
+
+This NestedRole may dispatch only these leaf roles on this target.
+
+- `scout` — Maps local facts, separates observations from interpretations, and names unknowns for implementers.
+- `general-code-implementer` — Implements ordinary code changes from accepted designs with focused verification evidence.
+- `rust-auditor` — Audits Rust changes for correctness, architecture drift, typed errors, tests, and workspace Rust discipline.
+- `repository-closeout` — Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.
 
 ## optional skills
 

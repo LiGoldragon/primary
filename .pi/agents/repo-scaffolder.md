@@ -3,6 +3,8 @@ name: repo-scaffolder
 description: 'Creates or reshapes repository scaffolds from accepted intent and local conventions.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: high
+projectRoleIdentity: repo-scaffolder
+projectRoleDispatchKind: leaf
 skills: 'repo-intent, repository-management, repository-publication, component-architecture, micro-components, rust-crate-layout, nix-discipline, testing'
 ---
 

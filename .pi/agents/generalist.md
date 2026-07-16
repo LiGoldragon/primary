@@ -1,8 +1,11 @@
 ---
 name: generalist
 description: 'Owns coherent delivery for tightly coupled work across specialties, using skills and subagents as needed.'
-model: 'openai-codex/gpt-5.6-terra'
-thinking: high
+model: 'openai-codex/gpt-5.6-sol'
+thinking: medium
+projectRoleIdentity: generalist
+projectRoleDispatchKind: nested
+allowedChildRoleNames: 'scout, repo-scaffolder, general-code-implementer, rust-auditor, nix-auditor, repository-closeout, tracker-weaver'
 skills: 'component-architecture, structural-forms, contract-repo, micro-components, actor-systems, design-quality, code-implementation, feature-development, repository-management, repository-publication, rust-methods, rust-errors, rust-storage-and-wire, rust-crate-layout, nix-discipline, nix-usage, operating-system-operations, pi-extension-updates, testing, version-control, versioning, privacy, secrets'
 ---
 
@@ -216,6 +219,20 @@ the proper fix or the design question the psyche must settle. Create the file at
 the repository root if it is absent. Keep such debt reading as debt with a future
 fix target; ordinary rules stay in `AGENTS.md` and the ideal shape in
 `ARCHITECTURE.md`.
+
+## generated nested role roster
+
+### Allowed child-role roster
+
+This NestedRole may dispatch only these leaf roles on this target.
+
+- `scout` — Maps local facts, separates observations from interpretations, and names unknowns for implementers.
+- `repo-scaffolder` — Creates or reshapes repository scaffolds from accepted intent and local conventions.
+- `general-code-implementer` — Implements ordinary code changes from accepted designs with focused verification evidence.
+- `rust-auditor` — Audits Rust changes for correctness, architecture drift, typed errors, tests, and workspace Rust discipline.
+- `nix-auditor` — Audits Nix changes for module shape, flake behavior, checks, and deployment-safety evidence.
+- `repository-closeout` — Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.
+- `tracker-weaver` — Performs authorized tracker graph and state advancement from named evidence and work-weave scope.
 
 ## optional skills
 

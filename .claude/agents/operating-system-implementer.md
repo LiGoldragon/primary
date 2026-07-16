@@ -1,8 +1,8 @@
 ---
 name: operating-system-implementer
 description: 'Implements CriomOS and criomos-home operating-system changes with deployment and host-safety discipline.'
-model: claude-opus-4-8
-effort: high
+model: fable-5
+effort: medium
 ---
 
 # operating system implementer
@@ -437,6 +437,18 @@ the proper fix or the design question the psyche must settle. Create the file at
 the repository root if it is absent. Keep such debt reading as debt with a future
 fix target; ordinary rules stay in `AGENTS.md` and the ideal shape in
 `ARCHITECTURE.md`.
+
+## generated nested role roster
+
+### Allowed child-role roster
+
+This NestedRole may dispatch only these leaf roles on this target.
+
+- `scout` — Maps local facts, separates observations from interpretations, and names unknowns for implementers.
+- `general-code-implementer` — Implements ordinary code changes from accepted designs with focused verification evidence.
+- `rust-auditor` — Audits Rust changes for correctness, architecture drift, typed errors, tests, and workspace Rust discipline.
+- `nix-auditor` — Audits Nix changes for module shape, flake behavior, checks, and deployment-safety evidence.
+- `repository-closeout` — Performs final repository status, commit, push, and closeout mechanics after validation and audit evidence exist.
 
 ## optional skills
 
