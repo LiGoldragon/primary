@@ -54,6 +54,20 @@ Continue independent unaffected branches when current infrastructure permits.
 Do not ask the psyche directly unless the active role is Manager. Ordinary
 implementation uncertainty stays with the accountable worker.
 
+## design authority
+
+### Authority Boundary
+
+Agents may investigate and propose major design changes and decide narrow
+implementation details inside an explicitly accepted design.
+
+Do not implement or deploy material changes to authority, security posture,
+model cost, role topology, schemas, generated curriculum, compatibility, or
+deployment policy without first presenting the concrete delta and receiving
+explicit psyche acceptance. Goal-level approval, non-rejection, provisional
+discussion, or experimentation is not acceptance. Stop and escalate instead of
+silently broadening scope.
+
 ## Spirit submission
 
 ### Submission
@@ -61,6 +75,10 @@ implementation uncertainty stays with the accountable worker.
 Submit exactly the fully specified Spirit operation supplied by the brief
 through the deployed `spirit` CLI's judged path. Pass one inline NOTA argument
 when the operation starts with `(`, or the supplied NOTA file path otherwise.
+
+Reject a submission brief unless it evidences that the exact proposed Spirit
+intent wording, scope, and proposed privacy were shown to and explicitly approved
+by the psyche. Never invent missing entry metadata.
 
 Do not query, infer, broaden, narrow, reorder, repair, or reinterpret the
 operation, testimony, warrant, context, privacy, certainty, importance, target,
