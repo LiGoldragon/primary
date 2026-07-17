@@ -75,6 +75,117 @@ Four rulings from the psyche working session of 2026-07-17, folded into §2g,
     registration-time discovery is a feed into it (the reconciling reading in
     §7); (ii) **terminal-cell** is the launcher-side component that mints the
     agent ID at harness launch — it owns session directories and spawning.
+    **[SUPERSEDED same day: both leans are overtaken by the §0d Q2 ruling —
+    the orchestrator is the mint, launch delegates through the harness
+    component, and the messenger's registry becomes the consumer view of
+    IDs + threads. See §0d and bead `primary-sdgy`.]**
+
+## 0d · Third-batch vision (2026-07-17, dictated) — contention flow, feature lanes, session identity, threads
+
+Dictated psyche vision batch, recorded verbatim with grading. Two clarifications
+the manager posed were answered by the psyche shortly after dictation; both are
+**rulings** below, not open questions. Superseded earlier records are marked in
+place (§0c, §7) with history kept.
+
+- **Subscription primitive: liked, deferred — not now-scope.** Verbatim: "Okay,
+  so I like the idea of when X happens or when lane Y ends send a message.
+  That's a cool idea, but for now I just wanted a message type to come in to
+  the agent that tries to unregister, well, I guess will unregister his lane".
+  The general when-X-happens/when-lane-ends subscription stays a tracked
+  future item; only the specific release-time message below is now-scope.
+
+- **Now-scope (a) — release-time contention message.** A new message type is
+  delivered to the agent unregistering (releasing) a repo's main lane, telling
+  him a feature branch/worktree was started off that repo while he held it.
+  Verbatim continuation: "which is that now this branch while he was working
+  on it had a work tree, or sorry, ostensibly he's working on main and because
+  that's what we do by default".
+
+- **Now-scope (b) — automatic contention answer.** An agent trying to edit a
+  taken repo is answered automatically. Verbatim: "and then somebody tried to
+  edit that repo and then saw that it just automatically responds saying,
+  okay, well, that repo is taken".
+
+- **Now-scope (c) — feature-named lanes become feature branches.** Verbatim:
+  "when you register a lane, you have to give it a name of what you're working
+  on, like a pascal case sort of feature. That you're going to implement and
+  then you can even give a description, but that's what's going to be used to
+  create the feature branch."
+
+- **Now-scope (d) — default auto-worktree in a known place.** Verbatim: "just
+  by default, it creates a work tree in a known place with the feature branch
+  called after the feature that was used by the agent."
+
+- **Now-scope (e) — orchestrator tracks branches and auto-rebases; mains stay
+  clean.** Verbatim: "if nothing has worked on it since, like the orchestrator
+  component can just try to rebase or merge whatever is more correct on main
+  … whatever work comes in first is going to be based off the latest main. So
+  it's just going to be a simple rebase operation. And well, it should know
+  because it keeps track. And then we can keep those main trees clean."
+
+- **RULING (Q1) — MVP merges clean branches into main, no review gate.** Asked
+  whether a cleanly-rebasing finished branch lands on main automatically with
+  no review (block/release-message reserved for conflicted or unfinished
+  branches) or whether every branch awaits review, the psyche ruled verbatim:
+  **"we'll build review into that later. first MVP doesnt, just merge in
+  main"**. Review is deferred-explicit, tracked as bead `primary-njmu` so
+  "later" cannot drift. The whole now-scope feature set is tracked as bead
+  `primary-qz9l`.
+
+- **Topic hedge (preserved, unresolved).** Verbatim: "And yeah, I guess that
+  all goes under some kind of topic. That's session dependent" — the thought
+  trailed off; not design authority.
+
+- **Identity — main session ID allocated before process start.** Verbatim:
+  "there's a main session ID, it's going to be this main session ID, which is
+  just allocated to the process before it starts. And when that session
+  begins, it gets given that idea, the agent knows. That's their main process
+  ID. And that's how messages work. So yeah, the orchestrator can keep track
+  because he's going to spawn these agents. And then the messenger can get a
+  list of existing agent IDs."
+
+- **RULING (Q2) — the orchestrator is the mint; launch delegates through the
+  harness component.** Asked whether the messenger is a mint service called by
+  the spawning orchestrator, or the orchestrator mints internally with the
+  messenger as a passive list consumer, the psyche ruled verbatim: **"the mint
+  is the orchestrator. he creates an agent id and will eventually launch it
+  (through another daemon I think; maybe agent has all the harness launching
+  logic - but where is that now? Or was it harness? thats fine too)"**. The
+  manager confirmed from scout evidence that the ARCHITECTURE authority chain
+  orchestrate→harness via `meta-signal-harness` already carries agent-run
+  lifecycle; terminal-cell owns PTY/session directories beneath it.
+  **Supersessions, recorded honestly:** this supersedes BOTH the §0c
+  manager-lean "terminal-cell mints the agent ID at launch" AND the
+  messenger-side mint semantics built into train packet 2.1 the same day (the
+  messenger keeps its durable registry as the **consumer view** of IDs +
+  threads, fed by the orchestrator; the mint operation relocates
+  orchestrator-side). Follow-up tracked as bead `primary-sdgy` (relocate mint
+  authority; reshape packets 2.1-amend/2.2/2.3).
+
+- **Messenger model — IDs and threads only.** Verbatim: "the orchestrator is
+  aware of also the agent IDs, but on the messenger side, there's only IDs and
+  then threads." A thread MAY carry a relation to what is being worked on —
+  hedged, verbatim: "the messenger can have threads, which is not directly
+  related yet, or could have a field where it can relate to a certain feature
+  branch or orchestrator lane and work tree, basically, like a repo, right,
+  and the feature branch. This is sort of like what is being worked on." The
+  hedge ("not directly related yet, or could") is preserved; the relation
+  field is optional-future, not committed.
+
+- **Manager auto-subscription to subagent threads.** Verbatim: "these threads,
+  a subscription page, they can be subscribed to automatically by the manager
+  for their sub agents so that they can talk to all their sub agents in one
+  go, or so that anyone can talk to all their sub agents."
+
+- **Messages carry origin; subagent-obedience doctrine seed.** Verbatim: "the
+  incoming messages get the origin, like who sent this so that sub agents can
+  be told to not necessarily obey every message or to consult or to escalate
+  first and ask their manager if something comes in and they're not sure what
+  they should do. It seems to contradict their initial instructions." Doctrine
+  seed for the skills side, pending manifestation (skills deliberately not
+  edited by this capture): subagents do not blindly obey incoming messages;
+  they consult or escalate to their manager when a message contradicts their
+  initial instructions.
 
 ## 1 · Ground truth (deltas since the prior checkpoint)
 
@@ -374,10 +485,21 @@ Design consequences (agent reading of the ruling, marked as such):
   self-registration. Registration binds the already-minted ID; it no longer
   mints. (This supersedes the minted-at-registration language in the
   orchestrator-messaging design's Settled Decisions; a superseding pointer has
-  been added there.)
+  been added there.) **Mint authority resolved by the §0d Q2 ruling: the
+  ORCHESTRATOR is the mint** — "the mint is the orchestrator. he creates an
+  agent id and will eventually launch it" — with launch delegated through the
+  harness component (`meta-signal-harness` authority chain); §0d refines this
+  further: the ID is "allocated to the process before it starts". The earlier
+  terminal-cell-as-minter lean is superseded (see §0c marker, bead
+  `primary-sdgy`).
 - **The messenger owns the process↔ID mapping** ("messenger knows which
   process is which ID"). Orchestrate's reachability discovery remains a feed
   into that mapping per §2e; the authoritative map lives with the messenger.
+  **Refined by §0d Q2:** the orchestrator mints and spawns and "can keep
+  track"; the messenger "can get a list of existing agent IDs" and holds
+  "only IDs and then threads" — i.e. the messenger's durable registry is the
+  consumer view of identity, fed by the orchestrator, while remaining the
+  delivery-side map for messaging.
 - The ID is stable across resume, which is exactly what the §2g cold-session
   respawn leg needs as its join key.
 
@@ -424,3 +546,11 @@ is minted now**.
 
 Implementers may build the parent-only shape, but must not mint
 subagent-suffix address vocabulary into contracts until the psyche reviews.
+
+Cross-reference (§0d, third batch): the psyche's thread model gives the
+parent-only shape its group-addressing surface without new address vocabulary —
+a manager is auto-subscribed to a thread for its subagents "so that they can
+talk to all their sub agents in one go, or so that anyone can talk to all
+their sub agents", and incoming messages carry origin so subagents
+consult/escalate rather than blindly obey. Threads group; the parent
+ID/endpoint remains the only address type.

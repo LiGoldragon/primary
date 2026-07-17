@@ -25,7 +25,40 @@ authority stays with these):
 Adopted manager leans (psyche: "go with your leans, good enough for me"):
 the messenger owns the authoritative process↔ID map with orchestrate discovery
 as a feed; terminal-cell acquires the agent ID at launch and delivers it in the
-initial prompt.
+initial prompt. **[Both leans superseded same day — see pending amendment
+below.]**
+
+## PENDING AMENDMENT (2026-07-17, third psyche batch — not yet restructured)
+
+This plan predates the psyche's dictated third batch (recorded in
+`reports/coordination-liveliness-messenger/design.md` §0d) and two same-day
+rulings. The packet structure below is NOT yet reshaped; treat this note as
+authoritative over conflicting packet text until a plan revision lands:
+
+1. **Mint authority ruling (supersedes the leans above and reshapes phase 2).**
+   Verbatim: "the mint is the orchestrator. he creates an agent id and will
+   eventually launch it (through another daemon I think; maybe agent has all
+   the harness launching logic - but where is that now? Or was it harness?
+   thats fine too)". The orchestrator mints (ID allocated to the process
+   before it starts) and launch delegates through the harness component
+   (orchestrate→harness via `meta-signal-harness`); terminal-cell keeps
+   PTY/session-dir duties beneath it, but is no longer the minter. Packet 2.1
+   as built keeps its durable registry as the consumer view of IDs + threads;
+   the mint operation relocates orchestrator-side. Reshape scope: packets
+   2.1-amend / 2.2 / 2.3 — tracked as bead `primary-sdgy`.
+2. **MVP merge ruling.** Verbatim: "we'll build review into that later. first
+   MVP doesnt, just merge in main" — a finished feature branch that rebases
+   cleanly merges into main automatically, no review gate; review is
+   deferred-explicit (bead `primary-njmu`).
+3. **New now-scope feature set (bead `primary-qz9l`).** Release-time
+   branch-started message to the releasing main-lane holder; automatic
+   "repo is taken" contention answer; PascalCase feature-named lane
+   registration becomes the feature branch; default auto-worktree in a known
+   place; orchestrator-tracked auto-rebase keeping mains clean. Slots into the
+   train as new packets (likely phase 2/3 neighbors); not yet numbered.
+4. **Subscription primitive** (when-X-happens / when-lane-ends notify): liked,
+   explicitly deferred — "That's a cool idea, but for now…". Stays future
+   scope; do not build in this train.
 
 ## Train overview
 

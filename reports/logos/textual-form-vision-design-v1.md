@@ -1,3 +1,13 @@
+> SUPERSEDED (2026-07-17) by `textual-form-vision-design-v2.md`, which seats the
+> psyche's four rulings answering this document's open joints: the tree/storage
+> question closes as immaterial and decode becomes ordered first-match expectation
+> enums with named transitional types (corrects §3, resolves DECISION 1); the
+> TextualRust syn/prettyplease bypass of §6 is REJECTED and replaced by real per-type
+> Rust textual-form data (resolves DECISION 2); §5.1's "NOTA is the base every language
+> specializes" is CORRECTED to the proto-language framing (resolves DECISION 3); and
+> component Input/Output objects with standard Version/Help variants are added. Read v2
+> as the authority; this v1 remains the prior step.
+
 # TextualForm / EncodedForm — the founding-vision design, seated and reconciled (v1)
 
 Design-authority document. Session `LanguageEngine`, lane `TextualFormVisionDesign`,
