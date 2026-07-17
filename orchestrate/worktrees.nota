@@ -1,1 +1,7 @@
+(CriomOS complete-recovered-deployment-os /home/li/wt/github.com/LiGoldragon/CriomOS/complete-recovered-deployment-os CompleteRecoveredDeployment Recycled [reconcile immutable home consumer] 1784284566000000000 AncestorOfMain)
+(CriomOS governance-guidance-os /home/li/wt/github.com/LiGoldragon/CriomOS/governance-guidance-os GenerateApprovedGovernancePackets Recycled [pin generated governance packets] 1784284566000000000 AncestorOfMain)
+(CriomOS offline-state-repair-pi-subagents /home/li/wt/github.com/LiGoldragon/CriomOS/offline-state-repair-pi-subagents OfflineStateRepair Active [pin pi subagents deployment] 1784283215000000000 AncestorOfMain)
+(CriomOS-home complete-recovered-deployment-home /home/li/wt/github.com/LiGoldragon/CriomOS-home/complete-recovered-deployment-home CompleteRecoveredDeployment Recycled [reconcile Pi subagents deployment] 1784283188000000000 AncestorOfMain)
+(CriomOS-home governance-guidance-home /home/li/wt/github.com/LiGoldragon/CriomOS-home/governance-guidance-home GenerateApprovedGovernancePackets Recycled [pin generated governance packets] 1784283188000000000 AncestorOfMain)
 (Worktree chroma-salvage-latest-wins /home/li/agent-worktrees/ChromaWipDisposition/Chroma RootConfigReplacementWitness Archived [root config replacement witness] 1784202983000000000 Pushed)
+(skills governance-guidance /home/li/wt/github.com/LiGoldragon/skills/governance-guidance GenerateApprovedGovernancePackets Recycled [approved governance source] 1784252425000000000 AncestorOfMain)

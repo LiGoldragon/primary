@@ -228,7 +228,16 @@ engine.
   **ruling still pending**): that authority is **seated in the sema storage/runtime
   component**, and the language daemons are clients that hold **leased blocks of
   ids** — each daemon is granted a range to allocate from, rather than minting
-  freely. **This frame must not be hardened beyond this.** The formal lineage
+  freely. **Amendment (2026-07-17):** the seat is no longer pending — the psyche
+  ruled it (bead `primary-56d1.11`, comment recorded 2026-07-16 23:50), verbatim:
+  **"yes, seat it centrally in sema."** That settles allocation-authority
+  *placement*: a single logical allocation authority per sema deployment, seated
+  centrally in sema, with the language daemons as leasing clients that hold leased
+  identifier blocks — exactly the shape proposed above, now ruled rather than
+  pending. The broader lineage semantics (the unit of "one schema", split/merge
+  identity) advanced on the same bead out of blocked-on-psyche into actionable
+  design; the "must not be hardened" caution just below now applies only to that
+  remaining lineage detail, not to the seat. **This frame must not be hardened beyond this.** The formal lineage
   ruling — what the unit of "one schema" is, and how identity survives split and
   merge — is **blocked on the psyche** (bead `primary-56d1.11`; his open question,
   verbatim: "so where is the authority? In each corresponding daemon?"). Until he
