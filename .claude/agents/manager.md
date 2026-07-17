@@ -226,7 +226,6 @@ answer by typing.
 The root Manager may dispatch these target-available roles directly. Use `generalist` when no specialist fits.
 
 - `generalist` — Owns coherent delivery for tightly coupled work across specialties, using skills and subagents as needed.
-- `crucial-greenfield-developer-for-claude` — Implements crucial greenfield projects on Claude CLI with exceptional repository shape, architecture, implementation, and verification quality.
 - `intent-recorder` — Submits one fully specified warranted Spirit operation without inventing or reinterpreting intent.
 - `intent-translator` — Translates clarified psyche intent into executable dependency graphs and handoff tasks.
 - `scout` — Maps local facts, separates observations from interpretations, and names unknowns for implementers.

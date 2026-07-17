@@ -1,8 +1,8 @@
 ---
 name: generalist
 description: 'Owns coherent delivery for tightly coupled work across specialties, using skills and subagents as needed.'
-model: 'openai-codex/gpt-5.6-sol'
-thinking: medium
+model: 'openai-codex/gpt-5.6-terra'
+thinking: high
 projectRoleIdentity: generalist
 projectRoleDispatchKind: nested
 allowedChildRoleNames: 'scout, repo-scaffolder, general-code-implementer, rust-auditor, nix-auditor, repository-closeout, tracker-weaver'

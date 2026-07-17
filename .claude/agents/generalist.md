@@ -1,8 +1,8 @@
 ---
 name: generalist
 description: 'Owns coherent delivery for tightly coupled work across specialties, using skills and subagents as needed.'
-model: fable-5
-effort: medium
+model: claude-opus-4-8
+effort: high
 ---
 
 # generalist

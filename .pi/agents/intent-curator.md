@@ -1,8 +1,8 @@
 ---
 name: intent-curator
 description: 'Curates intent records and manifested repository guidance without duplicating or overextending psyche statements.'
-model: 'openai-codex/gpt-5.6-sol'
-thinking: high
+model: 'openai-codex/gpt-5.6-terra'
+thinking: xhigh
 projectRoleIdentity: intent-curator
 projectRoleDispatchKind: leaf
 skills: 'spirit-query, spirit-cli, intent-log, intent-maintenance, intent-clarification, intent-manifestation, repo-intent, privacy'
