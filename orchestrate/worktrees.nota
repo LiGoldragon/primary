@@ -4,6 +4,7 @@
 (CriomOS remote-closure-build /home/li/wt/github.com/LiGoldragon/CriomOS/remote-closure-build RemoteClosureBuild Active [remote firmware closure validation] 1784286155000000000 AncestorOfMain)
 (CriomOS-home complete-recovered-deployment-home /home/li/wt/github.com/LiGoldragon/CriomOS-home/complete-recovered-deployment-home CompleteRecoveredDeployment Recycled [reconcile Pi subagents deployment] 1784283188000000000 AncestorOfMain)
 (CriomOS-home governance-guidance-home /home/li/wt/github.com/LiGoldragon/CriomOS-home/governance-guidance-home GenerateApprovedGovernancePackets Recycled [pin generated governance packets] 1784283188000000000 AncestorOfMain)
+(CriomOS-home pi-silent-theme-control /home/li/wt/github.com/LiGoldragon/CriomOS-home/pi-silent-theme-control ImplementLandDeploy Active [silence Pi live theme status and repin Chroma] 1784286123000000000 AncestorOfMain)
 (CriomOS-home remote-closure-build-home /home/li/wt/github.com/LiGoldragon/CriomOS-home/remote-closure-build-home RemoteClosureBuild Active [verify chroma network safety guard] 1784286123000000000 AncestorOfMain)
 (chroma ghostty-idempotent-theme /home/li/wt/github.com/LiGoldragon/chroma/ghostty-idempotent-theme ImplementLandDeploy Active [apply Ghostty config only on change] 1784244963000000000 AncestorOfMain)
 (chroma remote-closure-build-chroma /home/li/wt/github.com/LiGoldragon/chroma/remote-closure-build-chroma RemoteClosureBuild Active [validate no IP geolocation fallback] 1784246199000000000 AncestorOfMain)
@@ -21,4 +22,4 @@
 (skills governance-guidance /home/li/wt/github.com/LiGoldragon/skills/governance-guidance GenerateApprovedGovernancePackets Recycled [approved governance source] 1784252425000000000 AncestorOfMain)
 (skills land-manager-boundary-source /home/li/wt/github.com/LiGoldragon/skills/land-manager-boundary-source LandManagerBoundarySource Recycled [land manager boundary source] 1784280707000000000 AncestorOfMain)
 (skills manager-doctrine-guard /home/li/wt/github.com/LiGoldragon/skills/manager-doctrine-guard PreventRedundantRoleReads Active [prevent redundant manager role reads] 1784288063000000000 AncestorOfMain)
-(skills psyche-facing-identity /home/li/wt/github.com/LiGoldragon/skills/psyche-facing-identity SkillBoundLearning Active [strengthen psyche-facing skill-bound learning doctrine] 1784288063000000000 AncestorOfMain)
+(skills psyche-facing-identity /home/li/wt/github.com/LiGoldragon/skills/psyche-facing-identity SkillBoundLearning Recycled [strengthen psyche-facing skill-bound learning doctrine] 1784288063000000000 AncestorOfMain)
