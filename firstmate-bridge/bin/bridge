@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Local-only First Mate bridge artifact manager. It never launches workers or
-# executes project commands; Pi's coordinator owns delegation through subagent.
+# Manager is the sole First Mate/coordinator; Herdr is its worker-session backend.
+# This script only manages proposal, decision, and report artifacts.
 set -euo pipefail
 IFS=$'\n\t'
 
