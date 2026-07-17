@@ -1,0 +1,347 @@
+#!/usr/bin/env bash
+# Local-only First Mate bridge artifact manager. It never launches workers or
+# executes project commands; Pi's coordinator owns delegation through subagent.
+set -euo pipefail
+IFS=$'\n\t'
+
+bridge_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+bridge_home=${FIRST_MATE_BRIDGE_HOME:-"$bridge_root/.local"}
+
+fail() {
+	printf 'bridge: %s\n' "$*" >&2
+	exit 2
+}
+
+usage() {
+	cat <<'EOF'
+usage:
+  bridge init [--replace] <project-path>
+  bridge status
+  bridge intake <request-id> <brain-dump-file>
+  bridge proposal <proposal-id> <request-id>
+  bridge decision <decision-id> <proposal-id>
+  bridge report <report-id> <proposal-id> <decision-id>
+  bridge validate <proposal-id> <decision-id>
+  bridge validate-report <report-id>
+
+State is private and local at $FIRST_MATE_BRIDGE_HOME when set, otherwise
+<bridge-root>/.local. Artifact identifiers use lowercase letters, digits, and
+hyphens. The coordinator fills the generated Markdown templates; validation
+checks their required record shape, not human authority or worker correctness.
+EOF
+}
+
+check_home() {
+	case "$bridge_home" in
+	/*) ;;
+	*) fail 'FIRST_MATE_BRIDGE_HOME must be an absolute path' ;;
+	esac
+	[ "$bridge_home" != / ] || fail 'FIRST_MATE_BRIDGE_HOME must not be /'
+}
+
+ensure_home() {
+	check_home
+	umask 077
+	mkdir -p "$bridge_home/requests" "$bridge_home/proposals" \
+		"$bridge_home/decisions" "$bridge_home/reports" "$bridge_home/config"
+	chmod 700 "$bridge_home" "$bridge_home/requests" "$bridge_home/proposals" \
+		"$bridge_home/decisions" "$bridge_home/reports" "$bridge_home/config"
+}
+
+valid_identifier() {
+	[[ $1 =~ ^[a-z0-9][a-z0-9-]{0,63}$ ]]
+}
+
+require_identifier() {
+	valid_identifier "$1" || fail "invalid identifier: $1"
+}
+
+require_regular_file() {
+	[ -f "$1" ] || fail "file not found: $1"
+}
+
+create_file() {
+	local destination=$1
+	[ ! -e "$destination" ] || fail "refusing to overwrite: $destination"
+	cat >"$destination"
+	chmod 600 "$destination"
+}
+
+require_project() {
+	local project_file="$bridge_home/config/project-path"
+	require_regular_file "$project_file"
+	project_path=$(cat "$project_file")
+	[ -d "$project_path" ] || fail "configured project path is absent: $project_path"
+}
+
+require_exact_line() {
+	local file=$1
+	local line=$2
+	grep -Fqx -- "$line" "$file" || fail "missing required line in $file: $line"
+}
+
+require_heading() {
+	require_exact_line "$1" "## $2"
+}
+
+require_completed_record() {
+	local file=$1
+	if grep -nE 'TODO|<[^>]+>|\[ \]' "$file" >/dev/null; then
+		fail "incomplete placeholder in $file"
+	fi
+}
+
+init() {
+	local replace=false
+	if [ "${1:-}" = --replace ]; then
+		replace=true
+		shift
+	fi
+	[ "$#" -eq 1 ] || fail 'usage: bridge init [--replace] <project-path>'
+	[ -d "$1" ] || fail "project path is not a directory: $1"
+	ensure_home
+	local project_file="$bridge_home/config/project-path"
+	if [ -e "$project_file" ] && [ "$replace" != true ]; then
+		fail "project is already configured: $(cat "$project_file"); use --replace to change it"
+	fi
+	local project_path
+	project_path=$(cd -- "$1" && pwd -P)
+	printf '%s\n' "$project_path" >"$project_file"
+	chmod 600 "$project_file"
+	printf 'BRIDGE_PROJECT=%s\n' "$project_path"
+	printf 'BRIDGE_HOME=%s\n' "$bridge_home"
+}
+
+status() {
+	ensure_home
+	if [ -f "$bridge_home/config/project-path" ]; then
+		printf 'BRIDGE_PROJECT=%s\n' "$(cat "$bridge_home/config/project-path")"
+	else
+		printf 'BRIDGE_PROJECT=unconfigured\n'
+	fi
+	for artifact in requests proposals decisions reports; do
+		local count
+		count=$(find "$bridge_home/$artifact" -maxdepth 1 -type f -name '*.md' -printf . | wc -c)
+		printf 'BRIDGE_%s=%s\n' "${artifact^^}" "$count"
+	done
+	printf 'BRIDGE_HOME=%s\n' "$bridge_home"
+}
+
+intake() {
+	[ "$#" -eq 2 ] || fail 'usage: bridge intake <request-id> <brain-dump-file>'
+	local request_id=$1
+	local source_file=$2
+	require_identifier "$request_id"
+	require_regular_file "$source_file"
+	ensure_home
+	local destination="$bridge_home/requests/$request_id.md"
+	[ ! -e "$destination" ] || fail "refusing to overwrite: $destination"
+	cp -- "$source_file" "$destination"
+	chmod 600 "$destination"
+	printf 'REQUEST=%s\n' "$destination"
+}
+
+proposal() {
+	[ "$#" -eq 2 ] || fail 'usage: bridge proposal <proposal-id> <request-id>'
+	local proposal_id=$1
+	local request_id=$2
+	require_identifier "$proposal_id"
+	require_identifier "$request_id"
+	ensure_home
+	require_regular_file "$bridge_home/requests/$request_id.md"
+	create_file "$bridge_home/proposals/$proposal_id.md" <<EOF
+# Proposal $proposal_id
+
+Request: $request_id
+Status: draft
+Decision: pending
+
+## Problem
+TODO
+
+## Constraints
+TODO
+
+## Options
+TODO
+
+## Recommendation
+TODO
+
+## Decision needed
+TODO
+
+## Authority and safety check
+TODO
+
+## Worker plan
+TODO
+
+## Validation plan
+TODO
+EOF
+	printf 'PROPOSAL=%s\n' "$bridge_home/proposals/$proposal_id.md"
+}
+
+decision() {
+	[ "$#" -eq 2 ] || fail 'usage: bridge decision <decision-id> <proposal-id>'
+	local decision_id=$1
+	local proposal_id=$2
+	require_identifier "$decision_id"
+	require_identifier "$proposal_id"
+	ensure_home
+	require_regular_file "$bridge_home/proposals/$proposal_id.md"
+	create_file "$bridge_home/decisions/$decision_id.md" <<EOF
+# Decision $decision_id
+
+Proposal: $proposal_id
+Status: pending-human-confirmation
+Selected: TODO
+Evidence: TODO
+
+## Options considered
+TODO
+
+## Human confirmation
+TODO
+
+## Consequence
+TODO
+EOF
+	printf 'DECISION=%s\n' "$bridge_home/decisions/$decision_id.md"
+}
+
+report() {
+	[ "$#" -eq 3 ] || fail 'usage: bridge report <report-id> <proposal-id> <decision-id>'
+	local report_id=$1
+	local proposal_id=$2
+	local decision_id=$3
+	require_identifier "$report_id"
+	require_identifier "$proposal_id"
+	require_identifier "$decision_id"
+	ensure_home
+	require_regular_file "$bridge_home/proposals/$proposal_id.md"
+	require_regular_file "$bridge_home/decisions/$decision_id.md"
+	create_file "$bridge_home/reports/$report_id.md" <<EOF
+# Worker report $report_id
+
+Proposal: $proposal_id
+Decision: $decision_id
+Status: draft
+
+## Worker outcome
+TODO
+
+## Changed files
+TODO
+
+## Commands run
+TODO
+
+## Validation output
+TODO
+
+## Residual risks
+TODO
+
+## Coordinator conclusion
+TODO
+EOF
+	printf 'REPORT=%s\n' "$bridge_home/reports/$report_id.md"
+}
+
+validate() {
+	[ "$#" -eq 2 ] || fail 'usage: bridge validate <proposal-id> <decision-id>'
+	local proposal_id=$1
+	local decision_id=$2
+	require_identifier "$proposal_id"
+	require_identifier "$decision_id"
+	ensure_home
+	require_project
+	local proposal_file="$bridge_home/proposals/$proposal_id.md"
+	local decision_file="$bridge_home/decisions/$decision_id.md"
+	require_regular_file "$proposal_file"
+	require_regular_file "$decision_file"
+	local request_id
+	request_id=$(sed -nE 's/^Request: ([a-z0-9][a-z0-9-]{0,63})$/\1/p' "$proposal_file")
+	[ "$(printf '%s\n' "$request_id" | sed '/^$/d' | wc -l)" -eq 1 ] ||
+		fail "proposal must name one valid request: $proposal_file"
+	require_regular_file "$bridge_home/requests/$request_id.md"
+	require_exact_line "$proposal_file" "Request: $request_id"
+	require_exact_line "$proposal_file" 'Status: ready-for-worker'
+	require_exact_line "$proposal_file" "Decision: $decision_id"
+	for heading in Problem Constraints Options Recommendation 'Decision needed' \
+		'Authority and safety check' 'Worker plan' 'Validation plan'; do
+		require_heading "$proposal_file" "$heading"
+	done
+	require_completed_record "$proposal_file"
+	require_exact_line "$decision_file" "Proposal: $proposal_id"
+	require_exact_line "$decision_file" 'Status: human-confirmed'
+	for prefix in 'Selected: ' 'Evidence: '; do
+		grep -Eq "^${prefix}.+" "$decision_file" || fail "missing value in $decision_file: $prefix"
+	done
+	for heading in 'Options considered' 'Human confirmation' Consequence; do
+		require_heading "$decision_file" "$heading"
+	done
+	require_completed_record "$decision_file"
+	printf 'BRIDGE_VALIDATION=passed\n'
+	printf 'PROJECT=%s\n' "$project_path"
+	printf 'PROPOSAL=%s\n' "$proposal_file"
+	printf 'DECISION=%s\n' "$decision_file"
+}
+
+validate_report() {
+	[ "$#" -eq 1 ] || fail 'usage: bridge validate-report <report-id>'
+	local report_id=$1
+	require_identifier "$report_id"
+	ensure_home
+	local report_file="$bridge_home/reports/$report_id.md"
+	require_regular_file "$report_file"
+	require_exact_line "$report_file" 'Status: complete'
+	for heading in 'Worker outcome' 'Changed files' 'Commands run' 'Validation output' \
+		'Residual risks' 'Coordinator conclusion'; do
+		require_heading "$report_file" "$heading"
+	done
+	require_completed_record "$report_file"
+	printf 'BRIDGE_REPORT_VALIDATION=passed\n'
+	printf 'REPORT=%s\n' "$report_file"
+}
+
+command_name=${1:-}
+case "$command_name" in
+init)
+	shift
+	init "$@"
+	;;
+status)
+	shift
+	[ "$#" -eq 0 ] || fail 'usage: bridge status'
+	status
+	;;
+intake)
+	shift
+	intake "$@"
+	;;
+proposal)
+	shift
+	proposal "$@"
+	;;
+decision)
+	shift
+	decision "$@"
+	;;
+report)
+	shift
+	report "$@"
+	;;
+validate)
+	shift
+	validate "$@"
+	;;
+validate-report)
+	shift
+	validate_report "$@"
+	;;
+-h | --help | help | '') usage ;;
+*) fail "unknown command: $command_name" ;;
+esac
