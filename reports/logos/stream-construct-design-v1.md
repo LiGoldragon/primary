@@ -13,6 +13,136 @@ a settled psyche decision carried from `textual-form-vision-design-v2.md` /
 rulings; **[DECISION n]** = a joint returned to the manager, never asked of the
 psyche directly.
 
+## 0.0 Ruling capture and supersession (2026-07-18, lane StreamRulingsCapture, Opus 4.8)
+
+The psyche graded the four §7 decision items (chat, epic `primary-56d1.48`). His words
+are verbatim and are the source of truth; this section **supersedes** the sections named
+below. The original proposal (§0–§9) is kept as the agent pickup context, but where §0.0
+and a later section conflict, §0.0 governs.
+
+### Ruling A — the kind-system seat, and the MECHANISM it names (supersedes §2 and §7 [DECISION 1])
+
+Psyche verbatim: **"thats the power of nomos; just create a new kind of object"**.
+
+This is more than a seat choice. It **accepts that Stream is a new *declaration* kind** —
+resolving [DECISION 1] against the reference-position options (a)/(b) and onto the
+declaration-kind family (the §2.3 (c) direction). And it **names the mechanism**: new kinds
+of objects are minted **through Nomos** — the language grows its kind vocabulary via the
+macro / transformation layer (the dialect-as-macro-package lineage tracked on
+`primary-56d1.2`), **not** through hand edits to core Rust. **Stream is the first
+Nomos-minted object kind.**
+
+**The honest bootstrap tension (returned, not resolved).** Today the kind vocabulary is a
+set of **closed Rust enums, deliberately closed** to preserve static exhaustiveness and
+disjointness:
+
+- **[observed — `core-schema/src/declaration.rs:224`]** `CoreType { Newtype | Struct |
+  Enumeration }` — a closed enum, matched exhaustively with no wildcard everywhere it is
+  used (`identifier`, `constructor_count`, `restamp`, the textual reflect/reify paths).
+- **[observed — `core-schema/src/universe.rs:30-52`]** `MemberKind { ScalarLeaf | Field |
+  Declaration(CoreDeclaration) }`, whose `constructor_count` funnels through the closed
+  `CoreType`.
+- **[observed — `core-nomos/src/identity.rs`]** `SectionDefault { Newtype | Struct |
+  Enumeration }` with `of_core_type` **exhaustive over `CoreType`, no wildcard** — its own
+  doc-comment: *"a new declaration kind is a compile error until its section is named"*.
+  `MacroKind { Named | Structural(SectionDefault) }` is closed to *"exactly two"* per a
+  prior ruling.
+
+So "just create a new kind of object via Nomos" cannot be honoured today without editing
+these closed Rust surfaces. The design question is therefore: **what minimal hook must
+core-schema / core-nomos provide so Nomos can *mint* a new declaration kind, versus what a
+Nomos package supplies?** — returned as [DECISION A1]/[A2] below. This is a change to the
+**kind-system schema/topology** and is therefore gated on explicit psyche design acceptance
+before any implementation (authority boundary); this pass captures the ruling and the
+minimal-hook options, and implements nothing.
+
+The invariant that must survive whatever mint mechanism is chosen: **kind identity minted
+through the central authority** (kinds allocated like the central-authority-assigned type
+ids of `CoreUniverse::from_assignment`, not by parse order), **static disjointness preserved**
+(`validate_disjoint` must still prove every declaration-body form provably disjoint at seal
+time), and the **structuretree forms supplied** for the new kind (its `ConstructorCodec`
+decode/encode forms, §6) rather than special-cased in the codec.
+
+### Ruling B — role modeling (supersedes §3 and §7 [DECISION 2])
+
+Psyche verbatim: **"whatever"** — indifference. The recommendation therefore **stands as
+accepted-by-indifference**: **four named typed fields** (`token opened event close`), the
+closed role vocabulary living in the field set, lowering dispatching on the field, never on
+a role-name string. Recorded status: **agents' choice, psyche indifferent** — not a
+positive endorsement, but the agents are free to proceed with (i) and did.
+
+### Ruling C — the spelling was REJECTED as invalid syntax (supersedes §4 and §7 [DECISION 3])
+
+Psyche verbatim: **"that's invalid syntax. the types are different so naming them must be an
+error"**.
+
+**Manager's reading [manager interpretation — then checked against fixtures + codec below]:**
+explicit field names are legal **only** where two or more fields in the block **share a
+type** (elision would otherwise collide); **naming a field whose type is unique in the block
+is an ERROR, not a style choice.** The role name is a disambiguator, never decoration.
+
+**Fixture check [observed — `core-schema/tests/textual_roundtrip.rs:76`,
+`core-schema/src/fixture.rs`]:** the delivered `DatabaseMarker` fixture
+`DatabaseMarker.{ CommitSequence StateDigest secretDigest.StateDigest }` **already obeys the
+law at the value level.** `CommitSequence` is unique → elided. `StateDigest` appears twice
+(second and third fields both of type `StateDigest`); the second elides to its derived name
+`state_digest`, the third carries the explicit name `secretDigest` — the *only* explicit
+name in the block, and it sits on a field whose type collides. So the fixture is a valid
+witness under the ruled law and needs no change.
+
+**Corrected Stream spelling (seated, superseding §4 / §7 [DECISION 3]):**
+
+```
+IntentEventStream.Stream.{ token.SubscriptionToken SubscriptionStarted IntentEvent close.SubscriptionToken }
+```
+
+The two uniquely-typed legs **lose their labels** — `opened.SubscriptionStarted` becomes
+bare `SubscriptionStarted` and `event.IntentEvent` becomes bare `IntentEvent`; their core
+field names become the type-derived names (`subscription_started`, `intent_event`). The two
+colliding `SubscriptionToken` legs **keep explicit names** (`token`, `close`) because the
+collision requires distinguishing them. **Role semantics are carried by the Stream kind's
+structure — the fixed slot order of the four legs — never by magic recognition of the label
+strings.** (This tightens Ruling B: the four fields remain named *typed slots* in Core, but
+their **text** may only spell a name where collision forces it.)
+
+**Codec verification against delivered decode/encode [observed — `core-schema/src/textual.rs:193-314`,
+`core-schema/src/declaration.rs:403-415`]: the delivered codec DIVERGES from the ruled law.**
+The elision predicate is `CoreField::name_is_derivable` = `stored_name == reference.derived_field_name`
+— a pure **name-equals-derived** test with **no block-level type-multiplicity check**:
+
+- **Decode** (`reify_field`, `textual.rs:217-227`): the explicit-name alternative
+  `Application(Atom(name), Atom(type))` is accepted **unconditionally**; the codec **does
+  not** reject a superfluous explicit name on a uniquely-typed field. `Config.{ retries.Integer }`
+  (or `Stream.{ opened.SubscriptionStarted … }`) decodes today with no error.
+- **Encode** (`reflect_field`, `textual.rs:301-312`): emits the explicit form whenever
+  `name_is_derivable` is false, again with **no collision check** — a Core struct holding a
+  non-derived name on a uniquely-typed field **encodes to** the exact spelling the psyche
+  ruled invalid.
+
+The divergence is one-directional and clean: **the codec is more permissive than the ruled
+law** — it accepts and emits explicit names on uniquely-typed fields. If the manager reading
+survives the psyche's review (see the open veto below), the codec's elision rule must become
+**collision-aware**: explicit text names legal only where a type is shared in the block;
+`name_is_derivable` gains block context, and decode rejects a redundant explicit name. This
+is registered as an implementation work item on `primary-56d1.48`, gated on C surviving.
+
+**Open veto surfaced in chat.** The manager reading has a real consequence the psyche may
+reject: it forbids giving a *meaningful custom name* to a single field of an otherwise-unique
+type (`count.Integer` would be illegal, forced to bare `Integer` → derived `integer`). Whether
+that is intended or the law should instead be "names are always legal but redundant ones are
+discouraged/normalized" is the psyche's to settle. Until he confirms, **Ruling C stands as
+the manager reading, subject to his veto**; the codec work item does not land until he
+confirms the law.
+
+### Item D — the close-leg question is OPEN, not a ruling
+
+Psyche verbatim on the close-leg / `close`-mandatory-vs-defaulted question ([DECISION 4]):
+**"I dont follow all that."** This is a **lost-understanding signal, NOT a ruling.** The
+question (is `close` a mandatory explicit role, or does it default to `token`'s type when
+elided; and the broader close-leg semantics) has been **re-grounded to the psyche in chat**
+and **stays OPEN** on `primary-56d1.48`. Nothing is resolved here. [DECISION 4] remains open
+and is folded into Item D.
+
 ## 0. Why this exists, in one paragraph
 
 Spirit's live contract declares one streaming operation. **[observed —
@@ -357,6 +487,70 @@ blocks).
 today). **Recommendation: (i)** — explicit and faithful; the two legs are semantically
 distinct and a future stream may key close differently, so eliding it buries a real
 distinction. Returned because it is a syntax/brevity call the psyche owns.
+
+## 7.1 Post-ruling decision items — the Nomos-minted-kind bootstrap (2026-07-18)
+
+Ruling A resolved the *placement* ([DECISION 1] → declaration kind) and the *mechanism*
+(minted through Nomos). What it opened is the bootstrap: reconciling a Nomos-minted kind
+with the closed Rust `CoreType`/`SectionDefault`/`MemberKind` enums (§0.0 Ruling A). These
+items are the concrete kind-system-schema delta the psyche must accept **before** any
+implementation (authority boundary). Options + recommendation; not silently picked.
+
+**[DECISION A1] — How does a Nomos-minted declaration kind enter, given the closed Rust
+kind enums?**
+
+- **(a) Open the kind set to data.** Replace the closed `CoreType` enum with an extensible
+  kind registry: kind identity centrally assigned (like the authority-assigned type ids of
+  `CoreUniverse::from_assignment`), each kind supplying its `ConstructorCodec` structuretree
+  form and its Nomos lowering; every current exhaustive `match` becomes a total function
+  over the registry. *For:* maximal fidelity to "just create a new kind of object" — no Rust
+  edit per kind. *Against:* dissolves the compile-time exhaustiveness the family leans on;
+  static disjointness moves entirely to seal-time `validate_disjoint` (already how *forms*
+  are checked, so partially precedented, but a large blast radius across core-schema +
+  core-nomos + the universe bridge).
+- **(b) Keep `CoreType` closed; Nomos supplies behaviour only.** A new kind is still one new
+  Rust arm, but **all behaviour** — structuretree form, lowering, role semantics — is
+  authored as a Nomos package, not hand-written Rust. "Create a new kind" = author the Nomos
+  package; the one-line arm is mechanical plumbing. *For:* preserves static
+  exhaustiveness/disjointness untouched. *Against:* still a Rust edit per kind — contradicts
+  the letter of the ruling ("just create a new kind of object", implying no core edit).
+- **(c) One generic extension arm, minted into — RECOMMENDED.** Core provides the **minimal
+  hook**: a single `CoreType::Extension(CoreExtension { kind: MintedKindId, fields })` arm
+  (plus the mirror in `MemberKind`), where `MintedKindId` is **centrally assigned** exactly
+  like a type id. One Rust arm admits an **open family** of Nomos-minted kinds; each minted
+  kind supplies its own `ConstructorCodec` structuretree form and its structural lowering
+  from its Nomos package. Static disjointness is preserved because all extension kinds share
+  one Rust arm yet are proven pairwise-disjoint at seal by `validate_disjoint` over their
+  supplied forms (Stream's `Stream.{…}` head vs any future kind's head). *For:* honours "mint
+  a kind via Nomos" with **no per-kind Rust edit after the one hook**, keeps the three native
+  kinds closed and fast, and localises the change to one arm + a kind-id registry + a
+  form/lowering slot. *Against:* extension kinds are dispatched by `kind_id` (a small
+  dynamic step) rather than a Rust variant; the exhaustive-match guarantee holds for the
+  native three but becomes a registry lookup for extensions. **Recommendation: (c)** — the
+  honest minimal hook that lets Stream be *minted* rather than *hand-carved*, while the
+  native kinds keep their closed-enum discipline. Stream is the first mint and the witness.
+
+**[DECISION A2] — Does the Nomos dispatch side open with it?** `SectionDefault::of_core_type`
+is exhaustive-over-`CoreType` with no wildcard, and `MacroKind` is closed to *"exactly two"*.
+The "exactly two macro kinds" ruling is **untouched** — the two remain `Named` /
+`Structural`. But under A1(a)/(c) the **`Structural(SectionDefault)`** selector must map an
+**open** kind set to structural defaults, so `SectionDefault` becomes keyed by the
+centrally-assigned `MintedKindId` (a lookup) rather than the closed 3-variant enum for
+extension kinds. Recommendation: **keep the three native `SectionDefault` variants closed,
+add a `Structural` path keyed by `MintedKindId` for minted kinds** — consistent with A1(c),
+leaving `MacroKind`'s two-kind ruling intact.
+
+**[DECISION A3 = former DECISION 4, now Item D — OPEN, not agent-owned].** Whether `close` is
+a mandatory explicit role or defaults to `token`'s type when elided is **re-grounded to the
+psyche** ("I dont follow all that") and stays open (§0.0 Item D). No recommendation is
+carried forward as ruled; the earlier §7 [DECISION 4] recommendation (i) is now just a prior
+agent lean pending the psyche's own answer.
+
+**Implementation work item (consequence of Ruling C, gated on the veto).** The codec's
+elision rule (`CoreField::name_is_derivable`, `textual.rs` reify/reflect) must become
+**collision-aware**: reject on decode and never emit on encode an explicit text name for a
+field whose type is unique in its block. Registered on `primary-56d1.48`; does not land until
+the psyche confirms the manager reading of Ruling C.
 
 ## 8. Tracker
 
