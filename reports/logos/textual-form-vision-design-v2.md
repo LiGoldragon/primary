@@ -1,10 +1,17 @@
-# TextualForm / EncodedForm — founding-vision design, revision 2 (four rulings seated)
+# TextualForm / EncodedForm — founding-vision design, revision 2 (four rulings seated; five follow-up rulings appended §0.0)
 
 Design-authority document. Session `LanguageEngine`, lane `TextualFormVisionV2`,
 Fresh (Recovery-inherited the live lane of the same task), generalist, Opus 4.8
 (1M), 2026-07-17. Read-only on every engine repo; this file, the v1 supersession
 stamp, and the tracker slice edits are the lane's only writes. The psyche does not
 read reports — the chat return is his surface; this file is the agent pickup point.
+
+Follow-up capture pass (2026-07-17, later same day): Session `LanguageEngine`, lane
+`RulingCaptureOpenPile`, Fresh, generalist, Opus 4.8 (1M). Five further psyche
+rulings landed since the four above; they are captured in **§0.0** and fold back
+into the affected sections (§1.2/§1.4/§8-D1 for the overlap drop, §6/§8-D2 for the
+`Protos` name, §3.2/§8-D3 for the machinery placement). Where §0.0 and an earlier
+section conflict, **§0.0 is the later authority.**
 
 ## 0. What this revision is, and its authority lineage
 
@@ -36,7 +43,88 @@ manager floated in chat, seated here for validation, explicitly *not* psyche wor
 resolvable from the verbatim words, collected in §8 for the manager (never asked of
 the psyche directly).
 
+## 0.0 Follow-up rulings (2026-07-17, later same day) — the later authority
+
+Five further psyche rulings landed after the four v2 rulings above. They revise
+this document where noted and are the later authority over any earlier passage.
+
+### FR-1 — Overlap dropped entirely; universal static disjointness stands
+
+**[psyche verbatim]** (told that the codec statically rejects any non-provably-disjoint
+form set): "thats great. I guess thats just a consequence of good design. so I guess
+we dont need to worry about order resolution. if we dont need overlap then we can just
+drop this."
+
+**[ruling]** The ordered-overlap regime is **dropped in full**. Universal static
+disjointness — `validate_disjoint` rejecting any non-provably-disjoint form set at
+seal time — **stands as the single decode rule.** Ordered first-match precedence is
+**retracted**: there is no ranking machinery, no authored order, no first-match walk.
+The transitional / abstraction-level types of Ruling 1 (§1.3) **remain in the vision**,
+but they are expressed **over disjoint forms**: a block is potentially X, Y, or Z
+*until it is matched*, and because the forms are provably disjoint at most one can
+match, so resolution is by disjoint-match alone. The static safety guarantee is
+therefore **unweakened** — "ambiguous decode is statically impossible" holds
+everywhere, with no scoped exception. This resolves **[DECISION 1]** (§8): option (c),
+via the psyche's own words — overlap is not needed, so it is not admitted. §1.2 and
+§1.4 are superseded accordingly (see the in-place stamps there).
+
+### FR-2 — The proto-language is named `Protos`; `Protos` is the shared library seat
+
+**[psyche verbatim]** "Protos is nice; are we calling that the library for all the
+structural (textual/encoder + name + structure) aspect of our languages (the shared
+taxonomy)?"
+
+**[ruling]** The universal proto-language of Ruling 4 (§6) is named **`Protos`**. This
+closes the open name (§6.3 / the former **[DECISION 2]**); `Typos` is dropped.
+
+**[accepted direction]** `Protos` is also the **shared library seat** for the entire
+structural aspect the family shares: the **`TextualForm` / `EncodedForm` trait**, the
+**nametree**, the **structuretree**, and the **codec machinery** — the proto-language
+made concrete as the one library every family member (schema, Nomos, logos, the
+Rust form) imports. The manager affirmed this scoping in chat in answer to the
+psyche's question; it is seated here as accepted direction.
+
+**[open — returned to the manager as [DECISION 2′], options + recommendation, NOT an
+agent decision and no rename performed here]** the concrete crate mapping only:
+whether the delivered `structural-codec` (trait + codec) and the name table
+(`name-table`) **fold into one `protos` crate**, or **`protos` becomes an umbrella**
+re-exporting those as internals; and what renames that implies across the workspace.
+See §8 [DECISION 2′]. No crate or symbol is renamed by this pass.
+
+### FR-3 — Spirit production-db copy authorized (directive .39)
+
+**[psyche verbatim — authorization]** yes (to provisioning the copy of the production
+database for the Spirit pilot test). The `.39` directive's "test against a copy of the
+production database" is now **authorized to provision the copy**; a separate lane is
+doing the provisioning. Recorded on the `.39` context. The live daemon and live
+production state remain untouched — only a copy is provisioned.
+
+### FR-4 — Standard-component machinery placement confirmed: option (a)
+
+**[ruling]** The former **[DECISION 3]** (§3.2 / §8) is resolved to **option (a)**: the
+**standard variant *types* (`Version`, `Help`) live in the shared signal *contract*
+layer**, and the **generic *answerer* lives in the shared *runtime*.** This confirms
+the manager proposal §3.2 seated for validation and matches `component-architecture`'s
+contract-versus-runtime split. `.46` is updated to state (a) as decided, not proposed.
+
+### FR-5 — Legacy macro seam deletion authorized
+
+**[ruling]** The **legacy macro seam** (the schema→logos legacy macro-expansion
+machinery — schema-language registry/handler/declarative-library glue and nota's
+`MacroRegistry` / `MacroNodeDefinition`) whose retention was carried as a sanctioned
+interim is now **authorized for deletion**, and the excision is **executing in lane
+`LegacyMacroExcision`**. The ruling state is recorded on the tracker (epic
+`primary-56d1` note; relates to the macro-model beads `.2` / `.9` / `.41`). The
+excising lane owns the code-surface removal and its own verification.
+
 ## 1. Ruling 1 — what "tree" means; ordered expectation enums; transitional types
+
+**[SUPERSEDED IN PART by §0.0 FR-1, 2026-07-17]** The "ordered expectation enums /
+first-match precedence" reading below (§1.2, and the coexistence reconciliation in
+§1.4) is **retracted**: overlap is dropped entirely, disjointness is universal, and
+the transitional types (§1.3) are now expressed over provably-disjoint forms. §1.3's
+transitional/abstraction-level type lattice and §1.1's storage-is-immaterial closure
+both **stand unchanged**. Read §1.2/§1.4 as superseded history; §1.1 and §1.3 as live.
 
 **[psyche verbatim]** "What I mean when I say a tree is just, it doesn't matter if
 it's a vector... we would have these different enums of different kinds of structure
@@ -61,7 +149,11 @@ delivered flat keyed maps stay as storage with no change and no apology; the two
 identity laws stay proved once against them. v1 DECISION 1 is answered: representation
 is free, and the flat maps are fine.
 
-### 1.2 Decode is ordered expectation enums with first-match precedence
+### 1.2 Decode is ordered expectation enums with first-match precedence — SUPERSEDED by §0.0 FR-1
+
+**[RETRACTED — §0.0 FR-1]** First-match precedence and authored order are withdrawn;
+decode is disjoint-match over provably-disjoint forms only. The paragraph below is
+kept as superseded history.
 
 **[ruling]** The decode semantics are **ordered enums of structure expectations**,
 one set of expectations per aspect of what a block can look like, and **the first
@@ -94,7 +186,12 @@ for a transitional type is fixed by the psyche: **maximal capability to represen
 block's possibilities.** (This is the same discipline `up-close`/`naming` already
 apply to type names, now made explicit for partially-resolved reads.)
 
-### 1.4 Reconciliation: first-match precedence versus delivered disjointness discipline
+### 1.4 Reconciliation: first-match precedence versus delivered disjointness discipline — SUPERSEDED by §0.0 FR-1
+
+**[RETRACTED — §0.0 FR-1]** The "two regimes coexist" reconciliation below is
+withdrawn. There is exactly one regime: universal static disjointness. Ordered-overlap
+sets are not admitted, so there is no boundary to draw and no safety property to
+weaken. Kept below as superseded history.
 
 The delivered `structural-codec` enforces `validate_disjoint`: it **rejects** a form
 set that is not *provably* disjoint [observed — `structural-codec` conformance law;
@@ -315,9 +412,15 @@ The proto-language's lineage, in the psyche's exact attribution:
   structuretree = **"real computer language and atomic editing of code + type safety."**
 - **Rust** — strictness; **type-safety enforced by the runtime.**
 
-### 6.3 The name is OPEN
+### 6.3 The name is `Protos` — CLOSED (§0.0 FR-2, 2026-07-17)
 
-**[ruling]** The proto-language "probably needs a name" — the psyche states it is
+**[ruling — §0.0 FR-2]** The proto-language is named **`Protos`** (psyche: "Protos is
+nice"). `Protos` is additionally seated as the shared library for the whole structural
+aspect (trait + nametree + structuretree + codec machinery); the only open item is the
+concrete crate mapping ([DECISION 2′], §8). The passage below is superseded history from
+when the name was still open.
+
+**[ruling — superseded]** The proto-language "probably needs a name" — the psyche states it is
 unnamed. This is a **psyche-review item**, tracked (§7). **[manager proposal — unblessed
 candidates, NOT leans of the psyche]** the manager floated **Protos** and **Typos** in
 chat as candidates only. They are recorded as unblessed candidates for the psyche to
@@ -364,8 +467,13 @@ Slices created:
 
 ## 8. Decision items for the manager (options + recommendation; not asked of the psyche directly)
 
-**[DECISION 1] Admitting ordered-overlap form sets weakens a delivered static safety
-property.** *Tension:* Ruling 1 makes decode ordered first-match, which *requires*
+**[DECISION 1] — RESOLVED (§0.0 FR-1, 2026-07-17): dropped.** The psyche dropped overlap
+entirely ("if we dont need overlap then we can just drop this"), selecting option (c):
+universal static disjointness stands, ordered first-match is retracted, transitional
+types are expressed over disjoint forms. No safety property is weakened. Original text
+retained below as history.
+
+*Tension:* Ruling 1 makes decode ordered first-match, which *requires*
 allowing form sets where more than one expectation can match; the delivered
 `validate_disjoint` today **rejects** any non-provably-disjoint set, giving the hard
 static guarantee that ambiguous decode is impossible. Admitting ordered-overlap sets
@@ -384,16 +492,34 @@ design, so the safety loss is scoped to exactly the case the psyche described an
 nowhere else. This is returned because it is a genuine safety-property change, not an
 implementation choice — the dispatch instructed me to surface it rather than decide it.
 
-**[DECISION 2] The proto-language's name (route to the psyche).** *Tension:* Ruling 4
-states the proto-language "probably needs a name" and leaves it open. *Options:* the
-manager's unblessed candidates **Protos** and **Typos**, or a psyche-supplied name, or
-"leave unnamed for now." *Recommendation:* **route to the psyche as a naming item** — do
-not have an agent pick. Record Protos/Typos as candidates only (explicitly not psyche
-leans). The name touches a class of downstream identifiers, so it is worth settling, but
-it is a naming judgment that belongs to the psyche, not an agent decision.
+**[DECISION 2] — RESOLVED (§0.0 FR-2, 2026-07-17): the name is `Protos`.** The psyche
+blessed `Protos` ("Protos is nice"); `Typos` is dropped. The naming question closes.
 
-**[DECISION 3] Placement of the shared standard-component machinery (validate the
-manager proposal).** *Tension:* §3.2 is a manager proposal, not psyche words: per-component
+**[DECISION 2′] Concrete crate mapping for `Protos` as the shared library seat (options
++ recommendation; return to the manager — no rename performed by this pass).** *Context:*
+§0.0 FR-2 seats `Protos` as the shared library for the whole structural aspect
+(`TextualForm`/`EncodedForm` trait, nametree, structuretree, codec machinery). The
+*name* and *scope* are accepted direction; only the crate topology and its renames are
+open. *Options:* (a) **fold** the delivered `structural-codec` (trait + codec) and
+`name-table` into **one `protos` crate** — one import, one taxonomy home, but a larger
+crate and a workspace-wide rename of two published crate names and their `use` sites;
+(b) **umbrella** — `protos` becomes a thin façade crate that re-exports `structural-codec`
+and `name-table` as internals, keeping the delivered crates intact behind one public
+name (smaller blast radius, one indirection layer); (c) **rename-only** — rename the
+existing crates to a `protos-*` family (`protos-codec`, `protos-names`) without merging,
+minimal structural change. *Recommendation:* **(b) umbrella** — it realizes the psyche's
+"one library for the shared structural aspect" as a single public import immediately
+while preserving the delivered, tested `structural-codec` / `name-table` internals and
+their round-trip proofs, and it defers the heavier fold-or-not judgment until a second
+consumer proves the shape. Returned because crate topology + published-name renames
+touch the compatibility surface and belong to the manager/psyche, not this pass.
+
+**[DECISION 3] — RESOLVED (§0.0 FR-4, 2026-07-17): option (a).** The psyche confirmed
+option (a): standard variant *types* (`Version`, `Help`) in the shared signal *contract*
+layer, the generic *answerer* in the shared *runtime*. `.46` updated to decided.
+Original text retained below as history.
+
+*Tension:* §3.2 is a manager proposal, not psyche words: per-component
 `Input`/`Output` in `signal-<component>`, the standard `Version`/`Help` machinery once in
 "the shared signal runtime layer." The exact crate home for the shared machinery is
 unstated. *Options:* (a) **shared signal contract crate** (`signal-domain`-adjacent) owns
