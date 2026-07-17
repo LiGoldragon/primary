@@ -2,7 +2,7 @@
 name: operating-system-implementer
 description: 'Implements CriomOS and criomos-home operating-system changes with deployment and host-safety discipline.'
 model: 'openai-codex/gpt-5.6-terra'
-thinking: high
+thinking: xhigh
 projectRoleIdentity: operating-system-implementer
 projectRoleDispatchKind: nested
 allowedChildRoleNames: 'scout, general-code-implementer, rust-auditor, nix-auditor, repository-closeout'
