@@ -18,8 +18,10 @@ Companion: `LaneAbandonmentMachinery` is implementing §4 NOW against the landed
   harness-delivery leg. The prior "deploy message→router→harness" MVP is
   withdrawn. One load-bearing phrase remains ambiguous and is returned to the
   coordinator, not guessed (see §7).
-- **B2.** Three-layer liveliness kept as designed but **awaiting sign-off**; the
-  delivery-probe leg now goes through **messenger**, not router.
+- **B2.** Three-layer liveliness kept as designed, **signed off 2026-07-17**
+  (§0c: "yes, messenger-first, liveness first"; §3 layer 3 amended by psyche
+  ruling to an activity read); the delivery leg goes through **messenger**, not
+  router.
 - **B3.** Lane `Suspect` + grace **accepted**; durations are matter, set in §4.
   `ConcludeWorktree`/`RequestWorktree`/`WorktreeStatus::Abandoned` have landed
   (orchestrate `37fac745`, signal-orchestrate `9d030d0f`). The one open call —
@@ -27,6 +29,52 @@ Companion: `LaneAbandonmentMachinery` is implementing §4 NOW against the landed
   release — is decided in §4c.
 - **B4.** Both renames completed as one post-landing sweep; remotes in scope; no
   compatibility shim. Plan in §6.
+
+## 0b · Psyche rulings folded in (2026-07-17)
+
+Four rulings from the psyche working session of 2026-07-17, folded into §2g,
+§3, and §7 below. Quotes are verbatim; sections carry a "psyche-ruled
+2026-07-17" marker where amended.
+
+- **§3 amended — the delivery-probe layer is replaced by an activity read.**
+  Verbatim: "better to actually read the agent's latest activity; a single
+  command could take hours (rebuilding nixos from source)". Layers 1–2 (pidfd
+  exit-push, activity refresh) drew no objection and stand.
+- **§7 resolved — launch-minted agent ID as the endpoint.** Verbatim: "a lane
+  should have a agent ID, which becomes our endpoint. Same short hashes we've
+  been using for IDs in spirit, mind, wherever (4 chars + (adjusted for
+  conflicts)). so each time a harness is launched, it gets an ID (or re-uses
+  it if it's a resumed session) assigned, and knows it in his initial prompt.
+  and messenger knows which process is which ID"
+- **Cold-session delivery accepted (new §2g).** Asked whether the messenger
+  may deliver to a non-live session by respawning the harness with its resume
+  identity and the message as the next turn, the psyche ruled verbatim: "yes,
+  that is exactly what should happen. unless the agent is marked as killed, in
+  which case the message can bounce back with a notice of dead agent, for
+  now". The "for now" is a hedge, tracked as bead `primary-pm92`.
+- **Open psyche question, not ruled:** "how do we deal with claude subagents?"
+  — see §7b. Do not resolve by taste. (A parent-only working model was later
+  adopted via general blessing — see §0c and §7b; psyche review pending.)
+
+## 0c · Second-batch rulings (2026-07-17, later same day)
+
+- **Program spine ACCEPTED.** Verbatim: **"yes, messenger-first, liveness
+  first"** — the messenger promotion program is a settled go, with liveness
+  ordered first in the program.
+- **General blessing.** Verbatim: **"go with your leans, good enough for me"**
+  — applied by the manager to the then-open items. Lean-based applications are
+  flagged for psyche review; they are not direct rulings:
+  - Migration-safety hardening accepted (automatic pre-migration store backup
+    + migration tests against captured real stores) → bead `primary-4khu`.
+  - Orphaned rescue-preserve reap accepted, sequenced (recovery lane terminal,
+    then fixture capture, then delete) → bead `primary-te4v`.
+  - Claude subagents: parent-only working model adopted (see §7b), psyche
+    review pending.
+  - Two design tensions resolved by manager lean, psyche review pending:
+    (i) the **messenger** owns the authoritative process↔ID map; orchestrate's
+    registration-time discovery is a feed into it (the reconciling reading in
+    §7); (ii) **terminal-cell** is the launcher-side component that mints the
+    agent ID at harness launch — it owns session directories and spawning.
 
 ## 1 · Ground truth (deltas since the prior checkpoint)
 
@@ -133,11 +181,33 @@ exactly the local/remote line B1 draws. Flag for intent-maintenance: `alom`'s
 manifestation text should be updated to say "cross-host delivery" where it says
 "delivery." (I do not record intent; this is a pointer for the owner.)
 
-## 3 · Liveliness tests (B2 — awaiting sign-off)
+### 2g · Cold-session delivery — respawn by resume identity (psyche-ruled 2026-07-17)
 
-Kept as the prior three-layer push model; the only change is the probe
-transport. Liveliness is a property of the agent owning a lane. No clock-driven
-"are you alive?" loop exists at any layer.
+When a target session is not live, the messenger does not merely park the
+message: it delivers by respawning the harness with its stored resume identity
+and the message as the next turn. Psyche, verbatim: "yes, that is exactly what
+should happen. unless the agent is marked as killed, in which case the message
+can bounce back with a notice of dead agent, for now".
+
+- **Live target** → ordinary delivery leg (§2b).
+- **Not live, not marked killed** → record in the inbox/ledger as always, and
+  respawn the harness by resume identity; the message arrives as the resumed
+  session's next turn.
+- **Marked killed** → no respawn; the message bounces back to the sender with
+  a dead-agent notice. The "for now" is a psyche hedge preserved verbatim —
+  bounce-with-notice is interim behavior, tracked as bead `primary-pm92`.
+
+Consequences for §2a's storage: the local delivery registry carries the
+harness **resume identity** alongside the live endpoint, and a killed/dead
+mark fed by liveliness (§3). The killed mark is what distinguishes "cold,
+respawnable" from "dead, bounce".
+
+## 3 · Liveliness tests (B2 — psyche-ruled 2026-07-17)
+
+Three-layer push model. Liveliness is a property of the agent owning a lane.
+No clock-driven "are you alive?" loop exists at any layer. **Ruling status:**
+the psyche replaced layer 3 (see below); layers 1–2 drew no objection and
+stand.
 
 1. **Hard liveness — kernel exit push (primary).** Orchestrate opens a `pidfd`
    on the reachability record's `harness_pid` (verified against
@@ -149,21 +219,30 @@ transport. Liveliness is a property of the agent owning a lane. No clock-driven
 2. **Soft liveness — activity refresh (existing push).** `touch_lane` on real
    orchestrator use keeps a working lane fresh; every mutation republishes the
    deadline.
-3. **Liveliness probe — messenger-backed reachability check (ambiguous cases).**
-   When there is no pidfd (registration reachability was empty) or the case is
-   ambiguous, orchestrate asks the **messenger** to attempt a delivery to the
-   agent's registered target; the messenger's delivery leg reports
-   success/failure, so an undeliverable target is a dead endpoint. This fires on
-   the `Active→Suspect` transition, not on a clock — the reachability-probe
-   carve-out. **(Changed from router to messenger per B2.)**
+3. **Activity read — inspect the agent's real latest activity (ambiguous
+   cases). (Psyche-ruled 2026-07-17; replaces the messenger delivery probe.)**
+   The psyche rejected the delivery-probe leg, verbatim: "better to actually
+   read the agent's latest activity; a single command could take hours
+   (rebuilding nixos from source)". When there is no pidfd (registration
+   reachability was empty) or the case is ambiguous, the liveliness check
+   READS the agent's genuine recent activity — harness transcript/output
+   recency and the harness pid's live child-process tree — instead of probing
+   deliverability. A live busy child process (e.g. a long build) is positive
+   liveness: an agent inside one long-running command is NEVER judged Suspect
+   or dead on output silence alone. This still fires on the `Active→Suspect`
+   transition, not on a clock. Concrete activity sources (transcript paths,
+   child-tree walk) are implementer matter for the owning lane.
 
 Open push-not-pull escalation, unchanged: the ideal producer is the harness
 pushing a lifecycle event stream (idle/stalled/resumed/exited) the orchestrator
 subscribes to once. `pidfd` gives only the exit transition; "alive but stuck"
 has no event without harness cooperation. Whether the harness daemon can expose
 a push lifecycle subscription is the open producer-capability question. Until it
-can, exit-push + on-transition probe are the honest maximum and the idle
-deadline is the backstop. **This whole section awaits psyche sign-off.**
+can, exit-push + on-transition activity read are the honest maximum and the
+idle deadline is the backstop. **Sign-off status (2026-07-17): layer 3 ruled
+as above; layers 1–2 drew no objection and stand. Later same day the psyche
+accepted the program spine — verbatim "yes, messenger-first, liveness first"
+(§0c) — so this design is signed off, with liveness ordered first.**
 
 ## 4 · Unified abandonment (B3 — landing via LaneAbandonmentMachinery)
 
@@ -175,12 +254,14 @@ lifecycle bracket is now real on both ends: a worktree is born owned-by-a-lane
 
 ### 4a · Detection → grace → terminal
 
-- **Detection.** Any liveliness signal failing (pidfd exit; probe
-  undeliverable/timeout; idle-deadline backstop) transitions `Active → Suspect`.
+- **Detection.** Any liveliness signal failing (pidfd exit; an activity read
+  (§3.3, psyche-ruled 2026-07-17) finding neither recent output nor a live
+  child process; idle-deadline backstop) transitions `Active → Suspect`.
 - **Grace.** A bounded window after `Suspect`, driven by the existing
-  `LaneReclaimer` deadline worker (timerfd carve-out). Any real lane activity or
-  a positive probe returns the lane to `Active` and cancels reclamation — this
-  is how a live-but-quiet agent proves itself.
+  `LaneReclaimer` deadline worker (timerfd carve-out). Any real lane activity
+  or a positive activity read returns the lane to `Active` and cancels
+  reclamation — this is how a live-but-quiet agent proves itself; per §3.3 an
+  agent inside one long-running command reads as alive via its child process.
 - **Terminal (grace expires) — conclude the lane, reusing the landed op:**
   1. Release the lane's claims.
   2. Call `ConcludeWorktree` on the owning worktree. It branches on
@@ -229,8 +310,9 @@ last-claim-release become the same event class. One policy, no special case.
   reachability push, and prove the harness-delivery leg (`signal-harness` + a
   reachable harness daemon — still the least-proven part). Router keeps only the
   host-to-host actors; external-host escalation is a typed stub.
-- **After messenger local delivery works:** wire the on-transition
-  liveliness probe through messenger (needs §3 sign-off first).
+- **After messenger local delivery works:** wire the on-transition activity
+  read (§3.3 as psyche-ruled 2026-07-17; the messenger delivery-probe variant
+  is withdrawn) and the §2g cold-session respawn leg.
 - **Last, staged, after all above merged + quiescent:** the rename sweep (§6).
 
 ## 6 · Rename sweep plan (B4)
@@ -271,12 +353,37 @@ does. Default expectation: no shim anywhere.
 **Sequencing:** unchanged — only after the worktree protocol, liveliness, and
 messenger work are merged and the tree is quiescent.
 
-## 7 · Returned to the coordinator — load-bearing ambiguity (do not guess)
+## 7 · Lane addressing — RESOLVED (psyche-ruled 2026-07-17)
 
-The psyche phrase **"it routes its own lane; messages"** is materially ambiguous
-on a point my whole liveliness/abandonment design leans on (the word "lane" is
-overloaded in this workspace, where a *work-lane* is the abandonment subject).
-Readings with divergent contracts:
+**Ruling, verbatim:** "a lane should have a agent ID, which becomes our
+endpoint. Same short hashes we've been using for IDs in spirit, mind, wherever
+(4 chars + (adjusted for conflicts)). so each time a harness is launched, it
+gets an ID (or re-uses it if it's a resumed session) assigned, and knows it in
+his initial prompt. and messenger knows which process is which ID"
+
+Design consequences (agent reading of the ruling, marked as such):
+
+- **The endpoint/address type is the agent ID**, not a lane-typed address in
+  `signal-messenger`. A lane *carries* an agent ID; sending "to a lane"
+  resolves through the lane's agent ID on the orchestrator side.
+- **Mint discipline:** the same short-hash mint already used in spirit/mind —
+  random, 4 chars to start, length adjusted on conflicts.
+- **Mint moment moves to harness launch.** The ID is assigned when the harness
+  is launched — or re-used when the session is a resumed one — and the agent
+  **knows its own ID from its initial prompt**, ahead of any
+  self-registration. Registration binds the already-minted ID; it no longer
+  mints. (This supersedes the minted-at-registration language in the
+  orchestrator-messaging design's Settled Decisions; a superseding pointer has
+  been added there.)
+- **The messenger owns the process↔ID mapping** ("messenger knows which
+  process is which ID"). Orchestrate's reachability discovery remains a feed
+  into that mapping per §2e; the authoritative map lives with the messenger.
+- The ID is stable across resume, which is exactly what the §2g cold-session
+  respawn leg needs as its join key.
+
+Historical record — the ambiguity this resolves. The earlier psyche phrase
+"it routes its own lane; messages" was ambiguous across readings, kept here
+for the record:
 
 1. **Routing-plane reading:** "routes its own [delivery plane]; [carries]
    messages" — the semicolon separates two capabilities; "lane" ≈ the
@@ -292,9 +399,28 @@ Readings with divergent contracts:
 3. **Per-lane routing reading:** each work-lane has its own message stream/routing
    context inside the messenger.
 
-The router→messenger migration in §2b–2c is reading-independent and can proceed.
-The only piece blocked on this is **whether "lane" is an address/route type in
-`signal-messenger`.** Please confirm the reading before Slice work touches the
-messenger's addressing contract.
+The router→messenger migration in §2b–2c was reading-independent and remains
+unaffected. The formerly blocked piece — whether "lane" is an address/route
+type in `signal-messenger` — is now unblocked: it is not; the agent ID is the
+address (see the ruling above).
 
-Also awaiting sign-off: §3 liveliness mechanism as a whole (B2).
+## 7b · Claude subagents — parent-only working model adopted (psyche review pending)
+
+The psyche asked, verbatim: **"how do we deal with claude subagents?"** —
+i.e. how subagents spawned inside a harness session fit the launch-minted
+ID/endpoint model, given they have no separately launched harness process for
+the messenger to map.
+
+Manager proposal on file: subagents share the parent session's ID/endpoint
+and the parent relays to them, since they have no separate OS process the
+messenger can reach; optionally they could be named by a hierarchical suffix
+under the parent ID.
+
+**Working model (2026-07-17, accepted-via-general-blessing — "go with your
+leans, good enough for me" — NOT a direct psyche ruling; flagged for psyche
+review):** the parent-only shape is adopted. Subagents share the parent
+session's ID and endpoint; the parent relays inward; **no suffix vocabulary
+is minted now**.
+
+Implementers may build the parent-only shape, but must not mint
+subagent-suffix address vocabulary into contracts until the psyche reviews.

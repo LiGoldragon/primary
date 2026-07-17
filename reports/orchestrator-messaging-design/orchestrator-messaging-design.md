@@ -49,6 +49,21 @@ section wins.
    "separately gated" publication language at the end of the Slice Plan is STALE:
    all four new repos (and the messenger/harness repos touched here) are
    published to their remotes as ordinary practice, not held back.
+8. (2026-07-17 — superseding pointer, identity-mint moment.) The psyche has
+   ruled agent-identity minting forward to HARNESS LAUNCH, verbatim: "so each
+   time a harness is launched, it gets an ID (or re-uses it if it's a resumed
+   session) assigned, and knows it in his initial prompt. and messenger knows
+   which process is which ID". This supersedes the Settled-Decisions line "the
+   minted registration ID … is the canonical agent address" as to WHEN the ID
+   is minted and who holds the mapping: the ID (same short-hash mint
+   discipline, 4 chars growing on conflicts) exists from launch, is delivered
+   in the agent's initial prompt, is stable across resume, and the messenger
+   owns the process↔ID mapping. Registration binds the already-minted ID; it
+   no longer mints. The ID remains the canonical address and join key. The
+   authoritative statement lives in
+   `reports/coordination-liveliness-messenger/design.md` §7 (resolution),
+   with cold-session respawn delivery in §2g and the amended liveliness
+   layer 3 in §3.
 
 ## Orientation
 
