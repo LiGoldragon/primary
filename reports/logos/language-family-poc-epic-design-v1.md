@@ -158,7 +158,9 @@ implemented as settled fact:
 - raw profile revisions and the `$` Nomos extension;
 - StructuralMacroNode's dotted conversion and removal of a headed compatibility
   form;
-- the concrete TextualForm trait and the exact `syn` two-way subset;
+- the concrete TextualForm trait (over its EncodedForm — the settled pair; reseated
+  over the nametree + structuretree in `textual-form-vision-design-v1.md`) and the
+  exact `syn` two-way subset;
 - Nomos meta-types, macro terminology, and detailed lowering slate;
 - schema unit/split/merge identity, the lost bootstrap question, and sema-engine's
   successor stored-record identity;
@@ -390,7 +392,8 @@ repository is not made a parallel PoC implementation.
 
 ### Textual many-form slice
 
-A `TextualForm` is proposed as a codec family object with three owned pieces:
+A `TextualForm` is proposed as a codec family object — one of many textual mouths of
+an `EncodedForm` (the settled Core-side counterpart) — with three owned pieces:
 
 1. a raw boundary (NOTA raw discovery or a foreign parser);
 2. an expectation table for the relevant Core type family;

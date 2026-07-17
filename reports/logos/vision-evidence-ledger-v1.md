@@ -123,6 +123,7 @@ timestamps exist — ordering + date bound given; session ran 2026-07-14 →
 | L12 · 07-15 | Psyche forwards Codex | "codex has been looking at pushing the implementation with me. I didnt read what he said in detail. consider it and tell me what sticks out…" | Forwarding is EXPLICIT-PSYCHE; **the entire Codex pipeline is AGENT-PROPOSAL (Codex)** | — | Codex triad unread-in-detail; needs rulings |
 | L13 · 07-15 (latest) | Psyche monologue | "true made no sense for any of them. It's just textual… The textual schema and the textual logos." | EXPLICIT-PSYCHE | **supersedes L10 "maybe"** | `Textual*` adopted |
 | L13 · 07-15 | Psyche (confirmation-seeking, "Is that what you mean?") | "instead of saying structural macro, we say structural form" | EXPLICIT-PSYCHE-**leaning**, pending his ack of the manager's two-concept split (TextualForm vs StructuralForm) | — | Terminology not final (questionnaire Q2) |
+| L14 · 07-17 | Psyche (founding-vision restatement) | "shared abstraction around textualform and encodedform (use to be called true/core)… a nametree and a structuretree… textualform trait writes and reads the name and structure trees… multiple textualforms per encodedform… even nota can take this architecture" | EXPLICIT-PSYCHE (**settles** the `TextualForm`/`EncodedForm` pair; `.37` accepted) | supersedes the `.37` hedge | Seated in `textual-form-vision-design-v1.md` (authority for the pair + the two organs) |
 | L13 · 07-15 | Psyche (unruled musing) | "You could even say the symbolic form… but it's more general" | AGENT-adjacent musing, UNRULED | — | Not a ruling |
 | L13 · 07-15 | Psyche (open question) | "so what do we call the core? Just the core? … maybe there's an even better word" | EXPLICIT-PSYCHE **open question** | — | Questionnaire Q3 |
 | A1 · 07-13 22:01/22:05 | generalist (schema-codex) | `nomos-macro-model-v1.md` (commits `4be37999a`, `a1dc7b351`) — headless declarations, inline-struct input `{ Name Type }`, capitalized macros, named/structural kinds | Report = AGENT work; its rulings cite prior-session psyche | prior session | Kept-as-is by up-close supersedence map |
@@ -227,10 +228,13 @@ Format: **status** — evidence. "Accepted" = psyche ruling; "non-rejected" =
     **implemented on next-gen** (`{}` struct, `[]` vector, `Map.( … )`, `Some.payload`).
     Docs are stale ([LEANING]); nota `ARCHITECTURE.md` still mis-describes maps (D10).
 18. **"Many forms" ruling (Textual, TextualRust, foreign forms, custom leaves,
-    `syn`)** — **Accepted (EXPLICIT-PSYCHE, L11)** for the many-forms *principle* and
-    (L13) the `Textual*` name. The concrete `TextualForm` trait, `TextualRust` via
-    `syn`/prettyplease, and custom-leaf codecs are `AGENT-PROPOSAL` (up-close §6,
-    lowering §6).
+    `syn`)** — **Accepted (EXPLICIT-PSYCHE, L11)** for the many-forms *principle*,
+    (L13) the `Textual*` name, and (L14, 07-17) the settled **TextualForm /
+    EncodedForm** pair (one EncodedForm, many TextualForms). The concrete
+    `TextualForm` trait (now reseated over the nametree + structuretree in
+    `textual-form-vision-design-v1.md`), `TextualRust` (reconciled there as
+    trees-over-a-raw-layer, `syn`/prettyplease demoted to Rust's raw layer), and
+    custom-leaf codecs remain `AGENT-PROPOSAL` (up-close §6, lowering §6).
 19. **Logos 1-to-1 with Rust; binds Core not literal text** — **Accepted
     (EXPLICIT-PSYCHE, handover + design-v0 §1.2)**. The "binds Core, text is a
     projection/codec" reading is accepted (L10/L11). Emitter today is `TrueSchema`-in,
@@ -482,8 +486,9 @@ explicit non-rejection to convert to a ruling; nothing merges until you do.
 
 **Q2 — Macro vs "structural form": final terminology.** Do we (a) reserve "macro"
 for Nomos and name the parser-side data `StructuralForm`, splitting into two
-concepts (TextualForm = per-language view tree; StructuralForm = the sidecar
-conversion-pattern), or (b) keep your earlier unification
+concepts (TextualForm = per-language view tree over an EncodedForm, its settled
+Core-side counterpart; StructuralForm = the sidecar conversion-pattern), or (b) keep
+your earlier unification
 ("structural-expectations-macro," "a dialect is a macro package")?
 *Recommendation:* adopt the two-concept split with the name **structural form** —
 it matches your L13 lean and separates "how a form looks" from "how expectation

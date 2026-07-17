@@ -815,19 +815,26 @@ Lead name **`raw-discovery`**; alternates `positional-structure`, `delimiter-dis
 
 ## 6. The Textual many-forms family (ruling 2) — TextualLogos, TextualRust, and beyond
 
+> **Reseated (2026-07-17):** the settled pair is **TextualForm / EncodedForm**
+> (`EncodedForm` names the Core-side *view*, not the `Core*` types; `.25`, `.37`).
+> `textual-form-vision-design-v1.md` is now the authority for this abstraction and
+> the two organs (nametree, structuretree); it supersedes §6.1 (the trait) and §6.2
+> (the TextualRust foreign-raw bypass, now reconciled as trees-over-a-raw-layer).
+
 **[psyche verbatim]** "actually, we extend the textual to have many forms, so
 corelogos has both the logos and rust textual form data-trees. rust would have more
 custom implementations but we would find the logicalization which can also apply to
 a language like rust. this even opens us emitting other languages than rust from
 logos."
 
-So `Textual` is a **family** of per-form data-trees over one Core. `CoreLogos` is
+So `Textual` is a **family** of per-form data-trees over one **EncodedForm**
+(`CoreLogos` here). `CoreLogos` is
 viewed through **both** a `TextualLogos` form tree **and** a `TextualRust` form
 tree, each with its own bidirectional codec, sharing the logicalization vocabulary
 (the `StructuralForm` constructors of §4.1). Rust supplies more custom leaves. A
 third emission language is a third `TextualForm`.
 
-### 6.1 The form as a codec over one Core, with a principled raw-layer boundary
+### 6.1 The form as a codec over one EncodedForm, with a principled raw-layer boundary
 
 ```rust
 /// One textual rendering of a Core family: a raw layer + the expectation table
