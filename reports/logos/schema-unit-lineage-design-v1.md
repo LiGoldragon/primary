@@ -1,5 +1,16 @@
 # Schema-unit and split/merge lineage — design v1
 
+> **SUPERSEDED 2026-07-17 by `schema-unit-lineage-design-v2.md`.** The psyche
+> engaged this v1's chat summary and ruled, and his rulings **delete machinery**.
+> The identity keystone survives (identity is an allocated ID, not a derived
+> fingerprint), but v1's surrounding apparatus is REMOVED, not deferred: the
+> `DocumentLineage` origin DAG (§6), the receipts / multi-authority residual (L2
+> revision trigger, O2), the rename-intent alias (§5, L4), and "move" as a distinct
+> primitive. The unit is re-seated from the **document** (§2) onto the
+> **schema-whole** — the document is a legacy view. v1's open questions O1-O4 are
+> all resolved or dissolved by the keystone (see v2 §9). Read v2 as authoritative;
+> this file is kept only as superseded history.
+
 The design specification bead **primary-56d1.11** needs: the unit of "one schema"
 and its split/merge identity semantics, drafted to the point the psyche can grade
 it. Written 2026-07-17, session `LanguageFamilyDesign`, lane
