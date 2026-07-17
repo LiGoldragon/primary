@@ -22,43 +22,32 @@ authority stays with these):
   recorded debts (no sema-engine family-evolution primitive; store-format stamp
   not atomic with family registration).
 
-Adopted manager leans (psyche: "go with your leans, good enough for me"):
-the messenger owns the authoritative process↔ID map with orchestrate discovery
-as a feed; terminal-cell acquires the agent ID at launch and delivers it in the
-initial prompt. **[Both leans superseded same day — see pending amendment
-below.]**
+**Revision 2 (2026-07-18).** The 2026-07-17 PENDING AMENDMENT is folded into
+the packet structure below; this plan now matches the rulings in design §0d
+and the fourth-batch blessing in design §0e ("go with your leans, and report
+back with visuals"). Superseded lean history lives in design §0c/§0d; the
+governing identity shape here is: **the orchestrator mints the agent ID
+before the process starts and PUSHES identities into the messenger's
+registry; launch delegates through the harness component
+(orchestrate→harness via `meta-signal-harness`); terminal-cell keeps
+PTY/session-dir duties beneath; the messenger holds the consumer view — IDs
+and threads — and "gets the list" by reading its own pushed-to registry**
+(push-vs-pull reconciliation recorded in design §0e, manager-applied,
+flagged). The subscription primitive (when-X-happens / when-lane-ends notify)
+remains liked-but-deferred — not in this train.
 
-## PENDING AMENDMENT (2026-07-17, third psyche batch — not yet restructured)
+Parallel-dispatch note: the mint-relocation implementer (bead `primary-sdgy`,
+packet 2.1a) and the contention-flow MVP implementer (bead `primary-qz9l`,
+phase 2b) are dispatched in parallel with this revision; those beads' briefs
+are authoritative for their packet scope.
 
-This plan predates the psyche's dictated third batch (recorded in
-`reports/coordination-liveliness-messenger/design.md` §0d) and two same-day
-rulings. The packet structure below is NOT yet reshaped; treat this note as
-authoritative over conflicting packet text until a plan revision lands:
-
-1. **Mint authority ruling (supersedes the leans above and reshapes phase 2).**
-   Verbatim: "the mint is the orchestrator. he creates an agent id and will
-   eventually launch it (through another daemon I think; maybe agent has all
-   the harness launching logic - but where is that now? Or was it harness?
-   thats fine too)". The orchestrator mints (ID allocated to the process
-   before it starts) and launch delegates through the harness component
-   (orchestrate→harness via `meta-signal-harness`); terminal-cell keeps
-   PTY/session-dir duties beneath it, but is no longer the minter. Packet 2.1
-   as built keeps its durable registry as the consumer view of IDs + threads;
-   the mint operation relocates orchestrator-side. Reshape scope: packets
-   2.1-amend / 2.2 / 2.3 — tracked as bead `primary-sdgy`.
-2. **MVP merge ruling.** Verbatim: "we'll build review into that later. first
-   MVP doesnt, just merge in main" — a finished feature branch that rebases
-   cleanly merges into main automatically, no review gate; review is
-   deferred-explicit (bead `primary-njmu`).
-3. **New now-scope feature set (bead `primary-qz9l`).** Release-time
-   branch-started message to the releasing main-lane holder; automatic
-   "repo is taken" contention answer; PascalCase feature-named lane
-   registration becomes the feature branch; default auto-worktree in a known
-   place; orchestrator-tracked auto-rebase keeping mains clean. Slots into the
-   train as new packets (likely phase 2/3 neighbors); not yet numbered.
-4. **Subscription primitive** (when-X-happens / when-lane-ends notify): liked,
-   explicitly deferred — "That's a cool idea, but for now…". Stays future
-   scope; do not build in this train.
+**Integration status (2026-07-17 integration pass + 2026-07-18 deploy):**
+packets 0.1 (both halves), 0.2, 1.1, and 2.1-as-built are LANDED on all
+mains — schema-rust 0.9.0 (backport line `bc964c4f` published for current
+consumers), signal-orchestrate 0.6.0, meta-signal-orchestrate 0.5.0,
+orchestrate 0.8.0 (`e86502a1`), signal-message 0.5.0, message 0.7.0.
+Production: v0.7.2 deployed 2026-07-17 18:16; v0.8.0 deployment dispatched
+2026-07-18 under the blessing.
 
 ## Train overview
 
@@ -74,35 +63,48 @@ Repos in the train: `orchestrate` (+ `signal-orchestrate`), `message`
 `spirit` is read-only reference for the short-hash mint discipline
 (`repos/spirit/src/store/record_identifier.rs`).
 
-Expected bases: resolve at intent-authoring time; orchestrate base is
-`4c047209` (v0.7.2) or its then-current pushed main. Production note: v0.7.2
-deployment is in flight (watcher waiting on the recovery lane); the train
-builds on v0.7.2 semantics either way.
+Expected bases: resolve at intent-authoring time; orchestrate base is now
+`e86502a1` (v0.8.0 on main). Production: v0.7.2 live since 2026-07-17 18:16;
+v0.8.0 deployment dispatched 2026-07-18.
 
 ```
-Phase 0  Foundations         0.1 reply-reliability gate (parallel investigation)
-                             0.2 migration safety + Mirror coverage check
+Phase 0  Foundations         0.1 reply-reliability + teardown fix     [LANDED]
+                             0.2 migration safety + Mirror coverage   [LANDED]
                              0.3 train intent authoring
-                             0.4 real repo identity (CONDITIONAL — psyche)
+                             0.4 real repo identity                   (primary-9wxr)
+                             0.5 sema-engine evolution primitive      (primary-rlg7)
         |
-Phase 1  Liveness            1.1 pidfd exit watch -> typed Dead/Crashed status
+Phase 1  Liveness            1.1 pidfd exit watch -> typed Dead       [LANDED]
                              1.2 activity read (transcript + child tree)
                              1.3 Suspect+grace fold-in (coordinate w/ existing lane)
         |
-Phase 2  Launch identity     2.1 messenger.sema birth: identity/delivery registry
-                             2.2 terminal-cell launch mint + initial prompt
-                             2.3 orchestrate binds pre-minted ID
+Phase 2  Launch identity     2.1 messenger.sema identity/delivery registry [LANDED,
+                                 as-built mint pending 2.1a relocation]
+                             2.1a mint relocation -> orchestrator     (primary-sdgy)
+                             2.2 orchestrator pre-launch mint + launch via
+                                 harness; terminal-cell session-dir + initial
+                                 prompt beneath
+                             2.3 registration binds the pre-minted ID
+        |
+Phase 2b Contention-flow MVP 2b.1 repo-taken automatic answer         (primary-qz9l)
+                             2b.2 feature-named lane -> auto-worktree + branch
+                             2b.3 release-time branch-started message
+                             2b.4 tracked auto-rebase; MVP auto-merge to main
+                                  (review deferred: primary-njmu)
         |
 Phase 3  Messenger promotion 3.1 messenger.sema: ledger/inbox/thread index
                              3.2a messenger delivery leg (actors move in)
                              3.2b router shrink to host-to-host + stub
-                             3.3 orchestrate -> messenger reachability push
+                             3.3 orchestrate -> messenger identity/reachability push
                              3.4 Send/triage wire integration
                              3.5 PtySocket end-to-end proof
         |
 Phase 4  Cold delivery       4.1 killed mark + resume identity plumbing
-                             4.2 respawn-by-resume legs (pi, claude)
+                             4.2 respawn-by-resume legs (pi, claude — posture
+                                 primary-vpdx; codex deferred primary-ohrb)
                              4.3 dead-agent bounce (interim, primary-pm92)
+                             4.4 harness lifecycle push event stream
+                                 (post-messenger-core, primary-s4ep)
         |
 Phase 5  Rename sweep        5.1 orchestrate->orchestrator, message->messenger
 ```
@@ -115,37 +117,31 @@ Packet 0.2's check makes (b) mechanical.
 
 ## Phase 0 — Foundations
 
-### 0.1 Daemon reply reliability (GATE, placeholder)
+### 0.1 Daemon reply reliability + teardown fix — RESOLVED, LANDED
 
-An agent reported a `ConcludeWorktree` teardown failure: the daemon connection
-ended before the complete reply ("failed to fill whole buffer"); teardown was
-not confirmed; workspaces were left intact; crash vs broken connection is
-undistinguished. Investigation is running in parallel (separate session); this
-packet is a placeholder, not dispatchable from this plan.
+Diagnosed 2026-07-17 (bead `primary-p4h7`): two stacked defects, neither a
+crash. (1) The schema-rust-emitted daemon spine closed the socket with no
+reply frame on any engine error — clients read EOF ("failed to fill whole
+buffer") and could not distinguish domain error from daemon death. Fixed in
+the emitter: every decoded request now answers with a complete frame; engine
+failures carry a typed `EngineRefusal` under a reserved header
+(schema-rust 0.7.1 backport `bc964c4f` for the deployable line; 0.9.0 on
+main). (2) Rejected-worktree teardown deterministically failed on an empty
+undescribed working-copy commit (jj push refusal); fixed with the salvage
+revset + bookmark cleanup. Both landed on all mains in the 2026-07-17
+integration pass; the phase-1 trust gate is OPEN.
 
-- Repos: `orchestrate` (likely reply write path or socket lifecycle), possibly
-  `signal-orchestrate` framing.
-- Dependency edge: gates TRUST in phase 1 — liveness/abandonment must not go
-  live on a daemon whose replies can truncate mid-operation, because a
-  truncated conclusion is exactly what the abandonment machinery would then
-  act on. Phase 1 code may land, but its activation waits on this diagnosis.
-- Verification: reproduce or root-cause the truncation; regression test on the
-  reply path.
-- Single fresh context: yes, once the parallel investigation reports.
+### 0.2 Migration safety + Mirror coverage — LANDED (bead `primary-4khu`)
 
-### 0.2 Migration safety + Mirror coverage (accepted by psyche)
-
-- Content: automatic pre-migration store backup inside the daemon's migration
-  path (before any `OrchestrateStoreMigration` runs, snapshot the store using
-  the existing preserve-naming convention); migration tests against captured
-  real stores (fixtures from the preserved production copies already on disk);
-  a check that every registered sema family is carried by the handover Mirror
-  snapshot (protects every later packet mechanically).
-- Repos: `orchestrate`. Store families: none added; migration machinery only.
-- Depends on: nothing. Everything store-touching depends on it.
-- Verification: migration test suite green against at least one captured real
-  store; a deliberately-omitted-family fixture fails the Mirror check.
-- Single fresh context: yes.
+Landed 2026-07-17: automatic pre-migration preserve (typed fail-closed
+`Error::PreMigrationPreserve`; preserve taken before the first repair) and the
+fixture-gated migration harness (`tests/store_migration_fixtures.rs`, loading
+captured real stores from `ORCHESTRATE_MIGRATION_FIXTURE_DIRECTORY`, skipping
+cleanly when absent — privacy gate: no real store content in the public repo).
+Proven: the captured outage store migrates to the exact promised counts and
+its preserve replays to identical counts (rollback property); pre-v5 stores
+fail closed typed. Recorded residue: the daemon writes no operator-visible
+log line when a preserve is taken (candidate small follow-up).
 
 ### 0.3 Train intent authoring
 
@@ -159,38 +155,53 @@ packet is a placeholder, not dispatchable from this plan.
   selector drift.
 - Single fresh context: yes.
 
-### 0.4 Real repo identity (CONDITIONAL — psyche sequencing open)
+### 0.4 Real repo identity — BUILD NOW (bead `primary-9wxr`)
 
-`StoredRepository` is name + local path only; the psyche has ruled repo
-identity is real identity with path incidental, and the never-fork guard's
-repo-level block entries need it. Either an early packet here or deferred to
-the never-fork train — psyche's call (open question 3).
+Sequencing settled by the 2026-07-18 blessing (design §0e): early train
+packet, so messenger-era records are born carrying real identity.
+`StoredRepository` is name + local path only; the psyche's ruling is repo =
+real identity with path incidental, and both the never-fork guard's
+repo-level block entries and phase 2b's contention flow need the identity
+key.
 
 - Repos: `orchestrate` (+ `signal-orchestrate` if the repo vocabulary is on the
   wire). Store family change: `StoredRepository` gains real identity (remote
-  URL/identity); migration + Mirror addition required.
-- Depends on: 0.2.
+  URL/identity); migration + Mirror addition required (0.2 discipline; use the
+  landed fixture harness).
+- Depends on: 0.2 (landed).
 - Verification: migration test from a captured store; identity round-trip.
+- Single fresh context: yes.
+
+### 0.5 Sema-engine evolution primitive (bead `primary-rlg7`)
+
+Adopted by the 2026-07-18 blessing: each table family registers how to read
+its older shapes; the engine applies the chain at store open — replacing
+hand-written raw-catalog migrations (the recorded layering-violation debt).
+
+- Repos: `sema-engine`; consumers `orchestrate` + `message` adopt after.
+- Depends on: 0.2's fixture harness (acceptance runs against captured stores).
+  Not on the critical path; store-touching packets may land hand-written
+  migrations until it exists, then convert.
+- Verification: orchestrate's v7→v9 agent-registry migration re-expressed
+  through the primitive, green against the captured fixtures; no raw catalog
+  edits remain in consumers.
 - Single fresh context: yes.
 
 ## Phase 1 — Liveness (liveness-first per ruling)
 
-### 1.1 Kernel exit watch + typed death
+### 1.1 Kernel exit watch + typed death — LANDED
 
-- Content: `HarnessLivenessWatch` IO actor epolls `pidfd`s opened from
-  reachability records (`harness_pid` verified against `harness_start_time` to
-  defeat pid reuse); harness exit re-enters the daemon via the Signal socket
-  (the `LaneReclaimer` pattern); the owning agent gets a TYPED dead/crashed
-  status — no longer indistinguishable from idle. Store change: agent status
-  vocabulary gains the death state (this is also the "killed mark" source that
-  phase 4 consumes).
-- Repos: `orchestrate`; `signal-orchestrate` only if status is wire-visible in
-  observations.
-- Depends on: 0.2 (family change). Activation trust gated by 0.1.
-- Verification: spawn a real process, register reachability at it, kill it,
-  witness the typed transition via `Observe`; pid-reuse fixture (same pid, new
-  start time) does NOT fire.
-- Single fresh context: yes.
+Landed 2026-07-17 (orchestrate 0.8.0, schema v9): `HarnessLivenessWatch`
+holds pidfds on every Active agent's pin (start-time-verified against pid
+reuse; the wake is never trusted — transitions derive from `/proc`);
+exit re-enters the daemon and the agent gets typed
+`OrchestratorAgentStatus::Dead`, distinct from idle, with death re-stamping
+`last_activity` so terminal retention runs from the observation. End-to-end
+witnessed (kill a real process → Active→Dead through the wire `Observe`);
+pid-reuse fixture refuses to bind. Dead is the killed-mark source phase 4
+consumes. Note for 1.3: the branch already carries safe passthrough arms for
+the abandonment train's `LaneStatus::Suspect`, holding Suspect on the
+Active-sized reaper window until 1.3 sets the 15-min grace.
 
 ### 1.2 Activity read (psyche-ruled §3.3)
 
@@ -226,61 +237,102 @@ its landed commits; it folds in only what is missing:
   conclusion re-enters `Active` on touch within grace.
 - Single fresh context: yes, given the coordination check.
 
-## Phase 2 — Launch-minted identity (psyche-ruled §7)
+## Phase 2 — Launch identity (psyche-ruled §7 + §0d Q2: the orchestrator is the mint)
 
-### 2.1 messenger.sema birth: identity + delivery registry family
+### 2.1 messenger.sema birth: identity + delivery registry — LANDED as built
 
-- Content: the messenger's first durable family — the process↔ID map and local
-  delivery registry (one family per §2g: agent ID → live endpoint, harness
-  resume identity, killed/dead mark, pid + start time). A messenger operation
-  for launch-time identity acquisition (e.g. `AssignAgentIdentity`: pid, start
-  time, resume identity in → new or reused ID out), using spirit's mint
-  discipline (random base36, 4 chars growing on conflict; uniqueness domain =
-  this map). This honors both adopted leans: terminal-cell acquires at launch;
-  the messenger owns the map and therefore the uniqueness check. If the
-  implementer finds a materially simpler local-mint-with-conflict-retry shape,
-  that is implementer matter INSIDE the invariant "messenger owns the
-  authoritative map".
-- Repos: `message`, `signal-message` (new operation + reply vocabulary).
-- Store: `messenger.sema` created (flips the "SEMA honestly empty" invariant in
-  the message ARCHITECTURE — rewrite it in this packet).
-- Depends on: 0.2 discipline (new store; messenger has no Mirror equivalent —
-  confirm whether messenger participates in any handover snapshot; if not,
-  note that in ARCHITECTURE).
-- Verification: mint round-trip; conflict growth; resume reuse; registry
-  persistence across daemon restart (the durability the router registry never
-  had).
+Landed 2026-07-17 (signal-message 0.5.0, message 0.7.0): `messenger.sema`
+born with the `agent-registry` family (agent ID → endpoint, resume identity,
+killed mark, pid + start-time pin), spirit's mint algorithm verbatim, wire
+ops `AssignAgentIdentity`/`BindAgentEndpoint`/`QueryAgentRegistry`, registry
+persistence across reopen proven. **As-built mint semantics are superseded**
+by the §0d Q2 ruling — the messenger-side mint relocates in 2.1a; the durable
+registry itself stands as the messenger's consumer view of IDs (+ threads in
+3.1).
+
+### 2.1a Mint relocation to the orchestrator (bead `primary-sdgy`; implementer dispatched)
+
+- Content: the ORCHESTRATOR becomes the mint — it creates the agent ID
+  (spirit mint discipline moves/is invoked orchestrator-side; uniqueness
+  domain = the orchestrator's registry) and PUSHES minted identities into the
+  messenger's registry (§0e reconciliation: the messenger never polls; it
+  reads its own pushed-to registry). The messenger's `AssignAgentIdentity`
+  either retires or becomes the push-ingestion arm — implementer contract
+  call, recorded in both ARCHITECTUREs.
+- Repos: `orchestrate` (+ `signal-orchestrate` if mint is wire-visible),
+  `message`, `signal-message` (op reshape).
+- Depends on: 2.1 (landed). Bead brief is authoritative.
+- Verification: mint happens orchestrator-side before launch; messenger
+  registry row appears by push with no messenger-side mint; uniqueness holds
+  across both stores' views.
 - Single fresh context: yes.
 
-### 2.2 terminal-cell launch mint + initial-prompt delivery
+### 2.2 Pre-launch mint + launch through the harness component
 
-- Content: at session spawn, terminal-cell acquires the agent ID from the
-  messenger (2.1 operation) — or reuses the session's existing ID on resume —
-  writes it into the session directory (alongside `child.pid`/`data.sock`),
-  injects it into the agent's initial prompt ("you are agent <id>"), and the
-  registration also records the session's resume identity. Resume detection and
-  ID persistence live in the session directory.
-- Repos: `terminal-cell`.
-- Depends on: 2.1.
-- Verification: launch → agent's initial prompt carries the ID; relaunch with
-  resume → same ID; messenger map shows the live pid for the ID.
-- Single fresh context: yes.
+- Content: the spawn chain per §0d — the orchestrator allocates the ID
+  **before the process starts**, then launches through the harness component
+  (the existing orchestrate→harness `meta-signal-harness` authority chain);
+  terminal-cell, beneath, writes the ID into the session directory (alongside
+  `child.pid`/`data.sock`), injects it into the agent's initial prompt ("you
+  are agent <id>"), and records the session's resume identity. Resume
+  detection reuses the session's existing ID (mint reuse, not re-mint).
+- Repos: `orchestrate` (spawn/mint seam), `harness` (+ `meta-signal-harness`
+  if the launch op needs vocabulary), `terminal-cell` (session-dir + prompt
+  injection).
+- Depends on: 2.1a.
+- Verification: orchestrator-initiated launch → agent's initial prompt
+  carries the pre-allocated ID; relaunch with resume → same ID; messenger
+  registry shows the live pid for the ID via the push.
+- Single fresh context: borderline (three repos); split harness-launch from
+  terminal-cell-injection if heavy — the decision shape is one packet.
 
-### 2.3 orchestrate binds the pre-minted ID
+### 2.3 Registration binds the pre-minted ID
 
 - Content: registration BINDS the already-minted ID; it no longer mints
   (amendment 8). Orchestrate's reachability discovery already walks to the
-  terminal-cell session directory — it now also reads the launch-minted ID
-  there and binds the registration to it. Whether `RegisterAgent` additionally
-  carries the ID on the wire is a contract decision for the implementer (the
-  discovery-read path needs no request change and keeps the no-caller-supplied
-  -reachability rule; a wire slot would need `signal-orchestrate` vocabulary) —
-  decide inside the packet, record in ARCHITECTURE.
+  terminal-cell session directory — it now also reads the launch ID there and
+  binds the registration to it. Whether `RegisterAgent` additionally carries
+  the ID on the wire is a contract decision for the implementer (the
+  discovery-read path needs no request change and keeps the
+  no-caller-supplied-reachability rule) — decide inside the packet, record in
+  ARCHITECTURE.
 - Repos: `orchestrate` (+ `signal-orchestrate` if the wire slot is chosen).
 - Depends on: 2.2.
 - Verification: register from a terminal-cell session → registry keyed by the
-  launch ID; the minted-at-registration path is gone.
+  launch ID; no minted-at-registration path remains.
 - Single fresh context: yes.
+
+## Phase 2b — Contention-flow MVP (bead `primary-qz9l`; implementer dispatched)
+
+Psyche-dictated now-scope (design §0d a–e) with the Q1 ruling: MVP merges
+clean branches into main automatically — "we'll build review into that later.
+first MVP doesnt, just merge in main" (review gate = deferred packet, bead
+`primary-njmu`). The bead brief is authoritative for packet scope; the split
+below is the expected acceptance-boundary shape:
+
+- **2b.1 Repo-taken automatic answer** — an agent claiming a taken repo's
+  main is answered automatically with the typed contention reply instead of a
+  bare refusal.
+- **2b.2 Feature-named lane → auto-worktree + branch** — lane registration's
+  PascalCase feature name becomes the feature branch; orchestrate creates the
+  worktree in the known place by default (the existing `RequestWorktree`
+  scaffold becomes the contention default rather than an explicit request).
+- **2b.3 Release-time branch-started message** — the new message type to the
+  agent releasing a repo's main lane: a feature branch was started off this
+  repo while you held it. (Delivery leg: parks on phase 3 for real messenger
+  delivery; until 3.2a lands, surface it in the release reply.)
+- **2b.4 Tracked auto-rebase + MVP auto-merge** — orchestrate tracks what it
+  created; first finished work lands on latest main (simple rebase), later
+  branches auto-rebase; clean rebase → merge into main, no review gate.
+  Conflicted or unfinished branches park for the (deferred) review flow.
+- Repos: `orchestrate`, `signal-orchestrate` (contention reply + message
+  vocabulary), touches the worktree registry machinery landed with
+  `ConcludeWorktree`.
+- Depends on: 0.4 (real repo identity — the contention key), 1.1 (landed);
+  2b.3's delivery leg on phase 3.
+- Verification: two-agent contention fixture — second claimant gets the typed
+  answer + auto-worktree; release emits the branch-started notice; a clean
+  branch auto-merges to main; a conflicted branch parks.
 
 ## Phase 3 — Messenger promotion (B1)
 
@@ -329,12 +381,14 @@ its landed commits; it folds in only what is missing:
   vocabulary intact; messenger local delivery still green (3.2a tests).
 - Single fresh context: yes.
 
-### 3.3 Orchestrate → messenger reachability push
+### 3.3 Orchestrate → messenger identity/reachability push
 
-- Content: per push-not-pull, orchestrate is the producer and PUSHES agent
-  registration + reachability (terminal-cell endpoint or remote-host marker)
-  into the messenger's delivery registry via a subscription; the messenger
-  never polls. Replaces the router `RegisterActor` propagation leg
+- Content: per push-not-pull, orchestrate is the producer and PUSHES minted
+  identities (2.1a), agent registration, and reachability (terminal-cell
+  endpoint or remote-host marker) into the messenger's delivery registry via
+  a subscription; the messenger never polls — "the messenger can get a list
+  of existing agent IDs" is satisfied by reading its own pushed-to registry
+  (§0e reconciliation). Replaces the router `RegisterActor` propagation leg
   (`router_registration.rs`) — that leg retires with it. Death/killed
   transitions (1.1) ride the same push (consumed in 4.1).
 - Repos: `orchestrate`, `message`, `signal-message` (subscription vocabulary).
@@ -399,10 +453,14 @@ its landed commits; it folds in only what is missing:
   terminal-cell relaunch with resume; claude via `claude --resume <session-id>`
   (a NEW process appending a turn to the persisted transcript — the
   industry-standard Traycer-shape mechanism; there is no live-TUI reattach for
-  a plainly-launched claude). Codex leg deferred (controller-owned sessions
-  only upstream; see open question 6). The spawn effect executes through
-  terminal-cell so the respawned session gets a session directory, its
-  existing ID (2.2 resume path), and future reachability.
+  a plainly-launched claude). Claude posture per bead `primary-vpdx`
+  (blessing-adopted): launcher-launched claude sessions carry the cooperative
+  channel flag for LIVE reach (flag verification is that bead's pre-task);
+  plain launches stay cold-respawn-only; the cloud remote-control path is
+  off-limits by default. Codex leg deferred-by-lean (bead `primary-ohrb`).
+  The spawn effect executes through terminal-cell so the respawned session
+  gets a session directory, its existing ID (2.2 resume path), and future
+  reachability.
 - Repos: `message`, `terminal-cell` (spawn surface), `harness` (pi leg if the
   harness daemon owns the pi resume).
 - Depends on: 4.1, 2.2.
@@ -421,6 +479,21 @@ its landed commits; it folds in only what is missing:
 - Depends on: 4.1.
 - Verification: send to a killed agent → sender receives the typed bounce; no
   respawn attempted.
+- Single fresh context: yes.
+
+### 4.4 Harness lifecycle push event stream (bead `primary-s4ep`; post-messenger-core)
+
+- Content: the harness daemon grows a push lifecycle event stream
+  (turn-started/idle/stalled/resumed/exited); the orchestrator subscribes
+  once; liveness consumes the events as enrichment alongside pidfd exit-push
+  and the §3.3 activity read — "alive but stuck" finally has an event.
+  Blessing-adopted with explicit sequencing: after the messenger core
+  (phases 2–3), never displacing the critical path.
+- Repos: `harness` (+ `signal-harness` vocabulary), `orchestrate`
+  (subscription side).
+- Depends on: phase 3 core landed; 1.1 (status vocabulary).
+- Verification: events arrive pushed with no polling; a stalled-but-alive
+  fixture is distinguishable from busy and from dead.
 - Single fresh context: yes.
 
 ## Phase 5 — Rename sweep (B4, last)
@@ -445,18 +518,22 @@ its landed commits; it folds in only what is missing:
 ## Dependency edges (compact)
 
 ```
-0.2 -> {0.4, 1.1, 2.1, 3.1, 4.1}          (store-touching discipline)
-0.1 -> activation of {1.1, 1.2, 1.3}       (trust gate, code may land)
+[LANDED: 0.1, 0.2, 1.1, 2.1]               (trust gate OPEN)
+0.2 -> {0.4, 0.5, 3.1, 4.1}                (store-touching discipline)
 0.3 -> first cross-repo train verification
+0.4 -> 2b                                  0.5 -> (conversion, off critical path)
 1.1 -> 1.2 -> (1.3 wiring)                 1.1 -> 4.1
-2.1 -> {2.2, 3.1, 3.2a, 3.3}               2.2 -> {2.3, 4.2}
-3.1 -> 3.2a -> {3.2b, 3.5}                 3.3 -> {3.4, 3.5, 4.1}
-3.2a -> 3.4                                4.1 -> {4.2, 4.3}
+2.1 -> 2.1a -> 2.2 -> {2.3, 4.2}           2.1 -> {3.1, 3.2a, 3.3}
+2b.3 delivery leg -> 3.2a                  3.1 -> 3.2a -> {3.2b, 3.5}
+3.3 -> {3.4, 3.5, 4.1}                     3.2a -> 3.4
+4.1 -> {4.2, 4.3}                          phase 3 -> 4.4
 {all} -> 5.1
 ```
 
-Parallelizable from day one: 0.2, 0.3, 1.1, 2.1 (four independent starts).
-The critical path to a working messenger is 2.1 → 3.1 → 3.2a → 3.4.
+Dispatchable now, independent: 0.3, 0.4, 0.5, 1.2, 1.3 (after its
+coordination check), 2.1a (dispatched), 2b.1/2b.2 (dispatched under
+`primary-qz9l`), 3.1. Critical path to a working messenger:
+2.1(landed) → 3.1 → 3.2a → 3.4.
 
 ## Never-fork guard attachment points (not built here; not precluded)
 
@@ -468,32 +545,25 @@ The critical path to a working messenger is 2.1 → 3.1 → 3.2a → 3.4.
 - The liveness machinery (phase 1) is the guard's release valve for
   crashed-agent wedges — this train delivers it.
 
-## Open questions — psyche authority, NOT decided here
+## Former open questions — all resolved (2026-07-17/18)
 
-1. Claude subagents in the ID model (§7b, psyche's own open question): how do
-   subagents running inside a harness process — with no separate process for
-   the messenger to map — fit the launch-minted ID scheme? Manager proposal on
-   file (parent's ID/endpoint, parent relays, optional hierarchical suffix);
-   contracts must not bake subagent addressing until ruled.
-2. Sema-engine family-evolution primitive: recorded debt says the raw-catalog
-   migration workaround "needs a psyche design decision". This train ships
-   hand-written migrations under 0.2 discipline either way; whether to invest
-   in the engine primitive (and its shape) is the open design decision.
-3. Real repo identity sequencing: early train packet (0.4) or deferred to the
-   never-fork guard train?
-4. Harness lifecycle push subscription (design §3 open producer question):
-   should the harness daemon grow a push lifecycle event stream
-   (idle/stalled/resumed/exited) so liveness stops depending on exit-push +
-   activity reads alone? Scope and priority are the psyche's.
-5. Claude Code live-session delivery posture: pushing into a LIVE claude TUI
-   requires launching sessions with the cooperative Channels flag (unverified
-   on the installed build); otherwise claude delivery is cold-respawn only
-   (4.2). Is requiring a launch flag on claude sessions acceptable, and is the
-   cloud Remote Control path off-limits? (Carried from the harness report's
-   decision items.)
-6. Codex delivery leg: upstream supports controller-owned sessions only (no
-   attach to a human-launched TUI). Defer the codex leg, or adopt
-   spawn-through-app-server for codex sessions so they are drivable from birth?
+All six now carry resolution states; none block dispatch. Lean-adopted items
+keep their psyche-review flags (design §0e).
+
+1. Claude subagents: RESOLVED — parent-only working model adopted via general
+   blessing (§7b); threads give the group-addressing surface; no
+   subagent-suffix vocabulary in contracts pending psyche review.
+2. Sema-engine evolution primitive: RESOLVED-TO-BUILD by the 2026-07-18
+   blessing → packet 0.5, bead `primary-rlg7`.
+3. Real repo identity sequencing: RESOLVED — build now as packet 0.4, bead
+   `primary-9wxr`.
+4. Harness lifecycle push stream: RESOLVED — build post-messenger-core →
+   packet 4.4, bead `primary-s4ep`.
+5. Claude live-delivery posture: RESOLVED — launcher + cooperative flag for
+   live reach (flag verification is the bead's pre-task), plain launches
+   cold-only, cloud remote-control off-limits by default → bead
+   `primary-vpdx`.
+6. Codex leg: RESOLVED — deferred-by-lean → bead `primary-ohrb`.
 
 ## Unknowns for implementers (not psyche-blocking)
 
@@ -502,4 +572,5 @@ The critical path to a working messenger is 2.1 → 3.1 → 3.2a → 3.4.
   records the answer in ARCHITECTURE).
 - Which prior proof "RPC steer verified" used (intercom vs `--mode rpc`) —
   affects nothing in this plan; pi leg specifics settle inside 4.2.
-- The 0.1 truncation root cause (parallel investigation owns it).
+- ~~The 0.1 truncation root cause~~ — resolved and landed (see 0.1; bead
+  `primary-p4h7`).

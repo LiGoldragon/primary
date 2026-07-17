@@ -187,6 +187,43 @@ place (§0c, §7) with history kept.
   they consult or escalate to their manager when a message contradicts their
   initial instructions.
 
+## 0e · Fourth-batch blessing (2026-07-18) — open slate adopted by leans
+
+The psyche answered the remaining open slate with, verbatim: **"go with your
+leans, and report back with visuals"**. The manager's leans are ADOPTED —
+each recorded accepted-via-general-blessing with a PSYCHE-REVIEW FLAG,
+manager-lean wording preserved:
+
+- **Deploy v0.8.0** — adopted; deployment dispatched in parallel with this
+  record. (Production was v0.7.2; main carries reply-hardening,
+  migration-safety, the teardown fix, and pidfd exit-watch.)
+- **Sema-engine evolution primitive: BUILD.** Lean verbatim: "each table
+  family registers how to read its older shapes; the engine applies the chain
+  at store open, replacing hand-written raw-catalog migrations." → bead
+  `primary-rlg7`.
+- **Real repo identity: build NOW** as early train packet 0.4 (repo = real
+  remote identity; local path incidental — the identity principle itself is a
+  direct psyche ruling; only the timing is lean-adopted). → bead
+  `primary-9wxr`.
+- **Harness lifecycle push event stream** (turn-started/idle/exited):
+  accepted, sequenced AFTER the messenger core — not on the critical path.
+  Resolves §3's open producer question to build-later. → bead `primary-s4ep`.
+- **Claude live-delivery posture:** Claude sessions launch through our
+  launcher with the cooperative channel flag so they are live-reachable;
+  plainly-launched sessions stay cold-respawn-only; the Anthropic-cloud
+  remote-control path is off-limits by default (closed-by-default privacy).
+  Pre-task: the flag is unverified on the installed build. → bead
+  `primary-vpdx`.
+- **Codex delivery: deferred** (deferred-by-lean). → bead `primary-ohrb`.
+
+**§2e push-vs-pull reconciliation (manager-applied doctrine, flagged for
+review):** §0d's "the messenger can get a list of existing agent IDs"
+(pull-shaped) reconciles with §2e's push-not-pull as: the orchestrator PUSHES
+minted identities into the messenger's delivery registry; the messenger "gets
+the list" by reading its own pushed-to registry. No polling exists anywhere;
+the psyche's sentence is satisfied by the registry being present, not by a
+query to orchestrate.
+
 ## 1 · Ground truth (deltas since the prior checkpoint)
 
 - `signal-orchestrate` now carries `ConcludeWorktree(WorktreeConclusionRequest)`

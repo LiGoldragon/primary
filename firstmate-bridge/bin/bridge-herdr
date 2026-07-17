@@ -1,0 +1,561 @@
+#!/usr/bin/env bash
+# Private, local Herdr session backend for the temporary First Mate bridge.
+set -euo pipefail
+IFS=$'\n\t'
+
+bridge_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+bridge="$bridge_root/bin/bridge"
+bridge_home=${FIRST_MATE_BRIDGE_HOME:-"$bridge_root/.local"}
+herdr_directory="$bridge_home/herdr"
+profile="$herdr_directory/profile"
+config="$herdr_directory/config.toml"
+session_file="$herdr_directory/session-name"
+workers_directory="$herdr_directory/workers"
+
+# v0.7.4 was the current stable release when this backend was added. The commit
+# is the peeled, signed-release source resolved from the upstream release tag.
+readonly HERDR_VERSION=0.7.4
+readonly HERDR_RELEASE_TAG=v0.7.4
+readonly HERDR_RELEASE_COMMIT=50aaa2ec046ee26ff407c20f49de496f522512a8
+readonly HERDR_NIX_SOURCE="github:ogulcancelik/herdr/$HERDR_RELEASE_TAG"
+readonly BRIDGE_SESSION=firstmate-bridge
+readonly BRIDGE_WORKSPACE=firstmate-bridge
+
+fail() {
+	printf 'bridge-herdr: %s\n' "$*" >&2
+	exit 2
+}
+
+usage() {
+	cat <<'EOF'
+usage:
+  bridge-herdr install
+  bridge-herdr configure
+  bridge-herdr status
+  bridge-herdr start <worker-id> <proposal-id> <decision-id> -- <worker-command> [args...]
+  bridge-herdr observe <worker-id>
+  bridge-herdr send <worker-id> <message-file>
+  bridge-herdr finish <worker-id> <report-id>
+  bridge-herdr shutdown
+  bridge-herdr remove
+  bridge-herdr smoke
+
+The backend is private and local at $FIRST_MATE_BRIDGE_HOME/herdr when set,
+otherwise <bridge-root>/.local/herdr. install creates a Nix profile there;
+no global profile, SSH configuration, remote attach, worktree, credential, or
+network service is configured. start requires bridge validate to pass first.
+finish requires bridge validate-report to pass before the worker pane closes.
+EOF
+}
+
+check_home() {
+	case "$bridge_home" in
+	/*) ;;
+	*) fail 'FIRST_MATE_BRIDGE_HOME must be an absolute path' ;;
+	esac
+	[ "$bridge_home" != / ] || fail 'FIRST_MATE_BRIDGE_HOME must not be /'
+}
+
+valid_identifier() {
+	[[ $1 =~ ^[a-z0-9][a-z0-9-]{0,63}$ ]]
+}
+
+require_identifier() {
+	valid_identifier "$1" || fail "invalid identifier: $1"
+}
+
+ensure_private_directory() {
+	mkdir -p "$1"
+	chmod 700 "$1"
+}
+
+ensure_layout() {
+	check_home
+	umask 077
+	ensure_private_directory "$bridge_home"
+	ensure_private_directory "$herdr_directory"
+	ensure_private_directory "$workers_directory"
+	if [ ! -e "$session_file" ]; then
+		printf '%s\n' "$BRIDGE_SESSION" >"$session_file"
+		chmod 600 "$session_file"
+	fi
+	[ -f "$session_file" ] || fail "session name is not a regular file: $session_file"
+	[ "$(cat "$session_file")" = "$BRIDGE_SESSION" ] ||
+		fail "unexpected session name in $session_file"
+	if [ ! -e "$config" ]; then
+		cat >"$config" <<'EOF'
+# Managed by firstmate-bridge. This private config deliberately disables
+# remote access helpers, updates, sounds, notifications, pane-history storage,
+# and native session restoration for the bridge's disposable worker sessions.
+onboarding = false
+
+[update]
+version_check = false
+manifest_check = false
+
+[remote]
+manage_ssh_config = false
+
+[ui.toast]
+delivery = "off"
+
+[ui.sound]
+enabled = false
+
+[session]
+resume_agents_on_restore = false
+
+[experimental]
+pane_history = false
+EOF
+		chmod 600 "$config"
+	fi
+	[ -f "$config" ] || fail "Herdr configuration is not a regular file: $config"
+}
+
+herdr_binary() {
+	local binary="$profile/bin/herdr"
+	[ -x "$binary" ] || fail "Herdr is not installed at $binary; run: $bridge_root/bin/bridge-herdr install"
+	printf '%s' "$binary"
+}
+
+verify_herdr() {
+	local binary version
+	binary=$(herdr_binary)
+	version=$("$binary" --version 2>&1) || fail 'Herdr --version failed'
+	case "$version" in
+	*"$HERDR_VERSION"*) ;;
+	*) fail "expected Herdr $HERDR_VERSION, got: $version" ;;
+	esac
+	command -v jq >/dev/null 2>&1 || fail 'jq is required to parse Herdr responses'
+}
+
+session_name() {
+	ensure_layout
+	cat "$session_file"
+}
+
+herdr_scoped() {
+	local session=$1
+	shift
+	HERDR_CONFIG_PATH="$config" HERDR_SESSION="$session" "$(herdr_binary)" "$@" --session "$session"
+}
+
+herdr_unscoped() {
+	HERDR_CONFIG_PATH="$config" "$(herdr_binary)" "$@"
+}
+
+server_running() {
+	local session=$1 output
+	output=$(herdr_scoped "$session" status --json 2>/dev/null || true)
+	[ -n "$output" ] && printf '%s' "$output" | jq -e '.server.running == true' >/dev/null 2>&1
+}
+
+ensure_server() {
+	local session=$1 attempt
+	server_running "$session" && return 0
+	(herdr_scoped "$session" server >"$herdr_directory/server.log" 2>&1 &) ||
+		fail "could not start Herdr server for session $session"
+	for attempt in $(seq 1 20); do
+		server_running "$session" && return 0
+		sleep 0.5
+	done
+	fail "Herdr server for session $session did not become ready; see $herdr_directory/server.log"
+}
+
+worker_file() {
+	printf '%s/%s.env' "$workers_directory" "$1"
+}
+
+worker_value() {
+	local file=$1 key=$2
+	sed -nE "s/^${key}=([^[:space:]]+)$/\\1/p" "$file"
+}
+
+active_worker_count() {
+	find "$workers_directory" -maxdepth 1 -type f -name '*.env' -printf . | wc -c
+}
+
+require_worker_file() {
+	local worker_id=$1 file
+	require_identifier "$worker_id"
+	file=$(worker_file "$worker_id")
+	[ -f "$file" ] || fail "worker is not active: $worker_id"
+	printf '%s' "$file"
+}
+
+workspace_id() {
+	local session=$1 listed found
+	listed=$(herdr_scoped "$session" workspace list)
+	found=$(printf '%s' "$listed" | jq -er --arg wanted "$BRIDGE_WORKSPACE" '
+		[.result.workspaces[]? | select(.label == $wanted)] as $matches |
+		if ($matches | length) == 1 then $matches[0].workspace_id
+		elif ($matches | length) == 0 then empty
+		else error("ambiguous bridge workspace")
+		end
+	' 2>/dev/null || true)
+	if [ -n "$found" ]; then
+		printf '%s' "$found"
+		return 0
+	fi
+	listed=$(herdr_scoped "$session" workspace create --cwd "$bridge_root" --label "$BRIDGE_WORKSPACE" --no-focus)
+	printf '%s' "$listed" | jq -er '.result.workspace.workspace_id' ||
+		fail 'Herdr did not return a workspace id'
+}
+
+install() {
+	ensure_layout
+	if [ ! -x "$profile/bin/herdr" ]; then
+		command -v nix >/dev/null 2>&1 || fail 'Nix is required to install the private Herdr profile'
+		nix profile add --profile "$profile" "$HERDR_NIX_SOURCE"
+	fi
+	local binary
+	verify_herdr
+	binary=$(herdr_binary)
+	printf 'HERDR_VERSION=%s\n' "$("$binary" --version 2>&1)"
+	printf 'HERDR_SOURCE=%s#%s\n' "$HERDR_NIX_SOURCE" "$HERDR_RELEASE_COMMIT"
+	printf 'HERDR_PROFILE=%s\n' "$profile"
+	printf 'HERDR_CONFIG=%s\n' "$config"
+	printf 'HERDR_SESSION=%s\n' "$(session_name)"
+}
+
+configure() {
+	ensure_layout
+	verify_herdr
+	printf 'HERDR_CONFIG=%s\n' "$config"
+	printf 'HERDR_SESSION=%s\n' "$(session_name)"
+	printf 'HERDR_PRIVACY=local-only-no-remote-no-history\n'
+}
+
+status() {
+	local session binary
+	ensure_layout
+	verify_herdr
+	binary=$(herdr_binary)
+	session=$(session_name)
+	printf 'HERDR_VERSION=%s\n' "$("$binary" --version 2>&1)"
+	printf 'HERDR_SOURCE=%s#%s\n' "$HERDR_NIX_SOURCE" "$HERDR_RELEASE_COMMIT"
+	printf 'HERDR_PROFILE=%s\n' "$profile"
+	printf 'HERDR_CONFIG=%s\n' "$config"
+	printf 'HERDR_SESSION=%s\n' "$session"
+	printf 'HERDR_ACTIVE_WORKERS=%s\n' "$(active_worker_count)"
+	if server_running "$session"; then
+		herdr_scoped "$session" status --json
+	else
+		printf 'HERDR_SERVER=stopped\n'
+	fi
+}
+
+start() {
+	[ "$#" -ge 5 ] || fail 'usage: bridge-herdr start <worker-id> <proposal-id> <decision-id> -- <worker-command> [args...]'
+	local worker_id=$1 proposal_id=$2 decision_id=$3 separator=$4
+	shift 4
+	[ "$separator" = -- ] || fail 'start requires -- before the worker command'
+	[ "$#" -gt 0 ] || fail 'start requires a worker command'
+	require_identifier "$worker_id"
+	require_identifier "$proposal_id"
+	require_identifier "$decision_id"
+	ensure_layout
+	verify_herdr
+	[ "$(active_worker_count)" -eq 0 ] || fail 'one bridge worker is already active; finish its validated report first'
+	[ ! -e "$(worker_file "$worker_id")" ] || fail "worker record already exists: $worker_id"
+	"$bridge" validate "$proposal_id" "$decision_id" >/dev/null
+	local session workspace response agent_name pane_id record
+	session=$(session_name)
+	ensure_server "$session"
+	workspace=$(workspace_id "$session")
+	agent_name="bridge-$worker_id"
+	response=$(herdr_scoped "$session" agent start "$agent_name" --cwd "$bridge_root" --workspace "$workspace" --no-focus -- "$@")
+	pane_id=$(printf '%s' "$response" | jq -r '.result.agent.pane_id // .result.pane.pane_id // empty')
+	if [ -z "$pane_id" ]; then
+		for _ in $(seq 1 10); do
+			pane_id=$(herdr_scoped "$session" agent get "$agent_name" 2>/dev/null \
+				| jq -r '.result.agent.pane_id // empty' 2>/dev/null || true)
+			[ -n "$pane_id" ] && break
+			sleep 0.2
+		done
+	fi
+	[ -n "$pane_id" ] || fail "Herdr started $agent_name but did not return its pane id"
+	record=$(worker_file "$worker_id")
+	cat >"$record" <<EOF
+session=$session
+workspace=$workspace
+pane=$pane_id
+agent=$agent_name
+proposal=$proposal_id
+decision=$decision_id
+EOF
+	chmod 600 "$record"
+	printf 'HERDR_WORKER=%s\n' "$worker_id"
+	printf 'HERDR_AGENT=%s\n' "$agent_name"
+	printf 'HERDR_SESSION=%s\n' "$session"
+	printf 'HERDR_WORKSPACE=%s\n' "$workspace"
+	printf 'HERDR_PANE=%s\n' "$pane_id"
+}
+
+observe() {
+	[ "$#" -eq 1 ] || fail 'usage: bridge-herdr observe <worker-id>'
+	local worker_id=$1 file session agent
+	ensure_layout
+	verify_herdr
+	file=$(require_worker_file "$worker_id")
+	session=$(worker_value "$file" session)
+	agent=$(worker_value "$file" agent)
+	[ -n "$session" ] && [ -n "$agent" ] || fail "invalid worker record: $file"
+	printf 'HERDR_WORKER=%s\n' "$worker_id"
+	herdr_scoped "$session" agent get "$agent"
+	herdr_scoped "$session" agent read "$agent" --source recent-unwrapped --lines 80
+}
+
+send() {
+	[ "$#" -eq 2 ] || fail 'usage: bridge-herdr send <worker-id> <message-file>'
+	local worker_id=$1 message_file=$2 file session pane message
+	require_identifier "$worker_id"
+	[ -f "$message_file" ] || fail "message file is not a regular file: $message_file"
+	ensure_layout
+	verify_herdr
+	file=$(require_worker_file "$worker_id")
+	session=$(worker_value "$file" session)
+	pane=$(worker_value "$file" pane)
+	[ -n "$session" ] && [ -n "$pane" ] || fail "invalid worker record: $file"
+	message=$(cat "$message_file")
+	[ -n "$message" ] || fail 'refusing to send an empty worker message'
+	herdr_scoped "$session" pane send-text "$pane" "$message" >/dev/null
+	herdr_scoped "$session" pane send-keys "$pane" enter >/dev/null
+	printf 'HERDR_MESSAGE_DELIVERED=%s\n' "$worker_id"
+}
+
+finish() {
+	[ "$#" -eq 2 ] || fail 'usage: bridge-herdr finish <worker-id> <report-id>'
+	local worker_id=$1 report_id=$2 file session pane proposal decision report_file
+	require_identifier "$worker_id"
+	require_identifier "$report_id"
+	ensure_layout
+	verify_herdr
+	file=$(require_worker_file "$worker_id")
+	session=$(worker_value "$file" session)
+	pane=$(worker_value "$file" pane)
+	proposal=$(worker_value "$file" proposal)
+	decision=$(worker_value "$file" decision)
+	report_file="$bridge_home/reports/$report_id.md"
+	[ -f "$report_file" ] || fail "report is not a regular file: $report_file"
+	grep -Fqx "Proposal: $proposal" "$report_file" || fail "report does not belong to worker proposal: $report_file"
+	grep -Fqx "Decision: $decision" "$report_file" || fail "report does not belong to worker decision: $report_file"
+	"$bridge" validate-report "$report_id" >/dev/null
+	if server_running "$session"; then
+		herdr_scoped "$session" pane close "$pane" >/dev/null 2>&1 || true
+	fi
+	rm -f -- "$file"
+	printf 'HERDR_REPORT_GATE=passed\n'
+	printf 'HERDR_WORKER_FINISHED=%s\n' "$worker_id"
+}
+
+session_list_contains() {
+	local session=$1 listed
+	listed=$(herdr_unscoped session list --json 2>/dev/null || true)
+	printf '%s' "$listed" | jq -e --arg wanted "$session" '
+		.result.sessions[]? | if type == "string" then . == $wanted else (.name // .session_name // empty) == $wanted end
+	' >/dev/null 2>&1
+}
+
+shutdown() {
+	[ "$#" -eq 0 ] || fail 'usage: bridge-herdr shutdown'
+	local session
+	ensure_layout
+	verify_herdr
+	[ "$(active_worker_count)" -eq 0 ] || fail 'refusing shutdown while a worker lacks a validated report; run finish first'
+	session=$(session_name)
+	if session_list_contains "$session"; then
+		herdr_scoped "$session" session stop "$session" --json >/dev/null
+		herdr_scoped "$session" session delete "$session" --json >/dev/null
+	fi
+	printf 'HERDR_SHUTDOWN=passed\n'
+	printf 'HERDR_SESSION_REMOVED=%s\n' "$session"
+}
+
+remove() {
+	[ "$#" -eq 0 ] || fail 'usage: bridge-herdr remove'
+	shutdown
+	rm -rf -- "$herdr_directory"
+	printf 'HERDR_BACKEND_REMOVED=%s\n' "$herdr_directory"
+}
+
+smoke_cleanup() {
+	local status=$?
+	set +e
+	if [ -x "$profile/bin/herdr" ] && [ -f "$config" ]; then
+		herdr_unscoped session stop "$BRIDGE_SESSION" --session "$BRIDGE_SESSION" --json >/dev/null 2>&1 || true
+		herdr_unscoped session delete "$BRIDGE_SESSION" --session "$BRIDGE_SESSION" --json >/dev/null 2>&1 || true
+	fi
+	[ -z "${smoke_directory:-}" ] || rm -rf -- "$smoke_directory"
+	exit "$status"
+}
+
+smoke() {
+	[ "$#" -eq 0 ] || fail 'usage: bridge-herdr smoke'
+	local original_home=$bridge_home smoke_project brain_dump message_file output report_file
+	smoke_directory=$(mktemp -d "${TMPDIR:-/tmp}/firstmate-bridge-herdr-smoke.XXXXXX")
+	trap smoke_cleanup EXIT INT TERM
+	export FIRST_MATE_BRIDGE_HOME="$smoke_directory/state"
+	bridge_home=$FIRST_MATE_BRIDGE_HOME
+	herdr_directory="$bridge_home/herdr"
+	profile="$original_home/herdr/profile"
+	config="$herdr_directory/config.toml"
+	session_file="$herdr_directory/session-name"
+	workers_directory="$herdr_directory/workers"
+	smoke_project=$(cd -- "$bridge_root/.." && pwd -P)
+	"$bridge" init "$smoke_project" >/dev/null
+	brain_dump="$smoke_directory/brain-dump.md"
+	cat >"$brain_dump" <<'EOF'
+# Herdr smoke request
+
+Create one visible local worker, send it a harmless line, observe its reply,
+and then close it only after a complete local report. Do not modify project
+source, use remote access, publish, merge, deploy, spend, or use credentials.
+EOF
+	"$bridge" intake herdr-smoke-request "$brain_dump" >/dev/null
+	"$bridge" proposal herdr-smoke-proposal herdr-smoke-request >/dev/null
+	"$bridge" decision herdr-smoke-decision herdr-smoke-proposal >/dev/null
+	cat >"$FIRST_MATE_BRIDGE_HOME/proposals/herdr-smoke-proposal.md" <<'EOF'
+# Proposal herdr-smoke-proposal
+
+Request: herdr-smoke-request
+Status: ready-for-worker
+Decision: herdr-smoke-decision
+
+## Problem
+Demonstrate that the local bridge creates, observes, and communicates with a visible Herdr worker.
+
+## Constraints
+Keep the demonstration local, disposable, source-free, and unable to publish, merge, deploy, spend, expose SSH, or expand credentials.
+
+## Options
+Use an isolated named Herdr session with one shell worker and a private bridge home.
+
+## Recommendation
+Use the isolated named session because it proves the real backend without touching a project checkout.
+
+## Decision needed
+Confirm the local disposable demonstration.
+
+## Authority and safety check
+The fixture records an explicit local-only decision and excludes all prohibited actions.
+
+## Worker plan
+Start one shell worker, send one harmless line, observe its echoed response, and close it through the report gate.
+
+## Validation plan
+Require bridge validate before start, Herdr output after send, bridge validate-report before finish, and session deletion at shutdown.
+EOF
+	cat >"$FIRST_MATE_BRIDGE_HOME/decisions/herdr-smoke-decision.md" <<'EOF'
+# Decision herdr-smoke-decision
+
+Proposal: herdr-smoke-proposal
+Status: human-confirmed
+Selected: run the isolated local Herdr smoke fixture
+Evidence: explicit confirmation recorded in this deterministic local fixture
+
+## Options considered
+The fixture selects a private Herdr session rather than Pi subagent dispatch or a remote service.
+
+## Human confirmation
+The fixture records the required explicit confirmation before worker dispatch.
+
+## Consequence
+One harmless local worker may be started and must finish through a validated report.
+EOF
+	"$bridge" validate herdr-smoke-proposal herdr-smoke-decision >/dev/null
+	start herdr-smoke-worker herdr-smoke-proposal herdr-smoke-decision -- \
+		sh -c 'printf "WORKER_READY\\n"; IFS= read -r message; printf "WORKER_RECEIVED:%s\\n" "$message"; while :; do sleep 60; done'
+	message_file="$smoke_directory/worker-message.txt"
+	printf '%s\n' 'hello-from-bridge' >"$message_file"
+	send herdr-smoke-worker "$message_file"
+	local worker_record session pane
+	worker_record=$(worker_file herdr-smoke-worker)
+	session=$(worker_value "$worker_record" session)
+	pane=$(worker_value "$worker_record" pane)
+	herdr_scoped "$session" wait output "$pane" --match 'WORKER_RECEIVED:hello-from-bridge' --source recent-unwrapped --timeout 10000 >/dev/null
+	output=$(observe herdr-smoke-worker)
+	printf '%s\n' "$output" | grep -F 'WORKER_RECEIVED:hello-from-bridge' >/dev/null ||
+		fail 'Herdr worker output did not contain the delivered message'
+	"$bridge" report herdr-smoke-report herdr-smoke-proposal herdr-smoke-decision >/dev/null
+	report_file="$FIRST_MATE_BRIDGE_HOME/reports/herdr-smoke-report.md"
+	cat >"$report_file" <<'EOF'
+# Worker report herdr-smoke-report
+
+Proposal: herdr-smoke-proposal
+Decision: herdr-smoke-decision
+Status: complete
+
+## Worker outcome
+A real local Herdr worker received and printed the coordinator message.
+
+## Changed files
+No project source files changed; all fixture state was private and temporary.
+
+## Commands run
+bridge validate; bridge-herdr start; bridge-herdr send; bridge-herdr observe; Herdr wait output; bridge validate-report; bridge-herdr finish; bridge-herdr shutdown.
+
+## Validation output
+Herdr emitted WORKER_RECEIVED:hello-from-bridge and both bridge gates passed.
+
+## Residual risks
+This fixture proves a shell worker transport path, not a production worker's reasoning or project validation.
+
+## Coordinator conclusion
+The worker session was visible, observed, communicated with, report-gated, and removed locally.
+EOF
+	finish herdr-smoke-worker herdr-smoke-report
+	shutdown
+	printf 'HERDR_SMOKE=passed\n'
+	printf 'HERDR_SMOKE_STATE_REMOVAL=%s\n' "$FIRST_MATE_BRIDGE_HOME"
+}
+
+command_name=${1:-}
+case "$command_name" in
+install)
+	shift
+	[ "$#" -eq 0 ] || fail 'usage: bridge-herdr install'
+	install
+	;;
+configure)
+	shift
+	[ "$#" -eq 0 ] || fail 'usage: bridge-herdr configure'
+	configure
+	;;
+status)
+	shift
+	[ "$#" -eq 0 ] || fail 'usage: bridge-herdr status'
+	status
+	;;
+start)
+	shift
+	start "$@"
+	;;
+observe)
+	shift
+	observe "$@"
+	;;
+send)
+	shift
+	send "$@"
+	;;
+finish)
+	shift
+	finish "$@"
+	;;
+shutdown)
+	shift
+	shutdown "$@"
+	;;
+remove)
+	shift
+	remove "$@"
+	;;
+smoke)
+	shift
+	smoke "$@"
+	;;
+-h|--help|help|'') usage ;;
+*) fail "unknown command: $command_name" ;;
+esac
