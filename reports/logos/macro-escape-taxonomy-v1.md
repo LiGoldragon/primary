@@ -283,14 +283,25 @@ another datum).
 
 - **Has it:** Lisp `gensym`, Clojure `foo#`, Racket `generate-temporary`, TH `newName`, Rust
   `format_ident!`, Julia/Elixir `gensym` / `Macro.var`.
-- **Nomos:** **largely dissolves; a narrow residue is the honest open.** **[local]** Two sub-cases:
-  - *Deriving* a name from a datum (e.g. an output field's name from its type and position) is
-    **automatic** under the deterministic derived-name rule and the field-name ban — the macro
-    author never writes it. This sub-case is fully absorbed.
-  - *Minting a fresh binder* (the classic gensym, avoiding capture of a temporary) is the residual.
-    In a value-transforming, single-expansion setting with no user-visible temporaries injected into
-    a shared lexical scope, it is unclear this ever arises. This is the **fourth-escape question**
-    flagged in `nomos-macro-model-v1.md §3`; §6 recommends against seating it pre-emptively.
+- **Nomos:** **dissolves *as string work*; a purely-typed identity analogue is the honest residue.**
+  **[local]** Every instance of this kind in the surveyed systems is **string work** — `gensym`
+  interns a symbol name, `format_ident!` concatenates strings, the derived-name rule
+  (`StateDigest` to `state_digest`, ordinal-word prefixing) lowercases and joins characters. Under
+  the no-strings invariant **none of that may occur inside the schema-to-logos transformation.** Two
+  sub-cases:
+  - *Deriving* an output name from a datum is **string manipulation and is therefore relocated
+    entirely out of the transformation** — it belongs to the NameTable channel that spells encoded
+    identities into text, downstream of the encoded flow. The transformation itself carries only the
+    opaque encoded identity; it never reads or builds the string.
+  - *Minting a fresh identity* (the gensym analogue) survives **only in de-stringed form**: a fresh
+    encoded identifier allocated as an **opaque typed value** by the central authority (like a
+    central-authority-assigned type id, `CoreUniverse::from_assignment` style), never a name built
+    from characters. This is not string synthesis — it is token-of-identity allocation, which the
+    no-strings rule permits.
+  So the *escape* dissolves (no synthesize-name escape is a string operation the transformation may
+  hold); what remains is at most opaque-identity allocation, which §6 argues is a runtime capability,
+  not an author-facing escape sigil. This is the honest fate of the fourth-escape question from
+  `nomos-macro-model-v1.md §3`.
 
 ### Kind 6 — Nested quoting levels / stage crossing: multiple quote depths
 
@@ -347,9 +358,10 @@ KIND                         SYSTEMS THAT SPELL IT (verbatim)                   
                                                                                  field names banned
 4 TYPE passing               TH ''T   Scala Type[T]  Zig comptime T:type          DISSOLVES -> type is a value
                              Nim typedesc   Julia (types are values)             -> realize (see section 5)
-5 name synthesis / gensym    Lisp gensym  Clojure foo#  TH newName                MOSTLY DISSOLVES -> derived
-                             Rust format_ident!   Racket generate-temporary      names automatic; fresh-binder
-                                                                                 residue = the flagged 4th open
+5 name synthesis / gensym    Lisp gensym  Clojure foo#  TH newName                DISSOLVES AS STRING WORK ->
+                             Rust format_ident!   Racket generate-temporary      derived names leave to NameTable;
+                                                                                 residue = opaque-identity alloc,
+                                                                                 not a string escape
 6 nested levels / staging    Lisp ``,,  OCaml/Scala/MetaML multi-stage            DISSOLVES -> single stage;
                                                                                  recursion is realize-of-a-call
 7 hygiene control            Scheme datum->syntax  Julia esc  Elixir var!         DISSOLVES -> no lexical scope
@@ -398,7 +410,66 @@ to be placed as a type reference) versus asking the callee to *compute over* tha
 fields, derive a name) — both are value operations here, differing only in what the callee does with
 the value, not in how it is escaped.
 
-## 6. Recommended minimal escape-kind set for typed-data Nomos
+## 6. The no-strings invariant, per escape kind
+
+**[local — 2026-07-19 ruling]** *"in the nomos transformation (schema to logos), there shall be no
+string manipulation/introduction/reading of any kind."* This is a settled invariant: inside the
+encoded transformation, strings are never touched, created, or read. Identifiers are opaque typed
+values (encoded identities); the actual text of a name is added only in the **NameTable channel**,
+outside the encoded transformation. Analyzed against each escape kind:
+
+- **Kinds 1 (realize) and 2 (splice):** unaffected. Both move whole *encoded values* into holes —
+  no character is read or built. A `Type` or a `Fields` value is transplanted opaquely. These are
+  the two primitives precisely because they are the string-free operations.
+- **Kind 4 (type passing):** unaffected and reinforced. A type flows as an opaque encoded identity;
+  nothing spells it. This is why type passing collapses so cleanly into realize under this rule.
+- **Kind 3 (name passing):** already dissolved, and the no-strings rule seals it — even a `Name`
+  meta-value is carried as an opaque encoded identity, never as text to read or match.
+- **Kind 5 (name synthesis / gensym):** **this is the kind the invariant bites.** Every real-world
+  spelling of it is string work — `gensym` interning a symbol, `format_ident!` concatenating,
+  `StateDigest`→`state_digest` lowercasing. **None of that may live inside the transformation.**
+  Deriving an output name is string manipulation and moves wholesale to the NameTable channel
+  downstream; minting a fresh identity survives only as **opaque-identity allocation** by the
+  central authority (a token of identity, like an assigned type id), which is not string work. So
+  the invariant converts "name synthesis" from a candidate escape into either (a) a downstream
+  NameTable concern or (b) a runtime identity-allocation capability — never an author-facing string
+  escape.
+- **Kind 6 (nested levels):** unaffected — single-stage, no name-building at any level.
+- **Kind 7 (hygiene control):** unaffected and over-determined — hygiene is a name-string
+  reconciliation problem, and with no strings and no lexical scope there is simply nothing to
+  reconcile.
+- **Kind 8 (typed quote/splice):** this is what *enables* the no-strings discipline. Because holes
+  are typed and filled by typed values, the transformation never needs to inspect or assemble text
+  to know a value fits.
+
+**What the elaborate typed systems do that respects an equivalent no-strings discipline.** The rule
+is not exotic; the strongest typed stagers already honor a near-equivalent at their disciplined
+surface:
+
+- **MetaOCaml:** binders under brackets are alpha-renamed by the implementation; the user never
+  builds an identifier from characters. `.< fun x -> .~body >.` treats `x` as an opaque bound
+  variable, and freshness is internal alpha-conversion — **no user-level string synthesis at all.**
+- **Typed Template Haskell:** the typed path references bindings as resolved `Name` values (`'x`,
+  `''T`) whose identity is a *unique tag*, not their text, and `newName` mints a fresh `Name` by
+  allocating a unique — the string is only a debug hint. (The string-capturing `mkName` is the
+  un-disciplined escape hatch the typed path avoids.) So typed TH's disciplined surface allocates
+  opaque name-identities, mirroring Nomos's opaque-identity allocation.
+- **Scala 3:** the typed quote path uses compiler `Symbol`s and `Type[T]` givens — opaque type and
+  term representations — and mints fresh binders via `Symbol.newVal` / fresh-name allocation that
+  returns a symbol, **not** a user-assembled string.
+- **Zig:** honors it for *types* (a `type` is an opaque value, never a string) but is the honest
+  counter-example for *field names*: `@field(v, name)` and `@typeInfo` field names traffic in
+  comptime `[]const u8` strings. That is exactly the string-based field-name reflection Nomos
+  **forbids** — and Nomos's answer, positional typed slots with names in a separate table, is
+  strictly cleaner than Zig's on this one axis. Zig shows both the pull toward string field-names
+  and why Nomos's stricter line is coherent.
+
+The convergent lesson: a typed macro system respects a no-strings discipline by making **identity
+opaque and allocation-based** (alpha-renaming, unique-tagged `Name`s, compiler `Symbol`s) and
+pushing any human-readable *spelling* to a separate projection stage. That is exactly the
+NameTable-outside-the-transformation shape.
+
+## 7. Recommended minimal escape-kind set for typed-data Nomos
 
 **[recommendation — awaiting the psyche's ruling.]** The survey converges hard on the core already
 in `nomos-macro-model-v1`, and it argues *against* growing it. Recommended set, smallest that closes
@@ -429,16 +500,17 @@ name-world problems the typed footing was meant to escape:**
   macros that emit macro definitions (a real second stage), which would be a deliberate, separate
   design.
 
-**Leave the one honest open exactly where v1 left it — name synthesis (Kind 5).** Recommendation:
-**do not pre-emptively seat a general synthesize-name escape.** Deriving output identifiers is
-already automatic (deterministic derived-name rule + field-name ban), so the only conceivable
-residue is minting a genuinely fresh binder — and in a single-stage typed-value transform with no
-injected user-scope temporaries, it is not yet demonstrated that this case ever occurs. If a real
-instance appears, it wants a **narrow, named "derive/mint identifier from a typed datum" operation**
-scoped to that case, not a general gensym escape. Until such an instance is shown, the two-primitive
-core is complete.
+- **Name synthesis / gensym (Kind 5)** — under the no-strings ruling this **cannot be an escape at
+  all**, because every form of it is string work barred from the transformation. Its two sub-cases
+  leave the escape surface entirely: name *derivation* is a NameTable concern downstream of the
+  encoded flow, and fresh-*identity* minting is opaque-identity allocation (a runtime capability, an
+  assigned token like a type id), not an author-written sigil. The v1 "likely fourth escape" is
+  therefore **closed, not deferred**: the no-strings invariant resolves it by removing string
+  synthesis from the transformation, so no fourth escape is warranted.
 
 **Net recommendation, one line:** `$` realize + `$` splice + recursive-invocation surface form is
-the closed set; every other escape kind in the world's most elaborate macro systems either dissolves
-into value passing or has no substrate in a typed-data macro. This is the agent reading; the escape
-count and the fate of name synthesis are the psyche's to rule.
+the closed set; type passing folds into realize, and — decisively under the no-strings ruling — name
+synthesis is not an escape but a downstream NameTable spelling plus opaque-identity allocation. Every
+other escape kind in the world's most elaborate macro systems either dissolves into value passing or
+has no substrate in a strings-free typed-data macro. This is the agent reading; the final escape
+count is the psyche's to rule.
