@@ -43,6 +43,12 @@ code must reflect the conversation:
     EncodedForm value.
 - Say **"encoded form"** and **"encoded identifier"** — not "core value" / "core
   id" — in new code and prose you write, so the code reflects the conversation.
+  This is a **full rename, ruled and green-lit** (psyche verbatim: *"full rename
+  green light. It was from the start but agents tend to misunderstand my drastic
+  engineering approach."*). The concrete `Core*` **types themselves** rename to the
+  `Encoded*` / EncodedForm terminology — not only the trait or the view. Take the
+  full-strength reading: no partial, view-only, or alias-only rename. Carry the
+  rename through the crate and symbol names wherever `Core*` names appear.
 - **All conversion to and from a TextualForm goes through one Protos trait.** The
   input side does not start from bare files: it starts from a **manifest of
   files** — an explicit file list that resolves dependencies cargo-crate-style.
@@ -52,13 +58,22 @@ code must reflect the conversation:
 - **Nomos is a pure transformer, entirely in the encoded form.** Schema → logos
   conversion happens through Nomos and never touches text: Nomos knows the schema
   **encoded-form** types and the logos **encoded-form** types and maps one to the
-  other. It is **not a store.** Name tables convert too: Nomos adds the new names
-  it introduces (names not present in the schema) to produce the **logos name
-  table**.
-- The **encoded-form type definitions are wire contracts.** Talking to a logos
-  daemon means talking the logos encoded form. So those type definitions live in
-  the **signal repositories**, as another file in the shared contract crates, and
-  they are **written in schema itself**.
+  other. It is **not a store.**
+- **One NameTable per component (ruled).** Psyche verbatim: *"yea, one nametable
+  for each component. nomos uses the schema nametable to populate the logos
+  nametable (and uses its own to read/write from/to its own encodedform)."* Every
+  component owns exactly one NameTable for its own EncodedForm. In the schema→logos
+  transform, Nomos **consumes the schema NameTable to populate the logos
+  NameTable** — adding the new names it introduces that were not present in the
+  schema — and Nomos **additionally owns its own NameTable**, which it uses to read
+  and write its own EncodedForm. Three tables are in play (schema's, logos's, and
+  Nomos's own), each owned by its component; Nomos is the transform that carries
+  names from the schema table into the logos table.
+- The **encoded-form type definitions are wire contracts, seated in the signal
+  repositories (ruled: psyche verbatim "yes").** Talking to a logos daemon means
+  talking the logos encoded form. So those type definitions live in the **signal
+  repositories**, as another file in the shared contract crates, and they are
+  **written in schema itself**.
 - Syntax is **strict and simple**. Field names were removed entirely (see §2).
   Anything ambiguous is not worked around — it is **slashed**: simplify the
   architecture and syntax and start over. If you find yourself adding a side path
