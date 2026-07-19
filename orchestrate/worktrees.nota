@@ -27,6 +27,8 @@
 (orchestrate typed-human-readable-time /home/li/wt/github.com/LiGoldragon/orchestrate/typed-human-readable-time TypedHumanReadableTime Active [typed human readable duration presentation] 1784398157000000000 AncestorOfMain)
 (pi-subagents-nicobailon toolchain-refresh /home/li/wt/github.com/LiGoldragon/pi-subagents-nicobailon/toolchain-refresh UpdatePiClaudeCodex Active [reconcile maintained extension fork] 1784250261000000000 AncestorOfMain)
 (protos SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/protos/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784465980000000000 AncestorOfMain)
+(protos identifier-slicing-contracts /home/li/wt/github.com/LiGoldragon/protos/identifier-slicing-contracts IdentifierSlicingContracts Active [identifier namespace slicing producer] 1784465980000000000 AncestorOfMain)
+(protos next-layer-design /home/li/wt/github.com/LiGoldragon/protos/next-layer-design NextLayerDesign Active [protos engine next layer design sketch] 1784465980000000000 AncestorOfMain)
 (relative-age-display LandTypedHumanTime /home/li/wt/github.com/LiGoldragon/relative-age-display/LandTypedHumanTime LandTypedHumanTime Active [land typed duration producer] 1784246802000000000 AncestorOfMain)
 (relative-age-display typed-human-readable-time /home/li/wt/github.com/LiGoldragon/relative-age-display/typed-human-readable-time TypedHumanReadableTime Active [typed human readable duration value] 1784246802000000000 AncestorOfMain)
 (schema-engine SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/schema-engine/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784335546000000000 AncestorOfMain)
