@@ -205,6 +205,78 @@ Stream remains **design-blocked and unimplemented** (Ruling A's Nomos-mint mecha
 gated on psyche design acceptance); this records only that the close leg is settled as an
 event with its own type.
 
+### Deterministic same-typed-field rule — DIRECTED-WORK DELIVERY (2026-07-19, lane DeterministicFieldRule, Opus 4.8, general-code-implementer)
+
+Psyche verbatim (the directive this delivers): **"OUTRIGHT FORBID FIELD NAMES, and create a
+deterministic rule for structs that contain more than one field with the same type"**. Ruling
+E (above) delivered the forbid half and **explicitly left the create half open** — its
+"Downstream tension surfaced (NOT resolved here)" clause (a struct's two same-typed fields
+lower to Rust needing two *distinct* Rust field names, but positional decode derives the same
+name for both) registered the general schema→Rust field-naming question as a Nomos-lowering
+decision "not invented here." This entry records the delivery of that create half. **It is
+directed work, not a psyche ruling on the rule's *form*: the psyche authorized that a
+deterministic rule exist and be created; his review of this particular rule shape is pending.**
+
+**The rule (one sentence).** A struct field's Rust name is the `snake_case` of its type, and
+when a type names more than one field in that struct, each such field is distinguished by
+prefixing the **ordinal English word of its position among the same-typed fields**
+(`first_state_digest`, `second_state_digest`, …), a type naming a single field keeping the bare
+base name as the degenerate empty-ordinal case rather than a separate branch.
+
+**Why this shape.** Judged against the psyche's design values. *Special case dissolves:* the
+singleton `commit_sequence` is not a side branch but the empty-ordinal identity of the one
+disambiguation — the rule is uniformly "qualify each member of a same-type group by its ordinal
+position," and a group of size one has an empty qualifier, exactly as English omits "first" when
+there is only one door. *Full English words:* ordinals are spelled `first`/`second`/`twenty_third`
+(cardinal words with the final word ordinalized: `twenty` → `twentieth`, `three` → `third`), so
+the mapping is **total over `usize` and never falls back to a numeral** like `_2`. *Mechanism
+over cleverness:* it is a pure function of field **position and type** — no stored or authored
+name is read (honoring the field-name ban), the same struct always lowers to the same names, and
+adding a later field of another type never moves an earlier field's name. Prefix (not suffix)
+follows English word order and reads decently in real Rust field access.
+
+**Where it lives — Nomos lowering, not core-schema.** The stringless positional substrate
+deliberately carries **no** field names (that is the whole of Ruling E); manufacturing distinct
+identifiers is purely a property of lowering to a **name-bearing target** (Rust), which NOTA's
+positional surface never needs. So core-schema stays untouched at `2e47dec5`; its per-field
+`CoreReference::derived_field_name` supplies the base name, reused. The rule is new in
+**core-nomos** (`Evaluator::derive_group_names` computes the group's names; the `SameTypeOrdinal`
+newtype spells the ordinal word; `field_name` now takes the pre-computed group name). This also
+keeps Ruling E's "position is meaning" invariant intact at the Core level while resolving its
+downstream general case at the lowering boundary — the same "make distinct identifiers only
+where a named target forces it" move.
+
+**Real `DatabaseMarker` proof (verbatim from code output, not hand-mocked).** Input positional
+schema text decoded through `TextualSchema::fixture`:
+`DatabaseMarker.{ CommitSequence StateDigest StateDigest }`. Derived Rust field names:
+`commit_sequence` (unique → bare), `first_state_digest` + `second_state_digest` (the two
+`StateDigest` fields, ordinal-disambiguated). Emitted Rust (wire preamble), exactly as the
+pipeline test prints it:
+
+```rust
+#[rustfmt::skip]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+)]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub struct DatabaseMarker {
+    pub commit_sequence: CommitSequence,
+    pub first_state_digest: StateDigest,
+    pub second_state_digest: StateDigest,
+}
+```
+
+Before the rule, both `StateDigest` fields derived `state_digest` — invalid Rust; now
+positionally distinct.
+
+**Landed.** core-nomos `main` `4d6e8480ccf36fce44b50cbd4e58593b7f044db9`: re-pinned core-schema
+`66611bb5` → `2e47dec5` (0.3.0), the reverted `pipeline.rs` test updated from the now-illegal
+named spelling to the legal positional spelling asserting the derived names, `nix flake check`
+green (fmt, clippy, build, doc, test). Scope boundary honored: the wider consumer re-pin cascade
+(schema-engine and beyond) was **not** continued — that is a separate lane. Evidence also on
+tracker `primary-56d1.48`.
+
 ## 0. Why this exists, in one paragraph
 
 Spirit's live contract declares one streaming operation. **[observed —
