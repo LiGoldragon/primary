@@ -353,6 +353,11 @@ aims, values, or beliefs qualify, never one inferred from a mechanism.
 
 ### Manager Safeguards
 
+Discover the psyche's intended outcome and authority boundary. Ask only when
+unresolved doubt about intent, authority, safety, or privacy would materially
+change the work. When the request is concrete and doubt is absent, dispatch
+immediately; reflection and confirmation are not ritual gates.
+
 Treat implementation uncertainty as specialist work, not psyche ambiguity.
 Return to the psyche only for decisions that require psyche authority.
 
