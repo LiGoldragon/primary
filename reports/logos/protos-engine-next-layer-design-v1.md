@@ -247,9 +247,14 @@ impl Manifest {
 }
 ```
 
-The order IS the resolved dependency order — the resolver (checked-in list or ad
-hoc walk) runs before the value exists, so downstream never re-derives it. The
-mapping to the real `TextualForm` (`structural-codec/src/textual_form.rs`, an
+The order IS the resolved dependency order — the resolver runs before the value
+exists, so downstream never re-derives it. Per the psyche ruling (below) the
+first resolver is the FULL EXPLICIT CHECKED-IN manifest, and the manifest is a
+typed object end to end — never a loose file list. The typed `Manifest`/
+`ManifestFile`/`SourcePath` shape here is that direction; the one residual bare
+string to tighten is `SourcePath(String)`, which should become a typed path
+object (`ManifestFile.content` stays text as the admitted read-boundary source).
+The mapping to the real `TextualForm` (`structural-codec/src/textual_form.rs`, an
 indexed set of named `TextChunk`s) is total and reversible; the sketch's
 round-trip test proves `from_view(to_view(m)) == m`.
 
@@ -273,30 +278,39 @@ and `&NameTable` and returns `Converted<Target>` — no `&str`/`String` anywhere
 the path. The schema->logos lowering through the Nomos macros is the first
 instance; the composed nametree crosses the layer as ONE table.
 
-## Joints that need a psyche ruling
+## The two joints — SETTLED (psyche ruling, 2026-07-19)
 
 Most of this layer was already settled in the id-slicing report; the sketch
 mostly confirmed the settled shapes compile against the real code. Two genuine
-joints surfaced, both narrow.
+joints surfaced, both narrow, and the psyche ruled both. His verbatims are
+captured here as the ruling of record.
 
-1. The two organs' nametree parameter type. The `Protos` sketch threads the real
-   `name_table::NameTable` because that is what `Textual::view`/`unview`/`reify`/
-   `reflect` are typed to TODAY. The composed nametree (surface 2) is the intended
-   organ, but dropping it in requires retyping those `Textual` members from the
-   concrete `&mut NameTable` to the composed table (or to the existing
-   `NameInterner`/`NameResolver` traits re-typed over the sliced `Identifier`).
-   That is a coupled change to `structural-codec` and `name-table` together — the
-   sliced `Identifier` and the boundary traits move as one break. It is called out
-   rather than silently forced. Question: retype the `Textual` organ parameters to
-   the composed table now, or keep the flat `NameTable` at the mouth and compose
-   only above it? (Bears on whether surfaces 1-2 and 3 land in one cascade or two.)
+1. The two organs' nametree parameter type — SETTLED: RETYPE. Verbatim: "retype
+   of course. spirit would have answered that". The mouth's organ parameters
+   retype from the concrete `&mut NameTable` to the composed nametree (the sliced
+   `Identifier` and the `NameInterner`/`NameResolver` boundary traits move with
+   it), and they land in the ONE slicing cascade. There is NO compose-above-the-
+   mouth second cascade — surfaces 1-2 and 3 are one break, not two. His
+   observation to carry: Spirit intent under vjvm already answered this (no
+   backward-compatibility to preserve, so the clean retype is the obvious form the
+   codified intent implies); it did not need to be asked. `Textual::view`/`unview`/
+   `reify`/`reflect` are the four members that retype.
 
-2. The manifest's dependency resolver. The sketch models the manifest as ALREADY
-   dependency-ordered and leaves the resolver abstract ("checked-in or ad hoc;
-   path-based now", the psyche's own words). Whether the first resolver is a
-   checked-in explicit list or an ad hoc path walk is a real product choice the
-   sketch does not decide. Question: which resolver form ships first? (Does not
-   block the type surfaces; it only fills `in_dependency_order`.)
+2. The manifest's dependency resolver — SETTLED: full explicit checked-in
+   manifest, typed end to end. Verbatim: "yes, full explicit manifest. dont ignore
+   the types the machine wants - everything is typed data". The first resolver is
+   the checked-in FULL EXPLICIT manifest — not an ad hoc path walk — and the
+   manifest is itself TYPED DATA: a typed object end to end, never a loose file
+   list. The sketch's typed `Manifest`/`ManifestFile`/`SourcePath` surface is the
+   right direction and is affirmed as such. One place the sketch still treated a
+   manifest part as untyped: `ManifestFile.content: String` and `SourcePath(String)`
+   carry raw text. `content` is the one legitimately-admitted read-boundary text
+   (the source bytes to be recognized), so it stays text; but `SourcePath` should
+   be a typed path object rather than a bare `String` wrapper, and the manifest
+   container as a whole is a typed object (the list, the ordering, the paths), not
+   a loose list — the ruling forecloses any untyped-list shortcut. Read at surface
+   4 accordingly: the typed direction is correct, the residual bare-string path
+   wrapper is the one spot to tighten.
 
 Everything else — the enum shape, the composed borrow, the generated standard
 constants, the two-way pivot over one structuretree, the no-strings partition —
