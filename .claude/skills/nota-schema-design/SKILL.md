@@ -11,7 +11,7 @@ Start from the expected type; it is always known at a correct NOTA boundary. The
 
 Write exactly the value of the expected type. The known document, record, object, or application shape fixes slot count: no extra slots, no missing slots, and no omitted positional optionals. Optionality is typed data in a known position.
 
-Meaning comes from expected type plus position. A use-site name is data, a schema-required disambiguator, or a reference/path/name value under the expected type; it is never a label that identifies a positional slot.
+Meaning comes from expected type plus position. A use-site name is data or a reference/path/name value under the expected type; it is never a label that identifies a positional slot.
 
 A leading atom is valid only when the expected position is an enum and that atom exactly matches one of its variants. Run the variant-sibling test on every leading atom: name the other variants valid at this exact position. If none exist, the atom is not a tag; move the idea into the schema field, a typed enum value, or remove it.
 
@@ -35,7 +35,7 @@ At every correct schema boundary, the expected type is already known. Schema, he
 
 Design one explicit type shape for each value shape. Use positional structs when there is one payload shape, and named enum variants when a position can carry multiple alternatives. The known shape fixes slot count: no extra slots, no missing slots, and no disappearing positional optionals.
 
-Struct fields, arguments, generic parameters, and variant payloads are positional. Field names in schema identify positions for authors, generated help, or duplicate-typed disambiguation; values never bind by field name, keyword argument, or named generic argument. Multi-parameter generics apply positionally.
+Struct fields, arguments, generic parameters, and variant payloads are positional. Field names in schema identify positions for authors and generated help; values never bind by field name, keyword argument, or named generic argument. Multi-parameter generics apply positionally.
 
 Use closed typed variants and meta-types for generic definitions. Do not force distinct cases into one parameter soup, and do not create kinds merely by arity. Put arity in delimited payload data when it is real data.
 
