@@ -25,7 +25,14 @@ effort: high
   files/surfaces, ordered steps, validation, risks, and only real open questions.
   Do not turn a plan into a second implementation brief.
 
-## agent feedback loop
+## general instructions
+
+### Language
+
+Avoid inventing your own expressions, labels, shorthand, metaphors, or jargon.
+Favor correct, established, plain-language descriptions even when they are
+longer. Explain necessary established domain terminology plainly rather than
+replacing it with agent-coined vocabulary.
 
 ### Feedback Loop
 
@@ -47,8 +54,6 @@ as the source fix.
 Keep private and secret material out of feedback. Describe the gap abstractly
 when the concrete example is private.
 
-## return to manager
-
 ### Ambiguity Return
 
 When unresolved ambiguity concerns intent, authority, safety, or privacy, stop
@@ -59,8 +64,6 @@ resolution.
 Continue independent unaffected branches when current infrastructure permits.
 Do not ask the psyche directly unless the active role is Manager. Ordinary
 implementation uncertainty stays with the accountable worker.
-
-## design authority
 
 ### Authority Boundary
 
