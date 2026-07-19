@@ -10,6 +10,30 @@ This design is written against verified code (revisions in the appendix), not pr
 Where it draws a picture it uses plain ASCII, never a rendered Protos surface, and it
 quotes only real atoms that exist in the code today.
 
+## Revision note — the identifier representation is settled (2026-07-19)
+
+The psyche ruled on slate item 1, and the ruling supersedes both candidates this
+document originally proposed (the `{slice, local}` struct and the packed-CIDR u32).
+His words, verbatim:
+
+- "actually, I was complicating things; the ID is the variant with its inner u16
+  (16 bits should be lots for a language)"
+- "Schema.Id16 Logos.Id16 etc"
+
+Settled: the identifier is a **data-carrying enum** whose *variant is the slice* —
+`Schema`, `Logos`, and so on — each variant carrying an inner `u16` local
+(~65 000 names per language). No `{slice, local}` struct, no CIDR packing, no block
+arithmetic. Global uniqueness is by construction through the type system, matching is
+exhaustive, and the variant set *is* the namespace registry: minting a slice for a new
+component is adding an enum variant, and recompilation is cheap (Spirit 16jw, enums
+over strings — this ruling is that intent made concrete).
+
+The sections below are revised around this ruling. Everything the psyche had already
+confirmed is kept intact — the nametree is composable, a table borrows slices rather
+than copying them, and the tandem design records ID-to-ID links. Section 2 records the
+ruling; sections 3, 4, 7 and 8 are re-derived from it. The superseded struct/packed
+analysis is retained only as the decision trail that led here.
+
 ## 0. What the psyche said, and what it means against the code
 
 Three statements drive this design (2026-07-19, verbatim):
@@ -61,122 +85,127 @@ composable" is the same picture from the holder's side: a component's one nametr
 ## 1. The reframe: one keyspace, sliced
 
 Today an `Identifier(u32)` is a dense index into one `Vec<Name>` owned by one table.
-The reframe keeps one global keyspace but gives every identifier a slice and a local:
+The reframe keeps one global keyspace but makes the identifier an enum whose *variant
+is the slice*, each variant carrying a `u16` local:
 
 ```
-   TODAY                              PROPOSED
-   Identifier(u32)                    Identifier { slice, local }
-   = dense index into one Vec         = which block, and where inside it
+   TODAY                              SETTLED
+   Identifier(u32)                    Identifier = enum { Schema(u16), Logos(u16), ... }
+   = dense index into one Vec         = the variant IS the slice; the u16 is the local
 
    one flat table per component       one COMPOSED table per component,
-   built by cloning schema's              built by composing slices:
+   built by cloning schema's              built by composing per-variant nametrees:
    table and appending
 
    +------------------------+         +--------- component nametree view ---------+
-   | schema names ...       |         | borrow: [ logos standard slice ] (r/o)    |
-   | Vec Option String ...  |  --->   | borrow: [ schema slice ]         (r/o)    |
-   | (logos tail, re-made   |         | own:    [ logos allocation slice ] (append)|
+   | schema names ...       |         | borrow: [ Logos-standard nametree ] (r/o) |
+   | Vec Option String ...  |  --->   | borrow: [ Schema(..) nametree ]     (r/o) |
+   | (logos tail, re-made   |         | own:    [ Logos(..) nametree ]     (append)|
    |  every run, index      |         +-------------------------------------------+
-   |  depends on schema)    |             one view, many slice-nametrees
+   |  depends on schema)    |             one view, many per-variant nametrees
    +------------------------+
 ```
 
+Global uniqueness is now a type-system fact, not an arithmetic one: a `Schema(7)` and a
+`Logos(7)` are distinct identifier values that cannot be confused, and an exhaustive
+match over the variant set is total. The variant set is the namespace registry — the
+compiled enum definition names every slice that exists.
+
 The identity of a name never moves when a table composes it: a schema name keeps its
-`(schema-slice, local)` because logos **borrows** the schema slice rather than copying
-it. That is the literal realization of "the continuous identifier space" — continuous
+`Schema(local)` because logos **borrows** the schema nametree rather than copying it.
+That is the literal realization of "the continuous identifier space" — continuous
 because it is the *same* slice seen from two components, not because one component
 copied the other's indices to matching positions.
 
-Precedent already exists in the workspace: `ScopedCoreTypeId { universe, local }` in
-`structural-codec/src/ids.rs` is exactly this shape for the **type-id** space (a
-universe number plus a local). The name-id space is the one axis still flat. This
-design brings the name-id space into the same shape sema already assigns type-ids in
-(`CoreUniverse::from_assignment`, the authority-provided path).
+The workspace's type-id space has a parallel today: `ScopedCoreTypeId { universe, local }`
+in `structural-codec/src/ids.rs`. Whether that space should adopt the same variant-enum
+shape as the name space is a follow-on question, surfaced in the revised slate; the
+ruling here is specifically about the name identifier.
 
-## 2. Question 1 — slice topology
+## 2. Question 1 — slice topology (SETTLED: the variant is the slice)
 
-How the one global keyspace is carved.
+How the one global keyspace is carved. The psyche settled this, superseding the two
+representations this document first proposed.
 
-### 2.1 The two representations
+### 2.1 The ruling
 
-```
-  Packed / CIDR form                 Struct-of-two form
-  Identifier(u32)                    Identifier { slice: SliceId(u32), local: u32 }
-  [ p prefix bits | 32-p local ]     [ full u32 slice ][ full u32 local ]
-  self-describing slice by bit-mask  self-describing slice by field
-  caps: 2^p slices, 2^(32-p) locals  caps: none of practical concern
-  smallest wire                      64-bit, mirrors ScopedCoreTypeId exactly
-```
-
-The packed form is the literal letter of the IP analogy — a fixed-width prefix like a
-CIDR network number, the slice recoverable by masking. Its cost is the analogy's own
-warning: an 8-bit prefix is 256 slices (IPv4-scale scarcity), and stealing bits for
-more slices shrinks every slice. Range-registry allocation (variable blocks recorded
-in a table) is the third option and is rejected outright: it needs a lookup to answer
-"which slice owns this id", which is a per-resolve coordination the whole point is to
-avoid, and it violates the self-describing property the analogy insists on.
-
-### 2.2 Is u32 wide enough
-
-For the *local* axis, u32 is ample (4 billion names in one component's own slice). The
-real width question is whether the *slice* selector shares the local's u32 (packed) or
-gets its own (struct). Slicing does not force a wider *local*; it forces a decision
-about where the slice selector's bits come from.
-
-### 2.3 Recommendation
-
-Struct-of-two: `Identifier { slice: SliceId(u32), local: u32 }`. Three reasons:
-
-- It removes exhaustion pressure from both axes, so slice-exhaustion stops being a
-  scenario the design must special-case (see Q2).
-- It is byte-for-byte the shape the workspace already proved in `ScopedCoreTypeId`.
-  One shape for the two id families is the harmony lta7 asks for, and it opens the
-  unification in Q6 (one grant, both id families).
-- The packed-CIDR form is then a pure **wire projection** of the same structure — if
-  archived size ever bites, an `Identifier` packs to a u32 at a codec boundary without
-  changing the in-memory model. Nothing is lost by choosing the struct first.
-
-Psyche-owned: struct (analogy's spirit, workspace harmony) or packed (analogy's
-letter, smallest id). One word.
-
-## 3. Question 2 — allocation authority
-
-How the central authority delegates slices, and how a holder allocates locally.
-
-### 3.1 The delegation picture
+The identifier is a data-carrying enum, one variant per language/component, each
+carrying an inner `u16` local:
 
 ```
-        sema  (single seated allocation authority — prior ruling)
-          |  grants a slice (a block of the keyspace) to a component
+   Identifier = enum {
+     Schema(u16),      # ~65 000 names in schema's slice
+     Logos(u16),       # ~65 000 names in logos's slice
+     ...               # one variant per component; the variant set is the registry
+   }
+```
+
+His words: "the ID is the variant with its inner u16 (16 bits should be lots for a
+language)" and "Schema.Id16 Logos.Id16 etc". The carving is done by the type system:
+the variant *is* the slice, so there is no prefix to mask, no block to arithmetic over,
+and no range registry to look a slice up in. Global uniqueness holds by construction —
+two variants are distinct values — and an exhaustive match is total, so adding a
+component is adding a variant and the compiler finds every site that must handle it.
+
+### 2.2 Why this is better than what this document first proposed
+
+The originally-proposed `{slice, local}` struct and packed-CIDR u32 both carried the
+IP analogy's arithmetic baggage — a slice number that could be miscomputed, mismatched,
+or exhausted, and (for the packed form) the analogy's own scarcity warning. The enum
+keeps the analogy's *spirit* (one global namespace, per-component slices, local
+allocation with no coordination) while discarding its arithmetic: a slice is named, not
+numbered, so the whole class of block-arithmetic errors cannot be written. This is the
+16jw intent (enums over strings/numbers) applied to the id space itself. The struct and
+packed forms are retained above only as the trail that led to the ruling.
+
+### 2.3 The u16 width
+
+`u16` gives ~65 000 locals per language — the psyche's own sizing ("16 bits should be
+lots for a language"). Width is now a *per-variant* property, not a shared budget: a
+variant that ever needed more is widened on its own without touching any other slice
+(see Q2 exhaustion). The name identifier does not need `u32` locals; a language is not
+that large.
+
+## 3. Question 2 — allocation authority (re-derived: authority over the variant set)
+
+Under the enum ruling the central authority governs a different thing than numeric
+grants. It governs the **variant set itself**.
+
+### 3.1 What sema now governs
+
+```
+        sema  (single seated authority — prior ruling)
+          |  owns the identifier variant set (the namespace registry)
+          |  minting a slice = adding a variant to the Identifier enum
           v
-   +--------------+   +--------------+   +--------------------+
-   | schema slice |   | logos std    |   | logos alloc slice  |
-   | (granted)    |   | slice (grant)|   | (granted)          |
-   +--------------+   +--------------+   +--------------------+
-   holder appends locals within its own slice, 0 coordination
+   Identifier = enum { Schema(u16), Logos(u16), <new component>(u16), ... }
+          |  propagation = the recompilation cascade over the family
+          v
+   holder appends u16 locals within its OWN variant, 0 runtime coordination
 ```
 
-Identity is the id and there is one keyspace (prior ruling). sema mints slice grants;
-a grant is a typed delegation record, not a hardcoded constant. Once a component holds
-a slice it allocates locals by appending to that slice's own nametree — precisely
-today's `intern` (append + dedup), now scoped to the holder's slice. No allocation
-touches sema; coordination happens once, at grant time, exactly as an RIR delegates a
-subnet once and the holder assigns hosts freely.
+There is no runtime numeric grant to hand out and no block to reserve. The registry is
+the compiled enum definition; "minting a slice for a component" is adding its variant,
+a source edit made under sema's authority, and "propagation" is the recompilation
+cascade the ruling already accepts as cheap (16jw). Local allocation is unchanged and
+fully local: a component appends `u16` locals into its own variant's nametree —
+precisely today's `intern` (append + dedup), now scoped to the holder's variant. No
+allocation ever touches sema.
 
-"criome-authorized propagation is in the future" fixes a constraint on the record
-shape, not on today's behavior: a slice grant must be a **delegation** that can itself
-be re-delegated later (Criome authorizing a holder to sub-grant), even though today
-only sema mints. The design must not bake a single-minter assumption into the grant
-type; it must bake it into current policy alone.
+"criome-authorized propagation is in the future" now reads cleanly: today the variant
+set is a single compiled registry sema owns; the future is Criome-authorized dynamic
+variant registration (a component registering its slice without a central source edit).
+The design must not assume the variant set is *forever* static-and-central; it must
+assume that only for today's compiled form.
 
-### 3.2 Slice exhaustion
+### 3.2 Exhaustion — a raise-then case, not machinery now
 
-With the struct-of-two representation a slice never runs out of locals in practice. If
-a holder ever did exhaust a slice, it requests a second slice — and a component holding
-two slices is *already* the composable model from Q4. Exhaustion therefore dissolves
-into ordinary multi-slice composition rather than becoming a special path (lta7). This
-is the strongest single reason to prefer the struct representation in Q1: it turns the
-one genuinely ugly failure mode into the normal case.
+A `u16` variant holds ~65 000 locals. Should a single language ever outgrow that, the
+raise-then response is local to that one variant: widen its inner (`Schema(u16)` becomes
+a wider inner), or add a continuation variant for that language. Either is a bounded
+edit to one variant with no effect on any other slice, and neither is built now. The
+psyche sized `u16` as "lots for a language", so this stays a documented raise-then, not
+present machinery.
 
 ## 4. Question 3 — the logos builtin slice
 
@@ -203,32 +232,56 @@ logos allocation slice (Q5), not the standard slice. Only the schema-independent
 are pre-allocated. The fixed *affixes* (`Signal`, `Route`) could themselves be standard
 atoms, but the composed names they build are always derived.
 
-### 4.2 How it ships — three options
+### 4.2 Where the standard objects sit under the enum (open, propose-not-settle)
+
+The coordinator asked for a lean here without settling. Two placements:
+
+```
+  Distinct variant                        Reserved low range inside Logos
+  Identifier = { ..., LogosStandard(u16) } Identifier = { ..., Logos(u16) }
+  standard objects live in their own       locals 0..N of Logos reserved for
+    variant, peer to Logos                   standard objects; derived logos names
+  fixed ids by construction; a standard      append from N upward
+    id can never collide with a derived    "logos's own namespace, standard a slice
+    logos name (different variant, exhaustive  of it" reading; one variant, ordered
+    match tells them apart)                 low region
+```
+
+His statement carries both readings: "logos already has its own encodedID namespace"
+(one Logos variant) and "standard objects ... get their own slice of the ID namespace"
+(their own slice). Under the ruling that a slice *is* a variant, "their own slice"
+reads most literally as **their own variant**.
+
+Lean (not settled): a distinct `LogosStandard(u16)` variant. It is the literal reading
+of "their own slice", it makes the standard ids fixed and schema-independent by
+construction, and it uses the exhaustive-match property to keep standard objects and
+derived logos names provably separate — the same type-system guarantee the whole
+ruling is built on. The reserved-low-range alternative is the "a slice of logos's own
+namespace" reading and stays on the table; it is simpler but couples the two
+allocations inside one variant. Either way the *contents* of the standard slice are
+owned and versioned by logos; sema owns only whether the variant exists in the
+registry. (This absorbs the original ownership question: logos owns the standard
+vocabulary's contents regardless of which placement wins.)
+
+### 4.3 How it ships — three options
 
 ```
   (a) compiled-in constants        (b) runtime data file        (c) content-identified
       pub const STRING: Identifier      load a serialized            NameTableDomain sibling
-        = ...in the std slice;          nametree at startup          shipped + versioned by hash
-      engine references directly    string lookups at runtime    the co-versioning discipline
+        = LogosStandard(1); engine      nametree at startup          shipped + versioned by hash
+        references directly           string lookups at runtime    the co-versioning discipline
                                                                   name-table already has
 ```
 
-### 4.3 Recommendation
-
-Ship the logos standard slice as a content-identified `NameTableDomain` sibling (c) —
-the co-versioning mechanism `NameTable::identity()` already provides — and **generate**
-the compiled-in `Identifier` constants (a) from it as the engine's reference surface.
-The sibling nametree is the single source of truth (its content hash is its version);
-the constants are its deterministic projection (w312: derivable, so mechanism, not
-hand-authored). Nomos then references `standard::STRING` directly and never interns the
-string "String" again. The pure data-file (b) alone is rejected: the engine wants a
-compile-time typed reference, not a runtime string lookup, and (c)+(a) gives both a
-versioned artifact and a typed reference.
-
-Psyche-owned within this: does **logos own** its standard vocabulary (sema grants only
-the block number, logos fills and versions the block), or does **sema own/freeze** the
-vocabulary? Lean: logos owns the contents, sema grants the slice — single allocation
-authority over *blocks* without sema needing to know logos's vocabulary.
+Recommendation: ship the logos standard slice as a content-identified `NameTableDomain`
+sibling (c) — the co-versioning mechanism `NameTable::identity()` already provides — and
+**generate** the compiled-in `Identifier` constants (a) from it as the engine's
+reference surface. The sibling nametree is the single source of truth (its content hash
+is its version); the constants are its deterministic projection (w312: derivable, so
+mechanism, not hand-authored). Nomos then references `standard::STRING` directly and
+never interns the string "String" again. The pure data-file (b) alone is rejected: the
+engine wants a compile-time typed reference, not a runtime string lookup, and (c)+(a)
+gives both a versioned artifact and a typed reference.
 
 ## 5. Question 4 — composability
 
@@ -240,22 +293,23 @@ preserves the one-nametable-per-component ruling.
 ```
    component nametree (ONE view, the ruling's "one NameTable per component")
    +---------------------------------------------------------------+
-   |  slice map:  SliceId -> slice-nametree                        |
+   |  per-variant nametrees, keyed by the identifier variant       |
    |                                                               |
-   |   [ logos standard slice ]  borrowed, read-only               |
-   |   [ schema slice ]          borrowed, read-only               |
-   |   [ logos alloc slice ]     owned, append target (home slice) |
+   |   [ Logos-standard nametree ]  borrowed, read-only            |
+   |   [ Schema(..) nametree ]       borrowed, read-only           |
+   |   [ Logos(..) nametree ]        owned, append target (home)   |
    +---------------------------------------------------------------+
 
-   resolve(id)  = slices[id.slice].names[id.local]      (pick slice, index local)
-   intern(name) = append into the HOME slice only       (foreign slices are read-only)
+   resolve(id)  = match id { Schema(l) => schema[l], Logos(l) => home[l], ... }
+   intern(name) = append into the HOME variant only  (borrowed variants are read-only)
 ```
 
-`resolve` selects a slice by `id.slice` and indexes by `id.local` — each slice keeps
-today's dense `Vec<Name>`, so the fast path inside a slice is unchanged. `intern`
-targets the component's **home** (owned) slice; borrowed slices such as the standard
-slice or the schema slice are never appended to, which is why a standard object is
-referenced by its fixed id and never re-interned.
+`resolve` is an exhaustive match on the identifier variant, then a dense index by the
+`u16` local — each variant keeps today's `Vec<Name>`, so the fast path inside a slice is
+unchanged, and the match is total so a new variant is a compile error until handled.
+`intern` targets the component's **home** (owned) variant; borrowed variants such as the
+standard slice or the schema slice are never appended to, which is why a standard object
+is referenced by its fixed id and never re-interned.
 
 ### 5.2 Why the one-nametable ruling holds
 
@@ -343,46 +397,49 @@ re-pin and the authorized `Core*`->`Encoded*` rename.
 
 ```
   protos / name-table
-    Identifier(u32)            -> Identifier { slice: SliceId(u32), local: u32 }
-    NameTable (one Vec)        -> composition: SliceId -> slice-nametree,
-                                  a home (owned) slice + borrowed read-only slices
-    extend_from(base)          -> compose(borrowed slices) + fresh home slice  [retire]
-    intern                     -> append into the home slice
-    resolve                    -> dispatch by id.slice, index id.local
-    NameTableDomain            -> per-slice content identity (already the mechanism)
+    Identifier(u32)            -> Identifier = enum { Schema(u16), Logos(u16), ... }
+    NameTable (one Vec)        -> composition keyed by variant: a home (owned) variant
+                                  nametree + borrowed read-only variant nametrees
+    extend_from(base)          -> compose(borrowed variants) + fresh home variant [retire]
+    intern                     -> append u16 into the home variant
+    resolve                    -> exhaustive match on the variant, index the u16 local
+    NameTableDomain            -> per-variant content identity (already the mechanism)
+    variant set                -> the namespace registry, owned by sema's authority
 
   core-schema
-    Universe.names             -> the schema's own granted slice
-    from_assignment            -> already assigns locals centrally; extend the grant to
-                                  carry the slice id alongside the local
+    Universe.names             -> the schema's own variant (Schema)
+    from_assignment            -> already assigns locals centrally; the assigned local is
+                                  now the u16 carried by the Schema variant
 
   core-nomos
-    NameTableBoundary::new      -> compose standard slice + schema slice + fresh alloc
-                                   slice (stop cloning via extend_from)
-    place_literal_name          -> composition; the package authoring slice is borrowed,
+    NameTableBoundary::new      -> compose standard variant + schema variant + fresh
+                                   home variant (stop cloning via extend_from)
+    place_literal_name          -> composition; the package authoring variant is borrowed,
                                    so the round-trip through a string is gone
     leaf_path("Integer") + kin  -> reference standard::INTEGER and its pre-allocated kin
     field_names / transform_name/ derived-name allocation stays at the boundary, now
-      route/short-header/etc.      writing into the logos alloc slice
+      route/short-header/etc.      writing into the logos home variant
 
   core-logos
     ships the logos standard slice: the standard nametree (content-identified sibling)
-    and the generated Identifier constants the engine references
+    and the generated Identifier constants the engine references (the LogosStandard
+    variant, per the Q3 lean)
 ```
 
 ### 7.2 Content identity and vjvm
 
 `Identifier` is rkyv-archived and rides inside every `Core`/`Encoded` value's
-pre-image, so changing its layout re-hashes every content identity in the family. This
-is a clean break, which vjvm (no backward compatibility) blesses: no stored name-table
-or Core value needs migrating — they are regenerated. Two properties are worth stating
-as gains, not merely costs:
+pre-image, so changing it from a `u32` newtype to a data-carrying enum (a discriminant
+plus a `u16`) re-hashes every content identity in the family. This is a clean break,
+which vjvm (no backward compatibility) blesses: no stored name-table or Core value needs
+migrating — they are regenerated. Two properties are worth stating as gains, not merely
+costs:
 
-- Schema name ids become **authority-pinned** `(slice, local)` rather than
-  interning-order-derived, so they are more stable, not less.
+- Schema name ids become **variant-pinned** (`Schema(local)`, the authority-assigned
+  `u16`) rather than interning-order-derived, so they are more stable, not less.
 - Standard-object ids become **schema-independent** (the section 0 latent special case
-  is dissolved): `Vec` has one id everywhere, so logos content identity for its own
-  vocabulary stops depending on schema size.
+  is dissolved): `Vec` has one fixed id everywhere, so logos content identity for its
+  own vocabulary stops depending on schema size.
 
 ### 7.3 Sequencing
 
@@ -408,30 +465,40 @@ Portability: every producer pin (name-table -> schema -> logos -> nomos) advance
 order, and the witness re-pins to the new revision before its result is acceptance
 evidence — the same discipline the current core-nomos ARCHITECTURE already records.
 
-## 8. Decision slate (psyche-owned, each answerable in a word)
+## 8. Decision slate — revised under the enum ruling (each answerable in a word)
 
-1. Slice representation — `Identifier { slice, local }` struct (workspace harmony with
-   `ScopedCoreTypeId`, no exhaustion), or packed-CIDR u32 (the literal IP analogy,
-   smallest id)?  Lean: struct.  Answer: struct / packed.
-2. Standard-slice ownership — logos owns and versions its standard vocabulary (sema
-   grants only the block), or sema owns/freezes it?  Lean: logos.  Answer: logos / sema.
-3. Standard-slice shipment — content-identified sibling nametree with generated
-   `Identifier` constants, or a plain runtime data file, or hand-written compiled
-   constants?  Lean: generated.  Answer: generated / data / compiled.
-4. Slice-axis unification — one sema grant covers both a component's type-ids and its
-   name-ids under one slice number, or two parallel independent grants?  Lean: unify.
-   Answer: unify / parallel.
-5. Tandem derived names — eager materialization at the boundary (dedup preserved, the
-   blessed string touch), or deferred to render (pure no-strings-in-tandem,
-   canonicalization moved to render)?  Lean: eager.  Answer: eager / deferred.
-6. Sequencing — land slicing as its own cascade after the `Core*`->`Encoded*` rename,
-   or fold both into one cascade?  Lean: after.  Answer: after / fold.
+Item 1 is **settled** (the identifier is a data-carrying enum, the variant is the
+slice, inner `u16` local). It leaves the open slate. The remaining items are re-derived:
+one is reshaped, one collapses into another, and three survive intact.
 
-Not psyche decisions (mechanism / prior rulings): single allocation authority seated in
-sema; slice grants as re-delegatable records for future Criome propagation; slice
-exhaustion resolved by requesting a second slice (which composition already handles);
-composition preserving the one-nametable-per-component ruling; the clean rkyv break
-under vjvm.
+1. SETTLED — identifier is `enum { Schema(u16), Logos(u16), ... }`. Not open.
+2. Standard-object placement (reshaped, absorbs the old ownership item) — a distinct
+   `LogosStandard(u16)` variant (the literal "their own slice"; fixed, provably
+   separate ids), or a reserved low range inside `Logos(u16)` (the "a slice of logos's
+   own namespace" reading)?  Lean: variant.  Answer: variant / range.
+3. Standard-slice shipment (survives) — content-identified sibling nametree with
+   generated `Identifier` constants, or a plain runtime data file, or hand-written
+   compiled constants?  Lean: generated.  Answer: generated / data / compiled.
+4. Type-id mirror (reshaped from the old slice-axis-unification item, whose "grant"
+   premise the enum removes) — should the type-id space (`ScopedCoreTypeId { universe,
+   local }`) later adopt the same variant-enum shape as the name identifier, or stay
+   numeric and separate?  Lean: separate (out of this slicing's scope; the ruling was
+   about the name identifier).  Answer: mirror / separate.
+5. Tandem derived names (survives) — eager materialization at the boundary (dedup
+   preserved, the blessed string touch), or deferred to render (pure
+   no-strings-in-tandem, canonicalization moved to render)?  Lean: eager.
+   Answer: eager / deferred.
+6. Sequencing (survives) — land slicing as its own cascade after the
+   `Core*`->`Encoded*` rename, or fold both into one cascade?  Lean: after.
+   Answer: after / fold.
+
+Not psyche decisions (mechanism / prior rulings): single authority seated in sema, now
+governing the **variant set** (the registry) rather than numeric grants; the variant set
+as a compiled registry today, with Criome-authorized dynamic variant registration the
+future propagation path; variant exhaustion (a language past ~65 000) as a per-variant
+raise-then (widen the inner or add a continuation variant), not present machinery;
+composition preserving the one-nametable-per-component ruling; borrowing variants rather
+than copying them; the tandem ID-to-ID link design; the clean rkyv break under vjvm.
 
 ## Appendix — verified code facts
 
@@ -452,6 +519,7 @@ under vjvm.
   `from_assignment` already builds a universe from central-authority-assigned locals
   ("authority-provided universe"), the precedent for central assignment (`src/universe.rs`).
 - `structural-codec` (repos/structural-codec): `ScopedCoreTypeId { universe:
-  CoreUniverseId(u32), local: u32 }` in `src/ids.rs` is the proven struct-of-two shape
-  this design mirrors for the name-id space.
+  CoreUniverseId(u32), local: u32 }` in `src/ids.rs` is the type-id space; the settled
+  name identifier is instead a variant-enum (slate item 4 asks whether the type-id space
+  later mirrors it).
 - `sema` (repos/sema): the seated typed storage kernel / authority home (`ARCHITECTURE.md`).
