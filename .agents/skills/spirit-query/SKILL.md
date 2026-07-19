@@ -1,6 +1,6 @@
 ---
 name: spirit-query
-description: 'Read-only Spirit query discipline for grounding orchestration and judgment in existing psyche intent without recording or maintaining records.'
+description: 'Read-only Spirit query discipline for grounding management and judgment in existing psyche intent without recording or maintaining records.'
 ---
 
 # NOTA shape checklist
