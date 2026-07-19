@@ -26,5 +26,7 @@
 (signal-listener service-restore-completion /home/li/wt/github.com/LiGoldragon/signal-listener/service-restore-completion ServiceRestore Abandoned [add completion acknowledgement] 1784363112000000000 AncestorOfMain)
 (signal-lojix release-safety-user-attribution /home/li/wt/github.com/LiGoldragon/signal-lojix/release-safety-user-attribution DisposableRehearsal Active [bird closure attribution] 1784196767000000000 AncestorOfMain)
 (signal-orchestrate launch-delegation /home/li/wt/github.com/LiGoldragon/signal-orchestrate/launch-delegation LaunchDelegation Abandoned [launch delegation packet 2.2] 1784330413000000000 AncestorOfMain)
+(skills jj-repair-validation-gpg /home/li/wt/github.com/LiGoldragon/skills/jj-repair-validation-gpg WorktreeScaffoldPath Recycled [validate Jujutsu and GnuPG resolution] 1784458753000000000 AncestorOfMain)
 (skills manager-doctrine-guard /home/li/wt/github.com/LiGoldragon/skills/manager-doctrine-guard PreventRedundantRoleReads Active [prevent redundant manager role reads] 1784288063000000000 AncestorOfMain)
+(skills spirit-classification-rule /home/li/wt/github.com/LiGoldragon/skills/spirit-classification-rule MatterNotIntent Active [edit Spirit classification skill source and regeneration test] 1784458753000000000 AncestorOfMain)
 (terminal-cell launch-delegation /home/li/wt/github.com/LiGoldragon/terminal-cell/launch-delegation LaunchDelegation Abandoned [launch delegation packet 2.2] 1784152289000000000 AncestorOfMain)
