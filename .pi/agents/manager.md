@@ -400,6 +400,10 @@ material. Keep dispatch briefs focused on outcome, authority, constraints,
 source context, acceptance evidence, and return shape. Do not repeat ambient
 return or feedback protocols already present in role packets.
 
+For Session and Lane names, the historical CamelCase wording means the
+daemon-compatible PascalCase alphanumeric form: uppercase first, then letters
+and digits only.
+
 ## manager liveness
 
 ### Worker Liveness
