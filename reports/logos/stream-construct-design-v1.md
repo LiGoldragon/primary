@@ -143,6 +143,68 @@ elided; and the broader close-leg semantics) has been **re-grounded to the psych
 and **stays OPEN** on `primary-56d1.48`. Nothing is resolved here. [DECISION 4] remains open
 and is folded into Item D.
 
+### Ruling E — field names are illegal EVERYWHERE (2026-07-19, supersedes the collision-name clause of Ruling C and Item D's naming reasoning)
+
+Psyche verbatim: **"field names are now COMPLETLY ILLEGAL EVERYWHERE"**, with the
+authorization **"create a deterministic rule for structs that contain more than one field
+with the same type"**.
+
+This **abolishes the collision-aware elision law** that Ruling C stood on. Ruling C's
+manager reading kept explicit names legal *where a type is shared in the block* — the two
+colliding `SubscriptionToken` legs kept the names `token` / `close`; the `DatabaseMarker`
+fixture kept `secretDigest`. That entire clause is **superseded**: no field name is ever
+emitted, accepted, or represented in any Protos textual surface. The collision case that
+Ruling C treated as the *one* place a name was forced is now handled the deterministic way
+the psyche authorized — **by position alone**: a struct's fields are positional slots typed
+by the expected type at each position (the `PositionalSignature` machinery already present
+in the structuretree), and two fields of the same type are told apart by their order, never
+by a name. It also **supersedes Item D's naming reasoning** insofar as Item D reasoned about
+`close` as a *named* leg distinguished from `token` by its label; under Ruling E a leg can
+never be distinguished by a label.
+
+**[reconciled — implemented this pass, lane `FieldNameBanCodec`, bead `primary-56d1.40`]** The
+new-engine codec now enforces this: encode never writes a field name; decode rejects any
+explicit `name.Type` as illegal Protos; the `Field` meta-type carries one positional
+constructor; the `enforce_elision_law` / `field_types_share_names` / `SuperfluousName`
+apparatus is deleted. The `DatabaseMarker` fixture is now
+`DatabaseMarker.{ CommitSequence StateDigest StateDigest }` (its two `StateDigest` fields
+told apart by position), and the logos `Newtype` witness — two `Visibility` fields
+(`visibility`, `wrapped_visibility`) at positions 0 and 3 — round-trips purely positionally.
+core-schema 0.3.0, `nix flake check` green; core-logos re-pinned and green.
+
+**Stream spelling under Ruling E (superseding Ruling C's corrected spelling).** The two
+`SubscriptionToken` legs lose their `token` / `close` labels too — the earlier "colliding
+legs keep explicit names" carve-out is gone. Their disambiguation must come from the
+Stream kind's fixed slot order alone, OR from the legs being different types (see Ruling F).
+Stream is **not implemented** this pass; this only records how the abolition reshapes its
+spelling.
+
+**Downstream tension surfaced (NOT resolved here).** A struct whose two same-typed fields
+lower to Rust needs two *distinct* Rust field names, but positional decode derives the same
+name from the type for both (`state_digest`, `state_digest`). Rust codegen cannot emit two
+fields of the same name. The ruling settles the Protos/Core level (position is meaning) but
+leaves the schema→Rust field-naming decision for same-typed fields OPEN — the psyche resolved
+this for the specific Stream case in Ruling F (give the colliding leg its own type). The
+general case is registered as a Nomos-lowering question, not invented here.
+
+### Ruling F — the stream close leg exists, as an event (2026-07-19, settles Item D / [DECISION 4])
+
+Psyche verbatim: **"and yes, we should have a stream close event"**.
+
+This **closes Item D / [DECISION 4]**, which stood OPEN on the lost-understanding signal
+"I dont follow all that." The close leg **exists**, and it is an **event** — a member of the
+stream's event flow, not a bare token echoed back. Its own event **type** is therefore
+distinct from the subscription `token` type, which **dissolves the `token` / `close`
+same-type collision** that forced the two-name carve-out in Ruling C: once `close` is its
+own event type, the two legs are no longer the same type, so nothing positional-or-otherwise
+needs to disambiguate two `SubscriptionToken` legs — there are none. This is the same "make
+the colliding fields different types" move that resolves Ruling E's downstream tension for
+this concrete construct.
+
+Stream remains **design-blocked and unimplemented** (Ruling A's Nomos-mint mechanism is still
+gated on psyche design acceptance); this records only that the close leg is settled as an
+event with its own type.
+
 ## 0. Why this exists, in one paragraph
 
 Spirit's live contract declares one streaming operation. **[observed —
