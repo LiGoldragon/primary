@@ -12,13 +12,17 @@ prose, never exemplified. The design authorities behind it are
 `reports/logos/nomos-macro-model-v1.md`, `reports/logos/up-close-design-v1.md`,
 and tracker epic `primary-56d1`.
 
-Revision note (2026-07-19, same lane): the psyche ruled on all six previously-open
-joints. Those rulings are now seated as settled law in the body (full `Core*` →
-`Encoded*` rename §1; one NameTable per component §1; encoded-form contracts in the
-signal repos §1; Lineage B is THE generator and Lineage A is deprecated §3.1; the
-byte oracle removed, acceptance is working programs §3.3/§3.3a; the
-bootstrap-branch workflow and periodic cross-examination §3.3a). Only two joints
-remain open (§6): Protos crate topology and the Nomos macro-definition surface.
+Revision note (2026-07-19, seated across two ruling passes): the psyche ruled on
+the previously-open joints. Now settled law in the body: full `Core*` → `Encoded*`
+rename (§1); one NameTable per component (§1); encoded-form contracts in the signal
+repos (§1); **no string manipulation/introduction/reading inside the Nomos
+schema→logos transform** (§1, §2.8) with Nomos macros on typed data (§1); Lineage B
+is THE generator and Lineage A is deprecated (§3.1); the byte oracle removed,
+acceptance is working programs (§3.3/§3.3a); the bootstrap-branch workflow and
+periodic cross-examination (§3.3a); the **Protos structural library in its own
+separate repo** and **`$` as the base escape marker** (§6). What remains open (§6):
+the intra-repo Protos crate topology, and the Nomos escape-kind set / macro
+input-body spelling.
 
 Everything from `## PROMPT` down is the handoff to the Codex agent.
 
@@ -67,6 +71,21 @@ code must reflect the conversation:
   conversion happens through Nomos and never touches text: Nomos knows the schema
   **encoded-form** types and the logos **encoded-form** types and maps one to the
   other. It is **not a store.**
+- **NO STRINGS INSIDE THE NOMOS TRANSFORM (settled invariant).** Psyche verbatim:
+  *"basically, in the nomos transformation (schema to logos), there shall be *no
+  string manipulation/introduction/reading of any kind*."* The schema→logos
+  transformation operates **purely on typed encoded-form values and encoded
+  identifiers**. Inside it there is **no string manipulation, no string
+  introduction, and no string reading, of any kind** — not for structure, not for
+  names, not for anything. Encoded identifiers are indices; typed encoded values
+  are the currency; a string never appears in the transform. This is a hard
+  conformance invariant, not a guideline: if any step of the schema→logos transform
+  reaches for a string, that step is in the wrong channel (see the name/emission
+  channel note in §2.8) and must move.
+- **Nomos macros operate on typed data (settled).** Psyche verbatim: *"note that
+  our macros are on typed data, so its all a bit different."* A Nomos macro is not a
+  text-template pass; it transforms **typed encoded-form data**, which is why the
+  no-string invariant holds through the macro layer as well.
 - **One NameTable per component (ruled).** Psyche verbatim: *"yea, one nametable
   for each component. nomos uses the schema nametable to populate the logos
   nametable (and uses its own to read/write from/to its own encodedform)."* Every
@@ -227,10 +246,24 @@ never by reading a stored or authored name. The rule (landed in core-nomos, gree
 
 It is a pure function of field **position and type**: the same struct always
 lowers to the same names, and adding a later field of another type never moves an
-earlier field's name. It lives in **Nomos lowering, not in schema**: core-schema
-stays untouched at `2e47dec5`; the rule is `Engine::derive_group_names` with the
-`SameTypeOrdinal` newtype spelling the ordinal word
-(`repos/core-nomos/src/engine.rs`).
+earlier field's name. core-schema stays untouched at `2e47dec5`; the rule is
+`Engine::derive_group_names` with the `SameTypeOrdinal` newtype spelling the
+ordinal word (`repos/core-nomos/src/engine.rs`).
+
+**This name work lives OUTSIDE the encoded transform — it is a NameTable / emission
+channel concern, never part of the schema→logos encoded mapping (§1 invariant).**
+The encoded schema→logos transform is stringless: it produces logos encoded-form
+values with encoded identifiers (positional, no names). Turning an encoded
+identifier plus its position into a Rust identifier string
+(`state_digest` → `first_state_digest`) is **string introduction**, so by the
+settled no-string invariant it does **not** happen inside the transform; it happens
+only at the **name/emission boundary** — when the NameTable is populated and when
+the logos EncodedForm is emitted to the Rust TextualForm (a name-bearing target).
+Keep the two strictly separated: the schema→logos transform manipulates typed
+values and identifiers only; the ordinal name derivation belongs to the
+NameTable/emission channel keyed by encoded identifier and position. If the current
+implementation performs any of this string work inside the encoded transform,
+**move it to the name/emission channel** so the transform honors the invariant.
 
 Verified emitted Rust — the exact output of the pipeline test
 `illustrative_struct_from_schema_text_lowers_and_derives_names`
@@ -257,10 +290,15 @@ the rule they both derived `state_digest` — invalid Rust; now positionally
 distinct.
 
 **2.9 The Nomos macro-definition surface is UNSETTLED — do not exemplify it.** How
-a Nomos macro names its input and body and spells substitution (the `$` vs `<< >>`
-escape, the input struct shape) is under live psyche design and is not settled. Do
+a Nomos macro names its input and body and spells substitution (the input struct
+shape, the full escape-kind set) is under live psyche design and is not settled. Do
 not invent or exemplify its spelling. If you must touch it, name it unsettled and
-escalate (§6). This includes the escape sigil.
+escalate (§6). One anchor **is** settled: the **`$` sigil is the base escape
+marker** (psyche verbatim: *"whatever. $ is pretty standard"*). What remains open is
+the **escape-kind set** — which escape kinds exist beyond the base marker (realize,
+splice, recursive invocation, and a possible name-synthesis escape) — which is
+still under research. So: `$` as the base escape marker you may rely on; the kinds
+of escape and the macro input/body spelling you may not fix or exemplify.
 
 ### 3. The concrete bootstrap task
 
@@ -408,26 +446,35 @@ doubt, stop and escalate (§6) rather than broaden scope.
 
 ### 6. Joints that are still the PSYCHE's to rule — do NOT settle these silently
 
-Six earlier joints have now been **ruled** and are seated as law above (full
+Earlier joints have now been **ruled** and are seated as law above (full
 `Core*` → `Encoded*` rename, §1; one NameTable per component with Nomos populating
-the logos table, §1; encoded-form contracts in the signal repos, §1; Lineage B is
-THE generator and Lineage A is deprecated-not-adapted, §3.1; the byte oracle is
-removed and acceptance is working programs, §3.3 / §3.3a; schema-language is
-deprecated and not taught the ordinal rule, §3.1). Do not reopen them.
+the logos table, §1; encoded-form contracts in the signal repos, §1; **no strings
+inside the Nomos schema→logos transform**, §1 and §2.8; Nomos macros on typed data,
+§1; Lineage B is THE generator and Lineage A is deprecated-not-adapted, §3.1; the
+byte oracle is removed and acceptance is working programs, §3.3 / §3.3a;
+schema-language is deprecated and not taught the ordinal rule, §3.1; **the Protos
+structural library lives in its own separate repo**, and **`$` is the base escape
+marker**, below). Do not reopen them.
 
-Only these remain genuinely open. Mark them in your work and escalate; do not
-resolve them by implementation choice:
+Only the residual parts of these remain genuinely open. Mark them in your work and
+escalate; do not resolve them by implementation choice:
 
-1. **Protos crate topology.** Whether the delivered `structural-codec` (trait +
-   codec) and `name-table` **fold into one `protos` crate**, or `protos` becomes
-   an **umbrella** re-exporting them, or they become a `protos-*` family, is open
-   (design-authority `[DECISION 2′]`). This interacts with the full `Core*` →
-   `Encoded*` rename (§1): the rename is ruled, but which crate names the renamed
-   types land in is part of this open topology. Do not rename or merge crates on
-   your own authority — carry the rename inside the existing crate boundaries and
-   escalate the topology.
-2. **The Nomos macro-definition surface, including the escape sigil.** Unsettled
-   (§2.9). Do not exemplify or fix its spelling.
+1. **Protos crate topology WITHIN / AROUND the separate Protos repo.** The
+   **separate repo is settled** — the Protos structural library lives in its **own
+   separate repository** (psyche verbatim: *"I said this several times, even said it
+   in my original prompt; a separate repo"*). What remains open is only the topology
+   inside and around that repo: whether the delivered `structural-codec` (trait +
+   codec) and `name-table` **fold into one crate** there, become an **umbrella**
+   re-exporting them, or a `protos-*` family (design-authority `[DECISION 2′]`), and
+   how the ruled `Core*` → `Encoded*` rename (§1) lands across those crate names. Do
+   not rename or merge crates on your own authority; carry the rename inside the
+   existing crate boundaries, seat the library in its own repo, and escalate the
+   intra-repo topology.
+2. **The Nomos macro-definition surface — the escape-KIND set and the macro
+   input/body spelling.** The **`$` base escape marker is settled** (§2.9); what
+   remains open is the escape-**kind** set (realize / splice / recursive invocation
+   / possible name-synthesis) and how a macro spells its input and body — under live
+   research. Do not exemplify or fix those.
 
 ### 7. Return shape expected from you (Codex)
 
