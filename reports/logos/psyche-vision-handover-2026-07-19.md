@@ -239,10 +239,13 @@ Settled consequences:
   emitted — not even the codec's machine-forced disambiguation in the same-type
   collision case.** Any earlier framing that let the codec emit a collision name is
   ABOLISHED.
-- The same-type collision case is resolved instead by a **deterministic positional
-  rule** (position assigns meaning) for structs holding more than one field of the
-  same type. The rule is his directive and STANDS; its concrete form is OPEN and is
-  to be shown to him on real artifacts (§7).
+- Same-typed struct fields stay LEGAL; the collision is resolved by a **deterministic
+  rule** for structs holding more than one field of the same type. This is his
+  settled directive, not a decision awaiting him: *"create a deterministic rule for
+  structs that contain more than one field with the same type."* The authored/textual
+  side is already landed (position alone disambiguates — PositionalSignature, §5); the
+  Nomos Rust-side derived-name form is directed agent work in progress, to be shown to
+  him on the real artifact once created (§5).
 - **Every field-named spelling produced this week is now ILLEGAL** and must not be
   presented as valid. This includes the 2026-07-18 stream corrected spelling
   (`stream-construct-design-v1.md` §0.0 Ruling C, which kept `token`/`close` on the
@@ -252,10 +255,12 @@ Settled consequences:
   collision exception; they need the deterministic positional rule instead, and they
   are quoted anywhere only as explicitly-illegal, never as valid.
 - Directive: **make the `protos-syntax` skill correct and make it part of the
-  manager packet by default.** (Current skill state: it already seats "positionality
-  is absolute" as the first law, but it still describes and exemplifies the
-  codec-emitted collision name — that exception and its example must go, replaced by
-  the deterministic positional rule.)
+  manager packet by default.** LANDED (verified this pass): the skill now seats
+  "positionality is absolute" as the first law, the collision exception and its
+  example are retired, and same-typed fields are disambiguated by position alone
+  (skills main `61a6549f`, regenerated to primary main `f3f0df2f`); the manager packet
+  preloads `protos-syntax` (`.claude/agents/manager.md` and the `.codex`/`.pi`
+  mirrors). §8.
 
 ## 5. Other settled rulings (each self-contained)
 
@@ -266,17 +271,43 @@ Stream is the first Nomos-minted object kind; new kinds grow via the macro /
 transformation layer, not by hand-editing core Rust. (The bootstrap hook this
 requires is an OPEN, gated design question — §7.)
 
-**A stream close event exists** — settled (2026-07-19). His words:
+**A stream close event exists** — settled (2026-07-19, Ruling F,
+`stream-construct-design-v1.md` §0.0; tracker `primary-56d1.48`). His words:
 > "and yes, we should have a stream close event"
-(Note: distinct from the OPEN close-leg question below — he affirmed a close EVENT;
-the close-LEG mandatory-vs-defaulted semantics remain unresolved.)
+This SETTLES the former Item D / [DECISION 4] close-leg question (previously carried as
+a lost-understanding signal): the close leg exists as an EVENT with its own type, and
+because it is its own type it dissolves the earlier `token`/`close` same-type collision.
+This is his own general pattern — give the colliding leg its own type and the collision
+disappears — applied to the concrete Stream case.
+
+**Same-typed struct fields are legal, handled by a deterministic rule** — settled
+directive, agent work in progress (2026-07-19; tracker `primary-56d1.40`/`.48`). His
+directive verbatim:
+> "create a deterministic rule for structs that contain more than one field with the
+> same type"
+Settled: same-typed fields are NOT outlawed — they stay legal and are disambiguated by
+a deterministic rule; this is directed work, not a decision awaiting him. State landed
+so far: the field-name ban is implemented in the codec — encode is always positional,
+decode rejects explicit names, same-typed fields are disambiguated by POSITION alone
+(the PositionalSignature machinery), proven by round-trips (core-schema `2e47dec5`
+v0.3.0, flake check green; core-logos re-pinned `dbb5d4e1`). Remaining directed work:
+Nomos lowering of a struct with two same-typed fields to Rust would derive two identical
+Rust field names (two `StateDigest` fields → two `state_digest`), which is invalid Rust;
+the deterministic Rust-side derived-name rule is to be created and shown to him on the
+real artifact. No mechanism was invented ad hoc; the concrete case is core-nomos
+`tests/pipeline.rs illustrative_struct_from_schema_text_lowers_and_derives_names`, and
+core-nomos is held on its old core-schema pin until the rule lands. The consumer re-pin
+cascade to `language-engine-witness` (~10 repos: core-nomos, schema-engine, logos-engine,
+nomos-engine, the `signal-*` set) lands BEHIND this rule — it is not blocked on a psyche
+ruling.
 
 **Stream role modeling — accepted by indifference** — settled-by-indifference,
 Ruling B (§0.0). His word: **"whatever"**. Four typed positional lifecycle legs
 (open-token, opened, event, close) stand as the agents' choice; lowering dispatches
 on position/structure, never on a role-name string. (Under §4, these legs carry NO
-authored names; the two same-type legs are disambiguated by the deterministic
-positional rule, not by names.)
+authored names. The `token`/`close` legs no longer collide at all: Ruling F gives the
+close leg its own event type, so the two are different types — his own "give the
+colliding leg its own type" pattern; §5.)
 
 **The shown field-named stream spelling is invalid** — settled rejection, Ruling C
 (§0.0). His words:
@@ -430,15 +461,14 @@ Integer}` (source: core-logos round-trip, legal positional form). His lean prefe
 name-led framing instead; the reconciliation is his to rule.
 
 **The Stream kind representation decision** — OPEN, gated on his design acceptance
-(tracker `primary-56d1.48`; `stream-construct-design-v1.md` §0.0). Two joints remain:
-(1) the close-leg semantics — his words **"I dont follow all that."** is a
-lost-understanding signal, NOT a ruling; the close-leg (mandatory vs defaulted) is
-re-grounded to him and stays open (he separately affirmed a close EVENT exists, §5);
-(2) the Nomos-minted-kind bootstrap: the kind vocabulary today is closed,
-exhaustively-matched Rust enums, so "just create a new kind of object via Nomos"
-cannot be honored without a minimal hook into core-schema/core-nomos — a
-kind-system-topology change gated on his explicit design acceptance before any
-implementation.
+(tracker `primary-56d1.48`; `stream-construct-design-v1.md` §0.0). The close-leg
+question is no longer open — Ruling F settled it (close leg exists as its own event
+type, §5). The one joint that remains gated on him is the Nomos-minted-kind bootstrap:
+the kind vocabulary today is closed, exhaustively-matched Rust enums, so "just create a
+new kind of object via Nomos" cannot be honored without a minimal hook into
+core-schema/core-nomos — a kind-system-topology change gated on his explicit design
+acceptance before any implementation. Stream itself remains design-blocked and
+unimplemented on this hook.
 
 **Escape sigil and piped forms** — OPEN (tracker `primary-56d1.9`, `.42`;
 `nomos-macro-model-v1.md` §4/§6). He ruled the escape must be structural and
@@ -481,11 +511,12 @@ The skill is under discussion, not designed. He also parked a related note:
 > those things. dont panic-send an agent, just make a note of it for later"
 Parked deliberately; do not dispatch on it — it is a note for later.
 
-**The deterministic positional collision rule's concrete form** — OPEN (§4). The
-directive to create a deterministic rule for structs holding more than one field of
-the same type STANDS; its concrete form (how position assigns meaning when types
-collide) is to be worked out and shown to him on REAL artifacts, never with invented
-or field-named syntax.
+**The deterministic same-typed-field rule — NOT an open question** (kept here only to
+stop a fresh reader re-opening it). He already ruled it: same-typed struct fields are
+legal and handled by a deterministic rule ("create a deterministic rule for structs
+that contain more than one field with the same type"). It is settled directed agent
+work, not a decision awaiting him — the textual side has landed and the Nomos Rust-side
+derived-name rule is in progress, to be shown to him on the real artifact. See §5.
 
 ## 8. Durable-artifact pointers (verify here, not in prose)
 
@@ -509,10 +540,17 @@ or field-named syntax.
 - Spirit accepted-intent records (§2): jys2, zn2l, w312, vjvm, l62s, qvb3, lta7,
   izsf, sj2c, cam8, 16jw, hv5f, w1mm, t5qr — query read-only with
   `spirit "(Lookup <id>)"`.
-- `protos-syntax` skill (`.claude/skills/protos-syntax/SKILL.md`): seats
-  positionality-absolute but still carries the codec-emitted collision exception and
-  its example — needs correction to the §4 total ban and the deterministic positional
-  rule, and adoption into the manager packet by default (his directive).
+- `protos-syntax` skill (`.claude/skills/protos-syntax/SKILL.md`): correction LANDED —
+  the collision exception and its example are retired, and the total ban with positional
+  disambiguation of same-typed fields is seated (skills main `61a6549f`, regenerated to
+  primary main `f3f0df2f`; verified this pass). The manager packet preloads the skill
+  (`.claude/agents/manager.md` + `.codex`/`.pi` mirrors). Both of his directives ("make
+  it correct", "make it part of manager") are satisfied.
+- The field-name ban is landed in the codec: core-schema `2e47dec5` v0.3.0 (flake check
+  green), core-logos re-pinned `dbb5d4e1`; the handover file itself is committed to
+  primary main under `f3f0df2f`. The Nomos Rust-side same-typed-field derived-name rule
+  is directed work in progress (§5), with core-nomos held on its old core-schema pin
+  and the ~10-repo consumer re-pin cascade landing behind it.
 
 ## 9. Every 2026-07-19 verbatim, exactly as given (index)
 
@@ -532,8 +570,10 @@ together so none is lost:
    settled.
 6. "since agents seem TOTALLY FUCKING INCAPABLE of understanding the field-name rule,
    maybe we should just OUTRIGHT FORBID FIELD NAMES, and create a deterministic rule
-   for structs that contain more than one field with the same type" — §4 (the
-   "maybe" resolved by the total ban; the deterministic-rule directive stands).
+   for structs that contain more than one field with the same type" — §4/§5 (the
+   "maybe" resolved by the total ban; the deterministic-rule clause is a SETTLED
+   directive — same-typed fields stay legal, handled by a deterministic rule that is
+   directed agent work in progress, NOT a decision awaiting him; §5).
 7. "I think I prefer CommitSequence.Newtype.{ … } with a field in the struct for
    visibility (Public Private variant?)" — §6, hedged (read under the total ban: any
    visibility field is a positional slot, never named).
