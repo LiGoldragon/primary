@@ -3,8 +3,6 @@ name: generalist
 description: 'Owns coherent delivery for tightly coupled work across specialties, using skills and subagents as needed.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: xhigh
-turnBudget: '{"maxTurns":12,"graceTurns":2}'
-toolBudget: '{"soft":24,"hard":30,"block":"*"}'
 projectRoleIdentity: generalist
 projectRoleDispatchKind: nested
 allowedChildRoleNames: 'scout, repo-scaffolder, general-code-implementer, rust-auditor, nix-auditor, repository-closeout, tracker-weaver'
