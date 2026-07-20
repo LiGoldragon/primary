@@ -18,6 +18,15 @@ the reports above; **[recommendation]** = this agent's reading, explicitly await
 ruling. No concrete Nomos syntax is proposed beyond the already-chosen base sigil `$`; no
 schema/NOTA/logos/Protos spelling is invented here.
 
+**RULED (2026-07-20).** The §7 recommended set was RULED by the psyche on 2026-07-20 (manager
+chat, verbatim "agreed" to the manager-worded package summarizing this report and
+`nomos-macro-model-v1.md`): the closed escape set is `$` realize + `$@` splice, with splice
+spelled `$@` (the `@` mark glued to the `$` base sigil, the Lisp `,`/`,@` lineage) and legal
+ONLY at vector element positions. Every "awaiting the psyche's ruling" / "[recommendation]"
+mark on §7's recommended set below is SUPERSEDED by this ruling; §7's substance stands as the
+ruled design. Full ruling text and tracker capture: primary-56d1, primary-56d1.2,
+primary-56d1.42.
+
 ## 1. The framing that changes everything
 
 Every system surveyed below except two (Zig and Julia) shares one starting assumption: **the
