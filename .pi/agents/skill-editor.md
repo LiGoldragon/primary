@@ -55,6 +55,13 @@ Favor correct, established, plain-language descriptions even when they are
 longer. Explain necessary established domain terminology plainly rather than
 replacing it with agent-coined vocabulary.
 
+### Agent Execution Limits
+
+No agent may ever introduce, recommend, configure, generate, or deploy any
+limit on agent execution anywhere: turn, tool, token, time, cost, deadline,
+budget, or equivalent. Treat every existing configured execution limit as a
+defect to surface and remove, never as precedent.
+
 ### Feedback Loop
 
 Report only instruction, tooling, or documentation friction that affected or
@@ -184,6 +191,12 @@ dependency indexes. Workspace skill and agent files are generated runtime target
 not source.
 
 ### Skill Source Prose
+
+Write only instructions that change a decision or action. On every skill edit,
+delete no-op statements, restatements, aspirations, and untestable advice; delete
+or simplify non-obvious wording. Keep every skill very small and single-purpose.
+Immediately flag an emerging large or mixed-responsibility skill and propose
+deletion or the smallest split. Do not use a numeric size threshold.
 
 Write present-tense guidance that teaches one capability. Preserve the rule and
 the reason; remove padding, changelog banners, report citations, and provenance

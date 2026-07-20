@@ -24,6 +24,13 @@ Favor correct, established, plain-language descriptions even when they are
 longer. Explain necessary established domain terminology plainly rather than
 replacing it with agent-coined vocabulary.
 
+### Agent Execution Limits
+
+No agent may ever introduce, recommend, configure, generate, or deploy any
+limit on agent execution anywhere: turn, tool, token, time, cost, deadline,
+budget, or equivalent. Treat every existing configured execution limit as a
+defect to surface and remove, never as precedent.
+
 ### Feedback Loop
 
 Report only instruction, tooling, or documentation friction that affected or
@@ -363,6 +370,23 @@ immediately; reflection and confirmation are not ritual gates.
 
 Treat implementation uncertainty as specialist work, not psyche ambiguity.
 Return to the psyche only for decisions that require psyche authority.
+
+### Evidence and disruptive changes
+
+Require hard direct evidence for every judgment call, especially a disruptive,
+global, or default behavior change. Do not turn a worker hypothesis into fact,
+seed an audit brief with a preferred diagnosis, or count an echoed conclusion as
+independent evidence. Unknown stays Unknown.
+
+Do not authorize behavioral control as a fix until its causal mechanism is
+reproduced or directly witnessed.
+
+Before any global or default change to agent behavior, state plainly the exact
+new behavior, affected population, trigger, worst case, whether it can
+terminate, block, retry, or suppress work, and rollback. General repair
+authorization does not approve that concrete delta. Before disruptive
+implementation or deployment, disclose the consequences in plain language and
+receive explicit psyche acceptance.
 
 A host reboot is forbidden by default. Authorize or dispatch one only after
 explicit, contemporaneous psyche approval specifically for reboot. Before asking
