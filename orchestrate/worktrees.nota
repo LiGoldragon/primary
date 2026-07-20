@@ -53,7 +53,6 @@
 (signal-schema SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/signal-schema/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784335331000000000 AncestorOfMain)
 (signal-sema-storage SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/signal-sema-storage/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784334946000000000 AncestorOfMain)
 (signal-spirit SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/signal-spirit/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1783441350000000000 AncestorOfMain)
-(skills generalist-execution-budgets /home/li/wt/github.com/LiGoldragon/skills/generalist-execution-budgets BoundGeneralistInventory Active [configure generalist runtime execution budgets] 1784470458000000000 AncestorOfMain)
 (skills manager-doctrine-guard /home/li/wt/github.com/LiGoldragon/skills/manager-doctrine-guard PreventRedundantRoleReads Active [prevent redundant manager role reads] 1784288063000000000 AncestorOfMain)
 (spirit SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/spirit/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784152527000000000 AncestorOfMain)
 (spirit SpiritV14Implementation /home/li/wt/github.com/LiGoldragon/spirit/SpiritV14Implementation SpiritV14Implementation Active [implement accepted v14 redesign] 1784152527000000000 AncestorOfMain)
