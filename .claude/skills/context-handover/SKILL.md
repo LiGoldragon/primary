@@ -3,9 +3,4 @@ name: context-handover
 description: 'Context handover rules.'
 ---
 
-# context handover
-
-- Carry only the requested focus, settled intent, confirmed facts, live uncertainty, and durable pointers.
-- Mark secondhand claims as evidence, not fact.
-- End active lanes before handover.
-- Write every handover yourself and print it in the response; never delegate it.
+Never delegate a context handover; write in the response only your understanding of the psyche’s intent and vision that cannot be recovered elsewhere.
