@@ -125,7 +125,6 @@
 (signal-sema-storage SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/signal-sema-storage/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784334946000000000 AncestorOfMain)
 (signal-spirit SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/signal-spirit/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1783441350000000000 AncestorOfMain)
 (signal-version-handover VersionHandoverPins /home/li/wt/github.com/LiGoldragon/signal-version-handover/VersionHandoverPins VersionHandoverPins Active version-handover-pins 1783244933000000000 AncestorOfMain)
-(skills contextHandoverRefinement /home/li/wt/github.com/LiGoldragon/skills/contextHandoverRefinement contextHandoverRefinement Recycled [refine context handover and skill editor] 1784641733000000000 AncestorOfMain)
 (skills generalist-budget-rollback /home/li/wt/github.com/LiGoldragon/skills/generalist-budget-rollback RemoveForceStopBudgets Active [remove generalist default budgets] 1784538054000000000 AncestorOfMain)
 (skills manager-doctrine-guard /home/li/wt/github.com/LiGoldragon/skills/manager-doctrine-guard PreventRedundantRoleReads Active [prevent redundant manager role reads] 1784288063000000000 AncestorOfMain)
 (spirit SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/spirit/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784152527000000000 AncestorOfMain)
