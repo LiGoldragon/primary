@@ -37,6 +37,7 @@
 (criome CriomeElevenCompatibilityFinal /home/li/wt/github.com/LiGoldragon/criome/CriomeElevenCompatibilityFinal CriomeElevenCompatibilityFinal Active criome-eleven-compatibility-final 1784123861000000000 AncestorOfMain)
 (criome CriomeElevenFamilyComplete /home/li/wt/github.com/LiGoldragon/criome/CriomeElevenFamilyComplete CriomeElevenFamilyComplete Active criome-eleven-family-complete 1784556048000000000 AncestorOfMain)
 (criome CriomeRuntimeCompatibility /home/li/wt/github.com/LiGoldragon/criome/CriomeRuntimeCompatibility CriomeRuntimeCompatibility Active [pin runtime contract family] 1784123861000000000 AncestorOfMain)
+(goldragon horizon-driven-intercom /home/li/wt/github.com/LiGoldragon/goldragon/horizon-driven-intercom HorizonDrivenIntercom Active [Agent Intercom semantic cluster role assignment] 1784544968000000000 Pushed)
 (language-engine-witness NoAliasesWitness /home/li/wt/github.com/LiGoldragon/language-engine-witness/NoAliasesWitness NoAliasesWitness Abandoned [complete no aliases working program witness] 1784337245000000000 AncestorOfMain)
 (language-engine-witness SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/language-engine-witness/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784337245000000000 AncestorOfMain)
 (logos-engine NoAliasesConsumerTrain /home/li/wt/github.com/LiGoldragon/logos-engine/NoAliasesConsumerTrain NoAliasesConsumerTrain Abandoned [advance no alias consumer train] 1784337023000000000 AncestorOfMain)
