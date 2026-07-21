@@ -1,5 +1,7 @@
 # Persistent Two-Way Spirit Mirror — Architecture Design (for approval)
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Status: design on paper, for the psyche to review and approve before any build.
 Nothing here is implemented. All claims are grounded in the current source of
 the three components (router, Criome, Spirit) and the two readiness maps in this

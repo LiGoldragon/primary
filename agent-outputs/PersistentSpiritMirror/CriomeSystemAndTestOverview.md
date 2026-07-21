@@ -1,5 +1,7 @@
 # Criome / Spirit / Router Fabric — System and Test Overview
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 The comprehensive, source-grounded map of the criome cluster-propagation fabric
 and its entire test surface. Written for the psyche, who is not fluent in the
 agent-coined vocabulary: every term is defined on first use. Read-only survey;

@@ -1,5 +1,7 @@
 # Stream construct — how the subscription kind enters core-schema's ruled kind system (design proposal v1)
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Design-authority document. Session `LanguageEngine`, lane `StreamConstructDesign`,
 Fresh, generalist, Opus 4.8 (1M), 2026-07-18. Read-only on every engine repo; this
 file, the tracker slice it registers, and this lane's own directory are the only

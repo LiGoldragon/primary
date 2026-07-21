@@ -1,5 +1,7 @@
 # Language-family proof-of-concept epic — exploratory design v1
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 **Status:** design-only; no proof-of-concept branches or component repositories were created.
 
 **Written:** 2026-07-15, `management-language-family-poc` / `exploratory-design`.

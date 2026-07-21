@@ -1,5 +1,7 @@
 # Schema-unit and split/merge lineage — design v1
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 > **SUPERSEDED 2026-07-17 by `schema-unit-lineage-design-v2.md`.** The psyche
 > engaged this v1's chat summary and ruled, and his rulings **delete machinery**.
 > The identity keystone survives (identity is an allocated ID, not a derived

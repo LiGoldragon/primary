@@ -1,5 +1,7 @@
 # Cluster Authorization Slice Design — the criome cluster authorizes acceptance of spirit's state
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Design for the vertical slices. Design only; nothing was edited or committed
 in any code repo. This is the pickup point for implementation workers.
 

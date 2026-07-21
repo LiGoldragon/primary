@@ -1,5 +1,7 @@
 # Logos pipeline — component architecture v0
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 The next-generation schema→Rust pipeline, expressed as components, contracts,
 runtime planes, and a staged bootstrap. This document is the architecture spine;
 the macro-language design (Nomos's own grammar and macro model) is owned by

@@ -1,5 +1,7 @@
 # Protos engine — Codex implementer prompt v1 (bootstrap the new engine, 100% in the new syntax)
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Authored 2026-07-19, session `ProtosEngine`, lane `CodexBootstrap`, generalist,
 Opus 4.8 (1M). This file is the prompt the psyche hands to a Codex agent. It is
 self-contained: it restates the syntax law, the Protos vision vocabulary, the

@@ -1,5 +1,7 @@
 # Core partition/merge lineage — prior-art-grounded suggestions (research v1)
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Psyche-ordered research, verbatim: "This is a hard question. Do some research and
 make suggestions using similar systems or systems that do similar things as
 inspiration." Written 2026-07-16, session `LanguageFamilyPrototype`, lane

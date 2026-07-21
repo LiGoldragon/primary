@@ -1,5 +1,7 @@
 # Mirror Build Weave — launch-ready
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Epic: **primary-nbmq** — [EPIC] Persistent both-directions quorum-gated Spirit
 mirror (router-mediated, no new component). 13 child beads.
 

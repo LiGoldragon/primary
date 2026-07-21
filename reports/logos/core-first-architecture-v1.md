@@ -1,5 +1,7 @@
 # Core-first recrystallization of the language stack — v1
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 A deep architecture audit and recrystallization of the next-generation language
 stack (NOTA → schema → Nomos → Logos → generated Rust → rustc), re-centered on
 the psyche's **Core-first** principle: the strictly-typed true-binary

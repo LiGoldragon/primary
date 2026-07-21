@@ -1,5 +1,7 @@
 # Psyche-vision context handover — the Protos engine effort (2026-07-21)
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 ## HEALTH WARNING
 This carries ONLY the psyche's vision: verbatims, rulings, hedges, open questions, durable pointers. No agent chronology. Verify every factual claim at the named artifact before acting. Quotes marked as his are his; derivations are flagged and are NOT rulings. Codex-claimed facts are evidence, not fact, until witnessed.
 

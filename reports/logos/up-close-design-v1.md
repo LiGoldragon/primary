@@ -1,5 +1,7 @@
 # Up-close design v1 — the shared-codec family and the logos→Rust lowering, reconciled with Codex, at code level
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 The psyche accepted two design slates and asked to see them **up close** before
 implementation: "Yes, and I want to see the design of all that up close first"
 (shared-library slate) and "that all sounds right. Id like to see the design up

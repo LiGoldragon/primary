@@ -1,5 +1,7 @@
 # Criome Operational — Protocol Spec and Build Plan
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Making the Criome the deployment-authorization layer (SSH kept as fallback).
 This is the linchpin design artifact for the vision locked in the psyche
 interview: **today's spine is the build target; the phase-2 model is

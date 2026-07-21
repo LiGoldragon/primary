@@ -1,5 +1,7 @@
 # Protos engine — the next layer down, as compiling shape (v1)
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Status: DESIGN ARTIFACT. The concrete type surfaces one layer below the current
 `protos` machinery, demonstrated as REAL, COMPILING Rust in an isolated `protos`
 worktree and concluded Rejected (a design sketch, not a merge). This report is

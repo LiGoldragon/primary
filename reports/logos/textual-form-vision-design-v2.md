@@ -1,5 +1,7 @@
 # TextualForm / EncodedForm — founding-vision design, revision 2 (four rulings seated; five follow-up rulings appended §0.0)
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Design-authority document. Session `LanguageEngine`, lane `TextualFormVisionV2`,
 Fresh (Recovery-inherited the live lane of the same task), generalist, Opus 4.8
 (1M), 2026-07-17. Read-only on every engine repo; this file, the v1 supersession

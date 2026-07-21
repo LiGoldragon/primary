@@ -1,5 +1,7 @@
 # Vision evidence ledger v1 — classified reconstruction before the proof-of-concept epic
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 A read-only evidence reconstruction for Codex and the psyche, ahead of a
 multi-component proof-of-concept epic. It classifies every material claim in the
 `nextgen-recrystallization` session under Codex's binding evidence rules,

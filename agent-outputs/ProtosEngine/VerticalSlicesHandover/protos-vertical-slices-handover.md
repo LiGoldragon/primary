@@ -1,5 +1,7 @@
 # Protos vertical-slices handover
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 ## Focus
 
 Carry the Protos language engine and component-porting work forward as fully audited, fully tested vertical slices that merge progressively into `main` in every affected repository. Do not build another accumulating feature-branch train. A slice is complete only when its source, contracts, storage behavior where applicable, daemon path, and truthful acceptance evidence have landed on `main`.

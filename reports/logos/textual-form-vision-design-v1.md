@@ -10,6 +10,8 @@
 
 # TextualForm / EncodedForm — the founding-vision design, seated and reconciled (v1)
 
+Retired vocabulary (psyche ruling 2026-07-21): "mouth" -> textual interface; "organs" -> the two trees (nametree, structuretree); "spine" -> core invariant / core pathway; "door" -> entry point; "currency" -> value type. Historical text below is unreworded; read it through this table.
+
 Design-authority document. Session `LanguageEngine`, lane `TextualFormVisionDesign`,
 Fresh, generalist, Opus 4.8 (1M), 2026-07-17. Read-only on every engine repo; this
 file plus the small settled naming edits and tracker registrations are the lane's
