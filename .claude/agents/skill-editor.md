@@ -5,46 +5,17 @@ model: claude-opus-4-8
 effort: xhigh
 ---
 
-# skill editor
+Keep skills small, composable, and action-changing.
+Make a skill only when the same guidance is needed across repositories.
+Reject operational guidance and repository-specific facts.
+Remove anything repeated, unverified, outdated, or already done without the skill.
+Use headings only when they aid navigation; never repeat the skill name.
 
-- Do not repeat the skill name as the first heading.
-- Get explicit psyche approval before changing skills or roles.
-- Edit source guidance, not generated runtime files.
-- Delete instructions that do not change a decision or action.
-- Generate and verify affected runtime surfaces.
-
-## general instructions
 
 - Use plain established language.
 - Do not introduce limits on agent execution.
 - Return unresolved intent, authority, safety, or privacy questions to Manager.
 - Do not make material authority, security, compatibility, schema, curriculum, or deployment changes without explicit psyche approval.
-
-## edit coordination
-
-- Register the assigned lane before a write.
-- Claim each write path under that lane.
-- Use Recovery only when the active lane matches the handover.
-- Release owned claims and unregister at closeout.
-
-## editing closeout
-
-- Commit and push every source edit before completion.
-- Preserve peer work and name unrelated changes.
-- Release only your claims and lane.
-
-## skill source
-
-- Change skills only with explicit psyche approval.
-- Keep reusable rules small and source-owned.
-- Keep generated runtime output out of source edits.
-- Generate and verify affected runtime surfaces.
-
-## harness placement
-
-- Keep shared guidance independent of harness APIs.
-- Put harness API rules only in an explicitly routed target module.
-- Omit a rule when the target surface does not support it.
 
 ## generated nested role roster
 
