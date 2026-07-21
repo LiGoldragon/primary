@@ -13,7 +13,7 @@
 (CriomOS-home toolchain-refresh /home/li/wt/github.com/LiGoldragon/CriomOS-home/toolchain-refresh UpdatePiClaudeCodex Active [authorized toolchain refresh] 1784469122000000000 AncestorOfMain)
 (CriomOS-test-cluster current-system-certification /home/li/wt/github.com/LiGoldragon/CriomOS-test-cluster/current-system-certification CurrentSystemCertification Active [reconcile current Lojix release fixture] 1784318246000000000 AncestorOfMain)
 (CriomOS-test-cluster external-fixture-reconciliation /home/li/wt/github.com/LiGoldragon/CriomOS-test-cluster/external-fixture-reconciliation ExternalFixtureReconciliation Active [reconcile Prometheus fixture lock input] 1784318246000000000 AncestorOfMain)
-(Worktree management-guidance-deployment /home/li/wt/github.com/LiGoldragon/skills/management-guidance-deployment ManagementGuidanceDeployment Active [approved management guidance deployment] 1784567030000000000 AncestorOfMain)
+(Worktree management-guidance-deployment /home/li/wt/github.com/LiGoldragon/skills/management-guidance-deployment ManagementGuidanceDeployment Archived [approved management guidance deployment] 1784567030000000000 AncestorOfMain)
 (core-logos NoAliasesProducers /home/li/wt/github.com/LiGoldragon/core-logos/NoAliasesProducers NoAliasesProducers Active [remove transparent aliases consumer] 1784464447000000000 AncestorOfMain)
 (core-logos ProtosSourceForms /home/li/wt/github.com/LiGoldragon/core-logos/ProtosSourceForms ProtosSourceForms Active [implement Logos standard identifiers] 1784464447000000000 AncestorOfMain)
 (core-logos SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/core-logos/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784464447000000000 AncestorOfMain)
