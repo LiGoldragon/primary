@@ -58,7 +58,7 @@ directory. Shared files are claimed narrowly before editing.
   isolated workspace with `RequestWorktree` (scaffolded from `main` at
   `~/wt/github.com/LiGoldragon/<repo>/<branch>`), claim its path, and conclude it
   with `ConcludeWorktree` merged or rejected when done.
-- Skills and agent files under .agents/, .claude/, .codex/, and .pi/ are generated from LiGoldragon/skills.
+- Skills and agent files under .agents/, .claude/, .codex/, and .pi/ are generated from LiGoldragon/skills; edit their source in that repository, not here.
 - On primary, work on `main` directly. Use `jj commit -m '<message>'`,
   `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
 - Every description-taking `jj` command uses an inline message or equivalent
