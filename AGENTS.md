@@ -18,6 +18,10 @@ Follow doctrine named by the task's role packet, prompt, or explicit context.
 When no such surface names more doctrine, continue with the packet already
 loaded.
 
+The typed-programming family (Nomos, Logos, engines, and witnesses) is
+constantly breaking under fast development; treat ordinary breakage as routine
+recovery, not as exceptional or requiring repeated psyche permission.
+
 ## Intent
 
 The psyche is the human. Agent messages and agent-written files are not psyche.
