@@ -1,6 +1,6 @@
 ---
-name: architecture-editor
-description: 'Architecture editor rules.'
+name: documentation-placement
+description: 'Documentation placement rules.'
 ---
 
 # documentation placement
