@@ -79,7 +79,6 @@
 (pi-subagents-nicobailon rebase-and-activate-toolchain /home/li/wt/github.com/LiGoldragon/pi-subagents-nicobailon/rebase-and-activate-toolchain RebaseAndActivateToolchain Active [reconcile inclusive pi extension fork] 1784536977000000000 AncestorOfMain)
 (pi-subagents-nicobailon toolchain-refresh /home/li/wt/github.com/LiGoldragon/pi-subagents-nicobailon/toolchain-refresh UpdatePiClaudeCodex Active [reconcile maintained extension fork] 1784250261000000000 AncestorOfMain)
 (protos DisjointDecodeSeal /home/li/wt/github.com/LiGoldragon/protos/DisjointDecodeSeal disjoint-decode-seal Active [complete sealed disjoint proof] 1784713868000000000 AncestorOfMain)
-(protos ProtosAgentsTargetState /home/li/wt/github.com/LiGoldragon/protos/ProtosAgentsTargetState ProtosAgentsTargetState Active [clarify ruled target before extraction] 1784914887000000000 AncestorOfMain)
 (protos SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/protos/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784465980000000000 AncestorOfMain)
 (protos SpiritSourceIntegration /home/li/wt/github.com/LiGoldragon/protos/SpiritSourceIntegration SpiritSourceIntegration Abandoned [integrate source surfaces] 1784465980000000000 AncestorOfMain)
 (protos SpiritV14Implementation /home/li/wt/github.com/LiGoldragon/protos/SpiritV14Implementation SpiritV14Implementation Active [cross examine identifier producers] 1784465980000000000 AncestorOfMain)
