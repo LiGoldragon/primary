@@ -87,8 +87,8 @@ Do not broaden into unrelated coordination or operating-system work.
   - Run: `e880be19-faff-49b6-b85b-04244221b0de`
 - The async runner was marked failed by stale-run reconciliation. The report stated that PID `2750288` still appeared live but ownership could not be verified; the status age was anomalous.
 - No valid deployment result was returned. Activation success, current user generation, service state, rollback target, deployment-lane state, and claim state are unknown.
-- A read-only recovery scout was launched as run `d0b96cf6-0561-4957-83da-ea0b1f5ffc22` to inspect the PID, deployment outcome, services, sockets, rendered Mako rule, and orchestration state. It had not returned when this handover was written.
-- Do not assume deployment succeeded or failed from the stale-run marker alone.
+- A read-only recovery scout was launched as run `d0b96cf6-0561-4957-83da-ea0b1f5ffc22` to inspect the PID, deployment outcome, services, sockets, rendered Mako rule, and orchestration state. It also failed stale-run reconciliation: PID `3703771` still appeared live, ownership could not be verified, and no inspection result was returned.
+- Do not assume deployment succeeded or failed from either stale-run marker alone.
 
 ## Last known deployed baseline before this work
 
