@@ -48,3 +48,29 @@ Two revisions are attached to the ruling:
   development guidance") requires reconciliation by its owning lane before further
   work builds on it. That reconciliation belongs to the owning lane, not to this
   record.
+
+## Correction (2026-07-24)
+
+This section corrects the record forward. The original text above is retained
+unchanged for the record; nothing is rewritten or removed.
+
+The attachment claiming that local main `0ba0d641` ("add fast development
+guidance") is DIVERGENT from accepted `e0cec411` — and "must be reconciled onto
+`e0cec411` or discarded by its owning lane" — is WITHDRAWN as factually wrong.
+The premise was a false observation repeated by two agents without revset proof.
+
+Explicit jj revset ancestry checks in `/home/li/primary/repos/core-logos` prove
+`0ba0d641` is the DIRECT PARENT of `e0cec411`:
+
+- `0ba0d641 & ::e0cec411` is non-empty (0ba0d641 is an ancestor of e0cec411).
+- The reverse, `e0cec411 & ::0ba0d641`, is empty.
+- `e0cec411-` resolves to `0ba0d641`.
+
+`0ba0d641`'s single-file AGENTS.md addition is therefore already inside accepted
+main's linear history, and `main@origin` is `e0cec411` itself. There is no
+divergence and no reconciliation to perform: `0ba0d641` requires NO action.
+
+The core ruling is UNAFFECTED. `e0cec411` STANDS as accepted architecture, and
+divergent rev `22b12a47` remains retired — never pin, never merge. Only the
+`0ba0d641` divergence claim in the attachments is corrected; it was proven wrong
+by the explicit jj revset ancestry checks recorded above.
