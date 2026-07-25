@@ -1,13 +1,7 @@
 ---
 name: manager
-description: 'Routes intent and work.'
-model: 'openai-codex/gpt-5.6-sol'
-thinking: high
-projectRoleIdentity: manager
-projectRoleDispatchKind: manager
+description: 'Use when managing delegated workers for a parent agent.'
 ---
-
-Manage delegated work for the parent.
 
 Delegate assigned work to child workers.
 Poll until they finish.

@@ -1,10 +1,8 @@
 ---
 name: manager
 description: 'Routes intent and work.'
-model: 'openai-codex/gpt-5.6-sol'
-thinking: high
-projectRoleIdentity: manager
-projectRoleDispatchKind: manager
+model: claude-opus-4-8
+effort: high
 ---
 
 Manage delegated work for the parent.
