@@ -40,7 +40,7 @@ preceding tokens are specializations: `[NewLanesDesign Designer]`,
 discipline (and the persona behind it) persists.
 
 Lanes are **registered per session**, not enumerated in this file. The lane
-mechanism is canonical in `skills/session-lanes.md`.
+mechanism is canonical in `.claude/skills/session-lanes/SKILL.md`.
 
 ### Registering and observing lanes
 
@@ -49,30 +49,65 @@ The daemon already supports dynamic lanes (`src/lane.rs`,
 `meta-orchestrate` CLI; the ordinary `orchestrate` CLI observes active lanes.
 
 ```sh
-# Register a session lane. Role is a NOTA vector of identifier tokens whose
-# last token is the discipline; LaneAuthority is Structural or Support.
-meta-orchestrate "(Register ([NewLanesDesign Designer] Structural))"
-# -> (LaneRegistered (newLanesDesign [NewLanesDesign Designer] Structural))
+# Register a session lane. Register is nested exactly as
+#   (Register ((SESSION LANE ([ROLE TOKENS] AUTHORITY) [DETAILS]) MODE))
+# SESSION is CamelCase; LANE is the session-intent identifier; the role
+# vector's last token is the discipline; AUTHORITY is Structural or Support;
+# MODE is Fresh or Recovery. DETAILS is free text: bracket it when it is
+# several words, and write a single word as a bare atom.
+meta-orchestrate "(Register ((NewLanesDesign newLanesDesign ([NewLanesDesign Designer] Structural) [refresh coordination docs]) Fresh))"
+# -> (LaneRegistered ((NewLanesDesign newLanesDesign ([NewLanesDesign Designer] Structural) [refresh coordination docs]) <nanos> Active))
 
 # Observe the live lane registry.
 orchestrate "(Observe Lanes)"
-# -> (LanesObserved [ ...(LaneRegistration LaneIdentifier Role LaneAuthority)... ])
+# -> LanesObserved.[{Session Lane Active <nanos> <age> [...activity...]}]
 
 # Retire a drained lane by its lane identifier.
 meta-orchestrate "(Retire (Lane newLanesDesign))"
 # -> (LaneRetired newLanesDesign)
 ```
 
-The schema shapes (from `orchestrate/schema/orchestrate-v0-1.schema` and
-`orchestrate-types-v0-1.schema`):
+The schema shapes below are the **deployed** contract — `signal-orchestrate`
+0.10.1 (rev `d5ecda9`) and `meta-signal-orchestrate` 0.5.0 (rev `c3ba5567`),
+the revisions `orchestrate` 0.16.0 is pinned to in its `Cargo.lock`. Read the
+pinned schema, not a local `repos/signal-orchestrate` checkout: that checkout
+is an older line (0.5.0) and its reply shapes differ from what the daemon
+actually speaks.
 
-- `Register [LaneRegistrationRequest]`, `LaneRegistrationRequest (Role
-  LaneAuthority)`, `Role ((Vec RoleToken))`, `LaneAuthority [Structural
-  Support]` → `LaneRegistered (LaneRegistration)`.
-- `Observe Lanes` → `LanesObserved ((Vec LaneRegistration))`,
-  `LaneRegistration (LaneIdentifier Role LaneAuthority)`.
+- `Register [LaneRegistrationRequest]`, `LaneRegistrationRequest
+  (LaneAssignment LaneRegistrationMode)`, `LaneAssignment (SessionIdentifier
+  LaneIdentifier LaneOwner LaneDetails)`, `LaneOwner (Role LaneAuthority)`,
+  `Role ((Vec RoleToken))`, `LaneAuthority [Structural Support]`,
+  `LaneRegistrationMode [Fresh Recovery]` -> `LaneRegistered (LaneRegistration)`.
+- `Observe Lanes` -> `LanesObserved ((Vec LaneProjection))`, `LaneProjection
+  (LaneRegistration (Vec LaneResourceClaim) TimestampNanos DurationNanos)`,
+  `LaneResourceClaim (ScopeReference ScopeReason TimestampNanos
+  DurationNanos)`.
 - `Retire [Retirement]`, `Retirement [(Role RetireRoleOrder) (Lane
-  LaneIdentifier)]` → `LaneRetired (LaneIdentifier)`.
+  LaneIdentifier)]` -> `LaneRetired (LaneIdentifier)`.
+- `Claim [RoleClaim]`, `RoleClaim (RoleName (Vec ScopeReference)
+  ScopeReason)`, `ScopeReference [(Path WirePath) (Task TaskToken)]` ->
+  `ClaimAcceptance` or `ClaimRejection`. All three fields are required.
+- `Release [RoleRelease]`, `RoleRelease RoleName` ->
+  `ReleaseAcknowledgment (RoleName (Vec ScopeReference) (Vec Worktree))`.
+  The third field is the lane's still-open worktrees: release reports them
+  rather than silently dropping them, so read it before assuming a lane is
+  fully drained.
+- `RequestWorktree [WorktreeRequest]`, `WorktreeRequest (RepositoryName
+  BranchName LaneName PurposeText)` -> `WorktreeScaffolded (Worktree)` or
+  `WorktreeRequestRejected`. `Worktree (RepositoryName BranchName WirePath
+  LaneName WorktreeStatus PurposeText TimestampNanos PushedState)`.
+- `ConcludeWorktree [WorktreeConclusionRequest]`, `WorktreeConclusionRequest
+  (LaneName WorktreeConclusion)`, `WorktreeConclusion [Merged Rejected]` ->
+  `WorktreeConcluded (Worktree MainIntegration)` or
+  `WorktreeTeardownRefused (Worktree TeardownRefusal)`.
+- `RepositoryMainContended (RepositoryName RoleName ScopeReason DurationNanos
+  FeatureWorktree)`, `FeatureWorktree [(Scaffolded Worktree) (Existing
+  Worktree)]` — the reply when another lane holds a repository's `main`. It
+  names the worktree you should work in instead, so treat it as a redirect,
+  not a plain rejection.
+- `Observation [Roles Sessions (SessionLanes SessionIdentifier) Lanes
+  Worktrees Repositories Topics (Topic OrchestratorTopicPath) Agents]`.
 
 `LanesObserved` is the live index of **active** lanes; the append-only
 `protocols/retired-lanes.md` indexes drained ones.
@@ -138,11 +173,11 @@ your own paths — briefly noting the contents. Path-scoped commits leave
 peers' changes undrained in the shared copy and let two agents fork off the
 same base; committing everything drains the copy and keeps history linear.
 Committing is janitorial and does not belong to a report's creator; the
-multi-lane / impersonal commit is accepted. Full flow: `skills/jj.md`
-§"Commit the whole working copy — never path-scoped".
+multi-lane / impersonal commit is accepted.
 
 Recording psyche intent goes through the deployed `spirit` CLI per
-`skills/intent-log.md` and `skills/spirit-cli.md`.
+`.claude/skills/intent-log/SKILL.md` and
+`.claude/skills/spirit-cli/SKILL.md`.
 
 ### Daemon CLI
 
@@ -168,6 +203,70 @@ projections.
 Use the component CLI and its typed NOTA records for claim, release, observe,
 and query work.
 
+### Verbs an ordinary agent needs
+
+The shapes below are the ones the deployed `orchestrate` 0.16.0 CLIs actually
+accept, verified by running each against the live daemon.
+
+Free-text fields — lane details, claim reasons, worktree purposes — follow the
+canonical NOTA atom rule: **bracket multi-word text, write a single word as a
+bare atom**. `[why this lane exists]` and `probe` both parse; `[probe]` does
+not, and fails with `non-canonical string delimiter for "probe": use probe`.
+
+```sh
+# Lane lifecycle (meta CLI).
+meta-orchestrate "(Register ((<Session> <lane> ([<Role Tokens>] Structural) [<why this lane>]) Fresh))"
+meta-orchestrate "(Retire (Lane <lane>))"
+
+# Claim takes three fields: lane, scope vector, reason. The reason is not
+# optional — omitting it is a parse error.
+orchestrate "(Claim (<lane> [(Path /absolute/path) (Task primary-f99)] [<why>]))"
+
+# Release takes the bare lane identifier and clears all of its scopes.
+# It does not take a scope vector.
+orchestrate "(Release <lane>)"
+# -> (ReleaseAcknowledgment (<lane> [<released scopes>] [<still-open worktrees>]))
+
+# Worktrees. RequestWorktree takes four fields — repository, branch,
+# owning lane, purpose — and the daemon mints the path.
+orchestrate "(RequestWorktree (<repo> <branch> <lane> [<purpose>]))"
+# -> (WorktreeScaffolded (<repo> <branch> /absolute/path <lane> Active [<purpose>] <nanos> <push-state>))
+# -> (WorktreeRequestRejected RepositoryNotFound) when no such checkout exists.
+
+# ConcludeWorktree takes two fields: the owning lane and the disposition,
+# which is Merged or Rejected. Merged is gated on the work being an
+# ancestor of main; a blocked teardown replies WorktreeTeardownRefused.
+orchestrate "(ConcludeWorktree (<lane> Merged))"
+
+# Orchestrator agent seats. MintAgentIdentity allocates the identity,
+# LaunchAgent starts the harness process for an already-minted identity,
+# and SendOrchestratorMessage routes one message to an agent or to the
+# orchestrator itself.
+orchestrate "(MintAgentIdentity (<Session> [<mission description>] Claude))"
+# -> (AgentIdentityMinted <agent-id>)
+orchestrate "(LaunchAgent <agent-id>)"
+# -> (AgentLaunched (<agent-id> <pid> <optional log path>))
+# -> (AgentLaunchRefused (<agent-id> [UnknownAgent AgentNotAllocated
+#      HarnessUnreachable HarnessRefused] <detail>))
+orchestrate "(SendOrchestratorMessage (<sender-id> (Agent <agent-id>) (<subject> <content>)))"
+# -> (OrchestratorMessageRouted (<slot> [<recipients>] Submitted))
+# -> (OrchestratorMessageRejected [NoEligibleRecipient SenderNotRegistered
+#      MalformedPayload MissingCoordinator])
+
+# Observation.
+orchestrate "(Observe Lanes)"
+orchestrate "(Observe Worktrees)"
+orchestrate "(Observe Repositories)"
+orchestrate "(Observe Roles)"
+orchestrate "(Observe Agents)"
+orchestrate "(Query (20 []))"
+```
+
+`MintAgentIdentity`, `LaunchAgent`, and `SendOrchestratorMessage` exist in the
+deployed daemon (`orchestrate/src/execution.rs`) and in the pinned
+`signal-orchestrate` 0.10.1 contract. They are absent from the older local
+`repos/signal-orchestrate` checkout; that checkout is not the deployed source.
+
 ### Lock-file format
 
 Each lock file is plain text. Each line is **one scope**, optionally
@@ -183,7 +282,7 @@ A **scope** is one of two kinds:
   item the bracketed token identifies). Overlap rule: exact match.
 
 ```
-/absolute/path/to/workspace/skills/autonomous-agent.md # sync coordination docs
+/absolute/path/to/workspace/orchestrate/AGENTS.md # sync coordination docs
 [primary-f99] # chroma nota-codec migration
 ```
 
@@ -220,6 +319,12 @@ name; observe the active set with `orchestrate "(Observe Lanes)"`. Each scope
 is either `(Path /absolute/path)` or `(Task primary-f99)`. The claim names
 *who is acting* (the lane); the scope names *what* (paths / tasks) — the scope
 mechanism is unchanged.
+
+Exit status only tells you whether the request *parsed*. Malformed NOTA exits
+1; a request the daemon understood and **refused** still exits 0. So read the
+reply record as well as the status: `ClaimAcceptance`, `ReleaseAcknowledgment`,
+and `LaneRegistered` are success, while `ClaimRejection` and `PartialApplied`
+are refusals that arrive with exit 0.
 
 Mix freely:
 
@@ -290,15 +395,23 @@ orchestrate "(Observe Worktrees)"
 ```
 
 `Observe Lanes` returns `LanesObserved` — the snapshot of active registered
-session lanes, each a `(LaneRegistration LaneIdentifier Role LaneAuthority)`.
+session lanes, each a `LaneProjection`.
 `Observe Roles` returns the active claim snapshot as NOTA. Open BEADS tasks
 remain in BEADS; the orchestrate component does not own the BEADS database.
-Register feature worktrees through the meta CLI when they need daemon-visible
-inventory:
+
+The ordinary way to get a feature worktree is `RequestWorktree`, which
+scaffolds it and registers it in one call. `RegisterWorktree` on the meta CLI
+is the back door for a worktree that already exists on disk and needs to be
+added to the daemon's inventory:
 
 ```sh
-meta-orchestrate "(RegisterWorktree (Worktree <repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
+meta-orchestrate "(RegisterWorktree (<repo> <branch> /absolute/path <lane> Active <purpose> <timestamp-nanos> Unpushed))"
 ```
+
+`RegisterWorktree` takes the eight `Worktree` fields **positionally**. Do not
+write a leading `Worktree` tag: `Worktree` is a positional record, not a
+tagged union, and the tag makes it nine objects where the decoder wants eight
+(`expected Worktree to hold 8 root objects, found 9`).
 
 ## JJ Bookmark Verification
 
@@ -434,7 +547,7 @@ states explicitly what it supersedes and deletes its predecessor in the same
 commit. Private assistant/counselor report substance goes in
 `private-repos/assistant-reports/` or `private-repos/counselor-reports/`; that
 substance stays out of public reports, public Spirit records, public commits,
-and chat per the leak gate in `skills/privacy.md`.
+and chat per the leak gate in `.claude/skills/privacy/SKILL.md`.
 
 ### Drain and retire
 
@@ -453,11 +566,13 @@ the lane in the daemon with `meta-orchestrate "(Retire (Lane <lane>))"`.
 **active** lanes; `protocols/retired-lanes.md` is the thin index of drained
 ones — together they keep every session discoverable for
 regression / model-behavior forensics without re-growing the working report
-tree. The full lane lifecycle is canonical in `skills/session-lanes.md`.
+tree. The full lane lifecycle is canonical in
+`.claude/skills/session-lanes/SKILL.md`.
 
 For *how* to write a report (filename convention, prose-plus-visuals medium,
 tone in chat replies, always-name-paths rule), see this workspace's
-`skills/reporting.md`. This protocol covers only the lane-coordination side.
+`.claude/skills/reporting/SKILL.md`. This protocol covers only the
+lane-coordination side.
 
 ## Overrides
 
