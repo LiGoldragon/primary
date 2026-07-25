@@ -72,3 +72,6 @@ directory. Shared files are claimed narrowly before editing.
   prompt, or explicit context.
 - Private information is closed by default and stays out of public reports,
   public Spirit records, commits, and chat.
+- Repositories live at the ghq root `/git/<host>/<owner>/<repo>`. Clone a missing
+  repository with `ghq get <url>` and never clone elsewhere.
+- Domain standards live in `/git/github.com/LiGoldragon/standards`.
