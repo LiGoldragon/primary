@@ -1,8 +1,8 @@
 ---
 name: read-trivial
 description: 'The answer is in one known place — a file, a page, a query. You are fetching it, not finding it.'
-model: 'openai-codex/gpt-5.6-luna'
-thinking: low
+model: 'openai-codex/gpt-5.4-mini'
+thinking: medium
 projectRoleIdentity: read-trivial
 projectRoleDispatchKind: leaf
 disallowed_tools: 'edit, write'

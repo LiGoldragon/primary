@@ -1,8 +1,8 @@
 ---
 name: write-ordinary
 description: 'The approach is known. Applying it is the work.'
-model: 'openai-codex/gpt-5.6-terra'
-thinking: medium
+model: 'openai-codex/gpt-5.6-luna'
+thinking: high
 projectRoleIdentity: write-ordinary
 projectRoleDispatchKind: leaf
 ---

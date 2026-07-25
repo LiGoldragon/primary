@@ -1,8 +1,8 @@
 ---
 name: read-ordinary
 description: 'You know what you are looking for but not where it is. Search, fetch, and query until you have it.'
-model: 'openai-codex/gpt-5.6-terra'
-thinking: medium
+model: 'openai-codex/gpt-5.6-luna'
+thinking: high
 projectRoleIdentity: read-ordinary
 projectRoleDispatchKind: leaf
 disallowed_tools: 'edit, write'
