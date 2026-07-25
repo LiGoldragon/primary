@@ -1,7 +1,7 @@
 ---
 name: skill-maintainer
 description: 'Use when applying an approved skill change.'
-model: claude-opus-4-8
+model: claude-opus-5
 effort: xhigh
 ---
 

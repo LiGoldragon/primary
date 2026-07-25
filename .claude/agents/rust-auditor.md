@@ -1,7 +1,7 @@
 ---
 name: rust-auditor
 description: 'Reviews Rust changes.'
-model: claude-opus-4-8
+model: claude-opus-5
 effort: high
 ---
 

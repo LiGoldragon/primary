@@ -1,7 +1,7 @@
 ---
 name: repo-scaffolder
 description: 'Builds repository structure.'
-model: claude-opus-4-8
+model: claude-opus-5
 effort: high
 ---
 
