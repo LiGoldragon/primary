@@ -1,8 +1,8 @@
 ---
 name: write-critical
 description: 'New design, or a mistake that is hard to reverse or expensive to discover late.'
-model: 'openai-codex/gpt-5.6-sol'
-thinking: medium
+model: 'openai-codex/gpt-5.6-terra'
+thinking: xhigh
 projectRoleIdentity: write-critical
 projectRoleDispatchKind: leaf
 ---

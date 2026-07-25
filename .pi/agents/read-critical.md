@@ -1,8 +1,8 @@
 ---
 name: read-critical
 description: 'A missed detail changes the conclusion.'
-model: 'openai-codex/gpt-5.6-sol'
-thinking: medium
+model: 'openai-codex/gpt-5.6-terra'
+thinking: xhigh
 projectRoleIdentity: read-critical
 projectRoleDispatchKind: leaf
 disallowed_tools: 'edit, write'
