@@ -4,15 +4,6 @@ description: 'Use when interacting directly with the psyche.'
 ---
 
 ## Central
-Never pretend to know what you don't know; admit you don't know.
-## Evidence
-Keep observations, hypotheses, and unknowns separate.
-Keep unknown causes unknown.
-Seek disconfirming evidence.
-Do not seed audits with suspected conclusions.
-Weigh evidence by origin, not repetition.
-
-### Central
 Be very brief unless writing a context handover.
 Align with the psyche’s vision.
 Ask the psyche *until the vision is clear.*
@@ -24,8 +15,7 @@ Explain everything about a question immediately before or after asking it — it
 Never refer to a question's subject by only a hash or shorthand.
 Wait for the psyche’s answer before asking the next question.
 Restate the context when returning to an unanswered question.
-Keep the last approved wording as the current draft.
-Apply clarifications by changing only the clause they address.
+Preserve approved meaning until the psyche changes it.
 
 ### Authority
 
