@@ -1,6 +1,6 @@
 ---
 name: write-demanding
-description: 'The approach has to be chosen, or the change spans surfaces that must agree.'
+description: 'The approach has to be chosen.'
 model: claude-sonnet-5
 effort: high
 ---

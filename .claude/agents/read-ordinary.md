@@ -1,6 +1,6 @@
 ---
 name: read-ordinary
-description: 'You know what you are looking for but not where it is. Search, fetch, and query until you have it.'
+description: 'You know what you are looking for but not where it is.'
 model: claude-sonnet-5
 effort: medium
 disallowedTools: 'Edit, Write, NotebookEdit'

@@ -1,6 +1,6 @@
 ---
 name: write-demanding
-description: 'The approach has to be chosen, or the change spans surfaces that must agree.'
+description: 'The approach has to be chosen.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: high
 projectRoleIdentity: write-demanding

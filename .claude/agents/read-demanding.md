@@ -1,6 +1,6 @@
 ---
 name: read-demanding
-description: 'The answer is not written anywhere. It has to be assembled from how the parts behave.'
+description: 'The answer is written nowhere. Assemble it from how the parts behave.'
 model: claude-sonnet-5
 effort: high
 disallowedTools: 'Edit, Write, NotebookEdit'

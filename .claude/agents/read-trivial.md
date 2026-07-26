@@ -1,6 +1,6 @@
 ---
 name: read-trivial
-description: 'The answer is in one known place — a file, a page, a query. You are fetching it, not finding it.'
+description: 'The answer is in one known place. You are fetching it, not finding it.'
 model: claude-haiku-4-5
 disallowedTools: 'Edit, Write, NotebookEdit'
 ---
