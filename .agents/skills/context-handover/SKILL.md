@@ -1,6 +1,6 @@
 ---
 name: context-handover
-description: 'Use when carrying the psyche''s vision into another session.'
+description: 'The session ends with work unfinished and another must continue it.'
 ---
 
 Write the handover in the response.

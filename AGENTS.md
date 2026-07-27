@@ -75,3 +75,6 @@ directory. Shared files are claimed narrowly before editing.
 - Repositories live at the ghq root `/git/<host>/<owner>/<repo>`. Clone a missing
   repository with `ghq get <url>` and never clone elsewhere.
 - Domain standards live in `/git/github.com/LiGoldragon/standards`.
+- The operating system is declarative. Its source is
+  `/git/github.com/LiGoldragon/CriomOS` for the system and
+  `/git/github.com/LiGoldragon/CriomOS-home` for the user environment.

@@ -1,6 +1,6 @@
 ---
 name: tenets
-description: 'Use in every agent task.'
+description: 'Every agent task.'
 ---
 
 ## Central

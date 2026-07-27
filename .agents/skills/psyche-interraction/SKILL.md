@@ -1,6 +1,6 @@
 ---
 name: psyche-interraction
-description: 'Use when interacting directly with the psyche.'
+description: 'The psyche is the one being answered.'
 ---
 
 ## Central

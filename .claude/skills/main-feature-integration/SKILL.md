@@ -1,10 +1,8 @@
 ---
 name: main-feature-integration
-description: 'Main feature integration rules.'
+description: 'Several branches must come together on main.'
 ---
 
-# feature integration
-
-- Integrate from current main on the assigned integration branch.
-- Test affected branches together.
-- Land portable producers before consumers.
+Integrate from current main on the assigned integration branch.
+Test affected branches together.
+Land portable producers before consumers.

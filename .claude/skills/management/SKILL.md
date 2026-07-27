@@ -1,6 +1,6 @@
 ---
 name: management
-description: 'Use when coordinating delegated work for a caller.'
+description: 'A caller''s work will be carried out by other agents.'
 ---
 
 Reserve your context for managing subagents.

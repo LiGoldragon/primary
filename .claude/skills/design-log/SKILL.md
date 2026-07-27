@@ -1,6 +1,6 @@
 ---
 name: design-log
-description: 'Use when psyche design words accumulate across a train.'
+description: 'The psyche rules on a design question.'
 ---
 
 Append each psyche design ruling to `design/<Train>/<SessionName>-<Date>.md` with the agent text it answered, or a note that there was none.
