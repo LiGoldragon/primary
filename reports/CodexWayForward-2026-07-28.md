@@ -34,18 +34,25 @@ itemized below; the corrected step sequence follows.
 
 ## The verified design, in one view
 
-```mermaid
-flowchart LR
-  ET[Ethos text — the sweet authored syntax]
-  subgraph decode [Two-pass decode]
-    P1[Pass 1: block discovery — per-language boundary rule data, opaque strings/comments, source bounds]
-    P2[Pass 2: typed structural parsing — expected types through the one shared evaluator]
-  end
-  ET --> P1 --> P2
-  P2 --> CAP[EncodedForm + composed NameTree pin = Capsule]
-  CAP -->|Nomos: typed transform, zero string handling| LG[Logos — typed program data]
-  LG -->|TextualForm projection — name tree + structure tree only| RS[Rust text, fully qualified, assembly-like]
-  RS -->|cargo compile + run| WIT[Acceptance: behavior round-trip, no byte-golden]
+```
+Ethos text
+  |  pass 1: block discovery
+  |    boundary rules only; strings/comments opaque; source bounds on every block
+  v
+block tree
+  |  pass 2: typed structural parsing
+  |    expected types, one shared evaluator
+  v
+EncodedForm + composed NameTree pin  =  Capsule
+  |  Nomos transforms it: typed, zero string handling
+  v
+Logos (typed program data)
+  |  TextualForm projection: name tree + structure tree, nothing else
+  v
+Rust text (fully qualified)
+  |  cargo compile + run
+  v
+behavior witness (no byte-golden)
 ```
 
 Identity throughout: durable integers (`Schema.Id16`-style variants) and
@@ -175,18 +182,28 @@ trees — see the warning below).
 
 ## The corrected way forward
 
-```mermaid
-flowchart TD
-  S0[0. Sync working copies + bookmark Spirit 6dcf153] --> S1[1. Engine epic + dependency graph in beads]
-  S1 --> S2[2. Three design proposals to the psyche]
-  S1 --> S3[3. Behavior-free Ethos terminology train]
-  S2 -->|translator-daemon ruling| S4[4. One identity + Capsule bump train]
-  S3 --> S4
-  S4 --> S5[5. Slice 1 vertical build]
-  S5 --> S6[6. Gate: port language-engine-witness e2e into protos-engine]
-  S6 --> S7[7. Conformance Law 5 rehomed or retired by ruling]
-  S7 --> S8[8. Slice 2 opens: deterministic field-naming rule to the psyche]
-  S6 --> S9[9. Spirit port on isolated production copy, then staged storage migration]
+```
+0 sync working copies; bookmark spirit 6dcf153
+1 engine epic + dependency graph (beads)
+        |
+   +----+----------------------+
+   v                           v
+2 three design proposals     3 Ethos terminology train
+  to the psyche                (behavior-free)
+   |                           |
+   +------------+--------------+
+                v
+4 identity + Capsule bump train (one landing)
+                v
+5 slice-1 vertical build
+                v
+6 gate: port language-engine-witness e2e
+   |                           |
+   v                           v
+7 CL5 rehome or retire       9 Spirit port, then staged
+   |                           storage migration
+   v
+8 slice 2: field-naming rule to the psyche
 ```
 
 **0. Repair the ground first (new step).** Sync all ten working copies to their

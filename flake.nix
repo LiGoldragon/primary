@@ -29,18 +29,21 @@
           skillApps = skills.apps.${system};
 
           wrappedSkillApp =
-            appName: description:
+            appName: mode: description:
             let
               script = pkgs.writeShellApplication {
                 name = appName;
                 text = ''
                   if [ "$#" -gt 1 ]; then
-                    echo "usage: ${appName} [workspace-root]" >&2
+                    echo "usage: ${appName} [nota-payload]" >&2
                     exit 2
                   fi
 
-                  workspace_root="''${1:-$PWD}"
-                  exec "${skillApps.${appName}.program}" "$workspace_root"
+                  if [ "$#" -eq 1 ]; then
+                    exec "${skillApps.${appName}.program}" "$1"
+                  fi
+
+                  exec "${skillApps.${appName}.program}" "(Generate (${skills} $PWD manifests/active-outputs.nota ${mode}))"
                 '';
               };
             in
@@ -50,8 +53,8 @@
               meta.description = description;
             };
 
-          generateSkills = wrappedSkillApp "generate-skills" "Regenerate configured skill outputs into the workspace root";
-          checkSkills = wrappedSkillApp "check-skills" "Check generated skill outputs in the workspace root without writing";
+          generateSkills = wrappedSkillApp "generate-skills" "Write" "Regenerate configured skill outputs into the workspace root";
+          checkSkills = wrappedSkillApp "check-skills" "Check" "Check generated skill outputs in the workspace root without writing";
         in
         {
           generate-skills = generateSkills;
@@ -67,7 +70,7 @@
           skillApps = skills.apps.${system};
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
-            "${skillApps."check-skills".program}" ${self}
+            "${skillApps."check-skills".program}" "(Generate (${skills} ${self} manifests/active-outputs.nota Check))"
             touch "$out"
           '';
         in

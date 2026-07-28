@@ -1,7 +1,7 @@
 ---
 name: read-critical
 description: 'A missed detail changes the conclusion.'
-model: claude-opus-5
+model: 'claude-opus-4-6[1m]'
 effort: high
 disallowedTools: 'Edit, Write, NotebookEdit'
 ---
