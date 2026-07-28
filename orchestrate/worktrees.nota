@@ -57,6 +57,7 @@
 (logos-engine NoAliasesWitnessCoreNomos /home/li/wt/github.com/LiGoldragon/logos-engine/NoAliasesWitnessCoreNomos NoAliasesWitness Abandoned [align logos core nomos] 1784337023000000000 AncestorOfMain)
 (logos-engine SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/logos-engine/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784337023000000000 AncestorOfMain)
 (lojix horizon-driven-intercom /home/li/wt/github.com/LiGoldragon/lojix/horizon-driven-intercom HorizonDrivenIntercom Active [Horizon projection support for Agent Intercom role data] 1784166705000000000 AncestorOfMain)
+(lojix lojix-schema-v1-migration /home/li/wt/github.com/LiGoldragon/lojix/lojix-schema-v1-migration reconstruct-handover Active [implement current Lojix store migration] 1785155238000000000 AncestorOfMain)
 (message WorktreeSubjectIntegration /home/li/wt/github.com/LiGoldragon/message/WorktreeSubjectIntegration WorktreeSubjectIntegration Active [work subject relation contract integration] 1784401801000000000 AncestorOfMain)
 (meta-signal-criome MetaSignalCriomeElevenFamily /home/li/wt/github.com/LiGoldragon/meta-signal-criome/MetaSignalCriomeElevenFamily MetaSignalCriomeElevenFamily Active meta-signal-criome-eleven-family 1784129964000000000 AncestorOfMain)
 (meta-signal-criome MetaSignalCriomeRuntimeCompatibility /home/li/wt/github.com/LiGoldragon/meta-signal-criome/MetaSignalCriomeRuntimeCompatibility MetaSignalCriomeRuntimeCompatibility Active [pin meta criome runtime family] 1784129964000000000 AncestorOfMain)
