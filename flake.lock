@@ -237,11 +237,11 @@
         "triad-runtime-source": "triad-runtime-source"
       },
       "locked": {
-        "lastModified": 1785256925,
-        "narHash": "sha256-Gw2HLt95G/ycuUXf5b5LTPTr9TKB5BHswC96YIJJ8tE=",
+        "lastModified": 1785275246,
+        "narHash": "sha256-snmIXbv4cjb6kbGxK42xDViuHerDk/xavNa3HFBUQqM=",
         "owner": "LiGoldragon",
         "repo": "skills",
-        "rev": "c0a6a8d1577b9dc65d826e19073528f943f208bd",
+        "rev": "a2ff154f92f09b3b0f979991061c30d29c671c95",
         "type": "github"
       },
       "original": {

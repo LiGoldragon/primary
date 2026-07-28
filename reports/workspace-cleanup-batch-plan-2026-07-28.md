@@ -19,13 +19,13 @@ The actionable physical scope is **47 extra workspace-like directories**, not
 215 worktrees. An *extra workspace-like directory* is a physical directory in
 addition to its canonical repository root: a detached Jujutsu workspace, a
 physical root backing a non-default primary registration, or the one linked
-Git worktree without a Jujutsu identity.
+Git worktree tracked outside the primary Jujutsu repository.
 
 | Physical-extra unit | Preserve | Owner decision | Conditionally cleanup-eligible after approval | Total |
 | --- | ---: | ---: | ---: | ---: |
 | Detached Jujutsu workspaces under `/git/github.com/LiGoldragon` | 7 | 12 | 23 | 42 |
 | Physical roots backing non-default primary registrations | 0 | 4 | 0 | 4 |
-| Linked Git worktree with no Jujutsu identity | 0 | 1 | 0 | 1 |
+| Linked Git worktree outside the primary Jujutsu repository | 0 | 1 | 0 | 1 |
 | **Extra physical workspace-like directories** | **7** | **17** | **23** | **47** |
 
 The 166 canonical repository roots are context, not extra workspaces: 164 are
@@ -67,8 +67,14 @@ never as a count of physical worktrees or cleanup candidates.
 - Four physical primary-registration roots: existing substantial workspaces
   `/home/li/{mind-live-judge-eval-rerun,primary-worktrees/mind-judge-fixture-label-cleanup,primary-worktrees/MindJudgePromptRewrite-TargetedSecondPass,primary-worktrees/MindJudgePromptRewrite-NarrowThirdPass}` and two registrations without a discovered physical root, `primary-fix-audit-stale-repo-operator` and `primary-fix-audit-stale-repo-operator-v2`. The existing four contain retained `.beads`, reports, agent outputs, and source material even though their recorded `@` is empty; they need an owner/retention review.
 - Orphan-like linked Git worktree:
-  `/home/li/primary/synchronizer-release-train-p0-p2`, including
-  `/home/li/primary/.git/worktrees/synchronizer-release-train-p0-p2`. It has no Jujutsu repository identity and contains `.agents`, `.beads`, reports, and agent outputs. Do not prune its Git metadata or move it until origin, owner, and archive decision are known.
+  `/git/github.com/LiGoldragon/synchronizer-release-train-p0-p2`, including
+  its linked metadata under
+  `/git/github.com/LiGoldragon/synchronizer/.git/worktrees/synchronizer-release-train-p0-p2`.
+  It has a Git branch identity, `release-train-p0-p2`, and contains `.agents`,
+  `.beads`, reports, and agent outputs. That branch is fully merged into
+  `main`, so the concern is retention of the leftover physical worktree and
+  its retained material, not a missing identity. Do not prune its Git
+  metadata or move it until owner and archive decision are known.
 
 ### Likely cleanup-eligible after approval
 
