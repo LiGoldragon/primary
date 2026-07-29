@@ -65,3 +65,17 @@ unsuitable and that replacement capture hardware is the proper solution. The
 design must continue toward a software fix on the existing hardware. The
 aspect-ratio invariant above remains in force; this correction does not yet
 select the software mechanism or resolve reject versus crop/pad behavior.
+
+## Bridge removal — 2026-07-30
+
+Context: the psyche explicitly authorized disruptive declarative removal and
+redeployment on both Ouranos and Zeus, and directed that the existing bridge
+behavior be superseded and removed.
+
+Psyche ruling: **CriomOS-home profiles do not create or run
+capture-card-to-virtual-camera bridges.**
+
+This supersedes the prior Home Manager capture-card virtual-camera module and
+its service/package behavior. It does not decide the separate system-level
+v4l2loopback policy or a future software solution that does not create or run
+such a bridge.
