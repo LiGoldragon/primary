@@ -90,3 +90,19 @@ Expected current evidence is direct Nix-owned command resolution, Codex 0.146.0,
 2. Home Manager's reload can start declared services. Future narrow activations need an explicit expected-unit set and a pre/post check.
 3. Lojix's prior schema/transport corruption and lost job history leave an audit/provenance gap until resumable, timeout-bounded jobs are implemented.
 4. The upstream Codex Nix package may change its wrapper behavior in a future pin. Keep the direct-identity assertion in the focused Home check.
+
+## 2026-07-29 bounded Lojix transport repair
+
+### Completed, witnessed work
+
+Lojix `0.11.0` was pushed through commits `250c1e38`, `d0f7e83e`, and `15e25e0`. Its deploy pipeline now evaluates and builds the exact immutable output locally, copies that output to the target, then uses the existing root-mediated target-user profile and activation path. It never evaluates a deploy flake through an SSH Nix store. Every Nix, SSH, and activation effect now has a configured wall-clock bound; the production default is 2700 seconds. The runner starts a session process group, terminates it on expiry, escalates if necessary, waits for it, and reports a durable terminal rejection.
+
+Focused Rust tests cover the local eval/build, exact copy/profile/activation order, copy and activation failures, and a hung descendant process. The full Lojix Rust suite, its Nix sandbox test, and the CriomOS daemon-configuration round-trip check passed. The latter also corrected a stale assertion that expected shell quotes absent from the generated static migration script. No deployment-job schema or provenance migration was added: existing terminal failure persistence and source-revision records remain, while proposal-source snapshot and content provenance remain a known gap.
+
+CriomOS `0683d00e` pins Lojix `15e25e0`. It writes the bounded-effect value into the daemon startup archive and includes `setsid` in the service path. The exact pushed Ouranos system, built with all four authoritative generated full-OS inputs, completed successfully; its NAR hash was `sha256-EPd6ER6/HVdUW2xbPd9EwdXDlnkRud/1+k1JwCjhReU=`. The persistent system profile was set and switched through `root@localhost`. Afterwards, `lojix-daemon.service` was active and enabled, both sockets existed, its deployed unit carried Lojix `0.11.0`, and an ordinary `ByNode` query succeeded.
+
+### Owner and Bird gates
+
+Before the system switch, both Li and Bird resolved direct Codex `0.146.0` and Claude `2.1.220`; Codium reported `1.112.01907`, with `anthropic.claude-code@2.1.220` and `openai.chatgpt@26.5721.30844`. Neither account had the checked user overlay directory. Bird's Intercom units were inactive. After the switch, Li retained those package and VSIX versions and no overlay. Li's previously active Intercom units were then inactive and no longer installed. The authoritative generated Ouranos Horizon contains no Agent Intercom capability; that is consistent with the absence, but the observation alone does not establish the full causal mechanism.
+
+The single new Bird `ActivateNow` request was deliberately not submitted. The configured Zeus endpoint was reachable for the initial read-only Bird gate, then became unreachable before the required pre-activation content read: its resolved Yggdrasil route had no ICMP reply and new SSH connections timed out. Yggdrasil was active locally and its recent journal contained peer timeouts. No network restart, remote profile change, overlay change, or Bird deployment followed. Therefore no new terminal Bird current/content/NAR evidence exists for this repair; this remains an external reachability blocker rather than evidence of a deployment outcome.
