@@ -1198,3 +1198,499 @@ reveal how the system actually behaves, and agents are invited to research
 prior art on typed, placeholder-driven program transformation. Nothing in
 sections 1-9 of this document should be read as resolving this long-term
 scope; it orients direction, not this document's v1 decisions.
+
+## 11. Template(Logos): the Derived Grammar for Transformer Compilation
+
+This section is a **proposal for the psyche's ruling**, written at his
+direction. It is not settled law.
+
+### 11.1 The Conundrum
+
+The psyche identified the core difficulty when working through the
+transformer-compilation question. **[ruled, 2026-07-29]**
+(PsycheVisionReacquisition-2026-07-29.md Entry 5):
+
+> And taking a textual form Nomos transformer and creating a Rust type
+> transformation logic, I can see that now is a fairly difficult endeavor.
+
+> it has to take the handwritten textual form Nomos and create this
+> transformation logic where the placeholders with the dollar signs or
+> whatever are... hold the key as to what gets put where, from the Ethos
+> type into the generated Logos type that it produces
+
+The conundrum in operational terms: a transformer's result template is a
+Logos skeleton with typed placeholder positions. It must be parsed as
+Logos — its structure IS Logos structure (newtypes, structs, enumerations,
+attributes, fields, variants, all in their correct structural positions).
+But it is not Logos yet: some positions carry escapes (Realize, Invoke,
+Splice) instead of literal values. The template body cannot parse under the
+Logos grammar, because the Logos grammar does not admit escapes at term
+positions. It cannot parse under a hand-maintained alternative grammar
+either, because a hand-maintained second grammar is a synchronization
+liability that drifts from the Logos grammar it mirrors.
+
+And the psyche was explicit that string templates are not the answer.
+**[ruled, 2026-07-29]** (same Entry 5):
+
+> I was originally asking, and I still want the transformation to be strictly
+> through the encoded form. So there's strictly no string manipulation of any
+> kind, or like if we talk about template, I think you mean string templates,
+> in which case that's not at all what I'm looking for.
+
+### 11.2 The Proposed Dissolution: Template(X) as a Mechanically Derived Grammar
+
+**[proposal]** The template body is parsed under a second grammar derived
+mechanically from the Logos grammar. The derivation is specified as a
+function over the structural-codec rule records that define the Logos
+grammar — the same `Position<Role, Root, SharedDescriptor<Root>>` and
+`StructuralRule<Root>` types (structural-codec form.rs) already used to
+define every protos-family grammar. No hand-maintained parallel grammar
+exists; the derived grammar is computed from the Logos grammar's own typed
+data.
+
+The derivation has one operation: at every position in a Logos rule record
+where a term-producing descriptor sits, the derived grammar admits either the
+original term OR a typed escape whose output type matches what the original
+position expected. Structural positions (delimiters, operators, repetition
+scaffolding) pass through unchanged — they shape the skeleton, not fill it.
+Fixed vocabulary words (`SharedDescriptor::Literal` descriptors) also pass
+through unchanged — the visibility keyword `Public` in a template body is a
+literal, not a hole.
+
+### 11.3 The Derivation Function, Against the Real Types
+
+The structural-codec `SharedDescriptor<Root>` (form.rs lines 175-213) is an
+enum with 11 variants. The derivation function `lift_descriptor` classifies
+each variant into one of three treatments.
+
+**Term-producing positions — admit the escape alternation:**
+
+| SharedDescriptor variant | Lifting | What the escape represents |
+|:---|:---|:---|
+| `Declaration(AtomDescriptor)` | Alternation: the original `Declaration`, or a Realize escape at this position | A `Realize` unquoting a bound identifier into a name slot |
+| `Reference(AtomDescriptor)` | Alternation: the original `Reference`, or an Invoke escape at this position | An `Invoke` calling another transformer by reference |
+| `Delegate { target, payload }` | Recursively lift the delegated target: `Delegate { target: Template(target), payload }` | The sub-rule is itself a template, whose positions may carry escapes |
+
+**Structural positions — pass through, lifting content recursively:**
+
+| SharedDescriptor variant | Lifting |
+|:---|:---|
+| `Repeated { minimum, maximum, element }` | `Repeated { minimum, maximum, element: lift(*element) }` — repetition structure unchanged, element descriptor lifted |
+| `OrderedProduct(members)` | Members unchanged — the product names typed positions; each member's own descriptor is lifted independently through its `Position` |
+| `OrderedSequence(members)` | Same — the sequence names typed positions; each member is lifted through its `Position` |
+| `Application { operator, head, payload }` | Application structure unchanged — head and payload positions are lifted through their respective Positions |
+| `Delimited { boundary, content }` | Boundary unchanged, content position lifted through its `Position` |
+| `ItemBoundary { boundary, content }` | Same |
+
+**Fixed positions — unchanged:**
+
+| SharedDescriptor variant | Why unchanged |
+|:---|:---|
+| `Literal(EncodedId<Root>)` | Fixed vocabulary word (e.g. `Public`, `Private`, `Structural`); no escape admitted |
+| `Leaf(LeafCodec)` | Literal codec value (integer, text, etc.); not a typed hole |
+
+The function over a `Position`:
+
+`lift_position(Position<Role, Root, SharedDescriptor<Root>>)` applies
+`lift_descriptor` to the position's descriptor. Where the descriptor is
+widened (Declaration or Reference becoming an alternation), the widened
+descriptor is represented through the existing `RuleCoproduct<Left, Right>`
+machinery (form.rs lines 542-586): the evaluator at that position accepts
+either the original rule branch (literal case) or the escape rule branch
+(escape case). The coproduct composition is the structural-codec's own
+dispatch mechanism, already used to compose downstream vocabulary rule sets
+with the kernel's structural rules.
+
+### 11.4 The Escape Construct as a Typed Record in the Derived Grammar
+
+Each escape form is itself a typed rule record in the derived grammar, not an
+ad-hoc parse. Because the base-door escape syntax (section 3.2) is a dotted
+application — `Realize.name`, `Invoke.EnumerationAttributes`,
+`Splice.variants` — each escape is an `ApplicationRule<Root>` (form.rs lines
+357-422) whose positions carry typed descriptors:
+
+**Realize** at a Declaration position: an `ApplicationRule<Root>` where the
+head is `SharedDescriptor::Literal(realize_keyword_id)` — the reserved word
+`Realize` identified by its complete encodedID chain — and the payload is
+`SharedDescriptor::Declaration(AtomDescriptor)` — the binding name, resolved
+as a declaration in the input-signature namespace. An optional chained
+application carries the `NameTransform` (`.FieldName`, `.Screaming`,
+`.PascalCase`) as a further `Literal` descriptor.
+
+**Invoke** at a Reference position: an `ApplicationRule<Root>` where the head
+is `SharedDescriptor::Literal(invoke_keyword_id)` and the payload is
+`SharedDescriptor::Reference(AtomDescriptor)` — the transformer name,
+resolved as a reference through the nametree. The transformer was declared
+elsewhere; this position uses it. At decode time, the name gets its
+`encodedID` through the translator's allocation-on-receipt mechanism; the
+binding to a `MacroIdentity` is deferred to seal (section 12.3).
+
+**Splice** at a Repeated position: an `ApplicationRule<Root>` or
+`ApplicationDelimitedRule<Root>` (form.rs lines 426-516) where the head is
+`SharedDescriptor::Literal(splice_keyword_id)` and the payload carries the
+binding reference and per-element production data (the `SpliceElement`
+information as further typed positions).
+
+The derived `RuleCoproduct` at a widened position assembles as:
+
+```
+RuleCoproduct<OriginalLogosDescriptor,
+    RuleCoproduct<RealizeEscapeRule,
+        RuleCoproduct<InvokeEscapeRule,
+                      SpliceEscapeRule>>>
+```
+
+This uses the existing `RuleCoproduct<Left, Right>` nesting — no new generic
+type is needed. The shared evaluator's dispatch over `RuleCoproduct` branches
+(form.rs `StructureRecord<Root>` trait, `BorrowedFieldView<Root>` trait) already
+handles this nesting; the derived grammar's escape branches implement the same
+traits.
+
+### 11.5 The Parse Product: a Typed Skeleton in a Parallel Universe
+
+The parse product under the derived grammar is a typed skeleton in a parallel
+typed universe: at every position, the value is either a literal Logos value
+(an `Identifier`, `TypeReference`, `Visibility`, `Attribute`, etc.) or a
+typed escape (a `Realize`, `Invoke`, or `Splice` whose output type is
+constrained by the Logos type the position expects). This is exactly the
+`Scalar<Literal>` / `Sequence<Literal>` / `SequenceItem<Literal>` algebra
+already in core-nomos template.rs:
+
+- `Scalar<Identifier>` at a name position: either `Literal(Identifier)` or
+  `Escape(Realize{binding, transform})` — a literal name or a realized bound
+  name
+- `Scalar<TypeReference>` at a type position: either `Literal(TypeReference)`
+  or `Escape(Realize{binding, Identity})` — a literal type or a realized
+  bound type
+- `Sequence<Attribute>` at an attribute position: items that are each
+  `Literal(Attribute)` or `Escape(Invoke(identity))` — literal attributes or
+  a recursive transformer invocation
+- `Sequence<Variant>` at a variants position: items that are
+  `Literal(Variant)` or `Escape(Splice{binding, Variant})` — literal variants
+  or a spliced bound vector
+
+The Template(Logos) skeleton becomes Logos only at application time, when the
+evaluator (engine.rs) fills each escape with typed Ethos-derived data.
+Escapes typed by their position guarantee that ill-formed output is
+unrepresentable: a Realize in a name slot must produce an `Identifier`; a
+Realize in a type slot must produce a `TypeReference`; a Splice in a variant
+vector must produce `Variant` values. A Realize in a name slot producing a
+`TypeReference` is a type error in the *derived grammar* — caught at
+transformer load time, never at generation time.
+
+This directly instantiates the prior art survey's lesson 1
+(TransformerPriorArt-2026-07-29.md): "A Nomos transformer must be rejected
+at load time if any placeholder's Logos type, vector-slot position, or Ethos
+binding is wrong — never at generation time. MPS's generation-time-only
+failures, and the thousands of tests mbeddr needed to compensate, are the
+cost of skipping this." The derived grammar's typed positions enforce this: a
+template that misplaces an escape is a parse error in Template(Logos), not a
+generation-time surprise. The psyche's "strictly through the encoded form"
+ruling (Entry 5, quoted in 11.1) is the mechanism that makes this concrete:
+every position is typed to its Logos type, and no string template exists to
+degenerate into.
+
+### 11.6 Fit to the Two-Pass Architecture
+
+The existing load path (section 4.2) operates in two passes: pass 1
+(raw-discovery) discovers block boundaries; pass 2 (structural-codec)
+evaluates each block under the typed rule vocabulary for its structural
+position in the document.
+
+Template(Logos) fits without change to pass 1. Block discovery is
+structural — delimiters, boundaries, carrier-opaque scanning. A template
+body's curly-brace block is discovered the same way any block is discovered.
+Escapes use the same seven triggers (dotted application for `Realize.name`,
+brackets for `[Splice.variants]`, etc.) and create no new discovery-time
+distinctions.
+
+In pass 2, the structural evaluator selects the rule set for each position by
+the document's typed structure. A transformer definition's top-level
+positions (name, kind, input, template) are Nomos structural positions; the
+template body position, within that, is a Logos-shaped position — but under
+the derived grammar. The decoder at that position selects the
+Template(Logos) rule set, not the plain Logos rule set. The dispatch signal is
+the structural position itself: a `ResultTemplate` body is typed as
+Template(Logos) in the Nomos document structure, exactly as a `MacroKind`
+position is typed as the kind vocabulary. The decoder need not inspect the
+content to decide which grammar to use; the template body position's
+structural type tells it.
+
+The result block in a transformer definition carries type Template(Logos), so
+the structural evaluator at that position dispatches to the derived rule set.
+Escape constructs — `Realize.name`, `Invoke.EnumerationAttributes`,
+`Splice.variants` — are ordinary typed constructs of the derived grammar,
+evaluated through the same `StructureRecord<Root>` / `BorrowedFieldView<Root>`
+machinery that evaluates every other structural-codec rule. They are not lexer
+specials, not token-stream markers, not string-interpolation sites. They are
+typed positions in a typed grammar, evaluated to typed values.
+
+```mermaid
+flowchart TD
+    ND["Nomos document structure"] --> NP["Nomos positions: name, kind, input"]
+    ND --> TB["template body position: typed as Template-Logos"]
+    TB --> DG["Derived grammar selected at this position"]
+    DG --> LB["Literal branch: Logos rule record"]
+    DG --> EB["Escape branch: RealizeRule / InvokeRule / SpliceRule"]
+    LB --> SK["Typed skeleton: Scalar/Sequence with Literal values"]
+    EB --> SK
+    SK --> EV["Engine evaluates against WholeEthos"]
+    EV --> LO["Logos output: literal EncodedItem values"]
+```
+
+### 11.7 Genericity: Template(X) for Any Protos-Family Language
+
+The derivation is specified over `SharedDescriptor<Root>` and
+`Position<Role, Root>`, not over Logos-specific types. Any protos-family
+language X whose grammar is expressed as structural-codec rule records admits
+the same derivation. Today X=Logos because Nomos transformers produce Logos
+output. If a future transformer targets a different protos-family language,
+the same `lift_descriptor` function derives Template(X) from X's grammar with
+no new design.
+
+Template(Nomos) — a transformer whose output is itself a Nomos
+transformer — is the natural consequence: a meta-transformer authored in
+Nomos whose template body is a Nomos-shaped skeleton with escapes, parsed
+under the derived Template(Nomos) grammar. Whether meta-transformers are in
+scope is not decided here; the genericity is a design property of the
+derivation, not a feature commitment.
+
+### 11.8 Relation to the Existing Escape Algebra
+
+The existing `ResultTemplate` / `Escape` / `Scalar<Literal>` /
+`Sequence<Literal>` algebra in template.rs *is* the evaluation-side
+representation of Template(Logos). The derivation function proposed here does
+not replace it; it provides the *parse-side* specification that produces it.
+The relationship:
+
+- The derived grammar's typed positions parse authored text into the
+  `Scalar<Literal>` / `Sequence<Literal>` values that template.rs defines
+- The existing `Escape` enum (`Realize`, `Invoke`, `Splice`) is the
+  evaluation-side escape set — unchanged, closed at three members
+- Template(Logos) is the name for the grammatical universe in which those
+  escapes live alongside literal Logos values
+
+Where the escape algebra must still grow (noted as open, section 9
+Decision 1): the `Fold` construct proposed for tree-shaped recursion
+(ScopeOf, section 3.9) and targeted positional insertion into vector slots
+(section 4.4, the psyche's "a particular spot in a vector where a certain
+item gets inserted"). These are growth of the escape set, not growth of the
+derivation mechanism — `Fold` would be a new escape variant, and
+`lift_descriptor` would admit it at the appropriate positions by the same
+widening logic. The derivation function does not assume the escape set is
+frozen; it parameterizes over whatever `Escape` enum the evaluation side
+defines.
+
+### 11.9 Concrete Example: the Enumeration Template Under the Derivation
+
+The Enumeration structural default (section 3.3) has these template
+positions. Walking each through the derivation:
+
+1. **visibility** (`Public`): Logos position expecting `Visibility` — a
+   `Literal` descriptor for the fixed word `Public`. Under the derivation:
+   **unchanged**. It IS a literal (`SharedDescriptor::Literal`); no escape is
+   admitted. The authored text `Public` parses to `Visibility::Public`
+   directly.
+
+2. **attributes** (`Invoke.EnumerationAttributes`): Logos position expecting
+   `Sequence<Attribute>` — a `Repeated` descriptor over an attribute element.
+   Under the derivation: **lifted** — each element in the repetition admits
+   either a literal `Attribute` or an `Escape`. In the running example,
+   `Invoke.EnumerationAttributes` is parsed by the Invoke escape rule branch
+   (an `ApplicationRule` with head=`Invoke` literal, payload=
+   `EnumerationAttributes` reference), producing
+   `SequenceItem::Escape(Invoke(EnumerationAttributes_identity))`.
+
+3. **name** (`Realize.name`): Logos position expecting `Identifier` — a
+   `Declaration(AtomDescriptor)` descriptor. Under the derivation:
+   **widened** — the position admits either a literal `Declaration` (a fixed
+   name) or a `Realize` escape. `Realize.name` is parsed by the Realize
+   escape rule branch (an `ApplicationRule` with head=`Realize` literal,
+   payload=`name` declaration), producing
+   `Scalar::Escape(Realize{binding: Input(name), transform: Identity})`.
+
+4. **generics** (`()`): Logos position expecting `Generics` — a structured
+   Logos type. Under the derivation: **lifted recursively** via `Delegate`.
+   But `()` is a literal empty generics, so the literal branch is taken,
+   producing `Generics::none()`.
+
+5. **variants** (`[Splice.variants]`): Logos position expecting
+   `Sequence<Variant>` — a `Repeated` descriptor over a variant element.
+   Under the derivation: **lifted** — each element admits either a literal
+   `Variant` or an `Escape`. `Splice.variants` is parsed by the Splice escape
+   rule branch, producing
+   `Sequence::of(SequenceItem::Escape(Splice{binding: Input(variants), element: Variant}))`.
+
+The derived grammar parses this template body into exactly the
+`EnumerationTemplate` value that fixtures.rs constructs by hand — the same
+typed data, parsed from text through a typed grammar rather than built from
+Rust constructors. This is the same mapping table presented in section 3.3,
+but now with a grammatical account of *how* the parser reaches those values:
+not by ad-hoc recognition of escape keywords, but by the derived grammar's
+typed rule records dispatching through `RuleCoproduct` branches at each
+position.
+
+## 12. The Train's First Stop-Line: Phase-Stable Identity and Dependency Ordering
+
+This section is a **proposal for the psyche's ruling**, written at his
+direction. It addresses the dependency mismatch Codex's worker discovered
+and the design responses to it.
+
+### 12.1 The Evidence
+
+The first worker to implement po2.1 (plain-NOTA text decode into typed
+transformer declarations) hit a real dependency mismatch before writing code.
+Codex's report, verbatim:
+
+> The first worker hit a real dependency mismatch before writing code, which
+> is exactly what the train's stop-line is for. The current structural-codec
+> pin cannot represent ordered Nomos records; the newer codec can, but it
+> requires full translator-issued encodedID chains that core-nomos does not
+> yet carry. Separately, Invoke.\<name\> cannot honestly become the
+> package-local MacroIdentity until package registration. The worker created
+> po2.11 rather than smuggling in a flat-ID or forward-reference adapter; the
+> train manager is resequencing po2.1/.2/.4 around that evidence.
+
+**Verification against po2.11.** The bead (protos-engine-po2.11, "Authored
+Nomos needs a phase-stable identity carrier from decode through package
+sealing") confirms every claim in this summary:
+
+1. **structural-codec pin**: po2.11 records that structural-codec 0.6.0
+   (the pin core-nomos carries, commit 23497c43) "cannot represent the
+   approved whitespace-separated fixed positional record." The newer
+   structural-codec 0.8.0 (commit 5c11e1fb7f58 and later, current c36c0cef)
+   adds `OrderedSequence` — the rule record type that expresses the
+   fixed-position records the base-door syntax requires — but simultaneously
+   requires translator-issued full `EncodedId` chains through
+   `DecodeNameBindings`. core-nomos stores flat `name_table::Identifier`, not
+   full chains.
+
+2. **Invoke forward reference**: po2.11 records that "Invoke.\<name\> cannot
+   become existing Escape::Invoke(MacroIdentity) until package-local
+   identities are assigned during po2.4 sealing, especially for
+   forward/cross-file references."
+
+3. **Stop-line behavior**: po2.11 was created as a DISCOVERED-FROM bead of
+   po2.1. The worker created the bead recording the dependency rather than
+   working around it. po2.11's design section explicitly states: "Do not add
+   a temporary flat-ID adapter or let core-nomos allocate names."
+
+4. **Resequencing**: po2.1 now DEPENDS ON po2.11. The dependency graph is:
+   po2.11 (phase-stable carrier) blocks po2.1 (decode), which blocks po2.2
+   (translator allocation), which feeds po2.4 (package seal).
+
+### 12.2 Design Response: the Ordering Is Real
+
+**[proposal, endorsed as design fact]** The Template(Logos) decode described
+in section 11 rides the newer structural-codec, whose `OrderedSequence` and
+typed `DecodeNameBindings` require translator-issued `EncodedId` chains in
+core-nomos. This is a real dependency: the nametable/encodedID work
+(migrating core-nomos from flat `Identifier` to full `EncodedId` chains,
+publishing the updated structural-codec pin) must precede the
+Template(Logos) typed decode, which must precede the full
+authored-transformer load path.
+
+The dependency order, stated as design fact:
+
+1. **po2.11**: define the phase-stable authored carrier that retains full
+   `EncodedId` chains from decode through seal; existing `MacroDefinition`
+   remains the sealed execution record, and `MacroIdentity` remains
+   package-local implementation structure (po2.2 already specifies this)
+2. **po2.1**: decode authored `.nomos` text through raw-discovery +
+   structural-codec into the phase-stable carrier, using the
+   Template(Logos) derived grammar for template bodies
+3. **po2.2**: submit authored transformer and binding names to the
+   translator for `encodedID` allocation
+4. **po2.4**: seal the complete declaration set into a `MacroPackage` —
+   rebind Invoke targets from durable identity to package-local
+   `MacroIdentity` atomically
+
+No provisional or flat-ID intermediate representation is acceptable.
+po2.11's design section is explicit: "Do not add a temporary flat-ID adapter
+or let core-nomos allocate names." This is refusal over pretending: a
+flat-ID adapter would create a representation that lies about the phase it
+occupies, and would have to be torn out when the real carrier arrives. The
+train's stop-line exists to prevent exactly this kind of technical debt from
+entering the codebase under schedule pressure.
+
+This aligns with the resequencing rather than proposing a workaround. The
+worker who discovered the mismatch did the right thing by creating po2.11
+and stopping; the train manager's resequencing of po2.1/.2/.4 around the
+evidence is the right response; this design endorses the resulting dependency
+order as architecturally correct, not merely expedient.
+
+### 12.3 Design Response: Invoke Forward References Get Allocation-on-Receipt
+
+The Invoke forward-reference problem has two parts: giving a transformer
+name its durable identity, and binding that name to a package-local
+`MacroIdentity` for the sealed execution record. The design resolves them in
+two phases, separated by the seal boundary.
+
+**Phase 1 — allocation-on-receipt (settled law).** At decode time, when the
+translator encounters an unallocated word, it allocates an `encodedID` for it
+immediately. **[ruled]** (DesignReviewRulings entry 3): "no, nothing declares
+the coreID, the coreID is allocated by the translator on receiving an
+unallocated word." This is not a promise or a forward declaration; it is the
+standard identity-allocation mechanism that every word in every protos-family
+language passes through. A transformer name (`WireNewtype`) gets its
+`encodedID` when the translator first sees it, the same way `Status` or
+`Entry` gets theirs. An `Invoke.WireAttributes` reference to a
+not-yet-decoded transformer is a reference to a word the translator has
+already given (or will give, on first encounter) a durable identity — the
+*name* gets identity immediately; the question of whether that name denotes a
+real transformer is a separate question answered at seal time.
+
+This maps directly to the prior art survey's lesson 3
+(TransformerPriorArt-2026-07-29.md): "EncodedID identity dissolves
+hygiene — but three operations must be designed in its place." The three
+operations cited are (a) fresh-binder minting, (b) intentional capture, and
+(c) forward references to not-yet-generated nodes. Allocation-on-receipt is
+the protos answer to (a) and (c) simultaneously: fresh-binder minting IS
+allocation-on-receipt (every new word gets a fresh `encodedID`, never
+colliding with any other word's identity), and forward references are natural
+because the `encodedID` is allocated on first encounter regardless of whether
+the referent has been defined yet. Intentional capture (b) does not arise in
+the transformer-name case — a transformer invocation is a reference, not a
+binding into the caller's namespace — but the survey correctly notes it will
+need an explicit mechanism in the escape algebra when transformers that inject
+binders into generated code are designed. That is not the present case.
+
+**Phase 2 — atomic seal-time binding (proposal).** At package seal time
+(po2.4), the complete declaration set is known. Every Invoke target's durable
+`encodedID` is resolved against the declared transformer names. For each
+declared transformer, the seal allocates a package-local `MacroIdentity` (the
+monotonic index from identity.rs: "a monotonic package mint"). Every Invoke
+reference is rebound from its durable `encodedID` to the package-local
+`MacroIdentity` of the transformer it names. If any Invoke target remains
+undefined — its durable `encodedID` does not match any declared transformer
+in the sealed package — the seal refuses atomically, with no partial
+registration, no NameTable mutation, and no package output. The same refusal
+applies to duplicate declarations (two transformers declaring the same name).
+
+```mermaid
+flowchart TD
+    D["Decode: Invoke.WireAttributes encountered"] -->|"translator allocates on receipt"| A["WireAttributes gets encodedID e42"]
+    A --> C["Phase-stable carrier stores Invoke with durable encodedID e42"]
+    C --> S["Seal: complete declaration set known"]
+    S -->|"WireAttributes declared, gets MacroIdentity m3"| B["Invoke e42 rebound to Invoke m3 in sealed MacroDefinition"]
+    S -->|"WireAttributes NOT declared"| R["Seal refuses: unresolved Invoke target e42, no package emitted"]
+```
+
+**What is settled vs. proposal vs. open:**
+
+- **Settled law**: allocation-on-receipt (DesignReviewRulings entry 3);
+  `MacroIdentity` as package-local implementation structure (po2.2 design:
+  "stays a package-local mint index; it is implementation structure, not a
+  substitute for the translator-allocated encodedID"); the seal step itself
+  (section 4.2, steps 4-5).
+- **Proposal**: the specific seal-time binding and refusal semantics
+  described in phase 2 above — atomic full-set rebind from durable identity
+  to package-local `MacroIdentity`, with refusal on unresolved or duplicate
+  names. This is a concrete proposal for how the seal step works, consistent
+  with settled law but not itself ruled.
+- **Open**: whether cross-package Invoke (a transformer in one package
+  invoking a transformer in another package) needs additional design beyond
+  the seal-time binding described here. The seal as described operates
+  within one `MacroPackage`; cross-package references would need a resolution
+  mechanism at a higher level (the manifest, section 4.2 step 0). This is
+  not designed here.
