@@ -112,3 +112,35 @@ When TCP and identity-safe SSH later recovered, Bird again passed the command, V
 Post-rejection read-only checks found the Bird profile still resolving to its existing generation, and the direct command/extension/overlay and inactive-Intercom gates remained unchanged. The daemon was active and enabled. The copy failed before profile replacement or activation; that ordering is evidence against an activation, but the report does not claim an unavailable before/after profile digest comparison.
 
 Read-only declarative and runtime Nix inspection established a specific, unresolved signing boundary. Zeus requires signatures and currently trusts the key name `zeus.goldragon.criome`; Zeus and Ouranos have no configured `secret-key-files`. Their configured cache is `nix.prometheus.goldragon.criome`. Prometheus's active cache signs as `prometheus.goldragon.criome`, which Zeus does not trust, and its root Nix configuration likewise declares no `secret-key-files`. No declared root signing helper for the Zeus-trusted key was found. No key bytes were read, no trust or signature requirement was changed, and no unsigned-copy bypass was used. A psyche decision is required before adding or changing any signing/trust capability; without it, the one-shot smoke cannot reach `Current`.
+
+## 2026-07-30 capture-bridge removal and system redeploy
+
+Psyche authority covered disruptive declarative removal and redeployment on
+both hosts. CriomOS-home `653ade70` removes the Home-only capture-card
+virtual-camera module, its user service and bridge package, its aggregate
+import, and its prior positive check. Its focused absence check evaluates and
+builds representative large-edge and ordinary profile fixtures with no bridge
+unit or package; it also checks that the retired module and check roots are not
+present. CriomOS `3938a923` pins that exact Home revision in both `flake.nix`
+and `flake.lock`.
+
+Exact pushed full-OS closures were built from that CriomOS revision using the
+authoritative owner-generated inputs: Ouranos's local full-OS set and Zeus's
+authoritative full-OS set held by the owner on Ouranos. Before activation,
+each closure contained Claude 2.1.220, Codex 0.146.0, the pinned OpenAI VSIX
+26.5721.30844, and VSCodium; neither contained the retired bridge or an
+undeclared Intercom bridge/remote-control unit. Both persistent system
+profiles were set to their exact closures and switched declaratively. On each
+host, the current and persistent system references matched the activated
+closure afterwards.
+
+Read-only production verification found the retired unit not found in the
+system manager or in each already-running relevant user manager. It found no
+FFmpeg process using either former bridge video device, and no bridge package,
+script, or reference in the active system or Home Manager generations. No
+v4l2loopback device was present on either host; no device was removed. Ordinary
+Li and Bird login shells resolved `codium`, `claude`, and `codex` to Nix-owned
+executables; both accounts reported the required Claude and Codex versions and
+the expected Claude Code and OpenAI ChatGPT extensions. The prior user-local
+Codium overlay was absent on both accounts. These are observed deployment
+facts; they do not establish a cause for the earlier capture process.

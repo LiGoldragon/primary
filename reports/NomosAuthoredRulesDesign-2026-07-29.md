@@ -19,6 +19,16 @@ entry. Proposal text is the designer's and marked as such. Where Nomos lives
 is settled law, restored from recovery and recorded in section 8. Remaining
 open decisions for the psyche are collected in section 9.
 
+> **STOP-LINE — PRODUCTION PACKAGE STORED STATE IS NOT DESIGNED.**
+> The legacy flat `MacroPackage` is an execution fixture and equivalence
+> oracle, not a settled production target for authored Nomos. Do not implement
+> a general `LoadedNomosPopulation -> MacroPackage` seal from this document.
+> Full encodedID chains, nested module-owned tables, sibling homonyms, and
+> spelling-only rename stability are settled. The production package carrier,
+> its versioning and archive/migration boundary, any private runtime cache,
+> `PackageRevision` issuance and hash participation, and Capsule-pin
+> composition remain open and require proposals before implementation.
+
 ## 1. The Existing Machinery
 
 **Terminology (ruled, 2026-07-29):** this document uses **transformer**, not
@@ -56,8 +66,12 @@ turn is unlocated).
 
 **MacroPackage** (package.rs) is "Nomos stateful at rest": a content-identified
 `MacroDefinitions` table keyed by `MacroIdentity`, plus a sibling NameTable
-excluded from the content hash. The package is rename-stable by construction:
-renaming a transformer edits only the sibling NameTable.
+excluded from the content hash. This describes the live legacy execution
+fixture, not an approved production stored-state model. Its NameTable is flat:
+two valid same-spelled declarations in different authored module tables
+collapse to one legacy `Identifier`, and a later rename cannot preserve the
+settled full-chain identity through that collapse. Excluding the NameTable
+from its hash does not make this carrier a complete operational-rename model.
 
 **The engine** (engine.rs) applies the package to a `WholeEthos` through
 `MacroPackage::apply` / `apply_enriched`, producing `Lowering` (a
@@ -76,14 +90,14 @@ text crosses this path.
    (`name_boundary.rs`, `prelude.rs`). The compilation notes: "the no-strings
    law is honored exactly one file deep" (ProtosEngineDesign section 14).
 
-This proposal addresses gap 1 entirely and frames gap 2 as a growth path within
-the same surface.
+This proposal addresses the authored textual surface in gap 1 and frames gap 2
+as a growth path. It does not settle the production package representation that
+connects authored state to the existing evaluator.
 
 ## 2. The Transformer as an Authored Object
 
-A transformer (a `MacroDefinition` or a `MacroPackage`) is authored data. It has
-a name, and that name is a word like any other authored word. The identity
-question has a standing answer:
+An authored transformer declaration is data. It has a name, and that name is a
+word like any other authored word. The identity question has a standing answer:
 
 **[ruled]** (DesignReviewRulings entry 3): "no, nothing declares the coreID, the
 coreID is allocated by the translator on receiving an unallocated word."
@@ -96,10 +110,11 @@ module's table, and becomes durably identifiable. The same mechanism that gives
 
 The `MacroIdentity(u32)` that currently keys the package-internal table is a
 package-local mint index (identity.rs line 13: "a monotonic package mint").
-Under the full authored path, this local index relates to the translator's
-encodedID the same way any internal representation relates to the durable
-identity: the translator allocates the durable ID when the authored word first
-arrives; the package-local index is implementation structure.
+It may remain private evaluator cache structure only if a future package
+proposal preserves every durable reference and name lookup by full encodedID
+chain. Whether such a cache exists, how it is rebuilt, and whether
+`MacroIdentity` remains in the production carrier are open; this proposal does
+not promote the current index into durable identity.
 
 ## 3. The TextualNomos Syntax
 
@@ -252,7 +267,7 @@ Enumeration.Structural.Enumeration {
 | `variants`                      | `InputParameter.binding` (Identifier)             |
 | `Variants`                      | `InputParameter.meta` (MetaType::Variants)        |
 | `Public`                        | `EnumerationTemplate.visibility` (literal)        |
-| `Invoke.EnumerationAttributes`  | `Escape::Invoke(MacroIdentity)` in attributes     |
+| `Invoke.EnumerationAttributes`  | Phase-stable Invoke target (full encodedID chain); the legacy evaluator uses `Escape::Invoke(MacroIdentity)` |
 | `Realize.name`                  | `Scalar::Escape(Realize{name, Identity})` for name|
 | `()`                            | `Generics::none()`                                |
 | `[Splice.variants]`             | `Sequence::of(Escape::Splice{variants, Variant})` |
@@ -359,16 +374,18 @@ The splice element carries the field-name rule and the per-field visibility:
 `Splice.fields.FieldRuleDispatch.Public` means
 `Splice{fields, SpliceElement::Field{FieldRuleDispatch, Public}}`.
 
-### 3.7 A Complete `.nomos` File: the Wire Package
+### 3.7 A Complete `.nomos` Document: the Wire Population
 
-A `.nomos` file is a complete `MacroPackage`. It follows the six-slot document
-structure that Ethos uses (the fixtures confirm this: `spirit-min.ethos` has six
-top-level blocks). Loading such a file is one population path for the package
-data, not the only one — see section 4.2 step 0 on the manifest and the
-"possibly, but not necessarily" hedge. The Nomos slots carry:
+A `.nomos` file contributes authored Nomos data to the manifest-resolved
+population. It is not thereby the legacy flat `MacroPackage`, and this document
+does not decide the production package carrier. The example follows the
+six-slot document structure that Ethos uses (the fixtures confirm this:
+`spirit-min.ethos` has six top-level blocks). Loading such a file is one
+population path, not the only one — see section 4.2 step 0 on the manifest and
+the "possibly, but not necessarily" hedge. The Nomos slots carry:
 
 ```
-;; Wire package revision 1
+;; Authored document revision 1
 {1}
 ;; No interface inputs
 []
@@ -643,12 +660,12 @@ addressing it, sending its own encodedform + nametree to be transformed.
 flowchart TD
   A[Authored .nomos text, one population path among possibly others] --> B[raw-discovery boundaries, base-door profile - no dollar sigil needed]
   B --> C[structural-codec typed parsing under protos nametree/structural-tree]
-  C --> D[Typed transformer records: MacroDefinition, InputSignature, ResultTemplate]
-  D --> E[Seal: translator allocates encodedIDs for transformer names and binding names]
-  E --> F[MacroPackage as encoded data with content identity]
-  F --> G[Nomos daemon loads the encoded MacroPackage into a slot, short-ID addressed]
+  C --> D[Phase-stable authored transformer records with full encodedID chains]
+  D --> E[Seal names: declarations allocate in nested module tables; references only resolve]
+  E --> F[STOP: production package carrier and stored-state proposal required]
+  F --> G[Nomos daemon seats an approved content-addressed package representation]
   G --> H[Ethos transformation request addresses the slotted transformer with its encodedform + nametree]
-  H --> I[Engine executes MacroPackage.apply against WholeEthos input]
+  H --> I[Engine executes the selected transformer package against WholeEthos input]
   I --> J[WholeLogos output: encoded items plus Logos NameTable]
 ```
 
@@ -686,55 +703,84 @@ protos library drive all the decoding and encoding to/from text with DATA -
 strict invariant. nothing else will do."
 
 **Step 3: typed records.** The evaluator produces typed `MacroDefinition`
-records, `InputSignature` records, and `ResultTemplate` trees. Every identifier
-in the records is an `Identifier` from the nametree. No strings remain.
+shapes, `InputSignature` records, and `ResultTemplate` trees in the
+phase-stable authored carrier. Every durable identity and reference is a full
+variant-fronted encodedID chain. No strings remain. The legacy
+`MacroDefinition` execution type is not evidence that the production authored
+carrier may flatten those chains.
 
 **Step 4: seal with translator.** The authored transformer names and binding names are
 submitted to the sema-translator. The translator allocates encodedIDs for each
 new word in the appropriate module table. **[ruled]** (DesignReviewRulings
 entry 3): "nothing declares the coreID, the coreID is allocated by the
 translator on receiving an unallocated word." Transformer names are authored words
-and receive their encodedIDs by the same mechanism as any other authored name.
+and receive their encodedIDs by the same mechanism as any other authored
+declaration. References, including `Invoke`, only resolve; they never allocate.
+Allocation and uniqueness are scoped to each module-owned table. The complete
+chain through those nested tables is the durable identity.
 
-**Step 5: encoded MacroPackage.** The sealed definitions, their identifiers, and
-the structural defaults compose into a `MacroPackage` with its sibling
-NameTable. The package's `content_identity()` hashes the stringless
-`MacroDefinitions` table, excluding the NameTable. The package is "Nomos
-stateful at rest" — an archivable, content-addressed value.
+> **STOP-LINE AT STEP 5 — DO NOT SEAL GENERAL AUTHORED STATE INTO THE LEGACY
+> FLAT `MacroPackage`.**
 
-The package is a `Capsule<NomosKind>` under the ruled generic-struct model
-(**[ruled]** SliceOneRulings entry 1: "Generic struct"). The capsule kind
-is a type parameter; the capsule pins the complete composition of its nametree
-(**[ruled]** ShapeAndSliceRulings entry 1: "yes").
+**Step 5: production package representation — OPEN.** The current
+`MacroPackage`/`MacroDefinitions`/flat `NameTable` shape is a legacy execution
+fixture and equivalence oracle. It cannot represent two same-spelled
+declarations from different module tables as distinct durable identities, and
+it cannot provide spelling-only operational rename without changing or
+collapsing those identities. It is therefore not a settled production seal
+target, and the former "no new data model" route is withdrawn.
 
-**Settled (not a decision point):** Nomos implements the protos
-`Capsule`/`ShortIdentifier` traits like its siblings. **[ruled] 07-25**
-(ProtosEngineDesign-2026-07-28.md section 8, "Capsule"): "capsule
-and short-identifier are protos concepts — protos traits with per-engine
-implementations." The 07-25 ruling's exception is rust-logos specifically
-("rust-logos gets no capsule"), not Nomos; Nomos gets its own per-engine
-implementation of both traits, the same as Ethos and Logos do. This document
-previously listed "Nomos capsule kind" as an open decision (whether Nomos gets
-its own kind or composes with the Ethos capsule); the 07-25 ruling settles it
-in favor of Nomos having its own implementation, "like its siblings," which is
-the own-kind shape, not composition into the Ethos capsule.
+Settled facts the replacement must preserve:
+
+- full variant-fronted encodedID chains are durable identity and every durable
+  reference retains them;
+- module-owned nested tables allocate and enforce uniqueness locally, so
+  sibling-module homonyms remain distinct;
+- the NameTable spelling state is a sibling of encoded content;
+- an operational member or module rename edits only the owning table's
+  spelling and leaves every encodedID chain and content identity unchanged.
+
+Open, requiring proposals before implementation:
+
+- whether the production carrier replaces or versions the legacy
+  `MacroPackage`;
+- whether a private full-chain-to-`MacroIdentity` evaluator cache exists and,
+  if so, how it is derived without becoming durable identity;
+- the package archive envelope, migration, and compatibility policy;
+- ownership and minting of `PackageRevision`, and whether it participates in
+  the content-hash preimage;
+- how module tables compose into the complete nametree pin;
+- how the package representation relates to the generic `Capsule` carrier.
+
+Historical provenance remains: the container is the ruled generic `Capsule`
+struct, kind-distinct by its type parameter (**[ruled]** SliceOneRulings entry
+1: "Generic struct"), and a Capsule pins the complete composition of its
+nametree (**[ruled]** ShapeAndSliceRulings entry 1: "yes"). Historical
+provenance, not a current implementation instruction: **[ruled 07-25]**
+"capsule and short-identifier are protos concepts — protos traits with
+per-engine implementations." That does not bind the unresolved production
+package carrier to Capsule or decide pin composition. The later
+ShapeAndSliceRulings entries 6-7 supersede the short-identifier half: no
+`ShortIdentifier` supertrait or stored short code exists. A short identifier
+is an unstored, kind-distinct display projection of the full content hash, at
+least four characters and lengthened against a resolver/database view. Its
+alphabet and byte encoding remain unresolved.
 
 **Step 6: engine loads, slotted.** The Nomos engine daemon loads the encoded
-`MacroPackage` from its sema database into a slot. Per the recovered load-path
-quote, the daemon "should be able to run several versions" of a transformer
-concurrently, each occupying its own slot, and each slot is addressed by the
-same short-addressable-ID concept used throughout the engine ("agent-friendly").
-A schema (Ethos) transformation request names the slotted transformer it wants
-by that short ID and sends its own encodedform + nametree to it — this is the
-addressing step the recovered quote describes as "the schema tranformation
-request use[s] the slotted nomos transformer". The package is the transformer;
-the engine is the executor/interpreter that applies it.
+package representation approved by the future Step 5 proposal into a slot. Per
+the recovered load-path quote, the daemon "should be able to run several
+versions" of a transformer concurrently. Selection uses the shared
+short-addressable display concept described above; no stored short identity is
+introduced. The slot's durable identity/schema and the daemon request,
+storage, authorization, and failure contract are not designed here.
 
-**Step 7: engine executes.** `MacroPackage::apply(ethos, ethos_names)` or
-`apply_enriched(ethos, ethos_names)` runs the existing evaluation machinery:
-bind the input signature, evaluate the template, realize escapes, splice
-sequences, invoke recursively. The engine's role is interpreter/executor over
-the data; the transformation rules live in the package.
+**Step 7: engine executes.** The current
+`MacroPackage::apply(ethos, ethos_names)` /
+`apply_enriched(ethos, ethos_names)` methods remain the legacy evaluator and
+equivalence oracle: bind the input signature, evaluate the template, realize
+escapes, splice sequences, and invoke recursively. A production package
+proposal must define how lossless full-chain state reaches that evaluator or
+its successor; this document does not choose the bridge.
 
 **Step 8: WholeLogos output.** The engine produces `Lowering`: a
 `Vec<EncodedItem>` (the Logos encoded form) and a Logos NameTable composed with
@@ -744,10 +790,9 @@ the Ethos compatibility slice.
 
 The engine (`engine.rs`, `Evaluator`) is already an interpreter: it walks the
 template tree, matches escapes, binds inputs, and produces encoded logos values.
-The authored surface does not change this role; it eliminates the fixture
-constructors as the source of truth. The engine does not become smaller; it
-becomes the only consumer of authored package data rather than a consumer of
-Rust-constructed package data.
+The authored surface does not change that role. It can eliminate fixture
+constructors as the source of truth only after the open production package
+representation and lossless evaluator bridge are designed and proven.
 
 The enriched generation surface (`generation.rs`, 1,890 lines) is the part that
 does NOT yet fit this model. Its `GenerationClass` variants are dispatch tags
@@ -946,10 +991,11 @@ both paths. Once equivalence is proven, `SliceOneTransformation` becomes dead
 code. No deletion timeline is specified here; this is a design document.
 
 The production fixture path (`MacroPackage::wire_fixture()`,
-`MacroPackage::plain_fixture()`) transitions similarly: the Rust fixture
-constructors are replaced by authored `.nomos` files loaded through the
-TextualNomos surface. The fixture functions become test-only equivalence
-oracles.
+`MacroPackage::plain_fixture()`) can transition only after the open production
+carrier and lossless evaluator bridge are designed. Authored `.nomos` data may
+then replace Rust fixture constructors as the source of truth through that
+approved path; until then, the fixture functions remain equivalence oracles,
+not a production stored-state design.
 
 ## 7. The Generation Surface Growth Path
 
@@ -1053,12 +1099,14 @@ ruling anywhere in the recovered chain. This document continues to use
 ## 9. Decision Points for the Psyche
 
 The recovery sweep settled where Nomos lives (section 8), recursive transformer
-invocation as a requirement (section 3.9), and Nomos's participation as a
-Capsule/ShortIdentifier implementer alongside its siblings (section 4.2, step
-5). What remains genuinely open is narrower than this document previously
-presented. The ScopeOf identity question is tracked separately and is not
-repeated here (see `ScopeOfIdentityBriefing-2026-07-29.md`); it is pending with
-the psyche independent of this design.
+invocation as a requirement (section 3.9), and Nomos's kind in the generic
+`Capsule` carrier plus the shared kind-distinct short-display concept (section
+4.2, step 5). The later display ruling supersedes the historical
+`ShortIdentifier`-trait rendering. The production package stored state remains
+an explicit stop-line, not a decision this document answers. The ScopeOf
+identity question is tracked separately and is not repeated here (see
+`ScopeOfIdentityBriefing-2026-07-29.md`); it is pending with the psyche
+independent of this design.
 
 **Decision 1: the recursion construct's mechanics.**
 
@@ -1139,10 +1187,12 @@ machinery (section 3.11 below lays out honestly what building it requires):
 
 **The existing machinery is more complete than expected.** The production daemon
 path already runs transformers-as-data through `MacroPackage::apply_enriched`.
-The missing piece is purely the authoring surface: how a human writes a
-`.nomos` file and how that file becomes a `MacroPackage`. The engine, the
-template algebra, the content identity, the NameTable composition, the typed
-evaluation — all of this is live.
+The authoring surface is no longer the only missing piece. The engine and
+template algebra are live, but the flat legacy `MacroPackage` cannot be the
+general authored stored-state carrier under the settled nested-table identity
+model. The open production carrier, runtime-cache boundary, archive/migration,
+`PackageRevision`, and Capsule-pin questions in section 4.2 Step 5 must be
+designed before the authored population can replace fixtures in production.
 
 **Correction: the NomosExtended profile is narrower than earlier drafts
 claimed.** raw-discovery does carry a `GlyphSet::NomosExtended` variant
@@ -1208,6 +1258,14 @@ sections 1-9 of this document should be read as resolving this long-term
 scope; it orients direction, not this document's v1 decisions.
 
 ## 11. Template(Logos): the Derived Grammar for Transformer Compilation
+
+> **STOP-LINE FOR SECTION 11 IMPLEMENTERS.**
+> Template(Logos) produces phase-stable authored data with full encodedID
+> chains. It does not authorize sealing through the legacy flat
+> `MacroPackage`, converting durable references to `MacroIdentity`, or binding
+> a package to Capsule. References only resolve and never allocate. Continue
+> only as far as the open production stored-state boundary in section 4.2 Step
+> 5 and section 12.
 
 **[approved for implementation under delegated assent, Entry 6, 2026-07-29]**
 (PsycheVisionReacquisition-2026-07-29.md, protos-engine commit 31ee995b). The
@@ -1360,10 +1418,12 @@ application carries the `NameTransform` (`.FieldName`, `.Screaming`,
 **Invoke** at a Reference position: an `ApplicationRule<Root>` where the head
 is `SharedDescriptor::Literal(invoke_keyword_id)` and the payload is
 `SharedDescriptor::Reference(AtomDescriptor)` — the transformer name,
-resolved as a reference through the nametree. The transformer was declared
-elsewhere; this position uses it. At decode time, the name gets its
-`encodedID` through the translator's allocation-on-receipt mechanism; the
-binding to a `MacroIdentity` is deferred to seal (section 12.3).
+resolved by lookup through the nametree. The transformer is declared elsewhere
+in the same canonical declaration set; this position only uses it. The
+declaration allocates if needed. The `Invoke` reference never allocates and
+retains the resolved full target chain in the phase-stable carrier. Whether a
+future production representation derives any private execution handle is open
+at the stored-state boundary (section 12.3).
 
 **Splice** at a Repeated position: an `ApplicationRule<Root>` or
 `ApplicationDelimitedRule<Root>` (form.rs lines 426-516) where the head is
@@ -1621,6 +1681,12 @@ sealing") confirms every claim in this summary:
 
 ### 12.2 Design Response: the Ordering Is Real
 
+> **STOP-LINE FOR po2.4 WORKERS — THE OLD FINAL ARROW TO FLAT
+> `MacroPackage` IS WITHDRAWN.**
+> Phase-stable full-chain authored state is implemented. Its production package
+> carrier is not designed. Do not treat legacy execution types as approval for
+> flattening at seal.
+
 **[proposal, endorsed as design fact]** The Template(Logos) decode described
 in section 11 rides the newer structural-codec, whose `OrderedSequence` and
 typed `DecodeNameBindings` require translator-issued `EncodedId` chains in
@@ -1633,19 +1699,19 @@ authored-transformer load path.
 The dependency order, stated as design fact:
 
 1. **po2.11**: define the phase-stable authored carrier that retains full
-   `EncodedId` chains from decode through seal; existing `MacroDefinition`
-   remains the sealed execution record, and `MacroIdentity` remains
-   package-local implementation structure (po2.2 already specifies this)
+   `EncodedId` chains from decode through seal; legacy `MacroDefinition` and
+   `MacroIdentity` remain execution-fixture types, not settled production
+   stored state
 2. **po2.1**: decode authored `.nomos` text through raw-discovery +
    structural-codec into the phase-stable carrier, using the
    Template(Logos) derived grammar for template bodies
 3. **po2.2**: submit authored transformer and binding names to the
    translator for `encodedID` allocation
-4. **po2.4**: seal the complete declaration set into a `MacroPackage` —
-   rebind Invoke targets from durable identity to package-local
-   `MacroIdentity` atomically
+4. **po2.4**: stop for a production stored-state proposal before sealing the
+   complete declaration set; do not choose the carrier, archive, revision, or
+   private evaluator cache by analogy with the legacy fixture
 
-No provisional or flat-ID intermediate representation is acceptable.
+No provisional or flat-ID intermediate or final representation is acceptable.
 po2.11's design section is explicit: "Do not add a temporary flat-ID adapter
 or let core-nomos allocate names." This is refusal over pretending: a
 flat-ID adapter would create a representation that lies about the phase it
@@ -1655,82 +1721,53 @@ entering the codebase under schedule pressure.
 
 This aligns with the resequencing rather than proposing a workaround. The
 worker who discovered the mismatch did the right thing by creating po2.11
-and stopping; the train manager's resequencing of po2.1/.2/.4 around the
-evidence is the right response; this design endorses the resulting dependency
-order as architecturally correct, not merely expedient.
+and stopping. The same discipline now applies at the package boundary exposed
+by po2.4: implementation resumes only after the open Step 5 surfaces receive a
+design proposal.
 
-### 12.3 Design Response: Invoke Forward References Get Allocation-on-Receipt
+### 12.3 Design Response: Declarations Allocate; Invoke References Only Resolve
 
-The Invoke forward-reference problem has two parts: giving a transformer
-name its durable identity, and binding that name to a package-local
-`MacroIdentity` for the sealed execution record. The design resolves them in
-two phases, separated by the seal boundary.
+The Invoke forward-reference problem has two parts: allocating the declared
+transformer's durable identity and resolving an `Invoke` reference to that
+identity. The approved mechanism distinguishes them strictly.
 
-**Phase 1 — allocation-on-receipt (settled law).** At decode time, when the
-translator encounters an unallocated word, it allocates an `encodedID` for it
-immediately. **[ruled]** (DesignReviewRulings entry 3): "no, nothing declares
-the coreID, the coreID is allocated by the translator on receiving an
-unallocated word." This is not a promise or a forward declaration; it is the
-standard identity-allocation mechanism that every word in every protos-family
-language passes through. A transformer name (`WireNewtype`) gets its
-`encodedID` when the translator first sees it, the same way `Status` or
-`Entry` gets theirs. An `Invoke.WireAttributes` reference to a
-not-yet-decoded transformer is a reference to a word the translator has
-already given (or will give, on first encounter) a durable identity — the
-*name* gets identity immediately; the question of whether that name denotes a
-real transformer is a separate question answered at seal time.
+**Declarations allocate (settled).** A transformer declaration contributes its
+exact spelling in its owning module table. An unallocated declaration spelling
+receives the next module-local encodedID under the authority's canonical
+allocation order. The full variant-fronted chain is retained in the
+phase-stable authored carrier.
 
-This maps directly to the prior art survey's lesson 3
-(TransformerPriorArt-2026-07-29.md): "EncodedID identity dissolves
-hygiene — but three operations must be designed in its place." The three
-operations cited are (a) fresh-binder minting, (b) intentional capture, and
-(c) forward references to not-yet-generated nodes. Allocation-on-receipt is
-the protos answer to (a) and (c) simultaneously: fresh-binder minting IS
-allocation-on-receipt (every new word gets a fresh `encodedID`, never
-colliding with any other word's identity), and forward references are natural
-because the `encodedID` is allocated on first encounter regardless of whether
-the referent has been defined yet. Intentional capture (b) does not arise in
-the transformer-name case — a transformer invocation is a reference, not a
-binding into the caller's namespace — but the survey correctly notes it will
-need an explicit mechanism in the escape algebra when transformers that inject
-binders into generated code are designed. That is not the present case.
+**References only resolve (settled).** An `Invoke` occurrence never allocates.
+The complete canonical declaration set is staged before its references are
+resolved, so a valid forward reference may appear earlier in source or
+traversal order and still resolve to the target declaration's full chain. If
+the target is absent from that declaration set, resolution refuses atomically:
+no allocation is caused by the reference and no package value is returned.
+Duplicate declarations in one owning table likewise refuse atomically.
 
-**Phase 2 — atomic seal-time binding (proposal).** At package seal time
-(po2.4), the complete declaration set is known. Every Invoke target's durable
-`encodedID` is resolved against the declared transformer names. For each
-declared transformer, the seal allocates a package-local `MacroIdentity` (the
-monotonic index from identity.rs: "a monotonic package mint"). Every Invoke
-reference is rebound from its durable `encodedID` to the package-local
-`MacroIdentity` of the transformer it names. If any Invoke target remains
-undefined — its durable `encodedID` does not match any declared transformer
-in the sealed package — the seal refuses atomically, with no partial
-registration, no NameTable mutation, and no package output. The same refusal
-applies to duplicate declarations (two transformers declaring the same name).
+> **STOP-LINE AT THE RUNTIME BINDING — DO NOT INFER A
+> full-chain-to-`MacroIdentity` REBIND.**
+> Whether a future production carrier derives a private evaluator cache, keeps
+> full chains directly, replaces `MacroIdentity`, or uses another approved
+> execution representation belongs to the open stored-state proposal.
 
 ```mermaid
 flowchart TD
-    D["Decode: Invoke.WireAttributes encountered"] -->|"translator allocates on receipt"| A["WireAttributes gets encodedID e42"]
-    A --> C["Phase-stable carrier stores Invoke with durable encodedID e42"]
-    C --> S["Seal: complete declaration set known"]
-    S -->|"WireAttributes declared, gets MacroIdentity m3"| B["Invoke e42 rebound to Invoke m3 in sealed MacroDefinition"]
-    S -->|"WireAttributes NOT declared"| R["Seal refuses: unresolved Invoke target e42, no package emitted"]
+    D["Canonical declaration set contains WireAttributes"] -->|"declaration allocates in owning module table"| A["WireAttributes has full encodedID chain"]
+    I["Invoke.WireAttributes reference"] -->|"lookup only; never allocates"| R["Resolve against staged plus committed declarations"]
+    A --> R
+    R -->|"target present, even if forward in source"| C["Phase-stable carrier retains durable target chain"]
+    R -->|"target absent"| F["Atomic refusal: no reference allocation, no package returned"]
+    C --> S["STOP: production carrier and private runtime binding remain open"]
 ```
 
 **What is settled vs. proposal vs. open:**
 
-- **Settled law**: allocation-on-receipt (DesignReviewRulings entry 3);
-  `MacroIdentity` as package-local implementation structure (po2.2 design:
-  "stays a package-local mint index; it is implementation structure, not a
-  substitute for the translator-allocated encodedID"); the seal step itself
-  (section 4.2, steps 4-5).
-- **Proposal**: the specific seal-time binding and refusal semantics
-  described in phase 2 above — atomic full-set rebind from durable identity
-  to package-local `MacroIdentity`, with refusal on unresolved or duplicate
-  names. This is a concrete proposal for how the seal step works, consistent
-  with settled law but not itself ruled.
-- **Open**: whether cross-package Invoke (a transformer in one package
-  invoking a transformer in another package) needs additional design beyond
-  the seal-time binding described here. The seal as described operates
-  within one `MacroPackage`; cross-package references would need a resolution
-  mechanism at a higher level (the manifest, section 4.2 step 0). This is
-  not designed here.
+- **Settled**: declarations allocate; references only resolve and never
+  allocate; valid forward references resolve against the same canonical
+  declaration set; unresolved references and duplicate same-table
+  declarations refuse atomically; every durable target stays a full chain.
+- **Open**: the production package carrier or replacement and its versioning;
+  any private runtime cache or full-chain-to-execution mapping; archive and
+  migration policy; `PackageRevision` issuance and hash participation; and
+  Capsule-pin composition. No answer to any of these is proposed here.
