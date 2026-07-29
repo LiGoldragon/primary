@@ -178,19 +178,19 @@ The Nomos transformation (SliceOneTransformation) is stateless, string-free, and
 > "am I supposed to understand this? Do you? Like *actually understand* what
 > that means in practice?"
 
-### Pipeline Ownership -- Caveat
+### Pipeline Ownership
 
 Codex describes the pipeline division as already settled: "Ethos stores ScopeOf
 as sugar; typed, string-free Nomos expands it into complete ordinary Logos data;
-rust-logos only transcribes it." This decomposition is consistent with and
-follows naturally from the settled rulings above (no strings in Nomos, Nomos
-preserves encoded-ID chains, emitted Rust is identity-based). However, no
-psyche ruling was found that specifically states "ScopeOf expansion happens in
-Nomos." The psyche settled the constraints that make this pipeline the natural
-one, but did not directly dictate the pipeline itself. Codex's framing as
-"already settled by your earlier vision" overstates slightly -- it is
-constrained by your rulings to the point where alternatives would violate them,
-but it was not directly spoken.
+rust-logos only transcribes it." This is the ruled shape per the recovered
+vision (`RecoveredNomosVision-2026-07-29.md`) and the 2026-07-29 compilation
+(ProtosEngineDesign-2026-07-29.md section 12): Nomos owns the expansion. The
+founding-era quotes and the 2026-07-29 triple-language dictation
+(PsycheVisionReacquisition entry 4) establish this as psyche design, not
+inference — "Nomos is there to create the sugar syntax, the beautiful syntax
+of ethos." This section previously noted that ownership was "not directly
+spoken" and was only constrained-by-rulings inference; the recovery located
+the direct statements that were lost from the design surface.
 
 ## 4. The Identity Question Itself, from First Principles
 

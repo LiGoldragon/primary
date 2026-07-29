@@ -1,5 +1,13 @@
 # Authored Nomos: the TextualNomos Surface and Load Path
 
+**Design summary and framing control:** the `ProtosEngineDesign-2026-07-29.md`
+compilation now carries the design summary for the TextualNomos surface and
+transformer architecture (sections 10-12). Where this document and the
+compilation disagree on framing, the compilation controls. This document
+remains the detailed specification for the running Codex train
+(`protos-engine-po2`), with bead notes referencing its Section 11
+(Template(Logos) derivation) as the implementation spec.
+
 A design proposal for how transformation rules are authored as data in text,
 loaded by the protos infrastructure, and executed by the Nomos engine. This is
 the missing TextualNomos surface the crate itself names as open: "TextualNomos

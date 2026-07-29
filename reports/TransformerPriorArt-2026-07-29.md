@@ -1,5 +1,11 @@
 # Transformer Prior Art Survey
 
+**Absorbed-superseded.** The `ProtosEngineDesign-2026-07-29.md` compilation
+carries the ranked design lessons compactly (section 11). This document
+remains the detailed survey with per-system analysis, mechanism mapping, and
+failure-mode documentation; the compilation references it as the live
+prior-art record.
+
 Date: 2026-07-29. Currency of claims: web-verified July 2026 unless marked otherwise.
 
 Purpose: survey existing systems whose mechanisms overlap the ultra-transformer
