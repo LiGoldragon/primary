@@ -13,6 +13,20 @@ open decisions for the psyche are collected in section 9.
 
 ## 1. The Existing Machinery
 
+**Terminology (ruled, 2026-07-29):** this document uses **transformer**, not
+macro, as the prose name for the authored unit. **[ruled]**
+(PsycheVisionReacquisition-2026-07-29.md Entry 5, "the transformer crux"):
+
+> I'm going to use the word transformer instead of macro because I think
+> macro is overloaded and it doesn't... I think agents associate it too much
+> with string transformation, and this is really a type transformation.
+
+Existing Rust identifiers (`MacroDefinition`, `MacroPackage`, `MacroIdentity`,
+`MacroKind`, `NomosError::UnknownMacro`, and similar) predate this ruling and
+stay accurate as code literals — they are quoted or named here exactly as they
+exist in the crate, not renamed by this document. Prose below says
+transformer; code-identifier references keep their actual spelling.
+
 The production Nomos engine is already a transformers-as-data system. The design
 does not start from zero.
 
@@ -20,14 +34,14 @@ does not start from zero.
 data: its stringless name, its kind, its typed input signature ... and its
 result template ... a macro is a value." Its fields, all typed:
 
-1. `name: Identifier` (positional: the macro's stringless name)
+1. `name: Identifier` (positional: the transformer's stringless name)
 2. `kind: MacroKind` (Named or Structural with a SectionDefault)
 3. `input: InputSignature` (the `{ ... }` meta-shape as data)
 4. `template: ResultTemplate` (quoted logos skeleton with escape nodes)
 
 **The escape algebra** (template.rs) is closed at three members: `Realize`
 (unquote one bound value with an optional name transform), `Invoke` (recursively
-call another macro by identity), and `Splice` (expand a bound sequence into a
+call another transformer by identity), and `Splice` (expand a bound sequence into a
 vector). This is the system the psyche confirmed: **[confirmed]** "transformers
 are data" (ShapeAndSliceRulings entry 8, confirmed 2026-07-27; the original
 turn is unlocated).
@@ -35,7 +49,7 @@ turn is unlocated).
 **MacroPackage** (package.rs) is "Nomos stateful at rest": a content-identified
 `MacroDefinitions` table keyed by `MacroIdentity`, plus a sibling NameTable
 excluded from the content hash. The package is rename-stable by construction:
-renaming a macro edits only the sibling NameTable.
+renaming a transformer edits only the sibling NameTable.
 
 **The engine** (engine.rs) applies the package to a `WholeEthos` through
 `MacroPackage::apply` / `apply_enriched`, producing `Lowering` (a
@@ -44,7 +58,7 @@ text crosses this path.
 
 **What is missing:**
 
-1. **No authoring surface.** Macros are constructed by Rust functions in
+1. **No authoring surface.** Transformers are constructed by Rust functions in
    `fixtures.rs`. There is no file format, no text syntax, no loading from
    authored artifacts.
 
@@ -85,7 +99,7 @@ arrives; the package-local index is implementation structure.
 
 **[ruled] 2026-07-17** (textual-form-vision-design-v1.md lines 78-80, restored
 by `RecoveredNomosVision-2026-07-29.md`): Nomos gets a structural table so
-plain raw NOTA decodes into macros first, with the dollar-sigil / double-angle
+plain raw NOTA decodes into transformers first, with the dollar-sigil / double-angle
 template spelling coming later as a second form ("we can do that"). Two
 TextualForms for Nomos over one EncodedForm: a plain-NOTA base door and a
 richer `$`/`<<>>` sibling. This is the founding multiple-textualforms-per-
@@ -119,6 +133,26 @@ of any kind*", with walkers at the boundary ("that is necessary.").
 
 No bare strings as rule content. Spellings are data on typed positions. Fields
 are positional. The syntax must feel like the same language family as Ethos.
+
+**What "template" means here (ruled, 2026-07-29):** every occurrence of
+"template" in this document — `ResultTemplate`, `EnumerationTemplate`,
+`NewtypeTemplate`, and the running examples' template bodies — means a typed
+Logos skeleton: typed encoded data with typed placeholder (escape) positions,
+never text. String templates are explicitly ruled out. **[ruled]**
+(PsycheVisionReacquisition-2026-07-29.md Entry 5):
+
+> I was originally asking, and I still want the transformation to be strictly
+> through the encoded form. So there's strictly no string manipulation of any
+> kind, or like if we talk about template, I think you mean string templates,
+> in which case that's not at all what I'm looking for.
+
+Transformation is strictly encoded-form to encoded-form. Encoded form may
+also be called **the true form**: "All of our three languages, well, four if
+we include Noto, have textual form and encoded form, which we could also
+refer to as the true form." (same Entry 5 dictation). This is a naming
+option, not a replacement — "encoded form" and "true form" name the same
+thing; this document continues to use "encoded form" as its working term and
+notes "true form" as the psyche's alternate name for it.
 
 **Recovered note on the input-signature vocabulary:** the psyche's own working
 through the newtype case (2026-07-13, nomos-macro-model-v1.md lines 67-70)
@@ -155,7 +189,7 @@ distinguished from ordinary literal content:
 
 The base door satisfies this without a prefix glyph: the three escape forms
 are spelled as **reserved keyword applications** — `Realize.<binding>`,
-`Splice.<binding>`, `Invoke.<macro>` — using the same dotted-application
+`Splice.<binding>`, `Invoke.<transformer>` — using the same dotted-application
 mechanism that already distinguishes `Structural.Enumeration` from a bare
 word, or `Public`/`Private` from an ordinary identifier. At any structural
 position where an escape may legally appear, the typed rule for that position
@@ -220,7 +254,7 @@ The base-door vocabulary:
 - `Realize.binding` — Realize escape (unquote one bound value, identity
   transform)
 - `Splice.binding` — Splice escape (expand a bound sequence into the vector)
-- `Invoke.MacroName` — Invoke escape (recursively call a named macro)
+- `Invoke.TransformerName` — Invoke escape (recursively call a named transformer)
 - Bare words — literal encoded values (identifiers resolved through the
   nametree)
 - `.` — application (dotted declarations, as in Ethos)
@@ -238,7 +272,7 @@ kind* of escapes (two primitives plus Invoke as the recursion mechanism), not
 about the sigil glyphs, which the base door spells as reserved keyword
 applications instead. `Invoke` is the recursion mechanism, not a third escape
 primitive; the psyche ruled the closed set and `Invoke` is the recursive call
-into another macro by identity.
+into another transformer by identity.
 
 ### 3.4 Running Example 2: the Newtype Structural Default
 
@@ -252,7 +286,7 @@ WireNewtype.Structural.Newtype {
 ```
 
 Mapping: `Public` is the literal `Visibility::Public` for the produced item.
-`Invoke.WireAttributes` invokes the attributes macro. `Realize.name` realizes
+`Invoke.WireAttributes` invokes the attributes transformer. `Realize.name` realizes
 the bound `name` as `Scalar::Escape(Realize{name, Identity})`. `Realize.type`
 realizes the bound `type` as `Scalar::Escape(Realize{type, Identity})`.
 
@@ -275,9 +309,9 @@ WireNewtype.Structural.Newtype {
 }
 ```
 
-### 3.5 Running Example 3: the Named Attributes Macro
+### 3.5 Running Example 3: the Named Attributes Transformer
 
-The `WireAttributes` macro (fixtures.rs lines 108-115):
+The `WireAttributes` transformer (fixtures.rs lines 108-115):
 
 ```
 WireAttributes.Named {
@@ -332,7 +366,7 @@ data, not the only one — see section 4.2 step 0 on the manifest and the
 []
 ;; No interface outputs
 []
-;; Macro definitions
+;; Transformer definitions
 {
   WireAttributes.Named {
     ()
@@ -402,7 +436,7 @@ Logos item. ScopeOf reads the entire Domain tree and produces many items. The
 existing escape algebra handles per-declaration lowering. ScopeOf needs a way
 to express recursive tree traversal as data.
 
-Recursive macro invocation itself is not open — it is a ruled requirement:
+Recursive transformer invocation itself is not open — it is a ruled requirement:
 "We also need to be able to call more macros recursively." (2026-07-13,
 session 0fd2d07c line 572, restored in `RecoveredNomosVision-2026-07-29.md`).
 What is open is the mechanism that satisfies it for tree-shaped recursion
@@ -450,7 +484,7 @@ It is data: a closed binding signature and a template body that executes per
 tree node. The recursion terminates when a level has no payload-bearing variants
 (all variants are leaves).
 
-**Why Fold rather than Invoke:** `Invoke` calls a named macro by identity, but
+**Why Fold rather than Invoke:** `Invoke` calls a named transformer by identity, but
 it does not bind new parameters per recursion level. Fold binds fresh parameters
 at each recursive step (the child name and child source change at each level of
 the Domain tree). Making Fold a new escape variant rather than overloading Invoke
@@ -463,7 +497,7 @@ DomainScope.ScopeOf.Domain
 ```
 
 This is sugar in Ethos. The Nomos engine, on encountering a `ScopeOf`
-declaration, locates the `ScopeOfExpander` macro (or a built-in transformer
+declaration, locates the `ScopeOfExpander` transformer (or a built-in transformer
 handling this item kind), loads the source tree (Domain's full type structure
 from the encoded Ethos), and executes the expansion template. This is the
 concrete instance of the ruled shape from section 8: Ethos carries the sugar
@@ -471,7 +505,7 @@ declaration; Nomos, in its own files, carries the expansion.
 
 Open decisions carried forward to section 9: whether `Fold` is the right
 mechanism for the recursion requirement (Decision 1), and whether ScopeOf
-dispatches through the macro system or a built-in (Decision 2).
+dispatches through the transformer system or a built-in (Decision 2).
 
 ### 3.10 The Second TextualForm: the Sigil-Rich Spelling (Proposal, Ruled Future Refinement)
 
@@ -506,7 +540,7 @@ Illustrative sigil vocabulary sketch (not ruled, not built):
 
 - `$binding` — Realize
 - `$@binding` — Splice
-- `@MacroName` — Invoke
+- `@TransformerName` — Invoke
 - `$name.FieldName` / `$name.Screaming` / `$name.PascalCase` — transformed
   Realize, by the same dotted-suffix convention as the base door
 
@@ -634,7 +668,7 @@ exactly as the Ethos vocabulary and the Rust vocabulary extend it. The
 `Position<Role, Root, Descriptor>` records define the typed positions of a
 `MacroDefinition` rule (its name position, kind position, input position,
 template position), using the same `SharedDescriptor` machinery that Ethos and
-Rust use: `Declaration` descriptors for the macro name, `Literal` descriptors
+Rust use: `Declaration` descriptors for the transformer name, `Literal` descriptors
 for fixed vocabulary words (`Structural`, `Named`, `Public`, `Private`,
 `Name`, `Type`, `Fields`, `Variants`), and `Delegate` descriptors for
 recursive structures.
@@ -647,11 +681,11 @@ strict invariant. nothing else will do."
 records, `InputSignature` records, and `ResultTemplate` trees. Every identifier
 in the records is an `Identifier` from the nametree. No strings remain.
 
-**Step 4: seal with translator.** The authored macro names and binding names are
+**Step 4: seal with translator.** The authored transformer names and binding names are
 submitted to the sema-translator. The translator allocates encodedIDs for each
 new word in the appropriate module table. **[ruled]** (DesignReviewRulings
 entry 3): "nothing declares the coreID, the coreID is allocated by the
-translator on receiving an unallocated word." Macro names are authored words
+translator on receiving an unallocated word." Transformer names are authored words
 and receive their encodedIDs by the same mechanism as any other authored name.
 
 **Step 5: encoded MacroPackage.** The sealed definitions, their identifiers, and
@@ -711,9 +745,52 @@ The enriched generation surface (`generation.rs`, 1,890 lines) is the part that
 does NOT yet fit this model. Its `GenerationClass` variants are dispatch tags
 that select hardcoded Rust generation logic. The path from generation classes
 to authored template data is the next phase: each generation class would become
-an authored macro (or set of macros) in the `.nomos` file, using the extended
+an authored transformer (or set of transformers) in the `.nomos` file, using the extended
 escape algebra (including Fold for tree-walking constructs like the method-body
 match skeletons). This is growth, not immediate work.
+
+### 4.4 Nomos Runtime Scope (settled, 2026-07-29)
+
+The Nomos engine's runtime is not scoped to one transformer's local input and
+output types. **[ruled]** (PsycheVisionReacquisition-2026-07-29.md Entry 5):
+
+> Obviously, Nomos is going to have to load all of the Logos types into its
+> runtime because it has to convert into them, and it's going to have to load
+> all of the Ethos type, obviously, too, because it's going to convert them.
+> So the Nomos engine knows about everything. Well, not Rust, obviously, but
+> it knows about the three languages.
+
+The engine loads the **complete Ethos and Logos type universes** into its
+runtime — not just the declaration a given transformer touches. It knows the
+three languages (Ethos, Nomos, Logos), not Rust. Placeholders (the escape
+positions in the typed skeleton, section 3.1-3.2) key the movement of typed
+values from Ethos input into generated Logos output:
+
+> it has to take the handwritten textual form Nomos and create this
+> transformation logic where the placeholders with the dollar signs or
+> whatever are... hold the key as to what gets put where, from the Ethos type
+> into the generated Logos type that it produces, or Logos types, probably,
+> plural, because some of these transformations can create quite complex code.
+
+Two consequences for this design that were not previously stated:
+
+- **Plural output types.** One transformer application may produce more than
+  one Logos type (the running examples in section 3 each produce one item;
+  this is the common case, not a universal one).
+- **Positional insertion, including into vector slots.** A placeholder can key
+  insertion "into a particular spot in a vector where a certain item gets
+  inserted" (Entry 5) — not only whole-item production but insertion at a
+  specific position within a produced sequence. The existing `Splice` escape
+  (section 1) expands a bound sequence into a vector wholesale; targeted
+  positional insertion into an existing or partially-built vector is a
+  narrower operation than `Splice` currently expresses, and is not designed
+  in this document. It is noted here as a real requirement the escape algebra
+  does not yet cover, separate from the Fold proposal.
+
+This section is settled scope, not a decision point: the runtime loading all
+three languages, and placeholders keying cross-type movement (plural,
+positional), is the psyche's own account of how the engine must work, not a
+design choice open to alternatives.
 
 ## 5. Execution Semantics Sketch
 
@@ -723,7 +800,7 @@ A rule application is:
 
 1. **Typed match over Ethos carrier positions.** The engine receives an
    `EncodedDeclaration` (an `EncodedType` with a `Visibility`). The
-   `SectionDefault::of_encoded_type` dispatch selects which macro handles which
+   `SectionDefault::of_encoded_type` dispatch selects which transformer handles which
    declaration kind. The input signature's `MetaType` vocabulary binds the
    declaration's typed positions: `Name` binds the identifier, `Type` binds a
    newtype's wrapped reference, `Fields` binds a struct's fields, `Variants`
@@ -735,7 +812,7 @@ A rule application is:
    value (an identifier or a type reference from the Ethos side) into its
    corresponding Logos position. `Splice` expands a bound vector (fields or
    variants) through a per-element production. `Invoke` recursively evaluates
-   another macro. Every produced value is a genuine `core_logos` typed value
+   another transformer. Every produced value is a genuine `core_logos` typed value
    (`EncodedItem`, `Newtype`, `Struct`, `Enumeration`, `Field`, `Variant`,
    `TypeReference`, `Attribute`). No string is ever produced.
 
@@ -750,7 +827,7 @@ Under the proposed Fold extension, the ScopeOf expansion would work as follows:
 2. The Nomos engine dispatches this declaration kind to a ScopeOf structural
    default (a new `SectionDefault::ScopeOf` variant).
 
-3. The macro's input signature binds the target name (`DomainScope`) and the
+3. The transformer's input signature binds the target name (`DomainScope`) and the
    source tree root (`Domain`).
 
 4. The template's Fold escape walks the Domain tree. At each level:
@@ -777,10 +854,10 @@ Under the proposed Fold extension, the ScopeOf expansion would work as follows:
 Refusal is typed and atomic. The existing engine already refuses loudly on
 typed grounds:
 
-- `NomosError::NoStructuralDefault(section)` — no macro registered for a
+- `NomosError::NoStructuralDefault(section)` — no transformer registered for a
   declaration kind
 - `NomosError::UnknownMacro(identity)` — an invoke references a nonexistent
-  macro
+  transformer
 - `NomosError::RecursionCycle(identity)` — a recursive invocation cycle
 - `NomosError::MetaShape { meta }` — a meta-type does not match the
   declaration's structure
@@ -792,7 +869,7 @@ typed grounds:
   binding
 
 The authored surface adds load-time refusals (malformed `.nomos` text,
-unresolvable macro references, unknown meta-types) that are typed structural
+unresolvable transformer references, unknown meta-types) that are typed structural
 errors, consistent with the existing conservative-refusal law: what cannot be
 proven disjoint is rejected. Partial results are never produced.
 
@@ -800,6 +877,46 @@ For ScopeOf specifically, the expansion refuses atomically on: missing source
 tree (the Domain type does not exist in the Ethos), cyclic source trees,
 unsupported source structures (a source type that is not an enum tree), and
 unresolvable variant references.
+
+### 5.4 Whole-Payload Transformation (New Design Consideration, Beyond v1 Scope)
+
+Every rule application described in section 5.1 is scoped to one Ethos
+declaration producing output from that declaration's own bound input. The
+psyche's Entry 5 dictation names a case this document's execution model does
+not cover: a transformer whose correct output depends on **other**
+declarations elsewhere in the Ethos payload, not just its own input. **[ruled,
+as a requirement on the architecture]** (PsycheVisionReacquisition-2026-07-29.md
+Entry 5):
+
+> I see a quite possible scenario in which the transformation depends on
+> other factors. Or in other words, the transformation happens for the entire
+> payload, the entire Ethos payload. Some transformers might be affected by
+> what other declarations say about objects that are involved in a particular
+> transformation. Kind of like how the Rust compiler has to take so many
+> things into account before it can decide that, okay, yes, the lifetimes are
+> correct, the ownership is correct, the types are correct. It has to do a
+> very wide spectrum of analyses before it can actually decide that, all
+> right, we can start generating the assembler for this.
+
+This is a real requirement on the architecture, not a feature this design
+implements. Nothing in sections 1-5 above is described as precluding it —
+section 4.4 already establishes that the engine's runtime holds the complete
+Ethos and Logos type universes, which is a necessary (not sufficient)
+precondition for cross-declaration analysis — but nothing in this document
+designs the analysis itself: how a transformer would declare a dependency on
+other declarations, how the engine would order or fix a point over the whole
+payload before committing output, or what a "the lifetimes are correct, the
+ownership is correct" class of check looks like for Nomos's own type system.
+The rustc analogy is the psyche's own framing of the difficulty, not a
+prescription to imitate rustc's specific passes.
+
+**What this document commits to:** the running examples and load path above
+(sections 3-4) are the v1, per-declaration case; nothing here should be read
+as a final architecture that whole-payload analysis would have to be
+retrofitted around. Whether whole-payload transformation needs its own
+mechanism (a distinct transformer kind, a pre-pass over the Ethos payload
+before ordinary rule application, or something else) is unscoped and left
+for a future design round, explicitly marked beyond this document's v1 scope.
 
 ## 6. What Happens to slice_one.rs
 
@@ -835,7 +952,7 @@ WireExchangeCodec, WireExchangeEnvelope, TraceSupport) is a whole-Ethos
 generator that builds impl blocks, method bodies, match arms, const modules,
 and type aliases in hardcoded Rust.
 
-The long path is to express each generation class as authored macro data using
+The long path is to express each generation class as authored transformer data using
 the same escape algebra (extended as needed). What this requires:
 
 1. **Expression-level templates.** The current `ResultTemplate` produces items
@@ -927,7 +1044,7 @@ ruling anywhere in the recovered chain. This document continues to use
 
 ## 9. Decision Points for the Psyche
 
-The recovery sweep settled where Nomos lives (section 8), recursive macro
+The recovery sweep settled where Nomos lives (section 8), recursive transformer
 invocation as a requirement (section 3.9), and Nomos's participation as a
 Capsule/ShortIdentifier implementer alongside its siblings (section 4.2, step
 5). What remains genuinely open is narrower than this document previously
@@ -937,9 +1054,9 @@ the psyche independent of this design.
 
 **Decision 1: the recursion construct's mechanics.**
 
-Recursive macro invocation is ruled required ("We also need to be able to
+Recursive transformer invocation is ruled required ("We also need to be able to
 call more macros recursively." — 2026-07-13, session 0fd2d07c line 572). What
-is open is the mechanism, not the requirement. `Invoke` (call a named macro by
+is open is the mechanism, not the requirement. `Invoke` (call a named transformer by
 identity) already satisfies simple recursion. Whether tree-shaped recursion
 (ScopeOf's walk over a variable-depth Domain tree, binding fresh parameters at
 each level) needs a distinct construct is not settled:
@@ -960,12 +1077,12 @@ plus Invoke. Fold (proposal, not ruled) is a genuine new primitive under
 option (a). The alternative (b) avoids growing the escape set but adds a
 parallel mechanism. The psyche's call.
 
-**Decision 2: ScopeOf as a macro vs. a built-in.**
+**Decision 2: ScopeOf as a transformer vs. a built-in.**
 
 Should ScopeOf expansion be:
 
-- **(a) A macro authored in `.nomos`**, dispatched through a new
-  `SectionDefault::ScopeOf` variant. This keeps ScopeOf within the macro
+- **(a) A transformer authored in `.nomos`**, dispatched through a new
+  `SectionDefault::ScopeOf` variant. This keeps ScopeOf within the transformer
   system; the engine treats it as another structural default.
 - **(b) A built-in transformer** the engine recognizes from the `ScopeOf`
   keyword, with hardcoded expansion logic. This is simpler for the first
@@ -1003,8 +1120,8 @@ machinery (section 3.11 below lays out honestly what building it requires):
 - Whether Realize/Splice/Invoke get sigils at all, or whether the sigil form's
   value is elsewhere (e.g. compact template literals) with escapes staying
   structural even in the second form.
-- If sigils are wanted: `$x` / `$@xs` / `@macro`, or `$x` / `$@xs` / `$!macro`,
-  or `$x` / `$@xs` / `$(macro)` — several spellings are equally plausible and
+- If sigils are wanted: `$x` / `$@xs` / `@transformer`, or `$x` / `$@xs` / `$!transformer`,
+  or `$x` / `$@xs` / `$(transformer)` — several spellings are equally plausible and
   none is ruled.
 - Which layer builds it — a new trigger/character-class in raw-discovery, or a
   structural-codec-level convention over ordinary bare atoms (section 3.11) —
@@ -1053,8 +1170,31 @@ controlling over this document wherever the two conflict. This document has
 been corrected against that restoration; see section 3 and section 8 above for
 the corrected settled/open split.
 
-**Terminology alignment.** The crate calls its rules "macros" throughout
-(`MacroDefinition`, `MacroPackage`, `MacroIdentity`). The psyche's language
-uses "transformers" and "nomos." The textualform design adopts the psyche's
-framing (transformers, authored rules) while noting that the Rust types retain
-the "Macro" prefix — renaming the types is implementation matter.
+**Terminology alignment (ruled, corrected).** This document previously treated
+"transformer" as this design's own preferred framing alongside the crate's
+"macro." That undersold it: the psyche ruled the term directly (Entry 5,
+quoted in section 1 above) — "macro" is retired from prose because it is
+overloaded toward string transformation, and the unit is a type
+transformation, named transformer. The crate calls its rules "macros"
+throughout (`MacroDefinition`, `MacroPackage`, `MacroIdentity`, `MacroKind`);
+these identifiers predate the ruling and remain accurate as code literals —
+renaming the types is implementation matter, not addressed by this document.
+
+**Long-term vision (psyche, marked explicitly long-term, Entry 5).** The
+psyche framed Nomos's eventual scope beyond anything this document designs:
+
+> we might make Nomos, or we will eventually make Nomos the most load-bearing
+> part that could do all of the correctness verification or more than what
+> the Rust compiler actually does today. So it has to become an extremely
+> capable and extendable system. [...] we could have logos actually compile
+> into assembly language through LLVM.
+
+This is long-term direction, not a near-term design constraint: Nomos
+eventually verifying correctness at or beyond rustc's level, with Logos
+compiling to assembly through LLVM. The psyche paired this with an explicit
+acknowledgment that the difficulty was underestimated and that he does not
+yet have the answers — rulings will continue incrementally as vertical slices
+reveal how the system actually behaves, and agents are invited to research
+prior art on typed, placeholder-driven program transformation. Nothing in
+sections 1-9 of this document should be read as resolving this long-term
+scope; it orients direction, not this document's v1 decisions.
