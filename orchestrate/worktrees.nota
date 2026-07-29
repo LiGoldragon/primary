@@ -155,7 +155,6 @@
 (spirit NewSchemaPort /home/li/wt/github.com/LiGoldragon/spirit/NewSchemaPort signal-spirit-new-schema-port-20260725 Active [clean placeholder for daemon consumer] 1784152527000000000 AncestorOfMain)
 (spirit SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/spirit/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784152527000000000 AncestorOfMain)
 (spirit SpiritV14Implementation /home/li/wt/github.com/LiGoldragon/spirit/SpiritV14Implementation SpiritV14Implementation Active [implement accepted v14 redesign] 1784152527000000000 AncestorOfMain)
-(spirit spirit-v13-frozen-reader /home/li/wt/github.com/LiGoldragon/spirit/spirit-v13-frozen-reader spiritV13FrozenReader Active [migration only frozen version thirteen reader] 1785308183000000000 AncestorOfMain)
 (textual-rust NoAliasesProducers /home/li/wt/github.com/LiGoldragon/textual-rust/NoAliasesProducers NoAliasesProducers Active [remove alias projection] 1784464547000000000 AncestorOfMain)
 (textual-rust SpiritLineageBTrain /home/li/wt/github.com/LiGoldragon/textual-rust/SpiritLineageBTrain SpiritLineageBTrain Active [accepted spirit lineage b release train] 1784464547000000000 AncestorOfMain)
 (textual-rust no-alias-generators /home/li/wt/github.com/LiGoldragon/textual-rust/no-alias-generators NoAliasesGenerators Active [migrate textual rust canonical names] 1784464547000000000 AncestorOfMain)
