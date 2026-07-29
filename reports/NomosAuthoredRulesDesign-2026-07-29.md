@@ -1201,8 +1201,40 @@ scope; it orients direction, not this document's v1 decisions.
 
 ## 11. Template(Logos): the Derived Grammar for Transformer Compilation
 
-This section is a **proposal for the psyche's ruling**, written at his
-direction. It is not settled law.
+**[approved for implementation under delegated assent, Entry 6, 2026-07-29]**
+(PsycheVisionReacquisition-2026-07-29.md, protos-engine commit 31ee995b). The
+psyche's verbatim ruling:
+
+> fine, I dont quite understand but we can implement it and then Ill have
+> actual code for you and I to actually look at
+
+What this grade means: implementation of the Template(X) derivation is
+authorized so that concrete, reviewable code exists — it is not the psyche's
+reviewed conviction that the design is correct. No agent may cite this
+section, or Entry 6, as psyche endorsement of Template(X) beyond that. The
+psyche explicitly does not yet fully understand the design and retains full
+authority to redirect once real code and real behavior are visible to him.
+This is the same grade as the 2026-07-28 translator-daemon approval.
+
+**Design-level clarification the psyche's challenge produced.** Before
+assenting, the psyche challenged the proposal's hidden assumption: "what will
+write the type with the placeholding future type? I bet if I hadnt asked,
+they would be handwritten in rust." The answer that resolved the challenge,
+and that his assent covers, sharpens what was written in this section below:
+the derivation walks BOTH the Logos grammar rules AND the Logos type
+declarations in one pass. The landing types — the value-or-future-value
+twins at every widened position — are **computed, never authored**, whether
+per-transformer or per-type, in any form, including emitted Rust. There is no
+handwritten twin type anywhere in the system for any transformer or any
+Logos type; the only fixed substrate machinery is the derivation function
+(`lift_descriptor`/`lift_position`, section 11.3) and the evaluator that
+walks its output (engine.rs, section 11.5/11.6). His acknowledgment en route
+to assent: "ahh, so every placeholder is value-or-future-value, so there is
+no handwritten type per transformer."
+
+This section was previously written as a proposal awaiting ruling; the
+subsections below are retained as the specification the delegated-assent
+implementation must follow, not as still-open design questions.
 
 ### 11.1 The Conundrum
 
@@ -1239,7 +1271,7 @@ And the psyche was explicit that string templates are not the answer.
 
 ### 11.2 The Proposed Dissolution: Template(X) as a Mechanically Derived Grammar
 
-**[proposal]** The template body is parsed under a second grammar derived
+**[approved for implementation under delegated assent, Entry 6]** The template body is parsed under a second grammar derived
 mechanically from the Logos grammar. The derivation is specified as a
 function over the structural-codec rule records that define the Logos
 grammar — the same `Position<Role, Root, SharedDescriptor<Root>>` and
