@@ -7,8 +7,9 @@ the missing TextualNomos surface the crate itself names as open: "TextualNomos
 Nomos text surface" (core-nomos lib.rs lines 8-14).
 
 This document is a proposal. Settled law is quoted verbatim with its log and
-entry. Proposal text is the designer's and marked as such. Open decisions for
-the psyche are collected in section 8.
+entry. Proposal text is the designer's and marked as such. Where Nomos lives
+is settled law, restored from recovery and recorded in section 8. Remaining
+open decisions for the psyche are collected in section 9.
 
 ## 1. The Existing Machinery
 
@@ -80,6 +81,26 @@ arrives; the package-local index is implementation structure.
 
 ## 3. The TextualNomos Syntax
 
+### 3.0 The Two-TextualForm Law
+
+**[ruled] 2026-07-17** (textual-form-vision-design-v1.md lines 78-80, restored
+by `RecoveredNomosVision-2026-07-29.md`): Nomos gets a structural table so
+plain raw NOTA decodes into macros first, with the dollar-sigil / double-angle
+template spelling coming later as a second form ("we can do that"). Two
+TextualForms for Nomos over one EncodedForm: a plain-NOTA base door and a
+richer `$`/`<<>>` sibling. This is the founding multiple-textualforms-per-
+encodedform vision (2026-07-17, session 29d00eb1 line 108, quoted in full in
+section 8 below): "the vision even allowed multiple textualforms per
+encodedform."
+
+This document was previously structured the other way around — the sigil
+form presented as the (only) TextualNomos design, with no base door at all.
+That is corrected here. Section 3.1-3.9 below present the **base door**: the
+v1 authoring surface, spelled using only the seven existing protos triggers
+(no new lexer or raw-discovery work). Section 3.10-3.11 present the
+sigil-rich form as the **second textualform**, marked throughout as the ruled
+future refinement it is — not yet built, and not this design's v1 scope.
+
 ### 3.1 Design Constraints
 
 The syntax is a textualform view on typed encoded data. Every syntactic element
@@ -99,13 +120,62 @@ of any kind*", with walkers at the boundary ("that is necessary.").
 No bare strings as rule content. Spellings are data on typed positions. Fields
 are positional. The syntax must feel like the same language family as Ethos.
 
-### 3.2 The Nomos Glyph Extension
+**Recovered note on the input-signature vocabulary:** the psyche's own working
+through the newtype case (2026-07-13, nomos-macro-model-v1.md lines 67-70)
+considered the input-signature words themselves as possibly shared machinery:
 
-The raw-discovery profile already provisions for Nomos: `GlyphSet::NomosExtended`
-(profile.rs line 44) admits the `$` sigil that the Standard profile forbids. The
-Nomos textualform uses the NOTA family's existing boundary mechanisms (dotted
-application, braces, square brackets, parentheses, `(| ... |)` carriers) plus
-the `$` sigil for escape positions. The `;;` line comment is shared.
+> so if WireNewType only takes a name and inner type, then the input field
+> would be `{ Name Type }`. Name and Type could be pretty standard things,
+> perhaps nomos builtins, even a concept shared with schema somehow (it is a
+> schema concept after all).
+
+Reading (proposal, not ruled): `Name`, `Type`, `Fields`, `Variants` as
+`MetaType` vocabulary may be Nomos builtins that Ethos (schema) also shares
+rather than a Nomos-only vocabulary invented fresh. This document does not
+resolve that sharing; it is noted here so a future design round does not
+reinvent the same words independently in both languages.
+
+### 3.2 The Base Door: Escape Positions Distinguished Structurally
+
+The base door uses only the seven triggers that already exist in every NOTA
+family profile, including plain Standard (raw-discovery profile.rs lines
+381-429): the three bracket boundaries `(`/`)`, `[`/`]`, `{`/`}`; the `.`
+application glyph; the `(| ... |)` carrier; whitespace; and the `;;` line
+comment. No new trigger, character class, or glyph is introduced. This
+directly satisfies the base-door requirement in section 3.0: the plain-NOTA
+form decodes first, before any sigil machinery exists.
+
+The 2026-07-13 ruling (session 0fd2d07c line 572, restored in
+`RecoveredNomosVision-2026-07-29.md`) requires escape positions to be visually
+distinguished from ordinary literal content:
+
+> we should use a structural syntax, since this will be hard to tell from
+> the rest of the syntax; it just looks the same as everything else, which
+> is why macros conventions use `$` or `#` type prefix.
+
+The base door satisfies this without a prefix glyph: the three escape forms
+are spelled as **reserved keyword applications** — `Realize.<binding>`,
+`Splice.<binding>`, `Invoke.<macro>` — using the same dotted-application
+mechanism that already distinguishes `Structural.Enumeration` from a bare
+word, or `Public`/`Private` from an ordinary identifier. At any structural
+position where an escape may legally appear, the typed rule for that position
+is a closed alternation between the literal-word shape and these three
+keyword-application shapes; `Realize`, `Splice`, and `Invoke` are reserved
+vocabulary words in the Nomos nametree at that position, exactly as
+`Structural` and `Named` are reserved at the kind position. The distinguishing
+signal is the reserved keyword occupying a known structural slot, not a glyph
+— this is visual distinction achieved through vocabulary and position, not
+through new lexer machinery. The `$`/`#` sigil convention the psyche named as
+precedent is the second textualform's job (section 3.10); it is not required
+to satisfy the 07-13 ruling in the base door, because the base door has its
+own, different, structural means of the same end.
+
+An input-signature binding declaration (e.g. `name.Name`) is not itself an
+escape use-site — it is a plain two-field record (`binding.meta`), unconditionally
+interpreted under the `InputSignature` structural position, with no ambiguity
+against template-body content to resolve. Only template-body positions, where
+a literal word and an escape use are both legal, need the reserved-keyword
+distinction above.
 
 ### 3.3 Running Example 1: the Enumeration Structural Default
 
@@ -119,37 +189,38 @@ structural default. Its data content:
   `EnumerationAttributes`, name realized from the `name` binding, empty generics,
   variants spliced from the `variants` binding.
 
-**Proposed textualform:**
+**Proposed base-door textualform:**
 
 ```
 Enumeration.Structural.Enumeration {
-  ($name.Name $variants.Variants)
-  Public @EnumerationAttributes $name () [$@variants]
+  (name.Name variants.Variants)
+  Public Invoke.EnumerationAttributes Realize.name () [Splice.variants]
 }
 ```
 
 **Position-by-position mapping:**
 
-| Syntax element              | Typed record position                            |
-|:----------------------------|:-------------------------------------------------|
-| `Enumeration`               | `MacroDefinition.name` (Identifier)              |
-| `Structural.Enumeration`    | `MacroDefinition.kind` (MacroKind variant)        |
-| `($name.Name ...)`          | `MacroDefinition.input` (InputSignature)          |
-| `$name`                     | `InputParameter.binding` (Identifier)             |
-| `Name`                      | `InputParameter.meta` (MetaType::Name)            |
-| `$variants`                 | `InputParameter.binding` (Identifier)             |
-| `Variants`                  | `InputParameter.meta` (MetaType::Variants)        |
-| `Public`                    | `EnumerationTemplate.visibility` (literal)        |
-| `@EnumerationAttributes`    | `Escape::Invoke(MacroIdentity)` in attributes     |
-| `$name`                     | `Scalar::Escape(Realize{name, Identity})` for name|
-| `()`                        | `Generics::none()`                                |
-| `[$@variants]`              | `Sequence::of(Escape::Splice{variants, Variant})` |
+| Syntax element                | Typed record position                             |
+|:-------------------------------|:--------------------------------------------------|
+| `Enumeration`                  | `MacroDefinition.name` (Identifier)               |
+| `Structural.Enumeration`       | `MacroDefinition.kind` (MacroKind variant)        |
+| `(name.Name variants.Variants)`| `MacroDefinition.input` (InputSignature)          |
+| `name`                          | `InputParameter.binding` (Identifier)             |
+| `Name`                          | `InputParameter.meta` (MetaType::Name)            |
+| `variants`                      | `InputParameter.binding` (Identifier)             |
+| `Variants`                      | `InputParameter.meta` (MetaType::Variants)        |
+| `Public`                        | `EnumerationTemplate.visibility` (literal)        |
+| `Invoke.EnumerationAttributes`  | `Escape::Invoke(MacroIdentity)` in attributes     |
+| `Realize.name`                  | `Scalar::Escape(Realize{name, Identity})` for name|
+| `()`                            | `Generics::none()`                                |
+| `[Splice.variants]`             | `Sequence::of(Escape::Splice{variants, Variant})` |
 
-The sigil vocabulary:
+The base-door vocabulary:
 
-- `$binding` — Realize escape (unquote one bound value, identity transform)
-- `$@binding` — Splice escape (expand a bound sequence into the vector)
-- `@MacroName` — Invoke escape (recursively call a named macro)
+- `Realize.binding` — Realize escape (unquote one bound value, identity
+  transform)
+- `Splice.binding` — Splice escape (expand a bound sequence into the vector)
+- `Invoke.MacroName` — Invoke escape (recursively call a named macro)
 - Bare words — literal encoded values (identifiers resolved through the
   nametree)
 - `.` — application (dotted declarations, as in Ethos)
@@ -157,13 +228,17 @@ The sigil vocabulary:
 - `( ... )` — input signature delimiter, also generics and grouping
 - `[ ... ]` — variant/vector positions
 
-This corresponds to the existing closed escape set: `$` is Realize, `$@` is
-Splice, `@` is Invoke. The psyche's ruling confirmed exactly two escape
-primitives plus one recursion mechanism: **[ruled]** "the escape set is closed
-at two primitives (`$x` realizes, `$@xs` splices — 'agreed')"
-(ProtosEngineDesign section 11). The `@` invoke is the recursion mechanism, not
-a third escape primitive; the psyche ruled the closed set and `Invoke` is the
-recursive call into another macro by identity.
+This corresponds to the existing closed escape set: `Realize`, `Splice`,
+`Invoke`. The psyche's ruling confirmed exactly two escape primitives plus one
+recursion mechanism: **[ruled]** "the escape set is closed at two primitives
+(`$x` realizes, `$@xs` splices — 'agreed')" (ProtosEngineDesign section 11).
+That ruling names the sigil spellings (`$x`, `$@xs`) because that is how the
+question was put to the psyche at the time; the ruling is about the *count and
+kind* of escapes (two primitives plus Invoke as the recursion mechanism), not
+about the sigil glyphs, which the base door spells as reserved keyword
+applications instead. `Invoke` is the recursion mechanism, not a third escape
+primitive; the psyche ruled the closed set and `Invoke` is the recursive call
+into another macro by identity.
 
 ### 3.4 Running Example 2: the Newtype Structural Default
 
@@ -171,30 +246,32 @@ The production fixture (fixtures.rs lines 131-159):
 
 ```
 WireNewtype.Structural.Newtype {
-  ($name.Name $type.Type)
-  Public @WireAttributes $name $type
+  (name.Name type.Type)
+  Public Invoke.WireAttributes Realize.name Realize.type
 }
 ```
 
 Mapping: `Public` is the literal `Visibility::Public` for the produced item.
-`@WireAttributes` invokes the attributes macro. `$name` realizes the bound
-`name` as `Scalar::Escape(Realize{name, Identity})`. `$type` realizes the bound
-`type` as `Scalar::Escape(Realize{type, Identity})`.
+`Invoke.WireAttributes` invokes the attributes macro. `Realize.name` realizes
+the bound `name` as `Scalar::Escape(Realize{name, Identity})`. `Realize.type`
+realizes the bound `type` as `Scalar::Escape(Realize{type, Identity})`.
 
 The wrapped field's visibility (`Private`) is positional in the
 `NewtypeTemplate` struct and does not appear in the syntax because it is the
-fixed structural default for that position. **Decision point 1:** should the
-template syntax make the wrapped-field visibility explicit (e.g.
-`Public @WireAttributes $name Private.$type`) or should it remain positional and
-implicit? The current `NewtypeTemplate` struct carries it as an explicit field.
-Making it visible in the textualform is the more honest position.
+fixed structural default for that position. **Open styling question (minor,
+not in the section 9 list):** should the template syntax make the wrapped-field
+visibility explicit (e.g.
+`Public Invoke.WireAttributes Realize.name Private.Realize.type`) or should it
+remain positional and implicit? The current `NewtypeTemplate` struct carries it
+as an explicit field. Making it visible in the textualform is the more honest
+position.
 
 With explicit wrapped visibility:
 
 ```
 WireNewtype.Structural.Newtype {
-  ($name.Name $type.Type)
-  Public @WireAttributes $name Private $type
+  (name.Name type.Type)
+  Public Invoke.WireAttributes Realize.name Private Realize.type
 }
 ```
 
@@ -214,7 +291,8 @@ WireAttributes.Named {
 ```
 
 This is a `ResultTemplate::Attributes(Sequence<Attribute>)`. The input is unit
-`()`. The body is a vector of literal attributes:
+`()`. The body is a vector of literal attributes (no escapes at all, so this
+example is identical in the base door and the second form):
 
 - `rustfmt.skip` is `Attribute::ToolPath(PathNode{["rustfmt", "skip"]})`
 - The `(| nota-text |)` carrier is a `ConfigurationAttribute` with a
@@ -222,28 +300,30 @@ This is a `ResultTemplate::Attributes(Sequence<Attribute>)`. The input is unit
 - The `[ ... ]` square bracket group is a `DeriveGroup`
 
 The syntax reuses the NOTA carriers and boundaries exactly as the existing
-profile defines them. The `(| ... |)` carrier already exists in
-raw-discovery's trigger definitions for the NomosExtended profile (profile.rs
-line 412-416).
+profile defines them — the same seven triggers listed in section 3.2, present
+under both the Standard and NomosExtended glyph sets (section 3.11 corrects
+what actually differs between the two).
 
 ### 3.6 Running Example 4: the Particular-Struct Default
 
 ```
 ParticularStruct.Structural.Struct {
-  ($name.Name $fields.Fields)
-  Public @WireAttributes $name () [$@fields.FieldRuleDispatch.Public]
+  (name.Name fields.Fields)
+  Public Invoke.WireAttributes Realize.name () [Splice.fields.FieldRuleDispatch.Public]
 }
 ```
 
 The splice element carries the field-name rule and the per-field visibility:
-`$@fields.FieldRuleDispatch.Public` means
+`Splice.fields.FieldRuleDispatch.Public` means
 `Splice{fields, SpliceElement::Field{FieldRuleDispatch, Public}}`.
 
 ### 3.7 A Complete `.nomos` File: the Wire Package
 
 A `.nomos` file is a complete `MacroPackage`. It follows the six-slot document
 structure that Ethos uses (the fixtures confirm this: `spirit-min.ethos` has six
-top-level blocks). The Nomos slots carry:
+top-level blocks). Loading such a file is one population path for the package
+data, not the only one — see section 4.2 step 0 on the manifest and the
+"possibly, but not necessarily" hedge. The Nomos slots carry:
 
 ```
 ;; Wire package revision 1
@@ -273,18 +353,18 @@ top-level blocks). The Nomos slots carry:
   }
 
   WireNewtype.Structural.Newtype {
-    ($name.Name $type.Type)
-    Public @WireAttributes $name Private $type
+    (name.Name type.Type)
+    Public Invoke.WireAttributes Realize.name Private Realize.type
   }
 
   ParticularStruct.Structural.Struct {
-    ($name.Name $fields.Fields)
-    Public @WireAttributes $name () [$@fields.FieldRuleDispatch.Public]
+    (name.Name fields.Fields)
+    Public Invoke.WireAttributes Realize.name () [Splice.fields.FieldRuleDispatch.Public]
   }
 
   Enumeration.Structural.Enumeration {
-    ($name.Name $variants.Variants)
-    Public @EnumerationAttributes $name () [$@variants]
+    (name.Name variants.Variants)
+    Public Invoke.EnumerationAttributes Realize.name () [Splice.variants]
   }
 }
 ;; No enriched generation selection (plain package)
@@ -296,13 +376,13 @@ top-level blocks). The Nomos slots carry:
 ### 3.8 Name Transforms in the Syntax
 
 The `NameTransform` variants (Identity, FieldName, Screaming, PascalCase) apply
-to Realize escapes. The bare `$name` is identity. Transformed realizations
-use a dotted suffix:
+to Realize escapes. Bare `Realize.name` is identity. Transformed realizations
+use a further dotted suffix:
 
-- `$name` — `NameTransform::Identity`
-- `$name.FieldName` — `NameTransform::FieldName`
-- `$name.Screaming` — `NameTransform::Screaming`
-- `$name.PascalCase` — `NameTransform::PascalCase`
+- `Realize.name` — `NameTransform::Identity`
+- `Realize.name.FieldName` — `NameTransform::FieldName`
+- `Realize.name.Screaming` — `NameTransform::Screaming`
+- `Realize.name.PascalCase` — `NameTransform::PascalCase`
 
 These are data on a typed position (the `Realize.transform` field), not string
 operations: "name synthesis inside `Realize` instead of becoming a fourth
@@ -322,23 +402,34 @@ Logos item. ScopeOf reads the entire Domain tree and produces many items. The
 existing escape algebra handles per-declaration lowering. ScopeOf needs a way
 to express recursive tree traversal as data.
 
+Recursive macro invocation itself is not open — it is a ruled requirement:
+"We also need to be able to call more macros recursively." (2026-07-13,
+session 0fd2d07c line 572, restored in `RecoveredNomosVision-2026-07-29.md`).
+What is open is the mechanism that satisfies it for tree-shaped recursion
+(Decision 1, section 9); `Invoke` already satisfies simple, non-tree-shaped
+recursive calls.
+
 **The gap in the current escape algebra:** the existing `Splice` walks a flat
 vector (fields or variants) and produces one element per input. ScopeOf must
 walk a tree recursively: for each payload-bearing variant in Domain, produce a
 scope enum that mirrors it; for each sub-enum, recurse. The escape algebra has
 no tree-fold construct today.
 
-**Proposed extension:** a fourth escape form, `Fold`, that expresses recursive
-tree traversal as data. This is the genuine open design surface.
+**Proposed extension (matter, not ruled):** a fourth escape form, `Fold`, that
+expresses recursive tree traversal as data. This proposal is one candidate way
+to satisfy the ruled recursion requirement for the tree-shaped case; it is not
+itself something the psyche has ruled on, and Decision 1 in section 9 leaves
+open whether Fold, a separate mechanism, or a deferred design is the right
+shape.
 
 ```
 ScopeOfExpander.Named {
-  ($source.Name $target.Name)
+  (source.Name target.Name)
   [
-    $target.[ All $@source.Variants.MirrorScope ]
-    $@source.PayloadVariants.Fold {
-      ($child.Name $childSource.Name)
-      $child.[ All $@childSource.Variants.MirrorScope ]
+    Splice.target.[ All Splice.source.Variants.MirrorScope ]
+    Fold.source.PayloadVariants {
+      (child.Name childSource.Name)
+      Splice.child.[ All Splice.childSource.Variants.MirrorScope ]
     }
   ]
 }
@@ -346,15 +437,15 @@ ScopeOfExpander.Named {
 
 Where:
 
-- `$@source.Variants.MirrorScope` — a new splice element kind that mirrors each
-  source variant into the scope enum (preserving the variant name, converting a
-  payload-bearing variant into a scope-typed payload)
-- `$@source.PayloadVariants.Fold { ... }` — the recursive fold: for each
-  payload-bearing variant in the source, bind `$child` to the derived scope
-  sub-enum name and `$childSource` to the source sub-enum, then produce items
+- `Splice.source.Variants.MirrorScope` — a new splice element kind that mirrors
+  each source variant into the scope enum (preserving the variant name,
+  converting a payload-bearing variant into a scope-typed payload)
+- `Fold.source.PayloadVariants { ... }` — the recursive fold: for each
+  payload-bearing variant in the source, bind `child` to the derived scope
+  sub-enum name and `childSource` to the source sub-enum, then produce items
   from the body and recurse
 
-The `.Fold` construct is the recursion mechanism the ScopeOf expansion needs.
+The `Fold` construct is the recursion mechanism proposed for the ScopeOf need.
 It is data: a closed binding signature and a template body that executes per
 tree node. The recursion terminates when a level has no payload-bearing variants
 (all variants are leaves).
@@ -374,50 +465,167 @@ DomainScope.ScopeOf.Domain
 This is sugar in Ethos. The Nomos engine, on encountering a `ScopeOf`
 declaration, locates the `ScopeOfExpander` macro (or a built-in transformer
 handling this item kind), loads the source tree (Domain's full type structure
-from the encoded Ethos), and executes the expansion template.
+from the encoded Ethos), and executes the expansion template. This is the
+concrete instance of the ruled shape from section 8: Ethos carries the sugar
+declaration; Nomos, in its own files, carries the expansion.
 
-**Decision point 2:** should `Fold` be a fourth escape variant in the closed
-algebra, or should tree-recursive expansion be a separate mechanism outside the
-escape algebra (e.g. a distinct `TransformationKind` rather than a template
-extension)? The escape algebra is explicitly closed ("a fourth escape would be a
-new variant and a compile error until handled" — template.rs line 53). Adding
-Fold is coherent with that discipline; it grows the algebra by one variant.
-But the psyche may prefer to keep the escape set at the ruled three and handle
-tree recursion at a different level.
+Open decisions carried forward to section 9: whether `Fold` is the right
+mechanism for the recursion requirement (Decision 1), and whether ScopeOf
+dispatches through the macro system or a built-in (Decision 2).
 
-**Decision point 3:** should ScopeOf be handled by a macro authored in the
-`.nomos` file, or by a built-in transformer that the engine recognizes directly
-from the `ScopeOf` keyword in the Ethos declaration? The current `SectionDefault`
-dispatches by declaration kind (Newtype, Struct, Enumeration); ScopeOf is a new
-declaration kind. The production path would be: the Ethos engine parses
-`DomainScope.ScopeOf.Domain` as an `EncodedType::ScopeOf(...)` variant; the
-Nomos engine has a structural default for ScopeOf declarations that maps to the
-ScopeOfExpander macro. This keeps ScopeOf within the macro system rather than
-special-casing it.
+### 3.10 The Second TextualForm: the Sigil-Rich Spelling (Proposal, Ruled Future Refinement)
+
+Section 3.0 restored the 2026-07-17 ruling that a second, sigil-rich
+textualform comes later, over the same EncodedForm, once the base door exists.
+This section illustrates the target spelling this document previously
+presented as the (only) design. It remains useful as a sketch of what the
+second form is for — terser, template-like spelling — but it is not built, and
+its concrete sigil assignment is open (Decision 4, section 9). Nothing below
+is machinery; section 3.11 states plainly what exists and what would need
+building.
+
+Illustrative second-form spelling of the Enumeration example (section 3.3):
+
+```
+Enumeration.Structural.Enumeration {
+  ($name.Name $variants.Variants)
+  Public @EnumerationAttributes $name () [$@variants]
+}
+```
+
+Illustrative second-form spelling of the Newtype example (section 3.4):
+
+```
+WireNewtype.Structural.Newtype {
+  ($name.Name $type.Type)
+  Public @WireAttributes $name Private $type
+}
+```
+
+Illustrative sigil vocabulary sketch (not ruled, not built):
+
+- `$binding` — Realize
+- `$@binding` — Splice
+- `@MacroName` — Invoke
+- `$name.FieldName` / `$name.Screaming` / `$name.PascalCase` — transformed
+  Realize, by the same dotted-suffix convention as the base door
+
+### 3.11 What the Second Form Actually Requires
+
+This document previously claimed the raw-discovery `NomosExtended` glyph set
+was "pre-provisioned for this exact purpose" — built specifically to carry a
+sigil escape syntax. Reading the machinery directly (raw-discovery
+`src/profile.rs`) shows that claim was not accurate. The honest state:
+
+- `GlyphSet` has exactly two variants, `Standard` and `NomosExtended`
+  (profile.rs lines 40-44), and they differ by exactly one thing:
+  `NomosExtended` removes `$` from the profile's `forbidden_bare_characters`
+  set (profile.rs lines 430-434: Standard forbids `"` and `$`; NomosExtended
+  forbids only `"`).
+- `$` is **not** a trigger. It has no entry in the seven-trigger definition
+  table (profile.rs lines 381-429: two boundaries, one carrier, application,
+  whitespace, line comment — no `$`, no `@`). It has no capture semantics and
+  never participates in longest-match trigger resolution, because it is not a
+  trigger at all.
+- Under `NomosExtended`, `$x` is an ordinary bare atom — a plain identifier
+  whose first character happens to be `$` — with no special meaning to
+  raw-discovery. Nothing downstream currently reads that leading `$` as an
+  escape marker.
+- There is no `$@` or `@` machinery anywhere in the codebase. Both were
+  spellings this document invented for the illustration in section 3.10, not
+  things raw-discovery, structural-codec, or core-nomos implement.
+- "Seals cleanly" (a claim in an earlier draft) is trivially true: removing one
+  character from a forbidden-bare-characters set cannot introduce a trigger
+  ambiguity, because it does not touch the trigger table at all. This was not
+  evidence of purpose-built provisioning; it is the necessary consequence of
+  the change being that narrow.
+- The crate's own documentation names what `GlyphSet` and `RawProfile` actually
+  are: "compatibility selectors" (raw-discovery lib.rs line 34) — a
+  compatibility-naming mechanism for the two established NOTA-family profiles,
+  not an escape-syntax feature.
+
+**What a real sigil form would require**, honestly, as second-form work — not
+yet done, not scoped by this document:
+
+- Either new trigger/character-class design in raw-discovery (a `Punctuation`
+  or `LeadingCharacterClass` trigger for `$`, with the associated ambiguity
+  proof against the existing seven — `can_tie` in profile.rs governs this),
+  giving raw-discovery itself a notion of an escape-marked atom; or
+- Handling at the structural-codec layer instead: leave raw-discovery's atom
+  recognition untouched (a `$`-led atom stays an ordinary bare atom all the
+  way through boundary discovery) and let the Nomos structural-codec
+  vocabulary, when it resolves that atom against the nametree at an escape-
+  legal position, treat a leading `$` in the atom's *text* as a second-form
+  spelling of `Realize`/`Splice`/`Invoke` — a convention at the typed-parsing
+  layer, not a new lexical trigger.
+
+Which of these two shapes is right, or whether a third shape is better, is not
+decided here; it is the second-form design's task, separate from and after
+the base door.
 
 ## 4. The Load Path
 
 ### 4.1 Overview
 
+The recovered load-path statement (2026-07-22 14:19 UTC, session bc636bdb
+line 444, restored in `RecoveredNomosVision-2026-07-29.md`) is the controlling
+account and is quoted here in full because it settles more than any single
+step below:
+
+> I think I was first designing thinking the nomos logic would be applied to
+> schema text, but then later realized that it would be pure-data
+> transformation (the data for this machinery is *populated* (possibly, but
+> not necessarily) by parsing nomos files (with a manifest for dependency
+> resolution and an entry-point file) into nomos encodedform + nametree
+> data - only after the nomos data is loaded in its daemon (with a slot,
+> ostensibly; it should be able to run several versions - same
+> short-addressale ID concept we use so much; agent-friendly [...]) can the
+> schema tranformation request use the slotted nomos transformer to send its
+> encodedform + nametree [...] to generate logos encodedform + nametree, and
+> probably then rust textualform
+
+Read plainly, this settles: (1) the transformation is pure-data, not text
+manipulation, confirming the strict invariant already in section 3.1; (2)
+parsing `.nomos` files is **one** population path for the encoded transformer
+data, not the only one — "possibly, but not necessarily" is the psyche's own
+hedge, preserving an operational-editing endgame where the data is populated
+or edited directly and file-parsing is bypassed; (3) file-based loading needs
+a manifest for dependency resolution plus an entry-point file, not an
+unordered pile of `.nomos` files; (4) the Nomos daemon runs the loaded package
+in a **slot**, and can run several versions simultaneously, addressed by the
+same short-addressable-ID concept used elsewhere in the engine; (5) the schema
+(Ethos) transformation request uses the *slotted* Nomos transformer by
+addressing it, sending its own encodedform + nametree to be transformed.
+
 ```mermaid
 flowchart TD
-  A[Authored .nomos text] --> B[raw-discovery boundaries under NomosExtended profile]
+  A[Authored .nomos text, one population path among possibly others] --> B[raw-discovery boundaries, base-door profile - no dollar sigil needed]
   B --> C[structural-codec typed parsing under protos nametree/structural-tree]
-  C --> D[Typed NomosRule records: MacroDefinition, InputSignature, ResultTemplate]
-  D --> E[Seal: translator allocates encodedIDs for macro names and binding names]
+  C --> D[Typed transformer records: MacroDefinition, InputSignature, ResultTemplate]
+  D --> E[Seal: translator allocates encodedIDs for transformer names and binding names]
   E --> F[MacroPackage as encoded data with content identity]
-  F --> G[Nomos engine loads the encoded MacroPackage]
-  G --> H[Engine executes MacroPackage.apply against WholeEthos input]
-  H --> I[WholeLogos output: encoded items plus Logos NameTable]
+  F --> G[Nomos daemon loads the encoded MacroPackage into a slot, short-ID addressed]
+  G --> H[Ethos transformation request addresses the slotted transformer with its encodedform + nametree]
+  H --> I[Engine executes MacroPackage.apply against WholeEthos input]
+  I --> J[WholeLogos output: encoded items plus Logos NameTable]
 ```
 
 ### 4.2 Step by Step
 
-**Step 1: raw-discovery boundaries.** The `.nomos` file is text under the
-`NomosExtended` profile (which admits `$`). raw-discovery's `BoundaryReader`
-finds the block boundaries: the six top-level document slots (braces, brackets),
-the macro definition blocks, the template bodies, the input signatures. No
-grammar is applied here; just balanced delimiters and carrier-opaque scanning.
+**Step 0: manifest and entry point.** Before any `.nomos` file is read, a
+manifest resolves dependencies between `.nomos` files and names an entry-point
+file — the same shape the recovered quote requires. This document does not
+design the manifest format; it records the requirement so it is not lost
+again.
+
+**Step 1: raw-discovery boundaries.** The `.nomos` file is text. The base-door
+syntax (section 3.2) needs nothing beyond the Standard profile's seven
+triggers — no `$` admission is required for v1. raw-discovery's
+`BoundaryReader` finds the block boundaries: the six top-level document slots
+(braces, brackets), the transformer definition blocks, the template bodies,
+the input signatures. No grammar is applied here; just balanced delimiters and
+carrier-opaque scanning. (The `NomosExtended` profile remains relevant only to
+the second textualform, section 3.10-3.11, not to this step.)
 
 **Step 2: structural-codec typed parsing.** The structural evaluator parses each
 discovered block under the typed rule vocabulary for Nomos. The rule vocabulary
@@ -455,13 +663,30 @@ stateful at rest" — an archivable, content-addressed value.
 The package is a `Capsule<NomosKind>` under the ruled generic-struct model
 (**[ruled]** SliceOneRulings entry 1: "Generic struct"). The capsule kind
 is a type parameter; the capsule pins the complete composition of its nametree
-(**[ruled]** ShapeAndSliceRulings entry 1: "yes"). Whether the capsule kind for
-Nomos packages is a new kind or whether it composes with the Ethos capsule is
-**Decision point 4** below.
+(**[ruled]** ShapeAndSliceRulings entry 1: "yes").
 
-**Step 6: engine loads.** The Nomos engine daemon loads the encoded
-`MacroPackage` from its sema database. The package is the transformer; the
-engine is the executor/interpreter that applies it.
+**Settled (not a decision point):** Nomos implements the protos
+`Capsule`/`ShortIdentifier` traits like its siblings. **[ruled] 07-25**
+(ProtosEngineDesign-2026-07-28.md section 8, "Capsule"): "capsule
+and short-identifier are protos concepts — protos traits with per-engine
+implementations." The 07-25 ruling's exception is rust-logos specifically
+("rust-logos gets no capsule"), not Nomos; Nomos gets its own per-engine
+implementation of both traits, the same as Ethos and Logos do. This document
+previously listed "Nomos capsule kind" as an open decision (whether Nomos gets
+its own kind or composes with the Ethos capsule); the 07-25 ruling settles it
+in favor of Nomos having its own implementation, "like its siblings," which is
+the own-kind shape, not composition into the Ethos capsule.
+
+**Step 6: engine loads, slotted.** The Nomos engine daemon loads the encoded
+`MacroPackage` from its sema database into a slot. Per the recovered load-path
+quote, the daemon "should be able to run several versions" of a transformer
+concurrently, each occupying its own slot, and each slot is addressed by the
+same short-addressable-ID concept used throughout the engine ("agent-friendly").
+A schema (Ethos) transformation request names the slotted transformer it wants
+by that short ID and sends its own encodedform + nametree to it — this is the
+addressing step the recovered quote describes as "the schema tranformation
+request use[s] the slotted nomos transformer". The package is the transformer;
+the engine is the executor/interpreter that applies it.
 
 **Step 7: engine executes.** `MacroPackage::apply(ethos, ethos_names)` or
 `apply_enriched(ethos, ethos_names)` runs the existing evaluation machinery:
@@ -637,42 +862,92 @@ equivalence against the hardcoded output, then retire the Rust generator. The
 escapes, meta-types, and template kinds grow variant-by-variant, each a compile
 error until handled — the existing discipline.
 
-**Decision point 5:** should the generation surface growth be part of the
-TextualNomos design scope, or should it remain deferred? The escape algebra
-extension (Fold) serves both ScopeOf and generation classes. But the template
-vocabulary growth (ImplBlockTemplate, etc.) is substantial and may warrant its
-own design round.
+This question — whether generation-surface growth belongs in this design's
+scope or stays deferred — is carried forward as Decision 3 in section 9, not
+repeated here.
 
-## 8. Decision Points for the Psyche
+## 8. Where Nomos Lives — Settled Law
 
-Every choice below is genuinely open. Alternatives are presented honestly.
+This was presented in the 2026-07-29 draft of this document as an open
+decision ("Decision 1"). The psyche ruled the presentation itself wrong: this
+was never open — his design existed and had been lost from the design
+surface. `RecoveredNomosVision-2026-07-29.md` restores the firsthand quote
+chain; it controls over this section.
 
-**Decision 1: Nomos textualform file extension and separation.**
+**[ruled]** Nomos is its own language with its own files, its own syntax, its
+own EncodedForm, its own nametable and structural table, loaded through the
+same protos TextualForm mechanism that Ethos and Logos use. The chain, in the
+psyche's own words:
 
-Should Nomos have its own `.nomos` files, or should Nomos rules ride inside
-`.ethos` files?
+2026-07-11 (session 0fd2d07c line 402):
 
-- **Own files (proposed):** a `.nomos` file is a standalone `MacroPackage` in
-  textualform, under the NomosExtended raw-discovery profile (which admits `$`).
-  The manifest associates `.nomos` files to the transformer. This matches the
-  pipeline: Ethos is the schema language, Nomos is the transformer, Logos is the
-  output; each has its own authored surface.
-- **Inside Ethos:** Nomos rules would be declarations in the Ethos file. This
-  would require extending the Ethos grammar to carry escape syntax (`$`, `@`),
-  which violates the profile separation (the Standard profile forbids `$`).
-  It would also mean the Ethos engine must understand template constructs.
-- **Hybrid:** the Ethos file carries a `ScopeOf` declaration (sugar); the
-  `.nomos` file carries the expansion template. This is already the model
-  assumed by the ScopeOf running example.
+> actually, we should keep nomos, because it is its own language syntax.
+> logos is a rust-equivalent, but our macros will not be rust macros
 
-**Decision 2: the Fold escape.**
+2026-07-17 (session 29d00eb1 line 108, the founding TextualForm/EncodedForm
+vision):
 
-Should tree-recursive expansion be:
+> that means a major part of the vision was lost, or ignored. I had a great
+> vision for a shared abstraction around textualform and encodedform (use to
+> be called true/core) ... a nametree and a structuretree ... textualform
+> trait writes and reads the name and structure trees ... this drives all
+> textual en/decoding, including rust ... actually, the vision even allowed
+> multiple textualforms per encodedform; logos -> logos or logos -> rust ...
+> even nota can take this architecture; it would be the basic/most-universal
+> example.
 
-- **(a) A fourth escape variant** (`Escape::Fold`) in the closed algebra, growing
-  it from three to four members. The algebra's own documentation says "a fourth
-  escape would be a new variant and a compile error until handled" — this is
-  exactly that growth path.
+2026-07-29 (PsycheVisionReacquisition entry 4, the triple-language dictation,
+the newest and controlling anchor):
+
+> We have three languages, ethos, nomos, and logos. And all three use the
+> same mechanism to load to and from textual form into encoded form. They
+> have their own syntax. Well, they look very similar. They're all protos
+> family languages, like NOTA is actually, you could say, the fourth language
+> in the foundation. [...] Nomos is there to create the sugar syntax, the
+> beautiful syntax of ethos, and logos is there to give us a true
+> representation of essentially our assembly language [...] the entire reason
+> why we have nomos is so that we can modify the transformation using the
+> nomos language. So if the nomos language was never implemented, then the
+> entire engine is currently a failure because the whole point of creating
+> nomos was to be able to modify.
+
+Own files, not declarations riding inside `.ethos` files, and not a hybrid
+where only sugar-level `ScopeOf` markers live in Ethos: Nomos is a full
+sibling authored surface. The `ScopeOf` running example in section 3.9 above
+is still correct under this ruling — the Ethos declaration is sugar that
+names a transform; the transform itself is authored in Nomos's own files —
+it was never the "hybrid" alternative this document previously offered as one
+option among several; it is the only ruled shape.
+
+**Matter, not psyche-ruled:** the `.nomos` extension itself. "Own files" is
+ruled; which literal extension names those files is an agent convention, no
+different from any other file-naming choice, and is not recorded as a psyche
+ruling anywhere in the recovered chain. This document continues to use
+`.nomos` as the working convention.
+
+## 9. Decision Points for the Psyche
+
+The recovery sweep settled where Nomos lives (section 8), recursive macro
+invocation as a requirement (section 3.9), and Nomos's participation as a
+Capsule/ShortIdentifier implementer alongside its siblings (section 4.2, step
+5). What remains genuinely open is narrower than this document previously
+presented. The ScopeOf identity question is tracked separately and is not
+repeated here (see `ScopeOfIdentityBriefing-2026-07-29.md`); it is pending with
+the psyche independent of this design.
+
+**Decision 1: the recursion construct's mechanics.**
+
+Recursive macro invocation is ruled required ("We also need to be able to
+call more macros recursively." — 2026-07-13, session 0fd2d07c line 572). What
+is open is the mechanism, not the requirement. `Invoke` (call a named macro by
+identity) already satisfies simple recursion. Whether tree-shaped recursion
+(ScopeOf's walk over a variable-depth Domain tree, binding fresh parameters at
+each level) needs a distinct construct is not settled:
+
+- **(a) A fourth escape variant** (`Escape::Fold`) in the closed algebra,
+  proposed in section 3.9/5.2 below and marked as proposal throughout. The
+  algebra's own documentation says "a fourth escape would be a new variant and
+  a compile error until handled" — this is exactly that growth path.
 - **(b) A separate mechanism** outside the escape algebra — e.g. a
   `TransformationKind::TreeFold` that wraps a template but is not itself an
   escape. This keeps the escape set at the ruled three members at the cost of
@@ -681,10 +956,11 @@ Should tree-recursive expansion be:
   exact recursion shape is concrete enough to design against real data.
 
 The honest tension: the psyche ruled the escape set closed at two primitives
-plus Invoke. Fold is a genuine new primitive. The alternative (b) avoids growing
-the escape set but adds a parallel mechanism. The psyche's call.
+plus Invoke. Fold (proposal, not ruled) is a genuine new primitive under
+option (a). The alternative (b) avoids growing the escape set but adds a
+parallel mechanism. The psyche's call.
 
-**Decision 3: ScopeOf as a macro vs. a built-in.**
+**Decision 2: ScopeOf as a macro vs. a built-in.**
 
 Should ScopeOf expansion be:
 
@@ -701,23 +977,7 @@ conversion generation, and containment operations are complex enough that
 expressing them as template data may require so many escape-algebra extensions
 that the template is harder to understand than the direct logic.
 
-**Decision 4: Nomos capsule kind.**
-
-Should the Nomos `MacroPackage` be:
-
-- **(a) Its own capsule kind** — `Capsule<NomosKind>` alongside
-  `Capsule<EthosKind>` and `Capsule<LogosKind>`. This gives Nomos packages their
-  own content-identity variant and short-identifier type.
-- **(b) Composed with the Ethos capsule** — the Nomos package rides as part of
-  the Ethos capsule's data, since Nomos is the transformer that the Ethos
-  manifest configures.
-
-The production `MacroPackage` already has its own content identity
-(`ContentHash<EncodedNomosDomain>`, package.rs line 146). Making it a capsule
-is the natural step. But if the Nomos package is always associated with exactly
-one Ethos manifest, composition may be the better model.
-
-**Decision 5: generation surface scope.**
+**Decision 3: generation surface scope and migration ordering.**
 
 Should this design cover:
 
@@ -728,20 +988,29 @@ Should this design cover:
   template kinds for impl blocks, functions, expressions), designed now even if
   not implemented immediately.
 
-**Decision 6: escape sigil assignment.**
+Separately open: the order in which `SliceOneTransformation` (section 6) and
+the fixture-constructed packages retire once the authored surface proves
+equivalence, and whether any generation class migrates before the base-door
+TextualNomos syntax (section 3) is itself proven against production fixtures.
 
-The proposed sigils are `$` for Realize, `$@` for Splice, `@` for Invoke. These
-are consistent with the NomosExtended profile's `$` admission. Alternatives:
+**Decision 4: the second-textualform (sigil) details.**
 
-- `$x` / `$@xs` / `$!macro` — using `$!` for invoke instead of bare `@`
-- `$x` / `$@xs` / `$(macro)` — using a delimited form for invoke
+The two-textualform shape is ruled (section 3.0): a plain-NOTA base door
+first, a sigil-rich `$`/`<<>>` form second, over the same EncodedForm. What is
+open is the second form's concrete spelling, since it does not yet exist as
+machinery (section 3.11 below lays out honestly what building it requires):
 
-The `@` standalone sigil is not currently in any trigger definition (profile.rs
-shows only `.`, `()`, `[]`, `{}`, `(| |)`, whitespace, `;;`). It would be a new
-trigger in the NomosExtended profile, which is extensible. The `$` family
-keeps escapes visually unified.
+- Whether Realize/Splice/Invoke get sigils at all, or whether the sigil form's
+  value is elsewhere (e.g. compact template literals) with escapes staying
+  structural even in the second form.
+- If sigils are wanted: `$x` / `$@xs` / `@macro`, or `$x` / `$@xs` / `$!macro`,
+  or `$x` / `$@xs` / `$(macro)` — several spellings are equally plausible and
+  none is ruled.
+- Which layer builds it — a new trigger/character-class in raw-discovery, or a
+  structural-codec-level convention over ordinary bare atoms (section 3.11) —
+  is itself part of what is open, not a settled implementation detail.
 
-## 9. Observations from the Sources
+## 10. Observations from the Sources
 
 **The existing machinery is more complete than expected.** The production daemon
 path already runs transformers-as-data through `MacroPackage::apply_enriched`.
@@ -750,10 +1019,18 @@ The missing piece is purely the authoring surface: how a human writes a
 template algebra, the content identity, the NameTable composition, the typed
 evaluation — all of this is live.
 
-**The NomosExtended profile exists.** raw-discovery already provisions a Nomos
-glyph set (profile.rs line 43-49, line 68-71). The `$` sigil is explicitly
-gated by profile selection. This is not accidental; the codebase anticipated
-a Nomos textualform.
+**Correction: the NomosExtended profile is narrower than earlier drafts
+claimed.** raw-discovery does carry a `GlyphSet::NomosExtended` variant
+(profile.rs lines 40-49), and it is real, deliberate machinery — but it is not
+"pre-provisioned for" a sigil escape syntax, as an earlier draft of this
+document claimed. It differs from `Standard` by exactly one thing: removing
+`$` from the forbidden-bare-characters set (profile.rs lines 430-434). `$` is
+not a trigger anywhere in the seven-trigger table; it has no capture
+semantics; a `$`-led atom is an ordinary bare atom with no special reading by
+anything in the codebase today. The crate's own documentation calls
+`GlyphSet`/`RawProfile` "compatibility selectors" (raw-discovery lib.rs line
+34), not an escape-syntax feature. Section 3.11 states plainly what building a
+real sigil form on top of this would require.
 
 **The enriched generation surface is the real hard problem.** The structural
 defaults (newtype, struct, enumeration lowering) are straightforward to express
@@ -763,10 +1040,18 @@ method bodies, match arms, codec implementations) are the frontier. They require
 template vocabulary growth, richer meta-types, and possibly the Fold escape.
 This is where the "transformers are data" vision meets its most demanding test.
 
-**No partial authored-Nomos design was found in the design surface.** The
-design documents, the code, and the reports contain no prior proposal for
-TextualNomos syntax. The crate itself marks it as open. This proposal is the
-first concrete design for the authoring surface.
+**Correction (2026-07-29): the claim of no prior design was false.** This
+document originally stated that no partial authored-Nomos design existed in
+the design surface and that this proposal was the first concrete design. The
+psyche rejected that presentation when "where Nomos lives" was shown to him as
+an open decision: his design existed and had been lost, not absent. A recovery
+sweep located it — in `primary/reports/logos/nomos-macro-model-v1.md`,
+`textual-form-vision-design-v1.md` and `-v2.md`, `up-close-design-v1.md`, and
+in session transcripts spanning 2026-07-11 through 2026-07-22 — and restored it
+to `RecoveredNomosVision-2026-07-29.md` in this design tree, which is now
+controlling over this document wherever the two conflict. This document has
+been corrected against that restoration; see section 3 and section 8 above for
+the corrected settled/open split.
 
 **Terminology alignment.** The crate calls its rules "macros" throughout
 (`MacroDefinition`, `MacroPackage`, `MacroIdentity`). The psyche's language
