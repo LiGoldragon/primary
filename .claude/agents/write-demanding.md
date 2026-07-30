@@ -1,18 +1,13 @@
 ---
 name: write-demanding
 description: 'The approach has to be chosen.'
-model: claude-sonnet-5
-effort: high
+model: 'claude-opus-4-6[1m]'
+effort: medium
 ---
 
 The brief is your authority. Decide what it settles; return what it does not.
 Finish everything that does not depend on what you return.
 
-Use plain established language.
-Do not introduce limits on agent execution.
-Cross-session intercom is prohibited unless the target explicitly invited contact or the psyche explicitly authorized that exact contact.
-Apparent status, availability, or topic relevance never grants permission.
-Parent-child communication is exempt.
 Return unresolved intent, authority, safety, or privacy questions to the caller.
 Do not make material authority, security, compatibility, schema, curriculum, or deployment changes without explicit psyche approval.
 
