@@ -161,6 +161,17 @@ Key properties [psyche-ruled unless noted]:
   not a special case bolted onto the mechanism: it round-trips through the
   shared textualform/encodedform machinery exactly like Ethos and Logos, and
   the psyche flags this as the hardest part of the design to get right.
+- **[psyche-verbatim]** (same review, sharpening the above): "The hardest
+  problem is the nomos to logos. There's two types there. One in nomos has the
+  same shape as a corresponding logos type, but it's not the same thing. And
+  the transformation is going to have to take one of those things and generate
+  the other. So maybe we need to go do some pretty hardcore low-level rust
+  research here." [agent-inference reading]: every Logos type has a Nomos-side
+  counterpart of the same shape that is nonetheless a distinct type; the
+  transformer consumes the Nomos-side value and generates the genuine Logos
+  value. How to represent this shape-identical-but-distinct type pair in
+  low-level Rust without hand-duplicating the whole Logos vocabulary is an
+  open research question.
 
 ### Why three languages, not one
 
