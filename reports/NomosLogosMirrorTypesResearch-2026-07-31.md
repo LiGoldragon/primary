@@ -553,6 +553,18 @@ is consistent with [psyche-ruled] "not distinct in essence."
 **Rank 1 (recommended): Option 6 — Enhance the existing TemplateValue
 substrate.** [agent-inference]
 
+PROVENANCE CAVEAT (added after psyche review, 2026-07-31): the psyche
+reiterated "I already made it clear the previous slices were misguided, so we
+should doubt any and all parts" — this includes the TemplateValue substrate
+itself. Its mechanism may be sound, but "already implemented and tested" is
+not evidence of design correctness; the substrate must be re-derived from the
+vision before this ranking is acted on. Additionally, the psyche questioned
+the Fixed position category ("could we possibly want to support an evaluation
+to resolve visibility?") — if every position is escapable (proposed ruling,
+unconfirmed), the Fixed/ValueOrFuture distinction collapses, the
+"heterogeneous escapability" objection to Option 4 (uniform GAT mapping)
+evaporates, and every option above simplifies.
+
 Rationale: The codebase has already solved this problem at the
 structural-codec level. The `TemplateValue<Root>` + `TemplateLandingShape<Root>`
 mechanism IS the phase-parameterized single definition — it just lives in the

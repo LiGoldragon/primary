@@ -771,7 +771,100 @@ ScopeOf is the worked subject for designing the authoring stack:
 This order is deliberate: understand the target before designing the source
 syntax, and understand both before designing the transformation between them.
 
-## 10. Sources Consulted
+## 10. Live Thoughts from Psyche Review (2026-07-31)
+
+The psyche reviewed this report interactively and produced new vision
+material. Everything in this section is explicitly **thought-grade — "this is
+just a thought, not a decision"** [psyche-verbatim] — unless marked
+otherwise. It is recorded here so it is not lost; none of it is ruled.
+
+### 10.1 Doubt extends to the template substrate
+
+**[psyche-verbatim]**: "I already made it clear the previous slices were
+misguided, so we should doubt any and all parts." This explicitly covers the
+`TemplateValue<Root>` / `TemplateLandingShape<Root>` substrate that the
+mirror-types research (reports/NomosLogosMirrorTypesResearch-2026-07-31.md)
+ranked first as "already solved." Its mechanism may be sound, but its
+provenance is old-slice implementation: doubt-flagged, to be re-derived from
+the vision, not trusted because it exists.
+
+### 10.2 Every-position escapability (proposed ruling, unconfirmed)
+
+Raised by the psyche's question "could we possibly want to support an
+evaluation to resolve visibility? ... Isnt the point to have complete
+flexibility in nomos to create any level of sugar syntax in ethos?"
+[psyche-verbatim]. Proposed ruling line, awaiting confirmation: every
+position in a Nomos template is escapable; an escape must resolve to the
+position's type; Fixed positions are an implementation artifact, not design.
+
+### 10.3 NOTA-typed positions and typed Ethos programs
+
+**[psyche-verbatim]** (condensed): "In certain positions, I could see a
+design where it would expect a data object as in NOTA... we could have
+different types of ethos files even... different types of ethos programs.
+Type specificity is the strength here and we need to build up on it...
+a type of program that expects certain variables to be set."
+[agent-inference reading]: the pre-known-struct root principle generalizes —
+the root type of an Ethos file is itself selectable, so distinct program
+kinds exist, each with its own positional expectations, including positions
+whose expected type is a NOTA data object.
+
+### 10.4 Program-wide configuration data objects
+
+**[psyche-verbatim]** (condensed): "we would have a NOTA object in a
+particular position that configures certain things... there could be even
+certain object types [nomos-defined] that need configuration data in them...
+program-wide configuration data objects. And some of the escapes could refer
+to these... This is all about standards: we create standard ways to refer to
+these things. It could even involve bringing in a new prefix symbol to refer
+to this sort of program-wide configuration data object."
+
+### 10.5 Transformation-time evaluation runtime (derived values)
+
+**[psyche-verbatim]** (condensed): "these could even involve some kind of
+evaluation that depends on other parts of the configuration to resolve
+them — derived values... template conditions or default values: if this
+isn't set, then derive from this and this and this. So we could have some
+kind of transformation-time — what other languages call macro-expansion-time
+— evaluation. We create our own evaluation runtime. It's a thought... worth
+researching. Is this something that the most advanced macro language systems
+use universally? And is there a good use case for this?" Research
+commissioned: expansion-time evaluation prior art
+(reports/MacroTimeEvaluationPriorArt-2026-07-31.md when it lands).
+
+### 10.6 Possible rename of NOTA (naming exploration only)
+
+**[psyche-verbatim]** (condensed): "Maybe NOTA — I find it kind of clumsy in
+the mouth... next to ethos, nomos, and logos. Maybe it's something like
+dattos, or datom — but that conflicts with datum... dattos, D-A-T-O-S...
+Maybe you can look in the Greek and the Latin words, something that has to do
+with information." Explicitly a thought, not a decision. Naming research
+commissioned.
+
+### 10.7 Whole-program Ethos horizon and Rust FFI porting
+
+**[psyche-verbatim]** (condensed): "Imagine a world in which the whole
+program is written in ethos — full Rust language capability on the logos
+side. Anything could be expressed, even though we wouldn't necessarily
+support all of the Rust features — no multiple-value tuples, no free
+functions other than the main function... Libraries that need functions as
+arguments (anonymous lambdas) or free tuples could be resolved with a kind of
+FFI approach, so those libraries could be quote-unquote ported to be
+interoperable with ethos and logos — the PROTOS engine as a whole."
+
+### 10.8 How psyche vision grows (meta)
+
+**[psyche-verbatim]** (condensed): "Discussing the design and exploring
+creates more Psyche vision. The Psyche sees things and then, by interacting
+with these thought objects, the vision becomes clearer — or at least some
+ideas or questions come up which he needs to answer in order to know if he
+has made the proper design... sometimes visionaries need something to
+inspire them to ask the right question." [agent-inference]: this bears on the
+psyche-interraction doctrine — presenting concrete thought objects (worked
+examples, reports, syntax sketches) is itself the mechanism by which vision
+is elicited, not merely a way to document it.
+
+## 11. Sources Consulted
 
 All paths verified 2026-07-31 against the current checkout.
 

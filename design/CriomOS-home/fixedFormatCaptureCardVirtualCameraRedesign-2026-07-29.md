@@ -79,3 +79,30 @@ This supersedes the prior Home Manager capture-card virtual-camera module and
 its service/package behavior. It does not decide the separate system-level
 v4l2loopback policy or a future software solution that does not create or run
 such a bridge.
+
+## Kernel-quirk approval — 2026-07-31
+
+Agent text answered:
+
+> You’re correct. I conflated an absolute end-to-end guarantee with fixing this specific capture path.
+>
+> The proper software solution is a device-specific `uvcvideo` quirk in CriomOS:
+>
+> - Match Guermok `345f:2130`, revision `31.00`.
+> - Remove every non-exact-16:9 frame descriptor across MJPEG, YUYV, and other formats.
+> - Validate UVC Probe/Commit responses and fail closed if the device substitutes a removed mode.
+> - Keep normal V4L2 negotiation among the remaining modes.
+>
+> A Zoom request for `720x480` will consequently resolve to an available 16:9 mode such as `1280x720`. This requires no FFmpeg, loopback, extension, or persistent process.
+>
+> The disruption is limited to this capture-card revision: non-16:9 modes disappear for every application, invalid device responses cause camera opening to fail, and deploying the kernel patch requires a reboot. The exact USB descriptors must be captured after reconnecting the card.
+>
+> Do you approve this kernel-quirk design for implementation in CriomOS?
+
+Psyche approval and ruling:
+
+> sounds great. that code should be organized in a dedicated directory for hardware adjustments.
+
+The device-specific `uvcvideo` kernel-quirk design is approved for
+implementation in CriomOS. Its code must be organized in a dedicated directory
+for hardware adjustments. This ruling does not select or name that directory.
