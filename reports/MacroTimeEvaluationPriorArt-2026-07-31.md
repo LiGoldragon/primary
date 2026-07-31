@@ -584,3 +584,20 @@ Candidate A with strict topological evaluation is sufficient and Candidate B's
 lazy fixpoint is unnecessary complexity. If real patterns require circular
 derivation, then Candidate B or a lazy variant of Candidate C becomes
 necessary, and the implementation cost of a lazy evaluator must be accepted.
+
+## Correction (appended 2026-07-31, after independent review)
+
+This report's headline claim — that expansion-time evaluation is universal in
+advanced macro systems — overstates the evidence, as identified by an
+independent Codex research pass
+(reports/protosVisionReacquisition/2-Research-psyche-vision-open-questions-and-proposals.md,
+section 9.5). R7RS `syntax-rules` is an advanced hygienic system that performs
+pattern/template transcription without arbitrary expansion-time procedure
+execution; R6RS separates transcription (`syntax-rules`) from procedural
+(`syntax-case`) macros. The corrected, narrower conclusion: many powerful
+macro, staging, and configuration systems perform computation before runtime,
+but general evaluator execution is not universal, and structural transcription,
+typed evaluator execution, and stage transition are three distinct capabilities
+— Nomos may need all three, and none entails the others. The per-system
+surveys, hazard analysis, and candidate designs in this report are unaffected;
+only the universality framing is retracted.
