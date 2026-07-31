@@ -155,6 +155,12 @@ Key properties [psyche-ruled unless noted]:
   text with DATA - strict invariant. nothing else will do."]
 - Multiple textualforms per encodedform are possible (e.g. Logos to Logos text
   or Logos to Rust text). [psyche-ruled, session 29d00eb1 line 108, 2026-07-17]
+- **[psyche-verbatim]** (review of this report, 2026-07-31): "Nomos must have
+  the same textual/encoded form as the other two, so it can round-trip from/to
+  either forms. this is undoubtedly the hardest part to get right." Nomos is
+  not a special case bolted onto the mechanism: it round-trips through the
+  shared textualform/encodedform machinery exactly like Ethos and Logos, and
+  the psyche flags this as the hardest part of the design to get right.
 
 ### Why three languages, not one
 
@@ -177,21 +183,21 @@ flowchart LR
         N1 --> N2
     end
     subgraph authored["Authored Sugar"]
-        E["ETHOS source\n(pre-known struct)"]
+        E["ETHOS source<br/>(pre-known struct)"]
     end
     subgraph transform["Transformation"]
-        NOM["NOMOS\ntransformer rules\n(own files, own syntax)"]
+        NOM["NOMOS<br/>transformer rules<br/>(own files, own syntax)"]
     end
     subgraph trueform["True Form"]
-        L["LOGOS\nencoded items\n(assembly language)"]
+        L["LOGOS<br/>encoded items<br/>(assembly language)"]
     end
     subgraph projection["Text Edge"]
-        R["Rust source\n(textual projection)"]
+        R["Rust source<br/>(textual projection)"]
     end
-    E -->|"encodedform +\nnametree"| NOM
-    NOM -->|"typed transform\n(no strings)"| L
-    L -->|"Logos textualform\nto Rust"| R
-    substrate -.->|"shared mechanism\nfor all four"| E
+    E -->|"encodedform +<br/>nametree"| NOM
+    NOM -->|"typed transform<br/>(no strings)"| L
+    L -->|"Logos textualform<br/>to Rust"| R
+    substrate -.->|"shared mechanism<br/>for all four"| E
     substrate -.-> NOM
     substrate -.-> L
 ```
@@ -438,17 +444,17 @@ positional" and "field names illegal" rulings.
 ```mermaid
 flowchart TD
     P["PSYCHE (the human, Li)"]
-    P -->|"verbatim words"| PV["[psyche-verbatim]\nExact recorded quotes"]
-    P -->|"recorded ruling"| PR["[psyche-ruled]\nBinding decisions"]
-    P -->|"'fine, implement it'"| DA["[delegated-assent]\nAuthorized but not reviewed"]
-    P -->|"'go with your leans'"| NUP["[not-understood-by-psyche]\nOvernight leans, reversible"]
-    PR --> Spirit["Spirit (intent capture)\nOnly unbending directive will\nNot private substance"]
-    PR --> DL["design-log (matter)\nRules, mechanisms,\nsingle-component decisions"]
+    P -->|"verbatim words"| PV["psyche-verbatim<br/>Exact recorded quotes"]
+    P -->|"recorded ruling"| PR["psyche-ruled<br/>Binding decisions"]
+    P -->|"'fine, implement it'"| DA["delegated-assent<br/>Authorized but not reviewed"]
+    P -->|"'go with your leans'"| NUP["not-understood-by-psyche<br/>Overnight leans, reversible"]
+    PR --> Spirit["Spirit (intent capture)<br/>Only unbending directive will<br/>Not private substance"]
+    PR --> DL["design-log (matter)<br/>Rules, mechanisms,<br/>single-component decisions"]
     DA --> Code["Code + implementation"]
     NUP --> Code
-    Code --> AI["[agent-inference]\nReconstruction by agents\nNEVER doctrine"]
+    Code --> AI["agent-inference<br/>Reconstruction by agents<br/>NEVER doctrine"]
     AI -.->|"submit for review"| P
-    Spirit -.->|"NOTE: daemon down\nsince 2026-07-24"| Severed["Intent capture\nchannel SEVERED"]
+    Spirit -.->|"NOTE: daemon down<br/>since 2026-07-24"| Severed["Intent capture<br/>channel SEVERED"]
 ```
 
 **The critical distinction** [psyche-ruled via AGENTS.md]:
