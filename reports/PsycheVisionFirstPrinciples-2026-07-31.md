@@ -838,8 +838,18 @@ commissioned: expansion-time evaluation prior art
 the mouth... next to ethos, nomos, and logos. Maybe it's something like
 dattos, or datom — but that conflicts with datum... dattos, D-A-T-O-S...
 Maybe you can look in the Greek and the Latin words, something that has to do
-with information." Explicitly a thought, not a decision. Naming research
-commissioned.
+with information." Explicitly a thought, not a decision.
+
+Naming research result [agent-inference, exploration only]: top candidate
+**Dotos** — Greek δοτός, "given, granted," the literal Greek cognate of Latin
+*datum* (attested morpheme, as in Hēró-dotos "given by Hera"); no external
+language/database/trademark collision found, no internal collision, easy in
+English and French mouths, native to the -os family. Runner-up **Grammos**
+(γράμμα, "written character/record" — names the mark rather than the
+given-ness; soft collision with "gram"). **Datos** rejected as literally
+Spanish for "data" (less a coined name); Semos collides with in-system Sema;
+Eidos, Hylos, Mnemos, Morphos, Typos, Notos all rejected for external
+collisions or off-meaning.
 
 ### 10.7 Whole-program Ethos horizon and Rust FFI porting
 
