@@ -56,6 +56,16 @@ Test source shape (from `BREADTH_SOURCE`, `whole_six_slot.rs:21`):
 There are no field names in the six-slot document — slot meaning is entirely
 positional (see "No grammar keywords" below).
 
+**Current codec scope** `[implementation-fact: core-ethos/src/whole.rs
+lines 608-613]` — of the six slots, the codec currently *parses content* only
+at the Types slot. Imports, Generics, and Impls delegate to `empty_braces`;
+Input and Output delegate to `empty_square`. This means those five slots must
+be literally `{}` / `[]` for the current codec to accept a document — any
+populated content in them (trait catalogs, interface variants, etc.) is
+**old-generation evidence only**, and whether current Ethos will ever carry
+such content is `[open]`. Sections below covering Impls- and Input/Output-slot
+syntax describe old-schema shapes, not current codec behavior.
+
 ## The dot is the application operator
 
 `[implementation-fact: core-ethos/src/whole.rs:32]` — `APPLICATION_OPERATOR`
@@ -76,22 +86,44 @@ keyed/named one.
 
 All rows `[implementation-fact: core-ethos/src/whole.rs]` unless noted.
 
+**Current item vocabulary is exactly three constructors** `[implementation-fact:
+core-ethos/src/whole.rs; WholeEthosItem enum, lines 165-171]` — `WholeEthosItem`
+contains only two variants, `Newtype` and `Enumeration`. There is **no struct
+constructor** in the current Ethos surface.
+
 | Form | Meaning | Source |
 |------|---------|--------|
-| `X.[A B C]` | enum, square-delimited variants | `square_enumeration_rule`, line 754 |
-| `X.{A B C}` | enum, brace-delimited variants | `brace_enumeration_rule`, line 741 |
-| (both above decode to the same `WholeEthosEnumeration`) | | lines 916-917 region (`reify_item`, enum branch) |
 | `X.Y` | newtype wrapping `Y` | `newtype_rule`, line 731 |
-| `X.Y.Z` | newtype wrapping the application `Y.Z` — head `X` consumed as the declaration, remainder parsed as a type reference | `application_reference_rule`, line 798 |
-| `X.{many fields}` | positional struct | — |
-| `X.{one field}` | lowers to a newtype (field name dropped) | `core-ethos/src/declaration.rs`, `EncodedType::from_braced_body`, doc comment cites psyche ruling 2026-07-17, bead `primary-56d1.36`; converges byte-for-byte with the legacy `schema-language` `MacroExpansionStructBody::lower_type` behavior |
+| `X.Y.Z` | newtype wrapping the application `Y.Z` — head `X` consumed as the declaration, remainder parsed as a type reference | `application_reference_rule`, line 798 (applied within `newtype_rule`) |
+| `X.{A B}` | enum, brace-delimited variants | `brace_enumeration_rule`, line 741 |
+| `X.[A B]` | enum, square-delimited variants | `square_enumeration_rule`, line 754 |
+| (both enum forms decode to the same `WholeEthosEnumeration`) | | lines 916-917 region (`reify_item`, enum branch) |
 
-Variant syntax inside enum bodies (`core-ethos/src/whole.rs`):
+The codebase itself describes this as deliberately narrow: `[implementation-fact:
+core-ethos/src/whole.rs line 704]` — "bounded six-slot Ethos fixture breadth."
+
+**Older flat-algebra struct/newtype-lowering material (not current surface):**
+the braced-body struct form and the single-field-brace newtype lowering below
+belong to an older flat algebra, not the six-slot item vocabulary above.
+Whether struct support returns to the six-slot surface is `[open]`.
+
+| Form | Meaning | Source |
+|------|---------|--------|
+| `X.{many fields}` | positional struct (older flat algebra, not in current `WholeEthosItem`) | `[old-schema evidence]` |
+| `X.{one field}` | lowers to a newtype (field name dropped) | `[old-schema evidence]`: `core-ethos/src/declaration.rs`, `EncodedType::from_braced_body`, doc comment cites psyche ruling 2026-07-17, bead `primary-56d1.36`; converges byte-for-byte with the legacy `schema-language` `MacroExpansionStructBody::lower_type` behavior. This is older flat-algebra machinery, not confirmed part of the current six-slot item vocabulary. |
+
+Variant syntax inside enum bodies (`core-ethos/src/whole.rs`) —
+`[implementation-fact]` — three constructors:
 
 | Form | Meaning | Source |
 |------|---------|--------|
 | bare atom | unit variant | `unit_variant_rule`, line 767 |
-| `V.Payload` | payload variant | `payload_variant_rule`, line 784 |
+| `A.{T1 T2 ...}` | tuple variant, 1+ fields | `tuple_variant_rule`, line 771 |
+| `A.T` | payload variant, compact single-payload form | `payload_variant_rule`, line 784 |
+
+Both `A.T` and `A.{T}` reify to the same shape:
+`[implementation-fact: core-ethos/src/whole.rs lines 950-984]` — both forms
+produce `WholeEthosVariantPayload::Tuple`.
 
 Note on line numbers: the task brief cited `whole.rs` 572-591 for
 `SixSlotDocumentRecord`; the struct is at line 583 in the checked-out
@@ -108,11 +140,11 @@ NameText.[ Display AsRef PartialEq ]
 ```
 
 `X.[A B C]` at the Impls slot names a trait catalog for type `X`. This is
-**old-schema evidence only** — whether the current six-slot `core-ethos`
-codec decodes Impls-slot content at all (it currently only asserts the slot
-is present/delegated; see `ensure_delegated::<ImplsRole>` in
-`whole.rs`) is check-worthy and not yet confirmed. Treat the shape above as
-inherited intent, not verified current behavior.
+**old-schema evidence only**. The current six-slot codec does not decode
+Impls-slot content at all: `[implementation-fact: core-ethos/src/whole.rs
+lines 608-613]` — Impls delegates to `empty_braces`, meaning it must be
+literally `{}` to parse. Treat the shape above as inherited intent, not
+current behavior — carrying it forward is `[open]`.
 
 ## At the Input / Output slots
 
@@ -120,20 +152,42 @@ inherited intent, not verified current behavior.
 
 `X.Y` at Input or Output names an interface variant: `X` is the variant name,
 `Y` its payload — structurally the same `Name.Payload` application shape used
-for enum payload variants at the Types slot. Confirmed as a slot *role*
-(`InputRole` / `OutputRole` in the six-slot codec); the specific `X.Y` reading
-carries over from old-schema material and has not been independently
-re-verified against a decoding six-slot Input/Output fixture.
+for enum payload variants at the Types slot. This reading is **old-schema
+evidence only**. The current six-slot codec does not decode Input/Output-slot
+content at all: `[implementation-fact: core-ethos/src/whole.rs lines
+608-613]` — both slots delegate to `empty_square`, meaning they must be
+literally `[]` to parse. The slot *roles* (`InputRole` / `OutputRole`) are
+confirmed structural positions in the six-slot codec; the populated `X.Y`
+reading has not been, and currently cannot be, exercised against a decoding
+six-slot Input/Output fixture. Whether it carries forward is `[open]`.
 
 ## Type applications in reference positions
 
+`[implementation-fact: core-ethos/src/whole.rs]` — two type-reference
+constructors: `identity_reference_rule` (line 794, a bare name) and
+`application_reference_rule` (line 798, `Y.Z`).
+
+Applications are **right-associative**: `Y.Z.W` parses as `Y` applied to
+`(Z applied to W)`, not `(Y applied to Z)` applied to `W`.
+
+Application **heads must be registered priors**: `[implementation-fact:
+core-ethos/src/whole.rs, accepts_application_head, line 1003]` — a name can
+only head an application if it has been registered as an application-head
+prior. The default builtin priors are `[implementation-fact:
+core-ethos/src/whole.rs, WholeEthosBuiltinPriors, lines 1023-1032]` **only
+`Integer` and `Vector`** — no other builtin (not `Optional`, not `ScopeOf`)
+is a registered application head by default. The prior set is extensible via
+`with_identity` / `with_application_head` (`[implementation-fact: whole.rs
+lines 1045-1065]`), so a document or its embedding context can register more,
+but nothing beyond `Integer`/`Vector` ships registered by default.
+
 | Form | Reading | Status |
 |------|---------|--------|
-| `Vector.Integer` | `Vector` applied to `Integer` | current, exercised in `whole_six_slot.rs` |
-| `Optional.NodeConfig` | `Optional` applied to `NodeConfig` | current, same shape |
-| `ScopeOf.Domain` | `ScopeOf` applied to `Domain` | current, same shape (see ScopeOf section below) |
+| `Vector.Integer` | `Vector` applied to `Integer` | current, exercised in `whole_six_slot.rs`; `Vector` is a default-registered application-head prior |
+| `Optional.NodeConfig` | `Optional` applied to `NodeConfig` | shape is current-syntax-legal, but `Optional` is **not** a default-registered application-head prior — would require explicit registration |
+| `ScopeOf.Domain` | `ScopeOf` applied to `Domain` | shape is current-syntax-legal, but `ScopeOf` is **not** a default-registered application-head prior (see ScopeOf section below) |
 | `Bytes.4` | application with a value argument | old-schema shape; not independently re-verified in six-slot fixtures |
-| `Map.(A B)` | parenthesized multi-argument application | `[old-schema evidence only]` — parentheses are not present in the six-slot codec's boundary triggers (`SQUARE_BOUNDARY`, `BRACE_BOUNDARY` are the only two; no paren trigger in `whole.rs`). Not yet in the current six-slot codec. |
+| `Map.(A B)` | parenthesized multi-argument application | `[old-schema evidence only]` — parentheses are not present in the six-slot codec's boundary triggers. `[implementation-fact: core-ethos/src/whole.rs lines 1150-1167]` define only square, brace, and whitespace boundary triggers — no parenthesis trigger exists. Not expressible in the current six-slot codec. |
 
 ## Declaration vs. reference — the deepest positional fact
 
@@ -163,6 +217,20 @@ the identical token `X` is not merely displayed differently by position, it
 is *processed* by an entirely different binding rule depending on whether it
 sits in a declaring or referring position.
 
+This is test-proven, not just structurally inferred: `[implementation-fact:
+core-ethos/tests/whole_six_slot.rs lines 386-402]` — the test verifies that
+`CommitSequence` (a declaration-position atom) produces `Query::Declaration`
+and `Integer` (a reference-position atom) produces `Query::Reference`, each
+at its own source position.
+
+Supporting rulings:
+
+`[psyche-ruled, DesignReviewRulings entry 3]` — "nothing declares the coreID,
+the coreID is allocated by the translator on receiving an unallocated word."
+
+`[psyche-confirmed]` — "declarations allocate while references only
+resolve."
+
 ## No grammar keywords
 
 `[psyche-ruled 2026-07-22: "make them the same thing" — "exceptions are
@@ -178,19 +246,32 @@ not a special form the parser recognizes.
 
 ## ScopeOf specifically
 
-`DomainScope.ScopeOf.Domain` declares `DomainScope` as a newtype wrapping the
-application `ScopeOf.Domain` `[implementation-fact, per the Types-slot rules
-above: X.Y.Z = newtype wrapping (Y applied to Z)]`.
+**Status correction (important):** `ScopeOf` has **no handling in the
+current codec and is not a registered prior**. `[implementation-fact:
+core-ethos/src/whole.rs, WholeEthosBuiltinPriors, lines 1023-1032]` — the
+default builtin priors are only `Integer` and `Vector`; `ScopeOf` is absent.
 
-`[old-schema evidence: schema-rust/src/lib.rs, `scope_root_name()` at line
-1176, `is_scope_of()` at line 1188]` — the old schema-rust emitter **flattens**
-this to a bare concrete enum via `scope_root_name()` rather than preserving
-the newtype-over-application shape. This is an **old-generation inconsistency**
-between the encoded shape and the emitted Rust, identified by the psyche
-2026-07-31. It is evidence of prior (possibly informal) behavior, not a
-ruling on what current/future ScopeOf handling should do.
+Structurally, *if* `ScopeOf` were registered as an application-head prior
+(via `with_application_head`, lines 1045-1065), `DomainScope.ScopeOf.Domain`
+would parse as newtype `DomainScope` wrapping the application
+`ScopeOf.Domain` — `[implementation-fact, per the Types-slot rules above:
+X.Y.Z = newtype wrapping (Y applied to Z)]`. But this is conditional on a
+registration that does not currently exist; the syntax is legal, the prior
+is not present.
 
-Helper-type identity for ScopeOf remains `[open]` — see
+`[old-schema evidence: schema-rust/src/lib.rs, `SingleTypeReferenceProjection::ScopeOf`
+expansion semantics, lines 1176-1189 (`scope_root_name()` at line 1176,
+`is_scope_of()` at line 1188)]` — the old schema-rust emitter **flattens**
+`ScopeOf` applications to a bare concrete enum. This old-generation expansion
+semantics is **not carried forward as ruled design** — it is evidence of
+prior (possibly informal) behavior in the old generation only, not a ruling
+on current/future `ScopeOf` handling, and not something the current codec
+implements.
+
+Current-Ethos `ScopeOf` is **new design in progress**, per the psyche's
+2026-07-31 work order: an authored Nomos transformer plus prior registration
+— trait-based Rust target, minimal Ethos syntax, with the Nomos worked out
+between the two. Helper-type identity for `ScopeOf` remains `[open]` — see
 `ProtosEngineDesign-2026-07-29`, open question 15; the overnight addendum
 leaned toward "Option B," at a point the psyche had not yet reviewed/endorsed
 that lean.
@@ -200,10 +281,21 @@ that lean.
 the overnight lean's earlier "All matches only itself" reading — that earlier
 reading is superseded, not current.
 
-## Ratified item schema
+## Ratified LOGOS item vocabulary (not Ethos surface syntax)
 
-`[psyche-ruled: "otherwise I like the syntax", ProtosEngineDesign-2026-07-26,
-lines 251-293]`
+**Relabel:** the schema below is the **LOGOS item vocabulary** — the typed
+representation of Rust items — and is **not Ethos surface grammar**. It does
+not describe what you write in an Ethos document's Types slot; it describes
+a downstream typed representation. It is placed here only because earlier
+report drafts presented it beside Ethos syntax and that adjacency was
+misleading.
+
+`[psyche-ruled, carries an unrecovered exception: "otherwise I like the
+syntax", ProtosEngineDesign-2026-07-26, lines 251-293]` — the ratification
+itself is conditional. Per `ProtosEngineDesign-2026-07-29` section 13, "what
+'otherwise' excepted was never recovered" — the ruling text has a caveat
+whose content is lost. Treat this schema as **ratified-with-an-unrecovered-
+exception**, not unconditionally settled, wherever relied on.
 
 ```
 NewtypePayload.{ ItemName Visibility Attributes WrappedField }
@@ -213,29 +305,48 @@ EnumerationPayload.{ ItemName Visibility Attributes Generics Variants }
 
 The first field is always the identifying subject (the item's own name).
 
+Note the LOGOS vocabulary includes `StructPayload`, unlike the current
+`WholeEthosItem` Ethos-surface enum (Newtype/Enumeration only, see the Types
+slot section above) — another reason not to read this as Ethos grammar.
+
 ## Summary table — grading of the whole document
 
 | Claim | Grade |
 |-------|-------|
 | Six-slot document model, order, delimiters | implementation-fact |
+| Current codec parses content only at Types slot; other five delegate to empty_braces/empty_square | implementation-fact (whole.rs 608-613) |
 | `.` = application operator; `[]`/`{}` = boundaries only | implementation-fact |
 | "ALL FIELDS ARE POSITIONAL" / no field names | psyche-ruled |
-| Types-slot enum/newtype/struct forms | implementation-fact |
-| One-field brace body lowers to newtype | implementation-fact (+ psyche ruling 2026-07-17 cited in code comment) |
-| Variant forms (unit / payload) | implementation-fact |
-| Impls-slot `X.[A B C]` trait catalog | old-schema evidence; six-slot decode of Impls content is check-worthy/unconfirmed |
-| Input/Output-slot `X.Y` named interface variant | old-schema evidence + confirmed slot roles |
-| Type applications (`Vector.Integer` etc.) | implementation-fact for unary/binary shapes; `Bytes.4` and `Map.(A B)` are old-schema-only, `Map.(A B)` unsupported by current boundary triggers |
-| Declaration vs. reference binding by position | implementation-fact |
+| Item vocabulary: newtype, brace-enum, square-enum only (no struct) | implementation-fact (WholeEthosItem, whole.rs 165-171) |
+| Struct form / one-field brace-body newtype lowering | old-schema / older flat algebra evidence; current six-slot struct support is open |
+| Variant forms (unit / tuple / payload); A.T and A.{T} both reify Tuple | implementation-fact |
+| Impls-slot `X.[A B C]` trait catalog | old-schema evidence only; current codec requires literal `{}` at Impls |
+| Input/Output-slot `X.Y` named interface variant | old-schema evidence only; current codec requires literal `[]` at Input/Output |
+| Type applications (`Vector.Integer` etc.), right-associative, heads require registered priors, default priors only Integer/Vector | implementation-fact; `Bytes.4` and `Map.(A B)` are old-schema-only, `Map.(A B)` unsupported by current boundary triggers |
+| Declaration vs. reference binding by position | implementation-fact, test-proven (whole_six_slot.rs 386-402) |
 | No grammar keywords | psyche-ruled |
-| ScopeOf newtype-over-application shape | implementation-fact (derived from Types-slot rule) |
-| Old schema-rust ScopeOf flattening inconsistency | old-schema evidence, flagged by psyche 2026-07-31 |
+| ScopeOf not a registered prior in current codec | implementation-fact (WholeEthosBuiltinPriors, whole.rs 1023-1032) |
+| ScopeOf newtype-over-application shape | implementation-fact, conditional on future registration (derived from Types-slot rule) |
+| Old schema-rust ScopeOf flattening expansion semantics | old-schema evidence only, not carried forward as ruled design |
+| ScopeOf as new design (Nomos transformer + prior registration) | psyche work order 2026-07-31 |
 | ScopeOf helper-type identity | open |
 | All = whole-tree wildcard | psyche-ruled 2026-07-31, supersedes prior overnight lean |
-| Ratified item schema (Newtype/Struct/Enumeration payload) | psyche-ruled |
+| LOGOS item vocabulary (Newtype/Struct/Enumeration payload) — not Ethos syntax | psyche-ruled with unrecovered exception ("otherwise...") |
 | "protos" as the shared textual style name | psyche-ruled (PsycheVisionReacquisition entry 3) |
 
-## Sources consulted (2026-07-31)
+## Current grammar — compact summary
+
+Everything confirmed current-implementation-fact, in one place:
+
+```
+Document: {imports} [input] [output] {types} {generics} {impls} — only types populated.
+Items:    X.Y newtype; X.Y.Z newtype wrapping application; X.[A B C] / X.{A B C} enum.
+Variants: A unit; A.T payload; A.{T1 T2} tuple.
+References: Y identity; Y.Z application (right-recursive).
+Everything else is old-generation evidence or open.
+```
+
+## Sources consulted (2026-07-31, includes deeper verification pass)
 
 - `/git/github.com/LiGoldragon/core-ethos/src/whole.rs`
 - `/git/github.com/LiGoldragon/core-ethos/src/declaration.rs`
