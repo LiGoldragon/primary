@@ -838,7 +838,13 @@ commissioned: expansion-time evaluation prior art
 the mouth... next to ethos, nomos, and logos. Maybe it's something like
 dattos, or datom — but that conflicts with datum... dattos, D-A-T-O-S...
 Maybe you can look in the Greek and the Latin words, something that has to do
-with information." Explicitly a thought, not a decision.
+with information."
+
+UPDATE, same day: **[psyche-ruled]** "dotos is good. let's slate a rename for
+nota with the new protos engine train landing" — NOTA will be renamed
+**Dotos**, landing with the new protos engine train (not standalone churn).
+Design-log entry: `design/ProtosEngine/dotosRename-2026-07-31.md`; tracking
+bead primary-83s.
 
 Naming research result [agent-inference, exploration only]: top candidate
 **Dotos** — Greek δοτός, "given, granted," the literal Greek cognate of Latin
