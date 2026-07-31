@@ -5,7 +5,7 @@
 ;; /git/github.com/LiGoldragon/<name> directly; it does not depend on the
 ;; repos/ symlinks for membership. Editing tools resolve <name> to that path.
 ;;
-;; Mirrors the repos/skills/manifests/*.nota convention: positional NOTA records,
+;; Mirrors the repos/skills/manifests/*.dotos convention: positional DOTOS records,
 ;; one (Repo ...) per repo, bare atoms for canonical strings, named enum variants.
 ;;
 ;; (Repo <name> <remote> (Family <family>) <kind> <lifecycle> <doctrine-home> [<flag> ...])
@@ -13,7 +13,7 @@
 ;;   <remote> bare atom; github:LiGoldragon/<name>
 ;;   (Family <family>) grouping. signal-* repos are Signal; meta-signal-* repos
 ;;     are MetaSignal; every other repo groups by subsystem or cluster:
-;;     Nota Schema Sema Persona Cloud DomainCriome Criome Mentci Mirror Lojix
+;;     Dotos Schema Sema Persona Cloud DomainCriome Criome Mentci Mirror Lojix
 ;;     RepositoryLedger CriomOS Content Tooling.
 ;;   <kind> named-variant enum; what the repo *is*, orthogonal to lifecycle:
 ;;     Code                       source code.
@@ -35,10 +35,11 @@
 ;; retirement at the review gate and their local /git clones are removed.
 
 [
-  ;; Nota
-  (Repo nota-next github:LiGoldragon/nota-next (Family Nota) Code Active Architecture [])
-  (Repo nota-config github:LiGoldragon/nota-config (Family Nota) Code Active Architecture [])
-  (Repo tree-sitter-nota github:LiGoldragon/tree-sitter-nota (Family Nota) Code Active (OtherDoc README.md) [BuildTimeConsumed])
+  ;; Dotos
+  (Repo dotos github:LiGoldragon/dotos (Family Dotos) Code Active Architecture [])
+  (Repo dotos-config github:LiGoldragon/dotos-config (Family Dotos) Code Active Architecture [])
+  (Repo dotos-text-query github:LiGoldragon/dotos-text-query (Family Dotos) Code Active Architecture [])
+  (Repo tree-sitter-dotos github:LiGoldragon/tree-sitter-dotos (Family Dotos) Code Active (OtherDoc README.md) [BuildTimeConsumed])
 
   ;; Schema
   (Repo schema-next github:LiGoldragon/schema-next (Family Schema) Code Active Architecture [])

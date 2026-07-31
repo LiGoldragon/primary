@@ -2,7 +2,23 @@
   description = "primary workspace generated skill surfaces";
 
   inputs = {
+    dotos = {
+      url = "github:LiGoldragon/dotos/e19699933dabd09842c4423d15a704ce3d48b493";
+      flake = false;
+    };
+    dotos-config = {
+      url = "github:LiGoldragon/dotos-config/4fbf66d82c645d113ed7c3448c05218d1c8d7095";
+      flake = false;
+    };
+    dotos-text-query = {
+      url = "github:LiGoldragon/dotos-text-query/acf6b4b935443602f0bf575adfb22e974c5dde53";
+      flake = false;
+    };
     skills.url = "github:LiGoldragon/skills";
+    tree-sitter-dotos = {
+      url = "github:LiGoldragon/tree-sitter-dotos/a00d147463e0ba620e17e186803217e86487bce2";
+      flake = false;
+    };
     nixpkgs.follows = "skills/nixpkgs";
   };
 
@@ -11,6 +27,7 @@
       self,
       nixpkgs,
       skills,
+      ...
     }:
     let
       systems = [
@@ -35,7 +52,7 @@
                 name = appName;
                 text = ''
                   if [ "$#" -gt 1 ]; then
-                    echo "usage: ${appName} [nota-payload]" >&2
+                    echo "usage: ${appName} [dotos-payload]" >&2
                     exit 2
                   fi
 
@@ -43,7 +60,7 @@
                     exec "${skillApps.${appName}.program}" "$1"
                   fi
 
-                  exec "${skillApps.${appName}.program}" "(Generate (${skills} $PWD manifests/active-outputs.nota ${mode}))"
+                  exec "${skillApps.${appName}.program}" "Generate.{${skills} $PWD manifests/active-outputs.dotos ${mode}}"
                 '';
               };
             in
@@ -70,7 +87,7 @@
           skillApps = skills.apps.${system};
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
-            "${skillApps."check-skills".program}" "(Generate (${skills} ${self} manifests/active-outputs.nota Check))"
+            "${skillApps."check-skills".program}" "Generate.{${skills} ${self} manifests/active-outputs.dotos Check}"
             touch "$out"
           '';
         in

@@ -19,7 +19,7 @@ is one work session named for its intent (`newLanesDesign`,
 and report directory, and drains and retires at session close. The lane
 mechanism is canonical in the generated `session-lanes` skill packet. Active
 code lives in LiGoldragon repository checkouts inventoried by
-`protocols/repos-manifest.nota`. Workspace vision and the durable intent framing
+`protocols/repos-manifest.dotos`. Workspace vision and the durable intent framing
 live in this file (§"Workspace vision and intent"); the raw psyche-statement
 log lives in the deployed Spirit store. Cross-workspace agent discipline
 lives in the `lore` repository's `AGENTS.md`.
@@ -193,7 +193,7 @@ caller threading it).
 
 ### Wire and identity discipline
 
-- **No NOTA between components.** Daemons exchange binary protocol data; the CLI
+- **No DOTOS between components.** Daemons exchange binary protocol data; the CLI
   is the translation/debugging surface (it can wrap a normal call in a debugging
   request that says where logs are displayed or stored). `SEMA` is the compact
   data format defined by schema.
@@ -206,18 +206,18 @@ caller threading it).
   truth for component data, wire, storage, and upgrade behavior, and the textual
   representation of the psyche's idea language — not merely a codegen input but
   the text form where the idea language is expressed and authored. The
-  schema-derived stack uses separate repos for `nota-next`, `schema-next`, and
+  schema-derived stack uses separate repos for `dotos`, `schema-next`, and
   `schema-rust-next` rather than one combined repo.
-- **Canonical NOTA machinery only.** Components do not implement custom NOTA
+- **Canonical DOTOS machinery only.** Components do not implement custom DOTOS
   parsers, encoders, decoders, or hand-decoded command shapes when canonical
-  NOTA schema, generated codec, or contract machinery can express the shape.
-  NOTA itself is the allowed text data format for authored and projection
+  DOTOS schema, generated codec, or contract machinery can express the shape.
+  DOTOS itself is the allowed text data format for authored and projection
   surfaces; the bad pattern is leaking application-specific parsing or malformed
-  command structure through NOTA instead of fixing the schema or contract.
+  command structure through DOTOS instead of fixing the schema or contract.
 - **Fully-qualified symbol path is universal identity.** The
   fully-qualified-symbol-path is the workspace's universal machine-readable
   symbol identity, surfaced through a text form. Schema-emitted Rust types and
-  NOTA renderings are two projections of one symbol-path identity space; designs
+  DOTOS renderings are two projections of one symbol-path identity space; designs
   use this canonical mechanism rather than inventing per-design alternatives.
 - **Shortest reliable identifier is first-class.** Opaque content-addressed
   hashes (blake3/sha) cost roughly one token per character in agent context,
@@ -293,8 +293,8 @@ This closes the loop between specification, transport, and state.
 ### "signal" the noun is ambiguous
 
 When the psyche says "signal" (the bare noun), it may mean the rkyv-encoded
-binary signal traveling on a socket or the NOTA-encoded text signal that agents
-read and write; disambiguate when context does not pin the form. The term "nota
+binary signal traveling on a socket or the DOTOS-encoded text signal that agents
+read and write; disambiguate when context does not pin the form. The term "dotos
 signal" for the text form is *proposed but not yet hardened* into workspace
 vocabulary.
 
@@ -328,7 +328,7 @@ proposal/dev/next (new version being introduced).
 ├── CLAUDE.md              Claude-flavored shim → AGENTS.md
 ├── ARCHITECTURE.md        this file
 ├── protocols/
-│   ├── repos-manifest.nota      authoritative repos inventory (NOTA)
+│   ├── repos-manifest.dotos     authoritative repos inventory (DOTOS)
 │   ├── active-repositories.md   active-repo attention map + role narrative
 │   └── retired-lanes.md         append-only retired-lane index
 ├── .agents/skills/        generated workspace skill packets
@@ -339,7 +339,7 @@ proposal/dev/next (new version being introduced).
 ├── reports/<lane>/        session-lane report directories (drain at close)
 ├── repos/                 residual local checkouts (index retired; see §3)
 ├── orchestrate/           coordination protocol, daemon CLI, per-lane lock projections
-├── RECENT-REPOSITORIES.md superseded stub → protocols/repos-manifest.nota
+├── RECENT-REPOSITORIES.md superseded stub → protocols/repos-manifest.dotos
 └── primary.code-workspace VS Code workspace marker
 ```
 
@@ -394,8 +394,8 @@ from this workspace.
 
 ## 3 · Repos surface
 
-`protocols/repos-manifest.nota` is the authoritative inventory of LiGoldragon
-repos: a NOTA manifest recording, per repo, its name, remote, family, status
+`protocols/repos-manifest.dotos` is the authoritative inventory of LiGoldragon
+repos: a DOTOS manifest recording, per repo, its name, remote, family, status
 (`Active` / `Content` / `Deprecated`), doctrine-home, and fact-flags (`IsFork` /
 `IsPrivate` / `BuildTimeConsumed` / `DataRepo`). It is the single source of truth
 for what repos exist and their status, and it supersedes the inventory role of
@@ -406,7 +406,7 @@ per-repo role narrative). A coverage or doctrine run reads the manifest, filters
 membership no longer depends on which `repos/` symlinks happen to exist.
 
 The `repos/` symlink index has been retired. Agents reference canonical
-checkouts identified by `protocols/repos-manifest.nota` directly (for example
+checkouts identified by `protocols/repos-manifest.dotos` directly (for example
 the `lore` repository's `AGENTS.md`); membership and status come from the
 manifest. `repos/` now holds only residual local working checkouts and a few
 convenience symlinks pending migration to their canonical checkout homes; it is
@@ -424,7 +424,7 @@ This workspace owns:
   §"Workspace vision and intent"), anchored to the Spirit store.
 - Discipline and lane discipline (`AGENTS.md`, `CLAUDE.md`).
 - The coordination protocol (`orchestrate/AGENTS.md`), the authoritative repos
-  inventory (`protocols/repos-manifest.nota`), and the active-repo attention map
+  inventory (`protocols/repos-manifest.dotos`), and the active-repo attention map
   (`protocols/active-repositories.md`).
 - Generated workspace skill packets (`.agents/skills/<name>/SKILL.md` and
   harness-specific peers).

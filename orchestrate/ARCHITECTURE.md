@@ -7,18 +7,18 @@
 `orchestrate` answers *who has claimed which scope right now* and *who is doing which tracked work*. The production implementation is the `orchestrate` component:
 
 - `orchestrate-daemon` owns durable coordination state in `orchestrate/orchestrate.redb`.
-- `orchestrate` is the ordinary thin CLI. It takes exactly one NOTA request and prints exactly one NOTA reply.
+- `orchestrate` is the ordinary thin CLI. It takes exactly one DOTOS request and prints exactly one DOTOS reply.
 - `meta-orchestrate` is the meta-policy thin CLI for owner-level operations.
 - `signal-orchestrate` is the ordinary working contract.
 - `meta-signal-orchestrate` is the meta-policy contract.
 - `orchestrate/<lane>.lock` files are downstream visibility projections only.
 
-New coordination work uses direct NOTA through the component CLI.
+New coordination work uses direct DOTOS through the component CLI.
 
 ```mermaid
 flowchart TB
-    cli["orchestrate CLI\none NOTA request"] --> daemon["orchestrate-daemon"]
-    metacli["meta-orchestrate CLI\none NOTA request"] --> daemon
+    cli["orchestrate CLI\none DOTOS request"] --> daemon["orchestrate-daemon"]
+    metacli["meta-orchestrate CLI\none DOTOS request"] --> daemon
     ordinary["signal-orchestrate\nordinary contract"] --> daemon
     meta["meta-signal-orchestrate\nmeta contract"] --> daemon
     daemon --> store["orchestrate.redb\ndaemon-owned state"]
@@ -40,7 +40,7 @@ orchestrate "(Query (20 []))"
 
 Scope kinds:
 
-| Kind | NOTA form | Overlap rule |
+| Kind | DOTOS form | Overlap rule |
 |---|---|---|
 | Path scope | `(Path /absolute/path)` | nested or equal paths overlap; siblings do not |
 | Task scope | `(Task primary-68cb)` | exact token equality |
@@ -70,15 +70,15 @@ The daemon-owned store is canonical. Lock files are regenerated projections for 
 4. Durable state lives in the daemon-owned SEMA/redb store.
 5. Meta authority is separated onto `meta-signal-orchestrate` and the meta socket.
 
-The CLI is a text edge: it accepts NOTA for humans and sends the typed binary frame to the daemon. The daemon does not become an argv parser and does not gain a compatibility command grammar.
+The CLI is a text edge: it accepts DOTOS for humans and sends the typed binary frame to the daemon. The daemon does not become an argv parser and does not gain a compatibility command grammar.
 
 ## 4 · Current code map
 
 ```text
 github:LiGoldragon/orchestrate/
 ├── src/main.rs                 orchestrate-daemon
-├── src/bin/orchestrate.rs      ordinary one-NOTA CLI
-├── src/bin/meta_orchestrate.rs meta one-NOTA CLI
+├── src/bin/orchestrate.rs      ordinary one-DOTOS CLI
+├── src/bin/meta_orchestrate.rs meta one-DOTOS CLI
 ├── src/claim.rs                claim/release/handoff logic
 ├── src/lock_projection.rs      lock-file projection from daemon state
 ├── src/tables.rs               SEMA/redb table access

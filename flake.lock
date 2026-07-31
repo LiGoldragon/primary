@@ -15,6 +15,74 @@
         "type": "github"
       }
     },
+    "dotos": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785528684,
+        "narHash": "sha256-YGcJvgDJPuxw0+mWRKUcsc+EKKu9rDH4Tj4v2FNYvdU=",
+        "owner": "LiGoldragon",
+        "repo": "dotos",
+        "rev": "e19699933dabd09842c4423d15a704ce3d48b493",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "dotos",
+        "rev": "e19699933dabd09842c4423d15a704ce3d48b493",
+        "type": "github"
+      }
+    },
+    "dotos-config": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785523989,
+        "narHash": "sha256-pi3ecBbklYHaPrYqRaFWqNdZT59kdK1vNZeoKxmu5L0=",
+        "owner": "LiGoldragon",
+        "repo": "dotos-config",
+        "rev": "4fbf66d82c645d113ed7c3448c05218d1c8d7095",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "dotos-config",
+        "rev": "4fbf66d82c645d113ed7c3448c05218d1c8d7095",
+        "type": "github"
+      }
+    },
+    "dotos-source": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785523644,
+        "narHash": "sha256-JhSAtetUNDe7PqJuXDeEm0sXSqS9sNNrVdTy1sdOw9s=",
+        "owner": "LiGoldragon",
+        "repo": "dotos",
+        "rev": "1facca44fbcb37633f71fcf6f73bd693fbe56a5e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "dotos",
+        "rev": "1facca44fbcb37633f71fcf6f73bd693fbe56a5e",
+        "type": "github"
+      }
+    },
+    "dotos-text-query": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785524168,
+        "narHash": "sha256-lXeTsBrneiSaNAlKhbOopJTIXB+U7S9St3sowUMpa4E=",
+        "owner": "LiGoldragon",
+        "repo": "dotos-text-query",
+        "rev": "acf6b4b935443602f0bf575adfb22e974c5dde53",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "dotos-text-query",
+        "rev": "acf6b4b935443602f0bf575adfb22e974c5dde53",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -107,30 +175,17 @@
         "type": "github"
       }
     },
-    "nota-source": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1783224919,
-        "narHash": "sha256-0sYkfB1gE/RmWJX5ltxQmTkrFSx+2AhpWCPGCgacm/g=",
-        "owner": "LiGoldragon",
-        "repo": "nota",
-        "rev": "ce7c564de0a0518eaa1938d55dccc460a67cadb4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "LiGoldragon",
-        "repo": "nota",
-        "rev": "ce7c564de0a0518eaa1938d55dccc460a67cadb4",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
+        "dotos": "dotos",
+        "dotos-config": "dotos-config",
+        "dotos-text-query": "dotos-text-query",
         "nixpkgs": [
           "skills",
           "nixpkgs"
         ],
-        "skills": "skills"
+        "skills": "skills",
+        "tree-sitter-dotos": "tree-sitter-dotos"
       }
     },
     "rust-analyzer-src": {
@@ -226,10 +281,10 @@
     },
     "skills": {
       "inputs": {
+        "dotos-source": "dotos-source",
         "flake-utils": "flake-utils",
         "kameo-source": "kameo-source",
         "nixpkgs": "nixpkgs",
-        "nota-source": "nota-source",
         "rust-build": "rust-build",
         "schema-rust-source": "schema-rust-source",
         "schema-source": "schema-source",
@@ -237,11 +292,11 @@
         "triad-runtime-source": "triad-runtime-source"
       },
       "locked": {
-        "lastModified": 1785313218,
-        "narHash": "sha256-sSMXHuWx0kcTmxaRBx3Sg8CZPv1Fj/g/XTLWmV3nXSQ=",
+        "lastModified": 1785529232,
+        "narHash": "sha256-ptyVmRaAslg3aTg3HwwZYDghyA4iJ9n06r18UPIGD1c=",
         "owner": "LiGoldragon",
         "repo": "skills",
-        "rev": "9835adeb34cc66bd9321e4228c6a0f5dd3a4baec",
+        "rev": "ed866270d6a8ccd5b79ec81e683de23b57fc6112",
         "type": "github"
       },
       "original": {
@@ -277,6 +332,23 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tree-sitter-dotos": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785527227,
+        "narHash": "sha256-pYfrpU2jJxHy/rISGWGkOOR1Jsv+/UARgekejckFkOg=",
+        "owner": "LiGoldragon",
+        "repo": "tree-sitter-dotos",
+        "rev": "a00d147463e0ba620e17e186803217e86487bce2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "tree-sitter-dotos",
+        "rev": "a00d147463e0ba620e17e186803217e86487bce2",
         "type": "github"
       }
     },

@@ -81,16 +81,20 @@
 			"path": "/git/github.com/LiGoldragon/nexus-cli"
 		},
 		{
-			"name": "nota",
-			"path": "/git/github.com/LiGoldragon/nota"
+			"name": "dotos",
+			"path": "/git/github.com/LiGoldragon/dotos"
 		},
 		{
-			"name": "nota-codec",
-			"path": "/git/github.com/LiGoldragon/nota-codec"
+			"name": "dotos-config",
+			"path": "/git/github.com/LiGoldragon/dotos-config"
 		},
 		{
-			"name": "nota-derive",
-			"path": "/git/github.com/LiGoldragon/nota-derive"
+			"name": "dotos-text-query",
+			"path": "/git/github.com/LiGoldragon/dotos-text-query"
+		},
+		{
+			"name": "tree-sitter-dotos",
+			"path": "/git/github.com/LiGoldragon/tree-sitter-dotos"
 		},
 		{
 			"name": "criome",

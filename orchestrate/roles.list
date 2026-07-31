@@ -7,9 +7,9 @@
 #   Parallel-main lanes carry full main-role authority (structural decisions,
 #   design reports, skill edits) — they are a second seat at the discipline,
 #   not a subordinate lane.
-# - A specialized lane (e.g. cluster-operator, nota-designer) is a structural
+# - A specialized lane (e.g. cluster-operator, dotos-designer) is a structural
 #   role with a token-vector identity in the typed registry (e.g. [Cluster
-#   Operator], [Nota Designer]) and a specialized scope within its main role's
+#   Operator], [Dotos Designer]) and a specialized scope within its main role's
 #   discipline. Carries Structural authority. Appears bare in the bash format
 #   for now; the typed persona-orchestrate registry handles the role-vector
 #   shape natively. Ordinal prefixes (second-, third-) copy the whole following
@@ -21,7 +21,7 @@
 # capacity in a role is added as second-<role> / third-<role>, etc.
 #
 # This file is a transitional bash-readable format. The destination is
-# orchestrate/roles.nota — a typed Nota record read by a Rust-rewritten
+# orchestrate/roles.dotos — a typed Dotos record read by a Rust-rewritten
 # orchestrate component CLI.
 
 operator
@@ -35,7 +35,7 @@ maintainer                       parallel-of:system-maintainer
 designer
 second-designer                   parallel-of:designer
 third-designer                    parallel-of:designer
-nota-designer
+dotos-designer
 system-designer
 cloud-designer
 schema-designer

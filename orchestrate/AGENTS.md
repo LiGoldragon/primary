@@ -2,8 +2,8 @@
 
 The orchestration protocol coordinates autonomous agents sharing the same
 workspace. The live implementation is the `orchestrate` component CLI: it takes
-one NOTA request, submits typed `signal-orchestrate` frames to
-`orchestrate-daemon` over Unix sockets, and prints one NOTA reply. Lock files
+one DOTOS request, submits typed `signal-orchestrate` frames to
+`orchestrate-daemon` over Unix sockets, and prints one DOTOS reply. Lock files
 are daemon projections for local visibility only.
 
 The daemon-owned store is `orchestrate/orchestrate.redb`. Lock files are
@@ -11,7 +11,7 @@ visibility projections, not the source of truth. BEADS is shared coordination
 state while it exists, not a lockable scope.
 
 Agents should treat the current production surface as the daemon-backed
-`orchestrate` CLI and its NOTA records, not as an argv compatibility helper or
+`orchestrate` CLI and its DOTOS records, not as an argv compatibility helper or
 as a shell helper that owns files directly.
 
 ## Disciplines and lanes
@@ -34,7 +34,7 @@ signing key). A discipline is not a directory and not a session. There are
 A **lane** is a unique work-*session* identity named for that session's
 intent (e.g. `newLanesDesign`, `schemaWorkAudit`).
 A lane carries its discipline as metadata; in the orchestrate registry the
-lane's role is a NOTA vector whose **last token is the base discipline**,
+lane's role is a DOTOS vector whose **last token is the base discipline**,
 preceding tokens are specializations: `[NewLanesDesign Designer]`,
 `[SchemaWorkAudit Operator]`. The lane is ephemeral and disposable; the
 discipline (and the persona behind it) persists.
@@ -122,7 +122,7 @@ its own session lane and edits only its own lock file.
   (e.g. `orchestrate/newLanesDesign.lock`), where `<lane>` is the
   session-intent name. The daemon projects these from claim state.
 - BEADS database: `.beads/` (legacy transitional work-item store).
-- CLI: `orchestrate` with one NOTA request argument.
+- CLI: `orchestrate` with one DOTOS request argument.
 
 Agents do not edit lock files as the normal path. They use `orchestrate`; the
 daemon mutates typed claim state and projects each lane's lock file. The lock
@@ -182,7 +182,7 @@ Recording psyche intent goes through the deployed `spirit` CLI per
 ### Daemon CLI
 
 The current production surface for ordinary claim/release/observe work is the
-`orchestrate` component CLI speaking NOTA directly to `orchestrate-daemon`:
+`orchestrate` component CLI speaking DOTOS directly to `orchestrate-daemon`:
 
 ```sh
 orchestrate "(Claim (newLanesDesign [(Path /absolute/path/to/workspace/AGENTS.md)] [refresh coordination docs]))"
@@ -192,15 +192,15 @@ orchestrate "(Observe Worktrees)"
 orchestrate "(Query (20 []))"
 ```
 
-The ordinary and meta CLIs each take exactly one NOTA argument and print exactly
-one NOTA reply. Meta-policy requests such as `Register`, `Retire`,
+The ordinary and meta CLIs each take exactly one DOTOS argument and print exactly
+one DOTOS reply. Meta-policy requests such as `Register`, `Retire`,
 `RegisterWorktree`, and `RefreshWorktreeIndex` use `meta-orchestrate`.
 `orchestrate-daemon` is the only writer of durable claim state. On first
 startup, the daemon imports existing `orchestrate/*.lock` files if
 `orchestrate.redb` has no claims; after that, lock files are downstream
 projections.
 
-Use the component CLI and its typed NOTA records for claim, release, observe,
+Use the component CLI and its typed DOTOS records for claim, release, observe,
 and query work.
 
 ### Verbs an ordinary agent needs
@@ -209,7 +209,7 @@ The shapes below are the ones the deployed `orchestrate` 0.16.0 CLIs actually
 accept, verified by running each against the live daemon.
 
 Free-text fields — lane details, claim reasons, worktree purposes — follow the
-canonical NOTA atom rule: **bracket multi-word text, write a single word as a
+canonical DOTOS atom rule: **bracket multi-word text, write a single word as a
 bare atom**. `[why this lane exists]` and `probe` both parse; `[probe]` does
 not, and fails with `non-canonical string delimiter for "probe": use probe`.
 
@@ -283,7 +283,7 @@ A **scope** is one of two kinds:
 
 ```
 /absolute/path/to/workspace/orchestrate/AGENTS.md # sync coordination docs
-[primary-f99] # chroma nota-codec migration
+[primary-f99] # chroma dotos migration
 ```
 
 The two kinds are independent: a path lock and a task lock never
@@ -320,7 +320,7 @@ is either `(Path /absolute/path)` or `(Task primary-f99)`. The claim names
 *who is acting* (the lane); the scope names *what* (paths / tasks) — the scope
 mechanism is unchanged.
 
-Exit status only tells you whether the request *parsed*. Malformed NOTA exits
+Exit status only tells you whether the request *parsed*. Malformed DOTOS exits
 1; a request the daemon understood and **refused** still exits 0. So read the
 reply record as well as the status: `ClaimAcceptance`, `ReleaseAcknowledgment`,
 and `LaneRegistered` are success, while `ClaimRejection` and `PartialApplied`
@@ -329,7 +329,7 @@ are refusals that arrive with exit 0.
 Mix freely:
 
 ```sh
-orchestrate "(Claim (schemaWorkAudit [(Task primary-f99) (Path /absolute/path/to/chroma)] [chroma nota-codec migration]))"
+orchestrate "(Claim (schemaWorkAudit [(Task primary-f99) (Path /absolute/path/to/chroma)] [chroma dotos migration]))"
 ```
 
 The daemon performs the required work in one call:
@@ -339,10 +339,10 @@ The daemon performs the required work in one call:
    exact match for task locks).
 3. Commits accepted claim state to `orchestrate.redb`.
 4. Regenerates `orchestrate/<lane>.lock` projections from daemon state.
-5. Returns `(ClaimAcceptance ...)` or `(ClaimRejection ...)` as NOTA.
+5. Returns `(ClaimAcceptance ...)` or `(ClaimRejection ...)` as DOTOS.
 
 Use absolute paths where possible. Claim a repository by listing that
-checkout's root path. Use `protocols/repos-manifest.nota` for repository
+checkout's root path. Use `protocols/repos-manifest.dotos` for repository
 identity; do not bake one machine's checkout root into guidance.
 
 ### When to use a task lock
@@ -396,7 +396,7 @@ orchestrate "(Observe Worktrees)"
 
 `Observe Lanes` returns `LanesObserved` — the snapshot of active registered
 session lanes, each a `LaneProjection`.
-`Observe Roles` returns the active claim snapshot as NOTA. Open BEADS tasks
+`Observe Roles` returns the active claim snapshot as DOTOS. Open BEADS tasks
 remain in BEADS; the orchestrate component does not own the BEADS database.
 
 The ordinary way to get a feature worktree is `RequestWorktree`, which
@@ -424,7 +424,7 @@ with `Observe Worktrees`; repository hygiene that is not yet daemon-modeled is
 handled by the relevant repo's normal `jj` commands and reports.
 
 
-Reads `protocols/repos-manifest.nota`, selects the records whose `lifecycle`
+Reads `protocols/repos-manifest.dotos`, selects the records whose `lifecycle`
 is `Active`, and iterates those repositories directly; it does not crawl the
 filesystem, and it does not scope to the curated `active-repositories.md`
 attention map (a subset that would reintroduce partial coverage). For each
@@ -487,7 +487,7 @@ bd close <id> --reason "<what changed>"
 As of 2026-05-19 (per psyche 2026-05-19), any agent can pick up any bead based
 on topic affinity rather than a prescribed lane.
 
-When filing a bead: use **topic labels** (`nota`, `persona`, `criome`,
+When filing a bead: use **topic labels** (`dotos`, `persona`, `criome`,
 `horizon`, etc.) so agents working in that topic find the bead via `bd ready`
 or `bd list --label <topic>`.
 

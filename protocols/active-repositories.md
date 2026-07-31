@@ -1,7 +1,7 @@
 # Active Repositories
 
 The authoritative inventory of LiGoldragon repos — what exists and each repo's
-status, family, doctrine-home, and fact-flags — is `protocols/repos-manifest.nota`.
+status, family, doctrine-home, and fact-flags — is `protocols/repos-manifest.dotos`.
 That manifest is the source of truth for repo membership and active/deprecate
 status; this file is not an inventory and may lag it.
 
@@ -17,7 +17,7 @@ archive.
 
 ## Current Core Stack
 
-These repos are the active Persona / Sema / Signal / Nexus / NOTA
+These repos are the active Persona / Sema / Signal / Nexus / DOTOS
 stack.
 
 | Repository | Path | Current role |
@@ -27,11 +27,11 @@ stack.
 | `persona` | `/git/github.com/LiGoldragon/persona` | Persona meta-repo; wires the stack through Nix and apex architecture. |
 | `mind` | `/git/github.com/LiGoldragon/mind` | Central Persona state component; replaces lock-file orchestration over time. |
 | `mind-judge` | `/git/github.com/LiGoldragon/mind-judge` | Mind judge text/model edge adapter. Consumes `signal-mind-judge`, reads prompt/config data from `mind-judge-config`, and uses `judge` for provider mechanics. Socket-activated/semi-persistent target shape; not a core daemon. |
-| `mind-judge-config` | `/git/github.com/LiGoldragon/mind-judge-config` | Public prompt/config data for Mind judge adapters. Markdown prompt prose by concern, with NOTA manifests; no secrets or eval outputs. |
-| `mind-tests` | `/git/github.com/LiGoldragon/mind-tests` | Public Mind fixture, evaluation, and test tooling. Owns `.notal` stream artifact convention and heavier eval fixtures/results outside `mind`. |
+| `mind-judge-config` | `/git/github.com/LiGoldragon/mind-judge-config` | Public prompt/config data for Mind judge adapters. Markdown prompt prose by concern, with DOTOS manifests; no secrets or eval outputs. |
+| `mind-tests` | `/git/github.com/LiGoldragon/mind-tests` | Public Mind fixture, evaluation, and test tooling. Owns `.dotos` stream artifact convention and heavier eval fixtures/results outside `mind`. |
 | `router` | `/git/github.com/LiGoldragon/router` | Message routing and delivery coordination. Binds one socket: `router.sock` (0600, internal traffic only). External engine-owner ingress arrives via `message-daemon`. |
 | `message` | `/git/github.com/LiGoldragon/message` | Engine message ingress: the `message` CLI **and** the `message-daemon` supervised first-stack daemon. Daemon binds `message.sock` (mode 0660, engine-owner group) and forwards typed Signal frames to `router` with SO_PEERCRED-minted origin tags. |
-| `introspect` | `/git/github.com/LiGoldragon/introspect` | Supervised prototype inspection-plane component. Talks to live component daemons over Signal, fans in typed observation records, and projects NOTA only at the human/agent edge. It is not in the delivery path and does not directly open any peer component's redb. |
+| `introspect` | `/git/github.com/LiGoldragon/introspect` | Supervised prototype inspection-plane component. Talks to live component daemons over Signal, fans in typed observation records, and projects DOTOS only at the human/agent edge. It is not in the delivery path and does not directly open any peer component's redb. |
 | `signal-introspect` | `/git/github.com/LiGoldragon/signal-introspect` | Central introspection envelope contract: introspection query/reply selectors, correlation, projection wrappers, and prototype witness records. It asks and wraps; component-specific observations stay in the owning component contracts. |
 | `meta-signal-introspect` | `/git/github.com/LiGoldragon/meta-signal-introspect` | Introspect meta policy contract: `Configure` over the typed `IntrospectDaemonConfiguration` (peer-daemon set + `introspect.sema` location). |
 | `system` | `/git/github.com/LiGoldragon/system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-cell-owned for the V1 harness wave. |
@@ -39,14 +39,14 @@ stack.
 | `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Active terminal primitive for V1 harness work and Claude/Codex tests: daemon-owned PTY/transcript cell, raw attach path, control/data sockets, and lifecycle CLI. Use it directly; it is not currently subordinate to `terminal`. |
 | `sema` | `/git/github.com/LiGoldragon/sema` | **Today's** typed storage kernel (redb + rkyv + schema guard). Not a daemon, not shared storage, and not the full database engine. Distinct from the **eventual** `Sema` — the universal medium for meaning (self-hosting computational substrate, fully-typed human-language representation, universal interlingua). Per `ARCHITECTURE.md` §"Today and eventually". |
 | `signal-sema` | `/git/github.com/LiGoldragon/signal-sema` | Sema operation vocabulary: `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, and `Validate`. Public component contracts lower into this layer; they do not expose these words as universal request roots. |
-| `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema` and `signal-sema`: registered record families, Sema operation execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not NOTA, and not Persona-specific. First real consumer is `mind`; Criome follows. |
-| `schema-next` | `/git/github.com/LiGoldragon/schema-next` | Replacement schema engine for the schema-derived stack. Schema is a specialized NOTA dialect (a `.schema` file IS full NOTA), not a separate language. Authored `.schema` deserializes via the structural-macro-node codec into schema-in-Rust — the typed, rkyv-serializable canonical round-trip image. There is NO separate assemble/`Asschema` step (Asschema removed per record `6cfr`); the resolution it once did (inline-declaration hoisting, visibility, ordering, symbol paths) now lives as methods on the schema-in-Rust source types. Operator-owned `main`; designers branch from that baseline in `~/wt`. |
+| `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema` and `signal-sema`: registered record families, Sema operation execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not DOTOS, and not Persona-specific. First real consumer is `mind`; Criome follows. |
+| `schema-next` | `/git/github.com/LiGoldragon/schema-next` | Replacement schema engine for the schema-derived stack. Schema is a specialized DOTOS dialect (a `.schema` file IS full DOTOS), not a separate language. Authored `.schema` deserializes via the structural-macro-node codec into schema-in-Rust — the typed, rkyv-serializable canonical round-trip image. There is NO separate assemble/`Asschema` step (Asschema removed per record `6cfr`); the resolution it once did (inline-declaration hoisting, visibility, ordering, symbol paths) now lives as methods on the schema-in-Rust source types. Operator-owned `main`; designers branch from that baseline in `~/wt`. |
 | `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | Replacement Rust emission layer. LOWERS schema-in-Rust into Rust interface code using Rust's real macro infrastructure — `quote!` / `proc-macro2` `TokenStream` / `ToTokens` — NOT a hand-rolled string code generator (records `4np2`, `e6v5`). Each schema type/subobject renders itself as tokens via `LowerToRust`; the old 52-method `RustWriter` string emitter is mid-migration out and the remaining `format!`/string surface is transitional. Whether tokens land in checked-in `src/schema/*.rs` (build-time `quote!` + `prettyplease`) or expand inline is a separate visibility choice; generation is token-based either way. Operator-owned `main`. |
 | `triad-runtime` | `/git/github.com/LiGoldragon/triad-runtime` | Shared runtime support for schema-derived Signal/Nexus/SEMA daemons. Current live surface is generic trace logging, rkyv frame transport, and Unix trace socket listening; component crates keep generated nouns and actor hooks. |
 | `judge` | `/git/github.com/LiGoldragon/judge` | Shared domain-neutral judge adapter mechanics: provider/proxy calls, secret-source references, diagnostics, retry and format-failure handling. |
-| `spirit` | `/git/github.com/LiGoldragon/spirit` | Active production Spirit implementation and current schema-derived stack exemplar. The deployed `spirit` CLI talks to `spirit-daemon` over the rkyv Unix-socket boundary; NOTA stays at the CLI text edge. |
-| `signal-spirit` | `/git/github.com/LiGoldragon/signal-spirit` | Active ordinary Spirit wire contract, renamed from `signal-persona-spirit`. Default builds are binary/rkyv-only; `nota-text` enables CLI/debug/audit projection. |
-| `meta-signal-spirit` | `/git/github.com/LiGoldragon/meta-signal-spirit` | Active Spirit meta policy wire contract, renamed from `owner-signal-persona-spirit`. It carries privileged lifecycle/configuration operations; the default graph is binary/rkyv-only and `nota-text` is an explicit edge projection feature. |
+| `spirit` | `/git/github.com/LiGoldragon/spirit` | Active production Spirit implementation and current schema-derived stack exemplar. The deployed `spirit` CLI talks to `spirit-daemon` over the rkyv Unix-socket boundary; DOTOS stays at the CLI text edge. |
+| `signal-spirit` | `/git/github.com/LiGoldragon/signal-spirit` | Active ordinary Spirit wire contract, renamed from `signal-persona-spirit`. Default builds are binary/rkyv-only; `dotos-text` enables CLI/debug/audit projection. |
+| `meta-signal-spirit` | `/git/github.com/LiGoldragon/meta-signal-spirit` | Active Spirit meta policy wire contract, renamed from `owner-signal-persona-spirit`. It carries privileged lifecycle/configuration operations; the default graph is binary/rkyv-only and `dotos-text` is an explicit edge projection feature. |
 | `version-projection` | `/git/github.com/LiGoldragon/version-projection` | Shared projection and compatibility-policy library for adjacent component versions. Pure library; no daemon, no socket, no component-specific migration logic. |
 | `signal-version-handover` | `/git/github.com/LiGoldragon/signal-version-handover` | Private daemon-to-daemon signal contract for version handover marker, readiness, completion, mirror, divergence, and recovery messages. |
 | `meta-signal-version-handover` | `/git/github.com/LiGoldragon/meta-signal-version-handover` | Meta administrative signal contract for version handover authority: force selector flip, rollback, and quarantine. |
@@ -70,7 +70,7 @@ stack.
 | `signal-terminal` | `/git/github.com/LiGoldragon/signal-terminal` | Terminal transport control contract: prompt patterns, input gates, write injection acknowledgements, and terminal-worker lifecycle records. |
 | `meta-signal-terminal` | `/git/github.com/LiGoldragon/meta-signal-terminal` | Terminal meta policy contract for `CreateSession` and `RetireSession`; ordinary terminal traffic stays in `signal-terminal`. |
 | `signal-mind` | `/git/github.com/LiGoldragon/signal-mind` | Mind/orchestration contract vocabulary. |
-| `signal-mind-judge` | `/git/github.com/LiGoldragon/signal-mind-judge` | Mind-specific judge request/reply contract between `mind` and `mind-judge`; rkyv wire with NOTA projection only for clients, tests, and tools. |
+| `signal-mind-judge` | `/git/github.com/LiGoldragon/signal-mind-judge` | Mind-specific judge request/reply contract between `mind` and `mind-judge`; rkyv wire with DOTOS projection only for clients, tests, and tools. |
 | `meta-signal-mind` | `/git/github.com/LiGoldragon/meta-signal-mind` | Mind meta policy contract. |
 | `orchestrate` | `/git/github.com/LiGoldragon/orchestrate` | Orchestration component runtime. |
 | `signal-orchestrate` | `/git/github.com/LiGoldragon/signal-orchestrate` | Ordinary orchestration contract vocabulary. |
@@ -83,10 +83,12 @@ stack.
 | `repository-ledger` | `/git/github.com/LiGoldragon/repository-ledger` | Triad runtime component for recording pushed repository changes from the local Gitolite server into a sema-engine database. |
 | `signal-repository-ledger` | `/git/github.com/LiGoldragon/signal-repository-ledger` | Ordinary repository-ledger contract: receive-hook event assertions and repository/event read queries. |
 | `meta-signal-repository-ledger` | `/git/github.com/LiGoldragon/meta-signal-repository-ledger` | Meta-signal repository-ledger contract: repository registration, spool policy, and future mirror policy mutation. |
-| `nexus` | `/git/github.com/LiGoldragon/nexus` | Typed semantic text vocabulary written in NOTA syntax. |
-| `nexus-cli` | `/git/github.com/LiGoldragon/nexus-cli` | CLI surface for Nexus-shaped NOTA records. |
-| `nota-next` | `/git/github.com/LiGoldragon/nota-next` | Replacement NOTA implementation for the schema-derived stack. Owns raw structural block parsing, source spans, `qualifies_as_*` methods, and the **structural macro node** codec — `#[derive(StructuralMacroNode)]`, decoded by SHAPE (type-directed, structural match in declaration order, first match wins, recursive) with bidirectional encode back to a matching NOTA block (records `xai7`, `z544`). The derive now covers enums AND structs (positional typed body), supports named-field enum variants, and carries the full seven-shape vocabulary including the `HeadedAtom` and `PascalHeadBody` leaf shapes (structural-forms epic, branch `next/structural-forms`; see `skills/structural-forms.md`). Schema semantics still live in `schema-next`. Operator-owned `main`. |
-| `nota-config` | `/git/github.com/LiGoldragon/nota-config` | Strict one-argument typed configuration input over NOTA, `.nota`, or `.rkyv`. |
+| `nexus` | `/git/github.com/LiGoldragon/nexus` | Typed semantic text vocabulary written in DOTOS syntax. |
+| `nexus-cli` | `/git/github.com/LiGoldragon/nexus-cli` | CLI surface for Nexus-shaped DOTOS records. |
+| `dotos` | `/git/github.com/LiGoldragon/dotos` | Canonical DOTOS implementation for the schema-derived stack. Owns raw structural block parsing, source spans, `qualifies_as_*` methods, and the structural value codec. Schema semantics still live in `schema-next`. |
+| `dotos-config` | `/git/github.com/LiGoldragon/dotos-config` | Strict one-argument typed configuration input over DOTOS, `.dotos`, or `.rkyv`. |
+| `dotos-text-query` | `/git/github.com/LiGoldragon/dotos-text-query` | Engine-neutral typed text query library with optional readable DOTOS support. |
+| `tree-sitter-dotos` | `/git/github.com/LiGoldragon/tree-sitter-dotos` | DOTOS grammar, WASM parser, and editor highlighting support. |
 
 ## Inactive / Archived Components
 
@@ -115,7 +117,7 @@ the main Persona architecture reset unless the user names them.
 | `CriomOS` | `/git/github.com/LiGoldragon/CriomOS` | Operating-system layer for the broader project. |
 | `CriomOS-home` | `/git/github.com/LiGoldragon/CriomOS-home` | User/home-manager surface for the OS layer. |
 | `mentci-lib` | `/git/github.com/LiGoldragon/mentci-lib` | Future shell-state consumer of Sema patterns. |
-| `horizon-rs` | `/git/github.com/LiGoldragon/horizon-rs` | Active Rust codebase with NOTA/Rust discipline overlap. |
+| `horizon-rs` | `/git/github.com/LiGoldragon/horizon-rs` | Active Rust codebase with DOTOS/Rust discipline overlap. |
 | `lojix-cli` | `/git/github.com/LiGoldragon/lojix-cli` | Active CLI/Nix discipline reference. |
 | `goldragon` | `/git/github.com/LiGoldragon/goldragon` | Active workspace-adjacent tooling. |
 | `chronos` | `/git/github.com/LiGoldragon/chronos` | Active enough to keep visible, not Persona-core. |
@@ -131,7 +133,7 @@ cutover.
 |---|---|---|---|
 | `signal-lojix` | `github:LiGoldragon/signal-lojix` | wire surface implicit in `lojix-cli` (none today) | Skeleton + ARCHITECTURE.md. Implementation lands on the `horizon-leaner-shape` feature branch alongside `lojix` daemon work. |
 | `lojix` | `github:LiGoldragon/lojix` | implementation surface of `lojix-cli` (legacy stays at current schema; retires after CriomOS migrates) | Renamed from `lojix-daemon` (2026-05-14). One crate, two binaries: `lojix-daemon` (long-lived orchestrator) + `lojix` (thin CLI client) per `~/primary/AGENTS.md` §"Binary naming". Implementation lands on the `horizon-leaner-shape` feature branch. Storage via `sema-engine`; wire via `signal-frame` carrying `signal-lojix` records. |
-| `criomos-horizon-config` | `github:LiGoldragon/criomos-horizon-config` | pan-horizon constants previously inlined in `goldragon/datom.nota` (operator/suffixes/LAN pool/reserved labels) | Pan-horizon constants repo introduced on `horizon-leaner-shape`. Consumed by `horizon-rs` to derive cluster domains, router SSID, LAN CIDR/DHCP pool, resolver listen addresses, and tailnet base from cluster facts. |
+| `criomos-horizon-config` | `github:LiGoldragon/criomos-horizon-config` | pan-horizon constants previously inlined in `goldragon/datom.dotos` (operator/suffixes/LAN pool/reserved labels) | Pan-horizon constants repo introduced on `horizon-leaner-shape`. Consumed by `horizon-rs` to derive cluster domains, router SSID, LAN CIDR/DHCP pool, resolver listen addresses, and tailnet base from cluster facts. |
 
 **Cutover discipline.** Each replacement repo has a documented
 "replaces" target above. The cutover for that target is staged: build
@@ -163,19 +165,19 @@ Until cutover lands, agents must distinguish two parallel deploy stacks.
 in the canonical `/git/github.com/LiGoldragon/...` checkouts of
 `horizon-rs`, `lojix-cli`, `CriomOS`, `CriomOS-home`, `CriomOS-lib`,
 `goldragon`. The monolithic `lojix-cli` projects `horizon-rs` over
-`goldragon/datom.nota` and writes the `horizon` / `system` / `deployment`
+`goldragon/datom.dotos` and writes the `horizon` / `system` / `deployment`
 flake inputs into CriomOS at deploy time. No deploy daemon. **Already on
-nota-next:** CriomOS's lock pins `lojix-cli` at `fc2ff0287f53` (commit
+**Already on dotos:** CriomOS's lock pins `lojix-cli` at `fc2ff0287f53` (commit
 *"migrate lojix-cli to nota-next"*, reached transitively via
 `criomos-home`), whose `Cargo.lock` pins `horizon-rs` at `48df4bd` (the
-nota-next codec migration). The earlier `4c66b8a6fa55` pin is superseded.
+dotos codec migration). The earlier `4c66b8a6fa55` pin is superseded.
 `lojix-cli/Cargo.toml` declares `horizon-lib = { git = ".../horizon-rs" }`
 with **no rev** — it floats to horizon-rs `main`, so a pin bump pulls
 main's latest (a rev-pin would harden this). **Production fixes go here.**
 
 **Stack B — the lean rewrite was two streams, not one fork.** Contrary to
 an earlier framing, the rewrite did *not* fork six repos. The
-horizon-schema + nota-next-codec stream rolled forward on `main`
+horizon-schema + dotos-codec stream rolled forward on `main`
 (`horizon-rs`, `lojix-cli`, `goldragon`) and **already shipped to
 production** via the pins above — that is why `horizon-rs` has no fork.
 What remains genuinely unshipped, on parallel branches, is the **lojix
@@ -185,7 +187,7 @@ daemon reshape**: `horizon-leaner-shape` (and superseded
 net-new-on-`main` repos not yet consumed in production: `meta-signal-lojix`
 and `criomos-horizon-config` (the pan-horizon constants split, which
 `horizon-rs` main does **not** yet read — constants remain inline in
-`goldragon/datom.nota`). `horizon-rs`, `CriomOS`, `CriomOS-home`,
+`goldragon/datom.dotos`). `horizon-rs`, `CriomOS`, `CriomOS-home`,
 `CriomOS-lib`, and `goldragon` have **no `horizon-leaner-shape` branch at
 all**. **Daemon-reshape edits go in the `lojix` / `signal-lojix`
 worktrees.** (Forensics: `reports/system-designer/90`.)
@@ -235,15 +237,13 @@ nix's build infrastructure).
   (`Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate`)
   belong to `signal-sema` / `sema-engine` execution, not to the
   public contract spine.
-- Text: NOTA is the only text syntax. Nexus is typed semantic content
-  written in NOTA syntax, not a second parser or alternate text
+- Text: DOTOS is the only text syntax. Nexus is typed semantic content
+  written in DOTOS syntax, not a second parser or alternate text
   format.
-- Naming: the `-next` replacement repos have superseded their originals —
-  `nota-next` is the canonical NOTA implementation, `schema-next` +
-  `schema-rust-next` the canonical schema engine; the original `nota` /
-  `schema` repos are deprecated. The `-next` suffix is vestigial and slated
-  to drop (rename to base names `nota` / `schema` / `schema-rust`); not yet
-  executed. (Spirit `4ups`.)
+- Naming: `dotos` is the canonical DOTOS implementation, and `schema-next` +
+  `schema-rust-next` are the canonical schema engine. The original `nota` /
+  `schema` repos are deprecated. The `-next` suffix remains only on the
+  schema repositories. (Spirit `4ups`.)
 - Persona center: `mind` is the central state component for
   orchestration/work graph evolution. Lock files and BEADS are
   transitional compatibility surfaces.

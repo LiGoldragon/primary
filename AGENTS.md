@@ -67,7 +67,7 @@ directory. Shared files are claimed narrowly before editing.
 - No raw `git` except the documented escape hatches in the `jj` skill.
 - No `/nix/store` filesystem search.
 - No `---` horizontal rules in markdown.
-- NOTA records are positional; use bare atoms for strings when canonical.
+- DOTOS records are positional; use bare atoms for strings when canonical.
 - Rust editing requires the Rust doctrine named by the generated role packet,
   prompt, or explicit context.
 - Private information is closed by default and stays out of public reports,
