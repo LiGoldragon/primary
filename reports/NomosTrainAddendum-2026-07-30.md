@@ -1,5 +1,12 @@
 # Nomos Train — Overnight Authorization Addendum
 
+> **PARTIALLY SUPERSEDED.** Decision 1's claim that `All` matches only itself
+> is superseded by `design/Nomos/allMatchesAllScopeOf-2026-07-31.md`: `All`
+> matches the whole rooted tree. Decision 3 is superseded by
+> `design/Nomos/rustTuplesForbiddenLawScope-2026-07-30.md`: positional fields
+> govern the Protos data model, while Rust source forbids tuples except
+> single-member newtypes and uses named fields otherwise.
+
 **Addendum to:** `NomosTrainCodexDispatch-2026-07-29.md`
 
 **Authority:** `PsycheVisionReacquisition-2026-07-29.md` Entry 7 (protos-engine

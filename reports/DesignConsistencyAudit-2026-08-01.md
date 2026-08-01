@@ -64,6 +64,17 @@ roots, one machinery. What remains non-compliant or fragile:
   (project_newtype :2069, project_enumeration :2089, project_visibility
   :2141) — per-kind, per-slot destructuring in the production evaluator,
   flagged "temporary po2.6, po2.8 owns retiring."
+
+  **po2.8 retirement preparation (2026-08-02; no source change):** the
+  remaining numeric couplings are `authored[0]` and `authored[3]` in
+  `project_newtype`, `authored[0]` in `project_enumeration`, and constructor
+  locals `1`/`2` in `project_visibility`. They sit inside the temporary
+  `NativeTransformation::whole_projection` compatibility path; the native
+  evaluated population is already documented in source as authoritative.
+  Retire this compatibility path and its index-based projectors under po2.8,
+  only after the existing per-class equivalence gate required by
+  `reports/NomosTrainCodexDispatch-2026-07-29.md` section 5 is green. Do not
+  change `native.rs` as part of this documentation pass.
 - The Nomos document root (`core-nomos/src/textual.rs:935-1021`, six roles:
   Revision/Inputs/Outputs/Transformers/Selection/Capsule) is a legitimate
   separate root by the ruling, but its shape predates the re-explanation

@@ -1,5 +1,13 @@
 # Ethos Positional Grammar — Reconstructed Reference
 
+> **SUPERSEDED MODEL — DO NOT USE AS CURRENT DESIGN.** The six-slot document
+> model below is a retired implementation shape, not a universal Ethos root;
+> see `design/ProtosEngine/sameFormAndFileKinds-2026-08-01.md`. In particular,
+> do not read `Imports` as an authored root section: imports and exports are
+> derived textual views under
+> `design/ProtosEngine/threeLayerNamingAndNomosBootstrap-2026-08-01.md`,
+> section 5.
+
 Purpose: stop agents re-mining or guessing the Ethos (formerly "schema")
 positional grammar. Every claim below is graded by provenance. Grades:
 
