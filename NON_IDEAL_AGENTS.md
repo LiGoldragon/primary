@@ -29,3 +29,22 @@ it here; keep ordinary rules in `AGENTS.md` and the ideal shape in
 - Witnessed 2026-07-16: CriomOS, signal-introspect, and signal-standard each
   carried one stale `prunable` registration pointing at a removed
   `agent-worktrees/` directory.
+
+## Handwritten Nomos/Logos mirror types until self-hosting
+
+- **Every new Nomos object currently gets a corresponding handwritten Rust
+  type that closely mirrors its Logos type** — similar structure, but
+  different field types: the Nomos-side fields hold promise/unresolved values
+  to be evaluated from the Ethos payload, where the Logos-side fields hold
+  final concrete values. Maintaining these near-duplicate pairs by hand is a
+  sanctioned bootstrap hack (psyche-ruled 2026-08-01,
+  `design/ProtosEngine/traitStandardAndSpiritRename-2026-08-01.md`). Keep the
+  pair structurally in step when either side changes; drift between a mirror
+  pair is a defect, not a design choice.
+- **Proper fix:** the self-hosting loop
+  (`design/ProtosEngine/threeLayerNamingAndNomosBootstrap-2026-08-01.md`
+  section 8): a specialized Nomos object consumes Ethos type declarations and
+  emits both Logos types — the final concrete type and its promise-variant
+  mirror — so the Ethos-to-Logos transformation trait is fulfilled without
+  handwritten pairs. When that generator lands, the handwritten mirrors
+  become its first test fixtures and are retired.
