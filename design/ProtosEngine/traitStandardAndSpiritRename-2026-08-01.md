@@ -91,3 +91,33 @@ Three prompts, with beads: (1) Codex implementer — adapt to the reacquired
 vision, contracts/traits first; (2) Codex skills-and-standards agent —
 work with the psyche on rulings 3-6; (3) Spirit agent — bring Spirit back
 online, replay the queue, port the intent-to-spirit vocabulary (ruling 2).
+
+## Appended 2026-08-01, later same day: supersessions and additions
+
+The skills-and-standards Codex agent correctly flagged that ruling 3's
+exception list, as seated above, narrowed the psyche's spoken wording. The
+psyche has now ruled the canonical form; this appended section supersedes
+ruling 3's exception sentence.
+
+### Ruling 3a: canonical trait-standard exception list (supersedes ruling 3's exceptions)
+
+**[psyche-ruled]**: the full spoken exception list stands — too trivial; the
+proper trait cannot be determined; genuine difficulty; not worth the
+trouble — **with an audit requirement**: every taken exception must be noted
+at the site where it is taken (a visible note naming which exception
+applies), so drift in the use of discretion is auditable by the psyche.
+
+### Ruling 3b: traits are always the first pass
+
+**[psyche-verbatim]**: "traits become the first pass always; they give us
+the spec in code." Seated: in any implementation work, writing the traits
+(the contracts) is the mandated first pass. The trait layer is the
+specification, expressed in code, before bodies are written.
+
+### Ruling: bead order for the skills-and-standards agent
+
+**[psyche-ruled]**: primary-s7c (traits standard) first, then primary-77q
+(tuple verification — the rule may already be seated; verify scope and
+wording against `design/Nomos/rustTuplesForbiddenLawScope-2026-07-30.md`
+and close), then primary-pnr (skills gating design), then primary-0p2
+(archaeology).
