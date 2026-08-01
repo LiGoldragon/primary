@@ -58,3 +58,22 @@ undecided: Greek family names for the operation (Praxis — deed; Metabole —
 change; Ergon — work) with the log as the natural plural chain; English
 alternatives (operation, transaction, patch; "operation-sourced structural
 editing" for the paradigm). Nothing ruled.
+
+## Appended, later same day: terminology ruled — plain English
+
+Agent text answered: the research report's recommended Greek set
+(Praxis for the operation, Mneme for the log;
+`reports/OperationalEditingPriorArt-2026-08-01.md`).
+
+Psyche ruling [psyche-verbatim]: "im not looking for exotic names. plain
+english engineering terms."
+
+Seated: the Greek candidates are withdrawn. The vocabulary is the psyche's
+own dictation, unchanged: **operation** (the atomic unit), **operation
+interface** (the signal-message entry), **change log** (the per-engine
+record that is the VCS), **slot** (the encoded-form holder), and
+**operational editing** (the paradigm, his 07-29 phrase). Exotic naming
+remains reserved for the language family (Ethos, Nomos, Logos, Protos,
+Dotos); engineering machinery is named in plain English. The prior-art
+survey's substance (Unison, event sourcing, log-structured storage,
+projectional editors; git vocabulary to avoid) stands unaffected.
