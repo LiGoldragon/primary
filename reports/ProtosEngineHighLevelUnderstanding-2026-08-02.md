@@ -398,59 +398,71 @@ compiled in the next version, or compiled in a db migration executable"
 
 ### 6.1 The database-focused part of the Ethos dialect
 
-Ethos began as Schema, a specialized interface- and data-definition
-language; **[psyche-verbatim]** "when I first started Schema, the ancestor,
-it was a very specialized use." The database-focused part is the subset
-that declares stored data rather than interfaces: record types, their
-tables, and their keys. Historically that was the `Family` construct
-(surface shown as historical evidence, not current syntax):
+The database-focused part of Ethos is the subset that declares stored data
+rather than interfaces: record types, the tables that hold them, and the
+keys that address them. Under the file-kind law it needs no special
+machinery: a database-focused file kind is just another root type over the
+same shared parsing — the daemon database's schema authored in Ethos, held
+as encoded form in a slot. **[psyche-verbatim]** SEMA "means more than just
+a database. It's a new way of thinking about data, which doesn't contain
+strings eventually."
+
+Historical evidence only, retired surface and retired names: the `Family`
+construct once bound a record type to storage —
 
 ```ethos
 EntryFamily (Family { record Entry table entries key Domain })
 ```
 
-Under the file-kind law, this part needs no special machinery: a
-database-focused file kind is just another root type over the same shared
-parsing — SEMA's schema authored in Ethos, held as encoded form in a slot.
-And **[psyche-verbatim]** SEMA "means more than just a database. It's a new
-way of thinking about data, which doesn't contain strings eventually."
+— naming the stored record type, its table, and its key type; and the
+ancestor language's specialized interface-definition use explains why
+input/output slots ever existed. Neither retired name defines the current
+dialect.
 
 ### 6.2 Evolution by diffing the encoded form
 
 Under the engine model, a database schema is an encoded value in a slot,
-versioned by the change log like everything else. That yields the database
-evolution engine the same way the change log yields VCS — it falls out of
-the model rather than being built beside it:
+versioned by the change log like everything else. There are two routes into
+a schema change **[psyche-ruled 2026-08-02]**, and both end at the same
+place:
 
-1. Two versions of the database schema are two typed encoded values —
-   adjacent in the change log, or any pair of historical states.
-2. Diffing the encoded forms is a structural, typed diff — exact, not
-   heuristic text comparison. Added, removed, retyped, re-keyed elements
-   are typed facts of the diff; and because encoded names persist across
-   edits, a rename is *visibly not a structural change at all*.
-3. From the typed diff, the operation **produces the migration code** — the
-   typed fold from the old layout to the new — as part of its own atomic
-   cascade. Migration logic is derived output, never authored.
-4. The produced migration code has two sanctioned compilation vehicles
+- **Operational route** (the native model): the edit arrives as an atomic
+  operation through the operation interface. Because the operation names
+  the slot it edits, a rename is visibly not a structural change at all —
+  encoded names persist across edits.
+- **Textual route** (the bootstrap): someone edits textual Ethos; the
+  engine derives the edit operation by diffing the old and new encoded
+  forms — a structural, typed diff, exact where structure decides and
+  LLM-aided where it does not. The ambiguity the LLM resolves is exactly
+  the class the operational route never has: whether a textual change is a
+  rename of an existing slot or a removal plus a new thing. The derived
+  operation then applies atomically like any other.
+
+Either way, **it is the atomic edit operation that yields the database
+update logic**:
+
+1. The operation's cascade **produces the migration code** — the typed fold
+   from the old layout to the new. Migration logic is derived output, never
+   authored.
+2. The produced migration code has two sanctioned compilation vehicles
    **[psyche-ruled]**: compiled into the next version of the program, or
    compiled into a standalone database migration executable. Applying it to
    a live database is a deployment act through one of those vehicles.
 
 ```mermaid
 flowchart LR
-    subgraph log["Change log of the schema slot"]
-        S1["Schema encoded form<br/>version n"]
-        S2["Schema encoded form<br/>version n+1"]
-    end
-    Diff["Typed structural diff<br/>(encoded vs encoded;<br/>renames invisible by construction)"]
-    Classify["Classified changes<br/>auto-safe / needs explicit rule / unsupported"]
+    Op["Operational route:<br/>edit arrives as an operation"]
+    Text["Textual route:<br/>edited Ethos text"]
+    Diff["Typed structural diff<br/>of old vs new encoded form<br/>(LLM-aided where ambiguous)"]
+    DOp["Derived edit operation"]
+    AOp["One atomic edit operation<br/>on the schema slot"]
     Code["Produced migration code<br/>(typed fold old → new)"]
     V1["Compiled into<br/>the next version"]
     V2["Compiled into a<br/>db migration executable"]
 
-    S1 --> Diff
-    S2 --> Diff
-    Diff --> Classify --> Code
+    Op --> AOp
+    Text --> Diff --> DOp --> AOp
+    AOp --> Code
     Code --> V1
     Code --> V2
 ```
