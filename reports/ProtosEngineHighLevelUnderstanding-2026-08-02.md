@@ -151,7 +151,7 @@ canonical tests (`tests/next_gen_grammar.rs`, `tests/derive.rs`,
 | Form | Meaning |
 | --- | --- |
 | `{(commit sequence) 4}` | struct body — braces, positional fields |
-| `Tick.7` / `Range.{3 9}` | dotted enum variants, single- and multi-field |
+| `Tick.7` / `Range.{3 9}` / `Batch.[3 9 27]` | dotted enum variants: single-field, multi-field product, and a single vector field carried directly |
 | `Technology.Software.Programming.CodeGeneration` | nested enum path |
 | `(alpha; beta)` | ordinary text with spaces |
 | `(\|alpha;;beta\|)` / `[\|…\|]` | pipe-text: literal carriage for escaping and for multiline text — parsing dedents by the minimal common indent of the block's lines, so documents stay beautifully indented without the indent entering the value |

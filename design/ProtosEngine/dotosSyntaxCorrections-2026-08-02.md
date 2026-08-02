@@ -85,6 +85,19 @@ Seated:
   string is. This supersedes the "reserved for content that genuinely
   needs escaping" phrasing above.
 
+## Appended 2026-08-02: vector-payload variant spelling confirmed
+
+Agent text answered: the manager's expected form for a dotted variant whose
+single field is a vector — the vector carried directly as the payload,
+`Batch.[3 9 27]`.
+
+Psyche ruling [psyche-verbatim]: "you have it right"
+
+Seated: a single-field variant takes its payload block directly, whatever
+its delimiter — `Tick.7`, `Deprecated.(remote archived + local deleted)`,
+`Batch.[3 9 27]`; the brace wrapper appears only for multi-field products
+(`Range.{3 9}`).
+
 ## Open: remediation of the manifest convention
 
 `protocols/repos-manifest.dotos` self-documents its convention as mirroring
