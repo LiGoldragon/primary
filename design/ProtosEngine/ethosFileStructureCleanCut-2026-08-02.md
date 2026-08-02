@@ -116,3 +116,50 @@ with no branch on section — identical derives, traits, naming. The
 psyche's recollection was exact: the sections carried no behavioral
 difference, reinforcing ruling 4 — membership belongs to traits, not to
 sections that merely emit types.
+
+## Appended 2026-08-02, later same session: header ruled, imports confirmed textual-only, no-tag ruled
+
+Agent text answered: the manager's pushback — header minimalism and
+version semantics; the imports authored-versus-derived tension; the
+no-tag lean for trait declarations.
+
+Psyche rulings [psyche-verbatim, condensed]:
+
+- Header: "with the tiny header... the version for now should just be
+  like a SemVer, incrementally bumped up by the writer whenever something
+  feels like it could break... and the type. And just those two things
+  for now in the header... maybe [it] describes the version of ethos that
+  this uses. So the version number of the ethos used last, that last
+  worked with this content."
+- Imports: "imports are just for the source files... in encoded form we
+  don't think about imports... everything's just pure code... we use the
+  encoded name to find them. And encoded names are used in the code and
+  the true name is used in the table that matches encoded name to true
+  name to find the code, which is stored with the content address
+  storage."
+- No tag: "that's the whole point of creating different file types...
+  it's a specialized file, so you obviously don't need to repeat
+  yourself."
+
+Seated:
+
+- The header is exactly two things for now: the **ethos type** and a
+  **SemVer-style version**, writer-bumped when a change could break,
+  denoting the Ethos version the content last worked with. A bumping
+  standard comes later.
+- Imports are textual-form-only, confirming the three-layer ruling:
+  encoded form addresses absolutely — encoded names in the code, the
+  table mapping encoded name to current true name, content-addressed
+  storage holding the code.
+- In a specialized file kind, declarations carry **no kind tag** — the
+  file type supplies it. In a traits file:
+  `ScopeContainment.{contains.{Scope Bool}}`, no Trait or Contract head.
+  The trait-versus-contract keyword question mostly dissolves; what
+  remains is naming the file kinds themselves when the fixtures are
+  authored.
+
+Floated, explicitly not pushed [psyche-thought]: a source file might
+carry an ancestor reference — the hash of an older encoded version that
+already has a slot in the daemon, "put that hash back into the source
+file." Connects to the encoded-name minting sub-choice (first-version
+true name) and evolution lineage; recorded for later.

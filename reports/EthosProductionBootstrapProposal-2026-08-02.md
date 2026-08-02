@@ -74,10 +74,10 @@ Traits.1
 Each trait member is a method signature `name.{Params… Return}` — the
 **last position is the return type**; the receiver (Rust `&self`) is
 implied by trait membership and never written; borrowing, references, and
-dispatch are assembly decisions made by the Nomos object. Whether the
-trait declaration needs any tag at all where its body position implies it
-is open (non-repetition lean: no tag). A parameterized trait names its
-parameter traits per the generics-are-traits ruling.
+dispatch are assembly decisions made by the Nomos object. Ruled: no
+declaration tag in a specialized file kind — the file type supplies it. A
+parameterized trait names its parameter traits per the
+generics-are-traits ruling.
 
 ## 3. Proposed slice, in order
 
