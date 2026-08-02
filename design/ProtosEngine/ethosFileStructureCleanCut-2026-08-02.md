@@ -93,3 +93,26 @@ manager commissioned to verify how "contract" is currently used across
 the corpus before the name is fixed. Also open: whether a trait
 declaration needs any tag at all where its body position already implies
 it (non-repetition).
+
+## Appended 2026-08-02: both commissioned verifications returned
+
+**Contract overload — CONFIRMED, worse than suspected.** Beyond the prose
+trait-synonym sense, `Contract` is a shipped Rust type in `signal-criome`
+— a governance/authorization root of trust (`Contract::root`,
+`AdmitContract`, `ContractAdmitted`, `ContractDigest`,
+`AuthorizedObjectKind::Contract`) actively consumed by `spirit` and
+`orchestrate`, two of the four ruled first targets. Additional live
+senses: wire/version negotiation (`ContractVersion`,
+`CURRENT_CONTRACT_VERSION`, `GenerationClass::WireContract`), a
+legal-domain taxonomy value (`LawDomain::Contract`), and ad hoc boundary
+wrappers. Verdict: "Contract" is unavailable as the Ethos
+trait-declaration name; the **Trait** lean hardens.
+
+**Input/output codegen identity — CONFIRMED.** The ancestor's
+`TrueSchema::input_and_output()` merges both sections with no origin tag
+(`schema/src/schema.rs:610-612`); the sole codegen consumption site
+(`schema-rust/src/lib.rs:633-643`) pushes both through the same lowering
+with no branch on section — identical derives, traits, naming. The
+psyche's recollection was exact: the sections carried no behavioral
+difference, reinforcing ruling 4 — membership belongs to traits, not to
+sections that merely emit types.
