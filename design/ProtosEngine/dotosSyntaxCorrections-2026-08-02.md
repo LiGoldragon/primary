@@ -61,6 +61,30 @@ independently by the dotos repository ("`{}` = structs",
 - `tree-sitter-dotos` lags the current grammar (still carries the removed
   structural pipe forms); its fixtures are not current-syntax authority.
 
+## Appended 2026-08-02, later same session: pipe-text indentation baseline
+
+Agent text answered: the report's pipe-text table row ("only when content
+genuinely needs escaping") and, after the psyche's addition, the manager's
+restatement of indentation-aware parsing ending with the baseline
+sub-choice: opening-delimiter column vs minimal common indent.
+
+Psyche ruling [psyche-verbatim]: "and for indented whitespace parsing (for
+beautifully indented formatting). do you understand what I mean?" then,
+ruling the baseline: "the minimal common indent of the block's lines"
+
+Seated:
+
+- Pipe-text serves two purposes: literal carriage of content that needs
+  escaping, AND multiline text under **indentation-aware parsing** so
+  documents can be beautifully indented.
+- Parsing dedents a multiline pipe-text block by the **minimal common
+  indent of the block's lines**; the pretty-printer re-indents to the
+  structural depth; the encoded value carries the dedented true text.
+- Indentation belongs entirely to the textual projection, never to the
+  value: re-formatting at a different nesting depth never changes what the
+  string is. This supersedes the "reserved for content that genuinely
+  needs escaping" phrasing above.
+
 ## Open: remediation of the manifest convention
 
 `protocols/repos-manifest.dotos` self-documents its convention as mirroring

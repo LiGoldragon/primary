@@ -154,7 +154,7 @@ canonical tests (`tests/next_gen_grammar.rs`, `tests/derive.rs`,
 | `Tick.7` / `Range.{3 9}` | dotted enum variants, single- and multi-field |
 | `Technology.Software.Programming.CodeGeneration` | nested enum path |
 | `(alpha; beta)` | ordinary text with spaces |
-| `(\|alpha;;beta\|)` / `[\|…\|]` | pipe-text, only when content genuinely needs escaping |
+| `(\|alpha;;beta\|)` / `[\|…\|]` | pipe-text: literal carriage for escaping and for multiline text — parsing dedents by the minimal common indent of the block's lines, so documents stay beautifully indented without the indent entering the value |
 | `schema:spirit:Entry`, `github:LiGoldragon/dotos` | bare atoms; `:` and `/` legal |
 | `[]` | explicit empty collection — every field always present |
 | `;; comment` | comment |
