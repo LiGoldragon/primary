@@ -93,3 +93,46 @@ Seated:
   Landed-code consequence if it does: Slice 3's ScopeOf recognition
   matches a name-first shape (a typed newtype application whose head
   equals the ScopeOf identity) and would flip to head-resolution.
+
+## Appended 2026-08-02: method line refined; name-first standalone rejected; sections legitimated
+
+Agent text answered: the manager's two-model account (name-first vs
+object-first invariants) and proposed skill line.
+
+Psyche ruling [psyche-verbatim, condensed]: "It's more like: when you
+design syntax, always consider how it's going to be encoded and
+decoded." On `Observer.Stream.{...}`: "the problem with this approach
+is it creates a lot of complexity, because stream is a nomos
+transformer, which means it's going to need observer as a payload. And
+it also means that from the point of view of ethos, observer is going
+to be a new type on stream. So I don't think it makes any sense to use
+this approach... you could possibly create a section in which all
+objects are streams, and then you can start with observer. And that's
+why we get away with this syntax in other places. I think the biggest
+problem is it seems to be confusing agents — unless perhaps we train
+them well enough to understand the difference."
+
+Seated:
+
+- **Method line, the psyche's wording**: when you design syntax,
+  always consider how it's going to be encoded and decoded.
+- **Name-first standalone applications are rejected.** At a general
+  declaration position, `Observer.Stream.{...}` decodes structurally
+  as a newtype of the application — the wrong meaning — while the
+  transformer needs the name inside its payload, forcing a
+  special-case injection of the head symbol. Two encode/decode
+  incoherences; the form makes no sense.
+- **Sectioned name-first is the legitimate name-first.** A position
+  whose expected type supplies the operator lets entries lead with the
+  name and never write the operator at all. That is why name-first
+  "gets away with it" elsewhere: the section, not resolution, supplies
+  the operator. Inputs, outputs, and refusals are exactly this pattern
+  — the position supplies the membership trait.
+- Unified law [manager formulation, following the ruling]: **an
+  operator is written exactly once — as the head of a standalone
+  application — or zero times, when its section supplies it; never as
+  the second symbol of a name-first standalone form.**
+- Risk noted [psyche]: the dual surface (sectioned name-first beside
+  standalone object-first) may confuse agents; mitigation is training
+  and doctrine, to be carried into the skills gating Protos syntax
+  work.

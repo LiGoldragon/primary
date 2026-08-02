@@ -211,13 +211,17 @@ registry by the stream type.
    than Output membership — confirm.
 4. Token: one universal SubscriptionToken with type-level stream
    binding (proposed) rather than per-stream token types — confirm.
-5. The parse model for applications, sharpened by the psyche's
-   talked-past diagnosis: one model must win at declaration positions —
-   object-first (kind known after resolving the head; name is data;
-   the Stream ruling) or name-first (declared name always first;
-   definition classifies by resolution). If object-first generalizes,
-   the historical spellings flip AND Slice 3's landed ScopeOf
-   recognition (name-first shaped) flips to head-resolution. Whether
-   SimpleGeneric and ScopeOf are even transformers is itself unruled.
+5. PARTLY RULED: name-first *standalone* applications are rejected
+   (they decode as a newtype of the application while the transformer
+   needs the name in its payload — encode/decode incoherence). The
+   surviving law: an operator is written exactly once as the head of a
+   standalone application, or zero times when a section supplies it.
+   Remaining choice, per pattern: standalone object-first
+   (`Stream.Observer....` in the types position) versus a dedicated
+   operator-supplying section (a streams position whose entries lead
+   with the name). Slice 3's landed ScopeOf recognition is
+   name-first-standalone shaped and must move to one of the two legal
+   forms; whether SimpleGeneric and ScopeOf are even transformers is
+   itself unruled.
 6. The transformer-kind name for family emission (`Structural.Family`
    is a placeholder).
