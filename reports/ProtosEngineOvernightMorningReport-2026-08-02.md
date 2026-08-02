@@ -2,51 +2,53 @@
 
 This is the single morning report required by
 [`handoffs/codex-overnight-2026-08-01.md`](/home/li/primary/handoffs/codex-overnight-2026-08-01.md).
-It reports published component work separately from integration into each
-repository's `main` and from integration into the ProtosEngine root.
-Branch and bead state was last revalidated at 2026-08-02 07:18 CEST.
+It reports landed component work separately from integration into the
+language witness and the ProtosEngine root. Branch, worktree, and bead state
+was last revalidated at 2026-08-02 07:43 CEST.
 
 ## 1. Built work and test results
 
 **Current state.** `primary-36y` is closed, `primary-pjm` is blocked,
 `primary-zjo` is closed, and umbrella tuple-remediation bead `primary-wgd` is
-open. All feature heads named below are published at their remote bookmarks
-except the unchanged `language-engine-witness` lane, whose local feature
-bookmark still equals repository `main`. None of the feature heads is an
-ancestor of its repository's current `main`; the work is published for review
-and integration, not landed on component mains. ProtosEngine `main` remains at
-`99d26f14da9c6437f5a3e1589f3b2f0bcaaa02dc`.
+open. The original morning-report commit was
+`5772f5f49d8848258bc5420bcbc327006d568d91`; it contains the report and
+overnight integration records. All eight
+completed component feature heads named below have landed on their repository
+`main` bookmarks and their Orchestrate worktrees were concluded `Merged` after
+the cited gates passed. The exception is `language-engine-witness`: it remains
+unmigrated, has no distinct published feature ref, and its local
+`TypesOnlyEthos20260802` bookmark merely aliases unchanged `main`.
 
-| Surface | Published feature head | Repository `main` | Result |
-| --- | --- | --- | --- |
-| ScopeOf target, `signal-domain` | `ScopeOfTraitTarget20260802` at `fbc400bf5ed5e4c4d27ef4e76cb48fa4e5d53658`, version 0.2.0 | `1890f33174f3637b2d605b9c79e584e127580d13` | Seven contract traits and the handwritten Domain/Scope reference implementation; A1-A18 are visible at their sites. |
-| Slice 1 root integration, `protos-engine` | `ProtosOvernightIntegration20260802` at `d54e271f0d098061146435a6f6e13f93a828e9d7`; the Slice 1 integration commit is its parent `a3dc7fa3930e1dd98fdf6629dc42149399a7adb6` | `99d26f14da9c6437f5a3e1589f3b2f0bcaaa02dc` | Pins only the ScopeOf `signal-domain` head and adds the cross-repository fixture witness. The current head additionally places the requested capsule supersession banner in the compiled design. This is the only overnight component slice integrated into a ProtosEngine feature root. |
-| Types-only Ethos and its tuple cleanup, `core-ethos` | `TypesOnlyEthos20260802` at `7bb9c5a0a31851641998b26f14326515ca64a7e8`, version 0.23.0; the Slice 2 root itself entered at `78c9530782652af40493b1a0ca22397782560bf7` | `736460fdafbd65d6500fe15e6ae8844b42a39e7c` | One types-only root through the common codec, neutral API names, then archive-witnessed named-field remediation. Published, not integrated into the language witness or ProtosEngine. |
-| Tuple-clean Logos producer, `core-logos` | `TupleNamedFields20260802` at `1bb284325d3026a695130967215373fa266629d5`, version 0.20.0 | `9a61e2ac1bf8a8c1163794d695902115a05a4007` | Registered WholeLogos carriers use named fields with retained archive evidence. |
-| Tuple-clean Rust projection, `rust-logos` | `TupleNamedFields20260802` at `aa75cf6afdd457bb256ceb955ca78cca54d0e484`, version 0.20.0 | `f46167cbb35d25d86ddbc197653c6560ded8e077` | Dependency-only coherent repin to the tuple-clean Logos producer. |
-| Types-only, tuple-clean, ScopeOf pre-gate stack, `core-nomos` | `TypesOnlyEthos20260802` at `ee90fd7159ffb5ac711e0d888a5e658436352440`, version 0.31.0 | `58fd8036bffcb3cff6e27af4db25690764ecc768` | Contains the types-only Ethos repin, archive-witnessed named fields, the coherent current producer train, and Slice 3's non-recursive ScopeOf plan. |
-| Current Nomos signal, `signal-nomos` | `TypesOnlyEthos20260802` at `d5b102c339612e68e357a34792b016af3af5254f`, version 0.6.0 | `1af71a9d0625a6404f81cd6fe8b6393ac0c9040f` | Dependency-only repin to the coherent current Nomos train; its d47 compatibility dependency remains separate. |
-| Current Nomos engine, `nomos-engine` | `TypesOnlyEthos20260802` at `7f56a5bd93f29a7b4a2fafe73ce9ce72ae75edd9`, version 0.6.0 | `e4230f62b55fcf8543477a26d272862a63aa1fc3` | Coherent repin plus archive-witnessed conversion of the three registered forged carriers. |
-| Language integration witness | No new published feature head; local `TypesOnlyEthos20260802` still names `edbf506f2befd2ee756ecdf22e28fd09e53017e7`, the same commit as `main` | `edbf506f2befd2ee756ecdf22e28fd09e53017e7` | Slice 2, Slice 3, and the tuple-clean train have not crossed this integration boundary. |
+| Surface | Landed repository `main` | Result and remaining integration state |
+| --- | --- | --- |
+| ScopeOf target, `signal-domain` | `fbc400bf5ed5e4c4d27ef4e76cb48fa4e5d53658`, version 0.2.0 | Seven contract traits and the handwritten Domain/Scope reference implementation; A1-A18 are visible at their sites. ProtosEngine `main` pins this exact revision. |
+| Slice 1 root integration, `protos-engine` | `d54e271f0d098061146435a6f6e13f93a828e9d7`; the Slice 1 witness is parent `a3dc7fa3930e1dd98fdf6629dc42149399a7adb6` | Pins the ScopeOf `signal-domain` head, adds the cross-repository fixture witness, and carries the capsule supersession banner. This is the only new overnight component pin integrated into the ProtosEngine root. |
+| Types-only Ethos and its tuple cleanup, `core-ethos` | `7bb9c5a0a31851641998b26f14326515ca64a7e8`, version 0.23.0; the Slice 2 root entered at `78c9530782652af40493b1a0ca22397782560bf7` | One types-only root through the common codec, neutral API names, then archive-witnessed named-field remediation. Landed on component `main`, but not integrated into the language witness or ProtosEngine lock. |
+| Tuple-clean Logos producer, `core-logos` | `1bb284325d3026a695130967215373fa266629d5`, version 0.20.0 | Registered WholeLogos carriers use named fields with retained archive evidence; not yet consumed by the ProtosEngine lock. |
+| Tuple-clean Rust projection, `rust-logos` | `aa75cf6afdd457bb256ceb955ca78cca54d0e484`, version 0.20.0 | Coherent repin to the tuple-clean Logos producer; not yet consumed by the ProtosEngine lock. |
+| Types-only, tuple-clean, ScopeOf pre-gate stack, `core-nomos` | `ee90fd7159ffb5ac711e0d888a5e658436352440`, version 0.31.0 | Contains the types-only Ethos repin, archive-witnessed named fields, coherent current producer train, and Slice 3's non-recursive ScopeOf plan; not yet consumed by the ProtosEngine lock. |
+| Current Nomos signal, `signal-nomos` | `d5b102c339612e68e357a34792b016af3af5254f`, version 0.6.0 | Coherent current-train repin; its d47 compatibility dependency remains separate and ProtosEngine still pins older signal-nomos. |
+| Current Nomos engine, `nomos-engine` | `7f56a5bd93f29a7b4a2fafe73ce9ce72ae75edd9`, version 0.6.0 | Coherent repin plus archive-witnessed conversion of the three registered forged carriers; ProtosEngine still pins the older engine. |
+| Language integration witness | Unchanged `main` at `edbf506f2befd2ee756ecdf22e28fd09e53017e7`; no distinct published feature ref | Slice 2, Slice 3, and the tuple-clean train have not crossed this integration boundary. Its worktree remains the sole unconcluded overnight integration worktree. |
 
 **Tests that passed.**
 
 - The ScopeOf target passed the focused Domain contract suite, 10/10; the
   three dependency-boundary tests; documentation tests; formatting; full
   all-target/all-feature Clippy; its focused Nix test derivation; and full
-  `nix flake check`. The ProtosEngine Slice 1 feature root passed flake
+  `nix flake check`. The ProtosEngine Slice 1 root passed flake
   evaluation, the focused `scope-of-target-witness`, full `nix flake check
   --print-build-logs`, and `nix run .#check-all`. The witness byte-compared the
   pinned `signal-domain/schema/domain.schema` and
   `language-engine-witness/tests/fixtures/spirit-domain.ethos`; both had SHA-256
   `f671462eee55f82ead6feaece69b91e1c7a8bbccf13cd9e94a4a0a6c12d65b15`.
-  Those gates were recorded at integration commit `a3dc7fa393...`. The current
-  `d54e271f0d09...` head changes only the compiled design document by adding a
-  capsule supersession banner; no separate build rerun is recorded for that
-  documentation-only descendant.
+  Those gates were first recorded at integration commit `a3dc7fa393...`.
+  Before landing `d54e271f0d09...` on `main`, the focused ScopeOf witness,
+  focused repository-shape check, full `nix flake check --print-build-logs`, and
+  `nix run .#check-all` all passed again.
 - The original types-only producer commit passed 23/23 all-target tests,
   including 10/10 `whole_ethos` tests, plus formatting, warning-denied Clippy
-  and rustdoc, focused Nix test, and full Nix flake check. Its current published
+  and rustdoc, focused Nix test, and full Nix flake check. Its current landed
   head passes 24/24 all-target tests and all eight Nix checks after the
   registered tuple cleanup.
 - The six-repository current producer chain was independently checked at
@@ -63,6 +65,12 @@ and integration, not landed on component mains. ProtosEngine `main` remains at
   pre-existing ignored freezer witness; formatting, warning-denied Clippy and
   rustdoc, flake evaluation, full `nix flake check`, and the five explicit Nix
   build/test/doc/fmt/clippy derivations passed.
+- The validated heads then landed producer-first on their component `main`
+  bookmarks: `signal-domain`, `core-ethos`, `core-logos`, `rust-logos`,
+  `core-nomos`, `signal-nomos`, `nomos-engine`, and finally the Slice 1
+  ProtosEngine integration. Their main/origin refs resolve to the exact table
+  SHAs. The eight completed worktrees were concluded `Merged`; their owner
+  claims were released and their lanes retired.
 
 **Failures, corrections, and incomplete integrations.**
 
@@ -83,11 +91,11 @@ and integration, not landed on component mains. ProtosEngine `main` remains at
   restored one coherent 0.19 universe. The later coherent train moved the
   entire consumer chain to core-logos 0.20. The intermediate dual-universe
   claim is superseded and must not be treated as the current result.
-- `language-engine-witness` was not repinned, and the ProtosEngine feature root
+- `language-engine-witness` was not repinned, and the landed ProtosEngine root
   still pins the pre-overnight `core-ethos`, `core-logos`, `rust-logos`,
   `core-nomos`, `signal-nomos`, and `nomos-engine` revisions. Therefore Slice 2,
   Slice 3, and the tuple-clean producer train are not yet integrated even
-  though their component bookmarks are published and green.
+  though their component mains are landed and green.
 
 ## 2. Complete assumption register with sites
 
@@ -167,8 +175,9 @@ adapting the upstream generator path, or authorizing a temporary compatibility
 bridge and naming which representation is authoritative.
 
 **The language witness and ProtosEngine root did not integrate the new train.**
-The language witness lane still equals its old `main`. The ProtosEngine feature
-root pins only the new `signal-domain`; it deliberately retains old revisions
+The language witness has no distinct feature ref and still equals its old
+`main`. The landed ProtosEngine root pins only the new `signal-domain`; it
+deliberately retains old revisions
 for `core-ethos`, `core-logos`, `rust-logos`, `core-nomos`, `signal-nomos`, and
 `nomos-engine`. Moving those pins before resolving the canonical-source bridge
 would either preserve two contradictory source authorities or require an
@@ -208,7 +217,7 @@ not the complete Domain-to-Scope transformation.
 **Tuple remediation crossed the archive gate but not historical closure.**
 Archive-compatibility witnesses were written before converting every registered
 archived carrier, including non-empty and recursively meaningful values. At the
-current six-repository producer heads, all 27 registered multi-field tuple
+current six-repository component mains, all 27 registered multi-field tuple
 declarations are absent: 25 are named-field declarations and the two obsolete
 six-slot declarations disappeared with the new root. The misleading
 `*Newtype` carriers now have semantic named fields rather than merely renamed
@@ -231,7 +240,7 @@ could erase evidence. That is a psyche gate, not a mechanical omission.
 ## 4. Ranked questions for the psyche
 
 1. **Which source representation is canonical for the new types-only Ethos
-   file kind?** The published producer reads a single brace-delimited types
+   file kind?** The landed producer reads a single brace-delimited types
    position through the common structural codec. The current Domain generator
    reads a legacy six-position schema source and rejects the one-position form
    before code generation. If the types-only Ethos form is canonical, the next
@@ -281,7 +290,7 @@ could erase evidence. That is a psyche gate, not a mechanical omission.
    `All` meaning itself is already ruled. The open choices needing confirmation
    are the API decomposition and owner, reflexivity and operand direction,
    Domain-side `All`, and whether nested `All` exists and is local. These choices
-   are already executable at the published reference head, so accepting or
+   are already executable at the landed reference head, so accepting or
    correcting them now avoids building the transformer against an accidental
    truth table.
 
@@ -307,13 +316,13 @@ could erase evidence. That is a psyche gate, not a mechanical omission.
    compatibility revisions, whether they may remain active build inputs, and
    what proof must prevent their types from leaking into the current universe.
 
-8. **After the rulings above, should integration land as one coherent train or
-   as separately reviewed main landings followed by an atomic root repin?** The
-   component bookmarks are published and green, but no component `main`
-   contains them and the language witness and ProtosEngine root remain old. A
-   single train minimizes mixed type universes; separate landings make each
-   semantic change easier to review but temporarily leave published mains that
-   cannot yet compose. The integration must in either case update the language
-   witness's normal and compatibility pins together, prove daemon restart and
-   refusal behavior, then update the ProtosEngine exact-pin policy and lock in
-   one root commit.
+8. **After the rulings above, should the remaining integration cross the
+   language witness and ProtosEngine root as one coherent train?** The component
+   heads are now landed and green, but the language witness remains unmigrated
+   and ProtosEngine `main` still compiles the older core train except for its new
+   ScopeOf `signal-domain` pin. The remaining integration should update the
+   language witness's normal and compatibility pins together, prove daemon
+   restart and refusal behavior, then update the ProtosEngine exact-pin policy
+   and lock in one root commit; the question is whether the psyche wants that
+   remaining boundary crossed atomically once the source-authority and legacy
+   decisions above are answered.
