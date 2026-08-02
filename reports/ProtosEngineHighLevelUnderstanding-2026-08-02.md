@@ -125,36 +125,46 @@ representation, never for brevity.
 
 ### 3.1 Dotos (currently NOTA)
 
-Foundational typed positional data: positional records, bare atoms for
-canonical strings, named enum variants, flag lists. From
-`protocols/repos-manifest.dotos`:
+Foundational typed positional data. The text carries only what the expected
+type cannot infer; struct bodies are brace-delimited (**[psyche-verbatim]**
+"struct is {}"); type tags and field labels are illegal restatement of what
+the position already supplies. A homogeneous list of a known record type
+therefore carries headless brace bodies with bare atoms at known positions
+(corrected manifest records, psyche-reviewed 2026-08-02 —
+`design/ProtosEngine/dotosSyntaxCorrections-2026-08-02.md`):
 
 ```dotos
 [
   ;; Dotos
-  (Repo dotos github:LiGoldragon/dotos (Family Dotos) Code Active Architecture [])
-  (Repo tree-sitter-dotos github:LiGoldragon/tree-sitter-dotos (Family Dotos) Code Active (OtherDoc README.md) [BuildTimeConsumed])
+  {dotos Dotos Code Active Architecture []}
+  {tree-sitter-dotos Dotos Code Active OtherDoc.README.md [BuildTimeConsumed]}
 
-  ;; Persona — core stack daemon components
-  (Repo persona-pi github:LiGoldragon/persona-pi (Family Persona) Code (Deprecated [|remote archived + local deleted|]) Architecture [])
+  ;; Persona
+  {persona-pi Persona Code Deprecated.(remote archived + local deleted) Architecture []}
 ]
 ```
 
-The grammar fixture (`tree-sitter-dotos/test/fixtures/basic.dotos`) shows
-the full surface: three base delimiter pairs, pipe-text for escape strings,
-`;;` comments:
+Current-grammar element forms, evidenced by the dotos repository's
+canonical tests (`tests/next_gen_grammar.rs`, `tests/derive.rs`,
+`tests/codec.rs`, `tests/instance_schema.rs`):
 
-```dotos
-(Record [Topic Description] {key value} [|long text|])
-(| EnumLike [Child] |)
-{| StructLike field value |}
-42 -3 4.5 schema:spirit:Entry text;atom
-;; trailing comment
-```
+| Form | Meaning |
+| --- | --- |
+| `{(commit sequence) 4}` | struct body — braces, positional fields |
+| `Tick.7` / `Range.{3 9}` | dotted enum variants, single- and multi-field |
+| `Technology.Software.Programming.CodeGeneration` | nested enum path |
+| `(alpha; beta)` | ordinary text with spaces |
+| `(\|alpha;;beta\|)` / `[\|…\|]` | pipe-text, only when content genuinely needs escaping |
+| `schema:spirit:Entry`, `github:LiGoldragon/dotos` | bare atoms; `:` and `/` legal |
+| `[]` | explicit empty collection — every field always present |
+| `;; comment` | comment |
 
 Every position's expected type is already known before reading; the raw
 reader discovers delimiter structure, never guesses semantic types from
-content — atoms are classified on demand by expected type. Dotos text is a
+content — atoms are classified on demand by expected type. The old
+structural pipe forms `(| … |)` / `{| … |}` are removed from the grammar
+(`(|…|)` survives only as pipe-text), and `tree-sitter-dotos` still lags
+that change, so its fixtures are not syntax authority. Dotos text is a
 projection at one edge of a binary system: rkyv binary is the single
 encoded form, at rest as the SEMA body in each daemon's database and on the
 wire as component messaging. Daemons speak binary exclusively; the
