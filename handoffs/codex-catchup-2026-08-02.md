@@ -56,6 +56,12 @@ behavior diverges (e.g. a different baseline, or archived values carrying
 indent), stop and report the divergence with evidence before changing
 anything archive-visible. Version bump per the versioning discipline.
 
+While in the repo, close a small witness gap: the psyche confirmed the
+vector-payload variant spelling `Batch.[3 9 27]` (single-field variant
+carries its payload block directly). The grammar supports `Head.[...]`
+as a first-class dot-application form, but no derive round-trip test
+covers a single-field enum variant with a Vec payload — add one.
+
 ### 3.2 tree-sitter-dotos catch-up — implement
 
 The tree-sitter grammar lags the language: it still carries the removed
