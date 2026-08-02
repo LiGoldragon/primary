@@ -88,8 +88,11 @@ editing, evolution engine, ScopeOf realization.
 
 ## 4. The file kinds, full candidate shape
 
-Interface body grows to **five positions** — the inventory forced
-streams in: inputs, outputs, refusals, **streams**, shared types.
+The interface body is **four positions** — inputs, outputs, refusals,
+shared types. Streams are NOT a section (psyche-corrected: sections are
+earned only by universal roles; patterns are Nomos objects). A stream
+is a Nomos-object application declared among the types — full vertical
+design in `reports/NomosStreamDesign-2026-08-02.md`:
 
 ```ethos
 Interface.1
@@ -98,15 +101,15 @@ Interface.1
   [Record.Entry Observe.Query]
   [Recorded.RecordIdentifier Observed.Entries]
   [GuardianRejection.Reason ReferentRejection.Reason]
-  [Observer.{ObserverFilter ObserverSubscription ObservationEvent}]
-  {RecordIdentifier.Integer Entries.Vector.Entry Reason.Text}
+  {RecordIdentifier.Integer Entries.Vector.Entry Reason.Text
+   Stream.Observer.{ObserverFilter ObserverSubscription ObservationEvent}}
 }
 ```
 
-- A stream entry is `Name.{OpenPayload Receipt Event}`: the input that
-  opens it, the receipt returned, the event type pushed. Token and
-  close machinery are universal and emitted, never authored
-  (non-repetition: every stream closes the same way).
+- The Nomos object comes first — `Stream.Observer.{...}` is a stream
+  named Observer, its payload the open-query, receipt, and event
+  types; token and close machinery are universal and emitted, never
+  authored.
 - Imports group by source: `source.{A B}`, sources being sibling files
   of the component (`nexus`, `sema`, `interface`) or other components'
   contract names (`signal-domain`), resolved by the build wiring the
@@ -143,7 +146,7 @@ A sema body: record types, then families as `table.{Record Key}`.
 
 | # | Gap | Candidate |
 | --- | --- | --- |
-| G1 | Stream surface (forced by 3 of 4 daemons) | Fifth body position; `Name.{OpenPayload Receipt Event}`; universal token/close emitted |
+| G1 | Stream surface (forced by 3 of 4 daemons) | RESEATED: a Nomos object, not a section — `Stream.Observer.{...}`; full vertical in `reports/NomosStreamDesign-2026-08-02.md` |
 | G2 | Import spelling and resolution | `source.{A B}` entries; sources are sibling-file or component names, resolved by build wiring |
 | G3 | Unit return | Explicit `Unit` in last position (absence of result is information position cannot infer) |
 | G4 | Trait/method prose | Optional pipe-text description position; traits-as-documentation suggests yes |
@@ -191,8 +194,9 @@ A sema body: record types, then families as `table.{Record Key}`.
 
 ## 7. Questions for the psyche
 
-1. **Streams** (G1): confirm the fifth body position and react to
-   `Name.{OpenPayload Receipt Event}` with universal token/close.
+1. **Streams** (G1): SUPERSEDED — the psyche corrected the section
+   design to a Nomos object; the open questions now live in
+   `reports/NomosStreamDesign-2026-08-02.md` section 7.
 2. **First landing** (I3): fixtures spirit-first as ruled, but the
    first *production* switchover in signal-mind where nothing is
    displaced — accept, or insist spirit lands first in production too?
