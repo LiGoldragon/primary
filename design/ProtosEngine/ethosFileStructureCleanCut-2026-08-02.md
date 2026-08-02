@@ -1,0 +1,95 @@
+# Ethos File Structure, Clean Cut, Traits Doctrine — 2026-08-02
+
+Rulings and vision from the psyche's spoken answer to the Ethos production
+bootstrap proposal's question A (which asked how to treat the legacy
+six-slot form). Quotes condensed from dictation.
+
+## Ruling 1: clean cut — the old form is not a topic
+
+**[psyche-verbatim, condensed]**: "We don't care about the old form. We
+never care about the old form, especially now... I don't want to talk
+about the old form for the sake of the old form. If it's a good idea,
+then great, but that's the only reason we might even ever bring it up...
+we're making a clean cut here. It's over. We don't need to think about it
+anymore."
+
+Seated: the six-slot form and its migration are dissolved as design
+topics. Proposal question A is void — there is no bridge question, no
+migration phase to schedule, no old-form authority to respect. Old
+mechanisms may be mentioned only if independently good ideas.
+
+## Ruling 2: every Ethos file is header, imports, body
+
+**[psyche-verbatim, condensed]**: "all of the ethos files will have as a
+first object... like a header that gives us a hint for the type... we're
+going to want to have a version in there and an ethos type... the import
+is universal. It's just the second object. And then we have the content
+or body... which will be ethos type specific."
+
+Seated:
+
+- Three top-level objects: **header**, **imports**, **body**.
+- The **header** carries at least a **version** and the **ethos type**
+  (file kind). It is how the reader learns the body's root type — this
+  supersedes the expected-root-identity-only kind selection of the
+  overnight slice (`primary-pjm-A1`'s selector aspect).
+- **Imports** are universal across file kinds — the second object.
+- The **body** is file-kind-specific; the file-kind law stands: kinds
+  differ only in the body's root type, one shared machinery.
+
+Open sub-points, not ruled: what the version versions (language/format,
+declared content, or both); whether the header is exactly two positions
+or extensible; exact header spelling.
+
+## Ruling 3: initial file kinds
+
+**[psyche-vision]**: database specification ("which is going to open the
+door for eventually implementing the data evolution engine"); public
+interface specification (the signal communication protocol, the old
+input/output idea reborn without the old form); and likely a
+design/traits file kind ("really useful for when designing").
+
+## Ruling 4: input and output are traits
+
+**[psyche-verbatim, condensed]**: "the old schema had this input section
+and an output section, but in terms of code, they would do the same
+thing... whereas I think they should fall under a trait. So then these
+types implement the input trait and the output trait, meaning when the
+code calls them, all it does is treat input and emit output on all of
+these different objects, which creates the great cognitive reuse."
+
+Seated: input/output are not structural sections that merely generate
+types; they are trait memberships. A message type is an input because it
+falls under the input trait, an output likewise. (Manager verification
+commissioned: whether the ancestor's input/output sections were in fact
+codegen-identical.)
+
+## Ruling 5: traits doctrine deepened
+
+**[psyche-verbatim, condensed]**: "traits... give us the high-level view
+of the behavior of the program... they create shared mechanism that the
+objects implement, which creates reusable logic... most people implement
+traits as docs. So traits are actually more succinct... the ideal code
+documentation that are actually used by the compiler... writing a bit
+more code for agents is really not a big deal. So we can write traits for
+every method. Not every method has a trait, but every method falls under
+a trait. And we want to develop standards for agents to agglomerate
+behavior under certain names, which is to say under certain traits."
+
+Seated: extends the seated traits-first standard. Every method falls
+under a trait; trait proliferation is not a cost in the agent era; a
+standards item is warranted for the shared trait vocabulary (how agents
+agglomerate behavior under named traits).
+
+## Ruling 6: naming — traits lean, contract suspect
+
+**[psyche-verbatim, condensed]**: traits are "well-named, but maybe we
+want to think about different names... you've said contract before, but
+because we're using contract in other ways — and you can find out about
+that — it might be overloaded."
+
+Seated as lean: the declaration form leans **Trait** over **Contract**;
+manager commissioned to verify how "contract" is currently used across
+the corpus before the name is fixed. Also open: whether a trait
+declaration needs any tag at all where its body position already implies
+it (non-repetition).

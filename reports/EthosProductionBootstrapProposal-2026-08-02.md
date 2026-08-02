@@ -41,29 +41,43 @@ of a component is types **plus contracts with method signatures**. That
 syntax is the new design work, and it is small — everything else is
 plumbing an existing train.
 
-Candidate surface for psyche reaction (manager construction, following the
-positional, non-repetition, and known-type-at-position laws; NOT ruled):
+Candidate whole-file surface for psyche reaction, under the ruled
+header-imports-body structure (manager construction; NOT ruled). An
+interface file whose body positions are inputs, outputs, shared types —
+trait membership implied by position, per the input/output-are-traits
+ruling:
 
 ```ethos
+Interface.1
+[Domain Magnitude]
 {
-  Scope.ScopeOf.Domain
-  ScopeContainment.Contract.{
-    contains.{Scope Bool}
-  }
-  ScopeOverlap.Contract.{
-    overlaps.{Scope Bool}
-  }
+  [Record.Entry Observe.Query]
+  [Recorded.RecordIdentifier Observed.Entries]
+  {RecordIdentifier.Integer Entries.Vector.Entry}
 }
 ```
 
-Reading: at a declaration position, `Name.Contract.{...}` declares a
-contract; each member is a method signature `name.{...}` whose positions
-are the parameter types with the **last position the return type**; the
-receiver (Rust `&self`) is implied by contract membership and never
-written; reference-ness, borrowing, and dispatch (`&`, `dyn`, `impl`,
-monomorphization) are assembly decisions made by the Nomos object —
-Rust-is-assembly. A parameterized contract names its parameter contracts
-per the generics-are-traits ruling.
+Reading: header `Interface.1` (kind and version); imports; body with
+three positions — input types, output types, shared payload types. A type
+declared in the inputs position falls under the input trait with nothing
+written; the Nomos object emits the Rust `impl` — assembly detail. A
+traits/design file kind declares behavior:
+
+```ethos
+Traits.1
+[Scope]
+{
+  ScopeContainment.{contains.{Scope Bool}}
+}
+```
+
+Each trait member is a method signature `name.{Params… Return}` — the
+**last position is the return type**; the receiver (Rust `&self`) is
+implied by trait membership and never written; borrowing, references, and
+dispatch are assembly decisions made by the Nomos object. Whether the
+trait declaration needs any tag at all where its body position implies it
+is open (non-repetition lean: no tag). A parameterized trait names its
+parameter traits per the generics-are-traits ruling.
 
 ## 3. Proposed slice, in order
 
@@ -123,14 +137,16 @@ component consuming the output.
 
 ## 5. Questions for the psyche
 
-**A — Pipeline and canonicity.** Recommendation: the new interface file
-kind runs on the new train only, and the six-slot `domain.schema` path is
-left untouched for now — no bridge, no adaptation, no dual authority over
-the same content, because the new file kind carries new content (the
-contracts) that the legacy path never produced. `primary-pjm`'s
-types-migration question stays open and becomes its own later phase.
-Confirm, or rule instead that types migrate off six-slot in this same
-slice.
+**A — Pipeline and canonicity: DISSOLVED by psyche ruling.** The clean
+cut (`design/ProtosEngine/ethosFileStructureCleanCut-2026-08-02.md`): the
+old form is never a topic; no bridge, no migration phase, no old-form
+authority. Every Ethos file is **header, imports, body** — the header
+carries a version and the ethos type and is how the reader learns the
+body's root type; imports are the universal second object; the body is
+file-kind-specific. Initial kinds: database specification, public
+interface specification, and likely a design/traits kind. Input and
+output are trait memberships, not structural sections that merely emit
+types.
 
 **B — The contract and signature syntax.** React to the section 2
 candidate: `Name.Contract.{...}` members as `method.{Params... Return}`,
