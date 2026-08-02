@@ -38,3 +38,18 @@ protos-based spirit's database. This makes spirit's full vertical
 end to end, no compatibility reader, no fold. The bead train reflects
 this. (The data evolution engine remains a designed future capability,
 untouched by this bootstrap choice.)
+
+## Appended 2026-08-02: universal traits home confirmed — protos crate
+
+Agent text answered: the MVP bead train presentation, naming the two
+open decisions.
+
+Psyche ruling [psyche-verbatim]: "protos crate confirmed; dispatch
+codex for vq6.1-vq6.3"
+
+Seated: the universal Input, Output, and Refusal traits — and the
+stream-side StreamOpen and StreamEvent — live in the `protos` crate
+("implementation-free component contracts for the Protos family").
+The four daemons gain the dependency as their contract crates switch
+over. Bead primary-vq6.4 closed; codex dispatched for slices
+primary-vq6.1 through primary-vq6.3.
