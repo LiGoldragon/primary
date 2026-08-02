@@ -350,18 +350,18 @@ is reserved for the language family):
 
 ```mermaid
 sequenceDiagram
-    participant A as Author / agent
-    participant OI as Operation interface<br/>(signal message)
-    participant EN as Engine slots<br/>(encoded form)
-    participant CL as Change log<br/>(= VCS)
+    participant A as Author or agent
+    participant OI as Operation interface (signal message)
+    participant EN as Engine slots (encoded form)
+    participant CL as Change log (the VCS)
 
     A->>OI: one atomic operation
-    OI->>EN: apply edit + every cascaded effect<br/>(topological walk of affected DAG subgraph)
+    OI->>EN: apply edit and every cascaded effect (topological walk)
     alt all effects succeed
         EN->>CL: append the operation
-        CL-->>A: new state; history is the log
-    else any effect refuses (e.g. cycle)
-        OI-->>A: typed refusal; nothing changed
+        CL-->>A: new state - history is the log
+    else any effect refuses (a cycle, a typed error)
+        OI-->>A: typed refusal - nothing changed
     end
     A->>EN: ask to see a part
     EN-->>A: rendered textual form (projection)
