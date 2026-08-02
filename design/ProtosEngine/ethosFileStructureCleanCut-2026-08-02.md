@@ -163,3 +163,52 @@ carry an ancestor reference — the hash of an older encoded version that
 already has a slot in the daemon, "put that hash back into the source
 file." Connects to the encoded-name minting sub-choice (first-version
 true name) and evolution lineage; recorded for later.
+
+## Appended 2026-08-02, later same session: interface body confirmed, nexus introduced, sema naming
+
+Agent text answered: the manager's four-position interface body (inputs,
+outputs, refusals, shared types), the refusals-generate-Rust-errors
+account, and the signature conventions (last position return, receiver
+implied).
+
+Psyche ruling [psyche-verbatim]: "that looks good, yes." Also directed: a
+deep design hunting gaps for MVP protos-based components, "with the
+signal repos obviously adapted, as well as the in-repo database
+specification (formerly called sema.schema; we could call it sema.ethos
+for now, unless you have a better suggestion)".
+
+Seated:
+
+- The interface file body is four positions: **inputs, outputs, refusals,
+  shared types**. Refusal declarations generate the Rust error machinery;
+  membership in the input/output/refusal traits is positional and never
+  written.
+- Signature conventions confirmed: `method.{Params... Return}`, last
+  position the return type, receiver implied by trait membership,
+  borrowing and dispatch owned by the Nomos object.
+- The per-component database specification file is `sema.ethos` for now
+  (formerly sema.schema); the header carries the kind, so filenames are
+  convention.
+
+## The nexus [psyche-vision, same session]
+
+**[psyche-verbatim, condensed]**: "what we used to call the nexus...
+describes the main machinery of the logic of the daemon, how it
+transforms things. So perhaps that's a different kind of file... we used
+to use the same input-output concept, which arguably is valid, but is
+also invalid in the sense that every one of these components is
+significantly different in implementation... if we're defining the traits
+in ethos, then we need to define the types — the inputs and outputs, the
+signature for the methods for those traits — so they can be referenced.
+So perhaps that's mostly what the nexus is: defining the types that its
+traits implement and its traits. Like Spirit has a judge that judges
+whether an entry is valid to be accepted — you would have this trait of
+validate or judge, and then the types that come in and out of that
+judgment apparatus."
+
+Seated as vision: the **nexus file kind** declares the daemon's internal
+machinery spec — its behavior traits and the types those traits' method
+signatures reference. The old file-level input/output idea for the nexus
+is demoted, not lost: in/out is real per method, so it lives in the
+signatures, not in file sections. Manager brainstorming and the MVP deep
+design commissioned in this session's proposal thread.
