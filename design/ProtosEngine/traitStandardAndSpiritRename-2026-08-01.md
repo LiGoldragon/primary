@@ -121,3 +121,25 @@ specification, expressed in code, before bodies are written.
 wording against `design/Nomos/rustTuplesForbiddenLawScope-2026-07-30.md`
 and close), then primary-pnr (skills gating design), then primary-0p2
 (archaeology).
+
+## Appended 2026-08-02: trait placement and escalation
+
+Agent text answered: the previous proposal narrowed traits to nontrivial
+domain roles and asked whether "nearly every implementation" meant domain
+roles or literal methods and `impl` blocks.
+
+### Ruling 3c: traits map the program; unclear placement escalates
+
+**[psyche-ruled, condensed]**: traits are a fast, cheap, compilable map of the
+program, giving the Psyche an escalation and review surface before
+implementation bodies are written. When a behavior's domain is clear, reuse
+the existing behavioral-domain trait. When behavior belongs to that domain but
+the trait does not yet express it, extend the trait, using a provided/default
+method when a valid default exists. If neither an existing trait nor a clear
+new trait placement can be found, stop and escalate the need for machinery and
+the uncertainty to the Psyche instead of proceeding. This prevents trait hell
+and runaway traits.
+
+The Psyche is the current authority for this escalation. Future intermediate
+escalation layers may be interposed. This ruling governs the behavior; it does
+not approve or settle the exact standards or skill wording proposed today.
