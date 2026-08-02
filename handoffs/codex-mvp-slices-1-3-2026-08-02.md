@@ -47,8 +47,14 @@ Laws that are failure criteria: no per-file-kind parsing code (a new
 kind must cost a root type plus at most a simple trait impl); no field
 names; version mismatch and unknown kind are typed refusals.
 
-Witness: all three spirit fixtures decode to typed WholeEthos and
-re-emit byte-identical; goldens in the repo's `nix flake check`.
+Witness: each untouched Spirit golden decodes to typed `WholeEthos`, emits
+canonical text from that typed/encoded value through the shared structural
+writer, and reparses to the identical encoded value and archive bytes, including
+the same typed source-only import representation. Presentation layout bytes are
+not compared; text that is encoded content remains meaningful. Goldens remain
+in the repo's `nix flake check`. This semantic criterion supersedes the earlier
+agent-authored byte-identical wording per
+`design/ProtosEngine/encodedMeaningRoundTrip-2026-08-02.md`.
 
 ## Slice 2 — `primary-vq6.2`: trait/struct vocabulary to compiling Rust
 
@@ -73,11 +79,22 @@ transform -> WholeLogos -> Rust emit) as a batch entry point: a thin
 binary or library function linking the nomos-engine machinery,
 invocable from `build.rs` and Nix derivations with no daemons and no
 sockets. Typed refusals for header version/kind mismatches surface as
-build errors. Keep the daemon path untouched.
+build errors. The caller supplies every translator-issued source identity,
+grammar identity, prior, and Rust grammar identity; the batch path allocates no
+identity. Keep the daemon path untouched.
 
-Witness: the CLI takes each fixture and emits `.rs`; a scratch crate
-builds the nexus output; a Nix derivation invokes it; all in flake
-check.
+The Slice 3 projection is deliberately partial outside Nexus. Interface emits
+the currently supported wire type declarations while membership and refusal
+semantics remain deferred to Slice 5 and typed `Stream.Name.{...}` applications
+remain deferred to Slice 6. Sema emits its record/type declarations while
+tables and storage remain deferred to Slice 7. A successful partial generation
+returns both the `.rs` artifact and an observable typed deferred set; artifact
+presence alone never claims those later semantics.
+
+Witness: the CLI takes each of the three fixtures and emits `.rs` plus a
+deferred-outcome receipt; a scratch crate builds the Nexus output only; the
+library is called from `build.rs`; a Nix derivation invokes the installed CLI
+on all three; all remain in flake check.
 
 ## Hard stops
 
