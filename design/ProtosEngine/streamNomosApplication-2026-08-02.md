@@ -52,3 +52,44 @@ Seated:
 - This composes with the same-session reseating that streams are not a
   body section: universal roles earn positions; patterns are Nomos
   objects.
+
+## Appended 2026-08-02: the talked-past diagnosis and the parsing method
+
+Agent text answered: the manager's summary presenting
+`SimpleGeneric.Sorted.{Ord Vector}` and `ScopeOf.DomainScope.Domain` as
+"corrected spellings" under object-first.
+
+Psyche ruling [psyche-verbatim]: "in my mind, SimpleGeneric and ScopOf
+were nomos transformers. Im not saying they should be, but that is how
+we talked past each other, and why you thought you understood when you
+didnt. always think about parsing, then you wont miss details like
+this. I always think about how those objects are parsed to and from
+encodedform."
+
+Seated:
+
+- **Method directive**: syntax discussion is grounded in parsing —
+  every proposed form must state how the reader classifies it at its
+  known position, what resolves, what binds, and how the encoded form
+  re-emits it. Presenting a spelling without its parse path is how
+  agents and the psyche talk past each other.
+- **Diagnosis**: the corpus mixed two parse models without anyone
+  pinning either. Name-first (declaration-uniform: at a declaration
+  position the first symbol is always the declared name, and the
+  definition after the first dot classifies by resolution) and
+  object-first (constructor-first: the form's kind is known after
+  resolving the head, the name is data inside the application). The
+  historical spellings `Sorted.SimpleGeneric.{...}` and
+  `DomainScope.ScopeOf.Domain` were, in the psyche's mind, transformer
+  applications all along; the manager treated the spelling as settled
+  surface without stating the parse, and understanding was illusory.
+- Whether SimpleGeneric and ScopeOf themselves are Nomos transformers
+  is explicitly NOT ruled here ("Im not saying they should be").
+- Open, sharpened: one parse model must win for applications at
+  declaration positions — coexistence is parse-incoherent (the reader
+  cannot know whether symbol one is a name or an object without a
+  rule). The Stream ruling seats object-first for streams; whether it
+  generalizes to every transformer application is for the psyche.
+  Landed-code consequence if it does: Slice 3's ScopeOf recognition
+  matches a name-first shape (a typed newtype application whose head
+  equals the ScopeOf identity) and would flip to head-resolution.

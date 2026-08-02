@@ -211,7 +211,13 @@ registry by the stream type.
    than Output membership — confirm.
 4. Token: one universal SubscriptionToken with type-level stream
    binding (proposed) rather than per-stream token types — confirm.
-5. Retroactive object-first: do `SimpleGeneric.Sorted.{Ord Vector}`
-   and `ScopeOf.DomainScope.Domain` become the corrected spellings?
+5. The parse model for applications, sharpened by the psyche's
+   talked-past diagnosis: one model must win at declaration positions —
+   object-first (kind known after resolving the head; name is data;
+   the Stream ruling) or name-first (declared name always first;
+   definition classifies by resolution). If object-first generalizes,
+   the historical spellings flip AND Slice 3's landed ScopeOf
+   recognition (name-first shaped) flips to head-resolution. Whether
+   SimpleGeneric and ScopeOf are even transformers is itself unruled.
 6. The transformer-kind name for family emission (`Structural.Family`
    is a placeholder).
