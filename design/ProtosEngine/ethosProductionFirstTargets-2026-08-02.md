@@ -53,3 +53,21 @@ stream-side StreamOpen and StreamEvent — live in the `protos` crate
 The four daemons gain the dependency as their contract crates switch
 over. Bead primary-vq6.4 closed; codex dispatched for slices
 primary-vq6.1 through primary-vq6.3.
+
+## Appended 2026-08-02: full signal-crate rename, executed on the switchover landings
+
+Agent text answered: the manager's explanation of the rename-scope
+decision (coherence versus blast radius, with the touch-once
+sequencing recommendation).
+
+Psyche ruling [psyche-verbatim]: "full rename confirmed; do it on
+vq6.10 landings"
+
+Seated: `signal-orchestrate`, `meta-signal-orchestrate`, and
+`signal-message` rename with their daemons (`signal-orchestrator`,
+`meta-signal-orchestrator`, `signal-messenger`), and each rename
+executes inside that contract crate's Ethos switchover landing
+(bead primary-vq6.10) — new generation source, new name, consumers
+repinned, one atomic landing per crate. Bead primary-vq6.11 closed;
+primary-vq6.12 keeps the remainder: daemon repo renames, binary
+names, Nix service modules, and workspace references.
