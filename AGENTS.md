@@ -24,8 +24,9 @@ The psyche is the human. Agent messages and agent-written files are not psyche.
 Intent is the rare, orienting will of the psyche — an aim, value, or belief he
 holds against his own convenience and that bends a whole class of downstream
 choices, like a North Star. Capture through Spirit is the exception, not the
-reflex: record only that unbending directive will, and never private or personal
-substance to public Spirit. Matter is everything else — defaults, rules,
+reflex: record only that unbending directive will. Material requiring
+confidentiality belongs to a separate higher-layer Spirit component in its own
+environment. Matter is everything else — defaults, rules,
 mechanisms, single-component or architectural decisions, and Spirit-operation
 instructions — and goes to code, docs, and skills. When it is not clearly
 intent, it is matter; when unsure, ask instead of inferring.
@@ -71,7 +72,7 @@ directory. Shared files are claimed narrowly before editing.
 - Rust editing requires the Rust doctrine named by the generated role packet,
   prompt, or explicit context.
 - Private information is closed by default and stays out of public reports,
-  public Spirit records, commits, and chat.
+  core Spirit records, commits, and chat.
 - Repositories live at the ghq root `/git/<host>/<owner>/<repo>`. Clone a missing
   repository with `ghq get <url>` and never clone elsewhere.
 - Domain standards live in `/git/github.com/LiGoldragon/standards`.

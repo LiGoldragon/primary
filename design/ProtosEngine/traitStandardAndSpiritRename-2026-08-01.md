@@ -277,3 +277,31 @@ an independent package authority.
 **Intent-log classification**: this is dependency and deployment architecture,
 not an enduring psyche value. It belongs to this design log and the owning
 flake/deployment surfaces.
+
+## Appended 2026-08-03: clean migration removes three legacy dimensions
+
+Agent context answered: the clean Spirit migration needed a disposition for
+legacy certainty, privacy, and referent structures—whether to preserve them in
+compatibility storage, translate them, or omit them from the migrated database.
+
+**[psyche-verbatim]**: "I want certainty, privacy and referents gone".
+
+**[psyche-verbatim]**: "just throw the corresponding data out of the migrated
+database."
+
+### Ruling 16: retain records; discard certainty, privacy, and referent data
+
+**[psyche-ruled]**: the clean migration retains the Spirit records while
+discarding their certainty data, their privacy data, and all referent data. The
+migrated database carries no compatibility columns, tables, side records,
+aliases, or other storage for those removed dimensions. The removal applies to
+the migrated database; it does not itself authorize destruction of a separately
+retained pre-migration recovery backup.
+
+This supersedes every proposal to preserve certainty, privacy, or referents as
+legacy compatibility data inside the migrated Spirit database.
+
+**Intent-log classification**: this is Spirit architecture and data-migration
+matter, not a general psyche value, aim, or belief. It belongs to this design
+log and the owning contract, store, migration, documentation, and deployment
+surfaces.
