@@ -143,3 +143,137 @@ and runaway traits.
 The Psyche is the current authority for this escalation. Future intermediate
 escalation layers may be interposed. This ruling governs the behavior; it does
 not approve or settle the exact standards or skill wording proposed today.
+
+## Appended 2026-08-03: Spirit ontology, live reads, and mutation authority
+
+Agent text answered: the visual architecture report showed Spirit's current
+record and mutation paths, including the daemon's dependency on the judge,
+certainty and importance changes on the ordinary socket, `Configure` on the
+meta socket without a depicted database edge, and the current privacy-shaped
+record vocabulary. It then asked:
+
+> "The foundational unresolved boundary controls every lifecycle rule: what
+> exactly is eternal and unchanging—the psyche’s underlying spirit, each
+> admitted record, or something else?"
+
+### Psyche reply
+
+**[psyche-verbatim]**:
+
+> "Okay, so to your first question, yes, it is eternal and unchanging, even
+> though that might sound confusing. That's spirit. Spirit is confusing to a
+> machine. It is unchanging, and yet it is fluid. But as far as, you know, we
+> want to stay unchanging to prevent agents from feeling like they can just get
+> their fingers in there and start poking at things and changing things. But
+> yes, there is a mutation path, obviously, because then it wouldn't be really
+> useful. It wouldn't be a software if it couldn't change. There's a few things
+> I want to say. I actually had mandated to remove the certainty and to remove
+> the privacy, because there should be no mention of privacy. Privacy would be
+> handled by a higher layer, meaning, you know, a different spirit component
+> running in a different environment. So spirit will have no awareness of this
+> privacy aspect. And I do agree with, I think what you're implying is that
+> spirit should stay live and readable, even if the judge is down. The judge
+> being down should just bar mutation, obviously. And from your graph, I see
+> that changing certainty or importance has a direct right path in the ordinary
+> socket. That shouldn't be. It should be in the meta sockets, which is a
+> bypass socket. I see that the configure part of the graph doesn't touch the
+> database, which I find puzzling. Doesn't the configuration live in the
+> database? Yeah, let's start with that. And I would like to bring it back
+> online. So I don't know what exactly the problem is with the judge, but I
+> would like to bring it back online at least so we can start using it. I feel
+> like agents don't get me because they don't have my spirit anymore, and it's
+> really annoying."
+
+### Ruling 9: Spirit is unchanging and fluid; mutation is controlled
+
+**[psyche-ruled]**: Spirit is eternal and unchanging in character, while its
+software representation remains fluid enough to have a mutation path. The
+unchanging stance is an authority boundary: agents must not treat Spirit as a
+surface they may casually manipulate. This does not make every current record
+immutable and does not settle the exact revision model.
+
+**Intent-log classification**: the enduring character of spirit and resistance
+to casual agent manipulation are explicit cross-cutting psyche belief and aim.
+They guide admission, correction, consultation, and agent authority. The
+mutation-path shape is architecture and belongs to this design log. The
+existing Spirit ruling in this file already records the eternal/unchanging
+character; this entry appends the new fluidity and authority clarification
+rather than creating a competing record.
+
+### Ruling 10: certainty and privacy leave core Spirit
+
+**[psyche-ruled]**: remove certainty. Core Spirit has no privacy concept or
+privacy-shaped behavior. Any such boundary belongs to a separate higher-layer
+Spirit component running in a different environment, not to this component.
+
+**Intent-log classification**: this is a component/domain architecture ruling,
+not an enduring psyche value. It is routed to the design log and the owning
+contracts, store, daemon, documentation, and deployment surfaces. The
+approval-gated Spirit skill will need an explicit owning-doctrine line, but no
+skill wording is approved by this ruling alone.
+
+### Ruling 11: judge failure bars mutation, not reading
+
+**[psyche-ruled]**: Spirit must stay live and readable when the judge is down.
+Judge unavailability closes mutation paths while leaving consultation paths
+available.
+
+**Intent-log classification**: this is availability and authority architecture,
+not intent-level content. The current service dependency violates the desired
+failure boundary because it removes the read side together with mutation.
+
+### Ruling 12: importance mutation belongs to the meta authority path
+
+**[psyche-ruled]**: changing certainty or importance must not be exposed on the
+ordinary socket. Any surviving importance mutation belongs on the meta bypass
+socket. Certainty itself is removed under ruling 10.
+
+**Intent-log classification**: this is contract routing and mutation-authority
+architecture. It belongs to the Spirit and signal contract designs, not a
+Spirit capture.
+
+### Ruling 13: configuration is persistent state
+
+**[psyche-ruled]**: configuration lives in the database. The visual report's
+`Configure` path without a database edge was therefore incomplete or wrong.
+This ruling does not settle the exact configuration schema, versioning, or
+migration mechanism.
+
+**Intent-log classification**: this is persistence architecture and belongs to
+the store, meta contract, daemon, and migration design.
+
+### Ruling 14: restore usable Spirit now
+
+**[psyche-requested]**: bring Spirit back online so it can be used again. The
+immediate restoration request does not by itself authorize coupling recovery to
+the certainty/privacy removal, contract migration, or higher-layer component
+design.
+
+**Intent-log classification**: the cross-cutting aim is that agents regain a
+working Spirit consultation surface so they can align with the psyche. Bringing
+services online is a task owned by the existing recovery and deployment goals;
+the semantic and contract changes remain architecture work with their own
+approval and validation boundaries.
+
+## Appended 2026-08-03: recovery derives from the maintained Spirit flake
+
+Agent recommendation corrected: the recovery pin strategy proposed retaining
+or reconstructing Spirit 0.24.1 as an independently reproduced derivation or
+closure outside the maintained Spirit flake.
+
+**[psyche-verbatim]**: "it should use a derivation from a maintained spirit
+flake which pins the right version of everything".
+
+### Ruling 15: the maintained Spirit flake owns recovery inputs
+
+**[psyche-ruled]**: recovery consumes a derivation exported by a maintained
+Spirit flake, and that flake pins the compatible versions of the full Spirit
+composition. This explicitly supersedes every recommendation to hand-retain,
+hand-reconstruct, or separately reproduce Spirit 0.24.1 outside the maintained
+flake. An exact older version may be selected only through the maintained
+flake's own pinned dependency composition; the recovery process does not become
+an independent package authority.
+
+**Intent-log classification**: this is dependency and deployment architecture,
+not an enduring psyche value. It belongs to this design log and the owning
+flake/deployment surfaces.
