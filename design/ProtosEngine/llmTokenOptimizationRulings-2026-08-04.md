@@ -205,3 +205,33 @@ belonging to the next daemon down the chain. This concerns typing, not
 parsing: the 2026-08-03 invariant that the Ethos parser needs no Nomos
 transformer table survives, because `.( )` marks transformer applications
 structurally; the schemas are needed to type the payloads.
+
+## Ruling: string escapes — balanced nesting plus backslash
+
+Agent text answered: options for a literal `”` inside `“…”` — (a) backslash
+escape, (b) balanced-pair nesting, (c) both, with a lean toward (c).
+
+Psyche, verbatim: "sure"
+
+Seated: inside `“ ”`, balanced `“ ”` pairs nest without escapes (the two
+codepoints are distinct, so the parser counts depth for free). An unbalanced
+literal `”` or `“` is written `\”` or `\“`; a literal backslash is `\\`. The
+symmetric `\“` spelling and `\\` carry over from pipe-text's escape rule by
+agent extension; flagged to the psyche in chat.
+
+## Ruling: encoded forms use strict purpose-designed types
+
+Psyche, verbatim: "Also, I want the encoded form to use strict types
+designed specifically for each encoded form's needs. no Vec&lt;Fields&gt; and such
+dirty types. former code isnt binding, we are in a deep redesign phase."
+
+Seated: every encoded form is carried by types designed for that exact
+form's needs; generic container shapes (`Vec<Fields>` and similar) are
+barred from encoded surfaces. Existing codec code is not binding precedent —
+the train is in a deep redesign phase. Tracked as a bead.
+
+## Note: intent line approved
+
+The psyche approved the intent line on training models on Protos ("sure")
+and asked what the intent log is, distinct from Spirit; capture proceeds via
+the intent-log mechanism with the approved wording.
