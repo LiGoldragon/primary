@@ -156,3 +156,52 @@ Also floated, explicitly with question marks: reserving `.< >` for a
 dot-prefixed slot such as a transformer payload — "Observer.Stream.< ... >
 ??" — pending measurement of the `X.Y.<open>` chain patterns. No ruling
 seated; the trait/generics delimiter remains open.
+
+## Ruling: generics are bare Rust-style `< >`; transformer payload is `.( )`
+
+Agent text answered: round-3 measurement — the dotted chain
+`Observer.Stream.<…>` costs 1 token per call less than the ruled
+`Observer|Stream.{…}` because `|` fuses with nothing while `.Stream` and
+every dotted opener (`.<` `.{` `.(` `.[`) fuse to single tokens; bare
+`Vector<Sortable>` equals `Vector.<Sortable>` flat and saves 1 token per
+nested application (`Result<Vector<Sortable> Error>` = 7 vs 8); decision
+list posed the transformer form and the generics delimiter as open rulings.
+
+Psyche, verbatim: "we could use .() for transformers, and <> for generics"
+
+Psyche, verbatim: "and I want the Result<Vector<Sortable> Error> syntax for
+generics, since its more token efficient than using a dot, and recycles rust
+cognition"
+
+Seated:
+
+- Generic/trait parameters are bare angle pairs, Rust-shaped:
+  `Vector<Sortable>`, `Result<Vector<Sortable> Error>`. Angles are exclusive
+  to generics.
+- Transformer applications return to the dotted chain with a parenthesis
+  payload: `Name.Transformer.(…)`. The `.(` opener is the structural
+  transformer marker; it is token-equal to every other dotted opener, so the
+  choice costs nothing and removes the bare-`<>`-versus-dotted-`<>`
+  proximity concern entirely. `( )` is free for this duty because `“ ”` now
+  carries strings.
+
+Recorded as open pending psyche confirmation: whether `|` retires from the
+grammar entirely; whether sectioned entries spell `Observer.(…)` with the
+section supplying the operator, which would resolve the 2026-08-03 open
+question; whether `Map.(alpha.1 beta.2)` is reinterpreted as an ordinary
+transformer-style application under the new `.( )` meaning.
+
+## Architecture statement: transformer schema mirroring down the daemon chain
+
+Psyche, verbatim: "and ethos will need to know the (input) schema of the
+nomos transformers, so we are looking at another type-mirroring like with
+logos/nomos. Essentially, each daemon needs some types to store the objects
+belonging to the next deamon down the chain."
+
+Recorded: Ethos must carry the input schemas of Nomos transformers — a
+type-mirroring layer parallel to the existing Logos/Nomos mirroring. The
+implied general law: each daemon holds types that store the objects
+belonging to the next daemon down the chain. This concerns typing, not
+parsing: the 2026-08-03 invariant that the Ethos parser needs no Nomos
+transformer table survives, because `.( )` marks transformer applications
+structurally; the schemas are needed to type the payloads.
