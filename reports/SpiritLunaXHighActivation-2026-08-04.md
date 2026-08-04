@@ -61,7 +61,23 @@ instead.
 
 ## Decision state
 
-The target remains active and healthy. Activation rollback remains the accepted
-immutable CriomOS `b46390940cf641e19bc9bbd243726308286a8bd2` if the independent
-pre/post equality witness fails. Do not roll back solely because this local
-worker did not retain its pre-state hash.
+The independent verifier then found that Lojix did not retain the target
+CriomOS revision in its current-node record. This fails the required active
+profile/current-generation witness, so the target was rolled back immediately.
+
+The exact non-secret rollback request was a `Deploy(UserEnvironment(...))`
+request for CriomOS `b46390940cf641e19bc9bbd243726308286a8bd2`, with
+`ActivateNow`, `RequireImmutable`, `None`, and `[]`; it used the same approved
+account/node/configuration reference as activation. The typed deployment reply
+and subsequent node query both matched that immutable rollback revision. No
+source commit was reverted.
+
+Post-rollback gates passed without emitting record content: judge and daemon
+are active, exactly three Spirit sockets are present, `Version` is `0.26.0`,
+and `Marker` is `(25, 5374348791551424496)`. The live judge argv contains
+`OpenAiCodex`, `gpt-5.6-terra`, and `(Some Medium)`, and contains neither
+`gpt-5.6-luna` nor `(Some XHigh)`.
+
+The published 0.27 source chain remains available, but a new activation may
+proceed only after Lojix can retain and demonstrate its target current-profile
+record alongside the bounded pre/post state witness.
