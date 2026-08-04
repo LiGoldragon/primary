@@ -287,3 +287,38 @@ are the initiation payload and the event; the output is `Stream<Event>`.
 Naming leaning: `StreamInitiation` for the opening query, paired with
 `StreamTermination` — which implies close arrives as its own input type, not
 as a method on the Stream object. Initiation shape still open.
+
+## Ruling: one type per transformer; the mirror is shared Ethos source
+
+Agent text answered: a sketch giving transformer applications a single
+strict node, `TransformerApplication { name, transformer, payload }`, and
+questions on whether the Ethos-side mirror is derived or hand-authored and
+how deep it goes.
+
+Psyche, verbatim: "a different type for each transformer; hence my
+ethos/nomos overlap mention." and "so not that; it would a type for
+StreamInitiation, etc. those will eventually be written in ethos, and
+eventually that ethos code will be shared between nomos and ethos,
+eliminating the repitition." and "1. we will do some hand written mirror for
+now I guess" and "2. yes, full input schema"
+
+Seated: there is no generic transformer-application node in the encoded
+form. Each transformer has its own strict application type
+(`StreamInitiation`, `StreamTermination`, …), carrying that transformer's
+full input schema. For now the Ethos-side mirror of these types is
+hand-written; the end state is that the types are authored once in Ethos and
+that Ethos source is shared between Nomos and Ethos, eliminating the
+repetition.
+
+## Clarification: Sema is the database engine, not a chain daemon
+
+Agent text answered: a question whether Sema sits in the daemon chain as a
+mirrored layer.
+
+Psyche, verbatim: "I dont understand. I thought sema is the database engine
+that all daemons use. Do you mean the sema (storage) types?"
+
+The mirroring law binds the language daemons (Ethos/Nomos, Nomos/Logos).
+Sema is the shared database engine every daemon uses; the sema storage types
+a daemon holds are its persistence for objects, including the next daemon's
+mirrored objects, not a mirroring layer of their own.
