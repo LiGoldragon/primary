@@ -379,3 +379,27 @@ something for now"
 Seated: the previously open initiation shape is delegated — agents design
 the minimal `StreamInitiation` (and `StreamTermination`) the MVP needs, as a
 provisional form subject to later psyche review.
+
+## Ruling: correctNaming translation table in the Rust emission
+
+Agent text answered: the generic-pickup sketch using `Ord` as the trait
+name, with the Rust parameter spelled `T`.
+
+Psyche, corrected examples verbatim:
+
+```ethos
+Sorted.{Vector<Ordered>}              ;; struct Sorted<Ordered: Ord>(Vec<Ordered>)
+Range.{<Ordered> <Ordered>}           ;; struct Range<Ordered: Ord>(Ordered, Ordered)
+Status.[Pending Ready.<Numeric>]      ;; enum with a generic variant payload
+```
+
+Psyche, verbatim: "I want to create a translation table in logos' rust
+textualform emission for correctNaming &lt;-&gt; incorrectNaming, like Ordered and
+Ord, so we can have legible ethos/nomos/logos"
+
+Seated: the concept layer uses correct, legible names throughout ethos,
+nomos, and logos (`Ordered`, not `Ord`). Rust's abbreviated names are
+incorrectNaming, confined to Logos' Rust textual-form emission through a
+correctNaming ↔ incorrectNaming translation table (`Ordered` ↔ `Ord`, and
+kin). The psyche's examples also show the Rust type-parameter taking the
+trait's proper name (`Sorted<Ordered: Ord>`), not a minted `T`.
