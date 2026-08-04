@@ -497,3 +497,20 @@ Seated: `« »` carries no syntax today and is reserved — the designated
 delimiter pair for the language's next special need. It is not dropped from
 the design space; it is held. No surface may claim it without a psyche
 ruling.
+
+## Ruling: String is correct; the table translates only shortened code
+
+Agent text answered: provenance of the `Text ↔ String` table entry — `Text`
+is unruled fixture legacy that codex codified into the naming table;
+`String` is a full English word, arguably needing no translation entry at
+all.
+
+Psyche, verbatim: "String is correct; remove the table entry. there might
+be other names we want translated. anything that is shortened code."
+
+Seated: the string type's correct name is `String`, family-wide; the
+`Text ↔ String` entry leaves the translation table, and fixture uses of
+`Text` rename to `String`. The table's criterion is seated: it translates
+only shortened code — abbreviated Rust names (`Ord` ↔ `Ordered`,
+`Vec` ↔ `Vector`, and kin). Full-word Rust names pass through untranslated;
+new entries are added as shortened names are encountered.
