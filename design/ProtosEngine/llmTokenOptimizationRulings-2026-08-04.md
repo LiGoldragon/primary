@@ -421,3 +421,22 @@ concrete type. Distinct parameters sharing a trait use the named form:
 `<Left.Sortable> <Right.Sortable>`. Declaration-side generic pickup is
 thereby closed: mention declares, bare mentions co-refer by trait identity,
 names diverge.
+
+## Ruling: qualities — Shape and Trait under one syntax
+
+Agent text answered: proposal that the umbrella concept be named quality,
+encoded as one strict two-variant type (`Quality.[Shape Trait]`), with the
+parser seeing a single angle form, the resolver classifying each name by
+its declaration site, and typing enforcing the one asymmetry — bare pickup
+slots accept only the Trait variant; recommendation to keep Trait as the
+second variant's name over "capability".
+
+Psyche, verbatim: "confirmed."
+
+Seated: the things governing angle slots are qualities —
+`Quality.[Shape Trait]`. Shape is the engine-provided structural
+constructor (Vector, Option, Map): unbounded slots, not generics, never
+authored. Trait is the contractual quality (Ordered, Sortable): the only
+way authored declarations parameterize, always bounded; no universal trait
+exists. One surface syntax serves both; resolution classifies; bare pickup
+slots take Trait only.
