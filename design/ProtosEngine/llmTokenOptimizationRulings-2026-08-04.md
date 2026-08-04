@@ -352,3 +352,30 @@ Seated: the deep-redesign license is general — any current code that should
 be redesigned is redesigned without deference to what exists. Traits are the
 code ontology; the target is one hundred percent of impls living under a
 trait.
+
+## Ruling: traits are a soft requirement with per-repo trait-migration files
+
+Agent text answered: whether the 100%-traits target binds hand-written
+engine Rust via a dedicated migration pass, or converges as code passes
+through the redesign.
+
+Psyche, verbatim: "yes, hand written rust, make it a soft requirement
+(encouraged but not blocking; if a trait isnt obvious make a note in a
+trait-migration file in each repo which Ill review with claude agent later)"
+
+Seated: the target binds hand-written Rust as a soft requirement —
+encouraged, never blocking. Where a trait is not obvious, the implementer
+records the case in a trait-migration file in that repo; the psyche reviews
+those files later with a Claude agent.
+
+## Ruling: StreamInitiation MVP shape is agent-designed
+
+Agent text answered: whether the psyche rules `StreamInitiation`'s minimal
+contents now or leaves the stream work gated on it.
+
+Psyche, verbatim: "you can figure out what the mvp needs, and design
+something for now"
+
+Seated: the previously open initiation shape is delegated — agents design
+the minimal `StreamInitiation` (and `StreamTermination`) the MVP needs, as a
+provisional form subject to later psyche review.
