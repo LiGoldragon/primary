@@ -305,3 +305,28 @@ legacy compatibility data inside the migrated Spirit database.
 matter, not a general psyche value, aim, or belief. It belongs to this design
 log and the owning contract, store, migration, documentation, and deployment
 surfaces.
+
+## Appended 2026-08-04: the Spirit judge uses Luna at XHigh effort
+
+Agent context answered: no preceding agent proposal named a judge model or
+reasoning effort. Immediately after the Spirit 0.26.0 cutover report, the psyche
+asked, in the same message:
+
+**[psyche-verbatim]**: "what model is the judge using? Should be Luna XHigh.
+
+is the usage documentation updated? Where is the spirit cli usage documented anyway"
+
+### Ruling 17: Luna XHigh is the Spirit judge deployment target
+
+**[psyche-ruled]**: the Spirit judge uses Luna with XHigh reasoning effort. Any
+different deployed or declaratively configured judge model/effort profile is
+configuration drift to correct. Mapping the psyche's names to the concrete
+provider model identifier and effort encoding belongs to the owning deployment
+configuration, and the live service must be checked against that declaration
+before this ruling is considered satisfied.
+
+**Intent-log classification**: the judge model and reasoning effort are Spirit
+deployment/configuration architecture, not a general psyche value, aim, or
+belief. They are matter and belong in this design log plus the owning
+declarative service configuration. The adjacent documentation questions request
+an audit; they do not authorize documentation or skill edits by themselves.
