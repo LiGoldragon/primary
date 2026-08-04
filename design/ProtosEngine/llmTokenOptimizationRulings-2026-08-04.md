@@ -270,3 +270,20 @@ the fact that initiating a stream requires a query, and that its
 establishment should give a response. right?"
 
 Live discussion against the vq6.6 stream gate; not yet seated.
+
+## Leaning: StreamInitiation and StreamTermination; Stream is the output object
+
+Agent text answered: "`StreamRequest` is the input query, and `Stream` is
+itself the output object. With bare-angle generics seated, the output is
+`Stream<Event>` … what remains is the concrete shape of `StreamRequest`
+(what a query minimally carries) and whether close is a method on the Stream
+object or an input of its own."
+
+Psyche, verbatim: "I might prefer StreamInitiation, which more naturally
+opens the door for StreamTermination."
+
+The Stream-as-output-object framing stands: per stream, the authored types
+are the initiation payload and the event; the output is `Stream<Event>`.
+Naming leaning: `StreamInitiation` for the opening query, paired with
+`StreamTermination` — which implies close arrives as its own input type, not
+as a method on the Stream object. Initiation shape still open.
