@@ -403,3 +403,21 @@ incorrectNaming, confined to Logos' Rust textual-form emission through a
 correctNaming ↔ incorrectNaming translation table (`Ordered` ↔ `Ord`, and
 kin). The psyche's examples also show the Rust type-parameter taking the
 trait's proper name (`Sorted<Ordered: Ord>`), not a minted `T`.
+
+## Ruling: bare same-trait mentions co-refer
+
+Agent text answered: the two possible meanings of
+`Range.{<Ordered> <Ordered>}` — one parameter used twice (both fields lock
+to the same type at instantiation) versus two independent parameters
+sharing a trait — noting the psyche's own emission comment
+`struct Range<Ordered: Ord>(Ordered, Ordered)` already spells one
+parameter.
+
+Psyche, verbatim: "Yes, I guess that is what I meant."
+
+Seated: within one declaration, repeated bare mentions of the same trait
+denote one parameter; instantiation locks every mention to the same
+concrete type. Distinct parameters sharing a trait use the named form:
+`<Left.Sortable> <Right.Sortable>`. Declaration-side generic pickup is
+thereby closed: mention declares, bare mentions co-refer by trait identity,
+names diverge.
