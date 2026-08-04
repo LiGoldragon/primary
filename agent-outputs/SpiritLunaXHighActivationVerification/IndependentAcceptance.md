@@ -109,28 +109,57 @@ independent deployment and version witnesses already fail.
 
 ## Rollback-safe retry acceptance procedure
 
+The installed ordinary client and owner client/daemon are all Lojix `0.11.0`,
+the same version declared by the Lojix revision selected by the target lock.
+This is not a protocol or daemon repair prerequisite. The public owner CLI is,
+however, intentionally a one-shot adapter: it prints one typed reply and exits
+(`lojix/src/bin/meta-lojix.rs:1-21`; `lojix/src/client.rs:125-155`). It does not
+persist a handle, correlate a journal event, or poll. A small audited operator
+wrapper or manual ledger is therefore required before another live submission;
+it is evidence tooling, not a substitute deployment mechanism.
+
 1. Preserve the currently healthy `0.26.0` state; do not use direct Home
    Manager/NixOS activation to compensate for a missing Lojix receipt.
-2. Submit the approved owner Deploy for `goldragon/ouranos/li` with immutable
-   CriomOS `9b3d344631628cb19dda1a22af4d7ef25c5f8def`, `ActivateNow`, and
-   `RequireImmutable` through the Lojix owner channel.
-3. Retain the full typed immediate admission result privately and record only
-   its deployment identifier and marker in the evidence ledger. A substring
-   match is not success.
-4. Poll the ordinary Lojix node query until that same identifier, target
-   revision, activation mode, and Current state occur together. Correlate the
-   daemon journal terminal event to the identifier. Timeout, rejection, or a
-   different identifier is a stop condition, not a cue for direct activation.
-5. Independently prove the active Home profile closure contains Spirit `0.27.0`,
-   then confirm Version `0.27.0`, Count through the documented five-predicate
-   request, accepted Marker continuity, active/running/success judge and
-   daemon, required judge ordering, and three listeners.
-6. Hash-only argv/executable witnesses must then show OpenAiCodex true, Luna
+2. Construct exactly one owner-channel UserEnvironment Deploy for
+   `goldragon/ouranos/li`, the approved immutable CriomOS revision
+   `9b3d344631628cb19dda1a22af4d7ef25c5f8def`, `ActivateNow`, and
+   `RequireImmutable`. The locked implementation selects the user activation
+   package for this action (`lojix/src/schema_runtime.rs:954-965`) and
+   `ActivateNow` sets the user profile then runs its activation package
+   (`4429-4510`). Do not issue the rollback request in the same attempt.
+3. Capture the complete immediate typed reply in a restricted operator ledger,
+   parse it as either `DeployAccepted(handle)` or `DeployRejected(reason)`, and
+   retain only the accepted deployment identifier and database marker in shared
+   evidence. The source is explicit that the reply is an admission handle before
+   effects run (`lojix/src/daemon.rs:340-374`); substring matching is invalid.
+   A typed rejection is an immediate stop condition.
+4. Start a bounded poll deadline after an accepted handle. Reissue the ordinary
+   read-only node query and require a single generation row matching **all** of:
+   the accepted deployment identifier, target source revision, UserEnvironment,
+   LiveActivation, and Current. This is the correct durable read-model shape:
+   the projection contains identifier, source revision, activation effect, and
+   slot (`lojix/src/schema_runtime.rs:3160-3201`). Historical rows may also say
+   Current, so revision or slot alone is insufficient.
+5. In parallel, correlate the system Lojix daemon's terminal pipeline entry to
+   the accepted identifier and marker. The actor logs its terminal output after
+   driving the submitted deploy (`lojix/src/daemon.rs:580-585`); the pipeline
+   persists every stage through activation-recording before terminal success
+   (`lojix/src/schema_runtime.rs:876-892`, `1749-1757`, `2438-2464`). Absence of
+   either correlation at deadline, a terminal rejection, a different identifier,
+   or an unchanged read-model is a failed activation. Stop and preserve the
+   evidence; do not directly activate and do not infer success from a process
+   that appeared transiently.
+6. Only after both correlations, independently prove the active Home profile
+   closure contains Spirit `0.27.0`, then confirm Version `0.27.0`, Count through
+   the documented five-predicate request, accepted Marker continuity,
+   active/running/success judge and daemon, required judge ordering, and three
+   listeners.
+7. Hash-only argv/executable witnesses must then show OpenAiCodex true, Luna
    true, Terra false, XHigh true, Medium false, and the expected maintained
    wrapper/provider executable provenance. If any required witness fails after
-   an acknowledged target activation, use only an acknowledged owner-channel
-   rollback to the known-good immutable revision and repeat the same correlated
-   Lojix query/journal/profile checks.
+   the acknowledged target activation, use only a separately acknowledged
+   owner-channel rollback to the known-good immutable revision and repeat the
+   same correlated admission, read-model, journal, profile, and runtime checks.
 
 ## Final classification
 
