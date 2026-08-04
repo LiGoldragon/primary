@@ -440,3 +440,19 @@ authored. Trait is the contractual quality (Ordered, Sortable): the only
 way authored declarations parameterize, always bounded; no universal trait
 exists. One surface syntax serves both; resolution classifies; bare pickup
 slots take Trait only.
+
+## Ruling: the delimiter rulings bind the entire protos family
+
+Psyche, verbatim: "to be clear; all the new delimiters also apply to dotos
+(strings is the only one I can see which impacts dotos, but maybe Im
+missing something). make sure thats clear in the beads. The entire protos
+family in fact"
+
+Seated: every delimiter ruling in this file is family-wide — dotos, ethos,
+nomos, and logos textual surfaces alike; no dialect keeps a superseded
+form. Operative impact on dotos: `“ ”` replaces `( )` multi-word text and
+the dropped pipe-text forms `(| |)`/`[| |]` (one change — the string
+carrier); `.( )` transformer marking reads uniformly, keeping `Map.(…)`
+consistent. The remaining dotos surface (`{}` structs, `[]` vectors, dotted
+variant paths, `;;` comments, bare atoms) is untouched; `<>` qualities are
+type-side and reach data text nowhere, since position supplies the type.
