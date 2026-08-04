@@ -322,3 +322,33 @@ The mirroring law binds the language daemons (Ethos/Nomos, Nomos/Logos).
 Sema is the shared database engine every daemon uses; the sema storage types
 a daemon holds are its persistence for objects, including the next daemon's
 mirrored objects, not a mirroring layer of their own.
+
+## Ruling: nomos-types shared crate; transformer implementations stay in Nomos
+
+Agent text answered: the shared-crate shape — pure data types (per-
+transformer schemas) in one crate consumed by both core-ethos and
+core-nomos; the transformer trait Nomos-owned so `impl Transformer for
+StreamInitiation` satisfies the orphan rule; the crate as landing spot for
+the hand-written mirror and later the Ethos-generated source; a dedicated
+`nomos-types` recommended over widening `protos`.
+
+Psyche, verbatim: "we could use a shared repo (nomos-types?) to hold those
+so nomos and ethos can share the code? could the trait implementation
+(transformer) still live in nomos?" then "ok" (proceeding to the bead
+reorientation on this basis).
+
+Seated: per-transformer types live in a shared `nomos-types` repository,
+depended on by both core-ethos and core-nomos; the transformer trait and all
+transformer implementations remain in Nomos.
+
+## Ruling: current code is not binding; traits are the code ontology
+
+Psyche, verbatim: "I also want to make it cleaar that current code is *not
+binding*; redesign anything that should be, and make traits! traits are our
+new code ontology, we need to make our way to one hundred percent of impls
+living under a trait"
+
+Seated: the deep-redesign license is general — any current code that should
+be redesigned is redesigned without deference to what exists. Traits are the
+code ontology; the target is one hundred percent of impls living under a
+trait.
