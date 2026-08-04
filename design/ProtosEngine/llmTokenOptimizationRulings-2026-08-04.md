@@ -456,3 +456,44 @@ carrier); `.( )` transformer marking reads uniformly, keeping `Map.(…)`
 consistent. The remaining dotos surface (`{}` structs, `[]` vectors, dotted
 variant paths, `;;` comments, bare atoms) is untouched; `<>` qualities are
 type-side and reach data text nowhere, since position supplies the type.
+
+## Ruling: the sectioned transformer form is cut (supersedes in part)
+
+Agent text answered: after the stream redesign removed its only prospective
+customer (streams are plain typed inputs and a typed output object, no
+stream section; Interface sections supply membership traits, not
+transformers), nothing in the language uses the sectioned `Name.(…)`
+spelling — dead grammar carried by inertia; recommendation to cut.
+
+Psyche, verbatim: "yes, cut it."
+
+Seated: the sectioned spelling `Name.(…)` leaves the grammar; the standalone
+form `Name.Transformer.(…)` is the only transformer application. This
+supersedes the sectioned half of the `.( )` ruling above and retires the
+section-supplied-operator mechanism until a real case is ruled anew. The
+implemented sectioned parse path and its tests are removed in-train.
+
+## Ruling: co-reference kept, same-type enforced
+
+Agent text answered: whether same-type must be enforced on
+`Range.{<Ordered> <Ordered>}` — yes, because trait comparability exists
+only within one type; relating two same-trait fields (compare, merge,
+sort-together) requires one concrete type, and monomorphized Rust emission
+could not express the relation otherwise; enforcement is one equality check
+at instantiation.
+
+Psyche, verbatim: "and you can keep the co-reference syntax."
+
+Seated: co-reference stands as ruled, with same-type enforcement at
+instantiation. The named-divergence escape hatch stands with it.
+
+## Ruling: « » reserved as the extension pair
+
+Psyche, verbatim: "« » should be kept for the next special syntax need we
+might encounter. it is the only good delimiter pair left for extending the
+language"
+
+Seated: `« »` carries no syntax today and is reserved — the designated
+delimiter pair for the language's next special need. It is not dropped from
+the design space; it is held. No surface may claim it without a psyche
+ruling.
