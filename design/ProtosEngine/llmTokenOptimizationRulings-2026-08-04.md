@@ -235,3 +235,38 @@ the train is in a deep redesign phase. Tracked as a bead.
 The psyche approved the intent line on training models on Protos ("sure")
 and asked what the intent log is, distinct from Spirit; capture proceeds via
 the intent-log mechanism with the approved wording.
+
+## Correction: no Spirit capture was approved — the line is matter
+
+Psyche, verbatim: "I never approved a spirit capture. I even explicitely
+said no." and "its not called intent anymore, but if you meant the line for
+"intent log"; that is matter, not spirit" and "no, not anymore, and like I
+said, your proposal doesnt even come close to qualifying"
+
+Supersedes the note above. The psyche's "sure" approved the line as a note,
+not a Spirit capture; the agent misread "not spirit" as a question rather
+than the correction it was. No Spirit record exists — the guardian rejected
+the attempted capture as matter, which the psyche confirms was the right
+judgment. The line stands as design-log matter only, in this file. The
+intent log is a matter surface, not Spirit, and the concept is no longer
+named intent.
+
+## Ruling: the bare pipe retires
+
+Agent text answered: "does `|` retire from the grammar entirely? With
+`Name.Transformer.(…)` standalone and `Name.(…)` sectioned, I see no
+remaining duty for the bare pipe."
+
+Psyche, verbatim: "obviously. youre demonstrating that LLMs arent really
+intelligent yet by asking. One syntax necessarily replaces another"
+
+Seated: `|` leaves the grammar entirely. `Name.Transformer.(…)` standalone
+and `Name.(…)` sectioned replace the 2026-08-03 pipe forms.
+
+## Leaning: no stream section; a stream opens with a query, establishment answers
+
+Psyche, verbatim: "I doubt we need a stream section. I did want to bring up
+the fact that initiating a stream requires a query, and that its
+establishment should give a response. right?"
+
+Live discussion against the vq6.6 stream gate; not yet seated.
