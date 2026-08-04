@@ -84,3 +84,35 @@ was parsed as a typed `DeployAccepted` record.
 
 The identifier was reused after the failed target pipeline; therefore marker
 and immutable revision are both mandatory disambiguators for rollback evidence.
+
+## Rollback correlation and restored-base read-only proof
+
+Seven bounded typed `ByNode` polls from 2026-08-04T11:59:43Z through
+2026-08-04T12:00:13Z found zero revision-specific rows matching rollback
+identifier `4`, immutable base revision, `UserEnvironment`, `LiveActivation`,
+and `Current`. The daemon journal after rollback admission contained one
+terminal-pipeline line but no safe witness for identifier `4`, the base
+revision, or a same-identifier terminal state. Thus the rollback deployment is
+also not durably correlated and cannot be accepted as a Lojix receipt.
+
+At 2026-08-04T12:00:32Z, read-only live checks did preserve the expected base:
+
+| Witness | Safe observation | Classification |
+|---|---|---|
+| Spirit version | `0.26.0` | wired live runtime |
+| Spirit marker | `(25, 5374348791551424496)` | wired live runtime; equal to baseline |
+| Judge / daemon | active/running/success; daemon dependency and order include judge | wired |
+| Spirit listeners | exactly `3` Unix sockets | wired |
+| Kernel predicates | OpenAiCodex=true; Terra=true; Medium=true; Luna=false; XHigh=false | wired, base selection |
+| Judge executable identity | SHA-256 equal to baseline (`45cb7bb321daa7009928cc863e9af39c43443f326b15461b58c6592488e86af2`) | bounded provenance witness |
+| Active Home closure / base CriomOS source | not retained or claimed: exact source selection cannot be safely derived here without prohibited closure/store-path material | evidence-limited |
+
+## Final executor state
+
+**STOP — target activation rejected; rollback receipt also uncorrelated.** The
+target has no valid `Current` or terminal-journal witness, so POST target
+checks (closure, v0.27 runtime, Count, public CLIs, and deployed-origin docs)
+were correctly not run. The live bounded runtime remains on the expected
+`0.26.0` Terra/Medium base, but it is not claimed as a correlated rollback
+deployment proof. No additional deployment, direct activation, restart, source
+change, bead update, or commit was performed.
