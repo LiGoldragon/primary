@@ -97,3 +97,62 @@ intent-log line was proposed to the psyche separately.
 - A 12-char hex hash costs 9 tokens — more than an entire 4-field record.
   Hashes stay out of textual projections; three-layer naming already so
   provides.
+
+## Ruling: curly quotes become the string carrier (supersedes in part)
+
+Agent text answered: round-2 measurement — `“ ”` (U+201C/U+201D) is the
+stable typographic pair (+2.4% in both vocabs, `.“` merges free), while
+`« »` is tokenizer-unstable (+2.4% in o200k but +13.5% in cl100k) and
+recommended for demotion.
+
+Psyche, verbatim: "if “” is different from "", then we should use it for
+strings instead of () and (||), and make it common-indentation safe, so it
+can parse indented blocks properly. but Ill need an easy way to type it (as
+well as « » - no idea currently, im copy pasting yours just to mention it),
+but dont bother yourself too much with this; a beads will suffice and ill
+solve with with another agent."
+
+Condition verified: `“` `”` are distinct codepoints from ASCII `"` (U+0022),
+so the quotation-safety principle survives intact — Dotos still contains no
+ASCII double quote and remains embedding-safe in every double-quote host.
+
+Ruled: `“ ”` replaces `( )` multi-word text and `(| |)` pipe-text as the
+string carrier, and inherits pipe-text's common-indentation semantics
+(dedent by the minimal common indent of the block's lines). Non-string uses
+of `( )` (such as Map-headed application) are not addressed by this ruling.
+Typing ergonomics for `“ ”` and `« »` are tracked as a bead; the psyche will
+solve input methods with another agent. This supersedes the guillemet
+adoption above insofar as `« »` now carries no assigned slot and is
+disfavored for wire use by the tokenizer-variance evidence.
+
+## Ruling: piped delimiters dropped
+
+Agent text answered: round-2 measurement — compound pipes lose the
+dot-cluster merge (`Name.{|` costs +2 tokens/record), fragment under
+nesting, and `[| |]` is the worst pair measured at +26%.
+
+Psyche, verbatim: "so we should drop the piped delimiters."
+
+Ruled: `(| |)`, `[| |]`, and the proposed `{| |}` leave the grammar. String
+carriage moves to `“ ”` per the ruling above.
+
+## Leaning recorded: no complex struct/enum form; trait delimiter gives optional generics
+
+Psyche, verbatim: "I dont even think we need a complex struct/enum, if we
+use a special delimiter for traits(generics), we get optional generics using
+unambiguous parsing trick. im debatting different delimiters in my head
+right now."
+
+Candidate spellings under debate (psyche's own list):
+
+```ethos
+Vector.<Sortable>
+Vector<Sortable> ;; cognitive reuse of rust, right?
+Vector.«Sortable» ;; inefficient apparently
+Vector«Sortable»
+```
+
+Also floated, explicitly with question marks: reserving `.< >` for a
+dot-prefixed slot such as a transformer payload — "Observer.Stream.< ... >
+??" — pending measurement of the `X.Y.<open>` chain patterns. No ruling
+seated; the trait/generics delimiter remains open.
