@@ -1,0 +1,67 @@
+# Spirit Luna XHigh immutable activation — 2026-08-04
+
+## Target and source chain
+
+The authorized immutable user-environment target is CriomOS
+`9b3d344631628cb19dda1a22af4d7ef25c5f8def`. Its locked release chain is
+CriomOS-home `3dc0bada3f636065e7fd093711305a153dd5925a` and Spirit
+`7405eee89e3b1b5b6764eb1a50cbdf467b93c9a7`.
+
+The Lojix `UserEnvironment` activation used that exact CriomOS revision with
+`RequireImmutable`. Its activation reply matched the requested revision. No
+store path, credentials, session material, provider prompt/output, record body,
+Count value, or Marker value is recorded here.
+
+## Pre-activation and source gates
+
+Before activation, bounded `Version`, `Count`, and `Marker` reads succeeded;
+the judge and daemon user units were active and the three Spirit sockets were
+present. The pre-read values were intentionally not emitted. A local witness
+did not persist their hashes across its process boundary, so literal pre/post
+equality is pending the independent verifier's retained pre-state witness.
+
+The following source gates passed before activation:
+
+- Spirit Rust suite with `nota-text`, including public-CLI negative grammar.
+- Spirit release-input, service-bundle, and Nix test checks.
+- CriomOS-home full flake check and `spirit-deployment` build.
+- Lojix-materialized CriomOS flake check from both the local path and exact
+  published origin, plus the exact-origin top-level system build.
+
+An empty untracked local `checks/home-activation-equivalence` directory was
+the sole initial full-check obstruction. It was claimed, verified empty, and
+removed with non-recursive `rmdir`; no tracked source changed.
+
+## Post-activation runtime gates
+
+All of the following passed without emitting their payloads:
+
+- `spirit` reports version `0.27.0`.
+- Judge and daemon user units are active; exactly three Spirit Unix sockets are
+  present.
+- The live judge argv contains `OpenAiCodex`, `gpt-5.6-luna`, and
+  `(Some XHigh)`, and contains neither `gpt-5.6-terra` nor `(Some Medium)`.
+- `spirit Version` and `meta-spirit ObserveHead` succeed.
+- Both public CLIs reject zero operands, extra operands, `--pretty`, `--help`,
+  and an existing raw file path.
+
+The post-state hashes, over the raw typed replies and retained only as
+non-content witnesses, are:
+
+```text
+Version 4dec7c56776bf522c41f3a6bcecd571476cecd4e7cfa6eb9574ea63292a24042
+Count   369ec54a3bfd318438c31c53ed90007e389fb495780acca7e12259135188ed03
+Marker  10cd7a826d754083fa6b8cc0088295afa6ffc9497a9d95ea46d8f501b98c46cf
+```
+
+No provider request was sent: no supported non-content provider-acceptance
+interface was identified without constructing a judge request or exposing its
+prompt/output. Service health and the configured live argv were verified
+instead.
+
+## Decision state
+
+The target remains active and healthy. Activation rollback remains the accepted
+immutable CriomOS `b46390940cf641e19bc9bbd243726308286a8bd2` if the independent
+pre/post equality witness fails. Do not roll back solely because this local
+worker did not retain its pre-state hash.
