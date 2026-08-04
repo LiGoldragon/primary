@@ -7,10 +7,13 @@ The authorized immutable user-environment target is CriomOS
 CriomOS-home `3dc0bada3f636065e7fd093711305a153dd5925a` and Spirit
 `7405eee89e3b1b5b6764eb1a50cbdf467b93c9a7`.
 
-The Lojix `UserEnvironment` activation used that exact CriomOS revision with
-`RequireImmutable`. Its activation reply matched the requested revision. No
-store path, credentials, session material, provider prompt/output, record body,
-Count value, or Marker value is recorded here.
+The Lojix `UserEnvironment` activation request used that exact CriomOS revision
+with `RequireImmutable`. Its reply text contained the requested revision, but
+that was only an admission/request acknowledgement: Lojix later failed to show
+the revision in its current-node record. It must not be treated as proof of an
+active profile or generation. No store path, credentials, session material,
+provider prompt/output, record body, Count value, or Marker value is recorded
+here.
 
 ## Pre-activation and source gates
 
@@ -32,9 +35,11 @@ An empty untracked local `checks/home-activation-equivalence` directory was
 the sole initial full-check obstruction. It was claimed, verified empty, and
 removed with non-recursive `rmdir`; no tracked source changed.
 
-## Post-activation runtime gates
+## Post-request local runtime observations
 
-All of the following passed without emitting their payloads:
+The following passed in the caller's local runtime context immediately after
+the request, without emitting payloads. They are not attributed to the Lojix
+target because the required Lojix current-node proof was absent:
 
 - `spirit` reports version `0.27.0`.
 - Judge and daemon user units are active; exactly three Spirit Unix sockets are
@@ -64,6 +69,11 @@ instead.
 The independent verifier then found that Lojix did not retain the target
 CriomOS revision in its current-node record. This fails the required active
 profile/current-generation witness, so the target was rolled back immediately.
+The raw activation and rollback replies were held only in transient shell
+variables; they were not saved. No admission handle was issued or retained, and
+one immediate `ByNode` query was made for each request; no poll series exists.
+User-journal searches for either revision found no Lojix entry. No direct Home
+Manager, NixOS rebuild, or other profile activation was performed.
 
 The exact non-secret rollback request was a `Deploy(UserEnvironment(...))`
 request for CriomOS `b46390940cf641e19bc9bbd243726308286a8bd2`, with
