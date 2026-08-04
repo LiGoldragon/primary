@@ -330,3 +330,41 @@ deployment/configuration architecture, not a general psyche value, aim, or
 belief. They are matter and belong in this design log plus the owning
 declarative service configuration. The adjacent documentation questions request
 an audit; they do not authorize documentation or skill edits by themselves.
+
+## Appended 2026-08-04: CLI arguments remain NOTA/DOTOS objects
+
+Agent context answered: the agent reported that `spirit --help` and
+`meta-spirit --help` were absent, described that absence as part of the CLI
+documentation gap, and asked, "Do you approve implementing and activating the
+Luna XHigh judge train?"
+
+**[psyche-verbatim]**: "> spirit --help, meta-spirit --help
+
+of course; our clis must never use anything other than nota/dotos objects for arguments.
+
+I approve, and update all docs"
+
+### Ruling 18: every CLI argument is a NOTA/DOTOS object
+
+**[psyche-ruled]**: the CLI grammar across components accepts only NOTA/DOTOS
+objects as arguments. Unix-style flags such as `--help` are intentionally not a
+supported argument language; their rejection is not missing Spirit help
+functionality. Documentation and examples must teach object-shaped invocation
+and must not present flags or non-object positional forms as valid CLI syntax.
+
+**Intent-log classification**: this is cross-CLI contract architecture, not a
+general psyche value, aim, or belief. It is matter owned by CLI parsers,
+contracts, canonical examples, tests, and documentation.
+
+### Ruling 19: proceed with Luna XHigh and update the documentation
+
+**[psyche-ruled]**: the prior request to implement and activate the Luna XHigh
+judge train is approved, and the current Spirit documentation is to be updated
+to the approved contract. This authority does not bypass repository ownership,
+release validation, declarative activation, or rollback requirements.
+
+**Intent-log classification**: model deployment and documentation updates are
+implementation/deployment tasks and architecture matter, not general intent.
+The owning-skill wording was proposed only after this approval; the exact line
+`Accept CLI arguments only as NOTA/DOTOS objects; never add flags or positional
+shorthand.` remains unapproved and no skill edit is authorized by this ruling.
