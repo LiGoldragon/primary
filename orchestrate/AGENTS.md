@@ -176,7 +176,7 @@ Committing is janitorial and does not belong to a report's creator; the
 multi-lane / impersonal commit is accepted.
 
 Recording psyche intent goes through the deployed `spirit` CLI per
-`.claude/skills/intent-log/SKILL.md` and
+`.claude/skills/spirit-log/SKILL.md` and
 `.claude/skills/spirit-cli/SKILL.md`.
 
 ### Daemon CLI
