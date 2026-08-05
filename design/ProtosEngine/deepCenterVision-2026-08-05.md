@@ -72,3 +72,21 @@ Ruling (spirit-grade, recorded for the eventual approved capture;
 nothing is captured into core Spirit here): beauty and elegant,
 extendable logic take priority over every competing consideration,
 token cost included. Beauty first, efficiency second.
+
+## Correction: consequences are not Intent or Vision
+
+Agent text answered: after reading the four answers above, the receiving
+Codex session restated universal language replacement as Intent and the
+Ethos/Dotos surfaces plus self-hosting cascade as Vision.
+
+Psyche: "no, none of that is intent or vision. thats just what will happen."
+He restated the governing law: "Beauty and elegant, extendable logic always
+wins over everything, always. Beauty rules this universe." When elegance
+conflicts with token cost, familiarity, or convenience, elegance wins.
+
+Ruling: the `intent-grade` and `vision-grade` classifications above are
+superseded. Universal adoption, Ethos/Dotos becoming the surfaces through
+which people and agents think, and the complete self-hosting cascade are
+expected consequences. They constrain the scale and durability for which
+Protos must be designed, but they are not thereby Intent or Vision. The
+beauty law remains Spirit-grade; no Spirit capture is made here.
