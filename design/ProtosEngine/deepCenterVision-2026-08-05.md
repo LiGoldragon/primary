@@ -73,6 +73,29 @@ nothing is captured into core Spirit here): beauty and elegant,
 extendable logic take priority over every competing consideration,
 token cost included. Beauty first, efficiency second.
 
+## The train unifies on main
+
+Agent text answered: the repo survey reported the redesign already on
+main family-wide, two refinement trains unmerged on branches, 47
+worktrees and roughly 75 non-main bookmarks, and the pin cascade
+blocked by the primary-wd9 head bug.
+
+Psyche: "We need to unify the entire train on a unified series of
+branches, or just start working on main (if its easier; im ok with
+breaking everything so long as we finish the train and get everything
+back up and running on the new stack; we can always put a warning in
+the repos that depend on it not to update until upstream is marked as
+stable)"
+
+Ruling: the family converges on one line of work. The choice between
+a unified branch series and main was delegated on ease; main is
+chosen — the redesign already lives on main everywhere and the pin
+gates already shield consumers. Breakage on main is licensed until
+the train completes and the new stack runs end to end. Dependent
+repos carry a warning not to advance pins until upstream is marked
+stable. Refinement trains merge to main or are rejected; stale
+worktrees and bookmarks are concluded.
+
 ## Correction: consequences are not Intent or Vision
 
 Agent text answered: after reading the four answers above, the receiving
