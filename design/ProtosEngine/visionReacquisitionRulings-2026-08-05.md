@@ -121,3 +121,66 @@ vector: `interface.[Entry Referent RecordSet]`. Braces are wrong
 there. The dot between source and payload stands for now; the
 qualification syntax underneath (module versus repo, and the proposed
 `:` name qualifier) is under active design and not yet ruled.
+
+## Textual-form metadata is bound to the encoded identity
+
+Agent text answered: the management session asked whether one nested
+hierarchy covers module and repo imports, how import entries are
+spelled under `:`, and how the module segment is capitalized.
+
+Psyche: the name table generalizes — "we extended the concept of the
+textual form name table. It's just the textual form metadata," bound
+to the encoded ID. All textual-projection information for an object
+lives in that one place, including where the object lives in terms of
+files. Operational renaming targets "the configuration object in such
+module, in such crate or metamodule" — one specific object resolving
+to one encoded ID, never a spelling-wide textual rename. Lookups must
+work in both directions.
+
+Ruling: textual-form metadata is a single record per object, keyed to
+the encoded identity, carrying the visible name and module/file
+placement; module qualification therefore lives in metadata, not
+inside the object's name proper. Rename operations resolve through
+this metadata to exactly one encoded identity. This extends the
+2026-08-01 three-layer naming design.
+
+## The colon qualifies in import space; symbols are context-scoped
+
+Psyche: "I agree with the colon, I think," noting that with
+textual-form metadata the stakes drop and the reading can be scoped:
+"we can treat the colon differently in the import space. Our parser
+should be able to be context dependent." The colon is already a legal
+character inside unquoted single-word strings (the Nix-style
+`github:owner/repo` path precedent), and in import space it serves
+visual cognition — signalling importing, not defining. Token
+efficiency in this exact context should still be measured; the colon
+must conflict with nothing.
+
+Ruling: the colon is adopted as the qualification separator in import
+space, as a context-scoped reading rather than a globally special
+symbol. Unquoted single-word strings remain legal with interior
+colons.
+
+## Parsing is a context machine
+
+Psyche: "at any point there is this parsing context machine that
+decides how parsing proceeds." Angle-bracket delimiters cannot collide
+with arithmetic comparison because typed positions say what is
+expected — inside a typed arithmetic block the parser is "not looking
+for the closing delimiter. It's looking for the end of the arithmetic
+block." How contexts are known "is our job as designers of the ethos
+language."
+
+Ruling: the parser is context-dependent by design; every symbol's
+meaning is scoped by the active typed parsing context. This seats the
+2026-08-04 finding that bare angle brackets are safe under structural
+parsing as a general law.
+
+## Root-container terminology is open
+
+Open question, psyche requested brainstorm: the name for the outermost
+module container. "Repository" is wrong (version-control connotation,
+and a monorepo holds several crates); "root" is overloaded; Rust's
+"crate" shows coining a term is legitimate; "root module" and
+"metamodule" were floated without enthusiasm. Modules recurse
+indefinitely beneath it (submodule of submodule).
