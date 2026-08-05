@@ -96,6 +96,55 @@ repos carry a warning not to advance pins until upstream is marked
 stable. Refinement trains merge to main or are rejected; stale
 worktrees and bookmarks are concluded.
 
+## Development is staged
+
+Psyche (2026-08-06, correcting the implementing codex session for the
+second time): "he doesnt seem to understand we are developping protos
+in stages."
+
+Ruling: Protos develops in stages. The destiny (world adoption, the
+self-hosting cascade) is direction and acceptance test, never the
+scope of the current stage. The bootstrap deliberately leaves
+executable behavior in handwritten Rust; behavior gains its schema
+home at the Logos slice, later in the train. A stage's artifacts are
+judged on strictness, beauty, and extendability — that nothing in
+them forbids later homes — not on completeness against the destiny.
+
+## The root container is just a module
+
+Agent text answered (2026-08-06): management offered coined
+candidates (cosmos, oikos, holos, topos) for the outermost-container
+term left open by the 2026-08-05 brainstorm request — the
+crate-analogue that cross-container imports reference.
+
+Psyche: "what root-container name? For ethos import namespaces? just
+do module and submodules"
+
+Ruling: no coined term. The outermost container is simply a module —
+the root of the module tree — and everything beneath is submodules,
+recursing uniformly. The 2026-08-05 brainstorm is closed and all
+candidates are rejected.
+
+## The language grows: interfaces first, runtime logic later
+
+Agent text answered: management explained codex's block by pointing
+executable behavior to the Logos layer and its future slice.
+
+Psyche: "I dont think you understood codex's confusion. He seems to
+be confused because ethos doesnt cover runtime logic yet, as we
+havent developped the protos engine enough; we are starting with
+interfaces and will extend the language to take over more of rust's
+functionality later"
+
+Ruling (vision-grade): codex's observation is accurate and is the
+plan. Ethos does not cover runtime logic yet because the engine is
+not developed enough. The family starts with interfaces and the
+language is extended, stage by stage, to take over more of Rust's
+functionality. The absence of runtime logic in today's Ethos is
+growth state, not a design hole. The Logos-layer account of behavior
+stands beneath this arc as the explicit representation of whatever
+the language covers at a given stage.
+
 ## Correction: consequences are not Intent or Vision
 
 Agent text answered: after reading the four answers above, the receiving
