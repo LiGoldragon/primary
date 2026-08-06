@@ -202,8 +202,12 @@ line, slice path, and non-goals of the 2026-08-04 report remain
 operative.
 
 **Current stage deliverable.** The three bootstrap file kinds
-(interface, nexus, sema) as strict, beautiful, extendable schemas,
-pending psyche ruling on reports/ProtosFileKindSchemas-2026-08-05.md.
+(interface, nexus, sema) as strict, beautiful, extendable schemas.
+The proposal (reports/ProtosFileKindSchemas-2026-08-05.md, as revised
+under the interfaces-first correction) is provisionally accepted for
+MVP use — bootstrap readers may proceed on it — with the psyche's
+review deferred and tracked as primary-5pm; the schemas carry
+provisional seniority and remain revisable by that review.
 Their behavior remains handwritten Rust by design. Questions about
 schematizing executable behavior, effects, resources, concurrency, or
 general data anatomy belong to later stages of the language's growth
@@ -229,8 +233,9 @@ The 2026-08-04 report's supersession list stands, plus:
 
 - Colon token-cost measurement in import space (task; result feeds
   the design log, not a gate).
-- reports/ProtosFileKindSchemas-2026-08-05.md,
-  reports/SpiritHierarchyProposal-2026-08-05.md,
+- reports/ProtosFileKindSchemas-2026-08-05.md: provisionally in MVP
+  use; deferred psyche review tracked as primary-5pm.
+- reports/SpiritHierarchyProposal-2026-08-05.md,
   reports/AnatomyOfAGoodMachine-2026-08-05.md: pending psyche review.
 - primary-eyr.1 identity-scheme landing: direction set above;
   execution follows the train.

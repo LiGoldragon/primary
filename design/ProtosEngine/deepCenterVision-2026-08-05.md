@@ -145,6 +145,22 @@ growth state, not a design hole. The Logos-layer account of behavior
 stands beneath this arc as the explicit representation of whatever
 the language covers at a given stage.
 
+## File-kind schemas: provisional MVP use, review deferred
+
+Agent text answered (2026-08-06): management explained that the
+file-kind schema proposal (reports/ProtosFileKindSchemas-2026-08-05.md)
+awaits psyche review, which gates the bootstrap readers.
+
+Psyche: "I wont review it right now, as im off to bed, but we can use
+it for MVP for now. Try to remember that I should look at it later."
+
+Ruling: the file-kind schema proposal, as revised by the implementing
+codex session under the interfaces-first correction, is provisionally
+accepted for MVP use; bootstrap readers may proceed on it. The
+psyche's review is deferred, not waived — tracked as primary-5pm. The
+schemas carry provisional, not psyche-reviewed, seniority until that
+review and remain fully revisable by its outcome.
+
 ## Correction: consequences are not Intent or Vision
 
 Agent text answered: after reading the four answers above, the receiving
