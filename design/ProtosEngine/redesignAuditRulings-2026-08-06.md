@@ -243,3 +243,45 @@ Seated:
   now, not necessary for the current stage.
 - Orientation restated: syntax right, concepts right, minimum viable
   product.
+
+## Ruling: the body is the rkyv payload of the strict typed value
+
+Agent text answered: codex's identity-migration question — the
+validated Ethos transaction has no canonical per-object encoded body
+(identity bytes formerly came from callers, now forbidden by the
+authority-boundary ruling). Option 1: derive each TrueName from a new
+canonical encoded Ethos declaration body immediately after validation.
+Option 2: hash the lowered WholeLogos archive. The manager explained
+the fork and recommended option 1.
+
+Psyche ruling [psyche-verbatim, dictation]: "So we agreed that there
+would be a different type for every kind of ethos object, even all the
+way down to ethos mirroring the types that are needed to contain the
+particular nomos types, for now anyway. So that's, you know, the
+serialized RKYV payload of that filled data type is the body. The
+encoded form is the code. So the encoded form of ethos is ethos. The
+textual form is there so that our editors, our current editors, and
+our current LLM harnesses and models can actually make sense of it."
+
+Seated:
+
+- Option 1 stands, and the "define a canonical projection" work
+  dissolves: no bespoke canonical serializer is designed. Every kind
+  of Ethos object already has its own strict type (one type per
+  transformer, mirrors included, bootstrap scaffolding for now); the
+  canonical per-object body IS the rkyv payload of that filled,
+  validated typed value. Identity is fixed at validation, before
+  lowering, inside the authority boundary.
+- The true-name definition governs the hashed value: the object's own
+  name/identity is omitted from the hashed body, and references are
+  present as the referents' EncodedNames — which the encoded form
+  already satisfies, references being by encoded name.
+- Doctrine restated: the encoded form is the code — the encoded form
+  of Ethos is Ethos. The textual form exists so current editors,
+  harnesses, and models can make sense of it.
+- Standing caveat, accepted: the rkyv layout of each strict type is now
+  identity-critical — a layout change changes true names (a rebirth
+  under the rebirth ruling). Absorbed by the association table for
+  living objects; a reason the archive boundary stays NotYetArchived
+  until the substrate settles. Scoped to the three closed bootstrap
+  shapes, extended stage by stage.
