@@ -4,12 +4,12 @@ Date: 2026-08-06
 Author: Fable main-assistant session 9c422214-09c8-437c-89e3-018ce67b5e55.
 Supersedes: reports/deep-vision/protos-engine-renewed-vision-2026-08-04.md.
 
-Purpose: the current psyche-vision document for Protos. Every redesign
-agent holds this in context. It is a vision and authority map, not an
-implementation plan and not a design log. Where it conflicts with the
-2026-08-04 report, this document wins; where it is silent, the
-2026-08-04 report's uncontradicted material still stands and is
-referenced rather than repeated.
+Purpose: the current psyche-alignment document for Protos. Every redesign
+agent holds this in context. It keeps Spirit, Intent, Vision, and expected
+consequences distinct; it is not an implementation plan or a design log.
+Where it conflicts with the 2026-08-04 report, this document wins; where it
+is silent, the 2026-08-04 report's uncontradicted material still stands and
+is referenced rather than repeated.
 
 ## Sources
 
@@ -35,15 +35,16 @@ referenced rather than repeated.
 **Psyche.** Protos develops in stages. This sentence governs how every
 other sentence in this document may be used.
 
-The destiny in the next section is direction and acceptance test. It
-is never the scope of the current stage, and no stage can be refuted
-by observing that it is not the destination. The bootstrap stage
+The expected consequences in the next section constrain scale, durability,
+and the eventual acceptance test. They are neither Intent nor Vision. They
+are never the scope of the current stage, and no stage can be refuted by
+observing that it has not produced them yet. The bootstrap stage
 deliberately leaves executable behavior in handwritten Rust; that is
 the method, not a defect the current artifacts must compensate for.
 Behavior gains its schema home when the train reaches the Logos
 slice. A stage's artifacts are judged on strictness, beauty, and
 extendability — that nothing in them forbids the later homes — never
-on completeness against the destiny.
+on completeness against the expected consequences.
 
 Two named failure modes, both observed in practice and both
 forbidden: promoting a bootstrap artifact into a universal taxonomy,
@@ -53,13 +54,12 @@ block a future slice has found something real, and reports it as a
 constraint on extendability. An agent that finds a domain merely
 absent has found the method working.
 
-## The deep center
+## Expected consequences — neither Intent nor Vision
 
 **Psyche.** "Within a year, anybody worth his salt will use protos.
 Within 2 or 3 years every other language will only exist in history
-books." Protos is a general medium intended to replace programming
-languages at large. The estate is the first consumer, not the
-boundary. Schemas are designed for the world.
+books." Protos will replace programming languages at large. The estate is
+the first consumer, not the boundary. Schemas are designed for the world.
 
 **Psyche.** "Ethos will be how humans and agents visualize and think
 about code in general, along with dotos for data." The surfaces are
