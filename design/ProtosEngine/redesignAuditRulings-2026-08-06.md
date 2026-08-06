@@ -204,3 +204,42 @@ emission (streamness carried by type and engine machinery), or a
 stream's events-face is a fourth kind of role deserving its own
 section and universal trait — which would reopen the 2026-08-04 "no
 stream section" leaning. Unruled.
+
+## Ruling: stream is a fourth kind
+
+Agent text answered: the fork above — Output broad enough to cover
+ongoing emission, or stream as a fourth kind of role with its own
+section and universal trait.
+
+Psyche ruling [psyche-verbatim, dictation; "forest" read as "fourth"]:
+"I think we make stream a forest kind and we could even... Yeah.
+Eventually, I mean, not now, we could potentially write a transformer
+that also creates the required input objects to initiate and end the
+stream, although it's not necessary for now. And it would also mean
+that we have transformers that can name things, obviously synthetically
+create names, so that if the stream is called observer, then it would
+create an object called observer stream initiation, and then another
+object called observer stream termination, or something like that. But
+yeah, for now we could just create, write it all by hand and wire it up
+in the implementation. I'm more interested in getting the syntax right,
+getting the concepts right, and getting to minimum viable product."
+
+Seated:
+
+- Stream is a fourth role kind. The Interface body gains a Stream
+  section, and per the sections-confer ruling, placement in it confers
+  the stream's universal trait. This supersedes the 2026-08-04 "no
+  stream section" leaning (notice placed there). The exact position of
+  the Stream section in the body order and the exact shape of the
+  stream universal trait are delegated bootstrap choices, reviewable.
+- Bootstrap scope: the initiation and termination are hand-authored
+  input objects, wired up by hand in the implementation. No expansion
+  machinery now — consistent with the same-day disqualification of the
+  bundled family.
+- Vision-grade, deferred: transformers that synthetically create names
+  — a transformer could later generate the initiation and termination
+  input objects from the stream's name (Observer → ObserverStreamInitiation,
+  ObserverStreamTermination "or something like that"). Explicitly not
+  now, not necessary for the current stage.
+- Orientation restated: syntax right, concepts right, minimum viable
+  product.
