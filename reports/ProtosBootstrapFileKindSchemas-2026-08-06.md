@@ -144,8 +144,10 @@ MVP import law:
    the outermost module; every colon advances to a submodule.
 2. The dot separates the module path from one nonempty square vector of names.
 3. A singleton keeps its square vector. There is no second singleton grammar.
-4. The path resolves within the source set's dependency closure through
-   textual-form metadata. Ambiguous or absent paths are typed refusals.
+4. Each ownerless path/name selector resolves to exactly one identity within the
+   source set's dependency closure through textual-form metadata. An absent selector
+   is a typed refusal. If distinct valid import paths introduce the same local
+   spelling, using that spelling in the body is an ambiguity refusal.
 5. Imports have no aliases in this bootstrap. Renaming and placement belong to
    textual-form metadata bound to encoded identity.
 6. Body references use imported local names. Colon retains qualification meaning
@@ -172,26 +174,52 @@ position assigns one of these roles:
 A declaration's own visible name is excluded from its true-name body **[R]**.
 References in that body are encoded names **[R]**.
 
-The reader never mints identity **[MVP]**. Before semantic sealing, naming authority
-supplies a `NamingAssignments` input that maps every declaration occurrence to its
-randomly allocated EncodedName and supplies the visible-name/module lookup used by
-references. An unassigned declaration, duplicate assignment, or reference without
-one unambiguous assignment is a typed refusal. The owning edit operation requests
-allocation before sealing; allocation and collision handling remain outside the
-reader.
+The reader never mints identity or decides whether an identity may be preserved,
+renamed, moved, born, or removed **[MVP]**. Before semantic sealing, naming
+authority supplies a `NamingAssignments` input that maps every authored declaration
+occurrence to an EncodedName and carries an authority-proven `Existing` or `New`
+disposition. `Existing` means the owning operation has authorized preservation of
+one living identity; `New` means the authority has freshly minted a random identity.
+The reader verifies the supplied disposition against the authorized state
+transition but never infers authorization from matching text.
 
 ```text
 NamingAssignments.Vector<NamingAssignment>
-NamingAssignment.{DeclarationOccurrence EncodedName}
+NamingAssignment.{DeclarationOccurrence EncodedName NamingDisposition}
+NamingDisposition.[Existing New]
 
 TextualMetadataLookup.Vector<TextualMetadataEntry>
-TextualMetadataEntry.{ModulePath VisibleName EncodedName}
+TextualMetadataEntry.{TextualMetadataAddress EncodedName}
+TextualMetadataAddress.{ModulePath LexicalOwner? VisibleName}
+
+AuthorizedTextualMetadataTransition.{Before After AuthorityProof}
 ```
 
 `DeclarationOccurrence` is an ephemeral structural-discovery handle for this decode
 operation. It is not an object identity, is not retained in semantic bodies, and is
 never hashed. Every discovered declaration occurrence has exactly one assignment;
 every assigned occurrence must exist in the document.
+
+`TextualMetadataAddress` is exactly unique in both the before and after snapshots
+**[MVP]**. A top-level declaration has no `LexicalOwner`. An enum variant's owner is
+its enum EncodedName; a Trait method's owner is its Trait EncodedName. This preserves
+valid sibling reuse without permitting two objects at the same exact address. Import
+selectors address only ownerless top-level projections. Import ambiguity arises when
+the same local spelling is imported from distinct valid module paths; duplicate exact
+metadata is invalid authority state, never an ambiguity supplied to the reader.
+
+The source reader accepts an authority-supplied, authenticated before-to-after
+metadata transition **[MVP]**. The transition may preserve an Existing record, change
+its visible name or placement, remove a dead object, or add a New object. The reader
+checks exact consistency among occurrences, dispositions, semantic output, and the
+transition. It does not grant any of those mutations. Allocation, collision handling,
+authorization, and durable transition storage remain outside the reader.
+
+Naming authority also supplies one canonical byte projection and total order for
+every EncodedName **[MVP]**. Trait-binder normalization and canonicalization of
+semantically unordered collections use only that authority-supplied order. No reader
+schema inspects or reconstructs today's root tags, local integer chains, storage
+addresses, or any future EncodedName anatomy.
 
 This distinction is why a bare atom can be a reference in a role position while
 `Name.Type`, `Name.{...}`, and `Name.[...]` introduce declarations. The active
@@ -215,6 +243,8 @@ The MVP scope model is **[MVP]**:
    They do not introduce semantic declarations or alter an object's own name.
 6. Duplicate names are refused within their exact scope. The same visible spelling
    in distinct enum, Trait, or local-binder scopes is valid.
+7. Textual metadata keys nested declarations by their lexical owner's EncodedName;
+   module path plus spelling alone is never used to collapse distinct nested scopes.
 
 ## 5. Shared declaration schemas
 
@@ -307,11 +337,14 @@ distinct parameters **[R]**.
 
 `ParameterBinder` and its exact strict representation are **[P/MVP]**. For an
 inferred binder, the reader resolves every required Trait to its EncodedName,
-rejects duplicates, sorts the EncodedNames by canonical byte order, and uses that
-normalized nonempty vector as the co-reference key. Equal normalized vectors
-co-refer only within the containing type or method declaration. Named binders remain
-distinct even when their normalized Trait vectors are equal; reuse of one local name
-with a different normalized vector is a typed refusal **[MVP]**.
+rejects duplicates, sorts the EncodedNames by the naming authority's canonical byte
+order, and uses that normalized nonempty vector as the co-reference key. Equal
+normalized vectors co-refer only within the containing type or method declaration.
+Named binders remain distinct even when their normalized Trait vectors are equal;
+reuse of one local name with a different normalized vector is a typed refusal
+**[MVP]**. The same authority-supplied order canonicalizes every declaration or
+relation collection whose source order is semantically irrelevant; positional type
+arguments and product positions remain ordered by their schemas.
 
 The exact strict recursive algebra above is **[D/MVP]**. It makes the reader's
 classification explicit without introducing authored generic-parameter heads or
@@ -353,9 +386,9 @@ transformer or application node. There is no separately authored termination arm
 
 #### Generated Interface declaration schemas
 
-Resolving that strict declaration causes one atomic schema transaction to produce
-exactly three nominal Interface declarations and exactly three Interface-owned role
-relations **[P/MVP]**:
+Resolving that strict declaration prepares exactly three nominal Interface
+declarations and exactly three Interface-owned role relations as one proposed schema
+transaction **[P/MVP]**:
 
 ```text
 GeneratedStreamInterfaceDeclarations.{
@@ -393,13 +426,29 @@ relations are, in order, Input to the initiation declaration, Output to the dire
 ordinary `InterfaceRoleMembership` relations; Stream creates no fifth Interface
 section.
 
-The transaction obtains exactly three stable EncodedNames from naming authority:
-the authored outer `DeclarationName` designates the output identity, and the same
-transaction obtains the initiation and termination identities. Either all three
-declarations, their bodies, and their role relations are installed, or none are.
-Later edits preserve those associations rather than deriving new identities from
-visible text. The reader requests and consumes this complete atomic assignment; it
-does not mint any of the identities.
+Naming authority supplies exactly three stable EncodedNames: the authored outer
+`DeclarationName` assignment designates the output identity, while a separate
+generated assignment keyed by that authored occurrence supplies initiation and
+termination identities **[MVP]**:
+
+```text
+GeneratedStreamAssignments.Vector<GeneratedStreamAssignment>
+GeneratedStreamAssignment.{
+  StreamDeclarationOccurrence
+  Initiation.GeneratedIdentityAssignment
+  Termination.GeneratedIdentityAssignment
+}
+GeneratedIdentityAssignment.{EncodedName NamingDisposition}
+```
+
+All three assignments carry authority-proven `Existing` or `New` disposition, so
+later edits can preserve every association without deriving identity from visible
+text. The reader validates the authored meaning, generated declarations, role
+relations, schema changes, and authorized metadata transition together, then returns
+a `PreparedBootstrapTransaction` **[MVP]**. That value is a validated proposal for
+an external authority to commit atomically. The reader does not claim that anything
+was stored. The external commit must install all three declarations, their bodies,
+their role relations, and their identity/metadata changes, or install none.
 
 The following are generated explanatory projections. They are not additional
 authored declarations, and their visible spellings are only textual metadata:
@@ -481,6 +530,16 @@ the admitted `Stream` arity; the reader does not overload by comparing its spell
 Event in the two-position authored Stream payload except as an ordinary resolved
 type expression where the surrounding schema independently admits it.
 
+The prior catalog carries exact role data and explicit identity relationships
+**[MVP]**. It rejects a prior seat whose identity lacks the required role or whose
+role data conflicts with another role on that identity. For the active MVP, the
+`Stream` declaration head and one-argument `Stream` Shape are one EncodedName with
+two explicitly compatible roles; `StreamIdentity` and every other listed prior seat
+are distinct identities. A future review may choose distinct Stream head and Shape
+identities, but that would be an explicit catalog relation with position-seated
+lookup, never an accidental result of equal spelling. The catalog neither silently
+collapses distinct prior objects nor accepts an unspecified equality relationship.
+
 ## 6. Interface root
 
 ```text
@@ -497,7 +556,7 @@ Refusals.Vector<RoleEntry>
 Types.Vector<Declaration>
 
 RoleEntry.[
-  Declaration.Declaration
+  Declaration.TypeDeclaration
   Reference.TypeReference
 ]
 
@@ -509,14 +568,21 @@ The four body positions and their order are ruled **[R]**. Their universal Input
 Output, and Refusal memberships are supplied by position and never repeated as tags
 **[R]**.
 
-`RoleEntry = Declaration | TypeReference` is active **[MVP]**. It avoids requiring
-every role entry to redefine a type:
+`RoleEntry = TypeDeclaration | TypeReference` is deliberate and active **[MVP]**.
+It avoids requiring every role entry to redefine a type:
 
 - an imported type may acquire a component role by reference;
 - a type declared once in `Types` may serve several roles;
 - one encoded identity can be both Input and Output where the domain requires it;
 - a role-specific type can still be declared inline when it has no independent
   non-role home.
+
+A strict Nomos declaration, including authored Stream source, is admitted only in
+Interface support `Types` **[MVP]**. A Nomos declaration denotes a typed
+transformation that may prepare several declarations and relations; placing that
+operation in one role-vector slot would not denote one coherent role target. It is
+therefore not widened into `RoleEntry`, and Stream's generated Input/Output/Input
+relations remain the only role semantics produced by its strict arm.
 
 A bare type reference in a role vector does not mutate the referenced type. The
 Interface root owns an `InterfaceRoleMembership` relation from Input, Output, or
@@ -687,8 +753,15 @@ These cardinalities are active **[MVP]** unless separately marked ruled:
 | import entries | zero or more |
 | module path | exactly one outermost module plus zero or more submodules |
 | imported names per entry | one or more |
-| naming assignments | exactly one per discovered declaration occurrence; no extras |
-| textual-metadata lookup | zero or more entries; at most one EncodedName per exact module-path/name pair |
+| authored naming assignments | exactly one authority-proven Existing/New assignment per discovered authored declaration occurrence; no extras |
+| generated Stream assignments | exactly one initiation/termination assignment pair per authored Stream occurrence; no extras |
+| textual-metadata address | exactly ModulePath, optional LexicalOwner, then VisibleName |
+| textual-metadata lexical owner | absent for top-level declarations; exactly the owning enum/Trait EncodedName for variants/methods |
+| textual-metadata snapshots | exactly one EncodedName per exact textual-metadata address; one record per EncodedName |
+| metadata transition | exactly one authority-proven before state and after state; preservation, rename, move, removal, and addition are explicit |
+| canonical EncodedName order | exactly one authority-supplied canonical byte projection and total order per identity |
+| Stream prior relationship | declaration head and handle Shape are one explicitly compatible multi-role identity **[MVP]**; every other listed prior seat is distinct |
+| prepared transaction | exactly one validated proposal containing authored meaning, generated work, schema changes, and the authorized metadata transition; no committed-state claim |
 | `Declaration` | exactly one TypeDeclaration or one audited concrete Nomos alternative |
 | type declaration | exactly one assigned name and one strict TypeBody alternative |
 | `TypeBody` | exactly one newtype, struct, or enum alternative |
@@ -714,7 +787,7 @@ These cardinalities are active **[MVP]** unless separately marked ruled:
 | Interface body | exactly Inputs, Outputs, Refusals, Types in that order **[R]** |
 | each Interface role vector | zero or more RoleEntries |
 | Interface support Types | zero or more Declarations |
-| RoleEntry | exactly one Declaration or one TypeReference |
+| RoleEntry | exactly one TypeDeclaration or one TypeReference; never a Nomos declaration |
 | Interface role relation | exactly one role and one resolved type per RoleEntry |
 | Nexus body | exactly Traits then Types **[MVP]** |
 | Nexus Traits | zero or more; zero methods makes a marker Trait |
@@ -742,30 +815,44 @@ The hand-written bootstrap reader must obey these invariants:
    declared semantic body and TrueName **[MVP]**.
 4. Decode imports second as textual resolution context and discard them after
    reference resolution **[R/MVP]**.
-5. Discover declaration occurrences before resolving bodies, require a complete
-   `NamingAssignments` input from naming authority, and never mint identity in the
+5. Discover authored declaration occurrences before resolving bodies, require exact
+   authored and generated assignment inputs with authority-proven Existing/New
+   dispositions, and never mint identity or decide mutation authorization in the
    reader **[MVP]**.
-6. Make source order semantically irrelevant within each scope **[MVP]**.
-7. Enforce the top-level, enum-variant, Trait-method, and local-binder scopes in
-   section 4.1 **[MVP]**.
-8. Load the typed bootstrap prior vocabulary before resolving authored references
+6. Validate the authorized before-to-after textual metadata transition, including
+   exact lexical-owner addresses, while leaving preservation, rename, move, removal,
+   and addition authority outside the reader **[MVP]**.
+7. Make source order semantically irrelevant within each scope by using the
+   authority-supplied canonical EncodedName order for unordered collections
    **[MVP]**.
-9. At every recursive position, expected type plus local structure selects one
+8. Enforce the top-level, enum-variant, Trait-method, and local-binder scopes in
+   section 4.1 **[MVP]**.
+9. Load the typed bootstrap prior vocabulary, validate its role compatibility and
+   explicit identity equality/distinctness relations, then resolve authored references
+   **[MVP]**.
+10. At every recursive position, expected type plus local structure selects one
    strict alternative **[R/D]**.
-10. Resolve every semantic reference to an EncodedName and validate the strict leaf
+11. Resolve textual ambiguity before semantic-class validation. Duplicate exact
+    metadata is invalid; valid import ambiguity comes from the same local spelling
+    imported through distinct module paths **[MVP]**.
+12. Resolve every semantic reference to an EncodedName and validate the strict leaf
     target class in section 5.4 **[R/MVP]**.
-11. Do not preserve visible spelling inside semantic bodies **[R]**.
-12. Carry each semantic form in its purpose-designed type. Do not use universal
+13. Do not preserve visible spelling inside semantic bodies **[R]**.
+14. Carry each semantic form in its purpose-designed type. Do not use universal
     field vectors or a generic transformer application **[R]**.
-13. Decode a `RoleEntry` declaration or reference to one resolved type identity,
+15. Decode a `RoleEntry` TypeDeclaration or TypeReference to one resolved type identity,
     then create an Interface-owned role-membership relation; never alter the type
     body to add a role **[MVP]**.
-14. Normalize inferred Trait binder vectors and limit co-reference to the containing
-    declaration **[MVP]**.
-15. Parse all three file kinds with the same machinery. A kind supplies only its body
+16. Admit strict Nomos declarations only in Interface support Types; never interpret
+    a Nomos operation as one role-vector entry **[MVP]**.
+17. Normalize inferred Trait binder vectors using authority-supplied canonical
+    identity bytes and limit co-reference to the containing declaration **[MVP]**.
+18. Parse all three file kinds with the same machinery. A kind supplies only its body
     root; per-kind parsing code is implementation failure **[R]**.
-16. Preserve encoded meaning, not source bytes **[R]**.
-17. Do not add current-substrate concepts merely because Rust generation needs them.
+19. Return generated work as a validated prepared proposal for external atomic
+    commit; never describe reader output as committed state **[MVP]**.
+20. Preserve encoded meaning, not source bytes **[R]**.
+21. Do not add current-substrate concepts merely because Rust generation needs them.
     Handwritten Rust is this stage's behavior implementation, not its schema source
     **[R]**.
 
@@ -783,8 +870,29 @@ Envelope
 
 Context
   BootstrapPriorVocabulary
+    PriorRoleCompatibility
+    PriorIdentityRelations
+      StreamShapeAndNomos = SameIdentity [MVP]
   NamingAssignments
+    NamingAssignment
+      DeclarationOccurrence
+      EncodedName
+      NamingDisposition = Existing | New
+  GeneratedStreamAssignments
+    GeneratedStreamAssignment
+      StreamDeclarationOccurrence
+      Initiation.GeneratedIdentityAssignment
+      Termination.GeneratedIdentityAssignment
   TextualMetadataLookup
+    TextualMetadataAddress
+      ModulePath
+      LexicalOwner?
+      VisibleName
+  AuthorizedTextualMetadataTransition
+    Before
+    After
+    AuthorityProof
+  CanonicalIdentityOrder
   ScopeStack
 
 Declaration
@@ -808,6 +916,12 @@ GeneratedStreamInterfaceDeclarations
   StreamTerminationInterfaceDeclaration
   GeneratedStreamRoleRelations
 
+PreparedBootstrapTransaction
+  AuthoredMeaning
+  GeneratedStreamInterfaceDeclarations
+  SchemaChanges
+  AuthorizedTextualMetadataTransition
+
 RuntimeStreamValues
   StreamInitiationValue<Query> = Query
   StreamValue<Event> = StreamIdentity<Event>
@@ -827,7 +941,7 @@ InterfaceBody
   Outputs
   Refusals
   Types
-  RoleEntry = Declaration | TypeReference
+  RoleEntry = TypeDeclaration | TypeReference
   InterfaceRoleMembership
   InterfaceRole = Input | Output | Refusal
 
@@ -856,6 +970,10 @@ Validation
   StrictLeafTarget
   TraitBinderNormalization
   NamingAssignmentCompleteness
+  NamingDispositionConsistency
+  MetadataTransitionConsistency
+  CanonicalUnorderedCollections
+  PreparedTransactionCompleteness
 ```
 
 Every listed item is either a purpose-designed encoded type, a textual reader input,
@@ -870,8 +988,10 @@ questions:
 1. **Envelope projection.** Confirm the three-integer `EthosVersion` anatomy and
    canonical `Kind.{major minor patch}` header projection. The version's meaning is
    already ruled.
-2. **Interface role entries.** Confirm `RoleEntry = Declaration | TypeReference`,
-   allowing imported/shared types and one identity with several roles.
+2. **Interface role entries.** Confirm
+   `RoleEntry = TypeDeclaration | TypeReference`, allowing imported/shared types
+   and one identity with several roles while reserving strict Nomos declarations
+   for Interface support Types.
 3. **Nexus root.** Confirm active `{Traits Types}`, or revise it to the historical
    `{Types Traits}` proposal; confirm the exact trait/method signature schema.
 4. **Sema root.** Confirm `{RecordTypes Tables}` and
@@ -882,5 +1002,10 @@ questions:
 All five have active **[MVP]** answers in this report, so none blocks the reader.
 The provisional Stream contract in section 5.3 is likewise active for the reader;
 deferred review may revise it without reopening a generic application carrier.
+The lexical-owner metadata address, Existing/New authority disposition, authorized
+metadata transition, authority-supplied canonical identity order, and explicit
+prior equality/distinctness relations are also **[MVP]** reader contracts within
+`primary-5pm`'s review authority. They add no authored surface question and remain
+reviewable without allowing the reader to mint identity or claim a commit.
 Runtime logic, effects, resources, concurrency, temporal protocol semantics, and
 neutral general data anatomy remain outside this report by the staged vision.
