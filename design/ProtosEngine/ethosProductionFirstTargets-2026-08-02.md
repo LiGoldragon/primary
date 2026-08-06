@@ -1,15 +1,14 @@
 # Ethos Production First Targets, Component Renames — 2026-08-02
 
-> **Supersession notice (2026-08-06).** A later ruling supersedes part of
-> this file; the text below is preserved unedited as the record. No
-> longer in force:
-> - Universal Input/Output/Refusal/StreamOpen/StreamEvent traits homed
->   in the `protos` crate — superseded: role memberships stay encoded
->   positional relations that generate component-specific traits;
->   universal Rust marker traits are not created
->   (`redesignAuditRulings-2026-08-06.md`).
-> The design log reads by recency; consult the named file for the
-> current form.
+> **Supersession notice (2026-08-06), REVERSED later the same day.** A
+> ruling briefly superseded the universal-traits home (role memberships
+> as encoded relations generating component-specific traits, no
+> universal marker traits). The psyche reversed it: sections exist
+> precisely so that position confers implementation of the universal
+> Input/Output/Refusal traits, which are restored. The stream-side
+> traits (StreamOpen/StreamEvent) await the open stream-role question.
+> Both turns are recorded in `redesignAuditRulings-2026-08-06.md`; the
+> design log reads by recency.
 
 Agent text answered: the Ethos production bootstrap proposal
 (`reports/EthosProductionBootstrapProposal-2026-08-02.md`), whose question

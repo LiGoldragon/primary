@@ -158,3 +158,49 @@ Seated:
   whether Input/Output position items implement universal Input/Output
   traits — the psyche has reopened the marker-traits question ruled
   earlier this same day.
+
+## Ruling: sections confer the universal traits (reversal)
+
+Agent text answered: the manager asked directly — should position make
+each item implement the universal Input/Output/Refusal traits, as
+originally ruled 2026-08-02, which would reverse the same-day
+marker-traits ruling taken on managerial recommendation?
+
+Psyche ruling [psyche-verbatim]: "What other point is there to have
+different sections?"
+
+Seated:
+
+- Sections exist precisely so that placement confers implementation of
+  the universal Input, Output, and Refusal traits. Position makes each
+  item implement its section's trait. The same-day ruling "role
+  memberships stay positional; no universal marker traits" is reversed;
+  the 2026-08-02 universal-traits home (`protos` crate) is restored
+  (both notices updated).
+- The manager's StreamOpen/StreamEvent extension falls with the
+  reversal; the stream-side traits await the open stream-role question
+  below.
+- Disavowal, recorded verbatim against the 2026-08-02 seated clause
+  "membership is positional and never written": "If I said 'author
+  never writes' I dont remember, and I now disavow that. I dont even
+  know why I would say that. Maybe I meant it could have a default
+  implementation, but I havent thought about it deeply enough to be
+  sure." Placement in a section IS the writing of membership; whether
+  the universal traits carry default implementations is open and not
+  deeply considered.
+
+## Open question: is a stream the same kind of output?
+
+The manager's argument that a stream is a regular output because
+`Stream` is engine machinery like `Vector` was rejected
+[psyche-verbatim]: "thats disingenuous". The honest difference the
+analogy hid: a Vector output's multiplicity is inside the value — all
+elements arrive at once and the exchange completes; a Stream's
+multiplicity is inside time — events keep arriving, the engine holds
+per-connection state, either side can end it, and the MVP demands a
+persisted restart of exactly that state. The question stays open:
+either the Output section's trait is broad enough to cover ongoing
+emission (streamness carried by type and engine machinery), or a
+stream's events-face is a fourth kind of role deserving its own
+section and universal trait — which would reopen the 2026-08-04 "no
+stream section" leaning. Unruled.

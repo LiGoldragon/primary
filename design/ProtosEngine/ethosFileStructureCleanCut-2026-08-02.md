@@ -1,5 +1,13 @@
 # Ethos File Structure, Clean Cut, Traits Doctrine — 2026-08-02
 
+> **Correction notice (2026-08-06).** The "membership in the
+> input/output/refusal traits is positional and never written" clause is
+> partially disavowed by the psyche: the "never written" phrasing is
+> disavowed — placement in a section IS the writing of membership, and
+> sections exist precisely to confer implementation of the universal
+> traits (`redesignAuditRulings-2026-08-06.md`). The positional part
+> stands.
+
 Rulings and vision from the psyche's spoken answer to the Ethos production
 bootstrap proposal's question A (which asked how to treat the legacy
 six-slot form). Quotes condensed from dictation.
