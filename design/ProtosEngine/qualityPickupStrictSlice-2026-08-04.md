@@ -1,5 +1,9 @@
 # Strict quality pickup
 
+> **Supersession notice (2026-08-06).** Later rulings supersede parts of this file; the text below is preserved unedited as the record. No longer in force:
+> - Bare trait-pickup spellings (e.g. bare `Ordered` inside shape slots) — superseded in spelling by the guillemet trait-mark ruling: trait requirements are guillemet-marked at every position (`visionReacquisitionRulings-2026-08-05.md`). The strict-pickup semantics itself stands.
+> The design log reads by recency; consult the named files for the current form.
+
 Psyche ruling, conveyed through the implementation dispatch: authored bare
 `Ordered` in `WireResult.Result<Vector<Ordered> Error>` is a Trait pickup, not
 a concrete type reference to be renamed at every use. The strict carriers must

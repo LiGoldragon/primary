@@ -1,5 +1,9 @@
 # Vision Reacquisition Rulings — 2026-08-05
 
+> **Supersession notice (2026-08-06).** Later rulings supersede parts of this file; the text below is preserved unedited as the record. No longer in force:
+> - The open root-container brainstorm (cosmos/oikos/holos/topos candidates) — closed: the root container is just a module, all candidates rejected (`deepCenterVision-2026-08-05.md`, 2026-08-06 appended ruling).
+> The design log reads by recency; consult the named files for the current form.
+
 ## Ethos sources live in the owning component's repository
 
 Agent text answered: the implementing codex session proposed creating a

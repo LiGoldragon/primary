@@ -1,5 +1,7 @@
 # Trait Standard, Syntax Conciseness, Spirit Rename — 2026-08-01
 
+> **Contents note (2026-08-06).** Despite the filename, this file also carries rulings 9-19 (appended 2026-08-03 and 2026-08-04), which cover Spirit daemon architecture, the judge model, CLI-argument law, and flake recovery.
+
 Continuation of the psyche vision session. Agent text answered: the manager's
 summary of the self-hosting loop, the encoded-name assessment, and the two
 approval requests (Spirit capture wording; Spirit-redefinition doctrine

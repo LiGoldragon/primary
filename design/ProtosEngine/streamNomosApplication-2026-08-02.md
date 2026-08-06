@@ -1,5 +1,11 @@
 # Stream Is the Nomos Object; Name Is Data — 2026-08-02
 
+> **Supersession notice (2026-08-06).** Later rulings supersede parts of this file; the text below is preserved unedited as the record. No longer in force:
+> - Object-first dotted-chain form (`Stream.Observer.{...}`) — superseded by the bare-pipe universal name prefix (`universalNamePrefixTransformerPipe-2026-08-03.md`), then by `Name.Transformer.(...)` with the sectioned form cut (`llmTokenOptimizationRulings-2026-08-04.md`).
+> - Dotted-chain parameter-binding capability — superseded (dropped) by `universalNamePrefixTransformerPipe-2026-08-03.md`.
+> - Name-first/sectioned seatings — superseded by the bare-pipe universal name prefix (`universalNamePrefixTransformerPipe-2026-08-03.md`), then finally by `Name.Transformer.(...)` with the sectioned form cut (`llmTokenOptimizationRulings-2026-08-04.md`).
+> The design log reads by recency; consult the named files for the current form.
+
 Ruling from the psyche vision session, correcting the manager's stream
 candidate `Observer.Stream.{...}` (stream name in head position).
 

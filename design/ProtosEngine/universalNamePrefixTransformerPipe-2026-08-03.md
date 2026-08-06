@@ -1,5 +1,10 @@
 # Universal Name Prefix; Bare Pipe Marks the Transformer — 2026-08-03
 
+> **Supersession notice (2026-08-06).** Later rulings supersede parts of this file; the text below is preserved unedited as the record. No longer in force:
+> - Bare `|` as the name/transformer separator — superseded by `.( )` (`Name.Transformer.(...)`) (`llmTokenOptimizationRulings-2026-08-04.md`).
+> - The sectioned `Name.(...)` form — subsequently cut (`llmTokenOptimizationRulings-2026-08-04.md`).
+> The design log reads by recency; consult the named files for the current form.
+
 Ruling chain from the psyche session of 2026-08-03, continuing the stream
 syntax thread. Supersedes, within `streamNomosApplication-2026-08-02.md`:
 the object-first standalone seating ("the Nomos object comes first:
