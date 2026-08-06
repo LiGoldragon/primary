@@ -2,6 +2,7 @@
 
 > **Supersession notice (2026-08-06).** Later rulings supersede parts of this file; the text below is preserved unedited as the record. No longer in force:
 > - The survival of `(|...|)` as pipe-text — superseded: all piped delimiters were dropped and curly quotes “ ” (U+201C/U+201D) became the string carrier, inheriting pipe-text's common-indentation semantics (`llmTokenOptimizationRulings-2026-08-04.md`).
+> - Multi-segment dotted name chains (`Technology.Software.Programming.CodeGeneration`) — scrapped (`redesignAuditRulings-2026-08-06.md`).
 > The design log reads by recency; consult the named files for the current form.
 
 Rulings from the psyche-interaction session, correcting the Dotos exhibit

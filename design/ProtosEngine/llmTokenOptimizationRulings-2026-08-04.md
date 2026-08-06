@@ -3,7 +3,8 @@
 > **Supersession notice (2026-08-06).** Later rulings supersede parts of this file; the text below is preserved unedited as the record. No longer in force:
 > - `« »` reserved as the unassigned "extension pair" — spent; assigned to trait pickups (`visionReacquisitionRulings-2026-08-05.md`).
 > - "One surface syntax; resolution classifies" quality ruling — superseded by the shape/trait delimiter split (shapes bare `< >`, traits `« »`) (`visionReacquisitionRulings-2026-08-05.md`).
-> The design log reads by recency; consult the named files for the current form. (This file already contains internal "supersedes in part" sections; this notice covers only the 2026-08-05 external supersessions.)
+> - The head-joining dot in `Name.Transformer.(...)` — superseded: the colon joins a name to its transformer head, `Name:Transformer.(...)`; `.(` still opens the payload (`redesignAuditRulings-2026-08-06.md`).
+> The design log reads by recency; consult the named files for the current form. (This file already contains internal "supersedes in part" sections; this notice covers only the external supersessions.)
 
 Session: syntax-revision discussion driven by the psyche's aim of optimizing
 the Protos language family for LLM token cost. Evidence base: tiktoken

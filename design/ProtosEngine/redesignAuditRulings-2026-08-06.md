@@ -93,3 +93,68 @@ FrozenMagic precedent: stored-state readability is not grounds for
 survival, and a record nothing living constructs has no claim. A future
 store-adoption need returns as designed work at its stage, not as a
 survivor. The Legacy-naming option is moot on this evidence.
+
+## Ruling: the colon joins a name to its transformer head
+
+Agent text answered: the manager's analysis agreeing that
+`Name.Transformer.(...)` overloads the dot — a reader cannot classify
+`A.B.C` as name chain or transformer application until `.(` arrives —
+while a colon announces the transformer at the name boundary, restores
+the guaranteed-plain dot-world, and reuses the colon's ruled
+context-scoped qualification role.
+
+Psyche ruling [psyche-verbatim]: "I think Name:TransformerName.( ... )
+is the better syntax for named transformers. The other syntax will
+create difficult parsing and reasoning." Confirmed after the analysis,
+with the additions: "and : remains legal in a position expecting a
+string", and — against the manager's description of the dot as
+separating chained names (`Technology.Software.Programming`) — "no,
+that is scrapped", and — against "it opens plain data" — "you mean, it
+opens a delimiter. everything is data".
+
+Seated:
+
+- Transformer applications are `Name:Transformer.(payload)`. The colon
+  separates the declared name from the transformer head; `.(` still
+  opens the payload. This supersedes the head-joining dot of the
+  2026-08-04 `.( )` ruling (notice placed there).
+- The colon stays context-scoped: qualification separator in import
+  space, name-to-transformer binding at declaration positions, and a
+  legal interior character wherever a string is expected.
+- Multi-segment dotted name chains are scrapped; the form leaves the
+  grammar (notice placed in `dotosSyntaxCorrections-2026-08-02.md`).
+- Language correction for the record: everything is data; the dot opens
+  a delimiter. The dot/colon distinction is payload-opener versus
+  transformer-head, not data versus non-data.
+
+## Ruling: a stream is several source objects; the bundled expansion dies
+
+Agent text answered: the manager's account of the shipped bootstrap
+stream lifecycle family — one authored `Name.Stream.(Query Event)`
+expanded at sealing into three declarations, with the authority minting
+two hidden identity seats for the initiation and termination — defended
+as the non-repetition law at work.
+
+Psyche ruling [psyche-verbatim]: "When I explained that a stream is
+several parts, I was disqualifying the object that tries to put all of
+the components of the stream in one source object. So your whole
+problem should probably go away. Like you say, does it go in input,
+does it go in output, it's because you're trying to put two objects
+into one, that doesn't work either. That's not non-repetition. That's
+trying to fit a square block in a triangle hole." On the shipped
+mechanism: "which means it must now be deleted".
+
+Seated:
+
+- No source object bundles a stream's components. The opening query,
+  the stream, and any termination are separately authored objects, each
+  in its natural position; roles remain positional.
+- The shipped bootstrap family expansion — authority-supplied
+  initiation/termination seats and the derived three-declaration
+  family — is disqualified and must be deleted (bead filed on the
+  cleanup car).
+- Open, awaiting psyche: whether a stream is a regular output (its
+  streamness carried by its type rather than by a special role), and
+  whether Input/Output position items implement universal Input/Output
+  traits — the psyche has reopened the marker-traits question ruled
+  earlier this same day.
