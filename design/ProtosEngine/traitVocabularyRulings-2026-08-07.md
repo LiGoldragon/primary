@@ -56,3 +56,14 @@ is correctly spelled but heavy. Manager recommendation, following the
 ruled Ordered pattern (state-adjective, not -able): trait `TrueNamed`,
 method `true_name()`, value type `TrueName`. Awaiting the psyche's
 pick.
+
+## Ruling: TrueNamed
+
+Psyche [psyche-verbatim]: "TrueNamed it is"
+
+Seated: trait `TrueNamed` (state-adjective, the Ordered pattern),
+method `true_name()`, value type `TrueName`. The identity chain:
+`EncodedForm: TrueNamed`, with `TrueNamed` requiring the wire
+capability, its default `true_name()` hashing the rkyv wire bytes —
+one line through the layer below, per the defaults-via-sub-traits
+doctrine. This closes the open question above.
