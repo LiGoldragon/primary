@@ -161,6 +161,26 @@ psyche's review is deferred, not waived — tracked as primary-5pm. The
 schemas carry provisional, not psyche-reviewed, seniority until that
 review and remain fully revisable by its outcome.
 
+## Anything old must die
+
+Agent text answered (2026-08-06): the redesign audit asked two
+rulings — whether the signal-nomos d47 idiom (a superseded core-nomos
+compiled as a dev-dependency to prove old readers refuse new tags) is
+sanctioned, and whether structural-codec's retired PipeText leaf and
+Foreign catch-all leaf may be removed despite moving the archived
+layout for every consumer.
+
+Psyche: "anything old must die"
+
+Ruling: universal. No superseded form is kept alive as living code
+for any purpose — not compatibility, not an evidence harness, not a
+refusal proof. The d47 dev-dependency and its test die, and the
+old-reader refusal guarantee dies with them; frozen golden bytes are
+records, not survivors, and remain the only permitted fossil.
+structural-codec's PipeText leaf dies as retired syntax and its
+Foreign catch-all dies under the strict-type ruling; the resulting
+archived-layout movement in consumers is licensed breakage.
+
 ## Correction: consequences are not Intent or Vision
 
 Agent text answered: after reading the four answers above, the receiving

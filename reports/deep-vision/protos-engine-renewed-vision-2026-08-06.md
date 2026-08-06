@@ -216,6 +216,11 @@ this one.
 
 ## Supersessions in force
 
+**Psyche.** "Anything old must die." No superseded form survives as
+living code for any purpose — not compatibility, not an evidence
+harness, not a refusal proof. Frozen golden bytes are records, not
+survivors, and are the only permitted fossil.
+
 The 2026-08-04 report's supersession list stands, plus:
 
 - The one-surface quality syntax is superseded by the shape/trait
