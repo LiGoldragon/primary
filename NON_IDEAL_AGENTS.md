@@ -8,6 +8,12 @@ lane. When you discover a new non-ideality that is not yours to fix now, append
 it here; keep ordinary rules in `AGENTS.md` and the ideal shape in
 `ARCHITECTURE.md`.
 
+## Subagent and Protos compaction reminders
+
+- Use `gpt-5.6-terra` with `xhigh` reasoning for every non-trivial subagent; use `gpt-5.6-luna` only for trivial mechanical subagents; never spawn a Sol subagent.
+- When `management` or `psyche-interraction` is invoked, keep each invoked skill primordial for the whole session, including after compaction.
+- After every compaction during Protos-family work, reacquire the current Protos psyche vision from current authority/design documents and live beads before touching code.
+
 ## Remote builder depends on the Goldragon Wi-Fi
 
 `prometheus.goldragon.criome` may be unreachable unless Wi-Fi is connected to
