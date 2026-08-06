@@ -2,1010 +2,402 @@
 
 Date: 2026-08-06
 
-Status: provisionally authorized for MVP implementation. Final psyche review is
-deferred to `primary-5pm`. The choices marked **[MVP]** are the active bootstrap
-contract until that review revises them. This document supersedes
-`reports/ProtosFileKindSchemas-2026-08-05.md` only as the current implementation
-proposal; it does not supersede any psyche ruling. The historical report remains
-evidence of the earlier design pass.
+Status: shipped provisional bootstrap contract and psyche-review target.
+`primary-5pm` tracks the deferred ruling. This report replaces
+`reports/ProtosFileKindSchemas-2026-08-05.md` as the description of the model
+actually published; it does not raise any provisional choice to psyche-ruled
+seniority.
 
-Current vision:
-`reports/deep-vision/protos-engine-renewed-vision-2026-08-06.md`.
+The governing law is direct: “Beauty and elegant, extendable logic always wins
+over everything, always. Beauty rules this universe.” Convenience, familiarity,
+and token cost do not outrank it.
 
-## 1. The staged spine
+## 1. Scope and seniority
 
-Protos develops in stages. The current stage begins with component interfaces;
-executable behavior remains handwritten Rust deliberately. These schemas must be
-strict, beautiful, and extendable, but they must not pre-allocate positions for
-runtime logic, effects, resources, concurrency, lifecycle machinery, or general
-data anatomy.
+The bootstrap stage is interfaces-first. Authors describe component interfaces
+in Ethos while executable behavior remains handwritten Rust. The three roots in
+this report are therefore the current bootstrap entry points, not a universal
+taxonomy of programs.
 
-The later complete executable representation belongs to `primary-w2q`. General
-Ethos/Dotos data anatomy that is neither a component role nor persistent Sema
-storage belongs to `primary-bfs`. Neither future is a gate on this proposal.
+This report does not design behavior, effects, resources, concurrency, runtime
+world anatomy, or general Dotos data anatomy. Their absence is staging, not an
+invitation to add placeholder positions. The wider outcomes described by the
+psyche—general adoption and the self-hosting cascade through Rust, LLVM, Mentci,
+and the operating system—constrain these choices not to make a present substrate
+permanent. Outcomes expected to happen are not relabelled here as intent or
+vision.
 
-The current deliverable is exactly three bootstrap roots:
+Authority marks used below:
 
-- Interface: public typed roles.
-- Nexus: traits that handwritten behavior implements, plus signature-local types.
-- Sema: persistent record types and keyed tables.
+| Mark | Seniority |
+|:--|:--|
+| **[R]** | Direct psyche ruling or explicitly psyche-approved proposal. |
+| **[D]** | Delegated bootstrap implementation choice. |
+| **[P]** | Shipped provisional file-kind choice awaiting `primary-5pm`. |
+| **[E]** | Exact observed behavior of the published implementation; evidence, not a language ruling. |
 
-This is a bootstrap taxonomy, not a claim that all future programming reduces to
-these three roots.
+The implementation basis inspected for this reconciliation is:
 
-## 2. Authority legend
+| Published component | Revision | Relevant boundary |
+|:--|:--|:--|
+| `core-ethos` | `7a1384874f3747de97c6ccbb4ae6fa2149b27330` | root model, strict reader, canonical writer, archive status |
+| `sema-translator` | `4675e5ddfdd0d24144498ec9b7d2e5b9cb422249` | production naming-authority assembly |
+| `core-nomos` | `4758e8db3c72e7c84c30c1a0b597b6d9ed65d35d` | authority-sealed Interface/Nexus and Sema lowering |
+| `schema-rust` | `c1d2ae1b0dd189cd8c8788a2cfc062e26c0377f3` | strict Interface and Sema generation and checked-artifact proofs |
 
-- **[R] Ruled**: directly stated by the psyche or an agent proposal explicitly
-  confirmed by the psyche.
-- **[D] Derived**: a mechanical consequence of ruled structure. It remains an
-  agent interpretation and may be corrected.
-- **[P] Proposed**: new design in this report, pending psyche ruling.
-- **[MVP] Provisionally authorized**: the active implementation choice for the
-  bootstrap reader. Final psyche review may revise it through `primary-5pm`, but
-  that review is not a reader gate.
-- **[O] Open**: no exact shape is proposed because authority or delegated design
-  has not supplied enough information.
+`schema-rust` pins that exact producer train. Every model statement below is
+about these published revisions.
 
-Schema field names below explain positional meaning. They are not authored field
-labels. Canonical Dotos and Ethos values remain positional.
+## 2. Canonical envelope
 
-## 3. Shared envelope
+Every file has exactly three source positions: header, import vector, and one
+kind-selected body **[R/P]**.
 
-### 3.1 Root schema
-
-```text
-EthosFile.{
-  Header
-  Imports
-  Body
+```ethos
+Kind.{Major Minor Patch}
+[module:path.[Name OtherName]]
+{
+  [first kind-specific section]
+  [later kind-specific section]
 }
-
-Header.{EthosKind EthosVersion}
-EthosKind.[Interface Nexus Sema]
-
-EthosVersion.{Major Minor Patch}
-
-Imports.Vector<ImportEntry>
-ImportEntry.{ModulePath ImportedNames}
-ModulePath.{ModuleName Submodules}
-Submodules.Vector<ModuleName>
-ImportedNames.Vector<VisibleName>
 ```
 
-Authority by position:
+### 2.1 Header
 
-| Schema | Position | Meaning | Authority |
-|:--|:--|:--|:--|
-| `EthosFile` | 1 | header | **[R]** |
-| `EthosFile` | 2 | imports | **[R]** |
-| `EthosFile` | 3 | kind-specific body | **[R]** |
-| `Header` | 1 | Ethos file kind | **[R]** |
-| `Header` | 2 | Ethos compatibility version | **[R]** |
-| `EthosVersion` | 1–3 | major, minor, patch | **[MVP]** |
-| `ImportEntry` | 1 | module path | **[MVP]** |
-| `ImportEntry` | 2 | nonempty imported-name vector | **[R/MVP]** |
-
-The header is exactly kind and version for this stage **[R]**. The version denotes
-the version of Ethos with which the content last worked and is writer-bumped when
-a change may break compatibility **[R]**. It is not a file revision, component
-release, database schema revision, or content identity **[D]**.
-
-The active bootstrap projection is **[MVP]**:
+The header is the visible projection of one of the three registered bootstrap
+kind identities followed by exactly three canonical nonnegative decimal
+components **[P/E]**:
 
 ```ethos
 Interface.{1 0 0}
+Nexus.{1 0 0}
+Sema.{1 0 0}
 ```
 
-The first atom is exactly one `EthosKind`. The following brace product is exactly
-three nonnegative base-ten integers in major, minor, patch order. Canonical decimal
-has no sign and no leading zero except the value `0`. No fourth component, omitted
-component, or prerelease/build suffix is accepted. The earlier `Interface.1`
-spelling remains historical evidence rather than the MVP projection.
+The published catalog admits exactly version `1.0.0`. A different version is a
+typed refusal, as are a missing component, an extra component, a sign, and a
+noncanonical decimal such as `01`. The decoded header is retained compatibility
+metadata and must agree with the selected semantic body. The three-root carrier
+used by the bootstrap implementation is explicitly not an ontology claim.
 
-The header is retained in bootstrap source/document metadata for compatibility and
-provenance **[MVP]**. It selects the body root and records the writer's compatibility
-claim, but it is excluded from every declared semantic object's body and therefore
-from every declared object's TrueName. Imports are different: after they resolve
-textual references, they are discarded rather than retained in encoded document
-metadata **[R/MVP]**.
+### 2.2 Imports
 
-The body type is selected after decoding `Header.EthosKind`. One shared context
-machine then decodes that root. A discriminated Rust enum is a permissible
-bootstrap implementation; it is not the language ontology.
-
-### 3.2 Imports
-
-Imports exist only in textual projection. They resolve visible names to encoded
-identities and do not survive in encoded code **[R]**.
-
-Ruled projection:
+Imports use the ruled square selector vector **[R]**. The outer vector may be
+empty. Each entry has a nonempty colon-separated module path and a nonempty
+vector of ownerless visible names **[P/E]**:
 
 ```ethos
-interface.[Entry Referent RecordSet]
+[]
+[dependency:domain.[External Identifier]]
 ```
 
-The square payload is ruled. The active singleton projection keeps that vector
-form **[MVP]**:
+Imports resolve textual projections to encoded identities. They remain in the
+source-projection part of the decoded transaction so the canonical writer can
+reproduce the file, but they are not positions in the kind-specific semantic
+body **[D/E]**. Canonical emission groups selectors by module path, removes
+duplicate selectors, and orders selected names by authority-owned identity
+bytes. Missing, invalid, or ambiguous projections are refused.
+
+Declarations in the current module are visible without a self-import when the
+authority catalog seats their projection. Imported and current-module Shape
+identities are usable when their catalog role and arity are valid; Shapes are
+not restricted to the fixed bootstrap prior list.
+
+## 3. Shared authored vocabulary
+
+This section names the semantic alternatives accepted by the published reader.
+It is not a transcription of its Rust carriers.
+
+### 3.1 Plain nominal types
+
+A plain type declaration has one of three authored bodies **[P/E]**:
 
 ```ethos
-interface.[Entry]
+Identifier.Integer
+Pair.{Left Right}
+Choice.[None One.Left Both.{Left Right}]
 ```
 
-Colon qualification and uniform module recursion yield this active nested
-projection **[D/MVP]**:
+- A bare payload is a newtype over one type expression.
+- Braces are an ordered struct product.
+- Squares are an enum; a variant is unit, unary, or a nonempty ordered product.
+
+The recursive type-expression alternatives are:
+
+- an encoded nominal reference projected as a bare visible name;
+- a Shape application, written with bare angle brackets, such as
+  `Vector<String>`;
+- a Trait requirement, marked everywhere with guillemets, such as
+  `«Sortable Serializable»` or the named binder `«Value.Sortable»` **[R]**.
+
+Shape arity comes from the identity schema catalog. Product positions and Shape
+argument positions retain semantic order. Named collections—declarations,
+variants, traits, methods, Tables, and role entries—are canonically ordered by opaque
+authority-owned identity bytes **[D/E]**.
+
+### 3.2 Traits
+
+A Trait contains zero or more methods. A method product contains zero or more
+parameters followed by exactly one return type **[P/E]**:
 
 ```ethos
-component:protocol:interface.[Entry Referent]
+Transform.{apply.{Input Output}}
 ```
 
-MVP import law:
+Trait requirement binders are local to the containing type or method. They are
+not globally minted objects. Reusing one named binder with different
+requirements, or repeating a Trait in one requirement, is refused.
 
-1. The source is a nonempty path through the module tree. The first segment is
-   the outermost module; every colon advances to a submodule.
-2. The dot separates the module path from one nonempty square vector of names.
-3. A singleton keeps its square vector. There is no second singleton grammar.
-4. Each ownerless path/name selector resolves to exactly one identity within the
-   source set's dependency closure through textual-form metadata. An absent selector
-   is a typed refusal. If distinct valid import paths introduce the same local
-   spelling, using that spelling in the body is an ambiguity refusal.
-5. Imports have no aliases in this bootstrap. Renaming and placement belong to
-   textual-form metadata bound to encoded identity.
-6. Body references use imported local names. Colon retains qualification meaning
-   only in import context.
+### 3.3 The one admitted bootstrap Nomos form
 
-Only the colon, the square name vector, and recursive module terminology are
-ruled. Absolute outermost-to-leaf path resolution, singleton uniformity, and the
-lack of aliases are active **[MVP]** choices pending `primary-5pm`.
-
-## 4. Atom roles and identity
-
-The reader must never treat every atom as an undifferentiated string. Its expected
-position assigns one of these roles:
-
-| Atom role | Examples | Decode result |
-|:--|:--|:--|
-| fixed vocabulary | header kind; strict encoded variant selected by structure | a closed discriminant, never a user name |
-| literal value | the three version integers | a validated typed scalar, never name resolution |
-| declaration name | type, enum variant, trait, method, or table being introduced | consume the encoded-name assignment supplied by naming authority; record visible spelling and placement as textual metadata |
-| reference | type, Shape, Trait, return, record, or key reference | resolve through local declarations and imports to an encoded name |
-| local binder | the `Left` in `«Left.Sortable»` | scope-local parameter binder; never a global encoded name |
-| import selector | module path segment or imported visible name | textual lookup only; discarded after resolution |
-
-A declaration's own visible name is excluded from its true-name body **[R]**.
-References in that body are encoded names **[R]**.
-
-The reader never mints identity or decides whether an identity may be preserved,
-renamed, moved, born, or removed **[MVP]**. Before semantic sealing, naming
-authority supplies a `NamingAssignments` input that maps every authored declaration
-occurrence to an EncodedName and carries an authority-proven `Existing` or `New`
-disposition. `Existing` means the owning operation has authorized preservation of
-one living identity; `New` means the authority has freshly minted a random identity.
-The reader verifies the supplied disposition against the authorized state
-transition but never infers authorization from matching text.
-
-```text
-NamingAssignments.Vector<NamingAssignment>
-NamingAssignment.{DeclarationOccurrence EncodedName NamingDisposition}
-NamingDisposition.[Existing New]
-
-TextualMetadataLookup.Vector<TextualMetadataEntry>
-TextualMetadataEntry.{TextualMetadataAddress EncodedName}
-TextualMetadataAddress.{ModulePath LexicalOwner? VisibleName}
-
-AuthorizedTextualMetadataTransition.{Before After AuthorityProof}
-```
-
-`DeclarationOccurrence` is an ephemeral structural-discovery handle for this decode
-operation. It is not an object identity, is not retained in semantic bodies, and is
-never hashed. Every discovered declaration occurrence has exactly one assignment;
-every assigned occurrence must exist in the document.
-
-`TextualMetadataAddress` is exactly unique in both the before and after snapshots
-**[MVP]**. A top-level declaration has no `LexicalOwner`. An enum variant's owner is
-its enum EncodedName; a Trait method's owner is its Trait EncodedName. This preserves
-valid sibling reuse without permitting two objects at the same exact address. Import
-selectors address only ownerless top-level projections. Import ambiguity arises when
-the same local spelling is imported from distinct valid module paths; duplicate exact
-metadata is invalid authority state, never an ambiguity supplied to the reader.
-
-The source reader accepts an authority-supplied, authenticated before-to-after
-metadata transition **[MVP]**. The transition may preserve an Existing record, change
-its visible name or placement, remove a dead object, or add a New object. The reader
-checks exact consistency among occurrences, dispositions, semantic output, and the
-transition. It does not grant any of those mutations. Allocation, collision handling,
-authorization, and durable transition storage remain outside the reader.
-
-Naming authority also supplies one canonical byte projection and total order for
-every EncodedName **[MVP]**. Trait-binder normalization and canonicalization of
-semantically unordered collections use only that authority-supplied order. No reader
-schema inspects or reconstructs today's root tags, local integer chains, storage
-addresses, or any future EncodedName anatomy.
-
-This distinction is why a bare atom can be a reference in a role position while
-`Name.Type`, `Name.{...}`, and `Name.[...]` introduce declarations. The active
-expected type, not spelling in isolation, decides.
-
-### 4.1 Scope rules
-
-The MVP scope model is **[MVP]**:
-
-1. Every direct `Declaration`, `TraitDeclaration`, and `TableDeclaration` in one
-   body contributes a top-level name to that body's module scope. Interface inline
-   role declarations and Interface `Types` therefore share one scope.
-2. Enum variant names are declarations scoped by their owning enum. They do not
-   occupy the top-level module scope.
-3. Trait method names are declarations scoped by their owning Trait. They do not
-   occupy the top-level module scope.
-4. A `ParameterBinder` is local to the nearest containing type declaration or
-   method declaration. It never escapes that declaration and never receives a
-   global EncodedName.
-5. Import selectors extend only the document's textual-resolution environment.
-   They do not introduce semantic declarations or alter an object's own name.
-6. Duplicate names are refused within their exact scope. The same visible spelling
-   in distinct enum, Trait, or local-binder scopes is valid.
-7. Textual metadata keys nested declarations by their lexical owner's EncodedName;
-   module path plus spelling alone is never used to collapse distinct nested scopes.
-
-## 5. Shared declaration schemas
-
-### 5.1 Plain type declarations
-
-```text
-Declaration.[
-  Type.TypeDeclaration
-  Nomos.NomosDeclaration
-]
-
-TypeDeclaration.{DeclarationName TypeBody}
-
-TypeBody.[
-  Newtype.TypeExpression
-  Struct.TypePositions
-  Enum.Variants
-]
-
-TypePositions.Vector<TypeExpression>
-Variants.Vector<VariantDeclaration>
-
-VariantDeclaration.{VariantName VariantBody}
-
-VariantBody.[
-  Unit
-  Unary.TypeExpression
-  Product.TypePositions
-]
-```
-
-Canonical structural projections already ruled or directly derived from ruled
-delimiters:
+The authored declaration
 
 ```ethos
-Topic.String
-Entry.{Topics Kind Description}
-Kind.[Decision Principle Correction]
-Status.[Pending Ready.«Numeric»]
+Observer.Stream.(Query Event)
 ```
 
-The authored surface does not write `Newtype`, `Struct`, `Enum`, `Unit`, `Unary`,
-or `Product`. The declaration position and delimiter choose the strict encoded
-alternative:
+is the one closed, audited Nomos form admitted by this bootstrap **[P/E]**. It
+means Stream initiation with exactly two ordered arguments, Query then Event.
+It is accepted only in Interface support Types. This closed admission is a
+bootstrap limit, not a claim about the eventual Nomos language.
 
-- `Name.Type` selects `Newtype` **[R/D]**.
-- `Name.{...}` selects `Struct` **[R]**.
-- `Name.[...]` selects `Enum` **[R]**.
-- a bare enum member selects `Unit` **[D]**.
-- `Variant.Type` selects `Unary` **[D]**.
-- `Variant.{...}` selects `Product` **[D]**.
+## 4. Interface
 
-`TypePositions`, `Variants`, and the other named sequence types are
-purpose-specific encoded types. Their bootstrap implementation may contain an
-honest typed collection internally; they are not a universal `Vec<Fields>`.
+Interface has exactly four authored sections, in this order **[P]**:
 
-### 5.2 Type expressions
-
-```text
-TypeExpression.[
-  Reference.TypeReference
-  ShapeApplication.ShapeApplication
-  TraitRequirement.TraitRequirement
-]
-
-ShapeApplication.{ShapeReference TypeArguments}
-TypeArguments.Vector<TypeExpression>
-
-TraitRequirement.{ParameterBinder RequiredTraits}
-ParameterBinder.[Inferred Named.LocalName]
-RequiredTraits.Vector<TraitReference>
-```
-
-Ruled canonical forms:
-
-```ethos
-Vector<Timestamp>
-Vector<«Ordered»>
-Result<Vector<«Ordered»> «Error»>
-Range.{«Ordered» «Ordered»}
-Pair.{«Left.Sortable» «Right.Sortable»}
-Value.Vector<«Ordered Serializable»>
-```
-
-Shape applications keep bare angles **[R]**. Trait requirements use guillemets
-at every occurrence **[R]**. Several traits inside one guillemet pair constrain
-one parameter **[R]**. Unmarked names inside a Shape are ordinary concrete type
-references **[R]**. Repeated bare requirements co-refer and named prefixes create
-distinct parameters **[R]**.
-
-`ParameterBinder` and its exact strict representation are **[P/MVP]**. For an
-inferred binder, the reader resolves every required Trait to its EncodedName,
-rejects duplicates, sorts the EncodedNames by the naming authority's canonical byte
-order, and uses that normalized nonempty vector as the co-reference key. Equal
-normalized vectors co-refer only within the containing type or method declaration.
-Named binders remain distinct even when their normalized Trait vectors are equal;
-reuse of one local name with a different normalized vector is a typed refusal
-**[MVP]**. The same authority-supplied order canonicalizes every declaration or
-relation collection whose source order is semantically irrelevant; positional type
-arguments and product positions remain ordered by their schemas.
-
-The exact strict recursive algebra above is **[D/MVP]**. It makes the reader's
-classification explicit without introducing authored generic-parameter heads or
-string-based resolution.
-
-### 5.3 Nomos declarations
-
-There is no generic `TransformerApplication { name, transformer, payload }` in
-encoded form **[R]**.
-
-The declaration sum is extended by one purpose-designed Stream arm **[P/MVP]**:
-
-```text
-NomosDeclaration.[
-  StreamInitiation.StreamInitiationDeclaration
-]
-
-StreamInitiationDeclaration.{
-  DeclarationName
-  Query.TypeExpression
-  Event.TypeExpression
-}
-```
-
-#### Authored declaration schema
-
-The canonical authored projection is:
-
-```ethos
-Observer.Stream.(ObserverFilter ObservationEvent)
-```
-
-This source contains exactly one declaration. The outer `Observer` supplies its
-`DeclarationName`; that name is therefore elided from the parenthesized payload.
-The resolved `Stream` Nomos head selects `StreamInitiationDeclaration`, whose payload
-is exactly the query `TypeExpression` then the event `TypeExpression`. `Stream` is
-not preserved as a transformer field, and the reader never constructs a generic
-transformer or application node. There is no separately authored termination arm.
-
-#### Generated Interface declaration schemas
-
-Resolving that strict declaration prepares exactly three nominal Interface
-declarations and exactly three Interface-owned role relations as one proposed schema
-transaction **[P/MVP]**:
-
-```text
-GeneratedStreamInterfaceDeclarations.{
-  Initiation.StreamInitiationInterfaceDeclaration
-  Output.StreamInterfaceDeclaration
-  Termination.StreamTerminationInterfaceDeclaration
-}
-
-StreamInitiationInterfaceDeclaration.{
-  EncodedName
-  Query.TypeExpression
-}
-
-StreamInterfaceDeclaration.{
-  EncodedName
-  StreamOfEvent.ShapeApplication
-}
-
-StreamTerminationInterfaceDeclaration.{
-  EncodedName
-  StreamHandle.TypeReference
-}
-
-GeneratedStreamRoleRelations.{
-  InitiationInput.InterfaceRoleMembership
-  StreamOutput.InterfaceRoleMembership
-  TerminationInput.InterfaceRoleMembership
-}
-```
-
-The output declaration body is directly `Stream<Event>`. The termination declaration
-body is a reference to that output declaration, not a second handle type. The three
-relations are, in order, Input to the initiation declaration, Output to the direct
-`Stream<Event>` declaration, and Input to the termination declaration. These are
-ordinary `InterfaceRoleMembership` relations; Stream creates no fifth Interface
-section.
-
-Naming authority supplies exactly three stable EncodedNames: the authored outer
-`DeclarationName` assignment designates the output identity, while a separate
-generated assignment keyed by that authored occurrence supplies initiation and
-termination identities **[MVP]**:
-
-```text
-GeneratedStreamAssignments.Vector<GeneratedStreamAssignment>
-GeneratedStreamAssignment.{
-  StreamDeclarationOccurrence
-  Initiation.GeneratedIdentityAssignment
-  Termination.GeneratedIdentityAssignment
-}
-GeneratedIdentityAssignment.{EncodedName NamingDisposition}
-```
-
-All three assignments carry authority-proven `Existing` or `New` disposition, so
-later edits can preserve every association without deriving identity from visible
-text. The reader validates the authored meaning, generated declarations, role
-relations, schema changes, and authorized metadata transition together, then returns
-a `PreparedBootstrapTransaction` **[MVP]**. That value is a validated proposal for
-an external authority to commit atomically. The reader does not claim that anything
-was stored. The external commit must install all three declarations, their bodies,
-their role relations, and their identity/metadata changes, or install none.
-
-The following are generated explanatory projections. They are not additional
-authored declarations, and their visible spellings are only textual metadata:
-
-```ethos
-ObserverInitiation.ObserverFilter
-Observer.Stream<ObservationEvent>
-ObserverTermination.Observer
-```
-
-#### Runtime value schemas
-
-The runtime values are narrower than the declaration machinery **[P/MVP]**:
-
-```text
-StreamInitiationValue<Query>.Query
-StreamValue<Event>.StreamIdentity<Event>
-StreamTerminationValue<Event>.Stream<Event>
-```
-
-An initiation value is exactly the query value. A `Stream<Event>` handle contains
-exactly one `StreamIdentity<Event>`. A termination value contains exactly that same
-`Stream<Event>` handle value; it does not introduce another stream identity.
-`StreamIdentity<Event>` remains opaque at this schema boundary.
-
-#### Handwritten Rust behavior
-
-Runtime routing, the live-stream registry, termination handling, and refusal
-production and handling remain handwritten Rust in this stage. Existing behavior
-demonstrates a live handle, routing, and termination, but it does not prove Interface
-Output membership. This provisional generation contract therefore adds the explicit
-Interface-owned Output relation for the direct `Stream<Event>` declaration. No
-existing implementation is treated as schema authority.
-
-This contract admits no generic carrier, separately authored termination arm,
-grant or subscription declaration, grant or subscription value, or Stream-specific
-Interface section.
-
-### 5.4 Strict leaf references
-
-Every reference leaf has one admitted target class **[MVP]**:
-
-| Leaf | Admitted target | Refusal examples |
-|:--|:--|:--|
-| `TypeReference` | a named plain type declaration or audited strict Nomos declaration whose result is a nominal type | Trait, Shape, table, method, absent identity |
-| `ShapeReference` | a prior-vocabulary Shape identity | ordinary type or Trait identity |
-| `TraitReference` | a local, imported, or prior-vocabulary Trait identity | type or Shape identity |
-| `RoleEntry.Reference` | a concrete nominal type identity | anonymous application, Trait, table |
-| `RecordType` | a `PersistentNominalDeclaration` admitted as storable | anonymous expression, Trait, table |
-| `KeyType` | any `PersistentNominalDeclaration`; the key is a separately supplied typed value | anonymous expression, Trait, Shape, table |
-| resolved Nomos head | one concrete audited Nomos identity with one strict declaration schema | unknown head or head whose schema is not admitted in this body position |
-
-`DeclarationName`, `VariantName`, `TraitName`, `MethodName`, `TableName`, and
-`LocalName` are not reference leaves. Module and imported-name atoms are textual
-selectors, not semantic references. A visible spelling never chooses a semantic
-kind after resolution; the resolved EncodedName's registered kind does.
-
-### 5.5 Bootstrap prior vocabulary
-
-The reader receives this minimum prior vocabulary from the naming and schema
-authorities **[MVP]**:
-
-| Class | Prior entries |
-|:--|:--|
-| file kinds | `Interface`, `Nexus`, `Sema` |
-| Interface roles | `Input`, `Output`, `Refusal` |
-| primitive nominal types | `String`, `Integer`, `Boolean`, `Unit` |
-| Shapes | `Vector`, `Option`, `Map`, `Result` |
-| Stream declaration head | `Stream`, exactly two ordered `TypeExpression` payload positions: Query then Event; selects `StreamInitiationDeclaration` |
-| Stream handle Shape | `Stream`, exactly one Event `TypeExpression` argument; produces the direct stream-handle type |
-| Stream identity Shape | `StreamIdentity`, exactly one Event `TypeExpression` argument; types the opaque runtime identity inside a stream handle |
-| structural declaration alternatives | newtype, struct, enum, Trait, table |
-
-These are typed prior identities, not magic string comparisons. Their visible
-spellings are textual metadata. Domain types, domain Traits, and component modules
-must be declared or imported. The expected declaration-head or Shape role determines
-the admitted `Stream` arity; the reader does not overload by comparing its spelling.
-`StreamIdentity` is not a Nomos declaration head and cannot replace either Query or
-Event in the two-position authored Stream payload except as an ordinary resolved
-type expression where the surrounding schema independently admits it.
-
-The prior catalog carries exact role data and explicit identity relationships
-**[MVP]**. It rejects a prior seat whose identity lacks the required role or whose
-role data conflicts with another role on that identity. For the active MVP, the
-`Stream` declaration head and one-argument `Stream` Shape are one EncodedName with
-two explicitly compatible roles; `StreamIdentity` and every other listed prior seat
-are distinct identities. A future review may choose distinct Stream head and Shape
-identities, but that would be an explicit catalog relation with position-seated
-lookup, never an accidental result of equal spelling. The catalog neither silently
-collapses distinct prior objects nor accepts an unspecified equality relationship.
-
-## 6. Interface root
-
-```text
-InterfaceBody.{
-  Inputs
-  Outputs
-  Refusals
-  Types
-}
-
-Inputs.Vector<RoleEntry>
-Outputs.Vector<RoleEntry>
-Refusals.Vector<RoleEntry>
-Types.Vector<Declaration>
-
-RoleEntry.[
-  Declaration.TypeDeclaration
-  Reference.TypeReference
-]
-
-InterfaceRoleMembership.{InterfaceRole TypeReference}
-InterfaceRole.[Input Output Refusal]
-```
-
-The four body positions and their order are ruled **[R]**. Their universal Input,
-Output, and Refusal memberships are supplied by position and never repeated as tags
-**[R]**.
-
-`RoleEntry = TypeDeclaration | TypeReference` is deliberate and active **[MVP]**.
-It avoids requiring every role entry to redefine a type:
-
-- an imported type may acquire a component role by reference;
-- a type declared once in `Types` may serve several roles;
-- one encoded identity can be both Input and Output where the domain requires it;
-- a role-specific type can still be declared inline when it has no independent
-  non-role home.
-
-A strict Nomos declaration, including authored Stream source, is admitted only in
-Interface support `Types` **[MVP]**. A Nomos declaration denotes a typed
-transformation that may prepare several declarations and relations; placing that
-operation in one role-vector slot would not denote one coherent role target. It is
-therefore not widened into `RoleEntry`, and Stream's generated Input/Output/Input
-relations remain the only role semantics produced by its strict arm.
-
-A bare type reference in a role vector does not mutate the referenced type. The
-Interface root owns an `InterfaceRoleMembership` relation from Input, Output, or
-Refusal to that type's EncodedName **[MVP]**. An inline declaration receives its
-naming-authority assignment and the Interface creates the same relation. Thus one
-type body remains unchanged while one Interface may assign several roles. All
-top-level declaration names still resolve in one module scope.
-
-Refusals are not restricted to a fixed `{Reason Explanation}` product. A Refusal
-entry may declare or reference any strict type, and its role position drives the
-generated refusal/error membership **[MVP]**. Mapping each input to its possible
-outputs or refusals would introduce interaction behavior not present in the ruled
-four-position root; that belongs to later behavior growth, not this bootstrap.
-
-Streams add no fifth position. Initiation and termination participate as ordinary
-typed Inputs; the successfully established `Stream<Event>` participates as an
-ordinary Output; event and refusal types use the existing roles as appropriate
-**[R/D]**. Section 5.3 gives the provisional strict authored declaration, its three
-generated Interface declarations, and the exact Interface-owned role relations.
-
-Minimal neutral review witness:
+1. Input roles
+2. Output roles
+3. Refusal roles
+4. support Types
 
 ```ethos
 Interface.{1 0 0}
 []
 {
   [Submit.Request]
-  [Accepted.Response]
-  [Rejected.{Reason Explanation}]
-  [Request.String Response.String Reason.String Explanation.String]
+  [Response]
+  [Rejected.{String}]
+  [Request.String Response.String Observer.Stream.(Request Response)]
 }
 ```
 
-The body order and plain declaration syntax are ruled. The three-position version
-spelling and nested role algebra are active **[MVP]**. This witness deliberately
-contains no Stream syntax.
+Each entry in Input, Output, or Refusal is either:
 
-## 7. Nexus root
+- an inline plain nominal declaration, such as `Submit.Request`; or
+- a reference to a visible nominal declaration, such as `Response`.
 
-Recommended essence-first root:
+An inline declaration both declares the nominal and supplies the role target.
+A reference supplies only the role target. A Stream initiation is never a role
+entry; putting it directly in a role section is refused.
 
-```text
-NexusBody.{
-  Traits
-  Types
-}
+### 4.1 Memberships are derived, not authored
 
-Traits.Vector<TraitDeclaration>
-Types.Vector<Declaration>
+The sealed Interface meaning also carries one membership relation for every
+authored role entry **[D/P]**:
 
-TraitDeclaration.{TraitName Methods}
-Methods.Vector<MethodDeclaration>
+| Authored section | Derived relation |
+|:--|:--|
+| Input entry targeting `T` | `Input → T` |
+| Output entry targeting `T` | `Output → T` |
+| Refusal entry targeting `T` | `Refusal → T` |
 
-MethodDeclaration.{MethodName MethodSignature}
-MethodSignature.{Parameters Return}
-Parameters.Vector<TypeExpression>
-Return.TypeExpression
-```
+`memberships` is therefore not a fifth source section. It belongs to the
+Interface root and does not mutate the target type. The writer validates it
+against the three role sections and emits only those sections. Memberships are
+canonically ordered first by the prior role identity and then by target identity.
 
-Nexus declares a component's behavioral traits and the types referenced by their
-method signatures **[R]**. It does not declare implementation bodies. The method
-surface is `method.{Parameters... Return}`; the final position is the return type,
-the receiver is implied by trait membership, and borrowing and dispatch belong
-below Ethos **[R]**. A specialized trait position writes no `Trait` tag **[R]**.
+### 4.2 Support Types and prepared Stream generation
 
-The exact root order is unruled. The historical 2026-08-05 proposal used
-`{Types Traits}`. The active MVP root is `{Traits Types}` **[MVP]** because traits
-are the essence of Nexus and their supporting local types are subordinate, matching
-Interface's roles-first/support-types-last anatomy. This order is isolated behind
-the typed `NexusBody` root schema; `primary-5pm` may revise that root without changing
-the shared parser or declaration algebra.
+The fourth section accepts plain nominal declarations and the single audited
+Stream initiation form. For each authored `Name.Stream.(Query Event)`, the
+authority must supply two additional already-minted identity seats. Sealing
+prepares one atomic family **[D/P]**:
 
-The active signature encoding **[MVP]** separates a possibly empty parameter vector
-from one mandatory return. Its canonical source projection flattens them into the ruled
-last-position form. `Unit` is written explicitly when no value is returned. No
-effects, resources, concurrency, lifecycle hooks, visibility, async marker,
-configuration, or implementation positions are admitted in this stage.
+| Prepared declaration | Identity | Type/value relation | Interface role |
+|:--|:--|:--|:--|
+| initiation | authority-supplied generated identity | Query | Input |
+| direct Stream output | the authored `Name` identity | `Stream<Event>` | Output |
+| termination | authority-supplied generated identity | references the direct Stream output | Input |
 
-A zero-method Trait is a marker Trait and projects exactly with an explicit empty
-method product **[MVP]**:
+These three generated role relations live with the prepared Stream generation,
+not in the Interface body’s authored-role memberships. Generated declarations
+are transaction output for an external atomic commit; the canonical writer does
+not add them as source declarations.
 
-```ethos
-Serializable.{}
-```
+## 5. Nexus
 
-A bare `Serializable` in the Trait-declaration vector is not the marker projection;
-there it would lack the explicit declaration body.
-
-Minimal neutral review witness under the recommended order:
+Nexus has exactly two authored sections, Traits first and supporting Types
+second **[P]**:
 
 ```ethos
 Nexus.{1 0 0}
 []
 {
-  [Transformation.{transform.{Input Output}}]
-  [Input.String Output.String]
+  [Sortable.{} Transform.{apply.{«Value.Sortable» «Value.Sortable»}}]
+  [Pair.{«Left.Sortable» «Left.Sortable»}]
 }
 ```
 
-Trait and signature syntax are ruled. Root order and version anatomy remain
-active **[MVP]** choices pending deferred review.
+The first section contains Trait declarations. The second contains plain
+nominal declarations used by signatures. Although Interface and Nexus share an
+internal declaration carrier, the published Nexus root refuses Stream/Nomos
+declarations **[E]**. Nexus has no role sections and no membership relations.
 
-## 8. Sema root
+Traits-first is the shipped order. The types-first order described by the old
+report is obsolete.
 
-```text
-SemaBody.{
-  RecordTypes
-  Tables
-}
+## 6. Sema
 
-RecordTypes.Vector<PersistentNominalDeclaration>
-Tables.Vector<TableDeclaration>
-
-PersistentNominalDeclaration.Declaration
-
-TableDeclaration.{TableName RecordType KeyType}
-RecordType.TypeReference
-KeyType.TypeReference
-```
-
-Sema specifies persistent record types, tables, and keys **[R]**. The active MVP
-shape is the two-position body above and `table.{RecordType KeyType}` with exactly
-those two positions **[MVP]**.
-
-`RecordTypes` means any persistent nominal declaration admitted by the bootstrap
-storage vocabulary **[MVP]**. It is not restricted to struct-shaped “records”:
-newtypes, structs, enums, and a later audited strict Nomos declaration may qualify
-when its concrete encoded result is nominal and storable. Anonymous type expressions,
-Trait requirements, tables, and generic application carriers do not qualify.
-
-The active MVP projection reads `records.{StoredRecord RecordIdentifier}` as “a table of
-`StoredRecord`, keyed by `RecordIdentifier`.” Both slots require concrete nominal
-type references. A compound row or key is declared once as a named type and then
-referenced. The table's own name is declaration metadata tied to its encoded
-identity; its true-name body contains the two referenced encoded names, not its
-visible name.
-
-One primary key and its uniqueness are inherent in the table abstraction **[MVP]**.
-There are no index, uniqueness-list, migration-policy, lifecycle, storage-engine,
-or evolution-hint positions. Database migration logic is derived from the atomic
-schema edit **[R]**, not authored into each table. A real later need may introduce
-another strict Sema declaration kind without widening every existing table.
-
-Minimal neutral review witness:
+Sema has exactly two authored sections, persistent record Types followed by
+keyed Tables **[P]**:
 
 ```ethos
 Sema.{1 0 0}
-[]
+[dependency:domain.[External]]
 {
-  [StoredItem.{Identifier Item} Identifier.Integer Item.String]
-  [items.{StoredItem Identifier}]
+  [Identifier.Integer Stored.{Identifier External}]
+  [stored.{Stored Identifier}]
 }
 ```
 
-Plain type syntax is ruled. The Sema root, table spelling, record/key order, and
-version anatomy are active **[MVP]** projections pending deferred review.
+The first section admits only plain nominal types—newtypes, structs, and enums—
+and registers them as persistent nominals. It does not admit Stream or any
+other Nomos declaration **[P/E]**.
 
-## 9. Exact cardinalities
+Each Table entry is exactly:
 
-These cardinalities are active **[MVP]** unless separately marked ruled:
-
-| Structure | Cardinality |
-|:--|:--|
-| file top level | exactly one Header, one Imports vector, one Body **[R]** |
-| Header semantic positions | exactly kind then version **[R]** |
-| `EthosKind` | exactly one of Interface, Nexus, Sema |
-| `EthosVersion` | exactly three nonnegative integers |
-| import entries | zero or more |
-| module path | exactly one outermost module plus zero or more submodules |
-| imported names per entry | one or more |
-| authored naming assignments | exactly one authority-proven Existing/New assignment per discovered authored declaration occurrence; no extras |
-| generated Stream assignments | exactly one initiation/termination assignment pair per authored Stream occurrence; no extras |
-| textual-metadata address | exactly ModulePath, optional LexicalOwner, then VisibleName |
-| textual-metadata lexical owner | absent for top-level declarations; exactly the owning enum/Trait EncodedName for variants/methods |
-| textual-metadata snapshots | exactly one EncodedName per exact textual-metadata address; one record per EncodedName |
-| metadata transition | exactly one authority-proven before state and after state; preservation, rename, move, removal, and addition are explicit |
-| canonical EncodedName order | exactly one authority-supplied canonical byte projection and total order per identity |
-| Stream prior relationship | declaration head and handle Shape are one explicitly compatible multi-role identity **[MVP]**; every other listed prior seat is distinct |
-| prepared transaction | exactly one validated proposal containing authored meaning, generated work, schema changes, and the authorized metadata transition; no committed-state claim |
-| `Declaration` | exactly one TypeDeclaration or one audited concrete Nomos alternative |
-| type declaration | exactly one assigned name and one strict TypeBody alternative |
-| `TypeBody` | exactly one newtype, struct, or enum alternative |
-| struct type positions | zero or more |
-| enum variants | one or more |
-| variant declaration | exactly one assigned variant name and one VariantBody alternative |
-| `VariantBody` | exactly one unit, unary, or product alternative |
-| unit variant payload | zero |
-| unary variant payload | exactly one TypeExpression |
-| product variant positions | one or more |
-| Shape type arguments | one or more |
-| `ParameterBinder` | exactly inferred or one named LocalName |
-| Trait requirement | exactly one ParameterBinder and one or more distinct Trait references |
-| strict Nomos declaration | exact arity fixed independently by its concrete arm |
-| authored `StreamInitiationDeclaration` | exactly one outer DeclarationName plus Query then Event TypeExpressions; the parenthesized payload contains exactly the latter two |
-| generated Stream Interface declarations | exactly three: initiation, direct `Stream<Event>` output, termination |
-| generated Stream role relations | exactly three: initiation Input, stream Output, termination Input |
-| `Stream<Event>` Shape arguments | exactly one Event TypeExpression |
-| `StreamIdentity<Event>` Shape arguments | exactly one Event TypeExpression |
-| Stream initiation runtime value | exactly the query value |
-| Stream handle runtime value | exactly one `StreamIdentity<Event>` |
-| Stream termination runtime value | exactly the same `Stream<Event>` handle value being terminated |
-| Interface body | exactly Inputs, Outputs, Refusals, Types in that order **[R]** |
-| each Interface role vector | zero or more RoleEntries |
-| Interface support Types | zero or more Declarations |
-| RoleEntry | exactly one TypeDeclaration or one TypeReference; never a Nomos declaration |
-| Interface role relation | exactly one role and one resolved type per RoleEntry |
-| Nexus body | exactly Traits then Types **[MVP]** |
-| Nexus Traits | zero or more; zero methods makes a marker Trait |
-| Nexus support Types | zero or more Declarations |
-| Trait declaration | exactly one assigned Trait name and one Methods collection |
-| Trait methods | zero or more |
-| method declaration | exactly one assigned method name and one signature |
-| method parameters | zero or more TypeExpressions |
-| method return | exactly one TypeExpression **[R]** |
-| Sema body | exactly RecordTypes then Tables **[MVP]** |
-| Sema RecordTypes | zero or more persistent nominal declarations |
-| Sema Tables | zero or more |
-| table body | exactly RecordType then KeyType |
-
-Empty vectors remain explicit `[]`. An empty marker Trait method product remains
-explicit `{}`. A missing object or position is never inferred as empty.
-
-## 10. Shared reader invariants
-
-The hand-written bootstrap reader must obey these invariants:
-
-1. Discover raw structural boundaries before semantic classification **[R]**.
-2. Decode the header first and select exactly one expected body root **[R]**.
-3. Retain the Header in bootstrap source/document metadata; exclude it from every
-   declared semantic body and TrueName **[MVP]**.
-4. Decode imports second as textual resolution context and discard them after
-   reference resolution **[R/MVP]**.
-5. Discover authored declaration occurrences before resolving bodies, require exact
-   authored and generated assignment inputs with authority-proven Existing/New
-   dispositions, and never mint identity or decide mutation authorization in the
-   reader **[MVP]**.
-6. Validate the authorized before-to-after textual metadata transition, including
-   exact lexical-owner addresses, while leaving preservation, rename, move, removal,
-   and addition authority outside the reader **[MVP]**.
-7. Make source order semantically irrelevant within each scope by using the
-   authority-supplied canonical EncodedName order for unordered collections
-   **[MVP]**.
-8. Enforce the top-level, enum-variant, Trait-method, and local-binder scopes in
-   section 4.1 **[MVP]**.
-9. Load the typed bootstrap prior vocabulary, validate its role compatibility and
-   explicit identity equality/distinctness relations, then resolve authored references
-   **[MVP]**.
-10. At every recursive position, expected type plus local structure selects one
-   strict alternative **[R/D]**.
-11. Resolve textual ambiguity before semantic-class validation. Duplicate exact
-    metadata is invalid; valid import ambiguity comes from the same local spelling
-    imported through distinct module paths **[MVP]**.
-12. Resolve every semantic reference to an EncodedName and validate the strict leaf
-    target class in section 5.4 **[R/MVP]**.
-13. Do not preserve visible spelling inside semantic bodies **[R]**.
-14. Carry each semantic form in its purpose-designed type. Do not use universal
-    field vectors or a generic transformer application **[R]**.
-15. Decode a `RoleEntry` TypeDeclaration or TypeReference to one resolved type identity,
-    then create an Interface-owned role-membership relation; never alter the type
-    body to add a role **[MVP]**.
-16. Admit strict Nomos declarations only in Interface support Types; never interpret
-    a Nomos operation as one role-vector entry **[MVP]**.
-17. Normalize inferred Trait binder vectors using authority-supplied canonical
-    identity bytes and limit co-reference to the containing declaration **[MVP]**.
-18. Parse all three file kinds with the same machinery. A kind supplies only its body
-    root; per-kind parsing code is implementation failure **[R]**.
-19. Return generated work as a validated prepared proposal for external atomic
-    commit; never describe reader output as committed state **[MVP]**.
-20. Preserve encoded meaning, not source bytes **[R]**.
-21. Do not add current-substrate concepts merely because Rust generation needs them.
-    Handwritten Rust is this stage's behavior implementation, not its schema source
-    **[R]**.
-
-The complete hand-written bootstrap reader inventory is therefore:
-
-```text
-Envelope
-  Header
-    EthosKind
-    EthosVersion
-  Imports
-    ImportEntry
-    ModulePath
-    ImportedNames
-
-Context
-  BootstrapPriorVocabulary
-    PriorRoleCompatibility
-    PriorIdentityRelations
-      StreamShapeAndNomos = SameIdentity [MVP]
-  NamingAssignments
-    NamingAssignment
-      DeclarationOccurrence
-      EncodedName
-      NamingDisposition = Existing | New
-  GeneratedStreamAssignments
-    GeneratedStreamAssignment
-      StreamDeclarationOccurrence
-      Initiation.GeneratedIdentityAssignment
-      Termination.GeneratedIdentityAssignment
-  TextualMetadataLookup
-    TextualMetadataAddress
-      ModulePath
-      LexicalOwner?
-      VisibleName
-  AuthorizedTextualMetadataTransition
-    Before
-    After
-    AuthorityProof
-  CanonicalIdentityOrder
-  ScopeStack
-
-Declaration
-  TypeDeclaration
-    DeclarationNameAssignment
-    Newtype
-    Struct
-      TypePositions
-    Enum
-      Variants
-      VariantDeclaration
-        Unit
-        Unary
-        Product
-  NomosDeclaration
-    StreamInitiationDeclaration
-
-GeneratedStreamInterfaceDeclarations
-  StreamInitiationInterfaceDeclaration
-  StreamInterfaceDeclaration
-  StreamTerminationInterfaceDeclaration
-  GeneratedStreamRoleRelations
-
-PreparedBootstrapTransaction
-  AuthoredMeaning
-  GeneratedStreamInterfaceDeclarations
-  SchemaChanges
-  AuthorizedTextualMetadataTransition
-
-RuntimeStreamValues
-  StreamInitiationValue<Query> = Query
-  StreamValue<Event> = StreamIdentity<Event>
-  StreamTerminationValue<Event> = Stream<Event>
-
-TypeExpression
-  TypeReference
-  ShapeApplication
-    ShapeReference
-    TypeArguments
-  TraitRequirement
-    ParameterBinder
-    RequiredTraits
-
-InterfaceBody
-  Inputs
-  Outputs
-  Refusals
-  Types
-  RoleEntry = TypeDeclaration | TypeReference
-  InterfaceRoleMembership
-  InterfaceRole = Input | Output | Refusal
-
-NexusBody
-  Traits
-  Types
-  TraitDeclaration
-    MarkerTrait
-    Methods
-    MethodDeclaration
-      MethodSignature
-        Parameters
-        Return
-
-SemaBody
-  RecordTypes
-  Tables
-  PersistentNominalDeclaration
-  TableDeclaration
-    RecordType
-    KeyType
-
-Validation
-  Cardinality
-  Scope
-  StrictLeafTarget
-  TraitBinderNormalization
-  NamingAssignmentCompleteness
-  NamingDispositionConsistency
-  MetadataTransitionConsistency
-  CanonicalUnorderedCollections
-  PreparedTransactionCompleteness
+```ethos
+TableName.{RecordType KeyType}
 ```
 
-Every listed item is either a purpose-designed encoded type, a textual reader input,
-or a typed validation boundary. Nothing is a generic semantic catch-all.
+Both leaves are visible references with the persistent-nominal schema role.
+The reader establishes that schema relation. The current storage-aware Nomos
+lowering then imposes the narrower generation contract: both record and key
+must be declared by this exact Sema document, and the key must be a newtype.
+That distinction matters: the source model and the currently implemented Rust
+generation subset are not the same claim.
+
+## 7. Identity and authority transaction
+
+Encoded identity is never inferred from source spelling or declaration content
+in this lane **[R/E]**. The reader also never mints an identity and never commits
+authority state. The production path is:
+
+1. `core-ethos` plans structure and enumerates every declaration occurrence,
+   its visible spelling, source bound, lexical scope, and semantic purpose.
+2. The configured authority supplies an approved after-snapshot of textual
+   metadata, canonical bytes for exactly the already-minted new identities, and
+   the two generated seats for every authored Stream.
+3. `sema-translator` matches each occurrence to an exact projection in that
+   snapshot. Each seat is classified as `Existing` or `New`; a `New` seat
+   carries its authority-owned canonical bytes.
+4. `core-ethos` seals the source with the exact assignments, generated Stream
+   assignments, before-to-after metadata transition, schema additions, and
+   canonical identity order.
+5. The naming authority issues a receipt bound to the complete prepared draft,
+   its durable authority identity, and its monotonic revision. The resulting
+   transaction remains branded by that authority type.
+6. Every writer, Nomos lowerer, and generator revalidates the receipt and all
+   prepared-model invariants before use.
+
+The authority approval must be exact. Missing and unused seats are refusals;
+`Existing` must already exist; `New` must not; canonical bytes must be nonempty
+and unique; the metadata transition’s before snapshot must equal the reader’s
+catalog; and its after snapshot may not smuggle unrelated identities.
+
+The prepared transaction contains the decoded semantic body, retained source
+imports, generated Stream families, identity-schema additions, the verified
+metadata transition and dispositions, the receipt, and the complete canonical
+order **[D/E]**. It is a proposal for an external store to commit or reject
+atomically. Preparing it is not persistence.
+
+Visible name and module placement live in the authority’s textual metadata
+snapshot, keyed by encoded identity **[R]**. The canonical writer resolves from
+that same validated after-snapshot; it does not reverse-engineer spelling from
+source content or from generated Rust.
+
+## 8. Lowering and generation boundary
+
+The shipped readers accept more truthful source meaning than the first lowering
+slice can yet preserve. Unsupported meaning is refused, never erased **[E]**.
+
+| Published lane | Exact accepted subset | Exact boundary |
+|:--|:--|:--|
+| `core-nomos` direct Slice One | role-free Interface Types; trait-free Nexus Types | Revalidates the matching authority transaction and lowers plain nominal types and Shapes to `WholeLogos`. Refuses Interface roles, Stream, Nexus Traits, Sema, Tables, and Trait requirements. |
+| `core-nomos` Sema | one Sema transaction | Emits stored nominal Logos declarations before Tables. Requires document-local record/key types, a newtype key, and explicit owner-and-revision-bound storage provenance for every reachable nonlocal storage leaf. |
+| `schema-rust` Interface | one verified Interface assembly within the direct Slice One subset | Requires caller-supplied sealed Rust vocabulary and explicit encoded-identity-to-Rust-path resolution. Emits paired canonical Ethos and Rust artifacts. It does not accept Nexus or Sema. |
+| `schema-rust` Sema | one verified Sema assembly satisfying storage lowering | Requires the same explicit Rust projection inputs plus external storage provenance. Emits paired canonical Sema and Rust artifacts, including stored types and table specifications. |
+
+There is no published `schema-rust` Nexus generator in this train. The direct
+Nomos lowerer can lower a Nexus only when its Trait section is empty; it never
+silently drops a Trait.
+
+Both schema-rust lanes are deterministic for the same verified inputs. Their
+freshness boundary checks canonical source and generated Rust together, or
+updates both only under the explicit update environment variable. Generated
+Rust uses stable encoded identities for object coordinates and explicit paths
+for external Rust types; visible Ethos spellings are not treated as identity.
+
+Rust is the current bootstrap projection, not a permanent substrate **[R]**.
+The exact Rust-facing APIs above describe present staging only.
+
+## 9. Typed refusals
+
+The refusal surface is part of the shipped model, not incidental parser text.
+The principal classes are:
+
+| Boundary | Refuses |
+|:--|:--|
+| envelope and projection | unknown kind, unsupported or noncanonical version, wrong section arity, invalid module/name projection, empty import selectors, unresolved, ambiguous, invisible, or non-round-tripping references |
+| catalog and schema | missing or duplicate identities, wrong or incompatible schema roles, invalid prior relationships, Shape/Nomos arity mismatch, and Nomos identities outside the one seated prior |
+| declaration and scope | duplicate declarations or assignments, missing/extra assignments, identity collisions, incompatible Trait binders, repeated Trait requirements, Stream outside Interface Types, and non-plain Sema declarations |
+| authority transaction | before-snapshot mismatch, missing/extra metadata, rejected proof or receipt, incorrect Existing/New disposition, missing/duplicate canonical bytes, and missing/extra generated Stream seats |
+| direct Nomos lowering | any Interface membership, Stream declaration, Nexus Trait, Sema/Table in the type-only lane, Trait requirement, or invalid empty structural product/application |
+| Sema lowering | wrong kind, duplicate local record, nonlocal table record/key, non-newtype key, absent/duplicate/conflicting external storage provenance, cyclic storage shape, Trait requirement, or unresolved storage parameter |
+| Rust projection | wrong file kind, any propagated Nomos/storage refusal, unresolved explicit Rust type path, or invalid sealed Rust projection |
+| checked-artifact boundary | stale canonical source or stale generated Rust |
+
+Prepared transactions are validated again at every consuming boundary. A caller
+cannot bypass these refusals by constructing a decoded body or a naming map and
+passing it directly to Nomos or schema-rust.
+
+## 10. Intentional `NotYetArchived` boundary
+
+Both the published reader and every prepared bootstrap transaction report
+exactly:
+
+```text
+NotYetArchived
+```
+
+This is deliberate **[D/E]**. Archiving the bootstrap transaction carrier is
+deferred until the random EncodedName substrate is stable enough that an
+archive layout will not freeze today’s encoded-name chain representation.
+There is no fallback archive format and no claim of durable transaction replay
+in this model.
+
+`NotYetArchived` does not mean that Sema storage generation is absent. The Sema
+lane separately derives storage fingerprints and generated Rust archive/table
+support from explicit provenance. Nor are the paired canonical source/Rust
+artifacts an archive of the prepared authority transaction. The persisted
+restart finish line remains a downstream MVP acceptance proof, not something
+this report manufactures from checked-in projections.
 
 ## 11. Deferred psyche review
 
-Final psyche review is deferred to `primary-5pm`. It is not a gate on implementing
-the provisionally authorized reader. The review docket is deliberately only five
-questions:
+`primary-5pm` should review this document, not the superseded 2026-08-05 report.
+The provisional choices needing ruling are now visible without implementation
+transcription:
 
-1. **Envelope projection.** Confirm the three-integer `EthosVersion` anatomy and
-   canonical `Kind.{major minor patch}` header projection. The version's meaning is
-   already ruled.
-2. **Interface role entries.** Confirm
-   `RoleEntry = TypeDeclaration | TypeReference`, allowing imported/shared types
-   and one identity with several roles while reserving strict Nomos declarations
-   for Interface support Types.
-3. **Nexus root.** Confirm active `{Traits Types}`, or revise it to the historical
-   `{Types Traits}` proposal; confirm the exact trait/method signature schema.
-4. **Sema root.** Confirm `{RecordTypes Tables}` and
-   `table.{RecordType KeyType}` with exactly those two table positions.
-5. **Import projection.** Confirm outermost-to-leaf colon-qualified module paths,
-   an always-square nonempty imported-name vector, and no bootstrap alias form.
+- three bootstrap roots and their exact versioned envelope;
+- Interface’s four authored sections, Declaration-or-Reference role entries,
+  derived memberships, and prepared Stream lifecycle family;
+- Nexus’s Traits-first ordering and current two-section division;
+- Sema’s persistent Types followed by exact two-reference Tables;
+- the current separation between source meaning, authority-sealed transaction,
+  supported Nomos lowering, and Rust projection;
+- the deliberate `NotYetArchived` boundary.
 
-All five have active **[MVP]** answers in this report, so none blocks the reader.
-The provisional Stream contract in section 5.3 is likewise active for the reader;
-deferred review may revise it without reopening a generic application carrier.
-The lexical-owner metadata address, Existing/New authority disposition, authorized
-metadata transition, authority-supplied canonical identity order, and explicit
-prior equality/distinctness relations are also **[MVP]** reader contracts within
-`primary-5pm`'s review authority. They add no authored surface question and remain
-reviewable without allowing the reader to mint identity or claim a commit.
-Runtime logic, effects, resources, concurrency, temporal protocol semantics, and
-neutral general data anatomy remain outside this report by the staged vision.
+Until that ruling, these are the exact shipped provisional choices. A psyche
+correction changes the readers and consumers; the existence of published code
+does not convert a delegated choice into authority.
