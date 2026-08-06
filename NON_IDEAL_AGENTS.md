@@ -8,6 +8,13 @@ lane. When you discover a new non-ideality that is not yours to fix now, append
 it here; keep ordinary rules in `AGENTS.md` and the ideal shape in
 `ARCHITECTURE.md`.
 
+## Remote builder depends on the Goldragon Wi-Fi
+
+`prometheus.goldragon.criome` may be unreachable unless Wi-Fi is connected to
+the `goldragon.criom` access point. Before giving up, connect or reconnect to
+that access point and ping the host; if the ping succeeds, retry the remote
+builder.
+
 ## Stale git linked-worktree registrations linger in backing repos
 
 - **Removing a worktree directory without cleaning the backing repo's git worktree
