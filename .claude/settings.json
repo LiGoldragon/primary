@@ -2,6 +2,17 @@
   "hooks": {
     "PreToolUse": [
       {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/li/primary/.claude/hooks/deny-fable-subagents.sh",
+            "timeout": 10,
+            "statusMessage": "Checking subagent model policy..."
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit",
         "hooks": [
           {
