@@ -38,3 +38,58 @@ Scope and consequences:
 - The raw-discovery older recognizer (tracked as primary-hqu.23) falls
   under the same rule: the live source-bounded path replaced its
   functionality; the old path dies producer-first.
+
+## Ruling: the bootstrap commit is atomic
+
+Agent text answered: codex reset-audit question 1 — should one commit
+journal the authorized identity/metadata transition and install
+canonical Ethos plus generated Rust atomically, closing the current
+split-authority and partial-install defect (schema-rust
+`write_or_check`, bootstrap.rs:276-283, installs source then Rust
+sequentially with a partial-failure window)?
+
+Psyche ruling: approved on managerial recommendation [psyche-verbatim:
+"go with your recommendation ... I did not understand what your
+question #1 is about, but trust your recommendation"]. One commit
+journals the authorized identity/metadata transition and installs the
+canonical Ethos source and the generated Rust together, atomically —
+all or nothing. This applies the standing atomicity law at the
+bootstrap boundary; `CommitBootstrap` is the committer the
+`PreparedBootstrapTransaction` model already anticipated. Callers
+cannot manufacture authority proofs, receipts, seats, or fixture
+vocabularies.
+
+## Ruling: role memberships stay positional; no universal marker traits
+
+Agent text answered: codex reset-audit question 2, presented against
+the standing 2026-08-02 ruling that homed universal
+Input/Output/Refusal/StreamOpen/StreamEvent traits in the `protos`
+crate, while the shipped bootstrap model derives memberships
+positionally.
+
+Psyche ruling (on managerial recommendation, same approval): Input,
+Output, and Refusal remain encoded positional role relations that
+generate component-specific traits. Universal empty Rust marker traits
+are not created; any that exist die. The 2026-08-02 "universal traits
+home — protos crate" ruling is superseded (notice placed in
+`ethosProductionFirstTargets-2026-08-02.md`).
+
+Management extension, low seniority until countersigned: the same
+ground covers StreamOpen and StreamEvent — the stream lifecycle stays
+encoded family seats generating component-specific surfaces; no
+universal stream marker traits either.
+
+## Ruling: WholeLogosPreservedSemaFamily dies
+
+Agent text answered: codex reset-audit question 3. Verification found a
+stored-state adoption record (core-logos src/whole.rs:884, exported
+lib.rs:81) whose constructor is test-only — production never attaches
+one — while its read path sits in the production codec (rust-logos
+src/codec.rs:1024,1029) rendering nothing living.
+
+Psyche ruling (on managerial recommendation, same approval): it dies
+with the rest. Consistent with the replacement-kills ruling and the
+FrozenMagic precedent: stored-state readability is not grounds for
+survival, and a record nothing living constructs has no claim. A future
+store-adoption need returns as designed work at its stage, not as a
+survivor. The Legacy-naming option is moot on this evidence.
