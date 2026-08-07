@@ -35,3 +35,18 @@ luna-xhigh default stated today overlaps that line; recency favors
 luna-xhigh as the default, with the role built-ins as the alternative.
 Flagged to the psyche for explicit confirmation before
 NON_IDEAL_AGENTS.md itself is edited.
+
+## Ruling (supersedes the luna-default note above): Codex subagent economy
+
+Agent text answered: management flagged the tension between
+NON_IDEAL_AGENTS.md's terra-xhigh-for-nontrivial line and the earlier
+luna-xhigh default statement, asking for confirmation.
+
+Psyche, while commissioning the Codex startup prompt: tell him "to
+value using lots of luna xhigh agents in explicit dedicated tasks, and
+use terra high or xhigh for refactoring and writing code."
+
+Resolution: not a flat default. gpt-5.6-luna xhigh in volume for
+explicit, dedicated, well-scoped tasks; gpt-5.6-terra high or xhigh for
+refactoring and writing code; Sol never. NON_IDEAL_AGENTS.md is updated
+to this formulation.

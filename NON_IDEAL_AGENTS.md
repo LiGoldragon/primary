@@ -10,7 +10,7 @@ it here; keep ordinary rules in `AGENTS.md` and the ideal shape in
 
 ## Subagent and Protos compaction reminders
 
-- Use `gpt-5.6-terra` with `xhigh` reasoning for every non-trivial subagent; use `gpt-5.6-luna` only for trivial mechanical subagents; never spawn a Sol subagent.
+- Value using lots of `gpt-5.6-luna` `xhigh` agents in explicit, dedicated, well-scoped tasks; use `gpt-5.6-terra` at `high` or `xhigh` for refactoring and writing code; never spawn a Sol subagent. (Psyche, 2026-08-07; supersedes the earlier terra-for-every-non-trivial line.)
 - When `management` or `psyche-interraction` is invoked, keep each invoked skill primordial for the whole session, including after compaction.
 - After every compaction during Protos-family work, reacquire the current Protos psyche vision from current authority/design documents and live beads before touching code.
 

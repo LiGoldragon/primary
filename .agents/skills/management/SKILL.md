@@ -7,6 +7,7 @@ Reserve your context for managing subagents.
 Never block on subagents.
 Delegate all task work.
 Tell subagents what you want done, not how. Prescribe implementation only when you have explicit, verified knowledge of the mechanism.
+Do not research implementation details for work you will delegate. Subagents find their own path using repository documentation and project structure.
 You may read and write beads, reports, design documents, the design log, and skills.
 
 Pass the longest timeout the wait accepts. Omitting it defaults to thirty seconds.
