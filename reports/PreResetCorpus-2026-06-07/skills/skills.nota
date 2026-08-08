@@ -1,0 +1,145 @@
+;; NOTA records are positional. Type, then fields, no keywords.
+;; The `(key value)` shape from Lisp/Clojure/JSON is not NOTA.
+;; If you're sketching a new NOTA record, read skills/nota-design.md first.
+;;
+;; tier values (fourth positional field below):
+;;   apex      — read once; recognise everywhere
+;;   keystroke — applies on every keystroke and every report
+;;   topic     — consulted when the topic comes up
+;;   mechanism — procedural; consulted when the named mechanism is in play
+
+[
+  (Role operator skills/operator.md Apex
+    [Implementation as craft. The discipline an agent brings when the work is landing code.])
+  (Role designer skills/designer.md Apex
+    [Architecture as craft. What designer specifies; what operator implements against.])
+  (Role system-operator skills/system-operator.md Apex
+    [OS / platform / deploy craft.])
+  (Role poet skills/poet.md Apex
+    [Prose as craft.])
+  (Role assistant skills/assistant.md Apex
+    [Personal-affairs support for the psyche.])
+  (Role counselor skills/counselor.md Apex
+    [Personal-affairs advisory for the psyche, working with the assistant lane.])
+
+  (Architecture component-triad skills/component-triad.md Apex
+    [Daemon + thin CLI + signal-* contract. Signal/Nexus/SEMA runtime triad and async mail flow.])
+  (Architecture contract-repo skills/contract-repo.md Topic
+    [Wire-contract crate discipline. Six-verb spine; signal_channel! macro; layered-effect pattern.])
+  (Architecture micro-components skills/micro-components.md Topic
+    [When to create a new crate; family-of-micro-components pattern; kernel-extraction triggers.])
+  (Architecture actor-systems skills/actor-systems.md Topic
+    [Dense actor topology. Schema-root actors; async mail objects; supervised state-bearing actors.])
+  (Architecture architectural-truth-tests skills/architectural-truth-tests.md Topic
+    [Tests that catch architectural drift, not just regression.])
+  (Architecture engine-analysis skills/engine-analysis.md Topic
+    [How to analyze daemon/engine internals — the planes-and-actors lens.])
+  (Architecture engine-report skills/engine-report.md Topic
+    [Standard engine situation reports: component ledgers, code/schema/generated size, interfaces, signatures, runtime paths, witnesses, and introspection tools.])
+  (Architecture language-design skills/language-design.md Topic
+    [Language-design discipline. Closed enums; structural beauty over ad-hoc strings; branches/leaves vocabulary for typed-record trees.])
+  (Architecture library skills/library.md Topic
+    [Library-vs-daemon split. When to extract a library crate from a daemon.])
+  (Architecture subscription-lifecycle skills/subscription-lifecycle.md Topic
+    [Subscription close-vs-retract semantics. Token-keyed cleanup.])
+
+  (Craft abstractions skills/abstractions.md Keystroke
+    [Verb belongs to noun. Methods on types; no free helpers when a method would do.])
+  (Craft enum-contact-points skills/enum-contact-points.md Apex
+    [Engine logic = enum-vs-enum cross-product matching. Name the contact point — nested match or trait — not scattered ad-hoc arms, string predicates, or boolean flag soup.])
+  (Craft naming skills/naming.md Keystroke
+    [Full English words. The offender table.])
+  (Craft secrets skills/secrets.md Keystroke
+    [An agent never sees a secret value. gopass wraps env-vars in the user session; sops-nix carries secrets to cluster hosts; bridge stores ciphertext-to-ciphertext; verify by length and exit code, never by reading.])
+  (Craft privacy skills/privacy.md Keystroke
+    [Private personal-affairs work stays out of public workspace surfaces and privacy Zero Spirit. Elevated Spirit privacy exists, but private repositories remain the conservative default unless the psyche explicitly wants Spirit capture.])
+  (Craft workspace-vocabulary skills/workspace-vocabulary.md Topic
+    [Canonical glossary for load-bearing workspace terms. main/next, Persona, engine_manager — predecessors, scope, when-to-use.])
+  (Craft beauty skills/beauty.md Keystroke
+    [Beauty as criterion. Special cases dissolve into the normal case.])
+  (Craft push-not-pull skills/push-not-pull.md Keystroke
+    [No polling. Subscribe and receive; producers push events.])
+  (Craft reporting skills/reporting.md Keystroke
+    [When to write a report vs answer in chat. Chat for user; reports for agents.])
+  (Workflow report-naming skills/report-naming.md Mechanism
+    [Basic report-naming + supersession discipline. Filename convention, -v2/v3 iteration, commit-before-delete. Smaller than skills/reporting.md; every agent needs this.])
+  (Workflow workspace-update-report skills/workspace-update-report.md Mechanism
+    [Recurring workspace update report variant. Surveys major workspace changes since the previous update report — files changed, intent captures, skill evolution, reports landed/retired, component state. Periodic synthesis the psyche reads to see direction across busy periods.])
+  (Workflow versioning skills/versioning.md Keystroke
+    [Version bump discipline for code and logic changes. Distinguish component release, wire contract, storage schema, and deploy-slot versions; never leave behavior changes on stale package versions.])
+  (Craft typed-records-over-flags skills/typed-records-over-flags.md Keystroke
+    [Closed typed records over bool flags. Surface the variant set in the type system.])
+  (Craft prose skills/prose.md Topic
+    [Prose-craft discipline.])
+
+  (Programming kameo skills/kameo.md Topic
+    [Kameo actor-runtime discipline. Lifecycle contract; spawn-in-thread restart trap.])
+  (Programming rust-discipline skills/rust-discipline.md Topic
+    [Rust craft index. Methods on types; typed errors; no ZST holders.])
+  (Programming rust-methods skills/rust/methods.md Topic
+    [Methods on schema nouns. No production free functions; async mail flow as object flow.])
+  (Programming rust-errors skills/rust/errors.md Topic
+    [Typed errors at crate boundary. thiserror; no anyhow at edges.])
+  (Programming rust-storage-and-wire skills/rust/storage-and-wire.md Topic
+    [redb + rkyv pattern for storage and wire.])
+  (Programming rust-parsers skills/rust/parsers.md Topic
+    [No hand-rolled parsers. Use winnow or NOTA codec.])
+  (Programming rust-crate-layout skills/rust/crate-layout.md Topic
+    [Crate layout. Tests in separate files; bin / lib / examples.])
+  (Programming nix-discipline skills/nix-discipline.md Topic
+    [Nix module structure. Flake conventions; check derivations.])
+  (Programming nix-usage skills/nix-usage.md Topic
+    [When to use Nix tooling. nix eval / flake show / path-info — not filesystem search.])
+  (Programming mermaid skills/mermaid.md Mechanism
+    [Mermaid diagram conventions and safe-syntax workarounds.])
+  (Programming stt-interpreter skills/stt-interpreter.md Mechanism
+    [Speech-to-text interpreter integration notes.])
+
+  (Workflow role-lanes skills/role-lanes.md Mechanism
+    [Lane mechanism for main, ordinal, and qualified role lanes.])
+  (Workflow architecture-editor skills/architecture-editor.md Mechanism
+    [How to edit ARCHITECTURE.md. ARCH never references reports.])
+  (Workflow nota-schema-docs skills/nota-schema-docs.md Mechanism
+    [Pseudo-NOTA convention for documenting record schemas: angle-bracket placeholders, optional ?, enum |.])
+  (Workflow nota-design skills/nota-design.md Topic
+    [Canonical NOTA design. The type names the most useful distinction in context; data lives in records, not comments; enums get names, not numbers.])
+  (Workflow nota-comments skills/nota-comments.md Topic
+    [Code comments as NOTA signal records. (Why ...) opening pattern carries the per-edit rationale; Mind reads code-as-signal; pairs with intent-log for the why-vs-intent boundary.])
+  (Workflow jj skills/jj.md Mechanism
+    [Jujutsu version-control discipline. Concurrent-agent safety.])
+  (Workflow testing skills/testing.md Mechanism
+    [All tests in Nix. Pure tests as checks; -test suffix for test-only binaries.])
+  (Workflow feature-development skills/feature-development.md Mechanism
+    [Feature branches in worktrees, for CODE repos under /git only — NOT primary. Multi-repo arc coordination. On primary everyone works on main directly (record 2585).])
+  (Workflow double-implementation-strategy skills/double-implementation-strategy.md Topic
+    [Two parallel implementation tracks for a major break, BOTH on branches: operator amalgamates best-of-prototypes toward main; designer iterates the forward-looking design on next / a feature branch. Comparison drives convergence. Anti-drift mechanism. New repos are NOT used — major breaks are branches, a new repo is only for a genuinely new project (Spirit op4b / 53bj, 2026-06-07).])
+  (Workflow beads skills/beads.md Mechanism
+    [Short-tracked-item discipline. Transitional pre-Persona-mind.])
+  (Workflow repository-management skills/repository-management.md Mechanism
+    [ghq / gh mechanics for repo work.])
+  (Workflow skill-editor skills/skill-editor.md Mechanism
+    [How to edit skill files without growing them noisy. Skills never reference reports.])
+
+  (Meta human-interaction skills/human-interaction.md Apex
+    [How agents interact with the psyche — capture intent, handle forwarded prompts, dispatch subagents, run real-world tests, and report back. Must-read for every harness on every session.])
+  (Meta autonomous-agent skills/autonomous-agent.md Mechanism
+    [When to act vs ask within work. Bead-flow + claim + work + close + release loop. Pairs with human-interaction.md (the psyche-boundary skill) — autonomous-agent is the work-loop discipline.])
+  (Meta context-maintenance skills/context-maintenance.md Mechanism
+    [Sweep reports and conversation. Migrate substance to permanent homes.])
+  (Meta intent-log skills/intent-log.md Topic
+    [Record explicit psyche intent through Spirit. Five-kind positional NOTA plus certainty and privacy Magnitudes. Only psyche statements get recorded; public entries use privacy Zero.])
+  (Meta spirit-cli skills/spirit-cli.md Topic
+    [How to invoke the deployed Spirit CLI. Live v0.4.2 public/private query shape, record privacy, removal-candidate archive/print targets, inline NOTA vs file-path argument, and deployed-source verification.])
+  (Meta intent-maintenance skills/intent-maintenance.md Mechanism
+    [Sweep the Spirit intent log. Supersession protocol (only psyche can supersede psyche intent); verification against current state; legacy intent files are history.])
+  (Meta intent-clarification skills/intent-clarification.md Topic
+    [Ask the psyche when intent on a question is unclear, absent, or contradicted. Don't infer intent; ask. Structured options + lean.])
+  (Meta repo-intent skills/repo-intent.md Keystroke
+    [Per-repo INTENT.md is the FIRST and most important file per repo — canonical agent-context surface of psyche-stated goals, constraints, principles; read on entry before code. Agent-written prose, 100% backed by psyche statements, no inference. Every repo needs one; workspace intent affecting a repo lands in its INTENT.md in the work cycle. Spirit 944 Maximum.])
+  (Meta intent-manifestation skills/intent-manifestation.md Mechanism
+    [Walk through Spirit records; manifest recorded intent into the right guidance file (ESSENCE / AGENTS / INTENT / skills / per-repo INTENT). Verbatim quotes in italics. Eventually automated by persona-spirit.])
+  (Meta keep-working skills/keep-working.md Keystroke
+    [Psyche info-injection mid-task is not a stop signal. Keep working unless explicitly told to stop or redirected. Absorb the context, capture any durable intent, and continue; do not drop the work and go passive.])
+  (Workflow main-next skills/main-next.md Keystroke
+    [Each CODE repo under /git keeps main (operator-owned, integrated line) plus a long-lived next development branch (the designer line). Designer works on next; operator integrates next into main. When main is locked or busy, designer uses next and never blocks. NOT for primary — on primary everyone works on main directly (record 2585). Record 2561.])
+]
