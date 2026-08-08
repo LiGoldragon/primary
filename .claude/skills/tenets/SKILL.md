@@ -11,5 +11,3 @@ Keep unknown causes unknown.
 Seek disconfirming evidence.
 Do not seed audits with suspected conclusions.
 Weigh evidence by origin, not repetition.
-## Writing
-Write literal code identifiers as code — `LikeThis` — never as prose words; flag jargon-for-a-pattern at first use.
