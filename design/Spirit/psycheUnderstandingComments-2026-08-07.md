@@ -29,3 +29,15 @@ documentation is presumed to fall stale.
 The elaborate marking system itself is not yet designed. First
 application now: the sealed Sema consumer trait site is annotated as
 psyche-approved direction, deeper understanding deferred.
+
+## Follow-up ruling (same day): gradated marks are a code-writer skill; term pending
+
+Psyche, approving the sealed trait: the code in question is marked "only
+slightly reviewed by Psyche." These levels become "a skill that all code
+writers will need to have about the Psyche gradation of a code, or
+Psyche awareness, or... maybe we need a new term because these are
+actually meaning other things elsewhere." Management coined the
+temporary term **psyche-grasp** (levels: unseen, glimpsed,
+slightly-reviewed, understood, authored), marked TO BE REVIEWED. A
+psyche-grasp skill was created for all code writers under unchecked
+approval.

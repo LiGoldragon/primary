@@ -38,6 +38,12 @@ Core preparation. Conditions:
 - Annotate the site with a psyche-understanding comment marking it
   psyche-approved direction, deeper psyche understanding deferred (per
   `design/Spirit/psycheUnderstandingComments-2026-08-07.md`).
+- Trait name (agent-proposed, approved unchecked 2026-08-07):
+  `AdmittedToCoreEthosRawConstruction`. The trait is public; its private
+  supertrait seals implementation to the one admitted type, Sema's
+  transaction assembler.
+- Mark the landed code `psyche-grasp: slightly-reviewed (2026-08-07)`
+  (see section 5).
 
 ### hqu.33 APPROVED — Colon-Form Parsing
 
@@ -49,6 +55,32 @@ chains. Conditions:
 - The dot-form transformer application dies in the same landing.
 - Fixtures re-spelled in the colon form.
 - This unblocks hqu.34 (Stream section).
+
+### Stream section — the delegation stands
+
+The Stream section's position in the Interface body and the stream
+universal trait's shape are YOUR bootstrap choices, provisional and
+reviewable (redesignAuditRulings-2026-08-06). Do not wait for a psyche
+ruling on them. Draft the replacement fixture — colon form, stream as
+separate objects (`StreamInitiation` / `StreamTermination`, provisional
+names), your chosen section position, `[assumption]`-tagged — and
+present it for psyche blessing. Agents never mint goldens; the psyche's
+blessing converts your draft to golden, and the condemned bundled-form
+fixtures die in that same landing.
+
+### Spirit vertical — process approved: triage, rescue, death
+
+The old separate-source `spirit-ethos` repository is condemned (Ethos
+sources live in the owning component's repository). Approved order:
+1. Triage: one dedicated read pass over spirit-ethos's dirty state —
+   identify any psyche-authored content absent from the new sources.
+2. Rescue: carry anything with psyche signal into Spirit's own
+   repository as part of the fresh authoring.
+3. Death: the repository dies whole — no archive branch, no
+   compatibility shadow (SpiritSurfaceRemoval-2026-08-03).
+Author Spirit's replacement Interface source, authority seats, and Rust
+projections fresh under the standing rulings, `[assumption]`-tagged for
+review. No certainty, privacy, or referent surfaces.
 
 ## 3. Model Discipline
 
@@ -75,7 +107,17 @@ from-scratch trait design is the measure; existing code that does not
 sit under it is a deletion-and-rewrite candidate, not something to
 patch around.
 
-## 5. Standing Rules
+## 5. Psyche-Grasp Marking
+
+Temporary concept (term TO BE REVIEWED by the psyche): mark code sites
+with the psyche's level of grasp of that code — distinct from code
+seniority (alignment). Levels: unseen, glimpsed, slightly-reviewed,
+understood, authored. Form: `// psyche-grasp: slightly-reviewed
+(2026-08-07)` in Rust; `;; ...` in Ethos/Dotos. Mark every
+psyche-relevant landing; never inflate a level. Documentation lives in
+the code.
+
+## 6. Standing Rules
 
 - **No design leaps.** Missing ruling means an explicit `[assumption]`,
   revisitable. Do not invent design.
@@ -90,7 +132,7 @@ patch around.
   editing text mints a fresh EncodedName is disavowed — never a psyche
   ruling. Stability stands absolutely.
 
-## 6. Session Hygiene
+## 7. Session Hygiene
 
 Per `NON_IDEAL_AGENTS.md`: post-compaction vision reacquisition is
 mandatory. After every compaction during Protos-family work, reacquire

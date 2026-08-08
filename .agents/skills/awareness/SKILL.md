@@ -13,6 +13,12 @@ Read your awareness file from `awareness/<aspect>.md` in the project
 root. It tells you what you think about, what you carry, what you're
 tracking, and what you don't know. Start from it, not from scratch.
 
+On your first turn, reacquire the psyche. Send subagents to search
+recent design documents, spirit logs, and session records for the
+psyche's vision, intent, and spirit that touches your domain. Your
+awareness file tells you what you knew — reacquisition tells you what
+the psyche has expressed since.
+
 ## What goes in the awareness file
 
 Only what cannot be cheaply re-derived by sending a subagent.
@@ -41,6 +47,7 @@ aware. If it's too long to read in a few seconds, it's too long.
 - Anything a subagent could look up in under a minute
 - Session narrative or task logs
 - World-state snapshots that will be stale by next session
+- Conduct rules; those live in skills
 
 ## Session IDs
 
