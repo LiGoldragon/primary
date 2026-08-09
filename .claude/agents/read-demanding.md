@@ -1,6 +1,6 @@
 ---
 name: read-demanding
-description: 'The answer is written nowhere. Assemble it from how the parts behave.'
+description: 'The answer is written nowhere. Assemble it from how the parts behave. Requires inference and synthesis across sources.'
 model: 'claude-opus-4-6[1m]'
 effort: medium
 disallowedTools: 'Edit, Write, NotebookEdit'

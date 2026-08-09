@@ -1,6 +1,6 @@
 ---
 name: write-ordinary
-description: 'The approach is known. Applying it is the work.'
+description: 'The approach is known. Applying it is the work. Minor judgment on details, but the strategy is settled.'
 model: claude-sonnet-4-6
 effort: medium
 ---
