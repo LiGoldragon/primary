@@ -38,3 +38,16 @@ context). Verbatim excerpts:
 > healer is the name
 
 — psyche, 2026-08-09T12:55:28Z
+
+Captured 2026-08-09T16:40:32Z from the psyche's prompt (agent-authored
+context). Verbatim:
+
+> I just lost a recording; the multiple transcription in parallel isnt working
+> smoothly. Iv had lots of bugs. maybe a trivial agent can recover (we should
+> have documentation on how to recover so a trivial agent can do it)
+>
+> Oh, and if they have these reports, if they have these error messages, then
+> we should subscribe to them so that the listener component can tell us about
+> it and log it or something. And please use your own reasoning and your own
+> better understanding of the component to suggest anything elegant and
+> well-designed and beautiful.
