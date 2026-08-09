@@ -9,22 +9,22 @@ quickly; do not redo the cleanup.
 
 ## Rulings since the startup document was written
 
-All logged verbatim with capture timestamps in `psyche/Vision/designer/`.
+All logged verbatim with capture timestamps in the flat `psyche/Vision/` corpus.
 Binding on your work:
 
 1. The stream position is "a section inside the object", and
    "Yes, the initiation and termination live in the input."
-   (`psyche/Vision/designer/streamSection.md`)
+   (`psyche/Vision/streamSection.md`)
 2. Interface root objects branch as enumerators: "the root input
    objects and perhaps even a lot of the root output objects should be
    enumerators because if you're trying to create a language, an input
    and output language, you want to create like branches."
-   (`psyche/Vision/designer/interfaceRootEnumerators.md`)
+   (`psyche/Vision/interfaceRootEnumerators.md`)
 3. "is it a newtype around another newtype? Looks really confusing to
    me." — "I don't like it. I don't like the single field struct."
-   (`psyche/Vision/designer/newtypeWrappingAndSingleFieldStructs.md`)
+   (`psyche/Vision/newtypeWrappingAndSingleFieldStructs.md`)
 4. "I would rather not create confusion with :"
-   (`psyche/Vision/designer/colonConfusion.md`)
+   (`psyche/Vision/colonConfusion.md`)
 
 ## Open questions — do NOT decide these; leave current forms in place
 

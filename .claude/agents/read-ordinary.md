@@ -1,6 +1,6 @@
 ---
 name: read-ordinary
-description: 'You know what you are looking for but not where it is. Search and scan — no deep analysis needed.'
+description: 'You know what you are looking for but not where it is.'
 model: claude-sonnet-4-6
 effort: medium
 disallowedTools: 'Edit, Write, NotebookEdit'

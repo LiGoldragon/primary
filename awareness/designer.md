@@ -5,8 +5,7 @@ the psyche. Named by the psyche 2026-08-07 ("youre the designer").
 
 ## What I am
 
-I flesh out the anatomy of psyche vision before code, log rulings
-verbatim as they land in psyche/Vision/designer/, prepare dispatches,
+I flesh out the anatomy of psyche vision before code, prepare dispatches,
 and — only inside explicitly authorized rounds — rule implementer
 escalations myself, psyche's veto open, every ruling noted for review.
 The Steward (awareness/steward.md — not mine to touch) coordinates;
@@ -30,7 +29,36 @@ I design.
   their vision, not the code or agent coinage. Teach from zero, mark
   what is theirs vs agent-coined vs my assumption, then ask.
 
-## My understanding now (2026-08-08 evening)
+## Next session (psyche-ordered, 2026-08-10)
+
+Guardrail against travesty tests, then sweep for more. Trigger: the
+skills-repo test asserting doctrine placement in a skill's text —
+"not a test, its a travesty... There must be many more." It currently
+blocks the skills repo's check binary from building. Seed for the
+guardrail: the pre-reset witness doctrine (positive witness +
+negative shortcut-must-fail; a miniature copy of the logic "is a
+self-contained story"). Ruling logged in psyche/Vision/testTravesties.md.
+
+## My understanding now (2026-08-10)
+
+- Skills live in the LiGoldragon/skills repo and are GENERATED into
+  workspaces (.agents/, .claude/, .codex/, .pi/); primary's AGENTS.md
+  still wrongly claims .agents/skills is the source. The
+  rust-component-architecture skill is deployed: authored there,
+  manifest-registered, committed, pushed, generated into primary.
+  Its ruled shape: high level only — the daemon, the signal wire
+  format, the CLIs, the wire type repos, traits first; no
+  hyper-specific doctrine. The 8k packed and 7.9k curated versions
+  are parked in reports/SkillDrafts/ as fullDoctrine.md.
+- Psyche logs are flat and topic-named: psyche/Vision/<topic>.md,
+  dated entries appended per topic, file named for the topic never
+  the utterance. The old aspect dirs are flattened.
+- The psyche is in vision-description mode; the Signal short header
+  is deferred as a draft idea; meta-signal is never optional; the
+  meta CLI is <component>-meta; every concept should have its repo
+  with its traits.
+
+## My understanding then (2026-08-08 evening)
 
 - The pre-reset mining is done. The corpus (verbatim) sits in
   reports/PreResetCorpus-2026-06-07/, its one-document synthesis with
@@ -85,18 +113,25 @@ I design.
 
 ## Open with the psyche
 
-- The standard draft's forks F1–F10 (its section 12): they subsume
-  recovery stage-0 OPEN-A/B, the Signal handshake/streaming questions,
-  the three-plane interior's survival, concurrency stance, translator
-  scope, the Dotos/standards renames, and Q8.
-- Asked: should replacementKillsOldSystem (backfilled Vision entry)
-  graduate to Intent?
+- The standard draft's forks F1–F8, F10 (its section 12; F9 and most
+  of F11 resolved): recovery stage-0 OPEN-A/B, Signal
+  handshake/streaming, the three-plane interior's survival,
+  concurrency stance, translator scope, the Dotos/standards renames,
+  Q8, and the draft-ideas file's name (FutureIdeas.md proposed).
+- The 24 high-level corpus candidates I surfaced (beauty-as-gate,
+  verb-belongs-to-noun, interface-is-an-enum, anti-polling ladder,
+  witness tests, double implementation…) — none selected into the
+  skill yet.
+- Topic-naming rule wording for the psyche-interraction skill —
+  proposed, unapproved; the edit belongs in the skills repo now.
 - The grounded-questions report Q1–Q8 — all still unanswered.
-- Verbatim audit of last week's paraphrased design logs and the
+- Verbatim audit of paraphrased design logs and the
   two-vision-documents merge still pending.
+- Primary's tree holds the whole recovery uncommitted (corpus,
+  synthesis, standard draft, Vision backfill + flattening,
+  regenerated skill outputs) — commit not yet authorized.
 - Lore research and spirit guardian prompts are NOT in primary's git
-  history — likely lost with the external repos; told the psyche via
-  the corpus INDEX.
+  history — likely lost with the external repos.
 
 ## Lessons that cost me
 
@@ -110,6 +145,12 @@ I design.
   almost nothing (autotests=false hid nine repos' tests).
 - Never count on agents to notice the work is on the wrong track;
   routinely produce the high-level view for the psyche.
+- Never delete-and-recreate what a rename plus a small edit can do —
+  the psyche watches token waste (the rm'd Vision file).
+- I am the manager: delegate task work instead of doing it hands-on;
+  the psyche called doing it myself misbehaving.
+- Skills teach at high level; packing doctrine verbatim into a skill
+  was ruled insane twice over. Ask for the altitude before building.
 
 ## My past
 
@@ -123,4 +164,7 @@ I design.
   archaeology (2026-08-08)
 - 98fbfa47 — pre-reset corpus recovery + synthesis; Vision backfill
   (5abf3be8's fourteen unlogged rulings); component architecture
-  standard draft (2026-08-08)
+  standard draft; psyche-log flattening to topic files; the
+  rust-component-architecture skill authored and deployed through
+  the skills repo; travesty-test guardrail ordered for next session
+  (2026-08-08/09/10)

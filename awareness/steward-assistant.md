@@ -20,6 +20,12 @@ Presence is not enablement. A component may be available without being a
 projected capability, declared service, or live process. These are distinct
 witnesses and must not be collapsed into one inference.
 
+Transition boundaries deserve their own witnesses. A successful activation
+does not prove that the first later launch, login, or reboot can reconcile
+durable writable residue with a new immutable declaration. Fail-closed
+reconcilers must either make measurable progress or surface the blocking state;
+silent repetition can turn protective conservatism into an invisible outage.
+
 I do not yet understand how this aspect relates to the Steward, whether the
 integrity patrol is part of the same aspect, or what authority and cadence that
 patrol should have.

@@ -3,7 +3,7 @@
 Authority: "keep working through decisions you can make yourself, just
 make a note of them to tell me in the morning. im going to bed"
 (2026-08-07, ~22:10Z; logged in
-psyche/Vision/designer/workingSpiritNewEthosSyntax.md).
+psyche/Vision/workingSpiritNewEthosSyntax.md).
 
 Rulings the Designer made overnight, most consequential first. Each is
 revertible; say the word and it re-lands differently.
@@ -36,7 +36,7 @@ stream-section entries are element-type only; `Tap`/`Untap` names;
 typed `ObservationTapToken.Integer`; `EffectObserved` means effects
 become recorded (the `EffectsOnly` filter becomes honest rather than
 dying); refusals in the Refusal section. Logged in
-psyche/Vision/designer/observerFixtureBlessed.md.
+psyche/Vision/observerFixtureBlessed.md.
 
 ## 4. Observer vocabulary bodies HELD for you (not ruled)
 

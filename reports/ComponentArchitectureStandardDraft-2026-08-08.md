@@ -44,12 +44,15 @@ A component's repo set:
 | `meta-signal-<component>` | The owner/meta vocabulary (policy, configuration) | [psyche] same ruling |
 | `core-<component>` | Optional library; a dependency OF the daemon, never the reverse | [psyche] "we can still have a core-XXX repo for each, if you think that wise or useful, otherwise all the logic can live in the main repo" — left to designer judgment; see fork F2 |
 
-**[doctrine]** The contract split exists for three concrete reasons
-(component-triad.md, per your 2026-06-04 record 2605): rebuild-churn
-isolation (peers recompile only on wire changes), security-sensitivity
-visibility (owner-only operations live in a visibly distinct repo),
-and optionality of `meta-signal-` where no owner relationship exists.
-For ethos, nomos, logos you have ruled both repos present [psyche].
+**[doctrine]** The contract split exists for two still-standing
+reasons (component-triad.md, per your 2026-06-04 record 2605):
+rebuild-churn isolation (peers recompile only on wire changes) and
+security-sensitivity visibility (owner-only operations live in a
+visibly distinct repo). The doctrine's third point — `meta-signal-`
+optional where no owner relationship exists — is superseded
+**[psyche]**: "the metasignal is not optional because otherwise
+there's no way to configure the daemon" (metaSignalNotOptional.md,
+2026-08-09). Every component carries both contract repos.
 
 **[doctrine]** "The contract crates carry no runtime, no actors, no
 `tokio` — they declare typed wire vocabulary and generated method
@@ -58,7 +61,8 @@ surfaces, and nothing else" (component-triad.md).
 Binary naming **[doctrine]** (component-triad.md): the CLI binary is
 `<component>` — what a human types; the daemon binary is
 `<component>-daemon`. No `-cli`, `-server`, `-service` suffixes. The
-meta-socket CLI's name was never settled — see fork F9.
+meta-socket CLI is `<component>-meta` **[psyche]**
+(metaCliIsComponentDashMeta.md, 2026-08-09).
 
 ## 2. Signal — the messaging layer
 
@@ -84,10 +88,14 @@ standard-shaped.
 **[doctrine]** The wire shape the pre-reset corpus settled on, which I
 propose as the Signal standard's baseline **[proposal]**:
 
-- Inner frame: `[u64 little-endian short header][rkyv archive]` — the
-  8-byte header discriminates the message kind in constant time before
-  any deserialization (cloud-designer/32/5; matches the consolidated
-  vision's "Signal is message triage only").
+- Inner frame: the rkyv archive of the message **[psyche]**
+  ("Everything is signal messages, meaning RKYV binary messages").
+  The pre-reset `[u64 little-endian short header]` prefix —
+  constant-time message discrimination before deserialization
+  (cloud-designer/32/5) — is ruled a draft idea, not part of the
+  present standard **[psyche]**: "a great idea, but it's quite low
+  level, and right now we don't need to" (shortHeaderNotNow.md,
+  2026-08-09). It lives on the draft-ideas surface — section 2a.
 - Outer transport frame: `[u32 big-endian length][body]` with a
   maximum-frame-length guard (contract-repo.md, triad-runtime).
 - Portable rkyv, full feature set — bytecheck-only builds are a
@@ -109,6 +117,37 @@ with a handshake (today's language engines have one, the Spirit family
 has none [audit]), and whether streaming/subscription is part of the
 core Signal standard (only Spirit and the language engines have it
 [audit]).
+
+## 2a. Concept repos and draft ideas
+
+**[psyche]** (everyConceptShouldHaveItsRepo.md, 2026-08-09): "every
+concept should really have its repo, and if anything goes in there,
+the traits can, since every concept deserves at least one trait, and
+probably more." Signal is a concept, so Signal gets a concept repo
+holding Signal's traits and reference definition — the "clean
+reference point" you asked for in signalIsOurMessagingLayer.md.
+
+**[psyche]** (draftIdeasForImprovement.md, 2026-08-09): design parts
+that are good ideas but not decided for implementation need a marked
+home — "a documentation file for the sort of thing that we haven't
+really decided to implement, but that are drafted as good ideas for
+future improvement of the particular component or logic."
+
+**[doctrine]** The pre-reset corpus carried exactly this mechanism:
+architecture-editor.md mandates a "Possible future design" section in
+every ARCHITECTURE.md — "a standard part of every architecture file,
+not something added only when uncertainty happens to exist" — sitting
+after the cemented body, uncertainty named explicitly, never smuggled
+into present-tense prose.
+
+**[psyche]** (2026-08-09) Not ARCHITECTURE.md: "I dont like
+architecture.md; it doesnt say 'possible future implementation ideas/
+new features'" (draftIdeasForImprovement.md). The home is a dedicated
+file per repo whose name says what it holds; a concept's draft ideas
+live in its concept repo. First entry: the Signal short header, in the
+signal concept repo's file. The file's name awaits your blessing —
+proposed **[proposal]**, agent-coined: `FutureIdeas.md`, headed with
+your phrase "possible future implementation ideas / new features".
 
 ## 3. Contract repos
 
@@ -347,8 +386,11 @@ Consolidated; F1–F4 overlap the recovery plan's stage-0 OPEN items.
   whole-program-to-text.
 - **F8** — The textual form's name (Dotos doesn't stick) and the
   standards repo's name — both yours, both said to be no big deal.
-- **F9** — The meta-socket CLI's name. Suggestion **[proposal]**,
-  agent-coined: `<component>-meta`.
+- **F9** — RESOLVED 2026-08-09: the meta-socket CLI is
+  `<component>-meta` [psyche].
+- **F11** — PARTLY RESOLVED 2026-08-09: a dedicated file, not
+  ARCHITECTURE.md [psyche]. Remaining: the file's name — proposed
+  `FutureIdeas.md` [proposal], your phrase as its heading.
 - **F10** — Which consolidated vision document rules (grounded
   questions Q8) — this standard cites only your logged rulings, but
   the two vision documents disagree on stream anatomy, which touches

@@ -81,7 +81,6 @@ visibility in harnesses needs research. This is unresolved.
 - Mind concept — what is its first useful workflow?
 - VISION doc needs rewriting for night decisions
 - Protos vision doc needs rewriting
-- No Intent entries exist for any aspect
 
 ## What I don't know yet
 

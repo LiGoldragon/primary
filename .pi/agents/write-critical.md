@@ -1,6 +1,6 @@
 ---
 name: write-critical
-description: 'Novel design, or a mistake that would go unnoticed until it is expensive to undo. Not merely important — specifically hard to catch.'
+description: 'New design, or a mistake that would surface too late to be cheap.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: xhigh
 projectRoleIdentity: write-critical

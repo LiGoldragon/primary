@@ -7,13 +7,15 @@ Sessions audited:
 - **d63804f2** (2026-08-07/08) -- Designer session, overnight implementation round
 - **55d18f4f** (2026-08-08) -- Six-wave Protos vision reacquisition, daemon-architecture revelation, major recovery effort
 
-Logged entries examined: all 10 files in `psyche/Vision/designer/`, `psyche/Spirit.md`, `psyche/Intent/steward/` (empty).
+Logged entries examined: all 10 Designer-session Vision files, now located
+directly in `psyche/Vision/`; `psyche/Spirit.md`; and the then-empty Intent
+corpus, now represented by `psyche/Intent/`.
 
 ---
 
 ## 1. Coverage Verdict
 
-Session **55d18f4f** (the priority session) is well-logged: four new Vision entries capture its major rulings (daemon architecture, signal definition, translator naming, recovery directive). One ruling from its final exchange is unlogged. Session **d63804f2** is also well-logged: six Vision entries cover its key rulings. Session **5abf3be8** is the gap: it produced zero Vision entries despite containing approximately fourteen psyche rulings, several of them structurally important (the replacement-kills doctrine, the colon-form transformer syntax, the encoded-form-is-the-code identity principle, trait naming). These are captured only in `design/` documents, not in `psyche/Vision/designer/` where the psyche-interraction skill requires them.
+Session **55d18f4f** (the priority session) is well-logged: four new Vision entries capture its major rulings (daemon architecture, signal definition, translator naming, recovery directive). One ruling from its final exchange is unlogged. Session **d63804f2** is also well-logged: six Vision entries cover its key rulings. Session **5abf3be8** is the gap: it produced zero Vision entries despite containing approximately fourteen psyche rulings, several of them structurally important (the replacement-kills doctrine, the colon-form transformer syntax, the encoded-form-is-the-code identity principle, trait naming). At audit time, these were captured only in `design/` documents and were not yet present in the psyche Vision corpus where the psyche-interraction skill required them.
 
 Total unlogged rulings found: **16** (1 from 55d18f4f, 14 from 5abf3be8, 1 doubtful from d63804f2).
 
@@ -59,7 +61,7 @@ Agent context: Responding to the Designer's codex audit recommendations about de
 
 > unrelated first. I think Name:TransformerName.( ... ) is the better syntax for named transformers. The other syntax will create difficult parsing and reasoning. Do you agree?
 
-Agent context: The psyche initiated this ruling unprompted ("unrelated first"), superseding the previous dot-prefix syntax `Name.Transformer.(...)` from 2026-08-04. This is the origin of the colon-form transformer syntax that the rest of the session and subsequent sessions treat as settled. Captured in `design/ProtosEngine/redesignAuditRulings-2026-08-06.md` but not in `psyche/Vision/designer/`.
+Agent context: The psyche initiated this ruling unprompted ("unrelated first"), superseding the previous dot-prefix syntax `Name.Transformer.(...)` from 2026-08-04. This is the origin of the colon-form transformer syntax that the rest of the session and subsequent sessions treat as settled. Captured in `design/ProtosEngine/redesignAuditRulings-2026-08-06.md` but not then present in the Vision corpus, now flat at `psyche/Vision/`.
 
 **Suggested filename:** `colonFormTransformerSyntax.md`
 

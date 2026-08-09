@@ -1,6 +1,6 @@
 ---
 name: write-trivial
-description: 'The change is fully specified. No decisions remain. A large mechanical task with exact instructions is still trivial.'
+description: 'The change is fully specified. No decisions remain.'
 model: 'openai-codex/gpt-5.6-luna'
 thinking: low
 projectRoleIdentity: write-trivial
