@@ -37,3 +37,9 @@ Clean reachability to that gateway plus retransmission beyond it localizes an
 impairment after the host's local edge, but does not distinguish the gateway's
 WAN processing from provider behavior; that boundary requires observations on
 both sides of the gateway during the same failed flow.
+
+A physical carrier-line fault can selectively devastate latency-sensitive
+streams while buffered traffic still appears healthy and local equipment looks
+clean. An operator's physical-line finding can resolve a boundary that
+end-host probes only localize; restored service remains a separate terminal
+witness after repair.
