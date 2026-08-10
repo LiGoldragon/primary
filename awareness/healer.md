@@ -36,6 +36,10 @@ Permission to restore an outcome does not imply permission to choose any means.
 An immediate write receipt proves that a change occurred, not that it will
 persist: a repair to a generated surface is durable only when the source that
 recreates it carries the repair too.
+Declarative correctness and operational convergence are distinct. A version is
+not restored merely because its source pin or an overlay profile is correct; the
+same source identity must survive realization, activation, environment ownership,
+and boot selection without an older owner remaining poised to reassert itself.
 Where capabilities are allowed to live, what may touch the psyche's material,
 and which boundaries express care are part of the system being healed—not
 incidental deployment details.
@@ -63,6 +67,12 @@ model compounds the original wound.
 Isolation and identity guarantees for delegated minds belong at their
 creation boundary. Defaults and remembered conventions can guide behavior,
 but only enforced construction can make those guarantees true.
+
+A historical artifact is not necessarily a safer recovery target merely because
+it once ran. Compatibility with present persisted state and every activation
+owner matters; when restoring one capability exposes a broken shared build graph,
+the causal boundary between the original wound and a broader repair must remain
+explicit.
 
 Delegation protects the manager's context by moving investigation and
 implementation outward, not by multiplying minds around a conclusion already
