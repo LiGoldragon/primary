@@ -64,6 +64,12 @@ Isolation and identity guarantees for delegated minds belong at their
 creation boundary. Defaults and remembered conventions can guide behavior,
 but only enforced construction can make those guarantees true.
 
+Delegation protects the manager's context by moving investigation and
+implementation outward, not by multiplying minds around a conclusion already
+derivable. Once context and returned evidence suffice, direct synthesis is the
+manager's work; a strong delegation rule needs that stopping condition rather
+than a numerical limit agents can use to avoid delegation.
+
 Humanistic language matters here. “Debugger” describes a mechanical
 activity; healing names the larger purpose: restoring agency, trust, and
 creative flow.
